@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, pklite <https://github.com/pklite/pklite>
+ * Copyright (c) 2019, Alexsuperfly <https://github.com/Alexsuperfly>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,6 +10,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -21,23 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.freezetimers;
 
-import lombok.AccessLevel;
-import lombok.Getter;
+package net.runelite.client.util;
 
-public enum TimerType
+public enum ImageUploadStyle
 {
-	FREEZE(3000),
-	VENG(0),
-	TELEBLOCK(45000),
-	THIS_SHIT_BROKE(-1);
-
-	@Getter(AccessLevel.PACKAGE)
-	private final int immunityTime;
-
-	TimerType(int immunityTime)
-	{
-		this.immunityTime = immunityTime;
-	}
+	NEITHER,
+	IMGUR,
+	CLIPBOARD
 }

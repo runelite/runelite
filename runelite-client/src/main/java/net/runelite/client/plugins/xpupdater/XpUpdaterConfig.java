@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Alexsuperfly <https://github.com/Alexsuperfly>
+ * Copyright (c) 2020, Alexsuperfly <alexsuperfly@users.noreply.github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.xpupdater;
 
-package net.runelite.client.plugins.screenshot;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-public enum UploadStyle
+@ConfigGroup("xpupdater")
+public interface XpUpdaterConfig
 {
-	NEITHER("Neither"),
-	IMGUR("Imgur"),
-	CLIPBOARD("Clipboard");
-
-	private final String name;
-
-	@Override
-	public String toString()
+	@ConfigItem(
+		position = 1,
+		keyName = "cml",
+		name = "Crystal Math Labs",
+		description = "Automatically updates your stats on crystalmathlabs.com when you log out"
+	)
+	default boolean cml()
 	{
-		return name;
+		return false;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "templeosrs",
+		name = "TempleOSRS",
+		description = "Automatically updates your stats on templeosrs.com when you log out"
+	)
+	default boolean templeosrs()
+	{
+		return false;
 	}
 }

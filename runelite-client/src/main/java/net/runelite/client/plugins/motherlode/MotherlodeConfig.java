@@ -28,6 +28,7 @@ package net.runelite.client.plugins.motherlode;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("motherlode")
 public interface MotherlodeConfig extends Config
@@ -54,9 +55,10 @@ public interface MotherlodeConfig extends Config
 
 	@ConfigItem(
 		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
+		name = "Reset stats",
 		description = "Configures the time until statistics are reset"
 	)
+	@Units(Units.MINUTES)
 	default int statTimeout()
 	{
 		return 5;

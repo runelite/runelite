@@ -25,65 +25,83 @@ LABEL17:
    iload                  1
    iconst                 0
    if_icmple              LABEL21
-   jump                   LABEL25
+   jump                   LABEL31
 LABEL21:
    iconst                 1                   ; What we compare the boolean with
    iconst                 0                   ; Boolean
    sconst                 "drawSpecbarAnyway"
    runelite_callback
-   if_icmpeq              LABEL25
+   if_icmpeq              LABEL41
    iconst                 1
    iconst                 38862883
    if_sethide
+   iconst                 190
+   iconst                 28
+   iconst                 0
+   iconst                 0
+   iconst                 38862850
+   if_setsize
    return
-LABEL25:
+LABEL31:
+   invoke                 1972
+   iconst                 1
+   if_icmpeq              LABEL35
+   jump                   LABEL41
+LABEL35:
+   iconst                 190
+   iconst                 16
+   iconst                 0
+   iconst                 0
+   iconst                 38862850
+   if_setsize
+LABEL41:
    iconst                 0
    istore                 2
    iconst                 38862883
-   if_gethide            
+   if_gethide
    iconst                 1
-   if_icmpeq              LABEL32
-   jump                   LABEL34
-LABEL32:
+   if_icmpeq              LABEL48
+   jump                   LABEL50
+LABEL48:
    iconst                 1
    istore                 2
-LABEL34:
+LABEL50:
    iconst                 0
    iconst                 38862883
-   if_sethide            
+   if_sethide
    get_varp               301
    iconst                 0
-   if_icmpgt              LABEL41
-   jump                   LABEL45
-LABEL41:
+   if_icmpgt              LABEL57
+   jump                   LABEL61
+LABEL57:
    iconst                 16776960
    iconst                 38862888
-   if_setcolour          
-   jump                   LABEL48
-LABEL45:
+   if_setcolour
+   jump                   LABEL64
+LABEL61:
    iconst                 16
    iconst                 38862888
-   if_setcolour          
-LABEL48:
+   if_setcolour
+LABEL64:
    get_varp               300
    istore                 3
    iload                  3
    iconst                 0
-   if_icmplt              LABEL54
-   jump                   LABEL56
-LABEL54:
+   if_icmplt              LABEL70
+   jump                   LABEL72
+LABEL70:
    iconst                 0
    istore                 3
-LABEL56:
+LABEL72:
    sconst                 "Special Attack: "
    iload                  3
    iconst                 10
-   div                   
-   tostring              
+   div
+   tostring
    sconst                 "%"
    join_string            3
    iconst                 38862888
-   if_settext            
+   if_settext
    iload                  0
    iload                  3
    iload                  2
@@ -96,119 +114,119 @@ LABEL56:
    iconst                 0
    if_icmple              RETURN                    ; Return if the weapon isn't supposed to have a spec
    jump                   CONTINUE                  ; Idk why I'm doing it like this but it's the jagex way
-RETURN:
-   return
-CONTINUE:
+   RETURN:
+      return
+   CONTINUE:
    iload                  3
    iload                  1
-   if_icmpge              LABEL73
-   jump                   LABEL77
-LABEL73:
+   if_icmpge              LABEL89
+   jump                   LABEL93
+LABEL89:
    iconst                 3767611
    iconst                 38862887
-   if_setcolour          
-   jump                   LABEL80
-LABEL77:
+   if_setcolour
+   jump                   LABEL96
+LABEL93:
    iconst                 12907
    iconst                 38862887
-   if_setcolour          
-LABEL80:
+   if_setcolour
+LABEL96:
    iconst                 94
    iconst                 3
-   inv_getobj            
+   inv_getobj
    istore                 4
    iconst                 111
    iconst                 115
    iconst                 1739
    iload                  4
-   enum                  
+   enum
    sconst                 " ("
    iconst                 111
    iconst                 105
    iconst                 906
    iload                  4
-   enum                  
+   enum
    iconst                 10
-   div                   
-   tostring              
+   div
+   tostring
    sconst                 "%)"
    join_string            4
    sstore                 0
    iload                  4
-   switch                
-      22737: LABEL108
-      22740: LABEL108
-      22743: LABEL108
-      22731: LABEL108
-      22734: LABEL108
-   jump                   LABEL116
-LABEL108:
+   switch
+      22737: LABEL124
+      22740: LABEL124
+      22743: LABEL124
+      22731: LABEL124
+      22734: LABEL124
+   jump                   LABEL132
+LABEL124:
    iconst                 111
    iconst                 115
    iconst                 1739
    iload                  4
-   enum                  
+   enum
    sconst                 " 5-100% "
    join_string            2
    sstore                 0
-LABEL116:
+LABEL132:
    get_varbit             5712
    iconst                 0
-   if_icmpeq              LABEL120
-   jump                   LABEL185
-LABEL120:
+   if_icmpeq              LABEL136
+   jump                   LABEL201
+LABEL136:
    iload                  4
    iconst                 11235
-   if_icmpeq              LABEL136
+   if_icmpeq              LABEL152
    iload                  4
    iconst                 20408
-   if_icmpeq              LABEL136
+   if_icmpeq              LABEL152
    iload                  4
    iconst                 12765
-   if_icmpeq              LABEL136
+   if_icmpeq              LABEL152
    iload                  4
    iconst                 12768
-   if_icmpeq              LABEL136
+   if_icmpeq              LABEL152
    iload                  4
    iconst                 12767
-   if_icmpeq              LABEL136
-   jump                   LABEL169
-LABEL136:
+   if_icmpeq              LABEL152
+   jump                   LABEL185
+LABEL152:
    iconst                 94
    iconst                 13
-   inv_getobj            
+   inv_getobj
    iconst                 11212
-   if_icmpeq              LABEL157
+   if_icmpeq              LABEL173
    iconst                 94
    iconst                 13
-   inv_getobj            
+   inv_getobj
    iconst                 11227
-   if_icmpeq              LABEL157
+   if_icmpeq              LABEL173
    iconst                 94
    iconst                 13
-   inv_getobj            
+   inv_getobj
    iconst                 11228
-   if_icmpeq              LABEL157
+   if_icmpeq              LABEL173
    iconst                 94
    iconst                 13
-   inv_getobj            
+   inv_getobj
    iconst                 11229
-   if_icmpeq              LABEL157
-   jump                   LABEL169
-LABEL157:
+   if_icmpeq              LABEL173
+   jump                   LABEL185
+LABEL173:
    sconst                 "Descent of Dragons: Deal a double attack with dragon arrows that inflicts up to 50% more damage (minimum damage of 8 per hit). ("
    iconst                 111
    iconst                 105
    iconst                 906
    iload                  4
-   enum                  
+   enum
    iconst                 10
-   div                   
-   tostring              
+   div
+   tostring
    sconst                 "%)"
    join_string            3
    sstore                 0
-LABEL169:
+LABEL185:
    iconst                 526
    iconst                 -2147483645
    iconst                 -1
@@ -218,17 +236,17 @@ LABEL169:
    iconst                 160
    sconst                 "IiIsii"
    iconst                 38862883
-   if_setonmouserepeat   
+   if_setonmouserepeat
    iconst                 40
    iconst                 38862890
    sconst                 "I"
    iconst                 38862883
-   if_setonmouseleave    
-   jump                   LABEL189
-LABEL185:
+   if_setonmouseleave
+   jump                   LABEL205
+LABEL201:
    iconst                 -1
    sconst                 ""
    iconst                 38862883
-   if_setonmouserepeat   
-LABEL189:
+   if_setonmouserepeat
+LABEL205:
    return                

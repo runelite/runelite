@@ -69,6 +69,10 @@ public class InventoryTagsPlugin extends Plugin
 	private static final String SETNAME_GROUP_6 = "Group 6";
 	private static final String SETNAME_GROUP_7 = "Group 7";
 	private static final String SETNAME_GROUP_8 = "Group 8";
+	private static final String SETNAME_GROUP_9 = "Group 9";
+	private static final String SETNAME_GROUP_10 = "Group 10";
+	private static final String SETNAME_GROUP_11 = "Group 11";
+	private static final String SETNAME_GROUP_12 = "Group 12";
 
 
 	private static final String CONFIGURE = "Configure";
@@ -90,8 +94,8 @@ public class InventoryTagsPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
-	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_8, SETNAME_GROUP_7, SETNAME_GROUP_6,
-		SETNAME_GROUP_5, SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
+	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_12, SETNAME_GROUP_11, SETNAME_GROUP_10, SETNAME_GROUP_9,
+	SETNAME_GROUP_8, SETNAME_GROUP_7, SETNAME_GROUP_6, SETNAME_GROUP_5, SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
 
 	@Inject
 	private ConfigManager configManager;
@@ -119,6 +123,10 @@ public class InventoryTagsPlugin extends Plugin
 	private Color group6Color;
 	private Color group7Color;
 	private Color group8Color;
+	private Color group9Color;
+	private Color group10Color;
+	private Color group11Color;
+	private Color group12Color;
 
 	@Provides
 	InventoryTagsConfig provideConfig(ConfigManager configManager)
@@ -265,6 +273,14 @@ public class InventoryTagsPlugin extends Plugin
 				return this.group7Color;
 			case SETNAME_GROUP_8:
 				return this.group8Color;
+			case SETNAME_GROUP_9:
+				return this.group9Color;
+			case SETNAME_GROUP_10:
+				return this.group10Color;
+			case SETNAME_GROUP_11:
+				return this.group11Color;
+			case SETNAME_GROUP_12:
+				return this.group12Color;
 		}
 		return null;
 	}
@@ -316,5 +332,9 @@ public class InventoryTagsPlugin extends Plugin
 		this.group6Color = config.getGroup6Color();
 		this.group7Color = config.getGroup7Color();
 		this.group8Color = config.getGroup8Color();
+		this.group9Color = config.getGroup9Color();
+		this.group10Color = config.getGroup10Color();
+		this.group11Color = config.getGroup11Color();
+		this.group12Color = config.getGroup12Color();
 	}
 }

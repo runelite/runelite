@@ -30,6 +30,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
@@ -91,6 +92,7 @@ public interface AgilityConfig extends Config
 		hidden = true,
 		unhide = "showLapCount"
 	)
+	@Units(Units.MINUTES)
 	default int lapTimeout()
 	{
 		return 5;

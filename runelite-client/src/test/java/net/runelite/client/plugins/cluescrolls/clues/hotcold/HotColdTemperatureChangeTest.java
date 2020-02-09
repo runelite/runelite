@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot.imgur;
+package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Base64;
-import lombok.Data;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import org.junit.Test;
 
-@Data
-public class ImageUploadRequest
+public class HotColdTemperatureChangeTest
 {
-	private final String image;
-	private final String type;
+	private static final String[] VALID_MESSAGES = {
+		"The device is warm, and warmer than last time.",
+		"The device is cold, but colder than last time.",
+		"The device is very hot, and the same temperature as last time.",
+	};
+	private static final String[] INVALID_MESSAGES = {
+		"The device is cold.",
+		"The device is ice cold.",
+		"The device is very cold.",
+		"The device is hot.",
+		"The device is incredibly hot.",
+		"The device is an octopus, and is wetter than last time",
+		"foobar",
+		"a q p w",
+		"My feet are cold, I should put them in some lukewarm water, or run hot water over them.",
+		"and warmer than and colder than and the same temperature",
+	};
 
-	public ImageUploadRequest(File imageFile) throws IOException
+	@Test
+	public void testValidTemperatureChangeMessages()
 	{
-		this.image = Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
-		this.type = "base64";
+		for (final String message : VALID_MESSAGES)
+		{
+			assertNotNull(message, HotColdTemperatureChange.of(message));
+		}
+	}
+
+	@Test
+	public void testInvalidTemperatureChangeMessages()
+	{
+		for (final String message : INVALID_MESSAGES)
+		{
+			assertNull(message, HotColdTemperatureChange.of(message));
+		}
 	}
 }

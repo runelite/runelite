@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
@@ -152,6 +153,7 @@ public interface GroundItemsConfig extends Config
 		position = 9,
 		titleSection = "highlightedTitle"
 	)
+	@Units(Units.GP)
 	default int getHighlightOverValue()
 	{
 		return 0;
@@ -231,6 +233,7 @@ public interface GroundItemsConfig extends Config
 		position = 15,
 		titleSection = "hiddenTitle"
 	)
+	@Units(Units.GP)
 	default int getHideUnderValue()
 	{
 		return 0;
@@ -338,6 +341,7 @@ public interface GroundItemsConfig extends Config
 		position = 24,
 		titleSection = "lowValueTitle"
 	)
+	@Units(Units.GP)
 	default int lowValuePrice()
 	{
 		return 20000;
@@ -386,6 +390,7 @@ public interface GroundItemsConfig extends Config
 		position = 28,
 		titleSection = "mediumValueTitle"
 	)
+	@Units(Units.GP)
 	default int mediumValuePrice()
 	{
 		return 100000;
@@ -434,6 +439,7 @@ public interface GroundItemsConfig extends Config
 		position = 32,
 		titleSection = "highValueTitle"
 	)
+	@Units(Units.GP)
 	default int highValuePrice()
 	{
 		return 1000000;
@@ -482,6 +488,7 @@ public interface GroundItemsConfig extends Config
 		position = 36,
 		titleSection = "insaneValueTitle"
 	)
+	@Units(Units.GP)
 	default int insaneValuePrice()
 	{
 		return 10000000;
@@ -600,6 +607,7 @@ public interface GroundItemsConfig extends Config
 		position = 46,
 		titleSection = "miscTitle"
 	)
+	@Units(Units.MILLISECONDS)
 	default int doubleTapDelay()
 	{
 		return 250;

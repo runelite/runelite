@@ -37,6 +37,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigTitleSection;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Title;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("aoe")
 public interface AoeWarningConfig extends Config
@@ -124,6 +125,7 @@ public interface AoeWarningConfig extends Config
 		titleSection = "overlayTitle",
 		position = 4
 	)
+	@Units(Units.MILLISECONDS)
 	default int delay()
 	{
 		return 300;

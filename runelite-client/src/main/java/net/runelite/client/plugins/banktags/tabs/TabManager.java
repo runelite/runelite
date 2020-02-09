@@ -40,13 +40,12 @@ import net.runelite.api.util.Text;
 import net.runelite.client.config.ConfigManager;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_TABS_CONFIG;
 import org.apache.commons.lang3.math.NumberUtils;
 
 @Singleton
 class TabManager
 {
-	private static final String TAG_TABS_CONFIG = "tagtabs";
-
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TagTab> tabs = new ArrayList<>();
 	private final ConfigManager configManager;

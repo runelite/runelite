@@ -36,6 +36,7 @@ import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -188,9 +189,10 @@ public class ScreenMarkerPlugin extends Plugin
 
 	public void finishCreation(boolean aborted)
 	{
-		if (!aborted && currentMarker != null)
+		ScreenMarker marker = currentMarker;
+		if (!aborted && marker != null)
 		{
-			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(currentMarker);
+			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(marker);
 			screenMarkerOverlay.setPreferredLocation(overlay.getBounds().getLocation());
 			screenMarkerOverlay.setPreferredSize(overlay.getBounds().getSize());
 
@@ -258,6 +260,6 @@ public class ScreenMarkerPlugin extends Plugin
 		{
 		}.getType());
 
-		return screenMarkerData.stream().map(ScreenMarkerOverlay::new);
+		return screenMarkerData.stream().filter(Objects::nonNull).map(ScreenMarkerOverlay::new);
 	}
 }

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.boosts;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("boosts")
 public interface BoostsConfig extends Config
@@ -129,6 +130,7 @@ public interface BoostsConfig extends Config
 		description = "The amount of levels boosted to send a notification at. A value of 0 will disable notification.",
 		position = 8
 	)
+	@Units(Units.LEVELS)
 	default int boostThreshold()
 	{
 		return 0;

@@ -33,7 +33,7 @@ jobs:
         working-directory: /home/runner/work/runelite/cache-client
 
       - name: Assembling cache client
-        run: ./gradlew :cache-client:assemble --console=plain
+        run: ./gradlew assemble --console=plain
         working-directory: /home/runner/work/runelite/cache-client
 
       - name: Assembling scraper
@@ -41,7 +41,7 @@ jobs:
         working-directory: /home/runner/work/runelite/runelite
 
       - name: Building cache client
-        run: ./gradlew :cache-client:build --console=plain
+        run: ./gradlew build --console=plain
         working-directory: /home/runner/work/runelite/cache-client
 
       - name: Building scraper
@@ -49,7 +49,7 @@ jobs:
         working-directory: /home/runner/work/runelite/runelite
 
       - name: Downloading jagex cache
-        run: ./gradlew :cache-client:download --console=plain
+        run: ./gradlew download --console=plain
         working-directory: /home/runner/work/runelite/cache-client
 
       - name: Scraping NPC stats

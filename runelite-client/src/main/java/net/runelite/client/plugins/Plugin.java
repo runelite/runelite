@@ -87,4 +87,8 @@ public abstract class Plugin implements Module
 	{
 		subs.forEach(s -> s.subscribe(eventBus, this));
 	}
+
+	public void resetConfiguration()
+	{
+	}
 }

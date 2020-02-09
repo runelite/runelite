@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import javax.inject.Inject;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.CacheControl;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -60,6 +61,7 @@ public class WorldClient
 
 		Request request = new Request.Builder()
 			.url(url)
+			.cacheControl(CacheControl.FORCE_NETWORK)
 			.build();
 
 		try (Response response = client.newCall(request).execute())

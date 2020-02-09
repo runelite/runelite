@@ -30,6 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("mining")
 public interface MiningConfig extends Config
@@ -104,6 +105,7 @@ public interface MiningConfig extends Config
 		name = "Progress pie diameter",
 		description = "Configures how big the progress pie is"
 	)
+	@Units(Units.PIXELS)
 	default int progressPieDiameter()
 	{
 		return 30;

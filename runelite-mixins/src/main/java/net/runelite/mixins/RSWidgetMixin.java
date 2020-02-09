@@ -301,8 +301,9 @@ public abstract class RSWidgetMixin implements RSWidget
 			dragOffsetY = p.getY();
 		}
 
-		Rectangle bounds = new Rectangle(itemX + dragOffsetX, itemY + dragOffsetY, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
-		return new WidgetItem(itemId - 1, itemQuantity, index, bounds, this, isDragged);
+		Rectangle bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
+		Rectangle draggedBounds = new Rectangle(itemX + dragOffsetX, itemY + dragOffsetY, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
+		return new WidgetItem(itemId - 1, itemQuantity, index, bounds, this, draggedBounds);
 	}
 
 	@Inject

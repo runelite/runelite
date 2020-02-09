@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Parker <https://github.com/Judaxx>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,6 +10,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -21,48 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.kingdomofmiscellania;
+package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Units;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
-@ConfigGroup("kingdomofmiscellania")
-public interface KingdomConfig extends Config
+public class BeginnerHotColdLocationTest
 {
-	@ConfigItem(
-		keyName = "showInfoboxAnywhere",
-		name = "Show kingdom infobox anywhere",
-		description = "Show the infobox containing your favor/coffer amount even when outside Miscellania",
-		position = 0
-	)
-	default boolean showInfoboxAnywhere()
-	{
-		return false;
-	}
+	private static final Set<HotColdLocation> BEGINNER_HOT_COLD_LOCATIONS = Arrays.stream(HotColdLocation.values())
+		.filter(HotColdLocation::isBeginnerClue)
+		.collect(Collectors.toSet());
+	private static final int EXPECTED_DIMENSION_SIZE = 7;
 
-	@ConfigItem(
-		keyName = "notifyFavorThreshold",
-		name = "Notify chat favor",
-		description = "Sends a message to your chatbox when your kingdom favor percentage is below the threshold. Leave at 0 to disable.",
-		position = 1
-
-	)
-	default int notifyFavorThreshold()
+	@Test
+	public void beginnerHotColdLocationAreaTest()
 	{
-		return 0;
-	}
 
-	@ConfigItem(
-		keyName = "notifyCofferThreshold",
-		name = "Notify chat coffer value",
-		description = "Sends a message to your chatbox when your kingdom's coffer is below the threshold. Leave at 0 to disable.",
-		position = 2
-	)
-	@Units(Units.GP)
-	default int notifyCofferThreshold()
-	{
-		return 0;
+		for (final HotColdLocation location : BEGINNER_HOT_COLD_LOCATIONS)
+		{
+			assertEquals(EXPECTED_DIMENSION_SIZE, location.getRect().height);
+			assertEquals(EXPECTED_DIMENSION_SIZE, location.getRect().width);
+		}
 	}
 }

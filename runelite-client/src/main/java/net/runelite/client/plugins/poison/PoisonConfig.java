@@ -27,6 +27,7 @@ package net.runelite.client.plugins.poison;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup(PoisonConfig.GROUP)
 public interface PoisonConfig extends Config
@@ -81,6 +82,7 @@ public interface PoisonConfig extends Config
 		description = "The size the time left text for other players/npc's will be",
 		position = 3
 	)
+	@Units(Units.POINTS)
 	default int fontSize()
 	{
 		return 8;
