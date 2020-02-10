@@ -66,6 +66,7 @@ import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.config.NotificationSettings;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 import net.runelite.client.eventbus.Subscribe;
@@ -480,6 +481,10 @@ class ConfigPanel extends PluginPanel
 			return button;
 		}
 
+		if (cid.getType() == NotificationSettings.class)
+		{
+			return new NotificationSettingsPanel(pluginConfig, configManager);
+		}
 
 		log.warn("Didn't create a component for {}", cid);
 		return null;

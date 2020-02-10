@@ -29,6 +29,7 @@ import javax.swing.JMenuItem;
 import lombok.Value;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.config.NotificationSettings;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.externalplugins.ExternalPluginManifest;
 import net.runelite.client.plugins.Plugin;
@@ -55,6 +56,11 @@ class PluginConfigurationDescriptor
 	boolean hasConfigurables()
 	{
 		return configDescriptor != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden());
+	}
+
+	boolean hasNotificationConfigurables()
+	{
+		return configDescriptor != null && configDescriptor.getItems().stream().anyMatch(item -> item.getType().equals(NotificationSettings.class));
 	}
 
 	/**
