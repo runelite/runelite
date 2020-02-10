@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
+
+import lombok.Data;
+import net.runelite.api.ScriptEvent;
 
 /**
- * Utility class containing ASM opcodes used by the RuneLite client.
+ * An event that is fired before the designated script is ran
  */
-public class Opcodes
+@Data
+public class ScriptPreFired
 {
 	/**
-	 * opcode used to return from scripts.
+	 * The script id of the invoked script
 	 */
-	public static final int RETURN = 21;
+	private final int scriptId;
 
 	/**
-	 * opcode used to invoke scripts.
+	 * The input of the script invoke, this will be null unless it is the root script
 	 */
-	public static final int INVOKE = 40;
-
-	/**
-	 * RuneLite execution opcode used to inject scripts.
-	 */
-	public static final int RUNELITE_EXECUTE = 6599;
+	private ScriptEvent scriptEvent;
 }
