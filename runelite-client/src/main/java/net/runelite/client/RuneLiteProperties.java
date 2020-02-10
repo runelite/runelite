@@ -48,6 +48,7 @@ public class RuneLiteProperties
 	private static final String JAV_CONFIG_BACKUP = "runelite.jav_config_backup";
 	private static final String PLUGINHUB_BASE = "runelite.pluginhub.url";
 	private static final String PLUGINHUB_VERSION = "runelite.pluginhub.version";
+	private static final String IMGUR_CLIENT_ID = "runelite.imgur.client.id";
 
 	private static final Properties properties = new Properties();
 
@@ -138,5 +139,10 @@ public class RuneLiteProperties
 	{
 		String version = System.getProperty(PLUGINHUB_VERSION, properties.getProperty(PLUGINHUB_VERSION));
 		return HttpUrl.parse(properties.get(PLUGINHUB_BASE) + "/" + version);
+	}
+
+	public static String getImgurClientId()
+	{
+		return properties.getProperty(IMGUR_CLIENT_ID);
 	}
 }

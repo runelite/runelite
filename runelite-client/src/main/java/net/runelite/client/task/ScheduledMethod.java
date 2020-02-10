@@ -26,49 +26,22 @@ package net.runelite.client.task;
 
 import java.lang.reflect.Method;
 import java.time.Instant;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@RequiredArgsConstructor
+@ToString
+@Getter
 public class ScheduledMethod
 {
 	private final Schedule schedule;
 	private final Method method;
 	private final Object object;
+	@EqualsAndHashCode.Exclude
+	private final Runnable lambda;
+	@Setter
 	private Instant last = Instant.now();
-
-	public ScheduledMethod(Schedule schedule, Method method, Object object)
-	{
-		this.schedule = schedule;
-		this.method = method;
-		this.object = object;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "ScheduledMethod{" + "schedule=" + schedule + ", method=" + method + ", object=" + object + '}';
-	}
-
-	public Schedule getSchedule()
-	{
-		return schedule;
-	}
-
-	public Method getMethod()
-	{
-		return method;
-	}
-
-	public Object getObject()
-	{
-		return object;
-	}
-
-	public Instant getLast()
-	{
-		return last;
-	}
-
-	public void setLast(Instant last)
-	{
-		this.last = last;
-	}
 }

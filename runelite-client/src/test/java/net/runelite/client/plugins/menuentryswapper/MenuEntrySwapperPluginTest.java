@@ -303,14 +303,14 @@ public class MenuEntrySwapperPluginTest
 	}
 
 	@Test
-	public void testBankExtraOp()
+	public void testShiftWithdraw()
 	{
-		when(config.swapBankOp()).thenReturn(true);
+		when(config.bankDepositShiftClick()).thenReturn(ShiftDepositMode.EXTRA_OP);
 		menuEntrySwapperPlugin.setShiftModifier(true);
 
 		entries = new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
-			menu("Weild", "Abyssal whip", MenuAction.CC_OP_LOW_PRIORITY, 9),
+			menu("Wield", "Abyssal whip", MenuAction.CC_OP_LOW_PRIORITY, 9),
 			menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
 		};
 
@@ -329,7 +329,40 @@ public class MenuEntrySwapperPluginTest
 		assertArrayEquals(new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
 			menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
-			menu("Weild", "Abyssal whip", MenuAction.CC_OP, 9),
+			menu("Wield", "Abyssal whip", MenuAction.CC_OP, 9),
+		}, argumentCaptor.getValue());
+	}
+
+	@Test
+	public void testShiftDeposit()
+	{
+		when(config.bankDepositShiftClick()).thenReturn(ShiftDepositMode.DEPOSIT_ALL);
+		menuEntrySwapperPlugin.setShiftModifier(true);
+
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Wield", "Rune arrow", MenuAction.CC_OP_LOW_PRIORITY, 9),
+			menu("Deposit-All", "Rune arrow", MenuAction.CC_OP_LOW_PRIORITY, 8),
+			menu("Deposit-1", "Rune arrow", MenuAction.CC_OP, 2),
+		};
+
+		menuEntrySwapperPlugin.onMenuEntryAdded(new MenuEntryAdded(
+			"Deposit-1",
+			"Rune arrow",
+			MenuAction.CC_OP.getId(),
+			2,
+			-1,
+			-1
+		));
+
+		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
+		verify(client).setMenuEntries(argumentCaptor.capture());
+
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Wield", "Rune arrow", MenuAction.CC_OP_LOW_PRIORITY, 9),
+			menu("Deposit-1", "Rune arrow", MenuAction.CC_OP, 2),
+			menu("Deposit-All", "Rune arrow", MenuAction.CC_OP, 8),
 		}, argumentCaptor.getValue());
 	}
 }

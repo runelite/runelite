@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 import javax.inject.Inject;
+import javax.inject.Named;
+import joptsimple.internal.Strings;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -51,6 +53,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
@@ -61,7 +64,7 @@ import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -74,6 +77,8 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -97,6 +102,7 @@ import net.runelite.client.plugins.cluescrolls.clues.SkillChallengeClue;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -165,6 +171,10 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	@Inject
+	@Named("developerMode")
+	boolean developerMode;
+
 	private BufferedImage emoteImage;
 	private BufferedImage mapArrow;
 	private Integer clueItemId;
@@ -232,6 +242,18 @@ public class ClueScrollPlugin extends Plugin
 			{
 				((SkillChallengeClue) clue).setChallengeCompleted(true);
 			}
+		}
+	}
+
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
+	{
+		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
+		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY
+			&& overlayMenuClicked.getEntry().getOption().equals("Reset")
+			&& overlayMenuClicked.getOverlay() == clueScrollOverlay)
+		{
+			resetClue(true);
 		}
 	}
 
@@ -409,9 +431,13 @@ public class ClueScrollPlugin extends Plugin
 			resetClue(true);
 		}
 
-		// If we have a clue, save that knowledge
-		// so the clue window doesn't have to be open.
-		updateClue(findClueScroll());
+		final Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
+
+		if (clueScrollText != null)
+		{
+			ClueScroll clueScroll = findClueScroll(clueScrollText.getText());
+			updateClue(clueScroll);
+		}
 	}
 
 	@Subscribe
@@ -424,6 +450,18 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		updateClue(BeginnerMapClue.forWidgetID(event.getGroupId()));
+	}
+
+	@Subscribe
+	public void onCommandExecuted(CommandExecuted commandExecuted)
+	{
+		if (developerMode && commandExecuted.getCommand().equals("clue"))
+		{
+			String text = Strings.join(commandExecuted.getArguments(), " ");
+			ClueScroll clueScroll = findClueScroll(text);
+			log.debug("Found clue scroll for '{}': {}", text, clueScroll);
+			updateClue(clueScroll);
+		}
 	}
 
 	public BufferedImage getClueScrollImage()
@@ -483,17 +521,10 @@ public class ClueScrollPlugin extends Plugin
 		}
 	}
 
-	private ClueScroll findClueScroll()
+	private ClueScroll findClueScroll(String rawText)
 	{
-		final Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
-
-		if (clueScrollText == null)
-		{
-			return null;
-		}
-
 		// Remove line breaks and also the rare occasion where there are double line breaks
-		final String text = Text.sanitizeMultilineText(clueScrollText.getText()).toLowerCase();
+		final String text = Text.sanitizeMultilineText(rawText).toLowerCase();
 
 		// Early return if this is same clue as already existing one
 		if (clue instanceof TextClueScroll)
@@ -506,7 +537,7 @@ public class ClueScrollPlugin extends Plugin
 
 		if (text.startsWith("i'd like to hear some music."))
 		{
-			return MusicClue.forText(clueScrollText.getText());
+			return MusicClue.forText(rawText);
 		}
 
 		if (text.contains("degrees") && text.contains("minutes"))
@@ -561,7 +592,7 @@ public class ClueScrollPlugin extends Plugin
 			return hotColdClue;
 		}
 
-		final SkillChallengeClue skillChallengeClue = SkillChallengeClue.forText(text, clueScrollText.getText());
+		final SkillChallengeClue skillChallengeClue = SkillChallengeClue.forText(text, rawText);
 
 		if (skillChallengeClue != null)
 		{
@@ -569,7 +600,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// three step cryptic clues need unedited text to check which steps are already done
-		final ThreeStepCrypticClue threeStepCrypticClue = ThreeStepCrypticClue.forText(text, clueScrollText.getText());
+		final ThreeStepCrypticClue threeStepCrypticClue = ThreeStepCrypticClue.forText(text, rawText);
 
 		if (threeStepCrypticClue != null)
 		{
@@ -577,7 +608,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// We have unknown clue, reset
-		log.warn("Encountered unhandled clue text: {}", clueScrollText.getText());
+		log.warn("Encountered unhandled clue text: {}", rawText);
 		resetClue(true);
 		return null;
 	}
@@ -748,6 +779,8 @@ public class ClueScrollPlugin extends Plugin
 
 		resetClue(false);
 		checkClueNPCs(clue, client.getCachedNPCs());
+		// If we have a clue, save that knowledge
+		// so the clue window doesn't have to be open.
 		this.clue = clue;
 	}
 

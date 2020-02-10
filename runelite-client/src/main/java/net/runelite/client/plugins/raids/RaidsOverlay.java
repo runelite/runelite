@@ -26,9 +26,12 @@ package net.runelite.client.plugins.raids;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.ClanMemberManager;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
@@ -38,6 +41,7 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
@@ -46,12 +50,14 @@ public class RaidsOverlay extends Overlay
 {
 	private static final int OLM_PLANE = 0;
 	static final String BROADCAST_ACTION = "Broadcast layout";
+	static final String SCREENSHOT_ACTION = "Screenshot";
 
 	private Client client;
 	private RaidsPlugin plugin;
 	private RaidsConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
+	@Getter
 	@Setter
 	private boolean scoutOverlayShown = false;
 
@@ -66,6 +72,7 @@ public class RaidsOverlay extends Overlay
 		this.config = config;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, BROADCAST_ACTION, "Raids overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, SCREENSHOT_ACTION, "Raids overlay"));
 	}
 
 	@Override
@@ -100,6 +107,28 @@ public class RaidsOverlay extends Overlay
 			.text(layout)
 			.color(color)
 			.build());
+
+		if (config.ccDisplay())
+		{
+			color = Color.RED;
+			ClanMemberManager clanMemberManager = client.getClanMemberManager();
+			FontMetrics metrics = graphics.getFontMetrics();
+			String worldString = "W" + client.getWorld();
+			String clanOwner = "Join a CC";
+			if (clanMemberManager != null)
+			{
+				clanOwner = clanMemberManager.getClanOwner();
+				color = Color.ORANGE;
+			}
+
+			panelComponent.setPreferredSize(new Dimension(Math.max(ComponentConstants.STANDARD_WIDTH, metrics.stringWidth(worldString) + metrics.stringWidth(clanOwner) + 14), 0));
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(worldString)
+				.right(clanOwner)
+				.leftColor(Color.ORANGE)
+				.rightColor(color)
+				.build());
+		}
 
 		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{

@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,10 +44,12 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -111,6 +114,9 @@ public class TimersPlugin extends Plugin
 	private static final Pattern FULL_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 5 minutes\\.</col>");
 	private static final Pattern HALF_TELEBLOCK_PATTERN = Pattern.compile("<col=4f006f>A Tele Block spell has been cast on you by (.+)\\. It will expire in 2 minutes, 30 seconds\\.</col>");
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
+
+	@VisibleForTesting
+	static final int IMBUED_HEART_MIN_CERTAIN_BOOST_LEVEL = 40; // Before this level, other effects can grant boosts of equal amounts
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
@@ -889,6 +895,24 @@ public class TimersPlugin extends Plugin
 		if (playerDeath.getPlayer() == client.getLocalPlayer())
 		{
 			infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer().isRemovedOnDeath());
+		}
+	}
+
+	@Subscribe
+	public void onStatChanged(StatChanged statChanged)
+	{
+		if (statChanged.getSkill() != Skill.MAGIC || !config.showImbuedHeart())
+		{
+			return;
+		}
+
+		final int magicLevel = statChanged.getLevel();
+		final int boostAmount = statChanged.getBoostedLevel() - magicLevel;
+		final int heartBoost = 1 + (magicLevel / 10);
+
+		if (magicLevel >= IMBUED_HEART_MIN_CERTAIN_BOOST_LEVEL && boostAmount == heartBoost)
+		{
+			createGameTimer(IMBUEDHEART);
 		}
 	}
 

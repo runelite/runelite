@@ -54,6 +54,17 @@ public interface OpponentInfoConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showOpponentsOpponent",
+		name = "Show opponent's opponent",
+		description = "Toggle showing opponent's opponent if within a multi-combat area",
+		position = 2
+	)
+	default boolean showOpponentsOpponent()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showOpponentsInMenu",
 		name = "Show opponents in menu",
 		description = "Marks opponents names in the menu which you are attacking or are attacking you (NPC only)",

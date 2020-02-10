@@ -134,7 +134,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("If you look closely enough, it seems that the archers have lost more than their needles.", HAYSTACK, new WorldPoint(2672, 3416, 0), "Search the haystack by the south corner of the Rangers' Guild"),
 		new CrypticClue("Search the crate in the left-hand tower of Lumbridge Castle.", CRATE_357, new WorldPoint(3228, 3212, 1), "Located on the first floor of the southern tower at the Lumbridge Castle entrance."),
 		new CrypticClue("'Small shoe.' Often found with rod on mushroom.", "Gnome trainer", new WorldPoint(2476, 3428, 0), "Talk to any Gnome trainer in the agility area of the Tree Gnome Stronghold."),
-		new CrypticClue("I live in a deserted crack collecting soles.", "Genie", new WorldPoint(3371, 9320, 0), "Enter the crack west of Nardah Rug merchant, and talk to the Genie. You'll need a light source and a rope."),
+		new CrypticClue("I live in a deserted crack collecting soles.", "Genie", new WorldPoint(3371, 9320, 0), "Enter the crack west of Nardah Rug merchant, and talk to the Genie. You'll need a light source and a rope.", true),
 		new CrypticClue("46 is my number. My body is the colour of burnt orange and crawls among those with eight. Three mouths I have, yet I cannot eat. My blinking blue eye hides my grave.", new WorldPoint(3170, 3885, 0), "Sapphire respawn in the Spider's Nest, lvl 46 Wilderness. Dig under the sapphire spawn."),
 		new CrypticClue("Green is the colour of my death as the winter-guise, I swoop towards the ground.", new WorldPoint(2780, 3783, 0), "Players need to slide down to where Trollweiss grows on Trollweiss Mountain."),
 		new CrypticClue("Talk to a party-goer in Falador.", "Lucy", new WorldPoint(3046, 3382, 0), "Lucy is the bartender on the first floor of the party room."),
@@ -166,7 +166,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the drawers in Falador's chain mail shop.", DRAWERS, new WorldPoint(2969, 3311, 0), "Wayne's Chains - Chainmail Specialist store at the southern Falador walls."),
 		new CrypticClue("Talk to the barber in the Falador barber shop.", "Hairdresser", new WorldPoint(2945, 3379, 0), "The Hairdresser can be found in the barber shop, north of the west Falador bank."),
 		new CrypticClue("Often sought out by scholars of histories past, find me where words of wisdom speak volumes.", "Examiner", new WorldPoint(3362, 3341, 0), "Speak to an examiner at the Exam Centre."),
-		new CrypticClue("Generally speaking, his nose was very bent.", "General Bentnoze", new WorldPoint(2957, 3511, 0), "Talk to General Bentnoze"),
+		new CrypticClue("Generally speaking, his nose was very bent.", "General Bentnoze", new WorldPoint(2957, 3511, 0), "Talk to General Bentnoze in the Goblin Village north of Falador."),
 		new CrypticClue("Search the bush at the digsite centre.", BUSH_2357, new WorldPoint(3345, 3378, 0), "The bush is on the east side of the first pathway towards the digsite from the Exam Centre."),
 		new CrypticClue("Someone watching the fights in the Duel Arena is your next destination.", "Jeed", new WorldPoint(3360, 3242, 0), "Talk to Jeed, found on the upper floors, at the Duel Arena."),
 		new CrypticClue("It seems to have reached the end of the line, and it's still empty.", MINE_CART_6045, new WorldPoint(3041, 9820, 0), "Search the carts in the northern part of the Dwarven Mine."),
@@ -346,6 +346,12 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private CrypticClue(String text, String npc, WorldPoint location, String solution)
 	{
 		this(text, npc, -1, location, solution, "");
+	}
+
+	private CrypticClue(String text, String npc, WorldPoint location, String solution, boolean requiresLight)
+	{
+		this(text, npc, location, solution);
+		setRequiresLight(requiresLight);
 	}
 
 	private CrypticClue(String text, int objectId, WorldPoint location, String solution, String questionText)

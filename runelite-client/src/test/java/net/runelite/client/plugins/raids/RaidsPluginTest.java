@@ -44,6 +44,8 @@ import net.runelite.client.game.ItemManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import net.runelite.client.Notifier;
+import net.runelite.client.util.ImageCapture;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,6 +82,14 @@ public class RaidsPluginTest
 	@Mock
 	@Bind
 	ChatMessageManager chatMessageManager;
+
+	@Mock
+	@Bind
+	ImageCapture imageCapture;
+
+	@Mock
+	@Bind
+	Notifier notifier;
 
 	@Mock
 	@Bind

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.woodcutting;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("woodcutting")
 public interface WoodcuttingConfig extends Config
@@ -34,9 +35,10 @@ public interface WoodcuttingConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
+		name = "Reset stats",
 		description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
 	)
+	@Units(Units.MINUTES)
 	default int statTimeout()
 	{
 		return 5;

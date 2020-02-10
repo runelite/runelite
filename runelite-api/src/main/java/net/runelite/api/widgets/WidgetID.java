@@ -857,7 +857,7 @@ public class WidgetID
 
 	static class Lms
 	{
-		static final int INFO = 2;
+		static final int INFO = 3;
 	}
 
 	static class LmsKDA

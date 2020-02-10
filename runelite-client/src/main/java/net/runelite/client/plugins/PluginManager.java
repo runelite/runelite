@@ -38,6 +38,11 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import java.io.IOException;
+import java.lang.invoke.CallSite;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -57,8 +62,6 @@ import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigManager;
@@ -66,11 +69,14 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.util.GameEventManager;
+import net.runelite.client.util.ReflectUtil;
 
 @Singleton
 @Slf4j
@@ -126,8 +132,9 @@ public class PluginManager
 	private void refreshPlugins()
 	{
 		loadDefaultPluginConfiguration(null);
-		getPlugins()
-			.forEach(plugin -> executor.submit(() ->
+		SwingUtilities.invokeLater(() ->
+		{
+			for (Plugin plugin : getPlugins())
 			{
 				try
 				{
@@ -147,7 +154,8 @@ public class PluginManager
 				{
 					log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
 				}
-			}));
+			}
+		});
 	}
 
 	public Config getPluginConfigProxy(Plugin plugin)
@@ -209,12 +217,22 @@ public class PluginManager
 		{
 			try
 			{
-				startPlugin(plugin);
+				SwingUtilities.invokeAndWait(() ->
+				{
+					try
+					{
+						startPlugin(plugin);
+					}
+					catch (PluginInstantiationException ex)
+					{
+						log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
+						plugins.remove(plugin);
+					}
+				});
 			}
-			catch (PluginInstantiationException ex)
+			catch (InterruptedException | InvocationTargetException e)
 			{
-				log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
-				plugins.remove(plugin);
+				throw new RuntimeException(e);
 			}
 
 			loaded++;
@@ -319,8 +337,11 @@ public class PluginManager
 		return newPlugins;
 	}
 
-	public synchronized boolean startPlugin(Plugin plugin) throws PluginInstantiationException
+	public boolean startPlugin(Plugin plugin) throws PluginInstantiationException
 	{
+		// plugins always start in the EDT
+		assert SwingUtilities.isEventDispatchThread();
+
 		if (activePlugins.contains(plugin) || !isPluginEnabled(plugin))
 		{
 			return false;
@@ -330,18 +351,7 @@ public class PluginManager
 
 		try
 		{
-			// plugins always start in the event thread
-			SwingUtilities.invokeAndWait(() ->
-			{
-				try
-				{
-					plugin.startUp();
-				}
-				catch (Exception ex)
-				{
-					throw new RuntimeException(ex);
-				}
-			});
+			plugin.startUp();
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
 			if (!isOutdated && sceneTileManager != null)
@@ -357,7 +367,7 @@ public class PluginManager
 			schedule(plugin);
 			eventBus.post(new PluginChanged(plugin, true));
 		}
-		catch (InterruptedException | InvocationTargetException | IllegalArgumentException ex)
+		catch (Exception ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
@@ -365,36 +375,27 @@ public class PluginManager
 		return true;
 	}
 
-	public synchronized boolean stopPlugin(Plugin plugin) throws PluginInstantiationException
+	public boolean stopPlugin(Plugin plugin) throws PluginInstantiationException
 	{
+		// plugins always stop in the EDT
+		assert SwingUtilities.isEventDispatchThread();
+
 		if (!activePlugins.remove(plugin))
 		{
 			return false;
 		}
 
+		unschedule(plugin);
+		eventBus.unregister(plugin);
+
 		try
 		{
-			unschedule(plugin);
-			eventBus.unregister(plugin);
-
-			// plugins always stop in the event thread
-			SwingUtilities.invokeAndWait(() ->
-			{
-				try
-				{
-					plugin.shutDown();
-				}
-				catch (Exception ex)
-				{
-					throw new RuntimeException(ex);
-				}
-			});
+			plugin.shutDown();
 
 			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
 			eventBus.post(new PluginChanged(plugin, false));
-
 		}
-		catch (InterruptedException | InvocationTargetException ex)
+		catch (Exception ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
@@ -501,7 +502,30 @@ public class PluginManager
 				continue;
 			}
 
-			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin);
+			Runnable runnable = null;
+			try
+			{
+				final Class<?> clazz = method.getDeclaringClass();
+				final MethodHandles.Lookup caller = ReflectUtil.privateLookupIn(clazz);
+				final MethodType subscription = MethodType.methodType(method.getReturnType(), method.getParameterTypes());
+				final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
+				final CallSite site = LambdaMetafactory.metafactory(
+					caller,
+					"run",
+					MethodType.methodType(Runnable.class, clazz),
+					subscription,
+					target,
+					subscription);
+
+				final MethodHandle factory = site.getTarget();
+				runnable = (Runnable) factory.bindTo(plugin).invokeExact();
+			}
+			catch (Throwable e)
+			{
+				log.warn("Unable to create lambda for method {}", method, e);
+			}
+
+			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin, runnable);
 			log.debug("Scheduled task {}", scheduledMethod);
 
 			scheduler.addScheduledMethod(scheduledMethod);
@@ -526,6 +550,7 @@ public class PluginManager
 
 	/**
 	 * Topologically sort a graph. Uses Kahn's algorithm.
+	 *
 	 * @param graph
 	 * @param <T>
 	 * @return

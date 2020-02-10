@@ -36,6 +36,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -66,11 +67,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.externalplugins.ExternalPluginManifest;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -256,6 +259,16 @@ class ConfigPanel extends PluginPanel
 				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
 				spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
 
+				Units units = cid.getUnits();
+				if (units != null)
+				{
+					DecimalFormat df = ((JSpinner.NumberEditor) spinner.getEditor()).getFormat();
+					df.setPositiveSuffix(units.value());
+					df.setNegativeSuffix(units.value());
+					// Force update the spinner to have it add the units initially
+					spinnerTextField.setValue(value);
+				}
+
 				item.add(spinner, BorderLayout.EAST);
 			}
 
@@ -432,6 +445,13 @@ class ConfigPanel extends PluginPanel
 			if (result == JOptionPane.YES_OPTION)
 			{
 				configManager.setDefaultConfiguration(pluginConfig.getConfig(), true);
+
+				// Reset non-config panel keys
+				Plugin plugin = pluginConfig.getPlugin();
+				if (plugin != null)
+				{
+					plugin.resetConfiguration();
+				}
 
 				rebuild();
 			}

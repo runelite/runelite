@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2020, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.screenshot.imgur;
+package net.runelite.api.events;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Base64;
-import lombok.Data;
+import lombok.Value;
 
-@Data
-public class ImageUploadRequest
+/**
+ * An event that is fired after the designated script is ran
+ */
+@Value
+public class ScriptPostFired
 {
-	private final String image;
-	private final String type;
-
-	public ImageUploadRequest(File imageFile) throws IOException
-	{
-		this.image = Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
-		this.type = "base64";
-	}
+	/**
+	 * The script id of the invoked script
+	 */
+	private final int scriptId;
 }
