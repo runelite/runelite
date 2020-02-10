@@ -311,36 +311,30 @@ class PluginListPanel extends PluginPanel
 
 	void startPlugin(Plugin plugin)
 	{
-		executorService.submit(() ->
-		{
-			pluginManager.setPluginEnabled(plugin, true);
+		pluginManager.setPluginEnabled(plugin, true);
 
-			try
-			{
-				pluginManager.startPlugin(plugin);
-			}
-			catch (PluginInstantiationException ex)
-			{
-				log.warn("Error when starting plugin {}", plugin.getClass().getSimpleName(), ex);
-			}
-		});
+		try
+		{
+			pluginManager.startPlugin(plugin);
+		}
+		catch (PluginInstantiationException ex)
+		{
+			log.warn("Error when starting plugin {}", plugin.getClass().getSimpleName(), ex);
+		}
 	}
 
 	void stopPlugin(Plugin plugin)
 	{
-		executorService.submit(() ->
-		{
-			pluginManager.setPluginEnabled(plugin, false);
+		pluginManager.setPluginEnabled(plugin, false);
 
-			try
-			{
-				pluginManager.stopPlugin(plugin);
-			}
-			catch (PluginInstantiationException ex)
-			{
-				log.warn("Error when stopping plugin {}", plugin.getClass().getSimpleName(), ex);
-			}
-		});
+		try
+		{
+			pluginManager.stopPlugin(plugin);
+		}
+		catch (PluginInstantiationException ex)
+		{
+			log.warn("Error when stopping plugin {}", plugin.getClass().getSimpleName(), ex);
+		}
 	}
 
 	private List<String> getPinnedPluginNames()

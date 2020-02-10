@@ -48,6 +48,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.function.Function;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import jogamp.nativewindow.SurfaceScaleUtils;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
 import jogamp.newt.awt.NewtFactoryAWT;
@@ -334,15 +335,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				log.error("Error starting GPU plugin", e);
 
-				try
+				SwingUtilities.invokeLater(() ->
 				{
-					pluginManager.setPluginEnabled(this, false);
-					pluginManager.stopPlugin(this);
-				}
-				catch (PluginInstantiationException ex)
-				{
-					log.error("error stopping plugin", ex);
-				}
+					try
+					{
+						pluginManager.setPluginEnabled(this, false);
+						pluginManager.stopPlugin(this);
+					}
+					catch (PluginInstantiationException ex)
+					{
+						log.error("error stopping plugin", ex);
+					}
+				});
 
 				shutDown();
 			}
