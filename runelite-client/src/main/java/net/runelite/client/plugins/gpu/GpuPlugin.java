@@ -46,7 +46,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.function.Function;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import jogamp.nativewindow.SurfaceScaleUtils;
@@ -124,27 +123,40 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private GLContext glContext;
 	private GLDrawable glDrawable;
 
+	static final String LINUX_VERSION_HEADER =
+		"#version 420\n" +
+			"#extension GL_ARB_compute_shader : require\n" +
+			"#extension GL_ARB_shader_storage_buffer_object : require\n" +
+			"#extension GL_ARB_explicit_attrib_location : require\n";
+	static final String WINDOWS_VERSION_HEADER = "#version 430\n";
+
+	static final Shader PROGRAM = new Shader()
+		.add(GL4.GL_VERTEX_SHADER, "vert.glsl")
+		.add(GL4.GL_GEOMETRY_SHADER, "geom.glsl")
+		.add(GL4.GL_FRAGMENT_SHADER, "frag.glsl");
+
+	static final Shader COMPUTE_PROGRAM = new Shader()
+		.add(GL4.GL_COMPUTE_SHADER, "comp.glsl");
+
+	static final Shader SMALL_COMPUTE_PROGRAM = new Shader()
+		.add(GL4.GL_COMPUTE_SHADER, "comp_small.glsl");
+
+	static final Shader UNORDERED_COMPUTE_PROGRAM = new Shader()
+		.add(GL4.GL_COMPUTE_SHADER, "comp_unordered.glsl");
+
+	static final Shader UI_PROGRAM = new Shader()
+		.add(GL4.GL_VERTEX_SHADER, "vertui.glsl")
+		.add(GL4.GL_FRAGMENT_SHADER, "fragui.glsl");
+
 	private int glProgram;
-	private int glVertexShader;
-	private int glGeomShader;
-	private int glFragmentShader;
-
 	private int glComputeProgram;
-	private int glComputeShader;
-
 	private int glSmallComputeProgram;
-	private int glSmallComputeShader;
-
 	private int glUnorderedComputeProgram;
-	private int glUnorderedComputeShader;
+	private int glUiProgram;
 
 	private int vaoHandle;
 
 	private int interfaceTexture;
-
-	private int glUiProgram;
-	private int glUiVertexShader;
-	private int glUiFragmentShader;
 
 	private int vaoUiHandle;
 	private int vboUiHandle;
@@ -434,79 +446,23 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void initProgram() throws ShaderException
 	{
-		glProgram = gl.glCreateProgram();
-		glVertexShader = gl.glCreateShader(gl.GL_VERTEX_SHADER);
-		glGeomShader = gl.glCreateShader(gl.GL_GEOMETRY_SHADER);
-		glFragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
-
-		final String glVersionHeader;
-
-		if (OSType.getOSType() == OSType.Linux)
+		String versionHeader = OSType.getOSType() == OSType.Linux ? LINUX_VERSION_HEADER : WINDOWS_VERSION_HEADER;
+		Template template = new Template();
+		template.add(key ->
 		{
-			glVersionHeader =
-				"#version 420\n" +
-				"#extension GL_ARB_compute_shader : require\n" +
-				"#extension GL_ARB_shader_storage_buffer_object : require\n";
-		}
-		else
-		{
-			glVersionHeader = "#version 430\n";
-		}
-
-		Function<String, String> resourceLoader = (s) ->
-		{
-			if (s.endsWith(".glsl"))
+			if ("version_header".equals(key))
 			{
-				return inputStreamToString(getClass().getResourceAsStream(s));
+				return versionHeader;
 			}
+			return null;
+		});
+		template.addInclude(GpuPlugin.class);
 
-			if (s.equals("version_header"))
-			{
-				return glVersionHeader;
-			}
-
-			return "";
-		};
-
-		Template template = new Template(resourceLoader);
-		String source = template.process(resourceLoader.apply("geom.glsl"));
-
-		template = new Template(resourceLoader);
-		String vertSource = template.process(resourceLoader.apply("vert.glsl"));
-
-		template = new Template(resourceLoader);
-		String fragSource = template.process(resourceLoader.apply("frag.glsl"));
-
-		GLUtil.loadShaders(gl, glProgram, glVertexShader, glGeomShader, glFragmentShader,
-			vertSource,
-			source,
-			fragSource);
-
-		glComputeProgram = gl.glCreateProgram();
-		glComputeShader = gl.glCreateShader(gl.GL_COMPUTE_SHADER);
-		template = new Template(resourceLoader);
-		source = template.process(resourceLoader.apply("comp.glsl"));
-		GLUtil.loadComputeShader(gl, glComputeProgram, glComputeShader, source);
-
-		glSmallComputeProgram = gl.glCreateProgram();
-		glSmallComputeShader = gl.glCreateShader(gl.GL_COMPUTE_SHADER);
-		template = new Template(resourceLoader);
-		source = template.process(resourceLoader.apply("comp_small.glsl"));
-		GLUtil.loadComputeShader(gl, glSmallComputeProgram, glSmallComputeShader, source);
-
-		glUnorderedComputeProgram = gl.glCreateProgram();
-		glUnorderedComputeShader = gl.glCreateShader(gl.GL_COMPUTE_SHADER);
-		template = new Template(resourceLoader);
-		source = template.process(resourceLoader.apply("comp_unordered.glsl"));
-		GLUtil.loadComputeShader(gl, glUnorderedComputeProgram, glUnorderedComputeShader, source);
-
-		glUiProgram = gl.glCreateProgram();
-		glUiVertexShader = gl.glCreateShader(gl.GL_VERTEX_SHADER);
-		glUiFragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
-		GLUtil.loadShaders(gl, glUiProgram, glUiVertexShader, -1, glUiFragmentShader,
-			inputStreamToString(getClass().getResourceAsStream("vertui.glsl")),
-			null,
-			inputStreamToString(getClass().getResourceAsStream("fragui.glsl")));
+		glProgram = PROGRAM.compile(gl, template);
+		glComputeProgram = COMPUTE_PROGRAM.compile(gl, template);
+		glSmallComputeProgram = SMALL_COMPUTE_PROGRAM.compile(gl, template);
+		glUnorderedComputeProgram = UNORDERED_COMPUTE_PROGRAM.compile(gl, template);
+		glUiProgram = UI_PROGRAM.compile(gl, template);
 
 		initUniforms();
 	}
@@ -532,45 +488,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void shutdownProgram()
 	{
-		gl.glDeleteShader(glVertexShader);
-		glVertexShader = -1;
-
-		gl.glDeleteShader(glGeomShader);
-		glGeomShader = -1;
-
-		gl.glDeleteShader(glFragmentShader);
-		glFragmentShader = -1;
-
 		gl.glDeleteProgram(glProgram);
 		glProgram = -1;
-
-		///
-
-		gl.glDeleteShader(glComputeShader);
-		glComputeShader = -1;
 
 		gl.glDeleteProgram(glComputeProgram);
 		glComputeProgram = -1;
 
-		gl.glDeleteShader(glSmallComputeShader);
-		glSmallComputeShader = -1;
-
 		gl.glDeleteProgram(glSmallComputeProgram);
 		glSmallComputeProgram = -1;
 
-		gl.glDeleteShader(glUnorderedComputeShader);
-		glUnorderedComputeShader = -1;
-
 		gl.glDeleteProgram(glUnorderedComputeProgram);
 		glUnorderedComputeProgram = -1;
-
-		///
-
-		gl.glDeleteShader(glUiVertexShader);
-		glUiVertexShader = -1;
-
-		gl.glDeleteShader(glUiFragmentShader);
-		glUiFragmentShader = -1;
 
 		gl.glDeleteProgram(glUiProgram);
 		glUiProgram = -1;
