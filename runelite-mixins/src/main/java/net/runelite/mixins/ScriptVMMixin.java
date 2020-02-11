@@ -139,6 +139,15 @@ public abstract class ScriptVMMixin implements RSClient
 		return false;
 	}
 
+	boolean tryParseInt(String value) {
+		try {
+			Integer.parseInt(value);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
 	@Copy("runScript")
 	static void rs$runScript(RSScriptEvent event, int maxExecutionTime)
 	{
@@ -171,11 +180,15 @@ public abstract class ScriptVMMixin implements RSClient
 		{
 			try
 			{
-				scriptIds.push((Integer) event.getArguments()[0]); // this is safe because it will always be the script id
+				try
+				{
+					scriptIds.push((Integer) event.getArguments()[0]); // this is safe because it will always be the script id
 
-				ScriptPreFired preFired = new ScriptPreFired(scriptIds.peek()); // peek doesn't remove the top item
-				preFired.setScriptEvent(event);
-				client.getCallbacks().post(ScriptPreFired.class, preFired);
+					ScriptPreFired preFired = new ScriptPreFired(scriptIds.peek()); // peek doesn't remove the top item
+					preFired.setScriptEvent(event);
+					client.getCallbacks().post(ScriptPreFired.class, preFired);
+				}
+				catch (ClassCastException ignored) {}
 
 				rs$runScript(event, maxExecutionTime);
 
