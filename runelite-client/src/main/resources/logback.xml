@@ -55,4 +55,6 @@
 		<appender-ref ref="STDOUT"/>
 		<appender-ref ref="FILE"/>
 	</root>
+
+	<logger name="org.pf4j.AbstractPluginManager" level="OFF"/>
 </configuration>
