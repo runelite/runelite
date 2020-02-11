@@ -9,6 +9,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -41,10 +42,12 @@ import org.pf4j.DependencyResolver;
 import org.pf4j.JarPluginLoader;
 import org.pf4j.JarPluginRepository;
 import org.pf4j.ManifestPluginDescriptorFinder;
+import org.pf4j.PluginAlreadyLoadedException;
 import org.pf4j.PluginDependency;
 import org.pf4j.PluginDescriptorFinder;
 import org.pf4j.PluginLoader;
 import org.pf4j.PluginRepository;
+import org.pf4j.PluginRuntimeException;
 import org.pf4j.PluginWrapper;
 import org.pf4j.RuntimeMode;
 import org.pf4j.update.DefaultUpdateRepository;
@@ -112,6 +115,55 @@ class ExternalPluginManager
 			{
 				return debug ? RuntimeMode.DEVELOPMENT : RuntimeMode.DEPLOYMENT;
 			}
+
+			@Override
+			public void loadPlugins()
+			{
+				if (Files.notExists(pluginsRoot) || !Files.isDirectory(pluginsRoot))
+				{
+					log.warn("No '{}' root", pluginsRoot);
+					return;
+				}
+
+				List<Path> pluginPaths = pluginRepository.getPluginPaths();
+
+				if (pluginPaths.isEmpty())
+				{
+					log.info("No plugins");
+					return;
+				}
+
+				log.debug("Found {} possible plugins: {}", pluginPaths.size(), pluginPaths);
+
+				for (Path pluginPath : pluginPaths)
+				{
+					try
+					{
+						loadPluginFromPath(pluginPath);
+					}
+					catch (PluginRuntimeException e)
+					{
+						if (!(e instanceof PluginAlreadyLoadedException))
+						{
+							log.error(e.getMessage(), e);
+						}
+					}
+				}
+
+				try
+				{
+					resolvePlugins();
+				}
+				catch (PluginRuntimeException e)
+				{
+					if (e instanceof DependencyResolver.DependenciesNotFoundException)
+					{
+						throw e;
+					}
+
+					log.error(e.getMessage(), e);
+				}
+			}
 		};
 		this.externalPluginManager.setSystemVersion(SYSTEM_VERSION);
 	}
@@ -145,7 +197,30 @@ class ExternalPluginManager
 
 	public void startExternalPluginManager()
 	{
-		this.externalPluginManager.loadPlugins();
+		try
+		{
+			this.externalPluginManager.loadPlugins();
+		}
+		catch (Exception ex)
+		{
+			if (ex instanceof DependencyResolver.DependenciesNotFoundException)
+			{
+				List<String> deps = ((DependencyResolver.DependenciesNotFoundException) ex).getDependencies();
+
+				log.error("The following dependencies are missing: {}", deps);
+
+				for (String dep : deps)
+				{
+					install(dep);
+				}
+
+				startExternalPluginManager();
+			}
+
+			log.error("{}", ex.getMessage());
+		}
+
+		log.info(String.valueOf(externalPluginManager.getResolvedPlugins()));
 	}
 
 	public void startExternalUpdateManager()
@@ -482,11 +557,18 @@ class ExternalPluginManager
 			{
 				PluginInfo.PluginRelease lastRelease = updateManager.getLastPluginRelease(plugin.id);
 				String lastVersion = lastRelease.version;
-				boolean updated = updateManager.updatePlugin(plugin.id, lastVersion);
-
-				if (!updated)
+				try
 				{
-					log.warn("Cannot update plugin '{}'", plugin.id);
+					boolean updated = updateManager.updatePlugin(plugin.id, lastVersion);
+
+					if (!updated)
+					{
+						log.warn("Cannot update plugin '{}'", plugin.id);
+					}
+				}
+				catch (PluginRuntimeException ex)
+				{
+					log.warn("Cannot update plugin '{}', the user probably has another client open", plugin.id);
 				}
 			}
 		}
