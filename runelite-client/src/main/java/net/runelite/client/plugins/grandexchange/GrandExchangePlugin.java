@@ -292,8 +292,14 @@ public class GrandExchangePlugin extends Plugin
 			return;
 		}
 
-		// Only interested in offers which are fully bought/sold
-		if (offer.getState() != GrandExchangeOfferState.BOUGHT && offer.getState() != GrandExchangeOfferState.SOLD)
+		if (offer.getState() != GrandExchangeOfferState.BOUGHT && offer.getState() != GrandExchangeOfferState.SOLD &&
+			offer.getState() != GrandExchangeOfferState.CANCELLED_BUY && offer.getState() != GrandExchangeOfferState.CANCELLED_SELL)
+		{
+			return;
+		}
+
+		// Cancelled offers may have been cancelled before buying/selling any items
+		if (offer.getQuantitySold() == 0)
 		{
 			return;
 		}
@@ -305,12 +311,12 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		// getPrice() is the price of the offer, not necessarily what the item bought at
-		int priceEach = offer.getSpent() / offer.getTotalQuantity();
+		int priceEach = offer.getSpent() / offer.getQuantitySold();
 
 		GrandExchangeTrade grandExchangeTrade = new GrandExchangeTrade();
-		grandExchangeTrade.setBuy(offer.getState() == GrandExchangeOfferState.BOUGHT);
+		grandExchangeTrade.setBuy(offer.getState() == GrandExchangeOfferState.BOUGHT || offer.getState() == GrandExchangeOfferState.CANCELLED_BUY);
 		grandExchangeTrade.setItemId(offer.getItemId());
-		grandExchangeTrade.setQuantity(offer.getTotalQuantity());
+		grandExchangeTrade.setQuantity(offer.getQuantitySold());
 		grandExchangeTrade.setPrice(priceEach);
 
 		log.debug("Submitting trade: {}", grandExchangeTrade);
