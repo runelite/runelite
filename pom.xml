@@ -42,6 +42,7 @@
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
+		<glslang.path></glslang.path>
 
 		<rs.version>188</rs.version>
 	</properties>
@@ -171,6 +172,9 @@
 				<configuration>
 					<enableAssertions>true</enableAssertions>
 					<argLine>-Xmx512m</argLine>
+					<systemProperties>
+						<glslang.path>${glslang.path}</glslang.path>
+					</systemProperties>
 				</configuration>
 			</plugin>
 			<plugin>
