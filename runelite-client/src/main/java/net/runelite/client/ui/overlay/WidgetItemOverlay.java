@@ -89,12 +89,26 @@ public abstract class WidgetItemOverlay extends Overlay
 			Widget parent = widget.getParent();
 			Rectangle parentBounds = parent.getBounds();
 			Rectangle itemCanvasBounds = widgetItem.getCanvasBounds();
+			boolean dragging = widgetItem.getDraggingCanvasBounds() != null;
 
 			boolean shouldClip;
-			shouldClip = itemCanvasBounds.y < parentBounds.y && itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y;
-			shouldClip |= itemCanvasBounds.y < parentBounds.y + parentBounds.height && itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y + parentBounds.height;
-			shouldClip |= itemCanvasBounds.x < parentBounds.x && (itemCanvasBounds.x + itemCanvasBounds.width) >= parentBounds.x;
-			shouldClip |= itemCanvasBounds.x < parentBounds.x + parentBounds.width && itemCanvasBounds.x + itemCanvasBounds.width >= parentBounds.x + parentBounds.width;
+			if (dragging)
+			{
+				// If dragging, clip if the dragged item is outside of the parent bounds
+				shouldClip = itemCanvasBounds.x < parentBounds.x;
+				shouldClip |= itemCanvasBounds.x + itemCanvasBounds.width >= parentBounds.x + parentBounds.width;
+				shouldClip |= itemCanvasBounds.y < parentBounds.y;
+				shouldClip |= itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y + parentBounds.height;
+			}
+			else
+			{
+				// Otherwise, we only need to clip the overlay if it intersects the parent bounds,
+				// since items completely outside of the parent bounds are not drawn
+				shouldClip = itemCanvasBounds.y < parentBounds.y && itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y;
+				shouldClip |= itemCanvasBounds.y < parentBounds.y + parentBounds.height && itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y + parentBounds.height;
+				shouldClip |= itemCanvasBounds.x < parentBounds.x && itemCanvasBounds.x + itemCanvasBounds.width >= parentBounds.x;
+				shouldClip |= itemCanvasBounds.x < parentBounds.x + parentBounds.width && itemCanvasBounds.x + itemCanvasBounds.width >= parentBounds.x + parentBounds.width;
+			}
 			if (shouldClip)
 			{
 				if (curClipParent != parent)
