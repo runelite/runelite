@@ -292,7 +292,6 @@ public class GrandExchangePlugin extends Plugin
 			return;
 		}
 
-		// Only interested in offers which are fully bought/sold
 		if (offer.getState() != GrandExchangeOfferState.BOUGHT && offer.getState() != GrandExchangeOfferState.SOLD &&
 			offer.getState() != GrandExchangeOfferState.CANCELLED_BUY && offer.getState() != GrandExchangeOfferState.CANCELLED_SELL)
 		{
