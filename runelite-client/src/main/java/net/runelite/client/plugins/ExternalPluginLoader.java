@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
@@ -134,9 +135,20 @@ public class ExternalPluginLoader
 
 		try
 		{
-			pluginManager.startPlugin(plugin);
+			SwingUtilities.invokeAndWait(() ->
+			{
+				try
+				{
+					pluginManager.startPlugin(plugin);
+				}
+				catch (PluginInstantiationException e)
+				{
+					throw new RuntimeException(e);
+				}
+			});
+
 		}
-		catch (PluginInstantiationException ex)
+		catch (Exception ex)
 		{
 			close(loader);
 			log.warn("unable to start plugin", ex);

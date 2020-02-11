@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -343,9 +344,19 @@ class ExternalPluginManager
 
 		try
 		{
-			runelitePluginManager.startPlugin(plugin);
+			SwingUtilities.invokeAndWait(() ->
+			{
+				try
+				{
+					runelitePluginManager.startPlugin(plugin);
+				}
+				catch (PluginInstantiationException e)
+				{
+					throw new RuntimeException(e);
+				}
+			});
 		}
-		catch (PluginInstantiationException ex)
+		catch (Exception ex)
 		{
 			log.warn("unable to start plugin", ex);
 			return;
@@ -423,12 +434,22 @@ class ExternalPluginManager
 
 				try
 				{
-					runelitePluginManager.stopPlugin(plugin);
+					SwingUtilities.invokeAndWait(() ->
+					{
+						try
+						{
+							runelitePluginManager.stopPlugin(plugin);
+						}
+						catch (Exception e2)
+						{
+							throw new RuntimeException(e2);
+						}
+					});
 					runelitePluginManager.remove(plugin);
 
 					eventBus.post(ExternalPluginChanged.class, new ExternalPluginChanged(pluginId, plugin, false));
 				}
-				catch (PluginInstantiationException ex)
+				catch (Exception ex)
 				{
 					log.warn("unable to stop plugin", ex);
 					return;
@@ -459,14 +480,24 @@ class ExternalPluginManager
 
 				try
 				{
-					runelitePluginManager.stopPlugin(plugin);
+					SwingUtilities.invokeAndWait(() ->
+					{
+						try
+						{
+							runelitePluginManager.stopPlugin(plugin);
+						}
+						catch (Exception e2)
+						{
+							throw new RuntimeException(e2);
+						}
+					});
 					runelitePluginManager.remove(plugin);
 
 					eventBus.post(ExternalPluginChanged.class, new ExternalPluginChanged(pluginId, plugin, false));
 
 					return pluginWrapper.getPluginPath();
 				}
-				catch (PluginInstantiationException ex)
+				catch (Exception ex)
 				{
 					log.warn("unable to stop plugin", ex);
 					return null;

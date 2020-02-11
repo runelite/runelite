@@ -30,5 +30,6 @@ public enum LootRecordType
 	PLAYER,
 	EVENT,
 	DEATH,
+	PICKPOCKET,
 	UNKNOWN
 }
