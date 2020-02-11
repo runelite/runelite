@@ -209,7 +209,7 @@ class ExternalPluginManager
 
 				log.error("The following dependencies are missing: {}", deps);
 
-				for (String dep : ((DependencyResolver.DependenciesNotFoundException) ex).getDependencies())
+				for (String dep : deps)
 				{
 					install(dep);
 				}
@@ -557,11 +557,18 @@ class ExternalPluginManager
 			{
 				PluginInfo.PluginRelease lastRelease = updateManager.getLastPluginRelease(plugin.id);
 				String lastVersion = lastRelease.version;
-				boolean updated = updateManager.updatePlugin(plugin.id, lastVersion);
-
-				if (!updated)
+				try
 				{
-					log.warn("Cannot update plugin '{}'", plugin.id);
+					boolean updated = updateManager.updatePlugin(plugin.id, lastVersion);
+
+					if (!updated)
+					{
+						log.warn("Cannot update plugin '{}'", plugin.id);
+					}
+				}
+				catch (PluginRuntimeException ex)
+				{
+					log.warn("Cannot update plugin '{}', the user probably has another client open", plugin.id);
 				}
 			}
 		}
