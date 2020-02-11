@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -64,15 +65,17 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 	private String npc;
 	private WorldPoint location;
 	private String area;
+	@Nullable
 	private String question;
+	@Nullable
 	private String answer;
 
 	private CipherClue(String text, String npc, WorldPoint location, String area)
 	{
-		this(text, npc, location, area, "", null);
+		this(text, npc, location, area, null, null);
 	}
 
-	private CipherClue(String text, String npc, WorldPoint location, String area, String question, String answer)
+	private CipherClue(String text, String npc, WorldPoint location, String area, @Nullable String question, @Nullable String answer)
 	{
 		this.text = "The cipher reveals who to speak to next: " + text;
 		this.npc = npc;
@@ -129,7 +132,7 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 	{
 		for (CipherClue clue : CLUES)
 		{
-			if (clue.text.equalsIgnoreCase(text) || clue.question.equalsIgnoreCase(text))
+			if (text.equalsIgnoreCase(clue.text) || text.equalsIgnoreCase(clue.question))
 			{
 				return clue;
 			}
