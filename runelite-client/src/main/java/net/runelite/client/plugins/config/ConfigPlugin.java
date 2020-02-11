@@ -79,11 +79,13 @@ public class ConfigPlugin extends Plugin
 		pluginListPanel = pluginListPanelProvider.get();
 		pluginListPanel.addFakePlugin(
 			new PluginConfigurationDescriptor(
-				"OpenOSRS", "OpenOSRS client settings", PluginType.IMPORTANT, new String[]{"client"},
+				"OpenOSRS", "OpenOSRS client settings", PluginType.IMPORTANT,
+				new String[]{"sorting", "external", "logs", "categories", "colors", "opacity", "pin"},
 				null, openOSRSConfig, configManager.getConfigDescriptor(openOSRSConfig)
 			),
 			new PluginConfigurationDescriptor(
-				"RuneLite", "RuneLite client settings", PluginType.IMPORTANT, new String[]{"client"},
+				"RuneLite", "RuneLite client settings", PluginType.IMPORTANT,
+				new String[]{"client", "notification", "size", "position", "window", "chrome", "focus", "font", "overlay", "tooltip", "infobox"},
 				null, runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig)
 			),
 			new PluginConfigurationDescriptor(

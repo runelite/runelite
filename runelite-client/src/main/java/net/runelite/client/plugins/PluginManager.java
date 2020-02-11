@@ -53,7 +53,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -90,7 +89,6 @@ public class PluginManager
 	private final EventBus eventBus;
 	private final Scheduler scheduler;
 	private final ConfigManager configManager;
-	private final ScheduledExecutorService executor;
 	private final Provider<GameEventManager> sceneTileManager;
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
@@ -110,14 +108,12 @@ public class PluginManager
 		final EventBus eventBus,
 		final Scheduler scheduler,
 		final ConfigManager configManager,
-		final ScheduledExecutorService executor,
 		final Provider<GameEventManager> sceneTileManager)
 	{
 		this.developerMode = developerMode;
 		this.eventBus = eventBus;
 		this.scheduler = scheduler;
 		this.configManager = configManager;
-		this.executor = executor;
 		this.sceneTileManager = sceneTileManager;
 
 		if (eventBus != null)
@@ -140,21 +136,30 @@ public class PluginManager
 	private void refreshPlugins()
 	{
 		loadDefaultPluginConfiguration();
-		getPlugins()
-			.forEach(plugin -> executor.submit(() ->
+		SwingUtilities.invokeLater(() ->
+		{
+			for (Plugin plugin : getPlugins())
 			{
 				try
 				{
-					if (!startPlugin(plugin))
+					if (isPluginEnabled(plugin) != activePlugins.contains(plugin))
 					{
-						stopPlugin(plugin);
+						if (activePlugins.contains(plugin))
+						{
+							stopPlugin(plugin);
+						}
+						else
+						{
+							startPlugin(plugin);
+						}
 					}
 				}
 				catch (PluginInstantiationException e)
 				{
 					log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
 				}
-			}));
+			}
+		});
 	}
 
 	public Config getPluginConfigProxy(Plugin plugin)
@@ -217,22 +222,33 @@ public class PluginManager
 	public void startCorePlugins()
 	{
 		List<Plugin> scannedPlugins = new ArrayList<>(plugins);
-		int loaded = 0, started = 0;
+		int loaded = 0;
+		AtomicInteger started = new AtomicInteger();
 
 		final Stopwatch timer = Stopwatch.createStarted();
 		for (Plugin plugin : scannedPlugins)
 		{
 			try
 			{
-				if (startPlugin(plugin))
+				SwingUtilities.invokeAndWait(() ->
 				{
-					++started;
-				}
+					try
+					{
+						if (startPlugin(plugin))
+						{
+							started.incrementAndGet();
+						}
+					}
+					catch (PluginInstantiationException ex)
+					{
+						log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
+						plugins.remove(plugin);
+					}
+				});
 			}
-			catch (PluginInstantiationException ex)
+			catch (InterruptedException | InvocationTargetException e)
 			{
-				log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
-				plugins.remove(plugin);
+				throw new RuntimeException(e);
 			}
 
 			loaded++;
@@ -363,8 +379,11 @@ public class PluginManager
 		return scannedPlugins;
 	}
 
-	public synchronized boolean startPlugin(Plugin plugin) throws PluginInstantiationException
+	public boolean startPlugin(Plugin plugin) throws PluginInstantiationException
 	{
+		// plugins always start in the EDT
+		assert SwingUtilities.isEventDispatchThread();
+
 		if (activePlugins.contains(plugin) || !isPluginEnabled(plugin))
 		{
 			return false;
@@ -374,19 +393,7 @@ public class PluginManager
 
 		try
 		{
-			// plugins always start in the event thread
-			SwingUtilities.invokeAndWait(() ->
-			{
-				try
-				{
-					plugin.startUp();
-				}
-				catch (Exception ex)
-				{
-					throw new RuntimeException(ex);
-				}
-			});
-
+			plugin.startUp();
 			plugin.addAnnotatedSubscriptions(eventBus);
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
@@ -402,7 +409,7 @@ public class PluginManager
 			schedule(plugin);
 			eventBus.post(PluginChanged.class, new PluginChanged(plugin, true));
 		}
-		catch (InterruptedException | InvocationTargetException | IllegalArgumentException ex)
+		catch (Exception ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
@@ -410,39 +417,28 @@ public class PluginManager
 		return true;
 	}
 
-	public synchronized boolean stopPlugin(Plugin plugin) throws PluginInstantiationException
+	public boolean stopPlugin(Plugin plugin) throws PluginInstantiationException
 	{
-		if (!activePlugins.contains(plugin) || isPluginEnabled(plugin))
+		// plugins always stop in the EDT
+		assert SwingUtilities.isEventDispatchThread();
+
+		if (!activePlugins.remove(plugin))
 		{
 			return false;
 		}
 
-		activePlugins.remove(plugin);
+		unschedule(plugin);
 
 		try
 		{
-			unschedule(plugin);
-
-			// plugins always stop in the event thread
-			SwingUtilities.invokeAndWait(() ->
-			{
-				try
-				{
-					plugin.shutDown();
-				}
-				catch (Exception ex)
-				{
-					throw new RuntimeException(ex);
-				}
-			});
-
+			plugin.shutDown();
 			plugin.removeAnnotatedSubscriptions(eventBus);
 
 			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
 			eventBus.post(PluginChanged.class, new PluginChanged(plugin, false));
 
 		}
-		catch (InterruptedException | InvocationTargetException ex)
+		catch (Exception ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}

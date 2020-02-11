@@ -90,7 +90,6 @@ class InfoPanel extends PluginPanel
 	@Inject
 	public InfoPanel(final InfoPlugin plugin, final Client client)
 	{
-
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setBorder(new EmptyBorder(10, 10, 10, 10));

@@ -29,6 +29,8 @@ import java.util.regex.Pattern;
 import net.runelite.api.Client;
 import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -131,7 +133,20 @@ public abstract class ScriptVMMixin implements RSClient
 
 		try
 		{
+			if (event.getArguments() != null && event.getArguments().length > 0)
+			{
+				ScriptPreFired scriptPreFired = new ScriptPreFired((Integer) event.getArguments()[0]);
+				scriptPreFired.setScriptEvent(event);
+				client.getCallbacks().post(ScriptPreFired.class, scriptPreFired);
+			}
+
 			rs$runScript(event, maxExecutionTime);
+
+			if (event.getArguments() != null && event.getArguments().length > 0)
+			{
+				ScriptPostFired scriptPostFired = new ScriptPostFired((Integer) event.getArguments()[0]);
+				client.getCallbacks().post(ScriptPostFired.class, scriptPostFired);
+			}
 		}
 		finally
 		{
