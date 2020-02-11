@@ -372,6 +372,7 @@ public class RuneLite
 		pluginManager.loadCorePlugins();
 
 		// Load external plugins
+		externalPluginManager.startExternalUpdateManager();
 		externalPluginManager.startExternalPluginManager();
 
 		RuneLiteSplashScreen.stage(.75, "Finalizing configuration");
@@ -380,7 +381,6 @@ public class RuneLite
 		// to main settings
 		pluginManager.loadDefaultPluginConfiguration();
 
-		externalPluginManager.startExternalUpdateManager();
 
 		RuneLiteSplashScreen.stage(.77, "Updating external plugins");
 		externalPluginManager.update();
