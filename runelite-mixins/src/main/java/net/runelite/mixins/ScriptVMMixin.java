@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2020 ThatGamerBlue
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,9 +25,13 @@
  */
 package net.runelite.mixins;
 
+import java.util.ArrayList;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.Client;
+import static net.runelite.api.Opcodes.INVOKE;
+import static net.runelite.api.Opcodes.RETURN;
 import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
@@ -55,10 +60,21 @@ public abstract class ScriptVMMixin implements RSClient
 	@Inject
 	private static int currentScriptPC;
 
+	@Inject
+	private static ScriptPostFired deferredEvent = null;
+
+	@Inject
+	private static Stack<Integer> scriptIds = new Stack<>();
+
 	// Call is injected into runScript by the ScriptVM raw injector
 	@Inject
 	static boolean vmExecuteOpcode(int opcode)
 	{
+		if (deferredEvent != null)
+		{
+			client.getCallbacks().post(ScriptPostFired.class, deferredEvent);
+			deferredEvent = null;
+		}
 		if (opcode == RUNELITE_EXECUTE)
 		{
 			assert currentScript.getInstructions()[currentScriptPC] == RUNELITE_EXECUTE;
@@ -105,6 +121,21 @@ public abstract class ScriptVMMixin implements RSClient
 			client.getCallbacks().post(ScriptCallbackEvent.class, event);
 			return true;
 		}
+		else if (opcode == INVOKE)
+		{
+			int id = currentScript.getIntOperands()[currentScriptPC];
+			scriptIds.push(id);
+			ScriptPreFired event = new ScriptPreFired(id);
+			event.setScriptEvent(null);
+			client.getCallbacks().post(ScriptPreFired.class, event);
+		}
+		else if (opcode == RETURN)
+		{
+			if (scriptIds.size() > 1) // let the runScript method handle the final script
+			{
+				deferredEvent = new ScriptPostFired(scriptIds.pop()); // fire the event when we've left the script
+			}
+		}
 		return false;
 	}
 
@@ -122,35 +153,47 @@ public abstract class ScriptVMMixin implements RSClient
 		{
 			try
 			{
+				ScriptPreFired preFired = new ScriptPreFired(-1);
+				preFired.setScriptEvent(event);
+				client.getCallbacks().post(ScriptPreFired.class, preFired);
+
 				((JavaScriptCallback) arguments[0]).run(event);
+
+				ScriptPostFired postFired = new ScriptPostFired(-1);
+				client.getCallbacks().post(ScriptPostFired.class, postFired);
 			}
-			catch (Exception e)
+			catch (Exception e) // wont catch assertions
 			{
 				client.getLogger().error("Error in JavaScriptCallback", e);
 			}
-			return;
 		}
-
-		try
+		else
 		{
-			if (event.getArguments() != null && event.getArguments().length > 0)
+			try
 			{
-				ScriptPreFired scriptPreFired = new ScriptPreFired((Integer) event.getArguments()[0]);
-				scriptPreFired.setScriptEvent(event);
-				client.getCallbacks().post(ScriptPreFired.class, scriptPreFired);
+				scriptIds.push((Integer) event.getArguments()[0]); // this is safe because it will always be the script id
+
+				ScriptPreFired preFired = new ScriptPreFired(scriptIds.peek()); // peek doesn't remove the top item
+				preFired.setScriptEvent(event);
+				client.getCallbacks().post(ScriptPreFired.class, preFired);
+
+				rs$runScript(event, maxExecutionTime);
+
+				if (!scriptIds.empty())
+				{
+					ScriptPostFired postFired = new ScriptPostFired(scriptIds.pop()); // hopefully the stack should be dry at this point
+					assert scriptIds.empty() : "Script ID stack should be empty! Contains: " + getAllScriptIds();
+					client.getCallbacks().post(ScriptPostFired.class, postFired);
+				}
 			}
-
-			rs$runScript(event, maxExecutionTime);
-
-			if (event.getArguments() != null && event.getArguments().length > 0)
+			finally
 			{
-				ScriptPostFired scriptPostFired = new ScriptPostFired((Integer) event.getArguments()[0]);
-				client.getCallbacks().post(ScriptPostFired.class, scriptPostFired);
+				currentScript = null;
+				while (!scriptIds.empty())
+				{
+					scriptIds.pop(); // make sure the stack is empty, something disastrous happened
+				}
 			}
-		}
-		finally
-		{
-			currentScript = null;
 		}
 	}
 
@@ -164,5 +207,26 @@ public abstract class ScriptVMMixin implements RSClient
 		RSScriptEvent se = createScriptEvent();
 		se.setArguments(args);
 		runScript(se, 5000000);
+	}
+
+	@Inject
+	private static String getAllScriptIds()
+	{
+		ArrayList<Integer> ids = new ArrayList<>(scriptIds);
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (Object item : ids)
+		{
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				sb.append(", ");
+			}
+			sb.append(item);
+		}
+		return sb.toString();
 	}
 }
