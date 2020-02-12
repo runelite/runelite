@@ -80,11 +80,19 @@ public class ItemChargePlugin extends Plugin
 		"You can smelt ([0-9+]+|one) more pieces? of iron ore before a ring melts\\.");
 	private static final String RING_OF_FORGING_USED_TEXT = "You retrieve a bar of iron.";
 	private static final String RING_OF_FORGING_BREAK_TEXT = "<col=7f007f>Your Ring of Forging has melted.</col>";
+	private static final Pattern AMULET_OF_CHEMISTRY_CHECK_PATTERN = Pattern.compile(
+		"Your amulet of chemistry has (\\d) charges? left\\."
+	);
+	private static final Pattern AMULET_OF_CHEMISTRY_USED_PATTERN = Pattern.compile(
+		"Your amulet of chemistry helps you create a 4-dose potion\\. (?:<col=ff0000>)?It has (\\d|one) charges? left\\."
+	);
+	private static final String AMULET_OF_CHEMISTRY_BREAK_TEXT = "Your amulet of chemistry helps you create a 4-dose potion. <col=ff0000>It then crumbles to dust.</col>";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
 	private static final int MAX_EXPLORER_RING_CHARGES = 30;
 	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
+	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -151,6 +159,11 @@ public class ItemChargePlugin extends Plugin
 			removeInfobox(ItemWithSlot.TELEPORT);
 		}
 
+		if (!config.showAmuletOfChemistryCharges())
+		{
+			removeInfobox(ItemWithSlot.AMULET_OF_CHEMISTY);
+		}
+
 		if (!config.showAbyssalBraceletCharges())
 		{
 			removeInfobox(ItemWithSlot.ABYSSAL_BRACELET);
@@ -187,6 +200,8 @@ public class ItemChargePlugin extends Plugin
 		Matcher bindingNecklaceCheckMatcher = BINDING_CHECK_PATTERN.matcher(event.getMessage());
 		Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(event.getMessage());
 		Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
+		Matcher amuletOfChemistryCheckMatcher = AMULET_OF_CHEMISTRY_CHECK_PATTERN.matcher(message);
+		Matcher amuletOfChemistryUsedMatcher = AMULET_OF_CHEMISTRY_USED_PATTERN.matcher(message);
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
@@ -210,6 +225,26 @@ public class ItemChargePlugin extends Plugin
 			else if (dodgyProtectMatcher.find())
 			{
 				updateDodgyNecklaceCharges(Integer.parseInt(dodgyProtectMatcher.group(1)));
+			}
+			else if (amuletOfChemistryCheckMatcher.find())
+			{
+				updateAmuletOfChemistyCharges(Integer.parseInt(amuletOfChemistryCheckMatcher.group(1)));
+			}
+			else if (amuletOfChemistryUsedMatcher.find())
+			{
+				final String match = amuletOfChemistryUsedMatcher.group(1);
+
+				int charges = 1;
+				if (!match.equals("one"))
+				{
+					charges = Integer.parseInt(match);
+				}
+
+				updateAmuletOfChemistyCharges(charges);
+			}
+			else if (message.equals(AMULET_OF_CHEMISTRY_BREAK_TEXT))
+			{
+				updateAmuletOfChemistyCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
 			}
 			else if (message.contains(BINDING_BREAK_TEXT))
 			{
@@ -317,6 +352,11 @@ public class ItemChargePlugin extends Plugin
 		{
 			updateJewelleryInfobox(ItemWithSlot.RING_OF_FORGING, items);
 		}
+
+		if (config.showAmuletOfChemistryCharges())
+		{
+			updateJewelleryInfobox(ItemWithSlot.AMULET_OF_CHEMISTY, items);
+		}
 	}
 
 	@Subscribe
@@ -359,6 +399,23 @@ public class ItemChargePlugin extends Plugin
 			}
 
 			updateJewelleryInfobox(ItemWithSlot.DODGY_NECKLACE, itemContainer.getItems());
+		}
+	}
+
+	private void updateAmuletOfChemistyCharges(final int value)
+	{
+		config.amuletOfChemistry(value);
+
+		if (config.showInfoboxes() && config.showAmuletOfChemistryCharges())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.AMULET_OF_CHEMISTY, itemContainer.getItems());
 		}
 	}
 
@@ -440,6 +497,9 @@ public class ItemChargePlugin extends Plugin
 			case "Ring of forging":
 				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
 				break;
+			case "Amulet of chemistry":
+				updateAmuletOfChemistyCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
+				break;
 		}
 	}
 
@@ -486,6 +546,10 @@ public class ItemChargePlugin extends Plugin
 			else if (id == ItemID.RING_OF_FORGING && type == ItemWithSlot.RING_OF_FORGING)
 			{
 				charges = config.ringOfForging();
+			}
+			else if (id == ItemID.AMULET_OF_CHEMISTRY && type == ItemWithSlot.AMULET_OF_CHEMISTY)
+			{
+				charges = config.amuletOfChemistry();
 			}
 		}
 		else if (itemWithCharge.getType() == type.getType())
