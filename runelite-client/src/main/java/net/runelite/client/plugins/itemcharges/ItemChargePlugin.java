@@ -87,12 +87,20 @@ public class ItemChargePlugin extends Plugin
 		"Your amulet of chemistry helps you create a 4-dose potion\\. (?:<col=ff0000>)?It has (\\d|one) charges? left\\."
 	);
 	private static final String AMULET_OF_CHEMISTRY_BREAK_TEXT = "Your amulet of chemistry helps you create a 4-dose potion. <col=ff0000>It then crumbles to dust.</col>";
+	private static final Pattern AMULET_OF_BOUNTY_CHECK_PATTERN = Pattern.compile(
+		"Your amulet of bounty has (\\d+) charges? left\\."
+	);
+	private static final Pattern AMULET_OF_BOUNTY_USED_PATTERN = Pattern.compile(
+		"Your amulet of bounty saves some seeds for you\\. (?:<col=ff0000>)?It has (\\d) charges? left\\."
+	);
+	private static final String AMULET_OF_BOUNTY_BREAK_TEXT = "Your amulet of bounty saves some seeds for you. <col=ff0000>It then crumbles to dust.</col>";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
 	private static final int MAX_EXPLORER_RING_CHARGES = 30;
 	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
+	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -164,6 +172,11 @@ public class ItemChargePlugin extends Plugin
 			removeInfobox(ItemWithSlot.AMULET_OF_CHEMISTY);
 		}
 
+		if (!config.showAmuletOfBountyCharges())
+		{
+			removeInfobox(ItemWithSlot.AMULET_OF_BOUNTY);
+		}
+
 		if (!config.showAbyssalBraceletCharges())
 		{
 			removeInfobox(ItemWithSlot.ABYSSAL_BRACELET);
@@ -202,6 +215,8 @@ public class ItemChargePlugin extends Plugin
 		Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
 		Matcher amuletOfChemistryCheckMatcher = AMULET_OF_CHEMISTRY_CHECK_PATTERN.matcher(message);
 		Matcher amuletOfChemistryUsedMatcher = AMULET_OF_CHEMISTRY_USED_PATTERN.matcher(message);
+		Matcher amuletOfBountyCheckMatcher = AMULET_OF_BOUNTY_CHECK_PATTERN.matcher(message);
+		Matcher amuletOfBountyUsedMatcher = AMULET_OF_BOUNTY_USED_PATTERN.matcher(message);
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
@@ -245,6 +260,18 @@ public class ItemChargePlugin extends Plugin
 			else if (message.equals(AMULET_OF_CHEMISTRY_BREAK_TEXT))
 			{
 				updateAmuletOfChemistyCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
+			}
+			else if (amuletOfBountyCheckMatcher.find())
+			{
+				updateAmuletOfBountyCharges(Integer.parseInt(amuletOfBountyCheckMatcher.group(1)));
+			}
+			else if (amuletOfBountyUsedMatcher.find())
+			{
+				updateAmuletOfBountyCharges(Integer.parseInt(amuletOfBountyUsedMatcher.group(1)));
+			}
+			else if (message.equals(AMULET_OF_BOUNTY_BREAK_TEXT))
+			{
+				updateAmuletOfBountyCharges(MAX_AMULET_OF_BOUNTY_CHARGES);
 			}
 			else if (message.contains(BINDING_BREAK_TEXT))
 			{
@@ -357,6 +384,11 @@ public class ItemChargePlugin extends Plugin
 		{
 			updateJewelleryInfobox(ItemWithSlot.AMULET_OF_CHEMISTY, items);
 		}
+
+		if (config.showAmuletOfBountyCharges())
+		{
+			updateJewelleryInfobox(ItemWithSlot.AMULET_OF_BOUNTY, items);
+		}
 	}
 
 	@Subscribe
@@ -416,6 +448,23 @@ public class ItemChargePlugin extends Plugin
 			}
 
 			updateJewelleryInfobox(ItemWithSlot.AMULET_OF_CHEMISTY, itemContainer.getItems());
+		}
+	}
+
+	private void updateAmuletOfBountyCharges(final int value)
+	{
+		config.amuletOfBounty(value);
+
+		if (config.showInfoboxes() && config.showAmuletOfBountyCharges())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.AMULET_OF_BOUNTY, itemContainer.getItems());
 		}
 	}
 
@@ -550,6 +599,10 @@ public class ItemChargePlugin extends Plugin
 			else if (id == ItemID.AMULET_OF_CHEMISTRY && type == ItemWithSlot.AMULET_OF_CHEMISTY)
 			{
 				charges = config.amuletOfChemistry();
+			}
+			else if (id == ItemID.AMULET_OF_BOUNTY && type == ItemWithSlot.AMULET_OF_BOUNTY)
+			{
+				charges = config.amuletOfBounty();
 			}
 		}
 		else if (itemWithCharge.getType() == type.getType())
