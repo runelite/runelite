@@ -61,6 +61,12 @@
       "xp": 58
     },
     {
+      "level": 1,
+      "icon": 10976,
+      "name": "Long Bone",
+      "xp": 4500
+    },
+    {
       "level": 2,
       "icon": 8316,
       "name": "Brown Rug",
