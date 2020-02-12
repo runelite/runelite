@@ -139,15 +139,6 @@ public abstract class ScriptVMMixin implements RSClient
 		return false;
 	}
 
-	boolean tryParseInt(String value) {
-		try {
-			Integer.parseInt(value);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-
 	@Copy("runScript")
 	static void rs$runScript(RSScriptEvent event, int maxExecutionTime)
 	{
@@ -188,7 +179,9 @@ public abstract class ScriptVMMixin implements RSClient
 					preFired.setScriptEvent(event);
 					client.getCallbacks().post(ScriptPreFired.class, preFired);
 				}
-				catch (ClassCastException ignored) {}
+				catch (ClassCastException ignored)
+				{
+				}
 
 				rs$runScript(event, maxExecutionTime);
 
