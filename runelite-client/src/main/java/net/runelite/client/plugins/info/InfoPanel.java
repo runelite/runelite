@@ -65,7 +65,7 @@ class InfoPanel extends PluginPanel
 	private static final ImageIcon IMPORT_ICON;
 	private static final String RUNELITE_DIRECTORY = System.getProperty("user.home") + "\\.runelite";
 	private static final String LOG_DIRECTORY = RUNELITE_DIRECTORY + "\\logs";
-	private static final String PLUGINS_DIRECTORY = RUNELITE_DIRECTORY + "\\plugins";
+	private static final String PLUGINS_DIRECTORY = RUNELITE_DIRECTORY + "\\externalmanager";
 	private static final String SCREENSHOT_DIRECTORY = RUNELITE_DIRECTORY + "\\screenshots";
 
 	static
@@ -146,7 +146,7 @@ class InfoPanel extends PluginPanel
 		actionsContainer.add(buildLinkPanel(IMPORT_ICON, "Launcher Download", "for the latest launcher", "https://github.com/open-osrs/launcher/releases"));
 		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Runelite Directory", "for your .properties file", RUNELITE_DIR));
 		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Logs Directory", "for bug reports", LOGS_DIR));
-		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Plugins Directory", "for external plugins", PLUGINS_DIR));
+		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Plugins Directory", "for plugins", PLUGINS_DIR));
 		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Screenshots Directory", "for your screenshots", SCREENSHOT_DIR));
 
 		JPanel pathPanel = new JPanel();
