@@ -135,6 +135,7 @@ public enum HotColdLocation
 	MORYTANIA_MOS_LES_HARMLESS_BAR(new WorldPoint(3670, 2974, 0), MORYTANIA, "Near Mos Le'Harmless southern bar."),
 	MORYTANIA_DRAGONTOOTH_NORTH(new WorldPoint(3811, 3569, 0), MORYTANIA, "Northern part of Dragontooth Island."),
 	MORYTANIA_DRAGONTOOTH_SOUTH(new WorldPoint(3803, 3532, 0), MORYTANIA, "Southern part of Dragontooth Island."),
+	MORYTANIA_SLEPE_TENTS(new WorldPoint(3766, 3384, 0), MORYTANIA, "North-east of Slepe, near the tents."),
 	NORTHEAST_OF_AL_KHARID_MINE(true, new WorldPoint(3332, 3313, 0), MISTHALIN, "Northeast of Al Kharid Mine"),
 	WESTERN_PROVINCE_EAGLES_PEAK(new WorldPoint(2297, 3529, 0), WESTERN_PROVINCE, "North-west of Eagles' Peak."),
 	WESTERN_PROVINCE_PISCATORIS(new WorldPoint(2334, 3685, 0), WESTERN_PROVINCE, "Piscatoris Fishing Colony"),
