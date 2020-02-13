@@ -84,12 +84,12 @@
 	<repositories>
 		<repository>
 			<id>maven-central</id>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
 		<repository>
 			<id>runelite</id>
 			<name>RuneLite</name>
-			<url>http://repo.runelite.net</url>
+			<url>https://repo.runelite.net</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -99,12 +99,12 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>maven-central-plugins</id>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>https://repo.maven.apache.org/maven2</url>
 		</pluginRepository>
 		<pluginRepository>
 			<id>runelite-plugins</id>
 			<name>RuneLite Plugins</name>
-			<url>http://repo.runelite.net</url>
+			<url>https://repo.runelite.net</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
