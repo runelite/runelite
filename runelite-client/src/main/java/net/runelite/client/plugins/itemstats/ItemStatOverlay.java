@@ -42,6 +42,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.item.ItemEquipmentStats;
 import net.runelite.http.api.item.ItemStats;
 
@@ -182,7 +183,7 @@ public class ItemStatOverlay extends Overlay
 
 		final String prefix = value > 0 ? "+" : "";
 		final String suffix = showPercent ? "%" : "";
-		final String valueString = (int)value == value ? String.valueOf((int)value) : String.valueOf(value);
+		final String valueString = QuantityFormatter.formatNumber(value);
 		return label + ": " + ColorUtil.wrapWithColorTag(prefix + valueString + suffix, color) + "</br>";
 	}
 
