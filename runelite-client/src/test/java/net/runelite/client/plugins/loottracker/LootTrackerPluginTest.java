@@ -76,19 +76,29 @@ public class LootTrackerPluginTest
 	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		Player player = mock(Player.class);
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
 	}
 
 	@Test
 	public void testPickPocket()
 	{
-		Player player = mock(Player.class);
-		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
-		when(client.getLocalPlayer()).thenReturn(player);
-
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You pick the hero's pocket.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		assertEquals("Hero", lootTrackerPlugin.eventType);
 		assertEquals(LootRecordType.PICKPOCKET, lootTrackerPlugin.lootRecordType);
+	}
+
+	@Test
+	public void testFirstClue()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have completed 1 master Treasure Trail.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		assertEquals("Clue Scroll (Master)", lootTrackerPlugin.eventType);
+		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
 	}
 }
