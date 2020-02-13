@@ -30,6 +30,8 @@ import com.google.inject.Provides;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
@@ -51,6 +53,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -130,6 +133,8 @@ public class TimersPlugin extends Plugin
 	private int lastAnimation;
 	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
+	@Setter(AccessLevel.PACKAGE)
+	private int lastMagicLevel = -1;
 
 	@Inject
 	private ItemManager itemManager;
@@ -146,10 +151,19 @@ public class TimersPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	@Inject
+	private ClientThread clientThread;
+
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(TimersConfig.class);
+	}
+
+	@Override
+	public void startUp()
+	{
+		clientThread.invoke(() -> setLastMagicLevel(client.getBoostedSkillLevel(Skill.MAGIC)));
 	}
 
 	@Override
@@ -162,6 +176,7 @@ public class TimersPlugin extends Plugin
 		lastAnimation = -1;
 		loggedInRace = false;
 		widgetHiddenChangedOnPvpWorld = false;
+		lastMagicLevel = -1;
 	}
 
 	@Subscribe
@@ -907,13 +922,18 @@ public class TimersPlugin extends Plugin
 		}
 
 		final int magicLevel = statChanged.getLevel();
+		final int boostedLevel = statChanged.getBoostedLevel();
 		final int boostAmount = statChanged.getBoostedLevel() - magicLevel;
 		final int heartBoost = 1 + (magicLevel / 10);
 
-		if (magicLevel >= IMBUED_HEART_MIN_CERTAIN_BOOST_LEVEL && boostAmount == heartBoost)
+		if (magicLevel >= IMBUED_HEART_MIN_CERTAIN_BOOST_LEVEL
+			&& boostAmount == heartBoost
+			&& boostedLevel > lastMagicLevel)
 		{
 			createGameTimer(IMBUEDHEART);
 		}
+
+		lastMagicLevel = boostedLevel;
 	}
 
 	private TimerTimer createGameTimer(final GameTimer timer)

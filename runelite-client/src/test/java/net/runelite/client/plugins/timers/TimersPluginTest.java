@@ -153,6 +153,9 @@ public class TimersPluginTest
 		// because it is ambiguous what caused the boost. (Magic essences and potions can create similar boost amounts)
 		for (int level = 1; level < TimersPlugin.IMBUED_HEART_MIN_CERTAIN_BOOST_LEVEL; level++)
 		{
+			// Set starting magic level to base level
+			timersPlugin.setLastMagicLevel(level);
+
 			event = new StatChanged(Skill.MAGIC, 0, level, level + 1 + (level / 10));
 			timersPlugin.onStatChanged(event);
 			verify(infoBoxManager, never()).addInfoBox(any());
@@ -161,6 +164,9 @@ public class TimersPluginTest
 		// The following simulates magic essence and magic potion boosts and should not create an imbued heart timer
 		for (int level = TimersPlugin.IMBUED_HEART_MIN_CERTAIN_BOOST_LEVEL; level <= Experience.MAX_REAL_LEVEL; level++)
 		{
+			// Set starting magic level to base level
+			timersPlugin.setLastMagicLevel(level);
+
 			event = new StatChanged(Skill.MAGIC, 0, level, level + 3); // Magic essence
 			timersPlugin.onStatChanged(event);
 			verify(infoBoxManager, never()).addInfoBox(any());
@@ -173,6 +179,9 @@ public class TimersPluginTest
 		// The following simulates a real imbued heart magic boost and should create imbued heart timers
 		for (int level = TimersPlugin.IMBUED_HEART_MIN_CERTAIN_BOOST_LEVEL, i = 0; level <= Experience.MAX_REAL_LEVEL; level++, i++)
 		{
+			// Set starting magic level to base level
+			timersPlugin.setLastMagicLevel(level);
+
 			event = new StatChanged(Skill.MAGIC, 0, level, level + 1 + (level / 10));
 			timersPlugin.onStatChanged(event);
 
@@ -181,5 +190,26 @@ public class TimersPluginTest
 			TimerTimer infoBox = (TimerTimer) captor.getValue();
 			assertEquals(GameTimer.IMBUEDHEART, infoBox.getTimer());
 		}
+	}
+
+	@Test
+	public void testImbuedHeartTimerOnDebuff()
+	{
+		final int baseLevel = 96;
+		when(timersConfig.showImbuedHeart()).thenReturn(true);
+		StatChanged event;
+
+		// Establish starting magic level
+		timersPlugin.setLastMagicLevel(baseLevel);
+
+		// Boost using an Overload (+) potion, which has a larger skill boost than the imbued heart
+		event = new StatChanged(Skill.MAGIC, 0, baseLevel, 117);
+		timersPlugin.onStatChanged(event);
+		verify(infoBoxManager, never()).addInfoBox(any());
+
+		// Debuff magic using a Xeric's Aid (+) to the same level the imbued heart would boost to
+		event = new StatChanged(Skill.MAGIC, 0, baseLevel, 106);
+		timersPlugin.onStatChanged(event);
+		verify(infoBoxManager, never()).addInfoBox(any());
 	}
 }
