@@ -90,9 +90,13 @@ public class ItemStatOverlay extends Overlay
 		final int child = WidgetInfo.TO_CHILD(entry.getParam1());
 		final Widget widget = client.getWidget(group, child);
 
-		if (widget == null || (group != WidgetInfo.INVENTORY.getGroupId() &&
-			group != WidgetInfo.EQUIPMENT.getGroupId() &&
-			group != WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()))
+		if (widget == null
+			|| !(group == WidgetInfo.INVENTORY.getGroupId()
+				|| group == WidgetInfo.EQUIPMENT.getGroupId()
+				|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
+				|| (config.showStatsInBank()
+					&& (group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId()
+						|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()))))
 		{
 			return null;
 		}
@@ -107,12 +111,18 @@ public class ItemStatOverlay extends Overlay
 				itemId = widgetItem.getItemId();
 			}
 		}
-		else if (group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId())
+		else if (group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
+			|| group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId()
+			|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId())
 		{
-			final Widget widgetItem = widget.getChild(entry.getParam0());
-			if (widgetItem != null)
+			int index = entry.getParam0();
+			if (index > -1)
 			{
-				itemId = widgetItem.getItemId();
+				final Widget widgetItem = widget.getChild(index);
+				if (widgetItem != null)
+				{
+					itemId = widgetItem.getItemId();
+				}
 			}
 		}
 

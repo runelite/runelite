@@ -103,6 +103,16 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showStatsInBank",
+		name = "Show Stats In Bank",
+		description = "Show item stats on bank items tooltip"
+	)
+	default boolean showStatsInBank()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "colorBetterUncapped",
 		name = "Better (Uncapped)",
 		description = "Color to show when the stat change is fully consumed",
