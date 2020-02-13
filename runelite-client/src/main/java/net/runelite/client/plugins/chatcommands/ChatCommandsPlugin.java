@@ -1117,6 +1117,7 @@ public class ChatCommandsPlugin extends Plugin
 					hiscoreSkill = result.getLastManStanding();
 					break;
 				default:
+					log.warn("error looking up {} score: not implemented", minigame.getName().toLowerCase());
 					return;
 			}
 
