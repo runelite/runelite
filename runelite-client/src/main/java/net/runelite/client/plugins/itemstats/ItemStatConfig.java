@@ -113,6 +113,16 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "alwaysShowBaseStats",
+		name = "Always Show Base Stats",
+		description = "Always include the base items stats in the tooltip"
+	)
+	default boolean alwaysShowBaseStats()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "colorBetterUncapped",
 		name = "Better (Uncapped)",
 		description = "Color to show when the stat change is fully consumed",
