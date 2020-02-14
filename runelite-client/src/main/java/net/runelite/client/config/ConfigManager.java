@@ -61,6 +61,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
@@ -77,7 +78,6 @@ import net.runelite.http.api.config.Configuration;
 @Slf4j
 public class ConfigManager
 {
-	private static final String SETTINGS_FILE_NAME = "settings.properties";
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	@Inject
@@ -92,11 +92,15 @@ public class ConfigManager
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 	private final Map<String, String> pendingChanges = new HashMap<>();
+	private final File settingsFileInput;
 
 	@Inject
-	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
+	public ConfigManager(
+		@Named("config") File config,
+		ScheduledExecutorService scheduledExecutorService)
 	{
 		this.executor = scheduledExecutorService;
+		this.settingsFileInput = config;
 		this.propertiesFile = getPropertiesFile();
 
 		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
@@ -125,7 +129,7 @@ public class ConfigManager
 
 	private File getLocalPropertiesFile()
 	{
-		return new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
+		return settingsFileInput;
 	}
 
 	private File getPropertiesFile()
@@ -138,7 +142,7 @@ public class ConfigManager
 		else
 		{
 			File profileDir = new File(RuneLite.PROFILES_DIR, session.getUsername().toLowerCase());
-			return new File(profileDir, SETTINGS_FILE_NAME);
+			return new File(profileDir, RuneLite.DEFAULT_CONFIG_FILE);
 		}
 	}
 
@@ -331,7 +335,7 @@ public class ConfigManager
 
 		parent.mkdirs();
 
-		File tempFile = new File(parent, SETTINGS_FILE_NAME + ".tmp");
+		File tempFile = new File(parent, RuneLite.DEFAULT_CONFIG_FILE + ".tmp");
 
 		try (FileOutputStream out = new FileOutputStream(tempFile))
 		{

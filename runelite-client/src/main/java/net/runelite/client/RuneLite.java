@@ -33,6 +33,8 @@ import com.google.inject.Injector;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
@@ -85,6 +87,8 @@ public class RuneLite
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
+	public static final String DEFAULT_SESSION_FILE = "session";
+	public static final String DEFAULT_CONFIG_FILE = "settings.properties";
 
 	@Getter
 	private static Injector injector;
@@ -172,6 +176,10 @@ public class RuneLite
 		final OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
+		parser.accepts("sessionfile", "Use a specified session file")
+			.withRequiredArg().defaultsTo(DEFAULT_SESSION_FILE);
+		parser.accepts("config", "Use a specified config file")
+			.withRequiredArg().defaultsTo(DEFAULT_CONFIG_FILE);
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
@@ -240,13 +248,18 @@ public class RuneLite
 				}
 			}
 
+			String sessionfile = options.valueOf("sessionfile").toString();
+			String configfile = options.valueOf("config").toString();
+
 			PROFILES_DIR.mkdirs();
 
 			final long start = System.currentTimeMillis();
 
 			injector = Guice.createInjector(new RuneLiteModule(
 				clientLoader,
-				developerMode));
+				developerMode,
+				getFile(sessionfile),
+				getFile(configfile)));
 
 			injector.getInstance(RuneLite.class).start();
 
@@ -356,6 +369,21 @@ public class RuneLite
 		configManager.sendConfig();
 		clientSessionManager.shutdown();
 		discordService.close();
+	}
+
+	private static File getFile(String fileName)
+	{
+		Path path = Paths.get(fileName);
+		if (path.isAbsolute()
+			|| fileName.startsWith("./")
+			|| fileName.startsWith(".\\"))
+		{
+			return new File(fileName);
+		}
+		else
+		{
+			return new File(RuneLite.RUNELITE_DIR, fileName);
+		}
 	}
 
 	@VisibleForTesting

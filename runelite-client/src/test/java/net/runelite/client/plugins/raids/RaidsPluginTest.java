@@ -28,7 +28,9 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.io.File;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.inject.Named;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -36,6 +38,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ChatColorConfig;
@@ -97,6 +100,14 @@ public class RaidsPluginTest
 
 	@Inject
 	RaidsPlugin raidsPlugin;
+
+	@Bind
+	@Named("sessionfile")
+	File sessionfile = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_SESSION_FILE);
+
+	@Bind
+	@Named("config")
+	File config = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_CONFIG_FILE);
 
 	@Before
 	public void before()

@@ -27,13 +27,16 @@ package net.runelite.client.plugins.loottracker;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.io.File;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.RuneLite;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.loottracker.LootRecordType;
@@ -71,6 +74,14 @@ public class LootTrackerPluginTest
 	@Mock
 	@Bind
 	private LootTrackerConfig lootTrackerConfig;
+
+	@Bind
+	@Named("sessionfile")
+	File sessionfile = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_SESSION_FILE);
+
+	@Bind
+	@Named("config")
+	File config = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_CONFIG_FILE);
 
 	@Before
 	public void setUp()
