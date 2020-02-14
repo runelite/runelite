@@ -115,7 +115,7 @@ public class ImageCapture
 
 		playerFolder.mkdirs();
 
-		fileName +=  " " + format(new Date());
+		fileName += (fileName.isEmpty() ? "" : " ") + format(new Date());
 
 		try
 		{
