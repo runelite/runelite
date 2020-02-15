@@ -52,6 +52,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.BA_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
@@ -411,14 +412,35 @@ public class ChatCommandsPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widget)
 	{
-		// don't load kc if in an instance, if the player is in another players poh
-		// and reading their boss log
-		if (widget.getGroupId() != KILL_LOGS_GROUP_ID || client.isInInstancedRegion())
+		switch (widget.getGroupId())
 		{
-			return;
-		}
+			case KILL_LOGS_GROUP_ID:
+			{
+				// don't load kc if in an instance, if the player is in another players poh
+				// and reading their boss log
+				if (client.isInInstancedRegion())
+				{
+					return;
+				}
+				logKills = true;
 
-		logKills = true;
+				break;
+			}
+			case BA_REWARD_GROUP_ID:
+			{
+				// Record Penance Queen KC when reward widget appears after wave 10.
+				Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
+				if (rewardWidget != null
+					&& rewardWidget.getText().contains("<br>5"))
+				{
+					int kc = getKc("Penance Queen");
+					setKc("Penance Queen", kc + 1);
+					log.debug("Setting penance queen kill count: {}", kc + 1);
+				}
+
+				break;
+			}
+		}
 	}
 
 	@Subscribe
@@ -1338,6 +1360,11 @@ public class ChatCommandsPlugin extends Plugin
 
 			case "hydra":
 				return "Alchemical Hydra";
+
+			case "pq":
+			case "ba":
+			case "penance":
+				return "Penance Queen";
 
 			// gwd
 			case "sara":
