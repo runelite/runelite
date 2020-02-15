@@ -117,6 +117,7 @@ class HiscoreResultBuilder
 			hiscoreResult.setKreearra(skills.get(index++));
 			hiscoreResult.setKrilTsutsaroth(skills.get(index++));
 			hiscoreResult.setMimic(skills.get(index++));
+			hiscoreResult.setNightmare(skills.get(index++));
 			hiscoreResult.setObor(skills.get(index++));
 			hiscoreResult.setSarachnis(skills.get(index++));
 			hiscoreResult.setScorpia(skills.get(index++));
