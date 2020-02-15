@@ -39,6 +39,9 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.List;
 import javax.inject.Inject;
+import javax.swing.*;
+
+import com.sun.jna.platform.unix.X11;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Point;
@@ -245,7 +248,17 @@ public class XpGlobesOverlay extends Overlay
 		String skillCurrentXp = decimalFormat.format(mouseOverSkill.getCurrentXp());
 
 		xpTooltip.getChildren().clear();
-		xpTooltip.setPreferredLocation(new java.awt.Point(x, y));
+
+		//Perform check to make sure that tooltip doesn't go over window on the left
+		if (xpTooltip.getBounds().getLocation().x < graphics.getClipBounds().x){
+			xpTooltip.setPreferredLocation(new java.awt.Point(graphics.getClipBounds().x, y));
+		}
+
+		//Usual case where tooltip doesn't go over either sides of the window
+		if((xpTooltip.getBounds().getLocation().x > graphics.getClipBounds().x)){
+			xpTooltip.setPreferredLocation(new java.awt.Point(x,y));
+		}
+
 		xpTooltip.setPreferredSize(new Dimension(TOOLTIP_RECT_SIZE_X, 0));
 
 		xpTooltip.getChildren().add(LineComponent.builder()
