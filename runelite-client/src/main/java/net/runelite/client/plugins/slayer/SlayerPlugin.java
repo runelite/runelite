@@ -203,6 +203,8 @@ public class SlayerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int points;
 
+	public static Integer saveMonsHealth;
+
 	private TaskCounter counter;
 	private int cachedXp = -1;
 	private Instant infoTimer;
@@ -540,17 +542,29 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		final Task task = Task.getTask(taskName);
 
-		// null tasks are technically valid, it only means they arent explicitly defined in the Task enum
-		// allow them through so that if there is a task capture failure the counter will still work
-		final int taskKillExp = task != null ? task.getExpectedKillExp() : 0;
+		/* these are old comments
+		null tasks are technically valid, it only means they arent explicitly defined in the Task enum
+		allow them through so that if there is a task capture failure the counter will still work
 
-		// Only count exp gain as a kill if the task either has no expected exp for a kill, or if the exp gain is equal
-		// to the expected exp gain for the task.
-		if (taskKillExp == 0 || taskKillExp == slayerExp - cachedXp)
+		Only count exp gain as a kill if the task either has no expected exp for a kill, or if the exp gain is equal
+		to the expected exp gain for the task. */
+
+
+		// Get monster max health from public static variable to divide and get accurate kill count
+		if (amount > 1 && slayerExp >= (saveMonsHealth - (saveMonsHealth / 10)))
 		{
+			amount -= (slayerExp - cachedXp) / (saveMonsHealth - (saveMonsHealth / 10));
 			killedOne();
+		}
+		else if (amount > 1)
+		{
+			amount--;
+			killedOne();
+		}
+		else if (amount == 1)
+		{
+			amount--;
 		}
 
 		cachedXp = slayerExp;
@@ -582,7 +596,6 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
-		amount--;
 		if (doubleTroubleExtraKill())
 		{
 			amount--;
