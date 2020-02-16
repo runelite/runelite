@@ -40,6 +40,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.game.NPCManager;
+import net.runelite.client.plugins.slayer.SlayerPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -115,6 +116,7 @@ class OpponentInfoOverlay extends Overlay
 			if (opponent instanceof NPC)
 			{
 				lastMaxHealth = npcManager.getHealth(((NPC) opponent).getId());
+				SlayerPlugin.saveMonsHealth = lastMaxHealth;
 			}
 			else if (opponent instanceof Player)
 			{
