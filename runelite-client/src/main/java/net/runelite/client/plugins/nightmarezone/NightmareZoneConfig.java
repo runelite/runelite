@@ -28,6 +28,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.NotificationSettings;
 
 @ConfigGroup("nightmareZone")
 public interface NightmareZoneConfig extends Config
@@ -140,6 +141,17 @@ public interface NightmareZoneConfig extends Config
 	default Color absorptionColorBelowThreshold()
 	{
 		return Color.RED;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = NotificationSettings.KEY_NAME,
+		name = "",			// This config option is replaced with the ConfigItems generated from the NotificationSettings
+		description = ""	// So these values are useless but required by the annotation
+	)
+	default NotificationSettings notificationSettings()
+	{
+		return NotificationSettings.RUNELITE_DEFAULTS;
 	}
 
 }

@@ -184,7 +184,7 @@ public class BirdHouseTracker
 
 			if (config.birdHouseNotification())
 			{
-				notifier.notify("Your bird houses are ready to be dismantled.");
+				notifier.notify("Your bird houses are ready to be dismantled.", config.notificationSettings());
 			}
 
 			return true;

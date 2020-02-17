@@ -27,6 +27,7 @@ package net.runelite.client.plugins.idlenotifier;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.NotificationSettings;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("idlenotifier")
@@ -132,5 +133,16 @@ public interface IdleNotifierConfig extends Config
 	default int getSpecEnergyThreshold()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = NotificationSettings.KEY_NAME,
+		name = "",			// This config option is replaced with the ConfigItems generated from the NotificationSettings
+		description = ""	// So these values are useless but required by the annotation
+	)
+	default NotificationSettings notificationSettings()
+	{
+		return NotificationSettings.RUNELITE_DEFAULTS;
 	}
 }

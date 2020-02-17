@@ -137,7 +137,7 @@ public class RandomEventPlugin extends Plugin
 
 			if (shouldNotify(currentRandomEvent.getId()))
 			{
-				notifier.notify("Random event spawned: " + currentRandomEvent.getName());
+				notifier.notify("Random event spawned: " + currentRandomEvent.getName(), config.notificationSettings());
 			}
 		}
 	}

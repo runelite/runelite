@@ -28,6 +28,7 @@ package net.runelite.client.plugins.randomevents;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.NotificationSettings;
 
 @ConfigGroup("randomevents")
 public interface RandomEventConfig extends Config
@@ -151,6 +152,17 @@ public interface RandomEventConfig extends Config
 	default boolean notifyAllEvents()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = NotificationSettings.KEY_NAME,
+		name = "",			// This config option is replaced with the ConfigItems generated from the NotificationSettings
+		description = ""	// So these values are useless but required by the annotation
+	)
+	default NotificationSettings notificationSettings()
+	{
+		return NotificationSettings.RUNELITE_DEFAULTS;
 	}
 }
 

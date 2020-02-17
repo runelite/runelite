@@ -42,6 +42,15 @@ public class NotificationSettings
 	}
 
 	public static final String KEY_NAME = "notificationSettings";
+	public static final NotificationSettings RUNELITE_DEFAULTS = new NotificationSettings(
+		States.ON,
+		true,
+		true,
+		Notifier.NativeCustomOff.NATIVE,
+		false,
+		FlashNotification.DISABLED,
+		false
+	);
 
 	@ConfigItem(
 		keyName = "notificationState",

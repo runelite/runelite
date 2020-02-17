@@ -222,13 +222,13 @@ public class ItemChargePlugin extends Plugin
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
-				notifier.notify("Your Ring of Recoil has shattered");
+				notifier.notify("Your Ring of Recoil has shattered", config.notificationSettings());
 			}
 			else if (dodgyBreakMatcher.find())
 			{
 				if (config.dodgyNotification())
 				{
-					notifier.notify("Your dodgy necklace has crumbled to dust.");
+					notifier.notify("Your dodgy necklace has crumbled to dust.", config.notificationSettings());
 				}
 
 				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
@@ -277,7 +277,7 @@ public class ItemChargePlugin extends Plugin
 			{
 				if (config.bindingNotification())
 				{
-					notifier.notify(BINDING_BREAK_TEXT);
+					notifier.notify(BINDING_BREAK_TEXT, config.notificationSettings());
 				}
 
 				// This chat message triggers before the used message so add 1 to the max charges to ensure proper sync
@@ -332,7 +332,7 @@ public class ItemChargePlugin extends Plugin
 			{
 				if (config.ringOfForgingNotification())
 				{
-					notifier.notify("Your ring of forging has melted.");
+					notifier.notify("Your ring of forging has melted.", config.notificationSettings());
 				}
 
 				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);

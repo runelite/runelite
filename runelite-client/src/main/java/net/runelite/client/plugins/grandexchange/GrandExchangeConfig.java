@@ -27,6 +27,7 @@ package net.runelite.client.plugins.grandexchange;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.NotificationSettings;
 
 @ConfigGroup("grandexchange")
 public interface GrandExchangeConfig extends Config
@@ -95,5 +96,16 @@ public interface GrandExchangeConfig extends Config
 	default boolean showExact()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = NotificationSettings.KEY_NAME,
+		name = "",			// This config option is replaced with the ConfigItems generated from the NotificationSettings
+		description = ""	// So these values are useless but required by the annotation
+	)
+	default NotificationSettings notificationSettings()
+	{
+		return NotificationSettings.RUNELITE_DEFAULTS;
 	}
 }
