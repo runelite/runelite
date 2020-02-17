@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 logarrhytmic <https://github.com/logarrhythmic>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#version 330
+package net.runelite.client.plugins.gpu.config;
 
-#define SAMPLING_DEFAULT 0
-#define SAMPLING_MITCHELL 1
-#define SAMPLING_CATROM 2
-#define SAMPLING_XBR 3
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-uniform int samplingMode;
-uniform ivec2 sourceDimensions;
-uniform ivec2 targetDimensions;
-
-#include scale/xbr_lv2_vert.glsl
-
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec2 aTexCoord;
-
-out vec2 TexCoord;
-out XBRTable xbrTable;
-
-void main()
+@Getter
+@RequiredArgsConstructor
+public enum UIScalingMode
 {
-    gl_Position = vec4(aPos, 1.0);
-    TexCoord = aTexCoord;
+	NEAREST("Nearest Neighbor", 0),
+	LINEAR("Bilinear", 0),
+	MITCHELL("Bicubic (Mitchell)", 1),
+	CATMULL_ROM("Bicubic (Catmull-Rom)", 2),
+	XBR("xBR", 3);
 
-    if (samplingMode == SAMPLING_XBR)
-        xbrTable = xbr_vert(TexCoord, sourceDimensions);
+	private final String name;
+	private final int mode;
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

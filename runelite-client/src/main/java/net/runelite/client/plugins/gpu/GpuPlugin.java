@@ -76,6 +76,7 @@ import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import static net.runelite.client.plugins.gpu.GLUtil.*;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
+import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.util.OSType;
@@ -231,6 +232,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
+	private int uniTexSamplingMode;
+	private int uniTexSourceDimensions;
+	private int uniTexTargetDimensions;
 	private int uniTextures;
 	private int uniTextureOffsets;
 	private int uniBlockSmall;
@@ -478,6 +482,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
+		uniTexSamplingMode = gl.glGetUniformLocation(glUiProgram, "samplingMode");
+		uniTexTargetDimensions = gl.glGetUniformLocation(glUiProgram, "targetDimensions");
+		uniTexSourceDimensions = gl.glGetUniformLocation(glUiProgram, "sourceDimensions");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
 		uniTextureOffsets = gl.glGetUniformLocation(glProgram, "textureOffsets");
 
@@ -1085,26 +1092,31 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, width, height, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
 		}
 
+		// Use the texture bound in the first pass
+		final UIScalingMode uiScalingMode = config.uiScalingMode();
+		gl.glUseProgram(glUiProgram);
+		gl.glUniform1i(uniTex, 0);
+		gl.glUniform1i(uniTexSamplingMode, uiScalingMode.getMode());
+		gl.glUniform2i(uniTexSourceDimensions, canvasWidth, canvasHeight);
+
 		if (client.isStretchedEnabled())
 		{
 			Dimension dim = client.getStretchedDimensions();
 			glDpiAwareViewport(0, 0, dim.width, dim.height);
+			gl.glUniform2i(uniTexTargetDimensions, dim.width, dim.height);
 		}
 		else
 		{
 			glDpiAwareViewport(0, 0, canvasWidth, canvasHeight);
+			gl.glUniform2i(uniTexTargetDimensions, canvasWidth, canvasHeight);
 		}
-
-		// Use the texture bound in the first pass
-		gl.glUseProgram(glUiProgram);
-		gl.glUniform1i(uniTex, 0);
 
 		// Set the sampling function used when stretching the UI.
 		// This is probably better done with sampler objects instead of texture parameters, but this is easier and likely more portable.
 		// See https://www.khronos.org/opengl/wiki/Sampler_Object for details.
 		if (client.isStretchedEnabled())
 		{
-			final int function = client.isStretchedFast() ? gl.GL_NEAREST : gl.GL_LINEAR;
+			final int function = uiScalingMode == UIScalingMode.LINEAR ? gl.GL_LINEAR : gl.GL_NEAREST;
 			gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, function);
 			gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, function);
 		}
