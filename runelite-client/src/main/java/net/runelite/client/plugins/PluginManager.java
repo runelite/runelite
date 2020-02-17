@@ -462,7 +462,8 @@ public class PluginManager
 			return Boolean.parseBoolean(value);
 		}
 
-		return true;
+		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+		return pluginDescriptor == null || pluginDescriptor.enabledByDefault();
 	}
 
 	@SuppressWarnings("unchecked")
