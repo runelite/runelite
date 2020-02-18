@@ -1,11 +1,15 @@
 package net.runelite.client.plugins;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.MutableGraph;
 import com.google.inject.Binder;
+import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,12 +17,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JOptionPane;
@@ -35,7 +48,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ExternalPluginChanged;
-import net.runelite.client.events.ExternalPluginsLoaded;
 import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.util.SwingUtil;
 import org.pf4j.DefaultPluginManager;
@@ -68,8 +80,10 @@ class ExternalPluginManager
 	@Getter(AccessLevel.PUBLIC)
 	private final List<UpdateRepository> repositories = new ArrayList<>();
 	private final OpenOSRSConfig openOSRSConfig;
-	private final ConfigManager configManager;
 	private final EventBus eventBus;
+	private final ConfigManager configManager;
+	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
+	private final Map<String, String> pluginsMap = new HashMap<>();
 
 	@Getter(AccessLevel.PUBLIC)
 	private UpdateManager updateManager;
@@ -78,13 +92,13 @@ class ExternalPluginManager
 	public ExternalPluginManager(
 		PluginManager pluginManager,
 		OpenOSRSConfig openOSRSConfig,
-		ConfigManager configManager,
-		EventBus eventBus)
+		EventBus eventBus,
+		ConfigManager configManager)
 	{
 		this.runelitePluginManager = pluginManager;
 		this.openOSRSConfig = openOSRSConfig;
-		this.configManager = configManager;
 		this.eventBus = eventBus;
+		this.configManager = configManager;
 
 		//noinspection ResultOfMethodCallIgnored
 		EXTERNALPLUGIN_DIR.mkdirs();
@@ -280,140 +294,214 @@ class ExternalPluginManager
 		openOSRSConfig.setExternalRepositories(config.toString());
 	}
 
-	private void instantiatePlugin(String pluginId, Plugin plugin) throws PluginInstantiationException
+	private List<Plugin> scanAndInstantiate(List<Plugin> plugins, boolean init, boolean initConfig) throws IOException
 	{
-		List<Plugin> scannedPlugins = new ArrayList<>(runelitePluginManager.getPlugins());
-		Class<? extends Plugin> clazz = plugin.getClass();
+		RuneLiteSplashScreen.stage(.66, "Loading external plugins");
+		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
+			.directed()
+			.build();
 
-		PluginDescriptor[] pluginDescriptors = clazz.getAnnotationsByType(PluginDescriptor.class);
+		AtomicInteger loaded = new AtomicInteger();
+		List<Plugin> scannedPlugins = new CopyOnWriteArrayList<>();
 
-		for (PluginDescriptor pluginDescriptor : pluginDescriptors)
+		// some plugins get stuck on IO, so add some extra threads
+		ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+
+		for (Plugin plugin : plugins)
 		{
-			if (pluginDescriptor.type() == PluginType.EXTERNAL)
+			Class<? extends Plugin> clazz = plugin.getClass();
+			PluginDescriptor pluginDescriptor = clazz.getAnnotation(PluginDescriptor.class);
+
+			if (pluginDescriptor == null)
+			{
+				if (clazz.getSuperclass() == Plugin.class)
+				{
+					log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
+					continue;
+				}
+			}
+			else if (clazz.getSuperclass() != Plugin.class)
+			{
+				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
+				continue;
+			}
+			else if (pluginDescriptor.type() == PluginType.EXTERNAL)
 			{
 				log.error("Class {} is using the the new external plugin loader, it should not use PluginType.EXTERNAL", clazz);
-				return;
+				continue;
 			}
-		}
 
-		net.runelite.client.plugins.PluginDependency[] pluginDependencies = clazz.getAnnotationsByType(net.runelite.client.plugins.PluginDependency.class);
-		List<Plugin> deps = new ArrayList<>();
-		for (net.runelite.client.plugins.PluginDependency pluginDependency : pluginDependencies)
-		{
-			Optional<Plugin> dependency = scannedPlugins.stream().filter(p -> p.getClass() == pluginDependency.value()).findFirst();
-			if (dependency.isEmpty())
+			List<Future<?>> curGroup = new ArrayList<>();
+			curGroup.add(exec.submit(() ->
 			{
-				throw new PluginInstantiationException("Unmet dependency for " + clazz.getSimpleName() + ": " + pluginDependency.value().getSimpleName());
-			}
-			deps.add(dependency.get());
-		}
-
-		Module pluginModule = (Binder binder) ->
-		{
-			//noinspection unchecked
-			binder.bind((Class<Plugin>) plugin.getClass()).toInstance(plugin);
-			binder.install(plugin);
-
-			for (Plugin p : deps)
-			{
-				Module p2 = (Binder binder2) ->
-				{
-					//noinspection unchecked
-					binder2.bind((Class<Plugin>) p.getClass()).toInstance(p);
-					binder2.install(p);
-				};
-				binder.install(p2);
-			}
-		};
-		Injector pluginInjector = RuneLite.getInjector().createChildInjector(pluginModule);
-		pluginInjector.injectMembers(plugin);
-		plugin.injector = pluginInjector;
-
-		// Initialize default configuration
-		Injector injector = plugin.getInjector();
-
-		for (Key<?> key : injector.getAllBindings().keySet())
-		{
-			Class<?> type = key.getTypeLiteral().getRawType();
-			if (Config.class.isAssignableFrom(type))
-			{
-				Config config = (Config) injector.getInstance(key);
-				configManager.setDefaultConfiguration(config, false);
-			}
-		}
-
-		try
-		{
-			SwingUtilities.invokeAndWait(() ->
-			{
+				Plugin plugininst;
 				try
 				{
-					runelitePluginManager.startPlugin(plugin);
-				}
-				catch (PluginInstantiationException e)
-				{
-					throw new RuntimeException(e);
-				}
-			});
-		}
-		catch (Exception ex)
-		{
-			log.warn("unable to start plugin", ex);
-			return;
-		}
-
-		runelitePluginManager.add(plugin);
-		eventBus.post(ExternalPluginChanged.class, new ExternalPluginChanged(pluginId, plugin, true));
-	}
-
-	public void loadPlugins()
-	{
-		this.externalPluginManager.startPlugins();
-		List<PluginWrapper> startedPlugins = getStartedPlugins();
-		int index = 1;
-
-		for (PluginWrapper plugin : startedPlugins)
-		{
-			RuneLiteSplashScreen.stage(.90, 1, "Starting external plugins", index++, startedPlugins.size());
-			loadPlugin(plugin.getPluginId());
-		}
-
-		eventBus.post(ExternalPluginsLoaded.class, new ExternalPluginsLoaded());
-	}
-
-	private void loadPlugin(String pluginId)
-	{
-		try
-		{
-			List<Plugin> extensions = externalPluginManager.getExtensions(Plugin.class, pluginId);
-			for (Plugin plugin : extensions)
-			{
-				try
-				{
-					pluginClassLoaders.add(plugin.getClass().getClassLoader());
-					instantiatePlugin(pluginId, plugin);
+					plugininst = instantiate(scannedPlugins, (Class<Plugin>) plugin.getClass(), init, initConfig);
+					scannedPlugins.add(plugininst);
 				}
 				catch (PluginInstantiationException e)
 				{
 					log.warn("Error instantiating plugin!", e);
 					return;
 				}
-			}
+
+				loaded.getAndIncrement();
+
+				RuneLiteSplashScreen.stage(.67, .75, "Loading external plugins", loaded.get(), scannedPlugins.size());
+			}));
+			curGroup.forEach(future ->
+			{
+				try
+				{
+					future.get();
+				}
+				catch (InterruptedException | ExecutionException e)
+				{
+					e.printStackTrace();
+				}
+			});
 		}
-		catch (NoClassDefFoundError ex)
+
+		return scannedPlugins;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz, boolean init, boolean initConfig) throws PluginInstantiationException
+	{
+		net.runelite.client.plugins.PluginDependency[] pluginDependencies = clazz.getAnnotationsByType(net.runelite.client.plugins.PluginDependency.class);
+		List<Plugin> deps = new ArrayList<>();
+		for (net.runelite.client.plugins.PluginDependency pluginDependency : pluginDependencies)
 		{
-			try
+			Optional<Plugin> dependency = Stream.concat(runelitePluginManager.getPlugins().stream(), scannedPlugins.stream()).filter(p -> p.getClass() == pluginDependency.value()).findFirst();
+			if (!dependency.isPresent())
 			{
-				SwingUtil.syncExec(() ->
-					JOptionPane.showMessageDialog(null,
-						pluginId + " could not be loaded due to the following error: " + ex.getMessage(),
-						"External plugin error",
-						JOptionPane.ERROR_MESSAGE));
+				Stream.concat(runelitePluginManager.getPlugins().stream(), scannedPlugins.stream()).forEach((ev) -> {
+					log.info("Looking for {} - {}", pluginDependency.value(), ev.getClass());
+				});
+				throw new PluginInstantiationException("Unmet dependency for " + clazz.getSimpleName() + ": " + pluginDependency.value().getSimpleName());
 			}
-			catch (InvocationTargetException | InterruptedException ignored)
+			deps.add(dependency.get());
+		}
+
+		Plugin plugin;
+		try
+		{
+			plugin = clazz.newInstance();
+		}
+		catch (InstantiationException | IllegalAccessException ex)
+		{
+			throw new PluginInstantiationException(ex);
+		}
+
+		try
+		{
+			Module pluginModule = (Binder binder) ->
 			{
+				binder.bind(clazz).toInstance(plugin);
+				binder.install(plugin);
+				for (Plugin p : deps)
+				{
+					Module p2 = (Binder binder2) ->
+					{
+						binder2.bind((Class<Plugin>) p.getClass()).toInstance(p);
+						binder2.install(p);
+					};
+					binder.install(p2);
+				}
+			};
+			Injector pluginInjector = RuneLite.getInjector().createChildInjector(pluginModule);
+			pluginInjector.injectMembers(plugin);
+			plugin.injector = pluginInjector;
+
+			if (initConfig)
+			{
+				for (Key<?> key : pluginInjector.getAllBindings().keySet())
+				{
+					Class<?> type = key.getTypeLiteral().getRawType();
+					if (Config.class.isAssignableFrom(type))
+					{
+						Config config = (Config) pluginInjector.getInstance(key);
+						configManager.setDefaultConfiguration(config, false);
+					}
+				}
+			}
+
+			if (init)
+			{
+				try
+				{
+					SwingUtilities.invokeAndWait(() ->
+					{
+						try
+						{
+							runelitePluginManager.startPlugin(plugin);
+							runelitePluginManager.add(plugin);
+							eventBus.post(ExternalPluginChanged.class, new ExternalPluginChanged(pluginsMap.get(plugin.getClass().getSimpleName()), plugin, true));
+						}
+						catch (PluginInstantiationException e)
+						{
+							throw new RuntimeException(e);
+						}
+					});
+				}
+				catch (Exception ex)
+				{
+					log.warn("unable to start plugin", ex);
+				}
+			}
+			else
+			{
+				runelitePluginManager.add(plugin);
 			}
 		}
+		catch (CreationException ex)
+		{
+			throw new PluginInstantiationException(ex);
+		}
+
+		log.debug("Loaded plugin {}", clazz.getSimpleName());
+		return plugin;
+	}
+
+	public void loadPlugins()
+	{
+		this.externalPluginManager.startPlugins();
+		List<PluginWrapper> startedPlugins = getStartedPlugins();
+		List<Plugin> scannedPlugins = new ArrayList<>();
+
+		for (PluginWrapper plugin : startedPlugins)
+		{
+			scannedPlugins.addAll(loadPlugin(plugin.getPluginId()));
+		}
+
+		startPlugins(scannedPlugins, false, false);
+	}
+
+	private void startPlugins(List<Plugin> scannedPlugins, boolean init, boolean initConfig)
+	{
+		try
+		{
+			log.info("SCANNEDPLUGINS: {}", scannedPlugins);
+			plugins.addAll(scanAndInstantiate(scannedPlugins, init, initConfig));
+		}
+		catch (IOException ignored)
+		{
+		}
+	}
+
+	private List<Plugin> loadPlugin(String pluginId)
+	{
+		List<Plugin> scannedPlugins = new ArrayList<>();
+		List<Plugin> extensions = externalPluginManager.getExtensions(Plugin.class, pluginId);
+		for (Plugin plugin : extensions)
+		{
+			pluginClassLoaders.add(plugin.getClass().getClassLoader());
+			pluginsMap.put(plugin.getClass().getSimpleName(), pluginId);
+			scannedPlugins.add(plugin);
+		}
+
+		return scannedPlugins;
 	}
 
 	private void stopPlugins()
@@ -516,7 +604,7 @@ class ExternalPluginManager
 			this.externalPluginManager.enablePlugin(pluginId);
 			this.externalPluginManager.startPlugin(pluginId);
 
-			loadPlugin(pluginId);
+			startPlugins(loadPlugin(pluginId), true, false);
 
 			return;
 		}
@@ -550,7 +638,7 @@ class ExternalPluginManager
 
 			updateManager.installPlugin(pluginId, null);
 
-			loadPlugin(pluginId);
+			startPlugins(loadPlugin(pluginId), true, true);
 		}
 		catch (DependencyResolver.DependenciesNotFoundException ex)
 		{
