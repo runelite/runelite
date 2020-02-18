@@ -144,7 +144,7 @@ class ExternalPluginManager
 
 				if (pluginPaths.isEmpty())
 				{
-					log.info("No plugins");
+					log.warn("No plugins");
 					return;
 				}
 
@@ -234,8 +234,6 @@ class ExternalPluginManager
 
 			log.error("{}", ex.getMessage());
 		}
-
-		log.info(String.valueOf(externalPluginManager.getResolvedPlugins()));
 	}
 
 	public void startExternalUpdateManager()
@@ -376,9 +374,6 @@ class ExternalPluginManager
 			Optional<Plugin> dependency = Stream.concat(runelitePluginManager.getPlugins().stream(), scannedPlugins.stream()).filter(p -> p.getClass() == pluginDependency.value()).findFirst();
 			if (!dependency.isPresent())
 			{
-				Stream.concat(runelitePluginManager.getPlugins().stream(), scannedPlugins.stream()).forEach((ev) -> {
-					log.info("Looking for {} - {}", pluginDependency.value(), ev.getClass());
-				});
 				throw new PluginInstantiationException("Unmet dependency for " + clazz.getSimpleName() + ": " + pluginDependency.value().getSimpleName());
 			}
 			deps.add(dependency.get());
@@ -482,7 +477,6 @@ class ExternalPluginManager
 	{
 		try
 		{
-			log.info("SCANNEDPLUGINS: {}", scannedPlugins);
 			plugins.addAll(scanAndInstantiate(scannedPlugins, init, initConfig));
 		}
 		catch (IOException ignored)
