@@ -29,6 +29,7 @@ package net.runelite.client.plugins.emojis;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup(EmojiPlugin.CONFIG_GROUP_KEY)
 public interface EmojiConfig extends Config
@@ -47,9 +48,10 @@ public interface EmojiConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "emojiEmitDuration",
-		name = "Duration of message",
-		description = "Configure how long the emoji hint message stays in chat (in ticks)"
+		name = "Message duration",
+		description = "Configure how long the emoji hint message stays in chat"
 	)
+	@Units(Units.TICKS)
 	default int emojiEmitDuration()
 	{
 		return 20;
