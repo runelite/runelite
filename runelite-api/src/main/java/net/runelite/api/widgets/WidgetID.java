@@ -333,6 +333,7 @@ public class WidgetID
 	static class FixedViewport
 	{
 		static final int MINIMAP = 3;
+		static final int ALL_CHAT_TAB = 4;
 		static final int MINIMAP_DRAW_AREA = 8;
 		static final int CLAN_CHAT_TAB = 33;
 		static final int FRIENDS_TAB = 35;
@@ -370,6 +371,7 @@ public class WidgetID
 
 	static class ResizableViewport
 	{
+		static final int ALL_CHAT_TAB = 4;
 		static final int CLAN_CHAT_TAB = 37;
 		static final int FRIENDS_TAB = 39;
 		static final int IGNORES_TAB = 38;

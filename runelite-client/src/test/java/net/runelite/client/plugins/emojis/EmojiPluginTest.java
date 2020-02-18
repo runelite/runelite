@@ -58,6 +58,10 @@ public class EmojiPluginTest
 	@Bind
 	private ChatMessageManager chatMessageManager;
 
+	@Mock
+	@Bind
+	private EmojiConfig emojiConfig;
+
 	@Inject
 	private EmojiPlugin emojiPlugin;
 

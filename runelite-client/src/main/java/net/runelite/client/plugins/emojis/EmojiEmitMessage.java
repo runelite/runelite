@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
+ * Copyright (c) 2020, Henry Darnell <github.com/hjdarnel>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.client.plugins.emojis;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import lombok.Value;
+import net.runelite.api.MessageNode;
 
-public class TextTest
+@Value
+class EmojiEmitMessage
 {
-	@Test
-	public void removeTags()
-	{
-		assertEquals("Test", Text.removeTags("<col=FFFFFF>Test</col>"));
-		assertEquals("Test", Text.removeTags("<img=1><s>Test</s>"));
-		assertEquals("Zezima  (level-126)", Text.removeTags("<col=ffffff><img=2>Zezima<col=00ffff>  (level-126)"));
-		assertEquals("", Text.removeTags("<colrandomtext test>"));
-		assertEquals("Not so much.", Text.removeTags("<col=FFFFFF This is a very special message.</col>Not so much."));
-		assertEquals("Use Item -> Man", Text.removeTags("Use Item -> Man"));
-		assertEquals("a < b", Text.removeTags("a < b"));
-		assertEquals("Remove no tags", Text.removeTags("Remove no tags"));
-	}
-
-	@Test
-	public void unescapeTags()
-	{
-		assertEquals("Test", Text.unescapeTags("Test"));
-		assertEquals("<:)", Text.unescapeTags("<lt>:)"));
-		assertEquals(">:)", Text.unescapeTags("<gt>:)"));
-		assertEquals("\n", Text.unescapeTags("<br>"));
-	}
+	private final MessageNode messageNode;
+	private final int tick;
 }

@@ -30,6 +30,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.text.WordUtils;
 
@@ -146,6 +147,38 @@ public class Text
 				out.append(c);
 			}
 		}
+
+		return out.toString();
+	}
+
+	/**
+	 * Unescape a string for widgets, replacing &lt;lt&gt; and &lt;gt&gt; with their unescaped counterparts
+	 */
+	public static String unescapeTags(String str)
+	{
+		StringBuffer out = new StringBuffer(str.length());
+		Matcher matcher = TAG_REGEXP.matcher(str);
+
+		while (matcher.find())
+		{
+			matcher.appendReplacement(out, "");
+			String match = matcher.group(0);
+			switch (match)
+			{
+				case "<lt>":
+					out.append("<");
+					break;
+				case "<gt>":
+					out.append(">");
+					break;
+				case "<br>":
+					out.append("\n");
+					break;
+				default:
+					out.append(match);
+			}
+		}
+		matcher.appendTail(out);
 
 		return out.toString();
 	}

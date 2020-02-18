@@ -90,7 +90,7 @@ enum Emoji
 
 	private static final Map<String, Emoji> emojiMap;
 
-	private final String trigger;
+	final String trigger;
 
 	static
 	{
