@@ -219,7 +219,7 @@ public class PluginManager
 		plugins.addAll(scanAndInstantiate(getClass().getClassLoader(), PLUGIN_PACKAGE, false));
 	}
 
-	public void startCorePlugins()
+	public void startPlugins()
 	{
 		List<Plugin> scannedPlugins = new ArrayList<>(plugins);
 		int loaded = 0;
@@ -262,7 +262,7 @@ public class PluginManager
 	@SuppressWarnings("unchecked")
 	List<Plugin> scanAndInstantiate(ClassLoader classLoader, String packageName, boolean external) throws IOException
 	{
-		RuneLiteSplashScreen.stage(.59, "Loading plugins");
+		RuneLiteSplashScreen.stage(.60, "Loading plugins");
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
 			.directed()
 			.build();
@@ -359,7 +359,7 @@ public class PluginManager
 
 					loaded.getAndIncrement();
 
-					RuneLiteSplashScreen.stage(.60, .70, "Loading plugins", loaded.get(), scannedPlugins.size());
+					RuneLiteSplashScreen.stage(.60, .65, "Loading plugins", loaded.get(), scannedPlugins.size());
 				})));
 			curGroup.forEach(future ->
 			{
