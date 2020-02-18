@@ -38,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.FontTypeFace;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.MessageNode;
@@ -48,11 +49,13 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.OverheadTextChanged;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.FontType;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.MenuManager;
@@ -99,7 +102,7 @@ public class EmojiPlugin extends Plugin
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_ALL_CHAT_TAB);
 	private static final WidgetMenuOption RESIZABLE_INVENTORY_ALL_TAB = new WidgetMenuOption(EMIT,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_ALL_CHAT_TAB);
-	private static final int EMOJI_PER_LINE = 8;
+	private static final int EMOJI_PER_LINE = 7;
 	//	 Holds current emoji message, if any
 	private EmojiEmitMessage currentMessage = null;
 	private int modIconsStart = -1;
@@ -291,19 +294,29 @@ public class EmojiPlugin extends Plugin
 	private String getEmojiMessage()
 	{
 		ChatMessageBuilder builder = new ChatMessageBuilder();
+		ChatMessageBuilder spacer = new ChatMessageBuilder();
 		Emoji[] allEmoji = Emoji.values();
 
-		for (int i = 0; i < allEmoji.length; i++)
+		FontTypeFace fontFace = client.getWidget(WidgetInfo.CHATBOX_INPUT).getFont();
+		for (int i = 1; i < allEmoji.length + 1; i++)
 		{
-			Emoji emoji = allEmoji[i];
-			builder
-				.img(modIconsStart + emoji.ordinal())
-				.append("  " + Text.unescapeTags(emoji.trigger) + "  ");
+			Emoji emoji = allEmoji[i - 1];
+			builder.img(modIconsStart + emoji.ordinal());
+
+			spacer.append("  " + Text.unescapeTags(emoji.trigger));
+
+			while (fontFace.getTextWidth(spacer.build()) < 55)
+			{
+				spacer.append(" ");
+			}
 
 			if (i > 0 && (i % EMOJI_PER_LINE == 0))
 			{
-				builder.append("\n");
+				spacer.append("\n");
 			}
+
+			builder.append(Text.unescapeTags(spacer.build()));
+			spacer = new ChatMessageBuilder();
 		}
 		return builder.build();
 	}

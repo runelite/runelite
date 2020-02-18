@@ -47,8 +47,8 @@ public interface EmojiConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "emojiEmitDuration",
-		name = "Duration of chat message",
-		description = "Configure how long the emoji hint message stays in chat"
+		name = "Duration of message",
+		description = "Configure how long the emoji hint message stays in chat (in ticks)"
 	)
 	default int emojiEmitDuration()
 	{
