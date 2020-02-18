@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.emojis;
 
-import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -41,7 +40,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
@@ -64,7 +62,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Emojis",
@@ -260,15 +257,6 @@ public class EmojiPlugin extends Plugin
 			timeoutEmojiMessages(true);
 			addEmojiPaletteMessage();
 		}
-	}
-
-	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries)
-	{
-		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
-		int menuEntryCount = newMenu.length;
-		// swap Cancel entry to the end of the array
-		ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
-		client.setMenuEntries(newMenu);
 	}
 
 	private void timeoutEmojiMessages(boolean force)
