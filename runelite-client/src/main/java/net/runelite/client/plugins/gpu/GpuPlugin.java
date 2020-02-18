@@ -170,6 +170,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	// scene uv buffer id
 	private int uvBufferId;
 
+	private int tmpBufferId; // temporary scene vertex buffer
+	private int tmpUvBufferId; // temporary scene uv buffer
+	private int tmpModelBufferId; // scene model buffer, large
+	private int tmpModelBufferSmallId; // scene model buffer, small
+	private int tmpModelBufferUnorderedId;
+	private int tmpOutBufferId; // target vertex buffer for compute shaders
+	private int tmpOutUvBufferId; // target uv buffer for compute shaders
+
 	private int textureArrayId;
 
 	private int uniformBufferId;
@@ -245,7 +253,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			try
 			{
-				bufferId = uvBufferId = uniformBufferId = -1;
+				bufferId = uvBufferId = uniformBufferId = tmpBufferId = tmpUvBufferId = tmpModelBufferId = tmpModelBufferSmallId = tmpModelBufferUnorderedId = tmpOutBufferId = tmpOutUvBufferId = -1;
 				unorderedModels = smallModels = largeModels = 0;
 
 				canvas = client.getCanvas();
@@ -319,6 +327,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				initProgram();
 				initInterfaceTexture();
 				initUniformBuffer();
+				initBuffers();
 
 				client.setDrawCallbacks(this);
 				client.setGpu(true);
@@ -382,28 +391,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					textureArrayId = -1;
 				}
 
-				if (bufferId != -1)
-				{
-					GLUtil.glDeleteBuffer(gl, bufferId);
-					bufferId = -1;
-				}
-
-				if (uvBufferId != -1)
-				{
-					GLUtil.glDeleteBuffer(gl, uvBufferId);
-					uvBufferId = -1;
-				}
-
 				if (uniformBufferId != -1)
 				{
 					GLUtil.glDeleteBuffer(gl, uniformBufferId);
 					uniformBufferId = -1;
 				}
 
+				shutdownBuffers();
 				shutdownInterfaceTexture();
 				shutdownProgram();
 				shutdownVao();
-				shutdownSceneFbo();
+				shutdownAAFbo();
 			}
 
 			if (jawtWindow != null)
@@ -551,6 +549,76 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		vaoUiHandle = -1;
 	}
 
+	private void initBuffers()
+	{
+		bufferId = glGenBuffers(gl);
+		uvBufferId = glGenBuffers(gl);
+		tmpBufferId = glGenBuffers(gl);
+		tmpUvBufferId = glGenBuffers(gl);
+		tmpModelBufferId = glGenBuffers(gl);
+		tmpModelBufferSmallId = glGenBuffers(gl);
+		tmpModelBufferUnorderedId = glGenBuffers(gl);
+		tmpOutBufferId = glGenBuffers(gl);
+		tmpOutUvBufferId = glGenBuffers(gl);
+	}
+
+	private void shutdownBuffers()
+	{
+		if (bufferId != -1)
+		{
+			glDeleteBuffer(gl, bufferId);
+			bufferId = -1;
+		}
+
+		if (uvBufferId != -1)
+		{
+			glDeleteBuffer(gl, uvBufferId);
+			uvBufferId = -1;
+		}
+
+		if (tmpBufferId != -1)
+		{
+			glDeleteBuffer(gl, tmpBufferId);
+			tmpBufferId = -1;
+		}
+
+		if (tmpUvBufferId != -1)
+		{
+			glDeleteBuffer(gl, tmpUvBufferId);
+			tmpUvBufferId = -1;
+		}
+
+		if (tmpModelBufferId != -1)
+		{
+			glDeleteBuffer(gl, tmpModelBufferId);
+			tmpModelBufferId = -1;
+		}
+
+		if (tmpModelBufferSmallId != -1)
+		{
+			glDeleteBuffer(gl, tmpModelBufferSmallId);
+			tmpModelBufferSmallId = -1;
+		}
+
+		if (tmpModelBufferUnorderedId != -1)
+		{
+			glDeleteBuffer(gl, tmpModelBufferUnorderedId);
+			tmpModelBufferUnorderedId = -1;
+		}
+
+		if (tmpOutBufferId != -1)
+		{
+			glDeleteBuffer(gl, tmpOutBufferId);
+			tmpOutBufferId = -1;
+		}
+
+		if (tmpOutUvBufferId != -1)
+		{
+			glDeleteBuffer(gl, tmpOutUvBufferId);
+			tmpOutUvBufferId = -1;
+		}
+	}
+
 	private void initInterfaceTexture()
 	{
 		interfaceTexture = glGenTexture(gl);
@@ -587,7 +655,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
 	}
 
-	private void initSceneFbo(int width, int height, int aaSamples)
+	private void initAAFbo(int width, int height, int aaSamples)
 	{
 		// Create and bind the FBO
 		fboSceneHandle = glGenFrameBuffer(gl);
@@ -613,7 +681,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, 0);
 	}
 
-	private void shutdownSceneFbo()
+	private void shutdownAAFbo()
 	{
 		if (texSceneHandle != -1)
 		{
@@ -770,12 +838,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				|| lastStretchedCanvasHeight != stretchedCanvasHeight
 				|| lastAntiAliasingMode != antiAliasingMode)
 			{
-				shutdownSceneFbo();
+				shutdownAAFbo();
 
 				final int maxSamples = glGetInteger(gl, gl.GL_MAX_SAMPLES);
 				final int samples = Math.min(antiAliasingMode.getSamples(), maxSamples);
 
-				initSceneFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
+				initAAFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
 
 				lastStretchedCanvasWidth = stretchedCanvasWidth;
 				lastStretchedCanvasHeight = stretchedCanvasHeight;
@@ -786,7 +854,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		else
 		{
 			gl.glDisable(gl.GL_MULTISAMPLE);
-			shutdownSceneFbo();
+			shutdownAAFbo();
 		}
 
 		lastAntiAliasingMode = antiAliasingMode;
@@ -803,47 +871,34 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		modelBufferSmall.flip();
 		modelBufferUnordered.flip();
 
-		int bufferId = glGenBuffers(gl); // temporary scene vertex buffer
-		int uvBufferId = glGenBuffers(gl); // temporary scene uv buffer
-		int modelBufferId = glGenBuffers(gl); // scene model buffer, large
-		int modelBufferSmallId = glGenBuffers(gl); // scene model buffer, small
-		int modelBufferUnorderedId = glGenBuffers(gl);
-
 		IntBuffer vertexBuffer = this.vertexBuffer.getBuffer();
 		FloatBuffer uvBuffer = this.uvBuffer.getBuffer();
 		IntBuffer modelBuffer = this.modelBuffer.getBuffer();
 		IntBuffer modelBufferSmall = this.modelBufferSmall.getBuffer();
 		IntBuffer modelBufferUnordered = this.modelBufferUnordered.getBuffer();
 
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, bufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexBuffer.limit() * Integer.BYTES, vertexBuffer, gl.GL_STREAM_DRAW);
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpBufferId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexBuffer.limit() * Integer.BYTES, vertexBuffer, gl.GL_DYNAMIC_DRAW);
 
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, uvBufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, uvBuffer.limit() * Float.BYTES, uvBuffer, gl.GL_STREAM_DRAW);
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpUvBufferId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, uvBuffer.limit() * Float.BYTES, uvBuffer, gl.GL_DYNAMIC_DRAW);
 
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, modelBufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBuffer.limit() * Integer.BYTES, modelBuffer, gl.GL_STREAM_DRAW);
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpModelBufferId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBuffer.limit() * Integer.BYTES, modelBuffer, gl.GL_DYNAMIC_DRAW);
 
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, modelBufferSmallId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBufferSmall.limit() * Integer.BYTES, modelBufferSmall, gl.GL_STREAM_DRAW);
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpModelBufferSmallId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBufferSmall.limit() * Integer.BYTES, modelBufferSmall, gl.GL_DYNAMIC_DRAW);
 
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, modelBufferUnorderedId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBufferUnordered.limit() * Integer.BYTES, modelBufferUnordered, gl.GL_STREAM_DRAW);
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpModelBufferUnorderedId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBufferUnordered.limit() * Integer.BYTES, modelBufferUnordered, gl.GL_DYNAMIC_DRAW);
 
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0);
-
-		// allocate target vertex buffer for compute shaders
-		int outBufferId = glGenBuffers(gl);
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, outBufferId);
-
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpOutBufferId);
 		gl.glBufferData(gl.GL_ARRAY_BUFFER,
 			targetBufferOffset * 16, // each vertex is an ivec4, which is 16 bytes
 			null,
 			gl.GL_STREAM_DRAW);
 
-		// allocate target uv buffer for compute shaders
-		int outUvBufferId = glGenBuffers(gl);
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, outUvBufferId);
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpOutUvBufferId);
 		gl.glBufferData(gl.GL_ARRAY_BUFFER,
 			targetBufferOffset * 16,
 			null,
@@ -883,39 +938,39 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// unordered
 			gl.glUseProgram(glUnorderedComputeProgram);
 
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, modelBufferUnorderedId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferUnorderedId);
 			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, bufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, outBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, outUvBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
 			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, uvBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
 
 			gl.glDispatchCompute(unorderedModels, 1, 1);
 
 			// small
 			gl.glUseProgram(glSmallComputeProgram);
 
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, modelBufferSmallId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferSmallId);
 			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, bufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, outBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, outUvBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
 			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, uvBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
 
 			gl.glDispatchCompute(smallModels, 1, 1);
 
 			// large
 			gl.glUseProgram(glComputeProgram);
 
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, modelBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferId);
 			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, bufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, outBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, outUvBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
 			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, uvBufferId);
+			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
 
 			gl.glDispatchCompute(largeModels, 1, 1);
 
@@ -1001,11 +1056,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glBindVertexArray(vaoHandle);
 
 			gl.glEnableVertexAttribArray(0);
-			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, outBufferId);
+			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpOutBufferId);
 			gl.glVertexAttribIPointer(0, 4, gl.GL_INT, 0, 0);
 
 			gl.glEnableVertexAttribArray(1);
-			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, outUvBufferId);
+			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpOutUvBufferId);
 			gl.glVertexAttribPointer(1, 4, gl.GL_FLOAT, false, 0, 0);
 
 			gl.glDrawArrays(gl.GL_TRIANGLES, 0, targetBufferOffset);
@@ -1038,14 +1093,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		smallModels = largeModels = unorderedModels = 0;
 		tempOffset = 0;
 		tempUvOffset = 0;
-
-		glDeleteBuffer(gl, bufferId);
-		glDeleteBuffer(gl, uvBufferId);
-		glDeleteBuffer(gl, modelBufferId);
-		glDeleteBuffer(gl, modelBufferSmallId);
-		glDeleteBuffer(gl, modelBufferUnorderedId);
-		glDeleteBuffer(gl, outBufferId);
-		glDeleteBuffer(gl, outUvBufferId);
 
 		// Texture on UI
 		drawUi(canvasHeight, canvasWidth);
@@ -1194,21 +1241,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		IntBuffer vertexBuffer = this.vertexBuffer.getBuffer();
 		FloatBuffer uvBuffer = this.uvBuffer.getBuffer();
-
-		if (bufferId != -1)
-		{
-			GLUtil.glDeleteBuffer(gl, bufferId);
-			bufferId = -1;
-		}
-
-		if (uvBufferId != -1)
-		{
-			GLUtil.glDeleteBuffer(gl, uvBufferId);
-			uvBufferId = -1;
-		}
-
-		bufferId = glGenBuffers(gl);
-		uvBufferId = glGenBuffers(gl);
 
 		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, bufferId);
 		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexBuffer.limit() * Integer.BYTES, vertexBuffer, gl.GL_STATIC_COPY);
