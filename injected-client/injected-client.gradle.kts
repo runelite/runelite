@@ -45,6 +45,7 @@ val combined by configurations.creating {
 configurations {
     all {
         isTransitive = false
+        outgoing.artifact(tasks.inject.get().output)
     }
 }
 
