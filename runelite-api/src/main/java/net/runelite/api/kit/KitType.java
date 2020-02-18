@@ -42,7 +42,7 @@ public enum KitType
 	TORSO(4),
 	SHIELD(5),
 	LEGS(7),
-	HEAD(8),
+	HEAD(0),
 	HANDS(9),
 	BOOTS(10),
 	JAW(11);
