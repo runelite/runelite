@@ -36,7 +36,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.text.DecimalFormat;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -262,11 +261,7 @@ class ConfigPanel extends PluginPanel
 				Units units = cid.getUnits();
 				if (units != null)
 				{
-					DecimalFormat df = ((JSpinner.NumberEditor) spinner.getEditor()).getFormat();
-					df.setPositiveSuffix(units.value());
-					df.setNegativeSuffix(units.value());
-					// Force update the spinner to have it add the units initially
-					spinnerTextField.setValue(value);
+					spinnerTextField.setFormatterFactory(new UnitFormatterFactory(units));
 				}
 
 				item.add(spinner, BorderLayout.EAST);
