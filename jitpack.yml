@@ -3,4 +3,4 @@ jdk:
 install:
   - echo "Welcome to OpenOSRS JitPack"
   - chmod a+x ./gradlew
-  - ./gradlew build publishToMavenLocal -x test
+  - ./gradlew clean build publishToMavenLocal -x test
