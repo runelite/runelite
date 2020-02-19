@@ -90,7 +90,7 @@ import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
@@ -135,6 +135,9 @@ class ConfigPanel extends PluginPanel
 
 	@Inject
 	private ColorPickerManager colorPickerManager;
+
+	@Inject
+	private EventBus eventBus;
 
 	private PluginConfigurationDescriptor pluginConfig = null;
 	private final Map<String, JPanel> sectionWidgets = new HashMap<>();
@@ -230,6 +233,7 @@ class ConfigPanel extends PluginPanel
 		}
 
 		rebuild(false);
+		eventBus.subscribe(PluginChanged.class, this, this::onPluginChanged);
 	}
 
 	private void getSections(ConfigDescriptor cd)
@@ -1169,7 +1173,6 @@ class ConfigPanel extends PluginPanel
 		return new Dimension(PANEL_WIDTH + SCROLLBAR_WIDTH, super.getPreferredSize().height);
 	}
 
-	@Subscribe
 	public void onPluginChanged(PluginChanged event)
 	{
 		if (event.getPlugin() == this.pluginConfig.getPlugin())
