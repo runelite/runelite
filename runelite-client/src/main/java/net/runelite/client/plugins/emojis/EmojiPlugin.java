@@ -104,6 +104,7 @@ public class EmojiPlugin extends Plugin
 	//	 Holds current emoji message, if any
 	private EmojiEmitMessage currentMessage = null;
 	private int modIconsStart = -1;
+	private static final double TICK_LENGTH = 0.6;
 
 	@Provides
 	EmojiConfig provideConfig(ConfigManager configManager)
@@ -111,23 +112,29 @@ public class EmojiPlugin extends Plugin
 		return configManager.getConfig(EmojiConfig.class);
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	/**
+	 * Remove tags, except for &lt;lt&gt; and &lt;gt&gt;
+	 *
+	 * @return String with tags removed
+	 */
+	private static String removeTags(String str)
 	{
-		if (event.getGroup().equals(CONFIG_GROUP_KEY) && event.getKey().equals("showEmitEmojiEntry"))
+		StringBuffer stringBuffer = new StringBuffer();
+		Matcher matcher = TAG_REGEXP.matcher(str);
+		while (matcher.find())
 		{
-			if (config.showEmitEmojiEntry())
+			matcher.appendReplacement(stringBuffer, "");
+			String match = matcher.group(0);
+			switch (match)
 			{
-				menuManager.get().addManagedCustomMenu(FIXED_INVENTORY_ALL_TAB);
-				menuManager.get().addManagedCustomMenu(RESIZABLE_INVENTORY_ALL_TAB);
-			}
-			if (!config.showEmitEmojiEntry())
-			{
-				timeoutEmojiMessages(true);
-				menuManager.get().removeManagedCustomMenu(FIXED_INVENTORY_ALL_TAB);
-				menuManager.get().removeManagedCustomMenu(RESIZABLE_INVENTORY_ALL_TAB);
+				case "<lt>":
+				case "<gt>":
+					stringBuffer.append(match);
+					break;
 			}
 		}
+		matcher.appendTail(stringBuffer);
+		return stringBuffer.toString();
 	}
 
 	@Override
@@ -260,58 +267,23 @@ public class EmojiPlugin extends Plugin
 		}
 	}
 
-	private void timeoutEmojiMessages(boolean force)
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
 	{
-		if (currentMessage == null)
+		if (event.getGroup().equals(CONFIG_GROUP_KEY) && event.getKey().equals("showEmitEmojiEntry"))
 		{
-			return;
-		}
-
-		boolean removed = false;
-		MessageNode messageNode = currentMessage.getMessageNode();
-		final int createdTick = currentMessage.getTick();
-
-		if (client.getTickCount() > createdTick + config.emojiEmitDuration() || force)
-		{
-			ChatLineBuffer ccInfoBuffer = client.getChatLineMap().get(ChatMessageType.GAMEMESSAGE.getType());
-			if (ccInfoBuffer != null)
+			if (config.showEmitEmojiEntry())
 			{
-				ccInfoBuffer.removeMessageNode(messageNode);
-				removed = true;
-				currentMessage = null;
+				menuManager.get().addManagedCustomMenu(FIXED_INVENTORY_ALL_TAB);
+				menuManager.get().addManagedCustomMenu(RESIZABLE_INVENTORY_ALL_TAB);
+			}
+			else
+			{
+				timeoutEmojiMessages(true);
+				menuManager.get().removeManagedCustomMenu(FIXED_INVENTORY_ALL_TAB);
+				menuManager.get().removeManagedCustomMenu(RESIZABLE_INVENTORY_ALL_TAB);
 			}
 		}
-
-//		don't force a redraw if we're about to add the message back
-		if (removed && !force)
-		{
-			clientThread.invoke(() -> client.runScript(ScriptID.BUILD_CHATBOX));
-		}
-	}
-
-	/**
-	 * Remove tags, except for &lt;lt&gt; and &lt;gt&gt;
-	 *
-	 * @return String with tags removed
-	 */
-	private static String removeTags(String str)
-	{
-		StringBuffer stringBuffer = new StringBuffer();
-		Matcher matcher = TAG_REGEXP.matcher(str);
-		while (matcher.find())
-		{
-			matcher.appendReplacement(stringBuffer, "");
-			String match = matcher.group(0);
-			switch (match)
-			{
-				case "<lt>":
-				case "<gt>":
-					stringBuffer.append(match);
-					break;
-			}
-		}
-		matcher.appendTail(stringBuffer);
-		return stringBuffer.toString();
 	}
 
 	private void addEmojiPaletteMessage()
@@ -356,6 +328,35 @@ public class EmojiPlugin extends Plugin
 		}
 
 		return Strings.join(messageWords, " ");
+	}
+
+	private void timeoutEmojiMessages(boolean force)
+	{
+		if (currentMessage == null)
+		{
+			return;
+		}
+
+		boolean removed = false;
+		MessageNode messageNode = currentMessage.getMessageNode();
+		final int createdTick = currentMessage.getTick();
+
+		if (client.getTickCount() > createdTick + (config.emojiEmitDuration() / TICK_LENGTH) || force)
+		{
+			ChatLineBuffer ccInfoBuffer = client.getChatLineMap().get(ChatMessageType.GAMEMESSAGE.getType());
+			if (ccInfoBuffer != null)
+			{
+				ccInfoBuffer.removeMessageNode(messageNode);
+				removed = true;
+				currentMessage = null;
+			}
+		}
+
+		// don't force a redraw if we're about to add the message back
+		if (removed && !force)
+		{
+			clientThread.invoke(() -> client.runScript(ScriptID.BUILD_CHATBOX));
+		}
 	}
 
 	private String getEmojiMessage()

@@ -51,9 +51,9 @@ public interface EmojiConfig extends Config
 		name = "Message duration",
 		description = "Configure how long the emoji hint message stays in chat"
 	)
-	@Units(Units.TICKS)
+	@Units(Units.SECONDS)
 	default int emojiEmitDuration()
 	{
-		return 20;
+		return 10;
 	}
 }

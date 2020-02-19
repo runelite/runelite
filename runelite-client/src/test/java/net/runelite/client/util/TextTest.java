@@ -49,5 +49,9 @@ public class TextTest
 		assertEquals("<:)", Text.unescapeTags("<lt>:)"));
 		assertEquals(">:)", Text.unescapeTags("<gt>:)"));
 		assertEquals("\n", Text.unescapeTags("<br>"));
+		assertEquals("<col=FFFFFF This is a very special message.</col> >:)", Text.unescapeTags("<col=FFFFFF This is a very special message.</col> <gt>:)"));
+		assertEquals("<col=FFFFFF This is a very special message.</col> <:)", Text.unescapeTags("<col=FFFFFF This is a very special message.</col> <lt>:)"));
+		assertEquals("<col=FFFFFF This is a very special message.</col> \n:)", Text.unescapeTags("<col=FFFFFF This is a very special message.</col> <br>:)"));
+		assertEquals("<col=FFFFFF This is a very special message.</col>Not so much.", Text.unescapeTags("<col=FFFFFF This is a very special message.</col>Not so much."));
 	}
 }
