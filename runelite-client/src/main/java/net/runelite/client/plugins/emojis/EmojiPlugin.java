@@ -49,13 +49,11 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.OverheadTextChanged;
-import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.FontType;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.MenuManager;
@@ -291,34 +289,29 @@ public class EmojiPlugin extends Plugin
 		}
 	}
 
-	private String getEmojiMessage()
+	/**
+	 * Remove tags, except for &lt;lt&gt; and &lt;gt&gt;
+	 *
+	 * @return String with tags removed
+	 */
+	private static String removeTags(String str)
 	{
-		ChatMessageBuilder builder = new ChatMessageBuilder();
-		ChatMessageBuilder spacer = new ChatMessageBuilder();
-		Emoji[] allEmoji = Emoji.values();
-
-		FontTypeFace fontFace = client.getWidget(WidgetInfo.CHATBOX_INPUT).getFont();
-		for (int i = 1; i < allEmoji.length + 1; i++)
+		StringBuffer stringBuffer = new StringBuffer();
+		Matcher matcher = TAG_REGEXP.matcher(str);
+		while (matcher.find())
 		{
-			Emoji emoji = allEmoji[i - 1];
-			builder.img(modIconsStart + emoji.ordinal());
-
-			spacer.append("  " + Text.unescapeTags(emoji.trigger));
-
-			while (fontFace.getTextWidth(spacer.build()) < 55)
+			matcher.appendReplacement(stringBuffer, "");
+			String match = matcher.group(0);
+			switch (match)
 			{
-				spacer.append(" ");
+				case "<lt>":
+				case "<gt>":
+					stringBuffer.append(match);
+					break;
 			}
-
-			if (i > 0 && (i % EMOJI_PER_LINE == 0))
-			{
-				spacer.append("\n");
-			}
-
-			builder.append(Text.unescapeTags(spacer.build()));
-			spacer = new ChatMessageBuilder();
 		}
-		return builder.build();
+		matcher.appendTail(stringBuffer);
+		return stringBuffer.toString();
 	}
 
 	private void addEmojiPaletteMessage()
@@ -365,28 +358,33 @@ public class EmojiPlugin extends Plugin
 		return Strings.join(messageWords, " ");
 	}
 
-	/**
-	 * Remove tags, except for &lt;lt&gt; and &lt;gt&gt;
-	 *
-	 * @return
-	 */
-	private static String removeTags(String str)
+	private String getEmojiMessage()
 	{
-		StringBuffer stringBuffer = new StringBuffer();
-		Matcher matcher = TAG_REGEXP.matcher(str);
-		while (matcher.find())
+		ChatMessageBuilder builder = new ChatMessageBuilder();
+		ChatMessageBuilder spacer = new ChatMessageBuilder();
+		Emoji[] allEmoji = Emoji.values();
+
+		FontTypeFace fontFace = client.getWidget(WidgetInfo.CHATBOX_INPUT).getFont();
+		for (int i = 1; i < allEmoji.length + 1; i++)
 		{
-			matcher.appendReplacement(stringBuffer, "");
-			String match = matcher.group(0);
-			switch (match)
+			Emoji emoji = allEmoji[i - 1];
+			builder.img(modIconsStart + emoji.ordinal());
+
+			spacer.append("  " + Text.unescapeTags(emoji.getTrigger()));
+
+			while (fontFace.getTextWidth(spacer.build()) < 55)
 			{
-				case "<lt>":
-				case "<gt>":
-					stringBuffer.append(match);
-					break;
+				spacer.append(" ");
 			}
+
+			if (i % EMOJI_PER_LINE == 0)
+			{
+				spacer.append("\n");
+			}
+
+			builder.append(Text.unescapeTags(spacer.build()));
+			spacer = new ChatMessageBuilder();
 		}
-		matcher.appendTail(stringBuffer);
-		return stringBuffer.toString();
+		return builder.build();
 	}
 }
