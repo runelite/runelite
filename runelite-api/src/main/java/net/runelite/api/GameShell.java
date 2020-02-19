@@ -57,4 +57,6 @@ public interface GameShell
 	DrawCallbacks getDrawCallbacks();
 
 	void resizeCanvas();
+
+	void setReplaceCanvasNextFrame(boolean replace);
 }
