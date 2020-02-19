@@ -1709,4 +1709,6 @@ public interface Client extends GameEngine
 	 * Makes all widgets behave as if they are {@link WidgetConfig#WIDGET_USE_TARGET}
 	 */
 	void setAllWidgetsAreOpTargetable(boolean value);
+
+	void setOverrideMembersItemNames(boolean value);
 }

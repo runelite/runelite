@@ -26,7 +26,10 @@ package net.runelite.client.plugins.itemidentification;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -39,10 +42,16 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class ItemIdentificationPlugin extends Plugin
 {
 	@Inject
+	private Client client;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
 	private ItemIdentificationOverlay overlay;
+
+	@Inject
+	private ItemIdentificationConfig config;
 
 	@Provides
 	ItemIdentificationConfig getConfig(ConfigManager configManager)
@@ -54,11 +63,22 @@ public class ItemIdentificationPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		client.setOverrideMembersItemNames(config.membersObject());
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
+		client.setOverrideMembersItemNames(false);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("itemidentification") && event.getKey().equals("membersObject"))
+		{
+			client.setOverrideMembersItemNames(config.membersObject());
+		}
 	}
 }
