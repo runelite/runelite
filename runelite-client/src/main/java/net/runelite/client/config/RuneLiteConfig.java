@@ -25,6 +25,8 @@
 package net.runelite.client.config;
 
 import java.awt.Dimension;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import net.runelite.api.Constants;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.ContainableFrame;
@@ -181,11 +183,23 @@ public interface RuneLiteConfig extends Config
 		return 100;
 	}
 
+	@ConfigItem(
+		keyName = "tooltipPosition",
+		name = "Tooltip Position",
+		description = "Configures whether to show the tooltip above or under the cursor",
+		position = 13,
+		titleSection = "miscTitle"
+	)
+	default TooltipPositionType tooltipPosition()
+	{
+		return TooltipPositionType.UNDER_CURSOR;
+	}
+
 	@ConfigTitleSection(
 		keyName = "notificationsTitle",
 		name = "Notifications",
 		description = "",
-		position = 13
+		position = 14
 	)
 	default Title notificationsTitle()
 	{
@@ -196,7 +210,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
 		description = "Enables tray notifications",
-		position = 14,
+		position = 15,
 		titleSection = "notificationsTitle"
 	)
 	default boolean enableTrayNotifications()
@@ -208,7 +222,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationRequestFocus",
 		name = "Request focus on notification",
 		description = "Toggles window focus request",
-		position = 15,
+		position = 16,
 		titleSection = "notificationsTitle"
 	)
 	default boolean requestFocusOnNotification()
@@ -220,7 +234,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationSound",
 		name = "Notification sound",
 		description = "Enables the playing of a beep sound when notifications are displayed",
-		position = 16,
+		position = 17,
 		titleSection = "notificationsTitle"
 	)
 	default Notifier.NativeCustomOff notificationSound()
@@ -232,7 +246,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationGameMessage",
 		name = "Enable game message notifications",
 		description = "Puts a notification message in the chatbox",
-		position = 17,
+		position = 18,
 		titleSection = "notificationsTitle"
 	)
 	default boolean enableGameMessageNotification()
@@ -244,7 +258,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationFlash",
 		name = "Enable flash notification",
 		description = "Flashes the game frame as a notification",
-		position = 18,
+		position = 19,
 		titleSection = "notificationsTitle"
 	)
 	default FlashNotification flashNotification()
@@ -256,7 +270,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
 		description = "Toggles all notifications for when the client is focused",
-		position = 19,
+		position = 20,
 		titleSection = "notificationsTitle"
 	)
 	default boolean sendNotificationsWhenFocused()
@@ -268,7 +282,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "fontTitle",
 		name = "Font",
 		description = "",
-		position = 20
+		position = 21
 	)
 	default Title fontTitle()
 	{
@@ -279,7 +293,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "fontType",
 		name = "Dynamic Overlay Font",
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
-		position = 21,
+		position = 22,
 		titleSection = "fontTitle"
 	)
 	default FontType fontType()
@@ -291,7 +305,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "tooltipFontType",
 		name = "Tooltip Font",
 		description = "Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.",
-		position = 22,
+		position = 23,
 		titleSection = "fontTitle"
 	)
 	default FontType tooltipFontType()
@@ -303,7 +317,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "interfaceFontType",
 		name = "Interface Overlay Font",
 		description = "Configures what font type is used for in-game interface overlays such as panels, opponent info, clue scrolls etc.",
-		position = 23,
+		position = 24,
 		titleSection = "fontTitle"
 	)
 	default FontType interfaceFontType()
@@ -315,7 +329,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "overlayTitle",
 		name = "Overlays",
 		description = "",
-		position = 24
+		position = 25
 	)
 	default Title overlayTitle()
 	{
@@ -326,7 +340,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "menuEntryShift",
 		name = "Require Shift for overlay menu",
 		description = "Overlay right-click menu will require shift to be added",
-		position = 25,
+		position = 26,
 		titleSection = "overlayTitle"
 	)
 	default boolean menuEntryShift()
@@ -334,22 +348,22 @@ public interface RuneLiteConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
-		keyName = "tooltipPosition",
-		name = "Tooltip Position",
-		description = "Configures whether to show the tooltip above or under the cursor",
-		position = 35
+	@ConfigTitleSection(
+		keyName = "infoboxTitle",
+		name = "Infoboxes",
+		description = "",
+		position = 27
 	)
-	default TooltipPositionType tooltipPosition()
+	default Title infoboxTitle()
 	{
-		return TooltipPositionType.UNDER_CURSOR;
+		return new Title();
 	}
 
 	@ConfigItem(
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
-		position = 26,
+		position = 28,
 		titleSection = "infoboxTitle"
 	)
 	default boolean infoBoxVertical()
@@ -361,7 +375,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxWrap",
 		name = "Infobox wrap count",
 		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 27,
+		position = 29,
 		titleSection = "infoboxTitle"
 	)
 	default int infoBoxWrap()
@@ -373,7 +387,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxSize",
 		name = "Infobox size",
 		description = "Configures the size of each infobox in pixels",
-		position = 28,
+		position = 30,
 		titleSection = "infoboxTitle"
 	)
 	@Units(Units.PIXELS)
@@ -382,4 +396,38 @@ public interface RuneLiteConfig extends Config
 		return 35;
 	}
 
+	@ConfigTitleSection(
+		keyName = "keybindsTitle",
+		name = "Key binds",
+		description = "",
+		position = 31
+	)
+	default Title keybindsTitle()
+	{
+		return new Title();
+	}
+
+	@ConfigItem(
+		keyName = "sidebarToggleKey",
+		name = "Sidebar Toggle Key",
+		description = "The key that will toggle the sidebar (accepts modifiers)",
+		position = 32,
+		titleSection = "keybindsTitle"
+	)
+	default Keybind sidebarToggleKey()
+	{
+		return new Keybind(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+		keyName = "panelToggleKey",
+		name = "Plugin Panel Toggle Key",
+		description = "The key that will toggle the current or last opened plugin panel (accepts modifiers)",
+		position = 33,
+		titleSection = "keybindsTitle"
+	)
+	default Keybind panelToggleKey()
+	{
+		return new Keybind(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK);
+	}
 }

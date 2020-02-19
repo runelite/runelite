@@ -43,8 +43,6 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.Window;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
@@ -79,7 +77,6 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
-import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
 import net.runelite.client.eventbus.EventBus;
@@ -366,8 +363,7 @@ public class ClientUI
 			frame.add(container);
 
 			// Add key listener
-			final HotkeyListener sidebarListener = new HotkeyListener(() ->
-				new Keybind(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK))
+			final HotkeyListener sidebarListener = new HotkeyListener(config::sidebarToggleKey)
 			{
 				@Override
 				public void hotkeyPressed()
@@ -377,6 +373,17 @@ public class ClientUI
 			};
 
 			keyManager.registerKeyListener(sidebarListener);
+
+			final HotkeyListener pluginPanelListener = new HotkeyListener(config::panelToggleKey)
+			{
+				@Override
+				public void hotkeyPressed()
+				{
+					togglePluginPanel();
+				}
+			};
+
+			keyManager.registerKeyListener(pluginPanelListener);
 
 			// Add mouse listener
 			final MouseListener mouseListener = new MouseAdapter()
@@ -612,7 +619,7 @@ public class ClientUI
 		{
 			OSXUtil.requestFocus();
 		}
-		
+
 		// The workaround for Windows is to minimise and then un-minimise the client to bring
 		// it to the front because java.awt.Window#toFront doesn't work reliably.
 		// See https://stackoverflow.com/questions/309023/how-to-bring-a-window-to-the-front/7435722#7435722
@@ -792,6 +799,30 @@ public class ClientUI
 		else
 		{
 			frame.contractBy(pluginToolbar.getWidth());
+		}
+	}
+
+	private void togglePluginPanel()
+	{
+		// Toggle sidebar open
+		boolean isPanelOpen = sidebarOpen;
+		sidebarOpen = !sidebarOpen;
+
+		if (isPanelOpen)
+		{
+			contract();
+		}
+		else
+		{
+			// Try to restore last panel
+			expand(currentNavButton);
+
+			//Checks if the toolbar was previously closed by toggleSidebar
+			if (!container.isAncestorOf(pluginToolbar))
+			{
+				container.add(pluginToolbar);
+				frame.expandBy(pluginToolbar.getWidth());
+			}
 		}
 	}
 
