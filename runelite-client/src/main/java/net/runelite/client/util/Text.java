@@ -156,7 +156,7 @@ public class Text
 	 */
 	public static String unescapeTags(String str)
 	{
-		StringBuilder out = new StringBuilder();
+		StringBuffer out = new StringBuffer();
 		Matcher matcher = TAG_REGEXP.matcher(str);
 
 		while (matcher.find())

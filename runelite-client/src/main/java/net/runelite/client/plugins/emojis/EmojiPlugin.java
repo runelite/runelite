@@ -38,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import static net.runelite.api.Constants.GAME_TICK_LENGTH;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
@@ -104,7 +105,6 @@ public class EmojiPlugin extends Plugin
 	//	 Holds current emoji message, if any
 	private EmojiEmitMessage currentMessage = null;
 	private int modIconsStart = -1;
-	private static final double TICK_LENGTH = 0.6;
 
 	@Provides
 	EmojiConfig provideConfig(ConfigManager configManager)
@@ -341,7 +341,7 @@ public class EmojiPlugin extends Plugin
 		MessageNode messageNode = currentMessage.getMessageNode();
 		final int createdTick = currentMessage.getTick();
 
-		if (client.getTickCount() > createdTick + (config.emojiEmitDuration() / TICK_LENGTH) || force)
+		if (client.getTickCount() > createdTick + (config.emojiEmitDuration() * 1000 / GAME_TICK_LENGTH) || force)
 		{
 			ChatLineBuffer ccInfoBuffer = client.getChatLineMap().get(ChatMessageType.GAMEMESSAGE.getType());
 			if (ccInfoBuffer != null)
