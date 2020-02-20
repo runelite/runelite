@@ -40,14 +40,14 @@ import net.runelite.api.widgets.WidgetInfo;
 @AllArgsConstructor
 public enum KitType
 {
-	HELMET("Helmet", 0, WidgetInfo.EQUIPMENT_HELMET),
+	HEAD("Head", 0, WidgetInfo.EQUIPMENT_HELMET),
 	CAPE("Cape", 1, WidgetInfo.EQUIPMENT_CAPE),
 	AMULET("Amulet", 2, WidgetInfo.EQUIPMENT_AMULET),
 	WEAPON("Weapon", 3, WidgetInfo.EQUIPMENT_WEAPON),
 	TORSO("Torso", 4, WidgetInfo.EQUIPMENT_BODY),
 	SHIELD("Shield", 5, WidgetInfo.EQUIPMENT_SHIELD),
 	LEGS("Legs", 7, WidgetInfo.EQUIPMENT_LEGS),
-	HEAD("Head", 8, null),
+	HAIR("Hair", 8, null),
 	HANDS("Hands", 9, WidgetInfo.EQUIPMENT_GLOVES),
 	BOOTS("Boots", 10, WidgetInfo.EQUIPMENT_BOOTS),
 	JAW("Jaw", 11, null),
