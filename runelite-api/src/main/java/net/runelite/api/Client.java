@@ -1709,4 +1709,19 @@ public interface Client extends GameEngine
 	 * Makes all widgets behave as if they are {@link WidgetConfig#WIDGET_USE_TARGET}
 	 */
 	void setAllWidgetsAreOpTargetable(boolean value);
+
+	/**
+	 * Sets the result count for GE search
+	 */
+	void setGeSearchResultCount(int count);
+
+	/**
+	 * Sets the array of item ids for GE search
+	 */
+	void setGeSearchResultIds(short[] ids);
+
+	/**
+	 * Sets the starting index in the item id array for GE search
+	 */
+	void setGeSearchResultIndex(int index);
 }
