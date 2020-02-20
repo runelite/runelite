@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019 Spudjb <https://github.com/spudjb>
+ * Copyright (c) 2020, Jordan Zomerlei <<https://github.com/JZomerlei>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +38,7 @@ import lombok.Data;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Quest;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
@@ -93,11 +95,14 @@ public class QuestListPlugin extends Plugin
 
 	private QuestState currentFilterState;
 
+	private GenericQuestRequirement requirements;
+
 	@Override
 	protected void startUp()
 	{
 		currentFilterState = QuestState.ALL;
 		clientThread.invoke(this::addQuestButtons);
+		requirements = new QuestListRequirementList();
 	}
 
 	@Override
@@ -363,6 +368,11 @@ public class QuestListPlugin extends Plugin
 				{
 					hidden = questState == QuestState.COMPLETE;
 				}
+				else if (currentFilterState == QuestState.NOT_COMPLETED_DOABLE)
+				{
+					Quest curQuest = Quest.valueOf(questInfo.getQuest().getText().toUpperCase().replaceAll("[^A-Z ]", "").replaceAll(" ",  "_"));
+					hidden = questState == QuestState.COMPLETE || !getRequirementsMet(curQuest);
+				}
 				else
 				{
 					hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
@@ -401,7 +411,8 @@ public class QuestListPlugin extends Plugin
 		IN_PROGRESS(0xffff00, "In progress", SpriteID.MINIMAP_ORB_HITPOINTS_DISEASE),
 		COMPLETE(0xdc10d, "Completed", SpriteID.MINIMAP_ORB_HITPOINTS_POISON),
 		ALL(0, "All", SpriteID.MINIMAP_ORB_PRAYER),
-		NOT_COMPLETED(0, "Not Completed", SpriteID.MINIMAP_ORB_RUN);
+		NOT_COMPLETED(0, "Not Completed", SpriteID.MINIMAP_ORB_RUN),
+		NOT_COMPLETED_DOABLE(0, "Doable", SpriteID.MINIMAP_ORB_HITPOINTS_VENOM);
 
 		private final int color;
 		private final String name;
@@ -427,5 +438,22 @@ public class QuestListPlugin extends Plugin
 	{
 		private Widget quest;
 		private String title;
+	}
+
+	private boolean getRequirementsMet(Quest quest)
+	{
+		QuestRequirement questRequirements = requirements.getRequirements().get(quest);
+
+		if (questRequirements != null)
+		{
+			for (Requirement req : questRequirements.getRequirements())
+			{
+				if (!req.satisfiesRequirement(client))
+				{
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
