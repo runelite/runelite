@@ -102,7 +102,7 @@ public class EmojiPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_INVENTORY_ALL_TAB = new WidgetMenuOption(EMIT,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_ALL_CHAT_TAB);
 	private static final int EMOJI_PER_LINE = 7;
-	//	 Holds current emoji message, if any
+	// Holds current emoji message, if any
 	private EmojiEmitMessage currentMessage = null;
 	private int modIconsStart = -1;
 
@@ -110,31 +110,6 @@ public class EmojiPlugin extends Plugin
 	EmojiConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(EmojiConfig.class);
-	}
-
-	/**
-	 * Remove tags, except for &lt;lt&gt; and &lt;gt&gt;
-	 *
-	 * @return String with tags removed
-	 */
-	private static String removeTags(String str)
-	{
-		StringBuffer stringBuffer = new StringBuffer();
-		Matcher matcher = TAG_REGEXP.matcher(str);
-		while (matcher.find())
-		{
-			matcher.appendReplacement(stringBuffer, "");
-			String match = matcher.group(0);
-			switch (match)
-			{
-				case "<lt>":
-				case "<gt>":
-					stringBuffer.append(match);
-					break;
-			}
-		}
-		matcher.appendTail(stringBuffer);
-		return stringBuffer.toString();
 	}
 
 	@Override
@@ -328,6 +303,31 @@ public class EmojiPlugin extends Plugin
 		}
 
 		return Strings.join(messageWords, " ");
+	}
+
+	/**
+	 * Remove tags, except for &lt;lt&gt; and &lt;gt&gt;
+	 *
+	 * @return String with tags removed
+	 */
+	private static String removeTags(String str)
+	{
+		StringBuffer stringBuffer = new StringBuffer();
+		Matcher matcher = TAG_REGEXP.matcher(str);
+		while (matcher.find())
+		{
+			matcher.appendReplacement(stringBuffer, "");
+			String match = matcher.group(0);
+			switch (match)
+			{
+				case "<lt>":
+				case "<gt>":
+					stringBuffer.append(match);
+					break;
+			}
+		}
+		matcher.appendTail(stringBuffer);
+		return stringBuffer.toString();
 	}
 
 	private void timeoutEmojiMessages(boolean force)
