@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Graviton <https://github.com/Graviton1647>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +28,6 @@ package net.runelite.client.plugins.inventorygrid;
 
 import com.google.inject.Inject;
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -47,8 +47,6 @@ class InventoryGridOverlay extends Overlay
 	private static final int INVENTORY_SIZE = 28;
 	private static final int DISTANCE_TO_ACTIVATE_HOVER = 5;
 
-	private static final Color HIGHLIGHT = new Color(0, 255, 0, 45);
-	private static final Color GRID = new Color(255, 255, 255, 45);
 
 	private final InventoryGridConfig config;
 	private final Client client;
@@ -73,6 +71,22 @@ class InventoryGridOverlay extends Overlay
 	{
 		final Widget if1DraggingWidget = client.getIf1DraggedWidget();
 		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+
+
+		for (int i = 0; i < INVENTORY_SIZE; ++i)
+		{
+
+			WidgetItem targetWidgetItem = inventoryWidget.getWidgetItem(i);
+
+			final Rectangle bounds = targetWidgetItem.getCanvasBounds();
+
+			if (config.showIndividualGrid())
+			{
+				graphics.setColor(config.colorGrid());
+				graphics.fill(bounds);
+			}
+
+		}
 
 		if (if1DraggingWidget == null || if1DraggingWidget != inventoryWidget)
 		{
@@ -114,15 +128,18 @@ class InventoryGridOverlay extends Overlay
 
 			if (config.showHighlight() && inBounds)
 			{
-				graphics.setColor(HIGHLIGHT);
+				graphics.setColor(config.colorHighlight());
 				graphics.fill(bounds);
 			}
 			else if (config.showGrid())
 			{
-				graphics.setColor(GRID);
+				graphics.setColor(config.colorGrid());
 				graphics.fill(bounds);
 			}
+
+
 		}
+
 
 		return null;
 	}
