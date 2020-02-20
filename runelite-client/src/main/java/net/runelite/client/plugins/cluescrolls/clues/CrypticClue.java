@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import static net.runelite.api.NullObjectID.NULL_1293;
@@ -331,6 +332,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final int objectId;
 	private final WorldPoint location;
 	private final String solution;
+	@Nullable
 	private final String questionText;
 
 	private CrypticClue(String text, WorldPoint location, String solution)
@@ -340,12 +342,12 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 	private CrypticClue(String text, int objectId, WorldPoint location, String solution)
 	{
-		this(text, null, objectId, location, solution, "");
+		this(text, null, objectId, location, solution, null);
 	}
 
 	private CrypticClue(String text, String npc, WorldPoint location, String solution)
 	{
-		this(text, npc, -1, location, solution, "");
+		this(text, npc, -1, location, solution, null);
 	}
 
 	private CrypticClue(String text, String npc, WorldPoint location, String solution, boolean requiresLight)
@@ -366,10 +368,10 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution)
 	{
-		this(text, npc, objectId, location, solution, "");
+		this(text, npc, objectId, location, solution, null);
 	}
 
-	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution, String questionText)
+	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution, @Nullable String questionText)
 	{
 		this.text = text;
 		this.npc = npc;
@@ -465,7 +467,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	{
 		for (CrypticClue clue : CLUES)
 		{
-			if (clue.text.equalsIgnoreCase(text) || clue.questionText.equalsIgnoreCase(text))
+			if (text.equalsIgnoreCase(clue.text) || text.equalsIgnoreCase(clue.questionText))
 			{
 				return clue;
 			}

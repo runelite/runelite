@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectID;
@@ -172,16 +173,18 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final String npc;
 	private final WorldPoint location;
 	private final String area;
+	@Nullable
 	private final String question;
+	@Nullable
 	private final String answer;
 	private int objectId;
 
 	private AnagramClue(String text, String npc, WorldPoint location, String area)
 	{
-		this(text, npc, location, area, "", null);
+		this(text, npc, location, area, null, null);
 	}
 
-	private AnagramClue(String text, String npc, WorldPoint location, String area, String question, String answer)
+	private AnagramClue(String text, String npc, WorldPoint location, String area, @Nullable String question, @Nullable String answer)
 	{
 		this.text = text;
 		this.npc = npc;

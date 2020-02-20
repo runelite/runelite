@@ -461,9 +461,17 @@ public class ClueScrollPlugin extends Plugin
 		if (developerMode && commandExecuted.getCommand().equals("clue"))
 		{
 			String text = Strings.join(commandExecuted.getArguments(), " ");
-			ClueScroll clueScroll = findClueScroll(text);
-			log.debug("Found clue scroll for '{}': {}", text, clueScroll);
-			updateClue(clueScroll);
+
+			if (text.isEmpty())
+			{
+				resetClue(true);
+			}
+			else
+			{
+				ClueScroll clueScroll = findClueScroll(text);
+				log.debug("Found clue scroll for '{}': {}", text, clueScroll);
+				updateClue(clueScroll);
+			}
 		}
 	}
 
