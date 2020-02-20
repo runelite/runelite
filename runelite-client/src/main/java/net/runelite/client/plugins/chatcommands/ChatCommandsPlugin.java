@@ -99,7 +99,10 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
 	private static final String LEVEL_COMMAND_STRING = "!lvl";
+	private static final String BOUNTY_HUNTER_HUNTER_COMMAND = "!bh";
+	private static final String BOUNTY_HUNTER_ROGUE_COMMAND = "!bhrogue";
 	private static final String CLUES_COMMAND_STRING = "!clues";
+	private static final String LAST_MAN_STANDING_COMMAND = "!lms";
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
 	private static final String CMB_COMMAND_STRING = "!cmb";
 	private static final String QP_COMMAND_STRING = "!qp";
@@ -151,7 +154,10 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(CMB_COMMAND_STRING, this::combatLevelLookup);
 		chatCommandManager.registerCommand(PRICE_COMMAND_STRING, this::itemPriceLookup);
 		chatCommandManager.registerCommandAsync(LEVEL_COMMAND_STRING, this::playerSkillLookup);
+		chatCommandManager.registerCommandAsync(BOUNTY_HUNTER_HUNTER_COMMAND, this::bountyHunterHunterLookup);
+		chatCommandManager.registerCommandAsync(BOUNTY_HUNTER_ROGUE_COMMAND, this::bountyHunterRogueLookup);
 		chatCommandManager.registerCommandAsync(CLUES_COMMAND_STRING, this::clueLookup);
+		chatCommandManager.registerCommandAsync(LAST_MAN_STANDING_COMMAND, this::lastManStandingLookup);
 		chatCommandManager.registerCommandAsync(KILLCOUNT_COMMAND_STRING, this::killCountLookup, this::killCountSubmit);
 		chatCommandManager.registerCommandAsync(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
 		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
@@ -1052,6 +1058,102 @@ public class ChatCommandsPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.warn("Error fetching hiscore data", ex);
+		}
+	}
+
+	private void bountyHunterHunterLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.bh())
+		{
+			return;
+		}
+
+		minigameLookup(chatMessage, HiscoreSkill.BOUNTY_HUNTER_HUNTER);
+	}
+
+	private void bountyHunterRogueLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.bhRogue())
+		{
+			return;
+		}
+
+		minigameLookup(chatMessage, HiscoreSkill.BOUNTY_HUNTER_ROGUE);
+	}
+
+	private void lastManStandingLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.lms())
+		{
+			return;
+		}
+
+		minigameLookup(chatMessage, HiscoreSkill.LAST_MAN_STANDING);
+	}
+
+	private void minigameLookup(ChatMessage chatMessage, HiscoreSkill minigame)
+	{
+		try
+		{
+			final Skill hiscoreSkill;
+			final HiscoreLookup lookup = getCorrectLookupFor(chatMessage);
+			final HiscoreResult result = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
+
+			if (result == null)
+			{
+				log.warn("error looking up {} score: not found", minigame.getName().toLowerCase());
+				return;
+			}
+
+			switch (minigame)
+			{
+				case BOUNTY_HUNTER_HUNTER:
+					hiscoreSkill = result.getBountyHunterHunter();
+					break;
+				case BOUNTY_HUNTER_ROGUE:
+					hiscoreSkill = result.getBountyHunterRogue();
+					break;
+				case LAST_MAN_STANDING:
+					hiscoreSkill = result.getLastManStanding();
+					break;
+				default:
+					log.warn("error looking up {} score: not implemented", minigame.getName().toLowerCase());
+					return;
+			}
+
+			int score = hiscoreSkill.getLevel();
+			if (score == -1)
+			{
+				return;
+			}
+
+			ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append(minigame.getName())
+				.append(" Score: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(score));
+
+			int rank = hiscoreSkill.getRank();
+			if (rank != -1)
+			{
+				chatMessageBuilder.append(ChatColorType.NORMAL)
+					.append(" Rank: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", rank));
+			}
+
+			String response = chatMessageBuilder.build();
+
+			log.debug("Setting response {}", response);
+			final MessageNode messageNode = chatMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
+			client.refreshChat();
+		}
+		catch (IOException ex)
+		{
+			log.warn("error looking up {}", minigame.getName().toLowerCase(), ex);
 		}
 	}
 
