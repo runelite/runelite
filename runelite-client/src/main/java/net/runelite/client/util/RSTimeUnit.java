@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2020, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,69 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.barbarianassault;
+package net.runelite.client.util;
 
 import java.time.Duration;
-import java.time.Instant;
-import javax.inject.Inject;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalUnit;
 import lombok.Getter;
-import lombok.Setter;
-import static net.runelite.client.util.RSTimeUnit.GAME_TICKS;
+import net.runelite.api.Constants;
 
-class Round
+@Getter
+public enum RSTimeUnit implements TemporalUnit
 {
-	private final Instant roundStartTime;
-	@Getter
-	private final Role roundRole;
-	@Getter
-	@Setter
-	private boolean runnersKilled;
-	@Getter
-	@Setter
-	private boolean rangersKilled;
-	@Getter
-	@Setter
-	private boolean healersKilled;
-	@Getter
-	@Setter
-	private boolean fightersKilled;
+	CLIENT_TICKS("Client tick", Duration.ofMillis(Constants.CLIENT_TICK_LENGTH)),
+	GAME_TICKS("Game tick", Duration.ofMillis(Constants.GAME_TICK_LENGTH)),
+	;
 
-	@Inject
-	public Round(Role role)
+	private final String name;
+	private final Duration duration;
+
+	RSTimeUnit(String name, Duration estimatedDuration)
 	{
-		this.roundRole = role;
-		this.roundStartTime = Instant.now().plus(Duration.of(2, GAME_TICKS));
+		this.name = name;
+		duration = estimatedDuration;
 	}
 
-	public long getRoundTime()
+	@Override
+	public boolean isDurationEstimated()
 	{
-		return Duration.between(roundStartTime, Instant.now()).getSeconds();
+		return false;
 	}
 
-	public long getTimeToChange()
+	@Override
+	public boolean isDateBased()
 	{
-		return 30 + (Duration.between(Instant.now(), roundStartTime).getSeconds() % 30);
+		return false;
+	}
+
+	@Override
+	public boolean isTimeBased()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isSupportedBy(Temporal temporal)
+	{
+		return temporal.isSupported(this);
+	}
+
+	@Override
+	public <R extends Temporal> R addTo(R temporal, long amount)
+	{
+		return (R) temporal.plus(amount, this);
+	}
+
+	@Override
+	public long between(Temporal temporal1Inclusive, Temporal temporal2Exclusive)
+	{
+		return temporal1Inclusive.until(temporal2Exclusive, this);
+	}
+
+	@Override
+	public String toString()
+	{
+		return name + " (" + duration.toMillis() + "ms)";
 	}
 }
