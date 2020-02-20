@@ -403,6 +403,18 @@
       "xp": 210
     },
     {
+      "level": 30,
+      "icon": 10976,
+      "name": "Long Bone",
+      "xp": 4500
+    },
+    {
+      "level": 30,
+      "icon": 10977,
+      "name": "Curved Bone",
+      "xp": 6750
+    },
+    {
       "level": 31,
       "icon": 8110,
       "name": "Carved Oak Bench",
