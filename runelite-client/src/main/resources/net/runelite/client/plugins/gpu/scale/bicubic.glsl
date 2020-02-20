@@ -117,7 +117,7 @@ vec4 textureCubic(sampler2D sampler, vec2 texCoords, int mode)
             for (int n = -1; n <= 2; n++)
             {
                 // this would use texelFetch, but that would require manual implementation of texture wrapping
-                vec4 vecData = textureOffset(sampler, texCoords, ivec2(m, n));
+                vec4 vecData = texture(sampler, texCoords + vec2(m, n) * texelSize);
 
                 // update min and max as we go
                 min_sample = min(min_sample, vecData);
@@ -148,7 +148,7 @@ vec4 textureCubic(sampler2D sampler, vec2 texCoords, int mode)
             for (int n = -1; n <= 2; n++)
             {
                 // this would use texelFetch, but that would require manual implementation of texture wrapping
-                vec4 vecData = textureOffset(sampler, texCoords, ivec2(m, n));
+                vec4 vecData = texture(sampler, texCoords + vec2(m, n) * texelSize);
 
                 // calculate weight based on distance of the current texel offset from the sub-texel position of the sampling location
                 float w = mitchell( d(vec2(m, n), coordFract) );
