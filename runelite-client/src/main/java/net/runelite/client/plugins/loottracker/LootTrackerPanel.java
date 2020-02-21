@@ -221,6 +221,7 @@ class LootTrackerPanel extends PluginPanel
 		viewHiddenBtn.setRolloverSelectedIcon(VISIBLE_ICON_HOVER);
 		viewHiddenBtn.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		viewHiddenBtn.setUI(new BasicToggleButtonUI()); // substance breaks the layout and the pressed icon
+		viewHiddenBtn.addActionListener(e -> changeItemHiding(viewHiddenBtn.isSelected()));
 		SwingUtil.addModalTooltip(viewHiddenBtn, "Show ignored items", "Hide ignored items");
 		changeItemHiding(true);
 		viewControls.add(viewHiddenBtn);
