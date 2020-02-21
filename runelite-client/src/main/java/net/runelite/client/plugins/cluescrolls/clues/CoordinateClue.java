@@ -167,7 +167,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2820, 3078, 0), new CoordinateClueInfo("Tai Bwo Wannai. Hardwood Grove."))
 		.put(new WorldPoint(3811, 3060, 0), new CoordinateClueInfo("Small island north-east of Mos Le'Harmless.", true, Varbits.FIRE_PIT_MOS_LE_HARMLESS))
 		.put(new WorldPoint(2180, 3282, 0), new CoordinateClueInfo("North of Iorwerth Camp."))
-		.put(new WorldPoint(2870, 2997, 0), new CoordinateClueInfo("North-east of Shilo Village."))
+		.put(new WorldPoint(2870, 2997, 0), new CoordinateClueInfo("North-east corner in Shilo Village."))
 		.put(new WorldPoint(3302, 2988, 0), new CoordinateClueInfo("On top of a cliff to the west of Pollnivneach."))
 		.put(new WorldPoint(2511, 2980, 0), new CoordinateClueInfo("Just south of Gu'Tanoth, west of gnome glider."))
 		.put(new WorldPoint(2732, 3372, 0), new CoordinateClueInfo("Legends' Guild."))
