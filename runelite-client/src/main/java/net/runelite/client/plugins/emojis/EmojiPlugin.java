@@ -25,9 +25,13 @@
  */
 package net.runelite.client.plugins.emojis;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -38,7 +42,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import static net.runelite.api.Constants.GAME_TICK_LENGTH;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
@@ -47,9 +50,8 @@ import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.OverheadTextChanged;
+import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -61,7 +63,6 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
@@ -73,6 +74,8 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class EmojiPlugin extends Plugin
 {
+	static final String CONFIG_GROUP_KEY = "emoji";
+
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");
 
@@ -86,24 +89,28 @@ public class EmojiPlugin extends Plugin
 	private Provider<MenuManager> menuManager;
 
 	@Inject
-	private ClientToolbar clientToolbar;
-
-	@Inject
 	private EmojiConfig config;
 
 	@Inject
 	private ClientThread clientThread;
 
-	static final String CONFIG_GROUP_KEY = "emoji";
+	private static Set<WidgetInfo> ALL_TABS = ImmutableSet.of(
+		WidgetInfo.FIXED_VIEWPORT_ALL_CHAT_TAB,
+		WidgetInfo.RESIZABLE_VIEWPORT_ALL_CHAT_TAB
+	);
+
 	private static final String EMIT = "Show";
 	private static final String MENU_TARGET = "Emoji Key";
 	private static final WidgetMenuOption FIXED_INVENTORY_ALL_TAB = new WidgetMenuOption(EMIT,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_ALL_CHAT_TAB);
 	private static final WidgetMenuOption RESIZABLE_INVENTORY_ALL_TAB = new WidgetMenuOption(EMIT,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_ALL_CHAT_TAB);
+	@Inject
+	private ScheduledExecutorService executorService;
 	private static final int EMOJI_PER_LINE = 7;
 	// Holds current emoji message, if any
-	private EmojiEmitMessage currentMessage = null;
+	private MessageNode currentMessage = null;
+
 	private int modIconsStart = -1;
 
 	@Provides
@@ -116,6 +123,7 @@ public class EmojiPlugin extends Plugin
 	protected void startUp()
 	{
 		loadEmojiIcons();
+
 		if (config.showEmitEmojiEntry())
 		{
 			menuManager.get().addManagedCustomMenu(FIXED_INVENTORY_ALL_TAB);
@@ -225,19 +233,14 @@ public class EmojiPlugin extends Plugin
 		event.getActor().setOverheadText(updatedMessage);
 	}
 
-
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	public void onWidgetMenuOptionClicked (WidgetMenuOptionClicked event)
 	{
-		timeoutEmojiMessages(false);
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		if (event.getMenuOption().equals(EMIT))
+		if (ALL_TABS.contains(event.getWidget())
+			&& event.getMenuOption().equals(EMIT)
+			&& event.getMenuTarget().contains(MENU_TARGET))
 		{
-			timeoutEmojiMessages(true);
+			timeoutEmojiMessages();
 			addEmojiPaletteMessage();
 		}
 	}
@@ -254,7 +257,7 @@ public class EmojiPlugin extends Plugin
 			}
 			else
 			{
-				timeoutEmojiMessages(true);
+				timeoutEmojiMessages();
 				menuManager.get().removeManagedCustomMenu(FIXED_INVENTORY_ALL_TAB);
 				menuManager.get().removeManagedCustomMenu(RESIZABLE_INVENTORY_ALL_TAB);
 			}
@@ -268,9 +271,8 @@ public class EmojiPlugin extends Plugin
 
 		final ChatLineBuffer chatLineBuffer = client.getChatLineMap().get(ChatMessageType.GAMEMESSAGE.getType());
 		final MessageNode[] lines = chatLineBuffer.getLines();
-		final MessageNode line = lines[0];
-
-		currentMessage = new EmojiEmitMessage(line, client.getTickCount());
+		currentMessage = lines[0];
+		executorService.schedule(this::timeoutEmojiMessages, config.emojiEmitDuration(), TimeUnit.SECONDS);
 	}
 
 	@Nullable
@@ -330,31 +332,18 @@ public class EmojiPlugin extends Plugin
 		return stringBuffer.toString();
 	}
 
-	private void timeoutEmojiMessages(boolean force)
+	private void timeoutEmojiMessages()
 	{
 		if (currentMessage == null)
 		{
 			return;
 		}
 
-		boolean removed = false;
-		MessageNode messageNode = currentMessage.getMessageNode();
-		final int createdTick = currentMessage.getTick();
-
-		if (client.getTickCount() > createdTick + (config.emojiEmitDuration() * 1000 / GAME_TICK_LENGTH) || force)
+		ChatLineBuffer chatLineBuffer = client.getChatLineMap().get(ChatMessageType.GAMEMESSAGE.getType());
+		if (chatLineBuffer != null)
 		{
-			ChatLineBuffer ccInfoBuffer = client.getChatLineMap().get(ChatMessageType.GAMEMESSAGE.getType());
-			if (ccInfoBuffer != null)
-			{
-				ccInfoBuffer.removeMessageNode(messageNode);
-				removed = true;
-				currentMessage = null;
-			}
-		}
-
-		// don't force a redraw if we're about to add the message back
-		if (removed && !force)
-		{
+			chatLineBuffer.removeMessageNode(currentMessage);
+			currentMessage = null;
 			clientThread.invoke(() -> client.runScript(ScriptID.BUILD_CHATBOX));
 		}
 	}
@@ -375,6 +364,7 @@ public class EmojiPlugin extends Plugin
 
 			while (fontFace.getTextWidth(spacer.build()) < 55)
 			{
+				int z = fontFace.getTextWidth(spacer.build());
 				spacer.append(" ");
 			}
 
@@ -388,4 +378,5 @@ public class EmojiPlugin extends Plugin
 		}
 		return builder.build();
 	}
+
 }

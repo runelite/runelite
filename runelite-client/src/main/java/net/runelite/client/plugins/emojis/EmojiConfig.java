@@ -37,8 +37,8 @@ public interface EmojiConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "showEmitEmojiEntry",
-		name = "Add trigger to All chat tab",
-		description = "Add trigger to All tab right-click to display possible emojis"
+		name = "Add Emoji key menu option to All chat tab",
+		description = "Add menu option to All tab right-click to display a key of available emojis and their trigger text"
 	)
 	default boolean showEmitEmojiEntry()
 	{
@@ -48,8 +48,8 @@ public interface EmojiConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "emojiEmitDuration",
-		name = "Message duration",
-		description = "Configure how long the emoji hint message stays in chat"
+		name = "Emoji key duration",
+		description = "Configure how long the emoji key message is displayed in chat"
 	)
 	@Units(Units.SECONDS)
 	default int emojiEmitDuration()
