@@ -164,26 +164,39 @@ public class PluginManager
 
 	public Config getPluginConfigProxy(Plugin plugin)
 	{
-		final Injector injector = plugin.getInjector();
-
-		for (Key<?> key : injector.getAllBindings().keySet())
+		try
 		{
-			Class<?> type = key.getTypeLiteral().getRawType();
-			if (Config.class.isAssignableFrom(type))
+			final Injector injector = plugin.getInjector();
+
+			for (Key<?> key : injector.getAllBindings().keySet())
 			{
-				return (Config) injector.getInstance(key);
+				Class<?> type = key.getTypeLiteral().getRawType();
+				if (Config.class.isAssignableFrom(type))
+				{
+					return (Config) injector.getInstance(key);
+				}
 			}
 		}
-
+		catch (ThreadDeath e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			log.warn("Unable to get plugin config", e);
+		}
 		return null;
 	}
 
-	private List<Config> getPluginConfigProxies()
+	public List<Config> getPluginConfigProxies(Collection<Plugin> plugins)
 	{
 		List<Injector> injectors = new ArrayList<>();
-		injectors.add(RuneLite.getInjector());
-		getPlugins().forEach(pl -> injectors.add(pl.getInjector()));
-
+		if (plugins == null)
+		{
+			injectors.add(RuneLite.getInjector());
+			plugins = getPlugins();
+		}
+		plugins.forEach(pl -> injectors.add(pl.getInjector()));
 		List<Config> list = new ArrayList<>();
 		for (Injector injector : injectors)
 		{
@@ -197,15 +210,25 @@ public class PluginManager
 				}
 			}
 		}
-
 		return list;
 	}
 
 	public void loadDefaultPluginConfiguration()
 	{
-		for (Object config : getPluginConfigProxies())
+		try
 		{
-			configManager.setDefaultConfiguration(config, false);
+			for (Object config : getPluginConfigProxies(plugins))
+			{
+				configManager.setDefaultConfiguration(config, false);
+			}
+		}
+		catch (ThreadDeath e)
+		{
+			throw e;
+		}
+		catch (Throwable ex)
+		{
+			log.warn("Unable to reset plugin configuration", ex);
 		}
 	}
 
@@ -409,7 +432,11 @@ public class PluginManager
 			schedule(plugin);
 			eventBus.post(PluginChanged.class, new PluginChanged(plugin, true));
 		}
-		catch (Exception ex)
+		catch (ThreadDeath e)
+		{
+			throw e;
+		}
+		catch (Throwable ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
@@ -484,9 +511,13 @@ public class PluginManager
 		Plugin plugin;
 		try
 		{
-			plugin = clazz.newInstance();
+			plugin = clazz.getDeclaredConstructor().newInstance();
 		}
-		catch (InstantiationException | IllegalAccessException ex)
+		catch (ThreadDeath e)
+		{
+			throw e;
+		}
+		catch (Throwable ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
