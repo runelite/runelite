@@ -382,9 +382,13 @@ class ExternalPluginManager
 		Plugin plugin;
 		try
 		{
-			plugin = clazz.newInstance();
+			plugin = clazz.getDeclaredConstructor().newInstance();
 		}
-		catch (InstantiationException | IllegalAccessException ex)
+		catch (ThreadDeath e)
+		{
+			throw e;
+		}
+		catch (Throwable ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}

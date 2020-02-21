@@ -464,6 +464,18 @@ public interface RSClient extends RSGameShell, Client
 	@Import("grandExchangeOffers")
 	RSGrandExchangeOffer[] getGrandExchangeOffers();
 
+	@Import("foundItemIdCount")
+	@Override
+	void setGeSearchResultCount(int count);
+
+	@Import("foundItemIds")
+	@Override
+	void setGeSearchResultIds(short[] ids);
+
+	@Import("foundItemIndex")
+	@Override
+	void setGeSearchResultIndex(int index);
+
 	@Import("isMenuOpen")
 	@Override
 	boolean isMenuOpen();

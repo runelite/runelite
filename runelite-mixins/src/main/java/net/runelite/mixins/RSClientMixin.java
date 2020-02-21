@@ -76,6 +76,7 @@ import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
+import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.Menu;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
@@ -1169,6 +1170,23 @@ public abstract class RSClientMixin implements RSClient
 		if (player != null)
 		{
 			client.getCallbacks().postDeferred(PlayerSpawned.class, new PlayerSpawned(player));
+		}
+	}
+
+	@Copy("findItemDefinitions")
+	public static void rs$findItemDefinitions(String var0, boolean var1)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("findItemDefinitions")
+	public static void rl$findItemDefinitions(String var0, boolean var1)
+	{
+		GrandExchangeSearched event = new GrandExchangeSearched();
+		client.getCallbacks().post(GrandExchangeSearched.class, event);
+		if (!event.isConsumed())
+		{
+			rs$findItemDefinitions(var0, var1);
 		}
 	}
 
