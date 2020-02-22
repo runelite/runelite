@@ -120,7 +120,7 @@ class InventoryGridOverlay extends Overlay
 				graphics.setColor(HIGHLIGHT);
 				graphics.fill(bounds);
 			}
-			else if (config.showGrid())
+			else if (config.showInventoryGrid())
 			{
 				graphics.setColor(GRID);
 				graphics.fill(bounds);

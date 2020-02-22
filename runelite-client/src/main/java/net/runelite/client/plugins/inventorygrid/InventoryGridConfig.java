@@ -43,21 +43,31 @@ public interface InventoryGridConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showGrid",
-		name = "Show grid",
-		description = "Show a grid on the inventory while dragging"
-	)
-	default boolean showGrid()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showHighlight",
 		name = "Highlight background",
 		description = "Show a green background highlight on the new slot"
 	)
 	default boolean showHighlight()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showInventoryGrid",
+		name = "Show inventory grid",
+		description = "Show a grid on the inventory while dragging"
+	)
+	default boolean showInventoryGrid()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBankGrid",
+		name = "Show bank grid",
+		description = "Show a grid on the bank while dragging"
+	)
+	default boolean showBankGrid()
 	{
 		return true;
 	}
