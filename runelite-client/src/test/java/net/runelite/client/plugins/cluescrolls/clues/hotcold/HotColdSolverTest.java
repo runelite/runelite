@@ -46,6 +46,8 @@ public class HotColdSolverTest
 	private static final String RESPONSE_TEXT_COLD_COLDER = "The device is cold, but colder than last time.";
 	private static final String RESPONSE_TEXT_COLD_WARMER = "The device is cold, and warmer than last time.";
 	private static final String RESPONSE_TEXT_COLD_SAME_TEMP = "The device is cold, and the same temperature as last time.";
+	private static final String RESPONSE_TEXT_WARM = "The device is warm.";
+	private static final String RESPONSE_TEXT_WARM_SAME_TEMP = "The device is warm, and the same temperature as last time.";
 	private static final String RESPONSE_TEXT_VERY_HOT = "The device is very hot.";
 	private static final String RESPONSE_TEXT_VERY_HOT_COLDER = "The device is very hot, but colder than last time.";
 	private static final String RESPONSE_TEXT_VERY_HOT_WARMER = "The device is very hot, and warmer than last time.";
@@ -111,18 +113,18 @@ public class HotColdSolverTest
 			HotColdLocation.KARAMJA_KHARAZI_NE,
 			HotColdLocation.KARAMJA_CRASH_ISLAND);
 		final Set<HotColdLocation> secondLocationsSet = firstLocationsSet.stream()
-			.filter(location -> location != HotColdLocation.FELDIP_HILLS_RED_CHIN)
+			.filter(location -> location != HotColdLocation.FELDIP_HILLS_GNOME_GLITER)
 			.collect(Collectors.toSet());
 		final Set<HotColdLocation> thirdLocationSet = secondLocationsSet.stream()
-			.filter(location -> location != HotColdLocation.FELDIP_HILLS_GNOME_GLITER)
+			.filter(location -> location != HotColdLocation.FELDIP_HILLS_RED_CHIN)
 			.collect(Collectors.toSet());
 		final Set<HotColdLocation> finalLocation = thirdLocationSet.stream()
 			.filter(location -> location != HotColdLocation.KARAMJA_CRASH_ISLAND)
 			.collect(Collectors.toSet());
 
 		testSolver(solver, new WorldPoint(2711, 2803, 0), RESPONSE_TEXT_COLD, firstLocationsSet);
-		testSolver(solver, new WorldPoint(2711, 2802, 0), RESPONSE_TEXT_COLD_SAME_TEMP, firstLocationsSet);
-		testSolver(solver, new WorldPoint(2716, 2802, 0), RESPONSE_TEXT_COLD_WARMER, secondLocationsSet);
+		testSolver(solver, new WorldPoint(2711, 2802, 0), RESPONSE_TEXT_COLD_SAME_TEMP, secondLocationsSet);
+		testSolver(solver, new WorldPoint(2716, 2802, 0), RESPONSE_TEXT_COLD_WARMER, thirdLocationSet);
 		testSolver(solver, new WorldPoint(2739, 2808, 0), RESPONSE_TEXT_COLD_WARMER, thirdLocationSet);
 		testSolver(solver, new WorldPoint(2810, 2757, 0), RESPONSE_TEXT_COLD_COLDER, finalLocation);
 	}
@@ -160,6 +162,23 @@ public class HotColdSolverTest
 				HotColdLocation.ASGARNIA_CRAFT_GUILD,
 				HotColdLocation.MISTHALIN_LUMBRIDGE_2,
 				HotColdLocation.DESERT_BEDABIN_CAMP));
+	}
+
+	@Test
+	public void testZeahLocationNarrowing()
+	{
+		// Start with western Lovakengj sulphur mine and west of farming guild locations remaining
+		HotColdSolver solver = new HotColdSolver(EnumSet.of(
+			HotColdLocation.ZEAH_SULPHR_MINE,
+			HotColdLocation.ZEAH_FARMING_GUILD_W
+		));
+
+		testSolver(solver, new WorldPoint(1348, 3740, 0), RESPONSE_TEXT_WARM,
+			Sets.immutableEnumSet(
+				HotColdLocation.ZEAH_SULPHR_MINE,
+				HotColdLocation.ZEAH_FARMING_GUILD_W));
+		testSolver(solver, new WorldPoint(1347, 3740, 0), RESPONSE_TEXT_WARM_SAME_TEMP,
+			Sets.immutableEnumSet(HotColdLocation.ZEAH_SULPHR_MINE));
 	}
 
 	@Test

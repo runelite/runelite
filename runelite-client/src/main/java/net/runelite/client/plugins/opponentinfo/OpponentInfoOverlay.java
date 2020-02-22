@@ -114,7 +114,7 @@ class OpponentInfoOverlay extends Overlay
 			lastMaxHealth = null;
 			if (opponent instanceof NPC)
 			{
-				lastMaxHealth = npcManager.getHealth(opponentName, opponent.getCombatLevel());
+				lastMaxHealth = npcManager.getHealth(((NPC) opponent).getId());
 			}
 			else if (opponent instanceof Player)
 			{
@@ -130,7 +130,7 @@ class OpponentInfoOverlay extends Overlay
 			}
 
 			final Actor opponentsOpponent = opponent.getInteracting();
-			if (opponentsOpponent != null
+			if (opponent instanceof NPC && opponentsOpponent != null
 				&& (opponentsOpponent != client.getLocalPlayer() || client.getVar(Varbits.MULTICOMBAT_AREA) == 1))
 			{
 				opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());

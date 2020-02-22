@@ -24,7 +24,9 @@
  */
 package net.runelite.http.service.feed;
 
-import java.io.IOException;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +53,26 @@ public class FeedController
 	private final TwitterService twitterService;
 	private final OSRSNewsService osrsNewsService;
 
-	private FeedResult feedResult;
+	private static class MemoizedFeed
+	{
+		final FeedResult feedResult;
+		final String hash;
+
+		MemoizedFeed(FeedResult feedResult)
+		{
+			this.feedResult = feedResult;
+
+			Hasher hasher = Hashing.sha256().newHasher();
+			for (FeedItem itemPrice : feedResult.getItems())
+			{
+				hasher.putBytes(itemPrice.getTitle().getBytes()).putBytes(itemPrice.getContent().getBytes());
+			}
+			HashCode code = hasher.hash();
+			hash = code.toString();
+		}
+	}
+
+	private MemoizedFeed memoizedFeed;
 
 	@Autowired
 	public FeedController(BlogService blogService, TwitterService twitterService, OSRSNewsService osrsNewsService)
@@ -70,43 +91,44 @@ public class FeedController
 		{
 			items.addAll(blogService.getBlogPosts());
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			log.warn(e.getMessage());
+			log.warn("unable to fetch blogs", e);
 		}
 
 		try
 		{
 			items.addAll(twitterService.getTweets());
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			log.warn(e.getMessage());
+			log.warn("unable to fetch tweets", e);
 		}
 
 		try
 		{
 			items.addAll(osrsNewsService.getNews());
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			log.warn(e.getMessage());
+			log.warn("unable to fetch news", e);
 		}
 
-		feedResult = new FeedResult(items);
+		memoizedFeed = new MemoizedFeed(new FeedResult(items));
 	}
 
 	@GetMapping
 	public ResponseEntity<FeedResult> getFeed()
 	{
-		if (feedResult == null)
+		if (memoizedFeed == null)
 		{
 			return ResponseEntity.notFound()
 				.build();
 		}
 
 		return ResponseEntity.ok()
+			.eTag(memoizedFeed.hash)
 			.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
-			.body(feedResult);
+			.body(memoizedFeed.feedResult);
 	}
 }

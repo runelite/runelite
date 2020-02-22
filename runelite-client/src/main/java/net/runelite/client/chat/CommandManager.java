@@ -25,9 +25,9 @@
  */
 package net.runelite.client.chat;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -48,14 +48,14 @@ public class CommandManager
 {
 	private static final String RUNELITE_COMMAND = "runeliteCommand";
 	private static final String CHATBOX_INPUT = "chatboxInput";
-	private static final String PRIVMATE_MESSAGE = "privateMessage";
+	private static final String PRIVATE_MESSAGE = "privateMessage";
 
 	private final Client client;
 	private final EventBus eventBus;
 	private final ClientThread clientThread;
 	private boolean sending;
 
-	private final List<ChatboxInputListener> chatboxInputListenerList = new ArrayList<>();
+	private final List<ChatboxInputListener> chatboxInputListenerList = new CopyOnWriteArrayList<>();
 
 	@Inject
 	private CommandManager(Client client, EventBus eventBus, ClientThread clientThread)
@@ -91,7 +91,7 @@ public class CommandManager
 			case CHATBOX_INPUT:
 				handleInput(event);
 				break;
-			case PRIVMATE_MESSAGE:
+			case PRIVATE_MESSAGE:
 				handlePrivateMessage(event);
 				break;
 		}

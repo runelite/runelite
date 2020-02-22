@@ -29,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -38,21 +39,23 @@ class ClientConfigLoader
 	{
 	}
 
-	private static final String CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
-
-	static RSConfig fetch() throws IOException
+	static RSConfig fetch(HttpUrl url) throws IOException
 	{
 		final Request request = new Request.Builder()
-			.url(CONFIG_URL)
+			.url(url)
 			.build();
 
 		final RSConfig config = new RSConfig();
 
-		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute();
-			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream())))
+		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
-			String str;
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unsuccessful response: " + response.message());
+			}
 
+			String str;
+			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream()));
 			while ((str = in.readLine()) != null)
 			{
 				int idx = str.indexOf('=');

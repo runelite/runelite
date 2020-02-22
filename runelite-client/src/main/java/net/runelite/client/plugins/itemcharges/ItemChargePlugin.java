@@ -42,7 +42,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
@@ -340,6 +340,7 @@ public class ItemChargePlugin extends Plugin
 		int explorerRingCharge = client.getVar(Varbits.EXPLORER_RING_ALCHS);
 		if (lastExplorerRingCharge != explorerRingCharge)
 		{
+			lastExplorerRingCharge = explorerRingCharge;
 			updateExplorerRingCharges(explorerRingCharge);
 		}
 	}

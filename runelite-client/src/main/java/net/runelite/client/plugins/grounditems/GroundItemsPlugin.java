@@ -63,7 +63,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemDespawned;
@@ -90,7 +90,7 @@ import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.O
 import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -393,8 +393,7 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
-			.lootType(LootType.UNKNOWN)
-			.isDropped(dropped)
+			.lootType(dropped ? LootType.DROPPED : LootType.UNKNOWN)
 			.spawnTime(Instant.now())
 			.build();
 
@@ -673,7 +672,7 @@ public class GroundItemsPlugin extends Plugin
 			else
 			{
 				notificationStringBuilder.append(" (")
-					.append(StackFormatter.quantityToStackSize(item.getQuantity()))
+					.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
 					.append(")");
 			}
 		}

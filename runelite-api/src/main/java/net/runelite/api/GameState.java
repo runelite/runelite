@@ -24,9 +24,12 @@
  */
 package net.runelite.api;
 
+import lombok.Getter;
+
 /**
  * An enumeration of game states the client is in.
  */
+@Getter
 public enum GameState
 {
 	/**

@@ -28,6 +28,7 @@ import java.util.Collection;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
@@ -51,11 +52,16 @@ public class GrandExchangeService
 		") ENGINE=InnoDB;";
 
 	private final Sql2o sql2o;
+	private final int historyDays;
 
 	@Autowired
-	public GrandExchangeService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public GrandExchangeService(
+		@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		@Value("${runelite.ge.history}") int historyDays
+	)
 	{
 		this.sql2o = sql2o;
+		this.historyDays = historyDays;
 
 		// Ensure necessary tables exist
 		try (Connection con = sql2o.open())
@@ -106,7 +112,7 @@ public class GrandExchangeService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from ge_trades where time < current_timestamp - interval 1 month")
+			con.createQuery("delete from ge_trades where time < current_timestamp - interval " + historyDays + " day")
 				.executeUpdate();
 		}
 	}

@@ -27,6 +27,9 @@ package net.runelite.client.plugins.chatcommands;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 @ConfigGroup("chatcommands")
 public interface ChatCommandsConfig extends Config
@@ -121,12 +124,56 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "clearShortcuts",
-		name = "Clear shortcuts",
-		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
+		keyName = "bh",
+		name = "BH Command",
+		description = "Configures whether the Bounty Hunter - Hunter command is enabled<br> !bh"
 	)
-	default boolean clearShortcuts()
+	default boolean bh()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "bhRogue",
+		name = "BH Rogue Command",
+		description = "Configures whether the Bounty Hunter - Rogue command is enabled<br> !bhrogue"
+	)
+	default boolean bhRogue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "lms",
+		name = "LMS Command",
+		description = "Configures whether the Last Man Standing command is enabled<br> !lms"
+	)
+	default boolean lms()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "clearSingleWord",
+		name = "Clear Single Word",
+		description = "Enable hot key to clear single word at a time"
+	)
+	default Keybind clearSingleWord()
+	{
+		return new Keybind(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "clearEntireChatBox",
+		name = "Clear Chat Box",
+		description = "Enable hotkey to clear entire chat box"
+	)
+	default Keybind clearChatBox()
+	{
+		return new Keybind(KeyEvent.VK_BACK_SPACE, InputEvent.CTRL_DOWN_MASK);
 	}
 }

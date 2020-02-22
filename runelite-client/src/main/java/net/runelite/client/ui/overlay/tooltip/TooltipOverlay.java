@@ -32,6 +32,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.TooltipPositionType;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -41,16 +43,19 @@ import net.runelite.client.ui.overlay.components.TooltipComponent;
 @Singleton
 public class TooltipOverlay extends Overlay
 {
-	private static final int OFFSET = 24;
+	private static final int UNDER_OFFSET = 24;
+	private static final int ABOVE_OFFSET = -20;
 	private static final int PADDING = 2;
 	private final TooltipManager tooltipManager;
 	private final Client client;
+	private final RuneLiteConfig runeLiteConfig;
 
 	@Inject
-	private TooltipOverlay(Client client, TooltipManager tooltipManager)
+	private TooltipOverlay(Client client, TooltipManager tooltipManager, final RuneLiteConfig runeLiteConfig)
 	{
 		this.client = client;
 		this.tooltipManager = tooltipManager;
+		this.runeLiteConfig = runeLiteConfig;
 		setPosition(OverlayPosition.TOOLTIP);
 		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
@@ -81,7 +86,8 @@ public class TooltipOverlay extends Overlay
 	{
 		final Rectangle clientCanvasBounds = new Rectangle(client.getRealDimensions());
 		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
-		final Point mousePosition = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + OFFSET);
+		final int offset = runeLiteConfig.tooltipPosition() == TooltipPositionType.UNDER_CURSOR ? UNDER_OFFSET : ABOVE_OFFSET;
+		final Point mousePosition = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + offset);
 		final Rectangle bounds = new Rectangle(getBounds());
 		bounds.setLocation(mousePosition);
 
@@ -94,7 +100,7 @@ public class TooltipOverlay extends Overlay
 
 			if (boundsY > clientY)
 			{
-				graphics.translate(0, -bounds.height - OFFSET);
+				graphics.translate(0, -bounds.height - offset);
 			}
 
 			if (boundsX > clientX)
@@ -113,7 +119,7 @@ public class TooltipOverlay extends Overlay
 
 			if (newBounds.contains(mousePosition))
 			{
-				mousePosition.move(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + OFFSET + newBounds.height);
+				mousePosition.move(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + offset + newBounds.height);
 			}
 
 			tooltipComponent.setPosition(mousePosition);
