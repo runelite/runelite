@@ -110,7 +110,6 @@ public class PluginListPanel extends PluginPanel
 	private final PluginManager pluginManager;
 	private final Provider<ConfigPanel> configPanelProvider;
 	private final OpenOSRSConfig openOSRSConfig;
-	private final List<PluginConfigurationDescriptor> fakePlugins = new ArrayList<>();
 
 	@Getter
 	private final MultiplexingPluginPanel muxer;
@@ -245,7 +244,7 @@ public class PluginListPanel extends PluginPanel
 
 		// populate pluginList with all non-hidden plugins
 		pluginList = Stream.concat(
-			fakePlugins.stream(),
+			pluginManager.getFakePlugins().stream(),
 			pluginManager.getPlugins().stream()
 				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
 				.map(plugin ->
@@ -279,7 +278,8 @@ public class PluginListPanel extends PluginPanel
 
 	void addFakePlugin(PluginConfigurationDescriptor... descriptor)
 	{
-		Collections.addAll(fakePlugins, descriptor);
+		Collections.addAll(pluginManager.getFakePlugins(), descriptor);
+		pluginManager.loadFakePluginConfiguration();
 	}
 
 	void refresh()
@@ -367,7 +367,7 @@ public class PluginListPanel extends PluginPanel
 
 		if (text.isEmpty())
 		{
-			if (openOSRSConfig.pluginSortMode() == net.runelite.client.config.OpenOSRSConfig.SortStyle.ALPHABETICALLY || !openOSRSConfig.enableCategories())
+			if (openOSRSConfig.pluginSortMode() == OpenOSRSConfig.SortStyle.ALPHABETICALLY || !openOSRSConfig.enableCategories())
 			{
 				pluginList.stream().filter(item -> pinned == item.isPinned()).forEach(mainPanel::add);
 			}
@@ -383,7 +383,7 @@ public class PluginListPanel extends PluginPanel
 			{
 				if (pinned == listItem.isPinned() && listItem.matchesSearchTerms(searchTerms))
 				{
-					if (openOSRSConfig.pluginSortMode() == net.runelite.client.config.OpenOSRSConfig.SortStyle.ALPHABETICALLY || !openOSRSConfig.enableCategories())
+					if (openOSRSConfig.pluginSortMode() == OpenOSRSConfig.SortStyle.ALPHABETICALLY || !openOSRSConfig.enableCategories())
 					{
 						mainPanel.add(listItem);
 					}
@@ -395,7 +395,7 @@ public class PluginListPanel extends PluginPanel
 			});
 		}
 
-		if (openOSRSConfig.pluginSortMode() == net.runelite.client.config.OpenOSRSConfig.SortStyle.CATEGORY && openOSRSConfig.enableCategories())
+		if (openOSRSConfig.pluginSortMode() == OpenOSRSConfig.SortStyle.CATEGORY && openOSRSConfig.enableCategories())
 		{
 			generatePluginList(plugins);
 		}
@@ -639,7 +639,7 @@ public class PluginListPanel extends PluginPanel
 			return;
 		}
 
-		if (openOSRSConfig.pluginSortMode() == net.runelite.client.config.OpenOSRSConfig.SortStyle.CATEGORY)
+		if (openOSRSConfig.pluginSortMode() == OpenOSRSConfig.SortStyle.CATEGORY)
 		{
 			pluginList.sort(categoryComparator.thenComparing(ev -> ev.getPluginConfig().getName()));
 		}

@@ -60,6 +60,7 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
@@ -71,6 +72,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
+import net.runelite.client.plugins.config.PluginConfigurationDescriptor;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.RuneLiteSplashScreen;
@@ -92,6 +94,8 @@ public class PluginManager
 	private final Provider<GameEventManager> sceneTileManager;
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
+	@Getter
+	private final List<PluginConfigurationDescriptor> fakePlugins = new ArrayList<>();
 	private final String runeliteGroupName = RuneLiteConfig.class
 		.getAnnotation(ConfigGroup.class).value();
 
@@ -219,6 +223,30 @@ public class PluginManager
 		{
 			for (Object config : getPluginConfigProxies(plugins))
 			{
+				configManager.setDefaultConfiguration(config, false);
+			}
+		}
+		catch (ThreadDeath e)
+		{
+			throw e;
+		}
+		catch (Throwable ex)
+		{
+			log.warn("Unable to reset plugin configuration", ex);
+		}
+	}
+
+	public void loadFakePluginConfiguration()
+	{
+		try
+		{
+			for (Object config : fakePlugins.stream().map(PluginConfigurationDescriptor::getConfig).toArray())
+			{
+				if (config == null)
+				{
+					continue;
+				}
+
 				configManager.setDefaultConfiguration(config, false);
 			}
 		}
