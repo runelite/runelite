@@ -351,12 +351,12 @@ public class EmojiPlugin extends Plugin
 	private String getEmojiMessage()
 	{
 		ChatMessageBuilder builder = new ChatMessageBuilder();
-		ChatMessageBuilder spacer = new ChatMessageBuilder();
 		Emoji[] allEmoji = Emoji.values();
 
 		FontTypeFace fontFace = client.getWidget(WidgetInfo.CHATBOX_INPUT).getFont();
 		for (int i = 1; i < allEmoji.length + 1; i++)
 		{
+			ChatMessageBuilder spacer = new ChatMessageBuilder();
 			Emoji emoji = allEmoji[i - 1];
 			builder.img(modIconsStart + emoji.ordinal());
 
@@ -364,7 +364,6 @@ public class EmojiPlugin extends Plugin
 
 			while (fontFace.getTextWidth(spacer.build()) < 55)
 			{
-				int z = fontFace.getTextWidth(spacer.build());
 				spacer.append(" ");
 			}
 
@@ -374,9 +373,7 @@ public class EmojiPlugin extends Plugin
 			}
 
 			builder.append(Text.unescapeTags(spacer.build()));
-			spacer = new ChatMessageBuilder();
 		}
 		return builder.build();
 	}
-
 }
