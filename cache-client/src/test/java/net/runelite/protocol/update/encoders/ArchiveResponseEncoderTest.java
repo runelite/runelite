@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Random;
 import net.runelite.cache.fs.Container;
 import net.runelite.cache.fs.jagex.CompressionType;
-import net.runelite.protocol.update.decoders.ArchiveResponseDecoder;
 import net.runelite.protocol.api.update.ArchiveResponsePacket;
+import net.runelite.protocol.update.decoders.ArchiveResponseDecoder;
 import org.junit.Assert;
 import org.junit.Test;
 

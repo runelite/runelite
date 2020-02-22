@@ -121,8 +121,6 @@
 		<module>runelite-script-assembler-plugin</module>
 		<module>http-api</module>
 		<module>http-service</module>
-		<module>protocol-api</module>
-		<module>protocol</module>
 	</modules>
 
 	<dependencyManagement>
