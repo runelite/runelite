@@ -32,6 +32,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_1497;
 import static net.runelite.api.NpcID.FISHING_SPOT_1498;
 import static net.runelite.api.NpcID.FISHING_SPOT_1510;
 import static net.runelite.api.NpcID.FISHING_SPOT_1511;
+import static net.runelite.api.NpcID.FISHING_SPOT_1514;
 import static net.runelite.api.NpcID.FISHING_SPOT_1518;
 import static net.runelite.api.NpcID.FISHING_SPOT_1519;
 import static net.runelite.api.NpcID.FISHING_SPOT_1520;
@@ -86,10 +87,12 @@ import static net.runelite.api.NpcID.FISHING_SPOT_8525;
 import static net.runelite.api.NpcID.FISHING_SPOT_8526;
 import static net.runelite.api.NpcID.FISHING_SPOT_8527;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT;
+import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1506;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1508;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1509;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1513;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1515;
+import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1516;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1526;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1527;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_6825;
@@ -98,16 +101,19 @@ import static net.runelite.api.NpcID.ROD_FISHING_SPOT_7464;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_7468;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_7676;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_8524;
+import static net.runelite.api.NpcID.FISHING_SPOT_4928;
+import static net.runelite.api.NpcID.FISHING_SPOT_6784;
 
 @Getter
 enum FishingSpot
 {
 	SHRIMP("Shrimp, Anchovies", ItemID.RAW_SHRIMPS,
-		FISHING_SPOT_1518, FISHING_SPOT_1521, FISHING_SPOT_1523,
-		FISHING_SPOT_1524, FISHING_SPOT_1525, FISHING_SPOT_1528,
-		FISHING_SPOT_1530, FISHING_SPOT_1544, FISHING_SPOT_3913,
-		FISHING_SPOT_7155, FISHING_SPOT_7459, FISHING_SPOT_7462,
-		FISHING_SPOT_7467, FISHING_SPOT_7469, FISHING_SPOT_7947
+		FISHING_SPOT_1514, FISHING_SPOT_1518, FISHING_SPOT_1521,
+		FISHING_SPOT_1523, FISHING_SPOT_1524, FISHING_SPOT_1525,
+		FISHING_SPOT_1528, FISHING_SPOT_1530, FISHING_SPOT_1544,
+		FISHING_SPOT_3913, FISHING_SPOT_7155, FISHING_SPOT_7459,
+		FISHING_SPOT_7462, FISHING_SPOT_7467, FISHING_SPOT_7469,
+		FISHING_SPOT_7947
 	),
 	LOBSTER("Lobster, Swordfish, Tuna", ItemID.RAW_LOBSTER,
 		FISHING_SPOT_1510, FISHING_SPOT_1519, FISHING_SPOT_1522,
@@ -126,10 +132,14 @@ enum FishingSpot
 		FISHING_SPOT_4316
 	),
 	SALMON("Salmon, Trout", ItemID.RAW_SALMON,
-		ROD_FISHING_SPOT, ROD_FISHING_SPOT_1508, ROD_FISHING_SPOT_1509,
-		ROD_FISHING_SPOT_1513, ROD_FISHING_SPOT_1515, ROD_FISHING_SPOT_1526,
-		ROD_FISHING_SPOT_1527, ROD_FISHING_SPOT_7463, ROD_FISHING_SPOT_7464,
-		ROD_FISHING_SPOT_7468, ROD_FISHING_SPOT_8524
+		ROD_FISHING_SPOT, ROD_FISHING_SPOT_1506, ROD_FISHING_SPOT_1508,
+		ROD_FISHING_SPOT_1509, ROD_FISHING_SPOT_1513, ROD_FISHING_SPOT_1515,
+		ROD_FISHING_SPOT_1516, ROD_FISHING_SPOT_1526, ROD_FISHING_SPOT_1527,
+		ROD_FISHING_SPOT_7463, ROD_FISHING_SPOT_7464, ROD_FISHING_SPOT_7468,
+		ROD_FISHING_SPOT_8524
+	),
+	LAVA_EEL("Lava eel", ItemID.LAVA_EEL,
+		FISHING_SPOT_4928, FISHING_SPOT_6784
 	),
 	BARB_FISH("Sturgeon, Salmon, Trout", ItemID.LEAPING_STURGEON,
 		FISHING_SPOT_1542, FISHING_SPOT_7323
@@ -164,7 +174,6 @@ enum FishingSpot
 	COMMON_TENCH("Common tench, Bluegill, Greater siren, Mottled eel", ItemID.COMMON_TENCH,
 		FISHING_SPOT_8523);
 
-	@Getter
 	private static final Map<Integer, FishingSpot> SPOTS;
 
 	private final String name;
@@ -191,5 +200,10 @@ enum FishingSpot
 		this.name = spot;
 		this.fishSpriteId = fishSpriteId;
 		this.ids = ids;
+	}
+
+	static FishingSpot findSpot(int id)
+	{
+		return SPOTS.get(id);
 	}
 }

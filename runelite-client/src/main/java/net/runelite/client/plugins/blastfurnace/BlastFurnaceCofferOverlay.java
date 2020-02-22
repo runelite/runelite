@@ -39,7 +39,7 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 class BlastFurnaceCofferOverlay extends Overlay
 {
@@ -81,17 +81,17 @@ class BlastFurnaceCofferOverlay extends Overlay
 
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Coffer:")
-				.right(StackFormatter.quantityToStackSize(coffer) + " gp")
+				.right(QuantityFormatter.quantityToStackSize(coffer) + " gp")
 				.build());
 
 			if (config.showCofferTime())
 			{
-				final long millis = (long)(coffer / COST_PER_HOUR * 60 * 60 * 1000);
+				final long millis = (long) (coffer / COST_PER_HOUR * 60 * 60 * 1000);
 
 				panelComponent.getChildren().add(LineComponent.builder()
-						.left("Time:")
-						.right(formatDuration(millis, "H'h' m'm' s's'", true))
-						.build());
+					.left("Time:")
+					.right(formatDuration(millis, "H'h' m'm' s's'", true))
+					.build());
 			}
 		}
 

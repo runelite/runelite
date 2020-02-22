@@ -44,7 +44,7 @@ public interface TimersConfig extends Config
 	@ConfigItem(
 		keyName = "showAntipoison",
 		name = "Antipoison/Venom timers",
-		description = "Configures whether timers for Antipoision, Antidoe, Antivenom are is displayed"
+		description = "Configures whether timers for poison and venom protection are displayed"
 	)
 	default boolean showAntiPoison()
 	{
@@ -87,6 +87,16 @@ public interface TimersConfig extends Config
 		description = "Configures whether prayer enhance timer is displayed"
 	)
 	default boolean showPrayerEnhance()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDivine",
+		name = "Divine potion timer",
+		description = "Configures whether divine potion timer is displayed"
+	)
+	default boolean showDivine()
 	{
 		return true;
 	}

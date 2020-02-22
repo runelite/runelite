@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("devtools")
-public interface DevToolsConfig
+public interface DevToolsConfig extends Config
 {
 	@ConfigItem(
 		keyName = "inspectorAlwaysOnTop",

@@ -44,7 +44,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
@@ -62,7 +62,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.item.ItemEquipmentStats;
 import net.runelite.http.api.item.ItemStats;
 
@@ -340,7 +340,7 @@ public class ItemStatPlugin extends Plugin
 
 		createSeparator(invContainer, invContainer.getHeight() - 40);
 
-		final String coinText = "You have " + StackFormatter.quantityToRSStackSize(getCurrentGP())
+		final String coinText = "You have " + QuantityFormatter.quantityToStackSize(getCurrentGP())
 			+ (getCurrentGP() == 1 ? " coin." : " coins.");
 
 		final Widget coinWidget = createText(invContainer, coinText, FontID.PLAIN_12, ORANGE_TEXT,

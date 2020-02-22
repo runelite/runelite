@@ -103,4 +103,15 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "notifyExpire",
+		name = "Notify Expiration",
+		description = "Send a notifcation when the unaggressive timer expires",
+		position = 7
+	)
+	default boolean notifyExpire()
+	{
+		return false;
+	}
 }

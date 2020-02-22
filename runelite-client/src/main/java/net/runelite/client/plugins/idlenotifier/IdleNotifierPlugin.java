@@ -45,6 +45,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -88,6 +89,9 @@ public class IdleNotifierPlugin extends Plugin
 	private int lastAnimation = AnimationID.IDLE;
 	private Instant lastInteracting;
 	private Actor lastInteract;
+	private Instant lastMoving;
+	private WorldPoint lastPosition;
+	private boolean notifyPosition = false;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
 	private boolean notifyOxygen = true;
@@ -134,6 +138,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_DRAGON:
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
+			case WOODCUTTING_CRYSTAL:
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
@@ -153,7 +158,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_LEATHER:
 			case CRAFTING_POTTERS_WHEEL:
 			case CRAFTING_POTTERY_OVEN:
-			/* Fletching(Cutting, Stringing) */
+			/* Fletching(Cutting, Stringing, Adding feathers and heads) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
@@ -167,6 +172,8 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_STRING_MAPLE_LONGBOW:
 			case FLETCHING_STRING_YEW_LONGBOW:
 			case FLETCHING_STRING_MAGIC_LONGBOW:
+			case FLETCHING_ATTACH_FEATHERS_TO_ARROWSHAFT:
+			case FLETCHING_ATTACH_HEADS:
 			/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
@@ -174,6 +181,18 @@ public class IdleNotifierPlugin extends Plugin
 			/* Fishing */
 			case FISHING_CRUSHING_INFERNAL_EELS:
 			case FISHING_CUTTING_SACRED_EELS:
+			case FISHING_BIG_NET:
+			case FISHING_NET:
+			case FISHING_POLE_CAST:
+			case FISHING_CAGE:
+			case FISHING_HARPOON:
+			case FISHING_BARBTAIL_HARPOON:
+			case FISHING_DRAGON_HARPOON:
+			case FISHING_INFERNAL_HARPOON:
+			case FISHING_CRYSTAL_HARPOON:
+			case FISHING_OILY_ROD:
+			case FISHING_KARAMBWAN:
+			case FISHING_BAREHAND:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
@@ -183,9 +202,11 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_ADAMANT_PICKAXE:
 			case MINING_RUNE_PICKAXE:
 			case MINING_DRAGON_PICKAXE:
-			case MINING_DRAGON_PICKAXE_ORN:
+			case MINING_DRAGON_PICKAXE_UPGRADED:
+			case MINING_DRAGON_PICKAXE_OR:
 			case MINING_INFERNAL_PICKAXE:
 			case MINING_3A_PICKAXE:
+			case MINING_CRYSTAL_PICKAXE:
 			case DENSE_ESSENCE_CHIPPING:
 			case DENSE_ESSENCE_CHISELING:
 			/* Mining(Motherlode) */
@@ -197,9 +218,11 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_ADAMANT:
 			case MINING_MOTHERLODE_RUNE:
 			case MINING_MOTHERLODE_DRAGON:
-			case MINING_MOTHERLODE_DRAGON_ORN:
+			case MINING_MOTHERLODE_DRAGON_UPGRADED:
+			case MINING_MOTHERLODE_DRAGON_OR:
 			case MINING_MOTHERLODE_INFERNAL:
 			case MINING_MOTHERLODE_3A:
+			case MINING_MOTHERLODE_CRYSTAL:
 			/* Herblore */
 			case HERBLORE_PESTLE_AND_MORTAR:
 			case HERBLORE_POTIONMAKING:
@@ -393,6 +416,11 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
+		if (config.movementIdle() && checkMovementIdle(waitDuration, local))
+		{
+			notifier.notify("[" + local.getName() + "] has stopped moving!");
+		}
+
 		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
 		{
 			if (lastInteractWasCombat)
@@ -533,6 +561,11 @@ public class IdleNotifierPlugin extends Plugin
 			{
 				lastInteract = null;
 				lastInteracting = null;
+
+				// prevent animation notifications from firing too
+				lastAnimation = IDLE;
+				lastAnimating = null;
+
 				return true;
 			}
 		}
@@ -620,12 +653,48 @@ public class IdleNotifierPlugin extends Plugin
 			{
 				lastAnimation = IDLE;
 				lastAnimating = null;
+
+				// prevent interaction notifications from firing too
+				lastInteract = null;
+				lastInteracting = null;
+
 				return true;
 			}
 		}
 		else
 		{
 			lastAnimating = Instant.now();
+		}
+
+		return false;
+	}
+
+	private boolean checkMovementIdle(Duration waitDuration, Player local)
+	{
+		if (lastPosition == null)
+		{
+			lastPosition = local.getWorldLocation();
+			return false;
+		}
+
+		WorldPoint position = local.getWorldLocation();
+
+		if (lastPosition.equals(position))
+		{
+			if (notifyPosition
+				&& local.getAnimation() == IDLE
+				&& Instant.now().compareTo(lastMoving.plus(waitDuration)) >= 0)
+			{
+				notifyPosition = false;
+				// Return true only if we weren't just breaking out of an animation
+				return lastAnimation == IDLE;
+			}
+		}
+		else
+		{
+			notifyPosition = true;
+			lastPosition = position;
+			lastMoving = Instant.now();
 		}
 
 		return false;
