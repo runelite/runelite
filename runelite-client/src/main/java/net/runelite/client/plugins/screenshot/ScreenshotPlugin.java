@@ -28,11 +28,9 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Provides;
-import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.concurrent.ScheduledExecutorService;
@@ -82,6 +80,7 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import net.runelite.client.util.LinkBrowser;
 
 @PluginDescriptor(
 	name = "Screenshot",
@@ -188,14 +187,7 @@ public class ScreenshotPlugin extends Plugin
 				.<String, Runnable>builder()
 				.put("Open screenshot folder...", () ->
 				{
-					try
-					{
-						Desktop.getDesktop().open(SCREENSHOT_DIR);
-					}
-					catch (IOException ex)
-					{
-						log.warn("Error opening screenshot dir", ex);
-					}
+					LinkBrowser.open(SCREENSHOT_DIR.toString());
 				})
 				.build())
 			.build();

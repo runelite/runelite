@@ -193,7 +193,6 @@ class PluginHubPanel extends PluginPanel
 			JButton help = new JButton(HELP_ICON);
 			help.setRolloverIcon(HELP_ICON_HOVER);
 			SwingUtil.removeButtonDecorations(help);
-			help.setToolTipText("Help");
 			help.setBorder(null);
 			if (manifest.getSupport() == null)
 			{
@@ -201,6 +200,7 @@ class PluginHubPanel extends PluginPanel
 			}
 			else
 			{
+				help.setToolTipText("Open help: " + manifest.getSupport().toString());
 				help.addActionListener(ev -> LinkBrowser.browse(manifest.getSupport().toString()));
 			}
 
@@ -389,7 +389,7 @@ class PluginHubPanel extends PluginPanel
 			}
 		});
 
-		JLabel externalPluginWarning = new JLabel("<html>External plugins are not supported by the RuneLite Developers." +
+		JLabel externalPluginWarning = new JLabel("<html>External plugins are not supported by the RuneLite Developers. " +
 			"They may cause bugs or instability.</html>");
 		externalPluginWarning.setBackground(new Color(0xFFBB33));
 		externalPluginWarning.setForeground(Color.BLACK);
