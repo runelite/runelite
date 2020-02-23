@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
+import net.runelite.client.util.ColorUtil;
 
 public class InventoryTagsOverlay extends WidgetItemOverlay
 {
@@ -51,15 +52,22 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
 		final String group = plugin.getTag(itemId);
-		if (group != null)
+		if (group == null)
 		{
-			final Color color = plugin.getGroupNameColor(group);
-			if (color != null)
+			return;
+		}
+		Color color = plugin.getGroupNameColor(group);
+		if (color == null)
+		{
+			color = ColorUtil.fromString(group);
+			if (color == null)
 			{
-				Rectangle bounds = itemWidget.getCanvasBounds();
-				final BufferedImage outline = itemManager.getItemOutline(itemId, itemWidget.getQuantity(), color);
-				graphics.drawImage(outline, (int) bounds.getX(), (int) bounds.getY(), null);
+				return;
 			}
 		}
+
+		Rectangle bounds = itemWidget.getCanvasBounds();
+		final BufferedImage outline = itemManager.getItemOutline(itemId, itemWidget.getQuantity(), color);
+		graphics.drawImage(outline, (int) bounds.getX(), (int) bounds.getY(), null);
 	}
 }

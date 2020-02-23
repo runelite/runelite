@@ -63,6 +63,7 @@ public class InventoryTagsPlugin extends Plugin
 	private static final String SETNAME_GROUP_4 = "Group 4";
 	private static final String SETNAME_GROUP_5 = "Group 5";
 	private static final String SETNAME_GROUP_6 = "Group 6";
+	private static final String CUSTOM_COLOR = "Custom Color";
 
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
@@ -83,7 +84,8 @@ public class InventoryTagsPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
-	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_6, SETNAME_GROUP_5, SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
+	private static final List<String> GROUPS = ImmutableList.of(CUSTOM_COLOR, SETNAME_GROUP_6, SETNAME_GROUP_5,
+		SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
 
 	@Inject
 	private Client client;
@@ -124,7 +126,15 @@ public class InventoryTagsPlugin extends Plugin
 
 	private void setTag(int itemId, String tag)
 	{
-		configManager.setConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId, tag);
+		if (tag.equals(CUSTOM_COLOR))
+		{
+			configManager.setConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId,
+				String.valueOf(config.getCustomColor().getRGB()));
+		}
+		else
+		{
+			configManager.setConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId, tag);
+		}
 	}
 
 	private void unsetTag(int itemId)
@@ -212,7 +222,14 @@ public class InventoryTagsPlugin extends Plugin
 				final String group = getTag(itemId);
 				final MenuEntry newMenu = new MenuEntry();
 				final Color color = getGroupNameColor(groupName);
-				newMenu.setOption(groupName.equals(group) ? MENU_REMOVE : MENU_SET);
+				if (groupName.equals(CUSTOM_COLOR) && group != null && ColorUtil.fromString(group) != null)
+				{
+					newMenu.setOption(color.equals(ColorUtil.fromString(group)) ? MENU_REMOVE : MENU_SET);
+				}
+				else
+				{
+					newMenu.setOption(groupName.equals(group) ? MENU_REMOVE : MENU_SET);
+				}
 				newMenu.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)));
 				newMenu.setIdentifier(itemId);
 				newMenu.setParam1(widgetId);
@@ -240,6 +257,8 @@ public class InventoryTagsPlugin extends Plugin
 				return config.getGroup5Color();
 			case SETNAME_GROUP_6:
 				return config.getGroup6Color();
+			case CUSTOM_COLOR:
+				return config.getCustomColor();
 		}
 
 		return null;

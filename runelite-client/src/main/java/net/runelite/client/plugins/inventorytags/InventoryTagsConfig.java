@@ -99,4 +99,15 @@ public interface InventoryTagsConfig extends Config
 	{
 		return new Color(0, 255, 255);
 	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "customColor",
+		name = "Custom Color",
+		description = "Allows you to make infinite color groups"
+	)
+	default Color getCustomColor()
+	{
+		return new Color(255, 255, 255);
+	}
 }
