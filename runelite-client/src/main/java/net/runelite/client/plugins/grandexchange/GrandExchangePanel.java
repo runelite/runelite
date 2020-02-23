@@ -27,7 +27,6 @@
 package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.JPanel;
@@ -89,10 +88,5 @@ class GrandExchangePanel extends PluginPanel
 
 		tabGroup.select(searchTab);
 		revalidate();
-	}
-
-	void setGELimits(Map<Integer, Integer> itemGELimits)
-	{
-		searchPanel.setItemGELimits(itemGELimits);
 	}
 }
