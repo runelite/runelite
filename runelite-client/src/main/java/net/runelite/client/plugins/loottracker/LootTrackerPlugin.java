@@ -445,6 +445,10 @@ public class LootTrackerPlugin extends Plugin
 				event = "Fishing Trawler";
 				container = client.getItemContainer(InventoryID.FISHING_TRAWLER_REWARD);
 				break;
+			case (WidgetID.DRIFT_NET_FISHING_REWARD_GROUP_ID):
+				event = "Drift Net";
+				container = client.getItemContainer(InventoryID.DRIFT_NET_FISHING_REWARD);
+				break;
 			default:
 				return;
 		}
