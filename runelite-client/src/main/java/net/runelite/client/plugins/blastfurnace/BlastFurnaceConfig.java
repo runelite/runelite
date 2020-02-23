@@ -52,4 +52,15 @@ public interface BlastFurnaceConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showCofferTime",
+		name = "Show coffer time remaining",
+		description = "Configures whether or not the coffer time remaining is displayed",
+		position = 3
+	)
+	default boolean showCofferTime()
+	{
+		return true;
+	}
 }
