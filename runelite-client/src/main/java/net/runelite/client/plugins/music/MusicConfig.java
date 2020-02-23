@@ -76,6 +76,17 @@ public interface MusicConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "useIncrementalSliders",
+		name = "Use Incremental Volume Sliders",
+		description = "Use the vanilla sliders that increment by 25%",
+		position = 4
+	)
+	default boolean useIncrementalSliders()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "musicVolume",
 		name = "",
 		description = "",

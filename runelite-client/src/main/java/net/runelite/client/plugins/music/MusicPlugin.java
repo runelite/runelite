@@ -403,6 +403,23 @@ public class MusicPlugin extends Plugin
 		{
 			return getTrack().getWidth() - (PADDING * 2) - handle.getWidth();
 		}
+
+		private int getClosestIncrement(final int volume)
+		{
+			float closestIncrement = 0;
+			float closestIncrementDistance = this.getMax();
+
+			for (float i = 0; i <= this.getMax(); i += this.getMax() * .25)
+			{
+				float distance = Math.abs(volume - i);
+				if (distance < closestIncrementDistance)
+				{
+					closestIncrementDistance = distance;
+					closestIncrement = i;
+				}
+			}
+			return (int)closestIncrement;
+		}
 	}
 
 	private void teardownMusicOptions()
@@ -517,9 +534,13 @@ public class MusicPlugin extends Plugin
 					{
 						newVal = 0;
 					}
-					if (newVal > slider.getMax())
+					else if (newVal > slider.getMax())
 					{
 						newVal = slider.getMax();
+					}
+					else if (musicConfig.useIncrementalSliders())
+					{
+						newVal = slider.getClosestIncrement(newVal);
 					}
 
 					// We store +1 so we can tell the difference between 0 and muted
