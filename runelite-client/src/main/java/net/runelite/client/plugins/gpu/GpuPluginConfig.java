@@ -31,6 +31,7 @@ import net.runelite.client.config.Range;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_FOG_DEPTH;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_DISTANCE;
+import net.runelite.client.plugins.gpu.config.UIScalingMode;
 
 @ConfigGroup("gpu")
 public interface GpuPluginConfig extends Config
@@ -71,6 +72,17 @@ public interface GpuPluginConfig extends Config
 		return AntiAliasingMode.DISABLED;
 	}
 
+	@ConfigItem(
+		keyName = "uiScalingMode",
+		name = "UI scaling mode",
+		description = "Sampling function to use for the UI in stretched mode",
+		position = 4
+	)
+	default UIScalingMode uiScalingMode()
+	{
+		return UIScalingMode.LINEAR;
+	}
+
 	@Range(
 		max = MAX_FOG_DEPTH
 	)
@@ -78,7 +90,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "fogDepth",
 		name = "Fog depth",
 		description = "Distance from the scene edge the fog starts",
-		position = 4
+		position = 5
 	)
 	default int fogDepth()
 	{

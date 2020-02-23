@@ -24,13 +24,34 @@
  */
 #version 330
 
+#define SAMPLING_DEFAULT 0
+#define SAMPLING_MITCHELL 1
+#define SAMPLING_CATROM 2
+#define SAMPLING_XBR 3
+
 uniform sampler2D tex;
 
+uniform int samplingMode;
+uniform ivec2 sourceDimensions;
+uniform ivec2 targetDimensions;
+
+#include scale/bicubic.glsl
+#include scale/xbr_lv2_frag.glsl
+
 in vec2 TexCoord;
+in XBRTable xbrTable;
 
 out vec4 FragColor;
 
 void main() {
-  vec4 c = texture(tex, TexCoord);
-  FragColor = c;
+    vec4 c;
+
+    if (samplingMode == SAMPLING_DEFAULT)
+        c = texture(tex, TexCoord);
+    else if (samplingMode == SAMPLING_CATROM || samplingMode == SAMPLING_MITCHELL)
+        c = textureCubic(tex, TexCoord, samplingMode);
+    else if (samplingMode == SAMPLING_XBR)
+        c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
+
+    FragColor = c;
 }
