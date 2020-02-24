@@ -103,5 +103,8 @@ public interface GpuPluginConfig extends Config
 		description = "Hide the User Interface.",
 		position = 6
 	)
-	default boolean hideUi() { return false; }
+	default boolean hideUi()
+	{
+		return false;
+	}
 }
