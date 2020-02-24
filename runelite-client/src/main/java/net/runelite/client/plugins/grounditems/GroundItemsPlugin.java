@@ -36,12 +36,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -548,8 +546,8 @@ public class GroundItemsPlugin extends Plugin
 
 	void updateList(String item, boolean hiddenList)
 	{
-		final Set<String> hiddenItemSet = new HashSet<>(hiddenItemList);
-		final Set<String> highlightedItemSet = new HashSet<>(highlightedItemsList);
+		final List<String> hiddenItemSet = new ArrayList<>(hiddenItemList);
+		final List<String> highlightedItemSet = new ArrayList<>(highlightedItemsList);
 
 		if (hiddenList)
 		{
@@ -560,7 +558,7 @@ public class GroundItemsPlugin extends Plugin
 			hiddenItemSet.removeIf(item::equalsIgnoreCase);
 		}
 
-		final Set<String> items = hiddenList ? hiddenItemSet : highlightedItemSet;
+		final List<String> items = hiddenList ? hiddenItemSet : highlightedItemSet;
 
 		if (!items.removeIf(item::equalsIgnoreCase))
 		{
