@@ -237,7 +237,8 @@ public class GroundItemsPlugin extends Plugin
 		boolean shouldNotify = !config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
 			groundItem.getName(),
 			groundItem.getGePrice(),
-			groundItem.getHaPrice()));
+			groundItem.getHaPrice(),
+			true));
 
 		if (config.notifyHighlightedDrops() && shouldNotify)
 		{
@@ -365,7 +366,8 @@ public class GroundItemsPlugin extends Plugin
 				boolean shouldNotify = config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
 					groundItem.getName(),
 					groundItem.getGePrice(),
-					groundItem.getHaPrice()));
+					groundItem.getHaPrice(),
+					true));
 
 				if (config.notifyHighlightedDrops() && shouldNotify)
 				{
@@ -573,6 +575,11 @@ public class GroundItemsPlugin extends Plugin
 
 	Color getHighlighted(String item, int gePrice, int haPrice)
 	{
+		return getHighlighted(item, gePrice, haPrice, false);
+	}
+
+	Color getHighlighted(String item, int gePrice, int haPrice, boolean ignoreThresholds)
+	{
 		if (TRUE.equals(highlightedItems.getUnchecked(item)))
 		{
 			return config.highlightedColor();
@@ -587,6 +594,11 @@ public class GroundItemsPlugin extends Plugin
 		ValueCalculationMode mode = config.valueCalculationMode();
 		for (Map.Entry<Integer, Color> entry : priceChecks.entrySet())
 		{
+			if (ignoreThresholds && !entry.getValue().equals(config.highlightedColor()))
+			{
+				continue;
+			}
+
 			switch (mode)
 			{
 				case GE:
