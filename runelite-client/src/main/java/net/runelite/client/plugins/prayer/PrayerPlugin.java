@@ -31,12 +31,7 @@ import java.time.Instant;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.Constants;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.Prayer;
+import net.runelite.api.*;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -49,6 +44,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.item.ItemStats;
+import net.runelite.client.Notifier;
 
 @PluginDescriptor(
 	name = "Prayer",
@@ -91,11 +87,16 @@ public class PrayerPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private Notifier notifier;
+
 	@Provides
 	PrayerConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PrayerConfig.class);
 	}
+
+	private boolean prayerNotificationSend = true;
 
 	@Override
 	protected void startUp()
@@ -179,6 +180,10 @@ public class PrayerPlugin extends Plugin
 		if (!config.prayerIndicator())
 		{
 			return;
+		}
+
+		if(config.prayerNotification()){
+			checkPrayer();
 		}
 
 		for (PrayerType prayerType : PrayerType.values())
@@ -303,5 +308,28 @@ public class PrayerPlugin extends Plugin
 	{
 		infoBoxManager.removeIf(entry -> entry instanceof PrayerCounter
 			&& ((PrayerCounter) entry).getPrayerType().isOverhead());
+	}
+
+	private void checkPrayer()
+	{
+
+		int prayerPoints = client.getBoostedSkillLevel(Skill.PRAYER);
+
+		if(!prayerNotificationSend)
+		{
+
+			if(prayerPoints < config.prayerThreshold())
+			{
+				notifier.notify("Prayer points below: " + config.prayerThreshold());
+				prayerNotificationSend = true;
+			}
+		}
+		else
+		{
+			if (prayerPoints >= config.prayerThreshold())
+			{
+				prayerNotificationSend = false;
+			}
+		}
 	}
 }

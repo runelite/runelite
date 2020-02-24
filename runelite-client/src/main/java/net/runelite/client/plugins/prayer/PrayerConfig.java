@@ -129,4 +129,26 @@ public interface PrayerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 9,
+			keyName = "prayerNotification",
+			name = "Prayer notification",
+			description = "When prayer falls below the threshold, send a notification."
+	)
+	default boolean prayerNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "prayerThreshold",
+			name = "Prayer threshold",
+			description = "Send notification when prayer points fall below this threshold.",
+			position = 10
+	)
+	default int prayerThreshold()
+	{
+		return 10;
+	}
 }
