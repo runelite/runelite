@@ -433,6 +433,11 @@ public class GroundItemsPlugin extends Plugin
 		// Cache colors
 		priceChecks.clear();
 
+		if (config.getHighlightOverValue() > 0)
+		{
+			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
+		}
+
 		if (config.insaneValuePrice() > 0)
 		{
 			priceChecks.put(config.insaneValuePrice(), config.insaneValueColor());
@@ -451,11 +456,6 @@ public class GroundItemsPlugin extends Plugin
 		if (config.lowValuePrice() > 0)
 		{
 			priceChecks.put(config.lowValuePrice(), config.lowValueColor());
-		}
-
-		if (config.getHighlightOverValue() > 0)
-		{
-			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
 		}
 	}
 
