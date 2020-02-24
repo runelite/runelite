@@ -25,27 +25,34 @@
 package net.runelite.client.plugins.antidrag;
 
 import com.google.inject.Provides;
-import java.awt.event.KeyEvent;
 import javax.inject.Inject;
+import java.awt.event.KeyEvent;
 import net.runelite.api.Client;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
+
 @PluginDescriptor(
-	name = "Shift Anti Drag",
+	name = "Anti Drag",
 	description = "Prevent dragging an item for a specified delay",
-	tags = {"antidrag", "delay", "inventory", "items"}
+	tags = {"antidrag", "delay", "inventory", "items"},
+	enabledByDefault = false
 )
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
-	private static final int DEFAULT_DELAY = 5;
+	static final String CONFIG_GROUP = "antiDrag";
+
+	static final int DEFAULT_DELAY = 5;
 
 	@Inject
 	private Client client;
@@ -65,6 +72,11 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
+		if (!config.onShiftOnly())
+		{
+			client.setInventoryDragDelay(config.dragDelay());
+			setBankDragDelay(config.dragDelay());
+		}
 		keyManager.registerKeyListener(this);
 	}
 
@@ -72,6 +84,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	protected void shutDown() throws Exception
 	{
 		client.setInventoryDragDelay(DEFAULT_DELAY);
+		setBankDragDelay(DEFAULT_DELAY);
 		keyManager.unregisterKeyListener(this);
 	}
 
@@ -84,7 +97,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		if (config.onShiftOnly() && e.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
 			final int delay = config.dragDelay();
 			client.setInventoryDragDelay(delay);
@@ -95,7 +108,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		if (config.onShiftOnly() && e.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
 			client.setInventoryDragDelay(DEFAULT_DELAY);
 			setBankDragDelay(DEFAULT_DELAY);
@@ -112,6 +125,33 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		}
 	}
 
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (!config.onShiftOnly() && event.getGroupId() == WidgetID.BANK_GROUP_ID)
+		{
+			setBankDragDelay(config.dragDelay());
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals(CONFIG_GROUP))
+		{
+			if (config.onShiftOnly())
+			{
+				client.setInventoryDragDelay(DEFAULT_DELAY);
+				setBankDragDelay(DEFAULT_DELAY);
+			}
+			else
+			{
+				client.setInventoryDragDelay(config.dragDelay());
+				setBankDragDelay(config.dragDelay());
+			}
+		}
+	}
+
 	private void setBankDragDelay(int delay)
 	{
 		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
@@ -124,5 +164,4 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 			}
 		}
 	}
-
 }
