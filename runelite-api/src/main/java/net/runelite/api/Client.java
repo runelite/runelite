@@ -2000,4 +2000,14 @@ public interface Client extends GameShell
 	 * Sets the starting index in the item id array for GE search
 	 */
 	void setGeSearchResultIndex(int index);
+
+	/**
+	 * Sets values related to jagex compliance
+	 */
+	void setComplianceValue(@Nonnull String key, boolean value);
+
+	/**
+	 * Gets values related to jagex compliance
+	 */
+	boolean getComplianceValue(@Nonnull String key);
 }

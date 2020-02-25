@@ -35,7 +35,7 @@ public abstract class ClickboxMixin implements RSClient
 		boolean hasFlag = hash != 0L && (int) (hash >>> 16 & 1L) != 1;
 		boolean viewportContainsMouse = client.getViewportContainsMouse();
 
-		if (!hasFlag || !viewportContainsMouse)
+		if (!hasFlag || !viewportContainsMouse || (client.getOculusOrbState() != 0 && !client.getComplianceValue("orbInteraction")))
 		{
 			return;
 		}
