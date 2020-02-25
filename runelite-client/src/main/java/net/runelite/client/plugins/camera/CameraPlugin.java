@@ -35,6 +35,7 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
@@ -130,7 +131,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (currentLeftClickOption.equals(defaultLeftClickOption) || client.getTickCount() < lastUpdatedTick + RESET_DIRECTION_TIMEOUT)
+		final int timeoutTicks = (config.compassMultipleClickTimeout() * 1000) / Constants.GAME_TICK_LENGTH;
+		if (currentLeftClickOption.equals(defaultLeftClickOption) || (client.getTickCount() < (lastUpdatedTick + timeoutTicks)))
 		{
 			return;
 		}
