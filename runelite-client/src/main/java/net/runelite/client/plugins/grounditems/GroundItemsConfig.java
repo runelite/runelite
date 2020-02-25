@@ -328,10 +328,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyOverValue",
+		name = "Notify > Value",
+		description = "Configures the start price for being notified of an item drop",
+		position = 25
+	)
+	default int getNotifyOverValue()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
 		keyName = "onlyShowLoot",
 		name = "Only show loot",
 		description = "Only shows drops from NPCs and players",
-		position = 25
+		position = 26
 	)
 	default boolean onlyShowLoot()
 	{
@@ -342,7 +353,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "doubleTapDelay",
 		name = "Delay for double-tap ALT to hide",
 		description = "Decrease this number if you accidentally hide ground items often. (0 = Disabled)",
-		position = 26
+		position = 27
 	)
 	@Units(Units.MILLISECONDS)
 	default int doubleTapDelay()
@@ -354,7 +365,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "collapseEntries",
 		name = "Collapse ground item menu entries",
 		description = "Collapses ground item menu entries together and appends count",
-		position = 27
+		position = 28
 	)
 	default boolean collapseEntries()
 	{
@@ -365,7 +376,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "groundItemTimers",
 		name = "Show despawn timers",
 		description = "Shows despawn timers for items you've dropped and received as loot",
-		position = 28
+		position = 29
 	)
 	default boolean groundItemTimers()
 	{

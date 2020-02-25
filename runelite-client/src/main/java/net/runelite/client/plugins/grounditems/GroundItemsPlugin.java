@@ -232,14 +232,19 @@ public class GroundItemsPlugin extends Plugin
 			// The spawn time remains set at the oldest spawn
 		}
 
-		boolean shouldNotify = !config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
+		final Color highlightedColor = getHighlighted(
 			groundItem.getName(),
 			groundItem.getGePrice(),
-			groundItem.getHaPrice()));
+			groundItem.getHaPrice());
+		boolean shouldNotify = !config.onlyShowLoot() && config.highlightedColor().equals(highlightedColor);
 
 		if (config.notifyHighlightedDrops() && shouldNotify)
 		{
 			notifyHighlightedItem(groundItem);
+		}
+		else if (highlightedColor != null && (!config.onlyShowLoot() || groundItem.isMine()) && getGroundItemConfigValue(groundItem) > config.getNotifyOverValue())
+		{
+			notifyValuableItem(groundItem);
 		}
 	}
 
@@ -611,6 +616,20 @@ public class GroundItemsPlugin extends Plugin
 		return null;
 	}
 
+	private int getGroundItemConfigValue(GroundItem item)
+	{
+		ValueCalculationMode mode = config.valueCalculationMode();
+		switch (mode)
+		{
+			case GE:
+				return item.getGePrice();
+			case HA:
+				return item.getHaPrice();
+			default: // case HIGHEST
+				return Math.max(item.getHaPrice(), item.getGePrice());
+		}
+	}
+
 	Color getHidden(String item, int gePrice, int haPrice, boolean isTradeable)
 	{
 		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
@@ -649,14 +668,9 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	private void notifyHighlightedItem(GroundItem item)
+	private String buildGroundItemNotificationMessage(GroundItem item)
 	{
-		final Player local = client.getLocalPlayer();
-		final StringBuilder notificationStringBuilder = new StringBuilder()
-			.append("[")
-			.append(local.getName())
-			.append("] received a highlighted drop: ")
-			.append(item.getName());
+		final StringBuilder notificationStringBuilder = new StringBuilder(item.getName());
 
 		if (item.getQuantity() > 1)
 		{
@@ -673,6 +687,31 @@ public class GroundItemsPlugin extends Plugin
 					.append(")");
 			}
 		}
+
+		return notificationStringBuilder.toString();
+	}
+
+	private void notifyHighlightedItem(GroundItem item)
+	{
+		final Player local = client.getLocalPlayer();
+		final StringBuilder notificationStringBuilder = new StringBuilder()
+			.append("[")
+			.append(local.getName())
+			.append("] received a highlighted drop: ")
+			.append(buildGroundItemNotificationMessage(item));
+
+		notificationStringBuilder.append("!");
+		notifier.notify(notificationStringBuilder.toString());
+	}
+
+	private void notifyValuableItem(GroundItem item)
+	{
+		final Player local = client.getLocalPlayer();
+		final StringBuilder notificationStringBuilder = new StringBuilder()
+			.append("[")
+			.append(local.getName())
+			.append("] received a valuable drop: ")
+			.append(buildGroundItemNotificationMessage(item));
 
 		notificationStringBuilder.append("!");
 		notifier.notify(notificationStringBuilder.toString());
