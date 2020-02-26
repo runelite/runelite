@@ -45,6 +45,7 @@ public class TooltipOverlay extends Overlay
 {
 	private static final int UNDER_OFFSET = 24;
 	private static final int ABOVE_OFFSET = -20;
+	private static final int CURSOR_OFFSET = 32;
 	private static final int PADDING = 2;
 	private final TooltipManager tooltipManager;
 	private final Client client;
@@ -127,6 +128,11 @@ public class TooltipOverlay extends Overlay
 			if (newBounds.contains(mousePosition))
 			{
 				mousePosition.move(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + offset + newBounds.height);
+			}
+
+			if (tooltips.size() > 1 && this.runeLiteConfig.tooltipPosition() == TooltipPositionType.ABOVE_CURSOR)
+			{
+				mousePosition.translate(CURSOR_OFFSET, 0);
 			}
 
 			tooltipComponent.setPosition(mousePosition);
