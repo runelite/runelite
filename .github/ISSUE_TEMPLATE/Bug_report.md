@@ -24,8 +24,8 @@ If applicable, add screenshots to help explain your problem.
 
 **Environment (please complete the following information):**
  - OS: [e.g. Windows, Ubuntu, macOS]
- - RuneLite version: [e.g 1.4.6]
- - Launcher version: [e.g 1.5.2]
+ - OpenOSRS version: [e.g 3.0.3]
+ - Launcher version: [e.g 2.0.4]
 
 **Additional context**
 Add any other context about the problem here, e.g. logs. Your client logs can usually be found in
