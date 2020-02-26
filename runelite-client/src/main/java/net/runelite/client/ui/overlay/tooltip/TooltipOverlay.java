@@ -45,6 +45,7 @@ public class TooltipOverlay extends Overlay
 {
 	private static final int UNDER_OFFSET = 24;
 	private static final int ABOVE_OFFSET = -20;
+	private static final int CURSOR_OFFSET = 32;
 	private static final int PADDING = 2;
 	private final TooltipManager tooltipManager;
 	private final Client client;
@@ -87,7 +88,8 @@ public class TooltipOverlay extends Overlay
 		final Rectangle clientCanvasBounds = new Rectangle(client.getRealDimensions());
 		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
 		final int offset = runeLiteConfig.tooltipPosition() == TooltipPositionType.UNDER_CURSOR ? UNDER_OFFSET : ABOVE_OFFSET;
-		final Point mousePosition = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + offset);
+		final int mouseXOffset = tooltips.size() > 1 && this.runeLiteConfig.tooltipPosition() == TooltipPositionType.ABOVE_CURSOR ? CURSOR_OFFSET : 0;
+		final Point mousePosition = new Point(mouseCanvasPosition.getX() + mouseXOffset, mouseCanvasPosition.getY() + offset);
 		final Rectangle bounds = new Rectangle(getBounds());
 		bounds.setLocation(mousePosition);
 
@@ -126,7 +128,7 @@ public class TooltipOverlay extends Overlay
 
 			if (newBounds.contains(mousePosition))
 			{
-				mousePosition.move(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + offset + newBounds.height);
+				mousePosition.move(mouseCanvasPosition.getX() + mouseXOffset, mouseCanvasPosition.getY() + offset + newBounds.height);
 			}
 
 			tooltipComponent.setPosition(mousePosition);
