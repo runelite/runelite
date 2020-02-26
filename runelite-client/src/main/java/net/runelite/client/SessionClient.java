@@ -32,6 +32,7 @@ import java.util.UUID;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -43,6 +44,7 @@ class SessionClient
 			.build();
 
 		Request request = new Request.Builder()
+			.post(RequestBody.create(null, new byte[0]))
 			.url(url)
 			.build();
 
@@ -59,14 +61,16 @@ class SessionClient
 		}
 	}
 
-	void ping(UUID uuid) throws IOException
+	void ping(UUID uuid, boolean loggedIn) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
 			.addPathSegment("ping")
 			.addQueryParameter("session", uuid.toString())
+			.addQueryParameter("logged-in", String.valueOf(loggedIn))
 			.build();
 
 		Request request = new Request.Builder()
+			.post(RequestBody.create(null, new byte[0]))
 			.url(url)
 			.build();
 
