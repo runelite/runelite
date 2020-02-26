@@ -26,6 +26,7 @@ package net.runelite.http.api.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import com.google.gson.annotations.SerializedName;
 import lombok.Value;
 
 @Value
@@ -36,6 +37,8 @@ public class ItemStats
 	private boolean quest;
 	private boolean equipable;
 	private double weight;
+	@SerializedName("ge_limit")
+	private int geLimit;
 
 	private ItemEquipmentStats equipment;
 
@@ -80,7 +83,7 @@ public class ItemStats
 			newEquipment = equipment;
 		}
 
-		return new ItemStats(quest, equipable, newWeight, newEquipment);
+		return new ItemStats(quest, equipable, newWeight, 0, newEquipment);
 	}
 }
 
