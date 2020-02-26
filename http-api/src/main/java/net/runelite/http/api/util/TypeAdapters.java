@@ -81,7 +81,7 @@ public class TypeAdapters
 			}
 			in.endObject();
 
-			return new ItemStats(quest, equip, weight, stats);
+			return new ItemStats(quest, equip, weight, 0, stats);
 		}
 	};
 

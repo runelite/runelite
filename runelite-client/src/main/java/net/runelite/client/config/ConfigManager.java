@@ -41,8 +41,10 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -80,6 +82,7 @@ public class ConfigManager
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 	private final Map<String, String> pendingChanges = new HashMap<>();
+
 	@Inject
 	EventBus eventBus;
 
@@ -459,18 +462,23 @@ public class ConfigManager
 	{
 		ConfigManager.SETTINGS_FILE.getParentFile().mkdirs();
 
-		try (FileOutputStream out = new FileOutputStream(ConfigManager.SETTINGS_FILE))
-		{
-			final FileLock lock = out.getChannel().lock();
+		File tempFile = new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME + ".tmp");
 
-			try
-			{
-				properties.store(new OutputStreamWriter(out, StandardCharsets.UTF_8), "RuneLite configuration");
-			}
-			finally
-			{
-				lock.release();
-			}
+		try (FileOutputStream out = new FileOutputStream(tempFile))
+		{
+			out.getChannel().lock();
+			properties.store(new OutputStreamWriter(out, StandardCharsets.UTF_8), "RuneLite configuration");
+			// FileOutputStream.close() closes the associated channel, which frees the lock
+		}
+
+		try
+		{
+			Files.move(tempFile.toPath(), ConfigManager.SETTINGS_FILE.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+		}
+		catch (AtomicMoveNotSupportedException ex)
+		{
+			log.debug("atomic move not supported", ex);
+			Files.move(tempFile.toPath(), ConfigManager.SETTINGS_FILE.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 	}
 
