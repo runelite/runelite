@@ -95,12 +95,19 @@ public class TooltipOverlay extends Overlay
 		{
 			final int clientX = (int) clientCanvasBounds.getMaxX();
 			final int clientY = (int) clientCanvasBounds.getMaxY();
+			final int minClientY = (int) clientCanvasBounds.getMinY();
 			final int boundsX = (int) bounds.getMaxX();
 			final int boundsY = (int) bounds.getMaxY();
+			final int minBoundsY = (int) bounds.getMinY();
 
 			if (boundsY > clientY)
 			{
 				graphics.translate(0, -bounds.height - offset);
+			}
+
+			if (minBoundsY < minClientY)
+			{
+				graphics.translate(0, bounds.height - offset);
 			}
 
 			if (boundsX > clientX)
