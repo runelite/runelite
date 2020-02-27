@@ -8428,6 +8428,7 @@ public final class NpcID
 	public static final int STRONG_RONNY = 9410;
 	public static final int SHURA = 9413;
 	public static final int SHURA_9414 = 9414;
+	public static final int ACORN = 9415;
 	public static final int THE_NIGHTMARE = 9425;
 	public static final int THE_NIGHTMARE_9426 = 9426;
 	public static final int THE_NIGHTMARE_9427 = 9427;
