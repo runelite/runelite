@@ -34,9 +34,9 @@ import net.runelite.api.widgets.WidgetInfo;
 enum Viewport
 {
 	RESIZED_BOX(WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX, WidgetInfo.RESIZABLE_VIEWPORT_INTERFACE_CONTAINER,
-			new Point(20,  -4), new Point( 0,  -4)),
+			new Point(20, -4), new Point(0, -4)),
 	RESIZED_BOTTOM(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INTERFACE_CONTAINER,
-			new Point(61,  8), new Point(35,  -12)),
+			new Point(61, 8), new Point(35, -12)),
 	FIXED(WidgetInfo.FIXED_VIEWPORT, WidgetInfo.FIXED_VIEWPORT_INTERFACE_CONTAINER,
 			new Point(20, -4), new Point(0, -4));
 

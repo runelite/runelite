@@ -27,6 +27,9 @@ package net.runelite.client.plugins.friendlist;
 
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Friend;
+import net.runelite.api.Ignore;
+import net.runelite.api.NameableContainer;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
@@ -64,7 +67,8 @@ public class FriendListPlugin extends Plugin
 		final int world = client.getWorld();
 		final boolean isMember = client.getVar(VarPlayer.MEMBERSHIP_DAYS) > 0;
 
-		final int friendCount = client.getFriendsCount();
+		final NameableContainer<Friend> friendContainer = client.getFriendContainer();
+		final int friendCount = friendContainer.getCount();
 		if (friendCount >= 0)
 		{
 			final int limit = isMember ? MAX_FRIENDS_P2P : MAX_FRIENDS_F2P;
@@ -80,7 +84,8 @@ public class FriendListPlugin extends Plugin
 			setFriendsListTitle(title);
 		}
 
-		final int ignoreCount = client.getIgnoreCount();
+		final NameableContainer<Ignore> ignoreContainer = client.getIgnoreContainer();
+		final int ignoreCount = ignoreContainer.getCount();
 		if (ignoreCount >= 0)
 		{
 			final int limit = isMember ? MAX_IGNORES_P2P : MAX_IGNORES_F2P;

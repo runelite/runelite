@@ -35,8 +35,8 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.StatChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -93,11 +93,11 @@ public class XpGlobesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	public void onStatChanged(StatChanged statChanged)
 	{
-		Skill skill = event.getSkill();
-		int currentXp = client.getSkillExperience(skill);
-		int currentLevel = Experience.getLevelForXp(currentXp);
+		Skill skill = statChanged.getSkill();
+		int currentXp = statChanged.getXp();
+		int currentLevel = statChanged.getLevel();
 		int skillIdx = skill.ordinal();
 		XpGlobe cachedGlobe = globeCache[skillIdx];
 

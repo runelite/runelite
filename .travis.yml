@@ -1,11 +1,11 @@
 language: java
 sudo: false
-dist: trusty
+dist: xenial
 cache:
   directories:
     - $HOME/.m2
 jdk:
-- oraclejdk8
+- openjdk8
 - openjdk11
 install: true
 script: ./travis/build.sh

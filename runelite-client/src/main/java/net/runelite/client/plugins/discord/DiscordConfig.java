@@ -27,16 +27,18 @@ package net.runelite.client.plugins.discord;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("discord")
 public interface DiscordConfig extends Config
 {
 	@ConfigItem(
 		keyName = "actionTimeout",
-		name = "Action timeout (minutes)",
+		name = "Action timeout",
 		description = "Configures after how long of not updating status will be reset (in minutes)",
 		position = 1
 	)
+	@Units(Units.MINUTES)
 	default int actionTimeout()
 	{
 		return 5;

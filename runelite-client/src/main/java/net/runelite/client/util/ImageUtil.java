@@ -24,6 +24,7 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -34,12 +35,15 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.PixelGrabber;
 import java.awt.image.RescaleOp;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.GrayFilter;
 import java.util.function.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpritePixels;
 
 /**
@@ -48,6 +52,11 @@ import net.runelite.api.SpritePixels;
 @Slf4j
 public class ImageUtil
 {
+	static
+	{
+		ImageIO.setUseCache(false);
+	}
+
 	/**
 	 * Creates a {@link BufferedImage} from an {@link Image}.
 	 *
@@ -61,23 +70,37 @@ public class ImageUtil
 			return (BufferedImage) image;
 		}
 
-		final BufferedImage out = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D g2d = out.createGraphics();
+		return toARGB(image);
+	}
+
+	/**
+	 * Creates an ARGB {@link BufferedImage} from an {@link Image}.
+	 */
+	public static BufferedImage toARGB(final Image image)
+	{
+		if (image instanceof BufferedImage && ((BufferedImage) image).getType() == BufferedImage.TYPE_INT_ARGB)
+		{
+			return (BufferedImage) image;
+		}
+
+		BufferedImage out = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = out.createGraphics();
 		g2d.drawImage(image, 0, 0, null);
 		g2d.dispose();
 		return out;
 	}
 
 	/**
-	 * Offsets an image in the grayscale (darkens/brightens) by a given offset.
+	 * Offsets an image's luminance by a given value.
 	 *
-	 * @param image  The image to be darkened or brightened.
+	 * @param rawImg  The image to be darkened or brightened.
 	 * @param offset A signed 8-bit integer value to brighten or darken the image with.
 	 *               Values above 0 will brighten, and values below 0 will darken.
 	 * @return       The given image with its brightness adjusted by the given offset.
 	 */
-	public static BufferedImage grayscaleOffset(final BufferedImage image, final int offset)
+	public static BufferedImage luminanceOffset(final Image rawImg, final int offset)
 	{
+		BufferedImage image = toARGB(rawImg);
 		final float offsetFloat = (float) offset;
 		final int numComponents = image.getColorModel().getNumComponents();
 		final float[] scales = new float[numComponents];
@@ -95,15 +118,16 @@ public class ImageUtil
 	}
 
 	/**
-	 * Offsets an image in the grayscale (darkens/brightens) by a given percentage.
+	 * Changes an images luminance by a scaling factor
 	 *
-	 * @param image      The image to be darkened or brightened.
+	 * @param rawImg      The image to be darkened or brightened.
 	 * @param percentage The ratio to darken or brighten the given image.
 	 *                   Values above 1 will brighten, and values below 1 will darken.
 	 * @return           The given image with its brightness scaled by the given percentage.
 	 */
-	public static BufferedImage grayscaleOffset(final BufferedImage image, final float percentage)
+	public static BufferedImage luminanceScale(final Image rawImg, final float percentage)
 	{
+		BufferedImage image = toARGB(rawImg);
 		final int numComponents = image.getColorModel().getNumComponents();
 		final float[] scales = new float[numComponents];
 		final float[] offsets = new float[numComponents];
@@ -122,14 +146,15 @@ public class ImageUtil
 	/**
 	 * Offsets an image's alpha component by a given offset.
 	 *
-	 * @param image  The image to be made more or less transparent.
+	 * @param rawImg  The image to be made more or less transparent.
 	 * @param offset A signed 8-bit integer value to modify the image's alpha component with.
 	 *               Values above 0 will increase transparency, and values below 0 will decrease
 	 *               transparency.
 	 * @return       The given image with its alpha component adjusted by the given offset.
 	 */
-	public static BufferedImage alphaOffset(final BufferedImage image, final int offset)
+	public static BufferedImage alphaOffset(final Image rawImg, final int offset)
 	{
+		BufferedImage image = toARGB(rawImg);
 		final float offsetFloat = (float) offset;
 		final int numComponents = image.getColorModel().getNumComponents();
 		final float[] scales = new float[numComponents];
@@ -144,14 +169,15 @@ public class ImageUtil
 	/**
 	 * Offsets an image's alpha component by a given percentage.
 	 *
-	 * @param image      The image to be made more or less transparent.
+	 * @param rawImg      The image to be made more or less transparent.
 	 * @param percentage The ratio to modify the image's alpha component with.
 	 *                   Values above 1 will increase transparency, and values below 1 will decrease
 	 *                   transparency.
 	 * @return           The given image with its alpha component scaled by the given percentage.
 	 */
-	public static BufferedImage alphaOffset(final BufferedImage image, final float percentage)
+	public static BufferedImage alphaOffset(final Image rawImg, final float percentage)
 	{
+		BufferedImage image = toARGB(rawImg);
 		final int numComponents = image.getColorModel().getNumComponents();
 		final float[] scales = new float[numComponents];
 		final float[] offsets = new float[numComponents];
@@ -354,9 +380,13 @@ public class ImageUtil
 				return ImageIO.read(c.getResourceAsStream(path));
 			}
 		}
+		catch (IllegalArgumentException e)
+		{
+			throw new IllegalArgumentException(path, e);
+		}
 		catch (IOException e)
 		{
-			throw new RuntimeException(e);
+			throw new RuntimeException(path, e);
 		}
 	}
 
@@ -447,5 +477,75 @@ public class ImageUtil
 		}
 
 		return client.createSpritePixels(pixels, image.getWidth(), image.getHeight());
+	}
+
+	/**
+	 * Converts an image into an {@code IndexedSprite} instance.
+	 *
+	 * The passed in image can only have at max 255 different colors.
+	 *
+	 * @param image  The image to be converted
+	 * @param client Current client instance
+	 * @return		 The image as an {@code IndexedSprite}
+	 */
+	public static IndexedSprite getImageIndexedSprite(BufferedImage image, Client client)
+	{
+		final byte[] pixels = new byte[image.getWidth() * image.getHeight()];
+		final List<Integer> palette = new ArrayList<>();
+		/*
+			When drawing the indexed sprite, palette idx 0 is seen as fully transparent,
+			so pad the palette out so that our colors start at idx 1.
+		 */
+		palette.add(0);
+
+		final int[] sourcePixels = image.getRGB(0, 0,
+			image.getWidth(), image.getHeight(),
+			null, 0, image.getWidth());
+
+		/*
+			Build a color palette and assign the pixels to positions in the palette.
+		 */
+		for (int j = 0; j < sourcePixels.length; j++)
+		{
+			final int argb = sourcePixels[j];
+			final int a = (argb >> 24) & 0xFF;
+			final int rgb = argb & 0xFF_FF_FF;
+
+			// Default to not drawing the pixel.
+			int paletteIdx = 0;
+
+			// If the pixel is fully opaque, draw it.
+			if (a == 0xFF)
+			{
+				paletteIdx = palette.indexOf(rgb);
+
+				if (paletteIdx == -1)
+				{
+					paletteIdx = palette.size();
+					palette.add(rgb);
+				}
+			}
+
+			pixels[j] = (byte) paletteIdx;
+		}
+
+		if (palette.size() > 256)
+		{
+			throw new RuntimeException("Passed in image had " + (palette.size() - 1)
+				+ " different colors, exceeding the max of 255.");
+		}
+
+		final IndexedSprite sprite = client.createIndexedSprite();
+
+		sprite.setPixels(pixels);
+		sprite.setPalette(Ints.toArray(palette));
+		sprite.setWidth(image.getWidth());
+		sprite.setHeight(image.getHeight());
+		sprite.setOriginalWidth(image.getWidth());
+		sprite.setOriginalHeight(image.getHeight());
+		sprite.setOffsetX(0);
+		sprite.setOffsetY(0);
+
+		return sprite;
 	}
 }

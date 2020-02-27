@@ -77,7 +77,7 @@ public class SequenceDumper
 				SequenceLoader loader = new SequenceLoader();
 				SequenceDefinition seq = loader.load(file.getFileId(), file.getContents());
 
-				Files.write(gson.toJson(seq), new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(seq));
 				++count;
 			}
 		}

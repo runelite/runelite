@@ -25,12 +25,15 @@
 
 package net.runelite.client.game;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -39,7 +42,8 @@ import java.util.Map;
  */
 public class ItemVariationMapping
 {
-	private static final Map<Integer, Integer> MAPPINGS = new HashMap<>();
+	private static final Map<Integer, Integer> MAPPINGS;
+	private static final Multimap<Integer, Integer> INVERTED_MAPPINGS;
 
 	static
 	{
@@ -51,6 +55,8 @@ public class ItemVariationMapping
 		final InputStream geLimitData = ItemVariationMapping.class.getResourceAsStream("/item_variations.json");
 		final Map<String, Collection<Integer>> itemVariations = gson.fromJson(new InputStreamReader(geLimitData), typeToken.getType());
 
+		ImmutableMap.Builder<Integer, Integer> builder = new ImmutableMap.Builder<>();
+		ImmutableMultimap.Builder<Integer, Integer> invertedBuilder = new ImmutableMultimap.Builder<>();
 		for (Collection<Integer> value : itemVariations.values())
 		{
 			final Iterator<Integer> iterator = value.iterator();
@@ -58,9 +64,16 @@ public class ItemVariationMapping
 
 			while (iterator.hasNext())
 			{
-				MAPPINGS.put(iterator.next(), base);
+				final int id = iterator.next();
+				builder.put(id, base);
+				invertedBuilder.put(base, id);
 			}
+
+			invertedBuilder.put(base, base);
 		}
+
+		INVERTED_MAPPINGS = invertedBuilder.build();
+		MAPPINGS = builder.build();
 	}
 
 	/**
@@ -72,5 +85,16 @@ public class ItemVariationMapping
 	public static int map(int itemId)
 	{
 		return MAPPINGS.getOrDefault(itemId, itemId);
+	}
+
+	/**
+	 * Get item ids for provided variation item id.
+	 *
+	 * @param itemId the item id
+	 * @return the item ids
+	 */
+	public static Collection<Integer> getVariations(int itemId)
+	{
+		return INVERTED_MAPPINGS.asMap().getOrDefault(itemId, Collections.singletonList(itemId));
 	}
 }

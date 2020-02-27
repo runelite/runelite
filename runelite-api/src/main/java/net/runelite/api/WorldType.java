@@ -49,9 +49,9 @@ public enum WorldType
 	 */
 	SKILL_TOTAL(1 << 7),
 	/**
-	 * Pvp high risk world type.
+	 * High risk world type.
 	 */
-	PVP_HIGH_RISK(1 << 10),
+	HIGH_RISK(1 << 10),
 	/**
 	 * Last man standing world type.
 	 */
@@ -61,17 +61,13 @@ public enum WorldType
 	 */
 	TOURNAMENT(1 << 25),
 	/**
-	 * Deadman Tournament world type.
-	 */
-	DEADMAN_TOURNAMENT(1 << 26),
-	/**
 	 * Deadman world type.
 	 */
 	DEADMAN(1 << 29),
 	/**
-	 * Seasonal deadman world type.
+	 * League world type
 	 */
-	SEASONAL_DEADMAN(1 << 30);
+	LEAGUE(1 << 30);
 
 	private final int mask;
 
@@ -82,10 +78,7 @@ public enum WorldType
 
 	private static final EnumSet<WorldType> PVP_WORLD_TYPES = EnumSet.of(
 		DEADMAN,
-		DEADMAN_TOURNAMENT,
-		PVP,
-		PVP_HIGH_RISK,
-		SEASONAL_DEADMAN
+		PVP
 	);
 
 	/**

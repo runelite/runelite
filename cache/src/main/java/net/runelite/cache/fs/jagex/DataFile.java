@@ -186,22 +186,8 @@ public class DataFile implements Closeable
 
 		for (int part = 0; data.hasRemaining(); ++part)
 		{
-			int nextSector = 0;
+			int nextSector = sector + 1; // we always just append sectors
 			int dataToWrite;
-
-			if (nextSector == 0)
-			{
-				nextSector = (int) ((dat.length() + (long) (SECTOR_SIZE - 1)) / (long) SECTOR_SIZE);
-				if (nextSector == 0)
-				{
-					++nextSector;
-				}
-
-				if (nextSector == sector)
-				{
-					++nextSector;
-				}
-			}
 
 			if (0xFFFF < archiveId)
 			{

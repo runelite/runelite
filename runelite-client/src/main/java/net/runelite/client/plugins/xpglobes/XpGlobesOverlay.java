@@ -263,34 +263,43 @@ public class XpGlobesOverlay extends Overlay
 		{
 			XpActionType xpActionType = xpTrackerService.getActionType(mouseOverSkill.getSkill());
 
-			int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
-			if (actionsLeft != Integer.MAX_VALUE)
+			if (config.showActionsLeft())
 			{
-				String actionsLeftString = decimalFormat.format(actionsLeft);
-				xpTooltip.getChildren().add(LineComponent.builder()
-					.left(xpActionType.getLabel() + " left:")
-					.leftColor(Color.ORANGE)
-					.right(actionsLeftString)
-					.build());
+				int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
+				if (actionsLeft != Integer.MAX_VALUE)
+				{
+					String actionsLeftString = decimalFormat.format(actionsLeft);
+					xpTooltip.getChildren().add(LineComponent.builder()
+							.left(xpActionType.getLabel() + " left:")
+							.leftColor(Color.ORANGE)
+							.right(actionsLeftString)
+							.build());
+				}
 			}
 
-			int xpLeft = goalXp - mouseOverSkill.getCurrentXp();
-			String skillXpToLvl = decimalFormat.format(xpLeft);
-			xpTooltip.getChildren().add(LineComponent.builder()
-				.left("XP left:")
-				.leftColor(Color.ORANGE)
-				.right(skillXpToLvl)
-				.build());
-
-			int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
-			if (xpHr != 0)
+			if (config.showXpLeft())
 			{
-				String xpHrString = decimalFormat.format(xpHr);
+				int xpLeft = goalXp - mouseOverSkill.getCurrentXp();
+				String skillXpToLvl = decimalFormat.format(xpLeft);
 				xpTooltip.getChildren().add(LineComponent.builder()
-					.left("XP per hour:")
-					.leftColor(Color.ORANGE)
-					.right(xpHrString)
-					.build());
+						.left("XP left:")
+						.leftColor(Color.ORANGE)
+						.right(skillXpToLvl)
+						.build());
+			}
+
+			if (config.showXpHour())
+			{
+				int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
+				if (xpHr != 0)
+				{
+					String xpHrString = decimalFormat.format(xpHr);
+					xpTooltip.getChildren().add(LineComponent.builder()
+							.left("XP per hour:")
+							.leftColor(Color.ORANGE)
+							.right(xpHrString)
+							.build());
+				}
 			}
 		}
 

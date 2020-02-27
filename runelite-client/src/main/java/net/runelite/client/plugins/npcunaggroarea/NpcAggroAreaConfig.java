@@ -92,4 +92,26 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return Color.YELLOW;
 	}
+
+	@ConfigItem(
+		keyName = "npcUnaggroShowNotWorkingOverlay",
+		name = "Hide overlay hint",
+		description = "Hide overlay hint if plugin is enabled in unsupported area",
+		position = 6
+	)
+	default boolean hideOverlayHint()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyExpire",
+		name = "Notify Expiration",
+		description = "Send a notifcation when the unaggressive timer expires",
+		position = 7
+	)
+	default boolean notifyExpire()
+	{
+		return false;
+	}
 }

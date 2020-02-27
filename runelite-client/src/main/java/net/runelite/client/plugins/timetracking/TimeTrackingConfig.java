@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timetracking;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("timetracking")
 public interface TimeTrackingConfig extends Config
@@ -72,10 +73,11 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "defaultTimerMinutes",
-		name = "Default Time (Minutes)",
+		name = "Default Time",
 		description = "The default time for the timer in minutes",
 		position = 4
 	)
+	@Units(Units.MINUTES)
 	default int defaultTimerMinutes()
 	{
 		return 5;

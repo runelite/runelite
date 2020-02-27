@@ -54,4 +54,14 @@ public interface GroundMarkerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "drawOnMinimap",
+		name = "Draw tiles on minimap",
+		description = "Configures whether marked tiles should be drawn on minimap"
+	)
+	default boolean drawTileOnMinimmap()
+	{
+		return false;
+	}
 }

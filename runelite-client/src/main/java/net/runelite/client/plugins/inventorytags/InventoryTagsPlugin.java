@@ -30,15 +30,9 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.List;
 import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetMenuOptionClicked;
@@ -67,6 +61,8 @@ public class InventoryTagsPlugin extends Plugin
 	private static final String SETNAME_GROUP_2 = "Group 2";
 	private static final String SETNAME_GROUP_3 = "Group 3";
 	private static final String SETNAME_GROUP_4 = "Group 4";
+	private static final String SETNAME_GROUP_5 = "Group 5";
+	private static final String SETNAME_GROUP_6 = "Group 6";
 
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
@@ -87,7 +83,7 @@ public class InventoryTagsPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
-	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
+	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_6, SETNAME_GROUP_5, SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
 
 	@Inject
 	private Client client;
@@ -106,9 +102,6 @@ public class InventoryTagsPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
-
-	@Getter(AccessLevel.PACKAGE)
-	private boolean hasTaggedItems;
 
 	private boolean editorMode;
 
@@ -151,7 +144,7 @@ public class InventoryTagsPlugin extends Plugin
 	{
 		removeInventoryMenuOptions();
 		overlayManager.remove(overlay);
-		hasTaggedItems = editorMode = false;
+		editorMode = false;
 	}
 
 	@Subscribe
@@ -179,14 +172,10 @@ public class InventoryTagsPlugin extends Plugin
 		if (event.getMenuOption().equals(MENU_SET))
 		{
 			setTag(event.getId(), selectedMenu);
-
-			hasTaggedItems = true;
 		}
 		else if (event.getMenuOption().equals(MENU_REMOVE))
 		{
 			unsetTag(event.getId());
-
-			checkForTags(client.getItemContainer(InventoryID.INVENTORY));
 		}
 	}
 
@@ -235,47 +224,6 @@ public class InventoryTagsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
-	{
-		ItemContainer itemContainer = itemContainerChanged.getItemContainer();
-		if (itemContainer == client.getItemContainer(InventoryID.INVENTORY))
-		{
-			checkForTags(itemContainer);
-		}
-	}
-
-	private void checkForTags(ItemContainer itemContainer)
-	{
-		hasTaggedItems = false;
-
-		if (itemContainer == null)
-		{
-			return;
-		}
-
-		Item[] items = itemContainer.getItems();
-		if (items != null)
-		{
-			for (Item item : items)
-			{
-				if (item == null)
-				{
-					continue;
-				}
-
-				String tag = getTag(item.getId());
-				if (tag == null)
-				{
-					continue;
-				}
-
-				hasTaggedItems = true;
-				return;
-			}
-		}
-	}
-
 	Color getGroupNameColor(final String name)
 	{
 		switch (name)
@@ -288,6 +236,10 @@ public class InventoryTagsPlugin extends Plugin
 				return config.getGroup3Color();
 			case SETNAME_GROUP_4:
 				return config.getGroup4Color();
+			case SETNAME_GROUP_5:
+				return config.getGroup5Color();
+			case SETNAME_GROUP_6:
+				return config.getGroup6Color();
 		}
 
 		return null;

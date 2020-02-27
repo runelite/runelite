@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.implings;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -61,6 +61,24 @@ enum Impling
 	NINJA(ImplingType.NINJA, NpcID.NINJA_IMPLING),
 	NINJA_2(ImplingType.NINJA, NpcID.NINJA_IMPLING_1653),
 
+	CRYSTAL(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING),
+	CRYSTAL_2(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8742),
+	CRYSTAL_3(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8743),
+	CRYSTAL_4(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8744),
+	CRYSTAL_5(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8745),
+	CRYSTAL_6(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8746),
+	CRYSTAL_7(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8747),
+	CRYSTAL_8(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8748),
+	CRYSTAL_9(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8749),
+	CRYSTAL_10(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8750),
+	CRYSTAL_11(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8751),
+	CRYSTAL_12(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8752),
+	CRYSTAL_13(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8753),
+	CRYSTAL_14(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8754),
+	CRYSTAL_15(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8755),
+	CRYSTAL_16(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8756),
+	CRYSTAL_17(ImplingType.CRYSTAL, NpcID.CRYSTAL_IMPLING_8757),
+
 	DRAGON(ImplingType.DRAGON, NpcID.DRAGON_IMPLING),
 	DRAGON_2(ImplingType.DRAGON, NpcID.DRAGON_IMPLING_1654),
 
@@ -70,14 +88,18 @@ enum Impling
 	private ImplingType implingType;
 	private final int npcId;
 
-	private static final Map<Integer, Impling> IMPLINGS = new HashMap<>();
+	private static final Map<Integer, Impling> IMPLINGS;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Impling> builder = new ImmutableMap.Builder<>();
+
 		for (Impling impling : values())
 		{
-			IMPLINGS.put(impling.npcId, impling);
+			builder.put(impling.npcId, impling);
 		}
+
+		IMPLINGS = builder.build();
 	}
 
 	static Impling findImpling(int npcId)

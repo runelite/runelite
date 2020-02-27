@@ -42,14 +42,14 @@ import net.runelite.http.api.examine.ExamineClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExaminePluginTest
@@ -94,7 +94,7 @@ public class ExaminePluginTest
 		menuOptionClicked.setId(ItemID.ABYSSAL_WHIP);
 		examinePlugin.onMenuOptionClicked(menuOptionClicked);
 
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.EXAMINE_ITEM, "", "A weapon from the abyss.", "", 0);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.ITEM_EXAMINE, "", "A weapon from the abyss.", "", 0);
 		examinePlugin.onChatMessage(chatMessage);
 
 		// This passes due to not mocking the ItemComposition for the whip
@@ -112,7 +112,7 @@ public class ExaminePluginTest
 		menuOptionClicked.setId(ItemID.ABYSSAL_WHIP);
 		examinePlugin.onMenuOptionClicked(menuOptionClicked);
 
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.EXAMINE_ITEM, "", "100000 x Abyssal whip", "", 0);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.ITEM_EXAMINE, "", "100000 x Abyssal whip", "", 0);
 		examinePlugin.onChatMessage(chatMessage);
 
 		verify(examineClient, never()).submitItem(anyInt(), anyString());

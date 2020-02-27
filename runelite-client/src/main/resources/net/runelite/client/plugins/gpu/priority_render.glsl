@@ -113,7 +113,7 @@ int count_prio_offset(int priority) {
 void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom,
     out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
   int offset = minfo.offset;
-  int length = minfo.length;
+  int size = minfo.size;
   int flags = minfo.flags;
   int radius = (flags & 0x7fffffff) >> 12;
   int orientation = flags & 0x7ff;
@@ -121,7 +121,7 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, int
 
   uint ssboOffset;
 
-  if (localId < length) {
+  if (localId < size) {
     ssboOffset = localId;
   } else {
     ssboOffset = 0;
@@ -148,7 +148,7 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, int
 
   int thisPriority, thisDistance;
 
-  if (localId < length) {
+  if (localId < size) {
     // rotate for model orientation
     thisrvA = rotate(thisA, orientation);
     thisrvB = rotate(thisB, orientation);
@@ -186,14 +186,14 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, int
 }
 
 int map_face_priority(uint localId, modelinfo minfo, int thisPriority, int thisDistance, out int prio) {
-  int length = minfo.length;
+  int size = minfo.size;
 
   // Compute average distances for 0/2, 3/4, and 6/8
 
   int adjPrio;
   int prioIdx;
 
-  if (localId < length) {
+  if (localId < size) {
     int avg1 = 0;
     int avg2 = 0;
     int avg3 = 0;
@@ -224,9 +224,9 @@ int map_face_priority(uint localId, modelinfo minfo, int thisPriority, int thisD
 }
 
 void insert_dfs(uint localId, modelinfo minfo, int adjPrio, int distance, int prioIdx) {
-  int length = minfo.length;
+  int size = minfo.size;
 
-  if (localId < length) {
+  if (localId < size) {
     // calculate base offset into dfs based on number of faces with a lower priority
     int baseOff = count_prio_offset(adjPrio);
     // store into face array offset array by unique index
@@ -236,14 +236,14 @@ void insert_dfs(uint localId, modelinfo minfo, int adjPrio, int distance, int pr
 
 void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDistance, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC) {
   /* compute face distance */
-  int length = minfo.length;
+  int size = minfo.size;
   int outOffset = minfo.idx;
   int uvOffset = minfo.uvOffset;
   int flags = minfo.flags;
   ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
   int start, end, myOffset;
-  if (localId < length) {
+  if (localId < size) {
     const int priorityOffset = count_prio_offset(thisPriority);
     const int numOfPriority = totalMappedNum[thisPriority];
     start = priorityOffset; // index of first face with this priority
@@ -253,7 +253,7 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
     start = end = myOffset = 0;
   }
 
-  if (localId < length) {
+  if (localId < size) {
     // we only have to order faces against others of the same priority
     // calculate position this face will be in
     for (int i = start; i < end; ++i) {

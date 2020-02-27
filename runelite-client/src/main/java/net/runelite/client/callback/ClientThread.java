@@ -58,7 +58,7 @@ public class ClientThread
 	{
 		if (client.isClientThread())
 		{
-			if (r.getAsBoolean())
+			if (!r.getAsBoolean())
 			{
 				invokes.add(r);
 			}

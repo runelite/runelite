@@ -116,7 +116,7 @@ public class FlatStorage implements Storage
 					{
 						int lidx = line.indexOf('=');
 						String key = line.substring(0, lidx);
-						String value = line.substring(lidx + 1, line.length());
+						String value = line.substring(lidx + 1);
 
 						if ("file".equals(key))
 						{
@@ -128,7 +128,7 @@ public class FlatStorage implements Storage
 							int vidx = value.indexOf('=');
 							FileData fd = new FileData();
 							fd.setId(Integer.parseInt(value.substring(0, vidx)));
-							fd.setNameHash(Integer.parseInt(value.substring(vidx + 1, value.length())));
+							fd.setNameHash(Integer.parseInt(value.substring(vidx + 1)));
 							fileData.add(fd);
 							continue;
 						}

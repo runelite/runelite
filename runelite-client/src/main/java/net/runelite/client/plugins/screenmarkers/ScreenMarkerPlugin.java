@@ -36,20 +36,22 @@ import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenmarkers.ui.ScreenMarkerPluginPanel;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -85,6 +87,10 @@ public class ScreenMarkerPlugin extends Plugin
 	@Inject
 	private ScreenMarkerCreationOverlay overlay;
 
+	@Getter
+	@Inject
+	private ColorPickerManager colorPickerManager;
+
 	private ScreenMarkerMouseListener mouseListener;
 	private ScreenMarkerPluginPanel pluginPanel;
 	private NavigationButton navigationButton;
@@ -103,7 +109,7 @@ public class ScreenMarkerPlugin extends Plugin
 		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
 		screenMarkers.forEach(overlayManager::add);
 
-		pluginPanel = injector.getInstance(ScreenMarkerPluginPanel.class);
+		pluginPanel = new ScreenMarkerPluginPanel(this);
 		pluginPanel.rebuild();
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), ICON_FILE);
@@ -179,9 +185,10 @@ public class ScreenMarkerPlugin extends Plugin
 
 	public void finishCreation(boolean aborted)
 	{
-		if (!aborted)
+		ScreenMarker marker = currentMarker;
+		if (!aborted && marker != null)
 		{
-			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(currentMarker);
+			final ScreenMarkerOverlay screenMarkerOverlay = new ScreenMarkerOverlay(marker);
 			screenMarkerOverlay.setPreferredLocation(overlay.getBounds().getLocation());
 			screenMarkerOverlay.setPreferredSize(overlay.getBounds().getSize());
 
@@ -249,6 +256,6 @@ public class ScreenMarkerPlugin extends Plugin
 		{
 		}.getType());
 
-		return screenMarkerData.stream().map(ScreenMarkerOverlay::new);
+		return screenMarkerData.stream().filter(Objects::nonNull).map(ScreenMarkerOverlay::new);
 	}
 }

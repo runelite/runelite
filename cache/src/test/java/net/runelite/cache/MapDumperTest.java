@@ -165,7 +165,7 @@ public class MapDumperTest
 
 	@Test
 	@Ignore
-	public void dunpJson() throws IOException
+	public void dumpJson() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
 			outDir = folder.newFolder();

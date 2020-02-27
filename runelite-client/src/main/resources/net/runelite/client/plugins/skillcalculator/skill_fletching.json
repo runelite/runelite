@@ -4,7 +4,7 @@
       "level": 1,
       "icon": 52,
       "name": "Arrow Shaft",
-      "xp": 5
+      "xp": 0.33
     },
     {
       "level": 1,
@@ -17,12 +17,6 @@
       "icon": 882,
       "name": "Bronze Arrow",
       "xp": 1.3
-    },
-    {
-      "level": 1,
-      "icon": 806,
-      "name": "Bronze Dart",
-      "xp": 1.8
     },
     {
       "level": 5,
@@ -65,6 +59,12 @@
       "icon": 9174,
       "name": "Bronze Crossbow",
       "xp": 6
+    },
+    {
+      "level": 10,
+      "icon": 806,
+      "name": "Bronze Dart",
+      "xp": 1.8
     },
     {
       "level": 10,
@@ -487,6 +487,24 @@
       "xp": 10.6
     },
     {
+      "level": 78,
+      "icon": 21952,
+      "name": "Magic Stock",
+      "xp": 70
+    },
+    {
+      "level": 78,
+      "icon": 21921,
+      "name": "Dragon Crossbow (U)",
+      "xp": 135
+    },
+    {
+      "level": 78,
+      "icon": 21902,
+      "name": "Dragon Crossbow",
+      "xp": 70
+    },
+    {
       "level": 80,
       "icon": 861,
       "name": "Magic Shortbow",
@@ -509,6 +527,12 @@
       "icon": 21326,
       "name": "Amethyst Arrow",
       "xp": 13.5
+    },
+    {
+      "level": 84,
+      "icon": 21930,
+      "name": "Dragon Bolts",
+      "xp": 12
     },
     {
       "level": 84,

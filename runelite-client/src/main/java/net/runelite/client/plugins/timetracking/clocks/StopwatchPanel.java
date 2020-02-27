@@ -30,13 +30,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.components.IconButton;
+import net.runelite.client.util.SwingUtil;
 
 class StopwatchPanel extends ClockPanel
 {
@@ -57,7 +58,9 @@ class StopwatchPanel extends ClockPanel
 
 		contentContainer.add(lapsContainer);
 
-		IconButton lapButton = new IconButton(ClockTabPanel.LAP_ICON, ClockTabPanel.LAP_ICON_HOVER);
+		JButton lapButton = new JButton(ClockTabPanel.LAP_ICON);
+		lapButton.setRolloverIcon(ClockTabPanel.LAP_ICON_HOVER);
+		SwingUtil.removeButtonDecorations(lapButton);
 		lapButton.setPreferredSize(new Dimension(16, 14));
 		lapButton.setToolTipText("Add lap time");
 
@@ -70,7 +73,9 @@ class StopwatchPanel extends ClockPanel
 
 		leftActions.add(lapButton);
 
-		IconButton deleteButton = new IconButton(ClockTabPanel.DELETE_ICON, ClockTabPanel.DELETE_ICON_HOVER);
+		JButton deleteButton = new JButton(ClockTabPanel.DELETE_ICON);
+		deleteButton.setRolloverIcon(ClockTabPanel.DELETE_ICON_HOVER);
+		SwingUtil.removeButtonDecorations(deleteButton);
 		deleteButton.setPreferredSize(new Dimension(16, 14));
 		deleteButton.setToolTipText("Delete stopwatch");
 		deleteButton.addActionListener(e -> clockManager.removeStopwatch(stopwatch));

@@ -36,12 +36,14 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 class NpcAggroAreaNotWorkingOverlay extends Overlay
 {
 	private final NpcAggroAreaPlugin plugin;
+	private final NpcAggroAreaConfig config;
 	private final PanelComponent panelComponent;
 
 	@Inject
-	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin)
+	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin, NpcAggroAreaConfig config)
 	{
 		this.plugin = plugin;
+		this.config = config;
 
 		panelComponent = new PanelComponent();
 		panelComponent.setPreferredSize(new Dimension(150, 0));
@@ -56,7 +58,7 @@ class NpcAggroAreaNotWorkingOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isActive() || plugin.getSafeCenters()[1] != null)
+		if (!plugin.isActive() || plugin.getSafeCenters()[1] != null || config.hideOverlayHint())
 		{
 			return null;
 		}
