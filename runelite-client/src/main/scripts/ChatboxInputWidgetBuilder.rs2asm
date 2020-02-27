@@ -1,7 +1,7 @@
 .id                 223
 .int_stack_count    0
 .string_stack_count 0
-.int_var_count      4
+.int_var_count      5
 .string_var_count   3
    sconst                 "<col=0000ff>"
    sstore                 0
@@ -42,28 +42,44 @@ LABEL23:
    sstore                 2
    iconst                 0
    istore                 3
+   invoke                 1972
+   istore                 4
    get_varbit             8119
    iconst                 1
-   if_icmpeq              LABEL40
-   jump                   LABEL99
-LABEL40:
+   if_icmpeq              LABEL42
+   jump                   LABEL144
+LABEL42:
    iconst                 105
    iconst                 115
    iconst                 1894
    get_varbit             1777
    enum                  
    chat_playername       
+   join_string            2
+   sstore                 2
+   iload                  4
+   iconst                 1
+   if_icmpeq              LABEL54
+   jump                   LABEL58
+LABEL54:
+   sload                  2
+   sconst                 "<img=19>"
+   append                
+   sstore                 2
+LABEL58:
+   sload                  2
    sconst                 ": "
    sload                  0
    sload                  1
    sconst                 "</col>"
-   join_string            6
+   join_string            4
+   append                
    sstore                 2
    iload                  2
    iconst                 80
-   if_icmplt              LABEL56
-   jump                   LABEL63
-LABEL56:
+   if_icmplt              LABEL70
+   jump                   LABEL77
+LABEL70:
    sload                  2
    sload                  0
    sconst                 "*"
@@ -71,31 +87,65 @@ LABEL56:
    join_string            3
    append                
    sstore                 2
-LABEL63:
+LABEL77:
    sload                  2
    iconst                 2147483647
    iconst                 495
    parawidth             
    istore                 3
+   iload                  4
+   iconst                 1
+   if_icmpeq              LABEL86
+   jump                   LABEL101
+LABEL86:
+   iconst                 5
+   iload                  3
+   add                   
+   iconst                 30
+   iconst                 0
+   iconst                 0
+   iconst                 10616871
+   if_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 2
+   iconst                 10616871
+   if_setposition        
+   jump                   LABEL113
+LABEL101:
+   iconst                 0
+   iconst                 30
+   iconst                 0
+   iconst                 1
+   iconst                 10616871
+   if_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 2
+   iconst                 10616871
+   if_setposition        
+LABEL113:
    iload                  3
    iconst                 10616889
    if_getwidth           
-   if_icmpgt              LABEL73
-   jump                   LABEL79
-LABEL73:
+   if_icmpgt              LABEL118
+   jump                   LABEL124
+LABEL118:
    iconst                 2
    iconst                 2
    iconst                 0
    iconst                 10616889
    if_settextalign       
-   jump                   LABEL84
-LABEL79:
+   jump                   LABEL129
+LABEL124:
    iconst                 0
    iconst                 2
    iconst                 0
    iconst                 10616889
    if_settextalign       
-LABEL84:
+LABEL129:
    iconst                 10616889
    if_clearops           
    iconst                 -1
@@ -110,8 +160,8 @@ LABEL84:
    sconst                 ""
    iconst                 10616889
    if_setonop            
-   jump                   LABEL140
-LABEL99:
+   jump                   LABEL185
+LABEL144:
    iconst                 105
    iconst                 115
    iconst                 1894
@@ -153,7 +203,7 @@ LABEL99:
    sconst                 "ii"
    iconst                 10616889
    if_setonop            
-LABEL140:
+LABEL185:
    sload                  2
    iconst                 10616889
    if_settext            
