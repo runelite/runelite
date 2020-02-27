@@ -48,6 +48,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ExternalPluginChanged;
+import net.runelite.client.events.ExternalRepositoryChanged;
 import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.util.SwingUtil;
 import org.pf4j.DefaultPluginManager;
@@ -262,6 +263,7 @@ class ExternalPluginManager
 		{
 			DefaultUpdateRepository respository = new DefaultUpdateRepository(owner + toRepositoryUrl(owner, name), toRepositoryUrl(owner, name));
 			updateManager.addRepository(respository);
+			eventBus.post(ExternalRepositoryChanged.class, new ExternalRepositoryChanged(owner + toRepositoryUrl(owner, name), true));
 			saveConfig();
 		}
 		catch (MalformedURLException e)
@@ -273,6 +275,7 @@ class ExternalPluginManager
 	public void removeRepository(String owner)
 	{
 		updateManager.removeRepository(owner);
+		eventBus.post(ExternalRepositoryChanged.class, new ExternalRepositoryChanged(owner, false));
 		saveConfig();
 	}
 
@@ -594,7 +597,7 @@ class ExternalPluginManager
 		return null;
 	}
 
-	public void install(String pluginId) throws VerifyException
+	public boolean install(String pluginId) throws VerifyException
 	{
 
 		if (getDisabledPlugins().contains(pluginId))
@@ -604,12 +607,12 @@ class ExternalPluginManager
 
 			startPlugins(loadPlugin(pluginId), true, false);
 
-			return;
+			return true;
 		}
 
 		if (getStartedPlugins().stream().anyMatch(ev -> ev.getPluginId().equals(pluginId)))
 		{
-			return;
+			return true;
 		}
 
 		// Null version returns the last release version of this plugin for given system version
@@ -629,9 +632,10 @@ class ExternalPluginManager
 				}
 				catch (InvocationTargetException | InterruptedException ignored)
 				{
+					return false;
 				}
 
-				return;
+				return true;
 			}
 
 			updateManager.installPlugin(pluginId, null);
@@ -649,20 +653,22 @@ class ExternalPluginManager
 
 			install(pluginId);
 		}
-
+		return false;
 	}
 
-	public void uninstall(String pluginId)
+	public boolean uninstall(String pluginId)
 	{
 		Path pluginPath = stopPlugin(pluginId);
 
 		if (pluginPath == null)
 		{
-			return;
+			return false;
 		}
 
 		externalPluginManager.stopPlugin(pluginId);
 		externalPluginManager.disablePlugin(pluginId);
+
+		return true;
 	}
 
 	public void update()

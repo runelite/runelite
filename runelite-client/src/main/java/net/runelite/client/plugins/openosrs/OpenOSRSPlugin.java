@@ -45,7 +45,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.openosrs.externals.PluginManagerPanel;
+import net.runelite.client.plugins.openosrs.externals.ExternalPluginManagerPanel;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.HotkeyListener;
@@ -98,7 +98,7 @@ public class OpenOSRSPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		PluginManagerPanel panel = injector.getInstance(PluginManagerPanel.class);
+		ExternalPluginManagerPanel panel = injector.getInstance(ExternalPluginManagerPanel.class);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "externalmanager_icon.png");
 
