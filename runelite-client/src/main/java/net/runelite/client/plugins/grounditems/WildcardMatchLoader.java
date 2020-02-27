@@ -27,31 +27,37 @@ package net.runelite.client.plugins.grounditems;
 import com.google.common.base.Strings;
 import com.google.common.cache.CacheLoader;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import net.runelite.client.util.WildcardMatcher;
 
-class WildcardMatchLoader extends CacheLoader<String, Boolean>
+class WildcardMatchLoader extends CacheLoader<NamedQuantity, Boolean>
 {
-	private final List<String> nameFilters;
+	private final List<ItemThreshold> itemThresholds;
 
-	WildcardMatchLoader(List<String> nameFilters)
+	WildcardMatchLoader(List<String> configEntries)
 	{
-		this.nameFilters = nameFilters;
+		this.itemThresholds = configEntries.stream()
+			.map(ItemThreshold::fromConfigEntry)
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
 	}
 
 	@Override
-	public Boolean load(@Nonnull final String key)
+	public Boolean load(@Nonnull final NamedQuantity key)
 	{
-		if (Strings.isNullOrEmpty(key))
+		if (Strings.isNullOrEmpty(key.getName()))
 		{
 			return false;
 		}
 
-		final String filteredName = key.trim();
+		final String filteredName = key.getName().trim();
 
-		for (final String filter : nameFilters)
+		for (final ItemThreshold entry : itemThresholds)
 		{
-			if (WildcardMatcher.matches(filter, filteredName))
+			if (WildcardMatcher.matches(entry.getItemName(), filteredName)
+				&& entry.quantityHolds(key.getQuantity()))
 			{
 				return true;
 			}

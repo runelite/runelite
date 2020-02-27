@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, dekvall <https://github.com/dekvall>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,33 +24,18 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import java.util.Arrays;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
-public class WildcardMatchLoaderTest
+@Value
+@RequiredArgsConstructor
+class NamedQuantity
 {
-	@Test
-	public void testLoadItems()
-	{
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune*", "Abyssal whip"));
-		assertTrue(loader.load(new NamedQuantity("rune pouch", 1)));
-		assertTrue(loader.load(new NamedQuantity("Rune pouch", 1)));
-		assertFalse(loader.load(new NamedQuantity("Adamant dagger", 1)));
-		assertTrue(loader.load(new NamedQuantity("Runeite Ore", 1)));
-		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 1)));
-		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
-	}
+	private final String name;
+	private final int quantity;
 
-	@Test
-	public void testLoadQuantities()
+	NamedQuantity(GroundItem groundItem)
 	{
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune* < 3", "*whip>3", "nature*<5", "*rune > 30"));
-		assertTrue(loader.load(new NamedQuantity("Nature Rune", 50)));
-		assertFalse(loader.load(new NamedQuantity("Nature Impling", 5)));
-		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 4)));
-		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
-		assertTrue(loader.load(new NamedQuantity("Rune Longsword", 2)));
+		this(groundItem.getName(), groundItem.getQuantity());
 	}
 }
