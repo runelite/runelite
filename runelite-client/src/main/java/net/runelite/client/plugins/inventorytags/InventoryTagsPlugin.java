@@ -61,6 +61,8 @@ public class InventoryTagsPlugin extends Plugin
 	private static final String SETNAME_GROUP_2 = "Group 2";
 	private static final String SETNAME_GROUP_3 = "Group 3";
 	private static final String SETNAME_GROUP_4 = "Group 4";
+	private static final String SETNAME_GROUP_5 = "Group 5";
+	private static final String SETNAME_GROUP_6 = "Group 6";
 
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
@@ -81,7 +83,7 @@ public class InventoryTagsPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
-	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
+	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_6, SETNAME_GROUP_5, SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
 
 	@Inject
 	private Client client;
@@ -234,6 +236,10 @@ public class InventoryTagsPlugin extends Plugin
 				return config.getGroup3Color();
 			case SETNAME_GROUP_4:
 				return config.getGroup4Color();
+			case SETNAME_GROUP_5:
+				return config.getGroup5Color();
+			case SETNAME_GROUP_6:
+				return config.getGroup6Color();
 		}
 
 		return null;

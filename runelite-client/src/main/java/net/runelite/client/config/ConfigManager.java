@@ -41,8 +41,11 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -61,10 +64,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
@@ -324,20 +327,27 @@ public class ConfigManager
 
 	private void saveToFile(final File propertiesFile) throws IOException
 	{
-		propertiesFile.getParentFile().mkdirs();
+		File parent = propertiesFile.getParentFile();
 
-		try (FileOutputStream out = new FileOutputStream(propertiesFile))
+		parent.mkdirs();
+
+		File tempFile = new File(parent, SETTINGS_FILE_NAME + ".tmp");
+
+		try (FileOutputStream out = new FileOutputStream(tempFile))
 		{
-			final FileLock lock = out.getChannel().lock();
+			out.getChannel().lock();
+			properties.store(new OutputStreamWriter(out, StandardCharsets.UTF_8), "RuneLite configuration");
+			// FileOutputStream.close() closes the associated channel, which frees the lock
+		}
 
-			try
-			{
-				properties.store(new OutputStreamWriter(out, Charset.forName("UTF-8")), "RuneLite configuration");
-			}
-			finally
-			{
-				lock.release();
-			}
+		try
+		{
+			Files.move(tempFile.toPath(), propertiesFile.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+		}
+		catch (AtomicMoveNotSupportedException ex)
+		{
+			log.debug("atomic move not supported", ex);
+			Files.move(tempFile.toPath(), propertiesFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 	}
 
