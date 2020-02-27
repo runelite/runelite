@@ -91,7 +91,11 @@ enum Rock
 	ORE_VEIN(Duration.of(MiningOverlay.ORE_VEIN_MAX_RESPAWN_TIME, GAME_TICKS), 150),
 	AMETHYST(Duration.of(125, GAME_TICKS), 120),
 	ASH_VEIN(Duration.of(50, GAME_TICKS), 0, ASH_PILE),
-	GEM_ROCK(Duration.of(100, GAME_TICKS), 0, ROCKS_11380, ROCKS_11381);
+	GEM_ROCK(Duration.of(100, GAME_TICKS), 0, ROCKS_11380, ROCKS_11381),
+	URT_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33254),
+	EFH_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33255),
+	TE_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33256),
+	BASALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33257);
 
 	private static final int WILDERNESS_RESOURCE_AREA = 12605;
 	private static final int MISCELLANIA = 10044;
