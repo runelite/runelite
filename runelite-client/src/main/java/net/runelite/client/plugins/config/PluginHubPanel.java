@@ -543,7 +543,7 @@ class PluginHubPanel extends PluginPanel
 		else
 		{
 			stream = stream
-				.sorted(Comparator.comparing(PluginItem::isInstalled));
+				.sorted(Comparator.comparing(PluginItem::isInstalled).thenComparing(p -> p.manifest.getDisplayName()));
 		}
 
 		stream.forEach(mainPanel::add);
