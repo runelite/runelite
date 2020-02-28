@@ -113,4 +113,14 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showImplingJars",
+		name = "Impling jars",
+		description = "Show identification on Impling jars"
+	)
+	default boolean showImplingJars()
+	{
+		return false;
+	}
 }

@@ -172,7 +172,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Someone watching the fights in the Duel Arena is your next destination.", "Jeed", new WorldPoint(3360, 3242, 0), "Talk to Jeed, found on the upper floors, at the Duel Arena."),
 		new CrypticClue("It seems to have reached the end of the line, and it's still empty.", MINE_CART_6045, new WorldPoint(3041, 9820, 0), "Search the carts in the northern part of the Dwarven Mine."),
 		new CrypticClue("You'll have to plug your nose if you use this source of herbs.", null, "Kill an Aberrant or Deviant spectre."),
-		new CrypticClue("When you get tired of fighting, go deep, deep down until you need an antidote.", CRATE_357, new WorldPoint(2576, 9583, 0), "Go to Yanille Agility dungeon and fall into the place with the poison spiders. Search the crate by the stairs leading up."),
+		new CrypticClue("When you get tired of fighting, go deep, deep down until you need an antidote.", CRATE_357, new WorldPoint(2576, 9583, 0), "Go to Yanille Agility dungeon and fall into the place with the poison spiders by praying at the Chaos altar. Search the crate by the stairs leading up."),
 		new CrypticClue("Search the bookcase in the monastery.", BOOKCASE_380, new WorldPoint(3054, 3484, 0), "Search the southeastern bookcase at Edgeville Monastery."),
 		new CrypticClue("Surprising? I bet he is...", "Sir Prysin", new WorldPoint(3205, 3474, 0), "Talk to Sir Prysin in Varrock Palace."),
 		new CrypticClue("Search upstairs in the houses of Seers' Village for some drawers.", DRAWERS_25766, new WorldPoint(2716, 3471, 1), "Located in the house with the spinning wheel. South of the Seers' Village bank."),

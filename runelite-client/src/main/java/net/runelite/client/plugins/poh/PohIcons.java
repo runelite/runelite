@@ -86,7 +86,8 @@ public enum PohIcons
 	),
 	DIGSITEPENDANT("digsitependant",
 		DIGSITE_PENDANT, DIGSITE_PENDANT_33417, DIGSITE_PENDANT_33418, DIGSITE_PENDANT_33420
-	);
+	),
+	MYTHICALCAPE("mythicalcape", MYTHICAL_CAPE, MOUNTED_MYTHICAL_CAPE);
 
 	private static final Map<Integer, PohIcons> minimapIcons;
 

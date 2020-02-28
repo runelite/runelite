@@ -29,6 +29,7 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import javax.annotation.Nullable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.runelite.client.RuneLite;
@@ -45,7 +46,9 @@ public class ExternalPluginManifest
 	private String displayName;
 	private String version;
 	private String author;
+	@Nullable
 	private String description;
+	@Nullable
 	private String[] tags;
 	@EqualsAndHashCode.Exclude
 	private URL support;
