@@ -27,14 +27,17 @@ package net.runelite.client.plugins.discord;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.ws.PartyService;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
 import static org.mockito.Mockito.times;
@@ -77,8 +80,12 @@ public class DiscordStateTest
 		when(discordConfig.hideElapsedTime()).thenReturn(false);
 
 		discordState.triggerEvent(DiscordGameEventType.IN_MENU);
-		discordState.checkForTimeout();
+		verify(discordService).updatePresence(any(DiscordPresence.class));
 
-		verify(discordService, times(2)).updatePresence(any(DiscordPresence.class));
+		discordState.checkForTimeout();
+		ArgumentCaptor<DiscordPresence> captor = ArgumentCaptor.forClass(DiscordPresence.class);
+		verify(discordService, times(2)).updatePresence(captor.capture());
+		List<DiscordPresence> captured = captor.getAllValues();
+		assertNull(captured.get(captured.size() - 1).getEndTimestamp());
 	}
 }
