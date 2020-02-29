@@ -314,8 +314,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 			&& menuEntryAdded.getOption().startsWith("Deposit-"))
 		{
 			ShiftDepositMode shiftDepositMode = config.bankDepositShiftClick();
-			final int actionId = shiftDepositMode.getMenuAction().getId();
-			final int opId = shiftDepositMode.getIdentifier();
+			final int opId = menuEntryAdded.getActionParam1() == 983043 ? shiftDepositMode.getIdentifier() : shiftDepositMode.getIdentifierDepositBox();
+			final int actionId = opId >= 6 ? MenuAction.CC_OP_LOW_PRIORITY.getId() : MenuAction.CC_OP.getId();
 			bankModeSwap(actionId, opId);
 		}
 
@@ -328,17 +328,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			ShiftWithdrawMode shiftWithdrawMode = config.bankWithdrawShiftClick();
 			final int actionId = shiftWithdrawMode.getMenuAction().getId();
 			final int opId = shiftWithdrawMode.getIdentifier();
-			bankModeSwap(actionId, opId);
-		}
-
-		// Swap to shift-click deposit box behavior
-		if (shiftModifier && config.bankDepositBoxShiftClick() != ShiftDepositBoxMode.OFF
-				&& menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 2
-				&& menuEntryAdded.getOption().startsWith("Deposit-"))
-		{
-			ShiftDepositBoxMode shiftDepositBoxMode = config.bankDepositBoxShiftClick();
-			final int actionId = shiftDepositBoxMode.getMenuAction().getId();
-			final int opId = shiftDepositBoxMode.getIdentifier();
 			bankModeSwap(actionId, opId);
 		}
 	}

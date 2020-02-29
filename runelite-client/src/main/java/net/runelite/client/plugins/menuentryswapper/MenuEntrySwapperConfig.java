@@ -411,14 +411,4 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return ShiftDepositMode.OFF;
 	}
-
-	@ConfigItem(
-			keyName = "bankDepositBoxShiftClick",
-			name = "Bank Deposit Box Shift-Click",
-			description = "Swaps the behavior of shift-click when using a bank deposit box."
-	)
-	default ShiftDepositBoxMode bankDepositBoxShiftClick()
-	{
-		return ShiftDepositBoxMode.OFF;
-	}
 }
