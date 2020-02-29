@@ -330,6 +330,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 			final int opId = shiftWithdrawMode.getIdentifier();
 			bankModeSwap(actionId, opId);
 		}
+
+		// Swap to shift-click deposit box behavior
+		if (shiftModifier && config.bankDepositBoxShiftClick() != ShiftDepositBoxMode.OFF
+				&& menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 2
+				&& menuEntryAdded.getOption().startsWith("Deposit-"))
+		{
+			ShiftDepositBoxMode shiftDepositBoxMode = config.bankDepositBoxShiftClick();
+			final int actionId = shiftDepositBoxMode.getMenuAction().getId();
+			final int opId = shiftDepositBoxMode.getIdentifier();
+			bankModeSwap(actionId, opId);
+		}
 	}
 
 	private void bankModeSwap(int entryTypeId, int entryIdentifier)
