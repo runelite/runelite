@@ -26,7 +26,6 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.MenuAction;
 
 @Getter
 @RequiredArgsConstructor
