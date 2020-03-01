@@ -6,12 +6,9 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -21,10 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import lombok.SneakyThrows;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.ExternalPluginManager;
-import net.runelite.client.plugins.info.InfoPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
@@ -155,6 +150,12 @@ public class ExternalPluginManagerPanel extends PluginPanel
 				int option = JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
 				if (option != JOptionPane.OK_OPTION || id.getText().equals("") || url.getText().equals(""))
 				{
+					return;
+				}
+
+				if (id.getText().startsWith("gh:"))
+				{
+					JOptionPane.showMessageDialog(null, "Repository id cannot begin with \"gh:\".", "Error!", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
