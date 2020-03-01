@@ -10,6 +10,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MiscUtils
 {
@@ -183,11 +185,12 @@ public class MiscUtils
 	public static String urlToStringEncoded(URL url)
 	{
 		String s;
+		String path = url.getPath() != null ? Stream.of(url.getPath().split("/"))
+			.map(s2 -> URLEncoder.encode(s2, StandardCharsets.UTF_8)).collect(Collectors.joining("/")) : "";
 		return url.getProtocol()
 			+ ':'
-			+ (((s = url.getAuthority()) != null && s.length() > 0)
-				? "//" + s : "")
-			+ (((s = url.getPath()) != null) ? urlEncode(s) : "")
+			+ (((s = url.getAuthority()) != null && s.length() > 0) ? "//" + s : "")
+			+ (path)
 			+ (((s = url.getQuery()) != null) ? '?' + urlEncode(s) : "")
 			+ (((s = url.getRef()) != null) ? '#' + urlEncode(s) : "");
 	}

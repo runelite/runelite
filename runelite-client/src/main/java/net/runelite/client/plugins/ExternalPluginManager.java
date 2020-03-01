@@ -8,40 +8,10 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
-import static net.runelite.client.RuneLite.EXTERNALPLUGIN_DIR;
-import static net.runelite.client.RuneLite.SYSTEM_VERSION;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigManager;
@@ -70,6 +40,36 @@ import org.pf4j.update.PluginInfo;
 import org.pf4j.update.UpdateManager;
 import org.pf4j.update.UpdateRepository;
 import org.pf4j.update.VerifyException;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import static net.runelite.client.RuneLite.EXTERNALPLUGIN_DIR;
+import static net.runelite.client.RuneLite.SYSTEM_VERSION;
 
 @Slf4j
 @Singleton
@@ -107,7 +107,9 @@ class ExternalPluginManager
 
 		boolean debug = RuneLiteProperties.getLauncherVersion() == null && RuneLiteProperties.getPluginPath() != null;
 
-		this.externalPluginManager = new DefaultPluginManager(debug ? Paths.get(RuneLiteProperties.getPluginPath() + File.separator + "release") : EXTERNALPLUGIN_DIR.toPath())
+		this.externalPluginManager = new DefaultPluginManager(
+			debug ? Paths.get(RuneLiteProperties.getPluginPath() + File.separator + "release")
+				: EXTERNALPLUGIN_DIR.toPath())
 		{
 			@Override
 			protected PluginDescriptorFinder createPluginDescriptorFinder()
@@ -259,12 +261,18 @@ class ExternalPluginManager
 
 	public void startExternalUpdateManager()
 	{
+		boolean loadedOld = false;
 		if (!tryLoadNewFormat())
 		{
 			loadOldFormat();
+			loadedOld = true;
 		}
 
 		this.updateManager = new UpdateManager(this.externalPluginManager, repositories);
+		if (loadedOld)
+		{
+			saveConfig();
+		}
 	}
 
 	public boolean tryLoadNewFormat()
@@ -276,6 +284,7 @@ class ExternalPluginManager
 				String[] split = keyval.split("\\|");
 				if (split.length != 2)
 				{
+					log.error("failed to load new, split");
 					repositories.clear();
 					return false;
 				}
@@ -287,6 +296,7 @@ class ExternalPluginManager
 		}
 		catch (ArrayIndexOutOfBoundsException | MalformedURLException e)
 		{
+			log.error("failed to load new, exception", e);
 			repositories.clear();
 			return false;
 		}
@@ -427,16 +437,21 @@ class ExternalPluginManager
 	}
 
 	@SuppressWarnings("unchecked")
-	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz, boolean init, boolean initConfig) throws PluginInstantiationException
+	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz, boolean init, boolean initConfig)
+	throws PluginInstantiationException
 	{
-		net.runelite.client.plugins.PluginDependency[] pluginDependencies = clazz.getAnnotationsByType(net.runelite.client.plugins.PluginDependency.class);
+		net.runelite.client.plugins.PluginDependency[] pluginDependencies =
+			clazz.getAnnotationsByType(net.runelite.client.plugins.PluginDependency.class);
 		List<Plugin> deps = new ArrayList<>();
 		for (net.runelite.client.plugins.PluginDependency pluginDependency : pluginDependencies)
 		{
-			Optional<Plugin> dependency = Stream.concat(runelitePluginManager.getPlugins().stream(), scannedPlugins.stream()).filter(p -> p.getClass() == pluginDependency.value()).findFirst();
+			Optional<Plugin> dependency =
+				Stream.concat(runelitePluginManager.getPlugins().stream(), scannedPlugins.stream())
+					.filter(p -> p.getClass() == pluginDependency.value()).findFirst();
 			if (!dependency.isPresent())
 			{
-				throw new PluginInstantiationException("Unmet dependency for " + clazz.getSimpleName() + ": " + pluginDependency.value().getSimpleName());
+				throw new PluginInstantiationException(
+					"Unmet dependency for " + clazz.getSimpleName() + ": " + pluginDependency.value().getSimpleName());
 			}
 			deps.add(dependency.get());
 		}
@@ -498,7 +513,9 @@ class ExternalPluginManager
 						{
 							runelitePluginManager.startPlugin(plugin);
 							runelitePluginManager.add(plugin);
-							eventBus.post(ExternalPluginChanged.class, new ExternalPluginChanged(pluginsMap.get(plugin.getClass().getSimpleName()), plugin, true));
+							eventBus.post(ExternalPluginChanged.class,
+								new ExternalPluginChanged(pluginsMap.get(plugin.getClass().getSimpleName()), plugin,
+									true));
 						}
 						catch (PluginInstantiationException e)
 						{
