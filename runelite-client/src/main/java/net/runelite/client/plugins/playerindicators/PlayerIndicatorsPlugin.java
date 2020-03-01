@@ -27,6 +27,7 @@ package net.runelite.client.plugins.playerindicators;
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
+import lombok.Value;
 import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import net.runelite.api.Client;
@@ -115,7 +116,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 			|| type == PLAYER_EIGTH_OPTION.getId()
 			|| type == RUNELITE.getId())
 		{
-			final Player localPlayer = client.getLocalPlayer();
 			Player[] players = client.getCachedPlayers();
 			Player player = null;
 
@@ -129,57 +129,90 @@ public class PlayerIndicatorsPlugin extends Plugin
 				return;
 			}
 
-			int image = -1;
-			Color color = null;
+			Decorations decorations = getDecorations(player);
 
-			if (config.highlightFriends() && player.isFriend())
+			if (decorations == null)
 			{
-				color = config.getFriendColor();
-			}
-			else if (config.drawClanMemberNames() && player.isClanMember())
-			{
-				color = config.getClanMemberColor();
-
-				ClanMemberRank rank = clanManager.getRank(player.getName());
-				if (rank != UNRANKED)
-				{
-					image = clanManager.getIconNumber(rank);
-				}
-			}
-			else if (config.highlightTeamMembers() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
-			{
-				color = config.getTeamMemberColor();
-			}
-			else if (config.highlightNonClanMembers() && !player.isClanMember())
-			{
-				color = config.getNonClanMemberColor();
+				return;
 			}
 
-			if (image != -1 || color != null)
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			MenuEntry entry = menuEntries[menuEntries.length - 1];
+
+			String oldTarget = entry.getTarget();
+			String newTarget = decorateTarget(oldTarget, decorations);
+
+			entry.setTarget(newTarget);
+
+			client.setMenuEntries(menuEntries);
+		}
+	}
+
+	private Decorations getDecorations(Player player)
+	{
+		int image = -1;
+		Color color = null;
+
+		if (config.highlightFriends() && player.isFriend())
+		{
+			color = config.getFriendColor();
+		}
+		else if (config.drawClanMemberNames() && player.isClanMember())
+		{
+			color = config.getClanMemberColor();
+
+			ClanMemberRank rank = clanManager.getRank(player.getName());
+			if (rank != UNRANKED)
 			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
-				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-
-				if (color != null && config.colorPlayerMenu())
-				{
-					// strip out existing <col...
-					String target = lastEntry.getTarget();
-					int idx = target.indexOf('>');
-					if (idx != -1)
-					{
-						target = target.substring(idx + 1);
-					}
-
-					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
-				}
-
-				if (image != -1 && config.showClanRanks())
-				{
-					lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
-				}
-
-				client.setMenuEntries(menuEntries);
+				image = clanManager.getIconNumber(rank);
 			}
 		}
+		else if (config.highlightTeamMembers()
+			&& player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam())
+		{
+			color = config.getTeamMemberColor();
+		}
+		else if (config.highlightNonClanMembers() && !player.isClanMember())
+		{
+			color = config.getNonClanMemberColor();
+		}
+
+		if (image == -1 && color == null)
+		{
+			return null;
+		}
+
+		return new Decorations(image, color);
+	}
+
+	private String decorateTarget(String oldTarget, Decorations decorations)
+	{
+		String newTarget = oldTarget;
+
+		if (decorations.getColor() != null && config.colorPlayerMenu())
+		{
+			// strip out existing <col...
+			int idx = oldTarget.indexOf('>');
+			if (idx != -1)
+			{
+				newTarget = oldTarget.substring(idx + 1);
+			}
+
+			newTarget = ColorUtil.prependColorTag(newTarget, decorations.getColor());
+		}
+
+		if (decorations.getImage() != -1 && config.showClanRanks())
+		{
+			newTarget = "<img=" + decorations.getImage() + ">" + newTarget;
+		}
+
+		return newTarget;
+	}
+
+	@Value
+	private static class Decorations
+	{
+		private final int image;
+		private final Color color;
 	}
 }
