@@ -548,7 +548,7 @@ public class ChatCommandsPlugin extends Plugin
 
 		search = longBossName(search);
 
-		final int kc;
+		int kc = 0;
 		try
 		{
 			kc = chatClient.getKc(player, search);
@@ -556,18 +556,62 @@ public class ChatCommandsPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.debug("unable to lookup killcount", ex);
+		}
+
+		HiscoreSkill skill = null;
+		try
+		{
+			skill = HiscoreSkill.valueOf(search.toUpperCase().replace(" ", "_"));
+		}
+		catch (IllegalArgumentException ignored)
+		{
+		}
+
+		int rank = 0;
+		if (skill != null)
+		{
+			final HiscoreLookup lookup = getCorrectLookupFor(chatMessage);
+			try
+			{
+				final SingleHiscoreSkillResult result = hiscoreClient.lookup(lookup.getName(), skill, lookup.getEndpoint());
+				final Skill hiscoreSkill = result.getSkill();
+				// Update the local players config if its lower than the hiscore value
+				if (kc < hiscoreSkill.getLevel() && result.getPlayer().equals(client.getLocalPlayer().getName()))
+				{
+					setKc(search, hiscoreSkill.getLevel());
+				}
+
+				kc = Math.max(kc, result.getSkill().getLevel());
+				rank = result.getSkill().getRank();
+			}
+			catch (IOException ex)
+			{
+				log.warn("unable to lookup boss {} kc for {}", skill, lookup.getName(), ex);
+			}
+		}
+
+		if (kc <= 0)
+		{
 			return;
 		}
 
-		String response = new ChatMessageBuilder()
+		final ChatMessageBuilder responseBuilder = new ChatMessageBuilder()
 			.append(ChatColorType.HIGHLIGHT)
 			.append(search)
 			.append(ChatColorType.NORMAL)
 			.append(" kill count: ")
 			.append(ChatColorType.HIGHLIGHT)
-			.append(Integer.toString(kc))
-			.build();
+			.append(Integer.toString(kc));
 
+		if (rank > 0)
+		{
+			responseBuilder.append(ChatColorType.NORMAL)
+			.append(" Rank: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.format("%,d", rank));
+		}
+
+		final String response = responseBuilder.build();
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
@@ -1566,14 +1610,13 @@ public class ChatCommandsPlugin extends Plugin
 			// The Gauntlet
 			case "gaunt":
 			case "gauntlet":
-			case "the gauntlet":
-				return "Gauntlet";
+				return "The Gauntlet";
 
 			// Corrupted Gauntlet
 			case "cgaunt":
 			case "cgauntlet":
-			case "the corrupted gauntlet":
-				return "Corrupted Gauntlet";
+			case "corrupted gauntlet":
+				return "The Corrupted Gauntlet";
 
 			case "the nightmare":
 				return "Nightmare";
