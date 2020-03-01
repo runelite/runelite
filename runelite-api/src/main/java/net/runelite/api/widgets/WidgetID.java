@@ -1193,15 +1193,6 @@ public class WidgetID
 		static final int INVENTORY = 7;
 	}
 
-	static class Lms
-	{
-		static final int INFO = 3;
-	}
-
-	static class LmsKDA
-	{
-		static final int INFO = 4;
-	}
 
 	static class JewelBox
 	{
