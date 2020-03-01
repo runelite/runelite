@@ -1,12 +1,15 @@
 package net.runelite.client.util;
 
-import java.awt.Polygon;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
+import java.awt.Polygon;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 public class MiscUtils
 {
@@ -169,5 +172,28 @@ public class MiscUtils
 			str += "s";
 		}
 		return str;
+	}
+
+	/**
+	 * Mostly stolen from {@link java.net.URLStreamHandler#toExternalForm(URL)}
+	 *
+	 * @param url URL to encode
+	 * @return URL, with path, query and ref encoded
+	 */
+	public static String urlToStringEncoded(URL url)
+	{
+		String s;
+		return url.getProtocol()
+			+ ':'
+			+ (((s = url.getAuthority()) != null && s.length() > 0)
+				? "//" + s : "")
+			+ (((s = url.getPath()) != null) ? urlEncode(s) : "")
+			+ (((s = url.getQuery()) != null) ? '?' + urlEncode(s) : "")
+			+ (((s = url.getRef()) != null) ? '#' + urlEncode(s) : "");
+	}
+
+	private static String urlEncode(String s)
+	{
+		return URLEncoder.encode(s, StandardCharsets.UTF_8);
 	}
 }

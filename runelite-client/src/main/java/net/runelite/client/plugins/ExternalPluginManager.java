@@ -50,6 +50,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ExternalPluginChanged;
 import net.runelite.client.events.ExternalRepositoryChanged;
 import net.runelite.client.ui.RuneLiteSplashScreen;
+import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.SwingUtil;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.DependencyResolver;
@@ -184,22 +185,41 @@ class ExternalPluginManager
 		this.externalPluginManager.setSystemVersion(SYSTEM_VERSION);
 	}
 
+	public boolean doesGhRepoExist(String owner, String name)
+	{
+		return doesRepoExist("gh:" + owner + "/" + name);
+	}
+
+	/**
+	 * Note that {@link org.pf4j.update.UpdateManager#addRepository} checks if the repo exists, however it throws an exception which is bad
+	 */
+	public boolean doesRepoExist(String id)
+	{
+		return repositories.stream().anyMatch((repo) -> repo.getId().equals(id));
+	}
+
 	private static URL toRepositoryUrl(String owner, String name) throws MalformedURLException
 	{
 		return new URL("https://raw.githubusercontent.com/" + owner + "/" + name + "/master/");
 	}
 
-	public static boolean testRepository(String owner, String name)
+	public static boolean testGHRepository(String owner, String name)
 	{
-		final List<UpdateRepository> repositories = new ArrayList<>();
 		try
 		{
-			repositories.add(new DefaultUpdateRepository("github", new URL("https://raw.githubusercontent.com/" + owner + "/" + name + "/master/")));
+			return testRepository(toRepositoryUrl(owner, name));
 		}
 		catch (MalformedURLException e)
 		{
-			return true;
+			e.printStackTrace();
 		}
+		return false;
+	}
+
+	public static boolean testRepository(URL url)
+	{
+		final List<UpdateRepository> repositories = new ArrayList<>();
+		repositories.add(new DefaultUpdateRepository("repository-testing", url));
 		DefaultPluginManager testPluginManager = new DefaultPluginManager(EXTERNALPLUGIN_DIR.toPath());
 		UpdateManager updateManager = new UpdateManager(testPluginManager, repositories);
 
@@ -239,6 +259,42 @@ class ExternalPluginManager
 
 	public void startExternalUpdateManager()
 	{
+		if (!tryLoadNewFormat())
+		{
+			loadOldFormat();
+		}
+
+		this.updateManager = new UpdateManager(this.externalPluginManager, repositories);
+	}
+
+	public boolean tryLoadNewFormat()
+	{
+		try
+		{
+			for (String keyval : openOSRSConfig.getExternalRepositories().split(";"))
+			{
+				String[] split = keyval.split("\\|");
+				if (split.length != 2)
+				{
+					repositories.clear();
+					return false;
+				}
+				String id = split[0];
+				String url = split[1];
+
+				repositories.add(new DefaultUpdateRepository(id, new URL(url)));
+			}
+		}
+		catch (ArrayIndexOutOfBoundsException | MalformedURLException e)
+		{
+			repositories.clear();
+			return false;
+		}
+		return true;
+	}
+
+	public void loadOldFormat()
+	{
 		try
 		{
 			for (String keyval : openOSRSConfig.getExternalRepositories().split(";"))
@@ -253,23 +309,26 @@ class ExternalPluginManager
 		{
 			e.printStackTrace();
 		}
-
-		this.updateManager = new UpdateManager(this.externalPluginManager, repositories);
 	}
 
-	public void addRepository(String owner, String name)
+	public void addGHRepository(String owner, String name)
 	{
 		try
 		{
-			DefaultUpdateRepository respository = new DefaultUpdateRepository(owner + toRepositoryUrl(owner, name), toRepositoryUrl(owner, name));
-			updateManager.addRepository(respository);
-			eventBus.post(ExternalRepositoryChanged.class, new ExternalRepositoryChanged(owner + toRepositoryUrl(owner, name), true));
-			saveConfig();
+			addRepository("gh:" + owner + "/" + name, toRepositoryUrl(owner, name));
 		}
 		catch (MalformedURLException e)
 		{
 			log.error("Repostitory could not be added");
 		}
+	}
+
+	public void addRepository(String key, URL url)
+	{
+		DefaultUpdateRepository respository = new DefaultUpdateRepository(key, url);
+		updateManager.addRepository(respository);
+		eventBus.post(ExternalRepositoryChanged.class, new ExternalRepositoryChanged(key, true));
+		saveConfig();
 	}
 
 	public void removeRepository(String owner)
@@ -286,8 +345,8 @@ class ExternalPluginManager
 		for (UpdateRepository repository : updateManager.getRepositories())
 		{
 			config.append(repository.getId());
-			config.append(":");
-			config.append(repository.getUrl().toString());
+			config.append("|");
+			config.append(MiscUtils.urlToStringEncoded(repository.getUrl()));
 			config.append(";");
 		}
 		config.deleteCharAt(config.lastIndexOf(";"));
