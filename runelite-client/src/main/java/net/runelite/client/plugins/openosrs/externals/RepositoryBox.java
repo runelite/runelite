@@ -58,8 +58,8 @@ public class RepositoryBox extends JPanel
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		String name = updateRepository.getId().replace(updateRepository.getUrl().toString(), "");
-		String urlString = updateRepository.getUrl().toString().replace("https://raw.githubusercontent.com/", "").replace("/master/", "");
+		String name = updateRepository.getId();
+		String urlString = updateRepository.getUrl().toString();
 
 		JPanel titleWrapper = new JPanel(new BorderLayout());
 		titleWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);

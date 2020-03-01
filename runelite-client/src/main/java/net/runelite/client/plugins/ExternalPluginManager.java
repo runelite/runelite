@@ -86,7 +86,6 @@ class ExternalPluginManager
 	private final ConfigManager configManager;
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final Map<String, String> pluginsMap = new HashMap<>();
-
 	@Getter(AccessLevel.PUBLIC)
 	private UpdateManager updateManager;
 
@@ -261,18 +260,13 @@ class ExternalPluginManager
 
 	public void startExternalUpdateManager()
 	{
-		boolean loadedOld = false;
 		if (!tryLoadNewFormat())
 		{
 			loadOldFormat();
-			loadedOld = true;
 		}
 
 		this.updateManager = new UpdateManager(this.externalPluginManager, repositories);
-		if (loadedOld)
-		{
-			saveConfig();
-		}
+		saveConfig();
 	}
 
 	public boolean tryLoadNewFormat()
@@ -284,19 +278,32 @@ class ExternalPluginManager
 				String[] split = keyval.split("\\|");
 				if (split.length != 2)
 				{
-					log.error("failed to load new, split");
 					repositories.clear();
 					return false;
 				}
 				String id = split[0];
 				String url = split[1];
+				if (!url.endsWith("/"))
+				{
+					url = url.concat("/");
+				}
+
+				if (id.contains("https://raw.githubusercontent.com/"))
+				{
+					id = "gh:" + id.substring(id.indexOf("https://raw.githubusercontent.com/")).replace("/master", "")
+						.replace("https://raw.githubusercontent.com/", "");
+
+					if (id.endsWith("/"))
+					{
+						id = id.substring(0, id.lastIndexOf("/"));
+					}
+				}
 
 				repositories.add(new DefaultUpdateRepository(id, new URL(url)));
 			}
 		}
 		catch (ArrayIndexOutOfBoundsException | MalformedURLException e)
 		{
-			log.error("failed to load new, exception", e);
 			repositories.clear();
 			return false;
 		}
@@ -397,7 +404,8 @@ class ExternalPluginManager
 			}
 			else if (pluginDescriptor.type() == PluginType.EXTERNAL)
 			{
-				log.error("Class {} is using the the new external plugin loader, it should not use PluginType.EXTERNAL", clazz);
+				log.error("Class {} is using the the new external plugin loader, it should not use PluginType.EXTERNAL",
+					clazz);
 				continue;
 			}
 
