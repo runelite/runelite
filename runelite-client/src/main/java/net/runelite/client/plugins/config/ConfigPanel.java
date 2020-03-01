@@ -41,7 +41,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -672,11 +671,7 @@ class ConfigPanel extends PluginPanel
 
 					if (units != null)
 					{
-						DecimalFormat df = ((JSpinner.NumberEditor) spinner.getEditor()).getFormat();
-						df.setPositiveSuffix(units.value());
-						df.setNegativeSuffix(units.value());
-						// Force update the spinner to have it add the units initially
-						spinnerTextField.setValue(value);
+						spinnerTextField.setFormatterFactory(new UnitFormatterFactory(units));
 					}
 
 					item.add(spinner, BorderLayout.EAST);
@@ -812,11 +807,7 @@ class ConfigPanel extends PluginPanel
 
 				if (units != null)
 				{
-					DecimalFormat df = ((JSpinner.NumberEditor) widthSpinner.getEditor()).getFormat();
-					df.setPositiveSuffix(units.value());
-					df.setNegativeSuffix(units.value());
-					// Force update the spinner to have it add the units initially
-					widthSpinnerTextField.setValue(width);
+					widthSpinnerTextField.setFormatterFactory(new UnitFormatterFactory(units));
 				}
 
 				SpinnerModel heightModel = new SpinnerNumberModel(height, 0, Integer.MAX_VALUE, 1);
@@ -827,11 +818,7 @@ class ConfigPanel extends PluginPanel
 
 				if (units != null)
 				{
-					DecimalFormat df = ((JSpinner.NumberEditor) heightSpinner.getEditor()).getFormat();
-					df.setPositiveSuffix(units.value());
-					df.setNegativeSuffix(units.value());
-					// Force update the spinner to have it add the units initially
-					heightSpinnerTextField.setValue(height);
+					heightSpinnerTextField.setFormatterFactory(new UnitFormatterFactory(units));
 				}
 
 				ChangeListener listener = e ->
