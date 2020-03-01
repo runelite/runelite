@@ -238,7 +238,7 @@ public class HiscoreResult
 				return krilTsutsaroth;
 			case MIMIC:
 				return mimic;
-			case NIGHTMARE:
+			case THE_NIGHTMARE:
 				return nightmare;
 			case OBOR:
 				return obor;

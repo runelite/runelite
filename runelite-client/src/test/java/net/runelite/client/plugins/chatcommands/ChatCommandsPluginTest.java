@@ -411,7 +411,7 @@ public class ChatCommandsPluginTest
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("vorkath"), eq(1 * 60 + 21));
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("grotesque guardians"), eq(2 * 60 + 49));
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("hespori"), eq(57));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("nightmare"), eq( 3 * 60 + 30));
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("the nightmare"), eq( 3 * 60 + 30));
 	}
 
 	@Test

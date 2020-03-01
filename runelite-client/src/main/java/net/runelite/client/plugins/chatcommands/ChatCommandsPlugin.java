@@ -1618,8 +1618,8 @@ public class ChatCommandsPlugin extends Plugin
 			case "corrupted gauntlet":
 				return "The Corrupted Gauntlet";
 
-			case "the nightmare":
-				return "Nightmare";
+			case "nightmare":
+				return "The Nightmare";
 
 			default:
 				return WordUtils.capitalize(boss);
