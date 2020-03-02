@@ -43,6 +43,7 @@ import javax.swing.SwingUtilities;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.ValueConverter;
 import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -177,9 +178,11 @@ public class RuneLite
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("sessionfile", "Use a specified session file")
-			.withRequiredArg().defaultsTo(DEFAULT_SESSION_FILE);
+			.withRequiredArg().defaultsTo(DEFAULT_SESSION_FILE)
+			.withValuesConvertedBy(new FileConverter());
 		parser.accepts("config", "Use a specified config file")
-			.withRequiredArg().defaultsTo(DEFAULT_CONFIG_FILE);
+			.withRequiredArg().defaultsTo(DEFAULT_CONFIG_FILE)
+			.withValuesConvertedBy(new FileConverter());
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
@@ -248,8 +251,8 @@ public class RuneLite
 				}
 			}
 
-			String sessionfile = options.valueOf("sessionfile").toString();
-			String configfile = options.valueOf("config").toString();
+			File sessionfile = (File) options.valueOf("sessionfile");
+			File configfile = (File) options.valueOf("config");
 
 			PROFILES_DIR.mkdirs();
 
@@ -258,8 +261,8 @@ public class RuneLite
 			injector = Guice.createInjector(new RuneLiteModule(
 				clientLoader,
 				developerMode,
-				getFile(sessionfile),
-				getFile(configfile)));
+				sessionfile,
+				configfile));
 
 			injector.getInstance(RuneLite.class).start();
 
@@ -371,18 +374,34 @@ public class RuneLite
 		discordService.close();
 	}
 
-	private static File getFile(String fileName)
+	private static class FileConverter implements ValueConverter<File>
 	{
-		Path path = Paths.get(fileName);
-		if (path.isAbsolute()
-			|| fileName.startsWith("./")
-			|| fileName.startsWith(".\\"))
+		@Override
+		public File convert(String fileName)
 		{
-			return new File(fileName);
+			Path path = Paths.get(fileName);
+			if (path.isAbsolute()
+				|| fileName.startsWith("./")
+				|| fileName.startsWith(".\\"))
+			{
+				return new File(fileName);
+			}
+			else
+			{
+				return new File(RuneLite.RUNELITE_DIR, fileName);
+			}
 		}
-		else
+
+		@Override
+		public Class<? extends File> valueType()
 		{
-			return new File(RuneLite.RUNELITE_DIR, fileName);
+			return null;
+		}
+
+		@Override
+		public String valuePattern()
+		{
+			return null;
 		}
 	}
 
