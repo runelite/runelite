@@ -1,14 +1,10 @@
 package net.runelite.client.plugins.openosrs.externals;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.ScheduledExecutorService;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.plugins.ExternalPluginManager;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.ImageUtil;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -18,11 +14,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.plugins.ExternalPluginManager;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.util.ImageUtil;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class ExternalPluginManagerPanel extends PluginPanel
 {
@@ -33,8 +33,10 @@ public class ExternalPluginManagerPanel extends PluginPanel
 
 	static
 	{
-		final BufferedImage addIconRaw = ImageUtil.getResourceStreamFromClass(ExternalPluginManagerPanel.class, "add_raw_icon.png");
-		final BufferedImage addIconGh = ImageUtil.resizeImage(ImageUtil.getResourceStreamFromClass(ExternalPluginManagerPanel.class, "gh_icon.png"), 14, 14);
+		final BufferedImage addIconRaw =
+			ImageUtil.getResourceStreamFromClass(ExternalPluginManagerPanel.class, "add_raw_icon.png");
+		final BufferedImage addIconGh = ImageUtil
+			.resizeImage(ImageUtil.getResourceStreamFromClass(ExternalPluginManagerPanel.class, "gh_icon.png"), 14, 14);
 		ADD_ICON_RAW = new ImageIcon(addIconRaw);
 		ADD_HOVER_ICON_RAW = new ImageIcon(ImageUtil.alphaOffset(addIconRaw, 0.53f));
 		ADD_ICON_GH = new ImageIcon(addIconGh);
@@ -99,7 +101,8 @@ public class ExternalPluginManagerPanel extends PluginPanel
 					"Github Repository name:", name
 				};
 
-				int option = JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
+				int option =
+					JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
 				if (option != JOptionPane.OK_OPTION || owner.getText().equals("") || name.getText().equals(""))
 				{
 					return;
@@ -107,13 +110,15 @@ public class ExternalPluginManagerPanel extends PluginPanel
 
 				if (externalPluginManager.doesGhRepoExist(owner.getText(), name.getText()))
 				{
-					JOptionPane.showMessageDialog(null, "This repository already exists.", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "This repository already exists.", "Error!",
+						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
 				if (ExternalPluginManager.testGHRepository(owner.getText(), name.getText()))
 				{
-					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!",
+						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
@@ -147,21 +152,26 @@ public class ExternalPluginManagerPanel extends PluginPanel
 					"Repository URL:", url
 				};
 
-				int option = JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
+				int option =
+					JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
 				if (option != JOptionPane.OK_OPTION || id.getText().equals("") || url.getText().equals(""))
 				{
 					return;
 				}
 
-				if (id.getText().startsWith("gh:"))
+				if (id.getText().startsWith("gh:") || id.getText().contains("|"))
 				{
-					JOptionPane.showMessageDialog(null, "Repository id cannot begin with \"gh:\".", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+						"Repository id cannot begin with \"gh:\"\nor contain the pipe character '|'.", "Error!",
+						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
 				if (externalPluginManager.doesRepoExist(id.getText()))
 				{
-					JOptionPane.showMessageDialog(null, String.format("The repository with id %s already exists.", id.getText()), "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+						String.format("The repository with id %s already exists.", id.getText()), "Error!",
+						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
@@ -172,13 +182,15 @@ public class ExternalPluginManagerPanel extends PluginPanel
 				}
 				catch (MalformedURLException e)
 				{
-					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!",
+						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
 				if (ExternalPluginManager.testRepository(urlActual))
 				{
-					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!",
+						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
