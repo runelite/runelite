@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
+ * Copyright (c) 2020, Brandt Hill <https://github.com/BrandtHill>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,30 +24,54 @@
  */
 package net.runelite.client.plugins.kingdomofmiscellania;
 
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.Counter;
-import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
-public class KingdomCounter extends Counter
+@ConfigGroup(KingdomConfig.CONFIG_GROUP_NAME)
+public interface KingdomConfig extends Config
 {
-	private final KingdomPlugin plugin;
+	String CONFIG_GROUP_NAME = "kingdomofmiscellania";
+	int MAX_COFFER = 7_500_000;
+	int MAX_APPROVAL_PERCENT = 100;
 
-	KingdomCounter(BufferedImage image, KingdomPlugin plugin)
+	@ConfigItem(
+		position = 1,
+		keyName = "sendNotifications",
+		name = "Send Notifications",
+		description = "Send chat notifications upon login showing current estimated coffer and approval"
+	)
+	default boolean shouldSendNotifications()
 	{
-		super(image, plugin, plugin.getApproval());
-		this.plugin = plugin;
+		return false;
 	}
 
-	@Override
-	public String getText()
+	@Range(
+		max = MAX_COFFER
+	)
+	@ConfigItem(
+		position = 2,
+		keyName = "cofferThreshold",
+		name = "Coffer Threshold",
+		description = "Send notifications if coffer is below this value"
+	)
+	default int getCofferThreshold()
 	{
-		return KingdomPlugin.getApprovalPercent(plugin.getApproval()) + "%";
+		return MAX_COFFER;
 	}
 
-	@Override
-	public String getTooltip()
+	@Range(
+		max = MAX_APPROVAL_PERCENT
+	)
+	@ConfigItem(
+		position = 3,
+		keyName = "approvalThreshold",
+		name = "Approval Threshold",
+		description = "Send notifications if approval percentage is below this value"
+	)
+	default int getApprovalThreshold()
 	{
-		return "Approval: " + plugin.getApproval() + "/" + KingdomPlugin.MAX_APPROVAL + "</br>"
-			+ "Coffer: " + QuantityFormatter.quantityToStackSize(plugin.getCoffer());
+		return MAX_APPROVAL_PERCENT;
 	}
 }
