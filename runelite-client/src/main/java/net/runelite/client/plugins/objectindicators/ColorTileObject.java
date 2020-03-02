@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2020, dekvall <https://github.com/dekvall>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.objectindicators;
 
 import java.awt.Color;
-import net.runelite.client.config.Alpha;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import net.runelite.api.TileObject;
 
-@ConfigGroup("objectindicators")
-public interface ObjectIndicatorsConfig extends Config
+/**
+ * Used to denote marked objects and their colors.
+ * Note: This is not used for serialization of object indicators; see {@link ObjectPoint}
+ */
+@Value
+@RequiredArgsConstructor
+class ColorTileObject
 {
-	@Alpha
-	@ConfigItem(
-		keyName = "markerColor",
-		name = "Marker color",
-		description = "Configures the color of object marker"
-	)
-	default Color markerColor()
-	{
-		return Color.YELLOW;
-	}
-
-	@ConfigItem(
-		keyName = "rememberObjectColors",
-		name = "Remember color per object",
-		description = "Color objects using the color from time of marking"
-	)
-	default boolean rememberObjectColors()
-	{
-		return false;
-	}
+	private final TileObject tileObject;
+	private final Color color;
 }
