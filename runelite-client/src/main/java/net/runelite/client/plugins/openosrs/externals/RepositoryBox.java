@@ -60,6 +60,10 @@ public class RepositoryBox extends JPanel
 
 		String name = updateRepository.getId();
 		String urlString = updateRepository.getUrl().toString();
+		if (urlString.startsWith("/"))
+		{
+			urlString = urlString.substring(1);
+		}
 
 		JPanel titleWrapper = new JPanel(new BorderLayout());
 		titleWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
