@@ -77,7 +77,7 @@ class ExternalPluginManager
 {
 	public static ArrayList<ClassLoader> pluginClassLoaders = new ArrayList<>();
 	private final PluginManager runelitePluginManager;
-	private final org.pf4j.PluginManager externalPluginManager;
+	private org.pf4j.PluginManager externalPluginManager;
 	@Getter(AccessLevel.PUBLIC)
 	private final List<UpdateRepository> repositories = new ArrayList<>();
 	private final OpenOSRSConfig openOSRSConfig;
@@ -104,6 +104,11 @@ class ExternalPluginManager
 		//noinspection ResultOfMethodCallIgnored
 		EXTERNALPLUGIN_DIR.mkdirs();
 
+		initPluginManager();
+	}
+
+	private void initPluginManager()
+	{
 		boolean debug = RuneLiteProperties.getLauncherVersion() == null && RuneLiteProperties.getPluginPath() != null;
 
 		this.externalPluginManager = new DefaultPluginManager(debug ? Paths.get(RuneLiteProperties.getPluginPath() + File.separator + "release") : EXTERNALPLUGIN_DIR.toPath())
@@ -241,6 +246,8 @@ class ExternalPluginManager
 	{
 		try
 		{
+			repositories.clear();
+
 			for (String keyval : openOSRSConfig.getExternalRepositories().split(";"))
 			{
 				String id = keyval.substring(0, keyval.lastIndexOf(":https"));
@@ -474,6 +481,21 @@ class ExternalPluginManager
 
 		for (PluginWrapper plugin : startedPlugins)
 		{
+			boolean depsLoaded = true;
+			for (PluginDependency dependency : plugin.getDescriptor().getDependencies())
+			{
+				if (startedPlugins.stream().noneMatch(pl -> pl.getPluginId().equals(dependency.getPluginId())))
+				{
+					depsLoaded = false;
+				}
+			}
+
+			if (!depsLoaded)
+			{
+				// This should never happen but can crash the client
+				continue;
+			}
+
 			scannedPlugins.addAll(loadPlugin(plugin.getPluginId()));
 		}
 
@@ -673,6 +695,7 @@ class ExternalPluginManager
 
 	public void update()
 	{
+		boolean error = false;
 		if (updateManager.hasUpdates())
 		{
 			List<PluginInfo> updates = updateManager.getUpdates();
@@ -687,13 +710,23 @@ class ExternalPluginManager
 					if (!updated)
 					{
 						log.warn("Cannot update plugin '{}'", plugin.id);
+						error = true;
 					}
 				}
 				catch (PluginRuntimeException ex)
 				{
 					log.warn("Cannot update plugin '{}', the user probably has another client open", plugin.id);
+					error = true;
+					break;
 				}
 			}
+		}
+
+		if (error)
+		{
+			initPluginManager();
+			startExternalUpdateManager();
+			startExternalPluginManager();
 		}
 	}
 
