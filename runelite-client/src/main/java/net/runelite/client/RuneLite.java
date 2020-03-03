@@ -177,10 +177,12 @@ public class RuneLite
 		final OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
-		parser.accepts("sessionfile", "Use a specified session file")
+
+		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg().defaultsTo(DEFAULT_SESSION_FILE)
 			.withValuesConvertedBy(new FileConverter());
-		parser.accepts("config", "Use a specified config file")
+
+		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
 			.withRequiredArg().defaultsTo(DEFAULT_CONFIG_FILE)
 			.withValuesConvertedBy(new FileConverter());
 
@@ -251,9 +253,6 @@ public class RuneLite
 				}
 			}
 
-			File sessionfile = (File) options.valueOf("sessionfile");
-			File configfile = (File) options.valueOf("config");
-
 			PROFILES_DIR.mkdirs();
 
 			final long start = System.currentTimeMillis();
@@ -261,8 +260,8 @@ public class RuneLite
 			injector = Guice.createInjector(new RuneLiteModule(
 				clientLoader,
 				developerMode,
-				sessionfile,
-				configfile));
+				options.valueOf(sessionfile),
+				options.valueOf(configfile)));
 
 			injector.getInstance(RuneLite.class).start();
 
@@ -392,13 +391,11 @@ public class RuneLite
 			}
 		}
 
-		@Override
 		public Class<? extends File> valueType()
 		{
 			return null;
 		}
 
-		@Override
 		public String valuePattern()
 		{
 			return null;
