@@ -88,6 +88,7 @@ object Libraries {
         const val rxrelay = "2.1.1"
         const val sisu = "0.3.4"
         const val sentry = "1.7.29"
+        const val semver = "0.9.0"
         const val slf4j = "1.7.30"
     }
 
@@ -151,6 +152,7 @@ object Libraries {
     const val slf4jNop = "org.slf4j:slf4j-nop:${Versions.slf4j}"
     const val slf4jSimple = "org.slf4j:slf4j-simple:${Versions.slf4j}"
     const val sentry = "io.sentry:sentry:${Versions.sentry}"
+    const val semver = "com.github.zafarkhaja:java-semver:${Versions.semver}"
     const val substance = "org.pushing-pixels:radiance-substance:${Versions.radiance}"
     const val trident = "org.pushing-pixels:radiance-trident:${Versions.radiance}"
     const val vanilla = "net.runelite.rs:vanilla:${ProjectVersions.rsversion}"

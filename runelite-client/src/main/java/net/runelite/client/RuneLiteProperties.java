@@ -136,8 +136,7 @@ public class RuneLiteProperties
 	@Nullable
 	public static String getLauncherVersion()
 	{
-		String launcherVersion = properties.getProperty(LAUNCHER_VERSION_PROPERTY);
-		return launcherVersion.equals("-1") ? null : launcherVersion;
+		return System.getProperty(LAUNCHER_VERSION_PROPERTY);
 	}
 
 	@Nullable

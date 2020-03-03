@@ -41,6 +41,7 @@ import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.LauncherConfig;
 import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
@@ -131,5 +132,12 @@ public class RuneLiteModule extends AbstractModule
 	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatColorConfig.class);
+	}
+
+	@Provides
+	@Singleton
+	LauncherConfig provideLauncherConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LauncherConfig.class);
 	}
 }
