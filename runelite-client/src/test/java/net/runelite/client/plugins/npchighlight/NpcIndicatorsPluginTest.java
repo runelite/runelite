@@ -27,14 +27,12 @@ package net.runelite.client.plugins.npchighlight;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
-import javax.inject.Named;
 import net.runelite.api.Client;
-import net.runelite.client.RuneLite;
+import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,13 +59,9 @@ public class NpcIndicatorsPluginTest
 	@Inject
 	private NpcIndicatorsPlugin npcIndicatorsPlugin;
 
+	@Mock
 	@Bind
-	@Named("sessionfile")
-	File sessionfile = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_SESSION_FILE);
-
-	@Bind
-	@Named("config")
-	File config = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_CONFIG_FILE);
+	private OverlayManager overlayManager;
 
 	@Before
 	public void setUp()

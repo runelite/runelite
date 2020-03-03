@@ -27,11 +27,9 @@ package net.runelite.client.plugins.screenshot;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.io.File;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import javax.inject.Inject;
-import javax.inject.Named;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
@@ -43,10 +41,10 @@ import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
 import net.runelite.client.Notifier;
-import net.runelite.client.RuneLite;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
+import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -100,13 +98,9 @@ public class ScreenshotPluginTest
 	@Bind
 	ScheduledExecutorService service;
 
+	@Mock
 	@Bind
-	@Named("sessionfile")
-	File sessionfile = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_SESSION_FILE);
-
-	@Bind
-	@Named("config")
-	File configfile = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_CONFIG_FILE);
+	private OverlayManager overlayManager;
 
 	@Before
 	public void before()

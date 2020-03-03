@@ -28,9 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.io.File;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.inject.Named;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -38,17 +36,18 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.client.RuneLite;
+import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageCapture;
+import net.runelite.client.ws.PartyService;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import net.runelite.client.Notifier;
-import net.runelite.client.util.ImageCapture;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -101,13 +100,13 @@ public class RaidsPluginTest
 	@Inject
 	RaidsPlugin raidsPlugin;
 
+	@Mock
 	@Bind
-	@Named("sessionfile")
-	File sessionfile = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_SESSION_FILE);
+	private PartyService partyService;
 
+	@Mock
 	@Bind
-	@Named("config")
-	File config = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_CONFIG_FILE);
+	private OverlayManager overlayManager;
 
 	@Before
 	public void before()
