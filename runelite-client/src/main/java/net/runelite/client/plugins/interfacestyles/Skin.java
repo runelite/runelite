@@ -35,6 +35,7 @@ public enum Skin
 {
 	DEFAULT("Default"),
 	AROUND_2005("2005"),
+	AROUND_2007("2007"),
 	AROUND_2010("2010");
 
 	private String name;

@@ -29,6 +29,7 @@ package net.runelite.client.plugins.interfacestyles;
 import lombok.Getter;
 import net.runelite.api.SpriteID;
 import static net.runelite.client.plugins.interfacestyles.Skin.AROUND_2005;
+import static net.runelite.client.plugins.interfacestyles.Skin.AROUND_2007;
 import static net.runelite.client.plugins.interfacestyles.Skin.AROUND_2010;
 
 @Getter
@@ -82,7 +83,7 @@ enum SpriteOverride
 	SKILL_HUNTER(SpriteID.SKILL_HUNTER, AROUND_2010),
 	SKILL_CONSTRUCTION(SpriteID.SKILL_CONSTRUCTION, AROUND_2010),
 
-	COMPASS(SpriteID.COMPASS_TEXTURE, AROUND_2005),
+	COMPASS(SpriteID.COMPASS_TEXTURE, AROUND_2005, AROUND_2007),
 	WINDOW_CLOSE_BUTTON_RED_X(SpriteID.WINDOW_CLOSE_BUTTON_RED_X, AROUND_2010),
 	WINDOW_CLOSE_BUTTON_RED_X_HOVERED(SpriteID.WINDOW_CLOSE_BUTTON_RED_X_HOVERED, AROUND_2010),
 	WINDOW_CLOSE_BUTTON_BROWN_X(SpriteID.WINDOW_CLOSE_BUTTON_BROWN_X, AROUND_2010),
