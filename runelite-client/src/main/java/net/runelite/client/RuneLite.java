@@ -33,7 +33,6 @@ import com.google.inject.Injector;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 import javax.annotation.Nullable;
@@ -43,6 +42,7 @@ import javax.swing.SwingUtilities;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.ValueConversionException;
 import joptsimple.ValueConverter;
 import joptsimple.util.EnumConverter;
 import lombok.Getter;
@@ -55,12 +55,12 @@ import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
-import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
@@ -180,11 +180,11 @@ public class RuneLite
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg().defaultsTo(DEFAULT_SESSION_FILE)
-			.withValuesConvertedBy(new FileConverter());
+			.withValuesConvertedBy(new ConfigFileConverter());
 
 		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
 			.withRequiredArg().defaultsTo(DEFAULT_CONFIG_FILE)
-			.withValuesConvertedBy(new FileConverter());
+			.withValuesConvertedBy(new ConfigFileConverter());
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
@@ -373,38 +373,48 @@ public class RuneLite
 		discordService.close();
 	}
 
-	private static class FileConverter implements ValueConverter<File>
-	{
-		@Override
-		public File convert(String fileName)
-		{
-			Path path = Paths.get(fileName);
-			if (path.isAbsolute()
-				|| fileName.startsWith("./")
-				|| fileName.startsWith(".\\"))
-			{
-				return new File(fileName);
-			}
-			else
-			{
-				return new File(RuneLite.RUNELITE_DIR, fileName);
-			}
-		}
-
-		public Class<? extends File> valueType()
-		{
-			return null;
-		}
-
-		public String valuePattern()
-		{
-			return null;
-		}
-	}
-
 	@VisibleForTesting
 	public static void setInjector(Injector injector)
 	{
 		RuneLite.injector = injector;
+	}
+
+	private static class ConfigFileConverter implements ValueConverter<File>
+	{
+		@Override
+		public File convert(String fileName)
+		{
+			final File file;
+
+			if (Paths.get(fileName).isAbsolute()
+				|| fileName.startsWith("./")
+				|| fileName.startsWith(".\\"))
+			{
+				file = new File(fileName);
+			}
+			else
+			{
+				file = new File(RuneLite.RUNELITE_DIR, fileName);
+			}
+
+			if (file.exists() && (!file.isFile() || !file.canWrite()))
+			{
+				throw new ValueConversionException(String.format("File %s is not accessible", file.getAbsolutePath()));
+			}
+
+			return file;
+		}
+
+		@Override
+		public Class<? extends File> valueType()
+		{
+			return File.class;
+		}
+
+		@Override
+		public String valuePattern()
+		{
+			return null;
+		}
 	}
 }
