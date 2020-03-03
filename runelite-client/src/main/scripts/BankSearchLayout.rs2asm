@@ -833,6 +833,8 @@ LABEL720:
    iload                  11
    iload                  27
    iload                  28
+   sconst                 "addLastRow"
+   runelite_callback
    iload                  12
    iload                  13
    iload                  14
