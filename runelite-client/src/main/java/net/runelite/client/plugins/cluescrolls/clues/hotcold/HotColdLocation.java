@@ -147,7 +147,7 @@ public enum HotColdLocation
 	WESTERN_PROVINCE_TYRAS(new WorldPoint(2206, 3158, 0), WESTERN_PROVINCE, "Near Tyras Camp."),
 	WESTERN_PROVINCE_ZULANDRA(new WorldPoint(2196, 3057, 0), WESTERN_PROVINCE, "The northern house at Zul-Andra."),
 	WILDERNESS_5(new WorldPoint(3173, 3556, 0), WILDERNESS, "North of the Grand Exchange, level 5 Wilderness."),
-	WILDERNESS_12(new WorldPoint(3038, 3612, 0), WILDERNESS, "South-east of the Dark Warriors' Fortress, level 12 Wilderness."),
+	WILDERNESS_12(new WorldPoint(3036, 3612, 0), WILDERNESS, "South-east of the Dark Warriors' Fortress, level 12 Wilderness."),
 	WILDERNESS_20(new WorldPoint(3225, 3676, 0), WILDERNESS, "East of the Corporeal Beast's lair, level 20 Wilderness."),
 	WILDERNESS_27(new WorldPoint(3174, 3736, 0), WILDERNESS, "Inside the Ruins north of the Graveyard of Shadows, level 27 Wilderness."),
 	WILDERNESS_28(new WorldPoint(3377, 3737, 0), WILDERNESS, "East of Venenatis' nest, level 28 Wilderness."),
