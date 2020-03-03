@@ -24,13 +24,16 @@
  */
 package net.runelite.client.plugins.config;
 
+import com.github.zafarkhaja.semver.Version;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.swing.SwingUtilities;
 import net.runelite.api.MenuOpcode;
+import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.LauncherConfig;
 import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
@@ -69,6 +72,9 @@ public class ConfigPlugin extends Plugin
 	@Inject
 	private ChatColorConfig chatColorConfig;
 
+	@Inject
+	private LauncherConfig launcherConfig;
+
 	private PluginListPanel pluginListPanel;
 
 	private NavigationButton navButton;
@@ -92,6 +98,18 @@ public class ConfigPlugin extends Plugin
 				"Chat Color", "Recolor chat text", PluginType.MISCELLANEOUS, new String[]{"colour", "messages"},
 				null, chatColorConfig, configManager.getConfigDescriptor(chatColorConfig)
 			));
+
+		// Support for this has been added in launcher version 2.2.0
+		if (launcherVersion("2.2.0"))
+		{
+			pluginListPanel.addFakePlugin(
+				new PluginConfigurationDescriptor(
+					"Launcher", "Launcher settings", PluginType.IMPORTANT,
+					new String[]{"hw", "nightly", "stable", "proxy", "bootstrap"},
+					null, launcherConfig, configManager.getConfigDescriptor(launcherConfig)
+				));
+		}
+
 		pluginListPanel.rebuildPluginList();
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "config_icon.png");
@@ -136,5 +154,17 @@ public class ConfigPlugin extends Plugin
 				pluginListPanel.openConfigurationPanel(descriptor.name());
 			});
 		}
+	}
+
+	private boolean launcherVersion(String version)
+	{
+		String launcherVersion = RuneLiteProperties.getLauncherVersion();
+
+		if (launcherVersion == null)
+		{
+			return false;
+		}
+
+		return Version.valueOf(launcherVersion).greaterThanOrEqualTo(Version.valueOf(version));
 	}
 }

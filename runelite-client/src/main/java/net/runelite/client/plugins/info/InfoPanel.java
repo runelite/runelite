@@ -79,11 +79,14 @@ class InfoPanel extends PluginPanel
 	}
 
 	private JPanel syncPanel;
+
 	@Inject
 	@Nullable
 	private Client client;
+
 	@Inject
 	private ConfigManager configManager;
+
 	@Inject
 	private InfoPlugin plugin;
 
@@ -104,8 +107,11 @@ class InfoPanel extends PluginPanel
 		JLabel version = new JLabel(htmlLabel("RuneLite version: ", RuneLiteProperties.getVersion()));
 		version.setFont(smallFont);
 
-		JLabel plusVersion = new JLabel(htmlLabel("OpenOSRS version: ", RuneLiteProperties.getPlusVersion()));
-		plusVersion.setFont(smallFont);
+		JLabel openOsrsVersion = new JLabel(htmlLabel("OpenOSRS version: ", RuneLiteProperties.getPlusVersion()));
+		openOsrsVersion.setFont(smallFont);
+
+		JLabel launcherVersion = new JLabel(htmlLabel("Launcher version: ", RuneLiteProperties.getLauncherVersion()));
+		launcherVersion.setFont(smallFont);
 
 		JLabel revision = new JLabel();
 		revision.setFont(smallFont);
@@ -119,7 +125,8 @@ class InfoPanel extends PluginPanel
 		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
 
 		versionPanel.add(version);
-		versionPanel.add(plusVersion);
+		versionPanel.add(openOsrsVersion);
+		versionPanel.add(launcherVersion);
 		versionPanel.add(revision);
 
 		JPanel actionsContainer = new JPanel();
