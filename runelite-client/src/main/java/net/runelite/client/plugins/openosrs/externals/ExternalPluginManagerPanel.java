@@ -1,12 +1,10 @@
 package net.runelite.client.plugins.openosrs.externals;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.util.concurrent.ScheduledExecutorService;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.plugins.ExternalPluginManager;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.ImageUtil;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -16,25 +14,33 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.plugins.ExternalPluginManager;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.util.ImageUtil;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class ExternalPluginManagerPanel extends PluginPanel
 {
-	private static final ImageIcon ADD_ICON;
-	private static final ImageIcon ADD_HOVER_ICON;
+	private static final ImageIcon ADD_ICON_RAW;
+	private static final ImageIcon ADD_HOVER_ICON_RAW;
+	private static final ImageIcon ADD_ICON_GH;
+	private static final ImageIcon ADD_HOVER_ICON_GH;
 
 	static
 	{
-		final BufferedImage addIcon =
-			ImageUtil.recolorImage(
-				ImageUtil.getResourceStreamFromClass(ExternalPluginManagerPanel.class, "add_icon.png"), ColorScheme.BRAND_BLUE
-			);
-		ADD_ICON = new ImageIcon(addIcon);
-		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
+		final BufferedImage addIconRaw =
+			ImageUtil.getResourceStreamFromClass(ExternalPluginManagerPanel.class, "add_raw_icon.png");
+		final BufferedImage addIconGh = ImageUtil
+			.resizeImage(ImageUtil.getResourceStreamFromClass(ExternalPluginManagerPanel.class, "gh_icon.png"), 14, 14);
+		ADD_ICON_RAW = new ImageIcon(addIconRaw);
+		ADD_HOVER_ICON_RAW = new ImageIcon(ImageUtil.alphaOffset(addIconRaw, 0.53f));
+		ADD_ICON_GH = new ImageIcon(addIconGh);
+		ADD_HOVER_ICON_GH = new ImageIcon(ImageUtil.alphaOffset(addIconGh, 0.53f));
 	}
 
 	private final ExternalPluginManager externalPluginManager;
@@ -73,13 +79,17 @@ public class ExternalPluginManagerPanel extends PluginPanel
 		titlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		JLabel title = new JLabel();
-		JLabel addRepo = new JLabel(ADD_ICON);
+		JLabel addGHRepo = new JLabel(ADD_ICON_GH);
+		JLabel addRawRepo = new JLabel(ADD_ICON_RAW);
+
+		JPanel buttonHolder = new JPanel(new BorderLayout());
+		buttonHolder.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		title.setText("External Plugin Manager");
 		title.setForeground(Color.WHITE);
 
-		addRepo.setToolTipText("Add new repository");
-		addRepo.addMouseListener(new MouseAdapter()
+		addGHRepo.setToolTipText("Add new GitHub repository");
+		addGHRepo.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
@@ -91,36 +101,120 @@ public class ExternalPluginManagerPanel extends PluginPanel
 					"Github Repository name:", name
 				};
 
-				int option = JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
+				int option =
+					JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
 				if (option != JOptionPane.OK_OPTION || owner.getText().equals("") || name.getText().equals(""))
 				{
 					return;
 				}
 
-				if (ExternalPluginManager.testRepository(owner.getText(), name.getText()))
+				if (externalPluginManager.doesGhRepoExist(owner.getText(), name.getText()))
 				{
-					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "This repository already exists.", "Error!",
+						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
-				externalPluginManager.addRepository(owner.getText(), name.getText());
+				if (ExternalPluginManager.testGHRepository(owner.getText(), name.getText()))
+				{
+					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!",
+						JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				externalPluginManager.addGHRepository(owner.getText(), name.getText());
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				addRepo.setIcon(ADD_HOVER_ICON);
+				addGHRepo.setIcon(ADD_HOVER_ICON_GH);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				addRepo.setIcon(ADD_ICON);
+				addGHRepo.setIcon(ADD_ICON_GH);
 			}
 		});
+		addGHRepo.setBorder(new EmptyBorder(0, 3, 0, 0));
+
+		addRawRepo.setToolTipText("Add new raw repository");
+		addRawRepo.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				JTextField id = new JTextField();
+				JTextField url = new JTextField();
+				Object[] message = {
+					"Repository ID:", id,
+					"Repository URL:", url
+				};
+
+				int option =
+					JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
+				if (option != JOptionPane.OK_OPTION || id.getText().equals("") || url.getText().equals(""))
+				{
+					return;
+				}
+
+				if (id.getText().startsWith("gh:") || id.getText().contains("|"))
+				{
+					JOptionPane.showMessageDialog(null,
+						"Repository id cannot begin with \"gh:\"\nor contain the pipe character '|'.", "Error!",
+						JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				if (externalPluginManager.doesRepoExist(id.getText()))
+				{
+					JOptionPane.showMessageDialog(null,
+						String.format("The repository with id %s already exists.", id.getText()), "Error!",
+						JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				URL urlActual;
+				try
+				{
+					urlActual = new URL(url.getText());
+				}
+				catch (MalformedURLException e)
+				{
+					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!",
+						JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				if (ExternalPluginManager.testRepository(urlActual))
+				{
+					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!",
+						JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				externalPluginManager.addRepository(id.getText(), urlActual);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				addRawRepo.setIcon(ADD_HOVER_ICON_RAW);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				addRawRepo.setIcon(ADD_ICON_RAW);
+			}
+		});
+		addRawRepo.setBorder(new EmptyBorder(0, 0, 0, 3));
 
 		titlePanel.add(title, BorderLayout.WEST);
-		titlePanel.add(addRepo, BorderLayout.EAST);
+		buttonHolder.add(addRawRepo, BorderLayout.WEST);
+		buttonHolder.add(addGHRepo, BorderLayout.EAST);
+		titlePanel.add(buttonHolder, BorderLayout.EAST);
 
 		return titlePanel;
 	}

@@ -8,6 +8,42 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
+import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.OpenOSRSConfig;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ExternalPluginChanged;
+import net.runelite.client.events.ExternalRepositoryChanged;
+import net.runelite.client.ui.RuneLiteSplashScreen;
+import net.runelite.client.util.MiscUtils;
+import net.runelite.client.util.SwingUtil;
+import org.pf4j.DefaultPluginManager;
+import org.pf4j.DependencyResolver;
+import org.pf4j.JarPluginLoader;
+import org.pf4j.JarPluginRepository;
+import org.pf4j.ManifestPluginDescriptorFinder;
+import org.pf4j.PluginAlreadyLoadedException;
+import org.pf4j.PluginDependency;
+import org.pf4j.PluginDescriptorFinder;
+import org.pf4j.PluginLoader;
+import org.pf4j.PluginRepository;
+import org.pf4j.PluginRuntimeException;
+import org.pf4j.PluginWrapper;
+import org.pf4j.RuntimeMode;
+import org.pf4j.update.DefaultUpdateRepository;
+import org.pf4j.update.PluginInfo;
+import org.pf4j.update.UpdateManager;
+import org.pf4j.update.UpdateRepository;
+import org.pf4j.update.VerifyException;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -32,43 +68,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.RuneLite;
 import static net.runelite.client.RuneLite.EXTERNALPLUGIN_DIR;
 import static net.runelite.client.RuneLite.SYSTEM_VERSION;
-import net.runelite.client.RuneLiteProperties;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.OpenOSRSConfig;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.events.ExternalPluginChanged;
-import net.runelite.client.events.ExternalRepositoryChanged;
-import net.runelite.client.ui.RuneLiteSplashScreen;
-import net.runelite.client.util.SwingUtil;
-import org.pf4j.DefaultPluginManager;
-import org.pf4j.DependencyResolver;
-import org.pf4j.JarPluginLoader;
-import org.pf4j.JarPluginRepository;
-import org.pf4j.ManifestPluginDescriptorFinder;
-import org.pf4j.PluginAlreadyLoadedException;
-import org.pf4j.PluginDependency;
-import org.pf4j.PluginDescriptorFinder;
-import org.pf4j.PluginLoader;
-import org.pf4j.PluginRepository;
-import org.pf4j.PluginRuntimeException;
-import org.pf4j.PluginWrapper;
-import org.pf4j.RuntimeMode;
-import org.pf4j.update.DefaultUpdateRepository;
-import org.pf4j.update.PluginInfo;
-import org.pf4j.update.UpdateManager;
-import org.pf4j.update.UpdateRepository;
-import org.pf4j.update.VerifyException;
 
 @Slf4j
 @Singleton
@@ -85,7 +86,6 @@ class ExternalPluginManager
 	private final ConfigManager configManager;
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final Map<String, String> pluginsMap = new HashMap<>();
-
 	@Getter(AccessLevel.PUBLIC)
 	private UpdateManager updateManager;
 
@@ -111,7 +111,9 @@ class ExternalPluginManager
 	{
 		boolean debug = RuneLiteProperties.getLauncherVersion() == null && RuneLiteProperties.getPluginPath() != null;
 
-		this.externalPluginManager = new DefaultPluginManager(debug ? Paths.get(RuneLiteProperties.getPluginPath() + File.separator + "release") : EXTERNALPLUGIN_DIR.toPath())
+		this.externalPluginManager = new DefaultPluginManager(
+			debug ? Paths.get(RuneLiteProperties.getPluginPath() + File.separator + "release")
+				: EXTERNALPLUGIN_DIR.toPath())
 		{
 			@Override
 			protected PluginDescriptorFinder createPluginDescriptorFinder()
@@ -189,22 +191,41 @@ class ExternalPluginManager
 		this.externalPluginManager.setSystemVersion(SYSTEM_VERSION);
 	}
 
+	public boolean doesGhRepoExist(String owner, String name)
+	{
+		return doesRepoExist("gh:" + owner + "/" + name);
+	}
+
+	/**
+	 * Note that {@link org.pf4j.update.UpdateManager#addRepository} checks if the repo exists, however it throws an exception which is bad
+	 */
+	public boolean doesRepoExist(String id)
+	{
+		return repositories.stream().anyMatch((repo) -> repo.getId().equals(id));
+	}
+
 	private static URL toRepositoryUrl(String owner, String name) throws MalformedURLException
 	{
 		return new URL("https://raw.githubusercontent.com/" + owner + "/" + name + "/master/");
 	}
 
-	public static boolean testRepository(String owner, String name)
+	public static boolean testGHRepository(String owner, String name)
 	{
-		final List<UpdateRepository> repositories = new ArrayList<>();
 		try
 		{
-			repositories.add(new DefaultUpdateRepository("github", new URL("https://raw.githubusercontent.com/" + owner + "/" + name + "/master/")));
+			return testRepository(toRepositoryUrl(owner, name));
 		}
 		catch (MalformedURLException e)
 		{
-			return true;
+			e.printStackTrace();
 		}
+		return false;
+	}
+
+	public static boolean testRepository(URL url)
+	{
+		final List<UpdateRepository> repositories = new ArrayList<>();
+		repositories.add(new DefaultUpdateRepository("repository-testing", url));
 		DefaultPluginManager testPluginManager = new DefaultPluginManager(EXTERNALPLUGIN_DIR.toPath());
 		UpdateManager updateManager = new UpdateManager(testPluginManager, repositories);
 
@@ -244,6 +265,58 @@ class ExternalPluginManager
 
 	public void startExternalUpdateManager()
 	{
+		if (!tryLoadNewFormat())
+		{
+			loadOldFormat();
+		}
+
+		this.updateManager = new UpdateManager(this.externalPluginManager, repositories);
+		saveConfig();
+	}
+
+	public boolean tryLoadNewFormat()
+	{
+		try
+		{
+			for (String keyval : openOSRSConfig.getExternalRepositories().split(";"))
+			{
+				String[] split = keyval.split("\\|");
+				if (split.length != 2)
+				{
+					repositories.clear();
+					return false;
+				}
+				String id = split[0];
+				String url = split[1];
+				if (!url.endsWith("/"))
+				{
+					url = url.concat("/");
+				}
+
+				if (id.contains("https://raw.githubusercontent.com/"))
+				{
+					id = "gh:" + id.substring(id.indexOf("https://raw.githubusercontent.com/")).replace("/master", "")
+						.replace("https://raw.githubusercontent.com/", "");
+
+					if (id.endsWith("/"))
+					{
+						id = id.substring(0, id.lastIndexOf("/"));
+					}
+				}
+
+				repositories.add(new DefaultUpdateRepository(id, new URL(url)));
+			}
+		}
+		catch (ArrayIndexOutOfBoundsException | MalformedURLException e)
+		{
+			repositories.clear();
+			return false;
+		}
+		return true;
+	}
+
+	public void loadOldFormat()
+	{
 		try
 		{
 			repositories.clear();
@@ -260,23 +333,26 @@ class ExternalPluginManager
 		{
 			e.printStackTrace();
 		}
-
-		this.updateManager = new UpdateManager(this.externalPluginManager, repositories);
 	}
 
-	public void addRepository(String owner, String name)
+	public void addGHRepository(String owner, String name)
 	{
 		try
 		{
-			DefaultUpdateRepository respository = new DefaultUpdateRepository(owner + toRepositoryUrl(owner, name), toRepositoryUrl(owner, name));
-			updateManager.addRepository(respository);
-			eventBus.post(ExternalRepositoryChanged.class, new ExternalRepositoryChanged(owner + toRepositoryUrl(owner, name), true));
-			saveConfig();
+			addRepository("gh:" + owner + "/" + name, toRepositoryUrl(owner, name));
 		}
 		catch (MalformedURLException e)
 		{
 			log.error("Repostitory could not be added");
 		}
+	}
+
+	public void addRepository(String key, URL url)
+	{
+		DefaultUpdateRepository respository = new DefaultUpdateRepository(key, url);
+		updateManager.addRepository(respository);
+		eventBus.post(ExternalRepositoryChanged.class, new ExternalRepositoryChanged(key, true));
+		saveConfig();
 	}
 
 	public void removeRepository(String owner)
@@ -293,8 +369,8 @@ class ExternalPluginManager
 		for (UpdateRepository repository : updateManager.getRepositories())
 		{
 			config.append(repository.getId());
-			config.append(":");
-			config.append(repository.getUrl().toString());
+			config.append("|");
+			config.append(MiscUtils.urlToStringEncoded(repository.getUrl()));
 			config.append(";");
 		}
 		config.deleteCharAt(config.lastIndexOf(";"));
@@ -335,7 +411,8 @@ class ExternalPluginManager
 			}
 			else if (pluginDescriptor.type() == PluginType.EXTERNAL)
 			{
-				log.error("Class {} is using the the new external plugin loader, it should not use PluginType.EXTERNAL", clazz);
+				log.error("Class {} is using the the new external plugin loader, it should not use PluginType.EXTERNAL",
+					clazz);
 				continue;
 			}
 
@@ -375,16 +452,21 @@ class ExternalPluginManager
 	}
 
 	@SuppressWarnings("unchecked")
-	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz, boolean init, boolean initConfig) throws PluginInstantiationException
+	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz, boolean init, boolean initConfig)
+	throws PluginInstantiationException
 	{
-		net.runelite.client.plugins.PluginDependency[] pluginDependencies = clazz.getAnnotationsByType(net.runelite.client.plugins.PluginDependency.class);
+		net.runelite.client.plugins.PluginDependency[] pluginDependencies =
+			clazz.getAnnotationsByType(net.runelite.client.plugins.PluginDependency.class);
 		List<Plugin> deps = new ArrayList<>();
 		for (net.runelite.client.plugins.PluginDependency pluginDependency : pluginDependencies)
 		{
-			Optional<Plugin> dependency = Stream.concat(runelitePluginManager.getPlugins().stream(), scannedPlugins.stream()).filter(p -> p.getClass() == pluginDependency.value()).findFirst();
+			Optional<Plugin> dependency =
+				Stream.concat(runelitePluginManager.getPlugins().stream(), scannedPlugins.stream())
+					.filter(p -> p.getClass() == pluginDependency.value()).findFirst();
 			if (!dependency.isPresent())
 			{
-				throw new PluginInstantiationException("Unmet dependency for " + clazz.getSimpleName() + ": " + pluginDependency.value().getSimpleName());
+				throw new PluginInstantiationException(
+					"Unmet dependency for " + clazz.getSimpleName() + ": " + pluginDependency.value().getSimpleName());
 			}
 			deps.add(dependency.get());
 		}
@@ -446,7 +528,9 @@ class ExternalPluginManager
 						{
 							runelitePluginManager.startPlugin(plugin);
 							runelitePluginManager.add(plugin);
-							eventBus.post(ExternalPluginChanged.class, new ExternalPluginChanged(pluginsMap.get(plugin.getClass().getSimpleName()), plugin, true));
+							eventBus.post(ExternalPluginChanged.class,
+								new ExternalPluginChanged(pluginsMap.get(plugin.getClass().getSimpleName()), plugin,
+									true));
 						}
 						catch (PluginInstantiationException e)
 						{
