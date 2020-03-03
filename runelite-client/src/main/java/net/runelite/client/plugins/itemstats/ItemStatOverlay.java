@@ -281,7 +281,7 @@ public class ItemStatOverlay extends Overlay
 			b.append(buildStatRow("Magic Dmg", currentEquipment.getMdmg(), e.getMdmg(), false, true));
 
 			final StringBuilder abb = new StringBuilder();
-			abb.append(buildStatRow("Stab", currentEquipment.getAspeed(), e.getAspeed(), false, false));
+			abb.append(buildStatRow("Stab", currentEquipment.getAstab(), e.getAstab(), false, false));
 			abb.append(buildStatRow("Slash", currentEquipment.getAslash(), e.getAslash(), false, false));
 			abb.append(buildStatRow("Crush", currentEquipment.getAcrush(), e.getAcrush(), false, false));
 			abb.append(buildStatRow("Magic", currentEquipment.getAmagic(), e.getAmagic(), false, false));
