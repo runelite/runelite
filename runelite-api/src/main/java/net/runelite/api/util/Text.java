@@ -38,7 +38,7 @@ import org.apache.commons.text.similarity.JaroWinklerDistance;
 public class Text
 {
 	private static final StringBuilder SB = new StringBuilder(64);
-	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
+	public static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
 	public static final Splitter COMMA_SPLITTER = Splitter
 		.on(",")
 		.omitEmptyStrings()

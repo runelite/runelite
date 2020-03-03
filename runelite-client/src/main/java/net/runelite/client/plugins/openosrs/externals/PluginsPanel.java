@@ -30,6 +30,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
+import static net.runelite.api.util.Text.DISTANCE;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ExternalPluginChanged;
 import net.runelite.client.events.ExternalRepositoryChanged;
@@ -43,7 +44,6 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.DeferredDocumentChangedListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
-import org.apache.commons.text.similarity.JaroWinklerDistance;
 import org.pf4j.update.PluginInfo;
 import org.pf4j.update.UpdateManager;
 import org.pf4j.update.UpdateRepository;
@@ -52,7 +52,6 @@ import org.pf4j.update.VerifyException;
 @Slf4j
 public class PluginsPanel extends JPanel
 {
-	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_HOVER_ICON;
 	private static final ImageIcon DELETE_ICON;
