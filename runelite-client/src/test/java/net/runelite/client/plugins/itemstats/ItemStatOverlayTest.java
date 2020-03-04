@@ -24,12 +24,33 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.testing.fieldbinder.Bind;
+import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.Color;
+import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.item.ItemEquipmentStats;
 import net.runelite.http.api.item.ItemStats;
+import org.apache.commons.lang3.StringUtils;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ItemStatOverlayTest
 {
 	// Weapon definitions
@@ -70,6 +91,30 @@ public class ItemStatOverlayTest
 			.aspeed(7)
 			.build());
 
+	@Inject
+	ItemStatOverlay overlay;
+
+	@Mock
+	@Bind
+	Client client;
+
+	@Mock
+	@Bind
+	ItemStatConfig config;
+
+	@Mock
+	@Bind
+	ItemManager itemManager;
+
+	@Before
+	public void before()
+	{
+		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		when(config.colorBetterUncapped()).thenReturn(new Color(0));
+		when(config.colorWorse()).thenReturn(new Color(0));
+	}
+
 	@Test
 	public void testUnarmedAttackSpeed()
 	{
@@ -77,5 +122,50 @@ public class ItemStatOverlayTest
 		assertEquals(ItemStatOverlay.UNARMED.getEquipment().getAspeed(), KATANA.getEquipment().getAspeed());
 		assertEquals(-1, BLOWPIPE.getEquipment().getAspeed() - ItemStatOverlay.UNARMED.getEquipment().getAspeed());
 		assertEquals(3, HEAVY_BALLISTA.getEquipment().getAspeed() - ItemStatOverlay.UNARMED.getEquipment().getAspeed());
+	}
+
+	@Test
+	public void testBuildStatBonusString()
+	{
+		// Empty equipment (fully unarmed)
+		final ItemContainer equipment = mock(ItemContainer.class);
+		when(equipment.getItems()).thenReturn(new Item[0]);
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+
+		String tooltip;
+		String sanitizedTooltip;
+
+		tooltip = overlay.buildStatBonusString(ABYSSAL_DAGGER);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Stab: +75"));
+		assertTrue(sanitizedTooltip.contains("Slash: +40"));
+		assertTrue(sanitizedTooltip.contains("Crush: -4"));
+		assertEquals(2, StringUtils.countMatches(sanitizedTooltip, "Magic: +1")); // Attack and defense
+		assertTrue(sanitizedTooltip.contains("Melee Str: +75"));
+		assertFalse(sanitizedTooltip.contains("Speed:"));
+
+		tooltip = overlay.buildStatBonusString(KATANA);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Stab: +7"));
+		assertTrue(sanitizedTooltip.contains("Slash: +45"));
+		assertTrue(sanitizedTooltip.contains("Stab: +3")); // Defense
+		assertTrue(sanitizedTooltip.contains("Slash: +7")); // Defense
+		assertTrue(sanitizedTooltip.contains("Crush: +7")); // Defense
+		assertTrue(sanitizedTooltip.contains("Range: -3")); // Defense
+		assertTrue(sanitizedTooltip.contains("Melee Str: +40"));
+		assertFalse(sanitizedTooltip.contains("Speed:"));
+
+		tooltip = overlay.buildStatBonusString(BLOWPIPE);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Range: +60"));
+		assertTrue(sanitizedTooltip.contains("Range Str: +40"));
+		assertTrue(sanitizedTooltip.contains("Speed: -1"));
+		assertFalse(sanitizedTooltip.contains("Stab:"));
+
+		tooltip = overlay.buildStatBonusString(HEAVY_BALLISTA);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Range: +110"));
+		assertTrue(sanitizedTooltip.contains("Speed: +3"));
+		assertFalse(sanitizedTooltip.contains("Stab:"));
 	}
 }
