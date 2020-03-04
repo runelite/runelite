@@ -31,6 +31,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -45,6 +46,7 @@ public class RuneLiteAPI
 
 	public static final OkHttpClient CLIENT;
 	public static final Gson GSON = new Gson();
+	public static final MediaType JSON = MediaType.parse("application/json");
 	public static String userAgent;
 
 	private static final String BASE = "https://api.runelite.net";

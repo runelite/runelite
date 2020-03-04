@@ -31,13 +31,7 @@ import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.ABYSSAL_BRACELET;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -94,6 +88,33 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 			charges = config.explorerRing();
 		}
+		else if (itemId == ItemID.RING_OF_FORGING)
+		{
+			if (!config.showRingOfForgingCount())
+			{
+				return;
+			}
+
+			charges = config.ringOfForging();
+		}
+		else if (itemId == ItemID.AMULET_OF_CHEMISTRY)
+		{
+			if (!config.showAmuletOfChemistryCharges())
+			{
+				return;
+			}
+
+			charges = config.amuletOfChemistry();
+		}
+		else if (itemId == ItemID.AMULET_OF_BOUNTY)
+		{
+			if (!config.showAmuletOfBountyCharges())
+			{
+				return;
+			}
+
+			charges = config.amuletOfBounty();
+		}
 		else
 		{
 			ItemWithCharge chargeItem = ItemWithCharge.findItem(itemId);
@@ -109,7 +130,11 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				|| (type == WATERCAN && !config.showWateringCanCharges())
 				|| (type == WATERSKIN && !config.showWaterskinCharges())
 				|| (type == BELLOWS && !config.showBellowCharges())
-				|| (type == ABYSSAL_BRACELET && !config.showAbyssalBraceletCharges()))
+				|| (type == FRUIT_BASKET && !config.showBasketCharges())
+				|| (type == SACK && !config.showSackCharges())
+				|| (type == ABYSSAL_BRACELET && !config.showAbyssalBraceletCharges())
+				|| (type == AMULET_OF_CHEMISTRY && !config.showAmuletOfChemistryCharges())
+				|| (type == AMULET_OF_BOUNTY && !config.showAmuletOfBountyCharges()))
 			{
 				return;
 			}
@@ -129,6 +154,9 @@ class ItemChargeOverlay extends WidgetItemOverlay
 	{
 		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges() || config.showAbyssalBraceletCharges() || config.showExplorerRingCharges();
+			|| config.showBellowCharges() || config.showBasketCharges() || config.showSackCharges()
+			|| config.showAbyssalBraceletCharges() || config.showExplorerRingCharges() || config.showRingOfForgingCount()
+			|| config.showAmuletOfChemistryCharges() || config.showAmuletOfBountyCharges();
+
 	}
 }

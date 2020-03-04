@@ -32,6 +32,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.TooltipPositionType;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -41,16 +43,18 @@ import net.runelite.client.ui.overlay.components.TooltipComponent;
 @Singleton
 public class TooltipOverlay extends Overlay
 {
-	private static final int OFFSET = 24;
+	private static final int UNDER_OFFSET = 24;
 	private static final int PADDING = 2;
 	private final TooltipManager tooltipManager;
 	private final Client client;
+	private final RuneLiteConfig runeLiteConfig;
 
 	@Inject
-	private TooltipOverlay(Client client, TooltipManager tooltipManager)
+	private TooltipOverlay(Client client, TooltipManager tooltipManager, final RuneLiteConfig runeLiteConfig)
 	{
 		this.client = client;
 		this.tooltipManager = tooltipManager;
+		this.runeLiteConfig = runeLiteConfig;
 		setPosition(OverlayPosition.TOOLTIP);
 		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
@@ -66,54 +70,45 @@ public class TooltipOverlay extends Overlay
 			return null;
 		}
 
-		final Rectangle clientCanvasBounds = new Rectangle(client.getRealDimensions());
-		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
-		final Point mousePosition = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + OFFSET);
-		final Rectangle bounds = new Rectangle(getBounds());
-		bounds.setLocation(mousePosition);
-
-		if (!clientCanvasBounds.contains(bounds))
+		try
 		{
-			final int clientX = (int) clientCanvasBounds.getMaxX();
-			final int clientY = (int) clientCanvasBounds.getMaxY();
-			final int boundsX = (int) bounds.getMaxX();
-			final int boundsY = (int) bounds.getMaxY();
-
-			if (boundsY > clientY)
-			{
-				graphics.translate(0, -bounds.height - OFFSET);
-			}
-
-			if (boundsX > clientX)
-			{
-				graphics.translate(-bounds.width + clientCanvasBounds.width - bounds.x, 0);
-			}
+			return renderTooltips(graphics, tooltips);
 		}
+		finally
+		{
+			// Tooltips must always be cleared each frame
+			tooltipManager.clear();
+		}
+	}
 
-		final Rectangle newBounds = new Rectangle(-1, -1, 0, 0);
+	private Dimension renderTooltips(Graphics2D graphics, List<Tooltip> tooltips)
+	{
+		final int canvasWidth = client.getCanvasWidth();
+		final int canvasHeight = client.getCanvasHeight();
+		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
+		final Rectangle prevBounds = getBounds();
+
+		final int tooltipX = Math.min(canvasWidth - prevBounds.width, mouseCanvasPosition.getX());
+		final int tooltipY = runeLiteConfig.tooltipPosition() == TooltipPositionType.ABOVE_CURSOR
+			? Math.max(0, mouseCanvasPosition.getY() - prevBounds.height)
+			: Math.min(canvasHeight - prevBounds.height, mouseCanvasPosition.getY() + UNDER_OFFSET);
+
+		final Rectangle newBounds = new Rectangle(tooltipX, tooltipY, 0, 0);
 
 		for (Tooltip tooltip : tooltips)
 		{
 			final TooltipComponent tooltipComponent = new TooltipComponent();
 			tooltipComponent.setModIcons(client.getModIcons());
 			tooltipComponent.setText(tooltip.getText());
+			tooltipComponent.setPosition(new Point(tooltipX, tooltipY + newBounds.height));
 
-			if (newBounds.contains(mousePosition))
-			{
-				mousePosition.move(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + OFFSET + newBounds.height);
-			}
-
-			tooltipComponent.setPosition(mousePosition);
 			final Dimension dimension = tooltipComponent.render(graphics);
 
 			// Create incremental tooltip newBounds
-			newBounds.x = newBounds.x != -1 ? Math.min(newBounds.x, mousePosition.x) : mousePosition.x;
-			newBounds.y = newBounds.y != -1 ? Math.min(newBounds.y, mousePosition.y) : mousePosition.y;
 			newBounds.height += dimension.height + PADDING;
 			newBounds.width = Math.max(newBounds.width, dimension.width);
 		}
 
-		tooltipManager.clear();
 		return newBounds.getSize();
 	}
 }

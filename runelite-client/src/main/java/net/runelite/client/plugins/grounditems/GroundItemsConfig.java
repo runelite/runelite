@@ -29,6 +29,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
@@ -343,6 +344,7 @@ public interface GroundItemsConfig extends Config
 		description = "Decrease this number if you accidentally hide ground items often. (0 = Disabled)",
 		position = 26
 	)
+	@Units(Units.MILLISECONDS)
 	default int doubleTapDelay()
 	{
 		return 250;
@@ -355,6 +357,17 @@ public interface GroundItemsConfig extends Config
 		position = 27
 	)
 	default boolean collapseEntries()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "groundItemTimers",
+		name = "Show despawn timers",
+		description = "Shows despawn timers for items you've dropped and received as loot",
+		position = 28
+	)
+	default boolean groundItemTimers()
 	{
 		return false;
 	}

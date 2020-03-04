@@ -30,13 +30,12 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import net.runelite.api.Client;
-import net.runelite.api.Experience;
 import net.runelite.api.GameState;
-import net.runelite.api.Skill;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.Skill;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.callback.ClientThread;
@@ -61,6 +60,7 @@ public class WorldMapPlugin extends Plugin
 	private static final BufferedImage NOT_STARTED_ICON;
 	private static final BufferedImage STARTED_ICON;
 	private static final BufferedImage FINISHED_ICON;
+	private static final BufferedImage MINING_SITE_ICON;
 
 	static final String CONFIG_KEY = "worldmap";
 	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "fairyRingTooltips";
@@ -80,6 +80,8 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_RARE_TREE_TOOLTIPS = "rareTreeTooltips";
 	static final String CONFIG_KEY_RARE_TREE_LEVEL_ICON = "rareTreeIcon";
 	static final String CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS = "transportationTooltips";
+	static final String CONFIG_KEY_RUNECRAFTING_ALTAR_ICON = "runecraftingAltarIcon";
+	static final String CONFIG_KEY_MINING_SITE_TOOLTIPS = "miningSiteTooltips";
 
 	static
 	{
@@ -110,6 +112,10 @@ public class WorldMapPlugin extends Plugin
 		FINISHED_ICON = new BufferedImage(questIconBufferSize, questIconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage finishedIcon = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "quest_completed_icon.png");
 		FINISHED_ICON.getGraphics().drawImage(finishedIcon, 4, 4, null);
+
+		MINING_SITE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage miningSiteIcon = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "mining_site_icon.png");
+		MINING_SITE_ICON.getGraphics().drawImage(miningSiteIcon, 1, 1, null);
 	}
 
 	@Inject
@@ -152,6 +158,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
 		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
 		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
+		worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
 		agilityLevel = 0;
 		woodcuttingLevel = 0;
 	}
@@ -168,25 +175,29 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	public void onStatChanged(StatChanged statChanged)
 	{
-		if (event.getSkill() == Skill.AGILITY)
+		switch (statChanged.getSkill())
 		{
-			int newAgilityLevel = Experience.getLevelForXp(client.getSkillExperience(Skill.AGILITY));
-			if (newAgilityLevel != agilityLevel)
+			case AGILITY:
 			{
-				agilityLevel = newAgilityLevel;
-				clientThread.invokeLater(this::updateAgilityIcons);
+				int newAgilityLevel = statChanged.getLevel();
+				if (newAgilityLevel != agilityLevel)
+				{
+					agilityLevel = newAgilityLevel;
+					clientThread.invokeLater(this::updateAgilityIcons);
+				}
+				break;
 			}
-		}
-
-		if (event.getSkill() == Skill.WOODCUTTING)
-		{
-			int newWoodcutLevel = Experience.getLevelForXp(client.getSkillExperience(Skill.WOODCUTTING));
-			if (newWoodcutLevel != woodcuttingLevel)
+			case WOODCUTTING:
 			{
-				woodcuttingLevel = newWoodcutLevel;
-				updateRareTreeIcons();
+				int newWoodcutLevel = statChanged.getLevel();
+				if (newWoodcutLevel != woodcuttingLevel)
+				{
+					woodcuttingLevel = newWoodcutLevel;
+					updateRareTreeIcons();
+				}
+				break;
 			}
 		}
 	}
@@ -301,6 +312,22 @@ public class WorldMapPlugin extends Plugin
 				}
 			}).map(TeleportPoint::new)
 			.forEach(worldMapPointManager::add);
+
+		worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
+		if (config.runecraftingAltarIcon())
+		{
+			Arrays.stream(RunecraftingAltarLocation.values())
+				.map(RunecraftingAltarPoint::new)
+				.forEach(worldMapPointManager::add);
+		}
+
+		worldMapPointManager.removeIf(MiningSitePoint.class::isInstance);
+		if (config.miningSiteTooltips())
+		{
+			Arrays.stream(MiningSiteLocation.values())
+				.map(value -> new MiningSitePoint(value, value.isIconRequired() ? MINING_SITE_ICON : BLANK_ICON))
+				.forEach(worldMapPointManager::add);
+		}
 	}
 
 	private void updateQuestStartPointIcons()

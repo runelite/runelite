@@ -28,6 +28,7 @@ package net.runelite.client.plugins.stretchedmode;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("stretchedmode")
 public interface StretchedModeConfig extends Config
@@ -64,9 +65,10 @@ public interface StretchedModeConfig extends Config
 
 	@ConfigItem(
 		keyName = "scalingFactor",
-		name = "Resizable Scaling (%)",
+		name = "Resizable Scaling",
 		description = "In resizable mode, the game is reduced in size this much before it's stretched."
 	)
+	@Units(Units.PERCENT)
 	default int scalingFactor()
 	{
 		return 50;

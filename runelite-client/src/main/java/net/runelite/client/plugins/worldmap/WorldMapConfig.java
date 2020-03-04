@@ -218,4 +218,26 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_RUNECRAFTING_ALTAR_ICON,
+		name = "Show runecrafting altar locations",
+		description = "Show the icons of runecrafting altars",
+		position = 18
+	)
+	default boolean runecraftingAltarIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_MINING_SITE_TOOLTIPS,
+		name = "Show mining site tooltips",
+		description = "Indicates the ore available at mining sites",
+		position = 19
+	)
+	default boolean miningSiteTooltips()
+	{
+		return true;
+	}
 }

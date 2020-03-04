@@ -83,4 +83,44 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showOres",
+		name = "Ores",
+		description = "Show identification on Ores"
+	)
+	default boolean showOres()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showGems",
+		name = "Gems",
+		description = "Show identification on Gems"
+	)
+	default boolean showGems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showPotions",
+		name = "Potions",
+		description = "Show identification on Potions"
+	)
+	default boolean showPotions()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showImplingJars",
+		name = "Impling jars",
+		description = "Show identification on Impling jars"
+	)
+	default boolean showImplingJars()
+	{
+		return false;
+	}
 }

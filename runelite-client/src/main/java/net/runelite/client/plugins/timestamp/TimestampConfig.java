@@ -59,7 +59,8 @@ public interface TimestampConfig extends Config
 			"'HH' : hour in 24 hour format<br>" +
 			"'hh' : hour in 12 hour format<br>" +
 			"'mm' : minute<br>" +
-			"'ss' : second"
+			"'ss' : second<br>" +
+			"'a'  : AM/PM"
 	)
 	default String timestampFormat()
 	{

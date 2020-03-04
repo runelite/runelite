@@ -32,7 +32,6 @@ import java.util.Iterator;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.plugins.party.data.PartyTilePingData;
 import net.runelite.client.ui.overlay.Overlay;
@@ -58,18 +57,6 @@ class PartyPingOverlay extends Overlay
 		if (plugin.getPartyDataMap().isEmpty())
 		{
 			return null;
-		}
-
-		// Update selected scene tile
-		if (!client.isMenuOpen())
-		{
-			Point p = client.getMouseCanvasPosition();
-			p = new Point(
-				p.getX() - client.getViewportXOffset(),
-				p.getY() - client.getViewportYOffset());
-
-			client.setCheckClick(true);
-			client.setMouseCanvasHoverPosition(p);
 		}
 
 		synchronized (plugin.getPendingTilePings())
