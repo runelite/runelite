@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -48,10 +49,11 @@ import net.runelite.http.api.item.ItemStats;
 
 public class ItemStatOverlay extends Overlay
 {
-	// Unarmed attack speed is 6
-	private static final ItemStats UNARMED = new ItemStats(false, true, 0, 0,
+	// Unarmed attack speed is 4
+	@VisibleForTesting
+	static final ItemStats UNARMED = new ItemStats(false, true, 0, 0,
 		ItemEquipmentStats.builder()
-			.aspeed(6)
+			.aspeed(4)
 			.build());
 
 	@Inject
