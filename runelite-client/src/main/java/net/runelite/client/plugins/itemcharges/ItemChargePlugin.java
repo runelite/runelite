@@ -206,20 +206,20 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		String message = event.getMessage();
-		Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
-		Matcher dodgyProtectMatcher = DODGY_PROTECT_PATTERN.matcher(message);
-		Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
-		Matcher bindingNecklaceCheckMatcher = BINDING_CHECK_PATTERN.matcher(event.getMessage());
-		Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(event.getMessage());
-		Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
-		Matcher amuletOfChemistryCheckMatcher = AMULET_OF_CHEMISTRY_CHECK_PATTERN.matcher(message);
-		Matcher amuletOfChemistryUsedMatcher = AMULET_OF_CHEMISTRY_USED_PATTERN.matcher(message);
-		Matcher amuletOfBountyCheckMatcher = AMULET_OF_BOUNTY_CHECK_PATTERN.matcher(message);
-		Matcher amuletOfBountyUsedMatcher = AMULET_OF_BOUNTY_USED_PATTERN.matcher(message);
-
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
+			String message = event.getMessage();
+			Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
+			Matcher dodgyProtectMatcher = DODGY_PROTECT_PATTERN.matcher(message);
+			Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
+			Matcher bindingNecklaceCheckMatcher = BINDING_CHECK_PATTERN.matcher(message);
+			Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(message);
+			Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
+			Matcher amuletOfChemistryCheckMatcher = AMULET_OF_CHEMISTRY_CHECK_PATTERN.matcher(message);
+			Matcher amuletOfChemistryUsedMatcher = AMULET_OF_CHEMISTRY_USED_PATTERN.matcher(message);
+			Matcher amuletOfBountyCheckMatcher = AMULET_OF_BOUNTY_CHECK_PATTERN.matcher(message);
+			Matcher amuletOfBountyUsedMatcher = AMULET_OF_BOUNTY_USED_PATTERN.matcher(message);
+
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
 				notifier.notify("Your Ring of Recoil has shattered");
