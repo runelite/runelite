@@ -1206,9 +1206,9 @@ public class WidgetID
 
 	static class Options
 	{
-		static final int MUSIC_SLIDER = 38;
-		static final int SOUND_EFFECT_SLIDER = 44;
-		static final int AREA_SOUND_SLIDER = 50;
+		static final int MUSIC_SLIDER = 37;
+		static final int SOUND_EFFECT_SLIDER = 43;
+		static final int AREA_SOUND_SLIDER = 49;
 	}
 
 	static class AchievementDiary
