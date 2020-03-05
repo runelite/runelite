@@ -45,6 +45,7 @@ import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import joptsimple.ArgumentAcceptingOptionSpec;
+import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.util.EnumConverter;
@@ -234,7 +235,18 @@ public class RuneLite
 			});
 
 		parser.accepts("help", "Show this text").forHelp();
-		OptionSet options = parser.parse(args);
+
+		OptionSet options = parser.parse("");
+
+		try
+		{
+			options = parser.parse(args);
+		}
+		catch (OptionException e)
+		{
+			log.warn("Error parsing launch args: {}", e.getMessage());
+			log.warn("Proceeding with no arguments.");
+		}
 
 		if (options.has("help"))
 		{
