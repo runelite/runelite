@@ -48,12 +48,14 @@ import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -436,13 +438,19 @@ public class GrandExchangePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		// GE offers setup init
+		if (event.getScriptId() != ScriptID.GE_OFFERS_SETUP_BUILD)
+		{
+			return;
+		}
+		rebuildGeText();
+	}
+
+	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (event.getEventName().equals("geBuilt"))
-		{
-			rebuildGeText();
-		}
-
 		if (!event.getEventName().equals("setGETitle") || !config.showTotal())
 		{
 			return;
