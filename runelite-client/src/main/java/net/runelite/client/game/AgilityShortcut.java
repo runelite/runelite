@@ -27,6 +27,7 @@ package net.runelite.client.game;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Diary;
@@ -37,8 +38,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.requirement.AchievementDiaryRequirement;
 import net.runelite.client.game.requirement.Requirement;
 import net.runelite.client.game.requirement.SkillRequirement;
-
-import java.util.List;
 
 @Getter
 public enum AgilityShortcut
@@ -191,7 +190,7 @@ public enum AgilityShortcut
 	TAVERLEY_DUNGEON_ROCKS_SOUTH(70, "Rocks", new WorldPoint(2887, 9631, 0), ROCKS, ROCKS_14106),
 	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole" , new WorldPoint(3713, 3827, 0), HOLE_31481, HOLE_31482),
 	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole" , new WorldPoint(3715, 3817, 0), HOLE_31481, HOLE_31482),
-	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW),
+	AL_KHARID_WINDOW(70, Diary.DESERT_HARD, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW),
 	GWD_SARADOMIN_ROPE_NORTH(70, "Rope Descent", new WorldPoint(2912, 5300, 0), NULL_26371),
 	GWD_SARADOMIN_ROPE_SOUTH(70, "Rope Descent", new WorldPoint(2951, 5267, 0), NULL_26375),
 	SLAYER_TOWER_ADVANCED_CHAIN_FIRST(71, "Spiked Chain (Floor 2)", new WorldPoint(3447, 3578, 0), SPIKEY_CHAIN ),
@@ -205,7 +204,7 @@ public enum AgilityShortcut
 	REVENANT_CAVES_ANKOU_EAST(75, "Jump", new WorldPoint(3201, 10195, 0), PILLAR_31561),
 	REVENANT_CAVES_ANKOU_NORTH(75, "Jump", new WorldPoint(3180, 10209, 0), PILLAR_31561),
 	ZUL_ANDRA_ISLAND_CROSSING(76, "Stepping Stone", new WorldPoint(2156, 3073, 0), STEPPING_STONE_10663),
-	SHILO_VILLAGE_STEPPING_STONES(77, Diary.KARAMJA_ELITE, "Stepping Stones", new WorldPoint(2863, 2974, 0), STEPPING_STONE_16466),
+	SHILO_VILLAGE_STEPPING_STONES(77, Diary.KARAMJA_MEDIUM, "Stepping Stones", new WorldPoint(2863, 2974, 0), STEPPING_STONE_16466),
 	IORWERTHS_DUNGEON_NORTHERN_SHORTCUT_EAST(78, "Tight Gap", new WorldPoint(3221, 12441, 0), TIGHT_GAP),
 	IORWERTHS_DUNGEON_NORTHERN_SHORTCUT_WEST(78, "Tight Gap", new WorldPoint(3215, 12441, 0), TIGHT_GAP_36693),
 	KHARAZI_JUNGLE_VINE_CLIMB(79, "Vine", new WorldPoint(2897, 2939, 0), NULL_26884, NULL_26886),
@@ -214,7 +213,7 @@ public enum AgilityShortcut
 	LAVA_MAZE_NORTH_JUMP(82, Diary.WILDERNESS_HARD, "Stepping Stone", new WorldPoint(3092, 3880, 0), STEPPING_STONE_14917),
 	BRIMHAVEN_DUNGEON_EAST_STEPPING_STONES_NORTH(83, Diary.KARAMJA_ELITE, "Stepping Stones", new WorldPoint(2685, 9547, 0), STEPPING_STONE_19040),
 	BRIMHAVEN_DUNGEON_EAST_STEPPING_STONES_SOUTH(83, Diary.KARAMJA_ELITE, "Stepping Stones", new WorldPoint(2693, 9529, 0), STEPPING_STONE_19040),
-	ELVEN_ADVANCED_CLIFF_SCRAMBLE(85, "Rocks", new WorldPoint(2337, 3253, 0), ROCKS_16514, ROCKS_16514),
+	ELVEN_ADVANCED_CLIFF_SCRAMBLE(85, "Rocks", new WorldPoint(2337, 3253, 0), ROCKS_16514, ROCKS_16515),
 	ELVEN_ADVANCED_CLIFF_SCRAMBLE_PRIFDDINAS(85, "Rocks", new WorldPoint(3361, 6005, 0), ROCKS_16514, ROCKS_16515),
 	KALPHITE_WALL(86, Diary.DESERT_ELITE, "Crevice", new WorldPoint(3214, 9508, 0), CREVICE_16465),
 	BRIMHAVEN_DUNGEON_VINE_EAST(87, "Vine", new WorldPoint(2672, 9582, 0), VINE_26880, VINE_26882),
@@ -267,7 +266,7 @@ public enum AgilityShortcut
 
 	AgilityShortcut(int level, String description, WorldPoint location, int... obstacleIds)
 	{
-		this(ImmutableList.of(new SkillRequirement(Skill.AGILITY, level)), description, location, location, obstacleIds);
+		this(level, description, location, location, obstacleIds);
 	}
 
 	AgilityShortcut(int level, Diary diaryRequirement, String description, WorldPoint location, int... obstacleIds)
@@ -277,12 +276,14 @@ public enum AgilityShortcut
 
 	public boolean satisfiesAll(Client client)
 	{
-		boolean satisfies = true;
 		for (Requirement requirement : requirements)
 		{
-			satisfies &= requirement.isSatisfied(client);
+			if (!requirement.isSatisfied(client))
+			{
+				return false;
+			}
 		}
-		return satisfies;
+		return true;
 	}
 
 	public String getTooltip()

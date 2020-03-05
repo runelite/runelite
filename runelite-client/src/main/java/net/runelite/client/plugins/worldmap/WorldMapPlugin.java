@@ -185,7 +185,7 @@ public class WorldMapPlugin extends Plugin
 				if (newAgilityLevel != agilityLevel)
 				{
 					agilityLevel = newAgilityLevel;
-					clientThread.invokeLater(this::updateAgilityIcons);
+					clientThread.invokeLater(() ->	updateAgilityIcons());
 				}
 				break;
 			}
@@ -247,7 +247,7 @@ public class WorldMapPlugin extends Plugin
 
 	private void updateShownIcons()
 	{
-		clientThread.invokeLater(this::updateAgilityIcons);
+		clientThread.invokeLater(() ->	updateAgilityIcons());
 		updateRareTreeIcons();
 		updateQuestStartPointIcons();
 
