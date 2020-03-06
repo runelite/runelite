@@ -609,7 +609,7 @@ public class ClientUI
 			return;
 		}
 
-		final java.awt.Point hotspot = new java.awt.Point(container.getX(), container.getY());
+		final java.awt.Point hotspot = new java.awt.Point(0, 0);
 		final Cursor cursorAwt = Toolkit.getDefaultToolkit().createCustomCursor(image, hotspot, name);
 		container.setCursor(cursorAwt);
 	}
