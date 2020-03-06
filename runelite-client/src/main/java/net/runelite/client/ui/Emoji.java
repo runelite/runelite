@@ -22,14 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.emojis;
+package net.runelite.client.ui;
 
 import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import net.runelite.client.util.ImageUtil;
 
-enum Emoji
+public enum Emoji
 {
 	SLIGHT_SMILE(":)"),
 	JOY("=')"),
@@ -91,7 +91,7 @@ enum Emoji
 
 	private static final Map<String, Emoji> emojiMap;
 
-	private final String trigger;
+	public final String trigger;
 
 	static
 	{
@@ -110,12 +110,12 @@ enum Emoji
 		this.trigger = trigger;
 	}
 
-	BufferedImage loadImage()
+	public BufferedImage loadImage()
 	{
-		return ImageUtil.getResourceStreamFromClass(getClass(), this.name().toLowerCase() + ".png");
+		return ImageUtil.getResourceStreamFromClass(ClientUI.class, "emojis/" + this.name().toLowerCase() + ".png");
 	}
 
-	static Emoji getEmoji(String trigger)
+	public static Emoji getEmoji(String trigger)
 	{
 		return emojiMap.get(trigger);
 	}

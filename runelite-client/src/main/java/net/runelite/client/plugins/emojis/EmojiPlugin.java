@@ -44,6 +44,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.Emoji;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
