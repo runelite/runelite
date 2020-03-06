@@ -47,6 +47,7 @@ import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -314,8 +315,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 			&& menuEntryAdded.getOption().startsWith("Deposit-"))
 		{
 			ShiftDepositMode shiftDepositMode = config.bankDepositShiftClick();
-			final int actionId = shiftDepositMode.getMenuAction().getId();
-			final int opId = shiftDepositMode.getIdentifier();
+			final int opId = WidgetInfo.TO_GROUP(menuEntryAdded.getActionParam1()) == WidgetID.DEPOSIT_BOX_GROUP_ID ? shiftDepositMode.getIdentifierDepositBox() : shiftDepositMode.getIdentifier();
+			final int actionId = opId >= 6 ? MenuAction.CC_OP_LOW_PRIORITY.getId() : MenuAction.CC_OP.getId();
 			bankModeSwap(actionId, opId);
 		}
 
