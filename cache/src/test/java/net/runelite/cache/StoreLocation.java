@@ -93,7 +93,7 @@ public class StoreLocation
 
 	public static TemporaryFolder getTemporaryFolder()
 	{
-		return new TemporaryFolder()
+		return new TemporaryFolder(TMP)
 		{
 			@Override
 			public void after()
