@@ -185,7 +185,7 @@ public class WorldMapPlugin extends Plugin
 				if (newAgilityLevel != agilityLevel)
 				{
 					agilityLevel = newAgilityLevel;
-					clientThread.invokeLater(() ->	updateAgilityIcons());
+					updateAgilityIcons();
 				}
 				break;
 			}
@@ -219,12 +219,15 @@ public class WorldMapPlugin extends Plugin
 
 		if (config.agilityShortcutLevelIcon() || config.agilityShortcutTooltips())
 		{
-			Arrays.stream(AgilityShortcut.values())
+			clientThread.invokeLater(() ->
+			{
+				Arrays.stream(AgilityShortcut.values())
 				.filter(value -> value.getWorldMapLocation() != null)
 				.map(value -> new AgilityShortcutPoint(value,
 					config.agilityShortcutLevelIcon() && !value.satisfiesAll(client) ? NOPE_ICON : BLANK_ICON,
 					config.agilityShortcutTooltips()))
 				.forEach(worldMapPointManager::add);
+			});
 		}
 	}
 
@@ -247,7 +250,7 @@ public class WorldMapPlugin extends Plugin
 
 	private void updateShownIcons()
 	{
-		clientThread.invokeLater(() ->	updateAgilityIcons());
+		updateAgilityIcons();
 		updateRareTreeIcons();
 		updateQuestStartPointIcons();
 
