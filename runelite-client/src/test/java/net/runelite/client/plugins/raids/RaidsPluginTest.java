@@ -36,16 +36,18 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageCapture;
+import net.runelite.client.ws.PartyService;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import net.runelite.client.Notifier;
-import net.runelite.client.util.ImageCapture;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -97,6 +99,14 @@ public class RaidsPluginTest
 
 	@Inject
 	RaidsPlugin raidsPlugin;
+
+	@Mock
+	@Bind
+	private PartyService partyService;
+
+	@Mock
+	@Bind
+	private OverlayManager overlayManager;
 
 	@Before
 	public void before()
