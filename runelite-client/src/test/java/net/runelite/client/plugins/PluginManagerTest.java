@@ -84,8 +84,8 @@ public class PluginManagerTest
 	{
 		Injector injector = Guice.createInjector(Modules
 			.override(new RuneLiteModule(() -> null, true,
-				new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_SESSION_FILE),
-				new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_CONFIG_FILE)))
+				RuneLite.DEFAULT_SESSION_FILE,
+				RuneLite.DEFAULT_CONFIG_FILE))
 			.with(BoundFieldModule.of(this)));
 
 		RuneLite.setInjector(injector);
@@ -147,8 +147,8 @@ public class PluginManagerTest
 		List<Module> modules = new ArrayList<>();
 		modules.add(new GraphvizModule());
 		modules.add(new RuneLiteModule(() -> null, true,
-			new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_SESSION_FILE),
-			new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_CONFIG_FILE)));
+			RuneLite.DEFAULT_SESSION_FILE,
+			RuneLite.DEFAULT_CONFIG_FILE));
 
 		PluginManager pluginManager = new PluginManager(true, null, null, null, null, null);
 		pluginManager.loadCorePlugins();
