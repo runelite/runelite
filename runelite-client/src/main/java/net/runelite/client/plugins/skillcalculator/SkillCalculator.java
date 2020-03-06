@@ -128,7 +128,7 @@ class SkillCalculator extends JPanel
 		currentXP = client.getSkillExperience(calculatorType.getSkill());
 		currentLevel = Experience.getLevelForXp(currentXP);
 
-		if (currentSkill == null || !currentSkill.equals(calculatorType.getSkill()))
+		if (currentSkill != calculatorType.getSkill())
 		{
 			currentSkill = calculatorType.getSkill();
 
