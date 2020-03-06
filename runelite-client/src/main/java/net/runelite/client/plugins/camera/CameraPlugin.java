@@ -71,9 +71,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private static final String LOOK_SOUTH = "Look South";
 	private static final String LOOK_EAST = "Look East";
 	private static final String LOOK_WEST = "Look West";
-	private static final int RESET_DIRECTION_TIMEOUT = 5;
+	private static final String DEFAULT_LEFT_CLICK_OPTION = LOOK_NORTH;
 	private int lastUpdatedTick = 0;
-	private static final String defaultLeftClickOption = LOOK_NORTH;
 	private String currentLeftClickOption;
 	private String[] options = new String[]{LOOK_NORTH, LOOK_SOUTH, LOOK_EAST, LOOK_WEST};
 
@@ -113,7 +112,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		rightClick = false;
 		middleClick = false;
 		menuHasEntries = false;
-		currentLeftClickOption = defaultLeftClickOption;
+		currentLeftClickOption = DEFAULT_LEFT_CLICK_OPTION;
 		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
@@ -132,11 +131,11 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	public void onGameTick(GameTick gameTick)
 	{
 		final int timeoutTicks = (config.compassMultipleClickTimeout() * 1000) / Constants.GAME_TICK_LENGTH;
-		if (currentLeftClickOption.equals(defaultLeftClickOption) || (client.getTickCount() < (lastUpdatedTick + timeoutTicks)))
+		if (currentLeftClickOption.equals(DEFAULT_LEFT_CLICK_OPTION) || (client.getTickCount() < (lastUpdatedTick + timeoutTicks)))
 		{
 			return;
 		}
-		currentLeftClickOption = defaultLeftClickOption;
+		currentLeftClickOption = DEFAULT_LEFT_CLICK_OPTION;
 	}
 
 	@Subscribe
@@ -187,7 +186,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		// if the option is disabled, don't process the click any differently
-		if ((event.getMenuAction() == MenuAction.CC_OP) && config.compassMultipleClickCycle() && event.getMenuOption().equals(currentLeftClickOption))
+		if (event.getMenuAction() == MenuAction.CC_OP && config.compassMultipleClickCycle() && event.getMenuOption().equals(currentLeftClickOption))
 		{
 			// set the next option in options array as the left click option
 			final int count = options.length;
@@ -356,6 +355,12 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		menuHasEntries = hasMenuEntries(client.getMenuEntries());
 	}
 
+	@Override
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
 	/**
 	 * The event that is triggered when a mouse button is pressed
 	 * In this method the right click is changed to a middle-click to enable rotating the camera
@@ -443,6 +448,18 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		return mouseEvent;
 	}
 
+	@Override
+	public MouseEvent mouseEntered(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseExited(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
 	/*
 	 * These methods are unused but required to be present in a MouseListener implementation
 	 */
@@ -455,24 +472,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 
 	@Override
 	public MouseEvent mouseMoved(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
-	}
-
-	@Override
-	public MouseEvent mouseClicked(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
-	}
-
-	@Override
-	public MouseEvent mouseEntered(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
-	}
-
-	@Override
-	public MouseEvent mouseExited(MouseEvent mouseEvent)
 	{
 		return mouseEvent;
 	}
