@@ -59,6 +59,7 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER)
 		.put(WidgetInfo.LMS_INFO, OverlayPosition.TOP_CENTER)
 		.put(WidgetInfo.LMS_KDA, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.GAUNTLET_TIMER_CONTAINER, OverlayPosition.TOP_LEFT)
 		.build();
 
 	public static Collection<WidgetOverlay> createOverlays(final Client client)
