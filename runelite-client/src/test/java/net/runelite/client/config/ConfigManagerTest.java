@@ -61,11 +61,11 @@ public class ConfigManagerTest
 
 	@Bind
 	@Named("sessionfile")
-	File sessionfile = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_SESSION_FILE);
+	File sessionfile = RuneLite.DEFAULT_SESSION_FILE;
 
 	@Bind
 	@Named("config")
-	File config = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_CONFIG_FILE);
+	File config = RuneLite.DEFAULT_CONFIG_FILE;
 
 	@Inject
 	ConfigManager manager;

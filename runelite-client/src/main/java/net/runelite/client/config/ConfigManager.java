@@ -142,7 +142,7 @@ public class ConfigManager
 		else
 		{
 			File profileDir = new File(RuneLite.PROFILES_DIR, session.getUsername().toLowerCase());
-			return new File(profileDir, RuneLite.DEFAULT_CONFIG_FILE);
+			return new File(profileDir, RuneLite.DEFAULT_CONFIG_FILE.getName());
 		}
 	}
 
@@ -335,7 +335,7 @@ public class ConfigManager
 
 		parent.mkdirs();
 
-		File tempFile = new File(parent, RuneLite.DEFAULT_CONFIG_FILE + ".tmp");
+		File tempFile = new File(parent, RuneLite.DEFAULT_CONFIG_FILE.getName() + ".tmp");
 
 		try (FileOutputStream out = new FileOutputStream(tempFile))
 		{

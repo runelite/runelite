@@ -88,8 +88,8 @@ public class RuneLite
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
-	public static final String DEFAULT_SESSION_FILE = "session";
-	public static final String DEFAULT_CONFIG_FILE = "settings.properties";
+	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
+	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
 
 	@Getter
 	private static Injector injector;
@@ -179,12 +179,14 @@ public class RuneLite
 		parser.accepts("debug", "Show extra debugging output");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
-			.withRequiredArg().defaultsTo(DEFAULT_SESSION_FILE)
-			.withValuesConvertedBy(new ConfigFileConverter());
+			.withRequiredArg()
+			.withValuesConvertedBy(new ConfigFileConverter())
+			.defaultsTo(DEFAULT_SESSION_FILE);
 
 		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
-			.withRequiredArg().defaultsTo(DEFAULT_CONFIG_FILE)
-			.withValuesConvertedBy(new ConfigFileConverter());
+			.withRequiredArg()
+			.withValuesConvertedBy(new ConfigFileConverter())
+			.defaultsTo(DEFAULT_CONFIG_FILE);
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
