@@ -29,7 +29,6 @@ import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.annotation.Nullable;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
@@ -65,13 +64,13 @@ final class ClientPanel extends JPanel
 			{
 				String message = "Detected a bad codebase. Resetting...\n"
 					+ "Please restart client.\n";
-				JOptionPane.showMessageDialog(new JFrame(), message, "Bad Codebase",
+				JOptionPane.showMessageDialog(ClientUI.getFrame(), message, "Bad Codebase",
 					JOptionPane.ERROR_MESSAGE);
 				StringFileUtils.writeStringToFile(RuneLite.RUNELITE_DIR + "/codebase", "http://127.0.0.1/");
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(new JFrame(), "Error loading Oldschool RuneScape!", "Error",
+				JOptionPane.showMessageDialog(ClientUI.getFrame(), "Error loading Oldschool RuneScape!", "Error",
 					JOptionPane.ERROR_MESSAGE);
 				Sentry.capture(e);
 			}

@@ -1,19 +1,5 @@
 package net.runelite.client.plugins.openosrs.externals;
 
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.plugins.ExternalPluginManager;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.util.ImageUtil;
-import javax.inject.Inject;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,6 +9,21 @@ import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.inject.Inject;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.plugins.ExternalPluginManager;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.ImageUtil;
 
 public class ExternalPluginManagerPanel extends PluginPanel
 {
@@ -102,7 +103,7 @@ public class ExternalPluginManagerPanel extends PluginPanel
 				};
 
 				int option =
-					JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
+					JOptionPane.showConfirmDialog(ClientUI.getFrame(), message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
 				if (option != JOptionPane.OK_OPTION || owner.getText().equals("") || name.getText().equals(""))
 				{
 					return;
@@ -110,14 +111,14 @@ public class ExternalPluginManagerPanel extends PluginPanel
 
 				if (externalPluginManager.doesGhRepoExist(owner.getText(), name.getText()))
 				{
-					JOptionPane.showMessageDialog(null, "This repository already exists.", "Error!",
+					JOptionPane.showMessageDialog(ClientUI.getFrame(), "This repository already exists.", "Error!",
 						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
 				if (ExternalPluginManager.testGHRepository(owner.getText(), name.getText()))
 				{
-					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!",
+					JOptionPane.showMessageDialog(ClientUI.getFrame(), "This doesn't appear to be a valid repository.", "Error!",
 						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -153,7 +154,7 @@ public class ExternalPluginManagerPanel extends PluginPanel
 				};
 
 				int option =
-					JOptionPane.showConfirmDialog(null, message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
+					JOptionPane.showConfirmDialog(ClientUI.getFrame(), message, "Add repository", JOptionPane.OK_CANCEL_OPTION);
 				if (option != JOptionPane.OK_OPTION || id.getText().equals("") || url.getText().equals(""))
 				{
 					return;
@@ -161,7 +162,7 @@ public class ExternalPluginManagerPanel extends PluginPanel
 
 				if (id.getText().startsWith("gh:") || id.getText().contains("|"))
 				{
-					JOptionPane.showMessageDialog(null,
+					JOptionPane.showMessageDialog(ClientUI.getFrame(),
 						"Repository id cannot begin with \"gh:\"\nor contain the pipe character '|'.", "Error!",
 						JOptionPane.ERROR_MESSAGE);
 					return;
@@ -169,7 +170,7 @@ public class ExternalPluginManagerPanel extends PluginPanel
 
 				if (externalPluginManager.doesRepoExist(id.getText()))
 				{
-					JOptionPane.showMessageDialog(null,
+					JOptionPane.showMessageDialog(ClientUI.getFrame(),
 						String.format("The repository with id %s already exists.", id.getText()), "Error!",
 						JOptionPane.ERROR_MESSAGE);
 					return;
@@ -182,14 +183,14 @@ public class ExternalPluginManagerPanel extends PluginPanel
 				}
 				catch (MalformedURLException e)
 				{
-					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!",
+					JOptionPane.showMessageDialog(ClientUI.getFrame(), "This doesn't appear to be a valid repository.", "Error!",
 						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
 				if (ExternalPluginManager.testRepository(urlActual))
 				{
-					JOptionPane.showMessageDialog(null, "This doesn't appear to be a valid repository.", "Error!",
+					JOptionPane.showMessageDialog(ClientUI.getFrame(), "This doesn't appear to be a valid repository.", "Error!",
 						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
