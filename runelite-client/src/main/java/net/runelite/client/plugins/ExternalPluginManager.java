@@ -8,6 +8,7 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import java.util.Collections;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -124,7 +125,27 @@ class ExternalPluginManager
 			@Override
 			protected PluginRepository createPluginRepository()
 			{
-				return new JarPluginRepository(getPluginsRoot());
+				return new JarPluginRepository(getPluginsRoot())
+				{
+					@Override
+					public List<Path> getPluginPaths()
+					{
+						File[] files = pluginsRoot.toFile().listFiles(filter);
+
+						if ((files == null) || files.length == 0)
+						{
+							return Collections.emptyList();
+						}
+
+						List<Path> paths = new ArrayList<>(files.length);
+						for (File file : files)
+						{
+							paths.add(file.toPath());
+						}
+
+						return paths;
+					}
+				};
 			}
 
 			@Override
