@@ -8,11 +8,41 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
+import static net.runelite.client.RuneLite.EXTERNALPLUGIN_DIR;
+import static net.runelite.client.RuneLite.SYSTEM_VERSION;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigManager;
@@ -20,6 +50,7 @@ import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ExternalPluginChanged;
 import net.runelite.client.events.ExternalRepositoryChanged;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.SwingUtil;
@@ -41,36 +72,6 @@ import org.pf4j.update.PluginInfo;
 import org.pf4j.update.UpdateManager;
 import org.pf4j.update.UpdateRepository;
 import org.pf4j.update.VerifyException;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import static net.runelite.client.RuneLite.EXTERNALPLUGIN_DIR;
-import static net.runelite.client.RuneLite.SYSTEM_VERSION;
 
 @Slf4j
 @Singleton
@@ -474,7 +475,7 @@ class ExternalPluginManager
 
 	@SuppressWarnings("unchecked")
 	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz, boolean init, boolean initConfig)
-	throws PluginInstantiationException
+		throws PluginInstantiationException
 	{
 		net.runelite.client.plugins.PluginDependency[] pluginDependencies =
 			clazz.getAnnotationsByType(net.runelite.client.plugins.PluginDependency.class);
@@ -752,7 +753,7 @@ class ExternalPluginManager
 				try
 				{
 					SwingUtil.syncExec(() ->
-						JOptionPane.showMessageDialog(null,
+						JOptionPane.showMessageDialog(ClientUI.getFrame(),
 							pluginId + " is outdated and cannot be installed",
 							"Installation error",
 							JOptionPane.ERROR_MESSAGE));

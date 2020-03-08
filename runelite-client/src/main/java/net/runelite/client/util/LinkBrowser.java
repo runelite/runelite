@@ -36,6 +36,7 @@ import javax.inject.Singleton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.ClientUI;
 
 /**
  * Utility class used for web and file browser navigation
@@ -249,7 +250,7 @@ public class LinkBrowser
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			final int result = JOptionPane.showConfirmDialog(null, message, "Message",
+			final int result = JOptionPane.showConfirmDialog(ClientUI.getFrame(), message, "Message",
 				JOptionPane.OK_CANCEL_OPTION);
 
 			if (result == JOptionPane.OK_OPTION)
