@@ -240,6 +240,5 @@ public class TooltipComponent implements LayoutableRenderableEntity
 	@Override
 	public void setPreferredSize(Dimension dimension)
 	{
-
 	}
 }
