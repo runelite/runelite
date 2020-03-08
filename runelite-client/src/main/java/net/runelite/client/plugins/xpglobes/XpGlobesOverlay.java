@@ -231,9 +231,20 @@ public class XpGlobesOverlay extends Overlay
 
 	private void drawTooltip(Graphics2D graphics, XpGlobe mouseOverSkill, int goalXp, Ellipse2D drawnGlobe)
 	{
+		Rectangle canvas = client.getCanvas().getBounds();
+
+		int globeX = (int) drawnGlobe.getX();
+		int globeY = (int) drawnGlobe.getY();
 		//draw tooltip under the globe of the mouse location
-		int x = (int) drawnGlobe.getX() - (TOOLTIP_RECT_SIZE_X / 2) + (config.xpOrbSize() / 2);
-		int y = (int) drawnGlobe.getY() + config.xpOrbSize() + 10;
+		int x = globeX - (TOOLTIP_RECT_SIZE_X / 2) + (config.xpOrbSize() / 2);
+		int y = globeY + config.xpOrbSize() + 10;
+		int posX = Math.abs(graphics.getClipBounds().x - globeX) + x;
+		int posY = Math.abs(graphics.getClipBounds().y - globeY) + xpTooltip.getBounds().height;
+		int offsetY = -(MINIMUM_STEP + xpTooltip.getBounds().height);
+		int nwX = canvas.x + canvas.width;
+		int toolTipX = Math.abs(graphics.getClipBounds().x) + xpTooltip.getBounds().width;
+		int sY = canvas.y + canvas.height;
+		int seStart = (int) (drawnGlobe.getX() - xpTooltip.getBounds().width) + config.xpOrbSize();
 
 		// reset the timer on XpGlobe to prevent it from disappearing while hovered over it
 		mouseOverSkill.setTime(Instant.now());
@@ -243,21 +254,45 @@ public class XpGlobesOverlay extends Overlay
 
 		DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
 		String skillCurrentXp = decimalFormat.format(mouseOverSkill.getCurrentXp());
-
 		xpTooltip.getChildren().clear();
-		xpTooltip.setPreferredLocation(new java.awt.Point(x, y));
+
+		if (canvas.x > posX && sY < posY)
+		{
+			xpTooltip.setPreferredLocation(new java.awt.Point(globeX, offsetY));
+		}
+		else if (nwX < toolTipX && sY < posY)
+		{
+			xpTooltip.setPreferredLocation(new java.awt.Point(seStart, offsetY));
+		}
+		else if (canvas.x > posX)
+		{
+			xpTooltip.setPreferredLocation(new java.awt.Point(globeX, y));
+		}
+		else if (sY < posY)
+		{
+			xpTooltip.setPreferredLocation(new java.awt.Point(x, offsetY));
+		}
+		else if (nwX < toolTipX)
+		{
+			xpTooltip.setPreferredLocation(new java.awt.Point(seStart, y));
+		}
+		else
+		{
+			xpTooltip.setPreferredLocation(new java.awt.Point(x, y));
+		}
+
 		xpTooltip.setPreferredSize(new Dimension(TOOLTIP_RECT_SIZE_X, 0));
 
 		xpTooltip.getChildren().add(LineComponent.builder()
-			.left(skillName)
-			.right(skillLevel)
-			.build());
+				.left(skillName)
+				.right(skillLevel)
+				.build());
 
 		xpTooltip.getChildren().add(LineComponent.builder()
-			.left("Current XP:")
-			.leftColor(Color.ORANGE)
-			.right(skillCurrentXp)
-			.build());
+				.left("Current XP:")
+				.leftColor(Color.ORANGE)
+				.right(skillCurrentXp)
+				.build());
 
 		if (goalXp > mouseOverSkill.getCurrentXp())
 		{
