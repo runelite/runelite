@@ -53,8 +53,6 @@ public @interface PluginDescriptor
 	 */
 	boolean hidden() default false;
 
-	boolean developerPlugin() default false;
-
 	boolean loadWhenOutdated() default false;
 
 	PluginType type() default PluginType.UNCATEGORIZED;

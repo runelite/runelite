@@ -797,7 +797,9 @@ public enum WidgetInfo
 
 	SKILLS_CONTAINER(WidgetID.SKILLS_GROUP_ID, WidgetID.Skills.CONTAINER),
 
-	TRADING_WITH(WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID, WidgetID.TradeScreen.FIRST_TRADING_WITH);
+	TRADING_WITH(WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID, WidgetID.TradeScreen.FIRST_TRADING_WITH),
+
+	GAUNTLET_TIMER_CONTAINER(WidgetID.GAUNTLET_TIMER_GROUP_ID, WidgetID.GauntletTimer.CONTAINER);
 
 	private final int groupId;
 	private final int childId;

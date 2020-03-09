@@ -39,6 +39,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -48,6 +49,8 @@ import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.ValueConversionException;
+import joptsimple.ValueConverter;
 import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -107,6 +110,7 @@ public class RuneLite
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	public static final File PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
+	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "runeliteplus.properties");
 	public static final Locale SYSTEM_LOCALE = Locale.getDefault();
 	public static boolean allowPrivateServer = false;
 
@@ -220,6 +224,11 @@ public class RuneLite
 		final ArgumentAcceptingOptionSpec<Integer> worldInfo = parser
 			.accepts("world")
 			.withRequiredArg().ofType(Integer.class);
+		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
+			.withRequiredArg()
+			.withValuesConvertedBy(new ConfigFileConverter())
+			.defaultsTo(DEFAULT_CONFIG_FILE);
+
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
 			.withRequiredArg()
@@ -313,18 +322,6 @@ public class RuneLite
 			RuneLiteSplashScreen.init();
 		}
 
-		final boolean developerMode = options.has("developer-mode");
-
-		if (developerMode)
-		{
-			boolean assertions = false;
-			assert assertions = true;
-			if (!assertions)
-			{
-				log.warn("Developers should enable assertions; Add `-ea` to your JVM arguments`");
-			}
-		}
-
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
 		{
 			log.error("Uncaught exception:", throwable);
@@ -343,7 +340,7 @@ public class RuneLite
 
 		injector = Guice.createInjector(new RuneLiteModule(
 			clientLoader,
-			true));
+			options.valueOf(configfile)));
 
 		injector.getInstance(RuneLite.class).start();
 		final long end = System.currentTimeMillis();
@@ -505,9 +502,47 @@ public class RuneLite
 
 	public void shutdown()
 	{
-		configManager.sendConfig();
 		clientSessionManager.shutdown();
 		discordService.close();
 		appLock.release();
+	}
+
+	private static class ConfigFileConverter implements ValueConverter<File>
+	{
+		@Override
+		public File convert(String fileName)
+		{
+			final File file;
+
+			if (Paths.get(fileName).isAbsolute()
+				|| fileName.startsWith("./")
+				|| fileName.startsWith(".\\"))
+			{
+				file = new File(fileName);
+			}
+			else
+			{
+				file = new File(RuneLite.RUNELITE_DIR, fileName);
+			}
+
+			if (file.exists() && (!file.isFile() || !file.canWrite()))
+			{
+				throw new ValueConversionException(String.format("File %s is not accessible", file.getAbsolutePath()));
+			}
+
+			return file;
+		}
+
+		@Override
+		public Class<? extends File> valueType()
+		{
+			return File.class;
+		}
+
+		@Override
+		public String valuePattern()
+		{
+			return null;
+		}
 	}
 }

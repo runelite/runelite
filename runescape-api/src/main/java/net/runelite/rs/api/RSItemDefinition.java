@@ -71,4 +71,13 @@ public interface RSItemDefinition extends ItemDefinition
 
 	@Import("getModel")
 	RSModel getModel(int quantity);
+
+	@Import("unnotedId")
+	int getInventoryModel();
+
+	@Import("recolorTo")
+	short[] getColorToReplaceWith();
+
+	@Import("retextureTo")
+	short[] getTextureToReplaceWith();
 }

@@ -27,11 +27,14 @@ package net.runelite.client.config;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.io.File;
 import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.Client;
+import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
 import org.junit.Assert;
@@ -63,6 +66,10 @@ public class ConfigManagerTest
 	@Mock
 	@Bind
 	private OpenOSRSConfig openOSRSConfig;
+
+	@Bind
+	@Named("config")
+	private File config = RuneLite.DEFAULT_CONFIG_FILE;
 
 	@Inject
 	ConfigManager manager;
