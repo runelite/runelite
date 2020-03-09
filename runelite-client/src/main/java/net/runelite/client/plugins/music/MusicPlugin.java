@@ -452,7 +452,9 @@ public class MusicPlugin extends Plugin
 		for (MusicSlider slider : MusicSlider.values())
 		{
 			Widget icon = client.getWidget(slider.getWidgetID());
-			if (icon == null)
+			// VolumeChanged can trigger us before the sliders interface is fully valid, so
+			//  we check if the width is set before we copy it to all of our widgets
+			if (icon == null || icon.getWidth() == 0)
 			{
 				return;
 			}
