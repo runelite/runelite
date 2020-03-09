@@ -130,7 +130,7 @@ public enum Varbits
 	DIARY_KANDARIN_ELITE(4478),
 
 	DIARY_KARAMJA_EASY(3578),
-	DIARY_KARAMJA_MEDIUM(3599),
+	DIARY_KARAMJA_MEDIUM(3598),	// Could also be 3599 (original value), 3589 (set on completion but without accepting rewards)
 	DIARY_KARAMJA_HARD(3611),
 	DIARY_KARAMJA_ELITE(4566),
 
