@@ -56,7 +56,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
@@ -87,7 +86,6 @@ public class PluginManager
 	 */
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
 
-	private final boolean developerMode;
 	private final EventBus eventBus;
 	private final Scheduler scheduler;
 	private final ConfigManager configManager;
@@ -108,13 +106,11 @@ public class PluginManager
 	@Inject
 	@VisibleForTesting
 	PluginManager(
-		@Named("developerMode") final boolean developerMode,
 		final EventBus eventBus,
 		final Scheduler scheduler,
 		final ConfigManager configManager,
 		final Provider<GameEventManager> sceneTileManager)
 	{
-		this.developerMode = developerMode;
 		this.eventBus = eventBus;
 		this.scheduler = scheduler;
 		this.configManager = configManager;
@@ -351,11 +347,6 @@ public class PluginManager
 			}
 
 			if (!pluginDescriptor.loadWhenOutdated() && isOutdated)
-			{
-				continue;
-			}
-
-			if (pluginDescriptor.developerPlugin() && !developerMode)
 			{
 				continue;
 			}
