@@ -51,6 +51,7 @@ import net.runelite.client.util.Text;
 public class TagManager
 {
 	static final String ITEM_KEY_PREFIX = "item_";
+	static final String ITEM_QUANTITY_KEY_PREFIX = "itemQuantity_";
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
 	private final ClueScrollService clueScrollService;
@@ -79,6 +80,19 @@ public class TagManager
 		return config;
 	}
 
+	public String getQuantityOfItemForTag(String tag, int itemId, boolean variation)
+	{
+		itemId = getItemId(itemId, variation);
+
+		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_QUANTITY_KEY_PREFIX + itemId + "." + tag);
+		if (config == null)
+		{
+			return "";
+		}
+
+		return config;
+	}
+
 	Collection<String> getTags(int itemId, boolean variation)
 	{
 		return new LinkedHashSet<>(Text.fromCSV(getTagString(itemId, variation).toLowerCase()));
@@ -96,6 +110,21 @@ public class TagManager
 		{
 			configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, tags);
 		}
+	}
+
+	public void setTagItemQuantity(String tag, int itemId, String input)
+	{
+		itemId = getItemId(itemId, false);
+
+		if (Strings.isNullOrEmpty(input))
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, ITEM_QUANTITY_KEY_PREFIX + itemId + "." + tag);
+		}
+		else
+		{
+			configManager.setConfiguration(CONFIG_GROUP, ITEM_QUANTITY_KEY_PREFIX + itemId + "." + tag, input);
+		}
+
 	}
 
 	public void addTags(int itemId, final Collection<String> t, boolean variation)
