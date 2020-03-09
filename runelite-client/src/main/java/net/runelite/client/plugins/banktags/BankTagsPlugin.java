@@ -79,8 +79,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
+import net.runelite.client.plugins.banktags.tabs.TabQuantityOverlay;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -109,6 +111,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private TabQuantityOverlay tabQuantityOverlay;
 
 	@Inject
 	private Client client;
@@ -156,6 +164,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	{
 		List<String> extraKeys = Lists.newArrayList(
 			CONFIG_GROUP + "." + TagManager.ITEM_KEY_PREFIX,
+			CONFIG_GROUP + "." + TagManager.ITEM_QUANTITY_KEY_PREFIX,
 			CONFIG_GROUP + "." + ICON_SEARCH,
 			CONFIG_GROUP + "." + TAG_TABS_CONFIG
 		);
@@ -189,6 +198,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		mouseManager.registerMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::init);
 		spriteManager.addSpriteOverrides(TabSprites.values());
+		overlayManager.add(tabQuantityOverlay);
 	}
 
 	@Deprecated
@@ -251,6 +261,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		mouseManager.unregisterMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::destroy);
 		spriteManager.removeSpriteOverrides(TabSprites.values());
+		overlayManager.remove(tabQuantityOverlay);
 
 		shiftPressed = false;
 	}
