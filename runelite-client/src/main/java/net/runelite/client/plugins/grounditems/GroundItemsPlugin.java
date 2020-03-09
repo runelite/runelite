@@ -662,8 +662,7 @@ public class GroundItemsPlugin extends Plugin
 		{
 			notificationStringBuilder.append(" x ").append(item.getQuantity());
 
-
-			if (item.getQuantity() > (int) Character.MAX_VALUE)
+			if (item.getQuantity() >= (int) Character.MAX_VALUE)
 			{
 				notificationStringBuilder.append(" (Lots!)");
 			}
