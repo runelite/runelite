@@ -41,6 +41,8 @@ dependencies {
     annotationProcessor(Libraries.lombok)
     annotationProcessor(Libraries.pf4j)
 
+    api(project(":runelite-api"))
+
     compileOnly(Libraries.javax)
     compileOnly(Libraries.lombok)
     compileOnly(Libraries.orangeExtensions)
@@ -73,8 +75,6 @@ dependencies {
     }
     implementation(Libraries.pf4jUpdate)
     implementation(project(":http-api"))
-    api(project(":runelite-api"))
-    implementation(Libraries.naturalMouse)
 
     runtimeOnly(Libraries.trident)
     runtimeOnly(Libraries.jogampGluegenLinuxAmd64)
