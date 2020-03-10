@@ -58,7 +58,7 @@ fun isNonStable(version: String): Boolean {
 
 allprojects {
     group = "com.openosrs"
-    version = ProjectVersions.rlVersion
+    version = ProjectVersions.openosrsVersion
     apply<MavenPublishPlugin>()
 }
 
