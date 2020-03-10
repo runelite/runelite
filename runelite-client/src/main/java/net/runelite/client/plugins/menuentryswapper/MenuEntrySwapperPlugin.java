@@ -474,7 +474,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("assignment", option, target, index);
 			}
 
-			if (config.swapTrade())
+			// exclude crewmembers as they are handled separately
+			if (config.swapTrade() && !target.equals("trader crewmember"))
 			{
 				swap("trade", option, target, index);
 				swap("trade-with", option, target, index);
@@ -486,7 +487,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("claim-slime", option, target, index);
 			}
 
-			if (config.swapTravel())
+			// exclude crewmembers as they are handled separately
+			if (config.swapTravel() && !target.equals("trader crewmember"))
 			{
 				swap("travel", option, target, index);
 				swap("pay-fare", option, target, index);
@@ -524,6 +526,27 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapStartMinigame())
 			{
 				swap("start-minigame", option, target, index);
+			}
+
+			if (target.equals("trader crewmember"))
+			{
+				switch (config.swapTradeCrewmember())
+				{
+					case TRADE:
+						swap("trade", option, target, index);
+						break;
+					case CHARTER:
+						swap("charter", option, target, index);
+						break;
+					case PREVIOUS_LOCATION:
+						swap("charter-to catherby", option, target, index);
+						swap("charter-to brimhaven", option, target, index);
+						swap("charter-to port khazard", option, target, index);
+						swap("charter-to corsair cove", option, target, index);
+						swap("charter-to musa point", option, target, index);
+						swap("charter-to port sarim", option, target, index);
+						break;
+				}
 			}
 		}
 		else if (config.swapQuickLeave() && option.equals("leave tomb") && target.equals("tomb door"))
