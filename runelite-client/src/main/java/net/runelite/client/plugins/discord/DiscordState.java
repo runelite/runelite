@@ -212,7 +212,8 @@ class DiscordState
 
 		events.removeIf(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)));
 
-		if (eventWithTime.getType().getState().equals(DiscordGameEventType.IN_MENU.getState()) && now.isAfter(eventWithTime.getStart().plus(actionTimeout)))
+		assert DiscordGameEventType.IN_MENU.getState() != null;
+		if (DiscordGameEventType.IN_MENU.getState().equals(eventWithTime.getType().getState()) && now.isAfter(eventWithTime.getStart().plus(actionTimeout)))
 		{
 			final DiscordPresence presence = lastPresence
 				.toBuilder()
