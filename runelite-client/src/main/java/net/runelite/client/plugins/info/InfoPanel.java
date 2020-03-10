@@ -110,7 +110,8 @@ class InfoPanel extends PluginPanel
 		JLabel openOsrsVersion = new JLabel(htmlLabel("OpenOSRS version: ", RuneLiteProperties.getPlusVersion()));
 		openOsrsVersion.setFont(smallFont);
 
-		JLabel launcherVersion = new JLabel(htmlLabel("Launcher version: ", RuneLiteProperties.getLauncherVersion()));
+		String launcher = RuneLiteProperties.getLauncherVersion();
+		JLabel launcherVersion = new JLabel(htmlLabel("Launcher version: ", launcher));
 		launcherVersion.setFont(smallFont);
 
 		JLabel revision = new JLabel();
@@ -126,7 +127,10 @@ class InfoPanel extends PluginPanel
 
 		versionPanel.add(version);
 		versionPanel.add(openOsrsVersion);
-		versionPanel.add(launcherVersion);
+		if (launcher != null)
+		{
+			versionPanel.add(launcherVersion);
+		}
 		versionPanel.add(revision);
 
 		JPanel actionsContainer = new JPanel();
