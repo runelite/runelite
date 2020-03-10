@@ -44,7 +44,7 @@ open class BootstrapTask @Inject constructor(@Input val type: String) : DefaultT
             val version = splat[2]
             lateinit var path: String
 
-            if (it.file.name.contains(ProjectVersions.rlVersion)) {
+            if (it.file.name.contains(ProjectVersions.openosrsVersion)) {
                 path = "https://github.com/open-osrs/hosting/raw/master/${type}/${it.file.name}"
             } else if (it.file.name.contains("injection-annotations")) {
             path = "https://github.com/open-osrs/hosting/raw/master/" + group.replace(".", "/") + "/${name}/$version/${it.file.name}"
