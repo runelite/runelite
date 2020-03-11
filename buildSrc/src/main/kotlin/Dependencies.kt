@@ -27,7 +27,7 @@ object ProjectVersions {
     const val launcherVersion = "2.0.4"
     const val rlVersion = "1.6.9"
 
-    const val openosrsVersion = "3.0.7"
+    const val openosrsVersion = "3.1.0"
 
     const val rsversion = 188
     const val cacheversion = 165
@@ -82,8 +82,8 @@ object Libraries {
         const val pf4j = "3.2.0"
         const val pf4jUpdate = "2.3.0"
         const val radiance = "2.5.1"
-        const val rxjava = "2.2.18"
-        const val rxrelay = "2.1.1"
+        const val rxjava = "3.0.0"
+        const val rxrelay = "3.0.0-SNAPSHOT"
         const val sisu = "0.3.4"
         const val sentry = "1.7.30"
         const val semver = "0.9.0"
@@ -141,8 +141,8 @@ object Libraries {
     const val petitparser = "com.github.petitparser:java-petitparser:${Versions.petitparser}"
     const val pf4j = "org.pf4j:pf4j:${Versions.pf4j}"
     const val pf4jUpdate = "org.pf4j:pf4j-update:${Versions.pf4jUpdate}"
-    const val rxjava = "io.reactivex.rxjava2:rxjava:${Versions.rxjava}"
-    const val rxrelay = "com.jakewharton.rxrelay2:rxrelay:${Versions.rxrelay}"
+    const val rxjava = "io.reactivex.rxjava3:rxjava:${Versions.rxjava}"
+    const val rxrelay = "com.openosrs.rxrelay3:rxrelay:${Versions.rxrelay}"
     const val sisu = "org.eclipse.sisu:org.eclipse.sisu.inject:${Versions.sisu}"
     const val slf4jApi = "org.slf4j:slf4j-api:${Versions.slf4j}"
     const val slf4jNop = "org.slf4j:slf4j-nop:${Versions.slf4j}"

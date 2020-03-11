@@ -27,7 +27,7 @@ package net.runelite.http.api.item;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;

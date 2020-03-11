@@ -24,8 +24,8 @@
  */
 package net.runelite.client;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
 import java.io.IOException;
 import java.util.UUID;
 import net.runelite.http.api.RuneLiteAPI;

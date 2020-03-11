@@ -28,7 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.functions.Consumer;
 import java.lang.reflect.Method;
 import java.util.Set;
 import lombok.AccessLevel;

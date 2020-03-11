@@ -25,7 +25,7 @@
 package net.runelite.http.api.osbuddy;
 
 import com.google.gson.JsonParseException;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
