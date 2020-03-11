@@ -453,10 +453,12 @@ public class PluginManager
 		}
 		catch (ThreadDeath e)
 		{
+			activePlugins.remove(plugin);
 			throw e;
 		}
 		catch (Throwable ex)
 		{
+			activePlugins.remove(plugin);
 			throw new PluginInstantiationException(ex);
 		}
 
