@@ -24,7 +24,7 @@
  */
 package net.runelite.client;
 
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import javax.inject.Inject;

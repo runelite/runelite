@@ -27,8 +27,8 @@ package net.runelite.client.game;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.stream.JsonReader;
-import io.reactivex.Completable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;

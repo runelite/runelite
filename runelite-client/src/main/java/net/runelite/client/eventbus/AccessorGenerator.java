@@ -1,7 +1,7 @@
 package net.runelite.client.eventbus;
 
 import com.google.common.collect.ImmutableSet;
-import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.functions.Consumer;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;

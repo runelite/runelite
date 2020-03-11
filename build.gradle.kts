@@ -90,6 +90,7 @@ subprojects {
             }
             filter {
                 includeModule("net.runelite", "fernflower")
+                includeModule("com.openosrs.rxrelay3", "rxrelay")
             }
         }
     }

@@ -1,9 +1,9 @@
 package net.runelite.client.eventbus;
 
-import io.reactivex.Scheduler;
-import io.reactivex.annotations.Nullable;
-import io.reactivex.schedulers.Schedulers;
-import java.util.function.Supplier;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.functions.Supplier;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -22,6 +22,14 @@ public enum EventScheduler
 	@Nullable
 	public Scheduler get()
 	{
-		return scheduler.get();
+		try
+		{
+			return scheduler.get();
+		}
+		catch (Throwable ignored)
+		{
+		}
+
+		return null;
 	}
 }
