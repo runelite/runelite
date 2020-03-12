@@ -1,21 +1,17 @@
 package net.runelite.api.events.player.headicon;
 
-import lombok.Getter;
+import lombok.Data;
 import net.runelite.api.HeadIcon;
 import net.runelite.api.Player;
+import net.runelite.api.events.Event;
 
-public class OverheadPrayerChanged extends PlayerHeadIconChanged
+@Data
+public class OverheadPrayerChanged implements Event
 {
-	@Getter
+	private final Player player;
+
 	private final HeadIcon oldHeadIcon;
 
-	@Getter
 	private final HeadIcon newHeadIcon;
 
-	public OverheadPrayerChanged(Player player, HeadIcon changedFrom, HeadIcon changedTo)
-	{
-		super(player);
-		this.oldHeadIcon = changedFrom;
-		this.newHeadIcon = changedTo;
-	}
 }

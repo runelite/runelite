@@ -1,21 +1,17 @@
 package net.runelite.api.events.player.headicon;
 
-import lombok.Getter;
+import lombok.Data;
 import net.runelite.api.Player;
 import net.runelite.api.SkullIcon;
+import net.runelite.api.events.Event;
 
-public class PlayerSkullChanged extends PlayerHeadIconChanged
+@Data
+public class PlayerSkullChanged implements Event
 {
-	@Getter
+	private final Player player;
+
 	private final SkullIcon oldSkullIcon;
 
-	@Getter
 	private final SkullIcon newSkullIcon;
 
-	public PlayerSkullChanged(Player player, SkullIcon changedFrom, SkullIcon changedTo)
-	{
-		super(player);
-		this.oldSkullIcon = changedFrom;
-		this.newSkullIcon = changedTo;
-	}
 }
