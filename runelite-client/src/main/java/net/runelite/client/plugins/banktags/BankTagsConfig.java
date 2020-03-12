@@ -79,7 +79,7 @@ public interface BankTagsConfig extends Config
 
 	@ConfigItem(
 		keyName = "quantityOverlayColor",
-		name = "Color of Quantity",
+		name = "Quantity Color",
 		description = "Configures the color of the quantity overlay.",
 		position = 5
 	)
