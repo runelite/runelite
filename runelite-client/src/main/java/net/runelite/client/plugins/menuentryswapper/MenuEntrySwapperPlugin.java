@@ -105,6 +105,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.NPC_FIFTH_OPTION,
 		MenuAction.EXAMINE_NPC);
 
+	private static final Set<String> ESSENCE_MINE_NPCS = ImmutableSet.of(
+		"aubury",
+		"wizard sedridor",
+		"wizard distentor",
+		"wizard cromperty",
+		"brimstail"
+	);
+
 	@Inject
 	private Client client;
 
@@ -524,6 +532,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapStartMinigame())
 			{
 				swap("start-minigame", option, target, index);
+			}
+
+			if (config.swapEssenceMineTeleport() && ESSENCE_MINE_NPCS.contains(target))
+			{
+				swap("teleport", option, target, index);
 			}
 		}
 		else if (config.swapQuickLeave() && option.equals("leave tomb") && target.equals("tomb door"))
