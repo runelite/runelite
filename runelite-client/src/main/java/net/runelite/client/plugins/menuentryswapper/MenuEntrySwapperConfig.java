@@ -411,4 +411,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return ShiftDepositMode.OFF;
 	}
+
+	@ConfigItem(
+		keyName = "swapEssenceMineTeleport",
+		name = "Essence Mine Teleport",
+		description = "Swaps Talk-To with Teleport for Wizard Distentor and Aubury."
+	)
+	default boolean swapEssenceMineTeleport() 
+	{
+		return false;
+	}
 }
