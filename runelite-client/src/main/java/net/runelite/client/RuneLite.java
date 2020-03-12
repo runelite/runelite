@@ -402,7 +402,7 @@ public class RuneLite
 		pluginManager.loadDefaultPluginConfiguration();
 
 		// Start client session
-		RuneLiteSplashScreen.stage(.80, "Starting core interface");
+		RuneLiteSplashScreen.stage(.77, "Starting core interface");
 		clientSessionManager.start();
 
 		//Set the world if specified via CLI args - will not work until clientUI.init is called
@@ -410,7 +410,7 @@ public class RuneLite
 		worldArg.ifPresent(this::setWorld);
 
 		// Initialize UI
-		RuneLiteSplashScreen.stage(.77, "Initialize UI");
+		RuneLiteSplashScreen.stage(.80, "Initialize UI");
 		clientUI.init(this);
 
 		// Initialize Discord service
