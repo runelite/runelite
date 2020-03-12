@@ -4,7 +4,7 @@ import lombok.Getter;
 import net.runelite.api.Player;
 import net.runelite.api.SkullIcon;
 
-public class PlayerSkullChanged extends  PlayerHeadIconChanged
+public class PlayerSkullChanged extends PlayerHeadIconChanged
 {
 	@Getter
 	private final SkullIcon oldSkullIcon;
