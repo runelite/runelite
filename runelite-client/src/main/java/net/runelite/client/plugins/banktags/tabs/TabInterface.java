@@ -145,12 +145,14 @@ public class TabInterface
 	private final Rectangle canvasBounds = new Rectangle();
 
 	private ChatboxItemSearch searchProvider;
-	private TagTab activeTab;
 	private int maxTabs;
 	private int currentTabIndex;
 	private Instant startScroll = Instant.now();
 	private String rememberedSearch;
 	private boolean waitSearchTick;
+
+	@Getter
+	private TagTab activeTab;
 
 	@Getter
 	private Widget upButton;
@@ -192,11 +194,6 @@ public class TabInterface
 	public boolean isActive()
 	{
 		return activeTab != null;
-	}
-
-	public TagTab getActiveTagTab()
-	{
-		return activeTab;
 	}
 
 	public void init()

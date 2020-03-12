@@ -42,12 +42,12 @@ public class TabQuantityOverlay extends WidgetItemOverlay
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
 
-		if (!bankTagsConfig.useQuantityFeature() || tabInterface.getActiveTagTab() == null)
+		if (!bankTagsConfig.useQuantityFeature() || tabInterface.getActiveTab() == null)
 		{
 			return;
 		}
 
-		String configValue = tagManager.getQuantityOfItemForTag(tabInterface.getActiveTagTab().getTag(), itemId, false);
+		String configValue = tagManager.getQuantityOfItemForTag(tabInterface.getActiveTab().getTag(), itemId, false);
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 		Point location = itemWidget.getCanvasLocation();
