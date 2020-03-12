@@ -57,7 +57,7 @@ public interface BankTagsConfig extends Config
 
 	@ConfigItem(
 		keyName = "useQuantityFeature",
-		name = "Use Quantities",
+		name = "Display Quantities",
 		description = "Display an overlay of the quantity of items for the tag.",
 		position = 3
 	)
@@ -79,8 +79,8 @@ public interface BankTagsConfig extends Config
 
 	@ConfigItem(
 		keyName = "quantityOverlayColor",
-		name = "Color of Quantity",
-		description = "Configures the color of the quantity overlay.",
+		name = "Quantity Color",
+		description = "Color of the item quantity overlay.",
 		position = 5
 	)
 	@Alpha
