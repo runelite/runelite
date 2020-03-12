@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.util.ArrayList;
+import jdk.javadoc.internal.doclets.formats.html.markup.Head;
 import net.runelite.api.HeadIcon;
 import static net.runelite.api.HeadIcon.MAGIC;
 import static net.runelite.api.HeadIcon.MELEE;
@@ -46,6 +47,8 @@ import static net.runelite.api.SkullIcon.SKULL;
 import static net.runelite.api.SkullIcon.SKULL_FIGHT_PIT;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.PlayerAppearanceChanged;
+import net.runelite.api.events.player.headicon.OverheadPrayerChanged;
+import net.runelite.api.events.player.headicon.PlayerSkullChanged;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
@@ -66,6 +69,12 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 	@Inject
 	private boolean friended;
+
+	@Inject
+	private HeadIcon oldHeadIcon = null;
+
+	@Inject
+	private SkullIcon oldSkullIcon = null;
 
 	@Inject
 	@Override
@@ -92,7 +101,41 @@ public abstract class RSPlayerMixin implements RSPlayer
 	@Override
 	public HeadIcon getOverheadIcon()
 	{
-		switch (getRsOverheadIcon())
+		final HeadIcon headIcon = getHeadIcon(getRsOverheadIcon());
+		if (headIcon == null && oldHeadIcon == null)
+		{
+			return null;
+		}
+		if (headIcon != oldHeadIcon)
+		{
+			client.getCallbacks().post(OverheadPrayerChanged.class,
+				new OverheadPrayerChanged(this, oldHeadIcon, headIcon));
+		}
+		oldHeadIcon = headIcon;
+		return headIcon;
+	}
+
+	@Inject
+	@Override
+	public SkullIcon getSkullIcon()
+	{
+		final SkullIcon skullIcon = skullFromInt(getRsSkullIcon());
+		if (oldSkullIcon == null && skullIcon == null)
+		{
+			return null;
+		}
+			if (skullIcon != oldSkullIcon)
+		{
+			client.getCallbacks().post(PlayerSkullChanged.class,
+				new PlayerSkullChanged(this, oldSkullIcon, skullIcon));
+		}
+		oldSkullIcon = skullIcon;
+		return skullIcon;
+	}
+
+	private HeadIcon getHeadIcon(int overheadIcon)
+	{
+		switch (overheadIcon)
 		{
 			case 0:
 				return MELEE;
@@ -111,11 +154,9 @@ public abstract class RSPlayerMixin implements RSPlayer
 		}
 	}
 
-	@Inject
-	@Override
-	public SkullIcon getSkullIcon()
+	private SkullIcon skullFromInt(int skull)
 	{
-		switch (getRsSkullIcon())
+		switch (skull)
 		{
 			case 0:
 				return SKULL;
