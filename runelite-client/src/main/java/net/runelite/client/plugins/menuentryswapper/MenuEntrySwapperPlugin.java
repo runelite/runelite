@@ -471,6 +471,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("help", option, target, index);
 			}
 
+			if (config.swapNets())
+			{
+				swap("nets", option, target, index);
+			}
+
 			if (config.swapDarkMage())
 			{
 				swap("repairs", option, target, index);

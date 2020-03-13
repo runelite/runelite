@@ -421,4 +421,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "swapNets",
+		name = "Nets",
+		description = "Swap Talk-to with Nets on Annette"
+	)
+	default boolean swapNets()
+	{
+		return true;
+	}
 }
