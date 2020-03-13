@@ -86,7 +86,7 @@ class InventoryGridOverlay extends Overlay
 		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
 		final int if1DraggedItemIndex = client.getIf1DraggedItemIndex();
 		final WidgetItem draggedItem = inventoryWidget.getWidgetItem(if1DraggedItemIndex);
-		final Rectangle initialBounds = draggedItem.getCanvasBounds();
+		final Rectangle initialBounds = draggedItem.getCanvasBounds(false);
 
 		if (initialMousePoint == null)
 		{
