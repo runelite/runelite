@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.openosrs;
 
+import ch.qos.logback.classic.Logger;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
@@ -50,6 +51,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
+import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	loadWhenOutdated = true, // prevent users from disabling
@@ -145,6 +147,12 @@ public class OpenOSRSPlugin extends Plugin
 			enterIdx = 0;
 			expectInput = false;
 			keyManager.unregisterKeyListener(keyListener);
+		}
+
+		if (event.getKey().equals("shareLogs") && !config.shareLogs())
+		{
+			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+			logger.detachAppender("Sentry");
 		}
 	}
 

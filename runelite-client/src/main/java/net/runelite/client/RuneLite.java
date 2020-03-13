@@ -62,6 +62,7 @@ import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ExternalPluginsLoaded;
@@ -122,6 +123,7 @@ public class RuneLite
 
 	@Inject
 	private WorldService worldService;
+
 	@Inject
 	private PluginManager pluginManager;
 
@@ -200,6 +202,9 @@ public class RuneLite
 	@Inject
 	@Nullable
 	private Client client;
+
+	@Inject
+	private OpenOSRSConfig openOSRSConfig;
 
 	@Inject
 	private Provider<ModelOutlineRenderer> modelOutlineRenderer;
@@ -305,7 +310,7 @@ public class RuneLite
 			System.setProperty("cli.world", String.valueOf(world));
 		}
 
-		SentryClient client = Sentry.init("https://fa31d674e44247fa93966c69a903770f@sentry.io/1811856");
+		SentryClient client = Sentry.init();
 		client.setRelease(RuneLiteProperties.getPlusVersion());
 
 		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
@@ -364,6 +369,12 @@ public class RuneLite
 		{
 			// Inject members into client
 			injector.injectMembers(client);
+		}
+
+		if (RuneLiteProperties.getLauncherVersion() == null || !openOSRSConfig.shareLogs())
+		{
+			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+			logger.detachAppender("Sentry");
 		}
 
 		// Load user configuration

@@ -8,7 +8,6 @@ import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
-import io.sentry.Sentry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -17,7 +16,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.Event;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.OpenOSRSConfig;
 
 @Slf4j
@@ -91,14 +89,7 @@ public class EventBus implements EventBusInterface
 			.compose(applyScheduler(subscribe, true))
 			.compose(applyScheduler(observe, false))
 			.subscribe(action, error ->
-			{
-				log.error("Exception in eventbus", error);
-
-				if (RuneLiteProperties.getLauncherVersion() != null && openOSRSConfig.shareLogs())
-				{
-					Sentry.capture(error);
-				}
-			});
+				log.error("Exception in eventbus", error));
 
 		getCompositeDisposable(lifecycle).add(disposable);
 		subscriptionList.put(lifecycle, eventClass);

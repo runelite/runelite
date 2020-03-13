@@ -135,6 +135,7 @@ tasks {
 
         from("src/main/resources") {
             include("open.osrs.properties")
+            include("sentry.properties")
         }
         into("${buildDir}/resources/main")
 

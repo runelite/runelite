@@ -147,7 +147,7 @@ object Libraries {
     const val slf4jApi = "org.slf4j:slf4j-api:${Versions.slf4j}"
     const val slf4jNop = "org.slf4j:slf4j-nop:${Versions.slf4j}"
     const val slf4jSimple = "org.slf4j:slf4j-simple:${Versions.slf4j}"
-    const val sentry = "io.sentry:sentry:${Versions.sentry}"
+    const val sentry = "io.sentry:sentry-logback:${Versions.sentry}"
     const val semver = "com.github.zafarkhaja:java-semver:${Versions.semver}"
     const val substance = "org.pushing-pixels:radiance-substance:${Versions.radiance}"
     const val trident = "org.pushing-pixels:radiance-trident:${Versions.radiance}"
