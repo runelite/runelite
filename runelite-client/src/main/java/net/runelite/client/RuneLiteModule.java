@@ -41,6 +41,7 @@ import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.LauncherConfig;
 import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
@@ -61,18 +62,18 @@ public class RuneLiteModule extends AbstractModule
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
 
 	private final Supplier<Applet> clientLoader;
-	private final boolean developerMode;
+	private final File config;
 
-	public RuneLiteModule(final Supplier<Applet> clientLoader, boolean developerMode)
+	public RuneLiteModule(final Supplier<Applet> clientLoader, File config)
 	{
 		this.clientLoader = clientLoader;
-		this.developerMode = developerMode;
+		this.config = config;
 	}
 
 	@Override
 	protected void configure()
 	{
-		bindConstant().annotatedWith(Names.named("developerMode")).to(developerMode);
+		bind(File.class).annotatedWith(Names.named("config")).toInstance(config);
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
 		bind(OkHttpClient.class).toInstance(RuneLiteAPI.CLIENT.newBuilder()
 			.cache(new Cache(new File(RuneLite.CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE))
@@ -131,5 +132,12 @@ public class RuneLiteModule extends AbstractModule
 	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatColorConfig.class);
+	}
+
+	@Provides
+	@Singleton
+	LauncherConfig provideLauncherConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LauncherConfig.class);
 	}
 }

@@ -63,6 +63,7 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.LMS_INFO, OverlayPosition.TOP_CENTER)
 		.put(WidgetInfo.LMS_KDA, OverlayPosition.TOP_CENTER)
 		.put(WidgetInfo.THEATRE_OF_BLOOD_HEALTH_ORBS, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.GAUNTLET_TIMER_CONTAINER, OverlayPosition.TOP_LEFT)
 		.build();
 
 	public static Collection<WidgetOverlay> createOverlays(final Client client)

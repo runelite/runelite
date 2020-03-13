@@ -30,11 +30,13 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
+import static net.runelite.api.util.Text.DISTANCE;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ExternalPluginChanged;
 import net.runelite.client.events.ExternalRepositoryChanged;
 import net.runelite.client.plugins.ExternalPluginManager;
 import static net.runelite.client.plugins.openosrs.externals.ExternalPluginManagerPanel.wrapContainer;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
@@ -43,7 +45,6 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.DeferredDocumentChangedListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
-import org.apache.commons.text.similarity.JaroWinklerDistance;
 import org.pf4j.update.PluginInfo;
 import org.pf4j.update.UpdateManager;
 import org.pf4j.update.UpdateRepository;
@@ -52,7 +53,6 @@ import org.pf4j.update.VerifyException;
 @Slf4j
 public class PluginsPanel extends JPanel
 {
-	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_HOVER_ICON;
 	private static final ImageIcon DELETE_ICON;
@@ -257,7 +257,7 @@ public class PluginsPanel extends JPanel
 
 		if (availablePlugins == null || plugins == null)
 		{
-			JOptionPane.showMessageDialog(null, "The external plugin list could not be loaded.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(ClientUI.getFrame(), "The external plugin list could not be loaded.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -465,7 +465,7 @@ public class PluginsPanel extends JPanel
 				{
 					if (hideAction)
 					{
-						JOptionPane.showMessageDialog(null, "This plugin can't be uninstalled because one or more other plugins have a dependency on it.", "Error!", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(ClientUI.getFrame(), "This plugin can't be uninstalled because one or more other plugins have a dependency on it.", "Error!", JOptionPane.ERROR_MESSAGE);
 					}
 					else
 					{
@@ -573,7 +573,7 @@ public class PluginsPanel extends JPanel
 			try
 			{
 				SwingUtil.syncExec(() ->
-					JOptionPane.showMessageDialog(null, pluginInfo.name + " could not be installed, the hash could not be verified.", "Error!", JOptionPane.ERROR_MESSAGE));
+					JOptionPane.showMessageDialog(ClientUI.getFrame(), pluginInfo.name + " could not be installed, the hash could not be verified.", "Error!", JOptionPane.ERROR_MESSAGE));
 			}
 			catch (InvocationTargetException | InterruptedException ignored)
 			{

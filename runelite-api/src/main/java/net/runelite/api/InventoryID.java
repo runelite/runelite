@@ -58,6 +58,10 @@ public enum InventoryID
 	 */
 	MONKEY_MADNESS_PUZZLE_BOX(221),
 	/**
+	 * Drift net fishing reward
+	 */
+	DRIFT_NET_FISHING_REWARD(307),
+	/**
 	 * Looting Bag inventory
 	 */
 	LOOTING_BAG(516),

@@ -1,7 +1,7 @@
 package net.runelite.client.eventbus;
 
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.functions.Consumer;
 import net.runelite.api.events.Event;
 
 public interface EventBusInterface

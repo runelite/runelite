@@ -19,4 +19,3 @@ jobs:
           exempt-issue-label: 'awaiting-approval'
           exempt-pr-label: 'awaiting-approval'
           days-before-stale: 60
-          days-before-close: 30

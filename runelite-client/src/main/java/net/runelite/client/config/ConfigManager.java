@@ -59,6 +59,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
@@ -75,20 +76,20 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 public class ConfigManager
 {
-	private static final String SETTINGS_FILE_NAME = "runeliteplus.properties";
 	private static final String STANDARD_SETTINGS_FILE_NAME = "settings.properties";
-	private static final File SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
 	private static final File STANDARD_SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, STANDARD_SETTINGS_FILE_NAME);
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 	private final Map<String, String> pendingChanges = new HashMap<>();
+	private final File settingsFileInput;
 
 	@Inject
 	EventBus eventBus;
 
 	@Inject
-	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
+	public ConfigManager(@Named("config") File config, ScheduledExecutorService scheduledExecutorService)
 	{
+		this.settingsFileInput = config;
 		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
 
@@ -414,7 +415,7 @@ public class ConfigManager
 		handler.invalidate();
 		properties.clear();
 
-		try (FileInputStream in = new FileInputStream(SETTINGS_FILE))
+		try (FileInputStream in = new FileInputStream(settingsFileInput))
 		{
 			properties.load(new InputStreamReader(in, StandardCharsets.UTF_8));
 		}
@@ -460,9 +461,9 @@ public class ConfigManager
 
 	private void saveToFile() throws IOException
 	{
-		ConfigManager.SETTINGS_FILE.getParentFile().mkdirs();
+		settingsFileInput.getParentFile().mkdirs();
 
-		File tempFile = new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME + ".tmp");
+		File tempFile = new File(RuneLite.RUNELITE_DIR, RuneLite.DEFAULT_CONFIG_FILE.getName() + ".tmp");
 
 		try (FileOutputStream out = new FileOutputStream(tempFile))
 		{
@@ -473,12 +474,12 @@ public class ConfigManager
 
 		try
 		{
-			Files.move(tempFile.toPath(), ConfigManager.SETTINGS_FILE.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+			Files.move(tempFile.toPath(), settingsFileInput.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
 		}
 		catch (AtomicMoveNotSupportedException ex)
 		{
 			log.debug("atomic move not supported", ex);
-			Files.move(tempFile.toPath(), ConfigManager.SETTINGS_FILE.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			Files.move(tempFile.toPath(), settingsFileInput.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 	}
 

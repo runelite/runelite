@@ -227,5 +227,48 @@ public final class ScriptID
 	@ScriptArguments(string = 1)
 	public static final int CLAN_SEND_KICK = 215;
 
+	/**
+	 * Toggles the bank search
+	 *
+	 * <ul>
+	 * <li>int 1 (must be 1 or script immediately returns)</li>
+	 * </ul>
+	 *
+	 * Also takes 17 widget IDs corresponding to various bank widgets.
+	 * These can be retrieved from the getOnInvTransmit of BANK_ITEM_CONTAINER. Note that this array also
+	 * contains the script ID for the bank layout script in the first index
+	 */
+	@ScriptArguments(integer = 18)
+	public static final int BANKMAIN_SEARCH_TOGGLE = 281;
+
+	/**
+	 * Builds the items kept on death widget
+	 */
+	@ScriptArguments(integer = 4, string = 2)
+	public static final int DEATH_KEEP_BUILD = 1601;
+
+	/**
+	 * Builds the widget that holds all of the players inside a clan chat
+	 */
+	@ScriptArguments(integer = 15)
+	public static final int CLAN_CHAT_CHANNEL_BUILD = 1658;
+
+	/**
+	 * Builds the widget for making an offer in Grand Exchange
+	 */
+	@ScriptArguments(integer = 15)
+	public static final int GE_OFFERS_SETUP_BUILD = 779;
+
+	/**
+	 * Builds the quest list inside the quest tab that shows each quest's progress
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int QUESTLIST_PROGRESS_LIST_SHOW = 1354;
+
+	/**
+	 * Procedure called when the toplevel interface is resized
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int TOPLEVEL_RESIZE = 909;
 }
 

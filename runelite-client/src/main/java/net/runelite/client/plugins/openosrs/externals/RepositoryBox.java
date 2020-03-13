@@ -58,8 +58,12 @@ public class RepositoryBox extends JPanel
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		String name = updateRepository.getId().replace(updateRepository.getUrl().toString(), "");
-		String urlString = updateRepository.getUrl().toString().replace("https://raw.githubusercontent.com/", "").replace("/master/", "");
+		String name = updateRepository.getId();
+		String urlString = updateRepository.getUrl().toString();
+		if (urlString.startsWith("/"))
+		{
+			urlString = urlString.substring(1);
+		}
 
 		JPanel titleWrapper = new JPanel(new BorderLayout());
 		titleWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -145,11 +149,31 @@ public class RepositoryBox extends JPanel
 		titleWrapper.add(titleActions, BorderLayout.EAST);
 
 		JMultilineLabel repository = new JMultilineLabel();
-		repository.setText(urlString.split("/", 2)[1]);
+		repository.setText(formatURL(urlString));
 		repository.setFont(smallFont);
 		repository.setDisabledTextColor(Color.WHITE);
 
+		String finalUrlString = urlString;
+		repository.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				LinkBrowser.browse(formatURL(finalUrlString));
+			}
+		});
+
 		add(titleWrapper, BorderLayout.NORTH);
 		add(repository, BorderLayout.CENTER);
+	}
+
+	private String formatURL(String url)
+	{
+		if (url.contains("githubusercontent"))
+		{
+			url = url.replace("raw.githubusercontent", "github").replace("/master/", "");
+		}
+
+		return url;
 	}
 }

@@ -30,8 +30,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import io.reactivex.Completable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.sentry.Sentry;
 import io.sentry.SentryClient;
 import java.io.File;
@@ -39,14 +39,18 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import joptsimple.ArgumentAcceptingOptionSpec;
+import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.ValueConversionException;
+import joptsimple.ValueConverter;
 import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -85,6 +89,7 @@ import net.runelite.client.ui.overlay.arrow.ArrowWorldOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
+import net.runelite.client.util.AppLock;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.client.ws.PartyService;
 import net.runelite.http.api.worlds.World;
@@ -105,6 +110,7 @@ public class RuneLite
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	public static final File PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
+	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "runeliteplus.properties");
 	public static final Locale SYSTEM_LOCALE = Locale.getDefault();
 	public static boolean allowPrivateServer = false;
 
@@ -201,6 +207,9 @@ public class RuneLite
 	@Inject
 	private Scheduler scheduler;
 
+	@Inject
+	private AppLock appLock;
+
 	public static void main(String[] args) throws Exception
 	{
 		Locale.setDefault(Locale.ENGLISH);
@@ -215,6 +224,11 @@ public class RuneLite
 		final ArgumentAcceptingOptionSpec<Integer> worldInfo = parser
 			.accepts("world")
 			.withRequiredArg().ofType(Integer.class);
+		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
+			.withRequiredArg()
+			.withValuesConvertedBy(new ConfigFileConverter())
+			.defaultsTo(DEFAULT_CONFIG_FILE);
+
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
 			.withRequiredArg()
@@ -230,7 +244,18 @@ public class RuneLite
 			});
 
 		parser.accepts("help", "Show this text").forHelp();
-		OptionSet options = parser.parse(args);
+
+		OptionSet options = parser.parse("");
+
+		try
+		{
+			options = parser.parse(args);
+		}
+		catch (OptionException e)
+		{
+			log.warn("Error parsing launch args: {}", e.getMessage());
+			log.warn("Proceeding with no arguments.");
+		}
 
 		if (options.has("help"))
 		{
@@ -297,18 +322,6 @@ public class RuneLite
 			RuneLiteSplashScreen.init();
 		}
 
-		final boolean developerMode = options.has("developer-mode");
-
-		if (developerMode)
-		{
-			boolean assertions = false;
-			assert assertions = true;
-			if (!assertions)
-			{
-				log.warn("Developers should enable assertions; Add `-ea` to your JVM arguments`");
-			}
-		}
-
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
 		{
 			log.error("Uncaught exception:", throwable);
@@ -327,7 +340,7 @@ public class RuneLite
 
 		injector = Guice.createInjector(new RuneLiteModule(
 			clientLoader,
-			true));
+			options.valueOf(configfile)));
 
 		injector.getInstance(RuneLite.class).start();
 		final long end = System.currentTimeMillis();
@@ -368,9 +381,11 @@ public class RuneLite
 		externalPluginManager.startExternalUpdateManager();
 		externalPluginManager.startExternalPluginManager();
 
-
-		RuneLiteSplashScreen.stage(.59, "Updating external plugins");
-		externalPluginManager.update();
+		if (appLock.lock(this.getClass().getName()))
+		{
+			RuneLiteSplashScreen.stage(.59, "Updating external plugins");
+			externalPluginManager.update();
+		}
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
@@ -387,7 +402,7 @@ public class RuneLite
 		pluginManager.loadDefaultPluginConfiguration();
 
 		// Start client session
-		RuneLiteSplashScreen.stage(.80, "Starting core interface");
+		RuneLiteSplashScreen.stage(.77, "Starting core interface");
 		clientSessionManager.start();
 
 		//Set the world if specified via CLI args - will not work until clientUI.init is called
@@ -395,7 +410,7 @@ public class RuneLite
 		worldArg.ifPresent(this::setWorld);
 
 		// Initialize UI
-		RuneLiteSplashScreen.stage(.77, "Initialize UI");
+		RuneLiteSplashScreen.stage(.80, "Initialize UI");
 		clientUI.init(this);
 
 		// Initialize Discord service
@@ -487,8 +502,47 @@ public class RuneLite
 
 	public void shutdown()
 	{
-		configManager.sendConfig();
 		clientSessionManager.shutdown();
 		discordService.close();
+		appLock.release();
+	}
+
+	private static class ConfigFileConverter implements ValueConverter<File>
+	{
+		@Override
+		public File convert(String fileName)
+		{
+			final File file;
+
+			if (Paths.get(fileName).isAbsolute()
+				|| fileName.startsWith("./")
+				|| fileName.startsWith(".\\"))
+			{
+				file = new File(fileName);
+			}
+			else
+			{
+				file = new File(RuneLite.RUNELITE_DIR, fileName);
+			}
+
+			if (file.exists() && (!file.isFile() || !file.canWrite()))
+			{
+				throw new ValueConversionException(String.format("File %s is not accessible", file.getAbsolutePath()));
+			}
+
+			return file;
+		}
+
+		@Override
+		public Class<? extends File> valueType()
+		{
+			return File.class;
+		}
+
+		@Override
+		public String valuePattern()
+		{
+			return null;
+		}
 	}
 }

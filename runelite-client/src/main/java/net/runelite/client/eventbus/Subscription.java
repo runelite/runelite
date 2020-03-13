@@ -1,6 +1,6 @@
 package net.runelite.client.eventbus;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.functions.Consumer;
 import lombok.Value;
 
 @Value

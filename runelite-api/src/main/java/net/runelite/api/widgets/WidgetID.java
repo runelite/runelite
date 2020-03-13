@@ -124,6 +124,7 @@ public class WidgetID
 	public static final int WORLD_SWITCHER_GROUP_ID = 69;
 	public static final int DIALOG_OPTION_GROUP_ID = 219;
 	public static final int DIALOG_PLAYER_GROUP_ID = 217;
+	public static final int DRIFT_NET_FISHING_REWARD_GROUP_ID = 607;
 	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = 609;
 	public static final int MINIGAME_TAB_ID = 76;
 	public static final int SPELLBOOK_GROUP_ID = 218;
@@ -164,6 +165,9 @@ public class WidgetID
 	public static final int OPTIONS_GROUP_ID = 261;
 	public static final int THEATRE_OF_BLOOD_PARTY_GROUP_ID = 28;
 	public static final int GWD_KC_GROUP_ID = 406;
+	public static final int ADVENTURE_LOG_ID = 187;
+	public static final int COUNTERS_LOG_GROUP_ID = 625;
+	public static final int GAUNTLET_TIMER_GROUP_ID = 637;
 
 	static class WorldMap
 	{
@@ -726,6 +730,7 @@ public class WidgetID
 		static final int LIGHT_BOX = 1;
 		static final int LIGHT_BOX_WINDOW = 2;
 		static final int LIGHT_BULB_CONTAINER = 3;
+		static final int LIGHT_BOX_BUTTON_CONTAINER = 6;
 		static final int BUTTON_A = 8;
 		static final int BUTTON_B = 9;
 		static final int BUTTON_C = 10;
@@ -1190,15 +1195,6 @@ public class WidgetID
 		static final int INVENTORY = 7;
 	}
 
-	static class Lms
-	{
-		static final int INFO = 3;
-	}
-
-	static class LmsKDA
-	{
-		static final int INFO = 4;
-	}
 
 	static class JewelBox
 	{
@@ -1212,9 +1208,9 @@ public class WidgetID
 
 	static class Options
 	{
-		static final int MUSIC_SLIDER = 38;
-		static final int SOUND_EFFECT_SLIDER = 44;
-		static final int AREA_SOUND_SLIDER = 50;
+		static final int MUSIC_SLIDER = 37;
+		static final int SOUND_EFFECT_SLIDER = 43;
+		static final int AREA_SOUND_SLIDER = 49;
 	}
 
 	static class AchievementDiary
@@ -1226,5 +1222,30 @@ public class WidgetID
 	{
 		static final int CONTAINER = 0;
 	}
-	
+
+	static class Lms
+	{
+		static final int INFO = 3;
+	}
+
+	static class LmsKDA
+	{
+		static final int INFO = 5;
+	}
+
+	static class AdventureLog
+	{
+		static final int CONTAINER = 0;
+	}
+
+	static class CountersLog
+	{
+		static final int OWNER = 4;
+		static final int TEXT = 6;
+	}
+
+	static class GauntletTimer
+	{
+		static final int CONTAINER = 2;
+	}
 }

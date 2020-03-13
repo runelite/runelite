@@ -64,7 +64,6 @@ public class RuneLiteAPI
 	private static final String WSBASE = "https://api.runelite.net/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
 
-	private static final String OPENOSRS_BASE = /*"https://api.openosrs.com*/ "https://api.runelitepl.us";
 	private static final String OPENOSRS_SESSION = "http://session.openosrs.dev";
 	private static final String OPENOSRS_XTEA = "http://xtea.openosrs.dev";
 	private static final String OPENOSRS_ANIMATIONS = "http://animations.openosrs.dev";
@@ -149,11 +148,6 @@ public class RuneLiteAPI
 		}
 
 		return HttpUrl.parse(BASE + "/runelite-" + getVersion());
-	}
-
-	public static HttpUrl getOpenOSRSApiBase()
-	{
-		return HttpUrl.parse(OPENOSRS_BASE + "/http-service-" + getRlpVersion());
 	}
 
 	public static HttpUrl getStaticBase()

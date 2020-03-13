@@ -25,7 +25,7 @@
 package net.runelite.client.account;
 
 import com.google.gson.Gson;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;

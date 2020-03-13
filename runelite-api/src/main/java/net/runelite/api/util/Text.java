@@ -33,11 +33,12 @@ import java.util.Collection;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
+import org.apache.commons.text.similarity.JaroWinklerDistance;
 
 public class Text
 {
 	private static final StringBuilder SB = new StringBuilder(64);
-
+	public static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
 	public static final Splitter COMMA_SPLITTER = Splitter
 		.on(",")
 		.omitEmptyStrings()
@@ -291,5 +292,23 @@ public class Text
 		}
 
 		return toString;
+	}
+	
+	/**
+	 * Checks if all the search terms in the given list matches at least one keyword.
+	 *
+	 * @return true if all search terms matches at least one keyword, or false if otherwise.
+	 */
+	public static boolean matchesSearchTerms(String[] searchTerms, final Collection<String> keywords)
+	{
+		for (String term : searchTerms)
+		{
+			if (keywords.stream().noneMatch((t) -> t.contains(term) ||
+				DISTANCE.apply(t, term) > 0.9))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

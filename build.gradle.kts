@@ -58,7 +58,7 @@ fun isNonStable(version: String): Boolean {
 
 allprojects {
     group = "com.openosrs"
-    version = ProjectVersions.rlVersion
+    version = ProjectVersions.openosrsVersion
     apply<MavenPublishPlugin>()
 }
 
@@ -90,6 +90,7 @@ subprojects {
             }
             filter {
                 includeModule("net.runelite", "fernflower")
+                includeModule("com.openosrs.rxrelay3", "rxrelay")
             }
         }
     }

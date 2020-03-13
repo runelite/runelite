@@ -3,7 +3,17 @@
 .string_stack_count 0
 .int_var_count      35
 .string_var_count   1
-   sconst                 "bankLayoutInit"
+; callback "beforeBankLayout"
+;   Fired before the bank starts its layout
+;	Used by the TabInterface to hide fake bank items for tag tabs
+;
+; callback "setBankScroll"
+;	Fired before bank is calculated
+;   Used by the TabInterface to show fake bank items for tag tabs
+;
+; callback "isTabMenuActive"
+;	Used by the TabInterface to skip setting the bank title
+   sconst                 "beforeBankLayout"
    runelite_callback
    get_varbit             5102
    iconst                 1
@@ -12,12 +22,12 @@
 LABEL4:
    iconst                 0
    iload                  9
-   if_sethide
+   if_sethide            
    jump                   LABEL13
 LABEL8:
    iconst                 1
    iload                  9
-   if_sethide
+   if_sethide            
    iload                  11
    invoke                 41
 LABEL13:
@@ -33,10 +43,10 @@ LABEL19:
 LABEL21:
    iload                  16
    iload                  14
-   if_sethide
+   if_sethide            
    iload                  16
    iload                  15
-   if_sethide
+   if_sethide            
    get_varbit             8352
    iconst                 1
    if_icmpeq              LABEL31
@@ -51,22 +61,22 @@ LABEL34:
 LABEL36:
    iload                  16
    iload                  12
-   if_sethide
+   if_sethide            
    iload                  16
    iload                  13
-   if_sethide
+   if_sethide            
    iconst                 441
    iconst                 0
    iconst                 0
    iconst                 0
    iload                  14
-   if_setposition
+   if_setposition        
    iconst                 444
    iconst                 7
    iconst                 0
    iconst                 0
    iload                  15
-   if_setposition
+   if_setposition        
    get_varbit             8352
    iconst                 1
    if_icmpeq              LABEL58
@@ -78,27 +88,27 @@ LABEL58:
    jump                   LABEL85
 LABEL62:
    iload                  12
-   if_getx
+   if_getx               
    iload                  12
-   if_gety
+   if_gety               
    iconst                 0
    iconst                 0
    iload                  14
-   if_setposition
+   if_setposition        
    iload                  13
-   if_getx
+   if_getx               
    iload                  13
-   if_gety
+   if_gety               
    iconst                 0
    iconst                 0
    iload                  15
-   if_setposition
+   if_setposition        
    iconst                 37
    iconst                 37
    iconst                 1
    iconst                 0
    iload                  4
-   if_setsize
+   if_setsize            
    jump                   LABEL121
 LABEL85:
    get_varbit             8352
@@ -116,7 +126,7 @@ LABEL93:
    iconst                 1
    iconst                 0
    iload                  4
-   if_setsize
+   if_setsize            
    jump                   LABEL121
 LABEL100:
    get_varbit             8352
@@ -134,7 +144,7 @@ LABEL108:
    iconst                 1
    iconst                 0
    iload                  4
-   if_setsize
+   if_setsize            
    jump                   LABEL121
 LABEL115:
    iconst                 0
@@ -142,13 +152,13 @@ LABEL115:
    iconst                 1
    iconst                 0
    iload                  4
-   if_setsize
+   if_setsize            
 LABEL121:
    iconst                 1
    iload                  10
-   if_sethide
+   if_sethide            
    iload                  10
-   cc_deleteall
+   cc_deleteall          
    iconst                 0
    istore                 17
    get_varbit             4170
@@ -201,7 +211,7 @@ LABEL165:
 LABEL171:
    iconst                 1
    iload                  8
-   if_sethide
+   if_sethide            
    iconst                 2
    istore                 18
    iconst                 460
@@ -209,42 +219,42 @@ LABEL171:
    iconst                 0
    iconst                 1
    iload                  2
-   if_setsize
+   if_setsize            
    iconst                 16
    iconst                 39
    iconst                 0
    iconst                 1
    iload                  3
-   if_setsize
+   if_setsize            
    iconst                 28
    iconst                 42
    iconst                 2
    iconst                 0
    iload                  1
-   if_setposition
+   if_setposition        
    jump                   LABEL216
 LABEL195:
    iconst                 0
    iload                  8
-   if_sethide
+   if_sethide            
    iconst                 460
    iconst                 81
    iconst                 0
    iconst                 1
    iload                  2
-   if_setsize
+   if_setsize            
    iconst                 16
    iconst                 81
    iconst                 0
    iconst                 1
    iload                  3
-   if_setsize
+   if_setsize            
    iconst                 12
    iconst                 42
    iconst                 2
    iconst                 0
    iload                  1
-   if_setposition
+   if_setposition        
 LABEL216:
    iload                  3
    iload                  2
@@ -254,8 +264,8 @@ LABEL216:
    iconst                 816
    iconst                 9
    iconst                 3
-   multiply
-   add
+   multiply              
+   add                   
    istore                 20
 LABEL227:
    iload                  19
@@ -265,17 +275,17 @@ LABEL227:
 LABEL231:
    iload                  2
    iload                  19
-   cc_find
+   cc_find               
    iconst                 1
    if_icmpeq              LABEL237
    jump                   LABEL239
 LABEL237:
    iconst                 1
-   cc_sethide
+   cc_sethide            
 LABEL239:
    iload                  19
    iconst                 1
-   add
+   add                   
    istore                 19
    jump                   LABEL227
 LABEL244:
@@ -283,22 +293,22 @@ LABEL244:
    istore                 19
    iconst                 8
    iconst                 1
-   sub
+   sub                   
    istore                 21
    iload                  2
-   if_getwidth
+   if_getwidth           
    iconst                 51
-   sub
+   sub                   
    iconst                 35
-   sub
+   sub                   
    istore                 22
    iload                  22
    iconst                 8
    iconst                 36
-   multiply
-   sub
+   multiply              
+   sub                   
    iload                  21
-   div
+   div                   
    istore                 23
    iconst                 -1
    istore                 24
@@ -331,51 +341,51 @@ LABEL288:
 LABEL292:
    iload                  2
    iload                  19
-   cc_find
+   cc_find               
    iconst                 1
    if_icmpeq              LABEL298
    jump                   LABEL300
 LABEL298:
    iconst                 1
-   cc_sethide
+   cc_sethide            
 LABEL300:
    iconst                 95
    iload                  19
-   inv_getobj
+   inv_getobj            
    iconst                 -1
    if_icmpne              LABEL306
    jump                   LABEL312
 LABEL306:
    iload                  28
    iconst                 1
-   add
+   add                   
    iload                  19
    istore                 29
    istore                 28
 LABEL312:
    iload                  19
    iconst                 1
-   add
+   add                   
    istore                 19
    jump                   LABEL288
 LABEL317:
    get_varbit             4171
    get_varbit             4172
-   add
+   add                   
    get_varbit             4173
-   add
+   add                   
    get_varbit             4174
-   add
+   add                   
    get_varbit             4175
-   add
+   add                   
    get_varbit             4176
-   add
+   add                   
    get_varbit             4177
-   add
+   add                   
    get_varbit             4178
-   add
+   add                   
    get_varbit             4179
-   add
+   add                   
    istore                 30
    iload                  30
    iconst                 0
@@ -384,13 +394,22 @@ LABEL317:
 LABEL339:
    iconst                 816
    iconst                 1
-   sub
+   sub                   
    istore                 29
 LABEL343:
+   iconst                 0               	; Scroll height variable
+   iconst                 0               	; Compare variable
+   iconst                 0               	;
+   sconst                 "setBankScroll"   ; Show fake bank items for tag tabs
+   runelite_callback                        ; If tag tab menu search isn't active
+   if_icmpeq              CONTINUE_SEARCH 	; continue to normal bank search
+   istore 				  27              	; Load scroll height into variable
+   jump                   GetTabRange     	; Skip normal bank layout
+CONTINUE_SEARCH:
    iload                  30
    iload                  29
    iconst                 1
-   add
+   add                   
    iconst                 0
    iload                  2
    iload                  3
@@ -406,7 +425,7 @@ LABEL343:
    istore                 27
    iload                  26
    iload                  25
-   add
+   add                   
    istore                 26
    iconst                 0
    istore                 19
@@ -423,7 +442,7 @@ LABEL370:
    iload                  19
    iload                  19
    get_varbit             4171
-   add
+   add                   
    iconst                 1
    iload                  2
    iload                  3
@@ -439,11 +458,11 @@ LABEL370:
    istore                 27
    iload                  26
    iload                  25
-   add
+   add                   
    istore                 26
    iload                  19
    get_varbit             4171
-   add
+   add                   
    istore                 19
 LABEL400:
    get_varbit             4172
@@ -459,7 +478,7 @@ LABEL404:
    iload                  19
    iload                  19
    get_varbit             4172
-   add
+   add                   
    iconst                 2
    iload                  2
    iload                  3
@@ -475,11 +494,11 @@ LABEL404:
    istore                 27
    iload                  26
    iload                  25
-   add
+   add                   
    istore                 26
    iload                  19
    get_varbit             4172
-   add
+   add                   
    istore                 19
 LABEL434:
    get_varbit             4173
@@ -495,7 +514,7 @@ LABEL438:
    iload                  19
    iload                  19
    get_varbit             4173
-   add
+   add                   
    iconst                 3
    iload                  2
    iload                  3
@@ -511,11 +530,11 @@ LABEL438:
    istore                 27
    iload                  26
    iload                  25
-   add
+   add                   
    istore                 26
    iload                  19
    get_varbit             4173
-   add
+   add                   
    istore                 19
 LABEL468:
    get_varbit             4174
@@ -531,7 +550,7 @@ LABEL472:
    iload                  19
    iload                  19
    get_varbit             4174
-   add
+   add                   
    iconst                 4
    iload                  2
    iload                  3
@@ -547,11 +566,11 @@ LABEL472:
    istore                 27
    iload                  26
    iload                  25
-   add
+   add                   
    istore                 26
    iload                  19
    get_varbit             4174
-   add
+   add                   
    istore                 19
 LABEL502:
    get_varbit             4175
@@ -567,7 +586,7 @@ LABEL506:
    iload                  19
    iload                  19
    get_varbit             4175
-   add
+   add                   
    iconst                 5
    iload                  2
    iload                  3
@@ -583,11 +602,11 @@ LABEL506:
    istore                 27
    iload                  26
    iload                  25
-   add
+   add                   
    istore                 26
    iload                  19
    get_varbit             4175
-   add
+   add                   
    istore                 19
 LABEL536:
    get_varbit             4176
@@ -603,7 +622,7 @@ LABEL540:
    iload                  19
    iload                  19
    get_varbit             4176
-   add
+   add                   
    iconst                 6
    iload                  2
    iload                  3
@@ -619,11 +638,11 @@ LABEL540:
    istore                 27
    iload                  26
    iload                  25
-   add
+   add                   
    istore                 26
    iload                  19
    get_varbit             4176
-   add
+   add                   
    istore                 19
 LABEL570:
    get_varbit             4177
@@ -639,7 +658,7 @@ LABEL574:
    iload                  19
    iload                  19
    get_varbit             4177
-   add
+   add                   
    iconst                 7
    iload                  2
    iload                  3
@@ -655,11 +674,11 @@ LABEL574:
    istore                 27
    iload                  26
    iload                  25
-   add
+   add                   
    istore                 26
    iload                  19
    get_varbit             4177
-   add
+   add                   
    istore                 19
 LABEL604:
    get_varbit             4178
@@ -675,7 +694,7 @@ LABEL608:
    iload                  19
    iload                  19
    get_varbit             4178
-   add
+   add                   
    iconst                 8
    iload                  2
    iload                  3
@@ -691,11 +710,11 @@ LABEL608:
    istore                 27
    iload                  26
    iload                  25
-   add
+   add                   
    istore                 26
    iload                  19
    get_varbit             4178
-   add
+   add                   
    istore                 19
 LABEL638:
    get_varbit             4179
@@ -711,7 +730,7 @@ LABEL642:
    iload                  19
    iload                  19
    get_varbit             4179
-   add
+   add                   
    iconst                 9
    iload                  2
    iload                  3
@@ -727,11 +746,11 @@ LABEL642:
    istore                 27
    iload                  26
    iload                  25
-   add
+   add                   
    istore                 26
    iload                  19
    get_varbit             4179
-   add
+   add                   
    istore                 19
 LABEL672:
    invoke                 514
@@ -743,7 +762,7 @@ LABEL676:
    lowercase             ; instead get the var directly and lowercase it
    sstore                 0
    sload                  0
-   string_length
+   string_length         
    iconst                 0
    if_icmpgt              LABEL683
    jump                   LABEL702
@@ -754,7 +773,7 @@ LABEL683:
    sconst                 "</col>"
    join_string            4
    iload                  5
-   if_settext
+   if_settext            
    get_varc_int           5
    iconst                 11
    if_icmpeq              LABEL694
@@ -762,7 +781,7 @@ LABEL683:
 LABEL694:
    sconst                 "Show items whose names contain the following text: ("
    iload                  26
-   tostring
+   tostring              
    sconst                 " found)"
    join_string            3
    iload                  26                             ; load number of matches
@@ -770,7 +789,7 @@ LABEL694:
    runelite_callback     ; invoke callback
    pop_int               ; pop number of matches
    iconst                 10616876
-   if_settext
+   if_settext            
 LABEL701:
    jump                   LABEL716
 LABEL702:
@@ -780,7 +799,7 @@ LABEL702:
    sconst                 "</col>"
    join_string            4
    iload                  5
-   if_settext
+   if_settext            
    get_varc_int           5
    iconst                 11
    if_icmpeq              LABEL713
@@ -790,7 +809,7 @@ LABEL713:
    sconst                 "setSearchBankInputText"  ; load event name
    runelite_callback     ; invoke callback
    iconst                 10616876
-   if_settext
+   if_settext            
 LABEL716:
    jump                   LABEL720
 LABEL717:
@@ -798,7 +817,7 @@ LABEL717:
    sconst                 "setBankTitle"  ;
    runelite_callback     ;
    iload                  5
-   if_settext
+   if_settext            
 LABEL720:
    iload                  0
    iload                  1
@@ -821,17 +840,17 @@ LABEL720:
    iload                  14
    iload                  15
    invoke                 505
-   return
+   return                
 LABEL740:
    invoke                 514
    iconst                 1
    if_icmpeq              LABEL744
-   jump                   LABEL747
+   jump                   GetTabRange
 LABEL744:
    iconst                 1
    iconst                 1
    invoke                 299
-LABEL747:
+GetTabRange:
    iconst                 -1
    istore                 31
    iconst                 -1
@@ -848,18 +867,18 @@ LABEL759:
    iload                  19
    iconst                 816
    if_icmplt              LABEL763
-   jump                   LABEL843
+   jump                   SetTitle
 LABEL763:
    iload                  2
    iload                  19
-   cc_find
+   cc_find               
    iconst                 1
    if_icmpeq              LABEL769
    jump                   LABEL838
 LABEL769:
    iconst                 95
    iload                  19
-   inv_getobj
+   inv_getobj            
    istore                 24
    iload                  24
    iconst                 -1
@@ -868,7 +887,7 @@ LABEL769:
 LABEL777:
    iload                  28
    iconst                 1
-   add
+   add                   
    istore                 28
 LABEL781:
    iload                  19
@@ -882,11 +901,11 @@ LABEL785:
    jump                   LABEL836
 LABEL789:
    iconst                 0
-   cc_sethide
+   cc_sethide            
    iload                  24
    iconst                 95
    iload                  19
-   inv_getnum
+   inv_getnum            
    iload                  2
    iload                  3
    iload                  9
@@ -895,22 +914,22 @@ LABEL789:
    invoke                 278
    iload                  34
    iconst                 36
-   multiply
+   multiply              
    istore                 27
    iconst                 51
    iload                  33
    iconst                 36
    iload                  23
-   add
-   multiply
-   add
+   add                   
+   multiply              
+   add                   
    iload                  27
    iconst                 0
    iconst                 0
-   cc_setposition
+   cc_setposition        
    iload                  27
    iconst                 32
-   add
+   add                   
    istore                 27
    iload                  33
    iload                  21
@@ -919,55 +938,60 @@ LABEL789:
 LABEL824:
    iload                  33
    iconst                 1
-   add
+   add                   
    istore                 33
    jump                   LABEL835
 LABEL829:
    iconst                 0
    iload                  34
    iconst                 1
-   add
+   add                   
    istore                 34
    istore                 33
 LABEL835:
    jump                   LABEL838
 LABEL836:
    iconst                 1
-   cc_sethide
+   cc_sethide            
 LABEL838:
    iload                  19
    iconst                 1
-   add
+   add                   
    istore                 19
    jump                   LABEL759
-LABEL843:
+SetTitle:
+   iconst                 0              		; Compare variable
+   iconst                 0                   	;
+   sconst                 "isTabMenuActive"   	; Check if tag tab menu
+   runelite_callback                     		; is active and skip setting
+   if_icmpne              FinishBuilding       	; the bank title if it is
    get_varbit             4170
    iconst                 2
-   if_icmpeq              LABEL847
-   jump                   LABEL857
-LABEL847:
+   if_icmpeq              SetTitleRomanNumeral
+   jump                   SetTitleNumber
+SetTitleRomanNumeral:
    sconst                 "Tab "
    iconst                 105
    iconst                 115
    iconst                 207
    get_varbit             4150
-   enum
+   enum                  
    join_string            2
    sconst                 "setBankTitle"  ;
    runelite_callback     ;
    iload                  5
-   if_settext
-   jump                   LABEL863
-LABEL857:
+   if_settext            
+   jump                   FinishBuilding
+SetTitleNumber:
    sconst                 "Tab "
    get_varbit             4150
-   tostring
+   tostring              
    join_string            2
    sconst                 "setBankTitle"  ;
    runelite_callback     ;
    iload                  5
-   if_settext
-LABEL863:
+   if_settext            
+FinishBuilding:
    iload                  0
    iload                  1
    iload                  2
@@ -987,4 +1011,4 @@ LABEL863:
    iload                  14
    iload                  15
    invoke                 505
-   return
+   return                

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Shingyx <https://github.com/Shingyx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions;
+package net.runelite.client.ui.components;
 
-import lombok.Data;
+import javax.swing.JPopupMenu;
 
-@Data
-public class KitDefinition
+/**
+ * Represents a UI component which has a popup menu, to be used on child components inside DragAndDropReorderPane.
+ * This is because using setComponentPopupMenu consumes the MouseEvents required for drag and drop reordering.
+ */
+public interface PopupMenuOwner
 {
-	private final int id;
-	public short[] recolorToReplace;
-	public short[] recolorToFind;
-	public short[] retextureToFind;
-	public short[] retextureToReplace;
-	public int bodyPartId = -1;
-	public int[] models;
-	public int[] chatheadModels = new int[]
-	{
-		-1, -1, -1, -1, -1
-	};
-	public boolean nonSelectable = false;
+	JPopupMenu getPopupMenu();
 }
