@@ -233,4 +233,36 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 2)
 	public static final int TOPLEVEL_RESIZE = 909;
+
+	/**
+	 * Called when the friends list is updated
+	 * <ul>
+	 * <li> int (WidgetID) Friends list "full container" </li>
+	 * <li> int (WidgetID) Friends list sort by name button </li>
+	 * <li> int (WidgetID) Friends list sort by last world change button </li>
+	 * <li> int (WidgetID) Friends list sort by world button </li>
+	 * <li> int (WidgetID) Friends list legacy sort button </li>
+	 * <li> int (WidgetID) Friends list names container </li>
+	 * <li> int (WidgetID) Friends list scroll bar </li>
+	 * <li> int (WidgetID) Friends list "loading please wait" text </li>
+	 * <li> int (WidgetID) Friends list player previous name holder </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 9)
+	public static final int FRIENDS_UPDATE = 631;
+
+	/**
+	 * Called when the ignore list is updated
+	 * <ul>
+	 * <li> int (WidgetID) Ignore list "full container" </li>
+	 * <li> int (WidgetID) Ignore list sort by name button </li>
+	 * <li> int (WidgetID) Ignore list legacy sort button </li>
+	 * <li> int (WidgetID) Ignore list names container </li>
+	 * <li> int (WidgetID) Ignore list scroll bar </li>
+	 * <li> int (WidgetID) Ignore list "loading please wait" text </li>
+	 * <li> int (WidgetID) Ignore list player previous name holder </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 7)
+	public static final int IGNORE_UPDATE = 630;
 }
