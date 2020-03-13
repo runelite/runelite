@@ -67,7 +67,16 @@ subprojects {
         if (System.getenv("JITPACK") != null)
             mavenLocal()
         jcenter()
-        maven(url = "https://mvnrepository.com/artifact")
+        exclusiveContent {
+            forRepository {
+                maven {
+                    url = uri("https://mvnrepository.com/artifact")
+                }
+            }
+            filter {
+                excludeModule("com.github.petitparser", "java-petitparser")
+            }
+        }
         maven(url = "https://jitpack.io")
 
         exclusiveContent {
