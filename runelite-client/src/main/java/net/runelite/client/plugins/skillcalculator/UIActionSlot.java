@@ -45,6 +45,7 @@ import lombok.Setter;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.FlatTextField;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 class UIActionSlot extends JPanel
@@ -65,9 +66,13 @@ class UIActionSlot extends JPanel
 
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillDataEntry action;
-	private final JShadowedLabel uiLabelActions;
+	private JShadowedLabel uiInfoLabel;
 
-	private final JPanel uiInfo;
+	private JPanel uiInfo;
+	private JPanel uiLabelledInputActions;
+
+	@Getter(AccessLevel.PACKAGE)
+	private FlatTextField uiActionsInput;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isAvailable;
@@ -77,6 +82,9 @@ class UIActionSlot extends JPanel
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isOverlapping;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean expanded = false;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -121,15 +129,32 @@ class UIActionSlot extends JPanel
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 
+		// The name of the action
 		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
 		uiLabelName.setForeground(Color.WHITE);
 
-		uiLabelActions = new JShadowedLabel("Unknown");
-		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
-		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		// The label that displays how many actions until the target level
+		uiInfoLabel = new JShadowedLabel("Unknown");
+		uiInfoLabel.setFont(FontManager.getRunescapeSmallFont());
+		uiInfoLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+
+		// The panel that lets you input how many actions you will do
+		uiLabelledInputActions = new JPanel(new BorderLayout());
+
+		uiActionsInput = new FlatTextField();
+		uiActionsInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		JLabel uiActionsLabel = new JLabel("Actions:");
+		uiActionsLabel.setFont(FontManager.getRunescapeFont());
+		uiActionsLabel.setForeground(Color.WHITE);
+		uiActionsLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiActionsLabel.setToolTipText("Enter how many actions you will complete to see the level you will achieve");
+
+		uiLabelledInputActions.add(uiActionsLabel, BorderLayout.WEST);
+		uiLabelledInputActions.add(uiActionsInput, BorderLayout.CENTER);
 
 		uiInfo.add(uiLabelName);
-		uiInfo.add(uiLabelActions);
+		uiInfo.add(uiInfoLabel);
 
 		add(uiIcon, BorderLayout.LINE_START);
 		add(uiInfo, BorderLayout.CENTER);
@@ -155,7 +180,7 @@ class UIActionSlot extends JPanel
 
 	void setText(String text)
 	{
-		uiLabelActions.setText(text);
+		uiInfoLabel.setText(text);
 	}
 
 	private void updateBackground()
@@ -184,5 +209,49 @@ class UIActionSlot extends JPanel
 		{
 			uiInfo.setBackground(color);
 		}
+		if (uiActionsInput != null)
+		{
+			uiActionsInput.setBackground(color);
+		}
+		if (uiLabelledInputActions != null)
+		{
+			uiLabelledInputActions.setBackground(color);
+		}
+	}
+
+	int getNumInputActions()
+	{
+		try
+		{
+			return Integer.parseInt(uiActionsInput.getText());
+		}
+		catch (NumberFormatException e)
+		{
+			return 0;
+		}
+	}
+
+	void expand()
+	{
+		uiInfo.setLayout(new GridLayout(3, 1));
+		uiInfo.add(uiLabelledInputActions);
+
+		expanded = true;
+
+		revalidate();
+		repaint();
+	}
+
+	void retract()
+	{
+		uiInfo.remove(uiLabelledInputActions);
+		uiInfo.setLayout(new GridLayout(2, 1));
+
+		uiActionsInput.setText(null);
+
+		expanded = false;
+
+		revalidate();
+		repaint();
 	}
 }

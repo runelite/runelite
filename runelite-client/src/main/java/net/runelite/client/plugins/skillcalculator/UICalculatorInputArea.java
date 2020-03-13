@@ -44,14 +44,49 @@ class UICalculatorInputArea extends JPanel
 	private final JTextField uiFieldCurrentXP;
 	private final JTextField uiFieldTargetLevel;
 	private final JTextField uiFieldTargetXP;
+	private final JTextField uiFieldNewLevel;
+	private final JTextField uiFieldNewXP;
+
+	private final JPanel uiPanelNewLevel;
+	private final JPanel uiPanelNewXP;
+
+	private boolean newPanelsVisible = false;
 
 	UICalculatorInputArea()
 	{
 		setLayout(new GridLayout(2, 2, 7, 7));
-		uiFieldCurrentLevel = addComponent("Current Level");
-		uiFieldCurrentXP = addComponent("Current Experience");
-		uiFieldTargetLevel = addComponent("Target Level");
-		uiFieldTargetXP = addComponent("Target Experience");
+
+		FlatTextField uiFlatTextCurrentLevel = new FlatTextField();
+		FlatTextField uiFlatTextCurrentXP = new FlatTextField();
+		FlatTextField uiFlatTextTargetLevel = new FlatTextField();
+		FlatTextField uiFlatTextTargetXP = new FlatTextField();
+		FlatTextField uiFlatTextNewLevel = new FlatTextField();
+		FlatTextField uiFlatTextNewXP = new FlatTextField();
+
+		// The "New" fields do not need to be edited
+		uiFlatTextNewLevel.setEditable(false);
+		uiFlatTextNewXP.setEditable(false);
+
+		uiFieldCurrentLevel = uiFlatTextCurrentLevel.getTextField();
+		uiFieldCurrentXP = uiFlatTextCurrentXP.getTextField();
+		uiFieldTargetLevel = uiFlatTextTargetLevel.getTextField();
+		uiFieldTargetXP = uiFlatTextTargetXP.getTextField();
+		uiFieldNewLevel = uiFlatTextNewLevel.getTextField();
+		uiFieldNewXP = uiFlatTextNewXP.getTextField();
+
+		JPanel uiPanelCurrentLevel = createComponent("Current Level", uiFlatTextCurrentLevel);
+		JPanel uiPanelCurrentXP = createComponent("Current Experience", uiFlatTextCurrentXP);
+		JPanel uiPanelTargetLevel = createComponent("Target Level", uiFlatTextTargetLevel);
+		JPanel uiPanelTargetXP = createComponent("Target Experience", uiFlatTextTargetXP);
+		// We need to keep a reference to these ones so that we can add/remove them
+		uiPanelNewLevel = createComponent("New Level", uiFlatTextNewLevel);
+		uiPanelNewXP = createComponent("New Experience", uiFlatTextNewXP);
+
+		// We only want to add the Current/Target fields by default
+		add(uiPanelCurrentLevel);
+		add(uiPanelCurrentXP);
+		add(uiPanelTargetLevel);
+		add(uiPanelTargetXP);
 	}
 
 	int getCurrentLevelInput()
@@ -94,6 +129,16 @@ class UICalculatorInputArea extends JPanel
 		setInput(uiFieldTargetXP, value);
 	}
 
+	void setNewLevelInput(Object value)
+	{
+		setInput(uiFieldNewLevel, value);
+	}
+
+	void setNewXpInput(Object value)
+	{
+		setInput(uiFieldNewXP, value);
+	}
+
 	private int getInput(JTextField field)
 	{
 		try
@@ -111,27 +156,57 @@ class UICalculatorInputArea extends JPanel
 		field.setText(String.valueOf(value));
 	}
 
-	private JTextField addComponent(String label)
+	private JPanel createComponent(String label, FlatTextField uiInput)
 	{
-		final JPanel container = new JPanel();
+		JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
-
-		final JLabel uiLabel = new JLabel(label);
-		final FlatTextField uiInput = new FlatTextField();
 
 		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInput.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
 
-		uiLabel.setFont(FontManager.getRunescapeSmallFont());
-		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
-		uiLabel.setForeground(Color.WHITE);
+		JLabel uiLabel = createLabel(label);
 
 		container.add(uiLabel, BorderLayout.NORTH);
 		container.add(uiInput, BorderLayout.CENTER);
 
-		add(container);
+		return container;
+	}
 
-		return uiInput.getTextField();
+	private JLabel createLabel(String label)
+	{
+		JLabel uiLabel = new JLabel(label);
+
+		uiLabel.setFont(FontManager.getRunescapeSmallFont());
+		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
+		uiLabel.setForeground(Color.WHITE);
+
+		return uiLabel;
+	}
+
+	void addNewFields()
+	{
+		if (!newPanelsVisible)
+		{
+			setLayout(new GridLayout(3, 2, 7, 7));
+
+			add(uiPanelNewLevel);
+			add(uiPanelNewXP);
+
+			newPanelsVisible = true;
+		}
+	}
+
+	void removeNewFields()
+	{
+		if (newPanelsVisible)
+		{
+			remove(uiPanelNewLevel);
+			remove(uiPanelNewXP);
+
+			setLayout(new GridLayout(2, 2, 7, 7));
+
+			newPanelsVisible = false;
+		}
 	}
 }

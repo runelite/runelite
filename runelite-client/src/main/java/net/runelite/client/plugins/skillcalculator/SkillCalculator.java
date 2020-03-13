@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -72,6 +74,8 @@ class SkillCalculator extends JPanel
 	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
 	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
 	private final IconTextField searchBar = new IconTextField();
+	private final JButton resetButton = new JButton("Reset");
+	private final JPanel uiCardContainer = new JPanel(new CardLayout());
 
 	private SkillData skillData;
 	private int currentLevel = 1;
@@ -79,6 +83,8 @@ class SkillCalculator extends JPanel
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
+	private int numExpandedActionSlots = 0;
+	private UIActionSlot lastExpandedSlot = null;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
@@ -102,17 +108,23 @@ class SkillCalculator extends JPanel
 		uiInput.getUiFieldCurrentLevel().addActionListener(e ->
 		{
 			onFieldCurrentLevelUpdated();
+			calculateLevelFromInputActions();
 			uiInput.getUiFieldTargetLevel().requestFocusInWindow();
 		});
 
 		uiInput.getUiFieldCurrentXP().addActionListener(e ->
 		{
 			onFieldCurrentXPUpdated();
+			calculateLevelFromInputActions();
 			uiInput.getUiFieldTargetXP().requestFocusInWindow();
 		});
 
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
+
+		resetButton.setToolTipText("Clear all of the actions that have been entered");
+
+		resetButton.addActionListener(e -> clearInputActions());
 
 		// Register focus listeners to calculate xp when exiting a text field
 		uiInput.getUiFieldCurrentLevel().addFocusListener(buildFocusAdapter(e -> onFieldCurrentLevelUpdated()));
@@ -157,11 +169,27 @@ class SkillCalculator extends JPanel
 		// Add in checkboxes for available skill bonuses.
 		renderBonusOptions();
 
-		// Add the combined action slot.
-		add(combinedActionSlot);
+		// Clear the card layout panel that shows combined actions or reset button
+		uiCardContainer.removeAll();
+
+		// Re add the combined action slot and the reset button to the panel
+		uiCardContainer.add(combinedActionSlot);
+		uiCardContainer.add(resetButton);
+
+		// Add the card layout panel
+		add(uiCardContainer);
 
 		// Add the search bar
 		add(searchBar);
+
+		// Reset the expanded slot counter.
+		numExpandedActionSlots = 0;
+
+		// We don't need the old value
+		lastExpandedSlot = null;
+
+		// Change fields back to being target level and xp only.
+		removeNewFields();
 
 		// Create action slots for the skill actions.
 		renderActionSlots();
@@ -302,6 +330,8 @@ class SkillCalculator extends JPanel
 					if (!e.isShiftDown())
 					{
 						clearCombinedSlots();
+
+						toggleSlotExpanded(slot);
 					}
 
 					if (slot.isSelected())
@@ -317,6 +347,18 @@ class SkillCalculator extends JPanel
 					updateCombinedAction();
 				}
 			});
+
+			slot.getUiActionsInput().addActionListener(a ->
+			{
+				addNewFields();
+
+				if (slot.getNumInputActions() == 0)
+				{
+					retractSlot(slot);
+				}
+
+				calculateLevelFromInputActions();
+			});
 		}
 
 		// Refresh the rendering of this panel.
@@ -324,27 +366,64 @@ class SkillCalculator extends JPanel
 		repaint();
 	}
 
+	private void calculateLevelFromInputActions()
+	{
+		double cumulativeXpGain = 0;
+
+		for (UIActionSlot slot : uiActionSlots)
+		{
+			int numActions = slot.getNumInputActions();
+			if (numActions <= 0)
+			{
+				continue;
+			}
+
+			SkillDataEntry action = slot.getAction();
+
+			double xpGain = (action.isIgnoreBonus()) ? action.getXp() * numActions : action.getXp() * numActions * xpFactor;
+			cumulativeXpGain += xpGain;
+		}
+
+		int newTotalXp = currentXP + (int) Math.floor(cumulativeXpGain);
+
+		if (newTotalXp < 0 || newTotalXp > Experience.MAX_SKILL_XP)
+		{
+			newTotalXp = Experience.MAX_SKILL_XP;
+		}
+
+		int newLevel = Experience.getLevelForXp(newTotalXp);
+
+		uiInput.setNewLevelInput(newLevel);
+		uiInput.setNewXpInput(newTotalXp);
+
+	}
+
 	private void calculate()
 	{
 		for (UIActionSlot slot : uiActionSlots)
 		{
-			int actionCount = 0;
-			int neededXP = targetXP - currentXP;
-			SkillDataEntry action = slot.getAction();
-			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
-
-			if (neededXP > 0)
-			{
-				actionCount = (int) Math.ceil(neededXP / xp);
-			}
-
-			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
-			slot.setAvailable(currentLevel >= action.getLevel());
-			slot.setOverlapping(action.getLevel() < targetLevel);
-			slot.setValue(xp);
+			calculateSlot(slot);
 		}
 
 		updateCombinedAction();
+	}
+
+	private void calculateSlot(UIActionSlot slot)
+	{
+		int actionCount = 0;
+		int neededXP = targetXP - currentXP;
+		SkillDataEntry action = slot.getAction();
+		double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
+
+		if (neededXP > 0)
+		{
+			actionCount = (int) Math.ceil(neededXP / xp);
+		}
+
+		slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+		slot.setAvailable(currentLevel >= action.getLevel());
+		slot.setOverlapping(action.getLevel() < targetLevel);
+		slot.setValue(xp);
 	}
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
@@ -433,6 +512,97 @@ class SkillCalculator extends JPanel
 	{
 		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
 	}
+
+
+	private void toggleSlotExpanded(UIActionSlot slot)
+	{
+		if (!slot.isExpanded())
+		{
+			expandSlot(slot);
+		}
+		else
+		{
+			retractSlot(slot);
+		}
+
+		calculateSlot(slot);
+	}
+
+	private void expandSlot(UIActionSlot slot)
+	{
+		numExpandedActionSlots++;
+
+		if (lastExpandedSlot != null)
+		{
+			if (lastExpandedSlot.getNumInputActions() == 0)
+			{
+				retractSlot(lastExpandedSlot);
+			}
+			else
+			{
+				addNewFields();
+				calculateLevelFromInputActions();
+			}
+		}
+		lastExpandedSlot = slot;
+
+		slot.expand();
+		calculateSlot(slot);
+
+		slot.getUiActionsInput().getTextField().requestFocusInWindow();
+		slot.getUiActionsInput().setText(null);
+	}
+
+	private void retractSlot(UIActionSlot slot)
+	{
+		if (!slot.isExpanded())
+		{
+			return;
+		}
+
+		numExpandedActionSlots--;
+
+		slot.retract();
+
+		if (numExpandedActionSlots == 0)
+		{
+			removeNewFields();
+		}
+
+		calculateSlot(slot);
+		calculateLevelFromInputActions();
+	}
+
+	private void addNewFields()
+	{
+		uiInput.addNewFields();
+
+		CardLayout layout = (CardLayout) uiCardContainer.getLayout();
+		layout.last(uiCardContainer);
+
+		revalidate();
+		repaint();
+	}
+
+	private void removeNewFields()
+	{
+		uiInput.removeNewFields();
+
+		CardLayout layout = (CardLayout) uiCardContainer.getLayout();
+		layout.first(uiCardContainer);
+
+		revalidate();
+		repaint();
+	}
+
+	private void clearInputActions()
+	{
+		for (UIActionSlot slot : uiActionSlots)
+		{
+			retractSlot(slot);
+		}
+	}
+
 
 	private FocusAdapter buildFocusAdapter(Consumer<FocusEvent> focusLostConsumer)
 	{
