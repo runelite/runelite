@@ -133,7 +133,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Score a goal in skullball.", true, any("Ring of Charos", item(ItemID.RING_OF_CHAROS), item(ItemID.RING_OF_CHAROSA))),
 		new SkillChallengeClue("Complete a lap of Ape atoll agility course.", true, any("Ninja Monkey Greegree", item(ItemID.NINJA_MONKEY_GREEGREE), item(ItemID.NINJA_MONKEY_GREEGREE_4025), item(ItemID.KRUK_MONKEY_GREEGREE))),
 		new SkillChallengeClue("Create a super defence potion.", item(ItemID.CADANTINE_POTION_UNF), item(ItemID.WHITE_BERRIES)),
-		new SkillChallengeClue("Steal from a chest in King Lathas' castle in East Ardougne."),
+		new SkillChallengeClue("Steal from a chest in Ardougne Castle."),
 		new SkillChallengeClue("Craft a green d'hide body.", xOfItem(ItemID.GREEN_DRAGON_LEATHER, 3), item(ItemID.NEEDLE), item(ItemID.THREAD)),
 		new SkillChallengeClue("String a yew longbow.", item(ItemID.YEW_LONGBOW_U), item(ItemID.BOW_STRING)),
 		new SkillChallengeClue("Kill a Dust Devil.", "slay a dust devil.", true, any("Facemask or Slayer Helmet", item(ItemID.FACEMASK), item(ItemID.SLAYER_HELMET), item(ItemID. SLAYER_HELMET_I), item(ItemID. BLACK_SLAYER_HELMET), item(ItemID. BLACK_SLAYER_HELMET_I), item(ItemID. PURPLE_SLAYER_HELMET), item(ItemID. PURPLE_SLAYER_HELMET_I), item(ItemID. RED_SLAYER_HELMET), item(ItemID. RED_SLAYER_HELMET_I), item(ItemID.GREEN_SLAYER_HELMET), item(ItemID. GREEN_SLAYER_HELMET_I), item(ItemID. TURQUOISE_SLAYER_HELMET), item(ItemID. TURQUOISE_SLAYER_HELMET_I), item(ItemID. HYDRA_SLAYER_HELMET), item(ItemID. HYDRA_SLAYER_HELMET_I))),
