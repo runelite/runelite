@@ -253,6 +253,11 @@ class ExternalPluginManager
 		{
 			e.printStackTrace();
 		}
+		catch (StringIndexOutOfBoundsException e)
+		{
+			log.error("Error loading external repositories. They have been reset.");
+			openOSRSConfig.setExternalRepositories("OpenOSRS:https://raw.githubusercontent.com/open-osrs/plugin-hosting/master/");
+		}
 
 		this.updateManager = new UpdateManager(this.externalPluginManager, repositories);
 	}
