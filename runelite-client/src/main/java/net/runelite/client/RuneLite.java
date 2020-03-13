@@ -32,8 +32,6 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import io.sentry.Sentry;
-import io.sentry.SentryClient;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -309,9 +307,6 @@ public class RuneLite
 			int world = options.valueOf(worldInfo);
 			System.setProperty("cli.world", String.valueOf(world));
 		}
-
-		SentryClient client = Sentry.init();
-		client.setRelease(RuneLiteProperties.getPlusVersion());
 
 		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
 		Completable.fromAction(clientLoader::get)
