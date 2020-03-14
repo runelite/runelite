@@ -431,10 +431,6 @@ public class GroundItemsPlugin extends Plugin
 
 		// Cache colors
 		ImmutableList.Builder<PriceHighlight> priceCheckBuilder = ImmutableList.builder();
-		if (config.getHighlightOverValue() > 0)
-		{
-			priceCheckBuilder.add(new PriceHighlight(config.getHighlightOverValue(), config.highlightedColor()));
-		}
 
 		if (config.insaneValuePrice() > 0)
 		{
