@@ -49,6 +49,7 @@ public enum CannonSpots
 	KALPHITE(new WorldPoint(3307, 9528, 0)),
 	LESSER_DEMON(new WorldPoint(2838, 9559, 0), new WorldPoint(3163, 10114, 0)),
 	LIZARDMEN(new WorldPoint(1500, 3703, 0)),
+	LIZARDMEN_SHAMAN(new WorldPoint(1423, 3715, 0)),
 	MINIONS_OF_SCARABAS(new WorldPoint(3297, 9252, 0)),
 	SMOKE_DEVIL(new WorldPoint(2398, 9444, 0)),
 	CAVE_HORROR(new WorldPoint(3785, 9460, 0)),
