@@ -242,12 +242,7 @@ public class GroundItemsPlugin extends Plugin
 			// The spawn time remains set at the oldest spawn
 		}
 
-		boolean shouldNotify = !config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
-			new NamedQuantity(groundItem),
-			groundItem.getGePrice(),
-			groundItem.getHaPrice()));
-
-		if (config.notifyHighlightedDrops() && shouldNotify)
+		if (!config.onlyShowLoot())
 		{
 			notifyHighlightedItem(groundItem);
 		}
@@ -370,12 +365,7 @@ public class GroundItemsPlugin extends Plugin
 			{
 				groundItem.setLootType(lootType);
 
-				boolean shouldNotify = config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
-					new NamedQuantity(groundItem),
-					groundItem.getGePrice(),
-					groundItem.getHaPrice()));
-
-				if (config.notifyHighlightedDrops() && shouldNotify)
+				if (config.onlyShowLoot())
 				{
 					notifyHighlightedItem(groundItem);
 				}
@@ -645,6 +635,16 @@ public class GroundItemsPlugin extends Plugin
 
 	private void notifyHighlightedItem(GroundItem item)
 	{
+		boolean shouldNotifyHighlighted = config.highlightedColor().equals(getHighlighted(
+			new NamedQuantity(item),
+			item.getGePrice(),
+			item.getHaPrice()));
+
+		if (!config.notifyHighlightedDrops() || !shouldNotifyHighlighted)
+		{
+			return;
+		}
+
 		final Player local = client.getLocalPlayer();
 		final StringBuilder notificationStringBuilder = new StringBuilder()
 			.append("[")
