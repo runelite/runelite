@@ -163,8 +163,14 @@ public class PanelComponent implements LayoutableRenderableEntity
 		}
 
 		// Remove last child gap
-		totalWidth -= gap.x;
-		totalHeight -= gap.y;
+		if (orientation == ComponentOrientation.HORIZONTAL)
+		{
+			totalWidth -= gap.x;
+		}
+		else // VERTICAL
+		{
+			totalHeight -= gap.y;
+		}
 
 		// Cache children bounds
 		childDimensions.setSize(totalWidth, totalHeight);
