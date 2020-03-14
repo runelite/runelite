@@ -73,6 +73,7 @@ public class LineComponent implements LayoutableRenderableEntity
 		int y = baseY;
 		final int leftFullWidth = getLineWidth(left, metrics);
 		final int rightFullWidth = getLineWidth(right, metrics);
+		final TextComponent textComponent = new TextComponent();
 
 		if (preferredSize.width < leftFullWidth + rightFullWidth)
 		{
@@ -92,30 +93,24 @@ public class LineComponent implements LayoutableRenderableEntity
 
 			for (int i = 0; i < lineCount; i++)
 			{
-				String leftText = "";
-				String rightText = "";
-
 				if (i < leftSplitLines.length)
 				{
-					leftText = leftSplitLines[i];
+					final String leftText = leftSplitLines[i];
+					textComponent.setPosition(new Point(x, y));
+					textComponent.setText(leftText);
+					textComponent.setColor(leftColor);
+					textComponent.render(graphics);
 				}
 
 				if (i < rightSplitLines.length)
 				{
-					rightText = rightSplitLines[i];
+					final String rightText = rightSplitLines[i];
+					textComponent.setPosition(new Point(x + preferredSize.width - getLineWidth(rightText, metrics), y));
+					textComponent.setText(rightText);
+					textComponent.setColor(rightColor);
+					textComponent.render(graphics);
 				}
 
-				final TextComponent leftLineComponent = new TextComponent();
-				leftLineComponent.setPosition(new Point(x, y));
-				leftLineComponent.setText(leftText);
-				leftLineComponent.setColor(leftColor);
-				leftLineComponent.render(graphics);
-
-				final TextComponent rightLineComponent = new TextComponent();
-				rightLineComponent.setPosition(new Point(x + leftSmallWidth + rightSmallWidth - getLineWidth(rightText, metrics), y));
-				rightLineComponent.setText(rightText);
-				rightLineComponent.setColor(rightColor);
-				rightLineComponent.render(graphics);
 				y += metrics.getHeight();
 			}
 
@@ -125,17 +120,22 @@ public class LineComponent implements LayoutableRenderableEntity
 			return dimension;
 		}
 
-		final TextComponent leftLineComponent = new TextComponent();
-		leftLineComponent.setPosition(new Point(x, y));
-		leftLineComponent.setText(left);
-		leftLineComponent.setColor(leftColor);
-		leftLineComponent.render(graphics);
+		if (!left.isEmpty())
+		{
+			textComponent.setPosition(new Point(x, y));
+			textComponent.setText(left);
+			textComponent.setColor(leftColor);
+			textComponent.render(graphics);
+		}
 
-		final TextComponent rightLineComponent = new TextComponent();
-		rightLineComponent.setPosition(new Point(x + preferredSize.width - getLineWidth(right, metrics), y));
-		rightLineComponent.setText(right);
-		rightLineComponent.setColor(rightColor);
-		rightLineComponent.render(graphics);
+		if (!right.isEmpty())
+		{
+			textComponent.setPosition(new Point(x + preferredSize.width - rightFullWidth, y));
+			textComponent.setText(right);
+			textComponent.setColor(rightColor);
+			textComponent.render(graphics);
+		}
+
 		y += metrics.getHeight();
 
 		final Dimension dimension = new Dimension(preferredSize.width, y - baseY);
