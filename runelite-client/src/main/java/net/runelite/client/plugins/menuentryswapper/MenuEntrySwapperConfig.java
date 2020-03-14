@@ -415,7 +415,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapEssenceMineTeleport",
 		name = "Essence Mine Teleport",
-		description = "Swaps Talk-To with Teleport for Wizard Distentor and Aubury."
+		description = "Swaps Talk-To with Teleport for NPCs which teleport you to the essence mine"
 	)
 	default boolean swapEssenceMineTeleport() 
 	{
