@@ -35,6 +35,7 @@ import java.awt.Rectangle;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.client.util.Text;
 
 @Setter
 @Builder
@@ -146,7 +147,7 @@ public class LineComponent implements LayoutableRenderableEntity
 
 	private static int getLineWidth(final String line, final FontMetrics metrics)
 	{
-		return metrics.stringWidth(TextComponent.textWithoutColTags(line));
+		return metrics.stringWidth(Text.removeTags(line));
 	}
 
 	private static String[] lineBreakText(String text, int maxWidth, FontMetrics metrics)
