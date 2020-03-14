@@ -50,10 +50,32 @@ public interface NpcAggroAreaConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "npcUnaggroAutoActivation",
+			name = "Auto activate after attacking",
+			description = "Automatically activate aggression timers after attacking a configured number of times. Set to 0 to disable",
+			position = 2
+	)
+	default int autoActivation()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+			keyName = "npcUnaggroAutoActivationResetSeconds",
+			name = "Reset auto activation after (sec)",
+			description = "Automatically turn off after a period of time has elapsed (seconds) since the last attack.",
+			position = 3
+	)
+	default int autoActivationResetSeconds()
+	{
+		return 30;
+	}
+
+	@ConfigItem(
 		keyName = "npcUnaggroNames",
 		name = "NPC names",
 		description = "Enter names of NPCs where you wish to use this plugin",
-		position = 2
+		position = 4
 	)
 	default String npcNamePatterns()
 	{
@@ -64,7 +86,7 @@ public interface NpcAggroAreaConfig extends Config
 		keyName = "npcUnaggroShowTimer",
 		name = "Show timer",
 		description = "Display a timer until NPCs become unaggressive",
-		position = 3
+		position = 5
 	)
 	default boolean showTimer()
 	{
@@ -75,7 +97,7 @@ public interface NpcAggroAreaConfig extends Config
 		keyName = "npcUnaggroShowAreaLines",
 		name = "Show area lines",
 		description = "Display lines, when walked past, the unaggressive timer resets",
-		position = 4
+		position = 6
 	)
 	default boolean showAreaLines()
 	{
@@ -86,7 +108,7 @@ public interface NpcAggroAreaConfig extends Config
 		keyName = "npcUnaggroAreaColor",
 		name = "Area lines colour",
 		description = "Choose colour to use for marking NPC unaggressive area",
-		position = 5
+		position = 7
 	)
 	default Color aggroAreaColor()
 	{
@@ -97,7 +119,7 @@ public interface NpcAggroAreaConfig extends Config
 		keyName = "npcUnaggroShowNotWorkingOverlay",
 		name = "Hide overlay hint",
 		description = "Hide overlay hint if plugin is enabled in unsupported area",
-		position = 6
+		position = 8
 	)
 	default boolean hideOverlayHint()
 	{
@@ -108,7 +130,7 @@ public interface NpcAggroAreaConfig extends Config
 		keyName = "notifyExpire",
 		name = "Notify Expiration",
 		description = "Send a notifcation when the unaggressive timer expires",
-		position = 7
+		position = 9
 	)
 	default boolean notifyExpire()
 	{

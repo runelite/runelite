@@ -40,6 +40,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -50,6 +51,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.geometry.Geometry;
 import net.runelite.client.Notifier;
@@ -130,6 +132,9 @@ public class NpcAggroAreaPlugin extends Plugin
 	private WorldPoint previousUnknownCenter;
 	private boolean loggingIn;
 	private boolean notifyOnce;
+	private int hitsplatCount;
+	private Instant lastHitsplatTime;
+	private Duration autoActivateResetTime;
 
 	private List<String> npcNamePatterns;
 
@@ -160,6 +165,8 @@ public class NpcAggroAreaPlugin extends Plugin
 		loggingIn = false;
 		npcNamePatterns = null;
 		active = false;
+		hitsplatCount = 0;
+		lastHitsplatTime = null;
 
 		Arrays.fill(linesToDisplay, null);
 	}
@@ -274,6 +281,11 @@ public class NpcAggroAreaPlugin extends Plugin
 			return false;
 		}
 
+		if (hitsplatCount >= config.autoActivation())
+		{
+			return true;
+		}
+
 		for (String pattern : npcNamePatterns)
 		{
 			if (WildcardMatcher.matches(pattern, npcName))
@@ -319,6 +331,33 @@ public class NpcAggroAreaPlugin extends Plugin
 		}
 
 		checkAreaNpcs(event.getNpc());
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		if (!autoActivateEnabled())
+		{
+			return;
+		}
+
+		if (!(event.getActor() instanceof NPC))
+		{
+			return;
+		}
+
+		final Hitsplat hitsplat = event.getHitsplat();
+		if (hitsplat == null)
+		{
+			return;
+		}
+		final Hitsplat.HitsplatType hitsplatType = hitsplat.getHitsplatType();
+		if (hitsplatType == Hitsplat.HitsplatType.DAMAGE_ME || hitsplatType == Hitsplat.HitsplatType.BLOCK_ME)
+		{
+			hitsplatCount++;
+			lastHitsplatTime = Instant.now();
+			checkAreaNpcs((NPC) event.getActor());
+		}
 	}
 
 	@Subscribe
@@ -376,6 +415,13 @@ public class NpcAggroAreaPlugin extends Plugin
 		}
 
 		lastPlayerLocation = newLocation;
+
+		// Reset the hitsplat counter if the time since the last hitsplat is over the reset threshold.
+		if (lastHitsplatTime != null && Duration.between(lastHitsplatTime, Instant.now()).compareTo(autoActivateResetTime) > 0)
+		{
+			hitsplatCount = 0;
+			lastHitsplatTime = null;
+		}
 	}
 
 	@Subscribe
@@ -385,7 +431,16 @@ public class NpcAggroAreaPlugin extends Plugin
 		switch (key)
 		{
 			case "npcUnaggroAlwaysActive":
+			case "npcUnaggroAutoActivation":
+				if (!autoActivateEnabled())
+				{
+					hitsplatCount = 0;
+					lastHitsplatTime = null;
+				}
 				recheckActive();
+				break;
+			case "npcUnaggroAutoActivationResetSeconds":
+				autoActivateResetTime = Duration.ofSeconds(Math.max(0, config.autoActivationResetSeconds()));
 				break;
 			case "npcUnaggroShowTimer":
 				if (currentTimer != null)
@@ -402,6 +457,11 @@ public class NpcAggroAreaPlugin extends Plugin
 				recheckActive();
 				break;
 		}
+	}
+
+	private boolean autoActivateEnabled()
+	{
+		return config.autoActivation() > 0;
 	}
 
 	private void loadConfig()
