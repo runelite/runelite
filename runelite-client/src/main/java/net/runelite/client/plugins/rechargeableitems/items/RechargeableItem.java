@@ -5,7 +5,7 @@ import java.util.List;
 
 public abstract class RechargeableItem
 {
-	protected int currentAmountOfCharges;
+	protected int currentAmountOfCharges = 0;
 
 	public abstract void setupValues(String message);
 
@@ -45,7 +45,7 @@ public abstract class RechargeableItem
 
 		try
 		{
-			result = Integer.parseInt(words.get(words.indexOf(word) - 1).trim());
+			result = Integer.parseInt(words.get(words.indexOf(word) - 1).replace(",", "").trim());
 		}
 		catch (NumberFormatException e)
 		{

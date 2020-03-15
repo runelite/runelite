@@ -5,6 +5,11 @@ import java.util.List;
 
 public class TridentOfTheSeas extends RechargeableItem
 {
+	private int maxCharges;
+
+	public TridentOfTheSeas(int maxCharges) {
+		this.maxCharges = maxCharges;
+	}
 
 	/**
 	 * Get the current charges from the chat message.
@@ -28,23 +33,22 @@ public class TridentOfTheSeas extends RechargeableItem
 
 	/**
 	 * The Trident of the Seas charges up to 2500 charges.
-	 * Every recharge gives 1 charge which costs 1 Death Rune, 1 Chaos Rune, 5 Fire Runes and 10 gp.
+	 * Every recharge gives 1 charge which costs 1 Death Rune, 1 Chaos Rune, 5 Fire Runes and 10 Coins.
 	 *
 	 * @return String containing the recharge message
 	 */
 	@Override
 	public String getRechargeMessage()
 	{
-		final int MAX_CHARGES = 2500;
 		final int fireRunesPerCharge = 5;
-		final int gpPerCharge = 10;
+		final int coinsPerCharge = 10;
 
-		final int amountOfCharges = MAX_CHARGES - currentAmountOfCharges;
+		final int amountOfCharges = maxCharges - currentAmountOfCharges;
 		final int amountOfFireRunes = amountOfCharges * fireRunesPerCharge;
-		final int amountOfGp = amountOfCharges * gpPerCharge;
-		final String template = "%1$d Death Runes, %1$d Chaos Runes, %2$d Fire Runes and %3$d gp needed to fully recharge.";
+		final int amountOfCoins = amountOfCharges * coinsPerCharge;
+		final String template = "%1$d Death Runes, %1$d Chaos Runes, %2$d Fire Runes and %3$d Coins needed to fully recharge.";
 
-		return formatRechargeMessage(template, amountOfCharges, amountOfFireRunes, amountOfGp);
+		return formatRechargeMessage(template, amountOfCharges, amountOfFireRunes, amountOfCoins);
 	}
 
 

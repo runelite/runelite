@@ -5,6 +5,12 @@ import java.util.List;
 
 public class TridentOfTheSwamp extends RechargeableItem
 {
+	private int maxCharges;
+
+	public TridentOfTheSwamp(int maxCharges)
+	{
+		this.maxCharges = maxCharges;
+	}
 
 	/**
 	 * Get the current charges from the chat message.
@@ -35,10 +41,9 @@ public class TridentOfTheSwamp extends RechargeableItem
 	@Override
 	public String getRechargeMessage()
 	{
-		final int MAX_CHARGES = 2500;
 		final int fireRuneCosts = 5;
 
-		final int amountOfCharges = MAX_CHARGES - currentAmountOfCharges;
+		final int amountOfCharges = maxCharges - currentAmountOfCharges;
 		final int amountOfFireRunes = amountOfCharges * fireRuneCosts;
 		final String template = "%1$d Zulrah's Scale, %1$d Death Runes, %1$d Chaos Runes and %2$d Fire Runes needed to fully recharge.";
 
