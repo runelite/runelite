@@ -49,6 +49,8 @@ public class ExternalPluginManifest
 	@Nullable
 	private String description;
 	@Nullable
+	private String warning;
+	@Nullable
 	private String[] tags;
 	@EqualsAndHashCode.Exclude
 	private URL support;
