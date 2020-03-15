@@ -71,17 +71,42 @@ public class ChatKeyboardListener implements KeyListener
 					input = input.substring(0, input.length() - 1);
 				}
 
-				// find next word
-				int idx = input.lastIndexOf(' ');
-				final String replacement;
-				if (idx != -1)
+				// grab OS so that clearing single word behaves like system's default
+				String OS = System.getProperty("os.name").toLowerCase();
+				String tempReplacement;
+
+				if (OS.contains("win")) // windows default ctrl + backspace
 				{
-					replacement = input.substring(0, idx);
+					// find next word
+					int idx = input.lastIndexOf(' ') + 1;
+					tempReplacement = input.substring(0, idx);
 				}
-				else
+				else if (OS.contains("nix") || OS.contains("nux") || OS.contains("aix")) // unix default ctrl + backspace
 				{
-					replacement = "";
+					// find next word
+					int idx = input.lastIndexOf(' ') + 1;
+					tempReplacement = input.substring(0, idx);
 				}
+				else if (OS.contains("mac")) // mac default ctrl + backspace
+				{
+					// find next word
+					int idx = input.lastIndexOf(' ') + 1;
+					tempReplacement = input.substring(0, idx);
+				}
+				else if (OS.contains("sunos")) // solaris default ctrl + backspace
+				{
+					// find next word
+					int idx = input.lastIndexOf(' ') + 1;
+					tempReplacement = input.substring(0, idx);
+				}
+				else // catch all ctrl + backspace
+				{
+					// find next word
+					int idx = input.lastIndexOf(' ') + 1;
+					tempReplacement = input.substring(0, idx);
+				}
+
+				final String replacement = tempReplacement;
 
 				clientThread.invoke(() -> applyText(inputTye, replacement));
 			}
