@@ -24,6 +24,12 @@ public class Arclight extends RechargeableItem
 	{
 		final String wordToFind = "charges";
 		List<String> words = Arrays.asList(message.split(" "));
+
+		if (!words.contains(wordToFind))
+		{
+			return;
+		}
+
 		try
 		{
 			currentAmountOfCharges = Integer.parseInt(words.get(words.indexOf(wordToFind) - 1).trim());
@@ -37,15 +43,15 @@ public class Arclight extends RechargeableItem
 	@Override
 	public String getRechargeMessage()
 	{
-		StringBuilder stringBuilder = new StringBuilder();
-		Formatter formatter = new Formatter(stringBuilder);
+		final StringBuilder stringBuilder = new StringBuilder();
+		final Formatter formatter = new Formatter(stringBuilder);
 
-		double amountToCharge = MAX_CHARGES - currentAmountOfCharges;
-		double amountOfChargesPossible = Math.floor(amountToCharge / AMOUNT_OF_CHARGES_PER_CHARGE);
-		double amountOfShardsNeeded = amountOfChargesPossible * AMOUNT_OF_SHARDS_PER_CHARGE;
-		double newValue = currentAmountOfCharges + amountOfChargesPossible * AMOUNT_OF_CHARGES_PER_CHARGE;
+		final double amountToCharge = MAX_CHARGES - currentAmountOfCharges;
+		final double amountOfChargesPossible = Math.floor(amountToCharge / AMOUNT_OF_CHARGES_PER_CHARGE);
+		final double amountOfShardsNeeded = amountOfChargesPossible * AMOUNT_OF_SHARDS_PER_CHARGE;
+		final double newValue = currentAmountOfCharges + amountOfChargesPossible * AMOUNT_OF_CHARGES_PER_CHARGE;
 
-		formatter.format("%d ancient shards needed to recharge without wasting shards. (charges: %d)", (int) amountOfShardsNeeded, (int) newValue);
+		formatter.format("%d ancient shards to recharge without wasting shards. (new value: %d/%d)", (int) amountOfShardsNeeded, (int) newValue, (int) MAX_CHARGES);
 		return stringBuilder.toString();
 	}
 }
