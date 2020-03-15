@@ -31,6 +31,7 @@ import com.google.common.collect.EvictingQueue;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -242,7 +243,9 @@ public class GroundItemsPlugin extends Plugin
 		{
 			notifyHighlightedItem(groundItem);
 		}
-		else if (highlightedColor != null && (!config.onlyShowLoot() || groundItem.isMine()) && getGroundItemConfigValue(groundItem) > config.getNotifyOverValue())
+		else if (FALSE.equals(hiddenItems.getUnchecked(groundItem.getName()))
+			&& (!config.onlyShowLoot() || groundItem.isMine())
+			&& getGroundItemConfigValue(groundItem) > config.getNotifyOverValue())
 		{
 			notifyValuableItem(groundItem);
 		}
