@@ -58,6 +58,7 @@ import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
@@ -263,7 +264,23 @@ class PluginHubPanel extends PluginPanel
 			{
 				addrm.setText("Install");
 				addrm.setBackground(new Color(0x28BE28));
-				addrm.addActionListener(l -> externalPluginManager.install(manifest.getInternalName()));
+				addrm.addActionListener(l ->
+				{
+					if (manifest.getWarning() != null)
+					{
+						int result = JOptionPane.showConfirmDialog(
+							this,
+							"<html><p>" + manifest.getWarning() + "</p><strong>Are you sure you want to install this plugin?</strong></html>",
+							"Installing " + manifest.getDisplayName(),
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE);
+						if (result != JOptionPane.OK_OPTION)
+						{
+							return;
+						}
+					}
+					externalPluginManager.install(manifest.getInternalName());
+				});
 			}
 			else if (remove)
 			{
