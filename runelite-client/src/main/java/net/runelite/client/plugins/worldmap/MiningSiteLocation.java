@@ -166,6 +166,8 @@ enum MiningSiteLocation
 		new Rock(2, Ore.CLAY), new Rock(2, Ore.COPPER), new Rock(2, Ore.TIN), new Rock(3, Ore.IRON)),
 	PORT_KHAZARD(new WorldPoint(2651, 3172, 0),
 		new Rock(2, Ore.COPPER), new Rock(2, Ore.TIN), new Rock(2, Ore.MITHRIL)),
+	PRIFDDINAS_NORTH_WEST(new WorldPoint(3187, 6167, 0), new Rock(10, Ore.GOLD)),
+	PRIFDDINAS_SOUTH_EAST(new WorldPoint(3346, 6021, 0), new Rock(8, Ore.LIMESTONE)),
 	RELLEKKA(new WorldPoint(2682, 3704, 0), new Rock(4, Ore.CLAY), new Rock(3, Ore.SILVER), new Rock(7, Ore.COAL)),
 	RIMMINGTON(new WorldPoint(2977, 3240, 0),
 		new Rock(2, Ore.CLAY), new Rock(5, Ore.COPPER), new Rock(2, Ore.TIN), new Rock(6, Ore.IRON),
