@@ -3,15 +3,8 @@ package net.runelite.client.plugins.rechargeableitems.items;
 import java.util.Arrays;
 import java.util.List;
 
-public class TridentOfTheSwamp extends RechargeableItem
+public class SanguinestiStaff extends RechargeableItem
 {
-	private int maxCharges;
-
-	public TridentOfTheSwamp(int maxCharges)
-	{
-		this.maxCharges = maxCharges;
-	}
-
 	/**
 	 * Get the current charges from the chat message.
 	 * <p>
@@ -33,22 +26,21 @@ public class TridentOfTheSwamp extends RechargeableItem
 	}
 
 	/**
-	 * The Trident of the Swamp charges up to 2500 or 20000 charges.
-	 * Every recharge gives 1 charge which costs 1 Zulrah's Scale, 1 Death Rune, 1 Chaos Rune and 5 Fire Runes.
+	 * The Sanguinesti Staff charges up to 20000 charges.
+	 * Every recharge gives 1 charge which costs 3 Blood Runes.
 	 *
 	 * @return String containing the recharge message
 	 */
 	@Override
 	public String getRechargeMessage()
 	{
-		final int fireRuneCosts = 5;
+		final int maxCharges = 20000;
+		final int bloodRunesPerCharge = 3;
 
 		final int amountOfCharges = maxCharges - currentAmountOfCharges;
-		final int amountOfFireRunes = amountOfCharges * fireRuneCosts;
-		final String template = "%1$d Zulrah's Scale, %1$d Death Runes, %1$d Chaos Runes and %2$d Fire Runes needed to fully recharge.";
+		final int amountOfBloodRunes = amountOfCharges * bloodRunesPerCharge;
+		final String template = "%d Blood Runes needed to fully recharge.";
 
-		return formatRechargeMessage(template, amountOfCharges, amountOfFireRunes);
+		return formatRechargeMessage(template, amountOfBloodRunes);
 	}
-
-
 }

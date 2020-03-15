@@ -2,6 +2,7 @@ package net.runelite.client.plugins.rechargeableitems;
 
 import net.runelite.client.plugins.rechargeableitems.items.Arclight;
 import net.runelite.client.plugins.rechargeableitems.items.RechargeableItem;
+import net.runelite.client.plugins.rechargeableitems.items.SanguinestiStaff;
 import net.runelite.client.plugins.rechargeableitems.items.TridentOfTheSeas;
 import net.runelite.client.plugins.rechargeableitems.items.TridentOfTheSwamp;
 
@@ -14,6 +15,10 @@ public class RechargeableItemFactory
 		{
 			case ARCLIGHT:
 				rechargeableItem = new Arclight();
+				break;
+			case SANGUINESTI_STAFF:
+			case SANGUINESTI_STAFF_UNCHARGED:
+				rechargeableItem = new SanguinestiStaff();
 				break;
 			case TRIDENT_OF_THE_SEAS:
 				rechargeableItem = new TridentOfTheSeas(2500);

@@ -7,7 +7,8 @@ public class TridentOfTheSeas extends RechargeableItem
 {
 	private int maxCharges;
 
-	public TridentOfTheSeas(int maxCharges) {
+	public TridentOfTheSeas(int maxCharges)
+	{
 		this.maxCharges = maxCharges;
 	}
 
@@ -32,7 +33,7 @@ public class TridentOfTheSeas extends RechargeableItem
 	}
 
 	/**
-	 * The Trident of the Seas charges up to 2500 charges.
+	 * The Trident of the Seas charges up to 2500 or 20000 charges.
 	 * Every recharge gives 1 charge which costs 1 Death Rune, 1 Chaos Rune, 5 Fire Runes and 10 Coins.
 	 *
 	 * @return String containing the recharge message
@@ -50,6 +51,4 @@ public class TridentOfTheSeas extends RechargeableItem
 
 		return formatRechargeMessage(template, amountOfCharges, amountOfFireRunes, amountOfCoins);
 	}
-
-
 }
