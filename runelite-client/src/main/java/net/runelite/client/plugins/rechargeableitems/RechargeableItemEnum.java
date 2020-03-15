@@ -8,7 +8,12 @@ import net.runelite.api.ItemID;
 
 enum RechargeableItemEnum
 {
-	ARCLIGHT(ItemID.ARCLIGHT);
+	ARCLIGHT(ItemID.ARCLIGHT),
+	TRIDENT_OF_THE_SWAMP(ItemID.TRIDENT_OF_THE_SWAMP),
+	TRIDENT_OF_THE_SWAMP_E(ItemID.TRIDENT_OF_THE_SWAMP_E),
+	TRIDENT_OF_THE_SEAS(ItemID.IBANS_STAFF_U),
+	TRIDENT_OF_THE_SEAS_E(ItemID.TRIDENT_OF_THE_SEAS_E),
+	TRIDENT_OF_THE_SEAS_FULL(ItemID.TRIDENT_OF_THE_SEAS_FULL);
 
 	private static final Map<Integer, RechargeableItemEnum> lookup = new HashMap<>();
 

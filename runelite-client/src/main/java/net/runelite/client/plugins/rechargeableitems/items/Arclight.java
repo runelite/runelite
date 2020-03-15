@@ -1,15 +1,10 @@
 package net.runelite.client.plugins.rechargeableitems.items;
 
 import java.util.Arrays;
-import java.util.Formatter;
 import java.util.List;
 
 public class Arclight extends RechargeableItem
 {
-	private final double MAX_CHARGES = 10000;
-	private final double AMOUNT_OF_CHARGES_PER_CHARGE = 1000;
-	private final double AMOUNT_OF_SHARDS_PER_CHARGE = 3;
-	private int currentAmountOfCharges = 0;
 
 	/**
 	 * Get the current charges from the chat message.
@@ -25,33 +20,31 @@ public class Arclight extends RechargeableItem
 		final String wordToFind = "charges";
 		List<String> words = Arrays.asList(message.split(" "));
 
-		if (!words.contains(wordToFind))
+		if (words.contains(wordToFind))
 		{
-			return;
-		}
-
-		try
-		{
-			currentAmountOfCharges = Integer.parseInt(words.get(words.indexOf(wordToFind) - 1).trim());
-		}
-		catch (NumberFormatException e)
-		{
-			System.err.println(e.getMessage());
+			currentAmountOfCharges = findCurrentChargeValue(words, wordToFind);
 		}
 	}
 
+	/**
+	 * The Arclight charges up to 10000 charges.
+	 * Every recharge gives 1000 charges which costs 3 Ancient shards.
+	 * This means that if the current amount of charges is over 9000, charging the Arclight will waste potential charges.
+	 *
+	 * @return String containing the recharge message
+	 */
 	@Override
 	public String getRechargeMessage()
 	{
-		final StringBuilder stringBuilder = new StringBuilder();
-		final Formatter formatter = new Formatter(stringBuilder);
+		final double maxCharges = 10000;
+		final double amountOfChargesPerCharge = 1000;
+		final double amountOfShardsPerCharge = 3;
 
-		final double amountToCharge = MAX_CHARGES - currentAmountOfCharges;
-		final double amountOfChargesPossible = Math.floor(amountToCharge / AMOUNT_OF_CHARGES_PER_CHARGE);
-		final double amountOfShardsNeeded = amountOfChargesPossible * AMOUNT_OF_SHARDS_PER_CHARGE;
-		final double newValue = currentAmountOfCharges + amountOfChargesPossible * AMOUNT_OF_CHARGES_PER_CHARGE;
+		final double amountToCharge = maxCharges - currentAmountOfCharges;
+		final double amountOfChargesPossible = Math.floor(amountToCharge / amountOfChargesPerCharge);
+		final double amountOfShardsNeeded = amountOfChargesPossible * amountOfShardsPerCharge;
+		final String template = "%d ancient shards to recharge without wasting shards.";
 
-		formatter.format("%d ancient shards to recharge without wasting shards. (new value: %d/%d)", (int) amountOfShardsNeeded, (int) newValue, (int) MAX_CHARGES);
-		return stringBuilder.toString();
+		return formatRechargeMessage(template, (int) amountOfShardsNeeded);
 	}
 }
