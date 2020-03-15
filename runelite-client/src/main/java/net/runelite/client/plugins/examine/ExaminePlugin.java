@@ -329,9 +329,10 @@ public class ExaminePlugin extends Plugin
 		quantity = Math.max(1, quantity);
 		int itemCompositionPrice = itemComposition.getPrice();
 		final long gePrice = itemManager.getItemPrice(id);
+		final long geStackPrice = itemManager.getItemStackPrice(id, quantity);
 		final long alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
 
-		if (gePrice > 0 || alchPrice > 0)
+		if (geStackPrice > 0 || alchPrice > 0)
 		{
 			final ChatMessageBuilder message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
@@ -350,15 +351,15 @@ public class ExaminePlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append(":");
 
-			if (gePrice > 0)
+			if (geStackPrice > 0)
 			{
 				message
 					.append(ChatColorType.NORMAL)
 					.append(" GE average ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(QuantityFormatter.formatNumber(gePrice * quantity));
+					.append(QuantityFormatter.formatNumber(geStackPrice));
 
-				if (quantity > 1)
+				if (quantity > 1 && gePrice > 0)
 				{
 					message
 						.append(ChatColorType.NORMAL)

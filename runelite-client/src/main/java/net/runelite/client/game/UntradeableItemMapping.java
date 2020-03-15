@@ -41,8 +41,7 @@ public enum UntradeableItemMapping
 	GRACEFUL_BOOTS(ItemID.GRACEFUL_BOOTS, 32, ItemID.MARK_OF_GRACE),
 	GRACEFUL_CAPE(ItemID.GRACEFUL_CAPE, 32, ItemID.MARK_OF_GRACE),
 
-	// 10 golden nuggets = 100 soft clay
-	GOLDEN_NUGGET(ItemID.GOLDEN_NUGGET, 10, ItemID.SOFT_CLAY),
+	GOLDEN_NUGGET(10, ItemID.GOLDEN_NUGGET, 100, ItemID.SOFT_CLAY),
 	PROSPECTOR_HELMET(ItemID.PROSPECTOR_HELMET, 32, ItemID.GOLDEN_NUGGET),
 	PROSPECTOR_JACKET(ItemID.PROSPECTOR_JACKET, 48, ItemID.GOLDEN_NUGGET),
 	PROSPECTOR_LEGS(ItemID.PROSPECTOR_LEGS, 40, ItemID.GOLDEN_NUGGET),
@@ -68,8 +67,9 @@ public enum UntradeableItemMapping
 
 	private static final ImmutableMap<Integer, UntradeableItemMapping> UNTRADEABLE_RECLAIM_MAP;
 
+	private final int itemQuantity;
 	private final int itemID;
-	private final int quantity;
+	private final int priceQuantity;
 	private final int priceID;
 
 	static
@@ -80,6 +80,11 @@ public enum UntradeableItemMapping
 			map.put(p.getItemID(), p);
 		}
 		UNTRADEABLE_RECLAIM_MAP = map.build();
+	}
+
+	UntradeableItemMapping(int itemID, int itemQuantity, int priceID)
+	{
+		this(1, itemID, itemQuantity, priceID);
 	}
 
 	public static UntradeableItemMapping map(int itemId)

@@ -266,7 +266,7 @@ public class RaidsPlugin extends Plugin
 
 		long totalValue = Arrays.stream(rewardItemContainer.getItems())
 			.filter(item -> item.getId() > -1)
-			.mapToLong(item -> (long) itemManager.getItemPrice(item.getId()) * item.getQuantity())
+			.mapToLong(item -> itemManager.getItemStackPrice(item.getId(), item.getQuantity()))
 			.sum();
 
 		String chatMessage = new ChatMessageBuilder()

@@ -216,12 +216,14 @@ class ItemPricesOverlay extends Overlay
 		}
 
 		int gePrice = 0;
+		long geStackPrice = 0;
 		int haPrice = 0;
 		int haProfit = 0;
 		final int itemHaPrice = Math.round(itemDef.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 
 		if (config.showGEPrice())
 		{
+			geStackPrice = itemManager.getItemStackPrice(id, qty);
 			gePrice = itemManager.getItemPrice(id);
 		}
 		if (config.showHAValue())
@@ -233,22 +235,22 @@ class ItemPricesOverlay extends Overlay
 			haProfit = calculateHAProfit(itemHaPrice, gePrice);
 		}
 
-		if (gePrice > 0 || haPrice > 0)
+		if (geStackPrice > 0 || haPrice > 0)
 		{
-			return stackValueText(qty, gePrice, haPrice, haProfit);
+			return stackValueText(qty, geStackPrice, gePrice, haPrice, haProfit);
 		}
 
 		return null;
 	}
 
-	private String stackValueText(int qty, int gePrice, int haValue, int haProfit)
+	private String stackValueText(int qty, long geStackPrice, int gePrice, int haValue, int haProfit)
 	{
-		if (gePrice > 0)
+		if (geStackPrice > 0)
 		{
 			itemStringBuilder.append("EX: ")
-				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
+				.append(QuantityFormatter.quantityToStackSize(geStackPrice))
 				.append(" gp");
-			if (config.showEA() && qty > 1)
+			if (config.showEA() && qty > 1 && gePrice > 0)
 			{
 				itemStringBuilder.append(" (")
 					.append(QuantityFormatter.quantityToStackSize(gePrice))
@@ -257,7 +259,7 @@ class ItemPricesOverlay extends Overlay
 		}
 		if (haValue > 0)
 		{
-			if (gePrice > 0)
+			if (geStackPrice > 0)
 			{
 				itemStringBuilder.append("</br>");
 			}

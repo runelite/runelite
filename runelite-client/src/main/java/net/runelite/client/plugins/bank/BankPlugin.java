@@ -352,7 +352,7 @@ public class BankPlugin extends Plugin
 		}
 
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		long gePrice = (long) itemManager.getItemPrice(itemId) * (long) itemQuantities.count(itemId);
+		long gePrice = itemManager.getItemStackPrice(itemId, itemQuantities.count(itemId));
 		long haPrice = (long) (itemComposition.getPrice() * HIGH_ALCHEMY_MULTIPLIER) * (long) itemQuantities.count(itemId);
 
 		long value = Math.max(gePrice, haPrice);
