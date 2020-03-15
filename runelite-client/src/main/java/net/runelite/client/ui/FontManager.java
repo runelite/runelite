@@ -62,11 +62,11 @@ public class FontManager
 
 			Font boldFont = Font.createFont(Font.TRUETYPE_FONT,
 					FontManager.class.getResourceAsStream("runescape_bold.ttf"))
-					.deriveFont(Font.PLAIN, 16);
+					.deriveFont(Font.BOLD, 16);
 			ge.registerFont(boldFont);
 
 			runescapeBoldFont = StyleContext.getDefaultStyleContext()
-					.getFont(boldFont.getName(), Font.PLAIN, 16);
+					.getFont(boldFont.getName(), Font.BOLD, 16);
 			ge.registerFont(runescapeBoldFont);
 		}
 		catch (FontFormatException ex)
