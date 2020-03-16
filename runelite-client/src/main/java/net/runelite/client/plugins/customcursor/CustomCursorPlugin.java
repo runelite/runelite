@@ -37,6 +37,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.RuneLite;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -57,6 +58,9 @@ public class CustomCursorPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ClientUI clientUI;
@@ -97,7 +101,7 @@ public class CustomCursorPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (config.selectedCursor() == CustomCursor.CUSTOM_IMAGE)
+		if (config.selectedCursor() == CustomCursor.EQUIPPED_WEAPON && event.getContainerId() == InventoryID.EQUIPMENT.getId())
 		{
 			updateCursor();
 		}
@@ -130,33 +134,36 @@ public class CustomCursorPlugin extends Plugin
 			{
 				clientUI.resetCursor();
 			}
-			return;
 		}
 		else if (selectedCursor == CustomCursor.EQUIPPED_WEAPON)
 		{
-			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
-
-			if (itemContainer == null)
+			clientThread.invokeLater(() ->
 			{
-				clientUI.resetCursor();
-				return;
-			}
+				final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
-			final Item weapon = itemContainer.getItems()[EquipmentInventorySlot.WEAPON.getSlotIdx()];
-			final BufferedImage image = itemManager.getImage(weapon.getId());
+				if (itemContainer == null)
+				{
+					clientUI.resetCursor();
+					return;
+				}
 
-			if (weapon.getQuantity() > 0)
-			{
-				clientUI.setCursor(image, selectedCursor.getName());
-			}
-			else
-			{
-				clientUI.resetCursor();
-			}
-			return;
+				final Item weapon = itemContainer.getItems()[EquipmentInventorySlot.WEAPON.getSlotIdx()];
+				final BufferedImage image = itemManager.getImage(weapon.getId());
+
+				if (weapon.getQuantity() > 0)
+				{
+					clientUI.setCursor(image, selectedCursor.getName());
+				}
+				else
+				{
+					clientUI.resetCursor();
+				}
+			});
 		}
-
-		assert selectedCursor.getCursorImage() != null;
-		clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.getName());
+		else
+		{
+			assert selectedCursor.getCursorImage() != null;
+			clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.getName());
+		}
 	}
 }
