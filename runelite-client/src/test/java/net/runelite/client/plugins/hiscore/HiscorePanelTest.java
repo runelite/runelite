@@ -27,15 +27,14 @@ package net.runelite.client.plugins.hiscore;
 import static net.runelite.client.plugins.hiscore.HiscorePanel.formatLevel;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import static org.mockito.Mockito.mock;
 
 public class HiscorePanelTest
 {
 	@Test
 	public void testConstructor()
 	{
-		new HiscorePanel(new HiscoreConfig()
-		{
-		});
+		new HiscorePanel(mock(HiscoreConfig.class), mock(NameAutocompleter.class));
 	}
 
 	@Test
