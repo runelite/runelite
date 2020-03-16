@@ -97,7 +97,10 @@ public class CustomCursorPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		updateCursor();
+		if (config.selectedCursor() == CustomCursor.CUSTOM_IMAGE)
+		{
+			updateCursor();
+		}
 	}
 
 	private void updateCursor()
@@ -140,7 +143,7 @@ public class CustomCursorPlugin extends Plugin
 			}
 
 			final Item weapon = itemContainer.getItems()[EquipmentInventorySlot.WEAPON.getSlotIdx()];
-			final BufferedImage image = getImage(weapon);
+			final BufferedImage image = itemManager.getImage(weapon.getId());
 
 			if (weapon.getQuantity() > 0)
 			{
@@ -155,10 +158,5 @@ public class CustomCursorPlugin extends Plugin
 
 		assert selectedCursor.getCursorImage() != null;
 		clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.getName());
-	}
-
-	private BufferedImage getImage(Item item)
-	{
-		return itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1);
 	}
 }
