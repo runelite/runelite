@@ -38,7 +38,8 @@ public enum CustomCursor
 	DRAGON_DAGGER_POISON("Dragon Dagger (p)", "cursor-dragon-dagger-p.png"),
 	TROUT("Trout", "cursor-trout.png"),
 	DRAGON_SCIMITAR("Dragon Scimitar", "cursor-dragon-scimitar.png"),
-	CUSTOM_IMAGE("Custom Image");
+	CUSTOM_IMAGE("Custom Image"),
+	EQUIPPED_WEAPON("Equipped Weapon");
 
 	private final String name;
 	@Nullable
