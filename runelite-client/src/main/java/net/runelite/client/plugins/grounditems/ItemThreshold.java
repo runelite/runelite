@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, dekvall <https://github.com/dekvall>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,33 +24,57 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import java.util.Arrays;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
+import com.google.common.base.Strings;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import lombok.Value;
 
-public class WildcardMatchLoaderTest
+@Value
+class ItemThreshold
 {
-	@Test
-	public void testLoadItems()
+	enum Inequality
 	{
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune*", "Abyssal whip"));
-		assertTrue(loader.load(new NamedQuantity("rune pouch", 1)));
-		assertTrue(loader.load(new NamedQuantity("Rune pouch", 1)));
-		assertFalse(loader.load(new NamedQuantity("Adamant dagger", 1)));
-		assertTrue(loader.load(new NamedQuantity("Runeite Ore", 1)));
-		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 1)));
-		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
+		LESS_THAN,
+		MORE_THAN
 	}
 
-	@Test
-	public void testLoadQuantities()
+	private static final Pattern QUANTITY_THRESHOLD_PATTERN = Pattern.compile("(.+)(<|>)\\s*(\\d+)");
+
+	private final String itemName;
+	private final int quantity;
+	private final Inequality inequality;
+
+	static ItemThreshold fromConfigEntry(String entry)
 	{
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune* < 3", "*whip>3", "nature*<5", "*rune > 30"));
-		assertTrue(loader.load(new NamedQuantity("Nature Rune", 50)));
-		assertFalse(loader.load(new NamedQuantity("Nature Impling", 5)));
-		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 4)));
-		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
-		assertTrue(loader.load(new NamedQuantity("Rune Longsword", 2)));
+		if (Strings.isNullOrEmpty(entry))
+		{
+			return null;
+		}
+
+		Matcher matcher = QUANTITY_THRESHOLD_PATTERN.matcher(entry);
+
+		if (matcher.find())
+		{
+			String name = matcher.group(1).trim();
+			String sign = matcher.group(2);
+			int quantity = Integer.parseInt(matcher.group(3));
+			Inequality inequality = sign.equals("<") ? Inequality.LESS_THAN : Inequality.MORE_THAN;
+
+			return new ItemThreshold(name, quantity, inequality);
+		}
+
+		return new ItemThreshold(entry, 0, Inequality.MORE_THAN);
+	}
+
+	boolean quantityHolds(int itemCount)
+	{
+		if (inequality == Inequality.LESS_THAN)
+		{
+			return itemCount < quantity;
+		}
+		else
+		{
+			return itemCount > quantity;
+		}
 	}
 }
