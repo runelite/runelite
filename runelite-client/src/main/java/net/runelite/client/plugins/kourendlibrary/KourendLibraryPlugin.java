@@ -317,6 +317,7 @@ public class KourendLibraryPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChangedEvent)
 	{
 		updatePlayerBooks();
+		panel.update();
 	}
 
 	@Subscribe
@@ -336,6 +337,11 @@ public class KourendLibraryPlugin extends Plugin
 
 	boolean doesPlayerContainBook(Book book)
 	{
+		if (playerBooks == null)
+		{
+			return false;
+		}
+
 		return playerBooks.contains(book);
 	}
 
