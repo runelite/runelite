@@ -74,6 +74,7 @@ class SkillCalculator extends JPanel
 	private final IconTextField searchBar = new IconTextField();
 
 	private SkillData skillData;
+	private Skill currentSkill;
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
@@ -123,48 +124,54 @@ class SkillCalculator extends JPanel
 
 	void openCalculator(CalculatorType calculatorType)
 	{
-		// Load the skill data.
-		skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
-
-		// Reset the XP factor, removing bonuses.
-		xpFactor = 1.0f;
-
 		// Update internal skill/XP values.
 		currentXP = client.getSkillExperience(calculatorType.getSkill());
 		currentLevel = Experience.getLevelForXp(currentXP);
-		VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
-		int endGoal = client.getVar(endGoalVarp);
-		if (endGoal != -1)
+
+		if (currentSkill != calculatorType.getSkill())
 		{
-			targetLevel = Experience.getLevelForXp(endGoal);
-			targetXP = endGoal;
+			currentSkill = calculatorType.getSkill();
+
+			// Load the skill data.
+			skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
+
+			// Reset the XP factor, removing bonuses.
+			xpFactor = 1.0f;
+
+			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
+			int endGoal = client.getVar(endGoalVarp);
+			if (endGoal != -1)
+			{
+				targetLevel = Experience.getLevelForXp(endGoal);
+				targetXP = endGoal;
+			}
+			else
+			{
+				targetLevel = enforceSkillBounds(currentLevel + 1);
+				targetXP = Experience.getXpForLevel(targetLevel);
+			}
+
+			// Remove all components (action slots) from this panel.
+			removeAll();
+
+			// Clear the search bar
+			searchBar.setText(null);
+
+			// Clear the combined action slots
+			clearCombinedSlots();
+
+			// Add in checkboxes for available skill bonuses.
+			renderBonusOptions();
+
+			// Add the combined action slot.
+			add(combinedActionSlot);
+
+			// Add the search bar
+			add(searchBar);
+
+			// Create action slots for the skill actions.
+			renderActionSlots();
 		}
-		else
-		{
-			targetLevel = enforceSkillBounds(currentLevel + 1);
-			targetXP = Experience.getXpForLevel(targetLevel);
-		}
-
-		// Remove all components (action slots) from this panel.
-		removeAll();
-
-		// Clear the search bar
-		searchBar.setText(null);
-
-		// Clear the combined action slots
-		clearCombinedSlots();
-
-		// Add in checkboxes for available skill bonuses.
-		renderBonusOptions();
-
-		// Add the combined action slot.
-		add(combinedActionSlot);
-
-		// Add the search bar
-		add(searchBar);
-
-		// Create action slots for the skill actions.
-		renderActionSlots();
 
 		// Update the input fields.
 		updateInputFields();
