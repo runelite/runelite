@@ -152,9 +152,9 @@ class ItemPricesOverlay extends Overlay
 		ItemContainer container = null;
 
 		// Inventory item
-		if (widgetId == INVENTORY_ITEM_WIDGETID || 
-			widgetId == BANK_INVENTORY_ITEM_WIDGETID || 
-			widgetId == EXPLORERS_RING_ITEM_WIDGETID || 
+		if (widgetId == INVENTORY_ITEM_WIDGETID ||
+			widgetId == BANK_INVENTORY_ITEM_WIDGETID ||
+			widgetId == EXPLORERS_RING_ITEM_WIDGETID ||
 			widgetId == SEED_VAULT_INVENTORY_ITEM_WIDGETID)
 		{
 			container = client.getItemContainer(InventoryID.INVENTORY);
