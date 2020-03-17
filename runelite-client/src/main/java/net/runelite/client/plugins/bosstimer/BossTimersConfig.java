@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
+ * Copyright (c) 2018, Lasse <cronick@zytex.dk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,30 +25,21 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
-import java.awt.image.BufferedImage;
-import java.time.temporal.ChronoUnit;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Timer;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-class RespawnTimer extends Timer
+@ConfigGroup("bosstimer")
+public interface BossTimersConfig extends Config
 {
-	private final Boss boss;
-	private final int world;
-
-	public RespawnTimer(Boss boss, int world, BufferedImage bossImage, Plugin plugin)
+	@ConfigItem(
+		position = 0,
+		keyName = "showWorldTimers",
+		name = "Show timers for all worlds",
+		description = "Configures if the timers for each world are shown"
+	)
+	default boolean showWorldTimers()
 	{
-		super(boss.getSpawnTime().toMillis(), ChronoUnit.MILLIS, bossImage, plugin);
-		this.boss = boss;
-		this.world = world;
-	}
-
-	public Boss getBoss()
-	{
-		return boss;
-	}
-
-	public int getWorld()
-	{
-		return world;
+		return false;
 	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
+ * Copyright (c) 2018, Lasse <cronick@zytex.dk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,30 +25,27 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
-import java.awt.image.BufferedImage;
-import java.time.temporal.ChronoUnit;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Timer;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-class RespawnTimer extends Timer
+import java.util.ArrayList;
+import java.util.HashMap;
+
+class BossTimersSession
 {
-	private final Boss boss;
-	private final int world;
+	@Getter(AccessLevel.PACKAGE)
+	private HashMap<String, ArrayList<RespawnTimer>> worldsMap = new HashMap<>();
 
-	public RespawnTimer(Boss boss, int world, BufferedImage bossImage, Plugin plugin)
+	boolean isEmpty()
 	{
-		super(boss.getSpawnTime().toMillis(), ChronoUnit.MILLIS, bossImage, plugin);
-		this.boss = boss;
-		this.world = world;
+		return worldsMap.isEmpty();
 	}
 
-	public Boss getBoss()
+	void addBossTimer(String bossName, RespawnTimer respawnTimer)
 	{
-		return boss;
-	}
+		worldsMap.computeIfAbsent(bossName, k -> new ArrayList<>());
 
-	public int getWorld()
-	{
-		return world;
+		ArrayList<RespawnTimer> timers = worldsMap.get(bossName);
+		timers.add(respawnTimer);
 	}
 }
