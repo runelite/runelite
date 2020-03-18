@@ -34,7 +34,7 @@ import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.*;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
-import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.ClientTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
@@ -94,56 +94,63 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	public void onClientTick(ClientTick clientTick)
 	{
-		int type = menuEntryAdded.getType();
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		boolean modified = false;
 
-		if (type >= 2000)
+		for (MenuEntry entry : menuEntries)
 		{
-			type -= 2000;
+			int type = entry.getType();
+
+			if (type >= MENU_ACTION_DEPRIORITIZE_OFFSET)
+			{
+				type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
+			}
+
+			int identifier = entry.getIdentifier();
+			if (type == SPELL_CAST_ON_PLAYER.getId()
+				|| type == ITEM_USE_ON_PLAYER.getId()
+				|| type == PLAYER_FIRST_OPTION.getId()
+				|| type == PLAYER_SECOND_OPTION.getId()
+				|| type == PLAYER_THIRD_OPTION.getId()
+				|| type == PLAYER_FOURTH_OPTION.getId()
+				|| type == PLAYER_FIFTH_OPTION.getId()
+				|| type == PLAYER_SIXTH_OPTION.getId()
+				|| type == PLAYER_SEVENTH_OPTION.getId()
+				|| type == PLAYER_EIGTH_OPTION.getId()
+				|| type == RUNELITE.getId())
+			{
+				Player[] players = client.getCachedPlayers();
+				Player player = null;
+
+				if (identifier >= 0 && identifier < players.length)
+				{
+					player = players[identifier];
+				}
+
+				if (player == null)
+				{
+					continue;
+				}
+
+				Decorations decorations = getDecorations(player);
+
+				if (decorations == null)
+				{
+					continue;
+				}
+
+				String oldTarget = entry.getTarget();
+				String newTarget = decorateTarget(oldTarget, decorations);
+
+				entry.setTarget(newTarget);
+				modified = true;
+			}
 		}
 
-		int identifier = menuEntryAdded.getIdentifier();
-		if (type == SPELL_CAST_ON_PLAYER.getId()
-			|| type == ITEM_USE_ON_PLAYER.getId()
-			|| type == PLAYER_FIRST_OPTION.getId()
-			|| type == PLAYER_SECOND_OPTION.getId()
-			|| type == PLAYER_THIRD_OPTION.getId()
-			|| type == PLAYER_FOURTH_OPTION.getId()
-			|| type == PLAYER_FIFTH_OPTION.getId()
-			|| type == PLAYER_SIXTH_OPTION.getId()
-			|| type == PLAYER_SEVENTH_OPTION.getId()
-			|| type == PLAYER_EIGTH_OPTION.getId()
-			|| type == RUNELITE.getId())
+		if (modified)
 		{
-			Player[] players = client.getCachedPlayers();
-			Player player = null;
-
-			if (identifier >= 0 && identifier < players.length)
-			{
-				player = players[identifier];
-			}
-
-			if (player == null)
-			{
-				return;
-			}
-
-			Decorations decorations = getDecorations(player);
-
-			if (decorations == null)
-			{
-				return;
-			}
-
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			MenuEntry entry = menuEntries[menuEntries.length - 1];
-
-			String oldTarget = entry.getTarget();
-			String newTarget = decorateTarget(oldTarget, decorations);
-
-			entry.setTarget(newTarget);
-
 			client.setMenuEntries(menuEntries);
 		}
 	}
