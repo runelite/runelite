@@ -139,15 +139,24 @@ public class CustomCursorPlugin extends Plugin
 		{
 			clientThread.invokeLater(() ->
 			{
-				final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 
-				if (itemContainer == null)
+				if (equipment == null)
 				{
 					clientUI.resetCursor();
 					return;
 				}
 
-				final Item weapon = itemContainer.getItems()[EquipmentInventorySlot.WEAPON.getSlotIdx()];
+				final Item[] items = equipment.getItems();
+				final int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();
+
+				if (items == null || weaponIdx >= items.length)
+				{
+					clientUI.resetCursor();
+					return;
+				}
+
+				final Item weapon = items[EquipmentInventorySlot.WEAPON.getSlotIdx()];
 				final BufferedImage image = itemManager.getImage(weapon.getId());
 
 				if (weapon.getQuantity() > 0)
