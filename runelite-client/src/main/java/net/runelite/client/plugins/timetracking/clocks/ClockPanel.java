@@ -64,7 +64,7 @@ abstract class ClockPanel extends JPanel
 
 	private final FlatTextField nameInput;
 	private final JToggleButton startPauseButton;
-	private final FlatTextField displayInput;
+	protected final FlatTextField displayInput;
 
 	@Getter
 	private final Clock clock;
@@ -150,6 +150,7 @@ abstract class ClockPanel extends JPanel
 
 				clock.setDuration(Math.max(0, duration));
 				clock.reset();
+				clockManager.checkForWarnings();
 				updateDisplayInput();
 				updateActivityStatus();
 				clockManager.saveTimers();
@@ -199,6 +200,7 @@ abstract class ClockPanel extends JPanel
 		resetButton.addActionListener(e ->
 		{
 			clock.reset();
+			clockManager.checkForWarnings();
 			reset();
 			clockManager.saveToConfig();
 		});
@@ -238,7 +240,7 @@ abstract class ClockPanel extends JPanel
 		boolean isActive = clock.isActive();
 
 		displayInput.setEditable(editable && !isActive);
-		displayInput.getTextField().setForeground(isActive ? ACTIVE_CLOCK_COLOR : INACTIVE_CLOCK_COLOR);
+		displayInput.getTextField().setForeground(getColor());
 		startPauseButton.setToolTipText(isActive ? "Pause " + clockType : "Start " + clockType);
 		startPauseButton.setSelected(isActive);
 
@@ -246,6 +248,11 @@ abstract class ClockPanel extends JPanel
 		{
 			displayInput.getTextField().setForeground(ColorScheme.PROGRESS_ERROR_COLOR.darker());
 		}
+	}
+
+	protected Color getColor()
+	{
+		return clock.isActive() ? ACTIVE_CLOCK_COLOR : INACTIVE_CLOCK_COLOR;
 	}
 
 	static String getFormattedDuration(long duration)

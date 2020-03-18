@@ -161,6 +161,17 @@ public class ClockManager
 		return false;
 	}
 
+	/**
+	 * Sets the warning flag on each timer that should be in the warning state
+	 */
+	public void checkForWarnings()
+	{
+		for (Timer timer : timers)
+		{
+			timer.setWarning(timer.getDisplayTime() <= config.timerWarningThreshold());
+		}
+	}
+
 	public void loadTimers()
 	{
 		final String timersJson = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.TIMERS);
