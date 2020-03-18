@@ -84,6 +84,17 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "sortOrder",
+		name = "Sort Order",
+		description = "The order in which to sort the timers",
+		position = 5
+	)
+	default SortOrder sortOrder()
+	{
+		return SortOrder.NONE;
+	}
+
+	@ConfigItem(
 		keyName = "activeTab",
 		name = "Active Tab",
 		description = "The currently selected tab",
