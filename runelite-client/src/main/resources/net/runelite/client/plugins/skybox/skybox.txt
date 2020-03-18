@@ -215,7 +215,6 @@ R 42 69 43 71
 R 45 68 45 69
 R 49 149 50 149
 R 55 151 56 151
-R 58 151 58 152
 r 39 72
 r 39 156
 r 51 150
@@ -965,3 +964,7 @@ R 49 193 51 194
 // Braindeath Island
 #8AD2DF
 R 33 79 33 80
+
+// Nightmare dungeon (Morytania underground)
+#0a0a0a
+R 58 151 60 153
