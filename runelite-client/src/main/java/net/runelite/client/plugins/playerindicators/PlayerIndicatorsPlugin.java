@@ -103,8 +103,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 
 		int identifier = menuEntryAdded.getIdentifier();
-		if (type == FOLLOW.getId() || type == TRADE.getId()
-			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
+		if (type == SPELL_CAST_ON_PLAYER.getId()
+			|| type == ITEM_USE_ON_PLAYER.getId()
 			|| type == PLAYER_FIRST_OPTION.getId()
 			|| type == PLAYER_SECOND_OPTION.getId()
 			|| type == PLAYER_THIRD_OPTION.getId()
