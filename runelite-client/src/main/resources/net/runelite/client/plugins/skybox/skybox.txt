@@ -965,6 +965,6 @@ R 49 193 51 194
 #8AD2DF
 R 33 79 33 80
 
-//Nightmare dungeon (Morytania underground)
+// Nightmare dungeon (Morytania underground)
 #0a0a0a
 R 58 151 60 153
