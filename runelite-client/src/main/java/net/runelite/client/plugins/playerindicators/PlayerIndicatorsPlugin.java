@@ -108,8 +108,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 				type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
 			}
 
-			int identifier = entry.getIdentifier();
-			if (type == SPELL_CAST_ON_PLAYER.getId()
+			if (type == WALK.getId()
+				|| type == SPELL_CAST_ON_PLAYER.getId()
 				|| type == ITEM_USE_ON_PLAYER.getId()
 				|| type == PLAYER_FIRST_OPTION.getId()
 				|| type == PLAYER_SECOND_OPTION.getId()
@@ -123,6 +123,15 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				Player[] players = client.getCachedPlayers();
 				Player player = null;
+
+				int identifier = entry.getIdentifier();
+
+				// 'Walk here' identifiers are offset by 1 because the default
+				// identifier for this option is 0, which is also a player index.
+				if (type == WALK.getId())
+				{
+					identifier--;
+				}
 
 				if (identifier >= 0 && identifier < players.length)
 				{
