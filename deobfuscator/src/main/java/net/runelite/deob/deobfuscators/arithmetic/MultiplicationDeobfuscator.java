@@ -293,7 +293,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		
 		Collection<InstructionContext> ins = ctx.getFrame().getMethodCtx().getInstructonContexts(ctx.getInstruction());
 		for (InstructionContext i : ins)
-		{	
+		{
 			if (sctx == null)
 			{
 				if (!i.equals(ctx))

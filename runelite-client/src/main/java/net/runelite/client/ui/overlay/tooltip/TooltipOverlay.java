@@ -38,6 +38,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 import net.runelite.client.ui.overlay.components.TooltipComponent;
 
 @Singleton
@@ -97,12 +98,22 @@ public class TooltipOverlay extends Overlay
 
 		for (Tooltip tooltip : tooltips)
 		{
-			final TooltipComponent tooltipComponent = new TooltipComponent();
-			tooltipComponent.setModIcons(client.getModIcons());
-			tooltipComponent.setText(tooltip.getText());
-			tooltipComponent.setPosition(new Point(tooltipX, tooltipY + newBounds.height));
+			final LayoutableRenderableEntity entity;
 
-			final Dimension dimension = tooltipComponent.render(graphics);
+			if (tooltip.getComponent() != null)
+			{
+				entity = tooltip.getComponent();
+			}
+			else
+			{
+				final TooltipComponent tooltipComponent = new TooltipComponent();
+				tooltipComponent.setModIcons(client.getModIcons());
+				tooltipComponent.setText(tooltip.getText());
+				entity = tooltipComponent;
+			}
+
+			entity.setPreferredLocation(new Point(tooltipX, tooltipY + newBounds.height));
+			final Dimension dimension = entity.render(graphics);
 
 			// Create incremental tooltip newBounds
 			newBounds.height += dimension.height + PADDING;

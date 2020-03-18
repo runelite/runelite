@@ -151,7 +151,7 @@ public class IllegalStateExceptions implements Deobfuscator
 	
 	@Override
 	public void run(ClassGroup group)
-	{	
+	{
 		findInteresting(group);
 		
 		Execution execution = new Execution(group);

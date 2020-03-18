@@ -92,7 +92,7 @@ public class StackContext
 			return list;
 		
 		// remove from the stack things this instruction read
-		for (StackContext ctx : pushed.getPops()) 
+		for (StackContext ctx : pushed.getPops())
 			list.addAll(ctx.removeStack());
 		
 		return list;

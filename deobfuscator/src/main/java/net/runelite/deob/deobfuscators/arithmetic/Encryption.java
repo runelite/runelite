@@ -30,7 +30,7 @@ import java.util.Map;
 import net.runelite.asm.pool.Field;
 
 class Encryption
-{	
+{
 	private final Map<Field, Pair> fields = new HashMap<>();
 	
 	void addPair(Pair pair)

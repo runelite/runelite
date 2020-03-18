@@ -61,7 +61,7 @@ public class UnusedParametersTest
 
 	@Test
 	public void testRun()
-	{	
+	{
 		RenameUnique r = new RenameUnique();
 		r.run(group);
 		r = null;

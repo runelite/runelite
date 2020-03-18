@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import net.runelite.api.util.Text;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -255,7 +256,7 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	private static int getTextWidth(final FontMetrics metrics, final String cell)
 	{
-		return metrics.stringWidth(TextComponent.textWithoutColTags(cell));
+		return metrics.stringWidth(Text.removeTags(cell));
 	}
 
 	private static String[] lineBreakText(final String text, final int maxWidth, final FontMetrics metrics)
