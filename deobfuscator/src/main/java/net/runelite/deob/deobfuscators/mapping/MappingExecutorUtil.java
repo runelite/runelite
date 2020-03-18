@@ -50,7 +50,7 @@ import net.runelite.asm.execution.Variables;
 import net.runelite.asm.signature.Signature;
 
 public class MappingExecutorUtil
-{	
+{
 	public static ParallelExecutorMapping map(Method m1, Method m2)
 	{
 		ClassGroup group1 = m1.getClassFile().getGroup();
