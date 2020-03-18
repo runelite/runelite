@@ -230,6 +230,7 @@ public class TimeTrackingPlugin extends Plugin
 		{
 			clockDataChanged = clockManager.checkCompletion();
 			timerOrderChanged = clockManager.checkTimerOrder();
+			clockManager.checkForWarnings();
 		}
 
 		if (unitTime % panel.getUpdateInterval() == 0 || clockDataChanged || timerOrderChanged)
