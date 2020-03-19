@@ -34,16 +34,7 @@ public class RechargeableItemsPlugin extends Plugin
 	{
 		if (event.getMenuOption().equalsIgnoreCase("check"))
 		{
-			final int itemId = event.getId();
-
-			if (RechargeableItemEnum.containsItem(itemId))
-			{
-				this.itemId = itemId;
-			}
-			else
-			{
-				this.itemId = null;
-			}
+			this.itemId = event.getId();
 		}
 	}
 
@@ -73,15 +64,13 @@ public class RechargeableItemsPlugin extends Plugin
 
 	private void sendRechargeStatus(String message)
 	{
-		final RechargeableItem rechargeableItem = createRechargeableItem(this.itemId);
-		final String rechargeMessage = rechargeableItem.getRechargeMessage(message);
-		sendChatMessage(rechargeMessage);
-	}
+		final RechargeableItem rechargeableItem = RechargeableItemFactory.createRechargeableItem(itemId, client);
 
-	private RechargeableItem createRechargeableItem(int itemId)
-	{
-		final RechargeableItemEnum itemEnum = RechargeableItemEnum.getRechargeableItemEnum(itemId);
-		return RechargeableItemFactory.createRechargeableItem(itemEnum, client);
+		if (rechargeableItem != null)
+		{
+			final String rechargeMessage = rechargeableItem.getRechargeMessage(message);
+			sendChatMessage(rechargeMessage);
+		}
 	}
 
 	private void sendChatMessage(String message)
