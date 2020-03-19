@@ -44,13 +44,23 @@ class LootTrackerRecord
 	 * @param id other record id
 	 * @return true if match is made
 	 */
-	boolean matches(final String id, LootRecordType type)
+	boolean matches(final String id, LootRecordType type, String searchFilter)
 	{
+		if (!title.toLowerCase().contains(searchFilter.toLowerCase()))
+		{
+			return false;
+		}
+
 		if (id == null)
 		{
 			return true;
 		}
 
 		return title.equals(id) && this.type == type;
+	}
+
+	boolean matches(final String id, LootRecordType type)
+	{
+		return matches(id, type, "");
 	}
 }

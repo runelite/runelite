@@ -489,7 +489,7 @@ class LootTrackerPanel extends PluginPanel
 	private LootTrackerBox buildBox(LootTrackerRecord record)
 	{
 		// If this record is not part of current view, return
-		if (!record.matches(currentView, currentType) || isSearchFiltered(record.getTitle()))
+		if (!record.matches(currentView, currentType, searchBar.getText()))
 		{
 			return null;
 		}
@@ -602,7 +602,7 @@ class LootTrackerPanel extends PluginPanel
 
 		for (LootTrackerRecord record : concat(aggregateRecords, sessionRecords))
 		{
-			if (!record.matches(currentView, currentType) || isSearchFiltered(record.getTitle()))
+			if (!record.matches(currentView, currentType, searchBar.getText()))
 			{
 				continue;
 			}
@@ -644,11 +644,6 @@ class LootTrackerPanel extends PluginPanel
 	{
 		rebuild();
 		updateOverall();
-	}
-
-	private boolean isSearchFiltered(String title)
-	{
-		return !title.toLowerCase().contains(searchBar.getText().toLowerCase());
 	}
 
 	private static String htmlLabel(String key, long value)
