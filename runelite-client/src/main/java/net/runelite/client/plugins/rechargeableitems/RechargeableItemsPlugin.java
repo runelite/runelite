@@ -28,6 +28,7 @@ public class RechargeableItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		System.out.println(event.getId());
 		if (event.getMenuOption().equalsIgnoreCase("check"))
 		{
 			final int itemId = event.getId();
@@ -46,20 +47,32 @@ public class RechargeableItemsPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
+		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE
+			&& stringContainsNumber(chatMessage.getMessage())
+			&& itemId != null)
 		{
 			sendRechargeStatus(chatMessage.getMessage());
 		}
 	}
 
+	private boolean stringContainsNumber(String string)
+	{
+		for (int i = 0; i < string.length(); ++i)
+		{
+			if (Character.isDigit(string.charAt(i)))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private void sendRechargeStatus(String message)
 	{
-		if (this.itemId != null)
-		{
-			final RechargeableItem rechargeableItem = createRechargeableItem(this.itemId);
-			rechargeableItem.setupValues(message);
-			sendChatMessage(rechargeableItem.getRechargeMessage());
-		}
+		final RechargeableItem rechargeableItem = createRechargeableItem(this.itemId);
+		final String rechargeMessage = rechargeableItem.getRechargeMessage(message);
+		sendChatMessage(rechargeMessage);
 	}
 
 	private RechargeableItem createRechargeableItem(int itemId)
