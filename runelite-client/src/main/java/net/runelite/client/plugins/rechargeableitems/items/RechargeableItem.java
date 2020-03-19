@@ -16,14 +16,14 @@ public abstract class RechargeableItem
 	 * Get, if there are any numbers in the string, one or more matches.
 	 * <p>
 	 * Regex used is found on https://stackoverflow.com/a/5917250/9050460 below the header "Embedded numbers"
-	 * `((?!\S)|(?=\.))` is added at the end of the regex to get numbers with a literal . attached, such as the end of a sentence.
+	 * `((?!\S)|(?=\.))|(?=%)` is added at the end of the regex to get numbers with a literal . and % attached, such as the end of a sentence.
 	 *
 	 * @param message Game message containing the current amount of charges on an item
 	 * @return a list of strings matching the regex (any number, included with comma's)
 	 */
 	protected List<String> getNumbersFromString(String message)
 	{
-		Pattern pattern = Pattern.compile("(?<!\\S)(\\d*\\.?\\d+|\\d{1,3}(,\\d{3})*(\\.\\d+)?)((?!\\S)|(?=\\.))");
+		Pattern pattern = Pattern.compile("(?<!\\S)(\\d*\\.?\\d+|\\d{1,3}(,\\d{3})*(\\.\\d+)?)((?!\\S)|(?=\\.)|(?=%))");
 		Matcher matcher = pattern.matcher(message);
 		List<String> result = new ArrayList<>();
 

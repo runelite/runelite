@@ -2,6 +2,7 @@ package net.runelite.client.plugins.rechargeableitems;
 
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.chat.ChatColorType;
@@ -22,6 +23,9 @@ public class RechargeableItemsPlugin extends Plugin
 {
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private Client client;
 
 	private Integer itemId;
 
@@ -77,7 +81,7 @@ public class RechargeableItemsPlugin extends Plugin
 	private RechargeableItem createRechargeableItem(int itemId)
 	{
 		final RechargeableItemEnum itemEnum = RechargeableItemEnum.getRechargeableItemEnum(itemId);
-		return RechargeableItemFactory.createRechargeableItem(itemEnum);
+		return RechargeableItemFactory.createRechargeableItem(itemEnum, client);
 	}
 
 	private void sendChatMessage(String message)
