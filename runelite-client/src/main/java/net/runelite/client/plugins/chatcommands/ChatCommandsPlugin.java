@@ -29,6 +29,10 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.inject.Provides;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -125,6 +129,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String PB_COMMAND = "!pb";
 	private static final String GC_COMMAND_STRING = "!gc";
 	private static final String DUEL_ARENA_COMMAND = "!duels";
+	private static final String SESSION_COMMAND = "!session";
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -132,10 +137,12 @@ public class ChatCommandsPlugin extends Plugin
 	private boolean bossLogLoaded;
 	private boolean advLogLoaded;
 	private boolean scrollInterfaceLoaded;
+	private boolean ready;
 	private String pohOwner;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
 	private int lastPb = -1;
+	private Instant loginTime;
 
 	@Inject
 	private Client client;
@@ -188,6 +195,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
 		chatCommandManager.registerCommandAsync(GC_COMMAND_STRING, this::gambleCountLookup, this::gambleCountSubmit);
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
+		chatCommandManager.registerCommandAsync(SESSION_COMMAND, this::sessionLookup, this::sessionSubmit);
 	}
 
 	@Override
@@ -207,6 +215,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(PB_COMMAND);
 		chatCommandManager.unregisterCommand(GC_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
+		chatCommandManager.unregisterCommand(SESSION_COMMAND);
 	}
 
 	@Provides
@@ -573,6 +582,18 @@ public class ChatCommandsPlugin extends Plugin
 			case LOADING:
 			case HOPPING:
 				pohOwner = null;
+				break;
+			case LOGGING_IN:
+			case CONNECTION_LOST:
+				ready = true;
+				break;
+			case LOGGED_IN:
+				if (ready)
+				{
+					loginTime = Instant.now();
+					ready = false;
+				}
+				break;
 		}
 	}
 
@@ -1704,5 +1725,74 @@ public class ChatCommandsPlugin extends Plugin
 			default:
 				return WordUtils.capitalize(boss);
 		}
+	}
+
+	private void sessionLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.sessionTime())
+		{
+			return;
+		}
+
+		ChatMessageType type = chatMessage.getType();
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = Text.sanitize(chatMessage.getName());
+		}
+
+		Instant sessionTime;
+		try
+		{
+			sessionTime = chatClient.getSession(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup session time", ex);
+			return;
+		}
+
+		Duration duration = Duration.between(sessionTime, Instant.now());
+		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
+
+		final String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Logged in for: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	private boolean sessionSubmit(ChatInput chatInput, String value)
+	{
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitSession(playerName, loginTime);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit session time", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
 	}
 }
