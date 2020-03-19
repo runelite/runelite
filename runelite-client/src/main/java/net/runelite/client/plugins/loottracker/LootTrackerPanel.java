@@ -269,8 +269,8 @@ class LootTrackerPanel extends PluginPanel
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.setMinimumSize(new Dimension(0, 35));
 		searchBar.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR));
-		searchBar.addKeyListener(k -> searchFilter());
-		searchBar.addClearListener(c -> searchFilter());
+		searchBar.addKeyListener(k -> rebuild());
+		searchBar.addClearListener(c -> rebuild());
 
 		// Add icon and contents
 		final JPanel overallInfo = new JPanel();
@@ -638,12 +638,6 @@ class LootTrackerPanel extends PluginPanel
 		overallGpLabel.setToolTipText("<html>Total GE price: " + QuantityFormatter.formatNumber(overallGe)
 			+ "<br>Total HA price: " + QuantityFormatter.formatNumber(overallHa) + "</html>");
 		updateCollapseText();
-	}
-
-	private void searchFilter()
-	{
-		rebuild();
-		updateOverall();
 	}
 
 	private static String htmlLabel(String key, long value)
