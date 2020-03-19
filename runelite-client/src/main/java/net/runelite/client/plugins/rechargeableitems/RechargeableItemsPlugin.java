@@ -28,7 +28,6 @@ public class RechargeableItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		System.out.println(event.getId());
 		if (event.getMenuOption().equalsIgnoreCase("check"))
 		{
 			final int itemId = event.getId();

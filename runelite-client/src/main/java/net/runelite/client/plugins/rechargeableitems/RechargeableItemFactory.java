@@ -19,6 +19,7 @@ public class RechargeableItemFactory
 				rechargeableItem = new Arclight();
 				break;
 			case CRYSTAL_SHIELD:
+			case CRYSTAL_BOW:
 				rechargeableItem = new CrystalEquipment();
 				break;
 			case SANGUINESTI_STAFF:
