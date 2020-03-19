@@ -8,8 +8,6 @@ import java.util.regex.Pattern;
 
 public abstract class RechargeableItem
 {
-	protected int currentAmountOfCharges = 0;
-
 	public abstract String getRechargeMessage(String message);
 
 	/**

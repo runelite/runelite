@@ -2,8 +2,6 @@ package net.runelite.client.plugins.rechargeableitems.items;
 
 public class CrystalEquipment extends RechargeableItem
 {
-	// TODO: figure out the right enums of all the crystal equipment
-
 	/**
 	 * All the crystal equipment, weapons and tools charge up to 20000 charges.
 	 * Every recharge gives 100 charges which costs 1 Crystal Shard.
