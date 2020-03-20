@@ -177,14 +177,16 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		}
 		message.text = text;
 
-		if (message instanceof PartyMemberMessage)
+		for (Class<? extends WebsocketMessage> clazz : messages)
 		{
-			eventBus.post(PartyMemberMessage.class, message);
+			if (clazz.isInstance(message))
+			{
+				eventBus.post(clazz, message);
+				return;
+			}
 		}
-		else
-		{
-			eventBus.post(WebsocketMessage.class, message);
-		}
+
+		eventBus.post(message instanceof PartyMemberMessage ? PartyMemberMessage.class : WebsocketMessage.class, message);
 	}
 
 	@Override
