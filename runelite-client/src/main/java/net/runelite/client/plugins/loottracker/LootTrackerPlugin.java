@@ -269,7 +269,7 @@ public class LootTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
-		panel = new LootTrackerPanel(this, itemManager, config);
+		panel = new LootTrackerPanel(this, itemManager, config, injector.getInstance(ScheduledExecutorService.class));
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");

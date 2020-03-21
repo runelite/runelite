@@ -36,6 +36,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -52,6 +55,7 @@ import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
+import javax.swing.SwingUtilities;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -68,6 +72,7 @@ import net.runelite.http.api.loottracker.LootTrackerClient;
 class LootTrackerPanel extends PluginPanel
 {
 	private static final int MAX_LOOT_BOXES = 500;
+	private static final int DEBOUNCE_DELAY_MS = 500;
 
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
@@ -112,6 +117,8 @@ class LootTrackerPanel extends PluginPanel
 	private final JRadioButton groupedLootBtn = new JRadioButton();
 	private final JButton collapseBtn = new JButton();
 	private final IconTextField searchBar;
+
+	private Future<?> runningRequest = null;
 
 	// Aggregate of all kills
 	private final List<LootTrackerRecord> aggregateRecords = new ArrayList<>();
@@ -159,7 +166,7 @@ class LootTrackerPanel extends PluginPanel
 		EXPAND_ICON = new ImageIcon(expandedImg);
 	}
 
-	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
+	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config, ScheduledExecutorService scheduledExecutorService)
 	{
 		this.itemManager = itemManager;
 		this.plugin = plugin;
@@ -269,7 +276,23 @@ class LootTrackerPanel extends PluginPanel
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.setMinimumSize(new Dimension(0, 35));
 		searchBar.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR));
-		searchBar.addKeyListener(k -> rebuild());
+		searchBar.addKeyListener(k ->
+		{
+			if (runningRequest != null)
+			{
+				runningRequest.cancel(false);
+			}
+
+			runningRequest = scheduledExecutorService.schedule(() ->
+			{
+				SwingUtilities.invokeLater(() ->
+				{
+					rebuild();
+				});
+
+				runningRequest = null;
+			}, this.DEBOUNCE_DELAY_MS, TimeUnit.MILLISECONDS);
+		});
 		searchBar.addClearListener(c -> rebuild());
 
 		// Add icon and contents
