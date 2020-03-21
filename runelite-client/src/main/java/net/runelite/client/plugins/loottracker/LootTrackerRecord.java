@@ -46,7 +46,7 @@ class LootTrackerRecord
 	 */
 	boolean matches(final String id, LootRecordType type, String searchFilter)
 	{
-		if (!title.toLowerCase().contains(searchFilter.toLowerCase()))
+		if (!title.toLowerCase().contains(searchFilter.toLowerCase().trim()))
 		{
 			return false;
 		}
