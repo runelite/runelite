@@ -27,9 +27,12 @@ package net.runelite.client.plugins.keyremapping;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.client.config.ModifierlessKeybind;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,12 +55,43 @@ public class KeyRemappingListenerTest
 
 	@Mock
 	@Bind
+	private KeyRemappingPlugin keyRemappingPlugin;
+
+	@Mock
+	@Bind
 	private KeyRemappingConfig keyRemappingConfig;
 
 	@Before
 	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+	}
+
+	@Test
+	public void testTypingStateChange()
+	{
+		when(keyRemappingConfig.cameraRemap()).thenReturn(true);
+		when(keyRemappingConfig.up()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_W, 0));
+		when(keyRemappingConfig.down()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_S, 0));
+		when(keyRemappingConfig.left()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_A, 0));
+		when(keyRemappingConfig.right()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_D, 0));
+
+		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
+		KeyEvent event = mock(KeyEvent.class);
+		when(event.getKeyCode()).thenReturn(KeyEvent.VK_D);
+		when(event.getExtendedKeyCode()).thenReturn(KeyEvent.VK_D); // for keybind matches()
+		keyRemappingListener.keyPressed(event);
+		verify(event).setKeyCode(KeyEvent.VK_RIGHT);
+
+		// with the plugin now in typing mode, previously pressed and remapped keys should still be mapped
+		// on key release regardless
+		when(keyRemappingPlugin.isTyping()).thenReturn(true);
+		event = mock(KeyEvent.class);
+		when(event.getKeyCode()).thenReturn(KeyEvent.VK_D);
+		keyRemappingListener.keyReleased(event);
+		verify(event).setKeyCode(KeyEvent.VK_RIGHT);
 	}
 
 	@Test
