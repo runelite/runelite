@@ -122,8 +122,10 @@ public class WidgetID
 	public static final int DIARY_QUEST_GROUP_ID = 119;
 	public static final int THEATRE_OF_BLOOD_GROUP_ID = 28;
 	public static final int WORLD_SWITCHER_GROUP_ID = 69;
-	public static final int DIALOG_OPTION_GROUP_ID = 219;
 	public static final int DIALOG_PLAYER_GROUP_ID = 217;
+	public static final int DIALOG_OPTION_GROUP_ID = 219;
+	public static final int DIALOG_NOTIFICATION_GROUP_ID = 229;
+	public static final int FOSSIL_ISLAND_MUSHROOM_TELE_GROUP_ID = 608;
 	public static final int DRIFT_NET_FISHING_REWARD_GROUP_ID = 607;
 	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = 609;
 	public static final int MINIGAME_TAB_ID = 76;
@@ -163,6 +165,7 @@ public class WidgetID
 	public static final int LMS_INGAME_GROUP_ID = 328;
 	public static final int JEWELLERY_BOX_GROUP_ID = 590;
 	public static final int OPTIONS_GROUP_ID = 261;
+	public static final int MULTISKILL_MENU_GROUP_ID = 270;
 	public static final int THEATRE_OF_BLOOD_PARTY_GROUP_ID = 28;
 	public static final int GWD_KC_GROUP_ID = 406;
 	public static final int ADVENTURE_LOG_ID = 187;
@@ -190,6 +193,31 @@ public class WidgetID
 		static final int NAME = 2;
 		static final int CONTINUE = 3;
 		static final int TEXT = 4;
+	}
+
+
+	static class DialogPlayer
+	{
+		static final int HEAD_MODEL = 1;
+		static final int NAME = 2;
+		static final int CONTINUE = 3;
+		static final int TEXT = 4;
+	}
+
+	static class DialogNotification
+	{
+		static final int TEXT = 0;
+		static final int CONTINUE = 1;
+	}
+
+	static class DialogOption
+	{
+		static final int TEXT = 0;
+		static final int OPTION1 = 1;
+		static final int OPTION2 = 2;
+		static final int OPTION3 = 3;
+		static final int OPTION4 = 4;
+		static final int OPTION5 = 5;
 	}
 
 	static class LogoutPanel
@@ -330,6 +358,40 @@ public class WidgetID
 	static class Smithing
 	{
 		static final int INVENTORY_ITEM_CONTAINER = 0;
+
+		static final int QTY_1 = 3;
+		static final int QTY_5 = 4;
+		static final int QTY_10 = 5;
+		static final int QTY_X = 6;
+		static final int QTY_ALL = 7;
+
+		static final int DAGGER = 9;
+		static final int SWORD = 10;
+		static final int SCIMITAR = 11;
+		static final int LONG_SWORD = 12;
+		static final int TWO_H_SWORD = 13;
+		static final int AXE = 14;
+		static final int MACE = 15;
+		static final int WARHAMMER = 16;
+		static final int BATTLE_AXE = 17;
+		static final int CLAWS = 18;
+		static final int CHAIN_BODY = 19;
+		static final int PLATE_LEGS = 20;
+		static final int PLATE_SKIRT = 21;
+		static final int PLATE_BODY = 22;
+		static final int NAILS = 23;
+		static final int MED_HELM = 24;
+		static final int FULL_HELM = 25;
+		static final int SQ_SHIELD = 26;
+		static final int KITE_SHIELD = 27;
+		static final int EXCLUSIVE1 = 28;
+		static final int DART_TIPS = 29;
+		static final int ARROW_HEADS = 30;
+		static final int KNIVES = 31;
+		static final int EXCLUSIVE2 = 32;
+		static final int JAVELIN_HEADS = 33;
+		static final int BOLTS = 34;
+		static final int LIMBS = 35;
 	}
 
 	static class GuidePrices
@@ -862,6 +924,15 @@ public class WidgetID
 		static final int FOSSIL_ISLAND_OXYGEN_BAR = 4;
 	}
 
+	static class FossilMushroomTeleport
+	{
+		static final int ROOT = 2;
+		static final int HOUSE_ON_HILL = 4;
+		static final int VERDANT_VALLEY = 8;
+		static final int SWAMP = 12;
+		static final int MUSHROOM_MEADOW = 16;
+	}
+
 	static class Minigames
 	{
 		static final int TELEPORT_BUTTON = 26;
@@ -1020,6 +1091,30 @@ public class WidgetID
 		// ARCEUUS SPELLS
 		static final int ARCEUUS_HOME_TELEPORT = 144;
 		static final int BATTLEFRONT_TELEPORT = 179;
+		// HEADS
+		static final int REANIMATE_GOBLIN = 145;
+		static final int REANIMATE_MONKEY = 147;
+		static final int REANIMATE_IMP = 148;
+		static final int REANIMATE_MINOTAUR = 149;
+		static final int REANIMATE_SCORPION = 151;
+		static final int REANIMATE_BEAR = 152;
+		static final int REANIMATE_UNICORN = 153;
+		static final int REANIMATE_DOG = 154;
+		static final int REANIMATE_CHAOS_DRUID = 156;
+		static final int REANIMATE_GIANT = 158;
+		static final int REANIMATE_OGRE = 160;
+		static final int REANIMATE_ELF = 161;
+		static final int REANIMATE_TROLL = 162;
+		static final int REANIMATE_HORROR = 164;
+		static final int REANIMATE_KALPHITE = 165;
+		static final int REANIMATE_DAGANNOTH = 167;
+		static final int REANIMATE_BLOODVELD = 168;
+		static final int REANIMATE_TZHAAR = 170;
+		static final int REANIMATE_DEMON = 172;
+		static final int REANIMATE_AVIANSIE = 173;
+		static final int REANIMATE_ABYSSAL = 176;
+		static final int REANIMATE_DRAGON = 178;
+
 	}
 
 	static class StandardSpellBook
