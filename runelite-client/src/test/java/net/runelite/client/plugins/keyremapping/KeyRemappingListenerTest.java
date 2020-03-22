@@ -28,7 +28,6 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -38,7 +37,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -92,20 +90,5 @@ public class KeyRemappingListenerTest
 		when(event.getKeyCode()).thenReturn(KeyEvent.VK_D);
 		keyRemappingListener.keyReleased(event);
 		verify(event).setKeyCode(KeyEvent.VK_RIGHT);
-	}
-
-	@Test
-	public void testMouseClicked()
-	{
-		when(keyRemappingConfig.consumeExtraMouseButtons()).thenReturn(true);
-		MouseEvent mouseEvent = mock(MouseEvent.class);
-		when(mouseEvent.getButton()).thenReturn(4);
-		keyRemappingListener.mousePressed(mouseEvent);
-		verify(mouseEvent).consume();
-
-		mouseEvent = mock(MouseEvent.class);
-		when(mouseEvent.getButton()).thenReturn(1);
-		keyRemappingListener.mousePressed(mouseEvent);
-		verify(mouseEvent, never()).consume();
 	}
 }
