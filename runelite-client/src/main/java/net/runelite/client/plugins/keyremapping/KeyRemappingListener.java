@@ -233,7 +233,7 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 			return;
 		}
 
-		if (plugin.chatboxFocused() && !plugin.isTyping()) // is this keyreleased meant for doing as long as?? whats the point of removing modified here?
+		if (plugin.chatboxFocused() && !plugin.isTyping())
 		{
 			modified.remove(e.getKeyCode());
 
