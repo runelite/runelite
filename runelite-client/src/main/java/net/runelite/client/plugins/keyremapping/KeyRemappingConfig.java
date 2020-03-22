@@ -241,4 +241,15 @@ public interface KeyRemappingConfig extends Config
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_ESCAPE, 0);
 	}
+
+	@ConfigItem(
+		position = 20,
+		keyName = "consumeExtraMouseButtons",
+		name = "Block extra mouse buttons",
+		description = "Blocks mouse buttons 4 and 5"
+	)
+	default boolean consumeExtraMouseButtons()
+	{
+		return false;
+	}
 }

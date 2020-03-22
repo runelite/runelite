@@ -43,6 +43,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.JagexColors;
@@ -70,6 +71,9 @@ public class KeyRemappingPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
 	private KeyRemappingListener inputListener;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -81,6 +85,7 @@ public class KeyRemappingPlugin extends Plugin
 	{
 		typing = false;
 		keyManager.registerKeyListener(inputListener);
+		mouseManager.registerMouseListener(inputListener);
 
 		clientThread.invoke(() ->
 		{
@@ -104,6 +109,7 @@ public class KeyRemappingPlugin extends Plugin
 			}
 		});
 
+		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
 	}
 

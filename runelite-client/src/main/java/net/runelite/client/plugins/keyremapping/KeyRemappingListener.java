@@ -27,6 +27,7 @@ package net.runelite.client.plugins.keyremapping;
 
 import com.google.common.base.Strings;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -39,6 +40,8 @@ import net.runelite.client.input.MouseAdapter;
 
 class KeyRemappingListener extends MouseAdapter implements KeyListener
 {
+	// Button numbers greater than BUTTON3 have no constant identifier
+	private static final int MOUSE_BUTTON_4 = 4;
 
 	@Inject
 	private KeyRemappingPlugin plugin;
@@ -306,5 +309,33 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 				e.setKeyCode(m);
 			}
 		}
+	}
+
+	@Override
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
+	{
+		return consumeMouseEvent(mouseEvent);
+	}
+
+	@Override
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
+	{
+		return consumeMouseEvent(mouseEvent);
+	}
+
+	@Override
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
+	{
+		return consumeMouseEvent(mouseEvent);
+	}
+
+	private MouseEvent consumeMouseEvent(MouseEvent mouseEvent)
+	{
+		int button = mouseEvent.getButton();
+		if (button >= MOUSE_BUTTON_4 && config.consumeExtraMouseButtons())
+		{
+			mouseEvent.consume();
+		}
+		return mouseEvent;
 	}
 }
