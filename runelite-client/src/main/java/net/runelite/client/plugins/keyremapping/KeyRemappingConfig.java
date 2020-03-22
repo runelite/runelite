@@ -252,4 +252,49 @@ public interface KeyRemappingConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 20,
+			keyName = "toggleBetween",
+			name = "Toggle between",
+			description = "Toggle between two keys"
+	)
+	default boolean toggle()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 21,
+			keyName = "toggleBetweenKeyEvent",
+			name = "Toggle key",
+			description = "The key which will activate the toggle event."
+	)
+	default ModifierlessKeybind toggleKey()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_BACK_QUOTE, 0);
+	}
+
+	@ConfigItem(
+			position = 22,
+			keyName = "toggleOne",
+			name = "Toggle one",
+			description = "Toggle one"
+	)
+	default ModifierlessKeybind toggleOne()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_F1, 0);
+	}
+
+	@ConfigItem(
+			position = 23,
+			keyName = "toggleTwo",
+			name = "toggle two",
+			description = "toggle two"
+	)
+	default ModifierlessKeybind toggleTwo()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_F2, 0);
+	}
+
 }

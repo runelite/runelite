@@ -57,6 +57,8 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 
 	private final Map<Integer, Integer> modified = new HashMap<>();
 
+	private String currentToggle;
+
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
@@ -167,6 +169,18 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 					e.setKeyCode(KeyEvent.VK_ESCAPE);
 				}
 			}
+			if(config.toggle()) {
+				if(currentToggle == null) {
+					currentToggle = config.toggleOne().toString();
+				}
+				if(config.toggleKey().matches(e)){
+					if(currentToggle.equalsIgnoreCase(config.toggleOne().toString())) {
+						e.setKeyCode(config.toggleTwo().getKeyCode());
+					} else {
+						e.setKeyCode(config.toggleOne().getKeyCode());
+					}
+				}
+			}
 
 			switch (e.getKeyCode())
 			{
@@ -219,7 +233,7 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 			return;
 		}
 
-		if (plugin.chatboxFocused() && !plugin.isTyping())
+		if (plugin.chatboxFocused() && !plugin.isTyping()) // is this keyreleased meant for doing as long as?? whats the point of removing modified here?
 		{
 			modified.remove(e.getKeyCode());
 
@@ -298,6 +312,17 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 					e.setKeyCode(KeyEvent.VK_ESCAPE);
 				}
 			}
+			if(config.toggle()) {
+				if(config.toggleKey().matches(e)){
+					if(currentToggle.equalsIgnoreCase(config.toggleOne().toString())) {
+						e.setKeyCode(config.toggleTwo().getKeyCode());
+						currentToggle = config.toggleTwo().toString();
+					} else {
+						e.setKeyCode(config.toggleOne().getKeyCode());
+						currentToggle = config.toggleOne().toString();
+					}
+				}
+			}
 		}
 		else
 		{
@@ -338,4 +363,5 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 		}
 		return mouseEvent;
 	}
+
 }
