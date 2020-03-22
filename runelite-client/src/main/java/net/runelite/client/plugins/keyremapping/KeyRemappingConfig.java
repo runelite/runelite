@@ -254,10 +254,10 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 20,
-			keyName = "toggleBetween",
-			name = "Toggle between",
-			description = "Toggle between two keys"
+		position = 20,
+		keyName = "toggleBetween",
+		name = "Toggle between",
+		description = "Toggle between two keys"
 	)
 	default boolean toggle()
 	{
@@ -265,10 +265,10 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 21,
-			keyName = "toggleBetweenKeyEvent",
-			name = "Toggle key",
-			description = "The key which will activate the toggle event."
+		position = 21,
+		keyName = "toggleBetweenKeyEvent",
+		name = "Toggle key",
+		description = "The key which will activate the toggle event."
 	)
 	default ModifierlessKeybind toggleKey()
 	{
@@ -276,10 +276,10 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 22,
-			keyName = "toggleOne",
-			name = "Toggle one",
-			description = "Toggle one"
+		position = 22,
+		keyName = "toggleOne",
+		name = "Toggle one",
+		description = "Toggle one"
 	)
 	default ModifierlessKeybind toggleOne()
 	{
@@ -287,10 +287,10 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 23,
-			keyName = "toggleTwo",
-			name = "toggle two",
-			description = "toggle two"
+		position = 23,
+		keyName = "toggleTwo",
+		name = "toggle two",
+		description = "toggle two"
 	)
 	default ModifierlessKeybind toggleTwo()
 	{

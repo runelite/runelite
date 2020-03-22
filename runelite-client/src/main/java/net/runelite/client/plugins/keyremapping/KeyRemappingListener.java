@@ -169,14 +169,20 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 					e.setKeyCode(KeyEvent.VK_ESCAPE);
 				}
 			}
-			if(config.toggle()) {
-				if(currentToggle == null) {
+			if (config.toggle())
+			{
+				if (currentToggle == null)
+				{
 					currentToggle = config.toggleOne().toString();
 				}
-				if(config.toggleKey().matches(e)){
-					if(currentToggle.equalsIgnoreCase(config.toggleOne().toString())) {
+				if (config.toggleKey().matches(e))
+				{
+					if (currentToggle.equalsIgnoreCase(config.toggleOne().toString()))
+					{
 						e.setKeyCode(config.toggleTwo().getKeyCode());
-					} else {
+					}
+					else
+					{
 						e.setKeyCode(config.toggleOne().getKeyCode());
 					}
 				}
@@ -312,12 +318,17 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 					e.setKeyCode(KeyEvent.VK_ESCAPE);
 				}
 			}
-			if(config.toggle()) {
-				if(config.toggleKey().matches(e)){
-					if(currentToggle.equalsIgnoreCase(config.toggleOne().toString())) {
+			if (config.toggle())
+			{
+				if (config.toggleKey().matches(e))
+				{
+					if (currentToggle.equalsIgnoreCase(config.toggleOne().toString()))
+					{
 						e.setKeyCode(config.toggleTwo().getKeyCode());
 						currentToggle = config.toggleTwo().toString();
-					} else {
+					}
+					else
+					{
 						e.setKeyCode(config.toggleOne().getKeyCode());
 						currentToggle = config.toggleOne().toString();
 					}
