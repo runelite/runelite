@@ -69,8 +69,4 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	{
 		return this.getClass().getSimpleName();
 	}
-
-	public void onMouseOver()
-	{
-	}
 }

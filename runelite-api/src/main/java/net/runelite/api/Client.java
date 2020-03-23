@@ -1817,11 +1817,6 @@ public interface Client extends GameShell
 	 * Get the item index of the item being dragged on an if1 widget
 	 */
 	int getIf1DraggedItemIndex();
-	
-	/**
-	 * If a widget is in target mode?
-	 */
-	boolean getSpellSelected();
 
 	/**
 	 * Sets if a widget is in target mode
