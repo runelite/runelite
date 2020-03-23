@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.bosstimer;
 
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Timer;
@@ -33,12 +35,36 @@ class RespawnTimer extends Timer
 {
 	private final Boss boss;
 	private final int world;
+	private final Instant endTime;
+	private String bossName;
+	private boolean showTimer;
 
-	public RespawnTimer(Boss boss, int world, BufferedImage bossImage, Plugin plugin)
+	public RespawnTimer(Boss boss, int world, String bossName, BufferedImage bossImage, Plugin plugin)
 	{
 		super(boss.getSpawnTime().toMillis(), ChronoUnit.MILLIS, bossImage, plugin);
 		this.boss = boss;
 		this.world = world;
+		this.bossName = bossName;
+		showTimer = true;
+		endTime = Instant.now().plus(Duration.of(boss.getSpawnTime().toMillis(), ChronoUnit.MILLIS));
+	}
+
+	@Override
+	public String getText()
+	{
+		if (showTimer)
+		{
+			return super.getText();
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	public void setShowTimer(boolean showTimer)
+	{
+		this.showTimer = showTimer;
 	}
 
 	public Boss getBoss()
@@ -49,5 +75,15 @@ class RespawnTimer extends Timer
 	public int getWorld()
 	{
 		return world;
+	}
+
+	public String getBossName()
+	{
+		return bossName;
+	}
+
+	public Instant getEndTime()
+	{
+		return endTime;
 	}
 }

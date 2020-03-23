@@ -26,22 +26,23 @@
 package net.runelite.client.plugins.bosstimer;
 
 import javax.inject.Inject;
-import com.google.inject.Provides;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 @PluginDescriptor(
 	name = "Boss Timers",
@@ -61,35 +62,12 @@ public class BossTimersPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
-	private BossTimersConfig config;
-
-	@Inject
-	private BossTimersOverlay overlay;
-
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Getter(AccessLevel.PACKAGE)
-	private BossTimersSession session;
-
-	@Provides
-	BossTimersConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(BossTimersConfig.class);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		overlayManager.add(overlay);
-		session = null;
-	}
+	private RespawnTimersSession session;
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer);
-		overlayManager.remove(overlay);
 		session = null;
 	}
 
@@ -112,57 +90,107 @@ public class BossTimersPlugin extends Plugin
 			return;
 		}
 
-		if (session == null)
-		{
-			session = new BossTimersSession();
-		}
-
 		log.debug("Creating spawn timer for {} ({} seconds)", npc.getName(), boss.getSpawnTime());
 
-		RespawnTimer timer = new RespawnTimer(boss, getCurrentWorld(), itemManager.getImage(boss.getItemSpriteId()), this);
-		timer.setTooltip(npc.getName());
+		RespawnTimer timer = new RespawnTimer(boss, this.getCurrentWorld(), npc.getName(), itemManager.getImage(boss.getItemSpriteId()), this);
 
-		if (config.showWorldTimers())
+		if (session == null)
 		{
-			session.addBossTimer(npc.getName(), timer);
+			session = new RespawnTimersSession();
 		}
-		else
-		{
-			// remove existing timer
-			infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
-			infoBoxManager.addInfoBox(timer);
-		}
+
+		session.addBossTimer(timer);
+		updateInfoBoxes();
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	public void onGameTick(GameTick gameTick)
 	{
-		if (!config.showWorldTimers())
+		if (session == null)
 		{
-			switch (gameStateChanged.getGameState())
+			return;
+		}
+
+		session.cull();
+
+		if (session.isEmpty())
+		{
+			session = null;
+		}
+
+		updateInfoBoxes();
+	}
+
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case HOPPING:
+			case LOGGED_IN:
+				updateInfoBoxes();
+				break;
+		}
+	}
+
+	private void updateInfoBoxes()
+	{
+		if (session == null)
+		{
+			return;
+		}
+
+		infoBoxManager.removeIf(t -> t instanceof RespawnTimer);
+		Map<String, ArrayList<RespawnTimer>> timersMap = session.getTimersMap();
+
+		for (HashMap.Entry<String, ArrayList<RespawnTimer>> entry : timersMap.entrySet())
+		{
+			Iterator<RespawnTimer> valueIterator = entry.getValue().iterator();
+
+			Instant longest = Instant.now();
+			RespawnTimer longestTimer = null;
+			RespawnTimer worldTimer = null;
+
+			StringBuilder sb = new StringBuilder();
+			sb.append(entry.getKey());
+
+			while (valueIterator.hasNext())
 			{
-				case HOPPING:
-				case LOGIN_SCREEN:
-					infoBoxManager.removeIf(t -> t instanceof RespawnTimer);
-					break;
+				final RespawnTimer respawnTimer = valueIterator.next();
+
+				if (respawnTimer.getWorld() != getCurrentWorld())
+				{
+					sb.append("</br>World ").append(respawnTimer.getWorld());
+				}
+				else
+				{
+					worldTimer = respawnTimer;
+				}
+
+				if (respawnTimer.getEndTime().compareTo(longest) > 0)
+				{
+					longest = respawnTimer.getEndTime();
+					longestTimer = respawnTimer;
+				}
+			}
+
+			if (worldTimer != null)
+			{
+				worldTimer.setTooltip(sb.toString());
+				worldTimer.setShowTimer(true);
+				infoBoxManager.addInfoBox(worldTimer);
+			}
+			else if (longestTimer != null)
+			{
+				longestTimer.setTooltip(sb.toString());
+				longestTimer.setShowTimer(false);
+				infoBoxManager.addInfoBox(longestTimer);
 			}
 		}
 	}
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (!config.showWorldTimers())
-		{
-			session = null;
-		}
-		else
-		{
-			infoBoxManager.removeIf(t -> t instanceof RespawnTimer);
-		}
-	}
-
-	int getCurrentWorld()
+	private int getCurrentWorld()
 	{
 		return client.getWorld();
 	}

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
- * Copyright (c) 2018, Lasse <cronick@zytex.dk>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,21 +25,53 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-@ConfigGroup("bosstimer")
-public interface BossTimersConfig extends Config
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+class RespawnTimersSession
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "showWorldTimers",
-		name = "Show timers for all worlds",
-		description = "Configures if the timers for each world are shown"
-	)
-	default boolean showWorldTimers()
+	@Getter(AccessLevel.PACKAGE)
+	private Map<String, ArrayList<RespawnTimer>> timersMap = new HashMap<>();
+
+	boolean isEmpty()
 	{
-		return false;
+		return timersMap.isEmpty();
+	}
+
+	void addBossTimer(RespawnTimer respawnTimer)
+	{
+		timersMap.computeIfAbsent(respawnTimer.getBossName(), k -> new ArrayList<>());
+		timersMap.get(respawnTimer.getBossName()).add(respawnTimer);
+	}
+
+	void cull()
+	{
+		Iterator<HashMap.Entry<String, ArrayList<RespawnTimer>>> mapIterator = timersMap.entrySet().iterator();
+
+		while (mapIterator.hasNext())
+		{
+			final HashMap.Entry<String, ArrayList<RespawnTimer>> entry = mapIterator.next();
+			Iterator<RespawnTimer> valueIterator = entry.getValue().iterator();
+
+			while (valueIterator.hasNext())
+			{
+				final RespawnTimer respawnTimer = valueIterator.next();
+
+				if (respawnTimer.cull())
+				{
+					valueIterator.remove();
+
+					if (entry.getValue().size() == 0)
+					{
+						mapIterator.remove();
+					}
+				}
+			}
+		}
 	}
 }
