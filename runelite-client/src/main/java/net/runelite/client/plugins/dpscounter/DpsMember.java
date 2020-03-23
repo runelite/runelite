@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,78 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.dpscounter;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Nullable;
+import java.time.Duration;
+import java.time.Instant;
 import lombok.Getter;
-import lombok.Setter;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Getter
-@Setter
-public abstract class Overlay implements LayoutableRenderableEntity
+class DpsMember
 {
-	@Nullable
-	private final Plugin plugin;
-	private Point preferredLocation;
-	private Dimension preferredSize;
-	private OverlayPosition preferredPosition;
-	private Rectangle bounds = new Rectangle();
-	private OverlayPosition position = OverlayPosition.TOP_LEFT;
-	private OverlayPriority priority = OverlayPriority.NONE;
-	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
-	private final List<OverlayMenuEntry> menuEntries = new ArrayList<>();
+	private final String name;
+	private Instant start;
+	private Instant end;
+	private int damage;
 
-	protected Overlay()
+	void addDamage(int amount)
 	{
-		plugin = null;
+		if (start == null)
+		{
+			start = Instant.now();
+		}
+
+		damage += amount;
 	}
 
-	protected Overlay(@Nullable Plugin plugin)
+	float getDps()
 	{
-		this.plugin = plugin;
+		if (start == null)
+		{
+			return 0;
+		}
+
+		Instant now = end == null ? Instant.now() : end;
+		int diff = (int) (now.toEpochMilli() - start.toEpochMilli()) / 1000;
+		if (diff == 0)
+		{
+			return 0;
+		}
+
+		return (float) damage / (float) diff;
 	}
 
-	/**
-	 * Overlay name, used for saving the overlay, needs to be unique
-	 *
-	 * @return overlay name
-	 */
-	public String getName()
+	void pause()
 	{
-		return this.getClass().getSimpleName();
+		end = Instant.now();
 	}
 
-	public void onMouseOver()
+	boolean isPaused()
 	{
+		return start == null || end != null;
+	}
+
+	void unpause()
+	{
+		if (end == null)
+		{
+			return;
+		}
+
+		start = start.plus(Duration.between(end, Instant.now()));
+		end = null;
+	}
+
+	void reset()
+	{
+		damage = 0;
+		start = end = Instant.now();
+	}
+
+	Duration elapsed()
+	{
+		return Duration.between(start, end == null ? Instant.now() : end);
 	}
 }

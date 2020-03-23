@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.dpscounter;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Nullable;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Getter
-@Setter
-public abstract class Overlay implements LayoutableRenderableEntity
+@ConfigGroup("dpscounter")
+public interface DpsConfig extends Config
 {
-	@Nullable
-	private final Plugin plugin;
-	private Point preferredLocation;
-	private Dimension preferredSize;
-	private OverlayPosition preferredPosition;
-	private Rectangle bounds = new Rectangle();
-	private OverlayPosition position = OverlayPosition.TOP_LEFT;
-	private OverlayPriority priority = OverlayPriority.NONE;
-	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
-	private final List<OverlayMenuEntry> menuEntries = new ArrayList<>();
-
-	protected Overlay()
+	@ConfigItem(
+		position = 0,
+		keyName = "showDamage",
+		name = "Show damage",
+		description = "Show total damage instead of DPS"
+	)
+	default boolean showDamage()
 	{
-		plugin = null;
+		return false;
 	}
 
-	protected Overlay(@Nullable Plugin plugin)
+	@ConfigItem(
+		position = 1,
+		keyName = "autopause",
+		name = "Auto pause",
+		description = "Pause the DPS tracker when a boss dies"
+	)
+	default boolean autopause()
 	{
-		this.plugin = plugin;
-	}
-
-	/**
-	 * Overlay name, used for saving the overlay, needs to be unique
-	 *
-	 * @return overlay name
-	 */
-	public String getName()
-	{
-		return this.getClass().getSimpleName();
-	}
-
-	public void onMouseOver()
-	{
+		return false;
 	}
 }
