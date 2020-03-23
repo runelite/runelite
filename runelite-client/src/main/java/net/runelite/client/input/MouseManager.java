@@ -33,6 +33,9 @@ import javax.inject.Singleton;
 @Singleton
 public class MouseManager
 {
+	// Button numbers greater than BUTTON3 have no constant identifier
+	private static final int MOUSE_BUTTON_4 = 4;
+
 	private final List<MouseListener> mouseListeners = new CopyOnWriteArrayList<>();
 	private final List<MouseWheelListener> mouseWheelListeners = new CopyOnWriteArrayList<>();
 
@@ -74,6 +77,7 @@ public class MouseManager
 
 	public MouseEvent processMousePressed(MouseEvent mouseEvent)
 	{
+		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mousePressed(mouseEvent);
@@ -83,6 +87,7 @@ public class MouseManager
 
 	public MouseEvent processMouseReleased(MouseEvent mouseEvent)
 	{
+		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseReleased(mouseEvent);
@@ -92,11 +97,23 @@ public class MouseManager
 
 	public MouseEvent processMouseClicked(MouseEvent mouseEvent)
 	{
+		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseClicked(mouseEvent);
 		}
 		return mouseEvent;
+	}
+
+	private void checkExtraMouseButtons(MouseEvent mouseEvent)
+	{
+		// Prevent extra mouse buttins from being passed into the client,
+		// as it treats them all as left click
+		int button = mouseEvent.getButton();
+		if (button >= MOUSE_BUTTON_4)
+		{
+			mouseEvent.consume();
+		}
 	}
 
 	public MouseEvent processMouseEntered(MouseEvent mouseEvent)
