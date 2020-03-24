@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, melky <https://github.com/melkypie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,23 +24,51 @@
  */
 package net.runelite.http.api.worlds;
 
-import java.util.EnumSet;
-import lombok.Builder;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Value
-@Builder
-public class World
+/**
+ * Holds the data for each world's region (location)
+ */
+@AllArgsConstructor
+@Getter
+public enum WorldRegion
 {
-	private int id;
-	private EnumSet<WorldType> types;
-	private String address;
-	private String activity;
-	private int location;
-	private int players;
+	UNITED_STATES_OF_AMERICA("US", "USA"),
+	UNITED_KINGDOM("GB", "GBR"),
+	AUSTRALIA("AU", "AUS"),
+	GERMANY("DE", "DEU");
 
-	public WorldRegion getRegion()
+	/**
+	 * ISO-3166-1 alpha-2 country code
+	 */
+	private final String alpha2;
+	/**
+	 * ISO-3166-1 alpha-3 country code
+	 */
+	private final String alpha3;
+
+	/**
+	 * Gets the region using the location id
+	 * {@link WorldRegion} value.
+	 *
+	 * @param locationId the location id of world
+	 * @return WorldRegion the region of the world
+	 */
+	public static WorldRegion valueOf(int locationId)
 	{
-		return WorldRegion.valueOf(location);
+		switch (locationId)
+		{
+			case 0:
+				return UNITED_STATES_OF_AMERICA;
+			case 1:
+				return UNITED_KINGDOM;
+			case 3:
+				return AUSTRALIA;
+			case 7:
+				return GERMANY;
+			default:
+				return null;
+		}
 	}
 }
