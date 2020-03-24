@@ -861,7 +861,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the map
 	 */
-	IterableHashTable getMessages();
+	IterableHashTable<MessageNode> getMessages();
 
 	/**
 	 * Gets the viewport widget.
