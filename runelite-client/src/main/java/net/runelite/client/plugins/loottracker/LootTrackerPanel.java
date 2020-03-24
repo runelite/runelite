@@ -72,7 +72,7 @@ import net.runelite.http.api.loottracker.LootTrackerClient;
 class LootTrackerPanel extends PluginPanel
 {
 	private static final int MAX_LOOT_BOXES = 500;
-	private static final int DEBOUNCE_DELAY_MS = 500;
+	private static final int DEBOUNCE_DELAY_MS = 250;
 
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
