@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2019, Anthony Chen <https://github.com/achencoms>
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Sean Dewar <https://github.com/seandewar>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,10 +51,10 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.AreaSoundEffectPlayed;
-import net.runelite.api.events.SoundEffectPlayed;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.SoundEffectPlayed;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VolumeChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -67,10 +68,13 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @PluginDescriptor(
 	name = "Music",
@@ -125,6 +129,9 @@ public class MusicPlugin extends Plugin
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
 
+	@Inject
+	private TooltipManager tooltipManager;
+
 	private ChatboxTextInput searchInput;
 
 	private Widget musicSearchButton;
@@ -133,6 +140,8 @@ public class MusicPlugin extends Plugin
 	private Collection<Widget> tracks;
 
 	private MusicState currentMusicFilter = MusicState.ALL;
+
+	private MusicSlider hoveredSlider;
 
 	@Override
 	protected void startUp()
@@ -155,7 +164,7 @@ public class MusicPlugin extends Plugin
 		}
 
 		tracks = null;
-
+		hoveredSlider = null;
 		clientThread.invoke(this::teardownMusicOptions);
 	}
 
@@ -407,10 +416,11 @@ public class MusicPlugin extends Plugin
 	@Getter
 	private enum MusicSlider
 	{
-		MUSIC(WidgetInfo.OPTIONS_MUSIC_SLIDER, VarPlayer.MUSIC_VOLUME, MusicConfig::getMusicVolume, MusicConfig::setMusicVolume, 255),
-		AREA(WidgetInfo.OPTIONS_AREA_SOUND_SLIDER, VarPlayer.AREA_EFFECT_VOLUME, MusicConfig::getAreaSoundEffectVolume, MusicConfig::setAreaSoundEffectVolume, 127),
-		EFFECT(WidgetInfo.OPTIONS_SOUND_EFFECT_SLIDER, VarPlayer.SOUND_EFFECT_VOLUME, MusicConfig::getSoundEffectVolume, MusicConfig::setSoundEffectVolume, 127);
+		MUSIC("Music", WidgetInfo.OPTIONS_MUSIC_SLIDER, VarPlayer.MUSIC_VOLUME, MusicConfig::getMusicVolume, MusicConfig::setMusicVolume, 255),
+		AREA("Area Sounds", WidgetInfo.OPTIONS_AREA_SOUND_SLIDER, VarPlayer.AREA_EFFECT_VOLUME, MusicConfig::getAreaSoundEffectVolume, MusicConfig::setAreaSoundEffectVolume, 127),
+		EFFECT("Sound Effects", WidgetInfo.OPTIONS_SOUND_EFFECT_SLIDER, VarPlayer.SOUND_EFFECT_VOLUME, MusicConfig::getSoundEffectVolume, MusicConfig::setSoundEffectVolume, 127);
 
+		private final String name;
 		private final WidgetInfo widgetID;
 		private final VarPlayer var;
 		private final ToIntFunction<MusicConfig> getter;
@@ -433,6 +443,18 @@ public class MusicPlugin extends Plugin
 		private int getWidth()
 		{
 			return getTrack().getWidth() - (PADDING * 2) - handle.getWidth();
+		}
+
+		private int getValue(final MusicConfig config, final Client client)
+		{
+			int value = getter.applyAsInt(config) - 1;
+			if (value <= -1)
+			{
+				// Use the vanilla value
+				value = ((4 - client.getVar(var)) * max) / 4;
+			}
+
+			return value;
 		}
 	}
 
@@ -542,6 +564,9 @@ public class MusicPlugin extends Plugin
 				handle.setOriginalHeight(16);
 				handle.setClickMask(WidgetConfig.DRAG);
 
+				handle.setOnMouseRepeatListener((JavaScriptCallback) ev -> hoveredSlider = slider);
+				handle.setHasListener(true);
+
 				JavaScriptCallback move = ev ->
 				{
 					int newVal = ((ev.getMouseX() - MusicSlider.PADDING - (slider.getHandle().getWidth() / 2)) * slider.getMax())
@@ -568,17 +593,25 @@ public class MusicPlugin extends Plugin
 				client.runScript(ScriptID.OPTIONS_ALLSOUNDS, -1, init[2], init[3], init[4], init[5], init[6]);
 			}
 
-			int value = slider.getGetter().applyAsInt(musicConfig) - 1;
-			if (value <= -1)
-			{
-				// Use the vanilla value
-				value = ((4 - client.getVar(slider.getVar())) * slider.getMax()) / 4;
-			}
-
-			int newX = ((value * slider.getWidth()) / slider.getMax()) + slider.getX();
+			final int value = slider.getValue(musicConfig, client);
+			final int newX = ((value * slider.getWidth()) / slider.getMax()) + slider.getX();
 			slider.getHandle().setOriginalX(newX);
 			slider.getHandle().setOriginalY(slider.getTrack().getOriginalY());
 			slider.getHandle().revalidate();
+		}
+	}
+
+	@Subscribe
+	public void onBeforeRender(final BeforeRender event)
+	{
+		// Tooltips are auto-cleared before each render frame; create a new updated one for this frame
+		if (hoveredSlider != null)
+		{
+			final int value = hoveredSlider.getValue(musicConfig, client);
+			final int percent = (int) Math.round((value * 100.0 / hoveredSlider.getMax()));
+
+			tooltipManager.add(new Tooltip(hoveredSlider.getName() + ": " + percent + "%"));
+			hoveredSlider = null;
 		}
 	}
 
