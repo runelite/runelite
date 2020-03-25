@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, melky <https://github.com/melkypie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,9 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.http.api.worlds;
 
-public interface IterableHashTable<T extends Node> extends Iterable<T>
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+/**
+ * Holds the data for each world's region (location)
+ */
+@AllArgsConstructor
+@Getter
+public enum WorldRegion
 {
-	T get(long hash);
+	UNITED_STATES_OF_AMERICA("US", "USA"),
+	UNITED_KINGDOM("GB", "GBR"),
+	AUSTRALIA("AU", "AUS"),
+	GERMANY("DE", "DEU");
+
+	/**
+	 * ISO-3166-1 alpha-2 country code
+	 */
+	private final String alpha2;
+	/**
+	 * ISO-3166-1 alpha-3 country code
+	 */
+	private final String alpha3;
+
+	/**
+	 * Gets the region using the location id
+	 * {@link WorldRegion} value.
+	 *
+	 * @param locationId the location id of world
+	 * @return WorldRegion the region of the world
+	 */
+	public static WorldRegion valueOf(int locationId)
+	{
+		switch (locationId)
+		{
+			case 0:
+				return UNITED_STATES_OF_AMERICA;
+			case 1:
+				return UNITED_KINGDOM;
+			case 3:
+				return AUSTRALIA;
+			case 7:
+				return GERMANY;
+			default:
+				return null;
+		}
+	}
 }

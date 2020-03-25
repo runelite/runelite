@@ -38,4 +38,9 @@ public class World
 	private String activity;
 	private int location;
 	private int players;
+
+	public WorldRegion getRegion()
+	{
+		return WorldRegion.valueOf(location);
+	}
 }

@@ -300,6 +300,21 @@ public interface Widget
 	 * @param modelId the new model ID
 	 */
 	void setModelId(int modelId);
+	
+	/**
+	 * Gets the model type of the widget.
+	 *
+	 * @see WidgetModelType
+	 */
+	int getModelType();
+
+	/**
+	 * Sets the model type of the widget.
+	 *
+	 * @param type the new model type
+	 * @see WidgetModelType
+	 */
+	void setModelType(int type);
 
 	/**
 	 * Gets the x rotation of the model displayed in the widget
