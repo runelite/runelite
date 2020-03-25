@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Jordan <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,9 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.widgets;
 
-public interface IterableHashTable<T extends Node> extends Iterable<T>
+public class WidgetModelType
 {
-	T get(long hash);
+	public static final int NULL = 0;
+	public static final int MODEL = 1;
+	public static final int NPC_CHATHEAD = 2;
+	public static final int LOCAL_PLAYER_CHATHEAD = 3;
+	public static final int ITEM = 4;
+	public static final int PLAYER = 5;
 }
