@@ -25,8 +25,6 @@
 package net.runelite.client.plugins.grounditems;
 
 import com.google.common.base.Strings;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import lombok.Value;
 
 @Value
@@ -37,8 +35,6 @@ class ItemThreshold
 		LESS_THAN,
 		MORE_THAN
 	}
-
-	private static final Pattern QUANTITY_THRESHOLD_PATTERN = Pattern.compile("(.+)(<|>)\\s*(\\d+)");
 
 	private final String itemName;
 	private final int quantity;
@@ -51,19 +47,40 @@ class ItemThreshold
 			return null;
 		}
 
-		Matcher matcher = QUANTITY_THRESHOLD_PATTERN.matcher(entry);
+		Inequality operator = Inequality.MORE_THAN;
+		int qty = 0;
 
-		if (matcher.find())
+		for (int i = entry.length() - 1; i >= 0; i--)
 		{
-			String name = matcher.group(1).trim();
-			String sign = matcher.group(2);
-			int quantity = Integer.parseInt(matcher.group(3));
-			Inequality inequality = sign.equals("<") ? Inequality.LESS_THAN : Inequality.MORE_THAN;
-
-			return new ItemThreshold(name, quantity, inequality);
+			char c = entry.charAt(i);
+			if (c >= '0' && c <= '9' || Character.isWhitespace(c))
+			{
+				continue;
+			}
+			switch (c)
+			{
+				case '<':
+					operator = Inequality.LESS_THAN;
+					// fallthrough
+				case '>':
+					if (i + 1 < entry.length())
+					{
+						try
+						{
+							qty = Integer.parseInt(entry.substring(i + 1).trim());
+						}
+						catch (NumberFormatException e)
+						{
+							qty = 0;
+							operator = Inequality.MORE_THAN;
+						}
+						entry = entry.substring(0, i);
+					}
+			}
+			break;
 		}
 
-		return new ItemThreshold(entry, 0, Inequality.MORE_THAN);
+		return new ItemThreshold(entry.trim(), qty, operator);
 	}
 
 	boolean quantityHolds(int itemCount)
