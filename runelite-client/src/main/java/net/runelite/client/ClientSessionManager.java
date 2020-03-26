@@ -108,7 +108,8 @@ public class ClientSessionManager
 		boolean loggedIn = false;
 		if (client != null)
 		{
-			loggedIn = client.getGameState() != GameState.LOGIN_SCREEN;
+			GameState gameState = client.getGameState();
+			loggedIn = gameState.getState() >= GameState.LOADING.getState();
 		}
 
 		try
