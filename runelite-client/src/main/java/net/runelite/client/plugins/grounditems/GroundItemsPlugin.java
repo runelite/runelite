@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -162,6 +163,9 @@ public class GroundItemsPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	private ScheduledExecutorService executor;
+
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
 	private Map<Integer, Color> priceChecks = ImmutableMap.of();
@@ -179,9 +183,9 @@ public class GroundItemsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		reset();
 		mouseManager.registerMouseListener(inputListener);
 		keyManager.registerKeyListener(inputListener);
+		executor.execute(this::reset);
 	}
 
 	@Override
@@ -204,7 +208,7 @@ public class GroundItemsPlugin extends Plugin
 	{
 		if (event.getGroup().equals("grounditems"))
 		{
-			reset();
+			executor.execute(this::reset);
 		}
 	}
 
