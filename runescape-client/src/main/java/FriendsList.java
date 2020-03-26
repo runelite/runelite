@@ -4,64 +4,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jd")
+@ObfuscatedName("kr")
 @Implements("FriendsList")
 public class FriendsList extends UserList {
-	@ObfuscatedName("ge")
-	@Export("regions")
-	static int[] regions;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Lmv;"
+		signature = "Lmx;"
 	)
 	@Export("loginType")
 	final LoginType loginType;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -1784077363
+		intValue = -975708825
 	)
-	int field3606;
-	@ObfuscatedName("p")
+	int field3618;
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Ljr;"
+		signature = "Ljk;"
 	)
 	@Export("friendLoginUpdates")
 	public LinkDeque friendLoginUpdates;
 
 	@ObfuscatedSignature(
-		signature = "(Lmv;)V"
+		signature = "(Lmx;)V"
 	)
 	public FriendsList(LoginType var1) {
 		super(400);
-		this.field3606 = 1;
+		this.field3618 = 1;
 		this.friendLoginUpdates = new LinkDeque();
 		this.loginType = var1;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(S)Ljk;",
-		garbageValue = "30683"
+		signature = "(I)Ljd;",
+		garbageValue = "-1332552421"
 	)
 	@Export("newInstance")
 	User newInstance() {
 		return new Friend();
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(IB)[Ljk;",
-		garbageValue = "19"
+		signature = "(II)[Ljd;",
+		garbageValue = "-667029686"
 	)
 	@Export("newTypedArray")
 	User[] newTypedArray(int var1) {
 		return new Friend[var1];
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Ljz;ZI)Z",
-		garbageValue = "-1382316514"
+		signature = "(Lku;ZI)Z",
+		garbageValue = "-141392117"
 	)
 	@Export("isFriended")
 	public boolean isFriended(Username var1, boolean var2) {
@@ -73,10 +70,10 @@ public class FriendsList extends UserList {
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(Lkp;IB)V",
-		garbageValue = "118"
+		signature = "(Lkb;IB)V",
+		garbageValue = "51"
 	)
 	@Export("read")
 	public void read(Buffer var1, int var2) {
@@ -140,17 +137,17 @@ public class FriendsList extends UserList {
 					}
 
 					if (var6 != var11.world) {
-						var11.int2 = ++this.field3606 - 1;
+						var11.int2 = ++this.field3618 - 1;
 						if (var11.world == -1 && var6 == 0) {
-							var11.int2 = -(var11.int2 * 1598123503) * 179134735;
+							var11.int2 = -(var11.int2 * -1563374063) * 1414783729;
 						}
 
 						var11.world = var6;
 					}
 
 					var11.rank = var7;
-					var11.field3618 = var9;
-					var11.field3619 = var10;
+					var11.field3625 = var9;
+					var11.field3623 = var10;
 					continue;
 				}
 

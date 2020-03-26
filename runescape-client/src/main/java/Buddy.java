@@ -4,24 +4,24 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("je")
+@ObfuscatedName("ke")
 @Implements("Buddy")
 public class Buddy extends User {
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -1462953665
+		intValue = 1726409249
 	)
 	@Export("world")
 	public int world;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 179134735
+		intValue = 1414783729
 	)
 	@Export("int2")
 	public int int2;
-	@ObfuscatedName("d")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -1349530221
+		intValue = -25627413
 	)
 	@Export("rank")
 	public int rank;
@@ -30,10 +30,10 @@ public class Buddy extends User {
 		this.world = -1;
 	}
 
-	@ObfuscatedName("ai")
+	@ObfuscatedName("ag")
 	@ObfuscatedSignature(
 		signature = "(III)V",
-		garbageValue = "1991575010"
+		garbageValue = "1769610141"
 	)
 	@Export("set")
 	void set(int var1, int var2) {
@@ -41,49 +41,23 @@ public class Buddy extends User {
 		this.int2 = var2;
 	}
 
-	@ObfuscatedName("ab")
+	@ObfuscatedName("aw")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "-1822334974"
+		garbageValue = "734760061"
 	)
 	@Export("getWorld")
 	public int getWorld() {
 		return this.world;
 	}
 
-	@ObfuscatedName("ap")
+	@ObfuscatedName("bf")
 	@ObfuscatedSignature(
-		signature = "(B)Z",
-		garbageValue = "-101"
+		signature = "(I)Z",
+		garbageValue = "-182915585"
 	)
 	@Export("hasWorld")
 	public boolean hasWorld() {
 		return this.world > 0;
-	}
-
-	@ObfuscatedName("m")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)I",
-		garbageValue = "631809601"
-	)
-	public static int method5234(CharSequence var0) {
-		int var1 = var0.length();
-		int var2 = 0;
-
-		for (int var3 = 0; var3 < var1; ++var3) {
-			var2 = (var2 << 5) - var2 + var0.charAt(var3);
-		}
-
-		return var2;
-	}
-
-	@ObfuscatedName("ah")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;I)I",
-		garbageValue = "-2002208158"
-	)
-	@Export("stringCp1252NullTerminatedByteSize")
-	public static int stringCp1252NullTerminatedByteSize(String var0) {
-		return var0.length() + 1;
 	}
 }

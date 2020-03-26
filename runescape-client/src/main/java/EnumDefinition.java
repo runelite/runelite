@@ -4,43 +4,49 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iw")
+@ObfuscatedName("ji")
 @Implements("EnumDefinition")
 public class EnumDefinition extends DualNode {
-	@ObfuscatedName("t")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Leh;"
+		signature = "Liy;"
+	)
+	@Export("EnumDefinition_archive")
+	static AbstractArchive EnumDefinition_archive;
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		signature = "Leg;"
 	)
 	@Export("EnumDefinition_cached")
 	static EvictingDualNodeHashTable EnumDefinition_cached;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@Export("inputType")
 	public char inputType;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@Export("outputType")
 	public char outputType;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@Export("defaultStr")
 	public String defaultStr;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 763609869
+		intValue = 1168542031
 	)
 	@Export("defaultInt")
 	public int defaultInt;
-	@ObfuscatedName("d")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 1620263743
+		intValue = 744835807
 	)
 	@Export("outputCount")
 	public int outputCount;
-	@ObfuscatedName("l")
+	@ObfuscatedName("z")
 	@Export("keys")
 	public int[] keys;
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@Export("intVals")
 	public int[] intVals;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@Export("strVals")
 	public String[] strVals;
 
@@ -53,10 +59,10 @@ public class EnumDefinition extends DualNode {
 		this.outputCount = 0;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Lkp;I)V",
-		garbageValue = "-1295672156"
+		signature = "(Lkb;I)V",
+		garbageValue = "1803562371"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -70,10 +76,10 @@ public class EnumDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(Lkp;II)V",
-		garbageValue = "1239403484"
+		signature = "(Lkb;II)V",
+		garbageValue = "-1795608149"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -110,61 +116,45 @@ public class EnumDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "-1222306007"
+		garbageValue = "1493924915"
 	)
 	@Export("size")
 	public int size() {
 		return this.outputCount;
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(II)Les;",
-		garbageValue = "-1471944994"
+		signature = "(II)V",
+		garbageValue = "-530273467"
 	)
-	@Export("getFrames")
-	static Frames getFrames(int var0) {
-		Frames var1 = (Frames)SequenceDefinition.SequenceDefinition_cachedFrames.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			AbstractArchive var3 = Canvas.SequenceDefinition_animationsArchive;
-			AbstractArchive var4 = SequenceDefinition.SequenceDefinition_skeletonsArchive;
-			boolean var5 = true;
-			int[] var6 = var3.getGroupFileIds(var0);
+	public static void method4614(int var0) {
+		if (var0 != -1) {
+			if (Widget.Widget_loadedInterfaces[var0]) {
+				Widget.Widget_archive.clearFilesGroup(var0);
+				if (Widget.Widget_interfaceComponents[var0] != null) {
+					boolean var1 = true;
 
-			for (int var7 = 0; var7 < var6.length; ++var7) {
-				byte[] var8 = var3.getFile(var0, var6[var7]);
-				if (var8 == null) {
-					var5 = false;
-				} else {
-					int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
-					byte[] var10 = var4.getFile(var9, 0);
-					if (var10 == null) {
-						var5 = false;
+					for (int var2 = 0; var2 < Widget.Widget_interfaceComponents[var0].length; ++var2) {
+						if (Widget.Widget_interfaceComponents[var0][var2] != null) {
+							if (Widget.Widget_interfaceComponents[var0][var2].type != 2) {
+								Widget.Widget_interfaceComponents[var0][var2] = null;
+							} else {
+								var1 = false;
+							}
+						}
 					}
+
+					if (var1) {
+						Widget.Widget_interfaceComponents[var0] = null;
+					}
+
+					Widget.Widget_loadedInterfaces[var0] = false;
 				}
 			}
-
-			Frames var2;
-			if (!var5) {
-				var2 = null;
-			} else {
-				try {
-					var2 = new Frames(var3, var4, var0, false);
-				} catch (Exception var12) {
-					var2 = null;
-				}
-			}
-
-			if (var2 != null) {
-				SequenceDefinition.SequenceDefinition_cachedFrames.put(var2, (long)var0);
-			}
-
-			return var2;
 		}
 	}
 }

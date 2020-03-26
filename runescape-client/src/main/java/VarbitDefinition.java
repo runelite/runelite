@@ -4,35 +4,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("iq")
+@ObfuscatedName("iu")
 @Implements("VarbitDefinition")
 public class VarbitDefinition extends DualNode {
-	@ObfuscatedName("t")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Leh;"
+		signature = "Liy;"
+	)
+	@Export("VarbitDefinition_archive")
+	public static AbstractArchive VarbitDefinition_archive;
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		signature = "Leg;"
 	)
 	@Export("VarbitDefinition_cached")
 	public static EvictingDualNodeHashTable VarbitDefinition_cached;
-	@ObfuscatedName("lz")
-	@ObfuscatedSignature(
-		signature = "Lhn;"
-	)
-	static Widget field3296;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 1323501577
+		intValue = -927244413
 	)
 	@Export("baseVar")
 	public int baseVar;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1019762327
+		intValue = -326860353
 	)
 	@Export("startBit")
 	public int startBit;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 1631697359
+		intValue = -1659687913
 	)
 	@Export("endBit")
 	public int endBit;
@@ -41,10 +42,10 @@ public class VarbitDefinition extends DualNode {
 		VarbitDefinition_cached = new EvictingDualNodeHashTable(64);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(Lkp;I)V",
-		garbageValue = "2025380106"
+		signature = "(Lkb;B)V",
+		garbageValue = "113"
 	)
 	@Export("decode")
 	public void decode(Buffer var1) {
@@ -58,10 +59,10 @@ public class VarbitDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Lkp;II)V",
-		garbageValue = "-1332372720"
+		signature = "(Lkb;II)V",
+		garbageValue = "842018241"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {

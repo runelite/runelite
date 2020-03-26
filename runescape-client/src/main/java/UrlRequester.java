@@ -10,16 +10,24 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("ey")
 @Implements("UrlRequester")
 public class UrlRequester implements Runnable {
-	@ObfuscatedName("c")
+	@ObfuscatedName("fx")
+	@ObfuscatedSignature(
+		signature = "Llt;"
+	)
+	static AbstractSocket field1960;
+	@ObfuscatedName("gb")
+	@Export("xteaKeys")
+	static int[][] xteaKeys;
+	@ObfuscatedName("x")
 	@Export("thread")
 	final Thread thread;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@Export("isClosed")
 	volatile boolean isClosed;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@Export("requests")
 	Queue requests;
 
@@ -30,10 +38,10 @@ public class UrlRequester implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Ljava/net/URL;I)Leg;",
-		garbageValue = "-838754437"
+		signature = "(Ljava/net/URL;B)Lew;",
+		garbageValue = "81"
 	)
 	@Export("request")
 	public UrlRequest request(URL var1) {
@@ -45,10 +53,10 @@ public class UrlRequester implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "1550899791"
+		signature = "(B)V",
+		garbageValue = "0"
 	)
 	@Export("close")
 	public void close() {
@@ -111,70 +119,9 @@ public class UrlRequester implements Runnable {
 
 				}
 			} catch (Exception var17) {
-				class225.RunException_sendStackTrace((String)null, var17);
+				WorldMapDecorationType.RunException_sendStackTrace((String)null, var17);
 			}
 		}
 
-	}
-
-	@ObfuscatedName("ih")
-	@ObfuscatedSignature(
-		signature = "(Lhn;IIZI)V",
-		garbageValue = "1992355059"
-	)
-	@Export("alignWidgetSize")
-	static void alignWidgetSize(Widget var0, int var1, int var2, boolean var3) {
-		int var4 = var0.width;
-		int var5 = var0.height;
-		if (var0.widthAlignment == 0) {
-			var0.width = var0.rawWidth;
-		} else if (var0.widthAlignment == 1) {
-			var0.width = var1 - var0.rawWidth;
-		} else if (var0.widthAlignment == 2) {
-			var0.width = var0.rawWidth * var1 >> 14;
-		}
-
-		if (var0.heightAlignment == 0) {
-			var0.height = var0.rawHeight;
-		} else if (var0.heightAlignment == 1) {
-			var0.height = var2 - var0.rawHeight;
-		} else if (var0.heightAlignment == 2) {
-			var0.height = var2 * var0.rawHeight >> 14;
-		}
-
-		if (var0.widthAlignment == 4) {
-			var0.width = var0.field2589 * var0.height / var0.field2590;
-		}
-
-		if (var0.heightAlignment == 4) {
-			var0.height = var0.field2590 * var0.width / var0.field2589;
-		}
-
-		if (var0.contentType == 1337) {
-			Client.viewportWidget = var0;
-		}
-
-		if (var3 && var0.onResize != null && (var4 != var0.width || var5 != var0.height)) {
-			ScriptEvent var6 = new ScriptEvent();
-			var6.widget = var0;
-			var6.args = var0.onResize;
-			Client.scriptEvents.addFirst(var6);
-		}
-
-	}
-
-	@ObfuscatedName("kv")
-	@ObfuscatedSignature(
-		signature = "(Lkp;II)V",
-		garbageValue = "372064004"
-	)
-	static void method3373(Buffer var0, int var1) {
-		byte[] var2 = var0.array;
-		if (Client.randomDatData == null) {
-			Client.randomDatData = new byte[24];
-		}
-
-		class301.writeRandomDat(var2, var1, Client.randomDatData, 0, 24);
-		WorldMapSprite.method427(var0, var1);
 	}
 }

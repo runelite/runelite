@@ -4,297 +4,273 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("if")
+@ObfuscatedName("jx")
 @Implements("ItemDefinition")
 public class ItemDefinition extends DualNode {
-	@ObfuscatedName("g")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "Lii;"
-	)
-	@Export("ItemDefinition_archive")
-	public static AbstractArchive ItemDefinition_archive;
-	@ObfuscatedName("d")
-	@ObfuscatedSignature(
-		signature = "Lii;"
-	)
-	@Export("ItemDefinition_modelArchive")
-	public static AbstractArchive ItemDefinition_modelArchive;
-	@ObfuscatedName("j")
-	@ObfuscatedGetter(
-		intValue = 1524909813
-	)
-	@Export("ItemDefinition_fileCount")
-	public static int ItemDefinition_fileCount;
-	@ObfuscatedName("m")
-	@ObfuscatedSignature(
-		signature = "Leh;"
+		signature = "Leg;"
 	)
 	@Export("ItemDefinition_cached")
-	public static EvictingDualNodeHashTable ItemDefinition_cached;
-	@ObfuscatedName("p")
+	static EvictingDualNodeHashTable ItemDefinition_cached;
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		signature = "Leh;"
+		signature = "Leg;"
 	)
 	@Export("ItemDefinition_cachedModels")
-	public static EvictingDualNodeHashTable ItemDefinition_cachedModels;
-	@ObfuscatedName("h")
+	static EvictingDualNodeHashTable ItemDefinition_cachedModels;
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "Leh;"
+		signature = "Leg;"
 	)
 	@Export("ItemDefinition_cachedSprites")
 	public static EvictingDualNodeHashTable ItemDefinition_cachedSprites;
-	@ObfuscatedName("v")
-	@ObfuscatedSignature(
-		signature = "Lko;"
-	)
-	@Export("ItemDefinition_fontPlain11")
-	public static Font ItemDefinition_fontPlain11;
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -536446943
+		intValue = -32704117
 	)
 	@Export("id")
 	public int id;
-	@ObfuscatedName("x")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = -406504769
+		intValue = 1028533167
 	)
 	@Export("model")
 	int model;
-	@ObfuscatedName("w")
+	@ObfuscatedName("g")
 	@Export("name")
 	public String name;
-	@ObfuscatedName("k")
+	@ObfuscatedName("i")
 	@Export("recolorFrom")
 	short[] recolorFrom;
-	@ObfuscatedName("q")
+	@ObfuscatedName("a")
 	@Export("recolorTo")
 	short[] recolorTo;
-	@ObfuscatedName("z")
+	@ObfuscatedName("b")
 	@Export("retextureFrom")
 	short[] retextureFrom;
-	@ObfuscatedName("y")
+	@ObfuscatedName("l")
 	@Export("retextureTo")
 	short[] retextureTo;
-	@ObfuscatedName("f")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 2019539597
+		intValue = 790198705
 	)
 	@Export("zoom2d")
 	public int zoom2d;
-	@ObfuscatedName("b")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 1726268201
+		intValue = -512511795
 	)
 	@Export("xan2d")
 	public int xan2d;
-	@ObfuscatedName("r")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 93819839
+		intValue = 1120938463
 	)
 	@Export("yan2d")
 	public int yan2d;
-	@ObfuscatedName("s")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = 2090410293
+		intValue = -2126697049
 	)
 	@Export("zan2d")
 	public int zan2d;
-	@ObfuscatedName("a")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = 205349077
+		intValue = 2124715319
 	)
 	@Export("offsetX2d")
 	public int offsetX2d;
-	@ObfuscatedName("u")
+	@ObfuscatedName("f")
 	@ObfuscatedGetter(
-		intValue = -178910167
+		intValue = 1998077465
 	)
 	@Export("offsetY2d")
 	public int offsetY2d;
 	@ObfuscatedName("ae")
 	@ObfuscatedGetter(
-		intValue = 1045591487
+		intValue = -496150603
 	)
 	@Export("isStackable")
 	public int isStackable;
-	@ObfuscatedName("af")
+	@ObfuscatedName("an")
 	@ObfuscatedGetter(
-		intValue = 335051861
+		intValue = -1128123323
 	)
 	@Export("price")
 	public int price;
-	@ObfuscatedName("az")
+	@ObfuscatedName("ai")
 	@Export("isMembersOnly")
 	public boolean isMembersOnly;
-	@ObfuscatedName("ax")
+	@ObfuscatedName("ap")
 	@Export("groundActions")
 	public String[] groundActions;
-	@ObfuscatedName("aj")
+	@ObfuscatedName("ab")
 	@Export("inventoryActions")
 	public String[] inventoryActions;
-	@ObfuscatedName("ay")
+	@ObfuscatedName("af")
 	@ObfuscatedGetter(
-		intValue = 1996888449
+		intValue = 2022658475
 	)
 	@Export("shiftClickIndex")
 	int shiftClickIndex;
-	@ObfuscatedName("aa")
+	@ObfuscatedName("at")
 	@ObfuscatedGetter(
-		intValue = -665766999
+		intValue = -198787353
 	)
 	@Export("maleModel")
 	int maleModel;
-	@ObfuscatedName("aq")
+	@ObfuscatedName("al")
 	@ObfuscatedGetter(
-		intValue = -1666037601
+		intValue = -1595882143
 	)
 	@Export("maleModel1")
 	int maleModel1;
 	@ObfuscatedName("as")
 	@ObfuscatedGetter(
-		intValue = 1212173465
+		intValue = -1755438589
 	)
 	@Export("maleOffset")
 	int maleOffset;
-	@ObfuscatedName("ak")
+	@ObfuscatedName("am")
 	@ObfuscatedGetter(
-		intValue = -1350778211
+		intValue = 384600509
 	)
 	@Export("femaleModel")
 	int femaleModel;
-	@ObfuscatedName("ac")
+	@ObfuscatedName("au")
 	@ObfuscatedGetter(
-		intValue = 1772230311
+		intValue = 1401958483
 	)
 	@Export("femaleModel1")
 	int femaleModel1;
-	@ObfuscatedName("aw")
+	@ObfuscatedName("ao")
 	@ObfuscatedGetter(
-		intValue = -1256641587
+		intValue = -289691561
 	)
 	@Export("femaleOffset")
 	int femaleOffset;
-	@ObfuscatedName("ar")
+	@ObfuscatedName("aq")
 	@ObfuscatedGetter(
-		intValue = -1552928441
+		intValue = 270064135
 	)
 	@Export("maleModel2")
 	int maleModel2;
 	@ObfuscatedName("av")
 	@ObfuscatedGetter(
-		intValue = 2068450997
+		intValue = -2092220545
 	)
 	@Export("femaleModel2")
 	int femaleModel2;
-	@ObfuscatedName("al")
+	@ObfuscatedName("ak")
 	@ObfuscatedGetter(
-		intValue = -1141752707
+		intValue = -687751073
 	)
 	@Export("maleHeadModel")
 	int maleHeadModel;
-	@ObfuscatedName("ad")
+	@ObfuscatedName("aa")
 	@ObfuscatedGetter(
-		intValue = -659175095
+		intValue = -726951563
 	)
 	@Export("maleHeadModel2")
 	int maleHeadModel2;
-	@ObfuscatedName("am")
+	@ObfuscatedName("ax")
 	@ObfuscatedGetter(
-		intValue = -1827024377
+		intValue = 515679975
 	)
 	@Export("femaleHeadModel")
 	int femaleHeadModel;
-	@ObfuscatedName("ao")
+	@ObfuscatedName("az")
 	@ObfuscatedGetter(
-		intValue = -1593898643
+		intValue = 54393855
 	)
 	@Export("femaleHeadModel2")
 	int femaleHeadModel2;
-	@ObfuscatedName("at")
+	@ObfuscatedName("aj")
 	@Export("countobj")
 	int[] countobj;
-	@ObfuscatedName("an")
+	@ObfuscatedName("ay")
 	@Export("countco")
 	int[] countco;
-	@ObfuscatedName("ag")
+	@ObfuscatedName("ad")
 	@ObfuscatedGetter(
-		intValue = -1326162955
+		intValue = 1943254675
 	)
 	@Export("note")
 	public int note;
-	@ObfuscatedName("ai")
+	@ObfuscatedName("ac")
 	@ObfuscatedGetter(
-		intValue = -1734525481
+		intValue = 1721963949
 	)
 	@Export("noteTemplate")
 	public int noteTemplate;
-	@ObfuscatedName("ab")
+	@ObfuscatedName("ah")
 	@ObfuscatedGetter(
-		intValue = 978982797
+		intValue = -1325952823
 	)
 	@Export("resizeX")
 	int resizeX;
-	@ObfuscatedName("ap")
+	@ObfuscatedName("ag")
 	@ObfuscatedGetter(
-		intValue = 4324563
+		intValue = 1293336691
 	)
 	@Export("resizeY")
 	int resizeY;
-	@ObfuscatedName("ah")
+	@ObfuscatedName("aw")
 	@ObfuscatedGetter(
-		intValue = 232741831
+		intValue = -2092594315
 	)
 	@Export("resizeZ")
 	int resizeZ;
-	@ObfuscatedName("bq")
+	@ObfuscatedName("bf")
 	@ObfuscatedGetter(
-		intValue = -916763617
+		intValue = 701446973
 	)
 	@Export("ambient")
 	public int ambient;
-	@ObfuscatedName("bf")
+	@ObfuscatedName("bc")
 	@ObfuscatedGetter(
-		intValue = 1642665557
+		intValue = 1489802711
 	)
 	@Export("contrast")
 	public int contrast;
-	@ObfuscatedName("bc")
+	@ObfuscatedName("bo")
 	@ObfuscatedGetter(
-		intValue = 1763887503
+		intValue = -499099671
 	)
 	@Export("team")
 	public int team;
-	@ObfuscatedName("bk")
+	@ObfuscatedName("bd")
 	@ObfuscatedSignature(
-		signature = "Llp;"
+		signature = "Lln;"
 	)
 	@Export("params")
 	IterableNodeHashTable params;
-	@ObfuscatedName("bb")
+	@ObfuscatedName("bk")
 	@Export("isTradable")
 	public boolean isTradable;
-	@ObfuscatedName("bi")
+	@ObfuscatedName("bu")
 	@ObfuscatedGetter(
-		intValue = -1331779555
+		intValue = -997556147
 	)
 	@Export("unnotedId")
 	int unnotedId;
-	@ObfuscatedName("bp")
+	@ObfuscatedName("be")
 	@ObfuscatedGetter(
-		intValue = 1529334619
+		intValue = -1745550989
 	)
 	@Export("notedId")
 	int notedId;
-	@ObfuscatedName("bl")
+	@ObfuscatedName("bg")
 	@ObfuscatedGetter(
-		intValue = 1795625835
+		intValue = -355307627
 	)
 	@Export("placeholder")
 	public int placeholder;
-	@ObfuscatedName("by")
+	@ObfuscatedName("bt")
 	@ObfuscatedGetter(
-		intValue = -1321250167
+		intValue = 1596605635
 	)
 	@Export("placeholderTemplate")
 	public int placeholderTemplate;
@@ -346,19 +322,19 @@ public class ItemDefinition extends DualNode {
 		this.placeholderTemplate = -1;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "1252611790"
+		garbageValue = "1255281949"
 	)
 	@Export("post")
 	void post() {
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Lkp;B)V",
-		garbageValue = "-72"
+		signature = "(Lkb;I)V",
+		garbageValue = "-160078979"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -372,10 +348,10 @@ public class ItemDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(Lkp;IB)V",
-		garbageValue = "24"
+		signature = "(Lkb;II)V",
+		garbageValue = "-1270586282"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
@@ -494,16 +470,16 @@ public class ItemDefinition extends DualNode {
 			} else if (var2 == 149) {
 				this.placeholderTemplate = var1.readUnsignedShort();
 			} else if (var2 == 249) {
-				this.params = MouseRecorder.readStringIntParameters(var1, this.params);
+				this.params = NetCache.readStringIntParameters(var1, this.params);
 			}
 		}
 
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		signature = "(Lif;Lif;B)V",
-		garbageValue = "4"
+		signature = "(Ljx;Ljx;B)V",
+		garbageValue = "98"
 	)
 	@Export("genCert")
 	void genCert(ItemDefinition var1, ItemDefinition var2) {
@@ -524,10 +500,10 @@ public class ItemDefinition extends DualNode {
 		this.isStackable = 1;
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		signature = "(Lif;Lif;B)V",
-		garbageValue = "14"
+		signature = "(Ljx;Ljx;I)V",
+		garbageValue = "2110553543"
 	)
 	@Export("genBought")
 	void genBought(ItemDefinition var1, ItemDefinition var2) {
@@ -568,10 +544,10 @@ public class ItemDefinition extends DualNode {
 		this.price = 0;
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "(Lif;Lif;B)V",
-		garbageValue = "0"
+		signature = "(Ljx;Ljx;I)V",
+		garbageValue = "231591867"
 	)
 	@Export("genPlaceholder")
 	void genPlaceholder(ItemDefinition var1, ItemDefinition var2) {
@@ -593,10 +569,10 @@ public class ItemDefinition extends DualNode {
 		this.isTradable = false;
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "(IB)Ldg;",
-		garbageValue = "2"
+		signature = "(II)Lea;",
+		garbageValue = "-1152870229"
 	)
 	@Export("getModelData")
 	public final ModelData getModelData(int var1) {
@@ -611,11 +587,11 @@ public class ItemDefinition extends DualNode {
 			}
 
 			if (var2 != -1) {
-				return HealthBarDefinition.ItemDefinition_get(var2).getModelData(1);
+				return AbstractWorldMapData.ItemDefinition_get(var2).getModelData(1);
 			}
 		}
 
-		ModelData var4 = ModelData.ModelData_get(ItemDefinition_modelArchive, this.model, 0);
+		ModelData var4 = ModelData.ModelData_get(GrandExchangeOffer.ItemDefinition_modelArchive, this.model, 0);
 		if (var4 == null) {
 			return null;
 		} else {
@@ -639,10 +615,10 @@ public class ItemDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(II)Ldx;",
-		garbageValue = "1199706901"
+		signature = "(IB)Lel;",
+		garbageValue = "-60"
 	)
 	@Export("getModel")
 	public final Model getModel(int var1) {
@@ -656,7 +632,7 @@ public class ItemDefinition extends DualNode {
 			}
 
 			if (var2 != -1) {
-				return HealthBarDefinition.ItemDefinition_get(var2).getModel(1);
+				return AbstractWorldMapData.ItemDefinition_get(var2).getModel(1);
 			}
 		}
 
@@ -664,7 +640,7 @@ public class ItemDefinition extends DualNode {
 		if (var5 != null) {
 			return var5;
 		} else {
-			ModelData var6 = ModelData.ModelData_get(ItemDefinition_modelArchive, this.model, 0);
+			ModelData var6 = ModelData.ModelData_get(GrandExchangeOffer.ItemDefinition_modelArchive, this.model, 0);
 			if (var6 == null) {
 				return null;
 			} else {
@@ -693,10 +669,10 @@ public class ItemDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		signature = "(IB)Lif;",
-		garbageValue = "25"
+		signature = "(II)Ljx;",
+		garbageValue = "-2117466306"
 	)
 	@Export("getCountObj")
 	public ItemDefinition getCountObj(int var1) {
@@ -710,17 +686,17 @@ public class ItemDefinition extends DualNode {
 			}
 
 			if (var2 != -1) {
-				return HealthBarDefinition.ItemDefinition_get(var2);
+				return AbstractWorldMapData.ItemDefinition_get(var2);
 			}
 		}
 
 		return this;
 	}
 
-	@ObfuscatedName("h")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		signature = "(ZI)Z",
-		garbageValue = "-1615353166"
+		garbageValue = "1659080166"
 	)
 	@Export("hasNoValidModel")
 	public final boolean hasNoValidModel(boolean var1) {
@@ -737,15 +713,15 @@ public class ItemDefinition extends DualNode {
 			return true;
 		} else {
 			boolean var5 = true;
-			if (!ItemDefinition_modelArchive.tryLoadFile(var2, 0)) {
+			if (!GrandExchangeOffer.ItemDefinition_modelArchive.tryLoadFile(var2, 0)) {
 				var5 = false;
 			}
 
-			if (var3 != -1 && !ItemDefinition_modelArchive.tryLoadFile(var3, 0)) {
+			if (var3 != -1 && !GrandExchangeOffer.ItemDefinition_modelArchive.tryLoadFile(var3, 0)) {
 				var5 = false;
 			}
 
-			if (var4 != -1 && !ItemDefinition_modelArchive.tryLoadFile(var4, 0)) {
+			if (var4 != -1 && !GrandExchangeOffer.ItemDefinition_modelArchive.tryLoadFile(var4, 0)) {
 				var5 = false;
 			}
 
@@ -753,12 +729,12 @@ public class ItemDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("v")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(ZI)Ldg;",
-		garbageValue = "-695579037"
+		signature = "(ZI)Lea;",
+		garbageValue = "475767309"
 	)
-	public final ModelData method4732(boolean var1) {
+	public final ModelData method4722(boolean var1) {
 		int var2 = this.maleModel;
 		int var3 = this.maleModel1;
 		int var4 = this.maleModel2;
@@ -771,11 +747,11 @@ public class ItemDefinition extends DualNode {
 		if (var2 == -1) {
 			return null;
 		} else {
-			ModelData var5 = ModelData.ModelData_get(ItemDefinition_modelArchive, var2, 0);
+			ModelData var5 = ModelData.ModelData_get(GrandExchangeOffer.ItemDefinition_modelArchive, var2, 0);
 			if (var3 != -1) {
-				ModelData var6 = ModelData.ModelData_get(ItemDefinition_modelArchive, var3, 0);
+				ModelData var6 = ModelData.ModelData_get(GrandExchangeOffer.ItemDefinition_modelArchive, var3, 0);
 				if (var4 != -1) {
-					ModelData var7 = ModelData.ModelData_get(ItemDefinition_modelArchive, var4, 0);
+					ModelData var7 = ModelData.ModelData_get(GrandExchangeOffer.ItemDefinition_modelArchive, var4, 0);
 					ModelData[] var8 = new ModelData[]{var5, var6, var7};
 					var5 = new ModelData(var8, 3);
 				} else {
@@ -809,12 +785,12 @@ public class ItemDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
 		signature = "(ZI)Z",
-		garbageValue = "509539526"
+		garbageValue = "-846973377"
 	)
-	public final boolean method4731(boolean var1) {
+	public final boolean method4772(boolean var1) {
 		int var2 = this.maleHeadModel;
 		int var3 = this.maleHeadModel2;
 		if (var1) {
@@ -826,11 +802,11 @@ public class ItemDefinition extends DualNode {
 			return true;
 		} else {
 			boolean var4 = true;
-			if (!ItemDefinition_modelArchive.tryLoadFile(var2, 0)) {
+			if (!GrandExchangeOffer.ItemDefinition_modelArchive.tryLoadFile(var2, 0)) {
 				var4 = false;
 			}
 
-			if (var3 != -1 && !ItemDefinition_modelArchive.tryLoadFile(var3, 0)) {
+			if (var3 != -1 && !GrandExchangeOffer.ItemDefinition_modelArchive.tryLoadFile(var3, 0)) {
 				var4 = false;
 			}
 
@@ -838,12 +814,12 @@ public class ItemDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("x")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		signature = "(ZI)Ldg;",
-		garbageValue = "709869485"
+		signature = "(ZI)Lea;",
+		garbageValue = "2065185270"
 	)
-	public final ModelData method4741(boolean var1) {
+	public final ModelData method4724(boolean var1) {
 		int var2 = this.maleHeadModel;
 		int var3 = this.maleHeadModel2;
 		if (var1) {
@@ -854,9 +830,9 @@ public class ItemDefinition extends DualNode {
 		if (var2 == -1) {
 			return null;
 		} else {
-			ModelData var4 = ModelData.ModelData_get(ItemDefinition_modelArchive, var2, 0);
+			ModelData var4 = ModelData.ModelData_get(GrandExchangeOffer.ItemDefinition_modelArchive, var2, 0);
 			if (var3 != -1) {
-				ModelData var5 = ModelData.ModelData_get(ItemDefinition_modelArchive, var3, 0);
+				ModelData var5 = ModelData.ModelData_get(GrandExchangeOffer.ItemDefinition_modelArchive, var3, 0);
 				ModelData[] var6 = new ModelData[]{var4, var5};
 				var4 = new ModelData(var6, 2);
 			}
@@ -878,10 +854,10 @@ public class ItemDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		signature = "(III)I",
-		garbageValue = "16856082"
+		garbageValue = "1313437382"
 	)
 	@Export("getIntParam")
 	public int getIntParam(int var1, int var2) {
@@ -901,46 +877,31 @@ public class ItemDefinition extends DualNode {
 		return var3;
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;B)Ljava/lang/String;",
-		garbageValue = "-22"
+		signature = "(ILjava/lang/String;I)Ljava/lang/String;",
+		garbageValue = "1527088310"
 	)
 	@Export("getStringParam")
 	public String getStringParam(int var1, String var2) {
-		return FloorDecoration.method2914(this.params, var1, var2);
+		return class9.method122(this.params, var1, var2);
 	}
 
-	@ObfuscatedName("z")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		signature = "(I)I",
-		garbageValue = "840008410"
+		garbageValue = "782275365"
 	)
 	@Export("getShiftClickIndex")
 	public int getShiftClickIndex() {
 		if (this.shiftClickIndex != -1 && this.inventoryActions != null) {
 			if (this.shiftClickIndex >= 0) {
-				return this.inventoryActions[this.shiftClickIndex] != null ? this.shiftClickIndex : -1;
+				return this.inventoryActions[this.shiftClickIndex] != null ? this.shiftClickIndex * 2022658475 * -2124340989 : -1;
 			} else {
 				return "Drop".equalsIgnoreCase(this.inventoryActions[4]) ? 4 : -1;
 			}
 		} else {
 			return -1;
-		}
-	}
-
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		signature = "(IB)I",
-		garbageValue = "-108"
-	)
-	@Export("Messages_getLastChatID")
-	static int Messages_getLastChatID(int var0) {
-		Message var1 = (Message)Messages.Messages_hashTable.get((long)var0);
-		if (var1 == null) {
-			return -1;
-		} else {
-			return var1.nextDual == Messages.Messages_queue.sentinel ? -1 : ((Message)var1.nextDual).count;
 		}
 	}
 }

@@ -7,28 +7,37 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ff")
+@ObfuscatedName("fs")
 @Implements("TaskHandler")
 public class TaskHandler implements Runnable {
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@Export("javaVendor")
 	public static String javaVendor;
-	@ObfuscatedName("o")
+	@ObfuscatedName("m")
+	@Export("javaVersion")
+	public static String javaVersion;
+	@ObfuscatedName("fq")
 	@ObfuscatedSignature(
-		signature = "Lfw;"
+		signature = "Lkx;"
+	)
+	@Export("fontBold12")
+	static Font fontBold12;
+	@ObfuscatedName("k")
+	@ObfuscatedSignature(
+		signature = "Lfr;"
 	)
 	@Export("current")
 	Task current;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "Lfw;"
+		signature = "Lfr;"
 	)
 	@Export("task")
 	Task task;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@Export("thread")
 	Thread thread;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@Export("isClosed")
 	boolean isClosed;
 
@@ -37,11 +46,11 @@ public class TaskHandler implements Runnable {
 		this.task = null;
 		this.isClosed = false;
 		javaVendor = "Unknown";
-		class216.javaVersion = "1.6";
+		javaVersion = "1.6";
 
 		try {
 			javaVendor = System.getProperty("java.vendor");
-			class216.javaVersion = System.getProperty("java.version");
+			javaVersion = System.getProperty("java.version");
 		} catch (Exception var2) {
 		}
 
@@ -52,10 +61,10 @@ public class TaskHandler implements Runnable {
 		this.thread.start();
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(B)V",
-		garbageValue = "-77"
+		garbageValue = "-64"
 	)
 	@Export("close")
 	public final void close() {
@@ -71,10 +80,10 @@ public class TaskHandler implements Runnable {
 
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(IIILjava/lang/Object;S)Lfw;",
-		garbageValue = "-10894"
+		signature = "(IIILjava/lang/Object;I)Lfr;",
+		garbageValue = "-957641141"
 	)
 	@Export("newTask")
 	final Task newTask(int var1, int var2, int var3, Object var4) {
@@ -95,20 +104,20 @@ public class TaskHandler implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;II)Lfw;",
-		garbageValue = "-260343907"
+		signature = "(Ljava/lang/String;IB)Lfr;",
+		garbageValue = "-83"
 	)
 	@Export("newSocketTask")
 	public final Task newSocketTask(String var1, int var2) {
 		return this.newTask(1, var2, 0, var1);
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/Runnable;II)Lfw;",
-		garbageValue = "70274663"
+		signature = "(Ljava/lang/Runnable;IB)Lfr;",
+		garbageValue = "-108"
 	)
 	@Export("newThreadTask")
 	public final Task newThreadTask(Runnable var1, int var2) {
@@ -163,37 +172,74 @@ public class TaskHandler implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lmv;I)I",
-		garbageValue = "1649958240"
+		signature = "(CB)B",
+		garbageValue = "108"
 	)
-	public static final int method3540(LoginType var0) {
-		if (var0 == null) {
-			return 12;
+	@Export("charToByteCp1252")
+	public static byte charToByteCp1252(char var0) {
+		byte var1;
+		if (var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
+			var1 = (byte)var0;
+		} else if (var0 == 8364) {
+			var1 = -128;
+		} else if (var0 == 8218) {
+			var1 = -126;
+		} else if (var0 == 402) {
+			var1 = -125;
+		} else if (var0 == 8222) {
+			var1 = -124;
+		} else if (var0 == 8230) {
+			var1 = -123;
+		} else if (var0 == 8224) {
+			var1 = -122;
+		} else if (var0 == 8225) {
+			var1 = -121;
+		} else if (var0 == 710) {
+			var1 = -120;
+		} else if (var0 == 8240) {
+			var1 = -119;
+		} else if (var0 == 352) {
+			var1 = -118;
+		} else if (var0 == 8249) {
+			var1 = -117;
+		} else if (var0 == 338) {
+			var1 = -116;
+		} else if (var0 == 381) {
+			var1 = -114;
+		} else if (var0 == 8216) {
+			var1 = -111;
+		} else if (var0 == 8217) {
+			var1 = -110;
+		} else if (var0 == 8220) {
+			var1 = -109;
+		} else if (var0 == 8221) {
+			var1 = -108;
+		} else if (var0 == 8226) {
+			var1 = -107;
+		} else if (var0 == 8211) {
+			var1 = -106;
+		} else if (var0 == 8212) {
+			var1 = -105;
+		} else if (var0 == 732) {
+			var1 = -104;
+		} else if (var0 == 8482) {
+			var1 = -103;
+		} else if (var0 == 353) {
+			var1 = -102;
+		} else if (var0 == 8250) {
+			var1 = -101;
+		} else if (var0 == 339) {
+			var1 = -100;
+		} else if (var0 == 382) {
+			var1 = -98;
+		} else if (var0 == 376) {
+			var1 = -97;
 		} else {
-			switch(var0.field4037) {
-			case 6:
-				return 20;
-			default:
-				return 12;
-			}
+			var1 = 63;
 		}
-	}
 
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(ILii;IIIZI)V",
-		garbageValue = "869410445"
-	)
-	@Export("playMusicTrack")
-	public static void playMusicTrack(int var0, AbstractArchive var1, int var2, int var3, int var4, boolean var5) {
-		class197.field2414 = 1;
-		UserComparator5.musicTrackArchive = var1;
-		class197.musicTrackGroupId = var2;
-		class83.musicTrackFileId = var3;
-		AttackOption.musicTrackVolume = var4;
-		KeyHandler.musicTrackBoolean = var5;
-		class197.field2412 = var0;
+		return var1;
 	}
 }

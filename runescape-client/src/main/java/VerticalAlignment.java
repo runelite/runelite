@@ -4,38 +4,35 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ic")
+@ObfuscatedName("ie")
 @Implements("VerticalAlignment")
 public enum VerticalAlignment implements Enumerated {
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lic;"
+		signature = "Lie;"
 	)
-	field3196(2, 0),
-	@ObfuscatedName("t")
+	field3193(0, 0),
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "Lic;"
+		signature = "Lie;"
 	)
 	@Export("VerticalAlignment_centered")
-	VerticalAlignment_centered(0, 1),
-	@ObfuscatedName("o")
+	VerticalAlignment_centered(1, 1),
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Lic;"
+		signature = "Lie;"
 	)
-	field3198(1, 2);
+	field3196(2, 2);
 
-	@ObfuscatedName("l")
-	@Export("ByteArrayPool_altSizeArrayCounts")
-	static int[] ByteArrayPool_altSizeArrayCounts;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1614385539
+		intValue = 1209420553
 	)
 	@Export("value")
 	public final int value;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 272968923
+		intValue = -1378606847
 	)
 	@Export("id")
 	final int id;
@@ -45,68 +42,27 @@ public enum VerticalAlignment implements Enumerated {
 		this.id = var4;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
 		signature = "(B)I",
-		garbageValue = "1"
+		garbageValue = "56"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
 		return this.id;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("fq")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)J",
-		garbageValue = "1244217494"
+		signature = "(III)V",
+		garbageValue = "-738770564"
 	)
-	public static long method4424(CharSequence var0) {
-		long var1 = 0L;
-		int var3 = var0.length();
-
-		for (int var4 = 0; var4 < var3; ++var4) {
-			var1 *= 37L;
-			char var5 = var0.charAt(var4);
-			if (var5 >= 'A' && var5 <= 'Z') {
-				var1 += (long)(var5 + 1 - 65);
-			} else if (var5 >= 'a' && var5 <= 'z') {
-				var1 += (long)(var5 + 1 - 97);
-			} else if (var5 >= '0' && var5 <= '9') {
-				var1 += (long)(var5 + 27 - 48);
-			}
-
-			if (var1 >= 177917621779460413L) {
-				break;
-			}
+	@Export("playSoundJingle")
+	static void playSoundJingle(int var0, int var1) {
+		if (Client.musicVolume != 0 && var0 != -1) {
+			class74.method1321(WorldMapRegion.archive11, var0, 0, Client.musicVolume, false);
+			Client.field915 = true;
 		}
 
-		while (var1 % 37L == 0L && 0L != var1) {
-			var1 /= 37L;
-		}
-
-		return var1;
-	}
-
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;I)I",
-		garbageValue = "1671974094"
-	)
-	@Export("parseInt")
-	public static int parseInt(CharSequence var0) {
-		return KitDefinition.parseIntCustomRadix(var0, 10, true);
-	}
-
-	@ObfuscatedName("im")
-	@ObfuscatedSignature(
-		signature = "(IB)Ljava/lang/String;",
-		garbageValue = "116"
-	)
-	static String method4426(int var0) {
-		if (var0 < 0) {
-			return "";
-		} else {
-			return Client.menuTargets[var0].length() > 0 ? Client.menuActions[var0] + " " + Client.menuTargets[var0] : Client.menuActions[var0];
-		}
 	}
 }

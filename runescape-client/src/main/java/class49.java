@@ -1,195 +1,652 @@
-import javax.imageio.ImageIO;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ab")
+@ObfuscatedName("ah")
 public class class49 {
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "Lii;"
+	@ObfuscatedName("lo")
+	@ObfuscatedGetter(
+		intValue = 863785417
 	)
-	@Export("HitSplatDefinition_archive")
-	public static AbstractArchive HitSplatDefinition_archive;
+	@Export("menuWidth")
+	static int menuWidth;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = -182915585
+	)
+	@Export("pixelsPerTile")
+	int pixelsPerTile;
+	@ObfuscatedName("m")
+	@Export("tileTemplates")
+	byte[][][] tileTemplates;
 
-	static {
-		ImageIO.setUseCache(false);
+	class49(int var1) {
+		this.pixelsPerTile = var1;
 	}
 
-	@ObfuscatedName("fd")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(III)V",
-		garbageValue = "-624446357"
+		signature = "(IIIIIIIIB)V",
+		garbageValue = "-32"
 	)
-	@Export("playSoundJingle")
-	static void playSoundJingle(int var0, int var1) {
-		if (Client.musicVolume != 0 && var0 != -1) {
-			Archive var2 = GrandExchangeOffer.archive11;
-			int var3 = Client.musicVolume;
-			class197.field2414 = 1;
-			UserComparator5.musicTrackArchive = var2;
-			class197.musicTrackGroupId = var0;
-			class83.musicTrackFileId = 0;
-			AttackOption.musicTrackVolume = var3;
-			KeyHandler.musicTrackBoolean = false;
-			class197.field2412 = 10000;
-			Client.field881 = true;
+	void method818(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+		if (var7 != 0 && this.pixelsPerTile != 0 && this.tileTemplates != null) {
+			var8 = this.method819(var8, var7);
+			var7 = this.method837(var7);
+			Rasterizer2D.Rasterizer2D_drawGradientPixels(var1, var2, var5, var6, var3, var4, this.tileTemplates[var7 - 1][var8], this.pixelsPerTile);
+		}
+	}
+
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		signature = "(III)I",
+		garbageValue = "-108715988"
+	)
+	int method819(int var1, int var2) {
+		if (var2 == 9) {
+			var1 = var1 + 1 & 3;
 		}
 
+		if (var2 == 10) {
+			var1 = var1 + 3 & 3;
+		}
+
+		if (var2 == 11) {
+			var1 = var1 + 3 & 3;
+		}
+
+		return var1;
 	}
 
-	@ObfuscatedName("hk")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Lks;I)V",
-		garbageValue = "-815942128"
+		signature = "(IB)I",
+		garbageValue = "-51"
 	)
-	static final void method866(PacketBuffer var0) {
-		for (int var1 = 0; var1 < Client.field690; ++var1) {
-			int var2 = Client.field867[var1];
-			NPC var3 = Client.npcs[var2];
-			int var4 = var0.readUnsignedByte();
-			if ((var4 & 4) != 0) {
-				var3.targetIndex = var0.readUnsignedShort();
-				if (var3.targetIndex == 65535) {
-					var3.targetIndex = -1;
+	int method837(int var1) {
+		if (var1 != 9 && var1 != 10) {
+			return var1 == 11 ? 8 : var1;
+		} else {
+			return 1;
+		}
+	}
+
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "-118"
+	)
+	@Export("init")
+	void init() {
+		if (this.tileTemplates == null) {
+			this.tileTemplates = new byte[8][4][];
+			this.init0();
+			this.init1();
+			this.init2();
+			this.init3();
+			this.init4();
+			this.init5();
+			this.init6();
+			this.init7();
+		}
+	}
+
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "1433352887"
+	)
+	@Export("init0")
+	void init0() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var2 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3) {
+					var1[var2] = -1;
 				}
-			}
 
-			int var5;
-			if ((var4 & 2) != 0) {
-				var3.spotAnimation = var0.method5762();
-				var5 = var0.method5626();
-				var3.field980 = var5 >> 16;
-				var3.field979 = (var5 & 65535) + Client.cycle;
-				var3.spotAnimationFrame = 0;
-				var3.spotAnimationFrameCycle = 0;
-				if (var3.field979 > Client.cycle) {
-					var3.spotAnimationFrame = -1;
+				++var2;
+			}
+		}
+
+		this.tileTemplates[0][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3) {
+					var1[var2] = -1;
 				}
 
-				if (var3.spotAnimation == 65535) {
-					var3.spotAnimation = -1;
+				++var2;
+			}
+		}
+
+		this.tileTemplates[0][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3) {
+					var1[var2] = -1;
 				}
+
+				++var2;
 			}
+		}
 
-			if ((var4 & 32) != 0) {
-				var3.overheadText = var0.readStringCp1252NullTerminated();
-				var3.overheadTextCyclesRemaining = 100;
+		this.tileTemplates[0][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3) {
+					var1[var2] = -1;
+				}
+
+				++var2;
 			}
+		}
 
-			int var6;
-			int var7;
-			int var8;
-			if ((var4 & 1) != 0) {
-				var5 = var0.method5606();
-				int var9;
-				int var10;
-				int var11;
-				if (var5 > 0) {
-					for (var6 = 0; var6 < var5; ++var6) {
-						var8 = -1;
-						var9 = -1;
-						var10 = -1;
-						var7 = var0.readUShortSmart();
-						if (var7 == 32767) {
-							var7 = var0.readUShortSmart();
-							var9 = var0.readUShortSmart();
-							var8 = var0.readUShortSmart();
-							var10 = var0.readUShortSmart();
-						} else if (var7 != 32766) {
-							var9 = var0.readUShortSmart();
-						} else {
-							var7 = -1;
-						}
+		this.tileTemplates[0][3] = var1;
+	}
 
-						var11 = var0.readUShortSmart();
-						var3.addHitSplat(var7, var9, var8, var10, Client.cycle, var11);
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1487501517"
+	)
+	@Export("init1")
+	void init1() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var2 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[1][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var2 >= 0 && var2 < var1.length) {
+					if (var4 >= var3 << 1) {
+						var1[var2] = -1;
 					}
-				}
 
-				var6 = var0.readUnsignedByte();
-				if (var6 > 0) {
-					for (var7 = 0; var7 < var6; ++var7) {
-						var8 = var0.readUShortSmart();
-						var9 = var0.readUShortSmart();
-						if (var9 != 32767) {
-							var10 = var0.readUShortSmart();
-							var11 = var0.readUnsignedByte();
-							int var12 = var9 > 0 ? var0.method5606() : var11;
-							var3.addHealthBar(var8, Client.cycle, var9, var10, var11, var12);
-						} else {
-							var3.removeHealthBar(var8);
-						}
-					}
+					++var2;
+				} else {
+					++var2;
 				}
 			}
+		}
 
-			if ((var4 & 64) != 0) {
-				var3.field981 = var0.method5618();
-				var3.field957 = var0.method5618();
-				var3.field961 = var0.method5618();
-				var3.field991 = var0.readByte();
-				var3.field985 = var0.method5614() + Client.cycle;
-				var3.field986 = var0.method5614() + Client.cycle;
-				var3.field987 = var0.method5762();
-				var3.pathLength = 1;
-				var3.field998 = 0;
-				var3.field981 += var3.pathX[0];
-				var3.field957 += var3.pathY[0];
-				var3.field961 += var3.pathX[0];
-				var3.field991 += var3.pathY[0];
-			}
+		this.tileTemplates[1][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
 
-			if ((var4 & 8) != 0) {
-				var5 = var0.method5614();
-				if (var5 == 65535) {
-					var5 = -1;
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 >> 1) {
+					var1[var2] = -1;
 				}
 
-				var6 = var0.readUnsignedByte();
-				if (var5 == var3.sequence && var5 != -1) {
-					var7 = GraphicsDefaults.SequenceDefinition_get(var5).field3516;
-					if (var7 == 1) {
-						var3.sequenceFrame = 0;
-						var3.sequenceFrameCycle = 0;
-						var3.sequenceDelay = var6;
-						var3.field983 = 0;
-					}
-
-					if (var7 == 2) {
-						var3.field983 = 0;
-					}
-				} else if (var5 == -1 || var3.sequence == -1 || GraphicsDefaults.SequenceDefinition_get(var5).field3508 >= GraphicsDefaults.SequenceDefinition_get(var3.sequence).field3508) {
-					var3.sequence = var5;
-					var3.sequenceFrame = 0;
-					var3.sequenceFrameCycle = 0;
-					var3.sequenceDelay = var6;
-					var3.field983 = 0;
-					var3.field998 = var3.pathLength;
-				}
+				++var2;
 			}
+		}
 
-			if ((var4 & 16) != 0) {
-				var3.definition = NetCache.getNpcDefinition(var0.method5762());
-				var3.field942 = var3.definition.size * 64;
-				var3.field975 = var3.definition.rotation;
-				var3.walkSequence = var3.definition.walkSequence;
-				var3.walkBackSequence = var3.definition.walkBackSequence;
-				var3.walkLeftSequence = var3.definition.walkLeftSequence;
-				var3.walkRightSequence = var3.definition.walkRightSequence;
-				var3.readySequence = var3.definition.readySequence;
-				var3.turnLeftSequence = var3.definition.turnLeftSequence;
-				var3.turnRightSequence = var3.definition.turnRightSequence;
-			}
+		this.tileTemplates[1][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
 
-			if ((var4 & 128) != 0) {
-				var5 = var0.method5762();
-				var6 = var0.method5614();
-				var7 = var3.x - (var5 - Messages.baseX * 64 - Messages.baseX * 64) * 64;
-				var8 = var3.y - (var6 - Language.baseY * 64 - Language.baseY * 64) * 64;
-				if (var7 != 0 || var8 != 0) {
-					var3.field967 = (int)(Math.atan2((double)var7, (double)var8) * 325.949D) & 2047;
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 << 1) {
+					var1[var2] = -1;
 				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[1][3] = var1;
+	}
+
+	@ObfuscatedName("q")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-611900971"
+	)
+	@Export("init2")
+	void init2() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var2 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[2][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[2][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[2][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[2][3] = var1;
+	}
+
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "-1800334374"
+	)
+	@Export("init3")
+	void init3() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var2 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[3][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[3][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[3][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[3][3] = var1;
+	}
+
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "107"
+	)
+	@Export("init4")
+	void init4() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var2 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[4][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[4][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3 >> 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[4][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var2 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 << 1) {
+					var1[var2] = -1;
+				}
+
+				++var2;
+			}
+		}
+
+		this.tileTemplates[4][3] = var1;
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "-68"
+	)
+	@Export("init5")
+	void init5() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		boolean var2 = false;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var5 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[5][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var3 <= this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[5][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[5][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var3 >= this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[5][3] = var1;
+	}
+
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		signature = "(B)V",
+		garbageValue = "44"
+	)
+	@Export("init6")
+	void init6() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		boolean var2 = false;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var5 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[6][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 <= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[6][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[6][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 <= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[6][3] = var1;
+	}
+
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "1415108138"
+	)
+	@Export("init7")
+	void init7() {
+		byte[] var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		boolean var2 = false;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		int var5 = 0;
+
+		int var3;
+		int var4;
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[7][0] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = 0; var4 < this.pixelsPerTile; ++var4) {
+				if (var4 >= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[7][1] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = this.pixelsPerTile - 1; var3 >= 0; --var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[7][2] = var1;
+		var1 = new byte[this.pixelsPerTile * this.pixelsPerTile];
+		var5 = 0;
+
+		for (var3 = 0; var3 < this.pixelsPerTile; ++var3) {
+			for (var4 = this.pixelsPerTile - 1; var4 >= 0; --var4) {
+				if (var4 >= var3 - this.pixelsPerTile / 2) {
+					var1[var5] = -1;
+				}
+
+				++var5;
+			}
+		}
+
+		this.tileTemplates[7][3] = var1;
+	}
+
+	@ObfuscatedName("ha")
+	@ObfuscatedSignature(
+		signature = "(IIIII)V",
+		garbageValue = "-2108955904"
+	)
+	static final void method848(int var0, int var1, int var2, int var3) {
+		for (int var4 = 0; var4 < Client.rootWidgetCount; ++var4) {
+			if (Client.rootWidgetWidths[var4] + Client.rootWidgetXs[var4] > var0 && Client.rootWidgetXs[var4] < var0 + var2 && Client.rootWidgetYs[var4] + Client.rootWidgetHeights[var4] > var1 && Client.rootWidgetYs[var4] < var3 + var1) {
+				Client.field886[var4] = true;
 			}
 		}
 

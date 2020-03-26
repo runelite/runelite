@@ -1,26 +1,21 @@
+import java.io.IOException;
 import java.util.Comparator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("p")
+@ObfuscatedName("l")
 @Implements("GrandExchangeOfferUnitPriceComparator")
 final class GrandExchangeOfferUnitPriceComparator implements Comparator {
-	@ObfuscatedName("ar")
-	@Export("null_string")
-	protected static String null_string;
-	@ObfuscatedName("la")
-	@ObfuscatedSignature(
-		signature = "Lhn;"
-	)
-	@Export("mousedOverWidgetIf1")
-	static Widget mousedOverWidgetIf1;
+	@ObfuscatedName("s")
+	@Export("musicTrackBoolean")
+	public static boolean musicTrackBoolean;
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Ll;Ll;B)I",
-		garbageValue = "0"
+		signature = "(Li;Li;B)I",
+		garbageValue = "-48"
 	)
 	@Export("compare_bridged")
 	int compare_bridged(GrandExchangeEvent var1, GrandExchangeEvent var2) {
@@ -35,139 +30,145 @@ final class GrandExchangeOfferUnitPriceComparator implements Comparator {
 		return super.equals(var1);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(II)I",
-		garbageValue = "-2056490791"
+		signature = "(II)Ljv;",
+		garbageValue = "-600154853"
 	)
-	@Export("getVarbit")
-	public static int getVarbit(int var0) {
-		VarbitDefinition var2 = (VarbitDefinition)VarbitDefinition.VarbitDefinition_cached.get((long)var0);
-		VarbitDefinition var1;
-		if (var2 != null) {
-			var1 = var2;
+	public static HitSplatDefinition method213(int var0) {
+		HitSplatDefinition var1 = (HitSplatDefinition)HitSplatDefinition.HitSplatDefinition_cached.get((long)var0);
+		if (var1 != null) {
+			return var1;
 		} else {
-			byte[] var7 = class287.VarbitDefinition_archive.takeFile(14, var0);
-			var2 = new VarbitDefinition();
-			if (var7 != null) {
-				var2.decode(new Buffer(var7));
+			byte[] var2 = HitSplatDefinition.HitSplatDefinition_archive.takeFile(32, var0);
+			var1 = new HitSplatDefinition();
+			if (var2 != null) {
+				var1.decode(new Buffer(var2));
 			}
 
-			VarbitDefinition.VarbitDefinition_cached.put(var2, (long)var0);
-			var1 = var2;
+			HitSplatDefinition.HitSplatDefinition_cached.put(var1, (long)var0);
+			return var1;
 		}
-
-		int var3 = var1.baseVar;
-		int var4 = var1.startBit;
-		int var5 = var1.endBit;
-		int var6 = Varps.Varps_masks[var5 - var4];
-		return Varps.Varps_main[var3] >> var4 & var6;
 	}
 
-	@ObfuscatedName("ez")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)Lly;",
-		garbageValue = "-710096744"
+		signature = "(Llt;ZB)V",
+		garbageValue = "1"
 	)
-	@Export("getWorldMap")
-	static WorldMap getWorldMap() {
-		return WorldMapIcon_0.worldMap;
-	}
+	public static void method222(AbstractSocket var0, boolean var1) {
+		if (NetCache.NetCache_socket != null) {
+			try {
+				NetCache.NetCache_socket.close();
+			} catch (Exception var8) {
+			}
 
-	@ObfuscatedName("gt")
-	@ObfuscatedSignature(
-		signature = "(IIIIZI)V",
-		garbageValue = "2147483647"
-	)
-	@Export("setViewportShape")
-	static final void setViewportShape(int var0, int var1, int var2, int var3, boolean var4) {
-		if (var2 < 1) {
-			var2 = 1;
+			NetCache.NetCache_socket = null;
 		}
 
-		if (var3 < 1) {
-			var3 = 1;
-		}
-
-		int var5 = var3 - 334;
-		int var6;
-		if (var5 < 0) {
-			var6 = Client.field908;
-		} else if (var5 >= 100) {
-			var6 = Client.field897;
-		} else {
-			var6 = (Client.field897 - Client.field908) * var5 / 100 + Client.field908;
-		}
-
-		int var7 = var3 * var6 * 512 / (var2 * 334);
-		int var8;
-		int var9;
-		short var10;
-		if (var7 < Client.field819) {
-			var10 = Client.field819;
-			var6 = var10 * var2 * 334 / (var3 * 512);
-			if (var6 > Client.field673) {
-				var6 = Client.field673;
-				var8 = var3 * var6 * 512 / (var10 * 334);
-				var9 = (var2 - var8) / 2;
-				if (var4) {
-					Rasterizer2D.Rasterizer2D_resetClip();
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var9, var3, -16777216);
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0 + var2 - var9, var1, var9, var3, -16777216);
+		NetCache.NetCache_socket = var0;
+		Buffer var2;
+		if (NetCache.NetCache_socket != null) {
+			try {
+				var2 = new Buffer(4);
+				var2.writeByte(var1 ? 2 : 3);
+				var2.writeMedium(0);
+				NetCache.NetCache_socket.write(var2.array, 0, 4);
+			} catch (IOException var7) {
+				try {
+					NetCache.NetCache_socket.close();
+				} catch (Exception var6) {
 				}
 
-				var0 += var9;
-				var2 -= var9 * 2;
+				++NetCache.NetCache_ioExceptions;
+				NetCache.NetCache_socket = null;
 			}
-		} else if (var7 > Client.field903) {
-			var10 = Client.field903;
-			var6 = var10 * var2 * 334 / (var3 * 512);
-			if (var6 < Client.field900) {
-				var6 = Client.field900;
-				var8 = var10 * var2 * 334 / (var6 * 512);
-				var9 = (var3 - var8) / 2;
-				if (var4) {
-					Rasterizer2D.Rasterizer2D_resetClip();
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var9, -16777216);
-					Rasterizer2D.Rasterizer2D_fillRectangle(var0, var3 + var1 - var9, var2, var9, -16777216);
+		}
+
+		NetCache.NetCache_responseHeaderBuffer.offset = 0;
+		NetCache.NetCache_currentResponse = null;
+		NetCache.NetCache_responseArchiveBuffer = null;
+		NetCache.field3178 = 0;
+
+		while (true) {
+			NetFileRequest var9 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.first();
+			if (var9 == null) {
+				while (true) {
+					var9 = (NetFileRequest)NetCache.NetCache_pendingResponses.first();
+					if (var9 == null) {
+						if (NetCache.field3163 != 0) {
+							try {
+								var2 = new Buffer(4);
+								var2.writeByte(4);
+								var2.writeByte(NetCache.field3163);
+								var2.writeShort(0);
+								NetCache.NetCache_socket.write(var2.array, 0, 4);
+							} catch (IOException var5) {
+								try {
+									NetCache.NetCache_socket.close();
+								} catch (Exception var4) {
+								}
+
+								++NetCache.NetCache_ioExceptions;
+								NetCache.NetCache_socket = null;
+							}
+						}
+
+						NetCache.NetCache_loadTime = 0;
+						NetCache.field3165 = class217.currentTimeMillis();
+						return;
+					}
+
+					NetCache.NetCache_pendingWritesQueue.addLast(var9);
+					NetCache.NetCache_pendingWrites.put(var9, var9.key);
+					++NetCache.NetCache_pendingWritesCount;
+					--NetCache.NetCache_pendingResponsesCount;
 				}
-
-				var1 += var9;
-				var3 -= var9 * 2;
 			}
-		}
 
-		Client.viewportZoom = var3 * var6 / 334;
-		if (var2 != Client.viewportWidth || var3 != Client.viewportHeight) {
-			CollisionMap.method3650(var2, var3);
+			NetCache.NetCache_pendingPriorityWrites.put(var9, var9.key);
+			++NetCache.NetCache_pendingPriorityWritesCount;
+			--NetCache.NetCache_pendingPriorityResponsesCount;
 		}
-
-		Client.viewportOffsetX = var0;
-		Client.viewportOffsetY = var1;
-		Client.viewportWidth = var2;
-		Client.viewportHeight = var3;
 	}
 
-	@ObfuscatedName("gf")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1156773916"
+		signature = "(III)Lhe;",
+		garbageValue = "166208311"
 	)
-	static void method141() {
-		if (class192.localPlayer.x >> 7 == Client.destinationX && class192.localPlayer.y >> 7 == Client.destinationY) {
-			Client.destinationX = 0;
+	@Export("getWidgetChild")
+	public static Widget getWidgetChild(int var0, int var1) {
+		Widget var2 = MusicPatchNode.getWidget(var0);
+		if (var1 == -1) {
+			return var2;
+		} else {
+			return var2 != null && var2.children != null && var1 < var2.children.length ? var2.children[var1] : null;
 		}
-
 	}
 
-	@ObfuscatedName("ir")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(IIIZI)V",
-		garbageValue = "-1682009725"
+		signature = "(II)Z",
+		garbageValue = "-1968739504"
 	)
-	static final void method135(int var0, int var1, int var2, boolean var3) {
-		if (ScriptFrame.loadInterface(var0)) {
-			FloorUnderlayDefinition.resizeInterface(WorldMapLabel.Widget_interfaceComponents[var0], -1, var1, var2, var3);
+	public static boolean method218(int var0) {
+		return (var0 >> 20 & 1) != 0;
+	}
+
+	@ObfuscatedName("aj")
+	@ObfuscatedSignature(
+		signature = "([BII)I",
+		garbageValue = "-1953007669"
+	)
+	public static int method225(byte[] var0, int var1) {
+		int var3 = -1;
+
+		for (int var4 = 0; var4 < var1; ++var4) {
+			var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
 		}
+
+		var3 = ~var3;
+		return var3;
 	}
 }

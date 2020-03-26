@@ -4,72 +4,66 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cw")
+@ObfuscatedName("cv")
 @Implements("DynamicObject")
 public class DynamicObject extends Entity {
-	@ObfuscatedName("bw")
-	@ObfuscatedSignature(
-		signature = "[Lli;"
-	)
-	@Export("worldSelectStars")
-	static IndexedSprite[] worldSelectStars;
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 1669181917
+		intValue = -778595855
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -433017079
+		intValue = 1719688801
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = -857154587
+		intValue = 1645761999
 	)
 	@Export("orientation")
 	int orientation;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1092550967
+		intValue = -1021480433
 	)
 	@Export("plane")
 	int plane;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -660680399
+		intValue = 1939594765
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 74739559
+		intValue = 456415143
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("d")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Lip;"
+		signature = "Ljc;"
 	)
 	@Export("sequenceDefinition")
 	SequenceDefinition sequenceDefinition;
-	@ObfuscatedName("l")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -1110728841
+		intValue = -2053050533
 	)
 	@Export("frame")
 	int frame;
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1571006873
+		intValue = 1933430481
 	)
 	@Export("cycleStart")
 	int cycleStart;
 
 	@ObfuscatedSignature(
-		signature = "(IIIIIIIZLeq;)V"
+		signature = "(IIIIIIIZLee;)V"
 	)
 	DynamicObject(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Entity var9) {
 		this.id = var1;
@@ -79,10 +73,10 @@ public class DynamicObject extends Entity {
 		this.x = var5;
 		this.y = var6;
 		if (var7 != -1) {
-			this.sequenceDefinition = GraphicsDefaults.SequenceDefinition_get(var7);
+			this.sequenceDefinition = SpotAnimationDefinition.SequenceDefinition_get(var7);
 			this.frame = 0;
 			this.cycleStart = Client.cycle - 1;
-			if (this.sequenceDefinition.field3516 == 0 && var9 != null && var9 instanceof DynamicObject) {
+			if (this.sequenceDefinition.field3525 == 0 && var9 != null && var9 instanceof DynamicObject) {
 				DynamicObject var10 = (DynamicObject)var9;
 				if (this.sequenceDefinition == var10.sequenceDefinition) {
 					this.frame = var10.frame;
@@ -99,10 +93,10 @@ public class DynamicObject extends Entity {
 
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I)Ldx;",
-		garbageValue = "-2133076860"
+		signature = "(I)Lel;",
+		garbageValue = "480835067"
 	)
 	@Export("getModel")
 	protected final Model getModel() {
@@ -112,11 +106,11 @@ public class DynamicObject extends Entity {
 				var1 = 100;
 			}
 
-			label57: {
+			label55: {
 				do {
 					do {
 						if (var1 <= this.sequenceDefinition.frameLengths[this.frame]) {
-							break label57;
+							break label55;
 						}
 
 						var1 -= this.sequenceDefinition.frameLengths[this.frame];
@@ -132,7 +126,7 @@ public class DynamicObject extends Entity {
 			this.cycleStart = Client.cycle - var1;
 		}
 
-		ObjectDefinition var12 = Occluder.getObjectDefinition(this.id);
+		ObjectDefinition var12 = WorldMapSection2.getObjectDefinition(this.id);
 		if (var12.transforms != null) {
 			var12 = var12.transform();
 		}
@@ -155,74 +149,34 @@ public class DynamicObject extends Entity {
 			int var6 = (var3 >> 1) + this.y;
 			int var7 = (var3 + 1 >> 1) + this.y;
 			int[][] var8 = Tiles.Tiles_heights[this.plane];
-			int var9 = var8[var4][var6] + var8[var5][var6] + var8[var4][var7] + var8[var5][var7] >> 2;
+			int var9 = var8[var4][var7] + var8[var5][var6] + var8[var4][var6] + var8[var5][var7] >> 2;
 			int var10 = (this.x << 7) + (var2 << 6);
 			int var11 = (this.y << 7) + (var3 << 6);
 			return var12.getModelDynamic(this.type, this.orientation, var8, var10, var9, var11, this.sequenceDefinition, this.frame);
 		}
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(IB)I",
-		garbageValue = "2"
+		signature = "(ILlq;Lih;I)V",
+		garbageValue = "-389102765"
 	)
-	public static int method2293(int var0) {
-		--var0;
-		var0 |= var0 >>> 1;
-		var0 |= var0 >>> 2;
-		var0 |= var0 >>> 4;
-		var0 |= var0 >>> 8;
-		var0 |= var0 >>> 16;
-		return var0 + 1;
-	}
-
-	@ObfuscatedName("l")
-	@ObfuscatedSignature(
-		signature = "(Lkp;J)V"
-	)
-	static void method2291(Buffer var0, long var1) {
-		var1 /= 10L;
-		if (var1 < 0L) {
-			var1 = 0L;
-		} else if (var1 > 65535L) {
-			var1 = 65535L;
+	static void method2342(int var0, ArchiveDisk var1, Archive var2) {
+		byte[] var3 = null;
+		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+			for (ArchiveDiskAction var5 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.last(); var5 != null; var5 = (ArchiveDiskAction)ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.previous()) {
+				if (var5.key == (long)var0 && var1 == var5.archiveDisk && var5.type == 0) {
+					var3 = var5.data;
+					break;
+				}
+			}
 		}
 
-		var0.writeShort((int)var1);
-	}
-
-	@ObfuscatedName("m")
-	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1735804307"
-	)
-	public static void method2292() {
-		Huffman.SpriteBuffer_xOffsets = null;
-		NPC.SpriteBuffer_yOffsets = null;
-		class326.SpriteBuffer_spriteWidths = null;
-		class326.SpriteBuffer_spriteHeights = null;
-		class326.SpriteBuffer_spritePalette = null;
-		class326.SpriteBuffer_pixels = null;
-	}
-
-	@ObfuscatedName("h")
-	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "-75"
-	)
-	static final int method2286(int var0, int var1) {
-		if (var0 == -1) {
-			return 12345678;
+		if (var3 != null) {
+			var2.load(var1, var0, var3, true);
 		} else {
-			var1 = (var0 & 127) * var1 / 128;
-			if (var1 < 2) {
-				var1 = 2;
-			} else if (var1 > 126) {
-				var1 = 126;
-			}
-
-			return (var0 & 65408) + var1;
+			byte[] var4 = var1.read(var0);
+			var2.load(var1, var0, var4, true);
 		}
 	}
 }

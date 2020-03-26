@@ -4,186 +4,256 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gu")
+@ObfuscatedName("hz")
 @Implements("MusicPatchNode")
 public class MusicPatchNode extends Node {
-	@ObfuscatedName("c")
-	@ObfuscatedGetter(
-		intValue = 158121519
-	)
-	int field2447;
-	@ObfuscatedName("t")
+	@ObfuscatedName("dl")
 	@ObfuscatedSignature(
-		signature = "Lgr;"
+		signature = "Llt;"
+	)
+	@Export("js5Socket")
+	static AbstractSocket js5Socket;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = -1338967265
+	)
+	int field2452;
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		signature = "Lhy;"
 	)
 	@Export("patch")
 	MusicPatch patch;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Lcv;"
+		signature = "Ldm;"
 	)
 	@Export("rawSound")
 	RawSound rawSound;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
 		signature = "Lgf;"
 	)
-	MusicPatchNode2 field2445;
-	@ObfuscatedName("i")
-	@ObfuscatedGetter(
-		intValue = -1663286447
-	)
-	int field2449;
-	@ObfuscatedName("g")
-	@ObfuscatedGetter(
-		intValue = -816079619
-	)
-	int field2450;
-	@ObfuscatedName("d")
-	@ObfuscatedGetter(
-		intValue = 1312167649
-	)
-	int field2451;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = 109203307
-	)
-	int field2457;
-	@ObfuscatedName("j")
-	@ObfuscatedGetter(
-		intValue = -1309254043
-	)
-	int field2446;
-	@ObfuscatedName("m")
-	@ObfuscatedGetter(
-		intValue = -83070697
-	)
-	int field2454;
-	@ObfuscatedName("p")
-	@ObfuscatedGetter(
-		intValue = -280788283
-	)
-	int field2455;
-	@ObfuscatedName("h")
-	@ObfuscatedGetter(
-		intValue = 1453033600
-	)
-	int field2456;
-	@ObfuscatedName("v")
-	@ObfuscatedGetter(
-		intValue = -1758842307
-	)
-	int field2448;
-	@ObfuscatedName("n")
-	@ObfuscatedGetter(
-		intValue = -1607529919
-	)
-	int field2458;
-	@ObfuscatedName("x")
-	@ObfuscatedGetter(
-		intValue = 1043883777
-	)
-	int field2459;
+	MusicPatchNode2 field2460;
 	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 1085218982
+		intValue = -1651211223
 	)
-	int field2460;
-	@ObfuscatedName("k")
+	int field2467;
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 559765115
+		intValue = -454114325
 	)
-	int field2461;
+	int field2464;
 	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 586713195
+		intValue = 1747303555
 	)
-	int field2453;
+	int field2451;
 	@ObfuscatedName("z")
+	@ObfuscatedGetter(
+		intValue = -289148489
+	)
+	int field2465;
+	@ObfuscatedName("t")
+	@ObfuscatedGetter(
+		intValue = 1697812591
+	)
+	int field2445;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = 1048994435
+	)
+	int field2454;
+	@ObfuscatedName("s")
+	@ObfuscatedGetter(
+		intValue = -599358683
+	)
+	int field2455;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -1836492369
+	)
+	int field2456;
+	@ObfuscatedName("n")
+	@ObfuscatedGetter(
+		intValue = 705413515
+	)
+	int field2457;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = 1352510901
+	)
+	int field2458;
+	@ObfuscatedName("h")
+	@ObfuscatedGetter(
+		intValue = 2063074809
+	)
+	int field2459;
+	@ObfuscatedName("g")
+	@ObfuscatedGetter(
+		intValue = 1989506561
+	)
+	int field2448;
+	@ObfuscatedName("i")
+	@ObfuscatedGetter(
+		intValue = -1064961041
+	)
+	int field2461;
+	@ObfuscatedName("a")
+	@ObfuscatedGetter(
+		intValue = 32368267
+	)
+	int field2449;
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		signature = "Lde;"
+		signature = "Ldy;"
 	)
 	@Export("stream")
 	RawPcmStream stream;
-	@ObfuscatedName("y")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -923217515
+		intValue = -573766161
 	)
-	int field2464;
-	@ObfuscatedName("b")
+	int field2453;
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -1975530933
+		intValue = -1090387417
 	)
-	int field2465;
+	int field2462;
 
 	MusicPatchNode() {
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(I)V",
-		garbageValue = "-1631381229"
+		garbageValue = "-392566943"
 	)
-	void method3896() {
+	void method3917() {
 		this.patch = null;
 		this.rawSound = null;
-		this.field2445 = null;
+		this.field2460 = null;
 		this.stream = null;
-	}
-
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		signature = "(B)[Lhx;",
-		garbageValue = "-72"
-	)
-	public static StudioGame[] method3898() {
-		return new StudioGame[]{StudioGame.game5, StudioGame.stellardawn, StudioGame.game4, StudioGame.runescape, StudioGame.oldscape, StudioGame.game3};
 	}
 
 	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "55138406"
+		signature = "([Ljava/lang/CharSequence;IIS)Ljava/lang/String;",
+		garbageValue = "313"
 	)
-	static final int method3903() {
-		return ViewportMouse.ViewportMouse_x;
-	}
+	public static String method3921(CharSequence[] var0, int var1, int var2) {
+		if (var2 == 0) {
+			return "";
+		} else if (var2 == 1) {
+			CharSequence var3 = var0[var1];
+			return var3 == null ? "null" : var3.toString();
+		} else {
+			int var8 = var2 + var1;
+			int var4 = 0;
 
-	@ObfuscatedName("ii")
-	@ObfuscatedSignature(
-		signature = "(IIIIB)V",
-		garbageValue = "18"
-	)
-	@Export("selectSpell")
-	static void selectSpell(int var0, int var1, int var2, int var3) {
-		Widget var4 = SpriteMask.getWidgetChild(var0, var1);
-		if (var4 != null && var4.onTargetEnter != null) {
-			ScriptEvent var5 = new ScriptEvent();
-			var5.widget = var4;
-			var5.args = var4.onTargetEnter;
-			class4.runScriptEvent(var5);
+			for (int var5 = var1; var5 < var8; ++var5) {
+				CharSequence var6 = var0[var5];
+				if (var6 == null) {
+					var4 += 4;
+				} else {
+					var4 += var6.length();
+				}
+			}
+
+			StringBuilder var9 = new StringBuilder(var4);
+
+			for (int var10 = var1; var10 < var8; ++var10) {
+				CharSequence var7 = var0[var10];
+				if (var7 == null) {
+					var9.append("null");
+				} else {
+					var9.append(var7);
+				}
+			}
+
+			return var9.toString();
 		}
-
-		Client.field802 = var3;
-		Client.isSpellSelected = true;
-		FontName.selectedSpellWidget = var0;
-		Client.selectedSpellChildIndex = var1;
-		NetSocket.selectedSpellFlags = var2;
-		NPCDefinition.invalidateWidget(var4);
 	}
 
-	@ObfuscatedName("ji")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(II)Z",
-		garbageValue = "-1594747914"
+		signature = "(I)[Llu;",
+		garbageValue = "-133902824"
 	)
-	static boolean method3902(int var0) {
-		for (int var1 = 0; var1 < Client.field762; ++var1) {
-			if (Client.field869[var1] == var0) {
-				return true;
+	@Export("FillMode_values")
+	public static class332[] FillMode_values() {
+		return new class332[]{class332.SOLID, class332.field3875, class332.field3874};
+	}
+
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		signature = "(IB)Lhe;",
+		garbageValue = "-47"
+	)
+	@Export("getWidget")
+	public static Widget getWidget(int var0) {
+		int var1 = var0 >> 16;
+		int var2 = var0 & 65535;
+		if (Widget.Widget_interfaceComponents[var1] == null || Widget.Widget_interfaceComponents[var1][var2] == null) {
+			boolean var3 = LoginScreenAnimation.loadInterface(var1);
+			if (!var3) {
+				return null;
 			}
 		}
 
-		return false;
+		return Widget.Widget_interfaceComponents[var1][var2];
+	}
+
+	@ObfuscatedName("hx")
+	@ObfuscatedSignature(
+		signature = "(III)V",
+		garbageValue = "1143611655"
+	)
+	static void method3922(int var0, int var1) {
+		int var2 = TaskHandler.fontBold12.stringWidth("Choose Option");
+
+		int var3;
+		for (var3 = 0; var3 < Client.menuOptionsCount; ++var3) {
+			Font var4 = TaskHandler.fontBold12;
+			String var5;
+			if (var3 < 0) {
+				var5 = "";
+			} else if (Client.menuTargets[var3].length() > 0) {
+				var5 = Client.menuActions[var3] + " " + Client.menuTargets[var3];
+			} else {
+				var5 = Client.menuActions[var3];
+			}
+
+			int var6 = var4.stringWidth(var5);
+			if (var6 > var2) {
+				var2 = var6;
+			}
+		}
+
+		var2 += 8;
+		var3 = Client.menuOptionsCount * 15 + 22;
+		int var7 = var0 - var2 / 2;
+		if (var2 + var7 > WorldMapLabel.canvasWidth) {
+			var7 = WorldMapLabel.canvasWidth - var2;
+		}
+
+		if (var7 < 0) {
+			var7 = 0;
+		}
+
+		int var8 = var1;
+		if (var1 + var3 > Varps.canvasHeight) {
+			var8 = Varps.canvasHeight - var3;
+		}
+
+		if (var8 < 0) {
+			var8 = 0;
+		}
+
+		WorldMapDecoration.menuX = var7;
+		PacketBufferNode.menuY = var8;
+		class49.menuWidth = var2;
+		WorldMapData_1.menuHeight = Client.menuOptionsCount * 15 + 22;
 	}
 }

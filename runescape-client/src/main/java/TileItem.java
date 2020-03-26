@@ -7,21 +7,21 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("cf")
 @Implements("TileItem")
 public final class TileItem extends Entity {
-	@ObfuscatedName("sf")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "Lky;"
+		signature = "Lag;"
 	)
-	@Export("masterDisk")
-	static ArchiveDisk masterDisk;
-	@ObfuscatedName("c")
+	@Export("worldMapEvent")
+	static WorldMapEvent worldMapEvent;
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -1909413627
+		intValue = 809859925
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -1504274747
+		intValue = -1293976509
 	)
 	@Export("quantity")
 	int quantity;
@@ -29,13 +29,13 @@ public final class TileItem extends Entity {
 	TileItem() {
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I)Ldx;",
-		garbageValue = "-2133076860"
+		signature = "(I)Lel;",
+		garbageValue = "480835067"
 	)
 	@Export("getModel")
 	protected final Model getModel() {
-		return HealthBarDefinition.ItemDefinition_get(this.id).getModel(this.quantity);
+		return AbstractWorldMapData.ItemDefinition_get(this.id).getModel(this.quantity);
 	}
 }

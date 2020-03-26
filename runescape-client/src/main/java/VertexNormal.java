@@ -4,52 +4,32 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dp")
+@ObfuscatedName("en")
 @Implements("VertexNormal")
 public class VertexNormal {
-	@ObfuscatedName("c")
+	@ObfuscatedName("z")
+	public static short[][] field1764;
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		longValue = 1130865268298434617L
-	)
-	static long field1752;
-	@ObfuscatedName("n")
-	@ObfuscatedSignature(
-		signature = "Lli;"
-	)
-	static IndexedSprite field1753;
-	@ObfuscatedName("w")
-	@ObfuscatedSignature(
-		signature = "Lkp;"
-	)
-	@Export("NetCache_responseArchiveBuffer")
-	public static Buffer NetCache_responseArchiveBuffer;
-	@ObfuscatedName("gu")
-	@ObfuscatedSignature(
-		signature = "[Lli;"
-	)
-	@Export("mapSceneSprites")
-	static IndexedSprite[] mapSceneSprites;
-	@ObfuscatedName("t")
-	@ObfuscatedGetter(
-		intValue = 707257177
-	)
-	@Export("x")
-	int x;
-	@ObfuscatedName("o")
-	@ObfuscatedGetter(
-		intValue = 1141720523
+		intValue = 1214687281
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("e")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 1695799799
+		intValue = -412976723
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = 1667952739
 	)
 	@Export("z")
 	int z;
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1198697941
+		intValue = 284274911
 	)
 	@Export("magnitude")
 	int magnitude;
@@ -58,7 +38,7 @@ public class VertexNormal {
 	}
 
 	@ObfuscatedSignature(
-		signature = "(Ldp;)V"
+		signature = "(Len;)V"
 	)
 	VertexNormal(VertexNormal var1) {
 		this.x = var1.x;
@@ -67,38 +47,34 @@ public class VertexNormal {
 		this.magnitude = var1.magnitude;
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		signature = "(II)J",
-		garbageValue = "2082657015"
+		signature = "([BI)Lkx;",
+		garbageValue = "-1694309156"
 	)
-	public static long method3063(int var0) {
-		return ViewportMouse.ViewportMouse_entityTags[var0];
+	public static Font method3094(byte[] var0) {
+		if (var0 == null) {
+			return null;
+		} else {
+			Font var1 = new Font(var0, class335.SpriteBuffer_xOffsets, StructDefinition.SpriteBuffer_yOffsets, class335.SpriteBuffer_spriteWidths, class335.SpriteBuffer_spriteHeights, DefaultsGroup.SpriteBuffer_spritePalette, class4.SpriteBuffer_pixels);
+			Ignored.method5235();
+			return var1;
+		}
 	}
 
-	@ObfuscatedName("gn")
+	@ObfuscatedName("fu")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "1221286239"
+		signature = "(S)V",
+		garbageValue = "-399"
 	)
-	@Export("setWindowedMode")
-	static void setWindowedMode(int var0) {
-		Client.field859 = 0L;
-		if (var0 >= 2) {
-			Client.isResizable = true;
+	static final void method3093() {
+		if (Client.logoutTimer > 0) {
+			Huffman.logOut();
 		} else {
-			Client.isResizable = false;
+			Client.timer.method5050();
+			MouseRecorder.updateGameState(40);
+			UrlRequester.field1960 = Client.packetWriter.getSocket();
+			Client.packetWriter.removeSocket();
 		}
-
-		if (Friend.getWindowedMode() == 1) {
-			Username.client.setMaxCanvasSize(765, 503);
-		} else {
-			Username.client.setMaxCanvasSize(7680, 2160);
-		}
-
-		if (Client.gameState >= 25) {
-			class238.method4415();
-		}
-
 	}
 }

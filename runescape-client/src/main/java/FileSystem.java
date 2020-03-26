@@ -5,39 +5,57 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("fe")
 @Implements("FileSystem")
 public class FileSystem {
-	@ObfuscatedName("pk")
-	@Export("ClanChat_inClanChat")
-	static boolean ClanChat_inClanChat;
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@Export("FileSystem_hasPermissions")
-	static boolean FileSystem_hasPermissions;
-	@ObfuscatedName("t")
+	public static boolean FileSystem_hasPermissions;
+	@ObfuscatedName("m")
 	@Export("FileSystem_cacheDir")
-	static File FileSystem_cacheDir;
-	@ObfuscatedName("o")
+	public static File FileSystem_cacheDir;
+	@ObfuscatedName("k")
 	@Export("FileSystem_cacheFiles")
 	static Hashtable FileSystem_cacheFiles;
-	@ObfuscatedName("h")
-	@ObfuscatedSignature(
-		signature = "Lgk;"
-	)
-	@Export("musicTrack")
-	public static MusicTrack musicTrack;
 
 	static {
 		FileSystem_hasPermissions = false;
 		FileSystem_cacheFiles = new Hashtable(16);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		signature = "(III)Z",
-		garbageValue = "-1674158829"
+		signature = "(IIB)Z",
+		garbageValue = "-28"
 	)
-	static boolean method3572(int var0, int var1) {
-		return var0 != 4 || var1 < 8;
+	static final boolean method3588(int var0, int var1) {
+		ObjectDefinition var2 = WorldMapSection2.getObjectDefinition(var0);
+		if (var1 == 11) {
+			var1 = 10;
+		}
+
+		if (var1 >= 5 && var1 <= 8) {
+			var1 = 4;
+		}
+
+		return var2.method4661(var1);
+	}
+
+	@ObfuscatedName("ao")
+	@ObfuscatedSignature(
+		signature = "(Lds;S)V",
+		garbageValue = "4477"
+	)
+	@Export("PcmStream_disable")
+	static final void PcmStream_disable(PcmStream var0) {
+		var0.active = false;
+		if (var0.sound != null) {
+			var0.sound.position = 0;
+		}
+
+		for (PcmStream var1 = var0.firstSubStream(); var1 != null; var1 = var0.nextSubStream()) {
+			PcmStream_disable(var1);
+		}
+
 	}
 }

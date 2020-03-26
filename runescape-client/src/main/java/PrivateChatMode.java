@@ -1,64 +1,59 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kx")
+@ObfuscatedName("lg")
 @Implements("PrivateChatMode")
 public class PrivateChatMode {
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lkx;"
+		signature = "Llg;"
 	)
-	static final PrivateChatMode field3788;
-	@ObfuscatedName("t")
+	static final PrivateChatMode field3801;
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "Lkx;"
+		signature = "Llg;"
 	)
-	public static final PrivateChatMode field3790;
-	@ObfuscatedName("o")
+	public static final PrivateChatMode field3806;
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Lkx;"
+		signature = "Llg;"
 	)
-	static final PrivateChatMode field3789;
-	@ObfuscatedName("e")
+	static final PrivateChatMode field3803;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		signature = "Liy;"
+	)
+	@Export("ItemDefinition_archive")
+	public static AbstractArchive ItemDefinition_archive;
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1866307707
+		intValue = 1679462339
 	)
-	public final int field3787;
+	public final int field3804;
 
 	static {
-		field3788 = new PrivateChatMode(0);
-		field3790 = new PrivateChatMode(1);
-		field3789 = new PrivateChatMode(2);
+		field3801 = new PrivateChatMode(0);
+		field3806 = new PrivateChatMode(1);
+		field3803 = new PrivateChatMode(2);
 	}
 
 	PrivateChatMode(int var1) {
-		this.field3787 = var1;
+		this.field3804 = var1;
 	}
 
-	@ObfuscatedName("ld")
+	@ObfuscatedName("kx")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-78"
+		signature = "(Lhe;B)Ljava/lang/String;",
+		garbageValue = "70"
 	)
-	static void method5952() {
-		if (Client.field728 && class192.localPlayer != null) {
-			int var0 = class192.localPlayer.pathX[0];
-			int var1 = class192.localPlayer.pathY[0];
-			if (var0 < 0 || var1 < 0 || var0 >= 104 || var1 >= 104) {
-				return;
-			}
-
-			PendingSpawn.oculusOrbFocalPointX = class192.localPlayer.x;
-			int var2 = WorldMapSectionType.getTileHeight(class192.localPlayer.x, class192.localPlayer.y, Clock.Client_plane) - Client.camFollowHeight;
-			if (var2 < WorldMapSectionType.field166) {
-				WorldMapSectionType.field166 = var2;
-			}
-
-			Skeleton.oculusOrbFocalPointY = class192.localPlayer.y;
-			Client.field728 = false;
+	static String method5965(Widget var0) {
+		if (WorldMapRectangle.method388(ScriptEvent.getWidgetClickMask(var0)) == 0) {
+			return null;
+		} else {
+			return var0.spellActionName != null && var0.spellActionName.trim().length() != 0 ? var0.spellActionName : null;
 		}
-
 	}
 }

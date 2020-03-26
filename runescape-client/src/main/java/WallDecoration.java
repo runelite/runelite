@@ -3,74 +3,73 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("en")
+@ObfuscatedName("ez")
 @Implements("WallDecoration")
 public final class WallDecoration {
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 1358140077
-	)
-	@Export("tileHeight")
-	int tileHeight;
-	@ObfuscatedName("t")
-	@ObfuscatedGetter(
-		intValue = 915149021
-	)
-	@Export("x")
-	int x;
-	@ObfuscatedName("o")
-	@ObfuscatedGetter(
-		intValue = 1541741189
+		intValue = -1214014955
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("e")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -696517801
+		intValue = -166681381
+	)
+	@Export("tileHeight")
+	int tileHeight;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = -1454515853
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("d")
+	@ObfuscatedGetter(
+		intValue = -985506123
 	)
 	@Export("orientation")
 	int orientation;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 748186775
+		intValue = 817578233
 	)
 	@Export("orientation2")
 	int orientation2;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 1886905411
+		intValue = 1515780955
 	)
 	@Export("xOffset")
 	int xOffset;
-	@ObfuscatedName("d")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -275876635
+		intValue = -102361683
 	)
 	@Export("yOffset")
 	int yOffset;
-	@ObfuscatedName("l")
+	@ObfuscatedName("z")
 	@ObfuscatedSignature(
-		signature = "Leq;"
+		signature = "Lee;"
 	)
 	@Export("entity1")
 	public Entity entity1;
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "Leq;"
+		signature = "Lee;"
 	)
 	@Export("entity2")
 	public Entity entity2;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		longValue = 1621741553403153851L
+		longValue = -7258048285485333861L
 	)
 	@Export("tag")
 	public long tag;
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -183294239
+		intValue = 1418566089
 	)
 	@Export("flags")
 	int flags;
@@ -80,64 +79,61 @@ public final class WallDecoration {
 		this.flags = 0;
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lkp;I)Ljava/lang/String;",
-		garbageValue = "267409657"
+		signature = "(I[BLlq;S)V",
+		garbageValue = "4729"
 	)
-	public static String method3356(Buffer var0) {
-		return method3358(var0, 32767);
-	}
+	static void method3402(int var0, byte[] var1, ArchiveDisk var2) {
+		ArchiveDiskAction var3 = new ArchiveDiskAction();
+		var3.type = 0;
+		var3.key = (long)var0;
+		var3.data = var1;
+		var3.archiveDisk = var2;
+		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
+			ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.addFirst(var3);
+		}
 
-	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(Lkp;II)Ljava/lang/String;",
-		garbageValue = "149938652"
-	)
-	static String method3358(Buffer var0, int var1) {
-		try {
-			int var2 = var0.readUShortSmart();
-			if (var2 > var1) {
-				var2 = var1;
+		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) {
+			if (ArchiveDiskActionHandler.field3151 == 0) {
+				class197.ArchiveDiskActionHandler_thread = new Thread(new ArchiveDiskActionHandler());
+				class197.ArchiveDiskActionHandler_thread.setDaemon(true);
+				class197.ArchiveDiskActionHandler_thread.start();
+				class197.ArchiveDiskActionHandler_thread.setPriority(5);
 			}
 
-			byte[] var3 = new byte[var2];
-			var0.offset += class210.huffman.decompress(var0.array, var0.offset, var3, 0, var2);
-			String var4 = ScriptFrame.decodeStringCp1252(var3, 0, var2);
-			return var4;
-		} catch (Exception var6) {
-			return "Cabbage";
+			ArchiveDiskActionHandler.field3151 = 600;
 		}
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("iw")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "777331787"
+		signature = "(Ljava/lang/String;Lhe;I)Ljava/lang/String;",
+		garbageValue = "-748115662"
 	)
-	public static void method3359() {
-		WorldMapElement.WorldMapElement_cachedSprites.clear();
-	}
+	static String method3403(String var0, Widget var1) {
+		if (var0.indexOf("%") != -1) {
+			for (int var2 = 1; var2 <= 5; ++var2) {
+				while (true) {
+					int var3 = var0.indexOf("%" + var2);
+					if (var3 == -1) {
+						break;
+					}
 
-	@ObfuscatedName("ae")
-	@ObfuscatedSignature(
-		signature = "(ILce;ZI)I",
-		garbageValue = "2015482933"
-	)
-	static int method3357(int var0, Script var1, boolean var2) {
-		if (var0 == ScriptOpcodes.SOUND_SYNTH) {
-			class320.Interpreter_intStackSize -= 3;
-			AbstractWorldMapIcon.queueSoundEffect(Interpreter.Interpreter_intStack[class320.Interpreter_intStackSize], Interpreter.Interpreter_intStack[class320.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[class320.Interpreter_intStackSize + 2]);
-			return 1;
-		} else if (var0 == ScriptOpcodes.SOUND_SONG) {
-			BufferedSink.playSong(Interpreter.Interpreter_intStack[--class320.Interpreter_intStackSize]);
-			return 1;
-		} else if (var0 == ScriptOpcodes.SOUND_JINGLE) {
-			class320.Interpreter_intStackSize -= 2;
-			class49.playSoundJingle(Interpreter.Interpreter_intStack[class320.Interpreter_intStackSize], Interpreter.Interpreter_intStack[class320.Interpreter_intStackSize + 1]);
-			return 1;
-		} else {
-			return 2;
+					String var4 = var0.substring(0, var3);
+					int var6 = Tiles.method1227(var1, var2 - 1);
+					String var5;
+					if (var6 < 999999999) {
+						var5 = Integer.toString(var6);
+					} else {
+						var5 = "*";
+					}
+
+					var0 = var4 + var5 + var0.substring(var3 + 2);
+				}
+			}
 		}
+
+		return var0;
 	}
 }
