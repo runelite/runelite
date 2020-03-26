@@ -2,6 +2,7 @@
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * Copyright (c) 2017, Robbie <https://github.com/rbbi>
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2020, Dennis <me@dennis.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,13 +28,22 @@
 
 package net.runelite.client.plugins.grandexchange;
 
+import com.google.common.primitives.Shorts;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
@@ -49,10 +59,12 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
+import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
@@ -75,6 +87,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
@@ -83,6 +96,7 @@ import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.api.item.ItemStats;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
+import org.apache.commons.text.similarity.FuzzyScore;
 
 @PluginDescriptor(
 	name = "Grand Exchange",
@@ -104,6 +118,8 @@ public class GrandExchangePlugin extends Plugin
 	};
 
 	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
+
+	private static final int MAX_RESULT_COUNT = 250;
 
 	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
@@ -155,6 +171,65 @@ public class GrandExchangePlugin extends Plugin
 	private OSBGrandExchangeResult osbGrandExchangeResult;
 
 	private GrandExchangeClient grandExchangeClient;
+
+	private boolean wasFuzzySearch;
+
+	/**
+	 * Logic from {@link org.apache.commons.text.similarity.FuzzyScore}
+	 */
+	private static List<Integer> findFuzzyIndices(String term, String query)
+	{
+		List<Integer> indices = new ArrayList<>();
+
+		// fuzzy logic is case insensitive. We normalize the Strings to lower
+		// case right from the start. Turning characters to lower case
+		// via Character.toLowerCase(char) is unfortunately insufficient
+		// as it does not accept a locale.
+		final String termLowerCase = term.toLowerCase();
+		final String queryLowerCase = query.toLowerCase();
+
+		// the position in the term which will be scanned next for potential
+		// query character matches
+		int termIndex = 0;
+
+		for (int queryIndex = 0; queryIndex < queryLowerCase.length(); queryIndex++)
+		{
+			final char queryChar = queryLowerCase.charAt(queryIndex);
+
+			for (; termIndex < termLowerCase.length(); termIndex++)
+			{
+				final char termChar = termLowerCase.charAt(termIndex);
+
+				if (queryChar == termChar)
+				{
+					indices.add(termIndex);
+
+					// we can leave the nested loop. Every character in the
+					// query can match at most one character in the term.
+					break;
+				}
+			}
+		}
+
+		return indices;
+	}
+
+	private static List<Integer> findSubstringIndices(String term, String query)
+	{
+		term = term.toLowerCase();
+
+		List<Integer> indices = new ArrayList<>();
+
+		for (int idx = term.indexOf(query); idx != -1; idx = term.indexOf(query, idx + query.length()))
+		{
+			for (int i = 0; i < query.length(); i++)
+			{
+				indices.add(idx + i);
+			}
+		}
+
+		return indices;
+	}
 
 	private SavedOffer getOffer(int slot)
 	{
@@ -441,11 +516,137 @@ public class GrandExchangePlugin extends Plugin
 	public void onScriptPostFired(ScriptPostFired event)
 	{
 		// GE offers setup init
-		if (event.getScriptId() != ScriptID.GE_OFFERS_SETUP_BUILD)
+		if (event.getScriptId() == ScriptID.GE_OFFERS_SETUP_BUILD)
+		{
+			rebuildGeText();
+		}
+		else if (event.getScriptId() == ScriptID.GE_ITEM_SEARCH && config.highlightSearchMatch())
+		{
+			highlightSearchMatches();
+		}
+	}
+
+	private void highlightSearchMatches()
+	{
+		String input = client.getVar(VarClientStr.INPUT_TEXT);
+
+		String underlineTag = "<u=" + ColorUtil.colorToHexCode(config.highlightMatchColor()) + ">";
+
+		Widget results = client.getWidget(WidgetInfo.CHATBOX_GE_SEARCH_RESULTS);
+		Widget[] children = results.getDynamicChildren();
+		int resultCount = children.length / 3;
+
+		for (int i = 0; i < resultCount; i++)
+		{
+			Widget itemNameWidget = children[i * 3 + 1];
+			String itemName = itemNameWidget.getText();
+
+			List<Integer> indices;
+			if (wasFuzzySearch)
+			{
+				FuzzyScore fuzzy = new FuzzyScore(Locale.ENGLISH);
+				String otherName = itemName.replace('-', ' ');
+				if (!itemName.contains("-") || fuzzy.fuzzyScore(itemName, input) >= fuzzy.fuzzyScore(otherName, input))
+				{
+					indices = findFuzzyIndices(itemName, input);
+				}
+				else
+				{
+					indices = findFuzzyIndices(otherName, input);
+				}
+			}
+			else
+			{
+				indices = findSubstringIndices(itemName, input);
+			}
+			Collections.reverse(indices);
+
+			StringBuilder newItemName = new StringBuilder(itemName);
+			for (int index : indices)
+			{
+				if (wasFuzzySearch && (itemName.charAt(index) == ' ' || itemName.charAt(index) == '-'))
+				{
+					continue;
+				}
+				newItemName.insert(index + 1, "</u>");
+				newItemName.insert(index, underlineTag);
+			}
+
+			itemNameWidget.setText(newItemName.toString());
+		}
+	}
+
+	@Subscribe
+	public void onGrandExchangeSearched(GrandExchangeSearched event)
+	{
+		wasFuzzySearch = false;
+
+		GrandExchangeSearchMode searchMode = config.geSearchMode();
+		final String input = client.getVar(VarClientStr.INPUT_TEXT);
+		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty())
 		{
 			return;
 		}
-		rebuildGeText();
+
+		event.consume();
+
+		client.setGeSearchResultIndex(0);
+
+		int resultCount = 0;
+		if (searchMode == GrandExchangeSearchMode.FUZZY_FALLBACK)
+		{
+			List<Integer> ids = IntStream.range(0, client.getItemCount())
+					.mapToObj(itemManager::getItemComposition)
+					.filter(item -> item.isTradeable() && item.getNote() == -1
+						&& item.getName().toLowerCase().contains(input))
+					.limit(MAX_RESULT_COUNT + 1)
+					.sorted(Comparator.comparing(ItemComposition::getName))
+					.map(ItemComposition::getId)
+					.collect(Collectors.toList());
+			if (ids.size() > MAX_RESULT_COUNT)
+			{
+				client.setGeSearchResultCount(-1);
+				client.setGeSearchResultIds(null);
+			}
+			else
+			{
+				resultCount = ids.size();
+				client.setGeSearchResultCount(resultCount);
+				client.setGeSearchResultIds(Shorts.toArray(ids));
+			}
+		}
+
+		if (resultCount == 0)
+		{
+			FuzzyScore fuzzy = new FuzzyScore(Locale.ENGLISH);
+
+			// We do this so that for example the items "Anti-venom ..." are still at the top
+			// when searching "anti venom"
+			ToIntFunction<ItemComposition> getScore = item ->
+			{
+				int score = fuzzy.fuzzyScore(item.getName(), input);
+				if (item.getName().contains("-"))
+				{
+					return Math.max(fuzzy.fuzzyScore(item.getName().replace('-', ' '), input), score);
+				}
+				return score;
+			};
+
+			List<Integer> ids = IntStream.range(0, client.getItemCount())
+					.mapToObj(itemManager::getItemComposition)
+					.filter(item -> item.isTradeable() && item.getNote() == -1)
+					.filter(item -> getScore.applyAsInt(item) > 0)
+					.sorted(Comparator.comparingInt(getScore).reversed()
+						.thenComparing(ItemComposition::getName))
+					.limit(MAX_RESULT_COUNT)
+					.map(ItemComposition::getId)
+					.collect(Collectors.toList());
+
+			client.setGeSearchResultCount(ids.size());
+			client.setGeSearchResultIds(Shorts.toArray(ids));
+
+			wasFuzzySearch = true;
+		}
 	}
 
 	@Subscribe

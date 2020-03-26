@@ -27,6 +27,7 @@ package net.runelite.client.plugins.grandexchange;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
 
 @ConfigGroup("grandexchange")
 public interface GrandExchangeConfig extends Config
@@ -95,5 +96,38 @@ public interface GrandExchangeConfig extends Config
 	default boolean showExact()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+			position = 7,
+			keyName = "highlightSearchMatch",
+			name = "Highlight Search Match",
+			description = "Highlights the search match with an underline"
+	)
+	default boolean highlightSearchMatch()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 8,
+			keyName = "highlightMatchColor",
+			name = "Highlight Match Color",
+			description = "Color of the search match highlight"
+	)
+	default Color highlightMatchColor()
+	{
+		return new Color(0x800000);
+	}
+
+	@ConfigItem(
+			position = 9,
+			keyName = "geSearchMode",
+			name = "Search Mode",
+			description = "The search mode to use for the GE"
+	)
+	default GrandExchangeSearchMode geSearchMode()
+	{
+		return GrandExchangeSearchMode.DEFAULT;
 	}
 }
