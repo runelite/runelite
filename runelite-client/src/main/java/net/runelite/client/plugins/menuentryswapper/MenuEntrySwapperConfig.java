@@ -93,6 +93,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapNexus",
+			name = "Portal Nexus",
+			description = "Swap Left-click option with Teleport Menu"
+	)
+	default boolean swapNexus()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapContract",
 		name = "Contract",
 		description = "Swap Talk-to with Contract on Guildmaster Jane"

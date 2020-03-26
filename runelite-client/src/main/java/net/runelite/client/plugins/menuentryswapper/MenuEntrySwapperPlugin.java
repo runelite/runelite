@@ -754,6 +754,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, index);
 		}
+
+		else if (config.swapNexus() && target.equals("portal nexus"))
+		{
+			swap("teleport menu", option, target, index);
+		}
+
 		else if (option.equals("collect to inventory") || option.startsWith("collect-note") || option.startsWith("collect-item"))
 		{
 			switch (config.swapGEItemCollect())
