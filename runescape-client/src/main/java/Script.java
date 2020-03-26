@@ -7,48 +7,57 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ce")
 @Implements("Script")
 public class Script extends DualNode {
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Leh;"
+		signature = "Leg;"
 	)
 	@Export("Script_cached")
 	static EvictingDualNodeHashTable Script_cached;
-	@ObfuscatedName("t")
+	@ObfuscatedName("ej")
+	@Export("worldHost")
+	static String worldHost;
+	@ObfuscatedName("fs")
+	@ObfuscatedSignature(
+		signature = "Lkx;"
+	)
+	@Export("fontPlain11")
+	static Font fontPlain11;
+	@ObfuscatedName("m")
 	@Export("opcodes")
 	int[] opcodes;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@Export("intOperands")
 	int[] intOperands;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@Export("stringOperands")
 	String[] stringOperands;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 1871581323
+		intValue = -1902344849
 	)
 	@Export("localIntCount")
 	int localIntCount;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 822375411
+		intValue = -1904164233
 	)
 	@Export("localStringCount")
 	int localStringCount;
-	@ObfuscatedName("d")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -1252836573
+		intValue = -335811903
 	)
 	@Export("intArgumentCount")
 	int intArgumentCount;
-	@ObfuscatedName("l")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -1735199639
+		intValue = 931655197
 	)
 	@Export("stringArgumentCount")
 	int stringArgumentCount;
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "[Llp;"
+		signature = "[Lln;"
 	)
 	@Export("switches")
 	IterableNodeHashTable[] switches;
@@ -60,38 +69,23 @@ public class Script extends DualNode {
 	Script() {
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(IB)[Llp;",
-		garbageValue = "1"
+		signature = "(II)[Lln;",
+		garbageValue = "-1946257941"
 	)
 	@Export("newIterableNodeHashTable")
 	IterableNodeHashTable[] newIterableNodeHashTable(int var1) {
 		return new IterableNodeHashTable[var1];
 	}
 
-	@ObfuscatedName("kh")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(IIIILlt;Lhf;I)V",
-		garbageValue = "631816704"
+		signature = "(Ljava/lang/String;ZZI)V",
+		garbageValue = "1255823265"
 	)
-	@Export("drawSpriteOnMinimap")
-	static final void drawSpriteOnMinimap(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
-		if (var4 != null) {
-			int var6 = Client.camAngleY & 2047;
-			int var7 = var3 * var3 + var2 * var2;
-			if (var7 <= 6400) {
-				int var8 = Rasterizer3D.Rasterizer3D_sine[var6];
-				int var9 = Rasterizer3D.Rasterizer3D_cosine[var6];
-				int var10 = var3 * var8 + var9 * var2 >> 16;
-				int var11 = var3 * var9 - var8 * var2 >> 16;
-				if (var7 > 2500) {
-					var4.method6207(var10 + var5.width / 2 - var4.width / 2, var5.height / 2 - var11 - var4.height / 2, var0, var1, var5.width, var5.height, var5.xStarts, var5.xWidths);
-				} else {
-					var4.drawTransBgAt(var0 + var10 + var5.width / 2 - var4.width / 2, var5.height / 2 + var1 - var11 - var4.height / 2);
-				}
-
-			}
-		}
+	@Export("openURL")
+	public static void openURL(String var0, boolean var1, boolean var2) {
+		class224.method4125(var0, var1, "openjs", var2);
 	}
 }

@@ -1,32 +1,35 @@
+import java.applet.Applet;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import netscape.javascript.JSObject;
 
-@ObfuscatedName("bl")
+@ObfuscatedName("bs")
 @Implements("ItemContainer")
 public class ItemContainer extends Node {
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lln;"
+		signature = "Llv;"
 	)
 	@Export("itemContainers")
 	static NodeHashTable itemContainers;
-	@ObfuscatedName("h")
+	@ObfuscatedName("bq")
 	@ObfuscatedSignature(
-		signature = "Lli;"
+		signature = "Lle;"
 	)
-	static IndexedSprite field547;
-	@ObfuscatedName("be")
+	static IndexedSprite field572;
+	@ObfuscatedName("fr")
 	@ObfuscatedSignature(
-		signature = "[Lli;"
+		signature = "Lkf;"
 	)
-	@Export("worldSelectArrows")
-	static IndexedSprite[] worldSelectArrows;
-	@ObfuscatedName("t")
+	@Export("WorldMapElement_fonts")
+	static Fonts WorldMapElement_fonts;
+	@ObfuscatedName("m")
 	@Export("ids")
 	int[] ids;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@Export("quantities")
 	int[] quantities;
 
@@ -41,64 +44,109 @@ public class ItemContainer extends Node {
 
 	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(IZB)Ljava/lang/String;",
-		garbageValue = "-71"
+		signature = "(Ljava/lang/String;ILjava/lang/String;B)Z",
+		garbageValue = "17"
 	)
-	@Export("intToString")
-	public static String intToString(int var0, boolean var1) {
-		return var1 && var0 >= 0 ? Actor.method1741(var0, 10, var1) : Integer.toString(var0);
-	}
+	static boolean method1274(String var0, int var1, String var2) {
+		if (var1 == 0) {
+			try {
+				if (!class60.field462.startsWith("win")) {
+					throw new Exception();
+				} else if (!var0.startsWith("http://") && !var0.startsWith("https://")) {
+					throw new Exception();
+				} else {
+					String var13 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
 
-	@ObfuscatedName("gu")
-	@ObfuscatedSignature(
-		signature = "(ZI)V",
-		garbageValue = "-1888961685"
-	)
-	@Export("addNpcsToScene")
-	static final void addNpcsToScene(boolean var0) {
-		for (int var1 = 0; var1 < Client.npcCount; ++var1) {
-			NPC var2 = Client.npcs[Client.npcIndices[var1]];
-			if (var2 != null && var2.isVisible() && var2.definition.isVisible == var0 && var2.definition.transformIsVisible()) {
-				int var3 = var2.x >> 7;
-				int var4 = var2.y >> 7;
-				if (var3 >= 0 && var3 < 104 && var4 >= 0 && var4 < 104) {
-					if (var2.field942 * 367011904 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-						if (Client.tileLastDrawnActor[var3][var4] == Client.viewportDrawCount) {
-							continue;
+					for (int var4 = 0; var4 < var0.length(); ++var4) {
+						if (var13.indexOf(var0.charAt(var4)) == -1) {
+							throw new Exception();
 						}
-
-						Client.tileLastDrawnActor[var3][var4] = Client.viewportDrawCount;
 					}
 
-					long var5 = GameShell.calculateTag(0, 0, 1, !var2.definition.isInteractable, Client.npcIndices[var1]);
-					var2.playerCycle = Client.cycle;
-					ServerBuild.scene.drawEntity(Clock.Client_plane, var2.x, var2.y, WorldMapSectionType.getTileHeight(var2.field942 * 2013925376 - 64 + var2.x, var2.field942 * 2013925376 - 64 + var2.y, Clock.Client_plane), var2.field942 * 2013925376 - 64 + 60, var2, var2.rotation, var5, var2.isWalking);
+					Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
+					return true;
 				}
+			} catch (Throwable var8) {
+				return false;
 			}
+		} else if (var1 == 1) {
+			try {
+				Applet var7 = class60.applet;
+				Object[] var5 = new Object[]{(new URL(class60.applet.getCodeBase(), var0)).toString()};
+				Object var3 = JSObject.getWindow(var7).call(var2, var5);
+				return var3 != null;
+			} catch (Throwable var9) {
+				return false;
+			}
+		} else if (var1 == 2) {
+			try {
+				class60.applet.getAppletContext().showDocument(new URL(class60.applet.getCodeBase(), var0), "_blank");
+				return true;
+			} catch (Exception var10) {
+				return false;
+			}
+		} else if (var1 == 3) {
+			try {
+				class56.method950(class60.applet, "loggedout");
+			} catch (Throwable var12) {
+			}
+
+			try {
+				class60.applet.getAppletContext().showDocument(new URL(class60.applet.getCodeBase(), var0), "_top");
+				return true;
+			} catch (Exception var11) {
+				return false;
+			}
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	@ObfuscatedName("je")
+	@ObfuscatedSignature(
+		signature = "(Lhe;Ljx;IIZI)V",
+		garbageValue = "1190936651"
+	)
+	@Export("addWidgetItemMenuItem")
+	static final void addWidgetItemMenuItem(Widget var0, ItemDefinition var1, int var2, int var3, boolean var4) {
+		String[] var5 = var1.inventoryActions;
+		byte var6 = -1;
+		String var7 = null;
+		if (var5 != null && var5[var3] != null) {
+			if (var3 == 0) {
+				var6 = 33;
+			} else if (var3 == 1) {
+				var6 = 34;
+			} else if (var3 == 2) {
+				var6 = 35;
+			} else if (var3 == 3) {
+				var6 = 36;
+			} else {
+				var6 = 37;
+			}
+
+			var7 = var5[var3];
+		} else if (var3 == 4) {
+			var6 = 37;
+			var7 = "Drop";
+		}
+
+		if (var6 != -1 && var7 != null) {
+			ScriptFrame.insertMenuItem(var7, class297.colorStartTag(16748608) + var1.name, var6, var1.id, var2, var0.id, var4);
 		}
 
 	}
 
-	@ObfuscatedName("kp")
+	@ObfuscatedName("jo")
 	@ObfuscatedSignature(
-		signature = "(Lhn;I)Lhn;",
-		garbageValue = "701959243"
+		signature = "(Lhe;I)V",
+		garbageValue = "514293783"
 	)
-	static Widget method1184(Widget var0) {
-		int var2 = WorldMapIcon_0.getWidgetClickMask(var0);
-		int var1 = var2 >> 17 & 7;
-		int var3 = var1;
-		if (var1 == 0) {
-			return null;
-		} else {
-			for (int var4 = 0; var4 < var3; ++var4) {
-				var0 = Varps.getWidget(var0.parentId);
-				if (var0 == null) {
-					return null;
-				}
-			}
-
-			return var0;
+	@Export("invalidateWidget")
+	static void invalidateWidget(Widget var0) {
+		if (var0.cycle == Client.field884) {
+			Client.field679[var0.rootIndex] = true;
 		}
+
 	}
 }

@@ -1,75 +1,77 @@
-import java.security.SecureRandom;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("bb")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-	@ObfuscatedName("ef")
-	@Export("secureRandom")
-	static SecureRandom secureRandom;
-	@ObfuscatedName("c")
+	@ObfuscatedName("km")
+	@ObfuscatedGetter(
+		intValue = -2032356267
+	)
+	@Export("Client_plane")
+	static int Client_plane;
+	@ObfuscatedName("x")
 	@Export("args")
 	Object[] args;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@Export("isMouseInputEvent")
 	boolean isMouseInputEvent;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Lhn;"
+		signature = "Lhe;"
 	)
 	@Export("widget")
 	Widget widget;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = -1331050905
+		intValue = 662449011
 	)
 	@Export("mouseX")
 	int mouseX;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 1279210295
+		intValue = 1491668133
 	)
 	@Export("mouseY")
 	int mouseY;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -1465065173
+		intValue = -44479267
 	)
 	@Export("opIndex")
 	int opIndex;
-	@ObfuscatedName("d")
+	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		signature = "Lhn;"
+		signature = "Lhe;"
 	)
 	@Export("dragTarget")
 	Widget dragTarget;
-	@ObfuscatedName("l")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = -268491807
+		intValue = 128989033
 	)
 	@Export("keyTyped")
 	int keyTyped;
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1412457419
+		intValue = 1018201725
 	)
 	@Export("keyPressed")
 	int keyPressed;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@Export("targetName")
 	String targetName;
+	@ObfuscatedName("s")
+	@ObfuscatedGetter(
+		intValue = 171881153
+	)
+	int field604;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1385894557
-	)
-	int field582;
-	@ObfuscatedName("h")
-	@ObfuscatedGetter(
-		intValue = -891059655
+		intValue = -893996953
 	)
 	@Export("type")
 	int type;
@@ -78,80 +80,59 @@ public class ScriptEvent extends Node {
 		this.type = 76;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "([Ljava/lang/Object;I)V",
-		garbageValue = "-2105798075"
+		garbageValue = "-1877597946"
 	)
 	@Export("setArgs")
 	public void setArgs(Object[] var1) {
 		this.args = var1;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "350345560"
+		signature = "(IB)V",
+		garbageValue = "77"
 	)
 	@Export("setType")
 	public void setType(int var1) {
 		this.type = var1;
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("kv")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/CharSequence;II)I",
-		garbageValue = "2038755818"
+		signature = "(IIIILla;Lhg;B)V",
+		garbageValue = "-20"
 	)
-	public static int method1202(CharSequence var0, int var1) {
-		return KitDefinition.parseIntCustomRadix(var0, var1, true);
-	}
-
-	@ObfuscatedName("he")
-	@ObfuscatedSignature(
-		signature = "(ILjava/lang/String;I)V",
-		garbageValue = "43843350"
-	)
-	static void method1203(int var0, String var1) {
-		int var2 = Players.Players_count;
-		int[] var3 = Players.Players_indices;
-		boolean var4 = false;
-		Username var5 = new Username(var1, class192.loginType);
-
-		for (int var6 = 0; var6 < var2; ++var6) {
-			Player var7 = Client.players[var3[var6]];
-			if (var7 != null && var7 != class192.localPlayer && var7.username != null && var7.username.equals(var5)) {
-				PacketBufferNode var8;
-				if (var0 == 1) {
-					var8 = TilePaint.getPacketBufferNode(ClientPacket.field2282, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.writeByte(0);
-					var8.packetBuffer.writeShort(var3[var6]);
-					Client.packetWriter.addNode(var8);
-				} else if (var0 == 4) {
-					var8 = TilePaint.getPacketBufferNode(ClientPacket.field2216, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.writeByte(0);
-					var8.packetBuffer.writeShortLE(var3[var6]);
-					Client.packetWriter.addNode(var8);
-				} else if (var0 == 6) {
-					var8 = TilePaint.getPacketBufferNode(ClientPacket.field2221, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.method5787(var3[var6]);
-					var8.packetBuffer.writeByte(0);
-					Client.packetWriter.addNode(var8);
-				} else if (var0 == 7) {
-					var8 = TilePaint.getPacketBufferNode(ClientPacket.field2266, Client.packetWriter.isaacCipher);
-					var8.packetBuffer.method5787(var3[var6]);
-					var8.packetBuffer.method5602(0);
-					Client.packetWriter.addNode(var8);
+	@Export("drawSpriteOnMinimap")
+	static final void drawSpriteOnMinimap(int var0, int var1, int var2, int var3, Sprite var4, SpriteMask var5) {
+		if (var4 != null) {
+			int var6 = Client.camAngleY & 2047;
+			int var7 = var3 * var3 + var2 * var2;
+			if (var7 <= 6400) {
+				int var8 = Rasterizer3D.Rasterizer3D_sine[var6];
+				int var9 = Rasterizer3D.Rasterizer3D_cosine[var6];
+				int var10 = var9 * var2 + var3 * var8 >> 16;
+				int var11 = var3 * var9 - var8 * var2 >> 16;
+				if (var7 > 2500) {
+					var4.method6240(var10 + var5.width / 2 - var4.width / 2, var5.height / 2 - var11 - var4.height / 2, var0, var1, var5.width, var5.height, var5.xStarts, var5.xWidths);
+				} else {
+					var4.drawTransBgAt(var0 + var10 + var5.width / 2 - var4.width / 2, var5.height / 2 + var1 - var11 - var4.height / 2);
 				}
 
-				var4 = true;
-				break;
 			}
 		}
+	}
 
-		if (!var4) {
-			ClientPreferences.addGameMessage(4, "", "Unable to find " + var1);
-		}
-
+	@ObfuscatedName("kc")
+	@ObfuscatedSignature(
+		signature = "(Lhe;I)I",
+		garbageValue = "-1130493417"
+	)
+	@Export("getWidgetClickMask")
+	static int getWidgetClickMask(Widget var0) {
+		IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get((long)var0.childIndex + ((long)var0.id << 32));
+		return var1 != null ? var1.integer : var0.clickMask;
 	}
 }

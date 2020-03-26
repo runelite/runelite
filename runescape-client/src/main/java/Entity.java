@@ -4,23 +4,12 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eq")
+@ObfuscatedName("ee")
 @Implements("Entity")
 public abstract class Entity extends DualNode {
-	@ObfuscatedName("nj")
-	@ObfuscatedSignature(
-		signature = "[Lhn;"
-	)
-	static Widget[] field1866;
-	@ObfuscatedName("gj")
-	@ObfuscatedSignature(
-		signature = "Llt;"
-	)
-	@Export("compass")
-	static Sprite compass;
-	@ObfuscatedName("cy")
+	@ObfuscatedName("ci")
 	@ObfuscatedGetter(
-		intValue = -384609857
+		intValue = 566997565
 	)
 	@Export("height")
 	public int height;
@@ -29,17 +18,17 @@ public abstract class Entity extends DualNode {
 		this.height = 1000;
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "(I)Ldx;",
-		garbageValue = "-2133076860"
+		signature = "(I)Lel;",
+		garbageValue = "480835067"
 	)
 	@Export("getModel")
 	protected Model getModel() {
 		return null;
 	}
 
-	@ObfuscatedName("cn")
+	@ObfuscatedName("cq")
 	@Export("draw")
 	void draw(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, long var9) {
 		Model var11 = this.getModel();
@@ -50,21 +39,38 @@ public abstract class Entity extends DualNode {
 
 	}
 
-	@ObfuscatedName("fr")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-553494705"
+		signature = "(II)Z",
+		garbageValue = "-1030899417"
 	)
-	static final void method3332() {
-		int var0 = Players.Players_count;
-		int[] var1 = Players.Players_indices;
+	public static boolean method3374(int var0) {
+		return var0 >= WorldMapDecorationType.field2719.id && var0 <= WorldMapDecorationType.field2739.id;
+	}
 
-		for (int var2 = 0; var2 < var0; ++var2) {
-			Player var3 = Client.players[var1[var2]];
-			if (var3 != null) {
-				ScriptFrame.updateActorSequence(var3, 1);
+	@ObfuscatedName("x")
+	@ObfuscatedSignature(
+		signature = "([BILjava/lang/CharSequence;I)I",
+		garbageValue = "-304633818"
+	)
+	public static int method3372(byte[] var0, int var1, CharSequence var2) {
+		int var3 = var2.length();
+		int var4 = var1;
+
+		for (int var5 = 0; var5 < var3; ++var5) {
+			char var6 = var2.charAt(var5);
+			if (var6 <= 127) {
+				var0[var4++] = (byte)var6;
+			} else if (var6 <= 2047) {
+				var0[var4++] = (byte)(192 | var6 >> 6);
+				var0[var4++] = (byte)(128 | var6 & '?');
+			} else {
+				var0[var4++] = (byte)(224 | var6 >> '\f');
+				var0[var4++] = (byte)(128 | var6 >> 6 & 63);
+				var0[var4++] = (byte)(128 | var6 & '?');
 			}
 		}
 
+		return var4 - var1;
 	}
 }

@@ -4,21 +4,23 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lc")
+@ObfuscatedName("lj")
 @Implements("AbstractRasterProvider")
 public abstract class AbstractRasterProvider {
-	@ObfuscatedName("o")
+	@ObfuscatedName("a")
+	public static String[] field3871;
+	@ObfuscatedName("k")
 	@Export("pixels")
 	public int[] pixels;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = -677565243
+		intValue = 2037520285
 	)
 	@Export("width")
 	public int width;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 1515017949
+		intValue = -645523785
 	)
 	@Export("height")
 	public int height;
@@ -26,51 +28,29 @@ public abstract class AbstractRasterProvider {
 	protected AbstractRasterProvider() {
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
 		signature = "(III)V",
-		garbageValue = "-529782293"
+		garbageValue = "1321130014"
 	)
 	@Export("drawFull")
 	public abstract void drawFull(int var1, int var2);
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(IIIII)V",
-		garbageValue = "934582222"
+		signature = "(IIIIS)V",
+		garbageValue = "32475"
 	)
 	@Export("draw")
 	public abstract void draw(int var1, int var2, int var3, int var4);
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-96"
+		signature = "(I)V",
+		garbageValue = "1783812684"
 	)
 	@Export("apply")
 	public final void apply() {
 		Rasterizer2D.Rasterizer2D_replace(this.pixels, this.width, this.height);
-	}
-
-	@ObfuscatedName("fx")
-	@ObfuscatedSignature(
-		signature = "(I)Z",
-		garbageValue = "-569880085"
-	)
-	static boolean method6151() {
-		if (Client.archiveLoaders != null && Client.archiveLoadersDone < Client.archiveLoaders.size()) {
-			while (Client.archiveLoadersDone < Client.archiveLoaders.size()) {
-				ArchiveLoader var0 = (ArchiveLoader)Client.archiveLoaders.get(Client.archiveLoadersDone);
-				if (!var0.isLoaded()) {
-					return false;
-				}
-
-				++Client.archiveLoadersDone;
-			}
-
-			return true;
-		} else {
-			return true;
-		}
 	}
 }

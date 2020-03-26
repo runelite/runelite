@@ -3,20 +3,18 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jk")
+@ObfuscatedName("jd")
 @Implements("User")
 public class User implements Comparable {
-	@ObfuscatedName("v")
-	static boolean field3583;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "Ljz;"
+		signature = "Lku;"
 	)
 	@Export("username")
 	Username username;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "Ljz;"
+		signature = "Lku;"
 	)
 	@Export("previousUsername")
 	Username previousUsername;
@@ -24,40 +22,40 @@ public class User implements Comparable {
 	User() {
 	}
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("ar")
 	@ObfuscatedSignature(
-		signature = "(B)Ljz;",
-		garbageValue = "-7"
+		signature = "(I)Lku;",
+		garbageValue = "-1106641864"
 	)
 	@Export("getUsername")
 	public Username getUsername() {
 		return this.username;
 	}
 
-	@ObfuscatedName("u")
+	@ObfuscatedName("af")
 	@ObfuscatedSignature(
 		signature = "(I)Ljava/lang/String;",
-		garbageValue = "1147653243"
+		garbageValue = "1751830464"
 	)
 	@Export("getName")
 	public String getName() {
 		return this.username == null ? "" : this.username.getName();
 	}
 
-	@ObfuscatedName("ae")
+	@ObfuscatedName("at")
 	@ObfuscatedSignature(
 		signature = "(I)Ljava/lang/String;",
-		garbageValue = "403246047"
+		garbageValue = "-1275191870"
 	)
 	@Export("getPreviousName")
 	public String getPreviousName() {
 		return this.previousUsername == null ? "" : this.previousUsername.getName();
 	}
 
-	@ObfuscatedName("af")
+	@ObfuscatedName("as")
 	@ObfuscatedSignature(
-		signature = "(Ljz;Ljz;I)V",
-		garbageValue = "1456948401"
+		signature = "(Lku;Lku;S)V",
+		garbageValue = "255"
 	)
 	@Export("set")
 	void set(Username var1, Username var2) {
@@ -69,10 +67,10 @@ public class User implements Comparable {
 		}
 	}
 
-	@ObfuscatedName("az")
+	@ObfuscatedName("am")
 	@ObfuscatedSignature(
-		signature = "(Ljk;I)I",
-		garbageValue = "-746331144"
+		signature = "(Ljd;I)I",
+		garbageValue = "-1956183743"
 	)
 	@Export("compareTo_user")
 	public int compareTo_user(User var1) {

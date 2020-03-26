@@ -7,31 +7,31 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("is")
 @Implements("ParamDefinition")
 public class ParamDefinition extends DualNode {
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "Lii;"
+		signature = "Liy;"
 	)
 	@Export("ParamDefinition_archive")
 	public static AbstractArchive ParamDefinition_archive;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "Leh;"
+		signature = "Leg;"
 	)
 	@Export("ParamDefinition_cached")
-	static EvictingDualNodeHashTable ParamDefinition_cached;
-	@ObfuscatedName("o")
+	public static EvictingDualNodeHashTable ParamDefinition_cached;
+	@ObfuscatedName("k")
 	@Export("type")
 	char type;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = -2044093609
+		intValue = 493165411
 	)
 	@Export("defaultInt")
 	public int defaultInt;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@Export("defaultStr")
 	public String defaultStr;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@Export("autoDisable")
 	boolean autoDisable;
 
@@ -43,19 +43,19 @@ public class ParamDefinition extends DualNode {
 		this.autoDisable = true;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "2127914016"
+		signature = "(B)V",
+		garbageValue = "65"
 	)
 	@Export("postDecode")
 	void postDecode() {
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Lkp;B)V",
-		garbageValue = "-2"
+		signature = "(Lkb;I)V",
+		garbageValue = "1593854390"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
@@ -69,15 +69,15 @@ public class ParamDefinition extends DualNode {
 		}
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(Lkp;II)V",
-		garbageValue = "-372343900"
+		signature = "(Lkb;II)V",
+		garbageValue = "-1589952103"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2) {
 		if (var2 == 1) {
-			this.type = ServerBuild.method4209(var1.readByte());
+			this.type = class236.method4223(var1.readByte());
 		} else if (var2 == 2) {
 			this.defaultInt = var1.readInt();
 		} else if (var2 == 4) {
@@ -88,10 +88,10 @@ public class ParamDefinition extends DualNode {
 
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "1143023141"
+		garbageValue = "861109850"
 	)
 	@Export("isString")
 	public boolean isString() {

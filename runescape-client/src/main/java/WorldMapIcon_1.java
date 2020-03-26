@@ -4,48 +4,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("s")
+@ObfuscatedName("af")
 @Implements("WorldMapIcon_1")
 public class WorldMapIcon_1 extends AbstractWorldMapIcon {
-	@ObfuscatedName("c")
+	@ObfuscatedName("he")
 	@ObfuscatedGetter(
-		intValue = 52552105
+		intValue = -395695129
+	)
+	@Export("cameraYaw")
+	static int cameraYaw;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = -1547579339
 	)
 	@Export("objectDefId")
 	final int objectDefId;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "Lax;"
+		signature = "Lao;"
 	)
 	@Export("region")
 	final WorldMapRegion region;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 1871075417
+		intValue = -1354598699
 	)
 	@Export("element")
 	int element;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "Laz;"
+		signature = "Lau;"
 	)
 	@Export("label")
 	WorldMapLabel label;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -260537351
+		intValue = 152564965
 	)
 	@Export("subWidth")
 	int subWidth;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -753416785
+		intValue = -1072450563
 	)
 	@Export("subHeight")
 	int subHeight;
 
 	@ObfuscatedSignature(
-		signature = "(Lhj;Lhj;ILax;)V"
+		signature = "(Lhj;Lhj;ILao;)V"
 	)
 	WorldMapIcon_1(Coord var1, Coord var2, int var3, WorldMapRegion var4) {
 		super(var1, var2);
@@ -54,56 +60,56 @@ public class WorldMapIcon_1 extends AbstractWorldMapIcon {
 		this.init();
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "1499764486"
+		signature = "(B)I",
+		garbageValue = "16"
 	)
 	@Export("getElement")
 	public int getElement() {
 		return this.element;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(B)Laz;",
-		garbageValue = "124"
+		signature = "(I)Lau;",
+		garbageValue = "2077771117"
 	)
 	@Export("getLabel")
 	WorldMapLabel getLabel() {
 		return this.label;
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(S)I",
-		garbageValue = "-26101"
+		signature = "(I)I",
+		garbageValue = "650401890"
 	)
 	@Export("getSubWidth")
 	int getSubWidth() {
 		return this.subWidth;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "1"
+		signature = "(I)I",
+		garbageValue = "-1828864081"
 	)
 	@Export("getSubHeight")
 	int getSubHeight() {
 		return this.subHeight;
 	}
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("u")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "-1452393190"
+		signature = "(S)V",
+		garbageValue = "10774"
 	)
 	@Export("init")
 	void init() {
-		this.element = Occluder.getObjectDefinition(this.objectDefId).transform().mapIconId;
-		this.label = this.region.createMapLabel(PacketBufferNode.WorldMapElement_get(this.element));
-		WorldMapElement var1 = PacketBufferNode.WorldMapElement_get(this.getElement());
+		this.element = WorldMapSection2.getObjectDefinition(this.objectDefId).transform().mapIconId;
+		this.label = this.region.createMapLabel(class25.WorldMapElement_get(this.element));
+		WorldMapElement var1 = class25.WorldMapElement_get(this.getElement());
 		Sprite var2 = var1.getSpriteBool(false);
 		if (var2 != null) {
 			this.subWidth = var2.subWidth;
@@ -115,68 +121,41 @@ public class WorldMapIcon_1 extends AbstractWorldMapIcon {
 
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		signature = "([BILjava/lang/CharSequence;B)I",
-		garbageValue = "112"
+		signature = "(IB)I",
+		garbageValue = "39"
 	)
-	public static int method310(byte[] var0, int var1, CharSequence var2) {
-		int var3 = var2.length();
-		int var4 = var1;
-
-		for (int var5 = 0; var5 < var3; ++var5) {
-			char var6 = var2.charAt(var5);
-			if (var6 <= 127) {
-				var0[var4++] = (byte)var6;
-			} else if (var6 <= 2047) {
-				var0[var4++] = (byte)(192 | var6 >> 6);
-				var0[var4++] = (byte)(128 | var6 & '?');
-			} else {
-				var0[var4++] = (byte)(224 | var6 >> '\f');
-				var0[var4++] = (byte)(128 | var6 >> 6 & 63);
-				var0[var4++] = (byte)(128 | var6 & '?');
-			}
-		}
-
-		return var4 - var1;
+	public static int method407(int var0) {
+		return WorldMapRectangle.Entity_unpackID(ViewportMouse.ViewportMouse_entityTags[var0]);
 	}
 
-	@ObfuscatedName("fg")
+	@ObfuscatedName("gz")
 	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-8"
+		signature = "(II)V",
+		garbageValue = "265635085"
 	)
-	static final void method308() {
-		if (Client.logoutTimer > 0) {
-			class30.logOut();
+	@Export("setWindowedMode")
+	static void setWindowedMode(int var0) {
+		Client.field893 = 0L;
+		if (var0 >= 2) {
+			Client.isResizable = true;
 		} else {
-			Client.timer.method5045();
-			Projectile.updateGameState(40);
-			ClientPreferences.field1052 = Client.packetWriter.getSocket();
-			Client.packetWriter.removeSocket();
-		}
-	}
-
-	@ObfuscatedName("il")
-	@ObfuscatedSignature(
-		signature = "([Lhn;Lhn;ZB)V",
-		garbageValue = "42"
-	)
-	@Export("revalidateWidgetScroll")
-	static void revalidateWidgetScroll(Widget[] var0, Widget var1, boolean var2) {
-		int var3 = var1.scrollWidth != 0 ? var1.scrollWidth : var1.width;
-		int var4 = var1.scrollHeight != 0 ? var1.scrollHeight : var1.height;
-		FloorUnderlayDefinition.resizeInterface(var0, var1.id, var3, var4, var2);
-		if (var1.children != null) {
-			FloorUnderlayDefinition.resizeInterface(var1.children, var1.id, var3, var4, var2);
+			Client.isResizable = false;
 		}
 
-		InterfaceParent var5 = (InterfaceParent)Client.interfaceParents.get((long)var1.id);
-		if (var5 != null) {
-			GrandExchangeOfferUnitPriceComparator.method135(var5.group, var3, var4, var2);
+		if (class74.getWindowedMode() == 1) {
+			WorldMapSection1.client.setMaxCanvasSize(765, 503);
+		} else {
+			WorldMapSection1.client.setMaxCanvasSize(7680, 2160);
 		}
 
-		if (var1.contentType == 1337) {
+		if (Client.gameState >= 25) {
+			PacketBufferNode var1 = FaceNormal.getPacketBufferNode(ClientPacket.field2257, Client.packetWriter.isaacCipher);
+			var1.packetBuffer.writeByte(class74.getWindowedMode());
+			var1.packetBuffer.writeShort(WorldMapLabel.canvasWidth);
+			var1.packetBuffer.writeShort(Varps.canvasHeight);
+			Client.packetWriter.addNode(var1);
 		}
 
 	}

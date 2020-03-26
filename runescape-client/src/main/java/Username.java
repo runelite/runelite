@@ -1,39 +1,20 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jz")
+@ObfuscatedName("ku")
 @Implements("Username")
 public class Username implements Comparable {
-	@ObfuscatedName("p")
-	@ObfuscatedSignature(
-		signature = "Lii;"
-	)
-	@Export("Widget_spritesArchive")
-	static AbstractArchive Widget_spritesArchive;
-	@ObfuscatedName("s")
-	@ObfuscatedGetter(
-		intValue = -624446357
-	)
-	@Export("canvasWidth")
-	public static int canvasWidth;
-	@ObfuscatedName("ap")
-	@Export("client")
-	@ObfuscatedSignature(
-		signature = "Lclient;"
-	)
-	static Client client;
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@Export("name")
 	String name;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@Export("cleanName")
 	String cleanName;
 
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Lmv;)V"
+		signature = "(Ljava/lang/String;Lmx;)V"
 	)
 	public Username(String var1, LoginType var2) {
 		this.name = var1;
@@ -64,24 +45,144 @@ public class Username implements Comparable {
 				--var6;
 			}
 
-			int var13 = var6 - var5;
-			if (var13 >= 1 && var13 <= TaskHandler.method3540(var2)) {
-				StringBuilder var12 = new StringBuilder(var13);
+			int var17 = var6 - var5;
+			if (var17 >= 1 && var17 <= class228.method4205(var2)) {
+				StringBuilder var15 = new StringBuilder(var17);
 
 				for (int var9 = var5; var9 < var6; ++var9) {
 					char var10 = var1.charAt(var9);
-					if (Projectile.method2160(var10)) {
-						char var11 = Decimator.method2597(var10);
-						if (var11 != 0) {
-							var12.append(var11);
+					boolean var11;
+					if (Character.isISOControl(var10)) {
+						var11 = false;
+					} else if (AbstractWorldMapIcon.isAlphaNumeric(var10)) {
+						var11 = true;
+					} else {
+						char[] var16 = class348.field4062;
+						int var13 = 0;
+
+						label89:
+						while (true) {
+							char var14;
+							if (var13 >= var16.length) {
+								var16 = class348.field4063;
+
+								for (var13 = 0; var13 < var16.length; ++var13) {
+									var14 = var16[var13];
+									if (var14 == var10) {
+										var11 = true;
+										break label89;
+									}
+								}
+
+								var11 = false;
+								break;
+							}
+
+							var14 = var16[var13];
+							if (var14 == var10) {
+								var11 = true;
+								break;
+							}
+
+							++var13;
+						}
+					}
+
+					if (var11) {
+						char var12;
+						switch(var10) {
+						case ' ':
+						case '-':
+						case '_':
+						case ' ':
+							var12 = '_';
+							break;
+						case '#':
+						case '[':
+						case ']':
+							var12 = var10;
+							break;
+						case 'À':
+						case 'Á':
+						case 'Â':
+						case 'Ã':
+						case 'Ä':
+						case 'à':
+						case 'á':
+						case 'â':
+						case 'ã':
+						case 'ä':
+							var12 = 'a';
+							break;
+						case 'Ç':
+						case 'ç':
+							var12 = 'c';
+							break;
+						case 'È':
+						case 'É':
+						case 'Ê':
+						case 'Ë':
+						case 'è':
+						case 'é':
+						case 'ê':
+						case 'ë':
+							var12 = 'e';
+							break;
+						case 'Í':
+						case 'Î':
+						case 'Ï':
+						case 'í':
+						case 'î':
+						case 'ï':
+							var12 = 'i';
+							break;
+						case 'Ñ':
+						case 'ñ':
+							var12 = 'n';
+							break;
+						case 'Ò':
+						case 'Ó':
+						case 'Ô':
+						case 'Õ':
+						case 'Ö':
+						case 'ò':
+						case 'ó':
+						case 'ô':
+						case 'õ':
+						case 'ö':
+							var12 = 'o';
+							break;
+						case 'Ù':
+						case 'Ú':
+						case 'Û':
+						case 'Ü':
+						case 'ù':
+						case 'ú':
+						case 'û':
+						case 'ü':
+							var12 = 'u';
+							break;
+						case 'ß':
+							var12 = 'b';
+							break;
+						case 'ÿ':
+						case 'Ÿ':
+							var12 = 'y';
+							break;
+						default:
+							var12 = Character.toLowerCase(var10);
+						}
+
+						if (var12 != 0) {
+							var15.append(var12);
 						}
 					}
 				}
 
-				if (var12.length() == 0) {
+				if (var15.length() == 0) {
 					var4 = null;
 				} else {
-					var4 = var12.toString();
+					var4 = var15.toString();
 				}
 			} else {
 				var4 = null;
@@ -91,30 +192,30 @@ public class Username implements Comparable {
 		this.cleanName = var4;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(B)Ljava/lang/String;",
-		garbageValue = "-49"
+		signature = "(I)Ljava/lang/String;",
+		garbageValue = "-317689789"
 	)
 	@Export("getName")
 	public String getName() {
 		return this.name;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
 		signature = "(I)Z",
-		garbageValue = "750587090"
+		garbageValue = "-1005152425"
 	)
 	@Export("hasCleanName")
 	public boolean hasCleanName() {
 		return this.cleanName != null;
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(Ljz;B)I",
-		garbageValue = "-33"
+		signature = "(Lku;B)I",
+		garbageValue = "-36"
 	)
 	@Export("compareToTyped")
 	public int compareToTyped(Username var1) {
@@ -152,13 +253,21 @@ public class Username implements Comparable {
 		return this.compareToTyped((Username)var1);
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(IB)Z",
-		garbageValue = "-22"
+		signature = "(Liy;Ljava/lang/String;Ljava/lang/String;B)[Lle;",
+		garbageValue = "93"
 	)
-	@Export("isWorldMapEvent")
-	public static boolean isWorldMapEvent(int var0) {
-		return var0 == 10 || var0 == 11 || var0 == 12 || var0 == 13 || var0 == 14 || var0 == 15 || var0 == 16 || var0 == 17;
+	public static IndexedSprite[] method5271(AbstractArchive var0, String var1, String var2) {
+		int var3 = var0.getGroupId(var1);
+		int var4 = var0.getFileId(var3, var2);
+		IndexedSprite[] var5;
+		if (!UserComparator7.method3516(var0, var3, var4)) {
+			var5 = null;
+		} else {
+			var5 = Skills.method4214();
+		}
+
+		return var5;
 	}
 }

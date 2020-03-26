@@ -5,16 +5,10 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ai")
+@ObfuscatedName("bu")
 @Implements("Canvas")
 public final class Canvas extends java.awt.Canvas {
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		signature = "Lii;"
-	)
-	@Export("SequenceDefinition_animationsArchive")
-	static AbstractArchive SequenceDefinition_animationsArchive;
-	@ObfuscatedName("c")
+	@ObfuscatedName("m")
 	@Export("component")
 	Component component;
 
@@ -22,45 +16,39 @@ public final class Canvas extends java.awt.Canvas {
 		this.component = var1;
 	}
 
-	public final void paint(Graphics var1) {
-		this.component.paint(var1);
-	}
-
 	public final void update(Graphics var1) {
 		this.component.update(var1);
 	}
 
-	@ObfuscatedName("fq")
-	@ObfuscatedSignature(
-		signature = "(B)V",
-		garbageValue = "-97"
-	)
-	static final void method861() {
-		if (FileSystem.ClanChat_inClanChat) {
-			if (InterfaceParent.clanChat != null) {
-				InterfaceParent.clanChat.sort();
-			}
-
-			DefaultsGroup.method5953();
-			FileSystem.ClanChat_inClanChat = false;
-		}
-
+	public final void paint(Graphics var1) {
+		this.component.paint(var1);
 	}
 
-	@ObfuscatedName("hf")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(IIB)I",
-		garbageValue = "-77"
+		signature = "(IS)I",
+		garbageValue = "-1870"
 	)
-	static int method864(int var0, int var1) {
-		int var2 = var1 - 334;
-		if (var2 < 0) {
-			var2 = 0;
-		} else if (var2 > 100) {
-			var2 = 100;
-		}
+	public static int method958(int var0) {
+		return var0 >> 17 & 7;
+	}
 
-		int var3 = (Client.zoomWidth - Client.zoomHeight) * var2 / 100 + Client.zoomHeight;
-		return var0 * var3 / 256;
+	@ObfuscatedName("z")
+	@ObfuscatedSignature(
+		signature = "(IIIS)I",
+		garbageValue = "-22602"
+	)
+	static final int method957(int var0, int var1, int var2) {
+		int var3 = var0 / var2;
+		int var4 = var0 & var2 - 1;
+		int var5 = var1 / var2;
+		int var6 = var1 & var2 - 1;
+		int var7 = class232.method4218(var3, var5);
+		int var8 = class232.method4218(var3 + 1, var5);
+		int var9 = class232.method4218(var3, var5 + 1);
+		int var10 = class232.method4218(var3 + 1, var5 + 1);
+		int var11 = class195.method3695(var7, var8, var4, var2);
+		int var12 = class195.method3695(var9, var10, var4, var2);
+		return class195.method3695(var11, var12, var6, var2);
 	}
 }

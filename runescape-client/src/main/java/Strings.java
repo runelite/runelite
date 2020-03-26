@@ -1,96 +1,70 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hk")
+@ObfuscatedName("hx")
 @Implements("Strings")
 public class Strings {
-	@ObfuscatedName("bk")
-	public static String field3045;
-	@ObfuscatedName("cq")
-	public static String field2808;
-	@ObfuscatedName("ji")
-	public static String field3036;
-	@ObfuscatedName("jc")
-	public static String field3037;
-	@ObfuscatedName("jn")
-	public static String field2933;
+	@ObfuscatedName("rx")
+	@ObfuscatedGetter(
+		intValue = 2019355049
+	)
+	static int field2759;
+	@ObfuscatedName("bd")
+	public static String field2811;
+	@ObfuscatedName("cy")
+	public static String field2914;
+	@ObfuscatedName("jm")
+	public static String field3026;
+	@ObfuscatedName("jh")
+	public static String field2898;
+	@ObfuscatedName("jk")
+	public static String field2807;
 
 	static {
-		field3045 = "Please visit the support page for assistance.";
-		field2808 = "Please visit the support page for assistance.";
-		field3036 = "";
-		field3037 = "Page has opened in a new window.";
-		field2933 = "(Please check your popup blocker.)";
+		field2811 = "Please visit the support page for assistance.";
+		field2914 = "Please visit the support page for assistance.";
+		field3026 = "";
+		field2898 = "Page has opened in a new window.";
+		field2807 = "(Please check your popup blocker.)";
 	}
 
-	@ObfuscatedName("jt")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(Lhn;III)V",
-		garbageValue = "-1274264316"
+		signature = "(IS)Lii;",
+		garbageValue = "18624"
 	)
-	@Export("clickWidget")
-	static final void clickWidget(Widget var0, int var1, int var2) {
-		if (Client.clickedWidget == null && !Client.isMenuOpen) {
-			if (var0 != null) {
-				Widget var5 = var0;
-				int var7 = WorldMapIcon_0.getWidgetClickMask(var0);
-				int var6 = var7 >> 17 & 7;
-				int var8 = var6;
-				Widget var4;
-				if (var6 == 0) {
-					var4 = null;
-				} else {
-					int var9 = 0;
+	public static ServerBuild method4219(int var0) {
+		ServerBuild[] var1 = Language.method3751();
 
-					while (true) {
-						if (var9 >= var8) {
-							var4 = var5;
-							break;
-						}
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			ServerBuild var3 = var1[var2];
+			if (var0 == var3.field3101) {
+				return var3;
+			}
+		}
 
-						var5 = Varps.getWidget(var5.parentId);
-						if (var5 == null) {
-							var4 = null;
-							break;
-						}
+		return null;
+	}
 
-						++var9;
-					}
-				}
-
-				Widget var10 = var4;
-				if (var4 == null) {
-					var10 = var0.parent;
-				}
-
-				if (var10 != null) {
-					Client.clickedWidget = var0;
-					var4 = ItemContainer.method1184(var0);
-					if (var4 == null) {
-						var4 = var0.parent;
-					}
-
-					Client.clickedWidgetParent = var4;
-					Client.widgetClickX = var1;
-					Client.widgetClickY = var2;
-					SequenceDefinition.widgetDragDuration = 0;
-					Client.isDraggingWidget = false;
-					int var11 = Client.menuOptionsCount - 1;
-					if (var11 != -1) {
-						WorldMapRegion.tempMenuAction = new MenuAction();
-						WorldMapRegion.tempMenuAction.param0 = Client.menuArguments1[var11];
-						WorldMapRegion.tempMenuAction.param1 = Client.menuArguments2[var11];
-						WorldMapRegion.tempMenuAction.opcode = Client.menuOpcodes[var11];
-						WorldMapRegion.tempMenuAction.identifier = Client.menuIdentifiers[var11];
-						WorldMapRegion.tempMenuAction.action = Client.menuActions[var11];
-					}
-
-					return;
-				}
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		signature = "(III)I",
+		garbageValue = "-1791203071"
+	)
+	static final int method4220(int var0, int var1) {
+		if (var0 == -1) {
+			return 12345678;
+		} else {
+			var1 = (var0 & 127) * var1 / 128;
+			if (var1 < 2) {
+				var1 = 2;
+			} else if (var1 > 126) {
+				var1 = 126;
 			}
 
+			return (var0 & 65408) + var1;
 		}
 	}
 }

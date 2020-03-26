@@ -4,87 +4,75 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bw")
 @Implements("PendingSpawn")
 public final class PendingSpawn extends Node {
-	@ObfuscatedName("sx")
-	@ObfuscatedSignature(
-		signature = "Ld;"
-	)
-	@Export("grandExchangeEvents")
-	static GrandExchangeEvents grandExchangeEvents;
-	@ObfuscatedName("hu")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -1923954935
-	)
-	@Export("oculusOrbFocalPointX")
-	static int oculusOrbFocalPointX;
-	@ObfuscatedName("c")
-	@ObfuscatedGetter(
-		intValue = -1349370787
-	)
-	@Export("plane")
-	int plane;
-	@ObfuscatedName("t")
-	@ObfuscatedGetter(
-		intValue = 304063961
-	)
-	@Export("type")
-	int type;
-	@ObfuscatedName("o")
-	@ObfuscatedGetter(
-		intValue = -340804777
-	)
-	@Export("x")
-	int x;
-	@ObfuscatedName("e")
-	@ObfuscatedGetter(
-		intValue = 1612075495
+		intValue = -1216764751
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("i")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 1762819513
+		intValue = -1571459421
+	)
+	@Export("plane")
+	int plane;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = 1864356937
+	)
+	@Export("type")
+	int type;
+	@ObfuscatedName("d")
+	@ObfuscatedGetter(
+		intValue = 1344797441
+	)
+	@Export("x")
+	int x;
+	@ObfuscatedName("w")
+	@ObfuscatedGetter(
+		intValue = 1245486001
 	)
 	@Export("objectId")
 	int objectId;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 51558137
+		intValue = -547933481
 	)
-	int field935;
-	@ObfuscatedName("d")
+	int field968;
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = 1078181875
+		intValue = 1800022501
 	)
-	int field924;
-	@ObfuscatedName("l")
+	int field963;
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 869281397
+		intValue = 1336190783
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -186510347
+		intValue = 1244443099
 	)
 	@Export("orientation")
 	int orientation;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 1858623199
+		intValue = -668527737
 	)
-	int field933;
-	@ObfuscatedName("p")
+	int field967;
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -260343907
+		intValue = -297028933
 	)
 	@Export("delay")
 	int delay;
-	@ObfuscatedName("h")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1816335395
+		intValue = 718779675
 	)
 	@Export("hitpoints")
 	int hitpoints;
@@ -94,28 +82,34 @@ public final class PendingSpawn extends Node {
 		this.hitpoints = -1;
 	}
 
-	@ObfuscatedName("d")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(I)Llt;",
-		garbageValue = "-728987489"
+		signature = "(B)V",
+		garbageValue = "-42"
 	)
-	static Sprite method1738() {
-		Sprite var0 = new Sprite();
-		var0.width = GZipDecompressor.SpriteBuffer_spriteWidth;
-		var0.height = class326.SpriteBuffer_spriteHeight;
-		var0.xOffset = Huffman.SpriteBuffer_xOffsets[0];
-		var0.yOffset = NPC.SpriteBuffer_yOffsets[0];
-		var0.subWidth = class326.SpriteBuffer_spriteWidths[0];
-		var0.subHeight = class326.SpriteBuffer_spriteHeights[0];
-		int var1 = var0.subWidth * var0.subHeight;
-		byte[] var2 = class326.SpriteBuffer_pixels[0];
-		var0.pixels = new int[var1];
+	static void method1840() {
+		WorldMapRegion.WorldMapRegion_cachedSprites.clear();
+	}
 
-		for (int var3 = 0; var3 < var1; ++var3) {
-			var0.pixels[var3] = class326.SpriteBuffer_spritePalette[var2[var3] & 255];
-		}
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		signature = "(II)Lby;",
+		garbageValue = "755627010"
+	)
+	@Export("Messages_getMessage")
+	static Message Messages_getMessage(int var0) {
+		return (Message)Messages.Messages_hashTable.get((long)var0);
+	}
 
-		DynamicObject.method2292();
-		return var0;
+	@ObfuscatedName("h")
+	@ObfuscatedSignature(
+		signature = "(I)V",
+		garbageValue = "287596023"
+	)
+	public static void method1838() {
+		ObjectDefinition.ObjectDefinition_cached.clear();
+		ObjectDefinition.ObjectDefinition_cachedModelData.clear();
+		ObjectDefinition.ObjectDefinition_cachedEntities.clear();
+		ObjectDefinition.ObjectDefinition_cachedModels.clear();
 	}
 }

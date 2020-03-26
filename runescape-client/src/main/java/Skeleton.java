@@ -1,40 +1,28 @@
-import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("eb")
 @Implements("Skeleton")
 public class Skeleton extends Node {
-	@ObfuscatedName("hx")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = 1721561941
-	)
-	@Export("oculusOrbFocalPointY")
-	static int oculusOrbFocalPointY;
-	@ObfuscatedName("jv")
-	@ObfuscatedSignature(
-		signature = "Lhn;"
-	)
-	static Widget field1793;
-	@ObfuscatedName("c")
-	@ObfuscatedGetter(
-		intValue = -1632248683
+		intValue = -1117986987
 	)
 	@Export("id")
 	int id;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 705396631
+		intValue = 1228230163
 	)
 	@Export("count")
 	int count;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@Export("transformTypes")
 	int[] transformTypes;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@Export("labels")
 	int[][] labels;
 
@@ -62,28 +50,46 @@ public class Skeleton extends Node {
 
 	}
 
-	@ObfuscatedName("g")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(I)V",
-		garbageValue = "483242164"
+		signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
+		garbageValue = "172468289"
 	)
-	public static void method3152() {
-		FloorOverlayDefinition.FloorOverlayDefinition_cached.clear();
+	@Export("addGameMessage")
+	static void addGameMessage(int var0, String var1, String var2) {
+		ChatChannel.addChatMessage(var0, var1, var2, (String)null);
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("hw")
 	@ObfuscatedSignature(
-		signature = "(B)Ljava/lang/String;",
-		garbageValue = "91"
+		signature = "(IIIIIIIIII)V",
+		garbageValue = "-903187990"
 	)
-	static String method3153() {
-		String var0 = "";
+	@Export("updatePendingSpawn")
+	static final void updatePendingSpawn(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+		PendingSpawn var9 = null;
 
-		Message var2;
-		for (Iterator var1 = Messages.Messages_hashTable.iterator(); var1.hasNext(); var0 = var0 + var2.sender + ':' + var2.text + '\n') {
-			var2 = (Message)var1.next();
+		for (PendingSpawn var10 = (PendingSpawn)Client.pendingSpawns.last(); var10 != null; var10 = (PendingSpawn)Client.pendingSpawns.previous()) {
+			if (var0 == var10.plane && var10.x == var1 && var2 == var10.y && var3 == var10.type) {
+				var9 = var10;
+				break;
+			}
 		}
 
-		return var0;
+		if (var9 == null) {
+			var9 = new PendingSpawn();
+			var9.plane = var0;
+			var9.type = var3;
+			var9.x = var1;
+			var9.y = var2;
+			WorldMapSectionType.method348(var9);
+			Client.pendingSpawns.addFirst(var9);
+		}
+
+		var9.id = var4;
+		var9.field967 = var5;
+		var9.orientation = var6;
+		var9.delay = var7;
+		var9.hitpoints = var8;
 	}
 }

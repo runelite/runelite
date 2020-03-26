@@ -1,150 +1,285 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("r")
+@ObfuscatedName("ar")
 @Implements("WorldMapRectangle")
 public final class WorldMapRectangle {
-	@ObfuscatedName("pb")
+	@ObfuscatedName("sw")
 	@ObfuscatedSignature(
-		signature = "Llt;"
+		signature = "Lin;"
 	)
-	@Export("sceneMinimapSprite")
-	static Sprite sceneMinimapSprite;
-	@ObfuscatedName("c")
+	public static class247 field222;
+	@ObfuscatedName("rt")
 	@ObfuscatedGetter(
-		intValue = 1400048681
+		intValue = 396400765
+	)
+	static int field217;
+	@ObfuscatedName("hj")
+	@ObfuscatedGetter(
+		intValue = 1285501421
+	)
+	@Export("cameraX")
+	static int cameraX;
+	@ObfuscatedName("x")
+	@ObfuscatedGetter(
+		intValue = 2118227677
 	)
 	@Export("width")
 	int width;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -1470820319
+		intValue = -245816907
 	)
 	@Export("height")
 	int height;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = -86733365
+		intValue = -1773088179
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 204657909
+		intValue = -409358263
 	)
 	@Export("y")
 	int y;
 	// $FF: synthetic field
 	@ObfuscatedSignature(
-		signature = "Lak;"
+		signature = "Laj;"
 	)
 	final WorldMapManager this$0;
 
 	@ObfuscatedSignature(
-		signature = "(Lak;)V"
+		signature = "(Laj;)V"
 	)
 	WorldMapRectangle(WorldMapManager var1) {
 		this.this$0 = var1;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Lmx;",
-		garbageValue = "636335371"
+		signature = "(II)I",
+		garbageValue = "-1866970355"
 	)
-	@Export("getPreferencesFile")
-	public static AccessFile getPreferencesFile(String var0, String var1, boolean var2) {
-		File var3 = new File(JagexCache.cacheDir, "preferences" + var0 + ".dat");
-		if (var3.exists()) {
-			try {
-				AccessFile var10 = new AccessFile(var3, "rw", 10000L);
-				return var10;
-			} catch (IOException var9) {
-			}
-		}
-
-		String var4 = "";
-		if (GrandExchangeOfferOwnWorldComparator.cacheGamebuild == 33) {
-			var4 = "_rc";
-		} else if (GrandExchangeOfferOwnWorldComparator.cacheGamebuild == 34) {
-			var4 = "_wip";
-		}
-
-		File var5 = new File(UserComparator4.userHomeDirectory, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-		AccessFile var6;
-		if (!var2 && var5.exists()) {
-			try {
-				var6 = new AccessFile(var5, "rw", 10000L);
-				return var6;
-			} catch (IOException var8) {
-			}
-		}
-
-		try {
-			var6 = new AccessFile(var3, "rw", 10000L);
-			return var6;
-		} catch (IOException var7) {
-			throw new RuntimeException();
-		}
+	public static int method388(int var0) {
+		return var0 >> 11 & 63;
 	}
 
 	@ObfuscatedName("e")
-	@ObfuscatedSignature(
-		signature = "(IIS)Lbn;",
-		garbageValue = "-2264"
-	)
-	@Export("Messages_getByChannelAndID")
-	static Message Messages_getByChannelAndID(int var0, int var1) {
-		ChatChannel var2 = (ChatChannel)Messages.Messages_channels.get(var0);
-		return var2.getMessage(var1);
+	@Export("Entity_unpackID")
+	public static int Entity_unpackID(long var0) {
+		return (int)(var0 >>> 17 & 4294967295L);
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("gd")
 	@ObfuscatedSignature(
-		signature = "(II)V",
-		garbageValue = "1219570731"
+		signature = "(I)Z",
+		garbageValue = "767205713"
 	)
-	@Export("clearItemContainer")
-	static void clearItemContainer(int var0) {
-		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var1 != null) {
-			for (int var2 = 0; var2 < var1.ids.length; ++var2) {
-				var1.ids[var2] = -1;
-				var1.quantities[var2] = 0;
+	static boolean method386() {
+		return (Client.drawPlayerNames & 1) != 0;
+	}
+
+	@ObfuscatedName("in")
+	@ObfuscatedSignature(
+		signature = "(IIIII)V",
+		garbageValue = "-1807339500"
+	)
+	@Export("addSceneMenuOptions")
+	static final void addSceneMenuOptions(int var0, int var1, int var2, int var3) {
+		if (Client.isItemSelected == 0 && !Client.isSpellSelected) {
+			IgnoreList.insertMenuItemNoShift("Walk here", "", 23, 0, var0 - var2, var1 - var3);
+		}
+
+		long var4 = -1L;
+		long var6 = -1L;
+
+		int var8;
+		for (var8 = 0; var8 < SecureRandomCallable.method1250(); ++var8) {
+			long var9 = WorldMapEvent.method868(var8);
+			if (var9 != var6) {
+				var6 = var9;
+				int var22 = PacketWriter.method2376(var8);
+				int var12 = WorldMapSectionType.method347(var8);
+				int var13 = class276.method5036(var8);
+				int var14 = WorldMapIcon_1.method407(var8);
+				if (var13 == 2 && GrandExchangeOfferWorldComparator.scene.getObjectFlags(ScriptEvent.Client_plane, var22, var12, var9) >= 0) {
+					ObjectDefinition var15 = WorldMapSection2.getObjectDefinition(var14);
+					if (var15.transforms != null) {
+						var15 = var15.transform();
+					}
+
+					if (var15 == null) {
+						continue;
+					}
+
+					if (Client.isItemSelected == 1) {
+						IgnoreList.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + class297.colorStartTag(65535) + var15.name, 1, var14, var22, var12);
+					} else if (Client.isSpellSelected) {
+						if ((AbstractWorldMapIcon.selectedSpellFlags & 4) == 4) {
+							IgnoreList.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + class297.colorStartTag(65535) + var15.name, 2, var14, var22, var12);
+						}
+					} else {
+						String[] var23 = var15.actions;
+						if (var23 != null) {
+							for (int var24 = 4; var24 >= 0; --var24) {
+								if (var23[var24] != null) {
+									short var18 = 0;
+									if (var24 == 0) {
+										var18 = 3;
+									}
+
+									if (var24 == 1) {
+										var18 = 4;
+									}
+
+									if (var24 == 2) {
+										var18 = 5;
+									}
+
+									if (var24 == 3) {
+										var18 = 6;
+									}
+
+									if (var24 == 4) {
+										var18 = 1001;
+									}
+
+									IgnoreList.insertMenuItemNoShift(var23[var24], class297.colorStartTag(65535) + var15.name, var18, var14, var22, var12);
+								}
+							}
+						}
+
+						IgnoreList.insertMenuItemNoShift("Examine", class297.colorStartTag(65535) + var15.name, 1002, var15.id, var22, var12);
+					}
+				}
+
+				int var16;
+				NPC var17;
+				Player var19;
+				int[] var30;
+				int var32;
+				if (var13 == 1) {
+					NPC var27 = Client.npcs[var14];
+					if (var27 == null) {
+						continue;
+					}
+
+					if (var27.definition.size == 1 && (var27.x & 127) == 64 && (var27.y & 127) == 64) {
+						for (var16 = 0; var16 < Client.npcCount; ++var16) {
+							var17 = Client.npcs[Client.npcIndices[var16]];
+							if (var17 != null && var17 != var27 && var17.definition.size == 1 && var17.x == var27.x && var27.y == var17.y) {
+								WorldMapRegion.addNpcToMenu(var17.definition, Client.npcIndices[var16], var22, var12);
+							}
+						}
+
+						var16 = Players.Players_count;
+						var30 = Players.Players_indices;
+
+						for (var32 = 0; var32 < var16; ++var32) {
+							var19 = Client.players[var30[var32]];
+							if (var19 != null && var19.x == var27.x && var27.y == var19.y) {
+								InterfaceParent.addPlayerToMenu(var19, var30[var32], var22, var12);
+							}
+						}
+					}
+
+					WorldMapRegion.addNpcToMenu(var27.definition, var14, var22, var12);
+				}
+
+				if (var13 == 0) {
+					Player var28 = Client.players[var14];
+					if (var28 == null) {
+						continue;
+					}
+
+					if ((var28.x & 127) == 64 && (var28.y & 127) == 64) {
+						for (var16 = 0; var16 < Client.npcCount; ++var16) {
+							var17 = Client.npcs[Client.npcIndices[var16]];
+							if (var17 != null && var17.definition.size == 1 && var17.x == var28.x && var28.y == var17.y) {
+								WorldMapRegion.addNpcToMenu(var17.definition, Client.npcIndices[var16], var22, var12);
+							}
+						}
+
+						var16 = Players.Players_count;
+						var30 = Players.Players_indices;
+
+						for (var32 = 0; var32 < var16; ++var32) {
+							var19 = Client.players[var30[var32]];
+							if (var19 != null && var28 != var19 && var19.x == var28.x && var19.y == var28.y) {
+								InterfaceParent.addPlayerToMenu(var19, var30[var32], var22, var12);
+							}
+						}
+					}
+
+					if (var14 != Client.combatTargetPlayerIndex) {
+						InterfaceParent.addPlayerToMenu(var28, var14, var22, var12);
+					} else {
+						var4 = var9;
+					}
+				}
+
+				if (var13 == 3) {
+					NodeDeque var29 = Client.groundItems[ScriptEvent.Client_plane][var22][var12];
+					if (var29 != null) {
+						for (TileItem var33 = (TileItem)var29.first(); var33 != null; var33 = (TileItem)var29.next()) {
+							ItemDefinition var31 = AbstractWorldMapData.ItemDefinition_get(var33.id);
+							if (Client.isItemSelected == 1) {
+								IgnoreList.insertMenuItemNoShift("Use", Client.selectedItemName + " " + "->" + " " + class297.colorStartTag(16748608) + var31.name, 16, var33.id, var22, var12);
+							} else if (Client.isSpellSelected) {
+								if ((AbstractWorldMapIcon.selectedSpellFlags & 1) == 1) {
+									IgnoreList.insertMenuItemNoShift(Client.selectedSpellActionName, Client.selectedSpellName + " " + "->" + " " + class297.colorStartTag(16748608) + var31.name, 17, var33.id, var22, var12);
+								}
+							} else {
+								String[] var25 = var31.groundActions;
+
+								for (int var26 = 4; var26 >= 0; --var26) {
+									if (var25 != null && var25[var26] != null) {
+										byte var20 = 0;
+										if (var26 == 0) {
+											var20 = 18;
+										}
+
+										if (var26 == 1) {
+											var20 = 19;
+										}
+
+										if (var26 == 2) {
+											var20 = 20;
+										}
+
+										if (var26 == 3) {
+											var20 = 21;
+										}
+
+										if (var26 == 4) {
+											var20 = 22;
+										}
+
+										IgnoreList.insertMenuItemNoShift(var25[var26], class297.colorStartTag(16748608) + var31.name, var20, var33.id, var22, var12);
+									} else if (var26 == 2) {
+										IgnoreList.insertMenuItemNoShift("Take", class297.colorStartTag(16748608) + var31.name, 20, var33.id, var22, var12);
+									}
+								}
+
+								IgnoreList.insertMenuItemNoShift("Examine", class297.colorStartTag(16748608) + var31.name, 1004, var33.id, var22, var12);
+							}
+						}
+					}
+				}
 			}
-
-		}
-	}
-
-	@ObfuscatedName("ip")
-	@ObfuscatedSignature(
-		signature = "(IIIIII)V",
-		garbageValue = "2037508438"
-	)
-	@Export("drawScrollBar")
-	static final void drawScrollBar(int var0, int var1, int var2, int var3, int var4) {
-		class192.scrollBarSprites[0].drawAt(var0, var1);
-		class192.scrollBarSprites[1].drawAt(var0, var3 + var1 - 16);
-		Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1 + 16, 16, var3 - 32, Client.field870);
-		int var5 = var3 * (var3 - 32) / var4;
-		if (var5 < 8) {
-			var5 = 8;
 		}
 
-		int var6 = (var3 - 32 - var5) * var2 / (var4 - var3);
-		Rasterizer2D.Rasterizer2D_fillRectangle(var0, var6 + var1 + 16, 16, var5, Client.field709);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0, var6 + var1 + 16, var5, Client.field711);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0 + 1, var6 + var1 + 16, var5, Client.field711);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0, var6 + var1 + 16, 16, Client.field711);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0, var6 + var1 + 17, 16, Client.field711);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0 + 15, var6 + var1 + 16, var5, Client.field710);
-		Rasterizer2D.Rasterizer2D_drawVerticalLine(var0 + 14, var6 + var1 + 17, var5 - 1, Client.field710);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0, var6 + var5 + var1 + 15, 16, Client.field710);
-		Rasterizer2D.Rasterizer2D_drawHorizontalLine(var0 + 1, var5 + var6 + var1 + 14, 15, Client.field710);
+		if (var4 != -1L) {
+			var8 = (int)(var4 >>> 0 & 127L);
+			int var10 = UserComparator9.method3500(var4);
+			Player var11 = Client.players[Client.combatTargetPlayerIndex];
+			InterfaceParent.addPlayerToMenu(var11, Client.combatTargetPlayerIndex, var8, var10);
+		}
+
 	}
 }

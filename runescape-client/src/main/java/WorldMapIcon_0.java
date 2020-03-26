@@ -4,64 +4,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("z")
+@ObfuscatedName("an")
 @Implements("WorldMapIcon_0")
 public class WorldMapIcon_0 extends AbstractWorldMapIcon {
-	@ObfuscatedName("nl")
-	@ObfuscatedGetter(
-		intValue = 801956047
-	)
-	static int field142;
-	@ObfuscatedName("sn")
+	@ObfuscatedName("bu")
 	@ObfuscatedSignature(
-		signature = "Lly;"
+		signature = "Lmx;"
 	)
-	@Export("worldMap")
-	static WorldMap worldMap;
-	@ObfuscatedName("dv")
+	@Export("loginType")
+	static LoginType loginType;
+	@ObfuscatedName("dr")
 	@ObfuscatedSignature(
-		signature = "Lkr;"
+		signature = "Lih;"
 	)
-	@Export("js5Socket")
-	static AbstractSocket js5Socket;
-	@ObfuscatedName("eg")
+	@Export("archive5")
+	static Archive archive5;
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -201961779
-	)
-	static int field148;
-	@ObfuscatedName("c")
-	@ObfuscatedGetter(
-		intValue = -204680949
+		intValue = -602879945
 	)
 	@Export("element")
 	final int element;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "Laz;"
+		signature = "Lau;"
 	)
 	@Export("label")
 	final WorldMapLabel label;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = 844262399
+		intValue = -1634028725
 	)
 	@Export("subWidth")
 	final int subWidth;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 1735837545
+		intValue = 497212545
 	)
 	@Export("subHeight")
 	final int subHeight;
 
 	@ObfuscatedSignature(
-		signature = "(Lhj;Lhj;ILaz;)V"
+		signature = "(Lhj;Lhj;ILau;)V"
 	)
 	WorldMapIcon_0(Coord var1, Coord var2, int var3, WorldMapLabel var4) {
 		super(var1, var2);
 		this.element = var3;
 		this.label = var4;
-		WorldMapElement var5 = PacketBufferNode.WorldMapElement_get(this.getElement());
+		WorldMapElement var5 = class25.WorldMapElement_get(this.getElement());
 		Sprite var6 = var5.getSpriteBool(false);
 		if (var6 != null) {
 			this.subWidth = var6.subWidth;
@@ -73,207 +63,119 @@ public class WorldMapIcon_0 extends AbstractWorldMapIcon {
 
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(I)I",
-		garbageValue = "1499764486"
+		signature = "(B)I",
+		garbageValue = "16"
 	)
 	@Export("getElement")
 	public int getElement() {
 		return this.element;
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		signature = "(B)Laz;",
-		garbageValue = "124"
+		signature = "(I)Lau;",
+		garbageValue = "2077771117"
 	)
 	@Export("getLabel")
 	WorldMapLabel getLabel() {
 		return this.label;
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(S)I",
-		garbageValue = "-26101"
+		signature = "(I)I",
+		garbageValue = "650401890"
 	)
 	@Export("getSubWidth")
 	int getSubWidth() {
 		return this.subWidth;
 	}
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedSignature(
-		signature = "(B)I",
-		garbageValue = "1"
+		signature = "(I)I",
+		garbageValue = "-1828864081"
 	)
 	@Export("getSubHeight")
 	int getSubHeight() {
 		return this.subHeight;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		signature = "(B)J",
-		garbageValue = "74"
+		signature = "(Ljava/lang/String;II)Z",
+		garbageValue = "-1457680622"
 	)
-	@Export("currentTimeMillis")
-	public static final synchronized long currentTimeMillis() {
-		long var0 = System.currentTimeMillis();
-		if (var0 < VertexNormal.field1752) {
-			SpotAnimationDefinition.field3250 += VertexNormal.field1752 - var0;
-		}
-
-		VertexNormal.field1752 = var0;
-		return SpotAnimationDefinition.field3250 + var0;
+	static boolean method306(String var0, int var1) {
+		return ItemContainer.method1274(var0, var1, "openjs");
 	}
 
-	@ObfuscatedName("o")
+	@ObfuscatedName("hk")
 	@ObfuscatedSignature(
-		signature = "(Lks;I)V",
-		garbageValue = "-2023034499"
+		signature = "(I)V",
+		garbageValue = "1081049793"
 	)
-	static final void method206(PacketBuffer var0) {
-		int var1 = 0;
+	static final void method304() {
+		PacketBuffer var0 = Client.packetWriter.packetBuffer;
 		var0.importIndex();
-
-		byte[] var10000;
+		int var1 = var0.readBits(8);
 		int var2;
-		int var3;
-		int var4;
-		for (var2 = 0; var2 < Players.Players_count; ++var2) {
-			var3 = Players.Players_indices[var2];
-			if ((Players.field1236[var3] & 1) == 0) {
-				if (var1 > 0) {
-					--var1;
-					var10000 = Players.field1236;
-					var10000[var3] = (byte)(var10000[var3] | 2);
-				} else {
-					var4 = var0.readBits(1);
-					if (var4 == 0) {
-						var1 = class80.method2094(var0);
-						var10000 = Players.field1236;
-						var10000[var3] = (byte)(var10000[var3] | 2);
-					} else {
-						class208.readPlayerUpdate(var0, var3);
-					}
-				}
+		if (var1 < Client.npcCount) {
+			for (var2 = var1; var2 < Client.npcCount; ++var2) {
+				Client.field918[++Client.field801 - 1] = Client.npcIndices[var2];
 			}
 		}
 
-		var0.exportIndex();
-		if (var1 != 0) {
-			throw new RuntimeException();
+		if (var1 > Client.npcCount) {
+			throw new RuntimeException("");
 		} else {
-			var0.importIndex();
+			Client.npcCount = 0;
 
-			for (var2 = 0; var2 < Players.Players_count; ++var2) {
-				var3 = Players.Players_indices[var2];
-				if ((Players.field1236[var3] & 1) != 0) {
-					if (var1 > 0) {
-						--var1;
-						var10000 = Players.field1236;
-						var10000[var3] = (byte)(var10000[var3] | 2);
-					} else {
-						var4 = var0.readBits(1);
-						if (var4 == 0) {
-							var1 = class80.method2094(var0);
-							var10000 = Players.field1236;
-							var10000[var3] = (byte)(var10000[var3] | 2);
-						} else {
-							class208.readPlayerUpdate(var0, var3);
-						}
-					}
-				}
-			}
-
-			var0.exportIndex();
-			if (var1 != 0) {
-				throw new RuntimeException();
-			} else {
-				var0.importIndex();
-
-				for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
-					var3 = Players.Players_emptyIndices[var2];
-					if ((Players.field1236[var3] & 1) != 0) {
-						if (var1 > 0) {
-							--var1;
-							var10000 = Players.field1236;
-							var10000[var3] = (byte)(var10000[var3] | 2);
-						} else {
-							var4 = var0.readBits(1);
-							if (var4 == 0) {
-								var1 = class80.method2094(var0);
-								var10000 = Players.field1236;
-								var10000[var3] = (byte)(var10000[var3] | 2);
-							} else if (class40.updateExternalPlayer(var0, var3)) {
-								var10000 = Players.field1236;
-								var10000[var3] = (byte)(var10000[var3] | 2);
-							}
-						}
-					}
-				}
-
-				var0.exportIndex();
-				if (var1 != 0) {
-					throw new RuntimeException();
+			for (var2 = 0; var2 < var1; ++var2) {
+				int var3 = Client.npcIndices[var2];
+				NPC var4 = Client.npcs[var3];
+				int var5 = var0.readBits(1);
+				if (var5 == 0) {
+					Client.npcIndices[++Client.npcCount - 1] = var3;
+					var4.npcCycle = Client.cycle;
 				} else {
-					var0.importIndex();
-
-					for (var2 = 0; var2 < Players.Players_emptyIdxCount; ++var2) {
-						var3 = Players.Players_emptyIndices[var2];
-						if ((Players.field1236[var3] & 1) == 0) {
-							if (var1 > 0) {
-								--var1;
-								var10000 = Players.field1236;
-								var10000[var3] = (byte)(var10000[var3] | 2);
-							} else {
-								var4 = var0.readBits(1);
-								if (var4 == 0) {
-									var1 = class80.method2094(var0);
-									var10000 = Players.field1236;
-									var10000[var3] = (byte)(var10000[var3] | 2);
-								} else if (class40.updateExternalPlayer(var0, var3)) {
-									var10000 = Players.field1236;
-									var10000[var3] = (byte)(var10000[var3] | 2);
-								}
-							}
-						}
-					}
-
-					var0.exportIndex();
-					if (var1 != 0) {
-						throw new RuntimeException();
+					int var6 = var0.readBits(2);
+					if (var6 == 0) {
+						Client.npcIndices[++Client.npcCount - 1] = var3;
+						var4.npcCycle = Client.cycle;
+						Client.field725[++Client.field851 - 1] = var3;
 					} else {
-						Players.Players_count = 0;
-						Players.Players_emptyIdxCount = 0;
-
-						for (var2 = 1; var2 < 2048; ++var2) {
-							var10000 = Players.field1236;
-							var10000[var2] = (byte)(var10000[var2] >> 1);
-							Player var5 = Client.players[var2];
-							if (var5 != null) {
-								Players.Players_indices[++Players.Players_count - 1] = var2;
-							} else {
-								Players.Players_emptyIndices[++Players.Players_emptyIdxCount - 1] = var2;
+						int var7;
+						int var8;
+						if (var6 == 1) {
+							Client.npcIndices[++Client.npcCount - 1] = var3;
+							var4.npcCycle = Client.cycle;
+							var7 = var0.readBits(3);
+							var4.method2133(var7, (byte)1);
+							var8 = var0.readBits(1);
+							if (var8 == 1) {
+								Client.field725[++Client.field851 - 1] = var3;
 							}
+						} else if (var6 == 2) {
+							Client.npcIndices[++Client.npcCount - 1] = var3;
+							var4.npcCycle = Client.cycle;
+							var7 = var0.readBits(3);
+							var4.method2133(var7, (byte)2);
+							var8 = var0.readBits(3);
+							var4.method2133(var8, (byte)2);
+							int var9 = var0.readBits(1);
+							if (var9 == 1) {
+								Client.field725[++Client.field851 - 1] = var3;
+							}
+						} else if (var6 == 3) {
+							Client.field918[++Client.field801 - 1] = var3;
 						}
-
 					}
 				}
 			}
-		}
-	}
 
-	@ObfuscatedName("ks")
-	@ObfuscatedSignature(
-		signature = "(Lhn;I)I",
-		garbageValue = "2118498909"
-	)
-	@Export("getWidgetClickMask")
-	static int getWidgetClickMask(Widget var0) {
-		IntegerNode var1 = (IntegerNode)Client.widgetClickMasks.get((long)var0.childIndex + ((long)var0.id << 32));
-		return var1 != null ? var1.integer : var0.clickMask;
+		}
 	}
 }

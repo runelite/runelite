@@ -1,153 +1,182 @@
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("er")
+@ObfuscatedName("em")
 @Implements("Occluder")
 public final class Occluder {
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedGetter(
-		intValue = -1590617607
+		intValue = -1489465753
 	)
 	@Export("minTileX")
 	int minTileX;
-	@ObfuscatedName("t")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -547083531
+		intValue = -252661799
 	)
 	@Export("maxTileX")
 	int maxTileX;
-	@ObfuscatedName("o")
+	@ObfuscatedName("k")
 	@ObfuscatedGetter(
-		intValue = -50213873
+		intValue = -1056714957
 	)
 	@Export("minTileY")
 	int minTileY;
-	@ObfuscatedName("e")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 468551341
+		intValue = -1875839743
 	)
 	@Export("maxTileY")
 	int maxTileY;
-	@ObfuscatedName("i")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 1458013883
+		intValue = -1984874267
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("g")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 1331967011
+		intValue = 1069465565
 	)
 	@Export("minX")
 	int minX;
-	@ObfuscatedName("d")
+	@ObfuscatedName("q")
 	@ObfuscatedGetter(
-		intValue = -455782375
+		intValue = -1744424635
 	)
 	@Export("maxX")
 	int maxX;
-	@ObfuscatedName("l")
+	@ObfuscatedName("z")
 	@ObfuscatedGetter(
-		intValue = 819505963
+		intValue = -104326363
 	)
 	@Export("minZ")
 	int minZ;
-	@ObfuscatedName("j")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1618672975
+		intValue = -470429171
 	)
 	@Export("maxZ")
 	int maxZ;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -1033011613
+		intValue = 2023575959
 	)
 	@Export("minY")
 	int minY;
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -1435330577
+		intValue = 1540730751
 	)
 	@Export("maxY")
 	int maxY;
-	@ObfuscatedName("h")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 681234965
+		intValue = 223971517
 	)
-	int field1891;
-	@ObfuscatedName("v")
-	@ObfuscatedGetter(
-		intValue = 460124457
-	)
-	int field1900;
+	int field1916;
 	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -947874837
+		intValue = 1903761875
 	)
-	int field1901;
-	@ObfuscatedName("x")
+	int field1917;
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -1101467095
+		intValue = 2065104463
 	)
-	int field1903;
-	@ObfuscatedName("w")
+	int field1914;
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = -1920736103
+		intValue = 213261407
 	)
-	int field1904;
-	@ObfuscatedName("k")
+	int field1920;
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = -1277839357
+		intValue = 1460776299
 	)
-	int field1889;
-	@ObfuscatedName("q")
+	int field1908;
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 461878441
+		intValue = 1267954519
 	)
-	int field1905;
+	int field1921;
+	@ObfuscatedName("a")
+	@ObfuscatedGetter(
+		intValue = -1266608785
+	)
+	int field1922;
 
 	Occluder() {
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("ap")
 	@ObfuscatedSignature(
-		signature = "(IB)Lir;",
-		garbageValue = "-54"
+		signature = "(Lfs;III)Ldw;",
+		garbageValue = "2138193849"
 	)
-	@Export("getObjectDefinition")
-	public static ObjectDefinition getObjectDefinition(int var0) {
-		ObjectDefinition var1 = (ObjectDefinition)ObjectDefinition.ObjectDefinition_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
+	public static final PcmPlayer method3401(TaskHandler var0, int var1, int var2) {
+		if (PcmPlayer.field1421 == 0) {
+			throw new IllegalStateException();
+		} else if (var1 >= 0 && var1 < 2) {
+			if (var2 < 256) {
+				var2 = 256;
+			}
+
+			try {
+				PcmPlayer var3 = PcmPlayer.pcmPlayerProvider.player();
+				var3.samples = new int[(PcmPlayer.PcmPlayer_stereo ? 2 : 1) * 256];
+				var3.field1431 = var2;
+				var3.init();
+				var3.capacity = (var2 & -1024) + 1024;
+				if (var3.capacity > 16384) {
+					var3.capacity = 16384;
+				}
+
+				var3.open(var3.capacity);
+				if (PcmPlayer.field1423 > 0 && class332.soundSystem == null) {
+					class332.soundSystem = new SoundSystem();
+					PcmPlayer.soundSystemExecutor = Executors.newScheduledThreadPool(1);
+					PcmPlayer.soundSystemExecutor.scheduleAtFixedRate(class332.soundSystem, 0L, 10L, TimeUnit.MILLISECONDS);
+				}
+
+				if (class332.soundSystem != null) {
+					if (class332.soundSystem.players[var1] != null) {
+						throw new IllegalArgumentException();
+					}
+
+					class332.soundSystem.players[var1] = var3;
+				}
+
+				return var3;
+			} catch (Throwable var4) {
+				return new PcmPlayer();
+			}
 		} else {
-			byte[] var2 = ObjectDefinition.ObjectDefinition_archive.takeFile(6, var0);
-			var1 = new ObjectDefinition();
-			var1.id = var0;
-			if (var2 != null) {
-				var1.decode(new Buffer(var2));
-			}
-
-			var1.postDecode();
-			if (var1.isSolid) {
-				var1.interactType = 0;
-				var1.boolean1 = false;
-			}
-
-			ObjectDefinition.ObjectDefinition_cached.put(var1, (long)var0);
-			return var1;
+			throw new IllegalArgumentException();
 		}
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("lc")
 	@ObfuscatedSignature(
-		signature = "(I)[Lgb;",
-		garbageValue = "1401703013"
+		signature = "(Ljava/lang/String;I)Ljava/lang/String;",
+		garbageValue = "880911904"
 	)
-	@Export("ServerPacket_values")
-	public static ServerPacket[] ServerPacket_values() {
-		return new ServerPacket[]{ServerPacket.field2127, ServerPacket.field2129, ServerPacket.field2168, ServerPacket.field2118, ServerPacket.field2119, ServerPacket.field2120, ServerPacket.field2121, ServerPacket.field2122, ServerPacket.field2123, ServerPacket.field2124, ServerPacket.field2159, ServerPacket.field2126, ServerPacket.field2165, ServerPacket.field2145, ServerPacket.field2200, ServerPacket.field2169, ServerPacket.field2131, ServerPacket.field2132, ServerPacket.field2117, ServerPacket.field2134, ServerPacket.field2135, ServerPacket.field2136, ServerPacket.field2137, ServerPacket.field2138, ServerPacket.field2139, ServerPacket.field2140, ServerPacket.field2141, ServerPacket.field2142, ServerPacket.field2181, ServerPacket.field2151, ServerPacket.field2173, ServerPacket.field2146, ServerPacket.field2178, ServerPacket.field2183, ServerPacket.field2172, ServerPacket.field2150, ServerPacket.field2148, ServerPacket.field2152, ServerPacket.field2153, ServerPacket.field2125, ServerPacket.field2143, ServerPacket.field2116, ServerPacket.field2157, ServerPacket.field2144, ServerPacket.field2115, ServerPacket.field2160, ServerPacket.field2161, ServerPacket.field2149, ServerPacket.field2163, ServerPacket.field2164, ServerPacket.field2133, ServerPacket.field2166, ServerPacket.field2128, ServerPacket.field2156, ServerPacket.field2162, ServerPacket.field2155, ServerPacket.field2171, ServerPacket.field2193, ServerPacket.field2167, ServerPacket.field2174, ServerPacket.field2175, ServerPacket.field2176, ServerPacket.field2177, ServerPacket.field2154, ServerPacket.field2179, ServerPacket.field2180, ServerPacket.field2158, ServerPacket.field2182, ServerPacket.field2130, ServerPacket.field2184, ServerPacket.field2187, ServerPacket.field2186, ServerPacket.field2147, ServerPacket.field2188, ServerPacket.field2189, ServerPacket.field2190, ServerPacket.field2191, ServerPacket.field2192, ServerPacket.field2170, ServerPacket.field2194, ServerPacket.field2195, ServerPacket.field2196, ServerPacket.field2197, ServerPacket.field2198, ServerPacket.field2199, ServerPacket.field2185};
+	static String method3400(String var0) {
+		PlayerType[] var1 = InterfaceParent.PlayerType_values();
+
+		for (int var2 = 0; var2 < var1.length; ++var2) {
+			PlayerType var3 = var1[var2];
+			if (var3.modIcon != -1 && var0.startsWith(class1.method21(var3.modIcon))) {
+				var0 = var0.substring(6 + Integer.toString(var3.modIcon).length());
+				break;
+			}
+		}
+
+		return var0;
 	}
 }

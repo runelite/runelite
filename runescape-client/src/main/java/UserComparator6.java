@@ -3,16 +3,13 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fx")
 @Implements("UserComparator6")
 public class UserComparator6 extends AbstractUserComparator {
-	@ObfuscatedName("bl")
-	@ObfuscatedSignature(
-		signature = "[Llt;"
-	)
-	@Export("worldSelectBackSprites")
-	static Sprite[] worldSelectBackSprites;
-	@ObfuscatedName("c")
+	@ObfuscatedName("s")
+	@Export("Tiles_saturation")
+	static int[] Tiles_saturation;
+	@ObfuscatedName("x")
 	@Export("reversed")
 	final boolean reversed;
 
@@ -20,10 +17,10 @@ public class UserComparator6 extends AbstractUserComparator {
 		this.reversed = var1;
 	}
 
-	@ObfuscatedName("c")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		signature = "(Lje;Lje;B)I",
-		garbageValue = "-119"
+		signature = "(Lke;Lke;I)I",
+		garbageValue = "1973806284"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
