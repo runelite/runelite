@@ -28,6 +28,7 @@ package net.runelite.client.plugins.grounditems;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.EvictingQueue;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -161,9 +163,12 @@ public class GroundItemsPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	private ScheduledExecutorService executor;
+
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
-	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
+	private Map<Integer, Color> priceChecks = ImmutableMap.of();
 	private LoadingCache<NamedQuantity, Boolean> highlightedItems;
 	private LoadingCache<NamedQuantity, Boolean> hiddenItems;
 	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
@@ -178,9 +183,9 @@ public class GroundItemsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		reset();
 		mouseManager.registerMouseListener(inputListener);
 		keyManager.registerKeyListener(inputListener);
+		executor.execute(this::reset);
 	}
 
 	@Override
@@ -203,7 +208,7 @@ public class GroundItemsPlugin extends Plugin
 	{
 		if (event.getGroup().equals("grounditems"))
 		{
-			reset();
+			executor.execute(this::reset);
 		}
 	}
 
@@ -429,32 +434,33 @@ public class GroundItemsPlugin extends Plugin
 			.build(new WildcardMatchLoader(hiddenItemList));
 
 		// Cache colors
-		priceChecks.clear();
-
+		ImmutableMap.Builder<Integer, Color> priceCheckBuilder = ImmutableMap.builder();
 		if (config.getHighlightOverValue() > 0)
 		{
-			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
+			priceCheckBuilder.put(config.getHighlightOverValue(), config.highlightedColor());
 		}
 
 		if (config.insaneValuePrice() > 0)
 		{
-			priceChecks.put(config.insaneValuePrice(), config.insaneValueColor());
+			priceCheckBuilder.put(config.insaneValuePrice(), config.insaneValueColor());
 		}
 
 		if (config.highValuePrice() > 0)
 		{
-			priceChecks.put(config.highValuePrice(), config.highValueColor());
+			priceCheckBuilder.put(config.highValuePrice(), config.highValueColor());
 		}
 
 		if (config.mediumValuePrice() > 0)
 		{
-			priceChecks.put(config.mediumValuePrice(), config.mediumValueColor());
+			priceCheckBuilder.put(config.mediumValuePrice(), config.mediumValueColor());
 		}
 
 		if (config.lowValuePrice() > 0)
 		{
-			priceChecks.put(config.lowValuePrice(), config.lowValueColor());
+			priceCheckBuilder.put(config.lowValuePrice(), config.lowValueColor());
 		}
+
+		priceChecks = priceCheckBuilder.build();
 	}
 
 	@Subscribe

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,43 +24,26 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import java.util.Arrays;
 import joptsimple.internal.Strings;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Assert;
+import static net.runelite.client.plugins.grounditems.ItemThreshold.Inequality.*;
 import org.junit.Test;
 
-public class WildcardMatchLoaderTest
+public class ItemThresholdTest
 {
 	@Test
-	public void testLoadItems()
+	public void test()
 	{
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune*", "Abyssal whip"));
-		assertTrue(loader.load(new NamedQuantity("rune pouch", 1)));
-		assertTrue(loader.load(new NamedQuantity("Rune pouch", 1)));
-		assertFalse(loader.load(new NamedQuantity("Adamant dagger", 1)));
-		assertTrue(loader.load(new NamedQuantity("Runeite Ore", 1)));
-		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 1)));
-		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
+		Assert.assertEquals(ItemThreshold.fromConfigEntry("Dharok's platebody 100"), new ItemThreshold("Dharok's platebody 100", 0, MORE_THAN));
+		Assert.assertEquals(ItemThreshold.fromConfigEntry("Dharok's platebody 100<100"), new ItemThreshold("Dharok's platebody 100", 100, LESS_THAN));
+		Assert.assertEquals(ItemThreshold.fromConfigEntry("Dharok's platebody > 100"), new ItemThreshold("Dharok's platebody", 100, MORE_THAN));
+		Assert.assertEquals(ItemThreshold.fromConfigEntry("Dharok's platebody < 10 0"), new ItemThreshold("Dharok's platebody", 0, MORE_THAN));
 	}
 
-	@Test
-	public void testLoadQuantities()
-	{
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune* < 3", "*whip>3", "nature*<5", "*rune > 30"));
-		assertTrue(loader.load(new NamedQuantity("Nature Rune", 50)));
-		assertFalse(loader.load(new NamedQuantity("Nature Impling", 5)));
-		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 4)));
-		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
-		assertTrue(loader.load(new NamedQuantity("Rune Longsword", 2)));
-	}
-
-	@Test(timeout = 1000)
+	@Test(timeout = 100)
 	public void testExplosive()
 	{
 		String name = "archer" + Strings.repeat('e', 50000) + "s ring";
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList(name + "* < 100"));
-		assertTrue(loader.load(new NamedQuantity(name, 50)));
-		assertFalse(loader.load(new NamedQuantity(name, 150)));
+		Assert.assertEquals(ItemThreshold.fromConfigEntry(name + " < 387"), new ItemThreshold(name, 387, LESS_THAN));
 	}
 }
