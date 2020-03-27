@@ -34,6 +34,7 @@ open class BootstrapTask @Inject constructor(@Input val type: String) : DefaultT
 
     private fun getArtifacts(): Array<JsonBuilder> {
         val artifacts = ArrayList<JsonBuilder>()
+        val artifactsSet = HashSet<String>()
 
         project.configurations["runtimeClasspath"].resolvedConfiguration.resolvedArtifacts.forEach {
             val module = it.moduleVersion.id.toString()
@@ -44,7 +45,11 @@ open class BootstrapTask @Inject constructor(@Input val type: String) : DefaultT
             val version = splat[2]
             lateinit var path: String
 
-            if (it.file.name.contains(ProjectVersions.openosrsVersion)) {
+            if (it.file.name.contains("injected-client") ||
+                    it.file.name.contains("runelite-client") ||
+                    it.file.name.contains("http-api") ||
+                    it.file.name.contains("runescape-api") ||
+                    it.file.name.contains("runelite-api")) {
                 path = "https://github.com/open-osrs/hosting/raw/master/${type}/${it.file.name}"
             } else if (it.file.name.contains("injection-annotations") || it.file.name.contains("rxrelay")) {
                 path = "https://github.com/open-osrs/hosting/raw/master/" + group.replace(".", "/") + "/${name}/$version/${it.file.name}"
@@ -62,14 +67,18 @@ open class BootstrapTask @Inject constructor(@Input val type: String) : DefaultT
                 path += "${name}/$version/${name}-$version.jar"
             }
 
-            val artifactFile = File(it.file.absolutePath)
+            val filePath = it.file.absolutePath
+            val artifactFile = File(filePath)
 
-            artifacts.add(JsonBuilder(
-                    "name" to it.file.name,
-                    "path" to path,
-                    "size" to artifactFile.length(),
-                    "hash" to hash(artifactFile.readBytes())
-            ))
+            if (!artifactsSet.contains(filePath)) {
+                artifactsSet.add(filePath)
+                artifacts.add(JsonBuilder(
+                        "name" to it.file.name,
+                        "path" to path,
+                        "size" to artifactFile.length(),
+                        "hash" to hash(artifactFile.readBytes())
+                ))
+            }
         }
 
         artifacts.add(JsonBuilder(

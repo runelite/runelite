@@ -34,9 +34,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -54,9 +51,6 @@ import net.runelite.client.util.LinkBrowser;
 @Slf4j
 public class InfoPanel extends JPanel
 {
-	private static final String RUNELITE_VERSION = "runelite.version";
-	private static final String RUNELITE_PLUS_VERSION = "open.osrs.version";
-	private static final String RUNELITE_PLUS_DATE = "open.osrs.builddate";
 	private static final Color DARK_GREY = new Color(10, 10, 10, 255);
 
 	private static final BufferedImage TRANSPARENT_LOGO = ImageUtil.getResourceStreamFromClass(InfoPanel.class, "/openosrs.png");
@@ -67,16 +61,6 @@ public class InfoPanel extends JPanel
 
 	public InfoPanel()
 	{
-		Properties properties = new Properties();
-		try (InputStream in = getClass().getResourceAsStream("/open.osrs.properties"))
-		{
-			properties.load(in);
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to load propertries", ex);
-		}
-
 		this.setLayout(new GridBagLayout());
 		this.setPreferredSize(PANEL_SIZE);
 		this.setBackground(new Color(38, 38, 38));
@@ -104,11 +88,11 @@ public class InfoPanel extends JPanel
 		c.weighty = 0;
 
 		// OpenOSRS version
-		this.add(createPanelTextButton("OpenOSRS Version: " + properties.getProperty(RUNELITE_PLUS_VERSION)), c);
+		this.add(createPanelTextButton("OpenOSRS Version: " + RuneLiteProperties.getPlusVersion()), c);
 		c.gridy++;
 
 		// Build date
-		this.add(createPanelTextButton("Build date: " + properties.getProperty(RUNELITE_PLUS_DATE)), c);
+		this.add(createPanelTextButton("Build date: " + RuneLiteProperties.getPlusDate()), c);
 		c.gridy++;
 
 		final JLabel logsFolder = createPanelButton("Open logs folder", null, () -> LinkBrowser.openLocalFile(LOGS_DIR));

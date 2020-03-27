@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
@@ -78,6 +79,7 @@ import javax.swing.plaf.basic.BasicSpinnerUI;
 import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.util.Text;
+import net.runelite.client.RuneLite;
 import net.runelite.client.config.Button;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItem;
@@ -90,7 +92,9 @@ import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.plugins.ExternalPluginManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -102,6 +106,7 @@ import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.SwingUtil;
 
@@ -131,6 +136,9 @@ class ConfigPanel extends PluginPanel
 
 	@Inject
 	private PluginManager pluginManager;
+
+	@Inject
+	private ExternalPluginManager externalPluginManager;
 
 	@Inject
 	private ColorPickerManager colorPickerManager;
@@ -233,6 +241,7 @@ class ConfigPanel extends PluginPanel
 
 		rebuild(false);
 		eventBus.subscribe(PluginChanged.class, this, this::onPluginChanged);
+		eventBus.subscribe(ConfigChanged.class, this, this::onConfigChanged);
 	}
 
 	private void getSections(ConfigDescriptor cd)
@@ -425,10 +434,43 @@ class ConfigPanel extends PluginPanel
 		ConfigDescriptor cd = pluginConfig.getConfigDescriptor();
 		assert cd != null;
 
+		List<JButton> buttons = new ArrayList<>();
+
+		Map<String, Map<String, String>> pluginsInfoMap = externalPluginManager.getPluginsInfoMap();
+
+		if (pluginConfig.getPlugin() != null && pluginsInfoMap.containsKey(pluginConfig.getPlugin().getClass().getSimpleName()))
+		{
+
+			JPanel infoPanel = new JPanel();
+			infoPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			infoPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+			infoPanel.setLayout(new GridLayout(0, 1));
+
+			final Font smallFont = FontManager.getRunescapeSmallFont();
+
+			Map<String, String> pluginInfo = pluginsInfoMap.get(pluginConfig.getPlugin().getClass().getSimpleName());
+
+			JLabel idLabel = new JLabel(htmlLabel("id", pluginInfo.get("id")));
+			idLabel.setFont(smallFont);
+			infoPanel.add(idLabel);
+
+			JLabel versionLabel = new JLabel(htmlLabel("version", pluginInfo.get("version")));
+			versionLabel.setFont(smallFont);
+			infoPanel.add(versionLabel);
+
+			JLabel providerLabel = new JLabel(htmlLabel("provider", pluginInfo.get("provider")));
+			providerLabel.setFont(smallFont);
+			infoPanel.add(providerLabel);
+
+			JButton button = new JButton("Support");
+			button.addActionListener(e -> LinkBrowser.browse(pluginInfo.get("support")));
+			buttons.add(button);
+
+			mainPanel.add(infoPanel);
+		}
+
 		getSections(cd);
 		getTitleSections(cd);
-
-		List<JButton> buttons = new ArrayList<>();
 
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
@@ -1167,5 +1209,26 @@ class ConfigPanel extends PluginPanel
 			SwingUtilities.invokeLater(() ->
 				pluginToggle.setSelected(event.isLoaded()));
 		}
+	}
+
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getOrigin().equals(RuneLite.uuid))
+		{
+			return;
+		}
+
+		try
+		{
+			SwingUtilities.invokeAndWait(() -> rebuild(true));
+		}
+		catch (InterruptedException | InvocationTargetException e)
+		{
+		}
+	}
+
+	private static String htmlLabel(String key, String value)
+	{
+		return "<html><body style = 'color:#a5a5a5'>" + key + ": <span style = 'color:white'>" + value + "</span></body></html>";
 	}
 }

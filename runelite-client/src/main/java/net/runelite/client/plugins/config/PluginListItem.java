@@ -34,13 +34,19 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.SwingWorker;
 import lombok.Getter;
+import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.plugins.ExternalPluginManager;
 import net.runelite.client.plugins.PluginType;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
@@ -50,6 +56,8 @@ public class PluginListItem extends JPanel
 {
 	private static final ImageIcon CONFIG_ICON;
 	private static final ImageIcon CONFIG_ICON_HOVER;
+	private static final ImageIcon REFRESH_ICON;
+	private static final ImageIcon REFRESH_ICON_HOVER;
 	private static final ImageIcon ON_STAR;
 	private static final ImageIcon OFF_STAR;
 
@@ -70,10 +78,13 @@ public class PluginListItem extends JPanel
 	static
 	{
 		BufferedImage configIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_edit_icon.png");
+		BufferedImage refreshIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "refresh.png");
 		BufferedImage onStar = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "star_on.png");
 		CONFIG_ICON = new ImageIcon(configIcon);
+		REFRESH_ICON = new ImageIcon(refreshIcon);
 		ON_STAR = new ImageIcon(ImageUtil.recolorImage(onStar, ColorScheme.BRAND_BLUE));
 		CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(configIcon, -100));
+		REFRESH_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(refreshIcon, -100));
 
 		BufferedImage offStar = ImageUtil.luminanceScale(
 			ImageUtil.grayscaleImage(onStar),
@@ -82,7 +93,7 @@ public class PluginListItem extends JPanel
 		OFF_STAR = new ImageIcon(offStar);
 	}
 
-	PluginListItem(PluginListPanel pluginListPanel, PluginConfigurationDescriptor pluginConfig)
+	PluginListItem(PluginListPanel pluginListPanel, PluginConfigurationDescriptor pluginConfig, ExternalPluginManager externalPluginManager)
 	{
 		this.pluginListPanel = pluginListPanel;
 		this.pluginConfig = pluginConfig;
@@ -118,6 +129,55 @@ public class PluginListItem extends JPanel
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2));
 		add(buttonPanel, BorderLayout.LINE_END);
+
+		Map<String, Map<String, String>> pluginsInfoMap = externalPluginManager.getPluginsInfoMap();
+
+		if (RuneLiteProperties.getLauncherVersion() == null && pluginConfig.getPlugin() != null && pluginsInfoMap.containsKey(pluginConfig.getPlugin().getClass().getSimpleName()))
+		{
+			JButton hotSwapButton = new JButton(REFRESH_ICON);
+			hotSwapButton.setRolloverIcon(REFRESH_ICON_HOVER);
+			SwingUtil.removeButtonDecorations(hotSwapButton);
+			hotSwapButton.setPreferredSize(new Dimension(25, 0));
+			hotSwapButton.setVisible(false);
+			buttonPanel.add(hotSwapButton);
+
+			hotSwapButton.addActionListener(e ->
+			{
+				Map<String, String> pluginInfo = pluginsInfoMap.get(pluginConfig.getPlugin().getClass().getSimpleName());
+				String pluginId = pluginInfo.get("id");
+
+				hotSwapButton.setIcon(REFRESH_ICON);
+				externalPluginManager.uninstall(pluginId);
+
+				SwingWorker<Boolean, Void> worker = new SwingWorker<>()
+				{
+					@Override
+					protected Boolean doInBackground()
+					{
+						return externalPluginManager.uninstall(pluginId);
+					}
+				};
+				worker.execute();
+
+				JOptionPane.showMessageDialog(ClientUI.getFrame(),
+					pluginId + " is unloaded, put the new jar file in the externalmanager folder and click `ok`",
+					"Hotswap " + pluginId,
+					JOptionPane.INFORMATION_MESSAGE);
+
+				worker = new SwingWorker<>()
+				{
+					@Override
+					protected Boolean doInBackground()
+					{
+						return externalPluginManager.reloadStart(pluginId);
+					}
+				};
+				worker.execute();
+			});
+
+			hotSwapButton.setVisible(true);
+			hotSwapButton.setToolTipText("Hotswap plugin");
+		}
 
 		if (pluginConfig.hasConfigurables())
 		{
@@ -211,8 +271,6 @@ public class PluginListItem extends JPanel
 	 */
 	static void addLabelMouseOver(final JLabel label)
 	{
-		final Color labelForeground = label.getForeground();
-
 		label.addMouseListener(new MouseAdapter()
 		{
 			private Color lastForeground;

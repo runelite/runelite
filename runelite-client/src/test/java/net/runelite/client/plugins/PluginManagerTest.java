@@ -116,7 +116,7 @@ public class PluginManagerTest
 	@Test
 	public void testLoadPlugins() throws Exception
 	{
-		PluginManager pluginManager = new PluginManager(null, null, null, null);
+		PluginManager pluginManager = new PluginManager(null, null, null, null, null, null);
 		pluginManager.setOutdated(true);
 		pluginManager.loadCorePlugins();
 		Collection<Plugin> plugins = pluginManager.getPlugins();
@@ -127,7 +127,7 @@ public class PluginManagerTest
 			.count();
 		assertEquals(expected, plugins.size());
 
-		pluginManager = new PluginManager(null, null, null, null);
+		pluginManager = new PluginManager(null, null, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		plugins = pluginManager.getPlugins();
 
@@ -145,7 +145,7 @@ public class PluginManagerTest
 		modules.add(new GraphvizModule());
 		modules.add(new RuneLiteModule(() -> null, RuneLite.DEFAULT_CONFIG_FILE));
 
-		PluginManager pluginManager = new PluginManager(null, null, null, null);
+		PluginManager pluginManager = new PluginManager(null, null, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		modules.addAll(pluginManager.getPlugins());
 
@@ -194,10 +194,10 @@ public class PluginManagerTest
 	}
 
 	@Test
-	public void testEventbusAnnotations() throws PluginInstantiationException
+	public void testEventbusAnnotations() throws Exception
 	{
 		EventBus eventbus = new EventBus();
-		PluginManager pluginManager = new PluginManager(eventbus, null, null, null)
+		PluginManager pluginManager = new PluginManager(eventbus, null, null, null, null, null)
 		{
 			@Override
 			public boolean isPluginEnabled(Plugin plugin)

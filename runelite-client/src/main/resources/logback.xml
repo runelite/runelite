@@ -69,4 +69,5 @@
 	</root>
 
 	<logger name="org.pf4j.AbstractPluginManager" level="OFF"/>
+	<logger name="org.jgroups" level="ERROR"/>
 </configuration>

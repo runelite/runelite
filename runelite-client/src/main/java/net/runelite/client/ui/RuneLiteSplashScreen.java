@@ -67,6 +67,11 @@ public class RuneLiteSplashScreen extends JFrame
 		this.setVisible(true);
 	}
 
+	public static boolean showing()
+	{
+		return INSTANCE != null;
+	}
+
 	public static void setError(String title, String content)
 	{
 		if (INSTANCE != null)

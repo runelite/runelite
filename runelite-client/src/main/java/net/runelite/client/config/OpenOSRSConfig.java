@@ -343,10 +343,22 @@ public interface OpenOSRSConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "localSync",
+		name = "Sync local instances",
+		description = "Enables multiple local instances of OpenOSRS to communicate (this enables syncing plugin state and config options)",
+		position = 21,
+		titleSection = "miscTitle"
+	)
+	default boolean localSync()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "keyboardPin",
 		name = "Keyboard bank pin",
 		description = "Enables you to type your bank pin",
-		position = 21,
+		position = 22,
 		titleSection = "miscTitle"
 	)
 	default boolean keyboardPin()
@@ -358,7 +370,7 @@ public interface OpenOSRSConfig extends Config
 		keyName = "detachHotkey",
 		name = "Detach Cam",
 		description = "Detach Camera hotkey, press this and it will activate detatched camera.",
-		position = 22,
+		position = 23,
 		titleSection = "miscTitle"
 	)
 	default Keybind detachHotkey()

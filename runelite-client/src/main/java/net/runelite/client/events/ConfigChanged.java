@@ -24,6 +24,7 @@
  */
 package net.runelite.client.events;
 
+import java.io.Serializable;
 import lombok.Data;
 import net.runelite.api.events.Event;
 
@@ -31,7 +32,7 @@ import net.runelite.api.events.Event;
  * An event where a configuration entry has been modified.
  */
 @Data
-public class ConfigChanged implements Event
+public class ConfigChanged implements Event, Serializable
 {
 	/**
 	 * The parent group for the key.
@@ -52,4 +53,12 @@ public class ConfigChanged implements Event
 	 * The new value of the entry, null if the entry has been unset.
 	 */
 	private String newValue;
+	/**
+	 * The client where the config value was changed from
+	 */
+	private String origin;
+	/**
+	 * Path of the current config file
+	 */
+	private String path;
 }
