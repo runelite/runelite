@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timers;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import java.time.Instant;
 
 @ConfigGroup("timers")
 public interface TimersConfig extends Config
@@ -190,6 +191,70 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showTzhaarTimers",
+		name = "Fight Caves and Inferno timers",
+		description = "Display elapsed time in the Fight Caves and Inferno"
+	)
+	default boolean showTzhaarTimers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "tzhaarStartTime",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default Instant tzhaarStartTime()
+	{
+		return null;
+	}
+
+	@ConfigItem(
+		keyName = "tzhaarStartTime",
+		name = "",
+		description = ""
+	)
+	void tzhaarStartTime(Instant tzhaarStartTime);
+
+	@ConfigItem(
+		keyName = "tzhaarLastTime",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default Instant tzhaarLastTime()
+	{
+		return null;
+	}
+
+	@ConfigItem(
+		keyName = "tzhaarLastTime",
+		name = "",
+		description = ""
+	)
+	void tzhaarLastTime(Instant tzhaarLastTime);
+
+	@ConfigItem(
+		keyName = "tzhaarStarted",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default Boolean tzhaarStarted()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "tzhaarStarted",
+		name = "",
+		description = ""
+	)
+	void tzhaarStarted(Boolean tzhaarStarted);
 
 	@ConfigItem(
 		keyName = "showStaffOfTheDead",

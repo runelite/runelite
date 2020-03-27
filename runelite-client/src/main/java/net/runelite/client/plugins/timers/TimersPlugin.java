@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2019, winterdaze
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,6 +66,8 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
+import static net.runelite.api.ItemID.FIRE_CAPE;
+import static net.runelite.api.ItemID.INFERNAL_CAPE;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -72,14 +75,17 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import org.apache.commons.lang3.ArrayUtils;
+
 
 @PluginDescriptor(
 	name = "Timers",
 	description = "Show various timers in an infobox",
-	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar"}
 )
 @Slf4j
 public class TimersPlugin extends Plugin
@@ -117,6 +123,11 @@ public class TimersPlugin extends Plugin
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
 
+	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
+	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
+	private static final Pattern TZHAAR_COMPLETE_MESSAGE = Pattern.compile("Your (TzTok-Jad|TzKal-Zuk) kill count is:");
+	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (Inferno|Fight Cave) has been paused. You may now log out.");
+
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
@@ -134,6 +145,11 @@ public class TimersPlugin extends Plugin
 	private int lastAnimation;
 	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
+	private ElapsedTimer tzhaarTimer;
+	private Instant tzhaarStartTime;
+	private Instant tzhaarLastTime;
+	private Boolean tzhaarStarted = false;
+	private boolean loggingIn;
 
 	@Inject
 	private ItemManager itemManager;
@@ -168,6 +184,9 @@ public class TimersPlugin extends Plugin
 		widgetHiddenChangedOnPvpWorld = false;
 		lastPoisonVarp = 0;
 		nextPoisonTick = 0;
+		removeTzhaarTimer();
+		resetTzhaarConfig();
+		resetTzhaarVars();
 		staminaTimer = null;
 	}
 
@@ -639,6 +658,113 @@ public class TimersPlugin extends Plugin
 				}
 			}
 		}
+
+		if (config.showTzhaarTimers())
+		{
+			String message = Text.removeTags(event.getMessage());
+			Matcher matcher = TZHAAR_COMPLETE_MESSAGE.matcher(message);
+
+			if (message.contains(TZHAAR_DEFEATED_MESSAGE) || matcher.matches())
+			{
+				removeTzhaarTimer();
+				resetTzhaarConfig();
+				resetTzhaarVars();
+				return;
+			}
+
+			Instant now = Instant.now();
+			matcher = TZHAAR_PAUSED_MESSAGE.matcher(message);
+			if (matcher.matches())
+			{
+				tzhaarLastTime = now;
+				createTzhaarTimer(tzhaarStartTime, now);
+				return;
+			}
+
+			matcher = TZHAAR_WAVE_MESSAGE.matcher(message);
+			if (!matcher.matches())
+			{
+				return;
+			}
+
+			if (!tzhaarStarted)
+			{
+				int wave = Integer.parseInt(matcher.group(1));
+				if (wave != 1)
+				{
+					return;
+				}
+
+				tzhaarStarted = true;
+				tzhaarStartTime = now;
+			}
+
+			else if (tzhaarLastTime != null)
+			{
+				tzhaarStartTime = tzhaarStartTime.plus(Duration.between(tzhaarStartTime, now)).minus(Duration.between(tzhaarStartTime, tzhaarLastTime));
+				tzhaarLastTime = null;
+			}
+
+			createTzhaarTimer(tzhaarStartTime, tzhaarLastTime);
+		}
+
+	}
+
+	private void updateInfoBoxState()
+	{
+		if (tzhaarTimer == null)
+		{
+			return;
+		}
+
+		if (!checkInFightCaves() && !checkInInferno())
+		{
+			removeTzhaarTimer();
+			resetTzhaarConfig();
+			resetTzhaarVars();
+		}
+	}
+
+	private boolean checkInFightCaves()
+	{
+		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), 9551);
+	}
+
+	private boolean checkInInferno()
+	{
+		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), 9043);
+	}
+
+	private void resetTzhaarVars()
+	{
+		tzhaarStartTime = null;
+		tzhaarLastTime = null;
+		tzhaarStarted = false;
+	}
+
+	private void removeTzhaarTimer()
+	{
+		infoBoxManager.removeInfoBox(tzhaarTimer);
+		tzhaarTimer = null;
+	}
+
+	private void createTzhaarTimer(Instant startTime, Instant lastTime)
+	{
+		if (tzhaarTimer != null)
+		{
+			infoBoxManager.removeInfoBox(tzhaarTimer);
+		}
+
+		if (checkInFightCaves())
+		{
+			tzhaarTimer = new ElapsedTimer(itemManager.getImage(FIRE_CAPE), this, startTime, lastTime);
+			infoBoxManager.addInfoBox(tzhaarTimer);
+		}
+		else if (checkInInferno())
+		{
+			tzhaarTimer = new ElapsedTimer(itemManager.getImage(INFERNAL_CAPE), this, startTime, lastTime);
+			infoBoxManager.addInfoBox(tzhaarTimer);
+		}
 	}
 
 	@Subscribe
@@ -670,8 +796,7 @@ public class TimersPlugin extends Plugin
 		widgetHiddenChangedOnPvpWorld = false;
 
 		Widget widget = client.getWidget(PVP_WORLD_SAFE_ZONE);
-		if (widget != null
-			&& !widget.isSelfHidden())
+		if (widget != null && !widget.isSelfHidden())
 		{
 			log.debug("Entered safe zone in PVP world, clearing Teleblock timer.");
 			removeTbTimers();
@@ -683,12 +808,30 @@ public class TimersPlugin extends Plugin
 	{
 		switch (gameStateChanged.getGameState())
 		{
+			case LOGGING_IN:
+				loggingIn = true;
+				break;
+			case LOADING:
+				if (!loggingIn)
+				{
+					updateInfoBoxState();
+				}
+				break;
 			case HOPPING:
+				loggingIn = true;
 			case LOGIN_SCREEN:
+				removeTzhaarTimer();
+				saveTzhaarConfig();
 				removeTbTimers();
 				break;
 			case LOGGED_IN:
 				loggedInRace = true;
+				if (loggingIn)
+				{
+					loggingIn = false;
+					loadTzhaarConfig();
+					resetTzhaarConfig();
+				}
 				break;
 		}
 	}
@@ -954,5 +1097,41 @@ public class TimersPlugin extends Plugin
 		removeGameTimer(HALFTB);
 		removeGameTimer(DMM_FULLTB);
 		removeGameTimer(DMM_HALFTB);
+	}
+
+	private void loadTzhaarConfig()
+	{
+		tzhaarStartTime = config.tzhaarStartTime();
+		tzhaarStarted = config.tzhaarStarted();
+		tzhaarLastTime = config.tzhaarLastTime();
+		if (tzhaarStarted == null)
+		{
+			tzhaarStarted = false;
+		}
+	}
+
+	private void resetTzhaarConfig()
+	{
+		config.tzhaarStartTime(null);
+		config.tzhaarStarted(false);
+		config.tzhaarLastTime(null);
+	}
+
+	private void saveTzhaarConfig()
+	{
+		if (tzhaarStartTime == null)
+		{
+			return;
+		}
+
+		if (tzhaarLastTime == null)
+		{
+			tzhaarLastTime = Instant.now();
+		}
+
+		config.tzhaarStartTime(tzhaarStartTime);
+		config.tzhaarStarted(tzhaarStarted);
+		config.tzhaarLastTime(tzhaarLastTime);
+		resetTzhaarVars();
 	}
 }

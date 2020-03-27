@@ -22,9 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.tzhaartimers;
+package net.runelite.client.plugins.timers;
 
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
@@ -33,14 +32,13 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-@Slf4j
-public class TzhaarTimers extends InfoBox
+public class ElapsedTimer extends InfoBox
 {
 	private final Instant startTime;
 	private LocalTime time;
 	private Instant lastTime;
 
-	public TzhaarTimers(BufferedImage image, TzhaarTimersPlugin plugin, Instant startTime, Instant lastTime)
+	public ElapsedTimer(BufferedImage image, TimersPlugin plugin, Instant startTime, Instant lastTime)
 	{
 		super(image, plugin);
 		this.startTime = startTime;
@@ -82,10 +80,6 @@ public class TzhaarTimers extends InfoBox
 	@Override
 	public String getTooltip()
 	{
-		StringBuilder builder = new StringBuilder();
-		builder.append("Elapsed time: ");
-		builder.append(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-
-		return builder.toString();
+		return "Elapsed time: " +  time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 }
