@@ -288,4 +288,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 35;
 	}
+
+	@ConfigItem(
+		keyName = "blockExtraMouseButtons",
+		name = "Block Extra Mouse Buttons",
+		description = "Blocks extra mouse buttons (4 and above)",
+		position = 43
+	)
+	default boolean blockExtraMouseButtons()
+	{
+		return true;
+	}
 }
