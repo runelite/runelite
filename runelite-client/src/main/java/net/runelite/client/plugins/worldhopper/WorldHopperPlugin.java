@@ -584,6 +584,12 @@ public class WorldHopperPlugin extends Plugin
 				}
 			}
 
+			//Avoid switching to near-max population worlds to prevent failure
+			if(world.getPlayers() >= 1950)
+			{
+				continue;
+			}
+
 			// Break out if we've found a good world to hop to
 			if (currentWorldTypes.equals(types))
 			{
@@ -643,7 +649,7 @@ public class WorldHopperPlugin extends Plugin
 				.append(ChatColorType.HIGHLIGHT)
 				.append(Integer.toString(world.getId()))
 				.append(ChatColorType.NORMAL)
-				.append("..")
+				.append("...")
 				.build();
 
 			chatMessageManager
