@@ -430,4 +430,16 @@ public interface RuneLiteConfig extends Config
 	{
 		return new Keybind(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK);
 	}
+
+	@ConfigItem(
+		keyName = "blockExtraMouseButtons",
+		name = "Block Extra Mouse Buttons",
+		description = "Blocks extra mouse buttons (4 and above)",
+		position = 34,
+		titleSection = "keybindsTitle"
+	)
+	default boolean blockExtraMouseButtons()
+	{
+		return false;
+	}
 }
