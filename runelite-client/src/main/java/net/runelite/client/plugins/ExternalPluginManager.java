@@ -80,7 +80,6 @@ import net.runelite.client.util.Groups;
 import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.SwingUtil;
 import org.jgroups.Message;
-import org.jgroups.ReceiverAdapter;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.DependencyResolver;
 import org.pf4j.JarPluginLoader;
@@ -104,7 +103,7 @@ import org.pf4j.update.VerifyException;
 
 @Slf4j
 @Singleton
-public class ExternalPluginManager extends ReceiverAdapter
+public class ExternalPluginManager
 {
 	public static ArrayList<ClassLoader> pluginClassLoaders = new ArrayList<>();
 	private final PluginManager runelitePluginManager;
