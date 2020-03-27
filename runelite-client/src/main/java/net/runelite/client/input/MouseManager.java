@@ -28,7 +28,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.client.config.RuneLiteConfig;
 
 @Singleton
 public class MouseManager
@@ -38,6 +40,9 @@ public class MouseManager
 
 	private final List<MouseListener> mouseListeners = new CopyOnWriteArrayList<>();
 	private final List<MouseWheelListener> mouseWheelListeners = new CopyOnWriteArrayList<>();
+
+	@Inject
+	private RuneLiteConfig runeLiteConfig;
 
 	public void registerMouseListener(MouseListener mouseListener)
 	{
@@ -107,10 +112,10 @@ public class MouseManager
 
 	private void checkExtraMouseButtons(MouseEvent mouseEvent)
 	{
-		// Prevent extra mouse buttins from being passed into the client,
+		// Prevent extra mouse buttons from being passed into the client,
 		// as it treats them all as left click
 		int button = mouseEvent.getButton();
-		if (button >= MOUSE_BUTTON_4)
+		if (button >= MOUSE_BUTTON_4 && runeLiteConfig.blockExtraMouseButtons())
 		{
 			mouseEvent.consume();
 		}
