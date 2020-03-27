@@ -128,12 +128,18 @@ public class PluginManager
 		this.groups = groups;
 		this.settingsFileInput = config;
 
-		eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
-		eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
+		if (eventBus != null)
+		{
+			eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
+			eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
+		}
 
-		groups.getMessageStringSubject()
-			.subscribeOn(Schedulers.from(SwingUtilities::invokeLater))
-			.subscribe(this::receive);
+		if (groups != null)
+		{
+			groups.getMessageStringSubject()
+				.subscribeOn(Schedulers.from(SwingUtilities::invokeLater))
+				.subscribe(this::receive);
+		}
 	}
 
 	private void onSessionOpen(SessionOpen event)
