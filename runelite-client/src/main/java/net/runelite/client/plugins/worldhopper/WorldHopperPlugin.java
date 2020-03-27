@@ -102,6 +102,7 @@ public class WorldHopperPlugin extends Plugin
 {
 	private static final int REFRESH_THROTTLE = 60_000; // ms
 	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
+	private static final int MAX_PLAYER_COUNT = 1950;
 
 	private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
 
@@ -585,7 +586,7 @@ public class WorldHopperPlugin extends Plugin
 			}
 
 			//Avoid switching to near-max population worlds to prevent failure
-			if (world.getPlayers() >= 1950)
+			if (world.getPlayers() >= MAX_PLAYER_COUNT)
 			{
 				continue;
 			}
