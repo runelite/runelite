@@ -585,7 +585,7 @@ public class WorldHopperPlugin extends Plugin
 			}
 
 			//Avoid switching to near-max population worlds to prevent failure
-			if(world.getPlayers() >= 1950)
+			if (world.getPlayers() >= 1950)
 			{
 				continue;
 			}
