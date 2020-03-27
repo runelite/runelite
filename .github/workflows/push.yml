@@ -50,7 +50,7 @@ jobs:
       - name: Assembling
         run: ./gradlew assemble --console=plain
       - name: Testing
-        run: ./gradlew test --stacktrace --console=plain
+        run: ./gradlew test -x deobfuscator:test --stacktrace --console=plain
 
   checkstyleMain:
     name: Checkstyle main
