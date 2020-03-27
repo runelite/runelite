@@ -39,6 +39,8 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -56,6 +58,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
@@ -68,6 +71,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -76,6 +80,8 @@ import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.util.GameEventManager;
+import net.runelite.client.util.Groups;
+import org.jgroups.Message;
 
 @Singleton
 @Slf4j
@@ -96,6 +102,8 @@ public class PluginManager
 	private final List<PluginConfigurationDescriptor> fakePlugins = new ArrayList<>();
 	private final String runeliteGroupName = RuneLiteConfig.class
 		.getAnnotation(ConfigGroup.class).value();
+	private final Groups groups;
+	private final File settingsFileInput;
 
 	@Inject
 	ExternalPluginLoader externalPluginLoader;
@@ -109,17 +117,28 @@ public class PluginManager
 		final EventBus eventBus,
 		final Scheduler scheduler,
 		final ConfigManager configManager,
-		final Provider<GameEventManager> sceneTileManager)
+		final Provider<GameEventManager> sceneTileManager,
+		final Groups groups,
+		final @Named("config") File config)
 	{
 		this.eventBus = eventBus;
 		this.scheduler = scheduler;
 		this.configManager = configManager;
 		this.sceneTileManager = sceneTileManager;
+		this.groups = groups;
+		this.settingsFileInput = config;
 
 		if (eventBus != null)
 		{
 			eventBus.subscribe(SessionOpen.class, this, this::onSessionOpen);
 			eventBus.subscribe(SessionClose.class, this, this::onSessionClose);
+		}
+
+		if (groups != null)
+		{
+			groups.getMessageStringSubject()
+				.subscribeOn(Schedulers.from(SwingUtilities::invokeLater))
+				.subscribe(this::receive);
 		}
 	}
 
@@ -321,6 +340,12 @@ public class PluginManager
 		for (ClassInfo classInfo : classes)
 		{
 			Class<?> clazz = classInfo.load();
+
+			if (clazz == null)
+			{
+				continue;
+			}
+
 			PluginDescriptor pluginDescriptor = clazz.getAnnotation(PluginDescriptor.class);
 
 			if (pluginDescriptor == null)
@@ -462,6 +487,8 @@ public class PluginManager
 			throw new PluginInstantiationException(ex);
 		}
 
+		groups.broadcastSring("STARTPLUGIN;" + plugin.getClass().getSimpleName() + ";" + settingsFileInput.getAbsolutePath());
+
 		return true;
 	}
 
@@ -490,6 +517,8 @@ public class PluginManager
 		{
 			throw new PluginInstantiationException(ex);
 		}
+
+		groups.broadcastSring("STOPPLUGIN;" + plugin.getClass().getSimpleName() + ";" + settingsFileInput.getAbsolutePath());
 
 		return true;
 	}
@@ -659,6 +688,79 @@ public class PluginManager
 			dependencyCount.put(n, val);
 			graph.successors(n).forEach(m ->
 				incrementChildren(graph, dependencyCount, m, val + 1));
+		}
+	}
+
+	public void receive(Message message)
+	{
+		if (message.getObject() instanceof ConfigChanged)
+		{
+			return;
+		}
+
+		String[] messageObject = ((String) message.getObject()).split(";");
+
+		if (messageObject.length < 3)
+		{
+			return;
+		}
+
+		String command = messageObject[0];
+		String pluginName = messageObject[1];
+		String path = messageObject[2];
+		Plugin plugin = null;
+
+		if (!path.equals(settingsFileInput.getAbsolutePath()))
+		{
+			return;
+		}
+
+		for (Plugin pl : getPlugins())
+		{
+			if (pl.getClass().getSimpleName().equals(pluginName))
+			{
+				plugin = pl;
+
+				break;
+			}
+		}
+
+		if (plugin == null)
+		{
+			return;
+		}
+
+		Plugin finalPlugin = plugin;
+
+		switch (command)
+		{
+			case "STARTPLUGIN":
+
+				try
+				{
+					startPlugin(finalPlugin);
+				}
+				catch (PluginInstantiationException e)
+				{
+					log.warn("unable to start plugin", e);
+					throw new RuntimeException(e);
+				}
+
+				break;
+
+			case "STOPPLUGIN":
+
+				try
+				{
+					stopPlugin(finalPlugin);
+				}
+				catch (PluginInstantiationException e)
+				{
+					log.warn("unable to stop plugin", e);
+					throw new RuntimeException(e);
+				}
+
+				break;
 		}
 	}
 }

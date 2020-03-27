@@ -63,5 +63,9 @@ public class PluginClassLoader extends URLClassLoader
 			// fall back to main class loader
 			return parent.loadClass(name);
 		}
+		catch (NoClassDefFoundError ex)
+		{
+			return null;
+		}
 	}
 }

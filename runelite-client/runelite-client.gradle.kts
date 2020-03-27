@@ -56,6 +56,7 @@ dependencies {
     implementation(Libraries.okhttp3)
     implementation(Libraries.rxjava)
     implementation(Libraries.jna)
+    implementation(Libraries.javagroups)
     implementation(Libraries.jnaPlatform)
     implementation(Libraries.discord)
     implementation(Libraries.substance)
@@ -134,10 +135,14 @@ tasks {
         inputs.properties(tokens)
 
         from("src/main/resources") {
-            include("open.osrs.properties")
             include("sentry.properties")
         }
         into("${buildDir}/resources/main")
+
+        from("src/main/resources/net/runelite/client") {
+            include("open.osrs.properties")
+        }
+        into("${buildDir}/resources/main/net/runelite/client")
 
         filter(ReplaceTokens::class, "tokens" to tokens)
         filteringCharset = "UTF-8"

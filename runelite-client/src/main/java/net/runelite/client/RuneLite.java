@@ -40,6 +40,7 @@ import java.net.PasswordAuthentication;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -88,7 +89,7 @@ import net.runelite.client.ui.overlay.arrow.ArrowWorldOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
-import net.runelite.client.util.AppLock;
+import net.runelite.client.util.Groups;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.client.ws.PartyService;
 import net.runelite.http.api.worlds.World;
@@ -112,6 +113,7 @@ public class RuneLite
 	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "runeliteplus.properties");
 	public static final Locale SYSTEM_LOCALE = Locale.getDefault();
 	public static boolean allowPrivateServer = false;
+	public static String uuid = UUID.randomUUID().toString();
 
 	@Getter
 	private static Injector injector;
@@ -192,6 +194,9 @@ public class RuneLite
 	private Provider<PartyService> partyService;
 
 	@Inject
+	private Groups groups;
+
+	@Inject
 	private Hooks hooks;
 
 	@Inject
@@ -209,9 +214,6 @@ public class RuneLite
 
 	@Inject
 	private Scheduler scheduler;
-
-	@Inject
-	private AppLock appLock;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -383,15 +385,12 @@ public class RuneLite
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
 
-		// Load external plugins
+		// Load external plugin manager
 		externalPluginManager.startExternalUpdateManager();
 		externalPluginManager.startExternalPluginManager();
 
-		if (appLock.lock(this.getClass().getName()))
-		{
-			RuneLiteSplashScreen.stage(.59, "Updating external plugins");
-			externalPluginManager.update();
-		}
+		// Update external plugins
+		externalPluginManager.update();
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
@@ -510,7 +509,7 @@ public class RuneLite
 	{
 		clientSessionManager.shutdown();
 		discordService.close();
-		appLock.release();
+		groups.close();
 	}
 
 	private static class ConfigFileConverter implements ValueConverter<File>

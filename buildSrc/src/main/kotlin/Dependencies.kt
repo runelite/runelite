@@ -25,9 +25,9 @@
 
 object ProjectVersions {
     const val launcherVersion = "2.2.0"
-    const val rlVersion = "1.6.9"
+    const val rlVersion = "1.6.10"
 
-    const val openosrsVersion = "3.2.0"
+    const val openosrsVersion = "3.2.1"
 
     const val rsversion = 189
     const val cacheversion = 165
@@ -62,6 +62,7 @@ object Libraries {
         const val guice = "4.2.2"
         const val h2 = "1.4.200"
         const val hamcrest = "2.2"
+        const val javagroups = "4.0.0.Final"
         const val javax = "1.3.2"
         const val javaxInject = "1"
         const val jna = "5.5.0"
@@ -108,6 +109,7 @@ object Libraries {
     const val guiceTestlib = "com.google.inject.extensions:guice-testlib:${Versions.guice}"
     const val h2 = "com.h2database:h2:${Versions.h2}"
     const val hamcrest = "org.hamcrest:hamcrest-library:${Versions.hamcrest}"
+    const val javagroups = "org.jgroups:jgroups:${Versions.javagroups}"
     const val javax = "javax.annotation:javax.annotation-api:${Versions.javax}"
     const val javaxInject = "javax.inject:javax.inject:${Versions.javaxInject}"
     const val jna = "net.java.dev.jna:jna:${Versions.jna}"

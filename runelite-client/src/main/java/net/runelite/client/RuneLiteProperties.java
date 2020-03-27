@@ -52,7 +52,7 @@ public class RuneLiteProperties
 
 	static
 	{
-		try (InputStream in = RuneLiteProperties.class.getResourceAsStream("/open.osrs.properties"))
+		try (InputStream in = RuneLiteProperties.class.getResourceAsStream("open.osrs.properties"))
 		{
 			properties.load(in);
 		}

@@ -1,13 +1,36 @@
+/*
+ * Copyright (c) 2020, Owain van Brakel <https://github.com/Owain94>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package net.runelite.client.plugins;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.graph.GraphBuilder;
-import com.google.common.graph.MutableGraph;
 import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -30,13 +53,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -48,12 +71,15 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ExternalPluginChanged;
 import net.runelite.client.events.ExternalRepositoryChanged;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.RuneLiteSplashScreen;
+import net.runelite.client.util.Groups;
 import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.SwingUtil;
+import org.jgroups.Message;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.DependencyResolver;
 import org.pf4j.JarPluginLoader;
@@ -65,6 +91,8 @@ import org.pf4j.PluginDescriptorFinder;
 import org.pf4j.PluginLoader;
 import org.pf4j.PluginRepository;
 import org.pf4j.PluginRuntimeException;
+import org.pf4j.PluginState;
+import org.pf4j.PluginStateEvent;
 import org.pf4j.PluginWrapper;
 import org.pf4j.RuntimeMode;
 import org.pf4j.update.DefaultUpdateRepository;
@@ -75,8 +103,7 @@ import org.pf4j.update.VerifyException;
 
 @Slf4j
 @Singleton
-public
-class ExternalPluginManager
+public class ExternalPluginManager
 {
 	public static ArrayList<ClassLoader> pluginClassLoaders = new ArrayList<>();
 	private final PluginManager runelitePluginManager;
@@ -86,35 +113,41 @@ class ExternalPluginManager
 	private final OpenOSRSConfig openOSRSConfig;
 	private final EventBus eventBus;
 	private final ConfigManager configManager;
-	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final Map<String, String> pluginsMap = new HashMap<>();
 	@Getter(AccessLevel.PUBLIC)
+	private final Map<String, Map<String, String>> pluginsInfoMap = new HashMap<>();
+	private final Groups groups;
+	@Getter(AccessLevel.PUBLIC)
 	private UpdateManager updateManager;
+	private Map<String, PluginInfo.PluginRelease> lastPluginRelease = new HashMap<>();
 
 	@Inject
 	public ExternalPluginManager(
 		PluginManager pluginManager,
 		OpenOSRSConfig openOSRSConfig,
 		EventBus eventBus,
-		ConfigManager configManager)
+		ConfigManager configManager,
+		Groups groups)
 	{
 		this.runelitePluginManager = pluginManager;
 		this.openOSRSConfig = openOSRSConfig;
 		this.eventBus = eventBus;
 		this.configManager = configManager;
+		this.groups = groups;
 
 		//noinspection ResultOfMethodCallIgnored
 		EXTERNALPLUGIN_DIR.mkdirs();
 
 		initPluginManager();
+
+		groups.getMessageStringSubject()
+			.subscribe(this::receive);
 	}
 
 	private void initPluginManager()
 	{
-		boolean debug = RuneLiteProperties.getLauncherVersion() == null && RuneLiteProperties.getPluginPath() != null;
-
-		this.externalPluginManager = new DefaultPluginManager(
-			debug ? Paths.get(RuneLiteProperties.getPluginPath() + File.separator + "release")
+		externalPluginManager = new DefaultPluginManager(
+			RuneLiteProperties.getPluginPath() != null ? Paths.get(RuneLiteProperties.getPluginPath())
 				: EXTERNALPLUGIN_DIR.toPath())
 		{
 			@Override
@@ -158,7 +191,70 @@ class ExternalPluginManager
 			@Override
 			public RuntimeMode getRuntimeMode()
 			{
-				return debug ? RuntimeMode.DEVELOPMENT : RuntimeMode.DEPLOYMENT;
+				return RuneLiteProperties.getLauncherVersion() == null ? RuntimeMode.DEVELOPMENT : RuntimeMode.DEPLOYMENT;
+			}
+
+			@Override
+			protected void resolvePlugins()
+			{
+				// retrieves the plugins descriptors
+				List<org.pf4j.PluginDescriptor> descriptors = new ArrayList<>();
+				for (PluginWrapper plugin : plugins.values())
+				{
+					descriptors.add(plugin.getDescriptor());
+				}
+
+				// retrieves the plugins descriptors from the resolvedPlugins list. This allows to load plugins that have already loaded dependencies.
+				for (PluginWrapper plugin : resolvedPlugins)
+				{
+					descriptors.add(plugin.getDescriptor());
+				}
+
+				DependencyResolver.Result result = dependencyResolver.resolve(descriptors);
+
+				if (result.hasCyclicDependency())
+				{
+					throw new DependencyResolver.CyclicDependencyException();
+				}
+
+				List<String> notFoundDependencies = result.getNotFoundDependencies();
+				if (!notFoundDependencies.isEmpty())
+				{
+					throw new DependencyResolver.DependenciesNotFoundException(notFoundDependencies);
+				}
+
+				List<DependencyResolver.WrongDependencyVersion> wrongVersionDependencies = result.getWrongVersionDependencies();
+				if (!wrongVersionDependencies.isEmpty())
+				{
+					throw new DependencyResolver.DependenciesWrongVersionException(wrongVersionDependencies);
+				}
+
+				List<String> sortedPlugins = result.getSortedPlugins();
+
+				// move plugins from "unresolved" to "resolved"
+				for (String pluginId : sortedPlugins)
+				{
+					PluginWrapper pluginWrapper = plugins.get(pluginId);
+
+					//The plugin is already resolved. Don't put a copy in the resolvedPlugins.
+					if (resolvedPlugins.contains(pluginWrapper))
+					{
+						continue;
+					}
+
+					if (unresolvedPlugins.remove(pluginWrapper))
+					{
+						PluginState pluginState = pluginWrapper.getPluginState();
+						if (pluginState != PluginState.DISABLED)
+						{
+							pluginWrapper.setPluginState(PluginState.RESOLVED);
+						}
+
+						resolvedPlugins.add(pluginWrapper);
+
+						firePluginStateEvent(new PluginStateEvent(this, pluginWrapper, pluginState));
+					}
+				}
 			}
 
 			@Override
@@ -209,8 +305,129 @@ class ExternalPluginManager
 					log.error(e.getMessage(), e);
 				}
 			}
+
+			@Override
+			public PluginState stopPlugin(String pluginId)
+			{
+				if (!plugins.containsKey(pluginId))
+				{
+					throw new IllegalArgumentException(String.format("Unknown pluginId %s", pluginId));
+				}
+
+				PluginWrapper pluginWrapper = getPlugin(pluginId);
+				org.pf4j.PluginDescriptor pluginDescriptor = pluginWrapper.getDescriptor();
+				PluginState pluginState = pluginWrapper.getPluginState();
+				if (PluginState.STOPPED == pluginState)
+				{
+					log.debug("Already stopped plugin '{}'", getPluginLabel(pluginDescriptor));
+					return PluginState.STOPPED;
+				}
+
+				// test for disabled plugin
+				if (PluginState.DISABLED == pluginState)
+				{
+					// do nothing
+					return pluginState;
+				}
+
+				pluginWrapper.getPlugin().stop();
+				pluginWrapper.setPluginState(PluginState.STOPPED);
+				startedPlugins.remove(pluginWrapper);
+
+				firePluginStateEvent(new PluginStateEvent(this, pluginWrapper, pluginState));
+
+				return pluginWrapper.getPluginState();
+			}
+
+			@Override
+			public boolean unloadPlugin(String pluginId)
+			{
+				try
+				{
+					PluginState pluginState = stopPlugin(pluginId);
+					if (PluginState.STARTED == pluginState)
+					{
+						return false;
+					}
+
+					PluginWrapper pluginWrapper = getPlugin(pluginId);
+
+					// remove the plugin
+					plugins.remove(pluginId);
+					getResolvedPlugins().remove(pluginWrapper);
+
+					firePluginStateEvent(new PluginStateEvent(this, pluginWrapper, pluginState));
+
+					// remove the classloader
+					Map<String, ClassLoader> pluginClassLoaders = getPluginClassLoaders();
+					if (pluginClassLoaders.containsKey(pluginId))
+					{
+						ClassLoader classLoader = pluginClassLoaders.remove(pluginId);
+						if (classLoader instanceof Closeable)
+						{
+							try
+							{
+								((Closeable) classLoader).close();
+							}
+							catch (IOException e)
+							{
+								throw new PluginRuntimeException(e, "Cannot close classloader");
+							}
+						}
+					}
+
+					return true;
+				}
+				catch (IllegalArgumentException e)
+				{
+					// ignore not found exceptions because this method is recursive
+				}
+
+				return false;
+			}
+
+			@Override
+			public boolean deletePlugin(String pluginId)
+			{
+				if (!plugins.containsKey(pluginId))
+				{
+					throw new IllegalArgumentException(String.format("Unknown pluginId %s", pluginId));
+				}
+
+				PluginWrapper pluginWrapper = getPlugin(pluginId);
+				// stop the plugin if it's started
+				PluginState pluginState = stopPlugin(pluginId);
+				if (PluginState.STARTED == pluginState)
+				{
+					log.error("Failed to stop plugin '{}' on delete", pluginId);
+					return false;
+				}
+
+				// get an instance of plugin before the plugin is unloaded
+				// for reason see https://github.com/pf4j/pf4j/issues/309
+
+				org.pf4j.Plugin plugin = pluginWrapper.getPlugin();
+
+				if (!unloadPlugin(pluginId))
+				{
+					log.error("Failed to unload plugin '{}' on delete", pluginId);
+					return false;
+				}
+
+				// notify the plugin as it's deleted
+				plugin.delete();
+
+				Path pluginPath = pluginWrapper.getPluginPath();
+
+				return pluginRepository.deletePluginPath(pluginPath);
+			}
 		};
-		this.externalPluginManager.setSystemVersion(SYSTEM_VERSION);
+		externalPluginManager.setSystemVersion(SYSTEM_VERSION);
+	}
+
+	public boolean developmentMode()
+	{
+		return externalPluginManager.isDevelopment();
 	}
 
 	public boolean doesGhRepoExist(String owner, String name)
@@ -263,7 +480,7 @@ class ExternalPluginManager
 	{
 		try
 		{
-			this.externalPluginManager.loadPlugins();
+			externalPluginManager.loadPlugins();
 		}
 		catch (Exception ex)
 		{
@@ -275,7 +492,7 @@ class ExternalPluginManager
 
 				for (String dep : deps)
 				{
-					install(dep);
+					updateManager.installPlugin(dep, null);
 				}
 
 				startExternalPluginManager();
@@ -292,7 +509,7 @@ class ExternalPluginManager
 			loadOldFormat();
 		}
 
-		this.updateManager = new UpdateManager(this.externalPluginManager, repositories);
+		updateManager = new UpdateManager(externalPluginManager, repositories);
 		saveConfig();
 	}
 
@@ -361,7 +578,7 @@ class ExternalPluginManager
 			openOSRSConfig.setExternalRepositories("OpenOSRS:https://raw.githubusercontent.com/open-osrs/plugin-hosting/master/");
 		}
 
-		this.updateManager = new UpdateManager(this.externalPluginManager, repositories);
+		updateManager = new UpdateManager(externalPluginManager, repositories);
 	}
 
 	public void addGHRepository(String owner, String name)
@@ -407,12 +624,9 @@ class ExternalPluginManager
 		openOSRSConfig.setExternalRepositories(config.toString());
 	}
 
-	private List<Plugin> scanAndInstantiate(List<Plugin> plugins, boolean init, boolean initConfig) throws IOException
+	private void scanAndInstantiate(List<Plugin> plugins, boolean init, boolean initConfig)
 	{
 		RuneLiteSplashScreen.stage(.66, "Loading external plugins");
-		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
-			.directed()
-			.build();
 
 		AtomicInteger loaded = new AtomicInteger();
 		List<Plugin> scannedPlugins = new CopyOnWriteArrayList<>();
@@ -451,6 +665,7 @@ class ExternalPluginManager
 				Plugin plugininst;
 				try
 				{
+					//noinspection unchecked
 					plugininst = instantiate(scannedPlugins, (Class<Plugin>) plugin.getClass(), init, initConfig);
 					scannedPlugins.add(plugininst);
 				}
@@ -477,7 +692,6 @@ class ExternalPluginManager
 			});
 		}
 
-		return scannedPlugins;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -492,7 +706,7 @@ class ExternalPluginManager
 			Optional<Plugin> dependency =
 				Stream.concat(runelitePluginManager.getPlugins().stream(), scannedPlugins.stream())
 					.filter(p -> p.getClass() == pluginDependency.value()).findFirst();
-			if (!dependency.isPresent())
+			if (dependency.isEmpty())
 			{
 				throw new PluginInstantiationException(
 					"Unmet dependency for " + clazz.getSimpleName() + ": " + pluginDependency.value().getSimpleName());
@@ -551,12 +765,12 @@ class ExternalPluginManager
 			{
 				try
 				{
-					SwingUtilities.invokeAndWait(() ->
+					SwingUtil.syncExec(() ->
 					{
 						try
 						{
-							runelitePluginManager.startPlugin(plugin);
 							runelitePluginManager.add(plugin);
+							runelitePluginManager.startPlugin(plugin);
 							eventBus.post(ExternalPluginChanged.class,
 								new ExternalPluginChanged(pluginsMap.get(plugin.getClass().getSimpleName()), plugin,
 									true));
@@ -586,43 +800,53 @@ class ExternalPluginManager
 		return plugin;
 	}
 
+	private void checkDepsAndStart(List<PluginWrapper> startedPlugins, List<Plugin> scannedPlugins, PluginWrapper pluginWrapper)
+	{
+		boolean depsLoaded = true;
+		for (PluginDependency dependency : pluginWrapper.getDescriptor().getDependencies())
+		{
+			if (startedPlugins.stream().noneMatch(pl -> pl.getPluginId().equals(dependency.getPluginId())))
+			{
+				depsLoaded = false;
+			}
+		}
+
+		if (!depsLoaded)
+		{
+			// This should never happen but can crash the client
+			return;
+		}
+
+		scannedPlugins.addAll(loadPlugin(pluginWrapper.getPluginId()));
+	}
+
 	public void loadPlugins()
 	{
-		this.externalPluginManager.startPlugins();
+		externalPluginManager.startPlugins();
 		List<PluginWrapper> startedPlugins = getStartedPlugins();
 		List<Plugin> scannedPlugins = new ArrayList<>();
 
 		for (PluginWrapper plugin : startedPlugins)
 		{
-			boolean depsLoaded = true;
-			for (PluginDependency dependency : plugin.getDescriptor().getDependencies())
-			{
-				if (startedPlugins.stream().noneMatch(pl -> pl.getPluginId().equals(dependency.getPluginId())))
-				{
-					depsLoaded = false;
-				}
-			}
-
-			if (!depsLoaded)
-			{
-				// This should never happen but can crash the client
-				continue;
-			}
-
-			scannedPlugins.addAll(loadPlugin(plugin.getPluginId()));
+			checkDepsAndStart(startedPlugins, scannedPlugins, plugin);
 		}
 
-		startPlugins(scannedPlugins, false, false);
-	}
+		scanAndInstantiate(scannedPlugins, false, false);
 
-	private void startPlugins(List<Plugin> scannedPlugins, boolean init, boolean initConfig)
-	{
-		try
+		if (groups.getInstanceCount() > 1)
 		{
-			plugins.addAll(scanAndInstantiate(scannedPlugins, init, initConfig));
+			for (String pluginId : getDisabledPlugins())
+			{
+				groups.sendString("STOPEXTERNAL;" + pluginId);
+			}
 		}
-		catch (IOException ignored)
+		else
 		{
+			for (String pluginId : getDisabledPlugins())
+			{
+				externalPluginManager.enablePlugin(pluginId);
+				externalPluginManager.deletePlugin(pluginId);
+			}
 		}
 	}
 
@@ -633,53 +857,55 @@ class ExternalPluginManager
 		for (Plugin plugin : extensions)
 		{
 			pluginClassLoaders.add(plugin.getClass().getClassLoader());
+
+			pluginsMap.remove(plugin.getClass().getSimpleName());
 			pluginsMap.put(plugin.getClass().getSimpleName(), pluginId);
+
+			pluginsInfoMap.remove(plugin.getClass().getSimpleName());
+
+			AtomicReference<String> support = new AtomicReference<>("");
+			AtomicReference<String> version = new AtomicReference<>("");
+
+			updateManager.getRepositories().forEach(repository ->
+				repository.getPlugins().forEach((key, value) -> {
+					if (key.equals(pluginId))
+					{
+						support.set(value.projectUrl);
+
+						for (PluginInfo.PluginRelease release : value.releases)
+						{
+							if (externalPluginManager.getSystemVersion().equals("0.0.0") || externalPluginManager.getVersionManager().checkVersionConstraint(externalPluginManager.getSystemVersion(), release.requires))
+							{
+								if (lastPluginRelease.get(pluginId) == null)
+								{
+									lastPluginRelease.put(pluginId, release);
+								}
+								else if (externalPluginManager.getVersionManager().compareVersions(release.version, lastPluginRelease.get(pluginId).version) > 0)
+								{
+									lastPluginRelease.put(pluginId, release);
+								}
+							}
+						}
+
+						version.set(lastPluginRelease.get(pluginId).version);
+					}
+				}));
+
+			pluginsInfoMap.put(
+				plugin.getClass().getSimpleName(),
+				new HashMap<>()
+				{{
+					put("version", version.get());
+					put("id", externalPluginManager.getPlugin(pluginId).getDescriptor().getPluginId());
+					put("provider", externalPluginManager.getPlugin(pluginId).getDescriptor().getProvider());
+					put("support", support.get());
+				}}
+			);
+
 			scannedPlugins.add(plugin);
 		}
 
 		return scannedPlugins;
-	}
-
-	private void stopPlugins()
-	{
-		List<PluginWrapper> startedPlugins = ImmutableList.copyOf(getStartedPlugins());
-
-		for (PluginWrapper pluginWrapper : startedPlugins)
-		{
-			String pluginId = pluginWrapper.getDescriptor().getPluginId();
-			List<Plugin> extensions = externalPluginManager.getExtensions(Plugin.class, pluginId);
-
-			for (Plugin plugin : runelitePluginManager.getPlugins())
-			{
-				if (!extensions.get(0).getClass().getName().equals(plugin.getClass().getName()))
-				{
-					continue;
-				}
-
-				try
-				{
-					SwingUtilities.invokeAndWait(() ->
-					{
-						try
-						{
-							runelitePluginManager.stopPlugin(plugin);
-						}
-						catch (Exception e2)
-						{
-							throw new RuntimeException(e2);
-						}
-					});
-					runelitePluginManager.remove(plugin);
-
-					eventBus.post(ExternalPluginChanged.class, new ExternalPluginChanged(pluginId, plugin, false));
-				}
-				catch (Exception ex)
-				{
-					log.warn("unable to stop plugin", ex);
-					return;
-				}
-			}
-		}
 	}
 
 	private Path stopPlugin(String pluginId)
@@ -704,7 +930,7 @@ class ExternalPluginManager
 
 				try
 				{
-					SwingUtilities.invokeAndWait(() ->
+					SwingUtil.syncExec(() ->
 					{
 						try
 						{
@@ -716,6 +942,7 @@ class ExternalPluginManager
 						}
 					});
 					runelitePluginManager.remove(plugin);
+					pluginClassLoaders.remove(plugin.getClass().getClassLoader());
 
 					eventBus.post(ExternalPluginChanged.class, new ExternalPluginChanged(pluginId, plugin, false));
 
@@ -734,13 +961,13 @@ class ExternalPluginManager
 
 	public boolean install(String pluginId) throws VerifyException
 	{
-
 		if (getDisabledPlugins().contains(pluginId))
 		{
-			this.externalPluginManager.enablePlugin(pluginId);
-			this.externalPluginManager.startPlugin(pluginId);
+			externalPluginManager.enablePlugin(pluginId);
+			externalPluginManager.startPlugin(pluginId);
 
-			startPlugins(loadPlugin(pluginId), true, false);
+			groups.broadcastSring("STARTEXTERNAL;" + pluginId);
+			scanAndInstantiate(loadPlugin(pluginId), true, false);
 
 			return true;
 		}
@@ -775,7 +1002,9 @@ class ExternalPluginManager
 
 			updateManager.installPlugin(pluginId, null);
 
-			startPlugins(loadPlugin(pluginId), true, true);
+			scanAndInstantiate(loadPlugin(pluginId), true, true);
+
+			groups.broadcastSring("STARTEXTERNAL;" + pluginId);
 		}
 		catch (DependencyResolver.DependenciesNotFoundException ex)
 		{
@@ -793,6 +1022,11 @@ class ExternalPluginManager
 
 	public boolean uninstall(String pluginId)
 	{
+		return uninstall(pluginId, false);
+	}
+
+	public boolean uninstall(String pluginId, boolean skip)
+	{
 		Path pluginPath = stopPlugin(pluginId);
 
 		if (pluginPath == null)
@@ -801,13 +1035,35 @@ class ExternalPluginManager
 		}
 
 		externalPluginManager.stopPlugin(pluginId);
-		externalPluginManager.disablePlugin(pluginId);
+
+		if (skip)
+		{
+			return true;
+		}
+
+		if (groups.getInstanceCount() > 1)
+		{
+			groups.sendString("STOPEXTERNAL;" + pluginId);
+		}
+		else
+		{
+			externalPluginManager.deletePlugin(pluginId);
+		}
 
 		return true;
 	}
 
 	public void update()
 	{
+		if (groups.getInstanceCount() > 1)
+		{
+			// Do not update when there is more than one client open -> api might contain changes
+			log.info("Not updating external plugins since there is more than 1 client open");
+			return;
+		}
+
+		RuneLiteSplashScreen.stage(.59, "Updating external plugins");
+
 		boolean error = false;
 		if (updateManager.hasUpdates())
 		{
@@ -828,6 +1084,7 @@ class ExternalPluginManager
 				}
 				catch (PluginRuntimeException ex)
 				{
+					// This should never happen but can crash the client
 					log.warn("Cannot update plugin '{}', the user probably has another client open", plugin.id);
 					error = true;
 					break;
@@ -861,15 +1118,99 @@ class ExternalPluginManager
 
 	public List<String> getDisabledPlugins()
 	{
-		return this.externalPluginManager.getResolvedPlugins()
+		return externalPluginManager.getResolvedPlugins()
 			.stream()
-			.filter(not(this.externalPluginManager.getStartedPlugins()::contains))
+			.filter(not(externalPluginManager.getStartedPlugins()::contains))
 			.map(PluginWrapper::getPluginId)
 			.collect(Collectors.toList());
 	}
 
 	public List<PluginWrapper> getStartedPlugins()
 	{
-		return this.externalPluginManager.getStartedPlugins();
+		return externalPluginManager.getStartedPlugins();
+	}
+
+	public Boolean reloadStart(String pluginId)
+	{
+		externalPluginManager.loadPlugins();
+		externalPluginManager.startPlugin(pluginId);
+
+		List<PluginWrapper> startedPlugins = ImmutableList.copyOf(getStartedPlugins());
+		List<Plugin> scannedPlugins = new ArrayList<>();
+
+		for (PluginWrapper pluginWrapper : startedPlugins)
+		{
+			if (!pluginId.equals(pluginWrapper.getDescriptor().getPluginId()))
+			{
+				continue;
+			}
+
+			checkDepsAndStart(startedPlugins, scannedPlugins, pluginWrapper);
+		}
+
+		scanAndInstantiate(scannedPlugins, true, false);
+
+		groups.broadcastSring("STARTEXTERNAL;" + pluginId);
+
+		return true;
+	}
+
+	public void receive(Message message)
+	{
+		if (message.getObject() instanceof ConfigChanged)
+		{
+			return;
+		}
+
+		String[] messageObject = ((String) message.getObject()).split(";");
+
+		if (messageObject.length < 2)
+		{
+			return;
+		}
+
+		String command = messageObject[0];
+		String pluginId = messageObject[1];
+
+		switch (command)
+		{
+			case "STARTEXTERNAL":
+				externalPluginManager.loadPlugins();
+				externalPluginManager.startPlugin(pluginId);
+
+				List<PluginWrapper> startedPlugins = ImmutableList.copyOf(getStartedPlugins());
+				List<Plugin> scannedPlugins = new ArrayList<>();
+
+				for (PluginWrapper pluginWrapper : startedPlugins)
+				{
+					if (!pluginId.equals(pluginWrapper.getDescriptor().getPluginId()))
+					{
+						continue;
+					}
+
+					checkDepsAndStart(startedPlugins, scannedPlugins, pluginWrapper);
+				}
+
+				scanAndInstantiate(scannedPlugins, true, false);
+
+				break;
+
+			case "STOPEXTERNAL":
+				uninstall(pluginId, true);
+				externalPluginManager.unloadPlugin(pluginId);
+				groups.send(message.getSrc(), "STOPPEDEXTERNAL;" + pluginId);
+				break;
+
+			case "STOPPEDEXTERNAL":
+				groups.getMessageMap().get(pluginId).remove(message.getSrc());
+
+				if (groups.getMessageMap().get(pluginId).size() == 0)
+				{
+					groups.getMessageMap().remove(pluginId);
+					externalPluginManager.deletePlugin(pluginId);
+				}
+
+				break;
+		}
 	}
 }
