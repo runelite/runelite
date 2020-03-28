@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Travis Earley <travis.earley96@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -82,13 +82,15 @@ public class NatureRuneChestPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() {
+	protected void startUp()
+	{
 		overlayManager.add(overlay);
 		overlay.updateConfig();
 	}
 
 	@Override
-	protected void shutDown() {
+	protected void shutDown()
+	{
 		overlayManager.remove(overlay);
 	}
 
@@ -126,16 +128,20 @@ public class NatureRuneChestPlugin extends Plugin
 		}
 
 		//chest is being opened
-		if (object.getId() == 11743) {
-			if (NRC_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID())) {
+		if (object.getId() == 11743)
+		{
+			if (NRC_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID()))
+			{
 				chest = object;
 				state = 1;
 			}
 		}
 
 		//chest is ready to steal from
-		if (object.getId() == 11736) {
-			if (NRC_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID())) {
+		if (object.getId() == 11736)
+		{
+			if (NRC_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID()))
+			{
 				chest = object;
 				state = 0;
 			}

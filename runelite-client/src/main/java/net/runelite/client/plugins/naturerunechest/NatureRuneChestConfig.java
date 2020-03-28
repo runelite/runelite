@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin Weymans <Robin.weymans@gmail.com>
+ * Copyright (c) 2020, Travis Earley <travis.earley96@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
