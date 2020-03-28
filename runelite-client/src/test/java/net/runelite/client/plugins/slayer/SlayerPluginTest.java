@@ -86,6 +86,8 @@ public class SlayerPluginTest
 	private static final String TASK_KONAR_BOSS = "You're now assigned to bring balance to the Alchemical<br>Hydra 35 times. Your reward point tally is 724.";
 
 	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
+	private static final String TASK_EXISTING_2 = "You're still bringing balance to basilisks in the Jormungand's Prison, with 136 to go. Come back when you're finished.";
+	private static final String TASK_EXISTING_INVALID_LOC = "You're still bringing balance to basilisks in the Prison, with 136 to go. Come back when you're finished.";
 
 	private static final String REWARD_POINTS = "Reward points: 17,566";
 
@@ -703,6 +705,60 @@ public class SlayerPluginTest
 		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		slayerPlugin.killedOne();
 		assertEquals(30, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testTaskLookupFromNPCChat() throws IOException
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_EXISTING_2);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
+		task.setTask(slayerPlugin.getTaskName());
+		task.setLocation(slayerPlugin.getTaskLocation());
+		task.setAmount(slayerPlugin.getAmount());
+		task.setInitialAmount(slayerPlugin.getInitialAmount());
+
+		when(slayerConfig.taskCommand()).thenReturn(true);
+		when(chatClient.getTask(anyString())).thenReturn(task);
+
+		ChatMessage setMessage = new ChatMessage();
+		setMessage.setType(ChatMessageType.PUBLICCHAT);
+		setMessage.setName("Adam");
+		setMessage.setMessageNode(mock(MessageNode.class));
+
+		slayerPlugin.taskLookup(setMessage, "!task");
+
+		verify(chatMessageManager).update(any(MessageNode.class));
+	}
+
+	@Test
+	public void testTaskLookupFromNPCChatInvalidLocation() throws IOException
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_EXISTING_INVALID_LOC);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
+		task.setTask(slayerPlugin.getTaskName());
+		task.setLocation(slayerPlugin.getTaskLocation());
+		task.setAmount(slayerPlugin.getAmount());
+		task.setInitialAmount(slayerPlugin.getInitialAmount());
+
+		when(slayerConfig.taskCommand()).thenReturn(true);
+		when(chatClient.getTask(anyString())).thenReturn(task);
+
+		ChatMessage setMessage = new ChatMessage();
+		setMessage.setType(ChatMessageType.PUBLICCHAT);
+		setMessage.setName("Adam");
+		setMessage.setMessageNode(mock(MessageNode.class));
+
+		slayerPlugin.taskLookup(setMessage, "!task");
+
+		verify(chatMessageManager, never()).update(any(MessageNode.class));
 	}
 
 	@Test
