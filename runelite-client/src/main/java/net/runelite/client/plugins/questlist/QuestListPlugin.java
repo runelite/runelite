@@ -96,6 +96,7 @@ public class QuestListPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		currentFilterState = QuestState.ALL;
 		clientThread.invoke(this::addQuestButtons);
 	}
 
