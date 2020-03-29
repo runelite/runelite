@@ -750,9 +750,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("teleport", option, target, index);
 			}
 		}
-		else if (config.swapBones() && option.equals("bury"))
+		else if (config.swapBones())
 		{
-			swap("use", option, target, index);
+			if (option.equals("bury"))
+			{
+				swap("use", option, target, index);
+			}
+			else if (option.equals("use") && (target.contains("bones -> phials") || target.contains("bones -> altar")))
+			{
+				// Move this entry to the top so the user doesn't accidentally use bones on players nearby
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
+			}
 		}
 		else if (option.equals("collect to inventory") || option.startsWith("collect-note") || option.startsWith("collect-item"))
 		{
