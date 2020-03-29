@@ -25,9 +25,10 @@
 package net.runelite.http.api.ws.messages;
 
 import java.util.UUID;
+import net.runelite.api.events.Event;
 import net.runelite.http.api.ws.WebsocketMessage;
 
-public class Handshake extends WebsocketMessage
+public class Handshake extends WebsocketMessage implements Event
 {
 	private UUID session;
 

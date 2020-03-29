@@ -39,12 +39,11 @@ import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.Handshake;
-import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
+import net.runelite.http.api.ws.messages.party.PartyMessage;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
-import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @Singleton
@@ -148,21 +147,13 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	}
 
 	@Override
-	public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason)
+	public void onOpen(WebSocket webSocket, Response response)
 	{
-		log.info("Websocket {} closed: {}/{}", webSocket, code, reason);
-		this.webSocket = null;
+		log.info("Websocket {} opened", webSocket);
 	}
 
 	@Override
-	public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, Response response)
-	{
-		log.warn("Error in websocket {}:{}", response, t);
-		this.webSocket = null;
-	}
-
-	@Override
-	public void onMessage(@NotNull WebSocket webSocket, @NotNull String text)
+	public void onMessage(WebSocket webSocket, String text)
 	{
 		final WebsocketMessage message;
 
@@ -175,23 +166,29 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 			log.debug("Failed to deserialize message", e);
 			return;
 		}
-		message.text = text;
 
-		for (Class<? extends WebsocketMessage> clazz : messages)
+		if (message.isParty() && !(message instanceof PartyMessage))
 		{
-			if (clazz.isInstance(message))
-			{
-				eventBus.post(clazz, message);
-				return;
-			}
+			// spoofed message?
+			return;
 		}
 
-		eventBus.post(message instanceof PartyMemberMessage ? PartyMemberMessage.class : WebsocketMessage.class, message);
+		log.debug("Got: {}", text);
+
+		eventBus.post(message.getClass(), message);
 	}
 
 	@Override
-	public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response)
+	public void onClosed(WebSocket webSocket, int code, String reason)
 	{
-		log.info("Websocket {} opened", webSocket);
+		log.info("Websocket {} closed: {}/{}", webSocket, code, reason);
+		this.webSocket = null;
+	}
+
+	@Override
+	public void onFailure(WebSocket webSocket, Throwable t, Response response)
+	{
+		log.warn("Error in websocket {}:{}", response, t);
+		this.webSocket = null;
 	}
 }
