@@ -76,6 +76,8 @@ public class EventBus implements EventBusInterface
 	// Subscribe on lifecycle (for example from plugin startUp -> shutdown)
 	public <T extends Event> void subscribe(Class<T> eventClass, @NonNull Object lifecycle, @NonNull Consumer<T> action, int takeUntil, @Nullable EventScheduler subscribe, @Nullable EventScheduler observe)
 	{
+		assert Event.class.isAssignableFrom(eventClass) : "Parameters of methods annotated with @Subscribe should implement net.runelite.api.events.Event";
+
 		if (subscriptionList.containsKey(lifecycle) && eventClass.equals(subscriptionList.get(lifecycle)))
 		{
 			return;

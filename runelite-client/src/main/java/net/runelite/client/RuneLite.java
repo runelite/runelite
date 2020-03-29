@@ -59,21 +59,13 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.ExternalPluginsLoaded;
-import net.runelite.client.game.ClanManager;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.LootManager;
-import net.runelite.client.game.PlayerManager;
 import net.runelite.client.game.WorldService;
-import net.runelite.client.game.XpDropManager;
-import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.graphics.ModelOutlineRenderer;
-import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.ExternalPluginManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientLoader;
@@ -82,7 +74,6 @@ import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.arrow.ArrowMinimapOverlay;
 import net.runelite.client.ui.overlay.arrow.ArrowWorldOverlay;
@@ -91,7 +82,6 @@ import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.util.Groups;
 import net.runelite.client.util.WorldUtil;
-import net.runelite.client.ws.PartyService;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
 import org.slf4j.LoggerFactory;
@@ -146,22 +136,7 @@ public class RuneLite
 	private OverlayManager overlayManager;
 
 	@Inject
-	private Provider<ItemManager> itemManager;
-
-	@Inject
-	private Provider<OverlayRenderer> overlayRenderer;
-
-	@Inject
-	private Provider<ClanManager> clanManager;
-
-	@Inject
 	private Provider<ChatMessageManager> chatMessageManager;
-
-	@Inject
-	private Provider<MenuManager> menuManager;
-
-	@Inject
-	private Provider<CommandManager> commandManager;
 
 	@Inject
 	private Provider<InfoBoxOverlay> infoBoxOverlay;
@@ -177,21 +152,6 @@ public class RuneLite
 
 	@Inject
 	private Provider<ArrowMinimapOverlay> arrowMinimapOverlay;
-
-	@Inject
-	private Provider<LootManager> lootManager;
-
-	@Inject
-	private Provider<XpDropManager> xpDropManager;
-
-	@Inject
-	private Provider<PlayerManager> playerManager;
-
-	@Inject
-	private Provider<ChatboxPanelManager> chatboxPanelManager;
-
-	@Inject
-	private Provider<PartyService> partyService;
 
 	@Inject
 	private Groups groups;
@@ -425,18 +385,6 @@ public class RuneLite
 		{
 			// Initialize chat colors
 			chatMessageManager.get().loadColors();
-
-			overlayRenderer.get();
-			clanManager.get();
-			itemManager.get();
-			menuManager.get();
-			chatMessageManager.get();
-			commandManager.get();
-			lootManager.get();
-			xpDropManager.get();
-			playerManager.get();
-			chatboxPanelManager.get();
-			partyService.get();
 
 			eventBus.subscribe(GameStateChanged.class, this, hooks::onGameStateChanged);
 			eventBus.subscribe(ScriptCallbackEvent.class, this, hooks::onScriptCallbackEvent);
