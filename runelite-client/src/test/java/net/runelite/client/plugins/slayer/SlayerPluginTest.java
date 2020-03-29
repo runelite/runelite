@@ -708,6 +708,50 @@ public class SlayerPluginTest
 	}
 
 	@Test
+	public void testTaskLookup() throws IOException
+	{
+		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
+		task.setTask("Abyssal demons");
+		task.setLocation("Abyss");
+		task.setAmount(42);
+		task.setInitialAmount(42);
+
+		when(slayerConfig.taskCommand()).thenReturn(true);
+		when(chatClient.getTask(anyString())).thenReturn(task);
+
+		ChatMessage setMessage = new ChatMessage();
+		setMessage.setType(ChatMessageType.PUBLICCHAT);
+		setMessage.setName("Adam");
+		setMessage.setMessageNode(mock(MessageNode.class));
+
+		slayerPlugin.taskLookup(setMessage, "!task");
+
+		verify(chatMessageManager).update(any(MessageNode.class));
+	}
+
+	@Test
+	public void testTaskLookupInvalid() throws IOException
+	{
+		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
+		task.setTask("task<");
+		task.setLocation("loc");
+		task.setAmount(42);
+		task.setInitialAmount(42);
+
+		when(slayerConfig.taskCommand()).thenReturn(true);
+		when(chatClient.getTask(anyString())).thenReturn(task);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setName("Adam");
+		chatMessage.setMessageNode(mock(MessageNode.class));
+
+		slayerPlugin.taskLookup(chatMessage, "!task");
+
+		verify(chatMessageManager, never()).update(any(MessageNode.class));
+	}
+
+	@Test
 	public void testTaskLookupFromNPCChat() throws IOException
 	{
 		Widget npcDialog = mock(Widget.class);
@@ -757,50 +801,6 @@ public class SlayerPluginTest
 		setMessage.setMessageNode(mock(MessageNode.class));
 
 		slayerPlugin.taskLookup(setMessage, "!task");
-
-		verify(chatMessageManager, never()).update(any(MessageNode.class));
-	}
-
-	@Test
-	public void testTaskLookup() throws IOException
-	{
-		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
-		task.setTask("Abyssal demons");
-		task.setLocation("Abyss");
-		task.setAmount(42);
-		task.setInitialAmount(42);
-
-		when(slayerConfig.taskCommand()).thenReturn(true);
-		when(chatClient.getTask(anyString())).thenReturn(task);
-
-		ChatMessage setMessage = new ChatMessage();
-		setMessage.setType(ChatMessageType.PUBLICCHAT);
-		setMessage.setName("Adam");
-		setMessage.setMessageNode(mock(MessageNode.class));
-
-		slayerPlugin.taskLookup(setMessage, "!task");
-
-		verify(chatMessageManager).update(any(MessageNode.class));
-	}
-
-	@Test
-	public void testTaskLookupInvalid() throws IOException
-	{
-		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
-		task.setTask("task<");
-		task.setLocation("loc");
-		task.setAmount(42);
-		task.setInitialAmount(42);
-
-		when(slayerConfig.taskCommand()).thenReturn(true);
-		when(chatClient.getTask(anyString())).thenReturn(task);
-
-		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.setType(ChatMessageType.PUBLICCHAT);
-		chatMessage.setName("Adam");
-		chatMessage.setMessageNode(mock(MessageNode.class));
-
-		slayerPlugin.taskLookup(chatMessage, "!task");
 
 		verify(chatMessageManager, never()).update(any(MessageNode.class));
 	}
