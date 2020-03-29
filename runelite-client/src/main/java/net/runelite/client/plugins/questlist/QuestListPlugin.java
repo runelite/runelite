@@ -219,6 +219,8 @@ public class QuestListPlugin extends Plugin
 	private void closeSearch()
 	{
 		updateFilter("");
+		questSearchButton.setOnOpListener((JavaScriptCallback) e -> openSearch());
+		questSearchButton.setAction(1, MENU_OPEN);
 		chatboxPanelManager.close();
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
 	}
@@ -233,9 +235,18 @@ public class QuestListPlugin extends Plugin
 			.onChanged(s -> clientThread.invokeLater(() -> updateFilter(s)))
 			.onClose(() ->
 			{
-				clientThread.invokeLater(() -> updateFilter(""));
-				questSearchButton.setOnOpListener((JavaScriptCallback) e -> openSearch());
-				questSearchButton.setAction(1, MENU_OPEN);
+				final int quests = questSet.values().stream()
+					.map(q -> (int) q.stream()
+							.filter(qw -> !qw.getQuest().isHidden())
+							.count())
+					.reduce(0, Integer::sum);
+
+				if (quests == 0)
+				{
+					clientThread.invokeLater(() -> updateFilter(""));
+					questSearchButton.setOnOpListener((JavaScriptCallback) e -> openSearch());
+					questSearchButton.setAction(1, MENU_OPEN);
+				}
 			})
 			.build();
 	}
