@@ -38,6 +38,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Units
 {
+	String GOLD_PIECES = " gp";
 	String MILLISECONDS = "ms";
 	String MINUTES = " mins";
 	String PERCENT = "%";

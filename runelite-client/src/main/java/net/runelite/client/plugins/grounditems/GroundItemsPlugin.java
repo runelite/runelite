@@ -49,7 +49,6 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
@@ -101,7 +100,7 @@ import net.runelite.client.util.Text;
 	description = "Highlight ground items and/or show price information",
 	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
 )
-@Slf4j
+
 public class GroundItemsPlugin extends Plugin
 {
 	// ItemID for coins
@@ -650,15 +649,14 @@ public class GroundItemsPlugin extends Plugin
 
 	Color getItemColor(Color highlighted, Color hidden, Color profitable)
 	{
+		if (highlighted != null)
+		{
+			return highlighted;
+		}
 
 		if (profitable != null && !config.showHighlightedOnly() && config.getHighlightProfitOverValue() > 0)
 		{
 			return profitable;
-		}
-
-		if (highlighted != null)
-		{
-			return highlighted;
 		}
 
 		if (hidden != null)

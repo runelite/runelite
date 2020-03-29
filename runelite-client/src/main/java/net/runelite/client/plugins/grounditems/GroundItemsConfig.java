@@ -381,7 +381,7 @@ public interface GroundItemsConfig extends Config
 	)
 	default Color profitValueColor()
 	{
-		return Color.decode("#ffff00");
+		return Color.YELLOW;
 	}
 
 	@ConfigItem(
@@ -390,6 +390,7 @@ public interface GroundItemsConfig extends Config
 		description = "Highlights ground items with a high alch profit greater than value. (0 = Disabled)",
 		position = 30
 	)
+	@Units(Units.GOLD_PIECES)
 	default int getHighlightProfitOverValue()
 	{
 		return 0;
