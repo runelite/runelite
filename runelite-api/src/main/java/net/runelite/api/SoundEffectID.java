@@ -62,7 +62,33 @@ public final class SoundEffectID
 	public final static int ZERO_DAMAGE_SPLAT = 511;
 	public final static int TAKE_DAMAGE_SPLAT = 510;
 	public final static int ATTACK_HIT = 2498;
-	public final static int PRAYER_ACTIVATE_VROOM = 2690;
+
+	public final static int PRAYER_ACTIVATE_2690 = 2690; //Thick Skin
+	public final static int PRAYER_ACTIVATE_2688 = 2688; //Burst of Strength
+	public final static int PRAYER_ACTIVATE_2664 = 2664; //Clarity of Thought
+	public final static int PRAYER_ACTIVATE_2685 = 2685; //Sharp Eye, Rigour
+	public final static int PRAYER_ACTIVATE_2670 = 2670; //Mystic Will, Augury
+	public final static int PRAYER_ACTIVATE_2684 = 2684; //Rock Skin
+	public final static int PRAYER_ACTIVATE_2689 = 2689; //Superhuman Strength
+	public final static int PRAYER_ACTIVATE_2662 = 2662; //Improved Reflexes
+	public final static int PRAYER_ACTIVATE_2679 = 2679; //Rapid Restore, Preserve
+	public final static int PRAYER_ACTIVATE_2678 = 2678; //Rapid Heal
+	public final static int PRAYER_ACTIVATE_1982 = 1982; //Protect Item
+	public final static int PRAYER_ACTIVATE_2666 = 2666; //Hawk Eye
+	public final static int PRAYER_ACTIVATE_2668 = 2668; //Mystic Lore
+	public final static int PRAYER_ACTIVATE_2687 = 2687; //Steel Skin
+	public final static int PRAYER_ACTIVATE_2691 = 2691; //Ultimate Strength
+	public final static int PRAYER_ACTIVATE_2667 = 2667; //Incredible Reflexes
+	public final static int PRAYER_ACTIVATE_2675 = 2675; //Protect from Magic
+	public final static int PRAYER_ACTIVATE_2677 = 2677; //Protect from Missles
+	public final static int PRAYER_ACTIVATE_2676 = 2676; //Protect from Melee
+	public final static int PRAYER_ACTIVATE_2665 = 2665; //Eagle Eye
+	public final static int PRAYER_ACTIVATE_2669 = 2669; //Mystic Might
+	public final static int PRAYER_ACTIVATE_2682 = 2682; //Retribution
+	public final static int PRAYER_ACTIVATE_2680 = 2680; //Redemption
+	public final static int PRAYER_ACTIVATE_2686 = 2686; //Smite
+	public final static int PRAYER_ACTIVATE_3826 = 3826; //Chivalry
+	public final static int PRAYER_ACTIVATE_3825 = 3825; //Piety
 	public final static int PRAYER_DEACTIVE_VWOOP = 2663;
 	public final static int PRAYER_DEPLETE_TWINKLE = 2672;
 
