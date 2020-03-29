@@ -63,14 +63,8 @@ class PrayerFlickOverlay extends Overlay
 			return null;
 		}
 
-		// Prayer orb widget will be hidden when minimap is hidden
-		Widget prayerOrb = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB);
-		if (prayerOrb == null || prayerOrb.isHidden()) {
-			return null;
-		}
-
 		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
-		if (xpOrb == null)
+		if (xpOrb == null || xpOrb.isHidden())
 		{
 			return null;
 		}
