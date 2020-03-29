@@ -86,7 +86,7 @@ public class SlayerPluginTest
 	private static final String TASK_KONAR_BOSS = "You're now assigned to bring balance to the Alchemical<br>Hydra 35 times. Your reward point tally is 724.";
 
 	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
-	private static final String TASK_EXISTING_2 = "You're still bringing balance to basilisks in the Jormungand's Prison, with 136 to go. Come back when you're finished.";
+	private static final String TASK_EXISTING_2 = "You're still bringing balance to basilisks in the<br>Jormungand's Prison, with 136 to go. Come back when<br>you're finished.";
 	private static final String TASK_EXISTING_INVALID_LOC = "You're still bringing balance to basilisks in the Prison, with 136 to go. Come back when you're finished.";
 
 	private static final String REWARD_POINTS = "Reward points: 17,566";
