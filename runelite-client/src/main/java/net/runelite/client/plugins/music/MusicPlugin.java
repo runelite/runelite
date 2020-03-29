@@ -50,6 +50,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.AreaSoundEffectPlayed;
+import net.runelite.api.events.SoundEffectPlayed;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -80,6 +81,36 @@ public class MusicPlugin extends Plugin
 {
 	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
 		SoundEffectID.TELEPORT_VWOOP
+	);
+
+	private static final Set<Integer> PRAYER_SOUNDS = ImmutableSet.of(
+		SoundEffectID.PRAYER_ACTIVATE_2690,
+		SoundEffectID.PRAYER_ACTIVATE_2688,
+		SoundEffectID.PRAYER_ACTIVATE_2664,
+		SoundEffectID.PRAYER_ACTIVATE_2685,
+		SoundEffectID.PRAYER_ACTIVATE_2670,
+		SoundEffectID.PRAYER_ACTIVATE_2684,
+		SoundEffectID.PRAYER_ACTIVATE_2689,
+		SoundEffectID.PRAYER_ACTIVATE_2662,
+		SoundEffectID.PRAYER_ACTIVATE_2679,
+		SoundEffectID.PRAYER_ACTIVATE_2678,
+		SoundEffectID.PRAYER_ACTIVATE_1982,
+		SoundEffectID.PRAYER_ACTIVATE_2666,
+		SoundEffectID.PRAYER_ACTIVATE_2668,
+		SoundEffectID.PRAYER_ACTIVATE_2687,
+		SoundEffectID.PRAYER_ACTIVATE_2691,
+		SoundEffectID.PRAYER_ACTIVATE_2667,
+		SoundEffectID.PRAYER_ACTIVATE_2675,
+		SoundEffectID.PRAYER_ACTIVATE_2677,
+		SoundEffectID.PRAYER_ACTIVATE_2676,
+		SoundEffectID.PRAYER_ACTIVATE_2665,
+		SoundEffectID.PRAYER_ACTIVATE_2669,
+		SoundEffectID.PRAYER_ACTIVATE_2682,
+		SoundEffectID.PRAYER_ACTIVATE_2680,
+		SoundEffectID.PRAYER_ACTIVATE_2686,
+		SoundEffectID.PRAYER_ACTIVATE_3826,
+		SoundEffectID.PRAYER_ACTIVATE_3825,
+		SoundEffectID.PRAYER_DEACTIVE_VWOOP
 	);
 
 	@Inject
@@ -588,6 +619,17 @@ public class MusicPlugin extends Plugin
 			&& musicConfig.muteEnvironmentAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
+		}
+	}
+
+	@Subscribe
+	public void onSoundEffectPlayed(SoundEffectPlayed soundEffectPlayed)
+	{
+		int soundId = soundEffectPlayed.getSoundId();
+		if (musicConfig.mutePrayerSounds()
+			&& PRAYER_SOUNDS.contains(soundId))
+		{
+			soundEffectPlayed.consume();
 		}
 	}
 }
