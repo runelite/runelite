@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectID;
@@ -77,6 +78,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("C ON GAME HOC", "Gnome Coach", new WorldPoint(2395, 3486, 0), "Gnome Ball course", "How many gnomes on the Gnome ball field have red patches on their uniforms?", "6"),
 		new AnagramClue("COOL NERD", "Old crone", new WorldPoint(3462, 3557, 0), "East of the Slayer Tower", "What is the combined combat level of each species that live in Slayer tower?", "619"),
 		new AnagramClue("COPPER ORE CRYPTS", "Prospector Percy", new WorldPoint(3061, 3377, 0), "Motherlode Mine", "During a party, everyone shook hands with everyone else. There were 66 handshakes. How many people were at the party?", "12"),
+		new AnagramClue("DARN DRAKE", "Daer Krand", new WorldPoint(3728, 3302, 0), "Sisterhood Sanctuary (Slepe Dungeon, northeast of Nightmare Arena)"),
 		new AnagramClue("DED WAR", "Edward", new WorldPoint(3284, 3943, 0), "Inside Rogue's Castle"),
 		new AnagramClue("DEKAGRAM", "Dark mage", new WorldPoint(3039, 4835, 0), "Centre of the Abyss", "How many rifts are found here in the abyss?", "13"),
 		new AnagramClue("DO SAY MORE", "Doomsayer", new WorldPoint(3230, 3230, 0), "East of Lumbridge Castle", "What is 40 divided by 1/2 plus 15?", "95"),
@@ -171,16 +173,18 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final String npc;
 	private final WorldPoint location;
 	private final String area;
+	@Nullable
 	private final String question;
+	@Nullable
 	private final String answer;
 	private int objectId;
 
 	private AnagramClue(String text, String npc, WorldPoint location, String area)
 	{
-		this(text, npc, location, area, "", null);
+		this(text, npc, location, area, null, null);
 	}
 
-	private AnagramClue(String text, String npc, WorldPoint location, String area, String question, String answer)
+	private AnagramClue(String text, String npc, WorldPoint location, String area, @Nullable String question, @Nullable String answer)
 	{
 		this.text = text;
 		this.npc = npc;

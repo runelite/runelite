@@ -124,6 +124,39 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
+		keyName = "bh",
+		name = "BH Command",
+		description = "Configures whether the Bounty Hunter - Hunter command is enabled<br> !bh"
+	)
+	default boolean bh()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "bhRogue",
+		name = "BH Rogue Command",
+		description = "Configures whether the Bounty Hunter - Rogue command is enabled<br> !bhrogue"
+	)
+	default boolean bhRogue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "lms",
+		name = "LMS Command",
+		description = "Configures whether the Last Man Standing command is enabled<br> !lms"
+	)
+	default boolean lms()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 11,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",
 		description = "Enable hot key to clear single word at a time"
@@ -134,7 +167,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 12,
 		keyName = "clearEntireChatBox",
 		name = "Clear Chat Box",
 		description = "Enable hotkey to clear entire chat box"

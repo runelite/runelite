@@ -159,7 +159,7 @@ enum TeleportLocationData
 	EXPLORERS_RING(TeleportType.OTHER, "Explorer's Ring", new WorldPoint(3052, 3292, 0), "explorers_ring_icon.png"),
 	KARAMJA_GLOVES_GEM_MINE(TeleportType.OTHER, "Karamja Gloves", "Gem Mine (Underground)", new WorldPoint(2827, 2997, 0), "karamja_gloves_icon.png"),
 	KARAMJA_GLOVES_DURADEL(TeleportType.OTHER, "Karamja Gloves", "Duradel", new WorldPoint(2870, 2981, 0), "karamja_gloves_icon.png"),
-	DESERT_AMULET_NARDAH(TeleportType.OTHER, "Desert Amulet", "Nardah", new WorldPoint(3432, 2914, 0), "desert_amulet_icon.png"),
+	DESERT_AMULET_NARDAH(TeleportType.OTHER, "Desert Amulet", "Nardah", new WorldPoint(3425, 2928, 0), "desert_amulet_icon.png"),
 	DESERT_AMULKT_KALPHITE_CAVE(TeleportType.OTHER, "Desert Amulet", "Kalphite Cave", new WorldPoint(3322, 3122, 0), "desert_amulet_icon.png"),
 	MORYTANIA_LEGS_SLIME_PIT(TeleportType.OTHER, "Morytania Legs", "Slime Pit (Underground)", new WorldPoint(3654, 3516, 0), "morytania_legs_icon.png"),
 	MORYTANIA_LEGS_BURGH_DE_ROTT(TeleportType.OTHER, "Morytania Legs", "Burgh de Rott", new WorldPoint(3482, 3231, 0), "morytania_legs_icon.png"),

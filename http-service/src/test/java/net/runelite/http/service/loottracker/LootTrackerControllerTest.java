@@ -35,6 +35,7 @@ import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
+import net.runelite.http.service.util.redis.RedisPool;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +54,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import redis.clients.jedis.Jedis;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(LootTrackerController.class)
@@ -68,11 +70,16 @@ public class LootTrackerControllerTest
 	@MockBean
 	private AuthFilter authFilter;
 
+	@MockBean
+	private RedisPool redisPool;
+
 	@Before
 	public void before() throws IOException
 	{
 		when(authFilter.handle(any(HttpServletRequest.class), any(HttpServletResponse.class)))
 			.thenReturn(mock(SessionEntry.class));
+
+		when(redisPool.getResource()).thenReturn(mock(Jedis.class));
 	}
 
 	@Test

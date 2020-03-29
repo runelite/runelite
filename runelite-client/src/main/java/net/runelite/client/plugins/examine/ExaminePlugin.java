@@ -130,7 +130,7 @@ public class ExaminePlugin extends Plugin
 				type = ExamineType.ITEM;
 				id = event.getId();
 				break;
-			case EXAMINE_ITEM_BANK_EQ:
+			case CC_OP_LOW_PRIORITY:
 			{
 				type = ExamineType.ITEM_BANK_EQ;
 				int[] qi = findItemFromWidget(event.getWidgetId(), event.getActionParam());

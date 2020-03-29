@@ -29,7 +29,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
+import net.runelite.api.vars.InputType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 
@@ -56,7 +58,11 @@ public class ChatKeyboardListener implements KeyListener
 	{
 		if (chatCommandsConfig.clearSingleWord().matches(e))
 		{
-			String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+			int inputTye = client.getVar(VarClientInt.INPUT_TYPE);
+			String input = inputTye == InputType.NONE.getType()
+				? client.getVar(VarClientStr.CHATBOX_TYPED_TEXT)
+				: client.getVar(VarClientStr.INPUT_TEXT);
+
 			if (input != null)
 			{
 				// remove trailing space
@@ -66,31 +72,30 @@ public class ChatKeyboardListener implements KeyListener
 				}
 
 				// find next word
-				int idx = input.lastIndexOf(' ');
-				final String replacement;
-				if (idx != -1)
-				{
-					replacement = input.substring(0, idx);
-				}
-				else
-				{
-					replacement = "";
-				}
+				int idx = input.lastIndexOf(' ') + 1;
+				final String replacement = input.substring(0, idx);
 
-				clientThread.invoke(() ->
-				{
-					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
-					client.runScript(ScriptID.CHAT_PROMPT_INIT);
-				});
+				clientThread.invoke(() -> applyText(inputTye, replacement));
 			}
 		}
 		else if (chatCommandsConfig.clearChatBox().matches(e))
 		{
-			clientThread.invoke(() ->
-			{
-				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
-				client.runScript(ScriptID.CHAT_PROMPT_INIT);
-			});
+			int inputTye = client.getVar(VarClientInt.INPUT_TYPE);
+			clientThread.invoke(() -> applyText(inputTye, ""));
+		}
+	}
+
+	private void applyText(int inputType, String replacement)
+	{
+		if (inputType == InputType.NONE.getType())
+		{
+			client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
+			client.runScript(ScriptID.CHAT_PROMPT_INIT);
+		}
+		else if (inputType == InputType.PRIVATE_MESSAGE.getType())
+		{
+			client.setVar(VarClientStr.INPUT_TEXT, replacement);
+			client.runScript(ScriptID.CHAT_TEXT_INPUT_REBUILD, "");
 		}
 	}
 

@@ -150,7 +150,7 @@ public class ChatMessageManager
 			messageNode.setName(ColorUtil.wrapWithColorTag(messageNode.getName(), usernameColor));
 		}
 
-		String sender = chatMessage.getSender();
+		String sender = messageNode.getSender();
 		if (senderColor != null && !Strings.isNullOrEmpty(sender))
 		{
 			messageNode.setSender(ColorUtil.wrapWithColorTag(sender, senderColor));

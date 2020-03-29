@@ -1,0 +1,55 @@
+.id                 1050
+.int_stack_count    1
+.string_stack_count 0
+.int_var_count      2 ; +1 for saving target angle
+.string_var_count   0
+; Remove check of op index
+;   iload                  0
+;   iconst                 1
+;   if_icmpne              LABEL10
+   get_varbit             542
+   iconst                 1
+   if_icmpeq              LABEL10
+   get_varbit             4606
+   iconst                 0
+   if_icmpne              LABEL10
+   jump                   LABEL11
+LABEL10:
+   return                
+LABEL11:
+   ; switch on op index
+   iload 0
+   switch
+     1: LOOK_NORTH
+     2: LOOK_SOUTH
+     3: LOOK_EAST
+     4: LOOK_WEST
+   jump LABEL10
+LOOK_NORTH:
+   iconst                 0
+   istore                 1
+   jump                   LOOK
+LOOK_SOUTH:
+   iconst                 1024
+   istore                 1
+   jump                   LOOK
+LOOK_EAST:
+   iconst                 1536
+   istore                 1
+   jump                   LOOK
+LOOK_WEST:
+   iconst                 512
+   istore                 1
+   jump                   LOOK
+LOOK:
+   iconst                 2266
+   iconst                 1
+   iconst                 0
+   sound_synth           
+   iconst                 225
+   iconst                 5
+   randominc             
+   add
+   iload                  1 ; load target angle
+   cam_forceangle
+   return                

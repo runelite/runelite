@@ -73,7 +73,8 @@ public class ConfigPlugin extends Plugin
 	{
 		pluginListPanel = pluginListPanelProvider.get();
 		pluginListPanel.addFakePlugin(new PluginConfigurationDescriptor(
-				"RuneLite", "RuneLite client settings", new String[]{"client"},
+				"RuneLite", "RuneLite client settings",
+				new String[]{"client", "notification", "size", "position", "window", "chrome", "focus", "font", "overlay", "tooltip", "infobox"},
 				null, runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig)
 			),
 			new PluginConfigurationDescriptor(

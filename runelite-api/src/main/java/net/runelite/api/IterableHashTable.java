@@ -24,7 +24,7 @@
  */
 package net.runelite.api;
 
-public interface IterableHashTable extends Iterable
+public interface IterableHashTable<T extends Node> extends Iterable<T>
 {
-	Node get(long hash);
+	T get(long hash);
 }

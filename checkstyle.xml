@@ -40,6 +40,11 @@
 			<property name="message" value="Indent must use tab characters"/>
 			<property name="ignoreComments" value="true"/>
 		</module>
+		<module name="RegexpSinglelineJava">
+			<property name="format" value="[^\s]\s+$"/>
+			<property name="message" value="No trailing whitespace"/>
+			<property name="ignoreComments" value="true"/>
+		</module>
 		<module name="WhitespaceAround"/>
 		<module name="WhitespaceAfter">
 			<property name="tokens" value="COMMA"/>

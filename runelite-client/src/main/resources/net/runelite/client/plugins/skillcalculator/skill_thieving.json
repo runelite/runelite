@@ -7,6 +7,12 @@
       "xp": 8
     },
     {
+      "level": 1,
+      "icon": 10851,
+      "name": "Winter Sq'irkjuice",
+      "xp": 350
+    },
+    {
       "level": 2,
       "icon": 1965,
       "name": "Vegetable Stall",
@@ -79,6 +85,12 @@
       "xp": 28
     },
     {
+      "level": 25,
+      "icon": 10848,
+      "name": "Spring Sq'irkjuice",
+      "xp": 1350
+    },
+    {
       "level": 27,
       "icon": 5318,
       "name": "Seed Stall",
@@ -131,6 +143,12 @@
       "icon": 3686,
       "name": "Fremennik Citizen",
       "xp": 65
+    },
+    {
+      "level": 45,
+      "icon": 10850,
+      "name": "Autumn Sq'irkjuice",
+      "xp": 2350
     },
     {
       "level": 49,
@@ -191,6 +209,12 @@
       "icon": 3253,
       "name": "Yanille Watchman",
       "xp": 137.5
+    },
+    {
+      "level": 65,
+      "icon": 10849,
+      "name": "Summer Sq'irkjuice",
+      "xp": 3000
     },
     {
       "level": 70,
