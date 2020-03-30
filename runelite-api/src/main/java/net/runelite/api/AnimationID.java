@@ -41,6 +41,7 @@ public final class AnimationID
 	public static final int WOODCUTTING_MITHRIL = 871;
 	public static final int WOODCUTTING_ADAMANT = 869;
 	public static final int WOODCUTTING_RUNE = 867;
+	public static final int WOODCUTTING_GILDED = 8303;
 	public static final int WOODCUTTING_DRAGON = 2846;
 	public static final int WOODCUTTING_INFERNAL = 2117;
 	public static final int WOODCUTTING_3A_AXE = 7264;
