@@ -41,6 +41,7 @@ public final class AnimationID
 	public static final int WOODCUTTING_MITHRIL = 871;
 	public static final int WOODCUTTING_ADAMANT = 869;
 	public static final int WOODCUTTING_RUNE = 867;
+	public static final int WOODCUTTING_GILDED = 8303;
 	public static final int WOODCUTTING_DRAGON = 2846;
 	public static final int WOODCUTTING_INFERNAL = 2117;
 	public static final int WOODCUTTING_3A_AXE = 7264;
@@ -110,6 +111,7 @@ public final class AnimationID
 	public static final int MINING_MITHRIL_PICKAXE = 629;
 	public static final int MINING_ADAMANT_PICKAXE = 628;
 	public static final int MINING_RUNE_PICKAXE = 624;
+	public static final int MINING_GILDED_PICKAXE = 8313;
 	public static final int MINING_DRAGON_PICKAXE = 7139;
 	public static final int MINING_DRAGON_PICKAXE_UPGRADED = 642;
 	public static final int MINING_DRAGON_PICKAXE_OR = 8346;
@@ -123,6 +125,7 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_MITHRIL = 6757;
 	public static final int MINING_MOTHERLODE_ADAMANT = 6756;
 	public static final int MINING_MOTHERLODE_RUNE = 6752;
+	public static final int MINING_MOTHERLODE_GILDED = 8312;
 	public static final int MINING_MOTHERLODE_DRAGON = 6758;
 	public static final int MINING_MOTHERLODE_DRAGON_UPGRADED = 335;
 	public static final int MINING_MOTHERLODE_DRAGON_OR = 8344;
