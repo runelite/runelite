@@ -238,7 +238,15 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (actor.isDead() && interactedNpcIds.contains(actor.getId()))
 		{
-			removeCounters();
+			if (Boss.getBoss(actor.getId()) == null)
+			{
+				removeCounters();
+				return;
+			}
+			if (Boss.getBoss(actor.getId()).getMinionIds().size() == 0 || (Boss.getBoss(actor.getId()).getMinionIds().size() > 0 && !Boss.getBoss(actor.getId()).getMinionIds().contains(actor.getId())))
+			{
+				removeCounters();
+			}
 		}
 	}
 
