@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -123,6 +124,8 @@ public class TimersPlugin extends Plugin
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
 
+	private static final int FIGHT_CAVES_REGION_ID = 9551;
+	private static final int INFERNO_REGION_ID = 9043;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
 	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
 	private static final Pattern TZHAAR_COMPLETE_MESSAGE = Pattern.compile("Your (TzTok-Jad|TzKal-Zuk) kill count is:");
@@ -148,7 +151,6 @@ public class TimersPlugin extends Plugin
 	private ElapsedTimer tzhaarTimer;
 	private Instant tzhaarStartTime;
 	private Instant tzhaarLastTime;
-	private Boolean tzhaarStarted = false;
 	private boolean loggingIn;
 
 	@Inject
@@ -687,7 +689,7 @@ public class TimersPlugin extends Plugin
 				return;
 			}
 
-			if (!tzhaarStarted)
+			if (tzhaarStartTime == null)
 			{
 				int wave = Integer.parseInt(matcher.group(1));
 				if (wave != 1)
@@ -695,7 +697,6 @@ public class TimersPlugin extends Plugin
 					return;
 				}
 
-				tzhaarStarted = true;
 				tzhaarStartTime = now;
 			}
 
@@ -710,7 +711,7 @@ public class TimersPlugin extends Plugin
 
 	}
 
-	private void updateInfoBoxState()
+	private void updateTzhaarTimerOnLoading()
 	{
 		if (tzhaarTimer == null)
 		{
@@ -725,21 +726,21 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	private boolean checkInFightCaves()
+	@VisibleForTesting
+	boolean checkInFightCaves()
 	{
-		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), 9551);
+		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), FIGHT_CAVES_REGION_ID);
 	}
 
 	private boolean checkInInferno()
 	{
-		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), 9043);
+		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), INFERNO_REGION_ID);
 	}
 
 	private void resetTzhaarVars()
 	{
 		tzhaarStartTime = null;
 		tzhaarLastTime = null;
-		tzhaarStarted = false;
 	}
 
 	private void removeTzhaarTimer()
@@ -814,7 +815,7 @@ public class TimersPlugin extends Plugin
 			case LOADING:
 				if (!loggingIn)
 				{
-					updateInfoBoxState();
+					updateTzhaarTimerOnLoading();
 				}
 				break;
 			case HOPPING:
@@ -1102,18 +1103,12 @@ public class TimersPlugin extends Plugin
 	private void loadTzhaarConfig()
 	{
 		tzhaarStartTime = config.tzhaarStartTime();
-		tzhaarStarted = config.tzhaarStarted();
 		tzhaarLastTime = config.tzhaarLastTime();
-		if (tzhaarStarted == null)
-		{
-			tzhaarStarted = false;
-		}
 	}
 
 	private void resetTzhaarConfig()
 	{
 		config.tzhaarStartTime(null);
-		config.tzhaarStarted(false);
 		config.tzhaarLastTime(null);
 	}
 
@@ -1130,7 +1125,6 @@ public class TimersPlugin extends Plugin
 		}
 
 		config.tzhaarStartTime(tzhaarStartTime);
-		config.tzhaarStarted(tzhaarStarted);
 		config.tzhaarLastTime(tzhaarLastTime);
 		resetTzhaarVars();
 	}

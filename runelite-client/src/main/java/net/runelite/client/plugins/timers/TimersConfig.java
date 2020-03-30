@@ -239,24 +239,6 @@ public interface TimersConfig extends Config
 	void tzhaarLastTime(Instant tzhaarLastTime);
 
 	@ConfigItem(
-		keyName = "tzhaarStarted",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default Boolean tzhaarStarted()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "tzhaarStarted",
-		name = "",
-		description = ""
-	)
-	void tzhaarStarted(Boolean tzhaarStarted);
-
-	@ConfigItem(
 		keyName = "showStaffOfTheDead",
 		name = "Staff of the Dead timer",
 		description = "Configures whether staff of the dead timer is displayed"

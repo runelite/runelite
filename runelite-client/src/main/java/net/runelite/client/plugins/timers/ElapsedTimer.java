@@ -29,20 +29,32 @@ import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public class ElapsedTimer extends InfoBox
 {
 	private final Instant startTime;
-	private LocalTime time;
-	private Instant lastTime;
+	private Duration time;
+	private final Instant lastTime;
 
+	// Creates a timer that counts up if lastTime is null, or a paused timer if lastTime is defined
 	public ElapsedTimer(BufferedImage image, TimersPlugin plugin, Instant startTime, Instant lastTime)
 	{
 		super(image, plugin);
 		this.startTime = startTime;
 		this.lastTime = lastTime;
+		updateTimer();
+	}
+
+	public void updateTimer()
+	{
+		time = Duration.between(startTime, lastTime == null ? Instant.now() : lastTime);
+	}
+
+	private String formatTime(Duration time)
+	{
+		if (time.toHours() > 0) return DurationFormatUtils.formatDuration(time.toMillis(), "HH:mm", true);
+		return DurationFormatUtils.formatDuration(time.toMillis(), "mm:ss", true);
 	}
 
 	@Override
@@ -53,22 +65,8 @@ public class ElapsedTimer extends InfoBox
 			return "";
 		}
 
-		if (lastTime == null)
-		{
-			Duration elapsed = Duration.between(startTime, Instant.now());
-			time = LocalTime.ofSecondOfDay(elapsed.getSeconds());
-		}
-		else
-		{
-			Duration elapsed = Duration.between(startTime, lastTime);
-			time = LocalTime.ofSecondOfDay(elapsed.getSeconds());
-		}
-
-		if (time.getHour() > 0)
-		{
-			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
-		}
-		return time.format(DateTimeFormatter.ofPattern("mm:ss"));
+		updateTimer();
+		return formatTime(time);
 	}
 
 	@Override
@@ -80,6 +78,6 @@ public class ElapsedTimer extends InfoBox
 	@Override
 	public String getTooltip()
 	{
-		return "Elapsed time: " +  time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		return "Elapsed time: " +  DurationFormatUtils.formatDuration(time.toMillis(), "HH:mm:ss", true);
 	}
 }
