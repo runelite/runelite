@@ -135,6 +135,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_MITHRIL:
 			case WOODCUTTING_ADAMANT:
 			case WOODCUTTING_RUNE:
+			case WOODCUTTING_GILDED:
 			case WOODCUTTING_DRAGON:
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
