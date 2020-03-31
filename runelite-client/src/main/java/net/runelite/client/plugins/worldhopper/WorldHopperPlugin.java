@@ -586,7 +586,7 @@ public class WorldHopperPlugin extends Plugin
 				}
 			}
 
-			//Avoid switching to near-max population worlds to prevent failure
+			// Avoid switching to near-max population worlds to prevent failure
 			if (world.getPlayers() >= (MAX_PLAYER_COUNT * MAX_HOP_TO_PERCENTAGE))
 			{
 				continue;
