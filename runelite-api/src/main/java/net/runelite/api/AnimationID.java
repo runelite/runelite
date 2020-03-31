@@ -104,6 +104,14 @@ public final class AnimationID
 	public static final int FISHING_CRUSHING_INFERNAL_EELS = 7553;
 	public static final int FISHING_CUTTING_SACRED_EELS = 7151;
 	public static final int FISHING_BAREHAND = 6709;
+	public static final int FISHING_BAREHAND_WINDUP_1 = 6703;
+	public static final int FISHING_BAREHAND_WINDUP_2 = 6704;
+	public static final int FISHING_BAREHAND_CAUGHT_SHARK_1 = 6705;
+	public static final int FISHING_BAREHAND_CAUGHT_SHARK_2 = 6706;
+	public static final int FISHING_BAREHAND_CAUGHT_SWORDFISH_1 = 6707;
+	public static final int FISHING_BAREHAND_CAUGHT_SWORDFISH_2 = 6708;
+	public static final int FISHING_BAREHAND_CAUGHT_TUNA_1 = 6710;
+	public static final int FISHING_BAREHAND_CAUGHT_TUNA_2 = 6711;
 	public static final int MINING_BRONZE_PICKAXE = 625;
 	public static final int MINING_IRON_PICKAXE = 626;
 	public static final int MINING_STEEL_PICKAXE = 627;
