@@ -24,10 +24,9 @@
  */
 package net.runelite.client.plugins.inventoryviewer;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -35,7 +34,9 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.inventorytags.InventoryTagsConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
@@ -44,17 +45,25 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class InventoryViewerOverlay extends Overlay
 {
+	private static final String ITEM_KEY_PREFIX = "item_";
+	private static final String SETNAME_GROUP_1 = "Group 1";
+	private static final String SETNAME_GROUP_2 = "Group 2";
+	private static final String SETNAME_GROUP_3 = "Group 3";
+	private static final String SETNAME_GROUP_4 = "Group 4";
 	private static final int INVENTORY_SIZE = 28;
 	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(
 		new BufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
 	private final Client client;
 	private final ItemManager itemManager;
+	private final InventoryViewerConfig config;
+	private final InventoryTagsConfig configTag;
+	private final ConfigManager configManager;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private InventoryViewerOverlay(Client client, ItemManager itemManager)
+	private InventoryViewerOverlay(Client client, ConfigManager configManager, InventoryViewerConfig config, InventoryTagsConfig configTag, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);
@@ -62,6 +71,9 @@ class InventoryViewerOverlay extends Overlay
 		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		this.itemManager = itemManager;
 		this.client = client;
+		this.config = config;
+		this.configTag = configTag;
+		this.configManager = configManager;
 	}
 
 	@Override
@@ -85,12 +97,8 @@ class InventoryViewerOverlay extends Overlay
 				final Item item = items[i];
 				if (item.getQuantity() > 0)
 				{
-					final BufferedImage image = getImage(item);
-					if (image != null)
-					{
-						panelComponent.getChildren().add(new ImageComponent(image));
-						continue;
-					}
+					addImageToPanel(item);
+					continue;
 				}
 			}
 
@@ -101,9 +109,92 @@ class InventoryViewerOverlay extends Overlay
 		return panelComponent.render(graphics);
 	}
 
+	private void addImageToPanel(Item item)
+	{
+		BufferedImage image = getImage(item);
+
+		if (image != null) // if image exists we need to add it
+		{
+			if (showTags()) // if Inventory Tags is active
+			{
+				if (getOutline(item) != null) // trying to get the item outline
+				{
+					ColorModel taggedImageCM = image.getColorModel();
+					BufferedImage taggedImage = new BufferedImage(taggedImageCM,
+							image.copyData(null),
+							taggedImageCM.isAlphaPremultiplied(),
+							null);
+					Graphics2D graphic = taggedImage.createGraphics();
+					graphic.drawImage(getOutline(item), 0, 0, null); // drawing the outline over the sprite
+					graphic.dispose();
+					image = taggedImage;
+				}
+			}
+
+			panelComponent.getChildren().add(new ImageComponent(image));
+		}
+	}
+
 	private BufferedImage getImage(Item item)
 	{
 		ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
 		return itemManager.getImage(item.getId(), item.getQuantity(), itemComposition.isStackable());
+	}
+
+	private BufferedImage getOutline(Item item)
+	{
+		Color color = getBoundColor(item.getId());
+		if (color != null)
+		{
+			return itemManager.getItemOutline(item.getId(), item.getQuantity(), color);
+		}
+
+		return null;
+	}
+
+	private Color getBoundColor(int itemId)
+	{
+		final String group = getTag(itemId);
+		Color color = null;
+
+		if (group != null)
+		{
+			color = getGroupNameColor(group);
+		}
+
+		return color;
+	}
+
+	Color getGroupNameColor(final String name)
+	{
+		switch (name)
+		{
+			case SETNAME_GROUP_1:
+				return configTag.getGroup1Color();
+			case SETNAME_GROUP_2:
+				return configTag.getGroup2Color();
+			case SETNAME_GROUP_3:
+				return configTag.getGroup3Color();
+			case SETNAME_GROUP_4:
+				return configTag.getGroup4Color();
+		}
+
+		return null;
+	}
+
+	private String getTag(int itemId)
+	{
+		String tag = configManager.getConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId);
+		if (tag == null || tag.isEmpty())
+		{
+			return null;
+		}
+
+		return tag;
+	}
+
+	private boolean showTags()
+	{
+		return config.getMarkViewer();
 	}
 }

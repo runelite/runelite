@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 AWPH-I
+ * Copyright (c) 2019 Darkkgreen <https://github.com/darkkgreen>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,55 +24,23 @@
  */
 package net.runelite.client.plugins.inventoryviewer;
 
-import javax.inject.Inject;
-import com.google.inject.Provides;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.inventorytags.InventoryTagsConfig;
-import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@PluginDescriptor(
-	name = "Inventory Viewer",
-	description = "Add an overlay showing the contents of your inventory",
-	tags = {"alternate", "items", "overlay", "second"},
-	enabledByDefault = false
-)
-public class InventoryViewerPlugin extends Plugin
+@ConfigGroup("inventoryviewer")
+public interface InventoryViewerConfig extends Config
 {
-	@Inject
-	private InventoryViewerOverlay overlay;
+	String GROUP = "inventoryviewer";
 
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private ConfigManager configManager;
-
-	@Inject
-	private InventoryViewerConfig config;
-
-	@Provides
-	InventoryViewerConfig provideConfig(ConfigManager configManager)
+	@ConfigItem(
+		position = 4,
+		keyName = "showMarkInvViewer",
+		name = "Display markers",
+		description = "Display markers configured in Inventory Tags when active"
+	)
+	default boolean getMarkViewer()
 	{
-		return configManager.getConfig(InventoryViewerConfig.class);
-	}
-
-	@Provides
-	InventoryTagsConfig provideVariable(ConfigManager configManager)
-	{
-		return configManager.getConfig(InventoryTagsConfig.class);
-	}
-
-	@Override
-	public void startUp()
-	{
-		overlayManager.add(overlay);
-	}
-
-	@Override
-	public void shutDown()
-	{
-		overlayManager.remove(overlay);
+		return false;
 	}
 }
