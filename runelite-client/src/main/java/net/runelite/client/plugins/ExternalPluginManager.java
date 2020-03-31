@@ -755,8 +755,11 @@ public class ExternalPluginManager
 					Class<?> type = key.getTypeLiteral().getRawType();
 					if (Config.class.isAssignableFrom(type))
 					{
-						Config config = (Config) pluginInjector.getInstance(key);
-						configManager.setDefaultConfiguration(config, false);
+						if (type.getPackageName().startsWith(plugin.getClass().getPackageName()))
+						{
+							Config config = (Config) pluginInjector.getInstance(key);
+							configManager.setDefaultConfiguration(config, false);
+						}
 					}
 				}
 			}

@@ -82,6 +82,7 @@ import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.util.GameEventManager;
 import net.runelite.client.util.Groups;
 import org.jgroups.Message;
+import org.pf4j.Extension;
 
 @Singleton
 @Slf4j
@@ -192,6 +193,20 @@ public class PluginManager
 				Class<?> type = key.getTypeLiteral().getRawType();
 				if (Config.class.isAssignableFrom(type))
 				{
+					Extension externalDescriptor = plugin.getClass().getAnnotation(Extension.class);
+					if (externalDescriptor != null)
+					{
+						// external
+						Config config = (Config) injector.getInstance(key);
+						Class<?> actualClass = config.getClass().getInterfaces()[0];
+
+						if (actualClass.getPackageName().startsWith(plugin.getClass().getPackageName()))
+						{
+							return config;
+						}
+						continue;
+					}
+
 					return (Config) injector.getInstance(key);
 				}
 			}
