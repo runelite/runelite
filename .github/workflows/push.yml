@@ -103,6 +103,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: toolmantim/release-drafter@v5.2.0
+      - uses: ThatGamerBlue/release-drafter@v5.7.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
