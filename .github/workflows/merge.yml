@@ -12,26 +12,10 @@ jobs:
 
     steps:
       - name: automerge
-        uses: pascalgn/automerge-action@f84dd310ea4a19890c70a4ff11ab282a872fb94b
+        uses: pascalgn/automerge-action@v0.8.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_FORKS: false
-          LABELS: automated-pull-request
-          AUTOMERGE: automated-pull-request
-          
-  cleanup:
-    name: Cleanup
-    needs: automerge
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo $(jq --raw-output .pull_request.head.ref "$GITHUB_EVENT_PATH"))"
-        id: extract_branch
-      - name: Delete PR head branch
-        uses: dawidd6/action-delete-branch@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.extract_branch.outputs.branch }}
-          be_kind: true
+          MERGE_FORKS: "false"
+          MERGE_LABELS: "automated-pull-request"
+          MERGE_REMOVE_LABELS: ""
+          MERGE_DELETE_BRANCH: "true"
