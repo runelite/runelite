@@ -229,9 +229,9 @@ class LootTrackerBox extends JPanel
 
 		validate();
 		repaint();
-		for(LootTrackerRecord rec: records)
+		for (LootTrackerRecord rec: records)
 		{
-			if(rec.isShouldCollapseBox())
+			if (rec.isShouldCollapseBox())
 			{
 				this.collapse();
 			}
@@ -244,7 +244,7 @@ class LootTrackerBox extends JPanel
 		{
 			itemContainer.setVisible(false);
 			applyDimmer(false, logTitle);
-			for(LootTrackerRecord rec: records)
+			for (LootTrackerRecord rec: records)
 			{
 				rec.setShouldCollapseBox(true);
 			}
@@ -257,7 +257,7 @@ class LootTrackerBox extends JPanel
 		{
 			itemContainer.setVisible(true);
 			applyDimmer(true, logTitle);
-			for(LootTrackerRecord rec: records)
+			for (LootTrackerRecord rec: records)
 			{
 				rec.setShouldCollapseBox(false);
 			}
