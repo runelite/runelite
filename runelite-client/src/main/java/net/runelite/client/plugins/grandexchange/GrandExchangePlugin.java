@@ -217,23 +217,6 @@ public class GrandExchangePlugin extends Plugin
 		return indices;
 	}
 
-	private static List<Integer> findSubstringIndices(String term, String query)
-	{
-		term = term.toLowerCase();
-
-		List<Integer> indices = new ArrayList<>();
-
-		for (int idx = term.indexOf(query); idx != -1; idx = term.indexOf(query, idx + query.length()))
-		{
-			for (int i = 0; i < query.length(); i++)
-			{
-				indices.add(idx + i);
-			}
-		}
-
-		return indices;
-	}
-
 	private SavedOffer getOffer(int slot)
 	{
 		String offer = configManager.getConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot));
@@ -531,6 +514,10 @@ public class GrandExchangePlugin extends Plugin
 
 	private void highlightSearchMatches()
 	{
+		if (!wasFuzzySearch)
+		{
+			return;
+		}
 		String input = client.getVar(VarClientStr.INPUT_TEXT);
 
 		String underlineTag = "<u=" + ColorUtil.colorToHexCode(FUZZY_HIGHLIGHT_COLOR) + ">";
@@ -545,22 +532,15 @@ public class GrandExchangePlugin extends Plugin
 			String itemName = itemNameWidget.getText();
 
 			List<Integer> indices;
-			if (wasFuzzySearch)
+			FuzzyScore fuzzy = new FuzzyScore(Locale.ENGLISH);
+			String otherName = itemName.replace('-', ' ');
+			if (!itemName.contains("-") || fuzzy.fuzzyScore(itemName, input) >= fuzzy.fuzzyScore(otherName, input))
 			{
-				FuzzyScore fuzzy = new FuzzyScore(Locale.ENGLISH);
-				String otherName = itemName.replace('-', ' ');
-				if (!itemName.contains("-") || fuzzy.fuzzyScore(itemName, input) >= fuzzy.fuzzyScore(otherName, input))
-				{
-					indices = findFuzzyIndices(itemName, input);
-				}
-				else
-				{
-					indices = findFuzzyIndices(otherName, input);
-				}
+				indices = findFuzzyIndices(itemName, input);
 			}
 			else
 			{
-				indices = findSubstringIndices(itemName, input);
+				indices = findFuzzyIndices(otherName, input);
 			}
 			Collections.reverse(indices);
 
