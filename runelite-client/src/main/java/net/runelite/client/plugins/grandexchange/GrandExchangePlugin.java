@@ -32,6 +32,7 @@ import com.google.common.primitives.Shorts;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -120,6 +121,8 @@ public class GrandExchangePlugin extends Plugin
 	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
 
 	private static final int MAX_RESULT_COUNT = 250;
+
+	private static final Color FUZZY_HIGHLIGHT_COLOR = new Color(0x800000);
 
 	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
@@ -530,7 +533,7 @@ public class GrandExchangePlugin extends Plugin
 	{
 		String input = client.getVar(VarClientStr.INPUT_TEXT);
 
-		String underlineTag = "<u=" + ColorUtil.colorToHexCode(config.highlightMatchColor()) + ">";
+		String underlineTag = "<u=" + ColorUtil.colorToHexCode(FUZZY_HIGHLIGHT_COLOR) + ">";
 
 		Widget results = client.getWidget(WidgetInfo.CHATBOX_GE_SEARCH_RESULTS);
 		Widget[] children = results.getDynamicChildren();
