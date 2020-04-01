@@ -24,11 +24,11 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import lombok.Data;
 import lombok.NonNull;
-import lombok.Value;
 import net.runelite.http.api.loottracker.LootRecordType;
 
-@Value
+@Data
 class LootTrackerRecord
 {
 	@NonNull
@@ -37,6 +37,7 @@ class LootTrackerRecord
 	private final LootRecordType type;
 	private final LootTrackerItem[] items;
 	private final int kills;
+	private boolean shouldCollapseBox = false;
 
 	/**
 	 * Checks if this record matches specified id

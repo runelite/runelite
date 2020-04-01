@@ -78,6 +78,7 @@ class LootTrackerBox extends JPanel
 	private int kills;
 	@Getter
 	private final List<LootTrackerItem> items = new ArrayList<>();
+	private final List<LootTrackerRecord> records = new ArrayList<>();
 
 	private long totalPrice;
 	private boolean hideIgnoredItems;
@@ -186,6 +187,7 @@ class LootTrackerBox extends JPanel
 		}
 
 		kills += record.getKills();
+		records.add(record);
 
 		outer:
 		for (LootTrackerItem item : record.getItems())
@@ -227,6 +229,13 @@ class LootTrackerBox extends JPanel
 
 		validate();
 		repaint();
+		for(LootTrackerRecord rec: records)
+		{
+			if(rec.isShouldCollapseBox())
+			{
+				this.collapse();
+			}
+		}
 	}
 
 	void collapse()
@@ -235,6 +244,10 @@ class LootTrackerBox extends JPanel
 		{
 			itemContainer.setVisible(false);
 			applyDimmer(false, logTitle);
+			for(LootTrackerRecord rec: records)
+			{
+				rec.setShouldCollapseBox(true);
+			}
 		}
 	}
 
@@ -244,6 +257,11 @@ class LootTrackerBox extends JPanel
 		{
 			itemContainer.setVisible(true);
 			applyDimmer(true, logTitle);
+			for(LootTrackerRecord rec: records)
+			{
+				rec.setShouldCollapseBox(false);
+			}
+
 		}
 	}
 
