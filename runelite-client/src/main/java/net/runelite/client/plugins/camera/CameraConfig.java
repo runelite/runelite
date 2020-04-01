@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("zoom") // using the old plugin's group name
 public interface CameraConfig extends Config
@@ -157,5 +158,28 @@ public interface CameraConfig extends Config
 	default boolean compassLook()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "compassMultipleClickCycle",
+		name = "Multiple clicks on compass ",
+		description = "Cycle between Look North, South, East, and West by clicking on compass in rapid succession",
+		position = 11
+	)
+	default boolean compassMultipleClickCycle()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "compassMultipleClickTimeout",
+		name = "Multiple click timeout",
+		description = "Configure how quickly the compass resets to \"Look North\" after the last click",
+		position = 12
+	)
+	@Units(Units.SECONDS)
+	default int compassMultipleClickTimeout()
+	{
+		return 2;
 	}
 }
