@@ -170,9 +170,16 @@ public class QuestListPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (isChatboxOpen() && !isOnQuestTab())
+		if (!isOnQuestTab())
 		{
-			chatboxPanelManager.close();
+			updateFilter("");
+			questSearchButton.setOnOpListener((JavaScriptCallback) e -> openSearch());
+			questSearchButton.setAction(1, MENU_OPEN);
+
+			if (isChatboxOpen())
+			{
+				chatboxPanelManager.close();
+			}
 		}
 	}
 
@@ -181,9 +188,16 @@ public class QuestListPlugin extends Plugin
 	{
 		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex())
 		{
-			if (isChatboxOpen() && !isOnQuestTab())
+			if (!isOnQuestTab())
 			{
-				chatboxPanelManager.close();
+				updateFilter("");
+				questSearchButton.setOnOpListener((JavaScriptCallback) e -> openSearch());
+				questSearchButton.setAction(1, MENU_OPEN);
+
+				if (isChatboxOpen())
+				{
+					chatboxPanelManager.close();
+				}
 			}
 		}
 	}
