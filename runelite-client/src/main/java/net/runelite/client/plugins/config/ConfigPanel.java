@@ -36,6 +36,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -217,217 +218,11 @@ class ConfigPanel extends PluginPanel
 				continue;
 			}
 
-			JPanel item = new JPanel();
-			item.setLayout(new BorderLayout());
-			item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
-			String name = cid.getItem().name();
-			JLabel configEntryName = new JLabel(name);
-			configEntryName.setForeground(Color.WHITE);
-			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
-			item.add(configEntryName, BorderLayout.CENTER);
-
-			if (cid.getType() == boolean.class)
+			final Component itemComponent = createConfigItemComponent(cd, cid);
+			if (itemComponent != null)
 			{
-				JCheckBox checkbox = new JCheckBox();
-				checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
-				checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName())));
-				checkbox.addActionListener(ae -> changeConfiguration(checkbox, cd, cid));
-
-				item.add(checkbox, BorderLayout.EAST);
+				mainPanel.add(createConfigOptionPanel(cid, itemComponent));
 			}
-
-			if (cid.getType() == int.class)
-			{
-				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
-
-				Range range = cid.getRange();
-				int min = 0, max = Integer.MAX_VALUE;
-				if (range != null)
-				{
-					min = range.min();
-					max = range.max();
-				}
-
-				// Config may previously have been out of range
-				value = Ints.constrainToRange(value, min, max);
-
-				SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
-				JSpinner spinner = new JSpinner(model);
-				Component editor = spinner.getEditor();
-				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
-				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
-				spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
-
-				Units units = cid.getUnits();
-				if (units != null)
-				{
-					spinnerTextField.setFormatterFactory(new UnitFormatterFactory(units));
-				}
-
-				item.add(spinner, BorderLayout.EAST);
-			}
-
-			if (cid.getType() == String.class)
-			{
-				JTextComponent textField;
-
-				if (cid.getItem().secret())
-				{
-					textField = new JPasswordField();
-				}
-				else
-				{
-					final JTextArea textArea = new JTextArea();
-					textArea.setLineWrap(true);
-					textArea.setWrapStyleWord(true);
-					textField = textArea;
-				}
-
-				textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				textField.setText(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
-
-				textField.addFocusListener(new FocusAdapter()
-				{
-					@Override
-					public void focusLost(FocusEvent e)
-					{
-						changeConfiguration(textField, cd, cid);
-					}
-				});
-
-				item.add(textField, BorderLayout.SOUTH);
-			}
-
-			if (cid.getType() == Color.class)
-			{
-				String existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
-
-				Color existingColor;
-				JButton colorPickerBtn;
-
-				if (existing == null)
-				{
-					existingColor = Color.BLACK;
-					colorPickerBtn = new JButton("Pick a color");
-				}
-				else
-				{
-					existingColor = ColorUtil.fromString(existing);
-					colorPickerBtn = new JButton(ColorUtil.toHexColor(existingColor).toUpperCase());
-				}
-
-				colorPickerBtn.setFocusable(false);
-				colorPickerBtn.setBackground(existingColor);
-				colorPickerBtn.addMouseListener(new MouseAdapter()
-				{
-					@Override
-					public void mouseClicked(MouseEvent e)
-					{
-						RuneliteColorPicker colorPicker = colorPickerManager.create(
-							SwingUtilities.windowForComponent(ConfigPanel.this),
-							colorPickerBtn.getBackground(),
-							cid.getItem().name(),
-							cid.getAlpha() == null);
-						colorPicker.setLocation(getLocationOnScreen());
-						colorPicker.setOnColorChange(c ->
-						{
-							colorPickerBtn.setBackground(c);
-							colorPickerBtn.setText(ColorUtil.toHexColor(c).toUpperCase());
-						});
-						colorPicker.setOnClose(c -> changeConfiguration(colorPicker, cd, cid));
-						colorPicker.setVisible(true);
-					}
-				});
-
-				item.add(colorPickerBtn, BorderLayout.EAST);
-			}
-
-			if (cid.getType() == Dimension.class)
-			{
-				JPanel dimensionPanel = new JPanel();
-				dimensionPanel.setLayout(new BorderLayout());
-
-				String str = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
-				String[] splitStr = str.split("x");
-				int width = Integer.parseInt(splitStr[0]);
-				int height = Integer.parseInt(splitStr[1]);
-
-				SpinnerModel widthModel = new SpinnerNumberModel(width, 0, Integer.MAX_VALUE, 1);
-				JSpinner widthSpinner = new JSpinner(widthModel);
-				Component widthEditor = widthSpinner.getEditor();
-				JFormattedTextField widthSpinnerTextField = ((JSpinner.DefaultEditor) widthEditor).getTextField();
-				widthSpinnerTextField.setColumns(4);
-
-				SpinnerModel heightModel = new SpinnerNumberModel(height, 0, Integer.MAX_VALUE, 1);
-				JSpinner heightSpinner = new JSpinner(heightModel);
-				Component heightEditor = heightSpinner.getEditor();
-				JFormattedTextField heightSpinnerTextField = ((JSpinner.DefaultEditor) heightEditor).getTextField();
-				heightSpinnerTextField.setColumns(4);
-
-				ChangeListener listener = e ->
-					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
-
-				widthSpinner.addChangeListener(listener);
-				heightSpinner.addChangeListener(listener);
-
-				dimensionPanel.add(widthSpinner, BorderLayout.WEST);
-				dimensionPanel.add(new JLabel(" x "), BorderLayout.CENTER);
-				dimensionPanel.add(heightSpinner, BorderLayout.EAST);
-
-				item.add(dimensionPanel, BorderLayout.EAST);
-			}
-
-			if (cid.getType().isEnum())
-			{
-				Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
-				JComboBox box = new JComboBox(type.getEnumConstants());
-				box.setPreferredSize(new Dimension(box.getPreferredSize().width, 25));
-				box.setRenderer(new ComboBoxListRenderer());
-				box.setForeground(Color.WHITE);
-				box.setFocusable(false);
-				box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
-				try
-				{
-					Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
-					box.setSelectedItem(selectedItem);
-					box.setToolTipText(Text.titleCase(selectedItem));
-				}
-				catch (IllegalArgumentException ex)
-				{
-					log.debug("invalid seleced item", ex);
-				}
-				box.addItemListener(e ->
-				{
-					if (e.getStateChange() == ItemEvent.SELECTED)
-					{
-						changeConfiguration(box, cd, cid);
-						box.setToolTipText(Text.titleCase((Enum) box.getSelectedItem()));
-					}
-				});
-				item.add(box, BorderLayout.EAST);
-			}
-
-			if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
-			{
-				Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(),
-					cid.getItem().keyName(),
-					(Class<? extends Keybind>) cid.getType());
-
-				HotkeyButton button = new HotkeyButton(startingValue, cid.getType() == ModifierlessKeybind.class);
-
-				button.addFocusListener(new FocusAdapter()
-				{
-					@Override
-					public void focusLost(FocusEvent e)
-					{
-						changeConfiguration(button, cd, cid);
-					}
-				});
-
-				item.add(button, BorderLayout.EAST);
-			}
-
-			mainPanel.add(item);
 		}
 
 		JButton resetButton = new JButton("Reset");
@@ -536,5 +331,257 @@ class ConfigPanel extends PluginPanel
 			pluginList.getMuxer().popState();
 		}
 		SwingUtilities.invokeLater(this::rebuild);
+	}
+
+	private Component createConfigItemComponent(final ConfigDescriptor cd, final ConfigItemDescriptor cid)
+	{
+		if (cid.getType() == boolean.class)
+		{
+			final JCheckBox checkbox = createBooleanOption(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName())));
+			checkbox.addActionListener(ae -> changeConfiguration(checkbox, cd, cid));
+			return checkbox;
+		}
+
+		if (cid.getType() == int.class)
+		{
+			final int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+			final JSpinner spinner = createIntOption(value, cid.getRange(), cid.getUnits());
+			spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
+			return spinner;
+		}
+
+		if (cid.getType() == String.class)
+		{
+			final String value = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
+			final JTextComponent textField = createStringOption(value, cid.getItem().secret());
+			textField.addFocusListener(new FocusAdapter()
+			{
+				@Override
+				public void focusLost(FocusEvent e)
+				{
+					changeConfiguration(textField, cd, cid);
+				}
+			});
+
+			return textField;
+		}
+
+		if (cid.getType() == Color.class)
+		{
+			String existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
+
+			Color existingColor;
+			JButton colorPickerBtn;
+
+			if (existing == null)
+			{
+				existingColor = Color.BLACK;
+				colorPickerBtn = new JButton("Pick a color");
+			}
+			else
+			{
+				existingColor = ColorUtil.fromString(existing);
+				colorPickerBtn = new JButton(ColorUtil.toHexColor(existingColor).toUpperCase());
+			}
+
+			colorPickerBtn.setFocusable(false);
+			colorPickerBtn.setBackground(existingColor);
+			colorPickerBtn.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(MouseEvent e)
+				{
+					RuneliteColorPicker colorPicker = colorPickerManager.create(
+						SwingUtilities.windowForComponent(ConfigPanel.this),
+						colorPickerBtn.getBackground(),
+						cid.getItem().name(),
+						cid.getAlpha() == null);
+					colorPicker.setLocation(getLocationOnScreen());
+					colorPicker.setOnColorChange(c ->
+					{
+						colorPickerBtn.setBackground(c);
+						colorPickerBtn.setText(ColorUtil.toHexColor(c).toUpperCase());
+					});
+					colorPicker.setOnClose(c -> changeConfiguration(colorPicker, cd, cid));
+					colorPicker.setVisible(true);
+				}
+			});
+
+			return colorPickerBtn;
+		}
+
+		if (cid.getType() == Dimension.class)
+		{
+			JPanel dimensionPanel = new JPanel();
+			dimensionPanel.setLayout(new BorderLayout());
+
+			String str = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
+			String[] splitStr = str.split("x");
+			int width = Integer.parseInt(splitStr[0]);
+			int height = Integer.parseInt(splitStr[1]);
+
+			SpinnerModel widthModel = new SpinnerNumberModel(width, 0, Integer.MAX_VALUE, 1);
+			JSpinner widthSpinner = new JSpinner(widthModel);
+			Component widthEditor = widthSpinner.getEditor();
+			JFormattedTextField widthSpinnerTextField = ((JSpinner.DefaultEditor) widthEditor).getTextField();
+			widthSpinnerTextField.setColumns(4);
+
+			SpinnerModel heightModel = new SpinnerNumberModel(height, 0, Integer.MAX_VALUE, 1);
+			JSpinner heightSpinner = new JSpinner(heightModel);
+			Component heightEditor = heightSpinner.getEditor();
+			JFormattedTextField heightSpinnerTextField = ((JSpinner.DefaultEditor) heightEditor).getTextField();
+			heightSpinnerTextField.setColumns(4);
+
+			ChangeListener listener = e ->
+				configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+
+			widthSpinner.addChangeListener(listener);
+			heightSpinner.addChangeListener(listener);
+
+			dimensionPanel.add(widthSpinner, BorderLayout.WEST);
+			dimensionPanel.add(new JLabel(" x "), BorderLayout.CENTER);
+			dimensionPanel.add(heightSpinner, BorderLayout.EAST);
+
+			return dimensionPanel;
+		}
+
+		if (cid.getType().isEnum())
+		{
+			final JComboBox box = createEnumOption((Class<? extends Enum>) cid.getType(), configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+			box.addItemListener(e ->
+			{
+				if (e.getStateChange() == ItemEvent.SELECTED)
+				{
+					changeConfiguration(box, cd, cid);
+					box.setToolTipText(Text.titleCase((Enum) box.getSelectedItem()));
+				}
+			});
+
+			return box;
+		}
+
+		if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
+		{
+			Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(),
+				cid.getItem().keyName(),
+				(Class<? extends Keybind>) cid.getType());
+
+			HotkeyButton button = new HotkeyButton(startingValue, cid.getType() == ModifierlessKeybind.class);
+
+			button.addFocusListener(new FocusAdapter()
+			{
+				@Override
+				public void focusLost(FocusEvent e)
+				{
+					changeConfiguration(button, cd, cid);
+				}
+			});
+
+			return button;
+		}
+
+
+		log.warn("Didn't create a component for {}", cid);
+		return null;
+	}
+
+	static JPanel createConfigOptionPanel(ConfigItemDescriptor cid, Component option)
+	{
+		final JPanel item = new JPanel();
+		item.setLayout(new BorderLayout());
+		item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+
+		// Name Label
+		item.add(createConfigNameLabel(cid), BorderLayout.CENTER);
+		item.add(option, BorderLayout.EAST);
+
+		return item;
+	}
+
+	static JLabel createConfigNameLabel(ConfigItemDescriptor cid)
+	{
+		final String name = cid.getItem().name();
+		final JLabel configEntryName = new JLabel(name);
+		configEntryName.setForeground(Color.WHITE);
+		configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
+		return configEntryName;
+	}
+
+	static JCheckBox createBooleanOption(boolean value)
+	{
+		final JCheckBox checkbox = new JCheckBox();
+		checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
+		checkbox.setSelected(value);
+		checkbox.setOpaque(false);
+
+		return checkbox;
+	}
+
+	static JSpinner createIntOption(int value, @Nullable Range range, @Nullable Units units)
+	{
+		int min = 0, max = Integer.MAX_VALUE;
+		if (range != null)
+		{
+			min = range.min();
+			max = range.max();
+		}
+
+		// Config may previously have been out of range
+		value = Ints.constrainToRange(value, min, max);
+
+		final SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
+		final JSpinner spinner = new JSpinner(model);
+		final Component editor = spinner.getEditor();
+		final JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
+		spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+
+		if (units != null)
+		{
+			spinnerTextField.setFormatterFactory(new UnitFormatterFactory(units));
+		}
+
+		return spinner;
+	}
+
+	static JTextComponent createStringOption(String value, boolean secret)
+	{
+		JTextComponent textField;
+		if (secret)
+		{
+			textField = new JPasswordField();
+		}
+		else
+		{
+			final JTextArea textArea = new JTextArea();
+			textArea.setLineWrap(true);
+			textArea.setWrapStyleWord(true);
+			textField = textArea;
+		}
+		textField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		textField.setText(value);
+
+		return textField;
+	}
+
+	static JComboBox createEnumOption(Class<? extends Enum> type, String currentValue)
+	{
+		final JComboBox box = new JComboBox(type.getEnumConstants());
+		box.setPreferredSize(new Dimension(box.getPreferredSize().width, 25));
+		box.setRenderer(new ComboBoxListRenderer());
+		box.setForeground(Color.WHITE);
+		box.setFocusable(false);
+		box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
+		try
+		{
+			final Enum selectedItem = Enum.valueOf(type, currentValue);
+			box.setSelectedItem(selectedItem);
+			box.setToolTipText(Text.titleCase(selectedItem));
+		}
+		catch (IllegalArgumentException ex)
+		{
+			log.debug("invalid seleced item", ex);
+		}
+
+		return box;
 	}
 }
