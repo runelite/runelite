@@ -28,6 +28,10 @@
 
 We have migrated the project to Gradle. Information on how to setup and build the project can be found at https://github.com/open-osrs/runelite/wiki/Building-with-IntelliJ-IDEA
 
+## Install from Pre-built Binaries 
+
+Installers for Windows, Mac and Linux can be found at https://github.com/open-osrs/launcher/releases
+
 ## License  
 
 OpenOSRS is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
