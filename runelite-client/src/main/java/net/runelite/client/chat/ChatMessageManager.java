@@ -107,7 +107,7 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe
+	@Subscribe(priority = 1) // run after all plugins
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
@@ -150,7 +150,7 @@ public class ChatMessageManager
 			messageNode.setName(ColorUtil.wrapWithColorTag(messageNode.getName(), usernameColor));
 		}
 
-		String sender = chatMessage.getSender();
+		String sender = messageNode.getSender();
 		if (senderColor != null && !Strings.isNullOrEmpty(sender))
 		{
 			messageNode.setSender(ColorUtil.wrapWithColorTag(sender, senderColor));

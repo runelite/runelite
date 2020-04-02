@@ -29,10 +29,10 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.SimpleChannelInboundHandler;
 import java.util.concurrent.CompletableFuture;
-import net.runelite.protocol.update.decoders.ArchiveResponseDecoder;
-import net.runelite.protocol.api.update.EncryptionPacket;
 import net.runelite.protocol.api.handshake.HandshakeResponsePacket;
 import net.runelite.protocol.api.login.HandshakeResponseType;
+import net.runelite.protocol.api.update.EncryptionPacket;
+import net.runelite.protocol.update.decoders.ArchiveResponseDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

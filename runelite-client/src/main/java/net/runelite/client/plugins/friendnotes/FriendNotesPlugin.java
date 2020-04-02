@@ -29,28 +29,40 @@ package net.runelite.client.plugins.friendnotes;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ObjectArrays;
+import com.google.inject.Provides;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
+import net.runelite.api.GameState;
+import net.runelite.api.Ignore;
+import net.runelite.api.IndexedSprite;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Nameable;
+import net.runelite.api.ScriptID;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NameableNameChanged;
 import net.runelite.api.events.RemovedFriend;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
@@ -60,13 +72,15 @@ import net.runelite.client.util.Text;
 )
 public class FriendNotesPlugin extends Plugin
 {
-	private static final String CONFIG_GROUP = "friendNotes";
+	static final String CONFIG_GROUP = "friendNotes";
 	private static final int CHARACTER_LIMIT = 128;
 	private static final String KEY_PREFIX = "note_";
 	private static final String ADD_NOTE = "Add Note";
 	private static final String EDIT_NOTE = "Edit Note";
 	private static final String NOTE_PROMPT_FORMAT = "%s's Notes<br>" +
 		ColorUtil.prependColorTag("(Limit %s Characters)", new Color(0, 0, 170));
+	private static final int ICON_WIDTH = 14;
+	private static final int ICON_HEIGHT = 12;
 
 	@Inject
 	private Client client;
@@ -83,19 +97,74 @@ public class FriendNotesPlugin extends Plugin
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
 
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private FriendNotesConfig config;
+
 	@Getter
 	private HoveredFriend hoveredFriend = null;
+
+	private int iconIdx = -1;
+	private String currentlyLayouting;
+
+	@Provides
+	private FriendNotesConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(FriendNotesConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		clientThread.invoke(this::loadIcon);
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			rebuildFriendsList();
+			rebuildIgnoreList();
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			rebuildFriendsList();
+			rebuildIgnoreList();
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			loadIcon();
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(CONFIG_GROUP))
+		{
+			return;
+		}
+
+		switch (event.getKey())
+		{
+			case "showIcons":
+				if (client.getGameState() == GameState.LOGGED_IN)
+				{
+					rebuildFriendsList();
+					rebuildIgnoreList();
+				}
+				break;
+		}
 	}
 
 	/**
@@ -110,6 +179,11 @@ public class FriendNotesPlugin extends Plugin
 		else
 		{
 			configManager.setConfiguration(CONFIG_GROUP, KEY_PREFIX + displayName, note);
+		}
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			rebuildFriendsList();
+			rebuildIgnoreList();
 		}
 	}
 
@@ -164,7 +238,8 @@ public class FriendNotesPlugin extends Plugin
 		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 
 		// Look for "Message" on friends list
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
+		if ((groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message")) ||
+				(groupId == WidgetInfo.IGNORE_LIST.getGroupId() && event.getOption().equals("Delete")))
 		{
 			// Friends have color tags
 			setHoveredFriend(Text.toJagexName(Text.removeTags(event.getTarget())));
@@ -190,7 +265,9 @@ public class FriendNotesPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (WidgetInfo.TO_GROUP(event.getWidgetId()) == WidgetInfo.FRIENDS_LIST.getGroupId())
+		final int groupId = WidgetInfo.TO_GROUP(event.getWidgetId());
+
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.IGNORE_LIST.getGroupId())
 		{
 			if (Strings.isNullOrEmpty(event.getMenuTarget()))
 			{
@@ -230,12 +307,11 @@ public class FriendNotesPlugin extends Plugin
 	{
 		final Nameable nameable = event.getNameable();
 
-		if (nameable instanceof Friend)
+		if (nameable instanceof Friend || nameable instanceof Ignore)
 		{
 			// Migrate a friend's note to their new display name
-			final Friend friend = (Friend) nameable;
-			String name = friend.getName();
-			String prevName = friend.getPrevName();
+			String name = nameable.getName();
+			String prevName = nameable.getPrevName();
 
 			if (prevName != null)
 			{
@@ -251,8 +327,108 @@ public class FriendNotesPlugin extends Plugin
 	public void onRemovedFriend(RemovedFriend event)
 	{
 		// Delete a friend's note if they are removed
-		final String displayName = Text.toJagexName(event.getName());
+		final String displayName = Text.toJagexName(event.getNameable().getName());
 		log.debug("Remove friend: '{}'", displayName);
 		setFriendNote(displayName, null);
 	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	{
+		if (!config.showIcons() || iconIdx == -1)
+		{
+			return;
+		}
+
+		switch (event.getEventName())
+		{
+			case "friend_cc_settext":
+			case "ignore_cc_settext":
+				String[] stringStack = client.getStringStack();
+				int stringStackSize = client.getStringStackSize();
+				final String rsn = stringStack[stringStackSize - 1];
+				final String sanitized = Text.toJagexName(Text.removeTags(rsn));
+				currentlyLayouting = sanitized;
+				if (getFriendNote(sanitized) != null)
+				{
+					stringStack[stringStackSize - 1] = rsn + " <img=" + iconIdx + ">";
+				}
+				break;
+			case "friend_cc_setposition":
+			case "ignore_cc_setposition":
+				if (currentlyLayouting == null || getFriendNote(currentlyLayouting) == null)
+				{
+					return;
+				}
+
+				int[] intStack = client.getIntStack();
+				int intStackSize = client.getIntStackSize();
+				int xpos = intStack[intStackSize - 4];
+				xpos += ICON_WIDTH + 1;
+				intStack[intStackSize - 4] = xpos;
+				break;
+		}
+	}
+
+	private void rebuildFriendsList()
+	{
+		clientThread.invokeLater(() ->
+		{
+			log.debug("Rebuilding friends list");
+			client.runScript(
+				ScriptID.FRIENDS_UPDATE,
+				WidgetInfo.FRIEND_LIST_FULL_CONTAINER.getPackedId(),
+				WidgetInfo.FRIEND_LIST_SORT_BY_NAME_BUTTON.getPackedId(),
+				WidgetInfo.FRIEND_LIST_SORT_BY_LAST_WORLD_CHANGE_BUTTON.getPackedId(),
+				WidgetInfo.FRIEND_LIST_SORT_BY_WORLD_BUTTON.getPackedId(),
+				WidgetInfo.FRIEND_LIST_LEGACY_SORT_BUTTON.getPackedId(),
+				WidgetInfo.FRIEND_LIST_NAMES_CONTAINER.getPackedId(),
+				WidgetInfo.FRIEND_LIST_SCROLL_BAR.getPackedId(),
+				WidgetInfo.FRIEND_LIST_LOADING_TEXT.getPackedId(),
+				WidgetInfo.FRIEND_LIST_PREVIOUS_NAME_HOLDER.getPackedId()
+			);
+		});
+	}
+
+	private void rebuildIgnoreList()
+	{
+		clientThread.invokeLater(() ->
+		{
+			log.debug("Rebuilding ignore list");
+			client.runScript(
+				ScriptID.IGNORE_UPDATE,
+				WidgetInfo.IGNORE_FULL_CONTAINER.getPackedId(),
+				WidgetInfo.IGNORE_SORT_BY_NAME_BUTTON.getPackedId(),
+				WidgetInfo.IGNORE_LEGACY_SORT_BUTTON.getPackedId(),
+				WidgetInfo.IGNORE_NAMES_CONTAINER.getPackedId(),
+				WidgetInfo.IGNORE_SCROLL_BAR.getPackedId(),
+				WidgetInfo.IGNORE_LOADING_TEXT.getPackedId(),
+				WidgetInfo.IGNORE_PREVIOUS_NAME_HOLDER.getPackedId()
+			);
+		});
+	}
+
+	private void loadIcon()
+	{
+		final IndexedSprite[] modIcons = client.getModIcons();
+		if (iconIdx != -1 || modIcons == null)
+		{
+			return;
+		}
+
+		final BufferedImage iconImg = ImageUtil.getResourceStreamFromClass(getClass(), "note_icon.png");
+		if (iconImg == null)
+		{
+			return;
+		}
+
+		final BufferedImage resized = ImageUtil.resizeImage(iconImg, ICON_WIDTH, ICON_HEIGHT);
+
+		final IndexedSprite[] newIcons = Arrays.copyOf(modIcons, modIcons.length + 1);
+		newIcons[newIcons.length - 1] = ImageUtil.getImageIndexedSprite(resized, client);
+
+		iconIdx = newIcons.length - 1;
+		client.setModIcons(newIcons);
+	}
+
 }

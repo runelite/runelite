@@ -35,9 +35,8 @@ enum ServiceWorldType
 	HIGH_RISK(WorldType.HIGH_RISK, 1 << 10),
 	LAST_MAN_STANDING(WorldType.LAST_MAN_STANDING, 1 << 14),
 	TOURNAMENT(WorldType.TOURNAMENT, 1 << 25),
-	DEADMAN_TOURNAMENT(WorldType.DEADMAN_TOURNAMENT, 1 << 26),
 	DEADMAN(WorldType.DEADMAN, 1 << 29),
-	SEASONAL_DEADMAN(WorldType.SEASONAL_DEADMAN, 1 << 30);
+	LEAGUE(WorldType.LEAGUE, 1 << 30);
 
 	private final WorldType apiType;
 	private final int mask;

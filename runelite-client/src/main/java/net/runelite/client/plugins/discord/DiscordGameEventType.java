@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -85,6 +86,7 @@ enum DiscordGameEventType
 	BOSS_WINTERTODT("Wintertodt", DiscordAreaType.BOSSES, 6462),
 	BOSS_ZALCANO("Zalcano", DiscordAreaType.BOSSES, 13250),
 	BOSS_ZULRAH("Zulrah", DiscordAreaType.BOSSES, 9007),
+	BOSS_NIGHTMARE("Nightmare of Ashihama", DiscordAreaType.BOSSES, 15515),
 
 	// Cities
 	CITY_AL_KHARID("Al Kharid" , DiscordAreaType.CITIES, 13105, 13106),
@@ -225,6 +227,7 @@ enum DiscordGameEventType
 	DUNGEON_WITCHAVEN_SHRINE("Witchhaven Shrine Dungeon", DiscordAreaType.DUNGEONS, 10903),
 	DUNGEON_YANILLE_AGILITY("Yanille Agility Dungeon", DiscordAreaType.DUNGEONS, 10388),
 	DUNGEON_MOTHERLODE_MINE("Motherlode Mine", DiscordAreaType.DUNGEONS, 14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193),
+	DUNGEON_NIGHTMARE("Nightmare Dungeon", DiscordAreaType.DUNGEONS, 14999, 15000, 15001, 15255, 15256, 15257, 15511, 15512, 15513),
 
 	// Minigames
 	MG_BARBARIAN_ASSAULT("Barbarian Assault", DiscordAreaType.MINIGAMES, 10332),
@@ -285,15 +288,26 @@ enum DiscordGameEventType
 		FROM_VARBITS = fromVarbitsBuilder.build();
 	}
 
+	@Nullable
 	private String imageKey;
+
+	@Nullable
 	private String state;
+
+	@Nullable
 	private String details;
+
 	private int priority;
 	private boolean shouldClear;
 	private boolean shouldTimeout;
 
+	@Nullable
 	private DiscordAreaType discordAreaType;
+
+	@Nullable
 	private Varbits varbits;
+
+	@Nullable
 	private int[] regionIds;
 
 	DiscordGameEventType(Skill skill)
@@ -306,7 +320,6 @@ enum DiscordGameEventType
 		this.details = training(skill);
 		this.priority = priority;
 		this.imageKey = imageKeyOf(skill);
-		this.priority = priority;
 		this.shouldTimeout = true;
 	}
 

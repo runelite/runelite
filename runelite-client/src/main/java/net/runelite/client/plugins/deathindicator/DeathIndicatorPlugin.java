@@ -60,6 +60,7 @@ import net.runelite.client.util.ImageUtil;
 public class DeathIndicatorPlugin extends Plugin
 {
 	private static final Set<Integer> RESPAWN_REGIONS = ImmutableSet.of(
+		6457, // Kourend
 		12850, // Lumbridge
 		11828, // Falador
 		12342, // Edgeville

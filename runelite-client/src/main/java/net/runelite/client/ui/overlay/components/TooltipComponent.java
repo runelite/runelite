@@ -34,10 +34,9 @@ import java.awt.Rectangle;
 import java.util.regex.Pattern;
 import lombok.Setter;
 import net.runelite.api.IndexedSprite;
-import net.runelite.client.ui.overlay.RenderableEntity;
 
 @Setter
-public class TooltipComponent implements RenderableEntity
+public class TooltipComponent implements LayoutableRenderableEntity
 {
 	private static final Pattern BR = Pattern.compile("</br>");
 	private static final int OFFSET = 4;
@@ -224,5 +223,22 @@ public class TooltipComponent implements RenderableEntity
 				}
 			}
 		}
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		return null;
+	}
+
+	@Override
+	public void setPreferredLocation(Point position)
+	{
+		this.position = position;
+	}
+
+	@Override
+	public void setPreferredSize(Dimension dimension)
+	{
 	}
 }

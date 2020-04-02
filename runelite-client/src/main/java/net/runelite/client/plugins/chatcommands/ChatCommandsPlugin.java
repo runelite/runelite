@@ -25,8 +25,10 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
@@ -41,14 +43,19 @@ import net.runelite.api.Experience;
 import net.runelite.api.IconID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
+import static net.runelite.api.widgets.WidgetID.COUNTERS_LOG_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
@@ -63,7 +70,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
-import static net.runelite.client.util.Text.sanitize;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -85,17 +92,23 @@ public class ChatCommandsPlugin extends Plugin
 {
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest|lap|completion) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>");
+	private static final Pattern RAIDS_DURATION_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete! Duration:</col> <col=ff0000>([0-9:]+)</col>");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)^(?:Fight |Lap |Challenge |Corrupted challenge )?duration: <col=ff0000>[0-9:]+</col>\\. Personal best: ([0-9:]+)");
 	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)^(?:Fight |Lap |Challenge |Corrupted challenge )?duration: <col=ff0000>([0-9:]+)</col> \\(new personal best\\)");
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won (\\d+) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost (\\d+) duels?");
+	private static final Pattern ADVENTURE_LOG_TITLE_PATTERN = Pattern.compile("The Exploits of (.+)");
+	private static final Pattern ADVENTURE_LOG_PB_PATTERN = Pattern.compile("([a-zA-Z]+(?: [a-zA-Z]+)*) Fastest (?:kill|run): ([0-9:]+)");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
 	private static final String LEVEL_COMMAND_STRING = "!lvl";
+	private static final String BOUNTY_HUNTER_HUNTER_COMMAND = "!bh";
+	private static final String BOUNTY_HUNTER_ROGUE_COMMAND = "!bhrogue";
 	private static final String CLUES_COMMAND_STRING = "!clues";
+	private static final String LAST_MAN_STANDING_COMMAND = "!lms";
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
 	private static final String CMB_COMMAND_STRING = "!cmb";
 	private static final String QP_COMMAND_STRING = "!qp";
@@ -103,10 +116,15 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String GC_COMMAND_STRING = "!gc";
 	private static final String DUEL_ARENA_COMMAND = "!duels";
 
-	private final HiscoreClient hiscoreClient = new HiscoreClient();
+	@VisibleForTesting
+	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
+
 	private final ChatClient chatClient = new ChatClient();
 
-	private boolean logKills;
+	private boolean bossLogLoaded;
+	private boolean advLogLoaded;
+	private boolean countersLogLoaded;
+	private String pohOwner;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
 	private int lastPb = -1;
@@ -138,6 +156,9 @@ public class ChatCommandsPlugin extends Plugin
 	@Inject
 	private ChatKeyboardListener chatKeyboardListener;
 
+	@Inject
+	private HiscoreClient hiscoreClient;
+
 	@Override
 	public void startUp()
 	{
@@ -147,7 +168,10 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(CMB_COMMAND_STRING, this::combatLevelLookup);
 		chatCommandManager.registerCommand(PRICE_COMMAND_STRING, this::itemPriceLookup);
 		chatCommandManager.registerCommandAsync(LEVEL_COMMAND_STRING, this::playerSkillLookup);
+		chatCommandManager.registerCommandAsync(BOUNTY_HUNTER_HUNTER_COMMAND, this::bountyHunterHunterLookup);
+		chatCommandManager.registerCommandAsync(BOUNTY_HUNTER_ROGUE_COMMAND, this::bountyHunterRogueLookup);
 		chatCommandManager.registerCommandAsync(CLUES_COMMAND_STRING, this::clueLookup);
+		chatCommandManager.registerCommandAsync(LAST_MAN_STANDING_COMMAND, this::lastManStandingLookup);
 		chatCommandManager.registerCommandAsync(KILLCOUNT_COMMAND_STRING, this::killCountLookup, this::killCountSubmit);
 		chatCommandManager.registerCommandAsync(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
 		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
@@ -211,7 +235,8 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		if (chatMessage.getType() != ChatMessageType.TRADE
 			&& chatMessage.getType() != ChatMessageType.GAMEMESSAGE
-			&& chatMessage.getType() != ChatMessageType.SPAM)
+			&& chatMessage.getType() != ChatMessageType.SPAM
+			&& chatMessage.getType() != ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
 			return;
 		}
@@ -253,6 +278,17 @@ public class ChatCommandsPlugin extends Plugin
 			int kc = Integer.parseInt(matcher.group(2));
 
 			setKc(boss, kc);
+			if (lastPb > -1)
+			{
+				// lastPb contains the last raid duration and not the personal best, because the raid
+				// complete message does not include the pb. We have to check if it is a new pb:
+				int currentPb = getPb(boss);
+				if (currentPb <= 0 || lastPb < currentPb)
+				{
+					setPb(boss, lastPb);
+				}
+				lastPb = -1;
+			}
 			lastBossKill = boss;
 			return;
 		}
@@ -314,65 +350,109 @@ public class ChatCommandsPlugin extends Plugin
 			matchPb(matcher);
 		}
 
+		matcher = RAIDS_DURATION_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			matchPb(matcher);
+		}
+
 		lastBossKill = null;
+	}
+
+	private static int timeStringToSeconds(String timeString)
+	{
+		String[] s = timeString.split(":");
+		if (s.length == 2) // mm:ss
+		{
+			return Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]);
+		}
+		else if (s.length == 3) // h:mm:ss
+		{
+			return Integer.parseInt(s[0]) * 60 * 60 + Integer.parseInt(s[1]) * 60 + Integer.parseInt(s[2]);
+		}
+		return Integer.parseInt(timeString);
 	}
 
 	private void matchPb(Matcher matcher)
 	{
-		String personalBest = matcher.group(1);
-		String[] s = personalBest.split(":");
-		if (s.length == 2)
+		int seconds = timeStringToSeconds(matcher.group(1));
+		if (lastBossKill != null)
 		{
-			int seconds = Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]);
-			if (lastBossKill != null)
-			{
-				// Most bosses sent boss kill message, and then pb message, so we
-				// use the remembered lastBossKill
-				log.debug("Got personal best for {}: {}", lastBossKill, seconds);
-				setPb(lastBossKill, seconds);
-				lastPb = -1;
-			}
-			else
-			{
-				// Some bosses send the pb message, and then the kill message!
-				lastPb = seconds;
-			}
+			// Most bosses sent boss kill message, and then pb message, so we
+			// use the remembered lastBossKill
+			log.debug("Got personal best for {}: {}", lastBossKill, seconds);
+			setPb(lastBossKill, seconds);
+			lastPb = -1;
+		}
+		else
+		{
+			// Some bosses send the pb message, and then the kill message!
+			lastPb = seconds;
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!logKills)
+		if (client.getLocalPlayer() == null)
 		{
 			return;
 		}
 
-		logKills = false;
-
-		Widget title = client.getWidget(WidgetInfo.KILL_LOG_TITLE);
-		Widget bossMonster = client.getWidget(WidgetInfo.KILL_LOG_MONSTER);
-		Widget bossKills = client.getWidget(WidgetInfo.KILL_LOG_KILLS);
-
-		if (title == null || bossMonster == null || bossKills == null
-			|| !"Boss Kill Log".equals(title.getText()))
+		if (advLogLoaded)
 		{
-			return;
-		}
+			advLogLoaded = false;
 
-		Widget[] bossChildren = bossMonster.getChildren();
-		Widget[] killsChildren = bossKills.getChildren();
-
-		for (int i = 0; i < bossChildren.length; ++i)
-		{
-			Widget boss = bossChildren[i];
-			Widget kill = killsChildren[i];
-
-			String bossName = boss.getText().replace(":", "");
-			int kc = Integer.parseInt(kill.getText().replace(",", ""));
-			if (kc != getKc(bossName))
+			Widget adventureLog = client.getWidget(WidgetInfo.ADVENTURE_LOG);
+			Matcher advLogExploitsText = ADVENTURE_LOG_TITLE_PATTERN.matcher(adventureLog.getChild(ADV_LOG_EXPLOITS_TEXT_INDEX).getText());
+			if (advLogExploitsText.find())
 			{
-				setKc(bossName, kc);
+				pohOwner = advLogExploitsText.group(1);
+			}
+		}
+
+		if (bossLogLoaded && (pohOwner == null || pohOwner.equals(client.getLocalPlayer().getName())))
+		{
+			bossLogLoaded = false;
+
+			Widget title = client.getWidget(WidgetInfo.KILL_LOG_TITLE);
+			Widget bossMonster = client.getWidget(WidgetInfo.KILL_LOG_MONSTER);
+			Widget bossKills = client.getWidget(WidgetInfo.KILL_LOG_KILLS);
+
+			if (title == null || bossMonster == null || bossKills == null
+				|| !"Boss Kill Log".equals(title.getText()))
+			{
+				return;
+			}
+
+			Widget[] bossChildren = bossMonster.getChildren();
+			Widget[] killsChildren = bossKills.getChildren();
+
+			for (int i = 0; i < bossChildren.length; ++i)
+			{
+				Widget boss = bossChildren[i];
+				Widget kill = killsChildren[i];
+
+				String bossName = boss.getText().replace(":", "");
+				int kc = Integer.parseInt(kill.getText().replace(",", ""));
+				if (kc != getKc(longBossName(bossName)))
+				{
+					setKc(longBossName(bossName), kc);
+				}
+			}
+		}
+
+		if (countersLogLoaded && pohOwner.equals(client.getLocalPlayer().getName()))
+		{
+			countersLogLoaded = false;
+
+			String counterText = Text.sanitizeMultilineText(client.getWidget(WidgetInfo.COUNTERS_LOG_TEXT).getText());
+			Matcher mCounterText = ADVENTURE_LOG_PB_PATTERN.matcher(counterText);
+			while (mCounterText.find())
+			{
+				String bossName = mCounterText.group(1);
+				String pbTime = mCounterText.group(2);
+				setPb(longBossName(bossName), timeStringToSeconds(pbTime));
 			}
 		}
 	}
@@ -380,14 +460,29 @@ public class ChatCommandsPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widget)
 	{
-		// don't load kc if in an instance, if the player is in another players poh
-		// and reading their boss log
-		if (widget.getGroupId() != KILL_LOGS_GROUP_ID || client.isInInstancedRegion())
+		switch (widget.getGroupId())
 		{
-			return;
+			case ADVENTURE_LOG_ID:
+				advLogLoaded = true;
+				break;
+			case KILL_LOGS_GROUP_ID:
+				bossLogLoaded = true;
+				break;
+			case COUNTERS_LOG_GROUP_ID:
+				countersLogLoaded = true;
+				break;
 		}
+	}
 
-		logKills = true;
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case LOADING:
+			case HOPPING:
+				pohOwner = null;
+		}
 	}
 
 	@Subscribe
@@ -450,7 +545,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		search = longBossName(search);
@@ -531,7 +626,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		Duels duels;
@@ -588,7 +683,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		int qp;
@@ -662,7 +757,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		search = longBossName(search);
@@ -745,7 +840,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		int gc;
@@ -912,21 +1007,27 @@ public class ChatCommandsPlugin extends Plugin
 
 			final Skill hiscoreSkill = result.getSkill();
 
-			final String response = new ChatMessageBuilder()
+			ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
 				.append("Level ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(skill.getName()).append(": ").append(String.valueOf(hiscoreSkill.getLevel()))
-				.append(ChatColorType.NORMAL)
-				.append(" Experience: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", hiscoreSkill.getExperience()))
-				.append(ChatColorType.NORMAL)
-				.append(" Rank: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", hiscoreSkill.getRank()))
-				.build();
+				.append(ChatColorType.NORMAL);
+			if (hiscoreSkill.getExperience() != -1)
+			{
+				chatMessageBuilder.append(" Experience: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", hiscoreSkill.getExperience()))
+					.append(ChatColorType.NORMAL);
+			}
+			if (hiscoreSkill.getRank() != -1)
+			{
+				chatMessageBuilder.append(" Rank: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", hiscoreSkill.getRank()));
+			}
 
+			final String response = chatMessageBuilder.build();
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = chatMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
@@ -955,7 +1056,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(chatMessage.getName());
+			player = Text.sanitize(chatMessage.getName());
 		}
 
 		try
@@ -1021,6 +1122,102 @@ public class ChatCommandsPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.warn("Error fetching hiscore data", ex);
+		}
+	}
+
+	private void bountyHunterHunterLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.bh())
+		{
+			return;
+		}
+
+		minigameLookup(chatMessage, HiscoreSkill.BOUNTY_HUNTER_HUNTER);
+	}
+
+	private void bountyHunterRogueLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.bhRogue())
+		{
+			return;
+		}
+
+		minigameLookup(chatMessage, HiscoreSkill.BOUNTY_HUNTER_ROGUE);
+	}
+
+	private void lastManStandingLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.lms())
+		{
+			return;
+		}
+
+		minigameLookup(chatMessage, HiscoreSkill.LAST_MAN_STANDING);
+	}
+
+	private void minigameLookup(ChatMessage chatMessage, HiscoreSkill minigame)
+	{
+		try
+		{
+			final Skill hiscoreSkill;
+			final HiscoreLookup lookup = getCorrectLookupFor(chatMessage);
+			final HiscoreResult result = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
+
+			if (result == null)
+			{
+				log.warn("error looking up {} score: not found", minigame.getName().toLowerCase());
+				return;
+			}
+
+			switch (minigame)
+			{
+				case BOUNTY_HUNTER_HUNTER:
+					hiscoreSkill = result.getBountyHunterHunter();
+					break;
+				case BOUNTY_HUNTER_ROGUE:
+					hiscoreSkill = result.getBountyHunterRogue();
+					break;
+				case LAST_MAN_STANDING:
+					hiscoreSkill = result.getLastManStanding();
+					break;
+				default:
+					log.warn("error looking up {} score: not implemented", minigame.getName().toLowerCase());
+					return;
+			}
+
+			int score = hiscoreSkill.getLevel();
+			if (score == -1)
+			{
+				return;
+			}
+
+			ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append(minigame.getName())
+				.append(" Score: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(score));
+
+			int rank = hiscoreSkill.getRank();
+			if (rank != -1)
+			{
+				chatMessageBuilder.append(ChatColorType.NORMAL)
+					.append(" Rank: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(String.format("%,d", rank));
+			}
+
+			String response = chatMessageBuilder.build();
+
+			log.debug("Setting response {}", response);
+			final MessageNode messageNode = chatMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
+			client.refreshChat();
+		}
+		catch (IOException ex)
+		{
+			log.warn("error looking up {}", minigame.getName().toLowerCase(), ex);
 		}
 	}
 
@@ -1126,31 +1323,28 @@ public class ChatCommandsPlugin extends Plugin
 	 */
 	private HiscoreLookup getCorrectLookupFor(final ChatMessage chatMessage)
 	{
-		final String player;
-		final HiscoreEndpoint ironmanStatus;
+		Player localPlayer = client.getLocalPlayer();
+		final String player = Text.sanitize(chatMessage.getName());
 
-		if (chatMessage.getType().equals(ChatMessageType.PRIVATECHATOUT))
+		// If we are sending the message then just use the local hiscore endpoint for the world
+		if (chatMessage.getType().equals(ChatMessageType.PRIVATECHATOUT)
+			|| player.equals(localPlayer.getName()))
 		{
-			player = client.getLocalPlayer().getName();
-			ironmanStatus = hiscoreEndpoint;
+			return new HiscoreLookup(localPlayer.getName(), hiscoreEndpoint);
 		}
-		else
-		{
-			player = sanitize(chatMessage.getName());
 
-			if (player.equals(client.getLocalPlayer().getName()))
+		// Public chat on a leagues world is always league hiscores, regardless of icon
+		if (chatMessage.getType() == ChatMessageType.PUBLICCHAT || chatMessage.getType() == ChatMessageType.MODCHAT)
+		{
+			if (client.getWorldType().contains(WorldType.LEAGUE))
 			{
-				// Get ironman status from for the local player
-				ironmanStatus = hiscoreEndpoint;
-			}
-			else
-			{
-				// Get ironman status from their icon in chat
-				ironmanStatus = getHiscoreEndpointByName(chatMessage.getName());
+				return new HiscoreLookup(player, HiscoreEndpoint.LEAGUE);
 			}
 		}
 
-		return new HiscoreLookup(player, ironmanStatus);
+		// Get ironman status from their icon in chat
+		HiscoreEndpoint endpoint = getHiscoreEndpointByName(chatMessage.getName());
+		return new HiscoreLookup(player, endpoint);
 	}
 
 	/**
@@ -1189,6 +1383,12 @@ public class ChatCommandsPlugin extends Plugin
 	 */
 	private HiscoreEndpoint getLocalHiscoreEndpointType()
 	{
+		EnumSet<WorldType> worldType = client.getWorldType();
+		if (worldType.contains(WorldType.LEAGUE))
+		{
+			return HiscoreEndpoint.LEAGUE;
+		}
+
 		return toEndPoint(client.getAccountType());
 	}
 
@@ -1254,6 +1454,7 @@ public class ChatCommandsPlugin extends Plugin
 				return "Corporeal Beast";
 
 			case "jad":
+			case "tzhaar fight cave":
 				return "TzTok-Jad";
 
 			case "kq":
@@ -1373,12 +1574,17 @@ public class ChatCommandsPlugin extends Plugin
 			// The Gauntlet
 			case "gaunt":
 			case "gauntlet":
+			case "the gauntlet":
 				return "Gauntlet";
 
 			// Corrupted Gauntlet
 			case "cgaunt":
 			case "cgauntlet":
+			case "the corrupted gauntlet":
 				return "Corrupted Gauntlet";
+
+			case "the nightmare":
+				return "Nightmare";
 
 			default:
 				return WordUtils.capitalize(boss);

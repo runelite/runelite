@@ -53,7 +53,9 @@ class ItemPricesOverlay extends Overlay
 	private static final int BANK_INVENTORY_ITEM_WIDGETID = WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId();
 	private static final int BANK_ITEM_WIDGETID = WidgetInfo.BANK_ITEM_CONTAINER.getPackedId();
 	private static final int EXPLORERS_RING_ITEM_WIDGETID = WidgetInfo.EXPLORERS_RING_ALCH_INVENTORY.getPackedId();
-
+	private static final int SEED_VAULT_ITEM_WIDGETID = WidgetInfo.SEED_VAULT_ITEM_CONTAINER.getPackedId();
+	private static final int SEED_VAULT_INVENTORY_ITEM_WIDGETID = WidgetInfo.SEED_VAULT_INVENTORY_ITEMS_CONTAINER.getPackedId();
+	
 	private final Client client;
 	private final ItemPricesConfig config;
 	private final TooltipManager tooltipManager;
@@ -100,7 +102,7 @@ class ItemPricesOverlay extends Overlay
 				{
 					break;
 				}
-			case WIDGET_DEFAULT:
+			case CC_OP:
 			case ITEM_USE:
 			case ITEM_FIRST_OPTION:
 			case ITEM_SECOND_OPTION:
@@ -123,6 +125,8 @@ class ItemPricesOverlay extends Overlay
 						// intentional fallthrough
 					case WidgetID.BANK_GROUP_ID:
 					case WidgetID.BANK_INVENTORY_GROUP_ID:
+					case WidgetID.SEED_VAULT_GROUP_ID:
+					case WidgetID.SEED_VAULT_INVENTORY_GROUP_ID:
 						// Make tooltip
 						final String text = makeValueTooltip(menuEntry);
 						if (text != null)
@@ -148,7 +152,10 @@ class ItemPricesOverlay extends Overlay
 		ItemContainer container = null;
 
 		// Inventory item
-		if (widgetId == INVENTORY_ITEM_WIDGETID || widgetId == BANK_INVENTORY_ITEM_WIDGETID || widgetId == EXPLORERS_RING_ITEM_WIDGETID)
+		if (widgetId == INVENTORY_ITEM_WIDGETID ||
+			widgetId == BANK_INVENTORY_ITEM_WIDGETID ||
+			widgetId == EXPLORERS_RING_ITEM_WIDGETID ||
+			widgetId == SEED_VAULT_INVENTORY_ITEM_WIDGETID)
 		{
 			container = client.getItemContainer(InventoryID.INVENTORY);
 		}
@@ -157,7 +164,12 @@ class ItemPricesOverlay extends Overlay
 		{
 			container = client.getItemContainer(InventoryID.BANK);
 		}
-
+		// Seed vault item
+		else if (widgetId == SEED_VAULT_ITEM_WIDGETID)
+		{
+			container = client.getItemContainer(InventoryID.SEED_VAULT);
+		}
+		
 		if (container == null)
 		{
 			return null;
@@ -234,7 +246,7 @@ class ItemPricesOverlay extends Overlay
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("EX: ")
-				.append(QuantityFormatter.quantityToStackSize(gePrice * qty))
+				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
@@ -251,7 +263,7 @@ class ItemPricesOverlay extends Overlay
 			}
 
 			itemStringBuilder.append("HA: ")
-				.append(QuantityFormatter.quantityToStackSize(haValue * qty))
+				.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
@@ -267,7 +279,7 @@ class ItemPricesOverlay extends Overlay
 
 			itemStringBuilder.append("</br>");
 			itemStringBuilder.append("HA Profit: ")
-				.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit * qty), haColor))
+				.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{

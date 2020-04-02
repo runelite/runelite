@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import javax.annotation.Nullable;
+import okhttp3.HttpUrl;
 
 public class RuneLiteProperties
 {
@@ -43,6 +44,11 @@ public class RuneLiteProperties
 	private static final String TROUBLESHOOTING_LINK = "runelite.wiki.troubleshooting.link";
 	private static final String BUILDING_LINK = "runelite.wiki.building.link";
 	private static final String DNS_CHANGE_LINK = "runelite.dnschange.link";
+	private static final String JAV_CONFIG = "runelite.jav_config";
+	private static final String JAV_CONFIG_BACKUP = "runelite.jav_config_backup";
+	private static final String PLUGINHUB_BASE = "runelite.pluginhub.url";
+	private static final String PLUGINHUB_VERSION = "runelite.pluginhub.version";
+	private static final String IMGUR_CLIENT_ID = "runelite.imgur.client.id";
 
 	private static final Properties properties = new Properties();
 
@@ -117,5 +123,26 @@ public class RuneLiteProperties
 	public static String getDNSChangeLink()
 	{
 		return properties.getProperty(DNS_CHANGE_LINK);
+	}
+
+	public static String getJavConfig()
+	{
+		return properties.getProperty(JAV_CONFIG);
+	}
+
+	public static String getJavConfigBackup()
+	{
+		return properties.getProperty(JAV_CONFIG_BACKUP);
+	}
+
+	public static HttpUrl getPluginHubBase()
+	{
+		String version = System.getProperty(PLUGINHUB_VERSION, properties.getProperty(PLUGINHUB_VERSION));
+		return HttpUrl.parse(properties.get(PLUGINHUB_BASE) + "/" + version);
+	}
+
+	public static String getImgurClientId()
+	{
+		return properties.getProperty(IMGUR_CLIENT_ID);
 	}
 }

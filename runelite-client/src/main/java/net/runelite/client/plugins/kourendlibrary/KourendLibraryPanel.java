@@ -29,8 +29,6 @@ import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -52,10 +50,10 @@ import net.runelite.client.util.ImageUtil;
 class KourendLibraryPanel extends PluginPanel
 {
 	private static final ImageIcon RESET_ICON;
-	private static final ImageIcon RESET_CLICK_ICON;
+	private static final ImageIcon RESET_HOVER_ICON;
 
-	@Inject
-	private Library library;
+	private final KourendLibraryConfig config;
+	private final Library library;
 
 	private final HashMap<Book, BookPanel> bookPanels = new HashMap<>();
 
@@ -63,7 +61,16 @@ class KourendLibraryPanel extends PluginPanel
 	{
 		final BufferedImage resetIcon = ImageUtil.getResourceStreamFromClass(KourendLibraryPanel.class, "/util/reset.png");
 		RESET_ICON = new ImageIcon(resetIcon);
-		RESET_CLICK_ICON = new ImageIcon(ImageUtil.alphaOffset(resetIcon, -100));
+		RESET_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(resetIcon, -100));
+	}
+
+	@Inject
+	KourendLibraryPanel(KourendLibraryConfig config, Library library)
+	{
+		super();
+
+		this.config = config;
+		this.library = library;
 	}
 
 	void init()
@@ -80,6 +87,7 @@ class KourendLibraryPanel extends PluginPanel
 		c.gridy = 0;
 		Stream.of(Book.values())
 			.filter(b -> !b.isDarkManuscript())
+			.filter(b -> !config.hideVarlamoreEnvoy() || b != Book.VARLAMORE_ENVOY)
 			.sorted(Comparator.comparing(Book::getShortName))
 			.forEach(b ->
 			{
@@ -90,21 +98,11 @@ class KourendLibraryPanel extends PluginPanel
 			});
 
 		JButton reset = new JButton("Reset", RESET_ICON);
-		reset.addMouseListener(new MouseAdapter()
+		reset.setRolloverIcon(RESET_HOVER_ICON);
+		reset.addActionListener(ev ->
 		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				reset.setIcon(RESET_CLICK_ICON);
-				library.reset();
-				update();
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent mouseEvent)
-			{
-				reset.setIcon(RESET_ICON);
-			}
+			library.reset();
+			update();
 		});
 
 		add(reset, BorderLayout.NORTH);
@@ -155,5 +153,12 @@ class KourendLibraryPanel extends PluginPanel
 				}
 			}
 		});
+	}
+
+	void reload()
+	{
+		bookPanels.clear();
+		removeAll();
+		init();
 	}
 }

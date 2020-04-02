@@ -27,7 +27,6 @@ package net.runelite.http.service.feed;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +38,7 @@ import net.runelite.http.service.feed.osrsnews.OSRSNewsService;
 import net.runelite.http.service.feed.twitter.TwitterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -92,27 +92,27 @@ public class FeedController
 		{
 			items.addAll(blogService.getBlogPosts());
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			log.warn(e.getMessage());
+			log.warn("unable to fetch blogs", e);
 		}
 
 		try
 		{
 			items.addAll(twitterService.getTweets());
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			log.warn(e.getMessage());
+			log.warn("unable to fetch tweets", e);
 		}
 
 		try
 		{
 			items.addAll(osrsNewsService.getNews());
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			log.warn(e.getMessage());
+			log.warn("unable to fetch news", e);
 		}
 
 		memoizedFeed = new MemoizedFeed(new FeedResult(items));
@@ -123,7 +123,8 @@ public class FeedController
 	{
 		if (memoizedFeed == null)
 		{
-			return ResponseEntity.notFound()
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+				.cacheControl(CacheControl.noCache())
 				.build();
 		}
 

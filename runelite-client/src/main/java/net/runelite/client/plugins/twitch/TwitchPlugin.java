@@ -170,6 +170,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			.sender("Twitch")
 			.name(sender)
 			.runeLiteFormattedMessage(chatMessage)
+			.timestamp((int) (System.currentTimeMillis() / 1000))
 			.build());
 	}
 

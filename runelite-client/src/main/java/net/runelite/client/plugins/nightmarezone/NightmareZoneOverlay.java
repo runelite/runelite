@@ -111,7 +111,7 @@ class NightmareZoneOverlay extends Overlay
 			.right(QuantityFormatter.formatNumber(currentPoints))
 			.build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Points/Hour: ")
+			.left("Points/Hr: ")
 			.right(QuantityFormatter.formatNumber(plugin.getPointsPerHour()))
 			.build());
 		panelComponent.getChildren().add(LineComponent.builder()

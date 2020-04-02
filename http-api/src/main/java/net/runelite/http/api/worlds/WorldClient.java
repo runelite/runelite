@@ -67,7 +67,7 @@ public class WorldClient
 			if (!response.isSuccessful())
 			{
 				logger.debug("Error looking up worlds: {}", response);
-				return null;
+				throw new IOException("unsuccessful response looking up worlds");
 			}
 
 			InputStream in = response.body().byteStream();

@@ -36,13 +36,14 @@ import net.runelite.api.PlayerComposition;
  */
 public enum KitType
 {
+	HEAD(0),
 	CAPE(1),
 	AMULET(2),
 	WEAPON(3),
 	TORSO(4),
 	SHIELD(5),
 	LEGS(7),
-	HEAD(8),
+	HAIR(8),
 	HANDS(9),
 	BOOTS(10),
 	JAW(11);

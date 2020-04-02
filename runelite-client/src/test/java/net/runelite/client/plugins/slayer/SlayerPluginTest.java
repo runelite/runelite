@@ -73,6 +73,7 @@ public class SlayerPluginTest
 	private static final String TASK_NEW_KONAR_2 = "You are to bring balance to 142 Hellhounds in Witchhaven Dungeon.";
 	private static final String TASK_NEW_KONAR_3 = "You are to bring balance to 135 Trolls south of Mount Quidamortem.";
 	private static final String TASK_NEW_FIRST = "We'll start you off hunting goblins, you'll need to kill 17 of them.";
+	private static final String TASK_NEW_FIRST_KONAR = "We'll start you off bringing balance to cows, you'll need to kill 44 of them.";
 	private static final String TASK_NEW_NPC_CONTACT = "Excellent, you're doing great. Your new task is to kill<br>211 Suqahs.";
 	private static final String TASK_NEW_FROM_PARTNER = "You have received a new Slayer assignment from breaklulz: Dust Devils (377)";
 	private static final String TASK_CHECKSLAYERGEM = "You're assigned to kill Suqahs; only 211 more to go.";
@@ -82,6 +83,7 @@ public class SlayerPluginTest
 
 	private static final String TASK_BOSS_NEW = "Excellent. You're now assigned to kill Vet'ion 3 times.<br>Your reward point tally is 914.";
 	private static final String TASK_BOSS_NEW_THE = "Excellent. You're now assigned to kill the Chaos <br>Elemental 3 times. Your reward point tally is 914.";
+	private static final String TASK_KONAR_BOSS = "You're now assigned to bring balance to the Alchemical<br>Hydra 35 times. Your reward point tally is 724.";
 
 	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
 
@@ -232,6 +234,18 @@ public class SlayerPluginTest
 	}
 
 	@Test
+	public void testFirstTaskKonar()
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_NEW_FIRST_KONAR);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("cows", slayerPlugin.getTaskName());
+		assertEquals(44, slayerPlugin.getAmount());
+	}
+
+	@Test
 	public void testNewNpcContactTask()
 	{
 		Widget npcDialog = mock(Widget.class);
@@ -267,6 +281,19 @@ public class SlayerPluginTest
 		assertEquals("Chaos Elemental", slayerPlugin.getTaskName());
 		assertEquals(3, slayerPlugin.getAmount());
 		assertEquals(914, slayerPlugin.getPoints());
+	}
+
+	@Test
+	public void testKonarBossTask()
+	{
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_KONAR_BOSS);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("Alchemical Hydra", slayerPlugin.getTaskName());
+		assertEquals(35, slayerPlugin.getAmount());
+		assertEquals(724, slayerPlugin.getPoints());
 	}
 
 	@Test

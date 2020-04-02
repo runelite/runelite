@@ -45,6 +45,9 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.RAIDS_POINTS_INFOBOX, OverlayPosition.TOP_RIGHT)
+		.put(WidgetInfo.TOB_PARTY_INTERFACE, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.TOB_PARTY_STATS, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.GWD_KC, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.TITHE_FARM, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT)
@@ -54,6 +57,9 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER)
 		.put(WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.LMS_INFO, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.LMS_KDA, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.GAUNTLET_TIMER_CONTAINER, OverlayPosition.TOP_LEFT)
 		.build();
 
 	public static Collection<WidgetOverlay> createOverlays(final Client client)

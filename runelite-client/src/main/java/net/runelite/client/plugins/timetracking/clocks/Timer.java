@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.timetracking.clocks;
 
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,11 +41,16 @@ class Timer extends Clock
 	// the number of seconds remaining on the timer, as of last updated time
 	private long remaining;
 
+	// whether this timer is in the 'warning' state or not
+	@Getter(AccessLevel.NONE)
+	private transient boolean warning;
+
 	Timer(String name, long duration)
 	{
 		super(name);
 		this.duration = duration;
 		this.remaining = duration;
+		this.warning = false;
 	}
 
 	@Override
@@ -66,6 +72,7 @@ class Timer extends Clock
 			if (remaining <= 0)
 			{
 				remaining = duration;
+				warning = false;
 			}
 			lastUpdate = Instant.now().getEpochSecond();
 			active = true;
@@ -95,5 +102,10 @@ class Timer extends Clock
 		active = false;
 		remaining = duration;
 		lastUpdate = Instant.now().getEpochSecond();
+	}
+
+	boolean isWarning()
+	{
+		return warning && (remaining > 0);
 	}
 }

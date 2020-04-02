@@ -27,22 +27,32 @@ package net.runelite.client.plugins.kourendlibrary;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -69,9 +79,9 @@ public class KourendLibraryPlugin extends Plugin
 {
 	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
 	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
-	final static int REGION = 6459;
+	static final int REGION = 6459;
 
-	final static boolean debug = false;
+	static final boolean debug = false;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -89,6 +99,9 @@ public class KourendLibraryPlugin extends Plugin
 	private KourendLibraryOverlay overlay;
 
 	@Inject
+	private KourendLibraryTutorialOverlay tutorialOverlay;
+
+	@Inject
 	private KourendLibraryConfig config;
 
 	@Inject
@@ -100,6 +113,9 @@ public class KourendLibraryPlugin extends Plugin
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
 	private EnumSet<Book> playerBooks = null;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<NPC> npcsToMark = new HashSet<>();
 
 	@Provides
 	KourendLibraryConfig provideConfig(ConfigManager configManager)
@@ -125,6 +141,7 @@ public class KourendLibraryPlugin extends Plugin
 			.build();
 
 		overlayManager.add(overlay);
+		overlayManager.add(tutorialOverlay);
 
 		updatePlayerBooks();
 
@@ -137,13 +154,14 @@ public class KourendLibraryPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		overlay.setHidden(true);
 		overlayManager.remove(overlay);
+		overlayManager.remove(tutorialOverlay);
 		clientToolbar.removeNavigation(navButton);
 		buttonAttached = false;
 		lastBookcaseClick = null;
 		lastBookcaseAnimatedOn = null;
 		playerBooks = null;
+		npcsToMark.clear();
 	}
 
 	@Subscribe
@@ -154,26 +172,33 @@ public class KourendLibraryPlugin extends Plugin
 			return;
 		}
 
-		SwingUtilities.invokeLater(() ->
+		if (ev.getKey().equals("hideVarlamoreEnvoy"))
 		{
-			if (!config.hideButton())
+			SwingUtilities.invokeLater(panel::reload);
+		}
+		else if (ev.getKey().equals("hideButton"))
+		{
+			SwingUtilities.invokeLater(() ->
 			{
-				clientToolbar.addNavigation(navButton);
-			}
-			else
-			{
-				Player lp = client.getLocalPlayer();
-				boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
-				if (inRegion)
+				if (!config.hideButton())
 				{
 					clientToolbar.addNavigation(navButton);
 				}
 				else
 				{
-					clientToolbar.removeNavigation(navButton);
+					Player lp = client.getLocalPlayer();
+					boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
+					if (inRegion)
+					{
+						clientToolbar.addNavigation(navButton);
+					}
+					else
+					{
+						clientToolbar.removeNavigation(navButton);
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	@Subscribe
@@ -182,7 +207,6 @@ public class KourendLibraryPlugin extends Plugin
 		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
 		{
 			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
-			overlay.setHidden(false);
 		}
 	}
 
@@ -206,6 +230,16 @@ public class KourendLibraryPlugin extends Plugin
 				panel.update();
 				lastBookcaseAnimatedOn = null;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN ||
+			event.getGameState() == GameState.HOPPING)
+		{
+			npcsToMark.clear();
 		}
 	}
 
@@ -252,8 +286,7 @@ public class KourendLibraryPlugin extends Plugin
 		Widget npcHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
 		if (npcHead != null)
 		{
-			LibraryCustomer cust = LibraryCustomer.getById(npcHead.getModelId());
-			if (cust != null)
+			if (isLibraryCustomer(npcHead.getModelId()))
 			{
 				Widget textw = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 				String text = textw.getText();
@@ -268,13 +301,12 @@ public class KourendLibraryPlugin extends Plugin
 						return;
 					}
 
-					overlay.setHidden(false);
-					library.setCustomer(cust, book);
+					library.setCustomer(npcHead.getModelId(), book);
 					panel.update();
 				}
 				else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
 				{
-					library.setCustomer(null, null);
+					library.setCustomer(-1, null);
 					panel.update();
 				}
 			}
@@ -285,6 +317,21 @@ public class KourendLibraryPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChangedEvent)
 	{
 		updatePlayerBooks();
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		if (isLibraryCustomer(event.getNpc().getId()))
+		{
+			npcsToMark.add(event.getNpc());
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		npcsToMark.remove(event.getNpc());
 	}
 
 	boolean doesPlayerContainBook(Book book)
@@ -312,5 +359,10 @@ public class KourendLibraryPlugin extends Plugin
 
 			playerBooks = books;
 		}
+	}
+
+	static boolean isLibraryCustomer(int npcId)
+	{
+		return npcId == NpcID.VILLIA || npcId == NpcID.PROFESSOR_GRACKLEBONE || npcId == NpcID.SAM_7049;
 	}
 }

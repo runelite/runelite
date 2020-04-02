@@ -1293,7 +1293,7 @@ public final class SpriteID
 	public static final int SPELL_REANIMATE_CROPS_DISABLED = 1327;
 	/* Unmapped: 1328~1337 */
 	public static final int WORLD_SWITCHER_WORLD_STAR_BLUE = 1338;
-	public static final int GAMEBLAST16_PROMO_BANNER = 1339;
+	public static final int HITSPLAT_DARK_GREEN_VENOM = 1339;
 	public static final int FAIRY_RING_REMOVE_FAVOURITE = 1340;
 	public static final int FAIRY_RING_ADD_FAVOURITE = 1341;
 	public static final int BANK_PLACEHOLDERS_LOCK = 1342;
@@ -1317,7 +1317,7 @@ public final class SpriteID
 	public static final int HITSPLAT_GREEN_POISON = 1360;
 	public static final int HITSPLAT_ORANGE = 1361;
 	public static final int HITSPLAT_ORANGE_DISEASE = 1362;
-	public static final int HITSPLAT_DARK_GREEN_VENOM = 1363;
+	public static final int HITSPLAT_GREY = 1363;
 	public static final int BOUNTY_HUNTER_SKIP_TARGET = 1364;
 	public static final int BOUNTY_HUNTER_SKIP_TARGET_HOVERED = 1365;
 	public static final int HOUSE_VIEWER_ROTATE_CLOCKWISE = 1366;
@@ -1589,4 +1589,6 @@ public final class SpriteID
 	public static final int HEALTHBAR_DEFAULT_BACK_140PX = 2189;
 	public static final int HEALTHBAR_DEFAULT_FRONT_160PX = 2190;
 	public static final int HEALTHBAR_DEFAULT_BACK_160PX = 2191;
+	public static final int WIKI_DESELECTED = 2420;
+	public static final int WIKI_SELECTED = 2421;
 }

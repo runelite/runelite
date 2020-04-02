@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import static net.runelite.api.NullObjectID.NULL_1293;
@@ -134,9 +135,9 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("If you look closely enough, it seems that the archers have lost more than their needles.", HAYSTACK, new WorldPoint(2672, 3416, 0), "Search the haystack by the south corner of the Rangers' Guild"),
 		new CrypticClue("Search the crate in the left-hand tower of Lumbridge Castle.", CRATE_357, new WorldPoint(3228, 3212, 1), "Located on the first floor of the southern tower at the Lumbridge Castle entrance."),
 		new CrypticClue("'Small shoe.' Often found with rod on mushroom.", "Gnome trainer", new WorldPoint(2476, 3428, 0), "Talk to any Gnome trainer in the agility area of the Tree Gnome Stronghold."),
-		new CrypticClue("I live in a deserted crack collecting soles.", "Genie", new WorldPoint(3371, 9320, 0), "Enter the crack west of Nardah Rug merchant, and talk to the Genie. You'll need a light source and a rope."),
+		new CrypticClue("I live in a deserted crack collecting soles.", "Genie", new WorldPoint(3371, 9320, 0), "Enter the crack west of Nardah Rug merchant, and talk to the Genie. You'll need a light source and a rope.", true),
 		new CrypticClue("46 is my number. My body is the colour of burnt orange and crawls among those with eight. Three mouths I have, yet I cannot eat. My blinking blue eye hides my grave.", new WorldPoint(3170, 3885, 0), "Sapphire respawn in the Spider's Nest, lvl 46 Wilderness. Dig under the sapphire spawn."),
-		new CrypticClue("Green is the colour of my death as the winter-guise, I swoop towards the ground.", new WorldPoint(2780, 3783, 0), "Players need to slide down to where Trollweiss grows on Trollweiss Mountain."),
+		new CrypticClue("Green is the colour of my death as the winter-guise, I swoop towards the ground.", new WorldPoint(2780, 3783, 0), "Players need to slide down to where Trollweiss grows on Trollweiss Mountain. Bring a sled"),
 		new CrypticClue("Talk to a party-goer in Falador.", "Lucy", new WorldPoint(3046, 3382, 0), "Lucy is the bartender on the first floor of the party room."),
 		new CrypticClue("He knows just how easy it is to lose track of time.", "Brother Kojo", new WorldPoint(2570, 3250, 0), "Speak to Brother Kojo in the Clock Tower. Answer: 22", "On a clock, how many times a day do the minute hand and the hour hand overlap?"),
 		new CrypticClue("A great view - watch the rapidly drying hides get splashed. Check the box you are sitting on.", BOXES, new WorldPoint(2523, 3493, 1), "Almera's House north of Baxtorian Falls, search boxes on the first floor."),
@@ -166,12 +167,12 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the drawers in Falador's chain mail shop.", DRAWERS, new WorldPoint(2969, 3311, 0), "Wayne's Chains - Chainmail Specialist store at the southern Falador walls."),
 		new CrypticClue("Talk to the barber in the Falador barber shop.", "Hairdresser", new WorldPoint(2945, 3379, 0), "The Hairdresser can be found in the barber shop, north of the west Falador bank."),
 		new CrypticClue("Often sought out by scholars of histories past, find me where words of wisdom speak volumes.", "Examiner", new WorldPoint(3362, 3341, 0), "Speak to an examiner at the Exam Centre."),
-		new CrypticClue("Generally speaking, his nose was very bent.", "General Bentnoze", new WorldPoint(2957, 3511, 0), "Talk to General Bentnoze"),
+		new CrypticClue("Generally speaking, his nose was very bent.", "General Bentnoze", new WorldPoint(2957, 3511, 0), "Talk to General Bentnoze in the Goblin Village north of Falador."),
 		new CrypticClue("Search the bush at the digsite centre.", BUSH_2357, new WorldPoint(3345, 3378, 0), "The bush is on the east side of the first pathway towards the digsite from the Exam Centre."),
 		new CrypticClue("Someone watching the fights in the Duel Arena is your next destination.", "Jeed", new WorldPoint(3360, 3242, 0), "Talk to Jeed, found on the upper floors, at the Duel Arena."),
 		new CrypticClue("It seems to have reached the end of the line, and it's still empty.", MINE_CART_6045, new WorldPoint(3041, 9820, 0), "Search the carts in the northern part of the Dwarven Mine."),
 		new CrypticClue("You'll have to plug your nose if you use this source of herbs.", null, "Kill an Aberrant or Deviant spectre."),
-		new CrypticClue("When you get tired of fighting, go deep, deep down until you need an antidote.", CRATE_357, new WorldPoint(2576, 9583, 0), "Go to Yanille Agility dungeon and fall into the place with the poison spiders. Search the crate by the stairs leading up."),
+		new CrypticClue("When you get tired of fighting, go deep, deep down until you need an antidote.", CRATE_357, new WorldPoint(2576, 9583, 0), "Go to Yanille Agility dungeon and fall into the place with the poison spiders by praying at the Chaos altar. Search the crate by the stairs leading up."),
 		new CrypticClue("Search the bookcase in the monastery.", BOOKCASE_380, new WorldPoint(3054, 3484, 0), "Search the southeastern bookcase at Edgeville Monastery."),
 		new CrypticClue("Surprising? I bet he is...", "Sir Prysin", new WorldPoint(3205, 3474, 0), "Talk to Sir Prysin in Varrock Palace."),
 		new CrypticClue("Search upstairs in the houses of Seers' Village for some drawers.", DRAWERS_25766, new WorldPoint(2716, 3471, 1), "Located in the house with the spinning wheel. South of the Seers' Village bank."),
@@ -222,13 +223,13 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Anger Abbot Langley.", "Abbot Langley", new WorldPoint(3058, 3487, 0), "Speak to Abbot Langley in the Edgeville Monastery while you have a negative prayer bonus (currently only possible with an Ancient staff)."),
 		new CrypticClue("Dig where only the skilled, the wealthy, or the brave can choose not to visit again.", new WorldPoint(3221, 3219, 0), "Dig at Lumbridge spawn"),
 		new CrypticClue("Scattered coins and gems fill the floor. The chest you seek is in the north east.", "King Black Dragon", CLOSED_CHEST_375, new WorldPoint(2288, 4702, 0), "Kill the King Black Dragon for a key (elite), and then open the closed chest in the NE corner of the lair."),
-		new CrypticClue("A ring of water surrounds 4 powerful rings, dig above the ladder located there.", new WorldPoint(1910, 4367, 0), "Dig by the ladder leading to the Dagannoth Kings room in the Waterbirth Island Dungeon."),
+		new CrypticClue("A ring of water surrounds 4 powerful rings, dig above the ladder located there.", new WorldPoint(1910, 4367, 0), "Dig by the ladder leading to the Dagannoth Kings room in the Waterbirth Island Dungeon. Bring a pet rock and rune thrownaxe."),
 		new CrypticClue("This place sure is a mess.", "Ewesey", new WorldPoint(1646, 3631, 0), "Ewesey is located in the mess hall in Hosidius."),
 		new CrypticClue("Here, there are tears, but nobody is crying. Speak to the guardian and show off your alignment to balance.", "Juna", JUNA, new WorldPoint(3252, 9517, 2), "Talk to Juna while wearing three Guthix related items."),
 		new CrypticClue("You might have to turn over a few stones to progress.", null, "Kill a rock crab."),
 		new CrypticClue("Dig under Razorlor's toad batta.", new WorldPoint(3139, 4554, 0), "Dig on the toad batta spawn in Tarn's Lair."),
 		new CrypticClue("Talk to Cassie in Falador.", "Cassie", new WorldPoint(2975, 3383, 0), "Cassie is found just south-east of the northern Falador gate."),
-		new CrypticClue("Faint sounds of 'Arr', fire giants found deep, the eastern tip of a lake, are the rewards you could reap.", new WorldPoint(3055, 10338, 0), "Dig south of the pillar at the end of the Deep Wilderness Dungeon."),
+		new CrypticClue("Faint sounds of 'Arr', fire giants found deep, the eastern tip of a lake, are the rewards you could reap.", new WorldPoint(3055, 10338, 0), "Dig south of the pillar in the Deep Wilderness Dungeon in the room with the fire giants."),
 		new CrypticClue("If you're feeling brave, dig beneath the dragon's eye.", new WorldPoint(2410, 4714, 0), "Dig below the mossy rock under the Viyeldi caves (Legend's Quest). Items needed: Pickaxe, unpowered orb, lockpick, spade, and any charge orb spell."),
 		new CrypticClue("Search the tents in the Imperial Guard camp in Burthorpe for some boxes.", BOXES_3686, new WorldPoint(2885, 3540, 0), "Search in the tents in northwest corner of the camp."),
 		new CrypticClue("A dwarf, approaching death, but very much in the light.", "Thorgel", new WorldPoint(1863, 4639, 0), "Thorgel at the entrance to the Death altar"),
@@ -331,6 +332,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final int objectId;
 	private final WorldPoint location;
 	private final String solution;
+	@Nullable
 	private final String questionText;
 
 	private CrypticClue(String text, WorldPoint location, String solution)
@@ -340,12 +342,18 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 	private CrypticClue(String text, int objectId, WorldPoint location, String solution)
 	{
-		this(text, null, objectId, location, solution, "");
+		this(text, null, objectId, location, solution, null);
 	}
 
 	private CrypticClue(String text, String npc, WorldPoint location, String solution)
 	{
-		this(text, npc, -1, location, solution, "");
+		this(text, npc, -1, location, solution, null);
+	}
+
+	private CrypticClue(String text, String npc, WorldPoint location, String solution, boolean requiresLight)
+	{
+		this(text, npc, location, solution);
+		setRequiresLight(requiresLight);
 	}
 
 	private CrypticClue(String text, int objectId, WorldPoint location, String solution, String questionText)
@@ -360,10 +368,10 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution)
 	{
-		this(text, npc, objectId, location, solution, "");
+		this(text, npc, objectId, location, solution, null);
 	}
 
-	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution, String questionText)
+	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution, @Nullable String questionText)
 	{
 		this.text = text;
 		this.npc = npc;
@@ -459,7 +467,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	{
 		for (CrypticClue clue : CLUES)
 		{
-			if (clue.text.equalsIgnoreCase(text) || clue.questionText.equalsIgnoreCase(text))
+			if (text.equalsIgnoreCase(clue.text) || text.equalsIgnoreCase(clue.questionText))
 			{
 				return clue;
 			}

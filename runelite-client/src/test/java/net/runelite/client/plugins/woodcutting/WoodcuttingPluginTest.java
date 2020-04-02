@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Jordan Zomerlei <jordan@zomerlei.com>
+ * Copyright (c) 2020, Jordan Zomerlei <https://github.com/JZomerlei>
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *

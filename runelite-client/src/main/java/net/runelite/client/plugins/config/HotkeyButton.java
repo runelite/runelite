@@ -31,7 +31,7 @@ import lombok.Getter;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 
-public class HotkeyButton extends JButton
+class HotkeyButton extends JButton
 {
 	@Getter
 	private Keybind value;

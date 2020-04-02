@@ -47,11 +47,14 @@ import net.runelite.api.MainBufferProvider;
 import net.runelite.api.NullItemID;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.Renderable;
+import net.runelite.api.Skill;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.widgets.Widget;
@@ -549,5 +552,27 @@ public class Hooks implements Callbacks
 		BeforeMenuRender event = new BeforeMenuRender();
 		client.getCallbacks().post(event);
 		return event.isConsumed();
+	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	{
+		if (!scriptCallbackEvent.getEventName().equals("fakeXpDrop"))
+		{
+			return;
+		}
+
+		final int[] intStack = client.getIntStack();
+		final int intStackSize = client.getIntStackSize();
+
+		final int statId = intStack[intStackSize - 2];
+		final int xp = intStack[intStackSize - 1];
+
+		Skill skill = Skill.values()[statId];
+		FakeXpDrop fakeXpDrop = new FakeXpDrop(
+			skill,
+			xp
+		);
+		eventBus.post(fakeXpDrop);
 	}
 }

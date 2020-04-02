@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.40-SNAPSHOT</version>
+		<version>1.6.11-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -158,15 +158,9 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.sigpipe</groupId>
-			<artifactId>jbsdiff</artifactId>
+			<groupId>net.runelite</groupId>
+			<artifactId>archive-patcher</artifactId>
 			<version>1.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.tukaani</groupId>
-					<artifactId>xz</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<!-- net.runelite:discord also has this -->
 		<dependency>
@@ -238,6 +232,12 @@
 			<version>${guice.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>mockwebserver</artifactId>
+			<version>3.7.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -267,6 +267,7 @@
 						<nonFilteredFileExtension>ttf</nonFilteredFileExtension>
 						<nonFilteredFileExtension>png</nonFilteredFileExtension>
 						<nonFilteredFileExtension>gif</nonFilteredFileExtension>
+						<nonFilteredFileExtension>wav</nonFilteredFileExtension>
 					</nonFilteredFileExtensions>
 				</configuration>
 			</plugin>

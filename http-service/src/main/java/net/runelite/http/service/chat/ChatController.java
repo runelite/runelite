@@ -47,6 +47,7 @@ public class ChatController
 {
 	private static final Pattern STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int STRING_MAX_LENGTH = 50;
+	private static final int MAX_LAYOUT_ROOMS = 16;
 
 	private final Cache<KillCountKey, Integer> killCountCache = CacheBuilder.newBuilder()
 		.expireAfterWrite(2, TimeUnit.MINUTES)
@@ -214,6 +215,11 @@ public class ChatController
 	@PostMapping("/layout")
 	public void submitLayout(@RequestParam String name, @RequestBody LayoutRoom[] rooms)
 	{
+		if (rooms.length > MAX_LAYOUT_ROOMS)
+		{
+			return;
+		}
+
 		chatService.setLayout(name, rooms);
 	}
 

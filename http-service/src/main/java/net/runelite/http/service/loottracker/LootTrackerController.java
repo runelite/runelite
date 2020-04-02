@@ -26,13 +26,17 @@
 package net.runelite.http.service.loottracker;
 
 import com.google.api.client.http.HttpStatusCodes;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
+import net.runelite.http.service.util.redis.RedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,13 +45,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.Jedis;
 
 @RestController
 @RequestMapping("/loottracker")
 public class LootTrackerController
 {
+	private static final Gson GSON = RuneLiteAPI.GSON;
+
 	@Autowired
 	private LootTrackerService service;
+
+	@Autowired
+	private RedisPool redisPool;
 
 	@Autowired
 	private AuthFilter auth;
@@ -64,10 +74,15 @@ public class LootTrackerController
 
 		service.store(records, e.getUser());
 		response.setStatus(HttpStatusCodes.STATUS_CODE_OK);
+
+		try (Jedis jedis = redisPool.getResource())
+		{
+			jedis.publish("drops", GSON.toJson(records));
+		}
 	}
 
 	@GetMapping
-	public Collection<LootRecord> getLootRecords(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "count", defaultValue = "1024") int count, @RequestParam(value = "start", defaultValue = "0") int start) throws IOException
+	public Collection<LootAggregate> getLootAggregate(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "count", defaultValue = "1024") int count, @RequestParam(value = "start", defaultValue = "0") int start) throws IOException
 	{
 		SessionEntry e = auth.handle(request, response);
 		if (e == null)

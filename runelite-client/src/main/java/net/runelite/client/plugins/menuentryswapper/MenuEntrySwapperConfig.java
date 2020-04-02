@@ -133,6 +133,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapCaptainKhaled",
+		name = "Task",
+		description = "Swap Talk-to with Task for Captain Khaled in Port Piscarilius"
+	)
+	default boolean swapCaptainKhaled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapDecant",
 		name = "Decant",
 		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange."
@@ -183,6 +193,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapHelp",
+		name = "Help",
+		description = "Swap Talk-to with Help on Arceuus library customers"
+	)
+	default boolean swapHelp()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapHomePortal",
 		name = "Home",
 		description = "Swap Enter with Home or Build or Friend's house on Portal"
@@ -210,6 +230,16 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapPay()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapJewelleryBox",
+		name = "Jewellery Box",
+		description = "Swap Teleport Menu with previous destination on Jewellery Box"
+	)
+	default boolean swapJewelleryBox()
+	{
+		return false;
 	}
 
 	@ConfigItem(
@@ -330,5 +360,75 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapQuickLeave()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapGEItemCollect",
+		name = "GE Item Collect",
+		description = "Swap Collect-notes, Collect-items, or Bank options from GE offer"
+	)
+	default GEItemCollectMode swapGEItemCollect()
+	{
+		return GEItemCollectMode.DEFAULT;
+	}
+
+	@ConfigItem(
+		keyName = "swapGEAbort",
+		name = "GE Abort",
+		description = "Swap abort offer on Grand Exchange offers when shift-clicking"
+	)
+	default boolean swapGEAbort()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapNpcContact",
+		name = "NPC Contact",
+		description = "Swap NPC Contact with last contacted NPC when shift-clicking"
+	)
+	default boolean swapNpcContact()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "bankWithdrawShiftClick",
+		name = "Bank Withdraw Shift-Click",
+		description = "Swaps the behavior of shift-click when withdrawing from bank."
+	)
+	default ShiftWithdrawMode bankWithdrawShiftClick()
+	{
+		return ShiftWithdrawMode.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "bankDepositShiftClick",
+		name = "Bank Deposit Shift-Click",
+		description = "Swaps the behavior of shift-click when depositing to bank."
+	)
+	default ShiftDepositMode bankDepositShiftClick()
+	{
+		return ShiftDepositMode.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "swapEssenceMineTeleport",
+		name = "Essence Mine Teleport",
+		description = "Swaps Talk-To with Teleport for NPCs which teleport you to the essence mine"
+	)
+	default boolean swapEssenceMineTeleport()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapNets",
+		name = "Nets",
+		description = "Swap Talk-to with Nets on Annette"
+	)
+	default boolean swapNets()
+	{
+		return true;
 	}
 }

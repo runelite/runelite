@@ -84,7 +84,10 @@ enum Emoji
 	ALIEN("(@.@)"),
 	EGGPLANT("8=D"),
 	WAVE("(^_^)/"),
-	HEART_EYES("(*.*)");
+	HEART_EYES("(*.*)"),
+	FACEPALM("M-)"),
+	PENSIVE("V_V"),
+	;
 
 	private static final Map<String, Emoji> emojiMap;
 

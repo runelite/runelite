@@ -369,7 +369,7 @@ public class XpTrackerPlugin extends Plugin
 		if (interacting instanceof NPC && COMBAT.contains(skill))
 		{
 			final NPC npc = (NPC) interacting;
-			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
+			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getId()));
 		}
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
@@ -392,7 +392,7 @@ public class XpTrackerPlugin extends Plugin
 
 		for (Skill skill : COMBAT)
 		{
-			final XpUpdateResult updateResult = xpState.updateNpcKills(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
+			final XpUpdateResult updateResult = xpState.updateNpcKills(skill, npc, npcManager.getHealth(npc.getId()));
 			final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
 			xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 		}
@@ -670,7 +670,19 @@ public class XpTrackerPlugin extends Plugin
 			xpPauseState.tickXp(skill, skillExperience, xpTrackerConfig.pauseSkillAfter());
 		}
 
-		xpPauseState.tickLogout(xpTrackerConfig.pauseOnLogout(), !GameState.LOGIN_SCREEN.equals(client.getGameState()));
+		final boolean loggedIn;
+		switch (client.getGameState())
+		{
+			case LOGIN_SCREEN:
+			case LOGGING_IN:
+			case LOGIN_SCREEN_AUTHENTICATOR:
+				loggedIn = false;
+				break;
+			default:
+				loggedIn = true;
+				break;
+		}
+		xpPauseState.tickLogout(xpTrackerConfig.pauseOnLogout(), loggedIn);
 
 		if (lastTickMillis == 0)
 		{

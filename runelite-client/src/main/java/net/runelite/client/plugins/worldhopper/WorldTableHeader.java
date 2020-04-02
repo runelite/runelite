@@ -56,7 +56,7 @@ class WorldTableHeader extends JPanel
 	{
 		final BufferedImage arrowDown = ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "arrow_down.png");
 		final BufferedImage arrowUp = ImageUtil.rotateImage(arrowDown, Math.PI);
-		final BufferedImage arrowUpFaded = ImageUtil.grayscaleOffset(arrowUp, -80);
+		final BufferedImage arrowUpFaded = ImageUtil.luminanceOffset(arrowUp, -80);
 		ARROW_UP = new ImageIcon(arrowUpFaded);
 
 		final BufferedImage highlightArrowDown = ImageUtil.fillImage(arrowDown, HIGHLIGHT_COLOR);

@@ -171,7 +171,12 @@ public enum VarPlayer
 
 	MUSIC_VOLUME(168),
 	SOUND_EFFECT_VOLUME(169),
-	AREA_EFFECT_VOLUME(872);
+	AREA_EFFECT_VOLUME(872),
+
+	/**
+	 * 0 = 2 buttons, 1 = 1 button
+	 */
+	MOUSE_BUTTONS(170);
 
 	private final int id;
 }

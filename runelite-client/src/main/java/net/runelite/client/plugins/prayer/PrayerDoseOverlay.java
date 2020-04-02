@@ -37,7 +37,6 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Point;
-import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -47,7 +46,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
-import org.apache.commons.lang3.StringUtils;
 
 class PrayerDoseOverlay extends Overlay
 {
@@ -57,13 +55,12 @@ class PrayerDoseOverlay extends Overlay
 	private static final Color END_COLOR = new Color(0, 92, 92);
 
 	private final Client client;
+	private final PrayerPlugin plugin;
 	private final PrayerConfig config;
 	private final TooltipManager tooltipManager;
 	private Instant startOfLastTick = Instant.now();
 	private boolean trackTick = true;
 
-	@Setter(AccessLevel.PACKAGE)
-	private int prayerBonus;
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hasPrayerRestore;
 	@Setter(AccessLevel.PACKAGE)
@@ -72,10 +69,11 @@ class PrayerDoseOverlay extends Overlay
 	private boolean hasHolyWrench;
 
 	@Inject
-	private PrayerDoseOverlay(final Client client, final TooltipManager tooltipManager, final PrayerConfig config)
+	private PrayerDoseOverlay(final Client client, final TooltipManager tooltipManager, final PrayerPlugin plugin, final PrayerConfig config)
 	{
 		this.client = client;
 		this.tooltipManager = tooltipManager;
+		this.plugin = plugin;
 		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -114,11 +112,19 @@ class PrayerDoseOverlay extends Overlay
 
 		if (config.showPrayerStatistics() && bounds.contains(mousePosition.getX(), mousePosition.getY()))
 		{
-			final String tooltip = "Time Remaining: " + getEstimatedTimeRemaining() +
-				"</br>" +
-				"Prayer Bonus: " + prayerBonus;
+			final StringBuilder sb = new StringBuilder();
 
-			tooltipManager.add(new Tooltip(tooltip));
+			if (config.replaceOrbText())
+			{
+				sb.append("Prayer points remaining: ").append(client.getBoostedSkillLevel(Skill.PRAYER));
+			}
+			else
+			{
+				sb.append("Time Remaining: ").append(plugin.getEstimatedTimeRemaining(false));
+			}
+
+			sb.append("</br>").append("Prayer Bonus: ").append(plugin.getPrayerBonus());
+			tooltipManager.add(new Tooltip(sb.toString()));
 		}
 
 		if (!config.showPrayerDoseIndicator() || !hasPrayerRestore)
@@ -163,42 +169,4 @@ class PrayerDoseOverlay extends Overlay
 		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
 	}
 
-	private double getPrayerDrainRate(Client client)
-	{
-		double drainRate = 0.0;
-
-		for (Prayer prayer : Prayer.values())
-		{
-			if (client.isPrayerActive(prayer))
-			{
-				drainRate += prayer.getDrainRate();
-			}
-		}
-
-		return drainRate;
-	}
-
-	private String getEstimatedTimeRemaining()
-	{
-		// Base data
-		final double drainRate = getPrayerDrainRate(client);
-
-		if (drainRate == 0)
-		{
-			return "N/A";
-		}
-
-		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-
-		// Calculate how many seconds each prayer points last so the prayer bonus can be applied
-		final double secondsPerPoint = (60.0 / drainRate) * (1.0 + (prayerBonus / 30.0));
-
-		// Calculate the number of seconds left
-		final double secondsLeft = (currentPrayer * secondsPerPoint);
-		final int minutes = (int) Math.floor(secondsLeft / 60.0);
-		final int seconds = (int) Math.floor(secondsLeft - (minutes * 60.0));
-
-		// Return the text
-		return Integer.toString(minutes) + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
-	}
 }

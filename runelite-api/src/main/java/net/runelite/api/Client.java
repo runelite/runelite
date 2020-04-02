@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
+import net.runelite.api.annotations.VisibleForExternalPlugins;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.hooks.Callbacks;
@@ -687,6 +688,42 @@ public interface Client extends GameEngine
 	String getVar(VarClientStr varClientStr);
 
 	/**
+	 * Gets the value of a given VarPlayer.
+	 *
+	 * @param varpId the VarPlayer id
+	 * @return the value
+	 */
+	@VisibleForExternalPlugins
+	int getVarpValue(int varpId);
+
+	/**
+	 * Gets the value of a given Varbit.
+	 *
+	 * @param varbitId the varbit id
+	 * @return the value
+	 */
+	@VisibleForExternalPlugins
+	int getVarbitValue(int varbitId);
+
+	/**
+	 * Gets the value of a given VarClientInt
+	 *
+	 * @param varcIntId the VarClientInt id
+	 * @return the value
+	 */
+	@VisibleForExternalPlugins
+	int getVarcIntValue(int varcIntId);
+
+	/**
+	 * Gets the value of a given VarClientStr
+	 *
+	 * @param varcStrId the VarClientStr id
+	 * @return the value
+	 */
+	@VisibleForExternalPlugins
+	String getVarcStrValue(int varcStrId);
+
+	/**
 	 * Sets a VarClientString to the passed value
 	 */
 	void setVar(VarClientStr varClientStr, String value);
@@ -824,7 +861,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the map
 	 */
-	IterableHashTable getMessages();
+	IterableHashTable<MessageNode> getMessages();
 
 	/**
 	 * Gets the viewport widget.
@@ -1111,68 +1148,26 @@ public interface Client extends GameEngine
 	boolean isFriended(String name, boolean mustBeLoggedIn);
 
 	/**
-	 * Gets the number of players in the clan chat.
-	 *
-	 * @return the number of clan chat members
-	 */
-	int getClanChatCount();
-
-	/**
-	 * Gets an array of players in the clan chat.
-	 *
-	 * @return the clan chat members, null if not in a clan
-	 */
-	ClanMember[] getClanMembers();
-
-	/**
-	 * Gets the clan owner of the currently joined clan chat
+	 * Retrieve the clan member manager
 	 *
 	 * @return
 	 */
-	String getClanOwner();
+	@Nullable
+	ClanMemberManager getClanMemberManager();
 
 	/**
-	 * Gets the clan chat name of the currently joined clan chat
+	 * Retrieve the nameable container containing friends
 	 *
 	 * @return
 	 */
-	String getClanChatName();
+	NameableContainer<Friend> getFriendContainer();
 
 	/**
-	 * Gets an array of players in the friends list.
-	 *
-	 * @return the friends list
-	 */
-	Friend[] getFriends();
-
-	/**
-	 * Gets the number of friends on the friends list.
+	 * Retrieve the nameable container containing ignores
 	 *
 	 * @return
 	 */
-	int getFriendsCount();
-
-	/**
-	 * Gets an array of players on the ignore list.
-	 *
-	 * @return
-	 */
-	Ignore[] getIgnores();
-
-	/**
-	 * Gets the number of ignored players on the ignore list.
-	 *
-	 * @return
-	 */
-	int getIgnoreCount();
-
-	/**
-	 * Checks whether a player is in the same clan chat.
-	 *
-	 * @param name the name of the player
-	 * @return true if the player is in clan chat
-	 */
-	boolean isClanMember(String name);
+	NameableContainer<Ignore> getIgnoreContainer();
 
 	/**
 	 * Gets the clients saved preferences.
@@ -1494,6 +1489,13 @@ public interface Client extends GameEngine
 	void setNPCsHidden2D(boolean state);
 
 	/**
+	 * Sets whether Pets from other players are hidden.
+	 *
+	 * @param state new pet hidden state
+	 */
+	void setPetsHidden(boolean state);
+
+	/**
 	 * Sets whether attacking players or NPCs are hidden.
 	 *
 	 * @param state new attacker hidden state
@@ -1707,4 +1709,19 @@ public interface Client extends GameEngine
 	 * Makes all widgets behave as if they are {@link WidgetConfig#WIDGET_USE_TARGET}
 	 */
 	void setAllWidgetsAreOpTargetable(boolean value);
+
+	/**
+	 * Sets the result count for GE search
+	 */
+	void setGeSearchResultCount(int count);
+
+	/**
+	 * Sets the array of item ids for GE search
+	 */
+	void setGeSearchResultIds(short[] ids);
+
+	/**
+	 * Sets the starting index in the item id array for GE search
+	 */
+	void setGeSearchResultIndex(int index);
 }

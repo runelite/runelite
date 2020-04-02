@@ -1,7 +1,7 @@
 .id                 276
-.int_stack_count    17
+.int_stack_count    16
 .string_stack_count 0
-.int_var_count      17
+.int_var_count      16
 .string_var_count   0
 
 ; Check if we should allow server to relayout bank
@@ -41,6 +41,5 @@ LABEL2:
    iload                  13
    iload                  14
    iload                  15
-   iload                  16
    invoke                 277
    return                
