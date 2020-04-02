@@ -208,7 +208,7 @@ public class WintertodtPlugin extends Plugin
 
 				if (prevTimeInSeconds > timeToNotify && timeInSeconds <= timeToNotify)
 				{
-					notifier.notify("Wintertodt round is about to start");
+					notifier.notify("Wintertodt round is about to start", config.notificationSettings());
 				}
 			}
 
@@ -383,7 +383,7 @@ public class WintertodtPlugin extends Plugin
 
 		String notification = str.toString();
 		log.debug("Sending notification: {}", notification);
-		notifier.notify(notification);
+		notifier.notify(notification, config.notificationSettings());
 	}
 
 	@Subscribe

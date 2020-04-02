@@ -158,7 +158,7 @@ public class NightmareZonePlugin extends Plugin
 		{
 			if (config.overloadNotification())
 			{
-				notifier.notify("Your overload has worn off");
+				notifier.notify("Your overload has worn off", config.notificationSettings());
 			}
 		}
 		else if (msg.contains("A power-up has spawned:"))
@@ -167,28 +167,28 @@ public class NightmareZonePlugin extends Plugin
 			{
 				if (config.powerSurgeNotification())
 				{
-					notifier.notify(msg);
+					notifier.notify(msg, config.notificationSettings());
 				}
 			}
 			else if (msg.contains("Recurrent damage"))
 			{
 				if (config.recurrentDamageNotification())
 				{
-					notifier.notify(msg);
+					notifier.notify(msg, config.notificationSettings());
 				}
 			}
 			else if (msg.contains("Zapper"))
 			{
 				if (config.zapperNotification())
 				{
-					notifier.notify(msg);
+					notifier.notify(msg, config.notificationSettings());
 				}
 			}
 			else if (msg.contains("Ultimate force"))
 			{
 				if (config.ultimateForceNotification())
 				{
-					notifier.notify(msg);
+					notifier.notify(msg, config.notificationSettings());
 				}
 			}
 		}
@@ -202,7 +202,7 @@ public class NightmareZonePlugin extends Plugin
 		{
 			if (absorptionPoints < config.absorptionThreshold())
 			{
-				notifier.notify("Absorption points below: " + config.absorptionThreshold());
+				notifier.notify("Absorption points below: " + config.absorptionThreshold(), config.notificationSettings());
 				absorptionNotificationSend = true;
 			}
 		}

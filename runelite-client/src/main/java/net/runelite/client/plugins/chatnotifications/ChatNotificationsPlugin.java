@@ -135,13 +135,13 @@ public class ChatNotificationsPlugin extends Plugin
 			case TRADEREQ:
 				if (chatMessage.getMessage().contains("wishes to trade with you.") && config.notifyOnTrade())
 				{
-					notifier.notify(chatMessage.getMessage());
+					notifier.notify(chatMessage.getMessage(), config.notificationSettings());
 				}
 				break;
 			case CHALREQ_TRADE:
 				if (chatMessage.getMessage().contains("wishes to duel with you.") && config.notifyOnDuel())
 				{
-					notifier.notify(chatMessage.getMessage());
+					notifier.notify(chatMessage.getMessage(), config.notificationSettings());
 				}
 				break;
 			case CONSOLE:
@@ -246,7 +246,7 @@ public class ChatNotificationsPlugin extends Plugin
 
 		stringBuilder.append(Text.removeTags(message.getMessage()));
 		String notification = stringBuilder.toString();
-		notifier.notify(notification);
+		notifier.notify(notification, config.notificationSettings());
 	}
 
 	private String quoteAndIgnoreColor(String str)

@@ -30,6 +30,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.NotificationSettings;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
@@ -127,5 +128,16 @@ public interface WintertodtConfig extends Config
 	default boolean notifyBrazierOut()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = NotificationSettings.KEY_NAME,
+		name = "",			// This config option is replaced with the ConfigItems generated from the NotificationSettings
+		description = ""	// So these values are useless but required by the annotation
+	)
+	default NotificationSettings notificationSettings()
+	{
+		return NotificationSettings.RUNELITE_DEFAULTS;
 	}
 }

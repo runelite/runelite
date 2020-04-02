@@ -100,7 +100,7 @@ public class ImplingsPlugin extends Plugin
 		{
 			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
 			{
-				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+				notifier.notify(impling.getImplingType().getName() + " impling is in the area", config.notificationSettings());
 			}
 
 			implings.add(npc);
@@ -117,7 +117,7 @@ public class ImplingsPlugin extends Plugin
 		{
 			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
 			{
-				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+				notifier.notify(impling.getImplingType().getName() + " impling is in the area", config.notificationSettings());
 			}
 
 			if (!implings.contains(npc))

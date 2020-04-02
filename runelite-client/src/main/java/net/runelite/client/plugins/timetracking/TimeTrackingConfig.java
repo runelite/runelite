@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timetracking;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.NotificationSettings;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("timetracking")
@@ -124,4 +125,15 @@ public interface TimeTrackingConfig extends Config
 		hidden = true
 	)
 	void setActiveTab(Tab t);
+
+	@ConfigItem(
+		position = 5,
+		keyName = NotificationSettings.KEY_NAME,
+		name = "",			// This config option is replaced with the ConfigItems generated from the NotificationSettings
+		description = ""	// So these values are useless but required by the annotation
+	)
+	default NotificationSettings notificationSettings()
+	{
+		return NotificationSettings.RUNELITE_DEFAULTS;
+	}
 }

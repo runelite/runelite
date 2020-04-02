@@ -34,6 +34,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
+import static net.runelite.client.config.NotificationSettings.RUNELITE_DEFAULTS;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,6 +79,7 @@ public class WintertodtPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(config.notificationSettings()).thenReturn(RUNELITE_DEFAULTS);
 	}
 
 	@Test
@@ -91,7 +93,7 @@ public class WintertodtPluginTest
 		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(25);
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
 
-		verify(notifier, times(1)).notify("Wintertodt round is about to start");
+		verify(notifier, times(1)).notify("Wintertodt round is about to start", config.notificationSettings());
 	}
 
 	@Test
@@ -105,7 +107,7 @@ public class WintertodtPluginTest
 		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(16);
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
 
-		verify(notifier, times(1)).notify("Wintertodt round is about to start");
+		verify(notifier, times(1)).notify("Wintertodt round is about to start", config.notificationSettings());
 	}
 
 	@Test
@@ -119,7 +121,7 @@ public class WintertodtPluginTest
 		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(8);
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
 
-		verify(notifier, times(1)).notify("Wintertodt round is about to start");
+		verify(notifier, times(1)).notify("Wintertodt round is about to start", config.notificationSettings());
 	}
 
 	@Test
@@ -140,7 +142,7 @@ public class WintertodtPluginTest
 		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(4);
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
 
-		verify(notifier, times(1)).notify("Wintertodt round is about to start");
+		verify(notifier, times(1)).notify("Wintertodt round is about to start", config.notificationSettings());
 	}
 
 	@Test
@@ -150,6 +152,6 @@ public class WintertodtPluginTest
 		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(25);
 
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
-		verify(notifier, times(0)).notify("Wintertodt round is about to start");
+		verify(notifier, times(0)).notify("Wintertodt round is about to start", config.notificationSettings());
 	}
 }

@@ -63,6 +63,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.FlashNotification;
+import net.runelite.client.config.NotificationSettings;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NotificationFired;
@@ -114,6 +115,7 @@ public class Notifier
 	private final boolean terminalNotifierAvailable;
 	private Instant flashStart;
 	private long mouseLastPressedMillis;
+	private FlashNotification flashNotification;
 
 	@Inject
 	private Notifier(
@@ -137,34 +139,50 @@ public class Notifier
 			!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion())
 			&& isTerminalNotifierAvailable();
 
+		flashNotification = runeliteConfig.flashNotification();
+
 		storeIcon();
 	}
 
 	public void notify(String message)
 	{
-		notify(message, TrayIcon.MessageType.NONE);
+		notify(message, TrayIcon.MessageType.NONE, null);
 	}
 
 	public void notify(String message, TrayIcon.MessageType type)
 	{
-		eventBus.post(new NotificationFired(message, type));
+		notify(message, type, null);
+	}
 
-		if (!runeLiteConfig.sendNotificationsWhenFocused() && clientUI.isFocused())
+	public void notify(String message, NotificationSettings customSettings)
+	{
+		notify(message, TrayIcon.MessageType.NONE, customSettings);
+	}
+
+	public void notify(String message, TrayIcon.MessageType type, NotificationSettings customSettings)
+	{
+		eventBus.post(new NotificationFired(message, type));
+		// if the custom settings notification state is set to "on" we should use the default RuneLite settings
+		final boolean useCustom = customSettings != null && runeLiteConfig.enableCustomNotifier() && !customSettings.notificationState().equals(NotificationSettings.States.ON);
+		final NotificationSettings config = useCustom ? customSettings : getRuneLiteNotificationSettings();
+
+		if (config.notificationState().equals(NotificationSettings.States.OFF)
+			|| (config.sendNotificationsWhenFocused() && clientUI.isFocused()))
 		{
 			return;
 		}
 
-		if (runeLiteConfig.requestFocusOnNotification())
+		if (config.requestFocusOnNotification())
 		{
 			clientUI.requestFocus();
 		}
 
-		if (runeLiteConfig.enableTrayNotifications())
+		if (config.enableTrayNotifications())
 		{
 			sendNotification(appName, message, type);
 		}
 
-		switch (runeLiteConfig.notificationSound())
+		switch (config.notificationSound())
 		{
 			case NATIVE:
 				Toolkit.getDefaultToolkit().beep();
@@ -173,7 +191,7 @@ public class Notifier
 				executorService.submit(this::playCustomSound);
 		}
 
-		if (runeLiteConfig.enableGameMessageNotification() && client.getGameState() == GameState.LOGGED_IN)
+		if (config.enableGameMessageNotification() && client.getGameState() == GameState.LOGGED_IN)
 		{
 			final String formattedMessage = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
@@ -187,7 +205,8 @@ public class Notifier
 				.build());
 		}
 
-		if (runeLiteConfig.flashNotification() != FlashNotification.DISABLED)
+		flashNotification = config.flashNotification();
+		if (flashNotification != FlashNotification.DISABLED)
 		{
 			flashStart = Instant.now();
 			mouseLastPressedMillis = client.getMouseLastPressedMillis();
@@ -203,8 +222,6 @@ public class Notifier
 			flashStart = null;
 			return;
 		}
-
-		FlashNotification flashNotification = runeLiteConfig.flashNotification();
 
 		if (client.getGameCycle() % 40 >= 20
 			// For solid colour, fall through every time.
@@ -226,6 +243,7 @@ public class Notifier
 
 		switch (flashNotification)
 		{
+			case DISABLED:
 			case FLASH_TWO_SECONDS:
 			case SOLID_TWO_SECONDS:
 				flashStart = null;
@@ -450,5 +468,18 @@ public class Notifier
 			}
 		}
 		clip.start();
+	}
+
+	private NotificationSettings getRuneLiteNotificationSettings()
+	{
+		return new NotificationSettings(
+			runeLiteConfig.enableCustomNotifier() ? NotificationSettings.States.CUSTOM : NotificationSettings.States.ON,
+			runeLiteConfig.enableTrayNotifications(),
+			runeLiteConfig.requestFocusOnNotification(),
+			runeLiteConfig.notificationSound(),
+			runeLiteConfig.enableGameMessageNotification(),
+			runeLiteConfig.flashNotification(),
+			runeLiteConfig.sendNotificationsWhenFocused()
+		);
 	}
 }
