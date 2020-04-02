@@ -122,6 +122,8 @@ public class GrandExchangePlugin extends Plugin
 
 	private static final int MAX_RESULT_COUNT = 250;
 
+	private static final FuzzyScore FUZZY = new FuzzyScore(Locale.ENGLISH);
+
 	private static final Color FUZZY_HIGHLIGHT_COLOR = new Color(0x800000);
 
 	@Getter(AccessLevel.PACKAGE)
@@ -532,9 +534,8 @@ public class GrandExchangePlugin extends Plugin
 			String itemName = itemNameWidget.getText();
 
 			List<Integer> indices;
-			FuzzyScore fuzzy = new FuzzyScore(Locale.ENGLISH);
 			String otherName = itemName.replace('-', ' ');
-			if (!itemName.contains("-") || fuzzy.fuzzyScore(itemName, input) >= fuzzy.fuzzyScore(otherName, input))
+			if (!itemName.contains("-") || FUZZY.fuzzyScore(itemName, input) >= FUZZY.fuzzyScore(otherName, input))
 			{
 				indices = findFuzzyIndices(itemName, input);
 			}
@@ -601,16 +602,14 @@ public class GrandExchangePlugin extends Plugin
 
 		if (resultCount == 0)
 		{
-			FuzzyScore fuzzy = new FuzzyScore(Locale.ENGLISH);
-
 			// We do this so that for example the items "Anti-venom ..." are still at the top
 			// when searching "anti venom"
 			ToIntFunction<ItemComposition> getScore = item ->
 			{
-				int score = fuzzy.fuzzyScore(item.getName(), input);
+				int score = FUZZY.fuzzyScore(item.getName(), input);
 				if (item.getName().contains("-"))
 				{
-					return Math.max(fuzzy.fuzzyScore(item.getName().replace('-', ' '), input), score);
+					return Math.max(FUZZY.fuzzyScore(item.getName().replace('-', ' '), input), score);
 				}
 				return score;
 			};
