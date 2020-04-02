@@ -22,6 +22,7 @@
 - [runelite-mixins](runelite-mixins/src/main/java/net/runelite) - Classes containing the Objects to be injected using the injector-plugin
 - [runescape-api](runescape-api/src/main/java/net/runelite) - Mappings correspond to these interfaces, runelite-api is a subset of this
 - [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
+- [wiki-scraper](wiki-scraper/src/main/java/net/runelite/data) - Scrapes the runescape wiki https://oldschool.runescape.wiki for the latest npc data
 
 ## Building  
 
@@ -37,4 +38,10 @@ We've set up a separate document for our [contribution guidelines](https://githu
 
 ## Supported By  
 
-OpenOSRS uses profiling tools provided by [![YourKit](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com/java/profiler/)
+OpenOSRS uses profiling tools provided by [YourKit](https://www.yourkit.com/)
+
+Thanks [JetBrains](https://www.jetbrains.com/idea/download/) for providing our developers with IntelliJ IDEA Ultimate Edition.
+
+## Wiki
+
+Check out the [OpenOSRS wiki to learn more](https://github.com/open-osrs/runelite/wiki)
