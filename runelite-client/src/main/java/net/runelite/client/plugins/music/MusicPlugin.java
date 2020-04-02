@@ -50,6 +50,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.AreaSoundEffectPlayed;
+import net.runelite.api.events.SoundEffectPlayed;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -80,6 +81,36 @@ public class MusicPlugin extends Plugin
 {
 	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
 		SoundEffectID.TELEPORT_VWOOP
+	);
+
+	private static final Set<Integer> PRAYER_SOUNDS = ImmutableSet.of(
+		SoundEffectID.PRAYER_ACTIVATE_THICK_SKIN,
+		SoundEffectID.PRAYER_ACTIVATE_BURST_OF_STRENGTH,
+		SoundEffectID.PRAYER_ACTIVATE_CLARITY_OF_THOUGHT,
+		SoundEffectID.PRAYER_ACTIVATE_SHARP_EYE_RIGOUR,
+		SoundEffectID.PRAYER_ACTIVATE_MYSTIC_WILL_AUGURY,
+		SoundEffectID.PRAYER_ACTIVATE_ROCK_SKIN,
+		SoundEffectID.PRAYER_ACTIVATE_SUPERHUMAN_STRENGTH,
+		SoundEffectID.PRAYER_ACTIVATE_IMPROVED_REFLEXES,
+		SoundEffectID.PRAYER_ACTIVATE_RAPID_RESTORE_PRESERVE,
+		SoundEffectID.PRAYER_ACTIVATE_RAPID_HEAL,
+		SoundEffectID.PRAYER_ACTIVATE_PROTECT_ITEM,
+		SoundEffectID.PRAYER_ACTIVATE_HAWK_EYE,
+		SoundEffectID.PRAYER_ACTIVATE_MYSTIC_LORE,
+		SoundEffectID.PRAYER_ACTIVATE_STEEL_SKIN,
+		SoundEffectID.PRAYER_ACTIVATE_ULTIMATE_STRENGTH,
+		SoundEffectID.PRAYER_ACTIVATE_INCREDIBLE_REFLEXES,
+		SoundEffectID.PRAYER_ACTIVATE_PROTECT_FROM_MAGIC,
+		SoundEffectID.PRAYER_ACTIVATE_PROTECT_FROM_MISSILES,
+		SoundEffectID.PRAYER_ACTIVATE_PROTECT_FROM_MELEE,
+		SoundEffectID.PRAYER_ACTIVATE_EAGLE_EYE,
+		SoundEffectID.PRAYER_ACTIVATE_MYSTIC_MIGHT,
+		SoundEffectID.PRAYER_ACTIVATE_RETRIBUTION,
+		SoundEffectID.PRAYER_ACTIVATE_REDEMPTION,
+		SoundEffectID.PRAYER_ACTIVATE_SMITE,
+		SoundEffectID.PRAYER_ACTIVATE_CHIVALRY,
+		SoundEffectID.PRAYER_ACTIVATE_PIETY,
+		SoundEffectID.PRAYER_DEACTIVE_VWOOP
 	);
 
 	@Inject
@@ -588,6 +619,16 @@ public class MusicPlugin extends Plugin
 			&& musicConfig.muteEnvironmentAreaSounds())
 		{
 			areaSoundEffectPlayed.consume();
+		}
+	}
+
+	@Subscribe
+	public void onSoundEffectPlayed(SoundEffectPlayed soundEffectPlayed)
+	{
+		if (musicConfig.mutePrayerSounds()
+			&& PRAYER_SOUNDS.contains(soundEffectPlayed.getSoundId()))
+		{
+			soundEffectPlayed.consume();
 		}
 	}
 }
