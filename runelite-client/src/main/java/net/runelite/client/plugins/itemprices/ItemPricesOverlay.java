@@ -93,12 +93,13 @@ class ItemPricesOverlay extends Overlay
 		final MenuAction action = MenuAction.of(menuEntry.getType());
 		final int widgetId = menuEntry.getParam1();
 		final int groupId = WidgetInfo.TO_GROUP(widgetId);
+		final boolean isAlching = menuEntry.getOption().equals("Cast") && menuEntry.getTarget().contains("High Level Alchemy");
 
 		// Tooltip action type handling
 		switch (action)
 		{
 			case ITEM_USE_ON_WIDGET:
-				if (!config.showWhileAlching() || !menuEntry.getOption().equals("Cast") || !menuEntry.getTarget().contains("High Level Alchemy"))
+				if (!config.showWhileAlching() || !isAlching)
 				{
 					break;
 				}
@@ -118,7 +119,7 @@ class ItemPricesOverlay extends Overlay
 							return null;
 						}
 					case WidgetID.INVENTORY_GROUP_ID:
-						if (config.hideInventory())
+						if (config.hideInventory() && !(config.showWhileAlching() && isAlching))
 						{
 							return null;
 						}
