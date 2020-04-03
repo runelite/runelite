@@ -41,6 +41,7 @@ public final class AnimationID
 	public static final int WOODCUTTING_MITHRIL = 871;
 	public static final int WOODCUTTING_ADAMANT = 869;
 	public static final int WOODCUTTING_RUNE = 867;
+	public static final int WOODCUTTING_GILDED = 8303;
 	public static final int WOODCUTTING_DRAGON = 2846;
 	public static final int WOODCUTTING_INFERNAL = 2117;
 	public static final int WOODCUTTING_3A_AXE = 7264;
@@ -112,6 +113,14 @@ public final class AnimationID
 	public static final int FISHING_CRUSHING_INFERNAL_EELS = 7553;
 	public static final int FISHING_CUTTING_SACRED_EELS = 7151;
 	public static final int FISHING_BAREHAND = 6709;
+	public static final int FISHING_BAREHAND_WINDUP_1 = 6703;
+	public static final int FISHING_BAREHAND_WINDUP_2 = 6704;
+	public static final int FISHING_BAREHAND_CAUGHT_SHARK_1 = 6705;
+	public static final int FISHING_BAREHAND_CAUGHT_SHARK_2 = 6706;
+	public static final int FISHING_BAREHAND_CAUGHT_SWORDFISH_1 = 6707;
+	public static final int FISHING_BAREHAND_CAUGHT_SWORDFISH_2 = 6708;
+	public static final int FISHING_BAREHAND_CAUGHT_TUNA_1 = 6710;
+	public static final int FISHING_BAREHAND_CAUGHT_TUNA_2 = 6711;
 	public static final int MINING_BRONZE_PICKAXE = 625;
 	public static final int MINING_IRON_PICKAXE = 626;
 	public static final int MINING_STEEL_PICKAXE = 627;
@@ -119,6 +128,7 @@ public final class AnimationID
 	public static final int MINING_MITHRIL_PICKAXE = 629;
 	public static final int MINING_ADAMANT_PICKAXE = 628;
 	public static final int MINING_RUNE_PICKAXE = 624;
+	public static final int MINING_GILDED_PICKAXE = 8313;
 	public static final int MINING_DRAGON_PICKAXE = 7139;
 	public static final int MINING_DRAGON_PICKAXE_UPGRADED = 642;
 	public static final int MINING_DRAGON_PICKAXE_OR = 8346;
@@ -132,6 +142,7 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_MITHRIL = 6757;
 	public static final int MINING_MOTHERLODE_ADAMANT = 6756;
 	public static final int MINING_MOTHERLODE_RUNE = 6752;
+	public static final int MINING_MOTHERLODE_GILDED = 8312;
 	public static final int MINING_MOTHERLODE_DRAGON = 6758;
 	public static final int MINING_MOTHERLODE_DRAGON_UPGRADED = 335;
 	public static final int MINING_MOTHERLODE_DRAGON_OR = 8344;

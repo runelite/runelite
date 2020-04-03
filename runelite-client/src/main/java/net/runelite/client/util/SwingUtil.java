@@ -476,6 +476,7 @@ public class SwingUtil
 
 	public static void addModalTooltip(AbstractButton button, String on, String off)
 	{
+		button.setToolTipText(button.isSelected() ? on : off);
 		button.addItemListener(l -> button.setToolTipText(button.isSelected() ? on : off));
 	}
 

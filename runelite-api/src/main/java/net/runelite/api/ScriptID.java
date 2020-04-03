@@ -260,6 +260,12 @@ public final class ScriptID
 	public static final int GE_OFFERS_SETUP_BUILD = 779;
 
 	/**
+	 * Builds the grand exchange item search widget
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int GE_ITEM_SEARCH = 752;
+
+	/**
 	 * Builds the quest list inside the quest tab that shows each quest's progress
 	 */
 	@ScriptArguments(integer = 3)
