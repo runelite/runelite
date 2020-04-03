@@ -500,7 +500,7 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
-			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem);
+			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, groupLoot);
 		box.addKill(record);
 
 		// Create popup menu

@@ -38,6 +38,7 @@ class LootTrackerRecord
 	private final LootTrackerItem[] items;
 	private final int kills;
 	private boolean shouldCollapseBox = false;
+	private boolean shouldCollapseGroup = false;
 
 	/**
 	 * Checks if this record matches specified id

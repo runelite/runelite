@@ -83,6 +83,7 @@ class LootTrackerBox extends JPanel
 	private long totalPrice;
 	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
+	private boolean isGroupBox;
 
 	LootTrackerBox(
 		final ItemManager itemManager,
@@ -92,7 +93,8 @@ class LootTrackerBox extends JPanel
 		final boolean hideIgnoredItems,
 		final LootTrackerPriceType priceType,
 		final boolean showPriceType,
-		final BiConsumer<String, Boolean> onItemToggle)
+		final BiConsumer<String, Boolean> onItemToggle,
+		final boolean isGroupBox)
 	{
 		this.id = id;
 		this.lootRecordType = lootRecordType;
@@ -101,6 +103,7 @@ class LootTrackerBox extends JPanel
 		this.hideIgnoredItems = hideIgnoredItems;
 		this.priceType = priceType;
 		this.showPriceType = showPriceType;
+		this.isGroupBox = isGroupBox;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -231,9 +234,21 @@ class LootTrackerBox extends JPanel
 		repaint();
 		for (LootTrackerRecord rec: records)
 		{
-			if (rec.isShouldCollapseBox())
+			if (isGroupBox)
 			{
-				this.collapse();
+				if (rec.isShouldCollapseGroup())
+				{
+					this.collapse();
+					break;
+				}
+			}
+			else
+			{
+				if ((rec.isShouldCollapseBox()))
+				{
+					this.collapse();
+					break;
+				}
 			}
 		}
 	}
@@ -246,7 +261,15 @@ class LootTrackerBox extends JPanel
 			applyDimmer(false, logTitle);
 			for (LootTrackerRecord rec: records)
 			{
-				rec.setShouldCollapseBox(true);
+				if (isGroupBox)
+				{
+					rec.setShouldCollapseGroup(true);
+				}
+				else
+				{
+					assert (records.size() == 1);
+					rec.setShouldCollapseBox(true);
+				}
 			}
 		}
 	}
@@ -259,7 +282,15 @@ class LootTrackerBox extends JPanel
 			applyDimmer(true, logTitle);
 			for (LootTrackerRecord rec: records)
 			{
-				rec.setShouldCollapseBox(false);
+				if (isGroupBox)
+				{
+					rec.setShouldCollapseGroup(false);
+				}
+				else
+				{
+					assert (records.size() == 1);
+					rec.setShouldCollapseBox(false);
+				}
 			}
 
 		}
