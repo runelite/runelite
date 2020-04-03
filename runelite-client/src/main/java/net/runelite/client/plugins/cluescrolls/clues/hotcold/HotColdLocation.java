@@ -58,7 +58,7 @@ public enum HotColdLocation
 	ASGARNIA_COW(new WorldPoint(3031, 3304, 0), ASGARNIA, "In the cow pen north of Sarah's Farming Shop."),
 	ASGARNIA_PARTY_ROOM(new WorldPoint(3030, 3364, 0), ASGARNIA, "Outside the Falador Party Room."),
 	ASGARNIA_CRAFT_GUILD(new WorldPoint(2917, 3295, 0), ASGARNIA, "Outside the Crafting Guild cow pen."),
-	ASGARNIA_RIMMINGTON(new WorldPoint(2978, 3241, 0), ASGARNIA, "In the centre of the Rimmington mine."),
+	ASGARNIA_RIMMINGTON(new WorldPoint(2976, 3239, 0), ASGARNIA, "In the centre of the Rimmington mine."),
 	ASGARNIA_MUDSKIPPER(new WorldPoint(2987, 3110, 0), ASGARNIA, "Mudskipper Point, near the starfish in the south-west corner."),
 	ASGARNIA_TROLL(new WorldPoint(2910, 3616, 0), ASGARNIA, "The Troll arena, where the player fights Dad during the Troll Stronghold quest. Bring climbing boots if travelling from Burthorpe."),
 	DESERT_GENIE(new WorldPoint(3364, 2910, 0), DESERT, "West of Nardah genie cave."),
