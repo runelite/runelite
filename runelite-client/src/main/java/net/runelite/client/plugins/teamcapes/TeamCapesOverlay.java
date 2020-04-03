@@ -31,18 +31,16 @@ import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class TeamCapesOverlay extends Overlay
+public class TeamCapesOverlay extends OverlayPanel
 {
-	private final PanelComponent panelComponent = new PanelComponent();
 	private final TeamCapesPlugin plugin;
 	private final TeamCapesConfig config;
 	private final ItemManager manager;
@@ -70,8 +68,6 @@ public class TeamCapesOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
 		for (Map.Entry<Integer, Integer> team : teams.entrySet())
 		{
 			// Only display team capes that have a count greater than the configured minimum
@@ -97,6 +93,6 @@ public class TeamCapesOverlay extends Overlay
 			panelComponent.getChildren().add(new ImageComponent(manager.getImage(itemID, team.getValue(), true)));
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }
