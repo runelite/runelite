@@ -76,7 +76,7 @@ class DpsOverlay extends Overlay
 		setPaused(false);
 	}
 
-	@Override
+	/*@Override
 	public void onMouseOver()
 	{
 		DpsMember total = dpsCounterPlugin.getTotal();
@@ -92,13 +92,19 @@ class DpsOverlay extends Overlay
 			format = String.format("%d:%02d", s / 60, (s % 60));
 		}
 		tooltipManager.add(new Tooltip("Elapsed time: " + format));
-	}
+	}*/
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		Map<String, DpsMember> dpsMembers = dpsCounterPlugin.getMembers();
-		if (dpsMembers.isEmpty())
+		if (dpsConfig.displayTracker() == DpsConfig.DisplayChangeMode.IN_COMBAT)
+		{
+			if (dpsMembers.isEmpty())
+			{
+				return null;
+			}
+		} else if (dpsConfig.displayTracker() == DpsConfig.DisplayChangeMode.NEVER)
 		{
 			return null;
 		}
@@ -122,7 +128,12 @@ class DpsOverlay extends Overlay
 		for (DpsMember dpsMember : dpsMembers.values())
 		{
 			String left = dpsMember.getName();
-			String right = showDamage ? QuantityFormatter.formatNumber(dpsMember.getDamage()) : DPS_FORMAT.format(dpsMember.getDps());
+			if (left.contains("#")) {
+				left = left.substring(0, left.indexOf("#"));
+			}
+			String right = showDamage ? (QuantityFormatter.formatNumber(dpsMember.getDamage())
+					+ " (" + DPS_FORMAT.format(dpsMember.getDps()) + ")")
+					: DPS_FORMAT.format(dpsMember.getDps());
 			maxWidth = Math.max(maxWidth, fontMetrics.stringWidth(left) + fontMetrics.stringWidth(right));
 			panelComponent.getChildren().add(
 				LineComponent.builder()
@@ -145,11 +156,30 @@ class DpsOverlay extends Overlay
 					panelComponent.getChildren().add(
 						LineComponent.builder()
 							.left(total.getName())
-							.right(showDamage ? Integer.toString(total.getDamage()) : DPS_FORMAT.format(total.getDps()))
+							.right(showDamage ? (Integer.toString(total.getDamage())
+									+ " (" + DPS_FORMAT.format(total.getDps()) + ")")
+									: DPS_FORMAT.format(total.getDps()))
 							.build());
 				}
 			}
 		}
+
+		Duration elapsed = total.elapsed();
+		long s = elapsed.getSeconds();
+		String format;
+		if (s >= 3600)
+		{
+			format = String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
+		}
+		else
+		{
+			format = String.format("%d:%02d", s / 60, (s % 60));
+		}
+		panelComponent.getChildren().add(
+				LineComponent.builder()
+						.left("Elapsed time:")
+						.right(format)
+						.build());
 
 		return panelComponent.render(graphics);
 	}
