@@ -24,13 +24,13 @@
  */
 package net.runelite.deob.deobfuscators.mapping;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.Instant;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.io.File;
+import java.io.IOException;
+import java.time.Instant;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
@@ -106,6 +106,44 @@ public class MappingDumper
 				Number getter = DeobAnnotations.getObfuscatedGetter(f);
 
 				String fieldType = typeToString(type);
+				String var0 = fieldType.replace("[", "").replace("]", "");
+				if (var0.length() == 1 && !Character.isLowerCase(var0.codePointAt(0)))
+				{
+					// primitive array
+					String realType;
+					int arrayCount = (int) fieldType.codePoints().filter((i) -> i == '[').count();
+					switch (var0)
+					{
+						case "B":
+							realType = Byte.TYPE.getName();
+							break;
+						case "I":
+							realType = Integer.TYPE.getName();
+							break;
+						case "S":
+							realType = Short.TYPE.getName();
+							break;
+						case "J":
+							realType = Long.TYPE.getName();
+							break;
+						case "Z":
+							realType = Boolean.TYPE.getName();
+							break;
+						case "F":
+							realType = Float.TYPE.getName();
+							break;
+						case "D":
+							realType = Double.TYPE.getName();
+							break;
+						case "C":
+							realType = Character.TYPE.getName();
+							break;
+						default:
+							realType = Void.TYPE.getName();
+							break;
+					}
+					fieldType = realType + "[]".repeat(arrayCount);
+				}
 
 				if (f.isStatic())
 				{
@@ -117,14 +155,14 @@ public class MappingDumper
 					tmp = mBuilder;
 				}
 
-				tmp.append("\t").append(String.format(GAP, fieldType)).append(String.format(GAP, exportName))
-						.append(className).append(".").append(fieldName);
+				tmp.append("\t").append(String.format("%s ", fieldType))
+					.append(String.format("%s.%s=", implName, exportName))
+					.append(className).append(".").append(fieldName);
 
 				if (getter != null)
 				{
 					tmp.append(" * ").append(getter).append("\n");
 				}
-
 				else
 				{
 					tmp.append("\n");
@@ -152,6 +190,44 @@ public class MappingDumper
 				}
 
 				String returnType = typeToString(m.getDescriptor().getReturnValue());
+				String var0 = returnType.replace("[", "").replace("]", "");
+				if (var0.length() == 1 && !Character.isLowerCase(var0.codePointAt(0)))
+				{
+					// primitive array
+					String realType;
+					int arrayCount = (int) returnType.codePoints().filter((i) -> i == '[').count();
+					switch (var0)
+					{
+						case "B":
+							realType = Byte.TYPE.getName();
+							break;
+						case "I":
+							realType = Integer.TYPE.getName();
+							break;
+						case "S":
+							realType = Short.TYPE.getName();
+							break;
+						case "J":
+							realType = Long.TYPE.getName();
+							break;
+						case "Z":
+							realType = Boolean.TYPE.getName();
+							break;
+						case "F":
+							realType = Float.TYPE.getName();
+							break;
+						case "D":
+							realType = Double.TYPE.getName();
+							break;
+						case "C":
+							realType = Character.TYPE.getName();
+							break;
+						default:
+							realType = Void.TYPE.getName();
+							break;
+					}
+					returnType = realType + "[]".repeat(arrayCount);
+				}
 				String[] paramTypes = new String[signature.size()];
 				for (int i = 0; i < paramTypes.length; i++)
 				{
@@ -168,12 +244,51 @@ public class MappingDumper
 					tmp = mBuilder;
 				}
 
-				tmp.append("\t").append(String.format(GAP, returnType)).append(String.format(GAP, exportName))
-						.append(className).append(".").append(methodName);
+				tmp.append("\t").append(String.format("%s ", returnType))
+					.append(String.format("%s#%s=", implName, exportName))
+					.append(className).append(".").append(methodName);
 
 				tmp.append("(");
 				for (int i = 0; i < paramTypes.length; i++)
 				{
+					String var1 = paramTypes[i].replace("[", "").replace("]", "");
+					if (var1.length() == 1 && !Character.isLowerCase(var1.codePointAt(0)))
+					{
+						// primitive array
+						String realType;
+						int arrayCount = (int) paramTypes[i].codePoints().filter((i2) -> i2 == '[').count();
+						switch (var1)
+						{
+							case "B":
+								realType = Byte.TYPE.getName();
+								break;
+							case "I":
+								realType = Integer.TYPE.getName();
+								break;
+							case "S":
+								realType = Short.TYPE.getName();
+								break;
+							case "J":
+								realType = Long.TYPE.getName();
+								break;
+							case "Z":
+								realType = Boolean.TYPE.getName();
+								break;
+							case "F":
+								realType = Float.TYPE.getName();
+								break;
+							case "D":
+								realType = Double.TYPE.getName();
+								break;
+							case "C":
+								realType = Character.TYPE.getName();
+								break;
+							default:
+								realType = Void.TYPE.getName();
+								break;
+						}
+						paramTypes[i] = realType + "[]".repeat(arrayCount);
+					}
 					tmp.append(paramTypes[i]);
 
 					if (i == paramTypes.length - 1)
@@ -183,7 +298,6 @@ public class MappingDumper
 							tmp.append(" = ").append(garbageValue);
 						}
 					}
-
 					else
 					{
 						tmp.append(", ");
