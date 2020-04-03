@@ -435,6 +435,7 @@ public class WidgetID
 		static final int HEALTH_ORB = 2;
 		static final int PRAYER_ORB = 12;
 		static final int QUICK_PRAYER_ORB = 14; // Has the "Quick-prayers" name
+		static final int PRAYER_ORB_TEXT = 15;
 		static final int RUN_ORB = 20;
 		static final int TOGGLE_RUN_ORB = 22; // Has the "Toggle run" name
 		static final int RUN_ORB_TEXT = 23;
@@ -582,6 +583,7 @@ public class WidgetID
 		static final int CONTAINER = 40;
 		static final int TITLE = 44;
 		static final int FULL_INPUT = 45;
+		static final int GE_SEARCH_RESULTS = 53;
 		static final int MESSAGES = 55;
 		static final int TRANSPARENT_BACKGROUND_LINES = 56;
 		static final int INPUT = 57;

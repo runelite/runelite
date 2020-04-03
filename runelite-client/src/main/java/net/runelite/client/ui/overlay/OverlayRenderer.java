@@ -225,29 +225,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 		for (Overlay overlay : overlays)
 		{
-			OverlayPosition overlayPosition = overlay.getPosition();
-
-			if (overlay.getPreferredPosition() != null)
-			{
-				overlayPosition = overlay.getPreferredPosition();
-			}
-
-			if (!isResizeable)
-			{
-				// On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
-				// BOTTOM_RIGHT and CANVAS_TOP_RIGHT is same as TOP_RIGHT.
-				// Just use BOTTOM_RIGHT and TOP_RIGHT to prevent overlays from
-				// drawing over each other.
-				switch (overlayPosition)
-				{
-					case CANVAS_TOP_RIGHT:
-						overlayPosition = OverlayPosition.TOP_RIGHT;
-						break;
-					case ABOVE_CHATBOX_RIGHT:
-						overlayPosition = OverlayPosition.BOTTOM_RIGHT;
-						break;
-				}
-			}
+			final OverlayPosition overlayPosition = getCorrectedOverlayPosition(overlay);
 
 			if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
 			{
@@ -345,6 +323,13 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			for (Overlay overlay : overlayManager.getOverlays())
 			{
+				final OverlayPosition overlayPosition = getCorrectedOverlayPosition(overlay);
+
+				if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
+				{
+					continue;
+				}
+
 				if (overlay.getBounds().contains(mousePoint))
 				{
 					if (SwingUtilities.isRightMouseButton(mouseEvent))
@@ -522,6 +507,35 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());
 		overlay.getBounds().setSize(dimension);
+	}
+
+	private OverlayPosition getCorrectedOverlayPosition(final Overlay overlay)
+	{
+		OverlayPosition overlayPosition = overlay.getPosition();
+
+		if (overlay.getPreferredPosition() != null)
+		{
+			overlayPosition = overlay.getPreferredPosition();
+		}
+
+		if (!isResizeable)
+		{
+			// On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
+			// BOTTOM_RIGHT and CANVAS_TOP_RIGHT is same as TOP_RIGHT.
+			// Just use BOTTOM_RIGHT and TOP_RIGHT to prevent overlays from
+			// drawing over each other.
+			switch (overlayPosition)
+			{
+				case CANVAS_TOP_RIGHT:
+					overlayPosition = OverlayPosition.TOP_RIGHT;
+					break;
+				case ABOVE_CHATBOX_RIGHT:
+					overlayPosition = OverlayPosition.BOTTOM_RIGHT;
+					break;
+			}
+		}
+
+		return overlayPosition;
 	}
 
 	private boolean shouldInvalidateBounds()
