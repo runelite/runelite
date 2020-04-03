@@ -34,18 +34,17 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.api.Player;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.ws.PartyService;
 
-class DpsOverlay extends Overlay
+class DpsOverlay extends OverlayPanel
 {
 	private static final DecimalFormat DPS_FORMAT = new DecimalFormat("#0.0");
 	private static final int PANEL_WIDTH_OFFSET = 10; // assumes 8 for panel component border + 2px between left and right
@@ -59,8 +58,6 @@ class DpsOverlay extends Overlay
 	private final PartyService partyService;
 	private final Client client;
 	private final TooltipManager tooltipManager;
-
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	DpsOverlay(DpsCounterPlugin dpsCounterPlugin, DpsConfig dpsConfig, PartyService partyService, Client client,
@@ -108,8 +105,6 @@ class DpsOverlay extends Overlay
 		DpsMember total = dpsCounterPlugin.getTotal();
 		boolean paused = total.isPaused();
 
-		panelComponent.getChildren().clear();
-
 		final String title = (inParty ? "Party " : "") + (showDamage ? "Damage" : "DPS") + (paused ? " (paused)" : "");
 		panelComponent.getChildren().add(
 			TitleComponent.builder()
@@ -151,7 +146,7 @@ class DpsOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	void setPaused(boolean paused)

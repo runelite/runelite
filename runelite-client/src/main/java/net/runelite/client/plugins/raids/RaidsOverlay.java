@@ -37,20 +37,19 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.raids.solver.Room;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldRegion;
 import net.runelite.http.api.worlds.WorldResult;
 
-public class RaidsOverlay extends Overlay
+public class RaidsOverlay extends OverlayPanel
 {
 	private static final int OLM_PLANE = 0;
 	static final String BROADCAST_ACTION = "Broadcast layout";
@@ -59,7 +58,6 @@ public class RaidsOverlay extends Overlay
 	private Client client;
 	private RaidsPlugin plugin;
 	private RaidsConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Getter
 	@Setter
@@ -90,8 +88,6 @@ public class RaidsOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
 		if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
@@ -99,7 +95,7 @@ public class RaidsOverlay extends Overlay
 				.color(Color.RED)
 				.build());
 
-			return panelComponent.render(graphics);
+			return super.render(graphics);
 		}
 
 		Color color = Color.WHITE;
@@ -206,6 +202,6 @@ public class RaidsOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

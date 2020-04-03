@@ -32,20 +32,18 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.util.ColorUtil;
 
-class BoostsOverlay extends Overlay
+class BoostsOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final BoostsConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 	private final BoostsPlugin plugin;
 
 	@Inject
@@ -67,8 +65,6 @@ class BoostsOverlay extends Overlay
 		{
 			return null;
 		}
-
-		panelComponent.getChildren().clear();
 
 		int nextChange = plugin.getChangeDownTicks();
 
@@ -94,7 +90,7 @@ class BoostsOverlay extends Overlay
 
 		if (boostedSkills.isEmpty())
 		{
-			return panelComponent.render(graphics);
+			return super.render(graphics);
 		}
 
 		if (plugin.canShowBoosts())
@@ -129,7 +125,7 @@ class BoostsOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	private Color getTextColor(int boost)

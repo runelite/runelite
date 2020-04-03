@@ -24,25 +24,23 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import javax.inject.Inject;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
 
-class KourendLibraryTutorialOverlay extends Overlay
+class KourendLibraryTutorialOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final KourendLibraryConfig config;
 	private final Library library;
 
-	private final PanelComponent panelComponent;
 	private final LineComponent noDataMessageComponent;
 	private final LineComponent incompleteMessageComponent;
 	private final LineComponent completeMessageComponent;
@@ -55,7 +53,6 @@ class KourendLibraryTutorialOverlay extends Overlay
 		this.config = config;
 		this.library = library;
 
-		panelComponent = new PanelComponent();
 		panelComponent.setPreferredSize(new Dimension(177, 0));
 
 		noDataMessageComponent = LineComponent.builder().left("Click on the white squares to start finding books.").build();
@@ -87,8 +84,6 @@ class KourendLibraryTutorialOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
 		switch (library.getState())
 		{
 			case NO_DATA:
@@ -104,6 +99,6 @@ class KourendLibraryTutorialOverlay extends Overlay
 				break;
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

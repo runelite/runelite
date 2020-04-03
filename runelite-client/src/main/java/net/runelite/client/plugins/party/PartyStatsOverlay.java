@@ -34,15 +34,15 @@ import java.util.UUID;
 import javax.inject.Inject;
 import net.runelite.api.MenuAction;
 import net.runelite.client.plugins.party.data.PartyData;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ws.PartyService;
 
-public class PartyStatsOverlay extends Overlay
+public class PartyStatsOverlay extends OverlayPanel
 {
 	private static final Color HP_FG = new Color(0, 146, 54, 230);
 	private static final Color HP_BG = new Color(102, 15, 16, 230);
@@ -52,7 +52,6 @@ public class PartyStatsOverlay extends Overlay
 	private final PartyPlugin plugin;
 	private final PartyService party;
 	private final PartyConfig config;
-	private final PanelComponent body = new PanelComponent();
 
 	@Inject
 	private PartyStatsOverlay(final PartyPlugin plugin, final PartyService party, final PartyConfig config)
@@ -61,8 +60,8 @@ public class PartyStatsOverlay extends Overlay
 		this.plugin = plugin;
 		this.party = party;
 		this.config = config;
-		body.setBorder(new Rectangle());
-		body.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
+		panelComponent.setBorder(new Rectangle());
+		panelComponent.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
 		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, "Leave", "Party"));
 	}
 
@@ -80,8 +79,7 @@ public class PartyStatsOverlay extends Overlay
 			return null;
 		}
 
-		body.getChildren().clear();
-		body.setBackgroundColor(null);
+		panelComponent.setBackgroundColor(null);
 
 		boolean only1 = plugin.getPartyDataMap().size() == 1;
 
@@ -93,7 +91,7 @@ public class PartyStatsOverlay extends Overlay
 				{
 					if (only1)
 					{
-						body.getChildren().add(TitleComponent.builder()
+						panelComponent.getChildren().add(TitleComponent.builder()
 							.text("No other party members")
 							.color(Color.RED)
 							.build());
@@ -134,10 +132,10 @@ public class PartyStatsOverlay extends Overlay
 					panel.getChildren().add(prayBar);
 				}
 
-				body.getChildren().add(panel);
+				panelComponent.getChildren().add(panel);
 			});
 		}
 
-		return body.render(graphics);
+		return super.render(graphics);
 	}
 }

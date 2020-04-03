@@ -33,15 +33,14 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class WoodcuttingOverlay extends Overlay
+class WoodcuttingOverlay extends OverlayPanel
 {
 	static final String WOODCUTTING_RESET = "Reset";
 
@@ -49,7 +48,6 @@ class WoodcuttingOverlay extends Overlay
 	private final WoodcuttingPlugin plugin;
 	private final WoodcuttingConfig config;
 	private final XpTrackerService xpTrackerService;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
@@ -77,8 +75,6 @@ class WoodcuttingOverlay extends Overlay
 		{
 			return null;
 		}
-
-		panelComponent.getChildren().clear();
 
 		Axe axe = plugin.getAxe();
 		if (axe != null && axe.matchesChoppingAnimation(client.getLocalPlayer()))
@@ -113,7 +109,7 @@ class WoodcuttingOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 }
