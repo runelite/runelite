@@ -25,6 +25,10 @@
 package net.runelite.client.plugins.inventoryviewer;
 
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.events.VarClientIntChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -43,6 +47,9 @@ public class InventoryViewerPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
+	@Inject
+	private Client client;
+
 	@Override
 	public void startUp()
 	{
@@ -53,5 +60,26 @@ public class InventoryViewerPlugin extends Plugin
 	public void shutDown()
 	{
 		overlayManager.remove(overlay);
+	}
+
+	@Subscribe
+	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
+	{
+		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex())
+		{
+			if (isOnInvTab())
+			{
+				overlayManager.remove(overlay);
+			}
+			else
+			{
+				overlayManager.add(overlay);
+			}
+		}
+	}
+
+	private boolean isOnInvTab()
+	{
+		return client.getVar(VarClientInt.INVENTORY_TAB) == 3;
 	}
 }
