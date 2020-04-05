@@ -82,30 +82,57 @@ public class MouseManager
 
 	public MouseEvent processMousePressed(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mousePressed(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseEvent processMouseReleased(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseReleased(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseEvent processMouseClicked(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseClicked(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
@@ -123,45 +150,90 @@ public class MouseManager
 
 	public MouseEvent processMouseEntered(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseEntered(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseEvent processMouseExited(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseExited(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseEvent processMouseDragged(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseDragged(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseEvent processMouseMoved(MouseEvent mouseEvent)
 	{
+		if (mouseEvent.isConsumed())
+		{
+			return mouseEvent;
+		}
+
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseMoved(mouseEvent);
+			if (mouseEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseEvent;
 	}
 
 	public MouseWheelEvent processMouseWheelMoved(MouseWheelEvent mouseWheelEvent)
 	{
+		if (mouseWheelEvent.isConsumed())
+		{
+			return mouseWheelEvent;
+		}
+
 		for (MouseWheelListener mouseWheelListener : mouseWheelListeners)
 		{
 			mouseWheelEvent = mouseWheelListener.mouseWheelMoved(mouseWheelEvent);
+			if (mouseWheelEvent.isConsumed())
+			{
+				break;
+			}
 		}
 		return mouseWheelEvent;
 	}
