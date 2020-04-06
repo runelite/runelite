@@ -162,8 +162,8 @@ public final class ScriptID
 	 *
 	 * Updates the VarClientInts (73, 74) to this same value
 	 * <ul>
-	 * <li> int  Reset zoom position </li>
-	 * <li> int  Reset zoom position </li>
+	 * <li> int  Reset zoom position for fixed viewport mode</li>
+	 * <li> int  Reset zoom position for resizable viewport mode</li>
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 2)
