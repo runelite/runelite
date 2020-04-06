@@ -29,9 +29,11 @@ package net.runelite.client.plugins.motherlode;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
@@ -53,6 +55,7 @@ class MotherlodeRocksOverlay extends Overlay
 	private final Client client;
 	private final MotherlodePlugin plugin;
 	private final MotherlodeConfig config;
+	private final SkillIconManager iconManager;
 
 	private final BufferedImage miningIcon;
 
@@ -64,21 +67,50 @@ class MotherlodeRocksOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.iconManager = iconManager;
 
-		miningIcon = iconManager.getSkillImage(Skill.MINING);
+		miningIcon = getScaledMiningIcon();
+	}
+
+	private BufferedImage getScaledMiningIcon()
+	{
+		BufferedImage miningIcon = iconManager.getSkillImage(Skill.MINING);
+
+		int newW = (int) (miningIcon.getWidth() * (config.oreScaling() / 100.0f));
+		int newH = (int) (miningIcon.getHeight() * (config.oreScaling() / 100.0f));
+
+		if (newW <= 0)
+		{
+			newW = miningIcon.getWidth();
+		}
+		if (newH <= 0)
+		{
+			newH = miningIcon.getHeight();
+		}
+
+		Image tmp = miningIcon.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+		BufferedImage bImg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+		Graphics2D graphics2D = bImg.createGraphics();
+		graphics2D.drawImage(tmp, 0, 0, null);
+		graphics2D.dispose();
+
+		return bImg;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if ((!config.showVeins() && !config.showRockFalls()) || !plugin.isInMlm())
+		// Only render if the user is in MLM and wants to render veins or rockfalls
+		if ((config.showVeins() || config.showRockFalls()) && plugin.isInMlm())
 		{
-			return null;
+			Player local = client.getLocalPlayer();
+
+			if (local != null)
+			{
+				renderTiles(graphics, local);
+			}
 		}
-
-		Player local = client.getLocalPlayer();
-
-		renderTiles(graphics, local);
 
 		return null;
 	}
@@ -89,32 +121,37 @@ class MotherlodeRocksOverlay extends Overlay
 
 		if (config.showVeins())
 		{
-			for (WallObject vein : plugin.getVeins())
+			plugin.getVeins().forEach(vein ->
 			{
 				LocalPoint location = vein.getLocalLocation();
+
 				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 				{
 					// Only draw veins on the same level
-					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
+					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(location))
 					{
 						renderVein(graphics, vein);
 					}
 				}
-			}
+			});
 		}
 
 		if (config.showRockFalls())
 		{
-			for (GameObject rock : plugin.getRocks())
+			plugin.getRocks().forEach(rock ->
 			{
 				LocalPoint location = rock.getLocalLocation();
+
 				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 				{
-					renderRock(graphics, rock);
+					// Only draw rockfalls on the same level
+					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(location))
+					{
+						renderRock(graphics, rock);
+					}
 				}
-			}
+			});
 		}
-
 	}
 
 	private void renderVein(Graphics2D graphics, WallObject vein)
@@ -123,7 +160,7 @@ class MotherlodeRocksOverlay extends Overlay
 
 		if (canvasLoc != null)
 		{
-			graphics.drawImage(miningIcon, canvasLoc.getX(), canvasLoc.getY(), null);
+			graphics.drawImage(getScaledMiningIcon(), canvasLoc.getX(), canvasLoc.getY(), null);
 		}
 	}
 
