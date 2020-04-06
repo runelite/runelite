@@ -563,7 +563,17 @@ public enum Varbits
 	TWISTED_LEAGUE_RELIC_2(10050),
 	TWISTED_LEAGUE_RELIC_3(10051),
 	TWISTED_LEAGUE_RELIC_4(10052),
-	TWISTED_LEAGUE_RELIC_5(10053);
+	TWISTED_LEAGUE_RELIC_5(10053),
+
+	/**
+	 * Whether the Special Attack orb is disabled due to being in a PvP area
+	 *
+	 * 0 = Enabled (player is not in PvP)
+	 * 1 = Disabled (player in in PvP)
+	 *
+	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
+	 */
+	PVP_SPEC_ORB(8121);
 
 	/**
 	 * The raw varbit ID.
