@@ -563,6 +563,7 @@ public class MusicPlugin extends Plugin
 				handle.setOriginalWidth(16);
 				handle.setOriginalHeight(16);
 				handle.setClickMask(WidgetConfig.DRAG);
+				handle.revalidate();
 
 				handle.setOnMouseRepeatListener((JavaScriptCallback) ev -> hoveredSlider = slider);
 				handle.setHasListener(true);
