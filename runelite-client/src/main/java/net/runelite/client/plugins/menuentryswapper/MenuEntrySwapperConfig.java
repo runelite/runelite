@@ -431,4 +431,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "swapPetStray",
+			name = "Pet Stray",
+			description = "Swap Shoo-away with Pet for stray dogs"
+	)
+	default boolean swapPetStray()
+	{
+		return true;
+	}
 }

@@ -771,6 +771,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 					swap("bank", option, target, index);
 					break;
 			}
+		} else if (target.contains("stray dog") && option.equals("shoo-away") && config.swapPetStray()) {
+			swap("pet", option, target, index);
 		}
 
 		if (shiftModifier && config.swapTeleportSpell())
