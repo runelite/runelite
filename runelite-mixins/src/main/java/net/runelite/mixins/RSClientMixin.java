@@ -1435,9 +1435,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Override
 	@Inject
-	public void invokeMenuAction(int param0, int param1, int opcode, int id, String menuOption, String menuTarget, int canvasX, int canvasY)
+	public void invokeMenuAction(String option, String target, int identifier, int opcode, int param0, int param1)
 	{
-		client.sendMenuAction(param0, param1, opcode, id, menuOption, "!AUTHENTIC" + menuTarget, canvasX, canvasY);
+		client.sendMenuAction(param0, param1, opcode, identifier, option, "!AUTHENTIC" + target, 658, 384);
 	}
 
 	@FieldHook("Login_username")
