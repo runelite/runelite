@@ -125,7 +125,7 @@ public class CombatLevelPlugin extends Plugin
 		}
 
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
-		if (combatLevelWidget == null)
+		if (combatLevelWidget == null || !config.showPreciseCombatLevel())
 		{
 			return;
 		}
