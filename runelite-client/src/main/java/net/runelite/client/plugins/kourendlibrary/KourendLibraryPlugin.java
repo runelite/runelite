@@ -351,11 +351,10 @@ public class KourendLibraryPlugin extends Plugin
 	private void updatePlayerBooks()
 	{
 		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		EnumSet<Book> books = EnumSet.noneOf(Book.class);
 
 		if (itemContainer != null)
 		{
-			EnumSet<Book> books = EnumSet.noneOf(Book.class);
-
 			for (Item item : itemContainer.getItems())
 			{
 				Book book = Book.byId(item.getId());
@@ -365,9 +364,9 @@ public class KourendLibraryPlugin extends Plugin
 					books.add(book);
 				}
 			}
-
-			playerBooks = books;
 		}
+
+		playerBooks = books;
 	}
 
 	private void updateBooksPanel()
