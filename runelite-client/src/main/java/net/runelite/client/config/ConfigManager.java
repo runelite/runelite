@@ -57,9 +57,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -68,6 +71,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigClient;
@@ -675,27 +680,39 @@ public class ConfigManager
 		return object.toString();
 	}
 
-	public void sendConfig()
+	@Subscribe(priority = 100)
+	private void onClientShutdown(ClientShutdown e)
 	{
+		Future<Void> f = sendConfig();
+		if (f != null)
+		{
+			e.waitFor(f);
+		}
+	}
+
+	@Nullable
+	private CompletableFuture<Void> sendConfig()
+	{
+		CompletableFuture<Void> future = null;
 		boolean changed;
 		synchronized (pendingChanges)
 		{
 			if (client != null)
 			{
-				for (Map.Entry<String, String> entry : pendingChanges.entrySet())
+				future = CompletableFuture.allOf(pendingChanges.entrySet().stream().map(entry ->
 				{
 					String key = entry.getKey();
 					String value = entry.getValue();
 
 					if (Strings.isNullOrEmpty(value))
 					{
-						client.unset(key);
+						return client.unset(key);
 					}
 					else
 					{
-						client.set(key, value);
+						return client.set(key, value);
 					}
-				}
+				}).toArray(CompletableFuture[]::new));
 			}
 			changed = !pendingChanges.isEmpty();
 			pendingChanges.clear();
@@ -712,5 +729,7 @@ public class ConfigManager
 				log.warn("unable to save configuration file", ex);
 			}
 		}
+
+		return future;
 	}
 }
