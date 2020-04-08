@@ -225,7 +225,7 @@ public final class ScriptID
 	/**
 	 * Builds the grand exchange item search widget
 	 */
-	@ScriptArguments(integer = 2)
+	@ScriptArguments(integer = 3)
 	public static final int GE_ITEM_SEARCH = 752;
 
 	/**
