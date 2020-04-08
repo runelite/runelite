@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
@@ -913,7 +912,7 @@ public class ExternalPluginManager
 
 	private Path stopPlugin(String pluginId)
 	{
-		List<PluginWrapper> startedPlugins = ImmutableList.copyOf(getStartedPlugins());
+		List<PluginWrapper> startedPlugins = List.copyOf(getStartedPlugins());
 
 		for (PluginWrapper pluginWrapper : startedPlugins)
 		{
@@ -1138,7 +1137,7 @@ public class ExternalPluginManager
 		externalPluginManager.loadPlugins();
 		externalPluginManager.startPlugin(pluginId);
 
-		List<PluginWrapper> startedPlugins = ImmutableList.copyOf(getStartedPlugins());
+		List<PluginWrapper> startedPlugins = List.copyOf(getStartedPlugins());
 		List<Plugin> scannedPlugins = new ArrayList<>();
 
 		for (PluginWrapper pluginWrapper : startedPlugins)
@@ -1181,7 +1180,7 @@ public class ExternalPluginManager
 				externalPluginManager.loadPlugins();
 				externalPluginManager.startPlugin(pluginId);
 
-				List<PluginWrapper> startedPlugins = ImmutableList.copyOf(getStartedPlugins());
+				List<PluginWrapper> startedPlugins = List.copyOf(getStartedPlugins());
 				List<Plugin> scannedPlugins = new ArrayList<>();
 
 				for (PluginWrapper pluginWrapper : startedPlugins)

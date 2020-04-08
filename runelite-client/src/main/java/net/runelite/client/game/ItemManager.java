@@ -137,7 +137,7 @@ public class ItemManager
 	private final LoadingCache<Integer, ItemDefinition> itemDefinitions;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
-	private ImmutableMap<Integer, ItemStats> itemStats = ImmutableMap.of();
+	private Map<Integer, ItemStats> itemStats = Map.of();
 
 	@Inject
 	public ItemManager(

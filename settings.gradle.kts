@@ -39,7 +39,7 @@ include(":runelite-script-assembler-plugin")
 include(":runelite-client")
 include(":runelite-mixins")
 include(":injected-client")
-include("injection-annotations")
+include(":injection-annotations")
 include(":runelite-plugin-archetype")
 include(":wiki-scraper")
 

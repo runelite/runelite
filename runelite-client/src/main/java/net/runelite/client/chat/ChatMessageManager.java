@@ -27,7 +27,6 @@ package net.runelite.client.chat;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import java.awt.Color;
 import java.util.Arrays;
@@ -59,7 +58,7 @@ import net.runelite.client.util.ColorUtil;
 @Singleton
 public class ChatMessageManager
 {
-	private static final Set<Integer> TUTORIAL_ISLAND_REGIONS = ImmutableSet.of(12336, 12335, 12592, 12080, 12079, 12436);
+	private static final Set<Integer> TUTORIAL_ISLAND_REGIONS = Set.of(12336, 12335, 12592, 12080, 12079, 12436);
 
 	private final Multimap<ChatMessageType, ChatColor> colorCache = HashMultimap.create();
 	private final Client client;
@@ -593,7 +592,7 @@ public class ChatMessageManager
 
 		// Update the message with RuneLite additions
 		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
-		
+
 		if (message.getTimestamp() != 0)
 		{
 			line.setTimestamp(message.getTimestamp());
