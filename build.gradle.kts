@@ -33,14 +33,14 @@ buildscript {
     }
     dependencies {
         classpath("org.ajoberstar.grgit:grgit-core:4.0.1")
-        classpath("com.github.ben-manes:gradle-versions-plugin:0.27.0")
+        classpath("com.github.ben-manes:gradle-versions-plugin:0.28.0")
         classpath("com.openosrs:injector-plugin:${ProjectVersions.openosrsInjectorVersion}")
     }
 }
 
 plugins {
     id("com.adarshr.test-logger") version "2.0.0" apply false
-    id("com.github.ben-manes.versions") version "0.27.0"
+    id("com.github.ben-manes.versions") version "0.28.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.13"
     id("org.ajoberstar.grgit") version "4.0.1"
 
@@ -98,6 +98,8 @@ subprojects {
     apply<JavaLibraryPlugin>()
     //apply<MavenPublishPlugin>()
     apply(plugin = "com.adarshr.test-logger")
+    apply(plugin = "com.github.ben-manes.versions")
+    apply(plugin = "se.patrikerdes.use-latest-versions")
 
     project.extra["gitCommit"] = localGitCommit
     project.extra["rootPath"] = rootDir.toString().replace("\\", "/")
@@ -142,6 +144,20 @@ subprojects {
             exclude("**/ScriptVarType.java")
             exclude("**/LayoutSolver.java")
             exclude("**/RoomType.java")
+        }
+
+        named<DependencyUpdatesTask>("dependencyUpdates") {
+            checkForGradleUpdate = false
+
+            resolutionStrategy {
+                componentSelection {
+                    all {
+                        if (candidate.displayName.contains("fernflower") || isNonStable(candidate.version)) {
+                            reject("Non stable")
+                        }
+                    }
+                }
+            }
         }
     }
 }

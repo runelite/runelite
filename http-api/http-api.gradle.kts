@@ -35,13 +35,13 @@ dependencies {
 
     implementation(group = "com.google.code.gson", name = "gson", version = "2.8.6")
     implementation(group = "com.google.guava", name = "guava", version = "28.2-jre")
-    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.4.0")
-    implementation(group = "io.reactivex.rxjava3", name = "rxjava", version = "3.0.1")
+    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.5.0")
+    implementation(group = "io.reactivex.rxjava3", name = "rxjava", version = "3.0.2")
     implementation(group = "org.apache.commons", name = "commons-csv", version = "1.8")
     implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.30")
     implementation(project(":runelite-api"))
 
-    testImplementation(group = "com.squareup.okhttp3", name = "mockwebserver", version = "4.4.0")
+    testImplementation(group = "com.squareup.okhttp3", name = "mockwebserver", version = "4.5.0")
     testImplementation(group = "junit", name = "junit", version = "4.13")
     testImplementation(group = "org.slf4j", name = "slf4j-simple", version = "1.7.30")
 }
