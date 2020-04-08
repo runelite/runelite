@@ -79,6 +79,9 @@ class SkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
+	private int levelDifference = targetLevel - currentLevel;
+	private int xpDifference = Experience.getXpForLevel(currentLevel + levelDifference) - Experience.getXpForLevel(currentLevel);
+
 	private float xpFactor = 1.0f;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
@@ -114,12 +117,95 @@ class SkillCalculator extends JPanel
 
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
+		uiInput.getUiFieldLevelDifference().addActionListener(e ->
+		{
+			onFieldLevelDifferenceUpdated();
+			uiInput.getUiFieldTargetLevel().requestFocusInWindow();
+		});
+
+		uiInput.getUiFieldXPDifference().addActionListener(e ->
+		{
+			onFieldXPDifferenceUpdated();
+			uiInput.getUiFieldTargetXP().requestFocusInWindow();
+		});
 
 		// Register focus listeners to calculate xp when exiting a text field
 		uiInput.getUiFieldCurrentLevel().addFocusListener(buildFocusAdapter(e -> onFieldCurrentLevelUpdated()));
 		uiInput.getUiFieldCurrentXP().addFocusListener(buildFocusAdapter(e -> onFieldCurrentXPUpdated()));
 		uiInput.getUiFieldTargetLevel().addFocusListener(buildFocusAdapter(e -> onFieldTargetLevelUpdated()));
 		uiInput.getUiFieldTargetXP().addFocusListener(buildFocusAdapter(e -> onFieldTargetXPUpdated()));
+		uiInput.getUiFieldLevelDifference().addFocusListener(buildFocusAdapter(e -> onFieldLevelDifferenceUpdated()));
+		uiInput.getUiFieldXPDifference().addFocusListener(buildFocusAdapter(e -> onFieldXPDifferenceUpdated()));
+	}
+
+	private static int enforceSkillBounds(int input)
+	{
+		return Math.min(Experience.MAX_VIRT_LEVEL, Math.max(1, input));
+	}
+
+	private static int enforceLevelDifferenceBounds(int input)
+	{
+		return Math.min(Experience.MAX_VIRT_LEVEL, Math.max(0, input));
+	}
+
+	private static int enforceXPBounds(int input)
+	{
+		return Math.min(MAX_XP, Math.max(0, input));
+	}
+
+	private static VarPlayer endGoalVarpForSkill(final Skill skill)
+	{
+		switch (skill)
+		{
+			case ATTACK:
+				return VarPlayer.ATTACK_GOAL_END;
+			case MINING:
+				return VarPlayer.MINING_GOAL_END;
+			case WOODCUTTING:
+				return VarPlayer.WOODCUTTING_GOAL_END;
+			case DEFENCE:
+				return VarPlayer.DEFENCE_GOAL_END;
+			case MAGIC:
+				return VarPlayer.MAGIC_GOAL_END;
+			case RANGED:
+				return VarPlayer.RANGED_GOAL_END;
+			case HITPOINTS:
+				return VarPlayer.HITPOINTS_GOAL_END;
+			case AGILITY:
+				return VarPlayer.AGILITY_GOAL_END;
+			case STRENGTH:
+				return VarPlayer.STRENGTH_GOAL_END;
+			case PRAYER:
+				return VarPlayer.PRAYER_GOAL_END;
+			case SLAYER:
+				return VarPlayer.SLAYER_GOAL_END;
+			case FISHING:
+				return VarPlayer.FISHING_GOAL_END;
+			case RUNECRAFT:
+				return VarPlayer.RUNECRAFT_GOAL_END;
+			case HERBLORE:
+				return VarPlayer.HERBLORE_GOAL_END;
+			case FIREMAKING:
+				return VarPlayer.FIREMAKING_GOAL_END;
+			case CONSTRUCTION:
+				return VarPlayer.CONSTRUCTION_GOAL_END;
+			case HUNTER:
+				return VarPlayer.HUNTER_GOAL_END;
+			case COOKING:
+				return VarPlayer.COOKING_GOAL_END;
+			case FARMING:
+				return VarPlayer.FARMING_GOAL_END;
+			case CRAFTING:
+				return VarPlayer.CRAFTING_GOAL_END;
+			case SMITHING:
+				return VarPlayer.SMITHING_GOAL_END;
+			case THIEVING:
+				return VarPlayer.THIEVING_GOAL_END;
+			case FLETCHING:
+				return VarPlayer.FLETCHING_GOAL_END;
+			default:
+				throw new IllegalArgumentException();
+		}
 	}
 
 	void openCalculator(CalculatorType calculatorType)
@@ -151,6 +237,8 @@ class SkillCalculator extends JPanel
 				targetXP = Experience.getXpForLevel(targetLevel);
 			}
 
+			levelDifference = enforceLevelDifferenceBounds(targetLevel - currentLevel);
+			xpDifference = enforceXPBounds(targetXP - currentXP);
 			// Remove all components (action slots) from this panel.
 			removeAll();
 
@@ -367,10 +455,18 @@ class SkillCalculator extends JPanel
 			targetXP = Experience.getXpForLevel(targetLevel);
 		}
 
+		if (targetXP - currentXP != xpDifference || targetLevel - currentLevel != levelDifference)
+		{
+			xpDifference = enforceXPBounds(targetXP - currentXP);
+			levelDifference = enforceLevelDifferenceBounds(targetLevel - currentLevel);
+		}
+
 		uiInput.setCurrentLevelInput(currentLevel);
 		uiInput.setCurrentXPInput(currentXP);
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(targetXP);
+		uiInput.setLevelDifferenceInput(levelDifference);
+		uiInput.setXPDifferenceInput(xpDifference);
 		calculate();
 	}
 
@@ -408,14 +504,24 @@ class SkillCalculator extends JPanel
 		updateInputFields();
 	}
 
-	private static int enforceSkillBounds(int input)
+	private void onFieldLevelDifferenceUpdated()
 	{
-		return Math.min(Experience.MAX_VIRT_LEVEL, Math.max(1, input));
+		levelDifference = enforceLevelDifferenceBounds(uiInput.getLevelDifferenceInput());
+		xpDifference = Experience.getXpForLevel(enforceSkillBounds(currentLevel + levelDifference)) - Experience.getXpForLevel(currentLevel);
+		// Updates the target fields
+		targetLevel = enforceSkillBounds(currentLevel + levelDifference);
+		targetXP = enforceXPBounds(currentXP + xpDifference);
+		updateInputFields();
 	}
 
-	private static int enforceXPBounds(int input)
+	private void onFieldXPDifferenceUpdated()
 	{
-		return Math.min(MAX_XP, Math.max(0, input));
+		xpDifference = enforceXPBounds(uiInput.getXPDifferenceInput());
+		levelDifference = Experience.getLevelForXp(currentXP + xpDifference) - Experience.getLevelForXp(currentXP);
+		// Updates the target fields
+		targetLevel = enforceSkillBounds(currentLevel + levelDifference);
+		targetXP = enforceXPBounds(currentXP + xpDifference);
+		updateInputFields();
 	}
 
 	private void onSearch()
@@ -451,60 +557,5 @@ class SkillCalculator extends JPanel
 				focusLostConsumer.accept(e);
 			}
 		};
-	}
-
-	private static VarPlayer endGoalVarpForSkill(final Skill skill)
-	{
-		switch (skill)
-		{
-			case ATTACK:
-				return VarPlayer.ATTACK_GOAL_END;
-			case MINING:
-				return VarPlayer.MINING_GOAL_END;
-			case WOODCUTTING:
-				return VarPlayer.WOODCUTTING_GOAL_END;
-			case DEFENCE:
-				return VarPlayer.DEFENCE_GOAL_END;
-			case MAGIC:
-				return VarPlayer.MAGIC_GOAL_END;
-			case RANGED:
-				return VarPlayer.RANGED_GOAL_END;
-			case HITPOINTS:
-				return VarPlayer.HITPOINTS_GOAL_END;
-			case AGILITY:
-				return VarPlayer.AGILITY_GOAL_END;
-			case STRENGTH:
-				return VarPlayer.STRENGTH_GOAL_END;
-			case PRAYER:
-				return VarPlayer.PRAYER_GOAL_END;
-			case SLAYER:
-				return VarPlayer.SLAYER_GOAL_END;
-			case FISHING:
-				return VarPlayer.FISHING_GOAL_END;
-			case RUNECRAFT:
-				return VarPlayer.RUNECRAFT_GOAL_END;
-			case HERBLORE:
-				return VarPlayer.HERBLORE_GOAL_END;
-			case FIREMAKING:
-				return VarPlayer.FIREMAKING_GOAL_END;
-			case CONSTRUCTION:
-				return VarPlayer.CONSTRUCTION_GOAL_END;
-			case HUNTER:
-				return VarPlayer.HUNTER_GOAL_END;
-			case COOKING:
-				return VarPlayer.COOKING_GOAL_END;
-			case FARMING:
-				return VarPlayer.FARMING_GOAL_END;
-			case CRAFTING:
-				return VarPlayer.CRAFTING_GOAL_END;
-			case SMITHING:
-				return VarPlayer.SMITHING_GOAL_END;
-			case THIEVING:
-				return VarPlayer.THIEVING_GOAL_END;
-			case FLETCHING:
-				return VarPlayer.FLETCHING_GOAL_END;
-			default:
-				throw new IllegalArgumentException();
-		}
 	}
 }
