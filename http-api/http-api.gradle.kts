@@ -28,22 +28,22 @@ import org.apache.tools.ant.filters.ReplaceTokens
 description = "Web API"
 
 dependencies {
-    annotationProcessor(Libraries.lombok)
+    annotationProcessor(group = "org.projectlombok", name = "lombok", version = "1.18.12")
 
-    compileOnly(Libraries.javaxInject)
-    compileOnly(Libraries.lombok)
+    compileOnly(group = "javax.inject", name = "javax.inject", version = "1")
+    compileOnly(group = "org.projectlombok", name = "lombok", version = "1.18.12")
 
-    implementation(Libraries.gson)
-    implementation(Libraries.guava)
-    implementation(Libraries.okhttp3)
-    implementation(Libraries.rxjava)
-    implementation(Libraries.apacheCommonsCsv)
-    implementation(Libraries.slf4jApi)
+    implementation(group = "com.google.code.gson", name = "gson", version = "2.8.6")
+    implementation(group = "com.google.guava", name = "guava", version = "28.2-jre")
+    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.5.0")
+    implementation(group = "io.reactivex.rxjava3", name = "rxjava", version = "3.0.2")
+    implementation(group = "org.apache.commons", name = "commons-csv", version = "1.8")
+    implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.30")
     implementation(project(":runelite-api"))
 
-    testImplementation(Libraries.okhttp3Webserver)
-    testImplementation(Libraries.junit)
-    testImplementation(Libraries.slf4jSimple)
+    testImplementation(group = "com.squareup.okhttp3", name = "mockwebserver", version = "4.5.0")
+    testImplementation(group = "junit", name = "junit", version = "4.13")
+    testImplementation(group = "org.slf4j", name = "slf4j-simple", version = "1.7.30")
 }
 
 tasks {

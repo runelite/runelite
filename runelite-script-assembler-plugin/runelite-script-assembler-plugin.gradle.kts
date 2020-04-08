@@ -26,13 +26,13 @@
 description = "Script Assembler Plugin"
 
 dependencies {
-    annotationProcessor(Libraries.sisu)
+    annotationProcessor(group = "org.eclipse.sisu", name = "org.eclipse.sisu.inject", version = "0.3.4")
 
-    compileOnly(Libraries.mavenPluginAnnotations)
+    compileOnly(group = "org.apache.maven.plugin-tools", name = "maven-plugin-annotations", version = "3.6.0")
 
-    implementation(Libraries.guava)
-    implementation(Libraries.mavenPluginApi)
-    implementation(Libraries.slf4jNop)
+    implementation(group = "com.google.guava", name = "guava", version = "28.2-jre")
+    implementation(group = "org.apache.maven", name = "maven-plugin-api", version = "3.6.3")
+    implementation(group = "org.slf4j", name = "slf4j-nop", version = "1.7.30")
     implementation(project(":cache"))
     implementation(project(":runelite-api"))
 }
