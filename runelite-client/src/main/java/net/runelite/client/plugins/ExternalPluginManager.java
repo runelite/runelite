@@ -1077,6 +1077,8 @@ public class ExternalPluginManager
 				String lastVersion = lastRelease.version;
 				try
 				{
+					
+					RuneLiteSplashScreen.stage(.59, "Updating " + plugin.id + " to version " + lastVersion);
 					boolean updated = updateManager.updatePlugin(plugin.id, lastVersion);
 
 					if (!updated)
