@@ -28,7 +28,6 @@ import java.util.Set;
 )
 public class BlackjackPlugin extends Plugin {
     private static final String SUCCESS_BLACKJACK = "You smack the bandit over the head and render them unconscious.";
-    private static final String FAILED_BLACKJACK = "Your blow only glances off the bandit's head.";
 
     @Inject
     private BlackjackConfig blackjackConfig;
