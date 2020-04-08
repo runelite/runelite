@@ -57,8 +57,8 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER)
 		.put(WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER)
-		.put(WidgetInfo.LMS_INFO, OverlayPosition.TOP_CENTER)
-		.put(WidgetInfo.LMS_KDA, OverlayPosition.TOP_CENTER)
+		.put(WidgetInfo.LMS_INFO, OverlayPosition.TOP_RIGHT)
+		.put(WidgetInfo.LMS_KDA, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.GAUNTLET_TIMER_CONTAINER, OverlayPosition.TOP_LEFT)
 		.build();
 
