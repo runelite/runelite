@@ -29,6 +29,7 @@ import org.ajoberstar.grgit.Grgit
 buildscript {
     repositories {
         gradlePluginPortal()
+        mavenLocal()
         maven(url = "https://raw.githubusercontent.com/open-osrs/hosting/master")
     }
     dependencies {
@@ -43,6 +44,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.28.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.13"
     id("org.ajoberstar.grgit") version "4.0.1"
+    id("com.simonharrer.modernizer") version "1.8.0-1" apply false
 
     application
 }
@@ -113,6 +115,9 @@ subprojects {
             isShowViolations = true
             isIgnoreFailures = false
         }
+    }
+    if (this.name == "runelite-client" || this.name == "runelite-api") {
+        apply(plugin = "com.simonharrer.modernizer")
     }
 
     configure<PublishingExtension> {

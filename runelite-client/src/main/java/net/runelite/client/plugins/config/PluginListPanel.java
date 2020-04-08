@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.config;
 
-import com.google.common.collect.ImmutableList;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -105,7 +104,7 @@ public class PluginListPanel extends PluginPanel
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 
 	private static final List<String> colorOptions = Arrays.asList("enabledColors", "pvmColor", "pvpColor", "skillingColor", "utilityColor", "minigameColor", "miscellaneousColor", "gamemodeColor");
-	private static final ImmutableList<PluginType> definedOrder = ImmutableList.of(PluginType.IMPORTANT, PluginType.PVM, PluginType.SKILLING, PluginType.PVP, PluginType.UTILITY, PluginType.MINIGAME, PluginType.MISCELLANEOUS, PluginType.GAMEMODE, PluginType.EXTERNAL, PluginType.UNCATEGORIZED);
+	private static final List<PluginType> definedOrder = List.of(PluginType.IMPORTANT, PluginType.PVM, PluginType.SKILLING, PluginType.PVP, PluginType.UTILITY, PluginType.MINIGAME, PluginType.MISCELLANEOUS, PluginType.GAMEMODE, PluginType.EXTERNAL, PluginType.UNCATEGORIZED);
 	private static final Comparator<PluginListItem> categoryComparator = Comparator.comparing(plugin -> definedOrder.indexOf(plugin.getPluginType()));
 
 	private final ConfigManager configManager;
