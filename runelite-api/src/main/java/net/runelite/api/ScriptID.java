@@ -27,18 +27,6 @@ package net.runelite.api;
 public final class ScriptID
 {
 	/**
-	 * Handles zoom input
-	 *
-	 * Updates the VarClientInts (73, 74) to this same value
-	 * <ul>
-	 * <li> int  Reset zoom position </li>
-	 * <li> int  Reset zoom position </li>
-	 * </ul>
-	 */
-	@ScriptArguments(integer = 2)
-	public static final int CAMERA_DO_ZOOM = 42;
-
-	/**
 	 * Updates the scrollbar handle and container to the new height of the content container
 	 * <ul>
 	 * <li> int (WidgetID) Scrollbar's widget ID </li>
@@ -77,12 +65,6 @@ public final class ScriptID
 	public static final int OPEN_PRIVATE_MESSAGE_INTERFACE = 107;
 
 	/**
-	 * Rebuilds the chatbox
-	 */
-	@ScriptArguments()
-	public static final int BUILD_CHATBOX = 216;
-
-	/**
 	 * Rebuilds the text input widget inside the chat interface
 	 * <ul>
 	 * <li> String Message Prefix. Only used inside the GE search interfaces
@@ -90,12 +72,6 @@ public final class ScriptID
 	 */
 	@ScriptArguments(string = 1)
 	public static final int CHAT_TEXT_INPUT_REBUILD = 222;
-
-	/**
-	 * Builds the chatbox input widget
-	 */
-	@ScriptArguments()
-	public static final int CHAT_PROMPT_INIT = 223;
 
 	/**
 	 * Closes the chatbox input
@@ -140,17 +116,6 @@ public final class ScriptID
 	public static final int CHAT_PROMPT_INIT = 223;
 
 	/**
-	 * Displays the game messages when clicking on an item inside the Items Kept on Death interface
-	 * <ul>
-	 * <li> int (boolean) Item kept on death </li>
-	 * <li> int Item Quantity </li>
-	 * <li> String Item Name </li>
-	 * </ul>
-	 */
-	@ScriptArguments(integer = 2, string = 1)
-	public static final int DEATH_KEEP_ITEM_EXAMINE = 1603;
-
-	/**
 	 * Checks the state of the given stash unit.
 	 * <ul>
 	 * <li>int (loc) The stash unit object id</li>
@@ -173,17 +138,6 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 2, string = 1)
 	public static final int DEATH_KEEP_ITEM_EXAMINE = 1603;
-
-	/**
-	 * Creates a disabled experience drop
-	 *
-	 * <ul>
-	 * <li>int (Skill ordinal) Sets what icon to use</li>
-	 * <li>int Amount of exp to drop</li>
-	 * </ul>
-	 */
-	@ScriptArguments(integer = 2)
-	public static final int XPDROP_DISABLED = 2091;
 
 	/**
 	 * Queries the completion state of a quest by its struct id

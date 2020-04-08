@@ -46,7 +46,6 @@ import net.runelite.api.Entity;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.NullItemID;
 import net.runelite.api.RenderOverview;
-import net.runelite.api.Renderable;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.BeforeMenuRender;
@@ -94,8 +93,8 @@ public class Hooks implements Callbacks
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 	private static final OverlayManager overlayManager = injector.getInstance(OverlayManager.class);
 
-	private static final GameTick GAME_TICK = new GameTick();
-	private static final BeforeRender BEFORE_RENDER = new BeforeRender();
+	private static final GameTick GAME_TICK = GameTick.INSTANCE;
+	private static final BeforeRender BEFORE_RENDER = BeforeRender.INSTANCE;
 
 	@Inject
 	private EventBus eventBus;
