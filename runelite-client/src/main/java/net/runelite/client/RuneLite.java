@@ -73,6 +73,7 @@ import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.ws.PartyService;
@@ -126,6 +127,9 @@ public class RuneLite
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private TooltipManager tooltipManager;
 
 	@Inject
 	private Provider<PartyService> partyService;
@@ -336,6 +340,7 @@ public class RuneLite
 		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(infoBoxManager);
+		eventBus.register(tooltipManager);
 
 		if (!isOutdated)
 		{
