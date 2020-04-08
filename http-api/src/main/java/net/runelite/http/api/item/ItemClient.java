@@ -26,12 +26,15 @@ package net.runelite.http.api.item;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import io.reactivex.rxjava3.core.Observable;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
