@@ -435,12 +435,12 @@ public enum Varbits
 	DAILY_ESSENCE_COLLECTED(4547),
 	DAILY_RUNES_COLLECTED(4540),
 	DAILY_SAND_COLLECTED(4549),
-	DAILY_ARROWS_STATE(4563),
 	DAILY_FLAX_STATE(4559),
+	DAILY_ARROWS_STATE(4563),
 	/**
 	 * This varbit tracks how much bonemeal has been redeemed from Robin
 	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
-	 */
+ 	*/
 	DAILY_BONEMEAL_STATE(4543),
 
 	DAILY_DYNAMITE_COLLECTED(7939),
@@ -746,6 +746,22 @@ public enum Varbits
 	/**
 	 * Starts at 100, counts down every 10 ticks (6 seconds)
 	 */
+	TWISTED_LEAGUE_RELIC_1(10049),
+	TWISTED_LEAGUE_RELIC_2(10050),
+	TWISTED_LEAGUE_RELIC_3(10051),
+	TWISTED_LEAGUE_RELIC_4(10052),
+	TWISTED_LEAGUE_RELIC_5(10053),
+
+	/**
+	 * Whether the Special Attack orb is disabled due to being in a PvP area
+	 *
+	 * 0 = Enabled (player is not in PvP)
+	 * 1 = Disabled (player in in PvP)
+	 *
+	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
+	 */
+	PVP_SPEC_ORB(8121),
+
 	LMS_POISON_PROGRESS(5317),
 
 	/**
@@ -787,7 +803,6 @@ public enum Varbits
 	EMOTES_TAB_HOTKEY(4687),
 	CLAN_TAB_HOTKEY(4683),
 	MUSIC_TAB_HOTKEY(4688);
-
 	/**
 	 * The raw varbit ID.
 	 */

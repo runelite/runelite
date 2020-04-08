@@ -42,7 +42,6 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.Entity;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.NullItemID;
@@ -75,6 +74,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.DeferredEventBus;
+import net.runelite.client.util.RSTimeUnit;
 
 /**
  * This class contains field required for mixins and runelite hooks to work.
@@ -85,12 +85,15 @@ import net.runelite.client.util.DeferredEventBus;
 @Slf4j
 public class Hooks implements Callbacks
 {
-	private static final long CHECK = Constants.GAME_TICK_LENGTH; // ms - how often to run checks
+	private static final long CHECK = RSTimeUnit.GAME_TICKS.getDuration().toNanos(); // ns - how often to run checks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 	private static final OverlayManager overlayManager = injector.getInstance(OverlayManager.class);
+
+	private static final GameTick GAME_TICK = GameTick.INSTANCE;
+	private static final BeforeRender BEFORE_RENDER = BeforeRender.INSTANCE;
 
 	@Inject
 	private EventBus eventBus;
@@ -139,7 +142,6 @@ public class Hooks implements Callbacks
 	/**
 	 * Get the Graphics2D for the MainBufferProvider image
 	 * This caches the Graphics2D instance so it can be reused
-	 *
 	 * @param mainBufferProvider
 	 * @return
 	 */
@@ -190,7 +192,7 @@ public class Hooks implements Callbacks
 
 		clientThread.invoke();
 
-		long now = System.currentTimeMillis();
+		long now = System.nanoTime();
 
 		if (now - lastCheck < CHECK)
 		{
