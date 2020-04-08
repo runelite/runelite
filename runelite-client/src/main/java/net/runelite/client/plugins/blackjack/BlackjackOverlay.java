@@ -6,8 +6,6 @@ import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsConfig;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -72,7 +70,7 @@ public class BlackjackOverlay extends Overlay {
 
             if (textLocation != null)
             {
-                OverlayUtil.renderTextLocation(graphics, textLocation, npcName, color);
+                OverlayUtil.renderTextLocation(graphics, textLocation, plugin.statusText(), color);
             }
         }
     }

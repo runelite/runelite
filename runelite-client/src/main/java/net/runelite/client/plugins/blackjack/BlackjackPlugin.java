@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.blackjack;
 
+import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -8,16 +9,15 @@ import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.events.*;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.WildcardMatcher;
-import org.apache.commons.lang3.RandomUtils;
-
 import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,6 +59,12 @@ public class BlackjackPlugin extends Plugin {
 
     private String highlight = "";
     private long nextKnockOutTick = 0;
+
+    @Provides
+    BlackjackConfig provideConfig(ConfigManager configManager)
+    {
+        return configManager.getConfig(BlackjackConfig.class);
+    }
 
     @Override
     protected void startUp() throws Exception
@@ -189,5 +195,9 @@ public class BlackjackPlugin extends Plugin {
                 continue outer;
             }
         }
+    }
+
+    public String statusText() {
+        return isKnockedOut() ? "Knocked-out" : "Awake";
     }
 }
