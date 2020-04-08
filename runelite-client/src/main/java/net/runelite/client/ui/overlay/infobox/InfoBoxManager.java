@@ -24,7 +24,6 @@
  */
 package net.runelite.client.ui.overlay.infobox;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ComparisonChain;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -32,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -67,7 +67,7 @@ public class InfoBoxManager
 
 	public void addInfoBox(InfoBox infoBox)
 	{
-		Preconditions.checkNotNull(infoBox);
+		Objects.requireNonNull(infoBox);
 		log.debug("Adding InfoBox {}", infoBox);
 
 		updateInfoBoxImage(infoBox);

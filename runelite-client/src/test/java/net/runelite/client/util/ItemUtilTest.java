@@ -24,7 +24,6 @@
  */
 package net.runelite.client.util;
 
-import com.google.common.collect.ImmutableSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,9 +42,9 @@ import static org.mockito.Mockito.when;
 
 public class ItemUtilTest
 {
-	private static final Set<Integer> SOME_IDS = ImmutableSet.of(ItemID.MITHRIL_BAR, ItemID.DRAGON_BONES);
-	private static final Set<Integer> WRONG_IDS = ImmutableSet.of(ItemID.SCYTHE_OF_VITUR, ItemID.TWISTED_BOW);
-	private static final Set<Integer> MIX_IDS = ImmutableSet.of(
+	private static final Set<Integer> SOME_IDS = Set.of(ItemID.MITHRIL_BAR, ItemID.DRAGON_BONES);
+	private static final Set<Integer> WRONG_IDS = Set.of(ItemID.SCYTHE_OF_VITUR, ItemID.TWISTED_BOW);
+	private static final Set<Integer> MIX_IDS = Set.of(
 		ItemID.MITHRIL_BAR, ItemID.DRAGON_BONES,
 		ItemID.SCYTHE_OF_VITUR, ItemID.TWISTED_BOW
 	);

@@ -88,7 +88,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Getter
 	private int lines;
 
-	private StringBuffer value = new StringBuffer();
+	private StringBuilder value = new StringBuilder();
 
 	@Getter
 	private int cursorStart = 0;
@@ -157,7 +157,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 	public ChatboxTextInput value(String value)
 	{
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (char c : value.toCharArray())
 		{
 			if (charValidator.test(c))

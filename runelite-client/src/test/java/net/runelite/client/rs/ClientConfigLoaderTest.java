@@ -24,11 +24,11 @@
  */
 package net.runelite.client.rs;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;
@@ -47,7 +47,7 @@ public class ClientConfigLoaderTest
 		try (InputStream in = getClass().getResourceAsStream("jav_config.ws"))
 		{
 			response = CharStreams.toString(new InputStreamReader(
-				in, Charsets.UTF_8));
+				in, StandardCharsets.UTF_8));
 		}
 		server.enqueue(new MockResponse().setBody(response));
 
