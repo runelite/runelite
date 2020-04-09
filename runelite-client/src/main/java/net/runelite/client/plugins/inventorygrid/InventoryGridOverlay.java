@@ -34,6 +34,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -85,14 +86,16 @@ class InventoryGridOverlay extends Overlay
 		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
 		final int if1DraggedItemIndex = client.getIf1DraggedItemIndex();
 		final WidgetItem draggedItem = inventoryWidget.getWidgetItem(if1DraggedItemIndex);
-		final Rectangle initialBounds = draggedItem.getCanvasBounds();
+		final Rectangle initialBounds = draggedItem.getCanvasBounds(false);
 
 		if (initialMousePoint == null)
 		{
 			initialMousePoint = mousePoint;
 		}
 
-		if (draggedItem.getId() == -1 || !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
+		if (draggedItem.getId() == -1
+			|| client.getItemPressedDuration() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
+			|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
 		{
 			return null;
 		}
@@ -103,7 +106,7 @@ class InventoryGridOverlay extends Overlay
 		{
 			WidgetItem targetWidgetItem = inventoryWidget.getWidgetItem(i);
 
-			final Rectangle bounds = targetWidgetItem.getCanvasBounds();
+			final Rectangle bounds = targetWidgetItem.getCanvasBounds(false);
 			boolean inBounds = bounds.contains(mousePoint);
 
 			if (config.showItem() && inBounds)

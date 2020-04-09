@@ -75,7 +75,7 @@ class MouseHighlightOverlay extends Overlay
 		String option = menuEntry.getOption();
 		int type = menuEntry.getType();
 
-		if (type == MenuAction.RUNELITE_OVERLAY.getId() || type == MenuAction.EXAMINE_ITEM_BANK_EQ.getId())
+		if (type == MenuAction.RUNELITE_OVERLAY.getId() || type == MenuAction.CC_OP_LOW_PRIORITY.getId())
 		{
 			// These are always right click only
 			return null;

@@ -37,14 +37,14 @@ void main() {
   modelinfo minfo = ol[groupId];
 
   int offset = minfo.offset;
-  int length = minfo.length;
+  int size = minfo.size;
   int outOffset = minfo.idx;
   int uvOffset = minfo.uvOffset;
   int flags = minfo.flags;
   int orientation = flags & 0x7ff;
   ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
-  if (localId >= length) {
+  if (localId >= size) {
     return;
   }
 

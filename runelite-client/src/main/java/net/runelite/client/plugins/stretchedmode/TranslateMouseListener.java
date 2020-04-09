@@ -92,7 +92,12 @@ public class TranslateMouseListener implements MouseListener
 		int newX = (int) (e.getX() / (stretchedDimensions.width / realDimensions.getWidth()));
 		int newY = (int) (e.getY() / (stretchedDimensions.height / realDimensions.getHeight()));
 
-		return new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(),
-				newX, newY, e.getClickCount(), e.isPopupTrigger(), e.getButton());
+		MouseEvent mouseEvent = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(),
+			newX, newY, e.getClickCount(), e.isPopupTrigger(), e.getButton());
+		if (e.isConsumed())
+		{
+			mouseEvent.consume();
+		}
+		return mouseEvent;
 	}
 }

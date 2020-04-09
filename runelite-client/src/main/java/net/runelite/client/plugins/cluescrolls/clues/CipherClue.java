@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -48,7 +49,7 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 		new CipherClue("ZCZL", "Adam", new WorldPoint(3227, 3227, 0), "Outside Lumbridge castle", "How many snakeskins are needed in order to craft 44 boots, 29 vambraces and 34 bandanas?", "666"),
 		new CipherClue("ZHLUG ROG PDQ", "Weird Old Man", new WorldPoint(3224, 3112, 0), "Kalphite Lair entrance. Fairy ring BIQ", "SIX LEGS! All of them have 6! There are 25 of them! How many legs?", "150"),
 		new CipherClue("ECRVCKP MJCNGF", "Captain Khaled", new WorldPoint(1845, 3754, 0), "Large eastern building in Port Piscarilius", "How many fishing cranes can you find around here?", "5"),
-		new CipherClue("OVEXON", "Eluned", new WorldPoint(2289, 3144, 0), "Outside Lletya", "A question on elven crystal math. I have 5 and 3 crystals, large and small respectively. A large crystal is worth 10,000 coins and a small is worth but 1,000. How much are all my crystals worth?", "53,000"),
+		new CipherClue("OVEXON", "Eluned", new WorldPoint(2289, 3144, 0), "Outside Lletya or in Prifddinas after Song of the Elves", "A question on elven crystal math. I have 5 and 3 crystals, large and small respectively. A large crystal is worth 10,000 coins and a small is worth but 1,000. How much are all my crystals worth?", "53,000"),
 		new CipherClue("VTYR APCNTGLW", "King Percival", new WorldPoint(2634, 4682, 1), "Fisher Realm, first floor. Fairy ring BJR", "How many cannons are on this here castle?", "5"),
 		new CipherClue("UZZU MUJHRKYYKJ", "Otto Godblessed", new WorldPoint(2501, 3487, 0), "Otto's Grotto", "How many pyre sites are found around this lake?", "3"),
 		new CipherClue("USBJCPSO", "Traiborn", new WorldPoint(3112, 3162, 0), "First floor of Wizards Tower", "How many air runes would I need to cast 630 wind waves?", "3150"),
@@ -64,15 +65,17 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 	private String npc;
 	private WorldPoint location;
 	private String area;
+	@Nullable
 	private String question;
+	@Nullable
 	private String answer;
 
 	private CipherClue(String text, String npc, WorldPoint location, String area)
 	{
-		this(text, npc, location, area, "", null);
+		this(text, npc, location, area, null, null);
 	}
 
-	private CipherClue(String text, String npc, WorldPoint location, String area, String question, String answer)
+	private CipherClue(String text, String npc, WorldPoint location, String area, @Nullable String question, @Nullable String answer)
 	{
 		this.text = "The cipher reveals who to speak to next: " + text;
 		this.npc = npc;
@@ -129,7 +132,7 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 	{
 		for (CipherClue clue : CLUES)
 		{
-			if (clue.text.equalsIgnoreCase(text) || clue.question.equalsIgnoreCase(text))
+			if (text.equalsIgnoreCase(clue.text) || text.equalsIgnoreCase(clue.question))
 			{
 				return clue;
 			}

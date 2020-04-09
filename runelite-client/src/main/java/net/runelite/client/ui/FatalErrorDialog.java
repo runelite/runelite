@@ -28,18 +28,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -53,8 +50,9 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
-import net.runelite.client.util.VerificationException;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.VerificationException;
 
 @Slf4j
 public class FatalErrorDialog extends JDialog
@@ -83,7 +81,7 @@ public class FatalErrorDialog extends JDialog
 
 		try
 		{
-			BufferedImage logo = ImageIO.read(SplashScreen.class.getResourceAsStream("runelite_transparent.png"));
+			BufferedImage logo = ImageUtil.getResourceStreamFromClass(FatalErrorDialog.class, "runelite_transparent.png");
 			setIconImage(logo);
 
 			JLabel runelite = new JLabel();
@@ -93,7 +91,7 @@ public class FatalErrorDialog extends JDialog
 			runelite.setOpaque(true);
 			rightColumn.add(runelite);
 		}
-		catch (IOException e)
+		catch (RuntimeException e)
 		{
 		}
 
@@ -141,14 +139,7 @@ public class FatalErrorDialog extends JDialog
 
 		addButton("Open logs folder", () ->
 		{
-			try
-			{
-				Desktop.getDesktop().open(RuneLite.LOGS_DIR);
-			}
-			catch (IOException e)
-			{
-				log.warn("Unable to open logs", e);
-			}
+			LinkBrowser.open(RuneLite.LOGS_DIR.toString());
 		});
 		addButton("Get help on Discord", () -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()));
 		addButton("Troubleshooting steps", () -> LinkBrowser.browse(RuneLiteProperties.getTroubleshootingLink()));

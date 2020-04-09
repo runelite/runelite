@@ -162,8 +162,8 @@ public final class ScriptID
 	 *
 	 * Updates the VarClientInts (73, 74) to this same value
 	 * <ul>
-	 * <li> int  Reset zoom position </li>
-	 * <li> int  Reset zoom position </li>
+	 * <li> int  Reset zoom position for fixed viewport mode</li>
+	 * <li> int  Reset zoom position for resizable viewport mode</li>
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 2)
@@ -203,4 +203,72 @@ public final class ScriptID
 	 */
 	@ScriptArguments(string = 1)
 	public static final int CLAN_SEND_KICK = 215;
+
+	/**
+	 * Builds the items kept on death widget
+	 */
+	@ScriptArguments(integer = 4, string = 2)
+	public static final int DEATH_KEEP_BUILD = 1601;
+
+	/**
+	 * Builds the widget that holds all of the players inside a clan chat
+	 */
+	@ScriptArguments(integer = 15)
+	public static final int CLAN_CHAT_CHANNEL_BUILD = 1658;
+
+	/**
+	 * Builds the widget for making an offer in Grand Exchange
+	 */
+	@ScriptArguments(integer = 15)
+	public static final int GE_OFFERS_SETUP_BUILD = 779;
+
+	/**
+	 * Builds the grand exchange item search widget
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int GE_ITEM_SEARCH = 752;
+
+	/**
+	 * Builds the quest list inside the quest tab that shows each quest's progress
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int QUESTLIST_PROGRESS_LIST_SHOW = 1354;
+
+	/**
+	 * Procedure called when the toplevel interface is resized
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int TOPLEVEL_RESIZE = 909;
+
+	/**
+	 * Called when the friends list is updated
+	 * <ul>
+	 * <li> int (WidgetID) Friends list "full container" </li>
+	 * <li> int (WidgetID) Friends list sort by name button </li>
+	 * <li> int (WidgetID) Friends list sort by last world change button </li>
+	 * <li> int (WidgetID) Friends list sort by world button </li>
+	 * <li> int (WidgetID) Friends list legacy sort button </li>
+	 * <li> int (WidgetID) Friends list names container </li>
+	 * <li> int (WidgetID) Friends list scroll bar </li>
+	 * <li> int (WidgetID) Friends list "loading please wait" text </li>
+	 * <li> int (WidgetID) Friends list player previous name holder </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 9)
+	public static final int FRIENDS_UPDATE = 631;
+
+	/**
+	 * Called when the ignore list is updated
+	 * <ul>
+	 * <li> int (WidgetID) Ignore list "full container" </li>
+	 * <li> int (WidgetID) Ignore list sort by name button </li>
+	 * <li> int (WidgetID) Ignore list legacy sort button </li>
+	 * <li> int (WidgetID) Ignore list names container </li>
+	 * <li> int (WidgetID) Ignore list scroll bar </li>
+	 * <li> int (WidgetID) Ignore list "loading please wait" text </li>
+	 * <li> int (WidgetID) Ignore list player previous name holder </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 7)
+	public static final int IGNORE_UPDATE = 630;
 }

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timetracking;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("timetracking")
 public interface TimeTrackingConfig extends Config
@@ -72,13 +73,37 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "defaultTimerMinutes",
-		name = "Default Time (Minutes)",
+		name = "Default Time",
 		description = "The default time for the timer in minutes",
 		position = 4
 	)
+	@Units(Units.MINUTES)
 	default int defaultTimerMinutes()
 	{
 		return 5;
+	}
+
+	@ConfigItem(
+		keyName = "sortOrder",
+		name = "Sort Order",
+		description = "The order in which to sort the timers",
+		position = 5
+	)
+	default SortOrder sortOrder()
+	{
+		return SortOrder.NONE;
+	}
+
+	@ConfigItem(
+		keyName = "timerWarningThreshold",
+		name = "Timer Warning Threshold",
+		description = "The time at which to change the timer color to the warning color",
+		position = 6
+	)
+	@Units(Units.SECONDS)
+	default int timerWarningThreshold()
+	{
+		return 10;
 	}
 
 	@ConfigItem(

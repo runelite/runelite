@@ -198,6 +198,7 @@ enum Task
 		"Fremennik Slayer Dungeon",
 		"God Wars Dungeon",
 		"Iorwerth Dungeon",
+		"Jormungand's Prison",
 		"Kalphite Lair",
 		"Karuulm Slayer Dungeon",
 		"Keldagrim",

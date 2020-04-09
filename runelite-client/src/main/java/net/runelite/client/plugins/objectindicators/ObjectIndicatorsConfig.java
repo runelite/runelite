@@ -44,4 +44,14 @@ public interface ObjectIndicatorsConfig extends Config
 	{
 		return Color.YELLOW;
 	}
+
+	@ConfigItem(
+		keyName = "rememberObjectColors",
+		name = "Remember color per object",
+		description = "Color objects using the color from time of marking"
+	)
+	default boolean rememberObjectColors()
+	{
+		return false;
+	}
 }

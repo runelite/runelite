@@ -28,6 +28,10 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -47,6 +51,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NullObjectID;
@@ -58,6 +64,8 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
@@ -65,17 +73,23 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.util.HotkeyListener;
+import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.sanitize;
 import net.runelite.client.ws.PartyMember;
@@ -101,6 +115,9 @@ public class RaidsPlugin extends Plugin
 	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String LAYOUT_COMMAND = "!layout";
 	private static final int MAX_LAYOUT_LEN = 300;
+
+	@Inject
+	private RuneLiteConfig runeLiteConfig;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -144,6 +161,15 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService scheduledExecutorService;
 
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private ImageCapture imageCapture;
+
 	@Getter
 	private final Set<String> roomWhitelist = new HashSet<String>();
 
@@ -162,6 +188,8 @@ public class RaidsPlugin extends Plugin
 
 	@Getter
 	private boolean inRaidChambers;
+
+	private boolean chestOpened;
 
 	private RaidsTimer timer;
 
@@ -184,6 +212,7 @@ public class RaidsPlugin extends Plugin
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 		chatCommandManager.registerCommandAsync(LAYOUT_COMMAND, this::lookupRaid, this::submitRaid);
+		keyManager.registerKeyListener(screenshotHotkeyListener);
 	}
 
 	@Override
@@ -195,6 +224,8 @@ public class RaidsPlugin extends Plugin
 		inRaidChambers = false;
 		raid = null;
 		timer = null;
+		chestOpened = false;
+		keyManager.unregisterKeyListener(screenshotHotkeyListener);
 	}
 
 	@Subscribe
@@ -213,6 +244,44 @@ public class RaidsPlugin extends Plugin
 
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() != WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID ||
+			!config.showLootValue() ||
+			chestOpened)
+		{
+			return;
+		}
+
+		chestOpened = true;
+
+		ItemContainer rewardItemContainer = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
+		if (rewardItemContainer == null)
+		{
+			return;
+		}
+
+		long totalValue = Arrays.stream(rewardItemContainer.getItems())
+			.filter(item -> item.getId() > -1)
+			.mapToLong(item -> (long) itemManager.getItemPrice(item.getId()) * item.getQuantity())
+			.sum();
+
+		String chatMessage = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Your loot is worth around ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(QuantityFormatter.formatNumber(totalValue))
+			.append(ChatColorType.NORMAL)
+			.append(" coins.")
+			.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.runeLiteFormattedMessage(chatMessage)
+			.build());
 	}
 
 	@Subscribe
@@ -284,11 +353,19 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onOverlayMenuClicked(final OverlayMenuClicked event)
 	{
-		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
-			event.getEntry().getOption().equals(RaidsOverlay.BROADCAST_ACTION) &&
-			event.getOverlay() == overlay)
+		if (!(event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY
+			&& event.getOverlay() == overlay))
+		{
+			return;
+		}
+
+		if (event.getEntry().getOption().equals(RaidsOverlay.BROADCAST_ACTION))
 		{
 			sendRaidLayoutMessage();
+		}
+		else if (event.getEntry().getOption().equals(RaidsOverlay.SCREENSHOT_ACTION))
+		{
+			screenshotScoutOverlay();
 		}
 	}
 
@@ -309,6 +386,7 @@ public class RaidsPlugin extends Plugin
 			if (inRaidChambers)
 			{
 				raid = buildRaid();
+				chestOpened = false;
 
 				if (raid == null)
 				{
@@ -421,7 +499,18 @@ public class RaidsPlugin extends Plugin
 	private void updateList(Collection<String> list, String input)
 	{
 		list.clear();
-		list.addAll(Text.fromCSV(input.toLowerCase()));
+		for (String s : Text.fromCSV(input.toLowerCase()))
+		{
+			if (s.equals("unknown"))
+			{
+				list.add("unknown (combat)");
+				list.add("unknown (puzzle)");
+			}
+			else
+			{
+				list.add(s);
+			}
+		}
 	}
 
 	boolean getRotationMatches()
@@ -689,5 +778,33 @@ public class RaidsPlugin extends Plugin
 		});
 
 		return true;
+	}
+
+	private final HotkeyListener screenshotHotkeyListener = new HotkeyListener(() -> config.screenshotHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			screenshotScoutOverlay();
+		}
+	};
+
+	private void screenshotScoutOverlay()
+	{
+		if (!overlay.isScoutOverlayShown())
+		{
+			return;
+		}
+
+		Rectangle overlayDimensions = overlay.getBounds();
+		BufferedImage overlayImage = new BufferedImage(overlayDimensions.width, overlayDimensions.height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphic = overlayImage.createGraphics();
+		graphic.setFont(runeLiteConfig.interfaceFontType().getFont());
+		graphic.setColor(Color.BLACK);
+		graphic.fillRect(0, 0, overlayDimensions.width, overlayDimensions.height);
+		overlay.render(graphic);
+
+		imageCapture.takeScreenshot(overlayImage, "CoX_scout-", false, config.uploadScreenshot());
+		graphic.dispose();
 	}
 }

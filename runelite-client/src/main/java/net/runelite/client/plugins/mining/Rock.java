@@ -30,20 +30,21 @@ import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
 import static net.runelite.api.ObjectID.*;
+import static net.runelite.client.util.RSTimeUnit.*;
 
 enum Rock
 {
-	TIN(Duration.ofMillis(2400), 0, ROCKS_11360, ROCKS_11361),
-	COPPER(Duration.ofMillis(2400), 0, ROCKS_10943, ROCKS_11161),
-	IRON(Duration.ofMillis(5400), 0, ROCKS_11364, ROCKS_11365, ROCKS_36203)
+	TIN(Duration.of(4, GAME_TICKS), 0, ROCKS_11360, ROCKS_11361),
+	COPPER(Duration.of(4, GAME_TICKS), 0, ROCKS_10943, ROCKS_11161),
+	IRON(Duration.of(9, GAME_TICKS), 0, ROCKS_11364, ROCKS_11365, ROCKS_36203)
 		{
 			@Override
 			Duration getRespawnTime(int region)
 			{
-				return region == MINING_GUILD ? Duration.ofMillis(2400) : super.respawnTime;
+				return region == MINING_GUILD ? Duration.of(4, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	COAL(Duration.ofMillis(29400), 0, ROCKS_11366, ROCKS_11367, ROCKS_36204)
+	COAL(Duration.of(49, GAME_TICKS), 0, ROCKS_11366, ROCKS_11367, ROCKS_36204)
 		{
 			@Override
 			Duration getRespawnTime(int region)
@@ -51,46 +52,51 @@ enum Rock
 				switch (region)
 				{
 					case MINING_GUILD:
-						return Duration.ofMillis(14400);
+						return Duration.of(24, GAME_TICKS);
 					case MISCELLANIA:
-						return Duration.ofMillis(6600);
+						return Duration.of(11, GAME_TICKS);
 					default:
 						return super.respawnTime;
 				}
 			}
 		},
-	SILVER(Duration.ofMinutes(1), 0, ROCKS_11368, ROCKS_11369, ROCKS_36205),
-	SANDSTONE(Duration.ofMillis(5400), 0, ROCKS_11386),
-	GOLD(Duration.ofMinutes(1), 0, ROCKS_11370, ROCKS_11371, ROCKS_36206),
-	GRANITE(Duration.ofMillis(5400), 0, ROCKS_11387),
-	MITHRIL(Duration.ofMinutes(2), 0, ROCKS_11372, ROCKS_11373, ROCKS_36207)
+	SILVER(Duration.of(100, GAME_TICKS), 0, ROCKS_11368, ROCKS_11369, ROCKS_36205),
+	SANDSTONE(Duration.of(9, GAME_TICKS), 0, ROCKS_11386),
+	GOLD(Duration.of(100, GAME_TICKS), 0, ROCKS_11370, ROCKS_11371, ROCKS_36206),
+	GRANITE(Duration.of(9, GAME_TICKS), 0, ROCKS_11387),
+	MITHRIL(Duration.of(200, GAME_TICKS), 0, ROCKS_11372, ROCKS_11373, ROCKS_36207)
 		{
 			@Override
 			Duration getRespawnTime(int region)
 			{
-				return region == MINING_GUILD ? Duration.ofMinutes(1) : super.respawnTime;
+				return region == MINING_GUILD ? Duration.of(100, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	ADAMANTITE(Duration.ofMinutes(4), 0, ROCKS_11374, ROCKS_11375, ROCKS_36208)
+	LOVAKITE(Duration.of(MiningOverlay.LOVAKITE_ORE_MAX_RESPAWN_TIME, GAME_TICKS), 0, ROCKS_28596, ROCKS_28597),
+	ADAMANTITE(Duration.of(400, GAME_TICKS), 0, ROCKS_11374, ROCKS_11375, ROCKS_36208)
 		{
 			@Override
 			Duration getRespawnTime(int region)
 			{
-				return region == MINING_GUILD || region == WILDERNESS_RESOURCE_AREA ? Duration.ofMinutes(2) : super.respawnTime;
+				return region == MINING_GUILD || region == WILDERNESS_RESOURCE_AREA ? Duration.of(200, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	RUNITE(Duration.ofMinutes(12), 0, ROCKS_11376, ROCKS_11377, ROCKS_36209)
+	RUNITE(Duration.of(1200, GAME_TICKS), 0, ROCKS_11376, ROCKS_11377, ROCKS_36209)
 		{
 			@Override
 			Duration getRespawnTime(int region)
 			{
-				return region == MINING_GUILD ? Duration.ofMinutes(6) : super.respawnTime;
+				return region == MINING_GUILD ? Duration.of(600, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	ORE_VEIN(Duration.ofSeconds(MiningOverlay.ORE_VEIN_MAX_RESPAWN_TIME), 150),
-	AMETHYST(Duration.ofSeconds(75), 120),
-	ASH_VEIN(Duration.ofSeconds(30), 0, ASH_PILE),
-	GEM_ROCK(Duration.ofMinutes(1), 0, ROCKS_11380, ROCKS_11381);
+	ORE_VEIN(Duration.of(MiningOverlay.ORE_VEIN_MAX_RESPAWN_TIME, GAME_TICKS), 150),
+	AMETHYST(Duration.of(125, GAME_TICKS), 120),
+	ASH_VEIN(Duration.of(50, GAME_TICKS), 0, ASH_PILE),
+	GEM_ROCK(Duration.of(100, GAME_TICKS), 0, ROCKS_11380, ROCKS_11381),
+	URT_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33254),
+	EFH_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33255),
+	TE_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33256),
+	BASALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33257);
 
 	private static final int WILDERNESS_RESOURCE_AREA = 12605;
 	private static final int MISCELLANIA = 10044;

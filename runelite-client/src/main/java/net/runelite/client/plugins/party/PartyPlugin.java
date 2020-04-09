@@ -52,6 +52,7 @@ import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -119,6 +120,9 @@ public class PartyPlugin extends Plugin implements KeyListener
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	@Named("developerMode")
@@ -260,7 +264,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 				return;
 			}
 
-			client.playSoundEffect(SoundEffectID.SMITH_ANVIL_TINK);
+			clientThread.invoke(() -> client.playSoundEffect(SoundEffectID.SMITH_ANVIL_TINK));
 		}
 	}
 

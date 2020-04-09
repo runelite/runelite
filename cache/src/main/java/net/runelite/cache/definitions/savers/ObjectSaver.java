@@ -146,6 +146,11 @@ public class ObjectSaver
 			out.writeByte(68);
 			out.writeShort(obj.getMapSceneID());
 		}
+		if (obj.getBlockingMask() != 0)
+		{
+			out.writeByte(69);
+			out.writeByte(obj.getBlockingMask());
+		}
 		out.writeByte(70);
 		out.writeShort(obj.getOffsetX());
 		out.writeByte(71);

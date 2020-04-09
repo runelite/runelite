@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -49,6 +50,7 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.events.ConfigChanged;
@@ -159,6 +161,7 @@ public class KourendLibraryPlugin extends Plugin
 		lastBookcaseClick = null;
 		lastBookcaseAnimatedOn = null;
 		playerBooks = null;
+		npcsToMark.clear();
 	}
 
 	@Subscribe
@@ -171,29 +174,40 @@ public class KourendLibraryPlugin extends Plugin
 
 		if (ev.getKey().equals("hideVarlamoreEnvoy"))
 		{
-			panel.reload();
+			SwingUtilities.invokeLater(panel::reload);
 		}
-
-		SwingUtilities.invokeLater(() ->
+		else if (ev.getKey().equals("hideButton"))
 		{
-			if (!config.hideButton())
+			SwingUtilities.invokeLater(() ->
 			{
-				clientToolbar.addNavigation(navButton);
-			}
-			else
-			{
-				Player lp = client.getLocalPlayer();
-				boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
-				if (inRegion)
+				if (!config.hideButton())
 				{
 					clientToolbar.addNavigation(navButton);
 				}
 				else
 				{
-					clientToolbar.removeNavigation(navButton);
+					Player lp = client.getLocalPlayer();
+					boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
+					if (inRegion)
+					{
+						clientToolbar.addNavigation(navButton);
+					}
+					else
+					{
+						clientToolbar.removeNavigation(navButton);
+					}
 				}
+			});
+		}
+		else if (ev.getKey().equals("showTargetHintArrow"))
+		{
+			if (client.getLocalPlayer() == null || client.getLocalPlayer().getWorldLocation().getRegionID() != REGION)
+			{
+				return;
 			}
-		});
+
+			updateBookcaseHintArrow();
+		}
 	}
 
 	@Subscribe
@@ -222,9 +236,19 @@ public class KourendLibraryPlugin extends Plugin
 			if (event.getMessage().equals("You don't find anything useful here."))
 			{
 				library.mark(lastBookcaseAnimatedOn, null);
-				panel.update();
+				updateBooksPanel();
 				lastBookcaseAnimatedOn = null;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN ||
+			event.getGameState() == GameState.HOPPING)
+		{
+			npcsToMark.clear();
 		}
 	}
 
@@ -262,7 +286,7 @@ public class KourendLibraryPlugin extends Plugin
 				if (book != null)
 				{
 					library.mark(lastBookcaseAnimatedOn, book);
-					panel.update();
+					updateBooksPanel();
 					lastBookcaseAnimatedOn = null;
 				}
 			}
@@ -287,12 +311,12 @@ public class KourendLibraryPlugin extends Plugin
 					}
 
 					library.setCustomer(npcHead.getModelId(), book);
-					panel.update();
+					updateBooksPanel();
 				}
 				else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
 				{
 					library.setCustomer(-1, null);
-					panel.update();
+					updateBooksPanel();
 				}
 			}
 		}
@@ -327,11 +351,10 @@ public class KourendLibraryPlugin extends Plugin
 	private void updatePlayerBooks()
 	{
 		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		EnumSet<Book> books = EnumSet.noneOf(Book.class);
 
 		if (itemContainer != null)
 		{
-			EnumSet<Book> books = EnumSet.noneOf(Book.class);
-
 			for (Item item : itemContainer.getItems())
 			{
 				Book book = Book.byId(item.getId());
@@ -341,8 +364,51 @@ public class KourendLibraryPlugin extends Plugin
 					books.add(book);
 				}
 			}
+		}
 
-			playerBooks = books;
+		playerBooks = books;
+	}
+
+	private void updateBooksPanel()
+	{
+		panel.update();
+		updateBookcaseHintArrow();
+	}
+
+	private void updateBookcaseHintArrow()
+	{
+		final Book customerBook = library.getCustomerBook();
+		final SolvedState state = library.getState();
+
+		// Clear the hint arrow if the player has no book requested of them
+		// or if the player is already holding the correct book
+		// or if this plugin is configured not to show the target book hint arrow
+		if (customerBook == null || doesPlayerContainBook(customerBook) || !config.showTargetHintArrow())
+		{
+			client.clearHintArrow();
+		}
+		else if (state == SolvedState.COMPLETE && client.getHintArrowPoint() == null)
+		{
+			// Show a hint arrow pointing toward the target book if all book locations are known
+			// and a hint arrow is not already being displayed
+			for (Bookcase bookcase : library.getBookcases())
+			{
+				final Set<Book> books = bookcase.getPossibleBooks();
+
+				if (!books.isEmpty())
+				{
+					final Book book = books.iterator().next();
+
+					// Each bookcase in a complete solved state will contain only one book. If that book is the book
+					// the customer wants, mark the bookcase which contains it with a hint arrow.
+					if (book == customerBook)
+					{
+						WorldPoint correctLocation = bookcase.getLocation();
+						client.setHintArrow(correctLocation);
+						break;
+					}
+				}
+			}
 		}
 	}
 

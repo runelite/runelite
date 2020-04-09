@@ -49,6 +49,12 @@
       "xp": 50
     },
     {
+      "level": 18,
+      "icon": 4419,
+      "name": "Guthix Rest (3)",
+      "xp": 59
+    },
+    {
       "level": 19,
       "icon": 10142,
       "name": "Guam tar",
@@ -61,7 +67,7 @@
       "xp": 6.3
     },
     {
-      "level": 21,
+      "level": 22,
       "icon": 6472,
       "name": "Compost Potion (3)",
       "xp": 60

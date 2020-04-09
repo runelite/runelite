@@ -60,6 +60,7 @@ public class WorldMapPlugin extends Plugin
 	private static final BufferedImage NOT_STARTED_ICON;
 	private static final BufferedImage STARTED_ICON;
 	private static final BufferedImage FINISHED_ICON;
+	private static final BufferedImage MINING_SITE_ICON;
 
 	static final String CONFIG_KEY = "worldmap";
 	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "fairyRingTooltips";
@@ -80,6 +81,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_RARE_TREE_LEVEL_ICON = "rareTreeIcon";
 	static final String CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS = "transportationTooltips";
 	static final String CONFIG_KEY_RUNECRAFTING_ALTAR_ICON = "runecraftingAltarIcon";
+	static final String CONFIG_KEY_MINING_SITE_TOOLTIPS = "miningSiteTooltips";
 
 	static
 	{
@@ -110,6 +112,10 @@ public class WorldMapPlugin extends Plugin
 		FINISHED_ICON = new BufferedImage(questIconBufferSize, questIconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage finishedIcon = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "quest_completed_icon.png");
 		FINISHED_ICON.getGraphics().drawImage(finishedIcon, 4, 4, null);
+
+		MINING_SITE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage miningSiteIcon = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "mining_site_icon.png");
+		MINING_SITE_ICON.getGraphics().drawImage(miningSiteIcon, 1, 1, null);
 	}
 
 	@Inject
@@ -312,6 +318,14 @@ public class WorldMapPlugin extends Plugin
 		{
 			Arrays.stream(RunecraftingAltarLocation.values())
 				.map(RunecraftingAltarPoint::new)
+				.forEach(worldMapPointManager::add);
+		}
+
+		worldMapPointManager.removeIf(MiningSitePoint.class::isInstance);
+		if (config.miningSiteTooltips())
+		{
+			Arrays.stream(MiningSiteLocation.values())
+				.map(value -> new MiningSitePoint(value, value.isIconRequired() ? MINING_SITE_ICON : BLANK_ICON))
 				.forEach(worldMapPointManager::add);
 		}
 	}

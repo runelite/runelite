@@ -94,8 +94,8 @@ class HiscoreResultBuilder
 			hiscoreResult.setAlchemicalHydra(skills.get(index++));
 			hiscoreResult.setBarrowsChests(skills.get(index++));
 			hiscoreResult.setBryophyta(skills.get(index++));
-//			hiscoreResult.setCallisto(skills.get(index++));
-//			hiscoreResult.setCerberus(skills.get(index++));
+			hiscoreResult.setCallisto(skills.get(index++));
+			hiscoreResult.setCerberus(skills.get(index++));
 			hiscoreResult.setChambersOfXeric(skills.get(index++));
 			hiscoreResult.setChambersOfXericChallengeMode(skills.get(index++));
 			hiscoreResult.setChaosElemental(skills.get(index++));
@@ -117,6 +117,7 @@ class HiscoreResultBuilder
 			hiscoreResult.setKreearra(skills.get(index++));
 			hiscoreResult.setKrilTsutsaroth(skills.get(index++));
 			hiscoreResult.setMimic(skills.get(index++));
+			hiscoreResult.setNightmare(skills.get(index++));
 			hiscoreResult.setObor(skills.get(index++));
 			hiscoreResult.setSarachnis(skills.get(index++));
 			hiscoreResult.setScorpia(skills.get(index++));

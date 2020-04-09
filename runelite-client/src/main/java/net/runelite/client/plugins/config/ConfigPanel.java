@@ -66,11 +66,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.externalplugins.ExternalPluginManifest;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -256,6 +258,12 @@ class ConfigPanel extends PluginPanel
 				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
 				spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
 
+				Units units = cid.getUnits();
+				if (units != null)
+				{
+					spinnerTextField.setFormatterFactory(new UnitFormatterFactory(units));
+				}
+
 				item.add(spinner, BorderLayout.EAST);
 			}
 
@@ -432,6 +440,13 @@ class ConfigPanel extends PluginPanel
 			if (result == JOptionPane.YES_OPTION)
 			{
 				configManager.setDefaultConfiguration(pluginConfig.getConfig(), true);
+
+				// Reset non-config panel keys
+				Plugin plugin = pluginConfig.getPlugin();
+				if (plugin != null)
+				{
+					plugin.resetConfiguration();
+				}
 
 				rebuild();
 			}

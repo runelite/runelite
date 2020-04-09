@@ -292,7 +292,11 @@ public class DiscordPlugin extends Plugin
 					}
 
 					final InputStream inputStream = response.body().byteStream();
-					final BufferedImage image = ImageIO.read(inputStream);
+					final BufferedImage image;
+					synchronized (ImageIO.class)
+					{
+						image = ImageIO.read(inputStream);
+					}
 					memberById.setAvatar(image);
 				}
 				finally
@@ -377,7 +381,15 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromRegion(playerRegionID);
+		DiscordGameEventType discordGameEventType = DiscordGameEventType.fromRegion(playerRegionID);
+
+		// NMZ uses the same region ID as KBD. KBD is always on plane 0 and NMZ is always above plane 0
+		// Since KBD requires going through the wilderness there is no EventType for it
+		if (DiscordGameEventType.MG_NIGHTMARE_ZONE == discordGameEventType
+			&& client.getLocalPlayer().getWorldLocation().getPlane() == 0)
+		{
+			discordGameEventType = null;
+		}
 
 		if (discordGameEventType == null)
 		{

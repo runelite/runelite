@@ -76,6 +76,17 @@ public interface MusicConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "mutePrayerSounds",
+		name = "Mute prayer sounds",
+		description = "Mute prayer activation and deactivation sounds",
+		position = 4
+	)
+	default boolean mutePrayerSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "musicVolume",
 		name = "",
 		description = "",

@@ -150,7 +150,7 @@ public class ChatMessageManager
 			messageNode.setName(ColorUtil.wrapWithColorTag(messageNode.getName(), usernameColor));
 		}
 
-		String sender = chatMessage.getSender();
+		String sender = messageNode.getSender();
 		if (senderColor != null && !Strings.isNullOrEmpty(sender))
 		{
 			messageNode.setSender(ColorUtil.wrapWithColorTag(sender, senderColor));
@@ -585,7 +585,11 @@ public class ChatMessageManager
 
 		// Update the message with RuneLite additions
 		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
-		line.setTimestamp(message.getTimestamp());
+		
+		if (message.getTimestamp() != 0)
+		{
+			line.setTimestamp(message.getTimestamp());
+		}
 
 		update(line);
 	}

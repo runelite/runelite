@@ -29,10 +29,10 @@ import lombok.Data;
 @Data
 public class WorldMapType2 implements WorldMapTypeBase
 {
-	public int field510;
-	public int field511;
-	public int field512;
-	public int field514;
-	public int field515;
-	public int field519;
+	public int xLow;
+	public int numberOfPlanes;
+	public int yLow;
+	public int xHigh;
+	public int yHigh;
+	public int plane;
 }
