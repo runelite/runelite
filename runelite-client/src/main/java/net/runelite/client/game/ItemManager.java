@@ -290,13 +290,30 @@ public class ItemManager
 	 */
 	public int getItemPrice(int itemID, boolean ignoreUntradeableMap)
 	{
+		return (int) getItemStackPrice(itemID, 1, ignoreUntradeableMap);
+	}
+
+	/**
+	 * Look up an item stack's price
+	 *
+	 * @param itemID item id
+	 * @param quantity item quantity
+	 * @return item price
+	 */
+	public long getItemStackPrice(int itemID, int quantity)
+	{
+		return getItemStackPrice(itemID, quantity, false);
+	}
+
+	public long getItemStackPrice(int itemID, int quantity, boolean ignoreUntradeableMap)
+	{
 		if (itemID == ItemID.COINS_995)
 		{
-			return 1;
+			return quantity;
 		}
 		if (itemID == ItemID.PLATINUM_TOKEN)
 		{
-			return 1000;
+			return quantity * 1000;
 		}
 
 		if (!ignoreUntradeableMap)
@@ -304,7 +321,8 @@ public class ItemManager
 			UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
 			if (p != null)
 			{
-				return getItemPrice(p.getPriceID()) * p.getQuantity();
+				quantity -= quantity % p.getItemQuantity();
+				return getItemStackPrice(p.getPriceID(), quantity / p.getItemQuantity() * p.getPriceQuantity());
 			}
 		}
 
@@ -318,7 +336,7 @@ public class ItemManager
 			}
 		}
 
-		return price;
+		return price * quantity;
 	}
 
 	/**

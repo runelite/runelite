@@ -187,7 +187,7 @@ public class BarrowsPlugin extends Plugin
 
 			for (Item item : items)
 			{
-				long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
+				long itemStack = itemManager.getItemStackPrice(item.getId(), item.getQuantity());
 				chestPrice += itemStack;
 			}
 

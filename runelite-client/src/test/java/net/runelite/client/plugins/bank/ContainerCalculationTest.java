@@ -67,9 +67,11 @@ public class ContainerCalculationTest
 	@Test
 	public void testCalculate()
 	{
+		int WHIP_QUANTITY = 1_000_000_000;
+
 		Item coins = new Item(ItemID.COINS_995, Integer.MAX_VALUE);
 
-		Item whip = new Item(ItemID.ABYSSAL_WHIP, 1_000_000_000);
+		Item whip = new Item(ItemID.ABYSSAL_WHIP, WHIP_QUANTITY);
 
 		Item[] items = ImmutableList.of(
 			coins,
@@ -81,8 +83,8 @@ public class ContainerCalculationTest
 			.thenReturn(7); // 7 * .6 = 4, 4 * 1m overflows
 		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP))
 			.thenReturn(whipComp);
-		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP))
-			.thenReturn(3); // 1b * 3 overflows
+		when(itemManager.getItemStackPrice(ItemID.ABYSSAL_WHIP, WHIP_QUANTITY))
+			.thenReturn(3L * WHIP_QUANTITY); // 1b * 3 overflows
 
 		final ContainerPrices prices = containerCalculation.calculate(items);
 		assertNotNull(prices);
