@@ -249,7 +249,7 @@ public class ScreenshotPlugin extends Plugin
 		{
 			takeScreenshot("Death", "Deaths");
 		}
-		else if ((player.isClanMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
+		else if (player != client.getLocalPlayer() && (player.isClanMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
 		{
 			takeScreenshot("Death " + player.getName(), "Deaths");
 		}
