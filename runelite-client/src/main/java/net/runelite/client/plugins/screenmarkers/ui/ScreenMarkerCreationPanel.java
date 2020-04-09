@@ -34,6 +34,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import net.runelite.client.plugins.screenmarkers.ScreenMarkerGroup;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -110,6 +111,75 @@ public class ScreenMarkerCreationPanel extends JPanel
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				plugin.finishCreation(true);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				cancelLabel.setIcon(CANCEL_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				cancelLabel.setIcon(CANCEL_ICON);
+			}
+		});
+
+		actionsContainer.add(confirmLabel);
+		actionsContainer.add(cancelLabel);
+
+		add(instructionsLabel, BorderLayout.CENTER);
+		add(actionsContainer, BorderLayout.EAST);
+	}
+
+	ScreenMarkerCreationPanel(ScreenMarkerGroup group)
+	{
+		setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		setBorder(new EmptyBorder(8, 8, 8, 8));
+		setLayout(new BorderLayout());
+
+		instructionsLabel.setFont(FontManager.getRunescapeSmallFont());
+		instructionsLabel.setForeground(Color.WHITE);
+
+		JPanel actionsContainer = new JPanel(new GridLayout(1, 2, 8, 0));
+		actionsContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		confirmLabel.setIcon(CONFIRM_LOCKED_ICON);
+		confirmLabel.setToolTipText("Confirm and save");
+		confirmLabel.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				/* If the confirm button is not locked */
+				if (!lockedConfirm)
+				{
+					group.finishCreation(false);
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				confirmLabel.setIcon(lockedConfirm ? CONFIRM_LOCKED_ICON : CONFIRM_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				confirmLabel.setIcon(lockedConfirm ? CONFIRM_LOCKED_ICON : CONFIRM_ICON);
+			}
+		});
+
+		JLabel cancelLabel = new JLabel(CANCEL_ICON);
+		cancelLabel.setToolTipText("Cancel");
+		cancelLabel.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				group.finishCreation(true);
 			}
 
 			@Override

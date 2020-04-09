@@ -67,10 +67,11 @@ public class ScreenMarkerPlugin extends Plugin
 	private static final String CONFIG_KEY = "markers";
 	private static final String ICON_FILE = "panel_icon.png";
 	private static final String DEFAULT_MARKER_NAME = "Marker";
+	private static final String DEFAULT_GROUP_NAME = "Group";
 	private static final Dimension DEFAULT_SIZE = new Dimension(2, 2);
 
 	@Getter
-	private final List<ScreenMarkerOverlay> screenMarkers = new ArrayList<>();
+	private final List<ScreenMarkerWrapper> screenMarkers = new ArrayList<>();
 
 	@Inject
 	private ConfigManager configManager;
@@ -107,7 +108,7 @@ public class ScreenMarkerPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
-		screenMarkers.forEach(overlayManager::add);
+		screenMarkers.stream().filter(wrapper -> wrapper.getMarker() != null).map(ScreenMarkerWrapper::getMarker).forEach(overlayManager::add);
 
 		pluginPanel = new ScreenMarkerPluginPanel(this);
 		pluginPanel.rebuild();
@@ -149,7 +150,7 @@ public class ScreenMarkerPlugin extends Plugin
 		{
 			loadConfig(event.getNewValue()).forEach(screenMarkers::add);
 			overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
-			screenMarkers.forEach(overlayManager::add);
+			screenMarkers.stream().filter(wrapper -> wrapper.getMarker() != null).map(ScreenMarkerWrapper::getMarker).forEach(overlayManager::add);
 		}
 	}
 
@@ -167,9 +168,10 @@ public class ScreenMarkerPlugin extends Plugin
 
 	public void startCreation(Point location)
 	{
+		int markerCount = (int) screenMarkers.stream().filter(wrapper -> wrapper.getMarker() != null).count();
 		currentMarker = new ScreenMarker(
 			Instant.now().toEpochMilli(),
-			DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
+			DEFAULT_MARKER_NAME + " " + (markerCount + 1),
 			pluginPanel.getSelectedBorderThickness(),
 			pluginPanel.getSelectedColor(),
 			pluginPanel.getSelectedFillColor(),
@@ -192,7 +194,10 @@ public class ScreenMarkerPlugin extends Plugin
 			screenMarkerOverlay.setPreferredLocation(overlay.getBounds().getLocation());
 			screenMarkerOverlay.setPreferredSize(overlay.getBounds().getSize());
 
-			screenMarkers.add(screenMarkerOverlay);
+			ScreenMarkerWrapper wrapper = new ScreenMarkerWrapper();
+			wrapper.setMarker(screenMarkerOverlay);
+
+			screenMarkers.add(wrapper);
 			overlayManager.saveOverlay(screenMarkerOverlay);
 			overlayManager.add(screenMarkerOverlay);
 			pluginPanel.rebuild();
@@ -207,6 +212,20 @@ public class ScreenMarkerPlugin extends Plugin
 		pluginPanel.setCreation(false);
 	}
 
+	public void newGroup()
+	{
+		int groupCount = (int) screenMarkers.stream().filter(wrapper -> wrapper.getGroup() != null).count();
+		ScreenMarkerGroup group = new ScreenMarkerGroup(Instant.now().toEpochMilli(),
+			DEFAULT_GROUP_NAME + " " + (groupCount + 1));
+
+		ScreenMarkerWrapper wrapper = new ScreenMarkerWrapper();
+		wrapper.setGroup(group);
+
+		screenMarkers.add(wrapper);
+		pluginPanel.rebuild();
+		updateConfig();
+	}
+
 	/* The marker area has been drawn, inform the user and unlock the confirm button */
 	public void completeSelection()
 	{
@@ -215,9 +234,16 @@ public class ScreenMarkerPlugin extends Plugin
 
 	public void deleteMarker(final ScreenMarkerOverlay marker)
 	{
-		screenMarkers.remove(marker);
+		screenMarkers.removeIf(wrapper -> wrapper.getMarker().getName().equalsIgnoreCase(marker.getName()));
 		overlayManager.remove(marker);
 		overlayManager.resetOverlay(marker);
+		pluginPanel.rebuild();
+		updateConfig();
+	}
+
+	public void deleteGroup(final ScreenMarkerGroup group)
+	{
+		screenMarkers.removeIf(wrapper -> wrapper.getGroup().getName().equalsIgnoreCase(group.getName()));
 		pluginPanel.rebuild();
 		updateConfig();
 	}
@@ -239,12 +265,23 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 
 		final Gson gson = new Gson();
-		final String json = gson
-			.toJson(screenMarkers.stream().map(ScreenMarkerOverlay::getMarker).collect(Collectors.toList()));
+		List<ScreenMarkerItem> markerItems = new ArrayList<>();
+		screenMarkers.forEach(wrapper ->
+		{
+			if (wrapper.getMarker() != null)
+			{
+				markerItems.add(wrapper.getMarker().getMarker());
+			}
+			else if (wrapper.getGroup() != null)
+			{
+				markerItems.add(wrapper.getGroup());
+			}
+		});
+		final String json = gson.toJson(markerItems.stream().map(ScreenMarkerItem::serialize).collect(Collectors.toList()));
 		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY, json);
 	}
 
-	private Stream<ScreenMarkerOverlay> loadConfig(String json)
+	private Stream<ScreenMarkerWrapper> loadConfig(String json)
 	{
 		if (Strings.isNullOrEmpty(json))
 		{
@@ -252,10 +289,27 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 
 		final Gson gson = new Gson();
-		final List<ScreenMarker> screenMarkerData = gson.fromJson(json, new TypeToken<ArrayList<ScreenMarker>>()
+		final List<ScreenMarkerItem> screenMarkerData = gson.fromJson(json, new TypeToken<ArrayList<ScreenMarkerItem>>()
 		{
 		}.getType());
 
-		return screenMarkerData.stream().filter(Objects::nonNull).map(ScreenMarkerOverlay::new);
+		return screenMarkerData.stream().filter(Objects::nonNull).map(markerItem ->
+		{
+			ScreenMarkerWrapper wrapper = new ScreenMarkerWrapper();
+			if (markerItem.isGroup())
+			{
+				ScreenMarkerGroup group = (ScreenMarkerGroup) markerItem;
+				wrapper.setGroup(group);
+				List<ScreenMarker> groupScreenMarkerData = gson.fromJson(group.getGroupMarkers(), new TypeToken<ArrayList<ScreenMarker>>()
+				{
+				}.getType());
+				groupScreenMarkerData.stream().filter(Objects::nonNull).map(ScreenMarkerOverlay::new).forEach(overlay -> group.getMarkers().add(overlay));
+			}
+			else
+			{
+				wrapper.setMarker(new ScreenMarkerOverlay((ScreenMarker) markerItem));
+			}
+			return wrapper;
+		});
 	}
 }
