@@ -316,21 +316,23 @@ public class ItemStatOverlay extends Overlay
 		StringBuilder b = new StringBuilder();
 		b.append(ColorUtil.colorTag(Positivity.getColor(config, c.getPositivity())));
 
-		if (config.relative() && c.getPositivity() != Positivity.NO_CHANGE)
+		boolean showRelative = config.relative() && c.getPositivity() != Positivity.NO_CHANGE;
+
+		if (showRelative)
 		{
 			b.append(c.getFormattedRelative());
 		}
 
 		if (config.theoretical())
 		{
-			if (config.relative() && c.getPositivity() != Positivity.NO_CHANGE)
+			if (showRelative)
 			{
 				b.append("/");
 			}
 			b.append(c.getFormattedTheoretical());
 		}
 
-		if (config.absolute() && (config.relative() || config.theoretical()))
+		if (config.absolute() && (showRelative || config.theoretical()))
 		{
 			b.append(" (");
 		}
@@ -339,7 +341,7 @@ public class ItemStatOverlay extends Overlay
 			b.append(c.getAbsolute());
 		}
 
-		if (config.absolute() && (config.relative() || config.theoretical()))
+		if (config.absolute() && (showRelative || config.theoretical()))
 		{
 			b.append(")");
 		}
