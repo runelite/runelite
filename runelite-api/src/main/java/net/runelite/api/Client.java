@@ -1239,6 +1239,16 @@ public interface Client extends GameShell
 	void setCameraPitchRelaxerEnabled(boolean enabled);
 
 	/**
+	 * Sets if the moving the camera horizontally should be backwards
+	 */
+	void setInvertYaw(boolean invertYaw);
+
+	/**
+	 * Sets if the moving the camera vertically should be backwards
+	 */
+	void setInvertPitch(boolean invertPitch);
+
+	/**
 	 * Gets the world map overview.
 	 *
 	 * @return the world map overview

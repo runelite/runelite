@@ -87,6 +87,7 @@ import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.arrow.ArrowMinimapOverlay;
 import net.runelite.client.ui.overlay.arrow.ArrowWorldOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.util.Groups;
@@ -144,6 +145,12 @@ public class RuneLite
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private TooltipManager tooltipManager;
+
+	@Inject
+	private Provider<PartyService> partyService;
 
 	@Inject
 	private Provider<ItemManager> itemManager;
@@ -420,6 +427,15 @@ public class RuneLite
 
 		// Initialize Discord service
 		discordService.init();
+
+		// Register event listeners
+		eventBus.register(clientUI);
+		eventBus.register(pluginManager);
+		eventBus.register(externalPluginManager);
+		eventBus.register(overlayManager);
+		eventBus.register(drawManager);
+		eventBus.register(infoBoxManager);
+		eventBus.register(tooltipManager);
 
 		if (!isOutdated)
 		{
