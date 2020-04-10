@@ -46,10 +46,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
@@ -80,6 +83,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
@@ -338,6 +342,16 @@ public class LootTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
 		chestLooted = false;
+	}
+
+	@Subscribe
+	public void onClientShutdown(ClientShutdown event)
+	{
+		Future<Void> future = submitLoot();
+		if (future != null)
+		{
+			event.waitFor(future);
+		}
 	}
 
 	@Subscribe
@@ -629,14 +643,15 @@ public class LootTrackerPlugin extends Plugin
 		submitLoot();
 	}
 
-	private void submitLoot()
+	@Nullable
+	private CompletableFuture<Void> submitLoot()
 	{
 		List<LootRecord> copy;
 		synchronized (queuedLoots)
 		{
 			if (queuedLoots.isEmpty())
 			{
-				return;
+				return null;
 			}
 
 			copy = new ArrayList<>(queuedLoots);
@@ -645,12 +660,13 @@ public class LootTrackerPlugin extends Plugin
 
 		if (lootTrackerClient == null || !config.saveLoot())
 		{
-			return;
+			return null;
 		}
 
 		log.debug("Submitting {} loot records", copy.size());
 
-		lootTrackerClient.submit(copy);
+		CompletableFuture<Void> future = lootTrackerClient.submit(copy);
+		return future;
 	}
 
 	private void takeInventorySnapshot()
