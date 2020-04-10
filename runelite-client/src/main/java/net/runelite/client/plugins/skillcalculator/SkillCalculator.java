@@ -42,10 +42,8 @@ import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.runelite.api.Client;
-import net.runelite.api.Experience;
-import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
+
+import net.runelite.api.*;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -56,6 +54,9 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.AsyncBufferedImage;
+import net.runelite.http.api.item.ItemPrice;
+import net.runelite.http.api.item.ItemStats;
 
 class SkillCalculator extends JPanel
 {
@@ -345,13 +346,36 @@ class SkillCalculator extends JPanel
 				actionCount = (int) Math.ceil(neededXP / xp);
 			}
 
-			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+			slot.setText("<html>Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - ") + formatXPActionCostString(actionCount, action.getName()));
 			slot.setAvailable(currentLevel >= action.getLevel());
 			slot.setOverlapping(action.getLevel() < targetLevel);
 			slot.setValue(xp);
 		}
 
 		updateCombinedAction();
+	}
+
+	private int[] getCurrentPriceAndLimit(List<ItemPrice> result, String lookup, boolean exactMatch) {
+		int currentPriceAndLimit[] = new int[2];
+		for (ItemPrice item : result) {
+			if (exactMatch && item.getName().equalsIgnoreCase(lookup)) {
+				currentPriceAndLimit[0] = item.getPrice();
+				currentPriceAndLimit[1] = itemManager.getItemStats(item.getId(), false).getGeLimit();
+				return currentPriceAndLimit;
+			}
+		}
+		currentPriceAndLimit[0] = -1;
+		currentPriceAndLimit[1] = -1;
+		return currentPriceAndLimit;
+	}
+
+	private String formatXPActionCostString(int actionCount, String actionName)
+	{
+		List<ItemPrice> result = itemManager.search(actionName);
+		int[] currentPriceAndLimit = getCurrentPriceAndLimit(result, actionName, true);
+		int currentPrice = currentPriceAndLimit[0];
+		int maxActionCount = Math.min(currentPriceAndLimit[1], actionCount);
+		return currentPrice == -1 ? "</html>" : "<br/>" + NumberFormat.getIntegerInstance().format(currentPrice * maxActionCount) + " gp</html>";
 	}
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
