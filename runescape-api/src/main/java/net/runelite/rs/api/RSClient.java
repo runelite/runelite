@@ -384,8 +384,6 @@ public interface RSClient extends RSGameShell, Client
 	@Import("mouseCam")
 	boolean isMouseCam();
 
-
-
 	@Import("camAngleDX")
 	int getCamAngleDX();
 

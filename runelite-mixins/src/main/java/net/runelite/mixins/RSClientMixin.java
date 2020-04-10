@@ -1899,7 +1899,7 @@ public abstract class RSClientMixin implements RSClient
 	@FieldHook("camAngleDX")
 	private static void onCamAngleDXChange(int index)
 	{
-		if(invertPitch && client.getMouseCurrentButton() == 4 && client.isMouseCam())
+		if (invertPitch && client.getMouseCurrentButton() == 4 && client.isMouseCam())
 		{
 			client.setCamAngleDX(-client.getCamAngleDX());
 		}
@@ -1909,7 +1909,7 @@ public abstract class RSClientMixin implements RSClient
 	@FieldHook("camAngleDY")
 	private static void onCamAngleDYChange(int index)
 	{
-		if(invertYaw && client.getMouseCurrentButton() == 4 && client.isMouseCam())
+		if (invertYaw && client.getMouseCurrentButton() == 4 && client.isMouseCam())
 		{
 			client.setCamAngleDY(-client.getCamAngleDY());
 		}
