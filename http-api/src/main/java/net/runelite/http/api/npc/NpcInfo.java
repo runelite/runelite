@@ -29,7 +29,5 @@ import lombok.Data;
 @Data
 public class NpcInfo
 {
-	private String name;
-	private int combat;
 	private int hitpoints;
 }
