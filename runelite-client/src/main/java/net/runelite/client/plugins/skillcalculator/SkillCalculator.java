@@ -54,9 +54,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
-import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.item.ItemStats;
 
 class SkillCalculator extends JPanel
 {
@@ -355,10 +353,13 @@ class SkillCalculator extends JPanel
 		updateCombinedAction();
 	}
 
-	private int[] getCurrentPriceAndLimit(List<ItemPrice> result, String lookup, boolean exactMatch) {
+	private int[] getCurrentPriceAndLimit(List<ItemPrice> result, String lookup, boolean exactMatch)
+	{
 		int currentPriceAndLimit[] = new int[2];
-		for (ItemPrice item : result) {
-			if (exactMatch && item.getName().equalsIgnoreCase(lookup)) {
+		for (ItemPrice item : result)
+		{
+			if (exactMatch && item.getName().equalsIgnoreCase(lookup))
+			{
 				currentPriceAndLimit[0] = item.getPrice();
 				currentPriceAndLimit[1] = itemManager.getItemStats(item.getId(), false).getGeLimit();
 				return currentPriceAndLimit;
