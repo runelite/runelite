@@ -107,7 +107,7 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe(priority = 1) // run after all plugins
+	@Subscribe(priority = -1) // run after all plugins
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
