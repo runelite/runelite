@@ -198,9 +198,6 @@ public class RuneLite
 	private Provider<ChatboxPanelManager> chatboxPanelManager;
 
 	@Inject
-	private Provider<PartyService> partyService;
-
-	@Inject
 	private Groups groups;
 
 	@Inject
@@ -427,15 +424,6 @@ public class RuneLite
 
 		// Initialize Discord service
 		discordService.init();
-
-		// Register event listeners
-		eventBus.register(clientUI);
-		eventBus.register(pluginManager);
-		eventBus.register(externalPluginManager);
-		eventBus.register(overlayManager);
-		eventBus.register(drawManager);
-		eventBus.register(infoBoxManager);
-		eventBus.register(tooltipManager);
 
 		if (!isOutdated)
 		{
