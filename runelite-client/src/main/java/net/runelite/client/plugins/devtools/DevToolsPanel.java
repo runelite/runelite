@@ -34,6 +34,9 @@ import net.runelite.api.Client;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.overlay.infobox.Counter;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ImageUtil;
 
 class DevToolsPanel extends PluginPanel
 {
@@ -44,6 +47,7 @@ class DevToolsPanel extends PluginPanel
 	private final WidgetInspector widgetInspector;
 	private final VarInspector varInspector;
 	private final ScriptInspector scriptInspector;
+	private final InfoBoxManager infoBoxManager;
 
 	@Inject
 	private DevToolsPanel(
@@ -52,7 +56,8 @@ class DevToolsPanel extends PluginPanel
 		WidgetInspector widgetInspector,
 		VarInspector varInspector,
 		ScriptInspector scriptInspector,
-		Notifier notifier)
+		Notifier notifier,
+		InfoBoxManager infoBoxManager)
 	{
 		super();
 		this.client = client;
@@ -61,6 +66,7 @@ class DevToolsPanel extends PluginPanel
 		this.varInspector = varInspector;
 		this.scriptInspector = scriptInspector;
 		this.notifier = notifier;
+		this.infoBoxManager = infoBoxManager;
 
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
@@ -153,6 +159,14 @@ class DevToolsPanel extends PluginPanel
 				scriptInspector.open();
 			}
 		});
+
+		final JButton newInfoboxBtn = new JButton("Infobox");
+		newInfoboxBtn.addActionListener(e -> infoBoxManager.addInfoBox(new Counter(ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png"), plugin, 42)));
+		container.add(newInfoboxBtn);
+
+		final JButton clearInfoboxBtn = new JButton("Clear Infobox");
+		clearInfoboxBtn.addActionListener(e -> infoBoxManager.removeIf(i -> true));
+		container.add(clearInfoboxBtn);
 
 		return container;
 	}
