@@ -55,7 +55,7 @@ public abstract class AbstractByteArrayCopier {
 			if (var1) {
 				class206.rasterProvider.drawFull(0, 0);
 			} else {
-				class49.method848(var3, var4, var5, var6);
+				WorldMapScaleHandler.method848(var3, var4, var5, var6);
 			}
 
 		}

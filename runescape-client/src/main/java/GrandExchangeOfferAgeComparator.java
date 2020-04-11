@@ -961,7 +961,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 									}
 
 									if (var47 && var22 == var23 && var24 == var22 && var22 == var25) {
-										var10000 = class51.field404[var2][var11];
+										var10000 = WorldMapSection3.field404[var2][var11];
 										var10000[var17] |= 2340;
 									}
 								}
@@ -1074,22 +1074,22 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 				for (int var7 = 0; var7 <= 104; ++var7) {
 					for (int var8 = 0; var8 <= 104; ++var8) {
 						short var46;
-						if ((class51.field404[var6][var8][var7] & var2) != 0) {
+						if ((WorldMapSection3.field404[var6][var8][var7] & var2) != 0) {
 							var9 = var7;
 							var10 = var7;
 							var11 = var6;
 
-							for (var12 = var6; var9 > 0 && (class51.field404[var6][var8][var9 - 1] & var2) != 0; --var9) {
+							for (var12 = var6; var9 > 0 && (WorldMapSection3.field404[var6][var8][var9 - 1] & var2) != 0; --var9) {
 							}
 
-							while (var10 < 104 && (class51.field404[var6][var8][var10 + 1] & var2) != 0) {
+							while (var10 < 104 && (WorldMapSection3.field404[var6][var8][var10 + 1] & var2) != 0) {
 								++var10;
 							}
 
 							label465:
 							while (var11 > 0) {
 								for (var13 = var9; var13 <= var10; ++var13) {
-									if ((class51.field404[var11 - 1][var8][var13] & var2) == 0) {
+									if ((WorldMapSection3.field404[var11 - 1][var8][var13] & var2) == 0) {
 										break label465;
 									}
 								}
@@ -1100,7 +1100,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 							label454:
 							while (var12 < var5) {
 								for (var13 = var9; var13 <= var10; ++var13) {
-									if ((class51.field404[var12 + 1][var8][var13] & var2) == 0) {
+									if ((WorldMapSection3.field404[var12 + 1][var8][var13] & var2) == 0) {
 										break label454;
 									}
 								}
@@ -1117,29 +1117,29 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 
 								for (var17 = var11; var17 <= var12; ++var17) {
 									for (var18 = var9; var18 <= var10; ++var18) {
-										var10000 = class51.field404[var17][var8];
+										var10000 = WorldMapSection3.field404[var17][var8];
 										var10000[var18] &= ~var2;
 									}
 								}
 							}
 						}
 
-						if ((class51.field404[var6][var8][var7] & var3) != 0) {
+						if ((WorldMapSection3.field404[var6][var8][var7] & var3) != 0) {
 							var9 = var8;
 							var10 = var8;
 							var11 = var6;
 
-							for (var12 = var6; var9 > 0 && (class51.field404[var6][var9 - 1][var7] & var3) != 0; --var9) {
+							for (var12 = var6; var9 > 0 && (WorldMapSection3.field404[var6][var9 - 1][var7] & var3) != 0; --var9) {
 							}
 
-							while (var10 < 104 && (class51.field404[var6][var10 + 1][var7] & var3) != 0) {
+							while (var10 < 104 && (WorldMapSection3.field404[var6][var10 + 1][var7] & var3) != 0) {
 								++var10;
 							}
 
 							label518:
 							while (var11 > 0) {
 								for (var13 = var9; var13 <= var10; ++var13) {
-									if ((class51.field404[var11 - 1][var13][var7] & var3) == 0) {
+									if ((WorldMapSection3.field404[var11 - 1][var13][var7] & var3) == 0) {
 										break label518;
 									}
 								}
@@ -1150,7 +1150,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 							label507:
 							while (var12 < var5) {
 								for (var13 = var9; var13 <= var10; ++var13) {
-									if ((class51.field404[var12 + 1][var13][var7] & var3) == 0) {
+									if ((WorldMapSection3.field404[var12 + 1][var13][var7] & var3) == 0) {
 										break label507;
 									}
 								}
@@ -1167,29 +1167,29 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 
 								for (var17 = var11; var17 <= var12; ++var17) {
 									for (var18 = var9; var18 <= var10; ++var18) {
-										var10000 = class51.field404[var17][var18];
+										var10000 = WorldMapSection3.field404[var17][var18];
 										var10000[var7] &= ~var3;
 									}
 								}
 							}
 						}
 
-						if ((class51.field404[var6][var8][var7] & var4) != 0) {
+						if ((WorldMapSection3.field404[var6][var8][var7] & var4) != 0) {
 							var9 = var8;
 							var10 = var8;
 							var11 = var7;
 
-							for (var12 = var7; var11 > 0 && (class51.field404[var6][var8][var11 - 1] & var4) != 0; --var11) {
+							for (var12 = var7; var11 > 0 && (WorldMapSection3.field404[var6][var8][var11 - 1] & var4) != 0; --var11) {
 							}
 
-							while (var12 < 104 && (class51.field404[var6][var8][var12 + 1] & var4) != 0) {
+							while (var12 < 104 && (WorldMapSection3.field404[var6][var8][var12 + 1] & var4) != 0) {
 								++var12;
 							}
 
 							label571:
 							while (var9 > 0) {
 								for (var13 = var11; var13 <= var12; ++var13) {
-									if ((class51.field404[var6][var9 - 1][var13] & var4) == 0) {
+									if ((WorldMapSection3.field404[var6][var9 - 1][var13] & var4) == 0) {
 										break label571;
 									}
 								}
@@ -1200,7 +1200,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 							label560:
 							while (var10 < 104) {
 								for (var13 = var11; var13 <= var12; ++var13) {
-									if ((class51.field404[var6][var10 + 1][var13] & var4) == 0) {
+									if ((WorldMapSection3.field404[var6][var10 + 1][var13] & var4) == 0) {
 										break label560;
 									}
 								}
@@ -1214,7 +1214,7 @@ final class GrandExchangeOfferAgeComparator implements Comparator {
 
 								for (var14 = var9; var14 <= var10; ++var14) {
 									for (var15 = var11; var15 <= var12; ++var15) {
-										var10000 = class51.field404[var6][var14];
+										var10000 = WorldMapSection3.field404[var6][var14];
 										var10000[var15] &= ~var4;
 									}
 								}

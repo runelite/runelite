@@ -1715,7 +1715,7 @@ public class Widget extends Node {
 						class2.setTapToDrop(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize] == 1);
 						return 1;
 					} else if (var0 == ScriptOpcodes.GETTAPTODROP) {
-						Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class51.getTapToDrop() ? 1 : 0;
+						Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = WorldMapSection3.getTapToDrop() ? 1 : 0;
 						return 1;
 					} else if (var0 == ScriptOpcodes.SETOCULUSORBSPEED) {
 						Interpreter.Interpreter_intStackSize -= 2;

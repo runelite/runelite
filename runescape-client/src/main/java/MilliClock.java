@@ -128,7 +128,7 @@ public class MilliClock extends Clock {
 			this.field2021 = var2;
 		}
 
-		class169.method3541((long)this.field2021);
+		class169.sleepExact((long)this.field2021);
 
 		for (var5 = 0; this.field2023 < 256; this.field2023 += this.field2020) {
 			++var5;

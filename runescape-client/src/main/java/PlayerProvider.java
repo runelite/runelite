@@ -1,9 +1,11 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dg")
-public interface class108 {
+@Implements("PlayerProvider")
+public interface PlayerProvider {
 	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "(I)Ldw;",

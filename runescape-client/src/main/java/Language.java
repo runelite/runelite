@@ -75,13 +75,13 @@ public class Language implements Enumerated {
 	final int id;
 
 	static {
-		Language_EN = new Language("EN", "en", "English", class201.field2375, 0, "GB");
-		Language_DE = new Language("DE", "de", "German", class201.field2375, 1, "DE");
-		Language_FR = new Language("FR", "fr", "French", class201.field2375, 2, "FR");
-		Language_PT = new Language("PT", "pt", "Portuguese", class201.field2375, 3, "BR");
-		Language_NL = new Language("NL", "nl", "Dutch", class201.field2376, 4, "NL");
-		Language_ES = new Language("ES", "es", "Spanish", class201.field2376, 5, "ES");
-		Language_ES_MX = new Language("ES_MX", "es-mx", "Spanish (Latin American)", class201.field2375, 6, "MX");
+		Language_EN = new Language("EN", "en", "English", ModeWhere.field2375, 0, "GB");
+		Language_DE = new Language("DE", "de", "German", ModeWhere.field2375, 1, "DE");
+		Language_FR = new Language("FR", "fr", "French", ModeWhere.field2375, 2, "FR");
+		Language_PT = new Language("PT", "pt", "Portuguese", ModeWhere.field2375, 3, "BR");
+		Language_NL = new Language("NL", "nl", "Dutch", ModeWhere.field2376, 4, "NL");
+		Language_ES = new Language("ES", "es", "Spanish", ModeWhere.field2376, 5, "ES");
+		Language_ES_MX = new Language("ES_MX", "es-mx", "Spanish (Latin American)", ModeWhere.field2375, 6, "MX");
 		Language[] var0 = method3733();
 		Language_valuesOrdered = new Language[var0.length];
 		Language[] var1 = var0;
@@ -100,7 +100,7 @@ public class Language implements Enumerated {
 	@ObfuscatedSignature(
 		signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lgd;ILjava/lang/String;)V"
 	)
-	Language(String var1, String var2, String var3, class201 var4, int var5, String var6) {
+	Language(String var1, String var2, String var3, ModeWhere var4, int var5, String var6) {
 		this.field2364 = var1;
 		this.language = var2;
 		this.id = var5;
@@ -177,8 +177,8 @@ public class Language implements Enumerated {
 		signature = "(I)[Lii;",
 		garbageValue = "806638344"
 	)
-	static ServerBuild[] method3751() {
-		return new ServerBuild[]{ServerBuild.BUILDLIVE, ServerBuild.WIP, ServerBuild.RC, ServerBuild.LIVE};
+	static GameBuild[] method3751() {
+		return new GameBuild[]{GameBuild.BUILDLIVE, GameBuild.WIP, GameBuild.RC, GameBuild.LIVE};
 	}
 
 	@ObfuscatedName("x")
@@ -199,7 +199,7 @@ public class Language implements Enumerated {
 	static boolean loadWorlds() {
 		try {
 			if (LoginPacket.World_request == null) {
-				LoginPacket.World_request = WorldMapLabel.urlRequester.request(new URL(class201.field2390));
+				LoginPacket.World_request = WorldMapLabel.urlRequester.request(new URL(ModeWhere.worldListURL));
 			} else if (LoginPacket.World_request.isDone()) {
 				byte[] var0 = LoginPacket.World_request.getResponse();
 				Buffer var1 = new Buffer(var0);
@@ -257,7 +257,8 @@ public class Language implements Enumerated {
 		signature = "(II)Lgl;",
 		garbageValue = "-1926428299"
 	)
-	public static Language method3736(int var0) {
+	@Export("Language_get")
+	public static Language Language_get(int var0) {
 		return var0 >= 0 && var0 < Language_valuesOrdered.length ? Language_valuesOrdered[var0] : null;
 	}
 }

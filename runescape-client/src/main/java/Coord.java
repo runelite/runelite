@@ -240,7 +240,7 @@ public class Coord {
 			WorldMapRectangle.cameraX = var6 - var13;
 			GrandExchangeOfferWorldComparator.cameraY = var7 - var14;
 			class200.cameraZ = var8 - var15;
-			class74.cameraPitch = var4;
+			ApproximateRouteStrategy.cameraPitch = var4;
 			WorldMapIcon_1.cameraYaw = var20;
 			if (Client.oculusOrbState == 1 && Client.staffModLevel >= 2 && Client.cycle % 50 == 0 && (SoundSystem.oculusOrbFocalPointX >> 7 != ByteArrayPool.localPlayer.x >> 7 || ServerPacket.oculusOrbFocalPointY >> 7 != ByteArrayPool.localPlayer.y >> 7)) {
 				var16 = ByteArrayPool.localPlayer.plane;
@@ -259,7 +259,7 @@ public class Coord {
 		var20 = WorldMapRectangle.cameraX;
 		var6 = GrandExchangeOfferWorldComparator.cameraY;
 		var7 = class200.cameraZ;
-		var8 = class74.cameraPitch;
+		var8 = ApproximateRouteStrategy.cameraPitch;
 		var9 = WorldMapIcon_1.cameraYaw;
 
 		for (var10 = 0; var10 < 5; ++var10) {
@@ -282,13 +282,13 @@ public class Coord {
 				}
 
 				if (var10 == 4) {
-					class74.cameraPitch += var11;
-					if (class74.cameraPitch < 128) {
-						class74.cameraPitch = 128;
+					ApproximateRouteStrategy.cameraPitch += var11;
+					if (ApproximateRouteStrategy.cameraPitch < 128) {
+						ApproximateRouteStrategy.cameraPitch = 128;
 					}
 
-					if (class74.cameraPitch > 383) {
-						class74.cameraPitch = 383;
+					if (ApproximateRouteStrategy.cameraPitch > 383) {
+						ApproximateRouteStrategy.cameraPitch = 383;
 					}
 				}
 			}
@@ -312,7 +312,7 @@ public class Coord {
 		ChatChannel.playPcmPlayers();
 		var12 = Rasterizer3D.Rasterizer3D_zoom;
 		Rasterizer3D.Rasterizer3D_zoom = Client.viewportZoom;
-		GrandExchangeOfferWorldComparator.scene.draw(WorldMapRectangle.cameraX, GrandExchangeOfferWorldComparator.cameraY, class200.cameraZ, class74.cameraPitch, WorldMapIcon_1.cameraYaw, var4);
+		GrandExchangeOfferWorldComparator.scene.draw(WorldMapRectangle.cameraX, GrandExchangeOfferWorldComparator.cameraY, class200.cameraZ, ApproximateRouteStrategy.cameraPitch, WorldMapIcon_1.cameraYaw, var4);
 		Rasterizer3D.Rasterizer3D_zoom = var12;
 		ChatChannel.playPcmPlayers();
 		GrandExchangeOfferWorldComparator.scene.clearTempGameObjects();
@@ -323,7 +323,7 @@ public class Coord {
 		WorldMapRectangle.cameraX = var20;
 		GrandExchangeOfferWorldComparator.cameraY = var6;
 		class200.cameraZ = var7;
-		class74.cameraPitch = var8;
+		ApproximateRouteStrategy.cameraPitch = var8;
 		WorldMapIcon_1.cameraYaw = var9;
 		if (Client.isLoading && WorldMapLabelSize.method292(true, false) == 0) {
 			Client.isLoading = false;

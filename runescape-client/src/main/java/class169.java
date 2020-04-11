@@ -63,7 +63,8 @@ public enum class169 implements Enumerated {
 	}
 
 	@ObfuscatedName("x")
-	public static final void method3541(long var0) {
+	@Export("sleepExact")
+	public static final void sleepExact(long var0) {
 		if (var0 > 0L) {
 			if (0L == var0 % 10L) {
 				long var2 = var0 - 1L;

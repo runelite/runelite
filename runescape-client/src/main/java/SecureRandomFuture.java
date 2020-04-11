@@ -200,7 +200,7 @@ public class SecureRandomFuture {
 			}
 
 			if (var4 == 1 || var4 == 2 && var9.isStackable == 1) {
-				class51.ItemDefinition_fontPlain11.draw(GrandExchangeOfferOwnWorldComparator.method1385(var1), 0, 9, 16776960, 1);
+				WorldMapSection3.ItemDefinition_fontPlain11.draw(GrandExchangeOfferOwnWorldComparator.method1385(var1), 0, 9, 16776960, 1);
 			}
 
 			if (!var5) {

@@ -137,7 +137,7 @@ public final class Client extends GameShell implements Usernamed {
 	@ObfuscatedSignature(
 		signature = "Lbj;"
 	)
-	static final class74 field954;
+	static final ApproximateRouteStrategy field954;
 	@ObfuscatedName("ow")
 	@ObfuscatedSignature(
 		signature = "Ljh;"
@@ -1562,7 +1562,7 @@ public final class Client extends GameShell implements Usernamed {
 		archiveLoaders = new ArrayList(10);
 		archiveLoadersDone = 0;
 		field898 = 0;
-		field954 = new class74();
+		field954 = new ApproximateRouteStrategy();
 		field955 = new int[50];
 		field956 = new int[50];
 	}
@@ -1827,7 +1827,7 @@ public final class Client extends GameShell implements Usernamed {
 		}
 
 		if ((gameState == 10 || gameState == 20 || gameState == 30) && 0L != field893 && class217.currentTimeMillis() > field893) {
-			WorldMapIcon_1.setWindowedMode(class74.getWindowedMode());
+			WorldMapIcon_1.setWindowedMode(ApproximateRouteStrategy.getWindowedMode());
 		}
 
 		int var4;
@@ -1993,10 +1993,10 @@ public final class Client extends GameShell implements Usernamed {
 							worldProperties = Integer.parseInt(var2);
 							break;
 						case 6:
-							IgnoreList.clientLanguage = Language.method3736(Integer.parseInt(var2));
+							IgnoreList.clientLanguage = Language.Language_get(Integer.parseInt(var2));
 							break;
 						case 7:
-							class198.field2353 = Strings.method4219(Integer.parseInt(var2));
+							class198.field2353 = Strings.ServerBuild_get(Integer.parseInt(var2));
 							break;
 						case 8:
 							if (var2.equalsIgnoreCase("true")) {
@@ -2024,7 +2024,7 @@ public final class Client extends GameShell implements Usernamed {
 							gameBuild = Integer.parseInt(var2);
 							break;
 						case 17:
-							class201.field2390 = var2;
+							ModeWhere.worldListURL = var2;
 						}
 					}
 				}
@@ -2289,7 +2289,7 @@ public final class Client extends GameShell implements Usernamed {
 				this.startThread(765, 503, 189);
 			}
 		} catch (RuntimeException var38) {
-			throw class51.newRunException(var38, "client.init(" + ')');
+			throw WorldMapSection3.newRunException(var38, "client.init(" + ')');
 		}
 	}
 
@@ -3167,7 +3167,7 @@ public final class Client extends GameShell implements Usernamed {
 							}
 
 							var4 = FaceNormal.getPacketBufferNode(ClientPacket.field2257, packetWriter.isaacCipher);
-							var4.packetBuffer.writeByte(class74.getWindowedMode());
+							var4.packetBuffer.writeByte(ApproximateRouteStrategy.getWindowedMode());
 							var4.packetBuffer.writeShort(WorldMapLabel.canvasWidth);
 							var4.packetBuffer.writeShort(Varps.canvasHeight);
 							packetWriter.addNode(var4);
@@ -3774,17 +3774,18 @@ public final class Client extends GameShell implements Usernamed {
 																	var11 = 383;
 																}
 
-																if (class74.cameraPitch < var11) {
-																	class74.cameraPitch = (var11 - class74.cameraPitch) * Players.field1280 / 1000 + class74.cameraPitch + Friend.field3626;
-																	if (class74.cameraPitch > var11) {
-																		class74.cameraPitch = var11;
+																if (ApproximateRouteStrategy.cameraPitch < var11) {
+																	ApproximateRouteStrategy.cameraPitch = (var11 - ApproximateRouteStrategy.cameraPitch) * Players.field1280 / 1000 + ApproximateRouteStrategy.cameraPitch + Friend.field3626;
+																	if (ApproximateRouteStrategy.cameraPitch > var11) {
+																		ApproximateRouteStrategy.cameraPitch = var11;
 																	}
 																}
 
-																if (class74.cameraPitch > var11) {
-																	class74.cameraPitch -= Players.field1280 * (class74.cameraPitch - var11) / 1000 + Friend.field3626;
-																	if (class74.cameraPitch < var11) {
-																		class74.cameraPitch = var11;
+																if (ApproximateRouteStrategy.cameraPitch > var11) {
+																	ApproximateRouteStrategy.cameraPitch -= Players.field1280 * (
+																		ApproximateRouteStrategy.cameraPitch - var11) / 1000 + Friend.field3626;
+																	if (ApproximateRouteStrategy.cameraPitch < var11) {
+																		ApproximateRouteStrategy.cameraPitch = var11;
 																	}
 																}
 
@@ -3919,7 +3920,7 @@ public final class Client extends GameShell implements Usernamed {
 		if (GrandExchangeOfferOwnWorldComparator.clientPreferences != null) {
 			try {
 				Client var3 = WorldMapSection1.client;
-				Object[] var4 = new Object[]{class74.getWindowedMode()};
+				Object[] var4 = new Object[]{ApproximateRouteStrategy.getWindowedMode()};
 				JSObject.getWindow(var3).call("resize", var4);
 			} catch (Throwable var5) {
 			}
@@ -4007,7 +4008,7 @@ public final class Client extends GameShell implements Usernamed {
 		} else {
 			var1 = WorldMapDecoration.menuX;
 			var2 = PacketBufferNode.menuY;
-			var3 = class49.menuWidth;
+			var3 = WorldMapScaleHandler.menuWidth;
 			int var13 = WorldMapData_1.menuHeight;
 			int var14 = 6116423;
 			Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var13, var14);
@@ -4037,7 +4038,7 @@ public final class Client extends GameShell implements Usernamed {
 				var11.draw(var12, var1 + 3, var9, var10, 0);
 			}
 
-			class49.method848(WorldMapDecoration.menuX, PacketBufferNode.menuY, class49.menuWidth, WorldMapData_1.menuHeight);
+			WorldMapScaleHandler.method848(WorldMapDecoration.menuX, PacketBufferNode.menuY, WorldMapScaleHandler.menuWidth, WorldMapData_1.menuHeight);
 		}
 
 		if (gameDrawingMode == 3) {
@@ -4729,7 +4730,7 @@ public final class Client extends GameShell implements Usernamed {
 				}
 
 				if (ServerPacket.field2152 == var1.serverPacket) {
-					class74.method1328(var3.readStringCp1252NullTerminated());
+					ApproximateRouteStrategy.method1328(var3.readStringCp1252NullTerminated());
 					var1.serverPacket = null;
 					return true;
 				}
@@ -4806,14 +4807,14 @@ public final class Client extends GameShell implements Usernamed {
 						var8 = var6 - GrandExchangeOfferWorldComparator.cameraY;
 						var9 = var5 - class200.cameraZ;
 						var10 = (int)Math.sqrt((double)(var42 * var42 + var9 * var9));
-						class74.cameraPitch = (int)(Math.atan2((double)var8, (double)var10) * 325.949D) & 2047;
+						ApproximateRouteStrategy.cameraPitch = (int)(Math.atan2((double)var8, (double)var10) * 325.949D) & 2047;
 						WorldMapIcon_1.cameraYaw = (int)(Math.atan2((double)var42, (double)var9) * -325.949D) & 2047;
-						if (class74.cameraPitch < 128) {
-							class74.cameraPitch = 128;
+						if (ApproximateRouteStrategy.cameraPitch < 128) {
+							ApproximateRouteStrategy.cameraPitch = 128;
 						}
 
-						if (class74.cameraPitch > 383) {
-							class74.cameraPitch = 383;
+						if (ApproximateRouteStrategy.cameraPitch > 383) {
+							ApproximateRouteStrategy.cameraPitch = 383;
 						}
 					}
 
@@ -5453,11 +5454,11 @@ public final class Client extends GameShell implements Usernamed {
 						if (var1 != 1 && (class217.mouseCam || var1 != 4)) {
 							var2 = MouseHandler.MouseHandler_x;
 							var3 = MouseHandler.MouseHandler_y;
-							if (var2 < WorldMapDecoration.menuX - 10 || var2 > class49.menuWidth + WorldMapDecoration.menuX + 10 || var3 < PacketBufferNode.menuY - 10 || var3 > WorldMapData_1.menuHeight + PacketBufferNode.menuY + 10) {
+							if (var2 < WorldMapDecoration.menuX - 10 || var2 > WorldMapScaleHandler.menuWidth + WorldMapDecoration.menuX + 10 || var3 < PacketBufferNode.menuY - 10 || var3 > WorldMapData_1.menuHeight + PacketBufferNode.menuY + 10) {
 								isMenuOpen = false;
 								var4 = WorldMapDecoration.menuX;
 								var5 = PacketBufferNode.menuY;
-								var6 = class49.menuWidth;
+								var6 = WorldMapScaleHandler.menuWidth;
 								var19 = WorldMapData_1.menuHeight;
 
 								for (var8 = 0; var8 < rootWidgetCount; ++var8) {
@@ -5471,7 +5472,7 @@ public final class Client extends GameShell implements Usernamed {
 						if (var1 == 1 || !class217.mouseCam && var1 == 4) {
 							var2 = WorldMapDecoration.menuX;
 							var3 = PacketBufferNode.menuY;
-							var4 = class49.menuWidth;
+							var4 = WorldMapScaleHandler.menuWidth;
 							var5 = MouseHandler.MouseHandler_lastPressedX;
 							var6 = MouseHandler.MouseHandler_lastPressedY;
 							var19 = -1;
@@ -5497,7 +5498,7 @@ public final class Client extends GameShell implements Usernamed {
 							isMenuOpen = false;
 							var8 = WorldMapDecoration.menuX;
 							var9 = PacketBufferNode.menuY;
-							var10 = class49.menuWidth;
+							var10 = WorldMapScaleHandler.menuWidth;
 							var11 = WorldMapData_1.menuHeight;
 
 							for (int var12 = 0; var12 < rootWidgetCount; ++var12) {

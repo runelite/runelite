@@ -543,7 +543,7 @@ public class PlayerAppearance {
 								var32 = false;
 							}
 
-							var20 = class201.method3760(var29, var3, var32);
+							var20 = ModeWhere.method3760(var29, var3, var32);
 							switch(var20) {
 							case 0:
 								return;

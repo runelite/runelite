@@ -205,7 +205,7 @@ public class class237 {
 						GrandExchangeOffer.ItemDefinition_modelArchive = var5;
 						class169.ItemDefinition_inMembersWorld = var6;
 						class336.ItemDefinition_fileCount = PrivateChatMode.ItemDefinition_archive.getGroupFileCount(10);
-						class51.ItemDefinition_fontPlain11 = var7;
+						WorldMapSection3.ItemDefinition_fontPlain11 = var7;
 						Archive var8 = GrandExchangeOffer.archive2;
 						Archive var9 = ArchiveDiskAction.archive0;
 						Archive var10 = DirectByteArrayCopier.archive1;

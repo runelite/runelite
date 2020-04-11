@@ -128,7 +128,7 @@ public class WorldMapArea {
 			var4 = new WorldMapSection0();
 			break;
 		case 1:
-			var4 = new class51();
+			var4 = new WorldMapSection3();
 			break;
 		case 2:
 			var4 = new WorldMapSection1();
