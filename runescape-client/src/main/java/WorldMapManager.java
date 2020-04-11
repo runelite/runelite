@@ -53,7 +53,8 @@ public final class WorldMapManager {
 	@Export("regions")
 	WorldMapRegion[][] regions;
 	@ObfuscatedName("q")
-	HashMap field359;
+	@Export("scaleHandlers")
+	HashMap scaleHandlers;
 	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		signature = "[Lle;"
@@ -112,7 +113,7 @@ public final class WorldMapManager {
 	public WorldMapManager(IndexedSprite[] var1, HashMap var2, AbstractArchive var3, AbstractArchive var4) {
 		this.loaded = false;
 		this.loadStarted = false;
-		this.field359 = new HashMap();
+		this.scaleHandlers = new HashMap();
 		this.pixelsPerTile = 0;
 		this.mapSceneSprites = var1;
 		this.fonts = var2;
@@ -219,10 +220,10 @@ public final class WorldMapManager {
 		float var14 = this.getPixelsPerTile(var7 - var5, var3 - var1);
 		int var15 = (int)Math.ceil((double)var14);
 		this.pixelsPerTile = var15;
-		if (!this.field359.containsKey(var15)) {
-			class49 var16 = new class49(var15);
+		if (!this.scaleHandlers.containsKey(var15)) {
+			WorldMapScaleHandler var16 = new WorldMapScaleHandler(var15);
 			var16.init();
-			this.field359.put(var15, var16);
+			this.scaleHandlers.put(var15, var16);
 		}
 
 		int var23 = var13.width + var13.x - 1;
@@ -232,7 +233,7 @@ public final class WorldMapManager {
 		int var19;
 		for (var18 = var13.x; var18 <= var23; ++var18) {
 			for (var19 = var13.y; var19 <= var17; ++var19) {
-				this.regions[var18][var19].drawTile(var15, (class49)this.field359.get(var15), this.mapSceneSprites, this.geographyArchive, this.groundArchive);
+				this.regions[var18][var19].drawTile(var15, (WorldMapScaleHandler)this.scaleHandlers.get(var15), this.mapSceneSprites, this.geographyArchive, this.groundArchive);
 			}
 		}
 

@@ -38,11 +38,12 @@ public enum class7 implements Enumerated {
 	@ObfuscatedGetter(
 		intValue = -32487403
 	)
-	final int field31;
+	@Export("index")
+	final int index;
 
 	class7(int var3, int var4) {
 		this.field30 = var3;
-		this.field31 = var4;
+		this.index = var4;
 	}
 
 	@ObfuscatedName("d")
@@ -52,7 +53,7 @@ public enum class7 implements Enumerated {
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
-		return this.field31;
+		return this.index;
 	}
 
 	@ObfuscatedName("m")

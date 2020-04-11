@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ah")
-public class class49 {
+@Implements("WorldMapScaleHandler")
+public class WorldMapScaleHandler {
 	@ObfuscatedName("lo")
 	@ObfuscatedGetter(
 		intValue = 863785417
@@ -21,7 +23,7 @@ public class class49 {
 	@Export("tileTemplates")
 	byte[][][] tileTemplates;
 
-	class49(int var1) {
+	WorldMapScaleHandler(int var1) {
 		this.pixelsPerTile = var1;
 	}
 

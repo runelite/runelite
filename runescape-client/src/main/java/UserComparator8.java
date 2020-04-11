@@ -46,7 +46,7 @@ public class UserComparator8 extends AbstractUserComparator {
 			return ScriptEvent.Client_plane;
 		} else {
 			int var0 = 3;
-			if (class74.cameraPitch < 310) {
+			if (ApproximateRouteStrategy.cameraPitch < 310) {
 				int var1;
 				int var2;
 				if (Client.oculusOrbState == 1) {

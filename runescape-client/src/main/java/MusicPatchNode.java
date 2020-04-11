@@ -253,7 +253,7 @@ public class MusicPatchNode extends Node {
 
 		WorldMapDecoration.menuX = var7;
 		PacketBufferNode.menuY = var8;
-		class49.menuWidth = var2;
+		WorldMapScaleHandler.menuWidth = var2;
 		WorldMapData_1.menuHeight = Client.menuOptionsCount * 15 + 22;
 	}
 }

@@ -1,12 +1,14 @@
 import java.util.Date;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import netscape.javascript.JSObject;
 
 @ObfuscatedName("bj")
-public class class74 extends RouteStrategy {
+@Implements("ApproximateRouteStrategy")
+public class ApproximateRouteStrategy extends RouteStrategy {
 	@ObfuscatedName("hp")
 	@ObfuscatedGetter(
 		intValue = 363395723
@@ -14,7 +16,7 @@ public class class74 extends RouteStrategy {
 	@Export("cameraPitch")
 	static int cameraPitch;
 
-	class74() {
+	ApproximateRouteStrategy() {
 	}
 
 	@ObfuscatedName("x")

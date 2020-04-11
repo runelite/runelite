@@ -81,7 +81,7 @@ public class MappingDumper
 
 		for (ClassFile cf : group.getClasses())
 		{
-			String implName = DeobAnnotations.getImplements(cf);
+			String implName = cf.getName();
 			String className = DeobAnnotations.getObfuscatedName(cf.getAnnotations());
 
 			if (implName != null)

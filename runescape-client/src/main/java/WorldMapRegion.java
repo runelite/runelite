@@ -298,7 +298,7 @@ public class WorldMapRegion {
 		garbageValue = "828020907"
 	)
 	@Export("drawTile")
-	void drawTile(int var1, class49 var2, IndexedSprite[] var3, AbstractArchive var4, AbstractArchive var5) {
+	void drawTile(int var1, WorldMapScaleHandler var2, IndexedSprite[] var3, AbstractArchive var4, AbstractArchive var5) {
 		this.pixelsPerTile = var1;
 		if (this.worldMapData_0 != null || !this.worldMapData1List.isEmpty()) {
 			int var7 = this.regionX;
@@ -384,7 +384,7 @@ public class WorldMapRegion {
 		signature = "(Lah;[Lle;Lam;I)V",
 		garbageValue = "-1199825986"
 	)
-	void method531(class49 var1, IndexedSprite[] var2, WorldMapSprite var3) {
+	void method531(WorldMapScaleHandler var1, IndexedSprite[] var2, WorldMapSprite var3) {
 		int var4;
 		int var5;
 		for (var4 = 0; var4 < 64; ++var4) {
@@ -407,7 +407,7 @@ public class WorldMapRegion {
 		signature = "(Lah;[Lle;Lam;B)V",
 		garbageValue = "-33"
 	)
-	void method532(class49 var1, IndexedSprite[] var2, WorldMapSprite var3) {
+	void method532(WorldMapScaleHandler var1, IndexedSprite[] var2, WorldMapSprite var3) {
 		Iterator var4 = this.worldMapData1List.iterator();
 
 		WorldMapData_1 var5;
@@ -443,7 +443,7 @@ public class WorldMapRegion {
 		signature = "(IILab;Lah;[Lle;I)V",
 		garbageValue = "642220126"
 	)
-	void method533(int var1, int var2, AbstractWorldMapData var3, class49 var4, IndexedSprite[] var5) {
+	void method533(int var1, int var2, AbstractWorldMapData var3, WorldMapScaleHandler var4, IndexedSprite[] var5) {
 		this.method527(var1, var2, var3);
 		this.method518(var1, var2, var3, var5);
 	}
@@ -454,7 +454,7 @@ public class WorldMapRegion {
 		garbageValue = "700550528"
 	)
 	@Export("drawTileGround")
-	void drawTileGround(int var1, int var2, AbstractWorldMapData var3, class49 var4, WorldMapSprite var5) {
+	void drawTileGround(int var1, int var2, AbstractWorldMapData var3, WorldMapScaleHandler var4, WorldMapSprite var5) {
 		int var6 = var3.floorUnderlayIds[0][var1][var2] - 1;
 		int var7 = var3.floorOverlayIds[0][var1][var2] - 1;
 		if (var6 == -1 && var7 == -1) {
@@ -483,7 +483,7 @@ public class WorldMapRegion {
 		signature = "(IILab;Lah;B)V",
 		garbageValue = "7"
 	)
-	void method535(int var1, int var2, AbstractWorldMapData var3, class49 var4) {
+	void method535(int var1, int var2, AbstractWorldMapData var3, WorldMapScaleHandler var4) {
 		for (int var5 = 1; var5 < var3.planes; ++var5) {
 			int var6 = var3.floorOverlayIds[var5][var1][var2] - 1;
 			if (var6 > -1) {

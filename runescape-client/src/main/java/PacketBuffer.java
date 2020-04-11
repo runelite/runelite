@@ -268,7 +268,7 @@ public class PacketBuffer extends Buffer {
 
 					var6.method3187(var0, var1, var2, var16, 1, 1, (Entity)var34, 0, var19, var21);
 					if (var5 >= 12 && var5 <= 17 && var5 != 13 && var0 > 0) {
-						var10000 = class51.field404[var0][var1];
+						var10000 = WorldMapSection3.field404[var0][var1];
 						var10000[var2] |= 2340;
 					}
 
@@ -291,7 +291,7 @@ public class PacketBuffer extends Buffer {
 						}
 
 						if (var8.modelClipped) {
-							var10000 = class51.field404[var0][var1];
+							var10000 = WorldMapSection3.field404[var0][var1];
 							var10000[var2] |= 585;
 						}
 					} else if (var4 == 1) {
@@ -301,7 +301,7 @@ public class PacketBuffer extends Buffer {
 						}
 
 						if (var8.modelClipped) {
-							var10000 = class51.field404[var0][var1];
+							var10000 = WorldMapSection3.field404[var0][var1];
 							var10000[var2 + 1] |= 1170;
 						}
 					} else if (var4 == 2) {
@@ -311,7 +311,7 @@ public class PacketBuffer extends Buffer {
 						}
 
 						if (var8.modelClipped) {
-							var10000 = class51.field404[var0][var1 + 1];
+							var10000 = WorldMapSection3.field404[var0][var1 + 1];
 							var10000[var2] |= 585;
 						}
 					} else if (var4 == 3) {
@@ -321,7 +321,7 @@ public class PacketBuffer extends Buffer {
 						}
 
 						if (var8.modelClipped) {
-							var10000 = class51.field404[var0][var1];
+							var10000 = WorldMapSection3.field404[var0][var1];
 							var10000[var2] |= 1170;
 						}
 					}
@@ -375,24 +375,24 @@ public class PacketBuffer extends Buffer {
 						var6.newBoundaryObject(var0, var1, var2, var16, (Entity)var29, (Entity)var30, Tiles.field544[var4], Tiles.field544[var28], var19, var21);
 						if (var8.modelClipped) {
 							if (var4 == 0) {
-								var10000 = class51.field404[var0][var1];
+								var10000 = WorldMapSection3.field404[var0][var1];
 								var10000[var2] |= 585;
-								var10000 = class51.field404[var0][var1];
+								var10000 = WorldMapSection3.field404[var0][var1];
 								var10000[1 + var2] |= 1170;
 							} else if (var4 == 1) {
-								var10000 = class51.field404[var0][var1];
+								var10000 = WorldMapSection3.field404[var0][var1];
 								var10000[var2 + 1] |= 1170;
-								var10000 = class51.field404[var0][var1 + 1];
+								var10000 = WorldMapSection3.field404[var0][var1 + 1];
 								var10000[var2] |= 585;
 							} else if (var4 == 2) {
-								var10000 = class51.field404[var0][var1 + 1];
+								var10000 = WorldMapSection3.field404[var0][var1 + 1];
 								var10000[var2] |= 585;
-								var10000 = class51.field404[var0][var1];
+								var10000 = WorldMapSection3.field404[var0][var1];
 								var10000[var2] |= 1170;
 							} else if (var4 == 3) {
-								var10000 = class51.field404[var0][var1];
+								var10000 = WorldMapSection3.field404[var0][var1];
 								var10000[var2] |= 1170;
-								var10000 = class51.field404[var0][var1];
+								var10000 = WorldMapSection3.field404[var0][var1];
 								var10000[var2] |= 585;
 							}
 						}

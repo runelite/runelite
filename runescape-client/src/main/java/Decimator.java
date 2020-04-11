@@ -26,7 +26,7 @@ public class Decimator {
 
 	public Decimator(int var1, int var2) {
 		if (var2 != var1) {
-			int var3 = class201.method3763(var1, var2);
+			int var3 = ModeWhere.method3763(var1, var2);
 			var1 /= var3;
 			var2 /= var3;
 			this.inputRate = var1;

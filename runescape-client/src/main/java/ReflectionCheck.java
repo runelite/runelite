@@ -64,7 +64,7 @@ public class ReflectionCheck extends Node {
 		signature = "(Ldg;S)V",
 		garbageValue = "-25430"
 	)
-	public static final void method2397(class108 var0) {
+	public static final void method2397(PlayerProvider var0) {
 		PcmPlayer.pcmPlayerProvider = var0;
 	}
 }

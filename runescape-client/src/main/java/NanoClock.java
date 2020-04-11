@@ -41,7 +41,7 @@ public class NanoClock extends Clock {
 			var5 = var3;
 		}
 
-		class169.method3541(var5 / 1000000L);
+		class169.sleepExact(var5 / 1000000L);
 		long var7 = System.nanoTime();
 
 		int var9;

@@ -69,7 +69,7 @@ public class ArchiveDiskActionHandler implements Runnable {
 						field3151 = 600;
 					}
 				} else {
-					class169.method3541(100L);
+					class169.sleepExact(100L);
 					synchronized(ArchiveDiskActionHandler_lock) {
 						if (field3151 <= 1) {
 							field3151 = 0;

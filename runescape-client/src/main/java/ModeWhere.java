@@ -1,12 +1,14 @@
 import java.util.HashSet;
 import java.util.Set;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gd")
-public enum class201 implements Enumerated {
+@Implements("ModeWhere")
+public enum ModeWhere implements Enumerated {
 	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "Lgd;"
@@ -74,7 +76,8 @@ public enum class201 implements Enumerated {
 	field2386("", 13, new class200[]{class200.field2371});
 
 	@ObfuscatedName("bh")
-	static String field2390;
+	@Export("worldListURL")
+	static String worldListURL;
 	@ObfuscatedName("u")
 	@ObfuscatedGetter(
 		intValue = 1460687895
@@ -85,13 +88,13 @@ public enum class201 implements Enumerated {
 	final Set field2388;
 
 	static {
-		method3753();
+		ModeWhere_rsValues();
 	}
 
 	@ObfuscatedSignature(
 		signature = "(Ljava/lang/String;I[Lgy;)V"
 	)
-	class201(String var3, int var4, class200[] var5) {
+	ModeWhere(String var3, int var4, class200[] var5) {
 		this.field2388 = new HashSet();
 		this.id = var4;
 		class200[] var6 = var5;
@@ -103,7 +106,7 @@ public enum class201 implements Enumerated {
 
 	}
 
-	class201(String var3, int var4) {
+	ModeWhere(String var3, int var4) {
 		this.field2388 = new HashSet();
 		this.id = var4;
 	}
@@ -123,8 +126,9 @@ public enum class201 implements Enumerated {
 		signature = "(I)[Lgd;",
 		garbageValue = "-2096888845"
 	)
-	static class201[] method3753() {
-		return new class201[]{field2379, field2385, field2386, field2376, field2384, field2380, field2381, field2377, field2378, field2374, field2375, field2382, field2383};
+	@Export("ModeWhere_rsValues")
+	static ModeWhere[] ModeWhere_rsValues() {
+		return new ModeWhere[]{field2379, field2385, field2386, field2376, field2384, field2380, field2381, field2377, field2378, field2374, field2375, field2382, field2383};
 	}
 
 	@ObfuscatedName("x")

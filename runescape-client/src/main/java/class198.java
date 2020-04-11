@@ -8,7 +8,7 @@ public class class198 {
 	@ObfuscatedSignature(
 		signature = "Lii;"
 	)
-	static ServerBuild field2353;
+	static GameBuild field2353;
 
 	@ObfuscatedName("jk")
 	@ObfuscatedSignature(

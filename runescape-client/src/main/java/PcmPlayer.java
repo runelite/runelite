@@ -29,7 +29,7 @@ public class PcmPlayer {
 		signature = "Ldg;"
 	)
 	@Export("pcmPlayerProvider")
-	static class108 pcmPlayerProvider;
+	static PlayerProvider pcmPlayerProvider;
 	@ObfuscatedName("u")
 	@Export("samples")
 	protected int[] samples;

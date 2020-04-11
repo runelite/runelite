@@ -102,7 +102,7 @@ public final class NetSocket extends AbstractSocket implements Runnable {
 
 			if (this.task != null) {
 				while (this.task.status == 0) {
-					class169.method3541(1L);
+					class169.sleepExact(1L);
 				}
 
 				if (this.task.status == 1) {

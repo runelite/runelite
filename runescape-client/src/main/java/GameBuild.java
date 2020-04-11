@@ -5,32 +5,32 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ii")
-@Implements("ServerBuild")
-public class ServerBuild {
+@Implements("GameBuild")
+public class GameBuild {
 	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		signature = "Lii;"
 	)
 	@Export("LIVE")
-	static final ServerBuild LIVE;
+	static final GameBuild LIVE;
 	@ObfuscatedName("m")
 	@ObfuscatedSignature(
 		signature = "Lii;"
 	)
 	@Export("BUILDLIVE")
-	static final ServerBuild BUILDLIVE;
+	static final GameBuild BUILDLIVE;
 	@ObfuscatedName("k")
 	@ObfuscatedSignature(
 		signature = "Lii;"
 	)
 	@Export("RC")
-	static final ServerBuild RC;
+	static final GameBuild RC;
 	@ObfuscatedName("d")
 	@ObfuscatedSignature(
 		signature = "Lii;"
 	)
 	@Export("WIP")
-	static final ServerBuild WIP;
+	static final GameBuild WIP;
 	@ObfuscatedName("w")
 	@Export("name")
 	public final String name;
@@ -38,17 +38,18 @@ public class ServerBuild {
 	@ObfuscatedGetter(
 		intValue = 1808149537
 	)
-	final int field3101;
+	@Export("buildId")
+	final int buildId;
 
 	static {
-		LIVE = new ServerBuild("LIVE", 0);
-		BUILDLIVE = new ServerBuild("BUILDLIVE", 3);
-		RC = new ServerBuild("RC", 1);
-		WIP = new ServerBuild("WIP", 2);
+		LIVE = new GameBuild("LIVE", 0);
+		BUILDLIVE = new GameBuild("BUILDLIVE", 3);
+		RC = new GameBuild("RC", 1);
+		WIP = new GameBuild("WIP", 2);
 	}
 
-	ServerBuild(String var1, int var2) {
+	GameBuild(String var1, int var2) {
 		this.name = var1;
-		this.field3101 = var2;
+		this.buildId = var2;
 	}
 }

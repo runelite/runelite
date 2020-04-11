@@ -220,8 +220,8 @@ public class WorldMapSection0 implements WorldMapSection {
 			var0 -= WorldMapRectangle.cameraX;
 			var3 -= GrandExchangeOfferWorldComparator.cameraY;
 			var1 -= class200.cameraZ;
-			int var4 = Rasterizer3D.Rasterizer3D_sine[class74.cameraPitch];
-			int var5 = Rasterizer3D.Rasterizer3D_cosine[class74.cameraPitch];
+			int var4 = Rasterizer3D.Rasterizer3D_sine[ApproximateRouteStrategy.cameraPitch];
+			int var5 = Rasterizer3D.Rasterizer3D_cosine[ApproximateRouteStrategy.cameraPitch];
 			int var6 = Rasterizer3D.Rasterizer3D_sine[WorldMapIcon_1.cameraYaw];
 			int var7 = Rasterizer3D.Rasterizer3D_cosine[WorldMapIcon_1.cameraYaw];
 			int var8 = var0 * var7 + var6 * var1 >> 16;

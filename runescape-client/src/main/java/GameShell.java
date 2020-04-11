@@ -245,7 +245,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	final void post(Object var1) {
 		if (this.eventQueue != null) {
 			for (int var2 = 0; var2 < 50 && this.eventQueue.peekEvent() != null; ++var2) {
-				class169.method3541(1L);
+				class169.sleepExact(1L);
 			}
 
 			if (var1 != null) {
@@ -857,7 +857,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 	public final void destroy() {
 		if (this == gameShell && !isKilled) {
 			stopTimeMs = class217.currentTimeMillis();
-			class169.method3541(5000L);
+			class169.sleepExact(5000L);
 			this.kill();
 		}
 	}
@@ -892,7 +892,7 @@ public abstract class GameShell extends Applet implements Runnable, FocusListene
 			this.setFocusCycleRoot(true);
 			this.addCanvas();
 			this.setUp();
-			clock = class74.method1326();
+			clock = ApproximateRouteStrategy.method1326();
 
 			while (0L == stopTimeMs || class217.currentTimeMillis() < stopTimeMs) {
 				ModelData0.gameCyclesToDo = clock.wait(cycleDurationMillis, fiveOrOne);
