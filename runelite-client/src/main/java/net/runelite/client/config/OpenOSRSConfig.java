@@ -252,45 +252,6 @@ public interface OpenOSRSConfig extends Config
 		return new Color(244, 239, 211, 255);
 	}
 
-	@Alpha
-	@ConfigItem(
-		position = 14,
-		keyName = "externalColor",
-		name = "External color",
-		description = "Configure the color of external plugins",
-		titleSection = "pluginsColorTitle",
-		hidden = true,
-		unhide = "enabledColors"
-	)
-	default Color externalColor()
-	{
-		return new Color(177, 156, 217, 255);
-	}
-
-	@ConfigTitleSection(
-		keyName = "externalPluginsTitle",
-		name = "External",
-		description = "",
-		position = 15,
-		titleSection = "pluginsTitle"
-	)
-	default Title externalPluginsTitle()
-	{
-		return new Title();
-	}
-
-	@ConfigItem(
-		keyName = "enablePlugins",
-		name = "Enable loading of legacy external plugins",
-		description = "Enable loading of legacy external plugins",
-		position = 16,
-		titleSection = "externalPluginsTitle"
-	)
-	default boolean enablePlugins()
-	{
-		return false;
-	}
-
 	@ConfigTitleSection(
 		keyName = "opacityTitle",
 		name = "Opacity",

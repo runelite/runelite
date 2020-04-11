@@ -651,12 +651,6 @@ public class ExternalPluginManager
 				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
 				continue;
 			}
-			else if (pluginDescriptor.type() == PluginType.EXTERNAL)
-			{
-				log.error("Class {} is using the the new external plugin loader, it should not use PluginType.EXTERNAL",
-					clazz);
-				continue;
-			}
 
 			List<Future<?>> curGroup = new ArrayList<>();
 			curGroup.add(exec.submit(() ->
