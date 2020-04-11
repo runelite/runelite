@@ -43,9 +43,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
 import static net.runelite.client.RuneLite.LOGS_DIR;
-import static net.runelite.client.RuneLite.PLUGINS_DIR;
 import static net.runelite.client.RuneLite.RUNELITE_DIR;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
+import static net.runelite.client.RuneLite.EXTERNALPLUGIN_DIR;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
@@ -157,7 +157,7 @@ class InfoPanel extends PluginPanel
 		actionsContainer.add(buildLinkPanel(IMPORT_ICON, "Launcher Download", "for the latest launcher", "https://github.com/open-osrs/launcher/releases"));
 		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Runelite Directory", "for your .properties file", RUNELITE_DIR));
 		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Logs Directory", "for bug reports", LOGS_DIR));
-		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Plugins Directory", "for plugins", PLUGINS_DIR));
+		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open ExternalManager Directory", "to see your plugins", EXTERNALPLUGIN_DIR));
 		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open Screenshots Directory", "for your screenshots", SCREENSHOT_DIR));
 
 		JPanel pathPanel = new JPanel();
