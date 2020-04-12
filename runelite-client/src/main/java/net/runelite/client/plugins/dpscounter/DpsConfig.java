@@ -94,6 +94,17 @@ public interface DpsConfig extends Config
 	}
 
 	@ConfigItem(
+			position = 5,
+			keyName = "otherDamage",
+			name = "Other Damage",
+			description = "Add damage from players not in your party to total damage"
+	)
+	default boolean otherDamage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 			position = 999,
 			keyName = "displayMode",
 			name = "Display Mode",

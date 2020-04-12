@@ -232,9 +232,9 @@ public class DpsCounterPlugin extends Plugin
 				// apply to total
 				break;
 			case DAMAGE_OTHER:
-				if (actor != player.getInteracting() && !isBoss)
+				if (!dpsConfig.otherDamage())
 				{
-					// only track damage to npcs we are attacking, or is a nearby common boss
+					// only track other damage if config is set
 					return;
 				}
 				// apply to total

@@ -30,6 +30,8 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.api.Player;
@@ -43,7 +45,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.ws.PartyService;
-
+@Slf4j
 class DpsOverlay extends Overlay
 {
 	private static final DecimalFormat DPS_FORMAT = new DecimalFormat("#0.0");
@@ -145,7 +147,7 @@ class DpsOverlay extends Overlay
 			{
 				DpsMember self = dpsMembers.get(player.getName());
 
-				if (self != null && total.getDamage() > self.getDamage())
+				if ((self != null || dpsConfig.displayMode() == DpsConfig.DisplayMode.ALWAYS && total != null))
 				{
 					dpsPanelComponent.getChildren().add(
 						LineComponent.builder()
