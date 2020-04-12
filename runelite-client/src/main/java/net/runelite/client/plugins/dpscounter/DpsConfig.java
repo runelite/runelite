@@ -31,6 +31,13 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("dpscounter")
 public interface DpsConfig extends Config
 {
+	enum DisplayMode
+	{
+		ALWAYS,
+		IN_COMBAT,
+		NEVER
+	}
+
 	@ConfigItem(
 		position = 0,
 		keyName = "showDamage",
@@ -51,5 +58,27 @@ public interface DpsConfig extends Config
 	default boolean autopause()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+			position = 2,
+			keyName = "resetTracker",
+			name = "Reset",
+			description = "Reset DPS tracker at the start of every boss fight"
+	)
+	default boolean resetTracker()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 3,
+			keyName = "displayMode",
+			name = "Display Mode",
+			description = "Choose when to display the DPS tracker"
+	)
+	default DisplayMode displayMode()
+	{
+		return DisplayMode.IN_COMBAT;
 	}
 }

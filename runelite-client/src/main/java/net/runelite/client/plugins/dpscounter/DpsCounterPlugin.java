@@ -131,6 +131,9 @@ public class DpsCounterPlugin extends Plugin
 	private DpsConfig dpsConfig;
 
 	@Getter(AccessLevel.PACKAGE)
+	private boolean inCombat = false;
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, DpsMember> members = new ConcurrentHashMap<>();
 	@Getter(AccessLevel.PACKAGE)
 	private final DpsMember total = new DpsMember("Total");
@@ -168,9 +171,20 @@ public class DpsCounterPlugin extends Plugin
 	{
 		Player player = client.getLocalPlayer();
 		Actor actor = hitsplatApplied.getActor();
+
 		if (!(actor instanceof NPC))
 		{
 			return;
+		}
+
+		final int npcId = ((NPC) actor).getId();
+		boolean isBoss = BOSSES.contains(npcId);
+
+		if (!inCombat && dpsConfig.resetTracker() && isBoss)
+		{
+			members.clear();
+			total.reset();
+			inCombat = true;
 		}
 
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
@@ -196,8 +210,6 @@ public class DpsCounterPlugin extends Plugin
 				// apply to total
 				break;
 			case DAMAGE_OTHER:
-				final int npcId = ((NPC) actor).getId();
-				boolean isBoss = BOSSES.contains(npcId);
 				if (actor != player.getInteracting() && !isBoss)
 				{
 					// only track damage to npcs we are attacking, or is a nearby common boss
@@ -255,15 +267,14 @@ public class DpsCounterPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
-
-		if (npc.isDead() && BOSSES.contains(npc.getId()))
+		// wasn't resetting properly when Dusk died so that part is just hard coded
+		if ((BOSSES.contains(npc.getId()) && npc.isDead() && npc.getId() != DAWN_7885) || npc.getId() == DUSK_7889)
 		{
-			log.debug("Boss has died!");
-
 			if (dpsConfig.autopause())
 			{
 				pause();
 			}
+			inCombat = false;
 		}
 	}
 

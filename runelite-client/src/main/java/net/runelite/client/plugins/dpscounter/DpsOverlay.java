@@ -86,7 +86,11 @@ class DpsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		Map<String, DpsMember> dpsMembers = dpsCounterPlugin.getMembers();
-		if (dpsMembers.isEmpty())
+		if (dpsConfig.displayMode() == DpsConfig.DisplayMode.IN_COMBAT && !dpsCounterPlugin.isInCombat())
+		{
+			return null;
+		}
+		else if (dpsConfig.displayMode() == DpsConfig.DisplayMode.NEVER)
 		{
 			return null;
 		}
