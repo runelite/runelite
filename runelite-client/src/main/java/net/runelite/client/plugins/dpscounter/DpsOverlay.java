@@ -76,23 +76,11 @@ class DpsOverlay extends Overlay
 		setPaused(false);
 	}
 
-	@Override
+	/*@Override
 	public void onMouseOver()
 	{
-		DpsMember total = dpsCounterPlugin.getTotal();
-		Duration elapsed = total.elapsed();
-		long s = elapsed.getSeconds();
-		String format;
-		if (s >= 3600)
-		{
-			format = String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
-		}
-		else
-		{
-			format = String.format("%d:%02d", s / 60, (s % 60));
-		}
-		tooltipManager.add(new Tooltip("Elapsed time: " + format));
-	}
+
+	}*/
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -157,6 +145,23 @@ class DpsOverlay extends Overlay
 				}
 			}
 		}
+
+		Duration elapsed = total.elapsed();
+		long s = elapsed.getSeconds();
+		String format;
+		if (s >= 3600)
+		{
+			format = String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
+		}
+		else
+		{
+			format = String.format("%d:%02d", s / 60, (s % 60));
+		}
+		panelComponent.getChildren().add(
+				LineComponent.builder()
+						.left("Elapsed time:")
+						.right(format)
+						.build());
 
 		return panelComponent.render(graphics);
 	}
