@@ -186,6 +186,12 @@ public class DpsCounterPlugin extends Plugin
 		final String npcName = ((NPC) actor).getName();
 		boolean isBoss = BOSSES.contains(npcId);
 
+		if (dpsConfig.bossOnly() && !isBoss)
+		{
+			// only track boss damage if config is set
+			return;
+		}
+
 		if (!inCombat && dpsConfig.resetTracker() && isBoss)
 		{
 			members.clear();

@@ -83,6 +83,17 @@ public interface DpsConfig extends Config
 	}
 
 	@ConfigItem(
+			position = 4,
+			keyName = "bossOnly",
+			name = "Boss Only",
+			description = "Only show Damage/DPS on bosses"
+	)
+	default boolean bossOnly()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 			position = 999,
 			keyName = "displayMode",
 			name = "Display Mode",
