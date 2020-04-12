@@ -40,6 +40,7 @@ import static net.runelite.api.NpcID.*;
 import net.runelite.api.Player;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
@@ -276,6 +277,19 @@ public class DpsCounterPlugin extends Plugin
 			}
 			inCombat = false;
 		}
+	}
+
+	@Subscribe
+	public void onPlayerDeath(PlayerDeath playerDeath)
+	{
+		if (playerDeath.getPlayer() != client.getLocalPlayer())
+		{
+			return;
+		}
+		members.clear();
+		total.reset();
+		pause();
+		inCombat = false;
 	}
 
 	private void pause()
