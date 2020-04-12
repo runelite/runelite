@@ -1101,6 +1101,24 @@ public interface Client extends GameShell
 	long getMouseLastPressedMillis();
 
 	/**
+	 * Sets the time at which the last mouse press occurred in milliseconds since
+	 * the UNIX epoch.
+	 */
+	void setMouseLastPressedMillis(long time);
+
+	/**
+	 * Gets the time at which the second-to-last mouse press occurred in milliseconds since
+	 * the UNIX epoch.
+	 */
+	long getClientMouseLastPressedMillis();
+
+	/**
+	 * Sets the time at which the second-to-last mouse press occurred in milliseconds since
+	 * the UNIX epoch.
+	 */
+	void setClientMouseLastPressedMillis(long time);
+
+	/**
 	 * Gets the amount of client ticks since the last keyboard press occurred.
 	 *
 	 * @return amount of idle keyboard ticks

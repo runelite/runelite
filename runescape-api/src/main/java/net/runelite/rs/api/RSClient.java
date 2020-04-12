@@ -1182,4 +1182,67 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("changedSkills")
 	int[] getChangedSkillLevels();
+
+	@Import("MouseHandler_lastPressedTimeMillis")
+	@Override
+	void setMouseLastPressedMillis(long time);
+
+	@Import("mouseLastLastPressedTimeMillis")
+	@Override
+	long getClientMouseLastPressedMillis();
+
+	@Import("mouseLastLastPressedTimeMillis")
+	@Override
+	void setClientMouseLastPressedMillis(long time);
+
+	@Import("rootWidgetCount")
+	int getRootWidgetCount();
+
+	@Import("widgetClickX")
+	int getWidgetClickX();
+
+	@Import("widgetClickY")
+	int getWidgetClickY();
+
+	@Import("staffModLevel")
+	int getStaffModLevel();
+
+	@Import("tradeChatMode")
+	int getTradeChatMode();
+
+	@Import("publicChatMode")
+	int getPublicChatMode();
+
+	@Import("clientType")
+	int getClientType();
+
+	@Import("onMobile")
+	boolean isOnMobile();
+
+	@Import("hadFocus")
+	boolean hadFocus();
+
+	@Import("mouseCrossColor")
+	int getMouseCrossColor();
+
+	@Import("mouseCrossColor")
+	void setMouseCrossColor(int color);
+
+	@Import("leftClickOpensMenu")
+	int getLeftClickOpensMenu();
+
+	@Import("showMouseOverText")
+	boolean getShowMouseOverText();
+
+	@Import("showMouseOverText")
+	void setShowMouseOverText(boolean showMouseOverText);
+
+	@Import("defaultRotations")
+	int[] getDefaultRotations();
+
+	@Import("showLoadingMessages")
+	boolean getShowLoadingMessages();
+
+	@Import("showLoadingMessages")
+	void setShowLoadingMessages(boolean showLoadingMessages);
 }
