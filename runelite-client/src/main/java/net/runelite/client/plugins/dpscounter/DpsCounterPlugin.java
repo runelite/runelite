@@ -26,6 +26,8 @@ package net.runelite.client.plugins.dpscounter;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
@@ -133,6 +135,8 @@ public class DpsCounterPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inCombat = false;
+	@Getter(AccessLevel.PACKAGE)
+	private HashMap<String, Integer> targets = new HashMap<String, Integer>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, DpsMember> members = new ConcurrentHashMap<>();
@@ -179,12 +183,14 @@ public class DpsCounterPlugin extends Plugin
 		}
 
 		final int npcId = ((NPC) actor).getId();
+		final String npcName = ((NPC) actor).getName();
 		boolean isBoss = BOSSES.contains(npcId);
 
 		if (!inCombat && dpsConfig.resetTracker() && isBoss)
 		{
 			members.clear();
 			total.reset();
+			targets.clear();
 			inCombat = true;
 		}
 
@@ -208,6 +214,15 @@ public class DpsCounterPlugin extends Plugin
 					specialCounterUpdate.setMemberId(localMember.getMemberId());
 					wsClient.send(specialCounterUpdate);
 				}
+				// damage to specific targets
+				if (dpsConfig.targetDamage()) {
+					if (!targets.containsKey(npcName)) {
+						targets.put(npcName, hitsplat.getAmount());
+					} else {
+						targets.replace(npcName, hitsplat.getAmount() + targets.get(npcName));
+					}
+				}
+
 				// apply to total
 				break;
 			case DAMAGE_OTHER:
@@ -253,6 +268,7 @@ public class DpsCounterPlugin extends Plugin
 		{
 			members.clear();
 			total.reset();
+			targets.clear();
 		}
 		else if (event.getEntry() == DpsOverlay.UNPAUSE_ENTRY)
 		{

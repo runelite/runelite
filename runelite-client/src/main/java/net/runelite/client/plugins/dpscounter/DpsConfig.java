@@ -73,6 +73,17 @@ public interface DpsConfig extends Config
 
 	@ConfigItem(
 			position = 3,
+			keyName = "targetDamage",
+			name = "Damage to Targets",
+			description = "Show damage done to each target"
+	)
+	default boolean targetDamage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 999,
 			keyName = "displayMode",
 			name = "Display Mode",
 			description = "Choose when to display the DPS tracker"
