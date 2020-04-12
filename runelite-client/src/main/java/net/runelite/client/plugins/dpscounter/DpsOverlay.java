@@ -122,7 +122,14 @@ class DpsOverlay extends Overlay
 		for (DpsMember dpsMember : dpsMembers.values())
 		{
 			String left = dpsMember.getName();
-			String right = showDamage ? QuantityFormatter.formatNumber(dpsMember.getDamage()) : DPS_FORMAT.format(dpsMember.getDps());
+			// remove ID from discord name because it's annoying
+			if (left.contains("#"))
+			{
+				left = left.substring(0, left.indexOf("#"));
+			}
+			String right = showDamage ? (QuantityFormatter.formatNumber(dpsMember.getDamage())
+					+ " (" + DPS_FORMAT.format(dpsMember.getDps()) + ")")
+					: DPS_FORMAT.format(dpsMember.getDps());
 			maxWidth = Math.max(maxWidth, fontMetrics.stringWidth(left) + fontMetrics.stringWidth(right));
 			panelComponent.getChildren().add(
 				LineComponent.builder()
