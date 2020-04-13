@@ -79,6 +79,11 @@ public class MotherlodeOreOverlay extends OverlayPanel
 				.left("Nuggets:")
 				.right(Integer.toString(nuggetsFound))
 				.build());
+
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Nuggets/hr:")
+					.right(session.getRecentMined() > 2 ? Integer.toString(session.getNuggetsPerHour()) : "")
+					.build());
 		}
 
 		if (coalFound > 0)
@@ -87,6 +92,11 @@ public class MotherlodeOreOverlay extends OverlayPanel
 				.left("Coal:")
 				.right(Integer.toString(coalFound))
 				.build());
+
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Coal/hr:")
+					.right(session.getRecentMined() > 2 ? Integer.toString(session.getCoalPerHour()) : "")
+					.build());
 		}
 
 		if (goldFound > 0)
@@ -95,6 +105,11 @@ public class MotherlodeOreOverlay extends OverlayPanel
 				.left("Gold:")
 				.right(Integer.toString(goldFound))
 				.build());
+
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Gold/hr:")
+					.right(session.getRecentMined() > 2 ? Integer.toString(session.getGoldPerHour()) : "")
+					.build());
 		}
 
 		if (mithrilFound > 0)
@@ -103,6 +118,11 @@ public class MotherlodeOreOverlay extends OverlayPanel
 				.left("Mithril:")
 				.right(Integer.toString(mithrilFound))
 				.build());
+
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Mithril/hr:")
+					.right(session.getRecentMined() > 2 ? Integer.toString(session.getMithrilPerHour()) : "")
+					.build());
 		}
 
 		if (adamantiteFound > 0)
@@ -111,6 +131,11 @@ public class MotherlodeOreOverlay extends OverlayPanel
 				.left("Adamantite:")
 				.right(Integer.toString(adamantiteFound))
 				.build());
+
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Adamantite/hr:")
+					.right(session.getRecentMined() > 2 ? Integer.toString(session.getAdamantitePerHour()) : "")
+					.build());
 		}
 
 		if (runiteFound > 0)
@@ -119,6 +144,11 @@ public class MotherlodeOreOverlay extends OverlayPanel
 				.left("Runite:")
 				.right(Integer.toString(runiteFound))
 				.build());
+
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Runite/hr:")
+					.right(session.getRecentMined() > 2 ? Integer.toString(session.getRunitePerHour()) : "")
+					.build());
 		}
 
 		return super.render(graphics);
