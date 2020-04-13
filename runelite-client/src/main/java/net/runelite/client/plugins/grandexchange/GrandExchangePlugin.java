@@ -703,7 +703,7 @@ public class GrandExchangePlugin extends Plugin
 		LocalDateTime start = LocalDateTime.parse(lastDateTime, formatter);
 		LocalDateTime now = LocalDateTime.now();
 		long minuteDifference = ChronoUnit.MINUTES.between(start, now);
-		if (minuteDifference / 60 > 4)
+		if (minuteDifference / 60.0 > 4.0)
 			return "None";
 		else
 		{
