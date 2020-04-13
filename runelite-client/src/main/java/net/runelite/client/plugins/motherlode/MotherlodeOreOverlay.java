@@ -27,18 +27,16 @@ package net.runelite.client.plugins.motherlode;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class MotherlodeOreOverlay extends Overlay
+public class MotherlodeOreOverlay extends OverlayPanel
 {
 	private final MotherlodePlugin plugin;
 	private final MotherlodeSession motherlodeSession;
 	private final MotherlodeConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
@@ -73,7 +71,6 @@ public class MotherlodeOreOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(TitleComponent.builder().text("Ores found").build());
 
 		if (nuggetsFound > 0)
@@ -124,6 +121,6 @@ public class MotherlodeOreOverlay extends Overlay
 				.build());
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

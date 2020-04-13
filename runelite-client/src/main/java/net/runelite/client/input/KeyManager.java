@@ -49,25 +49,52 @@ public class KeyManager
 
 	public void processKeyPressed(KeyEvent keyEvent)
 	{
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
 			keyListener.keyPressed(keyEvent);
+			if (keyEvent.isConsumed())
+			{
+				break;
+			}
 		}
 	}
 
 	public void processKeyReleased(KeyEvent keyEvent)
 	{
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
 			keyListener.keyReleased(keyEvent);
+			if (keyEvent.isConsumed())
+			{
+				break;
+			}
 		}
 	}
 
 	public void processKeyTyped(KeyEvent keyEvent)
 	{
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
 			keyListener.keyTyped(keyEvent);
+			if (keyEvent.isConsumed())
+			{
+				break;
+			}
 		}
 	}
 }
