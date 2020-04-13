@@ -35,6 +35,9 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -399,6 +402,10 @@ public class GrandExchangePlugin extends Plugin
 			savedOffer.setSpent(offer.getSpent());
 			savedOffer.setState(offer.getState());
 			setOffer(slot, savedOffer);
+			if (offer.getState() == GrandExchangeOfferState.BOUGHT)
+			{
+				setLimitReset(offer.getItemId());
+			}
 		}
 	}
 
@@ -674,6 +681,40 @@ public class GrandExchangePlugin extends Plugin
 		stringStack[stringStackSize - 1] += titleBuilder.toString();
 	}
 
+	private void setLimitReset(int itemId)
+	{
+		String lastLimit = getimitReset(itemId);
+		if (!lastLimit.equals("None")) return; // do not update if previous limit has not expired
+		String itemIdStr = Integer.toString(itemId);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime now = LocalDateTime.now();
+		String currentDateTime = now.format(formatter);
+		configManager.setConfiguration("gelimitreset." + client.getUsername().toLowerCase(),
+				itemIdStr, currentDateTime);
+	}
+
+	private String getimitReset(int itemId)
+	{
+		String itemIdStr = Integer.toString(itemId);
+		String lastDateTime = configManager.getConfiguration("gelimitreset." + client.getUsername().toLowerCase(),
+				itemIdStr, String.class);
+		if (lastDateTime == null) return "None";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime start = LocalDateTime.parse(lastDateTime, formatter);
+		LocalDateTime now = LocalDateTime.now();
+		long minuteDifference = ChronoUnit.MINUTES.between(start, now);
+		if (minuteDifference / 60 > 4)
+			return "None";
+		else
+		{
+			int minsLeft = 240 - (int) minuteDifference;
+			int hours = minsLeft / 60;
+			int minutes = minsLeft % 60;
+			String limitResetString = hours + ":" + minutes;
+			return limitResetString;
+		}
+	}
+
 	private void rebuildGeText()
 	{
 		if (grandExchangeText == null || grandExchangeItem == null || grandExchangeItem.isHidden())
@@ -702,6 +743,11 @@ public class GrandExchangePlugin extends Plugin
 			{
 				text += BUY_LIMIT_GE_TEXT + QuantityFormatter.formatNumber(itemStats.getGeLimit());
 			}
+		}
+
+		if (config.enableGELimitReset())
+		{
+			text += " (" + getimitReset(itemId) + ")";
 		}
 
 		geText.setText(text);

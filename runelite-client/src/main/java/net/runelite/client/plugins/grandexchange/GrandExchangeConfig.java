@@ -74,20 +74,32 @@ public interface GrandExchangeConfig extends Config
 	{
 		return true;
 	}
-
 	@ConfigItem(
 		position = 5,
-		keyName = "showTotal",
-		name = "Show grand exchange total",
-		description = "Show grand exchange total"
+		keyName = "geLimitReset",
+		name = "Enable GE Limit Reset Timer",
+		description = "Shows when GE Trade limits reset (H:MM)"
 	)
-	default boolean showTotal()
+
+	default boolean enableGELimitReset()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		position = 6,
+		keyName = "showTotal",
+		name = "Show grand exchange total",
+		description = "Show grand exchange total"
+	)
+
+	default boolean showTotal()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 7,
 		keyName = "showExact",
 		name = "Show exact total value",
 		description = "Show exact total value"
@@ -98,7 +110,7 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "highlightSearchMatch",
 		name = "Highlight Search Match",
 		description = "Highlights the search match with an underline"
@@ -109,7 +121,7 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "geSearchMode",
 		name = "Search Mode",
 		description = "The search mode to use for the GE"
