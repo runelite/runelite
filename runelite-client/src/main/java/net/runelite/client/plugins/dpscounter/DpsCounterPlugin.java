@@ -192,7 +192,7 @@ public class DpsCounterPlugin extends Plugin
 			return;
 		}
 
-		if (!inCombat && dpsConfig.resetTracker() && isBoss)
+		if (!inCombat && dpsConfig.resetTracker())
 		{
 			members.clear();
 			total.reset();
@@ -290,8 +290,20 @@ public class DpsCounterPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
-		// wasn't resetting properly when Dusk died so that part is just hard coded
-		if ((BOSSES.contains(npc.getId()) && npc.isDead() && npc.getId() != DAWN_7885) || npc.getId() == DUSK_7889)
+		boolean isBoss = BOSSES.contains(npc.getId());
+		if (dpsConfig.bossOnly() && !isBoss)
+		{
+			return;
+		}
+
+		// don't want this to reset when Dawn dies because fight isn't over yet
+		if (npc.getId() == DAWN_7885)
+		{
+			return;
+		}
+
+		// counter wasn't resetting sometimes when Dusk died so just hard-coded it in
+		if (npc.isDead() || npc.getId() == DUSK_7889)
 		{
 			if (dpsConfig.autopause())
 			{
