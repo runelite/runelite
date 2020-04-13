@@ -34,9 +34,12 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.api.Player;
+<<<<<<< HEAD
+=======
+import net.runelite.client.ui.overlay.Overlay;
+>>>>>>> accc5af45ff7c3fd1df7cef07569cb7d358a44f1
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
-import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -44,8 +47,13 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.ws.PartyService;
+<<<<<<< HEAD
 
 class DpsOverlay extends OverlayPanel
+=======
+@Slf4j
+class DpsOverlay extends Overlay
+>>>>>>> accc5af45ff7c3fd1df7cef07569cb7d358a44f1
 {
 	private static final DecimalFormat DPS_FORMAT = new DecimalFormat("#0.0");
 	private static final int PANEL_WIDTH_OFFSET = 10; // assumes 8 for panel component border + 2px between left and right
