@@ -26,6 +26,7 @@ package net.runelite.client;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import com.github.zafarkhaja.semver.Version;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -33,13 +34,20 @@ import com.google.inject.Injector;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
@@ -61,6 +69,7 @@ import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.LauncherConfig;
 import net.runelite.client.config.OpenOSRSConfig;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
@@ -213,6 +222,9 @@ public class RuneLite
 	private OpenOSRSConfig openOSRSConfig;
 
 	@Inject
+	private LauncherConfig launcherConfig;
+
+	@Inject
 	private Provider<ModelOutlineRenderer> modelOutlineRenderer;
 
 	@Inject
@@ -313,6 +325,45 @@ public class RuneLite
 			System.setProperty("cli.world", String.valueOf(world));
 		}
 
+		Properties properties = new Properties();
+		try (FileInputStream in = new FileInputStream(RuneLite.RUNELITE_DIR + "\\runeliteplus.properties"))
+		{
+			properties.load(new InputStreamReader(in, StandardCharsets.UTF_8));
+			try
+			{
+				@SuppressWarnings("unchecked") Map<String, String> copy = (Map) Map.copyOf(properties);
+				copy.forEach((groupAndKey, value) ->
+				{
+					final String[] split = groupAndKey.split("\\.", 2);
+					final String groupName = split[0];
+					final String key = split[1];
+
+					if (!groupName.equals("openosrs"))
+					{
+						return;
+					}
+
+					if (key.equals("disableHw") && value.equals("true"))
+					{
+						log.info("Disabling HW Accel");
+						System.setProperty("sun.java2d.noddraw", "true");
+					}
+				});
+			}
+			catch (Exception ex)
+			{
+				log.error("Unexpected error", ex);
+			}
+		}
+		catch (FileNotFoundException ex)
+		{
+			log.error("Unable to load settings - no such file");
+		}
+		catch (IllegalArgumentException | IOException ex)
+		{
+			log.error("Unable to load settings", ex);
+		}
+
 		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
 		Completable.fromAction(clientLoader::get)
 			.subscribeOn(Schedulers.computation())
@@ -380,6 +431,8 @@ public class RuneLite
 		// Load user configuration
 		RuneLiteSplashScreen.stage(.57, "Loading user config");
 		configManager.load();
+
+		parseLauncherConfig();
 
 		// Load the session, including saved configuration
 		RuneLiteSplashScreen.stage(.58, "Loading session data");
@@ -502,6 +555,47 @@ public class RuneLite
 		else
 		{
 			log.warn("World {} not found.", correctedWorld);
+		}
+	}
+
+	private void parseLauncherConfig()
+	{
+		String launcherVersion = RuneLiteProperties.getLauncherVersion();
+
+		if (launcherVersion == null || !Version.valueOf(launcherVersion).greaterThanOrEqualTo(Version.valueOf("2.2.0")))
+		{
+			return;
+		}
+
+		if (launcherConfig.useProxy())
+		{
+			log.info("Setting proxy.");
+			String[] proxy = launcherConfig.proxyDetails().split(":");
+
+			if (proxy.length >= 2)
+			{
+				System.setProperty("socksProxyHost", proxy[0]);
+				System.setProperty("socksProxyPort", proxy[1]);
+			}
+
+			if (proxy.length >= 4)
+			{
+				System.setProperty("java.net.socks.username", proxy[2]);
+				System.setProperty("java.net.socks.password", proxy[3]);
+
+				final String user = proxy[2];
+				final char[] pass = proxy[3].toCharArray();
+
+				Authenticator.setDefault(new Authenticator()
+				{
+					private final PasswordAuthentication auth = new PasswordAuthentication(user, pass);
+
+					protected PasswordAuthentication getPasswordAuthentication()
+					{
+						return auth;
+					}
+				});
+			}
 		}
 	}
 
