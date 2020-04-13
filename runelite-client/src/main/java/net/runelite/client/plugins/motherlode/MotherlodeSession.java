@@ -38,7 +38,7 @@ public class MotherlodeSession
 {
 	private static final Duration HOUR = Duration.ofHours(1);
 
-	private int perHour;
+	private int payDirtPerHour;
 
 	private Instant lastPayDirtMined;
 	private int totalMined;
@@ -63,21 +63,27 @@ public class MotherlodeSession
 
 	@Getter(AccessLevel.PACKAGE)
 	private int nuggetsFound;
+	private int nuggetsPerHour;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int coalFound;
+	private int coalPerHour;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int goldFound;
+	private int goldPerHour;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int mithrilFound;
+	private int mithrilPerHour;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int adamantiteFound;
+	private int adamantitePerHour;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int runiteFound;
+	private int runitePerHour;
 
 	void incrementGemFound(int gemID)
 	{
@@ -108,25 +114,64 @@ public class MotherlodeSession
 
 	void updateOreFound(int item, int count)
 	{
+		Instant now = Instant.now();
+		Duration timeSinceStart;
+
 		switch (item)
 		{
 			case ItemID.GOLDEN_NUGGET:
 				nuggetsFound += count;
+
+				timeSinceStart = Duration.between(recentPayDirtMined, now);
+				if (!timeSinceStart.isZero())
+				{
+					nuggetsPerHour = (int) ((double) nuggetsFound * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+				}
 				break;
 			case ItemID.COAL:
 				coalFound += count;
+
+				timeSinceStart = Duration.between(recentPayDirtMined, now);
+				if (!timeSinceStart.isZero())
+				{
+					coalPerHour = (int) ((double) coalFound * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+				}
 				break;
 			case ItemID.GOLD_ORE:
 				goldFound += count;
+
+				timeSinceStart = Duration.between(recentPayDirtMined, now);
+				if (!timeSinceStart.isZero())
+				{
+					goldPerHour = (int) ((double) goldFound * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+				}
 				break;
 			case ItemID.MITHRIL_ORE:
 				mithrilFound += count;
+
+				timeSinceStart = Duration.between(recentPayDirtMined, now);
+				if (!timeSinceStart.isZero())
+				{
+					mithrilPerHour = (int) ((double) mithrilFound * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+				}
 				break;
 			case ItemID.ADAMANTITE_ORE:
 				adamantiteFound += count;
+
+				timeSinceStart = Duration.between(recentPayDirtMined, now);
+				if (!timeSinceStart.isZero())
+				{
+					adamantitePerHour = (int) ((double) adamantiteFound * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+				}
 				break;
 			case ItemID.RUNITE_ORE:
 				runiteFound += count;
+
+				timeSinceStart = Duration.between(recentPayDirtMined, now);
+				if (!timeSinceStart.isZero())
+				{
+					runitePerHour = (int) ((double) runiteFound * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+				}
 				break;
 			default:
 				log.debug("Invalid ore specified. The ore count will not be updated.");
@@ -149,19 +194,50 @@ public class MotherlodeSession
 		Duration timeSinceStart = Duration.between(recentPayDirtMined, now);
 		if (!timeSinceStart.isZero())
 		{
-			perHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+			payDirtPerHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
 		}
 	}
 
 	public void resetRecent()
 	{
 		recentPayDirtMined = null;
+
 		recentMined = 0;
 	}
 
-	public int getPerHour()
+	public int getPayDirtPerHour()
 	{
-		return perHour;
+		return payDirtPerHour;
+	}
+
+	public int getNuggetsPerHour()
+	{
+		return nuggetsPerHour;
+	}
+
+	public int getCoalPerHour()
+	{
+		return coalPerHour;
+	}
+
+	public int getGoldPerHour()
+	{
+		return goldPerHour;
+	}
+
+	public int getMithrilPerHour()
+	{
+		return mithrilPerHour;
+	}
+
+	public int getAdamantitePerHour()
+	{
+		return adamantitePerHour;
+	}
+
+	public int getRunitePerHour()
+	{
+		return runitePerHour;
 	}
 
 	public Instant getLastPayDirtMined()
