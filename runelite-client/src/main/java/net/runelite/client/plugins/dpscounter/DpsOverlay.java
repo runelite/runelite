@@ -24,7 +24,11 @@
  */
 package net.runelite.client.plugins.dpscounter;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Point;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.HashMap;
