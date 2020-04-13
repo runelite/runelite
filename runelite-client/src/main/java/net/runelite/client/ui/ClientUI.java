@@ -139,6 +139,7 @@ public class ClientUI
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
 	private Dimension lastClientSize;
+	private Cursor defaultCursor;
 
 	@Inject
 	private ClientUI(
@@ -664,6 +665,24 @@ public class ClientUI
 	}
 
 	/**
+	 * Returns current cursor set on game container
+	 * @return awt cursor
+	 */
+	public Cursor getCurrentCursor()
+	{
+		return container.getCursor();
+	}
+
+	/**
+	 * Returns current custom cursor or default system cursor if cursor is not set
+	 * @return awt cursor
+	 */
+	public Cursor getDefaultCursor()
+	{
+		return defaultCursor != null ? defaultCursor : Cursor.getDefaultCursor();
+	}
+
+	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
 	 * FIXME: This is working properly only on Windows, Linux and Mac are displaying cursor incorrectly
 	 * @param image cursor image
@@ -678,7 +697,17 @@ public class ClientUI
 
 		final java.awt.Point hotspot = new java.awt.Point(0, 0);
 		final Cursor cursorAwt = Toolkit.getDefaultToolkit().createCustomCursor(image, hotspot, name);
-		container.setCursor(cursorAwt);
+		defaultCursor = cursorAwt;
+		setCursor(cursorAwt);
+	}
+
+	/**
+	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
+	 * @param cursor awt cursor
+	 */
+	public void setCursor(final Cursor cursor)
+	{
+		container.setCursor(cursor);
 	}
 
 	/**
@@ -692,6 +721,7 @@ public class ClientUI
 			return;
 		}
 
+		defaultCursor = null;
 		container.setCursor(Cursor.getDefaultCursor());
 	}
 

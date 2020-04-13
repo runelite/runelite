@@ -39,19 +39,18 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.game.NPCManager;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.hiscore.HiscoreResult;
 
-class OpponentInfoOverlay extends Overlay
+class OpponentInfoOverlay extends OverlayPanel
 {
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
 	private static final Color HP_RED = new Color(102, 15, 16, 230);
@@ -61,8 +60,6 @@ class OpponentInfoOverlay extends Overlay
 	private final OpponentInfoConfig opponentInfoConfig;
 	private final HiscoreManager hiscoreManager;
 	private final NPCManager npcManager;
-
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	private Integer lastMaxHealth;
 	private int lastRatio = 0;
@@ -135,8 +132,6 @@ class OpponentInfoOverlay extends Overlay
 
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		panelComponent.getChildren().clear();
-
 		// Opponent name
 		int panelWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(opponentName) + ComponentConstants.STANDARD_BORDER + ComponentConstants.STANDARD_BORDER);
 		panelComponent.setPreferredSize(new Dimension(panelWidth, 0));
@@ -205,6 +200,6 @@ class OpponentInfoOverlay extends Overlay
 			panelComponent.getChildren().add(progressBarComponent);
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

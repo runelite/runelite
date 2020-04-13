@@ -267,17 +267,6 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "infoBoxWrap",
-		name = "Infobox wrap count",
-		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 41
-	)
-	default int infoBoxWrap()
-	{
-		return 4;
-	}
-
-	@ConfigItem(
 		keyName = "infoBoxSize",
 		name = "Infobox size",
 		description = "Configures the size of each infobox in pixels",

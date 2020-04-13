@@ -31,13 +31,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.api.Player;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -45,8 +44,8 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.ws.PartyService;
-@Slf4j
-class DpsOverlay extends Overlay
+
+class DpsOverlay extends OverlayPanel
 {
 	private static final DecimalFormat DPS_FORMAT = new DecimalFormat("#0.0");
 	private static final int PANEL_WIDTH_OFFSET = 10; // assumes 8 for panel component border + 2px between left and right
@@ -61,7 +60,6 @@ class DpsOverlay extends Overlay
 	private final Client client;
 	private final TooltipManager tooltipManager;
 
-	private final PanelComponent panelComponent = new PanelComponent();
 	private final PanelComponent damagePanelComponent = new PanelComponent();
 	private final PanelComponent dpsPanelComponent = new PanelComponent();
 
@@ -75,9 +73,9 @@ class DpsOverlay extends Overlay
 		this.dpsConfig = dpsConfig;
 		this.partyService = partyService;
 		this.client = client;
-		this.panelComponent.setBackgroundColor(null);
-		this.panelComponent.setBorder(new Rectangle());
-		this.panelComponent.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
+		super.panelComponent.setBackgroundColor(null);
+		super.panelComponent.setBorder(new Rectangle());
+		super.panelComponent.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
 		this.tooltipManager = tooltipManager;
 		getMenuEntries().add(RESET_ENTRY);
 		setPaused(false);
@@ -107,8 +105,8 @@ class DpsOverlay extends Overlay
 		DpsMember total = dpsCounterPlugin.getTotal();
 		boolean paused = total.isPaused();
 
-		panelComponent.getChildren().clear();
 		dpsPanelComponent.getChildren().clear();
+		damagePanelComponent.getChildren().clear();
 
 		final String title = (inParty ? "Party " : "") + (showDamage ? "Damage" : "DPS") + (paused ? " (paused)" : "");
 		dpsPanelComponent.getChildren().add(
@@ -201,7 +199,7 @@ class DpsOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	void setPaused(boolean paused)
