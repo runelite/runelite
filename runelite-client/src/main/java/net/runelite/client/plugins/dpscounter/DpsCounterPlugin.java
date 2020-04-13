@@ -221,10 +221,14 @@ public class DpsCounterPlugin extends Plugin
 					wsClient.send(specialCounterUpdate);
 				}
 				// damage to specific targets
-				if (dpsConfig.targetDamage()) {
-					if (!targets.containsKey(npcName)) {
+				if (dpsConfig.targetDamage())
+				{
+					if (!targets.containsKey(npcName))
+					{
 						targets.put(npcName, hitsplat.getAmount());
-					} else {
+					}
+					else
+					{
 						targets.replace(npcName, hitsplat.getAmount() + targets.get(npcName));
 					}
 				}
