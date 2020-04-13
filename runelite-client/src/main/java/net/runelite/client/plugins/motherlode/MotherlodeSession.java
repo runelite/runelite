@@ -201,7 +201,6 @@ public class MotherlodeSession
 	public void resetRecent()
 	{
 		recentPayDirtMined = null;
-
 		recentMined = 0;
 	}
 
