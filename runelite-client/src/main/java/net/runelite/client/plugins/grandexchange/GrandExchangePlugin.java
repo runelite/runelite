@@ -402,10 +402,8 @@ public class GrandExchangePlugin extends Plugin
 			savedOffer.setSpent(offer.getSpent());
 			savedOffer.setState(offer.getState());
 			setOffer(slot, savedOffer);
-			if (offer.getState() == GrandExchangeOfferState.BOUGHT)
-			{
-				setLimitReset(offer.getItemId());
-			}
+			if (config.enableGELimitReset())
+				updateLimitTimer(offer);
 		}
 	}
 
@@ -683,7 +681,7 @@ public class GrandExchangePlugin extends Plugin
 
 	private void setLimitReset(int itemId)
 	{
-		String lastLimit = getimitReset(itemId);
+		String lastLimit = getLimitReset(itemId);
 		if (!lastLimit.equals("None")) return; // do not update if previous limit has not expired
 		String itemIdStr = Integer.toString(itemId);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -693,7 +691,7 @@ public class GrandExchangePlugin extends Plugin
 				itemIdStr, currentDateTime);
 	}
 
-	private String getimitReset(int itemId)
+	private String getLimitReset(int itemId)
 	{
 		String itemIdStr = Integer.toString(itemId);
 		String lastDateTime = configManager.getConfiguration("gelimitreset." + client.getUsername().toLowerCase(),
@@ -712,6 +710,16 @@ public class GrandExchangePlugin extends Plugin
 			int minutes = minsLeft % 60;
 			String limitResetString = hours + ":" + minutes;
 			return limitResetString;
+		}
+	}
+
+	private void updateLimitTimer(GrandExchangeOffer offer)
+	{
+		if (offer.getState() == GrandExchangeOfferState.BOUGHT ||
+				(offer.getQuantitySold() > 0 &&
+						offer.getState() == GrandExchangeOfferState.BUYING))
+		{
+			setLimitReset(offer.getItemId());
 		}
 	}
 
@@ -747,7 +755,7 @@ public class GrandExchangePlugin extends Plugin
 
 		if (config.enableGELimitReset())
 		{
-			text += " (" + getimitReset(itemId) + ")";
+			text += " (" + getLimitReset(itemId) + ")";
 		}
 
 		geText.setText(text);
