@@ -403,7 +403,9 @@ public class GrandExchangePlugin extends Plugin
 			savedOffer.setState(offer.getState());
 			setOffer(slot, savedOffer);
 			if (config.enableGELimitReset())
+			{
 				updateLimitTimer(offer);
+			}
 		}
 	}
 
@@ -585,13 +587,13 @@ public class GrandExchangePlugin extends Plugin
 		if (searchMode == GrandExchangeSearchMode.FUZZY_FALLBACK)
 		{
 			List<Integer> ids = IntStream.range(0, client.getItemCount())
-					.mapToObj(itemManager::getItemComposition)
-					.filter(item -> item.isTradeable() && item.getNote() == -1
-						&& item.getName().toLowerCase().contains(input))
-					.limit(MAX_RESULT_COUNT + 1)
-					.sorted(Comparator.comparing(ItemComposition::getName))
-					.map(ItemComposition::getId)
-					.collect(Collectors.toList());
+				.mapToObj(itemManager::getItemComposition)
+				.filter(item -> item.isTradeable() && item.getNote() == -1
+					&& item.getName().toLowerCase().contains(input))
+				.limit(MAX_RESULT_COUNT + 1)
+				.sorted(Comparator.comparing(ItemComposition::getName))
+				.map(ItemComposition::getId)
+				.collect(Collectors.toList());
 			if (ids.size() > MAX_RESULT_COUNT)
 			{
 				client.setGeSearchResultCount(-1);
@@ -620,14 +622,14 @@ public class GrandExchangePlugin extends Plugin
 			};
 
 			List<Integer> ids = IntStream.range(0, client.getItemCount())
-					.mapToObj(itemManager::getItemComposition)
-					.filter(item -> item.isTradeable() && item.getNote() == -1)
-					.filter(item -> getScore.applyAsInt(item) > 0)
-					.sorted(Comparator.comparingInt(getScore).reversed()
-						.thenComparing(ItemComposition::getName))
-					.limit(MAX_RESULT_COUNT)
-					.map(ItemComposition::getId)
-					.collect(Collectors.toList());
+				.mapToObj(itemManager::getItemComposition)
+				.filter(item -> item.isTradeable() && item.getNote() == -1)
+				.filter(item -> getScore.applyAsInt(item) > 0)
+				.sorted(Comparator.comparingInt(getScore).reversed()
+					.thenComparing(ItemComposition::getName))
+				.limit(MAX_RESULT_COUNT)
+				.map(ItemComposition::getId)
+				.collect(Collectors.toList());
 
 			client.setGeSearchResultCount(ids.size());
 			client.setGeSearchResultIds(Shorts.toArray(ids));
@@ -682,27 +684,35 @@ public class GrandExchangePlugin extends Plugin
 	private void setLimitReset(int itemId)
 	{
 		String lastLimit = getLimitReset(itemId);
-		if (!lastLimit.equals("None")) return; // do not update if previous limit has not expired
+		if (!lastLimit.equals("None"))
+		{
+			return; // do not update if previous limit has not expired
+		}
 		String itemIdStr = Integer.toString(itemId);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		LocalDateTime now = LocalDateTime.now();
 		String currentDateTime = now.format(formatter);
 		configManager.setConfiguration("gelimitreset." + client.getUsername().toLowerCase(),
-				itemIdStr, currentDateTime);
+			itemIdStr, currentDateTime);
 	}
 
 	private String getLimitReset(int itemId)
 	{
 		String itemIdStr = Integer.toString(itemId);
 		String lastDateTime = configManager.getConfiguration("gelimitreset." + client.getUsername().toLowerCase(),
-				itemIdStr, String.class);
-		if (lastDateTime == null) return "None";
+			itemIdStr, String.class);
+		if (lastDateTime == null)
+		{
+			return "None";
+		}
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		LocalDateTime start = LocalDateTime.parse(lastDateTime, formatter);
 		LocalDateTime now = LocalDateTime.now();
 		long minuteDifference = ChronoUnit.MINUTES.between(start, now);
 		if (minuteDifference / 60.0 > 4.0)
+		{
 			return "None";
+		}
 		else
 		{
 			int minsLeft = 240 - (int) minuteDifference;
@@ -716,8 +726,8 @@ public class GrandExchangePlugin extends Plugin
 	private void updateLimitTimer(GrandExchangeOffer offer)
 	{
 		if (offer.getState() == GrandExchangeOfferState.BOUGHT ||
-				(offer.getQuantitySold() > 0 &&
-						offer.getState() == GrandExchangeOfferState.BUYING))
+			(offer.getQuantitySold() > 0 &&
+				offer.getState() == GrandExchangeOfferState.BUYING))
 		{
 			setLimitReset(offer.getItemId());
 		}
