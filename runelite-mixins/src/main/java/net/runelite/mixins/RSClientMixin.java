@@ -1396,20 +1396,20 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Replace("menuAction")
-	static void rl$menuAction(int param0, int param1, int opcode, int id, String menuOption, String menuTarget, int canvasX, int canvasY)
+	static void rl$menuAction(int param0, int param1, int opcode, int id, String option, String target, int canvasX, int canvasY)
 	{
 		boolean authentic = true;
-		if (menuTarget != null && menuTarget.startsWith("!AUTHENTIC"))
+		if (target != null && target.startsWith("!AUTHENTIC"))
 		{
 			authentic = false;
-			menuTarget = menuTarget.substring(10);
+			target = target.substring(10);
 		}
 
 		if (printMenuActions && client.getLogger().isDebugEnabled())
 		{
 			client.getLogger().debug(
-				"|MenuAction|: Param0={} Param1={} Opcode={} Id={} MenuOption={} MenuTarget={} CanvasX={} CanvasY={} Authentic={}",
-				param0, param1, opcode, id, menuOption, menuTarget, canvasX, canvasY, authentic
+				"|MenuAction|: MenuOption={} MenuTarget={} Id={} Opcode={} Param0={} Param1={} CanvasX={} CanvasY={} Authentic={}",
+				option, target, id, opcode, param0, param1, canvasX, canvasY, authentic
 			);
 		}
 
@@ -1422,8 +1422,8 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		final MenuOptionClicked menuOptionClicked = new MenuOptionClicked(
-			menuOption,
-			menuTarget,
+			option,
+			target,
 			id,
 			opcode,
 			param0,
@@ -1446,9 +1446,11 @@ public abstract class RSClientMixin implements RSClient
 
 	@Override
 	@Inject
-	public void invokeMenuAction(int param0, int param1, int opcode, int id, String menuOption, String menuTarget, int canvasX, int canvasY)
+	public void invokeMenuAction(String option, String target, int identifier, int opcode, int param0, int param1)
 	{
-		client.sendMenuAction(param0, param1, opcode, id, menuOption, "!AUTHENTIC" + menuTarget, canvasX, canvasY);
+		assert isClientThread();
+
+		client.sendMenuAction(param0, param1, opcode, identifier, option, "!AUTHENTIC" + target, 658, 384);
 	}
 
 	@FieldHook("Login_username")
@@ -1929,3 +1931,4 @@ public abstract class RSClientMixin implements RSClient
 		invertYaw = state;
 	}
 }
+
