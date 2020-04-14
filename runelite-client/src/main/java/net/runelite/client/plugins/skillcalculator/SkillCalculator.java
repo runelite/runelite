@@ -344,7 +344,16 @@ class SkillCalculator extends JPanel
 				actionCount = (int) Math.ceil(neededXP / xp);
 			}
 
-			slot.setText("<html>Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - ") + formatXPActionCostString(actionCount, action.getName()));
+			if (isBuyableSkill(currentSkill))
+			{
+				slot.setText("<html>Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - ") + formatXPActionCostString(actionCount, action.getName()));
+
+			}
+			else
+			{
+				slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+
+			}
 			slot.setAvailable(currentLevel >= action.getLevel());
 			slot.setOverlapping(action.getLevel() < targetLevel);
 			slot.setValue(xp);
@@ -476,6 +485,61 @@ class SkillCalculator extends JPanel
 				focusLostConsumer.accept(e);
 			}
 		};
+	}
+
+	private boolean isBuyableSkill(final Skill skill)
+	{
+		switch (skill)
+		{
+			case ATTACK:
+				return false;
+			case MINING:
+				return false;
+			case WOODCUTTING:
+				return false;
+			case DEFENCE:
+				return false;
+			case MAGIC:
+				return true;
+			case RANGED:
+				return false;
+			case HITPOINTS:
+				return false;
+			case AGILITY:
+				return false;
+			case STRENGTH:
+				return false;
+			case PRAYER:
+				return true;
+			case SLAYER:
+				return false;
+			case FISHING:
+				return false;
+			case RUNECRAFT:
+				return false;
+			case HERBLORE:
+				return true;
+			case FIREMAKING:
+				return true;
+			case CONSTRUCTION:
+				return true;
+			case HUNTER:
+				return true;
+			case COOKING:
+				return true;
+			case FARMING:
+				return true;
+			case CRAFTING:
+				return true;
+			case SMITHING:
+				return true;
+			case THIEVING:
+				return false;
+			case FLETCHING:
+				return true;
+			default:
+				throw new IllegalArgumentException();
+		}
 	}
 
 	private static VarPlayer endGoalVarpForSkill(final Skill skill)
