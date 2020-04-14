@@ -45,13 +45,13 @@ public class PlayerIndicatorsService
 
 	private Color randomColor( Player player )
 	{
-		if( this.colorMap.containsKey(player.getName()) )
+		if (this.colorMap.containsKey(player.getName()))
 		{
 			return this.colorMap.get(player.getName());
 		}
 		else
 		{
-			if(this.colorMap.size() > this.MAX_SIZE)
+			if (this.colorMap.size() > this.MAX_SIZE)
 			{
 				this.colorMap.remove( this.colorMap.keys().nextElement() );
 			}
