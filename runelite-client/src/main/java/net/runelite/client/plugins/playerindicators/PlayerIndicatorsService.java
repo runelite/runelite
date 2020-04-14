@@ -30,12 +30,36 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Random;
 
 @Singleton
 public class PlayerIndicatorsService
 {
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
+
+	private final int MAX_SIZE = 2500;
+	private final ConcurrentHashMap<String, Color> colorMap = new ConcurrentHashMap<>();
+	private final Random random = new Random();
+
+	private Color randomColor( Player player )
+	{
+		if( this.colorMap.containsKey(player.getName()) )
+		{
+			return this.colorMap.get(player.getName());
+		}
+		else
+		{
+			if(this.colorMap.size() > this.MAX_SIZE)
+			{
+				this.colorMap.remove( this.colorMap.keys().nextElement() );
+			}
+			Color randomColor = Color.getHSBColor(this.random.nextFloat(), 1.0f, 0.75f);
+			this.colorMap.put(player.getName(), randomColor);
+			return randomColor;
+		}
+	}
 
 	@Inject
 	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
@@ -47,7 +71,7 @@ public class PlayerIndicatorsService
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 		if (!config.highlightOwnPlayer() && !config.drawClanMemberNames()
-			&& !config.highlightFriends() && !config.highlightNonClanMembers())
+				&& !config.highlightFriends() && !config.highlightNonClanMembers())
 		{
 			return;
 		}
@@ -85,6 +109,10 @@ public class PlayerIndicatorsService
 			else if (config.highlightNonClanMembers() && !isClanMember)
 			{
 				consumer.accept(player, config.getNonClanMemberColor());
+			}
+			else if ( config.randomizeColor() )
+			{
+				consumer.accept(player, this.randomColor(player));
 			}
 		}
 	}
