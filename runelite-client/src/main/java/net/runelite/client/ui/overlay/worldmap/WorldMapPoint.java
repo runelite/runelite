@@ -66,7 +66,7 @@ public class WorldMapPoint
 
 	private String tooltip;
 
-	protected WorldMapPoint(WorldPoint worldPoint, BufferedImage image)
+	public WorldMapPoint(WorldPoint worldPoint, BufferedImage image)
 	{
 		this.worldPoint = worldPoint;
 		this.image = image;

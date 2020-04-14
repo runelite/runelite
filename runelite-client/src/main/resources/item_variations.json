@@ -2352,7 +2352,8 @@
   ],
   "cake": [
     1891,
-    1893
+    1893,
+    24549
   ],
   "chocolate cake": [
     1897,
@@ -6929,11 +6930,11 @@
     10364,
     10736
   ],
-  "zamorak dhide": [
+  "zamorak dhide body": [
     10370,
     10790
   ],
-  "saradomin dhide": [
+  "saradomin dhide body": [
     10386,
     10792
   ],
@@ -9584,7 +9585,9 @@
   ],
   "blade of saeldor": [
     23995,
-    23997
+    23997,
+    24551,
+    24553
   ],
   "elven top": [
     24009,

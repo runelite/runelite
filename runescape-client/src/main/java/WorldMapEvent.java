@@ -391,7 +391,7 @@ public class WorldMapEvent {
 	)
 	static int method865(int var0, Script var1, boolean var2) {
 		if (var0 == ScriptOpcodes.GETWINDOWMODE) {
-			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = class74.getWindowedMode();
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = ApproximateRouteStrategy.getWindowedMode();
 			return 1;
 		} else {
 			int var3;

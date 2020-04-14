@@ -50,7 +50,7 @@ configurations {
 }
 
 dependencies {
-    vanillaDep(Libraries.vanilla)
+    vanillaDep(group = "net.runelite.rs", name = "vanilla", version = ProjectVersions.rsversion.toString())
     rsapiDep(project(":runescape-api"))
     rsclientDep(project(":runescape-client"))
     mixinsDep(project(":runelite-mixins"))

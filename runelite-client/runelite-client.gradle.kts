@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 plugins {
-    id(Plugins.shadow.first) version Plugins.shadow.second
+    id("com.github.johnrengelman.shadow") version "5.2.0"
     java
 }
 
@@ -38,69 +38,69 @@ apply<BootstrapPlugin>()
 description = "RuneLite Client"
 
 dependencies {
-    annotationProcessor(Libraries.lombok)
-    annotationProcessor(Libraries.pf4j)
+    annotationProcessor(group = "org.projectlombok", name = "lombok", version = "1.18.12")
+    annotationProcessor(group = "org.pf4j", name = "pf4j", version = "3.2.0")
 
     api(project(":runelite-api"))
 
-    compileOnly(Libraries.javax)
-    compileOnly(Libraries.lombok)
-    compileOnly(Libraries.orangeExtensions)
+    compileOnly(group = "javax.annotation", name = "javax.annotation-api", version = "1.3.2")
+    compileOnly(group = "org.projectlombok", name = "lombok", version = "1.18.12")
+    compileOnly(group = "net.runelite", name = "orange-extensions", version = "1.0")
 
-    implementation(Libraries.logback)
-    implementation(Libraries.gson)
-    implementation(Libraries.guava)
-    implementation(Libraries.guice)
-    implementation(Libraries.h2)
-    implementation(Libraries.rxrelay)
-    implementation(Libraries.okhttp3)
-    implementation(Libraries.rxjava)
-    implementation(Libraries.jna)
-    implementation(Libraries.javagroups)
-    implementation(Libraries.jnaPlatform)
-    implementation(Libraries.discord)
-    implementation(Libraries.substance)
-    implementation(Libraries.jopt)
-    implementation(Libraries.apacheCommonsText)
-    implementation(Libraries.annotations)
-    implementation(Libraries.jogampGluegen)
-    implementation(Libraries.jogampJogl)
-    implementation(Libraries.jooq)
-    implementation(Libraries.jooqCodegen)
-    implementation(Libraries.jooqMeta)
-    implementation(Libraries.sentry)
-    implementation(Libraries.semver)
-    implementation(Libraries.slf4jApi)
-    implementation(Libraries.pf4j) {
+    implementation(group = "ch.qos.logback", name = "logback-classic", version = "1.2.3")
+    implementation(group = "com.google.code.gson", name = "gson", version = "2.8.6")
+    implementation(group = "com.google.guava", name = "guava", version = "28.2-jre")
+    implementation(group = "com.google.inject", name = "guice", version = "4.2.3", classifier = "no_aop")
+    implementation(group = "com.h2database", name = "h2", version = "1.4.200")
+    implementation(group = "com.openosrs.rxrelay3", name = "rxrelay", version = "3.0.0-SNAPSHOT")
+    implementation(group = "com.squareup.okhttp3", name = "okhttp", version = "4.5.0")
+    implementation(group = "io.reactivex.rxjava3", name = "rxjava", version = "3.0.2")
+    implementation(group = "net.java.dev.jna", name = "jna", version = "5.5.0")
+    implementation(group = "org.jgroups", name = "jgroups", version = "4.2.1.Final")
+    implementation(group = "net.java.dev.jna", name = "jna-platform", version = "5.5.0")
+    implementation(group = "net.runelite", name = "discord", version = "1.1")
+    implementation(group = "org.pushing-pixels", name = "radiance-substance", version = "2.5.1")
+    implementation(group = "net.sf.jopt-simple", name = "jopt-simple", version = "5.0.4")
+    implementation(group = "org.apache.commons", name = "commons-text", version = "1.8")
+    implementation(group = "org.jetbrains", name = "annotations", version = "19.0.0")
+    implementation(group = "org.jogamp.gluegen", name = "gluegen-rt", version = "2.3.2")
+    implementation(group = "org.jogamp.jogl", name = "jogl-all", version = "2.3.2")
+    implementation(group = "org.jooq", name = "jooq", version = "3.13.1")
+    implementation(group = "org.jooq", name = "jooq-codegen", version = "3.13.1")
+    implementation(group = "org.jooq", name = "jooq-meta", version = "3.13.1")
+    implementation(group = "io.sentry", name = "sentry-logback", version = "1.7.30")
+    implementation(group = "com.github.zafarkhaja", name = "java-semver", version = "0.9.0")
+    implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.30")
+    implementation(group = "org.pf4j", name = "pf4j", version = "3.2.0") {
         exclude(group = "org.slf4j")
     }
-    implementation(Libraries.pf4jUpdate)
+    implementation(group = "org.pf4j", name = "pf4j-update", version = "2.3.0")
     implementation(project(":http-api"))
 
-    runtimeOnly(Libraries.trident)
-    runtimeOnly(Libraries.jogampGluegenLinuxAmd64)
-    runtimeOnly(Libraries.jogampGluegenLinuxI586)
-    runtimeOnly(Libraries.jogampGluegenWindowsAmd64)
-    runtimeOnly(Libraries.jogampGluegenWindowsI586)
-    runtimeOnly(Libraries.jogampJoglLinuxAmd64)
-    runtimeOnly(Libraries.jogampJoglLinuxI586)
-    runtimeOnly(Libraries.jogampJoglWindowsAmd64)
-    runtimeOnly(Libraries.jogampJoglWindowsI586)
+    runtimeOnly(group = "org.pushing-pixels", name = "radiance-trident", version = "2.5.1")
+    runtimeOnly(group = "org.jogamp.gluegen", name = "gluegen-rt", version = "2.3.2", classifier = "natives-linux-amd64")
+    runtimeOnly(group = "org.jogamp.gluegen", name = "gluegen-rt", version = "2.3.2", classifier = "natives-linux-i586")
+    runtimeOnly(group = "org.jogamp.gluegen", name = "gluegen-rt", version = "2.3.2", classifier = "natives-windows-amd64")
+    runtimeOnly(group = "org.jogamp.gluegen", name = "gluegen-rt", version = "2.3.2", classifier = "natives-windows-i586")
+    runtimeOnly(group = "org.jogamp.jogl", name = "jogl-all", version = "2.3.2", classifier = "natives-linux-amd64")
+    runtimeOnly(group = "org.jogamp.jogl", name = "jogl-all", version = "2.3.2", classifier = "natives-linux-i586")
+    runtimeOnly(group = "org.jogamp.jogl", name = "jogl-all", version = "2.3.2", classifier = "natives-windows-amd64")
+    runtimeOnly(group = "org.jogamp.jogl", name = "jogl-all", version = "2.3.2", classifier = "natives-windows-i586")
     runtimeOnly(project(":injected-client"))
     runtimeOnly(project(":runescape-api"))
 
-    testAnnotationProcessor(Libraries.lombok)
+    testAnnotationProcessor(group = "org.projectlombok", name = "lombok", version = "1.18.12")
 
-    testCompileOnly(Libraries.lombok)
+    testCompileOnly(group = "org.projectlombok", name = "lombok", version = "1.18.12")
 
-    testImplementation(Libraries.guiceGrapher)
-    testImplementation(Libraries.guiceTestlib)
-    testImplementation(Libraries.hamcrest)
-    testImplementation(Libraries.junit)
-    testImplementation(Libraries.mockitoCore)
-    testImplementation(Libraries.mockitoInline)
-    testImplementation(Libraries.okhttp3Webserver)
-    testImplementation(Libraries.slf4jApi)
+    testImplementation(group = "com.google.inject.extensions", name = "guice-grapher", version = "4.2.3")
+    testImplementation(group = "com.google.inject.extensions", name = "guice-testlib", version = "4.2.3")
+    testImplementation(group = "org.hamcrest", name = "hamcrest-library", version = "2.2")
+    testImplementation(group = "junit", name = "junit", version = "4.13")
+    testImplementation(group = "org.mockito", name = "mockito-core", version = "3.3.3")
+    testImplementation(group = "org.mockito", name = "mockito-inline", version = "3.3.3")
+    testImplementation(group = "com.squareup.okhttp3", name = "mockwebserver", version = "4.5.0")
+    testImplementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.30")
 }
 
 fun formatDate(date: Date?) = with(date ?: Date()) {

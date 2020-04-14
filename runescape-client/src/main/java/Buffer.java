@@ -80,7 +80,7 @@ public class Buffer extends Node {
 	@Export("releaseArray")
 	public void releaseArray() {
 		if (this.array != null) {
-			class51.ByteArrayPool_release(this.array);
+			WorldMapSection3.ByteArrayPool_release(this.array);
 		}
 
 		this.array = null;

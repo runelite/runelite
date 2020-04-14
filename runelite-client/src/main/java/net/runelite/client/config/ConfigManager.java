@@ -26,7 +26,6 @@ package net.runelite.client.config;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -384,7 +383,7 @@ public class ConfigManager
 			return;
 		}
 
-		@SuppressWarnings("unchecked") final Map<String, String> copy = (Map) ImmutableMap.copyOf(this.properties);
+		@SuppressWarnings("unchecked") final Map<String, String> copy = (Map) Map.copyOf(this.properties);
 		copy.forEach((groupAndKey, value) ->
 		{
 			if (!properties.containsKey(groupAndKey))
@@ -443,7 +442,7 @@ public class ConfigManager
 
 		try
 		{
-			@SuppressWarnings("unchecked") Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
+			@SuppressWarnings("unchecked") Map<String, String> copy = (Map) Map.copyOf(properties);
 			copy.forEach((groupAndKey, value) ->
 			{
 				final String[] split = groupAndKey.split("\\.", 2);

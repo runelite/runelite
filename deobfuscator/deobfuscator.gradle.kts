@@ -26,7 +26,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id(Plugins.jarTest.first) version Plugins.jarTest.second
+    id("com.github.hauner.jarTest") version "1.0.1"
 }
 
 val deobjars = configurations.create("deobjars")
@@ -35,21 +35,21 @@ dependencies {
     deobjars(group = "net.runelite.rs", name = "vanilla", version = ProjectVersions.rsversion.toString())
     deobjars(project(":runescape-client"))
 
-    implementation(Libraries.annotations)
-    implementation(Libraries.asmAll)
-    implementation(Libraries.asmUtil)
-    implementation(Libraries.fernflower)
-    implementation(Libraries.gson)
-    implementation(Libraries.guava)
-    implementation(Libraries.slf4jApi)
+    implementation(group = "org.jetbrains", name = "annotations", version = "19.0.0")
+    implementation(group = "org.ow2.asm", name = "asm", version = "8.0.1")
+    implementation(group = "org.ow2.asm", name = "asm-util", version = "8.0.1")
+    implementation(group = "net.runelite", name = "fernflower", version = "07082019")
+    implementation(group = "com.google.code.gson", name = "gson", version = "2.8.6")
+    implementation(group = "com.google.guava", name = "guava", version = "28.2-jre")
+    implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.30")
     implementation(project(":runelite-api"))
     implementation(project(":runescape-api"))
 
-    runtimeOnly(Libraries.slf4jSimple)
+    runtimeOnly(group = "org.slf4j", name = "slf4j-simple", version = "1.7.30")
 
     testImplementation(deobjars)
-    testImplementation(Libraries.junit)
-    testImplementation(Libraries.mockitoCore)
+    testImplementation(group = "junit", name = "junit", version = "4.13")
+    testImplementation(group = "org.mockito", name = "mockito-core", version = "3.3.3")
 }
 
 tasks {

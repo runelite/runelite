@@ -35,6 +35,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.naming.directory.SearchResult;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;

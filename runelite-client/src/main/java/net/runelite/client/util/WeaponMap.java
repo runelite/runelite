@@ -83,6 +83,8 @@ public class WeaponMap
 		StyleMap.put(ItemID.BLACK_SWORD, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.BLACK_WARHAMMER, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.BLADE_OF_SAELDOR, WeaponStyle.MELEE);
+		StyleMap.put(ItemID.BLADE_OF_SAELDOR_I, WeaponStyle.MELEE);
+		StyleMap.put(ItemID.BLADE_OF_SAELDOR_INACTIVE, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.BLESSED_AXE, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.BLUE_FLOWERS, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.BLUE_FLOWERS_8936, WeaponStyle.MELEE);
@@ -452,7 +454,6 @@ public class WeaponMap
 		StyleMap.put(ItemID.ZAMORAK_GODSWORD, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.ZAMORAK_GODSWORD_OR, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.ZOMBIE_HEAD, WeaponStyle.MELEE);
-		
 
 	//Ranged
 		StyleMap.put(ItemID._3RD_AGE_BOW, WeaponStyle.RANGE);

@@ -1101,6 +1101,24 @@ public interface Client extends GameShell
 	long getMouseLastPressedMillis();
 
 	/**
+	 * Sets the time at which the last mouse press occurred in milliseconds since
+	 * the UNIX epoch.
+	 */
+	void setMouseLastPressedMillis(long time);
+
+	/**
+	 * Gets the time at which the second-to-last mouse press occurred in milliseconds since
+	 * the UNIX epoch.
+	 */
+	long getClientMouseLastPressedMillis();
+
+	/**
+	 * Sets the time at which the second-to-last mouse press occurred in milliseconds since
+	 * the UNIX epoch.
+	 */
+	void setClientMouseLastPressedMillis(long time);
+
+	/**
 	 * Gets the amount of client ticks since the last keyboard press occurred.
 	 *
 	 * @return amount of idle keyboard ticks
@@ -1237,6 +1255,16 @@ public interface Client extends GameShell
 	 * @param enabled new camera pitch relaxer value
 	 */
 	void setCameraPitchRelaxerEnabled(boolean enabled);
+
+	/**
+	 * Sets if the moving the camera horizontally should be backwards
+	 */
+	void setInvertYaw(boolean invertYaw);
+
+	/**
+	 * Sets if the moving the camera vertically should be backwards
+	 */
+	void setInvertPitch(boolean invertPitch);
 
 	/**
 	 * Gets the world map overview.

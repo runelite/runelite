@@ -81,7 +81,7 @@ public class UserComparator9 extends AbstractUserComparator {
 		class348.field4061 = new byte[4][104][104];
 		Tiles.field539 = new byte[4][104][104];
 		Tiles.field540 = new byte[4][104][104];
-		class51.field404 = new int[4][105][105];
+		WorldMapSection3.field404 = new int[4][105][105];
 		SoundCache.field1462 = new byte[4][105][105];
 		Tiles.field545 = new int[105][105];
 		GrandExchangeOfferAgeComparator.Tiles_hue = new int[104];

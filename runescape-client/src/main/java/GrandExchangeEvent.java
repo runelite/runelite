@@ -588,7 +588,7 @@ public class GrandExchangeEvent {
 				class348.field4061 = null;
 				Tiles.field539 = null;
 				Tiles.field540 = null;
-				class51.field404 = null;
+				WorldMapSection3.field404 = null;
 				SoundCache.field1462 = null;
 				Tiles.field545 = null;
 				GrandExchangeOfferAgeComparator.Tiles_hue = null;

@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -150,7 +151,7 @@ public class PluginManagerTest
 		modules.addAll(pluginManager.getPlugins());
 
 		File file = folder.newFile();
-		try (PrintWriter out = new PrintWriter(file, "UTF-8"))
+		try (PrintWriter out = new PrintWriter(file, StandardCharsets.UTF_8))
 		{
 			Injector injector = Guice.createInjector(modules);
 			GraphvizGrapher grapher = injector.getInstance(GraphvizGrapher.class);

@@ -25,7 +25,6 @@
  */
 package net.runelite.client.menus;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -39,6 +38,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
@@ -327,7 +327,7 @@ public class MenuManager
 
 	public void addPlayerMenuItem(String menuText)
 	{
-		Preconditions.checkNotNull(menuText);
+		Objects.requireNonNull(menuText);
 
 		int playerMenuIndex = findEmptyPlayerMenuIndex();
 		if (playerMenuIndex == IDX_UPPER)
@@ -340,7 +340,8 @@ public class MenuManager
 
 	public void removePlayerMenuItem(String menuText)
 	{
-		Preconditions.checkNotNull(menuText);
+		Objects.requireNonNull(menuText);
+
 		for (Map.Entry<Integer, String> entry : playerMenuIndexMap.entrySet())
 		{
 			if (entry.getValue().equalsIgnoreCase(menuText))

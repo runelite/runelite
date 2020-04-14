@@ -14,7 +14,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: seferov/pr-lint-action@v1.0.3
         with:
-          title-regex: '^([\w-/]+): \w+'
+          title-regex: '^([\w-/ ]+): [\w ]+'
 
   validate:
     name: Validate gradle wrapper

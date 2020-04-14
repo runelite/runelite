@@ -306,7 +306,7 @@ public class MusicPatchPcmStream extends PcmStream {
 		}
 
 		PacketBufferNode var5 = FaceNormal.getPacketBufferNode(ClientPacket.field2257, Client.packetWriter.isaacCipher);
-		var5.packetBuffer.writeByte(class74.getWindowedMode());
+		var5.packetBuffer.writeByte(ApproximateRouteStrategy.getWindowedMode());
 		var5.packetBuffer.writeShort(WorldMapLabel.canvasWidth);
 		var5.packetBuffer.writeShort(Varps.canvasHeight);
 		Client.packetWriter.addNode(var5);

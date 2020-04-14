@@ -25,7 +25,7 @@ public class class105 {
 	public static void method2394(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
 		int var5 = var0.getGroupId(var1);
 		int var6 = var0.getFileId(var5, var2);
-		class74.method1321(var0, var5, var6, var3, var4);
+		ApproximateRouteStrategy.method1321(var0, var5, var6, var3, var4);
 	}
 
 	@ObfuscatedName("m")

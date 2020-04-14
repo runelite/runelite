@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
@@ -120,6 +119,7 @@ public class ExternalPluginManager
 	@Getter(AccessLevel.PUBLIC)
 	private UpdateManager updateManager;
 	private Map<String, PluginInfo.PluginRelease> lastPluginRelease = new HashMap<>();
+	private Set<PluginType> pluginTypes = Set.of(PluginType.values());
 
 	@Inject
 	public ExternalPluginManager(
@@ -639,23 +639,29 @@ public class ExternalPluginManager
 			Class<? extends Plugin> clazz = plugin.getClass();
 			PluginDescriptor pluginDescriptor = clazz.getAnnotation(PluginDescriptor.class);
 
-			if (pluginDescriptor == null)
+			try
 			{
-				if (clazz.getSuperclass() == Plugin.class)
+				if (pluginDescriptor == null)
 				{
-					log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
+					if (clazz.getSuperclass() == Plugin.class)
+					{
+						log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
+						continue;
+					}
+				}
+				else if (clazz.getSuperclass() != Plugin.class)
+				{
+					log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
+					continue;
+				}
+				else if (!pluginTypes.contains(pluginDescriptor.type()))
+				{
 					continue;
 				}
 			}
-			else if (clazz.getSuperclass() != Plugin.class)
+			catch (EnumConstantNotPresentException e)
 			{
-				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
-				continue;
-			}
-			else if (pluginDescriptor.type() == PluginType.EXTERNAL)
-			{
-				log.error("Class {} is using the the new external plugin loader, it should not use PluginType.EXTERNAL",
-					clazz);
+				log.warn("{} has an invalid plugin type of {}", clazz, e.getMessage());
 				continue;
 			}
 
@@ -913,7 +919,7 @@ public class ExternalPluginManager
 
 	private Path stopPlugin(String pluginId)
 	{
-		List<PluginWrapper> startedPlugins = ImmutableList.copyOf(getStartedPlugins());
+		List<PluginWrapper> startedPlugins = List.copyOf(getStartedPlugins());
 
 		for (PluginWrapper pluginWrapper : startedPlugins)
 		{
@@ -1077,6 +1083,8 @@ public class ExternalPluginManager
 				String lastVersion = lastRelease.version;
 				try
 				{
+					
+					RuneLiteSplashScreen.stage(.59, "Updating " + plugin.id + " to version " + lastVersion);
 					boolean updated = updateManager.updatePlugin(plugin.id, lastVersion);
 
 					if (!updated)
@@ -1138,7 +1146,7 @@ public class ExternalPluginManager
 		externalPluginManager.loadPlugins();
 		externalPluginManager.startPlugin(pluginId);
 
-		List<PluginWrapper> startedPlugins = ImmutableList.copyOf(getStartedPlugins());
+		List<PluginWrapper> startedPlugins = List.copyOf(getStartedPlugins());
 		List<Plugin> scannedPlugins = new ArrayList<>();
 
 		for (PluginWrapper pluginWrapper : startedPlugins)
@@ -1181,7 +1189,7 @@ public class ExternalPluginManager
 				externalPluginManager.loadPlugins();
 				externalPluginManager.startPlugin(pluginId);
 
-				List<PluginWrapper> startedPlugins = ImmutableList.copyOf(getStartedPlugins());
+				List<PluginWrapper> startedPlugins = List.copyOf(getStartedPlugins());
 				List<Plugin> scannedPlugins = new ArrayList<>();
 
 				for (PluginWrapper pluginWrapper : startedPlugins)

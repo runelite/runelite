@@ -345,7 +345,8 @@ public class class22 {
 
 			if (!var12) {
 				if (Client.musicVolume != 0 && Client.currentTrackGroupId != -1) {
-					class74.method1321(AbstractWorldMapIcon.archive6, Client.currentTrackGroupId, 0, Client.musicVolume, false);
+					ApproximateRouteStrategy
+						.method1321(AbstractWorldMapIcon.archive6, Client.currentTrackGroupId, 0, Client.musicVolume, false);
 				}
 
 				Client.field915 = false;
@@ -460,7 +461,8 @@ public class class22 {
 
 				if (var3 != Client.musicVolume) {
 					if (Client.musicVolume == 0 && Client.currentTrackGroupId != -1) {
-						class74.method1321(AbstractWorldMapIcon.archive6, Client.currentTrackGroupId, 0, var3, false);
+						ApproximateRouteStrategy
+							.method1321(AbstractWorldMapIcon.archive6, Client.currentTrackGroupId, 0, var3, false);
 						Client.field915 = false;
 					} else if (var3 == 0) {
 						Client.method1496();

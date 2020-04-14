@@ -1321,6 +1321,7 @@ public class WidgetID
 
 	static class Options
 	{
+		static final int CAMERA_ZOOM_SLIDER_HANDLE = 15;
 		static final int MUSIC_SLIDER = 37;
 		static final int SOUND_EFFECT_SLIDER = 43;
 		static final int AREA_SOUND_SLIDER = 49;

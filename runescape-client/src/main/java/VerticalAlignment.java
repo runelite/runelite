@@ -60,7 +60,7 @@ public enum VerticalAlignment implements Enumerated {
 	@Export("playSoundJingle")
 	static void playSoundJingle(int var0, int var1) {
 		if (Client.musicVolume != 0 && var0 != -1) {
-			class74.method1321(WorldMapRegion.archive11, var0, 0, Client.musicVolume, false);
+			ApproximateRouteStrategy.method1321(WorldMapRegion.archive11, var0, 0, Client.musicVolume, false);
 			Client.field915 = true;
 		}
 

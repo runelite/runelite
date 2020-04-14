@@ -179,6 +179,12 @@ public abstract class RSClientMixin implements RSClient
 	private static RSTileItem lastItemDespawn;
 
 	@Inject
+	private static boolean invertPitch;
+
+	@Inject
+	private static boolean invertYaw;
+
+	@Inject
 	private boolean gpu;
 
 	@Inject
@@ -1087,16 +1093,21 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	public static void boostedSkillLevelsChanged(int idx)
 	{
-		Skill[] skills = Skill.values();
-
-		if (idx >= 0 && idx < skills.length - 1)
+		if (idx == 0)
 		{
-			Skill updatedSkill = skills[idx];
+			return;
+		}
+
+		int changedSkillIdx = idx - 1 & 31;
+		int skillIdx = client.getChangedSkillLevels()[changedSkillIdx];
+		Skill[] skills = Skill.values();
+		if (skillIdx >= 0 && skillIdx < skills.length - 1)
+		{
 			StatChanged statChanged = new StatChanged(
-				updatedSkill,
-				client.getSkillExperience(updatedSkill),
-				client.getRealSkillLevel(updatedSkill),
-				client.getBoostedSkillLevel(updatedSkill)
+				skills[skillIdx],
+				client.getSkillExperiences()[skillIdx],
+				client.getRealSkillLevels()[skillIdx],
+				client.getBoostedSkillLevels()[skillIdx]
 			);
 			client.getCallbacks().post(StatChanged.class, statChanged);
 		}
@@ -1885,4 +1896,39 @@ public abstract class RSClientMixin implements RSClient
 
 		return widgetClickMask;
 	}
+
+	@Inject
+	@FieldHook("camAngleDX")
+	private static void onCamAngleDXChange(int index)
+	{
+		if (invertPitch && client.getMouseCurrentButton() == 4 && client.isMouseCam())
+		{
+			client.setCamAngleDX(-client.getCamAngleDX());
+		}
+	}
+
+	@Inject
+	@FieldHook("camAngleDY")
+	private static void onCamAngleDYChange(int index)
+	{
+		if (invertYaw && client.getMouseCurrentButton() == 4 && client.isMouseCam())
+		{
+			client.setCamAngleDY(-client.getCamAngleDY());
+		}
+	}
+
+	@Inject
+	@Override
+	public void setInvertPitch(boolean state)
+	{
+		invertPitch = state;
+	}
+
+	@Inject
+	@Override
+	public void setInvertYaw(boolean state)
+	{
+		invertYaw = state;
+	}
 }
+
