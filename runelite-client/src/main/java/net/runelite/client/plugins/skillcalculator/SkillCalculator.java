@@ -524,7 +524,7 @@ class SkillCalculator extends JPanel
 			case CONSTRUCTION:
 				return true;
 			case HUNTER:
-				return true;
+				return false;
 			case COOKING:
 				return true;
 			case FARMING:
