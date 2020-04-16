@@ -97,7 +97,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private OverlayBounds snapCorners;
 
 	@Setter
-	private boolean shouldRender = false;
+	private boolean shouldRender = true;
 
 	@Inject
 	private OverlayRenderer(
