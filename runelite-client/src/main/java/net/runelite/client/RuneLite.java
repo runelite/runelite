@@ -302,6 +302,9 @@ public class RuneLite
 
 		SplashScreen.stage(.57, null, "Loading configuration");
 
+		// Register event listeners that rely on config changes
+		eventBus.register(tooltipManager);
+
 		// Load user configuration
 		configManager.load();
 
@@ -341,7 +344,6 @@ public class RuneLite
 		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(infoBoxManager);
-		eventBus.register(tooltipManager);
 		eventBus.register(configManager);
 		eventBus.register(discordService);
 
