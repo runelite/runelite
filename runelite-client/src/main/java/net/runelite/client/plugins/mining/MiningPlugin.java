@@ -45,6 +45,7 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WallObjectSpawned;
@@ -94,7 +95,6 @@ public class MiningPlugin extends Plugin
 	{
 		switch (event.getGameState())
 		{
-			case LOADING:
 			case HOPPING:
 				respawns.clear();
 				break;
@@ -110,6 +110,7 @@ public class MiningPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		respawns.removeIf(RockRespawn::isExpired);
 		recentlyLoggedIn = false;
 	}
 
@@ -129,6 +130,24 @@ public class MiningPlugin extends Plugin
 		{
 			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
 			respawns.add(rockRespawn);
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		GameObject object = event.getGameObject();
+
+		// If the Lovakite ore respawns before the timer is up, remove it
+		if (Rock.getRock(object.getId()) == Rock.LOVAKITE)
+		{
+			final WorldPoint point = object.getWorldLocation();
+			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
 		}
 	}
 

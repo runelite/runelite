@@ -33,15 +33,15 @@ import java.io.InputStreamReader;
 import java.time.Instant;
 import java.util.UUID;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
-import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.ws.WSClient;
 import net.runelite.http.api.account.AccountClient;
@@ -52,27 +52,32 @@ import net.runelite.http.api.ws.messages.LoginResponse;
 @Slf4j
 public class SessionManager
 {
-	private static final File SESSION_FILE = new File(RuneLite.RUNELITE_DIR, "session");
-
 	@Getter
 	private AccountSession accountSession;
 
 	private final EventBus eventBus;
 	private final ConfigManager configManager;
 	private final WSClient wsClient;
+	private final File sessionFile;
 
 	@Inject
-	private SessionManager(ConfigManager configManager, EventBus eventBus, WSClient wsClient)
+	private SessionManager(
+		@Named("sessionfile") File sessionfile,
+		ConfigManager configManager,
+		EventBus eventBus,
+		WSClient wsClient)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
 		this.wsClient = wsClient;
+		this.sessionFile = sessionfile;
+
 		eventBus.register(this);
 	}
 
 	public void loadSession()
 	{
-		if (!SESSION_FILE.exists())
+		if (!sessionFile.exists())
 		{
 			log.info("No session file exists");
 			return;
@@ -80,7 +85,7 @@ public class SessionManager
 
 		AccountSession session;
 
-		try (FileInputStream in = new FileInputStream(SESSION_FILE))
+		try (FileInputStream in = new FileInputStream(sessionFile))
 		{
 			session = new Gson().fromJson(new InputStreamReader(in), AccountSession.class);
 
@@ -110,11 +115,11 @@ public class SessionManager
 			return;
 		}
 
-		try (FileWriter fw = new FileWriter(SESSION_FILE))
+		try (FileWriter fw = new FileWriter(sessionFile))
 		{
 			new Gson().toJson(accountSession, fw);
 
-			log.debug("Saved session to {}", SESSION_FILE);
+			log.debug("Saved session to {}", sessionFile);
 		}
 		catch (IOException ex)
 		{
@@ -124,7 +129,7 @@ public class SessionManager
 
 	private void deleteSession()
 	{
-		SESSION_FILE.delete();
+		sessionFile.delete();
 	}
 
 	/**

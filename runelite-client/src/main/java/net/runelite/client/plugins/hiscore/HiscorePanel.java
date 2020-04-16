@@ -105,12 +105,12 @@ public class HiscorePanel extends PluginPanel
 		GIANT_MOLE, GROTESQUE_GUARDIANS, HESPORI,
 		KALPHITE_QUEEN, KING_BLACK_DRAGON, KRAKEN,
 		KREEARRA, KRIL_TSUTSAROTH, MIMIC,
-		OBOR, SARACHNIS, SCORPIA,
-		SKOTIZO, THE_GAUNTLET, THE_CORRUPTED_GAUNTLET,
-		THEATRE_OF_BLOOD, THERMONUCLEAR_SMOKE_DEVIL, TZKAL_ZUK,
-		TZTOK_JAD, VENENATIS, VETION,
-		VORKATH, WINTERTODT, ZALCANO,
-		ZULRAH
+		NIGHTMARE, OBOR, SARACHNIS,
+		SCORPIA, SKOTIZO, THE_GAUNTLET,
+		THE_CORRUPTED_GAUNTLET, THEATRE_OF_BLOOD, THERMONUCLEAR_SMOKE_DEVIL,
+		TZKAL_ZUK, TZTOK_JAD, VENENATIS,
+		VETION, VORKATH, WINTERTODT,
+		ZALCANO, ZULRAH
 	);
 
 	@Inject
@@ -121,6 +121,7 @@ public class HiscorePanel extends PluginPanel
 	private Client client;
 
 	private final HiscoreConfig config;
+	private final NameAutocompleter nameAutocompleter;
 
 	private final IconTextField searchBar;
 
@@ -141,10 +142,11 @@ public class HiscorePanel extends PluginPanel
 	private boolean loading = false;
 
 	@Inject
-	public HiscorePanel(HiscoreConfig config)
+	public HiscorePanel(HiscoreConfig config, NameAutocompleter nameAutocompleter)
 	{
 		super();
 		this.config = config;
+		this.nameAutocompleter = nameAutocompleter;
 
 		// The layout seems to be ignoring the top margin and only gives it
 		// a 2-3 pixel margin, so I set the value to 18 to compensate
@@ -295,6 +297,13 @@ public class HiscorePanel extends PluginPanel
 
 		add(bossPanel, c);
 		c.gridy++;
+
+		addInputKeyListener(nameAutocompleter);
+	}
+
+	void shutdown()
+	{
+		removeInputKeyListener(nameAutocompleter);
 	}
 
 	@Override
@@ -417,6 +426,8 @@ public class HiscorePanel extends PluginPanel
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setEditable(true);
 		loading = false;
+
+		nameAutocompleter.addToSearchHistory(result.getPlayer().toLowerCase());
 
 		for (Map.Entry<HiscoreSkill, JLabel> entry : skillLabels.entrySet())
 		{

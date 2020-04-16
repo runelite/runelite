@@ -34,6 +34,9 @@ import net.runelite.api.Client;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.overlay.infobox.Counter;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ImageUtil;
 
 class DevToolsPanel extends PluginPanel
 {
@@ -43,16 +46,27 @@ class DevToolsPanel extends PluginPanel
 
 	private final WidgetInspector widgetInspector;
 	private final VarInspector varInspector;
+	private final ScriptInspector scriptInspector;
+	private final InfoBoxManager infoBoxManager;
 
 	@Inject
-	private DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector, VarInspector varInspector, Notifier notifier)
+	private DevToolsPanel(
+		Client client,
+		DevToolsPlugin plugin,
+		WidgetInspector widgetInspector,
+		VarInspector varInspector,
+		ScriptInspector scriptInspector,
+		Notifier notifier,
+		InfoBoxManager infoBoxManager)
 	{
 		super();
 		this.client = client;
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
 		this.varInspector = varInspector;
+		this.scriptInspector = scriptInspector;
 		this.notifier = notifier;
+		this.infoBoxManager = infoBoxManager;
 
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
@@ -132,6 +146,27 @@ class DevToolsPanel extends PluginPanel
 			notifier.notify("Wow!", TrayIcon.MessageType.ERROR);
 		});
 		container.add(notificationBtn);
+
+		container.add(plugin.getScriptInspector());
+		plugin.getScriptInspector().addActionListener((ev) ->
+		{
+			if (plugin.getScriptInspector().isActive())
+			{
+				scriptInspector.close();
+			}
+			else
+			{
+				scriptInspector.open();
+			}
+		});
+
+		final JButton newInfoboxBtn = new JButton("Infobox");
+		newInfoboxBtn.addActionListener(e -> infoBoxManager.addInfoBox(new Counter(ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png"), plugin, 42)));
+		container.add(newInfoboxBtn);
+
+		final JButton clearInfoboxBtn = new JButton("Clear Infobox");
+		clearInfoboxBtn.addActionListener(e -> infoBoxManager.removeIf(i -> true));
+		container.add(clearInfoboxBtn);
 
 		return container;
 	}

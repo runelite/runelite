@@ -40,6 +40,7 @@ import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.OverheadTextChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -61,6 +62,9 @@ public class EmojiPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private ChatMessageManager chatMessageManager;
 
 	private int modIconsStart = -1;
@@ -68,7 +72,7 @@ public class EmojiPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		loadEmojiIcons();
+		clientThread.invoke(this::loadEmojiIcons);
 	}
 
 	@Subscribe

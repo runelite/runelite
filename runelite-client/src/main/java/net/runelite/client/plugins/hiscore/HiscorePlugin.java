@@ -41,12 +41,12 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -88,9 +88,6 @@ public class HiscorePlugin extends Plugin
 	private NavigationButton navButton;
 	private HiscorePanel hiscorePanel;
 
-	@Inject
-	private NameAutocompleter autocompleter;
-
 	@Provides
 	HiscoreConfig provideConfig(ConfigManager configManager)
 	{
@@ -117,16 +114,12 @@ public class HiscorePlugin extends Plugin
 		{
 			menuManager.get().addPlayerMenuItem(LOOKUP);
 		}
-		if (config.autocomplete())
-		{
-			hiscorePanel.addInputKeyListener(autocompleter);
-		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		hiscorePanel.removeInputKeyListener(autocompleter);
+		hiscorePanel.shutdown();
 		clientToolbar.removeNavigation(navButton);
 
 		if (client != null)
@@ -147,18 +140,6 @@ public class HiscorePlugin extends Plugin
 				if (config.playerOption())
 				{
 					menuManager.get().addPlayerMenuItem(LOOKUP);
-				}
-			}
-
-			if (event.getKey().equals("autocomplete"))
-			{
-				if (config.autocomplete())
-				{
-					hiscorePanel.addInputKeyListener(autocompleter);
-				}
-				else
-				{
-					hiscorePanel.removeInputKeyListener(autocompleter);
 				}
 			}
 		}

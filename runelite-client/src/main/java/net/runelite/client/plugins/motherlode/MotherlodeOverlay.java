@@ -32,34 +32,23 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_ADAMANT;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BLACK;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BRONZE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_CRYSTAL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_OR;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_UPGRADED;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
+import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class MotherlodeOverlay extends Overlay
+class MotherlodeOverlay extends OverlayPanel
 {
 	private static final Set<Integer> MINING_ANIMATION_IDS = ImmutableSet.of(
 		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
 		MINING_MOTHERLODE_BLACK, MINING_MOTHERLODE_MITHRIL, MINING_MOTHERLODE_ADAMANT,
-		MINING_MOTHERLODE_RUNE, MINING_MOTHERLODE_DRAGON, MINING_MOTHERLODE_DRAGON_UPGRADED,
-		MINING_MOTHERLODE_DRAGON_OR, MINING_MOTHERLODE_INFERNAL, MINING_MOTHERLODE_CRYSTAL
+		MINING_MOTHERLODE_RUNE, MINING_MOTHERLODE_GILDED, MINING_MOTHERLODE_DRAGON,
+		MINING_MOTHERLODE_DRAGON_UPGRADED, MINING_MOTHERLODE_DRAGON_OR, MINING_MOTHERLODE_INFERNAL,
+		MINING_MOTHERLODE_CRYSTAL
 	);
 	static final String MINING_RESET = "Reset";
 
@@ -67,7 +56,6 @@ class MotherlodeOverlay extends Overlay
 	private final MotherlodePlugin plugin;
 	private final MotherlodeSession motherlodeSession;
 	private final MotherlodeConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	MotherlodeOverlay(Client client, MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
@@ -104,8 +92,6 @@ class MotherlodeOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
 		if (config.showMiningState())
 		{
 			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
@@ -134,6 +120,6 @@ class MotherlodeOverlay extends Overlay
 			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "")
 			.build());
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

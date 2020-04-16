@@ -41,8 +41,11 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -54,17 +57,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
@@ -74,7 +83,6 @@ import net.runelite.http.api.config.Configuration;
 @Slf4j
 public class ConfigManager
 {
-	private static final String SETTINGS_FILE_NAME = "settings.properties";
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	@Inject
@@ -89,11 +97,15 @@ public class ConfigManager
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 	private final Map<String, String> pendingChanges = new HashMap<>();
+	private final File settingsFileInput;
 
 	@Inject
-	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
+	public ConfigManager(
+		@Named("config") File config,
+		ScheduledExecutorService scheduledExecutorService)
 	{
 		this.executor = scheduledExecutorService;
+		this.settingsFileInput = config;
 		this.propertiesFile = getPropertiesFile();
 
 		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
@@ -122,7 +134,7 @@ public class ConfigManager
 
 	private File getLocalPropertiesFile()
 	{
-		return new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
+		return settingsFileInput;
 	}
 
 	private File getPropertiesFile()
@@ -135,7 +147,7 @@ public class ConfigManager
 		else
 		{
 			File profileDir = new File(RuneLite.PROFILES_DIR, session.getUsername().toLowerCase());
-			return new File(profileDir, SETTINGS_FILE_NAME);
+			return new File(profileDir, RuneLite.DEFAULT_CONFIG_FILE.getName());
 		}
 	}
 
@@ -324,24 +336,31 @@ public class ConfigManager
 
 	private void saveToFile(final File propertiesFile) throws IOException
 	{
-		propertiesFile.getParentFile().mkdirs();
+		File parent = propertiesFile.getParentFile();
 
-		try (FileOutputStream out = new FileOutputStream(propertiesFile))
+		parent.mkdirs();
+
+		File tempFile = new File(parent, RuneLite.DEFAULT_CONFIG_FILE.getName() + ".tmp");
+
+		try (FileOutputStream out = new FileOutputStream(tempFile))
 		{
-			final FileLock lock = out.getChannel().lock();
+			out.getChannel().lock();
+			properties.store(new OutputStreamWriter(out, StandardCharsets.UTF_8), "RuneLite configuration");
+			// FileOutputStream.close() closes the associated channel, which frees the lock
+		}
 
-			try
-			{
-				properties.store(new OutputStreamWriter(out, Charset.forName("UTF-8")), "RuneLite configuration");
-			}
-			finally
-			{
-				lock.release();
-			}
+		try
+		{
+			Files.move(tempFile.toPath(), propertiesFile.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+		}
+		catch (AtomicMoveNotSupportedException ex)
+		{
+			log.debug("atomic move not supported", ex);
+			Files.move(tempFile.toPath(), propertiesFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 	}
 
-	public <T> T getConfig(Class<T> clazz)
+	public <T extends Config> T getConfig(Class<T> clazz)
 	{
 		if (!Modifier.isPublic(clazz.getModifiers()))
 		{
@@ -439,7 +458,7 @@ public class ConfigManager
 		eventBus.post(configChanged);
 	}
 
-	public ConfigDescriptor getConfigDescriptor(Object configurationProxy)
+	public ConfigDescriptor getConfigDescriptor(Config configurationProxy)
 	{
 		Class<?> inter = configurationProxy.getClass().getInterfaces()[0];
 		ConfigGroup group = inter.getAnnotation(ConfigGroup.class);
@@ -455,7 +474,8 @@ public class ConfigManager
 				m.getDeclaredAnnotation(ConfigItem.class),
 				m.getReturnType(),
 				m.getDeclaredAnnotation(Range.class),
-				m.getDeclaredAnnotation(Alpha.class)
+				m.getDeclaredAnnotation(Alpha.class),
+				m.getDeclaredAnnotation(Units.class)
 			))
 			.sorted((a, b) -> ComparisonChain.start()
 				.compare(a.getItem().position(), b.getItem().position())
@@ -660,27 +680,39 @@ public class ConfigManager
 		return object.toString();
 	}
 
-	public void sendConfig()
+	@Subscribe(priority = 100)
+	private void onClientShutdown(ClientShutdown e)
 	{
+		Future<Void> f = sendConfig();
+		if (f != null)
+		{
+			e.waitFor(f);
+		}
+	}
+
+	@Nullable
+	private CompletableFuture<Void> sendConfig()
+	{
+		CompletableFuture<Void> future = null;
 		boolean changed;
 		synchronized (pendingChanges)
 		{
 			if (client != null)
 			{
-				for (Map.Entry<String, String> entry : pendingChanges.entrySet())
+				future = CompletableFuture.allOf(pendingChanges.entrySet().stream().map(entry ->
 				{
 					String key = entry.getKey();
 					String value = entry.getValue();
 
 					if (Strings.isNullOrEmpty(value))
 					{
-						client.unset(key);
+						return client.unset(key);
 					}
 					else
 					{
-						client.set(key, value);
+						return client.set(key, value);
 					}
-				}
+				}).toArray(CompletableFuture[]::new));
 			}
 			changed = !pendingChanges.isEmpty();
 			pendingChanges.clear();
@@ -697,5 +729,7 @@ public class ConfigManager
 				log.warn("unable to save configuration file", ex);
 			}
 		}
+
+		return future;
 	}
 }

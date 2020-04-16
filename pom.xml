@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.6.2-SNAPSHOT</version>
+	<version>1.6.12-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -42,8 +42,9 @@
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
+		<glslang.path></glslang.path>
 
-		<rs.version>187</rs.version>
+		<rs.version>189</rs.version>
 	</properties>
 
 	<licenses>
@@ -83,12 +84,12 @@
 	<repositories>
 		<repository>
 			<id>maven-central</id>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
 		<repository>
 			<id>runelite</id>
 			<name>RuneLite</name>
-			<url>http://repo.runelite.net</url>
+			<url>https://repo.runelite.net</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -98,12 +99,12 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>maven-central-plugins</id>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>https://repo.maven.apache.org/maven2</url>
 		</pluginRepository>
 		<pluginRepository>
 			<id>runelite-plugins</id>
 			<name>RuneLite Plugins</name>
-			<url>http://repo.runelite.net</url>
+			<url>https://repo.runelite.net</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -120,8 +121,6 @@
 		<module>runelite-script-assembler-plugin</module>
 		<module>http-api</module>
 		<module>http-service</module>
-		<module>protocol-api</module>
-		<module>protocol</module>
 	</modules>
 
 	<dependencyManagement>
@@ -171,6 +170,9 @@
 				<configuration>
 					<enableAssertions>true</enableAssertions>
 					<argLine>-Xmx512m</argLine>
+					<systemProperties>
+						<glslang.path>${glslang.path}</glslang.path>
+					</systemProperties>
 				</configuration>
 			</plugin>
 			<plugin>

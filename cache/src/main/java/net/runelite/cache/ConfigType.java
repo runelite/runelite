@@ -43,6 +43,7 @@ public enum ConfigType
 	VARCLIENT(19),
 	VARCLIENTSTRING(15),
 	VARPLAYER(16),
+	HITSPLAT(32),
 	STRUCT(34),
 	AREA(35);
 

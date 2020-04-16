@@ -29,6 +29,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("slayer")
 public interface SlayerConfig extends Config
@@ -69,9 +70,10 @@ public interface SlayerConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "statTimeout",
-		name = "InfoBox Expiry (minutes)",
+		name = "InfoBox Expiry",
 		description = "Set the time until the InfoBox expires"
 	)
+	@Units(Units.MINUTES)
 	default int statTimeout()
 	{
 		return 5;

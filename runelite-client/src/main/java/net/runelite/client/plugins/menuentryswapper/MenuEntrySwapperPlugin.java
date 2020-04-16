@@ -42,10 +42,12 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -102,6 +104,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.NPC_FOURTH_OPTION,
 		MenuAction.NPC_FIFTH_OPTION,
 		MenuAction.EXAMINE_NPC);
+
+	private static final Set<String> ESSENCE_MINE_NPCS = ImmutableSet.of(
+		"aubury",
+		"wizard sedridor",
+		"wizard distentor",
+		"wizard cromperty",
+		"brimstail"
+	);
 
 	@Inject
 	private Client client;
@@ -300,6 +310,60 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		// This swap needs to happen prior to drag start on click, which happens during
+		// widget ticking and prior to our client tick event. This is because drag start
+		// is what builds the context menu row which is what the eventual click will use
+
+		// Swap to shift-click deposit behavior
+		// Deposit- op 2 is the current withdraw amount 1/5/10/x
+		if (shiftModifier && config.bankDepositShiftClick() != ShiftDepositMode.OFF
+			&& menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 2
+			&& menuEntryAdded.getOption().startsWith("Deposit-"))
+		{
+			ShiftDepositMode shiftDepositMode = config.bankDepositShiftClick();
+			final int opId = WidgetInfo.TO_GROUP(menuEntryAdded.getActionParam1()) == WidgetID.DEPOSIT_BOX_GROUP_ID ? shiftDepositMode.getIdentifierDepositBox() : shiftDepositMode.getIdentifier();
+			final int actionId = opId >= 6 ? MenuAction.CC_OP_LOW_PRIORITY.getId() : MenuAction.CC_OP.getId();
+			bankModeSwap(actionId, opId);
+		}
+
+		// Swap to shift-click withdraw behavior
+		// Deposit- op 1 is the current withdraw amount 1/5/10/x
+		if (shiftModifier && config.bankWithdrawShiftClick() != ShiftWithdrawMode.OFF
+			&& menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 1
+			&& menuEntryAdded.getOption().startsWith("Withdraw-"))
+		{
+			ShiftWithdrawMode shiftWithdrawMode = config.bankWithdrawShiftClick();
+			final int actionId = shiftWithdrawMode.getMenuAction().getId();
+			final int opId = shiftWithdrawMode.getIdentifier();
+			bankModeSwap(actionId, opId);
+		}
+	}
+
+	private void bankModeSwap(int entryTypeId, int entryIdentifier)
+	{
+		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		for (int i = menuEntries.length - 1; i >= 0; --i)
+		{
+			MenuEntry entry = menuEntries[i];
+
+			if (entry.getType() == entryTypeId && entry.getIdentifier() == entryIdentifier)
+			{
+				// Raise the priority of the op so it doesn't get sorted later
+				entry.setType(MenuAction.CC_OP.getId());
+
+				menuEntries[i] = menuEntries[menuEntries.length - 1];
+				menuEntries[menuEntries.length - 1] = entry;
+
+				client.setMenuEntries(menuEntries);
+				break;
+			}
+		}
+	}
+
+	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE || event.getWidgetId() != WidgetInfo.INVENTORY.getId())
@@ -407,6 +471,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("help", option, target, index);
 			}
 
+			if (config.swapNets())
+			{
+				swap("nets", option, target, index);
+			}
+
 			if (config.swapDarkMage())
 			{
 				swap("repairs", option, target, index);
@@ -469,6 +538,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("start-minigame", option, target, index);
 			}
+
+			if (config.swapEssenceMineTeleport() && ESSENCE_MINE_NPCS.contains(target))
+			{
+				swap("teleport", option, target, index);
+			}
 		}
 		else if (config.swapQuickLeave() && option.equals("leave tomb") && target.equals("tomb door"))
 		{
@@ -489,6 +563,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
 			swap("travel", option, target, index);
+		}
+		else if (config.swapTravel() && option.equals("board") && target.equals("travel cart"))
+		{
+			swap("pay-fare", option, target, index);
 		}
 		else if (config.swapHarpoon() && option.equals("cage"))
 		{
@@ -625,6 +703,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (shiftModifier && option.equals("view offer") && config.swapGEAbort())
 		{
 			swap("abort offer", option, target, index);
+		}
+		else if (shiftModifier && target.equals("npc contact") && config.swapNpcContact())
+		{
+			swap("honest jimmy", option, target, index);
+			swap("bert the sandman", option, target, index);
+			swap("advisor ghrim", option, target, index);
+			swap("dark mage", option, target, index);
+			swap("lanthus", option, target, index);
+			swap("turael", option, target, index);
+			swap("mazchna", option, target, index);
+			swap("vannaka", option, target, index);
+			swap("chaeldar", option, target, index);
+			swap("nieve", option, target, index);
+			swap("steve", option, target, index);
+			swap("duradel", option, target, index);
+			swap("krystilia", option, target, index);
+			swap("konar", option, target, index);
+			swap("murphy", option, target, index);
+			swap("cyrisus", option, target, index);
+			swap("smoggy", option, target, index);
+			swap("ginea", option, target, index);
+			swap("watson", option, target, index);
+			swap("barbarian guard", option, target, index);
+			swap("random", option, target, index);
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{

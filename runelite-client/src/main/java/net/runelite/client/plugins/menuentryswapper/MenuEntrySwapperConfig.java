@@ -381,4 +381,54 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "swapNpcContact",
+		name = "NPC Contact",
+		description = "Swap NPC Contact with last contacted NPC when shift-clicking"
+	)
+	default boolean swapNpcContact()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "bankWithdrawShiftClick",
+		name = "Bank Withdraw Shift-Click",
+		description = "Swaps the behavior of shift-click when withdrawing from bank."
+	)
+	default ShiftWithdrawMode bankWithdrawShiftClick()
+	{
+		return ShiftWithdrawMode.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "bankDepositShiftClick",
+		name = "Bank Deposit Shift-Click",
+		description = "Swaps the behavior of shift-click when depositing to bank."
+	)
+	default ShiftDepositMode bankDepositShiftClick()
+	{
+		return ShiftDepositMode.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "swapEssenceMineTeleport",
+		name = "Essence Mine Teleport",
+		description = "Swaps Talk-To with Teleport for NPCs which teleport you to the essence mine"
+	)
+	default boolean swapEssenceMineTeleport()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapNets",
+		name = "Nets",
+		description = "Swap Talk-to with Nets on Annette"
+	)
+	default boolean swapNets()
+	{
+		return true;
+	}
 }

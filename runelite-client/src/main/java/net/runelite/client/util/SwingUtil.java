@@ -26,34 +26,34 @@ package net.runelite.client.util;
 
 import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.SecondaryLoop;
 import java.awt.SystemTray;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.Enumeration;
-import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
@@ -184,48 +184,6 @@ public class SwingUtil
 	}
 
 	/**
-	 * Add graceful exit callback.
-	 *
-	 * @param frame           the frame
-	 * @param callback        the callback
-	 * @param confirmRequired the confirm required
-	 */
-	public static void addGracefulExitCallback(@Nonnull final JFrame frame, @Nonnull final Runnable callback, @Nonnull final Callable<Boolean> confirmRequired)
-	{
-		frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		frame.addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent event)
-			{
-				int result = JOptionPane.OK_OPTION;
-
-				try
-				{
-					if (confirmRequired.call())
-					{
-						result = JOptionPane.showConfirmDialog(
-							frame,
-							"Are you sure you want to exit?", "Exit",
-							JOptionPane.OK_CANCEL_OPTION,
-							JOptionPane.QUESTION_MESSAGE);
-					}
-				}
-				catch (Exception e)
-				{
-					log.warn("Unexpected exception occurred while check for confirm required", e);
-				}
-
-				if (result == JOptionPane.OK_OPTION)
-				{
-					callback.run();
-					System.exit(0);
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create swing button from navigation button.
 	 *
 	 * @param navigationButton the navigation button
@@ -291,6 +249,57 @@ public class SwingUtil
 
 	public static void addModalTooltip(AbstractButton button, String on, String off)
 	{
+		button.setToolTipText(button.isSelected() ? on : off);
 		button.addItemListener(l -> button.setToolTipText(button.isSelected() ? on : off));
+	}
+
+	/**
+	 * Removes all of a component's children faster than calling removeAll() on it in many cases
+	 */
+	public static void fastRemoveAll(Container c)
+	{
+		// If we are not on the EDT this will deadlock, in addition to being totally unsafe
+		assert SwingUtilities.isEventDispatchThread();
+
+		// when a component is removed it has to be resized for some reason, but only if it's valid
+		// so we make sure to invalidate everything before removing it
+		c.invalidate();
+		for (int i = 0; i < c.getComponentCount(); i++)
+		{
+			Component ic = c.getComponent(i);
+
+			// removeAll and removeNotify are both recursive, so we have to recurse before them
+			if (ic instanceof Container)
+			{
+				fastRemoveAll((Container) ic);
+			}
+
+			// each removeNotify needs to remove anything from the event queue that is for that widget
+			// this however requires taking a lock, and is moderately slow, so we just execute all of
+			// those events with a secondary event loop
+			pumpPendingEvents();
+
+			// call removeNotify early; this is most of the work in removeAll, and generates events that
+			// the next secondaryLoop will pickup
+			ic.removeNotify();
+		}
+
+		// Actually remove anything
+		c.removeAll();
+	}
+
+	/**
+	 * Run any events currently in the event queue
+	 */
+	public static void pumpPendingEvents()
+	{
+		EventQueue eq = Toolkit.getDefaultToolkit().getSystemEventQueue();
+
+		if (eq.peekEvent() != null)
+		{
+			SecondaryLoop l = eq.createSecondaryLoop();
+			SwingUtilities.invokeLater(l::exit);
+			l.enter();
+		}
 	}
 }

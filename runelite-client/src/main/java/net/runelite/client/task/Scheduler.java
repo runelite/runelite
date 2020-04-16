@@ -93,11 +93,18 @@ public class Scheduler
 
 	private void run(ScheduledMethod scheduledMethod)
 	{
-		Method method = scheduledMethod.getMethod();
-
 		try
 		{
-			method.invoke(scheduledMethod.getObject());
+			Runnable lambda = scheduledMethod.getLambda();
+			if (lambda != null)
+			{
+				lambda.run();
+			}
+			else
+			{
+				Method method = scheduledMethod.getMethod();
+				method.invoke(scheduledMethod.getObject());
+			}
 		}
 		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
 		{

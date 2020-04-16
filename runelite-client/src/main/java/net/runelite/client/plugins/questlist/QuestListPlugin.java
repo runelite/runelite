@@ -43,7 +43,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -96,12 +96,14 @@ public class QuestListPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		currentFilterState = QuestState.ALL;
 		clientThread.invoke(this::addQuestButtons);
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		currentFilterState = null;
 		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
 		if (header != null)
 		{
@@ -119,13 +121,12 @@ public class QuestListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	public void onScriptPostFired(ScriptPostFired event)
 	{
-		if (!event.getEventName().equals("questProgressUpdated"))
+		if (event.getScriptId() != ScriptID.QUESTLIST_PROGRESS_LIST_SHOW)
 		{
 			return;
 		}
-
 		addQuestButtons();
 	}
 

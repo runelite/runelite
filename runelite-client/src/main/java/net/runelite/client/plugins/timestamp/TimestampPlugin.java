@@ -105,7 +105,7 @@ public class TimestampPlugin extends Plugin
 
 		int messageId = intStack[intStackSize - 1];
 
-		MessageNode messageNode = (MessageNode) client.getMessages().get(messageId);
+		MessageNode messageNode = client.getMessages().get(messageId);
 
 		String timestamp = generateTimestamp(messageNode.getTimestamp(), ZoneId.systemDefault()) + " ";
 

@@ -33,18 +33,16 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class BarrowsBrotherSlainOverlay extends Overlay
+public class BarrowsBrotherSlainOverlay extends OverlayPanel
 {
 	private final Client client;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private BarrowsBrotherSlainOverlay(BarrowsPlugin plugin, Client client)
@@ -74,8 +72,6 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 			potential.setHidden(true);
 		}
 
-		panelComponent.getChildren().clear();
-
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
 			final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
@@ -94,6 +90,6 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 				.rightColor(rewardPercent >= 73.0f && rewardPercent <= 88.0f ? Color.GREEN : rewardPercent < 65.6f ? Color.WHITE : Color.YELLOW)
 				.build());
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

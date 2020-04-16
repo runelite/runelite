@@ -28,6 +28,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
@@ -56,10 +57,11 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "lapTimeout",
-		name = "Hide Lap Count (minutes)",
+		name = "Hide Lap Count",
 		description = "Time until the lap counter hides/resets",
 		position = 2
 	)
+	@Units(Units.MINUTES)
 	default int lapTimeout()
 	{
 		return 5;
@@ -67,8 +69,8 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "lapsToLevel",
-		name = "Show Laps Until Level",
-		description = "Show number of laps remaining until next level is reached.",
+		name = "Show Laps Until Goal",
+		description = "Show number of laps remaining until next goal is reached.",
 		position = 3
 	)
 	default boolean lapsToLevel()
@@ -77,21 +79,10 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lapsToGoal",
-		name = "Show Laps Until Goal",
-		description = "Show number of laps remaining until experience tracker goal is reached",
-		position = 4
-	)
-	default boolean lapsToGoal()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "overlayColor",
 		name = "Overlay Color",
 		description = "Color of Agility overlay",
-		position = 5
+		position = 4
 	)
 	default Color getOverlayColor()
 	{
@@ -102,7 +93,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightMarks",
 		name = "Highlight Marks of Grace",
 		description = "Enable/disable the highlighting of retrievable Marks of Grace",
-		position = 6
+		position = 5
 	)
 	default boolean highlightMarks()
 	{
@@ -113,7 +104,7 @@ public interface AgilityConfig extends Config
 		keyName = "markHighlight",
 		name = "Mark Highlight Color",
 		description = "Color of highlighted Marks of Grace",
-		position = 7
+		position = 6
 	)
 	default Color getMarkColor()
 	{
@@ -124,7 +115,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightShortcuts",
 		name = "Highlight Agility Shortcuts",
 		description = "Enable/disable the highlighting of Agility shortcuts",
-		position = 8
+		position = 7
 	)
 	default boolean highlightShortcuts()
 	{
@@ -135,7 +126,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapOverlay",
 		name = "Show Trap Overlay",
 		description = "Enable/disable the highlighting of traps on Agility courses",
-		position = 9
+		position = 8
 	)
 	default boolean showTrapOverlay()
 	{
@@ -146,7 +137,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapHighlight",
 		name = "Trap Overlay Color",
 		description = "Color of Agility trap overlay",
-		position = 10
+		position = 9
 	)
 	default Color getTrapColor()
 	{
@@ -157,7 +148,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaNotifier",
 		name = "Agility Arena notifier",
 		description = "Notify on ticket location change in Agility Arena",
-		position = 11
+		position = 10
 	)
 	default boolean notifyAgilityArena()
 	{
@@ -168,10 +159,32 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaTimer",
 		name = "Agility Arena timer",
 		description = "Configures whether Agility Arena timer is displayed",
-		position = 12
+		position = 11
 	)
 	default boolean showAgilityArenaTimer()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightStick",
+		name = "Highlight Stick",
+		description = "Highlight the retrievable stick in the Werewolf Agility Course",
+		position = 12
+	)
+	default boolean highlightStick()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "stickHighlightColor",
+		name = "Stick Highlight Color",
+		description = "Color of highlighted stick",
+		position = 13
+	)
+	default Color stickHighlightColor()
+	{
+		return Color.RED;
 	}
 }

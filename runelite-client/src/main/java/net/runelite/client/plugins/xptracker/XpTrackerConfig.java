@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("xpTracker")
 public interface XpTrackerConfig extends Config
@@ -87,6 +88,7 @@ public interface XpTrackerConfig extends Config
 		name = "Auto pause after",
 		description = "Configures how many minutes passes before pausing a skill while in game and there's no XP, 0 means disabled"
 	)
+	@Units(Units.MINUTES)
 	default int pauseSkillAfter()
 	{
 		return 0;

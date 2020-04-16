@@ -40,3 +40,5 @@ runelite:
     consumerkey:
     secretkey:
     listid: 1185897074786742273
+  ge:
+    history: 90 # days
