@@ -37,6 +37,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import static net.runelite.api.ItemID.BARROWS_TELEPORT;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
@@ -64,28 +65,29 @@ import net.runelite.client.ui.overlay.infobox.LoopTimer;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
-		name = "Barrows Brothers",
-		description = "Show helpful information for the Barrows minigame",
-		tags = {"combat", "minigame", "bosses", "pve", "pvm"}
+	name = "Barrows Brothers",
+	description = "Show helpful information for the Barrows minigame",
+	tags = {"combat", "minigame", "bosses", "pve", "pvm"}
 )
 
 public class BarrowsPlugin extends Plugin
 {
 	private static final ImmutableList<WidgetInfo> POSSIBLE_SOLUTIONS = ImmutableList.of(
-			WidgetInfo.BARROWS_PUZZLE_ANSWER1,
-			WidgetInfo.BARROWS_PUZZLE_ANSWER2,
-			WidgetInfo.BARROWS_PUZZLE_ANSWER3
+		WidgetInfo.BARROWS_PUZZLE_ANSWER1,
+		WidgetInfo.BARROWS_PUZZLE_ANSWER2,
+		WidgetInfo.BARROWS_PUZZLE_ANSWER3
 	);
 
 	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
-	private static final int CRYPT_REGION_ID = 14231;
-	private static final int BARROWS_TP_ID = 19629;
-	private static final String totalKillField = "TOTAL";
+	static final int CRYPT_REGION_ID = 14231;
+	static final String TOTAL_KILL_FIELD = "TOTAL";
 
 	private LoopTimer barrowsPrayerDrainTimer;
 	private boolean wasInCrypt = false;
 
 	private int barrowsStartingPotential = 0;
+
+	@Getter
 	private static Map<String, Integer> monstersKilled = new HashMap<>();
 
 	@Getter
@@ -132,7 +134,7 @@ public class BarrowsPlugin extends Plugin
 		overlayManager.add(barrowsOverlay);
 		overlayManager.add(brotherOverlay);
 		//Declare new infobox
-		this.kcInfobox = new BarrowsCryptKCInfobox(itemManager.getImage(BARROWS_TP_ID), this, client, config);
+		this.kcInfobox = new BarrowsCryptKCInfobox(itemManager.getImage(BARROWS_TELEPORT), this, client, config);
 		infoBoxManager.addInfoBox(this.kcInfobox);
 	}
 
@@ -185,8 +187,6 @@ public class BarrowsPlugin extends Plugin
 		}
 		else if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			//initialize kill count on login
-			initializeKC();
 			boolean isInCrypt = isInCrypt();
 			if (wasInCrypt && !isInCrypt)
 			{
@@ -194,8 +194,9 @@ public class BarrowsPlugin extends Plugin
 			}
 			else if (!wasInCrypt && isInCrypt)
 			{
-				//On login into crypt, initialize reward potential
+				//On login into crypt, initialize reward potential and kill count
 				initializeRewardPotential();
+				initializeKC();
 				startPrayerDrainTimer();
 			}
 		}
@@ -277,9 +278,6 @@ public class BarrowsPlugin extends Plugin
 					String monsterSlain = monster.getName();
 					int numKilled = monstersKilled.get(monsterSlain);
 					monstersKilled.put(monsterSlain, numKilled + 1);
-					//Increment total kills
-					int totalKills = monstersKilled.get(totalKillField);
-					monstersKilled.put(totalKillField, totalKills + 1);
 					//Update the tooltip
 					this.kcInfobox.updateTooltip();
 				}
@@ -290,7 +288,6 @@ public class BarrowsPlugin extends Plugin
 	private void initializeRewardPotential()
 	{
 		this.barrowsStartingPotential = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
-
 	}
 
 	private void initializeKC()
@@ -300,7 +297,6 @@ public class BarrowsPlugin extends Plugin
 		{
 			monstersKilled.put(monster.getName(), 0);
 		}
-		monstersKilled.put(totalKillField, 0);
 	}
 
 	protected String getTooltip()
@@ -320,11 +316,11 @@ public class BarrowsPlugin extends Plugin
 		if (config.showPrayerDrainTimer())
 		{
 			final LoopTimer loopTimer = new LoopTimer(
-					PRAYER_DRAIN_INTERVAL_MS,
-					ChronoUnit.MILLIS,
-					null,
-					this,
-					true);
+				PRAYER_DRAIN_INTERVAL_MS,
+				ChronoUnit.MILLIS,
+				null,
+				this,
+				true);
 
 			spriteManager.getSpriteAsync(SpriteID.TAB_PRAYER, 0, loopTimer);
 
@@ -346,10 +342,5 @@ public class BarrowsPlugin extends Plugin
 	{
 		Player localPlayer = client.getLocalPlayer();
 		return localPlayer != null && localPlayer.getWorldLocation().getRegionID() == CRYPT_REGION_ID;
-	}
-
-	protected Map<String, Integer> getMonstersKilled()
-	{
-		return monstersKilled;
 	}
 }

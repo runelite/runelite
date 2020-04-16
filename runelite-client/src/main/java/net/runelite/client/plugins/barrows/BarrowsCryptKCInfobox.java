@@ -31,15 +31,14 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class BarrowsCryptKCInfobox extends InfoBox
 {
 	private final Client client;
 	private final BarrowsConfig config;
 	private final BarrowsPlugin plugin;
-	private static final int CRYPT_REGION_ID = 14231;
 	private static final int CRYPT_PLANE_ID = 0;
-	private static final String totalKillField = "TOTAL";
 
 	@Inject
 	BarrowsCryptKCInfobox(BufferedImage image, BarrowsPlugin plugin, Client client, BarrowsConfig config)
@@ -55,8 +54,7 @@ public class BarrowsCryptKCInfobox extends InfoBox
 	@Override
 	public String getText()
 	{
-		Map<String, Integer> monstersKilled = plugin.getMonstersKilled();
-		return Integer.toString(monstersKilled.get(totalKillField));
+		return Integer.toString(plugin.getMonstersKilled().values().stream().mapToInt(Integer::intValue).sum());
 	}
 
 	@Override
@@ -72,7 +70,7 @@ public class BarrowsCryptKCInfobox extends InfoBox
 		return config.showCryptMonsterKills() && isInCrypt();
 	}
 
-	public String initializeTooltip()
+	String initializeTooltip()
 	{
 		StringBuilder tooltipBuilder = new StringBuilder();
 		Map<String, Integer> monstersKilled = plugin.getMonstersKilled();
@@ -89,7 +87,7 @@ public class BarrowsCryptKCInfobox extends InfoBox
 		return tooltipBuilder.toString();
 	}
 
-	public void updateTooltip()
+	void updateTooltip()
 	{
 		String tooltip = this.initializeTooltip();
 		this.setTooltip(tooltip);
@@ -99,7 +97,7 @@ public class BarrowsCryptKCInfobox extends InfoBox
 	// Also added plane checking to limit tracker to only appearing the maze portion, not in each barrow.
 	private boolean isInCrypt()
 	{
-		boolean cryptRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == CRYPT_REGION_ID;
+		boolean cryptRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == plugin.CRYPT_REGION_ID;
 		boolean cryptPlane = client.getLocalPlayer().getWorldLocation().getPlane() == CRYPT_PLANE_ID;
 		return cryptRegion && cryptPlane;
 	}
