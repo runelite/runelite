@@ -533,7 +533,13 @@ LABEL416:
 LABEL430:
    jump                   LABEL445
 LABEL431:
+   iload                  9                 ; The id of the messageNode of the message being built
+   sconst                 ""
+   sconst                 "addTimestamp"
+   runelite_callback
+   pop_int               ; pop message id
    sload                  11
+   join_string            2
    iload                  7
    iload                  8
    iconst                 10616891
