@@ -67,6 +67,7 @@ import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.hooks.DrawCallbacks;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -1102,7 +1103,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		tempUvOffset = 0;
 
 		// Texture on UI
-		drawUi(canvasHeight, canvasWidth);
+		// Hide UI handling - show UI if client is not logged in so the Login UI can still be used, show UI if Message of the Day is open
+		if (!config.hideUi() || client.getGameState() != GameState.LOGGED_IN || client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN_MESSAGE_OF_THE_DAY) != null)
+		{
+			drawUi(canvasHeight, canvasWidth);
+		}
 
 		glDrawable.swapBuffers();
 

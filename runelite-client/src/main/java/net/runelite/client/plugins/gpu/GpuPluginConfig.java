@@ -96,4 +96,15 @@ public interface GpuPluginConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "hideUi",
+		name = "Hide UI",
+		description = "Hide the User Interface.",
+		position = 6
+	)
+	default boolean hideUi()
+	{
+		return false;
+	}
 }
