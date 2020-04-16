@@ -319,7 +319,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		// Swap to shift-click deposit behavior
 		// Deposit- op 2 is the current withdraw amount 1/5/10/x
 		if (shiftModifier && config.bankDepositShiftClick() != ShiftDepositMode.OFF
-			&& menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 2
+			&& menuEntryAdded.getType() == MenuAction.CC_OP.getId() && (menuEntryAdded.getIdentifier() == 2 || menuEntryAdded.getIdentifier() == 1)
 			&& menuEntryAdded.getOption().startsWith("Deposit-"))
 		{
 			ShiftDepositMode shiftDepositMode = config.bankDepositShiftClick();
