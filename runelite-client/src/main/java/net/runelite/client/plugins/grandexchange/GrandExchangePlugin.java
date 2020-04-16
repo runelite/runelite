@@ -28,6 +28,7 @@
 
 package net.runelite.client.plugins.grandexchange;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.Shorts;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -182,7 +183,8 @@ public class GrandExchangePlugin extends Plugin
 	/**
 	 * Logic from {@link org.apache.commons.text.similarity.FuzzyScore}
 	 */
-	private static List<Integer> findFuzzyIndices(String term, String query)
+	@VisibleForTesting
+	static List<Integer> findFuzzyIndices(String term, String query)
 	{
 		List<Integer> indices = new ArrayList<>();
 
@@ -201,7 +203,9 @@ public class GrandExchangePlugin extends Plugin
 		{
 			final char queryChar = queryLowerCase.charAt(queryIndex);
 
-			for (; termIndex < termLowerCase.length(); termIndex++)
+			boolean termCharacterMatchFound = false;
+			for (; termIndex < termLowerCase.length()
+					&& !termCharacterMatchFound; termIndex++)
 			{
 				final char termChar = termLowerCase.charAt(termIndex);
 
@@ -211,7 +215,7 @@ public class GrandExchangePlugin extends Plugin
 
 					// we can leave the nested loop. Every character in the
 					// query can match at most one character in the term.
-					break;
+					termCharacterMatchFound = true;
 				}
 			}
 		}
@@ -548,10 +552,11 @@ public class GrandExchangePlugin extends Plugin
 			StringBuilder newItemName = new StringBuilder(itemName);
 			for (int index : indices)
 			{
-				if (wasFuzzySearch && (itemName.charAt(index) == ' ' || itemName.charAt(index) == '-'))
+				if (itemName.charAt(index) == ' ' || itemName.charAt(index) == '-')
 				{
 					continue;
 				}
+
 				newItemName.insert(index + 1, "</u>");
 				newItemName.insert(index, underlineTag);
 			}
