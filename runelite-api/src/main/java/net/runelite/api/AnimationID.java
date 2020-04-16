@@ -112,6 +112,9 @@ public final class AnimationID
 	public static final int FISHING_BAREHAND_CAUGHT_SWORDFISH_2 = 6708;
 	public static final int FISHING_BAREHAND_CAUGHT_TUNA_1 = 6710;
 	public static final int FISHING_BAREHAND_CAUGHT_TUNA_2 = 6711;
+	public static final int FISHING_PEARL_ROD = 8188;
+	public static final int FISHING_PEARL_FLY_ROD = 8189;
+	public static final int FISHING_PEARL_BARBARIAN_ROD = 8190;
 	public static final int MINING_BRONZE_PICKAXE = 625;
 	public static final int MINING_IRON_PICKAXE = 626;
 	public static final int MINING_STEEL_PICKAXE = 627;
