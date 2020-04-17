@@ -742,6 +742,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		scene.setDrawDistance(drawDistance);
 	}
 
+	@Override
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
 							SceneTilePaint paint, int tileZ, int tileX, int tileY,
 							int zoom, int centerX, int centerY)
@@ -768,6 +769,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
+	@Override
 	public void drawSceneModel(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
 							SceneTileModel model, int tileZ, int tileX, int tileY,
 							int zoom, int centerX, int centerY)
