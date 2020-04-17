@@ -70,6 +70,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	private KeyManager keyManager;
 
 	private boolean inPvp;
+	private boolean held;
 
 	@Provides
 	AntiDragConfig getConfig(ConfigManager configManager)
@@ -114,6 +115,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
 		{
 			setDragDelay();
+			held = true;
 		}
 	}
 
@@ -123,6 +125,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
 		{
 			resetDragDelay();
+			held = false;
 		}
 	}
 
@@ -133,6 +136,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		{
 			if (config.onShiftOnly() || inPvp)
 			{
+				held = false;
 				clientThread.invoke(this::resetDragDelay);
 			}
 			else
@@ -168,6 +172,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	{
 		if (!focusChanged.isFocused())
 		{
+			held = false;
 			clientThread.invoke(this::resetDragDelay);
 		}
 		else if (!inPvp && !config.onShiftOnly())
@@ -179,7 +184,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (widgetLoaded.getGroupId() == WidgetID.BANK_GROUP_ID)
+		if (widgetLoaded.getGroupId() == WidgetID.BANK_GROUP_ID && (!config.onShiftOnly() || held))
 		{
 			setBankDragDelay(config.dragDelay());
 		}
