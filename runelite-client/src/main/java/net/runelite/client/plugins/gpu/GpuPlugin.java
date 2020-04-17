@@ -932,7 +932,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		// Draw 3d scene
 		final TextureProvider textureProvider = client.getTextureProvider();
-		if (textureProvider != null && this.bufferId != -1)
+		if (textureProvider != null)
 		{
 			gl.glUniformBlockBinding(glSmallComputeProgram, uniBlockSmall, 0);
 			gl.glUniformBlockBinding(glComputeProgram, uniBlockLarge, 0);
