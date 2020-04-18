@@ -33,7 +33,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -92,6 +91,7 @@ import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ConfigButtonClicked;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.ExternalPluginManager;
@@ -551,22 +551,23 @@ class ConfigPanel extends PluginPanel
 				try
 				{
 					ConfigItem item = cid.getItem();
-
 					JButton button = new JButton(item.name());
-
-					Class<ActionListener> actionListener = (Class<ActionListener>) item.clazz();
-
-					button.addActionListener(actionListener.newInstance());
+					button.addActionListener((e) -> {
+						ConfigButtonClicked event = new ConfigButtonClicked();
+						event.setGroup(cd.getGroup().value());
+						event.setKey(cid.getItem().keyName());
+						eventBus.post(ConfigButtonClicked.class, event);
+					});
 					buttons.add(button);
 				}
-				catch (IllegalAccessException | InstantiationException ex)
+				catch (Exception ex)
 				{
 					log.error("Adding action listener failed: {}", ex.getMessage());
+					ex.printStackTrace();
 				}
 
 				continue;
 			}
-
 			JPanel item = new JPanel();
 			item.setLayout(new BorderLayout());
 			item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
