@@ -123,6 +123,15 @@ public class ClueScrollOverlay extends OverlayPanel
 			panelComponent.getChildren().add(LineComponent.builder().left("Requires Light Source!").leftColor(Color.RED).build());
 		}
 
+		if (clue.getEnemy() != null)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(clue.getEnemy().getText())
+				.leftColor(Color.YELLOW)
+				.build());
+		}
+
 		return super.render(graphics);
 	}
 }

@@ -212,6 +212,14 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 								.left("- " + hotColdLocation.getArea())
 								.leftColor(Color.LIGHT_GRAY)
 								.build());
+
+							if (digLocations.size() <= 5 && hotColdLocation.getEnemy() != null)
+							{
+								panelComponent.getChildren().add(LineComponent.builder()
+									.left(hotColdLocation.getEnemy().getText())
+									.leftColor(Color.YELLOW)
+									.build());
+							}
 						}
 					}
 				}
