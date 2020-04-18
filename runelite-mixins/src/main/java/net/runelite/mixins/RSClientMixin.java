@@ -1930,5 +1930,12 @@ public abstract class RSClientMixin implements RSClient
 	{
 		invertYaw = state;
 	}
+
+	@Inject
+	@Override
+	public void stopNow()
+	{
+		setStopTimeMs(1);
+	}
 }
 

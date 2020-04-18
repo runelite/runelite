@@ -308,4 +308,13 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 7)
 	public static final int IGNORE_UPDATE = 630;
+
+	/**
+	 * Called in an onTimer, determines whether to layout the bank during a search
+	 * <ul>
+	 * <li> int (WidgetID) * 16, various widgets making up the bank interface </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 16)
+	public static final int BANKMAIN_SEARCH_REFRESH = 283;
 }

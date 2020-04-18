@@ -33,6 +33,7 @@ import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
@@ -52,8 +53,10 @@ public class LootTrackerClient
 
 	private final UUID uuid;
 
-	public void submit(Collection<LootRecord> lootRecords)
+	public CompletableFuture<Void> submit(Collection<LootRecord> lootRecords)
 	{
+		CompletableFuture<Void> future = new CompletableFuture<>();
+
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("loottracker")
 			.build();
@@ -71,6 +74,7 @@ public class LootTrackerClient
 			public void onFailure(Call call, IOException e)
 			{
 				log.warn("unable to submit loot", e);
+				future.completeExceptionally(e);
 			}
 
 			@Override
@@ -78,8 +82,11 @@ public class LootTrackerClient
 			{
 				log.debug("Submitted loot");
 				response.close();
+				future.complete(null);
 			}
 		});
+
+		return future;
 	}
 
 	public Collection<LootRecord> get() throws IOException

@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -77,8 +78,10 @@ public class ConfigClient
 		}
 	}
 
-	public void set(String key, String value)
+	public CompletableFuture<Void> set(String key, String value)
 	{
+		CompletableFuture<Void> future = new CompletableFuture<>();
+
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("config")
 			.addPathSegment(key)
@@ -98,6 +101,7 @@ public class ConfigClient
 			public void onFailure(Call call, IOException e)
 			{
 				logger.warn("Unable to synchronize configuration item", e);
+				future.completeExceptionally(e);
 			}
 
 			@Override
@@ -105,12 +109,17 @@ public class ConfigClient
 			{
 				response.close();
 				logger.debug("Synchronized configuration value '{}' to '{}'", key, value);
+				future.complete(null);
 			}
 		});
+
+		return future;
 	}
 
-	public void unset(String key)
+	public CompletableFuture<Void> unset(String key)
 	{
+		CompletableFuture<Void> future = new CompletableFuture<>();
+
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("config")
 			.addPathSegment(key)
@@ -130,6 +139,7 @@ public class ConfigClient
 			public void onFailure(Call call, IOException e)
 			{
 				logger.warn("Unable to unset configuration item", e);
+				future.completeExceptionally(e);
 			}
 
 			@Override
@@ -137,7 +147,10 @@ public class ConfigClient
 			{
 				response.close();
 				logger.debug("Unset configuration value '{}'", key);
+				future.complete(null);
 			}
 		});
+
+		return future;
 	}
 }

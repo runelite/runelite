@@ -469,7 +469,7 @@ public class RuneLite
 
 		// Initialize UI
 		RuneLiteSplashScreen.stage(.80, "Initialize UI");
-		clientUI.init(this);
+		clientUI.init();
 
 		// Initialize Discord service
 		discordService.init();
@@ -597,13 +597,6 @@ public class RuneLite
 				});
 			}
 		}
-	}
-
-	public void shutdown()
-	{
-		clientSessionManager.shutdown();
-		discordService.close();
-		groups.close();
 	}
 
 	private static class ConfigFileConverter implements ValueConverter<File>

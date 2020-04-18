@@ -83,7 +83,7 @@ public class WeaponMap
 		StyleMap.put(ItemID.BLACK_SWORD, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.BLACK_WARHAMMER, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.BLADE_OF_SAELDOR, WeaponStyle.MELEE);
-		StyleMap.put(ItemID.BLADE_OF_SAELDOR_I, WeaponStyle.MELEE);
+		StyleMap.put(ItemID.BLADE_OF_SAELDOR_C, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.BLADE_OF_SAELDOR_INACTIVE, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.BLESSED_AXE, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.BLUE_FLOWERS, WeaponStyle.MELEE);

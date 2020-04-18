@@ -27,10 +27,12 @@ package net.runelite.client;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
+import java.util.concurrent.Future;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.task.Schedule;
 
 @Singleton
@@ -38,15 +40,23 @@ import net.runelite.client.task.Schedule;
 public class ClientSessionManager
 {
 	private final SessionClient sessionClient;
-	private final ClientThread clientThread;
 	private UUID sessionId;
 
 
 	@Inject
-	ClientSessionManager(ClientThread clientThread)
+	ClientSessionManager(EventBus eventBus)
 	{
 		this.sessionClient = new SessionClient();
-		this.clientThread = clientThread;
+
+		eventBus.subscribe(ClientShutdown.class, this, (e) ->
+		{
+			Future<Void> f = shutdown();
+			if (f != null)
+			{
+				e.waitFor(f);
+			}
+			sessionId = null;
+		});
 	}
 
 	void start()
@@ -54,7 +64,8 @@ public class ClientSessionManager
 		sessionClient.openSession()
 			.subscribeOn(Schedulers.io())
 			.observeOn(Schedulers.single())
-			.subscribe(this::setUuid, this::error);
+			.doOnError(this::error)
+			.subscribe(this::setUuid);
 	}
 
 	@Schedule(period = 10, unit = ChronoUnit.MINUTES, asynchronous = true)
@@ -73,18 +84,15 @@ public class ClientSessionManager
 			.subscribe();
 	}
 
-	public void shutdown()
+	private Future<Void> shutdown()
 	{
 		if (sessionId != null)
 		{
-			sessionClient.delete(sessionId)
-				.subscribeOn(Schedulers.io())
-				.observeOn(Schedulers.single())
-				.doOnError(this::error)
-				.subscribe();
+			return sessionClient.delete(sessionId)
+				.toFuture();
 
-			sessionId = null;
 		}
+		return null;
 	}
 
 	private void setUuid(UUID uuid)
