@@ -69,6 +69,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	private int inGameBit = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
+	private boolean playingCue = false;
 
 	@Getter
 	private Round currentRound;
@@ -163,9 +164,14 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		if (config.callChangeAudioCue() && currentRound != null)
 		{
-			if (currentRound.getTimeToChange() == 30)
+			long timeToChange = currentRound.getTimeToChange();
+
+			if (timeToChange == 30 && !playingCue)
 			{
+				playingCue = true;
 				client.playSoundEffect(SoundEffectID.TOWN_CRIER_BELL_DONG);
+			} else if (timeToChange != 30) {
+				playingCue = false;
 			}
 		}
 	}
