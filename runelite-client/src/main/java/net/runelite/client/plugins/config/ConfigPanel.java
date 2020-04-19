@@ -589,7 +589,15 @@ class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == int.class)
 			{
-				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+				int value;
+				try
+				{
+					value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+				}
+				catch (NumberFormatException ex)
+				{
+					return;
+				}
 
 				Units units = cid.getUnits();
 				Range range = cid.getRange();
