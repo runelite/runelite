@@ -28,7 +28,6 @@ package net.runelite.client.plugins.barbarianassault;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
 
 @ConfigGroup("barbarianAssault")
 public interface BarbarianAssaultConfig extends Config
@@ -36,8 +35,7 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "showTimer",
 		name = "Show call change timer",
-		description = "Show time to next call change",
-		position = 1
+		description = "Show time to next call change"
 	)
 	default boolean showTimer()
 	{
@@ -47,34 +45,17 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "callChangeAudioCue",
 		name = "Call Change Audio Cue",
-		description = "Play an audio cue when the call changes",
-		position = 2
+		description = "Play an audio cue when the call changes"
 	)
 	default boolean callChangeAudioCue()
 	{
-		return false;
-	}
-
-	@Range(
-		min = 0,
-		max = 29
-	)
-	@ConfigItem(
-		keyName = "callChangeAudioCueDelay",
-		name = "Audio Cue Delay",
-		description = "Sets the delay in seconds after a call change that the audio cue should occur",
-		position = 3
-	)
-	default int callChangeAudioCueDelay()
-	{
-		return 0;
+		return true;
 	}
 
 	@ConfigItem(
 		keyName = "showHealerBars",
 		name = "Show health bars for teammates when healer",
-		description = "Displays team health for healer",
-		position = 4
+		description = "Displays team health for healer"
 	)
 	default boolean showHealerBars()
 	{
@@ -84,8 +65,7 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "waveTimes",
 		name = "Show wave and game duration",
-		description = "Displays wave and game duration",
-		position = 5
+		description = "Displays wave and game duration"
 	)
 	default boolean waveTimes()
 	{
