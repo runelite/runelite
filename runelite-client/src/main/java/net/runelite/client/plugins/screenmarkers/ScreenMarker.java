@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScreenMarker
+public class ScreenMarker extends ScreenMarkerItem
 {
 	private long id;
 	private String name;

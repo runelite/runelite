@@ -33,14 +33,17 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.time.Instant;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.client.plugins.screenmarkers.ScreenMarkerGroup;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
+import net.runelite.client.plugins.screenmarkers.ScreenMarkerWrapper;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
@@ -51,14 +54,20 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_HOVER_ICON;
 
+	private static final ImageIcon ADD_GROUP_ICON;
+	private static final ImageIcon ADD_GROUP_HOVER_ICON;
+
 	private static final Color DEFAULT_BORDER_COLOR = Color.GREEN;
 	private static final Color DEFAULT_FILL_COLOR = new Color(0, 255, 0, 0);
 
 	private static final int DEFAULT_BORDER_THICKNESS = 3;
 
 	private final JLabel addMarker = new JLabel(ADD_ICON);
+	private final JLabel addGroup = new JLabel(ADD_GROUP_ICON);
 	private final JLabel title = new JLabel();
 	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
+	private final JPanel northPanel = new JPanel(new BorderLayout());
+	private final JPanel centerPanel = new JPanel(new BorderLayout());
 	private final JPanel markerView = new JPanel(new GridBagLayout());
 
 	private final ScreenMarkerPlugin plugin;
@@ -80,6 +89,10 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		final BufferedImage addIcon = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "add_icon.png");
 		ADD_ICON = new ImageIcon(addIcon);
 		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
+
+		final BufferedImage addGroupIcon = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "add_group_icon.png");
+		ADD_GROUP_ICON = new ImageIcon(addGroupIcon);
+		ADD_GROUP_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addGroupIcon, 0.53f));
 	}
 
 	public ScreenMarkerPluginPanel(ScreenMarkerPlugin screenMarkerPlugin)
@@ -89,16 +102,15 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		JPanel northPanel = new JPanel(new BorderLayout());
 		northPanel.setBorder(new EmptyBorder(1, 0, 10, 0));
 
 		title.setText("Screen Markers");
 		title.setForeground(Color.WHITE);
 
 		northPanel.add(title, BorderLayout.WEST);
-		northPanel.add(addMarker, BorderLayout.EAST);
+		northPanel.add(addMarker, BorderLayout.CENTER);
+		northPanel.add(addGroup, BorderLayout.EAST);
 
-		JPanel centerPanel = new JPanel(new BorderLayout());
 		centerPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		markerView.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -143,6 +155,28 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			}
 		});
 
+		addGroup.setToolTipText("Add new screen marker group");
+		addGroup.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				plugin.newGroup();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				addGroup.setIcon(ADD_GROUP_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				addGroup.setIcon(ADD_GROUP_ICON);
+			}
+		});
+
 		centerPanel.add(markerView, BorderLayout.CENTER);
 
 		add(northPanel, BorderLayout.NORTH);
@@ -159,11 +193,20 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 
 		markerView.removeAll();
 
-		for (final ScreenMarkerOverlay marker : plugin.getScreenMarkers())
+		for (final ScreenMarkerWrapper markerWrapper : plugin.getScreenMarkers())
 		{
-			markerView.add(new ScreenMarkerPanel(plugin, marker), constraints);
-			constraints.gridy++;
-
+			if (markerWrapper.getMarker() != null)
+			{
+				ScreenMarkerOverlay marker = (ScreenMarkerOverlay) markerWrapper.getMarker();
+				markerView.add(new ScreenMarkerPanel(plugin, marker), constraints);
+				constraints.gridy++;
+			}
+			else if (markerWrapper.getGroup() != null)
+			{
+				ScreenMarkerGroup group = (ScreenMarkerGroup) markerWrapper.getGroup();
+				markerView.add(new ScreenMarkerGroupPanel(plugin, this, group), constraints);
+				constraints.gridy++;
+			}
 			markerView.add(Box.createRigidArea(new Dimension(0, 10)), constraints);
 			constraints.gridy++;
 		}
@@ -205,5 +248,21 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			creationPanel.lockConfirm();
 			plugin.setMouseListenerEnabled(true);
 		}
+	}
+
+	public void displayGroup(ScreenMarkerGroupPluginPanel groupPanel)
+	{
+		northPanel.setVisible(false);
+		markerView.setVisible(false);
+		add(groupPanel.getNorthPanel(), BorderLayout.NORTH);
+		centerPanel.add(groupPanel.getMarkerView(), BorderLayout.CENTER);
+	}
+
+	public void hideActiveGroup(ScreenMarkerGroupPluginPanel groupPanel)
+	{
+		remove(groupPanel.getNorthPanel());
+		centerPanel.remove(groupPanel.getMarkerView());
+		northPanel.setVisible(true);
+		markerView.setVisible(true);
 	}
 }

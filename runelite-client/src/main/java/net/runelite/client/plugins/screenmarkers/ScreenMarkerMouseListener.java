@@ -60,10 +60,12 @@ public class ScreenMarkerMouseListener extends MouseAdapter
 		if (SwingUtilities.isLeftMouseButton(event))
 		{
 			plugin.startCreation(event.getPoint());
+			// TODO: Call group's creation if active
 		}
 		else if (plugin.isCreatingScreenMarker())
 		{
 			plugin.finishCreation(true);
+			// TODO: Call group's finish if active
 		}
 
 		event.consume();
