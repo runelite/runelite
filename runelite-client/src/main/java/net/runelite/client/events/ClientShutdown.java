@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.events;
 
-object ProjectVersions {
-    const val launcherVersion = "2.2.0"
-    const val rlVersion = "1.6.11"
+import java.time.Duration;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.Event;
 
-    const val openosrsVersion = "3.2.2"
-    const val openosrsInjectorVersion = "1.0.3.1"
+@Value
+@Slf4j
+public class ClientShutdown implements Event
+{
+	private Queue<Future<?>> tasks = new ConcurrentLinkedQueue<>();
 
-    const val rsversion = 189
-    const val cacheversion = 165
+	public void waitFor(Future<?> future)
+	{
+		tasks.add(future);
+	}
+
+	public void waitForAllConsumers(Duration totalTimeout)
+	{
+		long deadline = System.nanoTime() + totalTimeout.toNanos();
+		for (Future<?> task; (task = tasks.poll()) != null; )
+		{
+			long timeout = deadline - System.nanoTime();
+			if (timeout < 0)
+			{
+				log.warn("Timed out waiting for task completion");
+				return;
+			}
+
+			try
+			{
+				task.get(timeout, TimeUnit.NANOSECONDS);
+			}
+			catch (ThreadDeath d)
+			{
+				throw d;
+			}
+			catch (Throwable t)
+			{
+				log.warn("Error during shutdown: ", t);
+			}
+		}
+	}
 }

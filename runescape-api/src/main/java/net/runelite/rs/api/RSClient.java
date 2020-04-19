@@ -1245,4 +1245,7 @@ public interface RSClient extends RSGameShell, Client
 
 	@Import("showLoadingMessages")
 	void setShowLoadingMessages(boolean showLoadingMessages);
+
+	@Import("stopTimeMs")
+	void setStopTimeMs(long time);
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -12,6 +14,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.OpenOSRSConfig;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.RuneLiteSplashScreen;
 import org.jgroups.Address;
@@ -38,7 +42,7 @@ public class Groups extends ReceiverAdapter
 	private final PublishSubject<Message> messageObjectSubject = PublishSubject.create();
 
 	@Inject
-	public Groups(OpenOSRSConfig openOSRSConfig) throws Exception
+	public Groups(OpenOSRSConfig openOSRSConfig, EventBus eventBus) throws Exception
 	{
 		this.openOSRSConfig = openOSRSConfig;
 
@@ -47,6 +51,11 @@ public class Groups extends ReceiverAdapter
 			.setReceiver(this)
 			.setDiscardOwnMessages(true)
 			.connect("openosrs");
+
+		eventBus.subscribe(ClientShutdown.class, this, (e) -> {
+			Future<Void> f = close();
+			e.waitFor(f);
+		});
 	}
 
 	public void broadcastSring(String command)
@@ -134,10 +143,22 @@ public class Groups extends ReceiverAdapter
 		{
 			messageObjectSubject.onNext(message);
 		}
+
 	}
 
-	public void close()
+	private CompletableFuture<Void> close()
 	{
-		channel.close();
+		CompletableFuture<Void> future = new CompletableFuture<>();
+		try
+		{
+			channel.close();
+			future.complete(null);
+		}
+		catch (Exception ex)
+		{
+			future.completeExceptionally(ex);
+		}
+
+		return future;
 	}
 }
