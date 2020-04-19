@@ -32,8 +32,10 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.SoundEffectID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -54,7 +56,7 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Barbarian Assault",
 	description = "Show a timer to the next call change and game/wave duration in chat.",
-	tags = {"minigame", "overlay", "timer"}
+	tags = {"minigame", "overlay", "timer", "notifications"}
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
@@ -152,6 +154,18 @@ public class BarbarianAssaultPlugin extends Plugin
 			{
 				setRound(Role.COLLECTOR);
 				break;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		if (config.callChangeAudioCue() && currentRound != null)
+		{
+			if (currentRound.getTimeToChange() == 30)
+			{
+				client.playSoundEffect(SoundEffectID.TOWN_CRIER_BELL_DONG);
 			}
 		}
 	}

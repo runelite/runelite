@@ -43,6 +43,16 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "callChangeAudioCue",
+		name = "Call Change Audio Cue",
+		description = "Play an audio cue when the call changes"
+	)
+	default boolean callChangeAudioCue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showHealerBars",
 		name = "Show health bars for teammates when healer",
 		description = "Displays team health for healer"
