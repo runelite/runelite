@@ -174,7 +174,7 @@ public class PluginListPanel extends PluginPanel
 				sortPluginList(null);
 			}
 
-			if (colorOptions.stream().anyMatch(option -> option.equals(ev.getKey())))
+			if (pluginList != null && colorOptions.stream().anyMatch(option -> option.equals(ev.getKey())))
 			{
 				pluginList.forEach(listItem ->
 				{
