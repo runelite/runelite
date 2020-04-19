@@ -666,7 +666,13 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.warn("Exception during overlay rendering", ex);
+			return;
+		}
+		catch (Error er)
+		{
+			log.warn("Error during overlay rendering, removing overlay", er);
+			overlayManager.remove(overlay);
 			return;
 		}
 
