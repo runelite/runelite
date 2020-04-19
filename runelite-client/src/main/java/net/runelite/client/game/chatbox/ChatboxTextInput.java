@@ -573,7 +573,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	}
 
 	@Override
-	void close()
+	protected void close()
 	{
 		if (this.onClose != null)
 		{
