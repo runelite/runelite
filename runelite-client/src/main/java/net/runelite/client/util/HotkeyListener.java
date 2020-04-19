@@ -26,7 +26,9 @@ package net.runelite.client.util;
 
 import java.awt.event.KeyEvent;
 import java.util.function.Supplier;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.input.KeyListener;
 
@@ -38,6 +40,10 @@ public abstract class HotkeyListener implements KeyListener
 	private boolean isPressed = false;
 
 	private boolean isConsumingTyped = false;
+
+	@Setter
+	@Getter
+	private boolean isEnabledOnLogin = false;
 
 	@Override
 	public void keyTyped(KeyEvent e)
