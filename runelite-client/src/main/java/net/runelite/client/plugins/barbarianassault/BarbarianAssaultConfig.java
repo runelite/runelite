@@ -51,7 +51,7 @@ public interface BarbarianAssaultConfig extends Config
 	)
 	default boolean callChangeAudioCue()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
