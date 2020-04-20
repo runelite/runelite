@@ -35,7 +35,8 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "showTimer",
 		name = "Show call change timer",
-		description = "Show time to next call change"
+		description = "Show time to next call change",
+		position = 1
 	)
 	default boolean showTimer()
 	{
@@ -45,7 +46,8 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "callChangeAudioCue",
 		name = "Call Change Audio Cue",
-		description = "Play an audio cue when the call changes"
+		description = "Play an audio cue when the call changes",
+		position = 2
 	)
 	default boolean callChangeAudioCue()
 	{
@@ -55,7 +57,8 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "showHealerBars",
 		name = "Show health bars for teammates when healer",
-		description = "Displays team health for healer"
+		description = "Displays team health for healer",
+		position = 3
 	)
 	default boolean showHealerBars()
 	{
@@ -65,7 +68,8 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "waveTimes",
 		name = "Show wave and game duration",
-		description = "Displays wave and game duration"
+		description = "Displays wave and game duration",
+		position = 4
 	)
 	default boolean waveTimes()
 	{
