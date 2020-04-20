@@ -164,14 +164,15 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		if (config.callChangeAudioCue() && currentRound != null)
 		{
+			int audioCueTime = 30 - config.callChangeAudioCueDelay();
 			long timeToChange = currentRound.getTimeToChange();
 
-			if (timeToChange == 0 && !playingCue)
+			if (timeToChange == audioCueTime && !playingCue)
 			{
 				playingCue = true;
 				client.playSoundEffect(SoundEffectID.TOWN_CRIER_BELL_DONG);
 			}
-			else if (timeToChange != 0)
+			else if (timeToChange != audioCueTime)
 			{
 				playingCue = false;
 			}
