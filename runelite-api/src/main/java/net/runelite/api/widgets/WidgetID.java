@@ -466,6 +466,7 @@ public class WidgetID
 		static final int COLLECTION_LIST = 9;
 		static final int COLLECTION_VIEW = 35;
 		static final int COLLECTION_VIEW_HEADER = 19;
+		static final int COLLECTION_VIEW_SCROLLBAR = 36;
 	}
 
 	static class Chatbox
