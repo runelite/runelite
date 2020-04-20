@@ -63,6 +63,6 @@ class Round
 
 	public long getTimeToChange()
 	{
-		return 30 + (Duration.between(Instant.now(), roundStartTime).getSeconds() % 30);
+		return 30 - (Duration.between(roundStartTime, Instant.now()).getSeconds() % 30);
 	}
 }
