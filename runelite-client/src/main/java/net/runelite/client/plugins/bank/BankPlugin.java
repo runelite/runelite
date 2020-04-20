@@ -259,7 +259,7 @@ public class BankPlugin extends Plugin
 
 			if (config.showHA())
 			{
-				strCurrentTab += "EX: ";
+				strCurrentTab += "GE: ";
 			}
 
 			if (config.showExact())
