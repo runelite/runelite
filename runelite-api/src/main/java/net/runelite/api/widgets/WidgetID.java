@@ -76,6 +76,7 @@ public class WidgetID
 	public static final int SLAYER_REWARDS_GROUP_ID = 426;
 	public static final int PRIVATE_CHAT = 163;
 	public static final int CHATBOX_GROUP_ID = 162;
+	public static final int COLLECTION_LOG_GROUP_ID = 621;
 	public static final int WORLD_MAP_MENU_GROUP_ID = 160;
 	public static final int VOLCANIC_MINE_GROUP_ID = 611;
 	public static final int BA_ATTACKER_GROUP_ID = 485;
@@ -454,6 +455,17 @@ public class WidgetID
 		static final int MUSIC_ICON = 48;
 		static final int MAGIC_ICON = 65;
 		static final int INVENTORY_CONTAINER = 73;
+	}
+
+	static class CollectionLog
+	{
+		static final int PARENT = 0;
+		static final int FRAME = 1;
+		static final int CONTENT = 2;
+		static final int BUTTON_ROW = 3;
+		static final int COLLECTION_LIST = 9;
+		static final int COLLECTION_VIEW = 35;
+		static final int COLLECTION_VIEW_HEADER = 19;
 	}
 
 	static class Chatbox
