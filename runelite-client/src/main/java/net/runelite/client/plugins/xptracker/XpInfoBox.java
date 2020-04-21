@@ -61,7 +61,7 @@ import net.runelite.client.util.QuantityFormatter;
 
 class XpInfoBox extends JPanel
 {
-	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
+	static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
 	static
 	{
@@ -247,7 +247,7 @@ class XpInfoBox extends JPanel
 
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
-			progressBar.setCenterLabel(TWO_DECIMAL_FORMAT.format(xpSnapshotSingle.getSkillProgressToGoal()) + "%");
+			progressBar.setCenterLabel(xpTrackerConfig.progressBarLabel().getValueFunc().apply(xpSnapshotSingle));
 			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
 			progressBar.setRightLabel(xpSnapshotSingle.getEndGoalXp() == Experience.MAX_SKILL_XP
 				? "200M"

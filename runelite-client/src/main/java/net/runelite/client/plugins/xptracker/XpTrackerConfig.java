@@ -155,4 +155,15 @@ public interface XpTrackerConfig extends Config
 	{
 		return XpPanelLabel.ACTIONS_LEFT;
 	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "progressBarLabel",
+		name = "Progress bar label",
+		description = "Configures the info box progress bar to show Time to goal or percentage complete"
+	)
+	default XpProgressBarLabel progressBarLabel()
+	{
+		return XpProgressBarLabel.PERCENTAGE;
+	}
 }
