@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Levi <me@levischuck.com>
+ * Copyright (c) 2020, Anthony <https://github.com/while-loop>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -125,5 +126,50 @@ public interface XpTrackerConfig extends Config
 	default OnScreenDisplayModeBottom onScreenDisplayModeBottom()
 	{
 		return OnScreenDisplayModeBottom.XP_HOUR;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "xpPanelLabel1",
+		name = "Top-left XP info label",
+		description = "Configures the information displayed in the top-left of XP info box"
+	)
+	default XpPanelLabel xpPanelLabel1()
+	{
+		return XpPanelLabel.XP_GAINED;
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "xpPanelLabel2",
+		name = "Top-right XP info label",
+		description = "Configures the information displayed in the top-right of XP info box"
+	)
+
+	default XpPanelLabel xpPanelLabel2()
+	{
+		return XpPanelLabel.XP_LEFT;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "xpPanelLabel3",
+		name = "Bottom-left XP info label",
+		description = "Configures the information displayed in the bottom-left of XP info box"
+	)
+	default XpPanelLabel xpPanelLabel3()
+	{
+		return XpPanelLabel.XP_HOUR;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "xpPanelLabel4",
+		name = "Bottom-right XP info label",
+		description = "Configures the information displayed in the bottom-right of XP info box"
+	)
+	default XpPanelLabel xpPanelLabel4()
+	{
+		return XpPanelLabel.ACTIONS_LEFT;
 	}
 }
