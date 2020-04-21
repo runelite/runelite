@@ -300,7 +300,7 @@ public class WorldHopperPlugin extends Plugin
 	{
 		WorldResult worldResult = worldService.getWorlds();
 		worldCycleList.clear();
-		if(worldResult != null || worldList.isEmpty())
+		if (worldResult != null || worldList.isEmpty())
 		{
 			if (worldList.matches(NUMBER_COMMA_ONLY_REGEX))
 			{

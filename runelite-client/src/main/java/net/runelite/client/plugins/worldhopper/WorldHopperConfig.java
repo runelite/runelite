@@ -142,5 +142,8 @@ public interface WorldHopperConfig extends Config
 			description = "Hopping cycles between this list of worlds if present; Separate with Commas",
 			position = 9
 	)
-	default String customWorldCycle() { return ""; }
+	default String customWorldCycle()
+	{
+		return "";
+	}
 }
