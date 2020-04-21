@@ -27,19 +27,24 @@ package net.runelite.client.plugins.dpscounter;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Point;
 import java.text.DecimalFormat;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.api.Player;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.ws.PartyService;
@@ -59,43 +64,42 @@ class DpsOverlay extends OverlayPanel
 	private final Client client;
 	private final TooltipManager tooltipManager;
 
+	private final PanelComponent damagePanelComponent = new PanelComponent();
+	private final PanelComponent dpsPanelComponent = new PanelComponent();
+
 	@Inject
 	DpsOverlay(DpsCounterPlugin dpsCounterPlugin, DpsConfig dpsConfig, PartyService partyService, Client client,
 		TooltipManager tooltipManager)
 	{
 		super(dpsCounterPlugin);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.dpsCounterPlugin = dpsCounterPlugin;
 		this.dpsConfig = dpsConfig;
 		this.partyService = partyService;
 		this.client = client;
+		super.panelComponent.setBackgroundColor(null);
+		super.panelComponent.setBorder(new Rectangle());
+		super.panelComponent.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
 		this.tooltipManager = tooltipManager;
 		getMenuEntries().add(RESET_ENTRY);
 		setPaused(false);
 	}
 
-	@Override
+	/*@Override
 	public void onMouseOver()
 	{
-		DpsMember total = dpsCounterPlugin.getTotal();
-		Duration elapsed = total.elapsed();
-		long s = elapsed.getSeconds();
-		String format;
-		if (s >= 3600)
-		{
-			format = String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
-		}
-		else
-		{
-			format = String.format("%d:%02d", s / 60, (s % 60));
-		}
-		tooltipManager.add(new Tooltip("Elapsed time: " + format));
-	}
+
+	}*/
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		Map<String, DpsMember> dpsMembers = dpsCounterPlugin.getMembers();
-		if (dpsMembers.isEmpty())
+		if (dpsConfig.displayMode() == DpsConfig.DisplayMode.IN_COMBAT && !dpsCounterPlugin.isInCombat())
+		{
+			return null;
+		}
+		else if (dpsConfig.displayMode() == DpsConfig.DisplayMode.NEVER)
 		{
 			return null;
 		}
@@ -105,8 +109,11 @@ class DpsOverlay extends OverlayPanel
 		DpsMember total = dpsCounterPlugin.getTotal();
 		boolean paused = total.isPaused();
 
+		dpsPanelComponent.getChildren().clear();
+		damagePanelComponent.getChildren().clear();
+
 		final String title = (inParty ? "Party " : "") + (showDamage ? "Damage" : "DPS") + (paused ? " (paused)" : "");
-		panelComponent.getChildren().add(
+		dpsPanelComponent.getChildren().add(
 			TitleComponent.builder()
 				.text(title)
 				.build());
@@ -117,9 +124,16 @@ class DpsOverlay extends OverlayPanel
 		for (DpsMember dpsMember : dpsMembers.values())
 		{
 			String left = dpsMember.getName();
-			String right = showDamage ? QuantityFormatter.formatNumber(dpsMember.getDamage()) : DPS_FORMAT.format(dpsMember.getDps());
+			// remove ID from discord name because it's annoying
+			if (left.contains("#"))
+			{
+				left = left.substring(0, left.indexOf("#"));
+			}
+			String right = showDamage ? (QuantityFormatter.formatNumber(dpsMember.getDamage())
+					+ " (" + DPS_FORMAT.format(dpsMember.getDps()) + ")")
+					: DPS_FORMAT.format(dpsMember.getDps());
 			maxWidth = Math.max(maxWidth, fontMetrics.stringWidth(left) + fontMetrics.stringWidth(right));
-			panelComponent.getChildren().add(
+			dpsPanelComponent.getChildren().add(
 				LineComponent.builder()
 					.left(left)
 					.right(right)
@@ -135,14 +149,57 @@ class DpsOverlay extends OverlayPanel
 			{
 				DpsMember self = dpsMembers.get(player.getName());
 
-				if (self != null && total.getDamage() > self.getDamage())
+				if ((self != null || dpsConfig.displayMode() == DpsConfig.DisplayMode.ALWAYS && total != null))
 				{
-					panelComponent.getChildren().add(
+					dpsPanelComponent.getChildren().add(
 						LineComponent.builder()
 							.left(total.getName())
-							.right(showDamage ? Integer.toString(total.getDamage()) : DPS_FORMAT.format(total.getDps()))
+							.right(showDamage ? (Integer.toString(total.getDamage())
+								+ " (" + DPS_FORMAT.format(total.getDps()) + ")")
+								: DPS_FORMAT.format(total.getDps()))
 							.build());
 				}
+			}
+		}
+
+		Duration elapsed = total.elapsed();
+		long s = elapsed.getSeconds();
+		String format;
+		if (s >= 3600)
+		{
+			format = String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
+		}
+		else
+		{
+			format = String.format("%d:%02d", s / 60, (s % 60));
+		}
+		dpsPanelComponent.getChildren().add(
+			LineComponent.builder()
+				.left("Elapsed time:")
+				.right(format)
+				.build());
+
+		panelComponent.getChildren().add(dpsPanelComponent);
+		damagePanelComponent.getChildren().clear();
+		if (dpsConfig.targetDamage())
+		{
+			HashMap<String, Integer> targets = dpsCounterPlugin.getTargets();
+			int tooltipMaxWidth = ComponentConstants.STANDARD_WIDTH;
+			if (!targets.isEmpty())
+			{
+				for (Map.Entry target : targets.entrySet())
+				{
+					String tooltipLeft = target.getKey().toString() + ": ";
+					String tooltipRight = target.getValue().toString();
+					damagePanelComponent.getChildren().add(
+							LineComponent.builder()
+									.left(tooltipLeft)
+									.right(tooltipRight)
+									.build());
+					tooltipMaxWidth = Math.max(tooltipMaxWidth, fontMetrics.stringWidth(tooltipLeft) + fontMetrics.stringWidth(tooltipRight));
+					panelComponent.setPreferredSize(new Dimension(tooltipMaxWidth + PANEL_WIDTH_OFFSET, 0));
+				}
+				panelComponent.getChildren().add(damagePanelComponent);
 			}
 		}
 

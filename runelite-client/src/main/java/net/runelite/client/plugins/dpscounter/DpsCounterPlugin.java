@@ -26,6 +26,8 @@ package net.runelite.client.plugins.dpscounter;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
@@ -40,6 +42,7 @@ import static net.runelite.api.NpcID.*;
 import net.runelite.api.Player;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.PlayerDeath;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
@@ -61,18 +64,30 @@ public class DpsCounterPlugin extends Plugin
 {
 	private static final ImmutableSet<Integer> BOSSES = ImmutableSet.of(
 		ABYSSAL_SIRE, ABYSSAL_SIRE_5887, ABYSSAL_SIRE_5888, ABYSSAL_SIRE_5889, ABYSSAL_SIRE_5890, ABYSSAL_SIRE_5891, ABYSSAL_SIRE_5908,
+		ALCHEMICAL_HYDRA, ALCHEMICAL_HYDRA_8616, ALCHEMICAL_HYDRA_8617, ALCHEMICAL_HYDRA_8618, ALCHEMICAL_HYDRA_8619,
+		ALCHEMICAL_HYDRA_8620, ALCHEMICAL_HYDRA_8621, ALCHEMICAL_HYDRA_8622, ALCHEMICAL_HYDRA_8634,
 		CALLISTO, CALLISTO_6609,
 		CERBERUS, CERBERUS_5863, CERBERUS_5866,
 		CHAOS_ELEMENTAL, CHAOS_ELEMENTAL_6505,
+		COMMANDER_ZILYANA_6493, COMMANDER_ZILYANA,
 		CORPOREAL_BEAST,
+		DAGANNOTH_SUPREME, DAGANNOTH_PRIME, DAGANNOTH_REX,
+		DAWN, DAWN_7852, DAWN_7853, DAWN_7884, DAWN_7885,
+		DUSK, DUSK_7851, DUSK_7854, DUSK_7855, DUSK_7882, DUSK_7883, DUSK_7886, DUSK_7887, DUSK_7888, DUSK_7889,
 		GENERAL_GRAARDOR, GENERAL_GRAARDOR_6494,
 		GIANT_MOLE, GIANT_MOLE_6499,
 		KALPHITE_QUEEN, KALPHITE_QUEEN_963, KALPHITE_QUEEN_965, KALPHITE_QUEEN_4303, KALPHITE_QUEEN_4304, KALPHITE_QUEEN_6500, KALPHITE_QUEEN_6501,
 		KING_BLACK_DRAGON, KING_BLACK_DRAGON_2642, KING_BLACK_DRAGON_6502,
+		KRAKEN, KRAKEN_6640, KRAKEN_6656,
+		KREEARRA, KREEARRA_6492,
 		KRIL_TSUTSAROTH, KRIL_TSUTSAROTH_6495,
 		SARACHNIS,
+		SKOTIZO,
+		THERMONUCLEAR_SMOKE_DEVIL,
 		VENENATIS, VENENATIS_6610,
 		VETION, VETION_REBORN,
+		VORKATH_8058, VORKATH_8059,	VORKATH_8060, VORKATH_8061,
+		ZULRAH, ZULRAH_2043, ZULRAH_2044,
 
 		// ToB
 		THE_MAIDEN_OF_SUGADINTI, THE_MAIDEN_OF_SUGADINTI_8361, THE_MAIDEN_OF_SUGADINTI_8362, THE_MAIDEN_OF_SUGADINTI_8363, THE_MAIDEN_OF_SUGADINTI_8364, THE_MAIDEN_OF_SUGADINTI_8365,
@@ -119,6 +134,11 @@ public class DpsCounterPlugin extends Plugin
 	private DpsConfig dpsConfig;
 
 	@Getter(AccessLevel.PACKAGE)
+	private boolean inCombat = false;
+	@Getter(AccessLevel.PACKAGE)
+	private HashMap<String, Integer> targets = new HashMap<String, Integer>();
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, DpsMember> members = new ConcurrentHashMap<>();
 	@Getter(AccessLevel.PACKAGE)
 	private final DpsMember total = new DpsMember("Total");
@@ -156,9 +176,28 @@ public class DpsCounterPlugin extends Plugin
 	{
 		Player player = client.getLocalPlayer();
 		Actor actor = hitsplatApplied.getActor();
+
 		if (!(actor instanceof NPC))
 		{
 			return;
+		}
+
+		final int npcId = ((NPC) actor).getId();
+		final String npcName = ((NPC) actor).getName();
+		boolean isBoss = BOSSES.contains(npcId);
+
+		if (dpsConfig.bossOnly() && !isBoss)
+		{
+			// only track boss damage if config is set
+			return;
+		}
+
+		if (!inCombat && dpsConfig.resetTracker())
+		{
+			members.clear();
+			total.reset();
+			targets.clear();
+			inCombat = true;
 		}
 
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
@@ -181,14 +220,25 @@ public class DpsCounterPlugin extends Plugin
 					specialCounterUpdate.setMemberId(localMember.getMemberId());
 					wsClient.send(specialCounterUpdate);
 				}
+				// damage to specific targets
+				if (dpsConfig.targetDamage())
+				{
+					if (!targets.containsKey(npcName))
+					{
+						targets.put(npcName, hitsplat.getAmount());
+					}
+					else
+					{
+						targets.replace(npcName, hitsplat.getAmount() + targets.get(npcName));
+					}
+				}
+
 				// apply to total
 				break;
 			case DAMAGE_OTHER:
-				final int npcId = ((NPC) actor).getId();
-				boolean isBoss = BOSSES.contains(npcId);
-				if (actor != player.getInteracting() && !isBoss)
+				if (!dpsConfig.otherDamage())
 				{
-					// only track damage to npcs we are attacking, or is a nearby common boss
+					// only track other damage if config is set
 					return;
 				}
 				// apply to total
@@ -228,6 +278,7 @@ public class DpsCounterPlugin extends Plugin
 		{
 			members.clear();
 			total.reset();
+			targets.clear();
 		}
 		else if (event.getEntry() == DpsOverlay.UNPAUSE_ENTRY)
 		{
@@ -243,16 +294,40 @@ public class DpsCounterPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
-
-		if (npc.isDead() && BOSSES.contains(npc.getId()))
+		boolean isBoss = BOSSES.contains(npc.getId());
+		if (dpsConfig.bossOnly() && !isBoss)
 		{
-			log.debug("Boss has died!");
+			return;
+		}
 
+		// don't want this to reset when Dawn dies because fight isn't over yet
+		if (npc.getId() == DAWN_7885)
+		{
+			return;
+		}
+
+		// counter wasn't resetting sometimes when Dusk died so just hard-coded it in
+		if (npc.isDead() || npc.getId() == DUSK_7889)
+		{
 			if (dpsConfig.autopause())
 			{
 				pause();
 			}
+			inCombat = false;
 		}
+	}
+
+	@Subscribe
+	public void onPlayerDeath(PlayerDeath playerDeath)
+	{
+		if (playerDeath.getPlayer() != client.getLocalPlayer())
+		{
+			return;
+		}
+		members.clear();
+		total.reset();
+		pause();
+		inCombat = false;
 	}
 
 	private void pause()
