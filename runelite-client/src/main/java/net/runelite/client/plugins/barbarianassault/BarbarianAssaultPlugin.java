@@ -170,7 +170,9 @@ public class BarbarianAssaultPlugin extends Plugin
 			{
 				playingCue = true;
 				client.playSoundEffect(SoundEffectID.TOWN_CRIER_BELL_DONG);
-			} else if (timeToChange != 30) {
+			}
+			else if (timeToChange != 30)
+			{
 				playingCue = false;
 			}
 		}
