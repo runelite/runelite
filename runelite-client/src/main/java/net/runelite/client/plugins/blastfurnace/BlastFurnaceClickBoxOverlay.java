@@ -30,10 +30,8 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameObject;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
@@ -89,16 +87,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 			return false;
 		}
 
-		Item[] items = equipmentContainer.getItems();
-		int idx = EquipmentInventorySlot.GLOVES.getSlotIdx();
-
-		if (items == null || idx >= items.length)
-		{
-			return false;
-		}
-
-		Item glove = items[idx];
-		return glove != null && glove.getId() == ItemID.ICE_GLOVES;
+		return equipmentContainer.contains(ItemID.ICE_GLOVES);
 	}
 
 	private void renderObject(GameObject object, Graphics2D graphics, Color color)
