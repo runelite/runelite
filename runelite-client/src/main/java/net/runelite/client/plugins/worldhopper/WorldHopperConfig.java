@@ -129,10 +129,18 @@ public interface WorldHopperConfig extends Config
 		keyName = "displayPing",
 		name = "Display current ping",
 		description = "Displays ping to current game world",
-		position = 7
+		position = 8
 	)
 	default boolean displayPing()
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "customWorldCycle",
+			name = "Custom world cycle",
+			description = "Hopping cycles between this list of worlds if present; Separate with Commas",
+			position = 9
+	)
+	default String customWorldCycle() { return ""; }
 }

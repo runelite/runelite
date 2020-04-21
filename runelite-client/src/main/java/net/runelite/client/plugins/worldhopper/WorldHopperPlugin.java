@@ -36,6 +36,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -161,6 +163,10 @@ public class WorldHopperPlugin extends Plugin
 
 	private final Map<Integer, Integer> storedPings = new HashMap<>();
 
+	private List<World> worldCycleList = new ArrayList<>();
+
+	private final String NUMBER_COMMA_ONLY_REGEX = "((?<!^,)\\d+(,(?!$)|$))+";;
+
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
 		@Override
@@ -227,6 +233,9 @@ public class WorldHopperPlugin extends Plugin
 
 		// populate initial world list
 		updateList();
+
+		//set initial world cycle if present
+		setCustomWorldCycle(config.customWorldCycle());
 	}
 
 	@Override
@@ -280,6 +289,25 @@ public class WorldHopperPlugin extends Plugin
 					panel.setFilterMode(config.subscriptionFilter());
 					updateList();
 					break;
+				case "customWorldCycle":
+					setCustomWorldCycle(event.getNewValue());
+					break;
+			}
+		}
+	}
+
+	private void setCustomWorldCycle(String worldList)
+	{
+		WorldResult worldResult = worldService.getWorlds();
+		worldCycleList.clear();
+		if(worldResult != null || worldList.isEmpty())
+		{
+			if (worldList.matches(NUMBER_COMMA_ONLY_REGEX))
+			{
+				int[] worldCycleListInt = Arrays.stream(config.customWorldCycle().split(",")).mapToInt(Integer::parseInt).filter((x -> (worldResult.findWorld(x) != null))).toArray();
+				//convert valid worlds from string to int
+				Arrays.stream(worldCycleListInt).forEach(x -> worldCycleList.add(worldResult.findWorld(x)));
+				//convert int array to world list
 			}
 		}
 	}
@@ -525,7 +553,8 @@ public class WorldHopperPlugin extends Plugin
 		currentWorldTypes.remove(WorldType.SKILL_TOTAL);
 		currentWorldTypes.remove(WorldType.LAST_MAN_STANDING);
 
-		List<World> worlds = worldResult.getWorlds();
+		//use world cycle list if present
+		List<World> worlds = !worldCycleList.isEmpty() ? worldCycleList : worldResult.getWorlds();
 
 		int worldIdx = worlds.indexOf(currentWorld);
 		int totalLevel = client.getTotalLevel();
@@ -541,18 +570,14 @@ public class WorldHopperPlugin extends Plugin
 			 */
 			if (previous)
 			{
-				worldIdx--;
-
-				if (worldIdx < 0)
+				if (--worldIdx < 0)
 				{
 					worldIdx = worlds.size() - 1;
 				}
 			}
 			else
 			{
-				worldIdx++;
-
-				if (worldIdx >= worlds.size())
+				if (++worldIdx >= worlds.size())
 				{
 					worldIdx = 0;
 				}
