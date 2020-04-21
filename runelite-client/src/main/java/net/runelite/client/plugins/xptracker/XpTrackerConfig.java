@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -34,22 +33,6 @@ import net.runelite.client.config.Units;
 @ConfigGroup("xpTracker")
 public interface XpTrackerConfig extends Config
 {
-	@AllArgsConstructor
-	enum OnScreenDisplayMode
-	{
-		XP_GAINED,
-		XP_LEFT,
-		ACTIONS_DONE,
-		ACTIONS_LEFT
-	}
-
-	@AllArgsConstructor
-	enum OnScreenDisplayModeBottom
-	{
-		XP_HOUR,
-		ACTIONS_HOUR,
-	}
-
 	@ConfigItem(
 		position = 0,
 		keyName = "hideMaxed",
@@ -112,9 +95,9 @@ public interface XpTrackerConfig extends Config
 		name = "On-screen tracker display mode (top)",
 		description = "Configures the information displayed in the first line of on-screen XP overlays"
 	)
-	default OnScreenDisplayMode onScreenDisplayMode()
+	default XpPanelLabel onScreenDisplayMode()
 	{
-		return OnScreenDisplayMode.XP_GAINED;
+		return XpPanelLabel.XP_GAINED;
 	}
 
 	@ConfigItem(
@@ -123,9 +106,9 @@ public interface XpTrackerConfig extends Config
 		name = "On-screen tracker display mode (bottom)",
 		description = "Configures the information displayed in the second line of on-screen XP overlays"
 	)
-	default OnScreenDisplayModeBottom onScreenDisplayModeBottom()
+	default XpPanelLabel onScreenDisplayModeBottom()
 	{
-		return OnScreenDisplayModeBottom.XP_HOUR;
+		return XpPanelLabel.XP_HOUR;
 	}
 
 	@ConfigItem(
