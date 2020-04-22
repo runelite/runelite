@@ -688,7 +688,7 @@ public class TabInterface
 		{
 			entries = createMenuEntry(event, TAG_INVENTORY, event.getTarget(), entries);
 
-			if (activeTab != null)
+			if (activeTab != null && !isTabMenuActive())
 			{
 				entries = createMenuEntry(event, TAG_INVENTORY, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR), entries);
 			}
@@ -700,7 +700,7 @@ public class TabInterface
 		{
 			entries = createMenuEntry(event, TAG_GEAR, event.getTarget(), entries);
 
-			if (activeTab != null)
+			if (activeTab != null && !isTabMenuActive())
 			{
 				entries = createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR), entries);
 			}
@@ -834,7 +834,7 @@ public class TabInterface
 			{
 				MenuEntry entry = entries[entries.length - 1];
 
-				if (draggedWidget.getItemId() > 0 && entry.getOption().equals(VIEW_TAB) && draggedOn.getId() != draggedWidget.getId())
+				if (!isTabMenuActive() && draggedWidget.getItemId() > 0 && entry.getOption().equals(VIEW_TAB) && draggedOn.getId() != draggedWidget.getId())
 				{
 					entry.setOption(TAG_SEARCH + Text.removeTags(entry.getTarget()) + (shiftDown ? VAR_TAG_SUFFIX : ""));
 					entry.setTarget(draggedWidget.getName());
