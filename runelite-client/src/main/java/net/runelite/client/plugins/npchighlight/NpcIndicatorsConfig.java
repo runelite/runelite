@@ -32,22 +32,12 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("npcindicators")
 public interface NpcIndicatorsConfig extends Config
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "highlightStyle",
-		name = "Highlight Style",
-		description = "Highlight setting"
-	)
-	default RenderStyle renderStyle()
-	{
-		return RenderStyle.HULL;
-	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "npcToHighlight",
-		name = "NPCs to Highlight",
-		description = "List of NPC names to highlight"
+			position = 0,
+			keyName = "npcToHighlight",
+			name = "NPCs to Highlight",
+			description = "List of NPC names to highlight"
 	)
 	default String getNpcToHighlight()
 	{
@@ -55,10 +45,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "npcColor",
-		name = "Highlight Color",
-		description = "Color of the NPC highlight"
+			position = 1,
+			keyName = "npcColor",
+			name = "Highlight Color",
+			description = "Color of the NPC highlight"
 	)
 	default Color getHighlightColor()
 	{
@@ -66,10 +56,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "drawNames",
-		name = "Draw names above NPC",
-		description = "Configures whether or not NPC names should be drawn above the NPC"
+			position = 2,
+			keyName = "drawNames",
+			name = "Draw names above NPC",
+			description = "Configures whether or not NPC names should be drawn above the NPC"
 	)
 	default boolean drawNames()
 	{
@@ -77,10 +67,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "drawMinimapNames",
-		name = "Draw names on minimap",
-		description = "Configures whether or not NPC names should be drawn on the minimap"
+			position = 3,
+			keyName = "drawMinimapNames",
+			name = "Draw names on minimap",
+			description = "Configures whether or not NPC names should be drawn on the minimap"
 	)
 	default boolean drawMinimapNames()
 	{
@@ -88,10 +78,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
-		keyName = "highlightMenuNames",
-		name = "Highlight menu names",
-		description = "Highlight NPC names in right click menu"
+			position = 4,
+			keyName = "highlightMenuNames",
+			name = "Highlight menu names",
+			description = "Highlight NPC names in right click menu"
 	)
 	default boolean highlightMenuNames()
 	{
@@ -99,11 +89,44 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
-		keyName = "showRespawnTimer",
-		name = "Show respawn timer",
-		description = "Show respawn timer of tagged NPCs")
+			position = 5,
+			keyName = "showRespawnTimer",
+			name = "Show respawn timer",
+			description = "Show respawn timer of tagged NPCs")
 	default boolean showRespawnTimer()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 6,
+			keyName = "highlightStyleTile",
+			name = "Highlight Style Tile",
+			description = "Highlight setting Tile"
+	)
+	default boolean renderStyleTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 7,
+			keyName = "highlightStyleHull",
+			name = "Highlight Style Hull",
+			description = "Highlight setting Hull"
+	)
+	default boolean renderStyleHull()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 8,
+			keyName = "highlightStyleSouthWestTile",
+			name = "Highlight Style South West Tile",
+			description = "Highlight setting South West Tile"
+	)
+	default boolean renderStyleSouthWestTile()
 	{
 		return false;
 	}
