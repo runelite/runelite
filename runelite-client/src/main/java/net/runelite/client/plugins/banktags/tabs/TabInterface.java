@@ -520,26 +520,7 @@ public class TabInterface
 			return;
 		}
 
-		String str = client.getVar(VarClientStr.INPUT_TEXT);
-
-		if (Strings.isNullOrEmpty(str))
-		{
-			str = "";
-		}
-
-		Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-		if (bankTitle != null && !bankTitle.isHidden() && !str.startsWith(TAG_SEARCH))
-		{
-			str = bankTitle.getText().replaceFirst("Showing items: ", "");
-
-			if (str.startsWith("Tab "))
-			{
-				str = "";
-			}
-		}
-
-		str = Text.standardize(str);
-
+		String str = this.getTrimmedTitle();
 		if (str.startsWith(BankTagsPlugin.TAG_SEARCH))
 		{
 			activateTab(tabManager.find(str.substring(TAG_SEARCH.length())));
@@ -593,6 +574,28 @@ public class TabInterface
 		}
 	}
 
+	private String getTrimmedTitle()
+	{
+		String str = client.getVar(VarClientStr.INPUT_TEXT);
+		if (Strings.isNullOrEmpty(str))
+		{
+			str = "";
+		}
+
+		Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+		if (bankTitle != null && !bankTitle.isHidden() && !str.startsWith(TAG_SEARCH))
+		{
+			str = bankTitle.getText().replaceFirst("Showing items: ", "");
+
+			if (str.startsWith("Tab "))
+			{
+				str = "";
+			}
+		}
+
+		return Text.standardize(str);
+	}
+
 	private void setTabMenuVisible(boolean visible)
 	{
 		for (TagTab t : tabManager.getTabs())
@@ -603,7 +606,8 @@ public class TabInterface
 
 	private boolean isTabMenuActive()
 	{
-		return TAB_MENU.equals(client.getVar(VarClientStr.INPUT_TEXT));
+		String title = getTrimmedTitle();
+		return !Strings.isNullOrEmpty(title) && title.equals(TAB_MENU);
 	}
 
 	public void handleScriptEvent(final ScriptCallbackEvent event)
