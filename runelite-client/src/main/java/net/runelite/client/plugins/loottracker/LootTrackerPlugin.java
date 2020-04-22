@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -734,7 +733,7 @@ public class LootTrackerPlugin extends Plugin
 
 	void toggleItem(String name, boolean ignore)
 	{
-		final Set<String> ignoredItemSet = new HashSet<>(ignoredItems);
+		final Set<String> ignoredItemSet = new LinkedHashSet<>(ignoredItems);
 
 		if (ignore)
 		{
