@@ -64,7 +64,6 @@ import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
-
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PlayerLootReceived;
@@ -84,9 +83,9 @@ import net.runelite.client.util.Text;
 import net.runelite.client.util.LinkBrowser;
 
 @PluginDescriptor(
-		name = "Screenshot",
-		description = "Enable the manual and automatic taking of screenshots",
-		tags = {"external", "images", "imgur", "integration", "notifications"}
+	name = "Screenshot",
+	description = "Enable the manual and automatic taking of screenshots",
+	tags = {"external", "images", "imgur", "integration", "notifications"}
 )
 @Slf4j
 public class ScreenshotPlugin extends Plugin
@@ -99,8 +98,8 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9]+) duels?\\.");
 	private static final String GAUNTLET_LOOTED_MESSAGE = "You open the chest.";
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
-			"You feel something weird sneaking into your backpack",
-			"You have a funny feeling like you would have been followed");
+		"You feel something weird sneaking into your backpack",
+		"You have a funny feeling like you would have been followed");
 
 	private String clueType;
 	private Integer clueNumber;
@@ -181,18 +180,18 @@ public class ScreenshotPlugin extends Plugin
 		final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), "screenshot.png");
 
 		titleBarButton = NavigationButton.builder()
-				.tab(false)
-				.tooltip("Take screenshot")
-				.icon(iconImage)
-				.onClick(this::manualScreenshot)
-				.popup(ImmutableMap
-						.<String, Runnable>builder()
-						.put("Open screenshot folder...", () ->
-						{
-							LinkBrowser.open(SCREENSHOT_DIR.toString());
-						})
-						.build())
-				.build();
+			.tab(false)
+			.tooltip("Take screenshot")
+			.icon(iconImage)
+			.onClick(this::manualScreenshot)
+			.popup(ImmutableMap
+				.<String, Runnable>builder()
+				.put("Open screenshot folder...", () ->
+				{
+					LinkBrowser.open(SCREENSHOT_DIR.toString());
+				})
+				.build())
+			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
 
@@ -578,8 +577,8 @@ public class ScreenshotPlugin extends Plugin
 	private void takeScreenshot(String fileName, String subDir, Image image)
 	{
 		BufferedImage screenshot = config.includeFrame()
-				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-				: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
+			: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
 		Graphics graphics = screenshot.getGraphics();
 
