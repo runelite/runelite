@@ -410,6 +410,7 @@ public class TabInterface
 
 				if (tab.equals(activeTab))
 				{
+					resetBankTitle();
 					bankSearch.reset(true);
 					rememberedSearch = "";
 
@@ -596,6 +597,15 @@ public class TabInterface
 		return Text.standardize(str);
 	}
 
+	private void resetBankTitle()
+	{
+		// Clear the bank title if leaving tag tab menu
+		if (isTabMenuActive())
+		{
+			client.getWidget(WidgetInfo.BANK_TITLE_BAR).setText("");
+		}
+	}
+
 	private void setTabMenuVisible(boolean visible)
 	{
 		for (TagTab t : tabManager.getTabs())
@@ -743,6 +753,7 @@ public class TabInterface
 			&& event.getMenuOption().equals("Search")
 			&& client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND).getSpriteId() != SpriteID.EQUIPMENT_SLOT_SELECTED)
 		{
+			resetBankTitle();
 			activateTab(null);
 			// This ensures that when clicking Search when tab is selected, the search input is opened rather
 			// than client trying to close it first
@@ -752,6 +763,7 @@ public class TabInterface
 		else if (activeTab != null
 			&& event.getMenuOption().startsWith("View tab"))
 		{
+			resetBankTitle();
 			activateTab(null);
 		}
 		else if (activeTab != null
@@ -959,6 +971,7 @@ public class TabInterface
 	{
 		if (activeTab != null && activeTab.getTag().equals(tag))
 		{
+			resetBankTitle();
 			bankSearch.reset(true);
 		}
 
