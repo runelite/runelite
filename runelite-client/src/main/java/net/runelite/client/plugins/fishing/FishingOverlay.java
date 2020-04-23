@@ -69,7 +69,11 @@ class FishingOverlay extends OverlayPanel
 		AnimationID.FISHING_KARAMBWAN,
 		AnimationID.FISHING_NET,
 		AnimationID.FISHING_OILY_ROD,
-		AnimationID.FISHING_POLE_CAST);
+		AnimationID.FISHING_POLE_CAST,
+		AnimationID.FISHING_PEARL_ROD,
+		AnimationID.FISHING_PEARL_FLY_ROD,
+		AnimationID.FISHING_PEARL_BARBARIAN_ROD,
+		AnimationID.FISHING_PEARL_OILY_ROD);
 
 	private final Client client;
 	private final FishingPlugin plugin;

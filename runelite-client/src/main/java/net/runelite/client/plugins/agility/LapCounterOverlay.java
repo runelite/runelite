@@ -89,6 +89,14 @@ class LapCounterOverlay extends OverlayPanel
 				.build());
 		}
 
+		if (config.lapsPerHour() && session.getLapsPerHour() > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Laps per hour:")
+				.right(Integer.toString(session.getLapsPerHour()))
+				.build());
+		}
+
 		return super.render(graphics);
 	}
 }

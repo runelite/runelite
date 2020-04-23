@@ -43,7 +43,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -53,9 +52,22 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.*;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.AIR_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.BLOOD_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.BODY_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.CHAOS_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.COSMIC_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.DEATH_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.EARTH_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.FIRE_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.LAW_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.MIND_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.NATURE_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.SOUL_RIFT;
+import static net.runelite.client.plugins.runecraft.AbyssRifts.WATER_RIFT;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -190,7 +202,7 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		if (event.getContainerId() != InventoryID.INVENTORY.getId())
 		{
 			return;
 		}
