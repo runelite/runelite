@@ -590,13 +590,13 @@ public class GrandExchangePlugin extends Plugin
 		if (searchMode == GrandExchangeSearchMode.FUZZY_FALLBACK)
 		{
 			List<Integer> ids = IntStream.range(0, client.getItemCount())
-				.mapToObj(itemManager::getItemComposition)
-				.filter(item -> item.isTradeable() && item.getNote() == -1
-					&& item.getName().toLowerCase().contains(input))
-				.limit(MAX_RESULT_COUNT + 1)
-				.sorted(Comparator.comparing(ItemComposition::getName))
-				.map(ItemComposition::getId)
-				.collect(Collectors.toList());
+					.mapToObj(itemManager::getItemComposition)
+					.filter(item -> item.isTradeable() && item.getNote() == -1
+						&& item.getName().toLowerCase().contains(input))
+					.limit(MAX_RESULT_COUNT + 1)
+					.sorted(Comparator.comparing(ItemComposition::getName))
+					.map(ItemComposition::getId)
+					.collect(Collectors.toList());
 			if (ids.size() > MAX_RESULT_COUNT)
 			{
 				client.setGeSearchResultCount(-1);
