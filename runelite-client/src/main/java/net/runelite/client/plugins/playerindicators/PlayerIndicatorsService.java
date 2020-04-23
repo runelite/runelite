@@ -45,10 +45,9 @@ public class PlayerIndicatorsService
 
 	private Color randomColor( Player player )
 	{
-		String playerName = player.getName();
-		if (this.colorMap.containsKey(playerName))
+		if (this.colorMap.containsKey(player.getName()))
 		{
-			return this.colorMap.get(playerName);
+			return this.colorMap.get(player.getName());
 		}
 		else
 		{
@@ -56,8 +55,8 @@ public class PlayerIndicatorsService
 			{
 				this.colorMap.remove( this.colorMap.keys().nextElement() );
 			}
-			Color randomColor = ColorUtil.fromString(playerName);
-			this.colorMap.put(playerName, randomColor);
+			Color randomColor = ColorUtil.fromObject(player);
+			this.colorMap.put(player.getName(), randomColor);
 			return randomColor;
 		}
 	}
