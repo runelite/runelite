@@ -163,38 +163,39 @@ public class DpsCounterPlugin extends Plugin
 
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
 
-		switch (hitsplat.getHitsplatType())
+		if (hitsplat.isMine())
 		{
-			case DAMAGE_ME:
-				int hit = hitsplat.getAmount();
-				// Update local member
-				PartyMember localMember = partyService.getLocalMember();
-				// If not in a party, user local player name
-				final String name = localMember == null ? player.getName() : localMember.getName();
-				DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
-				dpsMember.addDamage(hit);
+			int hit = hitsplat.getAmount();
+			// Update local member
+			PartyMember localMember = partyService.getLocalMember();
+			// If not in a party, user local player name
+			final String name = localMember == null ? player.getName() : localMember.getName();
+			DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
+			dpsMember.addDamage(hit);
 
-				// broadcast damage
-				if (localMember != null)
-				{
-					final DpsUpdate specialCounterUpdate = new DpsUpdate(hit);
-					specialCounterUpdate.setMemberId(localMember.getMemberId());
-					wsClient.send(specialCounterUpdate);
-				}
-				// apply to total
-				break;
-			case DAMAGE_OTHER:
-				final int npcId = ((NPC) actor).getId();
-				boolean isBoss = BOSSES.contains(npcId);
-				if (actor != player.getInteracting() && !isBoss)
-				{
-					// only track damage to npcs we are attacking, or is a nearby common boss
-					return;
-				}
-				// apply to total
-				break;
-			default:
+			// broadcast damage
+			if (localMember != null)
+			{
+				final DpsUpdate specialCounterUpdate = new DpsUpdate(hit);
+				specialCounterUpdate.setMemberId(localMember.getMemberId());
+				wsClient.send(specialCounterUpdate);
+			}
+			// apply to total
+		}
+		else if (hitsplat.isOthers())
+		{
+			final int npcId = ((NPC) actor).getId();
+			boolean isBoss = BOSSES.contains(npcId);
+			if (actor != player.getInteracting() && !isBoss)
+			{
+				// only track damage to npcs we are attacking, or is a nearby common boss
 				return;
+			}
+			// apply to total
+		}
+		else
+		{
+			return;
 		}
 
 		unpause();

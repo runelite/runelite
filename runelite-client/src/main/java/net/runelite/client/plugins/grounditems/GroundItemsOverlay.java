@@ -243,7 +243,7 @@ public class GroundItemsOverlay extends Overlay
 			{
 				if (item.getGePrice() > 0)
 				{
-					itemStringBuilder.append(" (EX: ")
+					itemStringBuilder.append(" (GE: ")
 						.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
 						.append(" gp)");
 				}

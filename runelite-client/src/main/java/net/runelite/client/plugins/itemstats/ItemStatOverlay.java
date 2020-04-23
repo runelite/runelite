@@ -245,16 +245,12 @@ public class ItemStatOverlay extends Overlay
 		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
 		if (s.isEquipable() && currentEquipment != null && c != null)
 		{
-			final Item[] items = c.getItems();
 			final int slot = currentEquipment.getSlot();
 
-			if (slot != -1 && slot < items.length)
+			final Item item = c.getItem(slot);
+			if (item != null)
 			{
-				final Item item = items[slot];
-				if (item != null)
-				{
-					other = itemManager.getItemStats(item.getId(), false);
-				}
+				other = itemManager.getItemStats(item.getId(), false);
 			}
 
 			if (other == null && slot == EquipmentInventorySlot.WEAPON.getSlotIdx())

@@ -194,6 +194,10 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
 			case FISHING_BAREHAND:
+			case FISHING_PEARL_ROD:
+			case FISHING_PEARL_FLY_ROD:
+			case FISHING_PEARL_BARBARIAN_ROD:
+			case FISHING_PEARL_OILY_ROD:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
@@ -239,6 +243,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MAGIC_ENCHANTING_AMULET_1:
 			case MAGIC_ENCHANTING_AMULET_2:
 			case MAGIC_ENCHANTING_AMULET_3:
+			case MAGIC_ENCHANTING_BOLTS:
 			/* Prayer */
 			case USING_GILDED_ALTAR:
 			/* Farming */

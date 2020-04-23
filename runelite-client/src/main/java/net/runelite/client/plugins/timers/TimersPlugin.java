@@ -798,16 +798,8 @@ public class TimersPlugin extends Plugin
 		ItemContainer container = itemContainerChanged.getItemContainer();
 		if (container == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
-			Item[] items = container.getItems();
-			int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();
+			Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
 
-			if (items == null || weaponIdx >= items.length)
-			{
-				removeGameTimer(STAFF_OF_THE_DEAD);
-				return;
-			}
-
-			Item weapon = items[weaponIdx];
 			if (weapon == null)
 			{
 				removeGameTimer(STAFF_OF_THE_DEAD);

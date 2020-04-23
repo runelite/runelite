@@ -44,7 +44,7 @@ void main() {
   uint groupId = gl_WorkGroupID.x;
   uint localId = gl_LocalInvocationID.x * 4;
   modelinfo minfo = ol[groupId];
-  int length = minfo.size;
+  ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId == 0) {
     min10 = 1600;
@@ -57,29 +57,35 @@ void main() {
     }
   }
 
-  memoryBarrierShared();
-  barrier();
-
-  int prio1, dis1, prio1Adj;
+  int prio1, dis1;
   ivec4 vA1, vA2, vA3;
 
-  int prio2, dis2, prio2Adj;
+  int prio2, dis2;
   ivec4 vB1, vB2, vB3;
 
-  int prio3, dis3, prio3Adj;
+  int prio3, dis3;
   ivec4 vC1, vC2, vC3;
 
-  int prio4, dis4, prio4Adj;
+  int prio4, dis4;
   ivec4 vD1, vD2, vD3;
 
-  get_face(localId,     minfo, cameraYaw, cameraPitch, centerX, centerY, zoom, prio1, dis1, vA1, vA2, vA3);
-  get_face(localId + 1, minfo, cameraYaw, cameraPitch, centerX, centerY, zoom, prio2, dis2, vB1, vB2, vB3);
-  get_face(localId + 2, minfo, cameraYaw, cameraPitch, centerX, centerY, zoom, prio3, dis3, vC1, vC2, vC3);
-  get_face(localId + 3, minfo, cameraYaw, cameraPitch, centerX, centerY, zoom, prio4, dis4, vD1, vD2, vD3);
+  get_face(localId,     minfo, cameraYaw, cameraPitch, prio1, dis1, vA1, vA2, vA3);
+  get_face(localId + 1, minfo, cameraYaw, cameraPitch, prio2, dis2, vB1, vB2, vB3);
+  get_face(localId + 2, minfo, cameraYaw, cameraPitch, prio3, dis3, vC1, vC2, vC3);
+  get_face(localId + 3, minfo, cameraYaw, cameraPitch, prio4, dis4, vD1, vD2, vD3);
 
   memoryBarrierShared();
   barrier();
 
+  add_face_prio_distance(localId    , minfo, vA1, vA2, vA3, prio1, dis1, pos);
+  add_face_prio_distance(localId + 1, minfo, vB1, vB2, vB3, prio2, dis2, pos);
+  add_face_prio_distance(localId + 2, minfo, vC1, vC2, vC3, prio3, dis3, pos);
+  add_face_prio_distance(localId + 3, minfo, vD1, vD2, vD3, prio4, dis4, pos);
+
+  memoryBarrierShared();
+  barrier();
+
+  int prio1Adj, prio2Adj, prio3Adj, prio4Adj;
   int idx1 = map_face_priority(localId,     minfo, prio1, dis1, prio1Adj);
   int idx2 = map_face_priority(localId + 1, minfo, prio2, dis2, prio2Adj);
   int idx3 = map_face_priority(localId + 2, minfo, prio3, dis3, prio3Adj);

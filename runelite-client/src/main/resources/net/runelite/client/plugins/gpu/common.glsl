@@ -67,7 +67,7 @@ int face_distance(ivec4 vA, ivec4 vB, ivec4 vC, int cameraYaw, int cameraPitch) 
 /*
  * Test if a face is visible (not backward facing)
  */
-bool face_visible(ivec4 vA, ivec4 vB, ivec4 vC, ivec4 position, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
+bool face_visible(ivec4 vA, ivec4 vB, ivec4 vC, ivec4 position) {
   // Move model to scene location, and account for camera offset
   ivec4 cameraPos = ivec4(cameraX, cameraY, cameraZ, 0);
   vA += position - cameraPos;
