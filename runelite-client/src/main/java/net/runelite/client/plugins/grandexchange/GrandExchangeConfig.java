@@ -74,6 +74,7 @@ public interface GrandExchangeConfig extends Config
 	{
 		return true;
 	}
+
 	@ConfigItem(
 		position = 5,
 		keyName = "geLimitReset",

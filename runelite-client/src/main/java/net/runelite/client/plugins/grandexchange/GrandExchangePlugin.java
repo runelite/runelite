@@ -36,6 +36,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -589,13 +590,13 @@ public class GrandExchangePlugin extends Plugin
 		if (searchMode == GrandExchangeSearchMode.FUZZY_FALLBACK)
 		{
 			List<Integer> ids = IntStream.range(0, client.getItemCount())
-							.mapToObj(itemManager::getItemComposition)
-							.filter(item -> item.isTradeable() && item.getNote() == -1
-								&& item.getName().toLowerCase().contains(input))
-							.limit(MAX_RESULT_COUNT + 1)
-							.sorted(Comparator.comparing(ItemComposition::getName))
-							.map(ItemComposition::getId)
-							.collect(Collectors.toList());
+				.mapToObj(itemManager::getItemComposition)
+				.filter(item -> item.isTradeable() && item.getNote() == -1
+					&& item.getName().toLowerCase().contains(input))
+				.limit(MAX_RESULT_COUNT + 1)
+				.sorted(Comparator.comparing(ItemComposition::getName))
+				.map(ItemComposition::getId)
+				.collect(Collectors.toList());
 			if (ids.size() > MAX_RESULT_COUNT)
 			{
 				client.setGeSearchResultCount(-1);
@@ -624,14 +625,14 @@ public class GrandExchangePlugin extends Plugin
 			};
 
 			List<Integer> ids = IntStream.range(0, client.getItemCount())
-						.mapToObj(itemManager::getItemComposition)
-						.filter(item -> item.isTradeable() && item.getNote() == -1)
-						.filter(item -> getScore.applyAsInt(item) > 0)
-						.sorted(Comparator.comparingInt(getScore).reversed()
-							.thenComparing(ItemComposition::getName))
-						.limit(MAX_RESULT_COUNT)
-						.map(ItemComposition::getId)
-						.collect(Collectors.toList());
+					.mapToObj(itemManager::getItemComposition)
+					.filter(item -> item.isTradeable() && item.getNote() == -1)
+					.filter(item -> getScore.applyAsInt(item) > 0)
+					.sorted(Comparator.comparingInt(getScore).reversed()
+						.thenComparing(ItemComposition::getName))
+					.limit(MAX_RESULT_COUNT)
+					.map(ItemComposition::getId)
+					.collect(Collectors.toList());
 
 			client.setGeSearchResultCount(ids.size());
 			client.setGeSearchResultIds(Shorts.toArray(ids));
@@ -691,26 +692,22 @@ public class GrandExchangePlugin extends Plugin
 			return; // do not update if previous limit has not expired
 		}
 		String itemIdStr = Integer.toString(itemId);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		LocalDateTime now = LocalDateTime.now();
-		String currentDateTime = now.format(formatter);
+		Instant currentDateTime = Instant.now();
 		configManager.setConfiguration("gelimitreset",
-			client.getUsername().toLowerCase(), itemIdStr + currentDateTime);
+			client.getUsername().toLowerCase() + itemIdStr, currentDateTime);
 	}
 
 	private String getLimitReset(int itemId)
 	{
 		String itemIdStr = Integer.toString(itemId);
-		String lastDateTime = configManager.getConfiguration("gelimitreset." + client.getUsername().toLowerCase(),
-			itemIdStr, String.class);
+		Instant lastDateTime = configManager.getConfiguration("gelimitreset",
+			client.getUsername().toLowerCase() + itemIdStr, Instant.class);
 		if (lastDateTime == null)
 		{
 			return "None";
 		}
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		LocalDateTime start = LocalDateTime.parse(lastDateTime, formatter);
-		LocalDateTime now = LocalDateTime.now();
-		long minuteDifference = ChronoUnit.MINUTES.between(start, now);
+		Instant now = Instant.now();
+		long minuteDifference = ChronoUnit.MINUTES.between(lastDateTime, now);
 		if (minuteDifference / 60.0 > 4.0)
 		{
 			return "None";
