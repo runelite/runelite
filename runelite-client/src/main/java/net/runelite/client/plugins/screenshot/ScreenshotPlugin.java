@@ -42,16 +42,8 @@ import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.Player;
-import net.runelite.api.Point;
-import net.runelite.api.SpriteID;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.PlayerDeath;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID;
@@ -111,6 +103,8 @@ public class ScreenshotPlugin extends Plugin
 	private Integer chambersOfXericChallengeNumber;
 
 	private Integer theatreOfBloodNumber;
+
+	private boolean shouldTakeGauntletScreenshot;
 
 	private boolean shouldTakeScreenshot;
 
@@ -268,6 +262,19 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (!shouldTakeGauntletScreenshot || event.getContainerId() != InventoryID.INVENTORY.getId())
+		{
+			return;
+		}
+
+		shouldTakeGauntletScreenshot = false;
+		takeScreenshot("Gauntlet Loot", "Gauntlet Loot");
+	}
+
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
@@ -349,15 +356,7 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotGauntletLoot() && chatMessage.equals(GAUNTLET_LOOTED_MESSAGE))
 		{
-			try
-			{
-				Thread.sleep(750L);
-				String fileName = "Gauntlet Loot";
-				takeScreenshot(fileName, "Gauntlet Loot");
-			}
-			catch (InterruptedException ignored)
-			{
-			}
+			shouldTakeGauntletScreenshot = true;
 		}
 
 		if (config.screenshotValuableDrop())
