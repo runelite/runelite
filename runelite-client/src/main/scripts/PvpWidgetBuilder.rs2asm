@@ -10,7 +10,7 @@
    iload                  2
    iconst                 1
    if_icmpeq              LABEL8
-   jump                   LABEL74
+   jump                   LABEL80
 LABEL8:
    get_varp               1676
    iconst                 4
@@ -39,81 +39,87 @@ LABEL27:
    iload                  0
    if_settext            
 LABEL30:
-   jump                   LABEL73
+   jump                   LABEL79
 LABEL31:
    get_varbit             4965
    iconst                 0
    if_icmpgt              LABEL35
-   jump                   LABEL39
+   jump                   LABEL45
 LABEL35:
    sconst                 "Protection"
    iload                  0
    if_settext            
-   jump                   LABEL73
-LABEL39:
+   iconst                 0
+   iconst                 13
+   iconst                 1
+   iconst                 2
+   iload                  0
+   if_setposition        
+   jump                   LABEL79
+LABEL45:
    iload                  1
    iconst                 0
-   if_icmpgt              LABEL43
-   jump                   LABEL54
-LABEL43:
+   if_icmpgt              LABEL49
+   jump                   LABEL60
+LABEL49:
    get_varbit             5954
    iconst                 1
-   if_icmpeq              LABEL47
-   jump                   LABEL54
-LABEL47:
+   if_icmpeq              LABEL53
+   jump                   LABEL60
+LABEL53:
    sconst                 "Level: "
    iload                  1
    tostring              
    join_string            2
    iload                  0
    if_settext            
-   jump                   LABEL73
-LABEL54:
+   jump                   LABEL79
+LABEL60:
    get_varc_int           78
    iconst                 1
-   if_icmpeq              LABEL58
-   jump                   LABEL62
-LABEL58:
+   if_icmpeq              LABEL64
+   jump                   LABEL68
+LABEL64:
    sconst                 "Guarded"
    iload                  0
    if_settext            
-   jump                   LABEL73
-LABEL62:
+   jump                   LABEL79
+LABEL68:
    get_varc_int           78
    iconst                 2
-   if_icmpeq              LABEL66
-   jump                   LABEL70
-LABEL66:
+   if_icmpeq              LABEL72
+   jump                   LABEL76
+LABEL72:
    sconst                 "No PvP"
    iload                  0
    if_settext            
-   jump                   LABEL73
-LABEL70:
+   jump                   LABEL79
+LABEL76:
    sconst                 "Deadman"
    iload                  0
    if_settext            
-LABEL73:
-   jump                   LABEL88
-LABEL74:
+LABEL79:
+   jump                   LABEL94
+LABEL80:
    iload                  1
    iconst                 0
-   if_icmpgt              LABEL78
-   jump                   LABEL85
-LABEL78:
+   if_icmpgt              LABEL84
+   jump                   LABEL91
+LABEL84:
    sconst                 "Level: "
    iload                  1
    tostring              
    join_string            2
    iload                  0
    if_settext            
-   jump                   LABEL88
-LABEL85:
+   jump                   LABEL94
+LABEL91:
    sconst                 ""
    iload                  0
    if_settext            
-LABEL88:
+LABEL94:
    iload                  1
    invoke                 387
    sconst                 "wildernessWidgetTextSet"  ; set callback name
-   runelite_callback                                 ; invoke callback
+   runelite_callback     ; invoke callback
    return                
