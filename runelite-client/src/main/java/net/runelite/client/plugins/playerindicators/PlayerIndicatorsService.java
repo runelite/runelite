@@ -30,6 +30,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.client.util.ColorUtil;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Random;
 
@@ -41,13 +43,13 @@ public class PlayerIndicatorsService
 
 	private final int MAX_SIZE = 2500;
 	private final ConcurrentHashMap<String, Color> colorMap = new ConcurrentHashMap<>();
-	private final Random random = new Random();
 
 	private Color randomColor( Player player )
 	{
-		if (this.colorMap.containsKey(player.getName()))
+		String playerName = player.getName();
+		if (this.colorMap.containsKey(playerName))
 		{
-			return this.colorMap.get(player.getName());
+			return this.colorMap.get(playerName);
 		}
 		else
 		{
@@ -55,8 +57,8 @@ public class PlayerIndicatorsService
 			{
 				this.colorMap.remove( this.colorMap.keys().nextElement() );
 			}
-			Color randomColor = Color.getHSBColor(this.random.nextFloat(), 1.0f, 0.75f);
-			this.colorMap.put(player.getName(), randomColor);
+			Color randomColor = ColorUtil.fromString(playerName);
+			this.colorMap.put(playerName, randomColor);
 			return randomColor;
 		}
 	}
