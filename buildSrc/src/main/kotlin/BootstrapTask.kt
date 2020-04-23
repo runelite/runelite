@@ -17,16 +17,16 @@ open class BootstrapTask @Inject constructor(@Input val type: String) : DefaultT
     var clientJar: File? = null
 
     @Input
-    val launcherJvm11Arguments = arrayOf("-XX:+DisableAttachMechanism", "-Drunelite.launcher.nojvm=true", "-Xmx512m", "-Xss2m", "-XX:CompileThreshold=1500", "-Djna.nosys=true")
+    val launcherJvm11Arguments = arrayOf("-XX:+DisableAttachMechanism", "-Drunelite.launcher.nojvm=true", "-Xmx1G", "-Xss2m", "-XX:CompileThreshold=1500", "-Djna.nosys=true")
 
     @Input
-    val launcherArguments = arrayOf("-XX:+DisableAttachMechanism", "-Drunelite.launcher.nojvm=true", "-Xmx512m", "-Xss2m", "-XX:CompileThreshold=1500", "-Xincgc", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC", "-Djna.nosys=true")
+    val launcherArguments = arrayOf("-XX:+DisableAttachMechanism", "-Drunelite.launcher.nojvm=true", "-Xmx1G", "-Xss2m", "-XX:CompileThreshold=1500", "-Xincgc", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC", "-Djna.nosys=true")
 
     @Input
-    val clientJvmArguments = arrayOf("-XX:+DisableAttachMechanism", "-Xmx512m", "-Xss2m", "-XX:CompileThreshold=1500", "-Xincgc", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC", "-Djna.nosys=true", "-Dawt.useSystemAAFontSettings=on", "-Dswing.aatext=true")
+    val clientJvmArguments = arrayOf("-XX:+DisableAttachMechanism", "-Xmx1G", "-Xss2m", "-XX:CompileThreshold=1500", "-Xincgc", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC", "-Djna.nosys=true", "-Dawt.useSystemAAFontSettings=on", "-Dswing.aatext=true")
 
     @Input
-    val clientJvm9Arguments = arrayOf("-XX:+DisableAttachMechanism", "-Xmx512m", "-Xss2m", "-XX:CompileThreshold=1500", "-Djna.nosys=true", "-Dawt.useSystemAAFontSettings=on", "-Dswing.aatext=true")
+    val clientJvm9Arguments = arrayOf("-XX:+DisableAttachMechanism", "-Xmx1G", "-Xss2m", "-XX:CompileThreshold=1500", "-Djna.nosys=true", "-Dawt.useSystemAAFontSettings=on", "-Dswing.aatext=true")
 
     private fun hash(file: ByteArray): String {
         return MessageDigest.getInstance("SHA-256").digest(file).fold("", { str, it -> str + "%02x".format(it) })
