@@ -171,4 +171,15 @@ public interface FriendsChatConfig extends Config
 	{
 		return Color.RED;
 	}
+
+	@ConfigItem(
+		keyName = "senderReplace",
+		name = "Chat name replacement",
+		description = "Allows you to visually change the name of the friends chat to a custom name in the chat box",
+		position = 14
+	)
+	default String senderReplace()
+	{
+		return "";
+	}
 }
