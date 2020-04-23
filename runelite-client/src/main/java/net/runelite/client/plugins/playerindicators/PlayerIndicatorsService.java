@@ -33,7 +33,6 @@ import net.runelite.api.Player;
 import net.runelite.client.util.ColorUtil;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.Random;
 
 @Singleton
 public class PlayerIndicatorsService
