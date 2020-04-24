@@ -81,7 +81,11 @@ public class ClientSessionManager
 		{
 			try
 			{
-				sessionClient.delete(sessionId);
+				UUID localUuid = sessionId;
+				if (localUuid != null)
+				{
+					sessionClient.delete(localUuid);
+				}
 			}
 			catch (IOException ex)
 			{
