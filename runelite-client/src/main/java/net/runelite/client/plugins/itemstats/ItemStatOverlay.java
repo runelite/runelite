@@ -105,7 +105,8 @@ public class ItemStatOverlay extends Overlay
 
 		int itemId = entry.getIdentifier();
 
-		if (group == WidgetInfo.EQUIPMENT.getGroupId())
+		if (group == WidgetInfo.EQUIPMENT.getGroupId() || (group == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getGroupId()
+			&& widget.getParentId() == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getId()))
 		{
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
@@ -118,22 +119,14 @@ public class ItemStatOverlay extends Overlay
 			|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId())
 		{
 			int index = entry.getParam0();
-			final Widget widgetItem;
 
 			if (index > -1)
 			{
-				widgetItem = widget.getChild(index);
-			}
-			else
-			{
-				// In bank equipment menu, entry.getParam0() is returning -1, even though the child index we need is 1.
-				// This is causing the weight to use the default (0.453) for all items.
-				widgetItem = widget.getChild(1);
-			}
-
-			if (widgetItem != null)
-			{
-				itemId = widgetItem.getItemId();
+				final Widget widgetItem = widget.getChild(index);
+				if (widgetItem != null)
+				{
+					itemId = widgetItem.getItemId();
+				}
 			}
 		}
 
