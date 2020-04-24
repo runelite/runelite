@@ -98,7 +98,7 @@ public class ItemStatOverlay extends Overlay
 				|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
 				|| (config.showStatsInBank()
 					&& (group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId()
-					|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()))))
+						|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()))))
 		{
 			return null;
 		}
