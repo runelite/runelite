@@ -94,11 +94,11 @@ public class ItemStatOverlay extends Overlay
 
 		if (widget == null
 			|| !(group == WidgetInfo.INVENTORY.getGroupId()
-			|| group == WidgetInfo.EQUIPMENT.getGroupId()
-			|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
-			|| (config.showStatsInBank()
-			&& (group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId()
-			|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()))))
+				|| group == WidgetInfo.EQUIPMENT.getGroupId()
+				|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
+				|| (config.showStatsInBank()
+					&& (group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId()
+					|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()))))
 		{
 			return null;
 		}
