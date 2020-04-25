@@ -173,9 +173,31 @@ public interface FriendsChatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "senderLimit",
+		name = "Limit chat name length",
+		description = "Allows you to set a max display length for the name of the friends chat you are currently in",
+		position = 12
+	)
+	default boolean senderLimit()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "senderLength",
+		name = "Chat name limit",
+		description = "Character limit for the friends chat name",
+		position = 13
+	)
+	default int senderLength()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
 		keyName = "senderReplace",
 		name = "Chat name replacement",
-		description = "Allows you to visually change the name of the friends chat to a custom name in the chat box",
+		description = "Allows you to visually change the name of the friends chat to a custom name in the chat box. This setting overrides the chat name limit setting",
 		position = 14
 	)
 	default String senderReplace()

@@ -394,6 +394,12 @@ public class FriendsChatPlugin extends Plugin
 
 		String friendsChatName = friendsChatManager.getName();
 
+		if (config.senderLimit())
+		{
+			friendsChatName = friendsChatName.substring(0, config.senderLength());
+		}
+
+		// Name replacement overrides character limit
 		if (!config.senderReplace().isEmpty())
 		{
 			friendsChatName = config.senderReplace();
@@ -463,10 +469,21 @@ public class FriendsChatPlugin extends Plugin
 				}
 				break;
 			case FRIENDSCHAT:
+				if (config.senderLimit())
+				{
+					chatMessage.getMessageNode()
+						.setSender(chatMessage.getMessageNode()
+							.getSender().substring(0, config.senderLength()));
+				}
+				// Name replacement overrides character limit
 				if (!config.senderReplace().isEmpty())
 				{
 					chatMessage.getMessageNode()
 						.setSender(config.senderReplace());
+				}
+
+				if (config.senderLimit() || !config.senderReplace().isEmpty())
+				{
 					client.refreshChat();
 				}
 
