@@ -85,7 +85,7 @@ public interface RSWidget extends Widget
 
 	@Import("modelType")
 	int getModelType();
-	
+
 	@Import("modelType")
 	void setModelType(int modelType);
 
@@ -352,7 +352,7 @@ public interface RSWidget extends Widget
 
 	@Import("onOp")
 	@Override
-	Object[] getOnOp();
+	Object[] getOnOpListener();
 
 	@Import("onDialogAbort")
 	@Override

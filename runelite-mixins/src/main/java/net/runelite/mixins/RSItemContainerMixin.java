@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, ThatGamerBlue <thatgamerblue@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,6 +61,63 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 		}
 
 		return items;
+	}
+
+	@Inject
+	@Override
+	public Item getItem(int slot)
+	{
+		int[] itemIds = getItemIds();
+		int[] stackSizes = getStackSizes();
+		if (slot >= 0 && slot < itemIds.length && itemIds[slot] != -1)
+		{
+			return new Item(itemIds[slot], stackSizes[slot]);
+		}
+
+		return null;
+	}
+
+	@Inject
+	@Override
+	public boolean contains(int itemId)
+	{
+		int[] itemIds = getItemIds();
+		for (int id : itemIds)
+		{
+			if (id == itemId)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Inject
+	@Override
+	public int count(int itemId)
+	{
+		int[] itemIds = getItemIds();
+		int[] stackSizes = getStackSizes();
+		int count = 0;
+
+		for (int i = 0; i < itemIds.length; i++)
+		{
+			if (itemIds[i] != itemId)
+			{
+				continue;
+			}
+
+			int stack = stackSizes[i];
+			if (stack > 1)
+			{
+				return stack;
+			}
+
+			count++;
+		}
+
+		return count;
 	}
 
 	@FieldHook("changedItemContainers")
