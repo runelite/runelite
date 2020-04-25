@@ -104,4 +104,6 @@ public interface Model extends Entity
 
 	int getXYZMag();
 	boolean isClickable();
+	
+	void drawFace(int face);
 }
