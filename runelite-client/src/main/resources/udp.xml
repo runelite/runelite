@@ -8,6 +8,7 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups.xsd">
 	<UDP
+			bind_addr="127.0.0.1"
 			mcast_port="${jgroups.udp.mcast_port:45588}"
 			ip_ttl="4"
 			tos="8"
