@@ -108,6 +108,11 @@ public class ItemStatOverlay extends Overlay
 		if (group == WidgetInfo.EQUIPMENT.getGroupId() || (group == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getGroupId()
 			&& widget.getParentId() == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getId()))
 		{
+			/*
+			For the bank worn equipment UI, the current widget is one of the equipment slots like head slot or cape
+			slot. In order to easily check that the widget is one of these slots, check that the parent is the bank
+			worn equipment UI widget.
+			*/
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
 			{
