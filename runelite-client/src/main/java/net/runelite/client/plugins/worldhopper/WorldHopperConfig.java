@@ -72,7 +72,7 @@ public interface WorldHopperConfig extends Config
 
 	@ConfigItem(
 		keyName = "quickHopRegionFilter",
-		name = "Quick-hop to specific region only",
+		name = "Quick-hop region",
 		description = "Limit quick-hopping to worlds of a specific region",
 		position = 3
 	)
