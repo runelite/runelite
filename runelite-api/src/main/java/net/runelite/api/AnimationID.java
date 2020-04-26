@@ -73,7 +73,7 @@ public final class AnimationID
 	public static final int FLETCHING_STRING_MAGIC_SHORTBOW = 6683;
 	public static final int FLETCHING_STRING_MAGIC_LONGBOW = 6689;
 	public static final int FLETCHING_ATTACH_BOLT_TIPS_TO_BRONZE_BOLT = 8472;
-	public static final int FLETCHING_ATTACH_BOLT_TIPS_TO_IRON_BOLT = 8473;
+	public static final int FLETCHING_ATTACH_BOLT_TIPS_TO_IRON_BROAD_BOLT = 8473;
 	public static final int FLETCHING_ATTACH_BOLT_TIPS_TO_BLURITE_BOLT = 8474;
 	public static final int FLETCHING_ATTACH_BOLT_TIPS_TO_STEEL_BOLT = 8475;
 	public static final int FLETCHING_ATTACH_BOLT_TIPS_TO_MITHRIL_BOLT = 8476;
