@@ -24,15 +24,14 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
-import java.awt.Color;
-import java.util.function.BiConsumer;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.client.util.ColorUtil;
 
-import java.util.concurrent.ConcurrentHashMap;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.awt.*;
+import java.util.function.BiConsumer;
 
 @Singleton
 public class PlayerIndicatorsService
