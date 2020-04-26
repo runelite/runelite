@@ -36,6 +36,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.JagexColors;
@@ -105,7 +106,9 @@ public class ItemStatOverlay extends Overlay
 
 		int itemId = entry.getIdentifier();
 
-		if (group == WidgetInfo.EQUIPMENT.getGroupId())
+		if (group == WidgetInfo.EQUIPMENT.getGroupId() ||
+			// For bank worn equipment, check widget parent to differentiate from normal bank items
+			(group == WidgetID.BANK_GROUP_ID && widget.getParentId() == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getId()))
 		{
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
