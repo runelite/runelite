@@ -36,6 +36,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseWheelEvent;
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -91,6 +92,7 @@ import static net.runelite.client.plugins.banktags.tabs.MenuIndexes.NewTab;
 import static net.runelite.client.plugins.banktags.tabs.MenuIndexes.Tab;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -108,6 +110,7 @@ public class TabInterface
 	private static final String VIEW_TAB = "View tag tab";
 	private static final String RENAME_TAB = "Rename tag tab";
 	private static final String CHANGE_ICON = "Change icon";
+	private static final String EDIT_QUANTITY = "Edit-quantity";
 	private static final String REMOVE_TAG = "Remove-tag";
 	private static final String TAG_GEAR = "Tag-equipment";
 	private static final String TAG_INVENTORY = "Tag-inventory";
@@ -142,12 +145,14 @@ public class TabInterface
 	private final Rectangle canvasBounds = new Rectangle();
 
 	private ChatboxItemSearch searchProvider;
-	private TagTab activeTab;
 	private int maxTabs;
 	private int currentTabIndex;
 	private Instant startScroll = Instant.now();
 	private String rememberedSearch;
 	private boolean waitSearchTick;
+
+	@Getter
+	private TagTab activeTab;
 
 	@Getter
 	private Widget upButton;
@@ -258,6 +263,30 @@ public class TabInterface
 				for (Integer item : items)
 				{
 					tagManager.addTag(item, activeTab.getTag(), false);
+
+					if (config.autoSetQuantity())
+					{
+						int quantity = 0;
+						for (Item containerItem : container.getItems())
+						{
+							if (containerItem == null)
+							{
+								continue;
+							}
+
+							if (containerItem.getId() == item)
+							{
+								quantity += containerItem.getQuantity();
+							}
+						}
+
+						//Don't auto tag items of a quantity of 1
+						if (quantity > 1)
+						{
+							tagManager.setTagItemQuantity(activeTab.getTag(), item, String.valueOf(quantity));
+						}
+
+					}
 				}
 
 				openTag(activeTab.getTag());
@@ -633,6 +662,11 @@ public class TabInterface
 			&& event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getOption().equals("Examine"))
 		{
+			if (config.useQuantityFeature())
+			{
+				entries = createMenuEntry(event, EDIT_QUANTITY + " (" + activeTab.getTag() + ")", event.getTarget(), entries);
+			}
+
 			entries = createMenuEntry(event, REMOVE_TAG + " (" + activeTab.getTag() + ")", event.getTarget(), entries);
 			client.setMenuEntries(entries);
 		}
@@ -714,6 +748,56 @@ public class TabInterface
 			final int itemId = item.getId();
 			tagManager.removeTag(itemId, activeTab.getTag());
 			bankSearch.search(InputType.SEARCH, TAG_SEARCH + activeTab.getTag(), true);
+		}
+		else if (activeTab != null
+			&& event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getMenuAction() == MenuAction.RUNELITE
+			&& event.getMenuOption().startsWith(EDIT_QUANTITY))
+		{
+			// Add "edit-quantity" menu entry to all items in bank while tab is selected
+			event.consume();
+			final ItemComposition item = getItem(event.getActionParam());
+			final int itemId = item.getId();
+			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+			final String name = itemComposition.getName();
+
+			final String initialValue = tagManager.getQuantityOfItemForTag(activeTab.getTag(), itemId, false);
+
+			chatboxPanelManager.openTextInput(name + " quantity:<br>(enter blank to reset)")
+				.addCharValidator(FILTERED_CHARS)
+				.value(initialValue)
+				.onDone((newValue) ->
+					clientThread.invoke(() ->
+					{
+
+						// Set quantity
+						try
+						{
+							//Convert stack supported input to quantity
+							long stackSizeToQuantity = QuantityFormatter.parseQuantity(newValue.trim());
+
+							//Convert value to stack string (Ex. 10K)
+							String finalStackSizeString = QuantityFormatter.quantityToStackSize(stackSizeToQuantity);
+
+							//A value of > 0 is valid. A value 0 or less will unset the config
+							if (stackSizeToQuantity > 0)
+							{
+								tagManager.setTagItemQuantity(activeTab.getTag(), itemId, String.valueOf(finalStackSizeString));
+							}
+							else
+							{
+								tagManager.setTagItemQuantity(activeTab.getTag(), itemId, null);
+							}
+						}
+						catch (NumberFormatException | ParseException ex)
+						{
+							//Unset due to invalid or empty input.
+							tagManager.setTagItemQuantity(activeTab.getTag(), itemId, null);
+						}
+
+					}))
+				.build();
+
 		}
 		else if (event.getMenuAction() == MenuAction.RUNELITE
 			&& ((event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getMenuOption().equals(TAG_INVENTORY))
@@ -798,7 +882,7 @@ public class TabInterface
 		{
 			return;
 		}
-		
+
 		if (client.getVar(Varbits.BANK_REARRANGE_MODE) == 0)
 		{
 			tabManager.swap(source.getName(), dest.getName());

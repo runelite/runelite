@@ -34,9 +34,9 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -49,7 +49,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
@@ -65,6 +64,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
@@ -79,8 +79,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
+import net.runelite.client.plugins.banktags.tabs.TabQuantityOverlay;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -97,7 +99,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	public static final String ICON_SEARCH = "icon_";
 	public static final String TAG_TABS_CONFIG = "tagtabs";
 	public static final String VAR_TAG_SUFFIX = "*";
-
 	private static final int MAX_RESULT_COUNT = 250;
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
@@ -109,6 +110,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private TabQuantityOverlay tabQuantityOverlay;
 
 	@Inject
 	private Client client;
@@ -156,6 +163,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	{
 		List<String> extraKeys = Lists.newArrayList(
 			CONFIG_GROUP + "." + TagManager.ITEM_KEY_PREFIX,
+			CONFIG_GROUP + "." + TagManager.ITEM_QUANTITY_KEY_PREFIX,
 			CONFIG_GROUP + "." + ICON_SEARCH,
 			CONFIG_GROUP + "." + TAG_TABS_CONFIG
 		);
@@ -189,6 +197,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		mouseManager.registerMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::init);
 		spriteManager.addSpriteOverrides(TabSprites.values());
+		overlayManager.add(tabQuantityOverlay);
 	}
 
 	@Deprecated
@@ -251,6 +260,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		mouseManager.unregisterMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::destroy);
 		spriteManager.removeSpriteOverrides(TabSprites.values());
+		overlayManager.remove(tabQuantityOverlay);
 
 		shiftPressed = false;
 	}

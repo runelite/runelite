@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.banktags;
 
+import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -51,6 +53,40 @@ public interface BankTagsConfig extends Config
 	default boolean rememberTab()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "useQuantityFeature",
+		name = "Display Quantities",
+		description = "Display an overlay of the quantity of items for the tag.",
+		position = 3
+	)
+	default boolean useQuantityFeature()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "autoSetQuantity",
+		name = "Auto set Quantity",
+		description = "Automatically set quantities when tagging your inventory.",
+		position = 4
+	)
+	default boolean autoSetQuantity()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "quantityOverlayColor",
+		name = "Quantity Color",
+		description = "Color of the item quantity overlay.",
+		position = 5
+	)
+	@Alpha
+	default Color quantityOverlayColor()
+	{
+		return Color.yellow;
 	}
 
 	@ConfigItem(
