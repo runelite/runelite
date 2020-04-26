@@ -40,25 +40,9 @@ public class PlayerIndicatorsService
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
 
-	private final int MAX_SIZE = 2500;
-	private final ConcurrentHashMap<String, Color> colorMap = new ConcurrentHashMap<>();
-
 	private Color randomColor( Player player )
 	{
-		if (this.colorMap.containsKey(player.getName()))
-		{
-			return this.colorMap.get(player.getName());
-		}
-		else
-		{
-			if (this.colorMap.size() > this.MAX_SIZE)
-			{
-				this.colorMap.remove( this.colorMap.keys().nextElement() );
-			}
-			Color randomColor = ColorUtil.fromObject(player);
-			this.colorMap.put(player.getName(), randomColor);
-			return randomColor;
-		}
+		return ColorUtil.fromObject(player);
 	}
 
 	@Inject
