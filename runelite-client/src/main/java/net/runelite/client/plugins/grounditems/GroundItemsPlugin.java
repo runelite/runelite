@@ -35,8 +35,10 @@ import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +90,8 @@ import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
+
+import net.runelite.client.plugins.grounditems.config.SortedMenuDisplayMode;
 import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
@@ -110,6 +114,8 @@ public class GroundItemsPlugin extends Plugin
 
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
+	// ItemID for platinum tokens
+	private static final int PLATINUM_TOKEN = ItemID.PLATINUM_TOKEN;
 	// Ground item menu options
 	private static final int FIRST_OPTION = MenuAction.GROUND_ITEM_FIRST_OPTION.getId();
 	private static final int SECOND_OPTION = MenuAction.GROUND_ITEM_SECOND_OPTION.getId();
@@ -552,6 +558,34 @@ public class GroundItemsPlugin extends Plugin
 			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+			}
+
+			if (config.sortedMenuDisplayMode() != SortedMenuDisplayMode.OFF)
+			{
+				Arrays.sort(menuEntries, Comparator.comparing(menuEntry ->
+				{
+					ItemComposition sortItemComposition = itemManager.getItemComposition(menuEntry.getIdentifier());
+					int sortRealItemId = sortItemComposition.getNote() != -1 ? sortItemComposition.getLinkedNoteId() : sortItemComposition.getId();
+					int sortItemPrice = itemManager.getItemPrice(sortRealItemId);
+					int sortGePrice = sortItemPrice <= 0 ? sortItemComposition.getPrice() : sortItemPrice;
+					int sortHaPrice = Math.round(sortItemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
+
+					if (sortRealItemId == COINS || sortRealItemId == PLATINUM_TOKEN)
+					{
+						// always put coins and platinum tokens at the top of the pile
+						return Integer.MAX_VALUE;
+					}
+
+					switch (config.sortedMenuDisplayMode())
+					{
+						case GE:
+							return sortGePrice;
+						case HA:
+							return sortHaPrice;
+						default: // case HIGHEST
+							return Math.max(sortGePrice, sortHaPrice);
+					}
+				}));
 			}
 
 			client.setMenuEntries(menuEntries);

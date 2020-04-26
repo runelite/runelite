@@ -33,6 +33,7 @@ import net.runelite.client.config.Units;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
+import net.runelite.client.plugins.grounditems.config.SortedMenuDisplayMode;
 import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 
 @ConfigGroup("grounditems")
@@ -117,7 +118,7 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
@@ -371,4 +372,12 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "sortedMenuDisplayMode",
+		name = "Sorted Menu Display Mode",
+		description = "Configures the sorting method for item pile menu entries (right-click menu)",
+		position = 29
+	)
+	default SortedMenuDisplayMode sortedMenuDisplayMode() { return SortedMenuDisplayMode.HIGHEST; }
 }
