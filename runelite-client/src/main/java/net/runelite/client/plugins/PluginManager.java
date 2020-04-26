@@ -426,7 +426,7 @@ public class PluginManager
 
 					loaded.getAndIncrement();
 
-					RuneLiteSplashScreen.stage(.60, .65, "Loading plugins", loaded.get(), scannedPlugins.size());
+					RuneLiteSplashScreen.stage(.60, .65, "Loading Internal plugins", loaded.get(), scannedPlugins.size());
 				})));
 			curGroup.forEach(future ->
 			{
@@ -557,6 +557,8 @@ public class PluginManager
 			}
 			deps.add(dependency.get());
 		}
+
+		log.info("Loading plugin {}", clazz.getSimpleName());
 
 		Plugin plugin;
 		try

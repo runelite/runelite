@@ -720,6 +720,7 @@ public class ExternalPluginManager
 			deps.add(dependency.get());
 		}
 
+		log.info("Loading plugin {}", clazz.getSimpleName());
 		Plugin plugin;
 		try
 		{
