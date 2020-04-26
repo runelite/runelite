@@ -210,6 +210,9 @@ public class WorldMapPlugin extends Plugin
 			// Quest icons are per-account due to showing quest status,
 			// so we recreate them each time the map is loaded
 			updateQuestStartPointIcons();
+			// Some agility icons are per-account due to achievement diaries,
+			// so recreate when map is loaded
+			updateAgilityIcons();
 		}
 	}
 
@@ -219,12 +222,20 @@ public class WorldMapPlugin extends Plugin
 
 		if (config.agilityShortcutLevelIcon() || config.agilityShortcutTooltips())
 		{
-			Arrays.stream(AgilityShortcut.values())
+			clientThread.invokeLater(() ->
+			{
+				if (client.getGameState() != GameState.LOGGED_IN)
+				{
+					return false;
+				}
+				Arrays.stream(AgilityShortcut.values())
 				.filter(value -> value.getWorldMapLocation() != null)
 				.map(value -> new AgilityShortcutPoint(value,
-					agilityLevel > 0 && config.agilityShortcutLevelIcon() && value.getLevel() > agilityLevel ? NOPE_ICON : BLANK_ICON,
+					config.agilityShortcutLevelIcon() && !value.satisfiesAll(client) ? NOPE_ICON : BLANK_ICON,
 					config.agilityShortcutTooltips()))
 				.forEach(worldMapPointManager::add);
+				return true;
+			});
 		}
 	}
 

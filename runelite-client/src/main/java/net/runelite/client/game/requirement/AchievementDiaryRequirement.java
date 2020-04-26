@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Abex
+ * Copyright (c) 2019 MrGroggle
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.client.game.requirement;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.Client;
+import net.runelite.api.Diary;
 
-@RequiredArgsConstructor
 @Getter
-public class QuestPointRequirement implements Requirement
+@RequiredArgsConstructor
+public class AchievementDiaryRequirement implements Requirement
 {
-	private final int qp;
+	private final Diary diary;
 
 	@Override
 	public String toString()
 	{
-		return qp + " " + "Quest points";
+		return diary.getName() + " Diary";
+	}
+
+	@Override
+	public boolean isSatisfied(Client client)
+	{
+		int var = client.getVar(diary.getVarbit());
+		return var == 1;
 	}
 }

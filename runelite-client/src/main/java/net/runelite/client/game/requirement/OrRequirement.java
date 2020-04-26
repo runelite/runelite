@@ -22,8 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.client.game.requirement;
 
-public interface Requirement
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
+import java.util.List;
+import lombok.Getter;
+import net.runelite.api.Client;
+
+public class OrRequirement implements Requirement
 {
+	@Getter
+	private final List<Requirement> requirements;
+
+	public OrRequirement(Requirement... reqs)
+	{
+		this.requirements = ImmutableList.copyOf(reqs);
+	}
+
+	@Override
+	public String toString()
+	{
+		return Joiner.on(" or ").join(requirements);
+	}
+
+	@Override
+	public boolean isSatisfied(Client client)
+	{
+		return getRequirements()
+				.stream()
+				.anyMatch(r -> r.isSatisfied(client));
+	}
 }

@@ -22,26 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.client.game.requirement;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
-import java.util.List;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
 
-public class OrRequirement implements Requirement
+@RequiredArgsConstructor
+@Getter
+public class SkillRequirement implements Requirement
 {
-	@Getter
-	private final List<Requirement> requirements;
-
-	public OrRequirement(Requirement... reqs)
-	{
-		this.requirements = ImmutableList.copyOf(reqs);
-	}
+	private final Skill skill;
+	private final int level;
 
 	@Override
 	public String toString()
 	{
-		return Joiner.on(" or ").join(requirements);
+		return level + " " + skill.getName();
+	}
+
+	@Override
+	public boolean isSatisfied(Client client)
+	{
+		return client.getRealSkillLevel(getSkill()) >= getLevel();
 	}
 }

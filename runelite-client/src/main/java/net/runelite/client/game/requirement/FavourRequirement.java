@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Abex
+ * Copyright (c) 2019 William <https://github.com/monsterxsync>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.client.game.requirement;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.Quest;
+import net.runelite.api.Client;
+import net.runelite.api.Favour;
 
-@Getter
 @RequiredArgsConstructor
-public class QuestRequirement implements Requirement
+@Getter
+public class FavourRequirement implements Requirement
 {
-	private final Quest quest;
-	private final boolean started;
-
-	public QuestRequirement(Quest quest)
-	{
-		this(quest, false);
-	}
+	private final Favour house;
+	private final int percent;
 
 	@Override
 	public String toString()
 	{
-		if (started)
-		{
-			return "Started " + quest.getName();
-		}
+		return percent + "% " + house.getName() + " favour";
+	}
 
-		return quest.getName();
+	@Override
+	public boolean isSatisfied(Client client)
+	{
+		int realFavour = client.getVar(getHouse().getVarbit());
+		return (realFavour / 10) >= getPercent();
 	}
 }

@@ -22,20 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.client.game.requirement;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.Client;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 
-@RequiredArgsConstructor
 @Getter
-public class CombatLevelRequirement implements Requirement
+@RequiredArgsConstructor
+public class QuestRequirement implements Requirement
 {
-	private final int level;
+	private final Quest quest;
+	private final boolean started;
+
+	public QuestRequirement(Quest quest)
+	{
+		this(quest, false);
+	}
 
 	@Override
 	public String toString()
 	{
-		return level + " " + "Combat";
+		if (started)
+		{
+			return "Started " + quest.getName();
+		}
+
+		return quest.getName();
+	}
+
+	@Override
+	public boolean isSatisfied(Client client)
+	{
+		QuestState state = getQuest().getState(client);
+		if (isStarted())
+		{
+			return state != QuestState.NOT_STARTED;
+		}
+		return state == QuestState.FINISHED;
 	}
 }

@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Marshall <https://github.com/marshdevs>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,21 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.client.game.requirement;
 
-import java.util.HashSet;
-import java.util.Set;
-import lombok.Getter;
-import net.runelite.client.game.requirement.Requirement;
+import net.runelite.api.Client;
 
-public abstract class GenericDiaryRequirement
+public interface Requirement
 {
-	@Getter
-	private Set<DiaryRequirement> requirements = new HashSet<>();
-
-	protected void add(String task, Requirement... requirements)
-	{
-		DiaryRequirement diaryRequirement = new DiaryRequirement(task, requirements);
-		this.requirements.add(diaryRequirement);
-	}
+	/**
+	 * Check the client to see if the requirement is satisfied
+	 * @param client
+	 * @return Whether the requirement is satisfied by the client
+	 */
+	boolean isSatisfied(Client client);
 }

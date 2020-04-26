@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 William <https://github.com/monsterxsync>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.client.game.requirement;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.Favour;
+import net.runelite.api.Client;
+import net.runelite.api.VarPlayer;
 
 @RequiredArgsConstructor
 @Getter
-public class FavourRequirement implements Requirement
+public class QuestPointRequirement implements Requirement
 {
-	private final Favour house;
-	private final int percent;
+	private final int qp;
 
 	@Override
 	public String toString()
 	{
-		return percent + "% " + house.getName() + " favour";
+		return qp + " " + "Quest points";
+	}
+
+	@Override
+	public boolean isSatisfied(Client client)
+	{
+		return client.getVar(VarPlayer.QUEST_POINTS) >= getQp();
 	}
 }
