@@ -73,11 +73,11 @@ public class CastleWarsBandage implements Effect
 			return false;
 		}
 
-		final Item[] equipment = equipmentContainer.getItems();
+		final Item gloves = equipmentContainer.getItem(EquipmentInventorySlot.GLOVES.getSlotIdx());
 
-		if (equipment.length > EquipmentInventorySlot.GLOVES.getSlotIdx())
+		if (gloves != null)
 		{
-			return BRACELETS.contains(equipment[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId());
+			return BRACELETS.contains(gloves.getId());
 		}
 
 		return false;

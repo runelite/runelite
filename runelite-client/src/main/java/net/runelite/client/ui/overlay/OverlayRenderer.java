@@ -334,7 +334,10 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 		if (SwingUtilities.isRightMouseButton(mouseEvent))
 		{
-			overlayManager.resetOverlay(currentManagedOverlay);
+			if (currentManagedOverlay.isResettable())
+			{
+				overlayManager.resetOverlay(currentManagedOverlay);
+			}
 		}
 		else if (SwingUtilities.isLeftMouseButton(mouseEvent))
 		{

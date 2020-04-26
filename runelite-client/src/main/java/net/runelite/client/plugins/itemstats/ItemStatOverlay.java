@@ -36,6 +36,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.JagexColors;
@@ -105,7 +106,9 @@ public class ItemStatOverlay extends Overlay
 
 		int itemId = entry.getIdentifier();
 
-		if (group == WidgetInfo.EQUIPMENT.getGroupId())
+		if (group == WidgetInfo.EQUIPMENT.getGroupId() ||
+			// For bank worn equipment, check widget parent to differentiate from normal bank items
+			(group == WidgetID.BANK_GROUP_ID && widget.getParentId() == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getId()))
 		{
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
@@ -245,16 +248,12 @@ public class ItemStatOverlay extends Overlay
 		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
 		if (s.isEquipable() && currentEquipment != null && c != null)
 		{
-			final Item[] items = c.getItems();
 			final int slot = currentEquipment.getSlot();
 
-			if (slot != -1 && slot < items.length)
+			final Item item = c.getItem(slot);
+			if (item != null)
 			{
-				final Item item = items[slot];
-				if (item != null)
-				{
-					other = itemManager.getItemStats(item.getId(), false);
-				}
+				other = itemManager.getItemStats(item.getId(), false);
 			}
 
 			if (other == null && slot == EquipmentInventorySlot.WEAPON.getSlotIdx())

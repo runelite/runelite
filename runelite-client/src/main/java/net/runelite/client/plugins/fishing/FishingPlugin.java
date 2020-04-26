@@ -251,10 +251,6 @@ public class FishingPlugin extends Plugin
 
 		for (Item item : itemContainer.getItems())
 		{
-			if (item == null)
-			{
-				continue;
-			}
 			switch (item.getId())
 			{
 				case ItemID.DRAGON_HARPOON:
