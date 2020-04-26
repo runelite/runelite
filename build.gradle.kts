@@ -70,15 +70,15 @@ subprojects {
             mavenLocal()
         jcenter()
         exclusiveContent {
-        	forRepository {
-        		maven {
-        			url = uri("https://jitpack.io")
-        		}
-        	}
-        	filter {
-        		includeGroup("com.github.petitparser.java-petitparser")
+            forRepository {
+                maven {
+                    url = uri("https://jitpack.io")
+                }
+            }
+            filter {
+                includeGroup("com.github.petitparser.java-petitparser")
                 includeModule("com.github.petitparser", "java-petitparser")
-        	}
+            }
         }
         maven(url = "https://mvnrepository.com/artifact")
 
