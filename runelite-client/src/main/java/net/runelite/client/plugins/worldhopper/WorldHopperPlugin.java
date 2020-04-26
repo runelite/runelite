@@ -165,8 +165,6 @@ public class WorldHopperPlugin extends Plugin
 
 	private List<World> worldCycleList = new ArrayList<>();
 
-	private final String NUMBER_COMMA_ONLY_REGEX = "((?<!^,)\\d+(,(?!$)|$))+";;
-
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
 		@Override
@@ -235,7 +233,7 @@ public class WorldHopperPlugin extends Plugin
 		updateList();
 
 		//set initial world cycle if present
-		setCustomWorldCycle(config.customWorldCycle());
+		setCustomWorldCycle();
 	}
 
 	@Override
@@ -290,25 +288,33 @@ public class WorldHopperPlugin extends Plugin
 					updateList();
 					break;
 				case "customWorldCycle":
-					setCustomWorldCycle(event.getNewValue());
+					setCustomWorldCycle();
 					break;
 			}
 		}
 	}
 
-	private void setCustomWorldCycle(String worldList)
+	private void setCustomWorldCycle()
 	{
+		String worldList = config.customWorldCycle();
 		WorldResult worldResult = worldService.getWorlds();
 		worldCycleList.clear();
-		if (worldResult != null || worldList.isEmpty())
+		if (worldResult != null && !worldList.isEmpty())
 		{
-			if (worldList.matches(NUMBER_COMMA_ONLY_REGEX))
-			{
-				int[] worldCycleListInt = Arrays.stream(config.customWorldCycle().split(",")).mapToInt(Integer::parseInt).filter((x -> (worldResult.findWorld(x) != null))).toArray();
-				//convert valid worlds from string to int
-				Arrays.stream(worldCycleListInt).forEach(x -> worldCycleList.add(worldResult.findWorld(x)));
-				//convert int array to world list
-			}
+			Text.fromCSV(config.customWorldCycle()).stream()
+					.mapToInt(s ->
+					{
+						try
+						{
+							return Integer.parseInt(s);
+						}
+						catch (NumberFormatException e)
+						{
+							return 0;
+						}
+					})
+					.filter(world -> worldResult.findWorld(world) != null)
+					.forEach(world -> worldCycleList.add(worldResult.findWorld(world)));
 		}
 	}
 
@@ -570,14 +576,18 @@ public class WorldHopperPlugin extends Plugin
 			 */
 			if (previous)
 			{
-				if (--worldIdx < 0)
+				worldIdx--;
+
+				if (worldIdx < 0)
 				{
 					worldIdx = worlds.size() - 1;
 				}
 			}
 			else
 			{
-				if (++worldIdx >= worlds.size())
+				worldIdx++;
+
+				if (worldIdx >= worlds.size())
 				{
 					worldIdx = 0;
 				}
