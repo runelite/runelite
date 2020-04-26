@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
@@ -175,6 +176,19 @@ public abstract class RSModelMixin implements RSModel
 		return model;
 	}
 
+	@Copy("drawFace")
+	public abstract void rs$drawFace(int face);
+
+	@Replace("drawFace")
+	public void rl$drawFace(int face)
+	{
+		DrawCallbacks callbacks = client.getDrawCallbacks();
+		if (callbacks == null || !callbacks.drawFace(this, face))
+		{
+			rs$drawFace(face);
+		}
+	}
+
 	@MethodHook("buildSharedModel")
 	@Inject
 	public void rl$buildSharedModel(boolean refTransparencies, Model sharedModel, byte[] transparencyBuffer)
@@ -224,7 +238,7 @@ public abstract class RSModelMixin implements RSModel
 			{
 				int type = frame.getTransformTypes()[i];
 				this.animate(skin.getTypes()[type], skin.getList()[type], frame.getTranslatorX()[i],
-						frame.getTranslatorY()[i], frame.getTranslatorZ()[i]);
+					frame.getTranslatorY()[i], frame.getTranslatorZ()[i]);
 			}
 		}
 		else
@@ -235,13 +249,13 @@ public abstract class RSModelMixin implements RSModel
 			{
 				boolean frameValid = false;
 				if (transformIndex < frame.getTransformCount()
-						&& frame.getTransformTypes()[transformIndex] == i)
+					&& frame.getTransformTypes()[transformIndex] == i)
 				{
 					frameValid = true;
 				}
 				boolean nextFrameValid = false;
 				if (nextTransformIndex < nextFrame.getTransformCount()
-						&& nextFrame.getTransformTypes()[nextTransformIndex] == i)
+					&& nextFrame.getTransformTypes()[nextTransformIndex] == i)
 				{
 					nextFrameValid = true;
 				}

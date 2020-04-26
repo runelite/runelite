@@ -157,6 +157,10 @@ public interface RSModel extends RSEntity, Model
 	@Import("isSingleTile")
 	@Override
 	boolean isClickable();
+	
+	@Import("drawFace")
+	@Override
+	void drawFace(int face);
 
 	void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval, int intervalCount);
 

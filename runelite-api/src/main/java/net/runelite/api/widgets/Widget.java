@@ -692,18 +692,36 @@ public interface Widget
 	void revalidateScroll();
 
 	/**
-	 * Array of widget key listeners
+	 * Gets the script and arguments to be ran when a menu action is clicked.
+	 *
+	 * @return
+	 */
+	Object[] getOnOpListener();
+
+	/**
+	 * Gets the script and arguments to be ran when a key is pressed.
+	 *
+	 * @return
 	 */
 	Object[] getOnKeyListener();
 
 	/**
-	 * Array of widget load listeners
+	 * Gets the script and arguments to be ran when a interface is loaded.
+	 *
+	 * @return
 	 */
 	Object[] getOnLoadListener();
 
 	Object[] getOnInvTransmit();
 
 	Object[] getOnOp();
+
+	/**
+	 * Gets the script and arguments to be ran when one of the listened for inventories changes.
+	 *
+	 * @return
+	 */
+	Object[] getOnInvTransmitListener();
 
 	/**
 	 * Returns the archive id of the font used

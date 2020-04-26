@@ -1237,7 +1237,7 @@ public class Model extends Entity {
 						var27 = field1731[var7];
 
 						for (var10 = 0; var10 < var8; ++var10) {
-							this.method2986(var27[var10]);
+							this.drawFace(var27[var10]);
 						}
 					}
 				}
@@ -1304,7 +1304,7 @@ public class Model extends Entity {
 
 				for (var15 = 0; var15 < 10; ++var15) {
 					while (var15 == 0 && var10 > var7) {
-						this.method2986(var30[var11++]);
+						this.drawFace(var30[var11++]);
 						if (var11 == var12 && var30 != field1727[11]) {
 							var11 = 0;
 							var12 = field1736[11];
@@ -1320,7 +1320,7 @@ public class Model extends Entity {
 					}
 
 					while (var15 == 3 && var10 > var8) {
-						this.method2986(var30[var11++]);
+						this.drawFace(var30[var11++]);
 						if (var11 == var12 && var30 != field1727[11]) {
 							var11 = 0;
 							var12 = field1736[11];
@@ -1336,7 +1336,7 @@ public class Model extends Entity {
 					}
 
 					while (var15 == 5 && var10 > var9) {
-						this.method2986(var30[var11++]);
+						this.drawFace(var30[var11++]);
 						if (var11 == var12 && var30 != field1727[11]) {
 							var11 = 0;
 							var12 = field1736[11];
@@ -1355,12 +1355,12 @@ public class Model extends Entity {
 					int[] var32 = field1727[var15];
 
 					for (var18 = 0; var18 < var16; ++var18) {
-						this.method2986(var32[var18]);
+						this.drawFace(var32[var18]);
 					}
 				}
 
 				while (var10 != -1000) {
-					this.method2986(var30[var11++]);
+					this.drawFace(var30[var11++]);
 					if (var11 == var12 && var30 != field1727[11]) {
 						var11 = 0;
 						var30 = field1727[11];
@@ -1380,7 +1380,8 @@ public class Model extends Entity {
 	}
 
 	@ObfuscatedName("an")
-	final void method2986(int var1) {
+	@Export("drawFace")
+	final void drawFace(int var1) {
 		if (field1722[var1]) {
 			this.method3029(var1);
 		} else {

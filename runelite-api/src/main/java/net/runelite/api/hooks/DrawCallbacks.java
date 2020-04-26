@@ -24,6 +24,7 @@
  */
 package net.runelite.api.hooks;
 
+import net.runelite.api.Model;
 import net.runelite.api.Entity;
 import net.runelite.api.TileModel;
 import net.runelite.api.TilePaint;
@@ -43,6 +44,8 @@ public interface DrawCallbacks
 						int zoom, int centerX, int centerY);
 
 	void draw();
+
+	boolean drawFace(Model model, int face);
 
 	void drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane);
 

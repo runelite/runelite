@@ -66,4 +66,18 @@ public interface ScriptEvent
 	 * Parent relative x coordinate for mouse related events
 	 */
 	int getMouseX();
+
+	/**
+	 * Jagex typed keycode
+	 *
+	 * @return
+	 */
+	int getTypedKeyCode();
+
+	/**
+	 * Get the typed character, ascii.
+	 *
+	 * @return
+	 */
+	int getTypedKeyChar();
 }

@@ -417,6 +417,8 @@ public class WeaponMap
 		StyleMap.put(ItemID.VERACS_FLAIL_25, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.VERACS_FLAIL_50, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.VERACS_FLAIL_75, WeaponStyle.MELEE);
+		StyleMap.put(ItemID.VESTAS_BLIGHTED_LONGSWORD, WeaponStyle.MELEE);
+		StyleMap.put(ItemID.VESTAS_LONGSWORD_INACTIVE, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.VIGGORAS_CHAINMACE, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.VIGGORAS_CHAINMACE_U, WeaponStyle.MELEE);
 		StyleMap.put(ItemID.VOLCANIC_ABYSSAL_WHIP, WeaponStyle.MELEE);

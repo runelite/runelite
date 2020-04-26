@@ -397,6 +397,7 @@ public class ClientUI
 				}
 			};
 
+			sidebarListener.setEnabledOnLogin(true);
 			keyManager.registerKeyListener(sidebarListener);
 
 			final HotkeyListener pluginPanelListener = new HotkeyListener(config::panelToggleKey)
