@@ -151,22 +151,6 @@ public class NpcSceneOverlay extends Overlay
 			return;
 		}
 
-		if (config.renderStyleHull())
-		{
-			Shape objectClickbox = actor.getConvexHull();
-
-			renderPoly(graphics, color, objectClickbox);
-		}
-
-		if (config.renderStyleTile())
-		{
-			int size = npcComposition.getSize();
-			LocalPoint lp = actor.getLocalLocation();
-			Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
-
-			renderPoly(graphics, color, tilePoly);
-		}
-
 		if (config.renderStyleSouthWestTile())
 		{
 			int size = npcComposition.getSize();
@@ -178,6 +162,22 @@ public class NpcSceneOverlay extends Overlay
 			Polygon tilePoly = Perspective.getCanvasTilePoly(client, new LocalPoint(x, y));
 
 			renderPoly(graphics, color, tilePoly);
+		}
+
+		if (config.renderStyleTile())
+		{
+			int size = npcComposition.getSize();
+			LocalPoint lp = actor.getLocalLocation();
+			Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+
+			renderPoly(graphics, color, tilePoly);
+		}
+
+		if (config.renderStyleHull())
+		{
+			Shape objectClickbox = actor.getConvexHull();
+
+			renderPoly(graphics, color, objectClickbox);
 		}
 
 		if (config.drawNames() && actor.getName() != null)
