@@ -28,7 +28,10 @@ package net.runelite.client.plugins.chatnotifications;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.regex.Pattern.quote;
@@ -74,6 +77,9 @@ public class ChatNotificationsPlugin extends Plugin
 	private String usernameReplacer = "";
 	private Pattern highlightMatcher = null;
 
+	// Private message cache used to avoid duplicate notifications from ChatHistory.
+	private Set<Integer> privateMessageHashes = new HashSet<>();
+
 	@Provides
 	ChatNotificationsConfig provideConfig(ConfigManager configManager)
 	{
@@ -84,6 +90,12 @@ public class ChatNotificationsPlugin extends Plugin
 	public void startUp()
 	{
 		updateHighlights();
+	}
+
+	@Override
+	public void shutDown()
+	{
+		this.privateMessageHashes.clear();
 	}
 
 	@Subscribe
@@ -149,6 +161,19 @@ public class ChatNotificationsPlugin extends Plugin
 				if (chatMessage.getName().equals(RuneLiteProperties.getTitle()))
 				{
 					return;
+				}
+				break;
+			case PRIVATECHAT:
+			case MODPRIVATECHAT:
+				if (config.notifyOnPm())
+				{
+					int messageHash = this.buildMessageHash(chatMessage);
+					if (this.privateMessageHashes.contains(messageHash))
+					{
+						return;
+					}
+					this.privateMessageHashes.add(messageHash);
+					notifier.notify("Private message received from " + chatMessage.getName());
 				}
 				break;
 		}
@@ -226,6 +251,11 @@ public class ChatNotificationsPlugin extends Plugin
 			messageNode.setRuneLiteFormatMessage(messageNode.getValue());
 			chatMessageManager.update(messageNode);
 		}
+	}
+
+	private int buildMessageHash(ChatMessage message)
+	{
+		return (message.getName() + message.getMessage()).hashCode();
 	}
 
 	private void sendNotification(ChatMessage message)
