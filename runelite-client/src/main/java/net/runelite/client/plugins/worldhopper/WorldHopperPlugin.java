@@ -300,7 +300,7 @@ public class WorldHopperPlugin extends Plugin
 		worldCycleList.clear();
 		if (worldResult != null && !worldList.isEmpty())
 		{
-			Text.fromCSV(config.customWorldCycle()).stream()
+			Text.fromCSV(worldList).stream()
 					.mapToInt(s ->
 					{
 						try
