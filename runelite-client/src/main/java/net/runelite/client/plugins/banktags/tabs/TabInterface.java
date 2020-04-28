@@ -75,6 +75,7 @@ import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
@@ -235,6 +236,35 @@ public class TabInterface
 			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
 			openTag(config.tab());
 		}
+
+		Widget equipmentButton = client.getWidget(WidgetInfo.BANK_EQUIPMENT_BUTTON);
+		Widget titleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+		if (equipmentButton == null || titleBar == null || titleBar.getOriginalX() > 0)
+		{
+			// don't keep moving widgets if they have already been moved
+			return;
+		}
+
+		equipmentButton.setOriginalX(6);
+		equipmentButton.setOriginalY(4);
+		equipmentButton.revalidate();
+
+		// the bank item count is 3 widgets
+		for (int child = WidgetInfo.BANK_ITEM_COUNT_TOP.getChildId(); child <= WidgetInfo.BANK_ITEM_COUNT_BOTTOM.getChildId(); child++)
+		{
+			Widget widget = client.getWidget(WidgetID.BANK_GROUP_ID, child);
+			if (widget == null)
+			{
+				return;
+			}
+
+			widget.setOriginalX(widget.getOriginalX() + equipmentButton.getWidth());
+			widget.revalidate();
+		}
+
+		titleBar.setOriginalX(equipmentButton.getWidth() / 2);
+		titleBar.setOriginalWidth(titleBar.getWidth() - equipmentButton.getWidth());
+		titleBar.revalidate();
 	}
 
 	private void handleDeposit(MenuOptionClicked event, Boolean inventory)
@@ -982,7 +1012,7 @@ public class TabInterface
 		}
 
 		int proposedIndex = currentTabIndex + direction;
-		int numTabs = tabManager.size() + 1;
+		int numTabs = tabManager.size();
 
 		if (proposedIndex >= numTabs || proposedIndex < 0)
 		{
@@ -1076,7 +1106,7 @@ public class TabInterface
 	{
 		int y = bounds.y + MARGIN + BUTTON_HEIGHT;
 
-		if (maxTabs > tabManager.size())
+		if (maxTabs >= tabManager.size())
 		{
 			currentTabIndex = 0;
 		}
@@ -1122,8 +1152,6 @@ public class TabInterface
 				itemX += BANK_ITEM_X_PADDING + BANK_ITEM_WIDTH;
 			}
 		}
-
-		updateWidget(newTab, y);
 
 		boolean hidden = !(tabManager.size() > 0);
 
