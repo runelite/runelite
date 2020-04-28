@@ -323,7 +323,6 @@ public class WorldHopperPlugin extends Plugin
 			})
 			.filter(world -> worldResult.findWorld(world) != null)
 			.forEach(world -> worldCycleList.add(worldResult.findWorld(world)));
-
 	}
 
 	private void setFavoriteConfig(int world)
