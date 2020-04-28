@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, dekvall <https://github.com/dekvall>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.item;
+package net.runelite.client.plugins.objectindicators;
 
-import java.util.List;
-import lombok.Data;
+import java.awt.Color;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import net.runelite.api.TileObject;
 
-@Data
-public class RSSearch
+/**
+ * Used to denote marked objects and their colors.
+ * Note: This is not used for serialization of object indicators; see {@link ObjectPoint}
+ */
+@Value
+@RequiredArgsConstructor
+class ColorTileObject
 {
-	private List<RSItem> items;
+	private final TileObject tileObject;
+	private final Color color;
 }

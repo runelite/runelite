@@ -26,23 +26,22 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.MenuAction;
 
 @Getter
 @RequiredArgsConstructor
 public enum ShiftDepositMode
 {
-	DEPOSIT_1("Deposit-1", MenuAction.CC_OP, 3),
-	DEPOSIT_5("Deposit-5", MenuAction.CC_OP, 4),
-	DEPOSIT_10("Deposit-10", MenuAction.CC_OP, 5),
-	DEPOSIT_X("Deposit-X", MenuAction.CC_OP_LOW_PRIORITY, 6),
-	DEPOSIT_ALL("Deposit-All", MenuAction.CC_OP_LOW_PRIORITY, 8),
-	EXTRA_OP("Eat/Wield/Etc.", MenuAction.CC_OP_LOW_PRIORITY, 9),
-	OFF("Off", MenuAction.UNKNOWN, 0);
+	DEPOSIT_1("Deposit-1", 3, 2),
+	DEPOSIT_5("Deposit-5", 4, 3),
+	DEPOSIT_10("Deposit-10", 5, 4),
+	DEPOSIT_X("Deposit-X", 6, 6),
+	DEPOSIT_ALL("Deposit-All", 8, 5),
+	EXTRA_OP("Eat/Wield/Etc.", 9, 0),
+	OFF("Off", 0, 0);
 
 	private final String name;
-	private final MenuAction menuAction;
 	private final int identifier;
+	private final int identifierDepositBox;
 
 	@Override
 	public String toString()

@@ -222,6 +222,7 @@ class LootTrackerBox extends JPanel
 		if (kills > 1)
 		{
 			subTitleLabel.setText("x " + kills);
+			subTitleLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice / kills) + " gp (average)");
 		}
 
 		validate();

@@ -27,7 +27,7 @@ package net.runelite.http.service.item;
 import lombok.Data;
 
 @Data
-public class RSItemResponse
+class RSItemResponse
 {
 	private RSItem item;
 }

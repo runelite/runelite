@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -35,6 +36,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.JagexColors;
@@ -48,10 +50,11 @@ import net.runelite.http.api.item.ItemStats;
 
 public class ItemStatOverlay extends Overlay
 {
-	// Unarmed attack speed is 6
-	private static final ItemStats UNARMED = new ItemStats(false, true, 0, 0,
+	// Unarmed attack speed is 4
+	@VisibleForTesting
+	static final ItemStats UNARMED = new ItemStats(false, true, 0, 0,
 		ItemEquipmentStats.builder()
-			.aspeed(6)
+			.aspeed(4)
 			.build());
 
 	@Inject
@@ -103,7 +106,9 @@ public class ItemStatOverlay extends Overlay
 
 		int itemId = entry.getIdentifier();
 
-		if (group == WidgetInfo.EQUIPMENT.getGroupId())
+		if (group == WidgetInfo.EQUIPMENT.getGroupId() ||
+			// For bank worn equipment, check widget parent to differentiate from normal bank items
+			(group == WidgetID.BANK_GROUP_ID && widget.getParentId() == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getId()))
 		{
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
@@ -234,7 +239,8 @@ public class ItemStatOverlay extends Overlay
 		return b.toString();
 	}
 
-	private String buildStatBonusString(ItemStats s)
+	@VisibleForTesting
+	String buildStatBonusString(ItemStats s)
 	{
 		ItemStats other = null;
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
@@ -242,16 +248,12 @@ public class ItemStatOverlay extends Overlay
 		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
 		if (s.isEquipable() && currentEquipment != null && c != null)
 		{
-			final Item[] items = c.getItems();
 			final int slot = currentEquipment.getSlot();
 
-			if (slot != -1 && slot < items.length)
+			final Item item = c.getItem(slot);
+			if (item != null)
 			{
-				final Item item = items[slot];
-				if (item != null)
-				{
-					other = itemManager.getItemStats(item.getId(), false);
-				}
+				other = itemManager.getItemStats(item.getId(), false);
 			}
 
 			if (other == null && slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
@@ -281,7 +283,7 @@ public class ItemStatOverlay extends Overlay
 			b.append(buildStatRow("Magic Dmg", currentEquipment.getMdmg(), e.getMdmg(), false, true));
 
 			final StringBuilder abb = new StringBuilder();
-			abb.append(buildStatRow("Stab", currentEquipment.getAspeed(), e.getAspeed(), false, false));
+			abb.append(buildStatRow("Stab", currentEquipment.getAstab(), e.getAstab(), false, false));
 			abb.append(buildStatRow("Slash", currentEquipment.getAslash(), e.getAslash(), false, false));
 			abb.append(buildStatRow("Crush", currentEquipment.getAcrush(), e.getAcrush(), false, false));
 			abb.append(buildStatRow("Magic", currentEquipment.getAmagic(), e.getAmagic(), false, false));

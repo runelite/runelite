@@ -36,7 +36,7 @@ import net.runelite.api.HealthBar;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.BeforeMenuRender;
-import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostHealthBar;
@@ -119,7 +119,7 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClientTick(ClientTick event)
+	public void onBeforeRender(BeforeRender event)
 	{
 		adjustWidgetDimensions();
 	}
@@ -182,13 +182,17 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void overrideSprites()
 	{
+		final Skin configuredSkin = config.skin();
 		for (SpriteOverride spriteOverride : SpriteOverride.values())
 		{
 			for (Skin skin : spriteOverride.getSkin())
 			{
-				if (skin == config.skin())
+				if (skin == configuredSkin)
 				{
-					String file = config.skin().toString() + "/" + spriteOverride.getSpriteID() + ".png";
+					final String configSkin = skin.getExtendSkin() != null
+						? skin.getExtendSkin().toString()
+						: skin.toString();
+					String file = configSkin + "/" + spriteOverride.getSpriteID() + ".png";
 					SpritePixels spritePixels = getFileSpritePixels(file);
 
 					if (spriteOverride.getSpriteID() == SpriteID.COMPASS_TEXTURE)
@@ -216,11 +220,16 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void overrideWidgetSprites()
 	{
+		final Skin configuredSkin = config.skin();
 		for (WidgetOverride widgetOverride : WidgetOverride.values())
 		{
-			if (widgetOverride.getSkin() == config.skin())
+			if (widgetOverride.getSkin() == configuredSkin
+				|| widgetOverride.getSkin() == configuredSkin.getExtendSkin())
 			{
-				String file = config.skin().toString() + "/widget/" + widgetOverride.getName() + ".png";
+				final String configSkin = configuredSkin.getExtendSkin() != null
+					? configuredSkin.getExtendSkin().toString()
+					: configuredSkin.toString();
+				String file = configSkin + "/widget/" + widgetOverride.getName() + ".png";
 				SpritePixels spritePixels = getFileSpritePixels(file);
 
 				if (spritePixels != null)

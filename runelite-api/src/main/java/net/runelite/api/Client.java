@@ -141,6 +141,13 @@ public interface Client extends GameEngine
 	void setGameState(GameState gameState);
 
 	/**
+	 * Causes the client to shutdown. It is faster than
+	 * {@link java.applet.Applet#stop()} because it doesn't wait for 4000ms.
+	 * This will call {@link System#exit} when it is done
+	 */
+	void stopNow();
+
+	/**
 	 * Gets the current logged in username.
 	 *
 	 * @return the logged in username
@@ -861,7 +868,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the map
 	 */
-	IterableHashTable getMessages();
+	IterableHashTable<MessageNode> getMessages();
 
 	/**
 	 * Gets the viewport widget.
@@ -1183,6 +1190,16 @@ public interface Client extends GameEngine
 	 * @param enabled new camera pitch relaxer value
 	 */
 	void setCameraPitchRelaxerEnabled(boolean enabled);
+
+	/**
+	 * Sets if the moving the camera horizontally should be backwards
+	 */
+	void setInvertYaw(boolean invertYaw);
+
+	/**
+	 * Sets if the moving the camera vertically should be backwards
+	 */
+	void setInvertPitch(boolean invertPitch);
 
 	/**
 	 * Gets the world map overview.

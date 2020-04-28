@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,25 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wintertodt.config;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import javax.annotation.Nullable;
 
-@Getter
-@RequiredArgsConstructor
-public enum WintertodtNotifyMode
+/**
+ * Represents a clue which should highlight objects of a given name rather than a specific ID and location, as some
+ * clues will call for a general action which can be completed at any number of locations. The area in which this
+ * highlighting should occur can be restricted by giving a non-null array of region IDs where only objects within those
+ * regions will be highlighted.
+ */
+public interface NamedObjectClueScroll
 {
-	NONE("None"),
-	WHEN_DAMAGED("Damage Taken"),
-	ONLY_WHEN_INTERRUPTED("Action Interrupted"),
-	EITHER("Either");
+	String[] getObjectNames();
 
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	@Nullable
+	int[] getObjectRegions();
 }

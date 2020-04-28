@@ -135,6 +135,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_MITHRIL:
 			case WOODCUTTING_ADAMANT:
 			case WOODCUTTING_RUNE:
+			case WOODCUTTING_GILDED:
 			case WOODCUTTING_DRAGON:
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
@@ -174,6 +175,14 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_STRING_MAGIC_LONGBOW:
 			case FLETCHING_ATTACH_FEATHERS_TO_ARROWSHAFT:
 			case FLETCHING_ATTACH_HEADS:
+			case FLETCHING_ATTACH_BOLT_TIPS_TO_BRONZE_BOLT:
+			case FLETCHING_ATTACH_BOLT_TIPS_TO_IRON_BROAD_BOLT:
+			case FLETCHING_ATTACH_BOLT_TIPS_TO_BLURITE_BOLT:
+			case FLETCHING_ATTACH_BOLT_TIPS_TO_STEEL_BOLT:
+			case FLETCHING_ATTACH_BOLT_TIPS_TO_MITHRIL_BOLT:
+			case FLETCHING_ATTACH_BOLT_TIPS_TO_ADAMANT_BOLT:
+			case FLETCHING_ATTACH_BOLT_TIPS_TO_RUNE_BOLT:
+			case FLETCHING_ATTACH_BOLT_TIPS_TO_DRAGON_BOLT:
 			/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_SMELTING:
@@ -193,6 +202,10 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
 			case FISHING_BAREHAND:
+			case FISHING_PEARL_ROD:
+			case FISHING_PEARL_FLY_ROD:
+			case FISHING_PEARL_BARBARIAN_ROD:
+			case FISHING_PEARL_OILY_ROD:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
@@ -201,6 +214,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MITHRIL_PICKAXE:
 			case MINING_ADAMANT_PICKAXE:
 			case MINING_RUNE_PICKAXE:
+			case MINING_GILDED_PICKAXE:
 			case MINING_DRAGON_PICKAXE:
 			case MINING_DRAGON_PICKAXE_UPGRADED:
 			case MINING_DRAGON_PICKAXE_OR:
@@ -217,6 +231,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_MITHRIL:
 			case MINING_MOTHERLODE_ADAMANT:
 			case MINING_MOTHERLODE_RUNE:
+			case MINING_MOTHERLODE_GILDED:
 			case MINING_MOTHERLODE_DRAGON:
 			case MINING_MOTHERLODE_DRAGON_UPGRADED:
 			case MINING_MOTHERLODE_DRAGON_OR:
@@ -236,6 +251,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MAGIC_ENCHANTING_AMULET_1:
 			case MAGIC_ENCHANTING_AMULET_2:
 			case MAGIC_ENCHANTING_AMULET_3:
+			case MAGIC_ENCHANTING_BOLTS:
 			/* Prayer */
 			case USING_GILDED_ALTAR:
 			/* Farming */
@@ -361,8 +377,8 @@ public class IdleNotifierPlugin extends Plugin
 
 		final Hitsplat hitsplat = event.getHitsplat();
 
-		if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE
-			|| hitsplat.getHitsplatType() == Hitsplat.HitsplatType.BLOCK)
+		if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE_ME
+			|| hitsplat.getHitsplatType() == Hitsplat.HitsplatType.BLOCK_ME)
 		{
 			lastCombatCountdown = HIGHEST_MONSTER_ATTACK_SPEED;
 		}

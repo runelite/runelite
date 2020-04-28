@@ -267,17 +267,6 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "infoBoxWrap",
-		name = "Infobox wrap count",
-		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 41
-	)
-	default int infoBoxWrap()
-	{
-		return 4;
-	}
-
-	@ConfigItem(
 		keyName = "infoBoxSize",
 		name = "Infobox size",
 		description = "Configures the size of each infobox in pixels",
@@ -287,5 +276,16 @@ public interface RuneLiteConfig extends Config
 	default int infoBoxSize()
 	{
 		return 35;
+	}
+
+	@ConfigItem(
+		keyName = "blockExtraMouseButtons",
+		name = "Block Extra Mouse Buttons",
+		description = "Blocks extra mouse buttons (4 and above)",
+		position = 43
+	)
+	default boolean blockExtraMouseButtons()
+	{
+		return true;
 	}
 }

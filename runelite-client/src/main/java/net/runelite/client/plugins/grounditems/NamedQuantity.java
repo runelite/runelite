@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, dekvall <https://github.com/dekvall>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.item;
+package net.runelite.client.plugins.grounditems;
 
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 @Value
-class PendingLookup
+@RequiredArgsConstructor
+class NamedQuantity
 {
-	enum Type
-	{
-		SEARCH,
-		ITEM;
-	}
+	private final String name;
+	private final int quantity;
 
-	private final int itemId;
-	private final String search;
-	private final Type type;
-
-	public PendingLookup(int itemId, Type type)
+	NamedQuantity(GroundItem groundItem)
 	{
-		this.itemId = itemId;
-		this.search = null;
-		this.type = type;
-	}
-
-	public PendingLookup(String search, Type type)
-	{
-		this.itemId = -1;
-		this.search = search;
-		this.type = type;
+		this(groundItem.getName(), groundItem.getQuantity());
 	}
 }

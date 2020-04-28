@@ -271,7 +271,7 @@ class PluginListPanel extends PluginPanel
 		final String[] searchTerms = text.toLowerCase().split(" ");
 		pluginList.forEach(listItem ->
 		{
-			if (pinned == listItem.isPinned() && listItem.matchesSearchTerms(searchTerms))
+			if (pinned == listItem.isPinned() && Text.matchesSearchTerms(searchTerms, listItem.getKeywords()))
 			{
 				mainPanel.add(listItem);
 			}

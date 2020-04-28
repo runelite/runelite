@@ -33,12 +33,10 @@ import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -52,8 +50,9 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
-import net.runelite.client.util.VerificationException;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.VerificationException;
 
 @Slf4j
 public class FatalErrorDialog extends JDialog
@@ -82,7 +81,7 @@ public class FatalErrorDialog extends JDialog
 
 		try
 		{
-			BufferedImage logo = ImageIO.read(SplashScreen.class.getResourceAsStream("runelite_transparent.png"));
+			BufferedImage logo = ImageUtil.getResourceStreamFromClass(FatalErrorDialog.class, "runelite_transparent.png");
 			setIconImage(logo);
 
 			JLabel runelite = new JLabel();
@@ -92,7 +91,7 @@ public class FatalErrorDialog extends JDialog
 			runelite.setOpaque(true);
 			rightColumn.add(runelite);
 		}
-		catch (IOException e)
+		catch (RuntimeException e)
 		{
 		}
 

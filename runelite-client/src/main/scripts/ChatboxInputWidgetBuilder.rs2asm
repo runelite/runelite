@@ -47,7 +47,7 @@ LABEL23:
    get_varbit             8119
    iconst                 1
    if_icmpeq              LABEL42
-   jump                   LABEL144
+   jump                   LABEL146
 LABEL42:
    iconst                 105
    iconst                 115
@@ -96,11 +96,13 @@ LABEL77:
    iload                  4
    iconst                 1
    if_icmpeq              LABEL86
-   jump                   LABEL101
+   jump                   LABEL103
 LABEL86:
+   iconst                 60
    iconst                 5
    iload                  3
    add                   
+   invoke                 1045
    iconst                 30
    iconst                 0
    iconst                 0
@@ -112,8 +114,8 @@ LABEL86:
    iconst                 2
    iconst                 10616871
    if_setposition        
-   jump                   LABEL113
-LABEL101:
+   jump                   LABEL115
+LABEL103:
    iconst                 0
    iconst                 30
    iconst                 0
@@ -126,26 +128,26 @@ LABEL101:
    iconst                 2
    iconst                 10616871
    if_setposition        
-LABEL113:
+LABEL115:
    iload                  3
    iconst                 10616889
    if_getwidth           
-   if_icmpgt              LABEL118
-   jump                   LABEL124
-LABEL118:
+   if_icmpgt              LABEL120
+   jump                   LABEL126
+LABEL120:
    iconst                 2
    iconst                 2
    iconst                 0
    iconst                 10616889
    if_settextalign       
-   jump                   LABEL129
-LABEL124:
+   jump                   LABEL131
+LABEL126:
    iconst                 0
    iconst                 2
    iconst                 0
    iconst                 10616889
    if_settextalign       
-LABEL129:
+LABEL131:
    iconst                 10616889
    if_clearops           
    iconst                 -1
@@ -160,8 +162,8 @@ LABEL129:
    sconst                 ""
    iconst                 10616889
    if_setonop            
-   jump                   LABEL185
-LABEL144:
+   jump                   LABEL187
+LABEL146:
    iconst                 105
    iconst                 115
    iconst                 1894
@@ -203,7 +205,7 @@ LABEL144:
    sconst                 "ii"
    iconst                 10616889
    if_setonop            
-LABEL185:
+LABEL187:
    sload                  2
    iconst                 10616889
    if_settext            

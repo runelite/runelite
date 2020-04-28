@@ -52,7 +52,7 @@ public class LinkBrowser
 	 */
 	public static void browse(final String url)
 	{
-		new Thread(() -> 
+		new Thread(() ->
 		{
 			if (Strings.isNullOrEmpty(url))
 			{

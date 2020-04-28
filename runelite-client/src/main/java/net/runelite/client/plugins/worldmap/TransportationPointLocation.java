@@ -192,9 +192,9 @@ enum TransportationPointLocation
 	MUSHTREE_VERDANT_VALLEY("Mushtree", new WorldPoint(3757, 3756, 0)),
 	MYTHS_GUILD_PORTAL("Portal to Guilds", new WorldPoint(2456, 2856, 0)),
 	TRAIN_KELDAGRIM("Railway Station", new WorldPoint(2941, 10179, 0)),
-	WILDERNESS_LEVER_ARDOUGNE("Wilderness Lever", new WorldPoint(2559, 3309, 0)),
-	WILDERNESS_LEVER_EDGEVILLE("Wilderness Lever", new WorldPoint(3088, 3474, 0)),
-	WILDERNESS_LEVER_WILDERNESS("Wilderness Lever", new WorldPoint(3154, 3924, 0));
+	WILDERNESS_LEVER_ARDOUGNE("Wilderness Lever to Deserted Keep", new WorldPoint(2559, 3309, 0), new WorldPoint(3154, 3924, 0)),
+	WILDERNESS_LEVER_EDGEVILLE("Wilderness Lever to Deserted Keep", new WorldPoint(3088, 3474, 0), new WorldPoint(3154, 3924, 0)),
+	WILDERNESS_LEVER_WILDERNESS("Wilderness Lever to Ardougne/Edgeville", new WorldPoint(3154, 3924, 0));
 
 	private final String tooltip;
 	private final WorldPoint location;

@@ -158,4 +158,26 @@ public interface CameraConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "invertYaw",
+		name = "Invert Yaw",
+		description = "Makes moving the camera horizontally with the mouse backwards",
+		position = 11
+	)
+	default boolean invertYaw()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "invertPitch",
+		name = "Invert Pitch",
+		description = "Makes moving the camera vertically with the mouse backwards",
+		position = 12
+	)
+	default boolean invertPitch()
+	{
+		return false;
+	}
 }

@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -43,7 +44,6 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -64,10 +64,14 @@ import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
@@ -76,6 +80,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Show helpful information about agility courses and obstacles",
 	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
+@PluginDependency(XpTrackerPlugin.class)
 @Slf4j
 public class AgilityPlugin extends Plugin
 {
@@ -111,6 +116,9 @@ public class AgilityPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private XpTrackerService xpTrackerService;
+
 	@Getter
 	private AgilitySession session;
 
@@ -119,6 +127,9 @@ public class AgilityPlugin extends Plugin
 
 	@Getter
 	private int agilityLevel;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Tile stickTile;
 
 	@Provides
 	AgilityConfig getConfig(ConfigManager configManager)
@@ -143,6 +154,7 @@ public class AgilityPlugin extends Plugin
 		obstacles.clear();
 		session = null;
 		agilityLevel = 0;
+		stickTile = null;
 	}
 
 	@Subscribe
@@ -159,6 +171,7 @@ public class AgilityPlugin extends Plugin
 			case LOADING:
 				marksOfGrace.clear();
 				obstacles.clear();
+				stickTile = null;
 				break;
 			case LOGGED_IN:
 				if (!isInAgilityArena())
@@ -211,14 +224,14 @@ public class AgilityPlugin extends Plugin
 
 		if (session != null && session.getCourse() == course)
 		{
-			session.incrementLapCount(client);
+			session.incrementLapCount(client, xpTrackerService);
 		}
 		else
 		{
 			session = new AgilitySession(course);
 			// New course found, reset lap count and set new course
 			session.resetLapCount();
-			session.incrementLapCount(client);
+			session.incrementLapCount(client, xpTrackerService);
 		}
 	}
 
@@ -237,13 +250,25 @@ public class AgilityPlugin extends Plugin
 		{
 			marksOfGrace.add(tile);
 		}
+
+		if (item.getId() == ItemID.STICK)
+		{
+			stickTile = tile;
+		}
 	}
 
 	@Subscribe
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
+		final TileItem item = itemDespawned.getItem();
 		final Tile tile = itemDespawned.getTile();
+
 		marksOfGrace.remove(tile);
+
+		if (item.getId() == ItemID.STICK && stickTile == tile)
+		{
+			stickTile = null;
+		}
 	}
 
 	@Subscribe

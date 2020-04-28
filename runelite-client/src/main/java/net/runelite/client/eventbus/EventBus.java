@@ -106,7 +106,7 @@ public class EventBus
 			builder.putAll(subscribers);
 		}
 
-		builder.orderValuesBy(Comparator.comparing(Subscriber::getPriority)
+		builder.orderValuesBy(Comparator.comparing(Subscriber::getPriority).reversed()
 			.thenComparing(s -> s.object.getClass().getName()));
 
 		for (Class<?> clazz = object.getClass(); clazz != null; clazz = clazz.getSuperclass())

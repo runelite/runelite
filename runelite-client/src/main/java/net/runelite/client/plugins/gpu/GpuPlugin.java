@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.gpu;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import com.jogamp.nativewindow.awt.AWTGraphicsConfiguration;
 import com.jogamp.nativewindow.awt.JAWTWindow;
@@ -74,7 +75,17 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
-import static net.runelite.client.plugins.gpu.GLUtil.*;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteTexture;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteVertexArrays;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenBuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
+import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
@@ -94,6 +105,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private static final int MAX_TRIANGLE = 4096;
 	private static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
+	private static final int DEFAULT_DISTANCE = 25;
 	static final int MAX_DISTANCE = 90;
 	static final int MAX_FOG_DEPTH = 100;
 
@@ -117,6 +129,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	@Inject
 	private PluginManager pluginManager;
+
+	private boolean useComputeShaders;
 
 	private Canvas canvas;
 	private JAWTWindow jawtWindow;
@@ -231,6 +245,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int centerY;
 	private int yaw;
 	private int pitch;
+	// fields for non-compute draw
+	private boolean drawingModel;
+	private int modelX, modelY, modelZ;
+	private int modelOrientation;
 
 	// Uniforms
 	private int uniUseFog;
@@ -259,6 +277,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				bufferId = uvBufferId = uniformBufferId = tmpBufferId = tmpUvBufferId = tmpModelBufferId = tmpModelBufferSmallId = tmpModelBufferUnorderedId = tmpOutBufferId = tmpOutUvBufferId = -1;
 				unorderedModels = smallModels = largeModels = 0;
+				drawingModel = false;
 
 				canvas = client.getCanvas();
 
@@ -266,6 +285,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				{
 					return false;
 				}
+
+				useComputeShaders = config.useComputeShaders();
 
 				canvas.setIgnoreRepaint(true);
 
@@ -461,10 +482,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		template.addInclude(GpuPlugin.class);
 
 		glProgram = PROGRAM.compile(gl, template);
-		glComputeProgram = COMPUTE_PROGRAM.compile(gl, template);
-		glSmallComputeProgram = SMALL_COMPUTE_PROGRAM.compile(gl, template);
-		glUnorderedComputeProgram = UNORDERED_COMPUTE_PROGRAM.compile(gl, template);
 		glUiProgram = UI_PROGRAM.compile(gl, template);
+
+		if (useComputeShaders)
+		{
+			glComputeProgram = COMPUTE_PROGRAM.compile(gl, template);
+			glSmallComputeProgram = SMALL_COMPUTE_PROGRAM.compile(gl, template);
+			glUnorderedComputeProgram = UNORDERED_COMPUTE_PROGRAM.compile(gl, template);
+		}
 
 		initUniforms();
 	}
@@ -738,15 +763,25 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		pitch = client.getCameraPitch();
 
 		final Scene scene = client.getScene();
-		final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
-		scene.setDrawDistance(drawDistance);
+		scene.setDrawDistance(getDrawDistance());
 	}
 
+	@Override
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
 							SceneTilePaint paint, int tileZ, int tileX, int tileY,
 							int zoom, int centerX, int centerY)
 	{
-		if (paint.getBufferLen() > 0)
+		if (!useComputeShaders)
+		{
+			targetBufferOffset += sceneUploader.upload(paint,
+				tileZ, tileX, tileY,
+				vertexBuffer, uvBuffer,
+				Perspective.LOCAL_TILE_SIZE * tileX,
+				Perspective.LOCAL_TILE_SIZE * tileY,
+				true
+			);
+		}
+		else if (paint.getBufferLen() > 0)
 		{
 			x = tileX * Perspective.LOCAL_TILE_SIZE;
 			y = 0;
@@ -768,11 +803,19 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
+	@Override
 	public void drawSceneModel(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
 							SceneTileModel model, int tileZ, int tileX, int tileY,
 							int zoom, int centerX, int centerY)
 	{
-		if (model.getBufferLen() > 0)
+		if (!useComputeShaders)
+		{
+			targetBufferOffset += sceneUploader.upload(model,
+				tileX, tileY,
+				vertexBuffer, uvBuffer,
+				tileX << Perspective.LOCAL_COORD_BITS, tileY << Perspective.LOCAL_COORD_BITS, true);
+		}
+		else if (model.getBufferLen() > 0)
 		{
 			x = tileX * Perspective.LOCAL_TILE_SIZE;
 			y = 0;
@@ -911,7 +954,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			null,
 			gl.GL_STREAM_DRAW);
 
-		// UBO
+		// UBO. Only the first 32 bytes get modified here, the rest is the constant sin/cos table.
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, uniformBufferId);
 		uniformBuffer.clear();
 		uniformBuffer
@@ -928,60 +971,63 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glBufferSubData(gl.GL_UNIFORM_BUFFER, 0, uniformBuffer.limit() * Integer.BYTES, uniformBuffer);
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
 
+		gl.glBindBufferBase(gl.GL_UNIFORM_BUFFER, 0, uniformBufferId);
+
 		// Draw 3d scene
 		final TextureProvider textureProvider = client.getTextureProvider();
-		if (textureProvider != null && this.bufferId != -1)
+		if (textureProvider != null)
 		{
-			gl.glUniformBlockBinding(glSmallComputeProgram, uniBlockSmall, 0);
-			gl.glUniformBlockBinding(glComputeProgram, uniBlockLarge, 0);
+			if (useComputeShaders)
+			{
+				gl.glUniformBlockBinding(glSmallComputeProgram, uniBlockSmall, 0);
+				gl.glUniformBlockBinding(glComputeProgram, uniBlockLarge, 0);
 
-			gl.glBindBufferBase(gl.GL_UNIFORM_BUFFER, 0, uniformBufferId);
+				/*
+				 * Compute is split into two separate programs 'small' and 'large' to
+				 * save on GPU resources. Small will sort <= 512 faces, large will do <= 4096.
+				 */
 
-			/*
-			 * Compute is split into two separate programs 'small' and 'large' to
-			 * save on GPU resources. Small will sort <= 512 faces, large will do <= 4096.
-			 */
+				// unordered
+				gl.glUseProgram(glUnorderedComputeProgram);
 
-			// unordered
-			gl.glUseProgram(glUnorderedComputeProgram);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferUnorderedId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
 
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferUnorderedId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
+				gl.glDispatchCompute(unorderedModels, 1, 1);
 
-			gl.glDispatchCompute(unorderedModels, 1, 1);
+				// small
+				gl.glUseProgram(glSmallComputeProgram);
 
-			// small
-			gl.glUseProgram(glSmallComputeProgram);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferSmallId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
 
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferSmallId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
+				gl.glDispatchCompute(smallModels, 1, 1);
 
-			gl.glDispatchCompute(smallModels, 1, 1);
+				// large
+				gl.glUseProgram(glComputeProgram);
 
-			// large
-			gl.glUseProgram(glComputeProgram);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
+				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
 
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
-			gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
+				gl.glDispatchCompute(largeModels, 1, 1);
 
-			gl.glDispatchCompute(largeModels, 1, 1);
-
-			gl.glMemoryBarrier(gl.GL_SHADER_STORAGE_BARRIER_BIT);
+				gl.glMemoryBarrier(gl.GL_SHADER_STORAGE_BARRIER_BIT);
+			}
 
 			if (textureArrayId == -1)
 			{
@@ -1021,7 +1067,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			gl.glUseProgram(glProgram);
 
-			final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
+			final int drawDistance = getDrawDistance();
 			final int fogDepth = config.fogDepth();
 			gl.glUniform1i(uniUseFog, fogDepth > 0 ? 1 : 0);
 			gl.glUniform4f(uniFogColor, (sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
@@ -1059,15 +1105,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glEnable(gl.GL_BLEND);
 			gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA);
 
-			// Draw output of compute shaders
+			// Draw buffers
 			gl.glBindVertexArray(vaoHandle);
 
+			// When using compute shaders, draw using the output buffer of the compute. Otherwise
+			// only use the temporary buffers, which will contain the full scene.
 			gl.glEnableVertexAttribArray(0);
-			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpOutBufferId);
+			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, useComputeShaders ? tmpOutBufferId : tmpBufferId);
 			gl.glVertexAttribIPointer(0, 4, gl.GL_INT, 0, 0);
 
 			gl.glEnableVertexAttribArray(1);
-			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpOutUvBufferId);
+			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, useComputeShaders ? tmpOutUvBufferId : tmpUvBufferId);
 			gl.glVertexAttribPointer(1, 4, gl.GL_FLOAT, false, 0, 0);
 
 			gl.glDrawArrays(gl.GL_TRIANGLES, 0, targetBufferOffset);
@@ -1234,7 +1282,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		if (!useComputeShaders || gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -1326,8 +1374,38 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public void draw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
 	{
+		if (!useComputeShaders)
+		{
+			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
+			if (model != null)
+			{
+				model.calculateBoundsCylinder();
+				model.calculateExtreme(orientation);
+
+				if (!isVisible(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash))
+				{
+					return;
+				}
+
+				client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+
+				modelX = x + client.getCameraX2();
+				modelY = y + client.getCameraY2();
+				modelZ = z + client.getCameraZ2();
+				modelOrientation = orientation;
+				int triangleCount = model.getTrianglesCount();
+				vertexBuffer.ensureCapacity(12 * triangleCount);
+				uvBuffer.ensureCapacity(12 * triangleCount);
+
+				drawingModel = true;
+
+				renderable.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+
+				drawingModel = false;
+			}
+		}
 		// Model may be in the scene buffer
-		if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneUploader.sceneId)
+		else if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneUploader.sceneId)
 		{
 			Model model = (Model) renderable;
 
@@ -1384,7 +1462,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				int len = 0;
 				for (int i = 0; i < faces; ++i)
 				{
-					len += sceneUploader.pushFace(model, i, vertexBuffer, uvBuffer);
+					len += sceneUploader.pushFace(model, i, false, vertexBuffer, uvBuffer, 0, 0, 0, 0);
 				}
 
 				GpuIntBuffer b = bufferForTriangles(faces);
@@ -1409,6 +1487,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
+	@Override
+	public boolean drawFace(Model model, int face)
+	{
+		if (!drawingModel)
+		{
+			return false;
+		}
+
+		targetBufferOffset += sceneUploader.pushFace(model, face, true, vertexBuffer, uvBuffer, modelX, modelY, modelZ, modelOrientation);
+		return true;
+	}
+
 	/**
 	 * returns the correct buffer based on triangle count and updates model count
 	 *
@@ -1417,7 +1507,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	 */
 	private GpuIntBuffer bufferForTriangles(int triangles)
 	{
-		if (triangles < SMALL_TRIANGLE_COUNT)
+		if (triangles <= SMALL_TRIANGLE_COUNT)
 		{
 			++smallModels;
 			return modelBufferSmall;
@@ -1442,5 +1532,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			getScaledValue(t.getScaleY(), y),
 			getScaledValue(t.getScaleX(), width),
 			getScaledValue(t.getScaleY(), height));
+	}
+
+	private int getDrawDistance()
+	{
+		final int limit = useComputeShaders ? MAX_DISTANCE : DEFAULT_DISTANCE;
+		return Ints.constrainToRange(config.drawDistance(), 0, limit);
 	}
 }

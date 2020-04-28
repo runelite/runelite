@@ -107,7 +107,7 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe(priority = 1) // run after all plugins
+	@Subscribe(priority = -1) // run after all plugins
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		MessageNode messageNode = chatMessage.getMessageNode();
@@ -585,7 +585,11 @@ public class ChatMessageManager
 
 		// Update the message with RuneLite additions
 		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
-		line.setTimestamp(message.getTimestamp());
+		
+		if (message.getTimestamp() != 0)
+		{
+			line.setTimestamp(message.getTimestamp());
+		}
 
 		update(line);
 	}

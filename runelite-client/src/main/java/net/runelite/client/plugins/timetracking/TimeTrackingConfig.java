@@ -84,6 +84,29 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "sortOrder",
+		name = "Sort Order",
+		description = "The order in which to sort the timers",
+		position = 5
+	)
+	default SortOrder sortOrder()
+	{
+		return SortOrder.NONE;
+	}
+
+	@ConfigItem(
+		keyName = "timerWarningThreshold",
+		name = "Timer Warning Threshold",
+		description = "The time at which to change the timer color to the warning color",
+		position = 6
+	)
+	@Units(Units.SECONDS)
+	default int timerWarningThreshold()
+	{
+		return 10;
+	}
+
+	@ConfigItem(
 		keyName = "activeTab",
 		name = "Active Tab",
 		description = "The currently selected tab",

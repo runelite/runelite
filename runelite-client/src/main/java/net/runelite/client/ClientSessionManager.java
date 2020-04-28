@@ -35,6 +35,8 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.util.RunnableExceptionLogger;
 
 @Singleton
@@ -70,9 +72,12 @@ public class ClientSessionManager
 		scheduledFuture = executorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::ping), 1, 10, TimeUnit.MINUTES);
 	}
 
-	public void shutdown()
+	@Subscribe
+	private void onClientShutdown(ClientShutdown e)
 	{
-		if (sessionId != null)
+		scheduledFuture.cancel(true);
+
+		e.waitFor(executorService.submit(() ->
 		{
 			try
 			{
@@ -83,9 +88,7 @@ public class ClientSessionManager
 				log.warn(null, ex);
 			}
 			sessionId = null;
-		}
-		
-		scheduledFuture.cancel(true);
+		}));
 	}
 
 	private void ping()
@@ -108,7 +111,8 @@ public class ClientSessionManager
 		boolean loggedIn = false;
 		if (client != null)
 		{
-			loggedIn = client.getGameState() != GameState.LOGIN_SCREEN;
+			GameState gameState = client.getGameState();
+			loggedIn = gameState.getState() >= GameState.LOADING.getState();
 		}
 
 		try

@@ -188,8 +188,8 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final Color highlighted = plugin.getHighlighted(item.getName(), item.getGePrice(), item.getHaPrice());
-			final Color hidden = plugin.getHidden(item.getName(), item.getGePrice(), item.getHaPrice(), item.isTradeable());
+			final Color highlighted = plugin.getHighlighted(new NamedQuantity(item), item.getGePrice(), item.getHaPrice());
+			final Color hidden = plugin.getHidden(new NamedQuantity(item), item.getGePrice(), item.getHaPrice(), item.isTradeable());
 
 			if (highlighted == null && !plugin.isHotKeyPressed())
 			{
@@ -243,7 +243,7 @@ public class GroundItemsOverlay extends Overlay
 			{
 				if (item.getGePrice() > 0)
 				{
-					itemStringBuilder.append(" (EX: ")
+					itemStringBuilder.append(" (GE: ")
 						.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
 						.append(" gp)");
 				}
