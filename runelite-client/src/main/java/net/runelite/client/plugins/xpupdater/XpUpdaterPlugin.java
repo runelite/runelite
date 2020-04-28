@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2020, Alexsuperfly <alexsuperfly@users.noreply.github.com>
+ * Copyright (c) 2020, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +44,6 @@ import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -108,7 +108,7 @@ public class XpUpdaterPlugin extends Plugin
 			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
 				log.debug("Submitting update for {}", local.getName());
-				sendUpdateRequest(local.getName());
+				update(local.getName());
 				lastXp = totalXp;
 			}
 		}
@@ -124,10 +124,9 @@ public class XpUpdaterPlugin extends Plugin
 		}
 	}
 
-	private void sendUpdateRequest(String username)
+	private void update(String username)
 	{
 		String reformedUsername = username.replace(" ", "_");
-		OkHttpClient httpClient = RuneLiteAPI.CLIENT;
 
 		if (config.cml())
 		{
@@ -145,20 +144,7 @@ public class XpUpdaterPlugin extends Plugin
 					.url(url)
 					.build();
 
-			httpClient.newCall(request).enqueue(new Callback()
-			{
-				@Override
-				public void onFailure(Call call, IOException e)
-				{
-					log.warn("Error submitting CML update, caused by {}.", e.getMessage());
-				}
-
-				@Override
-				public void onResponse(Call call, Response response)
-				{
-					response.close();
-				}
-			});
+			sendRequest("CrystalMathLabs", request);
 		}
 
 		if (config.templeosrs())
@@ -176,20 +162,25 @@ public class XpUpdaterPlugin extends Plugin
 					.url(url)
 					.build();
 
-			httpClient.newCall(request).enqueue(new Callback()
-			{
-				@Override
-				public void onFailure(Call call, IOException e)
-				{
-					log.warn("Error submitting TempleOSRS update, caused by {}.", e.getMessage());
-				}
-
-				@Override
-				public void onResponse(Call call, Response response)
-				{
-					response.close();
-				}
-			});
+			sendRequest("TempleOSRS", request);
 		}
+	}
+
+	private static void sendRequest(String platform, Request request)
+	{
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		{
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				log.warn("Error submitting {} update, caused by {}.", platform, e.getMessage());
+			}
+
+			@Override
+			public void onResponse(Call call, Response response)
+			{
+				response.close();
+			}
+		});
 	}
 }
