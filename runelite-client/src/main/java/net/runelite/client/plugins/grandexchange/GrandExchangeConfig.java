@@ -93,7 +93,6 @@ public interface GrandExchangeConfig extends Config
 		name = "Show grand exchange total",
 		description = "Show grand exchange total"
 	)
-
 	default boolean showTotal()
 	{
 		return true;

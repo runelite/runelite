@@ -691,14 +691,14 @@ public class GrandExchangePlugin extends Plugin
 		}
 		String itemIdStr = Integer.toString(itemId);
 		Instant currentDateTime = Instant.now();
-		configManager.setConfiguration("gelimitreset",
+		configManager.setConfiguration("grandexchange",
 			client.getUsername().toLowerCase() + itemIdStr, currentDateTime);
 	}
 
 	private String getLimitReset(int itemId)
 	{
 		String itemIdStr = Integer.toString(itemId);
-		Instant lastDateTime = configManager.getConfiguration("gelimitreset",
+		Instant lastDateTime = configManager.getConfiguration("grandexchange",
 			client.getUsername().toLowerCase() + itemIdStr, Instant.class);
 		if (lastDateTime == null)
 		{
