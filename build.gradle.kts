@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Owain van Brakel <https://github.com/Owain94>
+ * Copyright (c) 2019-2020 Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -69,7 +69,17 @@ subprojects {
         if (System.getenv("JITPACK") != null)
             mavenLocal()
         jcenter()
-        maven(url = "https://jitpack.io")
+        exclusiveContent {
+            forRepository {
+                maven {
+                    url = uri("https://jitpack.io")
+                }
+            }
+            filter {
+                includeGroup("com.github.petitparser.java-petitparser")
+                includeModule("com.github.petitparser", "java-petitparser")
+            }
+        }
         maven(url = "https://mvnrepository.com/artifact")
 
         exclusiveContent {
@@ -125,6 +135,15 @@ subprojects {
             maven {
                 url = uri("$buildDir/repo")
             }
+            if (System.getProperty("REPO-URL") != null) {
+                maven {
+                    url = uri(System.getProperty("REPO-URL"))
+                    credentials {
+                        username = System.getProperty("REPO-USERNAME")
+                        password = System.getProperty("REPO-PASSWORD")
+                    }
+                }
+            }
         }
         publications {
             register("mavenJava", MavenPublication::class) {
@@ -137,6 +156,8 @@ subprojects {
         java {
             sourceCompatibility = JavaVersion.VERSION_11
             targetCompatibility = JavaVersion.VERSION_11
+
+            withSourcesJar()
         }
 
         withType<JavaCompile> {
