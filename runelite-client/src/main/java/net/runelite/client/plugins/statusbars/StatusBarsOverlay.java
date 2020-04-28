@@ -60,6 +60,7 @@ class StatusBarsOverlay extends Overlay
 	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
 	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
+	private static final Color ENERGY_COLOR = new Color(255, 252, 130, 255);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int WIDTH = 20;
@@ -86,8 +87,12 @@ class StatusBarsOverlay extends Overlay
 	private final BufferedImage prayerImage;
 
 	@Inject
-	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice)
-	{
+	private StatusBarsOverlay(
+		Client client,
+		StatusBarsConfig config,
+		SkillIconManager skillIconManager,
+		ItemStatChangesService itemstatservice
+	) {
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
@@ -129,7 +134,7 @@ class StatusBarsOverlay extends Overlay
 		final Point offsetLeft = curViewport.getOffsetLeft();
 		final Point offsetRight = curViewport.getOffsetRight();
 		final Point location = curWidget.getCanvasLocation();
-		final int height, offsetHealthX, offsetHealthY, offsetPrayerX, offsetPrayerY;
+		final int height, offsetHealthX, offsetHealthY, offsetPrayerX, offsetPrayerY, offsetEnergyX, offsetEnergyY;
 
 		if (curViewport == Viewport.RESIZED_BOTTOM)
 		{
@@ -138,6 +143,8 @@ class StatusBarsOverlay extends Overlay
 			offsetHealthY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
 			offsetPrayerX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX());
 			offsetPrayerY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+			offsetEnergyX = (location.getX()) + RESIZED_BOTTOM_OFFSET_X - (offsetRight.getX() * 2);
+			offsetEnergyY = (location.getY()) + RESIZED_BOTTOM_OFFSET_Y - (offsetRight.getY() * 2);
 		}
 		else
 		{
@@ -146,6 +153,8 @@ class StatusBarsOverlay extends Overlay
 			offsetHealthY = (location.getY() - offsetLeft.getY());
 			offsetPrayerX = (location.getX() - offsetRight.getX()) + curWidget.getWidth();
 			offsetPrayerY = (location.getY() - offsetRight.getY());
+			offsetEnergyX = (location.getX() - offsetRight.getX()) + (curWidget.getWidth() * 2);
+			offsetEnergyY = (location.getY() - offsetRight.getY());
 		}
 
 		final int poisonState = client.getVar(VarPlayer.IS_POISONED);
@@ -171,11 +180,39 @@ class StatusBarsOverlay extends Overlay
 		final int quickPrayerState = client.getVar(Varbits.QUICK_PRAYER);
 		final Color prayerBar = quickPrayerState == 1 ? QUICK_PRAYER_COLOR : PRAYER_COLOR;
 
-		renderBar(g, offsetHealthX, offsetHealthY,
-			maxHealth, currentHealth, height, healthBar);
+		final int maxEnergy = 100;
+		final int currentEnergy = client.getEnergy();
+		final Color energyBar = ENERGY_COLOR;
 
-		renderBar(g, offsetPrayerX, offsetPrayerY,
-			maxPrayer, currentPrayer, height, prayerBar);
+		renderBar(
+			g,
+			offsetHealthX,
+			offsetHealthY,
+			maxHealth,
+			currentHealth,
+			height,
+			healthBar
+		);
+
+		renderBar(
+			g,
+			offsetPrayerX,
+			offsetPrayerY,
+			maxPrayer,
+			currentPrayer,
+			height,
+			prayerBar
+		);
+
+		renderBar(
+			g,
+			offsetEnergyX,
+			offsetEnergyY,
+			maxEnergy,
+			currentEnergy,
+			height,
+			energyBar
+		);
 
 		if (config.enableRestorationBars())
 		{
