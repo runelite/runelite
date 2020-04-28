@@ -295,26 +295,35 @@ public class WorldHopperPlugin extends Plugin
 
 	private void setCustomWorldCycle()
 	{
-		String worldList = config.customWorldCycle();
-		WorldResult worldResult = worldService.getWorlds();
 		worldCycleList.clear();
-		if (worldResult != null && !worldList.isEmpty())
+
+		String worldList = config.customWorldCycle();
+		if (worldList.isEmpty())
 		{
-			Text.fromCSV(worldList).stream()
-					.mapToInt(s ->
-					{
-						try
-						{
-							return Integer.parseInt(s);
-						}
-						catch (NumberFormatException e)
-						{
-							return 0;
-						}
-					})
-					.filter(world -> worldResult.findWorld(world) != null)
-					.forEach(world -> worldCycleList.add(worldResult.findWorld(world)));
+			return;
 		}
+
+		WorldResult worldResult = worldService.getWorlds();
+		if (worldResult == null)
+		{
+			return;
+		}
+
+		Text.fromCSV(worldList).stream()
+			.mapToInt(s ->
+			{
+				try
+				{
+					return Integer.parseInt(s);
+				}
+				catch (NumberFormatException e)
+				{
+					return 0;
+				}
+			})
+			.filter(world -> worldResult.findWorld(world) != null)
+			.forEach(world -> worldCycleList.add(worldResult.findWorld(world)));
+
 	}
 
 	private void setFavoriteConfig(int world)
