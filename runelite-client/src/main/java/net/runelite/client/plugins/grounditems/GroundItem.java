@@ -50,6 +50,7 @@ class GroundItem
 	private LootType lootType;
 	@Nullable
 	private Instant spawnTime;
+	private boolean stackable;
 
 	int getHaPrice()
 	{
