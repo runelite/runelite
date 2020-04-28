@@ -426,7 +426,7 @@ public class PluginManager
 
 					loaded.getAndIncrement();
 
-					RuneLiteSplashScreen.stage(.60, .65, "Loading Internal plugins", loaded.get(), scannedPlugins.size());
+					RuneLiteSplashScreen.stage(.60, .65, "Loading internal plugins", loaded.get(), scannedPlugins.size());
 				})));
 			curGroup.forEach(future ->
 			{
