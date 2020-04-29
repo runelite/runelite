@@ -94,12 +94,7 @@ class StatusBarsOverlay extends Overlay
 	private final BufferedImage weightImage;
 
 	@Inject
-	private StatusBarsOverlay(
-			Client client,
-			StatusBarsConfig config,
-			SkillIconManager skillIconManager,
-			ItemStatChangesService itemstatservice
-	)
+	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
