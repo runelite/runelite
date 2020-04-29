@@ -47,12 +47,8 @@ class RunEnergyOverlay extends Overlay
 	private final TooltipManager tooltipManager;
 
 	@Inject
-	private RunEnergyOverlay(
-		final RunEnergyPlugin plugin,
-		final Client client,
-		final RunEnergyConfig config,
-		final TooltipManager tooltipManager
-	) {
+	private RunEnergyOverlay(final RunEnergyPlugin plugin, final Client client, final RunEnergyConfig config, final TooltipManager tooltipManager)
+	{
 		this.plugin = plugin;
 		this.client = client;
 		this.config = config;
