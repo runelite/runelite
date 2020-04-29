@@ -195,10 +195,12 @@ class StatusBarsOverlay extends Overlay
 		final Point offsetLeft = curViewport.getOffsetLeft();
 		final Point offsetRight = curViewport.getOffsetRight();
 		final Point location = curWidget.getCanvasLocation();
-		final int height, offsetHealthX, offsetHealthY, offsetPrayerX, offsetPrayerY, offsetEnergyX, offsetEnergyY;
+		final int height, offsetHealthX, offsetHealthY, offsetPrayerX, offsetPrayerY;
 
 		// the run energy bar can only be drawn when this variable is true
 		final boolean resizedBottomMode = curViewport == Viewport.RESIZED_BOTTOM;
+
+		final java.awt.Point offsetEnergy = getEnergyBarCoordinates(location, offsetRight);
 
 		if (resizedBottomMode)
 		{
@@ -209,9 +211,6 @@ class StatusBarsOverlay extends Overlay
 
 			offsetPrayerX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX());
 			offsetPrayerY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
-
-			offsetEnergyX = (location.getX() - RESIZED_BOTTOM_PADDING_X - (offsetRight.getX() * 2));
-			offsetEnergyY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
 		}
 		else
 		{
@@ -222,9 +221,6 @@ class StatusBarsOverlay extends Overlay
 
 			offsetPrayerX = (location.getX() - offsetRight.getX()) + curWidget.getWidth();
 			offsetPrayerY = (location.getY() - offsetRight.getY());
-
-			offsetEnergyX = 0;
-			offsetEnergyY = 0;
 		}
 
 		final int poisonState = client.getVar(VarPlayer.IS_POISONED);
@@ -249,7 +245,6 @@ class StatusBarsOverlay extends Overlay
 		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
 		final int quickPrayerState = client.getVar(Varbits.QUICK_PRAYER);
 		final Color prayerBar = quickPrayerState == 1 ? QUICK_PRAYER_COLOR : PRAYER_COLOR;
-
 		final int currentEnergy = client.getEnergy();
 
 		renderBar(
@@ -276,8 +271,8 @@ class StatusBarsOverlay extends Overlay
 		{
 			renderBar(
 				g,
-				offsetEnergyX,
-				offsetEnergyY,
+				offsetEnergy.x,
+				offsetEnergy.y,
 				MAX_ENERGY,
 				currentEnergy,
 				height,
@@ -338,7 +333,7 @@ class StatusBarsOverlay extends Overlay
 
 			if (resizedBottomMode)
 			{
-				renderHealingBar(g, offsetEnergyX, offsetEnergyY,
+				renderHealingBar(g, offsetEnergy.x, offsetEnergy.y,
 					MAX_ENERGY,
 					currentEnergy,
 					height,
@@ -367,8 +362,8 @@ class StatusBarsOverlay extends Overlay
 			{
 				renderIconsAndCounters(
 					g,
-					offsetEnergyX,
-					offsetEnergyY,
+					offsetEnergy.x,
+					offsetEnergy.y,
 					energyImage,
 					counterEnergyText,
 					ENERGY_LOCATION_X
@@ -377,8 +372,8 @@ class StatusBarsOverlay extends Overlay
 				{
 					renderIconsAndCounters(
 						g,
-						offsetEnergyX,
-						offsetEnergyY + 30,
+						offsetEnergy.x,
+						offsetEnergy.y + 30,
 						weightImage,
 						counterWeightText,
 						WEIGHT_LOCATION_X
@@ -388,6 +383,14 @@ class StatusBarsOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private java.awt.Point getEnergyBarCoordinates(Point canvasLocation, Point offsetRight)
+	{
+		return new java.awt.Point(
+			(canvasLocation.getX() - RESIZED_BOTTOM_PADDING_X - (offsetRight.getX() * 2)),
+			(canvasLocation.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY())
+		);
 	}
 
 	private void renderIconsAndCounters(Graphics2D graphics, int x, int y, BufferedImage image, String counterText, int counterPadding)
