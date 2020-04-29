@@ -107,6 +107,62 @@ class StatusBarsOverlay extends Overlay
 		weightImage = ImageUtil.getResourceStreamFromClass(getClass(), "weight_icon.png");
 	}
 
+	private static void renderBar(Graphics2D graphics, int x, int y, int max, int current, int height, Color filled)
+	{
+		graphics.setColor(BACKGROUND);
+		graphics.drawRect(x, y, WIDTH - PADDING, height - PADDING);
+		graphics.fillRect(x, y, WIDTH, height);
+
+		final int filledHeight = getBarHeight(max, current, height);
+		graphics.setColor(filled);
+		graphics.fillRect(x + PADDING,
+			y + PADDING + (height - filledHeight),
+			WIDTH - PADDING * OFFSET,
+			filledHeight - PADDING * OFFSET);
+	}
+
+	private static void renderHealingBar(Graphics2D graphics, int x, int y, int max, int current, int height, int heal, Color color)
+	{
+		if (heal <= 0)
+		{
+			return;
+		}
+
+		final int filledCurrentHeight = getBarHeight(max, current, height);
+		int filledHeight = getBarHeight(max, heal, height);
+		graphics.setColor(color);
+
+		if (filledHeight + filledCurrentHeight > height)
+		{
+			final int overHeal = filledHeight + filledCurrentHeight - height;
+			filledHeight = filledHeight - overHeal + OVERHEAL_OFFSET;
+			graphics.setColor(OVERHEAL_COLOR);
+			graphics.fillRect(x + PADDING,
+				y - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
+				WIDTH - PADDING * OVERHEAL_OFFSET,
+				filledHeight - PADDING * OVERHEAL_OFFSET);
+		}
+		else
+		{
+			graphics.fillRect(x + PADDING,
+				y - OVERHEAL_OFFSET - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
+				WIDTH - PADDING * OVERHEAL_OFFSET,
+				filledHeight + OVERHEAL_OFFSET - PADDING * OVERHEAL_OFFSET);
+		}
+	}
+
+	private static int getBarHeight(int base, int current, int size)
+	{
+		final double ratio = (double) current / base;
+
+		if (ratio >= 1)
+		{
+			return size;
+		}
+
+		return (int) Math.round(ratio * size);
+	}
+
 	@Override
 	public Dimension render(Graphics2D g)
 	{
@@ -196,35 +252,35 @@ class StatusBarsOverlay extends Overlay
 		final int currentEnergy = client.getEnergy();
 
 		renderBar(
-				g,
-				offsetHealthX,
-				offsetHealthY,
-				maxHealth,
-				currentHealth,
-				height,
-				healthBar
+			g,
+			offsetHealthX,
+			offsetHealthY,
+			maxHealth,
+			currentHealth,
+			height,
+			healthBar
 		);
 
 		renderBar(
-				g,
-				offsetPrayerX,
-				offsetPrayerY,
-				maxPrayer,
-				currentPrayer,
-				height,
-				prayerBar
+			g,
+			offsetPrayerX,
+			offsetPrayerY,
+			maxPrayer,
+			currentPrayer,
+			height,
+			prayerBar
 		);
 
 		if (resizedBottomMode)
 		{
 			renderBar(
-					g,
-					offsetEnergyX,
-					offsetEnergyY,
-					maxEnergy,
-					currentEnergy,
-					height,
-					ENERGY_COLOR
+				g,
+				offsetEnergyX,
+				offsetEnergyY,
+				maxEnergy,
+				currentEnergy,
+				height,
+				ENERGY_COLOR
 			);
 		}
 
@@ -272,21 +328,21 @@ class StatusBarsOverlay extends Overlay
 			}
 
 			renderHealingBar(g, offsetHealthX, offsetHealthY,
-					maxHealth, currentHealth, height,
-					foodHealValue, HEAL_COLOR);
+				maxHealth, currentHealth, height,
+				foodHealValue, HEAL_COLOR);
 
 			renderHealingBar(g, offsetPrayerX, offsetPrayerY,
-					maxPrayer, currentPrayer, height,
-					prayerHealValue, PRAYER_HEAL_COLOR);
+				maxPrayer, currentPrayer, height,
+				prayerHealValue, PRAYER_HEAL_COLOR);
 
 			if (resizedBottomMode)
 			{
 				renderHealingBar(g, offsetEnergyX, offsetEnergyY,
-						maxEnergy,
-						currentEnergy,
-						height,
-						energyHealValue,
-						ENERGY_HEAL_COLOR
+					maxEnergy,
+					currentEnergy,
+					height,
+					energyHealValue,
+					ENERGY_HEAL_COLOR
 				);
 			}
 		}
@@ -309,84 +365,28 @@ class StatusBarsOverlay extends Overlay
 			if (resizedBottomMode)
 			{
 				renderIconsAndCounters(
-						g,
-						offsetEnergyX,
-						offsetEnergyY,
-						energyImage,
-						counterEnergyText,
-						ENERGY_LOCATION_X
+					g,
+					offsetEnergyX,
+					offsetEnergyY,
+					energyImage,
+					counterEnergyText,
+					ENERGY_LOCATION_X
 				);
 				if (config.enableCounter())
 				{
 					renderIconsAndCounters(
-							g,
-							offsetEnergyX,
-							offsetEnergyY + 30,
-							weightImage,
-							counterWeightText,
-							WEIGHT_LOCATION_X
+						g,
+						offsetEnergyX,
+						offsetEnergyY + 30,
+						weightImage,
+						counterWeightText,
+						WEIGHT_LOCATION_X
 					);
 				}
 			}
 		}
 
 		return null;
-	}
-
-	private static void renderBar(Graphics2D graphics, int x, int y, int max, int current, int height, Color filled)
-	{
-		graphics.setColor(BACKGROUND);
-		graphics.drawRect(x, y, WIDTH - PADDING, height - PADDING);
-		graphics.fillRect(x, y, WIDTH, height);
-
-		final int filledHeight = getBarHeight(max, current, height);
-		graphics.setColor(filled);
-		graphics.fillRect(x + PADDING,
-				y + PADDING + (height - filledHeight),
-				WIDTH - PADDING * OFFSET,
-				filledHeight - PADDING * OFFSET);
-	}
-
-	private static void renderHealingBar(Graphics2D graphics, int x, int y, int max, int current, int height, int heal, Color color)
-	{
-		if (heal <= 0)
-		{
-			return;
-		}
-
-		final int filledCurrentHeight = getBarHeight(max, current, height);
-		int filledHeight = getBarHeight(max, heal, height);
-		graphics.setColor(color);
-
-		if (filledHeight + filledCurrentHeight > height)
-		{
-			final int overHeal = filledHeight + filledCurrentHeight - height;
-			filledHeight = filledHeight - overHeal + OVERHEAL_OFFSET;
-			graphics.setColor(OVERHEAL_COLOR);
-			graphics.fillRect(x + PADDING,
-					y - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
-					WIDTH - PADDING * OVERHEAL_OFFSET,
-					filledHeight - PADDING * OVERHEAL_OFFSET);
-		}
-		else
-		{
-			graphics.fillRect(x + PADDING,
-					y - OVERHEAL_OFFSET - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
-					WIDTH - PADDING * OVERHEAL_OFFSET,
-					filledHeight + OVERHEAL_OFFSET - PADDING * OVERHEAL_OFFSET);
-		}
-	}
-
-	private static int getBarHeight(int base, int current, int size)
-	{
-		final double ratio = (double) current / base;
-
-		if (ratio >= 1)
-		{
-			return size;
-		}
-
-		return (int) Math.round(ratio * size);
 	}
 
 	private void renderIconsAndCounters(Graphics2D graphics, int x, int y, BufferedImage image, String counterText, int counterPadding)
