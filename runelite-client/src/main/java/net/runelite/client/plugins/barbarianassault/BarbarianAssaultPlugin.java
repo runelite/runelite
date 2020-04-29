@@ -162,7 +162,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (config.callChangeAudioCue() && currentRound != null)
+		if (currentRound != null && config.callChangeAudioCue())
 		{
 			long timeToChange = currentRound.getTimeToChange();
 
