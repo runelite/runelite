@@ -32,32 +32,29 @@ import net.runelite.client.config.ConfigItem;
 public interface StatusBarsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "enableCounter",
-		name = "Show hitpoints & prayer counter",
-		description = "Shows current amount of hitpoints & prayer on the status bars"
+			keyName = "enableCounter",
+			name = "Show status counters",
+			description = "Shows current amount of hitpoints, prayer, energy and weight on the status bars"
 	)
-	default boolean enableCounter()
-	{
-		return false;
+	default boolean enableCounter() {
+		return true;
 	}
 
 	@ConfigItem(
 		keyName = "enableSkillIcon",
-		name = "Show hitpoints & prayer icons",
-		description = "Adds skill icons at the top of the bars."
+		name = "Show icons",
+		description = "Adds icons at the top of the bars."
 	)
-	default boolean enableSkillIcon()
-	{
+	default boolean enableSkillIcon() {
 		return true;
 	}
 
 	@ConfigItem(
 		keyName = "enableRestorationBars",
-		name = "Show amount of hitpoints and prayer restored",
-		description = "Visually shows how much a food or prayer will heal/restore you on the bars."
+		name = "Show restoration amount",
+		description = "Visually shows how many hit, prayer, and energy points will be restored."
 	)
-	default boolean enableRestorationBars()
-	{
+	default boolean enableRestorationBars() {
 		return true;
 	}
 }

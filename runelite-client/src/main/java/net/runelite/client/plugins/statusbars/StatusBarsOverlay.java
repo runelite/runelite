@@ -29,6 +29,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
@@ -49,6 +51,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.ImageUtil;
 
+@Slf4j
 class StatusBarsOverlay extends Overlay
 {
 	private static final Color PRAYER_COLOR = new Color(50, 200, 200, 175);
@@ -60,7 +63,8 @@ class StatusBarsOverlay extends Overlay
 	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
 	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
-	private static final Color ENERGY_COLOR = new Color(255, 252, 130, 255);
+	private static final Color ENERGY_COLOR = new Color(192, 156, 1, 255);
+	private static final Color ENERGY_HEAL_COLOR = new Color(57, 255, 186, 75);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int WIDTH = 20;
@@ -68,8 +72,11 @@ class StatusBarsOverlay extends Overlay
 	private static final int IMAGE_SIZE = 17;
 	private static final int HEALTH_LOCATION_X = 0;
 	private static final int PRAYER_LOCATION_X = 1;
+	private static final int ENERGY_LOCATION_X = 0;
+	private static final int WEIGHT_LOCATION_X = 1;
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
 	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
+	private static final int RESIZED_BOTTOM_PADDING_X = 7;
 	private static final int OVERHEAL_OFFSET = 2;
 	private static final int HEAL_OFFSET = 3;
 	private static final int ICON_AND_COUNTER_OFFSET_X = 1;
@@ -85,6 +92,8 @@ class StatusBarsOverlay extends Overlay
 	private final ItemStatChangesService itemStatService;
 
 	private final BufferedImage prayerImage;
+	private final BufferedImage energyImage;
+	private final BufferedImage weightImage;
 
 	@Inject
 	private StatusBarsOverlay(
@@ -101,6 +110,8 @@ class StatusBarsOverlay extends Overlay
 		this.itemStatService = itemstatservice;
 
 		prayerImage = ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE);
+		energyImage = ImageUtil.getResourceStreamFromClass(getClass(), "energy_icon.png");
+		weightImage = ImageUtil.getResourceStreamFromClass(getClass(), "weight_icon.png");
 	}
 
 	@Override
@@ -134,27 +145,35 @@ class StatusBarsOverlay extends Overlay
 		final Point offsetLeft = curViewport.getOffsetLeft();
 		final Point offsetRight = curViewport.getOffsetRight();
 		final Point location = curWidget.getCanvasLocation();
+		final boolean resizedBottomMode = curViewport == Viewport.RESIZED_BOTTOM;
+
 		final int height, offsetHealthX, offsetHealthY, offsetPrayerX, offsetPrayerY, offsetEnergyX, offsetEnergyY;
 
-		if (curViewport == Viewport.RESIZED_BOTTOM)
+		if (resizedBottomMode)
 		{
 			height = RESIZED_BOTTOM_HEIGHT;
+
 			offsetHealthX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX());
 			offsetHealthY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+
 			offsetPrayerX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX());
 			offsetPrayerY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
-			offsetEnergyX = (location.getX()) + RESIZED_BOTTOM_OFFSET_X - (offsetRight.getX() * 2);
-			offsetEnergyY = (location.getY()) + RESIZED_BOTTOM_OFFSET_Y - (offsetRight.getY() * 2);
+
+			offsetEnergyX = (location.getX() - RESIZED_BOTTOM_PADDING_X - (offsetRight.getX() * 2));
+			offsetEnergyY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
 		}
 		else
 		{
 			height = HEIGHT;
+
 			offsetHealthX = (location.getX() - offsetLeft.getX());
 			offsetHealthY = (location.getY() - offsetLeft.getY());
+
 			offsetPrayerX = (location.getX() - offsetRight.getX()) + curWidget.getWidth();
 			offsetPrayerY = (location.getY() - offsetRight.getY());
-			offsetEnergyX = (location.getX() - offsetRight.getX()) + (curWidget.getWidth() * 2);
-			offsetEnergyY = (location.getY() - offsetRight.getY());
+
+			offsetEnergyX = 0;
+			offsetEnergyY = 0;
 		}
 
 		final int poisonState = client.getVar(VarPlayer.IS_POISONED);
@@ -182,7 +201,6 @@ class StatusBarsOverlay extends Overlay
 
 		final int maxEnergy = 100;
 		final int currentEnergy = client.getEnergy();
-		final Color energyBar = ENERGY_COLOR;
 
 		renderBar(
 			g,
@@ -204,15 +222,17 @@ class StatusBarsOverlay extends Overlay
 			prayerBar
 		);
 
-		renderBar(
-			g,
-			offsetEnergyX,
-			offsetEnergyY,
-			maxEnergy,
-			currentEnergy,
-			height,
-			energyBar
-		);
+		if (resizedBottomMode) {
+			renderBar(
+					g,
+					offsetEnergyX,
+					offsetEnergyY,
+					maxEnergy,
+					currentEnergy,
+					height,
+					ENERGY_COLOR
+			);
+		}
 
 		if (config.enableRestorationBars())
 		{
@@ -221,6 +241,8 @@ class StatusBarsOverlay extends Overlay
 			final MenuEntry entry = menuSize > 0 ? menu[menuSize - 1] : null;
 			int prayerHealValue = 0;
 			int foodHealValue = 0;
+			int energyHealValue = 0;
+
 			if (entry != null && entry.getParam1() == WidgetInfo.INVENTORY.getId())
 			{
 				final Effect change = itemStatService.getItemStatChanges(entry.getIdentifier());
@@ -232,18 +254,22 @@ class StatusBarsOverlay extends Overlay
 					for (final StatChange c : statsChanges.getStatChanges())
 					{
 						final int theoreticalBoost = c.getTheoretical();
+						String healStat = c.getStat().getName();
 
-						if (c.getStat().getName().equals(Skill.HITPOINTS.getName()))
+						if (healStat.equals(Skill.HITPOINTS.getName()))
 						{
 							foodHealValue = theoreticalBoost;
 						}
-
-						if (c.getStat().getName().equals(Skill.PRAYER.getName()))
+						if (healStat.equals(Skill.PRAYER.getName()))
 						{
 							prayerHealValue = theoreticalBoost;
 						}
+						if (healStat.equals("Run Energy"))
+						{
+							energyHealValue = theoreticalBoost;
+						}
 
-						if (foodHealValue != 0 && prayerHealValue != 0)
+						if (foodHealValue != 0 && prayerHealValue != 0 && energyHealValue != 0)
 						{
 							break;
 						}
@@ -258,6 +284,16 @@ class StatusBarsOverlay extends Overlay
 			renderHealingBar(g, offsetPrayerX, offsetPrayerY,
 				maxPrayer, currentPrayer, height,
 				prayerHealValue, PRAYER_HEAL_COLOR);
+
+			if (resizedBottomMode) {
+				renderHealingBar(g, offsetEnergyX, offsetEnergyY,
+						maxEnergy,
+						currentEnergy,
+						height,
+						energyHealValue,
+						ENERGY_HEAL_COLOR
+				);
+			}
 		}
 
 		if (config.enableSkillIcon() || config.enableCounter())
@@ -265,11 +301,36 @@ class StatusBarsOverlay extends Overlay
 			final BufferedImage healthImage = skillIconManager.getSkillImage(Skill.HITPOINTS, true);
 			final int counterHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
 			final int counterPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
+			final int counterEnergy = client.getEnergy();
+			final int counterWeight = client.getWeight();
 			final String counterHealthText = Integer.toString(counterHealth);
 			final String counterPrayerText = Integer.toString(counterPrayer);
+			final String counterEnergyText = Integer.toString(counterEnergy);
+			final String counterWeightText = Integer.toString(counterWeight);
 
 			renderIconsAndCounters(g, offsetPrayerX, offsetPrayerY, prayerImage, counterPrayerText, PRAYER_LOCATION_X);
 			renderIconsAndCounters(g, offsetHealthX, offsetHealthY, healthImage, counterHealthText, HEALTH_LOCATION_X);
+
+			if (resizedBottomMode) {
+				renderIconsAndCounters(
+						g,
+						offsetEnergyX,
+						offsetEnergyY,
+						energyImage,
+						counterEnergyText,
+						ENERGY_LOCATION_X
+				);
+				if (config.enableCounter()) {
+					renderIconsAndCounters(
+							g,
+							offsetEnergyX,
+							offsetEnergyY + 30,
+							weightImage,
+							counterWeightText,
+							WEIGHT_LOCATION_X
+					);
+				}
+			}
 		}
 
 		return null;
@@ -348,7 +409,7 @@ class StatusBarsOverlay extends Overlay
 			textComponent.setText("");
 		}
 
-		if (config.enableSkillIcon())
+		if (config.enableSkillIcon() && image != null)
 		{
 			graphics.drawImage(image, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - image.getWidth(null), null);
 			textComponent.setPosition(new java.awt.Point(x + centerText + counterPadding, y + SKILL_ICON_HEIGHT));
