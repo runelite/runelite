@@ -161,7 +161,10 @@ public interface ChatCommandsConfig extends Config
 			name = "In-Chat Calculator",
 			description = "Configures whether the Calc command is enabled<br> !calc"
 	)
-	default boolean calc() { return true; }
+	default boolean calc()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		position = 12,

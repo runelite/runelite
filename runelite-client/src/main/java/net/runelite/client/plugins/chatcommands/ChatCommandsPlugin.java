@@ -27,8 +27,6 @@ package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
-
-import java.io.IOError;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.EnumSet;
@@ -688,7 +686,7 @@ public class ChatCommandsPlugin extends Plugin
 		String message = chatMessage.getMessage();
 		String roundAnswer = "";
 		String calculation = message.replace("!Calc ", "");
-		if(calculation.matches("(-)?\\d+([+-/*]([(]-)?\\d+[)]?)+"))
+		if (calculation.matches("(-)?\\d+([+-/*]([(]-)?\\d+[)]?)+"))
 		{
 			ScriptEngineManager mgr = new ScriptEngineManager();
 			ScriptEngine engine = mgr.getEngineByName("JavaScript");
