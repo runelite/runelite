@@ -690,7 +690,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			ScriptEngineManager mgr = new ScriptEngineManager();
 			ScriptEngine engine = mgr.getEngineByName("JavaScript");
-            DecimalFormat f = new DecimalFormat("##.#####");
+			DecimalFormat f = new DecimalFormat("##.#####");
 
 			try
 			{
