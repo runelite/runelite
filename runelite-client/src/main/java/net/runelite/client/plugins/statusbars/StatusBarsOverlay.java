@@ -81,6 +81,7 @@ class StatusBarsOverlay extends Overlay
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
 	private static final int OFFSET = 2;
+	private static final int MAX_ENERGY = 100;
 
 	private final Client client;
 	private final StatusBarsConfig config;
@@ -248,7 +249,6 @@ class StatusBarsOverlay extends Overlay
 		final int quickPrayerState = client.getVar(Varbits.QUICK_PRAYER);
 		final Color prayerBar = quickPrayerState == 1 ? QUICK_PRAYER_COLOR : PRAYER_COLOR;
 
-		final int maxEnergy = 100;
 		final int currentEnergy = client.getEnergy();
 
 		renderBar(
@@ -277,7 +277,7 @@ class StatusBarsOverlay extends Overlay
 				g,
 				offsetEnergyX,
 				offsetEnergyY,
-				maxEnergy,
+				MAX_ENERGY,
 				currentEnergy,
 				height,
 				ENERGY_COLOR
@@ -338,7 +338,7 @@ class StatusBarsOverlay extends Overlay
 			if (resizedBottomMode)
 			{
 				renderHealingBar(g, offsetEnergyX, offsetEnergyY,
-					maxEnergy,
+					MAX_ENERGY,
 					currentEnergy,
 					height,
 					energyHealValue,
