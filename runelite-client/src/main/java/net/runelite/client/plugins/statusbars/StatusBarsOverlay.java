@@ -195,9 +195,10 @@ class StatusBarsOverlay extends Overlay
 		final Point offsetLeft = curViewport.getOffsetLeft();
 		final Point offsetRight = curViewport.getOffsetRight();
 		final Point location = curWidget.getCanvasLocation();
-		final boolean resizedBottomMode = curViewport == Viewport.RESIZED_BOTTOM;
-
 		final int height, offsetHealthX, offsetHealthY, offsetPrayerX, offsetPrayerY, offsetEnergyX, offsetEnergyY;
+
+		// the run energy bar can only be drawn when this variable is true
+		final boolean resizedBottomMode = curViewport == Viewport.RESIZED_BOTTOM;
 
 		if (resizedBottomMode)
 		{
