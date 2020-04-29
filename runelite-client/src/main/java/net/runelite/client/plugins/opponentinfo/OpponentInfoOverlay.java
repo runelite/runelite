@@ -100,10 +100,10 @@ class OpponentInfoOverlay extends OverlayPanel
 			return null;
 		}
 
-		if (opponent.getName() != null && opponent.getHealth() > 0)
+		if (opponent.getName() != null && opponent.getHealthScale() > 0)
 		{
 			lastRatio = opponent.getHealthRatio();
-			lastHealthScale = opponent.getHealth();
+			lastHealthScale = opponent.getHealthScale();
 			opponentName = Text.removeTags(opponent.getName());
 
 			lastMaxHealth = null;
