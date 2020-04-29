@@ -64,6 +64,6 @@ class Round
 
 	public long getTimeToChange()
 	{
-		return CALL_DURATION - (Duration.between(Instant.now(), roundStartTime).getSeconds() % CALL_DURATION);
+		return CALL_DURATION + (Duration.between(Instant.now(), roundStartTime).getSeconds() % CALL_DURATION);
 	}
 }
