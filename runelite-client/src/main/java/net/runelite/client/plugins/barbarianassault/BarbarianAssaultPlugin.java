@@ -63,6 +63,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
+	static final int CALL_DURATION = 30;
 
 	private Font font;
 	private Image clockImage;
@@ -166,12 +167,12 @@ public class BarbarianAssaultPlugin extends Plugin
 		{
 			long timeToChange = currentRound.getTimeToChange();
 
-			if (timeToChange == 30 && !playingCue)
+			if (timeToChange == CALL_DURATION && !playingCue)
 			{
 				playingCue = true;
 				client.playSoundEffect(SoundEffectID.TOWN_CRIER_BELL_DONG);
 			}
-			else if (timeToChange != 30)
+			else if (timeToChange != CALL_DURATION)
 			{
 				playingCue = false;
 			}

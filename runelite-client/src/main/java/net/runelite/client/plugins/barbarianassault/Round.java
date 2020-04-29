@@ -29,6 +29,7 @@ import java.time.Instant;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
+import static net.runelite.client.plugins.barbarianassault.BarbarianAssaultPlugin.CALL_DURATION;
 import static net.runelite.client.util.RSTimeUnit.GAME_TICKS;
 
 class Round
@@ -63,6 +64,6 @@ class Round
 
 	public long getTimeToChange()
 	{
-		return 30 - (Duration.between(Instant.now(), roundStartTime).getSeconds() % 30);
+		return CALL_DURATION - (Duration.between(Instant.now(), roundStartTime).getSeconds() % CALL_DURATION);
 	}
 }
