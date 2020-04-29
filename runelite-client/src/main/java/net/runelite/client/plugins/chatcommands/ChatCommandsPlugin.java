@@ -27,7 +27,10 @@ package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
+
+import java.io.IOError;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -680,24 +683,29 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		calculateChatMessage(chatMessage);
 	}
-	private void calculateChatMessage(ChatMessage chatMessage){
+	private void calculateChatMessage(ChatMessage chatMessage)
+	{
 		String message = chatMessage.getMessage();
-		String answer = "";
+		String roundAnswer = "";
 		String calculation = message.replace("!Calc ", "");
-		System.out.println("calc: " + calculation);
-		System.out.println(!calculation.matches("\\d+([+-/*]\\d+)+"));
-		if(calculation.matches("\\d+([+-/*]\\d+)+")){
+		if(calculation.matches("(-)?\\d+([+-/*]([(]-)?\\d+[)]?)+"))
+		{
 			ScriptEngineManager mgr = new ScriptEngineManager();
 			ScriptEngine engine = mgr.getEngineByName("JavaScript");
+            DecimalFormat f = new DecimalFormat("##.#####");
 
-			try {
-				answer = engine.eval(calculation).toString();
-			}catch (ScriptException e){
+			try
+			{
+				String answer = engine.eval(calculation).toString();
+				roundAnswer = f.format(Float.parseFloat(answer));
+			}
+			catch (ScriptException e)
+			{
 				e.printStackTrace();
 			}
 
 			ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder()
-					.append(calculation + " = " + answer)
+					.append(calculation + " = " + roundAnswer)
 					.append(ChatColorType.HIGHLIGHT);
 
 			String response = chatMessageBuilder.build();
