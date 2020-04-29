@@ -82,6 +82,7 @@ class StatusBarsOverlay extends Overlay
 	private static final int COUNTER_ICON_HEIGHT = 18;
 	private static final int OFFSET = 2;
 	private static final int MAX_ENERGY = 100;
+	private static final String ENERGY_STAT_NAME = "Run Energy";
 
 	private final Client client;
 	private final StatusBarsConfig config;
@@ -310,7 +311,7 @@ class StatusBarsOverlay extends Overlay
 						{
 							prayerHealValue = theoreticalBoost;
 						}
-						if (healStat.equals("Run Energy"))
+						if (healStat.equals(ENERGY_STAT_NAME))
 						{
 							energyHealValue = theoreticalBoost;
 						}
