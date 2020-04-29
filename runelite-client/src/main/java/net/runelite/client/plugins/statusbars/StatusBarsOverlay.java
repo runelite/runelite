@@ -113,62 +113,6 @@ class StatusBarsOverlay extends Overlay
 		weightImage = ImageUtil.getResourceStreamFromClass(getClass(), "weight_icon.png");
 	}
 
-	private static void renderBar(Graphics2D graphics, int x, int y, int max, int current, int height, Color filled)
-	{
-		graphics.setColor(BACKGROUND);
-		graphics.drawRect(x, y, WIDTH - PADDING, height - PADDING);
-		graphics.fillRect(x, y, WIDTH, height);
-
-		final int filledHeight = getBarHeight(max, current, height);
-		graphics.setColor(filled);
-		graphics.fillRect(x + PADDING,
-				y + PADDING + (height - filledHeight),
-				WIDTH - PADDING * OFFSET,
-				filledHeight - PADDING * OFFSET);
-	}
-
-	private static void renderHealingBar(Graphics2D graphics, int x, int y, int max, int current, int height, int heal, Color color)
-	{
-		if (heal <= 0)
-		{
-			return;
-		}
-
-		final int filledCurrentHeight = getBarHeight(max, current, height);
-		int filledHeight = getBarHeight(max, heal, height);
-		graphics.setColor(color);
-
-		if (filledHeight + filledCurrentHeight > height)
-		{
-			final int overHeal = filledHeight + filledCurrentHeight - height;
-			filledHeight = filledHeight - overHeal + OVERHEAL_OFFSET;
-			graphics.setColor(OVERHEAL_COLOR);
-			graphics.fillRect(x + PADDING,
-					y - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
-					WIDTH - PADDING * OVERHEAL_OFFSET,
-					filledHeight - PADDING * OVERHEAL_OFFSET);
-		}
-		else
-		{
-			graphics.fillRect(x + PADDING,
-					y - OVERHEAL_OFFSET - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
-					WIDTH - PADDING * OVERHEAL_OFFSET,
-					filledHeight + OVERHEAL_OFFSET - PADDING * OVERHEAL_OFFSET);
-		}
-	}
-
-	private static int getBarHeight(int base, int current, int size)
-	{
-		final double ratio = (double) current / base;
-
-		if (ratio >= 1)
-		{
-			return size;
-		}
-
-		return (int) Math.round(ratio * size);
-	}
-
 	@Override
 	public Dimension render(Graphics2D g)
 	{
@@ -393,6 +337,62 @@ class StatusBarsOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private static void renderBar(Graphics2D graphics, int x, int y, int max, int current, int height, Color filled)
+	{
+		graphics.setColor(BACKGROUND);
+		graphics.drawRect(x, y, WIDTH - PADDING, height - PADDING);
+		graphics.fillRect(x, y, WIDTH, height);
+
+		final int filledHeight = getBarHeight(max, current, height);
+		graphics.setColor(filled);
+		graphics.fillRect(x + PADDING,
+				y + PADDING + (height - filledHeight),
+				WIDTH - PADDING * OFFSET,
+				filledHeight - PADDING * OFFSET);
+	}
+
+	private static void renderHealingBar(Graphics2D graphics, int x, int y, int max, int current, int height, int heal, Color color)
+	{
+		if (heal <= 0)
+		{
+			return;
+		}
+
+		final int filledCurrentHeight = getBarHeight(max, current, height);
+		int filledHeight = getBarHeight(max, heal, height);
+		graphics.setColor(color);
+
+		if (filledHeight + filledCurrentHeight > height)
+		{
+			final int overHeal = filledHeight + filledCurrentHeight - height;
+			filledHeight = filledHeight - overHeal + OVERHEAL_OFFSET;
+			graphics.setColor(OVERHEAL_COLOR);
+			graphics.fillRect(x + PADDING,
+					y - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
+					WIDTH - PADDING * OVERHEAL_OFFSET,
+					filledHeight - PADDING * OVERHEAL_OFFSET);
+		}
+		else
+		{
+			graphics.fillRect(x + PADDING,
+					y - OVERHEAL_OFFSET - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
+					WIDTH - PADDING * OVERHEAL_OFFSET,
+					filledHeight + OVERHEAL_OFFSET - PADDING * OVERHEAL_OFFSET);
+		}
+	}
+
+	private static int getBarHeight(int base, int current, int size)
+	{
+		final double ratio = (double) current / base;
+
+		if (ratio >= 1)
+		{
+			return size;
+		}
+
+		return (int) Math.round(ratio * size);
 	}
 
 	private void renderIconsAndCounters(Graphics2D graphics, int x, int y, BufferedImage image, String counterText, int counterPadding)
