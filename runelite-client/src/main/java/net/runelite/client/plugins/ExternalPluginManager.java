@@ -643,13 +643,13 @@ public class ExternalPluginManager
 			{
 				if (pluginDescriptor == null)
 				{
-					if (clazz.getSuperclass() == Plugin.class)
+					if (Plugin.class.isAssignableFrom(clazz))
 					{
 						log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
-						continue;
 					}
+					continue;
 				}
-				else if (clazz.getSuperclass() != Plugin.class)
+				else if (!Plugin.class.isAssignableFrom(clazz))
 				{
 					log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
 					continue;
@@ -1084,7 +1084,7 @@ public class ExternalPluginManager
 				String lastVersion = lastRelease.version;
 				try
 				{
-					
+
 					RuneLiteSplashScreen.stage(.59, "Updating " + plugin.id + " to version " + lastVersion);
 					boolean updated = updateManager.updatePlugin(plugin.id, lastVersion);
 

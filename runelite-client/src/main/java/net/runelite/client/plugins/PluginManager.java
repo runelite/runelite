@@ -356,18 +356,16 @@ public class PluginManager
 
 			if (pluginDescriptor == null)
 			{
-				if (clazz.getSuperclass() == Plugin.class)
+				if (Plugin.class.isAssignableFrom(clazz) && clazz != Plugin.class)
 				{
-					log.warn("Class {} is a plugin, but has no plugin descriptor",
-						clazz);
+					log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
 				}
 				continue;
 			}
 
-			if (clazz.getSuperclass() != Plugin.class)
+			if (!Plugin.class.isAssignableFrom(clazz))
 			{
-				log.warn("Class {} has plugin descriptor, but is not a plugin",
-					clazz);
+				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
 				continue;
 			}
 
