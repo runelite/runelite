@@ -81,6 +81,9 @@ import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
 import org.apache.commons.text.WordUtils;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 @PluginDescriptor(
 	name = "Chat Commands",
@@ -115,6 +118,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String PB_COMMAND = "!pb";
 	private static final String GC_COMMAND_STRING = "!gc";
 	private static final String DUEL_ARENA_COMMAND = "!duels";
+	private static final String CALCULATOR_COMMAND_STRING = "!calc";
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -177,6 +181,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
 		chatCommandManager.registerCommandAsync(GC_COMMAND_STRING, this::gambleCountLookup, this::gambleCountSubmit);
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
+		chatCommandManager.registerCommandAsync(CALCULATOR_COMMAND_STRING, this::calculateInChat);
 	}
 
 	@Override
@@ -196,6 +201,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(PB_COMMAND);
 		chatCommandManager.unregisterCommand(GC_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
+		chatCommandManager.unregisterCommand(CALCULATOR_COMMAND_STRING);
 	}
 
 	@Provides
@@ -666,7 +672,42 @@ public class ChatCommandsPlugin extends Plugin
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
+	private void calculateInChat(ChatMessage chatMessage, String message)
+	{
+		if (!config.calc())
+		{
+			return;
+		}
+		calculateChatMessage(chatMessage);
+	}
+	private void calculateChatMessage(ChatMessage chatMessage){
+		String message = chatMessage.getMessage();
+		String answer = "";
+		String calculation = message.replace("!Calc ", "");
+		System.out.println("calc: " + calculation);
+		System.out.println(!calculation.matches("\\d+([+-/*]\\d+)+"));
+		if(calculation.matches("\\d+([+-/*]\\d+)+")){
+			ScriptEngineManager mgr = new ScriptEngineManager();
+			ScriptEngine engine = mgr.getEngineByName("JavaScript");
 
+			try {
+				answer = engine.eval(calculation).toString();
+			}catch (ScriptException e){
+				e.printStackTrace();
+			}
+
+			ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder()
+					.append(calculation + " = " + answer)
+					.append(ChatColorType.HIGHLIGHT);
+
+			String response = chatMessageBuilder.build();
+			log.debug("Setting response {}", response);
+			final MessageNode messageNode = chatMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
+			client.refreshChat();
+		}
+	}
 	private void questPointsLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.qp())

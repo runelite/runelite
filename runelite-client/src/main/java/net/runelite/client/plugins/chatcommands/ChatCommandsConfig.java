@@ -156,7 +156,15 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+			position = 11,
+			keyName = "calc",
+			name = "In-Chat Calculator",
+			description = "Configures whether the Calc command is enabled<br> !calc"
+	)
+	default boolean calc() { return true; }
+
+	@ConfigItem(
+		position = 12,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",
 		description = "Enable hot key to clear single word at a time"
@@ -167,7 +175,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "clearEntireChatBox",
 		name = "Clear Chat Box",
 		description = "Enable hotkey to clear entire chat box"
