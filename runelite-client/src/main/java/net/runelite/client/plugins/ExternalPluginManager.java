@@ -645,15 +645,13 @@ public class ExternalPluginManager
 				{
 					if (Plugin.class.isAssignableFrom(clazz))
 					{
-						log.warn("Class {} is a plugin, but has no plugin descriptor",
-							clazz);
+						log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
 					}
 					continue;
 				}
 				else if (!Plugin.class.isAssignableFrom(clazz))
 				{
-					log.warn("Class {} has plugin descriptor, but is not a plugin",
-						clazz);
+					log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
 					continue;
 				}
 				else if (!pluginTypes.contains(pluginDescriptor.type()))
