@@ -53,6 +53,38 @@ public class Hitsplat
 		 */
 		DAMAGE_OTHER,
 		/**
+		 * Taking damage by me (cyan).
+		 */
+		DAMAGE_ME_CYAN,
+		/**
+		 * Taking damage by others (cyan).
+		 */
+		DAMAGE_OTHER_CYAN,
+		/**
+		 * Taking damage by me (orange).
+		 */
+		DAMAGE_ME_ORANGE,
+		/**
+		 * Taking damage by others (orange).
+		 */
+		DAMAGE_OTHER_ORANGE,
+		/**
+		 * Taking damage by me (yellow).
+		 */
+		DAMAGE_ME_YELLOW,
+		/**
+		 * Taking damage by others (yellow).
+		 */
+		DAMAGE_OTHER_YELLOW,
+		/**
+		 * Taking damage by me (white).
+		 */
+		DAMAGE_ME_WHITE,
+		/**
+		 * Taking damage by others (white/black).
+		 */
+		DAMAGE_OTHER_WHITE,
+		/**
 		 * Damage from poison (green).
 		 */
 		POISON,
@@ -88,6 +120,14 @@ public class Hitsplat
 				case 4: return DISEASE;
 				case 5: return VENOM;
 				case 6: return HEAL;
+				case 18: return DAMAGE_ME_CYAN;
+				case 19: return DAMAGE_OTHER_CYAN;
+				case 20: return DAMAGE_ME_ORANGE;
+				case 21: return DAMAGE_OTHER_ORANGE;
+				case 22: return DAMAGE_ME_YELLOW;
+				case 23: return DAMAGE_OTHER_YELLOW;
+				case 24: return DAMAGE_ME_WHITE;
+				case 25: return DAMAGE_OTHER_WHITE;
 			}
 			return null;
 		}
@@ -116,5 +156,37 @@ public class Hitsplat
 		this.hitsplatType = hitsplatType;
 		this.amount = amount;
 		this.disappearsOnGameCycle = disappearsOnGameCycle;
+	}
+
+	public boolean isMine()
+	{
+		switch (this.getHitsplatType())
+		{
+			case BLOCK_ME:
+			case DAMAGE_ME:
+			case DAMAGE_ME_CYAN:
+			case DAMAGE_ME_YELLOW:
+			case DAMAGE_ME_ORANGE:
+			case DAMAGE_ME_WHITE:
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	public boolean isOthers()
+	{
+		switch (this.getHitsplatType())
+		{
+			case BLOCK_OTHER:
+			case DAMAGE_OTHER:
+			case DAMAGE_OTHER_CYAN:
+			case DAMAGE_OTHER_YELLOW:
+			case DAMAGE_OTHER_ORANGE:
+			case DAMAGE_OTHER_WHITE:
+				return true;
+			default:
+				return false;
+		}
 	}
 }

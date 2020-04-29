@@ -234,11 +234,6 @@ public class RunEnergyPlugin extends Plugin
 
 		final Item[] items = equipment.getItems();
 
-		if (items == null)
-		{
-			return 0;
-		}
-
 		int boost = 0;
 
 		for (final GracefulEquipmentSlot slot : GracefulEquipmentSlot.values())

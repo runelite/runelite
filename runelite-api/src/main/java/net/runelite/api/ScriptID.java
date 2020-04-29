@@ -235,12 +235,6 @@ public final class ScriptID
 	public static final int QUESTLIST_PROGRESS_LIST_SHOW = 1354;
 
 	/**
-	 * Procedure called when the toplevel interface is resized
-	 */
-	@ScriptArguments(integer = 2)
-	public static final int TOPLEVEL_RESIZE = 909;
-
-	/**
 	 * Called when the friends list is updated
 	 * <ul>
 	 * <li> int (WidgetID) Friends list "full container" </li>
@@ -280,4 +274,10 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 16)
 	public static final int BANKMAIN_SEARCH_REFRESH = 283;
+
+	/**
+	 * Called to update the PVP widget (wilderness level/protection)
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int PVP_WIDGET_BUILDER = 388;
 }

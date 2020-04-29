@@ -168,7 +168,7 @@ public class SpecialCounterPlugin extends Plugin
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
 		Hitsplat.HitsplatType hitsplatType = hitsplat.getHitsplatType();
 		// Ignore all hitsplats other than mine
-		if ((hitsplatType != Hitsplat.HitsplatType.DAMAGE_ME && hitsplatType != Hitsplat.HitsplatType.BLOCK_ME) || target == client.getLocalPlayer())
+		if (!hitsplat.isMine() || target == client.getLocalPlayer())
 		{
 			return;
 		}
@@ -280,15 +280,11 @@ public class SpecialCounterPlugin extends Plugin
 			return null;
 		}
 
-		Item[] items = equipment.getItems();
-		int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();
-
-		if (items == null || weaponIdx >= items.length)
+		Item weapon = equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
+		if (weapon == null)
 		{
 			return null;
 		}
-
-		Item weapon = items[weaponIdx];
 
 		for (SpecialWeapon specialWeapon : SpecialWeapon.values())
 		{

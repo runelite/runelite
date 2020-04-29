@@ -45,6 +45,9 @@ class Timer extends Clock
 	@Getter(AccessLevel.NONE)
 	private transient boolean warning;
 
+	// whether this timer should loop or not
+	private boolean loop;
+
 	Timer(String name, long duration)
 	{
 		super(name);

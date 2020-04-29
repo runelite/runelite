@@ -33,16 +33,17 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -162,10 +163,9 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (config.wildernessAttackLevelRange()
-			&& "wildernessWidgetTextSet".equals(event.getEventName()))
+		if (scriptPostFired.getScriptId() == ScriptID.PVP_WIDGET_BUILDER && config.wildernessAttackLevelRange())
 		{
 			appendAttackLevelRangeText();
 		}

@@ -86,9 +86,7 @@ public class SpecialCounterPluginTest
 
 		// Set up spec weapon
 		ItemContainer equipment = mock(ItemContainer.class);
-		Item[] items = new Item[EquipmentInventorySlot.WEAPON.getSlotIdx() + 1];
-		items[EquipmentInventorySlot.WEAPON.getSlotIdx()] = new Item(ItemID.BANDOS_GODSWORD, 1);
-		when(equipment.getItems()).thenReturn(items);
+		when(equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(ItemID.BANDOS_GODSWORD, 1));
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
 
 		// Set up special attack energy

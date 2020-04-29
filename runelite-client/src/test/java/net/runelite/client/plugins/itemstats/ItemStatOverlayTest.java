@@ -32,7 +32,6 @@ import java.awt.Color;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.util.Text;
@@ -129,7 +128,6 @@ public class ItemStatOverlayTest
 	{
 		// Empty equipment (fully unarmed)
 		final ItemContainer equipment = mock(ItemContainer.class);
-		when(equipment.getItems()).thenReturn(new Item[0]);
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
 
 		String tooltip;
