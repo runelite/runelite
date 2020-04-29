@@ -61,7 +61,7 @@ class StatusBarsOverlay extends Overlay
 	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
 	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
-	private static final Color ENERGY_COLOR = new Color(192, 156, 1, 255);
+	private static final Color ENERGY_COLOR = new Color(192, 156, 1, 155);
 	private static final Color ENERGY_HEAL_COLOR = new Color(57, 255, 186, 75);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
