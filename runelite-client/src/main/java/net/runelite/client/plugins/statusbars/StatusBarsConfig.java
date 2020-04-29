@@ -38,7 +38,7 @@ public interface StatusBarsConfig extends Config
 	)
 	default boolean enableCounter()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
