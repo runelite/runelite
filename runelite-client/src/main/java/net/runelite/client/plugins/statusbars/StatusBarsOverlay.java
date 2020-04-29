@@ -24,19 +24,13 @@
  */
 package net.runelite.client.plugins.statusbars;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import javax.inject.Inject;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.SkillIconManager;
@@ -51,334 +45,379 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.ImageUtil;
 
+import javax.inject.Inject;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 @Slf4j
-class StatusBarsOverlay extends Overlay {
-    private static final Color PRAYER_COLOR = new Color(50, 200, 200, 175);
-    private static final Color QUICK_PRAYER_COLOR = new Color(57, 255, 186, 225);
-    private static final Color BACKGROUND = new Color(0, 0, 0, 150);
-    private static final Color HEALTH_COLOR = new Color(225, 35, 0, 125);
-    private static final Color POISONED_COLOR = new Color(0, 145, 0, 150);
-    private static final Color VENOMED_COLOR = new Color(0, 65, 0, 150);
-    private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
-    private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
-    private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
-    private static final Color ENERGY_COLOR = new Color(192, 156, 1, 255);
-    private static final Color ENERGY_HEAL_COLOR = new Color(57, 255, 186, 75);
-    private static final int HEIGHT = 252;
-    private static final int RESIZED_BOTTOM_HEIGHT = 272;
-    private static final int WIDTH = 20;
-    private static final int PADDING = 1;
-    private static final int IMAGE_SIZE = 17;
-    private static final int HEALTH_LOCATION_X = 0;
-    private static final int PRAYER_LOCATION_X = 1;
-    private static final int ENERGY_LOCATION_X = 0;
-    private static final int WEIGHT_LOCATION_X = 1;
-    private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
-    private static final int RESIZED_BOTTOM_OFFSET_X = 10;
-    private static final int RESIZED_BOTTOM_PADDING_X = 7;
-    private static final int OVERHEAL_OFFSET = 2;
-    private static final int HEAL_OFFSET = 3;
-    private static final int ICON_AND_COUNTER_OFFSET_X = 1;
-    private static final int ICON_AND_COUNTER_OFFSET_Y = 21;
-    private static final int SKILL_ICON_HEIGHT = 35;
-    private static final int COUNTER_ICON_HEIGHT = 18;
-    private static final int OFFSET = 2;
+class StatusBarsOverlay extends Overlay
+{
+	private static final Color PRAYER_COLOR = new Color(50, 200, 200, 175);
+	private static final Color QUICK_PRAYER_COLOR = new Color(57, 255, 186, 225);
+	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
+	private static final Color HEALTH_COLOR = new Color(225, 35, 0, 125);
+	private static final Color POISONED_COLOR = new Color(0, 145, 0, 150);
+	private static final Color VENOMED_COLOR = new Color(0, 65, 0, 150);
+	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
+	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
+	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
+	private static final Color ENERGY_COLOR = new Color(192, 156, 1, 255);
+	private static final Color ENERGY_HEAL_COLOR = new Color(57, 255, 186, 75);
+	private static final int HEIGHT = 252;
+	private static final int RESIZED_BOTTOM_HEIGHT = 272;
+	private static final int WIDTH = 20;
+	private static final int PADDING = 1;
+	private static final int IMAGE_SIZE = 17;
+	private static final int HEALTH_LOCATION_X = 0;
+	private static final int PRAYER_LOCATION_X = 1;
+	private static final int ENERGY_LOCATION_X = 0;
+	private static final int WEIGHT_LOCATION_X = 1;
+	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
+	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
+	private static final int RESIZED_BOTTOM_PADDING_X = 7;
+	private static final int OVERHEAL_OFFSET = 2;
+	private static final int HEAL_OFFSET = 3;
+	private static final int ICON_AND_COUNTER_OFFSET_X = 1;
+	private static final int ICON_AND_COUNTER_OFFSET_Y = 21;
+	private static final int SKILL_ICON_HEIGHT = 35;
+	private static final int COUNTER_ICON_HEIGHT = 18;
+	private static final int OFFSET = 2;
 
-    private final Client client;
-    private final StatusBarsConfig config;
-    private final SkillIconManager skillIconManager;
-    private final TextComponent textComponent = new TextComponent();
-    private final ItemStatChangesService itemStatService;
+	private final Client client;
+	private final StatusBarsConfig config;
+	private final SkillIconManager skillIconManager;
+	private final TextComponent textComponent = new TextComponent();
+	private final ItemStatChangesService itemStatService;
 
-    private final BufferedImage prayerImage;
-    private final BufferedImage energyImage;
-    private final BufferedImage weightImage;
+	private final BufferedImage prayerImage;
+	private final BufferedImage energyImage;
+	private final BufferedImage weightImage;
 
-    @Inject
-    private StatusBarsOverlay(
-            Client client,
-            StatusBarsConfig config,
-            SkillIconManager skillIconManager,
-            ItemStatChangesService itemstatservice
-    ) {
-        setPosition(OverlayPosition.DYNAMIC);
-        setLayer(OverlayLayer.ABOVE_WIDGETS);
-        this.client = client;
-        this.config = config;
-        this.skillIconManager = skillIconManager;
-        this.itemStatService = itemstatservice;
+	@Inject
+	private StatusBarsOverlay(
+			Client client,
+			StatusBarsConfig config,
+			SkillIconManager skillIconManager,
+			ItemStatChangesService itemstatservice
+	)
+	{
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		this.client = client;
+		this.config = config;
+		this.skillIconManager = skillIconManager;
+		this.itemStatService = itemstatservice;
 
-        prayerImage = ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE);
-        energyImage = ImageUtil.getResourceStreamFromClass(getClass(), "energy_icon.png");
-        weightImage = ImageUtil.getResourceStreamFromClass(getClass(), "weight_icon.png");
-    }
+		prayerImage = ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE);
+		energyImage = ImageUtil.getResourceStreamFromClass(getClass(), "energy_icon.png");
+		weightImage = ImageUtil.getResourceStreamFromClass(getClass(), "weight_icon.png");
+	}
 
-    @Override
-    public Dimension render(Graphics2D g) {
-        final Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-        if (widgetBankTitleBar != null && !widgetBankTitleBar.isHidden()) {
-            return null;
-        }
+	private static void renderBar(Graphics2D graphics, int x, int y, int max, int current, int height, Color filled)
+	{
+		graphics.setColor(BACKGROUND);
+		graphics.drawRect(x, y, WIDTH - PADDING, height - PADDING);
+		graphics.fillRect(x, y, WIDTH, height);
 
-        Viewport curViewport = null;
-        Widget curWidget = null;
+		final int filledHeight = getBarHeight(max, current, height);
+		graphics.setColor(filled);
+		graphics.fillRect(x + PADDING,
+				y + PADDING + (height - filledHeight),
+				WIDTH - PADDING * OFFSET,
+				filledHeight - PADDING * OFFSET);
+	}
 
-        for (Viewport viewport : Viewport.values()) {
-            final Widget viewportWidget = client.getWidget(viewport.getViewport());
-            if (viewportWidget != null && !viewportWidget.isHidden()) {
-                curViewport = viewport;
-                curWidget = viewportWidget;
-                break;
-            }
-        }
+	private static void renderHealingBar(Graphics2D graphics, int x, int y, int max, int current, int height, int heal, Color color)
+	{
+		if (heal <= 0)
+		{
+			return;
+		}
 
-        if (curViewport == null || curWidget.isHidden()) {
-            return null;
-        }
+		final int filledCurrentHeight = getBarHeight(max, current, height);
+		int filledHeight = getBarHeight(max, heal, height);
+		graphics.setColor(color);
 
-        final Point offsetLeft = curViewport.getOffsetLeft();
-        final Point offsetRight = curViewport.getOffsetRight();
-        final Point location = curWidget.getCanvasLocation();
-        final boolean resizedBottomMode = curViewport == Viewport.RESIZED_BOTTOM;
+		if (filledHeight + filledCurrentHeight > height)
+		{
+			final int overHeal = filledHeight + filledCurrentHeight - height;
+			filledHeight = filledHeight - overHeal + OVERHEAL_OFFSET;
+			graphics.setColor(OVERHEAL_COLOR);
+			graphics.fillRect(x + PADDING,
+					y - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
+					WIDTH - PADDING * OVERHEAL_OFFSET,
+					filledHeight - PADDING * OVERHEAL_OFFSET);
+		}
+		else
+		{
+			graphics.fillRect(x + PADDING,
+					y - OVERHEAL_OFFSET - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
+					WIDTH - PADDING * OVERHEAL_OFFSET,
+					filledHeight + OVERHEAL_OFFSET - PADDING * OVERHEAL_OFFSET);
+		}
+	}
 
-        final int height, offsetHealthX, offsetHealthY, offsetPrayerX, offsetPrayerY, offsetEnergyX, offsetEnergyY;
+	private static int getBarHeight(int base, int current, int size)
+	{
+		final double ratio = (double) current / base;
 
-        if (resizedBottomMode) {
-            height = RESIZED_BOTTOM_HEIGHT;
+		if (ratio >= 1)
+		{
+			return size;
+		}
 
-            offsetHealthX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX());
-            offsetHealthY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+		return (int) Math.round(ratio * size);
+	}
 
-            offsetPrayerX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX());
-            offsetPrayerY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+	@Override
+	public Dimension render(Graphics2D g)
+	{
+		final Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+		if (widgetBankTitleBar != null && !widgetBankTitleBar.isHidden())
+		{
+			return null;
+		}
 
-            offsetEnergyX = (location.getX() - RESIZED_BOTTOM_PADDING_X - (offsetRight.getX() * 2));
-            offsetEnergyY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
-        } else {
-            height = HEIGHT;
+		Viewport curViewport = null;
+		Widget curWidget = null;
 
-            offsetHealthX = (location.getX() - offsetLeft.getX());
-            offsetHealthY = (location.getY() - offsetLeft.getY());
+		for (Viewport viewport : Viewport.values())
+		{
+			final Widget viewportWidget = client.getWidget(viewport.getViewport());
+			if (viewportWidget != null && !viewportWidget.isHidden())
+			{
+				curViewport = viewport;
+				curWidget = viewportWidget;
+				break;
+			}
+		}
 
-            offsetPrayerX = (location.getX() - offsetRight.getX()) + curWidget.getWidth();
-            offsetPrayerY = (location.getY() - offsetRight.getY());
+		if (curViewport == null || curWidget.isHidden())
+		{
+			return null;
+		}
 
-            offsetEnergyX = 0;
-            offsetEnergyY = 0;
-        }
+		final Point offsetLeft = curViewport.getOffsetLeft();
+		final Point offsetRight = curViewport.getOffsetRight();
+		final Point location = curWidget.getCanvasLocation();
+		final boolean resizedBottomMode = curViewport == Viewport.RESIZED_BOTTOM;
 
-        final int poisonState = client.getVar(VarPlayer.IS_POISONED);
-        final Color healthBar;
+		final int height, offsetHealthX, offsetHealthY, offsetPrayerX, offsetPrayerY, offsetEnergyX, offsetEnergyY;
 
-        if (poisonState >= 1000000) {
-            healthBar = VENOMED_COLOR;
-        } else if (poisonState > 0) {
-            healthBar = POISONED_COLOR;
-        } else {
-            healthBar = HEALTH_COLOR;
-        }
+		if (resizedBottomMode)
+		{
+			height = RESIZED_BOTTOM_HEIGHT;
 
-        final int maxHealth = client.getRealSkillLevel(Skill.HITPOINTS);
-        final int maxPrayer = client.getRealSkillLevel(Skill.PRAYER);
-        final int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
-        final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-        final int quickPrayerState = client.getVar(Varbits.QUICK_PRAYER);
-        final Color prayerBar = quickPrayerState == 1 ? QUICK_PRAYER_COLOR : PRAYER_COLOR;
+			offsetHealthX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX());
+			offsetHealthY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
 
-        final int maxEnergy = 100;
-        final int currentEnergy = client.getEnergy();
+			offsetPrayerX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX());
+			offsetPrayerY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
 
-        renderBar(
-                g,
-                offsetHealthX,
-                offsetHealthY,
-                maxHealth,
-                currentHealth,
-                height,
-                healthBar
-        );
+			offsetEnergyX = (location.getX() - RESIZED_BOTTOM_PADDING_X - (offsetRight.getX() * 2));
+			offsetEnergyY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+		}
+		else
+		{
+			height = HEIGHT;
 
-        renderBar(
-                g,
-                offsetPrayerX,
-                offsetPrayerY,
-                maxPrayer,
-                currentPrayer,
-                height,
-                prayerBar
-        );
+			offsetHealthX = (location.getX() - offsetLeft.getX());
+			offsetHealthY = (location.getY() - offsetLeft.getY());
 
-        if (resizedBottomMode) {
-            renderBar(
-                    g,
-                    offsetEnergyX,
-                    offsetEnergyY,
-                    maxEnergy,
-                    currentEnergy,
-                    height,
-                    ENERGY_COLOR
-            );
-        }
+			offsetPrayerX = (location.getX() - offsetRight.getX()) + curWidget.getWidth();
+			offsetPrayerY = (location.getY() - offsetRight.getY());
 
-        if (config.enableRestorationBars()) {
-            final MenuEntry[] menu = client.getMenuEntries();
-            final int menuSize = menu.length;
-            final MenuEntry entry = menuSize > 0 ? menu[menuSize - 1] : null;
-            int prayerHealValue = 0;
-            int foodHealValue = 0;
-            int energyHealValue = 0;
+			offsetEnergyX = 0;
+			offsetEnergyY = 0;
+		}
 
-            if (entry != null && entry.getParam1() == WidgetInfo.INVENTORY.getId()) {
-                final Effect change = itemStatService.getItemStatChanges(entry.getIdentifier());
+		final int poisonState = client.getVar(VarPlayer.IS_POISONED);
+		final Color healthBar;
 
-                if (change != null) {
-                    final StatsChanges statsChanges = change.calculate(client);
+		if (poisonState >= 1000000)
+		{
+			healthBar = VENOMED_COLOR;
+		}
+		else if (poisonState > 0)
+		{
+			healthBar = POISONED_COLOR;
+		}
+		else
+		{
+			healthBar = HEALTH_COLOR;
+		}
 
-                    for (final StatChange c : statsChanges.getStatChanges()) {
-                        final int theoreticalBoost = c.getTheoretical();
-                        String healStat = c.getStat().getName();
+		final int maxHealth = client.getRealSkillLevel(Skill.HITPOINTS);
+		final int maxPrayer = client.getRealSkillLevel(Skill.PRAYER);
+		final int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
+		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
+		final int quickPrayerState = client.getVar(Varbits.QUICK_PRAYER);
+		final Color prayerBar = quickPrayerState == 1 ? QUICK_PRAYER_COLOR : PRAYER_COLOR;
 
-                        if (healStat.equals(Skill.HITPOINTS.getName())) {
-                            foodHealValue = theoreticalBoost;
-                        }
-                        if (healStat.equals(Skill.PRAYER.getName())) {
-                            prayerHealValue = theoreticalBoost;
-                        }
-                        if (healStat.equals("Run Energy")) {
-                            energyHealValue = theoreticalBoost;
-                        }
+		final int maxEnergy = 100;
+		final int currentEnergy = client.getEnergy();
 
-                        if (foodHealValue != 0 && prayerHealValue != 0 && energyHealValue != 0) {
-                            break;
-                        }
-                    }
-                }
-            }
+		renderBar(
+				g,
+				offsetHealthX,
+				offsetHealthY,
+				maxHealth,
+				currentHealth,
+				height,
+				healthBar
+		);
 
-            renderHealingBar(g, offsetHealthX, offsetHealthY,
-                    maxHealth, currentHealth, height,
-                    foodHealValue, HEAL_COLOR);
+		renderBar(
+				g,
+				offsetPrayerX,
+				offsetPrayerY,
+				maxPrayer,
+				currentPrayer,
+				height,
+				prayerBar
+		);
 
-            renderHealingBar(g, offsetPrayerX, offsetPrayerY,
-                    maxPrayer, currentPrayer, height,
-                    prayerHealValue, PRAYER_HEAL_COLOR);
+		if (resizedBottomMode)
+		{
+			renderBar(
+					g,
+					offsetEnergyX,
+					offsetEnergyY,
+					maxEnergy,
+					currentEnergy,
+					height,
+					ENERGY_COLOR
+			);
+		}
 
-            if (resizedBottomMode) {
-                renderHealingBar(g, offsetEnergyX, offsetEnergyY,
-                        maxEnergy,
-                        currentEnergy,
-                        height,
-                        energyHealValue,
-                        ENERGY_HEAL_COLOR
-                );
-            }
-        }
+		if (config.enableRestorationBars())
+		{
+			final MenuEntry[] menu = client.getMenuEntries();
+			final int menuSize = menu.length;
+			final MenuEntry entry = menuSize > 0 ? menu[menuSize - 1] : null;
+			int prayerHealValue = 0;
+			int foodHealValue = 0;
+			int energyHealValue = 0;
 
-        if (config.enableSkillIcon() || config.enableCounter()) {
-            final BufferedImage healthImage = skillIconManager.getSkillImage(Skill.HITPOINTS, true);
-            final int counterHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
-            final int counterPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-            final int counterEnergy = client.getEnergy();
-            final int counterWeight = client.getWeight();
-            final String counterHealthText = Integer.toString(counterHealth);
-            final String counterPrayerText = Integer.toString(counterPrayer);
-            final String counterEnergyText = Integer.toString(counterEnergy);
-            final String counterWeightText = Integer.toString(counterWeight);
+			if (entry != null && entry.getParam1() == WidgetInfo.INVENTORY.getId())
+			{
+				final Effect change = itemStatService.getItemStatChanges(entry.getIdentifier());
 
-            renderIconsAndCounters(g, offsetPrayerX, offsetPrayerY, prayerImage, counterPrayerText, PRAYER_LOCATION_X);
-            renderIconsAndCounters(g, offsetHealthX, offsetHealthY, healthImage, counterHealthText, HEALTH_LOCATION_X);
+				if (change != null)
+				{
+					final StatsChanges statsChanges = change.calculate(client);
 
-            if (resizedBottomMode) {
-                renderIconsAndCounters(
-                        g,
-                        offsetEnergyX,
-                        offsetEnergyY,
-                        energyImage,
-                        counterEnergyText,
-                        ENERGY_LOCATION_X
-                );
-                if (config.enableCounter()) {
-                    renderIconsAndCounters(
-                            g,
-                            offsetEnergyX,
-                            offsetEnergyY + 30,
-                            weightImage,
-                            counterWeightText,
-                            WEIGHT_LOCATION_X
-                    );
-                }
-            }
-        }
+					for (final StatChange c : statsChanges.getStatChanges())
+					{
+						final int theoreticalBoost = c.getTheoretical();
+						String healStat = c.getStat().getName();
 
-        return null;
-    }
+						if (healStat.equals(Skill.HITPOINTS.getName()))
+						{
+							foodHealValue = theoreticalBoost;
+						}
+						if (healStat.equals(Skill.PRAYER.getName()))
+						{
+							prayerHealValue = theoreticalBoost;
+						}
+						if (healStat.equals("Run Energy"))
+						{
+							energyHealValue = theoreticalBoost;
+						}
 
-    private static void renderBar(Graphics2D graphics, int x, int y, int max, int current, int height, Color filled) {
-        graphics.setColor(BACKGROUND);
-        graphics.drawRect(x, y, WIDTH - PADDING, height - PADDING);
-        graphics.fillRect(x, y, WIDTH, height);
+						if (foodHealValue != 0 && prayerHealValue != 0 && energyHealValue != 0)
+						{
+							break;
+						}
+					}
+				}
+			}
 
-        final int filledHeight = getBarHeight(max, current, height);
-        graphics.setColor(filled);
-        graphics.fillRect(x + PADDING,
-                y + PADDING + (height - filledHeight),
-                WIDTH - PADDING * OFFSET,
-                filledHeight - PADDING * OFFSET);
-    }
+			renderHealingBar(g, offsetHealthX, offsetHealthY,
+					maxHealth, currentHealth, height,
+					foodHealValue, HEAL_COLOR);
 
-    private static void renderHealingBar(Graphics2D graphics, int x, int y, int max, int current, int height, int heal, Color color) {
-        if (heal <= 0) {
-            return;
-        }
+			renderHealingBar(g, offsetPrayerX, offsetPrayerY,
+					maxPrayer, currentPrayer, height,
+					prayerHealValue, PRAYER_HEAL_COLOR);
 
-        final int filledCurrentHeight = getBarHeight(max, current, height);
-        int filledHeight = getBarHeight(max, heal, height);
-        graphics.setColor(color);
+			if (resizedBottomMode)
+			{
+				renderHealingBar(g, offsetEnergyX, offsetEnergyY,
+						maxEnergy,
+						currentEnergy,
+						height,
+						energyHealValue,
+						ENERGY_HEAL_COLOR
+				);
+			}
+		}
 
-        if (filledHeight + filledCurrentHeight > height) {
-            final int overHeal = filledHeight + filledCurrentHeight - height;
-            filledHeight = filledHeight - overHeal + OVERHEAL_OFFSET;
-            graphics.setColor(OVERHEAL_COLOR);
-            graphics.fillRect(x + PADDING,
-                    y - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
-                    WIDTH - PADDING * OVERHEAL_OFFSET,
-                    filledHeight - PADDING * OVERHEAL_OFFSET);
-        } else {
-            graphics.fillRect(x + PADDING,
-                    y - OVERHEAL_OFFSET - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
-                    WIDTH - PADDING * OVERHEAL_OFFSET,
-                    filledHeight + OVERHEAL_OFFSET - PADDING * OVERHEAL_OFFSET);
-        }
-    }
+		if (config.enableSkillIcon() || config.enableCounter())
+		{
+			final BufferedImage healthImage = skillIconManager.getSkillImage(Skill.HITPOINTS, true);
+			final int counterHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
+			final int counterPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
+			final int counterEnergy = client.getEnergy();
+			final int counterWeight = client.getWeight();
+			final String counterHealthText = Integer.toString(counterHealth);
+			final String counterPrayerText = Integer.toString(counterPrayer);
+			final String counterEnergyText = Integer.toString(counterEnergy);
+			final String counterWeightText = Integer.toString(counterWeight);
 
-    private static int getBarHeight(int base, int current, int size) {
-        final double ratio = (double) current / base;
+			renderIconsAndCounters(g, offsetPrayerX, offsetPrayerY, prayerImage, counterPrayerText, PRAYER_LOCATION_X);
+			renderIconsAndCounters(g, offsetHealthX, offsetHealthY, healthImage, counterHealthText, HEALTH_LOCATION_X);
 
-        if (ratio >= 1) {
-            return size;
-        }
+			if (resizedBottomMode)
+			{
+				renderIconsAndCounters(
+						g,
+						offsetEnergyX,
+						offsetEnergyY,
+						energyImage,
+						counterEnergyText,
+						ENERGY_LOCATION_X
+				);
+				if (config.enableCounter())
+				{
+					renderIconsAndCounters(
+							g,
+							offsetEnergyX,
+							offsetEnergyY + 30,
+							weightImage,
+							counterWeightText,
+							WEIGHT_LOCATION_X
+					);
+				}
+			}
+		}
 
-        return (int) Math.round(ratio * size);
-    }
+		return null;
+	}
 
-    private void renderIconsAndCounters(Graphics2D graphics, int x, int y, BufferedImage image, String counterText, int counterPadding) {
-        final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
-        final int centerText = (WIDTH - PADDING) / 2 - (widthOfCounter / 2);
+	private void renderIconsAndCounters(Graphics2D graphics, int x, int y, BufferedImage image, String counterText, int counterPadding)
+	{
+		final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
+		final int centerText = (WIDTH - PADDING) / 2 - (widthOfCounter / 2);
 
-        if (config.enableCounter()) {
-            graphics.setFont(FontManager.getRunescapeSmallFont());
-            textComponent.setColor(Color.WHITE);
-            textComponent.setText(counterText);
-            textComponent.setPosition(new java.awt.Point(x + centerText + counterPadding, y + COUNTER_ICON_HEIGHT));
-        } else {
-            textComponent.setText("");
-        }
+		if (config.enableCounter())
+		{
+			graphics.setFont(FontManager.getRunescapeSmallFont());
+			textComponent.setColor(Color.WHITE);
+			textComponent.setText(counterText);
+			textComponent.setPosition(new java.awt.Point(x + centerText + counterPadding, y + COUNTER_ICON_HEIGHT));
+		}
+		else
+		{
+			textComponent.setText("");
+		}
 
-        if (config.enableSkillIcon() && image != null) {
-            graphics.drawImage(image, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - image.getWidth(null), null);
-            textComponent.setPosition(new java.awt.Point(x + centerText + counterPadding, y + SKILL_ICON_HEIGHT));
-        }
+		if (config.enableSkillIcon() && image != null)
+		{
+			graphics.drawImage(image, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - image.getWidth(null), null);
+			textComponent.setPosition(new java.awt.Point(x + centerText + counterPadding, y + SKILL_ICON_HEIGHT));
+		}
 
-        textComponent.render(graphics);
-    }
+		textComponent.render(graphics);
+	}
 }
