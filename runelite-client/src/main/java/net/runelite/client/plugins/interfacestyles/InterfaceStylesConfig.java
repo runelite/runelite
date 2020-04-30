@@ -29,6 +29,7 @@ package net.runelite.client.plugins.interfacestyles;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("interfaceStyles")
 public interface InterfaceStylesConfig extends Config
@@ -81,5 +82,18 @@ public interface InterfaceStylesConfig extends Config
 	default boolean alwaysStack()
 	{
 		return false;
+	}
+
+	@Range(
+		max = 255
+	)
+	@ConfigItem(
+		keyName = "menuAlpha",
+		name = "Menu alpha",
+		description = "Configures the transparency of the right-click menu"
+	)
+	default int menuAlpha()
+	{
+		return 255;
 	}
 }

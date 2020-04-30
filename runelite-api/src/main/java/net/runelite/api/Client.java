@@ -1706,7 +1706,19 @@ public interface Client extends GameEngine
 
 	EnumComposition getEnum(int id);
 
-	void draw2010Menu();
+	/**
+	 * Draws a menu in the 2010 interface style.
+	 *
+	 * @param alpha background transparency of the menu
+	 */
+	void draw2010Menu(int alpha);
+
+	/**
+	 * Draws a menu in the OSRS interface style.
+	 *
+	 * @param alpha background transparency of the menu
+	 */
+	void drawOriginalMenu(int alpha);
 
 	void resetHealthBarCaches();
 
