@@ -99,6 +99,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9]+) duels?\\.");
 	private static final String GAUNTLET_LOOTED_MESSAGE = "You open the chest.";
+	private static final int GAUNTLET_LOBBY_REGION = 12127;
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
@@ -364,7 +365,8 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotGauntletLoot() && chatMessage.equals(GAUNTLET_LOOTED_MESSAGE))
+		final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+		if (config.screenshotRewards() && chatMessage.equals(GAUNTLET_LOOTED_MESSAGE) && GAUNTLET_LOBBY_REGION == regionID)
 		{
 			shouldTakeGauntletScreenshot = true;
 		}
