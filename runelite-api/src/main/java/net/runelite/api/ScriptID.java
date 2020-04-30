@@ -278,6 +278,6 @@ public final class ScriptID
 	/**
 	 * Called to update the PVP widget (wilderness level/protection)
 	 */
-	@ScriptArguments(integer = 3)
+	@ScriptArguments(integer = 1)
 	public static final int PVP_WIDGET_BUILDER = 388;
 }
