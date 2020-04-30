@@ -15803,6 +15803,7 @@ public final class ObjectID
 	public static final int POOL_OF_NIGHTMARES = 29706;
 	public static final int POOL_OF_NIGHTMARES_29707 = 29707;
 	public static final int SCOREBOARD_29708 = 29708;
+	public static final int HAMMER_29711 = 29711;
 	public static final int NOTICEBOARD_29718 = 29718;
 	public static final int BALLISTA_29719 = 29719;
 	public static final int STAIRCASE_29720 = 29720;
@@ -16023,6 +16024,7 @@ public final class ObjectID
 	public static final int PAINTING_30155 = 30155;
 	public static final int FURNACE_30157 = 30157;
 	public static final int FURNACE_30158 = 30158;
+	public static final int RETURN_ORB = 30160;
 	public static final int CRACK_30169 = 30169;
 	public static final int ROOT_30170 = 30170;
 	public static final int PORTAL_30172 = 30172;
