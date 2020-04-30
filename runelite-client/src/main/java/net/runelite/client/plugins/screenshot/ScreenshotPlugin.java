@@ -365,9 +365,13 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
-		if (config.screenshotRewards() && chatMessage.equals(GAUNTLET_LOOTED_MESSAGE) && GAUNTLET_LOBBY_REGION == regionID)
+		if (config.screenshotRewards() && chatMessage.equals(GAUNTLET_LOOTED_MESSAGE))
 		{
+			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+			if (GAUNTLET_LOBBY_REGION != regionID)
+			{
+				return;
+			}
 			shouldTakeGauntletScreenshot = true;
 		}
 
