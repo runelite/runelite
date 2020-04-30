@@ -62,6 +62,9 @@ public class PanelComponent implements LayoutableRenderableEntity
 	private boolean wrap = false;
 
 	@Setter
+	private boolean overrideResize = false;
+
+	@Setter
 	private Rectangle border = new Rectangle(
 		ComponentConstants.STANDARD_BORDER,
 		ComponentConstants.STANDARD_BORDER,
@@ -129,6 +132,11 @@ public class PanelComponent implements LayoutableRenderableEntity
 						child.setPreferredSize(new Dimension(0, childPreferredSize.height));
 						break;
 				}
+			}
+
+			if (overrideResize)
+			{
+				child.setPreferredSize(childPreferredSize);
 			}
 
 			child.setPreferredLocation(new Point(x, y));
