@@ -32,7 +32,6 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.SoundEffectID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
@@ -41,6 +40,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -92,6 +92,9 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	@Inject
 	private HealerOverlay healerOverlay;
+
+	@Inject
+	private Notifier notifier;
 
 	@Provides
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
@@ -163,14 +166,14 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (currentRound != null && config.callChangeAudioCue())
+		if (currentRound != null && config.notifyCallChange())
 		{
 			long timeToChange = currentRound.getTimeToChange();
 
 			if (timeToChange == CALL_DURATION && !playingCue)
 			{
 				playingCue = true;
-				client.playSoundEffect(SoundEffectID.TOWN_CRIER_BELL_DONG);
+				this.notifier.notify("Call changed!");
 			}
 			else if (timeToChange != CALL_DURATION)
 			{

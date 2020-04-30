@@ -43,11 +43,11 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "callChangeAudioCue",
-		name = "Call Change Audio Cue",
-		description = "Play an audio cue when the call changes"
+		keyName = "notifyCallChange",
+		name = "Notify on call change",
+		description = "Notify when the role call changes"
 	)
-	default boolean callChangeAudioCue()
+	default boolean notifyCallChange()
 	{
 		return false;
 	}
