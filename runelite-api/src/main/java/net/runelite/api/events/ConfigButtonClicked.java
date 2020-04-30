@@ -1,4 +1,4 @@
-package net.runelite.client.events;
+package net.runelite.api.events;
 
 import lombok.Data;
 import net.runelite.api.events.Event;
