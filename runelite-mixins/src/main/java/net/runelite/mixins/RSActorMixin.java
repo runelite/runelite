@@ -114,7 +114,7 @@ public abstract class RSActorMixin implements RSActor
 
 	@Inject
 	@Override
-	public int getHealth()
+	public int getHealthScale()
 	{
 		RSIterableNodeDeque healthBars = getHealthBars();
 		if (healthBars != null)
