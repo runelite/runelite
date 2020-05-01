@@ -26,7 +26,7 @@
 description = "RuneLite Mixins"
 
 dependencies {
-    compileOnly(group = "com.google.guava", name = "guava", version = "28.2-jre")
+    compileOnly(group = "com.google.guava", name = "guava", version = "29.0-jre")
     compileOnly(group = "javax.inject", name = "javax.inject", version = "1")
     compileOnly(group = "org.slf4j", name = "slf4j-api", version = "1.7.30")
     compileOnly(project(":injection-annotations"))
