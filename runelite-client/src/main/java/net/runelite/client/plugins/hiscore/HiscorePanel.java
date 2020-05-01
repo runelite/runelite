@@ -70,6 +70,7 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
 import net.runelite.http.api.hiscore.HiscoreSkillType;
 import net.runelite.http.api.hiscore.Skill;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
@@ -112,6 +113,10 @@ public class HiscorePanel extends PluginPanel
 		VETION, VORKATH, WINTERTODT,
 		ZALCANO, ZULRAH
 	);
+
+	private static final HiscoreEndpoint[] ENDPOINTS = new HiscoreEndpoint[] {
+		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.TOURNAMENT
+	};
 
 	@Inject
 	ScheduledExecutorService executor;
@@ -200,7 +205,7 @@ public class HiscorePanel extends PluginPanel
 		tabGroup = new MaterialTabGroup();
 		tabGroup.setLayout(new GridLayout(1, 5, 7, 7));
 
-		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
+		for (HiscoreEndpoint endpoint : ENDPOINTS)
 		{
 			final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), endpoint.name().toLowerCase() + ".png");
 
@@ -681,7 +686,9 @@ public class HiscorePanel extends PluginPanel
 	private void resetEndpoints()
 	{
 		// Select the correct tab based on the world type.
-		tabGroup.select(tabGroup.getTab(selectWorldEndpoint().ordinal()));
+		HiscoreEndpoint endpoint = selectWorldEndpoint();
+		int idx = ArrayUtils.indexOf(ENDPOINTS, endpoint);
+		tabGroup.select(tabGroup.getTab(idx));
 	}
 
 	private HiscoreEndpoint selectWorldEndpoint()
@@ -690,7 +697,11 @@ public class HiscorePanel extends PluginPanel
 		{
 			EnumSet<WorldType> wTypes = client.getWorldType();
 
-			if (wTypes.contains(WorldType.DEADMAN))
+			if (wTypes.contains(WorldType.DEADMAN_TOURNAMENT))
+			{
+				return HiscoreEndpoint.TOURNAMENT;
+			}
+			else if (wTypes.contains(WorldType.DEADMAN))
 			{
 				return HiscoreEndpoint.DEADMAN;
 			}
