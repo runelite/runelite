@@ -363,12 +363,12 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotUntradeableDrop() && !isInsideGauntlet())
 		{
-            Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(chatMessage);
-            if (m.matches())
-            {
-                String untradeableDropName = m.group(1);
-                String fileName = "Untradeable drop " + untradeableDropName;
-                takeScreenshot(fileName, "Untradeable Drops");
+		    Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(chatMessage);
+		    if (m.matches())
+		    {
+		        String untradeableDropName = m.group(1);
+		        String fileName = "Untradeable drop " + untradeableDropName;
+		        takeScreenshot(fileName, "Untradeable Drops");
             }
 		}
 
