@@ -4,6 +4,9 @@ dist: xenial
 cache:
   directories:
     - $HOME/.m2
+env:
+  global:
+    - JAVA_TOOL_OPTIONS=-Dhttps.protocols=TLSv1.2
 jdk:
 - openjdk8
 - openjdk11
