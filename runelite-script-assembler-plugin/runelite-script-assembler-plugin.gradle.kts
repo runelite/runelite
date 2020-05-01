@@ -30,7 +30,7 @@ dependencies {
 
     compileOnly(group = "org.apache.maven.plugin-tools", name = "maven-plugin-annotations", version = "3.6.0")
 
-    implementation(group = "com.google.guava", name = "guava", version = "28.2-jre")
+    implementation(group = "com.google.guava", name = "guava", version = "29.0-jre")
     implementation(group = "org.apache.maven", name = "maven-plugin-api", version = "3.6.3")
     implementation(group = "org.slf4j", name = "slf4j-nop", version = "1.7.30")
     implementation(project(":cache"))

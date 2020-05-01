@@ -31,7 +31,7 @@ dependencies {
     compileOnly(group = "org.projectlombok", name = "lombok", version = "1.18.12")
 
     implementation(group = "com.google.code.findbugs", name = "jsr305", version = "3.0.2")
-    implementation(group = "com.google.guava", name = "guava", version = "28.2-jre")
+    implementation(group = "com.google.guava", name = "guava", version = "29.0-jre")
     implementation(group = "org.apache.commons", name = "commons-text", version = "1.8")
     implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.30")
 

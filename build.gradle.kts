@@ -33,7 +33,7 @@ buildscript {
         maven(url = "https://raw.githubusercontent.com/open-osrs/hosting/master")
     }
     dependencies {
-        classpath("org.ajoberstar.grgit:grgit-core:4.0.1")
+        classpath("org.ajoberstar.grgit:grgit-core:4.0.2")
         classpath("com.github.ben-manes:gradle-versions-plugin:0.28.0")
         classpath("com.openosrs:injector-plugin:${ProjectVersions.openosrsInjectorVersion}")
     }
@@ -43,7 +43,7 @@ plugins {
     id("com.adarshr.test-logger") version "2.0.0" apply false
     id("com.github.ben-manes.versions") version "0.28.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.13"
-    id("org.ajoberstar.grgit") version "4.0.1"
+    id("org.ajoberstar.grgit") version "4.0.2"
     id("com.simonharrer.modernizer") version "1.8.0-1" apply false
 
     application
