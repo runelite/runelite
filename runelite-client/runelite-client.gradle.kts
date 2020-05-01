@@ -75,7 +75,6 @@ dependencies {
         exclude(group = "org.slf4j")
     }
     implementation(group = "org.pf4j", name = "pf4j-update", version = "2.3.0")
-    implementation(group = "org.codehaus.groovy", name = "groovy-all", version = "3.0.3")
     implementation(project(":http-api"))
 
     runtimeOnly(group = "org.pushing-pixels", name = "radiance-trident", version = "2.5.1")
