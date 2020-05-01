@@ -113,6 +113,8 @@ public class ScreenshotPlugin extends Plugin
 
 	private boolean shouldTakeScreenshot;
 
+	private boolean insideGauntlet = false;
+
 	@Inject
 	private ScreenshotConfig config;
 
@@ -248,6 +250,10 @@ public class ScreenshotPlugin extends Plugin
 		if (player == client.getLocalPlayer() && config.screenshotPlayerDeath())
 		{
 			takeScreenshot("Death", "Deaths");
+			if (insideGauntlet)
+			{
+				insideGauntlet = false;
+			}
 		}
 		else if (player != client.getLocalPlayer() && (player.isClanMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
 		{
@@ -357,14 +363,15 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotUntradeableDrop())
-		{
-			Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(chatMessage);
-			if (m.matches())
+		if (config.screenshotUntradeableDrop()) {
+			if (!insideGauntlet)
 			{
-				String untradeableDropName = m.group(1);
-				String fileName = "Untradeable drop " + untradeableDropName;
-				takeScreenshot(fileName, "Untradeable Drops");
+				Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(chatMessage);
+				if (m.matches()) {
+					String untradeableDropName = m.group(1);
+					String fileName = "Untradeable drop " + untradeableDropName;
+					takeScreenshot(fileName, "Untradeable Drops");
+				}
 			}
 		}
 
@@ -378,6 +385,16 @@ public class ScreenshotPlugin extends Plugin
 				String fileName = "Duel " + result + " (" + count + ")";
 				takeScreenshot(fileName, "Duels");
 			}
+		}
+
+		if (chatMessage.equals("You enter the Gauntlet."))
+		{
+			insideGauntlet = true;
+		}
+
+		if (chatMessage.equals("You leave the Gauntlet."))
+		{
+			insideGauntlet = false;
 		}
 	}
 
