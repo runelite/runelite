@@ -361,7 +361,8 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotUntradeableDrop() && !isInsideGauntlet()) {
+		if (config.screenshotUntradeableDrop() && !isInsideGauntlet())
+		{
             Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(chatMessage);
             if (m.matches())
             {
