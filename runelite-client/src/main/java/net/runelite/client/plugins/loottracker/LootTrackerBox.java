@@ -78,10 +78,12 @@ class LootTrackerBox extends JPanel
 	private int kills;
 	@Getter
 	private final List<LootTrackerItem> items = new ArrayList<>();
+	private final List<LootTrackerRecord> records = new ArrayList<>();
 
 	private long totalPrice;
 	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
+	private boolean isGroupBox;
 
 	LootTrackerBox(
 		final ItemManager itemManager,
@@ -91,7 +93,8 @@ class LootTrackerBox extends JPanel
 		final boolean hideIgnoredItems,
 		final LootTrackerPriceType priceType,
 		final boolean showPriceType,
-		final BiConsumer<String, Boolean> onItemToggle)
+		final BiConsumer<String, Boolean> onItemToggle,
+		final boolean isGroupBox)
 	{
 		this.id = id;
 		this.lootRecordType = lootRecordType;
@@ -100,6 +103,7 @@ class LootTrackerBox extends JPanel
 		this.hideIgnoredItems = hideIgnoredItems;
 		this.priceType = priceType;
 		this.showPriceType = showPriceType;
+		this.isGroupBox = isGroupBox;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -186,6 +190,7 @@ class LootTrackerBox extends JPanel
 		}
 
 		kills += record.getKills();
+		records.add(record);
 
 		outer:
 		for (LootTrackerItem item : record.getItems())
@@ -227,6 +232,25 @@ class LootTrackerBox extends JPanel
 
 		validate();
 		repaint();
+		for (LootTrackerRecord rec: records)
+		{
+			if (isGroupBox)
+			{
+				if (rec.isShouldCollapseGroup())
+				{
+					this.collapse();
+					break;
+				}
+			}
+			else
+			{
+				if ((rec.isShouldCollapseBox()))
+				{
+					this.collapse();
+					break;
+				}
+			}
+		}
 	}
 
 	void collapse()
@@ -235,6 +259,18 @@ class LootTrackerBox extends JPanel
 		{
 			itemContainer.setVisible(false);
 			applyDimmer(false, logTitle);
+			for (LootTrackerRecord rec: records)
+			{
+				if (isGroupBox)
+				{
+					rec.setShouldCollapseGroup(true);
+				}
+				else
+				{
+					assert (records.size() == 1);
+					rec.setShouldCollapseBox(true);
+				}
+			}
 		}
 	}
 
@@ -244,6 +280,19 @@ class LootTrackerBox extends JPanel
 		{
 			itemContainer.setVisible(true);
 			applyDimmer(true, logTitle);
+			for (LootTrackerRecord rec: records)
+			{
+				if (isGroupBox)
+				{
+					rec.setShouldCollapseGroup(false);
+				}
+				else
+				{
+					assert (records.size() == 1);
+					rec.setShouldCollapseBox(false);
+				}
+			}
+
 		}
 	}
 
