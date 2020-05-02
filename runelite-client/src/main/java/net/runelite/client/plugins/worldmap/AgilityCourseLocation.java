@@ -52,10 +52,12 @@ enum AgilityCourseLocation
 
 	private final String tooltip;
 	private final WorldPoint location;
+	private final boolean rooftopCourse;
 
 	AgilityCourseLocation(String tooltip, WorldPoint location)
 	{
 		this.tooltip = tooltip;
 		this.location = location;
+		this.rooftopCourse = this.name().contains("ROOFTOP_COURSE");
 	}
 }
