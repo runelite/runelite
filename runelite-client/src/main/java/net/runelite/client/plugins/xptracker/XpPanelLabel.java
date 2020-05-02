@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Levi <me@levischuck.com>
+ * Copyright (c) 2020, Anthony <https://github.com/while-loop>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,25 +24,48 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import lombok.Builder;
-import lombok.Value;
+import java.util.function.Function;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.client.util.QuantityFormatter;
 
-@Builder
-@Value
-class XpSnapshotSingle
+@Getter
+@AllArgsConstructor
+public enum XpPanelLabel
 {
-	private XpActionType actionType;
-	private int startLevel;
-	private int endLevel;
-	private int startGoalXp;
-	private int endGoalXp;
-	private int xpGainedInSession;
-	private int xpRemainingToGoal;
-	private int xpPerHour;
-	private double skillProgressToGoal;
-	private int actionsInSession;
-	private int actionsRemainingToGoal;
-	private int actionsPerHour;
-	private String timeTillGoal;
-	private String timeTillGoalShort;
+	TIME_TO_LEVEL("TTL", XpSnapshotSingle::getTimeTillGoalShort),
+
+	XP_GAINED("XP Gained", snap -> format(snap.getXpGainedInSession())),
+	XP_HOUR("XP/hr", snap -> format(snap.getXpPerHour())),
+	XP_LEFT("XP Left", snap -> format(snap.getXpRemainingToGoal())),
+
+	ACTIONS_LEFT("Actions", snap -> format(snap.getActionsRemainingToGoal())),
+	ACTIONS_HOUR("Actions/hr", snap -> format(snap.getActionsPerHour())),
+	ACTIONS_DONE("Actions Done", snap -> format(snap.getActionsInSession())),
+	;
+
+	private final String key;
+	private final Function<XpSnapshotSingle, String> valueFunc;
+
+	/**
+	 * Get the action key label based on if the Action type is an xp drop or kill
+	 *
+	 * @param snapshot
+	 * @return
+	 */
+	public String getActionKey(XpSnapshotSingle snapshot)
+	{
+		String actionKey = key;
+		if (snapshot.getActionType() == XpActionType.ACTOR_HEALTH)
+		{
+			return actionKey.replace("Action", "Kill");
+		}
+
+		return actionKey;
+	}
+
+	private static String format(int val)
+	{
+		return QuantityFormatter.quantityToRSDecimalStack(val, true);
+	}
 }
