@@ -277,6 +277,8 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
+		// Gauntlet has no interface for the loot, so we just take a screenshot after the
+		// loot has been added to the inventory.
 		if (!shouldTakeGauntletScreenshot || event.getContainerId() != InventoryID.INVENTORY.getId())
 		{
 			return;
@@ -372,6 +374,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				return;
 			}
+
 			shouldTakeGauntletScreenshot = true;
 		}
 
