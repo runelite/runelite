@@ -67,6 +67,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_FAIRY_RING_ICON = "fairyRingIcon";
 	static final String CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS = "agilityShortcutTooltips";
 	static final String CONFIG_KEY_AGILITY_SHORTCUT_LEVEL_ICON = "agilityShortcutIcon";
+	static final String CONFIG_KEY_AGILITY_COURSE_TOOLTIPS = "agilityCourseTooltips";
 	static final String CONFIG_KEY_NORMAL_TELEPORT_ICON = "standardSpellbookIcon";
 	static final String CONFIG_KEY_ANCIENT_TELEPORT_ICON = "ancientSpellbookIcon";
 	static final String CONFIG_KEY_LUNAR_TELEPORT_ICON = "lunarSpellbookIcon";
@@ -164,6 +165,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
 		worldMapPointManager.removeIf(DungeonPoint.class::isInstance);
 		worldMapPointManager.removeIf(FishingSpotPoint.class::isInstance);
+		worldMapPointManager.removeIf(AgilityCoursePoint.class::isInstance);
 		agilityLevel = 0;
 		woodcuttingLevel = 0;
 	}
@@ -233,6 +235,21 @@ public class WorldMapPlugin extends Plugin
 		}
 	}
 
+	private void updateAgilityCourseIcons()
+	{
+		worldMapPointManager.removeIf(AgilityCoursePoint.class::isInstance);
+
+		if (config.agilityCourseTooltip())
+		{
+			Arrays.stream(AgilityCourseLocation.values())
+				.filter(value -> value.getLocation() != null)
+				.map(value -> new AgilityCoursePoint(value,
+					BLANK_ICON,
+					config.agilityCourseTooltip()))
+				.forEach(worldMapPointManager::add);
+		}
+	}
+
 	private void updateRareTreeIcons()
 	{
 		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
@@ -253,6 +270,7 @@ public class WorldMapPlugin extends Plugin
 	private void updateShownIcons()
 	{
 		updateAgilityIcons();
+		updateAgilityCourseIcons();
 		updateRareTreeIcons();
 		updateQuestStartPointIcons();
 
