@@ -262,4 +262,15 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_FISHING_SPOT_TOOLTIPS,
+		name = "Show fishing spot tooltips",
+		description = "Indicates the type of fish fishable at the fishing spot",
+		position = 22
+	)
+	default boolean fishingSpotTooltips()
+	{
+		return true;
+	}
 }
