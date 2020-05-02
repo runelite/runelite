@@ -641,7 +641,7 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	private boolean isInsideGauntlet()
-    {
+	{
 		return this.client.isInInstancedRegion() && this.client.getMapRegions().length > 0 && (this.client.getMapRegions()[0] == GAUNTLET_REGION_ID || this.client.getMapRegions()[0] == CORRUPTED_GAUNTLET_REGION_ID);
 	}
 
