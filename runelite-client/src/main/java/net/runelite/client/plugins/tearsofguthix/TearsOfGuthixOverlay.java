@@ -69,6 +69,11 @@ class TearsOfGuthixOverlay extends Overlay
 	{
 		plugin.getStreams().forEach((object, timer) ->
 		{
+			if (object.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) >= MAX_ICON_DISTANCE)
+			{
+				return;
+			}
+
 			final Point position = object.getCanvasLocation(100);
 
 			if (position == null)
