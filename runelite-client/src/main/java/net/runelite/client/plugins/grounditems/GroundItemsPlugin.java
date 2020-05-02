@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,6 +55,7 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
+import static net.runelite.api.ItemID.NATURE_RUNE;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -99,6 +101,7 @@ import net.runelite.client.util.Text;
 	description = "Highlight ground items and/or show price information",
 	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
 )
+
 public class GroundItemsPlugin extends Plugin
 {
 	@Value
@@ -516,7 +519,8 @@ public class GroundItemsPlugin extends Plugin
 			final int gePrice = quantity * price;
 			final Color hidden = getHidden(new NamedQuantity(itemComposition.getName(), quantity), gePrice, haPrice, itemComposition.isTradeable());
 			final Color highlighted = getHighlighted(new NamedQuantity(itemComposition.getName(), quantity), gePrice, haPrice);
-			final Color color = getItemColor(highlighted, hidden);
+			final Color profitable = getProfitable(gePrice, haPrice);
+			final Color color = getItemColor(highlighted, hidden, profitable);
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
 			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
@@ -639,11 +643,28 @@ public class GroundItemsPlugin extends Plugin
 			: null;
 	}
 
-	Color getItemColor(Color highlighted, Color hidden)
+	Color getProfitable(int gePrice, int haPrice)
+	{
+		final int NATURE_RUNE_PRICE = itemManager.getItemPrice(NATURE_RUNE);
+		
+		if (haPrice - (gePrice + NATURE_RUNE_PRICE) > config.getHighlightProfitOverValue())
+		{
+			return config.profitValueColor();
+		}
+
+		return null;
+	}
+
+	Color getItemColor(Color highlighted, Color hidden, Color profitable)
 	{
 		if (highlighted != null)
 		{
 			return highlighted;
+		}
+
+		if (profitable != null && !config.showHighlightedOnly() && config.getHighlightProfitOverValue() > 0)
+		{
+			return profitable;
 		}
 
 		if (hidden != null)

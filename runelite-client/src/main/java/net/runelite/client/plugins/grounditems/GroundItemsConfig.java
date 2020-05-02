@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
+ * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -370,5 +371,28 @@ public interface GroundItemsConfig extends Config
 	default boolean groundItemTimers()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "profitValueColor",
+		name = "Profitable high alch items color",
+		description = "Configures the color for profitable high alch items",
+		position = 29
+	)
+	default Color profitValueColor()
+	{
+		return Color.YELLOW;
+	}
+
+	@ConfigItem(
+		keyName = "highlightProfitableOverValue",
+		name = "High alch Profit > Value",
+		description = "Highlights ground items with a high alch profit greater than value. (0 = Disabled)",
+		position = 30
+	)
+	@Units(Units.GOLD_PIECES)
+	default int getHighlightProfitOverValue()
+	{
+		return 0;
 	}
 }
