@@ -240,4 +240,15 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_DUNGEON_TOOLTIPS,
+		name = "Show dungeon tooltips",
+		description = "Indicates the names of dungeons",
+		position = 20
+	)
+	default boolean dungeonTooltips()
+	{
+		return true;
+	}
 }
