@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.tearsofguthix;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,9 +35,11 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Skill;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -49,6 +54,18 @@ public class TearsOfGuthixPlugin extends Plugin
 {
 	private static final int TOG_REGION = 12948;
 
+	@VisibleForTesting
+	static final ImmutableList<Skill> TOG_SKILLS = ImmutableList.of(
+		Skill.ATTACK, Skill.HITPOINTS, Skill.MINING,
+		Skill.STRENGTH, Skill.AGILITY, Skill.SMITHING,
+		Skill.DEFENCE, Skill.HERBLORE, Skill.FISHING,
+		Skill.RANGED, Skill.THIEVING, Skill.COOKING,
+		Skill.PRAYER, Skill.CRAFTING, Skill.FIREMAKING,
+		Skill.MAGIC, Skill.FLETCHING, Skill.WOODCUTTING,
+		Skill.RUNECRAFT, Skill.SLAYER, Skill.FARMING,
+		Skill.CONSTRUCTION, Skill.HUNTER
+	);
+
 	@Inject
 	private Client client;
 
@@ -60,6 +77,12 @@ public class TearsOfGuthixPlugin extends Plugin
 
 	@Getter
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
+
+	@Provides
+	TearsOfGuthixConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(TearsOfGuthixConfig.class);
+	}
 
 	@Override
 	protected void startUp()
@@ -111,5 +134,24 @@ public class TearsOfGuthixPlugin extends Plugin
 
 		DecorativeObject object = event.getDecorativeObject();
 		streams.remove(object);
+	}
+
+	Skill getTearsOfGuthixSkill()
+	{
+		Skill skill = TOG_SKILLS.get(0);
+		int lowestXp = client.getSkillExperience(skill);
+
+		for (int i = 1; i < TOG_SKILLS.size(); i++)
+		{
+			final Skill curSkill = TOG_SKILLS.get(i);
+			final int skillXp = client.getSkillExperience(curSkill);
+			if (skillXp < lowestXp)
+			{
+				skill = curSkill;
+				lowestXp = skillXp;
+			}
+		}
+
+		return skill;
 	}
 }

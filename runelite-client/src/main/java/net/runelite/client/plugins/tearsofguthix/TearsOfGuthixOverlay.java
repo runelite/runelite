@@ -27,25 +27,39 @@ package net.runelite.client.plugins.tearsofguthix;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 class TearsOfGuthixOverlay extends Overlay
 {
 	private static final Color CYAN_ALPHA = new Color(Color.CYAN.getRed(), Color.CYAN.getGreen(), Color.CYAN.getBlue(), 100);
 	private static final Duration MAX_TIME = Duration.ofSeconds(9);
+	private static final WorldPoint JUNA_LOCATION = new WorldPoint(3252, 9517, 2);
+	private static final int MAX_ICON_DISTANCE = 15;
 	private final TearsOfGuthixPlugin plugin;
+	private final TearsOfGuthixConfig config;
+	private final SkillIconManager skillIconManager;
+	private final Client client;
 
 	@Inject
-	private TearsOfGuthixOverlay(TearsOfGuthixPlugin plugin)
+	private TearsOfGuthixOverlay(TearsOfGuthixPlugin plugin, TearsOfGuthixConfig config, SkillIconManager skillIconManager, Client client)
 	{
 		this.plugin = plugin;
+		this.config = config;
+		this.skillIconManager = skillIconManager;
+		this.client = client;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
@@ -76,6 +90,20 @@ class TearsOfGuthixOverlay extends Overlay
 			progressPie.render(graphics);
 		});
 
+		drawSkillOverlay(graphics);
+
 		return null;
+	}
+
+	// Draws the skill which will receive experience from TOG on Juna
+	private void drawSkillOverlay(final Graphics2D graphics)
+	{
+		if (!config.displaySkillIcon() || client.getLocalPlayer().getWorldLocation().distanceTo(JUNA_LOCATION) >= MAX_ICON_DISTANCE)
+		{
+			return;
+		}
+
+		final BufferedImage icon = skillIconManager.getSkillImage(plugin.getTearsOfGuthixSkill());
+		OverlayUtil.renderImageLocation(client, graphics, LocalPoint.fromWorld(client, JUNA_LOCATION), icon, 40);
 	}
 }
