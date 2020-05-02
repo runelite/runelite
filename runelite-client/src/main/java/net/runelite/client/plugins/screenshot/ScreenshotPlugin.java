@@ -285,7 +285,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 
 		shouldTakeGauntletScreenshot = false;
-		takeScreenshot("Gauntlet Loot", "Gauntlet Loot");
+		takeScreenshot("Gauntlet Loot", "Gauntlet");
 	}
 
 	@Subscribe
