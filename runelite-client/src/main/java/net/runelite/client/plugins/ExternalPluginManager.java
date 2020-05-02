@@ -506,6 +506,7 @@ public class ExternalPluginManager
 	{
 		if (!tryLoadNewFormat())
 		{
+			log.debug("Load new format failed.");
 			loadOldFormat();
 		}
 
@@ -517,11 +518,14 @@ public class ExternalPluginManager
 	{
 		try
 		{
+			duplicateCheck();
+			log.debug("Trying to load new format: {}", openOSRSConfig.getExternalRepositories());
 			for (String keyval : openOSRSConfig.getExternalRepositories().split(";"))
 			{
 				String[] split = keyval.split("\\|");
 				if (split.length != 2)
 				{
+					log.debug("Split length invalid.");
 					repositories.clear();
 					return false;
 				}
@@ -548,6 +552,7 @@ public class ExternalPluginManager
 		}
 		catch (ArrayIndexOutOfBoundsException | MalformedURLException e)
 		{
+			log.error("Error in new format", e);
 			repositories.clear();
 			return false;
 		}
@@ -558,14 +563,18 @@ public class ExternalPluginManager
 	{
 		try
 		{
+			log.debug("Loading old format.");
 			repositories.clear();
 
 			for (String keyval : openOSRSConfig.getExternalRepositories().split(";"))
 			{
+				log.debug("KeyVal: {}", keyval);
 				String id = keyval.substring(0, keyval.lastIndexOf(":https"));
 				String url = keyval.substring(keyval.lastIndexOf("https"));
 
-				repositories.add(new DefaultUpdateRepository(id, new URL(url)));
+				DefaultUpdateRepository defaultRepo = new DefaultUpdateRepository(id, new URL(url));
+				repositories.add(defaultRepo);
+				log.debug("Added Repo: {}", defaultRepo.getUrl());
 			}
 		}
 		catch (MalformedURLException e)
@@ -620,8 +629,58 @@ public class ExternalPluginManager
 			config.append(";");
 		}
 		config.deleteCharAt(config.lastIndexOf(";"));
-
 		openOSRSConfig.setExternalRepositories(config.toString());
+	}
+
+
+	/**
+	 * This method is a fail safe to ensure that no duplicate
+	 * repositories end up getting saved to the config.
+	 * <p>
+	 * Configs that had duplicate repos prior to this should
+	 * be updated and set correctly.
+	 */
+	private void duplicateCheck()
+	{
+		String[] split = openOSRSConfig.getExternalRepositories().split(";");
+
+		if (split.length <= 0)
+		{
+			return;
+		}
+
+		Set<String> strings = new HashSet<>();
+		boolean duplicates = false;
+
+		for (String s : split)
+		{
+			if (strings.contains(s))
+			{
+				log.error("Duplicate Repo: {}", s);
+				duplicates = true;
+				continue;
+			}
+			strings.add(s);
+		}
+
+		if (duplicates)
+		{
+			StringBuilder sb = new StringBuilder();
+
+			for (String string : strings)
+			{
+				sb.append(string);
+				sb.append(";");
+			}
+
+			sb.deleteCharAt(sb.lastIndexOf(";"));
+			String duplicateFix = sb.toString();
+
+			log.info("Duplicate Repos detected, setting them to: {}", duplicateFix);
+			openOSRSConfig.setExternalRepositories(duplicateFix);
+			return;
+		}
+		log.info("No duplicates found.");
 	}
 
 	private void scanAndInstantiate(List<Plugin> plugins, boolean init, boolean initConfig)
@@ -877,7 +936,8 @@ public class ExternalPluginManager
 			AtomicReference<String> version = new AtomicReference<>("");
 
 			updateManager.getRepositories().forEach(repository ->
-				repository.getPlugins().forEach((key, value) -> {
+				repository.getPlugins().forEach((key, value) ->
+				{
 					if (key.equals(pluginId))
 					{
 						support.set(value.projectUrl);
