@@ -135,12 +135,12 @@ subprojects {
             maven {
                 url = uri("$buildDir/repo")
             }
-            if (System.getenv("REPO-URL") != null) {
+            if (System.getenv("REPO_URL") != null) {
                 maven {
-                    url = uri(System.getenv("REPO-URL"))
+                    url = uri(System.getenv("REPO_URL"))
                     credentials {
-                        username = System.getenv("REPO-USERNAME")
-                        password = System.getenv("REPO-PASSWORD")
+                        username = System.getenv("REPO_USERNAME")
+                        password = System.getenv("REPO_PASSWORD")
                     }
                 }
             }
