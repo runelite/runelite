@@ -35,7 +35,7 @@ buildscript {
     dependencies {
         classpath("org.ajoberstar.grgit:grgit-core:4.0.2")
         classpath("com.github.ben-manes:gradle-versions-plugin:0.28.0")
-        classpath("com.openosrs:injector-plugin:1.1.0")
+        classpath("com.openosrs:injector-plugin:1.1.2")
     }
 }
 
@@ -66,9 +66,17 @@ allprojects {
 
 subprojects {
     repositories {
-        if (System.getenv("JITPACK") != null)
+        if (System.getenv("JITPACK") != null) {
             mavenLocal()
-        jcenter()
+        }
+
+        jcenter {
+            content {
+                excludeGroupByRegex("com\\.openosrs.*")
+                excludeGroupByRegex("com\\.runelite.*")
+            }
+        }
+
         exclusiveContent {
             forRepository {
                 maven {
@@ -80,7 +88,6 @@ subprojects {
                 includeModule("com.github.petitparser", "java-petitparser")
             }
         }
-        maven(url = "https://mvnrepository.com/artifact")
 
         exclusiveContent {
             forRepository {
@@ -105,6 +112,8 @@ subprojects {
                 includeModule("com.openosrs.rxrelay3", "rxrelay")
             }
         }
+
+        maven(url = "https://mvnrepository.com/artifact")
     }
 
     apply<JavaLibraryPlugin>()
