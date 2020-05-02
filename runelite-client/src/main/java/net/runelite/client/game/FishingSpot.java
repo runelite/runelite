@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fishing;
+package net.runelite.client.game;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
@@ -105,7 +105,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_4928;
 import static net.runelite.api.NpcID.FISHING_SPOT_6784;
 
 @Getter
-enum FishingSpot
+public enum FishingSpot
 {
 	SHRIMP("Shrimp, Anchovies", ItemID.RAW_SHRIMPS,
 		FISHING_SPOT_1514, FISHING_SPOT_1518, FISHING_SPOT_1521,
@@ -202,7 +202,7 @@ enum FishingSpot
 		this.ids = ids;
 	}
 
-	static FishingSpot findSpot(int id)
+	public static FishingSpot findSpot(int id)
 	{
 		return SPOTS.get(id);
 	}
