@@ -183,7 +183,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (currentRound != null && config.notifyCallChange())
+		if (currentRound != null && config.notifyCallChange() && currentRound.getRoundTime() >= 10)
 		{
 			long timeToChange = currentRound.getTimeToChange();
 
