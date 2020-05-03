@@ -22,63 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.statusbars;
+package net.runelite.client.plugins.statusbars.Config;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.plugins.statusbars.Config.BarMode;
-
-@ConfigGroup("statusbars")
-public interface StatusBarsConfig extends Config
+public enum BarMode
 {
-	@ConfigItem(
-		keyName = "enableCounter",
-		name = "Show counters",
-		description = "Shows current value of the status on the bar"
-	)
-	default boolean enableCounter()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "enableSkillIcon",
-		name = "Show icons",
-		description = "Adds skill icons at the top of the bars."
-	)
-	default boolean enableSkillIcon()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "enableRestorationBars",
-		name = "Show restores",
-		description = "Visually shows how much will be restored to your status bar."
-	)
-	default boolean enableRestorationBars()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "leftBarMode",
-		name = "Left Status Bar",
-		description = "Configures the left status bar"
-	)
-	default BarMode leftBarMode()
-	{
-		return BarMode.HITPOINTS;
-	}
-
-	@ConfigItem(
-		keyName = "rightBarMode",
-		name = "Right Status Bar",
-		description = "Configures the right status bar"
-	)
-	default BarMode rightBarMode()
-	{
-		return BarMode.PRAYER;
-	}
+	DISABLED,
+	HITPOINTS,
+	PRAYER,
+	;
 }
