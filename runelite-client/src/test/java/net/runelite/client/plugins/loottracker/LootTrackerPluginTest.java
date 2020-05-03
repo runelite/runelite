@@ -32,11 +32,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
-import lombok.AllArgsConstructor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
@@ -55,7 +53,6 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.LootRecordType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,7 +65,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LootTrackerPluginTest
@@ -150,135 +146,30 @@ public class LootTrackerPluginTest
 		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
 	}
 
-	private static ItemStack is(int id, int q)
+	private static ItemComposition mockItem(String name)
 	{
-		return new ItemStack(id, q, null);
+		ItemComposition itemComposition = mock(ItemComposition.class);
+		when(itemComposition.getName()).thenReturn(name);
+		return itemComposition;
 	}
 
 	@Test
 	public void testClueStacks()
 	{
-		String beg = "Clue scroll (beginner)";
-		String easy = "Clue scroll (easy)";
-		String med = "Clue scroll (medium)";
-		String hard = "Clue scroll (hard)";
-		String elite = "Clue scroll (elite)";
-		String master = "Clue scroll (master)";
-		Map<Integer, String> idsToName = ImmutableMap.<Integer, String>builder()
-			.put(ItemID.CLUE_SCROLL_BEGINNER, beg)
-			.put(ItemID.CLUE_SCROLL_EASY, easy)
-			.put(ItemID.CLUE_SCROLL_EASY_2719, easy)
-			.put(ItemID.CLUE_SCROLL_EASY_23153, easy)
-			.put(ItemID.CLUE_SCROLL_MEDIUM, med)
-			.put(ItemID.CLUE_SCROLL_MEDIUM_3599, med)
-			.put(ItemID.CLUE_SCROLL_MEDIUM_2817, med)
-			.put(ItemID.CLUE_SCROLL_MEDIUM_3602, med)
-			.put(ItemID.CLUE_SCROLL_MEDIUM_12045, med)
-			.put(ItemID.CLUE_SCROLL_MEDIUM_12065, med)
-			.put(ItemID.CLUE_SCROLL_HARD, hard)
-			.put(ItemID.CLUE_SCROLL_HARD_3520, hard)
-			.put(ItemID.CLUE_SCROLL_HARD_3550, hard)
-			.put(ItemID.CLUE_SCROLL_HARD_23045, hard)
-			.put(ItemID.CLUE_SCROLL_ELITE, elite)
-			.put(ItemID.CLUE_SCROLL_ELITE_19783, elite)
-			.put(ItemID.CLUE_SCROLL_ELITE_21524, elite)
-			.put(ItemID.CLUE_SCROLL_ELITE_12096, elite)
-			.put(ItemID.CLUE_SCROLL_MASTER, master)
-			.put(ItemID.RUNE_PLATEBODY, "Rune platebody")
-			.put(ItemID.AMETHYST_ARROW, "Amethyst arrow")
-			.put(ItemID.GRACEFUL_HOOD_13579, "Graceful hood")
-			.put(ItemID.RUNITE_ORE, "Runite ore")
-			.put(ItemID.RUNITE_ORE + 1, "Runite ore")
-			.put(0, "null")
-			.build();
-
-		@AllArgsConstructor
-		class Case
-		{
-			private final List<ItemStack> drops;
-			private final List<ItemStack> expected;
-		}
-
-		Case[] cases = {
-			new Case(
-				Arrays.asList(
-					is(ItemID.CLUE_SCROLL_MEDIUM, 1),
-					is(ItemID.CLUE_SCROLL_MEDIUM_3602, 1)),
-				Collections.singletonList(
-					is(ItemID.CLUE_SCROLL_MEDIUM, 2))
-			),
-			new Case(
-				Arrays.asList(
-					// graceful isn't a drop, but it is an item w/ variations that we're not tracking.
-					is(ItemID.GRACEFUL_HOOD_13579, 1),
-					is(ItemID.RUNE_PLATEBODY, 1),
-					is(ItemID.AMETHYST_ARROW, 125)),
-				Arrays.asList(
-					is(ItemID.GRACEFUL_HOOD_13579, 1),
-					is(ItemID.RUNE_PLATEBODY, 1),
-					is(ItemID.AMETHYST_ARROW, 125))
-			),
-			new Case(
-				Arrays.asList(
-					is(ItemID.CLUE_SCROLL_BEGINNER, 1),
-					is(ItemID.CLUE_SCROLL_ELITE_19783, 1),
-					is(ItemID.CLUE_SCROLL_MEDIUM_12045, 1),
-					is(ItemID.CLUE_SCROLL_MEDIUM_12065, 1),
-					is(ItemID.RUNITE_ORE, 25),
-					is(ItemID.RUNITE_ORE + 1, 10)), // noted rune ore
-				Arrays.asList(
-					is(ItemID.CLUE_SCROLL_BEGINNER, 1),
-					is(ItemID.CLUE_SCROLL_ELITE, 1),
-					is(ItemID.CLUE_SCROLL_MEDIUM, 2),
-					is(ItemID.RUNITE_ORE, 25),
-					is(ItemID.RUNITE_ORE + 1, 10)) // noted rune ore
-			),
-			new Case(
-				Arrays.asList(
-					is(ItemID.CLUE_SCROLL_BEGINNER, 1),
-					is(ItemID.CLUE_SCROLL_BEGINNER, 1),
-					is(ItemID.CLUE_SCROLL_EASY, 1),
-					is(ItemID.CLUE_SCROLL_EASY_2719, 1),
-					is(ItemID.CLUE_SCROLL_EASY_23153, 1),
-					is(ItemID.CLUE_SCROLL_MEDIUM, 1),
-					is(ItemID.CLUE_SCROLL_MEDIUM_12065, 1),
-					is(ItemID.CLUE_SCROLL_MEDIUM_2817, 1),
-					is(ItemID.CLUE_SCROLL_HARD, 1),
-					is(ItemID.CLUE_SCROLL_HARD_3550, 1),
-					is(ItemID.CLUE_SCROLL_HARD_23045, 1),
-					is(ItemID.CLUE_SCROLL_ELITE, 1),
-					is(ItemID.CLUE_SCROLL_ELITE_21524, 1),
-					is(ItemID.CLUE_SCROLL_ELITE_12096, 1),
-					is(ItemID.CLUE_SCROLL_MASTER, 1),
-					is(ItemID.CLUE_SCROLL_MASTER, 1)),
-				Arrays.asList(
-					is(ItemID.CLUE_SCROLL_BEGINNER, 2),
-					is(ItemID.CLUE_SCROLL_EASY, 3),
-					is(ItemID.CLUE_SCROLL_MEDIUM, 3),
-					is(ItemID.CLUE_SCROLL_HARD, 3),
-					is(ItemID.CLUE_SCROLL_ELITE, 3),
-					is(ItemID.CLUE_SCROLL_MASTER, 2))
-			),
-		};
-
-		for (int i = 0; i < cases.length; i++)
-		{
-			Case tc = cases[i];
-			when(itemManager.getItemComposition(anyInt())).thenAnswer((Answer<ItemComposition>) invocationOnMock ->
-			{
-				int itemId = invocationOnMock.getArgument(0);
-				if (!idsToName.containsKey(itemId))
-				{
-					fail("item id not in names map: " + itemId);
-				}
-
-				ItemComposition c = mock(ItemComposition.class);
-				when(c.getName()).thenReturn(idsToName.get(itemId));
-				return c;
-			});
-
-			assertEquals("Test case: " + (i + 1), tc.expected, lootTrackerPlugin.stack(tc.drops));
-		}
+		when(itemManager.getItemComposition(ItemID.CLUE_SCROLL_MEDIUM)).thenAnswer(invocation -> mockItem("Clue scroll (medium)"));
+		when(itemManager.getItemComposition(ItemID.CLUE_SCROLL_MEDIUM_3602)).thenAnswer(invocation -> mockItem("Clue scroll (medium)"));
+		when(itemManager.getItemComposition(ItemID.GRACEFUL_HOOD_13579)).thenAnswer(invocation -> mockItem("Graceful hood"));
+		Collection<ItemStack> stack = lootTrackerPlugin.stack(
+			Arrays.asList(
+				new ItemStack(ItemID.CLUE_SCROLL_MEDIUM, 1, null),
+				new ItemStack(ItemID.CLUE_SCROLL_MEDIUM_3602, 1, null),
+				new ItemStack(ItemID.GRACEFUL_HOOD_13579, 1, null)
+			)
+		);
+		assertEquals(Arrays.asList(
+			new ItemStack(ItemID.CLUE_SCROLL_MEDIUM, 2, null),
+			new ItemStack(ItemID.GRACEFUL_HOOD_13579, 1, null)
+		), stack);
 	}
 
 	@Test

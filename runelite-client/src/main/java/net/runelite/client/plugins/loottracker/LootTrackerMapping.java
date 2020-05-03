@@ -26,14 +26,14 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 
-@Getter
-public enum LootTrackerMapping
+@AllArgsConstructor
+enum LootTrackerMapping
 {
 	CLUE_SCROLL_BEGINNER("Clue scroll (beginner)", ItemID.CLUE_SCROLL_BEGINNER),
 	CLUE_SCROLL_EASY("Clue scroll (easy)", ItemID.CLUE_SCROLL_EASY),
@@ -45,41 +45,30 @@ public enum LootTrackerMapping
 	private final String name;
 	private final int baseId;
 
-	LootTrackerMapping(String name, int baseId)
-	{
-		this.name = name;
-		this.baseId = baseId;
-	}
-
-	private static final ImmutableMap<String, LootTrackerMapping> MAPPINGS;
+	private static final ImmutableMap<String, Integer> MAPPINGS;
 
 	static
 	{
-		ImmutableMap.Builder<String, LootTrackerMapping> map = ImmutableMap.builder();
+		ImmutableMap.Builder<String, Integer> map = ImmutableMap.builder();
 		for (LootTrackerMapping mapping : values())
 		{
-			map.put(mapping.name, mapping);
+			map.put(mapping.name, mapping.baseId);
 		}
 		MAPPINGS = map.build();
 	}
 
-	public static int map(int itemId, ItemManager itemManager)
+	private static int map(int itemId, ItemManager itemManager)
 	{
 		ItemComposition itemComp = itemManager.getItemComposition(itemId);
-		if (itemComp == null || Strings.isNullOrEmpty(itemComp.getName()))
+		if (Strings.isNullOrEmpty(itemComp.getName()))
 		{
 			return itemId;
 		}
 
-		if (!MAPPINGS.containsKey(itemComp.getName()))
-		{
-			return itemId;
-		}
-
-		return MAPPINGS.get(itemComp.getName()).baseId;
+		return MAPPINGS.getOrDefault(itemComp.getName(), itemId);
 	}
 
-	public static ItemStack map(ItemStack item, ItemManager itemManager)
+	static ItemStack map(ItemStack item, ItemManager itemManager)
 	{
 		int baseId = map(item.getId(), itemManager);
 		if (baseId == item.getId())
