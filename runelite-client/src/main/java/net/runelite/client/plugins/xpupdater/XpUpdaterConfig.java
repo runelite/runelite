@@ -52,4 +52,15 @@ public interface XpUpdaterConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "wiseoldman",
+		name = "Wise Old Man",
+		description = "Automatically updates your stats on wiseoldman.net when you log out"
+	)
+	default boolean wiseoldman()
+	{
+		return false;
+	}
 }

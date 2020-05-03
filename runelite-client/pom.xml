@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.6.13-SNAPSHOT</version>
+		<version>1.6.14-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -37,7 +37,7 @@
 
 	<properties>
 		<guice.version>4.1.0</guice.version>
-		<jogl.version>2.3.2</jogl.version>
+		<jogl.version>2.4.0-rc-20200429</jogl.version>
 
 		<jarsigner.skip>true</jarsigner.skip>
 	</properties>
@@ -92,69 +92,69 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jogamp.jogl</groupId>
+			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
 			<version>${jogl.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jogamp.jogl</groupId>
+			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
 			<version>${jogl.version}</version>
 			<classifier>natives-windows-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jogamp.jogl</groupId>
+			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
 			<version>${jogl.version}</version>
 			<classifier>natives-windows-i586</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jogamp.jogl</groupId>
+			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
 			<version>${jogl.version}</version>
 			<classifier>natives-linux-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jogamp.jogl</groupId>
+			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
 			<version>${jogl.version}</version>
-			<classifier>natives-linux-i586</classifier>
+			<classifier>natives-macosx-universal</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jogamp.gluegen</groupId>
+			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
 			<version>${jogl.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jogamp.gluegen</groupId>
+			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
 			<version>${jogl.version}</version>
 			<classifier>natives-windows-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jogamp.gluegen</groupId>
+			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
 			<version>${jogl.version}</version>
 			<classifier>natives-windows-i586</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jogamp.gluegen</groupId>
+			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
 			<version>${jogl.version}</version>
 			<classifier>natives-linux-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jogamp.gluegen</groupId>
+			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
 			<version>${jogl.version}</version>
-			<classifier>natives-linux-i586</classifier>
+			<classifier>natives-macosx-universal</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -315,13 +315,13 @@
 									</includes>
 								</filter>
 								<filter>
-									<artifact>org.jogamp.jogl:*</artifact>
+									<artifact>net.runelite.jogl:*</artifact>
 									<includes>
 										<include>**</include>
 									</includes>
 								</filter>
 								<filter>
-									<artifact>org.jogamp.gluegen:*</artifact>
+									<artifact>net.runelite.gluegen:*</artifact>
 									<includes>
 										<include>**</include>
 									</includes>

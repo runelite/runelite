@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
+ * Copyright (c) 2020, Anthony <https://github.com/while-loop>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +47,6 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.SplitComponent;
-import net.runelite.client.util.QuantityFormatter;
 
 class XpInfoBoxOverlay extends OverlayPanel
 {
@@ -91,54 +91,20 @@ class XpInfoBoxOverlay extends OverlayPanel
 
 		final XpSnapshotSingle snapshot = plugin.getSkillSnapshot(skill);
 
-		final String leftStr;
-		final int rightNum;
-
-		switch (config.onScreenDisplayMode())
-		{
-			case ACTIONS_DONE:
-				leftStr = snapshot.getActionType().getLabel() + " Done";
-				rightNum = snapshot.getActionsInSession();
-				break;
-			case ACTIONS_LEFT:
-				leftStr = snapshot.getActionType().getLabel() + " Left";
-				rightNum = snapshot.getActionsRemainingToGoal();
-				break;
-			case XP_LEFT:
-				leftStr = "XP Left";
-				rightNum = snapshot.getXpRemainingToGoal();
-				break;
-			case XP_GAINED:
-			default:
-				leftStr = "XP Gained";
-				rightNum = snapshot.getXpGainedInSession();
-				break;
-		}
+		final String leftStr = config.onScreenDisplayMode().getActionKey(snapshot);
+		final String rightNum = config.onScreenDisplayMode().getValueFunc().apply(snapshot);
 
 		final LineComponent xpLine = LineComponent.builder()
 			.left(leftStr + ":")
-			.right(QuantityFormatter.quantityToRSDecimalStack(rightNum, true))
+			.right(rightNum)
 			.build();
 
-		final String bottemLeftStr;
-		final int bottomRightNum;
-
-		switch (config.onScreenDisplayModeBottom())
-		{
-			case ACTIONS_HOUR:
-				bottemLeftStr = snapshot.getActionType().getLabel() + "/Hour";
-				bottomRightNum = snapshot.getActionsPerHour();
-				break;
-			case XP_HOUR:
-			default:
-				bottemLeftStr = "XP/Hour";
-				bottomRightNum = snapshot.getXpPerHour();
-				break;
-		}
+		final String bottomLeftStr = config.onScreenDisplayModeBottom().getActionKey(snapshot);
+		final String bottomRightNum = config.onScreenDisplayModeBottom().getValueFunc().apply(snapshot);
 
 		final LineComponent xpLineBottom = LineComponent.builder()
-				.left(bottemLeftStr + ":")
-				.right(QuantityFormatter.quantityToRSDecimalStack(bottomRightNum, true))
+				.left(bottomLeftStr + ":")
+				.right(bottomRightNum)
 				.build();
 
 		final SplitComponent xpSplit = SplitComponent.builder()

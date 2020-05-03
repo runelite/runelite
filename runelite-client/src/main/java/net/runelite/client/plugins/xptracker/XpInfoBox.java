@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2020, Anthony <https://github.com/while-loop>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,7 +61,7 @@ import net.runelite.client.util.QuantityFormatter;
 
 class XpInfoBox extends JPanel
 {
-	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
+	static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
 	static
 	{
@@ -95,10 +96,10 @@ class XpInfoBox extends JPanel
 
 	private final ProgressBar progressBar = new ProgressBar();
 
-	private final JLabel expGained = new JLabel();
-	private final JLabel expHour = new JLabel();
-	private final JLabel expLeft = new JLabel();
-	private final JLabel actionsLeft = new JLabel();
+	private final JLabel topLeftStat = new JLabel();
+	private final JLabel bottomLeftStat = new JLabel();
+	private final JLabel topRightStat = new JLabel();
+	private final JLabel bottomRightStat = new JLabel();
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 	private final JMenuItem canvasItem = new JMenuItem(ADD_STATE);
 
@@ -184,15 +185,16 @@ class XpInfoBox extends JPanel
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
 
-		expGained.setFont(FontManager.getRunescapeSmallFont());
-		expHour.setFont(FontManager.getRunescapeSmallFont());
-		expLeft.setFont(FontManager.getRunescapeSmallFont());
-		actionsLeft.setFont(FontManager.getRunescapeSmallFont());
 
-		statsPanel.add(expGained);
-		statsPanel.add(expLeft);
-		statsPanel.add(expHour);
-		statsPanel.add(actionsLeft);
+		topLeftStat.setFont(FontManager.getRunescapeSmallFont());
+		bottomLeftStat.setFont(FontManager.getRunescapeSmallFont());
+		topRightStat.setFont(FontManager.getRunescapeSmallFont());
+		bottomRightStat.setFont(FontManager.getRunescapeSmallFont());
+
+		statsPanel.add(topLeftStat);     // top left
+		statsPanel.add(topRightStat);    // top right
+		statsPanel.add(bottomLeftStat);  // bottom left
+		statsPanel.add(bottomRightStat); // bottom right
 
 		headerPanel.add(skillIcon, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
@@ -243,14 +245,9 @@ class XpInfoBox extends JPanel
 
 			paused = skillPaused;
 
-			// Update information labels
-			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
-			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			actionsLeft.setText(htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
-
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
-			progressBar.setCenterLabel(TWO_DECIMAL_FORMAT.format(xpSnapshotSingle.getSkillProgressToGoal()) + "%");
+			progressBar.setCenterLabel(xpTrackerConfig.progressBarLabel().getValueFunc().apply(xpSnapshotSingle));
 			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
 			progressBar.setRightLabel(xpSnapshotSingle.getEndGoalXp() == Experience.MAX_SKILL_XP
 				? "200M"
@@ -304,13 +301,29 @@ class XpInfoBox extends JPanel
 			pauseSkill.setText("Pause");
 		}
 
+		// Update information labels
 		// Update exp per hour separately, every time (not only when there's an update)
-		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
+		topLeftStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel1(), xpSnapshotSingle));
+		topRightStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel2(), xpSnapshotSingle));
+		bottomLeftStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel3(), xpSnapshotSingle));
+		bottomRightStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel4(), xpSnapshotSingle));
+	}
+
+	static String htmlLabel(XpPanelLabel panelLabel, XpSnapshotSingle xpSnapshotSingle)
+	{
+		String key = panelLabel.getActionKey(xpSnapshotSingle) + ": ";
+		String value = panelLabel.getValueFunc().apply(xpSnapshotSingle);
+		return htmlLabel(key, value);
 	}
 
 	static String htmlLabel(String key, int value)
 	{
 		String valueStr = QuantityFormatter.quantityToRSDecimalStack(value, true);
+		return htmlLabel(key, valueStr);
+	}
+
+	static String htmlLabel(String key, String valueStr)
+	{
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 }
