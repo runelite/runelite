@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2020, Anthony <https://github.com/while-loop>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.xptracker;
 
-import java.time.Instant;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
-import net.runelite.api.coords.WorldPoint;
+import java.util.function.Function;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.client.util.QuantityFormatter;
 
-@Data
-@Builder
-class GroundItem
+@Getter
+@AllArgsConstructor
+public enum XpPanelLabel
 {
-	private int id;
-	private int itemId;
-	private String name;
-	private int quantity;
-	private WorldPoint location;
-	private int height;
-	private int haPrice;
-	private int gePrice;
-	private int offset;
-	private boolean tradeable;
-	@Nonnull
-	private LootType lootType;
-	@Nullable
-	private Instant spawnTime;
-	private boolean stackable;
+	TIME_TO_LEVEL("TTL", XpSnapshotSingle::getTimeTillGoalShort),
 
-	int getHaPrice()
+	XP_GAINED("XP Gained", snap -> format(snap.getXpGainedInSession())),
+	XP_HOUR("XP/hr", snap -> format(snap.getXpPerHour())),
+	XP_LEFT("XP Left", snap -> format(snap.getXpRemainingToGoal())),
+
+	ACTIONS_LEFT("Actions", snap -> format(snap.getActionsRemainingToGoal())),
+	ACTIONS_HOUR("Actions/hr", snap -> format(snap.getActionsPerHour())),
+	ACTIONS_DONE("Actions Done", snap -> format(snap.getActionsInSession())),
+	;
+
+	private final String key;
+	private final Function<XpSnapshotSingle, String> valueFunc;
+
+	/**
+	 * Get the action key label based on if the Action type is an xp drop or kill
+	 *
+	 * @param snapshot
+	 * @return
+	 */
+	public String getActionKey(XpSnapshotSingle snapshot)
 	{
-		return haPrice * quantity;
+		String actionKey = key;
+		if (snapshot.getActionType() == XpActionType.ACTOR_HEALTH)
+		{
+			return actionKey.replace("Action", "Kill");
+		}
+
+		return actionKey;
 	}
 
-	int getGePrice()
+	private static String format(int val)
 	{
-		return gePrice * quantity;
-	}
-
-	boolean isMine()
-	{
-		return lootType != LootType.UNKNOWN;
-	}
-
-	@Value
-	static class GroundItemKey
-	{
-		private int itemId;
-		private WorldPoint location;
+		return QuantityFormatter.quantityToRSDecimalStack(val, true);
 	}
 }

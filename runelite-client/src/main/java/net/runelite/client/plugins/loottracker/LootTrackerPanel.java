@@ -35,6 +35,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.swing.BorderFactory;
@@ -355,6 +356,11 @@ class LootTrackerPanel extends PluginPanel
 		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, type, items, 1);
 		sessionRecords.add(record);
 
+		if (hideIgnoredItems && plugin.isEventIgnored(eventName))
+		{
+			return;
+		}
+
 		LootTrackerBox box = buildBox(record);
 		if (box != null)
 		{
@@ -450,15 +456,12 @@ class LootTrackerPanel extends PluginPanel
 		}
 		else
 		{
-			int start = 0;
-			if (sessionRecords.size() > MAX_LOOT_BOXES)
-			{
-				start = sessionRecords.size() - MAX_LOOT_BOXES;
-			}
-			for (int i = start; i < sessionRecords.size(); i++)
-			{
-				buildBox(sessionRecords.get(i));
-			}
+			sessionRecords.stream()
+				.sorted(Collections.reverseOrder())
+				// filter records prior to limiting so that it is limited to the correct amount
+				.filter(r -> !hideIgnoredItems || !plugin.isEventIgnored(r.getTitle()))
+				.limit(MAX_LOOT_BOXES)
+				.forEach(this::buildBox);
 		}
 
 		boxes.forEach(LootTrackerBox::rebuild);
@@ -476,6 +479,12 @@ class LootTrackerPanel extends PluginPanel
 	{
 		// If this record is not part of current view, return
 		if (!record.matches(currentView, currentType))
+		{
+			return null;
+		}
+
+		final boolean isIgnored = plugin.isEventIgnored(record.getTitle());
+		if (hideIgnoredItems && isIgnored)
 		{
 			return null;
 		}
@@ -500,13 +509,17 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
-			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem);
+			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent, isIgnored);
 		box.addKill(record);
 
-		// Create popup menu
-		final JPopupMenu popupMenu = new JPopupMenu();
-		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-		box.setComponentPopupMenu(popupMenu);
+		// Use the existing popup menu or create a new one
+		JPopupMenu popupMenu = box.getComponentPopupMenu();
+		if (popupMenu == null)
+		{
+			popupMenu = new JPopupMenu();
+			popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+			box.setComponentPopupMenu(popupMenu);
+		}
 
 		// Create collapse event
 		box.addMouseListener(new MouseAdapter()
@@ -589,6 +602,11 @@ class LootTrackerPanel extends PluginPanel
 		for (LootTrackerRecord record : concat(aggregateRecords, sessionRecords))
 		{
 			if (!record.matches(currentView, currentType))
+			{
+				continue;
+			}
+
+			if (hideIgnoredItems && plugin.isEventIgnored(record.getTitle()))
 			{
 				continue;
 			}

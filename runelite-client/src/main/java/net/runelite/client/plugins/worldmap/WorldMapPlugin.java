@@ -50,7 +50,7 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "World Map",
 	description = "Enhance the world map to display additional information",
-	tags = {"agility", "fairy", "farming", "rings", "teleports"}
+	tags = {"agility", "dungeon", "fairy", "farming", "rings", "teleports"}
 )
 public class WorldMapPlugin extends Plugin
 {
@@ -82,6 +82,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS = "transportationTooltips";
 	static final String CONFIG_KEY_RUNECRAFTING_ALTAR_ICON = "runecraftingAltarIcon";
 	static final String CONFIG_KEY_MINING_SITE_TOOLTIPS = "miningSiteTooltips";
+	static final String CONFIG_KEY_DUNGEON_TOOLTIPS = "dungeonTooltips";
 
 	static
 	{
@@ -159,6 +160,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
 		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
 		worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
+		worldMapPointManager.removeIf(DungeonPoint.class::isInstance);
 		agilityLevel = 0;
 		woodcuttingLevel = 0;
 	}
@@ -326,6 +328,14 @@ public class WorldMapPlugin extends Plugin
 		{
 			Arrays.stream(MiningSiteLocation.values())
 				.map(value -> new MiningSitePoint(value, value.isIconRequired() ? MINING_SITE_ICON : BLANK_ICON))
+				.forEach(worldMapPointManager::add);
+		}
+
+		worldMapPointManager.removeIf(DungeonPoint.class::isInstance);
+		if (config.dungeonTooltips())
+		{
+			Arrays.stream(DungeonLocation.values())
+				.map(value -> new DungeonPoint(value, BLANK_ICON))
 				.forEach(worldMapPointManager::add);
 		}
 	}

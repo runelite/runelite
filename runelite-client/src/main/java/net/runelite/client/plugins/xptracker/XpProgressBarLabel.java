@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2020, Anthony <https://github.com/while-loop>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.xptracker;
 
-import java.time.Instant;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
-import net.runelite.api.coords.WorldPoint;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
-@Builder
-class GroundItem
+import java.util.function.Function;
+
+import static net.runelite.client.plugins.xptracker.XpInfoBox.TWO_DECIMAL_FORMAT;
+
+@Getter
+@AllArgsConstructor
+public enum XpProgressBarLabel
 {
-	private int id;
-	private int itemId;
-	private String name;
-	private int quantity;
-	private WorldPoint location;
-	private int height;
-	private int haPrice;
-	private int gePrice;
-	private int offset;
-	private boolean tradeable;
-	@Nonnull
-	private LootType lootType;
-	@Nullable
-	private Instant spawnTime;
-	private boolean stackable;
+	PERCENTAGE((snap) -> TWO_DECIMAL_FORMAT.format(snap.getSkillProgressToGoal()) + "%"),
+	TIME_TO_LEVEL(XpSnapshotSingle::getTimeTillGoal),
+	;
 
-	int getHaPrice()
-	{
-		return haPrice * quantity;
-	}
-
-	int getGePrice()
-	{
-		return gePrice * quantity;
-	}
-
-	boolean isMine()
-	{
-		return lootType != LootType.UNKNOWN;
-	}
-
-	@Value
-	static class GroundItemKey
-	{
-		private int itemId;
-		private WorldPoint location;
-	}
+	private final Function<XpSnapshotSingle, String> valueFunc;
 }
