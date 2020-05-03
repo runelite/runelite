@@ -74,7 +74,8 @@ class AgilityOverlay extends Overlay
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
 					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
-					Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes())
+					Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
+					Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId()) && !config.showPortalOverlay())
 			{
 				return;
 			}
@@ -98,9 +99,15 @@ class AgilityOverlay extends Overlay
 				{
 					AgilityShortcut agilityShortcut = obstacle.getShortcut();
 					Color configColor = agilityShortcut == null || agilityShortcut.getLevel() <= plugin.getAgilityLevel() ? config.getOverlayColor() : SHORTCUT_HIGH_LEVEL_COLOR;
+
 					if (config.highlightMarks() && !marksOfGrace.isEmpty())
 					{
 						configColor = config.getMarkColor();
+					}
+
+					if (Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId()))
+					{
+						configColor = config.getPortalColor();
 					}
 
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))

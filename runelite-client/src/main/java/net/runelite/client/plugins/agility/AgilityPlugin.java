@@ -406,7 +406,8 @@ public class AgilityPlugin extends Plugin
 
 		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
 			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
-				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
+				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())) ||
+			Obstacles.PORTAL_OBSTACLE_IDS.contains(newObject.getId()))
 		{
 			obstacles.put(newObject, new Obstacle(tile, null));
 		}

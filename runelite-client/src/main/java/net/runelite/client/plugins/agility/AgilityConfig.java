@@ -198,4 +198,27 @@ public interface AgilityConfig extends Config
 	{
 		return Color.RED;
 	}
+
+	@ConfigItem(
+		keyName = "highlightPortals",
+		name = "Show Prifddinas Portals Overlay",
+		description = "Enable/disable the highlighting of portals in the Prifddinas Agility course",
+		position = 15
+	)
+	default boolean showPortalOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "portalColor",
+		name = "Portal Overlay Color",
+		description = "Color of portals overlay",
+		position = 16
+	)
+	default Color getPortalColor()
+	{
+		return Color.GREEN;
+	}
+
 }
