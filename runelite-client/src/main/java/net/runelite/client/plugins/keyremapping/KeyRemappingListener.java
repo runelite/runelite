@@ -28,7 +28,9 @@ package net.runelite.client.plugins.keyremapping;
 import com.google.common.base.Strings;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -51,10 +53,16 @@ class KeyRemappingListener implements KeyListener
 	private ClientThread clientThread;
 
 	private final Map<Integer, Integer> modified = new HashMap<>();
+	private final Set<Character> blockedChars = new HashSet<>();
 
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
+		char keyChar = e.getKeyChar();
+		if (keyChar != KeyEvent.CHAR_UNDEFINED && blockedChars.contains(keyChar))
+		{
+			e.consume();
+		}
 	}
 
 	@Override
@@ -67,27 +75,25 @@ class KeyRemappingListener implements KeyListener
 
 		if (!plugin.isTyping())
 		{
+			int mappedKeyCode = KeyEvent.VK_UNDEFINED;
+
 			if (config.cameraRemap())
 			{
 				if (config.up().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_UP);
-					e.setKeyCode(KeyEvent.VK_UP);
+					mappedKeyCode = KeyEvent.VK_UP;
 				}
 				else if (config.down().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_DOWN);
-					e.setKeyCode(KeyEvent.VK_DOWN);
+					mappedKeyCode = KeyEvent.VK_DOWN;
 				}
 				else if (config.left().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_LEFT);
-					e.setKeyCode(KeyEvent.VK_LEFT);
+					mappedKeyCode = KeyEvent.VK_LEFT;
 				}
 				else if (config.right().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_RIGHT);
-					e.setKeyCode(KeyEvent.VK_RIGHT);
+					mappedKeyCode = KeyEvent.VK_RIGHT;
 				}
 			}
 
@@ -98,68 +104,70 @@ class KeyRemappingListener implements KeyListener
 			{
 				if (config.f1().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F1);
-					e.setKeyCode(KeyEvent.VK_F1);
+					mappedKeyCode = KeyEvent.VK_F1;
 				}
 				else if (config.f2().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F2);
-					e.setKeyCode(KeyEvent.VK_F2);
+					mappedKeyCode = KeyEvent.VK_F2;
 				}
 				else if (config.f3().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F3);
-					e.setKeyCode(KeyEvent.VK_F3);
+					mappedKeyCode = KeyEvent.VK_F3;
 				}
 				else if (config.f4().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F4);
-					e.setKeyCode(KeyEvent.VK_F4);
+					mappedKeyCode = KeyEvent.VK_F4;
 				}
 				else if (config.f5().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F5);
-					e.setKeyCode(KeyEvent.VK_F5);
+					mappedKeyCode = KeyEvent.VK_F5;
 				}
 				else if (config.f6().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F6);
-					e.setKeyCode(KeyEvent.VK_F6);
+					mappedKeyCode = KeyEvent.VK_F6;
 				}
 				else if (config.f7().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F7);
-					e.setKeyCode(KeyEvent.VK_F7);
+					mappedKeyCode = KeyEvent.VK_F7;
 				}
 				else if (config.f8().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F8);
-					e.setKeyCode(KeyEvent.VK_F8);
+					mappedKeyCode = KeyEvent.VK_F8;
 				}
 				else if (config.f9().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F9);
-					e.setKeyCode(KeyEvent.VK_F9);
+					mappedKeyCode = KeyEvent.VK_F9;
 				}
 				else if (config.f10().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F10);
-					e.setKeyCode(KeyEvent.VK_F10);
+					mappedKeyCode = KeyEvent.VK_F10;
 				}
 				else if (config.f11().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F11);
-					e.setKeyCode(KeyEvent.VK_F11);
+					mappedKeyCode = KeyEvent.VK_F11;
 				}
 				else if (config.f12().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F12);
-					e.setKeyCode(KeyEvent.VK_F12);
+					mappedKeyCode = KeyEvent.VK_F12;
 				}
 				else if (config.esc().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_ESCAPE);
-					e.setKeyCode(KeyEvent.VK_ESCAPE);
+					mappedKeyCode = KeyEvent.VK_ESCAPE;
+				}
+			}
+
+			if (mappedKeyCode != KeyEvent.VK_UNDEFINED)
+			{
+				final char keyChar = e.getKeyChar();
+				modified.put(e.getKeyCode(), mappedKeyCode);
+				e.setKeyCode(mappedKeyCode);
+				// arrow keys and fkeys do not have a character
+				e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
+				if (keyChar != KeyEvent.CHAR_UNDEFINED)
+				{
+					// If this key event has a valid key char then a key typed event may be received next,
+					// we must block it
+					blockedChars.add(keyChar);
 				}
 			}
 
@@ -209,6 +217,12 @@ class KeyRemappingListener implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
+		final char keyChar = e.getKeyChar();
+		if (keyChar != KeyEvent.CHAR_UNDEFINED)
+		{
+			blockedChars.remove(keyChar);
+		}
+
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			return;
@@ -218,23 +232,25 @@ class KeyRemappingListener implements KeyListener
 		{
 			modified.remove(e.getKeyCode());
 
+			int mappedKeyCode = KeyEvent.VK_UNDEFINED;
+
 			if (config.cameraRemap())
 			{
 				if (config.up().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_UP);
+					mappedKeyCode = KeyEvent.VK_UP;
 				}
 				else if (config.down().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_DOWN);
+					mappedKeyCode = KeyEvent.VK_DOWN;
 				}
 				else if (config.left().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_LEFT);
+					mappedKeyCode = KeyEvent.VK_LEFT;
 				}
 				else if (config.right().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_RIGHT);
+					mappedKeyCode = KeyEvent.VK_RIGHT;
 				}
 			}
 
@@ -242,56 +258,62 @@ class KeyRemappingListener implements KeyListener
 			{
 				if (config.f1().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F1);
+					mappedKeyCode = KeyEvent.VK_F1;
 				}
 				else if (config.f2().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F2);
+					mappedKeyCode = KeyEvent.VK_F2;
 				}
 				else if (config.f3().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F3);
+					mappedKeyCode = KeyEvent.VK_F3;
 				}
 				else if (config.f4().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F4);
+					mappedKeyCode = KeyEvent.VK_F4;
 				}
 				else if (config.f5().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F5);
+					mappedKeyCode = KeyEvent.VK_F5;
 				}
 				else if (config.f6().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F6);
+					mappedKeyCode = KeyEvent.VK_F6;
 				}
 				else if (config.f7().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F7);
+					mappedKeyCode = KeyEvent.VK_F7;
 				}
 				else if (config.f8().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F8);
+					mappedKeyCode = KeyEvent.VK_F8;
 				}
 				else if (config.f9().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F9);
+					mappedKeyCode = KeyEvent.VK_F9;
 				}
 				else if (config.f10().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F10);
+					mappedKeyCode = KeyEvent.VK_F10;
 				}
 				else if (config.f11().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F11);
+					mappedKeyCode = KeyEvent.VK_F11;
 				}
 				else if (config.f12().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_F12);
+					mappedKeyCode = KeyEvent.VK_F12;
 				}
 				else if (config.esc().matches(e))
 				{
-					e.setKeyCode(KeyEvent.VK_ESCAPE);
+					mappedKeyCode = KeyEvent.VK_ESCAPE;
 				}
+			}
+
+			if (mappedKeyCode != KeyEvent.VK_UNDEFINED)
+			{
+				e.setKeyCode(mappedKeyCode);
+				e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
 			}
 		}
 		else
@@ -302,6 +324,7 @@ class KeyRemappingListener implements KeyListener
 			{
 				modified.remove(e.getKeyCode());
 				e.setKeyCode(m);
+				e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
 			}
 		}
 	}
