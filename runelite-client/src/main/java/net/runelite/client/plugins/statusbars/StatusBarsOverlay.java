@@ -101,12 +101,6 @@ class StatusBarsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D g)
 	{
-		final Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-		if (widgetBankTitleBar != null && !widgetBankTitleBar.isHidden())
-		{
-			return null;
-		}
-
 		Viewport curViewport = null;
 		Widget curWidget = null;
 
@@ -121,7 +115,7 @@ class StatusBarsOverlay extends Overlay
 			}
 		}
 
-		if (curViewport == null || curWidget.isHidden())
+		if (curViewport == null)
 		{
 			return null;
 		}
