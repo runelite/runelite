@@ -362,9 +362,16 @@ public class DiscordPlugin extends Plugin
 	{
 		// Game state update does also full reset of discord state
 		discordState.reset();
-		discordState.triggerEvent(client.getGameState() == GameState.LOGGED_IN
-			? DiscordGameEventType.IN_GAME
-			: DiscordGameEventType.IN_MENU);
+                        
+                //update discord if in-game
+                if(client.getGameState() == GameState.LOGGED_IN){
+                    discordState.triggerEvent(DiscordGameEventType.IN_GAME);
+                    
+                //only update discord if setting is toggled
+                }else if(client.getGameState() == GameState.LOGIN_SCREEN && 
+                         config.showMainMenuActivity()){
+                    discordState.triggerEvent(DiscordGameEventType.IN_MENU);
+                }
 	}
 
 	private void checkForAreaUpdate()

@@ -120,4 +120,15 @@ public interface DiscordConfig extends Config
 	{
 		return true;
 	}
+        
+        @ConfigItem(
+		keyName = "showMainMenuActivity",
+		name = "Show main menu activity in discord",
+		description = "Configures if discord should display RuneLite activity while not logged in.",
+		position = 9
+	)
+	default boolean showMainMenuActivity()
+	{
+		return true;
+	}
 }
