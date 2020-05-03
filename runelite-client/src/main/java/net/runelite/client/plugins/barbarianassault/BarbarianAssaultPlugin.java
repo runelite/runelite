@@ -47,6 +47,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
@@ -60,6 +61,7 @@ import net.runelite.client.util.ImageUtil;
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
+	static final String CONFIG_GROUP = "barbarianAssault";
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
@@ -70,7 +72,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	private int inGameBit = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
-	private boolean playingCue = false;
+	private boolean playingCue;
 
 	@Getter
 	private Round currentRound;
@@ -121,6 +123,21 @@ public class BarbarianAssaultPlugin extends Plugin
 		gameTime = null;
 		currentWave = START_WAVE;
 		inGameBit = 0;
+		playingCue = false;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(CONFIG_GROUP))
+		{
+			return;
+		}
+
+		if (!config.notifyCallChange())
+		{
+			playingCue = false;
+		}
 	}
 
 	@Subscribe
