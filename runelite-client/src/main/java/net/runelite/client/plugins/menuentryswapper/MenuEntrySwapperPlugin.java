@@ -773,6 +773,46 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
+		else if (option.equals("value"))
+		{
+			if (config.shopBuy() != BuyMode.OFF)
+			{
+				switch (config.shopBuy())
+				{
+					case BUY_1:
+						swap("buy 1", option, target, index);
+						break;
+					case BUY_5:
+						swap("buy 5", option, target, index);
+						break;
+					case BUY_10:
+						swap("buy 10", option, target, index);
+						break;
+					case BUY_50:
+						swap("buy 50", option, target, index);
+						break;
+				}
+			}
+
+			if (config.shopSell() != SellMode.OFF)
+			{
+				switch (config.shopSell())
+				{
+					case SELL_1:
+						swap("sell 1", option, target, index);
+						break;
+					case SELL_5:
+						swap("sell 5", option, target, index);
+						break;
+					case SELL_10:
+						swap("sell 10", option, target, index);
+						break;
+					case SELL_50:
+						swap("sell 50", option, target, index);
+						break;
+				}
+			}
+		}
 
 		if (shiftModifier && config.swapTeleportSpell())
 		{

@@ -413,6 +413,26 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "shopBuy",
+		name = "Shop Buy",
+		description = "Swaps the Buy options with Value on items in shops."
+	)
+	default BuyMode shopBuy()
+	{
+		return BuyMode.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "shopSell",
+		name = "Shop Sell",
+		description = "Swaps the Sell options with Value on items in your inventory when selling to shops."
+	)
+	default SellMode shopSell()
+	{
+		return SellMode.OFF;
+	}
+
+	@ConfigItem(
 		keyName = "swapEssenceMineTeleport",
 		name = "Essence Mine Teleport",
 		description = "Swaps Talk-To with Teleport for NPCs which teleport you to the essence mine"
