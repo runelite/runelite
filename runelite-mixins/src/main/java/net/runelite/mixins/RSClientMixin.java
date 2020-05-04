@@ -1937,5 +1937,11 @@ public abstract class RSClientMixin implements RSClient
 	{
 		setStopTimeMs(1);
 	}
+
+	@Replace("doCheat")
+	static void doCheat(String cheat)
+	{
+		//This prevents the contents of all of our chat commands from getting sent to the server, no need to tell Jagex we're using the client
+	}
 }
 
