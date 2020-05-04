@@ -39,6 +39,7 @@ import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -63,6 +64,10 @@ class StatusBarsOverlay extends Overlay
 	private static final Color VENOMED_COLOR = new Color(0, 65, 0, 150);
 	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
 	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
+	private static final Color ENERGY_HEAL_COLOR = new Color (199,  118, 0, 218);
+	private static final Color RUN_STAMINA_COLOR = new Color(160, 124, 72, 255);
+	private static final Color SPECIAL_ATTACK_COLOR = new Color(3, 153, 0, 195);
+	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
 	private static final Color DISEASE_COLOR = new Color(255, 193, 75, 181);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
@@ -70,6 +75,8 @@ class StatusBarsOverlay extends Overlay
 	private static final int ICON_DIMENSIONS = 26;
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
 	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
+	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
+	private static final int MAX_RUN_ENERGY_VALUE = 100;
 
 	private final Client client;
 	private final StatusBarsConfig config;
@@ -81,6 +88,8 @@ class StatusBarsOverlay extends Overlay
 	private Image heartDisease;
 	private Image heartPoison;
 	private Image heartVenom;
+	private Image specialIcon;
+	private Image energyIcon;
 	private final Map<BarMode, BarRenderer> barRenderers = new EnumMap<>(BarMode.class);
 
 	@Inject
@@ -169,6 +178,32 @@ class StatusBarsOverlay extends Overlay
 			},
 			() -> PRAYER_HEAL_COLOR,
 			() -> prayerIcon
+		));
+		barRenderers.put(BarMode.RUN_ENERGY, new BarRenderer(
+			() -> MAX_RUN_ENERGY_VALUE,
+			client::getEnergy,
+			() -> getRestoreValue("Run Energy"),
+			() ->
+			{
+				if (client.getVar(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
+				{
+					return RUN_STAMINA_COLOR;
+				}
+				else
+				{
+					return ENERGY_COLOR;
+				}
+			},
+			() -> ENERGY_HEAL_COLOR,
+			() -> energyIcon
+		));
+		barRenderers.put(BarMode.SPECIAL_ATTACK, new BarRenderer(
+			() -> MAX_SPECIAL_ATTACK_VALUE,
+			() -> client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10,
+			() -> 0,
+			() -> SPECIAL_ATTACK_COLOR,
+			() -> SPECIAL_ATTACK_COLOR,
+			() -> specialIcon
 		));
 	}
 
@@ -264,7 +299,7 @@ class StatusBarsOverlay extends Overlay
 
 	private void buildIcons()
 	{
-		if (heartIcon != null && heartDisease != null && heartPoison != null && heartVenom != null)
+		if (heartIcon != null && heartDisease != null && heartPoison != null && heartVenom != null && energyIcon != null && specialIcon != null)
 		{
 			return;
 		}
@@ -273,5 +308,7 @@ class StatusBarsOverlay extends Overlay
 		heartDisease = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.DISEASE_HEART), ICON_DIMENSIONS, ICON_DIMENSIONS);
 		heartPoison = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.POISON_HEART), ICON_DIMENSIONS, ICON_DIMENSIONS);
 		heartVenom = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.VENOM_HEART), ICON_DIMENSIONS, ICON_DIMENSIONS);
+		energyIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_WALK_ICON, 0)), ICON_DIMENSIONS, ICON_DIMENSIONS);
+		specialIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON, 0)), ICON_DIMENSIONS, ICON_DIMENSIONS);
 	}
 }
