@@ -83,6 +83,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_RUNECRAFTING_ALTAR_ICON = "runecraftingAltarIcon";
 	static final String CONFIG_KEY_MINING_SITE_TOOLTIPS = "miningSiteTooltips";
 	static final String CONFIG_KEY_DUNGEON_TOOLTIPS = "dungeonTooltips";
+	static final String CONFIG_KEY_HUNTER_AREA_TOOLTIPS = "hunterAreaTooltips";
 
 	static
 	{
@@ -336,6 +337,14 @@ public class WorldMapPlugin extends Plugin
 		{
 			Arrays.stream(DungeonLocation.values())
 				.map(value -> new DungeonPoint(value, BLANK_ICON))
+				.forEach(worldMapPointManager::add);
+		}
+
+		worldMapPointManager.removeIf(HunterAreaPoint.class::isInstance);
+		if (config.hunterAreaTooltips())
+		{
+			Arrays.stream(HunterAreaLocation.values())
+				.map(value -> new HunterAreaPoint(value, BLANK_ICON))
 				.forEach(worldMapPointManager::add);
 		}
 	}
