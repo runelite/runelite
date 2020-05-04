@@ -29,5 +29,7 @@ public enum BarMode
 	DISABLED,
 	HITPOINTS,
 	PRAYER,
+	RUN_ENERGY,
+	SPECIAL_ATTACK,
 	;
 }
