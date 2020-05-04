@@ -50,7 +50,9 @@ public class WidgetID
 	public static final int PLAYER_TRADE_INVENTORY_GROUP_ID = 336;
 	public static final int FRIENDS_LIST_GROUP_ID = 429;
 	public static final int IGNORE_LIST_GROUP_ID = 432;
-	public static final int RAIDING_PARTY_GROUP_ID = 500;
+	public static final int RAIDING_PARTY_GROUP_ID = 500; // Party in minigame tab
+	public static final int RAIDING_PARTY_RECRUITMENT_BOARD_GROUP_ID = 507; // Party in recruiting board
+	public static final int RAIDING_PARTIES_RECRUITMENT_BOARD_GROUP_ID = 499; // Party list in recruiting board
 	public static final int EQUIPMENT_GROUP_ID = 387;
 	public static final int EQUIPMENT_INVENTORY_GROUP_ID = 85;
 	public static final int EMOTES_GROUP_ID = 216;
