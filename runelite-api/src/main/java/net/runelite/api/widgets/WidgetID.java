@@ -45,6 +45,7 @@ public class WidgetID
 	public static final int GRAND_EXCHANGE_GROUP_ID = 465;
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
 	public static final int INVENTORY_GROUP_ID = 149;
+	public static final int PLAYER_TRADE_CONFIRMATION_GROUP_ID = 334;
 	public static final int PLAYER_TRADE_SCREEN_GROUP_ID = 335;
 	public static final int PLAYER_TRADE_INVENTORY_GROUP_ID = 336;
 	public static final int FRIENDS_LIST_GROUP_ID = 429;
@@ -917,5 +918,19 @@ public class WidgetID
 	static class GauntletTimer
 	{
 		static final int CONTAINER = 2;
+	}
+
+	static class PlayerTradeConfirmation
+	{
+		static final int CONTAINER = 1;
+		static final int TRADING_WITH = 30;
+		static final int TRADE_MODIFIED_THEM = 31;
+	}
+
+	static class PlayerTradeOffer
+	{
+		static final int TRADE_MODIFIED_ME = 26;
+		static final int TRADE_MODIFIED_THEM = 29;
+		static final int TRADING_WITH = 31;
 	}
 }
