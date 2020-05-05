@@ -3,16 +3,10 @@ package net.runelite.client.plugins.stealingartefacts;
 import com.google.common.collect.ImmutableSet;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.Player;
-import net.runelite.api.Varbits;
+import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
@@ -55,6 +49,8 @@ public class StealingArtefactsPlugin extends Plugin
 	private static final ImmutableSet<Integer> ARTEFACT_ITEM_IDS = ImmutableSet.of(ItemID.STOLEN_PENDANT,
 			ItemID.STOLEN_GARNET_RING, ItemID.STOLEN_CIRCLET, ItemID.STOLEN_FAMILY_HEIRLOOM, ItemID.STOLEN_JEWELRY_BOX);
 
+	private NPC captainKhaled;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -63,9 +59,7 @@ public class StealingArtefactsPlugin extends Plugin
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invoke(() ->
-			{
-				stealingArtefactState = StealingArtefactState.getStealingArtefactState(client.getVar(Varbits.STEALING_ARTEFACT_STATE));
-			});
+					stealingArtefactState = StealingArtefactState.getStealingArtefactState(client.getVar(Varbits.STEALING_ARTEFACT_STATE)));
 		}
 		else
 		{
@@ -76,8 +70,11 @@ public class StealingArtefactsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		client.clearHintArrow();
 		overlayManager.remove(overlay);
 	}
+
+
 
 	private boolean hasArtefact()
 	{
@@ -98,10 +95,20 @@ public class StealingArtefactsPlugin extends Plugin
 		int stealingArtefactStateVarbit = client.getVar(Varbits.STEALING_ARTEFACT_STATE);
 		StealingArtefactState state = StealingArtefactState.getStealingArtefactState(stealingArtefactStateVarbit);
 
-		if (state != StealingArtefactState.DELIVER_ARTEFACT)
-		{
+		if (state != StealingArtefactState.DELIVER_ARTEFACT) {
+
 			stealingArtefactState = state;
+
+			if (state != StealingArtefactState.NO_TASK && state != StealingArtefactState.FAILURE) {
+				client.setHintArrow(stealingArtefactState.getWorldPoint());
+			} else {
+				client.clearHintArrow();
+			}
+
+		} else {
+			client.setHintArrow(captainKhaled);
 		}
+
 	}
 
 	@Subscribe
@@ -117,6 +124,15 @@ public class StealingArtefactsPlugin extends Plugin
 			{
 				stealingArtefactState = StealingArtefactState.FAILURE;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		if (event.getNpc().getId() == NpcID.CAPTAIN_KHALED)
+		{
+			captainKhaled = event.getNpc();
 		}
 	}
 
