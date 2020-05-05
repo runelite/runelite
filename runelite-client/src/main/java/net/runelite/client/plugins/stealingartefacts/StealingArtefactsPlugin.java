@@ -49,7 +49,7 @@ public class StealingArtefactsPlugin extends Plugin
 	private static final ImmutableSet<Integer> ARTEFACT_ITEM_IDS = ImmutableSet.of(ItemID.STOLEN_PENDANT,
 			ItemID.STOLEN_GARNET_RING, ItemID.STOLEN_CIRCLET, ItemID.STOLEN_FAMILY_HEIRLOOM, ItemID.STOLEN_JEWELRY_BOX);
 
-	private NPC captainKhaled;
+	private NPC captainKhaled = null;
 
 	@Override
 	protected void startUp() throws Exception
@@ -105,8 +105,10 @@ public class StealingArtefactsPlugin extends Plugin
 				client.clearHintArrow();
 			}
 
+		} else if (captainKhaled != null) {
+				client.setHintArrow(captainKhaled);
 		} else {
-			client.setHintArrow(captainKhaled);
+			client.clearHintArrow();
 		}
 
 	}
@@ -130,9 +132,12 @@ public class StealingArtefactsPlugin extends Plugin
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (event.getNpc().getId() == NpcID.CAPTAIN_KHALED)
+		if (event.getNpc().getId() == NpcID.CAPTAIN_KHALED_6972)
 		{
 			captainKhaled = event.getNpc();
+			if (stealingArtefactState == StealingArtefactState.DELIVER_ARTEFACT) {
+				client.setHintArrow(captainKhaled);
+			}
 		}
 	}
 
