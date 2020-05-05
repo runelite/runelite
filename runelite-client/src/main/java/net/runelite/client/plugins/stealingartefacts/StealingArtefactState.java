@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.awt.Color;
 import java.util.Map;
 
-public enum StealingArtefactsState
+public enum StealingArtefactState
 {
 	NO_TASK("No Task", Color.WHITE),
 	LOCATION_NORTH("North House", Color.YELLOW),
@@ -24,28 +24,28 @@ public enum StealingArtefactsState
 	@Getter(AccessLevel.PACKAGE)
 	private final Color color;
 
-	private static final Map<Integer, StealingArtefactsState> stealingArtefactsStates;
+	private static final Map<Integer, StealingArtefactState> stealingArtefactStates;
 
 	static
 	{
-		ImmutableMap.Builder<Integer, StealingArtefactsState> builder = new ImmutableMap.Builder<>();
+		ImmutableMap.Builder<Integer, StealingArtefactState> builder = new ImmutableMap.Builder<>();
 
-		for (StealingArtefactsState stealingArtefactsState : values())
+		for (StealingArtefactState stealingArtefactState : values())
 		{
-			builder.put(stealingArtefactsState.ordinal(), stealingArtefactsState);
+			builder.put(stealingArtefactState.ordinal(), stealingArtefactState);
 		}
 
-		stealingArtefactsStates = builder.build();
+		stealingArtefactStates = builder.build();
 	}
 
-	StealingArtefactsState(String description, Color color)
+	StealingArtefactState(String description, Color color)
 	{
 		this.description = description;
 		this.color = color;
 	}
 
-	public static StealingArtefactsState getStealingArtefactsState(int id)
+	public static StealingArtefactState getStealingArtefactState(int id)
 	{
-		return stealingArtefactsStates.get(id);
+		return stealingArtefactStates.get(id);
 	}
 }
