@@ -20,8 +20,8 @@ import java.util.stream.Stream;
 
 @PluginDescriptor(
 		name = "Stealing Artefacts",
-		description = "Show the location and status of your stealing artefact task.",
-		tags = {"thieving"},
+		description = "Show the location and status of your Stealing Artefact task.",
+		tags = {"thieving", "stealing", "artefact", "artefacts", "captain", "khaled"},
 		enabledByDefault = false
 )
 public class StealingArtefactsPlugin extends Plugin
@@ -73,8 +73,6 @@ public class StealingArtefactsPlugin extends Plugin
 		client.clearHintArrow();
 		overlayManager.remove(overlay);
 	}
-
-
 
 	private boolean hasArtefact()
 	{
