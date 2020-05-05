@@ -573,7 +573,12 @@ public enum Varbits
 	 *
 	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
 	 */
-	PVP_SPEC_ORB(8121);
+	PVP_SPEC_ORB(8121),
+
+	/**
+	 * Stealing Artefacts (Port Piscarilius Thieving)
+	 */
+	STEALING_ARTEFACT_STATE(4903);
 
 	/**
 	 * The raw varbit ID.
