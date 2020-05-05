@@ -63,8 +63,6 @@ dependencies {
     implementation(group = "net.sf.jopt-simple", name = "jopt-simple", version = "5.0.4")
     implementation(group = "org.apache.commons", name = "commons-text", version = "1.8")
     implementation(group = "org.jetbrains", name = "annotations", version = "19.0.0")
-    implementation(group = "org.jogamp.gluegen", name = "gluegen-rt", version = "2.3.2")
-    implementation(group = "org.jogamp.jogl", name = "jogl-all", version = "2.3.2")
     implementation(group = "org.jooq", name = "jooq", version = "3.13.1")
     implementation(group = "org.jooq", name = "jooq-codegen", version = "3.13.1")
     implementation(group = "org.jooq", name = "jooq-meta", version = "3.13.1")
@@ -78,14 +76,6 @@ dependencies {
     implementation(project(":http-api"))
 
     runtimeOnly(group = "org.pushing-pixels", name = "radiance-trident", version = "2.5.1")
-    runtimeOnly(group = "org.jogamp.gluegen", name = "gluegen-rt", version = "2.3.2", classifier = "natives-linux-amd64")
-    runtimeOnly(group = "org.jogamp.gluegen", name = "gluegen-rt", version = "2.3.2", classifier = "natives-linux-i586")
-    runtimeOnly(group = "org.jogamp.gluegen", name = "gluegen-rt", version = "2.3.2", classifier = "natives-windows-amd64")
-    runtimeOnly(group = "org.jogamp.gluegen", name = "gluegen-rt", version = "2.3.2", classifier = "natives-windows-i586")
-    runtimeOnly(group = "org.jogamp.jogl", name = "jogl-all", version = "2.3.2", classifier = "natives-linux-amd64")
-    runtimeOnly(group = "org.jogamp.jogl", name = "jogl-all", version = "2.3.2", classifier = "natives-linux-i586")
-    runtimeOnly(group = "org.jogamp.jogl", name = "jogl-all", version = "2.3.2", classifier = "natives-windows-amd64")
-    runtimeOnly(group = "org.jogamp.jogl", name = "jogl-all", version = "2.3.2", classifier = "natives-windows-i586")
     runtimeOnly(project(":injected-client"))
     runtimeOnly(project(":runescape-api"))
 
