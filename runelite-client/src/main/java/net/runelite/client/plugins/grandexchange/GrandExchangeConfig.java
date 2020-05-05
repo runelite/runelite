@@ -112,7 +112,8 @@ public interface GrandExchangeConfig extends Config
 		position = 8,
 		keyName = "geSearchMode",
 		name = "Search Mode",
-		description = "Default - Matches partial words only<br>"
+		description = "The search mode to use for the GE<br>"
+			+ "Default - Matches partial words only<br>"
 			+ "Fuzzy Only - Matches abbreviations and misspellings as well<br>"
 			+ "Fuzzy Fallback - Uses fuzzy only when no default matches found"
 	)
