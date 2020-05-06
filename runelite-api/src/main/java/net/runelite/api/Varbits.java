@@ -576,7 +576,16 @@ public enum Varbits
 	PVP_SPEC_ORB(8121),
 
 	/**
-	 * Stealing Artefacts (Port Piscarilius Thieving)
+	 * The player's state during the Stealing Artefacts task (Port Piscarilius Thieving)
+	 * 0 = NO_TASK
+	 * 1 = LOCATION_NORTH
+	 * 2 = LOCATION_SOUTHEAST
+	 * 3 = LOCATION_SOUTH
+	 * 4 = LOCATION_SOUTHWEST
+	 * 5 = LOCATION_WEST
+	 * 6 = LOCATION_NORTHWEST
+	 * 7 = FAILURE
+	 * 8 = DELIVER_ARTEFACT
 	 */
 	STEALING_ARTEFACT_STATE(4903);
 

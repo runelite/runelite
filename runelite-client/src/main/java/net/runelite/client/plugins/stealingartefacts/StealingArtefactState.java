@@ -23,18 +23,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.stealingartefacts;
 
 import com.google.common.collect.ImmutableMap;
+import java.awt.Color;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
-import java.awt.Color;
-import java.util.Map;
-
-public enum StealingArtefactState
+@Getter(AccessLevel.PACKAGE)
+enum StealingArtefactState
 {
 
 	NO_TASK("No Task", Color.WHITE, new WorldPoint(0, 0, 0)),
@@ -47,16 +46,11 @@ public enum StealingArtefactState
 	FAILURE("Failure", Color.RED, new WorldPoint(0, 0, 0)),
 	DELIVER_ARTEFACT("Deliver Artefact", Color.GREEN, new WorldPoint(0, 0, 0));
 
-	@Getter(AccessLevel.PACKAGE)
 	private final String description;
-
-	@Getter(AccessLevel.PACKAGE)
 	private final Color color;
-
-	@Getter(AccessLevel.PACKAGE)
-	private WorldPoint worldPoint;
-
 	private static final Map<Integer, StealingArtefactState> stealingArtefactStates;
+
+	private WorldPoint worldPoint;
 
 	static
 	{
@@ -77,7 +71,7 @@ public enum StealingArtefactState
 		this.worldPoint = worldPoint;
 	}
 
-	public static StealingArtefactState getStealingArtefactState(int id)
+	static StealingArtefactState getStealingArtefactState(int id)
 	{
 		return stealingArtefactStates.get(id);
 	}

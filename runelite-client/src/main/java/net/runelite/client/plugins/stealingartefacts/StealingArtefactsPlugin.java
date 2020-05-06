@@ -23,26 +23,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.stealingartefacts;
 
 import com.google.common.collect.ImmutableSet;
+import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.*;
+import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-
-import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 @PluginDescriptor(
 	name = "Stealing Artefacts",
@@ -50,8 +57,13 @@ import java.util.stream.Stream;
 	tags = {"thieving", "stealing", "artefact", "artefacts", "captain", "khaled"},
 	enabledByDefault = false
 )
+
 public class StealingArtefactsPlugin extends Plugin
 {
+	private static final ImmutableSet<Integer> PORT_PISCARILIUS_REGIONS = ImmutableSet.of(6970, 7226);
+	private static final ImmutableSet<Integer> ARTEFACT_ITEM_IDS = ImmutableSet.of(ItemID.STOLEN_PENDANT,
+		ItemID.STOLEN_GARNET_RING, ItemID.STOLEN_CIRCLET, ItemID.STOLEN_FAMILY_HEIRLOOM, ItemID.STOLEN_JEWELRY_BOX);
+
 	@Inject
 	private Client client;
 
@@ -70,12 +82,7 @@ public class StealingArtefactsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isInPortPiscariliusRegion;
 
-	private static final ImmutableSet<Integer> PORT_PISCARILIUS_REGIONS = ImmutableSet.of(6970, 7226);
-
-	private static final ImmutableSet<Integer> ARTEFACT_ITEM_IDS = ImmutableSet.of(ItemID.STOLEN_PENDANT,
-		ItemID.STOLEN_GARNET_RING, ItemID.STOLEN_CIRCLET, ItemID.STOLEN_FAMILY_HEIRLOOM, ItemID.STOLEN_JEWELRY_BOX);
-
-	private NPC captainKhaled = null;
+	private NPC captainKhaled;
 
 	@Override
 	protected void startUp() throws Exception
