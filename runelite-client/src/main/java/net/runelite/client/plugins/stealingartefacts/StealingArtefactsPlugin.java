@@ -35,6 +35,7 @@ import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
@@ -87,6 +88,7 @@ public class StealingArtefactsPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+
 		overlayManager.add(overlay);
 
 		if (client.getGameState() == GameState.LOGGED_IN)
@@ -100,7 +102,6 @@ public class StealingArtefactsPlugin extends Plugin
 	protected void shutDown()
 	{
 		client.clearHintArrow();
-		isInPortPiscariliusRegion = false;
 		stealingArtefactState = null;
 		captainKhaled = null;
 		overlayManager.remove(overlay);
@@ -175,7 +176,7 @@ public class StealingArtefactsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcSpawned event)
+	public void onNpcDespawned(NpcDespawned event)
 	{
 		if (event.getNpc().getId() == NpcID.CAPTAIN_KHALED_6972)
 		{
