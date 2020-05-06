@@ -93,10 +93,7 @@ public class StealingArtefactsPlugin extends Plugin
 		{
 			clientThread.invoke(() -> stealingArtefactState = StealingArtefactState.getStealingArtefactState(client.getVar(Varbits.STEALING_ARTEFACT_STATE)));
 		}
-		else
-		{
-			stealingArtefactState = null;
-		}
+
 	}
 
 	@Override

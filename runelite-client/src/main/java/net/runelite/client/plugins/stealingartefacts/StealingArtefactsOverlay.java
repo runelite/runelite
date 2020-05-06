@@ -53,14 +53,14 @@ class StealingArtefactsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 
-		panelComponent.getChildren().clear();
-
 		StealingArtefactState stealingArtefactState = plugin.getStealingArtefactState();
 
 		if (!plugin.isInPortPiscariliusRegion() || stealingArtefactState == null)
 		{
 			return null;
 		}
+
+		panelComponent.getChildren().clear();
 
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text("Stealing Artefacts")
