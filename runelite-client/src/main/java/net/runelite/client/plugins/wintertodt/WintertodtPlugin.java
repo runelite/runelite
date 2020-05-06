@@ -220,7 +220,6 @@ public class WintertodtPlugin extends Plugin
 
 	private void checkActionTimeout()
 	{
-		clientOverlayToggle = config.clientOverlayToggle();
 		if (currentActivity == WintertodtActivity.IDLE)
 		{
 			return;

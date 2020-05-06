@@ -50,10 +50,13 @@ class WintertodtOverlay extends OverlayPanel
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Wintertodt overlay"));
 	}
 
+	@Inject
+	private WintertodtConfig config;
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isInWintertodt() || plugin.clientOverlayToggle == false)
+		if (!plugin.isInWintertodt() || !config.displayOverlay())
 		{
 			return null;
 		}

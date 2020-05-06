@@ -130,12 +130,12 @@ public interface WintertodtConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 9,
-			keyName = "Overlay",
-			name = "Client Overlay Toggle",
-			description = "Toggle the overlay for this plugin"
+		position = 9,
+		keyName = "displayOverlay",
+		name = "Display Overlay",
+		description = "Display an overlay which shows your activity status and number of points and kindling held in your inventory."
 	)
-	default boolean clientOverlayToggle()
+	default boolean displayOverlay()
 	{
 		return true;
 	}
