@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -80,12 +81,12 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.OVERLAY;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
-import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
@@ -562,29 +563,12 @@ public class GroundItemsPlugin extends Plugin
 			return null;
 		}
 
-		ValueCalculationMode mode = config.valueCalculationMode();
+		final int price = getValueByMode(gePrice, haPrice);
 		for (PriceHighlight highlight : priceChecks)
 		{
-			switch (mode)
+			if (price > highlight.getPrice())
 			{
-				case GE:
-					if (gePrice > highlight.getPrice())
-					{
-						return highlight.getColor();
-					}
-					break;
-				case HA:
-					if (haPrice > highlight.getPrice())
-					{
-						return highlight.getColor();
-					}
-					break;
-				default: // case HIGHEST
-					if (gePrice > highlight.getPrice() || haPrice > highlight.getPrice())
-					{
-						return highlight.getColor();
-					}
-					break;
+				return highlight.getColor();
 			}
 		}
 
@@ -631,12 +615,26 @@ public class GroundItemsPlugin extends Plugin
 
 	private void notifyHighlightedItem(GroundItem item)
 	{
-		boolean shouldNotifyHighlighted = config.highlightedColor().equals(getHighlighted(
-			new NamedQuantity(item),
-			item.getGePrice(),
-			item.getHaPrice()));
+		final boolean shouldNotifyHighlighted = config.notifyHighlightedDrops() &&
+			config.highlightedColor().equals(getHighlighted(
+				new NamedQuantity(item),
+				item.getGePrice(),
+				item.getHaPrice()));
 
-		if (!config.notifyHighlightedDrops() || !shouldNotifyHighlighted)
+		final boolean shouldNotifyTier = config.notifyTier() != HighlightTier.OFF &&
+			getValueByMode(item.getGePrice(), item.getHaPrice()) > config.notifyTier().getValueFromTier(config) &&
+			FALSE.equals(hiddenItems.getUnchecked(new NamedQuantity(item)));
+
+		final String dropType;
+		if (shouldNotifyHighlighted)
+		{
+			dropType = "highlighted";
+		}
+		else if (shouldNotifyTier)
+		{
+			dropType = "valuable";
+		}
+		else
 		{
 			return;
 		}
@@ -645,7 +643,9 @@ public class GroundItemsPlugin extends Plugin
 		final StringBuilder notificationStringBuilder = new StringBuilder()
 			.append("[")
 			.append(local.getName())
-			.append("] received a highlighted drop: ")
+			.append("] received a ")
+			.append(dropType)
+			.append(" drop: ")
 			.append(item.getName());
 
 		if (item.getQuantity() > 1)
@@ -667,6 +667,19 @@ public class GroundItemsPlugin extends Plugin
 
 		notificationStringBuilder.append("!");
 		notifier.notify(notificationStringBuilder.toString());
+	}
+
+	private int getValueByMode(int gePrice, int haPrice)
+	{
+		switch (config.valueCalculationMode())
+		{
+			case GE:
+				return gePrice;
+			case HA:
+				return haPrice;
+			default: // Highest
+				return Math.max(gePrice, haPrice);
+		}
 	}
 
 	@Subscribe
