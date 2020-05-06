@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.events;
 
-public enum OverlayLayer
+import lombok.Value;
+import net.runelite.api.events.Event;
+import java.awt.Image;
+
+@Value
+public class DrawFinished implements Event
 {
-	/**
-	 * Render right above the scene (that contains actors and the surface)
-	 */
-	ABOVE_SCENE,
-
-	/**
-	 * Render under all interfaces, but above overheads
-	 */
-	UNDER_WIDGETS,
-
-	/**
-	 * Render under the right-click menu
-	 */
-	ABOVE_WIDGETS,
-
-	/**
-	 * Render overlay above all game elements
-	 */
-	ALWAYS_ON_TOP,
-
-	/**
-	 * Render over the map, even when it's fullscreen
-	 */
-	ABOVE_MAP,
-
-	/**
-	 * Render overlay after mirror is produced
-	 */
-	AFTER_MIRROR,
+	public Image image;
 }
