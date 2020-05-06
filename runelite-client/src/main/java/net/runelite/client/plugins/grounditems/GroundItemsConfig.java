@@ -30,6 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
+import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
@@ -141,10 +142,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyTier",
+		name = "Notify >= Tier",
+		description = "Configures what tier of highlight will cause a drop",
+		position = 8
+	)
+	default HighlightTier notifyTier()
+	{
+		return HighlightTier.OFF;
+	}
+
+	@ConfigItem(
 		keyName = "priceDisplayMode",
 		name = "Price Display Mode",
 		description = "Configures what price types are shown alongside of ground item name",
-		position = 8
+		position = 9
 	)
 	default PriceDisplayMode priceDisplayMode()
 	{
@@ -155,7 +167,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "itemHighlightMode",
 		name = "Item Highlight Mode",
 		description = "Configures how ground items will be highlighted",
-		position = 9
+		position = 10
 	)
 	default ItemHighlightMode itemHighlightMode()
 	{
@@ -166,7 +178,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "menuHighlightMode",
 		name = "Menu Highlight Mode",
 		description = "Configures what to highlight in right-click menu",
-		position = 10
+		position = 11
 	)
 	default MenuHighlightMode menuHighlightMode()
 	{
@@ -177,7 +189,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highlightValueCalculation",
 		name = "Highlight Value Calculation",
 		description = "Configures which coin value is used to determine highlight color",
-		position = 11
+		position = 12
 	)
 	default ValueCalculationMode valueCalculationMode()
 	{
