@@ -127,6 +127,8 @@ public class WintertodtPlugin extends Plugin
 
 	private int previousTimerValue;
 
+	public boolean clientOverlayToggle;
+
 	@Provides
 	WintertodtConfig getConfig(ConfigManager configManager)
 	{
@@ -155,6 +157,7 @@ public class WintertodtPlugin extends Plugin
 		numKindling = 0;
 		currentActivity = WintertodtActivity.IDLE;
 		lastActionTime = null;
+		clientOverlayToggle = config.clientOverlayToggle();
 	}
 
 	private boolean isInWintertodtRegion()
@@ -218,6 +221,7 @@ public class WintertodtPlugin extends Plugin
 
 	private void checkActionTimeout()
 	{
+		clientOverlayToggle = config.clientOverlayToggle();
 		if (currentActivity == WintertodtActivity.IDLE)
 		{
 			return;

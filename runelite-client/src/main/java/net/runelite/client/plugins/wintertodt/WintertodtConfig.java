@@ -128,4 +128,14 @@ public interface WintertodtConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 9,
+			keyName = "Overlay",
+			name = "Client Overlay Toggle",
+			description = "Toggle the overlay for this plugin"
+	)
+	default boolean clientOverlayToggle() {
+		return true;
+	}
 }

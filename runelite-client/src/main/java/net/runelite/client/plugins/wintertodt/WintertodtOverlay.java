@@ -53,7 +53,7 @@ class WintertodtOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isInWintertodt())
+		if (!plugin.isInWintertodt() || plugin.clientOverlayToggle == false)
 		{
 			return null;
 		}
