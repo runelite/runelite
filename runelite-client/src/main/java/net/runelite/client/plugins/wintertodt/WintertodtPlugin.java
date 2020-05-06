@@ -126,9 +126,7 @@ public class WintertodtPlugin extends Plugin
 	private Instant lastActionTime;
 
 	private int previousTimerValue;
-
-	public boolean clientOverlayToggle;
-
+	
 	@Provides
 	WintertodtConfig getConfig(ConfigManager configManager)
 	{
