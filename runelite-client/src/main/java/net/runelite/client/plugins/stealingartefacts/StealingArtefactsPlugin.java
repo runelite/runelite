@@ -85,14 +85,13 @@ public class StealingArtefactsPlugin extends Plugin
 	private NPC captainKhaled;
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		overlayManager.add(overlay);
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invoke(() ->
-				stealingArtefactState = StealingArtefactState.getStealingArtefactState(client.getVar(Varbits.STEALING_ARTEFACT_STATE)));
+			clientThread.invoke(() -> stealingArtefactState = StealingArtefactState.getStealingArtefactState(client.getVar(Varbits.STEALING_ARTEFACT_STATE)));
 		}
 		else
 		{
@@ -101,9 +100,12 @@ public class StealingArtefactsPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		client.clearHintArrow();
+		isInPortPiscariliusRegion = false;
+		stealingArtefactState = null;
+		captainKhaled = null;
 		overlayManager.remove(overlay);
 	}
 
@@ -122,19 +124,18 @@ public class StealingArtefactsPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int stealingArtefactStateVarbit = client.getVar(Varbits.STEALING_ARTEFACT_STATE);
-		StealingArtefactState state = StealingArtefactState.getStealingArtefactState(stealingArtefactStateVarbit);
+		StealingArtefactState state = StealingArtefactState.getStealingArtefactState(client.getVar(Varbits.STEALING_ARTEFACT_STATE));
 
 		if (state != StealingArtefactState.DELIVER_ARTEFACT)
 		{
 			stealingArtefactState = state;
-			if (state != StealingArtefactState.NO_TASK && state != StealingArtefactState.FAILURE)
+			if (state == StealingArtefactState.NO_TASK || state == StealingArtefactState.FAILURE)
 			{
-				client.setHintArrow(stealingArtefactState.getWorldPoint());
+				client.clearHintArrow();
 			}
 			else
 			{
-				client.clearHintArrow();
+				client.setHintArrow(stealingArtefactState.getWorldPoint());
 			}
 		}
 		else if (captainKhaled != null)
@@ -172,6 +173,19 @@ public class StealingArtefactsPlugin extends Plugin
 			if (stealingArtefactState == StealingArtefactState.DELIVER_ARTEFACT)
 			{
 				client.setHintArrow(captainKhaled);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcSpawned event)
+	{
+		if (event.getNpc().getId() == NpcID.CAPTAIN_KHALED_6972)
+		{
+			captainKhaled = null;
+			if (stealingArtefactState == StealingArtefactState.DELIVER_ARTEFACT)
+			{
+				client.clearHintArrow();
 			}
 		}
 	}

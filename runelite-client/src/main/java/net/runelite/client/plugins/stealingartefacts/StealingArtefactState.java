@@ -29,10 +29,12 @@ import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.util.Map;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter(AccessLevel.PACKAGE)
+@AllArgsConstructor
 enum StealingArtefactState
 {
 
@@ -62,13 +64,6 @@ enum StealingArtefactState
 		}
 
 		stealingArtefactStates = builder.build();
-	}
-
-	StealingArtefactState(String description, Color color, WorldPoint worldPoint)
-	{
-		this.description = description;
-		this.color = color;
-		this.worldPoint = worldPoint;
 	}
 
 	static StealingArtefactState getStealingArtefactState(int id)
