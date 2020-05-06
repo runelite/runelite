@@ -28,36 +28,47 @@ package net.runelite.client.plugins.chatfilter;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.inject.Provides;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.OverheadTextChanged;
+import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.ClanManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.MessageNode;
-import net.runelite.api.Player;
-import net.runelite.client.events.ConfigChanged;
-import net.runelite.api.events.OverheadTextChanged;
-import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.ClanManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.Text;
-import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Chat Filter",
 	description = "Censor user configurable words or patterns from chat",
 	enabledByDefault = false
 )
+@Slf4j
 public class ChatFilterPlugin extends Plugin
 {
+	private static final String COUNT_FORMAT = " (%d)";
 	private static final Splitter NEWLINE_SPLITTER = Splitter
 		.on("\n")
 		.omitEmptyStrings()
@@ -69,6 +80,7 @@ public class ChatFilterPlugin extends Plugin
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private final List<Pattern> filteredPatterns = new ArrayList<>();
 	private final List<Pattern> filteredNamePatterns = new ArrayList<>();
+	private ListMultimap<String, Integer> duplicateChatCache = LinkedListMultimap.create();
 
 	@Inject
 	private Client client;
@@ -96,6 +108,7 @@ public class ChatFilterPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		filteredPatterns.clear();
+		duplicateChatCache.clear();
 		client.refreshChat();
 	}
 
@@ -111,44 +124,34 @@ public class ChatFilterPlugin extends Plugin
 		int intStackSize = client.getIntStackSize();
 		int messageType = intStack[intStackSize - 2];
 		int messageId = intStack[intStackSize - 1];
-
 		ChatMessageType chatMessageType = ChatMessageType.of(messageType);
-
-		// Only filter public chat and private messages
-		switch (chatMessageType)
-		{
-			case PUBLICCHAT:
-			case MODCHAT:
-			case AUTOTYPER:
-			case PRIVATECHAT:
-			case MODPRIVATECHAT:
-			case FRIENDSCHAT:
-				break;
-			case LOGINLOGOUTNOTIFICATION:
-				if (config.filterLogin())
-				{
-					// Block the message
-					intStack[intStackSize - 3] = 0;
-				}
-				return;
-			default:
-				return;
-		}
-
 		MessageNode messageNode = client.getMessages().get(messageId);
 		String name = messageNode.getName();
-		if (!shouldFilterPlayerMessage(name))
-		{
-			return;
-		}
-
 		String[] stringStack = client.getStringStack();
 		int stringStackSize = client.getStringStackSize();
-
 		String message = stringStack[stringStackSize - 1];
-		String censoredMessage = censorMessage(name, message);
+		String fullMessage = messageNode.getName() + message;
+		boolean shouldBlockMessage = false;
 
-		if (censoredMessage == null)
+		if (shouldCollapseMessageType(chatMessageType))
+		{
+			shouldBlockMessage = duplicateChatCache.containsKey(fullMessage) &&
+					Iterables.getLast(duplicateChatCache.get(fullMessage)) != messageId ||
+					shouldBlockDuplicatePlayerChat(fullMessage, chatMessageType);
+		}
+
+		// Only filter public chat and private messages
+		if (shouldFilterMessageType(chatMessageType) && shouldFilterPlayerMessage(name))
+		{
+			message = censorMessage(name, message);
+			shouldBlockMessage |= message == null;
+		}
+		else if (chatMessageType == ChatMessageType.LOGINLOGOUTNOTIFICATION && config.filterLogin())
+		{
+			shouldBlockMessage = true;
+		}
+
+		if (shouldBlockMessage)
 		{
 			// Block the message
 			intStack[intStackSize - 3] = 0;
@@ -156,7 +159,7 @@ public class ChatFilterPlugin extends Plugin
 		else
 		{
 			// Replace the message
-			stringStack[stringStackSize - 1] = censoredMessage;
+			stringStack[stringStackSize - 1] = addCountToGameMessage(message, duplicateChatCache.get(fullMessage).size());
 		}
 	}
 
@@ -291,5 +294,93 @@ public class ChatFilterPlugin extends Plugin
 			}
 		}
 		return false;
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (shouldCollapseMessageType(chatMessage.getType()))
+		{
+			duplicateChatCache.put(chatMessage.getName() + chatMessage.getMessage(), chatMessage.getMessageNode().getId());
+		}
+		if (duplicateChatCache.keySet().size() > config.maxTrackedChats())
+		{
+			cleanupChatTrackers();
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			duplicateChatCache.clear();
+		}
+	}
+
+	private void cleanupChatTrackers()
+	{
+		log.debug("Cleaning up chat counts. Current size: {}", duplicateChatCache.keySet().size());
+		duplicateChatCache.keySet().removeIf(key -> duplicateChatCache.get(key).size() <= 1);
+		log.debug("After clearing messages with count == 1: {}", duplicateChatCache.keySet().size());
+		// Keep at least a buffer of 10 free spaces
+		if (duplicateChatCache.keySet().size() > config.maxTrackedChats() - 10)
+		{
+			duplicateChatCache.clear();
+		}
+	}
+
+	private boolean shouldFilterMessageType(ChatMessageType chatMessageType)
+	{
+		switch (chatMessageType)
+		{
+			case PUBLICCHAT:
+			case MODCHAT:
+			case AUTOTYPER:
+			case PRIVATECHAT:
+			case MODPRIVATECHAT:
+			case FRIENDSCHAT:
+				return true;
+			case LOGINLOGOUTNOTIFICATION:
+			default:
+				return false;
+		}
+	}
+
+	private boolean shouldCollapseMessageType(ChatMessageType chatMessageType)
+	{
+		switch (chatMessageType)
+		{
+			case ENGINE:
+			case GAMEMESSAGE:
+			case NPC_EXAMINE:
+			case OBJECT_EXAMINE:
+			case SPAM:
+				return true;
+			case PUBLICCHAT:
+				return config.consolidatePlayerChat();
+			default:
+				return false;
+		}
+	}
+
+	private boolean shouldBlockDuplicatePlayerChat(String fullMessage, ChatMessageType chatMessageType)
+	{
+		return chatMessageType == ChatMessageType.PUBLICCHAT &&
+				config.maxRepeatedPublicChats() > 1 &&
+				duplicateChatCache.get(fullMessage).size() > config.maxRepeatedPublicChats();
+	}
+
+	private String addCountToGameMessage(String gameMessage, int count)
+	{
+		if (count > 1)
+		{
+			return gameMessage +
+					ColorUtil.wrapWithColorTag(String.format(COUNT_FORMAT, count), config.chatCountColor());
+		}
+		else
+		{
+			return gameMessage;
+		}
 	}
 }

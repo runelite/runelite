@@ -28,6 +28,9 @@ package net.runelite.client.plugins.chatfilter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
+
+import java.awt.Color;
 
 @ConfigGroup("chatfilter")
 public interface ChatFilterConfig extends Config
@@ -107,5 +110,50 @@ public interface ChatFilterConfig extends Config
 	default boolean filterLogin()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+			keyName = "chatCountColor",
+			name = "Default count color",
+			description = "Configures the color for the count of game messages",
+			position = 8
+	)
+	default Color chatCountColor()
+	{
+		return new Color(0xA00080);
+	}
+
+	@ConfigItem(
+			keyName = "consolidatePlayerChat",
+			name = "Consolidate Player Chat",
+			description = "Configures consolidation of player chat",
+			position = 9
+	)
+	default boolean consolidatePlayerChat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "maxRepeatedPublicChats",
+			name = "Max repeated public chats",
+			description = "Blocks messages if repeated this many times. 0 is off",
+			position = 10
+	)
+	default int maxRepeatedPublicChats()
+	{
+		return 5;
+	}
+
+	@ConfigItem(
+			keyName = "maxTrackedChats",
+			name = "Max Tracked Chats",
+			description = "Configures the maximum number of chats that are tracked. Suggested 500",
+			position = 11
+	)
+	@Range(min = 100)
+	default int maxTrackedChats()
+	{
+		return 500;
 	}
 }
