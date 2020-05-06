@@ -738,9 +738,6 @@ public class RaidsPlugin extends Plugin
 		if (config.worldDisplay())
 		{
 			worldString = " on W" + client.getWorld();
-		} else
-		{
-			worldString = "";
 		}
 
 		String response = new ChatMessageBuilder()
