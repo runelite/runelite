@@ -157,7 +157,6 @@ public class WintertodtPlugin extends Plugin
 		numKindling = 0;
 		currentActivity = WintertodtActivity.IDLE;
 		lastActionTime = null;
-		clientOverlayToggle = config.clientOverlayToggle();
 	}
 
 	private boolean isInWintertodtRegion()

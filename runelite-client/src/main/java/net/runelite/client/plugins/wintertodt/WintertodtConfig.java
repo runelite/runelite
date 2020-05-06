@@ -135,7 +135,8 @@ public interface WintertodtConfig extends Config
 			name = "Client Overlay Toggle",
 			description = "Toggle the overlay for this plugin"
 	)
-	default boolean clientOverlayToggle() {
+	default boolean clientOverlayToggle()
+	{
 		return true;
 	}
 }
