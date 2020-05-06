@@ -193,6 +193,8 @@ public class RaidsPlugin extends Plugin
 
 	private RaidsTimer timer;
 
+	private String worldString;
+
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
 	{
@@ -733,11 +735,20 @@ public class RaidsPlugin extends Plugin
 			return;
 		}
 
+		if (config.worldDisplay())
+		{
+			worldString = " on W" + client.getWorld();
+		} else
+		{
+			worldString = "";
+		}
+
 		String response = new ChatMessageBuilder()
 			.append(ChatColorType.HIGHLIGHT)
 			.append("Layout: ")
 			.append(ChatColorType.NORMAL)
 			.append(layoutMessage)
+			.append(worldString)
 			.build();
 
 		log.debug("Setting response {}", response);

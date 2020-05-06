@@ -101,6 +101,17 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
+		keyName = "worldDisplay",
+		name = "World in !layout command",
+		description = "Include your current world in the !layout chat command"
+	)
+	default boolean worldDisplay()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
 		keyName = "whitelistedRooms",
 		name = "Whitelisted rooms",
 		description = "Display whitelisted rooms in green on the overlay. Separate with comma (full name)"
@@ -111,7 +122,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "blacklistedRooms",
 		name = "Blacklisted rooms",
 		description = "Display blacklisted rooms in red on the overlay. Separate with comma (full name)"
@@ -122,7 +133,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "enableRotationWhitelist",
 		name = "Enable rotation whitelist",
 		description = "Enable the rotation whitelist"
@@ -133,7 +144,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "whitelistedRotations",
 		name = "Whitelisted rotations",
 		description = "Warn when boss rotation doesn't match a whitelisted one. Add rotations like: tekton, muttadiles, guardians - each rotation on its own line"
@@ -144,7 +155,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "enableLayoutWhitelist",
 		name = "Enable layout whitelist",
 		description = "Enable the layout whitelist"
@@ -155,7 +166,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "whitelistedLayouts",
 		name = "Whitelisted layouts",
 		description = "Warn when layout doesn't match a whitelisted one. Add layouts like CFSCPPCSCF separated with comma"
@@ -166,7 +177,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "layoutMessage",
 		name = "Send raid layout message when entering raid",
 		description = "Sends game message with raid layout on entering new raid"
@@ -177,7 +188,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 14,
 		keyName = "showLootValue",
 		name = "Show Loot Value",
 		description = "Shows the value of your loot at the end of a raid"
@@ -188,7 +199,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 15,
 		keyName = "screenshotHotkey",
 		name = "Scouter screenshot hotkey",
 		description = "Hotkey used to screenshot the scouting overlay"
@@ -199,7 +210,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 16,
 		keyName = "uploadScreenshot",
 		name = "Upload scouting screenshot",
 		description = "Uploads the scouting screenshot to Imgur or the clipboard"
