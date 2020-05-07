@@ -50,9 +50,9 @@ enum StealingArtefactState
 
 	private final String description;
 	private final Color color;
-	private static final Map<Integer, StealingArtefactState> stealingArtefactStates;
-
 	private WorldPoint worldPoint;
+
+	private static final Map<Integer, StealingArtefactState> stealingArtefactStates;
 
 	static
 	{
@@ -66,8 +66,8 @@ enum StealingArtefactState
 		stealingArtefactStates = builder.build();
 	}
 
-	static StealingArtefactState getStealingArtefactState(int id)
+	static StealingArtefactState getState(int varbitValue)
 	{
-		return stealingArtefactStates.get(id);
+		return stealingArtefactStates.get(varbitValue);
 	}
 }

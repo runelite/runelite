@@ -81,7 +81,7 @@ public class StealingArtefactsPlugin extends Plugin
 	private StealingArtefactState stealingArtefactState;
 
 	@Getter(AccessLevel.PACKAGE)
-	private boolean isInPortPiscariliusRegion;
+	private boolean inPortPiscariliusRegion;
 
 	private NPC captainKhaled;
 
@@ -93,7 +93,7 @@ public class StealingArtefactsPlugin extends Plugin
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invoke(() -> stealingArtefactState = StealingArtefactState.getStealingArtefactState(client.getVar(Varbits.STEALING_ARTEFACT_STATE)));
+			clientThread.invoke(() -> stealingArtefactState = StealingArtefactState.getState(client.getVar(Varbits.STEALING_ARTEFACT_STATE)));
 		}
 
 	}
@@ -122,7 +122,7 @@ public class StealingArtefactsPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		StealingArtefactState state = StealingArtefactState.getStealingArtefactState(client.getVar(Varbits.STEALING_ARTEFACT_STATE));
+		StealingArtefactState state = StealingArtefactState.getState(client.getVar(Varbits.STEALING_ARTEFACT_STATE));
 
 		if (state != StealingArtefactState.DELIVER_ARTEFACT)
 		{
@@ -195,7 +195,7 @@ public class StealingArtefactsPlugin extends Plugin
 
 		if (player != null)
 		{
-			isInPortPiscariliusRegion = PORT_PISCARILIUS_REGIONS.contains(player.getWorldLocation().getRegionID());
+			inPortPiscariliusRegion = PORT_PISCARILIUS_REGIONS.contains(player.getWorldLocation().getRegionID());
 		}
 	}
 }
