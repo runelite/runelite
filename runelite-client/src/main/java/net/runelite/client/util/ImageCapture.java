@@ -27,15 +27,23 @@ package net.runelite.client.util;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.DateFormat;
@@ -43,18 +51,26 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Consumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Point;
 import net.runelite.api.WorldType;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.DrawManager;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -76,6 +92,10 @@ public class ImageCapture
 	private final Notifier notifier;
 	private final OkHttpClient okHttpClient;
 	private final Gson gson;
+	private final DrawManager drawManager;
+	private final ScheduledExecutorService executor;
+	private final ClientUI clientUi;
+	private final ClientThread clientThread;
 	private final String imgurClientId;
 
 	@Inject
@@ -84,6 +104,10 @@ public class ImageCapture
 		final Notifier notifier,
 		final OkHttpClient okHttpClient,
 		final Gson gson,
+		final DrawManager drawManager,
+		final ScheduledExecutorService executor,
+		final ClientUI clientUi,
+		final ClientThread clientThread,
 		@Named("runelite.imgur.client.id") final String imgurClientId
 	)
 	{
@@ -91,20 +115,22 @@ public class ImageCapture
 		this.notifier = notifier;
 		this.okHttpClient = okHttpClient;
 		this.gson = gson;
+		this.drawManager = drawManager;
+		this.executor = executor;
+		this.clientUi = clientUi;
+		this.clientThread = clientThread;
 		this.imgurClientId = imgurClientId;
 	}
 
 	/**
-	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
-	 * and optionally uploads it to an image-hosting service.
+	 * Saves an image to RuneLite's screenshots directory.
 	 *
-	 * @param screenshot BufferedImage to capture.
-	 * @param fileName Filename to use, without file extension.
-	 * @param subDir Directory within the player screenshots dir to store the captured screenshot to.
-	 * @param notify Send a notification to the system tray when the image is captured.
-	 * @param imageUploadStyle which method to use to upload the screenshot (Imgur or directly to clipboard).
+	 * @param options The options to use to save the screenshot, such as {@code fileName}, {@code subDir},
+	 *                {@code notify}, and {@code imageUploadStyle}.
+	 *
+	 * @see ImageCaptureOptions
 	 */
-	public void takeScreenshot(BufferedImage screenshot, String fileName, @Nullable String subDir, boolean notify, ImageUploadStyle imageUploadStyle)
+	public void takeScreenshot(@Nonnull final ImageCaptureOptions options)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -113,6 +139,103 @@ public class ImageCapture
 			return;
 		}
 
+		if (options.getScreenshot() == null)
+		{
+			captureScreenshot(options);
+		}
+		else
+		{
+			saveScreenshot(options.getScreenshot(), options);
+		}
+	}
+
+	/**
+	 * Captures a screenshot of the game and client frame to an image and saves it in RuneLite's screenshots directory.
+	 *
+	 * @param options The options to use to save the screenshot, such as {@code fileName}, {@code subDir},
+	 *                {@code notify}, and {@code imageUploadStyle}.
+	 *
+	 * @see ImageCaptureOptions
+	 */
+	private void captureScreenshot(final ImageCaptureOptions options)
+	{
+		drawManager.requestNextFrameListener((img) ->
+			executor.submit(() ->
+			{
+				final BufferedImage screenshot = options.isIncludeFrame()
+					? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
+					: new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+				final Graphics2D graphics = screenshot.createGraphics();
+
+				int gameOffsetX = 0;
+				int gameOffsetY = 0;
+
+				// Create client UI on screenshot before drawing game to it
+				if (options.isIncludeFrame())
+				{
+					// Draw the client frame onto the screenshot
+					try
+					{
+						SwingUtilities.invokeAndWait(() -> clientUi.paint(graphics));
+					}
+					catch (InterruptedException | InvocationTargetException e)
+					{
+						log.warn("unable to paint client UI on screenshot", e);
+					}
+
+					// Evaluate the position of the game inside the frame
+					final Point canvasOffset = clientUi.getCanvasOffset();
+					gameOffsetX = canvasOffset.getX();
+					gameOffsetY = canvasOffset.getY();
+				}
+
+				// Create graphics and evaluate the position of the game inside the screenshot frame
+				graphics.translate(gameOffsetX, gameOffsetY);
+
+				// Draw the game onto the screenshot
+				graphics.drawImage(img, 0, 0, null);
+
+				// Save graphics2d properties so we can restore them later
+				final AffineTransform transform = graphics.getTransform();
+				final Stroke stroke = graphics.getStroke();
+				final Composite composite = graphics.getComposite();
+				final Paint paint = graphics.getPaint();
+				final RenderingHints renderingHints = graphics.getRenderingHints();
+				final Color background = graphics.getBackground();
+
+				clientThread.invoke(() ->
+				{
+					// Draw overlays
+					for (final Consumer<Graphics2D> overlay : options.getOverlays())
+					{
+						overlay.accept(graphics);
+
+						// Restore graphics2d properties
+						graphics.setTransform(transform);
+						graphics.setStroke(stroke);
+						graphics.setComposite(composite);
+						graphics.setPaint(paint);
+						graphics.setRenderingHints(renderingHints);
+						graphics.setBackground(background);
+					}
+
+					// Save screenshot to file
+					saveScreenshot(screenshot, options);
+				});
+			}));
+	}
+
+	/**
+	 * Writes an image to a png image saves it in RuneLite's screenshots directory.
+	 *
+	 * @param screenshot The image to save
+	 * @param options    The options to use to save the screenshot, such as {@code fileName}, {@code subDir},
+	 *                   {@code notify}, and {@code imageUploadStyle}.
+	 *
+	 * @see ImageCaptureOptions
+	 */
+	private void saveScreenshot(final BufferedImage screenshot, final ImageCaptureOptions options)
+	{
 		File playerFolder;
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
@@ -132,9 +255,9 @@ public class ImageCapture
 				playerDir += "-Tournament";
 			}
 
-			if (!Strings.isNullOrEmpty(subDir))
+			if (!Strings.isNullOrEmpty(options.getSubDir()))
 			{
-				playerDir += File.separator + subDir;
+				playerDir += File.separator + options.getSubDir();
 			}
 
 			playerFolder = new File(SCREENSHOT_DIR, playerDir);
@@ -146,6 +269,7 @@ public class ImageCapture
 
 		playerFolder.mkdirs();
 
+		String fileName = Strings.isNullOrEmpty(options.getFileName()) ? "" : options.getFileName();
 		fileName += (fileName.isEmpty() ? "" : " ") + format(new Date());
 
 		try
@@ -162,22 +286,22 @@ public class ImageCapture
 
 			ImageIO.write(screenshot, "PNG", screenshotFile);
 
-			if (imageUploadStyle == ImageUploadStyle.IMGUR)
+			if (options.getImageUploadStyle() == ImageUploadStyle.IMGUR)
 			{
-				uploadScreenshot(screenshotFile, notify);
+				uploadScreenshot(screenshotFile, options.isNotify());
 			}
-			else if (imageUploadStyle == ImageUploadStyle.CLIPBOARD)
+			else if (options.getImageUploadStyle() == ImageUploadStyle.CLIPBOARD)
 			{
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				TransferableBufferedImage transferableBufferedImage = new TransferableBufferedImage(screenshot);
 				clipboard.setContents(transferableBufferedImage, null);
 
-				if (notify)
+				if (options.isNotify())
 				{
 					notifier.notify("A screenshot was saved and inserted into your clipboard!", TrayIcon.MessageType.INFO);
 				}
 			}
-			else if (notify)
+			else if (options.isNotify())
 			{
 				notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
 			}
@@ -192,11 +316,36 @@ public class ImageCapture
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
 	 * and optionally uploads it to an image-hosting service.
 	 *
+	 * @deprecated Superseded in functionality by {@link ImageCapture#takeScreenshot(ImageCaptureOptions)}
+	 * @param screenshot BufferedImage to capture.
+	 * @param fileName Filename to use, without file extension.
+	 * @param subDir Directory within the player screenshots dir to store the captured screenshot to.
+	 * @param notify Send a notification to the system tray when the image is captured.
+	 * @param imageUploadStyle which method to use to upload the screenshot (Imgur or directly to clipboard).
+	 */
+	@Deprecated
+	public void takeScreenshot(BufferedImage screenshot, String fileName, @Nullable String subDir, boolean notify, ImageUploadStyle imageUploadStyle)
+	{
+		takeScreenshot(ImageCaptureOptions.builder()
+			.screenshot(screenshot)
+			.fileName(fileName)
+			.subDir(subDir)
+			.notify(notify)
+			.imageUploadStyle(imageUploadStyle)
+			.build());
+	}
+
+	/**
+	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
+	 * and optionally uploads it to an image-hosting service.
+	 *
+	 * @deprecated Superseded in functionality by {@link ImageCapture#takeScreenshot(ImageCaptureOptions)}
 	 * @param screenshot BufferedImage to capture.
 	 * @param fileName Filename to use, without file extension.
 	 * @param notify Send a notification to the system tray when the image is captured.
 	 * @param imageUploadStyle which method to use to upload the screenshot (Imgur or directly to clipboard).
 	 */
+	@Deprecated
 	public void takeScreenshot(BufferedImage screenshot, String fileName, boolean notify, ImageUploadStyle imageUploadStyle)
 	{
 		takeScreenshot(screenshot, fileName, null, notify, imageUploadStyle);
