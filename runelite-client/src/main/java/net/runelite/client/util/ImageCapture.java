@@ -26,9 +26,11 @@
 package net.runelite.client.util;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
@@ -51,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
@@ -65,12 +68,16 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
+import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
+import net.runelite.client.ui.FontManager;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -87,6 +94,12 @@ public class ImageCapture
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
 	private static final MediaType JSON = MediaType.parse("application/json");
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
+	private static final int REPORT_BUTTON_X_OFFSET = 437;
+	private static final Set<Integer> REPORT_BUTTON_TLIS = ImmutableSet.of(
+		WidgetID.FIXED_VIEWPORT_GROUP_ID,
+		WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID,
+		WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID);
 
 	private final Client client;
 	private final Notifier notifier;
@@ -98,6 +111,8 @@ public class ImageCapture
 	private final ClientThread clientThread;
 	private final String imgurClientId;
 
+	private BufferedImage reportButton;
+
 	@Inject
 	private ImageCapture(
 		final Client client,
@@ -108,6 +123,7 @@ public class ImageCapture
 		final ScheduledExecutorService executor,
 		final ClientUI clientUi,
 		final ClientThread clientThread,
+		final SpriteManager spriteManager,
 		@Named("runelite.imgur.client.id") final String imgurClientId
 	)
 	{
@@ -120,6 +136,8 @@ public class ImageCapture
 		this.clientUi = clientUi;
 		this.clientThread = clientThread;
 		this.imgurClientId = imgurClientId;
+
+		spriteManager.getSpriteAsync(SpriteID.CHATBOX_REPORT_BUTTON, 0, s -> reportButton = s);
 	}
 
 	/**
@@ -400,6 +418,41 @@ public class ImageCapture
 				}
 			}
 		});
+	}
+
+	/**
+	 * Overlays the current date over the report button, replacing the "Report" text, in the format
+	 * {@code Jan. 01 1970}.
+	 *
+	 * @param graphics Graphics used to draw on the game screen.
+	 */
+	public void displayDateOverlay(final Graphics2D graphics)
+	{
+		if (reportButton == null || !REPORT_BUTTON_TLIS.contains(client.getTopLevelInterfaceId()))
+		{
+			return;
+		}
+
+		final int clientHeight = client.getCanvasHeight();
+		final int y = clientHeight - reportButton.getHeight() - 1;
+
+		graphics.drawImage(reportButton, REPORT_BUTTON_X_OFFSET, y, null);
+
+		graphics.setFont(FontManager.getRunescapeSmallFont());
+		final FontMetrics fontMetrics = graphics.getFontMetrics();
+
+		final String date = DATE_FORMAT.format(new Date());
+		final int dateWidth = fontMetrics.stringWidth(date);
+		final int dateHeight = fontMetrics.getHeight();
+
+		final int textX = REPORT_BUTTON_X_OFFSET + reportButton.getWidth() / 2 - dateWidth / 2;
+		final int textY = y + reportButton.getHeight() / 2 + dateHeight / 2;
+
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(date, textX + 1, textY + 1);
+
+		graphics.setColor(Color.WHITE);
+		graphics.drawString(date, textX, textY);
 	}
 
 	private static String format(Date date)
