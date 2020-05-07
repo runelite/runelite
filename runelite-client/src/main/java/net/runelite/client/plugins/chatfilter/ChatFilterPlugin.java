@@ -32,7 +32,11 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -41,9 +45,11 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -129,7 +135,6 @@ public class ChatFilterPlugin extends Plugin
 		int stringStackSize = client.getStringStackSize();
 		String message = stringStack[stringStackSize - 1];
 		String fullMessage = messageNode.getName() + message;
-
 		boolean shouldBlockMessage = false;
 
 		if (shouldCollapseMessageType(chatMessageType))
@@ -139,15 +144,13 @@ public class ChatFilterPlugin extends Plugin
 					shouldBlockDuplicatePlayerChat(fullMessage, chatMessageType);
 		}
 
-		String censoredMessage = null;
-
 		// Only filter public chat and private messages
 		if (shouldFilterMessageType(chatMessageType) && shouldFilterPlayerMessage(name))
 		{
-			censoredMessage = censorMessage(name, message);
-			shouldBlockMessage |= censoredMessage == null;
+			message = censorMessage(name, message);
+			shouldBlockMessage |= message == null;
 		}
-		else if(chatMessageType == ChatMessageType.LOGINLOGOUTNOTIFICATION && config.filterLogin())
+		else if (chatMessageType == ChatMessageType.LOGINLOGOUTNOTIFICATION && config.filterLogin())
 		{
 			shouldBlockMessage = true;
 		}
@@ -160,7 +163,7 @@ public class ChatFilterPlugin extends Plugin
 		else
 		{
 			// Replace the message
-			stringStack[stringStackSize - 1] = addCountToGameMessage(censoredMessage, chatCounts.count(fullMessage));
+			stringStack[stringStackSize - 1] = addCountToGameMessage(message, chatCounts.count(fullMessage));
 		}
 	}
 
@@ -311,6 +314,15 @@ public class ChatFilterPlugin extends Plugin
 		refreshChatIndex();
 	}
 
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			chatIndex.clear();
+		}
+	}
+
 	private void cleanupChatTrackers()
 	{
 		log.info("Cleaning up chat counts. Current size: {}", chatCounts.elementSet().size());
@@ -329,24 +341,25 @@ public class ChatFilterPlugin extends Plugin
 		{
 			String fullMessage = messageNode.getName() + messageNode.getValue();
 			Integer currentSetIndex = chatIndex.get(fullMessage);
-			if (currentSetIndex == null ||
-					currentSetIndex < messageNode.getId())
+			if (currentSetIndex == null || currentSetIndex < messageNode.getId())
 			{
 				chatIndex.put(fullMessage, messageNode.getId());
 			}
 		});
 	}
 
-	private boolean shouldFilterMessageType(ChatMessageType chatMessageType) {
-		switch (chatMessageType) {
+	private boolean shouldFilterMessageType(ChatMessageType chatMessageType)
+	{
+		switch (chatMessageType)
+		{
 			case PUBLICCHAT:
 			case MODCHAT:
 			case AUTOTYPER:
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
 			case FRIENDSCHAT:
-			case LOGINLOGOUTNOTIFICATION:
 				return true;
+			case LOGINLOGOUTNOTIFICATION:
 			default:
 				return false;
 		}
