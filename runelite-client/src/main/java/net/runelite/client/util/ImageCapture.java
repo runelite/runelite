@@ -280,7 +280,7 @@ public class ImageCapture
 		private final String image;
 		private final String type;
 
-		ImageUploadRequest(File imageFile) throws IOException
+		private ImageUploadRequest(File imageFile) throws IOException
 		{
 			this.image = Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
 			this.type = "base64";
