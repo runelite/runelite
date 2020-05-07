@@ -60,7 +60,7 @@ public class NpcSceneOverlay extends Overlay
 
 	static
 	{
-		((DecimalFormat)TIME_LEFT_FORMATTER).applyPattern("#0.0");
+		((DecimalFormat) TIME_LEFT_FORMATTER).applyPattern("#0.0");
 	}
 
 	private final Client client;
@@ -111,8 +111,8 @@ public class NpcSceneOverlay extends Overlay
 		final Color color = config.getHighlightColor();
 
 		final LocalPoint centerLp = new LocalPoint(
-				lp.getX() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2,
-				lp.getY() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2);
+			lp.getX() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2,
+			lp.getY() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2);
 
 		final Polygon poly = Perspective.getCanvasTileAreaPoly(client, centerLp, npc.getNpcSize());
 
@@ -131,13 +131,13 @@ public class NpcSceneOverlay extends Overlay
 		final int textHeight = graphics.getFontMetrics().getAscent();
 
 		final Point canvasPoint = Perspective
-				.localToCanvas(client, centerLp, respawnLocation.getPlane());
+			.localToCanvas(client, centerLp, respawnLocation.getPlane());
 
 		if (canvasPoint != null)
 		{
 			final Point canvasCenterPoint = new Point(
-					canvasPoint.getX() - textWidth / 2,
-					canvasPoint.getY() + textHeight / 2);
+				canvasPoint.getX() - textWidth / 2,
+				canvasPoint.getY() + textHeight / 2);
 
 			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, timeLeftStr, TEXT_COLOR);
 		}
@@ -181,17 +181,17 @@ public class NpcSceneOverlay extends Overlay
 				break;
 			case TRUE_LOCATIONS:
 				size = 1;
-				composition = actor.getTransformedComposition();
-				if (composition != null)
+				npcComposition = actor.getTransformedComposition();
+				if (npcComposition != null)
 				{
-					size = composition.getSize();
+					size = npcComposition.getSize();
 				}
 				WorldPoint npcWorldPoint = actor.getWorldLocation();
-				float offsetWorldPoints = ((float)size - 1) / 2;
-				int offsetLocalPoints = (int)(offsetWorldPoints * 128);
+				float offsetWorldPoints = ((float) size - 1) / 2;
+				int offsetLocalPoints = (int) (offsetWorldPoints * 128);
 				LocalPoint npcLocalPoint = LocalPoint.fromWorld(client, npcWorldPoint);
 				LocalPoint npcCentreLocalPoints = new LocalPoint(npcLocalPoint.getX() + offsetLocalPoints,
-						npcLocalPoint.getY() + offsetLocalPoints);
+					npcLocalPoint.getY() + offsetLocalPoints);
 				tilePoly = Perspective.getCanvasTileAreaPoly(client, npcCentreLocalPoints, size);
 
 				renderPoly(graphics, color, tilePoly);
