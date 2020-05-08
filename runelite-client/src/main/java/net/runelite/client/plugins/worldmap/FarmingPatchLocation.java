@@ -37,7 +37,7 @@ enum FarmingPatchLocation
 	),
 	ALLOTMENT_FLOWER("Allotment/Flower", new WorldPoint(3289, 6100, 0)),
 	ALLOTMENT_HERB_FLOWER("Allotment/Herb/Flower",
-		new WorldPoint(1809, 3490, 0),
+		new WorldPoint(1729, 3558, 0),
 		new WorldPoint(3598, 3524, 0),
 		new WorldPoint(3052, 3309, 0),
 		new WorldPoint(2810, 3462, 0),

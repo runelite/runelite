@@ -54,12 +54,9 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
-import net.runelite.api.ItemLayer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.Node;
 import net.runelite.api.Player;
-import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
@@ -406,6 +403,7 @@ public class GroundItemsPlugin extends Plugin
 			.tradeable(itemComposition.isTradeable())
 			.lootType(dropped ? LootType.DROPPED : LootType.UNKNOWN)
 			.spawnTime(Instant.now())
+			.stackable(itemComposition.isStackable())
 			.build();
 
 
@@ -482,40 +480,22 @@ public class GroundItemsPlugin extends Plugin
 				return;
 			}
 
-			int itemId = event.getIdentifier();
-			Scene scene = client.getScene();
-			Tile tile = scene.getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
-			ItemLayer itemLayer = tile.getItemLayer();
-
-			if (itemLayer == null)
-			{
-				return;
-			}
+			final int itemId = event.getIdentifier();
+			final int sceneX = event.getActionParam0();
+			final int sceneY = event.getActionParam1();
 
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
-			int quantity = 1;
-			Node current = itemLayer.getBottom();
+			final WorldPoint worldPoint = WorldPoint.fromScene(client, sceneX, sceneY, client.getPlane());
+			GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(itemId, worldPoint);
+			GroundItem groundItem = collectedGroundItems.get(groundItemKey);
+			int quantity = groundItem.getQuantity();
 
-			while (current instanceof TileItem)
-			{
-				TileItem item = (TileItem) current;
-				if (item.getId() == itemId)
-				{
-					quantity = item.getQuantity();
-				}
-				current = current.getNext();
-			}
-
-			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-			final int itemPrice = itemManager.getItemPrice(realItemId);
-			final int price = itemPrice <= 0 ? itemComposition.getPrice() : itemPrice;
-			final int haPrice = Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER) * quantity;
-			final int gePrice = quantity * price;
-			final Color hidden = getHidden(new NamedQuantity(itemComposition.getName(), quantity), gePrice, haPrice, itemComposition.isTradeable());
-			final Color highlighted = getHighlighted(new NamedQuantity(itemComposition.getName(), quantity), gePrice, haPrice);
+			final int gePrice = groundItem.getGePrice();
+			final int haPrice = groundItem.getHaPrice();
+			final Color hidden = getHidden(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice, groundItem.isTradeable());
+			final Color highlighted = getHighlighted(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice);
 			final Color color = getItemColor(highlighted, hidden);
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
@@ -549,7 +529,7 @@ public class GroundItemsPlugin extends Plugin
 				}
 			}
 
-			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
+			if (config.showMenuItemQuantities() && groundItem.isStackable() && quantity > 1)
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
 			}

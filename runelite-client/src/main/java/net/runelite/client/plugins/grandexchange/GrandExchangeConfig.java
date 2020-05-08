@@ -124,7 +124,10 @@ public interface GrandExchangeConfig extends Config
 		position = 9,
 		keyName = "geSearchMode",
 		name = "Search Mode",
-		description = "The search mode to use for the GE"
+		description = "The search mode to use for the GE<br>"
+			+ "Default - Matches exact text only<br>"
+			+ "Fuzzy Only - Matches inexact text such as 'sara sword'<br>"
+			+ "Fuzzy Fallback - Uses default search, falling back to fuzzy search if no results were found"
 	)
 	default GrandExchangeSearchMode geSearchMode()
 	{

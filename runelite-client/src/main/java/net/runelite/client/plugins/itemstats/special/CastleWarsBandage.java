@@ -48,7 +48,7 @@ public class CastleWarsBandage implements Effect
 	);
 
 	private static final double BASE_HP_PERC = .10;
-	private static final double BRACELET_HP_PERC = .50;
+	private static final double BRACELET_HP_PERC = .15;
 
 	@Override
 	public StatsChanges calculate(Client client)

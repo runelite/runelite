@@ -52,8 +52,6 @@ import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class RuneLiteModule extends AbstractModule
 {
@@ -97,10 +95,6 @@ public class RuneLiteModule extends AbstractModule
 		bind(EventBus.class)
 			.annotatedWith(Names.named("Deferred EventBus"))
 			.to(DeferredEventBus.class);
-
-		bind(Logger.class)
-			.annotatedWith(Names.named("Core Logger"))
-			.toInstance(LoggerFactory.getLogger(RuneLite.class));
 	}
 
 	@Provides

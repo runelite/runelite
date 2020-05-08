@@ -304,6 +304,9 @@ public enum Varbits
 	PERSONAL_POINTS(5422),
 	RAID_PARTY_SIZE(5424),
 
+	// 0 = raid not started, >0 = raid started
+	RAID_STATE(5425),
+
 	/**
 	 * Making Friends with My Arm fire pits
 	 *

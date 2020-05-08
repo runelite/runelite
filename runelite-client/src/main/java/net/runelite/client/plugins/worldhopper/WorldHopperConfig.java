@@ -71,10 +71,21 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "quickHopRegionFilter",
+		name = "Quick-hop region",
+		description = "Limit quick-hopping to worlds of a specific region",
+		position = 3
+	)
+	default RegionFilterMode quickHopRegionFilter()
+	{
+		return RegionFilterMode.NONE;
+	}
+
+	@ConfigItem(
 		keyName = "showSidebar",
 		name = "Show world hopper sidebar",
 		description = "Show sidebar containing all worlds that mimics in-game interface",
-		position = 3
+		position = 4
 	)
 	default boolean showSidebar()
 	{
@@ -85,7 +96,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "ping",
 		name = "Show world ping",
 		description = "Shows ping to each game world",
-		position = 4
+		position = 5
 	)
 	default boolean ping()
 	{
@@ -96,7 +107,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "showMessage",
 		name = "Show world hop message in chat",
 		description = "Shows what world is being hopped to in the chat",
-		position = 5
+		position = 6
 	)
 	default boolean showWorldHopMessage()
 	{
@@ -107,7 +118,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "menuOption",
 		name = "Show Hop-to menu option",
 		description = "Adds Hop-to menu option to the friends list and clan members list",
-		position = 6
+		position = 7
 	)
 	default boolean menuOption()
 	{
@@ -118,7 +129,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "subscriptionFilter",
 		name = "Show subscription types",
 		description = "Only show free worlds, member worlds, or both types of worlds in sidebar",
-		position = 7
+		position = 8
 	)
 	default SubscriptionFilterMode subscriptionFilter()
 	{
@@ -129,7 +140,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "displayPing",
 		name = "Display current ping",
 		description = "Displays ping to current game world",
-		position = 7
+		position = 9
 	)
 	default boolean displayPing()
 	{

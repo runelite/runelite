@@ -5993,6 +5993,7 @@ public final class NpcID
 	public static final int SISTER_SCAROPHIA = 6590;
 	public static final int LAVA_DRAGON = 6593;
 	public static final int ENT = 6594;
+	public static final int PRIFDDINAS_GUARD = 6595;
 	public static final int ZOMBIE_6596 = 6596;
 	public static final int ZOMBIE_6597 = 6597;
 	public static final int ZOMBIE_6598 = 6598;
