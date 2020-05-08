@@ -22,10 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.theatreofblood;
+package net.runelite.client.plugins.theatreofbloodstats;
 
 import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -56,13 +59,17 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Theatre of Blood",
-	description = "Extra time splits for Theatre of Blood rooms",
+	name = "Theatre of Blood Stats",
+	description = "Theatre of Blood room splits and damage",
 	tags = {"combat", "raid", "pve", "pvm", "bosses", "timer"},
 	enabledByDefault = false
 )
-public class TheatreOfBloodPlugin extends Plugin
+public class TheatreOfBloodStatsPlugin extends Plugin
 {
+	private static final DecimalFormat DMG_FORMAT = new DecimalFormat("#,###");
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
+	private static final int THEATRE_OF_BLOOD_ROOM_STATUS = 6447;
+	private static final int THEATRE_OF_BLOOD_BOSS_HP = 6448;
 	private static final int MAIDEN_REGION = 12613;
 	private static final int NYLOCAS_REGION = 13122;
 	private static final int SOTETSEG_REGION = 13123;
@@ -73,11 +80,12 @@ public class TheatreOfBloodPlugin extends Plugin
 	private static final int NYLOCAS_TOTAL = 120;
 	private static final int TICK_LENGTH = 600;
 	private static final String MAIDEN_WAVE = "Wave 'The Maiden of Sugadinti' complete!";
+	private static final String BLOAT_WAVE = "Wave 'The Pestilent Bloat' complete!";
 	private static final String NYLOCAS_WAVE = "Wave 'The Nylocas' complete!";
 	private static final String SOTETSEG_WAVE = "Wave 'Sotetseg' complete!";
 	private static final String XARPUS_WAVE = "Wave 'Xarpus' complete!";
-	private static final String VERZIK_WAVE = "Theatre of Blood total completion time:";
-	private static final Set<Integer> NYLOCAS_TYPES = ImmutableSet.of(
+	private static final String VERZIK_WAVE = "Your completed Theatre of Blood count is:";
+	private static final Set<Integer> NYLOCAS_IDS = ImmutableSet.of(
 		NpcID.NYLOCAS_HAGIOS, NpcID.NYLOCAS_HAGIOS_8347, NpcID.NYLOCAS_HAGIOS_8350, NpcID.NYLOCAS_HAGIOS_8353,
 		NpcID.NYLOCAS_TOXOBOLOS, NpcID.NYLOCAS_TOXOBOLOS_8343, NpcID.NYLOCAS_TOXOBOLOS_8346,
 		NpcID.NYLOCAS_TOXOBOLOS_8349, NpcID.NYLOCAS_TOXOBOLOS_8352, NpcID.NYLOCAS_ISCHYROS, NpcID.NYLOCAS_ISCHYROS_8342,
@@ -87,6 +95,9 @@ public class TheatreOfBloodPlugin extends Plugin
 		new Point(17, 24), new Point(17, 25), new Point(18, 24), new Point(18, 25),
 		new Point(31, 9), new Point(31, 10), new Point(32, 9), new Point(32, 10),
 		new Point(46, 24), new Point(46, 25), new Point(47, 24), new Point(47, 25)
+	);
+	private static final Set<String> BOSS_NAMES = ImmutableSet.of(
+		"The Maiden of Sugadinti", "Pestilent Bloat", "Nylocas Vasilias", "Sotetseg", "Xarpus", "Verzik Vitur"
 	);
 
 	@Inject
@@ -99,7 +110,7 @@ public class TheatreOfBloodPlugin extends Plugin
 	private boolean tobInside;
 	private boolean instanced;
 
-	private int maidenStartTick;
+	private int maidenStartTick = -1;
 	private boolean maiden70;
 	private String maiden70time;
 	private boolean maiden50;
@@ -107,29 +118,38 @@ public class TheatreOfBloodPlugin extends Plugin
 	private boolean maiden30;
 	private String maiden30time;
 
-	private int nyloStartTick;
-	private int totalNylos = 0;
-	private int currentNylos = 0;
+	private int nyloStartTick = -1;
+	private int totalNylos;
+	private int currentNylos;
 	private boolean nyloWavesFinished;
 	private boolean nyloCleanupFinished;
 	private String waveTime;
 	private String cleanupTime;
 	private String bossSpawnTime;
 
-	private int soteStartTick;
+	private int soteStartTick = -1;
 	private boolean sote66;
 	private String sote66time;
 	private boolean sote33;
 	private String sote33time;
 
-	private int xarpusStartTick;
-	private int xarpusHealAmount = 0;
+	private int xarpusStartTick = -1;
 	private String xarpusAcidTime;
 	private String xarpusRecoveryTime;
+	private int xarpusPreScreech;
 
-	private int verzikStartTick;
+	private int verzikStartTick = -1;
 	private String verzikP1time;
 	private String verzikP2time;
+	private double verzikP1personal;
+	private double verzikP1total;
+	private double verzikP2personal;
+	private double verzikP2total;
+	private double verzikP2healed;
+
+	private final Map<String, Integer> personalDamage = new HashMap<>();
+	private final Map<String, Integer> totalDamage  = new HashMap<>();
+	private final Map<String, Integer> totalHealing  = new HashMap<>();
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
@@ -142,7 +162,7 @@ public class TheatreOfBloodPlugin extends Plugin
 		int tobVar = client.getVar(Varbits.THEATRE_OF_BLOOD);
 		tobInside = tobVar == 2 || tobVar == 3;
 		int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-		int status = client.getVar(Varbits.THEATRE_OF_BLOOD_ROOM_STATUS);
+		int status = client.getVarbitValue(THEATRE_OF_BLOOD_ROOM_STATUS);
 
 		switch (status)
 		{
@@ -184,7 +204,7 @@ public class TheatreOfBloodPlugin extends Plugin
 				break;
 		}
 
-		int bosshp = client.getVar(Varbits.THEATRE_OF_BLOOD_BOSS_HP);
+		int bosshp = client.getVarbitValue(THEATRE_OF_BLOOD_BOSS_HP);
 
 		switch (region)
 		{
@@ -233,6 +253,11 @@ public class TheatreOfBloodPlugin extends Plugin
 
 		if (strippedMessage.startsWith(MAIDEN_WAVE))
 		{
+			double personal = personalDamage.getOrDefault("The Maiden of Sugadinti", 0);
+			double total = totalDamage.getOrDefault("The Maiden of Sugadinti", 0);
+			int healed = totalHealing.getOrDefault("The Maiden of Sugadinti", 0);
+			double percent = (personal / total) * 100;
+
 			message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
 				.append("70% - ")
@@ -245,11 +270,36 @@ public class TheatreOfBloodPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append("30% - ")
 				.append(Color.RED, maiden30time)
+				.append("\n")
+				.append(ChatColorType.NORMAL)
+				.append("Personal Boss Damage - ")
+				.append(Color.RED, DMG_FORMAT.format(personal) + " (" + DECIMAL_FORMAT.format(percent) + "%)")
+				.append("\n")
+				.append(ChatColorType.NORMAL)
+				.append("Total Healing - ")
+				.append(Color.RED, DMG_FORMAT.format(healed))
 				.build();
 			resetMaiden();
 		}
+		else if (strippedMessage.startsWith(BLOAT_WAVE))
+		{
+			double personal = personalDamage.getOrDefault("Pestilent Bloat", 0);
+			double total = totalDamage.getOrDefault("Pestilent Bloat", 0);
+			double percent = (personal / total) * 100;
+
+			message = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Personal Boss Damage - ")
+				.append(Color.RED, DMG_FORMAT.format(personal) + " (" + DECIMAL_FORMAT.format(percent) + "%)")
+				.build();
+			resetBloat();
+		}
 		else if (strippedMessage.startsWith(NYLOCAS_WAVE))
 		{
+			double personal = personalDamage.getOrDefault("Nylocas Vasilias", 0);
+			double total = totalDamage.getOrDefault("Nylocas Vasilias", 0);
+			double percent = (personal / total) * 100;
+
 			message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
 				.append("Waves - ")
@@ -262,11 +312,19 @@ public class TheatreOfBloodPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append("Boss Spawn - ")
 				.append(Color.RED, bossSpawnTime)
+				.append("\n")
+				.append(ChatColorType.NORMAL)
+				.append("Personal Boss Damage - ")
+				.append(Color.RED, DMG_FORMAT.format(personal) + " (" + DECIMAL_FORMAT.format(percent) + "%)")
 				.build();
 			resetNylo();
 		}
 		else if (strippedMessage.startsWith(SOTETSEG_WAVE))
 		{
+			double personal = personalDamage.getOrDefault("Sotetseg", 0);
+			double total = totalDamage.getOrDefault("Sotetseg", 0);
+			double percent = (personal / total) * 100;
+
 			message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
 				.append("66% - ")
@@ -275,33 +333,57 @@ public class TheatreOfBloodPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append("33% - ")
 				.append(Color.RED, sote33time)
+				.append("\n")
+				.append(ChatColorType.NORMAL)
+				.append("Personal Boss Damage - ")
+				.append(Color.RED, DMG_FORMAT.format(personal) + " (" + DECIMAL_FORMAT.format(percent) + "%)")
 				.build();
 			resetSote();
 		}
 		else if (strippedMessage.startsWith(XARPUS_WAVE))
 		{
+			double personal = personalDamage.getOrDefault("Xarpus", 0);
+			double total = totalDamage.getOrDefault("Xarpus", 0);
+			int healed = totalHealing.getOrDefault("Xarpus", 0);
+			double xarpusPostScreech = personal - xarpusPreScreech;
+			double percent = (personal / total) * 100;
+
 			message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
 				.append("Recovery Phase - ")
 				.append(Color.RED, xarpusRecoveryTime)
-				.append(Color.RED, " (" + xarpusHealAmount + "HP Healed)")
 				.append("\n")
 				.append(ChatColorType.NORMAL)
 				.append("Acid Phase - ")
 				.append(Color.RED, xarpusAcidTime)
+				.append("\n")
+				.append("Personal Boss Damage - ")
+				.append(Color.RED, DMG_FORMAT.format(personal) + " (" + DECIMAL_FORMAT.format(percent) + "%)")
+				.append("\n")
+				.append(ChatColorType.NORMAL)
+				.append(" Post Screech - ")
+				.append(Color.RED, DMG_FORMAT.format(xarpusPostScreech))
+				.append("\n")
+				.append("Total Healed - ")
+				.append(Color.RED, DMG_FORMAT.format(healed))
 				.build();
 			resetXarpus();
 		}
 		else if (strippedMessage.startsWith(VERZIK_WAVE))
 		{
+			double p3personal = personalDamage.getOrDefault("Verzik Vitur", 0) - (verzikP1personal + verzikP2personal);
+			double p3total = totalDamage.getOrDefault("Verzik Vitur", 0) - (verzikP1total + verzikP2total);
+			double p3healed = totalHealing.getOrDefault("Verzik Vitur", 0) - verzikP2healed;
+			double percent = (p3personal / p3total) * 100;
+
 			message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
-				.append("P1 - ")
-				.append(Color.RED, verzikP1time)
+				.append("P3 Personal Damage - ")
+				.append(Color.RED, DMG_FORMAT.format(p3personal) + " (" + DECIMAL_FORMAT.format(percent) + "%)")
 				.append("\n")
 				.append(ChatColorType.NORMAL)
-				.append("P2 - ")
-				.append(Color.RED, verzikP2time)
+				.append("P3 Healed - ")
+				.append(Color.RED, DMG_FORMAT.format(p3healed))
 				.build();
 			resetVerzik();
 		}
@@ -332,14 +414,65 @@ public class TheatreOfBloodPlugin extends Plugin
 				bossSpawnTime = formatTime(client.getTickCount() - nyloStartTick);
 				break;
 			case NpcID.VERZIK_VITUR_8371:
+			{
 				verzikP1time = formatTime(client.getTickCount() - verzikStartTick);
+				verzikP1personal = personalDamage.getOrDefault("Verzik Vitur", 0);
+				verzikP1total = totalDamage.getOrDefault("Verzik Vitur", 0);
+				double percent = (verzikP1personal / verzikP1total) * 100;
+
+				String message = new ChatMessageBuilder()
+					.append(ChatColorType.NORMAL)
+					.append("P1 - ")
+					.append(Color.RED, verzikP1time)
+					.append("\n")
+					.append(ChatColorType.NORMAL)
+					.append("P1 Personal Damage - ")
+					.append(Color.RED, DMG_FORMAT.format(verzikP1personal) + " (" + DECIMAL_FORMAT.format(percent) + "%)")
+					.build();
+
+				if (message != null)
+				{
+					chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.GAMEMESSAGE)
+						.runeLiteFormattedMessage(message)
+						.build());
+				}
 				break;
+			}
 			case NpcID.VERZIK_VITUR_8373:
+			{
 				verzikP2time = formatTime(client.getTickCount() - verzikStartTick);
+				verzikP2personal = personalDamage.getOrDefault("Verzik Vitur", 0) - verzikP1personal;
+				verzikP2total = totalDamage.getOrDefault("Verzik Vitur", 0) - verzikP1total;
+				verzikP2healed = totalHealing.getOrDefault("Verzik Vitur", 0);
+				double percent = (verzikP2personal / verzikP2total) * 100;
+
+				String message = new ChatMessageBuilder()
+					.append(ChatColorType.NORMAL)
+					.append("P2 - ")
+					.append(Color.RED, verzikP2time)
+					.append("\n")
+					.append(ChatColorType.NORMAL)
+					.append("P2 Personal Damage - ")
+					.append(Color.RED, DMG_FORMAT.format(verzikP2personal) + " (" + DECIMAL_FORMAT.format(percent) + "%)")
+					.append("\n")
+					.append(ChatColorType.NORMAL)
+					.append("P2 Healed - ")
+					.append(Color.RED, DMG_FORMAT.format(verzikP2healed))
+					.build();
+
+				if (message != null)
+				{
+					chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.GAMEMESSAGE)
+						.runeLiteFormattedMessage(message)
+						.build());
+				}
 				break;
+			}
 		}
 
-		if (!NYLOCAS_TYPES.contains(npcId) || prevRegion != NYLOCAS_REGION)
+		if (!NYLOCAS_IDS.contains(npcId) || prevRegion != NYLOCAS_REGION)
 		{
 			return;
 		}
@@ -371,7 +504,7 @@ public class TheatreOfBloodPlugin extends Plugin
 		}
 
 		int id = event.getNpc().getId();
-		if (!NYLOCAS_TYPES.contains(id) || prevRegion != NYLOCAS_REGION)
+		if (!NYLOCAS_IDS.contains(id) || prevRegion != NYLOCAS_REGION)
 		{
 			return;
 		}
@@ -416,17 +549,47 @@ public class TheatreOfBloodPlugin extends Plugin
 	@Subscribe
 	public void onHitsplatApplied(HitsplatApplied event)
 	{
-		Actor npc = event.getActor();
-		if (!(npc instanceof NPC) || !tobInside)
+		if (!tobInside)
 		{
 			return;
 		}
 
-		String npcName = npc.getName();
-		if (npcName != null && npcName.equals("Xarpus")
-			&& event.getHitsplat().getHitsplatType() == Hitsplat.HitsplatType.HEAL)
+		Actor actor = event.getActor();
+		if (!(actor instanceof NPC))
 		{
-			xarpusHealAmount += event.getHitsplat().getAmount();
+			return;
+		}
+
+		NPC npc = (NPC) actor;
+		String npcName = npc.getName();
+		if (npcName == null || !(BOSS_NAMES.contains(npcName)))
+		{
+			return;
+		}
+
+		npcName = Text.removeTags(npcName);
+		Hitsplat hitsplat = event.getHitsplat();
+
+		if (hitsplat.isMine())
+		{
+			int myDmg = personalDamage.getOrDefault(npcName, 0);
+			int totalDmg = totalDamage.getOrDefault(npcName, 0);
+			myDmg += hitsplat.getAmount();
+			totalDmg += hitsplat.getAmount();
+			personalDamage.put(npcName, myDmg);
+			totalDamage.put(npcName, totalDmg);
+		}
+		else if (hitsplat.isOthers())
+		{
+			int totalDmg = totalDamage.getOrDefault(npcName, 0);
+			totalDmg += hitsplat.getAmount();
+			totalDamage.put(npcName, totalDmg);
+		}
+		else if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.HEAL)
+		{
+			int healed = totalHealing.getOrDefault(npcName, 0);
+			healed += hitsplat.getAmount();
+			totalHealing.put(npcName, healed);
 		}
 	}
 
@@ -444,6 +607,25 @@ public class TheatreOfBloodPlugin extends Plugin
 		if (npcName != null && npcName.equals("Xarpus") && overheadText.equals("Screeeeech!"))
 		{
 			xarpusAcidTime = formatTime(client.getTickCount() - xarpusStartTick);
+			xarpusPreScreech = personalDamage.getOrDefault(npcName, 0);
+			double preScreechTotal = totalDamage.getOrDefault(npcName, 0);
+			double percent = (xarpusPreScreech / preScreechTotal) * 100;
+
+			String message = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Pre Screech - ")
+				.append(Color.RED, DMG_FORMAT.format(xarpusPreScreech))
+				.append(ChatColorType.NORMAL)
+				.append(" (" + DECIMAL_FORMAT.format(percent) + ")")
+				.build();
+
+			if (message != null)
+			{
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.GAMEMESSAGE)
+					.runeLiteFormattedMessage(message)
+					.build());
+			}
 		}
 	}
 
@@ -464,6 +646,15 @@ public class TheatreOfBloodPlugin extends Plugin
 		maiden50time = null;
 		maiden30 = false;
 		maiden30time = null;
+		personalDamage.remove("The Maiden of Sugadinti");
+		totalDamage.remove("The Maiden of Sugadinti");
+		totalHealing.remove("The Maiden of Sugadinti");
+	}
+
+	private void resetBloat()
+	{
+		personalDamage.remove("Pestilent Bloat");
+		totalDamage.remove("Pestilent Bloat");
 	}
 
 	private void resetNylo()
@@ -475,6 +666,8 @@ public class TheatreOfBloodPlugin extends Plugin
 		nyloCleanupFinished = false;
 		waveTime = null;
 		cleanupTime = null;
+		personalDamage.remove("Nylocas Vasilias");
+		totalDamage.remove("Nylocas Vasilias");
 	}
 
 	private void resetSote()
@@ -484,6 +677,8 @@ public class TheatreOfBloodPlugin extends Plugin
 		sote66time = null;
 		sote33 = false;
 		sote33time = null;
+		personalDamage.remove("Sotetseg");
+		totalDamage.remove("Sotetseg");
 	}
 
 	private void resetXarpus()
@@ -491,7 +686,10 @@ public class TheatreOfBloodPlugin extends Plugin
 		xarpusStartTick = -1;
 		xarpusRecoveryTime = null;
 		xarpusAcidTime = null;
-		xarpusHealAmount = 0;
+		xarpusPreScreech = 0;
+		personalDamage.remove("Xarpus");
+		totalDamage.remove("Xarpus");
+		totalHealing.remove("Xarpus");
 	}
 
 	private void resetVerzik()
@@ -499,5 +697,13 @@ public class TheatreOfBloodPlugin extends Plugin
 		verzikStartTick = -1;
 		verzikP1time = null;
 		verzikP2time = null;
+		verzikP1personal = 0;
+		verzikP1total = 0;
+		verzikP2personal = 0;
+		verzikP2total = 0;
+		verzikP2healed = 0;
+		personalDamage.clear();
+		totalDamage.clear();
+		totalHealing.clear();
 	}
 }
