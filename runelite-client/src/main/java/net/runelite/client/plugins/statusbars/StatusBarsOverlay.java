@@ -79,6 +79,7 @@ class StatusBarsOverlay extends Overlay
 
 	private final Client client;
 	private final StatusBarsConfig config;
+	private final StatusBarsPlugin plugin;
 	private final SkillIconManager skillIconManager;
 	private final TextComponent textComponent = new TextComponent();
 	private final ItemStatChangesService itemStatService;
@@ -86,11 +87,12 @@ class StatusBarsOverlay extends Overlay
 	private final BufferedImage prayerImage;
 
 	@Inject
-	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice)
+	private StatusBarsOverlay(Client client, StatusBarsConfig config, StatusBarsPlugin plugin, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
+		this.plugin = plugin;
 		this.config = config;
 		this.skillIconManager = skillIconManager;
 		this.itemStatService = itemstatservice;
@@ -103,6 +105,11 @@ class StatusBarsOverlay extends Overlay
 	{
 		final Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 		if (widgetBankTitleBar != null && !widgetBankTitleBar.isHidden())
+		{
+			return null;
+		}
+
+		if (config.getHideAfterDelay() != 0 && plugin.outOfCombat())
 		{
 			return null;
 		}
