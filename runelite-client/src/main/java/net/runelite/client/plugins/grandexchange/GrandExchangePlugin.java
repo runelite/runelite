@@ -116,6 +116,7 @@ public class GrandExchangePlugin extends Plugin
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
+	private static final String BUY_LIMIT_KEY = "buylimit.";
 	private static final Gson GSON = new Gson();
 	private static final TypeToken<Map<Integer, Integer>> BUY_LIMIT_TOKEN = new TypeToken<Map<Integer, Integer>>()
 	{
@@ -692,19 +693,20 @@ public class GrandExchangePlugin extends Plugin
 		String itemIdStr = Integer.toString(itemId);
 		Instant currentDateTime = Instant.now();
 		configManager.setConfiguration("grandexchange",
-			client.getUsername().toLowerCase() + itemIdStr, currentDateTime);
+			BUY_LIMIT_KEY + client.getUsername().toLowerCase() + itemIdStr, currentDateTime);
 	}
 
 	private String getLimitReset(int itemId)
 	{
 		String itemIdStr = Integer.toString(itemId);
 		Instant lastDateTime = configManager.getConfiguration("grandexchange",
-			client.getUsername().toLowerCase() + itemIdStr, Instant.class);
+			BUY_LIMIT_KEY + client.getUsername().toLowerCase() + itemIdStr, Instant.class);
 		if (lastDateTime == null)
 		{
 			return "None";
 		}
 		Instant now = Instant.now();
+
 		long minuteDifference = ChronoUnit.MINUTES.between(lastDateTime, now);
 		if (minuteDifference / 60.0 > 4.0)
 		{
@@ -712,10 +714,14 @@ public class GrandExchangePlugin extends Plugin
 		}
 		else
 		{
+//			Duration durationBetween = Duration.between(lastDateTime, now);
+//			LocalTime localTimeSecs = LocalTime.ofSecondOfDay(durationBetween.getSeconds());
+//			String limitResetString = localTimeSecs.format(DateTimeFormatter.ofPattern("HH:mm"));
+
 			int minsLeft = 240 - (int) minuteDifference;
 			int hours = minsLeft / 60;
 			int minutes = minsLeft % 60;
-			String limitResetString = hours + ":" + minutes;
+			String limitResetString = String.format("%d:%02d", hours, minutes);
 			return limitResetString;
 		}
 	}
