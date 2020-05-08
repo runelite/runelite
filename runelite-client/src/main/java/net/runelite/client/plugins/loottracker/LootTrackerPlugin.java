@@ -167,6 +167,8 @@ public class LootTrackerPlugin extends Plugin
 		"H.A.M. Member", "Woman"
 	);
 
+	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -405,7 +407,11 @@ public class LootTrackerPlugin extends Plugin
 
 		if (config.npcKillChatMessage())
 		{
-			lootReceivedChatMessage(items, "a " + name);
+			final String prefix = VOWELS.contains(Character.toLowerCase(name.charAt(0)))
+				? "an"
+				: "a";
+
+			lootReceivedChatMessage(items, prefix + ' ' + name);
 		}
 	}
 
