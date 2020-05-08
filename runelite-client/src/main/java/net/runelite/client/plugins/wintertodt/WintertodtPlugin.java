@@ -69,6 +69,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
@@ -137,13 +138,19 @@ public class WintertodtPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		reset();
-		overlayManager.add(overlay);
+		if (config.showOverlay())
+		{
+			overlayManager.add(overlay);
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
+		if (overlay != null)
+		{
+			overlayManager.remove(overlay);
+		}
 		reset();
 	}
 
@@ -479,6 +486,25 @@ public class WintertodtPlugin extends Plugin
 		else if (numLogs == 0 && numKindling == 0 && currentActivity == WintertodtActivity.FEEDING_BRAZIER)
 		{
 			currentActivity = WintertodtActivity.IDLE;
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (!configChanged.getGroup().equals("wintertodt"))
+		{
+			return;
+		}
+
+		if (configChanged.getKey().equals("showOverlay") && config.showOverlay())
+		{
+			overlayManager.add(overlay);
+		}
+
+		if (configChanged.getKey().equals("showOverlay") && !config.showOverlay())
+		{
+			overlayManager.remove(overlay);
 		}
 	}
 
