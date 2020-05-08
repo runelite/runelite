@@ -54,6 +54,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.AIR_RIFT;
 import static net.runelite.client.plugins.runecraft.AbyssRifts.BLOOD_RIFT;
@@ -72,6 +73,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Runecraft",
+	category = PluginCategory.SKILLS,
 	description = "Show minimap icons and clickboxes for abyssal rifts",
 	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
 )

@@ -32,11 +32,13 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Boss Timers",
+	category = PluginCategory.UTILITY,
 	description = "Show boss spawn timer overlays",
 	tags = {"combat", "pve", "overlay", "spawn"}
 )

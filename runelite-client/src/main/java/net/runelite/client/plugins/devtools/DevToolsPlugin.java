@@ -56,6 +56,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.JagexColors;
@@ -67,6 +68,7 @@ import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Developer Tools",
+	category = PluginCategory.CLIENT,
 	tags = {"panel"},
 	developerPlugin = true
 )

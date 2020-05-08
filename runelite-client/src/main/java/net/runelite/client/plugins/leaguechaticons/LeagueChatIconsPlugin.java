@@ -50,6 +50,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
@@ -59,6 +60,7 @@ import net.runelite.http.api.worlds.WorldType;
 
 @PluginDescriptor(
 	name = "League Chat Icons",
+	category = PluginCategory.CHAT,
 	description = "Changes the chat icon for players on league worlds",
 	enabledByDefault = false
 )

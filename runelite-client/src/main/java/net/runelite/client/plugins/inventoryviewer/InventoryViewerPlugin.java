@@ -26,11 +26,13 @@ package net.runelite.client.plugins.inventoryviewer;
 
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Inventory Viewer",
+	category = PluginCategory.UTILITY,
 	description = "Add an overlay showing the contents of your inventory",
 	tags = {"alternate", "items", "overlay", "second"},
 	enabledByDefault = false

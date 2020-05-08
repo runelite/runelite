@@ -74,6 +74,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -83,6 +84,7 @@ import net.runelite.http.api.chat.ChatClient;
 
 @PluginDescriptor(
 	name = "Slayer",
+	category = PluginCategory.SKILLS,
 	description = "Show additional slayer task related information",
 	tags = {"combat", "notifications", "overlay", "tasks"}
 )

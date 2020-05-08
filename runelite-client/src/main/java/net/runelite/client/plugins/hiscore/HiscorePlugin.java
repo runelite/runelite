@@ -49,6 +49,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -58,6 +59,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "HiScore",
+	category = PluginCategory.CLIENT,
 	description = "Enable the HiScore panel and an optional Lookup option on players",
 	tags = {"panel", "players"},
 	loadWhenOutdated = true

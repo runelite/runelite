@@ -45,11 +45,13 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Rogues' Den",
+	category = PluginCategory.MINIGAME,
 	description = "Mark tiles and clickboxes to help traverse the maze",
 	tags = {"agility", "maze", "minigame", "overlay", "thieving"}
 )

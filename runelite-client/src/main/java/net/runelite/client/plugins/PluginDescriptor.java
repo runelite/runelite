@@ -37,6 +37,8 @@ public @interface PluginDescriptor
 {
 	String name();
 
+	PluginCategory category() default PluginCategory.UNCATEGORISED;
+
 	/**
 	 * A short, one-line summary of the plugin.
 	 */

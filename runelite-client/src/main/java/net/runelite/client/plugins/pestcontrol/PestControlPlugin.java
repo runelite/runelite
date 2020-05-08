@@ -44,11 +44,13 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Pest Control",
+	category = PluginCategory.MINIGAME,
 	description = "Show helpful information for the Pest Control minigame",
 	tags = {"minigame", "overlay"}
 )

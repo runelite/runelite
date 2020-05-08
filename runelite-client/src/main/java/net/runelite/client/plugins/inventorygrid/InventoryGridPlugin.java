@@ -29,11 +29,13 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Inventory Grid",
+	category = PluginCategory.CLIENT,
 	description = "Shows a grid over the inventory and a preview of where items will be dragged",
 	tags = {"items", "overlay"},
 	enabledByDefault = false

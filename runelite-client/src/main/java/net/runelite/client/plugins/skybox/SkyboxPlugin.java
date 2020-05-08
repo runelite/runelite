@@ -34,10 +34,12 @@ import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Skybox",
+	category = PluginCategory.CLIENT,
 	description = "Draws an oldschool styled skybox",
 	enabledByDefault = false,
 	tags = {"sky"}

@@ -44,10 +44,12 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Random Events",
+	category = PluginCategory.UTILITY,
 	description = "Notify when random events appear and remove talk/dismiss options on events that aren't yours.",
 	enabledByDefault = false
 )

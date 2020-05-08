@@ -35,6 +35,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -42,6 +43,7 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Account",
+	category = PluginCategory.CLIENT,
 	description = "Sync RuneLite config settings with your Google account",
 	tags = {"external", "google", "integration"},
 	loadWhenOutdated = true

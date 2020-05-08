@@ -39,10 +39,12 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Minimap",
+	category = PluginCategory.UTILITY,
 	description = "Customize the color of minimap dots",
 	tags = {"items", "npcs", "players"}
 )

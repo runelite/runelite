@@ -72,12 +72,14 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @PluginDescriptor(
 	name = "Music",
+	category = PluginCategory.CLIENT,
 	description = "Adds search and filter for the music list, and additional volume control",
 	tags = {"sound", "volume"}
 )

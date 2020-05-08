@@ -60,11 +60,13 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemMapping;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
 	name = "Items Kept on Death",
+	category = PluginCategory.ITEM,
 	description = "Updates the Items Kept on Death interface to be more accurate",
 	enabledByDefault = false
 )

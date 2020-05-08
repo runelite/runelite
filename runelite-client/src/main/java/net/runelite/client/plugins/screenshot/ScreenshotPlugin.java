@@ -72,6 +72,7 @@ import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.ClientUI;
@@ -86,6 +87,7 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Screenshot",
+	category = PluginCategory.CLIENT,
 	description = "Enable the manual and automatic taking of screenshots",
 	tags = {"external", "images", "imgur", "integration", "notifications"}
 )

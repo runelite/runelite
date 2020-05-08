@@ -68,6 +68,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
@@ -77,6 +78,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Agility",
+	category = PluginCategory.SKILLS,
 	description = "Show helpful information about agility courses and obstacles",
 	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )

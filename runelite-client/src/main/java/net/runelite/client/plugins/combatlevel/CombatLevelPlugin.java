@@ -45,11 +45,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Combat Level",
+	category = PluginCategory.COMBAT,
 	description = "Show a more accurate combat level in Combat Options panel and other combat level functions",
 	tags = {"wilderness", "attack", "range"}
 )

@@ -51,11 +51,13 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Mining",
+	category = PluginCategory.SKILLS,
 	description = "Show ore respawn timers",
 	tags = {"overlay", "skilling", "timers"},
 	enabledByDefault = false

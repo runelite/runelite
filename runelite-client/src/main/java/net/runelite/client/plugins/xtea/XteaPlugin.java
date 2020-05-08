@@ -33,6 +33,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
 import net.runelite.http.api.xtea.XteaKey;
@@ -40,6 +41,7 @@ import net.runelite.http.api.xtea.XteaRequest;
 
 @PluginDescriptor(
 	name = "Xtea",
+	category = PluginCategory.CLIENT,
 	hidden = true
 )
 @Slf4j

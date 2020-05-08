@@ -47,12 +47,14 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Run Energy",
+	category = PluginCategory.UTILITY,
 	description = "Show various information related to run energy",
 	tags = {"overlay", "stamina"}
 )

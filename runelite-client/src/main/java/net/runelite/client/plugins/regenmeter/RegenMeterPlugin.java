@@ -44,11 +44,13 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Regeneration Meter",
+	category = PluginCategory.COMBAT,
 	description = "Track and show the hitpoints and special attack regeneration timers",
 	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay", "notifications"}
 )

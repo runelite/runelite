@@ -57,12 +57,14 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
 	name = "Fairy Rings",
+	category = PluginCategory.UTILITY,
 	description = "Show the location of the fairy ring teleport",
 	tags = {"teleportation"}
 )

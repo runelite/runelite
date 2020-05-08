@@ -74,6 +74,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
@@ -96,6 +97,7 @@ import net.runelite.client.util.OSType;
 
 @PluginDescriptor(
 	name = "GPU",
+	category = PluginCategory.CLIENT,
 	description = "Utilizes the GPU",
 	enabledByDefault = false,
 	tags = {"fog", "draw distance"}

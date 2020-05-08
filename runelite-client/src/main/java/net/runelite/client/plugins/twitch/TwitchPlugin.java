@@ -45,6 +45,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.twitch.irc.TwitchIRCClient;
 import net.runelite.client.plugins.twitch.irc.TwitchListener;
@@ -52,6 +53,7 @@ import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
 	name = "Twitch",
+	category = PluginCategory.CHAT,
 	description = "Integrates Twitch chat",
 	enabledByDefault = false
 )

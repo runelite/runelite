@@ -64,6 +64,7 @@ import net.runelite.client.events.PartyChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.plugins.party.data.PartyTilePingData;
@@ -84,6 +85,7 @@ import net.runelite.http.api.ws.messages.party.UserSync;
 
 @PluginDescriptor(
 	name = "Party",
+	category = PluginCategory.CLIENT,
 	description = "Shows useful information about current party"
 )
 public class PartyPlugin extends Plugin implements KeyListener

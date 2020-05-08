@@ -96,6 +96,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.cluescrolls.clues.AnagramClue;
 import net.runelite.client.plugins.cluescrolls.clues.BeginnerMapClue;
@@ -128,6 +129,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Clue Scroll",
+	category = PluginCategory.MINIGAME,
 	description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
 	tags = {"arrow", "hints", "world", "map", "coordinates", "emotes"}
 )

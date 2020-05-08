@@ -312,4 +312,14 @@ public interface RuneLiteConfig extends Config
 	{
 		return new Keybind(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK);
 	}
+
+	@ConfigItem(
+		keyName = "categorisePluginList",
+		name = "Categorise Plugin List",
+		description = "Adds categories to the plugin list"
+	)
+	default boolean categorisePluginList()
+	{
+		return false;
+	}
 }

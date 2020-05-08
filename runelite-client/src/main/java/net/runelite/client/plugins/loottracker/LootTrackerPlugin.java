@@ -98,6 +98,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
@@ -115,6 +116,7 @@ import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
 	name = "Loot Tracker",
+	category = PluginCategory.UTILITY,
 	description = "Tracks loot from monsters and minigames",
 	tags = {"drops"},
 	enabledByDefault = false

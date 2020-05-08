@@ -32,6 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.mta.alchemy.AlchemyRoom;
 import net.runelite.client.plugins.mta.enchantment.EnchantmentRoom;
@@ -41,6 +42,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Mage Training Arena",
+	category = PluginCategory.MINIGAME,
 	description = "Show helpful information for the Mage Training Arena minigame",
 	tags = {"mta", "magic", "minigame", "overlay"}
 )

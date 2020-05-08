@@ -31,10 +31,12 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Low Detail",
+	category = PluginCategory.CLIENT,
 	description = "Turn off ground decorations and certain textures, reducing memory usage",
 	tags = {"memory", "usage", "ground", "decorations"},
 	enabledByDefault = false

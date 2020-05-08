@@ -46,11 +46,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Chat Notifications",
+	category = PluginCategory.CHAT,
 	description = "Highlight and notify you of chat messages",
 	tags = {"duel", "messages", "notifications", "trade", "username"},
 	enabledByDefault = false

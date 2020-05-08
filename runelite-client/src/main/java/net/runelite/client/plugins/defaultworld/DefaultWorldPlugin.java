@@ -35,6 +35,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
@@ -42,6 +43,7 @@ import net.runelite.http.api.worlds.WorldResult;
 
 @PluginDescriptor(
 	name = "Default World",
+	category = PluginCategory.CLIENT,
 	description = "Enable a default world to be selected when launching the client",
 	tags = {"home"}
 )

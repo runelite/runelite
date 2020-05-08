@@ -46,6 +46,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -55,6 +56,7 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Poison",
+	category = PluginCategory.UTILITY,
 	description = "Tracks current damage values for Poison and Venom",
 	tags = {"combat", "poison", "venom", "heart", "hp"}
 )

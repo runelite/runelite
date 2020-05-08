@@ -31,6 +31,7 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -47,6 +48,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
  */
 @PluginDescriptor(
 	name = "FPS Control",
+	category = PluginCategory.CLIENT,
 	description = "Show current FPS and/or set an FPS limit",
 	tags = {"frames", "framerate", "limit", "overlay"},
 	enabledByDefault = false

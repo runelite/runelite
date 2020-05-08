@@ -37,10 +37,12 @@ import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Chatbox performance",
+	category = PluginCategory.CLIENT,
 	hidden = true
 )
 public class ChatboxPerformancePlugin extends Plugin

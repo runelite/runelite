@@ -77,6 +77,7 @@ import net.runelite.client.events.WorldsFetch;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.worldhopper.ping.Ping;
 import net.runelite.client.ui.ClientToolbar;
@@ -93,6 +94,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "World Hopper",
+	category = PluginCategory.CLIENT,
 	description = "Allows you to quickly hop worlds",
 	tags = {"ping", "switcher"}
 )

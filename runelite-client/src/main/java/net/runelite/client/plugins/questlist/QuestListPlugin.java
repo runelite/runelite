@@ -56,11 +56,13 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Quest List",
+	category = PluginCategory.UTILITY,
 	description = "Adds searching and filtering to the quest list"
 )
 public class QuestListPlugin extends Plugin

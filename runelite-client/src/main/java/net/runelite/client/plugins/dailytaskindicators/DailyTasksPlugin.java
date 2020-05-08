@@ -44,10 +44,12 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Daily Task Indicator",
+	category = PluginCategory.ACTIVITY,
 	description = "Show chat notifications for daily tasks upon login"
 )
 public class DailyTasksPlugin extends Plugin

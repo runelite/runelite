@@ -43,12 +43,14 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "World Map",
+	category = PluginCategory.CLIENT,
 	description = "Enhance the world map to display additional information",
 	tags = {"agility", "dungeon", "fairy", "farming", "rings", "teleports"}
 )

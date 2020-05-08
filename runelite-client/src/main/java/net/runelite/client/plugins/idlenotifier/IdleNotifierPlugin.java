@@ -56,10 +56,12 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Idle Notifier",
+	category = PluginCategory.CLIENT,
 	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
 	tags = {"health", "hitpoints", "notifications", "prayer"}
 )

@@ -28,11 +28,13 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Rune Pouch",
+	category = PluginCategory.COMBAT,
 	description = "Show the contents of your rune pouch",
 	tags = {"combat", "magic", "overlay"}
 )

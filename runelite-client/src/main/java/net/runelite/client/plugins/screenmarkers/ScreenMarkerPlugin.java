@@ -47,6 +47,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenmarkers.ui.ScreenMarkerPluginPanel;
 import net.runelite.client.ui.ClientToolbar;
@@ -57,6 +58,7 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Screen Markers",
+	category = PluginCategory.CLIENT,
 	description = "Enable drawing of screen markers on top of the client",
 	tags = {"boxes", "overlay", "panel"}
 )

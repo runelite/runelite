@@ -37,11 +37,13 @@ import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Tears Of Guthix",
+	category = PluginCategory.MINIGAME,
 	description = "Show timers for the Tears Of Guthix streams",
 	tags = {"minigame", "overlay", "skilling", "timers", "tog"}
 )

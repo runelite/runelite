@@ -45,6 +45,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.achievementdiary.diaries.ArdougneDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.DesertDiaryRequirement;
@@ -63,6 +64,7 @@ import net.runelite.client.util.Text;
 @Slf4j
 @PluginDescriptor(
 	name = "Diary Requirements",
+	category = PluginCategory.ACTIVITY,
 	description = "Display level requirements in Achievement Diary interface",
 	tags = {"achievements", "tasks"}
 )

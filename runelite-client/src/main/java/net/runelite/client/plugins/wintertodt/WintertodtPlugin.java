@@ -70,6 +70,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
 import static net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage.ALWAYS;
@@ -79,6 +80,7 @@ import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Wintertodt",
+	category = PluginCategory.MINIGAME,
 	description = "Show helpful information for the Wintertodt boss",
 	tags = {"minigame", "firemaking", "boss"}
 )

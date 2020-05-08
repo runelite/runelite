@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import com.google.inject.Provides;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.itemstats.ItemStatPlugin;
@@ -35,6 +36,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Status Bars",
+	category = PluginCategory.CLIENT,
 	description = "Draws status bars next to players inventory showing current HP & Prayer and healing amounts",
 	enabledByDefault = false
 )

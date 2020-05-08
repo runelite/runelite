@@ -86,6 +86,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -102,6 +103,7 @@ import org.apache.commons.text.similarity.FuzzyScore;
 
 @PluginDescriptor(
 	name = "Grand Exchange",
+	category = PluginCategory.CLIENT,
 	description = "Provide additional and/or easier access to Grand Exchange information",
 	tags = {"external", "integration", "notifications", "panel", "prices", "trade"}
 )

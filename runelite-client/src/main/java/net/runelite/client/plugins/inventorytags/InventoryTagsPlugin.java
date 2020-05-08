@@ -42,6 +42,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
@@ -49,6 +50,7 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Inventory Tags",
+	category = PluginCategory.ITEM,
 	description = "Add the ability to tag items in your inventory",
 	tags = {"highlight", "items", "overlay", "tagging"},
 	enabledByDefault = false

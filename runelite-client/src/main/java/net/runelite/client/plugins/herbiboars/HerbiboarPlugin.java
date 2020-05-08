@@ -61,6 +61,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
@@ -68,6 +69,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Herbiboar",
+	category = PluginCategory.SKILLS,
 	description = "Highlight starting rocks, trails, and the objects to search at the end of each trail",
 	tags = {"herblore", "hunter", "skilling", "overlay"}
 )

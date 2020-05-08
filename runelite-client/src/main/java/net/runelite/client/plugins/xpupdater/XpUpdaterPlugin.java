@@ -39,6 +39,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
@@ -51,6 +52,7 @@ import okhttp3.Response;
 
 @PluginDescriptor(
 	name = "XP Updater",
+	category = PluginCategory.UTILITY,
 	description = "Automatically updates your stats on external xptrackers when you log out",
 	tags = {"cml", "crystalmathlabs", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "external", "integration"},
 	enabledByDefault = false

@@ -52,6 +52,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -61,6 +62,7 @@ import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
 	name = "Barrows Brothers",
+	category = PluginCategory.MINIGAME,
 	description = "Show helpful information for the Barrows minigame",
 	tags = {"combat", "minigame", "bosses", "pve", "pvm"}
 )

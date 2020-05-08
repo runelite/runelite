@@ -56,6 +56,7 @@ import net.runelite.client.discord.events.DiscordReady;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
@@ -76,6 +77,7 @@ import okhttp3.Response;
 
 @PluginDescriptor(
 	name = "Discord",
+	category = PluginCategory.CLIENT,
 	description = "Show your status and activity in the Discord user panel",
 	tags = {"action", "activity", "external", "integration", "status"}
 )

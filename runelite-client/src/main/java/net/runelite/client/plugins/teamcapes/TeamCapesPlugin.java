@@ -38,12 +38,14 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Team Capes",
+	category = PluginCategory.UTILITY,
 	description = "Show the different team capes in your area and the amount of each",
 	tags = {"overlay", "players"},
 	enabledByDefault = false

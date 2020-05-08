@@ -46,12 +46,14 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
 	name = "Opponent Information",
+	category = PluginCategory.COMBAT,
 	description = "Show name and hitpoints information about the NPC you are fighting",
 	tags = {"combat", "health", "hitpoints", "npcs", "overlay"}
 )

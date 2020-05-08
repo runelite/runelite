@@ -46,11 +46,13 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
 	name = "Report Button",
+	category = PluginCategory.CLIENT,
 	description = "Replace the text on the Report button with the current time",
 	tags = {"time", "utc"}
 )

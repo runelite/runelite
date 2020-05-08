@@ -55,6 +55,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
@@ -67,6 +68,7 @@ import net.runelite.http.api.examine.ExamineClient;
  */
 @PluginDescriptor(
 	name = "Examine",
+	category = PluginCategory.ITEM,
 	description = "Send examine information to the API",
 	tags = {"npcs", "items", "inventory", "objects"}
 )

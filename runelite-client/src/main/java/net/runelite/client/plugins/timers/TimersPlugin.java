@@ -70,6 +70,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
@@ -77,6 +78,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Timers",
+	category = PluginCategory.UTILITY,
 	description = "Show various timers in an infobox",
 	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )

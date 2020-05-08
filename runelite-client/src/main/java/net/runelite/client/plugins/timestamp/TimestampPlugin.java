@@ -42,11 +42,13 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Chat Timestamps",
+	category = PluginCategory.CHAT,
 	description = "Add timestamps to chat messages",
 	tags = {"timestamp"},
 	enabledByDefault = false

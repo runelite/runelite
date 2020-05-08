@@ -45,6 +45,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ws.PartyMember;
@@ -53,6 +54,7 @@ import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
 	name = "DPS Counter",
+	category = PluginCategory.COMBAT,
 	description = "Counts damage (per second) by a party",
 	enabledByDefault = false
 )

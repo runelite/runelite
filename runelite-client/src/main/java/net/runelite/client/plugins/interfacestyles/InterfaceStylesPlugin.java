@@ -48,12 +48,14 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 @PluginDescriptor(
 	name = "Interface Styles",
+	category = PluginCategory.CLIENT,
 	description = "Change the interface style to the 2005/2010 interface",
 	tags = {"2005", "2010", "skin", "theme", "ui"},
 	enabledByDefault = false

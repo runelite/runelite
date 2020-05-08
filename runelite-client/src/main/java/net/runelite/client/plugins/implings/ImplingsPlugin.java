@@ -41,11 +41,13 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Implings",
+	category = PluginCategory.MINIGAME,
 	description = "Highlight nearby implings on the minimap and on-screen",
 	tags = {"hunter", "minimap", "overlay", "imp"}
 )

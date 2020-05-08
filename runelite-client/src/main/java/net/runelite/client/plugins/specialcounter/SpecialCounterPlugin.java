@@ -48,6 +48,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ws.PartyService;
@@ -55,6 +56,7 @@ import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
+	category = PluginCategory.COMBAT,
 	description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
 	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false

@@ -63,6 +63,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -71,6 +72,7 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Kourend Library",
+	category = PluginCategory.MINIGAME,
 	description = "Show where the books are found in the Kourend Library",
 	tags = {"arceuus", "magic", "runecrafting", "overlay", "panel"}
 )

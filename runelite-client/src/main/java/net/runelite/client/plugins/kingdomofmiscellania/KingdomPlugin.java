@@ -38,11 +38,13 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Kingdom of Miscellania",
+	category = PluginCategory.ACTIVITY,
 	description = "Show amount of favor when inside Miscellania",
 	tags = {"favor", "favour", "managing", "overlay"},
 	enabledByDefault = false

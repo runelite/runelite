@@ -58,6 +58,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
@@ -68,6 +69,7 @@ import net.runelite.http.api.item.ItemStats;
 
 @PluginDescriptor(
 	name = "Item Stats",
+	category = PluginCategory.ITEM,
 	description = "Show information about food and potion effects",
 	tags = {"food", "inventory", "overlay", "potion"}
 )

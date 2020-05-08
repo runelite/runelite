@@ -38,12 +38,14 @@ import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
 	name = "Tithe Farm",
+	category = PluginCategory.MINIGAME,
 	description = "Show timers for the farming patches within the Tithe Farm minigame",
 	tags = {"farming", "minigame", "overlay", "skilling", "timers"}
 )

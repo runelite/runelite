@@ -44,10 +44,12 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "XP Drop",
+	category = PluginCategory.UTILITY,
 	description = "Enable customization of the way XP drops are displayed",
 	tags = {"experience", "levels", "tick", "prayer"}
 )

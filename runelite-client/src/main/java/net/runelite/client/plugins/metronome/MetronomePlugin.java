@@ -34,10 +34,12 @@ import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Metronome",
+	category = PluginCategory.UTILITY,
 	description = "Play a sound on a specified tick to aid in efficient skilling",
 	tags = {"skilling", "tick", "timers"},
 	enabledByDefault = false

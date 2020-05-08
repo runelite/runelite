@@ -49,6 +49,7 @@ import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.puzzlesolver.lightbox.Combination;
 import net.runelite.client.plugins.puzzlesolver.lightbox.LightBox;
@@ -61,6 +62,7 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Puzzle Solver",
+	category = PluginCategory.ACTIVITY,
 	description = "Show you where to click to solve puzzle boxes",
 	tags = {"clues", "scrolls", "overlay"}
 )

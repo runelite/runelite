@@ -57,6 +57,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
@@ -65,6 +66,7 @@ import okhttp3.HttpUrl;
 @Slf4j
 @PluginDescriptor(
 	name = "Wiki",
+	category = PluginCategory.CLIENT,
 	description = "Adds a Wiki button that takes you to the OSRS Wiki"
 )
 public class WikiPlugin extends Plugin

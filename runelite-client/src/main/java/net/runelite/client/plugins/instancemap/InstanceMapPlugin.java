@@ -36,11 +36,13 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Instance Map",
+	category = PluginCategory.CLIENT,
 	description = "Add an instanced map, accessible by right-clicking the map button"
 )
 public class InstanceMapPlugin extends Plugin

@@ -37,10 +37,12 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Friend List",
+	category = PluginCategory.UTILITY,
 	description = "Add extra information to the friend and ignore lists"
 )
 public class FriendListPlugin extends Plugin

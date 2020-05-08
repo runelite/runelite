@@ -40,6 +40,7 @@ import net.runelite.api.events.StatChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
@@ -48,6 +49,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "XP Globes",
+	category = PluginCategory.UTILITY,
 	description = "Show XP globes for the respective skill when gaining XP",
 	tags = {"experience", "levels", "overlay"},
 	enabledByDefault = false

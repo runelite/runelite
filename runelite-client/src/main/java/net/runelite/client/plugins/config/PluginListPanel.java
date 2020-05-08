@@ -31,16 +31,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -54,15 +59,18 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.MultiplexingPluginPanel;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
@@ -81,6 +89,9 @@ class PluginListPanel extends PluginPanel
 	private final Provider<ConfigPanel> configPanelProvider;
 	private final List<PluginConfigurationDescriptor> fakePlugins = new ArrayList<>();
 
+	@Inject
+	RuneLiteConfig runeLiteConfig;
+
 	@Getter
 	private final ExternalPluginManager externalPluginManager;
 
@@ -90,7 +101,8 @@ class PluginListPanel extends PluginPanel
 	private final IconTextField searchBar;
 	private final JScrollPane scrollPane;
 	private final FixedWidthPanel mainPanel;
-	private List<PluginListItem> pluginList;
+	private Map<PluginCategory, List<PluginListItem>> pluginMap = new TreeMap<>();
+	private Map<PluginCategory, JLabel> categoryLabels = new TreeMap<>();
 
 	@Inject
 	public PluginListPanel(
@@ -184,8 +196,11 @@ class PluginListPanel extends PluginPanel
 	{
 		final List<String> pinnedPlugins = getPinnedPluginNames();
 
+		pluginMap = initPluginMap();
+		categoryLabels = initCategoryLabels();
+
 		// populate pluginList with all non-hidden plugins
-		pluginList = Stream.concat(
+		Stream.concat(
 			fakePlugins.stream(),
 			pluginManager.getPlugins().stream()
 				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
@@ -197,22 +212,53 @@ class PluginListPanel extends PluginPanel
 
 					return new PluginConfigurationDescriptor(
 						descriptor.name(),
+						descriptor.category(),
 						descriptor.description(),
 						descriptor.tags(),
 						plugin,
 						config,
 						configDescriptor);
 				})
-		).map(desc ->
+		).forEach(desc ->
 		{
 			PluginListItem listItem = new PluginListItem(this, desc);
+			pluginMap.get(listItem.getPluginConfig().getCategory()).add(listItem);
 			listItem.setPinned(pinnedPlugins.contains(desc.getName()));
-			return listItem;
-		}).collect(Collectors.toList());
+		});
 
-		pluginList.sort(Comparator.comparing(p -> p.getPluginConfig().getName()));
+		pluginMap.values().forEach(list -> list.sort(Comparator.comparing(p -> p.getPluginConfig().getName())));
 		mainPanel.removeAll();
 		refresh();
+	}
+
+	private Map<PluginCategory, List<PluginListItem>> initPluginMap()
+	{
+		final Map<PluginCategory, List<PluginListItem>> map = new TreeMap<>();
+
+		for (PluginCategory c : PluginCategory.values())
+		{
+			map.put(c, new ArrayList<>());
+		}
+
+		return map;
+	}
+
+	private Map<PluginCategory, JLabel> initCategoryLabels()
+	{
+		final Map<PluginCategory, JLabel> map = new TreeMap<>();
+
+		for (PluginCategory c : PluginCategory.values())
+		{
+			final JLabel categoryLabel = new JLabel(c.toString(), SwingConstants.LEFT);
+			categoryLabel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createEmptyBorder(c == PluginCategory.COMBAT ? 8 : 18, 0, 6, 0),
+				BorderFactory.createMatteBorder(0, 0, 2, 0, ColorScheme.BRAND_ORANGE_TRANSPARENT)));
+			categoryLabel.setFont(FontManager.getRunescapeBoldFont().deriveFont(24f));
+			categoryLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			map.put(c, categoryLabel);
+		}
+
+		return map;
 	}
 
 	void addFakePlugin(PluginConfigurationDescriptor... descriptor)
@@ -222,8 +268,9 @@ class PluginListPanel extends PluginPanel
 
 	void refresh()
 	{
+		pluginMap.get(PluginCategory.RUNELITE).forEach(p -> p.setPinned(true));
 		// update enabled / disabled status of all items
-		pluginList.forEach(listItem ->
+		getPluginList().forEach(listItem ->
 		{
 			final Plugin plugin = listItem.getPluginConfig().getPlugin();
 			if (plugin != null)
@@ -252,7 +299,8 @@ class PluginListPanel extends PluginPanel
 	{
 		final String text = searchBar.getText();
 
-		pluginList.forEach(mainPanel::remove);
+		pluginMap.values().forEach(l -> l.forEach(mainPanel::remove));
+		categoryLabels.values().forEach(mainPanel::remove);
 
 		showMatchingPlugins(true, text);
 		showMatchingPlugins(false, text);
@@ -262,25 +310,84 @@ class PluginListPanel extends PluginPanel
 
 	private void showMatchingPlugins(boolean pinned, String text)
 	{
+		List<PluginListItem> pluginList = getPluginList();
+		pluginList.sort(Comparator.comparing(p -> p.getPluginConfig().getName()));
 		if (text.isEmpty())
 		{
-			pluginList.stream().filter(item -> pinned == item.isPinned()).forEach(mainPanel::add);
+			if (runeLiteConfig.categorisePluginList())
+			{
+				if (pinned)
+				{
+					pluginMap.values().stream().flatMap(List::stream)
+						.filter(PluginListItem::isPinned).forEach(mainPanel::add);
+				}
+				else
+				{
+					pluginMap.keySet().forEach(category ->
+					{
+						List<PluginListItem> listItems = pluginMap.get(category).stream()
+							.filter(item -> !item.isPinned()).collect(Collectors.toList());
+						if (listItems.size() == 0)
+						{
+							return;
+						}
+						mainPanel.add(categoryLabels.get(category));
+						pluginMap.get(category).stream().filter(item -> !item.isPinned()).forEach(mainPanel::add);
+					});
+				}
+			}
+			else
+			{
+				pluginList.stream().filter(item -> pinned == item.isPinned()).forEach(mainPanel::add);
+			}
 			return;
 		}
 
 		final String[] searchTerms = text.toLowerCase().split(" ");
-		pluginList.forEach(listItem ->
+		if (runeLiteConfig.categorisePluginList())
 		{
-			if (pinned == listItem.isPinned() && Text.matchesSearchTerms(searchTerms, listItem.getKeywords()))
+			if (pinned)
 			{
-				mainPanel.add(listItem);
+				pluginMap.values().stream().flatMap(List::stream).forEach(item ->
+				{
+					log.debug(item.getPluginConfig().getName() + ": " + item.isPinned());
+					if (item.isPinned() && Text.matchesSearchTerms(searchTerms, item.getKeywords()))
+					{
+						mainPanel.add(item);
+					}
+				});
 			}
-		});
+			else
+			{
+				pluginMap.keySet().forEach(category ->
+				{
+					List<PluginListItem> listItems = pluginMap.get(category).stream()
+						.filter(item -> !item.isPinned() && Text.matchesSearchTerms(searchTerms, item.getKeywords()))
+						.collect(Collectors.toList());
+					if (listItems.size() == 0)
+					{
+						return;
+					}
+					mainPanel.add(categoryLabels.get(category));
+					listItems.forEach(mainPanel::add);
+				});
+			}
+		}
+		else
+		{
+			pluginList.forEach(item ->
+			{
+				if (pinned == item.isPinned() && Text.matchesSearchTerms(searchTerms, item.getKeywords()))
+				{
+					mainPanel.add(item);
+				}
+			});
+		}
 	}
 
 	void openConfigurationPanel(String configGroup)
 	{
-		for (PluginListItem pluginListItem : pluginList)
+		for (PluginListItem pluginListItem : getPluginList())
 		{
 			if (pluginListItem.getPluginConfig().getName().equals(configGroup))
 			{
@@ -292,7 +399,7 @@ class PluginListPanel extends PluginPanel
 
 	void openConfigurationPanel(Plugin plugin)
 	{
-		for (PluginListItem pluginListItem : pluginList)
+		for (PluginListItem pluginListItem : getPluginList())
 		{
 			if (pluginListItem.getPluginConfig().getPlugin() == plugin)
 			{
@@ -351,7 +458,7 @@ class PluginListPanel extends PluginPanel
 
 	void savePinnedPlugins()
 	{
-		final String value = pluginList.stream()
+		final String value = getPluginList().stream()
 			.filter(PluginListItem::isPinned)
 			.map(p -> p.getPluginConfig().getName())
 			.collect(Collectors.joining(","));
@@ -359,10 +466,24 @@ class PluginListPanel extends PluginPanel
 		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
 	}
 
+	List<PluginListItem> getPluginList()
+	{
+		return pluginMap.values().stream().flatMap(List::stream).collect(Collectors.toList());
+	}
+
 	@Subscribe
 	public void onPluginChanged(PluginChanged event)
 	{
 		SwingUtilities.invokeLater(this::refresh);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("runelite") && event.getKey().equals("categorisePluginList"))
+		{
+			onSearchBarChanged();
+		}
 	}
 
 	@Override

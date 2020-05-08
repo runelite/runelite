@@ -36,10 +36,12 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Entity Hider",
+	category = PluginCategory.CLIENT,
 	description = "Hide players, NPCs, and/or projectiles",
 	tags = {"npcs", "players", "projectiles"},
 	enabledByDefault = false

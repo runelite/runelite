@@ -31,10 +31,12 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Animation Smoothing",
+	category = PluginCategory.CLIENT,
 	description = "Show smoother player, NPC, and object animations",
 	tags = {"npcs", "objects", "players"},
 	enabledByDefault = false

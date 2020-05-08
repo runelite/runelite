@@ -57,6 +57,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -64,6 +65,7 @@ import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
 	name = "NPC Aggression Timer",
+	category = PluginCategory.COMBAT,
 	description = "Highlights the unaggressive area of NPCs nearby and timer until it becomes active",
 	tags = {"highlight", "lines", "unaggro", "aggro", "aggressive", "npcs", "area", "slayer"},
 	enabledByDefault = false

@@ -43,10 +43,12 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Anti Drag",
+	category = PluginCategory.CLIENT,
 	description = "Prevent dragging an item for a specified delay",
 	tags = {"antidrag", "delay", "inventory", "items"},
 	enabledByDefault = false

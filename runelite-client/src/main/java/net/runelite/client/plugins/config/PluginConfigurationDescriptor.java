@@ -26,18 +26,22 @@ package net.runelite.client.plugins.config;
 
 import javax.annotation.Nullable;
 import javax.swing.JMenuItem;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.externalplugins.ExternalPluginManifest;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.util.LinkBrowser;
 
 @Value
+@AllArgsConstructor
 class PluginConfigurationDescriptor
 {
 	private final String name;
+	PluginCategory category;
 	private final String description;
 	private final String[] tags;
 
@@ -51,6 +55,13 @@ class PluginConfigurationDescriptor
 
 	@Nullable
 	private final ConfigDescriptor configDescriptor;
+
+	boolean forcePinned;
+
+	public PluginConfigurationDescriptor(String name, PluginCategory category, String description, String[] tags, Plugin plugin, Config config, ConfigDescriptor configDescriptor)
+	{
+		this(name, category, description, tags, plugin, config, configDescriptor, false);
+	}
 
 	boolean hasConfigurables()
 	{

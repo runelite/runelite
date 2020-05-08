@@ -34,10 +34,12 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Stretched Mode",
+	category = PluginCategory.CLIENT,
 	description = "Stretches the game in fixed and resizable modes.",
 	tags = {"resize", "ui", "interface", "stretch", "scaling", "fixed"},
 	enabledByDefault = false

@@ -64,6 +64,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
@@ -76,6 +77,7 @@ import net.runelite.http.api.xp.XpClient;
 
 @PluginDescriptor(
 	name = "XP Tracker",
+	category = PluginCategory.UTILITY,
 	description = "Enable the XP Tracker panel",
 	tags = {"experience", "levels", "panel"}
 )

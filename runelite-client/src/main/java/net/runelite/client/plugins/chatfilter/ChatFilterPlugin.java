@@ -47,12 +47,14 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Chat Filter",
+	category = PluginCategory.CHAT,
 	description = "Censor user configurable words or patterns from chat",
 	enabledByDefault = false
 )

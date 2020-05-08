@@ -58,11 +58,13 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Drift Net",
+	category = PluginCategory.MINIGAME,
 	description = "Display information about drift nets",
 	tags = {"hunter", "fishing", "drift", "net"},
 	enabledByDefault = false

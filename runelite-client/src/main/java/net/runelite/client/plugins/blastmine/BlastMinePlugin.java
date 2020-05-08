@@ -41,11 +41,13 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Blast Mine",
+	category = PluginCategory.MINIGAME,
 	description = "Show helpful information for the Blast Mine minigame",
 	tags = {"explode", "explosive", "mining", "minigame", "skilling"}
 )

@@ -35,6 +35,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -44,6 +45,7 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Configuration",
+	category = PluginCategory.CLIENT,
 	loadWhenOutdated = true,
 	hidden = true // prevent users from disabling
 )
@@ -73,12 +75,12 @@ public class ConfigPlugin extends Plugin
 	{
 		pluginListPanel = pluginListPanelProvider.get();
 		pluginListPanel.addFakePlugin(new PluginConfigurationDescriptor(
-				"RuneLite", "RuneLite client settings",
+				"RuneLite", PluginCategory.RUNELITE, "RuneLite client settings",
 				new String[]{"client", "notification", "size", "position", "window", "chrome", "focus", "font", "overlay", "tooltip", "infobox"},
-				null, runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig)
+				null, runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig), true
 			),
 			new PluginConfigurationDescriptor(
-				"Chat Color", "Recolor chat text", new String[]{"colour", "messages"},
+				"Chat Color", PluginCategory.CHAT, "Recolor chat text", new String[]{"colour", "messages"},
 				null, chatColorConfig, configManager.getConfigDescriptor(chatColorConfig)
 			));
 		pluginListPanel.rebuildPluginList();

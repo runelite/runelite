@@ -27,6 +27,7 @@ package net.runelite.client.plugins.info;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
@@ -34,6 +35,7 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Info Panel",
+	category = PluginCategory.CLIENT,
 	description = "Enable the Info panel",
 	loadWhenOutdated = true
 )

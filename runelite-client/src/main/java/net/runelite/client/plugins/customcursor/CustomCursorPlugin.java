@@ -43,11 +43,13 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
 	name = "Custom Cursor",
+	category = PluginCategory.CLIENT,
 	description = "Replaces your mouse cursor image",
 	enabledByDefault = false
 )

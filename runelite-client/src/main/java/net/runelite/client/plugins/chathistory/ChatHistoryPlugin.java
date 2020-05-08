@@ -58,6 +58,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginCategory;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
@@ -65,6 +66,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Chat History",
+	category = PluginCategory.CHAT,
 	description = "Retain your chat history when logging in/out or world hopping",
 	tags = {"chat", "history", "retain", "cycle", "pm"}
 )
