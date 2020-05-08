@@ -40,7 +40,7 @@ public interface WintertodtConfig extends Config
 	@ConfigItem(
 		position = 0,
 		keyName = "showOverlay",
-		name = "Enable Overlay",
+		name = "Show Overlay",
 		description = "Toggles the status overlay"
 	)
 	default boolean showOverlay()

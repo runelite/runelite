@@ -147,10 +147,7 @@ public class WintertodtPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		if (overlay != null)
-		{
-			overlayManager.remove(overlay);
-		}
+		overlayManager.remove(overlay);
 		reset();
 	}
 
@@ -492,19 +489,16 @@ public class WintertodtPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if (!configChanged.getGroup().equals("wintertodt"))
+		if (configChanged.getGroup().equals("wintertodt") && configChanged.getKey().equals("showOverlay"))
 		{
-			return;
-		}
-
-		if (configChanged.getKey().equals("showOverlay") && config.showOverlay())
-		{
-			overlayManager.add(overlay);
-		}
-
-		if (configChanged.getKey().equals("showOverlay") && !config.showOverlay())
-		{
-			overlayManager.remove(overlay);
+			if (config.showOverlay())
+			{
+				overlayManager.add(overlay);
+			}
+			else
+			{
+				overlayManager.remove(overlay);
+			}
 		}
 	}
 
