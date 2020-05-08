@@ -45,6 +45,7 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
@@ -115,6 +116,10 @@ public class LootTrackerPluginTest
 	@Mock
 	@Bind
 	private ItemManager itemManager;
+
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
 
 	@Before
 	public void setUp()

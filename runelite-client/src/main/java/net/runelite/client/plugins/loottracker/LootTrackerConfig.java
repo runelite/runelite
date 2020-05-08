@@ -107,4 +107,24 @@ public interface LootTrackerConfig extends Config
 		description = ""
 	)
 	void setIgnoredEvents(String key);
+
+	@ConfigItem(
+		keyName = "npcKillChatMessage",
+		name = "Show chat message for NPC kills",
+		description = "Adds a chat message with monster name and kill value when receiving loot from an NPC kill."
+	)
+	default boolean npcKillChatMessage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "pvpKillChatMessage",
+		name = "Show chat message for PVP kills",
+		description = "Adds a chat message with player name and kill value when receiving loot from a player kill."
+	)
+	default boolean pvpKillChatMessage()
+	{
+		return false;
+	}
 }

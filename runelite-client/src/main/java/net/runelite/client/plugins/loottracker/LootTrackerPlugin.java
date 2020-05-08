@@ -80,6 +80,10 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -98,6 +102,7 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootAggregate;
@@ -188,6 +193,9 @@ public class LootTrackerPlugin extends Plugin
 
 	@Inject
 	private EventBus eventBus;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
@@ -394,6 +402,11 @@ public class LootTrackerPlugin extends Plugin
 		final int combat = npc.getCombatLevel();
 
 		addLoot(name, combat, LootRecordType.NPC, items);
+
+		if (config.npcKillChatMessage())
+		{
+			lootReceivedChatMessage(items, "a " + name);
+		}
 	}
 
 	@Subscribe
@@ -411,6 +424,11 @@ public class LootTrackerPlugin extends Plugin
 		final int combat = player.getCombatLevel();
 
 		addLoot(name, combat, LootRecordType.PLAYER, items);
+
+		if (config.pvpKillChatMessage())
+		{
+			lootReceivedChatMessage(items, name);
+		}
 	}
 
 	@Subscribe
@@ -839,5 +857,35 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	private long getTotalPrice(Collection<ItemStack> items)
+	{
+		long totalPrice = 0;
+
+		for (final ItemStack itemStack : items)
+		{
+			totalPrice += (long) itemManager.getItemPrice(itemStack.getId()) * itemStack.getQuantity();
+		}
+
+		return totalPrice;
+	}
+
+	private void lootReceivedChatMessage(final Collection<ItemStack> items, final String name)
+	{
+		final String message = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("You've killed ")
+			.append(name)
+			.append(" for ")
+			.append(QuantityFormatter.quantityToStackSize(getTotalPrice(items)))
+			.append(" loot.")
+			.build();
+
+		chatMessageManager.queue(
+			QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(message)
+				.build());
 	}
 }
