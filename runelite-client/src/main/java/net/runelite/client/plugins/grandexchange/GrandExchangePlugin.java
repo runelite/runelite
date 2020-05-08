@@ -706,7 +706,6 @@ public class GrandExchangePlugin extends Plugin
 			return "None";
 		}
 		Instant now = Instant.now();
-
 		long minuteDifference = ChronoUnit.MINUTES.between(lastDateTime, now);
 		if (minuteDifference / 60.0 > 4.0)
 		{
@@ -714,10 +713,6 @@ public class GrandExchangePlugin extends Plugin
 		}
 		else
 		{
-//			Duration durationBetween = Duration.between(lastDateTime, now);
-//			LocalTime localTimeSecs = LocalTime.ofSecondOfDay(durationBetween.getSeconds());
-//			String limitResetString = localTimeSecs.format(DateTimeFormatter.ofPattern("HH:mm"));
-
 			int minsLeft = 240 - (int) minuteDifference;
 			int hours = minsLeft / 60;
 			int minutes = minsLeft % 60;
