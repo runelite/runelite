@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, HSJ
+ * Copyright (c) 2020, HSJ
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -112,35 +112,36 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 
 	private int maidenStartTick = -1;
 	private boolean maiden70;
-	private String maiden70time;
+	private int maiden70time;
 	private boolean maiden50;
-	private String maiden50time;
+	private int maiden50time;
 	private boolean maiden30;
-	private String maiden30time;
+	private int maiden30time;
 
 	private int nyloStartTick = -1;
 	private int totalNylos;
 	private int currentNylos;
 	private boolean nyloWavesFinished;
 	private boolean nyloCleanupFinished;
-	private String waveTime;
-	private String cleanupTime;
-	private String bossSpawnTime;
+	private int waveTime;
+	private int cleanupTime;
+	private int bossSpawnTime;
 
 	private int soteStartTick = -1;
 	private boolean sote66;
-	private String sote66time;
+	private int sote66time;
 	private boolean sote33;
-	private String sote33time;
+	private int sote33time;
 
 	private int xarpusStartTick = -1;
-	private String xarpusAcidTime;
-	private String xarpusRecoveryTime;
+	private int xarpusAcidTime;
+	private int xarpusRecoveryTime;
 	private int xarpusPreScreech;
 
 	private int verzikStartTick = -1;
-	private String verzikP1time;
-	private String verzikP2time;
+	private int verzikP1time;
+	private int verzikP2time;
+	private int verzikP3time;
 	private double verzikP1personal;
 	private double verzikP1total;
 	private double verzikP2personal;
@@ -185,9 +186,25 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 					}
 				}
 
-				if (region == XARPUS_REGION && xarpusStartTick != -1 && xarpusRecoveryTime == null)
+				if (region == XARPUS_REGION && xarpusStartTick != -1 && xarpusRecoveryTime < 1)
 				{
-					xarpusRecoveryTime = formatTime(client.getTickCount() - xarpusStartTick);
+					xarpusRecoveryTime = client.getTickCount() - xarpusStartTick;
+					String message = new ChatMessageBuilder()
+						.append(ChatColorType.NORMAL)
+						.append("Recovery Phase - ")
+						.append(Color.RED, formatTime(xarpusRecoveryTime))
+						.append("\n")
+						.append("Total Healed - ")
+						.append(Color.RED, DMG_FORMAT.format(totalHealing.getOrDefault("Xarpus", 0)))
+						.build();
+
+					if (message != null)
+					{
+						chatMessageManager.queue(QueuedMessage.builder()
+							.type(ChatMessageType.GAMEMESSAGE)
+							.runeLiteFormattedMessage(message)
+							.build());
+					}
 				}
 				break;
 			case 2:
@@ -212,29 +229,29 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 				if (bosshp <= 700 && bosshp > 0 && !maiden70)
 				{
 					maiden70 = true;
-					maiden70time = formatTime(client.getTickCount() - maidenStartTick);
+					maiden70time = client.getTickCount() - maidenStartTick;
 				}
 				else if (bosshp <= 500 && bosshp > 0 && !maiden50)
 				{
 					maiden50 = true;
-					maiden50time = formatTime(client.getTickCount() - maidenStartTick);
+					maiden50time = client.getTickCount() - maidenStartTick;
 				}
 				else if (bosshp <= 300 && bosshp > 0 && !maiden30)
 				{
 					maiden30 = true;
-					maiden30time = formatTime(client.getTickCount() - maidenStartTick);
+					maiden30time = client.getTickCount() - maidenStartTick;
 				}
 				break;
 			case SOTETSEG_REGION:
 				if (bosshp == 666 && !sote66)
 				{
 					sote66 = true;
-					sote66time = formatTime(client.getTickCount() - soteStartTick);
+					sote66time = client.getTickCount() - soteStartTick;
 				}
 				else if (bosshp == 333 && !sote33)
 				{
 					sote33 = true;
-					sote33time = formatTime(client.getTickCount() - soteStartTick);
+					sote33time = client.getTickCount() - soteStartTick;
 				}
 				break;
 		}
@@ -261,15 +278,17 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 			message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
 				.append("70% - ")
-				.append(Color.RED, maiden70time)
+				.append(Color.RED, formatTime(maiden70time))
 				.append("\n")
 				.append(ChatColorType.NORMAL)
 				.append("50% - ")
-				.append(Color.RED, maiden50time)
+				.append(Color.RED, formatTime(maiden50time))
+				.append(" (" + formatTime(maiden50time - maiden70time) + ")")
 				.append("\n")
 				.append(ChatColorType.NORMAL)
 				.append("30% - ")
-				.append(Color.RED, maiden30time)
+				.append(Color.RED, formatTime(maiden30time))
+				.append(" (" + formatTime(maiden30time - maiden50time) + ")")
 				.append("\n")
 				.append(ChatColorType.NORMAL)
 				.append("Personal Boss Damage - ")
@@ -303,15 +322,17 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 			message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
 				.append("Waves - ")
-				.append(Color.RED, waveTime)
+				.append(Color.RED, formatTime(waveTime))
 				.append("\n")
 				.append(ChatColorType.NORMAL)
 				.append("Cleanup - ")
-				.append(Color.RED, cleanupTime)
+				.append(Color.RED, formatTime(cleanupTime))
+				.append(" (" + formatTime(cleanupTime - waveTime) + ")")
 				.append("\n")
 				.append(ChatColorType.NORMAL)
 				.append("Boss Spawn - ")
-				.append(Color.RED, bossSpawnTime)
+				.append(Color.RED, formatTime(bossSpawnTime))
+				.append(" (" + formatTime(bossSpawnTime - cleanupTime) + ")")
 				.append("\n")
 				.append(ChatColorType.NORMAL)
 				.append("Personal Boss Damage - ")
@@ -328,11 +349,12 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 			message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
 				.append("66% - ")
-				.append(Color.RED, sote66time)
+				.append(Color.RED, formatTime(sote66time))
 				.append("\n")
 				.append(ChatColorType.NORMAL)
 				.append("33% - ")
-				.append(Color.RED, sote33time)
+				.append(Color.RED, formatTime(sote33time))
+				.append(" (" + formatTime(sote33time - sote66time) + ")")
 				.append("\n")
 				.append(ChatColorType.NORMAL)
 				.append("Personal Boss Damage - ")
@@ -344,28 +366,16 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 		{
 			double personal = personalDamage.getOrDefault("Xarpus", 0);
 			double total = totalDamage.getOrDefault("Xarpus", 0);
-			int healed = totalHealing.getOrDefault("Xarpus", 0);
 			double xarpusPostScreech = personal - xarpusPreScreech;
 			double percent = (personal / total) * 100;
 
 			message = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Recovery Phase - ")
-				.append(Color.RED, xarpusRecoveryTime)
-				.append("\n")
-				.append(ChatColorType.NORMAL)
-				.append("Acid Phase - ")
-				.append(Color.RED, xarpusAcidTime)
-				.append("\n")
 				.append("Personal Boss Damage - ")
 				.append(Color.RED, DMG_FORMAT.format(personal) + " (" + DECIMAL_FORMAT.format(percent) + "%)")
 				.append("\n")
 				.append(ChatColorType.NORMAL)
-				.append(" Post Screech - ")
+				.append("Post Screech Damage - ")
 				.append(Color.RED, DMG_FORMAT.format(xarpusPostScreech))
-				.append("\n")
-				.append("Total Healed - ")
-				.append(Color.RED, DMG_FORMAT.format(healed))
 				.build();
 			resetXarpus();
 		}
@@ -377,6 +387,10 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 			double percent = (p3personal / p3total) * 100;
 
 			message = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("P3 - ")
+				.append(Color.RED, formatTime(verzikP3time))
+				.append(" (" + formatTime(verzikP3time - verzikP2time) + ")")
 				.append(ChatColorType.NORMAL)
 				.append("P3 Personal Damage - ")
 				.append(Color.RED, DMG_FORMAT.format(p3personal) + " (" + DECIMAL_FORMAT.format(percent) + "%)")
@@ -411,11 +425,11 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 		switch (npcId)
 		{
 			case NpcID.NYLOCAS_VASILIAS:
-				bossSpawnTime = formatTime(client.getTickCount() - nyloStartTick);
+				bossSpawnTime = client.getTickCount() - nyloStartTick;
 				break;
 			case NpcID.VERZIK_VITUR_8371:
 			{
-				verzikP1time = formatTime(client.getTickCount() - verzikStartTick);
+				verzikP1time = client.getTickCount() - verzikStartTick;
 				verzikP1personal = personalDamage.getOrDefault("Verzik Vitur", 0);
 				verzikP1total = totalDamage.getOrDefault("Verzik Vitur", 0);
 				double percent = (verzikP1personal / verzikP1total) * 100;
@@ -423,7 +437,7 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 				String message = new ChatMessageBuilder()
 					.append(ChatColorType.NORMAL)
 					.append("P1 - ")
-					.append(Color.RED, verzikP1time)
+					.append(Color.RED, formatTime(verzikP1time))
 					.append("\n")
 					.append(ChatColorType.NORMAL)
 					.append("P1 Personal Damage - ")
@@ -441,7 +455,7 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 			}
 			case NpcID.VERZIK_VITUR_8373:
 			{
-				verzikP2time = formatTime(client.getTickCount() - verzikStartTick);
+				verzikP2time = client.getTickCount() - verzikStartTick;
 				verzikP2personal = personalDamage.getOrDefault("Verzik Vitur", 0) - verzikP1personal;
 				verzikP2total = totalDamage.getOrDefault("Verzik Vitur", 0) - verzikP1total;
 				verzikP2healed = totalHealing.getOrDefault("Verzik Vitur", 0);
@@ -450,7 +464,8 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 				String message = new ChatMessageBuilder()
 					.append(ChatColorType.NORMAL)
 					.append("P2 - ")
-					.append(Color.RED, verzikP2time)
+					.append(Color.RED, formatTime(verzikP2time))
+					.append(" (" + formatTime(verzikP2time - verzikP1time) + ")")
 					.append("\n")
 					.append(ChatColorType.NORMAL)
 					.append("P2 Personal Damage - ")
@@ -469,6 +484,10 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 						.build());
 				}
 				break;
+			}
+			case NpcID.VERZIK_VITUR_8375:
+			{
+				verzikP3time = client.getTickCount() - verzikStartTick;
 			}
 		}
 
@@ -490,7 +509,7 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 
 		if (totalNylos == NYLOCAS_TOTAL && !nyloWavesFinished)
 		{
-			waveTime = formatTime(client.getTickCount() - nyloStartTick);
+			waveTime = client.getTickCount() - nyloStartTick;
 			nyloWavesFinished = true;
 		}
 	}
@@ -513,7 +532,7 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 
 		if (nyloWavesFinished && !nyloCleanupFinished && currentNylos == 0)
 		{
-			cleanupTime = formatTime(client.getTickCount() - nyloStartTick);
+			cleanupTime = client.getTickCount() - nyloStartTick;
 			nyloCleanupFinished = true;
 		}
 	}
@@ -606,14 +625,19 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 		String npcName = npc.getName();
 		if (npcName != null && npcName.equals("Xarpus") && overheadText.equals("Screeeeech!"))
 		{
-			xarpusAcidTime = formatTime(client.getTickCount() - xarpusStartTick);
+			xarpusAcidTime = client.getTickCount() - xarpusStartTick;
 			xarpusPreScreech = personalDamage.getOrDefault(npcName, 0);
 			double preScreechTotal = totalDamage.getOrDefault(npcName, 0);
 			double percent = (xarpusPreScreech / preScreechTotal) * 100;
 
 			String message = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
-				.append("Pre Screech - ")
+				.append("Screech Time - ")
+				.append(Color.RED, formatTime(xarpusAcidTime))
+				.append(" (" + formatTime(xarpusAcidTime - xarpusRecoveryTime) + ")")
+				.append("\n")
+				.append(ChatColorType.NORMAL)
+				.append("Pre Screech Damage - ")
 				.append(Color.RED, DMG_FORMAT.format(xarpusPreScreech))
 				.append(ChatColorType.NORMAL)
 				.append(" (" + DECIMAL_FORMAT.format(percent) + ")")
@@ -641,11 +665,11 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 	{
 		maidenStartTick = -1;
 		maiden70 = false;
-		maiden70time = null;
+		maiden70time = 0;
 		maiden50 = false;
-		maiden50time = null;
+		maiden50time = 0;
 		maiden30 = false;
-		maiden30time = null;
+		maiden30time = 0;
 		personalDamage.remove("The Maiden of Sugadinti");
 		totalDamage.remove("The Maiden of Sugadinti");
 		totalHealing.remove("The Maiden of Sugadinti");
@@ -664,8 +688,8 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 		currentNylos = 0;
 		nyloWavesFinished = false;
 		nyloCleanupFinished = false;
-		waveTime = null;
-		cleanupTime = null;
+		waveTime = 0;
+		cleanupTime = 0;
 		personalDamage.remove("Nylocas Vasilias");
 		totalDamage.remove("Nylocas Vasilias");
 	}
@@ -674,9 +698,9 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 	{
 		soteStartTick = -1;
 		sote66 = false;
-		sote66time = null;
+		sote66time = 0;
 		sote33 = false;
-		sote33time = null;
+		sote33time = 0;
 		personalDamage.remove("Sotetseg");
 		totalDamage.remove("Sotetseg");
 	}
@@ -684,8 +708,8 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 	private void resetXarpus()
 	{
 		xarpusStartTick = -1;
-		xarpusRecoveryTime = null;
-		xarpusAcidTime = null;
+		xarpusRecoveryTime = 0;
+		xarpusAcidTime = 0;
 		xarpusPreScreech = 0;
 		personalDamage.remove("Xarpus");
 		totalDamage.remove("Xarpus");
@@ -695,8 +719,9 @@ public class TheatreOfBloodStatsPlugin extends Plugin
 	private void resetVerzik()
 	{
 		verzikStartTick = -1;
-		verzikP1time = null;
-		verzikP2time = null;
+		verzikP1time = 0;
+		verzikP2time = 0;
+		verzikP3time = 0;
 		verzikP1personal = 0;
 		verzikP1total = 0;
 		verzikP2personal = 0;
