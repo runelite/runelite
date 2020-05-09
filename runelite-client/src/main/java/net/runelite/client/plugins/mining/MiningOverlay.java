@@ -56,20 +56,23 @@ class MiningOverlay extends Overlay
 	private final Client client;
 	private final MiningPlugin plugin;
 
+	private final MiningConfig config;
+
 	@Inject
-	private MiningOverlay(Client client, MiningPlugin plugin)
+	private MiningOverlay(Client client, MiningPlugin plugin, MiningConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
 		this.client = client;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		List<RockRespawn> respawns = plugin.getRespawns();
-		if (respawns.isEmpty())
+		if (respawns.isEmpty() || !config.showRespawnTimers())
 		{
 			return null;
 		}
@@ -113,6 +116,7 @@ class MiningOverlay extends Overlay
 			ProgressPieComponent ppc = new ProgressPieComponent();
 			ppc.setBorderColor(pieBorderColor);
 			ppc.setFill(pieFillColor);
+			ppc.setDiameter(config.RespawnTimerSize());
 			ppc.setPosition(point);
 			ppc.setProgress(percent);
 			ppc.render(graphics);
