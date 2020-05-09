@@ -32,26 +32,26 @@ import net.runelite.client.config.Units;
 @ConfigGroup("mining")
 public interface MiningConfig extends Config
 {
-    @ConfigItem(
-            position = 5,
-            keyName = "showRespawnTimers",
-            name = "Show respawn timers",
-            description = "Configures whether to display the respawn timer overlay"
-    )
-    default boolean showRespawnTimers()
-    {
-        return true;
-    }
+	@ConfigItem(
+		position = 5,
+		keyName = "showRespawnTimers",
+		name = "Show respawn timers",
+		description = "Configures whether to display the respawn timer overlay"
+	)
+	default boolean showRespawnTimers()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "RespawnTimerSize",
-            name = "Size of Respawn timers",
-            description = "Change the size of the Respawn timers",
-            position = 10
-    )
-    @Units(Units.PIXELS)
-    default int RespawnTimerSize()
-    {
-        return 25;
-    }
+	@ConfigItem(
+		keyName = "RespawnTimerSize",
+		name = "Size of Respawn timers",
+		description = "Change the size of the Respawn timers",
+		position = 10
+	)
+	@Units(Units.PIXELS)
+	default int RespawnTimerSize()
+	{
+		return 25;
+	}
 }
