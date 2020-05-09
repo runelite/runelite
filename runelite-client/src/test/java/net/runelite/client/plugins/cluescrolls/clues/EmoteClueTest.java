@@ -24,14 +24,58 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import static org.junit.Assert.assertNull;
+import net.runelite.api.Item;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import static net.runelite.api.ItemID.*;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class EmoteClueTest
 {
+	private Item item(final int id)
+	{
+		return new Item(id, 1);
+	}
+
 	@Test
 	public void forTextEmptyString()
 	{
 		assertNull(EmoteClue.forText(""));
+	}
+
+	@Test
+	public void itemRequirementsFullBarrowsSetNonDegraged()
+	{
+		EmoteClue barrowsClue = EmoteClue.forText("Do a jig at the barrows chest. Beware of double agents! Equip any full barrows set.");
+		ItemRequirement[] requirements = barrowsClue.getItemRequirements();
+
+		assertEquals(1, requirements.length);
+
+		ItemRequirement fullBarrowsSetRequirement = requirements[0];
+
+		assertTrue("Full Ahrim set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(AHRIMS_STAFF), item(AHRIMS_HOOD), item(AHRIMS_ROBETOP), item(AHRIMS_ROBESKIRT) }));
+		assertTrue("Full Dharok set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(DHAROKS_GREATAXE), item(DHAROKS_HELM), item(DHAROKS_PLATEBODY), item(DHAROKS_PLATELEGS) }));
+		assertTrue("Full Guthan set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(GUTHANS_WARSPEAR), item(GUTHANS_HELM), item(GUTHANS_PLATEBODY), item(GUTHANS_CHAINSKIRT) }));
+		assertTrue("Full Karil set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(KARILS_CROSSBOW), item(KARILS_COIF), item(KARILS_LEATHERTOP), item(KARILS_LEATHERSKIRT) }));
+		assertTrue("Full Torag set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(TORAGS_HAMMERS), item(TORAGS_HELM), item(TORAGS_PLATEBODY), item(TORAGS_PLATELEGS) }));
+		assertTrue("Full Verac set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(VERACS_FLAIL), item(VERACS_HELM), item(VERACS_BRASSARD), item(VERACS_PLATESKIRT) }));
+	}
+
+	@Test
+	public void itemRequirementsFullBarrowsSetDegraded()
+	{
+		EmoteClue barrowsClue = EmoteClue.forText("Do a jig at the barrows chest. Beware of double agents! Equip any full barrows set.");
+		ItemRequirement[] requirements = barrowsClue.getItemRequirements();
+
+		assertEquals(1, requirements.length);
+
+		ItemRequirement fullBarrowsSetRequirement = requirements[0];
+
+		assertTrue("Full Ahrim set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(AHRIMS_STAFF_50), item(AHRIMS_HOOD_50), item(AHRIMS_ROBETOP_50), item(AHRIMS_ROBESKIRT_50) }));
+		assertTrue("Full Dharok set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(DHAROKS_GREATAXE_50), item(DHAROKS_HELM_50), item(DHAROKS_PLATEBODY_50), item(DHAROKS_PLATELEGS_50) }));
+		assertTrue("Full Guthan set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(GUTHANS_WARSPEAR_50), item(GUTHANS_HELM_50), item(GUTHANS_PLATEBODY_50), item(GUTHANS_CHAINSKIRT_50) }));
+		assertTrue("Full Karil set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(KARILS_CROSSBOW_50), item(KARILS_COIF_50), item(KARILS_LEATHERTOP_50), item(KARILS_LEATHERSKIRT_50) }));
+		assertTrue("Full Torag set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(TORAGS_HAMMERS_50), item(TORAGS_HELM_50), item(TORAGS_PLATEBODY_50), item(TORAGS_PLATELEGS_50) }));
+		assertTrue("Full Verac set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(VERACS_FLAIL_50), item(VERACS_HELM_50), item(VERACS_BRASSARD_50), item(VERACS_PLATESKIRT_50) }));
 	}
 }
