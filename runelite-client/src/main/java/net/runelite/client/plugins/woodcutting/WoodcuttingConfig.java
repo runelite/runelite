@@ -87,4 +87,16 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "RespawnTimerSize",
+			name = "Size of Respawn timers",
+			description = "Change the size of the Respawn timers",
+			position = 10
+	)
+	@Units(Units.PIXELS)
+	default int RespawnTimerSize()
+	{
+		return 25;
+	}
 }
