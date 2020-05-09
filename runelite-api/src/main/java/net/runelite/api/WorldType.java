@@ -26,7 +26,6 @@ package net.runelite.api;
 
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.function.Predicate;
 
 /**
  * An enumeration of possible world types.
@@ -82,11 +81,8 @@ public enum WorldType
 	}
 
 	private static final EnumSet<WorldType> PVP_WORLD_TYPES = EnumSet.of(
+		DEADMAN, // dmmt worlds are also flaged as DEADMAN
 		PVP
-	);
-
-	private static final EnumSet<WorldType> DEADMAN_WORLD_TYPES = EnumSet.of(
-		DEADMAN
 	);
 
 	/**
@@ -138,17 +134,5 @@ public enum WorldType
 	public static boolean isPvpWorld(final Collection<WorldType> worldTypes)
 	{
 		return worldTypes.stream().anyMatch(PVP_WORLD_TYPES::contains);
-	}
-
-	/**
-	 * Checks whether a world having a {@link Collection} of {@link WorldType}s is a Deadman world.
-	 *
-	 * @param worldTypes A {@link Collection} of {@link WorldType}s describing the given world.
-	 * @return           True if the given worldtypes of the world are a Deadman world, false otherwise.
-	 * @see Client#getWorldType()
-	 */
-	public static boolean isDeadmanWorld(final Collection<WorldType> worldTypes)
-	{
-		return worldTypes.stream().anyMatch(DEADMAN_WORLD_TYPES::contains);
 	}
 }

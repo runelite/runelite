@@ -381,7 +381,7 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		if (WorldType.isDeadmanWorld(client.getWorldType()))
+		if (client.getWorldType().contains(WorldType.DEADMAN))
 		{
 			discordState.triggerEvent(DiscordGameEventType.PLAYING_DEADMAN);
 			return;
