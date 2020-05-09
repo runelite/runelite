@@ -221,12 +221,19 @@ class PluginListPanel extends PluginPanel
 				})
 		).forEach(desc ->
 		{
-			PluginListItem listItem = new PluginListItem(this, desc);
+			PluginListItem listItem = new PluginListItem(this, desc, runeLiteConfig);
 			pluginMap.get(listItem.getPluginConfig().getCategory()).add(listItem);
 			listItem.setPinned(pinnedPlugins.contains(desc.getName()));
 		});
 
 		pluginMap.values().forEach(list -> list.sort(Comparator.comparing(p -> p.getPluginConfig().getName())));
+		getPluginList().forEach(p ->
+		{
+			if (p.getPluginConfig().isForcePinned())
+			{
+				p.setPinned(true);
+			}
+		});
 		mainPanel.removeAll();
 		refresh();
 	}
@@ -268,7 +275,6 @@ class PluginListPanel extends PluginPanel
 
 	void refresh()
 	{
-		pluginMap.get(PluginCategory.RUNELITE).forEach(p -> p.setPinned(true));
 		// update enabled / disabled status of all items
 		getPluginList().forEach(listItem ->
 		{
@@ -482,7 +488,7 @@ class PluginListPanel extends PluginPanel
 	{
 		if (event.getGroup().equals("runelite") && event.getKey().equals("categorisePluginList"))
 		{
-			onSearchBarChanged();
+			rebuildPluginList();
 		}
 	}
 

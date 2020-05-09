@@ -47,6 +47,7 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.externalplugins.ExternalPluginManifest;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -86,7 +87,7 @@ class PluginListItem extends JPanel
 		OFF_STAR = new ImageIcon(offStar);
 	}
 
-	PluginListItem(PluginListPanel pluginListPanel, PluginConfigurationDescriptor pluginConfig)
+	PluginListItem(PluginListPanel pluginListPanel, PluginConfigurationDescriptor pluginConfig, RuneLiteConfig runeLiteConfig)
 	{
 		this.pluginListPanel = pluginListPanel;
 		this.pluginConfig = pluginConfig;
@@ -118,13 +119,23 @@ class PluginListItem extends JPanel
 		SwingUtil.removeButtonDecorations(pinButton);
 		SwingUtil.addModalTooltip(pinButton, "Unpin plugin", "Pin plugin");
 		pinButton.setPreferredSize(new Dimension(21, 0));
-		add(pinButton, BorderLayout.LINE_START);
 
 		pinButton.addActionListener(e ->
 		{
 			pluginListPanel.savePinnedPlugins();
 			pluginListPanel.refresh();
 		});
+
+		if (pluginConfig.isForcePinned() && runeLiteConfig.categorisePluginList())
+		{
+			JLabel btn = new JLabel(ON_STAR);
+			btn.setPreferredSize(new Dimension(21, 0));
+			add(btn, BorderLayout.LINE_START);
+		}
+		else
+		{
+			add(pinButton, BorderLayout.LINE_START);
+		}
 
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2));
