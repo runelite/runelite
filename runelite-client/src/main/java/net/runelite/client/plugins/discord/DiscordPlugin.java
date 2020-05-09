@@ -381,6 +381,12 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
+		if (WorldType.isDeadmanWorld(client.getWorldType()))
+		{
+			discordState.triggerEvent(DiscordGameEventType.PLAYING_DEADMAN);
+			return;
+		}
+
 		DiscordGameEventType discordGameEventType = DiscordGameEventType.fromRegion(playerRegionID);
 
 		// NMZ uses the same region ID as KBD. KBD is always on plane 0 and NMZ is always above plane 0
