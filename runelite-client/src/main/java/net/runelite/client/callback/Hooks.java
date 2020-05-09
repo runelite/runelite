@@ -95,6 +95,7 @@ public class Hooks implements Callbacks
 
 	private static final GameTick GAME_TICK = GameTick.INSTANCE;
 	private static final BeforeRender BEFORE_RENDER = BeforeRender.INSTANCE;
+	private static final DrawFinished drawFinishedEvent = new DrawFinished();
 
 	@Inject
 	private EventBus eventBus;
@@ -394,8 +395,8 @@ public class Hooks implements Callbacks
 			finalImage = image;
 		}
 
-		DrawFinished event = new DrawFinished(copy(finalImage));
-		eventBus.post(DrawFinished.class, event);
+		drawFinishedEvent.image = finalImage;
+		eventBus.post(DrawFinished.class, drawFinishedEvent);
 
 		try
 		{

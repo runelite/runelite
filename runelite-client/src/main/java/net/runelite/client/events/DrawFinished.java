@@ -24,11 +24,9 @@
  */
 package net.runelite.client.events;
 
-import lombok.Value;
 import net.runelite.api.events.Event;
 import java.awt.Image;
 
-@Value
 public class DrawFinished implements Event
 {
 	public Image image;
