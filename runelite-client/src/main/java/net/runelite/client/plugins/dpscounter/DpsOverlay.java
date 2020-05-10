@@ -95,15 +95,14 @@ class DpsOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		Map<String, DpsMember> dpsMembers = dpsCounterPlugin.getMembers();
-		if (dpsMembers.isEmpty())
-		{
-			return null;
-		}
-
 		boolean inParty = !partyService.getMembers().isEmpty();
 		boolean showDamage = dpsConfig.showDamage();
 		DpsMember total = dpsCounterPlugin.getTotal();
 		boolean paused = total.isPaused();
+		if (dpsMembers.isEmpty() && total.getStart() == total.getEnd())
+		{
+			return null;
+		}
 
 		final String title = (inParty ? "Party " : "") + (showDamage ? "Damage" : "DPS") + (paused ? " (paused)" : "");
 		panelComponent.getChildren().add(
@@ -135,7 +134,7 @@ class DpsOverlay extends OverlayPanel
 			{
 				DpsMember self = dpsMembers.get(player.getName());
 
-				if (self != null && total.getDamage() > self.getDamage())
+				if (self == null || total.getDamage() > self.getDamage())
 				{
 					panelComponent.getChildren().add(
 						LineComponent.builder()
