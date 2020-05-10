@@ -290,18 +290,20 @@ public class ItemManager
 	 */
 	public int getItemPrice(int itemID, boolean ignoreUntradeableMap)
 	{
-		if (itemID == ItemID.COINS_995)
+		final int realId = canonicalize(itemID);
+
+		if (realId == ItemID.COINS_995)
 		{
 			return 1;
 		}
-		if (itemID == ItemID.PLATINUM_TOKEN)
+		if (realId == ItemID.PLATINUM_TOKEN)
 		{
 			return 1000;
 		}
 
 		if (!ignoreUntradeableMap)
 		{
-			UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
+			UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(realId));
 			if (p != null)
 			{
 				return getItemPrice(p.getPriceID()) * p.getQuantity();
@@ -309,7 +311,7 @@ public class ItemManager
 		}
 
 		int price = 0;
-		for (int mappedID : ItemMapping.map(itemID))
+		for (int mappedID : ItemMapping.map(realId))
 		{
 			ItemPrice ip = itemPrices.get(mappedID);
 			if (ip != null)
