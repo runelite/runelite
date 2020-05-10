@@ -381,9 +381,16 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		if (client.getWorldType().contains(WorldType.DEADMAN))
+		final EnumSet<WorldType> worldType = client.getWorldType();
+
+		if (worldType.contains(WorldType.DEADMAN))
 		{
 			discordState.triggerEvent(DiscordGameEventType.PLAYING_DEADMAN);
+			return;
+		}
+		else if (WorldType.isPvpWorld(worldType))
+		{
+			discordState.triggerEvent(DiscordGameEventType.PLAYING_PVP);
 			return;
 		}
 
@@ -415,14 +422,6 @@ public class DiscordPlugin extends Plugin
 	private boolean showArea(final DiscordGameEventType event)
 	{
 		if (event == null)
-		{
-			return false;
-		}
-
-		final EnumSet<WorldType> worldType = client.getWorldType();
-
-		// Do not show location in PVP activities
-		if (WorldType.isPvpWorld(worldType))
 		{
 			return false;
 		}
