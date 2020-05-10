@@ -188,7 +188,7 @@ class ItemPricesOverlay extends Overlay
 
 	private String getItemStackValueText(Item item)
 	{
-		int id = item.getId();
+		int id = itemManager.canonicalize(item.getId());
 		int qty = item.getQuantity();
 
 		// Special case for coins and platinum tokens
@@ -202,11 +202,6 @@ class ItemPricesOverlay extends Overlay
 		}
 
 		ItemComposition itemDef = itemManager.getItemComposition(id);
-		if (itemDef.getNote() != -1)
-		{
-			id = itemDef.getLinkedNoteId();
-			itemDef = itemManager.getItemComposition(id);
-		}
 
 		// Only check prices for things with store prices
 		if (itemDef.getPrice() <= 0)

@@ -211,12 +211,7 @@ public class ExaminePlugin extends Plugin
 			}
 
 			itemComposition = itemManager.getItemComposition(itemId);
-
-			if (itemComposition != null)
-			{
-				final int id = itemManager.canonicalize(itemComposition.getId());
-				getItemPrice(id, itemComposition, itemQuantity);
-			}
+			getItemPrice(itemComposition.getId(), itemComposition, itemQuantity);
 		}
 		else
 		{
