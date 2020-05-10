@@ -193,7 +193,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		// Use second entry as first one can be walk here with transparent chatbox
 		final MenuEntry entry = event.getMenuEntries()[event.getMenuEntries().length - 2];
 
-		if (entry.getType() != MenuAction.CC_OP_LOW_PRIORITY.getId())
+		if (entry.getType() != MenuAction.CC_OP_LOW_PRIORITY.getId() && entry.getType() != MenuAction.RUNELITE.getId())
 		{
 			return;
 		}
@@ -264,7 +264,9 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		}
 		else if (COPY_TO_CLIPBOARD.equals(menuOption) && !Strings.isNullOrEmpty(currentMessage))
 		{
-			final StringSelection stringSelection = new StringSelection(Text.removeTags(currentMessage));
+		    currentMessage = currentMessage.replaceAll("<gt>","╩").replaceAll("<lt>","╔");
+            currentMessage = Text.removeTags(currentMessage).replaceAll("╩",">").replaceAll("╔","<");
+			final StringSelection stringSelection = new StringSelection(currentMessage);
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 		}
 	}
