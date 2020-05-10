@@ -110,67 +110,43 @@ int count_prio_offset(int priority) {
   }
 }
 
-void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom,
+void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,
     out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
-  int offset = minfo.offset;
   int size = minfo.size;
-  int flags = minfo.flags;
-  int radius = (flags & 0x7fffffff) >> 12;
-  int orientation = flags & 0x7ff;
-  ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
-
-  uint ssboOffset;
 
   if (localId < size) {
-    ssboOffset = localId;
-  } else {
-    ssboOffset = 0;
-  }
+    int offset = minfo.offset;
+    int flags = minfo.flags;
+    int radius = (flags & 0x7fffffff) >> 12;
+    int orientation = flags & 0x7ff;
 
-  ivec4 thisA;
-  ivec4 thisB;
-  ivec4 thisC;
+    ivec4 thisA;
+    ivec4 thisB;
+    ivec4 thisC;
 
-  // Grab triangle vertices from the correct buffer
-  if (flags < 0) {
-    thisA = vb[offset + ssboOffset * 3    ];
-    thisB = vb[offset + ssboOffset * 3 + 1];
-    thisC = vb[offset + ssboOffset * 3 + 2];
-  } else {
-    thisA = tempvb[offset + ssboOffset * 3    ];
-    thisB = tempvb[offset + ssboOffset * 3 + 1];
-    thisC = tempvb[offset + ssboOffset * 3 + 2];
-  }
+    // Grab triangle vertices from the correct buffer
+    if (flags < 0) {
+      thisA = vb[offset + localId * 3];
+      thisB = vb[offset + localId * 3 + 1];
+      thisC = vb[offset + localId * 3 + 2];
+    } else {
+      thisA = tempvb[offset + localId * 3];
+      thisB = tempvb[offset + localId * 3 + 1];
+      thisC = tempvb[offset + localId * 3 + 2];
+    }
 
-  ivec4 thisrvA;
-  ivec4 thisrvB;
-  ivec4 thisrvC;
-
-  int thisPriority, thisDistance;
-
-  if (localId < size) {
     // rotate for model orientation
-    thisrvA = rotate(thisA, orientation);
-    thisrvB = rotate(thisB, orientation);
-    thisrvC = rotate(thisC, orientation);
+    ivec4 thisrvA = rotate(thisA, orientation);
+    ivec4 thisrvB = rotate(thisB, orientation);
+    ivec4 thisrvC = rotate(thisC, orientation);
 
     // calculate distance to face
-    thisPriority = (thisA.w >> 16) & 0xff; // all vertices on the face have the same priority
+    int thisPriority = (thisA.w >> 16) & 0xff;// all vertices on the face have the same priority
+    int thisDistance;
     if (radius == 0) {
       thisDistance = 0;
     } else {
       thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch) + radius;
-    }
-
-    // if the face is not culled, it is calculated into priority distance averages
-    if (face_visible(thisrvA, thisrvB, thisrvC, pos, cameraYaw, cameraPitch, centerX, centerY, zoom)) {
-      atomicAdd(totalNum[thisPriority], 1);
-      atomicAdd(totalDistance[thisPriority], thisDistance);
-
-      // calculate minimum distance to any face of priority 10 for positioning the 11 faces later
-      if (thisPriority == 10) {
-        atomicMin(min10, thisDistance);
-      }
     }
 
     o1 = thisrvA;
@@ -180,8 +156,26 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, int
     prio = thisPriority;
     dis = thisDistance;
   } else {
+    o1 = ivec4(0);
+    o2 = ivec4(0);
+    o3 = ivec4(0);
     prio = 0;
     dis = 0;
+  }
+}
+
+void add_face_prio_distance(uint localId, modelinfo minfo, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC, int thisPriority, int thisDistance, ivec4 pos) {
+  if (localId < minfo.size) {
+    // if the face is not culled, it is calculated into priority distance averages
+    if (face_visible(thisrvA, thisrvB, thisrvC, pos)) {
+      atomicAdd(totalNum[thisPriority], 1);
+      atomicAdd(totalDistance[thisPriority], thisDistance);
+
+      // calculate minimum distance to any face of priority 10 for positioning the 11 faces later
+      if (thisPriority == 10) {
+        atomicMin(min10, thisDistance);
+      }
+    }
   }
 }
 
@@ -189,9 +183,6 @@ int map_face_priority(uint localId, modelinfo minfo, int thisPriority, int thisD
   int size = minfo.size;
 
   // Compute average distances for 0/2, 3/4, and 6/8
-
-  int adjPrio;
-  int prioIdx;
 
   if (localId < size) {
     int avg1 = 0;
@@ -210,16 +201,14 @@ int map_face_priority(uint localId, modelinfo minfo, int thisPriority, int thisD
       avg3 = (totalDistance[6] + totalDistance[8]) / (totalNum[6] + totalNum[8]);
     }
 
-    int _min10 = min10;
-    adjPrio = priority_map(thisPriority, thisDistance, _min10, avg1, avg2, avg3);
-
+    int adjPrio = priority_map(thisPriority, thisDistance, min10, avg1, avg2, avg3);
     int prioIdx = atomicAdd(totalMappedNum[adjPrio], 1);
 
     prio = adjPrio;
-
     return prioIdx;
   }
 
+  prio = 0;
   return 0;
 }
 
@@ -237,23 +226,19 @@ void insert_dfs(uint localId, modelinfo minfo, int adjPrio, int distance, int pr
 void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDistance, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC) {
   /* compute face distance */
   int size = minfo.size;
-  int outOffset = minfo.idx;
-  int uvOffset = minfo.uvOffset;
-  int flags = minfo.flags;
-  ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
-  int start, end, myOffset;
   if (localId < size) {
+    int outOffset = minfo.idx;
+    int uvOffset = minfo.uvOffset;
+    int flags = minfo.flags;
+    ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
+
     const int priorityOffset = count_prio_offset(thisPriority);
     const int numOfPriority = totalMappedNum[thisPriority];
-    start = priorityOffset; // index of first face with this priority
-    end = priorityOffset + numOfPriority; // index of last face with this priority
-    myOffset = priorityOffset;
-  } else {
-    start = end = myOffset = 0;
-  }
+    int start = priorityOffset; // index of first face with this priority
+    int end = priorityOffset + numOfPriority; // index of last face with this priority
+    int myOffset = priorityOffset;
 
-  if (localId < size) {
     // we only have to order faces against others of the same priority
     // calculate position this face will be in
     for (int i = start; i < end; ++i) {

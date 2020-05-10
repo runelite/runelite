@@ -164,7 +164,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		// Elite
 		.put(new WorldPoint(2357, 3151, 0), new CoordinateClueInfo("Lletya."))
 		.put(new WorldPoint(3587, 3180, 0), new CoordinateClueInfo("Meiyerditch."))
-		.put(new WorldPoint(2820, 3078, 0), new CoordinateClueInfo("Tai Bwo Wannai. Hardwood Grove."))
+		.put(new WorldPoint(2820, 3078, 0), new CoordinateClueInfo("Tai Bwo Wannai. Hardwood Grove. 100 Trading sticks or elite Karamja diary completion is needed to enter."))
 		.put(new WorldPoint(3811, 3060, 0), new CoordinateClueInfo("Small island north-east of Mos Le'Harmless.", true, Varbits.FIRE_PIT_MOS_LE_HARMLESS))
 		.put(new WorldPoint(2180, 3282, 0), new CoordinateClueInfo("North of Iorwerth Camp."))
 		.put(new WorldPoint(2870, 2997, 0), new CoordinateClueInfo("North-east corner in Shilo Village."))
@@ -195,6 +195,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2872, 3937, 0), new CoordinateClueInfo("Weiss."))
 		.put(new WorldPoint(2484, 4016, 0), new CoordinateClueInfo("Northeast corner of the Island of Stone."))
 		.put(new WorldPoint(2222, 3331, 0), new CoordinateClueInfo("Prifddinas, west of the Tower of Voices"))
+		.put(new WorldPoint(3560, 3987, 0), new CoordinateClueInfo("Lithkren. Digsite pendant teleport if unlocked, otherwise take rowboat from west of Mushroom Meadow Mushtree."))
 		// Master
 		.put(new WorldPoint(2178, 3209, 0), new CoordinateClueInfo("South of Iorwerth Camp."))
 		.put(new WorldPoint(2155, 3100, 0), new CoordinateClueInfo("South of Port Tyras (BJS)."))

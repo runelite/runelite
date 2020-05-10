@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.HIGH_ALCHEMY_MULTIPLIER;
 import net.runelite.api.InventoryID;
@@ -45,15 +46,21 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.ScriptID;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -68,6 +75,7 @@ import net.runelite.client.util.QuantityFormatter;
 	description = "Modifications to the banking interface",
 	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit"}
 )
+@Slf4j
 public class BankPlugin extends Plugin
 {
 	private static final List<Varbits> TAB_VARBITS = ImmutableList.of(
@@ -115,6 +123,7 @@ public class BankPlugin extends Plugin
 
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
+	private String searchString;
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -128,6 +137,7 @@ public class BankPlugin extends Plugin
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
 		itemQuantities = null;
+		searchString = null;
 	}
 
 	@Subscribe
@@ -195,6 +205,41 @@ public class BankPlugin extends Plugin
 				}
 
 				break;
+			case "bankpinButtonSetup":
+			{
+				if (!config.bankPinKeyboard())
+				{
+					return;
+				}
+
+				final int compId = intStack[intStackSize - 2];
+				final int buttonId = intStack[intStackSize - 1];
+				Widget button = client.getWidget(TO_GROUP(compId), TO_CHILD(compId));
+				Widget buttonRect = button.getChild(0);
+
+				final Object[] onOpListener = buttonRect.getOnOpListener();
+				buttonRect.setOnKeyListener((JavaScriptCallback) e ->
+				{
+					int typedChar = e.getTypedKeyChar() - '0';
+					if (typedChar != buttonId)
+					{
+						return;
+					}
+
+					log.debug("Bank pin keypress");
+
+					final String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+					clientThread.invokeLater(() ->
+					{
+						// reset chatbox input to avoid pin going to chatbox..
+						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, input);
+						client.runScript(ScriptID.CHAT_PROMPT_INIT);
+
+						client.runScript(onOpListener);
+					});
+				});
+				break;
+			}
 		}
 	}
 
@@ -207,6 +252,24 @@ public class BankPlugin extends Plugin
 		}
 
 		updateSeedVaultTotal();
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() != ScriptID.BANKMAIN_SEARCH_REFRESH)
+		{
+			return;
+		}
+
+		// vanilla only lays out the bank every 40 client ticks, so if the search input has changed,
+		// and the bank wasn't laid out this tick, lay it out early
+		final String inputText = client.getVar(VarClientStr.INPUT_TEXT);
+		if (searchString != inputText && client.getGameCycle() % 40 != 0)
+		{
+			clientThread.invokeLater(bankSearch::layoutBank);
+			searchString = inputText;
+		}
 	}
 
 	@Subscribe
@@ -236,7 +299,7 @@ public class BankPlugin extends Plugin
 
 			if (config.showHA())
 			{
-				strCurrentTab += "EX: ";
+				strCurrentTab += "GE: ";
 			}
 
 			if (config.showExact())

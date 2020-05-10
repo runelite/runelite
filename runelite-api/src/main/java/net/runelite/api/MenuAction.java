@@ -273,9 +273,6 @@ public enum MenuAction
 	 */
 	RUNELITE_OVERLAY_CONFIG(1502),
 
-	FOLLOW(2046),
-	TRADE(2047),
-
 	/**
 	 * Menu action triggered when the id is not defined in this class.
 	 */

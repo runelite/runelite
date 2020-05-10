@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.grounditems;
 
 import java.util.Arrays;
+import joptsimple.internal.Strings;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -52,5 +53,14 @@ public class WildcardMatchLoaderTest
 		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 4)));
 		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
 		assertTrue(loader.load(new NamedQuantity("Rune Longsword", 2)));
+	}
+
+	@Test(timeout = 1000)
+	public void testExplosive()
+	{
+		String name = "archer" + Strings.repeat('e', 50000) + "s ring";
+		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList(name + "* < 100"));
+		assertTrue(loader.load(new NamedQuantity(name, 50)));
+		assertFalse(loader.load(new NamedQuantity(name, 150)));
 	}
 }

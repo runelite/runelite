@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Liam Edwards <http://github.com/Spedwards>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.item;
+package net.runelite.client.plugins.worldhopper;
 
-import java.util.List;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import net.runelite.http.api.worlds.WorldRegion;
 
-@Data
-public class RSSearch
+@NoArgsConstructor
+@AllArgsConstructor
+public enum RegionFilterMode
 {
-	private List<RSItem> items;
+	NONE,
+	AUSTRALIA(WorldRegion.AUSTRALIA),
+	GERMANY(WorldRegion.GERMANY),
+	UNITED_KINGDOM(WorldRegion.UNITED_KINGDOM)
+		{
+			@Override
+			public String toString()
+			{
+				return "U.K.";
+			}
+		},
+	UNITED_STATES(WorldRegion.UNITED_STATES_OF_AMERICA)
+		{
+			@Override
+			public String toString()
+			{
+				return "USA";
+			}
+		};
+
+	@Getter
+	private WorldRegion region;
 }

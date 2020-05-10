@@ -96,4 +96,15 @@ public interface GpuPluginConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "useComputeShaders",
+		name = "Compute Shaders",
+		description = "Offloads face sorting to GPU, enabling extended draw distance. Requires plugin restart.",
+		position = 6
+	)
+	default boolean useComputeShaders()
+	{
+		return true;
+	}
 }

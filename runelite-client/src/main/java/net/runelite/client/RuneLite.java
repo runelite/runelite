@@ -274,7 +274,7 @@ public class RuneLite
 		}
 		catch (Exception e)
 		{
-			log.warn("Failure during startup", e);
+			log.error("Failure during startup", e);
 			SwingUtilities.invokeLater(() ->
 				new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
 					.open());
@@ -320,11 +320,12 @@ public class RuneLite
 
 		// Start client session
 		clientSessionManager.start();
+		eventBus.register(clientSessionManager);
 
 		SplashScreen.stage(.75, null, "Starting core interface");
 
 		// Initialize UI
-		clientUI.init(this);
+		clientUI.init();
 
 		// Initialize Discord service
 		discordService.init();
@@ -336,6 +337,8 @@ public class RuneLite
 		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(infoBoxManager);
+		eventBus.register(configManager);
+		eventBus.register(discordService);
 
 		if (!isOutdated)
 		{
@@ -366,13 +369,6 @@ public class RuneLite
 		SplashScreen.stop();
 
 		clientUI.show();
-	}
-
-	public void shutdown()
-	{
-		configManager.sendConfig();
-		clientSessionManager.shutdown();
-		discordService.close();
 	}
 
 	@VisibleForTesting

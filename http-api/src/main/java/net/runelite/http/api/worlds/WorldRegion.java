@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, melky <https://github.com/melkypie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.item;
+package net.runelite.http.api.worlds;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Value
-class PendingLookup
+/**
+ * Holds the data for each world's region (location)
+ */
+@AllArgsConstructor
+@Getter
+public enum WorldRegion
 {
-	enum Type
-	{
-		SEARCH,
-		ITEM;
-	}
+	UNITED_STATES_OF_AMERICA("US", "USA"),
+	UNITED_KINGDOM("GB", "GBR"),
+	AUSTRALIA("AU", "AUS"),
+	GERMANY("DE", "DEU");
 
-	private final int itemId;
-	private final String search;
-	private final Type type;
+	/**
+	 * ISO-3166-1 alpha-2 country code
+	 */
+	private final String alpha2;
+	/**
+	 * ISO-3166-1 alpha-3 country code
+	 */
+	private final String alpha3;
 
-	public PendingLookup(int itemId, Type type)
+	/**
+	 * Gets the region using the location id
+	 * {@link WorldRegion} value.
+	 *
+	 * @param locationId the location id of world
+	 * @return WorldRegion the region of the world
+	 */
+	public static WorldRegion valueOf(int locationId)
 	{
-		this.itemId = itemId;
-		this.search = null;
-		this.type = type;
-	}
-
-	public PendingLookup(String search, Type type)
-	{
-		this.itemId = -1;
-		this.search = search;
-		this.type = type;
+		switch (locationId)
+		{
+			case 0:
+				return UNITED_STATES_OF_AMERICA;
+			case 1:
+				return UNITED_KINGDOM;
+			case 3:
+				return AUSTRALIA;
+			case 7:
+				return GERMANY;
+			default:
+				return null;
+		}
 	}
 }

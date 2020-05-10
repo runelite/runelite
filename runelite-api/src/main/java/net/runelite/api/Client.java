@@ -41,7 +41,6 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
-import org.slf4j.Logger;
 
 /**
  * Represents the RuneScape client.
@@ -56,12 +55,6 @@ public interface Client extends GameEngine
 	DrawCallbacks getDrawCallbacks();
 
 	void setDrawCallbacks(DrawCallbacks drawCallbacks);
-
-	/**
-	 * Retrieve a global logger for the client.
-	 * This is most useful for mixins which can't have their own.
-	 */
-	Logger getLogger();
 
 	String getBuildID();
 
@@ -139,6 +132,13 @@ public interface Client extends GameEngine
 	 * @param gameState
 	 */
 	void setGameState(GameState gameState);
+
+	/**
+	 * Causes the client to shutdown. It is faster than
+	 * {@link java.applet.Applet#stop()} because it doesn't wait for 4000ms.
+	 * This will call {@link System#exit} when it is done
+	 */
+	void stopNow();
 
 	/**
 	 * Gets the current logged in username.
@@ -861,7 +861,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the map
 	 */
-	IterableHashTable getMessages();
+	IterableHashTable<MessageNode> getMessages();
 
 	/**
 	 * Gets the viewport widget.
@@ -1183,6 +1183,16 @@ public interface Client extends GameEngine
 	 * @param enabled new camera pitch relaxer value
 	 */
 	void setCameraPitchRelaxerEnabled(boolean enabled);
+
+	/**
+	 * Sets if the moving the camera horizontally should be backwards
+	 */
+	void setInvertYaw(boolean invertYaw);
+
+	/**
+	 * Sets if the moving the camera vertically should be backwards
+	 */
+	void setInvertPitch(boolean invertPitch);
 
 	/**
 	 * Gets the world map overview.

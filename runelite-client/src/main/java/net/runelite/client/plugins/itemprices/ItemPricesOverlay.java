@@ -176,11 +176,10 @@ class ItemPricesOverlay extends Overlay
 		}
 
 		// Find the item in the container to get stack size
-		final Item[] items = container.getItems();
 		final int index = menuEntry.getParam0();
-		if (index < items.length)
+		final Item item = container.getItem(index);
+		if (item != null)
 		{
-			final Item item = items[index];
 			return getItemStackValueText(item);
 		}
 
@@ -245,7 +244,7 @@ class ItemPricesOverlay extends Overlay
 	{
 		if (gePrice > 0)
 		{
-			itemStringBuilder.append("EX: ")
+			itemStringBuilder.append("GE: ")
 				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)

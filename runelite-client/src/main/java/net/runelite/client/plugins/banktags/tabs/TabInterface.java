@@ -45,6 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -74,6 +75,7 @@ import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
@@ -234,6 +236,35 @@ public class TabInterface
 			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
 			openTag(config.tab());
 		}
+
+		Widget equipmentButton = client.getWidget(WidgetInfo.BANK_EQUIPMENT_BUTTON);
+		Widget titleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+		if (equipmentButton == null || titleBar == null || titleBar.getOriginalX() > 0)
+		{
+			// don't keep moving widgets if they have already been moved
+			return;
+		}
+
+		equipmentButton.setOriginalX(6);
+		equipmentButton.setOriginalY(4);
+		equipmentButton.revalidate();
+
+		// the bank item count is 3 widgets
+		for (int child = WidgetInfo.BANK_ITEM_COUNT_TOP.getChildId(); child <= WidgetInfo.BANK_ITEM_COUNT_BOTTOM.getChildId(); child++)
+		{
+			Widget widget = client.getWidget(WidgetID.BANK_GROUP_ID, child);
+			if (widget == null)
+			{
+				return;
+			}
+
+			widget.setOriginalX(widget.getOriginalX() + equipmentButton.getWidth());
+			widget.revalidate();
+		}
+
+		titleBar.setOriginalX(equipmentButton.getWidth() / 2);
+		titleBar.setOriginalWidth(titleBar.getWidth() - equipmentButton.getWidth());
+		titleBar.revalidate();
 	}
 
 	private void handleDeposit(MenuOptionClicked event, Boolean inventory)
@@ -268,7 +299,7 @@ public class TabInterface
 
 		chatboxPanelManager.openTextInput((inventory ? "Inventory " : "Equipment ") + " tags:")
 			.addCharValidator(FILTERED_CHARS)
-			.onDone((newTags) ->
+			.onDone((Consumer<String>) (newTags) ->
 				clientThread.invoke(() ->
 				{
 					final List<String> tags = Text.fromCSV(newTags.toLowerCase());
@@ -290,7 +321,7 @@ public class TabInterface
 			case NewTab.NEW_TAB:
 				chatboxPanelManager.openTextInput("Tag name")
 					.addCharValidator(FILTERED_CHARS)
-					.onDone((tagName) -> clientThread.invoke(() ->
+					.onDone((Consumer<String>) (tagName) -> clientThread.invoke(() ->
 					{
 						if (!Strings.isNullOrEmpty(tagName))
 						{
@@ -908,7 +939,7 @@ public class TabInterface
 	{
 		chatboxPanelManager.openTextInput("Enter new tag name for tag \"" + oldTag + "\":")
 			.addCharValidator(FILTERED_CHARS)
-			.onDone((newTag) -> clientThread.invoke(() ->
+			.onDone((Consumer<String>) (newTag) -> clientThread.invoke(() ->
 			{
 				if (!Strings.isNullOrEmpty(newTag) && !newTag.equalsIgnoreCase(oldTag))
 				{
@@ -981,7 +1012,7 @@ public class TabInterface
 		}
 
 		int proposedIndex = currentTabIndex + direction;
-		int numTabs = tabManager.size() + 1;
+		int numTabs = tabManager.size();
 
 		if (proposedIndex >= numTabs || proposedIndex < 0)
 		{
@@ -1075,7 +1106,7 @@ public class TabInterface
 	{
 		int y = bounds.y + MARGIN + BUTTON_HEIGHT;
 
-		if (maxTabs > tabManager.size())
+		if (maxTabs >= tabManager.size())
 		{
 			currentTabIndex = 0;
 		}
@@ -1121,8 +1152,6 @@ public class TabInterface
 				itemX += BANK_ITEM_X_PADDING + BANK_ITEM_WIDTH;
 			}
 		}
-
-		updateWidget(newTab, y);
 
 		boolean hidden = !(tabManager.size() > 0);
 

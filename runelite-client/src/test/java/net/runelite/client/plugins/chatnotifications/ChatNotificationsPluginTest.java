@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
@@ -225,5 +226,40 @@ public class ChatNotificationsPluginTest
 	public void testStripColor()
 	{
 		assertEquals("you. It", ChatNotificationsPlugin.stripColor("you. <col=ff0000>It"));
+	}
+
+	@Test
+	public void testHighlightOwnName()
+	{
+		Player player = mock(Player.class);
+		when(player.getName()).thenReturn("Logic Knot");
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		when(config.highlightOwnName()).thenReturn(true);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("<col=005f00>Logic Knot received a drop: Adamant longsword</col>");
+		ChatMessage chatMessage = new ChatMessage(messageNode, ChatMessageType.GAMEMESSAGE, "", "", "", 0);
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setValue("<col=005f00><colHIGHLIGHT><u>Logic Knot</u><colNORMAL> received a drop: Adamant longsword</col>");
+	}
+
+	@Test
+	public void testHighlightOwnNameNbsp()
+	{
+		Player player = mock(Player.class);
+		when(player.getName()).thenReturn("Logic Knot");
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		when(config.highlightOwnName()).thenReturn(true);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("<col=005f00>Logic\u00a0Knot received a drop: Adamant longsword</col>");
+		ChatMessage chatMessage = new ChatMessage(messageNode, ChatMessageType.GAMEMESSAGE, "", "", "", 0);
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		// set value uses our player name, which has nbsp replaced
+		verify(messageNode).setValue("<col=005f00><colHIGHLIGHT><u>Logic Knot</u><colNORMAL> received a drop: Adamant longsword</col>");
 	}
 }

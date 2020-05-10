@@ -52,6 +52,7 @@ class KourendLibraryPanel extends PluginPanel
 	private static final ImageIcon RESET_ICON;
 	private static final ImageIcon RESET_HOVER_ICON;
 
+	private final KourendLibraryPlugin plugin;
 	private final KourendLibraryConfig config;
 	private final Library library;
 
@@ -65,10 +66,11 @@ class KourendLibraryPanel extends PluginPanel
 	}
 
 	@Inject
-	KourendLibraryPanel(KourendLibraryConfig config, Library library)
+	KourendLibraryPanel(KourendLibraryPlugin plugin, KourendLibraryConfig config, Library library)
 	{
 		super();
 
+		this.plugin = plugin;
 		this.config = config;
 		this.library = library;
 	}
@@ -117,7 +119,11 @@ class KourendLibraryPanel extends PluginPanel
 			Book customerBook = library.getCustomerBook();
 			for (Map.Entry<Book, BookPanel> b : bookPanels.entrySet())
 			{
-				b.getValue().setIsTarget(customerBook == b.getKey());
+				final Book book = b.getKey();
+				final BookPanel panel = b.getValue();
+
+				panel.setIsTarget(customerBook == book);
+				panel.setIsHeld(plugin.doesPlayerContainBook(book));
 			}
 
 			HashMap<Book, HashSet<String>> bookLocations = new HashMap<>();

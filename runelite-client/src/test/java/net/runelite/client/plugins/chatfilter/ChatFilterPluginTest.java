@@ -90,7 +90,7 @@ public class ChatFilterPluginTest
 		int[] simulatedIntStack =
 			new int[]{1, messageType.getType(), 1}; // is msg allowed to show, ChatMessageType.PUBLICCHAT, message id
 		String[] simulatedStringStack = new String[]{chatMessage};
-		IterableHashTable messageTable = mock(IterableHashTable.class);
+		IterableHashTable<MessageNode> messageTable = mock(IterableHashTable.class);
 		MessageNode mockedMsgNode = mockMessageNode(sender);
 		when(client.getIntStack()).thenReturn(simulatedIntStack);
 		when(client.getIntStackSize()).thenReturn(simulatedIntStack.length);

@@ -251,6 +251,9 @@ public class WidgetID
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 3;
+		static final int ITEM_COUNT_TOP = 4;
+		static final int ITEM_COUNT_BAR = 5;
+		static final int ITEM_COUNT_BOTTOM = 6;
 		static final int CONTENT_CONTAINER = 8;
 		static final int TAB_CONTAINER = 9;
 		static final int ITEM_CONTAINER = 11;
@@ -259,6 +262,8 @@ public class WidgetID
 		static final int DEPOSIT_EQUIPMENT = 42;
 		static final int INCINERATOR = 44;
 		static final int INCINERATOR_CONFIRM = 45;
+		static final int EQUIPMENT_CONTENT_CONTAINER = 66;
+		static final int EQUIPMENT_BUTTON = 107;
 	}
 
 	static class GrandExchange
@@ -324,6 +329,7 @@ public class WidgetID
 		static final int HEALTH_ORB = 2;
 		static final int PRAYER_ORB = 12;
 		static final int QUICK_PRAYER_ORB = 14; // Has the "Quick-prayers" name
+		static final int PRAYER_ORB_TEXT = 15;
 		static final int RUN_ORB = 20;
 		static final int TOGGLE_RUN_ORB = 22; // Has the "Toggle run" name
 		static final int RUN_ORB_TEXT = 23;
@@ -465,9 +471,12 @@ public class WidgetID
 		static final int CONTAINER = 40;
 		static final int TITLE = 44;
 		static final int FULL_INPUT = 45;
+		static final int GE_SEARCH_RESULTS = 53;
 		static final int MESSAGES = 55;
 		static final int TRANSPARENT_BACKGROUND_LINES = 56;
 		static final int INPUT = 57;
+		static final int MESSAGE_LINES = 58;
+		static final int FIRST_MESSAGE = 59;
 	}
 
 	static class Prayer
@@ -868,6 +877,7 @@ public class WidgetID
 
 	static class Options
 	{
+		static final int CAMERA_ZOOM_SLIDER_HANDLE = 15;
 		static final int MUSIC_SLIDER = 37;
 		static final int SOUND_EFFECT_SLIDER = 43;
 		static final int AREA_SOUND_SLIDER = 49;

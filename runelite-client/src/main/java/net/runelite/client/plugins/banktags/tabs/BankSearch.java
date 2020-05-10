@@ -54,19 +54,6 @@ public class BankSearch
 	{
 		clientThread.invoke(() ->
 		{
-			Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-			if (bankContainer == null || bankContainer.isHidden())
-			{
-				return;
-			}
-
-			Object[] scriptArgs = bankContainer.getOnInvTransmitListener();
-
-			if (scriptArgs == null)
-			{
-				return;
-			}
-
 			// This ensures that any chatbox input (e.g from search) will not remain visible when
 			// selecting/changing tab
 			if (closeInput)
@@ -77,8 +64,25 @@ public class BankSearch
 			client.setVar(VarClientInt.INPUT_TYPE, inputType.getType());
 			client.setVar(VarClientStr.INPUT_TEXT, search);
 
-			client.runScript(scriptArgs);
+			layoutBank();
 		});
+	}
+
+	public void layoutBank()
+	{
+		Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bankContainer == null || bankContainer.isHidden())
+		{
+			return;
+		}
+
+		Object[] scriptArgs = bankContainer.getOnInvTransmitListener();
+		if (scriptArgs == null)
+		{
+			return;
+		}
+
+		client.runScript(scriptArgs);
 	}
 
 	public void reset(boolean closeChat)

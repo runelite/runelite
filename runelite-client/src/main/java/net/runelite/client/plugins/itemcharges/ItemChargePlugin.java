@@ -320,9 +320,7 @@ public class ItemChargePlugin extends Plugin
 					return;
 				}
 
-				Item[] items = equipment.getItems();
-				if (EquipmentInventorySlot.RING.getSlotIdx() < items.length
-					&& items[EquipmentInventorySlot.RING.getSlotIdx()].getId() == ItemID.RING_OF_FORGING)
+				if (equipment.contains(ItemID.RING_OF_FORGING))
 				{
 					int charges = Ints.constrainToRange(config.ringOfForging() - 1, 0, MAX_RING_OF_FORGING_CHARGES);
 					updateRingOfForgingCharges(charges);
