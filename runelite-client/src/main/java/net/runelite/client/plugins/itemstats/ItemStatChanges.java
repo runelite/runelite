@@ -200,6 +200,7 @@ public class ItemStatChanges
 		add(combo(2, heal(HITPOINTS, 8), boost(FISHING, 5)), ADMIRAL_PIE, HALF_AN_ADMIRAL_PIE);
 		add(combo(2, heal(HITPOINTS, 11), boost(SLAYER, 5), boost(RANGED, 4)), WILD_PIE, HALF_A_WILD_PIE);
 		add(combo(2, heal(HITPOINTS, 11), boost(AGILITY, 5), heal(RUN_ENERGY, 10)), SUMMER_PIE, HALF_A_SUMMER_PIE);
+		add(combo(2, heal(HITPOINTS, 10), boost(FLETCHING, 4)), DRAGONFRUIT_PIE, HALF_A_DRAGONFRUIT_PIE);
 
 		// Other
 		add(combo(range(food(1), food(3)), heal(RUN_ENERGY, 10)), PURPLE_SWEETS_10476);
