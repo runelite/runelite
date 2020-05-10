@@ -264,8 +264,8 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		}
 		else if (COPY_TO_CLIPBOARD.equals(menuOption) && !Strings.isNullOrEmpty(currentMessage))
 		{
-		    currentMessage = currentMessage.replaceAll("<gt>","╩").replaceAll("<lt>","╔");
-            currentMessage = Text.removeTags(currentMessage).replaceAll("╩",">").replaceAll("╔","<");
+			currentMessage = currentMessage.replaceAll("<gt>","╩").replaceAll("<lt>","╔");
+			currentMessage = Text.removeTags(currentMessage).replaceAll("╩",">").replaceAll("╔","<");
 			final StringSelection stringSelection = new StringSelection(currentMessage);
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 		}
