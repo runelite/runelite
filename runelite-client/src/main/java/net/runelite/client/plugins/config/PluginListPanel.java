@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -316,79 +317,79 @@ class PluginListPanel extends PluginPanel
 
 	private void showMatchingPlugins(boolean pinned, String text)
 	{
+		if (runeLiteConfig.categorisePluginList())
+		{
+			showMatchingPluginsCategorised(pinned, text);
+			return;
+		}
+
 		List<PluginListItem> pluginList = getPluginList();
 		pluginList.sort(Comparator.comparing(p -> p.getPluginConfig().getName()));
 		if (text.isEmpty())
 		{
-			if (runeLiteConfig.categorisePluginList())
+			pluginList.stream().filter(item -> pinned == item.isPinned()).forEach(mainPanel::add);
+			return;
+		}
+
+		final String[] searchTerms = text.toLowerCase().split(" ");
+		pluginList.forEach(item ->
+		{
+			if (pinned == item.isPinned() && Text.matchesSearchTerms(searchTerms, item.getKeywords()))
 			{
-				if (pinned)
-				{
-					pluginMap.values().stream().flatMap(List::stream)
-						.filter(PluginListItem::isPinned).forEach(mainPanel::add);
-				}
-				else
-				{
-					pluginMap.keySet().forEach(category ->
-					{
-						List<PluginListItem> listItems = pluginMap.get(category).stream()
-							.filter(item -> !item.isPinned()).collect(Collectors.toList());
-						if (listItems.size() == 0)
-						{
-							return;
-						}
-						mainPanel.add(categoryLabels.get(category));
-						pluginMap.get(category).stream().filter(item -> !item.isPinned()).forEach(mainPanel::add);
-					});
-				}
+				mainPanel.add(item);
+			}
+		});
+	}
+
+	private void showMatchingPluginsCategorised(boolean pinned, String text)
+	{
+		if (text.isEmpty())
+		{
+			if (pinned)
+			{
+				addPinnedPluginsToPanel(null);
 			}
 			else
 			{
-				pluginList.stream().filter(item -> pinned == item.isPinned()).forEach(mainPanel::add);
+				addPluginCategoryToPanel(item -> !item.isPinned());
 			}
 			return;
 		}
 
 		final String[] searchTerms = text.toLowerCase().split(" ");
-		if (runeLiteConfig.categorisePluginList())
+		if (pinned)
 		{
-			if (pinned)
-			{
-				pluginMap.values().stream().flatMap(List::stream).forEach(item ->
-				{
-					log.debug(item.getPluginConfig().getName() + ": " + item.isPinned());
-					if (item.isPinned() && Text.matchesSearchTerms(searchTerms, item.getKeywords()))
-					{
-						mainPanel.add(item);
-					}
-				});
-			}
-			else
-			{
-				pluginMap.keySet().forEach(category ->
-				{
-					List<PluginListItem> listItems = pluginMap.get(category).stream()
-						.filter(item -> !item.isPinned() && Text.matchesSearchTerms(searchTerms, item.getKeywords()))
-						.collect(Collectors.toList());
-					if (listItems.size() == 0)
-					{
-						return;
-					}
-					mainPanel.add(categoryLabels.get(category));
-					listItems.forEach(mainPanel::add);
-				});
-			}
+			addPinnedPluginsToPanel(searchTerms);
 		}
 		else
 		{
-			pluginList.forEach(item ->
-			{
-				if (pinned == item.isPinned() && Text.matchesSearchTerms(searchTerms, item.getKeywords()))
-				{
-					mainPanel.add(item);
-				}
-			});
+			addPluginCategoryToPanel(item -> !item.isPinned() && Text.matchesSearchTerms(searchTerms, item.getKeywords()));
 		}
+	}
+
+	private void addPinnedPluginsToPanel(String[] searchTerms)
+	{
+		Predicate<PluginListItem> filter = item ->
+			item.isPinned() && (searchTerms == null || Text.matchesSearchTerms(searchTerms, item.getKeywords()));
+
+		pluginMap.values().stream().flatMap(List::stream).filter(filter).forEach(mainPanel::add);
+	}
+
+	private void addPluginCategoryToPanel(Predicate<PluginListItem> filter)
+	{
+		pluginMap.keySet().forEach(category ->
+		{
+			List<PluginListItem> listItems = pluginMap.get(category).stream()
+				.filter(filter).collect(Collectors.toList());
+
+			// Don't display category header if there are no remaining plugins to list
+			if (listItems.size() == 0)
+			{
+				return;
+			}
+			mainPanel.add(categoryLabels.get(category));
+			listItems.forEach(mainPanel::add);
+		});
 	}
 
 	void openConfigurationPanel(String configGroup)
