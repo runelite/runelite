@@ -27,7 +27,6 @@ package net.runelite.client.plugins.examine;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -72,10 +71,6 @@ public class ExaminePluginTest
 	@Mock
 	@Bind
 	ItemManager itemManager;
-
-	@Mock
-	@Bind
-	ScheduledExecutorService scheduledExecutorService;
 
 	@Before
 	public void before()
