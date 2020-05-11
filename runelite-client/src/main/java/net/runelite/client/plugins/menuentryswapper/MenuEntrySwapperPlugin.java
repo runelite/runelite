@@ -636,6 +636,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, index);
 		}
+		else if (config.swapGauntlet() && option.equals("enter") && target.equals("the gauntlet"))
+		{
+			swap("enter-corrupted", option, target, index);
+		}
 		else if (config.swapQuick() && option.equals("enter"))
 		{
 			swap("quick-enter", option, target, index);
