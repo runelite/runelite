@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2020, Trevor <https://github.com/TrevorMartz>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,33 +24,31 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import java.awt.Graphics2D;
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Varbits;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public abstract class ClueScroll
+@AllArgsConstructor
+@Getter
+public enum Enemy
 {
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private boolean requiresSpade;
+	//appears in hard clue emote steps in the wilderness
+	DOUBLE_AGENT_65("Double Agent level 65"),
+	//appears in hard clue emote steps not in the wilderness
+	DOUBLE_AGENT_108("Double Agent level 108"),
+	//appears for master clue emote steps all areas
+	DOUBLE_AGENT_141("Double Agent level 141"),
+	//appears for hard clue coordinate steps in the wilderness
+	ZAMORAK_WIZARD("Zamorak Wizard"),
+	//appears for hard clue coordinate steps not in the wilderness
+	SARADOMIN_WIZARD("Saradomin Wizard"),
+	//appears for elite clue coordinate steps all areas
+	ARMADYLIAN_OR_BANDOSIAN_GUARD("Armadylian OR Bandosian Guard"),
+	//appears for master clue coordinate and hot cold clues when single-way combat
+	BRASSICAN_MAGE("Brassican Mage"),
+	//appears for master clue coordinate and hot cold clues when multi-way combat
+	ANCIENT_WIZARDS("Ancient Wizard Trio"),
+	//There is a master hot cold step that overlaps the border of multi and single according to the wiki.
+	BRASSICAN_OR_WIZARDS("Brassican Mage OR Ancient Wizards");
 
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private boolean requiresLight;
-
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private Varbits hasFirePit;
-
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private Enemy enemy;
-
-	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin);
-
-	public abstract void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin);
+	private final String text;
 }
