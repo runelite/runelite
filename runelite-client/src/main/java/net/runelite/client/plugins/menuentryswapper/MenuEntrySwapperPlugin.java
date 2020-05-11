@@ -729,6 +729,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("barbarian guard", option, target, index);
 			swap("random", option, target, index);
 		}
+		else if (shiftModifier && option.equals("value"))
+		{
+			if (config.shopBuy() != null && config.shopBuy() != BuyMode.OFF)
+			{
+				swap(config.shopBuy().getOption(), option, target, index);
+			}
+
+			if (config.shopSell() != null && config.shopSell() != SellMode.OFF)
+			{
+				swap(config.shopSell().getOption(), option, target, index);
+			}
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(eventId);
@@ -771,18 +783,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 					swap("collect to bank", option, target, index);
 					swap("bank", option, target, index);
 					break;
-			}
-		}
-		else if (option.equals("value"))
-		{
-			if (config.shopBuy() != null && config.shopBuy() != BuyMode.OFF)
-			{
-				swap(config.shopBuy().getOption(), option, target, index);
-			}
-
-			if (config.shopSell() != null && config.shopSell() != SellMode.OFF)
-			{
-				swap(config.shopSell().getOption(), option, target, index);
 			}
 		}
 

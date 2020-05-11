@@ -414,8 +414,8 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "shopBuy",
-		name = "Shop Buy",
-		description = "Swaps the Buy options with Value on items in shops."
+		name = "Shop Buy Shift-Click",
+		description = "Swaps the Buy options with Value on items in shops when shift is held."
 	)
 	default BuyMode shopBuy()
 	{
@@ -424,8 +424,8 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "shopSell",
-		name = "Shop Sell",
-		description = "Swaps the Sell options with Value on items in your inventory when selling to shops."
+		name = "Shop Sell Shift-Click",
+		description = "Swaps the Sell options with Value on items in your inventory when selling to shops when shift is held."
 	)
 	default SellMode shopSell()
 	{
