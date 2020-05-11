@@ -404,4 +404,15 @@ public interface ItemChargeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showPotionDoseCount",
+		name = "Show Potion Doses",
+		description = "Configures if potion doses are shown",
+		position = 25
+	)
+	default boolean showPotionDoseCount()
+	{
+		return false;
+	}
 }
