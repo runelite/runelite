@@ -96,7 +96,7 @@ public interface LootTrackerConfig extends Config
 		name = "Ignored Loot Sources",
 		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M Member)."
 	)
-	default String getIgnoredSources()
+	default String getIgnoredEvents()
 	{
 		return "";
 	}
@@ -106,7 +106,7 @@ public interface LootTrackerConfig extends Config
 		name = "",
 		description = ""
 	)
-	void setIgnoredSources(String key);
+	void setIgnoredEvents(String key);
 
 	@ConfigItem(
 		keyName = "npcKillChatMessage",

@@ -92,8 +92,8 @@ class LootTrackerBox extends JPanel
 		final LootTrackerPriceType priceType,
 		final boolean showPriceType,
 		final BiConsumer<String, Boolean> onItemToggle,
-		final BiConsumer<String, Boolean> onSourceToggle,
-		final boolean sourceIgnored)
+		final BiConsumer<String, Boolean> onEventToggle,
+		final boolean eventIgnored)
 	{
 		this.id = id;
 		this.lootRecordType = lootRecordType;
@@ -108,7 +108,7 @@ class LootTrackerBox extends JPanel
 
 		logTitle.setLayout(new BoxLayout(logTitle, BoxLayout.X_AXIS));
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
-		logTitle.setBackground(sourceIgnored ? ColorScheme.DARKER_GRAY_HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR.darker());
+		logTitle.setBackground(eventIgnored ? ColorScheme.DARKER_GRAY_HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR.darker());
 
 		JLabel titleLabel = new JLabel();
 		titleLabel.setText(Text.removeTags(id));
@@ -143,8 +143,8 @@ class LootTrackerBox extends JPanel
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setComponentPopupMenu(popupMenu);
 
-		final JMenuItem toggle = new JMenuItem(sourceIgnored ? "Include loot" : "Hide loot");
-		toggle.addActionListener(e -> onSourceToggle.accept(id, !sourceIgnored));
+		final JMenuItem toggle = new JMenuItem(eventIgnored ? "Include loot" : "Hide loot");
+		toggle.addActionListener(e -> onEventToggle.accept(id, !eventIgnored));
 		popupMenu.add(toggle);
 	}
 
