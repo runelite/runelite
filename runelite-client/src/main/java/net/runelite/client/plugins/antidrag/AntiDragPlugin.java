@@ -112,7 +112,6 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		System.out.println(e.getKeyCode());
 		if (e.getKeyCode() == KeyEvent.VK_CONTROL && config.disableOnCtrl() && !config.onShiftOnly())
 		{
 			resetDragDelay();
