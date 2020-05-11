@@ -356,7 +356,7 @@ class LootTrackerPanel extends PluginPanel
 		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, type, items, 1);
 		sessionRecords.add(record);
 
-		if (hideIgnoredItems && plugin.isEventIgnored(eventName))
+		if (hideIgnoredItems && plugin.isSourceIgnored(eventName))
 		{
 			return;
 		}
@@ -459,7 +459,7 @@ class LootTrackerPanel extends PluginPanel
 			sessionRecords.stream()
 				.sorted(Collections.reverseOrder())
 				// filter records prior to limiting so that it is limited to the correct amount
-				.filter(r -> !hideIgnoredItems || !plugin.isEventIgnored(r.getTitle()))
+				.filter(r -> !hideIgnoredItems || !plugin.isSourceIgnored(r.getTitle()))
 				.limit(MAX_LOOT_BOXES)
 				.forEach(this::buildBox);
 		}
@@ -483,7 +483,7 @@ class LootTrackerPanel extends PluginPanel
 			return null;
 		}
 
-		final boolean isIgnored = plugin.isEventIgnored(record.getTitle());
+		final boolean isIgnored = plugin.isSourceIgnored(record.getTitle());
 		if (hideIgnoredItems && isIgnored)
 		{
 			return null;
@@ -606,7 +606,7 @@ class LootTrackerPanel extends PluginPanel
 				continue;
 			}
 
-			if (hideIgnoredItems && plugin.isEventIgnored(record.getTitle()))
+			if (hideIgnoredItems && plugin.isSourceIgnored(record.getTitle()))
 			{
 				continue;
 			}

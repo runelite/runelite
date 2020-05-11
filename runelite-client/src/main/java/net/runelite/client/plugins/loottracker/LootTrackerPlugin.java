@@ -207,7 +207,7 @@ public class LootTrackerPlugin extends Plugin
 	private String lastPickpocketTarget;
 
 	private List<String> ignoredItems = new ArrayList<>();
-	private List<String> ignoredEvents = new ArrayList<>();
+	private List<String> ignoredSources = new ArrayList<>();
 
 	private Multiset<Integer> inventorySnapshot;
 
@@ -279,7 +279,7 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getGroup().equals("loottracker"))
 		{
 			ignoredItems = Text.fromCSV(config.getIgnoredItems());
-			ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
+			ignoredSources = Text.fromCSV(config.getIgnoredSources());
 			SwingUtilities.invokeLater(panel::updateIgnoredRecords);
 		}
 	}
@@ -288,7 +288,7 @@ public class LootTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
-		ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
+		ignoredSources = Text.fromCSV(config.getIgnoredSources());
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
@@ -775,7 +775,7 @@ public class LootTrackerPlugin extends Plugin
 
 	void toggleEvent(String name, boolean ignore)
 	{
-		final Set<String> ignoredSet = new LinkedHashSet<>(ignoredEvents);
+		final Set<String> ignoredSet = new LinkedHashSet<>(ignoredSources);
 
 		if (ignore)
 		{
@@ -786,13 +786,13 @@ public class LootTrackerPlugin extends Plugin
 			ignoredSet.remove(name);
 		}
 
-		config.setIgnoredEvents(Text.toCSV(ignoredSet));
+		config.setIgnoredSources(Text.toCSV(ignoredSet));
 		// the config changed will update the panel
 	}
 
-	boolean isEventIgnored(String name)
+	boolean isSourceIgnored(String name)
 	{
-		return ignoredEvents.contains(name);
+		return ignoredSources.contains(name);
 	}
 
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
