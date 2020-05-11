@@ -31,17 +31,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SellMode
 {
-	OFF("Off"),
+	OFF(null),
 	SELL_1("Sell 1"),
 	SELL_5("Sell 5"),
 	SELL_10("Sell 10"),
 	SELL_50("Sell 50");
 
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	private final String option;
 }
