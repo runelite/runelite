@@ -201,18 +201,22 @@ class LootTrackerBox extends JPanel
 		outer:
 		for (LootTrackerItem item : record.getItems())
 		{
+			final int mappedItemId = LootTrackerMapping.map(item.getId(), item.getName());
 			// Combine it into an existing item if one already exists
 			for (int idx = 0; idx < items.size(); ++idx)
 			{
 				LootTrackerItem i = items.get(idx);
-				if (item.getId() == i.getId())
+				if (mappedItemId == i.getId())
 				{
 					items.set(idx, new LootTrackerItem(i.getId(), i.getName(), i.getQuantity() + item.getQuantity(), i.getGePrice(), i.getHaPrice(), i.isIgnored()));
 					continue outer;
 				}
 			}
 
-			items.add(item);
+			final LootTrackerItem mappedItem = mappedItemId == item.getId()
+				? item // reuse existing item
+				: new LootTrackerItem(mappedItemId, item.getName(), item.getQuantity(), item.getGePrice(), item.getHaPrice(), item.isIgnored());
+			items.add(mappedItem);
 		}
 	}
 

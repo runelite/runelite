@@ -215,14 +215,12 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerClient lootTrackerClient;
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
 
-	@VisibleForTesting
-	Collection<ItemStack> stack(Collection<ItemStack> items)
+	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
 		final List<ItemStack> list = new ArrayList<>();
 
-		for (ItemStack item : items)
+		for (final ItemStack item : items)
 		{
-			item = LootTrackerMapping.map(item, itemManager);
 			int quantity = 0;
 			for (final ItemStack i : list)
 			{

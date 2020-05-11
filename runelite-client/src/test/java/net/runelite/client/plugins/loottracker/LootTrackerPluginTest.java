@@ -159,25 +159,6 @@ public class LootTrackerPluginTest
 	}
 
 	@Test
-	public void testClueStacks()
-	{
-		when(itemManager.getItemComposition(ItemID.CLUE_SCROLL_MEDIUM)).thenAnswer(invocation -> mockItem("Clue scroll (medium)"));
-		when(itemManager.getItemComposition(ItemID.CLUE_SCROLL_MEDIUM_3602)).thenAnswer(invocation -> mockItem("Clue scroll (medium)"));
-		when(itemManager.getItemComposition(ItemID.GRACEFUL_HOOD_13579)).thenAnswer(invocation -> mockItem("Graceful hood"));
-		Collection<ItemStack> stack = lootTrackerPlugin.stack(
-			Arrays.asList(
-				new ItemStack(ItemID.CLUE_SCROLL_MEDIUM, 1, null),
-				new ItemStack(ItemID.CLUE_SCROLL_MEDIUM_3602, 1, null),
-				new ItemStack(ItemID.GRACEFUL_HOOD_13579, 1, null)
-			)
-		);
-		assertEquals(Arrays.asList(
-			new ItemStack(ItemID.CLUE_SCROLL_MEDIUM, 2, null),
-			new ItemStack(ItemID.GRACEFUL_HOOD_13579, 1, null)
-		), stack);
-	}
-
-	@Test
 	public void testHerbiboarHerbSack()
 	{
 		for (Map.Entry<Integer, String> herb : HERB_IDS_TO_NAMES.entrySet())

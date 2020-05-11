@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Anthony <https://github.com/while-loop>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,37 +24,48 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import com.google.common.collect.ImmutableMap;
-import lombok.AllArgsConstructor;
+import java.util.Arrays;
 import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
+import net.runelite.http.api.loottracker.LootRecordType;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import static org.mockito.Mockito.mock;
 
-@AllArgsConstructor
-enum LootTrackerMapping
+public class LootTrackerBoxTest
 {
-	CLUE_SCROLL_BEGINNER("Clue scroll (beginner)", ItemID.CLUE_SCROLL_BEGINNER),
-	CLUE_SCROLL_EASY("Clue scroll (easy)", ItemID.CLUE_SCROLL_EASY),
-	CLUE_SCROLL_MEDIUM("Clue scroll (medium)", ItemID.CLUE_SCROLL_MEDIUM),
-	CLUE_SCROLL_HARD("Clue scroll (hard)", ItemID.CLUE_SCROLL_HARD),
-	CLUE_SCROLL_ELITE("Clue scroll (elite)", ItemID.CLUE_SCROLL_ELITE),
-	CLUE_SCROLL_MASTER("Clue scroll (master)", ItemID.CLUE_SCROLL_MASTER);
-
-	private final String name;
-	private final int baseId;
-
-	private static final ImmutableMap<String, Integer> MAPPINGS;
-
-	static
+	@Test
+	public void testAddKill()
 	{
-		ImmutableMap.Builder<String, Integer> map = ImmutableMap.builder();
-		for (LootTrackerMapping mapping : values())
-		{
-			map.put(mapping.name, mapping.baseId);
-		}
-		MAPPINGS = map.build();
-	}
+		LootTrackerBox lootTrackerBox = new LootTrackerBox(
+			mock(ItemManager.class),
+			"Theatre of Blood",
+			LootRecordType.EVENT,
+			null,
+			false,
+			LootTrackerPriceType.GRAND_EXCHANGE,
+			false,
+			null, null,
+			false);
 
-	static int map(int itemId, String name)
-	{
-		return MAPPINGS.getOrDefault(name, itemId);
+		LootTrackerItem[] items = new LootTrackerItem[]{
+			new LootTrackerItem(ItemID.CLUE_SCROLL_MEDIUM, "Clue scroll (medium)", 1, 0, 0, false),
+			new LootTrackerItem(ItemID.CLUE_SCROLL_MEDIUM_3602, "Clue scroll (medium)", 1, 0, 0, false),
+			new LootTrackerItem(ItemID.GRACEFUL_HOOD_13579, "Graceful hood", 1, 0, 0, false),
+		};
+		LootTrackerRecord lootTrackerRecord = new LootTrackerRecord(
+			"Theatre of Blood",
+			null,
+			LootRecordType.EVENT,
+			items,
+			42
+		);
+
+		lootTrackerBox.addKill(lootTrackerRecord);
+
+		assertEquals(Arrays.asList(
+			new LootTrackerItem(ItemID.CLUE_SCROLL_MEDIUM, "Clue scroll (medium)", 2, 0, 0, false),
+			new LootTrackerItem(ItemID.GRACEFUL_HOOD_13579, "Graceful hood", 1, 0, 0, false)
+		), lootTrackerBox.getItems());
 	}
 }
