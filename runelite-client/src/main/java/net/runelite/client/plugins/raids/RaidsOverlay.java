@@ -30,11 +30,11 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.api.ClanMemberManager;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.Varbits;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.raids.solver.Room;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -60,7 +60,6 @@ public class RaidsOverlay extends OverlayPanel
 	private RaidsConfig config;
 
 	@Getter
-	@Setter
 	private boolean scoutOverlayShown = false;
 
 	@Inject
@@ -83,19 +82,10 @@ public class RaidsOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.scoutOverlay() || !scoutOverlayShown || plugin.isInRaidChambers() && client.getPlane() == OLM_PLANE)
+		scoutOverlayShown = shouldShowOverlay();
+		if (!scoutOverlayShown)
 		{
 			return null;
-		}
-
-		if (plugin.getRaid() == null || plugin.getRaid().getLayout() == null)
-		{
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Unable to scout this raid!")
-				.color(Color.RED)
-				.build());
-
-			return super.render(graphics);
 		}
 
 		Color color = Color.WHITE;
@@ -203,5 +193,35 @@ public class RaidsOverlay extends OverlayPanel
 		}
 
 		return super.render(graphics);
+	}
+
+	private boolean shouldShowOverlay()
+	{
+		if (plugin.getRaid() == null
+			|| plugin.getRaid().getLayout() == null
+			|| !config.scoutOverlay())
+		{
+			return false;
+		}
+
+		if (plugin.isInRaidChambers())
+		{
+			// If the raid has started
+			if (client.getVar(Varbits.RAID_STATE) > 0)
+			{
+				if (client.getPlane() == OLM_PLANE)
+				{
+					return false;
+				}
+
+				return config.scoutOverlayInRaid();
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+		return plugin.isInRaidParty() && config.scoutOverlayAtBank();
 	}
 }

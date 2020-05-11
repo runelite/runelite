@@ -82,12 +82,49 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "syncPanel",
 		name = "Synchronize panel contents",
-		description = "Synchronize your local loot tracker with your online (requires being logged in). This means" +
-			" that panel is filled with portion of your remote data on startup and deleting data in panel deletes them" +
-			" also on server."
+		description = "Synchronize your local loot tracker with your server data (requires being logged in).<br/>" +
+			" This means the panel is filled with portions of your remote data on startup<br/>" +
+			" and deleting data in the panel also deletes it on the server."
 	)
 	default boolean syncPanel()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "ignoredEvents",
+		name = "Ignored groups",
+		description = "Configures which loot groups should be excluded from the panel UI"
+	)
+	default String getIgnoredEvents()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "ignoredEvents",
+		name = "",
+		description = ""
+	)
+	void setIgnoredEvents(String key);
+
+	@ConfigItem(
+		keyName = "npcKillChatMessage",
+		name = "Show chat message for NPC kills",
+		description = "Adds a chat message with monster name and kill value when receiving loot from an NPC kill."
+	)
+	default boolean npcKillChatMessage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "pvpKillChatMessage",
+		name = "Show chat message for PVP kills",
+		description = "Adds a chat message with player name and kill value when receiving loot from a player kill."
+	)
+	default boolean pvpKillChatMessage()
+	{
+		return false;
 	}
 }

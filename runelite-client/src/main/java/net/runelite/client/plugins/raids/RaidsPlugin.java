@@ -62,7 +62,10 @@ import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -108,6 +111,9 @@ import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 public class RaidsPlugin extends Plugin
 {
 	private static final int LOBBY_PLANE = 3;
+	private static final int SECOND_FLOOR_PLANE = 2;
+	private static final int ROOMS_PER_PLANE = 8;
+	private static final int AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE = 4;
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
@@ -115,6 +121,9 @@ public class RaidsPlugin extends Plugin
 	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String LAYOUT_COMMAND = "!layout";
 	private static final int MAX_LAYOUT_LEN = 300;
+	// (x=3360, y=5152, plane=2) is the temp location the game puts the player on login into while it decides whether
+	// to put the player into a raid or not.
+	private static final WorldPoint TEMP_LOCATION = new WorldPoint(3360, 5152, 2);
 
 	@Inject
 	private RuneLiteConfig runeLiteConfig;
@@ -186,12 +195,20 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private Raid raid;
 
+	// if the player is inside of a raid or not
 	@Getter
 	private boolean inRaidChambers;
 
-	private boolean chestOpened;
+	// if the player is in a raid party or not
+	// This will be set when someone in the clan chat clicks the "make party button on the raids widget
+	// It will be reset when the raid ends but not if they leave the raid while it has not started yet
+	@Getter
+	private boolean inRaidParty;
 
+	private boolean chestOpened;
 	private RaidsTimer timer;
+	boolean checkInRaid;
+	private boolean loggedIn;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -210,7 +227,7 @@ public class RaidsPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		updateLists();
-		clientThread.invokeLater(() -> checkRaidPresence(true));
+		clientThread.invokeLater(() -> checkRaidPresence());
 		chatCommandManager.registerCommandAsync(LAYOUT_COMMAND, this::lookupRaid, this::submitRaid);
 		keyManager.registerKeyListener(screenshotHotkeyListener);
 	}
@@ -222,9 +239,7 @@ public class RaidsPlugin extends Plugin
 		overlayManager.remove(overlay);
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
-		raid = null;
-		timer = null;
-		chestOpened = false;
+		reset();
 		keyManager.unregisterKeyListener(screenshotHotkeyListener);
 	}
 
@@ -243,7 +258,6 @@ public class RaidsPlugin extends Plugin
 		}
 
 		updateLists();
-		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
 
 	@Subscribe
@@ -287,7 +301,34 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		checkRaidPresence(false);
+		boolean tempInParty = client.getVar(VarPlayer.IN_RAID_PARTY) != -1;
+		boolean tempInRaid = client.getVar(Varbits.IN_RAID) == 1;
+
+		// if the player's party state has changed
+		if (tempInParty != inRaidParty)
+		{
+			// if the player is no longer in a party then reset
+			if (!tempInParty
+				&& loggedIn
+				&& !tempInRaid)
+			{
+				reset();
+			}
+
+			inRaidParty = tempInParty;
+		}
+
+		// if the player's raid state has changed
+		if (tempInRaid != inRaidChambers)
+		{
+			// if the player is inside of a raid then check the raid
+			if (tempInRaid && loggedIn)
+			{
+				checkRaidPresence();
+			}
+
+			inRaidChambers = tempInRaid;
+		}
 	}
 
 	@Subscribe
@@ -369,60 +410,99 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void checkRaidPresence(boolean force)
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			// skip event while the game decides if the player belongs in a raid or not
+			if (client.getLocalPlayer() == null
+				|| client.getLocalPlayer().getWorldLocation().equals(TEMP_LOCATION))
+			{
+				return;
+			}
+
+			checkInRaid = true;
+		}
+		else if (client.getGameState() == GameState.LOGIN_SCREEN
+			|| client.getGameState() == GameState.CONNECTION_LOST)
+		{
+			loggedIn = false;
+		}
+		else if (client.getGameState() == GameState.HOPPING)
+		{
+			reset();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (checkInRaid)
+		{
+			loggedIn = true;
+			checkInRaid = false;
+
+			if (inRaidChambers)
+			{
+				checkRaidPresence();
+			}
+			else
+			{
+				if (!inRaidParty)
+				{
+					reset();
+				}
+			}
+		}
+	}
+
+	private void checkRaidPresence()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		boolean setting = client.getVar(Varbits.IN_RAID) == 1;
+		inRaidChambers = client.getVar(Varbits.IN_RAID) == 1;
 
-		if (force || inRaidChambers != setting)
+		if (!inRaidChambers)
 		{
-			inRaidChambers = setting;
-			updateInfoBoxState();
-
-			if (inRaidChambers)
-			{
-				raid = buildRaid();
-				chestOpened = false;
-
-				if (raid == null)
-				{
-					log.debug("Failed to build raid");
-					return;
-				}
-
-				Layout layout = layoutSolver.findLayout(raid.toCode());
-
-				if (layout == null)
-				{
-					log.debug("Could not find layout match");
-					return;
-				}
-
-				raid.updateLayout(layout);
-				RaidRoom[] rooms = raid.getCombatRooms();
-				RotationSolver.solve(rooms);
-				raid.setCombatRooms(rooms);
-				overlay.setScoutOverlayShown(true);
-
-				if (config.layoutMessage())
-				{
-					sendRaidLayoutMessage();
-				}
-			}
-			else if (!config.scoutOverlayAtBank())
-			{
-				overlay.setScoutOverlayShown(false);
-			}
+			return;
 		}
 
-		// If we left party raid was started or we left raid
-		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 && (!inRaidChambers || !config.scoutOverlayInRaid()))
+		updateInfoBoxState();
+		boolean firstSolve = (raid == null);
+		raid = buildRaid(raid);
+		chestOpened = false;
+
+		if (raid == null)
 		{
-			overlay.setScoutOverlayShown(false);
+			log.debug("Failed to build raid");
+			return;
+		}
+
+		if (raid.getLayout() == null)
+		{
+			Layout layout = layoutSolver.findLayout(raid.toCode());
+
+			if (layout == null)
+			{
+				log.debug("Could not find layout match");
+				raid = null;
+				return;
+			}
+
+			raid.updateLayout(layout);
+		}
+
+		RaidRoom[] rooms = raid.getCombatRooms();
+		RotationSolver.solve(rooms);
+		raid.setCombatRooms(rooms);
+
+		if (config.layoutMessage() && firstSolve)
+		{
+			sendRaidLayoutMessage();
 		}
 	}
 
@@ -547,77 +627,131 @@ public class RaidsPlugin extends Plugin
 		return null;
 	}
 
-	private Raid buildRaid()
+	private Raid buildRaid(Raid from)
 	{
-		Point gridBase = findLobbyBase();
+		Raid raid = from;
 
-		if (gridBase == null)
+		if (raid == null)
 		{
-			return null;
+			// The south-west tile of the lobby room in the scene
+			Point gridBase = findLobbyBase();
+
+			if (gridBase == null)
+			{
+				return null;
+			}
+
+			raid = new Raid(
+				new WorldPoint(client.getBaseX() + gridBase.getX(), client.getBaseY() + gridBase.getY(), LOBBY_PLANE),
+				findLobbyIndex(gridBase)
+			);
 		}
 
-		Raid raid = new Raid();
-		Tile[][] tiles;
-		int position, x, y, offsetX;
-		int startX = -2;
+		/*
+		 * The x position of the starting room relative to other rooms
+		 * The west most room will have a value of 0 and the east most will have a value of 3
+		 * The rooms have the following x values
+		 *     0 1 2 3
+		 *     0 1 2 3
+		 */
+		int baseX = raid.getLobbyIndex() % AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE;
 
-		for (int plane = 3; plane > 1; plane--)
+		/*
+		 * The y position of the starting room relative to other rooms
+		 * The north rooms will have a y value of 0 and the south will have a value of 1
+		 * The rooms have the following y values
+		 *     0 0 0 0
+		 *     1 1 1 1
+ 		 */
+		int baseY = raid.getLobbyIndex() % ROOMS_PER_PLANE > (AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE - 1) ? 1 : 0;
+
+		/*
+		 * i is the position of the room in the raid room array, the raid rooms are in order of north to south,
+		 * west to east, and plane 3 to plane 2. For example the 0th room is the north-west room on plane 3 and
+		 * the 15th room is the south-east room of plane 2
+		 *
+		 * The indexes of the rooms of plane 3 (the first/lobby floor) will look like
+		 *     0  1  2  3
+		 *     4  5  6  7
+		 *
+		 * The indexes of the rooms of plane 2 (the second floor) will look like
+		 *     8  9  10 11
+		 *     12 13 14 15
+		 */
+		for (int i = 0; i < raid.getRooms().length; i++)
 		{
-			tiles = client.getScene().getTiles()[plane];
+			/*
+			 * The x position of the current room relative to other rooms
+			 * The west most room will have a value of 0 and the east most will have a value of 3
+			 * The rooms have the following x values
+			 *     0 1 2 3
+			 *     0 1 2 3
+			 */
+			int x = i % AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE;
 
-			if (tiles[gridBase.getX() + RaidRoom.ROOM_MAX_SIZE][gridBase.getY()] == null)
+			/*
+			 * The y position of the current room relative to other rooms
+			 * The north rooms will have a y value of 0 and the south will have a value of 1
+			 * The rooms have the following y values
+			 *     0 0 0 0
+			 *     1 1 1 1
+			 */
+			int y = i % ROOMS_PER_PLANE > (AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE - 1) ? 1 : 0;
+
+			/*
+			 * The plane of the current room
+			 * The rooms on the lobby/first floor will have a plane of 3
+			 * The rooms on the second floor will have a plane of 2
+			 */
+			int plane = i > (ROOMS_PER_PLANE - 1) ? SECOND_FLOOR_PLANE : LOBBY_PLANE;
+
+			// The x position of the current room relative to starting room
+			x = x - baseX;
+
+			// The y position of the current room relative to starting room
+			y = y - baseY;
+
+			// The x coord (world point) of the south west tile of the current room
+			x = raid.getGridBase().getX() + x * RaidRoom.ROOM_MAX_SIZE;
+
+			// The y coord (world point) of the south west tile of the current room
+			y = raid.getGridBase().getY() - y * RaidRoom.ROOM_MAX_SIZE;
+
+			// The x coord (scene) of the south west tile of the current room
+			x = x - client.getBaseX();
+
+			// The y coord (scene) of the south west tile of the current room
+			y = y - client.getBaseY();
+
+			// If the west tile of the current room is not in the scene but the room itself has tiles in the scene
+			// then make x a tile of the room that is actually in the scene
+			if (x < (1 - RaidRoom.ROOM_MAX_SIZE) || x >= SCENE_SIZE)
 			{
-				position = 1;
+				continue;
 			}
-			else
+			else if (x < 1)
 			{
-				position = 0;
+				x = 1;
 			}
 
-			for (int i = 1; i > -2; i--)
+			// If the south tile of the current room is not in the scene
+			// then make y a tile of the room that is actually in the scene
+			if (y < 1)
 			{
-				y = gridBase.getY() + (i * RaidRoom.ROOM_MAX_SIZE);
-
-				for (int j = startX; j < 4; j++)
-				{
-					x = gridBase.getX() + (j * RaidRoom.ROOM_MAX_SIZE);
-					offsetX = 0;
-
-					if (x > SCENE_SIZE && position > 1 && position < 4)
-					{
-						position++;
-					}
-
-					if (x < 0)
-					{
-						offsetX = Math.abs(x) + 1; //add 1 because the tile at x=0 will always be null
-					}
-
-					if (x < SCENE_SIZE && y >= 0 && y < SCENE_SIZE)
-					{
-						if (tiles[x + offsetX][y] == null)
-						{
-							if (position == 4)
-							{
-								position++;
-								break;
-							}
-
-							continue;
-						}
-
-						if (position == 0 && startX != j)
-						{
-							startX = j;
-						}
-
-						Tile base = tiles[offsetX > 0 ? 1 : x][y];
-						RaidRoom room = determineRoom(base);
-						raid.setRoom(room, position + Math.abs((plane - 3) * 8));
-						position++;
-					}
-				}
+				y = 1;
 			}
+
+			// The scene tile of the current room to check for
+			Tile tile = client.getScene().getTiles()[plane][x][y];
+
+			if (tile == null)
+			{
+				continue;
+			}
+
+			// scout the room
+			RaidRoom room = determineRoom(tile);
+			raid.setRoom(room, i);
 		}
 
 		return raid;
@@ -806,5 +940,71 @@ public class RaidsPlugin extends Plugin
 
 		imageCapture.takeScreenshot(overlayImage, "CoX_scout-", false, config.uploadScreenshot());
 		graphic.dispose();
+	}
+
+	/**
+	 * Finds the lobby room index in the room array
+	 * There are 8 rooms per floor in a 4 wide (x) and 2 high (y) rectangle
+	 * The rooms on plane 3 (the lobby plane) have the following indexes
+	 *     0 1 2 3
+	 *     4 5 6 7
+	 */
+	private int findLobbyIndex(Point gridBase)
+	{
+		int x;
+		int y;
+
+		// the lobby will always be on the top/first floor (plane 3)
+		Tile[][] tiles = client.getScene().getTiles()[LOBBY_PLANE];
+
+		/*
+		 * if there is no room north the lobby then it is the north most room
+		 * The north rooms will have a y value of 0 and the south will have a value of 1
+		 * The rooms have the following y values
+		 *     0 0 0 0
+		 *     1 1 1 1
+		 */
+		if (tiles[gridBase.getX()][gridBase.getY() + RaidRoom.ROOM_MAX_SIZE] == null)
+		{
+			y = 0;
+		}
+		else
+		{
+			y = 1;
+		}
+
+		/*
+		 * if there is no room east of the lobby then it is the east most room
+		 * The west most room will have a value of 0 and the east most will have a value of 3
+		 * The rooms have the following x values
+		 *     0 1 2 3
+		 *     0 1 2 3
+		 */
+		if (tiles[gridBase.getX() + RaidRoom.ROOM_MAX_SIZE][gridBase.getY()] == null)
+		{
+			x = 3;
+		}
+		else
+		{
+			// determine x based on how many rooms are to the west of it.
+			for (x = 0; x < 3; x++)
+			{
+				int sceneX = gridBase.getX() - 1 - RaidRoom.ROOM_MAX_SIZE * x;
+				if (sceneX < 0 || tiles[sceneX][gridBase.getY()] == null)
+				{
+					break;
+				}
+			}
+		}
+
+		// the room index based on its x and y values
+		return x + y * AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE;
+	}
+
+	private void reset()
+	{
+		raid = null;
+		chestOpened = false;
+		updateInfoBoxState();
 	}
 }

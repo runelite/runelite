@@ -36,6 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -77,11 +78,26 @@ public class KeyRemappingListenerTest
 		when(keyRemappingConfig.right()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_D, 0));
 
 		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
+
 		KeyEvent event = mock(KeyEvent.class);
+		when(event.getKeyChar()).thenReturn('d');
 		when(event.getKeyCode()).thenReturn(KeyEvent.VK_D);
 		when(event.getExtendedKeyCode()).thenReturn(KeyEvent.VK_D); // for keybind matches()
+
 		keyRemappingListener.keyPressed(event);
+
 		verify(event).setKeyCode(KeyEvent.VK_RIGHT);
+		verify(event).setKeyChar(KeyEvent.CHAR_UNDEFINED);
+
+		// now the key listener has remapped d->right, it should consume the key type
+		// event for d
+		event = mock(KeyEvent.class);
+		when(event.getKeyChar()).thenReturn('d');
+		lenient().when(event.getKeyCode()).thenReturn(KeyEvent.VK_UNDEFINED);
+
+		keyRemappingListener.keyTyped(event);
+
+		verify(event).consume();
 
 		// with the plugin now in typing mode, previously pressed and remapped keys should still be mapped
 		// on key release regardless
@@ -90,5 +106,6 @@ public class KeyRemappingListenerTest
 		when(event.getKeyCode()).thenReturn(KeyEvent.VK_D);
 		keyRemappingListener.keyReleased(event);
 		verify(event).setKeyCode(KeyEvent.VK_RIGHT);
+		verify(event).setKeyChar(KeyEvent.CHAR_UNDEFINED);
 	}
 }

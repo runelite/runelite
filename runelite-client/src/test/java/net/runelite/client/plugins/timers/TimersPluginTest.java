@@ -42,7 +42,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -53,6 +55,8 @@ public class TimersPluginTest
 	private static final String DMM_HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 1 minute, 15 seconds.</col>";
 	private static final String FULL_TELEBLOCK_MESSAGE = "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 5 minutes.</col>";
 	private static final String HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 2 minutes, 30 seconds.</col>";
+	private static final String TRANSPARENT_CHATBOX_FULL_TELEBLOCK_MESSAGE = "<col=c356ef>A Tele Block spell has been cast on you by Alexsuperfly. It will expire in 5 minutes.</col>";
+	private static final String TRANSPARENT_CHATBOX_TELEBLOCK_REMOVED_MESSAGE = "<col=c356ef>Your Tele Block has been removed because you killed Alexsuperfly.</col>";
 
 	@Inject
 	private TimersPlugin timersPlugin;
@@ -135,5 +139,54 @@ public class TimersPluginTest
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.DMM_FULLTB, infoBox.getTimer());
+	}
+
+	@Test
+	public void testDivineBastion()
+	{
+		when(timersConfig.showDivine()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your divine bastion potion.", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.DIVINE_BASTION, infoBox.getTimer());
+	}
+
+	@Test
+	public void testDivineBattlemage()
+	{
+		when(timersConfig.showDivine()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your divine battlemage potion.", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.DIVINE_BATTLEMAGE, infoBox.getTimer());
+	}
+
+	@Test
+	public void testTransparentChatboxTb()
+	{
+		when(timersConfig.showTeleblock()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", TRANSPARENT_CHATBOX_FULL_TELEBLOCK_MESSAGE, "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.FULLTB, infoBox.getTimer());
+	}
+
+	@Test
+	public void testTransparentChatboxTbRemoved()
+	{
+		when(timersConfig.showTeleblock()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", TRANSPARENT_CHATBOX_TELEBLOCK_REMOVED_MESSAGE, "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		verify(infoBoxManager, atLeastOnce()).removeIf(any());
 	}
 }

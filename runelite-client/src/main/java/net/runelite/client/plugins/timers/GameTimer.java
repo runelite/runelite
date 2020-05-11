@@ -76,6 +76,8 @@ enum GameTimer
 	DIVINE_SUPER_COMBAT(ItemID.DIVINE_SUPER_COMBAT_POTION4, GameTimerImageType.ITEM, "Divine Super Combat", 5, ChronoUnit.MINUTES),
 	DIVINE_RANGING(ItemID.DIVINE_RANGING_POTION4, GameTimerImageType.ITEM, "Divine Ranging", 5, ChronoUnit.MINUTES),
 	DIVINE_MAGIC(ItemID.DIVINE_MAGIC_POTION4, GameTimerImageType.ITEM, "Divine Magic", 5, ChronoUnit.MINUTES),
+	DIVINE_BASTION(ItemID.DIVINE_BASTION_POTION4, GameTimerImageType.ITEM, "Divine Bastion", 5, ChronoUnit.MINUTES),
+	DIVINE_BATTLEMAGE(ItemID.DIVINE_BATTLEMAGE_POTION4, GameTimerImageType.ITEM, "Divine Battlemage", 5, ChronoUnit.MINUTES),
 	ANTIPOISON(ItemID.ANTIPOISON4, GameTimerImageType.ITEM, "Antipoison"),
 	ANTIVENOM(ItemID.ANTIVENOM4, GameTimerImageType.ITEM, "Anti-venom");
 

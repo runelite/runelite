@@ -35,13 +35,11 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 class NpcAggroAreaNotWorkingOverlay extends OverlayPanel
 {
 	private final NpcAggroAreaPlugin plugin;
-	private final NpcAggroAreaConfig config;
 
 	@Inject
-	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin, NpcAggroAreaConfig config)
+	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin)
 	{
 		this.plugin = plugin;
-		this.config = config;
 
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Unaggressive NPC timers will start working when you teleport far away or enter a dungeon.")
@@ -55,7 +53,7 @@ class NpcAggroAreaNotWorkingOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isActive() || plugin.getSafeCenters()[1] != null || config.hideOverlayHint())
+		if (!plugin.isActive() || plugin.getSafeCenters()[1] != null)
 		{
 			return null;
 		}
