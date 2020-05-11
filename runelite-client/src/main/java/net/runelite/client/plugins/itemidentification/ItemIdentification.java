@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.itemidentification;
 
 import com.google.common.collect.ImmutableMap;
-
 import java.util.ArrayList;
 import java.util.Map;
 import net.runelite.api.ItemID;
