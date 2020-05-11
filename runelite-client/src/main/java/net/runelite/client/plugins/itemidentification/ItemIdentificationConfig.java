@@ -115,6 +115,16 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showPotionsDosage",
+		name = "Potions Dosage",
+		description = "Show dosages of Potions"
+	)
+	default boolean showPotionsDosage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showImplingJars",
 		name = "Impling jars",
 		description = "Show identification on Impling jars"

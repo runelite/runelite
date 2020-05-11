@@ -96,7 +96,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 				}
 				break;
 			case POTION:
-				if (!config.showPotions())
+				if (!config.showPotions() && !config.showPotionsDosage())
 				{
 					return;
 				}
@@ -110,10 +110,10 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
-		renderText(graphics, itemWidget.getCanvasBounds(), iden);
+		renderText(graphics, itemWidget.getCanvasBounds(), iden, itemId);
 	}
 
-	private void renderText(Graphics2D graphics, Rectangle bounds, ItemIdentification iden)
+	private void renderText(Graphics2D graphics, Rectangle bounds, ItemIdentification iden, int itemId)
 	{
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + bounds.height - 1));
@@ -126,6 +126,18 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 			case MEDIUM:
 				textComponent.setText(iden.medName);
 				break;
+		}
+		if (config.showPotionsDosage() && iden.type == ItemIdentification.Type.POTION)
+		{
+			final TextComponent textComponentDoses = new TextComponent();
+			textComponentDoses.setPosition(new Point(bounds.x + 23, bounds.y + bounds.height - 22));
+			textComponentDoses.setColor(config.textColor());
+			textComponentDoses.setText("(" + ItemIdentification.getDosage(itemId) + ")");
+			textComponentDoses.render(graphics);
+			if (!config.showPotions())
+			{
+				textComponent.setText("");
+			}
 		}
 		textComponent.render(graphics);
 	}

@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.itemidentification;
 
 import com.google.common.collect.ImmutableMap;
+
+import java.util.ArrayList;
 import java.util.Map;
 import net.runelite.api.ItemID;
 
@@ -228,16 +230,43 @@ enum ItemIdentification
 	}
 
 	private static final Map<Integer, ItemIdentification> itemIdentifications;
+	private static final ArrayList<Integer> fourDose;
+	private static final ArrayList<Integer> threeDose;
+	private static final ArrayList<Integer> twoDose;
+	private static final ArrayList<Integer> oneDose;
 
 	static
 	{
 		ImmutableMap.Builder<Integer, ItemIdentification> builder = new ImmutableMap.Builder<>();
+		fourDose = new ArrayList<>();
+		threeDose = new ArrayList<>();
+		twoDose = new ArrayList<>();
+		oneDose = new ArrayList<>();
 
 		for (ItemIdentification i : values())
 		{
+			int j = 4;
 			for (int id : i.itemIDs)
 			{
 				builder.put(id, i);
+				if (i.type == Type.POTION)
+				{
+					switch (j)
+					{
+						case 4:
+							fourDose.add(id);
+							break;
+						case 3:
+							threeDose.add(id);
+							break;
+						case 2:
+							twoDose.add(id);
+							break;
+						case 1:
+							oneDose.add(id);
+					}
+				}
+				j--;
 			}
 		}
 
@@ -247,6 +276,33 @@ enum ItemIdentification
 	static ItemIdentification get(int id)
 	{
 		return itemIdentifications.get(id);
+	}
+
+	static int getDosage(int id)
+	{
+		if (fourDose.contains(id))
+		{
+			return 4;
+		}
+
+		else if (threeDose.contains(id))
+		{
+			return 3;
+		}
+
+		else if (twoDose.contains(id))
+		{
+			return 2;
+		}
+
+		else if (oneDose.contains(id))
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	enum Type
