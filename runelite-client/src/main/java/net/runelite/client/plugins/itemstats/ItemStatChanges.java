@@ -83,7 +83,7 @@ public class ItemStatChanges
 		add(food(19), CURRY, UGTHANKI_KEBAB, UGTHANKI_KEBAB_1885);
 		add(food(20), MUSHROOM_POTATO, SHARK, ROQED_FISH_5, MURNG_BAT_5, STUFFED_SNAKE);
 		add(food(21), SEA_TURTLE);
-		add(food(22), BLIGHTED_MANTA_RAY, MANTA_RAY, DARK_CRAB, TUNA_POTATO);
+		add(food(22), MANTA_RAY, BLIGHTED_MANTA_RAY, DARK_CRAB, TUNA_POTATO);
 		add(food(23), KYREN_FISH_6, PSYKK_BAT_6);
 		add(new Anglerfish(), ANGLERFISH, BLIGHTED_ANGLERFISH);
 		add(food(maxHP -> (int) Math.ceil(maxHP * .06)), STRAWBERRY);
