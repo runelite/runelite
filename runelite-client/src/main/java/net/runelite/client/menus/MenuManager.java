@@ -24,6 +24,7 @@
  */
 package net.runelite.client.menus;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -33,10 +34,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPCComposition;
@@ -61,6 +64,8 @@ public class MenuManager
 	private static final int IDX_LOWER = 4;
 	private static final int IDX_UPPER = 8;
 
+	private static final Pattern BOUNTY_EMBLEM_TAG_AND_TIER_REGEXP = Pattern.compile(String.format("%s[1-9]0?", IconID.BOUNTY_HUNTER_EMBLEM.toString()));
+
 	private final Client client;
 	private final EventBus eventBus;
 
@@ -71,7 +76,8 @@ public class MenuManager
 	private final Set<String> npcMenuOptions = new HashSet<>();
 
 	@Inject
-	private MenuManager(Client client, EventBus eventBus)
+	@VisibleForTesting
+	MenuManager(Client client, EventBus eventBus)
 	{
 		this.client = client;
 		this.eventBus = eventBus;
@@ -269,7 +275,9 @@ public class MenuManager
 			}
 		}
 
-		String target = event.getMenuTarget();
+		// removes bounty hunter emblem tag and tier from player name, e.g:
+		// "username<img=20>5<col=40ff00>  (level-42)" -> "username<col=40ff00>  (level-42)"
+		String target = BOUNTY_EMBLEM_TAG_AND_TIER_REGEXP.matcher(event.getMenuTarget()).replaceAll("");
 
 		// removes tags and level from player names for example:
 		// <col=ffffff>username<col=40ff00>  (level-42) or <col=ffffff><img=2>username</col>
