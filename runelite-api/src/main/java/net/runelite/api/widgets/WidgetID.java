@@ -466,6 +466,12 @@ public class WidgetID
 	{
 		static final int PARENT = 0;
 		static final int BUTTONS = 1;
+		static final int TAB_ALL = 4;
+		static final int TAB_GAME = 8;
+		static final int TAB_PUBLIC = 13;
+		static final int TAB_PRIVATE = 18;
+		static final int TAB_CLAN = 23;
+		static final int TAB_TRADE = 28;
 		static final int REPORT_TEXT = 36;
 		static final int FRAME = 37;
 		static final int TRANSPARENT_BACKGROUND = 38;
