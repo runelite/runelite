@@ -43,6 +43,8 @@ enum DiscordGameEventType
 
 	IN_GAME("In Game", -3),
 	IN_MENU("In Menu", -3),
+	PLAYING_DEADMAN("Playing Deadman Mode", -3),
+	PLAYING_PVP("Playing in a PVP world", -3),
 	TRAINING_ATTACK(Skill.ATTACK),
 	TRAINING_DEFENCE(Skill.DEFENCE),
 	TRAINING_STRENGTH(Skill.STRENGTH),
