@@ -145,9 +145,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	private List<String> highlights = new ArrayList<>();
 
 	/**
-	 * NPC ids marked with the Tag option
+	 * NPC ids marked with the Tag option, index -> composition id
 	 */
-	private final Set<Integer> npcTags = new HashSet<>();
+	private final Map<Integer, Integer> npcTags = new HashMap<>();
 
 	/**
 	 * Tagged NPCs that spawned this tick, which need to be verified that
@@ -294,7 +294,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		final int id = click.getId();
-		final boolean removed = npcTags.remove(id);
+		final Integer removedId = npcTags.remove(id);
 		final NPC[] cachedNPCs = client.getCachedNPCs();
 		final NPC npc = cachedNPCs[id];
 
@@ -303,7 +303,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (removed)
+		if (removedId != null)
 		{
 			highlightedNpcs.remove(npc);
 			memorizedNpcs.remove(npc.getIndex());
@@ -311,7 +311,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		else
 		{
 			memorizeNpc(npc);
-			npcTags.add(id);
+			npcTags.put(id, npc.getId());
 			highlightedNpcs.add(npc);
 		}
 
@@ -329,7 +329,8 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (npcTags.contains(npc.getIndex()))
+		Integer taggedId = npcTags.get(npc.getIndex());
+		if (taggedId != null && taggedId == npc.getId())
 		{
 			memorizeNpc(npc);
 			highlightedNpcs.add(npc);
@@ -475,7 +476,8 @@ public class NpcIndicatorsPlugin extends Plugin
 				continue;
 			}
 
-			if (npcTags.contains(npc.getIndex()))
+			Integer taggedId = npcTags.get(npc.getIndex());
+			if (taggedId != null && taggedId == npc.getId())
 			{
 				highlightedNpcs.add(npc);
 				continue;
