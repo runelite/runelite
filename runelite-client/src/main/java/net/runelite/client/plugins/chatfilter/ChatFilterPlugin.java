@@ -28,20 +28,10 @@ package net.runelite.client.plugins.chatfilter;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.inject.Provides;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-import javax.inject.Inject;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -50,17 +40,25 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 @PluginDescriptor(
 	name = "Chat Filter",
@@ -82,8 +80,7 @@ public class ChatFilterPlugin extends Plugin
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private final List<Pattern> filteredPatterns = new ArrayList<>();
 	private final List<Pattern> filteredNamePatterns = new ArrayList<>();
-	private Multiset<String> chatCounts = HashMultiset.create();
-	private Map<String, Integer> chatIndex = new HashMap<>();
+	private ListMultimap<String, Integer> duplicateChatCache = LinkedListMultimap.create();
 
 	@Inject
 	private Client client;
@@ -111,8 +108,7 @@ public class ChatFilterPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		filteredPatterns.clear();
-		chatCounts.clear();
-		chatIndex.clear();
+		duplicateChatCache.clear();
 		client.refreshChat();
 	}
 
@@ -139,8 +135,8 @@ public class ChatFilterPlugin extends Plugin
 
 		if (shouldCollapseMessageType(chatMessageType))
 		{
-			shouldBlockMessage = chatIndex.containsKey(fullMessage) &&
-					chatIndex.get(fullMessage) != messageId ||
+			shouldBlockMessage = duplicateChatCache.containsKey(fullMessage) &&
+					Iterables.getLast(duplicateChatCache.get(fullMessage)) != messageId ||
 					shouldBlockDuplicatePlayerChat(fullMessage, chatMessageType);
 		}
 
@@ -163,7 +159,7 @@ public class ChatFilterPlugin extends Plugin
 		else
 		{
 			// Replace the message
-			stringStack[stringStackSize - 1] = addCountToGameMessage(message, chatCounts.count(fullMessage));
+			stringStack[stringStackSize - 1] = addCountToGameMessage(message, duplicateChatCache.get(fullMessage).size());
 		}
 	}
 
@@ -303,15 +299,14 @@ public class ChatFilterPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (chatCounts.elementSet().size() > config.maxTrackedChats())
+		if (shouldCollapseMessageType(chatMessage.getType()))
+		{
+			duplicateChatCache.put(chatMessage.getName() + chatMessage.getMessage(), chatMessage.getMessageNode().getId());
+		}
+		if (duplicateChatCache.keySet().size() > config.maxTrackedChats())
 		{
 			cleanupChatTrackers();
 		}
-		if (shouldCollapseMessageType(chatMessage.getType()))
-		{
-			chatCounts.add(chatMessage.getName() + chatMessage.getMessage());
-		}
-		refreshChatIndex();
 	}
 
 	@Subscribe
@@ -319,33 +314,20 @@ public class ChatFilterPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			chatIndex.clear();
+			duplicateChatCache.clear();
 		}
 	}
 
 	private void cleanupChatTrackers()
 	{
-		log.info("Cleaning up chat counts. Current size: {}", chatCounts.elementSet().size());
-		chatCounts.removeIf(message -> chatCounts.count(message) <= 1);
-		log.info("After clearing messages with count == 1: {}", chatCounts.elementSet().size());
-		if (chatCounts.elementSet().size() > config.maxTrackedChats())
+		log.debug("Cleaning up chat counts. Current size: {}", duplicateChatCache.keySet().size());
+		duplicateChatCache.keySet().removeIf(key -> duplicateChatCache.get(key).size() <= 1);
+		log.debug("After clearing messages with count == 1: {}", duplicateChatCache.keySet().size());
+		// Keep at least a buffer of 10 free spaces
+		if (duplicateChatCache.keySet().size() > config.maxTrackedChats() - 10)
 		{
-			chatCounts.clear();
+			duplicateChatCache.clear();
 		}
-		chatIndex.clear();
-	}
-
-	private void refreshChatIndex()
-	{
-		client.getMessages().forEach(messageNode ->
-		{
-			String fullMessage = messageNode.getName() + messageNode.getValue();
-			Integer currentSetIndex = chatIndex.get(fullMessage);
-			if (currentSetIndex == null || currentSetIndex < messageNode.getId())
-			{
-				chatIndex.put(fullMessage, messageNode.getId());
-			}
-		});
 	}
 
 	private boolean shouldFilterMessageType(ChatMessageType chatMessageType)
@@ -386,7 +368,7 @@ public class ChatFilterPlugin extends Plugin
 	{
 		return chatMessageType == ChatMessageType.PUBLICCHAT &&
 				config.maxRepeatedPublicChats() > 1 &&
-				chatCounts.count(fullMessage) > config.maxRepeatedPublicChats();
+				duplicateChatCache.get(fullMessage).size() > config.maxRepeatedPublicChats();
 	}
 
 	private String addCountToGameMessage(String gameMessage, int count)

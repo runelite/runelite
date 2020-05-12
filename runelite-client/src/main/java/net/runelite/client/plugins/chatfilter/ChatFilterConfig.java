@@ -28,6 +28,7 @@ package net.runelite.client.plugins.chatfilter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 import java.awt.Color;
 
@@ -150,6 +151,7 @@ public interface ChatFilterConfig extends Config
 			description = "Configures the maximum number of chats that are tracked. Suggested 500",
 			position = 11
 	)
+	@Range(min = 100)
 	default int maxTrackedChats()
 	{
 		return 500;
