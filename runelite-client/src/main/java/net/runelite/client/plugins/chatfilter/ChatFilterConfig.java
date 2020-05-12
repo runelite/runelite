@@ -108,4 +108,26 @@ public interface ChatFilterConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "collapseGameChat",
+		name = "Collapse Game Chat",
+		description = "Collapse duplicate game chat messages into a single line",
+		position = 9
+	)
+	default boolean collapseGameChat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "collapsePlayerChat",
+		name = "Collapse Player Chat",
+		description = "Collapse duplicate player chat messages into a single line",
+		position = 10
+	)
+	default boolean collapsePlayerChat()
+	{
+		return false;
+	}
 }
