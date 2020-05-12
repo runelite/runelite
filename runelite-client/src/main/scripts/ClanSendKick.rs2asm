@@ -16,6 +16,10 @@ LABEL4:
    return
 LABEL7:
    sconst                 "-Attempting to kick player from friends chat..."
+   sload                  0
+   sconst                 "sendKickName"
+   runelite_callback
+   pop_string
    iconst                 2
    invoke                 96
    sload                  0
