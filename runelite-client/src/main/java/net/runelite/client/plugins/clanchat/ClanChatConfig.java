@@ -152,7 +152,7 @@ public interface ClanChatConfig extends Config
 
 	@ConfigItem(
 			keyName = "kickWithName",
-			name = "Kick with name",
+			name = "Show kicked player",
 			description = "Changes kick message to say who was kicked",
 			position = 10
 	)
