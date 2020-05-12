@@ -164,10 +164,10 @@ public class StealingArtefactsPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-	    if (event.getGameState() != GameState.LOGGED_IN)
-	    {
-            captainKhaled = null;
-        }
+		if (event.getGameState() != GameState.LOGGED_IN)
+		{
+			captainKhaled = null;
+		}
 	}
 
 	@Subscribe
