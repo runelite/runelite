@@ -555,6 +555,19 @@ public class ClanChatPlugin extends Plugin
 				clientThread.invokeLater(() -> confirmKickPlayer(kickPlayerName));
 				break;
 			}
+			case "sendKickName":
+			{
+				if(!config.kickWithName())
+				{
+					break;
+				}
+
+				final String[] stringStack = client.getStringStack();
+				final int stringSize = client.getStringStackSize();
+				final String kickPlayerName = stringStack[stringSize - 1];
+				stringStack[0] = "-Attempting to kick " + kickPlayerName + " from friends chat...";
+				break;
+			}
 		}
 	}
 
