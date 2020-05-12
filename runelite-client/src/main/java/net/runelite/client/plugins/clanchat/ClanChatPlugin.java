@@ -562,9 +562,12 @@ public class ClanChatPlugin extends Plugin
 					break;
 				}
 
+				// Get name of the player we are kicking
 				final String[] stringStack = client.getStringStack();
 				final int stringSize = client.getStringStackSize();
 				final String kickPlayerName = stringStack[stringSize - 1];
+
+				// Sets the kick message based on players name
 				stringStack[stringSize - 2] = "-Attempting to kick " + kickPlayerName + " from friends chat...";
 				break;
 			}
