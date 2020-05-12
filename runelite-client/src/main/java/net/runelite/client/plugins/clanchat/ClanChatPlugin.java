@@ -557,7 +557,7 @@ public class ClanChatPlugin extends Plugin
 			}
 			case "sendKickName":
 			{
-				if(!config.kickWithName())
+				if (!config.kickWithName())
 				{
 					break;
 				}
