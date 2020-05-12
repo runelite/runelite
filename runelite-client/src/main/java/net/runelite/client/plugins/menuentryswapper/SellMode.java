@@ -32,10 +32,10 @@ import lombok.RequiredArgsConstructor;
 public enum SellMode
 {
 	OFF(null),
-	SELL_1("Sell 1"),
-	SELL_5("Sell 5"),
-	SELL_10("Sell 10"),
-	SELL_50("Sell 50");
+	SELL_1("sell 1"),
+	SELL_5("sell 5"),
+	SELL_10("sell 10"),
+	SELL_50("sell 50");
 
 	private final String option;
 }

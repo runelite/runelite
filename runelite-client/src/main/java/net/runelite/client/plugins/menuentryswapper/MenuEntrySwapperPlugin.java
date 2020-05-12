@@ -896,7 +896,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		if (strict)
 		{
-			List<Integer> indexes = optionIndexes.get(option.toLowerCase());
+			List<Integer> indexes = optionIndexes.get(option);
 
 			// We want the last index which matches the target, as that is what is top-most
 			// on the menu

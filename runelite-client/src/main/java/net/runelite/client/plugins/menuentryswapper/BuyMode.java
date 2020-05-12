@@ -32,10 +32,10 @@ import lombok.RequiredArgsConstructor;
 public enum BuyMode
 {
 	OFF(null),
-	BUY_1("Buy 1"),
-	BUY_5("Buy 5"),
-	BUY_10("Buy 10"),
-	BUY_50("Buy 50");
+	BUY_1("buy 1"),
+	BUY_5("buy 5"),
+	BUY_10("buy 10"),
+	BUY_50("buy 50");
 
 	private final String option;
 }
