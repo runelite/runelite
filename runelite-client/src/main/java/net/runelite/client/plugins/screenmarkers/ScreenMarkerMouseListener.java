@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.screenmarkers;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 import net.runelite.client.input.MouseAdapter;
@@ -43,6 +44,15 @@ public class ScreenMarkerMouseListener extends MouseAdapter
 		if (SwingUtilities.isMiddleMouseButton(event))
 		{
 			return event;
+		}
+
+		if (SwingUtilities.isLeftMouseButton(event))
+		{
+			final Rectangle bounds = plugin.getSelectedWidgetBounds();
+			if (bounds != null)
+			{
+				plugin.startCreation(bounds.getLocation(), bounds.getSize());
+			}
 		}
 
 		event.consume();

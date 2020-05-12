@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -91,6 +92,9 @@ public class ScreenMarkerPlugin extends Plugin
 	@Inject
 	private ColorPickerManager colorPickerManager;
 
+	@Inject
+	private ScreenMarkerWidgetHighlightOverlay widgetHighlight;
+
 	private ScreenMarkerMouseListener mouseListener;
 	private ScreenMarkerPluginPanel pluginPanel;
 	private NavigationButton navigationButton;
@@ -99,13 +103,22 @@ public class ScreenMarkerPlugin extends Plugin
 	private ScreenMarker currentMarker;
 
 	@Getter
+	@Setter
 	private boolean creatingScreenMarker = false;
+
+	@Getter
+	private boolean drawing = false;
+
+	@Getter
+	@Setter
+	private Rectangle selectedWidgetBounds = null;
 	private Point startLocation = null;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(widgetHighlight);
 		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
 		screenMarkers.forEach(overlayManager::add);
 
@@ -130,16 +143,19 @@ public class ScreenMarkerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(widgetHighlight);
 		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
 		screenMarkers.clear();
 		clientToolbar.removeNavigation(navigationButton);
 		setMouseListenerEnabled(false);
 		creatingScreenMarker = false;
+		drawing = false;
 
 		pluginPanel = null;
 		currentMarker = null;
 		mouseListener = null;
 		navigationButton = null;
+		selectedWidgetBounds = null;
 	}
 
 	@Subscribe
@@ -167,6 +183,16 @@ public class ScreenMarkerPlugin extends Plugin
 
 	public void startCreation(Point location)
 	{
+		startCreation(location, DEFAULT_SIZE);
+		// Stop the highlighting so we don't get rectangles around widgets while trying to make normal screen markers
+		if (selectedWidgetBounds == null)
+		{
+			drawing = true;
+		}
+	}
+
+	public void startCreation(Point location, Dimension size)
+	{
 		currentMarker = new ScreenMarker(
 			Instant.now().toEpochMilli(),
 			DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
@@ -179,8 +205,7 @@ public class ScreenMarkerPlugin extends Plugin
 		// Set overlay creator bounds to current position and default size
 		startLocation = location;
 		overlay.setPreferredLocation(location);
-		overlay.setPreferredSize(DEFAULT_SIZE);
-		creatingScreenMarker = true;
+		overlay.setPreferredSize(size);
 	}
 
 	public void finishCreation(boolean aborted)
@@ -200,6 +225,8 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 
 		creatingScreenMarker = false;
+		drawing = false;
+		selectedWidgetBounds = null;
 		startLocation = null;
 		currentMarker = null;
 		setMouseListenerEnabled(false);
