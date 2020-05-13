@@ -544,6 +544,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("teleport", option, target, index);
 			}
+
+			if (config.swapDream())
+			{
+				swap("dream", option, target, index);
+			}
 		}
 		else if (config.swapQuickLeave() && option.equals("leave tomb") && target.equals("tomb door"))
 		{

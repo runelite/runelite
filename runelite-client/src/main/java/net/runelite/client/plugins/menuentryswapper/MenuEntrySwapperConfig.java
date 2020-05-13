@@ -153,6 +153,13 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapDream",
+		name = "Dream",
+		description = "Swap Talk-to with Dream for Dominic Onion at Nightmare Zone."
+	)
+	default boolean swapDream() { return false; }
+
+	@ConfigItem(
 		keyName = "swapExchange",
 		name = "Exchange",
 		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight"
