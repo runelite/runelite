@@ -72,7 +72,10 @@ public class NpcMinimapOverlay extends Overlay
 		{
 			return;
 		}
-
+		if (!config.highlightDeadNpcs() && actor.isDead())
+		{
+			return;
+		}
 		Point minimapLocation = actor.getMinimapLocation();
 		if (minimapLocation != null)
 		{
