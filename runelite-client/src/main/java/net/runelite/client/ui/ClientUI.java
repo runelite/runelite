@@ -65,9 +65,6 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.events.ClientShutdown;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -77,7 +74,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
@@ -90,6 +90,7 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.WinUtil;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
@@ -663,12 +664,38 @@ public class ClientUI
 	 */
 	public void requestFocus()
 	{
-		if (OSType.getOSType() == OSType.MacOS)
+		switch (OSType.getOSType())
 		{
-			OSXUtil.requestFocus();
+			case MacOS:
+				// On OSX Component::requestFocus has no visible effect, so we use our OSX-specific
+				// requestUserAttention()
+				OSXUtil.requestUserAttention();
+				break;
+			default:
+				frame.requestFocus();
 		}
 
-		frame.requestFocus();
+		giveClientFocus();
+	}
+
+	/**
+	 * Attempt to forcibly bring the client frame to front
+	 */
+	public void forceFocus()
+	{
+		switch (OSType.getOSType())
+		{
+			case MacOS:
+				OSXUtil.requestForeground();
+				break;
+			case Windows:
+				WinUtil.requestForeground(frame);
+				break;
+			default:
+				frame.requestFocus();
+				break;
+		}
+
 		giveClientFocus();
 	}
 

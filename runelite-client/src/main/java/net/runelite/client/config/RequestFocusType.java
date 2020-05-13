@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.client.config;
 
-import com.apple.eawt.Application;
-import com.apple.eawt.FullScreenUtilities;
-import javax.swing.JFrame;
-import lombok.extern.slf4j.Slf4j;
-
-/**
- * A class with OSX-specific functions to improve integration.
- */
-@Slf4j
-public class OSXUtil
+public enum RequestFocusType
 {
-	/**
-	 * Enables the osx native fullscreen if running on a mac.
-	 *
-	 * @param gui The gui to enable the fullscreen on.
-	 */
-	public static void tryEnableFullscreen(JFrame gui)
-	{
-		if (OSType.getOSType() == OSType.MacOS)
-		{
-			FullScreenUtilities.setWindowCanFullScreen(gui, true);
-			log.debug("Enabled fullscreen on macOS");
-		}
-	}
-
-	/**
-	 * Request user attention on macOS
-	 */
-	public static void requestUserAttention()
-	{
-		Application app = Application.getApplication();
-		app.requestUserAttention(true);
-		log.debug("Requested user attention on macOS");
-	}
-
-	/**
-	 * Requests the foreground in a macOS friendly way.
-	 */
-	public static void requestForeground()
-	{
-		Application app = Application.getApplication();
-		app.requestForeground(true);
-		log.debug("Forced focus on macOS");
-	}
+	OFF,
+	REQUEST,
+	FORCE;
 }
