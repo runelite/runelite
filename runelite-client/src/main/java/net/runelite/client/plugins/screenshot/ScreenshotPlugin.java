@@ -370,7 +370,7 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName, "Pets");
 		}
 
-		if (config.screenshotBossKills())
+		if (config.screenshotBossKills() )
 		{
 			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
 			if (m.matches())
@@ -578,8 +578,8 @@ public class ScreenshotPlugin extends Plugin
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
 	 * and optionally uploads it to an image-hosting service.
 	 *
-	 * @param fileName Filename to use, without file extension.
-	 * @param subDir   Subdirectory to store the captured screenshot in.
+	 * @param fileName    Filename to use, without file extension.
+	 * @param subDir      Subdirectory to store the captured screenshot in.
 	 */
 	private void takeScreenshot(String fileName, String subDir)
 	{
