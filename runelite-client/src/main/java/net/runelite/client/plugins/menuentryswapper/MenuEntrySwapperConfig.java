@@ -157,7 +157,7 @@ public interface MenuEntrySwapperConfig extends Config
 		name = "Dream",
 		description = "Swap Talk-to with Dream for Dominic Onion at Nightmare Zone."
 	)
-	default boolean swapDream() { return false; }
+	default boolean swapDream() { return true; }
 
 	@ConfigItem(
 		keyName = "swapExchange",
