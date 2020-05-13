@@ -94,6 +94,8 @@ public class ScreenshotPlugin extends Plugin
 {
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Map<Integer, String> CHEST_LOOT_EVENTS = ImmutableMap.of(12127, "The Gauntlet");
+	private static final int GAUNTLET_REGION = 7512;
+	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
@@ -401,7 +403,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotUntradeableDrop())
+		if (config.screenshotUntradeableDrop() && !isInsideGauntlet())
 		{
 			Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(chatMessage);
 			if (m.matches())
@@ -636,6 +638,14 @@ public class ScreenshotPlugin extends Plugin
 		// Draw the game onto the screenshot
 		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
 		imageCapture.takeScreenshot(screenshot, fileName, subDir, config.notifyWhenTaken(), config.uploadScreenshot());
+	}
+
+	private boolean isInsideGauntlet()
+	{
+		return this.client.isInInstancedRegion()
+			&& this.client.getMapRegions().length > 0
+			&& (this.client.getMapRegions()[0] == GAUNTLET_REGION
+			|| this.client.getMapRegions()[0] == CORRUPTED_GAUNTLET_REGION);
 	}
 
 	@VisibleForTesting
