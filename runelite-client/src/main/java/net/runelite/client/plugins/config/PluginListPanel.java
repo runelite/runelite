@@ -259,9 +259,9 @@ class PluginListPanel extends PluginPanel
 		{
 			final JLabel categoryLabel = new JLabel(c.toString(), SwingConstants.LEFT);
 			categoryLabel.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createEmptyBorder(c == PluginCategory.COMBAT ? 8 : 18, 0, 6, 0),
-				BorderFactory.createMatteBorder(0, 0, 2, 0, ColorScheme.BRAND_ORANGE_TRANSPARENT)));
-			categoryLabel.setFont(FontManager.getRunescapeBoldFont().deriveFont(24f));
+				BorderFactory.createEmptyBorder(8, 0, 6, 0),
+				BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.BRAND_ORANGE)));
+			categoryLabel.setFont(FontManager.getRunescapeBoldFont());
 			categoryLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 			map.put(c, categoryLabel);
 		}
