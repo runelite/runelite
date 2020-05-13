@@ -50,6 +50,7 @@ import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
@@ -84,6 +85,28 @@ public class NpcIndicatorsPlugin extends Plugin
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
 	private static final String UNTAG = "Un-tag";
+
+	// A list of known NPCs that are instanced and respawn on a set interval (for whitelisting).
+	// Instanced KBD, Corp, etc, don't have respawn timers from this plugin.
+	// KBD/Corp (maybe others) only have manual timers from the boss timers plugin.
+	// These bosses are still whitelisted in case this "bug" is fixed.
+	public static final List<Integer> StaticSpawnTimeInstancedNpcs = Arrays.asList(
+		NpcID.ALCHEMICAL_HYDRA,
+		NpcID.ALCHEMICAL_HYDRA_8616,
+		NpcID.ALCHEMICAL_HYDRA_8617,
+		NpcID.ALCHEMICAL_HYDRA_8618,
+		NpcID.ALCHEMICAL_HYDRA_8619,
+		NpcID.ALCHEMICAL_HYDRA_8620,
+		NpcID.ALCHEMICAL_HYDRA_8621,
+		NpcID.ALCHEMICAL_HYDRA_8622,
+		NpcID.CORPOREAL_BEAST,
+		NpcID.KRAKEN,
+		NpcID.KRAKEN_6640,
+		NpcID.KRAKEN_6656,
+		NpcID.KING_BLACK_DRAGON,
+		NpcID.KING_BLACK_DRAGON_2642,
+		NpcID.KING_BLACK_DRAGON_6502
+	);
 
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
@@ -430,6 +453,15 @@ public class NpcIndicatorsPlugin extends Plugin
 		return new WorldPoint(currWP.getX() - dx, currWP.getY() - dy, currWP.getPlane());
 	}
 
+	private Boolean isNpcNoneInstancedOrWhitelisted(NPC npc)
+	{
+		if (!client.isInInstancedRegion() || StaticSpawnTimeInstancedNpcs.contains(npc.getId()))
+		{
+			return true;
+		}
+		return false;
+	}
+
 	private void memorizeNpc(NPC npc)
 	{
 		final int npcIndex = npc.getIndex();
@@ -525,7 +557,7 @@ public class NpcIndicatorsPlugin extends Plugin
 					{
 						mn.setDiedOnTick(client.getTickCount() + 1); // This runs before tickCounter updates, so we add 1
 
-						if (!mn.getPossibleRespawnLocations().isEmpty())
+						if (!mn.getPossibleRespawnLocations().isEmpty() && isNpcNoneInstancedOrWhitelisted(npc))
 						{
 							log.debug("Starting {} tick countdown for {}", mn.getRespawnTime(), mn.getNpcName());
 							deadNpcsToDisplay.put(mn.getNpcIndex(), mn);
