@@ -88,7 +88,7 @@ enum Emoji
 	FACEPALM("M-)"),
 	PENSIVE("V_V"),
 	ACORN("<lt>D~"), // <D~
-	GORILLA(":G")
+	GORILLA(":G"),
 	;
 
 	private static final Map<String, Emoji> emojiMap;
