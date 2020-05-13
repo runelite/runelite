@@ -60,7 +60,7 @@ public class NpcSceneOverlay extends Overlay
 
 	static
 	{
-		((DecimalFormat) TIME_LEFT_FORMATTER).applyPattern("#0.0");
+		((DecimalFormat)TIME_LEFT_FORMATTER).applyPattern("#0.0");
 	}
 
 	private final Client client;
@@ -157,6 +157,7 @@ public class NpcSceneOverlay extends Overlay
 			{
 				int size = npcComposition.getSize();
 				LocalPoint localPoint = actor.getLocalLocation();
+
 				int x = localPoint.getX() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
 				int y = localPoint.getY() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
 
@@ -166,35 +167,43 @@ public class NpcSceneOverlay extends Overlay
 				break;
 			}
 			case TILE:
+			{
 				int size = npcComposition.getSize();
 				LocalPoint lp = actor.getLocalLocation();
 				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 
 				renderPoly(graphics, color, tilePoly);
 				break;
-
+			}
 			case HULL:
+			{
 				Shape objectClickbox = actor.getConvexHull();
 
 				renderPoly(graphics, color, objectClickbox);
 				break;
+			}
 			case TRUE_LOCATIONS:
-				size = 1;
-				npcComposition = actor.getTransformedComposition();
-				if (npcComposition != null)
+			{
+				final int size = npcComposition.getSize();
+				final float centerOffsetTiles = ((float) size - 1) / 2;
+				final int centerLocalOffset = (int) (centerOffsetTiles * Perspective.LOCAL_TILE_SIZE);
+				final LocalPoint npcLocalPoint = LocalPoint.fromWorld(client, actor.getWorldLocation());
+
+				if (npcLocalPoint == null)
 				{
-					size = npcComposition.getSize();
+					return;
 				}
-				WorldPoint npcWorldPoint = actor.getWorldLocation();
-				float offsetWorldPoints = ((float) size - 1) / 2;
-				int offsetLocalPoints = (int) (offsetWorldPoints * 128);
-				LocalPoint npcLocalPoint = LocalPoint.fromWorld(client, npcWorldPoint);
-				LocalPoint npcCentreLocalPoints = new LocalPoint(npcLocalPoint.getX() + offsetLocalPoints,
-					npcLocalPoint.getY() + offsetLocalPoints);
-				tilePoly = Perspective.getCanvasTileAreaPoly(client, npcCentreLocalPoints, size);
+
+				// Perspective#getCanvasTileAreaPoly(Client, LocalPoint, int) draws from the center of the given point,
+				// so we need to offset by half of the size (past 1 tile) of the NPC
+				final LocalPoint npcCenterLocalPoints = new LocalPoint(
+					npcLocalPoint.getX() + centerLocalOffset,
+					npcLocalPoint.getY() + centerLocalOffset);
+				final Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, npcCenterLocalPoints, size);
 
 				renderPoly(graphics, color, tilePoly);
 				break;
+			}
 		}
 
 		if (config.drawNames() && actor.getName() != null)
