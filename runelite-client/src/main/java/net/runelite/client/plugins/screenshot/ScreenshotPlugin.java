@@ -63,6 +63,7 @@ import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
@@ -157,6 +158,8 @@ public class ScreenshotPlugin extends Plugin
 
 	private NavigationButton titleBarButton;
 
+	private String kickPlayerName;
+
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
 	{
 		@Override
@@ -206,6 +209,7 @@ public class ScreenshotPlugin extends Plugin
 		overlayManager.remove(screenshotOverlay);
 		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
+		kickPlayerName = null;
 	}
 
 	@Subscribe
@@ -271,9 +275,25 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent e)
+	{
+		if (!"confirmClanKick".equals(e.getEventName()))
+		{
+			return;
+		}
+
+		final String[] stringStack = client.getStringStack();
+		final int stringSize = client.getStringStackSize();
+		kickPlayerName = stringStack[stringSize - 1];
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.TRADE)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE
+			&& event.getType() != ChatMessageType.SPAM
+			&& event.getType() != ChatMessageType.TRADE
+			&& event.getType() != ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
 			return;
 		}
@@ -329,6 +349,17 @@ public class ScreenshotPlugin extends Plugin
 				theatreOfBloodNumber = Integer.valueOf(m.group());
 				return;
 			}
+		}
+
+		if (config.screenshotCcKick() && chatMessage.equals("Your request to kick/ban this user was successful."))
+		{
+			if (kickPlayerName == null)
+			{
+				return;
+			}
+
+			takeScreenshot("Kick " + kickPlayerName, "Clan Chat Kicks");
+			kickPlayerName = null;
 		}
 
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
