@@ -151,6 +151,7 @@ public class NpcSceneOverlay extends Overlay
 		{
 			return;
 		}
+
 		switch (config.renderStyle())
 		{
 			case SOUTH_WEST_TILE:
