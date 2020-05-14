@@ -9,7 +9,7 @@
    iconst                 10616872
    if_sethide            
    iconst                 0
-   iconst                 10616887
+   iconst                 10616888
    if_sethide            
    invoke                 923
    iconst                 0
@@ -84,6 +84,9 @@ LABEL40:
    if_sethide            
    iconst                 1
    iconst                 10616881
+   if_sethide            
+   iconst                 1
+   iconst                 10616887
    if_sethide            
    iconst                 10616885
    cc_deleteall          
@@ -164,19 +167,19 @@ LABEL40:
    if_setonclick         
    get_varc_int           41
    iconst                 1337
-   if_icmpeq              LABEL154
-   jump                   LABEL158
-LABEL154:
+   if_icmpeq              LABEL157
+   jump                   LABEL161
+LABEL157:
    invoke                 2526
    pop_int               
    clientclock           
    set_varc_int           384
-LABEL158:
+LABEL161:
    invoke                 1972
    iconst                 1
-   if_icmpeq              LABEL162
-   jump                   LABEL163
-LABEL162:
+   if_icmpeq              LABEL165
+   jump                   LABEL166
+LABEL165:
    invoke                 2581
-LABEL163:
+LABEL166:
    return                

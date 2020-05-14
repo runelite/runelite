@@ -3,7 +3,7 @@
 .string_stack_count 0
 .int_var_count      17
 .string_var_count   13
-   iconst                 10616890
+   iconst                 10616891
    if_getwidth           
    istore                 1
    chat_playername       
@@ -103,7 +103,7 @@ LABEL82:
    join_string            7
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -247,7 +247,7 @@ LABEL190:
    join_string            3
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -274,7 +274,7 @@ LABEL211:
    join_string            3
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -304,7 +304,7 @@ LABEL232:
    join_string            3
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -328,7 +328,7 @@ LABEL254:
    join_string            4                 ; + 1 for timestamp
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -352,7 +352,7 @@ LABEL272:
    join_string            4                 ; + 1 for timestamp
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -399,7 +399,7 @@ LABEL305:
    join_string            3
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -423,7 +423,7 @@ LABEL327:
    join_string            4                 ; + 1 for time stamp
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -455,7 +455,7 @@ LABEL345:
    join_string            3
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -480,7 +480,7 @@ LABEL371:
    sload                  11
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -503,7 +503,7 @@ LABEL401:
    sconst                 "jk :P"
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -519,7 +519,7 @@ LABEL416:
    sload                  11
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -536,7 +536,7 @@ LABEL431:
    sload                  11
    iload                  7
    iload                  8
-   iconst                 10616890
+   iconst                 10616891
    iload                  1
    iconst                 3
    iconst                 14
@@ -889,7 +889,7 @@ LABEL720:
    iconst                 0
    iload                  8
    if_setsize            
-   iconst                 10616890
+   iconst                 10616891
    iload                  7
    iconst                 2
    multiply              
@@ -903,7 +903,7 @@ LABEL748:
    iconst                 1
    cc_sethide            
 LABEL752:
-   iconst                 10616890
+   iconst                 10616891
    iload                  7
    iconst                 2
    multiply              
@@ -939,7 +939,7 @@ LABEL777:
    iload                  5
    sub                   
    istore                 5
-   iconst                 10616890
+   iconst                 10616891
    if_getheight          
    istore                 16
    iload                  5
@@ -982,7 +982,7 @@ LABEL800:
    iconst                 0
    iload                  8
    if_setposition        
-   iconst                 10616890
+   iconst                 10616891
    iload                  7
    iconst                 2
    multiply              
@@ -997,7 +997,7 @@ LABEL832:
    iconst                 0
    cc_setposition        
 LABEL837:
-   iconst                 10616890
+   iconst                 10616891
    iload                  7
    iconst                 2
    multiply              
@@ -1018,17 +1018,17 @@ LABEL852:
 LABEL853:
    iconst                 0
    iload                  16
-   iconst                 10616890
+   iconst                 10616891
    if_setscrollsize      
-   iconst                 10617391
-   iconst                 10616890
+   iconst                 10617392
+   iconst                 10616891
    get_varc_int           7
    iload                  16
    get_varc_int           8
    sub                   
    add                   
    invoke                 72
-   iconst                 10616890
+   iconst                 10616891
    if_getscrolly         
    iload                  16
    set_varc_int           8
