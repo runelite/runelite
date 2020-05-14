@@ -598,7 +598,7 @@ public class ScreenshotPlugin extends Plugin
 		Matcher quest_match_final = quest_match_1.matches() ? quest_match_1 : quest_match_2;
 		if (!quest_match_final.matches())
 		{
-			return null;
+			return "Quest(quest not found)";
 		}
 
 		String quest = quest_match_final.group("quest");
