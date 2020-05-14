@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020, bfmoatbio <bfmoatbio@protonmail.com>
+ * Copyright (c) 2020, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -22,83 +23,73 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.menus;
 
+import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
+import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
 import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MenuManagerTest
 {
-    @Mock
-    @Bind
-    private Client client;
+	@Inject
+	private MenuManager menuManager;
 
-    private final EventBus eventBus = new EventBus();
-    private final MenuManager menuManager = new MenuManager(client, eventBus);
+	@Mock
+	@Bind
+	private Client client;
 
-    private MenuManagerTestOnPlayerMenuOptionClicked playerMenuOptionClickedListener;
+	@Mock
+	@Bind
+	private EventBus eventBus;
 
-    @Before
-    public void before()
-    {
-        playerMenuOptionClickedListener = new MenuManagerTestOnPlayerMenuOptionClicked();
-        eventBus.register(playerMenuOptionClickedListener);
-    }
+	@Before
+	public void before()
+	{
+		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+	}
 
-    @After
-    public void after()
-    {
-        eventBus.unregister(playerMenuOptionClickedListener);
-    }
+	@Test
+	public void testPlayerMenuOptionClicked()
+	{
+		MenuOptionClicked event = new MenuOptionClicked();
+		event.setMenuAction(MenuAction.RUNELITE);
+		event.setMenuTarget("username<col=40ff00>  (level-42)");
 
-    @Test
-    public void testPlayerMenuOptionClicked()
-    {
-        MenuOptionClicked event = new MenuOptionClicked();
-        event.setMenuAction(MenuAction.RUNELITE);
-        event.setMenuTarget("username<col=40ff00>  (level-42)");
+		menuManager.onMenuOptionClicked(event);
 
-        menuManager.onMenuOptionClicked(event);
+		ArgumentCaptor<PlayerMenuOptionClicked> captor = ArgumentCaptor.forClass(PlayerMenuOptionClicked.class);
+		verify(eventBus).post(captor.capture());
+		PlayerMenuOptionClicked clicked = captor.getValue();
+		assertEquals("username", clicked.getMenuTarget());
+	}
 
-        String target = playerMenuOptionClickedListener.lastEvent.getMenuTarget();
-        assertEquals("username", target);
-    }
+	@Test
+	public void testPlayerMenuOptionWithBountyHunterEmblemClicked()
+	{
+		MenuOptionClicked event = new MenuOptionClicked();
+		event.setMenuAction(MenuAction.RUNELITE);
+		event.setMenuTarget("username<img=20>5<col=40ff00>  (level-42)");
 
-    @Test
-    public void testPlayerMenuOptionWithBountyHunterEmblemClicked()
-    {
-        MenuOptionClicked event = new MenuOptionClicked();
-        event.setMenuAction(MenuAction.RUNELITE);
-        event.setMenuTarget("username<img=20>5<col=40ff00>  (level-42)");
+		menuManager.onMenuOptionClicked(event);
 
-        menuManager.onMenuOptionClicked(event);
-
-        String target = playerMenuOptionClickedListener.lastEvent.getMenuTarget();
-        assertEquals("username", target);
-    }
-}
-
-class MenuManagerTestOnPlayerMenuOptionClicked
-{
-    public PlayerMenuOptionClicked lastEvent;
-
-    @Subscribe
-    public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
-    {
-        lastEvent = event;
-    }
+		ArgumentCaptor<PlayerMenuOptionClicked> captor = ArgumentCaptor.forClass(PlayerMenuOptionClicked.class);
+		verify(eventBus).post(captor.capture());
+		PlayerMenuOptionClicked clicked = captor.getValue();
+		assertEquals("username", clicked.getMenuTarget());
+	}
 }
