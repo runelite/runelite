@@ -38,8 +38,10 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
+import static net.runelite.api.widgets.WidgetInfo.QUEST_COMPLETED_NAME_TEXT;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
@@ -109,6 +111,7 @@ public class ScreenshotPluginTest
 		when(screenshotConfig.screenshotLevels()).thenReturn(true);
 		when(screenshotConfig.screenshotValuableDrop()).thenReturn(true);
 		when(screenshotConfig.screenshotUntradeableDrop()).thenReturn(true);
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
 	}
 
 	@Test
@@ -238,6 +241,146 @@ public class ScreenshotPluginTest
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testTheCorsairCurseQuestComplete()
+	{
+		Widget questChild = mock(Widget.class);
+		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
+
+		when(questChild.getText()).thenReturn("You have completed The Corsair Curse!");
+
+		assertEquals("Quest(The Corsair Curse)", screenshotPlugin.parseQuestCompletedWidget());
+
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(QUEST_COMPLETED_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testOneSmallFavourQuestComplete()
+	{
+		Widget questChild = mock(Widget.class);
+		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
+
+		when(questChild.getText()).thenReturn("'One Small Favour' completed!");
+
+		assertEquals("Quest(One Small Favour)", screenshotPlugin.parseQuestCompletedWidget());
+
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(QUEST_COMPLETED_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testHazeelCultPcQuestComplete()
+	{
+		Widget questChild = mock(Widget.class);
+		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
+
+		when(questChild.getText()).thenReturn("You have... kind of... completed the Hazeel Cult Quest!");
+
+		assertEquals("Quest(Hazeel Cult partial completion)", screenshotPlugin.parseQuestCompletedWidget());
+
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(QUEST_COMPLETED_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testRagAndBoneManIIQuestComplete()
+	{
+		Widget questChild = mock(Widget.class);
+		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
+
+		when(questChild.getText()).thenReturn("You have completely completed Rag and Bone Man!");
+
+		assertEquals("Quest(Rag and Bone Man II)", screenshotPlugin.parseQuestCompletedWidget());
+
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(QUEST_COMPLETED_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testRFDCulinaromancerQuestComplete()
+	{
+		Widget questChild = mock(Widget.class);
+		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
+
+		when(questChild.getText()).thenReturn("Congratulations! You have defeated the Culinaromancer!");
+
+		assertEquals("Quest(Recipe for Disaster - Culinaromancer)", screenshotPlugin.parseQuestCompletedWidget());
+
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(QUEST_COMPLETED_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testRFDAnotherCooksQuestQuestComplete()
+	{
+		Widget questChild = mock(Widget.class);
+		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
+
+		when(questChild.getText()).thenReturn("You have completed Another Cook's Quest!");
+
+		assertEquals("Quest(Recipe for Disaster - Another Cook's Quest)", screenshotPlugin.parseQuestCompletedWidget());
+
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(QUEST_COMPLETED_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		GameTick tick = new GameTick();
+		screenshotPlugin.onGameTick(tick);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testDoricsQuestQuestComplete()
+	{
+		Widget questChild = mock(Widget.class);
+		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
+
+		when(questChild.getText()).thenReturn("You have completed Doric's Quest!");
+
+		assertEquals("Quest(Doric's Quest)", screenshotPlugin.parseQuestCompletedWidget());
+
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(QUEST_COMPLETED_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
