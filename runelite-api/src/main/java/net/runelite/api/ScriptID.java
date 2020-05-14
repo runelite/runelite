@@ -272,7 +272,7 @@ public final class ScriptID
 	 * <li> int (WidgetID) * 16, various widgets making up the bank interface </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 16)
+	@ScriptArguments(integer = 17)
 	public static final int BANKMAIN_SEARCH_REFRESH = 283;
 
 	/**
