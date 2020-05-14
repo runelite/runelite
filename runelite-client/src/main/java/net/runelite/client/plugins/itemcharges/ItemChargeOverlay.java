@@ -134,7 +134,8 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				|| (type == SACK && !config.showSackCharges())
 				|| (type == ABYSSAL_BRACELET && !config.showAbyssalBraceletCharges())
 				|| (type == AMULET_OF_CHEMISTRY && !config.showAmuletOfChemistryCharges())
-				|| (type == AMULET_OF_BOUNTY && !config.showAmuletOfBountyCharges()))
+				|| (type == AMULET_OF_BOUNTY && !config.showAmuletOfBountyCharges())
+				|| (type == POTION && !config.showPotionDoseCount()))
 			{
 				return;
 			}
@@ -156,7 +157,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
 			|| config.showBellowCharges() || config.showBasketCharges() || config.showSackCharges()
 			|| config.showAbyssalBraceletCharges() || config.showExplorerRingCharges() || config.showRingOfForgingCount()
-			|| config.showAmuletOfChemistryCharges() || config.showAmuletOfBountyCharges();
+			|| config.showAmuletOfChemistryCharges() || config.showAmuletOfBountyCharges() || config.showPotionDoseCount();
 
 	}
 }
