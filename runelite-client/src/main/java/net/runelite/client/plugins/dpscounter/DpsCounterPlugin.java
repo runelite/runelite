@@ -162,7 +162,12 @@ public class DpsCounterPlugin extends Plugin
 		}
 
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
-
+		final int npcId = ((NPC) actor).getId();
+		boolean isBoss = BOSSES.contains(npcId);
+		if (dpsConfig.bossOnly() && !isBoss)
+		{
+			return;
+		}
 		if (hitsplat.isMine())
 		{
 			int hit = hitsplat.getAmount();
@@ -184,8 +189,6 @@ public class DpsCounterPlugin extends Plugin
 		}
 		else if (hitsplat.isOthers())
 		{
-			final int npcId = ((NPC) actor).getId();
-			boolean isBoss = BOSSES.contains(npcId);
 			if (actor != player.getInteracting() && !isBoss)
 			{
 				// only track damage to npcs we are attacking, or is a nearby common boss
