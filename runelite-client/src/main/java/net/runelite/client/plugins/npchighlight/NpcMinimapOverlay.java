@@ -68,11 +68,8 @@ public class NpcMinimapOverlay extends Overlay
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
 	{
 		NPCComposition npcComposition = actor.getTransformedComposition();
-		if (npcComposition == null || !npcComposition.isInteractible())
-		{
-			return;
-		}
-		if (!config.highlightDeadNpcs() && actor.isDead())
+		if (npcComposition == null || !npcComposition.isInteractible()
+			|| (actor.isDead() && !config.highlightDeadNpcs()))
 		{
 			return;
 		}

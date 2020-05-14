@@ -60,7 +60,7 @@ public class NpcSceneOverlay extends Overlay
 
 	static
 	{
-		((DecimalFormat) TIME_LEFT_FORMATTER).applyPattern("#0.0");
+		((DecimalFormat)TIME_LEFT_FORMATTER).applyPattern("#0.0");
 	}
 
 	private final Client client;
@@ -146,11 +146,8 @@ public class NpcSceneOverlay extends Overlay
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
 		NPCComposition npcComposition = actor.getTransformedComposition();
-		if (npcComposition == null || !npcComposition.isInteractible())
-		{
-			return;
-		}
-		if (!config.highlightDeadNpcs() && actor.isDead())
+		if (npcComposition == null || !npcComposition.isInteractible()
+			|| (actor.isDead() && !config.highlightDeadNpcs()))
 		{
 			return;
 		}
