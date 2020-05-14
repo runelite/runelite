@@ -161,7 +161,7 @@ public class WidgetID
 		static final int OVERVIEW_MAP = 10;
 		static final int SEARCH = 25;
 		static final int SURFACE_SELECTOR = 33;
-		static final int TOOLTIP = 39;
+		static final int TOOLTIP = 41;
 		static final int OPTION = 46;
 	}
 
@@ -251,19 +251,19 @@ public class WidgetID
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 3;
-		static final int ITEM_COUNT_TOP = 4;
-		static final int ITEM_COUNT_BAR = 5;
-		static final int ITEM_COUNT_BOTTOM = 6;
-		static final int CONTENT_CONTAINER = 8;
-		static final int TAB_CONTAINER = 9;
-		static final int ITEM_CONTAINER = 11;
-		static final int SEARCH_BUTTON_BACKGROUND = 38;
-		static final int DEPOSIT_INVENTORY = 40;
-		static final int DEPOSIT_EQUIPMENT = 42;
-		static final int INCINERATOR = 44;
-		static final int INCINERATOR_CONFIRM = 45;
-		static final int EQUIPMENT_CONTENT_CONTAINER = 66;
-		static final int EQUIPMENT_BUTTON = 107;
+		static final int ITEM_COUNT_TOP = 5;
+		static final int ITEM_COUNT_BAR = 6;
+		static final int ITEM_COUNT_BOTTOM = 7;
+		static final int CONTENT_CONTAINER = 9;
+		static final int TAB_CONTAINER = 10;
+		static final int ITEM_CONTAINER = 12;
+		static final int SEARCH_BUTTON_BACKGROUND = 39;
+		static final int DEPOSIT_INVENTORY = 41;
+		static final int DEPOSIT_EQUIPMENT = 43;
+		static final int INCINERATOR = 45;
+		static final int INCINERATOR_CONFIRM = 46;
+		static final int EQUIPMENT_CONTENT_CONTAINER = 67;
+		static final int EQUIPMENT_BUTTON = 108;
 	}
 
 	static class GrandExchange
@@ -472,11 +472,11 @@ public class WidgetID
 		static final int TITLE = 44;
 		static final int FULL_INPUT = 45;
 		static final int GE_SEARCH_RESULTS = 53;
-		static final int MESSAGES = 55;
-		static final int TRANSPARENT_BACKGROUND_LINES = 56;
-		static final int INPUT = 57;
-		static final int MESSAGE_LINES = 58;
-		static final int FIRST_MESSAGE = 59;
+		static final int MESSAGES = 56;
+		static final int TRANSPARENT_BACKGROUND_LINES = 57;
+		static final int INPUT = 58;
+		static final int MESSAGE_LINES = 59;
+		static final int FIRST_MESSAGE = 60;
 	}
 
 	static class Prayer
