@@ -102,6 +102,10 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9]+) duels?\\.");
+	private static final Pattern QUEST_PATTERN_1 = Pattern.compile(".+?ve\\.*? (?<verb>been|rebuilt|.+?ed)? ?(?:the )?'?(?<quest>.+?)'?(?: [Qq]uest)?[!.]?$");
+	private static final Pattern QUEST_PATTERN_2 = Pattern.compile("'?(?<quest>.+?)'?(?: [Qq]uest)? (?<verb>[a-z]\\w+?ed)?(?: f.*?)?[!.]?$");
+	private static final ImmutableList<String> RFD_TAGS = ImmutableList.of("Another Cook", "freed", "defeated", "saved");
+	private static final ImmutableList<String> WORD_QUEST_IN_NAME_TAGS = ImmutableList.of("Another Cook", "Doric", "Heroes", "Legends", "Observatory", "Olaf", "Waterfall");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
@@ -238,9 +242,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
-			// "You have completed The Corsair Curse!"
-			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
-			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
+			fileName = parseQuestCompletedWidget();
 			screenshotSubDir = "Quests";
 		}
 
@@ -572,6 +574,56 @@ public class ScreenshotPlugin extends Plugin
 		String skillName = m.group(1);
 		String skillLevel = m.group(2);
 		return skillName + "(" + skillLevel + ")";
+	}
+
+	/**
+	 * Parses a WidgetInfo pointing to the second widget of the quest-completed dialog
+	 * into a shortened string for filename usage.
+	 *
+	 * @return Shortened string in the format "Quest(The Corsair Curse)"
+	 */
+	String parseQuestCompletedWidget()
+	{
+		Widget questChild = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT);
+		if (questChild == null)
+		{
+			return null;
+		}
+
+		String text = questChild.getText();
+		// "You have completed The Corsair Curse!"
+		Matcher quest_match_1 = QUEST_PATTERN_1.matcher(text);
+		// "'One Small Favour' completed!"
+		Matcher quest_match_2 = QUEST_PATTERN_2.matcher(text);
+		Matcher quest_match_final = quest_match_1.matches() ? quest_match_1 : quest_match_2;
+		if (!quest_match_final.matches())
+		{
+			return null;
+		}
+
+		String quest = quest_match_final.group("quest");
+		String verb = quest_match_final.group("verb") != null ? quest_match_final.group("verb") : "";
+
+		if (verb.contains("kind of"))
+		{
+			quest = quest + " partial completion";
+		}
+		else if (verb.contains("completely"))
+		{
+			quest = quest + " II";
+		}
+
+		if (RFD_TAGS.stream().anyMatch((quest + verb)::contains))
+		{
+			quest = "Recipe for Disaster - " + quest;
+		}
+
+		if (WORD_QUEST_IN_NAME_TAGS.stream().anyMatch(quest::contains))
+		{
+			quest = quest + " Quest";
+		}
+
+		return "Quest(" + quest + ")";
 	}
 
 	/**
