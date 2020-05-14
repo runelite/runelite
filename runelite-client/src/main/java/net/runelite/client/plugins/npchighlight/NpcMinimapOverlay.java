@@ -73,6 +73,7 @@ public class NpcMinimapOverlay extends Overlay
 		{
 			return;
 		}
+
 		Point minimapLocation = actor.getMinimapLocation();
 		if (minimapLocation != null)
 		{
