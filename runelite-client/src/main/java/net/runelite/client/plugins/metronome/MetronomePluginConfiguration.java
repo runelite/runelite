@@ -53,4 +53,15 @@ public interface MetronomePluginConfiguration extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "enableVisualCue",
+			name = "Enable visual cue overlay",
+			description = "Toggles whether to display visual cue around your player model",
+			position = 4
+	)
+	default boolean enableVisualCue()
+	{
+		return false;
+	}
 }
