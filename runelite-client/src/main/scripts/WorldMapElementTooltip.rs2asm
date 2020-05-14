@@ -28,6 +28,11 @@ LABEL14:
    mec_category          
    enum                  
    sstore                 0
+   worldmap_element                    ; load the current element we're processing
+   mec_category                        ; gets the category of the element
+   worldmap_getdisableelementcategory  ; returns true if an element is enabled
+   iconst 1                            ; load constant true
+   if_icmpne SETVARC                   ; jump to the end of the script if the element is hidden, otherwise continue
    sload                  0
    string_length         
    iconst                 0
@@ -181,6 +186,7 @@ LABEL99:
    cc_settextfont        
    iconst                 0
    cc_setcolour
+SETVARC:                               ; label we jump to for early exiting the script
    iconst                 1
    set_varc_int           2
    return                

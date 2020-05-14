@@ -292,4 +292,23 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 2)
 	public static final int TOPLEVEL_REDRAW = 907;
+
+	/**
+	 * Called to interface with the world map and show/hide icons
+	 * Usage:
+	 * <ul>
+	 * <li> int (Opcode) One of: 1, 2, 3, 4. See further down for behaviour </li>
+	 * <li> int (category id or -1) internal identifier to show or hide. Unused for global disableelement opcodes (1 and 2) </li>
+	 * <li> int (boolean) 1 == true, 0 == false. Use false to hide and true to show. Unused for getter opcode (2 and 4) </li>
+	 * </ul>
+	 * Opcodes:
+	 * <ul>
+	 * <li> 1: Calls worldmap_disableelements, shows/hides all elements on the world map. </li>
+	 * <li> 2: Calls worldmap_getdisableelements, adds a boolean to the int stack denoting if elements are enabled. Make sure you pop this off! </li>
+	 * <li> 3: Calls worldmap_disableelementcategory, shows/hides all elements in a given category </li>
+	 * <li> 4: Calls worldmap_getdisableelementcategory, adds a boolean to the int stack denoting if a specific element category is enabled. Make sure you pop this off! </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int WORLDMAP_ICON_UTIL = 10005;
 }

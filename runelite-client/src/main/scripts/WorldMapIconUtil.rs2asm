@@ -1,0 +1,77 @@
+; Copyright (c) 2020, ThatGamerBlue <thatgamerblue@gmail.com>
+; All rights reserved.
+;
+; Redistribution and use in source and binary forms, with or without
+; modification, are permitted provided that the following conditions are met:
+;
+; 1. Redistributions of source code must retain the above copyright notice, this
+;    list of conditions and the following disclaimer.
+; 2. Redistributions in binary form must reproduce the above copyright notice,
+;    this list of conditions and the following disclaimer in the documentation
+;    and/or other materials provided with the distribution.
+;
+; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+; ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+; WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+; DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+; ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+; (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+; ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+;;
+; Can be invoked to show/hide icons on the world map/minimap
+; See javadoc in ScriptID for more info
+; params: opcode(int) intparam boolparam
+;
+; Booleans are ints where 1 == true and 0 == false
+;;
+
+.id                 10005
+.int_stack_count    3
+.string_stack_count 0
+.int_var_count      3
+.string_var_count   0
+    iload 0 ; opcode
+    switch
+        1: DISABLEELEMENTS
+        2: GETDISABLEELEMENTS
+        3: DISABLEELEMENTCATEGORY
+        4: GETDISABLEELEMENTCATEGORY
+        ; 5: DISABLEELEMENT ; these are likely unnecessary, but im leaving the code here incase they are useful in the future
+        ; 6: GETDISABLEELEMENT
+    jump RETN
+DISABLEELEMENTS:
+    iload 2 ; boolean
+    worldmap_disableelements ; enables rendering of all map elements if true, else disables
+    jump RETN
+GETDISABLEELEMENTS:
+    worldmap_getdisableelements ; BEWARE: this leaves the int stack dirty with a bool, make sure you clean it up in your code!
+                                ; returns true if map element rendering is ENABLED
+    jump RETN
+DISABLEELEMENTCATEGORY:
+    iload 1 ; int
+    iload 2 ; bool
+    worldmap_disableelementcategory ; sets a world map category's enable state
+                                    ; calls getWorldMap().setCategoryEnabled(int, bool)
+    jump RETN
+GETDISABLEELEMENTCATEGORY:
+    iload 1 ; int
+    worldmap_getdisableelementcategory ; BEWARE: this leaves the int stack dirty with a bool, make sure you clean it up in your code!
+                                       ; returns true if the element category identified by int is ENABLED
+    jump RETN
+;DISABLEELEMENT:
+;    iload 1 ; int
+;    iload 2 ; boolean
+;    worldmap_disableelement ; sets a world map element's enabled state
+;                            ; calls getWorldMap().setElementEnabled(int, bool)
+;    jump RETN
+;GETDISABLEELEMENT:
+;    iload 1 ; int
+;    worldmap_getdisableelement ; BEWARE: this leaves the int stack dirty with a bool, make sure you clean it up in your code!
+;                               ; returns true if the element identified by int is ENABLED
+;    jump RETN
+RETN:
+    return
