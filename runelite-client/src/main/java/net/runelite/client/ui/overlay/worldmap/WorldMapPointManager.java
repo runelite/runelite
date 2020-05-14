@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 
@@ -43,6 +44,11 @@ public class WorldMapPointManager
 
 	@Inject
 	private Client client;
+
+	// This field is a dumb hack, but as I can't access the field internally and clientscripts are threaded, we have to track this here
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean allowClicking;
 
 	private final int WORLDMAP_SETDISABLEALL_OPCODE = 1;
 	private final int WORLDMAP_GETDISABLEALL_OPCODE = 2;

@@ -27,12 +27,13 @@ package net.runelite.client.plugins.worldmap;
 
 import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointCategory;
 
 class MiningSitePoint extends WorldMapPoint
 {
 	MiningSitePoint(MiningSiteLocation point, BufferedImage icon)
 	{
-		super(point.getLocation(), icon);
+		super(point.getLocation(), icon, WorldMapPointCategory.MINING_SITE);
 		setTooltip(point.getTooltip());
 	}
 }

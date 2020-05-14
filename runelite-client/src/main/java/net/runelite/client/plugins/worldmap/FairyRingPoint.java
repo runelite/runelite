@@ -27,12 +27,13 @@ package net.runelite.client.plugins.worldmap;
 
 import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointCategory;
 
 class FairyRingPoint extends WorldMapPoint
 {
 	FairyRingPoint(FairyRingLocation data, BufferedImage icon, boolean showTooltip)
 	{
-		super(data.getLocation(), icon);
+		super(data.getLocation(), icon, WorldMapPointCategory.TRANSPORTATION);
 
 		if (showTooltip)
 		{

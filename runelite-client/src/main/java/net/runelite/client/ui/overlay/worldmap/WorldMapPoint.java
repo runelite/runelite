@@ -66,10 +66,18 @@ public class WorldMapPoint
 
 	private String tooltip;
 
+	private int internalId;
+
 	public WorldMapPoint(WorldPoint worldPoint, BufferedImage image)
+	{
+		this(worldPoint, image, -1);
+	}
+
+	public WorldMapPoint(WorldPoint worldPoint, BufferedImage image, int internalId)
 	{
 		this.worldPoint = worldPoint;
 		this.image = image;
+		this.internalId = internalId;
 	}
 
 	public MouseEvent onClick(MouseEvent e)
