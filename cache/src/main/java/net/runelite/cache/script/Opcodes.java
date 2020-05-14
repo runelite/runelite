@@ -496,4 +496,6 @@ public class Opcodes
 	public static final int MEC_TEXTSIZE = 6694;
 	public static final int MEC_CATEGORY = 6695;
 	public static final int MEC_SPRITE = 6696;
+	public static final int WORLDMAP_ELEMENT = 6697;
+	public static final int WORLDMAP_ELEMENTCOORD = 6699;
 }
