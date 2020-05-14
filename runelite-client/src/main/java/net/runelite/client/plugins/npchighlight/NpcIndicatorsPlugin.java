@@ -431,6 +431,11 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private void memorizeNpc(NPC npc)
 	{
+		// NPCs in instances have inconsistent indexes, which breaks timer anyway.
+		if (client.isInInstancedRegion())
+		{
+			return;
+		}
 		final int npcIndex = npc.getIndex();
 		memorizedNpcs.putIfAbsent(npcIndex, new MemorizedNpc(npc));
 	}
