@@ -55,7 +55,8 @@ class StealingArtefactsOverlay extends Overlay
 
 		StealingArtefactState stealingArtefactState = plugin.getStealingArtefactState();
 
-		if (!plugin.isInPortPiscariliusRegion() || stealingArtefactState == null)
+		if (stealingArtefactState == null ||
+			(stealingArtefactState != StealingArtefactState.DELIVER_ARTEFACT && !plugin.isInPortPiscariliusRegion()))
 		{
 			return null;
 		}
