@@ -367,10 +367,12 @@ class SkillCalculator extends JPanel
 			targetXP = Experience.getXpForLevel(targetLevel);
 		}
 
+		final String cXP = String.format("%,d", currentXP);
+		final String tXP = String.format("%,d", targetXP);
 		uiInput.setCurrentLevelInput(currentLevel);
-		uiInput.setCurrentXPInput(currentXP);
+		uiInput.setCurrentXPInput(cXP);
 		uiInput.setTargetLevelInput(targetLevel);
-		uiInput.setTargetXPInput(targetXP);
+		uiInput.setTargetXPInput(tXP);
 		calculate();
 	}
 
