@@ -64,6 +64,7 @@ import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -244,8 +245,31 @@ public class BankPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("bank") && event.getKey().equals("removeTutorialButton"))
+		{
+			final Widget button = client.getWidget(WidgetInfo.BANK_TUTORIAL_BUTTON);
+			if (button != null)
+			{
+				button.setHidden(config.removeTutorialButton());
+			}
+		}
+	}
+
+	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
+		if (event.getGroupId() == WidgetID.BANK_GROUP_ID && config.removeTutorialButton())
+		{
+			final Widget button = client.getWidget(WidgetInfo.BANK_TUTORIAL_BUTTON);
+			if (button != null)
+			{
+				button.setHidden(true);
+			}
+			return;
+		}
+
 		if (event.getGroupId() != WidgetID.SEED_VAULT_GROUP_ID || !config.seedVaultValue())
 		{
 			return;

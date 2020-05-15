@@ -119,4 +119,15 @@ public interface BankConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "removeTutorialButton",
+		name = "Remove Tutorial Button",
+		description = "Removes the tutorial button from the bank interface",
+		position = 9
+	)
+	default boolean removeTutorialButton()
+	{
+		return false;
+	}
 }
