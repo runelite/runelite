@@ -7,8 +7,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import javax.inject.Inject;
 import java.awt.*;
 
-public class MetronomeOverlay extends Overlay {
-
+public class MetronomeOverlay extends Overlay
+{
     @Inject
     private Client client;
 
@@ -20,7 +20,8 @@ public class MetronomeOverlay extends Overlay {
     private boolean shouldDisplayOverlay = false;
 
     @Override
-    public Dimension render(Graphics2D graphics) {
+    public Dimension render(Graphics2D graphics)
+    {
         if (!config.enableVisualCue()) return null;
 
         Player p = client.getLocalPlayer();

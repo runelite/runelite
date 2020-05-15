@@ -102,7 +102,4 @@ public class MetronomePlugin extends Plugin
 			shouldTock = !shouldTock;
 		}
 	}
-
-
-
 }
