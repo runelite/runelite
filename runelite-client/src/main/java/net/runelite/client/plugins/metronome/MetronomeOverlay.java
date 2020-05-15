@@ -33,5 +33,5 @@ public class MetronomeOverlay extends Overlay
 		graphics.draw(playerShape);
 
 		return null;
-    }
+	}
 }
