@@ -160,10 +160,10 @@ public class InfoPanel extends PluginPanel
 		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
 		actionsContainer.setLayout(new GridLayout(0, 1, 0, 10));
 
-		syncPanel = buildLinkPanel(IMPORT_ICON, "Import local settings", "to remote RuneLite account", () ->
+		syncPanel = buildLinkPanel(IMPORT_ICON, "Export settings", "to RuneLite account", () ->
 		{
 			final int result = JOptionPane.showOptionDialog(syncPanel,
-				"This will replace your current RuneLite account settings with settings from your local profile.",
+				"This will synchronize your current settings to your RuneLite account, as well as to any other RuneLite clients you might be logged in to.",
 				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 				null, new String[]{"Yes", "No"}, "No");
 
