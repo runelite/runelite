@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemstats.potions;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.util.Comparator;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,8 @@ public class SuperRestore implements Effect
 		CONSTRUCTION
 	};
 
-	private final double percR; //percentage restored
+	@VisibleForTesting
+	public final double percR; //percentage restored
 	private final int delta;
 
 	@Override

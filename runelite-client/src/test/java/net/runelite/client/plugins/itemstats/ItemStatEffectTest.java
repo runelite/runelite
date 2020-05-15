@@ -42,6 +42,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class ItemStatEffectTest
 {
 	private static final ImmutableMap<Integer, Integer> REVITALISATION_TABLE;
+	private static final ImmutableMap<Integer, Integer> SUPER_RESTORE_TABLE;
+	private static final ImmutableMap<Integer, Integer> SANFEW_TABLE;
 
 	static
 	{
@@ -78,6 +80,52 @@ public class ItemStatEffectTest
 			.put(47, 25)    .put(97, 40)
 			.put(49, 25)    .put(99, 40)
 			.build();
+
+		// https://oldschool.runescape.wiki/w/Super_restore#Maximum_restoration
+		SUPER_RESTORE_TABLE = new ImmutableMap.Builder<Integer, Integer>()
+			.put(1, 8)      .put(36, 17)    .put(72, 26)
+			.put(3, 8)      .put(39, 17)    .put(75, 26)
+			.put(4, 9)      .put(40, 18)    .put(76, 27)
+			.put(7, 9)      .put(43, 18)    .put(79, 27)
+			.put(8, 10)     .put(44, 19)    .put(80, 28)
+			.put(11, 10)    .put(47, 19)    .put(83, 28)
+			.put(12, 11)    .put(48, 20)    .put(84, 29)
+			.put(15, 11)    .put(51, 20)    .put(87, 29)
+			.put(16, 12)    .put(52, 21)    .put(88, 30)
+			.put(19, 12)    .put(55, 21)    .put(91, 30)
+			.put(20, 13)    .put(56, 22)    .put(92, 31)
+			.put(23, 13)    .put(59, 22)    .put(95, 31)
+			.put(24, 14)    .put(60, 23)    .put(96, 32)
+			.put(27, 14)    .put(63, 23)    .put(99, 32)
+			.put(28, 15)    .put(64, 24)
+			.put(31, 15)    .put(67, 24)
+			.put(32, 16)    .put(68, 25)
+			.put(35, 16)    .put(71, 25)
+			.build();
+
+		// https://oldschool.runescape.wiki/w/Sanfew_serum#Maximum_restoration
+		SANFEW_TABLE = new ImmutableMap.Builder<Integer, Integer>()
+			.put(1, 4)      .put(34, 14)    .put(67, 24)
+			.put(3, 4)      .put(36, 14)    .put(69, 24)
+			.put(4, 5)      .put(37, 15)    .put(70, 25)
+			.put(6, 5)      .put(39, 15)    .put(73, 25)
+			.put(7, 6)      .put(40, 16)    .put(74, 26)
+			.put(9, 6)      .put(43, 16)    .put(76, 26)
+			.put(10, 7)     .put(44, 17)    .put(77, 27)
+			.put(13, 7)     .put(46, 17)    .put(79, 27)
+			.put(14, 8)     .put(47, 18)    .put(80, 28)
+			.put(16, 8)     .put(49, 18)    .put(83, 28)
+			.put(17, 9)     .put(50, 19)    .put(84, 29)
+			.put(19, 9)     .put(53, 19)    .put(86, 29)
+			.put(20, 10)    .put(54, 20)    .put(87, 30)
+			.put(23, 10)    .put(56, 20)    .put(89, 30)
+			.put(24, 11)    .put(57, 21)    .put(90, 31)
+			.put(26, 11)    .put(59, 21)    .put(93, 31)
+			.put(27, 12)    .put(60, 22)    .put(94, 32)
+			.put(29, 12)    .put(63, 22)    .put(96, 32)
+			.put(30, 13)    .put(64, 23)    .put(97, 33)
+			.put(33, 13)    .put(66, 23)    .put(99, 33)
+			.build();
 	}
 
 	@Mock
@@ -97,6 +145,20 @@ public class ItemStatEffectTest
 	{
 		final Effect item = itemStats.get(ItemID.REVITALISATION_1_20957);
 		matchWikiTable(REVITALISATION_TABLE, item);
+	}
+
+	@Test
+	public void testSuperRestore()
+	{
+		final Effect item = itemStats.get(ItemID.SUPER_RESTORE1);
+		matchWikiTable(SUPER_RESTORE_TABLE, item);
+	}
+
+	@Test
+	public void testSanfewSerum()
+	{
+		final Effect item = itemStats.get(ItemID.SANFEW_SERUM1);
+		matchWikiTable(SANFEW_TABLE, item);
 	}
 
 	private void matchWikiTable(final ImmutableMap<Integer, Integer> table, final Effect item)
