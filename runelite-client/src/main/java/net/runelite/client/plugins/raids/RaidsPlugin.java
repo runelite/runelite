@@ -199,11 +199,14 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private boolean inRaidChambers;
 
-	// if the player is in a raid party or not
-	// This will be set when someone in the clan chat clicks the "make party button on the raids widget
-	// It will be reset when the raid ends but not if they leave the raid while it has not started yet
+	/*
+	 * if the player is in a raid party or not
+	 * This will be set when someone in the clan chat clicks the "make party" button on the raids widget
+	 * It will change again when someone from your clan enters the raid to generate it
+	 * It will be reset when the raid starts but not if they leave the raid while it has not started yet
+	 */
 	@Getter
-	private boolean inRaidParty;
+	private int raidPartyID;
 
 	private boolean chestOpened;
 	private RaidsTimer timer;
@@ -301,21 +304,20 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		boolean tempInParty = client.getVar(VarPlayer.IN_RAID_PARTY) != -1;
+		int tempPartyID = client.getVar(VarPlayer.IN_RAID_PARTY);
 		boolean tempInRaid = client.getVar(Varbits.IN_RAID) == 1;
 
 		// if the player's party state has changed
-		if (tempInParty != inRaidParty)
+		if (tempPartyID != raidPartyID)
 		{
-			// if the player is no longer in a party then reset
-			if (!tempInParty
-				&& loggedIn
+			// if the player is outside of a raid when the party state changed
+			if (loggedIn
 				&& !tempInRaid)
 			{
 				reset();
 			}
 
-			inRaidParty = tempInParty;
+			raidPartyID = tempPartyID;
 		}
 
 		// if the player's raid state has changed
@@ -449,7 +451,7 @@ public class RaidsPlugin extends Plugin
 			}
 			else
 			{
-				if (!inRaidParty)
+				if (raidPartyID == -1)
 				{
 					reset();
 				}
