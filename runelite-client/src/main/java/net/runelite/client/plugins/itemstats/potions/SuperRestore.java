@@ -56,7 +56,7 @@ public class SuperRestore implements Effect
 		StatsChanges changes = new StatsChanges(0);
 
 		SimpleStatBoost calc = new SimpleStatBoost(null, false, perc(percR, delta));
-		PrayerPotion prayer = new PrayerPotion(delta);
+		PrayerPotion prayer = new PrayerPotion(delta, percR);
 		changes.setStatChanges(Stream.concat(
 			Stream.of(prayer.effect(client)),
 			Stream.of(superRestoreStats)
