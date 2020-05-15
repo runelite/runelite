@@ -112,7 +112,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT && (inPvp || config.onShiftOnly()))
 		{
 			setDragDelay();
 			held = true;
@@ -122,7 +122,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT && (inPvp || config.onShiftOnly()))
 		{
 			resetDragDelay();
 			held = false;
