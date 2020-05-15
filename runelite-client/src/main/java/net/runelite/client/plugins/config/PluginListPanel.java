@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.config;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -74,6 +75,15 @@ class PluginListPanel extends PluginPanel
 {
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
+	private static final ImmutableList<String> CATEGORY_TAGS = ImmutableList.of(
+		"Combat",
+		"Chat",
+		"Item",
+		"Minigame",
+		"Notification",
+		"Skilling",
+		"XP"
+	);
 
 	private final ConfigManager configManager;
 	private final PluginManager pluginManager;
@@ -150,6 +160,7 @@ class PluginListPanel extends PluginPanel
 				onSearchBarChanged();
 			}
 		});
+		CATEGORY_TAGS.forEach(searchBar.getSuggestionListModel()::addElement);
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
