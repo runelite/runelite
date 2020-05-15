@@ -171,4 +171,15 @@ public interface XpGlobesConfig extends Config
 	{
 		return 10;
 	}
+
+	@ConfigItem(
+		keyName = "xpGlobeTimeRemaining",
+		name = "Time Remaining",
+		description = "Enables the time remaining until the next level up based on current XP per-hour",
+		position = 12
+	)
+	default boolean showTimeRemaining()
+	{
+		return false;
+	}
 }

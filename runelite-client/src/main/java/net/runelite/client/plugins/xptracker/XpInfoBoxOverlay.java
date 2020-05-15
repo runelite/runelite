@@ -31,6 +31,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Experience;
@@ -47,6 +48,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.SplitComponent;
+import net.runelite.client.util.TimeUtil;
 
 class XpInfoBoxOverlay extends OverlayPanel
 {
@@ -54,6 +56,7 @@ class XpInfoBoxOverlay extends OverlayPanel
 	private static final int XP_AND_PROGRESS_BAR_GAP = 2;
 	private static final int XP_AND_ICON_GAP = 4;
 	private static final Rectangle XP_AND_ICON_COMPONENT_BORDER = new Rectangle(2, 1, 4, 0);
+	private static final DecimalFormat TIME_FMT = new DecimalFormat("00");
 
 	private final PanelComponent iconXpSplitPanel = new PanelComponent();
 	private final XpTrackerPlugin plugin;
@@ -103,23 +106,47 @@ class XpInfoBoxOverlay extends OverlayPanel
 		final String bottomRightNum = config.onScreenDisplayModeBottom().getValueFunc().apply(snapshot);
 
 		final LineComponent xpLineBottom = LineComponent.builder()
-				.left(bottomLeftStr + ":")
-				.right(bottomRightNum)
+			.left(bottomLeftStr + ":")
+			.right(bottomRightNum)
+			.build();
+
+		final SplitComponent xpSplit;
+		if (config.showTimeRemaining())
+		{
+			double timeDelta = (double) snapshot.getXpRemainingToGoal() / snapshot.getXpPerHour();
+			String timeRemainingStr = TimeUtil.timeDeltaToString(timeDelta);
+
+			final LineComponent timeComponent = LineComponent.builder()
+				.left("Time: ")
+				.right(timeRemainingStr)
 				.build();
 
-		final SplitComponent xpSplit = SplitComponent.builder()
+			xpSplit = SplitComponent.builder()
+				.first(xpLine)
+				.second(SplitComponent.builder()
+					.first(xpLineBottom)
+					.second(timeComponent)
+					.orientation(ComponentOrientation.VERTICAL)
+					.build())
+				.orientation(ComponentOrientation.VERTICAL)
+				.build();
+		}
+		else
+		{
+			xpSplit = SplitComponent.builder()
 				.first(xpLine)
 				.second(xpLineBottom)
 				.orientation(ComponentOrientation.VERTICAL)
 				.build();
+		}
 
 		final ImageComponent imageComponent = new ImageComponent(icon);
 		final SplitComponent iconXpSplit = SplitComponent.builder()
-				.first(imageComponent)
-				.second(xpSplit)
-				.orientation(ComponentOrientation.HORIZONTAL)
-				.gap(new Point(XP_AND_ICON_GAP, 0))
-				.build();
+			.first(imageComponent)
+			.second(xpSplit)
+			.orientation(ComponentOrientation.HORIZONTAL)
+			.gap(new Point(XP_AND_ICON_GAP, 0))
+			.build();
 
 		iconXpSplitPanel.getChildren().add(iconXpSplit);
 

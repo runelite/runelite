@@ -37,6 +37,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -55,6 +56,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.TimeUtil;
 
 public class XpGlobesOverlay extends Overlay
 {
@@ -103,7 +105,7 @@ public class XpGlobesOverlay extends Overlay
 		}
 
 		final List<XpGlobe> sortedXpGlobes = plugin.getXpGlobes();
-		sortedXpGlobes.sort((a, b) -> a.getSkill().compareTo(b.getSkill()));
+		sortedXpGlobes.sort(Comparator.comparing(XpGlobe::getSkill));
 
 		int curDrawX = 0;
 		for (final XpGlobe xpGlobe : sortedXpGlobes)
@@ -271,10 +273,10 @@ public class XpGlobesOverlay extends Overlay
 				{
 					String actionsLeftString = decimalFormat.format(actionsLeft);
 					xpTooltip.getChildren().add(LineComponent.builder()
-							.left(xpActionType.getLabel() + " left:")
-							.leftColor(Color.ORANGE)
-							.right(actionsLeftString)
-							.build());
+						.left(xpActionType.getLabel() + " left:")
+						.leftColor(Color.ORANGE)
+						.right(actionsLeftString)
+						.build());
 				}
 			}
 
@@ -283,10 +285,10 @@ public class XpGlobesOverlay extends Overlay
 				int xpLeft = goalXp - mouseOverSkill.getCurrentXp();
 				String skillXpToLvl = decimalFormat.format(xpLeft);
 				xpTooltip.getChildren().add(LineComponent.builder()
-						.left("XP left:")
-						.leftColor(Color.ORANGE)
-						.right(skillXpToLvl)
-						.build());
+					.left("XP left:")
+					.leftColor(Color.ORANGE)
+					.right(skillXpToLvl)
+					.build());
 			}
 
 			if (config.showXpHour())
@@ -296,10 +298,27 @@ public class XpGlobesOverlay extends Overlay
 				{
 					String xpHrString = decimalFormat.format(xpHr);
 					xpTooltip.getChildren().add(LineComponent.builder()
-							.left("XP per hour:")
-							.leftColor(Color.ORANGE)
-							.right(xpHrString)
-							.build());
+						.left("XP per hour:")
+						.leftColor(Color.ORANGE)
+						.right(xpHrString)
+						.build());
+				}
+			}
+
+			if (config.showTimeRemaining())
+			{
+				double xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
+				if (xpHr != 0)
+				{
+					double xpLeft = goalXp - mouseOverSkill.getCurrentXp();
+					double timeDelta = xpLeft / xpHr;
+
+					String timeRemainingStr = TimeUtil.timeDeltaToString(timeDelta);
+					xpTooltip.getChildren().add(LineComponent.builder()
+						.left("Time Remaining: ")
+						.leftColor(Color.ORANGE)
+						.right(timeRemainingStr)
+						.build());
 				}
 			}
 		}

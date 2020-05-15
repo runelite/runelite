@@ -166,4 +166,15 @@ public interface XpTrackerConfig extends Config
 	{
 		return XpProgressBarLabel.PERCENTAGE;
 	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "xpTrackerTimeRemaining",
+		name = "Time Remaining",
+		description = "Enables the time remaining until the next level up based on current XP per-hour"
+	)
+	default boolean showTimeRemaining()
+	{
+		return false;
+	}
 }
