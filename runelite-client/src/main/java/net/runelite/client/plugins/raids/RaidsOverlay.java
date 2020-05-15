@@ -222,6 +222,6 @@ public class RaidsOverlay extends OverlayPanel
 			}
 		}
 
-		return plugin.isInRaidParty() && config.scoutOverlayAtBank();
+		return plugin.getRaidPartyID() != -1 && config.scoutOverlayAtBank();
 	}
 }
