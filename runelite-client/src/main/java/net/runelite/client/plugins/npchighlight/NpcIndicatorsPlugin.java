@@ -51,7 +51,6 @@ import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -63,6 +62,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -310,8 +310,11 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		else
 		{
-			memorizeNpc(npc);
-			npcTags.add(id);
+			if (!client.isInInstancedRegion())
+			{
+				memorizeNpc(npc);
+				npcTags.add(id);
+			}
 			highlightedNpcs.add(npc);
 		}
 
@@ -341,9 +344,12 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			if (WildcardMatcher.matches(highlight, npcName))
 			{
-				memorizeNpc(npc);
 				highlightedNpcs.add(npc);
-				spawnedNpcsThisTick.add(npc);
+				if (!client.isInInstancedRegion())
+				{
+					memorizeNpc(npc);
+					spawnedNpcsThisTick.add(npc);
+				}
 				break;
 			}
 		}
@@ -485,7 +491,10 @@ public class NpcIndicatorsPlugin extends Plugin
 			{
 				if (WildcardMatcher.matches(highlight, npcName))
 				{
-					memorizeNpc(npc);
+					if (!client.isInInstancedRegion())
+					{
+						memorizeNpc(npc);
+					}
 					highlightedNpcs.add(npc);
 					continue outer;
 				}
