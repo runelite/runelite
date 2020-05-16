@@ -613,7 +613,13 @@ class LootTrackerPanel extends PluginPanel
 		long overallGe = 0;
 		long overallHa = 0;
 
-		for (LootTrackerRecord record : concat(aggregateRecords, sessionRecords))
+		Iterable<LootTrackerRecord> records = sessionRecords;
+		if (groupLoot)
+		{
+			records = concat(aggregateRecords, sessionRecords);
+		}
+
+		for (LootTrackerRecord record : records)
 		{
 			if (!record.matches(currentView, currentType))
 			{
