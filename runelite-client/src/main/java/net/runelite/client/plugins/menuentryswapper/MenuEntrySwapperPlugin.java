@@ -487,6 +487,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("assignment", option, target, index);
 			}
+			
+			// buy planks should also be higher priority than trade, for sawmill operators
+			if (config.swapBuyPlanks())
+			{
+				swap("buy-planks", option, target, index);
+			}
 
 			if (config.swapTrade())
 			{
