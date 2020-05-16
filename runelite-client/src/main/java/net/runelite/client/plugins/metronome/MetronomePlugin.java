@@ -59,6 +59,7 @@ public class MetronomePlugin extends Plugin
 
 	private int tickCounter = 0;
 	private boolean shouldTock = false;
+	private boolean currentColorGreen = false;
 
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
@@ -81,7 +82,7 @@ public class MetronomePlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		ovr.tick = !ovr.tick;
+		currentColorGreen = !currentColorGreen;
 
 		if (config.tickCount() == 0)
 		{
@@ -101,5 +102,13 @@ public class MetronomePlugin extends Plugin
 			}
 			shouldTock = !shouldTock;
 		}
+	}
+
+	public int getTickCounter() {
+		return tickCounter;
+	}
+
+	public boolean getIsCurrentColorGreen() {
+		return currentColorGreen;
 	}
 }
