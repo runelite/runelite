@@ -97,7 +97,7 @@ public interface MenuEntrySwapperConfig extends Config
 		name = "Buy-Planks",
 		description = "Swap Talk-To with Buy-Planks on sawmill NPCs"
 	)
-	default boolean swapBones()
+	default boolean swapBuyPlanks()
 	{
 		return false;
 	}
