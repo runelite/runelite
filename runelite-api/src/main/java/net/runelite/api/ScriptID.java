@@ -280,4 +280,10 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 1)
 	public static final int PVP_WIDGET_BUILDER = 388;
+
+	/**
+	 * Called to build the combat interface
+	 */
+	@ScriptArguments
+	public static final int COMBAT_INTERFACE_SETUP = 420;
 }
