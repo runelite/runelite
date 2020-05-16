@@ -104,11 +104,13 @@ public class MetronomePlugin extends Plugin
 		}
 	}
 
-	public int getTickCounter() {
+	public int getTickCounter()
+	{
 		return tickCounter;
 	}
 
-	public boolean getIsCurrentColorGreen() {
+	public boolean getIsCurrentColorGreen()
+	{
 		return currentColorGreen;
 	}
 }
