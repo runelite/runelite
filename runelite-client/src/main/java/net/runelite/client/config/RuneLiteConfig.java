@@ -103,11 +103,26 @@ public interface RuneLiteConfig extends Config
 		return true;
 	}
 
+	@Range(
+		min = 10,
+		max = 100
+	)
+	@ConfigItem(
+		keyName = "uiWindowOpacity",
+		name = "Window opacity",
+		description = "Set the windows opacity. Requires \"Enable custom window chrome\" to be enabled.",
+		position = 16
+	)
+	default int windowOpacity()
+	{
+		return 100;
+	}
+
 	@ConfigItem(
 		keyName = "gameAlwaysOnTop",
 		name = "Enable client always on top",
 		description = "The game will always be on the top of the screen",
-		position = 16
+		position = 17
 	)
 	default boolean gameAlwaysOnTop()
 	{
@@ -118,7 +133,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "warningOnExit",
 		name = "Display warning on exit",
 		description = "Toggles a warning popup when trying to exit the client",
-		position = 17
+		position = 18
 	)
 	default WarningOnExit warningOnExit()
 	{
@@ -129,7 +144,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "usernameInTitle",
 		name = "Show display name in title",
 		description = "Toggles displaying of local player's display name in client title",
-		position = 18
+		position = 19
 	)
 	default boolean usernameInTitle()
 	{
