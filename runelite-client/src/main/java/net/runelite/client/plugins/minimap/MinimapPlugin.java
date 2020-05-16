@@ -30,14 +30,15 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ScriptID;
 import net.runelite.api.SpritePixels;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -107,9 +108,12 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		updateMinimapWidgetVisibility(config.hideMinimap());
+		if (scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_REDRAW)
+		{
+			updateMinimapWidgetVisibility(config.hideMinimap());
+		}
 	}
 
 	private void updateMinimapWidgetVisibility(boolean enable)

@@ -286,4 +286,10 @@ public final class ScriptID
 	 */
 	@ScriptArguments
 	public static final int COMBAT_INTERFACE_SETUP = 420;
+
+	/**
+	 * Called to build the toplevel interface
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int TOPLEVEL_REDRAW = 907;
 }
