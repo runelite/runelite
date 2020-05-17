@@ -582,6 +582,7 @@ public class ScreenshotPlugin extends Plugin
 	 *
 	 * @return Shortened string in the format "Quest(The Corsair Curse)"
 	 */
+	@VisibleForTesting
 	String parseQuestCompletedWidget()
 	{
 		Widget questChild = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT);
@@ -606,11 +607,11 @@ public class ScreenshotPlugin extends Plugin
 
 		if (verb.contains("kind of"))
 		{
-			quest = quest + " partial completion";
+			quest += " partial completion";
 		}
 		else if (verb.contains("completely"))
 		{
-			quest = quest + " II";
+			quest += " II";
 		}
 
 		if (RFD_TAGS.stream().anyMatch((quest + verb)::contains))
@@ -620,7 +621,7 @@ public class ScreenshotPlugin extends Plugin
 
 		if (WORD_QUEST_IN_NAME_TAGS.stream().anyMatch(quest::contains))
 		{
-			quest = quest + " Quest";
+			quest += " Quest";
 		}
 
 		return "Quest(" + quest + ")";
