@@ -28,10 +28,14 @@ package net.runelite.client.plugins.metronome;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("metronome")
 public interface MetronomePluginConfiguration extends Config
 {
+	int DELAY_MIN = 0;
+	int DELAY_MAX = 600;
+
 	@ConfigItem(
 		keyName = "tickCount",
 		name = "Tick count",
@@ -47,10 +51,25 @@ public interface MetronomePluginConfiguration extends Config
 		keyName = "enableTock",
 		name = "Enable tock (alternating) sound",
 		description = "Toggles whether to play two alternating sounds",
-		position = 3
+		position = 4
 	)
 	default boolean enableTock()
 	{
 		return false;
+	}
+
+	@Range(
+		min = DELAY_MIN,
+		max = DELAY_MAX
+	)
+	@ConfigItem(
+		keyName = "tickDelay",
+		name = "Tick delay",
+		description = "Delay of sound from start of game tick in milliseconds, 0-600",
+		position = 3
+	)
+	default int tickDelay()
+	{
+		return 0;
 	}
 }

@@ -36,6 +36,12 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 @PluginDescriptor(
 	name = "Metronome",
 	description = "Play a sound on a specified tick to aid in efficient skilling",
@@ -53,11 +59,20 @@ public class MetronomePlugin extends Plugin
 	private int tickCounter = 0;
 	private boolean shouldTock = false;
 
+	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(MetronomePluginConfiguration.class);
 	}
+
+	private final Runnable playSound = new Runnable() {
+		@Override
+		public void run() {
+			client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
+		}
+	};
 
 	@Subscribe
 	public void onGameTick(GameTick tick)
@@ -71,11 +86,11 @@ public class MetronomePlugin extends Plugin
 		{
 			if (config.enableTock() && shouldTock)
 			{
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
+				scheduler.schedule(playSound,config.tickDelay(), MILLISECONDS);
 			}
 			else
 			{
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
+				scheduler.schedule(playSound,config.tickDelay(), MILLISECONDS);
 			}
 			shouldTock = !shouldTock;
 		}
