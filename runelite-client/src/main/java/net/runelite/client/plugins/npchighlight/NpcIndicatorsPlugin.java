@@ -28,6 +28,7 @@ package net.runelite.client.plugins.npchighlight;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +37,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -84,6 +87,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
 	private static final String UNTAG = "Un-tag";
+
+	private static Pattern COLOR_REGEX = Pattern.compile("<col=([0-9a-f]+)>");
 
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
@@ -257,14 +262,54 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
 		}
-
-		if (config.highlightMenuNames() &&
-			NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
-			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
+		if (NPC_MENU_ACTIONS.contains(MenuAction.of(type)))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-			final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getHighlightColor());
+
+			Matcher matcher = COLOR_REGEX.matcher(menuEntry.getTarget());
+			List<Color> menuEntryColors = new ArrayList();
+			while (matcher.find())
+			{
+				// Only interested in the actual color code, not the full tag.
+				// So we only want the 2nd group, which matches the hex code.
+				menuEntryColors.add(Color.decode("#" + matcher.group(1)));
+			}
+
+			Color menuNpcNameColor = null;
+			if (config.highlightMenuNames() &&
+				highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
+			{
+				menuNpcNameColor = config.getHighlightColor();
+			}
+			else
+			{
+				menuNpcNameColor = menuEntryColors.get(0);
+			}
+
+			final NPC menuNpc = client.getCachedNPCs()[event.getIdentifier()];
+			if (config.dampenDeadNPCs() && menuNpc.isDead())
+			{
+				menuNpcNameColor = menuNpcNameColor.darker();
+			}
+			final String menuNpcNameColorHex = ColorUtil.colorToHexCode(menuNpcNameColor);
+
+			String target = "";
+			Color menuNpcLevelColor = null;
+			int npcCombatLevel = menuNpc.getCombatLevel();
+			// NPCs without combat levels need to be treated differently.
+			if (npcCombatLevel > 0)
+			{
+				menuNpcLevelColor = menuEntryColors.get(1);
+				String menuNpcLevelColorHex = ColorUtil.colorToHexCode(menuNpcLevelColor);
+				target = String.format("<col=%s>%s <col=%s>(Level %d)",
+					menuNpcNameColorHex, menuNpc.getName(),
+					menuNpcLevelColorHex, menuNpc.getCombatLevel());
+			}
+			else
+			{
+				target = String.format("<col=%s>%s", menuNpcNameColorHex, menuNpc.getName());
+			}
 			menuEntry.setTarget(target);
 			client.setMenuEntries(menuEntries);
 		}
