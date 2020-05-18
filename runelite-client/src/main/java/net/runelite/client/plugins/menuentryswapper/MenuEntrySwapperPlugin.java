@@ -434,7 +434,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			return;
 		}
-		System.out.println("Swaping...");
+
 		if (option.equals("talk-to"))
 		{
 			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
@@ -492,12 +492,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapBuyPlank())
 			{
 				swap("buy-plank", option, target, index);
-				System.out.println("Buy plank");
 			}
 
 			if (config.swapTrade())
 			{
-				System.out.println("Trade");
 				swap("trade", option, target, index);
 				swap("trade-with", option, target, index);
 				swap("shop", option, target, index);
