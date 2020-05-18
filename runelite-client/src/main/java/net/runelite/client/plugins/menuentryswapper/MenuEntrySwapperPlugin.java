@@ -437,7 +437,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		System.out.println("Swaping...");
 		if (option.equals("talk-to"))
 		{
-			System.out.println("Talk-to");
 			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
 			{
 				swap("teleport", option, target, index);
