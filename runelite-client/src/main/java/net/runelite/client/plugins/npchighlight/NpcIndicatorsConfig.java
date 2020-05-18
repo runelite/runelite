@@ -111,8 +111,8 @@ public interface NpcIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 6,
 		keyName = "dampenDeadNPCs",
-		name = "Dampen dead NPCs",
-		description = "Dampens the color of dead NPCs")
+		name = "Dampen dead NPC menu entries",
+		description = "Dampens the color of dead NPCs in menu entries")
 	default boolean dampenDeadNPCs()
 	{
 		return false;
