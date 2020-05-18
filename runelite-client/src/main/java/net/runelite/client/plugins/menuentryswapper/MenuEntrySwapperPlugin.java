@@ -434,9 +434,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			return;
 		}
-
+		System.out.println("Swaping...");
 		if (option.equals("talk-to"))
 		{
+			System.out.println("Talk-to");
 			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
 			{
 				swap("teleport", option, target, index);
@@ -488,14 +489,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("assignment", option, target, index);
 			}
 			
-			// buy planks should also be higher priority than trade, for sawmill operators
-			if (config.swapBuyPlanks())
+			// buy plank should also be higher priority than trade, for sawmill operators
+			if (config.swapBuyPlank())
 			{
-				swap("buy-planks", option, target, index);
+				swap("buy-plank", option, target, index);
+				System.out.println("Buy plank");
 			}
 
 			if (config.swapTrade())
 			{
+				System.out.println("Trade");
 				swap("trade", option, target, index);
 				swap("trade-with", option, target, index);
 				swap("shop", option, target, index);

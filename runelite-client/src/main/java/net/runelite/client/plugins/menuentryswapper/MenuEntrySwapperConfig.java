@@ -93,11 +93,11 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 	
 	@ConfigItem(
-		keyName = "swapBuyPlanks",
-		name = "Buy-Planks",
-		description = "Swap Talk-To with Buy-Planks on sawmill NPCs"
+		keyName = "swapBuyPlank",
+		name = "Buy-Plank",
+		description = "Swap Talk-To with Buy-Plank on sawmill NPCs"
 	)
-	default boolean swapBuyPlanks()
+	default boolean swapBuyPlank()
 	{
 		return false;
 	}
