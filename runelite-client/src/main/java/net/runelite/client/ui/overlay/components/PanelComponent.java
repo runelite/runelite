@@ -24,7 +24,6 @@
  */
 package net.runelite.client.ui.overlay.components;
 
-import com.google.common.base.MoreObjects;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -90,7 +89,7 @@ public class PanelComponent implements LayoutableRenderableEntity
 		{
 			final BackgroundComponent backgroundComponent = new BackgroundComponent();
 			backgroundComponent.setRectangle(new Rectangle(preferredLocation, dimension));
-			backgroundComponent.setBackgroundColor(MoreObjects.firstNonNull(backgroundColor, ComponentConstants.STANDARD_BACKGROUND_COLOR));
+			backgroundComponent.setBackgroundColor(backgroundColor);
 			backgroundComponent.render(graphics);
 		}
 
