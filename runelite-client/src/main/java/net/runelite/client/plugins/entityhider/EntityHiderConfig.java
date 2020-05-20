@@ -152,4 +152,24 @@ public interface EntityHiderConfig extends Config
 	{
 		return false;
 	}
+	@ConfigItem(
+		position = 12,
+		keyName = "hideSnakelings",
+		name = "Hide Snakelings",
+		description = "Hides Zulrah's Snakelings"
+	)
+	default boolean hideSnakelings()
+	{
+		return true;
+	}
+	@ConfigItem(
+		position = 13,
+		keyName = "hideScions",
+		name = "Hide Scions",
+		description = "Hides Sire's Scions"
+	)
+	default boolean hideScions()
+	{
+		return true;
+	}
 }
