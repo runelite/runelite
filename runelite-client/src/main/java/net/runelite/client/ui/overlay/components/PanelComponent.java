@@ -51,6 +51,12 @@ public class PanelComponent implements LayoutableRenderableEntity
 	@Nullable
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 
+	@Setter
+	@Getter
+	// Used by the OverlayRenderer to apply the background color from the RuneLite config
+	// Only used if the backgroundColor is `ComponentConstants.STANDARD_BACKGROUND_COLOR`
+	private Color preferredBackgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
+
 	@Getter
 	private final List<LayoutableRenderableEntity> children = new ArrayList<>();
 
@@ -88,9 +94,14 @@ public class PanelComponent implements LayoutableRenderableEntity
 		// Render background
 		if (backgroundColor != null)
 		{
+			Color color = backgroundColor;
+			if (backgroundColor.equals(ComponentConstants.STANDARD_BACKGROUND_COLOR))
+			{
+				color = preferredBackgroundColor;
+			}
 			final BackgroundComponent backgroundComponent = new BackgroundComponent();
 			backgroundComponent.setRectangle(new Rectangle(preferredLocation, dimension));
-			backgroundComponent.setBackgroundColor(backgroundColor);
+			backgroundComponent.setBackgroundColor(color);
 			backgroundComponent.render(graphics);
 		}
 

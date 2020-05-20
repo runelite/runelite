@@ -226,6 +226,13 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 		for (Overlay overlay : overlays)
 		{
+			// Apply background color from RuneLite config
+			if (overlay instanceof OverlayPanel)
+			{
+				final OverlayPanel panel = (OverlayPanel) overlay;
+				panel.getPanelComponent().setPreferredBackgroundColor(runeLiteConfig.overlayBackgroundColor());
+			}
+
 			final OverlayPosition overlayPosition = getCorrectedOverlayPosition(overlay);
 
 			if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)

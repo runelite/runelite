@@ -283,13 +283,13 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "infoBoxColor",
-		name = "Infobox Color",
-		description = "Configures the background color of infoboxes",
+		keyName = "overlayBackgroundColor",
+		name = "Overlay Color",
+		description = "Configures the background color of infoboxes and overlays",
 		position = 43
 	)
 	@Alpha
-	default Color infoBoxColor()
+	default Color overlayBackgroundColor()
 	{
 		return ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	}
