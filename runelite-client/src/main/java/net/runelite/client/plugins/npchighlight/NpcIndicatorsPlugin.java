@@ -88,7 +88,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final String TAG = "Tag";
 	private static final String UNTAG = "Un-tag";
 
-	private static final String NPC_MENU_ENTRY_TARGET_FORMAT = "<col=%s>%s <col=%s>(Level %d)";
+	private static final String NPC_MENU_ENTRY_TARGET_FORMAT = "<col=%s>%s<col=%s>  (Level %d)";
 	private static final String NPC_MENU_ENTRY_TARGET_NO_COMBAT_LVL_FORMAT = "<col=%s>%s";
 
 	private static final Pattern COLOR_REGEX = Pattern.compile("<col=([0-9a-f]+)>");
@@ -127,7 +127,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<NPC> highlightedNpcs = new HashSet<>();
+	@VisibleForTesting
+	final Set<NPC> highlightedNpcs = new HashSet<>();
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
@@ -394,7 +395,8 @@ public class NpcIndicatorsPlugin extends Plugin
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
 
-	private String buildRecoloredNpcMenuEntryTarget(MenuEntry menuEntry, NPC menuNpc)
+	@VisibleForTesting
+	String buildRecoloredNpcMenuEntryTarget(MenuEntry menuEntry, NPC menuNpc)
 	{
 		List<Color> menuEntryColors = extractMenuEntryColors(menuEntry);
 
