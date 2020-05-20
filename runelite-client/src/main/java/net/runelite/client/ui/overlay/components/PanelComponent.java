@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay.components;
 
+import com.google.common.base.MoreObjects;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -31,7 +32,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,14 +48,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Setter
-	@Nullable
-	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
-
-	@Setter
 	@Getter
-	// Used by the OverlayRenderer to apply the background color from the RuneLite config
-	// Only used if the backgroundColor is `ComponentConstants.STANDARD_BACKGROUND_COLOR`
-	private Color preferredBackgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
+	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 
 	@Getter
 	private final List<LayoutableRenderableEntity> children = new ArrayList<>();
@@ -94,14 +88,9 @@ public class PanelComponent implements LayoutableRenderableEntity
 		// Render background
 		if (backgroundColor != null)
 		{
-			Color color = backgroundColor;
-			if (backgroundColor.equals(ComponentConstants.STANDARD_BACKGROUND_COLOR))
-			{
-				color = preferredBackgroundColor;
-			}
 			final BackgroundComponent backgroundComponent = new BackgroundComponent();
 			backgroundComponent.setRectangle(new Rectangle(preferredLocation, dimension));
-			backgroundComponent.setBackgroundColor(color);
+			backgroundComponent.setBackgroundColor(MoreObjects.firstNonNull(backgroundColor, ComponentConstants.STANDARD_BACKGROUND_COLOR));
 			backgroundComponent.render(graphics);
 		}
 

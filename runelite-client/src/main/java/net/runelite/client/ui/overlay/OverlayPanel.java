@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import lombok.Getter;
@@ -48,6 +49,11 @@ public abstract class OverlayPanel extends Overlay
 	 * Enables/disables automatic font size changes based on panel component size relative to default panel component size.
 	 */
 	private boolean dynamicFont = false;
+
+	/**
+	 * Preferred color used for panel component background
+	 */
+	private Color preferredColor = null;
 
 	protected OverlayPanel()
 	{
@@ -81,6 +87,11 @@ public abstract class OverlayPanel extends Overlay
 					graphics.setFont(FontManager.getRunescapeSmallFont());
 				}
 			}
+		}
+
+		if (getPreferredColor() != null && ComponentConstants.STANDARD_BACKGROUND_COLOR.equals(panelComponent.getBackgroundColor()))
+		{
+			panelComponent.setBackgroundColor(getPreferredColor());
 		}
 
 		final Dimension dimension = panelComponent.render(graphics);

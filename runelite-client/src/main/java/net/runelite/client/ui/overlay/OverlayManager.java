@@ -104,12 +104,14 @@ public class OverlayManager
 
 	private final ConfigManager configManager;
 	private final EventBus eventBus;
+	private final RuneLiteConfig runeLiteConfig;
 
 	@Inject
-	private OverlayManager(final ConfigManager configManager, final EventBus eventBus)
+	private OverlayManager(final ConfigManager configManager, final EventBus eventBus, final RuneLiteConfig runeLiteConfig)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
+		this.runeLiteConfig = runeLiteConfig;
 	}
 
 	@Subscribe
@@ -171,12 +173,19 @@ public class OverlayManager
 		// Add is always true
 		overlays.add(overlay);
 		loadOverlay(overlay);
-		// WidgetItemOverlays have a reference to the overlay manager in order to get the WidgetItems
-		// for each frame.
+
 		if (overlay instanceof WidgetItemOverlay)
 		{
+			// WidgetItemOverlays have a reference to the overlay manager in order to get the WidgetItems
+			// for each frame.
 			((WidgetItemOverlay) overlay).setOverlayManager(this);
 		}
+		else if (overlay instanceof OverlayPanel)
+		{
+			// Update preferred color for overlay panels based on configuration
+			((OverlayPanel) overlay).setPreferredColor(runeLiteConfig.overlayBackgroundColor());
+		}
+
 		rebuildOverlayLayers();
 		return true;
 	}
