@@ -89,7 +89,9 @@ public abstract class OverlayPanel extends Overlay
 			}
 		}
 
-		if (getPreferredColor() != null && ComponentConstants.STANDARD_BACKGROUND_COLOR.equals(panelComponent.getBackgroundColor()))
+		final Color oldBackgroundColor = panelComponent.getBackgroundColor();
+
+		if (getPreferredColor() != null && ComponentConstants.STANDARD_BACKGROUND_COLOR.equals(oldBackgroundColor))
 		{
 			panelComponent.setBackgroundColor(getPreferredColor());
 		}
@@ -102,6 +104,7 @@ public abstract class OverlayPanel extends Overlay
 		}
 
 		panelComponent.setPreferredSize(oldSize);
+		panelComponent.setBackgroundColor(oldBackgroundColor);
 		return dimension;
 	}
 }
