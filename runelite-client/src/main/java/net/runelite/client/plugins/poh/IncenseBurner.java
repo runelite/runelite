@@ -25,20 +25,46 @@
 package net.runelite.client.plugins.poh;
 
 import java.time.Instant;
-import lombok.AllArgsConstructor;
+import javax.inject.Inject;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
-@AllArgsConstructor
 class IncenseBurner
 {
+	@Inject
+	private PohConfig config;
+
 	private final Instant start = Instant.now();
+	private final int notificationOffset = 5;
 	private final int id;
+	private boolean notificationFired;
 	private double countdownTimer;
 	private double randomTimer;
+	private Instant stableEnd;
 	private Instant end;
+
+	public IncenseBurner(int id, double countdownTimer, double randomTimer, Instant end)
+	{
+		this.id = id;
+		this.countdownTimer = countdownTimer;
+		this.randomTimer = randomTimer;
+		this.end = end;
+
+		notificationFired = false;
+
+		// Convert seconds as double to milliseconds as long to avoid losing decimal fraction timings
+		long countdownMilliseconds = (long)((countdownTimer - notificationOffset) * 1000);
+		stableEnd = start.plusMillis(countdownMilliseconds);
+	}
+
+	public boolean checkIfShouldNotify()
+	{
+		if (notificationFired || stableEnd.compareTo(Instant.now()) >= 0)
+			return false;
+
+		notificationFired = true;
+		return true;
+	}
 }

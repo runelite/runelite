@@ -27,24 +27,17 @@ package net.runelite.client.plugins.poh;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("poh")
 public interface PohConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showPortals",
-		name = "Show Portals",
-		description = "Configures whether to display teleport portals"
-	)
-	default boolean showPortals()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showAltar",
 		name = "Show Altar",
-		description = "Configures whether or not the altar is displayed"
+		description = "Configures whether or not the altar is displayed",
+		position = 1
 	)
 	default boolean showAltar()
 	{
@@ -52,99 +45,10 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showGlory",
-		name = "Show Glory mount",
-		description = "Configures whether or not the mounted glory is displayed"
-	)
-	default boolean showGlory()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showPools",
-		name = "Show Pools",
-		description = "Configures whether or not the pools are displayed"
-	)
-	default boolean showPools()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showRepairStand",
-		name = "Show Repair stand",
-		description = "Configures whether or not the repair stand is displayed"
-	)
-	default boolean showRepairStand()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showExitPortal",
-		name = "Show Exit portal",
-		description = "Configures whether or not the exit portal is displayed"
-	)
-	default boolean showExitPortal()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showBurner",
-		name = "Show Incense Burner timers",
-		description = "Configures whether or not unlit/lit burners are displayed"
-	)
-	default boolean showBurner()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSpellbook",
-		name = "Show Spellbook altar",
-		description = "Configures whether or not the Spellbook altar is displayed"
-	)
-	default boolean showSpellbook()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showJewelleryBox",
-		name = "Show Jewellery Box",
-		description = "Configures whether or not the jewellery box is displayed"
-	)
-	default boolean showJewelleryBox()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showMagicTravel",
-		name = "Show Fairy/ Spirit Tree/ Obelisk",
-		description = "Configures whether or not the Fairy ring, Spirit tree or Obelisk is displayed"
-	)
-	default boolean showMagicTravel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showPortalNexus",
-		name = "Show Portal Nexus",
-		description = "Configures whether or not the Portal Nexus is displayed"
-	)
-	default boolean showPortalNexus()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showDigsitePendant",
 		name = "Show Digsite Pendant",
-		description = "Configures whether or not the Digsite Pendant is displayed"
+		description = "Configures whether or not the Digsite Pendant is displayed",
+		position = 2
 	)
 	default boolean showDigsitePendant()
 	{
@@ -152,11 +56,80 @@ public interface PohConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showXericsTalisman",
-		name = "Show Xeric's Talisman",
-		description = "Configures whether or not the Xeric's Talisman is displayed"
+		keyName = "showExitPortal",
+		name = "Show Exit portal",
+		description = "Configures whether or not the exit portal is displayed",
+		position = 3
 	)
-	default boolean showXericsTalisman()
+	default boolean showExitPortal()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showMagicTravel",
+		name = "Show Fairy/ Spirit Tree/ Obelisk",
+		description = "Configures whether or not the Fairy ring, Spirit tree or Obelisk is displayed",
+		position = 4
+	)
+	default boolean showMagicTravel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showGlory",
+		name = "Show Glory mount",
+		description = "Configures whether or not the mounted glory is displayed",
+		position = 5
+	)
+	default boolean showGlory()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBurner",
+		name = "Show Incense Burner timers",
+		description = "Configures whether or not unlit/lit burners are displayed",
+		position = 6
+	)
+	default boolean showBurner()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "notifyBurner",
+		name = "Burner Notifications",
+		description = "Configures whether or not to send a notification 5 seconds before burners enter the random timer phase",
+		position = 7
+	)
+	default boolean notifyBurner()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyBurnerLeadTime",
+		name = "Notification Lead Time",
+		description = "Configures the lead time in seconds that a notification will be sent, before burner enters random timer phase.",
+		position = 8
+	)
+	@Range(max = 130)
+	@Units(Units.SECONDS)
+	default int notifyBurnerLeadTime()
+	{
+		return 5;
+	}
+
+	@ConfigItem(
+		keyName = "showJewelleryBox",
+		name = "Show Jewellery Box",
+		description = "Configures whether or not the jewellery box is displayed",
+		position = 9
+	)
+	default boolean showJewelleryBox()
 	{
 		return true;
 	}
@@ -164,9 +137,76 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showMythicalCape",
 		name = "Show Mythical Cape",
-		description = "Configures whether or not the Mythical Cape is displayed"
+		description = "Configures whether or not the Mythical Cape is displayed",
+		position = 10
 	)
 	default boolean showMythicalCape()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showPools",
+		name = "Show Pools",
+		description = "Configures whether or not the pools are displayed",
+		position = 11
+	)
+	default boolean showPools()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showPortalNexus",
+		name = "Show Portal Nexus",
+		description = "Configures whether or not the Portal Nexus is displayed",
+		position = 12
+	)
+	default boolean showPortalNexus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showPortals",
+		name = "Show Portals",
+		description = "Configures whether to display teleport portals",
+		position = 13
+	)
+	default boolean showPortals()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showRepairStand",
+		name = "Show Repair stand",
+		description = "Configures whether or not the repair stand is displayed",
+		position = 14
+	)
+	default boolean showRepairStand()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSpellbook",
+		name = "Show Spellbook altar",
+		description = "Configures whether or not the Spellbook altar is displayed",
+		position = 15
+	)
+	default boolean showSpellbook()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showXericsTalisman",
+		name = "Show Xeric's Talisman",
+		description = "Configures whether or not the Xeric's Talisman is displayed",
+		position = 16
+	)
+	default boolean showXericsTalisman()
 	{
 		return true;
 	}

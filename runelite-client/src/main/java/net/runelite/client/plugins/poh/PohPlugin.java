@@ -49,6 +49,8 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.Notifier;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -99,6 +101,15 @@ public class PohPlugin extends Plugin
 
 	@Inject
 	private BurnerOverlay burnerOverlay;
+
+	@Inject
+	private PohConfig config;
+
+	@Inject
+	private Notifier notifier;
+
+	private Boolean recentlySentNotification = false;
+	private Integer ticksSinceSentNotification = 0;
 
 	@Provides
 	PohConfig getConfig(ConfigManager configManager)
@@ -215,6 +226,37 @@ public class PohPlugin extends Plugin
 				}
 			});
 
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (!config.notifyBurner() || incenseBurners.size() == 0)
+			return;
+
+		getIncenseBurners().forEach((tile, burner) ->
+		{
+			if (BURNER_LIT.contains(burner.getId()) && burner.checkIfShouldNotify())
+			{
+				if (!recentlySentNotification)
+				{
+					notifier.notify(String.format("Burner Unstable In %s Seconds", config.notifyBurnerLeadTime()));
+					recentlySentNotification = true;
+					return;
+				}
+			}
+		});
+
+		if (recentlySentNotification)
+		{
+			if (ticksSinceSentNotification >= 15)
+			{
+				ticksSinceSentNotification = 0;
+				recentlySentNotification = false;
+				return;
+			}
+			ticksSinceSentNotification++;
+		}
 	}
 
 	private void lookupPlayer(String playerName, IncenseBurner incenseBurner)
