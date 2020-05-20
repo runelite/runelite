@@ -47,6 +47,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
 
@@ -115,6 +116,17 @@ public class OverlayManager
 	}
 
 	@Subscribe
+	public void onConfigChanged(final ConfigChanged event)
+	{
+		if (!RuneLiteConfig.GROUP_NAME.equals(event.getGroup()) || !"overlayBackgroundColor".equals(event.getKey()))
+		{
+			return;
+		}
+
+		overlays.forEach(this::updateOverlayConfig);
+	}
+
+	@Subscribe
 	public void onPluginChanged(final PluginChanged event)
 	{
 		overlays.forEach(this::loadOverlay);
@@ -173,17 +185,13 @@ public class OverlayManager
 		// Add is always true
 		overlays.add(overlay);
 		loadOverlay(overlay);
+		updateOverlayConfig(overlay);
 
+		// WidgetItemOverlays have a reference to the overlay manager in order to get the WidgetItems
+		// for each frame.
 		if (overlay instanceof WidgetItemOverlay)
 		{
-			// WidgetItemOverlays have a reference to the overlay manager in order to get the WidgetItems
-			// for each frame.
 			((WidgetItemOverlay) overlay).setOverlayManager(this);
-		}
-		else if (overlay instanceof OverlayPanel)
-		{
-			// Update preferred color for overlay panels based on configuration
-			((OverlayPanel) overlay).setPreferredColor(runeLiteConfig.overlayBackgroundColor());
 		}
 
 		rebuildOverlayLayers();
@@ -311,6 +319,15 @@ public class OverlayManager
 		overlay.setPreferredSize(size);
 		final OverlayPosition position = loadOverlayPosition(overlay);
 		overlay.setPreferredPosition(position);
+	}
+
+	private void updateOverlayConfig(final Overlay overlay)
+	{
+		if (overlay instanceof OverlayPanel)
+		{
+			// Update preferred color for overlay panels based on configuration
+			((OverlayPanel) overlay).setPreferredColor(runeLiteConfig.overlayBackgroundColor());
+		}
 	}
 
 	private void saveOverlayLocation(final Overlay overlay)
