@@ -150,6 +150,7 @@ public class TabInterface
 	private Instant startScroll = Instant.now();
 	private String rememberedSearch;
 	private boolean waitSearchTick;
+	private boolean initializedOnce;
 
 	@Getter
 	private Widget upButton;
@@ -202,6 +203,7 @@ public class TabInterface
 
 		currentTabIndex = config.position();
 		parent = client.getWidget(WidgetInfo.BANK_CONTENT_CONTAINER);
+		initializedOnce = true;
 
 		updateBounds();
 
@@ -570,7 +572,8 @@ public class TabInterface
 			// Do the same for last active tab
 			if (config.rememberTab())
 			{
-				if (activeTab == null && !Strings.isNullOrEmpty(config.tab()))
+				// Prevent overwriting last active tab before tab interface is initialized once since startup
+				if (activeTab == null && !Strings.isNullOrEmpty(config.tab()) && initializedOnce)
 				{
 					config.tab("");
 				}
