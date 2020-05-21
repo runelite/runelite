@@ -68,7 +68,7 @@ public class MetronomePlugin extends Plugin
 
 		if (++tickCounter % config.tickCount() == 0)
 		{
-			// As playSoundEffect only uses the volume argument when the in-game volume is muted, sound effect volume
+			// As playSoundEffect only uses the volume argument when the in-game volume isn't muted, sound effect volume
 			// needs to be set to the value desired for ticks or tocks and afterwards reset to the previous value.
 			int previousVolume = client.getSoundEffectVolume();
 
