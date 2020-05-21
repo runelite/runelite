@@ -491,35 +491,10 @@ public class TabInterface
 
 	public void update()
 	{
+		saveTab();
+
 		if (isHidden())
 		{
-			parent = null;
-			waitSearchTick = false;
-			rememberedSearch = "";
-
-			// If bank window was just hidden, update last active tab position
-			if (currentTabIndex != config.position())
-			{
-				config.position(currentTabIndex);
-			}
-
-			// Do the same for last active tab
-			if (config.rememberTab())
-			{
-				if (activeTab == null && !Strings.isNullOrEmpty(config.tab()))
-				{
-					config.tab("");
-				}
-				else if (activeTab != null && !activeTab.getTag().equals(config.tab()))
-				{
-					config.tab(activeTab.getTag());
-				}
-			}
-			else if (!Strings.isNullOrEmpty(config.tab()))
-			{
-				config.tab("");
-			}
-
 			return;
 		}
 
@@ -576,6 +551,39 @@ public class TabInterface
 
 		updateBounds();
 		scrollTab(0);
+	}
+
+	public void saveTab()
+	{
+		if (isHidden())
+		{
+			parent = null;
+			waitSearchTick = false;
+			rememberedSearch = "";
+
+			// If bank window was just hidden, update last active tab position
+			if (currentTabIndex != config.position())
+			{
+				config.position(currentTabIndex);
+			}
+
+			// Do the same for last active tab
+			if (config.rememberTab())
+			{
+				if (activeTab == null && !Strings.isNullOrEmpty(config.tab()))
+				{
+					config.tab("");
+				}
+				else if (activeTab != null && !activeTab.getTag().equals(config.tab()))
+				{
+					config.tab(activeTab.getTag());
+				}
+			}
+			else if (!Strings.isNullOrEmpty(config.tab()))
+			{
+				config.tab("");
+			}
+		}
 	}
 
 	private void setTabMenuVisible(boolean visible)
@@ -846,7 +854,7 @@ public class TabInterface
 
 	private boolean isHidden()
 	{
-		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
+		Widget widget = client.getWidget(WidgetInfo.BANK_CONTENT_CONTAINER);
 		return !config.tabs() || widget == null || widget.isHidden();
 	}
 

@@ -58,6 +58,7 @@ import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
@@ -485,6 +486,34 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		if (!event.isFocused())
 		{
 			shiftPressed = false;
+		}
+	}
+
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	{
+		if (event.getWidget().getId() == WidgetInfo.BANK_CONTENT_CONTAINER.getId())
+		{
+			if (event.isHidden())
+			{
+				clientThread.invokeLater(() ->
+				{
+					if (tabInterface.getParent() != null)
+					{
+						tabInterface.saveTab();
+					}
+				});
+			}
+			else
+			{
+				clientThread.invokeLater(() ->
+				{
+					if (tabInterface.getParent() == null)
+					{
+						tabInterface.init();
+					}
+				});
+			}
 		}
 	}
 
