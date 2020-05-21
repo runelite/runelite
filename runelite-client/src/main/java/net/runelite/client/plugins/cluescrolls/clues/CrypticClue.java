@@ -284,7 +284,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the crates in the most north-western house in Al Kharid.", CRATE_358, new WorldPoint(3289, 3202, 0), "Search the crates in the house, marked with a icon, southeast of the gem stall."),
 		new CrypticClue("You will have to fly high where a sword cannot help you.", null, "Kill an Aviansie."),
 		new CrypticClue("A massive battle rages beneath so be careful when you dig by the large broken crossbow.", new WorldPoint(2927, 3761, 0), "NE of the God Wars Dungeon entrance, climb the rocky handholds & dig by large crossbow."),
-		new CrypticClue("Mix yellow with blue and add heat, make sure you bring protection.", null, "Kill a green dragon."),
+		new CrypticClue("Mix yellow with blue and add heat, make sure you bring protection.", null, "Kill a green or brutal green dragon."),
 		new CrypticClue("Speak to Ellis in Al Kharid.", "Ellis", new WorldPoint(3276, 3191, 0), "Ellis is tanner just north of Al Kharid bank."),
 		new CrypticClue("Search the chests in the Dwarven Mine.", CLOSED_CHEST_375, new WorldPoint(3000, 9798, 0), "The chest is on the western wall, where Hura's Crossbow Shop is, in the Dwarven Mine."),
 		new CrypticClue("In a while...", null, "Kill a crocodile."),
