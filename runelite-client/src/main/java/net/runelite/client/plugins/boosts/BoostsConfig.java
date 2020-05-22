@@ -118,5 +118,8 @@ public interface BoostsConfig extends Config
 		description = "Configures whether or not a notification will be sent for boosted stats.",
 		position = 7
 	)
-	default boolean enableBoostNotificationSending() { return true; }
+	default boolean enableBoostNotificationSending()
+	{
+		return true;
+	}
 }
