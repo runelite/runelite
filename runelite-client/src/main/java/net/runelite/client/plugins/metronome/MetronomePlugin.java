@@ -62,6 +62,7 @@ public class MetronomePlugin extends Plugin
 	protected void shutDown()
 	{
 		tickCounter = 0;
+		shouldTock = false;
 	}
 
 	@Subscribe
