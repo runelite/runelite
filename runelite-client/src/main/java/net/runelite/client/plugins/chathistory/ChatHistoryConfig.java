@@ -63,4 +63,15 @@ public interface ChatHistoryConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "clearHistory",
+		name = "Clear history option for all tabs",
+		description = "Add 'Clear history' option chatbox tab buttons",
+		position = 3
+	)
+	default boolean clearHistory()
+	{
+		return true;
+	}
 }
