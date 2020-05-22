@@ -208,12 +208,15 @@ public class BoostsPlugin extends Plugin
 		updateBoostedStats();
 
 		int boostThreshold = config.boostThreshold();
+		boolean enableBoostNotification = config.enableBoostNotificationSending();
 
-		if (boostThreshold != 0)
+		if (boostThreshold != 0 && enableBoostNotification)
 		{
 			int real = client.getRealSkillLevel(skill);
 			int lastBoost = last - real;
 			int boost = cur - real;
+			System.out.println("Time: " + System.currentTimeMillis() + ",  lastBoost: " + lastBoost + ", curBoost: " + boost);
+			System.out.println((boost <= boostThreshold) + " and " + (boostThreshold < lastBoost));
 			if (boost <= boostThreshold && boostThreshold < lastBoost)
 			{
 				notifier.notify(skill.getName() + " level is getting low!");

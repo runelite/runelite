@@ -111,4 +111,12 @@ public interface BoostsConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "enableBoostNotificationSending",
+		name = "Enable boost notification sending",
+		description = "Configures whether or not a notification will be sent for boosted stats.",
+		position = 7
+	)
+	default boolean enableBoostNotificationSending() { return true; }
 }
