@@ -58,7 +58,7 @@ class ScreenMarkerWidgetHighlightOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isCreatingScreenMarker() || plugin.isDrawing())
+		if (!plugin.isCreatingScreenMarker() || plugin.isDrawingScreenMarker())
 		{
 			return null;
 		}
@@ -107,6 +107,7 @@ class ScreenMarkerWidgetHighlightOverlay extends Overlay
 		{
 			drawHighlight(widget.getBounds(), graphics);
 		}
+
 		return null;
 	}
 

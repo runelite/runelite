@@ -46,15 +46,6 @@ public class ScreenMarkerMouseListener extends MouseAdapter
 			return event;
 		}
 
-		if (SwingUtilities.isLeftMouseButton(event))
-		{
-			final Rectangle bounds = plugin.getSelectedWidgetBounds();
-			if (bounds != null)
-			{
-				plugin.startCreation(bounds.getLocation(), bounds.getSize());
-			}
-		}
-
 		event.consume();
 		return event;
 	}
@@ -69,7 +60,16 @@ public class ScreenMarkerMouseListener extends MouseAdapter
 
 		if (SwingUtilities.isLeftMouseButton(event))
 		{
-			plugin.startCreation(event.getPoint());
+			final Rectangle bounds = plugin.getSelectedWidgetBounds();
+
+			if (bounds != null)
+			{
+				plugin.startCreation(bounds.getLocation(), bounds.getSize());
+			}
+			else
+			{
+				plugin.startCreation(event.getPoint());
+			}
 		}
 		else if (plugin.isCreatingScreenMarker())
 		{

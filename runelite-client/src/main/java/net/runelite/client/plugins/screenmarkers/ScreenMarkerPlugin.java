@@ -107,7 +107,7 @@ public class ScreenMarkerPlugin extends Plugin
 	private boolean creatingScreenMarker = false;
 
 	@Getter
-	private boolean drawing = false;
+	private boolean drawingScreenMarker = false;
 
 	@Getter
 	@Setter
@@ -149,7 +149,7 @@ public class ScreenMarkerPlugin extends Plugin
 		clientToolbar.removeNavigation(navigationButton);
 		setMouseListenerEnabled(false);
 		creatingScreenMarker = false;
-		drawing = false;
+		drawingScreenMarker = false;
 
 		pluginPanel = null;
 		currentMarker = null;
@@ -184,10 +184,11 @@ public class ScreenMarkerPlugin extends Plugin
 	public void startCreation(Point location)
 	{
 		startCreation(location, DEFAULT_SIZE);
+
 		// Stop the highlighting so we don't get rectangles around widgets while trying to make normal screen markers
 		if (selectedWidgetBounds == null)
 		{
-			drawing = true;
+			drawingScreenMarker = true;
 		}
 	}
 
@@ -225,7 +226,7 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 
 		creatingScreenMarker = false;
-		drawing = false;
+		drawingScreenMarker = false;
 		selectedWidgetBounds = null;
 		startLocation = null;
 		currentMarker = null;
@@ -234,7 +235,6 @@ public class ScreenMarkerPlugin extends Plugin
 		pluginPanel.setCreation(false);
 	}
 
-	/* The marker area has been drawn, inform the user and unlock the confirm button */
 	public void completeSelection()
 	{
 		pluginPanel.getCreationPanel().unlockConfirm();
@@ -251,6 +251,7 @@ public class ScreenMarkerPlugin extends Plugin
 
 	void resizeMarker(Point point)
 	{
+		drawingScreenMarker = true;
 		Rectangle bounds = new Rectangle(startLocation);
 		bounds.add(point);
 		overlay.setPreferredLocation(bounds.getLocation());
