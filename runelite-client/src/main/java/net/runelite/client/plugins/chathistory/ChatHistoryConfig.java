@@ -66,7 +66,7 @@ public interface ChatHistoryConfig extends Config
 
 	@ConfigItem(
 		keyName = "clearHistory",
-		name = "Clear history",
+		name = "Clear history option for all tabs",
 		description = "Add 'Clear history' option chatbox tab buttons",
 		position = 3
 	)

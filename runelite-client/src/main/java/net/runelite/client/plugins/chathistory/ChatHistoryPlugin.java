@@ -27,7 +27,6 @@ package net.runelite.client.plugins.chathistory;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.EvictingQueue;
-import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -57,7 +56,6 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
@@ -66,6 +64,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -253,12 +252,11 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		String menuOption = event.getMenuOption();
-		ChatboxTab tab = ChatboxTab.of(event.getWidgetId());
+		final String menuOption = event.getMenuOption();
 
-		if (menuOption.contains(CLEAR_HISTORY))
+		if (CLEAR_HISTORY.equals(menuOption))
 		{
-			clearChatboxHistory(tab);
+			clearChatboxHistory(ChatboxTab.of(event.getWidgetId()));
 		}
 		else if (COPY_TO_CLIPBOARD.equals(menuOption) && !Strings.isNullOrEmpty(currentMessage))
 		{
@@ -270,39 +268,39 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded entry)
 	{
-		String option = Text.removeTags(entry.getOption());
-		ChatboxTab tab = ChatboxTab.of(entry.getActionParam1());
+		final String option = Text.removeTags(entry.getOption());
+		final ChatboxTab tab = ChatboxTab.of(entry.getActionParam1());
 
 		if (!config.clearHistory() || tab == null || !option.equals(tab.getAfter()))
 		{
 			return;
 		}
 
-		// Public + private Clear history entries are all one word as the option.
-		// MenuEntry target is empty string.
 		final MenuEntry clearEntry = new MenuEntry();
-		ChatMessageBuilder optionBldr = new ChatMessageBuilder();
-		if (tab != ChatboxTab.ALL)
-		{
-			optionBldr.append(Color.yellow, String.format("%s: ", tab.getName()));
-		}
-		optionBldr.append(CLEAR_HISTORY);
-		clearEntry.setOption(optionBldr.build());
-
 		clearEntry.setTarget("");
 		clearEntry.setType(MenuAction.RUNELITE.getId());
+		clearEntry.setParam0(entry.getActionParam0());
+		clearEntry.setParam1(entry.getActionParam1());
+
 		if (tab == ChatboxTab.GAME)
 		{
 			// keep type as the original CC_OP to correctly group "Game: Clear history" with
 			// other tab "Game: *" options.
 			clearEntry.setType(entry.getType());
 		}
-		clearEntry.setParam0(entry.getActionParam0());
-		clearEntry.setParam1(entry.getActionParam1());
 
-		MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), clearEntry);
-		ArrayUtils.swap(newMenu, newMenu.length - 1, newMenu.length - 2);
-		client.setMenuEntries(newMenu);
+		final StringBuilder messageBuilder = new StringBuilder();
+
+		if (tab != ChatboxTab.ALL)
+		{
+			messageBuilder.append(ColorUtil.wrapWithColorTag(tab.getName() + ": ", Color.YELLOW));
+		}
+
+		messageBuilder.append(CLEAR_HISTORY);
+		clearEntry.setOption(messageBuilder.toString());
+
+		final MenuEntry[] menuEntries = client.getMenuEntries();
+		client.setMenuEntries(ArrayUtils.insert(menuEntries.length - 1, menuEntries, clearEntry));
 	}
 
 	private void clearMessageQueue(ChatboxTab tab)
@@ -326,16 +324,18 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		for (ChatMessageType msgType : tab.getMessageTypes())
 		{
 			final ChatLineBuffer lineBuffer = client.getChatLineMap().get(msgType.getType());
-			if (lineBuffer != null)
+			if (lineBuffer == null)
 			{
-				MessageNode[] lines = lineBuffer.getLines().clone();
-				for (MessageNode line : lines)
+				continue;
+			}
+
+			final MessageNode[] lines = lineBuffer.getLines().clone();
+			for (final MessageNode line : lines)
+			{
+				if (line != null)
 				{
-					if (line != null)
-					{
-						lineBuffer.removeMessageNode(line);
-						removed = true;
-					}
+					lineBuffer.removeMessageNode(line);
+					removed = true;
 				}
 			}
 		}
