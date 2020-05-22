@@ -161,25 +161,11 @@ public class ClientUI
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("runelite") ||
+		if (!event.getGroup().equals(CONFIG_GROUP) ||
 			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
 			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
 		{
 			return;
-		}
-
-		// Update window opacity iff the frame is undecorated, translucency capable and not fullscreen
-		if (event.getGroup().equals(CONFIG_GROUP) && event.getKey().equals("uiWindowOpacity"))
-		{
-			SwingUtilities.invokeLater(() ->
-			{
-				if (frame.isUndecorated() &&
-					frame.getGraphicsConfiguration().isTranslucencyCapable() &&
-					frame.getGraphicsConfiguration().getDevice().getFullScreenWindow() == null)
-				{
-					frame.setOpacity((float) Integer.parseInt(event.getNewValue()) / 100.0f);
-				}
-			});
 		}
 
 		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
@@ -430,13 +416,6 @@ public class ClientUI
 			// Decorate window with custom chrome and titlebar if needed
 			withTitleBar = config.enableCustomChrome();
 			frame.setUndecorated(withTitleBar);
-
-			if (frame.isUndecorated() &&
-				frame.getGraphicsConfiguration().isTranslucencyCapable() &&
-				frame.getGraphicsConfiguration().getDevice().getFullScreenWindow() == null)
-			{
-				frame.setOpacity(((float) config.windowOpacity()) / 100.0f);
-			}
 
 			if (withTitleBar)
 			{
@@ -998,6 +977,14 @@ public class ClientUI
 		if (frame == null)
 		{
 			return;
+		}
+
+		// Update window opacity iff the frame is undecorated, translucency capable and not fullscreen
+		if (frame.isUndecorated() &&
+			frame.getGraphicsConfiguration().isTranslucencyCapable() &&
+			frame.getGraphicsConfiguration().getDevice().getFullScreenWindow() == null)
+		{
+			frame.setOpacity(((float) config.windowOpacity()) / 100.0f);
 		}
 
 		if (config.usernameInTitle() && (client instanceof Client))
