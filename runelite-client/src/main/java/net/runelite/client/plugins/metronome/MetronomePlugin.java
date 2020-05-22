@@ -59,7 +59,7 @@ public class MetronomePlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp()
+	protected void shutDown()
 	{
 		tickCounter = 0;
 	}
