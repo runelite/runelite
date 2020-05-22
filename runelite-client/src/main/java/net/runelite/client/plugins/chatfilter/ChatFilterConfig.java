@@ -130,4 +130,15 @@ public interface ChatFilterConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "maxRepeatedPublicChats",
+		name = "Max repeated public chats",
+		description = "Block player chat message if repeated this many times. 0 is off",
+		position = 11
+	)
+	default int maxRepeatedPublicChats()
+	{
+		return 0;
+	}
 }

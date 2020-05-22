@@ -195,7 +195,9 @@ public class ChatFilterPlugin extends Plugin
 			Duplicate duplicateCacheEntry = duplicateChatCache.get(name + ":" + message);
 			if (duplicateCacheEntry != null)
 			{
-				blockMessage = duplicateCacheEntry.messageId != messageId;
+				blockMessage = duplicateCacheEntry.messageId != messageId ||
+					((chatMessageType == PUBLICCHAT || chatMessageType == MODCHAT) &&
+						config.maxRepeatedPublicChats() > 0 && duplicateCacheEntry.count > config.maxRepeatedPublicChats());
 				duplicateCount = duplicateCacheEntry.count;
 			}
 		}
