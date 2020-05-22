@@ -979,7 +979,7 @@ public class ClientUI
 			return;
 		}
 
-		// Update window opacity iff the frame is undecorated, translucency capable and not fullscreen
+		// Update window opacity if the frame is undecorated, translucency capable and not fullscreen
 		if (frame.isUndecorated() &&
 			frame.getGraphicsConfiguration().isTranslucencyCapable() &&
 			frame.getGraphicsConfiguration().getDevice().getFullScreenWindow() == null)
