@@ -55,14 +55,16 @@ class IncenseBurner
 		notificationFired = false;
 
 		// Convert seconds as double to milliseconds as long to avoid losing decimal fraction timings
-		long countdownMilliseconds = (long)((countdownTimer - notificationOffset) * 1000);
+		long countdownMilliseconds = (long)((countdownTimer - config.notifyBurnerLeadTime()) * 1000);
 		stableEnd = start.plusMillis(countdownMilliseconds);
 	}
 
 	public boolean checkIfShouldNotify()
 	{
 		if (notificationFired || stableEnd.compareTo(Instant.now()) >= 0)
+		{
 			return false;
+		}
 
 		notificationFired = true;
 		return true;

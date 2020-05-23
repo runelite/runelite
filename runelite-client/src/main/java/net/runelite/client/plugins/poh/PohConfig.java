@@ -102,7 +102,7 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "notifyBurner",
 		name = "Burner Notifications",
-		description = "Configures whether or not to send a notification 5 seconds before burners enter the random timer phase",
+		description = "Configures whether or not to send a notification before burners enter the random timer phase",
 		position = 7
 	)
 	default boolean notifyBurner()

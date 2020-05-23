@@ -232,7 +232,9 @@ public class PohPlugin extends Plugin
 	public void onGameTick(GameTick gameTick)
 	{
 		if (!config.notifyBurner() || incenseBurners.size() == 0)
+		{
 			return;
+		}
 
 		getIncenseBurners().forEach((tile, burner) ->
 		{
