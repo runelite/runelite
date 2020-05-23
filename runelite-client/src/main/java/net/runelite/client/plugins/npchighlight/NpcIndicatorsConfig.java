@@ -110,21 +110,21 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 7,
-		keyName = "dampenedColor",
+		keyName = "deadNpcColor",
 		name = "Dead NPC menu entry color",
 		description = "Color of menu entries that refer to dead NPCs"
 	)
-	default Color getDampenColor()
+	default Color getdeadNpcColor()
 	{
 		return Color.GRAY;
 	}
 
 	@ConfigItem(
 		position = 8,
-		keyName = "dampenDeadNPCs",
-		name = "Dampen dead NPC menu entries",
-		description = "Dampens the color of dead NPCs in menu entries")
-	default boolean dampenDeadNPCs()
+		keyName = "recolorDeadNpcs",
+		name = "Recolor dead NPC menu entries",
+		description = "Changes the color of dead NPCs in menu entries")
+	default boolean recolorDeadNpcs()
 	{
 		return false;
 	}

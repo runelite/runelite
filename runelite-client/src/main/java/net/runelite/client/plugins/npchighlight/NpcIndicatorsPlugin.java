@@ -119,7 +119,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	final Set<NPC> highlightedNpcs = new HashSet<>();
+	private final Set<NPC> highlightedNpcs = new HashSet<>();
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
@@ -261,9 +261,9 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			String target;
 			final NPC menuNpc = client.getCachedNPCs()[event.getIdentifier()];
-			if (menuNpc.isDead() && config.dampenDeadNPCs())
+			if (menuNpc.isDead() && config.recolorDeadNpcs())
 			{
-				target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getDampenColor());
+				target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getdeadNpcColor());
 			}
 			else if (config.highlightMenuNames() &&
 				highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
