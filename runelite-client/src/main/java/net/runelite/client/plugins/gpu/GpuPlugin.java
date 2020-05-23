@@ -1300,14 +1300,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			height = dim.height;
 		}
 
-		String gdkScale_env = System.getenv("GDK_SCALE");
-		if(gdkScale_env != null)
+		String gdkScaleEnv = System.getenv("GDK_SCALE");
+		if (gdkScaleEnv != null)
 		{
-			int gdkScale = Integer.parseInt(gdkScale_env);
-			if (gdkScale > 1)
+			try
 			{
-				width = width * gdkScale;
-				height = height * gdkScale;
+				int gdkScale = Integer.parseInt(gdkScaleEnv);
+				if (gdkScale > 1)
+				{
+					width = width * gdkScale;
+					height = height * gdkScale;
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				log.info("Error GDK_SCALE is not set");
 			}
 		}
 
