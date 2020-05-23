@@ -28,7 +28,6 @@ package net.runelite.client.plugins.npchighlight;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,8 +36,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -88,11 +85,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final String TAG = "Tag";
 	private static final String UNTAG = "Un-tag";
 
-	private static final String NPC_MENU_ENTRY_TARGET_FORMAT = "<col=%s>%s<col=%s>  (Level %d)";
-	private static final String NPC_MENU_ENTRY_TARGET_NO_COMBAT_LVL_FORMAT = "<col=%s>%s";
-
-	private static final Pattern COLOR_REGEX = Pattern.compile("<col=([0-9a-f]+)>");
-
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
 
@@ -127,7 +119,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	@VisibleForTesting
 	final Set<NPC> highlightedNpcs = new HashSet<>();
 
 	/**
@@ -268,11 +259,24 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		if (NPC_MENU_ACTIONS.contains(MenuAction.of(type)))
 		{
+			String target;
+			final NPC menuNpc = client.getCachedNPCs()[event.getIdentifier()];
+			if (menuNpc.isDead() && config.dampenDeadNPCs())
+			{
+				target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getDampenColor());
+			}
+			else if (config.highlightMenuNames() &&
+				highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
+			{
+				target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getHighlightColor());
+			}
+			else
+			{
+				return;
+			}
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-			final NPC menuNpc = client.getCachedNPCs()[event.getIdentifier()];
-			String recoloredTarget = buildRecoloredNpcMenuEntryTarget(menuEntry, menuNpc);
-			menuEntry.setTarget(recoloredTarget);
+			menuEntry.setTarget(target);
 			client.setMenuEntries(menuEntries);
 		}
 		else if (hotKeyPressed && type == MenuAction.EXAMINE_NPC.getId())
@@ -395,62 +399,10 @@ public class NpcIndicatorsPlugin extends Plugin
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
 
-	@VisibleForTesting
-	String buildRecoloredNpcMenuEntryTarget(MenuEntry menuEntry, NPC menuNpc)
-	{
-		List<Color> menuEntryColors = extractMenuEntryColors(menuEntry);
-
-		Color menuNpcNameColor = null;
-		if (config.highlightMenuNames() &&
-			highlightedNpcs.stream().anyMatch(npc -> menuNpc.getIndex() == npc.getIndex()))
-		{
-			menuNpcNameColor = config.getHighlightColor();
-		}
-		else
-		{
-			menuNpcNameColor = menuEntryColors.get(0);
-		}
-
-		if (config.dampenDeadNPCs() && menuNpc.isDead())
-		{
-			menuNpcNameColor = menuNpcNameColor.darker();
-		}
-		final String menuNpcNameColorHex = ColorUtil.colorToHexCode(menuNpcNameColor);
-
-		Color menuNpcLevelColor = null;
-		// NPCs without combat levels need to be treated differently.
-		if (menuNpc.getCombatLevel() > 0)
-		{
-			menuNpcLevelColor = menuEntryColors.get(1);
-			String menuNpcLevelColorHex = ColorUtil.colorToHexCode(menuNpcLevelColor);
-			return String.format(NPC_MENU_ENTRY_TARGET_FORMAT,
-				menuNpcNameColorHex, menuNpc.getName(),
-				menuNpcLevelColorHex, menuNpc.getCombatLevel());
-		}
-		else
-		{
-			return String.format(NPC_MENU_ENTRY_TARGET_NO_COMBAT_LVL_FORMAT,
-				menuNpcNameColorHex, menuNpc.getName());
-		}
-	}
-
 	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)
 	{
 		int distance = wp1.distanceTo(wp2);
 		return distance < MAX_ACTOR_VIEW_RANGE;
-	}
-
-	private static List<Color> extractMenuEntryColors(MenuEntry menuEntry)
-	{
-		Matcher matcher = COLOR_REGEX.matcher(menuEntry.getTarget());
-		List<Color> menuEntryColors = new ArrayList();
-		while (matcher.find())
-		{
-			// Only interested in the actual color code, not the full tag.
-			// So we only want the 2nd group, which matches the hex code.
-			menuEntryColors.add(Color.decode("#" + matcher.group(1)));
-		}
-		return menuEntryColors;
 	}
 
 	private static WorldPoint getWorldLocationBehind(NPC npc)

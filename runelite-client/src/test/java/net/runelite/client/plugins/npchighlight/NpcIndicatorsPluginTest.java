@@ -27,21 +27,17 @@ package net.runelite.client.plugins.npchighlight;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.NPC;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -84,149 +80,5 @@ public class NpcIndicatorsPluginTest
 		assertEquals("goblin", iterator.next());
 		assertEquals("zulrah", iterator.next());
 		assertEquals("*wyvern", iterator.next());
-	}
-
-	@Test
-	public void buildRecoloredNpcMenuEntryTarget_withCombatLevel_alive_noHighlight()
-	{
-		npcIndicatorsPlugin.highlightedNpcs.clear();
-		when(npcIndicatorsConfig.dampenDeadNPCs()).thenReturn(true);
-		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(false);
-		final MenuEntry menuEntry = mock(MenuEntry.class);
-		when(menuEntry.getTarget()).thenReturn("<col=ffff00>Goblin<col=ff00>  (level-2)");
-		final NPC npc = mock(NPC.class);
-		when(npc.isDead()).thenReturn(false);
-		when(npc.getName()).thenReturn("Goblin");
-		when(npc.getCombatLevel()).thenReturn(2);
-
-		String recoloredTarget = npcIndicatorsPlugin.buildRecoloredNpcMenuEntryTarget(menuEntry, npc);
-		assertEquals("<col=ffff00>Goblin<col=00ff00>  (Level 2)", recoloredTarget);
-	}
-
-	@Test
-	public void buildRecoloredNpcMenuEntryTarget_withCombatLevel_dead_noHighlight()
-	{
-		npcIndicatorsPlugin.highlightedNpcs.clear();
-		when(npcIndicatorsConfig.dampenDeadNPCs()).thenReturn(true);
-		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(false);
-		final MenuEntry menuEntry = mock(MenuEntry.class);
-		when(menuEntry.getTarget()).thenReturn("<col=ffff00>Goblin<col=ff00>  (level-2)");
-		final NPC npc = mock(NPC.class);
-		when(npc.isDead()).thenReturn(true);
-		when(npc.getName()).thenReturn("Goblin");
-		when(npc.getCombatLevel()).thenReturn(2);
-
-		String recoloredTarget = npcIndicatorsPlugin.buildRecoloredNpcMenuEntryTarget(menuEntry, npc);
-		assertEquals("<col=b2b200>Goblin<col=00ff00>  (Level 2)", recoloredTarget);
-	}
-
-	@Test
-	public void buildRecoloredNpcMenuEntryTarget_withCombatLevel_alive_highlight()
-	{
-		npcIndicatorsPlugin.highlightedNpcs.clear();
-		when(npcIndicatorsConfig.dampenDeadNPCs()).thenReturn(true);
-		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(true);
-		when(npcIndicatorsConfig.getHighlightColor()).thenReturn(new Color(255, 200, 255));
-		final MenuEntry menuEntry = mock(MenuEntry.class);
-		when(menuEntry.getTarget()).thenReturn("<col=ffff00>Goblin<col=ff00>  (level 2)");
-		final NPC npc = mock(NPC.class);
-		when(npc.isDead()).thenReturn(false);
-		when(npc.getName()).thenReturn("Goblin");
-		when(npc.getCombatLevel()).thenReturn(2);
-		npcIndicatorsPlugin.highlightedNpcs.add(npc);
-
-		String recoloredTarget = npcIndicatorsPlugin.buildRecoloredNpcMenuEntryTarget(menuEntry, npc);
-		assertEquals("<col=ffc8ff>Goblin<col=00ff00>  (Level 2)", recoloredTarget);
-	}
-
-	@Test
-	public void buildRecoloredNpcMenuEntryTarget_withCombatLevel_dead_highlight()
-	{
-		npcIndicatorsPlugin.highlightedNpcs.clear();
-		when(npcIndicatorsConfig.dampenDeadNPCs()).thenReturn(true);
-		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(true);
-		when(npcIndicatorsConfig.getHighlightColor()).thenReturn(new Color(255, 200, 255));
-		final MenuEntry menuEntry = mock(MenuEntry.class);
-		when(menuEntry.getTarget()).thenReturn("<col=ffff00>Goblin<col=ff00>  (level 2)");
-		final NPC npc = mock(NPC.class);
-		when(npc.isDead()).thenReturn(true);
-		when(npc.getName()).thenReturn("Goblin");
-		when(npc.getCombatLevel()).thenReturn(2);
-		npcIndicatorsPlugin.highlightedNpcs.add(npc);
-
-		String recoloredTarget = npcIndicatorsPlugin.buildRecoloredNpcMenuEntryTarget(menuEntry, npc);
-		assertEquals("<col=b28cb2>Goblin<col=00ff00>  (Level 2)", recoloredTarget);
-	}
-
-	@Test
-	public void buildRecoloredNpcMenuEntryTarget_withoutCombatLevel_alive_noHighlight()
-	{
-		npcIndicatorsPlugin.highlightedNpcs.clear();
-		when(npcIndicatorsConfig.dampenDeadNPCs()).thenReturn(true);
-		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(false);
-		final MenuEntry menuEntry = mock(MenuEntry.class);
-		when(menuEntry.getTarget()).thenReturn("<col=ffff00>Tekton");
-		final NPC npc = mock(NPC.class);
-		when(npc.isDead()).thenReturn(false);
-		when(npc.getName()).thenReturn("Tekton");
-		when(npc.getCombatLevel()).thenReturn(0);
-
-		String recoloredTarget = npcIndicatorsPlugin.buildRecoloredNpcMenuEntryTarget(menuEntry, npc);
-		assertEquals("<col=ffff00>Tekton", recoloredTarget);
-	}
-
-	@Test
-	public void buildRecoloredNpcMenuEntryTarget_withoutCombatLevel_dead_noHighlight()
-	{
-		npcIndicatorsPlugin.highlightedNpcs.clear();
-		when(npcIndicatorsConfig.dampenDeadNPCs()).thenReturn(true);
-		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(false);
-		final MenuEntry menuEntry = mock(MenuEntry.class);
-		when(menuEntry.getTarget()).thenReturn("<col=ffff00>Tekton");
-		final NPC npc = mock(NPC.class);
-		when(npc.isDead()).thenReturn(true);
-		when(npc.getName()).thenReturn("Tekton");
-		when(npc.getCombatLevel()).thenReturn(0);
-
-		String recoloredTarget = npcIndicatorsPlugin.buildRecoloredNpcMenuEntryTarget(menuEntry, npc);
-		assertEquals("<col=b2b200>Tekton", recoloredTarget);
-	}
-
-	@Test
-	public void buildRecoloredNpcMenuEntryTarget_withoutCombatLevel_alive_highlight()
-	{
-		npcIndicatorsPlugin.highlightedNpcs.clear();
-		when(npcIndicatorsConfig.dampenDeadNPCs()).thenReturn(true);
-		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(true);
-		when(npcIndicatorsConfig.getHighlightColor()).thenReturn(new Color(255, 200, 255));
-		final MenuEntry menuEntry = mock(MenuEntry.class);
-		when(menuEntry.getTarget()).thenReturn("<col=ffff00>Tekton");
-		final NPC npc = mock(NPC.class);
-		when(npc.isDead()).thenReturn(false);
-		when(npc.getName()).thenReturn("Tekton");
-		when(npc.getCombatLevel()).thenReturn(0);
-		npcIndicatorsPlugin.highlightedNpcs.add(npc);
-
-		String recoloredTarget = npcIndicatorsPlugin.buildRecoloredNpcMenuEntryTarget(menuEntry, npc);
-		assertEquals("<col=ffc8ff>Tekton", recoloredTarget);
-	}
-
-	@Test
-	public void buildRecoloredNpcMenuEntryTarget_withoutCombatLevel_dead_highlight()
-	{
-		npcIndicatorsPlugin.highlightedNpcs.clear();
-		when(npcIndicatorsConfig.dampenDeadNPCs()).thenReturn(true);
-		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(true);
-		when(npcIndicatorsConfig.getHighlightColor()).thenReturn(new Color(255, 200, 255));
-		final MenuEntry menuEntry = mock(MenuEntry.class);
-		when(menuEntry.getTarget()).thenReturn("<col=ffff00>Tekton");
-		final NPC npc = mock(NPC.class);
-		when(npc.isDead()).thenReturn(true);
-		when(npc.getName()).thenReturn("Tekton");
-		when(npc.getCombatLevel()).thenReturn(0);
-		npcIndicatorsPlugin.highlightedNpcs.add(npc);
-
-		String recoloredTarget = npcIndicatorsPlugin.buildRecoloredNpcMenuEntryTarget(menuEntry, npc);
-		assertEquals("<col=b28cb2>Tekton", recoloredTarget);
 	}
 }
