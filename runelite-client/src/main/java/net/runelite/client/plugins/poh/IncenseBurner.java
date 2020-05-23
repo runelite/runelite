@@ -37,7 +37,6 @@ class IncenseBurner
 	private PohConfig config;
 
 	private final Instant start = Instant.now();
-	private final int notificationOffset = 5;
 	private final int id;
 	private boolean notificationFired;
 	private double countdownTimer;
