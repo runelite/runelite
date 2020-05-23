@@ -368,7 +368,7 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testCoXKill()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete! Duration:</col> <col=ff0000>37:04</col>", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>4 players</col> Duration:</col> <col=ff0000>37:04</col> (new personal best)</col>>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>51</col>.", null, 0);
@@ -383,7 +383,7 @@ public class ChatCommandsPluginTest
 	{
 		when(configManager.getConfiguration(anyString(), anyString(), any())).thenReturn(2224);
 
-		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete! Duration:</col> <col=ff0000>1:45:04</col>", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>3 players</col> Duration:</col> <col=ff0000>37:10</col> (new personal best)</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
@@ -405,6 +405,7 @@ public class ChatCommandsPluginTest
 		when(advLogWidget.getChild(ChatCommandsPlugin.ADV_LOG_EXPLOITS_TEXT_INDEX)).thenReturn(advLogExploitsTextWidget);
 		when(advLogExploitsTextWidget.getText()).thenReturn("The Exploits of " + PLAYER_NAME);
 		when(client.getWidget(WidgetInfo.ADVENTURE_LOG)).thenReturn(advLogWidget);
+		when(configManager.getConfiguration(anyString(), anyString(), any())).thenReturn(2224);
 
 		WidgetLoaded advLogEvent = new WidgetLoaded();
 		advLogEvent.setGroupId(ADVENTURE_LOG_ID);
@@ -425,9 +426,10 @@ public class ChatCommandsPluginTest
 			"Fastest kill: <col=d0c0b0>2:49</col><br><br>Alchemical Hydra<br>Fastest kill: <col=d0c0b0>-</col>" +
 			"<br><br>Hespori<br>Fastest kill: <col=d0c0b0>0:57</col><br><br>Nightmare<br>" +
 			"Fastest kill: <col=d0c0b0>3:30</col><br><br>The Gauntlet<br>Fastest run: <col=d0c0b0>-</col>" +
-			"<br><br>The Corrupted Gauntlet<br>Fastest run: <col=d0c0b0>-</col><br><br>Fragment of Seren<br>" +
-			"Fastest kill: <col=d0c0b0>-</col><br><br>Barbarian Assault<br>High-level gambles: " +
-			"<col=d0c0b0>15</col><br><br>Fremennik spirits rested: <col=d0c0b0>0</col>";
+			"<br><br>The Corrupted Gauntlet<br>Fastest run: <col=d0c0b0>-</col><br><br>Fragment of Seren<br>Fastest kill: <col=d0c0b0>-</col>" +
+			"<br><br>Chambers of Xeric<br>Fastest run - (Team size: 4 players): <col=d0c0b0>24:17</col>" +
+			"<br><br>Chambers of Xeric - Challenge mode<br>Fastest run - (Team size: Solo): <col=d0c0b0>22:15</col>" +
+			"<br><br>Barbarian Assault<br>High-level gambles: <col=d0c0b0>0</col><br><br>Fremennik spirits rested: <col=d0c0b0>0</col>";
 
 		Widget countersPage = mock(Widget.class);
 		when(countersPage.getText()).thenReturn(COUNTER_TEXT);
@@ -444,6 +446,8 @@ public class ChatCommandsPluginTest
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("grotesque guardians"), eq(2 * 60 + 49));
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("hespori"), eq(57));
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("nightmare"), eq(3 * 60 + 30));
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric"), eq(24 * 60 + 17));
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric challenge mode"), eq(22 * 60 + 15));
 	}
 
 	@Test
@@ -478,9 +482,10 @@ public class ChatCommandsPluginTest
 			"Fastest kill: <col=d0c0b0>-</col><br><br>Alchemical Hydra<br>Fastest kill: <col=d0c0b0>-</col>" +
 			"<br><br>Hespori<br>Fastest kill: <col=d0c0b0>1:42</col><br><br>Nightmare<br>" +
 			"Fastest kill: <col=d0c0b0>-</col><br><br>The Gauntlet<br>Fastest run: <col=d0c0b0>-</col>" +
-			"<br><br>The Corrupted Gauntlet<br>Fastest run: <col=d0c0b0>-</col><br><br>Fragment of Seren<br>" +
-			"Fastest kill: <col=d0c0b0>-</col><br><br>Barbarian Assault<br>High-level gambles: " +
-			"<col=d0c0b0>0</col><br><br>Fremennik spirits rested: <col=d0c0b0>0</col>";
+			"<br><br>The Corrupted Gauntlet<br>Fastest run: <col=d0c0b0>-</col><br><br>Fragment of Seren<br>Fastest kill: <col=d0c0b0>-</col>" +
+			"<br><br>Chambers of Xeric<br>Fastest run - (Team size: Solo): <col=d0c0b0>21:23</col><br>Fastest run - (Team size: 3 players): <col=d0c0b0>27:16</col>" +
+			"<br><br>Chambers of Xeric - Challenge mode<br>Fastest run - (Team size: Solo): <col=d0c0b0>34:30</col><br>Fastest run - (Team size: 4 players): <col=d0c0b0>21:26</col>" +
+			"<br><br>Barbarian Assault<br>High-level gambles: <col=d0c0b0>0</col><br><br>Fremennik spirits rested: <col=d0c0b0>0</col>";
 
 		Widget countersPage = mock(Widget.class);
 		when(countersPage.getText()).thenReturn(COUNTER_TEXT);
@@ -495,6 +500,8 @@ public class ChatCommandsPluginTest
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("zulrah"), eq(2 * 60 + 55));
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("vorkath"), eq(1 * 60 + 37));
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("hespori"), eq(1 * 60 + 42));
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric"), eq(21 * 60 + 23));
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric challenge mode"), eq(21 * 60 + 26));
 	}
 
 	@Test
