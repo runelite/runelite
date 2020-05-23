@@ -1314,7 +1314,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			}
 			catch (NumberFormatException e)
 			{
-				log.info("Error GDK_SCALE is not set");
+				log.info("GDK_SCALE is not valid");
 			}
 		}
 
