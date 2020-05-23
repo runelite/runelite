@@ -1300,11 +1300,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			height = dim.height;
 		}
 
-		int gdkScale = Integer.parseInt(System.getenv("GDK_SCALE"));
-		if (gdkScale > 1)
+		String gdkScale_env = System.getenv("GDK_SCALE");
+		if(gdkScale_env != null)
 		{
-			width = width * gdkScale;
-			height = height * gdkScale;
+			int gdkScale = Integer.parseInt(gdkScale_env);
+			if (gdkScale > 1)
+			{
+				width = width * gdkScale;
+				height = height * gdkScale;
+			}
 		}
 
 		ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4)
