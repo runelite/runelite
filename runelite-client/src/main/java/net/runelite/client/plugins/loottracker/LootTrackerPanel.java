@@ -502,7 +502,7 @@ class LootTrackerPanel extends PluginPanel
 			{
 				if (box.matches(record))
 				{
-					//float the matched box to the top of the UI list if it's not already first
+					// float the matched box to the top of the UI list if it's not already first
 					int idx = logsContainer.getComponentZOrder(box);
 					if (idx > 0)
 					{
