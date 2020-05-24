@@ -246,7 +246,7 @@ public interface KeyRemappingConfig extends Config
 		position = 20,
 		keyName = "space",
 		name = "Space",
-		description = "The key which will replace {Space}."
+		description = "The key which will replace {Space} when dialogs are open."
 	)
 	default ModifierlessKeybind space()
 	{
