@@ -151,7 +151,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "notificationRequestFocus",
-		name = "Request focus on notification",
+		name = "Notification focus",
 		description = "Configures the window focus request type on notification",
 		position = 21
 	)
