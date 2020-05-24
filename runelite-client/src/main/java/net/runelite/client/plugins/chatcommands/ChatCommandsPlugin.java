@@ -93,6 +93,8 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest|lap|completion) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern RAIDS_PB_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>(?:[0-9]+ players|Solo)</col> Duration:</col> <col=ff0000>([0-9:]+)</col> \\(new personal best\\)</col>");
+	private static final Pattern TOB_WAVE_PB_PATTERN = Pattern.compile("^.*Theatre of Blood wave completion time: <col=ff0000>([0-9:]+)</col> \\(Personal best!\\)");
+	private static final Pattern TOB_WAVE_DURATION_PATTERN = Pattern.compile("^.*Theatre of Blood wave completion time: <col=ff0000>[0-9:]+</col><br></col>Personal best: ([0-9:]+)");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)^(?:Fight |Lap |Challenge |Corrupted challenge )?duration: <col=ff0000>[0-9:]+</col>\\. Personal best: ([0-9:]+)");
@@ -353,6 +355,18 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		matcher = RAIDS_PB_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			matchPb(matcher);
+		}
+
+		matcher = TOB_WAVE_PB_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			matchPb(matcher);
+		}
+
+		matcher = TOB_WAVE_DURATION_PATTERN.matcher(message);
 		if (matcher.find())
 		{
 			matchPb(matcher);
