@@ -94,7 +94,7 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "ignoredEvents",
 		name = "Ignored Loot Sources",
-		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M Member)."
+		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member)."
 	)
 	default String getIgnoredEvents()
 	{
