@@ -24,9 +24,7 @@
  */
 package net.runelite.client.plugins.chathistory;
 
-import com.google.common.collect.ImmutableList;
-import java.util.HashMap;
-import java.util.List;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.Getter;
@@ -63,28 +61,30 @@ enum ChatboxTab
 		ChatMessageType.TRADE_SENT, ChatMessageType.TRADEREQ, ChatMessageType.TRADE, ChatMessageType.CHALREQ_TRADE),
 	;
 
-	private static final Map<Integer, ChatboxTab> TAB_MESSAGE_TYPES = new HashMap<>();
+	private static final Map<Integer, ChatboxTab> TAB_MESSAGE_TYPES;
 
+	private final String name;
 	@Nullable
 	private final String after;
-	private final String name;
 	private final int widgetId;
-	private final List<ChatMessageType> messageTypes;
+	private final ChatMessageType[] messageTypes;
 
 	ChatboxTab(String name, String after, WidgetInfo widgetId, ChatMessageType... messageTypes)
 	{
 		this.name = name;
 		this.after = after;
 		this.widgetId = widgetId.getId();
-		this.messageTypes = ImmutableList.copyOf(messageTypes);
+		this.messageTypes = messageTypes;
 	}
 
 	static
 	{
+		ImmutableMap.Builder<Integer, ChatboxTab> builder = ImmutableMap.builder();
 		for (ChatboxTab t : values())
 		{
-			TAB_MESSAGE_TYPES.put(t.widgetId, t);
+			builder.put(t.widgetId, t);
 		}
+		TAB_MESSAGE_TYPES = builder.build();
 	}
 
 	static ChatboxTab of(int widgetId)

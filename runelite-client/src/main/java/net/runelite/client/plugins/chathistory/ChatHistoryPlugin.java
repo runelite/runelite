@@ -268,10 +268,9 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded entry)
 	{
-		final String option = Text.removeTags(entry.getOption());
 		final ChatboxTab tab = ChatboxTab.of(entry.getActionParam1());
 
-		if (!config.clearHistory() || tab == null || !option.equals(tab.getAfter()))
+		if (tab == null || !config.clearHistory() || !Text.removeTags(entry.getOption()).equals(tab.getAfter()))
 		{
 			return;
 		}
@@ -310,7 +309,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			friends.clear();
 		}
 
-		messageQueue.removeIf(e -> tab.getMessageTypes().contains(e.getType()));
+		messageQueue.removeIf(e -> ArrayUtils.contains(tab.getMessageTypes(), e.getType()));
 	}
 
 	private void clearChatboxHistory(ChatboxTab tab)
@@ -343,8 +342,9 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		if (removed)
 		{
 			clientThread.invoke(() -> client.runScript(ScriptID.BUILD_CHATBOX));
-			clearMessageQueue(tab);
 		}
+
+		clearMessageQueue(tab);
 	}
 
 	/**
