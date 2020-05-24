@@ -36,11 +36,10 @@ import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.util.AsyncBufferedImage;
-import net.runelite.client.plugins.PluginDescriptor;
 
 @Singleton
 @Slf4j
@@ -168,7 +167,7 @@ public class InfoBoxManager
 		infoBoxes.sort((b1, b2) -> ComparisonChain
 			.start()
 			.compare(b1.getPriority(), b2.getPriority())
-			.compare(b1.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name(), b2.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name())
+			.compare(b1.getPlugin().getName(), b2.getPlugin().getName())
 			.result());
 	}
 }
