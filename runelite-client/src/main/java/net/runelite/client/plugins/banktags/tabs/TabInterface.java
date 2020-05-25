@@ -209,28 +209,32 @@ public class TabInterface
 
 		updateBounds();
 
-		upButton = createGraphic("", TabSprites.UP_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, bounds.x, 0, true);
-		upButton.setAction(1, SCROLL_UP);
-		int clickmask = upButton.getClickMask();
-		clickmask |= WidgetConfig.DRAG;
-		upButton.setClickMask(clickmask);
-		upButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(-1));
+		if (parent.getChildren() == null)
+		{
+			upButton = createGraphic("", TabSprites.UP_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, bounds.x, 0, true);
+			upButton.setAction(1, SCROLL_UP);
+			int clickmask = upButton.getClickMask();
+			clickmask |= WidgetConfig.DRAG;
+			upButton.setClickMask(clickmask);
+			upButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(-1));
 
-		downButton = createGraphic("", TabSprites.DOWN_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, bounds.x, 0, true);
-		downButton.setAction(1, SCROLL_DOWN);
-		clickmask = downButton.getClickMask();
-		clickmask |= WidgetConfig.DRAG;
-		downButton.setClickMask(clickmask);
-		downButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(1));
+			downButton = createGraphic("", TabSprites.DOWN_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, bounds.x, 0, true);
+			downButton.setAction(1, SCROLL_DOWN);
+			clickmask = downButton.getClickMask();
+			clickmask |= WidgetConfig.DRAG;
+			downButton.setClickMask(clickmask);
+			downButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(1));
 
-		newTab = createGraphic("", TabSprites.NEW_TAB.getSpriteId(), -1, TAB_WIDTH, 39, bounds.x, 0, true);
-		newTab.setAction(1, NEW_TAB);
-		newTab.setAction(2, IMPORT_TAB);
-		newTab.setAction(3, OPEN_TAB_MENU);
-		newTab.setOnOpListener((JavaScriptCallback) this::handleNewTab);
+			newTab = createGraphic("", TabSprites.NEW_TAB.getSpriteId(), -1, TAB_WIDTH, 39, bounds.x, 0, true);
+			newTab.setAction(1, NEW_TAB);
+			newTab.setAction(2, IMPORT_TAB);
+			newTab.setAction(3, OPEN_TAB_MENU);
+			newTab.setOnOpListener((JavaScriptCallback) this::handleNewTab);
 
-		tabManager.clear();
-		tabManager.getAllTabs().forEach(this::loadTab);
+			tabManager.clear();
+			tabManager.getAllTabs().forEach(this::loadTab);
+		}
+
 		activateTab(null);
 		scrollTab(0);
 
