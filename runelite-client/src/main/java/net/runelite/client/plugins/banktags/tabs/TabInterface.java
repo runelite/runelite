@@ -116,6 +116,8 @@ public class TabInterface
 	private static final String TAB_MENU_KEY = "tagtabs";
 	private static final String TAB_MENU = TAG_SEARCH + TAB_MENU_KEY;
 	private static final String OPEN_TAB_MENU = "View tag tabs";
+	private static final String SHOW_WORN = "Show worn items";
+	private static final String SHOW_SETTINGS = "Show menu";
 	private static final int TAB_HEIGHT = 40;
 	private static final int TAB_WIDTH = 39;
 	private static final int BUTTON_HEIGHT = 20;
@@ -493,10 +495,9 @@ public class TabInterface
 
 	public void update()
 	{
-		saveTab();
-
 		if (isHidden())
 		{
+			saveTab();
 			return;
 		}
 
@@ -557,35 +558,32 @@ public class TabInterface
 
 	public void saveTab()
 	{
-		if (isHidden())
+		parent = null;
+		waitSearchTick = false;
+		rememberedSearch = "";
+
+		// If bank window was just hidden, update last active tab position
+		if (currentTabIndex != config.position())
 		{
-			parent = null;
-			waitSearchTick = false;
-			rememberedSearch = "";
+			config.position(currentTabIndex);
+		}
 
-			// If bank window was just hidden, update last active tab position
-			if (currentTabIndex != config.position())
-			{
-				config.position(currentTabIndex);
-			}
-
-			// Do the same for last active tab
-			if (config.rememberTab())
-			{
-				// Prevent overwriting last active tab before tab interface is initialized once since startup
-				if (activeTab == null && !Strings.isNullOrEmpty(config.tab()) && initializedOnce)
-				{
-					config.tab("");
-				}
-				else if (activeTab != null && !activeTab.getTag().equals(config.tab()))
-				{
-					config.tab(activeTab.getTag());
-				}
-			}
-			else if (!Strings.isNullOrEmpty(config.tab()))
+		// Do the same for last active tab
+		if (config.rememberTab())
+		{
+			// Prevent overwriting last active tab before tab interface is initialized once since startup
+			if (activeTab == null && !Strings.isNullOrEmpty(config.tab()) && initializedOnce)
 			{
 				config.tab("");
 			}
+			else if (activeTab != null && !activeTab.getTag().equals(config.tab()))
+			{
+				config.tab(activeTab.getTag());
+			}
+		}
+		else if (!Strings.isNullOrEmpty(config.tab()))
+		{
+			config.tab("");
 		}
 	}
 
@@ -763,6 +761,11 @@ public class TabInterface
 			|| (event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getMenuOption().equals(TAG_GEAR))))
 		{
 			handleDeposit(event, event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
+		}
+		else if ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(SHOW_WORN))
+			|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(SHOW_SETTINGS)))
+		{
+			saveTab();
 		}
 	}
 

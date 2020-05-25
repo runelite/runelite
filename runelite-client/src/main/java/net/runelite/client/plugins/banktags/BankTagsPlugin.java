@@ -492,28 +492,15 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Subscribe
 	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
-		if (event.getWidget().getId() == WidgetInfo.BANK_CONTENT_CONTAINER.getId())
+		if (event.getWidget().getId() == WidgetInfo.BANK_CONTENT_CONTAINER.getId() && !event.isHidden())
 		{
-			if (event.isHidden())
+			clientThread.invokeLater(() ->
 			{
-				clientThread.invokeLater(() ->
+				if (tabInterface.getParent() == null)
 				{
-					if (tabInterface.getParent() != null)
-					{
-						tabInterface.saveTab();
-					}
-				});
-			}
-			else
-			{
-				clientThread.invokeLater(() ->
-				{
-					if (tabInterface.getParent() == null)
-					{
-						tabInterface.init();
-					}
-				});
-			}
+					tabInterface.init();
+				}
+			});
 		}
 	}
 
