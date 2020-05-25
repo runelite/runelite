@@ -184,7 +184,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3828, 2848, 0), new CoordinateClueInfo("East of Harmony Island.", ARMADYLIAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3225, 2838, 0), new CoordinateClueInfo("South of Desert Treasure pyramid.", ARMADYLIAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(1773, 3510, 0), new CoordinateClueInfo("Ruins north of the Hosidius mine.", ARMADYLIAN_OR_BANDOSIAN_GUARD))
-		.put(new WorldPoint(3822, 3562, 0), new CoordinateClueInfo("North-east of Dragontooth Island.", ARMADYLIAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(3822, 3562, 0), new CoordinateClueInfo("North-east of Dragontooth Island. Bring a Ghostspeak Amulet and 25 Ecto-tokens to reach the island.", ARMADYLIAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3603, 3564, 0), new CoordinateClueInfo("North of the wrecked ship, outside of Port Phasmatys.", ARMADYLIAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2936, 2721, 0), new CoordinateClueInfo("Eastern shore of Crash Island.", ARMADYLIAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2697, 2705, 0), new CoordinateClueInfo("South-west of Ape Atoll.", ARMADYLIAN_OR_BANDOSIAN_GUARD))
