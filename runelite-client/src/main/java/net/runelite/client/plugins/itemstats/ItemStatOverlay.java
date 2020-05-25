@@ -61,6 +61,9 @@ public class ItemStatOverlay extends Overlay
 	private Client client;
 
 	@Inject
+	private ItemStatPlugin plugin;
+
+	@Inject
 	private ItemManager itemManager;
 
 	@Inject
@@ -75,6 +78,11 @@ public class ItemStatOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (config.toggleableItemStats() && !plugin.isToggleableDown())
+		{
+			return null;
+		}
+
 		if (client.isMenuOpen() || (!config.relative() && !config.absolute() && !config.theoretical()))
 		{
 			return null;
