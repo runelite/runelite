@@ -1110,6 +1110,7 @@ public class TabInterface
 			child.setType(WidgetType.GRAPHIC);
 			child.setSpriteId(TabSprites.INCINERATOR.getSpriteId());
 			incinerator.revalidate();
+			child.revalidate();
 
 			bounds.setSize(TAB_WIDTH + MARGIN * 2, height - incinerator.getHeight());
 		}
