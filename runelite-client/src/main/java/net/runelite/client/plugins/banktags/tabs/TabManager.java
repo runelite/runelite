@@ -43,7 +43,7 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
 
 @Singleton
-class TabManager
+Public class TabManager
 {
 	@Getter
 	private final List<TagTab> tabs = new ArrayList<>();
