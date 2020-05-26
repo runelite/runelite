@@ -118,6 +118,7 @@ public class TabInterface
 	private static final String OPEN_TAB_MENU = "View tag tabs";
 	private static final String SHOW_WORN = "Show worn items";
 	private static final String SHOW_SETTINGS = "Show menu";
+	private static final String SHOW_TUTORIAL = "Show tutorial";
 	private static final int TAB_HEIGHT = 40;
 	private static final int TAB_WIDTH = 39;
 	private static final int BUTTON_HEIGHT = 20;
@@ -767,7 +768,8 @@ public class TabInterface
 			handleDeposit(event, event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
 		}
 		else if ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(SHOW_WORN))
-			|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(SHOW_SETTINGS)))
+			|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(SHOW_SETTINGS))
+			|| (event.getWidgetId() == WidgetInfo.BANK_TUTORIAL_BUTTON.getId() && event.getMenuOption().equals(SHOW_TUTORIAL)))
 		{
 			saveTab();
 		}
