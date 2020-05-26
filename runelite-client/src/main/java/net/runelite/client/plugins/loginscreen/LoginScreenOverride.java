@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2020, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,68 +24,36 @@
  */
 package net.runelite.client.plugins.loginscreen;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Getter;
 
-@ConfigGroup("loginscreen")
-public interface LoginScreenConfig extends Config
+public enum LoginScreenOverride
 {
-	@ConfigItem(
-		keyName = "syncusername",
-		name = "Sync username",
-		description = "Syncs the username that is currently remembered between computers"
-	)
-	default boolean syncUsername()
+	OFF,
+	NORMAL("normal.jpg"),
+	OLD("old.jpg"),
+	CHRISTMAS("christmas.jpg"),
+	CHAMBERS_OF_XERIC("cox.jpg"),
+	DRAGON_SLAYER_2("ds2.jpg"),
+	FOSSIL_ISLAND("fossil_island.jpg"),
+	HALLOWEEN("halloween.jpg"),
+	HALLOWEEN_2019("halloween_2019.jpg"),
+	INFERNO("inferno.jpg"),
+	KEBOS("kebos.jpg"),
+	MONKEY_MADNESS_2("mm2.jpg"),
+	PRIFDDINAS("prifddinas.jpg"),
+	THEATRE_OF_BLOOD("tob.jpg"),
+	CUSTOM;
+
+	@Getter
+	private final String fileName;
+
+	LoginScreenOverride()
 	{
-		return true;
+		this.fileName = null;
 	}
 
-	@ConfigItem(
-		keyName = "pasteenabled",
-		name = "Ctrl-V paste",
-		description = "Enables Ctrl+V pasting on the login screen"
-	)
-	default boolean pasteEnabled()
+	LoginScreenOverride(String fileName)
 	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "username",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String username()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "username",
-		name = "",
-		description = ""
-	)
-	void username(String key);
-
-	@ConfigItem(
-		keyName = "loginScreen",
-		name = "Custom Background",
-		description = "Force the login screen to use an image from the past instead of the current one."
-	)
-	default LoginScreenOverride loginScreen()
-	{
-		return LoginScreenOverride.OFF;
-	}
-
-	@ConfigItem(
-		keyName = "showLoginFire",
-		name = "Display Fire",
-		description = "Whether or not the fire in the braziers at the sides of the login screen should be on fire."
-	)
-	default boolean showLoginFire()
-	{
-		return true;
+		this.fileName = fileName;
 	}
 }
