@@ -86,6 +86,7 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
+import net.runelite.api.WorldType;
 
 @PluginDescriptor(
 	name = "Screenshot",
@@ -271,7 +272,7 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
-		if (config.screenshotKills() && !isAtLMS())
+		if (config.screenshotKills() && !isAtLMS() && !client.getWorldType().contains(WorldType.TOURNAMENT))
 		{
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
