@@ -34,6 +34,7 @@ import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.item.ItemEquipmentStats;
 import net.runelite.http.api.item.ItemStats;
@@ -104,6 +105,10 @@ public class ItemStatOverlayTest
 	@Mock
 	@Bind
 	ItemManager itemManager;
+
+	@Mock
+	@Bind
+	OverlayManager overlayManager;
 
 	@Before
 	public void before()
