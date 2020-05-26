@@ -1746,4 +1746,16 @@ public interface Client extends GameEngine
 	 * Sets the starting index in the item id array for GE search
 	 */
 	void setGeSearchResultIndex(int index);
+
+	/**
+	 * Sets the image to be used for the login screen, provided as SpritePixels
+	 * If the image is larger than half the width of fixed mode,
+	 * it won't get mirrored to the other side of the screen
+	 */
+	void setLoginScreen(SpritePixels pixels);
+
+	/**
+	 * Sets whether the flames on the login screen should be rendered
+	 */
+	void setShouldRenderLoginScreenFire(boolean val);
 }
