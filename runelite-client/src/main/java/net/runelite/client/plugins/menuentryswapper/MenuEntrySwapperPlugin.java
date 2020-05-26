@@ -544,6 +544,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("teleport", option, target, index);
 			}
+			if (config.swapMetamorphosis() && target.contains("baby chinchompa"))
+			{
+				swap("metamorphosis", option, target, true);
+			}
 		}
 		else if (config.swapQuickLeave() && option.equals("leave tomb") && target.equals("tomb door"))
 		{
