@@ -290,20 +290,25 @@ public class ItemManager
 	 */
 	public int getItemPrice(int itemID, boolean ignoreUntradeableMap)
 	{
-		final int realId = canonicalize(itemID);
-
-		if (realId == ItemID.COINS_995)
+		if (itemID == ItemID.COINS_995)
 		{
 			return 1;
 		}
-		if (realId == ItemID.PLATINUM_TOKEN)
+		if (itemID == ItemID.PLATINUM_TOKEN)
 		{
 			return 1000;
 		}
 
+		ItemComposition itemComposition = getItemComposition(itemID);
+		if (itemComposition.getNote() != -1)
+		{
+			itemID = itemComposition.getLinkedNoteId();
+		}
+		itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
+
 		if (!ignoreUntradeableMap)
 		{
-			UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(realId));
+			UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
 			if (p != null)
 			{
 				return getItemPrice(p.getPriceID()) * p.getQuantity();
@@ -311,7 +316,7 @@ public class ItemManager
 		}
 
 		int price = 0;
-		for (int mappedID : ItemMapping.map(realId))
+		for (int mappedID : ItemMapping.map(itemID))
 		{
 			ItemPrice ip = itemPrices.get(mappedID);
 			if (ip != null)
