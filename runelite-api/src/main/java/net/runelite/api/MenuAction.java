@@ -272,6 +272,11 @@ public enum MenuAction
 	 * Menu action for configuring runelite overlays.
 	 */
 	RUNELITE_OVERLAY_CONFIG(1502),
+	/**
+	 * Menu action injected by runelite for menu items which target
+	 * a player and have its identifier set to a player index.
+	 */
+	RUNELITE_PLAYER(1503),
 
 	/**
 	 * Menu action triggered when the id is not defined in this class.

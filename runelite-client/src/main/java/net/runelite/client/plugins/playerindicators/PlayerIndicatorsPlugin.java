@@ -124,7 +124,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 				|| type == PLAYER_SIXTH_OPTION.getId()
 				|| type == PLAYER_SEVENTH_OPTION.getId()
 				|| type == PLAYER_EIGTH_OPTION.getId()
-				|| type == RUNELITE.getId())
+				|| type == RUNELITE_PLAYER.getId())
 			{
 				Player[] players = client.getCachedPlayers();
 				Player player = null;
