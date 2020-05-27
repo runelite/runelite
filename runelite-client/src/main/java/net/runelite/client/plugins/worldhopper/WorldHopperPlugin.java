@@ -87,6 +87,7 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
+import net.runelite.http.api.worlds.WorldRegion;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 import org.apache.commons.lang3.ArrayUtils;
@@ -560,8 +561,15 @@ public class WorldHopperPlugin extends Plugin
 
 			world = worlds.get(worldIdx);
 
-			// Check world region if filter is enabled
-			if (config.quickHopRegionFilter() != RegionFilterMode.NONE && world.getRegion() != config.quickHopRegionFilter().getRegion())
+			if (!config.quickHopAURegion() && !config.quickHopDERegion()
+				&& !config.quickHopGBRegion() && !config.quickHopUSRegion())
+			{
+				return;
+			}
+			else if ((!config.quickHopAURegion() && world.getRegion() == WorldRegion.AUSTRALIA)
+				|| (!config.quickHopDERegion() && world.getRegion() == WorldRegion.GERMANY)
+				|| (!config.quickHopUSRegion() && world.getRegion() == WorldRegion.UNITED_STATES_OF_AMERICA)
+				|| (!config.quickHopGBRegion() && world.getRegion() == WorldRegion.UNITED_KINGDOM))
 			{
 				continue;
 			}
