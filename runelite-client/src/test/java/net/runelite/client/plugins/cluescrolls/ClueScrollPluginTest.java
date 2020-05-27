@@ -42,6 +42,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import org.junit.Before;
@@ -80,6 +81,10 @@ public class ClueScrollPluginTest
 	@Mock
 	@Bind
 	ItemManager itemManager;
+
+	@Mock
+	@Bind
+	WorldMapPointManager worldMapPointManager;
 
 	@Before
 	public void before()
@@ -162,5 +167,39 @@ public class ClueScrollPluginTest
 		// scene
 		verify(client, times(++clueSetupHintArrowClears)).clearHintArrow();
 		verify(client, times(1)).setHintArrow(any(WorldPoint.class));
+	}
+
+	@Test
+	public void testAlternateClueCrypticClue()
+	{
+		final Widget clueWidget = mock(Widget.class);
+		when(clueWidget.getText()).thenReturn("There is no 'worthier' lord.");
+		final Player localPlayer = mock(Player.class);
+
+		when(client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT)).thenReturn(clueWidget);
+		when(client.getPlane()).thenReturn(0);
+		when(client.getCachedNPCs()).thenReturn(new NPC[] {});
+		when(config.displayHintArrows()).thenReturn(true);
+		when(client.getIntStack()).thenReturn(new int[] {1});
+
+		plugin.onGameTick(new GameTick());
+		plugin.onGameTick(new GameTick());
+
+		// One location added to world map: one on overworld southwest of Prifddinas
+		verify(worldMapPointManager, times(1)).add(any(ClueScrollWorldMapPoint.class));
+
+		when(clueWidget.getText()).thenReturn("after having completed the quest req...");
+
+		plugin.onGameTick(new GameTick());
+
+		when(clueWidget.getText()).thenReturn("There is no 'worthier' lord.");
+		when(client.getIntStack()).thenReturn(new int[] {2});
+
+		plugin.onGameTick(new GameTick());
+		plugin.onGameTick(new GameTick());
+
+		// Two locations added to world map: one on overworld Prifddinas and the other on real Prifddinas
+		verify(worldMapPointManager, times(3)).add(any(ClueScrollWorldMapPoint.class));
+
 	}
 }

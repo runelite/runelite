@@ -60,6 +60,8 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Scene;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
@@ -90,6 +92,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -168,6 +171,9 @@ public class ClueScrollPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private ItemManager itemManager;
 
 	@Inject
@@ -199,6 +205,7 @@ public class ClueScrollPlugin extends Plugin
 	private BufferedImage mapArrow;
 	private Integer clueItemId;
 	private boolean worldMapPointsSet = false;
+
 
 	// Some objects will only update to their "active" state when changing to their plane after varbit changes,
 	// which take one extra tick to fire after the plane change. These fields are used to track those changes and delay
@@ -527,6 +534,8 @@ public class ClueScrollPlugin extends Plugin
 				client.clearHintArrow();
 			}
 
+			addMapPoints(locations);
+
 			for (WorldPoint location : locations)
 			{
 				// Only set the location hint arrow if we do not already have more accurate location
@@ -535,7 +544,6 @@ public class ClueScrollPlugin extends Plugin
 					client.setHintArrow(location);
 				}
 
-				addMapPoints(location);
 
 				if (clue instanceof ObjectClueScroll)
 				{
@@ -596,21 +604,25 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (developerMode && commandExecuted.getCommand().equals("clue"))
+		clientThread.invokeLater(() ->
 		{
-			String text = Strings.join(commandExecuted.getArguments(), " ");
+			if (developerMode && commandExecuted.getCommand().equals("clue"))
+			{
+				String text = Strings.join(commandExecuted.getArguments(), " ");
 
-			if (text.isEmpty())
-			{
-				resetClue(true);
+				if (text.isEmpty())
+				{
+					resetClue(true);
+				}
+				else
+				{
+					ClueScroll clueScroll = findClueScroll(text);
+					log.debug("Found clue scroll for '{}': {}", text, clueScroll);
+					updateClue(clueScroll);
+				}
 			}
-			else
-			{
-				ClueScroll clueScroll = findClueScroll(text);
-				log.debug("Found clue scroll for '{}': {}", text, clueScroll);
-				updateClue(clueScroll);
-			}
-		}
+		});
+
 	}
 
 	public BufferedImage getClueScrollImage()
@@ -708,10 +720,9 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		final CrypticClue crypticClue = CrypticClue.forText(text);
-
 		if (crypticClue != null)
 		{
-			return crypticClue;
+			return findCorrectClueScroll(crypticClue);
 		}
 
 		final EmoteClue emoteClue = EmoteClue.forText(text);
@@ -761,6 +772,31 @@ public class ClueScrollPlugin extends Plugin
 		log.warn("Encountered unhandled clue text: {}", rawText);
 		resetClue(true);
 		return null;
+	}
+
+	private ClueScroll findCorrectClueScroll(ClueScroll clueScroll)
+	{
+		while (clueScroll.getAlternateClue() != null)
+		{
+			if (checkQuestConditions(clueScroll.getQuestConditions()) == true)
+			{
+				return clueScroll;
+			}
+			clueScroll = clueScroll.getAlternateClue();
+		}
+		return clueScroll;
+	}
+
+	private boolean checkQuestConditions(Quest[] questConditions)
+	{
+		for (Quest quest : questConditions)
+		{
+			if (quest.getState(client) != QuestState.FINISHED)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
