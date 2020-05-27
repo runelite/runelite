@@ -288,7 +288,8 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName, "LMS Kills");
 		}
 
-		if (config.screenshotTournamentKills() && client.getWorldType().contains(WorldType.TOURNAMENT)) {
+		if (config.screenshotTournamentKills() && client.getWorldType().contains(WorldType.TOURNAMENT))
+		{
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
 			String fileName = "Kill " + name;
