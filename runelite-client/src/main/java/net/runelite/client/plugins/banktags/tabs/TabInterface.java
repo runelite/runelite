@@ -212,32 +212,28 @@ public class TabInterface
 
 		updateBounds();
 
-		if (parent.getChildren() == null)
-		{
-			upButton = createGraphic("", TabSprites.UP_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, bounds.x, 0, true);
-			upButton.setAction(1, SCROLL_UP);
-			int clickmask = upButton.getClickMask();
-			clickmask |= WidgetConfig.DRAG;
-			upButton.setClickMask(clickmask);
-			upButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(-1));
+		upButton = createGraphic("", TabSprites.UP_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, bounds.x, 0, true);
+		upButton.setAction(1, SCROLL_UP);
+		int clickmask = upButton.getClickMask();
+		clickmask |= WidgetConfig.DRAG;
+		upButton.setClickMask(clickmask);
+		upButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(-1));
 
-			downButton = createGraphic("", TabSprites.DOWN_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, bounds.x, 0, true);
-			downButton.setAction(1, SCROLL_DOWN);
-			clickmask = downButton.getClickMask();
-			clickmask |= WidgetConfig.DRAG;
-			downButton.setClickMask(clickmask);
-			downButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(1));
+		downButton = createGraphic("", TabSprites.DOWN_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, bounds.x, 0, true);
+		downButton.setAction(1, SCROLL_DOWN);
+		clickmask = downButton.getClickMask();
+		clickmask |= WidgetConfig.DRAG;
+		downButton.setClickMask(clickmask);
+		downButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(1));
 
-			newTab = createGraphic("", TabSprites.NEW_TAB.getSpriteId(), -1, TAB_WIDTH, 39, bounds.x, 0, true);
-			newTab.setAction(1, NEW_TAB);
-			newTab.setAction(2, IMPORT_TAB);
-			newTab.setAction(3, OPEN_TAB_MENU);
-			newTab.setOnOpListener((JavaScriptCallback) this::handleNewTab);
+		newTab = createGraphic("", TabSprites.NEW_TAB.getSpriteId(), -1, TAB_WIDTH, 39, bounds.x, 0, true);
+		newTab.setAction(1, NEW_TAB);
+		newTab.setAction(2, IMPORT_TAB);
+		newTab.setAction(3, OPEN_TAB_MENU);
+		newTab.setOnOpListener((JavaScriptCallback) this::handleNewTab);
 
-			tabManager.clear();
-			tabManager.getAllTabs().forEach(this::loadTab);
-		}
-
+		tabManager.clear();
+		tabManager.getAllTabs().forEach(this::loadTab);
 		activateTab(null);
 		scrollTab(0);
 
@@ -504,7 +500,17 @@ public class TabInterface
 	{
 		if (isHidden())
 		{
+			parent = null;
+			waitSearchTick = false;
+			rememberedSearch = "";
+
 			saveTab();
+			return;
+		}
+
+		// Don't continue ticking if equipment menu or bank menu is open
+		if (parent.isSelfHidden())
+		{
 			return;
 		}
 
@@ -565,10 +571,6 @@ public class TabInterface
 
 	public void saveTab()
 	{
-		parent = null;
-		waitSearchTick = false;
-		rememberedSearch = "";
-
 		// If bank window was just hidden, update last active tab position
 		if (currentTabIndex != config.position())
 		{
@@ -714,13 +716,17 @@ public class TabInterface
 	{
 		if (isHidden())
 		{
-			// In the scenario of closing worn items or settings menu while staying within the bank,
-			// running init must occur after the scenario completes to allow init to run past the isHidden check correctly
-			if ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(HIDE_WORN))
-				|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(HIDE_SETTINGS)))
+			return;
+		}
+
+		if ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(HIDE_WORN))
+			|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(HIDE_SETTINGS)))
+		{
+			clientThread.invokeLater(() ->
 			{
-				clientThread.invokeLater(this::init);
-			}
+				update(); // Open the last saved tag tab if applicable (in which case activeTab is always set to null)
+				update(); // Update the value of activeTab right afterward instead of on the next game tick
+			});
 			return;
 		}
 
@@ -776,11 +782,12 @@ public class TabInterface
 		{
 			handleDeposit(event, event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
 		}
-		else if ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(SHOW_WORN))
+		else if (activeTab != null && ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(SHOW_WORN))
 			|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(SHOW_SETTINGS))
-			|| (event.getWidgetId() == WidgetInfo.BANK_TUTORIAL_BUTTON.getId() && event.getMenuOption().equals(SHOW_TUTORIAL)))
+			|| (event.getWidgetId() == WidgetInfo.BANK_TUTORIAL_BUTTON.getId() && event.getMenuOption().equals(SHOW_TUTORIAL))))
 		{
 			saveTab();
+			rememberedSearch = TAG_SEARCH + activeTab.getTag();
 		}
 	}
 
@@ -859,7 +866,7 @@ public class TabInterface
 		{
 			return;
 		}
-		
+
 		if (client.getVar(Varbits.BANK_REARRANGE_MODE) == 0)
 		{
 			tabManager.swap(source.getName(), dest.getName());
@@ -875,7 +882,7 @@ public class TabInterface
 
 	private boolean isHidden()
 	{
-		Widget widget = client.getWidget(WidgetInfo.BANK_CONTENT_CONTAINER);
+		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
 		return !config.tabs() || widget == null || widget.isHidden();
 	}
 
