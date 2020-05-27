@@ -285,7 +285,14 @@ public class ScreenshotPlugin extends Plugin
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
 			String fileName = "Kill " + name;
-			takeScreenshot(fileName, "PvP Kills");
+			takeScreenshot(fileName, "LMS Kills");
+		}
+
+		if (config.screenshotTournamentKills() && client.getWorldType().contains(WorldType.TOURNAMENT)) {
+			final Player player = playerLootReceived.getPlayer();
+			final String name = player.getName();
+			String fileName = "Kill " + name;
+			takeScreenshot(fileName, "Tournament World Kills");
 		}
 	}
 
