@@ -279,10 +279,10 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 				}
 			}
 		}
-		if (config.loginScreen() == LoginScreenOverride.RANDOM)
+		else if (config.loginScreen() == LoginScreenOverride.RANDOM)
 		{
 
-			ArrayList<String> loginScreenOverrides = new ArrayList<String>();
+			ArrayList<String> loginScreenOverrides = new ArrayList<>();
 
 			for (LoginScreenOverride loginScreenOverride : LoginScreenOverride.values())
 			{
