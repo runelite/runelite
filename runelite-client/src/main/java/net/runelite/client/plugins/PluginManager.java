@@ -164,7 +164,7 @@ public class PluginManager
 		{
 			final Injector injector = plugin.getInjector();
 
-			for (Key<?> key : injector.getAllBindings().keySet())
+			for (Key<?> key : injector.getBindings().keySet())
 			{
 				Class<?> type = key.getTypeLiteral().getRawType();
 				if (Config.class.isAssignableFrom(type))
@@ -197,7 +197,7 @@ public class PluginManager
 		List<Config> list = new ArrayList<>();
 		for (Injector injector : injectors)
 		{
-			for (Key<?> key : injector.getAllBindings().keySet())
+			for (Key<?> key : injector.getBindings().keySet())
 			{
 				Class<?> type = key.getTypeLiteral().getRawType();
 				if (Config.class.isAssignableFrom(type))
