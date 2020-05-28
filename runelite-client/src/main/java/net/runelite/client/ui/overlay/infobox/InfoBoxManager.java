@@ -76,10 +76,7 @@ public class InfoBoxManager
 				.compare(b1.getPriority(), b2.getPriority())
 				.compare(b1.getPlugin().getName(), b2.getPlugin().getName())
 				.result());
-			if (idx < 0)
-			{
-				infoBoxes.add(-idx - 1, infoBox);
-			}
+			infoBoxes.add(idx < 0 ? -idx - 1 : idx, infoBox);
 		}
 
 		BufferedImage image = infoBox.getImage();
