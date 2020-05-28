@@ -89,7 +89,6 @@ import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.N
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
