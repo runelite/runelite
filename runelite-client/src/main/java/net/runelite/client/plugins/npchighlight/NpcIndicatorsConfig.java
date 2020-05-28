@@ -32,19 +32,8 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("npcindicators")
 public interface NpcIndicatorsConfig extends Config
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "highlightStyle",
-		name = "Highlight Style",
-		description = "Highlight setting"
-	)
-	default RenderStyle renderStyle()
-	{
-		return RenderStyle.HULL;
-	}
 
 	@ConfigItem(
-		position = 1,
 		keyName = "npcToHighlight",
 		name = "NPCs to Highlight",
 		description = "List of NPC names to highlight"
@@ -55,7 +44,6 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
 		keyName = "npcColor",
 		name = "Highlight Color",
 		description = "Color of the NPC highlight"
@@ -66,7 +54,6 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
 		keyName = "drawNames",
 		name = "Draw names above NPC",
 		description = "Configures whether or not NPC names should be drawn above the NPC"
@@ -77,7 +64,6 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not NPC names should be drawn on the minimap"
@@ -88,7 +74,6 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
 		keyName = "highlightMenuNames",
 		name = "Highlight menu names",
 		description = "Highlight NPC names in right click menu"
@@ -99,11 +84,40 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
 		keyName = "showRespawnTimer",
 		name = "Show respawn timer",
 		description = "Show respawn timer of tagged NPCs")
 	default boolean showRespawnTimer()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "highlightStyleTile",
+		name = "Highlight Style Tile",
+		description = "Highlight setting Tile"
+	)
+	default boolean renderStyleTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "highlightStyleHull",
+		name = "Highlight Style Hull",
+		description = "Highlight setting Hull"
+	)
+	default boolean renderStyleHull()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightStyleSouthWestTile",
+		name = "Highlight Style South West Tile",
+		description = "Highlight setting South West Tile"
+	)
+	default boolean renderStyleSouthWestTile()
 	{
 		return false;
 	}
