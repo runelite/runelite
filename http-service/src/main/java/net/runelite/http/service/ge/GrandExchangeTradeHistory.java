@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.ge;
+package net.runelite.http.service.ge;
 
+import java.time.Instant;
 import lombok.Data;
 
 @Data
-public class GrandExchangeTrade
+class GrandExchangeTradeHistory
 {
 	private boolean buy;
 	private int itemId;
 	private int quantity;
 	private int price;
+	private Instant time;
 }

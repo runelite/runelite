@@ -69,7 +69,7 @@ public class GrandExchangeController
 	}
 
 	@GetMapping
-	public Collection<GrandExchangeTrade> get(HttpServletRequest request, HttpServletResponse response,
+	public Collection<GrandExchangeTradeHistory> get(HttpServletRequest request, HttpServletResponse response,
 		@RequestParam(required = false, defaultValue = "1024") int limit,
 		@RequestParam(required = false, defaultValue = "0") int offset) throws IOException
 	{
@@ -85,9 +85,9 @@ public class GrandExchangeController
 			.collect(Collectors.toList());
 	}
 
-	private static GrandExchangeTrade convert(TradeEntry tradeEntry)
+	private static GrandExchangeTradeHistory convert(TradeEntry tradeEntry)
 	{
-		GrandExchangeTrade grandExchangeTrade = new GrandExchangeTrade();
+		GrandExchangeTradeHistory grandExchangeTrade = new GrandExchangeTradeHistory();
 		grandExchangeTrade.setBuy(tradeEntry.getAction() == TradeAction.BUY);
 		grandExchangeTrade.setItemId(tradeEntry.getItem());
 		grandExchangeTrade.setQuantity(tradeEntry.getQuantity());
