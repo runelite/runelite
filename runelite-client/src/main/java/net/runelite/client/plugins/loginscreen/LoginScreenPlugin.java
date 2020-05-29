@@ -290,9 +290,15 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 						.map(Path::toFile)
 						.collect(Collectors.toList());
 
-					File selectedCustomScreen = customScreens.get(random.nextInt(customScreens.size()));
-
-					pixels = getFileSpritePixels(selectedCustomScreen);
+					if (customScreens.size() > 0)
+					{
+						File selectedCustomScreen = customScreens.get(random.nextInt(customScreens.size()));
+						pixels = getFileSpritePixels(selectedCustomScreen);
+					}
+					else
+					{
+						log.error("Random Custom selected but no images were found in \"login-screen\" folder");
+					}
 				}
 				catch (IOException e)
 				{
