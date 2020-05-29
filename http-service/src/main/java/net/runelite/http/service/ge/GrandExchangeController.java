@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service.ge;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
+import net.runelite.http.service.util.redis.RedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,19 +43,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.Jedis;
 
 @RestController
 @RequestMapping("/ge")
 public class GrandExchangeController
 {
+	private static final Gson GSON = RuneLiteAPI.GSON;
+
 	private final GrandExchangeService grandExchangeService;
 	private final AuthFilter authFilter;
+	private final RedisPool redisPool;
 
 	@Autowired
-	public GrandExchangeController(GrandExchangeService grandExchangeService, AuthFilter authFilter)
+	public GrandExchangeController(GrandExchangeService grandExchangeService, AuthFilter authFilter, RedisPool redisPool)
 	{
 		this.grandExchangeService = grandExchangeService;
 		this.authFilter = authFilter;
+		this.redisPool = redisPool;
 	}
 
 	@PostMapping
@@ -75,6 +82,23 @@ public class GrandExchangeController
 		if (userId != null && (grandExchangeTrade.isCancel() || grandExchangeTrade.getQuantity() == grandExchangeTrade.getTotal()))
 		{
 			grandExchangeService.add(userId, grandExchangeTrade);
+		}
+
+		Trade trade = new Trade();
+		trade.setBuy(grandExchangeTrade.isBuy());
+		trade.setCancel(grandExchangeTrade.isCancel());
+		trade.setItemId(grandExchangeTrade.getItemId());
+		trade.setQuantity(grandExchangeTrade.getQuantity());
+		trade.setPrice(grandExchangeTrade.getPrice());
+		trade.setOffer(grandExchangeTrade.getOffer());
+		trade.setTime((int) (System.currentTimeMillis() / 1000L));
+		trade.setMachineId(request.getHeader(RuneLiteAPI.RUNELITE_MACHINEID));
+		trade.setUserId(userId);
+		trade.setIp(request.getHeader("X-Forwarded-For"));
+		String json = GSON.toJson(trade);
+		try (Jedis jedis = redisPool.getResource())
+		{
+			jedis.publish("ge", json);
 		}
 	}
 
