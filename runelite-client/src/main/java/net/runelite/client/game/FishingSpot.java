@@ -171,13 +171,13 @@ public enum FishingSpot
 	MINNOW("Minnow", ItemID.MINNOW,
 		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733
 	),
-	INFERNAL_EEL("Infernal Eel", "Leaping sturgeon", ItemID.INFERNAL_EEL,
+	INFERNAL_EEL("Infernal Eel", ItemID.INFERNAL_EEL,
 		ROD_FISHING_SPOT_7676
 	),
-	KARAMBWAN("Karambwan", "Karambwanji", ItemID.RAW_KARAMBWAN,
+	KARAMBWAN("Karambwan", ItemID.RAW_KARAMBWAN,
 		FISHING_SPOT_4712, FISHING_SPOT_4713
 	),
-	KARAMBWANJI("Karambwanji, Shrimp", ItemID.KARAMBWANJI,
+	KARAMBWANJI("Karambwanji, Shrimp", "Karambwanji", ItemID.KARAMBWANJI,
 		FISHING_SPOT_4710
 	),
 	SACRED_EEL("Sacred eel", ItemID.SACRED_EEL,
