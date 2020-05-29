@@ -87,6 +87,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 
 	private String usernameCache;
 
+	private boolean setNewRandomBackground = true; // bool prevents infinite loop in onGameStateChanged
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -133,9 +135,20 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			applyUsername();
+
+			if ((setNewRandomBackground &&
+				config.loginScreen() == LoginScreenOverride.RANDOM) ||
+				(setNewRandomBackground &&
+					config.loginScreen() == LoginScreenOverride.RANDOM_CUSTOM))
+			{
+				setNewRandomBackground = false;
+				overrideLoginScreen();
+			}
 		}
 		else if (event.getGameState() == GameState.LOGGED_IN)
 		{
+			setNewRandomBackground = true;    // So Background will be changed on logout if RANDOM OR RANDOM_CUSTOM
+
 			String username = "";
 
 			if (client.getPreferences().getRememberedUsername() != null)
@@ -252,7 +265,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		client.setShouldRenderLoginScreenFire(config.showLoginFire());
 
 		SpritePixels pixels = null;
-		Random random = new Random(System.nanoTime());
+		Random random = new Random();
 
 		switch (config.loginScreen())
 		{
@@ -371,7 +384,6 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		catch (IOException | NullPointerException e)
 		{
 			log.error("error loading custom login screen: " + file, e);
-			restoreLoginScreen();
 			return null;
 		}
 	}
