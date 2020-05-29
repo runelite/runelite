@@ -187,7 +187,7 @@
       "xp": 6218.4
     },
     {
-      "level": 57,
+      "level": 58,
       "icon": 22932,
       "name": "White lily",
       "xp": 292
@@ -239,6 +239,12 @@
       "icon": 2481,
       "name": "Lantadyme",
       "xp": 134.5
+    },
+    {
+      "level": 74,
+      "icon": 23962,
+      "name": "Crystal Tree",
+      "xp": 13366
     },
     {
       "level": 75,

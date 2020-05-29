@@ -1,0 +1,121 @@
+.id                 679
+.int_stack_count    21
+.string_stack_count 0
+.int_var_count      21
+.string_var_count   0
+   iload                  0
+   cc_deleteall          
+   iload                  0
+   iconst                 3
+   iconst                 0
+   cc_create             
+   iconst                 64
+   iconst                 64
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 16777215
+   cc_setcolour          
+   iconst                 1
+   cc_setfill            
+   iconst                 255
+   cc_settrans           
+   iload                  0
+   iconst                 4
+   iconst                 1
+   cc_create              1
+   iconst                 10
+   iconst                 15
+   iconst                 0
+   iconst                 0
+   cc_setsize             1
+   iconst                 5
+   iload                  0
+   if_getwidth           
+   iconst                 15
+   sub                   
+   randominc             
+   add                   
+   iconst                 5
+   iload                  0
+   if_getheight          
+   iconst                 20
+   sub                   
+   randominc             
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition         1
+   iconst                 1
+   iconst                 1
+   iconst                 0
+   cc_settextalign        1
+   iconst                 496
+   cc_settextfont         1
+   iconst                 16744192
+   cc_setcolour           1
+   iconst                 0
+   cc_settextshadow       1
+   sconst                 ""
+   cc_settext             1
+   iconst                 683
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iload                  1
+   clientclock           
+   iconst                 5
+   add                   
+   sconst                 "Iiii"
+   cc_setontimer          1
+   iconst                 684
+   iconst                 0
+   iconst                 -2147483645
+   iconst                 -2147483643
+   cc_getid               1
+   sconst                 "1Iii"
+   cc_setonmouserepeat   
+   iconst                 684
+   iconst                 1
+   iconst                 -2147483645
+   iconst                 -2147483643
+   cc_getid               1
+   sconst                 "1Iii"
+   cc_setonmouseleave    
+   iconst                 1
+   sconst                 "Select"
+   cc_setop              
+   iconst                 685
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   iload                  19
+   iload                  20
+   sconst                 "iiiIIIIIIIIIIIIIIIII"
+   cc_setonop
+   iload                   0 ; button component id
+   iload                   1 ; 0-9
+   sconst                 "bankpinButtonSetup"
+   runelite_callback
+   pop_int                  ; 0-9
+   pop_int                  ; button component id
+   return                

@@ -27,13 +27,14 @@ package net.runelite.client.plugins.playerindicators;
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
+import lombok.Value;
 import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.*;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
-import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.ClientTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
@@ -93,93 +94,146 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	public void onClientTick(ClientTick clientTick)
 	{
-		int type = menuEntryAdded.getType();
-
-		if (type >= 2000)
+		if (client.isMenuOpen())
 		{
-			type -= 2000;
+			return;
 		}
 
-		int identifier = menuEntryAdded.getIdentifier();
-		if (type == FOLLOW.getId() || type == TRADE.getId()
-			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
-			|| type == PLAYER_FIRST_OPTION.getId()
-			|| type == PLAYER_SECOND_OPTION.getId()
-			|| type == PLAYER_THIRD_OPTION.getId()
-			|| type == PLAYER_FOURTH_OPTION.getId()
-			|| type == PLAYER_FIFTH_OPTION.getId()
-			|| type == PLAYER_SIXTH_OPTION.getId()
-			|| type == PLAYER_SEVENTH_OPTION.getId()
-			|| type == PLAYER_EIGTH_OPTION.getId()
-			|| type == RUNELITE.getId())
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		boolean modified = false;
+
+		for (MenuEntry entry : menuEntries)
 		{
-			final Player localPlayer = client.getLocalPlayer();
-			Player[] players = client.getCachedPlayers();
-			Player player = null;
+			int type = entry.getType();
 
-			if (identifier >= 0 && identifier < players.length)
+			if (type >= MENU_ACTION_DEPRIORITIZE_OFFSET)
 			{
-				player = players[identifier];
+				type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
 			}
 
-			if (player == null)
+			if (type == WALK.getId()
+				|| type == SPELL_CAST_ON_PLAYER.getId()
+				|| type == ITEM_USE_ON_PLAYER.getId()
+				|| type == PLAYER_FIRST_OPTION.getId()
+				|| type == PLAYER_SECOND_OPTION.getId()
+				|| type == PLAYER_THIRD_OPTION.getId()
+				|| type == PLAYER_FOURTH_OPTION.getId()
+				|| type == PLAYER_FIFTH_OPTION.getId()
+				|| type == PLAYER_SIXTH_OPTION.getId()
+				|| type == PLAYER_SEVENTH_OPTION.getId()
+				|| type == PLAYER_EIGTH_OPTION.getId()
+				|| type == RUNELITE_PLAYER.getId())
 			{
-				return;
-			}
+				Player[] players = client.getCachedPlayers();
+				Player player = null;
 
-			int image = -1;
-			Color color = null;
+				int identifier = entry.getIdentifier();
 
-			if (config.highlightFriends() && player.isFriend())
-			{
-				color = config.getFriendColor();
-			}
-			else if (config.drawClanMemberNames() && player.isClanMember())
-			{
-				color = config.getClanMemberColor();
-
-				ClanMemberRank rank = clanManager.getRank(player.getName());
-				if (rank != UNRANKED)
+				// 'Walk here' identifiers are offset by 1 because the default
+				// identifier for this option is 0, which is also a player index.
+				if (type == WALK.getId())
 				{
-					image = clanManager.getIconNumber(rank);
-				}
-			}
-			else if (config.highlightTeamMembers() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
-			{
-				color = config.getTeamMemberColor();
-			}
-			else if (config.highlightNonClanMembers() && !player.isClanMember())
-			{
-				color = config.getNonClanMemberColor();
-			}
-
-			if (image != -1 || color != null)
-			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
-				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-
-				if (color != null && config.colorPlayerMenu())
-				{
-					// strip out existing <col...
-					String target = lastEntry.getTarget();
-					int idx = target.indexOf('>');
-					if (idx != -1)
-					{
-						target = target.substring(idx + 1);
-					}
-
-					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
+					identifier--;
 				}
 
-				if (image != -1 && config.showClanRanks())
+				if (identifier >= 0 && identifier < players.length)
 				{
-					lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
+					player = players[identifier];
 				}
 
-				client.setMenuEntries(menuEntries);
+				if (player == null)
+				{
+					continue;
+				}
+
+				Decorations decorations = getDecorations(player);
+
+				if (decorations == null)
+				{
+					continue;
+				}
+
+				String oldTarget = entry.getTarget();
+				String newTarget = decorateTarget(oldTarget, decorations);
+
+				entry.setTarget(newTarget);
+				modified = true;
 			}
 		}
+
+		if (modified)
+		{
+			client.setMenuEntries(menuEntries);
+		}
+	}
+
+	private Decorations getDecorations(Player player)
+	{
+		int image = -1;
+		Color color = null;
+
+		if (config.highlightFriends() && player.isFriend())
+		{
+			color = config.getFriendColor();
+		}
+		else if (config.drawClanMemberNames() && player.isClanMember())
+		{
+			color = config.getClanMemberColor();
+
+			ClanMemberRank rank = clanManager.getRank(player.getName());
+			if (rank != UNRANKED)
+			{
+				image = clanManager.getIconNumber(rank);
+			}
+		}
+		else if (config.highlightTeamMembers()
+			&& player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam())
+		{
+			color = config.getTeamMemberColor();
+		}
+		else if (config.highlightNonClanMembers() && !player.isClanMember())
+		{
+			color = config.getNonClanMemberColor();
+		}
+
+		if (image == -1 && color == null)
+		{
+			return null;
+		}
+
+		return new Decorations(image, color);
+	}
+
+	private String decorateTarget(String oldTarget, Decorations decorations)
+	{
+		String newTarget = oldTarget;
+
+		if (decorations.getColor() != null && config.colorPlayerMenu())
+		{
+			// strip out existing <col...
+			int idx = oldTarget.indexOf('>');
+			if (idx != -1)
+			{
+				newTarget = oldTarget.substring(idx + 1);
+			}
+
+			newTarget = ColorUtil.prependColorTag(newTarget, decorations.getColor());
+		}
+
+		if (decorations.getImage() != -1 && config.showClanRanks())
+		{
+			newTarget = "<img=" + decorations.getImage() + ">" + newTarget;
+		}
+
+		return newTarget;
+	}
+
+	@Value
+	private static class Decorations
+	{
+		private final int image;
+		private final Color color;
 	}
 }

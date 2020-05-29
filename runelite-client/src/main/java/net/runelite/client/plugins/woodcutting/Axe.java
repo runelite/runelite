@@ -32,7 +32,9 @@ import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
 import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
 import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
 import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
+import static net.runelite.api.AnimationID.WOODCUTTING_CRYSTAL;
 import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_GILDED;
 import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
 import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
 import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
@@ -41,13 +43,16 @@ import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
 import static net.runelite.api.ItemID.ADAMANT_AXE;
 import static net.runelite.api.ItemID.BLACK_AXE;
 import static net.runelite.api.ItemID.BRONZE_AXE;
+import static net.runelite.api.ItemID.CRYSTAL_AXE;
 import static net.runelite.api.ItemID.DRAGON_AXE;
+import static net.runelite.api.ItemID.GILDED_AXE;
 import static net.runelite.api.ItemID.INFERNAL_AXE;
 import static net.runelite.api.ItemID.IRON_AXE;
 import static net.runelite.api.ItemID.MITHRIL_AXE;
 import static net.runelite.api.ItemID.RUNE_AXE;
 import static net.runelite.api.ItemID.STEEL_AXE;
 import static net.runelite.api.ItemID._3RD_AGE_AXE;
+import net.runelite.api.Player;
 
 @AllArgsConstructor
 @Getter
@@ -60,9 +65,11 @@ enum Axe
 	MITHRIL(WOODCUTTING_MITHRIL, MITHRIL_AXE),
 	ADAMANT(WOODCUTTING_ADAMANT, ADAMANT_AXE),
 	RUNE(WOODCUTTING_RUNE, RUNE_AXE),
+	GILDED(WOODCUTTING_GILDED, GILDED_AXE),
 	DRAGON(WOODCUTTING_DRAGON, DRAGON_AXE),
 	INFERNAL(WOODCUTTING_INFERNAL, INFERNAL_AXE),
-	THIRDAGE(WOODCUTTING_3A_AXE, _3RD_AGE_AXE);
+	THIRDAGE(WOODCUTTING_3A_AXE, _3RD_AGE_AXE),
+	CRYSTAL(WOODCUTTING_CRYSTAL, CRYSTAL_AXE);
 
 	private final Integer animId;
 	private final Integer itemId;
@@ -79,6 +86,11 @@ enum Axe
 		}
 
 		AXE_ANIM_IDS = builder.build();
+	}
+
+	boolean matchesChoppingAnimation(final Player player)
+	{
+		return player != null && animId == player.getAnimation();
 	}
 
 	static Axe findAxeByAnimId(int animId)

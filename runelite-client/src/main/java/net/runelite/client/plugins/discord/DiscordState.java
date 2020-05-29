@@ -58,16 +58,14 @@ class DiscordState
 	private final DiscordService discordService;
 	private final DiscordConfig config;
 	private PartyService party;
-	private final RuneLiteProperties properties;
 	private DiscordPresence lastPresence;
 
 	@Inject
-	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party, final RuneLiteProperties properties)
+	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party)
 	{
 		this.discordService = discordService;
 		this.config = config;
 		this.party = party;
-		this.properties = properties;
 	}
 
 	/**
@@ -124,9 +122,7 @@ class DiscordState
 		}
 		else
 		{
-			// If we aren't showing the elapsed time within Discord then
-			// We null out the event start property
-			event = new EventWithTime(eventType, config.hideElapsedTime() ? null : Instant.now());
+			event = new EventWithTime(eventType, Instant.now());
 
 			events.add(event);
 		}
@@ -173,13 +169,13 @@ class DiscordState
 		}
 
 		// Replace snapshot with + to make tooltip shorter (so it will span only 1 line)
-		final String versionShortHand = properties.getVersion().replace("-SNAPSHOT", "+");
+		final String versionShortHand = RuneLiteProperties.getVersion().replace("-SNAPSHOT", "+");
 
 		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
-			.largeImageText(properties.getTitle() + " v" + versionShortHand)
-			.startTimestamp(event.getStart())
+			.largeImageText(RuneLiteProperties.getTitle() + " v" + versionShortHand)
+			.startTimestamp(config.hideElapsedTime() ? null : event.getStart())
 			.smallImageKey(imageKey)
 			.partyMax(PARTY_MAX)
 			.partySize(party.getMembers().size());
@@ -205,8 +201,26 @@ class DiscordState
 	 */
 	void checkForTimeout()
 	{
+		if (events.isEmpty())
+		{
+			return;
+		}
+
 		final Duration actionTimeout = Duration.ofMinutes(config.actionTimeout());
 		final Instant now = Instant.now();
+		final EventWithTime eventWithTime = events.get(0);
+
 		events.removeIf(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)));
+
+		assert DiscordGameEventType.IN_MENU.getState() != null;
+		if (DiscordGameEventType.IN_MENU.getState().equals(eventWithTime.getType().getState()) && now.isAfter(eventWithTime.getStart().plus(actionTimeout)))
+		{
+			final DiscordPresence presence = lastPresence
+				.toBuilder()
+				.startTimestamp(null)
+				.build();
+			lastPresence = presence;
+			discordService.updatePresence(presence);
+		}
 	}
 }

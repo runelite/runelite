@@ -725,7 +725,7 @@ public final class SpriteID
 	public static final int EMOTE_GOBLIN_SALUTE = 727;
 	public static final int EMOTE_SCARED = 728;
 	public static final int EMOTE_SLAP_HEAD = 729;
-	public static final int EMOTE_STOMP = 730;
+	public static final int EMOTE_STAMP = 730;
 	public static final int EMOTE_FLAP = 731;
 	public static final int EMOTE_IDEA = 732;
 	public static final int EMOTE_ZOMBIE_WALK = 733;
@@ -745,7 +745,7 @@ public final class SpriteID
 	public static final int EMOTE_GOBLIN_SALUTE_LOCKED = 747;
 	public static final int EMOTE_SCARED_LOCKED = 748;
 	public static final int EMOTE_SLAP_HEAD_LOCKED = 749;
-	public static final int EMOTE_STOMP_LOCKED = 750;
+	public static final int EMOTE_STAMP_LOCKED = 750;
 	public static final int EMOTE_FLAP_LOCKED = 751;
 	public static final int EMOTE_IDEA_LOCKED = 752;
 	public static final int EMOTE_ZOMBIE_WALK_LOCKED = 753;
@@ -1293,7 +1293,7 @@ public final class SpriteID
 	public static final int SPELL_REANIMATE_CROPS_DISABLED = 1327;
 	/* Unmapped: 1328~1337 */
 	public static final int WORLD_SWITCHER_WORLD_STAR_BLUE = 1338;
-	public static final int GAMEBLAST16_PROMO_BANNER = 1339;
+	public static final int HITSPLAT_DARK_GREEN_VENOM = 1339;
 	public static final int FAIRY_RING_REMOVE_FAVOURITE = 1340;
 	public static final int FAIRY_RING_ADD_FAVOURITE = 1341;
 	public static final int BANK_PLACEHOLDERS_LOCK = 1342;
@@ -1317,7 +1317,7 @@ public final class SpriteID
 	public static final int HITSPLAT_GREEN_POISON = 1360;
 	public static final int HITSPLAT_ORANGE = 1361;
 	public static final int HITSPLAT_ORANGE_DISEASE = 1362;
-	public static final int HITSPLAT_DARK_GREEN_VENOM = 1363;
+	public static final int HITSPLAT_GREY = 1363;
 	public static final int BOUNTY_HUNTER_SKIP_TARGET = 1364;
 	public static final int BOUNTY_HUNTER_SKIP_TARGET_HOVERED = 1365;
 	public static final int HOUSE_VIEWER_ROTATE_CLOCKWISE = 1366;
@@ -1564,7 +1564,11 @@ public final class SpriteID
 	public static final int MOBILE_FUNCTION_MODE_DISABLED = 1624;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_1 = 1625;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_2 = 1626;
-	/* Unmapped: 1627~1707 */
+	public static final int MOBILE_FINGER_ON_INTERFACE = 1653;
+	/* Unmapped: 1627~1701 */
+	public static final int BUTTON_FRIENDS = 1702;
+	public static final int BUTTON_IGNORES = 1703;
+	/* Unmapped: 1704~1707 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS_UNUSED = 1708;
 	/* Unmapped: 1709, 1710 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS = 1711;
@@ -1585,4 +1589,6 @@ public final class SpriteID
 	public static final int HEALTHBAR_DEFAULT_BACK_140PX = 2189;
 	public static final int HEALTHBAR_DEFAULT_FRONT_160PX = 2190;
 	public static final int HEALTHBAR_DEFAULT_BACK_160PX = 2191;
+	public static final int WIKI_DESELECTED = 2420;
+	public static final int WIKI_SELECTED = 2421;
 }

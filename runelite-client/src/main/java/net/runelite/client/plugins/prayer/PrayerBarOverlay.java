@@ -165,7 +165,7 @@ class PrayerBarOverlay extends Overlay
 			return;
 		}
 
-		if (config.hideIfOutOfCombat() && localPlayer.getHealth() == -1)
+		if (config.hideIfOutOfCombat() && localPlayer.getHealthScale() == -1)
 		{
 			showingPrayerBar = false;
 		}

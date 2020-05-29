@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.30-SNAPSHOT</version>
+		<version>1.6.18-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runelite-api</artifactId>
@@ -55,6 +55,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.12</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

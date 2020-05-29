@@ -29,6 +29,8 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
+import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
@@ -109,7 +111,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "recolorMenuHiddenItems",
 		name = "Recolor Menu Hidden Items",
-		description = "Configures whether or not hidden items in right click menu will be recolored",
+		description = "Configures whether or not hidden items in right-click menu will be recolored",
 		position = 5
 	)
 	default boolean recolorMenuHiddenItems()
@@ -123,9 +125,9 @@ public interface GroundItemsConfig extends Config
 		description = "Configures whether or not to highlight tiles containing ground items",
 		position = 6
 	)
-	default boolean highlightTiles() 
-	{ 
-		return false; 
+	default boolean highlightTiles()
+	{
+		return false;
 	}
 
 	@ConfigItem(
@@ -140,10 +142,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyTier",
+		name = "Notify >= Tier",
+		description = "Configures which price tiers will trigger a notification on drop",
+		position = 8
+	)
+	default HighlightTier notifyTier()
+	{
+		return HighlightTier.OFF;
+	}
+
+	@ConfigItem(
 		keyName = "priceDisplayMode",
 		name = "Price Display Mode",
-		description = "Configures what price types are shown alongside of ground item name",
-		position = 8
+		description = "Configures which price types are shown alongside ground item name",
+		position = 9
 	)
 	default PriceDisplayMode priceDisplayMode()
 	{
@@ -154,7 +167,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "itemHighlightMode",
 		name = "Item Highlight Mode",
 		description = "Configures how ground items will be highlighted",
-		position = 9
+		position = 10
 	)
 	default ItemHighlightMode itemHighlightMode()
 	{
@@ -165,7 +178,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "menuHighlightMode",
 		name = "Menu Highlight Mode",
 		description = "Configures what to highlight in right-click menu",
-		position = 10
+		position = 11
 	)
 	default MenuHighlightMode menuHighlightMode()
 	{
@@ -176,22 +189,11 @@ public interface GroundItemsConfig extends Config
 		keyName = "highlightValueCalculation",
 		name = "Highlight Value Calculation",
 		description = "Configures which coin value is used to determine highlight color",
-		position = 11
+		position = 12
 	)
 	default ValueCalculationMode valueCalculationMode()
 	{
 		return ValueCalculationMode.HIGHEST;
-	}
-
-	@ConfigItem(
-		keyName = "highlightOverValue2",
-		name = "Highlight > Value",
-		description = "Configures highlighted ground items over either GE or HA value",
-		position = 12
-	)
-	default int getHighlightOverValue()
-	{
-		return 0;
 	}
 
 	@ConfigItem(
@@ -343,6 +345,7 @@ public interface GroundItemsConfig extends Config
 		description = "Decrease this number if you accidentally hide ground items often. (0 = Disabled)",
 		position = 26
 	)
+	@Units(Units.MILLISECONDS)
 	default int doubleTapDelay()
 	{
 		return 250;
@@ -355,6 +358,17 @@ public interface GroundItemsConfig extends Config
 		position = 27
 	)
 	default boolean collapseEntries()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "groundItemTimers",
+		name = "Show despawn timers",
+		description = "Shows despawn timers for items you've dropped and received as loot",
+		position = 28
+	)
+	default boolean groundItemTimers()
 	{
 		return false;
 	}

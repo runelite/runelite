@@ -24,9 +24,13 @@
  */
 package net.runelite.http.service.chat;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
+import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.chat.Task;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.service.util.redis.RedisPool;
@@ -196,6 +200,33 @@ public class ChatService
 		{
 			jedis.hmset(key, duelsMap);
 			jedis.expire(key, (int) EXPIRE.getSeconds());
+		}
+	}
+
+	public LayoutRoom[] getLayout(String name)
+	{
+		String layout;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			layout = jedis.get("layout." + name);
+		}
+
+		if (layout == null)
+		{
+			return null;
+		}
+
+		List<String> roomList = Splitter.on(' ').splitToList(layout);
+		return roomList.stream()
+			.map(LayoutRoom::valueOf)
+			.toArray(LayoutRoom[]::new);
+	}
+
+	public void setLayout(String name, LayoutRoom[] rooms)
+	{
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("layout." + name, (int) EXPIRE.getSeconds(), Joiner.on(' ').join(rooms));
 		}
 	}
 }

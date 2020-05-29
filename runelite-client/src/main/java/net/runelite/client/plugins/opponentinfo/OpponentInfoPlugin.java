@@ -35,10 +35,14 @@ import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -111,15 +115,15 @@ public class OpponentInfoPlugin extends Plugin
 		final EnumSet<WorldType> worldType = client.getWorldType();
 		if (worldType.contains(WorldType.DEADMAN_TOURNAMENT))
 		{
-			hiscoreEndpoint = HiscoreEndpoint.DEADMAN_TOURNAMENT;
-		}
-		else if (worldType.contains(WorldType.SEASONAL_DEADMAN))
-		{
-			hiscoreEndpoint = HiscoreEndpoint.SEASONAL_DEADMAN;
+			hiscoreEndpoint = HiscoreEndpoint.TOURNAMENT;
 		}
 		else if (worldType.contains(WorldType.DEADMAN))
 		{
 			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
+		}
+		else if (worldType.contains(WorldType.LEAGUE))
+		{
+			hiscoreEndpoint = HiscoreEndpoint.LEAGUE;
 		}
 		else
 		{
@@ -157,6 +161,31 @@ public class OpponentInfoPlugin extends Plugin
 			{
 				lastOpponent = null;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		if (menuEntryAdded.getType() != MenuAction.NPC_SECOND_OPTION.getId()
+			|| !menuEntryAdded.getOption().equals("Attack")
+			|| !config.showOpponentsInMenu())
+		{
+			return;
+		}
+
+		int npcIndex = menuEntryAdded.getIdentifier();
+		NPC npc = client.getCachedNPCs()[npcIndex];
+		if (npc == null)
+		{
+			return;
+		}
+
+		if (npc.getInteracting() == client.getLocalPlayer() || lastOpponent == npc)
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			menuEntries[menuEntries.length - 1].setTarget("*" + menuEntryAdded.getTarget());
+			client.setMenuEntries(menuEntries);
 		}
 	}
 }

@@ -45,6 +45,7 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WallObjectSpawned;
@@ -62,7 +63,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class MiningPlugin extends Plugin
 {
 	private static final int ROCK_DISTANCE = 14;
-	private static final int MINING_GUILD_REGION = 12183;
 
 	@Inject
 	private Client client;
@@ -95,7 +95,6 @@ public class MiningPlugin extends Plugin
 	{
 		switch (event.getGameState())
 		{
-			case LOADING:
 			case HOPPING:
 				respawns.clear();
 				break;
@@ -111,6 +110,7 @@ public class MiningPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		respawns.removeIf(RockRespawn::isExpired);
 		recentlyLoggedIn = false;
 	}
 
@@ -123,12 +123,31 @@ public class MiningPlugin extends Plugin
 		}
 
 		final GameObject object = event.getGameObject();
+		final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 
 		Rock rock = Rock.getRock(object.getId());
 		if (rock != null)
 		{
-			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
+			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
 			respawns.add(rockRespawn);
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		GameObject object = event.getGameObject();
+
+		// If the Lovakite ore respawns before the timer is up, remove it
+		if (Rock.getRock(object.getId()) == Rock.LOVAKITE)
+		{
+			final WorldPoint point = object.getWorldLocation();
+			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
 		}
 	}
 
@@ -141,13 +160,14 @@ public class MiningPlugin extends Plugin
 		}
 
 		final WallObject object = event.getWallObject();
+		final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 
 		switch (object.getId())
 		{
 			case EMPTY_WALL:
 			{
 				Rock rock = Rock.AMETHYST;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
 				respawns.add(rockRespawn);
 				break;
 			}
@@ -157,7 +177,7 @@ public class MiningPlugin extends Plugin
 			case DEPLETED_VEIN_26668: // Depleted motherlode vein
 			{
 				Rock rock = Rock.ORE_VEIN;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(inMiningGuild()).toMillis(), rock.getZOffset());
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
 				respawns.add(rockRespawn);
 				break;
 			}
@@ -172,10 +192,5 @@ public class MiningPlugin extends Plugin
 				break;
 			}
 		}
-	}
-
-	private boolean inMiningGuild()
-	{
-		return client.getLocalPlayer().getWorldLocation().getRegionID() == MINING_GUILD_REGION;
 	}
 }

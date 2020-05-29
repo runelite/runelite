@@ -44,6 +44,7 @@ void main() {
   uint groupId = gl_WorkGroupID.x;
   uint localId = gl_LocalInvocationID.x;
   modelinfo minfo = ol[groupId];
+  ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId == 0) {
     min10 = 1600;
@@ -56,17 +57,20 @@ void main() {
     }
   }
 
-  memoryBarrierShared();
-  barrier();
-
-  int prio1, dis1, prio1Adj;
+  int prio1, dis1;
   ivec4 vA1, vA2, vA3;
 
-  get_face(localId, minfo, cameraYaw, cameraPitch, centerX, centerY, zoom, prio1, dis1, vA1, vA2, vA3);
+  get_face(localId, minfo, cameraYaw, cameraPitch, prio1, dis1, vA1, vA2, vA3);
 
   memoryBarrierShared();
   barrier();
 
+  add_face_prio_distance(localId, minfo, vA1, vA2, vA3, prio1, dis1, pos);
+
+  memoryBarrierShared();
+  barrier();
+
+  int prio1Adj;
   int idx1 = map_face_priority(localId, minfo, prio1, dis1, prio1Adj);
 
   memoryBarrierShared();

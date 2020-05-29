@@ -29,7 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.geom.Area;
+import java.awt.Shape;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -68,10 +68,13 @@ class AgilityOverlay extends Overlay
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
 		final List<Tile> marksOfGrace = plugin.getMarksOfGrace();
+		final Tile stickTile = plugin.getStickTile();
+
 		plugin.getObstacles().forEach((object, obstacle) ->
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
-					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay())
+					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
+					Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes())
 			{
 				return;
 			}
@@ -90,7 +93,7 @@ class AgilityOverlay extends Overlay
 					}
 					return;
 				}
-				Area objectClickbox = object.getClickbox();
+				Shape objectClickbox = object.getClickbox();
 				if (objectClickbox != null)
 				{
 					AgilityShortcut agilityShortcut = obstacle.getShortcut();
@@ -98,6 +101,11 @@ class AgilityOverlay extends Overlay
 					if (config.highlightMarks() && !marksOfGrace.isEmpty())
 					{
 						configColor = config.getMarkColor();
+					}
+
+					if (config.highlightPortals() && Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId()))
+					{
+						configColor = config.getPortalsColor();
 					}
 
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
@@ -121,21 +129,29 @@ class AgilityOverlay extends Overlay
 		{
 			for (Tile markOfGraceTile : marksOfGrace)
 			{
-				if (markOfGraceTile.getPlane() == client.getPlane() && markOfGraceTile.getItemLayer() != null
-						&& markOfGraceTile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
-				{
-					final Polygon poly = markOfGraceTile.getItemLayer().getCanvasTilePoly();
-
-					if (poly == null)
-					{
-						continue;
-					}
-
-					OverlayUtil.renderPolygon(graphics, poly, config.getMarkColor());
-				}
+				highlightTile(graphics, playerLocation, markOfGraceTile, config.getMarkColor());
 			}
 		}
 
+		if (stickTile != null && config.highlightStick())
+		{
+			highlightTile(graphics, playerLocation, stickTile, config.stickHighlightColor());
+		}
+
 		return null;
+	}
+
+	private void highlightTile(Graphics2D graphics, LocalPoint playerLocation, Tile tile, Color color)
+	{
+		if (tile.getPlane() == client.getPlane() && tile.getItemLayer() != null
+			&& tile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+		{
+			final Polygon poly = tile.getItemLayer().getCanvasTilePoly();
+
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, color);
+			}
+		}
 	}
 }

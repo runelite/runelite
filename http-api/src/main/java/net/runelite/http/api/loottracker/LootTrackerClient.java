@@ -33,13 +33,14 @@ import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
+import static net.runelite.http.api.RuneLiteAPI.JSON;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -48,20 +49,21 @@ import okhttp3.Response;
 @AllArgsConstructor
 public class LootTrackerClient
 {
-	private static final MediaType JSON = MediaType.parse("application/json");
 	private static final Gson GSON = RuneLiteAPI.GSON;
 
 	private final UUID uuid;
 
-	public void submit(LootRecord lootRecord)
+	public CompletableFuture<Void> submit(Collection<LootRecord> lootRecords)
 	{
+		CompletableFuture<Void> future = new CompletableFuture<>();
+
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("loottracker")
 			.build();
 
 		Request request = new Request.Builder()
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.post(RequestBody.create(JSON, GSON.toJson(lootRecord)))
+			.post(RequestBody.create(JSON, GSON.toJson(lootRecords)))
 			.url(url)
 			.build();
 
@@ -71,6 +73,7 @@ public class LootTrackerClient
 			public void onFailure(Call call, IOException e)
 			{
 				log.warn("unable to submit loot", e);
+				future.completeExceptionally(e);
 			}
 
 			@Override
@@ -78,11 +81,14 @@ public class LootTrackerClient
 			{
 				log.debug("Submitted loot");
 				response.close();
+				future.complete(null);
 			}
 		});
+
+		return future;
 	}
 
-	public Collection<LootRecord> get() throws IOException
+	public Collection<LootAggregate> get() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("loottracker")
@@ -102,7 +108,7 @@ public class LootTrackerClient
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), new TypeToken<List<LootRecord>>()
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), new TypeToken<List<LootAggregate>>()
 			{
 			}.getType());
 		}

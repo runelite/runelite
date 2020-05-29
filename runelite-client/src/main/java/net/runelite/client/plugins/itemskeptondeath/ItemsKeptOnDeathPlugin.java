@@ -51,7 +51,7 @@ import net.runelite.api.SkullIcon;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
-import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -61,7 +61,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemMapping;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
 	name = "Items Kept on Death",
@@ -72,6 +72,7 @@ import net.runelite.client.util.StackFormatter;
 public class ItemsKeptOnDeathPlugin extends Plugin
 {
 	private static final int DEEP_WILDY = 20;
+
 	private static final Pattern WILDERNESS_LEVEL_PATTERN = Pattern.compile("^Level: (\\d+).*");
 
 	@AllArgsConstructor
@@ -121,9 +122,9 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 	int wildyLevel;
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	public void onScriptPostFired(ScriptPostFired event)
 	{
-		if (event.getEventName().equals("itemsKeptOnDeath"))
+		if (event.getScriptId() == ScriptID.DEATH_KEEP_BUILD)
 		{
 			// The script in charge of building the Items Kept on Death interface has finished running.
 			// Make all necessary changes now.
@@ -338,7 +339,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			if (!Pets.isPet(id)
 				&& !LostIfNotProtected.isLostIfNotProtected(id)
 				&& !isTradeable(itemManager.getItemComposition(id)) && wildyLevel <= DEEP_WILDY
-				&& (wildyLevel <= 0 || BrokenOnDeathItem.isBrokenOnDeath(i.getId())))
+				&& (wildyLevel <= 0 || BrokenOnDeathItem.getRepairPrice(i.getId()) != null))
 			{
 				keptItems.add(new ItemStack(id, qty));
 			}
@@ -442,19 +443,29 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			// Grab base item price
 			exchangePrice = itemManager.getItemPrice(fixedPrice.getBaseId(), true);
 		}
-		else
+
+		// Jagex uses the repair price when determining which items are kept on death.
+		final Integer repairPrice = BrokenOnDeathItem.getRepairPrice(canonicalizedItemId);
+		if (repairPrice != null)
 		{
-			// Account for items whose death value comes from their tradeable variant (barrows) or components (ornate kits)
-			for (final int mappedID : ItemMapping.map(canonicalizedItemId))
-			{
-				exchangePrice += itemManager.getItemPrice(mappedID, true);
-			}
+			exchangePrice = repairPrice;
 		}
 
 		if (exchangePrice == 0)
 		{
-			final ItemComposition c1 = itemManager.getItemComposition(canonicalizedItemId);
-			exchangePrice = c1.getPrice();
+			// Account for items whose death value comes from their tradeable variant (barrows) or components (ornate kits)
+			// ItemMapping.map will always return a collection with at least the passed ID
+			for (final int mappedID : ItemMapping.map(canonicalizedItemId))
+			{
+				exchangePrice += itemManager.getItemPrice(mappedID, true);
+			}
+
+			// If for some reason it still has no price default to the items store price
+			if (exchangePrice == 0)
+			{
+				final ItemComposition c1 = itemManager.getItemComposition(canonicalizedItemId);
+				exchangePrice = c1.getPrice();
+			}
 		}
 
 		// Apply fixed price offset
@@ -560,7 +571,7 @@ public class ItemsKeptOnDeathPlugin extends Plugin
 			total += (long) price * w.getItemQuantity();
 		}
 		final Widget lostValue = client.getWidget(WidgetInfo.ITEMS_LOST_VALUE);
-		lostValue.setText(StackFormatter.quantityToStackSize(total) + " gp");
+		lostValue.setText(QuantityFormatter.quantityToStackSize(total) + " gp");
 
 		// Update Max items kept
 		final Widget max = client.getWidget(WidgetInfo.ITEMS_KEPT_MAX);

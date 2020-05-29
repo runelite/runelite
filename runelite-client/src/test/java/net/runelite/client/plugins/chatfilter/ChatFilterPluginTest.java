@@ -29,8 +29,15 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.IterableHashTable;
+import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.client.game.ClanManager;
+import static net.runelite.client.plugins.chatfilter.ChatFilterPlugin.CENSOR_MESSAGE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -39,8 +46,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChatFilterPluginTest
@@ -55,6 +63,9 @@ public class ChatFilterPluginTest
 
 	@Mock
 	@Bind
+	private ClanManager clanManager;
+
+	@Mock
 	private Player localPlayer;
 
 	@Inject
@@ -68,7 +79,41 @@ public class ChatFilterPluginTest
 		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
 		when(chatFilterConfig.filteredWords()).thenReturn("");
 		when(chatFilterConfig.filteredRegex()).thenReturn("");
+		when(chatFilterConfig.filteredNames()).thenReturn("");
 		when(client.getLocalPlayer()).thenReturn(localPlayer);
+	}
+
+	private ScriptCallbackEvent createCallbackEvent(final String sender, final String chatMessage, final ChatMessageType messageType)
+	{
+		ScriptCallbackEvent event = new ScriptCallbackEvent();
+		event.setScript(null);
+		event.setEventName("chatFilterCheck");
+		int[] simulatedIntStack =
+			new int[]{1, messageType.getType(), 1}; // is msg allowed to show, ChatMessageType.PUBLICCHAT, message id
+		String[] simulatedStringStack = new String[]{chatMessage};
+		IterableHashTable<MessageNode> messageTable = mock(IterableHashTable.class);
+		MessageNode mockedMsgNode = mockMessageNode(sender);
+		when(client.getIntStack()).thenReturn(simulatedIntStack);
+		when(client.getIntStackSize()).thenReturn(simulatedIntStack.length);
+		when(client.getStringStack()).thenReturn(simulatedStringStack);
+		when(client.getStringStackSize()).thenReturn(simulatedStringStack.length);
+		when(client.getMessages()).thenReturn(messageTable);
+		when(messageTable.get(1)).thenReturn(mockedMsgNode);
+		return event;
+	}
+
+	private MessageNode mockMessageNode(String sender)
+	{
+		MessageNode node = mock(MessageNode.class);
+		when(node.getName()).thenReturn(sender);
+		return node;
+	}
+
+	private MessageNode mockMessageNode(int id)
+	{
+		MessageNode node = mock(MessageNode.class);
+		when(node.getId()).thenReturn(id);
+		return node;
 	}
 
 	@Test
@@ -77,7 +122,7 @@ public class ChatFilterPluginTest
 		when(chatFilterConfig.filteredWords()).thenReturn("hat");
 
 		chatFilterPlugin.updateFilteredPatterns();
-		assertEquals("w***s up", chatFilterPlugin.censorMessage("whats up"));
+		assertEquals("w***s up", chatFilterPlugin.censorMessage("Blue", "whats up"));
 	}
 
 	@Test
@@ -87,7 +132,7 @@ public class ChatFilterPluginTest
 		when(chatFilterConfig.filteredRegex()).thenReturn("5[0-9]x2\n(");
 
 		chatFilterPlugin.updateFilteredPatterns();
-		assertNull(chatFilterPlugin.censorMessage("55X2 Dicing | Trusted Ranks | Huge Pay Outs!"));
+		assertNull(chatFilterPlugin.censorMessage("Blue", "55X2 Dicing | Trusted Ranks | Huge Pay Outs!"));
 	}
 
 	@Test
@@ -96,7 +141,7 @@ public class ChatFilterPluginTest
 		when(chatFilterConfig.filteredRegex()).thenReturn("Test\n)\n73");
 
 		chatFilterPlugin.updateFilteredPatterns();
-		assertEquals("** isn't funny", chatFilterPlugin.censorMessage("73 isn't funny"));
+		assertEquals("** isn't funny", chatFilterPlugin.censorMessage("Blue", "73 isn't funny"));
 	}
 
 	@Test
@@ -106,8 +151,7 @@ public class ChatFilterPluginTest
 		when(chatFilterConfig.filteredWords()).thenReturn("ReGeX!!!");
 
 		chatFilterPlugin.updateFilteredPatterns();
-		assertEquals("Hey, everyone, I just tried to say something very silly!",
-			chatFilterPlugin.censorMessage("I love regex!!!!!!!!"));
+		assertEquals(CENSOR_MESSAGE, chatFilterPlugin.censorMessage("Blue", "I love regex!!!!!!!!"));
 	}
 
 	@Test
@@ -117,13 +161,23 @@ public class ChatFilterPluginTest
 		when(chatFilterConfig.filteredWords()).thenReturn("test");
 
 		chatFilterPlugin.updateFilteredPatterns();
-		assertNull(chatFilterPlugin.censorMessage("te\u008Cst"));
+		assertNull(chatFilterPlugin.censorMessage("Blue", "te\u008Cst"));
+	}
+
+	@Test
+	public void testReplayedMessage()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		when(chatFilterConfig.filteredWords()).thenReturn("hello osrs");
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertNull(chatFilterPlugin.censorMessage("Blue", "hello\u00A0osrs"));
 	}
 
 	@Test
 	public void testMessageFromFriendIsFiltered()
 	{
-		when(client.isFriended("Iron Mammal", false)).thenReturn(true);
+		when(clanManager.isClanMember("Iron Mammal")).thenReturn(false);
 		when(chatFilterConfig.filterFriends()).thenReturn(true);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Iron Mammal"));
 	}
@@ -139,7 +193,7 @@ public class ChatFilterPluginTest
 	@Test
 	public void testMessageFromClanIsFiltered()
 	{
-		when(client.isClanMember("B0aty")).thenReturn(true);
+		when(client.isFriended("B0aty", false)).thenReturn(false);
 		when(chatFilterConfig.filterClan()).thenReturn(true);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
 	}
@@ -147,7 +201,7 @@ public class ChatFilterPluginTest
 	@Test
 	public void testMessageFromClanIsNotFiltered()
 	{
-		when(client.isClanMember("B0aty")).thenReturn(true);
+		when(clanManager.isClanMember("B0aty")).thenReturn(true);
 		when(chatFilterConfig.filterClan()).thenReturn(false);
 		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
 	}
@@ -163,7 +217,169 @@ public class ChatFilterPluginTest
 	public void testMessageFromNonFriendNonClanIsFiltered()
 	{
 		when(client.isFriended("Woox", false)).thenReturn(false);
-		when(client.isClanMember("Woox")).thenReturn(false);
+		when(clanManager.isClanMember("Woox")).thenReturn(false);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Woox"));
+	}
+
+	@Test
+	public void testShouldFilterByName()
+	{
+		when(chatFilterConfig.filteredNames()).thenReturn("Gamble [0-9]*");
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertTrue(chatFilterPlugin.shouldFilterByName("Gamble 1234"));
+		assertFalse(chatFilterPlugin.shouldFilterByName("Adam"));
+	}
+
+	@Test
+	public void testCensorWordsByName()
+	{
+		when(chatFilterConfig.filteredNames()).thenReturn("Blue");
+		chatFilterPlugin.updateFilteredPatterns();
+		assertEquals("************", chatFilterPlugin.censorMessage("Blue", "Gamble today"));
+	}
+
+	@Test
+	public void textCensorMessageByName()
+	{
+		when(chatFilterConfig.filteredNames()).thenReturn("Blue");
+		chatFilterPlugin.updateFilteredPatterns();
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_MESSAGE);
+		assertEquals(CENSOR_MESSAGE,
+			chatFilterPlugin.censorMessage("Blue", "Meet swampletics, my morytania locked ultimate ironman"));
+	}
+
+	@Test
+	public void testRemoveMessageByName()
+	{
+		when(chatFilterConfig.filteredNames()).thenReturn("Blue");
+		chatFilterPlugin.updateFilteredPatterns();
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		assertNull(
+			chatFilterPlugin.censorMessage("Blue", "What about now it's time to rock with the biggity buck bumble"));
+	}
+
+	@Test
+	public void testEventRemoveByName()
+	{
+		when(chatFilterConfig.filteredNames()).thenReturn("Gamble [0-9]*");
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+
+		chatFilterPlugin.updateFilteredPatterns();
+		ScriptCallbackEvent event = createCallbackEvent("Gamble 1234", "filterme", ChatMessageType.PUBLICCHAT);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+		assertEquals(0, client.getIntStack()[client.getIntStackSize() - 3]);
+	}
+
+	@Test
+	public void testEventRemoveByText()
+	{
+		when(chatFilterConfig.filteredWords()).thenReturn("filterme");
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+
+		chatFilterPlugin.updateFilteredPatterns();
+		ScriptCallbackEvent event = createCallbackEvent("Adam", "please filterme plugin", ChatMessageType.PUBLICCHAT);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+		assertEquals(0, client.getIntStack()[client.getIntStackSize() - 3]);
+	}
+
+	@Test
+	public void testEventCensorWordsByName()
+	{
+		when(chatFilterConfig.filteredNames()).thenReturn("Gamble [0-9]*");
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
+
+		chatFilterPlugin.updateFilteredPatterns();
+		ScriptCallbackEvent event = createCallbackEvent("Gamble 1234", "filterme", ChatMessageType.PUBLICCHAT);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+		assertEquals("********", client.getStringStack()[client.getStringStackSize() - 1]);
+	}
+
+	@Test
+	public void testEventCensorWordsByText()
+	{
+		when(chatFilterConfig.filteredWords()).thenReturn("filterme");
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
+
+		chatFilterPlugin.updateFilteredPatterns();
+		ScriptCallbackEvent event = createCallbackEvent("Adam", "please filterme plugin", ChatMessageType.PUBLICCHAT);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+		assertEquals("please ******** plugin", client.getStringStack()[client.getStringStackSize() - 1]);
+	}
+
+	@Test
+	public void testEventCensorMessageByName()
+	{
+		when(chatFilterConfig.filteredNames()).thenReturn("Gamble [0-9]*");
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_MESSAGE);
+
+		chatFilterPlugin.updateFilteredPatterns();
+		ScriptCallbackEvent event = createCallbackEvent("Gamble 1234", "filterme", ChatMessageType.PUBLICCHAT);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+		assertEquals(CENSOR_MESSAGE, client.getStringStack()[client.getStringStackSize() - 1]);
+	}
+
+	@Test
+	public void testEventCensorMessageByText()
+	{
+		when(chatFilterConfig.filteredWords()).thenReturn("filterme");
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_MESSAGE);
+
+		chatFilterPlugin.updateFilteredPatterns();
+		ScriptCallbackEvent event = createCallbackEvent("Adam", "please filterme plugin", ChatMessageType.PUBLICCHAT);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+		assertEquals(CENSOR_MESSAGE, client.getStringStack()[client.getStringStackSize() - 1]);
+	}
+
+	@Test
+	public void testDuplicateChatFiltered()
+	{
+		when(chatFilterConfig.collapseGameChat()).thenReturn(true);
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(0), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
+		ScriptCallbackEvent event = createCallbackEvent(null, "testMessage", ChatMessageType.GAMEMESSAGE);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+
+		assertEquals(0, client.getIntStack()[client.getIntStackSize() - 3]);
+	}
+
+	@Test
+	public void testNoDuplicate()
+	{
+		when(chatFilterConfig.collapseGameChat()).thenReturn(true);
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
+		ScriptCallbackEvent event = createCallbackEvent(null, "testMessage", ChatMessageType.GAMEMESSAGE);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+
+		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]);
+		assertEquals("testMessage", client.getStringStack()[client.getStringStackSize() - 1]);
+	}
+
+	@Test
+	public void testDuplicateChatCount()
+	{
+		when(chatFilterConfig.collapseGameChat()).thenReturn(true);
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(4), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(3), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(2), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
+		ScriptCallbackEvent event = createCallbackEvent(null, "testMessage", ChatMessageType.GAMEMESSAGE);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+
+		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]);
+		assertEquals("testMessage (4)", client.getStringStack()[client.getStringStackSize() - 1]);
+	}
+
+	@Test
+	public void publicChatFilteredOnDuplicate()
+	{
+		when(chatFilterConfig.collapsePlayerChat()).thenReturn(true);
+		when(chatFilterConfig.maxRepeatedPublicChats()).thenReturn(2);
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1), ChatMessageType.PUBLICCHAT, "testName", "testMessage", null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1), ChatMessageType.PUBLICCHAT, "testName", "testMessage", null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1), ChatMessageType.PUBLICCHAT, "testName", "testMessage", null, 0));
+		ScriptCallbackEvent event = createCallbackEvent("testName", "testMessage", ChatMessageType.PUBLICCHAT);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+
+		assertEquals(0, client.getIntStack()[client.getIntStackSize() - 3]);
 	}
 }

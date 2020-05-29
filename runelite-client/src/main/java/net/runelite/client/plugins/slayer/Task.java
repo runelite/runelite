@@ -26,8 +26,11 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
@@ -76,7 +79,6 @@ enum Task
 	DARK_BEASTS("Dark beasts", ItemID.DARK_BEAST, "Night beast"),
 	DARK_WARRIORS("Dark warriors", ItemID.BLACK_MED_HELM, "Dark warrior"),
 	DERANGED_ARCHAEOLOGIST("Deranged Archaeologist", ItemID.ARCHAEOLOGISTS_DIARY),
-	DESERT_LIZARDS("Desert lizards", ItemID.DESERT_LIZARD, 4, ItemID.ICE_COOLER, "Small lizard", "Lizard"),
 	DOGS("Dogs", ItemID.GUARD_DOG, "Jackal"),
 	DRAKES("Drakes", ItemID.DRAKE),
 	DUST_DEVILS("Dust devils", ItemID.DUST_DEVIL, "Choke devil"),
@@ -121,6 +123,7 @@ enum Task
 	KURASK("Kurask", ItemID.KURASK),
 	ROGUES("Rogues", ItemID.ROGUE_MASK, "Rogue"),
 	LESSER_DEMONS("Lesser demons", ItemID.LESSER_DEMON_MASK),
+	LIZARDS("Lizards", ItemID.DESERT_LIZARD, "Desert lizard", "Sulphur lizard", "Small lizard", "Lizard"),
 	LIZARDMEN("Lizardmen", ItemID.LIZARDMAN_FANG, "Lizardman"),
 	MINIONS_OF_SCABARAS("Minions of scabaras", ItemID.GOLDEN_SCARAB, "Scarab swarm", "Locust rider", "Scarab mage"),
 	MINOTAURS("Minotaurs", ItemID.ENSOULED_MINOTAUR_HEAD),
@@ -142,6 +145,7 @@ enum Task
 	CHAOS_DRUIDS("Chaos druids", ItemID.ELDER_CHAOS_HOOD, "Elder Chaos druid", "Chaos druid"),
 	BANDITS("Bandits", ItemID.BANDIT, "Bandit"),
 	MAGIC_AXES("Magic axes", ItemID.IRON_BATTLEAXE, "Magic axe"),
+	SARACHNIS("Sarachnis", ItemID.SRARACHA),
 	SCORPIONS("Scorpions", ItemID.ENSOULED_SCORPION_HEAD),
 	SEA_SNAKES("Sea snakes", ItemID.SNAKE_CORPSE),
 	SHADES("Shades", ItemID.SHADE_ROBE_TOP, "Loar Shadow", "Loar Shade", "Phrin Shadow", "Phrin Shade", "Riyl Shadow", "Riyl Shade", "Asyn Shadow", "Asyn Shade", "Fiyr Shadow", "Fiyr Shade"),
@@ -154,12 +158,14 @@ enum Task
 	STEEL_DRAGONS("Steel dragons", ItemID.STEEL_DRAGON),
 	SULPHUR_LIZARDS("Sulphur Lizards", ItemID.SULPHUR_LIZARD),
 	SUQAHS("Suqahs", ItemID.SUQAH_TOOTH),
+	TEMPLE_SPIDERS("Temple Spiders", ItemID.RED_SPIDERS_EGGS),
 	TERROR_DOGS("Terror dogs", ItemID.TERROR_DOG),
 	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL),
 	TROLLS("Trolls", ItemID.TROLL_GUARD),
 	TUROTH("Turoth", ItemID.TUROTH),
 	TZHAAR("Tzhaar", ItemID.ENSOULED_TZHAAR_HEAD),
-	VAMPIRES("Vampires", ItemID.STAKE),
+	UNDEAD_DRUIDS("Undead Druids", ItemID.MASK_OF_RANUL),
+	VAMPYRES("Vampyres", ItemID.STAKE, "Vyrewatch", "Vampire"),
 	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING),
 	VETION("Vet'ion", ItemID.VETION_JR),
 	VORKATH("Vorkath", ItemID.VORKI),
@@ -175,6 +181,50 @@ enum Task
 	//</editor-fold>
 
 	private static final Map<String, Task> tasks;
+	static final List<String> LOCATIONS = ImmutableList.of(
+		"", // no location is a valid location
+		"Abyss",
+		"Ancient Cavern",
+		"Asgarnian Ice Dungeon",
+		"Brimhaven Dungeon",
+		"Brine Rat Cavern",
+		"Catacombs of Kourend",
+		"Chasm of Fire",
+		"Clan Wars",
+		"Death Plateau",
+		"Evil Chicken's Lair",
+		"Fossil Island",
+		"Forthos Dungeon",
+		"Fremennik Slayer Dungeon",
+		"God Wars Dungeon",
+		"Iorwerth Dungeon",
+		"Jormungand's Prison",
+		"Kalphite Lair",
+		"Karuulm Slayer Dungeon",
+		"Keldagrim",
+		"Kraken Cove",
+		"Lighthouse",
+		"Lithkren Vault",
+		"Lizardman Canyon",
+		"Lizardman Settlement",
+		"Molch",
+		"Mount Quidamortem",
+		"Mourner Tunnels",
+		"Ogre Enclave",
+		"Slayer Tower",
+		"Smoke Devil Dungeon",
+		"Smoke Dungeon",
+		"Stronghold of Security",
+		"Stronghold Slayer Dungeon",
+		"task-only Kalphite Cave",
+		"Taverley Dungeon",
+		"Troll Stronghold",
+		"Waterbirth Island",
+		"Waterfall Dungeon",
+		"Wilderness",
+		"Witchaven Dungeon",
+		"Zanaris"
+	);
 
 	private final String name;
 	private final int itemSpriteId;
@@ -228,6 +278,7 @@ enum Task
 		this.expectedKillExp = expectedKillExp;
 	}
 
+	@Nullable
 	static Task getTask(String taskName)
 	{
 		return tasks.get(taskName.toLowerCase());

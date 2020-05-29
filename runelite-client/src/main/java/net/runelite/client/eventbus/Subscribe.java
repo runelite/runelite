@@ -38,4 +38,5 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Subscribe
 {
+	float priority() default 0;
 }

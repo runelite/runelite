@@ -30,7 +30,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.awt.Shape;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
@@ -71,7 +71,7 @@ public class TargetClickboxOverlay extends Overlay
 
 	private void renderTargetOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
-		Polygon objectClickbox = actor.getConvexHull();
+		Shape objectClickbox = actor.getConvexHull();
 		if (objectClickbox != null)
 		{
 			graphics.setColor(color);

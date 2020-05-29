@@ -28,10 +28,22 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
+	@ConfigItem(
+		keyName = "showClickboxes",
+		name = "Show Clickboxes",
+		description = "Show agility course obstacle clickboxes",
+		position = 0
+	)
+	default boolean showClickboxes()
+	{
+		return true;
+	}
+
 	@ConfigItem(
 		keyName = "showLapCount",
 		name = "Show Lap Count",
@@ -45,20 +57,43 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "lapTimeout",
-		name = "Hide Lap Count (minutes)",
+		name = "Hide Lap Count",
 		description = "Time until the lap counter hides/resets",
 		position = 2
 	)
+	@Units(Units.MINUTES)
 	default int lapTimeout()
 	{
 		return 5;
 	}
 
 	@ConfigItem(
+		keyName = "lapsToLevel",
+		name = "Show Laps Until Goal",
+		description = "Show number of laps remaining until next goal is reached.",
+		position = 3
+	)
+	default boolean lapsToLevel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "lapsPerHour",
+		name = "Show Laps Per Hour",
+		description = "Shows how many laps you can expect to complete per hour.",
+		position = 4
+	)
+	default boolean lapsPerHour()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "overlayColor",
 		name = "Overlay Color",
 		description = "Color of Agility overlay",
-		position = 3
+		position = 5
 	)
 	default Color getOverlayColor()
 	{
@@ -69,7 +104,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightMarks",
 		name = "Highlight Marks of Grace",
 		description = "Enable/disable the highlighting of retrievable Marks of Grace",
-		position = 4
+		position = 6
 	)
 	default boolean highlightMarks()
 	{
@@ -80,7 +115,7 @@ public interface AgilityConfig extends Config
 		keyName = "markHighlight",
 		name = "Mark Highlight Color",
 		description = "Color of highlighted Marks of Grace",
-		position = 5
+		position = 7
 	)
 	default Color getMarkColor()
 	{
@@ -88,10 +123,32 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highlightPortals",
+		name = "Highlight Portals",
+		description = "Enable/disable the highlighting of Prifddinas portals",
+		position = 8
+	)
+	default boolean highlightPortals()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "portalsHighlight",
+		name = "Portals Highlight Color",
+		description = "Color of highlighted Prifddinas portals",
+		position = 9
+	)
+	default Color getPortalsColor()
+	{
+		return Color.MAGENTA;
+	}
+
+	@ConfigItem(
 		keyName = "highlightShortcuts",
 		name = "Highlight Agility Shortcuts",
 		description = "Enable/disable the highlighting of Agility shortcuts",
-		position = 6
+		position = 10
 	)
 	default boolean highlightShortcuts()
 	{
@@ -102,7 +159,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapOverlay",
 		name = "Show Trap Overlay",
 		description = "Enable/disable the highlighting of traps on Agility courses",
-		position = 7
+		position = 11
 	)
 	default boolean showTrapOverlay()
 	{
@@ -113,7 +170,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapHighlight",
 		name = "Trap Overlay Color",
 		description = "Color of Agility trap overlay",
-		position = 8
+		position = 12
 	)
 	default Color getTrapColor()
 	{
@@ -124,7 +181,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaNotifier",
 		name = "Agility Arena notifier",
 		description = "Notify on ticket location change in Agility Arena",
-		position = 9
+		position = 13
 	)
 	default boolean notifyAgilityArena()
 	{
@@ -135,10 +192,32 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaTimer",
 		name = "Agility Arena timer",
 		description = "Configures whether Agility Arena timer is displayed",
-		position = 10
+		position = 14
 	)
 	default boolean showAgilityArenaTimer()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightStick",
+		name = "Highlight Stick",
+		description = "Highlight the retrievable stick in the Werewolf Agility Course",
+		position = 13
+	)
+	default boolean highlightStick()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "stickHighlightColor",
+		name = "Stick Highlight Color",
+		description = "Color of highlighted stick",
+		position = 14
+	)
+	default Color stickHighlightColor()
+	{
+		return Color.RED;
 	}
 }

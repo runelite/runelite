@@ -87,7 +87,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.LEGENDS_QUEST));
 		add("Enter the Magic Guild.",
 			new SkillRequirement(Skill.MAGIC, 66));
-		add("Attempt to steal from King Lathas' chest.",
+		add("Attempt to steal from a chest in Ardougne Castle.",
 			new SkillRequirement(Skill.THIEVING, 72));
 		add("Have a zookeeper put you in Ardougne Zoo's monkey cage.",
 			new QuestRequirement(Quest.MONKEY_MADNESS_I, true));
@@ -109,7 +109,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.LEGENDS_QUEST));
 		add("Craft some Death runes.",
 			new SkillRequirement(Skill.RUNECRAFT, 65),
-			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_II));
+			new QuestRequirement(Quest.MOURNINGS_END_PART_II));
 
 		// ELITE
 		add("Catch a Manta ray in the Fishing Trawler and cook it in Port Khazard.",

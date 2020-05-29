@@ -39,6 +39,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +48,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MotherlodePluginTest
@@ -87,6 +88,10 @@ public class MotherlodePluginTest
 	@Bind
 	private ScheduledExecutorService scheduledExecutorService;
 
+	@Mock
+	@Bind
+	private OverlayManager overlayManager;
+
 	@Before
 	public void before()
 	{
@@ -111,12 +116,12 @@ public class MotherlodePluginTest
 		// Create before inventory
 		ItemContainer inventory = mock(ItemContainer.class);
 		Item[] items = new Item[]{
-			mockItem(ItemID.RUNITE_ORE, 1),
-			mockItem(ItemID.GOLDEN_NUGGET, 4),
-			mockItem(ItemID.COAL, 1),
-			mockItem(ItemID.COAL, 1),
-			mockItem(ItemID.COAL, 1),
-			mockItem(ItemID.COAL, 1),
+			item(ItemID.RUNITE_ORE, 1),
+			item(ItemID.GOLDEN_NUGGET, 4),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
 
 		};
 		when(inventory.getItems())
@@ -130,16 +135,16 @@ public class MotherlodePluginTest
 		inventory = mock(ItemContainer.class);
 		// +1 rune, +4 nugget, +2 coal, +1 addy
 		items = new Item[]{
-			mockItem(ItemID.RUNITE_ORE, 1),
-			mockItem(ItemID.RUNITE_ORE, 1),
-			mockItem(ItemID.GOLDEN_NUGGET, 8),
-			mockItem(ItemID.COAL, 1),
-			mockItem(ItemID.COAL, 1),
-			mockItem(ItemID.COAL, 1),
-			mockItem(ItemID.COAL, 1),
-			mockItem(ItemID.COAL, 1),
-			mockItem(ItemID.COAL, 1),
-			mockItem(ItemID.ADAMANTITE_ORE, 1),
+			item(ItemID.RUNITE_ORE, 1),
+			item(ItemID.RUNITE_ORE, 1),
+			item(ItemID.GOLDEN_NUGGET, 8),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.ADAMANTITE_ORE, 1),
 
 		};
 		when(inventory.getItems())
@@ -156,11 +161,8 @@ public class MotherlodePluginTest
 		verifyNoMoreInteractions(motherlodeSession);
 	}
 
-	private static Item mockItem(int itemId, int quantity)
+	private static Item item(int itemId, int quantity)
 	{
-		Item item = mock(Item.class);
-		when(item.getId()).thenReturn(itemId);
-		when(item.getQuantity()).thenReturn(quantity);
-		return item;
+		return new Item(itemId, quantity);
 	}
 }

@@ -25,7 +25,6 @@
 package net.runelite.client.plugins;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
@@ -39,6 +38,11 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
 import java.io.IOException;
+import java.lang.invoke.CallSite;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -49,6 +53,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -57,20 +62,21 @@ import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
+import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.util.GameEventManager;
+import net.runelite.client.util.ReflectUtil;
 
 @Singleton
 @Slf4j
@@ -89,8 +95,6 @@ public class PluginManager
 	private final Provider<GameEventManager> sceneTileManager;
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
-	private final String runeliteGroupName = RuneLiteConfig.class
-			.getAnnotation(ConfigGroup.class).value();
 
 	@Setter
 	boolean isOutdated;
@@ -127,50 +131,73 @@ public class PluginManager
 
 	private void refreshPlugins()
 	{
-		loadDefaultPluginConfiguration();
-		getPlugins()
-			.forEach(plugin -> executor.submit(() ->
+		loadDefaultPluginConfiguration(null);
+		SwingUtilities.invokeLater(() ->
+		{
+			for (Plugin plugin : getPlugins())
 			{
 				try
 				{
-					if (!startPlugin(plugin))
+					if (isPluginEnabled(plugin) != activePlugins.contains(plugin))
 					{
-						stopPlugin(plugin);
+						if (activePlugins.contains(plugin))
+						{
+							stopPlugin(plugin);
+						}
+						else
+						{
+							startPlugin(plugin);
+						}
 					}
 				}
 				catch (PluginInstantiationException e)
 				{
-					log.warn("Error during starting/stopping plugin {}. {}", plugin.getClass().getSimpleName(), e);
+					log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
 				}
-			}));
+			}
+		});
 	}
 
 	public Config getPluginConfigProxy(Plugin plugin)
 	{
-		final Injector injector = plugin.getInjector();
-
-		for (Key<?> key : injector.getAllBindings().keySet())
+		try
 		{
-			Class<?> type = key.getTypeLiteral().getRawType();
-			if (Config.class.isAssignableFrom(type))
+			final Injector injector = plugin.getInjector();
+
+			for (Key<?> key : injector.getBindings().keySet())
 			{
-				return (Config) injector.getInstance(key);
+				Class<?> type = key.getTypeLiteral().getRawType();
+				if (Config.class.isAssignableFrom(type))
+				{
+					return (Config) injector.getInstance(key);
+				}
 			}
 		}
-
+		catch (ThreadDeath e)
+		{
+			throw e;
+		}
+		catch (Throwable e)
+		{
+			log.warn("Unable to get plugin config", e);
+		}
 		return null;
 	}
 
-	public List<Config> getPluginConfigProxies()
+	public List<Config> getPluginConfigProxies(Collection<Plugin> plugins)
 	{
 		List<Injector> injectors = new ArrayList<>();
-		injectors.add(RuneLite.getInjector());
-		getPlugins().forEach(pl -> injectors.add(pl.getInjector()));
+		if (plugins == null)
+		{
+			injectors.add(RuneLite.getInjector());
+			plugins = getPlugins();
+		}
+		plugins.forEach(pl -> injectors.add(pl.getInjector()));
 
 		List<Config> list = new ArrayList<>();
 		for (Injector injector : injectors)
 		{
-			for (Key<?> key : injector.getAllBindings().keySet())
+			for (Key<?> key : injector.getBindings().keySet())
 			{
 				Class<?> type = key.getTypeLiteral().getRawType();
 				if (Config.class.isAssignableFrom(type))
@@ -184,66 +211,91 @@ public class PluginManager
 		return list;
 	}
 
-	public void loadDefaultPluginConfiguration()
+	public void loadDefaultPluginConfiguration(Collection<Plugin> plugins)
 	{
-		for (Object config : getPluginConfigProxies())
+		try
 		{
-			configManager.setDefaultConfiguration(config, false);
+			for (Object config : getPluginConfigProxies(plugins))
+			{
+				configManager.setDefaultConfiguration(config, false);
+			}
+		}
+		catch (ThreadDeath e)
+		{
+			throw e;
+		}
+		catch (Throwable ex)
+		{
+			log.warn("Unable to reset plugin configuration", ex);
 		}
 	}
 
-	public void loadCorePlugins() throws IOException
-	{
-		plugins.addAll(scanAndInstantiate(getClass().getClassLoader(), PLUGIN_PACKAGE));
-	}
-
-	public void startCorePlugins()
+	public void startPlugins()
 	{
 		List<Plugin> scannedPlugins = new ArrayList<>(plugins);
+		int loaded = 0;
 		for (Plugin plugin : scannedPlugins)
 		{
 			try
 			{
-				startPlugin(plugin);
+				SwingUtilities.invokeAndWait(() ->
+				{
+					try
+					{
+						startPlugin(plugin);
+					}
+					catch (PluginInstantiationException ex)
+					{
+						log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
+						plugins.remove(plugin);
+					}
+				});
 			}
-			catch (PluginInstantiationException ex)
+			catch (InterruptedException | InvocationTargetException e)
 			{
-				log.warn("Unable to start plugin {}. {}", plugin.getClass().getSimpleName(), ex);
-				plugins.remove(plugin);
+				throw new RuntimeException(e);
 			}
+
+			loaded++;
+			SplashScreen.stage(.80, 1, null, "Starting plugins", loaded, scannedPlugins.size(), false);
 		}
 	}
 
-	List<Plugin> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
+	public void loadCorePlugins() throws IOException, PluginInstantiationException
+	{
+		SplashScreen.stage(.59, null, "Loading Plugins");
+		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
+
+		List<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
+			.map(ClassInfo::load)
+			.collect(Collectors.toList());
+
+		loadPlugins(plugins, (loaded, total) ->
+			SplashScreen.stage(.60, .70, null, "Loading Plugins", loaded, total, false));
+	}
+
+	public List<Plugin> loadPlugins(List<Class<?>> plugins, BiConsumer<Integer, Integer> onPluginLoaded) throws PluginInstantiationException
 	{
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
 			.directed()
 			.build();
 
-		List<Plugin> scannedPlugins = new ArrayList<>();
-		ClassPath classPath = ClassPath.from(classLoader);
-
-		ImmutableSet<ClassInfo> classes = packageName == null ? classPath.getAllClasses()
-			: classPath.getTopLevelClassesRecursive(packageName);
-		for (ClassInfo classInfo : classes)
+		for (Class<?> clazz : plugins)
 		{
-			Class<?> clazz = classInfo.load();
 			PluginDescriptor pluginDescriptor = clazz.getAnnotation(PluginDescriptor.class);
 
 			if (pluginDescriptor == null)
 			{
 				if (clazz.getSuperclass() == Plugin.class)
 				{
-					log.warn("Class {} is a plugin, but has no plugin descriptor",
-							clazz);
+					log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
 				}
 				continue;
 			}
 
 			if (clazz.getSuperclass() != Plugin.class)
 			{
-				log.warn("Class {} has plugin descriptor, but is not a plugin",
-						clazz);
+				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
 				continue;
 			}
 
@@ -274,33 +326,43 @@ public class PluginManager
 
 		if (Graphs.hasCycle(graph))
 		{
-			throw new RuntimeException("Plugin dependency graph contains a cycle!");
+			throw new PluginInstantiationException("Plugin dependency graph contains a cycle!");
 		}
 
 		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
 		sortedPlugins = Lists.reverse(sortedPlugins);
 
+		int loaded = 0;
+		List<Plugin> newPlugins = new ArrayList<>();
 		for (Class<? extends Plugin> pluginClazz : sortedPlugins)
 		{
 			Plugin plugin;
 			try
 			{
-				plugin = instantiate(scannedPlugins, (Class<Plugin>) pluginClazz);
+				plugin = instantiate(this.plugins, (Class<Plugin>) pluginClazz);
+				newPlugins.add(plugin);
+				this.plugins.add(plugin);
 			}
 			catch (PluginInstantiationException ex)
 			{
 				log.warn("Error instantiating plugin!", ex);
-				continue;
 			}
 
-			scannedPlugins.add(plugin);
+			loaded++;
+			if (onPluginLoaded != null)
+			{
+				onPluginLoaded.accept(loaded, sortedPlugins.size());
+			}
 		}
 
-		return scannedPlugins;
+		return newPlugins;
 	}
 
-	public synchronized boolean startPlugin(Plugin plugin) throws PluginInstantiationException
+	public boolean startPlugin(Plugin plugin) throws PluginInstantiationException
 	{
+		// plugins always start in the EDT
+		assert SwingUtilities.isEventDispatchThread();
+
 		if (activePlugins.contains(plugin) || !isPluginEnabled(plugin))
 		{
 			return false;
@@ -310,18 +372,7 @@ public class PluginManager
 
 		try
 		{
-			// plugins always start in the event thread
-			SwingUtilities.invokeAndWait(() ->
-			{
-				try
-				{
-					plugin.startUp();
-				}
-				catch (Exception ex)
-				{
-					throw new RuntimeException(ex);
-				}
-			});
+			plugin.startUp();
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
 			if (!isOutdated && sceneTileManager != null)
@@ -337,7 +388,11 @@ public class PluginManager
 			schedule(plugin);
 			eventBus.post(new PluginChanged(plugin, true));
 		}
-		catch (InterruptedException | InvocationTargetException | IllegalArgumentException ex)
+		catch (ThreadDeath e)
+		{
+			throw e;
+		}
+		catch (Throwable ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
@@ -345,38 +400,27 @@ public class PluginManager
 		return true;
 	}
 
-	public synchronized boolean stopPlugin(Plugin plugin) throws PluginInstantiationException
+	public boolean stopPlugin(Plugin plugin) throws PluginInstantiationException
 	{
-		if (!activePlugins.contains(plugin) || isPluginEnabled(plugin))
+		// plugins always stop in the EDT
+		assert SwingUtilities.isEventDispatchThread();
+
+		if (!activePlugins.remove(plugin))
 		{
 			return false;
 		}
 
-		activePlugins.remove(plugin);
+		unschedule(plugin);
+		eventBus.unregister(plugin);
 
 		try
 		{
-			unschedule(plugin);
-			eventBus.unregister(plugin);
-
-			// plugins always stop in the event thread
-			SwingUtilities.invokeAndWait(() ->
-			{
-				try
-				{
-					plugin.shutDown();
-				}
-				catch (Exception ex)
-				{
-					throw new RuntimeException(ex);
-				}
-			});
+			plugin.shutDown();
 
 			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
 			eventBus.post(new PluginChanged(plugin, false));
-
 		}
-		catch (InterruptedException | InvocationTargetException ex)
+		catch (Exception ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
@@ -387,13 +431,13 @@ public class PluginManager
 	public void setPluginEnabled(Plugin plugin, boolean enabled)
 	{
 		final String keyName = plugin.getClass().getSimpleName().toLowerCase();
-		configManager.setConfiguration(runeliteGroupName, keyName, String.valueOf(enabled));
+		configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, keyName, String.valueOf(enabled));
 	}
 
 	public boolean isPluginEnabled(Plugin plugin)
 	{
 		final String keyName = plugin.getClass().getSimpleName().toLowerCase();
-		final String value = configManager.getConfiguration(runeliteGroupName, keyName);
+		final String value = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, keyName);
 
 		if (value != null)
 		{
@@ -421,30 +465,52 @@ public class PluginManager
 		Plugin plugin;
 		try
 		{
-			plugin = clazz.newInstance();
+			plugin = clazz.getDeclaredConstructor().newInstance();
 		}
-		catch (InstantiationException | IllegalAccessException ex)
+		catch (ThreadDeath e)
+		{
+			throw e;
+		}
+		catch (Throwable ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
 
 		try
 		{
-			Module pluginModule = (Binder binder) ->
+			Injector parent = RuneLite.getInjector();
+
+			if (deps.size() > 1)
 			{
-				binder.bind(clazz).toInstance(plugin);
-				binder.install(plugin);
+				List<Module> modules = new ArrayList<>(deps.size());
 				for (Plugin p : deps)
 				{
-					Module p2 = (Binder binder2) ->
+					// Create a module for each dependency
+					Module module = (Binder binder) ->
 					{
-						binder2.bind((Class<Plugin>) p.getClass()).toInstance(p);
-						binder2.install(p);
+						binder.bind((Class<Plugin>) p.getClass()).toInstance(p);
+						binder.install(p);
 					};
-					binder.install(p2);
+					modules.add(module);
 				}
+
+				// Create a parent injector containing all of the dependencies
+				parent = parent.createChildInjector(modules);
+			}
+			else if (!deps.isEmpty())
+			{
+				// With only one dependency we can simply use its injector
+				parent = deps.get(0).injector;
+			}
+
+			// Create injector for the module
+			Module pluginModule = (Binder binder) ->
+			{
+				// Since the plugin itself is a module, it won't bind itself, so we'll bind it here
+				binder.bind(clazz).toInstance(plugin);
+				binder.install(plugin);
 			};
-			Injector pluginInjector = RuneLite.getInjector().createChildInjector(pluginModule);
+			Injector pluginInjector = parent.createChildInjector(pluginModule);
 			pluginInjector.injectMembers(plugin);
 			plugin.injector = pluginInjector;
 		}
@@ -457,12 +523,12 @@ public class PluginManager
 		return plugin;
 	}
 
-	void add(Plugin plugin)
+	public void add(Plugin plugin)
 	{
 		plugins.add(plugin);
 	}
 
-	void remove(Plugin plugin)
+	public void remove(Plugin plugin)
 	{
 		plugins.remove(plugin);
 	}
@@ -483,7 +549,30 @@ public class PluginManager
 				continue;
 			}
 
-			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin);
+			Runnable runnable = null;
+			try
+			{
+				final Class<?> clazz = method.getDeclaringClass();
+				final MethodHandles.Lookup caller = ReflectUtil.privateLookupIn(clazz);
+				final MethodType subscription = MethodType.methodType(method.getReturnType(), method.getParameterTypes());
+				final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
+				final CallSite site = LambdaMetafactory.metafactory(
+					caller,
+					"run",
+					MethodType.methodType(Runnable.class, clazz),
+					subscription,
+					target,
+					subscription);
+
+				final MethodHandle factory = site.getTarget();
+				runnable = (Runnable) factory.bindTo(plugin).invokeExact();
+			}
+			catch (Throwable e)
+			{
+				log.warn("Unable to create lambda for method {}", method, e);
+			}
+
+			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, plugin, runnable);
 			log.debug("Scheduled task {}", scheduledMethod);
 
 			scheduler.addScheduledMethod(scheduledMethod);
@@ -508,6 +597,7 @@ public class PluginManager
 
 	/**
 	 * Topologically sort a graph. Uses Kahn's algorithm.
+	 *
 	 * @param graph
 	 * @param <T>
 	 * @return

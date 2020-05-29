@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
+
 /**
  * Represents the template of a specific item type.
  */
@@ -129,13 +131,38 @@ public interface ItemComposition
 	/**
 	 * Sets the menu action index of the shift-click action.
 	 *
-	 * @param shiftclickActionIndex the new index of the shift-click action
+	 * @param shiftClickActionIndex the new index of the shift-click action
 	 */
-	void setShiftClickActionIndex(int shiftclickActionIndex);
+	void setShiftClickActionIndex(int shiftClickActionIndex);
 
 	/**
 	 * Resets the menu action index of the shift-click action to its
 	 * default value.
 	 */
 	void resetShiftClickActionIndex();
+
+	/**
+	 * Gets the model ID of the inventory item.
+	 *
+	 * @return the model ID
+	 */
+	int getInventoryModel();
+
+	/**
+	 * Since the client reuses item models, it stores colors that can be replaced.
+	 * This returns what colors the item model will be replaced with.
+	 *
+	 * @return the colors to replace with
+	 */
+	@Nullable
+	short[] getColorToReplaceWith();
+
+	/**
+	 * Since the client reuses item models, it stores textures that can be replaced.
+	 * This returns what textures the item model will be replaced with.
+	 *
+	 * @return the textures to replace with
+	 */
+	@Nullable
+	short[] getTextureToReplaceWith();
 }

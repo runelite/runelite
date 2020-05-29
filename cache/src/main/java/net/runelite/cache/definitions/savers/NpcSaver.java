@@ -47,45 +47,45 @@ public class NpcSaver
 			out.writeByte(2);
 			out.writeString(npc.name);
 		}
-		if (npc.tileSpacesOccupied != 1)
+		if (npc.size != 1)
 		{
 			out.writeByte(12);
-			out.writeByte(npc.tileSpacesOccupied);
+			out.writeByte(npc.size);
 		}
-		if (npc.stanceAnimation != -1)
+		if (npc.standingAnimation != -1)
 		{
 			out.writeByte(13);
-			out.writeShort(npc.stanceAnimation);
+			out.writeShort(npc.standingAnimation);
 		}
-		if (npc.walkAnimation != -1)
+		if (npc.walkingAnimation != -1)
 		{
 			out.writeByte(14);
-			out.writeShort(npc.walkAnimation);
+			out.writeShort(npc.walkingAnimation);
 		}
-		if (npc.anInt2165 != -1)
+		if (npc.rotateLeftAnimation != -1)
 		{
 			out.writeByte(15);
-			out.writeShort(npc.anInt2165);
+			out.writeShort(npc.rotateLeftAnimation);
 		}
-		if (npc.anInt2189 != -1)
+		if (npc.rotateRightAnimation != -1)
 		{
 			out.writeByte(16);
-			out.writeShort(npc.anInt2189);
+			out.writeShort(npc.rotateRightAnimation);
 		}
 		if (npc.rotate180Animation != -1 || npc.rotate90LeftAnimation != -1 || npc.rotate90RightAnimation != -1)
 		{
 			out.writeByte(17);
-			out.writeShort(npc.walkAnimation);
+			out.writeShort(npc.walkingAnimation);
 			out.writeShort(npc.rotate180Animation);
 			out.writeShort(npc.rotate90RightAnimation);
 			out.writeShort(npc.rotate90LeftAnimation);
 		}
 		for (int i = 0; i < 5; ++i)
 		{
-			if (npc.options[i] != null)
+			if (npc.actions[i] != null)
 			{
 				out.writeByte(30 + i);
-				out.writeString(npc.options[i]);
+				out.writeString(npc.actions[i]);
 			}
 		}
 		if (npc.recolorToFind != null && npc.recolorToReplace != null)
@@ -108,16 +108,16 @@ public class NpcSaver
 				out.writeShort(npc.retextureToReplace[i]);
 			}
 		}
-		if (npc.models_2 != null)
+		if (npc.chatheadModels != null)
 		{
 			out.writeByte(60);
-			out.writeByte(npc.models_2.length);
-			for (int modelId : npc.models_2)
+			out.writeByte(npc.chatheadModels.length);
+			for (int modelId : npc.chatheadModels)
 			{
 				out.writeShort(modelId);
 			}
 		}
-		if (!npc.renderOnMinimap)
+		if (!npc.isMinimapVisible)
 		{
 			out.writeByte(93);
 		}
@@ -127,9 +127,9 @@ public class NpcSaver
 			out.writeShort(npc.combatLevel);
 		}
 		out.writeByte(97);
-		out.writeShort(npc.resizeX);
+		out.writeShort(npc.widthScale);
 		out.writeByte(98);
-		out.writeShort(npc.resizeY);
+		out.writeShort(npc.heightScale);
 		if (npc.hasRenderPriority)
 		{
 			out.writeByte(99);
@@ -144,23 +144,23 @@ public class NpcSaver
 			out.writeShort(npc.headIcon);
 		}
 		out.writeByte(103);
-		out.writeShort(npc.rotation);
-		if (!npc.isClickable)
+		out.writeShort(npc.rotationSpeed);
+		if (!npc.isInteractable)
 		{
 			out.writeByte(107);
 		}
-		if (!npc.aBool2170)
+		if (!npc.rotationFlag)
 		{
 			out.writeByte(109);
 		}
-		if (npc.aBool2190)
+		if (npc.isPet)
 		{
 			out.writeByte(111);
 		}
 		if (npc.configs != null)
 		{
 			out.writeByte(118);
-			out.writeShort(npc.varbitIndex);
+			out.writeShort(npc.varbitId);
 			out.writeShort(npc.varpIndex);
 
 			int[] c = npc.configs;

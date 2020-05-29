@@ -27,11 +27,24 @@ package net.runelite.client.input;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.client.util.HotkeyListener;
 
 @Singleton
 public class KeyManager
 {
+	private final Client client;
+
+	@Inject
+	private KeyManager(@Nullable final Client client)
+	{
+		this.client = client;
+	}
+
 	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
 
 	public void registerKeyListener(KeyListener keyListener)
@@ -49,25 +62,89 @@ public class KeyManager
 
 	public void processKeyPressed(KeyEvent keyEvent)
 	{
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
+			if (!shouldProcess(keyListener))
+			{
+				continue;
+			}
+
 			keyListener.keyPressed(keyEvent);
+			if (keyEvent.isConsumed())
+			{
+				break;
+			}
 		}
 	}
 
 	public void processKeyReleased(KeyEvent keyEvent)
 	{
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
+			if (!shouldProcess(keyListener))
+			{
+				continue;
+			}
+
 			keyListener.keyReleased(keyEvent);
+			if (keyEvent.isConsumed())
+			{
+				break;
+			}
 		}
 	}
 
 	public void processKeyTyped(KeyEvent keyEvent)
 	{
+		if (keyEvent.isConsumed())
+		{
+			return;
+		}
+
 		for (KeyListener keyListener : keyListeners)
 		{
+			if (!shouldProcess(keyListener))
+			{
+				continue;
+			}
+
 			keyListener.keyTyped(keyEvent);
+			if (keyEvent.isConsumed())
+			{
+				break;
+			}
 		}
+	}
+
+	private boolean shouldProcess(final KeyListener keyListener)
+	{
+		if (client == null)
+		{
+			return true;
+		}
+
+		if (!(keyListener instanceof HotkeyListener))
+		{
+			return true;
+		}
+
+		final HotkeyListener hotkeyListener = (HotkeyListener) keyListener;
+
+		if (hotkeyListener.isEnabledOnLogin())
+		{
+			return true;
+		}
+
+		return client.getGameState() != GameState.LOGIN_SCREEN;
 	}
 }

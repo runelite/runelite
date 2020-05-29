@@ -33,26 +33,25 @@ import javax.inject.Inject;
 import static net.runelite.api.AnimationID.SMITHING_CANNONBALL;
 import static net.runelite.api.AnimationID.SMITHING_SMELTING;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class SmeltingOverlay extends Overlay
+class SmeltingOverlay extends OverlayPanel
 {
-	private static final int SMELT_TIMEOUT = 5;
+	private static final int SMELT_TIMEOUT = 7;
+	static final String SMELTING_RESET = "Reset";
 
 	private final Client client;
 	private final SmeltingPlugin plugin;
 	private final XpTrackerService xpTrackerService;
-
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	SmeltingOverlay(Client client, SmeltingPlugin plugin, XpTrackerService xpTrackerService)
@@ -63,6 +62,7 @@ class SmeltingOverlay extends Overlay
 		this.xpTrackerService = xpTrackerService;
 		setPosition(OverlayPosition.TOP_LEFT);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Smelting overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, SMELTING_RESET, "Smelting overlay"));
 	}
 
 	@Override
@@ -73,8 +73,6 @@ class SmeltingOverlay extends Overlay
 		{
 			return null;
 		}
-
-		panelComponent.getChildren().clear();
 
 		if (isSmelting() || Duration.between(session.getLastItemSmelted(), Instant.now()).getSeconds() < SMELT_TIMEOUT)
 		{
@@ -117,7 +115,7 @@ class SmeltingOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 
 	}
 

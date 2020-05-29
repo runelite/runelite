@@ -27,6 +27,7 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import java.awt.image.BufferedImage;
 
@@ -35,6 +36,12 @@ class TransportationPoint extends WorldMapPoint
 	TransportationPoint(TransportationPointLocation data, BufferedImage icon)
 	{
 		super(data.getLocation(), icon);
+		final WorldPoint target = data.getTarget();
+		if (target != null)
+		{
+			setTarget(target);
+			setJumpOnClick(true);
+		}
 		setTooltip(data.getTooltip());
 	}
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
@@ -28,12 +28,15 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
@@ -41,6 +44,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -69,6 +74,7 @@ class SkillCalculator extends JPanel
 	private final IconTextField searchBar = new IconTextField();
 
 	private SkillData skillData;
+	private Skill currentSkill;
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
@@ -88,6 +94,7 @@ class SkillCalculator extends JPanel
 		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.addClearListener(e -> onSearch());
 		searchBar.addKeyListener(e -> onSearch());
 
 		setLayout(new DynamicGridLayout(0, 1, 0, 5));
@@ -107,39 +114,64 @@ class SkillCalculator extends JPanel
 
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
+
+		// Register focus listeners to calculate xp when exiting a text field
+		uiInput.getUiFieldCurrentLevel().addFocusListener(buildFocusAdapter(e -> onFieldCurrentLevelUpdated()));
+		uiInput.getUiFieldCurrentXP().addFocusListener(buildFocusAdapter(e -> onFieldCurrentXPUpdated()));
+		uiInput.getUiFieldTargetLevel().addFocusListener(buildFocusAdapter(e -> onFieldTargetLevelUpdated()));
+		uiInput.getUiFieldTargetXP().addFocusListener(buildFocusAdapter(e -> onFieldTargetXPUpdated()));
 	}
 
 	void openCalculator(CalculatorType calculatorType)
 	{
-		// Load the skill data.
-		skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
-
-		// Reset the XP factor, removing bonuses.
-		xpFactor = 1.0f;
-
 		// Update internal skill/XP values.
 		currentXP = client.getSkillExperience(calculatorType.getSkill());
 		currentLevel = Experience.getLevelForXp(currentXP);
-		targetLevel = enforceSkillBounds(currentLevel + 1);
-		targetXP = Experience.getXpForLevel(targetLevel);
 
-		// Remove all components (action slots) from this panel.
-		removeAll();
+		if (currentSkill != calculatorType.getSkill())
+		{
+			currentSkill = calculatorType.getSkill();
 
-		// Clear the search bar
-		searchBar.setText(null);
+			// Load the skill data.
+			skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
 
-		// Add in checkboxes for available skill bonuses.
-		renderBonusOptions();
+			// Reset the XP factor, removing bonuses.
+			xpFactor = 1.0f;
 
-		// Add the combined action slot.
-		add(combinedActionSlot);
+			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
+			int endGoal = client.getVar(endGoalVarp);
+			if (endGoal != -1)
+			{
+				targetLevel = Experience.getLevelForXp(endGoal);
+				targetXP = endGoal;
+			}
+			else
+			{
+				targetLevel = enforceSkillBounds(currentLevel + 1);
+				targetXP = Experience.getXpForLevel(targetLevel);
+			}
 
-		// Add the search bar
-		add(searchBar);
+			// Remove all components (action slots) from this panel.
+			removeAll();
 
-		// Create action slots for the skill actions.
-		renderActionSlots();
+			// Clear the search bar
+			searchBar.setText(null);
+
+			// Clear the combined action slots
+			clearCombinedSlots();
+
+			// Add in checkboxes for available skill bonuses.
+			renderBonusOptions();
+
+			// Add the combined action slot.
+			add(combinedActionSlot);
+
+			// Add the search bar
+			add(searchBar);
+
+			// Create action slots for the skill actions.
+			renderActionSlots();
+		}
 
 		// Update the input fields.
 		updateInputFields();
@@ -335,10 +367,14 @@ class SkillCalculator extends JPanel
 			targetXP = Experience.getXpForLevel(targetLevel);
 		}
 
+		final String cXP = String.format("%,d", currentXP);
+		final String tXP = String.format("%,d", targetXP);
+		final String nXP = String.format("%,d", targetXP - currentXP);
 		uiInput.setCurrentLevelInput(currentLevel);
-		uiInput.setCurrentXPInput(currentXP);
+		uiInput.setCurrentXPInput(cXP);
 		uiInput.setTargetLevelInput(targetLevel);
-		uiInput.setTargetXPInput(targetXP);
+		uiInput.setTargetXPInput(tXP);
+		uiInput.setNeededXP(nXP + " XP required to reach target XP");
 		calculate();
 	}
 
@@ -409,4 +445,70 @@ class SkillCalculator extends JPanel
 		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
 	}
 
+	private FocusAdapter buildFocusAdapter(Consumer<FocusEvent> focusLostConsumer)
+	{
+		return new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				focusLostConsumer.accept(e);
+			}
+		};
+	}
+
+	private static VarPlayer endGoalVarpForSkill(final Skill skill)
+	{
+		switch (skill)
+		{
+			case ATTACK:
+				return VarPlayer.ATTACK_GOAL_END;
+			case MINING:
+				return VarPlayer.MINING_GOAL_END;
+			case WOODCUTTING:
+				return VarPlayer.WOODCUTTING_GOAL_END;
+			case DEFENCE:
+				return VarPlayer.DEFENCE_GOAL_END;
+			case MAGIC:
+				return VarPlayer.MAGIC_GOAL_END;
+			case RANGED:
+				return VarPlayer.RANGED_GOAL_END;
+			case HITPOINTS:
+				return VarPlayer.HITPOINTS_GOAL_END;
+			case AGILITY:
+				return VarPlayer.AGILITY_GOAL_END;
+			case STRENGTH:
+				return VarPlayer.STRENGTH_GOAL_END;
+			case PRAYER:
+				return VarPlayer.PRAYER_GOAL_END;
+			case SLAYER:
+				return VarPlayer.SLAYER_GOAL_END;
+			case FISHING:
+				return VarPlayer.FISHING_GOAL_END;
+			case RUNECRAFT:
+				return VarPlayer.RUNECRAFT_GOAL_END;
+			case HERBLORE:
+				return VarPlayer.HERBLORE_GOAL_END;
+			case FIREMAKING:
+				return VarPlayer.FIREMAKING_GOAL_END;
+			case CONSTRUCTION:
+				return VarPlayer.CONSTRUCTION_GOAL_END;
+			case HUNTER:
+				return VarPlayer.HUNTER_GOAL_END;
+			case COOKING:
+				return VarPlayer.COOKING_GOAL_END;
+			case FARMING:
+				return VarPlayer.FARMING_GOAL_END;
+			case CRAFTING:
+				return VarPlayer.CRAFTING_GOAL_END;
+			case SMITHING:
+				return VarPlayer.SMITHING_GOAL_END;
+			case THIEVING:
+				return VarPlayer.THIEVING_GOAL_END;
+			case FLETCHING:
+				return VarPlayer.FLETCHING_GOAL_END;
+			default:
+				throw new IllegalArgumentException();
+		}
+	}
 }

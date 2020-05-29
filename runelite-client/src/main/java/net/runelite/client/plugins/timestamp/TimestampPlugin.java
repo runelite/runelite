@@ -37,7 +37,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -105,7 +105,7 @@ public class TimestampPlugin extends Plugin
 
 		int messageId = intStack[intStackSize - 1];
 
-		MessageNode messageNode = (MessageNode) client.getMessages().get(messageId);
+		MessageNode messageNode = client.getMessages().get(messageId);
 
 		String timestamp = generateTimestamp(messageNode.getTimestamp(), ZoneId.systemDefault()) + " ";
 

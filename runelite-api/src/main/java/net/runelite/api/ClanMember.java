@@ -30,13 +30,6 @@ package net.runelite.api;
 public interface ClanMember extends ChatPlayer
 {
 	/**
-	 * Gets the username of the member.
-	 *
-	 * @return the username
-	 */
-	String getUsername();
-
-	/**
 	 * Gets the world the member is in.
 	 *
 	 * @return the world

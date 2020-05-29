@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("xpglobes")
 public interface XpGlobesConfig extends Config
@@ -45,10 +46,43 @@ public interface XpGlobesConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showXpLeft",
+		name = "Show XP Left",
+		description = "Shows XP Left inside the globe tooltip box",
+		position = 1
+	)
+	default boolean showXpLeft()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showActionsLeft",
+		name = "Show actions left",
+		description = "Shows the number of actions left inside the globe tooltip box",
+		position = 2
+	)
+	default boolean showActionsLeft()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showXpHour",
+		name = "Show XP/hr",
+		description = "Shows XP per hour inside the globe tooltip box",
+		position = 3
+	)
+	default boolean showXpHour()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "hideMaxed",
 		name = "Hide maxed skills",
-		description = "Stop globes from showing up for level 99 skills ",
-		position = 1
+		description = "Stop globes from showing up for level 99 skills",
+		position = 4
 	)
 	default boolean hideMaxed()
 	{
@@ -59,7 +93,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "enableCustomArcColor",
 		name = "Enable custom arc color",
 		description = "Enables the custom coloring of the globe's arc instead of using the skill's default color.",
-		position = 2
+		position = 5
 	)
 	default boolean enableCustomArcColor()
 	{
@@ -71,7 +105,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Progress arc color",
 		name = "Progress arc color",
 		description = "Change the color of the progress arc in the xp orb",
-		position = 3
+		position = 6
 	)
 	default Color progressArcColor()
 	{
@@ -83,7 +117,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Progress orb outline color",
 		name = "Progress orb outline color",
 		description = "Change the color of the progress orb outline",
-		position = 4
+		position = 7
 	)
 	default Color progressOrbOutLineColor()
 	{
@@ -95,7 +129,7 @@ public interface XpGlobesConfig extends Config
 		keyName = "Progress orb background color",
 		name = "Progress orb background color",
 		description = "Change the color of the progress orb background",
-		position = 5
+		position = 8
 	)
 	default Color progressOrbBackgroundColor()
 	{
@@ -106,8 +140,9 @@ public interface XpGlobesConfig extends Config
 		keyName = "Progress arc width",
 		name = "Progress arc width",
 		description = "Change the stroke width of the progress arc",
-		position = 6
+		position = 9
 	)
+	@Units(Units.PIXELS)
 	default int progressArcStrokeWidth()
 	{
 		return 2;
@@ -117,8 +152,9 @@ public interface XpGlobesConfig extends Config
 		keyName = "Orb size",
 		name = "Size of orbs",
 		description = "Change the size of the xp orbs",
-		position = 7
+		position = 10
 	)
+	@Units(Units.PIXELS)
 	default int xpOrbSize()
 	{
 		return 40;
@@ -128,8 +164,9 @@ public interface XpGlobesConfig extends Config
 		keyName = "Orb duration",
 		name = "Duration of orbs",
 		description = "Change the duration the xp orbs are visible",
-		position = 8
+		position = 11
 	)
+	@Units(Units.SECONDS)
 	default int xpOrbDuration()
 	{
 		return 10;

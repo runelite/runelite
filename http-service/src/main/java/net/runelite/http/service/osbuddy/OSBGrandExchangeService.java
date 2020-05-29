@@ -98,6 +98,11 @@ public class OSBGrandExchangeService
 					Integer itemId = entry.getKey();
 					OsbuddySummaryItem item = entry.getValue();
 
+					if (item.getBuy_average() <= 0 || item.getSell_average() <= 0 || item.getOverall_average() <= 0)
+					{
+						continue;
+					}
+
 					query
 						.addParameter("itemId", itemId)
 						.addParameter("buyAverage", item.getBuy_average())

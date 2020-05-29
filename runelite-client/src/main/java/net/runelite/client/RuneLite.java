@@ -33,34 +33,41 @@ import com.google.inject.Injector;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.file.Paths;
 import java.util.Locale;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.ValueConversionException;
+import joptsimple.ValueConverter;
 import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
+import net.runelite.client.ui.FatalErrorDialog;
+import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.WidgetOverlay;
@@ -76,14 +83,22 @@ import org.slf4j.LoggerFactory;
 public class RuneLite
 {
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
+	public static final File CACHE_DIR = new File(RUNELITE_DIR, "cache");
+	public static final File PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
+	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
+	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
+	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
 
 	@Getter
 	private static Injector injector;
 
 	@Inject
 	private PluginManager pluginManager;
+
+	@Inject
+	private ExternalPluginManager externalPluginManager;
 
 	@Inject
 	private EventBus eventBus;
@@ -113,7 +128,7 @@ public class RuneLite
 	private OverlayManager overlayManager;
 
 	@Inject
-	private PartyService partyService;
+	private Provider<PartyService> partyService;
 
 	@Inject
 	private Provider<ItemManager> itemManager;
@@ -149,6 +164,9 @@ public class RuneLite
 	private Provider<ChatboxPanelManager> chatboxPanelManager;
 
 	@Inject
+	private Provider<Hooks> hooks;
+
+	@Inject
 	@Nullable
 	private Client client;
 
@@ -159,6 +177,16 @@ public class RuneLite
 		final OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
+
+		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
+			.withRequiredArg()
+			.withValuesConvertedBy(new ConfigFileConverter())
+			.defaultsTo(DEFAULT_SESSION_FILE);
+
+		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
+			.withRequiredArg()
+			.withValuesConvertedBy(new ConfigFileConverter())
+			.defaultsTo(DEFAULT_CONFIG_FILE);
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
@@ -183,20 +211,6 @@ public class RuneLite
 			System.exit(0);
 		}
 
-		final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
-
-		if (developerMode)
-		{
-			boolean assertions = false;
-			assert assertions = true;
-			if (!assertions)
-			{
-				throw new RuntimeException("Developers should enable assertions; Add `-ea` to your JVM arguments`");
-			}
-		}
-
-		PROFILES_DIR.mkdirs();
-
 		if (options.has("debug"))
 		{
 			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -212,18 +226,63 @@ public class RuneLite
 			}
 		});
 
-		final long start = System.currentTimeMillis();
+		SplashScreen.init();
+		SplashScreen.stage(0, "Retrieving client", "");
 
-		injector = Guice.createInjector(new RuneLiteModule(
-			options.valueOf(updateMode),
-			developerMode));
+		try
+		{
+			final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
 
-		injector.getInstance(RuneLite.class).start();
+			new Thread(() ->
+			{
+				clientLoader.get();
+				ClassPreloader.preload();
+			}, "Preloader").start();
 
-		final long end = System.currentTimeMillis();
-		final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
-		final long uptime = rb.getUptime();
-		log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
+			final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
+
+			if (developerMode)
+			{
+				boolean assertions = false;
+				assert assertions = true;
+				if (!assertions)
+				{
+					SwingUtilities.invokeLater(() ->
+						new FatalErrorDialog("Developers should enable assertions; Add `-ea` to your JVM arguments`")
+							.addBuildingGuide()
+							.open());
+					return;
+				}
+			}
+
+			PROFILES_DIR.mkdirs();
+
+			final long start = System.currentTimeMillis();
+
+			injector = Guice.createInjector(new RuneLiteModule(
+				clientLoader,
+				developerMode,
+				options.valueOf(sessionfile),
+				options.valueOf(configfile)));
+
+			injector.getInstance(RuneLite.class).start();
+
+			final long end = System.currentTimeMillis();
+			final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+			final long uptime = rb.getUptime();
+			log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
+		}
+		catch (Exception e)
+		{
+			log.error("Failure during startup", e);
+			SwingUtilities.invokeLater(() ->
+				new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
+					.open());
+		}
+		finally
+		{
+			SplashScreen.stop();
+		}
 	}
 
 	public void start() throws Exception
@@ -237,6 +296,8 @@ public class RuneLite
 			injector.injectMembers(client);
 		}
 
+		SplashScreen.stage(.57, null, "Loading configuration");
+
 		// Load user configuration
 		configManager.load();
 
@@ -249,16 +310,22 @@ public class RuneLite
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
 		pluginManager.loadCorePlugins();
+		externalPluginManager.loadExternalPlugins();
+
+		SplashScreen.stage(.70, null, "Finalizing configuration");
 
 		// Plugins have provided their config, so set default config
 		// to main settings
-		pluginManager.loadDefaultPluginConfiguration();
+		pluginManager.loadDefaultPluginConfiguration(null);
 
 		// Start client session
 		clientSessionManager.start();
+		eventBus.register(clientSessionManager);
+
+		SplashScreen.stage(.75, null, "Starting core interface");
 
 		// Initialize UI
-		clientUI.open(this);
+		clientUI.init();
 
 		// Initialize Discord service
 		discordService.init();
@@ -266,16 +333,19 @@ public class RuneLite
 		// Register event listeners
 		eventBus.register(clientUI);
 		eventBus.register(pluginManager);
+		eventBus.register(externalPluginManager);
 		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(infoBoxManager);
-		eventBus.register(partyService);
+		eventBus.register(configManager);
+		eventBus.register(discordService);
 
 		if (!isOutdated)
 		{
 			// Initialize chat colors
 			chatMessageManager.get().loadColors();
 
+			eventBus.register(partyService.get());
 			eventBus.register(overlayRenderer.get());
 			eventBus.register(clanManager.get());
 			eventBus.register(itemManager.get());
@@ -284,6 +354,7 @@ public class RuneLite
 			eventBus.register(commandManager.get());
 			eventBus.register(lootManager.get());
 			eventBus.register(chatboxPanelManager.get());
+			eventBus.register(hooks.get());
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
@@ -293,31 +364,55 @@ public class RuneLite
 		}
 
 		// Start plugins
-		pluginManager.startCorePlugins();
-	}
+		pluginManager.startPlugins();
 
-	public void shutdown()
-	{
-		configManager.sendConfig();
-		clientSessionManager.shutdown();
-		discordService.close();
+		SplashScreen.stop();
 
-		for (final Plugin plugin : pluginManager.getPlugins())
-		{
-			try
-			{
-				pluginManager.stopPlugin(plugin);
-			}
-			catch (PluginInstantiationException e)
-			{
-				log.warn("Failed to gracefully close plugin", e);
-			}
-		}
+		clientUI.show();
 	}
 
 	@VisibleForTesting
 	public static void setInjector(Injector injector)
 	{
 		RuneLite.injector = injector;
+	}
+
+	private static class ConfigFileConverter implements ValueConverter<File>
+	{
+		@Override
+		public File convert(String fileName)
+		{
+			final File file;
+
+			if (Paths.get(fileName).isAbsolute()
+				|| fileName.startsWith("./")
+				|| fileName.startsWith(".\\"))
+			{
+				file = new File(fileName);
+			}
+			else
+			{
+				file = new File(RuneLite.RUNELITE_DIR, fileName);
+			}
+
+			if (file.exists() && (!file.isFile() || !file.canWrite()))
+			{
+				throw new ValueConversionException(String.format("File %s is not accessible", file.getAbsolutePath()));
+			}
+
+			return file;
+		}
+
+		@Override
+		public Class<? extends File> valueType()
+		{
+			return File.class;
+		}
+
+		@Override
+		public String valuePattern()
+		{
+			return null;
+		}
 	}
 }

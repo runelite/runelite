@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemstats.Builders.*;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
+import net.runelite.client.plugins.itemstats.potions.GauntletPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
 import net.runelite.client.plugins.itemstats.potions.SuperRestore;
@@ -54,8 +55,8 @@ public class ItemStatChanges
 		add(food(-5), POISON_KARAMBWAN);
 		add(food(1), POTATO, ONION, CABBAGE, POT_OF_CREAM, CHOPPED_ONION, ANCHOVIES);
 		add(food(2), TOMATO, CHOPPED_TOMATO, BANANA, SLICED_BANANA, ORANGE, ORANGE_SLICES, ORANGE_CHUNKS,
-				PINEAPPLE_RING, PINEAPPLE_CHUNKS, SPICY_SAUCE, CHEESE, SPINACH_ROLL, LEMON, LEMON_CHUNKS, LEMON_SLICES,
-				LIME, LIME_CHUNKS, LIME_SLICES, DWELLBERRIES);
+			PINEAPPLE_RING, PINEAPPLE_CHUNKS, SPICY_SAUCE, CHEESE, SPINACH_ROLL, LEMON, LEMON_CHUNKS, LEMON_SLICES,
+			LIME, LIME_CHUNKS, LIME_SLICES, DWELLBERRIES);
 		add(food(3), SHRIMPS, COOKED_MEAT, COOKED_CHICKEN, ROE, CHOCOLATE_BAR);
 		add(food(4), SARDINE, CAKE, _23_CAKE, SLICE_OF_CAKE, CHOCOLATEY_MILK, BAKED_POTATO, EDIBLE_SEAWEED, MOONLIGHT_MEAD);
 		add(food(5), BREAD, HERRING, CHOCOLATE_CAKE, _23_CHOCOLATE_CAKE, CHOCOLATE_SLICE, COOKED_RABBIT, CHILLI_CON_CARNE,
@@ -78,13 +79,13 @@ public class ItemStatChanges
 		add(food(15), PREMADE_TTL, TANGLED_TOADS_LEGS, PREMADE_CHOC_BOMB, CHOCOLATE_BOMB, COOKED_JUBBLY);
 		add(food(16), MONKFISH, POTATO_WITH_CHEESE, EGG_POTATO);
 		add(food(17), MYCIL_FISH_4, KRYKET_BAT_4);
-		add(food(18), COOKED_KARAMBWAN);
+		add(food(18), COOKED_KARAMBWAN, BLIGHTED_KARAMBWAN);
 		add(food(19), CURRY, UGTHANKI_KEBAB, UGTHANKI_KEBAB_1885);
 		add(food(20), MUSHROOM_POTATO, SHARK, ROQED_FISH_5, MURNG_BAT_5, STUFFED_SNAKE);
 		add(food(21), SEA_TURTLE);
-		add(food(22), MANTA_RAY, DARK_CRAB, TUNA_POTATO);
+		add(food(22), MANTA_RAY, BLIGHTED_MANTA_RAY, DARK_CRAB, TUNA_POTATO);
 		add(food(23), KYREN_FISH_6, PSYKK_BAT_6);
-		add(new Anglerfish(), ANGLERFISH);
+		add(new Anglerfish(), ANGLERFISH, BLIGHTED_ANGLERFISH);
 		add(food(maxHP -> (int) Math.ceil(maxHP * .06)), STRAWBERRY);
 		add(food(maxHP -> (int) Math.ceil(maxHP * .05)), WATERMELON_SLICE);
 		add(food(perc(.1, 1)), COOKED_SWEETCORN, SWEETCORN_7088 /* Bowl of cooked sweetcorn */);
@@ -92,10 +93,11 @@ public class ItemStatChanges
 		add(combo(2, food(8), heal(RUN_ENERGY, 5)), PAPAYA_FRUIT);
 		add(range(food(5), food(7)), THIN_SNAIL_MEAT);
 		add(range(food(7), food(9)), FAT_SNAIL_MEAT);
+		add(range(food(7), food(10)), SPIDER_ON_STICK_6297, SPIDER_ON_SHAFT_6299);
 
 		// Dorgeshuun Cuisine
 		add(food(2), BAT_SHISH, COATED_FROGS_LEGS, FILLETS, FINGERS, FROGBURGER, FROGSPAWN_GUMBO, GREEN_GLOOP_SOUP,
-				GRUBS__LA_MODE, MUSHROOMS, ROAST_FROG);
+			GRUBS__LA_MODE, MUSHROOMS, ROAST_FROG);
 		add(food(3), LOACH);
 		add(range(food(3), food(6)), FROG_SPAWN);
 		add(range(food(6), food(10)), COOKED_SLIMY_EEL);
@@ -134,6 +136,14 @@ public class ItemStatChanges
 		add(boost(MAGIC, perc(.15, 5)), SUPER_MAGIC_POTION_1, SUPER_MAGIC_POTION_2, SUPER_MAGIC_POTION_3, SUPER_MAGIC_POTION_4);
 		add(combo(2, boost(RANGED, perc(0.1, 4)), boost(DEFENCE, perc(0.15, 5))), BASTION_POTION1, BASTION_POTION2, BASTION_POTION3, BASTION_POTION4);
 		add(combo(2, boost(MAGIC, 4), boost(DEFENCE, perc(0.15, 5))), BATTLEMAGE_POTION1, BATTLEMAGE_POTION2, BATTLEMAGE_POTION3, BATTLEMAGE_POTION4);
+		add(combo(boost(MAGIC, 4), heal(HITPOINTS, -10)), DIVINE_MAGIC_POTION1, DIVINE_MAGIC_POTION2, DIVINE_MAGIC_POTION3, DIVINE_MAGIC_POTION4);
+		add(combo(boost(RANGED, perc(.10, 4)), heal(HITPOINTS, -10)), DIVINE_RANGING_POTION1, DIVINE_RANGING_POTION2, DIVINE_RANGING_POTION3, DIVINE_RANGING_POTION4);
+		add(combo(boost(ATTACK, perc(.15, 5)), heal(HITPOINTS, -10)), DIVINE_SUPER_ATTACK_POTION1, DIVINE_SUPER_ATTACK_POTION2, DIVINE_SUPER_ATTACK_POTION3, DIVINE_SUPER_ATTACK_POTION4);
+		add(combo(boost(STRENGTH, perc(.15, 5)), heal(HITPOINTS, -10)), DIVINE_SUPER_STRENGTH_POTION1, DIVINE_SUPER_STRENGTH_POTION2, DIVINE_SUPER_STRENGTH_POTION3, DIVINE_SUPER_STRENGTH_POTION4);
+		add(combo(boost(DEFENCE, perc(.15, 5)), heal(HITPOINTS, -10)), DIVINE_SUPER_DEFENCE_POTION1, DIVINE_SUPER_DEFENCE_POTION2, DIVINE_SUPER_DEFENCE_POTION3, DIVINE_SUPER_DEFENCE_POTION4);
+		add(combo(3, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), heal(HITPOINTS, -10)), DIVINE_SUPER_COMBAT_POTION1, DIVINE_SUPER_COMBAT_POTION2, DIVINE_SUPER_COMBAT_POTION3, DIVINE_SUPER_COMBAT_POTION4);
+		add(combo(2, boost(RANGED, perc(0.1, 4)), boost(DEFENCE, perc(0.15, 5)), heal(HITPOINTS, -10)), DIVINE_BASTION_POTION1, DIVINE_BASTION_POTION2, DIVINE_BASTION_POTION3, DIVINE_BASTION_POTION4);
+		add(combo(2, boost(MAGIC, 4), boost(DEFENCE, perc(0.15, 5)), heal(HITPOINTS, -10)), DIVINE_BATTLEMAGE_POTION1, DIVINE_BATTLEMAGE_POTION2, DIVINE_BATTLEMAGE_POTION3, DIVINE_BATTLEMAGE_POTION4);
 
 		// Regular overload (NMZ)
 		add(combo(5, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(HITPOINTS, -50)), OVERLOAD_1, OVERLOAD_2, OVERLOAD_3, OVERLOAD_4);
@@ -146,7 +156,8 @@ public class ItemStatChanges
 		add(heal(RUN_ENERGY, 10), ENERGY_POTION1, ENERGY_POTION2, ENERGY_POTION3, ENERGY_POTION4);
 		add(new PrayerPotion(7), PRAYER_POTION1, PRAYER_POTION2, PRAYER_POTION3, PRAYER_POTION4);
 		add(heal(RUN_ENERGY, 20), SUPER_ENERGY1, SUPER_ENERGY2, SUPER_ENERGY3, SUPER_ENERGY4);
-		add(new SuperRestore(.25, 8), SUPER_RESTORE1, SUPER_RESTORE2, SUPER_RESTORE3, SUPER_RESTORE4);
+		add(new SuperRestore(.25, 8), SUPER_RESTORE1, SUPER_RESTORE2, SUPER_RESTORE3, SUPER_RESTORE4,
+			BLIGHTED_SUPER_RESTORE1, BLIGHTED_SUPER_RESTORE2, BLIGHTED_SUPER_RESTORE3, BLIGHTED_SUPER_RESTORE4);
 		add(new SuperRestore(.25, 9), SANFEW_SERUM1, SANFEW_SERUM2, SANFEW_SERUM3, SANFEW_SERUM4);
 		add(heal(RUN_ENERGY, 20), STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4);
 
@@ -177,7 +188,7 @@ public class ItemStatChanges
 		add(combo(2, boost(HITPOINTS, 5), heal(RUN_ENERGY, 5)), GUTHIX_REST1, GUTHIX_REST2, GUTHIX_REST3, GUTHIX_REST4);
 
 		// Misc/run energy
-		add(heal(RUN_ENERGY, 10), WHITE_TREE_FRUIT);
+		add(combo(food(3), range(heal(RUN_ENERGY, 5), heal(RUN_ENERGY, 10))), WHITE_TREE_FRUIT);
 		add(heal(RUN_ENERGY, 30), STRANGE_FRUIT);
 		add(heal(RUN_ENERGY, 50), MINT_CAKE);
 		add(combo(food(12), heal(RUN_ENERGY, 50)), GOUT_TUBER);
@@ -190,12 +201,17 @@ public class ItemStatChanges
 		add(combo(2, heal(HITPOINTS, 8), boost(FISHING, 5)), ADMIRAL_PIE, HALF_AN_ADMIRAL_PIE);
 		add(combo(2, heal(HITPOINTS, 11), boost(SLAYER, 5), boost(RANGED, 4)), WILD_PIE, HALF_A_WILD_PIE);
 		add(combo(2, heal(HITPOINTS, 11), boost(AGILITY, 5), heal(RUN_ENERGY, 10)), SUMMER_PIE, HALF_A_SUMMER_PIE);
+		add(combo(2, heal(HITPOINTS, 10), boost(FLETCHING, 4)), DRAGONFRUIT_PIE, HALF_A_DRAGONFRUIT_PIE);
 
 		// Other
 		add(combo(range(food(1), food(3)), heal(RUN_ENERGY, 10)), PURPLE_SWEETS_10476);
 		add(new SpicyStew(), SPICY_STEW);
 		add(boost(MAGIC, perc(.10, 1)), IMBUED_HEART);
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(DEFENCE, -1)), JANGERBERRIES);
+
+		// Gauntlet items
+		add(heal(HITPOINTS, 20), PADDLEFISH);
+		add(new GauntletPotion(), EGNIOL_POTION_1, EGNIOL_POTION_2, EGNIOL_POTION_3, EGNIOL_POTION_4);
 
 		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
 	}

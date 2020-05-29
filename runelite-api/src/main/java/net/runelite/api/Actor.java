@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
@@ -50,6 +51,7 @@ public interface Actor extends Renderable
 	 *
 	 * @return the name
 	 */
+	@Nullable
 	String getName();
 
 	/**
@@ -67,21 +69,22 @@ public interface Actor extends Renderable
 	Actor getInteracting();
 
 	/**
-	 * Gets the health ratio of the actor.
-	 * <p>
-	 * The ratio is the number of green bars in the overhead
-	 * HP display.
+	 * Gets the health of the actor in {@link #getHealthScale()} units.
 	 *
-	 * @return the health ratio
+	 * The server does not transmit actors' real health, only this value
+	 * between zero and {@link #getHealthScale()}. Some actors may be
+	 * missing this info, in which case -1 is returned.
 	 */
 	int getHealthRatio();
 
 	/**
-	 * Gets the health of the actor.
+	 * Gets the maximum value {@link #getHealthRatio()} can return
 	 *
-	 * @return the health
+	 * For actors with the default size health bar this is 30, but
+	 * for bosses with a larger health bar this can be a larger number.
+	 * Some actors may be missing this info, in which case -1 is returned.
 	 */
-	int getHealth();
+	int getHealthScale();
 
 	/**
 	 * Gets the server-side location of the actor.
@@ -217,7 +220,7 @@ public interface Actor extends Renderable
 	 * @return the convex hull
 	 * @see net.runelite.api.model.Jarvis
 	 */
-	Polygon getConvexHull();
+	Shape getConvexHull();
 
 	/**
 	 * Gets the world area that the actor occupies.

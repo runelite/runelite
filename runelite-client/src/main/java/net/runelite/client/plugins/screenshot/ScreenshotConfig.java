@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
+import net.runelite.client.util.ImageUploadStyle;
 
 @ConfigGroup("screenshot")
 public interface ScreenshotConfig extends Config
@@ -111,15 +112,14 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "uploadScreenshot",
-		name = "Upload To Imgur",
-		description = "Configures whether or not screenshots are uploaded to Imgur and copied into your clipboard",
+		name = "Upload",
+		description = "Configures whether or not screenshots are uploaded to Imgur, or placed on your clipboard",
 		position = 7
 	)
-	default boolean uploadScreenshot()
+	default ImageUploadStyle uploadScreenshot()
 	{
-		return false;
+		return ImageUploadStyle.NEITHER;
 	}
-
 
 	@ConfigItem(
 		keyName = "kills",
@@ -155,10 +155,21 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "friendDeath",
+		name = "Screenshot Friend Deaths",
+		description = "Configures whether or not screenshots are automatically taken when friends or clan members die.",
+		position = 11
+	)
+	default boolean screenshotFriendDeath()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "duels",
 		name = "Screenshot Duels",
 		description = "Configures whether or not screenshots are automatically taken of the duel end screen.",
-		position = 11
+		position = 12
 	)
 	default boolean screenshotDuels()
 	{
@@ -169,7 +180,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "valuableDrop",
 		name = "Screenshot Valuable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.",
-		position = 12
+		position = 13
 	)
 	default boolean screenshotValuableDrop()
 	{
@@ -180,9 +191,20 @@ public interface ScreenshotConfig extends Config
 		keyName = "untradeableDrop",
 		name = "Screenshot Untradeable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
-		position = 13
+		position = 14
 	)
 	default boolean screenshotUntradeableDrop()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "ccKick",
+		name = "Screenshot Kicks from CC",
+		description = "Take a screenshot when you kick a user from a clan chat.",
+		position = 15
+	)
+	default boolean screenshotCcKick()
 	{
 		return false;
 	}
@@ -191,7 +213,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 14
+		position = 16
 	)
 	default Keybind hotkey()
 	{

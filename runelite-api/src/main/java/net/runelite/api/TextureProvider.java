@@ -30,21 +30,19 @@ public interface TextureProvider
 
 	/**
 	 * Set the brightness for textures, clearing the texture cache.
-	 * @param brightness
+	 *
+	 * .9 is the darkest value available in the standard options
+	 * .6 is the brightest value
 	 */
 	void setBrightness(double brightness);
 
 	/**
 	 * Get all textures
-	 *
-	 * @return
 	 */
 	Texture[] getTextures();
 
 	/**
 	 * Get the pixels for a texture
-	 * @param textureId
-	 * @return
 	 */
 	int[] load(int textureId);
 }

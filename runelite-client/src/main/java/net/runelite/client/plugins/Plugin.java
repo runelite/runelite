@@ -45,8 +45,17 @@ public abstract class Plugin implements Module
 	{
 	}
 
+	public void resetConfiguration()
+	{
+	}
+
 	public final Injector getInjector()
 	{
 		return injector;
+	}
+
+	public String getName()
+	{
+		return getClass().getAnnotation(PluginDescriptor.class).name();
 	}
 }

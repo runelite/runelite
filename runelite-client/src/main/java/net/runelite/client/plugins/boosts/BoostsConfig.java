@@ -38,15 +38,23 @@ public interface BoostsConfig extends Config
 		NEVER
 	}
 
+	enum DisplayBoosts
+	{
+		NONE,
+		COMBAT,
+		NON_COMBAT,
+		BOTH
+	}
+
 	@ConfigItem(
-		keyName = "enableSkill",
-		name = "Enable Skill Boosts",
-		description = "Configures whether or not to display skill boost information",
+		keyName = "displayBoosts",
+		name = "Display Boosts",
+		description = "Configures which skill boosts to display",
 		position = 1
 	)
-	default boolean enableSkill()
+	default DisplayBoosts displayBoosts()
 	{
-		return true;
+		return DisplayBoosts.BOTH;
 	}
 
 	@ConfigItem(
@@ -95,12 +103,23 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "boostThreshold",
-		name = "Boost Amount Threshold",
-		description = "The amount of levels boosted to send a notification at. A value of 0 will disable notification.",
+		name = "Boost amount threshold",
+		description = "The threshold at which boosted levels will be displayed in a different color. A value of 0 will disable the feature.",
 		position = 6
 	)
 	default int boostThreshold()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "notifyOnBoost",
+		name = "Notify on boost threshold",
+		description = "Configures whether or not a notification will be sent for boosted stats.",
+		position = 7
+	)
+	default boolean notifyOnBoost()
+	{
+		return true;
 	}
 }

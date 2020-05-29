@@ -56,7 +56,7 @@
 // 		C <chunk X 1> <chunk Y 1> <chunk X 2> <chunk Y 2>
 // Sets the chunks relative to the last region/region1 to the current color and blending
 
-bounds 18 19 60 162
+bounds 18 19 60 196
 
 b 8
 
@@ -215,7 +215,6 @@ R 42 69 43 71
 R 45 68 45 69
 R 49 149 50 149
 R 55 151 56 151
-R 58 151 58 152
 r 39 72
 r 39 156
 r 51 150
@@ -392,6 +391,9 @@ r 47 70
 r 53 78
 r 55 90
 r 57 154
+R 42 94 45 96
+R 49 93 52 96
+r 52 92
 
 #b2b595
 r 40 67
@@ -949,3 +951,20 @@ R 19 19 21 20
 // Cosmic entity's plane
 #040404
 r 32 75
+
+b 0
+#000000
+// Song of the elves boss area
+R 49 92 51 92
+
+// Iorwerth dungeon
+#030A0A
+R 49 193 51 194
+
+// Braindeath Island
+#8AD2DF
+R 33 79 33 80
+
+// Nightmare dungeon (Morytania underground)
+#0a0a0a
+R 58 151 60 153

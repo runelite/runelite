@@ -8,6 +8,18 @@
     },
     {
       "level": 1,
+      "icon": 1787,
+      "name": "Unfired pot",
+      "xp": 6.3
+    },
+    {
+      "level": 1,
+      "icon": 1931,
+      "name": "Pot",
+      "xp": 6.3
+    },
+    {
+      "level": 1,
       "icon": 1059,
       "name": "Leather Gloves",
       "xp": 13.8
@@ -49,6 +61,12 @@
       "xp": 15
     },
     {
+      "level": 5,
+      "icon": 21512,
+      "name": "Bird House",
+      "xp": 15
+    },
+    {
       "level": 6,
       "icon": 1654,
       "name": "Gold Necklace",
@@ -62,9 +80,33 @@
     },
     {
       "level": 7,
+      "icon": 1789,
+      "name": "Unfired pie dish",
+      "xp": 15
+    },
+    {
+      "level": 7,
+      "icon": 2313,
+      "name": "Pie dish",
+      "xp": 10
+    },
+    {
+      "level": 7,
       "icon": 11068,
       "name": "Gold Bracelet",
       "xp": 25
+    },
+    {
+      "level": 8,
+      "icon": 1791,
+      "name": "Unfired bowl",
+      "xp": 18
+    },
+    {
+      "level": 8,
+      "icon": 1923,
+      "name": "Bowl",
+      "xp": 15
     },
     {
       "level": 8,
@@ -121,6 +163,12 @@
       "xp": 25
     },
     {
+      "level": 15,
+      "icon": 21515,
+      "name": "Oak Bird House",
+      "xp": 20
+    },
+    {
       "level": 16,
       "icon": 1613,
       "name": "Red Topaz",
@@ -156,6 +204,18 @@
       "icon": 1095,
       "name": "Leather Chaps",
       "xp": 27
+    },
+    {
+      "level": 19,
+      "icon": 5352,
+      "name": "Unfired plant pot",
+      "xp": 20
+    },
+    {
+      "level": 19,
+      "icon": 5350,
+      "name": "Empty plant pot",
+      "xp": 17.5
     },
     {
       "level": 19,
@@ -213,9 +273,33 @@
     },
     {
       "level": 25,
+      "icon": 4438,
+      "name": "Unfired pot lid",
+      "xp": 20
+    },
+    {
+      "level": 25,
+      "icon": 4440,
+      "name": "Pot lid",
+      "xp": 20
+    },
+    {
+      "level": 25,
       "icon": 21093,
       "name": "Jade Necklace",
       "xp": 54
+    },
+    {
+      "level": 25,
+      "icon": 21518,
+      "name": "Willow Bird House",
+      "xp": 25
+    },
+    {
+      "level": 26,
+      "icon": 6209,
+      "name": "Drift Net",
+      "xp": 55
     },
     {
       "level": 27,
@@ -308,6 +392,18 @@
       "xp": 70
     },
     {
+      "level": 35,
+      "icon": 6235,
+      "name": "Broodoo shield",
+      "xp": 100
+    },
+    {
+      "level": 35,
+      "icon": 21521,
+      "name": "Teak Bird House",
+      "xp": 30
+    },
+    {
       "level": 36,
       "icon": 5376,
       "name": "Basket",
@@ -374,6 +470,12 @@
       "xp": 30
     },
     {
+      "level": 45,
+      "icon": 22192,
+      "name": "Maple Bird House",
+      "xp": 35
+    },
+    {
       "level": 46,
       "icon": 567,
       "name": "Unpowered Orb",
@@ -402,6 +504,12 @@
       "icon": 1679,
       "name": "Ruby Amulet (U)",
       "xp": 85
+    },
+    {
+      "level": 50,
+      "icon": 22195,
+      "name": "Mahogany Bird House",
+      "xp": 40
     },
     {
       "level": 51,
@@ -468,6 +576,12 @@
       "icon": 1099,
       "name": "Green D'hide Chaps",
       "xp": 124
+    },
+    {
+      "level": 60,
+      "icon": 22198,
+      "name": "Yew Bird House",
+      "xp": 45
     },
     {
       "level": 62,
@@ -558,6 +672,12 @@
       "icon": 2495,
       "name": "Red D'hide Chaps",
       "xp": 156
+    },
+    {
+      "level": 75,
+      "icon": 22201,
+      "name": "Magic Bird House",
+      "xp": 50
     },
     {
       "level": 76,
@@ -654,6 +774,12 @@
       "icon": 6579,
       "name": "Onyx Amulet (U)",
       "xp": 165
+    },
+    {
+      "level": 90,
+      "icon": 22204,
+      "name": "Redwood Bird House",
+      "xp": 55
     },
     {
       "level": 92,

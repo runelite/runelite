@@ -243,10 +243,90 @@ public interface Widget
 
 	/**
 	 * Gets the model ID displayed in the widget.
-	 *
-	 * @return the model ID
 	 */
 	int getModelId();
+
+	/**
+	 * Sets the model ID displayed in the widget.
+	 *
+	 * @param modelId the new model ID
+	 */
+	void setModelId(int modelId);
+
+	/**
+	 * Gets the model type of the widget.
+	 *
+	 * @see WidgetModelType
+	 */
+	int getModelType();
+
+	/**
+	 * Sets the model type of the widget.
+	 *
+	 * @param type the new model type
+	 * @see WidgetModelType
+	 */
+	void setModelType(int type);
+
+	/**
+	 * Gets the x rotation of the model displayed in the widget.
+	 * 0 = no rotation, 2047 = full rotation
+	 */
+	int getRotationX();
+
+	/**
+	 * Sets the x rotation of the model displayed in the widget.
+	 * <br>
+	 * Note: Setting this value outside of the input range defined by {@link Widget#getRotationX()} will cause a client
+	 *       crash.
+	 *
+	 * @param modelX the new model x rotation value
+	 */
+	void setRotationX(int modelX);
+
+	/**
+	 * Gets the y rotation of the model displayed in the widget.
+	 * 0 = no rotation, 2047 = full rotation
+	 */
+	int getRotationY();
+
+	/**
+	 * Sets the y rotation of the model displayed in the widget.
+	 * <br>
+	 * Note: Setting this value outside of the input range defined by {@link Widget#getRotationY()} will cause a client
+	 *       crash.
+	 *
+	 * @param modelY the new model y rotation value
+	 */
+	void setRotationY(int modelY);
+
+	/**
+	 * Gets the z rotation of the model displayed in the widget.
+	 * 0 = no rotation, 2047 = full rotation
+	 */
+	int getRotationZ();
+
+	/**
+	 * Sets the z rotation of the model displayed in the widget.
+	 * <br>
+	 * Note: Setting this value outside of the input range defined by {@link Widget#getRotationZ()} will cause a client
+	 *       crash.
+	 *
+	 * @param modelZ the new model z rotation value
+	 */
+	void setRotationZ(int modelZ);
+
+	/**
+	 * Gets the amount zoomed in on the model displayed in the widget.
+	 */
+	int getModelZoom();
+
+	/**
+	 * Sets the amount zoomed in on the model displayed in the widget.
+	 *
+	 * @param modelZoom the new model zoom value
+	 */
+	void setModelZoom(int modelZoom);
 
 	/**
 	 * Gets the sprite ID displayed in the widget.
@@ -553,7 +633,7 @@ public interface Widget
 	void setOnMouseOverListener(Object... args);
 
 	/**
-	 * Sets a script to be ran every frame when the mouse is in the widget bounds
+	 * Sets a script to be ran every client tick when the mouse is in the widget bounds
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
@@ -567,7 +647,7 @@ public interface Widget
 	void setOnMouseLeaveListener(Object... args);
 
 	/**
-	 * Sets a script to be ran every frame
+	 * Sets a script to be ran every client tick
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
@@ -613,14 +693,32 @@ public interface Widget
 	void revalidateScroll();
 
 	/**
-	 * Array of widget key listeners
+	 * Gets the script and arguments to be ran when a menu action is clicked.
+	 *
+	 * @return
+	 */
+	Object[] getOnOpListener();
+
+	/**
+	 * Gets the script and arguments to be ran when a key is pressed.
+	 *
+	 * @return
 	 */
 	Object[] getOnKeyListener();
 
 	/**
-	 * Array of widget load listeners
+	 * Gets the script and arguments to be ran when a interface is loaded.
+	 *
+	 * @return
 	 */
 	Object[] getOnLoadListener();
+
+	/**
+	 * Gets the script and arguments to be ran when one of the listened for inventories changes.
+	 *
+	 * @return
+	 */
+	Object[] getOnInvTransmitListener();
 
 	/**
 	 * Returns the archive id of the font used
@@ -821,4 +919,31 @@ public interface Widget
 	 * Can widgets under this widgets be scrolled in this widgets bounding box
 	 */
 	void setNoScrollThrough(boolean noScrollThrough);
+
+	/**
+	 * {@link net.runelite.api.VarPlayer}s that triggers this widgets varTransmitListener
+	 */
+	void setVarTransmitTrigger(int ...trigger);
+
+	/**
+	 * Sets a script to be ran the first client tick the mouse is held ontop of this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnClickListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran the every client tick the mouse is held ontop of this widget,
+	 * except the first client tick.
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnHoldListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran the first client tick the mouse is not held ontop of this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnReleaseListener(Object ...args);
 }

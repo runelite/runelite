@@ -51,7 +51,6 @@ import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -63,6 +62,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -83,6 +83,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
+	private static final String UNTAG = "Un-tag";
 
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
@@ -273,7 +274,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption(TAG);
+			tagEntry.setOption(highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG);
 			tagEntry.setTarget(event.getTarget());
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
@@ -286,7 +287,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked click)
 	{
-		if (click.getMenuAction() != MenuAction.RUNELITE || !click.getMenuOption().equals(TAG))
+		if (click.getMenuAction() != MenuAction.RUNELITE ||
+			!(click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG)))
 		{
 			return;
 		}
@@ -308,8 +310,11 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		else
 		{
-			memorizeNpc(npc);
-			npcTags.add(id);
+			if (!client.isInInstancedRegion())
+			{
+				memorizeNpc(npc);
+				npcTags.add(id);
+			}
 			highlightedNpcs.add(npc);
 		}
 
@@ -339,9 +344,12 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			if (WildcardMatcher.matches(highlight, npcName))
 			{
-				memorizeNpc(npc);
 				highlightedNpcs.add(npc);
-				spawnedNpcsThisTick.add(npc);
+				if (!client.isInInstancedRegion())
+				{
+					memorizeNpc(npc);
+					spawnedNpcsThisTick.add(npc);
+				}
 				break;
 			}
 		}
@@ -483,7 +491,10 @@ public class NpcIndicatorsPlugin extends Plugin
 			{
 				if (WildcardMatcher.matches(highlight, npcName))
 				{
-					memorizeNpc(npc);
+					if (!client.isInInstancedRegion())
+					{
+						memorizeNpc(npc);
+					}
 					highlightedNpcs.add(npc);
 					continue outer;
 				}

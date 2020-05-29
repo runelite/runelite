@@ -33,8 +33,8 @@ enum Courses
 {
 	GNOME(86.5, 46, 9781),
 	DRAYNOR(120.0, 79, 12338),
-	AL_KHARID(180.0, 30, 13105, new WorldPoint(3299, 3194, 0)),
-	PYRAMID(722.0, 300, 13356, new WorldPoint(3364, 2830, 0)),
+	AL_KHARID(180.0, 0, 13105, new WorldPoint(3299, 3194, 0)),
+	PYRAMID(722.0, 0, 13356, new WorldPoint(3364, 2830, 0)),
 	VARROCK(238.0, 125, 12853),
 	PENGUIN(540.0, 65, 10559),
 	BARBARIAN(139.5, 60, 10039),
@@ -46,6 +46,7 @@ enum Courses
 	SEERS(570.0, 435, 10806),
 	POLLNIVNEACH(890.0, 540, 13358),
 	RELLEKA(780.0, 475, 10553),
+	PRIFDDINAS(1337.0, 1037, 12895),
 	ARDOUGNE(793.0, 529, 10547);
 
 	private final static Map<Integer, Courses> coursesByRegion;

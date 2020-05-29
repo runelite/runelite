@@ -43,7 +43,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -96,12 +96,14 @@ public class QuestListPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		currentFilterState = QuestState.ALL;
 		clientThread.invoke(this::addQuestButtons);
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		currentFilterState = null;
 		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
 		if (header != null)
 		{
@@ -119,13 +121,12 @@ public class QuestListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	public void onScriptPostFired(ScriptPostFired event)
 	{
-		if (!event.getEventName().equals("questProgressUpdated"))
+		if (event.getScriptId() != ScriptID.QUESTLIST_PROGRESS_LIST_SHOW)
 		{
 			return;
 		}
-
 		addQuestButtons();
 	}
 
@@ -232,6 +233,7 @@ public class QuestListPlugin extends Plugin
 		questSearchButton.setOnOpListener((JavaScriptCallback) e -> closeSearch());
 		searchInput = chatboxPanelManager.openTextInput("Search quest list")
 			.onChanged(s -> clientThread.invokeLater(() -> updateFilter(s)))
+			.onDone(s -> false)
 			.onClose(() ->
 			{
 				clientThread.invokeLater(() -> updateFilter(""));
@@ -357,7 +359,14 @@ public class QuestListPlugin extends Plugin
 			else
 			{
 				// Otherwise hide if it doesn't match the filter state
-				hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+				if (currentFilterState == QuestState.NOT_COMPLETED)
+				{
+					hidden = questState == QuestState.COMPLETE;
+				}
+				else
+				{
+					hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+				}
 			}
 
 			quest.setHidden(hidden);
@@ -391,7 +400,8 @@ public class QuestListPlugin extends Plugin
 		NOT_STARTED(0xff0000, "Not started", SpriteID.MINIMAP_ORB_HITPOINTS),
 		IN_PROGRESS(0xffff00, "In progress", SpriteID.MINIMAP_ORB_HITPOINTS_DISEASE),
 		COMPLETE(0xdc10d, "Completed", SpriteID.MINIMAP_ORB_HITPOINTS_POISON),
-		ALL(0, "All", SpriteID.MINIMAP_ORB_PRAYER);
+		ALL(0, "All", SpriteID.MINIMAP_ORB_PRAYER),
+		NOT_COMPLETED(0, "Not Completed", SpriteID.MINIMAP_ORB_RUN);
 
 		private final int color;
 		private final String name;

@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Represents an inventory that contains items.
  */
@@ -34,5 +37,34 @@ public interface ItemContainer extends Node
 	 *
 	 * @return the items held
 	 */
+	@Nonnull
 	Item[] getItems();
+
+	/**
+	 * Gets an item from the container at the given slot.
+	 *
+	 * @param slot
+	 * @return the item
+	 * @see Item
+	 */
+	@Nullable
+	Item getItem(int slot);
+
+	/**
+	 * Check if this item container contains the given item
+	 *
+	 * @param itemId
+	 * @return
+	 * @see ItemID
+	 */
+	boolean contains(int itemId);
+
+	/**
+	 * Counts how many of an item this item container contains
+	 *
+	 * @param itemId
+	 * @return
+	 * @see ItemID
+	 */
+	int count(int itemId);
 }

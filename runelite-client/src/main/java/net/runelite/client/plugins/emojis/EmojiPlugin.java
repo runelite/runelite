@@ -40,6 +40,7 @@ import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.OverheadTextChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -55,9 +56,13 @@ import net.runelite.client.util.ImageUtil;
 public class EmojiPlugin extends Plugin
 {
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
+	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -67,7 +72,7 @@ public class EmojiPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		loadEmojiIcons();
+		clientThread.invoke(this::loadEmojiIcons);
 	}
 
 	@Subscribe
@@ -166,9 +171,9 @@ public class EmojiPlugin extends Plugin
 	}
 
 	@Nullable
-	private String updateMessage(final String message)
+	String updateMessage(final String message)
 	{
-		final String[] messageWords = message.split(" ");
+		final String[] messageWords = WHITESPACE_REGEXP.split(message);
 
 		boolean editedMessage = false;
 		for (int i = 0; i < messageWords.length; i++)

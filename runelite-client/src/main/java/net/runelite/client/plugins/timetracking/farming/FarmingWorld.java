@@ -244,6 +244,13 @@ class FarmingWorld
 			new FarmingPatch("", Varbits.FARMING_7907, PatchImplementation.REDWOOD)
 		));
 
+		add(new FarmingRegion("Prifddinas", 13151,
+			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
+			new FarmingPatch("", Varbits.FARMING_4775, PatchImplementation.CRYSTAL_TREE)
+		));
+
 		// Finalize
 		this.regions = Collections.unmodifiableMap(regions);
 		Map<Tab, Set<FarmingPatch>> umtabs = new TreeMap<>();

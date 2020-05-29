@@ -70,7 +70,8 @@ enum MinigameLocation
 	ANIMATION_ROOM("Animation Room", new WorldPoint(2853, 3537, 0)),
 	DUMMY_ROOM("Dummy Room", new WorldPoint(2857, 3551, 0)),
 	CATAPULT_ROOM("Catapult Room", new WorldPoint(2842, 3545, 0)),
-	SHOT_PUT_ROOM("Shot Put Room", new WorldPoint(2863, 3550, 0));
+	SHOT_PUT_ROOM("Shot Put Room", new WorldPoint(2863, 3550, 0)),
+	THE_GAUNTLET("The Gauntlet", new WorldPoint(3223, 12505, 1));
 
 	private final String tooltip;
 	private final WorldPoint location;

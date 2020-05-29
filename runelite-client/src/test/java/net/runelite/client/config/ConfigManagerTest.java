@@ -27,11 +27,14 @@ package net.runelite.client.config;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Named;
+import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
 import org.junit.Assert;
@@ -39,7 +42,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConfigManagerTest
@@ -55,6 +58,14 @@ public class ConfigManagerTest
 	@Mock
 	@Bind
 	RuneLiteConfig runeliteConfig;
+
+	@Bind
+	@Named("sessionfile")
+	File sessionfile = RuneLite.DEFAULT_SESSION_FILE;
+
+	@Bind
+	@Named("config")
+	File config = RuneLite.DEFAULT_CONFIG_FILE;
 
 	@Inject
 	ConfigManager manager;

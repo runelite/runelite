@@ -25,7 +25,7 @@
 package net.runelite.api.events;
 
 import lombok.Value;
-import net.runelite.api.Item;
+import net.runelite.api.TileItem;
 import net.runelite.api.Tile;
 
 /**
@@ -34,7 +34,7 @@ import net.runelite.api.Tile;
 @Value
 public class ItemQuantityChanged
 {
-	private final Item item;
+	private final TileItem item;
 	private final Tile tile;
 	private final int oldQuantity;
 	private final int newQuantity;

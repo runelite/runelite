@@ -27,10 +27,10 @@ package net.runelite.client.plugins.examine;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.events.ChatMessage;
@@ -42,14 +42,14 @@ import net.runelite.http.api.examine.ExamineClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExaminePluginTest
@@ -73,10 +73,6 @@ public class ExaminePluginTest
 	@Bind
 	ItemManager itemManager;
 
-	@Mock
-	@Bind
-	ScheduledExecutorService scheduledExecutorService;
-
 	@Before
 	public void before()
 	{
@@ -87,6 +83,7 @@ public class ExaminePluginTest
 	public void testItem()
 	{
 		when(client.getWidget(anyInt(), anyInt())).thenReturn(mock(Widget.class));
+		when(itemManager.getItemComposition(anyInt())).thenReturn(mock(ItemComposition.class));
 
 		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
 		menuOptionClicked.setMenuOption("Examine");
@@ -105,6 +102,7 @@ public class ExaminePluginTest
 	public void testLargeStacks()
 	{
 		when(client.getWidget(anyInt(), anyInt())).thenReturn(mock(Widget.class));
+		when(itemManager.getItemComposition(anyInt())).thenReturn(mock(ItemComposition.class));
 
 		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
 		menuOptionClicked.setMenuOption("Examine");

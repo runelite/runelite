@@ -36,7 +36,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.widgets.Widget;
@@ -224,13 +224,16 @@ public class TimeTrackingPlugin extends Plugin
 		long unitTime = Instant.now().toEpochMilli() / 200;
 
 		boolean clockDataChanged = false;
+		boolean timerOrderChanged = false;
 
 		if (unitTime % 5 == 0)
 		{
 			clockDataChanged = clockManager.checkCompletion();
+			timerOrderChanged = clockManager.checkTimerOrder();
+			clockManager.checkForWarnings();
 		}
 
-		if (unitTime % panel.getUpdateInterval() == 0 || clockDataChanged)
+		if (unitTime % panel.getUpdateInterval() == 0 || clockDataChanged || timerOrderChanged)
 		{
 			panel.update();
 		}

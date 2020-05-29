@@ -149,6 +149,10 @@ public enum ChatMessageType
 	 */
 	TENSECTIMEOUT(107),
 	/**
+	 * The "Welcome to RuneScape" message
+	 */
+	WELCOME(108),
+	/**
 	 * An unknown message type.
 	 */
 	UNKNOWN(-1);

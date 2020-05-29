@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import java.awt.Shape;
+
 /**
  * Represents one or two walls on a tile
  */
@@ -54,6 +56,15 @@ public interface WallObject extends TileObject
 	 * }</pre>
 	 */
 	int getConfig();
+
+	/**
+	 * Gets the convex hull of the objects model.
+	 *
+	 * @return the convex hull
+	 * @see net.runelite.api.model.Jarvis
+	 */
+	Shape getConvexHull();
+	Shape getConvexHull2();
 
 	Renderable getRenderable1();
 	Renderable getRenderable2();

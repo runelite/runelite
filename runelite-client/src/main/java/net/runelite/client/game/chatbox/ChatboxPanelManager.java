@@ -89,7 +89,7 @@ public class ChatboxPanelManager
 	private void unsafeCloseInput()
 	{
 		client.runScript(
-			ScriptID.RESET_CHATBOX_INPUT,
+			ScriptID.MESSAGE_LAYER_CLOSE,
 			0,
 			1
 		);
@@ -101,7 +101,7 @@ public class ChatboxPanelManager
 
 	private void unsafeOpenInput(ChatboxInput input)
 	{
-		client.runScript(ScriptID.CLEAR_CHATBOX_PANEL);
+		client.runScript(ScriptID.MESSAGE_LAYER_OPEN, 0);
 
 		eventBus.register(input);
 		if (input instanceof KeyListener)

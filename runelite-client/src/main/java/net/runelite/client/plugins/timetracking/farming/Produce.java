@@ -129,7 +129,8 @@ public enum Produce
 	SPIRIT_TREE("Spirit tree", ItemID.SPIRIT_TREE, 320, 13),
 	CELASTRUS("Celastrus", ItemID.BATTLESTAFF, 160, 6, 0, 4),
 	REDWOOD("Redwood", ItemID.REDWOOD_LOGS, 640, 11),
-	HESPORI("Hespori", NullItemID.NULL_23044, 640, 4, 0, 2);
+	HESPORI("Hespori", NullItemID.NULL_23044, 640, 4, 0, 2),
+	CRYSTAL_TREE("Crystal tree", ItemID.CRYSTAL_SHARDS, 80, 7);
 
 	/**
 	 * User-visible name

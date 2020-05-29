@@ -28,6 +28,8 @@ package net.runelite.client.plugins.prayer;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,16 +39,21 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.http.api.item.ItemStats;
 
 @PluginDescriptor(
 	name = "Prayer",
@@ -61,6 +68,9 @@ public class PrayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean prayersActive = false;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int prayerBonus;
 
 	@Inject
 	private Client client;
@@ -85,6 +95,9 @@ public class PrayerPlugin extends Plugin
 
 	@Inject
 	private PrayerConfig config;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Provides
 	PrayerConfig provideConfig(ConfigManager configManager)
@@ -145,7 +158,7 @@ public class PrayerPlugin extends Plugin
 
 			if (equipment != null)
 			{
-				doseOverlay.setPrayerBonus(checkContainerForPrayer(equipment.getItems()));
+				prayerBonus = checkContainerForPrayer(equipment.getItems());
 			}
 
 		}
@@ -169,6 +182,11 @@ public class PrayerPlugin extends Plugin
 		if (config.showPrayerBar())
 		{
 			barOverlay.onTick();
+		}
+
+		if (config.replaceOrbText() && isAnyPrayerActive())
+		{
+			setPrayerOrbText(getEstimatedTimeRemaining(true));
 		}
 
 		if (!config.prayerIndicator())
@@ -245,8 +263,11 @@ public class PrayerPlugin extends Plugin
 				}
 			}
 
-			int bonus = PrayerItems.getItemPrayerBonus(item.getId());
-			total += bonus;
+			ItemStats is = itemManager.getItemStats(item.getId(), false);
+			if (is != null && is.getEquipment() != null)
+			{
+				total += is.getEquipment().getPrayer();
+			}
 		}
 
 		if (hasSanfew || hasSuperRestore || hasPrayerPotion)
@@ -295,5 +316,58 @@ public class PrayerPlugin extends Plugin
 	{
 		infoBoxManager.removeIf(entry -> entry instanceof PrayerCounter
 			&& ((PrayerCounter) entry).getPrayerType().isOverhead());
+	}
+
+	private void setPrayerOrbText(String text)
+	{
+		Widget prayerOrbText = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB_TEXT);
+		if (prayerOrbText != null)
+		{
+			prayerOrbText.setText(text);
+		}
+	}
+
+	private static double getPrayerDrainRate(Client client)
+	{
+		double drainRate = 0.0;
+
+		for (Prayer prayer : Prayer.values())
+		{
+			if (client.isPrayerActive(prayer))
+			{
+				drainRate += prayer.getDrainRate();
+			}
+		}
+
+		return drainRate;
+	}
+
+	String getEstimatedTimeRemaining(boolean formatForOrb)
+	{
+		final double drainRate = getPrayerDrainRate(client);
+
+		if (drainRate == 0)
+		{
+			return "N/A";
+		}
+
+		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
+
+		// Calculate how many seconds each prayer points last so the prayer bonus can be applied
+		final double secondsPerPoint = (60.0 / drainRate) * (1.0 + (prayerBonus / 30.0));
+
+		// Calculate the number of seconds left
+		final double secondsLeft = (currentPrayer * secondsPerPoint);
+
+		LocalTime timeLeft = LocalTime.ofSecondOfDay((long) secondsLeft);
+
+		if (formatForOrb && timeLeft.getMinute() > 9)
+		{
+			return timeLeft.format(DateTimeFormatter.ofPattern("m")) + "m";
+		}
+		else
+		{
+			return timeLeft.format(DateTimeFormatter.ofPattern("m:ss"));
+		}
 	}
 }

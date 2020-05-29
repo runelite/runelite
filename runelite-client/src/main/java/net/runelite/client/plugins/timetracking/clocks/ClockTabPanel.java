@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -40,9 +41,9 @@ import net.runelite.client.plugins.timetracking.TimeTrackingPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.SwingUtil;
 
 public class ClockTabPanel extends TabContentPanel
 {
@@ -56,6 +57,10 @@ public class ClockTabPanel extends TabContentPanel
 	static final ImageIcon RESET_ICON_HOVER;
 	static final ImageIcon START_ICON;
 	static final ImageIcon START_ICON_HOVER;
+	static final ImageIcon LOOP_ICON;
+	static final ImageIcon LOOP_ICON_HOVER;
+	static final ImageIcon LOOP_SELECTED_ICON;
+	static final ImageIcon LOOP_SELECTED_ICON_HOVER;
 
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_ICON_HOVER;
@@ -72,19 +77,25 @@ public class ClockTabPanel extends TabContentPanel
 		BufferedImage resetIcon = ImageUtil.getResourceStreamFromClass(TimeTrackingPlugin.class, "reset_icon.png");
 		BufferedImage startIcon = ImageUtil.getResourceStreamFromClass(TimeTrackingPlugin.class, "start_icon.png");
 		BufferedImage addIcon = ImageUtil.getResourceStreamFromClass(TimeTrackingPlugin.class, "add_icon.png");
+		BufferedImage loopIcon = ImageUtil.getResourceStreamFromClass(TimeTrackingPlugin.class, "loop_icon.png");
+		BufferedImage loopSelectedIcon = ImageUtil.getResourceStreamFromClass(TimeTrackingPlugin.class, "loop_selected_icon.png");
 
 		DELETE_ICON = new ImageIcon(deleteIcon);
-		DELETE_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(deleteIcon, -80));
+		DELETE_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(deleteIcon, -80));
 		LAP_ICON = new ImageIcon(lapIcon);
-		LAP_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(lapIcon, -80));
+		LAP_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(lapIcon, -80));
 		PAUSE_ICON = new ImageIcon(pauseIcon);
-		PAUSE_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(pauseIcon, -80));
+		PAUSE_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(pauseIcon, -80));
 		RESET_ICON = new ImageIcon(resetIcon);
-		RESET_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(resetIcon, -80));
+		RESET_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(resetIcon, -80));
 		START_ICON = new ImageIcon(startIcon);
-		START_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(startIcon, -80));
+		START_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(startIcon, -80));
 		ADD_ICON = new ImageIcon(addIcon);
 		ADD_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
+		LOOP_ICON = new ImageIcon(loopIcon);
+		LOOP_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(loopIcon, -80));
+		LOOP_SELECTED_ICON = new ImageIcon(loopSelectedIcon);
+		LOOP_SELECTED_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(loopSelectedIcon, -80));
 	}
 
 	ClockTabPanel(ClockManager clockManager)
@@ -150,7 +161,9 @@ public class ClockTabPanel extends TabContentPanel
 		headerLabel.setFont(FontManager.getRunescapeSmallFont());
 		panel.add(headerLabel, BorderLayout.CENTER);
 
-		IconButton addButton = new IconButton(ADD_ICON, ADD_ICON_HOVER);
+		JButton addButton = new JButton(ADD_ICON);
+		addButton.setRolloverIcon(ADD_ICON_HOVER);
+		SwingUtil.removeButtonDecorations(addButton);
 		addButton.setPreferredSize(new Dimension(14, 14));
 		addButton.setToolTipText("Add a " + type);
 		addButton.addActionListener(actionListener);

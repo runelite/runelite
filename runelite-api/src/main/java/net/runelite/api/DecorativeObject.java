@@ -24,7 +24,7 @@
  */
 package net.runelite.api;
 
-import java.awt.Polygon;
+import java.awt.Shape;
 
 /**
  * Represents a decorative object, such as an object on a wall.
@@ -37,8 +37,8 @@ public interface DecorativeObject extends TileObject
 	 * @return the convex hull
 	 * @see net.runelite.api.model.Jarvis
 	 */
-	Polygon getConvexHull();
-	Polygon getConvexHull2();
+	Shape getConvexHull();
+	Shape getConvexHull2();
 
 	Renderable getRenderable();
 	Renderable getRenderable2();

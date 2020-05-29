@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 import net.runelite.http.api.worlds.WorldResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,8 +46,15 @@ public class WorldController
 	private WorldResult worldResult;
 
 	@GetMapping
-	public ResponseEntity<WorldResult> listWorlds() throws IOException
+	public ResponseEntity<WorldResult> listWorlds()
 	{
+		if (worldResult == null)
+		{
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+				.cacheControl(CacheControl.noCache())
+				.build();
+		}
+
 		return ResponseEntity.ok()
 			.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
 			.body(worldResult);

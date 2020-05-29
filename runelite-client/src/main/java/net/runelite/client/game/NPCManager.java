@@ -24,42 +24,54 @@
  */
 package net.runelite.client.game;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.npc.NpcInfo;
+import net.runelite.http.api.npc.NpcInfoClient;
+import okhttp3.OkHttpClient;
 
 @Singleton
+@Slf4j
 public class NPCManager
 {
-	private final Map<String, Integer> healthMap;
+	private final OkHttpClient okHttpClient;
+	private Map<Integer, NpcInfo> npcMap = Collections.emptyMap();
 
 	@Inject
-	private NPCManager()
+	private NPCManager(OkHttpClient okHttpClient, ScheduledExecutorService scheduledExecutorService)
 	{
-		final Gson gson = new Gson();
-		final Type typeToken = new TypeToken<Map<String, Integer>>()
-		{
-		}.getType();
-
-		final InputStream healthFile = getClass().getResourceAsStream("/npc_health.json");
-		healthMap = gson.fromJson(new InputStreamReader(healthFile), typeToken);
+		this.okHttpClient = okHttpClient;
+		scheduledExecutorService.execute(this::loadNpcs);
 	}
 
-	/**
-	 * Returns health for target NPC based on it's combat level and name
-	 * @param name npc name
-	 * @param combatLevel npc combat level
-	 * @return health or null if HP is unknown
-	 */
 	@Nullable
-	public Integer getHealth(final String name, final int combatLevel)
+	public NpcInfo getNpcInfo(int npcId)
 	{
-		return healthMap.get(name + "_" + combatLevel);
+		return npcMap.get(npcId);
+	}
+
+	@Nullable
+	public Integer getHealth(int npcId)
+	{
+		NpcInfo npcInfo = npcMap.get(npcId);
+		return npcInfo == null ? null : npcInfo.getHitpoints();
+	}
+
+	private void loadNpcs()
+	{
+		try
+		{
+			npcMap = new NpcInfoClient(okHttpClient).getNpcs();
+		}
+		catch (IOException e)
+		{
+			log.warn("error loading npc stats", e);
+		}
 	}
 }

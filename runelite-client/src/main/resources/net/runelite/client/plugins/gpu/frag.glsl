@@ -31,7 +31,7 @@ uniform float smoothBanding;
 uniform vec4 fogColor;
 
 in vec4 Color;
-in float fHsl;
+centroid in float fHsl;
 in vec4 fUv;
 in float fogAmount;
 

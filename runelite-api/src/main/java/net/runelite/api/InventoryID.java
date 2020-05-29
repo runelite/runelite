@@ -30,6 +30,10 @@ package net.runelite.api;
 public enum InventoryID
 {
 	/**
+	 * Reward from fishing trawler
+	 */
+	FISHING_TRAWLER_REWARD(0),
+	/**
 	 * Standard player inventory.
 	 */
 	INVENTORY(93),
@@ -53,6 +57,14 @@ public enum InventoryID
 	 * Monkey madness puzzle box inventory.
 	 */
 	MONKEY_MADNESS_PUZZLE_BOX(221),
+	/**
+	 * Drift net fishing reward
+	 */
+	DRIFT_NET_FISHING_REWARD(307),
+	/**
+	 * Kingdom Of Miscellania reward inventory.
+	 */
+	KINGDOM_OF_MISCELLANIA(390),
 	/**
 	 * Chambers of Xeric chest inventory.
 	 */
