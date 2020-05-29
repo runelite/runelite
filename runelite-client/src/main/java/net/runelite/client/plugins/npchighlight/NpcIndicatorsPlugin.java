@@ -51,7 +51,6 @@ import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -63,6 +62,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -145,9 +145,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	private List<String> highlights = new ArrayList<>();
 
 	/**
-	 * NPC ids marked with the Tag option, index -> composition id
+	 * NPC ids marked with the Tag option
 	 */
-	private final Map<Integer, Integer> npcTags = new HashMap<>();
+	private final Set<Integer> npcTags = new HashSet<>();
 
 	/**
 	 * Tagged NPCs that spawned this tick, which need to be verified that
@@ -294,7 +294,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		final int id = click.getId();
-		final Integer removedId = npcTags.remove(id);
+		final boolean removed = npcTags.remove(id);
 		final NPC[] cachedNPCs = client.getCachedNPCs();
 		final NPC npc = cachedNPCs[id];
 
@@ -303,15 +303,18 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (removedId != null)
+		if (removed)
 		{
 			highlightedNpcs.remove(npc);
 			memorizedNpcs.remove(npc.getIndex());
 		}
 		else
 		{
-			memorizeNpc(npc);
-			npcTags.put(id, npc.getId());
+			if (!client.isInInstancedRegion())
+			{
+				memorizeNpc(npc);
+				npcTags.add(id);
+			}
 			highlightedNpcs.add(npc);
 		}
 
@@ -329,8 +332,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		Integer taggedId = npcTags.get(npc.getIndex());
-		if (taggedId != null && taggedId == npc.getId())
+		if (npcTags.contains(npc.getIndex()))
 		{
 			memorizeNpc(npc);
 			highlightedNpcs.add(npc);
@@ -342,9 +344,12 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			if (WildcardMatcher.matches(highlight, npcName))
 			{
-				memorizeNpc(npc);
 				highlightedNpcs.add(npc);
-				spawnedNpcsThisTick.add(npc);
+				if (!client.isInInstancedRegion())
+				{
+					memorizeNpc(npc);
+					spawnedNpcsThisTick.add(npc);
+				}
 				break;
 			}
 		}
@@ -476,8 +481,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				continue;
 			}
 
-			Integer taggedId = npcTags.get(npc.getIndex());
-			if (taggedId != null && taggedId == npc.getId())
+			if (npcTags.contains(npc.getIndex()))
 			{
 				highlightedNpcs.add(npc);
 				continue;
@@ -487,7 +491,10 @@ public class NpcIndicatorsPlugin extends Plugin
 			{
 				if (WildcardMatcher.matches(highlight, npcName))
 				{
-					memorizeNpc(npc);
+					if (!client.isInInstancedRegion())
+					{
+						memorizeNpc(npc);
+					}
 					highlightedNpcs.add(npc);
 					continue outer;
 				}

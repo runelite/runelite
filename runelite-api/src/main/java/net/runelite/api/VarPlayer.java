@@ -54,6 +54,15 @@ public enum VarPlayer
 	SPECIAL_ATTACK_PERCENT(300),
 	SPECIAL_ATTACK_ENABLED(301),
 
+	/**
+	 * The ID of the party. This Var is only set in the raid bank area and the raid lobby
+	 *
+	 * This gets set to -1 when the raid starts. This is first set when the first player of the clan forms a party
+	 * on the recruiting board and it changes again when the first person actually enters the raid.
+	 *
+	 * -1 : Not in a party or in the middle of an ongoing raid
+	 * Anything else : This means that your clan has a raid party being formed and has not started yet
+	 */
 	IN_RAID_PARTY(1427),
 
 	NMZ_REWARD_POINTS(1060),

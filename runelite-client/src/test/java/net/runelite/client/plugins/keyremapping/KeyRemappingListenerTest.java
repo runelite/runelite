@@ -99,9 +99,9 @@ public class KeyRemappingListenerTest
 
 		verify(event).consume();
 
+		lenient().when(keyRemappingPlugin.isTyping()).thenReturn(true); // release handler no longer checks this
 		// with the plugin now in typing mode, previously pressed and remapped keys should still be mapped
 		// on key release regardless
-		when(keyRemappingPlugin.isTyping()).thenReturn(true);
 		event = mock(KeyEvent.class);
 		when(event.getKeyCode()).thenReturn(KeyEvent.VK_D);
 		keyRemappingListener.keyReleased(event);

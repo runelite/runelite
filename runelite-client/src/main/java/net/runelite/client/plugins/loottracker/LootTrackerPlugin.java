@@ -167,6 +167,8 @@ public class LootTrackerPlugin extends Plugin
 		"H.A.M. Member", "Woman"
 	);
 
+	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -403,7 +405,11 @@ public class LootTrackerPlugin extends Plugin
 
 		if (config.npcKillChatMessage())
 		{
-			lootReceivedChatMessage(items, "a " + name);
+			final String prefix = VOWELS.contains(Character.toLowerCase(name.charAt(0)))
+				? "an"
+				: "a";
+
+			lootReceivedChatMessage(items, prefix + ' ' + name);
 		}
 	}
 
@@ -795,8 +801,7 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final int gePrice = itemManager.getItemPrice(realItemId);
+		final int gePrice = itemManager.getItemPrice(itemId);
 		final int haPrice = Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 		final boolean ignored = ignoredItems.contains(itemComposition.getName());
 

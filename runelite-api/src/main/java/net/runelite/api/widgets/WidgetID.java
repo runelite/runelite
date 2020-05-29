@@ -154,6 +154,7 @@ public class WidgetID
 	public static final int ADVENTURE_LOG_ID = 187;
 	public static final int COUNTERS_LOG_GROUP_ID = 625;
 	public static final int GAUNTLET_TIMER_GROUP_ID = 637;
+	public static final int BANK_PIN_GROUP_ID = 213;
 
 	static class WorldMap
 	{
@@ -262,8 +263,8 @@ public class WidgetID
 		static final int DEPOSIT_EQUIPMENT = 43;
 		static final int INCINERATOR = 45;
 		static final int INCINERATOR_CONFIRM = 46;
-		static final int EQUIPMENT_CONTENT_CONTAINER = 67;
-		static final int EQUIPMENT_BUTTON = 108;
+		static final int EQUIPMENT_CONTENT_CONTAINER = 68;
+		static final int EQUIPMENT_BUTTON = 109;
 	}
 
 	static class GrandExchange
@@ -465,6 +466,12 @@ public class WidgetID
 	{
 		static final int PARENT = 0;
 		static final int BUTTONS = 1;
+		static final int TAB_ALL = 4;
+		static final int TAB_GAME = 8;
+		static final int TAB_PUBLIC = 13;
+		static final int TAB_PRIVATE = 18;
+		static final int TAB_CLAN = 23;
+		static final int TAB_TRADE = 28;
 		static final int REPORT_TEXT = 36;
 		static final int FRAME = 37;
 		static final int TRANSPARENT_BACKGROUND = 38;
@@ -629,7 +636,7 @@ public class WidgetID
 
 	static class Raids
 	{
-		static final int POINTS_INFOBOX = 6;
+		static final int POINTS_INFOBOX = 7;
 	}
 
 	static class Tob
@@ -917,5 +924,10 @@ public class WidgetID
 	static class GauntletTimer
 	{
 		static final int CONTAINER = 2;
+	}
+
+	static class BankPin
+	{
+		static final int CONTAINER = 0;
 	}
 }

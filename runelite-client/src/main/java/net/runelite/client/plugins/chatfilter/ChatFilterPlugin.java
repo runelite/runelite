@@ -28,23 +28,36 @@ package net.runelite.client.plugins.chatfilter;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import static net.runelite.api.ChatMessageType.ENGINE;
+import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
+import static net.runelite.api.ChatMessageType.ITEM_EXAMINE;
+import static net.runelite.api.ChatMessageType.MODCHAT;
+import static net.runelite.api.ChatMessageType.NPC_EXAMINE;
+import static net.runelite.api.ChatMessageType.OBJECT_EXAMINE;
+import static net.runelite.api.ChatMessageType.PUBLICCHAT;
+import static net.runelite.api.ChatMessageType.SPAM;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -66,9 +79,37 @@ public class ChatFilterPlugin extends Plugin
 	@VisibleForTesting
 	static final String CENSOR_MESSAGE = "Hey, everyone, I just tried to say something very silly!";
 
+	private static final Set<ChatMessageType> COLLAPSIBLE_MESSAGETYPES = ImmutableSet.of(
+		ENGINE,
+		GAMEMESSAGE,
+		ITEM_EXAMINE,
+		NPC_EXAMINE,
+		OBJECT_EXAMINE,
+		SPAM,
+		PUBLICCHAT,
+		MODCHAT
+	);
+
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private final List<Pattern> filteredPatterns = new ArrayList<>();
 	private final List<Pattern> filteredNamePatterns = new ArrayList<>();
+
+	private static class Duplicate
+	{
+		int messageId;
+		int count;
+	}
+
+	private final LinkedHashMap<String, Duplicate> duplicateChatCache = new LinkedHashMap<String, Duplicate>()
+	{
+		private static final int MAX_ENTRIES = 100;
+
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<String, Duplicate> eldest)
+		{
+			return size() > MAX_ENTRIES;
+		}
+	};
 
 	@Inject
 	private Client client;
@@ -96,6 +137,7 @@ public class ChatFilterPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		filteredPatterns.clear();
+		duplicateChatCache.clear();
 		client.refreshChat();
 	}
 
@@ -109,10 +151,18 @@ public class ChatFilterPlugin extends Plugin
 
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
-		int messageType = intStack[intStackSize - 2];
-		int messageId = intStack[intStackSize - 1];
+		String[] stringStack = client.getStringStack();
+		int stringStackSize = client.getStringStackSize();
+
+		final int messageType = intStack[intStackSize - 2];
+		final int messageId = intStack[intStackSize - 1];
+		String message = stringStack[stringStackSize - 1];
 
 		ChatMessageType chatMessageType = ChatMessageType.of(messageType);
+		final MessageNode messageNode = client.getMessages().get(messageId);
+		final String name = messageNode.getName();
+		int duplicateCount = 0;
+		boolean blockMessage = false;
 
 		// Only filter public chat and private messages
 		switch (chatMessageType)
@@ -123,32 +173,36 @@ public class ChatFilterPlugin extends Plugin
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
 			case FRIENDSCHAT:
+				if (shouldFilterPlayerMessage(name))
+				{
+					message = censorMessage(name, message);
+					blockMessage = message == null;
+				}
 				break;
 			case LOGINLOGOUTNOTIFICATION:
 				if (config.filterLogin())
 				{
-					// Block the message
-					intStack[intStackSize - 3] = 0;
+					blockMessage = true;
 				}
-				return;
-			default:
-				return;
+				break;
 		}
 
-		MessageNode messageNode = client.getMessages().get(messageId);
-		String name = messageNode.getName();
-		if (!shouldFilterPlayerMessage(name))
+		boolean shouldCollapse = chatMessageType == PUBLICCHAT || chatMessageType == MODCHAT
+			? config.collapsePlayerChat()
+			: COLLAPSIBLE_MESSAGETYPES.contains(chatMessageType) && config.collapseGameChat();
+		if (!blockMessage && shouldCollapse)
 		{
-			return;
+			Duplicate duplicateCacheEntry = duplicateChatCache.get(name + ":" + message);
+			if (duplicateCacheEntry != null)
+			{
+				blockMessage = duplicateCacheEntry.messageId != messageId ||
+					((chatMessageType == PUBLICCHAT || chatMessageType == MODCHAT) &&
+						config.maxRepeatedPublicChats() > 0 && duplicateCacheEntry.count > config.maxRepeatedPublicChats());
+				duplicateCount = duplicateCacheEntry.count;
+			}
 		}
 
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
-
-		String message = stringStack[stringStackSize - 1];
-		String censoredMessage = censorMessage(name, message);
-
-		if (censoredMessage == null)
+		if (blockMessage)
 		{
 			// Block the message
 			intStack[intStackSize - 3] = 0;
@@ -156,7 +210,12 @@ public class ChatFilterPlugin extends Plugin
 		else
 		{
 			// Replace the message
-			stringStack[stringStackSize - 1] = censoredMessage;
+			if (duplicateCount > 1)
+			{
+				message += " (" + duplicateCount + ")";
+			}
+
+			stringStack[stringStackSize - 1] = message;
 		}
 	}
 
@@ -176,6 +235,25 @@ public class ChatFilterPlugin extends Plugin
 		}
 
 		event.getActor().setOverheadText(message);
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (COLLAPSIBLE_MESSAGETYPES.contains(chatMessage.getType()))
+		{
+			// remove and re-insert into map to move to end of list
+			final String key = chatMessage.getName() + ":" + chatMessage.getMessage();
+			Duplicate duplicate = duplicateChatCache.remove(key);
+			if (duplicate == null)
+			{
+				duplicate = new Duplicate();
+			}
+
+			duplicate.count++;
+			duplicate.messageId = chatMessage.getMessageNode().getId();
+			duplicateChatCache.put(key, duplicate);
+		}
 	}
 
 	boolean shouldFilterPlayerMessage(String playerName)

@@ -67,7 +67,7 @@ public class MenuManagerTest
 	public void testPlayerMenuOptionClicked()
 	{
 		MenuOptionClicked event = new MenuOptionClicked();
-		event.setMenuAction(MenuAction.RUNELITE);
+		event.setMenuAction(MenuAction.RUNELITE_PLAYER);
 		event.setMenuTarget("username<col=40ff00>  (level-42)");
 
 		menuManager.onMenuOptionClicked(event);
@@ -82,7 +82,7 @@ public class MenuManagerTest
 	public void testPlayerMenuOptionWithBountyHunterEmblemClicked()
 	{
 		MenuOptionClicked event = new MenuOptionClicked();
-		event.setMenuAction(MenuAction.RUNELITE);
+		event.setMenuAction(MenuAction.RUNELITE_PLAYER);
 		event.setMenuTarget("username<img=20>5<col=40ff00>  (level-42)");
 
 		menuManager.onMenuOptionClicked(event);

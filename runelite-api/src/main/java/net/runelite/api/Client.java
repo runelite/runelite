@@ -48,10 +48,14 @@ import net.runelite.api.widgets.WidgetInfo;
 public interface Client extends GameEngine
 {
 	/**
-	 * The client invokes these callbacks to communicate to
+	 * The injected client invokes these callbacks to send events to us
 	 */
 	Callbacks getCallbacks();
 
+	/**
+	 * The injected client invokes these callbacks for scene drawing, which is
+	 * used by the gpu plugin to override the client's normal scene drawing code
+	 */
 	DrawCallbacks getDrawCallbacks();
 
 	void setDrawCallbacks(DrawCallbacks drawCallbacks);
@@ -1706,7 +1710,19 @@ public interface Client extends GameEngine
 
 	EnumComposition getEnum(int id);
 
-	void draw2010Menu();
+	/**
+	 * Draws a menu in the 2010 interface style.
+	 *
+	 * @param alpha background transparency of the menu
+	 */
+	void draw2010Menu(int alpha);
+
+	/**
+	 * Draws a menu in the OSRS interface style.
+	 *
+	 * @param alpha background transparency of the menu
+	 */
+	void drawOriginalMenu(int alpha);
 
 	void resetHealthBarCaches();
 
@@ -1734,4 +1750,16 @@ public interface Client extends GameEngine
 	 * Sets the starting index in the item id array for GE search
 	 */
 	void setGeSearchResultIndex(int index);
+
+	/**
+	 * Sets the image to be used for the login screen, provided as SpritePixels
+	 * If the image is larger than half the width of fixed mode,
+	 * it won't get mirrored to the other side of the screen
+	 */
+	void setLoginScreen(SpritePixels pixels);
+
+	/**
+	 * Sets whether the flames on the login screen should be rendered
+	 */
+	void setShouldRenderLoginScreenFire(boolean val);
 }

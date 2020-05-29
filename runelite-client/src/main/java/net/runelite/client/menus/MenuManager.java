@@ -253,9 +253,10 @@ public class MenuManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE)
+		if (event.getMenuAction() != MenuAction.RUNELITE
+			&& event.getMenuAction() != MenuAction.RUNELITE_PLAYER)
 		{
-			return; // not a player menu
+			return; // not a managed widget option or custom player option
 		}
 
 		int widgetId = event.getWidgetId();
@@ -294,7 +295,7 @@ public class MenuManager
 	{
 		client.getPlayerOptions()[playerOptionIndex] = menuText;
 		client.getPlayerOptionsPriorities()[playerOptionIndex] = true;
-		client.getPlayerMenuTypes()[playerOptionIndex] = MenuAction.RUNELITE.getId();
+		client.getPlayerMenuTypes()[playerOptionIndex] = MenuAction.RUNELITE_PLAYER.getId();
 
 		playerMenuIndexMap.put(playerOptionIndex, menuText);
 	}
