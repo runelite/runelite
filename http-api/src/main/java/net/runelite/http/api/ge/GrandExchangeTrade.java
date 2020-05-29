@@ -30,7 +30,10 @@ import lombok.Data;
 public class GrandExchangeTrade
 {
 	private boolean buy;
+	private boolean cancel;
 	private int itemId;
 	private int quantity;
+	private int total;
 	private int price;
+	private int offer;
 }

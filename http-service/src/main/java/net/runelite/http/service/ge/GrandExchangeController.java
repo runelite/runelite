@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
@@ -58,14 +59,23 @@ public class GrandExchangeController
 	@PostMapping
 	public void submit(HttpServletRequest request, HttpServletResponse response, @RequestBody GrandExchangeTrade grandExchangeTrade) throws IOException
 	{
-		SessionEntry session = authFilter.handle(request, response);
-
-		if (session == null)
+		SessionEntry session = null;
+		if (request.getHeader(RuneLiteAPI.RUNELITE_AUTH) != null)
 		{
-			return;
+			session = authFilter.handle(request, response);
+			if (session == null)
+			{
+				// error is set here on the response, so we shouldn't continue
+				return;
+			}
 		}
+		Integer userId = session == null ? null : session.getUser();
 
-		grandExchangeService.add(session.getUser(), grandExchangeTrade);
+		// We don't keep track of pending trades in the web UI, so only add cancelled or completed trades
+		if (userId != null && (grandExchangeTrade.isCancel() || grandExchangeTrade.getQuantity() == grandExchangeTrade.getTotal()))
+		{
+			grandExchangeService.add(userId, grandExchangeTrade);
+		}
 	}
 
 	@GetMapping
