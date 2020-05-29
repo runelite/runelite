@@ -29,17 +29,21 @@
 package net.runelite.client.plugins.grandexchange;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import com.google.common.primitives.Shorts;
 import com.google.gson.Gson;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.NetworkInterface;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
@@ -80,7 +84,6 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -91,6 +94,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.OSType;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.ge.GrandExchangeClient;
@@ -176,9 +180,41 @@ public class GrandExchangePlugin extends Plugin
 	private int osbItem;
 	private OSBGrandExchangeResult osbGrandExchangeResult;
 
+	@Inject
 	private GrandExchangeClient grandExchangeClient;
+	private static String machineUuid;
 
 	private boolean wasFuzzySearch;
+
+	static
+	{
+		try
+		{
+			Hasher hasher = Hashing.sha256().newHasher();
+			Runtime runtime = Runtime.getRuntime();
+
+			hasher.putByte((byte) OSType.getOSType().ordinal());
+			hasher.putByte((byte) runtime.availableProcessors());
+			hasher.putUnencodedChars(System.getProperty("os.arch", ""));
+			hasher.putUnencodedChars(System.getProperty("os.version", ""));
+			hasher.putUnencodedChars(System.getProperty("user.name", ""));
+			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+			while (networkInterfaces.hasMoreElements())
+			{
+				NetworkInterface networkInterface = networkInterfaces.nextElement();
+				byte[] hardwareAddress = networkInterface.getHardwareAddress();
+				if (hardwareAddress != null)
+				{
+					hasher.putBytes(hardwareAddress);
+				}
+			}
+			machineUuid = hasher.hash().toString();
+		}
+		catch (Exception ex)
+		{
+			log.warn("unable to generate machine id", ex);
+		}
+	}
 
 	/**
 	 * Logic from {@link org.apache.commons.text.similarity.FuzzyScore}
@@ -274,8 +310,13 @@ public class GrandExchangePlugin extends Plugin
 		AccountSession accountSession = sessionManager.getAccountSession();
 		if (accountSession != null)
 		{
-			grandExchangeClient = new GrandExchangeClient(accountSession.getUuid());
+			grandExchangeClient.setUuid(accountSession.getUuid());
 		}
+		else
+		{
+			grandExchangeClient.setUuid(null);
+		}
+		grandExchangeClient.setMachineId(machineUuid);
 
 		osbItem = -1;
 		osbGrandExchangeResult = null;
@@ -289,27 +330,13 @@ public class GrandExchangePlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 		grandExchangeText = null;
 		grandExchangeItem = null;
-		grandExchangeClient = null;
 	}
 
 	@Subscribe
 	public void onSessionOpen(SessionOpen sessionOpen)
 	{
 		AccountSession accountSession = sessionManager.getAccountSession();
-		if (accountSession.getUuid() != null)
-		{
-			grandExchangeClient = new GrandExchangeClient(accountSession.getUuid());
-		}
-		else
-		{
-			grandExchangeClient = null;
-		}
-	}
-
-	@Subscribe
-	public void onSessionClose(SessionClose sessionClose)
-	{
-		grandExchangeClient = null;
+		grandExchangeClient.setUuid(accountSession.getUuid());
 	}
 
 	@Subscribe
@@ -351,11 +378,6 @@ public class GrandExchangePlugin extends Plugin
 
 	private void submitTrades(int slot, GrandExchangeOffer offer)
 	{
-		if (grandExchangeClient == null)
-		{
-			return;
-		}
-
 		if (offer.getState() != GrandExchangeOfferState.BOUGHT && offer.getState() != GrandExchangeOfferState.SOLD &&
 			offer.getState() != GrandExchangeOfferState.CANCELLED_BUY && offer.getState() != GrandExchangeOfferState.CANCELLED_SELL)
 		{
