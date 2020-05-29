@@ -43,7 +43,8 @@ public enum LoginScreenOverride
 	PRIFDDINAS("prifddinas.jpg"),
 	THEATRE_OF_BLOOD("tob.jpg"),
 	CUSTOM,
-	RANDOM;
+	RANDOM,
+	RANDOM_CUSTOM;
 
 	@Getter
 	private final String fileName;
