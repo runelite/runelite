@@ -25,6 +25,7 @@
 package net.runelite.http.api.ge;
 
 import lombok.Data;
+import net.runelite.http.api.worlds.WorldType;
 
 @Data
 public class GrandExchangeTrade
@@ -36,4 +37,5 @@ public class GrandExchangeTrade
 	private int total;
 	private int price;
 	private int offer;
+	private WorldType worldType;
 }

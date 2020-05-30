@@ -95,6 +95,8 @@ public class GrandExchangeController
 		trade.setMachineId(request.getHeader(RuneLiteAPI.RUNELITE_MACHINEID));
 		trade.setUserId(userId);
 		trade.setIp(request.getHeader("X-Forwarded-For"));
+		trade.setWorldType(grandExchangeTrade.getWorldType());
+
 		String json = GSON.toJson(trade);
 		try (Jedis jedis = redisPool.getResource())
 		{

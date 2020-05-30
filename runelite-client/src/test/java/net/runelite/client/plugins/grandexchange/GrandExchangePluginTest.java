@@ -28,6 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -35,6 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemID;
+import net.runelite.api.WorldType;
 import net.runelite.client.Notifier;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
@@ -116,6 +118,7 @@ public class GrandExchangePluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(client.getUsername()).thenReturn("adam");
+		when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));
 	}
 
 	@Test

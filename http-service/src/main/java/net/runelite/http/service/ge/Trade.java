@@ -25,6 +25,7 @@
 package net.runelite.http.service.ge;
 
 import lombok.Data;
+import net.runelite.http.api.worlds.WorldType;
 
 @Data
 class Trade
@@ -39,4 +40,5 @@ class Trade
 	private String machineId;
 	private Integer userId;
 	private String ip;
+	private WorldType worldType;
 }

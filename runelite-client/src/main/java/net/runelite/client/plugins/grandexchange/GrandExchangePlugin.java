@@ -43,6 +43,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -102,6 +103,7 @@ import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.api.item.ItemStats;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
+import net.runelite.http.api.worlds.WorldType;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.text.similarity.FuzzyScore;
 
@@ -397,6 +399,7 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setTotal(offer.getTotalQuantity());
 			grandExchangeTrade.setPrice(0);
 			grandExchangeTrade.setOffer(offer.getPrice());
+			grandExchangeTrade.setWorldType(getGeWorldType());
 
 			log.debug("Submitting new trade: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
@@ -425,6 +428,7 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setTotal(offer.getTotalQuantity());
 			grandExchangeTrade.setPrice(offer.getQuantitySold() > 0 ? offer.getSpent() / offer.getQuantitySold() : 0);
 			grandExchangeTrade.setOffer(offer.getPrice());
+			grandExchangeTrade.setWorldType(getGeWorldType());
 
 			log.debug("Submitting cancelled: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
@@ -453,9 +457,27 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeTrade.setTotal(offer.getTotalQuantity());
 		grandExchangeTrade.setPrice(price);
 		grandExchangeTrade.setOffer(offer.getPrice());
+		grandExchangeTrade.setWorldType(getGeWorldType());
 
 		log.debug("Submitting trade: {}", grandExchangeTrade);
 		grandExchangeClient.submit(grandExchangeTrade);
+	}
+
+	private WorldType getGeWorldType()
+	{
+		EnumSet<net.runelite.api.WorldType> worldTypes = client.getWorldType();
+		if (worldTypes.contains(net.runelite.api.WorldType.DEADMAN))
+		{
+			return WorldType.DEADMAN;
+		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.DEADMAN_TOURNAMENT))
+		{
+			return WorldType.DEADMAN_TOURNAMENT;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	private void updateConfig(int slot, GrandExchangeOffer offer)
