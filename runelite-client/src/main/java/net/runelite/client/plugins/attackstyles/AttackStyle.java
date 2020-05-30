@@ -32,13 +32,10 @@ enum AttackStyle
 	AGGRESSIVE("Aggressive", Skill.STRENGTH),
 	DEFENSIVE("Defensive", Skill.DEFENCE),
 	CONTROLLED("Controlled", Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE),
-	ACCURATE_RANGING("Accurate Ranging", Skill.RANGED),
 	RANGING("Ranging", Skill.RANGED),
 	LONGRANGE("Longrange", Skill.RANGED, Skill.DEFENCE),
 	CASTING("Casting", Skill.MAGIC),
 	DEFENSIVE_CASTING("Defensive Casting", Skill.MAGIC, Skill.DEFENCE),
-	AIM_AND_FIRE("Aim and Fire"),
-	BLOCK("Blocking"),
 	OTHER("Other");
 
 	private final String name;
