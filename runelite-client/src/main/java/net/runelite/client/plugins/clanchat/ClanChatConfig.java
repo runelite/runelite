@@ -151,10 +151,10 @@ public interface ClanChatConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "kickWithName",
-			name = "Show kicked player",
-			description = "Changes kick message to say who was kicked",
-			position = 10
+		keyName = "kickWithName",
+		name = "Show kicked player",
+		description = "Changes kick message to say who was kicked",
+		position = 10
 	)
 	default boolean kickWithName()
 	{
