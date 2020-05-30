@@ -26,23 +26,15 @@
 package net.runelite.client.plugins.stealingartefacts;
 
 import com.google.common.collect.ImmutableSet;
-import java.util.Arrays;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
@@ -63,8 +55,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class StealingArtefactsPlugin extends Plugin
 {
 	private static final ImmutableSet<Integer> PORT_PISCARILIUS_REGIONS = ImmutableSet.of(6970, 7226);
-	private static final ImmutableSet<Integer> ARTEFACT_ITEM_IDS = ImmutableSet.of(ItemID.STOLEN_PENDANT,
-		ItemID.STOLEN_GARNET_RING, ItemID.STOLEN_CIRCLET, ItemID.STOLEN_FAMILY_HEIRLOOM, ItemID.STOLEN_JEWELRY_BOX);
 
 	@Inject
 	private Client client;
@@ -93,7 +83,7 @@ public class StealingArtefactsPlugin extends Plugin
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invoke(() -> stealingArtefactState = StealingArtefactState.getState(client.getVar(Varbits.STEALING_ARTEFACT_STATE)));
+			clientThread.invoke(() -> stealingArtefactState = StealingArtefactState.values()[client.getVar(Varbits.STEALING_ARTEFACT_STATE)]);
 		}
 	}
 
@@ -106,67 +96,23 @@ public class StealingArtefactsPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
-	private boolean hasArtefact()
-	{
-		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-
-		if (inventory != null)
-		{
-			final Stream<Item> items = Arrays.stream(inventory.getItems());
-			return items.anyMatch(item -> ARTEFACT_ITEM_IDS.contains(item.getId()));
-		}
-		return false;
-	}
-
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		StealingArtefactState state = StealingArtefactState.getState(client.getVar(Varbits.STEALING_ARTEFACT_STATE));
+		StealingArtefactState state = StealingArtefactState.values()[(client.getVar(Varbits.STEALING_ARTEFACT_STATE))];
+		stealingArtefactState = state;
 
-		if (state != StealingArtefactState.DELIVER_ARTEFACT)
-		{
-			stealingArtefactState = state;
-			if (state == StealingArtefactState.NO_TASK || state == StealingArtefactState.FAILURE)
-			{
-				client.clearHintArrow();
-			}
-			else
-			{
-				client.setHintArrow(stealingArtefactState.getWorldPoint());
-			}
-		}
-		else if (captainKhaled != null)
+		if (state == StealingArtefactState.DELIVER_ARTEFACT && captainKhaled != null)
 		{
 			client.setHintArrow(captainKhaled);
 		}
-		else
+		else if (state == StealingArtefactState.NO_TASK || state == StealingArtefactState.FAILURE)
 		{
 			client.clearHintArrow();
 		}
-	}
-
-	@Subscribe
-	public void onItemContainerChanged(final ItemContainerChanged event)
-	{
-		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		else
 		{
-			if (hasArtefact())
-			{
-				stealingArtefactState = StealingArtefactState.DELIVER_ARTEFACT;
-			}
-			else if (stealingArtefactState == StealingArtefactState.DELIVER_ARTEFACT)
-			{
-				stealingArtefactState = StealingArtefactState.FAILURE;
-			}
-		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() != GameState.LOGGED_IN)
-		{
-			captainKhaled = null;
+			client.setHintArrow(stealingArtefactState.getWorldPoint());
 		}
 	}
 
@@ -186,7 +132,7 @@ public class StealingArtefactsPlugin extends Plugin
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		if (event.getNpc().getId() == NpcID.CAPTAIN_KHALED_6972)
+		if (captainKhaled != null && event.getNpc().getId() == captainKhaled.getId())
 		{
 			captainKhaled = null;
 			if (stealingArtefactState == StealingArtefactState.DELIVER_ARTEFACT)

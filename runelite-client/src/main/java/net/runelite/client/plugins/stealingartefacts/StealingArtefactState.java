@@ -25,9 +25,7 @@
  */
 package net.runelite.client.plugins.stealingartefacts;
 
-import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
-import java.util.Map;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,24 +48,6 @@ enum StealingArtefactState
 
 	private final String description;
 	private final Color color;
-	private WorldPoint worldPoint;
+	private final WorldPoint worldPoint;
 
-	private static final Map<Integer, StealingArtefactState> stealingArtefactStates;
-
-	static
-	{
-		ImmutableMap.Builder<Integer, StealingArtefactState> builder = new ImmutableMap.Builder<>();
-
-		for (StealingArtefactState stealingArtefactState : values())
-		{
-			builder.put(stealingArtefactState.ordinal(), stealingArtefactState);
-		}
-
-		stealingArtefactStates = builder.build();
-	}
-
-	static StealingArtefactState getState(int varbitValue)
-	{
-		return stealingArtefactStates.get(varbitValue);
-	}
 }
