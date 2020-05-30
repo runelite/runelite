@@ -237,13 +237,14 @@ public class ChatFilterPlugin extends Plugin
 		event.getActor().setOverheadText(message);
 	}
 
-	@Subscribe
+	@Subscribe(priority = -2) // run after ChatMessageManager
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (COLLAPSIBLE_MESSAGETYPES.contains(chatMessage.getType()))
 		{
+			final MessageNode messageNode = chatMessage.getMessageNode();
 			// remove and re-insert into map to move to end of list
-			final String key = chatMessage.getName() + ":" + chatMessage.getMessage();
+			final String key = messageNode.getName() + ":" + messageNode.getValue();
 			Duplicate duplicate = duplicateChatCache.remove(key);
 			if (duplicate == null)
 			{
@@ -251,7 +252,7 @@ public class ChatFilterPlugin extends Plugin
 			}
 
 			duplicate.count++;
-			duplicate.messageId = chatMessage.getMessageNode().getId();
+			duplicate.messageId = messageNode.getId();
 			duplicateChatCache.put(key, duplicate);
 		}
 	}
