@@ -120,7 +120,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "deadNpcColor",
 		name = "Dead NPC menu entry color",
 		description = "Color of menu entries that refer to dead NPCs"
@@ -131,7 +131,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "recolorDeadNpcs",
 		name = "Recolor dead NPC menu entries",
 		description = "Changes the color of dead NPCs in menu entries")
