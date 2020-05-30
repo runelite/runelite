@@ -81,6 +81,8 @@ import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import net.runelite.client.util.ContainerCalculation;
+import net.runelite.client.util.ContainerPrices;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 

@@ -22,12 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bank;
+package net.runelite.client.util;
 
 import lombok.Value;
 
 @Value
-class ContainerPrices
+public class ContainerPrices
 {
 	private long gePrice;
 	private long highAlchPrice;
