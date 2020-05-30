@@ -780,6 +780,8 @@ LABEL692:
    sconst                 "<col=ff0000>"
    sload                  0
    sconst                 "</col>"
+   sconst                 "setBankTitle"  ;
+   runelite_callback     ; invoke callback
    join_string            4
    iload                  5
    if_settext            

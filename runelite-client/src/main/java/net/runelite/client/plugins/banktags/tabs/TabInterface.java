@@ -88,11 +88,13 @@ import net.runelite.client.plugins.banktags.BankTagsConfig;
 import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.VAR_TAG_SUFFIX;
+import net.runelite.client.plugins.banktags.ContainerPrices;
 import net.runelite.client.plugins.banktags.TagManager;
 import static net.runelite.client.plugins.banktags.tabs.MenuIndexes.NewTab;
 import static net.runelite.client.plugins.banktags.tabs.MenuIndexes.Tab;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
 @Singleton

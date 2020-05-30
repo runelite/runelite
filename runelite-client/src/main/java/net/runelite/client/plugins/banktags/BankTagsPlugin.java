@@ -33,6 +33,7 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -45,7 +46,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarClientInt;
@@ -56,6 +56,7 @@ import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
@@ -80,6 +81,7 @@ import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -105,6 +107,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
 		"Show items whose names or tags contain the following text: (%d found)<br>" +
 			"(To show only tagged items, start your search with 'tag:')";
+	private static HashSet<Integer> tabContainer = new HashSet<>();
 
 	@Inject
 	private ItemManager itemManager;
@@ -141,6 +144,11 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private ContainerCalculation bankCalculation;
+
+	private boolean shiftPressed = false;
 
 	@Provides
 	BankTagsConfig getConfig(ConfigManager configManager)
@@ -182,6 +190,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	public void startUp()
 	{
 		cleanConfig();
+		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::init);
 		spriteManager.addSpriteOverrides(TabSprites.values());
@@ -243,9 +252,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Override
 	public void shutDown()
 	{
+		keyManager.unregisterKeyListener(this);
 		mouseManager.unregisterMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::destroy);
 		spriteManager.removeSpriteOverrides(TabSprites.values());
+
+		shiftPressed = false;
 	}
 
 	@Subscribe
@@ -276,6 +288,16 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	}
 
 	@Subscribe
+	public void onScriptPreFired(ScriptPreFired event)
+	{
+		// 277 is the ID of BankSearchLayout.rs2asm, just want to clear the container before searching by tag.
+		if (event.getScriptId() == 277)
+		{
+			tabContainer.clear();
+		}
+	}
+
+	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		String eventName = event.getEventName();
@@ -293,11 +315,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				stringStack[stringStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
 				break;
 			case "setSearchBankInputTextFound":
-			{
 				int matches = intStack[intStackSize - 1];
 				stringStack[stringStackSize - 1] = String.format(SEARCH_BANK_INPUT_TEXT_FOUND, matches);
 				break;
-			}
 			case "bankSearchFilter":
 				int itemId = intStack[intStackSize - 1];
 				String search = stringStack[stringStackSize - 1];
@@ -312,6 +332,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
+					tabContainer.add(itemId);
 				}
 				else if (tagSearch)
 				{
@@ -320,6 +341,27 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				break;
 			case "getSearchingTagTab":
 				intStack[intStackSize - 1] = tabInterface.isActive() ? 1 : 0;
+				break;
+			case "setBankTitle":
+				String priceText = "";
+				if (tabContainer.size() > 1)
+				{
+					final ItemContainer container = client.getItemContainer(InventoryID.BANK);
+					final Item[] items = container.getItems();
+					ArrayList<Item> tabContainerToCalculate = new ArrayList<>();
+					for (Item item : items)
+					{
+						if (tabContainer.contains(item.getId()))
+						{
+							tabContainerToCalculate.add(item);
+						}
+					}
+					Item[] foundItems = tabContainer.toArray(new Item[tabContainer.size()]);
+					final ContainerPrices prices = bankCalculation.calculate(foundItems);
+					priceText = createValueText(prices);
+				}
+
+				stringStack[stringStackSize - 1] += priceText;
 				break;
 		}
 	}
@@ -459,7 +501,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
 	{
-		final boolean shiftPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
 		tabInterface.handleDrag(event.isDraggingWidget(), shiftPressed);
 	}
 
@@ -477,5 +518,52 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	{
 		tabInterface.handleWheel(event);
 		return event;
+	}
+
+	private String createValueText(final ContainerPrices prices)
+	{
+		final long gePrice = prices.getGePrice();
+		final long haPrice = prices.getHighAlchPrice();
+
+		String strCurrentTab = "";
+		if (config.showGE() && gePrice != 0)
+		{
+			strCurrentTab += " (";
+
+			if (config.showHA())
+			{
+				strCurrentTab += "GE: ";
+			}
+
+			if (config.showExact())
+			{
+				strCurrentTab += QuantityFormatter.formatNumber(gePrice) + ")";
+			}
+			else
+			{
+				strCurrentTab += QuantityFormatter.quantityToStackSize(gePrice) + ")";
+			}
+		}
+
+		if (config.showHA() && haPrice != 0)
+		{
+			strCurrentTab += " (";
+
+			if (config.showGE())
+			{
+				strCurrentTab += "HA: ";
+			}
+
+			if (config.showExact())
+			{
+				strCurrentTab += QuantityFormatter.formatNumber(haPrice) + ")";
+			}
+			else
+			{
+				strCurrentTab += QuantityFormatter.quantityToStackSize(haPrice) + ")";
+			}
+		}
+
+		return strCurrentTab;
 	}
 }
