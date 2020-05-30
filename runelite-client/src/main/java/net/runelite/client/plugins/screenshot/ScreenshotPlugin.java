@@ -27,6 +27,7 @@ package net.runelite.client.plugins.screenshot;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -34,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -83,6 +85,8 @@ import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.ArrayUtils;
+import net.runelite.api.WorldType;
 
 @PluginDescriptor(
 	name = "Screenshot",
@@ -102,6 +106,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9]+) duels?\\.");
+	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13617, 13658, 13659, 13660, 13914, 13915, 13916);
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
@@ -267,14 +272,32 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
-		if (config.screenshotKills())
+		if (config.screenshotKills() && !isAtLMS() && !client.getWorldType().contains(WorldType.TOURNAMENT))
 		{
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
 			String fileName = "Kill " + name;
 			takeScreenshot(fileName, "PvP Kills");
 		}
+
+		if (config.screenshotLMSKills() && isAtLMS())
+		{
+			final Player player = playerLootReceived.getPlayer();
+			final String name = player.getName();
+			String fileName = "Kill " + name;
+			takeScreenshot(fileName, "LMS Kills");
+		}
+
+		if (config.screenshotTournamentKills() && client.getWorldType().contains(WorldType.TOURNAMENT))
+		{
+			final Player player = playerLootReceived.getPlayer();
+			final String name = player.getName();
+			String fileName = "Kill " + name;
+			takeScreenshot(fileName, "Tournament World Kills");
+		}
 	}
+
+
 
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent e)
@@ -646,6 +669,20 @@ public class ScreenshotPlugin extends Plugin
 			&& this.client.getMapRegions().length > 0
 			&& (this.client.getMapRegions()[0] == GAUNTLET_REGION
 			|| this.client.getMapRegions()[0] == CORRUPTED_GAUNTLET_REGION);
+	}
+
+	boolean isAtLMS()
+	{
+		final int[] mapRegions = client.getMapRegions();
+
+		for (int region : LAST_MAN_STANDING_REGIONS)
+		{
+			if (ArrayUtils.contains(mapRegions, region))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@VisibleForTesting
