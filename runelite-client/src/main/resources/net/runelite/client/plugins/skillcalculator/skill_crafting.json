@@ -8,6 +8,18 @@
     },
     {
       "level": 1,
+      "icon": 1787,
+      "name": "Unfired pot",
+      "xp": 6.3
+    },
+    {
+      "level": 1,
+      "icon": 1931,
+      "name": "Pot",
+      "xp": 6.3
+    },
+    {
+      "level": 1,
       "icon": 1059,
       "name": "Leather Gloves",
       "xp": 13.8
@@ -68,9 +80,33 @@
     },
     {
       "level": 7,
+      "icon": 1789,
+      "name": "Unfired pie dish",
+      "xp": 15
+    },
+    {
+      "level": 7,
+      "icon": 2313,
+      "name": "Pie dish",
+      "xp": 10
+    },
+    {
+      "level": 7,
       "icon": 11068,
       "name": "Gold Bracelet",
       "xp": 25
+    },
+    {
+      "level": 8,
+      "icon": 1791,
+      "name": "Unfired bowl",
+      "xp": 18
+    },
+    {
+      "level": 8,
+      "icon": 1923,
+      "name": "Bowl",
+      "xp": 15
     },
     {
       "level": 8,
@@ -171,6 +207,18 @@
     },
     {
       "level": 19,
+      "icon": 5352,
+      "name": "Unfired plant pot",
+      "xp": 20
+    },
+    {
+      "level": 19,
+      "icon": 5350,
+      "name": "Empty plant pot",
+      "xp": 17.5
+    },
+    {
+      "level": 19,
       "icon": 6038,
       "name": "Magic String",
       "xp": 30
@@ -222,6 +270,18 @@
       "icon": 1675,
       "name": "Sapphire Amulet (U)",
       "xp": 65
+    },
+    {
+      "level": 25,
+      "icon": 4438,
+      "name": "Unfired pot lid",
+      "xp": 20
+    },
+    {
+      "level": 25,
+      "icon": 4440,
+      "name": "Pot lid",
+      "xp": 20
     },
     {
       "level": 25,

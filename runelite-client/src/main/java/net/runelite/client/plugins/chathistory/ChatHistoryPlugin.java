@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2020, Anthony <https://github.com/while-loop>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,6 +28,7 @@ package net.runelite.client.plugins.chathistory;
 import com.google.common.base.Strings;
 import com.google.common.collect.EvictingQueue;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
@@ -35,14 +37,17 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.Queue;
 import javax.inject.Inject;
+import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.MessageNode;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.vars.InputType;
@@ -59,6 +64,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +78,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 {
 	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape";
 	private static final String CLEAR_HISTORY = "Clear history";
-	private static final String CLEAR_PRIVATE = "<col=ffff00>Private:";
 	private static final String COPY_TO_CLIPBOARD = "Copy to clipboard";
 	private static final int CYCLE_HOTKEY = KeyEvent.VK_TAB;
 	private static final int FRIENDS_MAX_SIZE = 5;
@@ -102,7 +107,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	{
 		return configManager.getConfig(ChatHistoryConfig.class);
 	}
-	
+
 	@Override
 	protected void startUp()
 	{
@@ -247,26 +252,100 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		String menuOption = event.getMenuOption();
+		final String menuOption = event.getMenuOption();
 
-		if (menuOption.contains(CLEAR_HISTORY))
+		// The menu option for clear history is "<col=ffff00>Public:</col> Clear history"
+		if (menuOption.endsWith(CLEAR_HISTORY))
 		{
-			if (menuOption.startsWith(CLEAR_PRIVATE))
-			{
-				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATECHAT ||
-					e.getType() == ChatMessageType.PRIVATECHATOUT || e.getType() == ChatMessageType.MODPRIVATECHAT);
-				friends.clear();
-			}
-			else
-			{
-				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PUBLICCHAT || e.getType() == ChatMessageType.MODCHAT);
-			}
+			clearChatboxHistory(ChatboxTab.of(event.getWidgetId()));
 		}
 		else if (COPY_TO_CLIPBOARD.equals(menuOption) && !Strings.isNullOrEmpty(currentMessage))
 		{
 			final StringSelection stringSelection = new StringSelection(Text.removeTags(currentMessage));
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded entry)
+	{
+		final ChatboxTab tab = ChatboxTab.of(entry.getActionParam1());
+
+		if (tab == null || !config.clearHistory() || !Text.removeTags(entry.getOption()).equals(tab.getAfter()))
+		{
+			return;
+		}
+
+		final MenuEntry clearEntry = new MenuEntry();
+		clearEntry.setTarget("");
+		clearEntry.setType(MenuAction.RUNELITE.getId());
+		clearEntry.setParam0(entry.getActionParam0());
+		clearEntry.setParam1(entry.getActionParam1());
+
+		if (tab == ChatboxTab.GAME)
+		{
+			// keep type as the original CC_OP to correctly group "Game: Clear history" with
+			// other tab "Game: *" options.
+			clearEntry.setType(entry.getType());
+		}
+
+		final StringBuilder messageBuilder = new StringBuilder();
+
+		if (tab != ChatboxTab.ALL)
+		{
+			messageBuilder.append(ColorUtil.wrapWithColorTag(tab.getName() + ": ", Color.YELLOW));
+		}
+
+		messageBuilder.append(CLEAR_HISTORY);
+		clearEntry.setOption(messageBuilder.toString());
+
+		final MenuEntry[] menuEntries = client.getMenuEntries();
+		client.setMenuEntries(ArrayUtils.insert(menuEntries.length - 1, menuEntries, clearEntry));
+	}
+
+	private void clearMessageQueue(ChatboxTab tab)
+	{
+		if (tab == ChatboxTab.ALL || tab == ChatboxTab.PRIVATE)
+		{
+			friends.clear();
+		}
+
+		messageQueue.removeIf(e -> ArrayUtils.contains(tab.getMessageTypes(), e.getType()));
+	}
+
+	private void clearChatboxHistory(ChatboxTab tab)
+	{
+		if (tab == null)
+		{
+			return;
+		}
+
+		boolean removed = false;
+		for (ChatMessageType msgType : tab.getMessageTypes())
+		{
+			final ChatLineBuffer lineBuffer = client.getChatLineMap().get(msgType.getType());
+			if (lineBuffer == null)
+			{
+				continue;
+			}
+
+			final MessageNode[] lines = lineBuffer.getLines().clone();
+			for (final MessageNode line : lines)
+			{
+				if (line != null)
+				{
+					lineBuffer.removeMessageNode(line);
+					removed = true;
+				}
+			}
+		}
+
+		if (removed)
+		{
+			clientThread.invoke(() -> client.runScript(ScriptID.BUILD_CHATBOX));
+		}
+
+		clearMessageQueue(tab);
 	}
 
 	/**

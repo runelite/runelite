@@ -266,7 +266,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getdeadNpcColor());
 			}
 			else if (config.highlightMenuNames() &&
-				highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
+				highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == menuNpc.getIndex() && (!npc.isDead() || config.highlightDeadNpcs())))
 			{
 				target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getHighlightColor());
 			}

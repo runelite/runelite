@@ -70,6 +70,8 @@ public interface Callbacks
 	 */
 	void drawAboveOverheads();
 
+	void drawAfterWidgets();
+
 	/**
 	 * Client top-most draw method, rendering over top of most of game interfaces.
 	 *

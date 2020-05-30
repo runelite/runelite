@@ -68,4 +68,24 @@ public interface LoginScreenConfig extends Config
 		description = ""
 	)
 	void username(String key);
+
+	@ConfigItem(
+		keyName = "loginScreen",
+		name = "Custom Background",
+		description = "Force the login screen to use an image from the past instead of the current one."
+	)
+	default LoginScreenOverride loginScreen()
+	{
+		return LoginScreenOverride.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "showLoginFire",
+		name = "Display Fire",
+		description = "Whether or not the fire in the braziers at the sides of the login screen should be on fire."
+	)
+	default boolean showLoginFire()
+	{
+		return true;
+	}
 }

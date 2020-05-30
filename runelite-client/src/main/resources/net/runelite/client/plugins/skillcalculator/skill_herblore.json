@@ -248,6 +248,24 @@
     },
     {
       "level": 70,
+      "icon": 23697,
+      "name": "Divine super attack potion(4)",
+      "xp:": 2
+    },
+    {
+      "level": 70,
+      "icon": 23721,
+      "name": "Divine super defence potion(4)",
+      "xp:": 2
+    },
+    {
+      "level": 70,
+      "icon": 23709,
+      "name": "Divine super strength potion(4)",
+      "xp:": 2
+    },
+    {
+      "level": 70,
       "icon": 267,
       "name": "Dwarf Weed",
       "xp": 13.8
@@ -263,6 +281,12 @@
       "icon": 5937,
       "name": "Weapon Poison (+)",
       "xp": 165
+    },
+    {
+      "level": 74,
+      "icon": 23733,
+      "name": "Divine ranging potion(4)",
+      "xp:": 2
     },
     {
       "level": 75,
@@ -287,6 +311,12 @@
       "icon": 12625,
       "name": "Stamina Potion (4)",
       "xp": 102
+    },
+    {
+      "level": 78,
+      "icon": 23745,
+      "name": "Divine magic potion(4)",
+      "xp:": 2
     },
     {
       "level": 78,
@@ -331,6 +361,18 @@
       "xp": 82.5
     },
     {
+      "level": 86,
+      "icon": 24635,
+      "name": "Divine bastion potion(4)",
+      "xp:": 2
+    },
+    {
+      "level": 86,
+      "icon": 24623,
+      "name": "Divine battlemage potion(4)",
+      "xp:": 2
+    },
+    {
       "level": 87,
       "icon": 12907,
       "name": "Anti-venom(3)",
@@ -353,6 +395,12 @@
       "icon": 12915,
       "name": "Anti-venom+(3)",
       "xp": 125
+    },
+    {
+      "level": 97,
+      "icon": 23685,
+      "name": "Divine super combat potion(4)",
+      "xp:": 2
     },
     {
       "level": 98,

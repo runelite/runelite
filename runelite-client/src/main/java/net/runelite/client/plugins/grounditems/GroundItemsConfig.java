@@ -111,7 +111,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "recolorMenuHiddenItems",
 		name = "Recolor Menu Hidden Items",
-		description = "Configures whether or not hidden items in right click menu will be recolored",
+		description = "Configures whether or not hidden items in right-click menu will be recolored",
 		position = 5
 	)
 	default boolean recolorMenuHiddenItems()
@@ -144,7 +144,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "notifyTier",
 		name = "Notify >= Tier",
-		description = "Configures what tier of highlight will cause a drop",
+		description = "Configures which price tiers will trigger a notification on drop",
 		position = 8
 	)
 	default HighlightTier notifyTier()
@@ -155,7 +155,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "priceDisplayMode",
 		name = "Price Display Mode",
-		description = "Configures what price types are shown alongside of ground item name",
+		description = "Configures which price types are shown alongside ground item name",
 		position = 9
 	)
 	default PriceDisplayMode priceDisplayMode()

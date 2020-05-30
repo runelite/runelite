@@ -92,7 +92,9 @@ public class ChatCommandsPlugin extends Plugin
 {
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest|lap|completion) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>");
-	private static final Pattern RAIDS_DURATION_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete! Duration:</col> <col=ff0000>([0-9:]+)</col>");
+	private static final Pattern RAIDS_PB_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>(?:[0-9]+ players|Solo)</col> Duration:</col> <col=ff0000>([0-9:]+)</col> \\(new personal best\\)</col>");
+	private static final Pattern TOB_WAVE_PB_PATTERN = Pattern.compile("^.*Theatre of Blood wave completion time: <col=ff0000>([0-9:]+)</col> \\(Personal best!\\)");
+	private static final Pattern TOB_WAVE_DURATION_PATTERN = Pattern.compile("^.*Theatre of Blood wave completion time: <col=ff0000>[0-9:]+</col><br></col>Personal best: ([0-9:]+)");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)^(?:Fight |Lap |Challenge |Corrupted challenge )?duration: <col=ff0000>[0-9:]+</col>\\. Personal best: ([0-9:]+)");
@@ -100,7 +102,9 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won (\\d+) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost (\\d+) duels?");
 	private static final Pattern ADVENTURE_LOG_TITLE_PATTERN = Pattern.compile("The Exploits of (.+)");
-	private static final Pattern ADVENTURE_LOG_PB_PATTERN = Pattern.compile("([a-zA-Z]+(?: [a-zA-Z]+)*) Fastest (?:kill|run): ([0-9:]+)");
+	private static final Pattern ADVENTURE_LOG_COX_PB_PATTERN = Pattern.compile("Fastest (?:kill|run)(?: - \\(Team size: (?:[0-9]+ players|Solo)\\))?: ([0-9:]+)");
+	private static final Pattern ADVENTURE_LOG_BOSS_PB_PATTERN = Pattern.compile("[a-zA-Z]+(?: [a-zA-Z]+)*");
+	private static final Pattern ADVENTURE_LOG_PB_PATTERN = Pattern.compile("(" + ADVENTURE_LOG_BOSS_PB_PATTERN + "(?: - " + ADVENTURE_LOG_BOSS_PB_PATTERN + ")*) (?:" + ADVENTURE_LOG_COX_PB_PATTERN + "( )*)+");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -350,7 +354,19 @@ public class ChatCommandsPlugin extends Plugin
 			matchPb(matcher);
 		}
 
-		matcher = RAIDS_DURATION_PATTERN.matcher(message);
+		matcher = RAIDS_PB_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			matchPb(matcher);
+		}
+
+		matcher = TOB_WAVE_PB_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			matchPb(matcher);
+		}
+
+		matcher = TOB_WAVE_DURATION_PATTERN.matcher(message);
 		if (matcher.find())
 		{
 			matchPb(matcher);
@@ -450,9 +466,28 @@ public class ChatCommandsPlugin extends Plugin
 			Matcher mCounterText = ADVENTURE_LOG_PB_PATTERN.matcher(counterText);
 			while (mCounterText.find())
 			{
-				String bossName = mCounterText.group(1);
-				String pbTime = mCounterText.group(2);
-				setPb(longBossName(bossName), timeStringToSeconds(pbTime));
+				String bossName = longBossName(mCounterText.group(1));
+				if (bossName.equalsIgnoreCase("chambers of xeric") ||
+					bossName.equalsIgnoreCase("chambers of xeric challenge mode"))
+				{
+					Matcher mCoxRuns = ADVENTURE_LOG_COX_PB_PATTERN.matcher(mCounterText.group());
+					int bestPbTime = Integer.MAX_VALUE;
+					while (mCoxRuns.find())
+					{
+						bestPbTime = Math.min(timeStringToSeconds(mCoxRuns.group(1)), bestPbTime);
+					}
+					// So we don't reset people's already saved PB's if they had one before the update
+					int currentPb = getPb(bossName);
+					if (currentPb == 0 || currentPb > bestPbTime)
+					{
+						setPb(bossName, bestPbTime);
+					}
+				}
+				else
+				{
+					String pbTime = mCounterText.group(2);
+					setPb(bossName, timeStringToSeconds(pbTime));
+				}
 			}
 		}
 	}
@@ -1556,6 +1591,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "chambers cm":
 			case "olm cm":
 			case "raids cm":
+			case "chambers of xeric - challenge mode":
 				return "Chambers of Xeric Challenge Mode";
 
 			// tob
