@@ -165,8 +165,8 @@ public class AgilityPlugin extends Plugin
 	{
 		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
 		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY
-				&& overlayMenuClicked.getEntry().getOption().equals(LapCounterOverlay.AGILITY_RESET)
-				&& overlayMenuClicked.getOverlay() == lapCounterOverlay)
+			&& overlayMenuClicked.getOverlay() == lapCounterOverlay
+			&& overlayMenuClicked.getEntry().getOption().equals(LapCounterOverlay.AGILITY_RESET))
 		{
 			session = null;
 		}
