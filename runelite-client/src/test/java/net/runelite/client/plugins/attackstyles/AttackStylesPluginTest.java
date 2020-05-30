@@ -132,7 +132,7 @@ public class AttackStylesPluginTest
 		when(strWidget.isHidden()).thenAnswer(x -> isStrHidden());
 
 		// equip type_4 weapon type on player
-		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_4.ordinal());
+		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.CLAW.ordinal());
 		attackPlugin.onVarbitChanged(new VarbitChanged());
 
 		// Verify there is a warned skill
@@ -167,9 +167,9 @@ public class AttackStylesPluginTest
 		attackPlugin.onConfigChanged(hideWidgetEvent);
 
 		// verify that the aggressive and accurate attack style widgets are no longer hidden
-		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
+		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.CLAW,
 			WidgetInfo.COMBAT_STYLE_ONE));
-		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
+		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.CLAW,
 			WidgetInfo.COMBAT_STYLE_THREE));
 	}
 
@@ -208,7 +208,7 @@ public class AttackStylesPluginTest
 		when(attackConfig.removeWarnedStyles()).thenReturn(true);
 
 		// equip bludgeon on player
-		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_26.ordinal());
+		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.BLUDGEON.ordinal());
 		attackPlugin.onVarbitChanged(new VarbitChanged());
 		attackPlugin.onWidgetHiddenChanged(widgetHiddenChanged);
 
@@ -219,7 +219,7 @@ public class AttackStylesPluginTest
 		// equip bow on player
 		// the equipped weaopn varbit will change after the hiddenChanged event has been dispatched
 		attackPlugin.onWidgetHiddenChanged(widgetHiddenChanged);
-		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_3.ordinal());
+		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.BOW.ordinal());
 		attackPlugin.onVarbitChanged(new VarbitChanged());
 
 		// verify that the longrange attack style widget is now hidden
@@ -233,7 +233,7 @@ public class AttackStylesPluginTest
 		{
 			return false;
 		}
-		return attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4, WidgetInfo.COMBAT_STYLE_ONE);
+		return attackPlugin.getHiddenWidgets().get(WeaponType.CLAW, WidgetInfo.COMBAT_STYLE_ONE);
 	}
 
 	private boolean isStrHidden()
@@ -242,6 +242,6 @@ public class AttackStylesPluginTest
 		{
 			return false;
 		}
-		return attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4, WidgetInfo.COMBAT_STYLE_TWO);
+		return attackPlugin.getHiddenWidgets().get(WeaponType.CLAW, WidgetInfo.COMBAT_STYLE_TWO);
 	}
 }
