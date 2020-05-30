@@ -116,6 +116,15 @@ public class ChatFilterPluginTest
 		return node;
 	}
 
+	private MessageNode mockMessageNode(int id, String sender, String value)
+	{
+		MessageNode node = mock(MessageNode.class);
+		when(node.getId()).thenReturn(id);
+		when(node.getName()).thenReturn(sender);
+		when(node.getValue()).thenReturn(value);
+		return node;
+	}
+
 	@Test
 	public void testCensorWords()
 	{
@@ -335,7 +344,7 @@ public class ChatFilterPluginTest
 	public void testDuplicateChatFiltered()
 	{
 		when(chatFilterConfig.collapseGameChat()).thenReturn(true);
-		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(0), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(0, null, "testMessage"), ChatMessageType.GAMEMESSAGE, null, null, null, 0));
 		ScriptCallbackEvent event = createCallbackEvent(null, "testMessage", ChatMessageType.GAMEMESSAGE);
 		chatFilterPlugin.onScriptCallbackEvent(event);
 
@@ -358,10 +367,10 @@ public class ChatFilterPluginTest
 	public void testDuplicateChatCount()
 	{
 		when(chatFilterConfig.collapseGameChat()).thenReturn(true);
-		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(4), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
-		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(3), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
-		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(2), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
-		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1), ChatMessageType.GAMEMESSAGE, null, "testMessage", null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(4, null, "testMessage"), ChatMessageType.GAMEMESSAGE, null, null, null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(3, null, "testMessage"), ChatMessageType.GAMEMESSAGE, null, null, null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(2, null, "testMessage"), ChatMessageType.GAMEMESSAGE, null, null, null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1, null, "testMessage"), ChatMessageType.GAMEMESSAGE, null, null, null, 0));
 		ScriptCallbackEvent event = createCallbackEvent(null, "testMessage", ChatMessageType.GAMEMESSAGE);
 		chatFilterPlugin.onScriptCallbackEvent(event);
 
@@ -374,12 +383,27 @@ public class ChatFilterPluginTest
 	{
 		when(chatFilterConfig.collapsePlayerChat()).thenReturn(true);
 		when(chatFilterConfig.maxRepeatedPublicChats()).thenReturn(2);
-		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1), ChatMessageType.PUBLICCHAT, "testName", "testMessage", null, 0));
-		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1), ChatMessageType.PUBLICCHAT, "testName", "testMessage", null, 0));
-		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1), ChatMessageType.PUBLICCHAT, "testName", "testMessage", null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1, "testName", "testMessage"), ChatMessageType.PUBLICCHAT, null, null, null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1, "testName", "testMessage"), ChatMessageType.PUBLICCHAT, null, null, null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1, "testName", "testMessage"), ChatMessageType.PUBLICCHAT, null, null, null, 0));
 		ScriptCallbackEvent event = createCallbackEvent("testName", "testMessage", ChatMessageType.PUBLICCHAT);
 		chatFilterPlugin.onScriptCallbackEvent(event);
 
 		assertEquals(0, client.getIntStack()[client.getIntStackSize() - 3]);
+	}
+
+	@Test
+	public void testDuplicateChatFilterIgnoresFormatting()
+	{
+		when(chatFilterConfig.collapseGameChat()).thenReturn(true);
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(4, null, "<col=000000>testMessage</col>"), ChatMessageType.GAMEMESSAGE, null, null, null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(3, null, "<col=000000>testMessage</col>"), ChatMessageType.GAMEMESSAGE, null, null, null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(2, null, "<col=000000>testMessage</col>"), ChatMessageType.GAMEMESSAGE, null, null, null, 0));
+		chatFilterPlugin.onChatMessage(new ChatMessage(mockMessageNode(1, null, "<col=000000>testMessage</col>"), ChatMessageType.GAMEMESSAGE, null, null, null, 0));
+		ScriptCallbackEvent event = createCallbackEvent(null, "<col=000000>testMessage</col>", ChatMessageType.GAMEMESSAGE);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+
+		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]);
+		assertEquals("<col=000000>testMessage</col> (4)", client.getStringStack()[client.getStringStackSize() - 1]);
 	}
 }
