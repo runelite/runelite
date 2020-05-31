@@ -161,7 +161,7 @@ public class ClientUI
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("runelite") ||
+		if (!event.getGroup().equals(CONFIG_GROUP) ||
 			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
 			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
 		{
@@ -977,6 +977,14 @@ public class ClientUI
 		if (frame == null)
 		{
 			return;
+		}
+
+		// Update window opacity if the frame is undecorated, translucency capable and not fullscreen
+		if (frame.isUndecorated() &&
+			frame.getGraphicsConfiguration().isTranslucencyCapable() &&
+			frame.getGraphicsConfiguration().getDevice().getFullScreenWindow() == null)
+		{
+			frame.setOpacity(((float) config.windowOpacity()) / 100.0f);
 		}
 
 		if (config.usernameInTitle() && (client instanceof Client))
