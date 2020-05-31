@@ -26,27 +26,19 @@ package net.runelite.client.plugins.attackstyles;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.ACCURATE;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.AGGRESSIVE;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.CONTROLLED;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.LONGRANGE;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.RANGING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.*;
 
 enum WeaponType
 {
 	UNARMED(ACCURATE, AGGRESSIVE, null, DEFENSIVE),
 	AXE(ACCURATE, AGGRESSIVE, AGGRESSIVE, DEFENSIVE),
 	BLUNT(ACCURATE, AGGRESSIVE, null, DEFENSIVE),
-	BOW(RANGING, RANGING, null, LONGRANGE),
+	BOW(ACCURATE_RANGING, RANGING, null, LONGRANGE),
 	CLAWS(ACCURATE, AGGRESSIVE, CONTROLLED, DEFENSIVE),
-	CROSSBOW(RANGING, RANGING, null, LONGRANGE),
+	CROSSBOW(ACCURATE_RANGING, RANGING, null, LONGRANGE),
 	SALAMANDER(AGGRESSIVE, RANGING, CASTING, null),
-	CHINCHOMPA(RANGING, RANGING, null, LONGRANGE),
-	GUN(OTHER, AGGRESSIVE, null, null), // Fixed device
+	CHINCHOMPA(ACCURATE_RANGING, RANGING, null, LONGRANGE),
+	GUN(AIM_AND_FIRE, AGGRESSIVE, null, null), // Fixed device
 	SWORD_SLASH(ACCURATE, AGGRESSIVE, CONTROLLED, DEFENSIVE),
 	SWORD_2H(ACCURATE, AGGRESSIVE, AGGRESSIVE, DEFENSIVE),
 	PICKAXE(ACCURATE, AGGRESSIVE, AGGRESSIVE, DEFENSIVE),
@@ -57,7 +49,7 @@ enum WeaponType
 	SPIKED(ACCURATE, AGGRESSIVE, CONTROLLED, DEFENSIVE),
 	SWORD_STAB(ACCURATE, AGGRESSIVE, AGGRESSIVE, DEFENSIVE),
 	STAFF(ACCURATE, AGGRESSIVE, null, DEFENSIVE, CASTING, DEFENSIVE_CASTING),
-	THROWN(RANGING, RANGING, null, LONGRANGE),
+	THROWN(ACCURATE_RANGING, RANGING, null, LONGRANGE),
 	WHIP(ACCURATE, CONTROLLED, null, DEFENSIVE),
 	STAFF_BLADED(ACCURATE, AGGRESSIVE, null, DEFENSIVE, CASTING, DEFENSIVE_CASTING),
 	GODSWORD(ACCURATE, AGGRESSIVE, AGGRESSIVE, DEFENSIVE),
@@ -65,7 +57,7 @@ enum WeaponType
 	BANNER(ACCURATE, AGGRESSIVE, CONTROLLED, DEFENSIVE),
 	POLEARM(CONTROLLED, AGGRESSIVE, null, DEFENSIVE),
 	BLUDGEON(AGGRESSIVE, AGGRESSIVE, null, AGGRESSIVE),
-	BULWARK(ACCURATE, null, null, OTHER),
+	BULWARK(ACCURATE, null, null, BLOCK),
 	;
 
 	private final AttackStyle[] attackStyles;
