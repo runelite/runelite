@@ -125,18 +125,5 @@ public interface NpcIndicatorsConfig extends Config
 		name = "Dead NPC menu entry color",
 		description = "Color of menu entries that refer to dead NPCs"
 	)
-	default Color getdeadNpcColor()
-	{
-		return Color.GRAY;
-	}
-
-	@ConfigItem(
-		position = 9,
-		keyName = "recolorDeadNpcs",
-		name = "Recolor dead NPC menu entries",
-		description = "Changes the color of dead NPCs in menu entries")
-	default boolean recolorDeadNpcs()
-	{
-		return false;
-	}
+	Color getdeadNpcColor();
 }
