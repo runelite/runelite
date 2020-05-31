@@ -344,7 +344,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			case "getSearchingTagTab":
 				intStack[intStackSize - 1] = tabInterface.isActive() ? 1 : 0;
 				break;
-			case "setBankTitle":
+			case "setBankTitleSearch":
 				String priceText = "";
 				if (tabContainer.size() > 1)
 				{
@@ -358,7 +358,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 							tabContainerToCalculate.add(item);
 						}
 					}
-					Item[] foundItems = tabContainer.toArray(new Item[tabContainer.size()]);
+					Item[] foundItems = tabContainerToCalculate.toArray(new Item[tabContainerToCalculate.size()]);
 					final ContainerPrices prices = bankCalculation.calculate(foundItems);
 					priceText = createValueText(prices);
 				}
