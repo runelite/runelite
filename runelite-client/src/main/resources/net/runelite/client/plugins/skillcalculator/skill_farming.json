@@ -8,6 +8,30 @@
   "actions": [
     {
       "level": 1,
+      "icon": 10847,
+      "name": "Winter Sq'irk",
+      "xp": 30
+    },
+    {
+      "level": 1,
+      "icon": 10844,
+      "name": "Spring Sq'irk",
+      "xp": 40
+    },
+    {
+      "level": 1,
+      "icon": 10846,
+      "name": "Autumn Sq'irk",
+      "xp": 50
+    },
+    {
+      "level": 1,
+      "icon": 10845,
+      "name": "Summer Sq'irk",
+      "xp": 60
+    },
+    {
+      "level": 1,
       "icon": 1942,
       "name": "Potatoes",
       "xp": 8
