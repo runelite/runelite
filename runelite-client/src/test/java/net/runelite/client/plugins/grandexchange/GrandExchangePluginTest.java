@@ -159,7 +159,7 @@ public class GrandExchangePluginTest
 		assertEquals(ItemID.ABYSSAL_WHIP, trade.getItemId());
 		assertEquals(2, trade.getQuantity());
 		assertEquals(10, trade.getTotal());
-		assertEquals(10, trade.getPrice());
+		assertEquals(20, trade.getSpent());
 	}
 
 	@Test
@@ -216,6 +216,6 @@ public class GrandExchangePluginTest
 		assertEquals(ItemID.ABYSSAL_WHIP, trade.getItemId());
 		assertEquals(1, trade.getQuantity());
 		assertEquals(10, trade.getTotal());
-		assertEquals(25, trade.getPrice());
+		assertEquals(25, trade.getSpent());
 	}
 }

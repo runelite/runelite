@@ -404,7 +404,7 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setItemId(offer.getItemId());
 			grandExchangeTrade.setQuantity(0);
 			grandExchangeTrade.setTotal(offer.getTotalQuantity());
-			grandExchangeTrade.setPrice(0);
+			grandExchangeTrade.setSpent(0);
 			grandExchangeTrade.setOffer(offer.getPrice());
 			grandExchangeTrade.setWorldType(getGeWorldType());
 
@@ -433,7 +433,7 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setItemId(offer.getItemId());
 			grandExchangeTrade.setQuantity(offer.getQuantitySold());
 			grandExchangeTrade.setTotal(offer.getTotalQuantity());
-			grandExchangeTrade.setPrice(offer.getQuantitySold() > 0 ? offer.getSpent() / offer.getQuantitySold() : 0);
+			grandExchangeTrade.setSpent(offer.getSpent());
 			grandExchangeTrade.setOffer(offer.getPrice());
 			grandExchangeTrade.setWorldType(getGeWorldType());
 
@@ -443,16 +443,8 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		final int qty = offer.getQuantitySold() - savedOffer.getQuantitySold();
-		if (qty <= 0)
-		{
-			return;
-		}
-
-		// offer.getPrice() is the price of the offer, not necessarily what the item bought at, so we compute it
-		// based on how much was spent & the qty
 		final int dspent = offer.getSpent() - savedOffer.getSpent();
-		final int price = dspent / qty;
-		if (price <= 0)
+		if (qty <= 0 || dspent <= 0)
 		{
 			return;
 		}
@@ -462,7 +454,7 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeTrade.setItemId(offer.getItemId());
 		grandExchangeTrade.setQuantity(qty);
 		grandExchangeTrade.setTotal(offer.getTotalQuantity());
-		grandExchangeTrade.setPrice(price);
+		grandExchangeTrade.setSpent(dspent);
 		grandExchangeTrade.setOffer(offer.getPrice());
 		grandExchangeTrade.setWorldType(getGeWorldType());
 

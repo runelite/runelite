@@ -35,7 +35,7 @@ public class GrandExchangeTrade
 	private int itemId;
 	private int quantity;
 	private int total;
-	private int price;
+	private int spent;
 	private int offer;
 	private WorldType worldType;
 }
