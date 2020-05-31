@@ -85,6 +85,7 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -339,6 +340,12 @@ public class GrandExchangePlugin extends Plugin
 	{
 		AccountSession accountSession = sessionManager.getAccountSession();
 		grandExchangeClient.setUuid(accountSession.getUuid());
+	}
+
+	@Subscribe
+	public void onSessionClose(SessionClose sessionClose)
+	{
+		grandExchangeClient.setUuid(null);
 	}
 
 	@Subscribe
