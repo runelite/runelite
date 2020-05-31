@@ -89,6 +89,7 @@ public class GrandExchangeController
 		trade.setCancel(grandExchangeTrade.isCancel());
 		trade.setItemId(grandExchangeTrade.getItemId());
 		trade.setQuantity(grandExchangeTrade.getQuantity());
+		trade.setTotal(grandExchangeTrade.getTotal());
 		trade.setPrice(grandExchangeTrade.getPrice());
 		trade.setOffer(grandExchangeTrade.getOffer());
 		trade.setTime((int) (System.currentTimeMillis() / 1000L));

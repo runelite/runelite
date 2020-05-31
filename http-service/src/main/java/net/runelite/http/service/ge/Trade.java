@@ -34,6 +34,7 @@ class Trade
 	private boolean cancel;
 	private int itemId;
 	private int quantity;
+	private int total;
 	private int price;
 	private int offer;
 	private int time;
