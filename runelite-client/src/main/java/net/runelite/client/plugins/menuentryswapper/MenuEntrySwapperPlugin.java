@@ -771,6 +771,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, index);
 		}
+		else if (config.swapTan() && option.equals("tan 1"))
+		{
+			swap("tan all", option, target, index);
+		}
 		else if (option.equals("collect to inventory") || option.startsWith("collect-note") || option.startsWith("collect-item"))
 		{
 			switch (config.swapGEItemCollect())
