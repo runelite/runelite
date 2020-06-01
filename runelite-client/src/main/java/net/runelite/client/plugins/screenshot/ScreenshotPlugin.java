@@ -577,9 +577,9 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	/**
-	 * Parses a WidgetInfo pointing to the second widget of the quest-completed dialog
-	 * into a shortened string for filename usage.
+	 * Parses the passed quest completion dialog text into a shortened string for filename usage.
 	 *
+	 * @param text The {@link Widget#getText() text} of the {@link WidgetInfo#QUEST_COMPLETED_NAME_TEXT} widget.
 	 * @return Shortened string in the format "Quest(The Corsair Curse)"
 	 */
 	@VisibleForTesting
