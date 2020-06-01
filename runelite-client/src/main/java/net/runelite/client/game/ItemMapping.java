@@ -28,12 +28,14 @@ package net.runelite.client.game;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Collection;
-import java.util.Collections;
+import javax.annotation.Nullable;
+import lombok.Getter;
 import static net.runelite.api.ItemID.*;
 
 /**
  * Converts untradeable items to it's tradeable counterparts
  */
+@Getter
 public enum ItemMapping
 {
 	// Barrows equipment
@@ -249,6 +251,9 @@ public enum ItemMapping
 	ITEM_CRYSTAL_BOW(CRYSTAL_WEAPON_SEED, CRYSTAL_BOW, CRYSTAL_BOW_24123, CRYSTAL_BOW_INACTIVE),
 	ITEM_CRYSTAL_HALBERD(CRYSTAL_WEAPON_SEED, CRYSTAL_HALBERD, CRYSTAL_HALBERD_24125, CRYSTAL_HALBERD_INACTIVE),
 	ITEM_CRYSTAL_SHIELD(CRYSTAL_WEAPON_SEED, CRYSTAL_SHIELD, CRYSTAL_SHIELD_24127, CRYSTAL_SHIELD_INACTIVE),
+	ITEM_CRYSTAL_HELMET(CRYSTAL_ARMOUR_SEED, CRYSTAL_HELM, CRYSTAL_HELM_INACTIVE),
+	ITEM_CRYSTAL_LEGS(CRYSTAL_ARMOUR_SEED, 2L, CRYSTAL_LEGS, CRYSTAL_LEGS_INACTIVE),
+	ITEM_CRYSTAL_BODY(CRYSTAL_ARMOUR_SEED, 3L, CRYSTAL_BODY, CRYSTAL_BODY_INACTIVE),
 
 	// Bird nests
 	ITEM_BIRD_NEST(BIRD_NEST_5075, BIRD_NEST, BIRD_NEST_5071, BIRD_NEST_5072, BIRD_NEST_5073, BIRD_NEST_5074, BIRD_NEST_7413, BIRD_NEST_13653, BIRD_NEST_22798, BIRD_NEST_22800, CLUE_NEST_EASY, CLUE_NEST_MEDIUM, CLUE_NEST_HARD, CLUE_NEST_ELITE),
@@ -256,11 +261,38 @@ public enum ItemMapping
 	// Ancestral robes
 	ITEM_ANCESTRAL_HAT(ANCESTRAL_HAT, TWISTED_ANCESTRAL_HAT),
 	ITEM_ANCESTRAL_ROBE_TOP(ANCESTRAL_ROBE_TOP, TWISTED_ANCESTRAL_ROBE_TOP),
-	ITEM_ANCESTRAL_ROBE_BOTTOM(ANCESTRAL_ROBE_BOTTOM, TWISTED_ANCESTRAL_ROBE_BOTTOM);
+	ITEM_ANCESTRAL_ROBE_BOTTOM(ANCESTRAL_ROBE_BOTTOM, TWISTED_ANCESTRAL_ROBE_BOTTOM),
 
-	private static final Multimap<Integer, Integer> MAPPINGS = HashMultimap.create();
+	// Graceful
+	ITEM_MARK_OF_GRACE(AMYLASE_CRYSTAL, true, 10L, MARK_OF_GRACE),
+	ITEM_GRACEFUL_HOOD(MARK_OF_GRACE, true, 28L, GRACEFUL_HOOD),
+	ITEM_GRACEFUL_TOP(MARK_OF_GRACE, true, 44L, GRACEFUL_TOP),
+	ITEM_GRACEFUL_LEGS(MARK_OF_GRACE, true, 48L, GRACEFUL_LEGS),
+	ITEM_GRACEFUL_GLOVES(MARK_OF_GRACE, true, 24L, GRACEFUL_GLOVES),
+	ITEM_GRACEFUL_BOOTS(MARK_OF_GRACE, true, 32L, GRACEFUL_BOOTS),
+	ITEM_GRACEFUL_CAPE(MARK_OF_GRACE, true, 32L, GRACEFUL_CAPE),
+
+	// 10 golden nuggets = 100 soft clay
+	ITEM_GOLDEN_NUGGET(SOFT_CLAY, true, 10L, GOLDEN_NUGGET),
+	ITEM_PROSPECTOR_HELMET(GOLDEN_NUGGET, true, 32L, PROSPECTOR_HELMET),
+	ITEM_PROSPECTOR_JACKET(GOLDEN_NUGGET, true, 48L, PROSPECTOR_JACKET),
+	ITEM_PROSPECTOR_LEGS(GOLDEN_NUGGET, true, 40L, PROSPECTOR_LEGS),
+	ITEM_PROSPECTOR_BOOTS(GOLDEN_NUGGET, true, 24L, PROSPECTOR_BOOTS),
+
+	// Converted to coins
+	ITEM_TATTERED_PAGE(COINS_995, true, 1000L, TATTERED_MOON_PAGE, TATTERED_SUN_PAGE, TATTERED_TEMPLE_PAGE),
+	ITEM_LONG_BONE(COINS_995, true, 1000L, LONG_BONE),
+	ITEM_CURVED_BONE(COINS_995, true, 2000L, CURVED_BONE),
+	ITEM_PERFECT_SHELL(COINS_995, true, 600L, PERFECT_SHELL),
+	ITEM_PERFECT_SNAIL_SHELL(COINS_995, true, 600L, PERFECT_SNAIL_SHELL),
+	ITEM_SNAIL_SHELL(COINS_995, true, 600L, SNAIL_SHELL),
+	ITEM_TORTOISE_SHELL(COINS_995, true, 250L, TORTOISE_SHELL);
+
+	private static final Multimap<Integer, ItemMapping> MAPPINGS = HashMultimap.create();
 	private final int tradeableItem;
 	private final int[] untradableItems;
+	private final long quantity;
+	private final boolean untradeable;
 
 	static
 	{
@@ -268,15 +300,35 @@ public enum ItemMapping
 		{
 			for (int itemId : item.untradableItems)
 			{
-				MAPPINGS.put(itemId, item.tradeableItem);
+				if (item.untradeable)
+				{
+					for (final Integer variation : ItemVariationMapping.getVariations(itemId))
+					{
+						MAPPINGS.put(variation, item);
+					}
+				}
+
+				MAPPINGS.put(itemId, item);
 			}
 		}
 	}
 
-	ItemMapping(int tradeableItem, int... untradableItems)
+	ItemMapping(int tradeableItem, boolean untradeable, long quantity, int... untradableItems)
 	{
 		this.tradeableItem = tradeableItem;
 		this.untradableItems = untradableItems;
+		this.quantity = quantity;
+		this.untradeable = untradeable;
+	}
+
+	ItemMapping(int tradeableItem, long quantity, int... untradableItems)
+	{
+		this(tradeableItem, false, quantity, untradableItems);
+	}
+
+	ItemMapping(int tradeableItem, int... untradableItems)
+	{
+		this(tradeableItem, 1L, untradableItems);
 	}
 
 	/**
@@ -285,33 +337,16 @@ public enum ItemMapping
 	 * @param itemId the item id
 	 * @return the collection
 	 */
-	public static Collection<Integer> map(int itemId)
+	@Nullable
+	public static Collection<ItemMapping> map(int itemId)
 	{
-		final Collection<Integer> mapping = MAPPINGS.get(itemId);
+		final Collection<ItemMapping> mapping = MAPPINGS.get(itemId);
 
-		if (mapping == null || mapping.isEmpty())
+		if (mapping.isEmpty())
 		{
-			return Collections.singleton(itemId);
+			return null;
 		}
 
 		return mapping;
-	}
-
-	/**
-	 * Map an item from its untradeable version to its tradeable version
-	 *
-	 * @param itemId
-	 * @return
-	 */
-	public static int mapFirst(int itemId)
-	{
-		final Collection<Integer> mapping = MAPPINGS.get(itemId);
-
-		if (mapping == null || mapping.isEmpty())
-		{
-			return itemId;
-		}
-
-		return mapping.iterator().next();
 	}
 }
