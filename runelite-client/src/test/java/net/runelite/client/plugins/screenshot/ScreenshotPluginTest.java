@@ -40,7 +40,6 @@ import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
-import static net.runelite.api.widgets.WidgetInfo.QUEST_COMPLETED_NAME_TEXT;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
@@ -248,90 +247,15 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
-	public void testTheCorsairCurseQuestComplete()
+	public void testQuestParsing()
 	{
-		Widget questChild = mock(Widget.class);
-		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
-
-		when(questChild.getText()).thenReturn("You have completed The Corsair Curse!");
-
-		assertEquals("Quest(The Corsair Curse)", screenshotPlugin.parseQuestCompletedWidget());
-	}
-
-	@Test
-	public void testOneSmallFavourQuestComplete()
-	{
-		Widget questChild = mock(Widget.class);
-		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
-
-		when(questChild.getText()).thenReturn("'One Small Favour' completed!");
-
-		assertEquals("Quest(One Small Favour)", screenshotPlugin.parseQuestCompletedWidget());
-	}
-
-	@Test
-	public void testHazeelCultPcQuestComplete()
-	{
-		Widget questChild = mock(Widget.class);
-		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
-
-		when(questChild.getText()).thenReturn("You have... kind of... completed the Hazeel Cult Quest!");
-
-		assertEquals("Quest(Hazeel Cult partial completion)", screenshotPlugin.parseQuestCompletedWidget());
-	}
-
-	@Test
-	public void testRagAndBoneManIIQuestComplete()
-	{
-		Widget questChild = mock(Widget.class);
-		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
-
-		when(questChild.getText()).thenReturn("You have completely completed Rag and Bone Man!");
-
-		assertEquals("Quest(Rag and Bone Man II)", screenshotPlugin.parseQuestCompletedWidget());
-	}
-
-	@Test
-	public void testRFDCulinaromancerQuestComplete()
-	{
-		Widget questChild = mock(Widget.class);
-		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
-
-		when(questChild.getText()).thenReturn("Congratulations! You have defeated the Culinaromancer!");
-
-		assertEquals("Quest(Recipe for Disaster - Culinaromancer)", screenshotPlugin.parseQuestCompletedWidget());
-	}
-
-	@Test
-	public void testRFDAnotherCooksQuestQuestComplete()
-	{
-		Widget questChild = mock(Widget.class);
-		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
-
-		when(questChild.getText()).thenReturn("You have completed Another Cook's Quest!");
-
-		assertEquals("Quest(Recipe for Disaster - Another Cook's Quest)", screenshotPlugin.parseQuestCompletedWidget());
-	}
-
-	@Test
-	public void testDoricsQuestQuestComplete()
-	{
-		Widget questChild = mock(Widget.class);
-		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
-
-		when(questChild.getText()).thenReturn("You have completed Doric's Quest!");
-
-		assertEquals("Quest(Doric's Quest)", screenshotPlugin.parseQuestCompletedWidget());
-	}
-
-	@Test
-	public void testQuestNotFoundQuestComplete()
-	{
-		Widget questChild = mock(Widget.class);
-		when(client.getWidget(eq(QUEST_COMPLETED_NAME_TEXT))).thenReturn(questChild);
-
-		when(questChild.getText()).thenReturn("Sins of the Father forgiven!");
-
-		assertEquals("Quest(quest not found)", screenshotPlugin.parseQuestCompletedWidget());
+		assertEquals("Quest(The Corsair Curse)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed The Corsair Curse!"));
+		assertEquals("Quest(One Small Favour)", ScreenshotPlugin.parseQuestCompletedWidget("'One Small Favour' completed!"));
+		assertEquals("Quest(Hazeel Cult partial completion)", ScreenshotPlugin.parseQuestCompletedWidget("You have... kind of... completed the Hazeel Cult Quest!"));
+		assertEquals("Quest(Rag and Bone Man II)", ScreenshotPlugin.parseQuestCompletedWidget("You have completely completed Rag and Bone Man!"));
+		assertEquals("Quest(Recipe for Disaster - Culinaromancer)", ScreenshotPlugin.parseQuestCompletedWidget("Congratulations! You have defeated the Culinaromancer!"));
+		assertEquals("Quest(Recipe for Disaster - Another Cook's Quest)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed Another Cook's Quest!"));
+		assertEquals("Quest(Doric's Quest)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed Doric's Quest!"));
+		assertEquals("Quest(quest not found)", ScreenshotPlugin.parseQuestCompletedWidget("Sins of the Father forgiven!"));
 	}
 }

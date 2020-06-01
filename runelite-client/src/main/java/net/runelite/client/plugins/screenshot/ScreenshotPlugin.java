@@ -242,7 +242,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
-			fileName = parseQuestCompletedWidget();
+			fileName = parseQuestCompletedWidget(client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText());
 			screenshotSubDir = "Quests";
 		}
 
@@ -583,27 +583,20 @@ public class ScreenshotPlugin extends Plugin
 	 * @return Shortened string in the format "Quest(The Corsair Curse)"
 	 */
 	@VisibleForTesting
-	String parseQuestCompletedWidget()
+	static String parseQuestCompletedWidget(final String text)
 	{
-		Widget questChild = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT);
-		if (questChild == null)
-		{
-			return null;
-		}
-
-		String text = questChild.getText();
 		// "You have completed The Corsair Curse!"
-		Matcher quest_match_1 = QUEST_PATTERN_1.matcher(text);
+		final Matcher questMatch1 = QUEST_PATTERN_1.matcher(text);
 		// "'One Small Favour' completed!"
-		Matcher quest_match_2 = QUEST_PATTERN_2.matcher(text);
-		Matcher quest_match_final = quest_match_1.matches() ? quest_match_1 : quest_match_2;
-		if (!quest_match_final.matches())
+		final Matcher questMatch2 = QUEST_PATTERN_2.matcher(text);
+		final Matcher questMatchFinal = questMatch1.matches() ? questMatch1 : questMatch2;
+		if (!questMatchFinal.matches())
 		{
 			return "Quest(quest not found)";
 		}
 
-		String quest = quest_match_final.group("quest");
-		String verb = quest_match_final.group("verb") != null ? quest_match_final.group("verb") : "";
+		String quest = questMatchFinal.group("quest");
+		String verb = questMatchFinal.group("verb") != null ? questMatchFinal.group("verb") : "";
 
 		if (verb.contains("kind of"))
 		{
@@ -624,7 +617,7 @@ public class ScreenshotPlugin extends Plugin
 			quest += " Quest";
 		}
 
-		return "Quest(" + quest + ")";
+		return "Quest(" + quest + ')';
 	}
 
 	/**
