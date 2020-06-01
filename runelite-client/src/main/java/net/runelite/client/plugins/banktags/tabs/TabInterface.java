@@ -722,11 +722,7 @@ public class TabInterface
 		if ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(HIDE_WORN))
 			|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(HIDE_SETTINGS)))
 		{
-			clientThread.invokeLater(() ->
-			{
-				update(); // Open the last saved tag tab if applicable (in which case activeTab is always set to null)
-				update(); // Update the value of activeTab right afterward instead of on the next game tick
-			});
+			clientThread.invokeLater(this::update); // Open the last saved tag tab if applicable
 			return;
 		}
 
