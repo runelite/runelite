@@ -245,4 +245,17 @@ public class ScreenshotPluginTest
 
 		verify(drawManager).requestNextFrameListener(any(Consumer.class));
 	}
+
+	@Test
+	public void testQuestParsing()
+	{
+		assertEquals("Quest(The Corsair Curse)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed The Corsair Curse!"));
+		assertEquals("Quest(One Small Favour)", ScreenshotPlugin.parseQuestCompletedWidget("'One Small Favour' completed!"));
+		assertEquals("Quest(Hazeel Cult partial completion)", ScreenshotPlugin.parseQuestCompletedWidget("You have... kind of... completed the Hazeel Cult Quest!"));
+		assertEquals("Quest(Rag and Bone Man II)", ScreenshotPlugin.parseQuestCompletedWidget("You have completely completed Rag and Bone Man!"));
+		assertEquals("Quest(Recipe for Disaster - Culinaromancer)", ScreenshotPlugin.parseQuestCompletedWidget("Congratulations! You have defeated the Culinaromancer!"));
+		assertEquals("Quest(Recipe for Disaster - Another Cook's Quest)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed Another Cook's Quest!"));
+		assertEquals("Quest(Doric's Quest)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed Doric's Quest!"));
+		assertEquals("Quest(quest not found)", ScreenshotPlugin.parseQuestCompletedWidget("Sins of the Father forgiven!"));
+	}
 }
