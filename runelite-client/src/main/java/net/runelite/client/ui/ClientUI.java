@@ -513,11 +513,15 @@ public class ClientUI
 					{
 						frame.setBounds(clientBounds);
 
+						// frame.getGraphicsConfiguration().getBounds() returns the bounds for the primary display.
+						// We have to find the correct graphics configuration by using the intersection of the client boundaries.
 						GraphicsConfiguration gc = getIntersectingDisplay(clientBounds);
 						if (gc != null)
 						{
 							double scale = gc.getDefaultTransform().getScaleX();
 
+							// When Windows screen scaling is on, the position/bounds will be wrong when they are set.
+							// The bounds saved in shutdown are the full, non-scaled co-ordinates.
 							if (scale != 1)
 							{
 								clientBounds.setRect(
