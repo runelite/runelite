@@ -91,6 +91,7 @@ enum Emoji
 	GORILLA(":G"),
 	PLEADING("(n_n)"),
 	XD("Xd"),
+	SPOON("--o"),
 	;
 
 	private static final Map<String, Emoji> emojiMap;
