@@ -242,7 +242,8 @@ public class ScreenshotPlugin extends Plugin
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
-			fileName = parseQuestCompletedWidget(client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText());
+			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
+			fileName = parseQuestCompletedWidget(text);
 			screenshotSubDir = "Quests";
 		}
 
