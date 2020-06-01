@@ -26,13 +26,16 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
+import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BANK_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.BANK_INVENTORY_GROUP_ID;
@@ -45,6 +48,7 @@ import static net.runelite.api.widgets.WidgetID.INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SEED_VAULT_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SHOP_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetInfo.BANK_CONTENT_CONTAINER;
+import static net.runelite.api.widgets.WidgetInfo.BANK_INCINERATOR_CONFIRM;
 import static net.runelite.api.widgets.WidgetInfo.BANK_TAB_CONTAINER;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
@@ -57,6 +61,9 @@ public abstract class WidgetItemOverlay extends Overlay
 	 * Interfaces to draw overlay over.
 	 */
 	private final Set<Integer> interfaceGroups = new HashSet<>();
+
+	@Inject
+	private Client client;
 
 	protected WidgetItemOverlay()
 	{
@@ -73,6 +80,8 @@ public abstract class WidgetItemOverlay extends Overlay
 		final List<WidgetItem> itemWidgets = overlayManager.getItemWidgets();
 		final Rectangle originalClipBounds = graphics.getClipBounds();
 		Widget curClipParent = null;
+		Widget incinerator_confirm = client.getWidget(BANK_INCINERATOR_CONFIRM);
+		boolean curClipIncinerator = false;
 		for (WidgetItem widgetItem : itemWidgets)
 		{
 			Widget widget = widgetItem.getWidget();
@@ -117,10 +126,29 @@ public abstract class WidgetItemOverlay extends Overlay
 					curClipParent = parent;
 				}
 			}
+			else if (incinerator_confirm != null && !incinerator_confirm.isHidden()
+				&& interfaceGroup == BANK_GROUP_ID && !curClipIncinerator)
+			{
+				Rectangle incinerator_confirm_bounds = incinerator_confirm.getChild(0).getBounds();
+				int is_x1 = parentBounds.x;
+				int is_x2 = incinerator_confirm_bounds.x;
+				int is_x3 = incinerator_confirm_bounds.x + incinerator_confirm_bounds.width;
+				int is_x4 = parentBounds.x + parentBounds.width;
+				int is_y1 = parentBounds.y;
+				int is_y2 = incinerator_confirm_bounds.y;
+				int is_y3 = incinerator_confirm_bounds.y + incinerator_confirm_bounds.height;
+				int is_y4 = parentBounds.y + parentBounds.height;
+				int is_npoints = 10;
+				Polygon incinerator_shape = new Polygon(new int[]{is_x1, is_x2, is_x2, is_x3, is_x3, is_x2, is_x2, is_x4, is_x4, is_x1},
+					new int[]{is_y1, is_y1, is_y3, is_y3, is_y2, is_y2, is_y1, is_y1, is_y4, is_y4}, is_npoints);
+				graphics.setClip(incinerator_shape);
+				curClipIncinerator = true;
+			}
 			else if (curClipParent != null && curClipParent != parent)
 			{
 				graphics.setClip(originalClipBounds);
 				curClipParent = null;
+				curClipIncinerator = false;
 			}
 
 			renderItemOverlay(graphics, widgetItem.getId(), widgetItem);
