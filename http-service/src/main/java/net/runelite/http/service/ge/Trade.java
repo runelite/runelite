@@ -32,6 +32,7 @@ class Trade
 {
 	private boolean buy;
 	private boolean cancel;
+	private boolean login;
 	private int itemId;
 	private int quantity;
 	private int total;

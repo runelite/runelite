@@ -89,6 +89,7 @@ public class GrandExchangeController
 		Trade trade = new Trade();
 		trade.setBuy(grandExchangeTrade.isBuy());
 		trade.setCancel(grandExchangeTrade.isCancel());
+		trade.setLogin(grandExchangeTrade.isLogin());
 		trade.setItemId(grandExchangeTrade.getItemId());
 		trade.setQuantity(grandExchangeTrade.getQuantity());
 		trade.setTotal(grandExchangeTrade.getTotal());
