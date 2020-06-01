@@ -531,6 +531,11 @@ public class TabInterface
 		if (bankTitle != null && !bankTitle.isHidden() && !str.startsWith(TAG_SEARCH))
 		{
 			str = bankTitle.getText().replaceFirst("Showing items: ", "");
+			// trim off the price
+			if (str.contains("</col>"))
+			{
+				str = str.substring(0, str.indexOf("</col>") + 6);
+			}
 
 			if (str.startsWith("Tab "))
 			{
