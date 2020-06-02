@@ -320,7 +320,10 @@ public class PluginManager
 
 			for (PluginDependency pluginDependency : pluginDependencies)
 			{
-				graph.putEdge(pluginClazz, pluginDependency.value());
+				if (graph.nodes().contains(pluginDependency.value()))
+				{
+					graph.putEdge(pluginClazz, pluginDependency.value());
+				}
 			}
 		}
 
