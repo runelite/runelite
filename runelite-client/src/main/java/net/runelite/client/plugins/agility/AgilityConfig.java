@@ -203,7 +203,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightStick",
 		name = "Highlight Stick",
 		description = "Highlight the retrievable stick in the Werewolf Agility Course",
-		position = 13
+		position = 15
 	)
 	default boolean highlightStick()
 	{
@@ -214,7 +214,7 @@ public interface AgilityConfig extends Config
 		keyName = "stickHighlightColor",
 		name = "Stick Highlight Color",
 		description = "Color of highlighted stick",
-		position = 14
+		position = 16
 	)
 	default Color stickHighlightColor()
 	{
