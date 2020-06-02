@@ -719,13 +719,6 @@ public class TabInterface
 			return;
 		}
 
-		if ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(HIDE_WORN))
-			|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(HIDE_SETTINGS)))
-		{
-			clientThread.invokeLater(this::update); // Open the last saved tag tab if applicable
-			return;
-		}
-
 		if (chatboxPanelManager.getCurrentInput() != null
 			&& event.getMenuAction() != MenuAction.CANCEL
 			&& !event.getMenuOption().equals(SCROLL_UP)
@@ -784,6 +777,12 @@ public class TabInterface
 		{
 			saveTab();
 			rememberedSearch = TAG_SEARCH + activeTab.getTag();
+		}
+		else if (!Strings.isNullOrEmpty(rememberedSearch) && ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(HIDE_WORN))
+				|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(HIDE_SETTINGS))))
+		{
+			bankSearch.reset(true);
+			bankSearch.search(InputType.NONE, rememberedSearch, true);
 		}
 	}
 
