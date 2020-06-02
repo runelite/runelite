@@ -85,6 +85,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		applyUsername();
 		keyManager.registerKeyListener(this);
 		clientThread.invoke(this::overrideLoginScreen);
+		clientThread.invoke(this::overrideLoginSprites);
 	}
 
 	@Override
@@ -111,6 +112,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		if (event.getGroup().equals("loginscreen"))
 		{
 			clientThread.invoke(this::overrideLoginScreen);
+			clientThread.invoke(this::overrideLoginSprites);
 		}
 	}
 
@@ -245,7 +247,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 
 		if (config.loginScreen() == LoginScreenOverride.OFF)
 		{
-			restoreLoginScreen();
+			client.setLoginScreen(null);
 			return;
 		}
 
@@ -290,6 +292,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 
 	private void restoreLoginScreen()
 	{
+		restoreLoginScreenSprites();
 		client.setLoginScreen(null);
 	}
 
@@ -307,5 +310,43 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		}
 
 		return null;
+	}
+
+	private void restoreLoginScreenSprites()
+	{
+		for (final LoginScreenSprites s : LoginScreenSprites.values())
+		{
+			client.getSpriteOverrides().remove(s.getSpriteID());
+		}
+	}
+
+	private void overrideLoginSprites()
+	{
+		final LoginScreenSpriteOverride spriteOverride = config.loginSprites();
+		if (spriteOverride == LoginScreenSpriteOverride.OFF)
+		{
+			restoreLoginScreenSprites();
+		}
+		else
+		{
+
+			for (final LoginScreenSprites s : LoginScreenSprites.values())
+			{
+				final BufferedImage image = s.getOverrideImage(spriteOverride);
+				if (image == null)
+				{
+					continue;
+				}
+
+				client.getSpriteOverrides().put(s.getSpriteID(), ImageUtil.getImageSpritePixels(image, client));
+			}
+		}
+
+		// refresh login screen
+		if (client.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			client.setGameState(GameState.STARTING);
+			client.setGameState(GameState.LOGIN_SCREEN);
+		}
 	}
 }

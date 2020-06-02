@@ -80,6 +80,16 @@ public interface LoginScreenConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "loginSprites",
+		name = "Custom Interface",
+		description = "Force the login screen to use an interface style from the past instead of the current one."
+	)
+	default LoginScreenSpriteOverride loginSprites()
+	{
+		return LoginScreenSpriteOverride.OFF;
+	}
+
+	@ConfigItem(
 		keyName = "showLoginFire",
 		name = "Display Fire",
 		description = "Whether or not the fire in the braziers at the sides of the login screen should be on fire."
