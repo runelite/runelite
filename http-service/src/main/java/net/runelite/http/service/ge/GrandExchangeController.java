@@ -24,14 +24,17 @@
  */
 package net.runelite.http.service.ge;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
+import net.runelite.http.service.util.redis.RedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,36 +43,73 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.Jedis;
 
 @RestController
 @RequestMapping("/ge")
 public class GrandExchangeController
 {
+	private static final Gson GSON = RuneLiteAPI.GSON;
+
 	private final GrandExchangeService grandExchangeService;
 	private final AuthFilter authFilter;
+	private final RedisPool redisPool;
 
 	@Autowired
-	public GrandExchangeController(GrandExchangeService grandExchangeService, AuthFilter authFilter)
+	public GrandExchangeController(GrandExchangeService grandExchangeService, AuthFilter authFilter, RedisPool redisPool)
 	{
 		this.grandExchangeService = grandExchangeService;
 		this.authFilter = authFilter;
+		this.redisPool = redisPool;
 	}
 
 	@PostMapping
 	public void submit(HttpServletRequest request, HttpServletResponse response, @RequestBody GrandExchangeTrade grandExchangeTrade) throws IOException
 	{
-		SessionEntry session = authFilter.handle(request, response);
-
-		if (session == null)
+		SessionEntry session = null;
+		if (request.getHeader(RuneLiteAPI.RUNELITE_AUTH) != null)
 		{
-			return;
+			session = authFilter.handle(request, response);
+			if (session == null)
+			{
+				// error is set here on the response, so we shouldn't continue
+				return;
+			}
+		}
+		Integer userId = session == null ? null : session.getUser();
+
+		// We don't keep track of pending trades in the web UI, so only add cancelled or completed trades
+		if (userId != null &&
+			grandExchangeTrade.getQuantity() > 0 &&
+			(grandExchangeTrade.isCancel() || grandExchangeTrade.getQuantity() == grandExchangeTrade.getTotal()))
+		{
+			grandExchangeService.add(userId, grandExchangeTrade);
 		}
 
-		grandExchangeService.add(session.getUser(), grandExchangeTrade);
+		Trade trade = new Trade();
+		trade.setBuy(grandExchangeTrade.isBuy());
+		trade.setCancel(grandExchangeTrade.isCancel());
+		trade.setLogin(grandExchangeTrade.isLogin());
+		trade.setItemId(grandExchangeTrade.getItemId());
+		trade.setQuantity(grandExchangeTrade.getQuantity());
+		trade.setTotal(grandExchangeTrade.getTotal());
+		trade.setSpent(grandExchangeTrade.getSpent());
+		trade.setOffer(grandExchangeTrade.getOffer());
+		trade.setTime((int) (System.currentTimeMillis() / 1000L));
+		trade.setMachineId(request.getHeader(RuneLiteAPI.RUNELITE_MACHINEID));
+		trade.setUserId(userId);
+		trade.setIp(request.getHeader("X-Forwarded-For"));
+		trade.setWorldType(grandExchangeTrade.getWorldType());
+
+		String json = GSON.toJson(trade);
+		try (Jedis jedis = redisPool.getResource())
+		{
+			jedis.publish("ge", json);
+		}
 	}
 
 	@GetMapping
-	public Collection<GrandExchangeTrade> get(HttpServletRequest request, HttpServletResponse response,
+	public Collection<GrandExchangeTradeHistory> get(HttpServletRequest request, HttpServletResponse response,
 		@RequestParam(required = false, defaultValue = "1024") int limit,
 		@RequestParam(required = false, defaultValue = "0") int offset) throws IOException
 	{
@@ -85,9 +125,9 @@ public class GrandExchangeController
 			.collect(Collectors.toList());
 	}
 
-	private static GrandExchangeTrade convert(TradeEntry tradeEntry)
+	private static GrandExchangeTradeHistory convert(TradeEntry tradeEntry)
 	{
-		GrandExchangeTrade grandExchangeTrade = new GrandExchangeTrade();
+		GrandExchangeTradeHistory grandExchangeTrade = new GrandExchangeTradeHistory();
 		grandExchangeTrade.setBuy(tradeEntry.getAction() == TradeAction.BUY);
 		grandExchangeTrade.setItemId(tradeEntry.getItem());
 		grandExchangeTrade.setQuantity(tradeEntry.getQuantity());

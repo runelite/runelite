@@ -502,6 +502,14 @@ class LootTrackerPanel extends PluginPanel
 			{
 				if (box.matches(record))
 				{
+					// float the matched box to the top of the UI list if it's not already first
+					int idx = logsContainer.getComponentZOrder(box);
+					if (idx > 0)
+					{
+						logsContainer.remove(idx);
+						logsContainer.add(box, 0);
+					}
+
 					box.addKill(record);
 					return box;
 				}
@@ -605,7 +613,13 @@ class LootTrackerPanel extends PluginPanel
 		long overallGe = 0;
 		long overallHa = 0;
 
-		for (LootTrackerRecord record : concat(aggregateRecords, sessionRecords))
+		Iterable<LootTrackerRecord> records = sessionRecords;
+		if (groupLoot)
+		{
+			records = concat(aggregateRecords, sessionRecords);
+		}
+
+		for (LootTrackerRecord record : records)
 		{
 			if (!record.matches(currentView, currentType))
 			{

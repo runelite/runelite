@@ -29,7 +29,6 @@ import com.google.common.cache.CacheBuilder;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -91,9 +90,6 @@ public class ExaminePlugin extends Plugin
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
-
-	@Inject
-	private ScheduledExecutorService executor;
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
@@ -215,12 +211,7 @@ public class ExaminePlugin extends Plugin
 			}
 
 			itemComposition = itemManager.getItemComposition(itemId);
-
-			if (itemComposition != null)
-			{
-				final int id = itemManager.canonicalize(itemComposition.getId());
-				executor.submit(() -> getItemPrice(id, itemComposition, itemQuantity));
-			}
+			getItemPrice(itemComposition.getId(), itemComposition, itemQuantity);
 		}
 		else
 		{

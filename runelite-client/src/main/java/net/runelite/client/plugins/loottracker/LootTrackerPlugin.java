@@ -66,6 +66,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
@@ -131,6 +132,9 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HERBIBOAR_EVENT = "Herbiboar";
 	private static final Pattern HERBIBOAR_HERB_SACK_PATTERN = Pattern.compile(".+(Grimy .+?) herb.+");
 
+	// Seed Pack loot handling
+	private static final String SEEDPACK_EVENT = "Seed pack";
+
 	// Hespori loot handling
 	private static final String HESPORI_LOOTED_MESSAGE = "You have successfully cleared this patch for new crops.";
 	private static final String HESPORI_EVENT = "Hespori";
@@ -162,6 +166,8 @@ public class LootTrackerPlugin extends Plugin
 		"H.A.M. Member", "Man",
 		"H.A.M. Member", "Woman"
 	);
+
+	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -399,7 +405,11 @@ public class LootTrackerPlugin extends Plugin
 
 		if (config.npcKillChatMessage())
 		{
-			lootReceivedChatMessage(items, "a " + name);
+			final String prefix = VOWELS.contains(Character.toLowerCase(name.charAt(0)))
+				? "an"
+				: "a";
+
+			lootReceivedChatMessage(items, prefix + ' ' + name);
 		}
 	}
 
@@ -622,6 +632,7 @@ public class LootTrackerPlugin extends Plugin
 		if (CHEST_EVENT_TYPES.containsValue(eventType)
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
+			|| SEEDPACK_EVENT.equals(eventType)
 			|| lootRecordType == LootRecordType.PICKPOCKET)
 		{
 			processInventoryLoot(eventType, lootRecordType, event.getItemContainer());
@@ -638,6 +649,13 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Pickpocket"))
 		{
 			lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
+		}
+
+		if (event.getMenuOption().equals("Take") && event.getId() == ItemID.SEED_PACK)
+		{
+			eventType = SEEDPACK_EVENT;
+			lootRecordType = LootRecordType.EVENT;
+			takeInventorySnapshot();
 		}
 	}
 
@@ -783,8 +801,7 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final int gePrice = itemManager.getItemPrice(realItemId);
+		final int gePrice = itemManager.getItemPrice(itemId);
 		final int haPrice = Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
 		final boolean ignored = ignoredItems.contains(itemComposition.getName());
 

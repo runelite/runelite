@@ -123,10 +123,32 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highlightPortals",
+		name = "Highlight Portals",
+		description = "Enable/disable the highlighting of Prifddinas portals",
+		position = 8
+	)
+	default boolean highlightPortals()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "portalsHighlight",
+		name = "Portals Highlight Color",
+		description = "Color of highlighted Prifddinas portals",
+		position = 9
+	)
+	default Color getPortalsColor()
+	{
+		return Color.MAGENTA;
+	}
+
+	@ConfigItem(
 		keyName = "highlightShortcuts",
 		name = "Highlight Agility Shortcuts",
 		description = "Enable/disable the highlighting of Agility shortcuts",
-		position = 8
+		position = 10
 	)
 	default boolean highlightShortcuts()
 	{
@@ -137,7 +159,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapOverlay",
 		name = "Show Trap Overlay",
 		description = "Enable/disable the highlighting of traps on Agility courses",
-		position = 9
+		position = 11
 	)
 	default boolean showTrapOverlay()
 	{
@@ -148,7 +170,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapHighlight",
 		name = "Trap Overlay Color",
 		description = "Color of Agility trap overlay",
-		position = 10
+		position = 12
 	)
 	default Color getTrapColor()
 	{
@@ -159,7 +181,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaNotifier",
 		name = "Agility Arena notifier",
 		description = "Notify on ticket location change in Agility Arena",
-		position = 11
+		position = 13
 	)
 	default boolean notifyAgilityArena()
 	{
@@ -170,7 +192,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaTimer",
 		name = "Agility Arena timer",
 		description = "Configures whether Agility Arena timer is displayed",
-		position = 12
+		position = 14
 	)
 	default boolean showAgilityArenaTimer()
 	{

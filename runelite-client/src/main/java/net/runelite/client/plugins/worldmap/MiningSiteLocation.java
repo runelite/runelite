@@ -118,7 +118,7 @@ enum MiningSiteLocation
 		new Rock(1, Ore.IRON), new Rock(1, Ore.SILVER), new Rock(1, Ore.COAL), new Rock(2, Ore.MITHRIL),
 		new Rock(2, Ore.ADAMANTITE)),
 	KARAMJA_VOLCANO(new WorldPoint(2856, 9579, 0), new Rock(4, Ore.GOLD)),
-	KEBOS_LOWLANDS(new WorldPoint(1211, 3657, 0), new Rock(9, Ore.IRON), new Rock(2, Ore.MITHRIL)),
+	KEBOS_LOWLANDS(new WorldPoint(1211, 3657, 0), new Rock(4, Ore.ADAMANTITE), new Rock(5, Ore.MITHRIL)),
 	KELDAGRIM_ENTRANCE(new WorldPoint(2724, 3693, 0), new Rock(9, Ore.IRON), new Rock(2, Ore.MITHRIL)),
 	KELDAGRIM_NORTH_EAST(new WorldPoint(2937, 10232, 0), new Rock(9, Ore.COAL)),
 	KELDAGRIM_SOUTH_WEST_BOTTOM(new WorldPoint(2872, 10119, 0), new Rock(2, Ore.COPPER), new Rock(5, Ore.COAL)),

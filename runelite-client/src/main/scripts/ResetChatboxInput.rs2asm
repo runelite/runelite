@@ -9,7 +9,7 @@
    iconst                 10616872
    if_sethide            
    iconst                 0
-   iconst                 10616887
+   iconst                 10616888
    if_sethide            
    invoke                 923
    iconst                 0
@@ -85,10 +85,71 @@ LABEL40:
    iconst                 1
    iconst                 10616881
    if_sethide            
+   iconst                 1
+   iconst                 10616887
+   if_sethide            
    iconst                 10616885
    cc_deleteall          
    iconst                 10616886
    cc_deleteall          
+   iconst                 0
+   iconst                 -8
+   iconst                 1
+   iconst                 1
+   iconst                 10616876
+   if_setposition        
+   iconst                 0
+   iconst                 40
+   iconst                 1
+   iconst                 0
+   iconst                 10616876
+   if_setsize            
+   iconst                 1
+   iconst                 1
+   iconst                 0
+   iconst                 10616876
+   if_settextalign       
+   iconst                 496
+   iconst                 10616876
+   if_settextfont        
+   iconst                 496
+   iconst                 10616877
+   if_settextfont        
+   iconst                 128
+   iconst                 10616877
+   if_setcolour          
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616877
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616877
+   if_setonmouseleave    
+   sconst                 ""
+   iconst                 10616877
+   if_settext            
+   iconst                 0
+   iconst                 22
+   iconst                 1
+   iconst                 1
+   iconst                 10616877
+   if_setposition        
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616872
+   if_setonclick         
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616877
+   if_setonclick         
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616877
+   if_setonkey           
+   iconst                 1
+   iconst                 10616874
+   if_sethide            
    iconst                 -1
    sconst                 ""
    iconst                 10616872
@@ -164,19 +225,19 @@ LABEL40:
    if_setonclick         
    get_varc_int           41
    iconst                 1337
-   if_icmpeq              LABEL154
-   jump                   LABEL158
-LABEL154:
+   if_icmpeq              LABEL215
+   jump                   LABEL219
+LABEL215:
    invoke                 2526
    pop_int               
    clientclock           
    set_varc_int           384
-LABEL158:
+LABEL219:
    invoke                 1972
    iconst                 1
-   if_icmpeq              LABEL162
-   jump                   LABEL163
-LABEL162:
+   if_icmpeq              LABEL223
+   jump                   LABEL224
+LABEL223:
    invoke                 2581
-LABEL163:
+LABEL224:
    return                

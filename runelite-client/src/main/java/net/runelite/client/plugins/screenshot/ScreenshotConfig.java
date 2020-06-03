@@ -199,10 +199,21 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "ccKick",
+		name = "Screenshot Kicks from CC",
+		description = "Take a screenshot when you kick a user from a clan chat.",
+		position = 15
+	)
+	default boolean screenshotCcKick()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 15
+		position = 16
 	)
 	default Keybind hotkey()
 	{

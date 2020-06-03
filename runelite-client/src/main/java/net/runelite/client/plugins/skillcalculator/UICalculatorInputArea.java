@@ -94,6 +94,11 @@ class UICalculatorInputArea extends JPanel
 		setInput(uiFieldTargetXP, value);
 	}
 
+	void setNeededXP(Object value)
+	{
+		uiFieldTargetXP.setToolTipText((String) value);
+	}
+
 	private int getInput(JTextField field)
 	{
 		try

@@ -27,7 +27,6 @@ package net.runelite.client.plugins.metronome;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import net.runelite.api.SoundEffectVolume;
 import net.runelite.api.Client;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.GameTick;
@@ -59,6 +58,13 @@ public class MetronomePlugin extends Plugin
 		return configManager.getConfig(MetronomePluginConfiguration.class);
 	}
 
+	@Override
+	protected void shutDown()
+	{
+		tickCounter = 0;
+		shouldTock = false;
+	}
+
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
@@ -69,14 +75,23 @@ public class MetronomePlugin extends Plugin
 
 		if (++tickCounter % config.tickCount() == 0)
 		{
-			if (config.enableTock() && shouldTock)
+			// As playSoundEffect only uses the volume argument when the in-game volume isn't muted, sound effect volume
+			// needs to be set to the value desired for ticks or tocks and afterwards reset to the previous value.
+			int previousVolume = client.getSoundEffectVolume();
+
+			if (shouldTock && config.tockVolume() > 0)
 			{
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
+				client.setSoundEffectVolume(config.tockVolume());
+				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, config.tockVolume());
 			}
-			else
+			else if (config.tickVolume() > 0)
 			{
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, SoundEffectVolume.MEDIUM_HIGH);
+				client.setSoundEffectVolume(config.tickVolume());
+				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, config.tickVolume());
 			}
+
+			client.setSoundEffectVolume(previousVolume);
+
 			shouldTock = !shouldTock;
 		}
 	}

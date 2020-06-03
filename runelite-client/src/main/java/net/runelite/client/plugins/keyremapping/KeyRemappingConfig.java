@@ -241,4 +241,15 @@ public interface KeyRemappingConfig extends Config
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_ESCAPE, 0);
 	}
+
+	@ConfigItem(
+		position = 20,
+		keyName = "space",
+		name = "Space",
+		description = "The key which will replace {Space} when dialogs are open."
+	)
+	default ModifierlessKeybind space()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_SPACE, 0);
+	}
 }

@@ -83,7 +83,7 @@ public interface WorldHopperConfig extends Config
 
 	@ConfigItem(
 		keyName = "showSidebar",
-		name = "Show world hopper sidebar",
+		name = "Show world switcher sidebar",
 		description = "Show sidebar containing all worlds that mimics in-game interface",
 		position = 4
 	)

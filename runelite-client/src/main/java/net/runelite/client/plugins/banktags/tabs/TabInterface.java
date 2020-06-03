@@ -406,6 +406,7 @@ public class TabInterface
 				if (tab.equals(activeTab))
 				{
 					bankSearch.reset(true);
+					rememberedSearch = "";
 
 					clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0));
 				}

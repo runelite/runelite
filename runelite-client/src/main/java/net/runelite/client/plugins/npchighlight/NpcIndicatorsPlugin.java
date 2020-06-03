@@ -51,7 +51,6 @@ import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -63,6 +62,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -86,7 +86,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final String UNTAG = "Un-tag";
 
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
-		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
+		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION, MenuAction.SPELL_CAST_ON_NPC,
+		MenuAction.ITEM_USE_ON_NPC);
 
 	@Inject
 	private Client client;
@@ -260,7 +261,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		if (config.highlightMenuNames() &&
 			NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
-			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
+			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier() && (!npc.isDead() || config.highlightDeadNpcs())))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
@@ -310,8 +311,11 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		else
 		{
-			memorizeNpc(npc);
-			npcTags.add(id);
+			if (!client.isInInstancedRegion())
+			{
+				memorizeNpc(npc);
+				npcTags.add(id);
+			}
 			highlightedNpcs.add(npc);
 		}
 
@@ -341,9 +345,12 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			if (WildcardMatcher.matches(highlight, npcName))
 			{
-				memorizeNpc(npc);
 				highlightedNpcs.add(npc);
-				spawnedNpcsThisTick.add(npc);
+				if (!client.isInInstancedRegion())
+				{
+					memorizeNpc(npc);
+					spawnedNpcsThisTick.add(npc);
+				}
 				break;
 			}
 		}
@@ -485,7 +492,10 @@ public class NpcIndicatorsPlugin extends Plugin
 			{
 				if (WildcardMatcher.matches(highlight, npcName))
 				{
-					memorizeNpc(npc);
+					if (!client.isInInstancedRegion())
+					{
+						memorizeNpc(npc);
+					}
 					highlightedNpcs.add(npc);
 					continue outer;
 				}

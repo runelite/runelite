@@ -154,6 +154,7 @@ public class WidgetID
 	public static final int ADVENTURE_LOG_ID = 187;
 	public static final int COUNTERS_LOG_GROUP_ID = 625;
 	public static final int GAUNTLET_TIMER_GROUP_ID = 637;
+	public static final int BANK_PIN_GROUP_ID = 213;
 
 	static class WorldMap
 	{
@@ -161,7 +162,7 @@ public class WidgetID
 		static final int OVERVIEW_MAP = 10;
 		static final int SEARCH = 25;
 		static final int SURFACE_SELECTOR = 33;
-		static final int TOOLTIP = 39;
+		static final int TOOLTIP = 41;
 		static final int OPTION = 46;
 	}
 
@@ -251,19 +252,19 @@ public class WidgetID
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 3;
-		static final int ITEM_COUNT_TOP = 4;
-		static final int ITEM_COUNT_BAR = 5;
-		static final int ITEM_COUNT_BOTTOM = 6;
-		static final int CONTENT_CONTAINER = 8;
-		static final int TAB_CONTAINER = 9;
-		static final int ITEM_CONTAINER = 11;
-		static final int SEARCH_BUTTON_BACKGROUND = 38;
-		static final int DEPOSIT_INVENTORY = 40;
-		static final int DEPOSIT_EQUIPMENT = 42;
-		static final int INCINERATOR = 44;
-		static final int INCINERATOR_CONFIRM = 45;
-		static final int EQUIPMENT_CONTENT_CONTAINER = 66;
-		static final int EQUIPMENT_BUTTON = 107;
+		static final int ITEM_COUNT_TOP = 5;
+		static final int ITEM_COUNT_BAR = 6;
+		static final int ITEM_COUNT_BOTTOM = 7;
+		static final int CONTENT_CONTAINER = 9;
+		static final int TAB_CONTAINER = 10;
+		static final int ITEM_CONTAINER = 12;
+		static final int SEARCH_BUTTON_BACKGROUND = 39;
+		static final int DEPOSIT_INVENTORY = 41;
+		static final int DEPOSIT_EQUIPMENT = 43;
+		static final int INCINERATOR = 45;
+		static final int INCINERATOR_CONFIRM = 46;
+		static final int EQUIPMENT_CONTENT_CONTAINER = 68;
+		static final int EQUIPMENT_BUTTON = 109;
 	}
 
 	static class GrandExchange
@@ -465,6 +466,12 @@ public class WidgetID
 	{
 		static final int PARENT = 0;
 		static final int BUTTONS = 1;
+		static final int TAB_ALL = 4;
+		static final int TAB_GAME = 8;
+		static final int TAB_PUBLIC = 13;
+		static final int TAB_PRIVATE = 18;
+		static final int TAB_CLAN = 23;
+		static final int TAB_TRADE = 28;
 		static final int REPORT_TEXT = 36;
 		static final int FRAME = 37;
 		static final int TRANSPARENT_BACKGROUND = 38;
@@ -472,11 +479,11 @@ public class WidgetID
 		static final int TITLE = 44;
 		static final int FULL_INPUT = 45;
 		static final int GE_SEARCH_RESULTS = 53;
-		static final int MESSAGES = 55;
-		static final int TRANSPARENT_BACKGROUND_LINES = 56;
-		static final int INPUT = 57;
-		static final int MESSAGE_LINES = 58;
-		static final int FIRST_MESSAGE = 59;
+		static final int MESSAGES = 56;
+		static final int TRANSPARENT_BACKGROUND_LINES = 57;
+		static final int INPUT = 58;
+		static final int MESSAGE_LINES = 59;
+		static final int FIRST_MESSAGE = 60;
 	}
 
 	static class Prayer
@@ -629,7 +636,7 @@ public class WidgetID
 
 	static class Raids
 	{
-		static final int POINTS_INFOBOX = 6;
+		static final int POINTS_INFOBOX = 7;
 	}
 
 	static class Tob
@@ -917,5 +924,10 @@ public class WidgetID
 	static class GauntletTimer
 	{
 		static final int CONTAINER = 2;
+	}
+
+	static class BankPin
+	{
+		static final int CONTAINER = 0;
 	}
 }

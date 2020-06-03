@@ -80,7 +80,7 @@ public class GrandExchangeService
 				.addParameter("action", grandExchangeTrade.isBuy() ? "BUY" : "SELL")
 				.addParameter("item", grandExchangeTrade.getItemId())
 				.addParameter("quantity", grandExchangeTrade.getQuantity())
-				.addParameter("price", grandExchangeTrade.getPrice())
+				.addParameter("price", grandExchangeTrade.getSpent() / grandExchangeTrade.getQuantity())
 				.executeUpdate();
 		}
 	}
