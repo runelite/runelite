@@ -53,4 +53,15 @@ public interface AntiDragConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "disableOnCtrl",
+		name = "Disable On Control Pressed",
+		description = "Configures whether to ignore the delay while holding control.",
+		position = 3
+	)
+	default boolean disableOnCtrl()
+	{
+		return false;
+	}
 }
