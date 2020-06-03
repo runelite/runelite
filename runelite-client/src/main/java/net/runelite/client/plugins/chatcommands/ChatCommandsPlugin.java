@@ -55,7 +55,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.COUNTERS_LOG_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.GENERIC_SCROLL_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
@@ -127,7 +127,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	private boolean bossLogLoaded;
 	private boolean advLogLoaded;
-	private boolean countersLogLoaded;
+	private boolean scrollInterfaceLoaded;
 	private String pohOwner;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
@@ -458,35 +458,38 @@ public class ChatCommandsPlugin extends Plugin
 			}
 		}
 
-		if (countersLogLoaded && pohOwner.equals(client.getLocalPlayer().getName()))
+		if (scrollInterfaceLoaded)
 		{
-			countersLogLoaded = false;
+			scrollInterfaceLoaded = false;
 
-			String counterText = Text.sanitizeMultilineText(client.getWidget(WidgetInfo.COUNTERS_LOG_TEXT).getText());
-			Matcher mCounterText = ADVENTURE_LOG_PB_PATTERN.matcher(counterText);
-			while (mCounterText.find())
+			if (client.getLocalPlayer().getName().equals(pohOwner))
 			{
-				String bossName = longBossName(mCounterText.group(1));
-				if (bossName.equalsIgnoreCase("chambers of xeric") ||
-					bossName.equalsIgnoreCase("chambers of xeric challenge mode"))
+				String counterText = Text.sanitizeMultilineText(client.getWidget(WidgetInfo.GENERIC_SCROLL_TEXT).getText());
+				Matcher mCounterText = ADVENTURE_LOG_PB_PATTERN.matcher(counterText);
+				while (mCounterText.find())
 				{
-					Matcher mCoxRuns = ADVENTURE_LOG_COX_PB_PATTERN.matcher(mCounterText.group());
-					int bestPbTime = Integer.MAX_VALUE;
-					while (mCoxRuns.find())
+					String bossName = longBossName(mCounterText.group(1));
+					if (bossName.equalsIgnoreCase("chambers of xeric") ||
+						bossName.equalsIgnoreCase("chambers of xeric challenge mode"))
 					{
-						bestPbTime = Math.min(timeStringToSeconds(mCoxRuns.group(1)), bestPbTime);
+						Matcher mCoxRuns = ADVENTURE_LOG_COX_PB_PATTERN.matcher(mCounterText.group());
+						int bestPbTime = Integer.MAX_VALUE;
+						while (mCoxRuns.find())
+						{
+							bestPbTime = Math.min(timeStringToSeconds(mCoxRuns.group(1)), bestPbTime);
+						}
+						// So we don't reset people's already saved PB's if they had one before the update
+						int currentPb = getPb(bossName);
+						if (currentPb == 0 || currentPb > bestPbTime)
+						{
+							setPb(bossName, bestPbTime);
+						}
 					}
-					// So we don't reset people's already saved PB's if they had one before the update
-					int currentPb = getPb(bossName);
-					if (currentPb == 0 || currentPb > bestPbTime)
+					else
 					{
-						setPb(bossName, bestPbTime);
+						String pbTime = mCounterText.group(2);
+						setPb(bossName, timeStringToSeconds(pbTime));
 					}
-				}
-				else
-				{
-					String pbTime = mCounterText.group(2);
-					setPb(bossName, timeStringToSeconds(pbTime));
 				}
 			}
 		}
@@ -503,8 +506,8 @@ public class ChatCommandsPlugin extends Plugin
 			case KILL_LOGS_GROUP_ID:
 				bossLogLoaded = true;
 				break;
-			case COUNTERS_LOG_GROUP_ID:
-				countersLogLoaded = true;
+			case GENERIC_SCROLL_GROUP_ID:
+				scrollInterfaceLoaded = true;
 				break;
 		}
 	}
