@@ -56,6 +56,7 @@ import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.InputType;
@@ -300,6 +301,38 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	}
 
 	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		// 277 is the ID of BankSearchLayout.rs2asm, set the bank title after it runs.
+		if (event.getScriptId() == 277)
+		{
+			String priceText = "";
+			if (tabContainer.size() > 0)
+			{
+				final ItemContainer container = client.getItemContainer(InventoryID.BANK);
+				final Item[] items = container.getItems();
+				ArrayList<Item> tabContainerToCalculate = new ArrayList<>();
+				for (Item item : items)
+				{
+					if (tabContainer.contains(item.getId()))
+					{
+						tabContainerToCalculate.add(item);
+					}
+				}
+				Item[] foundItems = tabContainerToCalculate.toArray(new Item[tabContainerToCalculate.size()]);
+				final ContainerPrices prices = bankCalculation.calculate(foundItems);
+				if (prices != null)
+				{
+					priceText = createValueText(prices);
+				}
+			}
+
+			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+			bankTitle.setText(bankTitle.getText() + "<br>" + priceText);
+		}
+	}
+
+	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		String eventName = event.getEventName();
@@ -343,27 +376,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				break;
 			case "getSearchingTagTab":
 				intStack[intStackSize - 1] = tabInterface.isActive() ? 1 : 0;
-				break;
-			case "setBankTitleSearch":
-				String priceText = "";
-				if (tabContainer.size() > 1)
-				{
-					final ItemContainer container = client.getItemContainer(InventoryID.BANK);
-					final Item[] items = container.getItems();
-					ArrayList<Item> tabContainerToCalculate = new ArrayList<>();
-					for (Item item : items)
-					{
-						if (tabContainer.contains(item.getId()))
-						{
-							tabContainerToCalculate.add(item);
-						}
-					}
-					Item[] foundItems = tabContainerToCalculate.toArray(new Item[tabContainerToCalculate.size()]);
-					final ContainerPrices prices = bankCalculation.calculate(foundItems);
-					priceText = createValueText(prices);
-				}
-
-				stringStack[stringStackSize - 1] += priceText;
 				break;
 		}
 	}

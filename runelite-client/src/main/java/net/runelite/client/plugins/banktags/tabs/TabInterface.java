@@ -532,9 +532,9 @@ public class TabInterface
 		{
 			str = bankTitle.getText().replaceFirst("Showing items: ", "");
 			// trim off the price
-			if (str.contains("</col>"))
+			if (str.contains("<br>"))
 			{
-				str = str.substring(0, str.indexOf("</col>") + 6);
+				str = str.substring(0, str.indexOf("<br>") + 4);
 			}
 
 			if (str.startsWith("Tab "))
