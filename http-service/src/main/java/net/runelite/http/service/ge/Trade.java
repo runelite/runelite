@@ -38,6 +38,7 @@ class Trade
 	private int total;
 	private int spent;
 	private int offer;
+	private int slot;
 	private int time;
 	private String machineId;
 	private Integer userId;

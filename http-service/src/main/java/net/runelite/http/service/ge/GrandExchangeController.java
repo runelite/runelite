@@ -95,6 +95,7 @@ public class GrandExchangeController
 		trade.setTotal(grandExchangeTrade.getTotal());
 		trade.setSpent(grandExchangeTrade.getSpent());
 		trade.setOffer(grandExchangeTrade.getOffer());
+		trade.setSlot(grandExchangeTrade.getSlot());
 		trade.setTime((int) (System.currentTimeMillis() / 1000L));
 		trade.setMachineId(request.getHeader(RuneLiteAPI.RUNELITE_MACHINEID));
 		trade.setUserId(userId);
