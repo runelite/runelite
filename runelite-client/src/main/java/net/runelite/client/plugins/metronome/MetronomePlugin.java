@@ -34,11 +34,12 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Metronome",
-	description = "Play a sound on a specified tick to aid in efficient skilling",
-	tags = {"skilling", "tick", "timers"},
+	description = "Play a sound on a specified tick to aid in efficient skilling and prayer flicking",
+	tags = {"skilling", "tick", "timers", "prayer", "flick"},
 	enabledByDefault = false
 )
 public class MetronomePlugin extends Plugin
@@ -49,8 +50,15 @@ public class MetronomePlugin extends Plugin
 	@Inject
 	private MetronomePluginConfiguration config;
 
+	@Inject
+	private MetronomeOverlay ovr;
+
+	@Inject
+	private OverlayManager overlayManager;
+
 	private int tickCounter = 0;
 	private boolean shouldTock = false;
+	private boolean currentColorGreen = false;
 
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
@@ -58,9 +66,23 @@ public class MetronomePlugin extends Plugin
 		return configManager.getConfig(MetronomePluginConfiguration.class);
 	}
 
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(ovr);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(ovr);
+	}
+
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		currentColorGreen = !currentColorGreen;
+
 		if (config.tickCount() == 0)
 		{
 			return;
@@ -87,5 +109,15 @@ public class MetronomePlugin extends Plugin
 
 			shouldTock = !shouldTock;
 		}
+	}
+
+	public int getTickCounter()
+	{
+		return tickCounter;
+	}
+
+	public boolean getIsCurrentColorGreen()
+	{
+		return currentColorGreen;
 	}
 }
