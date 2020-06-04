@@ -80,8 +80,8 @@ public class GrandExchangeController
 
 		// We don't keep track of pending trades in the web UI, so only add cancelled or completed trades
 		if (userId != null &&
-			grandExchangeTrade.getQuantity() > 0 &&
-			(grandExchangeTrade.isCancel() || grandExchangeTrade.getQuantity() == grandExchangeTrade.getTotal()))
+			grandExchangeTrade.getQty() > 0 &&
+			(grandExchangeTrade.isCancel() || grandExchangeTrade.getQty() == grandExchangeTrade.getTotal()))
 		{
 			grandExchangeService.add(userId, grandExchangeTrade);
 		}
@@ -91,7 +91,8 @@ public class GrandExchangeController
 		trade.setCancel(grandExchangeTrade.isCancel());
 		trade.setLogin(grandExchangeTrade.isLogin());
 		trade.setItemId(grandExchangeTrade.getItemId());
-		trade.setQuantity(grandExchangeTrade.getQuantity());
+		trade.setQty(grandExchangeTrade.getQty());
+		trade.setDqty(grandExchangeTrade.getDqty());
 		trade.setTotal(grandExchangeTrade.getTotal());
 		trade.setSpent(grandExchangeTrade.getSpent());
 		trade.setOffer(grandExchangeTrade.getOffer());
