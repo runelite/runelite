@@ -33,10 +33,12 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemID;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
@@ -55,6 +57,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
@@ -217,5 +220,21 @@ public class GrandExchangePluginTest
 		assertEquals(1, trade.getQty());
 		assertEquals(10, trade.getTotal());
 		assertEquals(25, trade.getSpent());
+	}
+
+	@Test
+	public void testHop()
+	{
+		when(client.getGameState()).thenReturn(GameState.HOPPING);
+
+		GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
+		when(grandExchangeOffer.getState()).thenReturn(GrandExchangeOfferState.EMPTY);
+
+		GrandExchangeOfferChanged grandExchangeOfferChanged = new GrandExchangeOfferChanged();
+		grandExchangeOfferChanged.setOffer(grandExchangeOffer);
+
+		grandExchangePlugin.onGrandExchangeOfferChanged(grandExchangeOfferChanged);
+
+		verify(configManager, never()).unsetConfiguration(anyString(), anyString());
 	}
 }
