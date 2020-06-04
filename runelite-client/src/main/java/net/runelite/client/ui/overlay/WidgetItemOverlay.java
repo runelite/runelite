@@ -26,7 +26,6 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -81,16 +80,17 @@ public abstract class WidgetItemOverlay extends Overlay
 		final Rectangle originalClipBounds = graphics.getClipBounds();
 		Widget curClipParent = null;
 		Widget incinerator_confirm = client.getWidget(BANK_INCINERATOR_CONFIRM);
-		boolean curClipIncinerator = false;
 		for (WidgetItem widgetItem : itemWidgets)
 		{
 			Widget widget = widgetItem.getWidget();
 			int interfaceGroup = TO_GROUP(widget.getId());
 
 			// Don't draw if this widget isn't one of the allowed nor in tag tab/item tab
-			if (!interfaceGroups.contains(interfaceGroup) ||
-				(interfaceGroup == BANK_GROUP_ID
-					&& (widget.getParentId() == BANK_CONTENT_CONTAINER.getId() || widget.getParentId() == BANK_TAB_CONTAINER.getId())))
+			// Nor draw if this widget is in bank and incinerator confirm dialog is open
+			if (!interfaceGroups.contains(interfaceGroup)
+				|| (interfaceGroup == BANK_GROUP_ID
+					&& (widget.getParentId() == BANK_CONTENT_CONTAINER.getId() || widget.getParentId() == BANK_TAB_CONTAINER.getId()
+						|| (incinerator_confirm != null && !incinerator_confirm.isHidden()))))
 			{
 				continue;
 			}
@@ -126,29 +126,10 @@ public abstract class WidgetItemOverlay extends Overlay
 					curClipParent = parent;
 				}
 			}
-			else if (incinerator_confirm != null && !incinerator_confirm.isHidden()
-				&& interfaceGroup == BANK_GROUP_ID && !curClipIncinerator)
-			{
-				Rectangle incinerator_confirm_bounds = incinerator_confirm.getChild(0).getBounds();
-				int is_x1 = parentBounds.x;
-				int is_x2 = incinerator_confirm_bounds.x;
-				int is_x3 = incinerator_confirm_bounds.x + incinerator_confirm_bounds.width;
-				int is_x4 = parentBounds.x + parentBounds.width;
-				int is_y1 = parentBounds.y;
-				int is_y2 = incinerator_confirm_bounds.y;
-				int is_y3 = incinerator_confirm_bounds.y + incinerator_confirm_bounds.height;
-				int is_y4 = parentBounds.y + parentBounds.height;
-				int is_npoints = 10;
-				Polygon incinerator_shape = new Polygon(new int[]{is_x1, is_x2, is_x2, is_x3, is_x3, is_x2, is_x2, is_x4, is_x4, is_x1},
-					new int[]{is_y1, is_y1, is_y3, is_y3, is_y2, is_y2, is_y1, is_y1, is_y4, is_y4}, is_npoints);
-				graphics.setClip(incinerator_shape);
-				curClipIncinerator = true;
-			}
 			else if (curClipParent != null && curClipParent != parent)
 			{
 				graphics.setClip(originalClipBounds);
 				curClipParent = null;
-				curClipIncinerator = false;
 			}
 
 			renderItemOverlay(graphics, widgetItem.getId(), widgetItem);
