@@ -107,8 +107,6 @@ import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 import net.runelite.http.api.worlds.WorldType;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.text.similarity.FuzzyScore;
-import sun.lwawt.macosx.CSystemTray;
-import sun.tools.jconsole.JConsole;
 
 @PluginDescriptor(
 	name = "Grand Exchange",
