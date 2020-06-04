@@ -377,6 +377,13 @@ public class GrandExchangePlugin extends Plugin
 		final int slot = offerEvent.getSlot();
 		final GrandExchangeOffer offer = offerEvent.getOffer();
 
+		if (offer.getState() == GrandExchangeOfferState.EMPTY && client.getGameState() != GameState.LOGGED_IN)
+		{
+			// Trades are cleared by the client during LOGIN_SCREEN/HOPPING/LOGGING_IN, ignore those so we don't
+			// zero and re-submit the trade on login as an update
+			return;
+		}
+
 		log.debug("GE offer updated: state: {}, slot: {}, item: {}, qty: {}, login: {}",
 			offer.getState(), slot, offer.getItemId(), offer.getQuantitySold(), loginBurstGeUpdates);
 
