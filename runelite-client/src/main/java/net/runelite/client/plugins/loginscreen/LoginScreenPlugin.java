@@ -96,7 +96,11 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		}
 
 		keyManager.unregisterKeyListener(this);
-		clientThread.invoke(this::restoreLoginScreen);
+		clientThread.invoke(() ->
+		{
+			restoreLoginScreen();
+			client.setShouldRenderLoginScreenFire(true);
+		});
 	}
 
 	@Provides

@@ -33,6 +33,7 @@ public enum LoginScreenOverride
 	OLD("old.jpg"),
 	CHRISTMAS("christmas.jpg"),
 	CHAMBERS_OF_XERIC("cox.jpg"),
+	DARKMEYER("darkmeyer.jpg"),
 	DRAGON_SLAYER_2("ds2.jpg"),
 	FOSSIL_ISLAND("fossil_island.jpg"),
 	HALLOWEEN("halloween.jpg"),

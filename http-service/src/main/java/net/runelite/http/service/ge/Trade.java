@@ -34,10 +34,12 @@ class Trade
 	private boolean cancel;
 	private boolean login;
 	private int itemId;
-	private int quantity;
+	private int qty;
+	private int dqty;
 	private int total;
 	private int spent;
 	private int offer;
+	private int slot;
 	private int time;
 	private String machineId;
 	private Integer userId;
