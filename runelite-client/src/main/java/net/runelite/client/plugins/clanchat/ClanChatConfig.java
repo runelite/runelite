@@ -151,21 +151,10 @@ public interface ClanChatConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "kickWithName",
-		name = "Show kicked player",
-		description = "Changes kick message to say who was kicked",
-		position = 10
-	)
-	default boolean kickWithName()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showIgnores",
 		name = "Recolor ignored players",
 		description = "Recolors players that are on your ignore list",
-		position = 11
+		position = 10
 	)
 	default boolean showIgnores()
 	{
@@ -176,7 +165,7 @@ public interface ClanChatConfig extends Config
 		keyName = "showIgnoresColor",
 		name = "Ignored color",
 		description = "Allows you to change the color of the ignored players in your clan chat",
-		position = 12
+		position = 11
 	)
 	default Color showIgnoresColor()
 	{

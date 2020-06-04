@@ -6,9 +6,6 @@
 ; callback "confirmClanKick"
 ; 	Used by the ClanChat plugin to show a chatbox panel confirming the requested kick
 ;	Also requires the "confirmKicks" option of ClanChatConfig to be enabled
-; callback "sendKickName"
-;   Used by the ClanChat plugin to modify the kick message to include player name
-;   Also requires the "kickWithName" option of ClanChatConfig to be enabled
    invoke                 1942
    iconst                 1
    if_icmpeq              LABEL4
@@ -19,10 +16,6 @@ LABEL4:
    return
 LABEL7:
    sconst                 "-Attempting to kick player from friends chat..."
-   sload                  0             ; Username we are kicking
-   sconst                 "sendKickName"
-   runelite_callback
-   pop_string                           ; Username we are kicking
    iconst                 2
    invoke                 96
    sload                  0
