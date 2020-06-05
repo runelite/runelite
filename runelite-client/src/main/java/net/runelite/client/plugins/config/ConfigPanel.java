@@ -226,6 +226,15 @@ class ConfigPanel extends PluginPanel
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 			item.add(configEntryName, BorderLayout.CENTER);
 
+			JMenuItem resetItem = new JMenuItem("Reset");
+			resetItem.addActionListener(l ->
+			{
+				configManager.setDefaultConfiguration(pluginConfig.getConfig(), cid.getItem());
+				rebuild();
+			});
+
+			PluginListItem.addLabelPopupMenu(configEntryName, resetItem);
+
 			if (cid.getType() == boolean.class)
 			{
 				JCheckBox checkbox = new JCheckBox();
