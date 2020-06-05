@@ -27,12 +27,20 @@ package net.runelite.client.plugins.screenshot;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.util.ImageUploadStyle;
 
 @ConfigGroup("screenshot")
 public interface ScreenshotConfig extends Config
 {
+	@ConfigSection(
+		name = "What to Screenshot",
+		description = "All the options that select what to screenshot",
+		position = 99
+	)
+	String whatSection = "what";
+
 	@ConfigItem(
 		keyName = "includeFrame",
 		name = "Include Client Frame",
@@ -70,7 +78,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "rewards",
 		name = "Screenshot Rewards",
 		description = "Configures whether screenshots are taken of clues, barrows, and quest completion",
-		position = 3
+		position = 3,
+		section = whatSection
 	)
 	default boolean screenshotRewards()
 	{
@@ -81,7 +90,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "levels",
 		name = "Screenshot Levels",
 		description = "Configures whether screenshots are taken of level ups",
-		position = 4
+		position = 4,
+		section = whatSection
 	)
 	default boolean screenshotLevels()
 	{
@@ -92,7 +102,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "kingdom",
 		name = "Screenshot Kingdom Reward",
 		description = "Configures whether screenshots are taken of Kingdom Reward",
-		position = 5
+		position = 5,
+		section = whatSection
 	)
 	default boolean screenshotKingdom()
 	{
@@ -103,7 +114,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "pets",
 		name = "Screenshot Pet",
 		description = "Configures whether screenshots are taken of receiving pets",
-		position = 6
+		position = 6,
+		section = whatSection
 	)
 	default boolean screenshotPet()
 	{
@@ -125,7 +137,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "kills",
 		name = "Screenshot PvP Kills",
 		description = "Configures whether or not screenshots are automatically taken of PvP kills",
-		position = 8
+		position = 8,
+		section = whatSection
 	)
 	default boolean screenshotKills()
 	{
@@ -136,7 +149,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "boss",
 		name = "Screenshot Boss Kills",
 		description = "Configures whether or not screenshots are automatically taken of boss kills",
-		position = 9
+		position = 9,
+		section = whatSection
 	)
 	default boolean screenshotBossKills()
 	{
@@ -147,7 +161,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "playerDeath",
 		name = "Screenshot Deaths",
 		description = "Configures whether or not screenshots are automatically taken when you die.",
-		position = 10
+		position = 10,
+		section = whatSection
 	)
 	default boolean screenshotPlayerDeath()
 	{
@@ -158,7 +173,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "friendDeath",
 		name = "Screenshot Friend Deaths",
 		description = "Configures whether or not screenshots are automatically taken when friends or clan members die.",
-		position = 11
+		position = 11,
+		section = whatSection
 	)
 	default boolean screenshotFriendDeath()
 	{
@@ -169,7 +185,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "duels",
 		name = "Screenshot Duels",
 		description = "Configures whether or not screenshots are automatically taken of the duel end screen.",
-		position = 12
+		position = 12,
+		section = whatSection
 	)
 	default boolean screenshotDuels()
 	{
@@ -180,7 +197,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "valuableDrop",
 		name = "Screenshot Valuable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.",
-		position = 13
+		position = 13,
+		section = whatSection
 	)
 	default boolean screenshotValuableDrop()
 	{
@@ -191,7 +209,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "untradeableDrop",
 		name = "Screenshot Untradeable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
-		position = 14
+		position = 14,
+		section = whatSection
 	)
 	default boolean screenshotUntradeableDrop()
 	{
@@ -202,7 +221,8 @@ public interface ScreenshotConfig extends Config
 		keyName = "ccKick",
 		name = "Screenshot Kicks from CC",
 		description = "Take a screenshot when you kick a user from a clan chat.",
-		position = 15
+		position = 15,
+		section = whatSection
 	)
 	default boolean screenshotCcKick()
 	{

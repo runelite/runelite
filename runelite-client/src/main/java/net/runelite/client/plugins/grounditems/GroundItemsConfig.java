@@ -30,6 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
@@ -39,11 +40,20 @@ import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 @ConfigGroup("grounditems")
 public interface GroundItemsConfig extends Config
 {
+	@ConfigSection(
+		name = "Item Lists",
+		description = "The highlighted and hidden item lists",
+		position = 0,
+		closedByDefault = true
+	)
+	String itemLists = "itemLists";
+
 	@ConfigItem(
 		keyName = "highlightedItems",
 		name = "Highlighted Items",
 		description = "Configures specifically highlighted ground items. Format: (item), (item)",
-		position = 0
+		position = 0,
+		section = itemLists
 	)
 	default String getHighlightItems()
 	{
@@ -61,7 +71,8 @@ public interface GroundItemsConfig extends Config
 		keyName = "hiddenItems",
 		name = "Hidden Items",
 		description = "Configures hidden ground items. Format: (item), (item)",
-		position = 1
+		position = 1,
+		section = itemLists
 	)
 	default String getHiddenItems()
 	{
