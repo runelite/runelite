@@ -97,4 +97,15 @@ public interface ChatNotificationsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "notifyOnBroadcast",
+		name = "Notify on broadcast",
+		description = "Notifies you whenever you receive a broadcast message"
+	)
+	default boolean notifyOnBroadcast()
+	{
+		return false;
+	}
 }
