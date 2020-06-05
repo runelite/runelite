@@ -67,6 +67,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
@@ -329,6 +330,7 @@ class ConfigPanel extends PluginPanel
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
+			PluginListItem.addLabelPopupMenu(configEntryName, createResetMenuItem(pluginConfig, cid));
 			item.add(configEntryName, BorderLayout.CENTER);
 
 			if (cid.getType() == boolean.class)
@@ -651,5 +653,22 @@ class ConfigPanel extends PluginPanel
 			pluginList.getMuxer().popState();
 		}
 		SwingUtilities.invokeLater(this::rebuild);
+	}
+
+	private JMenuItem createResetMenuItem(PluginConfigurationDescriptor pluginConfig, ConfigItemDescriptor configItemDescriptor)
+	{
+		JMenuItem menuItem = new JMenuItem("Reset");
+		menuItem.addActionListener(e -> {
+			ConfigDescriptor configDescriptor = pluginConfig.getConfigDescriptor();
+			ConfigGroup configGroup = configDescriptor.getGroup();
+			ConfigItem configItem = configItemDescriptor.getItem();
+
+			// To reset one item we'll just unset it and then apply defaults over the whole group
+			configManager.unsetConfiguration(configGroup.value(), configItem.keyName());
+			configManager.setDefaultConfiguration(pluginConfig.getConfig(), false);
+
+			rebuild();
+		});
+		return menuItem;
 	}
 }
