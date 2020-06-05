@@ -84,7 +84,7 @@ public class ItemChargePlugin extends Plugin
 		"Your amulet of chemistry has (\\d) charges? left\\."
 	);
 	private static final Pattern AMULET_OF_CHEMISTRY_USED_PATTERN = Pattern.compile(
-		"Your amulet of chemistry helps you create a (\\d)-dose potion\\. (?:<col=ff0000>)?It has (\\d|one) charges? left\\."
+		"Your amulet of chemistry helps you create a \\d-dose potion\\. (?:<col=ff0000>)?It has (\\d|one) charges? left\\."
 	);
 	private static final Pattern AMULET_OF_CHEMISTRY_BREAK_PATTERN = Pattern.compile(
 		"Your amulet of chemistry helps you create a (\\d)-dose potion\\. (?:<col=ff0000>)?It then crumbles to dust\\."
