@@ -28,6 +28,7 @@ package net.runelite.client.plugins.npchighlight;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -259,17 +260,33 @@ public class NpcIndicatorsPlugin extends Plugin
 			type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
 		}
 
-		if (config.highlightMenuNames() &&
-			NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
-			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier() && (!npc.isDead() || !config.ignoreDeadNpcs())))
+		final MenuAction menuAction = MenuAction.of(type);
+
+		if (NPC_MENU_ACTIONS.contains(menuAction))
 		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-			final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getHighlightColor());
-			menuEntry.setTarget(target);
-			client.setMenuEntries(menuEntries);
+			NPC npc = client.getCachedNPCs()[event.getIdentifier()];
+
+			Color color = null;
+			if (npc.isDead())
+			{
+				color = config.deadNpcMenuColor();
+			}
+
+			if (color == null && highlightedNpcs.contains(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
+			{
+				color = config.getHighlightColor();
+			}
+
+			if (color != null)
+			{
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
+				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+				menuEntry.setTarget(target);
+				client.setMenuEntries(menuEntries);
+			}
 		}
-		else if (hotKeyPressed && type == MenuAction.EXAMINE_NPC.getId())
+		else if (hotKeyPressed && menuAction == MenuAction.EXAMINE_NPC)
 		{
 			// Add tag option
 			MenuEntry[] menuEntries = client.getMenuEntries();

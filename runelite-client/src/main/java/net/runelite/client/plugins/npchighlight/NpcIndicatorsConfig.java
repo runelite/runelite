@@ -118,4 +118,12 @@ public interface NpcIndicatorsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "deadNpcMenuColor",
+		name = "Dead NPC menu color",
+		description = "Color of the NPC menus for dead NPCs"
+	)
+	Color deadNpcMenuColor();
 }
