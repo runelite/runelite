@@ -29,7 +29,6 @@ package net.runelite.client.ui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -38,6 +37,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -76,6 +77,8 @@ public class IconTextField extends JPanel
 
 	@Getter
 	private final DefaultListModel<String> suggestionListModel;
+
+	private final List<Runnable> clearListeners = new ArrayList<>();
 
 	public IconTextField()
 	{
@@ -124,7 +127,15 @@ public class IconTextField extends JPanel
 
 		clearButton = createRHSButton(ColorScheme.PROGRESS_ERROR_COLOR, Color.PINK);
 		clearButton.setText("×");
-		clearButton.addActionListener(evt -> setText(null));
+		clearButton.addActionListener(evt ->
+		{
+			setText(null);
+
+			for (Runnable l : clearListeners)
+			{
+				l.run();
+			}
+		});
 
 		suggestionListModel = new DefaultListModel<>();
 		suggestionListModel.addListDataListener(new ListDataListener()
@@ -318,9 +329,9 @@ public class IconTextField extends JPanel
 		textField.addKeyListener(keyListener);
 	}
 
-	public void addClearListener(Consumer<ActionEvent> actionEventConsumer)
+	public void addClearListener(Runnable clearListener)
 	{
-		clearButton.addActionListener(actionEventConsumer::accept);
+		clearListeners.add(clearListener);
 	}
 
 	public void addKeyListener(Consumer<KeyEvent> keyEventConsumer)
