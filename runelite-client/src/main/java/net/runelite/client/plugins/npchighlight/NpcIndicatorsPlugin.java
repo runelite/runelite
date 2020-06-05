@@ -29,6 +29,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Instant;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -259,15 +260,19 @@ public class NpcIndicatorsPlugin extends Plugin
 			type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
 		}
 
-		if (config.highlightMenuNames() &&
-			NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
-			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier() && (!npc.isDead() || config.highlightDeadNpcs())))
+		NPC menuNpc = client.getCachedNPCs()[event.getIdentifier()];
+		if (NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
+			(config.highlightMenuNames() && getHighlightedNpcs().contains(menuNpc) || config.highlightAllDeadNpcMenuNames() && menuNpc.isDead()))
 		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-			final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getHighlightColor());
-			menuEntry.setTarget(target);
-			client.setMenuEntries(menuEntries);
+			final Color highlightColor = getNpcHighlightColor(menuNpc);
+			if (highlightColor != null)
+			{
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
+				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), highlightColor);
+				menuEntry.setTarget(target);
+				client.setMenuEntries(menuEntries);
+			}
 		}
 		else if (hotKeyPressed && type == MenuAction.EXAMINE_NPC.getId())
 		{
@@ -458,6 +463,12 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		return Text.fromCSV(configNpcs);
+	}
+
+	Color getNpcHighlightColor(NPC npc)
+	{
+		final boolean highlightNpc = highlightedNpcs.contains(npc);
+		return npc.isDead() && config.deadNpcColor() != null ? config.deadNpcColor() : (highlightNpc ? config.livingNpcColor() : null);
 	}
 
 	private void rebuildAllNpcs()

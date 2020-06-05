@@ -87,7 +87,7 @@ public class NpcSceneOverlay extends Overlay
 
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, config.getHighlightColor());
+			renderNpcOverlay(graphics, npc, plugin.getNpcHighlightColor(npc));
 		}
 
 		return null;
@@ -108,7 +108,7 @@ public class NpcSceneOverlay extends Overlay
 			return;
 		}
 
-		final Color color = config.getHighlightColor();
+		final Color color = config.livingNpcColor();
 
 		final LocalPoint centerLp = new LocalPoint(
 			lp.getX() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2,
@@ -146,8 +146,7 @@ public class NpcSceneOverlay extends Overlay
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
 		NPCComposition npcComposition = actor.getTransformedComposition();
-		if (npcComposition == null || !npcComposition.isInteractible()
-			|| (actor.isDead() && !config.highlightDeadNpcs()))
+		if (npcComposition == null || !npcComposition.isInteractible() || color == null)
 		{
 			return;
 		}

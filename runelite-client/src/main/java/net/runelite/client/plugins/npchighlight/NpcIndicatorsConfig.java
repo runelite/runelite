@@ -57,16 +57,24 @@ public interface NpcIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "npcColor",
-		name = "Highlight Color",
-		description = "Color of the NPC highlight"
+		name = "Living highlight Color",
+		description = "Color of the NPC highlight for living NPCs"
 	)
-	default Color getHighlightColor()
+	default Color livingNpcColor()
 	{
 		return Color.CYAN;
 	}
 
 	@ConfigItem(
 		position = 3,
+		keyName = "deadNpcColor",
+		name = "Dead highlight color",
+		description = "Color of the NPC highlight for dead NPCs"
+	)
+	Color deadNpcColor();
+
+	@ConfigItem(
+		position = 4,
 		keyName = "drawNames",
 		name = "Draw names above NPC",
 		description = "Configures whether or not NPC names should be drawn above the NPC"
@@ -77,7 +85,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not NPC names should be drawn on the minimap"
@@ -88,7 +96,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "highlightMenuNames",
 		name = "Highlight menu names",
 		description = "Highlight NPC names in right click menu"
@@ -99,18 +107,18 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
-		keyName = "highlightDeadNPCs",
-		name = "Highlight dead NPCs",
-		description = "Highlight dead NPCs"
+		position = 7,
+		keyName = "highlightAllDeadNpcMenuNames",
+		name = "Highlight all dead NPC menu names",
+		description = "Highlight all dead NPC names in right click menu, even those not tagged"
 	)
-	default boolean highlightDeadNpcs()
+	default boolean highlightAllDeadNpcMenuNames()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "showRespawnTimer",
 		name = "Show respawn timer",
 		description = "Show respawn timer of tagged NPCs")

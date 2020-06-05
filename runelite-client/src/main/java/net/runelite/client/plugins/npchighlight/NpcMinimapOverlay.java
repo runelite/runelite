@@ -59,7 +59,7 @@ public class NpcMinimapOverlay extends Overlay
 	{
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
+			renderNpcOverlay(graphics, npc, npc.getName(), plugin.getNpcHighlightColor(npc));
 		}
 
 		return null;
@@ -68,8 +68,7 @@ public class NpcMinimapOverlay extends Overlay
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
 	{
 		NPCComposition npcComposition = actor.getTransformedComposition();
-		if (npcComposition == null || !npcComposition.isInteractible()
-			|| (actor.isDead() && !config.highlightDeadNpcs()))
+		if (npcComposition == null || !npcComposition.isInteractible() || color == null)
 		{
 			return;
 		}
