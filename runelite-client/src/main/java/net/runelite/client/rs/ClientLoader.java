@@ -87,15 +87,17 @@ public class ClientLoader implements Supplier<Applet>
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
 	private final WorldSupplier worldSupplier;
+	private final String javConfigUrl;
 
 	private Object client;
 
-	public ClientLoader(OkHttpClient okHttpClient, ClientUpdateCheckMode updateCheckMode)
+	public ClientLoader(OkHttpClient okHttpClient, ClientUpdateCheckMode updateCheckMode, String javConfigUrl)
 	{
 		this.okHttpClient = okHttpClient;
 		this.clientConfigLoader = new ClientConfigLoader(okHttpClient);
 		this.updateCheckMode = updateCheckMode;
 		this.worldSupplier = new WorldSupplier(okHttpClient);
+		this.javConfigUrl = javConfigUrl;
 	}
 
 	@Override
@@ -186,7 +188,7 @@ public class ClientLoader implements Supplier<Applet>
 
 	private RSConfig downloadConfig() throws IOException
 	{
-		HttpUrl url = HttpUrl.parse(RuneLiteProperties.getJavConfig());
+		HttpUrl url = HttpUrl.parse(javConfigUrl);
 		IOException err = null;
 		for (int attempt = 0; attempt < NUM_ATTEMPTS; attempt++)
 		{
@@ -204,6 +206,12 @@ public class ClientLoader implements Supplier<Applet>
 			catch (IOException e)
 			{
 				log.info("Failed to get jav_config from host \"{}\" ({})", url.host(), e.getMessage());
+
+				if (!javConfigUrl.equals(RuneLiteProperties.getJavConfig()))
+				{
+					throw e;
+				}
+
 				String host = worldSupplier.get().getAddress();
 				url = url.newBuilder().host(host).build();
 				err = e;
