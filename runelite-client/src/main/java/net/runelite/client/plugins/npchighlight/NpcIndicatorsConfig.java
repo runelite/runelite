@@ -100,13 +100,13 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "highlightDeadNPCs",
-		name = "Highlight dead NPCs",
-		description = "Highlight dead NPCs"
+		keyName = "ignoreDeadNpcs",
+		name = "Ignore dead NPCs",
+		description = "Prevents highlighting NPCs after they are dead"
 	)
-	default boolean highlightDeadNpcs()
+	default boolean ignoreDeadNpcs()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(

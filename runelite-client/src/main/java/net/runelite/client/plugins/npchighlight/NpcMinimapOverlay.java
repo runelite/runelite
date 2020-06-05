@@ -69,7 +69,7 @@ public class NpcMinimapOverlay extends Overlay
 	{
 		NPCComposition npcComposition = actor.getTransformedComposition();
 		if (npcComposition == null || !npcComposition.isInteractible()
-			|| (actor.isDead() && !config.highlightDeadNpcs()))
+			|| (actor.isDead() && config.ignoreDeadNpcs()))
 		{
 			return;
 		}

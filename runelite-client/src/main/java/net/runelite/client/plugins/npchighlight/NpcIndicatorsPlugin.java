@@ -261,7 +261,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		if (config.highlightMenuNames() &&
 			NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
-			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier() && (!npc.isDead() || config.highlightDeadNpcs())))
+			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier() && (!npc.isDead() || !config.ignoreDeadNpcs())))
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
