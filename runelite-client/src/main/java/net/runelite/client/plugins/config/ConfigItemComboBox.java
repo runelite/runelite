@@ -24,16 +24,17 @@
  */
 package net.runelite.client.plugins.config;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ItemEvent;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.util.Text;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ItemEvent;
 
 @Slf4j
 class ConfigItemComboBox extends JComboBox

@@ -24,13 +24,18 @@
  */
 package net.runelite.client.plugins.config;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeListener;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
-
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
 
 class ConfigItemDimension extends JPanel
 {
@@ -56,7 +61,7 @@ class ConfigItemDimension extends JPanel
 		heightSpinnerTextField.setColumns(4);
 
 		ChangeListener listener = e ->
-				configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
 
 		widthSpinner.addChangeListener(listener);
 		heightSpinner.addChangeListener(listener);

@@ -24,13 +24,13 @@
  */
 package net.runelite.client.plugins.config;
 
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import javax.swing.BorderFactory;
+import javax.swing.JPasswordField;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
-
-import javax.swing.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 class ConfigItemSecretField extends JPasswordField
 {

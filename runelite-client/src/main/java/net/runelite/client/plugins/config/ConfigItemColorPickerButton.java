@@ -24,25 +24,24 @@
  */
 package net.runelite.client.plugins.config;
 
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.config.ConfigPanel;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ColorUtil;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 class ConfigItemColorPickerButton extends JButton
 {
 	private final ConfigManager configManager;
 
 	public ConfigItemColorPickerButton(ConfigManager configManager, ConfigDescriptor cd, ConfigItemDescriptor cid,
-			ColorPickerManager colorPickerManager, ConfigPanel configPanel)
+									ColorPickerManager colorPickerManager, ConfigPanel configPanel)
 	{
 		this.configManager = configManager;
 
@@ -69,10 +68,10 @@ class ConfigItemColorPickerButton extends JButton
 			public void mouseClicked(MouseEvent e)
 			{
 				RuneliteColorPicker colorPicker = colorPickerManager.create(
-						SwingUtilities.windowForComponent(configPanel),
-						colorPickerBtn.getBackground(),
-						cid.getItem().name(),
-						cid.getAlpha() == null);
+					SwingUtilities.windowForComponent(configPanel),
+					colorPickerBtn.getBackground(),
+					cid.getItem().name(),
+					cid.getAlpha() == null);
 				colorPicker.setLocation(getLocationOnScreen());
 				colorPicker.setOnColorChange(c ->
 				{

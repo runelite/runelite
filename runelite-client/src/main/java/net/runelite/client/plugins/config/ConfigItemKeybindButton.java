@@ -24,11 +24,13 @@
  */
 package net.runelite.client.plugins.config;
 
-import net.runelite.client.config.*;
-import net.runelite.client.plugins.config.HotkeyButton;
-
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.config.ConfigItemDescriptor;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
+import net.runelite.client.config.ModifierlessKeybind;
 
 class ConfigItemKeybindButton extends HotkeyButton
 {
@@ -37,8 +39,8 @@ class ConfigItemKeybindButton extends HotkeyButton
 	public ConfigItemKeybindButton(ConfigManager configManager, ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
 		super(configManager.getConfiguration(cd.getGroup().value(),
-				cid.getItem().keyName(), (Class<? extends Keybind>) cid.getType()),
-				cid.getType() == ModifierlessKeybind.class);
+			cid.getItem().keyName(), (Class<? extends Keybind>) cid.getType()),
+			cid.getType() == ModifierlessKeybind.class);
 		this.configManager = configManager;
 
 		this.addFocusListener(new FocusAdapter()

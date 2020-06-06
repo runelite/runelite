@@ -24,8 +24,29 @@
  */
 package net.runelite.client.plugins.config;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.config.*;
+import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.config.ConfigItemDescriptor;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
+import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
@@ -39,13 +60,6 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
-
-import javax.inject.Inject;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 @Slf4j
 class ConfigPanel extends PluginPanel
@@ -244,8 +258,8 @@ class ConfigPanel extends PluginPanel
 		resetButton.addActionListener((e) ->
 		{
 			final int result = JOptionPane.showOptionDialog(resetButton, "Are you sure you want to reset this plugin's configuration?",
-					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-					null, new String[]{"Yes", "No"}, "No");
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[] {"Yes", "No"}, "No");
 
 			if (result == JOptionPane.YES_OPTION)
 			{
@@ -292,7 +306,7 @@ class ConfigPanel extends PluginPanel
 	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
 	{
 		if (pluginManager.getPlugins().stream()
-				.noneMatch(p -> p == this.pluginConfig.getPlugin()))
+			.noneMatch(p -> p == this.pluginConfig.getPlugin()))
 		{
 			pluginList.getMuxer().popState();
 		}

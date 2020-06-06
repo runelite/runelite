@@ -25,10 +25,16 @@
 package net.runelite.client.plugins.config;
 
 import com.google.common.primitives.Ints;
-import net.runelite.client.config.*;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import javax.swing.JFormattedTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.config.ConfigItemDescriptor;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 class ConfigItemSpinner extends JSpinner
 {

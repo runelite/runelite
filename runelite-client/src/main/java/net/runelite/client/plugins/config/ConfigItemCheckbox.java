@@ -24,12 +24,11 @@
  */
 package net.runelite.client.plugins.config;
 
+import javax.swing.JCheckBox;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
-
-import javax.swing.*;
 
 class ConfigItemCheckbox extends JCheckBox
 {
