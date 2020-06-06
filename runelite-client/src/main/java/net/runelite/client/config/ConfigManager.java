@@ -504,62 +504,88 @@ public class ConfigManager
 		for (Method method : clazz.getDeclaredMethods())
 		{
 			ConfigItem item = method.getAnnotation(ConfigItem.class);
+			setDefaultConfiguration(proxy, method, group, item, override);
+		}
+	}
 
-			// only apply default configuration for methods which read configuration (0 args)
-			if (item == null || method.getParameterCount() != 0)
-			{
-				continue;
-			}
+	public void setDefaultConfiguration(Object proxy, Method method, ConfigGroup group, ConfigItem item, boolean override)
+	{
+		// only apply default configuration for methods which read configuration (0 args)
+		if (item == null || method.getParameterCount() != 0)
+		{
+			return;
+		}
 
-			if (!method.isDefault())
+		if (!method.isDefault())
+		{
+			if (override)
 			{
-				if (override)
-				{
-					String current = getConfiguration(group.value(), item.keyName());
-					// only unset if already set
-					if (current != null)
-					{
-						unsetConfiguration(group.value(), item.keyName());
-					}
-				}
-				continue;
-			}
-
-			if (!override)
-			{
-				// This checks if it is set and is also unmarshallable to the correct type; so
-				// we will overwrite invalid config values with the default
-				Object current = getConfiguration(group.value(), item.keyName(), method.getReturnType());
+				String current = getConfiguration(group.value(), item.keyName());
+				// only unset if already set
 				if (current != null)
 				{
-					continue; // something else is already set
+					unsetConfiguration(group.value(), item.keyName());
 				}
 			}
+			return;
+		}
 
-			Object defaultValue;
-			try
+		if (!override)
+		{
+			// This checks if it is set and is also unmarshallable to the correct type; so
+			// we will overwrite invalid config values with the default
+			Object current = getConfiguration(group.value(), item.keyName(), method.getReturnType());
+			if (current != null)
 			{
-				defaultValue = ConfigInvocationHandler.callDefaultMethod(proxy, method, null);
+				return; // something else is already set
 			}
-			catch (Throwable ex)
+		}
+
+		Object defaultValue;
+		try
+		{
+			defaultValue = ConfigInvocationHandler.callDefaultMethod(proxy, method, null);
+		}
+		catch (Throwable ex)
+		{
+			log.warn(null, ex);
+			return;
+		}
+
+		String current = getConfiguration(group.value(), item.keyName());
+		String valueString = objectToString(defaultValue);
+		// null and the empty string are treated identically in sendConfig and treated as an unset
+		// If a config value defaults to "" and the current value is null, it will cause an extra
+		// unset to be sent, so treat them as equal
+		if (Objects.equals(current, valueString) || (Strings.isNullOrEmpty(current) && Strings.isNullOrEmpty(valueString)))
+		{
+			return; // already set to the default value
+		}
+
+		log.debug("Setting default configuration value for {}.{} to {}", group.value(), item.keyName(), defaultValue);
+
+		setConfiguration(group.value(), item.keyName(), valueString);
+	}
+
+	public void setDefaultConfiguration(Object proxy, ConfigItem item)
+	{
+		Class<?> clazz = proxy.getClass().getInterfaces()[0];
+		ConfigGroup group = clazz.getAnnotation(ConfigGroup.class);
+
+		if (group == null || item == null)
+		{
+			return;
+		}
+
+		log.debug("Resetting config item {}", item);
+
+		for (Method method : clazz.getDeclaredMethods())
+		{
+			if (Objects.equals(item, method.getAnnotation(ConfigItem.class)))
 			{
-				log.warn(null, ex);
-				continue;
+				setDefaultConfiguration(proxy, method, group, item, true);
+				return;
 			}
-
-			String current = getConfiguration(group.value(), item.keyName());
-			String valueString = objectToString(defaultValue);
-			// null and the empty string are treated identically in sendConfig and treated as an unset
-			// If a config value defaults to "" and the current value is null, it will cause an extra
-			// unset to be sent, so treat them as equal
-			if (Objects.equals(current, valueString) || (Strings.isNullOrEmpty(current) && Strings.isNullOrEmpty(valueString)))
-			{
-				continue; // already set to the default value
-			}
-
-			log.debug("Setting default configuration value for {}.{} to {}", group.value(), item.keyName(), defaultValue);
-
-			setConfiguration(group.value(), item.keyName(), valueString);
 		}
 	}
 
