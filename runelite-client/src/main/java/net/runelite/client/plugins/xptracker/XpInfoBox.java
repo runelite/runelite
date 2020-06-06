@@ -245,7 +245,20 @@ class XpInfoBox extends JPanel
 	{
 		if (updated)
 		{
-			if (getParent() != panel)
+			if (xpTrackerConfig.prioritizeRecentXpSkills())
+			{
+				if (getParent() != panel)
+				{
+					panel.add(this, 0);
+				}
+				else
+				{
+					panel.remove(this);
+					panel.add(this, 0);
+				}
+				panel.revalidate();
+			}
+			else if (getParent() != panel)
 			{
 				panel.add(this);
 				panel.revalidate();

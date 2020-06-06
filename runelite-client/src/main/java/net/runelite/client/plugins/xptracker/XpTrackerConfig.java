@@ -177,4 +177,15 @@ public interface XpTrackerConfig extends Config
 	{
 		return XpProgressBarLabel.PERCENTAGE;
 	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "prioritizeRecentXpSkills",
+		name = "Move recently trained skills to top",
+		description = "Configures whether skills should be organized by most recently gained xp"
+	)
+	default boolean prioritizeRecentXpSkills()
+	{
+		return false;
+	}
 }
