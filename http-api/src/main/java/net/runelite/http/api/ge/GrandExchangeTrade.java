@@ -38,6 +38,7 @@ public class GrandExchangeTrade
 	private int dqty;
 	private int total;
 	private int spent;
+	private int dspent;
 	private int offer;
 	private int slot;
 	private WorldType worldType;
