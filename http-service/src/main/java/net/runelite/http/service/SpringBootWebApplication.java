@@ -28,16 +28,6 @@ import ch.qos.logback.classic.LoggerContext;
 import com.google.common.base.Strings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import java.io.IOException;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import javax.naming.NamingException;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
-import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.service.util.InstantConverter;
@@ -53,7 +43,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.jndi.JndiTemplate;
@@ -62,38 +52,75 @@ import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
 
+import javax.naming.NamingException;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.ServletException;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableScheduling
 @Slf4j
 public class SpringBootWebApplication extends SpringBootServletInitializer
 {
+	private static DataSource getDataSource(final DataSourceProperties dataSourceProperties)
+	{
+		if (!Strings.isNullOrEmpty(dataSourceProperties.getJndiName()))
+		{
+			// Use JNDI provided datasource, which is already configured with pooling
+			final JndiDataSourceLookup dataSourceLookup = new JndiDataSourceLookup();
+			return dataSourceLookup.getDataSource(dataSourceProperties.getJndiName());
+		}
+		else
+		{
+			return dataSourceProperties.initializeDataSourceBuilder().build();
+		}
+	}
+
+	private static Sql2o createSql2oFromDataSource(final DataSource dataSource)
+	{
+		final Map<Class, Converter> converters = new HashMap<>();
+		converters.put(Instant.class, new InstantConverter());
+		return new Sql2o(dataSource, new NoQuirks(converters));
+	}
+
+	public static void main(final String[] args)
+	{
+		SpringApplication.run(SpringBootWebApplication.class, args);
+	}
+
 	@Bean
 	protected ServletContextListener listener()
 	{
 		return new ServletContextListener()
 		{
 			@Override
-			public void contextInitialized(ServletContextEvent sce)
+			public void contextInitialized(final ServletContextEvent sce)
 			{
 				log.info("RuneLite API started");
 			}
 
 			@Override
-			public void contextDestroyed(ServletContextEvent sce)
+			public void contextDestroyed(final ServletContextEvent sce)
 			{
 				// Destroy okhttp client
-				OkHttpClient client = RuneLiteAPI.CLIENT;
+				final OkHttpClient client = RuneLiteAPI.CLIENT;
 				client.dispatcher().executorService().shutdown();
 				client.connectionPool().evictAll();
 				try
 				{
-					Cache cache = client.cache();
+					final Cache cache = client.cache();
 					if (cache != null)
 					{
 						cache.close();
 					}
 				}
-				catch (IOException ex)
+				catch (final IOException ex)
 				{
 					log.warn(null, ex);
 				}
@@ -126,47 +153,47 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	}
 
 	@Bean(value = "runelite", destroyMethod = "")
-	public DataSource runeliteDataSource(@Qualifier("dataSourceRuneLite") DataSourceProperties dataSourceProperties)
+	public DataSource runeliteDataSource(@Qualifier("dataSourceRuneLite") final DataSourceProperties dataSourceProperties)
 	{
 		return getDataSource(dataSourceProperties);
 	}
 
 	@Bean(value = "runelite-cache", destroyMethod = "")
-	public DataSource runeliteCache2DataSource(@Qualifier("dataSourceRuneLiteCache") DataSourceProperties dataSourceProperties)
+	public DataSource runeliteCache2DataSource(@Qualifier("dataSourceRuneLiteCache") final DataSourceProperties dataSourceProperties)
 	{
 		return getDataSource(dataSourceProperties);
 	}
 
 	@Bean(value = "runelite-tracker", destroyMethod = "")
-	public DataSource runeliteTrackerDataSource(@Qualifier("dataSourceRuneLiteTracker") DataSourceProperties dataSourceProperties)
+	public DataSource runeliteTrackerDataSource(@Qualifier("dataSourceRuneLiteTracker") final DataSourceProperties dataSourceProperties)
 	{
 		return getDataSource(dataSourceProperties);
 	}
 
 	@Bean("Runelite SQL2O")
-	public Sql2o sql2o(@Qualifier("runelite") DataSource dataSource)
+	public Sql2o sql2o(@Qualifier("runelite") final DataSource dataSource)
 	{
 		return createSql2oFromDataSource(dataSource);
 	}
 
 	@Bean("Runelite Cache SQL2O")
-	public Sql2o cacheSql2o(@Qualifier("runelite-cache") DataSource dataSource)
+	public Sql2o cacheSql2o(@Qualifier("runelite-cache") final DataSource dataSource)
 	{
 		return createSql2oFromDataSource(dataSource);
 	}
 
 	@Bean("Runelite XP Tracker SQL2O")
-	public Sql2o trackerSql2o(@Qualifier("runelite-tracker") DataSource dataSource)
+	public Sql2o trackerSql2o(@Qualifier("runelite-tracker") final DataSource dataSource)
 	{
 		return createSql2oFromDataSource(dataSource);
 	}
 
 	@Bean(destroyMethod = "")
-	public MongoClient mongoClient(@Value("${mongo.host:}") String host, @Value("${mongo.jndiName:}") String jndiName) throws NamingException
+	public MongoClient mongoClient(@Value("${mongo.host:}") final String host, @Value("${mongo.jndiName:}") final String jndiName) throws NamingException
 	{
 		if (!Strings.isNullOrEmpty(jndiName))
 		{
-			JndiTemplate jndiTemplate = new JndiTemplate();
+			final JndiTemplate jndiTemplate = new JndiTemplate();
 			return jndiTemplate.lookup(jndiName, MongoClient.class);
 		}
 		else if (!Strings.isNullOrEmpty(host))
@@ -179,48 +206,22 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		}
 	}
 
-	private static DataSource getDataSource(DataSourceProperties dataSourceProperties)
-	{
-		if (!Strings.isNullOrEmpty(dataSourceProperties.getJndiName()))
-		{
-			// Use JNDI provided datasource, which is already configured with pooling
-			JndiDataSourceLookup dataSourceLookup = new JndiDataSourceLookup();
-			return dataSourceLookup.getDataSource(dataSourceProperties.getJndiName());
-		}
-		else
-		{
-			return dataSourceProperties.initializeDataSourceBuilder().build();
-		}
-	}
-
-	private static Sql2o createSql2oFromDataSource(final DataSource dataSource)
-	{
-		final Map<Class, Converter> converters = new HashMap<>();
-		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o(dataSource, new NoQuirks(converters));
-	}
-
 	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application)
+	protected SpringApplicationBuilder configure(final SpringApplicationBuilder application)
 	{
 		return application.sources(SpringBootWebApplication.class);
 	}
 
 	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException
+	public void onStartup(final ServletContext servletContext) throws ServletException
 	{
 		super.onStartup(servletContext);
-		ILoggerFactory loggerFactory = StaticLoggerBinder.getSingleton().getLoggerFactory();
+		final ILoggerFactory loggerFactory = StaticLoggerBinder.getSingleton().getLoggerFactory();
 		if (loggerFactory instanceof LoggerContext)
 		{
-			LoggerContext loggerContext = (LoggerContext) loggerFactory;
+			final LoggerContext loggerContext = (LoggerContext) loggerFactory;
 			loggerContext.setPackagingDataEnabled(false);
 			log.debug("Disabling logback packaging data");
 		}
-	}
-
-	public static void main(String[] args)
-	{
-		SpringApplication.run(SpringBootWebApplication.class, args);
 	}
 }

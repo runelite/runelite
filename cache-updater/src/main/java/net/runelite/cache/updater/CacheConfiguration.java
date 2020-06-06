@@ -27,19 +27,20 @@ package net.runelite.cache.updater;
 import io.minio.MinioClient;
 import io.minio.errors.InvalidEndpointException;
 import io.minio.errors.InvalidPortException;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
+
+import javax.sql.DataSource;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class CacheConfiguration
@@ -62,9 +63,9 @@ public class CacheConfiguration
 
 	@Bean
 	@Qualifier("Runelite Cache SQL2O")
-	public Sql2o sql2o(DataSource dataSource)
+	public Sql2o sql2o(final DataSource dataSource)
 	{
-		Map<Class, Converter> converters = new HashMap<>();
+		final Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o(dataSource, new NoQuirks(converters));
 	}
