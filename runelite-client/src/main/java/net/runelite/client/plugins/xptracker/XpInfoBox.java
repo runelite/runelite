@@ -245,23 +245,20 @@ class XpInfoBox extends JPanel
 	{
 		if (updated)
 		{
+			if (getParent() != panel)
+			{
+				panel.add(this);
+				panel.revalidate();
+			}
+
 			if (xpTrackerConfig.prioritizeRecentXpSkills())
 			{
-				if (getParent() != panel)
-				{
-					panel.add(this, 0);
-				}
-				else
+				int index = panel.getComponentZOrder(this);
+				if (index > 0)
 				{
 					panel.remove(this);
 					panel.add(this, 0);
 				}
-				panel.revalidate();
-			}
-			else if (getParent() != panel)
-			{
-				panel.add(this);
-				panel.revalidate();
 			}
 
 			paused = skillPaused;
