@@ -143,6 +143,11 @@ public class LootTrackerPlugin extends Plugin
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
+
+	private static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
+	private static final int HALLOWED_SEPULCHRE_COFFIN_REG = 39535;
+	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin";
+
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = new ImmutableMap.Builder<Integer, String>().
 		put(5179, "Brimstone Chest").
 		put(11573, "Crystal Chest").
@@ -206,6 +211,7 @@ public class LootTrackerPlugin extends Plugin
 	@VisibleForTesting
 	LootRecordType lootRecordType;
 	private boolean chestLooted;
+	private boolean coffinLooted;
 	private String lastPickpocketTarget;
 
 	private List<String> ignoredItems = new ArrayList<>();
@@ -542,6 +548,15 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		if (message.equals(COFFIN_LOOTED_MESSAGE) && eventType.equals(HALLOWED_SEPULCHRE_COFFIN_EVENT))
+		{
+			coffinLooted = true;
+			lootRecordType = LootRecordType.EVENT;
+			takeInventorySnapshot();
+
+			return;
+		}
+
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
 		{
 			if (processHerbiboarHerbSackLoot(event.getTimestamp()))
@@ -633,7 +648,8 @@ public class LootTrackerPlugin extends Plugin
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
 			|| SEEDPACK_EVENT.equals(eventType)
-			|| lootRecordType == LootRecordType.PICKPOCKET)
+			|| lootRecordType == LootRecordType.PICKPOCKET
+			|| coffinLooted)
 		{
 			processInventoryLoot(eventType, lootRecordType, event.getItemContainer());
 			eventType = null;
@@ -649,6 +665,11 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Pickpocket"))
 		{
 			lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
+		}
+
+		if (event.getMenuOption().equals("Search-for-traps") && event.getId() == HALLOWED_SEPULCHRE_COFFIN_REG)
+		{
+			eventType = HALLOWED_SEPULCHRE_COFFIN_EVENT;
 		}
 
 		if (event.getMenuOption().equals("Take") && event.getId() == ItemID.SEED_PACK)
