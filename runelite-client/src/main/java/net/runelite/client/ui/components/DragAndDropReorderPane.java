@@ -176,11 +176,7 @@ public class DragAndDropReorderPane extends JLayeredPane
 			if (SwingUtilities.isLeftMouseButton(e) && dragStartPoint != null)
 			{
 				Point point = e.getPoint();
-				if (!contains(point))
-				{
-					finishDragging();
-				}
-				else if (draggingComponent != null)
+				if (draggingComponent != null)
 				{
 					drag(point);
 				}
