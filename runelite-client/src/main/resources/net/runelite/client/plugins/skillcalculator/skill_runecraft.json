@@ -1,76 +1,94 @@
 {
+  "bonuses": [
+    {
+      "name": "Daeyalt essence (+50%)",
+      "value": 0.5
+    }
+  ],
   "actions": [
     {
       "level": 1,
       "icon": 5527,
       "name": "Air Tiara",
-      "xp": 25
+      "xp": 25,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 5529,
       "name": "Mind Tiara",
-      "xp": 27.5
+      "xp": 27.5,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 5531,
       "name": "Water Tiara",
-      "xp": 30
+      "xp": 30,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 5535,
       "name": "Earth Tiara",
-      "xp": 32.5
+      "xp": 32.5,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 5537,
       "name": "Fire Tiara",
-      "xp": 35
+      "xp": 35,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 5533,
       "name": "Body Tiara",
-      "xp": 37.5
+      "xp": 37.5,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 5539,
       "name": "Cosmic Tiara",
-      "xp": 40
+      "xp": 40,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 5543,
       "name": "Chaos Tiara",
-      "xp": 42.5
+      "xp": 42.5,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 5541,
       "name": "Nature Tiara",
-      "xp": 45
+      "xp": 45,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 5545,
       "name": "Law Tiara",
-      "xp": 47.5
+      "xp": 47.5,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 5547,
       "name": "Death Tiara",
-      "xp": 50
+      "xp": 50,
+      "ignoreBonus": true
     },
     {
       "level": 1,
       "icon": 22121,
       "name": "Wrath Tiara",
-      "xp": 52.5
+      "xp": 52.5,
+      "ignoreBonus": true
     },
     {
       "level": 1,
@@ -184,13 +202,15 @@
       "level": 77,
       "icon": 565,
       "name": "Blood Rune",
-      "xp": 24.425
+      "xp": 24.425,
+      "ignoreBonus": true
     },
     {
       "level": 90,
       "icon": 566,
       "name": "Soul Rune",
-      "xp": 30.325
+      "xp": 30.325,
+      "ignoreBonus": true
     },
     {
       "level": 95,
