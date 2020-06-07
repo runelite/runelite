@@ -837,10 +837,10 @@ public class GrandExchangePlugin extends Plugin
 
 		String[] lines = geText.getText().split("<br>");
 		String text = lines[0]; // remove any limit or OSB ge values
-		final ItemStats itemStats = itemManager.getItemStats(itemId, false);
 
 		if (config.enableGELimits())
 		{
+			final ItemStats itemStats = itemManager.getItemStats(itemId, false);
 			// If we have item buy limit, append it
 			if (itemStats != null && itemStats.getGeLimit() > 0)
 			{
@@ -851,10 +851,10 @@ public class GrandExchangePlugin extends Plugin
 		if (config.enableGELimitReset())
 		{
 			Instant resetTime = getLimitResetTime(itemId);
-			if (resetTime != null && itemStats.getGeLimit() > 0)
+			if (resetTime != null)
 			{
 				Duration remaining = Duration.between(Instant.now(), resetTime);
-				text += " (" + DurationFormatUtils.formatDuration(remaining.toMillis(), "H:mm") + ")";
+				text += "<br>(" + DurationFormatUtils.formatDuration(remaining.toMillis(), "H:mm") + ")";
 			}
 		}
 
