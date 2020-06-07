@@ -69,7 +69,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("AREA CHEF TREK", "Father Aereck", new WorldPoint(3243, 3208, 0), "Lumbridge Church", "How many gravestones are in the church graveyard?", "19 or 20"),
 		new AnagramClue("BAIL TRIMS", "Brimstail", new WorldPoint(2402, 3419, 0), "West of Stronghold Slayer Cave"),
 		new AnagramClue("BAKER CLIMB", "Brambickle", new WorldPoint(2783, 3861, 0), "Trollweiss mountain"),
-		new AnagramClue("BLUE GRIM GUIDED", "Lumbridge Guide", new WorldPoint(3232, 3232, 0), "Lumbridge"),
+		new AnagramClue("BLUE GRIM GUIDED", "Lumbridge Guide", new WorldPoint(3238, 3220, 0), "Lumbridge"),
 		new AnagramClue("BY LOOK", "Bolkoy", new WorldPoint(2529, 3162, 0), "Tree Gnome Village general store", "How many flowers are there in the clearing below this platform?", "13"),
 		new AnagramClue("CALAMARI MADE MUD", "Madame Caldarium", new WorldPoint(2553, 2868, 0), "Corsair Cove", "What is 3(5-3)?", "6"),
 		new AnagramClue("CAR IF ICES", "Sacrifice", new WorldPoint(2209, 3056, 0), "Zul-Andra"),
