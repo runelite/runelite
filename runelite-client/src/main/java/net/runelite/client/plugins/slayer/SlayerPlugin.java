@@ -54,7 +54,6 @@ import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
@@ -72,6 +71,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -198,12 +198,6 @@ public class SlayerPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private String taskName;
 
-	@Getter(AccessLevel.PACKAGE)
-	private int streak;
-
-	@Getter(AccessLevel.PACKAGE)
-	private int points;
-
 	private TaskCounter counter;
 	private int cachedXp = -1;
 	private Instant infoTimer;
@@ -225,8 +219,6 @@ public class SlayerPlugin extends Plugin
 			if (config.amount() != -1
 				&& !config.taskName().isEmpty())
 			{
-				points = config.points();
-				streak = config.streak();
 				setExpeditiousChargeCount(config.expeditious());
 				setSlaughterChargeCount(config.slaughter());
 				clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation(), false));
@@ -274,8 +266,6 @@ public class SlayerPlugin extends Plugin
 					&& !config.taskName().isEmpty()
 					&& loginFlag)
 				{
-					points = config.points();
-					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
 					setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation(), false);
@@ -291,8 +281,6 @@ public class SlayerPlugin extends Plugin
 		config.initialAmount(initialAmount);
 		config.taskName(taskName);
 		config.taskLocation(taskLocation);
-		config.points(points);
-		config.streak(streak);
 		config.expeditious(expeditiousChargeCount);
 		config.slaughter(slaughterChargeCount);
 	}
@@ -342,7 +330,8 @@ public class SlayerPlugin extends Plugin
 			{
 				int amount = Integer.parseInt(mAssignBoss.group(2));
 				setTask(mAssignBoss.group(1), amount, amount);
-				points = Integer.parseInt(mAssignBoss.group(3).replaceAll(",", ""));
+				int points = Integer.parseInt(mAssignBoss.group(3).replaceAll(",", ""));
+				config.points(points);
 			}
 			else if (mCurrent.find())
 			{
@@ -377,11 +366,12 @@ public class SlayerPlugin extends Plugin
 				Matcher mPoints = REWARD_POINTS.matcher(w.getText());
 				if (mPoints.find())
 				{
-					final int prevPoints = points;
-					points = Integer.parseInt(mPoints.group(1).replaceAll(",", ""));
+					final int prevPoints = config.points();
+					int points = Integer.parseInt(mPoints.group(1).replaceAll(",", ""));
 
 					if (prevPoints != points)
 					{
+						config.points(points);
 						removeCounter();
 						addCounter();
 					}
@@ -465,6 +455,7 @@ public class SlayerPlugin extends Plugin
 				matches.add(mComplete.group(0).replaceAll(",", ""));
 			}
 
+			int streak = -1, points = -1;
 			switch (matches.size())
 			{
 				case 0:
@@ -480,6 +471,15 @@ public class SlayerPlugin extends Plugin
 				default:
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
+			if (streak != -1)
+			{
+				config.streak(streak);
+			}
+			if (points != -1)
+			{
+				config.points(points);
+			}
+
 			setTask("", 0, 0);
 			return;
 		}
@@ -734,7 +734,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		counter = new TaskCounter(taskImg, this, amount);
-		counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
+		counter.setTooltip(String.format(taskTooltip, capsString(taskName), config.points(), config.streak()));
 
 		infoBoxManager.addInfoBox(counter);
 	}
