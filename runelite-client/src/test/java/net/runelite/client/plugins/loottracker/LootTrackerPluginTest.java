@@ -151,6 +151,13 @@ public class LootTrackerPluginTest
 		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
 	}
 
+	@Test
+	public void testChatMessage()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Sketchy Pat received a drop: 3 x Hallowed mark</col>", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+	}
+
 	private static ItemComposition mockItem(String name)
 	{
 		ItemComposition itemComposition = mock(ItemComposition.class);

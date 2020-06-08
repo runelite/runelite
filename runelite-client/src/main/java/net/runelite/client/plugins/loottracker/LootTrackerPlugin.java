@@ -26,8 +26,8 @@
 package net.runelite.client.plugins.loottracker;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.CharMatcher;
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -39,14 +39,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -144,11 +137,6 @@ public class LootTrackerPlugin extends Plugin
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
-
-	private static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
-	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin";
-	private static final List<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableList.of(8797, 10077, 9308);
-
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = new ImmutableMap.Builder<Integer, String>().
 		put(5179, "Brimstone Chest").
 		put(11573, "Crystal Chest").
@@ -157,6 +145,17 @@ public class LootTrackerPlugin extends Plugin
 		put(13113, "Larran's small chest").
 		put(13151, "Elven Crystal Chest").
 		build();
+
+	// Hallow Sepulchre Coffin handling
+	private static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
+	private static final Pattern GRAND_COFFIN_LOOTED_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin \\d times!");
+	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin";
+	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308);
+
+	//Regex for chatbox matching, quantity if >1 is group 1, item name is group 2
+	private static final String RECEIVED_A_DROP_TEMPLATE = " received a drop: (?:(\\d+) x )?(.+?(?=</col>))";
+	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: (?:(\\d+) x )?(.+(?= \\())");
+	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: (?:(\\d+) x )?(.+(?= \\())");
 
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
@@ -212,7 +211,7 @@ public class LootTrackerPlugin extends Plugin
 	@VisibleForTesting
 	LootRecordType lootRecordType;
 	private boolean chestLooted;
-	private boolean coffinLooted;
+	private boolean coffinOpened;
 	private String lastPickpocketTarget;
 
 	private List<String> ignoredItems = new ArrayList<>();
@@ -362,7 +361,7 @@ public class LootTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
 		chestLooted = false;
-		coffinLooted = false;
+		coffinOpened = false;
 	}
 
 	@Subscribe
@@ -381,7 +380,7 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			chestLooted = false;
-			coffinLooted = false;
+			coffinOpened = false;
 		}
 	}
 
@@ -426,7 +425,7 @@ public class LootTrackerPlugin extends Plugin
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		// Ignore Last Man Standing player loots
-		if (isAtLMS())
+		if (isPlayerWithinMapRegion(LAST_MAN_STANDING_REGIONS))
 		{
 			return;
 		}
@@ -551,12 +550,21 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		if (GRAND_COFFIN_LOOTED_PATTERN.matcher(message).matches())
+		{
+			coffinOpened = false;
+			return;
+		}
+
 		if (message.equals(COFFIN_LOOTED_MESSAGE) && eventType.equals(HALLOWED_SEPULCHRE_COFFIN_EVENT))
 		{
-			coffinLooted = true;
-			lootRecordType = LootRecordType.EVENT;
-			takeInventorySnapshot();
+			coffinOpened = true;
+			return;
+		}
 
+		if (true)
+		{
+			coffinOpened = processChatMessageForLoot(event.getMessage(), HALLOWED_SEPULCHRE_COFFIN_EVENT);
 			return;
 		}
 
@@ -651,8 +659,7 @@ public class LootTrackerPlugin extends Plugin
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
 			|| SEEDPACK_EVENT.equals(eventType)
-			|| lootRecordType == LootRecordType.PICKPOCKET
-			|| coffinLooted)
+			|| lootRecordType == LootRecordType.PICKPOCKET)
 		{
 			processInventoryLoot(eventType, lootRecordType, event.getItemContainer());
 			eventType = null;
@@ -670,7 +677,7 @@ public class LootTrackerPlugin extends Plugin
 			lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
 		}
 
-		if (event.getMenuOption().equals("Search-for-traps") && isAtSepulchre())
+		if (event.getMenuOption().equals("Search-for-traps") && isPlayerWithinMapRegion(HALLOWED_SEPULCHRE_MAP_REGIONS))
 		{
 			eventType = HALLOWED_SEPULCHRE_COFFIN_EVENT;
 		}
@@ -750,6 +757,46 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	// Processes a chat message for types of loot messages, returns false if message did not contain loot
+	private boolean processChatMessageForLoot(String message, String eventType)
+	{
+		String cleanedMessage = CharMatcher.ascii().retainFrom(message.replace('\u00A0', ' '));
+		final String playerName = "Sketchy Pat";
+		final String playerHasReceivedRegex = ".*" + playerName + RECEIVED_A_DROP_TEMPLATE;
+		final Pattern playerHasReceived = Pattern.compile(playerHasReceivedRegex);
+		ItemStack loot = null;
+		int quantity;
+
+		if (playerHasReceived.matcher(cleanedMessage).find())
+		{
+			Matcher m = playerHasReceived.matcher(cleanedMessage);
+			quantity = (m.group(1) != null) ? Integer.parseInt(m.group(1)) : 1;
+			loot = new ItemStack(itemManager.search(m.group(2)).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
+		}
+
+		if (VALUABLE_DROP_PATTERN.matcher(message).find())
+		{
+			Matcher m = VALUABLE_DROP_PATTERN.matcher(message);
+			quantity = (m.group(1) != null) ? Integer.parseInt(m.group(1)) : 1;
+			loot = new ItemStack(itemManager.search(m.group(2)).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
+		}
+
+		if (UNTRADEABLE_DROP_PATTERN.matcher(message).find())
+		{
+			Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(message);
+			quantity = (m.group(1) != null) ? Integer.parseInt(m.group(1)) : 1;
+			loot = new ItemStack(itemManager.search(m.group(2)).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
+		}
+
+		if (loot != null)
+		{
+			addLoot(eventType, -1, LootRecordType.EVENT, Collections.singleton(loot));
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean processHerbiboarHerbSackLoot(int timestamp)
 	{
 		List<ItemStack> herbs = new ArrayList<>();
@@ -757,7 +804,7 @@ public class LootTrackerPlugin extends Plugin
 		for (MessageNode messageNode : client.getMessages())
 		{
 			if (messageNode.getTimestamp() != timestamp
-				|| messageNode.getType() != ChatMessageType.SPAM)
+					|| messageNode.getType() != ChatMessageType.SPAM)
 			{
 				continue;
 			}
@@ -868,31 +915,13 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	/**
-	 * Is player at the Last Man Standing minigame
+	 * Is player currently within the provided map regions
 	 */
-	private boolean isAtLMS()
+	private boolean isPlayerWithinMapRegion(Set<Integer> definedMapRegions)
 	{
 		final int[] mapRegions = client.getMapRegions();
 
-		for (int region : LAST_MAN_STANDING_REGIONS)
-		{
-			if (ArrayUtils.contains(mapRegions, region))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Is player on one of the five floors of the Hallowed Sepulchre minigame
-	 */
-	private boolean isAtSepulchre()
-	{
-		final int[] mapRegions = client.getMapRegions();
-
-		for (int region : HALLOWED_SEPULCHRE_MAP_REGIONS)
+		for (int region : definedMapRegions)
 		{
 			if (ArrayUtils.contains(mapRegions, region))
 			{
@@ -931,5 +960,10 @@ public class LootTrackerPlugin extends Plugin
 				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage(message)
 				.build());
+	}
+
+	static String stripColor(String str)
+	{
+		return str.replaceAll("(<col=[0-9a-f]+>|</col>)", "");
 	}
 }
