@@ -153,7 +153,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308);
 
 	//Regex for chatbox matching, quantity if >1 is group 1, item name is group 2
-	private static final String RECEIVED_A_DROP_TEMPLATE = " received a drop: (?:(\\d+) x )?(.+?(?=</col>))";
+	private static final String RECEIVED_A_DROP_TEMPLATE = " received a drop: (?:(\\d+) x )?(.+)";
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: (?:(\\d+) x )?(.+(?= \\())");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: (?:(\\d+) x )?(.+(?= \\())");
 
@@ -760,7 +760,7 @@ public class LootTrackerPlugin extends Plugin
 	// Processes a chat message for types of loot messages, returns false if message did not contain loot
 	private boolean processChatMessageForLoot(String message, String eventType)
 	{
-		String cleanedMessage = CharMatcher.ascii().retainFrom(message.replace('\u00A0', ' '));
+		String cleanedMessage = Text.removeTags(CharMatcher.ascii().retainFrom(message.replace('\u00A0', ' ')));
 		final String playerName = "Sketchy Pat";
 		final String playerHasReceivedRegex = ".*" + playerName + RECEIVED_A_DROP_TEMPLATE;
 		final Pattern playerHasReceived = Pattern.compile(playerHasReceivedRegex);
