@@ -152,12 +152,6 @@ public class RunecraftPlugin extends Plugin
 		overlayManager.add(abyssMinimapOverlay);
 		overlayManager.add(denseRunestoneOverlay);
 		updateRifts();
-
-		// update state on start up instead of waiting for varbit to change
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			updateDenseRunestoneState();
-		}
 	}
 
 	@Override
