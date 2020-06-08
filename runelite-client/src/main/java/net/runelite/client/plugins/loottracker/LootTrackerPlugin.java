@@ -152,8 +152,8 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin";
 	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308);
 
-	//Regex for chatbox matching, quantity if >1 is group 1, item name is group 2
-	private static final String RECEIVED_A_DROP_TEMPLATE = " received a drop: (?:(\\d+) x )?(.+)";
+	//Regex for chatbox matching
+	private static final Pattern RECEIVED_A_DROP_PATTERN = Pattern.compile("(.*?) received a drop: (?:(\\d+) x )?([^<]+)");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: (?:(\\d+) x )?(.+(?= \\())");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: (?:(\\d+) x )?(.+(?= \\())");
 
@@ -760,32 +760,31 @@ public class LootTrackerPlugin extends Plugin
 	// Processes a chat message for types of loot messages, returns false if message did not contain loot
 	private boolean processChatMessageForLoot(String message, String eventType)
 	{
-		String cleanedMessage = Text.removeTags(CharMatcher.ascii().retainFrom(message.replace('\u00A0', ' ')));
 		final String playerName = "Sketchy Pat";
-		final String playerHasReceivedRegex = ".*" + playerName + RECEIVED_A_DROP_TEMPLATE;
-		final Pattern playerHasReceived = Pattern.compile(playerHasReceivedRegex);
+
+		final Matcher playerHasReceived = RECEIVED_A_DROP_PATTERN.matcher(message);
+		final Matcher valuableDrop = VALUABLE_DROP_PATTERN.matcher(message);
+		final Matcher untradeableDrop = UNTRADEABLE_DROP_PATTERN.matcher(message);
+
 		ItemStack loot = null;
 		int quantity;
 
-		if (playerHasReceived.matcher(cleanedMessage).find())
+		if (playerHasReceived.find() && Text.toJagexName(playerHasReceived.group(1)).equals(playerName))
 		{
-			Matcher m = playerHasReceived.matcher(cleanedMessage);
-			quantity = (m.group(1) != null) ? Integer.parseInt(m.group(1)) : 1;
-			loot = new ItemStack(itemManager.search(m.group(2)).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
+			quantity = (playerHasReceived.group(2) != null) ? Integer.parseInt(playerHasReceived.group(2)) : 1;
+			loot = new ItemStack(itemManager.search(playerHasReceived.group(2)).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
 		}
 
-		if (VALUABLE_DROP_PATTERN.matcher(message).find())
+		if (valuableDrop.find())
 		{
-			Matcher m = VALUABLE_DROP_PATTERN.matcher(message);
-			quantity = (m.group(1) != null) ? Integer.parseInt(m.group(1)) : 1;
-			loot = new ItemStack(itemManager.search(m.group(2)).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
+			quantity = (valuableDrop.group(1) != null) ? Integer.parseInt(valuableDrop.group(1)) : 1;
+			loot = new ItemStack(itemManager.search(valuableDrop.group(2)).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
 		}
 
-		if (UNTRADEABLE_DROP_PATTERN.matcher(message).find())
+		if (untradeableDrop.find())
 		{
-			Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(message);
-			quantity = (m.group(1) != null) ? Integer.parseInt(m.group(1)) : 1;
-			loot = new ItemStack(itemManager.search(m.group(2)).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
+			quantity = (untradeableDrop.group(1) != null) ? Integer.parseInt(untradeableDrop.group(1)) : 1;
+			loot = new ItemStack(itemManager.search(untradeableDrop.group(2)).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
 		}
 
 		if (loot != null)
