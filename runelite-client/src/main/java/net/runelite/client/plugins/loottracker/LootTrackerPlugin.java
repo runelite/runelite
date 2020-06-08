@@ -27,6 +27,7 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -145,8 +146,8 @@ public class LootTrackerPlugin extends Plugin
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
 
 	private static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
-	private static final int HALLOWED_SEPULCHRE_COFFIN_REG = 39535;
 	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin";
+	private static final List<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableList.of(8797, 10077, 9308);
 
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = new ImmutableMap.Builder<Integer, String>().
 		put(5179, "Brimstone Chest").
@@ -361,6 +362,7 @@ public class LootTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient = null;
 		chestLooted = false;
+		coffinLooted = false;
 	}
 
 	@Subscribe
@@ -379,6 +381,7 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			chestLooted = false;
+			coffinLooted = false;
 		}
 	}
 
@@ -667,7 +670,7 @@ public class LootTrackerPlugin extends Plugin
 			lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
 		}
 
-		if (event.getMenuOption().equals("Search-for-traps") && event.getId() == HALLOWED_SEPULCHRE_COFFIN_REG)
+		if (event.getMenuOption().equals("Search-for-traps") && isAtSepulchre())
 		{
 			eventType = HALLOWED_SEPULCHRE_COFFIN_EVENT;
 		}
@@ -872,6 +875,24 @@ public class LootTrackerPlugin extends Plugin
 		final int[] mapRegions = client.getMapRegions();
 
 		for (int region : LAST_MAN_STANDING_REGIONS)
+		{
+			if (ArrayUtils.contains(mapRegions, region))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Is player on one of the five floors of the Hallowed Sepulchre minigame
+	 */
+	private boolean isAtSepulchre()
+	{
+		final int[] mapRegions = client.getMapRegions();
+
+		for (int region : HALLOWED_SEPULCHRE_MAP_REGIONS)
 		{
 			if (ArrayUtils.contains(mapRegions, region))
 			{
