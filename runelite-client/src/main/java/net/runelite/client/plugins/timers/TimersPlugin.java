@@ -767,6 +767,20 @@ public class TimersPlugin extends Plugin
 			createGameTimer(IMBUEDHEART);
 		}
 
+		if (config.showHomeMinigameTeleports()
+			&& (actor.getGraphic() == HOME_TELEPORT.getGraphicId()
+			|| actor.getGraphic() == MINIGAME_TELEPORT.getGraphicId()))
+		{
+			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
+			{
+				createGameTimer(HOME_TELEPORT);
+			}
+			else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT)
+			{
+				createGameTimer(MINIGAME_TELEPORT);
+			}
+		}
+
 		if (config.showFreezes())
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
