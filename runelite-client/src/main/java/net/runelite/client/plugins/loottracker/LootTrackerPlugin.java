@@ -144,6 +144,11 @@ public class LootTrackerPlugin extends Plugin
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
+	private static final String STONE_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
+	private static final String DORGESH_KAAN_CHEST_LOOTED_MESSAGE = "You find treasure inside!";
+	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You unlock the chest with your key.";
+	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
+	private static final int HAM_STOREROOM_REGION = 10321;
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = new ImmutableMap.Builder<Integer, String>().
 		put(5179, "Brimstone Chest").
 		put(11573, "Crystal Chest").
@@ -151,6 +156,10 @@ public class LootTrackerPlugin extends Plugin
 		put(12127, "The Gauntlet").
 		put(13113, "Larran's small chest").
 		put(13151, "Elven Crystal Chest").
+		put(5277, "Stone chest").
+		put(10835, "Dorgesh-Kaan Chest").
+		put(10834, "Dorgesh-Kaan Chest").
+		put(7323, "Grubby Chest").
 		build();
 
 	// Shade chest loot handling
@@ -593,7 +602,9 @@ public class LootTrackerPlugin extends Plugin
 
 		final String message = event.getMessage();
 
-		if (message.equals(CHEST_LOOTED_MESSAGE) || LARRAN_LOOTED_PATTERN.matcher(message).matches())
+		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(STONE_CHEST_LOOTED_MESSAGE)
+			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.equals(GRUBBY_CHEST_LOOTED_MESSAGE)
+			|| LARRAN_LOOTED_PATTERN.matcher(message).matches())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 			if (!CHEST_EVENT_TYPES.containsKey(regionID))
@@ -634,6 +645,16 @@ public class LootTrackerPlugin extends Plugin
 		if (HESPORI_REGION == regionID && message.equals(HESPORI_LOOTED_MESSAGE))
 		{
 			eventType = HESPORI_EVENT;
+			lootRecordType = LootRecordType.EVENT;
+			takeInventorySnapshot();
+			return;
+		}
+
+		final Matcher hamStoreroomMatcher = HAM_CHEST_LOOTED_PATTERN.matcher(message);
+		if (hamStoreroomMatcher.matches() && regionID == HAM_STOREROOM_REGION)
+		{
+			String keyType = hamStoreroomMatcher.group("key");
+			eventType = String.format("H.A.M. chest (%s)", keyType);
 			lootRecordType = LootRecordType.EVENT;
 			takeInventorySnapshot();
 			return;
@@ -706,7 +727,8 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getContainerId() != InventoryID.INVENTORY.getId())
+		if (event.getContainerId() != InventoryID.INVENTORY.getId()
+			|| eventType == null)
 		{
 			return;
 		}
@@ -719,6 +741,7 @@ public class LootTrackerPlugin extends Plugin
 			|| SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
 			|| BIRDNEST_EVENT.equals(eventType)
+			|| eventType.startsWith("H.A.M. chest")
 			|| lootRecordType == LootRecordType.PICKPOCKET)
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
