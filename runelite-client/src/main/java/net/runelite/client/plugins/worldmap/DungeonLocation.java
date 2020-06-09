@@ -40,7 +40,7 @@ enum DungeonLocation
 	ARDOUGNE_SEWERS_N("Ardougne Sewers", new WorldPoint(2631, 3294, 0)),
 	ARDOUGNE_SEWERS_S("Ardougne Sewers", new WorldPoint(2586, 3235, 0)),
 	ARDOUGNE_SEWERS_W("Ardougne Sewers", new WorldPoint(2528, 3303, 0)),
-	ASGARDIA_ICE("Asgardia Ice Dungeon", new WorldPoint(3007, 3150, 0)),
+	ASGARNIAN_ICE("Asgarnian Ice Dungeon", new WorldPoint(3007, 3150, 0)),
 	BRIMHAVEN_AGILITY("Brimhaven Agility Arena", new WorldPoint(2808, 3194, 0)),
 	BRIMHAVEN_N("Brimhaven Dungeon", new WorldPoint(2743, 3154, 0)),
 	BRIMHAVEN_S("Brimhaven Dungeon", new WorldPoint(2759, 3062, 0)),
