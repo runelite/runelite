@@ -958,9 +958,4 @@ public class LootTrackerPlugin extends Plugin
 				.runeLiteFormattedMessage(message)
 				.build());
 	}
-
-	static String stripColor(String str)
-	{
-		return str.replaceAll("(<col=[0-9a-f]+>|</col>)", "");
-	}
 }
