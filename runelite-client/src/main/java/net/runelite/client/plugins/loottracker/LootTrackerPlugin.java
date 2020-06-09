@@ -38,7 +38,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -67,6 +74,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -154,10 +162,11 @@ public class LootTrackerPlugin extends Plugin
 	static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin";
 	@VisibleForTesting
 	static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
+	static final int TICKS_TILL_PROCESS_COFFIN_LOOT = 4;
 
 	//Regex for chatbox matching
 	private static final Pattern LOOT_DROP_PATTERN =
-			Pattern.compile("^(?:Valuable|Untradeable|(?<name>.*?) received a) drop: (?:(?<quantity>\\d+) x )?(?<item>[A-Za-z \\(\\d\\)]+)(?: \\([\\d,]+ coins\\))?$");
+			Pattern.compile("^(?:Valuable|Untradeable|(?<name>.*?) received a) drop: (?:(?<quantity>\\d+) x )?(?<item>[A-Za-z' \\(\\d\\)]+)(?: \\([\\d,]+ coins\\))?$");
 
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
@@ -221,6 +230,9 @@ public class LootTrackerPlugin extends Plugin
 	private List<String> ignoredEvents = new ArrayList<>();
 
 	private Multiset<Integer> inventorySnapshot;
+	private Multiset<Integer> lootCollectedFromChat;
+
+	private int ticksTillProcessChatLoot = -1;
 
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
@@ -384,6 +396,23 @@ public class LootTrackerPlugin extends Plugin
 		{
 			chestLooted = false;
 			coffinOpened = false;
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (ticksTillProcessChatLoot > 0)
+		{
+			log.debug("subtracting one from ticksTillProcess, current value: " + ticksTillProcessChatLoot);
+			ticksTillProcessChatLoot = ticksTillProcessChatLoot -1;
+			log.debug("new value: " + ticksTillProcessChatLoot);
+		}
+
+		if (ticksTillProcessChatLoot == 0)
+		{
+			processCollectedLootFromChat();
+			ticksTillProcessChatLoot = -1;
 		}
 	}
 
@@ -558,12 +587,19 @@ public class LootTrackerPlugin extends Plugin
 			if (GRAND_COFFIN_LOOTED_PATTERN.matcher(message).matches())
 			{
 				coffinOpened = false;
+				processCollectedLootFromChat();
 				return;
 			}
 
 			if (message.equals(COFFIN_LOOTED_MESSAGE))
 			{
 				coffinOpened = true;
+				ticksTillProcessChatLoot = TICKS_TILL_PROCESS_COFFIN_LOOT;
+				eventType = HALLOWED_SEPULCHRE_COFFIN_EVENT;
+				lootRecordType = LootRecordType.EVENT;
+
+				log.debug("CoffinOpened set to true, ticks till process set");
+
 				return;
 			}
 
@@ -799,11 +835,32 @@ public class LootTrackerPlugin extends Plugin
 
 		if (loot != null)
 		{
-			addLoot(eventType, -1, LootRecordType.EVENT, Collections.singleton(loot));
+			lootCollectedFromChat = (lootCollectedFromChat != null) ? lootCollectedFromChat : HashMultiset.create();
+			lootCollectedFromChat.add(loot.getId(), loot.getQuantity());
+
+			log.debug("Added item " + loot.getId() + " to set from chat");
 			return true;
 		}
 
 		return false;
+	}
+
+	private void processCollectedLootFromChat()
+	{
+		log.debug("ticks have counted down! Processing");
+
+		if (lootCollectedFromChat != null)
+		{
+			List<ItemStack> items = lootCollectedFromChat.entrySet().stream()
+					.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
+					.collect(Collectors.toList());
+
+			addLoot(eventType, -1, lootRecordType, items);
+
+			lootCollectedFromChat = null;
+			eventType = null;
+			lootRecordType = null;
+		}
 	}
 
 	private boolean processHerbiboarHerbSackLoot(int timestamp)

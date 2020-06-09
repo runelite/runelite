@@ -227,7 +227,7 @@ public class LootTrackerPluginTest
 		assertTrue(lootTrackerPluginSpy.coffinOpened);
 
 		// below test case has nbsp; in username
-		ChatMessage dropMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Sketchy Pat received a drop: 5 x Monkfish</col>", "", 0);
+		ChatMessage dropMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Sketchy Pat received a drop: Monk's robe</col>", "", 0);
 		ChatMessage dropMessage2 = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Sketchy Pat received a drop: 3 x Hallowed mark</col>", "", 0);
 		ChatMessage dropMessage3 = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Untradeable drop: 8 x Hallowed mark", "", 0);
 		ChatMessage dropMessage4 = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Valuable drop: 2 x Sanfew serum(4) (61,788 coins)</col>", "", 0);
