@@ -98,6 +98,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
@@ -770,18 +771,29 @@ public class LootTrackerPlugin extends Plugin
 
 		if (lootMatcher.find())
 		{
+			quantity = (lootMatcher.group("quantity") != null) ? Integer.parseInt(lootMatcher.group("quantity")) : 1;
+
+			List<ItemPrice> itemLookup = itemManager.search(lootMatcher.group("item"));
+			int lootId = (itemLookup.size() == 0) ? DetermineWorthlessLoot(lootMatcher.group("item")) : itemLookup.get(0).getId();
+
+			if (lootId == -1)
+			{
+				log.error("Unable to determine ItemId for loot " + lootMatcher.group("item"));
+				return false;
+			}
+
 			if (lootMatcher.group("name") != null)
 			{
+				// if name is there, it has to match ours
 				if (Text.toJagexName(lootMatcher.group("name")).equals(playerName))
 				{
-					quantity = (lootMatcher.group("quantity") != null) ? Integer.parseInt(lootMatcher.group("quantity")) : 1;
-					loot = new ItemStack(itemManager.search(lootMatcher.group("item")).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
+					loot = new ItemStack(lootId, quantity, client.getLocalPlayer().getLocalLocation());
 				}
 			}
 			else
 			{
-				quantity = (lootMatcher.group("quantity") != null) ? Integer.parseInt(lootMatcher.group("quantity")) : 1;
-				loot = new ItemStack(itemManager.search(lootMatcher.group("item")).get(0).getId(), quantity, client.getLocalPlayer().getLocalLocation());
+				// otherwise just add it, its ours
+				loot = new ItemStack(lootId, quantity, client.getLocalPlayer().getLocalLocation());
 			}
 		}
 
@@ -927,6 +939,18 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	private Integer DetermineWorthlessLoot(String itemName)
+	{
+		int itemId = -1;
+
+		switch(itemName.toLowerCase())
+		{
+			case "hallowed mark": itemId = ItemID.HALLOWED_MARK; break;
+		}
+
+		return itemId;
 	}
 
 	private long getTotalPrice(Collection<ItemStack> items)
