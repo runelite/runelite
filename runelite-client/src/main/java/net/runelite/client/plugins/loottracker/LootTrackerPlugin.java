@@ -945,7 +945,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		int itemId = -1;
 
-		switch(itemName.toLowerCase())
+		switch (itemName.toLowerCase())
 		{
 			case "hallowed mark": itemId = ItemID.HALLOWED_MARK; break;
 		}
