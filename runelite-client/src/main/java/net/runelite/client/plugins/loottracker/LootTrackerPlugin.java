@@ -146,14 +146,17 @@ public class LootTrackerPlugin extends Plugin
 		build();
 
 	// Hallow Sepulchre Coffin handling
-	private static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
+	@VisibleForTesting
+	static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
 	private static final Pattern GRAND_COFFIN_LOOTED_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin \\d times!");
-	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin";
-	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308);
+	@VisibleForTesting
+	static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin";
+	@VisibleForTesting
+	static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
 
 	//Regex for chatbox matching
 	private static final Pattern LOOT_DROP_PATTERN =
-			Pattern.compile("^(?:Valuable|Untradeable|(?<name>.*?) received a) drop: (?:(?<quantity>\\d+) x )?(?<item>[A-Za-z \\(\\)]+)(?: \\([\\d,]+ coins\\))?$");
+			Pattern.compile("^(?:Valuable|Untradeable|(?<name>.*?) received a) drop: (?:(?<quantity>\\d+) x )?(?<item>[A-Za-z \\(\\d\\)]+)(?: \\([\\d,]+ coins\\))?$");
 
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
@@ -209,7 +212,8 @@ public class LootTrackerPlugin extends Plugin
 	@VisibleForTesting
 	LootRecordType lootRecordType;
 	private boolean chestLooted;
-	private boolean coffinOpened;
+	@VisibleForTesting
+	boolean coffinOpened;
 	private String lastPickpocketTarget;
 
 	private List<String> ignoredItems = new ArrayList<>();
@@ -548,22 +552,25 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (GRAND_COFFIN_LOOTED_PATTERN.matcher(message).matches())
+		if (isPlayerWithinMapRegion(HALLOWED_SEPULCHRE_MAP_REGIONS))
 		{
-			coffinOpened = false;
-			return;
-		}
+			if (GRAND_COFFIN_LOOTED_PATTERN.matcher(message).matches())
+			{
+				coffinOpened = false;
+				return;
+			}
 
-		if (message.equals(COFFIN_LOOTED_MESSAGE) && eventType.equals(HALLOWED_SEPULCHRE_COFFIN_EVENT))
-		{
-			coffinOpened = true;
-			return;
-		}
+			if (message.equals(COFFIN_LOOTED_MESSAGE))
+			{
+				coffinOpened = true;
+				return;
+			}
 
-		if (true)
-		{
-			coffinOpened = processChatMessageForLoot(event.getMessage(), HALLOWED_SEPULCHRE_COFFIN_EVENT);
-			return;
+			if (coffinOpened)
+			{
+				coffinOpened = processChatMessageForLoot(event.getMessage(), HALLOWED_SEPULCHRE_COFFIN_EVENT);
+				return;
+			}
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
@@ -673,11 +680,6 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Pickpocket"))
 		{
 			lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
-		}
-
-		if (event.getMenuOption().equals("Search-for-traps") && isPlayerWithinMapRegion(HALLOWED_SEPULCHRE_MAP_REGIONS))
-		{
-			eventType = HALLOWED_SEPULCHRE_COFFIN_EVENT;
 		}
 
 		if (event.getMenuOption().equals("Take") && event.getId() == ItemID.SEED_PACK)
@@ -912,7 +914,7 @@ public class LootTrackerPlugin extends Plugin
 	/**
 	 * Is player currently within the provided map regions
 	 */
-	private boolean isPlayerWithinMapRegion(Set<Integer> definedMapRegions)
+	boolean isPlayerWithinMapRegion(Set<Integer> definedMapRegions)
 	{
 		final int[] mapRegions = client.getMapRegions();
 

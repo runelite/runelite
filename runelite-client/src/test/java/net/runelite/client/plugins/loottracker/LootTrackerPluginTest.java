@@ -42,6 +42,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.account.SessionManager;
@@ -54,13 +55,17 @@ import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.LootRecordType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -151,13 +156,6 @@ public class LootTrackerPluginTest
 		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
 	}
 
-	@Test
-	public void testChatMessage()
-	{
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Sketchy Pat received a drop: 3 x Hallowed mark</col>", "", 0);
-		lootTrackerPlugin.onChatMessage(chatMessage);
-	}
-
 	private static ItemComposition mockItem(String name)
 	{
 		ItemComposition itemComposition = mock(ItemComposition.class);
@@ -208,5 +206,45 @@ public class LootTrackerPluginTest
 			// Check the event type is null, which means the plugin isn't waiting on an inventory change event
 			assertNull(lootTrackerPlugin.eventType);
 		}
+	}
+
+	@Test
+	public void testprocessChatMessageForLoot()
+	{
+		final ItemPrice fake = new ItemPrice();
+		fake.setId(0);
+		fake.setName("");
+
+		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
+		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(Collection.class));
+		doReturn(true).when(lootTrackerPluginSpy).isPlayerWithinMapRegion(LootTrackerPlugin.HALLOWED_SEPULCHRE_MAP_REGIONS);
+		when(client.getLocalPlayer().getName()).thenReturn("Sketchy Pat");
+		when(client.getLocalPlayer().getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(itemManager.search(anyString())).thenReturn(Collections.singletonList(fake));
+
+		ChatMessage openedCoffinMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", LootTrackerPlugin.COFFIN_LOOTED_MESSAGE, "", 0);
+		lootTrackerPluginSpy.onChatMessage(openedCoffinMessage);
+		assertTrue(lootTrackerPluginSpy.coffinOpened);
+
+		// below test case has nbsp; in username
+		ChatMessage dropMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Sketchy Pat received a drop: 5 x Monkfish</col>", "", 0);
+		ChatMessage dropMessage2 = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Sketchy Pat received a drop: 3 x Hallowed mark</col>", "", 0);
+		ChatMessage dropMessage3 = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Untradeable drop: 8 x Hallowed mark", "", 0);
+		ChatMessage dropMessage4 = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Valuable drop: 2 x Sanfew serum(4) (61,788 coins)</col>", "", 0);
+		ChatMessage endMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Zezima received a drop: Strange old lockpick (full)</col>", "", 0);
+
+		// The coffin should "remain open" as long as plugin is successfully processing loot messages
+		lootTrackerPluginSpy.onChatMessage(dropMessage);
+		assertTrue(lootTrackerPluginSpy.coffinOpened);
+		lootTrackerPluginSpy.onChatMessage(dropMessage2);
+		assertTrue(lootTrackerPluginSpy.coffinOpened);
+		lootTrackerPluginSpy.onChatMessage(dropMessage3);
+		assertTrue(lootTrackerPluginSpy.coffinOpened);
+		lootTrackerPluginSpy.onChatMessage(dropMessage4);
+		assertTrue(lootTrackerPluginSpy.coffinOpened);
+
+		lootTrackerPluginSpy.onChatMessage(endMessage);
+		// Coffin should be "closed" now after player names don't match in last message (simulating a broadcast message)
+		assertFalse(lootTrackerPluginSpy.coffinOpened);
 	}
 }
