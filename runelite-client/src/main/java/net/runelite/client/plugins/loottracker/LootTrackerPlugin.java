@@ -405,7 +405,7 @@ public class LootTrackerPlugin extends Plugin
 		if (ticksTillProcessChatLoot > 0)
 		{
 			log.debug("subtracting one from ticksTillProcess, current value: " + ticksTillProcessChatLoot);
-			ticksTillProcessChatLoot = ticksTillProcessChatLoot -1;
+			ticksTillProcessChatLoot = ticksTillProcessChatLoot - 1;
 			log.debug("new value: " + ticksTillProcessChatLoot);
 		}
 
