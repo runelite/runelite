@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.util.HashSet;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ClanMemberManager;
@@ -96,6 +98,48 @@ public class RaidsOverlay extends OverlayPanel
 			color = Color.RED;
 		}
 
+		boolean blacklisted = false;
+		HashSet<String> roomNames = new HashSet();
+		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
+		{
+			int position = layoutRoom.getPosition();
+			RaidRoom room = plugin.getRaid().getRoom(position);
+
+			if (room == null)
+			{
+				continue;
+			}
+			roomNames.add(room.getName().toLowerCase());
+
+			if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase()))
+			{
+				blacklisted = true;
+				break;
+			}
+		}
+
+		if (!blacklisted)
+		{
+			for (String requiredRoom : plugin.getRoomRequiredlist())
+			{
+				if (!roomNames.contains(requiredRoom))
+				{
+					blacklisted = true;
+					break;
+				}
+			}
+		}
+
+		if (config.hideBlacklisted() && blacklisted)
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+					.text("Bad Raid!")
+					.color(Color.RED)
+					.build());
+
+			return super.render(graphics);
+		}
+
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text(layout)
 			.color(color)
@@ -162,6 +206,10 @@ public class RaidsOverlay extends OverlayPanel
 					}
 
 					String name = room == RaidRoom.UNKNOWN_COMBAT ? "Unknown" : room.getName();
+					if (plugin.getRoomRequiredlist().contains(room.getName().toLowerCase()))
+					{
+						color = config.requiredColor();
+					}
 
 					panelComponent.getChildren().add(LineComponent.builder()
 						.left(room.getType().getName())
@@ -182,6 +230,10 @@ public class RaidsOverlay extends OverlayPanel
 					}
 
 					name = room == RaidRoom.UNKNOWN_PUZZLE ? "Unknown" : room.getName();
+					if (plugin.getRoomRequiredlist().contains(room.getName().toLowerCase()))
+					{
+						color = config.requiredColor();
+					}
 
 					panelComponent.getChildren().add(LineComponent.builder()
 						.left(room.getType().getName())

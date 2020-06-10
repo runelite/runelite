@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -184,6 +185,9 @@ public class RaidsPlugin extends Plugin
 
 	@Getter
 	private final Set<String> roomBlacklist = new HashSet<String>();
+
+	@Getter
+	private final Set<String> roomRequiredlist = new HashSet<String>();
 
 	@Getter
 	private final Set<String> rotationWhitelist = new HashSet<String>();
@@ -568,6 +572,7 @@ public class RaidsPlugin extends Plugin
 	{
 		updateList(roomWhitelist, config.whitelistedRooms());
 		updateList(roomBlacklist, config.blacklistedRooms());
+		updateList(roomRequiredlist, config.requiredRooms());
 		updateList(layoutWhitelist, config.whitelistedLayouts());
 
 		// Update rotation whitelist

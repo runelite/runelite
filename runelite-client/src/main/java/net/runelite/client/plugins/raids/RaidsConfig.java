@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,6 +30,8 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.util.ImageUploadStyle;
+
+import java.awt.Color;
 
 @ConfigGroup("raids")
 public interface RaidsConfig extends Config
@@ -207,5 +210,38 @@ public interface RaidsConfig extends Config
 	default ImageUploadStyle uploadScreenshot()
 	{
 		return ImageUploadStyle.CLIPBOARD;
+	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "requiredRooms",
+			name = "Required rooms",
+			description = "Display required rooms in a different color on the overlay. Separate with comma (full name)"
+	)
+	default String requiredRooms()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+			position = 20,
+			keyName = "requiredColor",
+			name = "Required room color",
+			description = "The color of required rooms"
+	)
+	default Color requiredColor()
+	{
+		return Color.MAGENTA;
+	}
+
+	@ConfigItem(
+			position = 21,
+			keyName = "hideBlacklist",
+			name = "Hide blacklisted raids",
+			description = "Completely hides raids with blacklisted rooms or missing required rooms"
+	)
+	default boolean hideBlacklisted()
+	{
+		return false;
 	}
 }
