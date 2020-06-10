@@ -116,6 +116,7 @@ public class RaidsPluginTest
 		when(raidsConfig.blacklistedRooms()).thenReturn("");
 		when(raidsConfig.whitelistedRotations()).thenReturn("");
 		when(raidsConfig.whitelistedLayouts()).thenReturn("");
+		when(raidsConfig.recommendedItems()).thenReturn("");
 	}
 
 	@Test
