@@ -220,4 +220,26 @@ public interface AgilityConfig extends Config
 	{
 		return Color.RED;
 	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreNpcs",
+		name = "Highlight Sepulchre Projectiles",
+		description = "Highlights arrows and swords in the Sepulchre",
+		position = 15
+	)
+	default boolean highlightSepulchreNpcs()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "sepulchreHighlightColor",
+		name = "Sepulchre Highlight",
+		description = "Overlay color for arrows and swords",
+		position = 16
+	)
+	default Color sepulchreHighlightColor()
+	{
+		return Color.GREEN;
+	}
 }
