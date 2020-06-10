@@ -158,7 +158,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Dig where the forces of Zamorak and Saradomin collide.", new WorldPoint(3049, 4839, 0), "Dig next to the law rift in the Abyss"),
 		new CrypticClue("Search the boxes in the goblin house near Lumbridge.", BOXES, new WorldPoint(3245, 3245, 0), "Goblin house on the eastern side of the river outside of Lumbridge."),
 		new CrypticClue("W marks the spot.", new WorldPoint(2867, 3546, 0), "Dig in the middle of the Warriors' Guild entrance hall"),
-		new CrypticClue("There is no 'worthier' lord.", "Lord Iorwerth", new WorldPoint(2205, 3252, 0), "Speak to Lord Iorwerth in the elven camp near Prifddinas"),
+		new CrypticClue("There is no 'worthier' lord.", "Lord Iorwerth", new WorldPoint(2205, 3252, 0), "Speak to Lord Iorwerth in the elven camp southwest of Prifddinas."),
 		new CrypticClue("Surviving.", "Sir Vyvin", new WorldPoint(2983, 3338, 0), "Talk to Sir Vyvin on the second floor of Falador castle."),
 		new CrypticClue("My name is like a tree, yet it is spelt with a 'g'. Come see the fur which is right near me.", "Wilough", new WorldPoint(3221, 3435, 0), "Speak to Wilough, next to the Fur Merchant in Varrock Square."),
 		new CrypticClue("Speak to Jatix in Taverley.", "Jatix", new WorldPoint(2898, 3428, 0), "Jatix is found in the middle of Taverley."),
