@@ -105,7 +105,7 @@ import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
 	description = "Show helpful information for the Chambers of Xeric raid",
-	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses"}
+	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
