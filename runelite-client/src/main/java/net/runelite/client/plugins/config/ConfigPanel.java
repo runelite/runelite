@@ -658,7 +658,8 @@ class ConfigPanel extends PluginPanel
 	private JMenuItem createResetMenuItem(PluginConfigurationDescriptor pluginConfig, ConfigItemDescriptor configItemDescriptor)
 	{
 		JMenuItem menuItem = new JMenuItem("Reset");
-		menuItem.addActionListener(e -> {
+		menuItem.addActionListener(e ->
+		{
 			ConfigDescriptor configDescriptor = pluginConfig.getConfigDescriptor();
 			ConfigGroup configGroup = configDescriptor.getGroup();
 			ConfigItem configItem = configItemDescriptor.getItem();
