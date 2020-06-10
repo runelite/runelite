@@ -81,7 +81,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Speak to the bartender of the Blue Moon Inn in Varrock.", "Bartender", new WorldPoint(3226, 3399, 0), "Talk to the bartender in Blue Moon Inn in Varrock."),
 		new CrypticClue("This aviator is at the peak of his profession.", "Captain Bleemadge", new WorldPoint(2846, 1749, 0), "Captain Bleemadge, the gnome glider pilot, is found at the top of White Wolf Mountain."),
 		new CrypticClue("Search the crates in the shed just north of East Ardougne.", CRATE_355, new WorldPoint(2617, 3347, 0), "The crates in the shed north of the northern Ardougne bank."),
-		new CrypticClue("I wouldn't wear this jean on my legs.", "Father Jean", new WorldPoint(1734, 3576, 0), "Talk to father Jean in the Hosidius church"),
+		new CrypticClue("I wouldn't wear this jean on my legs.", "Father Jean", new WorldPoint(1734, 3576, 0), "Talk to father Jean in the Hosidius church."),
 		new CrypticClue("Search the crate in the Toad and Chicken pub.", CRATE_354, new WorldPoint(2913, 3536, 0), "The Toad and Chicken pub is located in Burthorpe."),
 		new CrypticClue("Search chests found in the upstairs of shops in Port Sarim.", CLOSED_CHEST_375, new WorldPoint(3016, 3205, 1), "Search the chest on the east wall found upstairs of Wydin's Food Store in Port Sarim."),
 		new CrypticClue("Right on the blessed border, cursed by the evil ones. On the spot inaccessible by both; I will be waiting. The bugs' imminent possession holds the answer.", new WorldPoint(3410, 3324, 0), "B I P. Dig right under the fairy ring."),
