@@ -28,10 +28,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -216,7 +219,6 @@ public class LootTrackerPluginTest
 		fake.setName("");
 
 		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
-		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(Collection.class));
 		doReturn(true).when(lootTrackerPluginSpy).isPlayerWithinMapRegion(LootTrackerPlugin.HALLOWED_SEPULCHRE_MAP_REGIONS);
 		when(client.getLocalPlayer().getName()).thenReturn("Sketchy Pat");
 		when(client.getLocalPlayer().getLocalLocation()).thenReturn(new LocalPoint(0, 0));
@@ -231,6 +233,7 @@ public class LootTrackerPluginTest
 		ChatMessage dropMessage2 = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Sketchy Pat received a drop: 3 x Hallowed mark</col>", "", 0);
 		ChatMessage dropMessage3 = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Untradeable drop: 8 x Hallowed mark", "", 0);
 		ChatMessage dropMessage4 = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Valuable drop: 2 x Sanfew serum(4) (61,788 coins)</col>", "", 0);
+		ChatMessage dropMessage5 = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Sketchy Pat received a drop: 19,306 x Coins</col>", "", 0);
 		ChatMessage endMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=005f00>Zezima received a drop: Strange old lockpick (full)</col>", "", 0);
 
 		// The coffin should "remain open" as long as plugin is successfully processing loot messages
@@ -242,9 +245,33 @@ public class LootTrackerPluginTest
 		assertTrue(lootTrackerPluginSpy.coffinOpened);
 		lootTrackerPluginSpy.onChatMessage(dropMessage4);
 		assertTrue(lootTrackerPluginSpy.coffinOpened);
+		lootTrackerPluginSpy.onChatMessage(dropMessage5);
+		assertTrue(lootTrackerPluginSpy.coffinOpened);
 
 		lootTrackerPluginSpy.onChatMessage(endMessage);
 		// Coffin should be "closed" now after player names don't match in last message (simulating a broadcast message)
 		assertFalse(lootTrackerPluginSpy.coffinOpened);
+	}
+
+	@Test
+	public void testwhiteLillyDropEdgecase()
+	{
+		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
+
+		final ItemPrice lillySeed = new ItemPrice();
+		lillySeed.setId(ItemID.WHITE_LILY_SEED);
+		lillySeed.setName("White Lilly Seed");
+
+		final ItemPrice lilly = new ItemPrice();
+		lilly.setId(ItemID.WHITE_LILY);
+		lilly.setName("White Lilly");
+		
+		List<ItemPrice> lookup = new ArrayList<>();
+		
+		lookup.add(lillySeed);
+		lookup.add(lilly);
+		
+		int id = lootTrackerPluginSpy.DetermineCorrectItemPrice(lookup, "White Lilly");
+		assertTrue(id == ItemID.WHITE_LILY);
 	}
 }

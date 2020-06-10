@@ -159,14 +159,14 @@ public class LootTrackerPlugin extends Plugin
 	static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
 	private static final Pattern GRAND_COFFIN_LOOTED_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin \\d times!");
 	@VisibleForTesting
-	static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin";
+	static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
 	@VisibleForTesting
 	static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
 	static final int TICKS_TILL_PROCESS_COFFIN_LOOT = 4;
 
 	//Regex for chatbox matching
 	private static final Pattern LOOT_DROP_PATTERN =
-			Pattern.compile("^(?:Valuable|Untradeable|(?<name>.*?) received a) drop: (?:(?<quantity>\\d+) x )?(?<item>[A-Za-z' \\(\\d\\)]+)(?: \\([\\d,]+ coins\\))?$");
+			Pattern.compile("^(?:Valuable|Untradeable|(?<name>.*?) received a) drop: (?:(?<quantity>[\\d,]+) x )?(?<item>[A-Za-z' \\(\\d\\)]+)(?: \\([\\d,]+ coins\\))?$");
 
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
@@ -404,9 +404,8 @@ public class LootTrackerPlugin extends Plugin
 	{
 		if (ticksTillProcessChatLoot > 0)
 		{
-			log.debug("subtracting one from ticksTillProcess, current value: " + ticksTillProcessChatLoot);
 			ticksTillProcessChatLoot = ticksTillProcessChatLoot - 1;
-			log.debug("new value: " + ticksTillProcessChatLoot);
+			log.debug("subtracting one from ticksTillProcess, new value: " + ticksTillProcessChatLoot);
 		}
 
 		if (ticksTillProcessChatLoot == 0)
@@ -598,14 +597,14 @@ public class LootTrackerPlugin extends Plugin
 				eventType = HALLOWED_SEPULCHRE_COFFIN_EVENT;
 				lootRecordType = LootRecordType.EVENT;
 
-				log.debug("CoffinOpened set to true, ticks till process set");
+				log.debug("CoffinOpened set to true, ticks till process set to " + TICKS_TILL_PROCESS_COFFIN_LOOT);
 
 				return;
 			}
 
 			if (coffinOpened)
 			{
-				coffinOpened = processChatMessageForLoot(event.getMessage(), HALLOWED_SEPULCHRE_COFFIN_EVENT);
+				coffinOpened = processChatMessageForLoot(event.getMessage());
 				return;
 			}
 		}
@@ -795,7 +794,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	// Processes a chat message for types of loot messages, returns false if message did not contain loot
-	private boolean processChatMessageForLoot(String message, String eventType)
+	private boolean processChatMessageForLoot(String message)
 	{
 		final String cleanedMessage = Text.removeTags(message);
 		final String playerName = client.getLocalPlayer().getName();
@@ -807,10 +806,11 @@ public class LootTrackerPlugin extends Plugin
 
 		if (lootMatcher.find())
 		{
-			quantity = (lootMatcher.group("quantity") != null) ? Integer.parseInt(lootMatcher.group("quantity")) : 1;
-
+			quantity = (lootMatcher.group("quantity") != null) ? Integer.parseInt(lootMatcher.group("quantity").replace(",", "")) : 1;
 			List<ItemPrice> itemLookup = itemManager.search(lootMatcher.group("item"));
-			int lootId = (itemLookup.size() == 0) ? DetermineWorthlessLoot(lootMatcher.group("item")) : itemLookup.get(0).getId();
+
+			int idFromLookup = DetermineCorrectItemPrice(itemLookup, lootMatcher.group("item"));
+			int lootId = (itemLookup.size() == 0) ? DetermineWorthlessLoot(lootMatcher.group("item")) : idFromLookup;
 
 			if (lootId == -1)
 			{
@@ -996,6 +996,32 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	Integer DetermineCorrectItemPrice(List<ItemPrice> itemPrices, String itemNameFromChat)
+	{
+		if (itemPrices.size() == 0)
+		{
+			return -1;
+		}
+
+		// Default to first result
+		ItemPrice firstResult = itemPrices.get(0);
+		int idFromLookup = firstResult.getId();
+
+		// if first item is not correct, try to find correct result in list
+		if (!firstResult.getName().equals(itemNameFromChat))
+		{
+			for (ItemPrice itemPrice : itemPrices)
+			{
+				if (itemPrice.getName().equals(itemNameFromChat))
+				{
+					return itemPrice.getId();
+				}
+			}
+		}
+
+		return idFromLookup;
 	}
 
 	private Integer DetermineWorthlessLoot(String itemName)
