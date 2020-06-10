@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,12 +36,17 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -53,12 +59,15 @@ import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
 import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
+
+import net.runelite.api.SpriteID;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
@@ -120,6 +129,8 @@ public class RaidsPlugin extends Plugin
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String LAYOUT_COMMAND = "!layout";
+	private static final int LINE_COMPONENT_HEIGHT = 16;
+	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 	private static final int MAX_LAYOUT_LEN = 300;
 	// (x=3360, y=5152, plane=2) is the temp location the game puts the player on login into while it decides whether
 	// to put the player into a raid or not.
@@ -190,6 +201,9 @@ public class RaidsPlugin extends Plugin
 
 	@Getter
 	private final Set<String> layoutWhitelist = new HashSet<String>();
+
+	@Getter
+	private final Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
 
 	@Setter(AccessLevel.PACKAGE) // for the test
 	@Getter
@@ -569,6 +583,7 @@ public class RaidsPlugin extends Plugin
 		updateList(roomWhitelist, config.whitelistedRooms());
 		updateList(roomBlacklist, config.blacklistedRooms());
 		updateList(layoutWhitelist, config.whitelistedLayouts());
+		updateMap(recommendedItemsList, config.recommendedItems());
 
 		// Update rotation whitelist
 		rotationWhitelist.clear();
@@ -591,6 +606,40 @@ public class RaidsPlugin extends Plugin
 			else
 			{
 				list.add(s);
+			}
+		}
+	}
+
+	private void updateMap(Map<String, List<Integer>> map, String input)
+	{
+		map.clear();
+
+		Matcher m = ROTATION_REGEX.matcher(input);
+		while (m.find())
+		{
+			String everything = m.group(1).toLowerCase();
+			int split = everything.indexOf(',');
+			if (split < 0)
+				continue;
+			String key = everything.substring(0, split);
+			if (key.length() < 1)
+				continue;
+			List<String> itemNames = Text.fromCSV(everything.substring(split));
+
+			map.computeIfAbsent(key, k -> new ArrayList<>());
+
+			for (String itemName : itemNames)
+			{
+				if (itemName.equals(""))
+					continue;
+				if (itemName.equals("ice barrage"))
+					map.get(key).add(SpriteID.SPELL_ICE_BARRAGE);
+				else if (itemName.startsWith("salve"))
+					map.get(key).add(ItemID.SALVE_AMULETEI);
+				else if (itemManager.search(itemName).size() > 0)
+					map.get(key).add(itemManager.search(itemName).get(0).getId());
+				else
+					log.info("RaidsPlugin: Could not find an item ID for item: " + itemName);
 			}
 		}
 	}

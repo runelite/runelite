@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -207,5 +208,27 @@ public interface RaidsConfig extends Config
 	default ImageUploadStyle uploadScreenshot()
 	{
 		return ImageUploadStyle.CLIPBOARD;
+	}
+
+	@ConfigItem(
+			position = 17,
+			keyName = "showRecommendedItems",
+			name = "Show recommended items",
+			description = "Adds overlay with recommended items to scouter"
+	)
+	default boolean showRecommendedItems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 18,
+			keyName = "recommendedItems",
+			name = "Recommended items",
+			description = "User-set recommended items in the form: [muttadiles,ice barrage,zamorak godsword],[tekton,elder maul], ..."
+	)
+	default String recommendedItems()
+	{
+		return "";
 	}
 }
