@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2019, Yani <yani@xenokore.com>
  * All rights reserved.
  *
@@ -25,38 +24,52 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.ObjectID;
 
 @Getter
-@Setter
-class Portal
+public class PestControlRepairObject
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
+	@Getter
+	private static final Set<Integer> repairableBarricades = ImmutableSet.of(
+		//ObjectID.BARRICADE_14224,
+		ObjectID.BARRICADE_14227,
+		ObjectID.BARRICADE_14228,
+		ObjectID.BARRICADE_14229,
+		ObjectID.BARRICADE_14230,
+		ObjectID.BARRICADE_14231,
+		ObjectID.BARRICADE_14232
+	);
 
-	private PortalState portalState = PortalState.SHIELDED;
+	@Getter
+	private static final Set<Integer> repairableGates = ImmutableSet.of(
+		ObjectID.GATE_14238,
+		ObjectID.GATE_14239,
+		ObjectID.GATE_14240,
+		ObjectID.GATE_14241,
+		ObjectID.GATE_14242,
+		ObjectID.GATE_14243,
+		ObjectID.GATE_14244,
+		ObjectID.GATE_14245,
+		ObjectID.GATE_14246,
+		ObjectID.GATE_14247,
+		ObjectID.GATE_14248
+	);
 
-	public Portal(PortalColor color, WidgetPortal widget)
+	public static boolean isRepairableBarricadeId(int objectId)
 	{
-		this.color = color;
-		this.widget = widget;
+		return repairableBarricades.contains(objectId);
 	}
 
-	public boolean isShielded()
+	public static boolean isRepairableGateId(int objectId)
 	{
-		return portalState == PortalState.SHIELDED;
+		return repairableGates.contains(objectId);
 	}
 
-	public boolean isDead()
+	public static boolean isRepairableId(int objectId)
 	{
-		return portalState == PortalState.DEAD;
-	}
-
-	public boolean isActive()
-	{
-		return (!isShielded() && !isDead());
+		return isRepairableBarricadeId(objectId) || isRepairableGateId(objectId);
 	}
 }

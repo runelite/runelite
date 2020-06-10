@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2019, Yani <yani@xenokore.com>
  * All rights reserved.
  *
@@ -25,38 +24,16 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-@Getter
-@Setter
-class Portal
+public class PointsInfoboxCounter extends Counter
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
+	private final PestControlPlugin plugin;
 
-	private PortalState portalState = PortalState.SHIELDED;
-
-	public Portal(PortalColor color, WidgetPortal widget)
+	PointsInfoboxCounter(BufferedImage image, PestControlPlugin plugin, int count)
 	{
-		this.color = color;
-		this.widget = widget;
-	}
-
-	public boolean isShielded()
-	{
-		return portalState == PortalState.SHIELDED;
-	}
-
-	public boolean isDead()
-	{
-		return portalState == PortalState.DEAD;
-	}
-
-	public boolean isActive()
-	{
-		return (!isShielded() && !isDead());
+		super(image, plugin, count);
+		this.plugin = plugin;
 	}
 }
