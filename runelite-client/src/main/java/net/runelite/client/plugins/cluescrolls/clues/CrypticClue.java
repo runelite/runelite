@@ -92,7 +92,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("You were 3 and I was the 6th. Come speak to me.", "Vannaka", new WorldPoint(3146, 9913, 0), "Speak to Vannaka in Edgeville Dungeon."),
 		new CrypticClue("Search the crates in Draynor Manor.", CRATE_11485, new WorldPoint(3106, 3369, 2), "Top floor of the Draynor Manor."),
 		new CrypticClue("Search the crates near a cart in Varrock.", CRATE_5107, new WorldPoint(3226, 3452, 0), "South east of Varrock Palace, south of the tree farming patch."),
-		new CrypticClue("A Guthixian ring lies between two peaks. Search the stones and you'll find what you seek.", STONES_26633, new WorldPoint(2922, 3484, 0), "Search the stones several steps west of the Guthixian stone circle in Taverley"),
+		new CrypticClue("A Guthixian ring lies between two peaks. Search the stones and you'll find what you seek.", STONES_26633, new WorldPoint(2922, 3484, 0), "Search the stones several steps west of the Guthixian stone circle in Taverley."),
 		new CrypticClue("Search the boxes in the house near the south entrance to Varrock.", BOXES_5111, new WorldPoint(3203, 3384, 0), "The first house on the left when entering Varrock from the southern entrance."),
 		new CrypticClue("His head might be hollow, but the crates nearby are filled with surprises.", CRATE_354, new WorldPoint(3478, 3091, 0), "Search the crates near the Clay golem in the ruins of Uzer."),
 		new CrypticClue("One of the sailors in Port Sarim is your next destination.", "Captain Tobias", new WorldPoint(3026, 3216, 0), "Speak to Captain Tobias on the docks of Port Sarim."),
