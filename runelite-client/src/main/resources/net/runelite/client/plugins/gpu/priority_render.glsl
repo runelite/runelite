@@ -113,27 +113,34 @@ int count_prio_offset(int priority) {
 void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,
     out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
   int size = minfo.size;
+  int offset = minfo.offset;
+  int flags = minfo.flags;
+  uint ssboOffset;
 
   if (localId < size) {
-    int offset = minfo.offset;
-    int flags = minfo.flags;
+    ssboOffset = localId;
+  } else {
+    ssboOffset = 0;
+  }
+
+  ivec4 thisA;
+  ivec4 thisB;
+  ivec4 thisC;
+
+  // Grab triangle vertices from the correct buffer
+  if (flags < 0) {
+    thisA = vb[offset + ssboOffset * 3];
+    thisB = vb[offset + ssboOffset * 3 + 1];
+    thisC = vb[offset + ssboOffset * 3 + 2];
+  } else {
+    thisA = tempvb[offset + ssboOffset * 3];
+    thisB = tempvb[offset + ssboOffset * 3 + 1];
+    thisC = tempvb[offset + ssboOffset * 3 + 2];
+  }
+
+  if (localId < size) {
     int radius = (flags & 0x7fffffff) >> 12;
     int orientation = flags & 0x7ff;
-
-    ivec4 thisA;
-    ivec4 thisB;
-    ivec4 thisC;
-
-    // Grab triangle vertices from the correct buffer
-    if (flags < 0) {
-      thisA = vb[offset + localId * 3];
-      thisB = vb[offset + localId * 3 + 1];
-      thisC = vb[offset + localId * 3 + 2];
-    } else {
-      thisA = tempvb[offset + localId * 3];
-      thisB = tempvb[offset + localId * 3 + 1];
-      thisC = tempvb[offset + localId * 3 + 2];
-    }
 
     // rotate for model orientation
     ivec4 thisrvA = rotate(thisA, orientation);
