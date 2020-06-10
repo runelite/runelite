@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -207,5 +208,16 @@ public interface RaidsConfig extends Config
 	default ImageUploadStyle uploadScreenshot()
 	{
 		return ImageUploadStyle.CLIPBOARD;
+	}
+
+	@ConfigItem(
+			position = 16,
+			keyName = "displayFloorBreak",
+			name = "Layout floor break",
+			description = "Displays floor break in layout"
+	)
+	default boolean displayFloorBreak()
+	{
+		return false;
 	}
 }

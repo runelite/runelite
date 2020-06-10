@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -90,6 +91,16 @@ public class RaidsOverlay extends OverlayPanel
 
 		Color color = Color.WHITE;
 		String layout = plugin.getRaid().getLayout().toCodeString();
+		String displayLayout;
+		if (config.displayFloorBreak())
+		{
+			displayLayout = plugin.getRaid().getLayout().toCode();
+			displayLayout = displayLayout.substring(0, displayLayout.length() - 1).replaceAll("#", "").replaceFirst("¤", " | ");
+		}
+		else
+		{
+			displayLayout = layout;
+		}
 
 		if (config.enableLayoutWhitelist() && !plugin.getLayoutWhitelist().contains(layout.toLowerCase()))
 		{
@@ -97,7 +108,7 @@ public class RaidsOverlay extends OverlayPanel
 		}
 
 		panelComponent.getChildren().add(TitleComponent.builder()
-			.text(layout)
+			.text(displayLayout)
 			.color(color)
 			.build());
 
