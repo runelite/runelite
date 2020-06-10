@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -54,6 +55,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.SkillColor;
+import net.runelite.client.ui.components.MouseDragEventForwarder;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.LinkBrowser;
@@ -80,7 +82,7 @@ class XpInfoBox extends JPanel
 	private static final String ADD_STATE = "Add to canvas";
 
 	// Instance members
-	private final JPanel panel;
+	private final JComponent panel;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Skill skill;
@@ -107,7 +109,7 @@ class XpInfoBox extends JPanel
 
 	private boolean paused = false;
 
-	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, JPanel panel, Skill skill, SkillIconManager iconManager)
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, JComponent panel, Skill skill, SkillIconManager iconManager)
 	{
 		this.xpTrackerConfig = xpTrackerConfig;
 		this.panel = panel;
@@ -217,13 +219,19 @@ class XpInfoBox extends JPanel
 		container.setComponentPopupMenu(popupMenu);
 		progressBar.setComponentPopupMenu(popupMenu);
 
+		// forward mouse drag events to parent panel for drag and drop reordering
+		MouseDragEventForwarder mouseDragEventForwarder = new MouseDragEventForwarder(panel);
+		container.addMouseListener(mouseDragEventForwarder);
+		container.addMouseMotionListener(mouseDragEventForwarder);
+		progressBar.addMouseListener(mouseDragEventForwarder);
+		progressBar.addMouseMotionListener(mouseDragEventForwarder);
+
 		add(container, BorderLayout.NORTH);
 	}
 
 	void reset()
 	{
 		canvasItem.setText(ADD_STATE);
-		container.remove(statsPanel);
 		panel.remove(this);
 		panel.revalidate();
 	}
