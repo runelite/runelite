@@ -28,12 +28,14 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import static net.runelite.api.NullObjectID.NULL_1293;
 import net.runelite.api.ObjectComposition;
 import static net.runelite.api.ObjectID.*;
+import net.runelite.api.Quest;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -158,7 +160,8 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Dig where the forces of Zamorak and Saradomin collide.", new WorldPoint(3049, 4839, 0), "Dig next to the law rift in the Abyss"),
 		new CrypticClue("Search the boxes in the goblin house near Lumbridge.", BOXES, new WorldPoint(3245, 3245, 0), "Goblin house on the eastern side of the river."),
 		new CrypticClue("W marks the spot.", new WorldPoint(2867, 3546, 0), "Dig in the middle of the Warriors' Guild entrance hall"),
-		new CrypticClue("There is no 'worthier' lord.", "Lord Iorwerth", new WorldPoint(2205, 3252, 0), "Speak to Lord Iorwerth in the elven camp near Prifddinas"),
+		new CrypticClue("There is no 'worthier' lord.", "Lord Iestin Iorwerth", new WorldPoint[]{new WorldPoint(2222, 3289, 0), new WorldPoint(3246, 6040, 0)}, "Speak to Lord Iestin Iorwerth in a building in the southwest quadrant of Prifddinas", new Quest[]{Quest.SONG_OF_THE_ELVES},
+			new CrypticClue("There is no 'worthier' lord.", "Lord Iorwerth", new WorldPoint(2205, 3252, 0), "Speak to Lord Iorwerth in the elven camp near Prifddinas")),
 		new CrypticClue("Surviving.", "Sir Vyvin", new WorldPoint(2983, 3338, 0), "Talk to Sir Vyvin on the second floor of Falador castle."),
 		new CrypticClue("My name is like a tree, yet it is spelt with a 'g'. Come see the fur which is right near me.", "Wilough", new WorldPoint(3221, 3435, 0), "Speak to Wilough, next to the Fur Merchant in Varrock Square."),
 		new CrypticClue("Speak to Jatix in Taverley.", "Jatix", new WorldPoint(2898, 3428, 0), "Jatix is found in the middle of Taverley."),
@@ -330,7 +333,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final String text;
 	private final String npc;
 	private final int objectId;
-	private final WorldPoint location;
+	private final WorldPoint[] locations;
 	private final String solution;
 	@Nullable
 	private final String questionText;
@@ -342,12 +345,12 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 	private CrypticClue(String text, int objectId, WorldPoint location, String solution)
 	{
-		this(text, null, objectId, location, solution, null);
+		this(text, null, objectId, location == null ? new WorldPoint[0] : new WorldPoint[]{location}, solution, null, new Quest[0], null);
 	}
 
 	private CrypticClue(String text, String npc, WorldPoint location, String solution)
 	{
-		this(text, npc, -1, location, solution, null);
+		this(text, npc, -1, location == null ? new WorldPoint[0] : new WorldPoint[]{location}, solution, null, new Quest[0], null);
 	}
 
 	private CrypticClue(String text, String npc, WorldPoint location, String solution, boolean requiresLight)
@@ -358,27 +361,34 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 	private CrypticClue(String text, int objectId, WorldPoint location, String solution, String questionText)
 	{
-		this(text, null, objectId, location, solution, questionText);
+		this(text, null, objectId, location == null ? new WorldPoint[0] : new WorldPoint[]{location}, solution, questionText, new Quest[0], null);
 	}
 
 	private CrypticClue(String text, String npc, WorldPoint location, String solution, String questionText)
 	{
-		this(text, npc, -1, location, solution, questionText);
+		this(text, npc, -1, location == null ? new WorldPoint[0] : new WorldPoint[]{location}, solution, questionText, new Quest[0], null);
 	}
 
 	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution)
 	{
-		this(text, npc, objectId, location, solution, null);
+		this(text, npc, objectId, location == null ? new WorldPoint[0] : new WorldPoint[]{location}, solution, null, new Quest[0], null);
 	}
 
-	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution, @Nullable String questionText)
+	private CrypticClue(String text, String npc, WorldPoint[] locations, String solution, Quest[] questConditions, CrypticClue alternateClue)
+	{
+		this(text, npc, -1, locations, solution, null, questConditions, alternateClue);
+	}
+
+	private CrypticClue(String text, String npc, int objectId, WorldPoint[] locations, String solution, @Nullable String questionText, @Nonnull Quest[] questConditions, @Nullable CrypticClue alternateClue)
 	{
 		this.text = text;
 		this.npc = npc;
 		this.objectId = objectId;
-		this.location = location;
+		this.locations = locations;
 		this.solution = solution;
 		this.questionText = questionText;
+		setQuestConditions(questConditions);
+		setAlternateClue(alternateClue);
 		setRequiresSpade(getLocation() != null && getNpc() == null && objectId == -1);
 	}
 
@@ -472,8 +482,13 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 				return clue;
 			}
 		}
-
 		return null;
+	}
+
+	@Override
+	public WorldPoint getLocation()
+	{
+		return locations.length == 0 ? null : locations[locations.length - 1];
 	}
 
 	@Override
