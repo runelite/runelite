@@ -226,7 +226,7 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 			position = 20,
 			keyName = "highlightColor",
-			name = "Required room color",
+			name = "Highlighted room color",
 			description = "The color of highlighted rooms"
 	)
 	default Color highlightColor()
