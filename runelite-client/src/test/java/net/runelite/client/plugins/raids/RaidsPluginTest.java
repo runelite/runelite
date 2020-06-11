@@ -114,7 +114,7 @@ public class RaidsPluginTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(raidsConfig.whitelistedRooms()).thenReturn("");
 		when(raidsConfig.blacklistedRooms()).thenReturn("");
-		when(raidsConfig.requiredRooms()).thenReturn("");
+		when(raidsConfig.highlightedRooms()).thenReturn("");
 		when(raidsConfig.whitelistedRotations()).thenReturn("");
 		when(raidsConfig.whitelistedLayouts()).thenReturn("");
 	}

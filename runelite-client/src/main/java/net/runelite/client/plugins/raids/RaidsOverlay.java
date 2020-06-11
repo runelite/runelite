@@ -98,7 +98,7 @@ public class RaidsOverlay extends OverlayPanel
 			color = Color.RED;
 		}
 
-		boolean blacklisted = false;
+		boolean hide = false;
 		HashSet<String> roomNames = new HashSet();
 		for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
 		{
@@ -111,26 +111,26 @@ public class RaidsOverlay extends OverlayPanel
 			}
 			roomNames.add(room.getName().toLowerCase());
 
-			if (plugin.getRoomBlacklist().contains(room.getName().toLowerCase()))
+			if (config.hideBlacklisted() && plugin.getRoomBlacklist().contains(room.getName().toLowerCase()))
 			{
-				blacklisted = true;
+				hide = true;
 				break;
 			}
 		}
 
-		if (!blacklisted)
+		if (!hide && config.hideMissingHighlighted())
 		{
-			for (String requiredRoom : plugin.getRoomRequiredlist())
+			for (String requiredRoom : plugin.getRoomHighlightedList())
 			{
 				if (!roomNames.contains(requiredRoom))
 				{
-					blacklisted = true;
+					hide = true;
 					break;
 				}
 			}
 		}
 
-		if (config.hideBlacklisted() && blacklisted)
+		if (hide)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 					.text("Bad Raid!")
@@ -206,9 +206,9 @@ public class RaidsOverlay extends OverlayPanel
 					}
 
 					String name = room == RaidRoom.UNKNOWN_COMBAT ? "Unknown" : room.getName();
-					if (plugin.getRoomRequiredlist().contains(room.getName().toLowerCase()))
+					if (plugin.getRoomHighlightedList().contains(room.getName().toLowerCase()))
 					{
-						color = config.requiredColor();
+						color = config.highlightColor();
 					}
 
 					panelComponent.getChildren().add(LineComponent.builder()
@@ -230,9 +230,9 @@ public class RaidsOverlay extends OverlayPanel
 					}
 
 					name = room == RaidRoom.UNKNOWN_PUZZLE ? "Unknown" : room.getName();
-					if (plugin.getRoomRequiredlist().contains(room.getName().toLowerCase()))
+					if (plugin.getRoomHighlightedList().contains(room.getName().toLowerCase()))
 					{
-						color = config.requiredColor();
+						color = config.highlightColor();
 					}
 
 					panelComponent.getChildren().add(LineComponent.builder()

@@ -187,7 +187,7 @@ public class RaidsPlugin extends Plugin
 	private final Set<String> roomBlacklist = new HashSet<String>();
 
 	@Getter
-	private final Set<String> roomRequiredlist = new HashSet<String>();
+	private final Set<String> roomHighlightedList = new HashSet<String>();
 
 	@Getter
 	private final Set<String> rotationWhitelist = new HashSet<String>();
@@ -572,7 +572,7 @@ public class RaidsPlugin extends Plugin
 	{
 		updateList(roomWhitelist, config.whitelistedRooms());
 		updateList(roomBlacklist, config.blacklistedRooms());
-		updateList(roomRequiredlist, config.requiredRooms());
+		updateList(roomHighlightedList, config.highlightedRooms());
 		updateList(layoutWhitelist, config.whitelistedLayouts());
 
 		// Update rotation whitelist

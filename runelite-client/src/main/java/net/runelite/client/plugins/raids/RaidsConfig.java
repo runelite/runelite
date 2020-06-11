@@ -214,22 +214,22 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 			position = 19,
-			keyName = "requiredRooms",
-			name = "Required rooms",
-			description = "Display required rooms in a different color on the overlay. Separate with comma (full name)"
+			keyName = "highlightedRooms",
+			name = "Highlighted rooms",
+			description = "Display highlighted rooms in a different color on the overlay. Separate with comma (full name)"
 	)
-	default String requiredRooms()
+	default String highlightedRooms()
 	{
 		return "";
 	}
 
 	@ConfigItem(
 			position = 20,
-			keyName = "requiredColor",
+			keyName = "highlightColor",
 			name = "Required room color",
-			description = "The color of required rooms"
+			description = "The color of highlighted rooms"
 	)
-	default Color requiredColor()
+	default Color highlightColor()
 	{
 		return Color.MAGENTA;
 	}
@@ -237,10 +237,21 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 			position = 21,
 			keyName = "hideBlacklist",
-			name = "Hide blacklisted raids",
-			description = "Completely hides raids with blacklisted rooms or missing required rooms"
+			name = "Hide raids containing blacklisted rooms",
+			description = "Completely hides raids containing blacklisted room(s)"
 	)
 	default boolean hideBlacklisted()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 22,
+			keyName = "hideMissingHighlighted",
+			name = "Hide raids missing highlighted rooms",
+			description = "Completely hides raids missing highlighted room(s)"
+	)
+	default boolean hideMissingHighlighted()
 	{
 		return false;
 	}
