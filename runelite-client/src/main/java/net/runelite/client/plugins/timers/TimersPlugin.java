@@ -27,6 +27,9 @@ package net.runelite.client.plugins.timers;
 
 import com.google.inject.Provides;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -73,6 +76,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -129,6 +133,7 @@ public class TimersPlugin extends Plugin
 	private int lastAnimation;
 	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
+	private boolean wearingRingOfEndurance;
 
 	@Inject
 	private ItemManager itemManager;
@@ -284,7 +289,7 @@ public class TimersPlugin extends Plugin
 
 		if (!config.showStamina())
 		{
-			removeGameTimer(STAMINA);
+			removeStaminaTimers();
 		}
 
 		if (!config.showOverload())
@@ -379,7 +384,14 @@ public class TimersPlugin extends Plugin
 			|| event.getId() == ItemID.EGNIOL_POTION_4))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-			createGameTimer(STAMINA);
+			if (wearingRingOfEndurance)
+			{
+				createGameTimer(STAMINA_RING_OF_ENDURANCE);
+			}
+			else
+			{
+				createGameTimer(STAMINA);
+			}
 			return;
 		}
 
@@ -440,12 +452,19 @@ public class TimersPlugin extends Plugin
 
 		if (config.showStamina() && (event.getMessage().equals(STAMINA_DRINK_MESSAGE) || event.getMessage().equals(STAMINA_SHARED_DRINK_MESSAGE)))
 		{
-			createGameTimer(STAMINA);
+			if (wearingRingOfEndurance)
+			{
+				createGameTimer(STAMINA_RING_OF_ENDURANCE);
+			}
+			else
+			{
+				createGameTimer(STAMINA);
+			}
 		}
 
 		if (config.showStamina() && (event.getMessage().equals(STAMINA_EXPIRED_MESSAGE) || event.getMessage().equals(GAUNTLET_ENTER_MESSAGE)))
 		{
-			removeGameTimer(STAMINA);
+			removeStaminaTimers();
 		}
 
 		if (config.showAntiFire() && event.getMessage().equals(ANTIFIRE_DRINK_MESSAGE))
@@ -689,7 +708,7 @@ public class TimersPlugin extends Plugin
 		if (config.showAbyssalSireStun()
 			&& actor instanceof NPC)
 		{
-			int npcId = ((NPC)actor).getId();
+			int npcId = ((NPC) actor).getId();
 
 			switch (npcId)
 			{
@@ -807,24 +826,18 @@ public class TimersPlugin extends Plugin
 		ItemContainer container = itemContainerChanged.getItemContainer();
 		if (container == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
-			Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
-
-			if (weapon == null)
+			int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();
+			boolean isWearingStaffOfTheDead = isWearingEquipment(container, weaponIdx, ItemID.STAFF_OF_THE_DEAD, ItemID.TOXIC_STAFF_OF_THE_DEAD, ItemID.STAFF_OF_LIGHT, ItemID.TOXIC_STAFF_UNCHARGED);
+			if (!isWearingStaffOfTheDead)
 			{
 				removeGameTimer(STAFF_OF_THE_DEAD);
-				return;
 			}
 
-			switch (weapon.getId())
+			int ringIdx = EquipmentInventorySlot.RING.getSlotIdx();
+			wearingRingOfEndurance = isWearingEquipment(container, ringIdx, ItemID.RING_OF_ENDURANCE);
+			if (!wearingRingOfEndurance)
 			{
-				case ItemID.STAFF_OF_THE_DEAD:
-				case ItemID.TOXIC_STAFF_OF_THE_DEAD:
-				case ItemID.STAFF_OF_LIGHT:
-				case ItemID.TOXIC_STAFF_UNCHARGED:
-					// don't reset timer if still wielding staff
-					return;
-				default:
-					removeGameTimer(STAFF_OF_THE_DEAD);
+				halfStaminaTimer();
 			}
 		}
 	}
@@ -920,5 +933,54 @@ public class TimersPlugin extends Plugin
 		removeGameTimer(HALFTB);
 		removeGameTimer(DMM_FULLTB);
 		removeGameTimer(DMM_HALFTB);
+	}
+
+	private void removeStaminaTimers()
+	{
+		removeGameTimer(STAMINA_RING_OF_ENDURANCE);
+		removeGameTimer(STAMINA);
+	}
+
+	private void halfStaminaTimer()
+	{
+		TimerTimer t = getCurrentTimer(STAMINA_RING_OF_ENDURANCE);
+		if (t != null)
+		{
+			Duration remainingDuration = Duration.between(Instant.now(), t.getEndTime());
+			removeGameTimer(STAMINA_RING_OF_ENDURANCE);
+			createGameTimer(STAMINA, remainingDuration.dividedBy(2));
+		}
+	}
+
+	private TimerTimer getCurrentTimer(GameTimer timer)
+	{
+		List<InfoBox> infoBoxes = infoBoxManager.getInfoBoxes();
+		if (infoBoxes == null)
+		{
+			return null;
+		}
+		for (InfoBox infoBox : infoBoxes)
+		{
+			if (infoBox instanceof TimerTimer && ((TimerTimer) infoBox).getTimer() == timer)
+			{
+				return ((TimerTimer) infoBox);
+			}
+		}
+		return null;
+	}
+
+	private boolean isWearingEquipment(ItemContainer container, int itemIdx, int... itemIDs)
+	{
+		if (container == null)
+		{
+			return false;
+		}
+		Item item = container.getItem(itemIdx);
+		if (item == null)
+		{
+			return false;
+		}
+
+		return Arrays.stream(itemIDs).anyMatch(i -> i == item.getId());
 	}
 }

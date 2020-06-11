@@ -41,6 +41,7 @@ import static net.runelite.client.util.RSTimeUnit.GAME_TICKS;
 enum GameTimer
 {
 	STAMINA(ItemID.STAMINA_POTION4, GameTimerImageType.ITEM, "Stamina", 2, ChronoUnit.MINUTES, true),
+	STAMINA_RING_OF_ENDURANCE(ItemID.STAMINA_POTION4, GameTimerImageType.ITEM, "Stamina", 4, ChronoUnit.MINUTES, true),
 	ANTIFIRE(ItemID.ANTIFIRE_POTION4, GameTimerImageType.ITEM, "Antifire", 6, ChronoUnit.MINUTES),
 	EXANTIFIRE(ItemID.EXTENDED_ANTIFIRE4, GameTimerImageType.ITEM, "Extended antifire", 12, ChronoUnit.MINUTES),
 	OVERLOAD(ItemID.OVERLOAD_4, GameTimerImageType.ITEM, "Overload", 5, ChronoUnit.MINUTES, true),
