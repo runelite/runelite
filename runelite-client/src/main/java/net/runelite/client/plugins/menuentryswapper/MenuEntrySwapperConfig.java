@@ -562,4 +562,26 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "hideEmptyInBank",
+		name = "Hide empty in bank",
+		description = "Always hides empty in bank",
+		section = itemSection
+	)
+	default boolean hideEmptyInBank()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapEssPouch",
+		name = "Empty essence pouch",
+		description = "Always empty essence pouch in inventory",
+		section = itemSection
+	)
+	default boolean swapEssPouch()
+	{
+		return false;
+	}
 }

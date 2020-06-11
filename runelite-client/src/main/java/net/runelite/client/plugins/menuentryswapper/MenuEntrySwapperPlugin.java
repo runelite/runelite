@@ -560,6 +560,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			if (entry.getType() == entryTypeId && entry.getIdentifier() == entryIdentifier)
 			{
+				if (config.hideEmptyInBank() && entry.getOption().equals("Empty"))
+				{
+					break;
+				}
 				// Raise the priority of the op so it doesn't get sorted later
 				entry.setType(MenuAction.CC_OP.getId());
 
