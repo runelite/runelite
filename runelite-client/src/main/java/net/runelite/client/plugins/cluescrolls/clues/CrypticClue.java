@@ -238,7 +238,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the drawers in the ground floor of a shop in Yanille.", DRAWERS_350, new WorldPoint(2570, 3085, 0), "Search the drawers in Yanille's hunting shop."),
 		new CrypticClue("Search the drawers of houses in Burthorpe.", DRAWERS, new WorldPoint(2929, 3570, 0), "Inside Hild's house in the northeast corner of Burthorpe."),
 		new CrypticClue("Where safe to speak, the man who offers the pouch of smallest size wishes to see your alignment.", "Mage of Zamorak", new WorldPoint(3260, 3385, 0), "Speak to the Mage of Zamorak south of the Rune Shop in Varrock while wearing three Zamorakian items."),
-		new CrypticClue("Search the crates in the guard house of the northern gate of East Ardougne.", CRATE_356, new WorldPoint(2645, 3338, 0), "The guard house is northwest of the  East Ardougne market."),
+		new CrypticClue("Search the crates in the guard house of the northern gate of East Ardougne.", CRATE_356, new WorldPoint(2645, 3338, 0), "The guard house northwest of the East Ardougne market."),
 		new CrypticClue("Go to the village being attacked by trolls, search the drawers in one of the houses.", "Penda", DRAWERS_350, new WorldPoint(2921, 3577, 0), "Go to Dunstan's house in the northeast corner of Burthorpe. Kill Penda in the Toad and Chicken to obtain the key."),
 		new CrypticClue("You'll get licked.", null, "Kill a Bloodveld."),
 		new CrypticClue("She's small but can build both literally and figuratively, as long as you have their favour.", "Lovada", new WorldPoint(1486, 3834, 0), "Speak to Lovada by the entrance to the blast mine in Lovakengj."),
