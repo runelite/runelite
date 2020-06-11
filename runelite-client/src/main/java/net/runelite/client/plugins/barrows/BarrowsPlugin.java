@@ -69,7 +69,6 @@ import net.runelite.client.util.QuantityFormatter;
 	description = "Show helpful information for the Barrows minigame",
 	tags = {"combat", "minigame", "bosses", "pve", "pvm"}
 )
-
 public class BarrowsPlugin extends Plugin
 {
 	private static final ImmutableList<WidgetInfo> POSSIBLE_SOLUTIONS = ImmutableList.of(
@@ -80,7 +79,6 @@ public class BarrowsPlugin extends Plugin
 
 	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
 	static final int CRYPT_REGION_ID = 14231;
-	static final String TOTAL_KILL_FIELD = "TOTAL";
 
 	private LoopTimer barrowsPrayerDrainTimer;
 	private boolean wasInCrypt = false;
@@ -218,16 +216,16 @@ public class BarrowsPlugin extends Plugin
 			}
 
 			final ChatMessageBuilder message = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("Your chest is worth around ")
-					.append(QuantityFormatter.formatNumber(chestPrice))
-					.append(" coins.")
-					.append(ChatColorType.NORMAL);
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Your chest is worth around ")
+				.append(QuantityFormatter.formatNumber(chestPrice))
+				.append(" coins.")
+				.append(ChatColorType.NORMAL);
 
 			chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.ITEM_EXAMINE)
-					.runeLiteFormattedMessage(message.build())
-					.build());
+				.type(ChatMessageType.ITEM_EXAMINE)
+				.runeLiteFormattedMessage(message.build())
+				.build());
 		}
 		else if (event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
 		{

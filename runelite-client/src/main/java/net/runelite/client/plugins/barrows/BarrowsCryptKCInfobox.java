@@ -31,7 +31,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class BarrowsCryptKCInfobox extends InfoBox
 {
