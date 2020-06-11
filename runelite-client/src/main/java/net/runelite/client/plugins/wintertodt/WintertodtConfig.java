@@ -38,6 +38,17 @@ import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
 public interface WintertodtConfig extends Config
 {
 	@ConfigItem(
+		position = 0,
+		keyName = "showOverlay",
+		name = "Show Overlay",
+		description = "Toggles the status overlay"
+	)
+	default boolean showOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 1,
 		keyName = "damageNotificationColor",
 		name = "Damage Notification Color",

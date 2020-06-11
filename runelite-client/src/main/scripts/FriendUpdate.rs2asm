@@ -117,7 +117,7 @@ LABEL101:
    iconst                 1
    iload                  0
    if_sethide            
-   jump                   LABEL468
+   jump                   LABEL484
 LABEL105:
    iload                  15
    iconst                 -1
@@ -147,21 +147,39 @@ LABEL126:
    iconst                 1
    iload                  0
    if_sethide            
-   jump                   LABEL468
+   jump                   LABEL484
 LABEL130:
+   iload                  15
+   iconst                 0
+   if_icmpeq              LABEL134
+   jump                   LABEL146
+LABEL134:
+   sconst                 "You may add friends by using the button below, or by "
+   sconst                 "right-clicking"
+   sconst                 "long pressing"
+   invoke                 1971
+   sconst                 " on a message from them and selecting to add them as a friend."
+   join_string            3
+   iload                  7
+   if_settext            
+   iconst                 1
+   iload                  0
+   if_sethide            
+   jump                   LABEL484
+LABEL146:
    invoke                 1972
    istore                 14
    iload                  14
    iconst                 1
-   if_icmpeq              LABEL136
-   jump                   LABEL141
-LABEL136:
+   if_icmpeq              LABEL152
+   jump                   LABEL157
+LABEL152:
    iconst                 8
    iconst                 5
    iload                  13
    scale                 
    istore                 13
-LABEL141:
+LABEL157:
    sconst                 ""
    iload                  7
    if_settext            
@@ -171,71 +189,71 @@ LABEL141:
    3628                  
    get_varc_int           183
    switch                
-      1: LABEL151
-      2: LABEL154
-      3: LABEL159
-      4: LABEL174
-      5: LABEL194
-      8: LABEL164
-      9: LABEL169
-   jump                   LABEL213
-LABEL151:
+      1: LABEL167
+      2: LABEL170
+      3: LABEL175
+      4: LABEL190
+      5: LABEL210
+      8: LABEL180
+      9: LABEL185
+   jump                   LABEL229
+LABEL167:
    iconst                 0
    3629                  
-   jump                   LABEL213
-LABEL154:
+   jump                   LABEL229
+LABEL170:
    iconst                 1
    3633                  
    iconst                 1
    3630                  
-   jump                   LABEL213
-LABEL159:
+   jump                   LABEL229
+LABEL175:
    iconst                 1
    3633                  
    iconst                 0
    3630                  
-   jump                   LABEL213
-LABEL164:
+   jump                   LABEL229
+LABEL180:
    iconst                 1
    3633                  
    iconst                 1
    3632                  
-   jump                   LABEL213
-LABEL169:
-   iconst                 1
-   3633                  
-   iconst                 0
-   3632                  
-   jump                   LABEL213
-LABEL174:
-   iconst                 1
-   3633                  
-   iconst                 1
-   3636                  
-   iconst                 1
-   3631                  
-   get_varc_int           205
-   switch                
-      3: LABEL185
-      8: LABEL188
-      9: LABEL191
-   iconst                 1
-   3630                  
-   jump                   LABEL193
+   jump                   LABEL229
 LABEL185:
+   iconst                 1
+   3633                  
+   iconst                 0
+   3632                  
+   jump                   LABEL229
+LABEL190:
+   iconst                 1
+   3633                  
+   iconst                 1
+   3636                  
+   iconst                 1
+   3631                  
+   get_varc_int           205
+   switch                
+      3: LABEL201
+      8: LABEL204
+      9: LABEL207
+   iconst                 1
+   3630                  
+   jump                   LABEL209
+LABEL201:
    iconst                 0
    3630                  
-   jump                   LABEL193
-LABEL188:
+   jump                   LABEL209
+LABEL204:
    iconst                 1
    3632                  
-   jump                   LABEL193
-LABEL191:
+   jump                   LABEL209
+LABEL207:
    iconst                 0
    3632                  
-LABEL193:
-   jump                   LABEL213
-LABEL194:
+LABEL209:
+   jump                   LABEL229
+LABEL210:
    iconst                 1
    3633                  
    iconst                 1
@@ -244,33 +262,33 @@ LABEL194:
    3631                  
    get_varc_int           205
    switch                
-      3: LABEL205
-      8: LABEL208
-      9: LABEL211
+      3: LABEL221
+      8: LABEL224
+      9: LABEL227
    iconst                 1
    3630                  
-   jump                   LABEL213
-LABEL205:
+   jump                   LABEL229
+LABEL221:
    iconst                 0
    3630                  
-   jump                   LABEL213
-LABEL208:
+   jump                   LABEL229
+LABEL224:
    iconst                 1
    3632                  
-   jump                   LABEL213
-LABEL211:
+   jump                   LABEL229
+LABEL227:
    iconst                 0
    3632                  
-LABEL213:
+LABEL229:
    3639                  
-LABEL214:
+LABEL230:
    iload                  9
    iload                  15
-   if_icmplt              LABEL218
-   jump                   LABEL460
-LABEL218:
+   if_icmplt              LABEL234
+   jump                   LABEL476
+LABEL234:
    iload                  9
-   friend_getname
+   friend_getname        
    sstore                 1
    sstore                 0
    iload                  5
@@ -283,7 +301,7 @@ LABEL218:
    istore                 10
    sload                  0
    sconst                 "friend_cc_settext"
-   runelite_callback
+   runelite_callback     
    cc_settext            
    iconst                 0
    iload                  13
@@ -315,24 +333,24 @@ LABEL218:
    istore                 11
    iload                  11
    iconst                 0
-   if_icmpne              LABEL264
-   jump                   LABEL271
-LABEL264:
+   if_icmpne              LABEL280
+   jump                   LABEL287
+LABEL280:
    iconst                 1
    sconst                 "Message"
    cc_setop              
    iconst                 2
    sconst                 ""
    cc_setop              
-   jump                   LABEL277
-LABEL271:
+   jump                   LABEL293
+LABEL287:
    iconst                 1
    sconst                 ""
    cc_setop              
    iconst                 2
    sconst                 "Message"
    cc_setop              
-LABEL277:
+LABEL293:
    iconst                 3
    sconst                 "Delete"
    cc_setop              
@@ -365,7 +383,7 @@ LABEL277:
    iconst                 0
    iconst                 0
    sconst                 "friend_cc_setposition"
-   runelite_callback
+   runelite_callback     
    cc_setposition         1
    iconst                 1093
    cc_setgraphic          1
@@ -374,14 +392,14 @@ LABEL277:
    sload                  1
    string_length         
    iconst                 0
-   if_icmpgt              LABEL318
-   jump                   LABEL367
-LABEL318:
+   if_icmpgt              LABEL334
+   jump                   LABEL383
+LABEL334:
    iload                  14
    iconst                 1
-   if_icmpeq              LABEL322
-   jump                   LABEL336
-LABEL322:
+   if_icmpeq              LABEL338
+   jump                   LABEL352
+LABEL338:
    iconst                 10
    sconst                 "Reveal previous name"
    cc_setop              
@@ -395,8 +413,8 @@ LABEL322:
    sload                  0
    sconst                 "isIiiss"
    cc_setonop            
-   jump                   LABEL364
-LABEL336:
+   jump                   LABEL380
+LABEL352:
    sconst                 "Previous name:"
    sconst                 "<br>"
    sload                  1
@@ -425,11 +443,11 @@ LABEL336:
    sconst                 "null"
    sconst                 "isIiiss"
    cc_setonop            
-LABEL364:
+LABEL380:
    iconst                 0
    cc_sethide             1
-   jump                   LABEL383
-LABEL367:
+   jump                   LABEL399
+LABEL383:
    iconst                 40
    iload                  8
    sconst                 "I"
@@ -446,7 +464,7 @@ LABEL367:
    sconst                 "null"
    sconst                 "isIiiss"
    cc_setonop            
-LABEL383:
+LABEL399:
    iload                  5
    iconst                 4
    iload                  10
@@ -475,20 +493,20 @@ LABEL383:
    cc_settextshadow      
    iload                  11
    iconst                 0
-   if_icmpeq              LABEL413
-   jump                   LABEL418
-LABEL413:
+   if_icmpeq              LABEL429
+   jump                   LABEL434
+LABEL429:
    sconst                 "Offline"
    cc_settext            
    iconst                 16711680
    cc_setcolour          
-   jump                   LABEL451
-LABEL418:
+   jump                   LABEL467
+LABEL434:
    iload                  11
    map_world             
-   if_icmpeq              LABEL422
-   jump                   LABEL430
-LABEL422:
+   if_icmpeq              LABEL438
+   jump                   LABEL446
+LABEL438:
    sconst                 "World "
    iload                  11
    tostring              
@@ -496,13 +514,13 @@ LABEL422:
    cc_settext            
    iconst                 901389
    cc_setcolour          
-   jump                   LABEL451
-LABEL430:
+   jump                   LABEL467
+LABEL446:
    iload                  11
    iconst                 5000
-   if_icmpgt              LABEL434
-   jump                   LABEL443
-LABEL434:
+   if_icmpgt              LABEL450
+   jump                   LABEL459
+LABEL450:
    sconst                 "<col=ffff00>"
    sconst                 "Classic "
    iload                  11
@@ -511,18 +529,18 @@ LABEL434:
    tostring              
    join_string            3
    cc_settext            
-   jump                   LABEL449
-LABEL443:
+   jump                   LABEL465
+LABEL459:
    sconst                 "<col=ffff00>"
    sconst                 "World "
    iload                  11
    tostring              
    join_string            3
    cc_settext            
-LABEL449:
+LABEL465:
    iconst                 16776960
    cc_setcolour          
-LABEL451:
+LABEL467:
    iload                  9
    iconst                 1
    add                   
@@ -531,24 +549,24 @@ LABEL451:
    add                   
    istore                 12
    istore                 9
-   jump                   LABEL214
-LABEL460:
+   jump                   LABEL230
+LABEL476:
    iload                  15
    iconst                 1
-   if_icmpge              LABEL464
-   jump                   LABEL468
-LABEL464:
+   if_icmpge              LABEL480
+   jump                   LABEL484
+LABEL480:
    iload                  12
    iconst                 5
    add                   
    istore                 12
-LABEL468:
+LABEL484:
    iload                  12
    iload                  5
    if_getheight          
-   if_icmpgt              LABEL473
-   jump                   LABEL482
-LABEL473:
+   if_icmpgt              LABEL489
+   jump                   LABEL498
+LABEL489:
    iconst                 0
    iload                  12
    iload                  5
@@ -557,8 +575,8 @@ LABEL473:
    iload                  5
    get_varc_int           9
    invoke                 72
-   jump                   LABEL490
-LABEL482:
+   jump                   LABEL506
+LABEL498:
    iconst                 0
    iconst                 0
    iload                  5
@@ -567,5 +585,5 @@ LABEL482:
    iload                  5
    iconst                 0
    invoke                 72
-LABEL490:
+LABEL506:
    return                

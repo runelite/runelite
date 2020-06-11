@@ -31,10 +31,10 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
@@ -147,16 +147,13 @@ public class CustomCursorPlugin extends Plugin
 					return;
 				}
 
-				final Item[] items = equipment.getItems();
-				final int weaponIdx = EquipmentInventorySlot.WEAPON.getSlotIdx();
-
-				if (items == null || weaponIdx >= items.length)
+				Item weapon = equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
+				if (weapon == null)
 				{
 					clientUI.resetCursor();
 					return;
 				}
 
-				final Item weapon = items[EquipmentInventorySlot.WEAPON.getSlotIdx()];
 				final BufferedImage image = itemManager.getImage(weapon.getId());
 
 				if (weapon.getQuantity() > 0)

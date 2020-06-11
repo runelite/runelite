@@ -39,16 +39,10 @@ import net.runelite.client.ui.overlay.RenderableEntity;
 public class BackgroundComponent implements RenderableEntity
 {
 	private static final int BORDER_OFFSET = 2;
-
-	private static final int OUTSIDE_STROKE_RED_OFFSET = 14;
-	private static final int OUTSIDE_STROKE_GREEN_OFFSET = 13;
-	private static final int OUTSIDE_STROKE_BLUE_OFFSET = 15;
-	private static final int OUTSIDE_STROKE_ALPHA = 255;
-
-	private static final int INSIDE_STROKE_RED_OFFSET = 20;
-	private static final int INSIDE_STROKE_GREEN_OFFSET = 21;
-	private static final int INSIDE_STROKE_BLUE_OFFSET = 19;
-	private static final int INSIDE_STROKE_ALPHA = 255;
+	private static final float COLOR_OFFSET = 0.2f;
+	private static final float OUTER_COLOR_OFFSET = 1 - COLOR_OFFSET;
+	private static final float INNER_COLOR_OFFSET = 1 + COLOR_OFFSET;
+	private static final float ALPHA_COLOR_OFFSET = 1 + 2 * COLOR_OFFSET;
 
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private Rectangle rectangle = new Rectangle();
@@ -58,17 +52,17 @@ public class BackgroundComponent implements RenderableEntity
 	public Dimension render(Graphics2D graphics)
 	{
 		Color outsideStrokeColor = new Color(
-			Math.max(0, backgroundColor.getRed() - OUTSIDE_STROKE_RED_OFFSET),
-			Math.max(0, backgroundColor.getGreen() - OUTSIDE_STROKE_GREEN_OFFSET),
-			Math.max(0, backgroundColor.getBlue() - OUTSIDE_STROKE_BLUE_OFFSET),
-			OUTSIDE_STROKE_ALPHA
+			(int) (backgroundColor.getRed() * OUTER_COLOR_OFFSET),
+			(int) (backgroundColor.getGreen() * OUTER_COLOR_OFFSET),
+			(int) (backgroundColor.getBlue() * OUTER_COLOR_OFFSET),
+			Math.min(255, (int) (backgroundColor.getAlpha() * ALPHA_COLOR_OFFSET))
 		);
 
 		Color insideStrokeColor = new Color(
-			Math.min(255, backgroundColor.getRed() + INSIDE_STROKE_RED_OFFSET),
-			Math.min(255, backgroundColor.getGreen() + INSIDE_STROKE_GREEN_OFFSET),
-			Math.min(255, backgroundColor.getBlue() + INSIDE_STROKE_BLUE_OFFSET),
-			INSIDE_STROKE_ALPHA
+			Math.min(255, (int) (backgroundColor.getRed() * INNER_COLOR_OFFSET)),
+			Math.min(255, (int) (backgroundColor.getGreen() * INNER_COLOR_OFFSET)),
+			Math.min(255, (int) (backgroundColor.getBlue() * INNER_COLOR_OFFSET)),
+			Math.min(255, (int) (backgroundColor.getAlpha() * ALPHA_COLOR_OFFSET))
 		);
 
 		// Render background

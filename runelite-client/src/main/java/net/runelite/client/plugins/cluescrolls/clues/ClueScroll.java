@@ -46,6 +46,10 @@ public abstract class ClueScroll
 	@Getter(AccessLevel.PUBLIC)
 	private Varbits hasFirePit;
 
+	@Setter(AccessLevel.PROTECTED)
+	@Getter(AccessLevel.PUBLIC)
+	private Enemy enemy;
+
 	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin);
 
 	public abstract void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin);

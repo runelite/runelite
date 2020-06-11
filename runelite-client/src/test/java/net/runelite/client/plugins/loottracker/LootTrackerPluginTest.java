@@ -37,6 +37,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
@@ -44,6 +45,7 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
@@ -115,6 +117,10 @@ public class LootTrackerPluginTest
 	@Bind
 	private ItemManager itemManager;
 
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
+
 	@Before
 	public void setUp()
 	{
@@ -143,6 +149,13 @@ public class LootTrackerPluginTest
 
 		assertEquals("Clue Scroll (Master)", lootTrackerPlugin.eventType);
 		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+	}
+
+	private static ItemComposition mockItem(String name)
+	{
+		ItemComposition itemComposition = mock(ItemComposition.class);
+		when(itemComposition.getName()).thenReturn(name);
+		return itemComposition;
 	}
 
 	@Test

@@ -49,7 +49,7 @@ public enum Quest
 	RUNE_MYSTERIES(314, "Rune Mysteries"),
 	SHEEP_SHEARER(315, "Sheep Shearer"),
 	SHIELD_OF_ARRAV(316, "Shield of Arrav"),
-	VAMPIRE_SLAYER(317, "Vampire Slayer"),
+	VAMPYRE_SLAYER(1278, "Vampyre Slayer"),
 	WITCHS_POTION(318, "Witch's Potion"),
 	X_MARKS_THE_SPOT(550, "X Marks the Spot"),
 
@@ -177,6 +177,7 @@ public enum Quest
 	THE_FORSAKEN_TOWER(543, "The Forsaken Tower"),
 	SONG_OF_THE_ELVES(603, "Song of the Elves"),
 	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles"),
+	SINS_OF_THE_FATHER(1276, "Sins of the Father"),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss"),

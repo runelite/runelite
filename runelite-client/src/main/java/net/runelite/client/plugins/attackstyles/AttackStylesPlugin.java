@@ -30,25 +30,23 @@ import com.google.common.collect.Table;
 import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
-import javax.inject.Inject;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
@@ -138,25 +136,12 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (event.getWidget().isSelfHidden() || TO_GROUP(event.getWidget().getId()) != COMBAT_GROUP_ID)
+		if (scriptPostFired.getScriptId() == ScriptID.COMBAT_INTERFACE_SETUP)
 		{
-			return;
+			processWidgets();
 		}
-
-		processWidgets();
-	}
-
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		if (event.getGroupId() != COMBAT_GROUP_ID)
-		{
-			return;
-		}
-
-		processWidgets();
 	}
 
 	/**
@@ -204,6 +189,8 @@ public class AttackStylesPlugin extends Plugin
 				castingModeVarbit);
 			updateWarning(weaponSwitch);
 
+			// this isn't required, but will hide styles 1 tick earlier than the script event, which fires
+			// 1 tick after the combat options is unhidden
 			if (weaponSwitch)
 			{
 				processWidgets();

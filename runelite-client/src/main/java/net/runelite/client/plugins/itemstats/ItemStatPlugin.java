@@ -38,14 +38,12 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.FontID;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
@@ -57,6 +55,7 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -407,15 +406,7 @@ public class ItemStatPlugin extends Plugin
 			return 0;
 		}
 
-		for (final Item item : inventory.getItems())
-		{
-			if (item.getId() == ItemID.COINS_995)
-			{
-				return item.getQuantity();
-			}
-		}
-
-		return 0;
+		return inventory.count(ItemID.COINS_995);
 	}
 
 	private Widget getInventoryContainer()

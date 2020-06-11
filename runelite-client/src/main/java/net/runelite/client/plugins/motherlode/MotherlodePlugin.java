@@ -100,7 +100,7 @@ public class MotherlodePlugin extends Plugin
 	private static final int SACK_LARGE_SIZE = 162;
 	private static final int SACK_SIZE = 81;
 
-	private static final int UPPER_FLOOR_HEIGHT = -500;
+	private static final int UPPER_FLOOR_HEIGHT = -490;
 
 	@Inject
 	private OverlayManager overlayManager;

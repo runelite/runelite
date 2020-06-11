@@ -321,6 +321,7 @@ public class MusicPlugin extends Plugin
 		musicSearchButton.setOnOpListener((JavaScriptCallback) e -> closeSearch());
 		searchInput = chatboxPanelManager.openTextInput("Search music list")
 			.onChanged(s -> clientThread.invokeLater(() -> updateFilter(s.trim())))
+			.onDone(s -> false)
 			.onClose(() ->
 			{
 				clientThread.invokeLater(() -> updateFilter(""));

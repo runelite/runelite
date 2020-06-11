@@ -79,10 +79,21 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "lapsPerHour",
+		name = "Show Laps Per Hour",
+		description = "Shows how many laps you can expect to complete per hour.",
+		position = 4
+	)
+	default boolean lapsPerHour()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "overlayColor",
 		name = "Overlay Color",
 		description = "Color of Agility overlay",
-		position = 4
+		position = 5
 	)
 	default Color getOverlayColor()
 	{
@@ -93,7 +104,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightMarks",
 		name = "Highlight Marks of Grace",
 		description = "Enable/disable the highlighting of retrievable Marks of Grace",
-		position = 5
+		position = 6
 	)
 	default boolean highlightMarks()
 	{
@@ -104,7 +115,7 @@ public interface AgilityConfig extends Config
 		keyName = "markHighlight",
 		name = "Mark Highlight Color",
 		description = "Color of highlighted Marks of Grace",
-		position = 6
+		position = 7
 	)
 	default Color getMarkColor()
 	{
@@ -112,10 +123,32 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highlightPortals",
+		name = "Highlight Portals",
+		description = "Enable/disable the highlighting of Prifddinas portals",
+		position = 8
+	)
+	default boolean highlightPortals()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "portalsHighlight",
+		name = "Portals Highlight Color",
+		description = "Color of highlighted Prifddinas portals",
+		position = 9
+	)
+	default Color getPortalsColor()
+	{
+		return Color.MAGENTA;
+	}
+
+	@ConfigItem(
 		keyName = "highlightShortcuts",
 		name = "Highlight Agility Shortcuts",
 		description = "Enable/disable the highlighting of Agility shortcuts",
-		position = 7
+		position = 10
 	)
 	default boolean highlightShortcuts()
 	{
@@ -126,7 +159,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapOverlay",
 		name = "Show Trap Overlay",
 		description = "Enable/disable the highlighting of traps on Agility courses",
-		position = 8
+		position = 11
 	)
 	default boolean showTrapOverlay()
 	{
@@ -137,7 +170,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapHighlight",
 		name = "Trap Overlay Color",
 		description = "Color of Agility trap overlay",
-		position = 9
+		position = 12
 	)
 	default Color getTrapColor()
 	{
@@ -148,7 +181,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaNotifier",
 		name = "Agility Arena notifier",
 		description = "Notify on ticket location change in Agility Arena",
-		position = 10
+		position = 13
 	)
 	default boolean notifyAgilityArena()
 	{
@@ -159,7 +192,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaTimer",
 		name = "Agility Arena timer",
 		description = "Configures whether Agility Arena timer is displayed",
-		position = 11
+		position = 14
 	)
 	default boolean showAgilityArenaTimer()
 	{
@@ -170,7 +203,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightStick",
 		name = "Highlight Stick",
 		description = "Highlight the retrievable stick in the Werewolf Agility Course",
-		position = 12
+		position = 13
 	)
 	default boolean highlightStick()
 	{
@@ -181,10 +214,32 @@ public interface AgilityConfig extends Config
 		keyName = "stickHighlightColor",
 		name = "Stick Highlight Color",
 		description = "Color of highlighted stick",
-		position = 13
+		position = 14
 	)
 	default Color stickHighlightColor()
 	{
 		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreNpcs",
+		name = "Highlight Sepulchre Projectiles",
+		description = "Highlights arrows and swords in the Sepulchre",
+		position = 15
+	)
+	default boolean highlightSepulchreNpcs()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "sepulchreHighlightColor",
+		name = "Sepulchre Highlight",
+		description = "Overlay color for arrows and swords",
+		position = 16
+	)
+	default Color sepulchreHighlightColor()
+	{
+		return Color.GREEN;
 	}
 }

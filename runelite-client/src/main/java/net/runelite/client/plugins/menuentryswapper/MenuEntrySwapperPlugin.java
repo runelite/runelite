@@ -317,9 +317,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		// is what builds the context menu row which is what the eventual click will use
 
 		// Swap to shift-click deposit behavior
-		// Deposit- op 2 is the current withdraw amount 1/5/10/x
+		// Deposit- op 1 is the current withdraw amount 1/5/10/x for deposit box interface
+		// Deposit- op 2 is the current withdraw amount 1/5/10/x for bank interface
 		if (shiftModifier && config.bankDepositShiftClick() != ShiftDepositMode.OFF
-			&& menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getIdentifier() == 2
+			&& menuEntryAdded.getType() == MenuAction.CC_OP.getId() && (menuEntryAdded.getIdentifier() == 2 || menuEntryAdded.getIdentifier() == 1)
 			&& menuEntryAdded.getOption().startsWith("Deposit-"))
 		{
 			ShiftDepositMode shiftDepositMode = config.bankDepositShiftClick();
@@ -441,7 +442,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("teleport", option, target, index);
 			}
 
-			if (config.swapHardWoodGrove() && target.contains("rionasta"))
+			if (config.swapHardWoodGroveParcel() && target.contains("rionasta"))
 			{
 				swap("send-parcel", option, target, index);
 			}
@@ -635,6 +636,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("empty", option, target, index);
 		}
+		else if (config.swapGauntlet() && option.equals("enter") && target.equals("the gauntlet"))
+		{
+			swap("enter-corrupted", option, target, index);
+		}
 		else if (config.swapQuick() && option.equals("enter"))
 		{
 			swap("quick-enter", option, target, index);
@@ -727,6 +732,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("watson", option, target, index);
 			swap("barbarian guard", option, target, index);
 			swap("random", option, target, index);
+		}
+		else if (shiftModifier && option.equals("value"))
+		{
+			if (config.shopBuy() != null && config.shopBuy() != BuyMode.OFF)
+			{
+				swap(config.shopBuy().getOption(), option, target, index);
+			}
+
+			if (config.shopSell() != null && config.shopSell() != SellMode.OFF)
+			{
+				swap(config.shopSell().getOption(), option, target, index);
+			}
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{

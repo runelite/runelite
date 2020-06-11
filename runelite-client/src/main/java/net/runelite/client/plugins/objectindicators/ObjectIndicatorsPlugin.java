@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -335,7 +336,8 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 					&& worldPoint.getPlane() == objectPoint.getZ())
 			{
 				// Transform object to get the name which matches against what we've stored
-				if (objectPoint.getName().equals(getObjectComposition(object.getId()).getName()))
+				ObjectComposition composition = getObjectComposition(object.getId());
+				if (composition != null && objectPoint.getName().equals(composition.getName()))
 				{
 					log.debug("Marking object {} due to matching {}", object, objectPoint);
 					objects.add(new ColorTileObject(object, objectPoint.getColor()));
@@ -494,6 +496,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			.collect(Collectors.toSet());
 	}
 
+	@Nullable
 	private ObjectComposition getObjectComposition(int id)
 	{
 		ObjectComposition objectComposition = client.getObjectDefinition(id);

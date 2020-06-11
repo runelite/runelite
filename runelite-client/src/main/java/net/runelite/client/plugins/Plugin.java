@@ -53,4 +53,9 @@ public abstract class Plugin implements Module
 	{
 		return injector;
 	}
+
+	public String getName()
+	{
+		return getClass().getAnnotation(PluginDescriptor.class).name();
+	}
 }
