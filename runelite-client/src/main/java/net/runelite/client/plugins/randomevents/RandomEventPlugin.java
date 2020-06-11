@@ -177,6 +177,8 @@ public class RandomEventPlugin extends Plugin
 
 		switch (id)
 		{
+			case NpcID.BEE_KEEPER_6747:
+				return config.notifyBeekeeper();
 			case NpcID.SERGEANT_DAMIEN_6743:
 				return config.notifyDemon();
 			case NpcID.FREAKY_FORESTER_6748:
@@ -186,6 +188,9 @@ public class RandomEventPlugin extends Plugin
 			case NpcID.GENIE:
 			case NpcID.GENIE_327:
 				return config.notifyGenie();
+			case NpcID.DR_JEKYLL:
+			case NpcID.DR_JEKYLL_314:
+				return config.notifyJekyll();
 			case NpcID.EVIL_BOB:
 			case NpcID.EVIL_BOB_6754:
 				return config.notifyBob();
@@ -200,6 +205,8 @@ public class RandomEventPlugin extends Plugin
 				return config.notifyQuiz();
 			case NpcID.DUNCE_6749:
 				return config.notifyDunce();
+			case NpcID.SANDWICH_LADY:
+				return config.notifySandwich();
 			default:
 				return false;
 		}
