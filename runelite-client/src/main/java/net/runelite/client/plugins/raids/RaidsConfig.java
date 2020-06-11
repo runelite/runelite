@@ -226,7 +226,7 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 			position = 20,
 			keyName = "highlightColor",
-			name = "Highlighted room color",
+			name = "Highlight color",
 			description = "The color of highlighted rooms"
 	)
 	default Color highlightColor()
@@ -237,7 +237,7 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 			position = 21,
 			keyName = "hideBlacklist",
-			name = "Hide raids containing blacklisted rooms",
+			name = "Hide raids with blacklisted",
 			description = "Completely hides raids containing blacklisted room(s)"
 	)
 	default boolean hideBlacklisted()
@@ -248,7 +248,7 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 			position = 22,
 			keyName = "hideMissingHighlighted",
-			name = "Hide raids missing highlighted rooms",
+			name = "Hide raids missing highlighted",
 			description = "Completely hides raids missing highlighted room(s)"
 	)
 	default boolean hideMissingHighlighted()
