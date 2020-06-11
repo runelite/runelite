@@ -584,4 +584,26 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "alwaysShiftModifyDeposit",
+		name = "Always shift deposit",
+		description = "Always shift-clicks when clicking on deposit",
+		section = itemSection
+	)
+	default boolean alwaysShiftModifyDeposit()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "alwaysShiftModifyWithdraw",
+		name = "Always shift withdraw",
+		description = "Always shift-clicks when clicking on withdraw",
+		section = itemSection
+	)
+	default boolean alwaysShiftModifyWithdraw()
+	{
+		return false;
+	}
 }
