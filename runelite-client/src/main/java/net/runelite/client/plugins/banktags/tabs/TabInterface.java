@@ -567,7 +567,7 @@ public class TabInterface
 		scrollTab(0);
 	}
 
-	public void saveTab()
+	private void saveTab()
 	{
 		// If bank window was just hidden, update last active tab position
 		if (currentTabIndex != config.position())
