@@ -384,14 +384,7 @@ public class TimersPlugin extends Plugin
 			|| event.getId() == ItemID.EGNIOL_POTION_4))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-			if (wearingRingOfEndurance)
-			{
-				createGameTimer(STAMINA_RING_OF_ENDURANCE);
-			}
-			else
-			{
-				createGameTimer(STAMINA);
-			}
+			createStaminaTimer();
 			return;
 		}
 
@@ -452,14 +445,7 @@ public class TimersPlugin extends Plugin
 
 		if (config.showStamina() && (event.getMessage().equals(STAMINA_DRINK_MESSAGE) || event.getMessage().equals(STAMINA_SHARED_DRINK_MESSAGE)))
 		{
-			if (wearingRingOfEndurance)
-			{
-				createGameTimer(STAMINA_RING_OF_ENDURANCE);
-			}
-			else
-			{
-				createGameTimer(STAMINA);
-			}
+			createStaminaTimer();
 		}
 
 		if (config.showStamina() && (event.getMessage().equals(STAMINA_EXPIRED_MESSAGE) || event.getMessage().equals(GAUNTLET_ENTER_MESSAGE)))
@@ -645,6 +631,19 @@ public class TimersPlugin extends Plugin
 						break;
 				}
 			}
+		}
+	}
+
+	private void createStaminaTimer()
+	{
+		if (wearingRingOfEndurance)
+		{
+			removeGameTimer(STAMINA);
+			createGameTimer(STAMINA_RING_OF_ENDURANCE);
+		}
+		else
+		{
+			createGameTimer(STAMINA);
 		}
 	}
 
