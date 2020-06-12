@@ -95,7 +95,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showTeleportCharges",
 		name = "Show Teleport Charges",
-		description = "Configures if teleport item count is shown",
+		description = "Configures if teleport item charge count is shown",
 		position = 5,
 		section = chargesSection
 	)
@@ -107,7 +107,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showDodgyCount",
 		name = "Dodgy Necklace Count",
-		description = "Configures if Dodgy Necklace charge count is shown",
+		description = "Configures if Dodgy necklace charge count is shown",
 		position = 6,
 		section = chargesSection
 	)
@@ -119,7 +119,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "dodgyNotification",
 		name = "Dodgy Necklace Notification",
-		description = "Configures if the dodgy necklace breaking notification is shown",
+		description = "Configures if a notification is sent when a Dodgy necklace breaks",
 		position = 7,
 		section = notificationSection
 	)
@@ -149,7 +149,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showImpCharges",
 		name = "Show Imp-in-a-box charges",
-		description = "Configures if imp-in-a-box item charges is shown",
+		description = "Configures if Imp-in-a-box item charge is shown",
 		position = 8,
 		section = chargesSection
 	)
@@ -161,7 +161,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showFungicideCharges",
 		name = "Show Fungicide Charges",
-		description = "Configures if fungicide item charges is shown",
+		description = "Configures if Fungicide item charge is shown",
 		position = 9,
 		section = chargesSection
 	)
@@ -173,7 +173,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showWateringCanCharges",
 		name = "Show Watering Can Charges",
-		description = "Configures if watering can item charge is shown",
+		description = "Configures if Watering can item charge is shown",
 		position = 10,
 		section = chargesSection
 	)
@@ -185,7 +185,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showWaterskinCharges",
 		name = "Show Waterskin Charges",
-		description = "Configures if waterskin item charge is shown",
+		description = "Configures if Waterskin dose count is shown",
 		position = 11,
 		section = chargesSection
 	)
@@ -196,8 +196,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBellowCharges",
-		name = "Show Bellow Charges",
-		description = "Configures if ogre bellow item charge is shown",
+		name = "Show Bellows Charges",
+		description = "Configures if Ogre bellows item charge is shown",
 		position = 12,
 		section = chargesSection
 	)
@@ -209,7 +209,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showBasketCharges",
 		name = "Show Basket Charges",
-		description = "Configures if fruit basket item charge is shown",
+		description = "Configures if Fruit basket item count is shown",
 		position = 13,
 		section = chargesSection
 	)
@@ -221,7 +221,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showSackCharges",
 		name = "Show Sack Charges",
-		description = "Configures if sack item charge is shown",
+		description = "Configures if Sack item count is shown",
 		position = 14,
 		section = chargesSection
 	)
@@ -233,7 +233,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showAbyssalBraceletCharges",
 		name = "Show Abyssal Bracelet Charges",
-		description = "Configures if abyssal bracelet item charge is shown",
+		description = "Configures if Abyssal bracelet item charge is shown",
 		position = 15,
 		section = chargesSection
 	)
@@ -245,7 +245,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showAmuletOfChemistryCharges",
 		name = "Show Amulet of Chemistry Charges",
-		description = "Configures if amulet of chemistry item charge is shown",
+		description = "Configures if Amulet of chemistry item charge is shown",
 		position = 16,
 		section = chargesSection
 	)
@@ -275,7 +275,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showAmuletOfBountyCharges",
 		name = "Show Amulet of Bounty Charges",
-		description = "Configures if amulet of bounty item charge is shown",
+		description = "Configures if Amulet of bounty item charge is shown",
 		position = 17,
 		section = chargesSection
 	)
@@ -305,7 +305,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "recoilNotification",
 		name = "Ring of Recoil Notification",
-		description = "Configures if the ring of recoil breaking notification is shown",
+		description = "Configures if a notification is sent when a Ring of recoil breaks",
 		position = 18,
 		section = notificationSection
 	)
@@ -317,7 +317,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showBindingNecklaceCharges",
 		name = "Show Binding Necklace Charges",
-		description = "Configures if binding necklace item charge is shown",
+		description = "Configures if Binding necklace item charge is shown",
 		position = 19,
 		section = chargesSection
 	)
@@ -347,7 +347,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "bindingNotification",
 		name = "Binding Necklace Notification",
-		description = "Configures if the binding necklace breaking notification is shown",
+		description = "Configures if a notification is sent when a Binding necklace breaks",
 		position = 20,
 		section = notificationSection
 	)
@@ -359,7 +359,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showExplorerRingCharges",
 		name = "Show Explorer's Ring Alch Charges",
-		description = "Configures if explorer's ring alchemy charges are shown",
+		description = "Configures if Explorer's ring alchemy charges are shown",
 		position = 21,
 		section = chargesSection
 	)
@@ -389,7 +389,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showRingOfForgingCount",
 		name = "Show Ring of Forging Charges",
-		description = "Configures if the Ring of Forging charge count is shown",
+		description = "Configures if Ring of forging charge count is shown",
 		position = 22,
 		section = chargesSection
 	)
@@ -419,7 +419,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "ringOfForgingNotification",
 		name = "Ring of Forging Notification",
-		description = "Configures if the Ring of Forging breaking notification is enabled",
+		description = "Configures if a notification is sent when a Ring of forging breaks",
 		position = 23,
 		section = notificationSection
 	)
@@ -431,7 +431,7 @@ public interface ItemChargeConfig extends Config
 	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
-		description = "Configures whether to show an infobox equipped charge items",
+		description = "Configures if an infobox with remaining charges for equipped items is shown",
 		position = 24
 	)
 	default boolean showInfoboxes()
