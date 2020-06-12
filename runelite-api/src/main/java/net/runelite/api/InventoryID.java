@@ -57,6 +57,12 @@ public enum InventoryID
 	 * Monkey madness puzzle box inventory.
 	 */
 	MONKEY_MADNESS_PUZZLE_BOX(221),
+
+	/**
+	 * Any shop inventory.
+	 */
+	SHOP_INVENTORY(279),
+
 	/**
 	 * Drift net fishing reward
 	 */
