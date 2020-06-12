@@ -298,7 +298,6 @@ public class WorldHopperPlugin extends Plugin
 	private void clearFavoriteConfig(int world)
 	{
 		configManager.unsetConfiguration(WorldHopperConfig.GROUP, "favorite_" + world);
-		panel.resetAllFavoriteMenus();
 	}
 
 	boolean isFavorite(World world)

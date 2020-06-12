@@ -223,15 +223,6 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 	}
 
-	void resetAllFavoriteMenus()
-	{
-		for (WorldTableRow row : rows)
-		{
-			row.setFavoriteMenu(false);
-		}
-
-	}
-
 	void populate(List<World> worlds)
 	{
 		rows.clear();

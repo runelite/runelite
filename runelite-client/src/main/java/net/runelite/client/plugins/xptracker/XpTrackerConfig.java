@@ -28,11 +28,19 @@ package net.runelite.client.plugins.xptracker;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("xpTracker")
 public interface XpTrackerConfig extends Config
 {
+	@ConfigSection(
+		name = "Overlay",
+		description = "Canvas overlay options",
+		position = 99
+	)
+	String overlaySection = "overlay";
+
 	@ConfigItem(
 		position = 0,
 		keyName = "hideMaxed",
@@ -82,7 +90,8 @@ public interface XpTrackerConfig extends Config
 		position = 4,
 		keyName = "skillTabOverlayMenuOptions",
 		name = "Add skill tab canvas menu option",
-		description = "Configures whether a menu option to show/hide canvas XP trackers will be added to skills on the skill tab"
+		description = "Configures whether a menu option to show/hide canvas XP trackers will be added to skills on the skill tab",
+		section = overlaySection
 	)
 	default boolean skillTabOverlayMenuOptions()
 	{
@@ -93,7 +102,8 @@ public interface XpTrackerConfig extends Config
 		position = 5,
 		keyName = "onScreenDisplayMode",
 		name = "On-screen tracker display mode (top)",
-		description = "Configures the information displayed in the first line of on-screen XP overlays"
+		description = "Configures the information displayed in the first line of on-screen XP overlays",
+		section = overlaySection
 	)
 	default XpPanelLabel onScreenDisplayMode()
 	{
@@ -104,7 +114,8 @@ public interface XpTrackerConfig extends Config
 		position = 6,
 		keyName = "onScreenDisplayModeBottom",
 		name = "On-screen tracker display mode (bottom)",
-		description = "Configures the information displayed in the second line of on-screen XP overlays"
+		description = "Configures the information displayed in the second line of on-screen XP overlays",
+		section = overlaySection
 	)
 	default XpPanelLabel onScreenDisplayModeBottom()
 	{

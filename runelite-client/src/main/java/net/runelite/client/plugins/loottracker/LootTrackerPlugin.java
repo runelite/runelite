@@ -393,7 +393,7 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOADING)
+		if (event.getGameState() == GameState.LOADING && !client.isInInstancedRegion())
 		{
 			chestLooted = false;
 			coffinOpened = false;
