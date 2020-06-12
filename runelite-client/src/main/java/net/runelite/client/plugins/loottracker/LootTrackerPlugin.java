@@ -811,8 +811,8 @@ public class LootTrackerPlugin extends Plugin
 			String itemName = lootMatcher.group("item");
 			List<ItemPrice> itemLookup = itemManager.strictSearch(itemName);
 
-			int idFromLookup = (coinDropMatch.matches()) ? ItemID.COINS : -1;
-			int lootId = (itemLookup.size() == 0) ? DetermineWorthlessLoot(itemName) : idFromLookup;
+			int idFromLookup = (itemLookup.size() != 0) ? itemLookup.get(0).getId() : DetermineWorthlessLoot(itemName);
+			int lootId = (coinDropMatch.matches()) ? ItemID.COINS : idFromLookup;
 
 			if (lootId == -1)
 			{
