@@ -167,6 +167,7 @@ public class LootTrackerPlugin extends Plugin
 	//Regex for chatbox matching
 	private static final Pattern LOOT_DROP_PATTERN =
 			Pattern.compile("^(?:Valuable|Untradeable|(?<name>.*?) received a) drop: (?:(?<quantity>[\\d,]+) x )?(?<item>[A-Za-z' \\(\\d\\)]+)(?: \\([\\d,]+ coins\\))?$");
+	private static final Pattern COIN_DROP_PATTERN = Pattern.compile("([\\d|,]+ x Coins)");
 
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
@@ -798,7 +799,6 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final String cleanedMessage = Text.removeTags(message);
 		final String playerName = client.getLocalPlayer().getName();
-
 		final Matcher lootMatcher = LOOT_DROP_PATTERN.matcher(cleanedMessage);
 
 		ItemStack loot = null;
@@ -806,15 +806,20 @@ public class LootTrackerPlugin extends Plugin
 
 		if (lootMatcher.find())
 		{
+			final Matcher coinDropMatch = COIN_DROP_PATTERN.matcher(cleanedMessage);
 			quantity = (lootMatcher.group("quantity") != null) ? Integer.parseInt(lootMatcher.group("quantity").replace(",", "")) : 1;
-			List<ItemPrice> itemLookup = itemManager.search(lootMatcher.group("item"));
+			String itemName = lootMatcher.group("item");
+			List<ItemPrice> itemLookup = itemManager.search(itemName);
 
-			int idFromLookup = DetermineCorrectItemPrice(itemLookup, lootMatcher.group("item"));
-			int lootId = (itemLookup.size() == 0) ? DetermineWorthlessLoot(lootMatcher.group("item")) : idFromLookup;
+			int idFromLookup = (!coinDropMatch.matches())
+					? DetermineCorrectItemPrice(itemLookup, itemName)
+					: ItemID.COINS;
+
+			int lootId = (itemLookup.size() == 0) ? DetermineWorthlessLoot(itemName) : idFromLookup;
 
 			if (lootId == -1)
 			{
-				log.error("Unable to determine ItemId for loot " + lootMatcher.group("item"));
+				log.error("Unable to determine ItemId for loot " + itemName);
 				return false;
 			}
 
