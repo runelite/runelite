@@ -164,6 +164,11 @@ public class TimeTrackingPlugin extends Plugin
 			return;
 		}
 
+		if (e.getKey().equals("farmingContractInfoBox"))
+		{
+			farmingContractManager.handleInfoBox();
+		}
+
 		if (clockManager.getTimers().isEmpty() && e.getKey().equals(TIMERS))
 		{
 			clockManager.loadTimers();

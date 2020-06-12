@@ -159,23 +159,23 @@ public class FarmingContractManager
 		return oldSummary != summary;
 	}
 
-	private void handleInfoBox()
+	public void handleInfoBox()
 	{
 		if (infoBox != null)
 		{
-			if (contract == null)
+			if (contract == null || !config.farmingContractInfoBox())
 			{
 				infoBoxManager.removeInfoBox(infoBox);
 				infoBox = null;
 			}
-			else if (infoBox.getContract() != contract)
+			else if (infoBox.getContract() != contract && config.farmingContractInfoBox())
 			{
 				infoBoxManager.removeInfoBox(infoBox);
 				infoBox = new FarmingContractInfoBox(itemManager.getImage(contract.getItemID()), plugin, contract, config, this);
 				infoBoxManager.addInfoBox(infoBox);
 			}
 		}
-		else if (contract != null)
+		else if (contract != null && config.farmingContractInfoBox())
 		{
 			infoBox = new FarmingContractInfoBox(itemManager.getImage(contract.getItemID()), plugin, contract, config, this);
 			infoBoxManager.addInfoBox(infoBox);

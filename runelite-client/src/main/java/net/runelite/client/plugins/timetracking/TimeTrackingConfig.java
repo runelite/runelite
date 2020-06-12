@@ -72,10 +72,21 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "farmingContractInfoBox",
+		name = "Show farming contract infobox",
+		description = "Show an infobox of your current farming contract when inside the farming guild",
+		position = 4
+	)
+	default boolean farmingContractInfoBox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "defaultTimerMinutes",
 		name = "Default Time",
 		description = "The default time for the timer in minutes",
-		position = 4
+		position = 5
 	)
 	@Units(Units.MINUTES)
 	default int defaultTimerMinutes()
@@ -87,7 +98,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "sortOrder",
 		name = "Sort Order",
 		description = "The order in which to sort the timers",
-		position = 5
+		position = 6
 	)
 	default SortOrder sortOrder()
 	{
@@ -98,7 +109,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "timerWarningThreshold",
 		name = "Timer Warning Threshold",
 		description = "The time at which to change the timer color to the warning color",
-		position = 6
+		position = 7
 	)
 	@Units(Units.SECONDS)
 	default int timerWarningThreshold()
