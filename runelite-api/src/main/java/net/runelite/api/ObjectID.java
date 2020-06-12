@@ -19728,7 +19728,6 @@ public final class ObjectID
 	public static final int WIZARD_STATUE_38423 = 38423;
 	public static final int WIZARD_STATUE_38424 = 38424;
 	public static final int WIZARD_STATUE_38425 = 38425;
-	public static final int FIRE_38426 = 38426;
 	public static final int FIRE_38427 = 38427;
 	public static final int KNIGHT_STATUE = 38428;
 	public static final int KNIGHT_STATUE_38429 = 38429;
