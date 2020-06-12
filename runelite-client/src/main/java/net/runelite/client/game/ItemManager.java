@@ -374,6 +374,22 @@ public class ItemManager
 		return result;
 	}
 
+	public List<ItemPrice> strictSearch(String itemName)
+	{
+		itemName = itemName.toLowerCase();
+
+		List<ItemPrice> result = new ArrayList<>();
+		for (ItemPrice itemPrice : itemPrices.values())
+		{
+			final String name = itemPrice.getName();
+			if (name.toLowerCase().equals(itemName))
+			{
+				result.add(itemPrice);
+			}
+		}
+		return result;
+	}
+
 	/**
 	 * Look up an item's composition
 	 *

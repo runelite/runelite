@@ -809,12 +809,9 @@ public class LootTrackerPlugin extends Plugin
 			final Matcher coinDropMatch = COIN_DROP_PATTERN.matcher(cleanedMessage);
 			quantity = (lootMatcher.group("quantity") != null) ? Integer.parseInt(lootMatcher.group("quantity").replace(",", "")) : 1;
 			String itemName = lootMatcher.group("item");
-			List<ItemPrice> itemLookup = itemManager.search(itemName);
+			List<ItemPrice> itemLookup = itemManager.strictSearch(itemName);
 
-			int idFromLookup = (!coinDropMatch.matches())
-					? DetermineCorrectItemPrice(itemLookup, itemName)
-					: ItemID.COINS;
-
+			int idFromLookup = (coinDropMatch.matches()) ? ItemID.COINS : -1;
 			int lootId = (itemLookup.size() == 0) ? DetermineWorthlessLoot(itemName) : idFromLookup;
 
 			if (lootId == -1)
@@ -1001,32 +998,6 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return false;
-	}
-
-	Integer DetermineCorrectItemPrice(List<ItemPrice> itemPrices, String itemNameFromChat)
-	{
-		if (itemPrices.size() == 0)
-		{
-			return -1;
-		}
-
-		// Default to first result
-		ItemPrice firstResult = itemPrices.get(0);
-		int idFromLookup = firstResult.getId();
-
-		// if first item is not correct, try to find correct result in list
-		if (!firstResult.getName().equals(itemNameFromChat))
-		{
-			for (ItemPrice itemPrice : itemPrices)
-			{
-				if (itemPrice.getName().equals(itemNameFromChat))
-				{
-					return itemPrice.getId();
-				}
-			}
-		}
-
-		return idFromLookup;
 	}
 
 	private Integer DetermineWorthlessLoot(String itemName)

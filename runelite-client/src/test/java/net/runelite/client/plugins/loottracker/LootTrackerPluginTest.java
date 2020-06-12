@@ -252,26 +252,4 @@ public class LootTrackerPluginTest
 		// Coffin should be "closed" now after player names don't match in last message (simulating a broadcast message)
 		assertFalse(lootTrackerPluginSpy.coffinOpened);
 	}
-
-	@Test
-	public void testwhiteLillyDropEdgecase()
-	{
-		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
-
-		final ItemPrice lillySeed = new ItemPrice();
-		lillySeed.setId(ItemID.WHITE_LILY_SEED);
-		lillySeed.setName("White Lilly Seed");
-
-		final ItemPrice lilly = new ItemPrice();
-		lilly.setId(ItemID.WHITE_LILY);
-		lilly.setName("White Lilly");
-		
-		List<ItemPrice> lookup = new ArrayList<>();
-		
-		lookup.add(lillySeed);
-		lookup.add(lilly);
-		
-		int id = lootTrackerPluginSpy.DetermineCorrectItemPrice(lookup, "White Lilly");
-		assertTrue(id == ItemID.WHITE_LILY);
-	}
 }
