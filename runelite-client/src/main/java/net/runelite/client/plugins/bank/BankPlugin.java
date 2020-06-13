@@ -112,8 +112,8 @@ public class BankPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-    @Inject
-    private WorldService worldService;
+	@Inject
+	private WorldService worldService;
 
 	@Inject
 	private BankConfig config;
@@ -191,12 +191,15 @@ public class BankPlugin extends Plugin
 		if (config.hideMembersItems() && !worlds.findWorld(client.getWorld()).getTypes().contains(WorldType.MEMBERS))
 		{
 			Widget itemContainer = client.getWidget(WidgetID.BANK_GROUP_ID, 12);
-			if (itemContainer != null) {
+			if (itemContainer != null)
+			{
 				Widget[] children = itemContainer.getDynamicChildren();
-				for (int i = 0; i < children.length; i++) {
+				for (int i = 0; i < children.length; i++)
+				{
 					int realItemId = itemManager.canonicalize(children[i].getItemId());
 					ItemComposition itemComposition = itemManager.getItemComposition(realItemId);
-					if (itemComposition.isMembers()){
+					if (itemComposition.isMembers())
+					{
 						children[i].setOpacity(200);
 					}
 				}
