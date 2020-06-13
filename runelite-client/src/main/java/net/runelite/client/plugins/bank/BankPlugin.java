@@ -65,10 +65,13 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.util.QuantityFormatter;
+import net.runelite.http.api.worlds.WorldResult;
+import net.runelite.http.api.worlds.WorldType;
 
 @PluginDescriptor(
 	name = "Bank",
@@ -108,6 +111,9 @@ public class BankPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+    @Inject
+    private WorldService worldService;
 
 	@Inject
 	private BankConfig config;
@@ -180,6 +186,22 @@ public class BankPlugin extends Plugin
 		String[] stringStack = client.getStringStack();
 		int intStackSize = client.getIntStackSize();
 		int stringStackSize = client.getStringStackSize();
+
+		WorldResult worlds = worldService.getWorlds();
+		if (config.hideMembersItems() && !worlds.findWorld(client.getWorld()).getTypes().contains(WorldType.MEMBERS))
+		{
+			Widget itemContainer = client.getWidget(WidgetID.BANK_GROUP_ID, 12);
+			if (itemContainer != null) {
+				Widget[] children = itemContainer.getDynamicChildren();
+				for (int i = 0; i < children.length; i++) {
+					int realItemId = itemManager.canonicalize(children[i].getItemId());
+					ItemComposition itemComposition = itemManager.getItemComposition(realItemId);
+					if (itemComposition.isMembers()){
+						children[i].setOpacity(200);
+					}
+				}
+			}
+		}
 
 		switch (event.getEventName())
 		{
