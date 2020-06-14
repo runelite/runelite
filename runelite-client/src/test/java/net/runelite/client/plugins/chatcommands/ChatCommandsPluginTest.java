@@ -590,4 +590,62 @@ public class ChatCommandsPluginTest
 
 		verify(messageNode).setRuneLiteFormatMessage("<colNORMAL>Level <colHIGHLIGHT>Zulrah: 1000<colNORMAL> Rank: <colHIGHLIGHT>10");
 	}
+
+	@Test
+	public void testHsFloorNoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 1 time: <col=ff0000>1:19</col>. Personal best: 0:28", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 1", 28);
+	}
+
+	@Test
+	public void testHsFloorPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 2 time: <col=ff0000>0:47</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 2", 47);
+	}
+
+	@Test
+	public void testHsOverallPb_Pb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>4:46</col> (new personal best)<br>Overall time: <col=ff0000>9:53</col> (new personal best)<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 4 * 60 + 46);
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 9 * 60 + 53);
+	}
+
+	@Test
+	public void testHsOverallPb_NoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:26</col> (new personal best)<br>Overall time: <col=ff0000>9:17</col>. Personal best: 9:15<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 3 * 60 + 26);
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 9 * 60 + 15);
+	}
+
+	@Test
+	public void testHsOverallNoPb_NoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:56</col>. Personal best: 3:05<br>Overall time: <col=ff0000>9:14</col>. Personal best: 7:49<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 3 * 60 + 5);
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 7 * 60 + 49);
+	}
+
+	@Test
+	public void testHsOverallNoPb_Pb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:10</col>. Personal best: 3:04<br>Overall time: <col=ff0000>7:47</col> (new personal best)<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 3 * 60 + 4);
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 7 * 60 + 47);
+	}
 }
