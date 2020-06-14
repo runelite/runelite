@@ -207,7 +207,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3560, 3987, 0), new CoordinateClueInfo("Lithkren. Digsite pendant teleport if unlocked, otherwise take rowboat from west of Mushroom Meadow Mushtree.", ARMADYLIAN_OR_BANDOSIAN_GUARD))
 		// Master
 		.put(new WorldPoint(2178, 3209, 0), new CoordinateClueInfo("South of Iorwerth Camp.", BRASSICAN_MAGE))
-		.put(new WorldPoint(2155, 3100, 0), new CoordinateClueInfo("South of Port Tyras (BJS).", BRASSICAN_MAGE))
+		.put(new WorldPoint(2155, 3100, 0), new CoordinateClueInfo("South of Port Tyras (BJS if 76 Agility).", BRASSICAN_MAGE))
 		.put(new WorldPoint(2217, 3092, 0), new CoordinateClueInfo("Poison Waste island (DLR).", BRASSICAN_MAGE))
 		.put(new WorldPoint(3830, 3060, 0), new CoordinateClueInfo("Small island located north-east of Mos Le'Harmless.", BRASSICAN_MAGE, true, Varbits.FIRE_PIT_MOS_LE_HARMLESS))
 		.put(new WorldPoint(2834, 3271, 0), new CoordinateClueInfo("Crandor island.", BRASSICAN_MAGE))
