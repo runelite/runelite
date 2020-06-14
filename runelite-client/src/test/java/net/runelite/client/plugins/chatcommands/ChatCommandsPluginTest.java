@@ -648,4 +648,22 @@ public class ChatCommandsPluginTest
 		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 3 * 60 + 4);
 		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 7 * 60 + 47);
 	}
+
+	@Test
+	public void testHsFloorKc()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have completed Floor 5 of the Hallowed Sepulchre! Total completions: <col=ff0000>81</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "hallowed sepulchre floor 5", 81);
+	}
+
+	@Test
+	public void testHsGhcKc()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have opened the Grand Hallowed Coffin <col=ff0000>36</col> times!", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "hallowed sepulchre", 36);
+	}
 }

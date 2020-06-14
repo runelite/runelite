@@ -108,6 +108,8 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern ADVENTURE_LOG_PB_PATTERN = Pattern.compile("(" + ADVENTURE_LOG_BOSS_PB_PATTERN + "(?: - " + ADVENTURE_LOG_BOSS_PB_PATTERN + ")*) (?:" + ADVENTURE_LOG_COX_PB_PATTERN + "( )*)+");
 	private static final Pattern HS_PB_PATTERN = Pattern.compile("Floor (?<floor>\\d) time: <col=ff0000>(?<floortime>[0-9:]+)</col>(?: \\(new personal best\\)|. Personal best: (?<floorpb>[0-9:]+))" +
 		"(?:<br>Overall time: <col=ff0000>(?<otime>[0-9:]+)</col>(?: \\(new personal best\\)|. Personal best: (?<opb>[0-9:]+)))?");
+	private static final Pattern HS_KC_FLOOR_PATTERN = Pattern.compile("You have completed Floor (\\d) of the Hallowed Sepulchre! Total completions: <col=ff0000>(\\d+)</col>\\.");
+	private static final Pattern HS_KC_GHC_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin <col=ff0000>(\\d+)</col> times?!");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -392,6 +394,21 @@ public class ChatCommandsPlugin extends Plugin
 				pb = MoreObjects.firstNonNull(opb, otime);
 				setPb("Hallowed Sepulchre", timeStringToSeconds(pb));
 			}
+		}
+
+		matcher = HS_KC_FLOOR_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			int floor = Integer.parseInt(matcher.group(1));
+			int kc = Integer.parseInt(matcher.group(2));
+			setKc("Hallowed Sepulchre Floor " + floor, kc);
+		}
+
+		matcher = HS_KC_GHC_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			int kc = Integer.parseInt(matcher.group(1));
+			setKc("Hallowed Sepulchre", kc);
 		}
 
 		lastBossKill = null;
@@ -1647,6 +1664,7 @@ public class ChatCommandsPlugin extends Plugin
 			// Hallowed Sepulchre
 			case "hs":
 			case "sepulchre":
+			case "ghc":
 				return "Hallowed Sepulchre";
 			case "hs1":
 			case "hs 1":
