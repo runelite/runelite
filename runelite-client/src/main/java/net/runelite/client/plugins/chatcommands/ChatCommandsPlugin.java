@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.EnumSet;
@@ -105,6 +106,8 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern ADVENTURE_LOG_COX_PB_PATTERN = Pattern.compile("Fastest (?:kill|run)(?: - \\(Team size: (?:[0-9]+ players|Solo)\\))?: ([0-9:]+)");
 	private static final Pattern ADVENTURE_LOG_BOSS_PB_PATTERN = Pattern.compile("[a-zA-Z]+(?: [a-zA-Z]+)*");
 	private static final Pattern ADVENTURE_LOG_PB_PATTERN = Pattern.compile("(" + ADVENTURE_LOG_BOSS_PB_PATTERN + "(?: - " + ADVENTURE_LOG_BOSS_PB_PATTERN + ")*) (?:" + ADVENTURE_LOG_COX_PB_PATTERN + "( )*)+");
+	private static final Pattern HS_PB_PATTERN = Pattern.compile("Floor (?<floor>\\d) time: <col=ff0000>(?<floortime>[0-9:]+)</col>(?: \\(new personal best\\)|. Personal best: (?<floorpb>[0-9:]+))" +
+		"(?:<br>Overall time: <col=ff0000>(?<otime>[0-9:]+)</col>(?: \\(new personal best\\)|. Personal best: (?<opb>[0-9:]+)))?");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -370,6 +373,25 @@ public class ChatCommandsPlugin extends Plugin
 		if (matcher.find())
 		{
 			matchPb(matcher);
+		}
+
+		matcher = HS_PB_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			int floor = Integer.parseInt(matcher.group("floor"));
+			String floortime = matcher.group("floortime");
+			String floorpb = matcher.group("floorpb");
+			String otime = matcher.group("otime");
+			String opb = matcher.group("opb");
+
+			String pb = MoreObjects.firstNonNull(floorpb, floortime);
+			setPb("Hallowed Sepulchre Floor " + floor, timeStringToSeconds(pb));
+
+			if (otime != null)
+			{
+				pb = MoreObjects.firstNonNull(opb, otime);
+				setPb("Hallowed Sepulchre", timeStringToSeconds(pb));
+			}
 		}
 
 		lastBossKill = null;
@@ -1621,6 +1643,26 @@ public class ChatCommandsPlugin extends Plugin
 
 			case "the nightmare":
 				return "Nightmare";
+
+			// Hallowed Sepulchre
+			case "hs":
+			case "sepulchre":
+				return "Hallowed Sepulchre";
+			case "hs1":
+			case "hs 1":
+				return "Hallowed Sepulchre Floor 1";
+			case "hs2":
+			case "hs 2":
+				return "Hallowed Sepulchre Floor 2";
+			case "hs3":
+			case "hs 3":
+				return "Hallowed Sepulchre Floor 3";
+			case "hs4":
+			case "hs 4":
+				return "Hallowed Sepulchre Floor 4";
+			case "hs5":
+			case "hs 5":
+				return "Hallowed Sepulchre Floor 5";
 
 			default:
 				return WordUtils.capitalize(boss);
