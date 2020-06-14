@@ -220,7 +220,7 @@ public class LootTrackerPluginTest
 		doReturn(true).when(lootTrackerPluginSpy).isPlayerWithinMapRegion(LootTrackerPlugin.HALLOWED_SEPULCHRE_MAP_REGIONS);
 		when(client.getLocalPlayer().getName()).thenReturn("Sketchy Pat");
 		when(client.getLocalPlayer().getLocalLocation()).thenReturn(new LocalPoint(0, 0));
-		when(itemManager.search(anyString())).thenReturn(Collections.singletonList(fake));
+		when(itemManager.strictSearch(anyString())).thenReturn(Collections.singletonList(fake));
 
 		ChatMessage openedCoffinMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", LootTrackerPlugin.COFFIN_LOOTED_MESSAGE, "", 0);
 		lootTrackerPluginSpy.onChatMessage(openedCoffinMessage);
