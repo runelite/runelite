@@ -32,7 +32,9 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -44,6 +46,9 @@ class MouseHighlightOverlay extends Overlay
 	private final TooltipManager tooltipManager;
 	private final Client client;
 	private final MouseHighlightConfig config;
+
+	private static final int PRAYER_TOOLTIP_SET_BIT = 30;
+	private static final int SPECIAL_ATTACK_TOOLTIP_SET_BIT = 31;
 
 	@Inject
 	MouseHighlightOverlay(Client client, TooltipManager tooltipManager, MouseHighlightConfig config)
@@ -131,6 +136,22 @@ class MouseHighlightOverlay extends Overlay
 		if (tooltipDisplayed == 1)
 		{
 			return null;
+		}
+
+		if (config.followRuneScape())
+		{
+			// If the tooltip is disabled in the advanced settings, don't show our tooltip
+			int tooltips = client.getVar(VarPlayer.TOOLTIPS);
+
+			if (groupId == WidgetID.PRAYER_GROUP_ID && (tooltips >> PRAYER_TOOLTIP_SET_BIT & 1) == 1)
+			{
+				return null;
+			}
+
+			if (groupId == WidgetID.COMBAT_GROUP_ID && tooltips >>> SPECIAL_ATTACK_TOOLTIP_SET_BIT == 1)
+			{
+				return null;
+			}
 		}
 
 		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));

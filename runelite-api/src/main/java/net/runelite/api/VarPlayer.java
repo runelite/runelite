@@ -49,6 +49,12 @@ public enum VarPlayer
 
 	BANK_TAB(115),
 
+	/**
+	 * Use prayer tooltip bit setting: 30
+	 * Use special attack tooltip bit setting: 31
+	 */
+	TOOLTIPS(284),
+
 	MEMBERSHIP_DAYS(1780),
 
 	SPECIAL_ATTACK_PERCENT(300),
