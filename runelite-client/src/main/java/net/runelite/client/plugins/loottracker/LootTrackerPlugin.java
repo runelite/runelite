@@ -802,13 +802,13 @@ public class LootTrackerPlugin extends Plugin
 		final Matcher lootMatcher = LOOT_DROP_PATTERN.matcher(cleanedMessage);
 
 		ItemStack loot = null;
-		int quantity;
+		int quantity = 0;
 
 		if (lootMatcher.find())
 		{
-			final Matcher coinDropMatch = COIN_DROP_PATTERN.matcher(cleanedMessage);
+			final String itemName = lootMatcher.group("item");
+			final Matcher coinDropMatch = COIN_DROP_PATTERN.matcher(itemName);
 			quantity = (lootMatcher.group("quantity") != null) ? Integer.parseInt(lootMatcher.group("quantity").replace(",", "")) : 1;
-			String itemName = lootMatcher.group("item");
 			List<ItemPrice> itemLookup = itemManager.strictSearch(itemName);
 
 			int idFromLookup = (itemLookup.size() != 0) ? itemLookup.get(0).getId() : DetermineWorthlessLoot(itemName);
@@ -840,7 +840,7 @@ public class LootTrackerPlugin extends Plugin
 			lootCollectedFromChat = (lootCollectedFromChat != null) ? lootCollectedFromChat : HashMultiset.create();
 			lootCollectedFromChat.add(loot.getId(), loot.getQuantity());
 
-			log.debug("Added item " + loot.getId() + " to set from chat");
+			log.debug("Added " + quantity + "x item " + loot.getId() + " to set from chat");
 			return true;
 		}
 
