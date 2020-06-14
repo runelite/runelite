@@ -119,7 +119,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(1247, 3726, 0), new CoordinateClueInfo("Just inside the Farming Guild"))
 		.put(new WorldPoint(3770, 3898, 0), new CoordinateClueInfo("On the small island north-east of Fossil Island's mushroom forest."))
 		// Hard
-		.put(new WorldPoint(2209, 3161, 0), new CoordinateClueInfo("North-east of Tyras Camp (BJS).", SARADOMIN_WIZARD))
+		.put(new WorldPoint(2209, 3161, 0), new CoordinateClueInfo("North-east of Tyras Camp (BJS if 76 Agility).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2181, 3206, 0), new CoordinateClueInfo("South of Iorwerth Camp.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3081, 3209, 0), new CoordinateClueInfo("Small Island (CLP).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3399, 3246, 0), new CoordinateClueInfo("Behind the Duel Arena."))
