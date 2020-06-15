@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -402,5 +403,26 @@ public class LootManager
 		}
 
 		return new WorldPoint(x, y, worldLocation.getPlane());
+	}
+
+	/**
+	 * Get the list of items present at the provided WorldPoint that spawned this tick.
+	 *
+	 * @param worldPoint the location in question
+	 * @return the list of item stacks
+	 */
+	public Collection<ItemStack> getItemSpawns(WorldPoint worldPoint)
+	{
+		LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
+		if (localPoint == null)
+		{
+			return Collections.emptyList();
+		}
+
+		final int sceneX = localPoint.getSceneX();
+		final int sceneY = localPoint.getSceneY();
+		final int packed = sceneX << 8 | sceneY;
+		final List<ItemStack> itemStacks = itemSpawns.get(packed);
+		return Collections.unmodifiableList(itemStacks);
 	}
 }
