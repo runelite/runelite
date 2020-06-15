@@ -968,13 +968,12 @@ LABEL848:
    add                   
    istore                 20
    jump                   LABEL769
-SetTitle:
+LABEL853:
    iconst                 0                  ; Compare variable
    iconst                 0                  ;
    sconst                 "isTabMenuActive"
    runelite_callback     ; skip setting the bank title if the tag tab menu is active
    if_icmpne              FinishBuilding
-LABEL853:
    get_varbit             4170
    iconst                 2
    if_icmpeq              LABEL857
