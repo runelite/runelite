@@ -30,8 +30,8 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatPlayer;
-import net.runelite.api.ClanMember;
-import net.runelite.api.ClanMemberManager;
+import net.runelite.api.FriendsChatMember;
+import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
 import net.runelite.api.GameState;
@@ -145,7 +145,7 @@ public class LeagueChatIconsPlugin extends Plugin
 		{
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
-				// Note this is unable to change icon on PMs if they are not a friend or in clan chat
+				// Note this is unable to change icon on PMs if they are not a friend or in friends chat
 			case FRIENDSCHAT:
 				String name = Text.removeTags(chatMessage.getName());
 				if (isChatPlayerOnLeague(name))
@@ -265,7 +265,7 @@ public class LeagueChatIconsPlugin extends Plugin
 	}
 
 	/**
-	 * Checks if a player name is a friend or clan member on a league world.
+	 * Checks if a player name is a friend or friends chat member on a league world.
 	 *
 	 * @param name name of player to check.
 	 * @return boolean true/false.
@@ -325,22 +325,22 @@ public class LeagueChatIconsPlugin extends Plugin
 	}
 
 	/**
-	 * Gets a ChatPlayer object from a clean name by searching clan and friends list.
+	 * Gets a ChatPlayer object from a clean name by searching friends chat and friends list.
 	 *
 	 * @param name name of player to find.
 	 * @return ChatPlayer if found, else null.
 	 */
 	private ChatPlayer getChatPlayerFromName(String name)
 	{
-		// Search clan members first, because if a friend is in the clan chat but their private
-		// chat is 'off', then we won't know the world
-		ClanMemberManager clanMemberManager = client.getClanMemberManager();
-		if (clanMemberManager != null)
+		// Search friends chat members first, because we will be able to get the world if their private
+		// is off.
+		FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+		if (friendsChatManager != null)
 		{
-			ClanMember clanMember = clanMemberManager.findByName(name);
-			if (clanMember != null)
+			FriendsChatMember member = friendsChatManager.findByName(name);
+			if (member != null)
 			{
-				return clanMember;
+				return member;
 			}
 		}
 

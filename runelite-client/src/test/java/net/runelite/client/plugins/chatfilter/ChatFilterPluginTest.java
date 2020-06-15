@@ -36,7 +36,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.client.game.ClanManager;
+import net.runelite.client.game.FriendChatManager;
 import static net.runelite.client.plugins.chatfilter.ChatFilterPlugin.CENSOR_MESSAGE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -63,7 +63,7 @@ public class ChatFilterPluginTest
 
 	@Mock
 	@Bind
-	private ClanManager clanManager;
+	private FriendChatManager friendChatManager;
 
 	@Mock
 	private Player localPlayer;
@@ -186,7 +186,7 @@ public class ChatFilterPluginTest
 	@Test
 	public void testMessageFromFriendIsFiltered()
 	{
-		when(clanManager.isClanMember("Iron Mammal")).thenReturn(false);
+		when(friendChatManager.isMember("Iron Mammal")).thenReturn(false);
 		when(chatFilterConfig.filterFriends()).thenReturn(true);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Iron Mammal"));
 	}
@@ -200,18 +200,18 @@ public class ChatFilterPluginTest
 	}
 
 	@Test
-	public void testMessageFromClanIsFiltered()
+	public void testMessageFromFriendsChatIsFiltered()
 	{
 		when(client.isFriended("B0aty", false)).thenReturn(false);
-		when(chatFilterConfig.filterClan()).thenReturn(true);
+		when(chatFilterConfig.filterFriendsChat()).thenReturn(true);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
 	}
 
 	@Test
-	public void testMessageFromClanIsNotFiltered()
+	public void testMessageFromFriendsChatIsNotFiltered()
 	{
-		when(clanManager.isClanMember("B0aty")).thenReturn(true);
-		when(chatFilterConfig.filterClan()).thenReturn(false);
+		when(friendChatManager.isMember("B0aty")).thenReturn(true);
+		when(chatFilterConfig.filterFriendsChat()).thenReturn(false);
 		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
 	}
 
@@ -223,10 +223,10 @@ public class ChatFilterPluginTest
 	}
 
 	@Test
-	public void testMessageFromNonFriendNonClanIsFiltered()
+	public void testMessageFromNonFriendNonFCIsFiltered()
 	{
 		when(client.isFriended("Woox", false)).thenReturn(false);
-		when(clanManager.isClanMember("Woox")).thenReturn(false);
+		when(friendChatManager.isMember("Woox")).thenReturn(false);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Woox"));
 	}
 

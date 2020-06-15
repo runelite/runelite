@@ -24,19 +24,19 @@
  */
 package net.runelite.api;
 
-public interface ClanMemberManager extends NameableContainer<ClanMember>
+public interface FriendsChatManager extends NameableContainer<FriendsChatMember>
 {
 	/**
-	 * Gets the clan owner of the currently joined clan chat
+	 * Gets the owner of the currently joined friends chat
 	 *
 	 * @return
 	 */
-	String getClanOwner();
+	String getOwner();
 
 	/**
-	 * Gets the clan chat name of the currently joined clan chat
+	 * Gets the name of the currently joined friends chat
 	 *
 	 * @return
 	 */
-	String getClanChatName();
+	String getName();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.clanchat;
+package net.runelite.client.plugins.friendschat;
 
+import lombok.AllArgsConstructor;
 import lombok.Value;
-import net.runelite.api.MessageNode;
+import net.runelite.api.FriendsChatMember;
 
 @Value
-class ClanJoinMessage
+@AllArgsConstructor
+class MemberActivity
 {
-	private final MessageNode messageNode;
-	private final int getMessageId;
-	private final int tick;
+	private ActivityType activityType;
+	private FriendsChatMember member;
+	private Integer tick;
 }

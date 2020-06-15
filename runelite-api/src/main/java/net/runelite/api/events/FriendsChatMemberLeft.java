@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,15 +25,13 @@
 package net.runelite.api.events;
 
 import lombok.Value;
+import net.runelite.api.FriendsChatMember;
 
-/**
- * An event where the client has joined or left a clan chat.
- */
 @Value
-public class ClanChanged
+public class FriendsChatMemberLeft
 {
 	/**
-	 * Whether or not the client is now in a clan chat.
+	 * The member that left
 	 */
-	private boolean joined;
+	private FriendsChatMember member;
 }

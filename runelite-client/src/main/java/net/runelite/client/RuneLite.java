@@ -56,7 +56,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.externalplugins.ExternalPluginManager;
-import net.runelite.client.game.ClanManager;
+import net.runelite.client.game.FriendChatManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
@@ -137,7 +137,7 @@ public class RuneLite
 	private Provider<OverlayRenderer> overlayRenderer;
 
 	@Inject
-	private Provider<ClanManager> clanManager;
+	private Provider<FriendChatManager> friendsChatManager;
 
 	@Inject
 	private Provider<ChatMessageManager> chatMessageManager;
@@ -347,7 +347,7 @@ public class RuneLite
 
 			eventBus.register(partyService.get());
 			eventBus.register(overlayRenderer.get());
-			eventBus.register(clanManager.get());
+			eventBus.register(friendsChatManager.get());
 			eventBus.register(itemManager.get());
 			eventBus.register(menuManager.get());
 			eventBus.register(chatMessageManager.get());

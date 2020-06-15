@@ -1152,12 +1152,12 @@ public interface Client extends GameEngine
 	boolean isFriended(String name, boolean mustBeLoggedIn);
 
 	/**
-	 * Retrieve the clan member manager
+	 * Retrieve the friends chat manager
 	 *
 	 * @return
 	 */
 	@Nullable
-	ClanMemberManager getClanMemberManager();
+	FriendsChatManager getFriendsChatManager();
 
 	/**
 	 * Retrieve the nameable container containing friends
@@ -1466,11 +1466,11 @@ public interface Client extends GameEngine
 	void setFriendsHidden(boolean state);
 
 	/**
-	 * Sets whether or not clan mates are hidden.
+	 * Sets whether or not friends chat members are hidden.
 	 *
-	 * @param state the new clan mates hidden state
+	 * @param state the new friends chat member hidden state
 	 */
-	void setClanMatesHidden(boolean state);
+	void setFriendsChatMembersHidden(boolean state);
 
 	/**
 	 * Sets whether the local player is hidden.

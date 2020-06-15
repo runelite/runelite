@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.friendschat;
 
-/**
- * Represents a clan member.
- */
-public interface ClanMember extends ChatPlayer
+enum ActivityType
 {
-	/**
-	 * Gets the world the member is in.
-	 *
-	 * @return the world
-	 */
-	int getWorld();
-
-	/**
-	 * Gets the rank of the clan member.
-	 *
-	 * @return the rank
-	 */
-	ClanMemberRank getRank();
+	JOINED,
+	LEFT
 }

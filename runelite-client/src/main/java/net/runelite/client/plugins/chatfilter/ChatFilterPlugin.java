@@ -58,7 +58,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.game.ClanManager;
+import net.runelite.client.game.FriendChatManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
@@ -118,7 +118,7 @@ public class ChatFilterPlugin extends Plugin
 	private ChatFilterConfig config;
 
 	@Inject
-	private ClanManager clanManager;
+	private FriendChatManager friendChatManager;
 
 	@Provides
 	ChatFilterConfig provideConfig(ConfigManager configManager)
@@ -262,7 +262,7 @@ public class ChatFilterPlugin extends Plugin
 		boolean isMessageFromSelf = playerName.equals(client.getLocalPlayer().getName());
 		return !isMessageFromSelf &&
 			(config.filterFriends() || !client.isFriended(playerName, false)) &&
-			(config.filterClan() || !clanManager.isClanMember(playerName));
+			(config.filterFriendsChat() || !friendChatManager.isMember(playerName));
 	}
 
 	String censorMessage(final String username, final String message)

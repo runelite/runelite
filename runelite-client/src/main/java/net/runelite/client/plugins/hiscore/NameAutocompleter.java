@@ -40,7 +40,7 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ClanMemberManager;
+import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
 import net.runelite.api.Nameable;
@@ -222,20 +222,20 @@ class NameAutocompleter implements KeyListener
 			}
 		}
 
-		// Search clan if a friend wasn't found
+		// Search friends chat if a friend wasn't found
 		if (!autocompleteName.isPresent())
 		{
-			final ClanMemberManager clanMemberManager = client.getClanMemberManager();
-			if (clanMemberManager != null)
+			final FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+			if (friendsChatManager != null)
 			{
-				autocompleteName = Arrays.stream(clanMemberManager.getMembers())
+				autocompleteName = Arrays.stream(friendsChatManager.getMembers())
 					.map(Nameable::getName)
 					.filter(n -> pattern.matcher(n).matches())
 					.findFirst();
 			}
 		}
 
-		// Search cached players if a clannie wasn't found.
+		// Search cached players if a friend wasn't found
 		if (!autocompleteName.isPresent())
 		{
 			final Player[] cachedPlayers = client.getCachedPlayers();

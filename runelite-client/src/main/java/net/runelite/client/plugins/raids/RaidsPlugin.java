@@ -201,8 +201,8 @@ public class RaidsPlugin extends Plugin
 
 	/*
 	 * if the player is in a raid party or not
-	 * This will be set when someone in the clan chat clicks the "make party" button on the raids widget
-	 * It will change again when someone from your clan enters the raid to generate it
+	 * This will be set when someone in the friends chat clicks the "make party" button on the raids widget
+	 * It will change again when someone from your friends chat enters the raid to generate it
 	 * It will be reset when the raid starts but not if they leave the raid while it has not started yet
 	 */
 	@Getter

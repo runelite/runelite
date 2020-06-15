@@ -89,11 +89,11 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "filterClan",
-		name = "Filter Clan Chat Members",
-		description = "Filter your clan chat members' messages",
+		name = "Filter Friends Chat Members",
+		description = "Filter your friends chat members' messages",
 		position = 6
 	)
-	default boolean filterClan()
+	default boolean filterFriendsChat()
 	{
 		return false;
 	}

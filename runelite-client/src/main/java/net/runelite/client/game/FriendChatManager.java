@@ -36,94 +36,94 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.ClanMember;
-import net.runelite.api.ClanMemberManager;
-import net.runelite.api.ClanMemberRank;
+import net.runelite.api.FriendsChatMember;
+import net.runelite.api.FriendsChatManager;
+import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpriteID;
-import net.runelite.api.events.ClanChanged;
+import net.runelite.api.events.FriendsChatChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @Singleton
-public class ClanManager
+public class FriendChatManager
 {
-	private static final int[] CLANCHAT_IMAGES =
+	private static final int[] RANK_IMAGES =
 		{
-			SpriteID.CLAN_CHAT_RANK_SMILEY_FRIEND,
-			SpriteID.CLAN_CHAT_RANK_SINGLE_CHEVRON_RECRUIT,
-			SpriteID.CLAN_CHAT_RANK_DOUBLE_CHEVRON_CORPORAL,
-			SpriteID.CLAN_CHAT_RANK_TRIPLE_CHEVRON_SERGEANT,
-			SpriteID.CLAN_CHAT_RANK_BRONZE_STAR_LIEUTENANT,
-			SpriteID.CLAN_CHAT_RANK_SILVER_STAR_CAPTAIN,
-			SpriteID.CLAN_CHAT_RANK_GOLD_STAR_GENERAL,
-			SpriteID.CLAN_CHAT_RANK_KEY_CHANNEL_OWNER,
-			SpriteID.CLAN_CHAT_RANK_CROWN_JAGEX_MODERATOR,
+			SpriteID.FRIENDS_CHAT_RANK_SMILEY_FRIEND,
+			SpriteID.FRIENDS_CHAT_RANK_SINGLE_CHEVRON_RECRUIT,
+			SpriteID.FRIENDS_CHAT_RANK_DOUBLE_CHEVRON_CORPORAL,
+			SpriteID.FRIENDS_CHAT_RANK_TRIPLE_CHEVRON_SERGEANT,
+			SpriteID.FRIENDS_CHAT_RANK_BRONZE_STAR_LIEUTENANT,
+			SpriteID.FRIENDS_CHAT_RANK_SILVER_STAR_CAPTAIN,
+			SpriteID.FRIENDS_CHAT_RANK_GOLD_STAR_GENERAL,
+			SpriteID.FRIENDS_CHAT_RANK_KEY_CHANNEL_OWNER,
+			SpriteID.FRIENDS_CHAT_RANK_CROWN_JAGEX_MODERATOR,
 		};
-	private static final Dimension CLANCHAT_IMAGE_DIMENSION = new Dimension(11, 11);
-	private static final Color CLANCHAT_IMAGE_OUTLINE_COLOR = new Color(33, 33, 33);
+	private static final Dimension IMAGE_DIMENSION = new Dimension(11, 11);
+	private static final Color IMAGE_OUTLINE_COLOR = new Color(33, 33, 33);
 
 	private final Client client;
 	private final SpriteManager spriteManager;
-	private final BufferedImage[] clanChatImages = new BufferedImage[CLANCHAT_IMAGES.length];
+	private final BufferedImage[] rankImages = new BufferedImage[RANK_IMAGES.length];
 
-	private final LoadingCache<String, ClanMemberRank> clanRanksCache = CacheBuilder.newBuilder()
+	private final LoadingCache<String, FriendsChatRank> ranksCache = CacheBuilder.newBuilder()
 		.maximumSize(100)
 		.expireAfterWrite(1, TimeUnit.MINUTES)
-		.build(new CacheLoader<String, ClanMemberRank>()
+		.build(new CacheLoader<String, FriendsChatRank>()
 		{
 			@Override
-			public ClanMemberRank load(@Nonnull String key)
+			public FriendsChatRank load(@Nonnull String key)
 			{
-				final ClanMemberManager clanMemberManager = client.getClanMemberManager();
-				if (clanMemberManager == null)
+				final FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+				if (friendsChatManager == null)
 				{
-					return ClanMemberRank.UNRANKED;
+					return FriendsChatRank.UNRANKED;
 				}
 
-				ClanMember clanMember = clanMemberManager.findByName(sanitize(key));
-				return clanMember != null ? clanMember.getRank() : ClanMemberRank.UNRANKED;
+				FriendsChatMember friendsChatMember = friendsChatManager.findByName(sanitize(key));
+				return friendsChatMember != null ? friendsChatMember.getRank() : FriendsChatRank.UNRANKED;
 			}
 		});
 
 	private int offset;
 
 	@Inject
-	private ClanManager(Client client, SpriteManager spriteManager)
+	private FriendChatManager(Client client, SpriteManager spriteManager)
 	{
 		this.client = client;
 		this.spriteManager = spriteManager;
 	}
 
-	public boolean isClanMember(String name)
+	public boolean isMember(String name)
 	{
-		ClanMemberManager clanMemberManager = client.getClanMemberManager();
-		return clanMemberManager != null && clanMemberManager.findByName(name) != null;
+		FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+		return friendsChatManager != null && friendsChatManager.findByName(name) != null;
 	}
 
-	public ClanMemberRank getRank(String playerName)
+	public FriendsChatRank getRank(String playerName)
 	{
-		return clanRanksCache.getUnchecked(playerName);
+		return ranksCache.getUnchecked(playerName);
 	}
 
 	@Nullable
-	public BufferedImage getClanImage(final ClanMemberRank clanMemberRank)
+	public BufferedImage getRankImage(final FriendsChatRank friendsChatRank)
 	{
-		if (clanMemberRank == ClanMemberRank.UNRANKED)
+		if (friendsChatRank == FriendsChatRank.UNRANKED)
 		{
 			return null;
 		}
 
-		return clanChatImages[clanMemberRank.ordinal() - 1];
+		return rankImages[friendsChatRank.ordinal() - 1];
 	}
 
-	public int getIconNumber(final ClanMemberRank clanMemberRank)
+	public int getIconNumber(final FriendsChatRank friendsChatRank)
 	{
-		return offset + clanMemberRank.ordinal() - 1;
+		return offset + friendsChatRank.ordinal() - 1;
 	}
 
 	@Subscribe
@@ -131,17 +131,17 @@ public class ClanManager
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN && offset == 0)
 		{
-			loadClanChatIcons();
+			loadRankIcons();
 		}
 	}
 
 	@Subscribe
-	public void onClanChanged(ClanChanged clanChanged)
+	public void onFriendsChatChanged(FriendsChatChanged friendsChatChanged)
 	{
-		clanRanksCache.invalidateAll();
+		ranksCache.invalidateAll();
 	}
 
-	private void loadClanChatIcons()
+	private void loadRankIcons()
 	{
 		{
 			IndexedSprite[] modIcons = client.getModIcons();
@@ -151,21 +151,21 @@ public class ClanManager
 				new BufferedImage(modIcons[0].getWidth(), modIcons[0].getHeight(), BufferedImage.TYPE_INT_ARGB),
 				client);
 
-			modIcons = Arrays.copyOf(modIcons, offset + CLANCHAT_IMAGES.length);
+			modIcons = Arrays.copyOf(modIcons, offset + RANK_IMAGES.length);
 			Arrays.fill(modIcons, offset, modIcons.length, blank);
 
 			client.setModIcons(modIcons);
 		}
 
-		for (int i = 0; i < CLANCHAT_IMAGES.length; i++)
+		for (int i = 0; i < RANK_IMAGES.length; i++)
 		{
 			final int fi = i;
 
-			spriteManager.getSpriteAsync(CLANCHAT_IMAGES[i], 0, sprite ->
+			spriteManager.getSpriteAsync(RANK_IMAGES[i], 0, sprite ->
 			{
 				IndexedSprite[] modIcons = client.getModIcons();
-				clanChatImages[fi] = clanChatImageFromSprite(sprite);
-				modIcons[offset + fi] = ImageUtil.getImageIndexedSprite(clanChatImages[fi], client);
+				rankImages[fi] = friendsChatImageFromSprite(sprite);
+				modIcons[offset + fi] = ImageUtil.getImageIndexedSprite(rankImages[fi], client);
 			});
 		}
 	}
@@ -176,9 +176,9 @@ public class ClanManager
 		return cleaned.replace('\u00A0', ' ');
 	}
 
-	private static BufferedImage clanChatImageFromSprite(final BufferedImage clanSprite)
+	private static BufferedImage friendsChatImageFromSprite(final BufferedImage sprite)
 	{
-		final BufferedImage clanChatCanvas = ImageUtil.resizeCanvas(clanSprite, CLANCHAT_IMAGE_DIMENSION.width, CLANCHAT_IMAGE_DIMENSION.height);
-		return ImageUtil.outlineImage(clanChatCanvas, CLANCHAT_IMAGE_OUTLINE_COLOR);
+		final BufferedImage canvas = ImageUtil.resizeCanvas(sprite, IMAGE_DIMENSION.width, IMAGE_DIMENSION.height);
+		return ImageUtil.outlineImage(canvas, IMAGE_OUTLINE_COLOR);
 	}
 }
