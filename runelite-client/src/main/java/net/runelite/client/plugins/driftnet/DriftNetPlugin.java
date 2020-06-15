@@ -26,12 +26,15 @@
 package net.runelite.client.plugins.driftnet;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Actor;
@@ -99,8 +102,19 @@ public class DriftNetPlugin extends Plugin
 	private Map<NPC, Integer> taggedFish = new HashMap<>();
 	@Getter
 	private final List<DriftNet> NETS = ImmutableList.of(
-		new DriftNet(NullObjectID.NULL_31433, Varbits.NORTH_NET_STATUS, Varbits.NORTH_NET_CATCH_COUNT),
-		new DriftNet(NullObjectID.NULL_31434, Varbits.SOUTH_NET_STATUS, Varbits.SOUTH_NET_CATCH_COUNT));
+		new DriftNet(NullObjectID.NULL_31433, Varbits.NORTH_NET_STATUS, Varbits.NORTH_NET_CATCH_COUNT, ImmutableSet.of(
+			new WorldPoint(3746, 10297, 1),
+			new WorldPoint(3747, 10297, 1),
+			new WorldPoint(3748, 10297, 1),
+			new WorldPoint(3749, 10297, 1)
+		)),
+		new DriftNet(NullObjectID.NULL_31434, Varbits.SOUTH_NET_STATUS, Varbits.SOUTH_NET_CATCH_COUNT, ImmutableSet.of(
+			new WorldPoint(3742, 10288, 1),
+			new WorldPoint(3742, 10289, 1),
+			new WorldPoint(3742, 10290, 1),
+			new WorldPoint(3742, 10291, 1),
+			new WorldPoint(3742, 10292, 1)
+		)));
 
 	@Getter
 	private boolean inDriftNetArea;
@@ -190,12 +204,6 @@ public class DriftNetPlugin extends Plugin
 			net.setStatus(status);
 			net.setCount(count);
 		}
-
-		// When you collect any loot, all tags become invalidated
-		if (client.getVar(Varbits.DRIFT_NET_COLLECT) != 0)
-		{
-			taggedFish.clear();
-		}
 	}
 
 	@Subscribe
@@ -211,6 +219,17 @@ public class DriftNetPlugin extends Plugin
 		}
 	}
 
+	private boolean isFishNextToNet(NPC fish, Collection<DriftNet> nets)
+	{
+		final WorldPoint fishTile = WorldPoint.fromLocalInstance(client, fish.getLocalLocation());
+		return nets.stream().anyMatch(net -> net.getAdjacentTiles().contains(fishTile));
+	}
+
+	private boolean isTagExpired(Integer tick)
+	{
+		return tick + config.timeoutDelay() < client.getTickCount();
+	}
+
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
@@ -219,8 +238,16 @@ public class DriftNetPlugin extends Plugin
 			return;
 		}
 
-		final int currentTickCount = client.getTickCount();
-		taggedFish.entrySet().removeIf(entry -> entry.getValue() + config.timeoutDelay() < currentTickCount);
+		List<DriftNet> closedNets = NETS.stream()
+			.filter(DriftNet::isNotAcceptingFish)
+			.collect(Collectors.toList());
+
+		taggedFish.entrySet().removeIf(entry ->
+			isTagExpired(entry.getValue()) ||
+			isFishNextToNet(entry.getKey(), closedNets)
+		);
+
+		NETS.forEach(net -> net.setPrevTickStatus(net.getStatus()));
 
 		armInteraction = false;
 	}
@@ -271,6 +298,7 @@ public class DriftNetPlugin extends Plugin
 	{
 		final NPC npc = event.getNpc();
 		fish.remove(npc);
+		taggedFish.remove(npc);
 	}
 
 	@Subscribe

@@ -76,12 +76,12 @@ public interface DriftNetConfig extends Config
 	)
 	@Range(
 		min = 1,
-		max = 60
+		max = 100
 	)
 	@Units(Units.TICKS)
 	default int timeoutDelay()
 	{
-		return 10;
+		return 60;
 	}
 
 	@ConfigItem(
