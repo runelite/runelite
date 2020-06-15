@@ -69,6 +69,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
@@ -151,6 +152,31 @@ public class LootTrackerPlugin extends Plugin
 		put(12127, "The Gauntlet").
 		put(13113, "Larran's small chest").
 		put(13151, "Elven Crystal Chest").
+		build();
+
+	// Shade chest loot handling
+	private static final Pattern SHADE_CHEST_NO_KEY_PATTERN = Pattern.compile("You need a [a-z]+ key with a [a-z]+ trim to open this chest .*");
+	private static final Map<Integer, String> SHADE_CHEST_OBJECTS = new ImmutableMap.Builder<Integer, String>().
+		put(ObjectID.BRONZE_CHEST, "Bronze key red").
+		put(ObjectID.BRONZE_CHEST_4112, "Bronze key brown").
+		put(ObjectID.BRONZE_CHEST_4113, "Bronze key crimson").
+		put(ObjectID.BRONZE_CHEST_4114, "Bronze key black").
+		put(ObjectID.BRONZE_CHEST_4115, "Bronze key purple").
+		put(ObjectID.STEEL_CHEST, "Steel key red").
+		put(ObjectID.STEEL_CHEST_4117, "Steel key brown").
+		put(ObjectID.STEEL_CHEST_4118, "Steel key crimson").
+		put(ObjectID.STEEL_CHEST_4119, "Steel key black").
+		put(ObjectID.STEEL_CHEST_4120, "Steel key purple").
+		put(ObjectID.BLACK_CHEST, "Black key red").
+		put(ObjectID.BLACK_CHEST_4122, "Black key brown").
+		put(ObjectID.BLACK_CHEST_4123, "Black key crimson").
+		put(ObjectID.BLACK_CHEST_4124, "Black key black").
+		put(ObjectID.BLACK_CHEST_4125, "Black key purple").
+		put(ObjectID.SILVER_CHEST, "Silver key red").
+		put(ObjectID.SILVER_CHEST_4127, "Silver key brown").
+		put(ObjectID.SILVER_CHEST_4128, "Silver key crimson").
+		put(ObjectID.SILVER_CHEST_4129, "Silver key black").
+		put(ObjectID.SILVER_CHEST_4130, "Silver key purple").
 		build();
 
 	// Last man standing map regions
@@ -600,28 +626,35 @@ public class LootTrackerPlugin extends Plugin
 				case "beginner":
 					eventType = "Clue Scroll (Beginner)";
 					lootRecordType = LootRecordType.EVENT;
-					break;
+					return;
 				case "easy":
 					eventType = "Clue Scroll (Easy)";
 					lootRecordType = LootRecordType.EVENT;
-					break;
+					return;
 				case "medium":
 					eventType = "Clue Scroll (Medium)";
 					lootRecordType = LootRecordType.EVENT;
-					break;
+					return;
 				case "hard":
 					eventType = "Clue Scroll (Hard)";
 					lootRecordType = LootRecordType.EVENT;
-					break;
+					return;
 				case "elite":
 					eventType = "Clue Scroll (Elite)";
 					lootRecordType = LootRecordType.EVENT;
-					break;
+					return;
 				case "master":
 					eventType = "Clue Scroll (Master)";
 					lootRecordType = LootRecordType.EVENT;
-					break;
+					return;
 			}
+		}
+
+		if (SHADE_CHEST_NO_KEY_PATTERN.matcher(message).matches())
+		{
+			// Player didn't have the key they needed.
+			eventType = null;
+			lootRecordType = null;
 		}
 	}
 
@@ -634,6 +667,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		if (CHEST_EVENT_TYPES.containsValue(eventType)
+			|| SHADE_CHEST_OBJECTS.containsValue(eventType)
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
 			|| SEEDPACK_EVENT.equals(eventType)
@@ -661,6 +695,13 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Take") && event.getId() == ItemID.SEED_PACK)
 		{
 			eventType = SEEDPACK_EVENT;
+			lootRecordType = LootRecordType.EVENT;
+			takeInventorySnapshot();
+		}
+
+		if (event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
+		{
+			eventType = SHADE_CHEST_OBJECTS.get(event.getId());
 			lootRecordType = LootRecordType.EVENT;
 			takeInventorySnapshot();
 		}
