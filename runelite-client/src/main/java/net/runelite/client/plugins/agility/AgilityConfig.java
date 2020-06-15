@@ -225,7 +225,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreNpcs",
 		name = "Highlight Sepulchre Projectiles",
 		description = "Highlights arrows and swords in the Sepulchre",
-		position = 15
+		position = 17
 	)
 	default boolean highlightSepulchreNpcs()
 	{
@@ -236,10 +236,32 @@ public interface AgilityConfig extends Config
 		keyName = "sepulchreHighlightColor",
 		name = "Sepulchre Highlight",
 		description = "Overlay color for arrows and swords",
-		position = 16
+		position = 18
 	)
 	default Color sepulchreHighlightColor()
 	{
 		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreObstacles",
+		name = "Highlight Sepulchre Obstacles",
+		description = "Highlights pillars and stairs in the Sepulchre",
+		position = 19
+	)
+	default boolean highlightSepulchreObstacles()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreSkilling",
+		name = "Highlight Sepulchre Skill Challenges",
+		description = "Highlights skilling challenges in the Sepulchre",
+		position = 20
+	)
+	default boolean highlightSepulchreSkilling()
+	{
+		return true;
 	}
 }
