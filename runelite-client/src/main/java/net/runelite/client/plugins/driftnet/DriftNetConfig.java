@@ -94,4 +94,26 @@ public interface DriftNetConfig extends Config
 	{
 		return Color.CYAN;
 	}
+
+	@ConfigItem(
+		keyName = "tagAnnette",
+		name = "Tag Annette when no nets in inventory",
+		description = "Tag Annette when no nets in inventory",
+		position = 6
+	)
+	default boolean tagAnnetteWhenNoNets()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "annetteTagColor",
+		name = "Annette tag color",
+		description = "Color of Annette tag",
+		position = 7
+	)
+	default Color annetteTagColor()
+	{
+		return Color.RED;
+	}
 }

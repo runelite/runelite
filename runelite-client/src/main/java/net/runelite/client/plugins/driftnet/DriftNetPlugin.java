@@ -39,9 +39,13 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
@@ -51,6 +55,7 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
@@ -101,6 +106,12 @@ public class DriftNetPlugin extends Plugin
 	private boolean inDriftNetArea;
 	private boolean armInteraction;
 
+	@Getter
+	private boolean driftNetsInInventory;
+
+	@Getter
+	private GameObject annette;
+
 	@Provides
 	DriftNetConfig provideConfig(ConfigManager configManager)
 	{
@@ -132,6 +143,10 @@ public class DriftNetPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
+		if (event.getGameState() != GameState.LOGGED_IN)
+		{
+			annette = null;
+		}
 		switch (event.getGameState())
 		{
 			case LOGIN_SCREEN:
@@ -262,6 +277,11 @@ public class DriftNetPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject object = event.getGameObject();
+		if (object.getId() == ObjectID.ANNETTE)
+		{
+			annette = object;
+		}
+
 		for (DriftNet net : NETS)
 		{
 			if (net.getObjectId() == object.getId())
@@ -275,6 +295,11 @@ public class DriftNetPlugin extends Plugin
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		GameObject object = event.getGameObject();
+		if (object == annette)
+		{
+			annette = null;
+		}
+
 		for (DriftNet net : NETS)
 		{
 			if (net.getObjectId() == object.getId())
@@ -282,6 +307,18 @@ public class DriftNetPlugin extends Plugin
 				net.setNet(null);
 			}
 		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(final ItemContainerChanged event)
+	{
+		final ItemContainer itemContainer = event.getItemContainer();
+		if (itemContainer != client.getItemContainer(InventoryID.INVENTORY))
+		{
+			return;
+		}
+
+		driftNetsInInventory = itemContainer.contains(ItemID.DRIFT_NET);
 	}
 
 	private boolean checkArea()
