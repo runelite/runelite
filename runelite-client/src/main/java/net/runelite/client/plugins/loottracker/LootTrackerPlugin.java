@@ -810,7 +810,7 @@ public class LootTrackerPlugin extends Plugin
 			List<ItemPrice> itemLookup = itemManager.strictSearch(itemName);
 
 			int idFromLookup = (itemLookup.size() != 0) ? itemLookup.get(0).getId() : DetermineWorthlessLoot(itemName);
-			int lootId = (itemName.equals("Coins")) ? ItemID.COINS : idFromLookup;
+			int lootId = (itemName.equals("Coins")) ? ItemID.COINS_995 : idFromLookup;
 
 			if (lootId == -1)
 			{
