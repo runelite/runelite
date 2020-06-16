@@ -55,14 +55,17 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.InfoBoxMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
@@ -455,6 +458,20 @@ public class DevToolsPlugin extends Plugin
 
 			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
 			client.setMenuEntries(entries);
+		}
+	}
+
+	@Subscribe
+	public void onInfoBoxMenuClicked(InfoBoxMenuClicked event)
+	{
+		OverlayMenuEntry entry = event.getEntry();
+		if (entry.getMenuAction() == MenuAction.RUNELITE_INFOBOX &&
+			entry.getOption().equals("Test Option") &&
+			// this would preferably be event.getInfoBox() == infoBox
+			// however we don't store an infobox reference in the plugin
+			Text.removeTags(entry.getTarget()).equals("DevTools"))
+		{
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "InfoBox clicked with id " + event.getInfoBox().getId(), "");
 		}
 	}
 }

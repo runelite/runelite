@@ -26,11 +26,15 @@ package net.runelite.client.ui.overlay.infobox;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 
 public abstract class InfoBox
 {
@@ -46,6 +50,15 @@ public abstract class InfoBox
 	@Setter(AccessLevel.PACKAGE)
 	private BufferedImage scaledImage;
 
+	/**
+	 * Used to distinguish between infoboxes when clicked.
+	 * Only populated when this InfoBox instance is added to the canvas by calling {@link net.runelite.client.ui.overlay.infobox.InfoBoxManager#addInfoBox(InfoBox)}
+	 */
+	@VisibleForDevtools
+	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	private int id;
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter
 	private InfoBoxPriority priority;
@@ -53,6 +66,10 @@ public abstract class InfoBox
 	@Getter
 	@Setter
 	private String tooltip;
+
+	@Getter
+	@Setter
+	private List<OverlayMenuEntry> menuEntries = new ArrayList<>();
 
 	public InfoBox(BufferedImage image, @Nonnull Plugin plugin)
 	{

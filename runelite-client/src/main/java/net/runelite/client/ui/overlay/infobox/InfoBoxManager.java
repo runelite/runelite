@@ -30,14 +30,20 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.MenuAction;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.InfoBoxMenuClicked;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.util.AsyncBufferedImage;
 
 @Singleton
@@ -46,11 +52,14 @@ public class InfoBoxManager
 {
 	private final List<InfoBox> infoBoxes = new CopyOnWriteArrayList<>();
 	private final RuneLiteConfig runeLiteConfig;
+	private final EventBus eventBus;
+	private int infoboxesAdded;
 
 	@Inject
-	private InfoBoxManager(final RuneLiteConfig runeLiteConfig)
+	private InfoBoxManager(final RuneLiteConfig runeLiteConfig, final EventBus eventBus)
 	{
 		this.runeLiteConfig = runeLiteConfig;
+		this.eventBus = eventBus;
 	}
 
 	@Subscribe
@@ -59,6 +68,30 @@ public class InfoBoxManager
 		if (event.getGroup().equals("runelite") && event.getKey().equals("infoBoxSize"))
 		{
 			infoBoxes.forEach(this::updateInfoBoxImage);
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getMenuAction() != MenuAction.RUNELITE_INFOBOX)
+		{
+			return;
+		}
+
+		// don't pass the event to the client
+		event.consume();
+
+		// find the correct infobox to handle the menu action
+		Optional<InfoBox> optionalInfobox = infoBoxes.stream().filter(o -> o.getId() == event.getId()).findAny();
+		if (optionalInfobox.isPresent())
+		{
+			InfoBox infoBox = optionalInfobox.get();
+			List<OverlayMenuEntry> menuEntries = infoBox.getMenuEntries();
+			Optional<OverlayMenuEntry> optionalMenuEntry = menuEntries.stream()
+				.filter(entry -> entry.getOption().equals(event.getMenuOption()))
+				.findAny();
+			optionalMenuEntry.ifPresent(menuEntry -> eventBus.post(new InfoBoxMenuClicked(menuEntry, infoBox)));
 		}
 	}
 
@@ -76,6 +109,10 @@ public class InfoBoxManager
 				.compare(b1.getPriority(), b2.getPriority())
 				.compare(b1.getPlugin().getName(), b2.getPlugin().getName())
 				.result());
+
+			// create a unique id for each infobox to distinguish which has been clicked
+			infoBox.setId(infoboxesAdded++);
+
 			infoBoxes.add(idx < 0 ? -idx - 1 : idx, infoBox);
 		}
 

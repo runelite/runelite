@@ -33,9 +33,11 @@ import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
@@ -166,7 +168,13 @@ class DevToolsPanel extends PluginPanel
 		});
 
 		final JButton newInfoboxBtn = new JButton("Infobox");
-		newInfoboxBtn.addActionListener(e -> infoBoxManager.addInfoBox(new Counter(ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png"), plugin, 42)));
+		newInfoboxBtn.addActionListener(e ->
+		{
+			Counter c = new Counter(ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png"), plugin, 42);
+			c.getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_INFOBOX, "Test Option", "DevTools"));
+			infoBoxManager.addInfoBox(c);
+			c.setCount(c.getId());
+		});
 		container.add(newInfoboxBtn);
 
 		final JButton clearInfoboxBtn = new JButton("Clear Infobox");

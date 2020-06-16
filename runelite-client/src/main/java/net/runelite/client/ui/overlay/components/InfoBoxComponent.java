@@ -32,9 +32,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 
 @Setter
 public class InfoBoxComponent implements LayoutableRenderableEntity
@@ -44,6 +46,12 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 
 	@Getter
 	private String tooltip;
+
+	@Getter
+	private List<OverlayMenuEntry> menuEntries;
+
+	@Getter
+	private int parentId = -1;
 
 	@Getter
 	private final Rectangle bounds = new Rectangle();

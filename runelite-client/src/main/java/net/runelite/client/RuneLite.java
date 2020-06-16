@@ -347,6 +347,7 @@ public class RuneLite
 
 			eventBus.register(partyService.get());
 			eventBus.register(overlayRenderer.get());
+			eventBus.register(infoBoxOverlay.get());
 			eventBus.register(friendsChatManager.get());
 			eventBus.register(itemManager.get());
 			eventBus.register(menuManager.get());
