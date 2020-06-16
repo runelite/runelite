@@ -88,6 +88,7 @@ public class PluginManager
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
 
 	private final boolean developerMode;
+	private final boolean safeMode;
 	private final EventBus eventBus;
 	private final Scheduler scheduler;
 	private final ConfigManager configManager;
@@ -103,6 +104,7 @@ public class PluginManager
 	@VisibleForTesting
 	PluginManager(
 		@Named("developerMode") final boolean developerMode,
+		@Named("safeMode") final boolean safeMode,
 		final EventBus eventBus,
 		final Scheduler scheduler,
 		final ConfigManager configManager,
@@ -110,6 +112,7 @@ public class PluginManager
 		final Provider<GameEventManager> sceneTileManager)
 	{
 		this.developerMode = developerMode;
+		this.safeMode = safeMode;
 		this.eventBus = eventBus;
 		this.scheduler = scheduler;
 		this.configManager = configManager;
@@ -306,6 +309,14 @@ public class PluginManager
 
 			if (pluginDescriptor.developerPlugin() && !developerMode)
 			{
+				continue;
+			}
+
+			if (safeMode && !pluginDescriptor.loadInSafeMode())
+			{
+				log.debug("Disabling {} due to safe mode", clazz);
+				// also disable the plugin from autostarting later
+				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME, clazz.getSimpleName().toLowerCase());
 				continue;
 			}
 
