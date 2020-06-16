@@ -257,6 +257,10 @@ public class RuneLite
 
 			PROFILES_DIR.mkdirs();
 
+			log.info("RuneLite {} (launcher version {}) starting up, args: {}",
+				RuneLiteProperties.getVersion(), RuneLiteProperties.getLauncherVersion() == null ? "unknown" : RuneLiteProperties.getLauncherVersion(),
+				args.length == 0 ? "none" : String.join(" ", args));
+
 			final long start = System.currentTimeMillis();
 
 			injector = Guice.createInjector(new RuneLiteModule(
