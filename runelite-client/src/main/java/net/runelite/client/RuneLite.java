@@ -177,6 +177,7 @@ public class RuneLite
 		final OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
+		parser.accepts("safe-mode", "Disables external plugins and the GPU plugin");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -266,6 +267,7 @@ public class RuneLite
 			injector = Guice.createInjector(new RuneLiteModule(
 				clientLoader,
 				developerMode,
+				options.has("safe-mode"),
 				options.valueOf(sessionfile),
 				options.valueOf(configfile)));
 
