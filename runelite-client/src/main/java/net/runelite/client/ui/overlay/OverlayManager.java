@@ -143,10 +143,9 @@ public class OverlayManager
 
 		event.consume();
 
-		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlays.indexOf(o) == event.getId()).findAny();
-		if (optionalOverlay.isPresent())
+		Overlay overlay = overlays.get(event.getId());
+		if (overlay != null)
 		{
-			Overlay overlay = optionalOverlay.get();
 			List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
 			Optional<OverlayMenuEntry> optionalOverlayMenuEntry = menuEntries.stream()
 				.filter(me -> me.getOption().equals(event.getMenuOption()))
