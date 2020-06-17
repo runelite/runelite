@@ -32,20 +32,25 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PlayerDeath;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.InfoBoxMenuClicked;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -59,6 +64,7 @@ import net.runelite.client.util.ImageUtil;
 @Slf4j
 public class DeathIndicatorPlugin extends Plugin
 {
+	private static final String DEATH_TIMER_CLEAR = "Clear";
 	private static final Set<Integer> RESPAWN_REGIONS = ImmutableSet.of(
 		6457, // Kourend
 		12850, // Lumbridge
@@ -83,6 +89,10 @@ public class DeathIndicatorPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	@Named("developerMode")
+	boolean developerMode;
 
 	private BufferedImage mapArrow;
 
@@ -176,25 +186,7 @@ public class DeathIndicatorPlugin extends Plugin
 
 			log.debug("Died! Grave at {}", lastDeath);
 
-			// Save death to config
-			config.deathLocationX(lastDeath.getX());
-			config.deathLocationY(lastDeath.getY());
-			config.deathLocationPlane(lastDeath.getPlane());
-			config.timeOfDeath(lastDeathTime);
-			config.deathWorld(lastDeathWorld);
-
-			if (config.showDeathHintArrow())
-			{
-				client.setHintArrow(lastDeath);
-			}
-
-			if (config.showDeathOnWorldMap())
-			{
-				worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
-				worldMapPointManager.add(new DeathWorldMapPoint(lastDeath, this));
-			}
-
-			resetInfobox();
+			die(lastDeath, lastDeathTime, lastDeathWorld);
 
 			lastDeath = null;
 			lastDeathTime = null;
@@ -209,18 +201,42 @@ public class DeathIndicatorPlugin extends Plugin
 		WorldPoint deathPoint = new WorldPoint(config.deathLocationX(), config.deathLocationY(), config.deathLocationPlane());
 		if (deathPoint.equals(client.getLocalPlayer().getWorldLocation()) || (deathTimer != null && deathTimer.cull()))
 		{
-			client.clearHintArrow();
+			reset();
 
-			if (deathTimer != null)
-			{
-				infoBoxManager.removeInfoBox(deathTimer);
-				deathTimer = null;
-			}
-
-			worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
-
-			resetDeath();
+			resetDeathConfig();
 		}
+	}
+
+	@Subscribe
+	public void onCommandExecuted(CommandExecuted commandExecuted)
+	{
+		if (developerMode && commandExecuted.getCommand().equals("die"))
+		{
+			die(client.getLocalPlayer().getWorldLocation(), Instant.now(), client.getWorld());
+		}
+	}
+
+	private void die(WorldPoint location, Instant time, int world)
+	{
+		// Save death to config
+		config.deathLocationX(location.getX());
+		config.deathLocationY(location.getY());
+		config.deathLocationPlane(location.getPlane());
+		config.timeOfDeath(time);
+		config.deathWorld(world);
+
+		if (config.showDeathHintArrow())
+		{
+			client.setHintArrow(location);
+		}
+
+		if (config.showDeathOnWorldMap())
+		{
+			worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
+			worldMapPointManager.add(new DeathWorldMapPoint(location, this));
+		}
+
+		resetInfobox();
 	}
 
 	@Subscribe
@@ -287,12 +303,34 @@ public class DeathIndicatorPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onInfoBoxMenuClicked(InfoBoxMenuClicked infoBoxMenuClicked)
+	{
+		if (infoBoxMenuClicked.getInfoBox() == deathTimer)
+		{
+			reset();
+		}
+	}
+
 	private boolean hasDied()
 	{
 		return config.timeOfDeath() != null;
 	}
 
-	private void resetDeath()
+	private void reset()
+	{
+		client.clearHintArrow();
+
+		if (deathTimer != null)
+		{
+			infoBoxManager.removeInfoBox(deathTimer);
+			deathTimer = null;
+		}
+
+		worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
+	}
+
+	private void resetDeathConfig()
 	{
 		config.deathLocationX(0);
 		config.deathLocationY(0);
@@ -317,6 +355,7 @@ public class DeathIndicatorPlugin extends Plugin
 			{
 				deathTimer = new Timer(timeLeft.getSeconds(), ChronoUnit.SECONDS, getBonesImage(), this);
 				deathTimer.setTooltip("Died on world: " + config.deathWorld());
+				deathTimer.getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_INFOBOX, DEATH_TIMER_CLEAR, "Death Timer"));
 				infoBoxManager.addInfoBox(deathTimer);
 			}
 		}
