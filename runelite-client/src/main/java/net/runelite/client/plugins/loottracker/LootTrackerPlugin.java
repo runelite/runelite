@@ -112,7 +112,6 @@ import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.http.api.loottracker.LootTrackerClient;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -921,9 +920,9 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final int[] mapRegions = client.getMapRegions();
 
-		for (int region : definedMapRegions)
+		for (int region : mapRegions)
 		{
-			if (ArrayUtils.contains(mapRegions, region))
+			if (definedMapRegions.contains(region))
 			{
 				return true;
 			}
