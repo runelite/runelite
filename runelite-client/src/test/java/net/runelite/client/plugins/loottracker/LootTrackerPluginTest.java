@@ -129,7 +129,6 @@ public class LootTrackerPluginTest
 		Player player = mock(Player.class);
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
-		when(client.getMapRegions()).thenReturn(new int[0]);
 	}
 
 	@Test
