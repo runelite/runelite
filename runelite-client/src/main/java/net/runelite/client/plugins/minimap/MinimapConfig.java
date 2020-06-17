@@ -104,10 +104,10 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "circleMap",
-			name = "Circular minimap",
-			description = "Makes the map circular similar to Resizable mode, Removes the map-lizards",
-			position = 5
+		keyName = "circleMap",
+		name = "Circular minimap",
+		description = "Makes the map circular similar to Resizable mode, Removes the map-lizards",
+		position = 5
 	)
 	default boolean circleMap()
 	{

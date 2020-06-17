@@ -82,7 +82,8 @@ public class MinimapPlugin extends Plugin
 		updateMinimapWidgetVisibility(config.hideMinimap());
 		storeOriginalDots();
 		replaceMapDots();
-		if (config.circleMap()){
+		if (config.circleMap())
+		{
 			clientThread.invokeLater(this::circleMinimap);
 		}
 	}
@@ -251,7 +252,9 @@ public class MinimapPlugin extends Plugin
 				alphaMap.setSpriteId(-1183);
 				alphaMap.revalidate();
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 	}
@@ -267,7 +270,9 @@ public class MinimapPlugin extends Plugin
 					alphaMap.setSpriteId(1183);
 					alphaMap.revalidate();
 				}
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				e.printStackTrace();
 			}
 		}
