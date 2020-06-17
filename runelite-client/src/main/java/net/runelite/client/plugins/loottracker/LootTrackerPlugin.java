@@ -179,6 +179,11 @@ public class LootTrackerPlugin extends Plugin
 		put(ObjectID.SILVER_CHEST_4130, "Silver key purple").
 		build();
 
+	// Hallow Sepulchre Coffin handling
+	static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
+	static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
+	static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
+
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
 
@@ -447,7 +452,7 @@ public class LootTrackerPlugin extends Plugin
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		// Ignore Last Man Standing player loots
-		if (isAtLMS())
+		if (isPlayerWithinMapRegion(LAST_MAN_STANDING_REGIONS))
 		{
 			return;
 		}
@@ -572,6 +577,17 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		if (isPlayerWithinMapRegion(HALLOWED_SEPULCHRE_MAP_REGIONS))
+		{
+			if (message.equals(COFFIN_LOOTED_MESSAGE))
+			{
+				eventType = HALLOWED_SEPULCHRE_COFFIN_EVENT;
+				lootRecordType = LootRecordType.EVENT;
+				takeInventorySnapshot();
+				return;
+			}
+		}
+
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
 		{
 			if (processHerbiboarHerbSackLoot(event.getTimestamp()))
@@ -668,6 +684,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (CHEST_EVENT_TYPES.containsValue(eventType)
 			|| SHADE_CHEST_OBJECTS.containsValue(eventType)
+			|| HALLOWED_SEPULCHRE_COFFIN_EVENT.equals(eventType)
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
 			|| SEEDPACK_EVENT.equals(eventType)
@@ -895,13 +912,13 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	/**
-	 * Is player at the Last Man Standing minigame
+	 * Is player currently within the provided map regions
 	 */
-	private boolean isAtLMS()
+	private boolean isPlayerWithinMapRegion(Set<Integer> definedMapRegions)
 	{
 		final int[] mapRegions = client.getMapRegions();
 
-		for (int region : LAST_MAN_STANDING_REGIONS)
+		for (int region : definedMapRegions)
 		{
 			if (ArrayUtils.contains(mapRegions, region))
 			{
