@@ -181,7 +181,6 @@ public class LootTrackerPlugin extends Plugin
 	// Hallow Sepulchre Coffin handling
 	static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
 	static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
-	@VisibleForTesting
 	static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
 
 	// Last man standing map regions
@@ -691,8 +690,7 @@ public class LootTrackerPlugin extends Plugin
 			|| lootRecordType == LootRecordType.PICKPOCKET)
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-			ItemContainer playerInventory = client.getItemContainer(InventoryID.INVENTORY);
-			Collection<ItemStack> groundItems = (playerInventory.contains(-1)) ? new ArrayList<>() : lootManager.getItemSpawns(playerLocation);
+			Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
 
 			processInventoryLoot(eventType, lootRecordType, event.getItemContainer(), groundItems);
 			eventType = null;
