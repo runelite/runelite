@@ -75,6 +75,7 @@ public class StealingArtefactsPlugin extends Plugin
 	private boolean inPortPiscariliusRegion;
 
 	private NPC captainKhaled;
+	private int prevPlane = 0;
 
 	@Override
 	protected void startUp()
@@ -99,21 +100,7 @@ public class StealingArtefactsPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		StealingArtefactState state = StealingArtefactState.values()[(client.getVar(Varbits.STEALING_ARTEFACT_STATE))];
-		stealingArtefactState = state;
-
-		if (state == StealingArtefactState.DELIVER_ARTEFACT && captainKhaled != null)
-		{
-			client.setHintArrow(captainKhaled);
-		}
-		else if (state == StealingArtefactState.NO_TASK || state == StealingArtefactState.FAILURE)
-		{
-			client.clearHintArrow();
-		}
-		else
-		{
-			client.setHintArrow(stealingArtefactState.getWorldPoint());
-		}
+		setHintArrow();
 	}
 
 	@Subscribe
@@ -161,7 +148,37 @@ public class StealingArtefactsPlugin extends Plugin
 			if (!inPortPiscariliusRegion)
 			{
 				client.clearHintArrow();
+				return;
 			}
+		}
+
+		if (client.getPlane() == 1 && prevPlane != 1)
+		{
+			client.setHintArrow(stealingArtefactState.getWorldPoint());
+		}
+		else if (client.getPlane() == 0 && prevPlane != 0)
+		{
+			setHintArrow();
+		}
+		prevPlane = client.getPlane();
+	}
+
+	private void setHintArrow()
+	{
+		StealingArtefactState state = StealingArtefactState.values()[(client.getVar(Varbits.STEALING_ARTEFACT_STATE))];
+		stealingArtefactState = state;
+
+		if (state == StealingArtefactState.DELIVER_ARTEFACT && captainKhaled != null)
+		{
+			client.setHintArrow(captainKhaled);
+		}
+		else if (state == StealingArtefactState.NO_TASK || state == StealingArtefactState.FAILURE)
+		{
+			client.clearHintArrow();
+		}
+		else
+		{
+			client.setHintArrow(stealingArtefactState.getLadderPoint());
 		}
 	}
 }
