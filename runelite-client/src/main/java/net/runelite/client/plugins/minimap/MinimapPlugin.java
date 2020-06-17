@@ -141,7 +141,7 @@ public class MinimapPlugin extends Plugin
 		if (scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_REDRAW)
 		{
 			updateMinimapWidgetVisibility(config.hideMinimap());
-			circleMinimap();
+			loadCustomMask();
 		}
 	}
 
@@ -243,18 +243,21 @@ public class MinimapPlugin extends Plugin
 
 	private void loadCustomMask()
 	{
-		try
+		if (config.circleMap())
 		{
-			Widget alphaMap = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
-			if (alphaMap != null)
+			try
 			{
-				alphaMap.setSpriteId(-1183);
-				alphaMap.revalidate();
+				Widget alphaMap = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+				if (alphaMap != null)
+				{
+					alphaMap.setSpriteId(-1183);
+					alphaMap.revalidate();
+				}
 			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
