@@ -48,7 +48,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Stealing Artefacts",
 	description = "Show the location and status of your Stealing Artefact task.",
-	tags = {"thieving", "stealing", "artefact", "artefacts", "captain", "khaled"},
+	tags = {"thieving", "captain", "khaled", "piscarilius", "zeah"},
 	enabledByDefault = false
 )
 

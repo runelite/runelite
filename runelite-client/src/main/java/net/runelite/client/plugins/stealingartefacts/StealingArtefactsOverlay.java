@@ -53,10 +53,9 @@ class StealingArtefactsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 
-		StealingArtefactState stealingArtefactState = plugin.getStealingArtefactState();
+		StealingArtefactState state = plugin.getStealingArtefactState();
 
-		if (stealingArtefactState == null ||
-			(stealingArtefactState != StealingArtefactState.DELIVER_ARTEFACT && !plugin.isInPortPiscariliusRegion()))
+		if (state == null || (state != StealingArtefactState.DELIVER_ARTEFACT && !plugin.isInPortPiscariliusRegion()))
 		{
 			return null;
 		}
@@ -69,8 +68,8 @@ class StealingArtefactsOverlay extends Overlay
 			.build());
 
 		panelComponent.getChildren().add(TitleComponent.builder()
-			.text(stealingArtefactState.getDescription())
-			.color(stealingArtefactState.getColor())
+			.text(state.getDescription())
+			.color(state.getColor())
 			.build());
 
 		return panelComponent.render(graphics);
