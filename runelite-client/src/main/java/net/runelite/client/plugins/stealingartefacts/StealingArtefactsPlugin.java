@@ -30,6 +30,10 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.TileObject;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.NpcDespawned;
@@ -45,6 +49,18 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import static net.runelite.api.ObjectID.DRAWERS_27771;
+import static net.runelite.api.ObjectID.DRAWERS_27772;
+import static net.runelite.api.ObjectID.DRAWERS_27773;
+import static net.runelite.api.ObjectID.DRAWERS_27774;
+import static net.runelite.api.ObjectID.DRAWERS_27775;
+import static net.runelite.api.ObjectID.DRAWERS_27776;
+import static net.runelite.api.ObjectID.LADDER_27634;
+import static net.runelite.api.ObjectID.LADDER_27635;
+
 @PluginDescriptor(
 	name = "Stealing Artefacts",
 	description = "Show the location and status of your Stealing Artefact task.",
@@ -55,6 +71,16 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class StealingArtefactsPlugin extends Plugin
 {
 	private static final ImmutableSet<Integer> PORT_PISCARILIUS_REGIONS = ImmutableSet.of(6970, 7226);
+	private static final Set<Integer> OBJECT_IDS = ImmutableSet.of(
+		LADDER_27634,
+		LADDER_27635,
+		DRAWERS_27771,
+		DRAWERS_27772,
+		DRAWERS_27773,
+		DRAWERS_27774,
+		DRAWERS_27775,
+		DRAWERS_27776
+	);
 
 	@Inject
 	private Client client;
@@ -68,19 +94,26 @@ public class StealingArtefactsPlugin extends Plugin
 	@Inject
 	private StealingArtefactsOverlay overlay;
 
+	@Inject
+	private ClickboxOverlay overlayClickbox;
+
 	@Getter(AccessLevel.PACKAGE)
 	private StealingArtefactState stealingArtefactState;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inPortPiscariliusRegion;
 
+	@Getter(AccessLevel.PACKAGE)
+	private TileObject objectToHighlight;
+
 	private NPC captainKhaled;
-	private int prevPlane = 0;
+	private Map<WorldPoint, TileObject> relevantObjects = new HashMap<>();
 
 	@Override
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(overlayClickbox);
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -94,13 +127,28 @@ public class StealingArtefactsPlugin extends Plugin
 		client.clearHintArrow();
 		stealingArtefactState = null;
 		captainKhaled = null;
+		objectToHighlight = null;
+		relevantObjects.clear();
 		overlayManager.remove(overlay);
+		overlayManager.remove(overlayClickbox);
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		setHintArrow();
+		setHintArrowAndHighlight();
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		onTileObject(null, event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		onTileObject(event.getGameObject(), null);
 	}
 
 	@Subscribe
@@ -147,38 +195,67 @@ public class StealingArtefactsPlugin extends Plugin
 
 			if (!inPortPiscariliusRegion)
 			{
+				objectToHighlight = null;
+				relevantObjects.clear();
 				client.clearHintArrow();
 				return;
 			}
 		}
 
-		if (client.getPlane() == 1 && prevPlane != 1)
+		stealingArtefactState = StealingArtefactState.values()[(client.getVar(Varbits.STEALING_ARTEFACT_STATE))];
+
+		if (client.getPlane() == 1)
 		{
 			client.setHintArrow(stealingArtefactState.getWorldPoint());
+			objectToHighlight = relevantObjects.get(stealingArtefactState.getWorldPoint());
 		}
-		else if (client.getPlane() == 0 && prevPlane != 0)
+		else if (client.getPlane() == 0)
 		{
-			setHintArrow();
+			setHintArrowAndHighlight();
 		}
-		prevPlane = client.getPlane();
 	}
 
-	private void setHintArrow()
+	private void setHintArrowAndHighlight()
 	{
-		StealingArtefactState state = StealingArtefactState.values()[(client.getVar(Varbits.STEALING_ARTEFACT_STATE))];
-		stealingArtefactState = state;
-
+		StealingArtefactState state = stealingArtefactState;
+		if (state == null)
+		{
+			return;
+		}
 		if (state == StealingArtefactState.DELIVER_ARTEFACT && captainKhaled != null)
 		{
 			client.setHintArrow(captainKhaled);
+			objectToHighlight = null;
 		}
 		else if (state == StealingArtefactState.NO_TASK || state == StealingArtefactState.FAILURE)
 		{
 			client.clearHintArrow();
+			objectToHighlight = null;
 		}
 		else
 		{
 			client.setHintArrow(stealingArtefactState.getLadderPoint());
+			objectToHighlight = relevantObjects.get(stealingArtefactState.getLadderPoint());
+		}
+	}
+
+	// Store relevant GameObjects (ladders and drawers)
+	private void onTileObject(TileObject oldObject, TileObject newObject)
+	{
+		if (oldObject != null)
+		{
+			WorldPoint oldLocation = oldObject.getWorldLocation();
+			relevantObjects.remove(oldLocation);
+		}
+
+		if (newObject == null)
+		{
+			return;
+		}
+
+		if (OBJECT_IDS.contains(newObject.getId()))
+		{
+			relevantObjects.put(newObject.getWorldLocation(), newObject);
 		}
 	}
 }

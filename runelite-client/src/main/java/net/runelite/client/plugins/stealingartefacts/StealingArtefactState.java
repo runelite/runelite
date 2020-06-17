@@ -37,10 +37,10 @@ enum StealingArtefactState
 {
 
 	NO_TASK("No Task", Color.WHITE, new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0)),
-	LOCATION_NORTH("North House", Color.YELLOW, new WorldPoint(1767, 3751, 0), new WorldPoint(1767, 3751, 0)),
+	LOCATION_NORTH("North House", Color.YELLOW, new WorldPoint(1767, 3753, 1), new WorldPoint(1767, 3751, 0)),
 	LOCATION_SOUTHEAST("Southeast House", Color.YELLOW, new WorldPoint(1774, 3730, 1), new WorldPoint(1776, 3730, 0)),
 	LOCATION_SOUTH("South House", Color.YELLOW, new WorldPoint(1764, 3735, 1), new WorldPoint(1768, 3733, 0)),
-	LOCATION_SOUTHWEST("Southwest House", Color.YELLOW, new WorldPoint(1749, 3735, 1), new WorldPoint(1749, 3730, 0)),
+	LOCATION_SOUTHWEST("Southwest House", Color.YELLOW, new WorldPoint(1750, 3735, 1), new WorldPoint(1749, 3730, 0)),
 	LOCATION_WEST("West House", Color.YELLOW, new WorldPoint(1747, 3749, 1), new WorldPoint(1751, 3751, 0)),
 	LOCATION_NORTHWEST("Northwest House", Color.YELLOW, new WorldPoint(1750, 3763, 1), new WorldPoint(1750, 3756, 0)),
 	FAILURE("Failure", Color.RED, new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0)),
