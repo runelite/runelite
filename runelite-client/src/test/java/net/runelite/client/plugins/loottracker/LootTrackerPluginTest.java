@@ -61,6 +61,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -121,6 +122,8 @@ public class LootTrackerPluginTest
 	@Bind
 	private ChatMessageManager chatMessageManager;
 
+	LootTrackerPlugin lootTrackerPluginSpy;
+
 	@Before
 	public void setUp()
 	{
@@ -129,26 +132,29 @@ public class LootTrackerPluginTest
 		Player player = mock(Player.class);
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
+
+		lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
+		doReturn(false).when(lootTrackerPluginSpy).isPlayerWithinMapRegion(LootTrackerPlugin.HALLOWED_SEPULCHRE_MAP_REGIONS);
 	}
 
 	@Test
 	public void testPickPocket()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You pick the hero's pocket.", "", 0);
-		lootTrackerPlugin.onChatMessage(chatMessage);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
 
-		assertEquals("Hero", lootTrackerPlugin.eventType);
-		assertEquals(LootRecordType.PICKPOCKET, lootTrackerPlugin.lootRecordType);
+		assertEquals("Hero", lootTrackerPluginSpy.eventType);
+		assertEquals(LootRecordType.PICKPOCKET, lootTrackerPluginSpy.lootRecordType);
 	}
 
 	@Test
 	public void testFirstClue()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have completed 1 master Treasure Trail.", "", 0);
-		lootTrackerPlugin.onChatMessage(chatMessage);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
 
-		assertEquals("Clue Scroll (Master)", lootTrackerPlugin.eventType);
-		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+		assertEquals("Clue Scroll (Master)", lootTrackerPluginSpy.eventType);
+		assertEquals(LootRecordType.EVENT, lootTrackerPluginSpy.lootRecordType);
 	}
 
 	private static ItemComposition mockItem(String name)
@@ -187,8 +193,6 @@ public class LootTrackerPluginTest
 			when(mockIterator.next()).thenReturn(node).thenReturn(nodeFull);
 			when(messageTable.iterator()).thenReturn(mockIterator);
 			when(client.getMessages()).thenReturn(messageTable);
-
-			LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
 			doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(Collection.class));
 
 			ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", LootTrackerPlugin.HERBIBOAR_LOOTED_MESSAGE, "", 0);
