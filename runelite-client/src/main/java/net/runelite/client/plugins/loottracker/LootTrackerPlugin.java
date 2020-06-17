@@ -692,9 +692,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 			ItemContainer playerInventory = client.getItemContainer(InventoryID.INVENTORY);
-			long playerInventoryCount = Arrays.stream(playerInventory.getItems()).filter(item -> item.getId() != -1).count();
-
-			Collection<ItemStack> groundItems = (playerInventoryCount == 28) ? lootManager.getItemSpawns(playerLocation) : new ArrayList<>();
+			Collection<ItemStack> groundItems = (playerInventory.contains(-1)) ? new ArrayList<>() : lootManager.getItemSpawns(playerLocation);
 
 			processInventoryLoot(eventType, lootRecordType, event.getItemContainer(), groundItems);
 			eventType = null;
