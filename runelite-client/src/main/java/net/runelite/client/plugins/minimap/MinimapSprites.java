@@ -3,7 +3,6 @@ package net.runelite.client.plugins.minimap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.game.SpriteOverride;
-import net.runelite.api.SpriteID;
 
 @RequiredArgsConstructor
 public enum MinimapSprites implements SpriteOverride

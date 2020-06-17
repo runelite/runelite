@@ -26,7 +26,6 @@ package net.runelite.client.plugins.minimap;
 
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.io.IOException;
 import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
