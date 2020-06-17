@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,63 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.infobox;
+package net.runelite.client.events;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Nonnull;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.client.plugins.Plugin;
+import lombok.Value;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-public abstract class InfoBox
+@Value
+public class InfoBoxMenuClicked
 {
-	@Nonnull
-	@Getter(AccessLevel.PACKAGE)
-	private final Plugin plugin;
-
-	@Getter
-	@Setter
-	private BufferedImage image;
-
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private BufferedImage scaledImage;
-
-	@Getter(AccessLevel.PACKAGE)
-	@Setter
-	private InfoBoxPriority priority;
-
-	@Getter
-	@Setter
-	private String tooltip;
-
-	@Getter
-	@Setter
-	private List<OverlayMenuEntry> menuEntries = new ArrayList<>();
-
-	public InfoBox(BufferedImage image, @Nonnull Plugin plugin)
-	{
-		this.plugin = plugin;
-		setImage(image);
-		setPriority(InfoBoxPriority.NONE);
-	}
-
-	public abstract String getText();
-
-	public abstract Color getTextColor();
-
-	public boolean render()
-	{
-		return true;
-	}
-
-	public boolean cull()
-	{
-		return false;
-	}
+	private OverlayMenuEntry entry;
+	private InfoBox infoBox;
 }
