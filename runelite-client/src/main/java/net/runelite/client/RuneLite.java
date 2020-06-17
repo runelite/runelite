@@ -361,6 +361,7 @@ public class RuneLite
 			eventBus.register(lootManager.get());
 			eventBus.register(chatboxPanelManager.get());
 			eventBus.register(hooks.get());
+			eventBus.register(infoBoxOverlay.get());
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
