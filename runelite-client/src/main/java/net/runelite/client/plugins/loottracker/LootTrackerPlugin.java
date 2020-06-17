@@ -576,15 +576,13 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (isPlayerWithinMapRegion(HALLOWED_SEPULCHRE_MAP_REGIONS))
+		if (message.equals(COFFIN_LOOTED_MESSAGE) &&
+			isPlayerWithinMapRegion(HALLOWED_SEPULCHRE_MAP_REGIONS))
 		{
-			if (message.equals(COFFIN_LOOTED_MESSAGE))
-			{
-				eventType = HALLOWED_SEPULCHRE_COFFIN_EVENT;
-				lootRecordType = LootRecordType.EVENT;
-				takeInventorySnapshot();
-				return;
-			}
+			eventType = HALLOWED_SEPULCHRE_COFFIN_EVENT;
+			lootRecordType = LootRecordType.EVENT;
+			takeInventorySnapshot();
+			return;
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
