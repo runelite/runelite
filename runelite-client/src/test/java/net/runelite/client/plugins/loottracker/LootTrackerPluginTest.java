@@ -188,6 +188,7 @@ public class LootTrackerPluginTest
 			when(mockIterator.next()).thenReturn(node).thenReturn(nodeFull);
 			when(messageTable.iterator()).thenReturn(mockIterator);
 			when(client.getMessages()).thenReturn(messageTable);
+
 			LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
 			doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(Collection.class));
 

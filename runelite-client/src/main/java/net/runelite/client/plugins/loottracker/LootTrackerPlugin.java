@@ -179,9 +179,9 @@ public class LootTrackerPlugin extends Plugin
 		build();
 
 	// Hallow Sepulchre Coffin handling
-	static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
-	static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
-	static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
+	private static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
+	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
+	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
 
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
@@ -913,7 +913,7 @@ public class LootTrackerPlugin extends Plugin
 	/**
 	 * Is player currently within the provided map regions
 	 */
-	boolean isPlayerWithinMapRegion(Set<Integer> definedMapRegions)
+	private boolean isPlayerWithinMapRegion(Set<Integer> definedMapRegions)
 	{
 		final int[] mapRegions = client.getMapRegions();
 
