@@ -95,9 +95,21 @@ public interface MinimapConfig extends Config
 	@ConfigItem(
 		keyName = "hideMinimap",
 		name = "Hide minimap",
-		description = "Do not show the minimap on screen (Resizable only)"
+		description = "Do not show the minimap on screen (Resizable only)",
+		position = 4
 	)
 	default boolean hideMinimap()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "circleMap",
+			name = "Circular minimap",
+			description = "Makes the map circular similar to Resizable mode, Removes the map-lizards",
+			position = 5
+	)
+	default boolean circleMap()
 	{
 		return false;
 	}
