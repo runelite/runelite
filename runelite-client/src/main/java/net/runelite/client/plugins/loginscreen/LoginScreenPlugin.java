@@ -42,7 +42,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.DirectoryManager;
-import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.SessionOpen;

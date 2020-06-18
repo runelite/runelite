@@ -33,7 +33,6 @@ import javax.annotation.Nullable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.runelite.client.DirectoryManager;
-import net.runelite.client.RuneLite;
 
 @Data
 public class ExternalPluginManifest

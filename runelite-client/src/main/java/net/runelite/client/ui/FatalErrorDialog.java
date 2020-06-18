@@ -49,7 +49,6 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.DirectoryManager;
-import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;

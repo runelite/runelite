@@ -60,7 +60,6 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.DirectoryManager;
-import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
