@@ -54,7 +54,8 @@ public class MinnowConversionOverlay extends Overlay
 			case WidgetID.BANK_GROUP_ID:
 			case WidgetID.BANK_INVENTORY_GROUP_ID:
 				String text = createConversionText(entry);
-				if (text != null) {
+				if (text != null)
+				{
 					tooltipManager.add(new Tooltip(ColorUtil.prependColorTag(text, new Color(238, 238, 238))));
 				}
 		}
