@@ -36,7 +36,7 @@ public interface FriendsChatConfig extends Config
 	@ConfigItem(
 		keyName = "clanChatIcons",
 		name = "Chat Icons",
-		description = "Show friends chat chat icons next to members.",
+		description = "Show rank icons next to friends chat members.",
 		position = 1
 	)
 	default boolean chatIcons()
@@ -131,7 +131,7 @@ public interface FriendsChatConfig extends Config
 	@ConfigItem(
 		keyName = "clanTabChat",
 		name = "Tab Chat",
-		description = "Allows friends chat chat without prepending '/' to messages when on the friends chat tab",
+		description = "Message friends chat without appending '/' when the friends chat tab is selected.",
 		position = 8
 	)
 	default boolean friendsChatTabChat()
@@ -153,7 +153,7 @@ public interface FriendsChatConfig extends Config
 	@ConfigItem(
 		keyName = "showIgnores",
 		name = "Recolor ignored players",
-		description = "Recolors players that are on your ignore list",
+		description = "Recolor members who are on your ignore list",
 		position = 10
 	)
 	default boolean showIgnores()
