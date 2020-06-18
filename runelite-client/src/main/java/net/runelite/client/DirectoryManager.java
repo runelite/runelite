@@ -25,6 +25,15 @@
 package net.runelite.client;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class DirectoryManager
 {
@@ -37,9 +46,11 @@ public class DirectoryManager
 	public static final File DEFAULT_SESSION_FILE = new File(DATA_DIR, "session");
 	public static final File DEFAULT_CONFIG_FILE = new File(getConfigFolder(), "settings.properties");
 
+	private static final boolean isUnix = System.getProperty("os.name").contains("nux");
+
 	public static File getDataFolder()
 	{
-		if (System.getProperty("os.name").contains("nux"))
+		if (isUnix)
 		{ //unix
 			String dataLocation = System.getenv("XDG_DATA_HOME");
 			if (dataLocation == null || dataLocation.isEmpty())
@@ -59,7 +70,7 @@ public class DirectoryManager
 
 	public static File getCacheFolder()
 	{
-		if (System.getProperty("os.name").contains("nux"))
+		if (isUnix)
 		{ //unix
 			String cacheLocation = System.getenv("XDG_CACHE_HOME");
 			if (cacheLocation == null || cacheLocation.isEmpty())
@@ -79,7 +90,7 @@ public class DirectoryManager
 
 	public static File getConfigFolder()
 	{
-		if (System.getProperty("os.name").contains("nux"))
+		if (isUnix)
 		{ //unix
 			String configLocation = System.getenv("XDG_CONFIG_HOME");
 			if (configLocation == null || configLocation.isEmpty())
@@ -94,6 +105,90 @@ public class DirectoryManager
 		else
 		{
 			return DATA_DIR;
+		}
+	}
+
+	public static void moveOldConfig() throws IOException
+	{
+		File oldLocation = new File(System.getProperty("user.home"), ".runelite");
+
+		if (isUnix && oldLocation.exists())
+		{
+			//Copy files, and finally delete, so a failure won't destroy your old config folder
+
+			deleteFolder(getConfigFolder().toPath());
+			getConfigFolder().mkdirs();
+			Files.copy(new File(oldLocation, "settings.properties").toPath(), DEFAULT_CONFIG_FILE.toPath());
+			copyFolder(new File(oldLocation, "profiles").toPath(), new File(DEFAULT_CONFIG_FILE, "profiles").toPath());
+
+			deleteFolder(CACHE_DIR.toPath());
+			CACHE_DIR.mkdirs();
+			copyFolder(new File(oldLocation, "cache").toPath(), CACHE_DIR.toPath());
+
+			deleteFolder(DATA_DIR.toPath());
+			DATA_DIR.mkdirs();
+			ArrayList<String> contents = new ArrayList<>(Arrays.asList(oldLocation.list()));
+			contents.remove("settings.properties");
+			contents.remove("profiles");
+			contents.remove("cache");
+			for (String location : contents)
+			{
+				File file = new File(oldLocation, location);
+				if (file.isFile())
+				{
+					Files.copy(file.toPath(), new File(DATA_DIR, location).toPath());
+				}
+				else
+				{
+					copyFolder(file.toPath(), new File(DATA_DIR, location).toPath());
+				}
+			}
+
+			deleteFolder(oldLocation.toPath());
+		}
+	}
+
+	private static void copyFolder(Path sourceFolder, Path destinationFolder) throws IOException
+	{
+		Files.walkFileTree(sourceFolder, new FileVisitor<Path>()
+		{
+			@Override
+			public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes basicFileAttributes) throws IOException
+			{
+				return FileVisitResult.CONTINUE;
+			}
+
+			@Override
+			public FileVisitResult visitFile(Path path, BasicFileAttributes basicFileAttributes) throws IOException
+			{
+				Path destinationFile = destinationFolder.resolve(sourceFolder.relativize(path));
+				destinationFile.toFile().getParentFile().mkdirs();
+				Files.copy(path, destinationFile);
+				return FileVisitResult.CONTINUE;
+			}
+
+			@Override
+			public FileVisitResult visitFileFailed(Path path, IOException e) throws IOException
+			{
+				throw new IOException("Visit Failed");
+			}
+
+			@Override
+			public FileVisitResult postVisitDirectory(Path path, IOException e) throws IOException
+			{
+				return FileVisitResult.CONTINUE;
+			}
+		});
+	}
+
+	private static void deleteFolder(Path folder) throws IOException
+	{
+		if (folder.toFile().exists())
+		{
+			Files.walk(folder)
+				.sorted(Comparator.reverseOrder())
+				.map(Path::toFile)
+				.forEach(File::delete);
 		}
 	}
 }
