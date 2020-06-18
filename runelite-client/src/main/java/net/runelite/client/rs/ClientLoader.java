@@ -59,6 +59,7 @@ import javax.annotation.Nonnull;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.client.DirectoryManager;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
@@ -79,9 +80,9 @@ import okhttp3.Response;
 public class ClientLoader implements Supplier<Applet>
 {
 	private static final int NUM_ATTEMPTS = 6;
-	private static File LOCK_FILE = new File(RuneLite.CACHE_DIR, "cache.lock");
-	private static File VANILLA_CACHE = new File(RuneLite.CACHE_DIR, "vanilla.cache");
-	private static File PATCHED_CACHE = new File(RuneLite.CACHE_DIR, "patched.cache");
+	private static File LOCK_FILE = new File(DirectoryManager.CACHE_DIR, "cache.lock");
+	private static File VANILLA_CACHE = new File(DirectoryManager.CACHE_DIR, "vanilla.cache");
+	private static File PATCHED_CACHE = new File(DirectoryManager.CACHE_DIR, "patched.cache");
 
 	private ClientUpdateCheckMode updateCheckMode;
 	private Object client = null;

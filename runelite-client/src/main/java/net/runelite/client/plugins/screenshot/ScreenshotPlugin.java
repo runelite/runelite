@@ -65,7 +65,7 @@ import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.Notifier;
-import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
+import static net.runelite.client.DirectoryManager.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PlayerLootReceived;

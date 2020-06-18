@@ -104,7 +104,7 @@ public class Notifier
 
 	private static final String appName = RuneLiteProperties.getTitle();
 
-	private static final File NOTIFICATION_FILE = new File(RuneLite.RUNELITE_DIR, "notification.wav");
+	private static final File NOTIFICATION_FILE = new File(DirectoryManager.DATA_DIR, "notification.wav");
 	private static final long CLIP_MTIME_UNLOADED = -2;
 	private static final long CLIP_MTIME_BUILTIN = -1;
 
@@ -136,7 +136,7 @@ public class Notifier
 		this.executorService = executorService;
 		this.chatMessageManager = chatMessageManager;
 		this.eventBus = eventBus;
-		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
+		this.notifyIconPath = DirectoryManager.DATA_DIR.toPath().resolve("icon.png");
 
 		// First check if we are running in launcher
 		this.terminalNotifierAvailable =

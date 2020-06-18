@@ -41,6 +41,7 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.DirectoryManager;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ConfigChanged;
@@ -63,7 +64,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 {
 	private static final int MAX_USERNAME_LENGTH = 254;
 	private static final int MAX_PIN_LENGTH = 6;
-	private static final File CUSTOM_LOGIN_SCREEN_FILE = new File(RuneLite.RUNELITE_DIR, "login.png");
+	private static final File CUSTOM_LOGIN_SCREEN_FILE = new File(DirectoryManager.DATA_DIR, "login.png");
 
 	@Inject
 	private Client client;
