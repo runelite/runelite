@@ -548,7 +548,9 @@ public enum WidgetInfo
 
 	SKILLS_CONTAINER(WidgetID.SKILLS_GROUP_ID, WidgetID.Skills.CONTAINER),
 
-	GAUNTLET_TIMER_CONTAINER(WidgetID.GAUNTLET_TIMER_GROUP_ID, WidgetID.GauntletTimer.CONTAINER);
+	GAUNTLET_TIMER_CONTAINER(WidgetID.GAUNTLET_TIMER_GROUP_ID, WidgetID.GauntletTimer.CONTAINER),
+
+	ENCOUNTER_HEALTH_BAR(WidgetID.ENCOUNTER_HEALTH_BAR_GROUP_ID, WidgetID.EncounterHealthBar.CONTAINER);
 
 	private final int groupId;
 	private final int childId;
