@@ -42,7 +42,17 @@ public class NavigationButton
 	/**
 	 * Icon of button.
 	 */
-	private final BufferedImage icon;
+	private BufferedImage icon;
+
+	public void setIcon(BufferedImage image)
+	{
+		icon = image;
+
+		if (onIconChange != null)
+		{
+			onIconChange.run();
+		}
+	}
 
 	/**
 	 * If the button is tab or not
@@ -60,6 +70,11 @@ public class NavigationButton
 	 * Button selection state
 	 */
 	private boolean selected;
+
+	/**
+	 * On icon having been changed.
+	 */
+	private Runnable onIconChange;
 
 	/**
 	 * On click action of the button.

@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
-import java.util.function.Supplier;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -103,26 +102,42 @@ class FeedPanel extends PluginPanel
 	}
 
 	private final FeedConfig config;
-	private final Supplier<FeedResult> feedSupplier;
+	private long lastSeenBlogPostTimestamp;
 
-	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier)
+	FeedPanel(FeedConfig config)
 	{
 		super(true);
 		this.config = config;
-		this.feedSupplier = feedSupplier;
+
+		/*
+		 * Use the last seen timestamp from when the panel was created
+		 * as the basis of which blog post items are "new",
+		 * so the items are seen as new even across feed updates
+		 * and across updates to the lastSeenBlogPostTimestamp config item.
+		 */
+		this.lastSeenBlogPostTimestamp = config.lastSeenBlogPostTimestamp().toEpochMilli();
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new GridLayout(0, 1, 0, 4));
 	}
 
-	void rebuildFeed()
+	void rebuildFeed(FeedResult feed)
 	{
-		FeedResult feed = feedSupplier.get();
-
-		if (feed == null)
+		// If it's the first time running the plugin,
+		// only mark the latest blog post as new.
+		if (lastSeenBlogPostTimestamp == 0)
 		{
-			return;
+			for (FeedItem item : feed.getItems())
+			{
+				if (item.getType() == FeedItemType.BLOG_POST
+					&& item.getTimestamp() > lastSeenBlogPostTimestamp)
+				{
+					// Set lastSeenBlogPostTimestamp to the latest blog post timestamp minus one,
+					// so the latest one is regarded as new, but not ones older than that.
+					lastSeenBlogPostTimestamp = item.getTimestamp() - 1;
+				}
+			}
 		}
 
 		SwingUtilities.invokeLater(() ->
@@ -148,6 +163,14 @@ class FeedPanel extends PluginPanel
 		// width = 48+4 to compensate for the border
 		avatar.setPreferredSize(new Dimension(52, 48));
 		avatar.setBorder(new EmptyBorder(0, 4, 0, 0));
+
+		Color darkerForeground = UIManager.getColor("Label.foreground").darker();
+
+		JLabel titleLabel = new JLabel(item.getTitle());
+		titleLabel.setFont(FontManager.getRunescapeSmallFont());
+		titleLabel.setBackground(null);
+		titleLabel.setForeground(darkerForeground);
+		titleLabel.setPreferredSize(new Dimension(CONTENT_WIDTH - TIME_WIDTH, 0));
 
 		switch (item.getType())
 		{
@@ -206,6 +229,12 @@ class FeedPanel extends PluginPanel
 					avatar.setIcon(RUNELITE_ICON);
 				}
 				avatarAndRight.setBackground(BLOG_POST_BACKGROUND);
+
+				// If we haven't seen this blog post item before, add "NEW" in front of the item's title
+				if (lastSeenBlogPostTimestamp < item.getTimestamp())
+				{
+					titleLabel.setText("<html><font color='green'>NEW</font> " + titleLabel.getText());
+				}
 				break;
 		}
 
@@ -217,14 +246,6 @@ class FeedPanel extends PluginPanel
 		JPanel titleAndTime = new JPanel();
 		titleAndTime.setLayout(new BorderLayout());
 		titleAndTime.setBackground(null);
-
-		Color darkerForeground = UIManager.getColor("Label.foreground").darker();
-
-		JLabel titleLabel = new JLabel(item.getTitle());
-		titleLabel.setFont(FontManager.getRunescapeSmallFont());
-		titleLabel.setBackground(null);
-		titleLabel.setForeground(darkerForeground);
-		titleLabel.setPreferredSize(new Dimension(CONTENT_WIDTH - TIME_WIDTH, 0));
 
 		Duration duration = Duration.between(Instant.ofEpochMilli(item.getTimestamp()), Instant.now());
 		JLabel timeLabel = new JLabel(durationToString(duration));

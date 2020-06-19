@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.feed;
 
+import java.time.Instant;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -39,4 +40,22 @@ public interface FeedConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "lastSeenBlogPostTimestamp",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default Instant lastSeenBlogPostTimestamp()
+	{
+		return Instant.ofEpochMilli(0);
+	}
+
+	@ConfigItem(
+		keyName = "lastSeenBlogPostTimestamp",
+		name = "",
+		description = ""
+	)
+	void lastSeenBlogPostTimestamp(Instant timestamp);
 }
