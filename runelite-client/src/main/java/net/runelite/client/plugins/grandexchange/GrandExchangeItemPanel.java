@@ -39,9 +39,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.QuantityFormatter;
 
 /**
@@ -90,7 +89,7 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				geLink(name, itemID);
+				GrandExchangePlugin.openGeLink(name, itemID);
 			}
 		};
 
@@ -163,15 +162,5 @@ class GrandExchangeItemPanel extends JPanel
 		{
 			c.setBackground(color);
 		}
-	}
-
-	private static void geLink(String name, int itemID)
-	{
-		final String url = "http://services.runescape.com/m=itemdb_oldschool/"
-			+ name.replaceAll(" ", "_")
-			+ "/viewitem?obj="
-			+ itemID;
-
-		LinkBrowser.browse(url);
 	}
 }
