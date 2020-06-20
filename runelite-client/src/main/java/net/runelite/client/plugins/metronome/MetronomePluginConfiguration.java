@@ -25,11 +25,13 @@
  */
 package net.runelite.client.plugins.metronome;
 
+import net.runelite.api.Constants;
+import net.runelite.api.SoundEffectVolume;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
-import net.runelite.api.SoundEffectVolume;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("metronome")
 public interface MetronomePluginConfiguration extends Config
@@ -70,5 +72,19 @@ public interface MetronomePluginConfiguration extends Config
 	default int tockVolume()
 	{
 		return SoundEffectVolume.MUTED;
+	}
+
+	@Range(
+		max = Constants.GAME_TICK_LENGTH
+	)
+	@Units(Units.MILLISECONDS)
+	@ConfigItem(
+		keyName = "soundDelay",
+		name = "Sound delay",
+		description = "Configures the amount of time to delay the metronome sound from a game tick."
+	)
+	default int soundDelay()
+	{
+		return 0;
 	}
 }
