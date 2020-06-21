@@ -125,7 +125,7 @@ public interface ChatFilterConfig extends Config
 		keyName = "collapseGameChat",
 		name = "Collapse Game Chat",
 		description = "Collapse duplicate game chat messages into a single line",
-		position = 8
+		position = 9
 	)
 	default boolean collapseGameChat()
 	{
@@ -136,7 +136,7 @@ public interface ChatFilterConfig extends Config
 		keyName = "collapsePlayerChat",
 		name = "Collapse Player Chat",
 		description = "Collapse duplicate player chat messages into a single line",
-		position = 9
+		position = 10
 	)
 	default boolean collapsePlayerChat()
 	{
@@ -147,7 +147,7 @@ public interface ChatFilterConfig extends Config
 		keyName = "maxRepeatedPublicChats",
 		name = "Max repeated public chats",
 		description = "Block player chat message if repeated this many times. 0 is off",
-		position = 10
+		position = 11
 	)
 	default int maxRepeatedPublicChats()
 	{
