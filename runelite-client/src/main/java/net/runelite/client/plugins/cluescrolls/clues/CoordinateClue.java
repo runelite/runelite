@@ -103,7 +103,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2387, 3435, 0), new CoordinateClueInfo("West of Tree Gnome Stronghold, near the pen containing terrorbirds."))
 		.put(new WorldPoint(2512, 3467, 0), new CoordinateClueInfo("Baxtorian Falls (Bring rope)."))
 		.put(new WorldPoint(2381, 3468, 0), new CoordinateClueInfo("West of Tree Gnome Stronghold, north of the pen with terrorbirds."))
-		.put(new WorldPoint(3005, 3475, 0), new CoordinateClueInfo("Ice Mountain, west of Edgeville."))
+		.put(new WorldPoint(3005, 3475, 0), new CoordinateClueInfo("Ice Mountain, west of Edgeville Monastery."))
 		.put(new WorldPoint(2585, 3505, 0), new CoordinateClueInfo("By the shore line north of the Coal Trucks."))
 		.put(new WorldPoint(3443, 3515, 0), new CoordinateClueInfo("South of Slayer Tower (CKS)."))
 		.put(new WorldPoint(2416, 3516, 0), new CoordinateClueInfo("Tree Gnome Stronghold, west of Grand Tree, near swamp."))
