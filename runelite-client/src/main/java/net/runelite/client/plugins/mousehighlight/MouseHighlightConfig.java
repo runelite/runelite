@@ -55,11 +55,11 @@ public interface MouseHighlightConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "spellbookTooltip",
+		keyName = "disableSpellbooktooltip",
 		name = "Disable Spellbook Tooltips",
 		description = "Disable Spellbook Tooltips so they don't cover descriptions"
 	)
-	default boolean spellbookTooltip()
+	default boolean disableSpellbooktooltip()
 	{
 		return false;
 	}

@@ -117,7 +117,7 @@ class MouseHighlightOverlay extends Overlay
 			return null;
 		}
 
-		if (config.spellbookTooltip() && groupId == WidgetID.SPELLBOOK_GROUP_ID)
+		if (config.disableSpellbooktooltip() && groupId == WidgetID.SPELLBOOK_GROUP_ID)
 		{
 			return null;
 		}
