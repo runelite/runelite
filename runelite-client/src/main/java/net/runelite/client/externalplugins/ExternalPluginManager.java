@@ -44,6 +44,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Function;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +75,10 @@ public class ExternalPluginManager
 {
 	private static final String PLUGIN_LIST_KEY = "externalPlugins";
 	private static Class<? extends Plugin>[] builtinExternals = null;
+
+	@Inject
+	@Named("safeMode")
+	private boolean safeMode;
 
 	@Inject
 	private ConfigManager configManager;
@@ -115,6 +120,12 @@ public class ExternalPluginManager
 
 	private void refreshPlugins()
 	{
+		if (safeMode)
+		{
+			log.debug("External plugins are disabled in safe mode!");
+			return;
+		}
+
 		Multimap<ExternalPluginManifest, Plugin> loadedExternalPlugins = HashMultimap.create();
 		for (Plugin p : pluginManager.getPlugins())
 		{

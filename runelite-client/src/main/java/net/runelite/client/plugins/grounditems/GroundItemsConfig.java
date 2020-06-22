@@ -30,6 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
@@ -39,11 +40,20 @@ import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 @ConfigGroup("grounditems")
 public interface GroundItemsConfig extends Config
 {
+	@ConfigSection(
+		name = "Item Lists",
+		description = "The highlighted and hidden item lists",
+		position = 0,
+		closedByDefault = true
+	)
+	String itemLists = "itemLists";
+
 	@ConfigItem(
 		keyName = "highlightedItems",
 		name = "Highlighted Items",
 		description = "Configures specifically highlighted ground items. Format: (item), (item)",
-		position = 0
+		position = 0,
+		section = itemLists
 	)
 	default String getHighlightItems()
 	{
@@ -61,7 +71,8 @@ public interface GroundItemsConfig extends Config
 		keyName = "hiddenItems",
 		name = "Hidden Items",
 		description = "Configures hidden ground items. Format: (item), (item)",
-		position = 1
+		position = 1,
+		section = itemLists
 	)
 	default String getHiddenItems()
 	{
@@ -111,7 +122,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "recolorMenuHiddenItems",
 		name = "Recolor Menu Hidden Items",
-		description = "Configures whether or not hidden items in right click menu will be recolored",
+		description = "Configures whether or not hidden items in right-click menu will be recolored",
 		position = 5
 	)
 	default boolean recolorMenuHiddenItems()
@@ -144,7 +155,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "notifyTier",
 		name = "Notify >= Tier",
-		description = "Configures what tier of highlight will cause a drop",
+		description = "Configures which price tiers will trigger a notification on drop",
 		position = 8
 	)
 	default HighlightTier notifyTier()
@@ -155,7 +166,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "priceDisplayMode",
 		name = "Price Display Mode",
-		description = "Configures what price types are shown alongside of ground item name",
+		description = "Configures which price types are shown alongside ground item name",
 		position = 9
 	)
 	default PriceDisplayMode priceDisplayMode()

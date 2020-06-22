@@ -83,7 +83,7 @@ public class PluginManagerTest
 	public void before() throws IOException
 	{
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(() -> null, true,
+			.override(new RuneLiteModule(() -> null, true, false,
 				RuneLite.DEFAULT_SESSION_FILE,
 				RuneLite.DEFAULT_CONFIG_FILE))
 			.with(BoundFieldModule.of(this)));
@@ -114,7 +114,7 @@ public class PluginManagerTest
 	@Test
 	public void testLoadPlugins() throws Exception
 	{
-		PluginManager pluginManager = new PluginManager(false, null, null, null, null, null);
+		PluginManager pluginManager = new PluginManager(false, false, null, null, null, null, null);
 		pluginManager.setOutdated(true);
 		pluginManager.loadCorePlugins();
 		Collection<Plugin> plugins = pluginManager.getPlugins();
@@ -125,7 +125,7 @@ public class PluginManagerTest
 			.count();
 		assertEquals(expected, plugins.size());
 
-		pluginManager = new PluginManager(false, null, null, null, null, null);
+		pluginManager = new PluginManager(false, false, null, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		plugins = pluginManager.getPlugins();
 
@@ -146,11 +146,11 @@ public class PluginManagerTest
 	{
 		List<Module> modules = new ArrayList<>();
 		modules.add(new GraphvizModule());
-		modules.add(new RuneLiteModule(() -> null, true,
+		modules.add(new RuneLiteModule(() -> null, true, false,
 			RuneLite.DEFAULT_SESSION_FILE,
 			RuneLite.DEFAULT_CONFIG_FILE));
 
-		PluginManager pluginManager = new PluginManager(true, null, null, null, null, null);
+		PluginManager pluginManager = new PluginManager(true, false, null, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		for (Plugin p : pluginManager.getPlugins())
 		{

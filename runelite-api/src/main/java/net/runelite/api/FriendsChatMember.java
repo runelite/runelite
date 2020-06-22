@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,19 +24,22 @@
  */
 package net.runelite.api;
 
-public interface ClanMemberManager extends NameableContainer<ClanMember>
+/**
+ * Represents a friends chat member.
+ */
+public interface FriendsChatMember extends ChatPlayer
 {
 	/**
-	 * Gets the clan owner of the currently joined clan chat
+	 * Gets the world the member is in.
 	 *
-	 * @return
+	 * @return the world
 	 */
-	String getClanOwner();
+	int getWorld();
 
 	/**
-	 * Gets the clan chat name of the currently joined clan chat
+	 * Gets the rank of the friends chat member.
 	 *
-	 * @return
+	 * @return the rank
 	 */
-	String getClanChatName();
+	FriendsChatRank getRank();
 }

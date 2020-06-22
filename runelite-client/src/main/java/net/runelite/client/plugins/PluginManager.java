@@ -88,6 +88,7 @@ public class PluginManager
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
 
 	private final boolean developerMode;
+	private final boolean safeMode;
 	private final EventBus eventBus;
 	private final Scheduler scheduler;
 	private final ConfigManager configManager;
@@ -103,6 +104,7 @@ public class PluginManager
 	@VisibleForTesting
 	PluginManager(
 		@Named("developerMode") final boolean developerMode,
+		@Named("safeMode") final boolean safeMode,
 		final EventBus eventBus,
 		final Scheduler scheduler,
 		final ConfigManager configManager,
@@ -110,6 +112,7 @@ public class PluginManager
 		final Provider<GameEventManager> sceneTileManager)
 	{
 		this.developerMode = developerMode;
+		this.safeMode = safeMode;
 		this.eventBus = eventBus;
 		this.scheduler = scheduler;
 		this.configManager = configManager;
@@ -164,7 +167,7 @@ public class PluginManager
 		{
 			final Injector injector = plugin.getInjector();
 
-			for (Key<?> key : injector.getAllBindings().keySet())
+			for (Key<?> key : injector.getBindings().keySet())
 			{
 				Class<?> type = key.getTypeLiteral().getRawType();
 				if (Config.class.isAssignableFrom(type))
@@ -197,7 +200,7 @@ public class PluginManager
 		List<Config> list = new ArrayList<>();
 		for (Injector injector : injectors)
 		{
-			for (Key<?> key : injector.getAllBindings().keySet())
+			for (Key<?> key : injector.getBindings().keySet())
 			{
 				Class<?> type = key.getTypeLiteral().getRawType();
 				if (Config.class.isAssignableFrom(type))
@@ -309,6 +312,14 @@ public class PluginManager
 				continue;
 			}
 
+			if (safeMode && !pluginDescriptor.loadInSafeMode())
+			{
+				log.debug("Disabling {} due to safe mode", clazz);
+				// also disable the plugin from autostarting later
+				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME, clazz.getSimpleName().toLowerCase());
+				continue;
+			}
+
 			Class<Plugin> pluginClass = (Class<Plugin>) clazz;
 			graph.addNode(pluginClass);
 		}
@@ -320,7 +331,10 @@ public class PluginManager
 
 			for (PluginDependency pluginDependency : pluginDependencies)
 			{
-				graph.putEdge(pluginClazz, pluginDependency.value());
+				if (graph.nodes().contains(pluginDependency.value()))
+				{
+					graph.putEdge(pluginClazz, pluginDependency.value());
+				}
 			}
 		}
 
@@ -478,21 +492,39 @@ public class PluginManager
 
 		try
 		{
-			Module pluginModule = (Binder binder) ->
+			Injector parent = RuneLite.getInjector();
+
+			if (deps.size() > 1)
 			{
-				binder.bind(clazz).toInstance(plugin);
-				binder.install(plugin);
+				List<Module> modules = new ArrayList<>(deps.size());
 				for (Plugin p : deps)
 				{
-					Module p2 = (Binder binder2) ->
+					// Create a module for each dependency
+					Module module = (Binder binder) ->
 					{
-						binder2.bind((Class<Plugin>) p.getClass()).toInstance(p);
-						binder2.install(p);
+						binder.bind((Class<Plugin>) p.getClass()).toInstance(p);
+						binder.install(p);
 					};
-					binder.install(p2);
+					modules.add(module);
 				}
+
+				// Create a parent injector containing all of the dependencies
+				parent = parent.createChildInjector(modules);
+			}
+			else if (!deps.isEmpty())
+			{
+				// With only one dependency we can simply use its injector
+				parent = deps.get(0).injector;
+			}
+
+			// Create injector for the module
+			Module pluginModule = (Binder binder) ->
+			{
+				// Since the plugin itself is a module, it won't bind itself, so we'll bind it here
+				binder.bind(clazz).toInstance(plugin);
+				binder.install(plugin);
 			};
-			Injector pluginInjector = RuneLite.getInjector().createChildInjector(pluginModule);
+			Injector pluginInjector = parent.createChildInjector(pluginModule);
 			pluginInjector.injectMembers(plugin);
 			plugin.injector = pluginInjector;
 		}

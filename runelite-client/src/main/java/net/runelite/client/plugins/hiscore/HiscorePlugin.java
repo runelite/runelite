@@ -28,7 +28,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -156,7 +155,7 @@ public class HiscorePlugin extends Plugin
 		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 		String option = event.getOption();
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId() ||
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId() ||
 				groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
 				groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId() ||
 				groupId == WidgetInfo.IGNORE_LIST.getGroupId())
@@ -213,23 +212,12 @@ public class HiscorePlugin extends Plugin
 
 	private void lookupPlayer(String playerName)
 	{
-		executor.execute(() ->
+		SwingUtilities.invokeLater(() ->
 		{
-			try
+			if (!navButton.isSelected())
 			{
-				SwingUtilities.invokeAndWait(() ->
-				{
-					if (!navButton.isSelected())
-					{
-						navButton.getOnSelect().run();
-					}
-				});
+				navButton.getOnSelect().run();
 			}
-			catch (InterruptedException | InvocationTargetException e)
-			{
-				throw new RuntimeException(e);
-			}
-
 			hiscorePanel.lookup(playerName);
 		});
 	}

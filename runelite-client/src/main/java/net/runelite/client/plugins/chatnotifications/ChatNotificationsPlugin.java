@@ -144,6 +144,22 @@ public class ChatNotificationsPlugin extends Plugin
 					notifier.notify(chatMessage.getMessage());
 				}
 				break;
+			case BROADCAST:
+				if (config.notifyOnBroadcast())
+				{
+					// Some broadcasts have links attached, notated by `|` followed by a number, while others contain color tags.
+					// We don't want to see either in the printed notification.
+					String broadcast = chatMessage.getMessage();
+
+					int urlTokenIndex = broadcast.lastIndexOf('|');
+					if (urlTokenIndex != -1)
+					{
+						broadcast = broadcast.substring(0, urlTokenIndex);
+					}
+
+					notifier.notify(Text.removeFormattingTags(broadcast));
+				}
+				break;
 			case CONSOLE:
 				// Don't notify for notification messages
 				if (chatMessage.getName().equals(RuneLiteProperties.getTitle()))

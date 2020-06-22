@@ -95,20 +95,18 @@ public class ObjectManager
 	public void java(File java) throws IOException
 	{
 		java.mkdirs();
-		try (IDClass ids = IDClass.create(java, "ObjectID"))
+		try (IDClass ids = IDClass.create(java, "ObjectID");
+			IDClass nulls = IDClass.create(java, "NullObjectID"))
 		{
-			try (IDClass nulls = IDClass.create(java, "NullObjectID"))
+			for (ObjectDefinition def : objects.values())
 			{
-				for (ObjectDefinition def : objects.values())
+				if ("null".equals(def.getName()))
 				{
-					if ("null".equals(def.getName()))
-					{
-						nulls.add(def.getName(), def.getId());
-					}
-					else
-					{
-						ids.add(def.getName(), def.getId());
-					}
+					nulls.add(def.getName(), def.getId());
+				}
+				else
+				{
+					ids.add(def.getName(), def.getId());
 				}
 			}
 		}

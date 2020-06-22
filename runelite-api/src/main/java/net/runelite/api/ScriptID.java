@@ -196,13 +196,13 @@ public final class ScriptID
 	public static final int XPDROP_DISABLED = 2091;
 
 	/**
-	 * Attempts to kick the specified player from the Clan Chat
+	 * Attempts to kick the specified player from the friends chat
 	 * <ul>
 	 * <li>String Players in-game name</li>
 	 * </ul>
 	 */
 	@ScriptArguments(string = 1)
-	public static final int CLAN_SEND_KICK = 215;
+	public static final int FRIENDS_CHAT_SEND_KICK = 215;
 
 	/**
 	 * Builds the items kept on death widget
@@ -211,10 +211,10 @@ public final class ScriptID
 	public static final int DEATH_KEEP_BUILD = 1601;
 
 	/**
-	 * Builds the widget that holds all of the players inside a clan chat
+	 * Builds the widget that holds all of the players inside a friends chat
 	 */
 	@ScriptArguments(integer = 15)
-	public static final int CLAN_CHAT_CHANNEL_BUILD = 1658;
+	public static final int FRIENDS_CHAT_CHANNEL_REBUILD = 1658;
 
 	/**
 	 * Builds the widget for making an offer in Grand Exchange

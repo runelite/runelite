@@ -203,7 +203,7 @@ public class AttackStylesPlugin extends Plugin
 	{
 		if (event.getGroup().equals("attackIndicator"))
 		{
-			boolean enabled = event.getNewValue().equals("true");
+			boolean enabled = Boolean.TRUE.toString().equals(event.getNewValue());
 			switch (event.getKey())
 			{
 				case "warnForDefensive":

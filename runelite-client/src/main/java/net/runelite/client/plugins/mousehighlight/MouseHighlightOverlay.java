@@ -33,6 +33,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -112,6 +113,11 @@ class MouseHighlightOverlay extends Overlay
 		}
 
 		if (!config.chatboxTooltip() && groupId == WidgetInfo.CHATBOX.getGroupId())
+		{
+			return null;
+		}
+
+		if (config.disableSpellbooktooltip() && groupId == WidgetID.SPELLBOOK_GROUP_ID)
 		{
 			return null;
 		}

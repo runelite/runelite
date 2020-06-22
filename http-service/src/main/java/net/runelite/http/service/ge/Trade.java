@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,85 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.http.service.ge;
 
-import java.util.HashMap;
-import java.util.Map;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import net.runelite.http.api.worlds.WorldType;
 
-/**
- * An enumeration of ranks of clan members.
- */
-@AllArgsConstructor
-@Getter
-public enum ClanMemberRank
+@Data
+class Trade
 {
-	/**
-	 * Not in a clan.
-	 */
-	UNRANKED(-1),
-	/**
-	 * Friend rank.
-	 */
-	FRIEND(0),
-	/**
-	 * Recruit rank.
-	 */
-	RECRUIT(1),
-	/**
-	 * Corporal rank.
-	 */
-	CORPORAL(2),
-	/**
-	 * Sergeant rank.
-	 */
-	SERGEANT(3),
-	/**
-	 * Lieutenant rank.
-	 */
-	LIEUTENANT(4),
-	/**
-	 * Captain rank.
-	 */
-	CAPTAIN(5),
-	/**
-	 * General rank.
-	 */
-	GENERAL(6),
-	/**
-	 * Channel owner rank.
-	 */
-	OWNER(7),
-	/**
-	 * JMod rank.
-	 */
-	JMOD(127);
-
-	private static final Map<Integer, ClanMemberRank> RANKS = new HashMap<>();
-
-	static
-	{
-		for (final ClanMemberRank clanMemberRank : ClanMemberRank.values())
-		{
-			RANKS.put(clanMemberRank.value, clanMemberRank);
-		}
-	}
-
-	/**
-	 * Utility method that maps the rank value to its respective
-	 * {@link ClanMemberRank} value.
-	 *
-	 * @param rank the rank value
-	 * @return rank type
-	 */
-	public static ClanMemberRank valueOf(int rank)
-	{
-		return RANKS.get(rank);
-	}
-
-	/**
-	 * The value of the clan rank.
-	 */
-	private final int value;
+	private boolean buy;
+	private boolean cancel;
+	private boolean login;
+	private int itemId;
+	private int qty;
+	private int dqty;
+	private int total;
+	private int spent;
+	private int offer;
+	private int slot;
+	private int time;
+	private String machineId;
+	private Integer userId;
+	private String ip;
+	private WorldType worldType;
 }

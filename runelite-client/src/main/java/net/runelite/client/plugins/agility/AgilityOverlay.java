@@ -31,8 +31,12 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
@@ -136,6 +140,24 @@ class AgilityOverlay extends Overlay
 		if (stickTile != null && config.highlightStick())
 		{
 			highlightTile(graphics, playerLocation, stickTile, config.stickHighlightColor());
+		}
+
+		Set<NPC> npcs = plugin.getNpcs();
+		if (!npcs.isEmpty() && config.highlightSepulchreNpcs())
+		{
+			Color color = config.sepulchreHighlightColor();
+			for (NPC npc : npcs)
+			{
+				NPCComposition npcComposition = npc.getComposition();
+				int size = npcComposition.getSize();
+				LocalPoint lp = npc.getLocalLocation();
+
+				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+				if (tilePoly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, tilePoly, color);
+				}
+			}
 		}
 
 		return null;

@@ -69,7 +69,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 		new FaloTheBardClue("These gloves of white won't help you fight, but aid in cooking, they just might.", item(COOKING_GAUNTLETS)),
 		new FaloTheBardClue("They come from some time ago, from a land unto the east. Fossilised they have become, this small and gentle beast.", item(NUMULITE)),
 		new FaloTheBardClue("To slay a dragon you must first do, before this chest piece can be put on you.", item(RUNE_PLATEBODY)),
-		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis flail", range(ROD_OF_IVANDIS_10, ROD_OF_IVANDIS_1), item(IVANDIS_FLAIL)))
+		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis/Blisterwood flail", range(ROD_OF_IVANDIS_10, ROD_OF_IVANDIS_1), item(IVANDIS_FLAIL), item(BLISTERWOOD_FLAIL)))
 	);
 
 	private static final WorldPoint LOCATION = new WorldPoint(2689, 3550, 0);

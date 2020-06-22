@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Sebastiaan <https://github.com/SebastiaanVanspauwen>
+ * Copyright (c) 2020, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.clanchat;
+package net.runelite.client.plugins.loginscreen;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.Counter;
+import lombok.Getter;
 
-class ClanChatIndicator extends Counter
+public enum LoginScreenOverride
 {
-	private final ClanChatPlugin plugin;
+	OFF,
+	NORMAL("normal.jpg"),
+	OLD("old.jpg"),
+	CHRISTMAS("christmas.jpg"),
+	CHAMBERS_OF_XERIC("cox.jpg"),
+	DARKMEYER("darkmeyer.jpg"),
+	DRAGON_SLAYER_2("ds2.jpg"),
+	FOSSIL_ISLAND("fossil_island.jpg"),
+	HALLOWEEN("halloween.jpg"),
+	HALLOWEEN_2019("halloween_2019.jpg"),
+	INFERNO("inferno.jpg"),
+	KEBOS("kebos.jpg"),
+	MONKEY_MADNESS_2("mm2.jpg"),
+	PRIFDDINAS("prifddinas.jpg"),
+	THEATRE_OF_BLOOD("tob.jpg"),
+	CUSTOM;
 
-	ClanChatIndicator(BufferedImage image, ClanChatPlugin plugin)
+	@Getter
+	private final String fileName;
+
+	LoginScreenOverride()
 	{
-		super(image, plugin, plugin.getClanAmount());
-		this.plugin = plugin;
+		this.fileName = null;
 	}
 
-	@Override
-	public int getCount()
+	LoginScreenOverride(String fileName)
 	{
-		return plugin.getClanAmount();
-	}
-
-	@Override
-	public String getTooltip()
-	{
-		return plugin.getClanAmount() + " clan member(s) near you";
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		return Color.WHITE;
+		this.fileName = fileName;
 	}
 }

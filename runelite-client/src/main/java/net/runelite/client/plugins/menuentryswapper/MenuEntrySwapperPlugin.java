@@ -442,7 +442,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("teleport", option, target, index);
 			}
 
-			if (config.swapHardWoodGrove() && target.contains("rionasta"))
+			if (config.swapHardWoodGroveParcel() && target.contains("rionasta"))
 			{
 				swap("send-parcel", option, target, index);
 			}

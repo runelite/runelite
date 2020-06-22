@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.function.BooleanSupplier;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -47,7 +48,12 @@ class OverviewItemPanel extends JPanel
 
 	private static final Color HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
 
+	private final JPanel textContainer;
 	private final JLabel statusLabel;
+	private final JLabel arrowLabel;
+	private final BooleanSupplier isSelectable;
+
+	private boolean isHighlighted;
 
 	static
 	{
@@ -56,16 +62,23 @@ class OverviewItemPanel extends JPanel
 
 	OverviewItemPanel(ItemManager itemManager, TimeTrackingPanel pluginPanel, Tab tab, String title)
 	{
+		this(itemManager, () -> pluginPanel.switchTab(tab), () -> true, tab.getItemID(), title);
+	}
+
+	OverviewItemPanel(ItemManager itemManager, Runnable onTabSwitched, BooleanSupplier isSelectable, int iconItemID, String title)
+	{
+		this.isSelectable = isSelectable;
+
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(7, 7, 7, 7));
 
 		JLabel iconLabel = new JLabel();
 		iconLabel.setMinimumSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
-		itemManager.getImage(tab.getItemID()).addTo(iconLabel);
+		itemManager.getImage(iconItemID).addTo(iconLabel);
 		add(iconLabel, BorderLayout.WEST);
 
-		JPanel textContainer = new JPanel();
+		textContainer = new JPanel();
 		textContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		textContainer.setLayout(new GridLayout(2, 1));
 		textContainer.setBorder(new EmptyBorder(5, 7, 5, 7));
@@ -75,32 +88,27 @@ class OverviewItemPanel extends JPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				pluginPanel.switchTab(tab);
-				setBackground(ColorScheme.DARKER_GRAY_COLOR);
-				textContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+				onTabSwitched.run();
+
+				setHighlighted(false);
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				setBackground(HOVER_COLOR);
-				textContainer.setBackground(HOVER_COLOR);
+				setHighlighted(true);
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				setBackground(HOVER_COLOR);
-				textContainer.setBackground(HOVER_COLOR);
-				setCursor(new Cursor(Cursor.HAND_CURSOR));
+				setHighlighted(true);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-				setBackground(ColorScheme.DARKER_GRAY_COLOR);
-				textContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				setHighlighted(false);
 			}
 		});
 
@@ -117,7 +125,8 @@ class OverviewItemPanel extends JPanel
 
 		add(textContainer, BorderLayout.CENTER);
 
-		JLabel arrowLabel = new JLabel(ARROW_RIGHT_ICON);
+		arrowLabel = new JLabel(ARROW_RIGHT_ICON);
+		arrowLabel.setVisible(isSelectable.getAsBoolean());
 		add(arrowLabel, BorderLayout.EAST);
 	}
 
@@ -125,5 +134,26 @@ class OverviewItemPanel extends JPanel
 	{
 		statusLabel.setText(text);
 		statusLabel.setForeground(color);
+
+		arrowLabel.setVisible(isSelectable.getAsBoolean());
+
+		if (isHighlighted && !isSelectable.getAsBoolean())
+		{
+			setHighlighted(false);
+		}
+	}
+
+	private void setHighlighted(boolean highlighted)
+	{
+		if (highlighted && !isSelectable.getAsBoolean())
+		{
+			return;
+		}
+
+		setBackground(highlighted ? HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR);
+		setCursor(new Cursor(highlighted && getMousePosition(true) != null ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR));
+		textContainer.setBackground(highlighted ? HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR);
+
+		isHighlighted = highlighted;
 	}
 }

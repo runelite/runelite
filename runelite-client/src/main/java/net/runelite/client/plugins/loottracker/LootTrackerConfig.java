@@ -28,14 +28,24 @@ package net.runelite.client.plugins.loottracker;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("loottracker")
 public interface LootTrackerConfig extends Config
 {
+	@ConfigSection(
+		name = "Ignored Entries",
+		description = "The Ignore items and Ignore groups options",
+		position = -2,
+		closedByDefault = true
+	)
+	String ignored = "ignored";
+
 	@ConfigItem(
 		keyName = "ignoredItems",
 		name = "Ignored items",
-		description = "Configures which items should be ignored when calculating loot prices."
+		description = "Configures which items should be ignored when calculating loot prices.",
+		section = ignored
 	)
 	default String getIgnoredItems()
 	{
@@ -93,8 +103,9 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigItem(
 		keyName = "ignoredEvents",
-		name = "Ignored groups",
-		description = "Configures which loot groups should be excluded from the panel UI"
+		name = "Ignored Loot Sources",
+		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member).",
+		section = ignored
 	)
 	default String getIgnoredEvents()
 	{

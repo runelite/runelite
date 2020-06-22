@@ -22,16 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.friendschat;
 
+import lombok.AllArgsConstructor;
 import lombok.Value;
-import net.runelite.api.ClanMember;
+import net.runelite.api.FriendsChatMember;
 
 @Value
-public class ClanMemberJoined
+@AllArgsConstructor
+class MemberActivity
 {
-	/**
-	 * The ClanMember that joined
-	 */
-	private ClanMember member;
+	private ActivityType activityType;
+	private FriendsChatMember member;
+	private Integer tick;
 }

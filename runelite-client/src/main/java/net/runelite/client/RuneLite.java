@@ -56,7 +56,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.externalplugins.ExternalPluginManager;
-import net.runelite.client.game.ClanManager;
+import net.runelite.client.game.FriendChatManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
@@ -137,7 +137,7 @@ public class RuneLite
 	private Provider<OverlayRenderer> overlayRenderer;
 
 	@Inject
-	private Provider<ClanManager> clanManager;
+	private Provider<FriendChatManager> friendsChatManager;
 
 	@Inject
 	private Provider<ChatMessageManager> chatMessageManager;
@@ -177,6 +177,7 @@ public class RuneLite
 		final OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
+		parser.accepts("safe-mode", "Disables external plugins and the GPU plugin");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -257,11 +258,16 @@ public class RuneLite
 
 			PROFILES_DIR.mkdirs();
 
+			log.info("RuneLite {} (launcher version {}) starting up, args: {}",
+				RuneLiteProperties.getVersion(), RuneLiteProperties.getLauncherVersion() == null ? "unknown" : RuneLiteProperties.getLauncherVersion(),
+				args.length == 0 ? "none" : String.join(" ", args));
+
 			final long start = System.currentTimeMillis();
 
 			injector = Guice.createInjector(new RuneLiteModule(
 				clientLoader,
 				developerMode,
+				options.has("safe-mode"),
 				options.valueOf(sessionfile),
 				options.valueOf(configfile)));
 
@@ -347,7 +353,7 @@ public class RuneLite
 
 			eventBus.register(partyService.get());
 			eventBus.register(overlayRenderer.get());
-			eventBus.register(clanManager.get());
+			eventBus.register(friendsChatManager.get());
 			eventBus.register(itemManager.get());
 			eventBus.register(menuManager.get());
 			eventBus.register(chatMessageManager.get());
@@ -355,6 +361,7 @@ public class RuneLite
 			eventBus.register(lootManager.get());
 			eventBus.register(chatboxPanelManager.get());
 			eventBus.register(hooks.get());
+			eventBus.register(infoBoxOverlay.get());
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);

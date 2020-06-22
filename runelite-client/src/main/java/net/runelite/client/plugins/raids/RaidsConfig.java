@@ -91,10 +91,10 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "ccDisplay",
-		name = "CC and World in scout overlay",
-		description = "Display current Clan Chat and World in scouting overlay"
+		name = "FC and World in scout overlay",
+		description = "Display current Friends Chat and World in scouting overlay"
 	)
-	default boolean ccDisplay()
+	default boolean fcDisplay()
 	{
 		return false;
 	}

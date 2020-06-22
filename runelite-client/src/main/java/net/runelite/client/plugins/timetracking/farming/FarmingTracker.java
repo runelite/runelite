@@ -70,9 +70,9 @@ public class FarmingTracker
 	}
 
 
-	public FarmingTabPanel createTabPanel(Tab tab)
+	public FarmingTabPanel createTabPanel(Tab tab, FarmingContractManager farmingContractManager)
 	{
-		return new FarmingTabPanel(this, itemManager, config, farmingWorld.getTabs().get(tab));
+		return new FarmingTabPanel(this, itemManager, config, farmingWorld.getTabs().get(tab), farmingContractManager);
 	}
 
 	/**

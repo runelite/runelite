@@ -48,8 +48,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
-import net.runelite.api.ClanMember;
-import net.runelite.api.ClanMemberManager;
+import net.runelite.api.FriendsChatMember;
+import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
 import net.runelite.api.GameState;
@@ -298,7 +298,6 @@ public class WorldHopperPlugin extends Plugin
 	private void clearFavoriteConfig(int world)
 	{
 		configManager.unsetConfiguration(WorldHopperConfig.GROUP, "favorite_" + world);
-		panel.resetAllFavoriteMenus();
 	}
 
 	boolean isFavorite(World world)
@@ -357,7 +356,7 @@ public class WorldHopperPlugin extends Plugin
 		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 		String option = event.getOption();
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId())
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId())
 		{
 			boolean after;
 
@@ -731,15 +730,15 @@ public class WorldHopperPlugin extends Plugin
 	{
 		String cleanName = Text.removeTags(name);
 
-		// Search clan members first, because if a friend is in the clan chat but their private
-		// chat is 'off', then the hop-to option will not get shown in the menu (issue #5679).
-		ClanMemberManager clanMemberManager = client.getClanMemberManager();
-		if (clanMemberManager != null)
+		// Search friends chat members first, because we can always get their world;
+		// friends worlds may be hidden if they have private off. (#5679)
+		FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+		if (friendsChatManager != null)
 		{
-			ClanMember clanMember = clanMemberManager.findByName(cleanName);
-			if (clanMember != null)
+			FriendsChatMember member = friendsChatManager.findByName(cleanName);
+			if (member != null)
 			{
-				return clanMember;
+				return member;
 			}
 		}
 

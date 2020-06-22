@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, trimbe <github.com/trimbe>
+ * Copyright (c) 2020, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.config;
 
-import lombok.Value;
-import net.runelite.api.ClanMember;
-
-@Value
-public class ClanMemberLeft
+public interface ConfigObject
 {
-	/**
-	 * The ClanMember that left
-	 */
-	private ClanMember member;
+	String key();
+	String name();
+	int position();
 }

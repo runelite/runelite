@@ -143,7 +143,7 @@ class LootTrackerBox extends JPanel
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setComponentPopupMenu(popupMenu);
 
-		final JMenuItem toggle = new JMenuItem(eventIgnored ? "Include group" : "Ignore group");
+		final JMenuItem toggle = new JMenuItem(eventIgnored ? "Include loot" : "Hide loot");
 		toggle.addActionListener(e -> onEventToggle.accept(id, !eventIgnored));
 		popupMenu.add(toggle);
 	}

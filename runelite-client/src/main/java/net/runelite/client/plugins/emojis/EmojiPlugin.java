@@ -26,7 +26,6 @@ package net.runelite.client.plugins.emojis;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -46,6 +45,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Emojis",
@@ -55,7 +55,6 @@ import net.runelite.client.util.ImageUtil;
 @Slf4j
 public class EmojiPlugin extends Plugin
 {
-	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");
 
 	@Inject
@@ -179,7 +178,7 @@ public class EmojiPlugin extends Plugin
 		for (int i = 0; i < messageWords.length; i++)
 		{
 			// Remove tags except for <lt> and <gt>
-			final String trigger = removeTags(messageWords[i]);
+			final String trigger = Text.removeFormattingTags(messageWords[i]);
 			final Emoji emoji = Emoji.getEmoji(trigger);
 
 			if (emoji == null)
@@ -200,30 +199,5 @@ public class EmojiPlugin extends Plugin
 		}
 
 		return Strings.join(messageWords, " ");
-	}
-
-	/**
-	 * Remove tags, except for &lt;lt&gt; and &lt;gt&gt;
-	 *
-	 * @return
-	 */
-	private static String removeTags(String str)
-	{
-		StringBuffer stringBuffer = new StringBuffer();
-		Matcher matcher = TAG_REGEXP.matcher(str);
-		while (matcher.find())
-		{
-			matcher.appendReplacement(stringBuffer, "");
-			String match = matcher.group(0);
-			switch (match)
-			{
-				case "<lt>":
-				case "<gt>":
-					stringBuffer.append(match);
-					break;
-			}
-		}
-		matcher.appendTail(stringBuffer);
-		return stringBuffer.toString();
 	}
 }

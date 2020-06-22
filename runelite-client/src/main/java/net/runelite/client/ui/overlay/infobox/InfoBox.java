@@ -26,13 +26,18 @@ package net.runelite.client.ui.overlay.infobox;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 
 public abstract class InfoBox
 {
+	@Nonnull
 	@Getter(AccessLevel.PACKAGE)
 	private final Plugin plugin;
 
@@ -52,7 +57,11 @@ public abstract class InfoBox
 	@Setter
 	private String tooltip;
 
-	public InfoBox(BufferedImage image, Plugin plugin)
+	@Getter
+	@Setter
+	private List<OverlayMenuEntry> menuEntries = new ArrayList<>();
+
+	public InfoBox(BufferedImage image, @Nonnull Plugin plugin)
 	{
 		this.plugin = plugin;
 		setImage(image);

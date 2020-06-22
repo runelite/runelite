@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Shingyx <https://github.com/Shingyx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.clanchat;
+package net.runelite.client.ui.components;
 
-import lombok.Value;
-import net.runelite.api.MessageNode;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.SwingUtilities;
 
-@Value
-class ClanJoinMessage
+/**
+ * Forwards left mouse button drag events to the target Component.
+ */
+public class MouseDragEventForwarder extends MouseAdapter
 {
-	private final MessageNode messageNode;
-	private final int getMessageId;
-	private final int tick;
+	private final Component target;
+
+	public MouseDragEventForwarder(Component target)
+	{
+		this.target = target;
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e)
+	{
+		processEvent(e);
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e)
+	{
+		processEvent(e);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e)
+	{
+		processEvent(e);
+	}
+
+	private void processEvent(MouseEvent e)
+	{
+		if (SwingUtilities.isLeftMouseButton(e))
+		{
+			MouseEvent eventForTarget = SwingUtilities.convertMouseEvent((Component) e.getSource(), e, target);
+			target.dispatchEvent(eventForTarget);
+		}
+	}
 }
