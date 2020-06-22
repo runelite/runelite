@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Sam <dasistkeinnamen@gmail.com>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,11 +24,16 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-public enum SellMode
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import lombok.Value;
+
+@Value
+class Swap
 {
-	OFF,
-	SELL_1,
-	SELL_5,
-	SELL_10,
-	SELL_50;
+	private Predicate<String> optionPredicate;
+	private Predicate<String> targetPredicate;
+	private String swappedOption;
+	private Supplier<Boolean> enabled;
+	private boolean strict;
 }

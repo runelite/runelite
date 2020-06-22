@@ -45,6 +45,7 @@ import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -96,6 +97,8 @@ public class MenuEntrySwapperPluginTest
 			entries = (MenuEntry[]) argument;
 			return null;
 		}).when(client).setMenuEntries(any(MenuEntry[].class));
+
+		menuEntrySwapperPlugin.setupSwaps();
 	}
 
 	private static MenuEntry menu(String option, String target, MenuAction menuAction)
@@ -116,7 +119,7 @@ public class MenuEntrySwapperPluginTest
 	@Test
 	public void testSlayerMaster()
 	{
-		when(config.swapTrade()).thenReturn(true);
+		lenient().when(config.swapTrade()).thenReturn(true);
 		when(config.swapAssignment()).thenReturn(true);
 
 		entries = new MenuEntry[]{
@@ -129,15 +132,14 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.onClientTick(new ClientTick());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		// Once for assignment<->talk-to and once for trade<->talk-to
-		verify(client, times(2)).setMenuEntries(argumentCaptor.capture());
+		verify(client).setMenuEntries(argumentCaptor.capture());
 
-		MenuEntry[] value = argumentCaptor.getValue();
+		// check the assignment swap is hit first instead of trade
 		assertArrayEquals(new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
 			menu("Rewards", "Duradel", MenuAction.NPC_FIFTH_OPTION),
-			menu("Talk-to", "Duradel", MenuAction.NPC_FIRST_OPTION),
 			menu("Trade", "Duradel", MenuAction.NPC_FOURTH_OPTION),
+			menu("Talk-to", "Duradel", MenuAction.NPC_FIRST_OPTION),
 			menu("Assignment", "Duradel", MenuAction.NPC_THIRD_OPTION),
 		}, argumentCaptor.getValue());
 	}
@@ -275,7 +277,6 @@ public class MenuEntrySwapperPluginTest
 	public void testTobDoor()
 	{
 		when(config.swapQuick()).thenReturn(true);
-		when(config.swapHomePortal()).thenReturn(HouseMode.HOME);
 
 		//Quick-enter, Enter
 		entries = new MenuEntry[]{
