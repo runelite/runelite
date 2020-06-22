@@ -550,7 +550,7 @@ public enum WidgetInfo
 
 	GAUNTLET_TIMER_CONTAINER(WidgetID.GAUNTLET_TIMER_GROUP_ID, WidgetID.GauntletTimer.CONTAINER),
 
-	ENCOUNTER_HEALTH_BAR(WidgetID.ENCOUNTER_HEALTH_BAR_GROUP_ID, WidgetID.EncounterHealthBar.CONTAINER);
+	HEALTH_OVERLAY_BAR(WidgetID.HEALTH_OVERLAY_BAR_GROUP_ID, WidgetID.EncounterHealthBar.CONTAINER);
 
 	private final int groupId;
 	private final int childId;

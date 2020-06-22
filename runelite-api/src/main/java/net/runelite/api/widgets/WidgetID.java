@@ -155,7 +155,7 @@ public class WidgetID
 	public static final int COUNTERS_LOG_GROUP_ID = 625;
 	public static final int GAUNTLET_TIMER_GROUP_ID = 637;
 	public static final int BANK_PIN_GROUP_ID = 213;
-	public static final int ENCOUNTER_HEALTH_BAR_GROUP_ID = 303;
+	public static final int HEALTH_OVERLAY_BAR_GROUP_ID = 303;
 
 	static class WorldMap
 	{
