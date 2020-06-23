@@ -771,8 +771,8 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showHomeMinigameTeleports()
-			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
-			&& (lastGraphic == GraphicID.BOOK_HOME_TELEPORT_4))
+			&& (actor.getGraphic() == HOME_TELEPORT.getGraphicId()
+			|| actor.getGraphic() == MINIGAME_TELEPORT.getGraphicId()))
 		{
 			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
 			{
