@@ -549,4 +549,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "swapTan",
+		name = "Tan",
+		description = "Swap Tan 1 with Tan All",
+		section = uiSection
+	)
+	default boolean swapTan()
+	{
+		return false;
+	}
 }

@@ -352,6 +352,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("collect-item", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
 		swap("collect-items", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
 
+		swap("tan 1", "tan all", config::swapTan);
+
 		swapTeleport("varrock teleport", "grand exchange");
 		swapTeleport("camelot teleport", "seers'");
 		swapTeleport("watchtower teleport", "yanille");
