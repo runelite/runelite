@@ -152,34 +152,32 @@ public class NpcSceneOverlay extends Overlay
 			return;
 		}
 
-		switch (config.renderStyle())
+		if (config.highlightHull())
 		{
-			case SOUTH_WEST_TILE:
-			{
-				int size = npcComposition.getSize();
-				LocalPoint localPoint = actor.getLocalLocation();
+			Shape objectClickbox = actor.getConvexHull();
+			renderPoly(graphics, color, objectClickbox);
+		}
 
-				int x = localPoint.getX() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
-				int y = localPoint.getY() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
+		if (config.highlightTile())
+		{
+			int size = npcComposition.getSize();
+			LocalPoint lp = actor.getLocalLocation();
+			Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 
-				Polygon tilePoly = Perspective.getCanvasTilePoly(client, new LocalPoint(x, y));
+			renderPoly(graphics, color, tilePoly);
+		}
 
-				renderPoly(graphics, color, tilePoly);
-				break;
-			}
-			case TILE:
-				int size = npcComposition.getSize();
-				LocalPoint lp = actor.getLocalLocation();
-				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+		if (config.highlightSouthWestTile())
+		{
+			int size = npcComposition.getSize();
+			LocalPoint lp = actor.getLocalLocation();
 
-				renderPoly(graphics, color, tilePoly);
-				break;
+			int x = lp.getX() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
+			int y = lp.getY() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
 
-			case HULL:
-				Shape objectClickbox = actor.getConvexHull();
+			Polygon southWestTilePoly = Perspective.getCanvasTilePoly(client, new LocalPoint(x, y));
 
-				renderPoly(graphics, color, objectClickbox);
-				break;
+			renderPoly(graphics, color, southWestTilePoly);
 		}
 
 		if (config.drawNames() && actor.getName() != null)
