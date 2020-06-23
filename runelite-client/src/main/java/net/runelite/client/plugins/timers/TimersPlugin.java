@@ -39,6 +39,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
+import net.runelite.api.GraphicID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -132,6 +133,7 @@ public class TimersPlugin extends Plugin
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
+	private int lastGraphic;
 	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
 
@@ -164,6 +166,7 @@ public class TimersPlugin extends Plugin
 		lastPoint = null;
 		lastTeleportClicked = null;
 		lastAnimation = -1;
+		lastGraphic = -1;
 		loggedInRace = false;
 		widgetHiddenChangedOnPvpWorld = false;
 		lastPoisonVarp = 0;
@@ -768,8 +771,8 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showHomeMinigameTeleports()
-			&& (actor.getGraphic() == HOME_TELEPORT.getGraphicId()
-			|| actor.getGraphic() == MINIGAME_TELEPORT.getGraphicId()))
+			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
+			&& (lastGraphic == GraphicID.BOOK_HOME_TELEPORT_4))
 		{
 			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
 			{
@@ -820,6 +823,8 @@ public class TimersPlugin extends Plugin
 				}
 			}
 		}
+
+		lastGraphic = actor.getGraphic();
 	}
 
 	/**
