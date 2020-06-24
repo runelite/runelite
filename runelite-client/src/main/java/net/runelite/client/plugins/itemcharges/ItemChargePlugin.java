@@ -84,9 +84,11 @@ public class ItemChargePlugin extends Plugin
 		"Your amulet of chemistry has (\\d) charges? left\\."
 	);
 	private static final Pattern AMULET_OF_CHEMISTRY_USED_PATTERN = Pattern.compile(
-		"Your amulet of chemistry helps you create a 4-dose potion\\. (?:<col=ff0000>)?It has (\\d|one) charges? left\\."
+		"Your amulet of chemistry helps you create a \\d-dose potion\\. (?:<col=ff0000>)?It has (\\d|one) charges? left\\."
 	);
-	private static final String AMULET_OF_CHEMISTRY_BREAK_TEXT = "Your amulet of chemistry helps you create a 4-dose potion. <col=ff0000>It then crumbles to dust.</col>";
+	private static final Pattern AMULET_OF_CHEMISTRY_BREAK_PATTERN = Pattern.compile(
+		"Your amulet of chemistry helps you create a \\d-dose potion\\. (?:<col=ff0000>)?It then crumbles to dust\\."
+	);
 	private static final Pattern AMULET_OF_BOUNTY_CHECK_PATTERN = Pattern.compile(
 		"Your amulet of bounty has (\\d+) charges? left\\."
 	);
@@ -217,6 +219,7 @@ public class ItemChargePlugin extends Plugin
 			Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
 			Matcher amuletOfChemistryCheckMatcher = AMULET_OF_CHEMISTRY_CHECK_PATTERN.matcher(message);
 			Matcher amuletOfChemistryUsedMatcher = AMULET_OF_CHEMISTRY_USED_PATTERN.matcher(message);
+			Matcher amuletOfChemistryBreakMatcher = AMULET_OF_CHEMISTRY_BREAK_PATTERN.matcher(message);
 			Matcher amuletOfBountyCheckMatcher = AMULET_OF_BOUNTY_CHECK_PATTERN.matcher(message);
 			Matcher amuletOfBountyUsedMatcher = AMULET_OF_BOUNTY_USED_PATTERN.matcher(message);
 
@@ -243,7 +246,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (amuletOfChemistryCheckMatcher.find())
 			{
-				updateAmuletOfChemistyCharges(Integer.parseInt(amuletOfChemistryCheckMatcher.group(1)));
+				updateAmuletOfChemistryCharges(Integer.parseInt(amuletOfChemistryCheckMatcher.group(1)));
 			}
 			else if (amuletOfChemistryUsedMatcher.find())
 			{
@@ -255,11 +258,11 @@ public class ItemChargePlugin extends Plugin
 					charges = Integer.parseInt(match);
 				}
 
-				updateAmuletOfChemistyCharges(charges);
+				updateAmuletOfChemistryCharges(charges);
 			}
-			else if (message.equals(AMULET_OF_CHEMISTRY_BREAK_TEXT))
+			else if (amuletOfChemistryBreakMatcher.find())
 			{
-				updateAmuletOfChemistyCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
+				updateAmuletOfChemistryCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
 			}
 			else if (amuletOfBountyCheckMatcher.find())
 			{
@@ -432,7 +435,7 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
-	private void updateAmuletOfChemistyCharges(final int value)
+	private void updateAmuletOfChemistryCharges(final int value)
 	{
 		config.amuletOfChemistry(value);
 
@@ -545,7 +548,7 @@ public class ItemChargePlugin extends Plugin
 				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
 				break;
 			case "Amulet of chemistry":
-				updateAmuletOfChemistyCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
+				updateAmuletOfChemistryCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
 				break;
 		}
 	}
@@ -633,7 +636,7 @@ public class ItemChargePlugin extends Plugin
 				return false;
 			}
 
-			final ItemChargeInfobox i = (ItemChargeInfobox)t;
+			final ItemChargeInfobox i = (ItemChargeInfobox) t;
 			return i.getItem() == item && i.getSlot() == slot;
 		});
 	}
