@@ -96,7 +96,8 @@ enum Rock
 	URT_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33254),
 	EFH_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33255),
 	TE_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33256),
-	BASALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33257);
+	BASALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33257),
+	DAEYALT_ESSENCE(Duration.of(MiningOverlay.DAEYALT_MAX_RESPAWN_TIME, GAME_TICKS), 0, DAEYALT_ESSENCE_39095);
 
 	private static final int WILDERNESS_RESOURCE_AREA = 12605;
 	private static final int MISCELLANIA = 10044;
