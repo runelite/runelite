@@ -143,6 +143,8 @@ enum TeleportLocationData
 	CAMULET_TEMPLE(TeleportType.OTHER, "Camulet", "Enakhra's Temple", new WorldPoint(3190, 2923, 0), "camulet_teleport_icon.png"),
 	TELEPORT_CRYSTAL_LLETYA(TeleportType.OTHER, "Teleport crystal", "Lletya", new WorldPoint(2330, 3172, 0), "teleport_crystal_icon.png"),
 	TELEPORT_CRYSTAL_PRIFDDINAS(TeleportType.OTHER, "Teleport crystal", "Prifddinas", new WorldPoint(3264, 6065, 0), "teleport_crystal_icon.png"),
+	DRAKANS_MEDALLION_VER_SINHAZA(TeleportType.OTHER, "Drakan's medallion", "Ver Sinhaza", new WorldPoint(3649, 3230, 0), "drakans_medallion_teleport_icon.png"),
+	DRAKANS_MEDALLION_DARKMEYER(TeleportType.OTHER, "Drakan's medallion", "Darkmeyer", new WorldPoint(3592, 3337, 0), "drakans_medallion_teleport_icon.png"),
 
 	// Wilderness
 	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),

@@ -65,6 +65,7 @@ enum MiningSiteLocation
 	CRANDOR_NORTH_WEST(new WorldPoint(2831, 3296, 0), new Rock(7, Ore.COAL), new Rock(1, Ore.MITHRIL)),
 	CRANDOR_SOUTH_EAST(new WorldPoint(2835, 3245, 0), new Rock(3, Ore.COAL), new Rock(3, Ore.ADAMANTITE)),
 	CRANDOR_SOUTH_WEST(new WorldPoint(2819, 3247, 0), new Rock(7, Ore.MITHRIL)),
+	DAEYALT_ESSENCE_MINE(new WorldPoint(3631, 3340, 0), new Rock(3, Ore.DAEYALT_ESSENCE)),
 	DESERT_MINING_CAMP_SURFACE(new WorldPoint(3299, 3021, 0), true, new Rock(4, Ore.COPPER), new Rock(4, Ore.TIN), new Rock(3, Ore.IRON), new Rock(4, Ore.COAL)),
 	// DESERT_MINING_CAMP_UNDERGROUND -- NOT AVAILABLE ON WORLDMAP
 	DORGESH_KAAN_NORTH(new WorldPoint(3309, 9645, 0), new Rock(1, Ore.IRON), new Rock(9, Ore.SILVER)),
@@ -232,6 +233,7 @@ enum MiningSiteLocation
 		COAL("Coal"),
 		SANDSTONE("Sandstone"),
 		DENSE_ESSENCE("Dense essence"),
+		DAEYALT_ESSENCE("Daeyalt essence"),
 		GOLD("Gold"),
 		GEM_ROCK("Gem rock"),
 		HARD_ROCK("Hard rock"),
