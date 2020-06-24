@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,58 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.raids;
+package net.runelite.client.plugins.raids.events;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@AllArgsConstructor
-@Getter
-public enum RoomType
+/**
+ * An event that fires when the raid plugin resets
+ *
+ * This happens when the player leaves a raid and when the raid plugin turns off
+ */
+public class RaidReset
 {
-	START("Start", '#'),
-	END("End", '¤'),
-	SCAVENGERS("Scavengers", 'S'),
-	FARMING("Farming", 'F'),
-	EMPTY("Empty", ' '),
-	COMBAT("Combat", 'C'),
-	PUZZLE("Puzzle", 'P');
-
-	private final String name;
-	private final char code;
-
-	RaidRoom getUnsolvedRoom()
-	{
-		switch (this)
-		{
-			case START:
-				return RaidRoom.START;
-			case END:
-				return RaidRoom.END;
-			case SCAVENGERS:
-				return RaidRoom.SCAVENGERS;
-			case FARMING:
-				return RaidRoom.FARMING;
-			case COMBAT:
-				return RaidRoom.UNKNOWN_COMBAT;
-			case PUZZLE:
-				return RaidRoom.UNKNOWN_PUZZLE;
-			case EMPTY:
-			default:
-				return RaidRoom.EMPTY;
-		}
-	}
-
-	static RoomType fromCode(char code)
-	{
-		for (RoomType type : values())
-		{
-			if (type.getCode() == code)
-			{
-				return type;
-			}
-		}
-
-		return EMPTY;
-	}
 }

@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-enum RaidRoom
+public enum RaidRoom
 {
 	START("Start", RoomType.START),
 	END("End", RoomType.END),
