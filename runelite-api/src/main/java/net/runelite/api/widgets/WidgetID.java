@@ -144,7 +144,6 @@ public class WidgetID
 	public static final int BEGINNER_CLUE_MAP_NORTH_OF_FALADOR = 351;
 	public static final int BEGINNER_CLUE_MAP_WIZARDS_TOWER = 356;
 	public static final int SEED_BOX_GROUP_ID = 128;
-	public static final int ITEMS_KEPT_ON_DEATH_GROUP_ID = 4;
 	public static final int SEED_VAULT_GROUP_ID = 631;
 	public static final int EXPLORERS_RING_ALCH_GROUP_ID = 483;
 	public static final int OPTIONS_GROUP_ID = 261;
@@ -857,18 +856,6 @@ public class WidgetID
 		static final int ANSWER2 = 15;
 		static final int ANSWER3_CONTAINER = 16;
 		static final int ANSWER3 = 17;
-	}
-
-	static class KeptOnDeath
-	{
-		static final int KEPT_ITEMS_TEXT = 17;
-		static final int KEPT_ITEMS_CONTAINER = 18;
-		static final int LOST_ITEMS_TEXT = 20;
-		static final int LOST_ITEMS_CONTAINER = 21;
-		static final int LOST_ITEMS_VALUE = 23;
-		static final int INFORMATION_CONTAINER = 29;
-		static final int MAX_ITEMS_KEPT_ON_DEATH = 30;
-		static final int SAFE_ZONE_CONTAINER = 31;
 	}
 
 	static class SeedVault
