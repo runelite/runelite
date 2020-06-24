@@ -107,10 +107,21 @@ public interface FriendsChatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "joinLeaveTimeout",
+		name = "Join/Leave timeout",
+		description = "Set the timeout duration of join/leave messages. A value of 0 will make the messages permanent.",
+		position = 6
+	)
+	default int joinLeaveTimeout()
+	{
+		return 20;
+	}
+
+	@ConfigItem(
 		keyName = "privateMessageIcons",
 		name = "Private Message Icons",
 		description = "Add rank icons to private messages received from members.",
-		position = 6
+		position = 7
 	)
 	default boolean privateMessageIcons()
 	{
@@ -121,7 +132,7 @@ public interface FriendsChatConfig extends Config
 		keyName = "publicChatIcons",
 		name = "Public Chat Icons",
 		description = "Add rank icons to public chat messages from members.",
-		position = 7
+		position = 8
 	)
 	default boolean publicChatIcons()
 	{
@@ -132,7 +143,7 @@ public interface FriendsChatConfig extends Config
 		keyName = "clanTabChat",
 		name = "Tab Chat",
 		description = "Message friends chat without appending '/' when the friends chat tab is selected.",
-		position = 8
+		position = 9
 	)
 	default boolean friendsChatTabChat()
 	{
@@ -143,7 +154,7 @@ public interface FriendsChatConfig extends Config
 		keyName = "confirmKicks",
 		name = "Confirm Kicks",
 		description = "Shows a chat prompt to confirm kicks",
-		position = 9
+		position = 10
 	)
 	default boolean confirmKicks()
 	{
@@ -154,7 +165,7 @@ public interface FriendsChatConfig extends Config
 		keyName = "showIgnores",
 		name = "Recolor ignored players",
 		description = "Recolor members who are on your ignore list",
-		position = 10
+		position = 11
 	)
 	default boolean showIgnores()
 	{
@@ -165,7 +176,7 @@ public interface FriendsChatConfig extends Config
 		keyName = "showIgnoresColor",
 		name = "Ignored color",
 		description = "Allows you to change the color of the ignored players in your friends chat",
-		position = 11
+		position = 12
 	)
 	default Color showIgnoresColor()
 	{
