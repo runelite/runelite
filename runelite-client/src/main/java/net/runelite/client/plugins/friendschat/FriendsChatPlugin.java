@@ -42,10 +42,10 @@ import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.FriendsChatMember;
-import net.runelite.api.FriendsChatManager;
-import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Client;
+import net.runelite.api.FriendsChatManager;
+import net.runelite.api.FriendsChatMember;
+import net.runelite.api.FriendsChatRank;
 import net.runelite.api.GameState;
 import net.runelite.api.Ignore;
 import net.runelite.api.MessageNode;
@@ -96,7 +96,6 @@ public class FriendsChatPlugin extends Plugin
 	private static final int MAX_CHATS = 10;
 	private static final String TITLE = "FC";
 	private static final String RECENT_TITLE = "Recent FCs";
-	private static final int JOIN_LEAVE_DURATION = 20;
 	private static final int MESSAGE_DELAY = 10;
 
 	@Inject
@@ -315,6 +314,12 @@ public class FriendsChatPlugin extends Plugin
 			return;
 		}
 
+		final int joinLeaveTimeout = config.joinLeaveTimeout();
+		if (joinLeaveTimeout == 0)
+		{
+			return;
+		}
+
 		boolean removed = false;
 
 		for (Iterator<MemberJoinMessage> it = joinMessages.iterator(); it.hasNext(); )
@@ -323,7 +328,7 @@ public class FriendsChatPlugin extends Plugin
 			MessageNode messageNode = joinMessage.getMessageNode();
 			final int createdTick = joinMessage.getTick();
 
-			if (client.getTickCount() > createdTick + JOIN_LEAVE_DURATION)
+			if (client.getTickCount() > createdTick + joinLeaveTimeout)
 			{
 				it.remove();
 
