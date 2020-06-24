@@ -98,8 +98,13 @@ class ContainerCalculation
 		return prices;
 	}
 
-	private int hashItems(final Item[] items)
+	private static int hashItems(@Nullable final Item[] items)
 	{
+		if (items == null)
+		{
+			return -1;
+		}
+
 		final Map<Integer, Integer> mapCheck = new HashMap<>(items.length);
 		for (Item item : items)
 		{
