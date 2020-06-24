@@ -252,6 +252,7 @@ public class WidgetID
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 3;
+		static final int TUTORIAL_BUTTON = 4;
 		static final int ITEM_COUNT_TOP = 5;
 		static final int ITEM_COUNT_BAR = 6;
 		static final int ITEM_COUNT_BOTTOM = 7;
@@ -264,6 +265,7 @@ public class WidgetID
 		static final int INCINERATOR = 45;
 		static final int INCINERATOR_CONFIRM = 46;
 		static final int EQUIPMENT_CONTENT_CONTAINER = 68;
+		static final int SETTINGS_BUTTON = 108;
 		static final int EQUIPMENT_BUTTON = 109;
 	}
 
