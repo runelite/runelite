@@ -44,7 +44,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -54,7 +53,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -111,12 +109,6 @@ public class RunecraftPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private GameObject denseRunestoneNorth;
-
-	@Getter(AccessLevel.PACKAGE)
-	private boolean denseRunestoneSouthMineable;
-
-	@Getter(AccessLevel.PACKAGE)
-	private boolean denseRunestoneNorthMineable;
 
 	@Inject
 	private Client client;
@@ -347,20 +339,5 @@ public class RunecraftPlugin extends Plugin
 				denseRunestoneNorth = null;
 				break;
 		}
-	}
-
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
-		denseRunestoneSouthMineable = client.getVar(Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED) == 0;
-		denseRunestoneNorthMineable = client.getVar(Varbits.DENSE_RUNESTONE_NORTH_DEPLETED) == 0;
-
-		updateDenseRunestoneState();
-	}
-
-	private void updateDenseRunestoneState()
-	{
-		denseRunestoneSouthMineable = client.getVar(Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED) == 0;
-		denseRunestoneNorthMineable = client.getVar(Varbits.DENSE_RUNESTONE_NORTH_DEPLETED) == 0;
 	}
 }

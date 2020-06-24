@@ -35,6 +35,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -80,8 +81,8 @@ public class DenseRunestoneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		boolean northStoneMineable = plugin.isDenseRunestoneNorthMineable();
-		boolean southStoneMineable = plugin.isDenseRunestoneSouthMineable();
+		boolean northStoneMineable = client.getVar(Varbits.DENSE_RUNESTONE_NORTH_DEPLETED) == 0;
+		boolean southStoneMineable = client.getVar(Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED) == 0;
 		GameObject northStone = plugin.getDenseRunestoneNorth();
 		GameObject southStone = plugin.getDenseRunestoneSouth();
 
