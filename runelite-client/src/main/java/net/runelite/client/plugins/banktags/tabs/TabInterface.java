@@ -531,15 +531,14 @@ public class TabInterface
 		if (bankTitle != null && !bankTitle.isHidden() && !str.startsWith(TAG_SEARCH))
 		{
 			str = bankTitle.getText().replaceFirst("Showing items: ", "");
-			// trim off the price
-			if (str.contains("<br>"))
-			{
-				str = str.substring(0, str.indexOf("<br>") + 4);
-			}
 
 			if (str.startsWith("Tab "))
 			{
 				str = "";
+			}
+			else if (str.contains("<br>"))
+			{
+				str = str.substring(0, str.indexOf("<br>") + 4);
 			}
 		}
 
@@ -730,10 +729,10 @@ public class TabInterface
 		}
 
 		if ((event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-				|| event.getWidgetId() == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId())
+			|| event.getWidgetId() == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId())
 			&& event.getMenuAction() == MenuAction.CC_OP_LOW_PRIORITY
 			&& (event.getMenuOption().equalsIgnoreCase("withdraw-x")
-				|| event.getMenuOption().equalsIgnoreCase("deposit-x")))
+			|| event.getMenuOption().equalsIgnoreCase("deposit-x")))
 		{
 			waitSearchTick = true;
 			rememberedSearch = client.getVar(VarClientStr.INPUT_TEXT);

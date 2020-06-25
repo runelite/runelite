@@ -259,6 +259,15 @@ public final class ScriptID
 	public static final int BANKMAIN_SEARCH_REFRESH = 283;
 
 	/**
+	 * Called when the bank window is updated
+	 * <ul>
+	 * <li> int (WidgetID) * 16, various widgets making up the bank interface </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 17)
+	public static final int BANKMAIN_BUILD = 277;
+
+	/**
 	 * Called to update the PVP widget (wilderness level/protection)
 	 */
 	@ScriptArguments(integer = 1)

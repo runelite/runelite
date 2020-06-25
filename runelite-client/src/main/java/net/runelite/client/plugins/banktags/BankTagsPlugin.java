@@ -29,6 +29,7 @@ package net.runelite.client.plugins.banktags;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Shorts;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +49,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.DraggingWidgetChanged;
@@ -71,6 +73,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
@@ -93,7 +96,7 @@ import net.runelite.client.util.Text;
 	tags = {"searching", "tagging"}
 )
 @PluginDependency(ClueScrollPlugin.class)
-public class BankTagsPlugin extends Plugin implements MouseWheelListener
+public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyListener
 {
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
@@ -293,8 +296,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onScriptPreFired(ScriptPreFired event)
 	{
-		// 277 is the ID of BankSearchLayout.rs2asm, just want to clear the container before searching by tag.
-		if (event.getScriptId() == 277)
+		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
 			tabContainer.clear();
 		}
@@ -303,32 +305,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired event)
 	{
-		// 277 is the ID of BankSearchLayout.rs2asm, set the bank title after it runs.
-		if (event.getScriptId() == 277)
+		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			String priceText = "";
-			if (tabContainer.size() > 0)
-			{
-				final ItemContainer container = client.getItemContainer(InventoryID.BANK);
-				final Item[] items = container.getItems();
-				ArrayList<Item> tabContainerToCalculate = new ArrayList<>();
-				for (Item item : items)
-				{
-					if (tabContainer.contains(item.getId()))
-					{
-						tabContainerToCalculate.add(item);
-					}
-				}
-				Item[] foundItems = tabContainerToCalculate.toArray(new Item[tabContainerToCalculate.size()]);
-				final ContainerPrices prices = bankCalculation.calculate(foundItems);
-				if (prices != null)
-				{
-					priceText = createValueText(prices);
-				}
-			}
-
-			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-			bankTitle.setText(bankTitle.getText() + "<br>" + priceText);
+			updateBankTitle();
 		}
 	}
 
@@ -532,6 +511,60 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	{
 		tabInterface.handleWheel(event);
 		return event;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		{
+			shiftPressed = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		{
+			shiftPressed = false;
+		}
+	}
+
+	// Updates the bank title using the items found in tabContainer
+	private void updateBankTitle()
+	{
+		String priceText = "";
+		if (tabContainer.size() > 0)
+		{
+			final ItemContainer container = client.getItemContainer(InventoryID.BANK);
+			final Item[] items = container.getItems();
+			ArrayList<Item> tabContainerToCalculate = new ArrayList<>();
+			for (Item item : items)
+			{
+				if (tabContainer.contains(item.getId()))
+				{
+					tabContainerToCalculate.add(item);
+				}
+			}
+			Item[] foundItems = tabContainerToCalculate.toArray(new Item[tabContainerToCalculate.size()]);
+			final ContainerPrices prices = bankCalculation.calculate(foundItems);
+			if (prices != null)
+			{
+				priceText = createValueText(prices);
+			}
+		}
+
+		if (!priceText.isEmpty())
+		{
+			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+			bankTitle.setText(bankTitle.getText() + "<br>" + priceText);
+		}
 	}
 
 	private String createValueText(final ContainerPrices prices)
