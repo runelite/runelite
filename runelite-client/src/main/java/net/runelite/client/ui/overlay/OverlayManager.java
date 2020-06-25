@@ -33,7 +33,6 @@ import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -136,24 +135,25 @@ public class OverlayManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE_OVERLAY)
+		MenuAction menuAction = event.getMenuAction();
+		if (menuAction != MenuAction.RUNELITE_OVERLAY && menuAction != MenuAction.RUNELITE_OVERLAY_CONFIG)
 		{
 			return;
 		}
 
 		event.consume();
 
-		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlays.indexOf(o) == event.getId()).findAny();
-		if (optionalOverlay.isPresent())
+		Overlay overlay = overlays.get(event.getId());
+		if (overlay != null)
 		{
-			Overlay overlay = optionalOverlay.get();
 			List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
-			Optional<OverlayMenuEntry> optionalOverlayMenuEntry = menuEntries.stream()
+			OverlayMenuEntry overlayMenuEntry = menuEntries.stream()
 				.filter(me -> me.getOption().equals(event.getMenuOption()))
-				.findAny();
-			if (optionalOverlayMenuEntry.isPresent())
+				.findAny()
+				.orElse(null);
+			if (overlayMenuEntry != null)
 			{
-				eventBus.post(new OverlayMenuClicked(optionalOverlayMenuEntry.get(), overlay));
+				eventBus.post(new OverlayMenuClicked(overlayMenuEntry, overlay));
 			}
 		}
 	}

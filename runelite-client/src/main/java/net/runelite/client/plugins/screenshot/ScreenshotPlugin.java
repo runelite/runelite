@@ -261,7 +261,7 @@ public class ScreenshotPlugin extends Plugin
 		{
 			takeScreenshot("Death", "Deaths");
 		}
-		else if (player != client.getLocalPlayer() && (player.isClanMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
+		else if (player != client.getLocalPlayer() && (player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
 		{
 			takeScreenshot("Death " + player.getName(), "Deaths");
 		}
@@ -282,7 +282,7 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
-		if (!"confirmClanKick".equals(e.getEventName()))
+		if (!"confirmFriendsChatKick".equals(e.getEventName()))
 		{
 			return;
 		}
@@ -356,14 +356,14 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotCcKick() && chatMessage.equals("Your request to kick/ban this user was successful."))
+		if (config.screenshotKick() && chatMessage.equals("Your request to kick/ban this user was successful."))
 		{
 			if (kickPlayerName == null)
 			{
 				return;
 			}
 
-			takeScreenshot("Kick " + kickPlayerName, "Clan Chat Kicks");
+			takeScreenshot("Kick " + kickPlayerName, "Friends Chat Kicks");
 			kickPlayerName = null;
 		}
 

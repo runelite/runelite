@@ -46,6 +46,10 @@ class MiningOverlay extends Overlay
 	private static final int ORE_VEIN_MIN_RESPAWN_TIME = 150; // Game ticks
 	private static final float ORE_VEIN_RANDOM_PERCENT_THRESHOLD = (float) ORE_VEIN_MIN_RESPAWN_TIME / ORE_VEIN_MAX_RESPAWN_TIME;
 
+	static final int DAEYALT_MAX_RESPAWN_TIME = 110; // Game ticks
+	private static final int DAEYALT_MIN_RESPAWN_TIME = 91; // Game ticks
+	private static final float DAEYALT_RANDOM_PERCENT_THRESHOLD = (float) DAEYALT_MIN_RESPAWN_TIME / DAEYALT_MAX_RESPAWN_TIME;
+
 	static final int LOVAKITE_ORE_MAX_RESPAWN_TIME = 65; // Game ticks
 	private static final int LOVAKITE_ORE_MIN_RESPAWN_TIME = 50; // Game ticks
 	private static final float LOVAKITE_ORE_RANDOM_PERCENT_THRESHOLD = (float) LOVAKITE_ORE_MIN_RESPAWN_TIME / LOVAKITE_ORE_MAX_RESPAWN_TIME;
@@ -104,6 +108,7 @@ class MiningOverlay extends Overlay
 
 			// Recolour pie on motherlode veins or Lovakite ore during the portion of the timer where they may respawn
 			if ((rock == Rock.ORE_VEIN && percent > ORE_VEIN_RANDOM_PERCENT_THRESHOLD)
+				|| (rock == Rock.DAEYALT_ESSENCE && percent > DAEYALT_RANDOM_PERCENT_THRESHOLD)
 				|| (rock == Rock.LOVAKITE && percent > LOVAKITE_ORE_RANDOM_PERCENT_THRESHOLD))
 			{
 				pieFillColor = Color.GREEN;

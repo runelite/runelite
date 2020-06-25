@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemskeptondeath;
+package net.runelite.api;
 
-import com.google.common.collect.ImmutableSet;
-import java.util.Set;
-import net.runelite.api.ItemID;
-
-final class LostIfNotProtected
+/**
+ * Represents a friends chat member.
+ */
+public interface FriendsChatMember extends ChatPlayer
 {
-	private static final Set<Integer> ITEMS = ImmutableSet.of(
-		ItemID.AMULET_OF_THE_DAMNED,
-		ItemID.RING_OF_CHAROS, ItemID.RING_OF_CHAROSA,
-		ItemID.LUNAR_STAFF,
-		ItemID.SHADOW_SWORD,
-		ItemID.KERIS, ItemID.KERISP, ItemID.KERISP_10583, ItemID.KERISP_10584
-	);
+	/**
+	 * Gets the world the member is in.
+	 *
+	 * @return the world
+	 */
+	int getWorld();
 
-	public static boolean isLostIfNotProtected(int id)
-	{
-		return ITEMS.contains(id);
-	}
+	/**
+	 * Gets the rank of the friends chat member.
+	 *
+	 * @return the rank
+	 */
+	FriendsChatRank getRank();
 }

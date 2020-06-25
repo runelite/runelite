@@ -91,11 +91,11 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "drawClanMemberNames",
-		name = "Highlight clan members",
-		description = "Configures whether or clan members should be highlighted",
+		name = "Highlight friends chat members",
+		description = "Configures if friends chat members should be highlighted",
 		section = highlightSection
 	)
-	default boolean drawClanMemberNames()
+	default boolean drawFriendsChatMemberNames()
 	{
 		return true;
 	}
@@ -103,11 +103,11 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "clanMemberColor",
-		name = "Clan member color",
-		description = "Color of clan members",
+		name = "Friends chat member color",
+		description = "Color of friends chat members",
 		section = highlightSection
 	)
-	default Color getClanMemberColor()
+	default Color getFriendsChatMemberColor()
 	{
 		return new Color(170, 0, 255);
 	}
@@ -139,11 +139,11 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 8,
 		keyName = "drawNonClanMemberNames",
-		name = "Highlight non-clan members",
-		description = "Configures whether or not non-clan members should be highlighted",
+		name = "Highlight others",
+		description = "Configures whether or not other players should be highlighted",
 		section = highlightSection
 	)
-	default boolean highlightNonClanMembers()
+	default boolean highlightOthers()
 	{
 		return false;
 	}
@@ -151,11 +151,11 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 9,
 		keyName = "nonClanMemberColor",
-		name = "Non-clan member color",
-		description = "Color of non-clan member names",
+		name = "Others color",
+		description = "Color of other players names",
 		section = highlightSection
 	)
-	default Color getNonClanMemberColor()
+	default Color getOthersColor()
 	{
 		return Color.RED;
 	}
@@ -207,10 +207,10 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 14,
 		keyName = "clanMenuIcons",
-		name = "Show clan ranks",
-		description = "Add clan rank to right click menu and next to player names"
+		name = "Show friends chat ranks",
+		description = "Add friends chat rank to right click menu and next to player names"
 	)
-	default boolean showClanRanks()
+	default boolean showFriendsChatRanks()
 	{
 		return true;
 	}

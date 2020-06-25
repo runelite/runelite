@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.menuentryswapper;
 
-/**
- * Represents a clan member.
- */
-public interface ClanMember extends ChatPlayer
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import lombok.Value;
+
+@Value
+class Swap
 {
-	/**
-	 * Gets the world the member is in.
-	 *
-	 * @return the world
-	 */
-	int getWorld();
-
-	/**
-	 * Gets the rank of the clan member.
-	 *
-	 * @return the rank
-	 */
-	ClanMemberRank getRank();
+	private Predicate<String> optionPredicate;
+	private Predicate<String> targetPredicate;
+	private String swappedOption;
+	private Supplier<Boolean> enabled;
+	private boolean strict;
 }

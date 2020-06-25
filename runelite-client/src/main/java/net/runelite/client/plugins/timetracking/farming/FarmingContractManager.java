@@ -161,24 +161,18 @@ public class FarmingContractManager
 
 	private void handleInfoBox()
 	{
-		if (infoBox != null)
+		if (contract != (infoBox == null ? null : infoBox.getContract()))
 		{
-			if (contract == null)
+			if (infoBox != null)
 			{
 				infoBoxManager.removeInfoBox(infoBox);
 				infoBox = null;
 			}
-			else if (infoBox.getContract() != contract)
+			if (contract != null)
 			{
-				infoBoxManager.removeInfoBox(infoBox);
 				infoBox = new FarmingContractInfoBox(itemManager.getImage(contract.getItemID()), plugin, contract, config, this);
 				infoBoxManager.addInfoBox(infoBox);
 			}
-		}
-		else if (contract != null)
-		{
-			infoBox = new FarmingContractInfoBox(itemManager.getImage(contract.getItemID()), plugin, contract, config, this);
-			infoBoxManager.addInfoBox(infoBox);
 		}
 	}
 

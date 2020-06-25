@@ -39,7 +39,7 @@
     {
       "level": 1,
       "icon": 8186,
-      "name": "Fern",
+      "name": "Fern (big plant)",
       "xp": 31
     },
     {
@@ -128,7 +128,7 @@
     },
     {
       "level": 6,
-      "icon": 8187,
+      "icon": 8190,
       "name": "Large Leaf Bush",
       "xp": 70
     },
@@ -200,9 +200,9 @@
     },
     {
       "level": 12,
-      "icon": 8186,
-      "name": "Fern",
-      "xp": 70
+      "icon": 8182,
+      "name": "Fern (small plant)",
+      "xp": 100
     },
     {
       "level": 12,

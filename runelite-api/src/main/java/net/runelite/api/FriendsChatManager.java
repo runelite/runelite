@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemskeptondeath;
+package net.runelite.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
-class ItemStack
+public interface FriendsChatManager extends NameableContainer<FriendsChatMember>
 {
-	private int id;
-	private int qty;
+	/**
+	 * Gets the owner of the currently joined friends chat
+	 *
+	 * @return
+	 */
+	String getOwner();
+
+	/**
+	 * Gets the name of the currently joined friends chat
+	 *
+	 * @return
+	 */
+	String getName();
 }

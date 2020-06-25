@@ -107,4 +107,10 @@ class FarmingContractInfoBox extends InfoBox
 
 		return sb.toString();
 	}
+
+	@Override
+	public boolean render()
+	{
+		return config.farmingContractInfoBox();
+	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, trimbe <github.com/trimbe>
+ * Copyright (c) 2020, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.clanchat;
+package net.runelite.cache.definitions;
 
-enum ClanActivityType
+import lombok.Data;
+
+@Data
+public class HealthBarDefinition
 {
-	JOINED,
-	LEFT
+	public int id;
+	public int field3276;
+	public int field3277;
+	public int field3278;
+	public int field3283;
+	public int field3272;
+	public int field3275;
+	public int healthBarFrontSpriteId;
+	public int healthBarBackSpriteId;
+	public int healthScale;
+	public int healthBarPadding;
 }

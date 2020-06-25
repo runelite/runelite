@@ -40,7 +40,7 @@ class ConfigInvocationHandler implements InvocationHandler
 
 	private final ConfigManager manager;
 	private final Cache<Method, Object> cache = CacheBuilder.newBuilder()
-		.maximumSize(128)
+		.maximumSize(256)
 		.build();
 
 	ConfigInvocationHandler(ConfigManager manager)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Sebastiaan <https://github.com/SebastiaanVanspauwen>
+ * Copyright (c) 2020 Mitchell <https://github.com/Mitchell-Kovacs>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.clanchat;
+package net.runelite.client.plugins.pyramidplunder;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.Counter;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
-class ClanChatIndicator extends Counter
+class PyramidPlunderTimer extends Timer
 {
-	private final ClanChatPlugin plugin;
+	private final PyramidPlunderConfig config;
+	private final Client client;
 
-	ClanChatIndicator(BufferedImage image, ClanChatPlugin plugin)
+	public PyramidPlunderTimer(
+		Duration duration,
+		BufferedImage image,
+		PyramidPlunderPlugin plugin,
+		PyramidPlunderConfig config,
+		Client client
+	)
 	{
-		super(image, plugin, plugin.getClanAmount());
-		this.plugin = plugin;
-	}
-
-	@Override
-	public int getCount()
-	{
-		return plugin.getClanAmount();
-	}
-
-	@Override
-	public String getTooltip()
-	{
-		return plugin.getClanAmount() + " clan member(s) near you";
+		super(duration.toMillis(), ChronoUnit.MILLIS, image, plugin);
+		this.config = config;
+		this.client = client;
 	}
 
 	@Override
 	public Color getTextColor()
 	{
-		return Color.WHITE;
+		long secondsLeft = Duration.between(Instant.now(), getEndTime()).getSeconds();
+		return secondsLeft < config.timerLowWarning() ? Color.RED.brighter() : Color.white;
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		int floor = client.getVar(Varbits.PYRAMID_PLUNDER_ROOM);
+		int thievingLevel = client.getVar(Varbits.PYRAMID_PLUNDER_THIEVING_LEVEL);
+		return String.format("Time remaining. Floor: %d. Thieving level: %d", floor, thievingLevel);
+	}
+
+	@Override
+	public boolean render()
+	{
+		return config.showExactTimer();
 	}
 }

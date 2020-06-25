@@ -43,7 +43,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.COUNTERS_LOG_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.GENERIC_SCROLL_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageManager;
@@ -400,7 +400,7 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testCoXKill()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>4 players</col> Duration:</col> <col=ff0000>37:04</col> (new personal best)</col>>", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>24+ players</col> Duration:</col> <col=ff0000>37:04</col> (new personal best)</col>>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>51</col>.", null, 0);
@@ -408,6 +408,21 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setConfiguration(eq("killcount.adam"), eq("chambers of xeric"), eq(51));
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric"), eq(37 * 60 + 4));
+	}
+
+	@Test
+	public void testCoXKillUnknownPb()
+	{
+		when(configManager.getConfiguration("personalbest.adam", "chambers of xeric", int.class)).thenReturn(25 * 60 + 14);
+
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>3 players</col> Duration:</col> <col=ff0000>23:25</col> Personal best: </col><col=ff0000>20:19</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "chambers of xeric", 52);
+		verify(configManager).setConfiguration("personalbest.adam", "chambers of xeric", 20 * 60 + 19);
 	}
 
 	@Test
@@ -459,16 +474,16 @@ public class ChatCommandsPluginTest
 			"<br><br>Hespori<br>Fastest kill: <col=d0c0b0>0:57</col><br><br>Nightmare<br>" +
 			"Fastest kill: <col=d0c0b0>3:30</col><br><br>The Gauntlet<br>Fastest run: <col=d0c0b0>-</col>" +
 			"<br><br>The Corrupted Gauntlet<br>Fastest run: <col=d0c0b0>-</col><br><br>Fragment of Seren<br>Fastest kill: <col=d0c0b0>-</col>" +
-			"<br><br>Chambers of Xeric<br>Fastest run - (Team size: 4 players): <col=d0c0b0>24:17</col>" +
+			"<br><br>Chambers of Xeric<br>Fastest run - (Team size: 24+ players): <col=d0c0b0>24:17</col>" +
 			"<br><br>Chambers of Xeric - Challenge mode<br>Fastest run - (Team size: Solo): <col=d0c0b0>22:15</col>" +
 			"<br><br>Barbarian Assault<br>High-level gambles: <col=d0c0b0>0</col><br><br>Fremennik spirits rested: <col=d0c0b0>0</col>";
 
 		Widget countersPage = mock(Widget.class);
 		when(countersPage.getText()).thenReturn(COUNTER_TEXT);
-		when(client.getWidget(WidgetInfo.COUNTERS_LOG_TEXT)).thenReturn(countersPage);
+		when(client.getWidget(WidgetInfo.GENERIC_SCROLL_TEXT)).thenReturn(countersPage);
 
 		WidgetLoaded countersLogEvent = new WidgetLoaded();
-		countersLogEvent.setGroupId(COUNTERS_LOG_GROUP_ID);
+		countersLogEvent.setGroupId(GENERIC_SCROLL_GROUP_ID);
 		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
 		chatCommandsPlugin.onGameTick(new GameTick());
 
@@ -521,10 +536,10 @@ public class ChatCommandsPluginTest
 
 		Widget countersPage = mock(Widget.class);
 		when(countersPage.getText()).thenReturn(COUNTER_TEXT);
-		when(client.getWidget(WidgetInfo.COUNTERS_LOG_TEXT)).thenReturn(countersPage);
+		when(client.getWidget(WidgetInfo.GENERIC_SCROLL_TEXT)).thenReturn(countersPage);
 
 		WidgetLoaded countersLogEvent = new WidgetLoaded();
-		countersLogEvent.setGroupId(COUNTERS_LOG_GROUP_ID);
+		countersLogEvent.setGroupId(GENERIC_SCROLL_GROUP_ID);
 		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
 		chatCommandsPlugin.onGameTick(new GameTick());
 
@@ -555,7 +570,7 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onGameTick(new GameTick());
 
 		WidgetLoaded countersLogEvent = new WidgetLoaded();
-		countersLogEvent.setGroupId(COUNTERS_LOG_GROUP_ID);
+		countersLogEvent.setGroupId(GENERIC_SCROLL_GROUP_ID);
 		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
 		chatCommandsPlugin.onGameTick(new GameTick());
 
@@ -589,5 +604,81 @@ public class ChatCommandsPluginTest
 		value.accept(chatMessage, "!lvl zulrah");
 
 		verify(messageNode).setRuneLiteFormatMessage("<colNORMAL>Level <colHIGHLIGHT>Zulrah: 1000<colNORMAL> Rank: <colHIGHLIGHT>10");
+	}
+
+	@Test
+	public void testHsFloorNoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 1 time: <col=ff0000>1:19</col>. Personal best: 0:28", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 1", 28);
+	}
+
+	@Test
+	public void testHsFloorPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 2 time: <col=ff0000>0:47</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 2", 47);
+	}
+
+	@Test
+	public void testHsOverallPb_Pb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>4:46</col> (new personal best)<br>Overall time: <col=ff0000>9:53</col> (new personal best)<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 4 * 60 + 46);
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 9 * 60 + 53);
+	}
+
+	@Test
+	public void testHsOverallPb_NoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:26</col> (new personal best)<br>Overall time: <col=ff0000>9:17</col>. Personal best: 9:15<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 3 * 60 + 26);
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 9 * 60 + 15);
+	}
+
+	@Test
+	public void testHsOverallNoPb_NoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:56</col>. Personal best: 3:05<br>Overall time: <col=ff0000>9:14</col>. Personal best: 7:49<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 3 * 60 + 5);
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 7 * 60 + 49);
+	}
+
+	@Test
+	public void testHsOverallNoPb_Pb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:10</col>. Personal best: 3:04<br>Overall time: <col=ff0000>7:47</col> (new personal best)<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 3 * 60 + 4);
+		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 7 * 60 + 47);
+	}
+
+	@Test
+	public void testHsFloorKc()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have completed Floor 5 of the Hallowed Sepulchre! Total completions: <col=ff0000>81</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "hallowed sepulchre floor 5", 81);
+	}
+
+	@Test
+	public void testHsGhcKc()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have opened the Grand Hallowed Coffin <col=ff0000>36</col> times!", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration("killcount.adam", "hallowed sepulchre", 36);
 	}
 }

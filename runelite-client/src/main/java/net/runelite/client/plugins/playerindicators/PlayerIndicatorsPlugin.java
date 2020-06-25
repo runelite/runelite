@@ -28,8 +28,8 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
 import lombok.Value;
-import net.runelite.api.ClanMemberRank;
-import static net.runelite.api.ClanMemberRank.UNRANKED;
+import net.runelite.api.FriendsChatRank;
+import static net.runelite.api.FriendsChatRank.UNRANKED;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.*;
 import net.runelite.api.MenuEntry;
@@ -37,7 +37,7 @@ import net.runelite.api.Player;
 import net.runelite.api.events.ClientTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.ClanManager;
+import net.runelite.client.game.FriendChatManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -69,7 +69,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ClanManager clanManager;
+	private FriendChatManager friendChatManager;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -178,14 +178,14 @@ public class PlayerIndicatorsPlugin extends Plugin
 		{
 			color = config.getFriendColor();
 		}
-		else if (config.drawClanMemberNames() && player.isClanMember())
+		else if (config.drawFriendsChatMemberNames() && player.isFriendsChatMember())
 		{
-			color = config.getClanMemberColor();
+			color = config.getFriendsChatMemberColor();
 
-			ClanMemberRank rank = clanManager.getRank(player.getName());
+			FriendsChatRank rank = friendChatManager.getRank(player.getName());
 			if (rank != UNRANKED)
 			{
-				image = clanManager.getIconNumber(rank);
+				image = friendChatManager.getIconNumber(rank);
 			}
 		}
 		else if (config.highlightTeamMembers()
@@ -193,9 +193,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 		{
 			color = config.getTeamMemberColor();
 		}
-		else if (config.highlightNonClanMembers() && !player.isClanMember())
+		else if (config.highlightOthers() && !player.isFriendsChatMember())
 		{
-			color = config.getNonClanMemberColor();
+			color = config.getOthersColor();
 		}
 
 		if (image == -1 && color == null)
@@ -222,7 +222,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			newTarget = ColorUtil.prependColorTag(newTarget, decorations.getColor());
 		}
 
-		if (decorations.getImage() != -1 && config.showClanRanks())
+		if (decorations.getImage() != -1 && config.showFriendsChatRanks())
 		{
 			newTarget = "<img=" + decorations.getImage() + ">" + newTarget;
 		}

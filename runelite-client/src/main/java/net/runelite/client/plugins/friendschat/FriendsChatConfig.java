@@ -22,24 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.clanchat;
+package net.runelite.client.plugins.friendschat;
 
 import java.awt.Color;
-import net.runelite.api.ClanMemberRank;
+import net.runelite.api.FriendsChatRank;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("clanchat")
-public interface ClanChatConfig extends Config
+@ConfigGroup("clanchat") // group name from the old plugin
+public interface FriendsChatConfig extends Config
 {
 	@ConfigItem(
 		keyName = "clanChatIcons",
-		name = "Clan Chat Icons",
-		description = "Show clan chat icons next to clan members.",
+		name = "Chat Icons",
+		description = "Show rank icons next to friends chat members.",
 		position = 1
 	)
-	default boolean clanChatIcons()
+	default boolean chatIcons()
 	{
 		return true;
 	}
@@ -47,7 +47,7 @@ public interface ClanChatConfig extends Config
 	@ConfigItem(
 		keyName = "recentChats",
 		name = "Recent Chats",
-		description = "Show recent clan chats.",
+		description = "Show recent friends chats.",
 		position = 2
 	)
 	default boolean recentChats()
@@ -57,11 +57,11 @@ public interface ClanChatConfig extends Config
 
 	@ConfigItem(
 		keyName = "clanCounter",
-		name = "Clan Members Counter",
-		description = "Show the amount of clan members near you.",
+		name = "Members Counter",
+		description = "Show the amount of friends chat members near you.",
 		position = 3
 	)
-	default boolean showClanCounter()
+	default boolean showCounter()
 	{
 		return false;
 	}
@@ -101,16 +101,27 @@ public interface ClanChatConfig extends Config
 		description = "Only show join/leave messages for members at or above this rank.",
 		position = 5
 	)
-	default ClanMemberRank joinLeaveRank()
+	default FriendsChatRank joinLeaveRank()
 	{
-		return ClanMemberRank.UNRANKED;
+		return FriendsChatRank.UNRANKED;
+	}
+
+	@ConfigItem(
+		keyName = "joinLeaveTimeout",
+		name = "Join/Leave timeout",
+		description = "Set the timeout duration of join/leave messages. A value of 0 will make the messages permanent.",
+		position = 6
+	)
+	default int joinLeaveTimeout()
+	{
+		return 20;
 	}
 
 	@ConfigItem(
 		keyName = "privateMessageIcons",
 		name = "Private Message Icons",
-		description = "Add clan chat rank icons to private messages received from clan mates.",
-		position = 6
+		description = "Add rank icons to private messages received from members.",
+		position = 7
 	)
 	default boolean privateMessageIcons()
 	{
@@ -120,8 +131,8 @@ public interface ClanChatConfig extends Config
 	@ConfigItem(
 		keyName = "publicChatIcons",
 		name = "Public Chat Icons",
-		description = "Add clan chat rank icons to public chat messages from clan mates.",
-		position = 7
+		description = "Add rank icons to public chat messages from members.",
+		position = 8
 	)
 	default boolean publicChatIcons()
 	{
@@ -130,11 +141,11 @@ public interface ClanChatConfig extends Config
 
 	@ConfigItem(
 		keyName = "clanTabChat",
-		name = "Clan Tab Chat",
-		description = "Allows clan chat without prepending '/' to messages when on clan tab",
-		position = 8
+		name = "Tab Chat",
+		description = "Message friends chat without appending '/' when the friends chat tab is selected.",
+		position = 9
 	)
-	default boolean clanTabChat()
+	default boolean friendsChatTabChat()
 	{
 		return false;
 	}
@@ -143,7 +154,7 @@ public interface ClanChatConfig extends Config
 		keyName = "confirmKicks",
 		name = "Confirm Kicks",
 		description = "Shows a chat prompt to confirm kicks",
-		position = 9
+		position = 10
 	)
 	default boolean confirmKicks()
 	{
@@ -153,8 +164,8 @@ public interface ClanChatConfig extends Config
 	@ConfigItem(
 		keyName = "showIgnores",
 		name = "Recolor ignored players",
-		description = "Recolors players that are on your ignore list",
-		position = 10
+		description = "Recolor members who are on your ignore list",
+		position = 11
 	)
 	default boolean showIgnores()
 	{
@@ -164,8 +175,8 @@ public interface ClanChatConfig extends Config
 	@ConfigItem(
 		keyName = "showIgnoresColor",
 		name = "Ignored color",
-		description = "Allows you to change the color of the ignored players in your clan chat",
-		position = 11
+		description = "Allows you to change the color of the ignored players in your friends chat",
+		position = 12
 	)
 	default Color showIgnoresColor()
 	{

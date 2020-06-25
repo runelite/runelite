@@ -80,7 +80,8 @@ public interface RunecraftConfig extends Config
 		keyName = "showBlood",
 		name = "Show Blood rift",
 		description = "Configures whether to display the Blood rift",
-		position = 5
+		position = 5,
+		section = riftSection
 	)
 	default boolean showBlood()
 	{

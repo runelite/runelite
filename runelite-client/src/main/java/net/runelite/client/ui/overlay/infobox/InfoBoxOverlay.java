@@ -31,11 +31,18 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.InfoBoxMenuClicked;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
@@ -54,18 +61,23 @@ public class InfoBoxOverlay extends OverlayPanel
 	private final TooltipManager tooltipManager;
 	private final Client client;
 	private final RuneLiteConfig config;
+	private final EventBus eventBus;
+
+	private InfoBoxComponent hoveredComponent;
 
 	@Inject
 	private InfoBoxOverlay(
 		InfoBoxManager infoboxManager,
 		TooltipManager tooltipManager,
 		Client client,
-		RuneLiteConfig config)
+		RuneLiteConfig config,
+		EventBus eventBus)
 	{
 		this.tooltipManager = tooltipManager;
 		this.infoboxManager = infoboxManager;
 		this.client = client;
 		this.config = config;
+		this.eventBus = eventBus;
 		setPosition(OverlayPosition.TOP_LEFT);
 		setClearChildren(false);
 
@@ -79,6 +91,12 @@ public class InfoBoxOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		final List<InfoBox> infoBoxes = infoboxManager.getInfoBoxes();
+
+		final boolean menuOpen = client.isMenuOpen();
+		if (!menuOpen)
+		{
+			hoveredComponent = null;
+		}
 
 		if (infoBoxes.isEmpty())
 		{
@@ -112,6 +130,7 @@ public class InfoBoxOverlay extends OverlayPanel
 			infoBoxComponent.setTooltip(box.getTooltip());
 			infoBoxComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
 			infoBoxComponent.setBackgroundColor(config.overlayBackgroundColor());
+			infoBoxComponent.setInfoBox(box);
 			panelComponent.getChildren().add(infoBoxComponent);
 		}
 
@@ -122,25 +141,55 @@ public class InfoBoxOverlay extends OverlayPanel
 
 		for (final LayoutableRenderableEntity child : panelComponent.getChildren())
 		{
-			if (child instanceof InfoBoxComponent)
+			final InfoBoxComponent component = (InfoBoxComponent) child;
+
+			// Create intersection rectangle
+			final Rectangle intersectionRectangle = new Rectangle(component.getBounds());
+			intersectionRectangle.translate(getBounds().x, getBounds().y);
+
+			if (intersectionRectangle.contains(mouse))
 			{
-				final InfoBoxComponent component = (InfoBoxComponent) child;
-
-				if (!Strings.isNullOrEmpty(component.getTooltip()))
+				final String tooltip = component.getTooltip();
+				if (!Strings.isNullOrEmpty(tooltip))
 				{
-					// Create intersection rectangle
-					final Rectangle intersectionRectangle = new Rectangle(component.getBounds());
-					intersectionRectangle.translate(getBounds().x, getBounds().y);
-
-					if (intersectionRectangle.contains(mouse))
-					{
-						tooltipManager.add(new Tooltip(component.getTooltip()));
-					}
+					tooltipManager.add(new Tooltip(tooltip));
 				}
+
+				if (!menuOpen)
+				{
+					hoveredComponent = component;
+				}
+				break;
 			}
 		}
 
 		panelComponent.getChildren().clear();
 		return dimension;
+	}
+
+	@Override
+	public List<OverlayMenuEntry> getMenuEntries()
+	{
+		// we dynamically build the menu options based on which infobox is hovered
+		return hoveredComponent == null ? Collections.emptyList() : hoveredComponent.getInfoBox().getMenuEntries();
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	{
+		if (menuOptionClicked.getMenuAction() != MenuAction.RUNELITE_INFOBOX)
+		{
+			return;
+		}
+
+		InfoBox infoBox = hoveredComponent.getInfoBox();
+		OverlayMenuEntry overlayMenuEntry = infoBox.getMenuEntries().stream()
+			.filter(me -> me.getOption().equals(menuOptionClicked.getMenuOption()))
+			.findAny()
+			.orElse(null);
+		if (overlayMenuEntry != null)
+		{
+			eventBus.post(new InfoBoxMenuClicked(overlayMenuEntry, infoBox));
+		}
 	}
 }

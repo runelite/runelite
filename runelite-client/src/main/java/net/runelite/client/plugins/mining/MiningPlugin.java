@@ -128,23 +128,39 @@ public class MiningPlugin extends Plugin
 		Rock rock = Rock.getRock(object.getId());
 		if (rock != null)
 		{
-			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
-			respawns.add(rockRespawn);
+			if (rock == Rock.DAEYALT_ESSENCE)
+			{
+				final WorldPoint point = object.getWorldLocation();
+				respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
+			}
+			else
+			{
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
+				respawns.add(rockRespawn);
+			}
 		}
 	}
 
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
 		{
 			return;
 		}
 
 		GameObject object = event.getGameObject();
+		Rock rock = Rock.getRock(object.getId());
 
+		// Inverse timer to track daeyalt essence active duration
+		if (rock == Rock.DAEYALT_ESSENCE)
+		{
+			final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
+			respawns.add(rockRespawn);
+		}
 		// If the Lovakite ore respawns before the timer is up, remove it
-		if (Rock.getRock(object.getId()) == Rock.LOVAKITE)
+		else if (rock == Rock.LOVAKITE)
 		{
 			final WorldPoint point = object.getWorldLocation();
 			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));

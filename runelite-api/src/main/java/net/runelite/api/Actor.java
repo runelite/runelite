@@ -126,6 +126,23 @@ public interface Actor extends Renderable
 	int getAnimation();
 
 	/**
+	 * Gets the secondary animation the actor is performing.
+	 *
+	 * @return the animation ID
+	 * @see AnimationID
+	 */
+	int getPoseAnimation();
+
+	/**
+	 * If this is equal to the pose animation, the pose animation is ignored when
+	 * you are doing another action.
+	 *
+	 * @return the animation ID
+	 * @see AnimationID
+	 */
+	int getIdlePoseAnimation();
+
+	/**
 	 * Sets an animation for the actor to perform.
 	 *
 	 * @param animation the animation ID

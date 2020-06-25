@@ -3,9 +3,9 @@
 .string_stack_count 1
 .int_var_count      0
 .string_var_count   1
-; callback "confirmClanKick"
-; 	Used by the ClanChat plugin to show a chatbox panel confirming the requested kick
-;	Also requires the "confirmKicks" option of ClanChatConfig to be enabled
+; callback "confirmFriendsChatKick"
+; 	Used by the friends chat plugin to show a chatbox panel confirming the requested kick
+;	Also requires the "confirmKicks" option of FriendsChatConfig to be enabled
    invoke                 1942
    iconst                 1
    if_icmpeq              LABEL4
@@ -26,7 +26,7 @@ LABEL73:
 CONFIRM_KICK:
    sload                  0             ; Username we are trying to kick
    iconst                 0             ; Modified if we are confirming the kick inside the plugin
-   sconst                 "confirmClanKick"
+   sconst                 "confirmFriendsChatKick"
    runelite_callback
    pop_string                           ; Pop username
    iconst                 0             ; Compare against zero

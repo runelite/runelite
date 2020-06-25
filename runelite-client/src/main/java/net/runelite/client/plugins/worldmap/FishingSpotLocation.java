@@ -114,7 +114,7 @@ enum FishingSpotLocation
 		new WorldPoint(3480, 3433, 0), new WorldPoint(3485, 3448, 0)),
 	MORT_MYRE_SWAMP_WEST(FishingSpot.SLIMY_EEL,
 		new WorldPoint(3425, 3409, 0), new WorldPoint(3432, 3415, 0)),
-	MOR_UI_REK(FishingSpot.INFERNAL_EEL,
+	MOR_UL_REK(FishingSpot.INFERNAL_EEL,
 		new WorldPoint(2443, 5104, 0), new WorldPoint(2476, 5077, 0),
 		new WorldPoint(2537, 5086, 0)),
 	MOUNT_QUIDAMORTEM(FishingSpot.BARB_FISH,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Sebastiaan <https://github.com/SebastiaanVanspauwen>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.clanchat;
+package net.runelite.client.plugins.friendschat;
 
-import lombok.Value;
-import net.runelite.api.MessageNode;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-@Value
-class ClanJoinMessage
+class MembersIndicator extends Counter
 {
-	private final MessageNode messageNode;
-	private final int getMessageId;
-	private final int tick;
+	private final FriendsChatPlugin plugin;
+
+	MembersIndicator(BufferedImage image, FriendsChatPlugin plugin)
+	{
+		super(image, plugin, plugin.getMembersSize());
+		this.plugin = plugin;
+	}
+
+	@Override
+	public int getCount()
+	{
+		return plugin.getMembersSize();
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		return plugin.getMembersSize() + " friends chat member(s) near you";
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return Color.WHITE;
+	}
 }

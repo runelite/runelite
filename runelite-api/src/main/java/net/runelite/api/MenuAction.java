@@ -277,6 +277,10 @@ public enum MenuAction
 	 * a player and have its identifier set to a player index.
 	 */
 	RUNELITE_PLAYER(1503),
+	/**
+	 * Menu action for InfoBox menu entries
+	 */
+	RUNELITE_INFOBOX(1504),
 
 	/**
 	 * Menu action triggered when the id is not defined in this class.

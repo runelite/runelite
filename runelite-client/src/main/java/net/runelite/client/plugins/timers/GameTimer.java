@@ -40,7 +40,7 @@ import static net.runelite.client.util.RSTimeUnit.GAME_TICKS;
 @Getter(AccessLevel.PACKAGE)
 enum GameTimer
 {
-	STAMINA(ItemID.STAMINA_POTION4, GameTimerImageType.ITEM, "Stamina", 2, ChronoUnit.MINUTES, true),
+	STAMINA(ItemID.STAMINA_POTION4, GameTimerImageType.ITEM, "Stamina", true),
 	ANTIFIRE(ItemID.ANTIFIRE_POTION4, GameTimerImageType.ITEM, "Antifire", 6, ChronoUnit.MINUTES),
 	EXANTIFIRE(ItemID.EXTENDED_ANTIFIRE4, GameTimerImageType.ITEM, "Extended antifire", 12, ChronoUnit.MINUTES),
 	OVERLOAD(ItemID.OVERLOAD_4, GameTimerImageType.ITEM, "Overload", 5, ChronoUnit.MINUTES, true),
@@ -78,8 +78,8 @@ enum GameTimer
 	DIVINE_MAGIC(ItemID.DIVINE_MAGIC_POTION4, GameTimerImageType.ITEM, "Divine Magic", 5, ChronoUnit.MINUTES),
 	DIVINE_BASTION(ItemID.DIVINE_BASTION_POTION4, GameTimerImageType.ITEM, "Divine Bastion", 5, ChronoUnit.MINUTES),
 	DIVINE_BATTLEMAGE(ItemID.DIVINE_BATTLEMAGE_POTION4, GameTimerImageType.ITEM, "Divine Battlemage", 5, ChronoUnit.MINUTES),
-	ANTIPOISON(ItemID.ANTIPOISON4, GameTimerImageType.ITEM, "Antipoison"),
-	ANTIVENOM(ItemID.ANTIVENOM4, GameTimerImageType.ITEM, "Anti-venom");
+	ANTIPOISON(ItemID.ANTIPOISON4, GameTimerImageType.ITEM, "Antipoison", false),
+	ANTIVENOM(ItemID.ANTIVENOM4, GameTimerImageType.ITEM, "Anti-venom", false);
 
 	@Nullable
 	private final Duration duration;
@@ -110,12 +110,12 @@ enum GameTimer
 		this(imageId, idType, description, null, time, unit, false);
 	}
 
-	GameTimer(int imageId, GameTimerImageType idType, String description)
+	GameTimer(int imageId, GameTimerImageType idType, String description, boolean removedOnDeath)
 	{
 		this.duration = null;
 		this.graphicId = null;
 		this.description = description;
-		this.removedOnDeath = false;
+		this.removedOnDeath = removedOnDeath;
 		this.imageId = imageId;
 		this.imageType = idType;
 	}

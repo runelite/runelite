@@ -26,7 +26,6 @@ package net.runelite.client.plugins.cannon;
 
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -37,6 +36,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
@@ -47,8 +47,8 @@ import static net.runelite.api.ProjectileID.CANNONBALL;
 import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ProjectileMoved;
@@ -56,10 +56,10 @@ import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
@@ -217,13 +217,10 @@ public class CannonPlugin extends Plugin
 
 	}
 
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void checkSpots()
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (!config.showCannonSpots())
+		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -231,12 +228,10 @@ public class CannonPlugin extends Plugin
 		spotPoints.clear();
 		for (WorldPoint spot : CannonSpots.getCannonSpots())
 		{
-			if (spot.getPlane() != client.getPlane() || !spot.isInScene(client))
+			if (WorldPoint.isInScene(client, spot.getX(), spot.getY()))
 			{
-				continue;
+				spotPoints.add(spot);
 			}
-
-			spotPoints.add(spot);
 		}
 	}
 

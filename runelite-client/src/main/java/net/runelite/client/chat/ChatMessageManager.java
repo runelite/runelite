@@ -139,11 +139,11 @@ public class ChatMessageManager
 				break;
 			}
 			case FRIENDSCHAT:
-				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanUsernames() : chatColorConfig.opaqueClanUsernames();
+				usernameColor = isChatboxTransparent ? chatColorConfig.transparentFriendsChatUsernames() : chatColorConfig.opaqueFriendsChatUsernames();
 				break;
 		}
 
-		senderColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelName() : chatColorConfig.opaqueClanChannelName();
+		senderColor = isChatboxTransparent ? chatColorConfig.transparentFriendsChatChannelName() : chatColorConfig.opaqueFriendsChatChannelName();
 
 		if (usernameColor != null)
 		{
@@ -218,7 +218,7 @@ public class ChatMessageManager
 				case PRIVATECHAT:
 					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND;
 				case FRIENDSCHAT:
-					return JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
+					return JagexColors.CHAT_FC_TEXT_OPAQUE_BACKGROUND;
 				case ITEM_EXAMINE:
 				case OBJECT_EXAMINE:
 				case NPC_EXAMINE:
@@ -238,7 +238,7 @@ public class ChatMessageManager
 				case PRIVATECHAT:
 					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND;
 				case FRIENDSCHAT:
-					return JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
+					return JagexColors.CHAT_FC_TEXT_TRANSPARENT_BACKGROUND;
 				case ITEM_EXAMINE:
 				case OBJECT_EXAMINE:
 				case NPC_EXAMINE:
@@ -311,24 +311,24 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePrivateMessageReceivedHighlight(), false),
 				ChatMessageType.MODPRIVATECHAT);
 		}
-		if (chatColorConfig.opaqueClanChatInfo() != null)
+		if (chatColorConfig.opaqueFriendsChatInfo() != null)
 		{
-			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatInfo(), false),
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueFriendsChatInfo(), false),
 				ChatMessageType.FRIENDSCHATNOTIFICATION);
 		}
-		if (chatColorConfig.opaqueClanChatInfoHighlight() != null)
+		if (chatColorConfig.opaqueFriendsChatInfoHighlight() != null)
 		{
-			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatInfoHighlight(), false),
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueFriendsChatInfoHighlight(), false),
 				ChatMessageType.FRIENDSCHATNOTIFICATION);
 		}
-		if (chatColorConfig.opaqueClanChatMessage() != null)
+		if (chatColorConfig.opaqueFriendsChatMessage() != null)
 		{
-			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatMessage(), false),
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueFriendsChatMessage(), false),
 				ChatMessageType.FRIENDSCHAT);
 		}
-		if (chatColorConfig.opaqueClanChatMessageHighlight() != null)
+		if (chatColorConfig.opaqueFriendsChatMessageHighlight() != null)
 		{
-			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatMessageHighlight(), false),
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueFriendsChatMessageHighlight(), false),
 				ChatMessageType.FRIENDSCHAT);
 		}
 		if (chatColorConfig.opaqueAutochatMessage() != null)
@@ -444,24 +444,24 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentPrivateMessageReceivedHighlight(), true),
 				ChatMessageType.MODPRIVATECHAT);
 		}
-		if (chatColorConfig.transparentClanChatInfo() != null)
+		if (chatColorConfig.transparentFriendsChatInfo() != null)
 		{
-			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatInfo(), true),
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentFriendsChatInfo(), true),
 				ChatMessageType.FRIENDSCHATNOTIFICATION);
 		}
-		if (chatColorConfig.transparentClanChatInfoHighlight() != null)
+		if (chatColorConfig.transparentFriendsChatInfoHighlight() != null)
 		{
-			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentClanChatInfoHighlight(), true),
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentFriendsChatInfoHighlight(), true),
 				ChatMessageType.FRIENDSCHATNOTIFICATION);
 		}
-		if (chatColorConfig.transparentClanChatMessage() != null)
+		if (chatColorConfig.transparentFriendsChatMessage() != null)
 		{
-			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatMessage(), true),
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentFriendsChatMessage(), true),
 				ChatMessageType.FRIENDSCHAT);
 		}
-		if (chatColorConfig.transparentClanChatMessageHighlight() != null)
+		if (chatColorConfig.transparentFriendsChatMessageHighlight() != null)
 		{
-			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentClanChatMessageHighlight(), true),
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentFriendsChatMessageHighlight(), true),
 				ChatMessageType.FRIENDSCHAT);
 		}
 		if (chatColorConfig.transparentAutochatMessage() != null)

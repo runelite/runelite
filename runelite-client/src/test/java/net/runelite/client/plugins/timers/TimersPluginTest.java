@@ -28,16 +28,21 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.time.Duration;
 import java.util.EnumSet;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +50,7 @@ import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -188,5 +194,43 @@ public class TimersPluginTest
 		timersPlugin.onChatMessage(chatMessage);
 
 		verify(infoBoxManager, atLeastOnce()).removeIf(any());
+	}
+
+	@Test
+	public void testStamina()
+	{
+		when(timersConfig.showStamina()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your stamina potion.", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.STAMINA, infoBox.getTimer());
+		assertEquals(Duration.ofMinutes(2), infoBox.getDuration());
+	}
+
+	@Test
+	public void testEndurance()
+	{
+		when(timersConfig.showStamina()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "Your Ring of endurance doubles the duration of your stamina potion's effect.", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your stamina potion.", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.STAMINA, infoBox.getTimer());
+		assertEquals(Duration.ofMinutes(4), infoBox.getDuration());
+
+		// unwield ring
+		timersPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), mock(ItemContainer.class)));
+		// some time has elapsed in the test; this should be just under 2 mins
+		int mins = (int) infoBox.getDuration().toMinutes();
+		assertTrue(mins == 1 || mins == 2);
 	}
 }

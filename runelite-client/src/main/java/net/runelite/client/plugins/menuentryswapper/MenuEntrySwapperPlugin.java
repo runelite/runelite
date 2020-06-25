@@ -26,11 +26,20 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import com.google.common.annotations.VisibleForTesting;
+import static com.google.common.base.Predicates.alwaysTrue;
+import static com.google.common.base.Predicates.equalTo;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.inject.Provides;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -143,6 +152,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Setter
 	private boolean shiftModifier = false;
 
+	private final Multimap<String, Swap> swaps = LinkedHashMultimap.create();
 	private final ArrayListMultimap<String, Integer> optionIndexes = ArrayListMultimap.create();
 
 	@Provides
@@ -158,12 +168,222 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			enableCustomization();
 		}
+
+		setupSwaps();
 	}
 
 	@Override
 	public void shutDown()
 	{
 		disableCustomization();
+
+		swaps.clear();
+	}
+
+	@VisibleForTesting
+	void setupSwaps()
+	{
+		swap("talk-to", "mage of zamorak", "teleport", config::swapAbyssTeleport);
+		swap("talk-to", "rionasta", "send-parcel", config::swapHardWoodGroveParcel);
+		swap("talk-to", "captain khaled", "task", config::swapCaptainKhaled);
+		swap("talk-to", "bank", config::swapBank);
+		swap("talk-to", "contract", config::swapContract);
+		swap("talk-to", "exchange", config::swapExchange);
+		swap("talk-to", "help", config::swapHelp);
+		swap("talk-to", "nets", config::swapNets);
+		swap("talk-to", "repairs", config::swapDarkMage);
+		// make sure assignment swap is higher priority than trade swap for slayer masters
+		swap("talk-to", "assignment", config::swapAssignment);
+		swap("talk-to", "trade", config::swapTrade);
+		swap("talk-to", "trade-with", config::swapTrade);
+		swap("talk-to", "shop", config::swapTrade);
+		swap("talk-to", "robin", "claim-slime", config::swapTrade);
+		swap("talk-to", "travel", config::swapTravel);
+		swap("talk-to", "pay-fare", config::swapTravel);
+		swap("talk-to", "charter", config::swapTravel);
+		swap("talk-to", "take-boat", config::swapTravel);
+		swap("talk-to", "fly", config::swapTravel);
+		swap("talk-to", "jatizso", config::swapTravel);
+		swap("talk-to", "neitiznot", config::swapTravel);
+		swap("talk-to", "rellekka", config::swapTravel);
+		swap("talk-to", "follow", config::swapTravel);
+		swap("talk-to", "transport", config::swapTravel);
+		swap("talk-to", "pay", config::swapPay);
+		swapContains("talk-to", alwaysTrue(), "pay (", config::swapPay);
+		swap("talk-to", "decant", config::swapDecant);
+		swap("talk-to", "quick-travel", config::swapQuick);
+		swap("talk-to", "enchant", config::swapEnchant);
+		swap("talk-to", "start-minigame", config::swapStartMinigame);
+		swap("talk-to", ESSENCE_MINE_NPCS::contains, "teleport", config::swapEssenceMineTeleport);
+
+		swap("leave tomb", "quick-leave", config::swapQuickLeave);
+		swap("tomb door", "quick-leave", config::swapQuickLeave);
+
+		swap("pass", "energy barrier", "pay-toll(2-ecto)", config::swapTravel);
+		swap("open", "gate", "pay-toll(10gp)", config::swapTravel);
+
+		swap("open", "hardwood grove doors", "quick-pay(100)", config::swapHardWoodGrove);
+
+		swap("inspect", "trapdoor", "travel", config::swapTravel);
+		swap("board", "travel cart", "pay-fare", config::swapTravel);
+
+		swap("cage", "harpoon", config::swapHarpoon);
+		swap("big net", "harpoon", config::swapHarpoon);
+		swap("net", "harpoon", config::swapHarpoon);
+
+		swap("enter", "portal", "home", () -> config.swapHomePortal() == HouseMode.HOME);
+		swap("enter", "portal", "build mode", () -> config.swapHomePortal() == HouseMode.BUILD_MODE);
+		swap("enter", "portal", "friend's house", () -> config.swapHomePortal() == HouseMode.FRIENDS_HOUSE);
+
+		swap("view", "add-house", () -> config.swapHouseAdvertisement() == HouseAdvertisementMode.ADD_HOUSE);
+		swap("view", "visit-last", () -> config.swapHouseAdvertisement() == HouseAdvertisementMode.VISIT_LAST);
+
+		for (String option : new String[]{"zanaris", "configure", "tree"})
+		{
+			swapContains(option, alwaysTrue(), "last-destination", () -> config.swapFairyRing() == FairyRingMode.LAST_DESTINATION);
+			swapContains(option, alwaysTrue(), "configure", () -> config.swapFairyRing() == FairyRingMode.CONFIGURE);
+		}
+
+		swapContains("tree", alwaysTrue(), "zanaris", () -> config.swapFairyRing() == FairyRingMode.ZANARIS);
+
+		swap("check", "reset", config::swapBoxTrap);
+		swap("dismantle", "reset", config::swapBoxTrap);
+		swap("take", "lay", config::swapBoxTrap);
+
+		swap("pick-up", "chase", config::swapChase);
+
+		swap("interact", target -> target.endsWith("birdhouse"), "empty", config::swapBirdhouseEmpty);
+
+		swap("enter", "the gauntlet", "enter-corrupted", config::swapGauntlet);
+
+		swap("enter", "quick-enter", config::swapQuick);
+		swap("ring", "quick-start", config::swapQuick);
+		swap("pass", "quick-pass", config::swapQuick);
+		swap("pass", "quick pass", config::swapQuick);
+		swap("open", "quick-open", config::swapQuick);
+		swap("climb-down", "quick-start", config::swapQuick);
+		swap("climb-down", "pay", config::swapQuick);
+
+		swap("admire", "teleport", config::swapAdmire);
+		swap("admire", "spellbook", config::swapAdmire);
+		swap("admire", "perks", config::swapAdmire);
+
+		swap("teleport menu", "duel arena", config::swapJewelleryBox);
+		swap("teleport menu", "castle wars", config::swapJewelleryBox);
+		swap("teleport menu", "clan wars", config::swapJewelleryBox);
+		swap("teleport menu", "burthorpe", config::swapJewelleryBox);
+		swap("teleport menu", "barbarian outpost", config::swapJewelleryBox);
+		swap("teleport menu", "corporeal beast", config::swapJewelleryBox);
+		swap("teleport menu", "tears of guthix", config::swapJewelleryBox);
+		swap("teleport menu", "wintertodt camp", config::swapJewelleryBox);
+		swap("teleport menu", "warriors' guild", config::swapJewelleryBox);
+		swap("teleport menu", "champions' guild", config::swapJewelleryBox);
+		swap("teleport menu", "monastery", config::swapJewelleryBox);
+		swap("teleport menu", "ranging guild", config::swapJewelleryBox);
+		swap("teleport menu", "fishing guild", config::swapJewelleryBox);
+		swap("teleport menu", "mining guild", config::swapJewelleryBox);
+		swap("teleport menu", "crafting guild", config::swapJewelleryBox);
+		swap("teleport menu", "cooking guild", config::swapJewelleryBox);
+		swap("teleport menu", "woodcutting guild", config::swapJewelleryBox);
+		swap("teleport menu", "farming guild", config::swapJewelleryBox);
+		swap("teleport menu", "miscellania", config::swapJewelleryBox);
+		swap("teleport menu", "grand exchange", config::swapJewelleryBox);
+		swap("teleport menu", "falador park", config::swapJewelleryBox);
+		swap("teleport menu", "dondakan's rock", config::swapJewelleryBox);
+		swap("teleport menu", "edgeville", config::swapJewelleryBox);
+		swap("teleport menu", "karamja", config::swapJewelleryBox);
+		swap("teleport menu", "draynor village", config::swapJewelleryBox);
+		swap("teleport menu", "al kharid", config::swapJewelleryBox);
+
+		swap("shared", "private", config::swapPrivate);
+
+		swap("pick", "pick-lots", config::swapPick);
+
+		swap("view offer", "abort offer", () -> shiftModifier && config.swapGEAbort());
+
+		swap("cast", "npc contact", "honest jimmy", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "bert the sandman", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "advisor ghrim", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "dark mage", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "lanthus", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "turael", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "mazchna", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "vannaka", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "chaeldar", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "nieve", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "steve", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "duradel", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "krystilia", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "konar", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "murphy", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "cyrisus", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "smoggy", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "ginea", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "watson", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "barbarian guard", () -> shiftModifier && config.swapNpcContact());
+		swap("cast", "npc contact", "random", () -> shiftModifier && config.swapNpcContact());
+
+		swap("value", "buy 1", () -> shiftModifier && config.shopBuy() == BuyMode.BUY_1);
+		swap("value", "buy 5", () -> shiftModifier && config.shopBuy() == BuyMode.BUY_5);
+		swap("value", "buy 10", () -> shiftModifier && config.shopBuy() == BuyMode.BUY_10);
+		swap("value", "buy 50", () -> shiftModifier && config.shopBuy() == BuyMode.BUY_50);
+
+		swap("value", "sell 1", () -> shiftModifier && config.shopSell() == SellMode.SELL_1);
+		swap("value", "sell 5", () -> shiftModifier && config.shopSell() == SellMode.SELL_5);
+		swap("value", "sell 10", () -> shiftModifier && config.shopSell() == SellMode.SELL_10);
+		swap("value", "sell 50", () -> shiftModifier && config.shopSell() == SellMode.SELL_50);
+
+		swap("wear", "rub", config::swapTeleportItem);
+		swap("wear", "teleport", config::swapTeleportItem);
+		swap("wield", "teleport", config::swapTeleportItem);
+
+		swap("bury", "use", config::swapBones);
+
+		swap("collect-note", "collect-item", () -> config.swapGEItemCollect() == GEItemCollectMode.ITEMS);
+		swap("collect-notes", "collect-items", () -> config.swapGEItemCollect() == GEItemCollectMode.ITEMS);
+
+		swap("collect-item", "collect-note", () -> config.swapGEItemCollect() == GEItemCollectMode.NOTES);
+		swap("collect-items", "collect-notes", () -> config.swapGEItemCollect() == GEItemCollectMode.NOTES);
+
+		swap("collect to inventory", "collect to bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
+		swap("collect", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
+		swap("collect-note", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
+		swap("collect-notes", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
+		swap("collect-item", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
+		swap("collect-items", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
+
+		swap("tan 1", "tan all", config::swapTan);
+
+		swapTeleport("varrock teleport", "grand exchange");
+		swapTeleport("camelot teleport", "seers'");
+		swapTeleport("watchtower teleport", "yanille");
+		swapTeleport("teleport to house", "outside");
+	}
+
+	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
+	{
+		swap(option, alwaysTrue(), swappedOption, enabled);
+	}
+
+	private void swap(String option, String target, String swappedOption, Supplier<Boolean> enabled)
+	{
+		swap(option, equalTo(target), swappedOption, enabled);
+	}
+
+	private void swap(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
+	{
+		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, true));
+	}
+
+	private void swapContains(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
+	{
+		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, false));
+	}
+
+	private void swapTeleport(String option, String swappedOption)
+	{
+		swap("cast", option, swappedOption, () -> shiftModifier && config.swapTeleportSpell());
+		swap(swappedOption, option, "cast", () -> shiftModifier && config.swapTeleportSpell());
 	}
 
 	@Subscribe
@@ -394,30 +614,22 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		int index = -1;
-		boolean valid = false;
-
 		if (option.equals("Use")) //because "Use" is not in inventoryActions
 		{
-			valid = true;
+			setSwapConfig(itemId, -1);
 		}
 		else
 		{
 			String[] inventoryActions = itemComposition.getInventoryActions();
 
-			for (index = 0; index < inventoryActions.length; index++)
+			for (int index = 0; index < inventoryActions.length; index++)
 			{
 				if (option.equals(inventoryActions[index]))
 				{
-					valid = true;
+					setSwapConfig(itemId, index);
 					break;
 				}
 			}
-		}
-
-		if (valid)
-		{
-			setSwapConfig(itemId, index);
 		}
 	}
 
@@ -435,391 +647,31 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		if (option.equals("talk-to"))
-		{
-			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
-			{
-				swap("teleport", option, target, index);
-			}
-
-			if (config.swapHardWoodGroveParcel() && target.contains("rionasta"))
-			{
-				swap("send-parcel", option, target, index);
-			}
-
-			if (config.swapCaptainKhaled() && target.contains("captain khaled"))
-			{
-				swap("task", option, target, index);
-			}
-
-			if (config.swapBank())
-			{
-				swap("bank", option, target, index);
-			}
-
-			if (config.swapContract())
-			{
-				swap("contract", option, target, index);
-			}
-
-			if (config.swapExchange())
-			{
-				swap("exchange", option, target, index);
-			}
-
-			if (config.swapHelp())
-			{
-				swap("help", option, target, index);
-			}
-
-			if (config.swapNets())
-			{
-				swap("nets", option, target, index);
-			}
-
-			if (config.swapDarkMage())
-			{
-				swap("repairs", option, target, index);
-			}
-
-			// make sure assignment swap is higher priority than trade swap for slayer masters
-			if (config.swapAssignment())
-			{
-				swap("assignment", option, target, index);
-			}
-
-			if (config.swapTrade())
-			{
-				swap("trade", option, target, index);
-				swap("trade-with", option, target, index);
-				swap("shop", option, target, index);
-			}
-
-			if (config.claimSlime() && target.equals("robin"))
-			{
-				swap("claim-slime", option, target, index);
-			}
-
-			if (config.swapTravel())
-			{
-				swap("travel", option, target, index);
-				swap("pay-fare", option, target, index);
-				swap("charter", option, target, index);
-				swap("take-boat", option, target, index);
-				swap("fly", option, target, index);
-				swap("jatizso", option, target, index);
-				swap("neitiznot", option, target, index);
-				swap("rellekka", option, target, index);
-				swap("follow", option, target, index);
-				swap("transport", option, target, index);
-			}
-
-			if (config.swapPay())
-			{
-				swap("pay", option, target, index);
-				swapContains("pay (", option, target, index);
-			}
-
-			if (config.swapDecant())
-			{
-				swap("decant", option, target, index);
-			}
-
-			if (config.swapQuick())
-			{
-				swap("quick-travel", option, target, index);
-			}
-
-			if (config.swapEnchant())
-			{
-				swap("enchant", option, target, index);
-			}
-
-			if (config.swapStartMinigame())
-			{
-				swap("start-minigame", option, target, index);
-			}
-
-			if (config.swapEssenceMineTeleport() && ESSENCE_MINE_NPCS.contains(target))
-			{
-				swap("teleport", option, target, index);
-			}
-		}
-		else if (config.swapQuickLeave() && option.equals("leave tomb") && target.equals("tomb door"))
-		{
-			swap("quick-leave", option, target, index);
-		}
-		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
-		{
-			swap("pay-toll(2-ecto)", option, target, index);
-		}
-		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
-		{
-			swap("pay-toll(10gp)", option, target, index);
-		}
-		else if (config.swapHardWoodGrove() && option.equals("open") && target.equals("hardwood grove doors"))
-		{
-			swap("quick-pay(100)", option, target, index);
-		}
-		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
-		{
-			swap("travel", option, target, index);
-		}
-		else if (config.swapTravel() && option.equals("board") && target.equals("travel cart"))
-		{
-			swap("pay-fare", option, target, index);
-		}
-		else if (config.swapHarpoon() && option.equals("cage"))
-		{
-			swap("harpoon", option, target, index);
-		}
-		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
-		{
-			swap("harpoon", option, target, index);
-		}
-		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter") && target.equals("portal"))
-		{
-			switch (config.swapHomePortal())
-			{
-				case HOME:
-					swap("home", option, target, index);
-					break;
-				case BUILD_MODE:
-					swap("build mode", option, target, index);
-					break;
-				case FRIENDS_HOUSE:
-					swap("friend's house", option, target, index);
-					break;
-			}
-		}
-		else if (config.swapHouseAdvertisement() != HouseAdvertisementMode.VIEW && option.equals("view"))
-		{
-			switch (config.swapHouseAdvertisement())
-			{
-				case ADD_HOUSE:
-					swap("add-house", option, target, index);
-					break;
-				case VISIT_LAST:
-					swap("visit-last", option, target, index);
-					break;
-			}
-		}
-		else if (config.swapFairyRing() != FairyRingMode.OFF && config.swapFairyRing() != FairyRingMode.ZANARIS
-			&& (option.equals("zanaris") || option.equals("configure") || option.equals("tree")))
-		{
-			if (config.swapFairyRing() == FairyRingMode.LAST_DESTINATION)
-			{
-				swapContains("last-destination", option, target, index);
-			}
-			else if (config.swapFairyRing() == FairyRingMode.CONFIGURE)
-			{
-				swapContains("configure", option, target, index);
-			}
-		}
-		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
-		{
-			swapContains("zanaris", option, target, index);
-		}
-		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
-		{
-			swap("reset", option, target, index);
-		}
-		else if (config.swapBoxTrap() && option.equals("take"))
-		{
-			swap("lay", option, target, index);
-		}
-		else if (config.swapChase() && option.equals("pick-up"))
-		{
-			swap("chase", option, target, index);
-		}
-		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
-		{
-			swap("empty", option, target, index);
-		}
-		else if (config.swapGauntlet() && option.equals("enter") && target.equals("the gauntlet"))
-		{
-			swap("enter-corrupted", option, target, index);
-		}
-		else if (config.swapQuick() && option.equals("enter"))
-		{
-			swap("quick-enter", option, target, index);
-		}
-		else if (config.swapQuick() && option.equals("ring"))
-		{
-			swap("quick-start", option, target, index);
-		}
-		else if (config.swapQuick() && option.equals("pass"))
-		{
-			swap("quick-pass", option, target, index);
-			swap("quick pass", option, target, index);
-		}
-		else if (config.swapQuick() && option.equals("open"))
-		{
-			swap("quick-open", option, target, index);
-		}
-		else if (config.swapQuick() && option.equals("climb-down"))
-		{
-			swap("quick-start", option, target, index);
-			swap("pay", option, target, index);
-		}
-		else if (config.swapAdmire() && option.equals("admire"))
-		{
-			swap("teleport", option, target, index);
-			swap("spellbook", option, target, index);
-			swap("perks", option, target, index);
-		}
-		else if (config.swapJewelleryBox() && option.equals("teleport menu"))
-		{
-			swap("duel arena", option, target, index);
-			swap("castle wars", option, target, index);
-			swap("clan wars", option, target, index);
-			swap("burthorpe", option, target, index);
-			swap("barbarian outpost", option, target, index);
-			swap("corporeal beast", option, target, index);
-			swap("tears of guthix", option, target, index);
-			swap("wintertodt camp", option, target, index);
-			swap("warriors' guild", option, target, index);
-			swap("champions' guild", option, target, index);
-			swap("monastery", option, target, index);
-			swap("ranging guild", option, target, index);
-			swap("fishing guild", option, target, index);
-			swap("mining guild", option, target, index);
-			swap("crafting guild", option, target, index);
-			swap("cooking guild", option, target, index);
-			swap("woodcutting guild", option, target, index);
-			swap("farming guild", option, target, index);
-			swap("miscellania", option, target, index);
-			swap("grand exchange", option, target, index);
-			swap("falador park", option, target, index);
-			swap("dondakan's rock", option, target, index);
-			swap("edgeville", option, target, index);
-			swap("karamja", option, target, index);
-			swap("draynor village", option, target, index);
-			swap("al kharid", option, target, index);
-		}
-		else if (config.swapPrivate() && option.equals("shared"))
-		{
-			swap("private", option, target, index);
-		}
-		else if (config.swapPick() && option.equals("pick"))
-		{
-			swap("pick-lots", option, target, index);
-		}
-		else if (shiftModifier && option.equals("view offer") && config.swapGEAbort())
-		{
-			swap("abort offer", option, target, index);
-		}
-		else if (shiftModifier && target.equals("npc contact") && config.swapNpcContact())
-		{
-			swap("honest jimmy", option, target, index);
-			swap("bert the sandman", option, target, index);
-			swap("advisor ghrim", option, target, index);
-			swap("dark mage", option, target, index);
-			swap("lanthus", option, target, index);
-			swap("turael", option, target, index);
-			swap("mazchna", option, target, index);
-			swap("vannaka", option, target, index);
-			swap("chaeldar", option, target, index);
-			swap("nieve", option, target, index);
-			swap("steve", option, target, index);
-			swap("duradel", option, target, index);
-			swap("krystilia", option, target, index);
-			swap("konar", option, target, index);
-			swap("murphy", option, target, index);
-			swap("cyrisus", option, target, index);
-			swap("smoggy", option, target, index);
-			swap("ginea", option, target, index);
-			swap("watson", option, target, index);
-			swap("barbarian guard", option, target, index);
-			swap("random", option, target, index);
-		}
-		else if (shiftModifier && option.equals("value"))
-		{
-			if (config.shopBuy() != null && config.shopBuy() != BuyMode.OFF)
-			{
-				swap(config.shopBuy().getOption(), option, target, index);
-			}
-
-			if (config.shopSell() != null && config.shopSell() != SellMode.OFF)
-			{
-				swap(config.shopSell().getOption(), option, target, index);
-			}
-		}
-		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
+		// Special case use shift click due to items not actually containing a "Use" option, making
+		// the client unable to perform the swap itself.
+		if (shiftModifier && config.shiftClickCustomization() && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(eventId);
 
 			if (customOption != null && customOption == -1)
 			{
-				swap("use", option, target, index);
-			}
-		}
-		// Put all item-related swapping after shift-click
-		else if (config.swapTeleportItem() && option.equals("wear"))
-		{
-			swap("rub", option, target, index);
-			swap("teleport", option, target, index);
-		}
-		else if (option.equals("wield"))
-		{
-			if (config.swapTeleportItem())
-			{
-				swap("teleport", option, target, index);
-			}
-		}
-		else if (config.swapBones() && option.equals("bury"))
-		{
-			swap("use", option, target, index);
-		}
-		else if (option.equals("collect to inventory") || option.startsWith("collect-note") || option.startsWith("collect-item"))
-		{
-			switch (config.swapGEItemCollect())
-			{
-				case ITEMS:
-					swap("collect-items", option, target, index);
-					swap("collect-item", option, target, index);
-					break;
-				case NOTES:
-					swap("collect-notes", option, target, index);
-					swap("collect-note", option, target, index);
-					break;
-				case BANK:
-					swap("collect to bank", option, target, index);
-					swap("bank", option, target, index);
-					break;
+				if (swap("use", target, index, true))
+				{
+					return;
+				}
 			}
 		}
 
-		if (shiftModifier && config.swapTeleportSpell())
+		Collection<Swap> swaps = this.swaps.get(option);
+		for (Swap swap : swaps)
 		{
-			if (target.equals("varrock teleport"))
+			if (swap.getTargetPredicate().test(target) && swap.getEnabled().get())
 			{
-				swapTeleport(target, option, "grand exchange", index);
+				if (swap(swap.getSwappedOption(), target, index, swap.isStrict()))
+				{
+					break;
+				}
 			}
-			else if (target.equals("camelot teleport"))
-			{
-				swapTeleport(target, option, "seers'", index);
-			}
-			else if (target.equals("watchtower teleport"))
-			{
-				swapTeleport(target, option, "yanille", index);
-			}
-			else if (target.equals("teleport to house"))
-			{
-				swapTeleport(target, option, "outside", index);
-			}
-		}
-	}
-
-	private void swapTeleport(String target, String option, String optionA, int index)
-	{
-		if (option.equals("cast"))
-		{
-			swap(optionA, option, target, index);
-		}
-		else if (option.equals(optionA))
-		{
-			swap("cast", option, target, index);
 		}
 	}
 
@@ -873,27 +725,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private void swap(String optionA, String optionB, String target, int index)
-	{
-		swap(optionA, optionB, target, index, true);
-	}
-
-	private void swapContains(String optionA, String optionB, String target, int index)
-	{
-		swap(optionA, optionB, target, index, false);
-	}
-
-	private void swap(String optionA, String optionB, String target, int index, boolean strict)
+	private boolean swap(String option, String target, int index, boolean strict)
 	{
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
-		int thisIndex = findIndex(menuEntries, index, optionB, target, strict);
-		int optionIdx = findIndex(menuEntries, thisIndex, optionA, target, strict);
+		// find option to swap with
+		int optionIdx = findIndex(menuEntries, index, option, target, strict);
 
-		if (thisIndex >= 0 && optionIdx >= 0)
+		if (optionIdx >= 0)
 		{
-			swap(optionIndexes, menuEntries, optionIdx, thisIndex);
+			swap(optionIndexes, menuEntries, optionIdx, index);
+			return true;
 		}
+
+		return false;
 	}
 
 	private int findIndex(MenuEntry[] entries, int limit, String option, String target, boolean strict)
@@ -911,7 +756,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
 
 				// Limit to the last index which is prior to the current entry
-				if (idx <= limit && entryTarget.equals(target))
+				if (idx < limit && entryTarget.equals(target))
 				{
 					return idx;
 				}
@@ -920,7 +765,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else
 		{
 			// Without strict matching we have to iterate all entries up to the current limit...
-			for (int i = limit; i >= 0; i--)
+			for (int i = limit - 1; i >= 0; i--)
 			{
 				MenuEntry entry = entries[i];
 				String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
@@ -939,20 +784,33 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void swap(ArrayListMultimap<String, Integer> optionIndexes, MenuEntry[] entries, int index1, int index2)
 	{
-		MenuEntry entry = entries[index1];
-		entries[index1] = entries[index2];
-		entries[index2] = entry;
+		MenuEntry entry1 = entries[index1],
+			entry2 = entries[index2];
+
+		entries[index1] = entry2;
+		entries[index2] = entry1;
 
 		client.setMenuEntries(entries);
 
-		// Rebuild option indexes
-		optionIndexes.clear();
-		int idx = 0;
-		for (MenuEntry menuEntry : entries)
-		{
-			String option = Text.removeTags(menuEntry.getOption()).toLowerCase();
-			optionIndexes.put(option, idx++);
-		}
+		// Update optionIndexes
+		String option1 = Text.removeTags(entry1.getOption()).toLowerCase(),
+			option2 = Text.removeTags(entry2.getOption()).toLowerCase();
+
+		List<Integer> list1 = optionIndexes.get(option1),
+			list2 = optionIndexes.get(option2);
+
+		// call remove(Object) instead of remove(int)
+		list1.remove((Integer) index1);
+		list2.remove((Integer) index2);
+
+		sortedInsert(list1, index2);
+		sortedInsert(list2, index1);
+	}
+
+	private static <T extends Comparable<? super T>> void sortedInsert(List<T> list, T value)
+	{
+		int idx = Collections.binarySearch(list, value);
+		list.add(idx < 0 ? -idx - 1 : idx, value);
 	}
 
 	private void removeShiftClickCustomizationMenus()
