@@ -197,7 +197,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "trade", config::swapTrade);
 		swap("talk-to", "trade-with", config::swapTrade);
 		swap("talk-to", "shop", config::swapTrade);
-		swap("talk-to", "robin", "claim-slime", config::swapTrade);
+		swap("talk-to", "robin", "claim-slime", config::claimSlime);
 		swap("talk-to", "travel", config::swapTravel);
 		swap("talk-to", "pay-fare", config::swapTravel);
 		swap("talk-to", "charter", config::swapTravel);
