@@ -124,8 +124,12 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	{
 		if (!event.isFocused())
 		{
-			inOverlayManagingMode = false;
-			resetOverlayManagementMode();
+			if (inOverlayManagingMode)
+			{
+				inOverlayManagingMode = false;
+				resetOverlayManagementMode();
+			}
+
 			inMenuEntryMode = false;
 			menuEntries = null;
 		}
@@ -596,7 +600,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (!e.isAltDown())
+		if (!e.isAltDown() && inOverlayManagingMode)
 		{
 			inOverlayManagingMode = false;
 			resetOverlayManagementMode();
