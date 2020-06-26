@@ -633,30 +633,40 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private void swapMenuEntry(int index, MenuEntry menuEntry)
 	{
 		final int eventId = menuEntry.getIdentifier();
+		final MenuAction menuAction = MenuAction.of(menuEntry.getType());
 		final String option = Text.removeTags(menuEntry.getOption()).toLowerCase();
 		final String target = Text.removeTags(menuEntry.getTarget()).toLowerCase();
 		final NPC hintArrowNpc = client.getHintArrowNpc();
 
 		if (hintArrowNpc != null
 			&& hintArrowNpc.getIndex() == eventId
-			&& NPC_MENU_TYPES.contains(MenuAction.of(menuEntry.getType())))
+			&& NPC_MENU_TYPES.contains(menuAction))
 		{
 			return;
 		}
 
-		// Special case use shift click due to items not actually containing a "Use" option, making
-		// the client unable to perform the swap itself.
-		if (shiftModifier && config.shiftClickCustomization() && !option.equals("use"))
+		if (shiftModifier && (menuAction == MenuAction.ITEM_FIRST_OPTION
+			|| menuAction == MenuAction.ITEM_SECOND_OPTION
+			|| menuAction == MenuAction.ITEM_THIRD_OPTION
+			|| menuAction == MenuAction.ITEM_FOURTH_OPTION
+			|| menuAction == MenuAction.ITEM_FIFTH_OPTION
+			|| menuAction == MenuAction.ITEM_USE))
 		{
-			Integer customOption = getSwapConfig(eventId);
-
-			if (customOption != null && customOption == -1)
+			// Special case use shift click due to items not actually containing a "Use" option, making
+			// the client unable to perform the swap itself.
+			if (config.shiftClickCustomization() && !option.equals("use"))
 			{
-				if (swap("use", target, index, true))
+				Integer customOption = getSwapConfig(eventId);
+
+				if (customOption != null && customOption == -1)
 				{
-					return;
+					swap("use", target, index, true);
 				}
 			}
+
+			// don't perform swaps on items when shift is held; instead prefer the client menu swap, which
+			// we may have overwrote
+			return;
 		}
 
 		Collection<Swap> swaps = this.swaps.get(option);
