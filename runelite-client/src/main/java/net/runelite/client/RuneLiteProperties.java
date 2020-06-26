@@ -41,6 +41,7 @@ public class RuneLiteProperties
 	private static final String WIKI_LINK = "runelite.wiki.link";
 	private static final String PATREON_LINK = "runelite.patreon.link";
 	private static final String LAUNCHER_VERSION_PROPERTY = "runelite.launcher.version";
+	private static final String INSECURE_SKIP_TLS_VERIFICATION_PROPERTY = "runelite.insecure-skip-tls-verification";
 	private static final String TROUBLESHOOTING_LINK = "runelite.wiki.troubleshooting.link";
 	private static final String BUILDING_LINK = "runelite.wiki.building.link";
 	private static final String DNS_CHANGE_LINK = "runelite.dnschange.link";
@@ -108,6 +109,11 @@ public class RuneLiteProperties
 	public static String getLauncherVersion()
 	{
 		return System.getProperty(LAUNCHER_VERSION_PROPERTY);
+	}
+
+	public static boolean isInsecureSkipTlsVerification()
+	{
+		return Boolean.getBoolean(INSECURE_SKIP_TLS_VERIFICATION_PROPERTY);
 	}
 
 	public static String getTroubleshootingLink()

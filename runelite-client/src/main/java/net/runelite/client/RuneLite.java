@@ -34,10 +34,17 @@ import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.nio.file.Paths;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.Locale;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.swing.SwingUtilities;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
@@ -233,9 +240,16 @@ public class RuneLite
 			}
 		});
 
-		final OkHttpClient okHttpClient = RuneLiteAPI.CLIENT.newBuilder()
-			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE))
-			.build();
+		OkHttpClient.Builder okHttpClientBuilder = RuneLiteAPI.CLIENT.newBuilder()
+			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE));
+
+		final boolean insecureSkipTlsVerification = options.has("insecure-skip-tls-verification");
+		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
+		{
+			setupInsecureTrustManager(okHttpClientBuilder);
+		}
+
+		final OkHttpClient okHttpClient = okHttpClientBuilder.build();
 
 		SplashScreen.init();
 		SplashScreen.stage(0, "Retrieving client", "");
@@ -431,6 +445,39 @@ public class RuneLite
 		public String valuePattern()
 		{
 			return null;
+		}
+	}
+
+	private static void setupInsecureTrustManager(OkHttpClient.Builder okHttpClientBuilder)
+	{
+		try
+		{
+			X509TrustManager trustManager = new X509TrustManager()
+			{
+				@Override
+				public void checkClientTrusted(X509Certificate[] chain, String authType)
+				{
+				}
+
+				@Override
+				public void checkServerTrusted(X509Certificate[] chain, String authType)
+				{
+				}
+
+				@Override
+				public X509Certificate[] getAcceptedIssuers()
+				{
+					return new X509Certificate[0];
+				}
+			};
+
+			SSLContext sc = SSLContext.getInstance("SSL");
+			sc.init(null, new TrustManager[]{trustManager}, new SecureRandom());
+			okHttpClientBuilder.sslSocketFactory(sc.getSocketFactory(), trustManager);
+		}
+		catch (NoSuchAlgorithmException | KeyManagementException ex)
+		{
+			log.warn("unable to setup insecure trust manager", ex);
 		}
 	}
 }
