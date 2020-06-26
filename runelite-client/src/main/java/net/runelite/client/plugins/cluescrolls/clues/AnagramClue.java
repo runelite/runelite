@@ -115,7 +115,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("LADDER MEMO GUV", "Guard Vemmeldo", new WorldPoint(2447, 3418, 1), "Gnome Stronghold Bank", "How many magic trees can you find inside the Gnome Stronghold?", "3"),
 		new AnagramClue("MAL IN TAU", "Luminata", new WorldPoint(3508, 3237, 0), "Near Burgh de Rott entrance"),
 		new AnagramClue("ME AM THE CALC", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Outside Duel Arena"),
-		new AnagramClue("MACHETE CLAM", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Outside Duel Arena", "How many items can carry water in RuneScape?", "6"),
+		new AnagramClue("MACHETE CLAM", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Outside Duel Arena", "How many items can carry water in Gielinor?", "6"),
 		new AnagramClue("ME IF", "Femi", new WorldPoint(2461, 3382, 0), "Gates of Tree Gnome Stronghold"),
 		new AnagramClue("MOLD LA RAN", "Old Man Ral", new WorldPoint(3602, 3209, 0), "Meiyerditch"),
 		new AnagramClue("MOTHERBOARD", "Brother Omad", new WorldPoint(2606, 3211, 0), "Monastery south of Ardougne", "What is the next number? 12, 13, 15, 17, 111, 113, 117, 119, 123....?", "129"),
