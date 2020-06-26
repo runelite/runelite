@@ -29,9 +29,11 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("menuentryswapper")
+@ConfigGroup(MenuEntrySwapperConfig.GROUP)
 public interface MenuEntrySwapperConfig extends Config
 {
+	String GROUP = "menuentryswapper";
+
 	@ConfigSection(
 		name = "Item Swaps",
 		description = "All options that swap item menu entries",

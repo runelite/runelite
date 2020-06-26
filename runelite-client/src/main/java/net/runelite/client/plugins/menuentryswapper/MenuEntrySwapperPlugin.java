@@ -85,7 +85,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String RESET = "Reset";
 	private static final String MENU_TARGET = "Shift-click";
 
-	private static final String CONFIG_GROUP = "shiftclick";
+	private static final String SHIFTCLICK_CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
@@ -389,12 +389,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!CONFIG_GROUP.equals(event.getGroup()))
-		{
-			return;
-		}
-
-		if (event.getKey().equals("shiftClickCustomization"))
+		if (event.getGroup().equals(MenuEntrySwapperConfig.GROUP) && event.getKey().equals("shiftClickCustomization"))
 		{
 			if (config.shiftClickCustomization())
 			{
@@ -405,7 +400,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				disableCustomization();
 			}
 		}
-		else if (event.getKey().startsWith(ITEM_KEY_PREFIX))
+		else if (event.getGroup().equals(SHIFTCLICK_CONFIG_GROUP) && event.getKey().startsWith(ITEM_KEY_PREFIX))
 		{
 			clientThread.invoke(this::resetItemCompositionCache);
 		}
@@ -420,7 +415,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private Integer getSwapConfig(int itemId)
 	{
 		itemId = ItemVariationMapping.map(itemId);
-		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
+		String config = configManager.getConfiguration(SHIFTCLICK_CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
 		if (config == null || config.isEmpty())
 		{
 			return null;
@@ -432,19 +427,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private void setSwapConfig(int itemId, int index)
 	{
 		itemId = ItemVariationMapping.map(itemId);
-		configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, index);
+		configManager.setConfiguration(SHIFTCLICK_CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, index);
 	}
 
 	private void unsetSwapConfig(int itemId)
 	{
 		itemId = ItemVariationMapping.map(itemId);
-		configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
+		configManager.unsetConfiguration(SHIFTCLICK_CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
 	}
 
 	private void enableCustomization()
 	{
 		keyManager.registerKeyListener(inputListener);
 		refreshShiftClickCustomizationMenus();
+		// set shift click action index on the item compositions
 		clientThread.invoke(this::resetItemCompositionCache);
 	}
 
@@ -453,6 +449,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 		removeShiftClickCustomizationMenus();
 		configuringShiftClick = false;
+		// flush item compositions to reset the shift click action index
 		clientThread.invoke(this::resetItemCompositionCache);
 	}
 
@@ -707,6 +704,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Subscribe
 	public void onPostItemComposition(PostItemComposition event)
 	{
+		if (!config.shiftClickCustomization())
+		{
+			// since shift-click is done by the client we have to check if our shift click customization is on
+			// prior to altering the item shift click action index.
+			return;
+		}
+
 		ItemComposition itemComposition = event.getItemComposition();
 		Integer option = getSwapConfig(itemComposition.getId());
 
