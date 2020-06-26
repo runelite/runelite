@@ -36,9 +36,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import static net.runelite.api.Constants.HIGH_ALCHEMY_MULTIPLIER;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -115,12 +117,6 @@ public class BankPlugin extends Plugin
 	@Inject
 	private BankSearch bankSearch;
 
-	@Inject
-	private ContainerCalculation bankCalculation;
-
-	@Inject
-	private ContainerCalculation seedVaultCalculation;
-
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
@@ -184,7 +180,7 @@ public class BankPlugin extends Plugin
 		switch (event.getEventName())
 		{
 			case "setBankTitle":
-				final ContainerPrices prices = bankCalculation.calculate(getBankTabItems());
+				final ContainerPrices prices = calculate(getBankTabItems());
 				if (prices == null)
 				{
 					return;
@@ -375,7 +371,7 @@ public class BankPlugin extends Plugin
 			return;
 		}
 
-		final ContainerPrices prices = seedVaultCalculation.calculate(getSeedVaultItems());
+		final ContainerPrices prices = calculate(getSeedVaultItems());
 		if (prices == null)
 		{
 			return;
@@ -492,5 +488,48 @@ public class BankPlugin extends Plugin
 			}
 		}
 		return set;
+	}
+
+	@Nullable
+	ContainerPrices calculate(@Nullable Item[] items)
+	{
+		if (items == null)
+		{
+			return null;
+		}
+
+		long ge = 0;
+		long alch = 0;
+
+		for (final Item item : items)
+		{
+			final int qty = item.getQuantity();
+			final int id = item.getId();
+
+			if (id <= 0 || qty == 0)
+			{
+				continue;
+			}
+
+			switch (id)
+			{
+				case ItemID.COINS_995:
+					ge += qty;
+					alch += qty;
+					break;
+				case ItemID.PLATINUM_TOKEN:
+					ge += qty * 1000L;
+					alch += qty * 1000L;
+					break;
+				default:
+					final long storePrice = itemManager.getItemComposition(id).getPrice();
+					final long alchPrice = (long) (storePrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
+					alch += alchPrice * qty;
+					ge += (long) itemManager.getItemPrice(id) * qty;
+					break;
+			}
+		}
+
+		return new ContainerPrices(ge, alch);
 	}
 }
