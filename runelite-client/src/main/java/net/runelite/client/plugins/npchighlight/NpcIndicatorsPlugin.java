@@ -41,18 +41,17 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
@@ -106,16 +105,10 @@ public class NpcIndicatorsPlugin extends Plugin
 	private NpcMinimapOverlay npcMinimapOverlay;
 
 	@Inject
-	private NpcIndicatorsInput inputListener;
-
-	@Inject
 	private KeyManager keyManager;
 
 	@Inject
 	private ClientThread clientThread;
-
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hotKeyPressed = false;
 
 	/**
 	 * NPCs to highlight
@@ -191,7 +184,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		overlayManager.add(npcSceneOverlay);
 		overlayManager.add(npcMinimapOverlay);
-		keyManager.registerKeyListener(inputListener);
 		highlights = getHighlights();
 		clientThread.invoke(() ->
 		{
@@ -212,7 +204,6 @@ public class NpcIndicatorsPlugin extends Plugin
 		teleportGraphicsObjectSpawnedThisTick.clear();
 		npcTags.clear();
 		highlightedNpcs.clear();
-		keyManager.unregisterKeyListener(inputListener);
 	}
 
 	@Subscribe
@@ -239,15 +230,6 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		highlights = getHighlights();
 		rebuildAllNpcs();
-	}
-
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		if (!focusChanged.isFocused())
-		{
-			hotKeyPressed = false;
-		}
 	}
 
 	@Subscribe
@@ -286,7 +268,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				client.setMenuEntries(menuEntries);
 			}
 		}
-		else if (hotKeyPressed && menuAction == MenuAction.EXAMINE_NPC)
+		else if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
 		{
 			// Add tag option
 			MenuEntry[] menuEntries = client.getMenuEntries();

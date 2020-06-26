@@ -30,6 +30,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ClientTick;
@@ -224,7 +225,7 @@ public class MenuEntrySwapperPluginTest
 	public void testTeleport()
 	{
 		when(config.swapTeleportSpell()).thenReturn(true);
-		menuEntrySwapperPlugin.setShiftModifier(true);
+		when(client.isKeyPressed(KeyCode.KC_SHIFT)).thenReturn(true);
 
 		// Cast -> Grand Exchange
 		entries = new MenuEntry[]{
@@ -307,7 +308,7 @@ public class MenuEntrySwapperPluginTest
 	public void testShiftWithdraw()
 	{
 		when(config.bankDepositShiftClick()).thenReturn(ShiftDepositMode.EXTRA_OP);
-		menuEntrySwapperPlugin.setShiftModifier(true);
+		when(client.isKeyPressed(KeyCode.KC_SHIFT)).thenReturn(true);
 
 		entries = new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
@@ -338,7 +339,7 @@ public class MenuEntrySwapperPluginTest
 	public void testShiftDeposit()
 	{
 		when(config.bankDepositShiftClick()).thenReturn(ShiftDepositMode.DEPOSIT_ALL);
-		menuEntrySwapperPlugin.setShiftModifier(true);
+		when(client.isKeyPressed(KeyCode.KC_SHIFT)).thenReturn(true);
 
 		entries = new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
