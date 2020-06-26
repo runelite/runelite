@@ -52,6 +52,7 @@ public interface DpsConfig extends Config
 	{
 		return false;
 	}
+
 	@ConfigItem(
 			position = 2,
 			keyName = "bossOnly",
