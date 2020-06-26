@@ -1762,4 +1762,12 @@ public interface Client extends GameEngine
 	 * Sets whether the flames on the login screen should be rendered
 	 */
 	void setShouldRenderLoginScreenFire(boolean val);
+
+	/**
+	 * Test if a key is pressed
+	 * @param keycode the keycode
+	 * @return
+	 * @see KeyCode
+	 */
+	boolean isKeyPressed(int keycode);
 }
