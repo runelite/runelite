@@ -49,10 +49,10 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.util.LinkBrowser;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -66,6 +66,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 	private static final int PREDICTION_DEBOUNCE_DELAY_MS = 200;
 
 	private final ChatboxPanelManager chatboxPanelManager;
+	private final OkHttpClient okHttpClient;
 	private final Gson gson = new Gson();
 
 	private Future<?> runningRequest = null;
@@ -76,10 +77,12 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 
 	@Inject
 	public WikiSearchChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
-		ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode)
+		ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode,
+		OkHttpClient okHttpClient)
 	{
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;
+		this.okHttpClient = okHttpClient;
 
 		lines(1);
 		prompt("OSRS Wiki Search");
@@ -122,7 +125,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 					.url(url)
 					.build();
 
-				RuneLiteAPI.CLIENT.newCall(req).enqueue(new Callback()
+				okHttpClient.newCall(req).enqueue(new Callback()
 				{
 					@Override
 					public void onFailure(Call call, IOException e)

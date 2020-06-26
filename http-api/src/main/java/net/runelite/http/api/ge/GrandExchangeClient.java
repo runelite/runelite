@@ -27,6 +27,7 @@ package net.runelite.http.api.ge;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
@@ -34,14 +35,18 @@ import static net.runelite.http.api.RuneLiteAPI.JSON;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @Slf4j
+@RequiredArgsConstructor
 public class GrandExchangeClient
 {
 	private static final Gson GSON = RuneLiteAPI.GSON;
+
+	private final OkHttpClient client;
 
 	@Setter
 	private UUID uuid;
@@ -69,7 +74,7 @@ public class GrandExchangeClient
 			.url(url)
 			.build();
 
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		client.newCall(request).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)

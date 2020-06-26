@@ -27,6 +27,7 @@ package net.runelite.client.plugins.examine;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -58,6 +59,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.examine.ExamineClient;
+import okhttp3.OkHttpClient;
 
 /**
  * Submits examine info to the api
@@ -90,6 +92,12 @@ public class ExaminePlugin extends Plugin
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
+	@Provides
+	ExamineClient provideExamineClient(OkHttpClient okHttpClient)
+	{
+		return new ExamineClient(okHttpClient);
+	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)

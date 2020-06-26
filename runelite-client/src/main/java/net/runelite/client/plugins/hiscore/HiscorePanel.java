@@ -70,6 +70,7 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
 import net.runelite.http.api.hiscore.HiscoreSkillType;
 import net.runelite.http.api.hiscore.Skill;
+import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -118,15 +119,11 @@ public class HiscorePanel extends PluginPanel
 		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.TOURNAMENT
 	};
 
-	@Inject
-	ScheduledExecutorService executor;
-
-	@Inject
-	@Nullable
-	private Client client;
-
+	private final ScheduledExecutorService executor;
+	private final Client client;
 	private final HiscoreConfig config;
 	private final NameAutocompleter nameAutocompleter;
+	private final HiscoreClient hiscoreClient;
 
 	private final IconTextField searchBar;
 
@@ -136,10 +133,6 @@ public class HiscorePanel extends PluginPanel
 	/* Container of all the selectable endpoints (ironman, deadman, etc) */
 	private final MaterialTabGroup tabGroup;
 
-	private final HiscoreClient hiscoreClient = new HiscoreClient();
-
-	private HiscoreResult result;
-
 	/* The currently selected endpoint */
 	private HiscoreEndpoint selectedEndPoint;
 
@@ -147,11 +140,14 @@ public class HiscorePanel extends PluginPanel
 	private boolean loading = false;
 
 	@Inject
-	public HiscorePanel(HiscoreConfig config, NameAutocompleter nameAutocompleter)
+	public HiscorePanel(ScheduledExecutorService scheduledExecutorService, @Nullable Client client,
+		HiscoreConfig config, NameAutocompleter nameAutocompleter, OkHttpClient okHttpClient)
 	{
-		super();
+		this.executor = scheduledExecutorService;
+		this.client = client;
 		this.config = config;
 		this.nameAutocompleter = nameAutocompleter;
+		this.hiscoreClient = new HiscoreClient(okHttpClient);
 
 		// The layout seems to be ignoring the top margin and only gives it
 		// a 2-3 pixel margin, so I set the value to 18 to compensate
@@ -405,6 +401,7 @@ public class HiscorePanel extends PluginPanel
 			selectedEndPoint = HiscoreEndpoint.NORMAL;
 		}
 
+		HiscoreResult result;
 		try
 		{
 			log.debug("Hiscore endpoint " + selectedEndPoint.name() + " selected");

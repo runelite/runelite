@@ -50,6 +50,7 @@ import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.find
 import static net.runelite.http.api.RuneLiteAPI.GSON;
 import net.runelite.http.api.ge.GrandExchangeClient;
 import net.runelite.http.api.ge.GrandExchangeTrade;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -107,6 +108,10 @@ public class GrandExchangePluginTest
 	@Mock
 	@Bind
 	private GrandExchangeClient grandExchangeClient;
+
+	@Mock
+	@Bind
+	private OSBGrandExchangeClient osbGrandExchangeClient;
 
 	@Mock
 	@Bind

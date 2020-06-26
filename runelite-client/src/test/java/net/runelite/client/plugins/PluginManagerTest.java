@@ -51,13 +51,18 @@ import net.runelite.client.RuneLiteModule;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.eventbus.EventBus;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -76,14 +81,18 @@ public class PluginManagerTest
 	@Bind
 	public Client client;
 
-	private Set<Class> pluginClasses;
-	private Set<Class> configClasses;
+	private Set<Class<?>> pluginClasses;
+	private Set<Class<?>> configClasses;
 
 	@Before
 	public void before() throws IOException
 	{
+		OkHttpClient okHttpClient = mock(OkHttpClient.class);
+		when(okHttpClient.newCall(any(Request.class)))
+			.thenThrow(new RuntimeException("in plugin manager test"));
+
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(() -> null, true, false,
+			.override(new RuneLiteModule(okHttpClient, () -> null, true, false,
 				RuneLite.DEFAULT_SESSION_FILE,
 				RuneLite.DEFAULT_CONFIG_FILE))
 			.with(BoundFieldModule.of(this)));
@@ -119,7 +128,7 @@ public class PluginManagerTest
 		pluginManager.loadCorePlugins();
 		Collection<Plugin> plugins = pluginManager.getPlugins();
 		long expected = pluginClasses.stream()
-			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))
+			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
 			.filter(Objects::nonNull)
 			.filter(PluginDescriptor::loadWhenOutdated)
 			.count();
@@ -134,7 +143,7 @@ public class PluginManagerTest
 		plugins.forEach(eventBus::register);
 
 		expected = pluginClasses.stream()
-			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))
+			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
 			.filter(Objects::nonNull)
 			.filter(pd -> !pd.developerPlugin())
 			.count();
@@ -146,16 +155,13 @@ public class PluginManagerTest
 	{
 		List<Module> modules = new ArrayList<>();
 		modules.add(new GraphvizModule());
-		modules.add(new RuneLiteModule(() -> null, true, false,
+		modules.add(new RuneLiteModule(mock(OkHttpClient.class), () -> null, true, false,
 			RuneLite.DEFAULT_SESSION_FILE,
 			RuneLite.DEFAULT_CONFIG_FILE));
 
 		PluginManager pluginManager = new PluginManager(true, false, null, null, null, null, null);
 		pluginManager.loadCorePlugins();
-		for (Plugin p : pluginManager.getPlugins())
-		{
-			modules.add(p);
-		}
+		modules.addAll(pluginManager.getPlugins());
 
 		File file = folder.newFile();
 		try (PrintWriter out = new PrintWriter(file, "UTF-8"))
@@ -171,7 +177,7 @@ public class PluginManagerTest
 	@Test
 	public void ensureNoDuplicateConfigKeyNames()
 	{
-		for (final Class clazz : configClasses)
+		for (final Class<?> clazz : configClasses)
 		{
 			final Set<String> configKeyNames = new HashSet<>();
 

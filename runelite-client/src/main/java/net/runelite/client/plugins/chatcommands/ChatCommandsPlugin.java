@@ -80,6 +80,7 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
+import okhttp3.OkHttpClient;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -128,8 +129,6 @@ public class ChatCommandsPlugin extends Plugin
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
 
-	private final ChatClient chatClient = new ChatClient();
-
 	private boolean bossLogLoaded;
 	private boolean advLogLoaded;
 	private boolean scrollInterfaceLoaded;
@@ -167,6 +166,9 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private HiscoreClient hiscoreClient;
+
+	@Inject
+	private ChatClient chatClient;
 
 	@Override
 	public void startUp()
@@ -211,6 +213,12 @@ public class ChatCommandsPlugin extends Plugin
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
+	}
+
+	@Provides
+	HiscoreClient provideHiscoreClient(OkHttpClient okHttpClient)
+	{
+		return new HiscoreClient(okHttpClient);
 	}
 
 	private void setKc(String boss, int killcount)

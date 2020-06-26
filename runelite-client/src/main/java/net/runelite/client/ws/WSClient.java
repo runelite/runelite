@@ -40,6 +40,7 @@ import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.Handshake;
 import net.runelite.http.api.ws.messages.party.PartyMessage;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -50,6 +51,7 @@ import okhttp3.WebSocketListener;
 public class WSClient extends WebSocketListener implements AutoCloseable
 {
 	private final EventBus eventBus;
+	private final OkHttpClient okHttpClient;
 	private final Collection<Class<? extends WebsocketMessage>> messages = new HashSet<>();
 
 	private volatile Gson gson;
@@ -58,9 +60,10 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	private WebSocket webSocket;
 
 	@Inject
-	private WSClient(EventBus eventBus)
+	private WSClient(EventBus eventBus, OkHttpClient okHttpClient)
 	{
 		this.eventBus = eventBus;
+		this.okHttpClient = okHttpClient;
 		this.gson = WebsocketGsonFactory.build(WebsocketGsonFactory.factory(messages));
 	}
 
@@ -101,7 +104,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 			.url(RuneLiteAPI.getWsEndpoint())
 			.build();
 
-		webSocket = RuneLiteAPI.CLIENT.newWebSocket(request, this);
+		webSocket = okHttpClient.newWebSocket(request, this);
 
 		Handshake handshake = new Handshake();
 		handshake.setSession(sessionId);

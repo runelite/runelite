@@ -28,15 +28,20 @@ import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 @Slf4j
+@AllArgsConstructor
 public class OSBGrandExchangeClient
 {
+	private final OkHttpClient client;
+
 	public OSBGrandExchangeResult lookupItem(int itemId) throws IOException
 	{
 		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
@@ -51,7 +56,7 @@ public class OSBGrandExchangeClient
 			.url(url)
 			.build();
 
-		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (final Response response = client.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{

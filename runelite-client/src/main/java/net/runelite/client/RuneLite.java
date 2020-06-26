@@ -76,6 +76,9 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.ws.PartyService;
+import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import org.slf4j.LoggerFactory;
 
 @Singleton
@@ -90,6 +93,8 @@ public class RuneLite
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
 	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
+
+	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
 
 	@Getter
 	private static Injector injector;
@@ -178,6 +183,7 @@ public class RuneLite
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("safe-mode", "Disables external plugins and the GPU plugin");
+		parser.accepts("insecure-skip-tls-verification", "Disables TLS verification");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -227,12 +233,16 @@ public class RuneLite
 			}
 		});
 
+		final OkHttpClient okHttpClient = RuneLiteAPI.CLIENT.newBuilder()
+			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE))
+			.build();
+
 		SplashScreen.init();
 		SplashScreen.stage(0, "Retrieving client", "");
 
 		try
 		{
-			final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
+			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode));
 
 			new Thread(() ->
 			{
@@ -265,6 +275,7 @@ public class RuneLite
 			final long start = System.currentTimeMillis();
 
 			injector = Guice.createInjector(new RuneLiteModule(
+				okHttpClient,
 				clientLoader,
 				developerMode,
 				options.has("safe-mode"),

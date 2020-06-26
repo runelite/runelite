@@ -63,11 +63,6 @@
 			<artifactId>commons-csv</artifactId>
 			<version>1.4</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<version>1</version>
-		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>

@@ -111,6 +111,7 @@ import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.http.api.loottracker.LootTrackerClient;
+import okhttp3.OkHttpClient;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -234,6 +235,9 @@ public class LootTrackerPlugin extends Plugin
 	@Inject
 	private LootManager lootManager;
 
+	@Inject
+	private OkHttpClient okHttpClient;
+
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	@VisibleForTesting
@@ -293,7 +297,7 @@ public class LootTrackerPlugin extends Plugin
 		AccountSession accountSession = sessionManager.getAccountSession();
 		if (accountSession.getUuid() != null)
 		{
-			lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+			lootTrackerClient = new LootTrackerClient(okHttpClient, accountSession.getUuid());
 		}
 		else
 		{
@@ -341,7 +345,7 @@ public class LootTrackerPlugin extends Plugin
 		AccountSession accountSession = sessionManager.getAccountSession();
 		if (accountSession != null)
 		{
-			lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+			lootTrackerClient = new LootTrackerClient(okHttpClient, accountSession.getUuid());
 
 			clientThread.invokeLater(() ->
 			{

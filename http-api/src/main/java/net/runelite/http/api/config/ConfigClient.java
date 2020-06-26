@@ -30,29 +30,26 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@AllArgsConstructor
+@Slf4j
 public class ConfigClient
 {
-	private static final Logger logger = LoggerFactory.getLogger(ConfigClient.class);
-
 	private static final MediaType TEXT_PLAIN = MediaType.parse("text/plain");
 
+	private final OkHttpClient client;
 	private final UUID uuid;
-
-	public ConfigClient(UUID uuid)
-	{
-		this.uuid = uuid;
-	}
 
 	public Configuration get() throws IOException
 	{
@@ -60,14 +57,14 @@ public class ConfigClient
 			.addPathSegment("config")
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = client.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), Configuration.class);
@@ -87,7 +84,7 @@ public class ConfigClient
 			.addPathSegment(key)
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
 			.put(RequestBody.create(TEXT_PLAIN, value))
@@ -95,12 +92,12 @@ public class ConfigClient
 			.url(url)
 			.build();
 
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		client.newCall(request).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				logger.warn("Unable to synchronize configuration item", e);
+				log.warn("Unable to synchronize configuration item", e);
 				future.completeExceptionally(e);
 			}
 
@@ -108,7 +105,7 @@ public class ConfigClient
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				logger.debug("Synchronized configuration value '{}' to '{}'", key, value);
+				log.debug("Synchronized configuration value '{}' to '{}'", key, value);
 				future.complete(null);
 			}
 		});
@@ -125,7 +122,7 @@ public class ConfigClient
 			.addPathSegment(key)
 			.build();
 
-		logger.debug("Built URI: {}", url);
+		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
 			.delete()
@@ -133,12 +130,12 @@ public class ConfigClient
 			.url(url)
 			.build();
 
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		client.newCall(request).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				logger.warn("Unable to unset configuration item", e);
+				log.warn("Unable to unset configuration item", e);
 				future.completeExceptionally(e);
 			}
 
@@ -146,7 +143,7 @@ public class ConfigClient
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				logger.debug("Unset configuration value '{}'", key);
+				log.debug("Unset configuration value '{}'", key);
 				future.complete(null);
 			}
 		});

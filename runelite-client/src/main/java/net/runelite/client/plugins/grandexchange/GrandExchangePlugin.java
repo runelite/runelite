@@ -105,6 +105,7 @@ import net.runelite.http.api.item.ItemStats;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 import net.runelite.http.api.worlds.WorldType;
+import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.text.similarity.FuzzyScore;
 
@@ -119,7 +120,6 @@ public class GrandExchangePlugin extends Plugin
 	private static final int GE_SLOTS = 8;
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
-	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
@@ -189,6 +189,9 @@ public class GrandExchangePlugin extends Plugin
 	private GrandExchangeClient grandExchangeClient;
 	private boolean loginBurstGeUpdates;
 	private static String machineUuid;
+
+	@Inject
+	private OSBGrandExchangeClient osbGrandExchangeClient;
 
 	private boolean wasFuzzySearch;
 
@@ -289,6 +292,18 @@ public class GrandExchangePlugin extends Plugin
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(GrandExchangeConfig.class);
+	}
+
+	@Provides
+	OSBGrandExchangeClient provideOsbGrandExchangeClient(OkHttpClient okHttpClient)
+	{
+		return new OSBGrandExchangeClient(okHttpClient);
+	}
+
+	@Provides
+	GrandExchangeClient provideGrandExchangeClient(OkHttpClient okHttpClient)
+	{
+		return new GrandExchangeClient(okHttpClient);
 	}
 
 	@Override
@@ -902,7 +917,7 @@ public class GrandExchangePlugin extends Plugin
 		{
 			try
 			{
-				final OSBGrandExchangeResult result = CLIENT.lookupItem(itemId);
+				final OSBGrandExchangeResult result = osbGrandExchangeClient.lookupItem(itemId);
 				if (result != null && result.getOverall_average() > 0)
 				{
 					osbGrandExchangeResult = result;

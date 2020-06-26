@@ -64,8 +64,8 @@ import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.util.CountingInputStream;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.VerificationException;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -94,6 +94,9 @@ public class ExternalPluginManager
 
 	@Inject
 	private EventBus eventBus;
+
+	@Inject
+	private OkHttpClient okHttpClient;
 
 	public void loadExternalPlugins() throws PluginInstantiationException
 	{
@@ -208,7 +211,7 @@ public class ExternalPluginManager
 						.addPathSegment(manifest.getCommit() + ".jar")
 						.build();
 
-					try (Response res = RuneLiteAPI.CLIENT.newCall(new Request.Builder().url(url).build()).execute())
+					try (Response res = okHttpClient.newCall(new Request.Builder().url(url).build()).execute())
 					{
 						int fdownloaded = downloaded;
 						downloaded += manifest.getSize();

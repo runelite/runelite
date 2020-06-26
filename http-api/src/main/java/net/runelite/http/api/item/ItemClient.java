@@ -31,26 +31,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.Map;
-import javax.inject.Inject;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
+@AllArgsConstructor
 public class ItemClient
 {
-	private static final Logger logger = LoggerFactory.getLogger(ItemClient.class);
-
 	private final OkHttpClient client;
-
-	@Inject
-	public ItemClient(OkHttpClient client)
-	{
-		this.client = client;
-	}
 
 	public ItemPrice[] getPrices() throws IOException
 	{
@@ -60,7 +53,7 @@ public class ItemClient
 
 		HttpUrl url = urlBuilder.build();
 
-		logger.debug("Built URI: {}", url);
+		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -70,7 +63,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.warn("Error looking up prices: {}", response);
+				log.warn("Error looking up prices: {}", response);
 				return null;
 			}
 
@@ -92,7 +85,7 @@ public class ItemClient
 
 		HttpUrl url = urlBuilder.build();
 
-		logger.debug("Built URI: {}", url);
+		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -102,7 +95,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.warn("Error looking up item stats: {}", response);
+				log.warn("Error looking up item stats: {}", response);
 				return null;
 			}
 

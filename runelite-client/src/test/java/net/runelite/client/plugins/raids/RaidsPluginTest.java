@@ -45,6 +45,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageCapture;
 import net.runelite.client.ws.PartyService;
+import net.runelite.http.api.chat.ChatClient;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -92,6 +93,10 @@ public class RaidsPluginTest
 	@Mock
 	@Bind
 	Notifier notifier;
+
+	@Mock
+	@Bind
+	ChatClient chatClient;
 
 	@Mock
 	@Bind

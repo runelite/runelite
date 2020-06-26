@@ -26,10 +26,10 @@
  */
 package net.runelite.client.plugins.xpupdater;
 
+import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.Objects;
 import javax.inject.Inject;
-import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -40,11 +40,11 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -66,12 +66,15 @@ public class XpUpdaterPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private XpUpdaterConfig config;
+
+	@Inject
+	private OkHttpClient okHttpClient;
+
 	private String lastUsername;
 	private boolean fetchXp;
 	private long lastXp;
-
-	@Inject
-	private XpUpdaterConfig config;
 
 	@Provides
 	XpUpdaterConfig getConfig(ConfigManager configManager)
@@ -191,9 +194,9 @@ public class XpUpdaterPlugin extends Plugin
 		}
 	}
 
-	private static void sendRequest(String platform, Request request)
+	private void sendRequest(String platform, Request request)
 	{
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		okHttpClient.newCall(request).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)

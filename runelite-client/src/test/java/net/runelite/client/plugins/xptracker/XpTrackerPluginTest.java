@@ -39,6 +39,7 @@ import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.http.api.xp.XpClient;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,6 +70,10 @@ public class XpTrackerPluginTest
 	@Mock
 	@Bind
 	private XpTrackerConfig xpTrackerConfig;
+
+	@Mock
+	@Bind
+	private XpClient xpClient;
 
 	@Mock
 	@Bind

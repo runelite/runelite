@@ -38,23 +38,27 @@ import net.runelite.api.GameState;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.util.RunnableExceptionLogger;
+import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
 public class ClientSessionManager
 {
-	private final SessionClient sessionClient = new SessionClient();
 	private final ScheduledExecutorService executorService;
 	private final Client client;
+	private final SessionClient sessionClient;
 
 	private ScheduledFuture<?> scheduledFuture;
 	private UUID sessionId;
 
 	@Inject
-	ClientSessionManager(ScheduledExecutorService executorService, @Nullable Client client)
+	ClientSessionManager(ScheduledExecutorService executorService,
+		@Nullable Client client,
+		OkHttpClient okHttpClient)
 	{
 		this.executorService = executorService;
 		this.client = client;
+		this.sessionClient = new SessionClient(okHttpClient);
 	}
 
 	public void start()
