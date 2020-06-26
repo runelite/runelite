@@ -187,10 +187,12 @@ public class DpsCounterPlugin extends Plugin
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
 		final int npcId = ((NPC) actor).getId();
 		boolean isBoss = BOSSES.contains(npcId);
-		if (dpsConfig.bossOnly() && !isBoss)
+
+		if (!isBoss && dpsConfig.bossOnly())
 		{
 			return;
 		}
+
 		if (hitsplat.isMine())
 		{
 			int hit = hitsplat.getAmount();
