@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.examine;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.time.Instant;
@@ -313,11 +314,12 @@ public class ExaminePlugin extends Plugin
 		return null;
 	}
 
-	private void getItemPrice(int id, ItemComposition itemComposition, int quantity)
+	@VisibleForTesting
+	void getItemPrice(int id, ItemComposition itemComposition, int quantity)
 	{
 		// quantity is at least 1
 		quantity = Math.max(1, quantity);
-		final long gePrice = itemManager.getItemPrice(id);
+		final int gePrice = itemManager.getItemPrice(id);
 		final int alchPrice = itemComposition.getHaPrice();
 
 		if (gePrice > 0 || alchPrice > 0)
@@ -345,7 +347,7 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" GE average ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(QuantityFormatter.formatNumber(gePrice * quantity));
+					.append(QuantityFormatter.formatNumber((long) gePrice * quantity));
 
 				if (quantity > 1)
 				{
@@ -365,7 +367,7 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(QuantityFormatter.formatNumber(alchPrice * quantity));
+					.append(QuantityFormatter.formatNumber((long) alchPrice * quantity));
 
 				if (quantity > 1)
 				{
