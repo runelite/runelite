@@ -37,6 +37,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.util.ContainerPrices;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

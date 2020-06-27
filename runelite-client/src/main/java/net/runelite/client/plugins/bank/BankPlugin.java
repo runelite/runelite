@@ -117,6 +117,9 @@ public class BankPlugin extends Plugin
 	@Inject
 	private BankSearch bankSearch;
 
+	@Inject
+	private ContainerCalculation bankCalculation;
+
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
@@ -494,42 +497,6 @@ public class BankPlugin extends Plugin
 	@Nullable
 	ContainerPrices calculate(@Nullable Item[] items)
 	{
-		if (items == null)
-		{
-			return null;
-		}
-
-		long ge = 0;
-		long alch = 0;
-
-		for (final Item item : items)
-		{
-			final int qty = item.getQuantity();
-			final int id = item.getId();
-
-			if (id <= 0 || qty == 0)
-			{
-				continue;
-			}
-
-			switch (id)
-			{
-				case ItemID.COINS_995:
-					ge += qty;
-					alch += qty;
-					break;
-				case ItemID.PLATINUM_TOKEN:
-					ge += qty * 1000L;
-					alch += qty * 1000L;
-					break;
-				default:
-					final int alchPrice = itemManager.getItemComposition(id).getHaPrice();
-					alch += (long) alchPrice * qty;
-					ge += (long) itemManager.getItemPrice(id) * qty;
-					break;
-			}
-		}
-
-		return new ContainerPrices(ge, alch);
+		return bankCalculation.calculate(items);
 	}
 }

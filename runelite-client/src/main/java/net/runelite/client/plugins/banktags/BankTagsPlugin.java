@@ -29,7 +29,6 @@ package net.runelite.client.plugins.banktags;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Shorts;
 import com.google.inject.Provides;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,12 +40,14 @@ import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
@@ -73,7 +74,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
-import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
@@ -96,7 +96,7 @@ import net.runelite.client.util.Text;
 	tags = {"searching", "tagging"}
 )
 @PluginDependency(ClueScrollPlugin.class)
-public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyListener
+public class BankTagsPlugin extends Plugin implements MouseWheelListener
 {
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
@@ -154,8 +154,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Inject
 	private ContainerCalculation bankCalculation;
 
-	private boolean shiftPressed = false;
-
 	@Provides
 	BankTagsConfig getConfig(ConfigManager configManager)
 	{
@@ -196,7 +194,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	public void startUp()
 	{
 		cleanConfig();
-		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::init);
 		spriteManager.addSpriteOverrides(TabSprites.values());
@@ -258,12 +255,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Override
 	public void shutDown()
 	{
-		keyManager.unregisterKeyListener(this);
 		mouseManager.unregisterMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::destroy);
 		spriteManager.removeSpriteOverrides(TabSprites.values());
-
-		shiftPressed = false;
 	}
 
 	@Subscribe
@@ -494,6 +488,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Subscribe
 	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
 	{
+		final boolean shiftPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
 		tabInterface.handleDrag(event.isDraggingWidget(), shiftPressed);
 	}
 
@@ -513,29 +508,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		return event;
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			shiftPressed = true;
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			shiftPressed = false;
-		}
-	}
-
 	// Updates the bank title using the items found in tabContainer
 	private void updateBankTitle()
 	{
@@ -553,7 +525,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				}
 			}
 			Item[] foundItems = tabContainerToCalculate.toArray(new Item[tabContainerToCalculate.size()]);
-			final ContainerPrices prices = bankCalculation.calculate(foundItems);
+			final ContainerPrices prices = calculate(foundItems);
 			if (prices != null)
 			{
 				priceText = createValueText(prices);
@@ -612,5 +584,11 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		}
 
 		return strCurrentTab;
+	}
+
+	@Nullable
+	ContainerPrices calculate(@Nullable Item[] items)
+	{
+		return bankCalculation.calculate(items);
 	}
 }

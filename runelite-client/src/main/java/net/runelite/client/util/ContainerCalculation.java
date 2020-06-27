@@ -25,8 +25,6 @@
  */
 package net.runelite.client.util;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Constants;
@@ -36,10 +34,7 @@ import net.runelite.client.game.ItemManager;
 
 public class ContainerCalculation
 {
-	private final ItemManager itemManager;
-
-	private int hash;
-	private ContainerPrices containerPrices;
+	private static ItemManager itemManager;
 
 	@Inject
 	private ContainerCalculation(ItemManager itemManager)
@@ -48,16 +43,12 @@ public class ContainerCalculation
 	}
 
 	@Nullable
-	public ContainerPrices calculate(Item[] items)
+	public ContainerPrices calculate(@Nullable Item[] items)
 	{
-		// Returns last calculation if inventory hasn't changed
-		final int newHash = hashItems(items);
-		if (containerPrices != null && hash == newHash)
+		if (items == null)
 		{
-			return containerPrices;
+			return null;
 		}
-
-		hash = newHash;
 
 		long ge = 0;
 		long alch = 0;
@@ -89,23 +80,8 @@ public class ContainerCalculation
 					ge += (long) itemManager.getItemPrice(id) * qty;
 					break;
 			}
-
 		}
 
-		ContainerPrices prices = new ContainerPrices(ge, alch);
-		containerPrices = prices;
-
-		return prices;
-	}
-
-	private int hashItems(final Item[] items)
-	{
-		final Map<Integer, Integer> mapCheck = new HashMap<>(items.length);
-		for (Item item : items)
-		{
-			mapCheck.put(item.getId(), item.getQuantity());
-		}
-
-		return mapCheck.hashCode();
+		return new ContainerPrices(ge, alch);
 	}
 }
