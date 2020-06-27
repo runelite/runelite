@@ -27,7 +27,6 @@ package net.runelite.client.util;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import net.runelite.api.Constants;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
@@ -74,9 +73,8 @@ public class ContainerCalculation
 					alch += qty * 1000L;
 					break;
 				default:
-					final long storePrice = itemManager.getItemComposition(id).getPrice();
-					final long alchPrice = (long) (storePrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
-					alch += alchPrice * qty;
+					final int alchPrice = itemManager.getItemComposition(id).getHaPrice();
+					alch += (long) alchPrice * qty;
 					ge += (long) itemManager.getItemPrice(id) * qty;
 					break;
 			}

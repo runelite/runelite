@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bank;
+package net.runelite.client.util;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
@@ -34,8 +34,6 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.util.ContainerCalculation;
-import net.runelite.client.util.ContainerPrices;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -79,8 +77,8 @@ public class ContainerCalculationTest
 		).toArray(new Item[0]);
 
 		ItemComposition whipComp = mock(ItemComposition.class);
-		when(whipComp.getPrice())
-			.thenReturn(7); // 7 * .6 = 4, 4 * 1m overflows
+		when(whipComp.getHaPrice())
+			.thenReturn(4); // 4 * 1m overflows
 		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP))
 			.thenReturn(whipComp);
 		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP))
