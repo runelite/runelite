@@ -609,6 +609,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return;
+		}
+
 		char c = e.getKeyChar();
 		if (charValidator.test(c))
 		{
@@ -628,6 +633,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Override
 	public void keyPressed(KeyEvent ev)
 	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return;
+		}
+
 		int code = ev.getKeyCode();
 		if (ev.isControlDown())
 		{
