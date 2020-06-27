@@ -91,8 +91,17 @@ public interface ItemComposition
 	 * @return the general store value of the item
 	 *
 	 * @see Constants#HIGH_ALCHEMY_MULTIPLIER
+	 * @see ItemComposition#getHaPrice()
 	 */
 	int getPrice();
+
+	/**
+	 * Get the high alchemy price for this item. All items have a high alchemy price,
+	 * but not all items can be alched.
+	 *
+	 * @return the high alch price
+	 */
+	int getHaPrice();
 
 	/**
 	 * Checks whether the item is members only.
