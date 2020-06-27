@@ -178,6 +178,11 @@ public class ChatboxTextMenuInput extends ChatboxInput implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return;
+		}
+
 		char c = e.getKeyChar();
 
 		if (c == '\033')
@@ -198,6 +203,11 @@ public class ChatboxTextMenuInput extends ChatboxInput implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return;
+		}
+
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 		{
 			e.consume();
