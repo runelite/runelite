@@ -82,15 +82,6 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class RuneLite
 {
-	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
-	public static final File CACHE_DIR = new File(RUNELITE_DIR, "cache");
-	public static final File PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
-	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
-	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
-	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
-	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
-	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
-
 	@Getter
 	private static Injector injector;
 
@@ -182,12 +173,12 @@ public class RuneLite
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
 			.withValuesConvertedBy(new ConfigFileConverter())
-			.defaultsTo(DEFAULT_SESSION_FILE);
+			.defaultsTo(DirectoryManager.DEFAULT_SESSION_FILE);
 
 		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
 			.withRequiredArg()
 			.withValuesConvertedBy(new ConfigFileConverter())
-			.defaultsTo(DEFAULT_CONFIG_FILE);
+			.defaultsTo(DirectoryManager.DEFAULT_CONFIG_FILE);
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
@@ -232,6 +223,8 @@ public class RuneLite
 
 		try
 		{
+			DirectoryManager.moveOldConfig();
+
 			final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
 
 			new Thread(() ->
@@ -256,7 +249,7 @@ public class RuneLite
 				}
 			}
 
-			PROFILES_DIR.mkdirs();
+			DirectoryManager.PROFILES_DIR.mkdirs();
 
 			log.info("RuneLite {} (launcher version {}) starting up, args: {}",
 				RuneLiteProperties.getVersion(), RuneLiteProperties.getLauncherVersion() == null ? "unknown" : RuneLiteProperties.getLauncherVersion(),
@@ -399,7 +392,7 @@ public class RuneLite
 			}
 			else
 			{
-				file = new File(RuneLite.RUNELITE_DIR, fileName);
+				file = new File(DirectoryManager.DATA_DIR, fileName);
 			}
 
 			if (file.exists() && (!file.isFile() || !file.canWrite()))

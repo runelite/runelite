@@ -68,7 +68,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.RuneLite;
+import net.runelite.client.DirectoryManager;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -146,8 +146,8 @@ public class ConfigManager
 		}
 		else
 		{
-			File profileDir = new File(RuneLite.PROFILES_DIR, session.getUsername().toLowerCase());
-			return new File(profileDir, RuneLite.DEFAULT_CONFIG_FILE.getName());
+			File profileDir = new File(DirectoryManager.PROFILES_DIR, session.getUsername().toLowerCase());
+			return new File(profileDir, DirectoryManager.DEFAULT_CONFIG_FILE.getName());
 		}
 	}
 
@@ -340,7 +340,7 @@ public class ConfigManager
 
 		parent.mkdirs();
 
-		File tempFile = new File(parent, RuneLite.DEFAULT_CONFIG_FILE.getName() + ".tmp");
+		File tempFile = new File(parent, DirectoryManager.DEFAULT_CONFIG_FILE.getName() + ".tmp");
 
 		try (FileOutputStream out = new FileOutputStream(tempFile))
 		{

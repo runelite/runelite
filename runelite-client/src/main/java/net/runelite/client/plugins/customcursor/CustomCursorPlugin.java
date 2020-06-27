@@ -36,7 +36,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.client.RuneLite;
+import net.runelite.client.DirectoryManager;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -54,7 +54,7 @@ import net.runelite.client.ui.ClientUI;
 @Slf4j
 public class CustomCursorPlugin extends Plugin
 {
-	private static final File CUSTOM_IMAGE_FILE = new File(RuneLite.RUNELITE_DIR, "cursor.png");
+	private static final File CUSTOM_IMAGE_FILE = new File(DirectoryManager.DATA_DIR, "cursor.png");
 
 	@Inject
 	private Client client;

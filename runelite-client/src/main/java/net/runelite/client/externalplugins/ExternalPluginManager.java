@@ -48,7 +48,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.RuneLite;
+import net.runelite.client.DirectoryManager;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
@@ -155,7 +155,7 @@ public class ExternalPluginManager
 			SplashScreen.stage(splashStart, null, "Downloading external plugins");
 			Set<ExternalPluginManifest> externalPlugins = new HashSet<>();
 
-			RuneLite.PLUGINS_DIR.mkdirs();
+			DirectoryManager.PLUGINS_DIR.mkdirs();
 
 			List<ExternalPluginManifest> manifestList;
 			try
@@ -186,7 +186,7 @@ public class ExternalPluginManager
 				}
 
 				// delete old plugins
-				File[] files = RuneLite.PLUGINS_DIR.listFiles();
+				File[] files = DirectoryManager.PLUGINS_DIR.listFiles();
 				if (files != null)
 				{
 					for (File fi : files)

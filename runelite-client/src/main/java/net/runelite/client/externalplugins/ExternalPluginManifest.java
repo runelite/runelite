@@ -32,7 +32,7 @@ import java.net.URL;
 import javax.annotation.Nullable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.runelite.client.RuneLite;
+import net.runelite.client.DirectoryManager;
 
 @Data
 public class ExternalPluginManifest
@@ -63,7 +63,7 @@ public class ExternalPluginManifest
 
 	File getJarFile()
 	{
-		return new File(RuneLite.PLUGINS_DIR, internalName + commit + ".jar");
+		return new File(DirectoryManager.PLUGINS_DIR, internalName + commit + ".jar");
 	}
 
 	boolean isValid()

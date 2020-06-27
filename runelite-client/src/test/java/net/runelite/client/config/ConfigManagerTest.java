@@ -34,7 +34,7 @@ import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Named;
-import net.runelite.client.RuneLite;
+import net.runelite.client.DirectoryManager;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
 import org.junit.Assert;
@@ -61,11 +61,11 @@ public class ConfigManagerTest
 
 	@Bind
 	@Named("sessionfile")
-	File sessionfile = RuneLite.DEFAULT_SESSION_FILE;
+	File sessionfile = DirectoryManager.DEFAULT_SESSION_FILE;
 
 	@Bind
 	@Named("config")
-	File config = RuneLite.DEFAULT_CONFIG_FILE;
+	File config = DirectoryManager.DEFAULT_CONFIG_FILE;
 
 	@Inject
 	ConfigManager manager;
