@@ -84,8 +84,8 @@ public class BankPluginTest
 		ItemComposition comp = mock(ItemComposition.class);
 
 		// 60k HA price * 30 = 1.8m
-		when(comp.getPrice())
-			.thenReturn(100_000);
+		when(comp.getHaPrice())
+			.thenReturn(60_000);
 
 		// 400k GE Price * 30 = 12m
 		when(itemManager.getItemPrice(itemId))
@@ -121,8 +121,8 @@ public class BankPluginTest
 		).toArray(new Item[0]);
 
 		ItemComposition whipComp = mock(ItemComposition.class);
-		when(whipComp.getPrice())
-			.thenReturn(7); // 7 * .6 = 4, 4 * 1m overflows
+		when(whipComp.getHaPrice())
+			.thenReturn(4); // 4 * 1m overflows
 		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP))
 			.thenReturn(whipComp);
 		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP))

@@ -34,7 +34,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
@@ -318,9 +317,8 @@ public class ExaminePlugin extends Plugin
 	{
 		// quantity is at least 1
 		quantity = Math.max(1, quantity);
-		int itemCompositionPrice = itemComposition.getPrice();
 		final long gePrice = itemManager.getItemPrice(id);
-		final long alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
+		final int alchPrice = itemComposition.getHaPrice();
 
 		if (gePrice > 0 || alchPrice > 0)
 		{

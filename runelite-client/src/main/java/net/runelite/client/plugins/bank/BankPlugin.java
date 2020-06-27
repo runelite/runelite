@@ -40,8 +40,6 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
-import static net.runelite.api.Constants.HIGH_ALCHEMY_MULTIPLIER;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -411,8 +409,9 @@ public class BankPlugin extends Plugin
 		}
 
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		long gePrice = (long) itemManager.getItemPrice(itemId) * (long) itemQuantities.count(itemId);
-		long haPrice = (long) (itemComposition.getPrice() * HIGH_ALCHEMY_MULTIPLIER) * (long) itemQuantities.count(itemId);
+		final int qty = itemQuantities.count(itemId);
+		final long gePrice = (long) itemManager.getItemPrice(itemId) * qty;
+		final long haPrice = (long) itemComposition.getHaPrice() * qty;
 
 		long value = Math.max(gePrice, haPrice);
 
@@ -522,9 +521,8 @@ public class BankPlugin extends Plugin
 					alch += qty * 1000L;
 					break;
 				default:
-					final long storePrice = itemManager.getItemComposition(id).getPrice();
-					final long alchPrice = (long) (storePrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
-					alch += alchPrice * qty;
+					final int alchPrice = itemManager.getItemComposition(id).getHaPrice();
+					alch += (long) alchPrice * qty;
 					ge += (long) itemManager.getItemPrice(id) * qty;
 					break;
 			}

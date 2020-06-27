@@ -39,7 +39,6 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.Experience;
 import net.runelite.api.IconID;
 import net.runelite.api.ItemComposition;
@@ -1018,15 +1017,12 @@ public class ChatCommandsPlugin extends Plugin
 				.append(QuantityFormatter.formatNumber(itemPrice));
 
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			if (itemComposition != null)
-			{
-				int alchPrice = Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
-				builder
-					.append(ChatColorType.NORMAL)
-					.append(" HA value ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(QuantityFormatter.formatNumber(alchPrice));
-			}
+			final int alchPrice = itemComposition.getHaPrice();
+			builder
+				.append(ChatColorType.NORMAL)
+				.append(" HA value ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(QuantityFormatter.formatNumber(alchPrice));
 
 			String response = builder.build();
 
