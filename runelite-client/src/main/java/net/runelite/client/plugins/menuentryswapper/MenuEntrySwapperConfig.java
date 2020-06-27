@@ -562,4 +562,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "swapCollectMiscellenia",
+			name = "Miscellenia",
+			description = "Swap Talk-to with Collect for Advisor Ghrim",
+			section = npcSection
+	)
+	default boolean swapCollectMiscellenia()
+	{
+		return false;
+	}
 }
