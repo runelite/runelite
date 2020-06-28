@@ -45,6 +45,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.WidgetLoaded;
@@ -242,5 +243,46 @@ public class LootTrackerPluginTest
 
 		QueuedMessage queuedMessage = captor.getValue();
 		assertEquals("<colNORMAL>Your loot is worth around <colHIGHLIGHT>1,100,000,252<colNORMAL> coins.", queuedMessage.getRuneLiteFormattedMessage());
+	}
+
+	@Test
+	public void testToBRaidsLootValue()
+	{
+		when(lootTrackerConfig.priceType()).thenReturn(LootTrackerPriceType.HIGH_ALCHEMY);
+		when(lootTrackerConfig.showRaidsLootValue()).thenReturn(true);
+
+		LootTrackerPlugin spyPlugin = Mockito.spy(lootTrackerPlugin);
+		// Make sure we don't execute addLoot, so we don't have to mock LootTrackerPanel and everything else also
+		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), anyCollection());
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.SCYTHE_OF_VITUR, 1),
+			new Item(ItemID.MAHOGANY_SEED, 10)
+		});
+		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
+
+		ItemComposition compScythe = mock(ItemComposition.class);
+		when(itemManager.getItemComposition(ItemID.SCYTHE_OF_VITUR)).thenReturn(compScythe);
+		when(compScythe.getHaPrice()).thenReturn(60_000_000);
+
+		ItemComposition compSeed = mock(ItemComposition.class);
+		when(itemManager.getItemComposition(ItemID.MAHOGANY_SEED)).thenReturn(compSeed);
+		when(compSeed.getHaPrice()).thenReturn(2_102);
+
+		when(client.getBaseX()).thenReturn(3232);
+		when(client.getBaseY()).thenReturn(4320);
+		LocalPoint localPoint = new LocalPoint(0, 0);
+		when(client.getLocalPlayer().getLocalLocation()).thenReturn(localPoint);
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_GROUP_ID);
+		spyPlugin.onWidgetLoaded(widgetLoaded);
+
+		ArgumentCaptor<QueuedMessage> captor = ArgumentCaptor.forClass(QueuedMessage.class);
+		verify(chatMessageManager).queue(captor.capture());
+
+		QueuedMessage queuedMessage = captor.getValue();
+		assertEquals("<colNORMAL>Your loot is worth around <colHIGHLIGHT>60,021,020<colNORMAL> coins.", queuedMessage.getRuneLiteFormattedMessage());
 	}
 }
