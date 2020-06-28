@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2020 MMagicala
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,15 +26,18 @@
 package net.runelite.client.plugins.itemstats;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -72,6 +76,68 @@ public class ItemStatOverlay extends Overlay
 	@Inject
 	private ItemStatConfig config;
 
+	private enum Potion
+	{
+		ANTIPOISON(90, ItemID.ANTIPOISON4, ItemID.ANTIPOISON3, ItemID.ANTIPOISON2, ItemID.ANTIPOISON1),
+		SUPERANTIPOISON(720, ItemID.SUPERANTIPOISON4, ItemID.SUPERANTIPOISON3, ItemID.SUPERANTIPOISON2, ItemID.SUPERANTIPOISON1),
+		ANTIDOTE_P(540, ItemID.ANTIDOTE4, ItemID.ANTIDOTE3, ItemID.ANTIDOTE2, ItemID.ANTIDOTE1),
+		ANTIDOTE_PP(720, ItemID.ANTIDOTE4_5952, ItemID.ANTIDOTE3_5954, ItemID.ANTIDOTE2_5956, ItemID.ANTIDOTE1_5958),
+		ANTIVENOM(new PotionDurationRange[]{
+			new PotionDurationRange("Anti-poison", 720, 720),
+			new PotionDurationRange("Anti-venom", 18, 36)},
+			ItemID.ANTIVENOM4, ItemID.ANTIVENOM3, ItemID.ANTIVENOM2, ItemID.ANTIVENOM1),
+		ANTIVENOM_P(new PotionDurationRange[]{
+			new PotionDurationRange("Anti-poison", 900, 900),
+			new PotionDurationRange("Anti-venom", 180, 180)},
+			ItemID.ANTIVENOM4_12913, ItemID.ANTIVENOM3_12915, ItemID.ANTIVENOM2_12917, ItemID.ANTIVENOM1_12919),
+		ANTIFIRE(360, ItemID.ANTIFIRE_POTION4, ItemID.ANTIFIRE_POTION3, ItemID.ANTIFIRE_POTION2, ItemID.ANTIFIRE_POTION1),
+		EXTENDED_ANTIFIRE(720, ItemID.EXTENDED_ANTIFIRE4, ItemID.EXTENDED_ANTIFIRE3, ItemID.EXTENDED_ANTIFIRE2, ItemID.EXTENDED_ANTIFIRE1),
+		SUPER_ANTIFIRE(180, ItemID.SUPER_ANTIFIRE_POTION4, ItemID.SUPER_ANTIFIRE_POTION3, ItemID.SUPER_ANTIFIRE_POTION2, ItemID.SUPER_ANTIFIRE_POTION1),
+		EXTENDED_SUPER_ANTIFIRE(360, ItemID.EXTENDED_SUPER_ANTIFIRE4, ItemID.EXTENDED_SUPER_ANTIFIRE3, ItemID.EXTENDED_SUPER_ANTIFIRE2, ItemID.EXTENDED_SUPER_ANTIFIRE1);
+
+		PotionDurationRange[] durationRanges;
+
+		final int[] itemIds;
+
+		Potion(int duration, int... itemIds)
+		{
+			PotionDurationRange[] ranges = new PotionDurationRange[1];
+			// Only need the duration, not the potion name or a range
+			ranges[0] = new PotionDurationRange("", duration, duration);
+			this.durationRanges = ranges;
+
+			this.itemIds = itemIds;
+		}
+
+		Potion(PotionDurationRange[] durationRanges, int... itemIds)
+		{
+			this.durationRanges = durationRanges;
+			this.itemIds = itemIds;
+		}
+
+		private static final Map<Integer, Potion> potions;
+
+		static
+		{
+			ImmutableMap.Builder<Integer, Potion> builder = new ImmutableMap.Builder<>();
+
+			for (Potion potion : values())
+			{
+				for (int id : potion.itemIds)
+				{
+					builder.put(id, potion);
+				}
+			}
+
+			potions = builder.build();
+		}
+
+		static Potion get(int id)
+		{
+			return potions.get(id);
+		}
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -95,11 +161,11 @@ public class ItemStatOverlay extends Overlay
 
 		if (widget == null
 			|| !(group == WidgetInfo.INVENTORY.getGroupId()
-				|| group == WidgetInfo.EQUIPMENT.getGroupId()
-				|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
-				|| (config.showStatsInBank()
-					&& ((group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() && child == WidgetInfo.BANK_ITEM_CONTAINER.getChildId())
-						|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()))))
+			|| group == WidgetInfo.EQUIPMENT.getGroupId()
+			|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
+			|| (config.showStatsInBank()
+			&& ((group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() && child == WidgetInfo.BANK_ITEM_CONTAINER.getChildId())
+			|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()))))
 		{
 			return null;
 		}
@@ -149,6 +215,27 @@ public class ItemStatOverlay extends Overlay
 				if (!tooltip.isEmpty())
 				{
 					tooltipManager.add(new Tooltip(tooltip));
+				}
+			}
+
+			Potion p = Potion.get(itemId);
+
+			if (p != null)
+			{
+				if (p.durationRanges.length == 1)
+				{
+					// Only show "Duration: <time>" if there is one tooltip
+					final String durationToolTip = buildDurationString(p.durationRanges[0].lowestDuration);
+					tooltipManager.add(new Tooltip(durationToolTip));
+				}
+				else
+				{
+					// List the effect names and their duration (ranges)
+					for (PotionDurationRange durationRange : p.durationRanges)
+					{
+						final String durationToolTip = buildDurationString(durationRange);
+						tooltipManager.add(new Tooltip(durationToolTip));
+					}
 				}
 			}
 		}
@@ -344,6 +431,50 @@ public class ItemStatOverlay extends Overlay
 		}
 		b.append(" ").append(c.getStat().getName());
 		b.append("</br>");
+
+		return b.toString();
+	}
+
+	private String buildDurationString(PotionDurationRange durationRange)
+	{
+		StringBuilder b = new StringBuilder();
+
+		b.append(durationRange.getPotionName());
+		b.append(": ");
+
+		int lowestDuration = durationRange.getLowestDuration();
+		b.append(buildFormattedDurationString(lowestDuration));
+
+		int highestDuration = durationRange.getHighestDuration();
+
+		if (lowestDuration != highestDuration)
+		{
+			b.append("~");
+			b.append(buildFormattedDurationString(highestDuration));
+		}
+
+		return b.toString();
+	}
+
+	private String buildDurationString(int duration)
+	{
+		return "Duration: " + buildFormattedDurationString(duration);
+	}
+
+	private String buildFormattedDurationString(int duration)
+	{
+		StringBuilder b = new StringBuilder();
+
+		int minutes = duration / 60;
+		int seconds = duration % 60;
+		b.append(minutes);
+		b.append(":");
+
+		if (seconds < 10)
+		{
+			b.append("0");
+		}
+		b.append(seconds);
 
 		return b.toString();
 	}
