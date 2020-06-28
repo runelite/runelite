@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2020, Alejandro Ramos (github.com/aeramos)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -94,8 +95,7 @@ class VarInspector extends JFrame
 	private int lastTick = 0;
 
 	private int[] oldVarps = null;
-	private int[] oldVarps2 = null;
-	private int numVarbits = 10000;
+	private int numVarbits = Integer.MAX_VALUE; // will be set to proper value on first loop
 
 	private Map<Integer, Object> varcs = null;
 
@@ -213,9 +213,11 @@ class VarInspector extends JFrame
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged ev)
+	public void onVarbitChanged(VarbitChanged e)
 	{
-		int[] varps = client.getVarps();
+		int[] varps = client.getVarps().clone();
+		boolean varbitChanged = false;
+		int consecutiveHoles = 0; // for when there's a hole in the varbit list
 
 		// Check varbits
 		for (int i = 0; i < numVarbits; i++)
@@ -226,10 +228,7 @@ class VarInspector extends JFrame
 				int neew = client.getVarbitValue(varps, i);
 				if (old != neew)
 				{
-					// Set the varbit so it doesn't show in the varp changes
-					// However, some varbits share common bits, so we only do it in oldVarps2
-					// Example: 4101 collides with 4104-4129
-					client.setVarbitValue(oldVarps2, i, neew);
+					varbitChanged = true;
 
 					String name = String.format("%d", i);
 					for (Varbits varbit : Varbits.values())
@@ -242,20 +241,27 @@ class VarInspector extends JFrame
 					}
 					addVarLog(VarType.VARBIT, name, old, neew);
 				}
+				consecutiveHoles = 0;
 			}
-			catch (IndexOutOfBoundsException e)
+			catch (IndexOutOfBoundsException ex)
 			{
-				// We don't know what the last varbit is, so we just hit the end, then set it for future iterations
-				log.debug("Hit OOB at varbit {}", i);
-				numVarbits = i;
-				break;
+				consecutiveHoles++;
+				if (consecutiveHoles == 3) // if there are 3 holes in a row then it's likely the end of the list
+				{
+					i -= 2; // the first time it goes out of bounds, so the last valid varbit is at index i - 1
+
+					// We don't know what the last varbit is, so we just hit the end, then set it for future iterations
+					log.debug("Setting last varbit to {}", i - 1);
+					numVarbits = i;
+					break;
+				}
 			}
 		}
 
-		// Check varps
-		for (int i = 0; i < varps.length; i++)
+		if (!varbitChanged)
 		{
-			int old = oldVarps2[i];
+			final int i = e.getIndex();
+			int old = oldVarps[i];
 			int neew = varps[i];
 			if (old != neew)
 			{
@@ -271,9 +277,7 @@ class VarInspector extends JFrame
 				addVarLog(VarType.VARP, name, old, neew);
 			}
 		}
-
-		System.arraycopy(client.getVarps(), 0, oldVarps, 0, oldVarps.length);
-		System.arraycopy(client.getVarps(), 0, oldVarps2, 0, oldVarps2.length);
+		oldVarps = varps;
 	}
 
 	@Subscribe
@@ -343,11 +347,9 @@ class VarInspector extends JFrame
 		if (oldVarps == null)
 		{
 			oldVarps = new int[client.getVarps().length];
-			oldVarps2 = new int[client.getVarps().length];
 		}
 
 		System.arraycopy(client.getVarps(), 0, oldVarps, 0, oldVarps.length);
-		System.arraycopy(client.getVarps(), 0, oldVarps2, 0, oldVarps2.length);
 		varcs = new HashMap<>(client.getVarcMap());
 
 		eventBus.register(this);
