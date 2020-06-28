@@ -547,7 +547,7 @@ public class LootTrackerPlugin extends Plugin
 			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
 			.collect(Collectors.toList());
 
-		if (config.showRaidsLootValue() && event.equals("Chambers of Xeric"))
+		if (config.showRaidsLootValue() && (event.equals("Theatre of Blood") || event.equals("Chambers of Xeric")))
 		{
 			long totalValue = items.stream()
 				.filter(item -> item.getId() > -1)
