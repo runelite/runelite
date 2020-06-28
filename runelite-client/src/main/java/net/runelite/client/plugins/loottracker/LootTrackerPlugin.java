@@ -547,6 +547,30 @@ public class LootTrackerPlugin extends Plugin
 			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
 			.collect(Collectors.toList());
 
+		if (config.showRaidsLootValue() && event.equals("Chambers of Xeric"))
+		{
+			long totalValue = items.stream()
+				.filter(item -> item.getId() > -1)
+				.mapToLong(item -> (long) (config.priceType() == LootTrackerPriceType.GRAND_EXCHANGE ?
+					itemManager.getItemPrice(item.getId()) * item.getQuantity() :
+					itemManager.getItemComposition(item.getId()).getHaPrice() * item.getQuantity()))
+				.sum();
+
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Your loot is worth around ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(QuantityFormatter.formatNumber(totalValue))
+				.append(ChatColorType.NORMAL)
+				.append(" coins.")
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
+		}
+
 		if (items.isEmpty())
 		{
 			log.debug("No items to find for Event: {} | Container: {}", event, container);

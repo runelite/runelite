@@ -138,4 +138,14 @@ public interface LootTrackerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showRaidsLootValue",
+		name = "Show chat message for raids loot",
+		description = "Adds a chat message that displays the value of your loot at the end of the raid."
+	)
+	default boolean showRaidsLootValue()
+	{
+		return true;
+	}
 }
