@@ -96,4 +96,14 @@ public final class SoundEffectID
 	public final static int TOWN_CRIER_BELL_DONG = 3817;
 	public final static int TOWN_CRIER_SHOUT_SQUEAK = 3816;
 
+	// Pet sounds
+	public final static int CAT_HISS = 333;
+	public final static int SNAKELING_METAMORPHOSIS = 794;
+	public final static int CLOCKWORK_CAT_CLICK_CLICK = 941;
+	public final static int PET_WALKING_THUMP = 3834;
+	public final static int PET_KREEARRA_WING_FLAP = 3882;
+	public final static int ELECTRIC_HYDRA_IN = 4118;
+	public final static int ELECTRIC_HYDRA_OUT = 4132;
+	public final static int IKKLE_HYDRA_RIGHT_FOOT_STOMP = 4112;
+	public final static int IKKLE_HYDRA_LEFT_FOOT_STOMP = 4134;
 }

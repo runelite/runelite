@@ -117,6 +117,18 @@ public class MusicPlugin extends Plugin
 		SoundEffectID.PRAYER_DEACTIVE_VWOOP
 	);
 
+	private static final Set<Integer> PET_SOUNDS = ImmutableSet.of(
+		SoundEffectID.CAT_HISS,
+		SoundEffectID.SNAKELING_METAMORPHOSIS,
+		SoundEffectID.CLOCKWORK_CAT_CLICK_CLICK,
+		SoundEffectID.PET_WALKING_THUMP,
+		SoundEffectID.PET_KREEARRA_WING_FLAP,
+		SoundEffectID.ELECTRIC_HYDRA_IN,
+		SoundEffectID.ELECTRIC_HYDRA_OUT,
+		SoundEffectID.IKKLE_HYDRA_RIGHT_FOOT_STOMP,
+		SoundEffectID.IKKLE_HYDRA_LEFT_FOOT_STOMP
+	);
+
 	@Inject
 	private Client client;
 
@@ -644,16 +656,27 @@ public class MusicPlugin extends Plugin
 		{
 			areaSoundEffectPlayed.consume();
 		}
-		else if (source instanceof NPC
-			&& musicConfig.muteNpcAreaSounds())
+		else if (source instanceof NPC)
 		{
-			areaSoundEffectPlayed.consume();
+			if (musicConfig.muteNpcAreaSounds())
+			{
+				areaSoundEffectPlayed.consume();
+			}
+			else if (PET_SOUNDS.contains(areaSoundEffectPlayed.getSoundId()) && musicConfig.mutePetSounds())
+			{
+				areaSoundEffectPlayed.consume();
+			}
 		}
-		else if (source == null
-			&& !SOURCELESS_PLAYER_SOUNDS.contains(soundId)
-			&& musicConfig.muteEnvironmentAreaSounds())
+		else if (source == null)
 		{
-			areaSoundEffectPlayed.consume();
+			if (!SOURCELESS_PLAYER_SOUNDS.contains(soundId) && musicConfig.muteEnvironmentAreaSounds())
+			{
+				areaSoundEffectPlayed.consume();
+			}
+			else if (PET_SOUNDS.contains(soundId) && musicConfig.mutePetSounds())
+			{
+				areaSoundEffectPlayed.consume();
+			}
 		}
 	}
 

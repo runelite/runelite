@@ -87,6 +87,17 @@ public interface MusicConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "mutePetSounds",
+		name = "Mute pet sounds",
+		description = "Mute the sounds of noise-making pets",
+		position = 5
+	)
+	default boolean mutePetSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "musicVolume",
 		name = "",
 		description = "",
