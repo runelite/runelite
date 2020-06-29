@@ -75,6 +75,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ItemQuantityChanged;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -730,6 +732,33 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onItemSpawned(ItemSpawned itemSpawned)
+	{
+		handleOnlyGroundItems();
+	}
+
+	@Subscribe
+	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
+	{
+		handleOnlyGroundItems();
+	}
+
+	public void handleOnlyGroundItems()
+	{
+		if (false)
+		{
+			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+			Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
+			if (!groundItems.isEmpty())
+			{
+				processInventoryLoot(eventType, lootRecordType, null, groundItems);
+				eventType = null;
+				lootRecordType = null;
+			}
+		}
+	}
+
 	@Schedule(
 		period = 5,
 		unit = ChronoUnit.MINUTES,
@@ -782,8 +811,11 @@ public class LootTrackerPlugin extends Plugin
 		if (inventorySnapshot != null)
 		{
 			Multiset<Integer> currentInventory = HashMultiset.create();
-			Arrays.stream(inventoryContainer.getItems())
-				.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+			if (inventoryContainer != null)
+			{
+				Arrays.stream(inventoryContainer.getItems())
+					.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+			}
 
 			groundItems.stream()
 				.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
