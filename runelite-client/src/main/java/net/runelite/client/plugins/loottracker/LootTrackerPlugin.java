@@ -466,8 +466,13 @@ public class LootTrackerPlugin extends Plugin
 
 	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Object metadata, Collection<ItemStack> items)
 	{
+		addLoot(name, combatLevel, type, items, 1);
+	}
+
+	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Collection<ItemStack> items, int amount)
+	{
 		final LootTrackerItem[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries));
+		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries, amount));
 
 		if (config.saveLoot())
 		{
@@ -478,7 +483,7 @@ public class LootTrackerPlugin extends Plugin
 			}
 		}
 
-		eventBus.post(new LootReceived(name, combatLevel, type, items));
+		eventBus.post(new LootReceived(name, combatLevel, type, items, amount));
 	}
 
 	@Subscribe
@@ -925,6 +930,20 @@ public class LootTrackerPlugin extends Plugin
 				.collect(Collectors.toList());
 
 			addLoot(event, -1, lootRecordType, metadata, items);
+			final Multiset<Integer> diffr = Multisets.difference(inventorySnapshot, currentInventory);
+			List<ItemStack> itemsr = diffr.entrySet().stream()
+				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
+				.collect(Collectors.toList());
+
+			int amount = 1;
+			for (ItemStack i : itemsr)
+			{
+				if (IMPLING_JAR_EVENTS.containsKey(i.getId()) && i.getQuantity() > amount)
+				{
+					amount = i.getQuantity();
+				}
+			}
+			addLoot(event, -1, lootRecordType, items, amount);
 
 			inventorySnapshot = null;
 		}
