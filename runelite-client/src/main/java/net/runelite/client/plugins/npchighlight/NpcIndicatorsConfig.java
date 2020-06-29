@@ -77,10 +77,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 3,
-			keyName = "npcToHighlightPerm",
-			name = "Tags persist after restart (P)",
-			description = "Tag will modify \"NPCs to Highlight\", instead of temporarily tagging"
+		position = 3,
+		keyName = "npcToHighlightPerm",
+		name = "Tags persist after restart (P)",
+		description = "Tag will modify \"NPCs to Highlight\", instead of temporarily tagging"
 	)
 	default boolean getNpcToHighlightPerm()
 	{
