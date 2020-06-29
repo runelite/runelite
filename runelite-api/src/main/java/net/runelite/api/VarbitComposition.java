@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,20 +24,26 @@
  */
 package net.runelite.api;
 
-/**
- * Represents an index in the cache
- */
-public interface IndexDataBase
+public interface VarbitComposition
 {
 	/**
-	 * Returns true if any cache overlay in this index is outdated due to hash mismatch
-	 */
-	boolean isOverlayOutdated();
-
-	/**
-	 * Get the child file ids for a given archive
-	 * @param archiveId
+	 * The varp index for this varbit
+	 *
 	 * @return
 	 */
-	int[] getFileIds(int archiveId);
+	int getIndex();
+
+	/**
+	 * The least significant bit of the varbit
+	 *
+	 * @return
+	 */
+	int getLeastSignificantBit();
+
+	/**
+	 * The most significant bit of the varbit (inclusive)
+	 *
+	 * @return
+	 */
+	int getMostSignificantBit();
 }

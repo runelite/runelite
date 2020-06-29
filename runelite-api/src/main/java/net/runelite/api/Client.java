@@ -401,6 +401,11 @@ public interface Client extends GameEngine
 	IndexDataBase getIndexScripts();
 
 	/**
+	 * Gets the config index.
+	 */
+	IndexDataBase getIndexConfig();
+
+	/**
 	 * Returns the x-axis base coordinate.
 	 * <p>
 	 * This value is the x-axis world coordinate of tile (0, 0) in
@@ -744,6 +749,16 @@ public interface Client extends GameEngine
 	 * @param value the new value
 	 */
 	void setVarbit(Varbits varbit, int value);
+
+	/**
+	 * Gets the varbit composition for a given varbit id
+	 *
+	 * @param id
+	 * @return
+	 */
+	@VisibleForDevtools
+	@Nullable
+	VarbitComposition getVarbit(int id);
 
 	/**
 	 * Gets the value of a given variable.
