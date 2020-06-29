@@ -30,15 +30,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import javax.inject.Inject;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -84,6 +78,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
 	private static final String UNTAG = "Un-tag";
+	private static final String MODIFIER = " (P)";
 
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION, MenuAction.SPELL_CAST_ON_NPC,
@@ -271,10 +266,12 @@ public class NpcIndicatorsPlugin extends Plugin
 		else if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
 		{
 			// Add tag option
+			final String modifier = config.getNpcToHighlightPerm() ? MODIFIER : "";
+
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption(highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG);
+			tagEntry.setOption((highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG) + modifier);
 			tagEntry.setTarget(event.getTarget());
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
@@ -288,37 +285,69 @@ public class NpcIndicatorsPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked click)
 	{
 		if (click.getMenuAction() != MenuAction.RUNELITE ||
-			!(click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG)))
+			(!(click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG)) &&
+			!click.getMenuOption().contains(MODIFIER)))
 		{
 			return;
 		}
 
-		final int id = click.getId();
-		final boolean removed = npcTags.remove(id);
-		final NPC[] cachedNPCs = client.getCachedNPCs();
-		final NPC npc = cachedNPCs[id];
-
-		if (npc == null || npc.getName() == null)
+		if (!config.getNpcToHighlightPerm())
 		{
-			return;
-		}
+			final int id = click.getId();
+			final boolean removed = npcTags.remove(id);
+			final NPC[] cachedNPCs = client.getCachedNPCs();
+			final NPC npc = cachedNPCs[id];
 
-		if (removed)
-		{
-			highlightedNpcs.remove(npc);
-			memorizedNpcs.remove(npc.getIndex());
+			if (npc == null || npc.getName() == null)
+			{
+				return;
+			}
+
+			if (removed)
+			{
+				highlightedNpcs.remove(npc);
+				memorizedNpcs.remove(npc.getIndex());
+			}
+			else
+			{
+				if (!client.isInInstancedRegion())
+				{
+					memorizeNpc(npc);
+					npcTags.add(id);
+				}
+				highlightedNpcs.add(npc);
+			}
+
+			click.consume();
 		}
 		else
 		{
-			if (!client.isInInstancedRegion())
-			{
-				memorizeNpc(npc);
-				npcTags.add(id);
-			}
-			highlightedNpcs.add(npc);
-		}
+			final String npcNames = config.getNpcToHighlight().toLowerCase();
+			List<String> highlightNames = new ArrayList<>();
 
-		click.consume();
+			if (!npcNames.trim().isEmpty())
+			{
+				highlightNames = new ArrayList<>(Arrays.asList(npcNames.split(",")));
+			}
+
+			final int id = click.getId();
+			final NPC[] cachedNPCs = client.getCachedNPCs();
+			final NPC npc = cachedNPCs[id];
+
+			if (npc == null || npc.getName() == null)
+			{
+				return;
+			}
+
+			final String name = npc.getName().toLowerCase();
+			final boolean removed = highlightNames.remove(name);
+
+			if (!removed)
+			{
+				highlightNames.add(name);
+			}
+			config.setNpcToHighlight(String.join(",", highlightNames));
+		}
 	}
 
 	@Subscribe
