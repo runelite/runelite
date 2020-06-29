@@ -193,6 +193,10 @@ public class LootTrackerPlugin extends Plugin
 	private static final String SERUM_207_MESSAGE = "Oh... thank you, you used the serum";
 	private static final String SERUM_208_MESSAGE = "Oh... thank you, you used the permanent serum";
 
+	// Guthix balance handling
+	private static final String GUTHIX_BALANCE_EVENT = "Guthix balance";
+	private static final String GUTHIX_BALANCE_MESSAGE = "Thanks so much for saving me from being a vampyre.";
+
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
 
@@ -706,6 +710,7 @@ public class LootTrackerPlugin extends Plugin
 			|| CASKET_EVENT.equals(eventType)
 			|| SERUM_207_EVENT.equals(eventType)
 			|| SERUM_208_EVENT.equals(eventType)
+			|| GUTHIX_BALANCE_EVENT.equals(eventType)
 			|| lootRecordType == LootRecordType.PICKPOCKET)
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
@@ -781,6 +786,11 @@ public class LootTrackerPlugin extends Plugin
 			takeInventorySnapshot();
 			eventType = SERUM_208_EVENT;
 		}
+		else if (message.startsWith(GUTHIX_BALANCE_MESSAGE))
+		{
+			takeInventorySnapshot();
+			eventType = GUTHIX_BALANCE_EVENT;
+		}
 	}
 
 	@Subscribe
@@ -798,7 +808,8 @@ public class LootTrackerPlugin extends Plugin
 	public void handleOnlyGroundItems()
 	{
 		if (SERUM_207_EVENT.equals(eventType)
-			|| SERUM_208_EVENT.equals(eventType))
+			|| SERUM_208_EVENT.equals(eventType)
+			|| GUTHIX_BALANCE_EVENT.equals(eventType))
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 			Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
