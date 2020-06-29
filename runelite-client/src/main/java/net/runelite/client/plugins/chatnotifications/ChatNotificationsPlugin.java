@@ -38,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.chat.ChatColorType;
@@ -74,6 +75,8 @@ public class ChatNotificationsPlugin extends Plugin
 	private String usernameReplacer = "";
 	private Pattern highlightMatcher = null;
 
+	private int ticksSinceLogin;
+
 	@Provides
 	ChatNotificationsConfig provideConfig(ConfigManager configManager)
 	{
@@ -95,7 +98,16 @@ public class ChatNotificationsPlugin extends Plugin
 			case HOPPING:
 				usernameMatcher = null;
 				break;
+			case LOGGED_IN:
+				ticksSinceLogin = 0;
+				break;
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		ticksSinceLogin++;
 	}
 
 	@Subscribe
@@ -233,7 +245,7 @@ public class ChatNotificationsPlugin extends Plugin
 				matcher.appendTail(stringBuffer);
 				messageNode.setValue(stringBuffer.toString());
 
-				if (config.notifyOnHighlight())
+				if (config.notifyOnHighlight() && ticksSinceLogin >= 1)
 				{
 					sendNotification(chatMessage);
 				}
