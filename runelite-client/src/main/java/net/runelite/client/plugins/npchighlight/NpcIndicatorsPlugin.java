@@ -85,6 +85,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final String TAG = "Tag";
 	private static final String UNTAG = "Un-tag";
 
+	private static final String TAG_ALL = "Tag-All";
+	private static final String UNTAG_ALL = "Un-tag-All";
+
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION, MenuAction.SPELL_CAST_ON_NPC,
 		MenuAction.ITEM_USE_ON_NPC);
@@ -270,16 +273,48 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		else if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
 		{
-			// Add tag option
+			// Add tag and tag-all options
+			final int id = event.getIdentifier();
+			final NPC[] cachedNPCs = client.getCachedNPCs();
+			final NPC npc = cachedNPCs[id];
+
+			if (npc == null || npc.getName() == null)
+			{
+				return;
+			}
+
+			final String npcName = npc.getName();
+			boolean matchesList = highlights.stream()
+				.filter(highlight -> !highlight.equalsIgnoreCase(npcName))
+				.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcName));
+
 			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+			// Only add Untag-All option to npcs not highlighted by a wildcard entry, because untag-all will not remove wildcards
+			if (!matchesList)
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+				final MenuEntry tagAllEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+				tagAllEntry.setOption(highlights.stream().anyMatch(npcName::equalsIgnoreCase) ? UNTAG_ALL : TAG_ALL);
+				tagAllEntry.setTarget(event.getTarget());
+				tagAllEntry.setParam0(event.getActionParam0());
+				tagAllEntry.setParam1(event.getActionParam1());
+				tagAllEntry.setIdentifier(event.getIdentifier());
+				tagAllEntry.setType(MenuAction.RUNELITE.getId());
+			}
+			else
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			}
+
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption(highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG);
+			tagEntry.setOption(highlightedNpcs.contains(npc) ? UNTAG : TAG);
 			tagEntry.setTarget(event.getTarget());
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
 			tagEntry.setIdentifier(event.getIdentifier());
 			tagEntry.setType(MenuAction.RUNELITE.getId());
+
 			client.setMenuEntries(menuEntries);
 		}
 	}
@@ -288,13 +323,13 @@ public class NpcIndicatorsPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked click)
 	{
 		if (click.getMenuAction() != MenuAction.RUNELITE ||
-			!(click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG)))
+			!(click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG) ||
+				click.getMenuOption().equals(TAG_ALL) || click.getMenuOption().equals(UNTAG_ALL)))
 		{
 			return;
 		}
 
 		final int id = click.getId();
-		final boolean removed = npcTags.remove(id);
 		final NPC[] cachedNPCs = client.getCachedNPCs();
 		final NPC npc = cachedNPCs[id];
 
@@ -303,19 +338,29 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (removed)
+		if (click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG))
 		{
-			highlightedNpcs.remove(npc);
-			memorizedNpcs.remove(npc.getIndex());
+			final boolean removed = npcTags.remove(id);
+
+			if (removed)
+			{
+				highlightedNpcs.remove(npc);
+				memorizedNpcs.remove(npc.getIndex());
+			}
+			else
+			{
+				if (!client.isInInstancedRegion())
+				{
+					memorizeNpc(npc);
+					npcTags.add(id);
+				}
+				highlightedNpcs.add(npc);
+			}
 		}
 		else
 		{
-			if (!client.isInInstancedRegion())
-			{
-				memorizeNpc(npc);
-				npcTags.add(id);
-			}
-			highlightedNpcs.add(npc);
+			final String name = npc.getName();
+			updateNpcsToHighlight(name);
 		}
 
 		click.consume();
@@ -388,6 +433,19 @@ public class NpcIndicatorsPlugin extends Plugin
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
 
+	private void updateNpcsToHighlight(String npc)
+	{
+		final List<String> highlightedNpcs = new ArrayList<>(highlights);
+
+		if (!highlightedNpcs.removeIf(npc::equalsIgnoreCase))
+		{
+			highlightedNpcs.add(npc);
+		}
+
+		// this triggers the config change event and rebuilds npcs
+		config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
+	}
+
 	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)
 	{
 		int distance = wp1.distanceTo(wp2);
@@ -449,7 +507,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@VisibleForTesting
 	List<String> getHighlights()
 	{
-		final String configNpcs = config.getNpcToHighlight().toLowerCase();
+		final String configNpcs = config.getNpcToHighlight();
 
 		if (configNpcs.isEmpty())
 		{
