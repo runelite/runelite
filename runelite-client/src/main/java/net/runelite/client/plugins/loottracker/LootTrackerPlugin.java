@@ -74,12 +74,15 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
@@ -244,6 +247,8 @@ public class LootTrackerPlugin extends Plugin
 	LootRecordType lootRecordType;
 	private boolean chestLooted;
 	private String lastPickpocketTarget;
+
+	private boolean awaitingDialogue = true;
 
 	private List<String> ignoredItems = new ArrayList<>();
 	private List<String> ignoredEvents = new ArrayList<>();
@@ -530,6 +535,9 @@ public class LootTrackerPlugin extends Plugin
 				event = "Drift Net";
 				container = client.getItemContainer(InventoryID.DRIFT_NET_FISHING_REWARD);
 				break;
+			case (WidgetID.DIALOG_NPC_GROUP_ID):
+				awaitingDialogue = true;
+				return;
 			default:
 				return;
 		}
@@ -730,6 +738,30 @@ public class LootTrackerPlugin extends Plugin
 			lootRecordType = LootRecordType.EVENT;
 			takeInventorySnapshot();
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		handleDialogue();
+	}
+
+	public void handleDialogue()
+	{
+		if (!awaitingDialogue)
+		{
+			return;
+		}
+
+		awaitingDialogue = false;
+
+		Widget npcDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		if (npcDialogueTextWidget == null)
+		{
+			return;
+		}
+
+		final String message = npcDialogueTextWidget.getText();
 	}
 
 	@Subscribe
