@@ -187,6 +187,12 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
 	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
 
+	// Serum 207/208 handling
+	private static final String SERUM_207_EVENT = "Serum 207";
+	private static final String SERUM_208_EVENT = "Serum 208";
+	private static final String SERUM_207_MESSAGE = "Oh... thank you, you used the serum";
+	private static final String SERUM_208_MESSAGE = "Oh... thank you, you used the permanent serum";
+
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
 
@@ -482,6 +488,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final String event;
 		final ItemContainer container;
+
 		switch (widgetLoaded.getGroupId())
 		{
 			case (WidgetID.BARROWS_REWARD_GROUP_ID):
@@ -697,6 +704,8 @@ public class LootTrackerPlugin extends Plugin
 			|| HESPORI_EVENT.equals(eventType)
 			|| SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
+			|| SERUM_207_EVENT.equals(eventType)
+			|| SERUM_208_EVENT.equals(eventType)
 			|| lootRecordType == LootRecordType.PICKPOCKET)
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
@@ -762,6 +771,16 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final String message = npcDialogueTextWidget.getText();
+		if (message.startsWith(SERUM_207_MESSAGE))
+		{
+			takeInventorySnapshot();
+			eventType = SERUM_207_EVENT;
+		}
+		else if (message.startsWith(SERUM_208_MESSAGE))
+		{
+			takeInventorySnapshot();
+			eventType = SERUM_208_EVENT;
+		}
 	}
 
 	@Subscribe
@@ -778,7 +797,8 @@ public class LootTrackerPlugin extends Plugin
 
 	public void handleOnlyGroundItems()
 	{
-		if (false)
+		if (SERUM_207_EVENT.equals(eventType)
+			|| SERUM_208_EVENT.equals(eventType))
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 			Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
