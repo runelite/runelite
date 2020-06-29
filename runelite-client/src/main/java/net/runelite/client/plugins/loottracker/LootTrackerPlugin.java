@@ -27,6 +27,7 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -59,6 +60,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -75,6 +77,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -188,6 +191,37 @@ public class LootTrackerPlugin extends Plugin
 		put(ObjectID.SILVER_CHEST_4130, "Silver key purple").
 		build();
 
+	// Impling loot handling
+	private static final Map<Integer, String> IMPLING_JAR_EVENTS = new ImmutableMap.Builder<Integer, String>().
+		put(ItemID.BABY_IMPLING_JAR, "Baby impling jar").
+		put(ItemID.YOUNG_IMPLING_JAR, "Young impling jar").
+		put(ItemID.GOURMET_IMPLING_JAR, "Gourmet impling jar").
+		put(ItemID.EARTH_IMPLING_JAR, "Earth impling jar").
+		put(ItemID.ESSENCE_IMPLING_JAR, "Essence impling jar").
+		put(ItemID.ECLECTIC_IMPLING_JAR, "Eclectic impling jar").
+		put(ItemID.NATURE_IMPLING_JAR, "Nature impling jar").
+		put(ItemID.MAGPIE_IMPLING_JAR, "Magpie impling jar").
+		put(ItemID.NINJA_IMPLING_JAR, "Ninja impling jar").
+		put(ItemID.DRAGON_IMPLING_JAR, "Dragon impling jar").
+		put(ItemID.LUCKY_IMPLING_JAR, "Lucky impling jar").
+		put(ItemID.CRYSTAL_IMPLING_JAR, "Crystal impling jar").
+		build();
+	private static final String IMPLING_CATCH_MESSAGE = "You manage to catch the impling and acquire some loot.";
+	private static final List<String> IMPLING_CATCH_EVENTS = new ImmutableList.Builder<String>().
+		add("Baby impling").
+		add("Young impling").
+		add("Gourmet impling").
+		add("Earth impling").
+		add("Essence impling").
+		add("Eclectic impling").
+		add("Nature impling").
+		add("Magpie impling").
+		add("Ninja impling").
+		add("Dragon impling").
+		add("Lucky impling").
+		add("Crystal impling").
+		build();
+
 	// Hallow Sepulchre Coffin handling
 	private static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
 	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
@@ -258,6 +292,7 @@ public class LootTrackerPlugin extends Plugin
 	@VisibleForTesting
 	LootRecordType lootRecordType;
 	private Object metadata;
+	private String lastInteracted;
 	private boolean chestLooted;
 	private String lastPickpocketTarget;
 
@@ -709,6 +744,29 @@ public class LootTrackerPlugin extends Plugin
 			// Player didn't have the key they needed.
 			resetEvent();
 		}
+
+		if (message.equals(IMPLING_CATCH_MESSAGE))
+		{
+			eventType = lastInteracted;
+			lootRecordType = LootRecordType.EVENT;
+			takeInventorySnapshot();
+			return;
+		}
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged interactingChanged)
+	{
+		Actor target = interactingChanged.getTarget();
+		if (target == null )
+		{
+			return;
+		}
+		String name = target.getName();
+		if (IMPLING_CATCH_EVENTS.contains(name))
+		{
+			lastInteracted = name;
+		}
 	}
 
 	@Subscribe
@@ -722,11 +780,13 @@ public class LootTrackerPlugin extends Plugin
 
 		if (CHEST_EVENT_TYPES.containsValue(eventType)
 			|| SHADE_CHEST_OBJECTS.containsValue(eventType)
+			|| IMPLING_JAR_EVENTS.containsValue(eventType)
 			|| HALLOWED_SEPULCHRE_COFFIN_EVENT.equals(eventType)
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
 			|| SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
+			|| IMPLING_CATCH_EVENTS.contains(eventType)
 			|| BIRDNEST_EVENT.equals(eventType)
 			|| eventType.startsWith("H.A.M. chest")
 			|| lootRecordType == LootRecordType.PICKPOCKET)
@@ -770,6 +830,13 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.CASKET)
 		{
 			setEvent(LootRecordType.EVENT, CASKET_EVENT);
+			takeInventorySnapshot();
+		}
+
+		if (event.getMenuOption().equals("Loot") && IMPLING_JAR_EVENTS.containsKey(event.getId()))
+		{
+			eventType = IMPLING_JAR_EVENTS.get(event.getId());
+			lootRecordType = LootRecordType.EVENT;
 			takeInventorySnapshot();
 		}
 	}
