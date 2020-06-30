@@ -271,27 +271,24 @@ public class NpcIndicatorsPlugin extends Plugin
 			final int id = event.getIdentifier();
 			final NPC[] cachedNPCs = client.getCachedNPCs();
 			final NPC npcCached = cachedNPCs[id];
-			boolean npcFound = true;
-			boolean matchesList = false;
 
 			if (npcCached == null || npcCached.getName() == null)
 			{
-				npcFound = false;
+				return;
 			}
-			else
-			{
-				matchesList = highlights.stream()
-					.filter(highlight -> !highlight.equals(npcCached.getName().toLowerCase()))
-					.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcCached.getName().toLowerCase()));
-			}
+
+			final String npcName = npcCached.getName().toLowerCase();
+			boolean	matchesList = highlights.stream()
+					.filter(highlight -> !highlight.equals(npcName))
+					.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcName));
 
 			MenuEntry[] menuEntries = client.getMenuEntries();
 
-			if (npcFound && !matchesList)
+			if (!matchesList)
 			{
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
 				final MenuEntry tagAllEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
-				tagAllEntry.setOption((Arrays.stream(config.getNpcToHighlight().split(",")).anyMatch(npc -> npc.toLowerCase().equals(npcCached.getName().toLowerCase())) ? UNTAG_ALL : TAG_ALL));
+				tagAllEntry.setOption(highlights.contains(npcName) ? UNTAG_ALL : TAG_ALL);
 				tagAllEntry.setTarget(event.getTarget());
 				tagAllEntry.setParam0(event.getActionParam0());
 				tagAllEntry.setParam1(event.getActionParam1());
@@ -304,7 +301,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			}
 
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption((highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG));
+			tagEntry.setOption((highlightedNpcs.contains(npcCached) ? UNTAG : TAG));
 			tagEntry.setTarget(event.getTarget());
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
@@ -325,17 +322,18 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
+		final int id = click.getId();
+		final NPC[] cachedNPCs = client.getCachedNPCs();
+		final NPC npc = cachedNPCs[id];
+
+		if (npc == null || npc.getName() == null)
+		{
+			return;
+		}
+
 		if (click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG))
 		{
-			final int id = click.getId();
 			final boolean removed = npcTags.remove(id);
-			final NPC[] cachedNPCs = client.getCachedNPCs();
-			final NPC npc = cachedNPCs[id];
-
-			if (npc == null || npc.getName() == null)
-			{
-				return;
-			}
 
 			if (removed)
 			{
@@ -356,31 +354,9 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		else
 		{
-			final String npcNames = config.getNpcToHighlight().toLowerCase();
-			List<String> highlightNames = new ArrayList<>();
-
-			if (!npcNames.trim().isEmpty())
-			{
-				highlightNames = new ArrayList<>(Arrays.asList(npcNames.split(",")));
-			}
-
-			final int id = click.getId();
-			final NPC[] cachedNPCs = client.getCachedNPCs();
-			final NPC npc = cachedNPCs[id];
-
-			if (npc == null || npc.getName() == null)
-			{
-				return;
-			}
-
 			final String name = npc.getName().toLowerCase();
-			final boolean removed = highlightNames.remove(name);
 
-			if (!removed)
-			{
-				highlightNames.add(name);
-			}
-			config.setNpcToHighlight(String.join(",", highlightNames));
+			updateList(name);
 		}
 	}
 
@@ -449,6 +425,18 @@ public class NpcIndicatorsPlugin extends Plugin
 		validateSpawnedNpcs();
 		lastTickUpdate = Instant.now();
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
+	}
+
+	void updateList(String item)
+	{
+		final List<String> highlightedNpcs = new ArrayList<>(highlights);
+
+		if (!highlightedNpcs.removeIf(item::equalsIgnoreCase))
+		{
+			highlightedNpcs.add(item);
+		}
+
+		config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
 	}
 
 	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)
