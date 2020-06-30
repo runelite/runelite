@@ -270,14 +270,15 @@ public class NpcIndicatorsPlugin extends Plugin
 			// Add tag and tag-all options
 			final int id = event.getIdentifier();
 			final NPC[] cachedNPCs = client.getCachedNPCs();
-			final NPC npcCached = cachedNPCs[id];
+			final NPC npc = cachedNPCs[id];
 
-			if (npcCached == null || npcCached.getName() == null)
+			if (npc == null || npc.getName() == null)
 			{
 				return;
 			}
 
-			final String npcName = npcCached.getName().toLowerCase();
+			// Only add Untag options to npcs not highlighted by a wildcard entry, because untag-all will not remove wildcards
+			final String npcName = npc.getName().toLowerCase();
 			boolean	matchesList = highlights.stream()
 					.filter(highlight -> !highlight.equals(npcName))
 					.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcName));
@@ -301,7 +302,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			}
 
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption((highlightedNpcs.contains(npcCached) ? UNTAG : TAG));
+			tagEntry.setOption(highlightedNpcs.contains(npc) ? UNTAG : TAG);
 			tagEntry.setTarget(event.getTarget());
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
@@ -316,8 +317,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked click)
 	{
 		if (click.getMenuAction() != MenuAction.RUNELITE ||
-			(!(click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG)) &&
-			(!(click.getMenuOption().equals(TAG_ALL) || click.getMenuOption().equals(UNTAG_ALL)))))
+				!(click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG) ||
+					click.getMenuOption().equals(TAG_ALL) || click.getMenuOption().equals(UNTAG_ALL)))
 		{
 			return;
 		}
@@ -354,9 +355,9 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		else
 		{
-			final String name = npc.getName().toLowerCase();
+			final String name = npc.getName();
 
-			updateList(name);
+			updateNpcsToHighlight(name);
 		}
 	}
 
@@ -427,15 +428,16 @@ public class NpcIndicatorsPlugin extends Plugin
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
 
-	void updateList(String item)
+	private void updateNpcsToHighlight(String npc)
 	{
 		final List<String> highlightedNpcs = new ArrayList<>(highlights);
 
-		if (!highlightedNpcs.removeIf(item::equalsIgnoreCase))
+		if (!highlightedNpcs.removeIf(npc::equalsIgnoreCase))
 		{
-			highlightedNpcs.add(item);
+			highlightedNpcs.add(npc);
 		}
 
+		// this triggers the config change event and rebuilds npcs
 		config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
 	}
 

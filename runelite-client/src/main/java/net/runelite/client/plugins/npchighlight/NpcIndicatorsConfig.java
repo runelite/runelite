@@ -92,7 +92,7 @@ public interface NpcIndicatorsConfig extends Config
 		name = "",
 		description = ""
 	)
-	void setNpcToHighlight(String key);
+	void setNpcToHighlight(String npcsToHighlight);
 
 	@ConfigItem(
 		position = 4,
