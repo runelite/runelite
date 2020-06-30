@@ -78,7 +78,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
 	private static final String UNTAG = "Un-tag";
-	private static final String MODIFIER = " (P)";
+
+	private static final String TAG_ALL = "Tag-All";
+	private static final String UNTAG_ALL = "Un-tag-All";
 
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION, MenuAction.SPELL_CAST_ON_NPC,
@@ -265,18 +267,36 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		else if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
 		{
-			// Add tag option
-			final String modifier = config.getNpcToHighlightPerm() ? MODIFIER : "";
-
+			// Add tag and tag-all options
 			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption((highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG) + modifier);
+			tagEntry.setOption((highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG));
 			tagEntry.setTarget(event.getTarget());
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
 			tagEntry.setIdentifier(event.getIdentifier());
 			tagEntry.setType(MenuAction.RUNELITE.getId());
+
+			final int id = event.getIdentifier();
+			final NPC[] cachedNPCs = client.getCachedNPCs();
+			final NPC npcCached = cachedNPCs[id];
+
+			if (npcCached == null || npcCached.getName() == null)
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
+				client.setMenuEntries(menuEntries);
+				return;
+			}
+
+			final MenuEntry tagAllEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+			tagAllEntry.setOption((Arrays.stream(config.getNpcToHighlight().split(",")).anyMatch(npc -> npc.toLowerCase().equals(npcCached.getName().toLowerCase())) ? UNTAG_ALL : TAG_ALL));
+			tagAllEntry.setTarget(event.getTarget());
+			tagAllEntry.setParam0(event.getActionParam0());
+			tagAllEntry.setParam1(event.getActionParam1());
+			tagAllEntry.setIdentifier(event.getIdentifier());
+			tagAllEntry.setType(MenuAction.RUNELITE.getId());
 			client.setMenuEntries(menuEntries);
 		}
 	}
@@ -286,12 +306,12 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		if (click.getMenuAction() != MenuAction.RUNELITE ||
 			(!(click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG)) &&
-			!click.getMenuOption().contains(MODIFIER)))
+			(!(click.getMenuOption().equals(TAG_ALL) || click.getMenuOption().equals(UNTAG_ALL)))))
 		{
 			return;
 		}
 
-		if (!config.getNpcToHighlightPerm())
+		if (click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG))
 		{
 			final int id = click.getId();
 			final boolean removed = npcTags.remove(id);
