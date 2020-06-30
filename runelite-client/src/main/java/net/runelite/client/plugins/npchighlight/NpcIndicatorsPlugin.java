@@ -268,8 +268,40 @@ public class NpcIndicatorsPlugin extends Plugin
 		else if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
 		{
 			// Add tag and tag-all options
+			final int id = event.getIdentifier();
+			final NPC[] cachedNPCs = client.getCachedNPCs();
+			final NPC npcCached = cachedNPCs[id];
+			boolean npcFound = true;
+			boolean matchesList = false;
+
+			if (npcCached == null || npcCached.getName() == null)
+			{
+				npcFound = false;
+			}
+			else
+			{
+				matchesList = highlights.stream()
+					.filter(highlight -> !highlight.equals(npcCached.getName().toLowerCase()))
+					.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcCached.getName().toLowerCase()));
+			}
+
 			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+
+			if (npcFound && !matchesList)
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+				final MenuEntry tagAllEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+				tagAllEntry.setOption((Arrays.stream(config.getNpcToHighlight().split(",")).anyMatch(npc -> npc.toLowerCase().equals(npcCached.getName().toLowerCase())) ? UNTAG_ALL : TAG_ALL));
+				tagAllEntry.setTarget(event.getTarget());
+				tagAllEntry.setParam0(event.getActionParam0());
+				tagAllEntry.setParam1(event.getActionParam1());
+				tagAllEntry.setIdentifier(event.getIdentifier());
+				tagAllEntry.setType(MenuAction.RUNELITE.getId());
+			}
+			else
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			}
 
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 			tagEntry.setOption((highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()) ? UNTAG : TAG));
@@ -279,24 +311,6 @@ public class NpcIndicatorsPlugin extends Plugin
 			tagEntry.setIdentifier(event.getIdentifier());
 			tagEntry.setType(MenuAction.RUNELITE.getId());
 
-			final int id = event.getIdentifier();
-			final NPC[] cachedNPCs = client.getCachedNPCs();
-			final NPC npcCached = cachedNPCs[id];
-
-			if (npcCached == null || npcCached.getName() == null)
-			{
-				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
-				client.setMenuEntries(menuEntries);
-				return;
-			}
-
-			final MenuEntry tagAllEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
-			tagAllEntry.setOption((Arrays.stream(config.getNpcToHighlight().split(",")).anyMatch(npc -> npc.toLowerCase().equals(npcCached.getName().toLowerCase())) ? UNTAG_ALL : TAG_ALL));
-			tagAllEntry.setTarget(event.getTarget());
-			tagAllEntry.setParam0(event.getActionParam0());
-			tagAllEntry.setParam1(event.getActionParam1());
-			tagAllEntry.setIdentifier(event.getIdentifier());
-			tagAllEntry.setType(MenuAction.RUNELITE.getId());
 			client.setMenuEntries(menuEntries);
 		}
 	}
