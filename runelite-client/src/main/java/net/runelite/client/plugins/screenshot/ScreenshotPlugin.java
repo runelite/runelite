@@ -43,15 +43,17 @@ import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
+import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.PlayerDeath;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -63,7 +65,6 @@ import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
@@ -254,16 +255,20 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerDeath(PlayerDeath playerDeath)
+	public void onActorDeath(ActorDeath actorDeath)
 	{
-		Player player = playerDeath.getPlayer();
-		if (player == client.getLocalPlayer() && config.screenshotPlayerDeath())
+		Actor actor = actorDeath.getActor();
+		if (actor instanceof Player)
 		{
-			takeScreenshot("Death", "Deaths");
-		}
-		else if (player != client.getLocalPlayer() && (player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
-		{
-			takeScreenshot("Death " + player.getName(), "Deaths");
+			Player player = (Player) actor;
+			if (player == client.getLocalPlayer() && config.screenshotPlayerDeath())
+			{
+				takeScreenshot("Death", "Deaths");
+			}
+			else if (player != client.getLocalPlayer() && (player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
+			{
+				takeScreenshot("Death " + player.getName(), "Deaths");
+			}
 		}
 	}
 
