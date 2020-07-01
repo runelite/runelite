@@ -29,6 +29,7 @@ import com.google.common.collect.ComparisonChain;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
@@ -71,12 +72,12 @@ public class InfoBoxManager
 
 		synchronized (this)
 		{
-			int idx = Collections.binarySearch(infoBoxes, infoBox, (b1, b2) -> ComparisonChain
+			int idx = findInsertionIndex(infoBoxes, infoBox, (b1, b2) -> ComparisonChain
 				.start()
 				.compare(b1.getPriority(), b2.getPriority())
 				.compare(b1.getPlugin().getName(), b2.getPlugin().getName())
 				.result());
-			infoBoxes.add(idx < 0 ? -idx - 1 : idx, infoBox);
+			infoBoxes.add(idx, infoBox);
 		}
 
 		BufferedImage image = infoBox.getImage();
@@ -149,5 +150,39 @@ public class InfoBoxManager
 		}
 
 		infoBox.setScaledImage(resultImage);
+	}
+
+	/**
+	 * Find insertion point for the given key into the given sorted list. If key already exists in the list,
+	 * return the index after the last occurrence.
+	 * @param list
+	 * @param key
+	 * @param c
+	 * @param <T>
+	 * @return
+	 */
+	private static <T> int findInsertionIndex(List<? extends T> list, T key, Comparator<? super T> c)
+	{
+		int idx = Collections.binarySearch(list, key, c);
+
+		if (idx < 0)
+		{
+			// key isn't found in the list
+			return -idx - 1;
+		}
+
+		// list(idx) is equal to key, so it is not necessary to recheck it
+		for (int i = idx + 1; i < list.size(); ++i)
+		{
+			T cur = list.get(i);
+			int cmp = c.compare(cur, key);
+			if (cmp > 0)
+			{
+				// this is the first element which is greater
+				return i;
+			}
+		}
+
+		return list.size();
 	}
 }

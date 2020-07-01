@@ -114,5 +114,8 @@ public class InfoBoxManagerTest
 		infoBoxManager.addInfoBox(new TestInfobox(InfoBoxPriority.MED, "three"));
 
 		assertEquals(3, infoBoxManager.getInfoBoxes().size());
+		assertEquals("one", infoBoxManager.getInfoBoxes().get(0).getText());
+		assertEquals("two", infoBoxManager.getInfoBoxes().get(1).getText());
+		assertEquals("three", infoBoxManager.getInfoBoxes().get(2).getText());
 	}
 }
