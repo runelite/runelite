@@ -308,7 +308,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			}
 
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption(highlightedNpcs.contains(npc) ? UNTAG : TAG);
+			tagEntry.setOption(npcTags.contains(npc.getIndex()) ? UNTAG : TAG);
 			tagEntry.setTarget(event.getTarget());
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
