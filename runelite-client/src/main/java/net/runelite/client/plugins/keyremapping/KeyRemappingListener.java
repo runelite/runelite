@@ -68,7 +68,7 @@ class KeyRemappingListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (client.getGameState() == GameState.LOGIN_SCREEN || !plugin.chatboxFocused())
+		if (client.getGameState() == GameState.LOGIN_SCREEN || client.getGameState() == GameState.LOGIN_SCREEN_AUTHENTICATOR || !plugin.chatboxFocused())
 		{
 			return;
 		}
