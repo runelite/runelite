@@ -53,6 +53,8 @@ import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
@@ -93,6 +95,7 @@ public class ChatFilterPlugin extends Plugin
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private final List<Pattern> filteredPatterns = new ArrayList<>();
 	private final List<Pattern> filteredNamePatterns = new ArrayList<>();
+	private boolean recentlyLoggedIn;
 
 	private static class Duplicate
 	{
@@ -131,6 +134,7 @@ public class ChatFilterPlugin extends Plugin
 	{
 		updateFilteredPatterns();
 		client.refreshChat();
+		recentlyLoggedIn = true;
 	}
 
 	@Override
@@ -139,6 +143,24 @@ public class ChatFilterPlugin extends Plugin
 		filteredPatterns.clear();
 		duplicateChatCache.clear();
 		client.refreshChat();
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case HOPPING:
+			case LOGGED_IN:
+				recentlyLoggedIn = true;
+				break;
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		recentlyLoggedIn = false;
 	}
 
 	@Subscribe
@@ -251,7 +273,11 @@ public class ChatFilterPlugin extends Plugin
 				duplicate = new Duplicate();
 			}
 
-			duplicate.count++;
+			if (!recentlyLoggedIn)
+			{
+				duplicate.count++;
+			}
+
 			duplicate.messageId = messageNode.getId();
 			duplicateChatCache.put(key, duplicate);
 		}
