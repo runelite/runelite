@@ -50,12 +50,14 @@ import okhttp3.OkHttpClient;
 public class WorldService
 {
 	private static final int WORLD_FETCH_TIMER = 10; // minutes
+	private static final int MAX_FETCH_RETRY = 3; // maximum retries for *first* request failure
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
 	private final WorldClient worldClient;
 	private final EventBus eventBus;
 	private final CompletableFuture<WorldResult> firstRunFuture = new CompletableFuture<>();
+	private int firstRunNumRetries = 0;
 
 	private WorldResult worlds;
 
@@ -83,6 +85,12 @@ public class WorldService
 		finally
 		{
 			firstRunFuture.complete(worlds);
+			// first fetch failed, schedule an early retry
+			// once worlds is non-null, it will not be nulled, so this only occurs on first fetch failure
+			if (null == worlds && firstRunNumRetries < MAX_FETCH_RETRY)
+			{
+				scheduledExecutorService.schedule(this::tick, 5 * ++firstRunNumRetries, TimeUnit.SECONDS);
+			}
 		}
 	}
 
