@@ -146,16 +146,19 @@ public class FarmingContractManager
 		if (loc.getRegionID() == FARMING_GUILD_REGION_ID)
 		{
 			handleGuildmasterJaneWidgetDialog();
+		}
+
+		if (config.farmingContractInfoBox().equals(FarmingContractInfoBoxDisplay.ALWAYS)
+			|| (config.farmingContractInfoBox().equals(FarmingContractInfoBoxDisplay.FARMING_GUILD) && loc.getRegionID() == FARMING_GUILD_REGION_ID))
+		{
 			handleInfoBox();
 		}
-		else
+		else if (infoBox != null)
 		{
-			if (infoBox != null)
-			{
-				infoBoxManager.removeInfoBox(infoBox);
-				infoBox = null;
-			}
+			infoBoxManager.removeInfoBox(infoBox);
+			infoBox = null;
 		}
+
 		return oldSummary != summary;
 	}
 

@@ -111,6 +111,6 @@ class FarmingContractInfoBox extends InfoBox
 	@Override
 	public boolean render()
 	{
-		return config.farmingContractInfoBox();
+		return !config.farmingContractInfoBox().equals(FarmingContractInfoBoxDisplay.NEVER);
 	}
 }

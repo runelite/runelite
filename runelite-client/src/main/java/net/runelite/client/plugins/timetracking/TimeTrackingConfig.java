@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
+import net.runelite.client.plugins.timetracking.farming.FarmingContractInfoBoxDisplay;
 
 @ConfigGroup("timetracking")
 public interface TimeTrackingConfig extends Config
@@ -74,12 +75,12 @@ public interface TimeTrackingConfig extends Config
 	@ConfigItem(
 		keyName = "farmingContractInfoBox",
 		name = "Show farming contract infobox",
-		description = "Show an infobox of your current farming contract when inside the farming guild",
+		description = "Show an infobox of your current farming contract",
 		position = 4
 	)
-	default boolean farmingContractInfoBox()
+	default FarmingContractInfoBoxDisplay farmingContractInfoBox()
 	{
-		return true;
+		return FarmingContractInfoBoxDisplay.FARMING_GUILD;
 	}
 
 	@ConfigItem(
