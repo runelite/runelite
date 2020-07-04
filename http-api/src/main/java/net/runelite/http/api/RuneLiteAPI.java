@@ -37,6 +37,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.netty.http.client.HttpClient;
 
 public class RuneLiteAPI
 {
@@ -56,6 +57,8 @@ public class RuneLiteAPI
 	private static final Properties properties = new Properties();
 	private static String version;
 	private static int rsVersion;
+
+	private static final HttpClient BASE_CLIENT;
 
 	static
 	{
@@ -96,6 +99,17 @@ public class RuneLiteAPI
 				}
 			})
 			.build();
+
+
+		final String prop = System.getProperty("runelite.http-service.url");
+		final String url = prop != null && !prop.isEmpty() ? prop : BASE + "/runelite-" + getVersion();
+		BASE_CLIENT = HttpClient.create()
+			.baseUrl(url)
+			.headers(headers -> headers.add("User-Agent", userAgent));
+	}
+
+	public static HttpClient getBaseClient() {
+		return BASE_CLIENT;
 	}
 
 	public static HttpUrl getSessionBase()
