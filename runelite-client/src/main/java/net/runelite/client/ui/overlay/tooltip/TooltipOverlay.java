@@ -39,6 +39,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TooltipComponent;
 
 @Singleton
@@ -103,12 +104,17 @@ public class TooltipOverlay extends Overlay
 			if (tooltip.getComponent() != null)
 			{
 				entity = tooltip.getComponent();
+				if (entity instanceof PanelComponent)
+				{
+					((PanelComponent) entity).setBackgroundColor(runeLiteConfig.overlayBackgroundColor());
+				}
 			}
 			else
 			{
 				final TooltipComponent tooltipComponent = new TooltipComponent();
 				tooltipComponent.setModIcons(client.getModIcons());
 				tooltipComponent.setText(tooltip.getText());
+				tooltipComponent.setBackgroundColor(runeLiteConfig.overlayBackgroundColor());
 				entity = tooltipComponent;
 			}
 
