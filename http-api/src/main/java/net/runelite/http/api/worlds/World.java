@@ -24,23 +24,29 @@
  */
 package net.runelite.http.api.worlds;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import java.util.EnumSet;
 import lombok.Builder;
 import lombok.Value;
 
 @Value
 @Builder
+@JsonDeserialize(builder = World.WorldBuilder.class)
 public class World
 {
-	private int id;
-	private EnumSet<WorldType> types;
-	private String address;
-	private String activity;
-	private int location;
-	private int players;
+	int id;
+	EnumSet<WorldType> types;
+	String address;
+	String activity;
+	int location;
+	int players;
 
 	public WorldRegion getRegion()
 	{
 		return WorldRegion.valueOf(location);
 	}
+
+	@JsonPOJOBuilder(withPrefix = "")
+	public static class WorldBuilder {}
 }

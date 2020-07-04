@@ -24,21 +24,18 @@
  */
 package net.runelite.http.api.worlds;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import java.util.List;
+import lombok.Builder;
+import lombok.Value;
 
+@Value
+@Builder
+@JsonDeserialize(builder = WorldResult.WorldResultBuilder.class)
 public class WorldResult
 {
-	private List<World> worlds;
-
-	public List<World> getWorlds()
-	{
-		return worlds;
-	}
-
-	public void setWorlds(List<World> worlds)
-	{
-		this.worlds = worlds;
-	}
+	List<World> worlds;
 
 	public World findWorld(int worldNum)
 	{
@@ -51,4 +48,7 @@ public class WorldResult
 		}
 		return null;
 	}
+
+	@JsonPOJOBuilder(withPrefix = "")
+	public static class WorldResultBuilder {}
 }
