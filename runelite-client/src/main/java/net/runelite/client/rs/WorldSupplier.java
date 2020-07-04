@@ -58,7 +58,7 @@ class WorldSupplier implements Supplier<World>
 
 		try
 		{
-			List<World> newWorlds = new WorldClient(okHttpClient)
+			List<World> newWorlds = WorldClient.create()
 				.lookupWorlds()
 				.getWorlds()
 				.stream()

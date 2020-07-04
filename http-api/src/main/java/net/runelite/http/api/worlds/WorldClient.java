@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,50 +26,70 @@
  */
 package net.runelite.http.api.worlds;
 
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import lombok.RequiredArgsConstructor;
+import java.util.concurrent.Future;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import net.runelite.http.api.RuneLiteClient;
+import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 @Slf4j
-@RequiredArgsConstructor
-public class WorldClient
+public class WorldClient extends RuneLiteClient
 {
-	private final OkHttpClient client;
 
+	private static final String ENDPOINT = "/worlds";
+
+	private WorldClient(HttpClient client)
+	{
+		super(client, ENDPOINT);
+	}
+
+	/**
+	 * Asynchronously lookup a list of worlds.
+	 * Sends an {@link IOException} error signal if lookup fails with a non-200 response.
+	 * The result can be handled as a {@link Future} if desired:
+	 *
+	 * <pre> {@code lookupWorldsAsync().toFuture;} </pre>
+	 * <p>
+	 * Similarly, the {@link Future} will throw a {@link java.util.concurrent.ExecutionException}, wrapping
+	 * the {@link IOException} on error.
+	 *
+	 * @return A {@link Mono<WorldResult>} containing the worlds.
+	 */
+	public Mono<WorldResult> lookupWorldsAsync()
+	{
+		return get(WorldResult.class)
+			.retrieve()
+			.defaultIfEmpty(WorldResult.builder().build());
+	}
+
+	/**
+	 * Synchronously lookup a list of worlds.
+	 *
+	 * @return A {@link WorldResult} containing the worlds.
+	 * @throws IOException if lookup fails with a non-200 response.
+	 */
 	public WorldResult lookupWorlds() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("worlds.js")
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
+		try
 		{
-			if (!response.isSuccessful())
-			{
-				log.debug("Error looking up worlds: {}", response);
-				throw new IOException("unsuccessful response looking up worlds");
-			}
-
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), WorldResult.class);
+			return lookupWorldsAsync()
+				.block();
 		}
-		catch (JsonParseException ex)
+		catch (RuntimeException e)
 		{
-			throw new IOException(ex);
+			throw new IOException(e);
 		}
+	}
+
+	public static WorldClient create()
+	{
+		return create(RuneLiteAPI.getBaseClient());
+	}
+
+	public static WorldClient create(HttpClient client)
+	{
+		return new WorldClient(client);
 	}
 }

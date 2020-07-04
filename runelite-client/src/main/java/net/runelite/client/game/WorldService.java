@@ -65,7 +65,7 @@ public class WorldService
 	{
 		this.client = client;
 		this.scheduledExecutorService = scheduledExecutorService;
-		this.worldClient = new WorldClient(okHttpClient);
+		this.worldClient = WorldClient.create();
 		this.eventBus = eventBus;
 
 		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::tick), 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
