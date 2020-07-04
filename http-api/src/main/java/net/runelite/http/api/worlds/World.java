@@ -48,5 +48,7 @@ public class World
 	}
 
 	@JsonPOJOBuilder(withPrefix = "")
-	public static class WorldBuilder {}
+	public static class WorldBuilder
+	{
+	}
 }

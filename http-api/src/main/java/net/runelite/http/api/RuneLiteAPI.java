@@ -108,7 +108,8 @@ public class RuneLiteAPI
 			.headers(headers -> headers.add("User-Agent", userAgent));
 	}
 
-	public static HttpClient getBaseClient() {
+	public static HttpClient getBaseClient()
+	{
 		return BASE_CLIENT;
 	}
 

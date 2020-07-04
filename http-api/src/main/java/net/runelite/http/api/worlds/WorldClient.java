@@ -51,7 +51,7 @@ public class WorldClient extends RuneLiteClient
 	 * The result can be handled as a {@link Future} if desired:
 	 *
 	 * <pre> {@code lookupWorldsAsync().toFuture;} </pre>
-	 * <p>
+	 *
 	 * Similarly, the {@link Future} will throw a {@link java.util.concurrent.ExecutionException}, wrapping
 	 * the {@link IOException} on error.
 	 *

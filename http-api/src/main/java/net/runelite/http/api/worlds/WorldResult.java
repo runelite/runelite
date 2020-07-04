@@ -50,5 +50,7 @@ public class WorldResult
 	}
 
 	@JsonPOJOBuilder(withPrefix = "")
-	public static class WorldResultBuilder {}
+	public static class WorldResultBuilder
+	{
+	}
 }
