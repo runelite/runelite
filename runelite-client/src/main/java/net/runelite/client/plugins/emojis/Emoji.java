@@ -89,6 +89,13 @@ enum Emoji
 	PENSIVE("V_V"),
 	ACORN("<lt>D~"), // <D~
 	GORILLA(":G"),
+	AUSTRALIA_FLAG("#Au"),
+	BLACK_FLAG("#Blk"),
+	GERMANY_FLAG("#De"),
+	RAINBOW_FLAG("#Rbw"),
+	UK_FLAG("#Uk"),
+	US_FLAG("#Us"),
+	WHITE_FLAG("#Wht"),
 	;
 
 	private static final Map<String, Emoji> emojiMap;
