@@ -465,6 +465,11 @@ public class ScreenshotPlugin extends Plugin
 				}
 				break;
 			case LEVEL_UP_GROUP_ID:
+				if (!config.screenshotLevels())
+				{
+					return;
+				}
+				break;
 			case DIALOG_SPRITE_GROUP_ID:
 				if (!(config.screenshotLevels() || config.screenshotHighGamble()))
 				{
