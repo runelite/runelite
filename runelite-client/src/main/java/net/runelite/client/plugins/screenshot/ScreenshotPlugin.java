@@ -640,7 +640,7 @@ public class ScreenshotPlugin extends Plugin
 	 * Parses the Barbarian Assault high gamble reward dialog text into a shortened string for filename usage.
 	 *
 	 * @param text The {@link Widget#getText() text} of the {@link WidgetInfo#DIALOG_SPRITE_TEXT} widget.
-	 * @return Shortened string in the format "Watermelon seed (x50)(100)"
+	 * @return Shortened string in the format "(100) Watermelon seed (x50)"
 	 */
 	static String parseBAHighGambleWidget(final String text)
 	{
@@ -650,7 +650,7 @@ public class ScreenshotPlugin extends Plugin
 			String reward = highGambleMatch.group(1);
 			String gambleCount = highGambleMatch.group(2);
 
-			return String.format("%s(%s)", reward, gambleCount);
+			return String.format("(%s) %s", gambleCount, reward);
 		}
 
 		return "High Gamble(count not found)";
