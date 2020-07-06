@@ -35,6 +35,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Instant;
 import java.util.Locale;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -85,9 +86,9 @@ public class NpcSceneOverlay extends Overlay
 			plugin.getDeadNpcsToDisplay().forEach((id, npc) -> renderNpcRespawn(npc, graphics));
 		}
 
-		for (NPC npc : plugin.getHighlightedNpcs())
+		for (Map.Entry<NPC, NpcHighlight> entrySet : plugin.getHighlightedNpcs().entrySet())
 		{
-			renderNpcOverlay(graphics, npc, config.getHighlightColor());
+			renderNpcOverlay(graphics, entrySet.getKey(), entrySet.getValue());
 		}
 
 		return null;
@@ -143,8 +144,10 @@ public class NpcSceneOverlay extends Overlay
 		}
 	}
 
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color)
+	private void renderNpcOverlay(Graphics2D graphics, NPC actor, NpcHighlight npcHighlight)
 	{
+		Color color = npcHighlight.getColor();
+
 		NPCComposition npcComposition = actor.getTransformedComposition();
 		if (npcComposition == null || !npcComposition.isInteractible()
 			|| (actor.isDead() && config.ignoreDeadNpcs()))
@@ -152,13 +155,13 @@ public class NpcSceneOverlay extends Overlay
 			return;
 		}
 
-		if (config.highlightHull())
+		if (npcHighlight.getRenderHull())
 		{
 			Shape objectClickbox = actor.getConvexHull();
 			renderPoly(graphics, color, objectClickbox);
 		}
 
-		if (config.highlightTile())
+		if (npcHighlight.getRenderTile())
 		{
 			int size = npcComposition.getSize();
 			LocalPoint lp = actor.getLocalLocation();
@@ -167,7 +170,7 @@ public class NpcSceneOverlay extends Overlay
 			renderPoly(graphics, color, tilePoly);
 		}
 
-		if (config.highlightSouthWestTile())
+		if (npcHighlight.getRenderSouthWestTile())
 		{
 			int size = npcComposition.getSize();
 			LocalPoint lp = actor.getLocalLocation();
