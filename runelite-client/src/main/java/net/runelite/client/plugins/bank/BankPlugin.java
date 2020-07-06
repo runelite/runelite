@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -54,6 +55,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -201,6 +203,12 @@ public class BankPlugin extends Plugin
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
+					ContainerCalculation.getItemContainer().add(itemId);
+				}
+
+				if (stringStack[0].toLowerCase().contains(search.toLowerCase()))
+				{
+					ContainerCalculation.getItemContainer().add(itemId);
 				}
 
 				break;
@@ -254,8 +262,23 @@ public class BankPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onScriptPreFired(ScriptPreFired event)
+	{
+		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
+		{
+			ContainerCalculation.getItemContainer().clear();
+		}
+	}
+
+	@Subscribe
 	public void onScriptPostFired(ScriptPostFired event)
 	{
+
+		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
+		{
+			updateBankTitle();
+		}
+
 		if (event.getScriptId() != ScriptID.BANKMAIN_SEARCH_REFRESH)
 		{
 			return;
@@ -492,6 +515,51 @@ public class BankPlugin extends Plugin
 			}
 		}
 		return set;
+	}
+
+	// Updates the bank title using the items found in ItemContainer
+	private void updateBankTitle()
+	{
+		String priceText = "";
+		if (ContainerCalculation.getItemContainer().size() > 0)
+		{
+			final ItemContainer container = client.getItemContainer(InventoryID.BANK);
+			final Item[] items = container.getItems();
+			ArrayList<Item> itemContainerToCalculate = new ArrayList<>();
+			for (Item item : items)
+			{
+				if (ContainerCalculation.getItemContainer().contains(item.getId()))
+				{
+					itemContainerToCalculate.add(item);
+				}
+			}
+			Item[] foundItems = itemContainerToCalculate.toArray(new Item[itemContainerToCalculate.size()]);
+			final ContainerPrices prices = calculate(foundItems);
+			if (prices != null)
+			{
+				priceText = createValueText(prices);
+			}
+		}
+
+		if (!priceText.isEmpty())
+		{
+			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+
+			// if BankPlugin's setting to write is what BankTagsPlugin would, don't do anything.
+			if (!bankTitle.getText().endsWith("<br>" + priceText))
+			{
+				// if BankPlugin wrote something on the title, append priceText of BankTagsPlugin
+				if (bankTitle.getText().contains("<br>"))
+				{
+					bankTitle.setText(bankTitle.getText() + priceText);
+				}
+				else
+				{
+					// if BankPlugin didn't write anything, then BankTagsPlugin writes instead.
+					bankTitle.setText(bankTitle.getText() + "<br>" + priceText);
+				}
+			}
+		}
 	}
 
 	@Nullable

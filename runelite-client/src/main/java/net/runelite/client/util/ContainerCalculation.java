@@ -25,14 +25,20 @@
  */
 package net.runelite.client.util;
 
+import java.util.HashSet;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 
 public class ContainerCalculation
 {
+	@Getter(AccessLevel.PUBLIC)
+	private static HashSet<Integer> itemContainer = new HashSet<>();
+
 	private static ItemManager itemManager;
 
 	@Inject

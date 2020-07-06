@@ -33,7 +33,6 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -113,7 +112,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
 		"Show items whose names or tags contain the following text: (%d found)<br>" +
 			"(To show only tagged items, start your search with 'tag:')";
-	private static HashSet<Integer> tabContainer = new HashSet<>();
 
 	@Inject
 	private ItemManager itemManager;
@@ -292,11 +290,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			tabContainer.clear();
+			ContainerCalculation.getItemContainer().clear();
 		}
 	}
 
-	@Subscribe
+	// run after BankPlugin's updateBankTitle
+	@Subscribe(priority = -1)
 	public void onScriptPostFired(ScriptPostFired event)
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
@@ -340,7 +339,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
-					tabContainer.add(itemId);
+					ContainerCalculation.getItemContainer().add(itemId);
 				}
 				else if (tagSearch)
 				{
@@ -508,23 +507,23 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		return event;
 	}
 
-	// Updates the bank title using the items found in tabContainer
+	// Updates the bank title using the items found in ItemContainer
 	private void updateBankTitle()
 	{
 		String priceText = "";
-		if (tabContainer.size() > 0)
+		if (ContainerCalculation.getItemContainer().size() > 0)
 		{
 			final ItemContainer container = client.getItemContainer(InventoryID.BANK);
 			final Item[] items = container.getItems();
-			ArrayList<Item> tabContainerToCalculate = new ArrayList<>();
+			ArrayList<Item> itemContainerToCalculate = new ArrayList<>();
 			for (Item item : items)
 			{
-				if (tabContainer.contains(item.getId()))
+				if (ContainerCalculation.getItemContainer().contains(item.getId()))
 				{
-					tabContainerToCalculate.add(item);
+					itemContainerToCalculate.add(item);
 				}
 			}
-			Item[] foundItems = tabContainerToCalculate.toArray(new Item[tabContainerToCalculate.size()]);
+			Item[] foundItems = itemContainerToCalculate.toArray(new Item[itemContainerToCalculate.size()]);
 			final ContainerPrices prices = calculate(foundItems);
 			if (prices != null)
 			{
@@ -535,7 +534,21 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		if (!priceText.isEmpty())
 		{
 			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-			bankTitle.setText(bankTitle.getText() + "<br>" + priceText);
+
+			// if BankPlugin's setting to write is what BankTagsPlugin would, don't do anything.
+			if (!bankTitle.getText().endsWith("<br>" + priceText))
+			{
+				// if BankPlugin wrote something on the title, append priceText of BankTagsPlugin
+				if (bankTitle.getText().contains("<br>"))
+				{
+					bankTitle.setText(bankTitle.getText() + priceText);
+				}
+				else
+				{
+					// if BankPlugin didn't write anything, then BankTagsPlugin writes instead.
+					bankTitle.setText(bankTitle.getText() + "<br>" + priceText);
+				}
+			}
 		}
 	}
 
