@@ -380,13 +380,17 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	/**
-	 * Builds an appropriate NpcHighlight object from given NPC and string
+	 * Builds an appropriate NpcHighlight object from given npc and string
 	 */
 	private NpcHighlight buildNpcHighlight(NPC npc, String highlightString)
 	{
 		String splitHighlight[] = highlightString.split(HIGHLIGHT_CONFIG_SPLITTER);
+		if (splitHighlight.length == 0)
+		{
+			return null;
+		}
 		String highlightNpcName = splitHighlight[0];
-		if (splitHighlight.length == 0 || !WildcardMatcher.matches(highlightNpcName, npc.getName()))
+		if (!WildcardMatcher.matches(highlightNpcName, npc.getName()))
 		{
 			return null;
 		}
