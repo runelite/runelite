@@ -640,7 +640,7 @@ public class ScreenshotPlugin extends Plugin
 	 * Parses the Barbarian Assault high gamble reward dialog text into a shortened string for filename usage.
 	 *
 	 * @param text The {@link Widget#getText() text} of the {@link WidgetInfo#DIALOG_SPRITE_TEXT} widget.
-	 * @return Shortened string in the format "Watermelon seed (x50) (100)"
+	 * @return Shortened string in the format "Watermelon seed (x50)(100)"
 	 */
 	static String parseBAHighGambleWidget(final String text)
 	{
