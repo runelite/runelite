@@ -236,7 +236,10 @@ public interface ScreenshotConfig extends Config
 		position = 16,
 		section = whatSection
 	)
-	default boolean screenshotHighGamble() { return false; }
+	default boolean screenshotHighGamble()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "hotkey",
