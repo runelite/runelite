@@ -387,7 +387,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		for (String highlight : highlights)
 		{
-			if (WildcardMatcher.matches(highlight, npcName))
+			if (config.showAllNPCs() ^ WildcardMatcher.matches(highlight, npcName))
 			{
 				highlightedNpcs.add(npc);
 				if (!client.isInInstancedRegion())
@@ -517,6 +517,8 @@ public class NpcIndicatorsPlugin extends Plugin
 		return Text.fromCSV(configNpcs);
 	}
 
+
+
 	private void rebuildAllNpcs()
 	{
 		highlightedNpcs.clear();
@@ -547,7 +549,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			for (String highlight : highlights)
 			{
-				if (WildcardMatcher.matches(highlight, npcName))
+				if (config.showAllNPCs() ^ WildcardMatcher.matches(highlight, npcName))
 				{
 					if (!client.isInInstancedRegion())
 					{
