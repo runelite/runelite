@@ -29,6 +29,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import lombok.Builder;
 import lombok.Value;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -114,6 +115,25 @@ public class RuneLiteApiClientTest
 
 		Assert.assertEquals(0, server.getRequestCount());
 		Assert.assertFalse(response.isDone());
+	}
+
+	@Test
+	public void correctBuiltUrl() throws IOException
+	{
+		// Create an echo client that short circuits and returns the request URL in the response
+		RuneLiteApiClient client = new RuneLiteApiClient(new OkHttpClient.Builder().addInterceptor(chain -> {
+			HttpUrl url = chain.request().url();
+			return new Response.Builder()
+				.body(ResponseBody.create(MediaType.parse("text"), url.toString()))
+				.code(200)
+				.protocol(Protocol.HTTP_2)
+				.request(chain.request())
+				.build();
+		}),
+			HttpUrl.parse("http://www.google.com"), "one/two/three");
+
+		Response response = client.get_();
+		Assert.assertEquals("http://www.google.com/one/two/three", response.body().string());
 	}
 
 	@Test

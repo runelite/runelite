@@ -229,7 +229,7 @@ public class RuneLiteApiClient
 	{
 		Request request = requestBuilder
 			.url(urlInterceptor.apply(baseUrl.newBuilder()
-				.addPathSegment(endpoint)
+				.addPathSegments(endpoint)
 				.build()))
 			.build();
 
@@ -356,6 +356,8 @@ public class RuneLiteApiClient
 				.newBuilder()
 				.header("User-Agent", createUserAgent())
 				.build();
+
+			log.debug(String.format("Built URL: %s", request.url().toString()));
 
 			Response response = chain.proceed(request);
 
