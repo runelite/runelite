@@ -145,6 +145,6 @@ public class KeyManager
 			return true;
 		}
 
-		return client.getGameState() != GameState.LOGIN_SCREEN;
+		return client.getGameState() != GameState.LOGIN_SCREEN && client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR;
 	}
 }
