@@ -37,43 +37,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-public class RuneLiteApiClientTest
+public class RuneLiteApiClientTest extends AbstractApiClientTest
 {
-
-	public final MockWebServer server = new MockWebServer();
-	private OkHttpClient.Builder testClient;
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
-	@Before
-	public void before() throws IOException
-	{
-		server.start();
-		testClient = new OkHttpClient.Builder()
-			.addInterceptor(chain -> {
-				Request request = chain.request()
-					.newBuilder()
-					.url(server.url("/"))
-					.build();
-
-				return chain.proceed(request);
-			});
-	}
-
-	@After
-	public void after() throws IOException
-	{
-		server.shutdown();
-	}
 
 	@Test
 	public void gsonParseLombok() throws IOException
@@ -120,20 +88,14 @@ public class RuneLiteApiClientTest
 	@Test
 	public void correctBuiltUrl() throws IOException
 	{
-		// Create an echo client that short circuits and returns the request URL in the response
-		RuneLiteApiClient client = new RuneLiteApiClient(new OkHttpClient.Builder().addInterceptor(chain -> {
-			HttpUrl url = chain.request().url();
-			return new Response.Builder()
-				.body(ResponseBody.create(MediaType.parse("text"), url.toString()))
-				.code(200)
-				.protocol(Protocol.HTTP_2)
-				.request(chain.request())
-				.build();
-		}),
+		CaptureRequestInterceptor captureRequest = new CaptureRequestInterceptor();
+		RuneLiteApiClient client = new RuneLiteApiClient(new OkHttpClient.Builder()
+			.addInterceptor(captureRequest),
 			HttpUrl.parse("http://www.google.com"), "one/two/three");
 
 		Response response = client.get_();
-		Assert.assertEquals("http://www.google.com/one/two/three", response.body().string());
+		Request request = captureRequest.getRequest();
+		Assert.assertEquals("http://www.google.com/one/two/three", request.url().toString());
 	}
 
 	@Test

@@ -25,51 +25,24 @@
 package net.runelite.http.api.worlds;
 
 import java.io.IOException;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import net.runelite.http.api.AbstractApiClientTest;
 import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-public class WorldClientTest
+public class WorldClientTest extends AbstractApiClientTest
 {
-	private final MockWebServer server = new MockWebServer();
-	private OkHttpClient testClient;
+
 
 	private static final String expectedJson =
 		"{\"worlds\":[{\"id\":385,\"types\":[\"SKILL_TOTAL\"],\"address\":" +
 			"\"oldschool85.runescape.com\",\"activity\":\"750 skill total\",\"location\":0,\"players\":95}]}";
 
-	@Before
-	public void before() throws IOException
-	{
-		server.start();
-		testClient = new OkHttpClient.Builder()
-			.addInterceptor(chain -> {
-				Request request = chain.request()
-					.newBuilder()
-					.url(server.url("/"))
-					.build();
-
-				return chain.proceed(request);
-			})
-			.build();
-	}
-
-	@After
-	public void after() throws IOException
-	{
-		server.shutdown();
-	}
-
 	@Test
 	public void expectedResponse() throws IOException
 	{
 		server.enqueue(new MockResponse().setBody(expectedJson).setResponseCode(200));
-		WorldClient client = new WorldClient(testClient);
+		WorldClient client = new WorldClient(testClient.build());
 		WorldResult result = client.lookupWorlds();
 
 		Assert.assertEquals(1, result.getWorlds().size());
