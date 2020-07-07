@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, AeonLucid <https://github.com/AeonLucid>
+ * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,51 +25,23 @@
  */
 package net.runelite.http.api.osbuddy;
 
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
+import net.runelite.http.api.RuneLiteApiClient;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
-@Slf4j
-@AllArgsConstructor
-public class OSBGrandExchangeClient
+public class OSBGrandExchangeClient extends RuneLiteApiClient
 {
-	private final OkHttpClient client;
+	private static final String ENDPOINT = "osb/ge";
+
+	public OSBGrandExchangeClient(OkHttpClient client)
+	{
+		super(client.newBuilder(), ENDPOINT);
+	}
 
 	public OSBGrandExchangeResult lookupItem(int itemId) throws IOException
 	{
-		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("osb")
-			.addPathSegment("ge")
+		return bodyToObject(get_(url -> url.newBuilder()
 			.addQueryParameter("itemId", Integer.toString(itemId))
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		final Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (final Response response = client.newCall(request).execute())
-		{
-			if (!response.isSuccessful())
-			{
-				throw new IOException("Error looking up item id: " + response);
-			}
-
-			final InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), OSBGrandExchangeResult.class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+			.build()), OSBGrandExchangeResult.class);
 	}
 }
