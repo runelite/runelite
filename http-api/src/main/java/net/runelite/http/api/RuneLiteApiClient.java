@@ -237,7 +237,15 @@ public class RuneLiteApiClient
 		Call call = client.newCall(request);
 		call.enqueue(response);
 
-		return response.getFuture();
+		return response.getFuture()
+			.whenComplete((r, e) ->
+			{
+				// Ensure response is closed in case exception
+				if (e != null)
+				{
+					r.body().close();
+				}
+			});
 	}
 
 	private Response request(Request.Builder requestBuilder, Function<HttpUrl, HttpUrl> urlInterceptor) throws IOException
