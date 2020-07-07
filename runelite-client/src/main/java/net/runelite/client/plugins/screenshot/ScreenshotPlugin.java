@@ -653,9 +653,7 @@ public class ScreenshotPlugin extends Plugin
 		final Matcher highGambleMatch = BA_HIGH_GAMBLE_REWARD_PATTERN.matcher(text);
 		if (highGambleMatch.find())
 		{
-			String reward = highGambleMatch.group(1);
 			String gambleCount = highGambleMatch.group(2);
-
 			return String.format("High Gamble(%s)", gambleCount);
 		}
 
