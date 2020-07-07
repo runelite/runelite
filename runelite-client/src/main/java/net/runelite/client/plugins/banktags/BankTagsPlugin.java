@@ -39,7 +39,6 @@ import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -49,7 +48,6 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.DraggingWidgetChanged;
@@ -58,8 +56,6 @@ import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
@@ -84,9 +80,6 @@ import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.util.ContainerCalculation;
-import net.runelite.client.util.ContainerPrices;
-import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -148,11 +141,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 	@Inject
 	private ConfigManager configManager;
-
-	@Inject
-	private ContainerCalculation bankCalculation;
-
-	private List<Integer> itemContainer = new ArrayList<>();
 
 	@Provides
 	BankTagsConfig getConfig(ConfigManager configManager)
@@ -258,7 +246,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		mouseManager.unregisterMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::destroy);
 		spriteManager.removeSpriteOverrides(TabSprites.values());
-		itemContainer.clear();
 	}
 
 	@Subscribe
@@ -289,23 +276,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired event)
-	{
-		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
-		{
-			itemContainer.clear();
-		}
-	}
-
-	public void onScriptPostFired(ScriptPostFired event)
-	{
-		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
-		{
-			updateBankTitle();
-		}
-	}
-
-	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		String eventName = event.getEventName();
@@ -323,9 +293,11 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				stringStack[stringStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
 				break;
 			case "setSearchBankInputTextFound":
+			{
 				int matches = intStack[intStackSize - 1];
 				stringStack[stringStackSize - 1] = String.format(SEARCH_BANK_INPUT_TEXT_FOUND, matches);
 				break;
+			}
 			case "bankSearchFilter":
 				int itemId = intStack[intStackSize - 1];
 				String search = stringStack[stringStackSize - 1];
@@ -339,10 +311,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
-					if (stringStack[stringStackSize - 1].startsWith(TAG_SEARCH))
-					{
-						itemContainer.add(itemId);
-					}
 				}
 				else if (tagSearch)
 				{
@@ -508,89 +476,5 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	{
 		tabInterface.handleWheel(event);
 		return event;
-	}
-
-	// Updates the bank title using the items found in ItemContainer
-	private void updateBankTitle()
-	{
-		String priceText = "";
-		if (itemContainer.size() > 0)
-		{
-			final ItemContainer container = client.getItemContainer(InventoryID.BANK);
-			final Item[] items = container.getItems();
-			ArrayList<Item> itemContainerToCalculate = new ArrayList<>();
-			for (Item item : items)
-			{
-				if (itemContainer.contains(item.getId()))
-				{
-					itemContainerToCalculate.add(item);
-				}
-			}
-			Item[] foundItems = itemContainerToCalculate.toArray(new Item[itemContainerToCalculate.size()]);
-			final ContainerPrices prices = calculate(foundItems);
-			if (prices != null)
-			{
-				priceText = createValueText(prices);
-			}
-		}
-
-		if (!priceText.isEmpty())
-		{
-			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-			bankTitle.setText(bankTitle.getText() + "<br>" + priceText);
-		}
-	}
-
-	private String createValueText(final ContainerPrices prices)
-	{
-		final long gePrice = prices.getGePrice();
-		final long haPrice = prices.getHighAlchPrice();
-
-		String strCurrentTab = "";
-		if (config.showGE() && gePrice != 0)
-		{
-			strCurrentTab += " (";
-
-			if (config.showHA())
-			{
-				strCurrentTab += "GE: ";
-			}
-
-			if (config.showExact())
-			{
-				strCurrentTab += QuantityFormatter.formatNumber(gePrice) + ")";
-			}
-			else
-			{
-				strCurrentTab += QuantityFormatter.quantityToStackSize(gePrice) + ")";
-			}
-		}
-
-		if (config.showHA() && haPrice != 0)
-		{
-			strCurrentTab += " (";
-
-			if (config.showGE())
-			{
-				strCurrentTab += "HA: ";
-			}
-
-			if (config.showExact())
-			{
-				strCurrentTab += QuantityFormatter.formatNumber(haPrice) + ")";
-			}
-			else
-			{
-				strCurrentTab += QuantityFormatter.quantityToStackSize(haPrice) + ")";
-			}
-		}
-
-		return strCurrentTab;
-	}
-
-	@Nullable
-	ContainerPrices calculate(@Nullable Item[] items)
-	{
-		return bankCalculation.calculate(items);
 	}
 }

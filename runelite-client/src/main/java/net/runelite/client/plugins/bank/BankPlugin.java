@@ -33,7 +33,6 @@ import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,8 +69,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.BankSearch;
-import net.runelite.client.util.ContainerCalculation;
-import net.runelite.client.util.ContainerPrices;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
@@ -82,18 +79,6 @@ import net.runelite.client.util.QuantityFormatter;
 @Slf4j
 public class BankPlugin extends Plugin
 {
-	private static final List<Varbits> TAB_VARBITS = ImmutableList.of(
-		Varbits.BANK_TAB_ONE_COUNT,
-		Varbits.BANK_TAB_TWO_COUNT,
-		Varbits.BANK_TAB_THREE_COUNT,
-		Varbits.BANK_TAB_FOUR_COUNT,
-		Varbits.BANK_TAB_FIVE_COUNT,
-		Varbits.BANK_TAB_SIX_COUNT,
-		Varbits.BANK_TAB_SEVEN_COUNT,
-		Varbits.BANK_TAB_EIGHT_COUNT,
-		Varbits.BANK_TAB_NINE_COUNT
-	);
-
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
 	private static final String DEPOSIT_LOOT = "Deposit loot";
@@ -119,13 +104,10 @@ public class BankPlugin extends Plugin
 	@Inject
 	private BankSearch bankSearch;
 
-	@Inject
-	private ContainerCalculation bankCalculation;
-
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
-	private List<Integer> itemContainer;
+	private ArrayList<Item> itemContainer = new ArrayList<>();
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -186,17 +168,6 @@ public class BankPlugin extends Plugin
 
 		switch (event.getEventName())
 		{
-			case "setBankTitle":
-				final ContainerPrices prices = calculate(getBankTabItems());
-				if (prices == null)
-				{
-					return;
-				}
-
-				final String strCurrentTab = createValueText(prices);
-
-				stringStack[stringStackSize - 1] += strCurrentTab;
-				break;
 			case "bankSearchFilter":
 				int itemId = intStack[intStackSize - 1];
 				String search = stringStack[stringStackSize - 1];
@@ -205,12 +176,6 @@ public class BankPlugin extends Plugin
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
-					itemContainer.add(itemId);
-				}
-
-				if (stringStack[0].toLowerCase().contains(search.toLowerCase()))
-				{
-					itemContainer.add(itemId);
 				}
 
 				break;
@@ -268,17 +233,16 @@ public class BankPlugin extends Plugin
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			itemContainer = new ArrayList<>();
+			itemContainer.clear();
 		}
 	}
 
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired event)
 	{
-
 		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			updateBankTitle();
+			addItemsToContainer();
 		}
 
 		if (event.getScriptId() != ScriptID.BANKMAIN_SEARCH_REFRESH)
@@ -356,33 +320,6 @@ public class BankPlugin extends Plugin
 		}
 
 		return strCurrentTab;
-	}
-
-	private Item[] getBankTabItems()
-	{
-		final ItemContainer container = client.getItemContainer(InventoryID.BANK);
-		if (container == null)
-		{
-			return null;
-		}
-
-		final Item[] items = container.getItems();
-		int currentTab = client.getVar(Varbits.CURRENT_BANK_TAB);
-
-		if (currentTab > 0)
-		{
-			int startIndex = 0;
-
-			for (int i = currentTab - 1; i > 0; i--)
-			{
-				startIndex += client.getVar(TAB_VARBITS.get(i - 1));
-			}
-
-			int itemCount = client.getVar(TAB_VARBITS.get(currentTab - 1));
-			return Arrays.copyOfRange(items, startIndex, startIndex + itemCount);
-		}
-
-		return items;
 	}
 
 	private void updateSeedVaultTotal()
@@ -519,24 +456,77 @@ public class BankPlugin extends Plugin
 		return set;
 	}
 
+	@Nullable
+	ContainerPrices calculate(@Nullable Item[] items)
+	{
+		if (items == null)
+		{
+			return null;
+		}
+
+		long ge = 0;
+		long alch = 0;
+
+		for (final Item item : items)
+		{
+			final int qty = item.getQuantity();
+			final int id = item.getId();
+
+			if (id <= 0 || qty == 0)
+			{
+				continue;
+			}
+
+			switch (id)
+			{
+				case ItemID.COINS_995:
+					ge += qty;
+					alch += qty;
+					break;
+				case ItemID.PLATINUM_TOKEN:
+					ge += qty * 1000L;
+					alch += qty * 1000L;
+					break;
+				default:
+					final int alchPrice = itemManager.getItemComposition(id).getHaPrice();
+					alch += (long) alchPrice * qty;
+					ge += (long) itemManager.getItemPrice(id) * qty;
+					break;
+			}
+		}
+
+		return new ContainerPrices(ge, alch);
+	}
+
+	// add visible items to ItemContainer
+	private void addItemsToContainer()
+	{
+		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bankItemContainer != null)
+		{
+			Widget[] items = bankItemContainer.getDynamicChildren();
+			for (Widget item : items)
+			{
+				if (!item.isHidden())
+				{
+					if (!item.getName().isEmpty() && item.getItemId() >= 0)
+					{
+						itemContainer.add(new Item(item.getItemId(), item.getItemQuantity()));
+					}
+				}
+			}
+		}
+		updateBankTitle();
+	}
+
 	// Updates the bank title using the items found in ItemContainer
 	private void updateBankTitle()
 	{
 		String priceText = "";
 		if (itemContainer.size() > 0)
 		{
-			final ItemContainer container = client.getItemContainer(InventoryID.BANK);
-			final Item[] items = container.getItems();
-			ArrayList<Item> itemContainerToCalculate = new ArrayList<>();
-			for (Item item : items)
-			{
-				if (itemContainer.contains(item.getId()))
-				{
-					itemContainerToCalculate.add(item);
-				}
-			}
-			Item[] foundItems = itemContainerToCalculate.toArray(new Item[itemContainerToCalculate.size()]);
-			final ContainerPrices prices = calculate(foundItems);
+			Item[] items = itemContainer.toArray(new Item[itemContainer.size()]);
+			final ContainerPrices prices = calculate(items);
 			if (prices != null)
 			{
 				priceText = createValueText(prices);
@@ -548,11 +538,5 @@ public class BankPlugin extends Plugin
 			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 			bankTitle.setText(bankTitle.getText() + "<br>" + priceText);
 		}
-	}
-
-	@Nullable
-	ContainerPrices calculate(@Nullable Item[] items)
-	{
-		return bankCalculation.calculate(items);
 	}
 }

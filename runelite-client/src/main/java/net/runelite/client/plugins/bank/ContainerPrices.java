@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,63 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.client.plugins.bank;
 
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import net.runelite.api.Item;
-import net.runelite.api.ItemID;
-import net.runelite.client.game.ItemManager;
+import lombok.Value;
 
-public class ContainerCalculation
+@Value
+class ContainerPrices
 {
-	private final ItemManager itemManager;
-
-	@Inject
-	private ContainerCalculation(ItemManager itemManager)
-	{
-		this.itemManager = itemManager;
-	}
-
-	@Nullable
-	public ContainerPrices calculate(@Nullable Item[] items)
-	{
-		if (items == null)
-		{
-			return null;
-		}
-
-		long ge = 0;
-		long alch = 0;
-
-		for (final Item item : items)
-		{
-			final int qty = item.getQuantity();
-			final int id = item.getId();
-
-			if (id <= 0 || qty == 0)
-			{
-				continue;
-			}
-
-			switch (id)
-			{
-				case ItemID.COINS_995:
-					ge += qty;
-					alch += qty;
-					break;
-				case ItemID.PLATINUM_TOKEN:
-					ge += qty * 1000L;
-					alch += qty * 1000L;
-					break;
-				default:
-					final int alchPrice = itemManager.getItemComposition(id).getHaPrice();
-					alch += (long) alchPrice * qty;
-					ge += (long) itemManager.getItemPrice(id) * qty;
-					break;
-			}
-		}
-
-		return new ContainerPrices(ge, alch);
-	}
+	private long gePrice;
+	private long highAlchPrice;
 }
