@@ -125,6 +125,7 @@ public class BankPlugin extends Plugin
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
+	private List<Integer> itemContainer;
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -139,6 +140,7 @@ public class BankPlugin extends Plugin
 		forceRightClickFlag = false;
 		itemQuantities = null;
 		searchString = null;
+		itemContainer.clear();
 	}
 
 	@Subscribe
@@ -203,12 +205,12 @@ public class BankPlugin extends Plugin
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
-					ContainerCalculation.getItemContainer().add(itemId);
+					itemContainer.add(itemId);
 				}
 
 				if (stringStack[0].toLowerCase().contains(search.toLowerCase()))
 				{
-					ContainerCalculation.getItemContainer().add(itemId);
+					itemContainer.add(itemId);
 				}
 
 				break;
@@ -266,7 +268,7 @@ public class BankPlugin extends Plugin
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			ContainerCalculation.getItemContainer().clear();
+			itemContainer = new ArrayList<>();
 		}
 	}
 
@@ -521,14 +523,14 @@ public class BankPlugin extends Plugin
 	private void updateBankTitle()
 	{
 		String priceText = "";
-		if (ContainerCalculation.getItemContainer().size() > 0)
+		if (itemContainer.size() > 0)
 		{
 			final ItemContainer container = client.getItemContainer(InventoryID.BANK);
 			final Item[] items = container.getItems();
 			ArrayList<Item> itemContainerToCalculate = new ArrayList<>();
 			for (Item item : items)
 			{
-				if (ContainerCalculation.getItemContainer().contains(item.getId()))
+				if (itemContainer.contains(item.getId()))
 				{
 					itemContainerToCalculate.add(item);
 				}
@@ -544,21 +546,7 @@ public class BankPlugin extends Plugin
 		if (!priceText.isEmpty())
 		{
 			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-
-			// if BankPlugin's setting to write is what BankTagsPlugin would, don't do anything.
-			if (!bankTitle.getText().endsWith("<br>" + priceText))
-			{
-				// if BankPlugin wrote something on the title, append priceText of BankTagsPlugin
-				if (bankTitle.getText().contains("<br>"))
-				{
-					bankTitle.setText(bankTitle.getText() + priceText);
-				}
-				else
-				{
-					// if BankPlugin didn't write anything, then BankTagsPlugin writes instead.
-					bankTitle.setText(bankTitle.getText() + "<br>" + priceText);
-				}
-			}
+			bankTitle.setText(bankTitle.getText() + "<br>" + priceText);
 		}
 	}
 
