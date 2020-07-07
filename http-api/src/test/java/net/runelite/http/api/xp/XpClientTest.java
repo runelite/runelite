@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
@@ -25,24 +24,32 @@
  */
 package net.runelite.http.api.xp;
 
-import java.util.concurrent.CompletableFuture;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteApiClient;
+import java.util.List;
+import net.runelite.http.api.AbstractApiClientTest;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import org.junit.Assert;
+import org.junit.Test;
 
-@Slf4j
-public class XpClient extends RuneLiteApiClient
+public class XpClientTest extends AbstractApiClientTest
 {
-	private static final String ENDPOINT = "xp/update";
-
-	public XpClient(OkHttpClient client)
+	@Test
+	public void correctUrlBuilt()
 	{
-		super(client.newBuilder(), ENDPOINT);
-	}
+		CaptureRequestInterceptor captureRequest = new CaptureRequestInterceptor();
+		XpClient xpClient = new XpClient(new OkHttpClient.Builder().addInterceptor(captureRequest).build());
 
-	public CompletableFuture<Void> update(String username)
-	{
-		return getAsync_(url -> url.newBuilder().addQueryParameter("username", username).build())
-			.thenCompose(response -> bodyToObjectFuture(response, Void.class));
+		xpClient.update("Zezima").join();
+
+		HttpUrl builtUrl = captureRequest.getRequest().url();
+		List<String> pathSegments = builtUrl.pathSegments();
+
+		Assert.assertEquals(3, pathSegments.size());
+		Assert.assertEquals("xp", pathSegments.get(1));
+		Assert.assertEquals("update", pathSegments.get(2));
+
+		Assert.assertEquals("Zezima", builtUrl.queryParameter("username"));
+
+
 	}
 }
