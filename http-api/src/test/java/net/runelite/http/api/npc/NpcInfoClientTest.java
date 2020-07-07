@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
@@ -25,32 +24,51 @@
  */
 package net.runelite.http.api.npc;
 
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
-import net.runelite.http.api.RuneLiteApiClient;
+import net.runelite.http.api.AbstractApiClientTest;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import okhttp3.mockwebserver.MockResponse;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class NpcInfoClient extends RuneLiteApiClient
+public class NpcInfoClientTest extends AbstractApiClientTest
 {
-	private final static String ENDPOINT = "npcs/npcs.min.json";
-	private final static Type typeToken;
+	private static final String expectedJson =
+		"{\"1\":{\"hitpoints\":52},\"2\":{\"hitpoints\":90},\"3\":{\"hitpoints\":90}}";
 
-	static
+	@Test
+	public void expectedResponse() throws IOException
 	{
-		typeToken = new TypeToken<Map<Integer, NpcInfo>>()
-		{
-		}.getType();
+		server.enqueue(new MockResponse().setBody(expectedJson).setResponseCode(200));
+		NpcInfoClient client = new NpcInfoClient(testClient.build());
+
+		Map<Integer, NpcInfo> result = client.getNpcs();
+
+		Assert.assertEquals(3, result.size());
+		Assert.assertEquals(52, result.get(1).getHitpoints());
+		Assert.assertEquals(90, result.get(2).getHitpoints());
+		Assert.assertEquals(90, result.get(3).getHitpoints());
 	}
 
-	public NpcInfoClient(OkHttpClient client)
+	@Test
+	public void correctUrlBuilt() throws IOException
 	{
-		super(client.newBuilder(), STATIC_BASE_URL, ENDPOINT);
-	}
+		CaptureRequestInterceptor captureRequest = new CaptureRequestInterceptor();
+		NpcInfoClient npcInfoClient = new NpcInfoClient(new OkHttpClient.Builder()
+			.addInterceptor(captureRequest).build());
 
-	public Map<Integer, NpcInfo> getNpcs() throws IOException
-	{
-		return bodyToObject(get_(), typeToken);
+		npcInfoClient.getNpcs();
+
+		HttpUrl builtUrl = captureRequest.getRequest().url();
+
+		Assert.assertTrue(builtUrl.host().contains("static.runelite"));
+
+		List<String> pathSegments = builtUrl.pathSegments();
+		Assert.assertEquals(2, pathSegments.size());
+		Assert.assertEquals("npcs", pathSegments.get(0));
+		Assert.assertEquals("npcs.min.json", pathSegments.get(1));
 	}
 }
