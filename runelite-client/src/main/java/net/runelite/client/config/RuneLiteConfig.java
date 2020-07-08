@@ -329,10 +329,34 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "infoBoxTextWithOutline",
+		name = "Outline on infobox texts",
+		description = "Toggles the infobox texts to be displayed with an outline for better readability",
+		position = 41,
+		section = overlaySettings
+	)
+	default boolean infoBoxTextWithOutline()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "infoBoxTextWithBackground",
+		name = "Background on infobox texts",
+		description = "Toggles the infobox texts to be displayed with a transparent background for better readability",
+		position = 42,
+		section = overlaySettings
+	)
+	default boolean infoBoxTextWithBackground()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "infoBoxSize",
 		name = "Infobox size",
 		description = "Configures the size of each infobox in pixels",
-		position = 42,
+		position = 43,
 		section = overlaySettings
 	)
 	@Units(Units.PIXELS)
@@ -345,7 +369,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "overlayBackgroundColor",
 		name = "Overlay Color",
 		description = "Configures the background color of infoboxes and overlays",
-		position = 43,
+		position = 44,
 		section = overlaySettings
 	)
 	@Alpha
@@ -358,7 +382,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "blockExtraMouseButtons",
 		name = "Block Extra Mouse Buttons",
 		description = "Blocks extra mouse buttons (4 and above)",
-		position = 44
+		position = 45
 	)
 	default boolean blockExtraMouseButtons()
 	{
@@ -369,7 +393,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "sidebarToggleKey",
 		name = "Sidebar Toggle Key",
 		description = "The key that will toggle the sidebar (accepts modifiers)",
-		position = 45,
+		position = 46,
 		section = windowSettings
 	)
 	default Keybind sidebarToggleKey()
@@ -381,7 +405,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "panelToggleKey",
 		name = "Plugin Panel Toggle Key",
 		description = "The key that will toggle the current or last opened plugin panel (accepts modifiers)",
-		position = 46,
+		position = 47,
 		section = windowSettings
 	)
 	default Keybind panelToggleKey()
