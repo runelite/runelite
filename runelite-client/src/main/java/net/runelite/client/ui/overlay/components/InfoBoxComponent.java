@@ -54,6 +54,7 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 	private String text;
 	private Color color = Color.WHITE;
 	private boolean outline = false;
+	private boolean textBackground = false;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private BufferedImage image;
 	@Getter
@@ -93,6 +94,19 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 		// Render caption
 		if (!Strings.isNullOrEmpty(text))
 		{
+			if (textBackground)
+			{
+				final int textHeight = graphics.getFontMetrics().getHeight();
+				final BackgroundComponent textBackgroundComponent = new BackgroundComponent();
+				textBackgroundComponent.setBackgroundColor(new Color(0, 0, 0, 90));
+				textBackgroundComponent.setBorder(false);
+				// The numbers here are a reference to the border on the background, which is a const of 2.
+				// We put the background on the inner border to make it a little bit more prettier, hence starting 1 px
+				// from the edge.
+				textBackgroundComponent.setRectangle(new Rectangle(1, size - textHeight - 2, size - 2, textHeight + 1));
+				textBackgroundComponent.render(graphics);
+			}
+
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(color);
 			textComponent.setText(text);
