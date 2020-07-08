@@ -130,4 +130,26 @@ public interface HerbiboarConfig extends Config
 	{
 		return Color.WHITE;
 	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "showHerbiboars",
+		name = "Show Herbiboars",
+		description = "Show highlights for herbiboars"
+	)
+	default boolean areHerbiboarsShown()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "colorHerbiboars",
+		name = "Herbiboars Color",
+		description = "Color for herbiboars"
+	)
+	default Color getHerbiboarsColor()
+	{
+		return Color.GREEN;
+	}
 }

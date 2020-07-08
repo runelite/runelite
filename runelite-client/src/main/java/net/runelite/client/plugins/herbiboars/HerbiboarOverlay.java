@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.herbiboars;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import java.awt.Color;
@@ -31,6 +32,10 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.util.Set;
+import static net.runelite.api.AnimationID.HERBIBOAR_LEAVING;
+import net.runelite.api.NPC;
+import static net.runelite.api.NpcID.HERBIBOAR;
+import static net.runelite.api.NpcID.HERBIBOAR_7786;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -42,6 +47,12 @@ class HerbiboarOverlay extends Overlay
 {
 	private final HerbiboarPlugin plugin;
 	private final HerbiboarConfig config;
+
+	// IDs the herbiboars have when they are visible.
+	private static final Set<Integer> HERBIBOAR_IDS = ImmutableSet.of(
+		HERBIBOAR,
+		HERBIBOAR_7786
+	);
 
 	@Inject
 	public HerbiboarOverlay(HerbiboarPlugin plugin, HerbiboarConfig config)
@@ -60,12 +71,37 @@ class HerbiboarOverlay extends Overlay
 			return null;
 		}
 
+		boolean herbiboarReadyToHarvest = false;
+
+		// Draw herbiboars.
+		// Since they change compositions based of varbits, they usually do not trigger NPC spawn/despawn/changed events.
+		// For that reason, we have to scan the area for npcs.
+		if (config.areHerbiboarsShown())
+		{
+			for (NPC npc : plugin.getClient().getNpcs())
+			{
+				if (HERBIBOAR_IDS.contains(npc.getId()) && npc.getAnimation() != HERBIBOAR_LEAVING)
+				{
+					herbiboarReadyToHarvest = true;
+
+					if (config.showClickBoxes())
+					{
+						OverlayUtil.renderActorClickbox(plugin.getClient(), graphics, npc, config.getHerbiboarsColor());
+					}
+					else
+					{
+						OverlayUtil.renderActorHull(graphics, npc, config.getHerbiboarsColor());
+					}
+				}
+			}
+		}
+
 		HerbiboarSearchSpot.Group currentGroup = plugin.getCurrentGroup();
 		TrailToSpot nextTrail = plugin.getNextTrail();
 		int finishId = plugin.getFinishId();
 
 		// Draw start objects
-		if (config.isStartShown() && (currentGroup == null && finishId == 0))
+		if (config.isStartShown() && currentGroup == null && finishId == 0 && !herbiboarReadyToHarvest)
 		{
 			plugin.getStarts().values().forEach((obj) -> OverlayUtil.renderTileOverlay(graphics, obj, "", config.getStartColor()));
 		}
@@ -104,7 +140,7 @@ class HerbiboarOverlay extends Overlay
 		}
 
 		// Draw finish tunnels
-		if (config.isTunnelShown() && finishId > 0)
+		if (config.isTunnelShown() && finishId > 0 && !herbiboarReadyToHarvest)
 		{
 			WorldPoint finishLoc = plugin.getEndLocations().get(finishId - 1);
 			TileObject object = plugin.getTunnels().get(finishLoc);
