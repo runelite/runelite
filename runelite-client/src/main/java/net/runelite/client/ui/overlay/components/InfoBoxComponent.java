@@ -53,6 +53,7 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 	private Dimension preferredSize = new Dimension(DEFAULT_SIZE, DEFAULT_SIZE);
 	private String text;
 	private Color color = Color.WHITE;
+	private boolean outline = false;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private BufferedImage image;
 	@Getter
@@ -95,6 +96,7 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(color);
 			textComponent.setText(text);
+			textComponent.setOutline(outline);
 			textComponent.setPosition(new Point(baseX + ((size - metrics.stringWidth(text)) / 2), baseY + size - SEPARATOR));
 			textComponent.render(graphics);
 		}

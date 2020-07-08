@@ -131,6 +131,7 @@ public class InfoBoxOverlay extends OverlayPanel
 			infoBoxComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
 			infoBoxComponent.setBackgroundColor(config.overlayBackgroundColor());
 			infoBoxComponent.setInfoBox(box);
+			infoBoxComponent.setOutline(config.infoBoxTextWithOutline());
 			panelComponent.getChildren().add(infoBoxComponent);
 		}
 
