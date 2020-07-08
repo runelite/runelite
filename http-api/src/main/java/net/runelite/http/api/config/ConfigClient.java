@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,130 +25,60 @@
  */
 package net.runelite.http.api.config;
 
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
+import lombok.RequiredArgsConstructor;
+import net.runelite.http.api.RuneLiteApiClient;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-@AllArgsConstructor
-@Slf4j
-public class ConfigClient
+public class ConfigClient extends RuneLiteApiClient
 {
+	private static final String ENDPOINT = "config";
 	private static final MediaType TEXT_PLAIN = MediaType.parse("text/plain");
 
-	private final OkHttpClient client;
-	private final UUID uuid;
+	public ConfigClient(OkHttpClient client, UUID uuid)
+	{
+		super(client.newBuilder().addInterceptor(new ConfigClientInterceptor(uuid)), ENDPOINT);
+	}
 
 	public Configuration get() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("config")
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
-		{
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), Configuration.class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+		return bodyToObject(get_(), Configuration.class);
 	}
 
 	public CompletableFuture<Void> set(String key, String value)
 	{
-		CompletableFuture<Void> future = new CompletableFuture<>();
-
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("config")
-			.addPathSegment(key)
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.put(RequestBody.create(TEXT_PLAIN, value))
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
-
-		client.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("Unable to synchronize configuration item", e);
-				future.completeExceptionally(e);
-			}
-
-			@Override
-			public void onResponse(Call call, Response response)
-			{
-				response.close();
-				log.debug("Synchronized configuration value '{}' to '{}'", key, value);
-				future.complete(null);
-			}
-		});
-
-		return future;
+		return putAsync_(RequestBody.create(TEXT_PLAIN, value), url -> url.newBuilder().addPathSegment(key).build())
+			.thenCompose(response -> bodyToObjectFuture(response, Void.class));
 	}
 
 	public CompletableFuture<Void> unset(String key)
 	{
-		CompletableFuture<Void> future = new CompletableFuture<>();
+		return deleteAsync_(url -> url.newBuilder().addPathSegment(key).build())
+			.thenCompose(response -> bodyToObjectFuture(response, Void.class));
+	}
 
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("config")
-			.addPathSegment(key)
-			.build();
+	@RequiredArgsConstructor
+	private static class ConfigClientInterceptor implements Interceptor
+	{
 
-		log.debug("Built URI: {}", url);
+		private final UUID uuid;
 
-		Request request = new Request.Builder()
-			.delete()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
-
-		client.newCall(request).enqueue(new Callback()
+		@Override
+		public Response intercept(Chain chain) throws IOException
 		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("Unable to unset configuration item", e);
-				future.completeExceptionally(e);
-			}
+			Request request = chain.request()
+				.newBuilder()
+				.header(AUTH_HEADER, uuid.toString())
+				.build();
 
-			@Override
-			public void onResponse(Call call, Response response)
-			{
-				response.close();
-				log.debug("Unset configuration value '{}'", key);
-				future.complete(null);
-			}
-		});
-
-		return future;
+			return chain.proceed(request);
+		}
 	}
 }
