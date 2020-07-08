@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +11,6 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,33 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.coxhelper;
 
-public enum OverlayLayer
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.Prayer;
+
+@AllArgsConstructor
+@Getter(AccessLevel.PACKAGE)
+public enum PrayAgainst
 {
-	/**
-	 * Render right above the scene (that contains actors and the surface)
-	 */
-	ABOVE_SCENE,
+	MELEE(Prayer.PROTECT_FROM_MELEE),
+	MAGIC(Prayer.PROTECT_FROM_MAGIC),
+	RANGED(Prayer.PROTECT_FROM_MISSILES);
 
-	/**
-	 * Render under all interfaces, but above overheads
-	 */
-	UNDER_WIDGETS,
-
-	/**
-	 * Render under the right-click menu
-	 */
-	ABOVE_WIDGETS,
-
-	/**
-	 * Render overlay above all game elements
-	 */
-	ALWAYS_ON_TOP,
-
-	/**
-	 * Render over the map, even when it's fullscreen
-	 */
-	ABOVE_MAP,
-	AFTER_MIRROR,
+	private final Prayer prayer;
 }

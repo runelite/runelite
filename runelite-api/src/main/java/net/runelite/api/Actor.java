@@ -65,8 +65,11 @@ public interface Actor extends Renderable
 	 * </ul>
 	 *
 	 * @return the actor, null if no interaction is occurring
+	 *
+	 * (getRSInteracting returns the npc/player index, useful for menus)
 	 */
 	Actor getInteracting();
+	int getRSInteracting();
 
 	/**
 	 * Gets the health of the actor in {@link #getHealthScale()} units.
@@ -117,6 +120,8 @@ public interface Actor extends Renderable
 	 */
 	int getOrientation();
 
+	int getCurrentOrientation();
+
 	/**
 	 * Gets the current animation the actor is performing.
 	 *
@@ -165,6 +170,11 @@ public interface Actor extends Renderable
 	 * @return the graphic of the actor
 	 * @see GraphicID
 	 */
+	int getSpotAnimation();
+
+	void setSpotAnimation(int graphic);
+
+	void setSpotAnimationFrame(int spotAnimFrame);
 	int getGraphic();
 
 	@VisibleForDevtools
@@ -172,7 +182,6 @@ public interface Actor extends Renderable
 
 	@VisibleForDevtools
 	void setSpotAnimFrame(int spotAnimFrame);
-
 	/**
 	 * Gets the canvas area of the current tile the actor is standing on.
 	 *
@@ -259,4 +268,30 @@ public interface Actor extends Renderable
 	 * @param overheadText the overhead text
 	 */
 	void setOverheadText(String overheadText);
+
+	/**
+	 * Used by the "Tick Counter Plugin
+	 */
+	int getActionFrame();
+	int getActionFrameCycle();
+
+	/*
+	 This collection of methods gets extended debug information about the actor
+
+	 Used by dev tools
+	 */
+
+	int getTurnLeftAnimation();
+
+	int getTurnRightAnimation();
+
+	int getWalkAnimation();
+
+	int getWalkBackAnimation();
+
+	int getWalkLeftAnimation();
+
+	int getWalkRightAnimation();
+
+	int getRunAnimation();
 }

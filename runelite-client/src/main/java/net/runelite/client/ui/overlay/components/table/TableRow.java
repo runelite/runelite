@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.ui.overlay.components.table;
 
-public enum OverlayLayer
+import java.awt.Color;
+import java.util.Collections;
+import java.util.List;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class TableRow
 {
-	/**
-	 * Render right above the scene (that contains actors and the surface)
-	 */
-	ABOVE_SCENE,
-
-	/**
-	 * Render under all interfaces, but above overheads
-	 */
-	UNDER_WIDGETS,
-
-	/**
-	 * Render under the right-click menu
-	 */
-	ABOVE_WIDGETS,
-
-	/**
-	 * Render overlay above all game elements
-	 */
-	ALWAYS_ON_TOP,
-
-	/**
-	 * Render over the map, even when it's fullscreen
-	 */
-	ABOVE_MAP,
-	AFTER_MIRROR,
+    Color rowColor;
+    TableAlignment rowAlignment;
+    @Builder.Default
+    List<TableElement> elements = Collections.emptyList();
 }

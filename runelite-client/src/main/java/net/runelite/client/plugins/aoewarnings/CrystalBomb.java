@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, PallasDieKatze (Pallas Cat)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.aoewarnings;
 
-public enum OverlayLayer
+import java.time.Instant;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.GameObject;
+import net.runelite.api.coords.WorldPoint;
+
+@Slf4j
+@Getter(AccessLevel.PACKAGE)
+class CrystalBomb
 {
-	/**
-	 * Render right above the scene (that contains actors and the surface)
-	 */
-	ABOVE_SCENE,
+	private GameObject gameObject;
+	private Instant plantedOn;
+	private Instant lastClockUpdate;
+	private int objectId;
+	private int tickStarted;
+	private WorldPoint worldLocation;
 
-	/**
-	 * Render under all interfaces, but above overheads
-	 */
-	UNDER_WIDGETS,
+	CrystalBomb(GameObject gameObject, int startTick)
+	{
+		this.gameObject = gameObject;
+		this.objectId = gameObject.getId();
+		this.plantedOn = Instant.now();
+		this.worldLocation = gameObject.getWorldLocation();
+		this.tickStarted = startTick;
+	}
 
-	/**
-	 * Render under the right-click menu
-	 */
-	ABOVE_WIDGETS,
-
-	/**
-	 * Render overlay above all game elements
-	 */
-	ALWAYS_ON_TOP,
-
-	/**
-	 * Render over the map, even when it's fullscreen
-	 */
-	ABOVE_MAP,
-	AFTER_MIRROR,
+	void bombClockUpdate()
+	{
+		lastClockUpdate = Instant.now();
+	}
 }

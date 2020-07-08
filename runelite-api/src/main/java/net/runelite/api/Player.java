@@ -35,13 +35,16 @@ public interface Player extends Actor
 	@Override
 	int getCombatLevel();
 
+	int getPlayerId();
+
 	/**
 	 * Gets the composition of this player.
 	 *
 	 * @return the composition
 	 */
+	@Nullable
+	PlayerAppearance getPlayerAppearance();
 	PlayerComposition getPlayerComposition();
-
 	/**
 	 * Gets the polygons that make up the players model.
 	 *
@@ -76,11 +79,11 @@ public interface Player extends Actor
 	 *
 	 * @return the overhead icon
 	 */
+	@Nullable
 	HeadIcon getOverheadIcon();
 
 	/**
 	 * Gets the displayed skull icon of the player.
-	 * Only works on the local player.
 	 *
 	 * @return the skull icon
 	 */
