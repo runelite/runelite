@@ -66,7 +66,8 @@ public class WorldMapOverlayMouseListener extends MouseAdapter
 				Rectangle clickbox = worldMapPoint.getClickbox();
 				if (clickbox != null && clickbox.contains(mousePos.getX(), mousePos.getY()))
 				{
-					if (worldMapPoint.isJumpOnClick())
+					// HACK: if you mouseover a worldpoint, disable it, then click, your map still gets moved.
+					if (worldMapPoint.isJumpOnClick() && worldMapPointManager.isAllowClicking())
 					{
 						// jump map to target, or position of point
 						WorldPoint target = worldMapPoint.getTarget();

@@ -92,6 +92,13 @@ public class WorldMapOverlay extends Overlay
 			return null;
 		}
 
+		if (!worldMapPointManager.getAllElementsEnabled())
+		{
+			worldMapPointManager.setAllowClicking(false);
+			return null;
+		}
+
+		worldMapPointManager.setAllowClicking(true);
 		final Rectangle worldMapRectangle = widget.getBounds();
 		final Area mapViewArea = getWorldMapClipArea(worldMapRectangle);
 		final Rectangle canvasBounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
@@ -110,6 +117,13 @@ public class WorldMapOverlay extends Overlay
 				Point drawPoint = mapWorldPointToGraphicsPoint(point);
 
 				if (drawPoint == null)
+				{
+					worldPoint.setClickbox(null);
+					continue;
+				}
+
+				// This clause is here instead of nearer the top because clientscripts are relatively expensive
+				if (!worldMapPointManager.isCategoryEnabled(worldPoint.getInternalId()))
 				{
 					worldPoint.setClickbox(null);
 					continue;
@@ -266,6 +280,12 @@ public class WorldMapOverlay extends Overlay
 		List<String> rows = TOOLTIP_SPLITTER.splitToList(tooltip);
 
 		if (rows.isEmpty())
+		{
+			return;
+		}
+
+		// This clause is here instead of nearer the top because clientscripts are relatively expensive
+		if (!worldMapPointManager.isCategoryEnabled(worldPoint.getInternalId()))
 		{
 			return;
 		}

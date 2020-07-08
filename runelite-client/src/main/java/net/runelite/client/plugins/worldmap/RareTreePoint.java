@@ -29,12 +29,13 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointCategory;
 
 class RareTreePoint extends WorldMapPoint
 {
 	RareTreePoint(WorldPoint point, String tooltip, BufferedImage icon, boolean showTooltip)
 	{
-		super(point, icon);
+		super(point, icon, WorldMapPointCategory.RARE_TREES);
 
 		if (showTooltip)
 		{

@@ -27,12 +27,13 @@ package net.runelite.client.plugins.worldmap;
 
 import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointCategory;
 
 class MinigamePoint extends WorldMapPoint
 {
 	MinigamePoint(MinigameLocation data, BufferedImage icon)
 	{
-		super(data.getLocation(), icon);
+		super(data.getLocation(), icon, WorldMapPointCategory.MINIGAME);
 		setTooltip(data.getTooltip());
 	}
 }

@@ -28,12 +28,13 @@ package net.runelite.client.plugins.worldmap;
 import java.awt.image.BufferedImage;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointCategory;
 
 class FishingSpotPoint extends WorldMapPoint
 {
 	FishingSpotPoint(WorldPoint point, String tooltip, BufferedImage icon)
 	{
-		super(point, icon);
+		super(point, icon, WorldMapPointCategory.FISHING_SPOT);
 		setTooltip(tooltip);
 	}
 }

@@ -1,0 +1,192 @@
+.id                 1847
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      8
+.string_var_count   1
+   get_varbit             5640
+   iconst                 3
+   testbit               
+   iconst                 1
+   if_icmpeq              LABEL6
+   jump                   LABEL9
+LABEL6:
+   iconst                 38993961
+   invoke                 41
+   return                
+LABEL9:
+   get_varc_int           2
+   iconst                 1
+   if_icmpeq              LABEL13
+   jump                   LABEL14
+LABEL13:
+   return                
+LABEL14:
+   iconst                 121
+   iconst                 115
+   iconst                 1713
+   worldmap_element       
+   mec_category          
+   enum                  
+   sstore                 0
+   worldmap_element                    ; load the current element we're processing
+   mec_category                        ; gets the category of the element
+   worldmap_getdisableelementcategory  ; returns true if an element is enabled
+   iconst 1                            ; load constant true
+   if_icmpne SETVARC                   ; jump to the end of the script if the element is hidden, otherwise continue
+   sload                  0
+   string_length         
+   iconst                 0
+   if_icmple              LABEL26
+   jump                   LABEL27
+LABEL26:
+   return                
+LABEL27:
+   iconst                 150
+   istore                 2
+   iconst                 38993961
+   if_getlayer           
+   istore                 3
+   iload                  3
+   iconst                 -1
+   if_icmpne              LABEL36
+   jump                   LABEL41
+LABEL36:
+   iload                  2
+   iload                  3
+   if_getwidth           
+   invoke                 1046
+   istore                 2
+LABEL41:
+   iload                  2
+   iconst                 4
+   sub                   
+   istore                 2
+   iconst                 4
+   sload                  0
+   iload                  2
+   iconst                 495
+   parawidth             
+   add                   
+   istore                 4
+   iconst                 7
+   iconst                 12
+   sload                  0
+   iload                  2
+   iconst                 495
+   paraheight            
+   multiply              
+   add                   
+   istore                 5
+   iload                  4
+   iload                  5
+   iconst                 0
+   iconst                 0
+   iconst                 38993961
+   if_setsize            
+   iload                  0
+   iconst                 5
+   add                   
+   istore                 6
+   iload                  1
+   iconst                 20
+   add                   
+   istore                 7
+   iload                  3
+   iconst                 -1
+   if_icmpne              LABEL79
+   jump                   LABEL99
+LABEL79:
+   iload                  6
+   iload                  3
+   if_getwidth           
+   iload                  4
+   sub                   
+   invoke                 1046
+   istore                 6
+   iload                  7
+   iload                  3
+   if_getheight          
+   iload                  5
+   sub                   
+   if_icmpgt              LABEL93
+   jump                   LABEL99
+LABEL93:
+   iload                  1
+   iload                  5
+   iconst                 5
+   add                   
+   sub                   
+   istore                 7
+LABEL99:
+   iload                  6
+   iload                  7
+   iconst                 0
+   iconst                 0
+   iconst                 38993961
+   if_setposition        
+   iconst                 38993961
+   cc_deleteall          
+   iconst                 38993961
+   iconst                 3
+   iconst                 0
+   cc_create             
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   cc_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   cc_setposition        
+   iconst                 1
+   cc_setfill            
+   iconst                 16777120
+   cc_setcolour          
+   iconst                 38993961
+   iconst                 3
+   iconst                 1
+   cc_create             
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   cc_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   cc_setposition        
+   iconst                 0
+   cc_setfill            
+   iconst                 0
+   cc_setcolour          
+   iconst                 38993961
+   iconst                 4
+   iconst                 2
+   cc_create             
+   iconst                 4
+   iconst                 1
+   iconst                 1
+   iconst                 1
+   cc_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 2
+   cc_setposition        
+   sload                  0
+   cc_settext            
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   cc_settextalign       
+   iconst                 495
+   cc_settextfont        
+   iconst                 0
+   cc_setcolour
+SETVARC:                               ; label we jump to for early exiting the script
+   iconst                 1
+   set_varc_int           2
+   return                

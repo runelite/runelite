@@ -30,12 +30,13 @@ package net.runelite.client.plugins.worldmap;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointCategory;
 
 class TransportationPoint extends WorldMapPoint
 {
 	TransportationPoint(TransportationPointLocation data, BufferedImage icon)
 	{
-		super(data.getLocation(), icon);
+		super(data.getLocation(), icon, WorldMapPointCategory.TRANSPORTATION);
 		final WorldPoint target = data.getTarget();
 		if (target != null)
 		{

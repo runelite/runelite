@@ -505,6 +505,8 @@ public class Instructions
 		add(MEC_TEXTSIZE, "mec_textsize");
 		add(MEC_CATEGORY, "mec_category");
 		add(MEC_SPRITE, "mec_sprite");
+		add(WORLDMAP_ELEMENT, "worldmap_element");
+		add(WORLDMAP_ELEMENTCOORD, "worldmap_elementcoord");
 	}
 
 	protected void add(int opcode, String name)
