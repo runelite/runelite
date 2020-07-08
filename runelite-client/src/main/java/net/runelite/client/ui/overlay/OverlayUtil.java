@@ -76,7 +76,7 @@ public class OverlayUtil
 		graphics.setColor(color);
 		graphics.rotate(angle, center.getX(), center.getY());
 		graphics.drawRect(center.getX() - width / 2, center.getY() - height / 2, width, height);
-		graphics.rotate(-angle , center.getX(), center.getY());
+		graphics.rotate(-angle, center.getX(), center.getY());
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, Point txtLoc, String text, Color color)
@@ -191,6 +191,32 @@ public class OverlayUtil
 			graphics.draw(area);
 			graphics.setColor(fillColor);
 			graphics.fill(area);
+		}
+	}
+
+	public static void renderActorHull(Graphics2D graphics, Actor actor, Color color)
+	{
+		Shape hull = actor.getConvexHull();
+		if (hull != null)
+		{
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.draw(hull);
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+			graphics.fill(hull);
+		}
+	}
+
+	public static void renderActorClickbox(Client client, Graphics2D graphics, Actor actor, Color color)
+	{
+		Shape clickbox = Perspective.getClickbox(client, actor.getModel(), actor.getOrientation(), actor.getLocalLocation());
+		if (clickbox != null)
+		{
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.draw(clickbox);
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+			graphics.fill(clickbox);
 		}
 	}
 
