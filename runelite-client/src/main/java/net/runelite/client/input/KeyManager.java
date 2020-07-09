@@ -32,7 +32,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.util.HotkeyListener;
 
 @Singleton
 public class KeyManager
@@ -133,18 +132,13 @@ public class KeyManager
 			return true;
 		}
 
-		if (!(keyListener instanceof HotkeyListener))
+		final GameState gameState = client.getGameState();
+
+		if (gameState == GameState.LOGIN_SCREEN || gameState == GameState.LOGIN_SCREEN_AUTHENTICATOR)
 		{
-			return true;
+			return keyListener.isEnabledOnLoginScreen();
 		}
 
-		final HotkeyListener hotkeyListener = (HotkeyListener) keyListener;
-
-		if (hotkeyListener.isEnabledOnLogin())
-		{
-			return true;
-		}
-
-		return client.getGameState() != GameState.LOGIN_SCREEN && client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR;
+		return true;
 	}
 }
