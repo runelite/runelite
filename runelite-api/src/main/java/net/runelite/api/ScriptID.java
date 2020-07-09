@@ -275,4 +275,13 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 2)
 	public static final int TOPLEVEL_REDRAW = 907;
+
+	/**
+	 * Called to set position of an xpdrop text and sprite(s)
+	 * <ul>
+	 * <li> XP drop parent component </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 4, string = 1)
+	public static final int XPDROPS_SETDROPSIZE = 996;
 }
