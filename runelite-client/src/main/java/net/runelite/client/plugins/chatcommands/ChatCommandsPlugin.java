@@ -1696,6 +1696,11 @@ public class ChatCommandsPlugin extends Plugin
 			case "hs 5":
 				return "Hallowed Sepulchre Floor 5";
 
+			// Ape Atoll Agility
+			case "aa":
+			case "ape atoll":
+				return "Ape Atoll Agility";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
