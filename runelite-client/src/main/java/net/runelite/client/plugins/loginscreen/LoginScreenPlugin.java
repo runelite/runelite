@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.RuneLite;
@@ -84,7 +85,12 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	{
 		applyUsername();
 		keyManager.registerKeyListener(this);
-		clientThread.invoke(this::overrideLoginScreen);
+		clientThread.invoke(() ->
+		{
+			overrideLoginScreen();
+			client.setShouldRenderLoginScreenFire(config.showLoginFire());
+			overrideLoginSprites();
+		});
 	}
 
 	@Override
@@ -100,6 +106,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		{
 			restoreLoginScreen();
 			client.setShouldRenderLoginScreenFire(true);
+			client.setLoginUISprites(null, null, null, null, null, null);
 		});
 	}
 
@@ -114,7 +121,18 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	{
 		if (event.getGroup().equals("loginscreen"))
 		{
-			clientThread.invoke(this::overrideLoginScreen);
+			switch (event.getKey())
+			{
+				case "loginScreen":
+					clientThread.invoke(this::overrideLoginScreen);
+					break;
+				case "loginSprites":
+					clientThread.invoke(this::overrideLoginSprites);
+					break;
+				case "showLoginFire":
+					clientThread.invoke(() -> client.setShouldRenderLoginScreenFire(config.showLoginFire()));
+					break;
+			}
 		}
 	}
 
@@ -251,8 +269,6 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 
 	private void overrideLoginScreen()
 	{
-		client.setShouldRenderLoginScreenFire(config.showLoginFire());
-
 		if (config.loginScreen() == LoginScreenOverride.OFF)
 		{
 			restoreLoginScreen();
@@ -303,6 +319,22 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		client.setLoginScreen(null);
 	}
 
+	private void overrideLoginSprites()
+	{
+		if (config.loginSprites() == LoginScreenSpriteOverride.OFF)
+		{
+			client.setLoginUISprites(null, null, null, null, null, null);
+			return;
+		}
+
+		client.setLoginUISprites(getIndexedSprite(LoginScreenSprites.LOGO),
+			getIndexedSprite(LoginScreenSprites.DIALOG_BACKGROUND),
+			getIndexedSprite(LoginScreenSprites.BUTTON_BACKGROUND),
+			getIndexedSprite(LoginScreenSprites.MUSIC_BUTTON),
+			getIndexedSprite(LoginScreenSprites.MUSIC_BUTTON_MUTED),
+			getIndexedSprite(LoginScreenSprites.WORLD_SWITCH));
+	}
+
 	private SpritePixels getFileSpritePixels(String file)
 	{
 		try
@@ -317,5 +349,10 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		}
 
 		return null;
+	}
+
+	private IndexedSprite getIndexedSprite(LoginScreenSprites sprite)
+	{
+		return ImageUtil.getImageIndexedSprite(sprite.getOverrideImage(config.loginSprites()), client);
 	}
 }
