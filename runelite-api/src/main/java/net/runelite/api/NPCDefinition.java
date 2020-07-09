@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import java.awt.*;
+
 /**
  * Information about a specific {@link NpcID}
  */
@@ -88,7 +90,7 @@ public interface NPCDefinition
      * @throws NullPointerException if {@link #getConfigs()} is null
      */
     NPCDefinition transform();
-
+    Entity getEntity();
     /**
      * How many tiles wide this NPC is
      */
@@ -98,4 +100,5 @@ public interface NPCDefinition
      * Gets the displayed overhead icon of the NPC.
      */
     HeadIcon getOverheadIcon();
+    Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
 }

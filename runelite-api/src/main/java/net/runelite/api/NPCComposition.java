@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import java.awt.*;
+
 /**
  * Information about a specific {@link NpcID}
  */
@@ -41,12 +43,14 @@ public interface NPCComposition
 
 	/**
 	 * The 5 menuops this NPC has when in world. Index 0 corresponds to
-	 * {@link MenuAction#NPC_FIRST_OPTION}, Index 2 to
-	 * {@link MenuAction#NPC_SECOND_OPTION} and so on.
+	 * {@link MenuOpcode#NPC_FIRST_OPTION}, Index 2 to
+	 * {@link MenuOpcode#NPC_SECOND_OPTION} and so on.
 	 */
 	String[] getActions();
 
 	boolean isClickable();
+
+	boolean isFollower();
 
 	/**
 	 * NPC can be interacting with via menu options
@@ -86,7 +90,7 @@ public interface NPCComposition
 	 * @throws NullPointerException if {@link #getConfigs()} is null
 	 */
 	NPCComposition transform();
-
+	Entity getEntity();
 	/**
 	 * How many tiles wide this NPC is
 	 */
@@ -96,4 +100,5 @@ public interface NPCComposition
 	 * Gets the displayed overhead icon of the NPC.
 	 */
 	HeadIcon getOverheadIcon();
+	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
 }

@@ -10,6 +10,7 @@ public interface Entity extends Node
      */
     Model getModel();
 
+    int getAnimationID();
     /**
      * Gets the height of the model.
      */

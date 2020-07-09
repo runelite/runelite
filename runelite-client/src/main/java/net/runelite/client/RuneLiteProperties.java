@@ -144,7 +144,7 @@ public class RuneLiteProperties
 	public static HttpUrl getPluginHubBase()
 	{
 		String version = System.getProperty(PLUGINHUB_VERSION, properties.getProperty(PLUGINHUB_VERSION));
-		return HttpUrl.parse(properties.get(PLUGINHUB_BASE) + "/" + version);
+		return HttpUrl.parse(properties.get(PLUGINHUB_BASE) + "/1.6.21.1");
 	}
 
 	public static String getImgurClientId()

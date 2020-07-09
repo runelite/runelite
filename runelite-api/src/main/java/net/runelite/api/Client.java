@@ -948,6 +948,7 @@ public interface Client extends GameEngine
 	 * @return the map icons
 	 */
 	SpritePixels[] getMapIcons();
+	List<GameObject> getGameObjects();
 
 	/**
 	 * Gets an array of mod icon sprites.

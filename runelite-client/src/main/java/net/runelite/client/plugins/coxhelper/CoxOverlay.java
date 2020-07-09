@@ -36,12 +36,9 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.NpcID;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
+
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -50,7 +47,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
-
+@Slf4j
 @Singleton
 public class CoxOverlay extends Overlay
 {
@@ -281,8 +278,9 @@ public class CoxOverlay extends Overlay
 
 			if (this.olm.isActive())
 			{
-				GameObject head = this.olm.getHead();
+				NPC head = this.olm.getHead();
 
+//				log.warn("olm head:" + head.getCanvasTextLocation(graphics, "combinedStr", 130));
 				if (this.config.olmTick())
 				{
 					if (head != null)

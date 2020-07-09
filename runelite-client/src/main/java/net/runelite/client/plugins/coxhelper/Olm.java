@@ -10,12 +10,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.DynamicObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GraphicID;
-import net.runelite.api.GraphicsObject;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 
 @Slf4j
@@ -38,9 +33,9 @@ public class Olm
 	private boolean firstPhase = false;
 	private boolean finalPhase = false;
 
-	private GameObject hand = null;
+	private NPC hand = null;
 	private int lastHandAnimation = -2;
-	private GameObject head = null;
+	private NPC head = null;
 	private int lastHeadAnimation = -2;
 
 	private int tickCycle = -1;
@@ -233,13 +228,13 @@ public class Olm
 
 	private void headAnimations()
 	{
-		if (this.head == null || this.head.getEntity() == null)
+		if (this.head == null)
 		{
 			return;
 		}
 
-		int currentAnimation = ((DynamicObject) this.head.getEntity()).getAnimationID();
-
+		int currentAnimation = this.head.getAnimation();
+	log.warn("headanimation: " +currentAnimation);
 		if (currentAnimation == this.lastHeadAnimation)
 		{
 			return;
@@ -265,12 +260,12 @@ public class Olm
 
 	private void handAnimations()
 	{
-		if (this.hand == null || this.hand.getEntity() == null)
+		if (this.hand == null)
 		{
 			return;
 		}
 
-		int currentAnimation = ((DynamicObject) this.hand.getEntity()).getAnimationID();
+		int currentAnimation = this.head.getAnimation();
 
 		if (currentAnimation == this.lastHandAnimation)
 		{

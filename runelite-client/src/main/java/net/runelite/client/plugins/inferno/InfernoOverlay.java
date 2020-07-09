@@ -43,7 +43,7 @@ public class InfernoOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
-		determineLayer();
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGHEST);
 	}
 
@@ -486,6 +486,13 @@ public class InfernoOverlay extends Overlay
 
 	public void determineLayer()
 	{
-
+		if (config.mirrorMode())
+		{
+			setLayer(OverlayLayer.AFTER_MIRROR);
+		}
+		if (!config.mirrorMode())
+		{
+			setLayer(OverlayLayer.ABOVE_WIDGETS);
+		}
 	}
 }

@@ -65,7 +65,7 @@ class NPCContainer
 		this.ticksUntilAttack = 0;
 		this.intermissionPeriod = 0;
 		this.attackStyle = Attackstyle.UNKNOWN;
-		final NPCComposition composition = npc.getTransformedComposition();
+		final NPCDefinition composition = npc.getTransformedDefinition();
 
 		if (composition != null)
 		{

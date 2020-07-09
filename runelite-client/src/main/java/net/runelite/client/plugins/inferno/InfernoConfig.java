@@ -278,7 +278,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideNibblerDeath()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -351,7 +351,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideBatDeath()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -423,7 +423,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideBlobDeath()
 	{
-		return false;
+		return true;
 	}
 
 
@@ -436,7 +436,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideBlobSmallRangedDeath()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -448,7 +448,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideBlobSmallMagicDeath()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -460,7 +460,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideBlobSmallMeleeDeath()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -496,7 +496,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean safespotsMeleer()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -520,7 +520,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideMeleerDeath()
 	{
-		return false;
+		return true;
 	}
 
 
@@ -581,7 +581,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideRangerDeath()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -641,7 +641,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideMagerDeath()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -701,7 +701,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideHealerJadDeath()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -737,7 +737,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean safespotsJad()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -749,7 +749,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideJadDeath()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -773,7 +773,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideHealerZukDeath()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -833,7 +833,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean ticksOnNpcZukShield()
 	{
-		return false;
+		return true;
 	}
 
 	@Getter

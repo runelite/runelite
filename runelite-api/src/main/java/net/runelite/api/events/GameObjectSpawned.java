@@ -26,6 +26,8 @@ package net.runelite.api.events;
 
 import lombok.Data;
 import net.runelite.api.GameObject;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Tile;
 
 /**
@@ -42,4 +44,6 @@ public class GameObjectSpawned
 	 * The newly spawned game object.
 	 */
 	private GameObject gameObject;
+	private NPCComposition npcComposition;
+	private NPCDefinition npcDefinition;
 }

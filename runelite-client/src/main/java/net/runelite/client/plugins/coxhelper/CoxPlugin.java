@@ -28,7 +28,10 @@
 package net.runelite.client.plugins.coxhelper;
 
 import com.google.inject.Provides;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,24 +39,8 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GraphicID;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.Player;
-import net.runelite.api.Projectile;
-import net.runelite.api.ProjectileID;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.ProjectileSpawned;
-import net.runelite.api.events.SpotAnimationChanged;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
 import net.runelite.api.util.Text;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -64,6 +51,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import org.apache.commons.lang3.ArrayUtils;
 
 
 @PluginDescriptor(
@@ -245,6 +233,35 @@ public class CoxPlugin extends Plugin
 		}
 	}
 
+
+//	private void handleOlm(GameTick event) {
+//		if(event != null) {
+//			NPC event = event.getTransformedDefinition();
+//			switch (event.getId()) {
+//				case NpcID.GREAT_OLM_7554:
+//				case NpcID.GREAT_OLM:
+//					switch (event.getAnimation()) {
+//						case OlmID.OLM_RISING_1:
+//						case OlmID.OLM_RISING_2:
+//						case OlmID.OLM_MIDDLE: {
+//							this.olm.setHead(event);
+////							this.olm.setHead(npcs.getNpc().getAnimation());
+//						}
+//					}
+//				case NpcID.GREAT_OLM_LEFT_CLAW:
+//				case NpcID.GREAT_OLM_LEFT_CLAW_7555:
+//					log.warn("LEft animations:" + event.getAnimation());
+//					switch (event.getAnimation()) {
+////						case OlmID.Ol:
+////						case OlmID.OLM_RISING_2:
+////						case OlmID.OLM_MIDDLE: {
+////							this.olm.setHead(npcs.getNpc().getAnimation());
+////						}
+//					}
+//			}
+//		}
+//	}
+
 	@Subscribe
 	private void onNpcSpawned(NpcSpawned event)
 	{
@@ -338,7 +355,7 @@ public class CoxPlugin extends Plugin
 		}
 
 		this.handleNpcs();
-
+		this.doOlm();
 		if (this.olm.isActive())
 		{
 			this.olm.update();
@@ -349,6 +366,7 @@ public class CoxPlugin extends Plugin
 	{
 		for (NPCContainer npcs : this.getNpcContainers().values())
 		{
+//			log.warn("NPC: "+ npcs.getNpc().getName());
 			switch (npcs.getNpc().getId())
 			{
 				case NpcID.TEKTON:
@@ -433,6 +451,69 @@ public class CoxPlugin extends Plugin
 		return this.client.getVar(Varbits.IN_RAID) == 1;
 	}
 
+	private void doOlm()
+	{
+		List<NPC> npcs = client.getNpcs();
+		for (NPC npc : npcs)
+		{
+			log.warn("NPC: "+ npc.getName());
+//			NPCDefinition composition = npc.getDefinition();
+		{
+//			log.warn("NPC: "+ composition);
+//		if (composition == null)
+//		{
+//			return;
+//		}
+
+		int id = npc.getId();
+
+		switch (id)
+		{
+			case NpcID.GREAT_OLM_7554:
+			case NpcID.GREAT_OLM:
+				if (this.olm.getHead() == null)
+				{
+					this.olm.startPhase();
+				}
+				this.olm.setHead(npc);
+				break;
+			case NpcID.GREAT_OLM_LEFT_CLAW:
+			case NpcID.GREAT_OLM_LEFT_CLAW_7555:
+				this.olm.setHand(npc);
+				break;
+		}
+//		ObjectComposition npc = client.getObjectDefinition(OlmID.OLM_HEAD_GAMEOBJECT_READY);
+//		for (ObjectComposition npc : npcs)
+//		{
+//		log.warn("NPC: "+ npc.getName());
+//		switch ((npc.getId())) {
+//			case NpcID.GREAT_OLM_7554:
+//			case NpcID.GREAT_OLM:
+////				switch (npc.getAnimation()) {
+////					case OlmID.OLM_RISING_1:
+////					case OlmID.OLM_RISING_2:
+////					case OlmID.OLM_MIDDLE: {
+//						this.olm.setHead(npc);
+//						log.warn("NPC: "+ npc.getId());
+//							this.olm.setHead(npcs.getNpc().getAnimation());
+//					}
+//				}
+//			case NpcID.GREAT_OLM_LEFT_CLAW:
+//			case NpcID.GREAT_OLM_LEFT_CLAW_7555:
+////				log.warn("LEft animations:" + npc.getAnimation());
+//				switch (npc.getAnimation()) {
+////						case OlmID.Ol:
+////						case OlmID.OLM_RISING_2:
+////						case OlmID.OLM_MIDDLE: {
+////							this.olm.setHead(npcs.getNpc().getAnimation());
+////						}
+//				}
+		}
+		}
+	}
+
+
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
@@ -464,21 +545,22 @@ public class CoxPlugin extends Plugin
 		}
 
 		int id = event.getGameObject().getId();
-		switch (id)
-		{
-			case OlmID.OLM_HEAD_GAMEOBJECT_RISING:
-			case OlmID.OLM_HEAD_GAMEOBJECT_READY:
-				if (this.olm.getHead() == null)
-				{
-					this.olm.startPhase();
-				}
-				this.olm.setHead(event.getGameObject());
-				break;
-			case OlmID.OLM_LEFT_HAND_GAMEOBJECT_RISING:
-			case OlmID.OLM_LEFT_HAND_GAMEOBJECT_READY:
-				this.olm.setHand(event.getGameObject());
-				break;
-		}
+
+//		switch (id)
+//		{
+//			case OlmID.OLM_HEAD_GAMEOBJECT_RISING:
+//			case OlmID.OLM_HEAD_GAMEOBJECT_READY:
+//				if (this.olm.getHead() == null)
+//				{
+//					this.olm.startPhase();
+//				}
+//				this.olm.setHead(event.getNpcDefinition());
+//				break;
+//			case OlmID.OLM_LEFT_HAND_GAMEOBJECT_RISING:
+//			case OlmID.OLM_LEFT_HAND_GAMEOBJECT_READY:
+//				this.olm.setHand(event.getNpcDefinition());
+//				break;
+//		}
 	}
 
 	@Subscribe
