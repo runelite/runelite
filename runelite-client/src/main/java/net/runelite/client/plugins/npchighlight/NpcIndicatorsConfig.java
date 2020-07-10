@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.npchighlight;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -100,6 +101,7 @@ public interface NpcIndicatorsConfig extends Config
 		name = "Highlight Color",
 		description = "Color of the NPC highlight"
 	)
+	@Alpha
 	default Color getHighlightColor()
 	{
 		return Color.CYAN;
