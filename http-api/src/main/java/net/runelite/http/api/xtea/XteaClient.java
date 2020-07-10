@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,113 +25,52 @@
  */
 package net.runelite.http.api.xtea;
 
-import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import static net.runelite.http.api.RuneLiteAPI.JSON;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
+import java.util.concurrent.CompletableFuture;
+import net.runelite.http.api.RuneLiteApiClient;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
-@Slf4j
-@AllArgsConstructor
-public class XteaClient
+public class XteaClient extends RuneLiteApiClient
 {
-	private final OkHttpClient client;
+	private static final String ENDPOINT = "xtea";
+	private static final Type typeToken;
+	private static final Type typeTokenList;
 
-	public void submit(XteaRequest xteaRequest)
+	static
 	{
-		String json = RuneLiteAPI.GSON.toJson(xteaRequest);
-
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("xtea")
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.post(RequestBody.create(JSON, json))
-			.url(url)
-			.build();
-
-		client.newCall(request).enqueue(new Callback()
+		typeToken = new TypeToken<XteaKey>()
 		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("unable to submit xtea keys", e);
-			}
+		}.getType();
+		typeTokenList = new TypeToken<List<XteaKey>>()
+		{
+		}.getType();
+	}
 
-			@Override
-			public void onResponse(Call call, Response response)
-			{
-				try
-				{
-					if (!response.isSuccessful())
-					{
-						log.debug("unsuccessful xtea response");
-					}
-				}
-				finally
-				{
-					response.close();
-				}
-			}
-		});
+	public XteaClient(OkHttpClient client)
+	{
+		super(client.newBuilder(), ENDPOINT);
+	}
+
+	public CompletableFuture<Void> submit(XteaRequest xteaRequest)
+	{
+		RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, objectToJson(xteaRequest));
+		return postAsync_(body).thenCompose(response -> bodyToObjectFuture(response, typeTokenList));
 	}
 
 	public List<XteaKey> get() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("xtea")
-			.build();
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
-		{
-			InputStream in = response.body().byteStream();
-			// CHECKSTYLE:OFF
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), new TypeToken<List<XteaKey>>() { }.getType());
-			// CHECKSTYLE:ON
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+		return bodyToObject(get_(), typeTokenList);
 	}
 
 	public XteaKey get(int region) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("xtea")
+		return bodyToObject(get_(url -> url.newBuilder()
 			.addPathSegment(Integer.toString(region))
-			.build();
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
-		{
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), XteaKey.class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+			.build()
+		), typeToken);
 	}
 }
