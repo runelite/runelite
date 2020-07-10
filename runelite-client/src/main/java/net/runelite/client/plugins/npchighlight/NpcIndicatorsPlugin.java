@@ -344,8 +344,11 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			if (removed)
 			{
-				highlightedNpcs.remove(npc);
-				memorizedNpcs.remove(npc.getIndex());
+				if (!highlightMatchesNPCName(npc.getName()))
+				{
+					highlightedNpcs.remove(npc);
+					memorizedNpcs.remove(npc.getIndex());
+				}
 			}
 			else
 			{
