@@ -385,17 +385,13 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		for (String highlight : highlights)
+		if (highlightMatchesNPCName(npcName))
 		{
-			if (WildcardMatcher.matches(highlight, npcName))
+			highlightedNpcs.add(npc);
+			if (!client.isInInstancedRegion())
 			{
-				highlightedNpcs.add(npc);
-				if (!client.isInInstancedRegion())
-				{
-					memorizeNpc(npc);
-					spawnedNpcsThisTick.add(npc);
-				}
-				break;
+				memorizeNpc(npc);
+				spawnedNpcsThisTick.add(npc);
 			}
 		}
 	}
@@ -529,7 +525,6 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		outer:
 		for (NPC npc : client.getNpcs())
 		{
 			final String npcName = npc.getName();
@@ -545,22 +540,32 @@ public class NpcIndicatorsPlugin extends Plugin
 				continue;
 			}
 
-			for (String highlight : highlights)
+			if (highlightMatchesNPCName(npcName))
 			{
-				if (WildcardMatcher.matches(highlight, npcName))
+				if (!client.isInInstancedRegion())
 				{
-					if (!client.isInInstancedRegion())
-					{
-						memorizeNpc(npc);
-					}
-					highlightedNpcs.add(npc);
-					continue outer;
+					memorizeNpc(npc);
 				}
+				highlightedNpcs.add(npc);
+				continue;
 			}
 
 			// NPC is not highlighted
 			memorizedNpcs.remove(npc.getIndex());
 		}
+	}
+
+	private boolean highlightMatchesNPCName(String npcName)
+	{
+		for (String highlight : highlights)
+		{
+			if (WildcardMatcher.matches(highlight, npcName))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void validateSpawnedNpcs()
