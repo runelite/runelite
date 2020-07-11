@@ -28,6 +28,7 @@ package net.runelite.client.plugins.npchighlight;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
@@ -57,16 +58,19 @@ public class NpcMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		for (NPC npc : plugin.getHighlightedNpcs())
+		for (Map.Entry<NPC, NpcHighlight> entrySet : plugin.getHighlightedNpcs().entrySet())
 		{
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
+			renderNpcOverlay(graphics, entrySet.getKey(), entrySet.getValue());
 		}
 
 		return null;
 	}
 
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
+	private void renderNpcOverlay(Graphics2D graphics, NPC actor, NpcHighlight npcHighlight)
 	{
+		Color color = npcHighlight.getColor();
+		String name = actor.getName();
+
 		NPCComposition npcComposition = actor.getTransformedComposition();
 		if (npcComposition == null || !npcComposition.isInteractible()
 			|| (actor.isDead() && config.ignoreDeadNpcs()))

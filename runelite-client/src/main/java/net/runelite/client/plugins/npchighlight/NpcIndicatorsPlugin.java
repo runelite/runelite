@@ -38,6 +38,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -88,6 +90,15 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final String TAG_ALL = "Tag-All";
 	private static final String UNTAG_ALL = "Un-tag-All";
 
+	// The character used to split NPC config variables
+	private static final String HIGHLIGHT_CONFIG_SPLITTER = ":";
+
+	private static final String HIGHLIGHT_CONFIG_TILE = "tile"; // Tile highlight style
+	private static final String HIGHLIGHT_CONFIG_SOUTH_WEST_TILE = "sw"; // South west tile highlight style
+	private static final String HIGHLIGHT_CONFIG_HULL = "hull"; // Hull highlight style
+
+	private static final Pattern HIGHLIGHT_CONFIG_RGB = Pattern.compile("^([rgb])([0-9]{1,3})$");
+
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION, MenuAction.SPELL_CAST_ON_NPC,
 		MenuAction.ITEM_USE_ON_NPC);
@@ -117,7 +128,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<NPC> highlightedNpcs = new HashSet<>();
+	private final HashMap<NPC, NpcHighlight> highlightedNpcs = new HashMap<>();
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
@@ -257,7 +268,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				color = config.deadNpcMenuColor();
 			}
 
-			if (color == null && highlightedNpcs.contains(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
+			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
 			{
 				color = config.getHighlightColor();
 			}
@@ -341,7 +352,6 @@ public class NpcIndicatorsPlugin extends Plugin
 		if (click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG))
 		{
 			final boolean removed = npcTags.remove(id);
-
 			if (removed)
 			{
 				highlightedNpcs.remove(npc);
@@ -354,7 +364,10 @@ public class NpcIndicatorsPlugin extends Plugin
 					memorizeNpc(npc);
 					npcTags.add(id);
 				}
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, new NpcHighlight(config.getHighlightColor(),
+					config.highlightTile(),
+					config.highlightHull(),
+					config.highlightSouthWestTile()));
 			}
 		}
 		else
@@ -364,6 +377,87 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		click.consume();
+	}
+
+	/**
+	 * Builds an appropriate NpcHighlight object from given npc and string
+	 */
+	private NpcHighlight buildNpcHighlight(NPC npc, String highlightString)
+	{
+		String splitHighlight[] = highlightString.split(HIGHLIGHT_CONFIG_SPLITTER);
+		if (splitHighlight.length == 0)
+		{
+			return null;
+		}
+		String highlightNpcName = splitHighlight[0];
+		if (!WildcardMatcher.matches(highlightNpcName, npc.getName()))
+		{
+			return null;
+		}
+
+		Boolean customHighlightColourDefined = false;
+		Boolean customHighlightStylesDefined = false;
+		int redHighlight = 0;
+		int greenHighlight = 0;
+		int blueHighlight = 0;
+		Boolean tileHighlight = false;
+		Boolean swHighlight = false;
+		Boolean hullHighlight = false;
+
+		for (String highlightVar : splitHighlight)
+		{
+			highlightVar = highlightVar.trim().toLowerCase();
+
+			Matcher matcher = HIGHLIGHT_CONFIG_RGB.matcher(highlightVar);
+			if (matcher.matches())
+			{
+				int matchColorValue = Integer.parseInt(matcher.group(2));
+				switch (matcher.group(1))
+				{
+					case "r":
+						redHighlight = matchColorValue;
+						break;
+					case "g":
+						greenHighlight = matchColorValue;
+						break;
+					case "b":
+						blueHighlight = matchColorValue;
+						break;
+				}
+				customHighlightColourDefined = true;
+				continue;
+			}
+
+			if (highlightVar.equals(HIGHLIGHT_CONFIG_TILE))
+			{
+				tileHighlight = true;
+				customHighlightStylesDefined = true;
+			}
+			else if (highlightVar.equals(HIGHLIGHT_CONFIG_SOUTH_WEST_TILE))
+			{
+				swHighlight = true;
+				customHighlightStylesDefined = true;
+			}
+			else if (highlightVar.equals(HIGHLIGHT_CONFIG_HULL))
+			{
+				hullHighlight = true;
+				customHighlightStylesDefined = true;
+			}
+		}
+
+		Color highlightColor = config.getHighlightColor();
+		if (customHighlightColourDefined)
+		{
+			highlightColor = new Color(redHighlight, greenHighlight, blueHighlight);
+		}
+		if (!customHighlightStylesDefined)
+		{
+			tileHighlight = config.highlightTile();
+			hullHighlight = config.highlightHull();
+			swHighlight = config.highlightSouthWestTile();
+		}
+
+		return new NpcHighlight(highlightColor, tileHighlight, hullHighlight, swHighlight);
 	}
 
 	@Subscribe
@@ -380,16 +474,22 @@ public class NpcIndicatorsPlugin extends Plugin
 		if (npcTags.contains(npc.getIndex()))
 		{
 			memorizeNpc(npc);
-			highlightedNpcs.add(npc);
+			highlightedNpcs.put(npc, new NpcHighlight(
+				config.getHighlightColor(),
+				config.highlightTile(),
+				config.highlightHull(),
+				config.highlightSouthWestTile()
+			));
 			spawnedNpcsThisTick.add(npc);
 			return;
 		}
 
 		for (String highlight : highlights)
 		{
-			if (WildcardMatcher.matches(highlight, npcName))
+			NpcHighlight npcHighlight = buildNpcHighlight(npc, highlight);
+			if (npcHighlight != null)
 			{
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, npcHighlight);
 				if (!client.isInInstancedRegion())
 				{
 					memorizeNpc(npc);
@@ -409,7 +509,6 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			despawnedNpcsThisTick.add(npc);
 		}
-
 		highlightedNpcs.remove(npc);
 	}
 
@@ -541,19 +640,25 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			if (npcTags.contains(npc.getIndex()))
 			{
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, new NpcHighlight(
+					config.getHighlightColor(),
+					config.highlightTile(),
+					config.highlightHull(),
+					config.highlightSouthWestTile()
+				));
 				continue;
 			}
 
 			for (String highlight : highlights)
 			{
-				if (WildcardMatcher.matches(highlight, npcName))
+				NpcHighlight npcHighlight = buildNpcHighlight(npc, highlight);
+				if (npcHighlight != null)
 				{
 					if (!client.isInInstancedRegion())
 					{
 						memorizeNpc(npc);
 					}
-					highlightedNpcs.add(npc);
+					highlightedNpcs.put(npc, npcHighlight);
 					continue outer;
 				}
 			}
