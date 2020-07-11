@@ -114,7 +114,7 @@ public class XpDropPlugin extends Plugin
 				.skip(1) // skip text
 				.mapToInt(Widget::getSpriteId);
 
-		int color = -1;
+		int color = 0;
 
 		switch (prayer)
 		{
@@ -142,7 +142,7 @@ public class XpDropPlugin extends Plugin
 				break;
 		}
 
-		if (color != -1)
+		if (color != 0)
 		{
 			text.setTextColor(color);
 		}
