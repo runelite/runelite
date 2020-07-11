@@ -293,28 +293,25 @@ public class ExaminePlugin extends Plugin
 			|| WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID == widgetGroup
 			|| WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID == widgetGroup)
 		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
+			Widget widgetItem = widget.getChild(actionParam);
+			if (widgetItem != null)
 			{
-				Widget widgetItem = children[actionParam];
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
 		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
+			Widget widgetItem = widget.getChild(actionParam);
+			if (widgetItem != null)
 			{
-				Widget widgetItem = children[actionParam];
 				return new int[]{1, widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetID.SEED_VAULT_GROUP_ID == widgetGroup)
 		{
-			Widget[] children = client.getWidget(SEED_VAULT_ITEM_CONTAINER).getDynamicChildren();
-			if (actionParam < children.length)
+			Widget widgetItem = client.getWidget(SEED_VAULT_ITEM_CONTAINER).getChild(actionParam);
+			if (widgetItem != null)
 			{
-				Widget widgetItem = children[actionParam];
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}

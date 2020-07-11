@@ -93,14 +93,14 @@ public class XpDropPlugin extends Plugin
 	private void processXpDrop(int widgetId)
 	{
 		final Widget xpdrop = client.getWidget(TO_GROUP(widgetId), TO_CHILD(widgetId));
-		final Widget[] children = xpdrop.getDynamicChildren();
+		final Widget[] children = xpdrop.getChildren();
 		// child 0 is the xpdrop text, everything else are sprite ids for skills
 		final Widget text = children[0];
 
 		if (config.hideSkillIcons())
 		{
 			// keep only text
-			xpdrop.setChildren(Arrays.copyOf(children, 1));
+			Arrays.fill(children, 1, children.length, null);
 		}
 
 		PrayerType prayer = currentTickPrayer;

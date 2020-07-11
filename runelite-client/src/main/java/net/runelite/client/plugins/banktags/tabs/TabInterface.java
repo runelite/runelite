@@ -1113,7 +1113,7 @@ public class TabInterface
 			incinerator.setOriginalWidth(INCINERATOR_WIDTH);
 			incinerator.setOriginalY(INCINERATOR_HEIGHT);
 
-			Widget child = incinerator.getDynamicChildren()[0];
+			Widget child = incinerator.getChild(0);
 			child.setOriginalHeight(INCINERATOR_HEIGHT);
 			child.setOriginalWidth(INCINERATOR_WIDTH);
 			child.setWidthMode(WidgetSizeMode.ABSOLUTE);
