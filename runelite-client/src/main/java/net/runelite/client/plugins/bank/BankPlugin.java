@@ -363,8 +363,8 @@ public class BankPlugin extends Plugin
 			return;
 		}
 
-		final Widget[] children = titleContainer.getDynamicChildren();
-		if (children == null || children.length < 2)
+		final Widget title = titleContainer.getChild(1);
+		if (title == null)
 		{
 			return;
 		}
@@ -377,7 +377,6 @@ public class BankPlugin extends Plugin
 
 		final String titleText = createValueText(prices);
 
-		final Widget title = children[1];
 		title.setText(SEED_VAULT_TITLE + titleText);
 	}
 

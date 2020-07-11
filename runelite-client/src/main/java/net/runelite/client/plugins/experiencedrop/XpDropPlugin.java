@@ -99,7 +99,7 @@ public class XpDropPlugin extends Plugin
 		if (config.hideSkillIcons())
 		{
 			// keep only text
-			xpdrop.setChildren(Arrays.copyOf(children, 1));
+			Arrays.fill(children, 1, children.length, null);
 		}
 
 		PrayerType prayer = getActivePrayerType();
