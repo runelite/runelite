@@ -187,7 +187,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		overlayManager.add(npcSceneOverlay);
 		overlayManager.add(npcMinimapOverlay);
-		highlights = getHighlights();
 		clientThread.invoke(() ->
 		{
 			skipNextSpawnCheck = true;
@@ -200,13 +199,16 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		overlayManager.remove(npcSceneOverlay);
 		overlayManager.remove(npcMinimapOverlay);
-		deadNpcsToDisplay.clear();
-		memorizedNpcs.clear();
-		spawnedNpcsThisTick.clear();
-		despawnedNpcsThisTick.clear();
-		teleportGraphicsObjectSpawnedThisTick.clear();
-		npcTags.clear();
-		highlightedNpcs.clear();
+		clientThread.invoke(() ->
+		{
+			deadNpcsToDisplay.clear();
+			memorizedNpcs.clear();
+			spawnedNpcsThisTick.clear();
+			despawnedNpcsThisTick.clear();
+			teleportGraphicsObjectSpawnedThisTick.clear();
+			npcTags.clear();
+			highlightedNpcs.clear();
+		});
 	}
 
 	@Subscribe
@@ -231,8 +233,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		highlights = getHighlights();
-		rebuildAllNpcs();
+		clientThread.invoke(this::rebuildAllNpcs);
 	}
 
 	@Subscribe
@@ -516,8 +517,10 @@ public class NpcIndicatorsPlugin extends Plugin
 		return Text.fromCSV(configNpcs);
 	}
 
-	private void rebuildAllNpcs()
+	@VisibleForTesting
+	void rebuildAllNpcs()
 	{
+		highlights = getHighlights();
 		highlightedNpcs.clear();
 
 		if (client.getGameState() != GameState.LOGGED_IN &&
