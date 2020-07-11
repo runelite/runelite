@@ -203,7 +203,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 			}
 		};
 		timer = new Timer();
-		timer.schedule(doAsynchronousTask, 0, 1000*config.delay());
+		timer.schedule(doAsynchronousTask, 0, 1000 * config.delay());
 	}
 
 	public void loadImages()
@@ -362,7 +362,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(LOGIN_SCREEN_FOLDER.toPath(), "*.{png,jpg,jpeg}"))
 		{
-			for (Path entry: stream) {
+			for (Path entry: stream)
+			{
 				customBackgrounds.add(getFileSpritePixels(entry.toFile()));
 			}
 		}
