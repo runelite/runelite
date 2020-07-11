@@ -38,7 +38,6 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -97,9 +96,7 @@ public class NpcIndicatorsPluginTest
 		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
 		when(npcIndicatorsConfig.deadNpcMenuColor()).thenReturn(Color.RED);
 
-		ConfigChanged configChanged = new ConfigChanged();
-		configChanged.setGroup("npcindicators");
-		npcIndicatorsPlugin.onConfigChanged(configChanged);
+		npcIndicatorsPlugin.rebuildAllNpcs();
 
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Goblin");
@@ -124,9 +121,7 @@ public class NpcIndicatorsPluginTest
 		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(true);
 		when(npcIndicatorsConfig.getHighlightColor()).thenReturn(Color.BLUE);
 
-		ConfigChanged configChanged = new ConfigChanged();
-		configChanged.setGroup("npcindicators");
-		npcIndicatorsPlugin.onConfigChanged(configChanged);
+		npcIndicatorsPlugin.rebuildAllNpcs();
 
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Goblin");
