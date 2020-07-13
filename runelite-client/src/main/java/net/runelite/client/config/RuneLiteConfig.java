@@ -256,6 +256,19 @@ public interface RuneLiteConfig extends Config
 		return false;
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "notificationFlashColor",
+		name = "Notification Flash Color",
+		description = "Sets the color of the notification flashes.",
+		position = 26,
+		section = notificationSettings
+	)
+	default Color notificationFlashColor()
+	{
+		return new Color(255, 0, 0, 70);
+	}
+
 	@ConfigItem(
 		keyName = "fontType",
 		name = "Dynamic Overlay Font",
