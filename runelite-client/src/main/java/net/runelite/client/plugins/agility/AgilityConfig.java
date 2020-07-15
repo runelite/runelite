@@ -28,11 +28,19 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
+	@ConfigSection(
+		name = "Hallowed Sepulchre",
+		description = "Settings for Hallowed Sepulchre highlights",
+		position = 17
+	)
+	String sepulchreSection = "Hallowed Sepulchre";
+
 	@ConfigItem(
 		keyName = "showClickboxes",
 		name = "Show Clickboxes",
@@ -223,9 +231,10 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightSepulchreNpcs",
-		name = "Highlight Sepulchre Projectiles",
+		name = "Highlight Projectiles",
 		description = "Highlights arrows and swords in the Sepulchre",
-		position = 15
+		position = 17,
+		section = sepulchreSection
 	)
 	default boolean highlightSepulchreNpcs()
 	{
@@ -234,12 +243,37 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "sepulchreHighlightColor",
-		name = "Sepulchre Highlight",
+		name = "Projectile Color",
 		description = "Overlay color for arrows and swords",
-		position = 16
+		position = 18,
+		section = sepulchreSection
 	)
 	default Color sepulchreHighlightColor()
 	{
 		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreObstacles",
+		name = "Highlight Obstacles",
+		description = "Highlights pillars and stairs in the Sepulchre",
+		position = 19,
+		section = sepulchreSection
+	)
+	default boolean highlightSepulchreObstacles()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreSkilling",
+		name = "Highlight Skill Challenges",
+		description = "Highlights skilling challenges in the Sepulchre",
+		position = 20,
+		section = sepulchreSection
+	)
+	default boolean highlightSepulchreSkilling()
+	{
+		return true;
 	}
 }

@@ -78,7 +78,9 @@ class AgilityOverlay extends Overlay
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
 					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
-					Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes())
+					Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
+					Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
+					Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
 			{
 				return;
 			}
