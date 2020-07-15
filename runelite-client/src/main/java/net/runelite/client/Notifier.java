@@ -141,7 +141,7 @@ public class Notifier
 		// First check if we are running in launcher
 		this.terminalNotifierAvailable =
 			!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion())
-				&& isTerminalNotifierAvailable();
+			&& isTerminalNotifierAvailable();
 
 		storeIcon();
 	}
