@@ -179,7 +179,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Leader of the Yak City.", "Mawnis Burowgar", new WorldPoint(2336, 3799, 0), "Talk to Mawnis Burowgar in Neitiznot."),
 		new CrypticClue("Speak to Arhein in Catherby.", "Arhein", new WorldPoint(2803, 3430, 0), "Arhein is just south of the Catherby bank."),
 		new CrypticClue("Speak to Doric, who lives north of Falador.", "Doric", new WorldPoint(2951, 3451, 0), "Doric is found north of Falador and east of the Taverley gate."),
-		new CrypticClue("Between where the best are commemorated for a year, and a celebratory cup, not just for beer.", new WorldPoint(3388, 3152, 0), "Dig at the Clan Cup Trophy at Clan Wars."),
+		new CrypticClue("Where the best are commemorated, and a celebratory cup, not just for beer.", new WorldPoint(3388, 3152, 0), "Dig at the Clan Cup Trophy south-west of Citharede Abbey."),
 		new CrypticClue("'See you in your dreams' said the vegetable man.", "Dominic Onion", new WorldPoint(2608, 3116, 0), "Speak to Dominic Onion at the Nightmare Zone teleport spot."),
 		new CrypticClue("Try not to step on any aquatic nasties while searching this crate.", CRATE_18204, new WorldPoint(2764, 3273, 0), "Search the crate in Bailey's house on the Fishing Platform."),
 		new CrypticClue("The cheapest water for miles around, but they react badly to religious icons.", CRATE_354, new WorldPoint(3178, 2987, 0), "Search the crates in the General Store tent in the Desert Bandit Camp."),
