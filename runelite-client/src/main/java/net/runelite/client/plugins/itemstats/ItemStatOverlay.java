@@ -239,10 +239,18 @@ public class ItemStatOverlay extends Overlay
 		return b.toString();
 	}
 
+	private ItemStats getItemStatsFromContainer(ItemContainer container, int slotID)
+	{
+		final Item item = container.getItem(slotID);
+		return item != null ? itemManager.getItemStats(item.getId(), false) : null;
+	}
+
 	@VisibleForTesting
 	String buildStatBonusString(ItemStats s)
 	{
 		ItemStats other = null;
+		// Used if switching into a 2 handed weapon to store off-hand stats
+		ItemStats offHand = null;
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
 
 		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
@@ -250,20 +258,39 @@ public class ItemStatOverlay extends Overlay
 		{
 			final int slot = currentEquipment.getSlot();
 
-			final Item item = c.getItem(slot);
-			if (item != null)
+			other = getItemStatsFromContainer(c, slot);
+			// Check if this is a shield and there's a two-handed weapon equipped
+			if (other == null && slot == EquipmentInventorySlot.SHIELD.getSlotIdx())
 			{
-				other = itemManager.getItemStats(item.getId(), false);
+				other = getItemStatsFromContainer(c, EquipmentInventorySlot.WEAPON.getSlotIdx());
+				if (other != null)
+				{
+					final ItemEquipmentStats otherEquip = other.getEquipment();
+					if (otherEquip != null)
+					{
+						// Account for speed change when two handed weapon gets removed
+						// shield - (2h - unarmed) == shield - 2h + unarmed
+						other = otherEquip.isTwoHanded() ? other.subtract(UNARMED) : null;
+					}
+				}
 			}
 
-			if (other == null && slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
+			if (slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
 			{
-				// Unarmed
-				other = UNARMED;
+				if (other == null)
+				{
+					other = UNARMED;
+				}
+
+				// Get offhand's stats to be removed from equipping a 2h weapon
+				if (currentEquipment.isTwoHanded())
+				{
+					offHand = getItemStatsFromContainer(c, EquipmentInventorySlot.SHIELD.getSlotIdx());
+				}
 			}
 		}
 
-		final ItemStats subtracted = s.subtract(other);
+		final ItemStats subtracted = s.subtract(other).subtract(offHand);
 		final ItemEquipmentStats e = subtracted.getEquipment();
 
 		final StringBuilder b = new StringBuilder();
