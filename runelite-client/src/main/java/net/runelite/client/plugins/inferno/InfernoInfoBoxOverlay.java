@@ -125,6 +125,13 @@ public class InfernoInfoBoxOverlay extends Overlay
 
 	public void determineLayer()
 	{
-
+		if (config.mirrorMode())
+		{
+			setLayer(OverlayLayer.AFTER_MIRROR);
+		}
+		if (!config.mirrorMode())
+		{
+			setLayer(OverlayLayer.ABOVE_WIDGETS);
+		}
 	}
 }
