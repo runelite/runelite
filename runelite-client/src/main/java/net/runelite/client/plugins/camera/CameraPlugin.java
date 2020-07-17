@@ -79,7 +79,10 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 * Whether or not the current menu has any non-ignored menu entries
 	 */
 	private boolean menuHasEntries;
-	
+
+	//Integer used to keep track of zoom value
+	private int currentZoom;
+
 	@Inject
 	private Client client;
 
@@ -113,6 +116,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		rightClick = false;
 		middleClick = false;
 		menuHasEntries = false;
+		currentZoom = client.get3dZoom();
 		copyConfigs();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
@@ -261,6 +265,27 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
 		{
 			controlDown = true;
+		}
+
+		if (config.controlFunction() != ControlFunction.CONTROL_TO_INC_DEC)
+		{
+			return;
+		}
+
+		if ((e.getKeyCode() == KeyEvent.VK_EQUALS || e.getKeyCode() == KeyEvent.VK_PLUS) && controlDown)
+		{
+			final int newZoom = currentZoom + config.zoomIncrement();
+			final int zoomValue = Ints.constrainToRange(newZoom, CameraConfig.OUTER_LIMIT_MIN, CameraConfig.INNER_ZOOM_LIMIT);
+			clientThread.invokeLater(() -> client.runScript(ScriptID.CAMERA_DO_ZOOM, zoomValue, zoomValue));
+			currentZoom = zoomValue;
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_MINUS && controlDown)
+		{
+			final int newZoom = currentZoom - config.zoomIncrement();
+			final int zoomValue = Ints.constrainToRange(newZoom, CameraConfig.OUTER_LIMIT_MIN, CameraConfig.INNER_ZOOM_LIMIT);
+			clientThread.invokeLater(() -> client.runScript(ScriptID.CAMERA_DO_ZOOM, zoomValue, zoomValue));
+			currentZoom = zoomValue;
 		}
 	}
 

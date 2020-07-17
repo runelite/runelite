@@ -34,7 +34,8 @@ public enum ControlFunction
 {
 	NONE("None"),
 	CONTROL_TO_ZOOM("Hold to zoom"),
-	CONTROL_TO_RESET("Reset zoom");
+	CONTROL_TO_RESET("Reset zoom"),
+	CONTROL_TO_INC_DEC("Hold and (+/-)");
 
 	private final String name;
 
