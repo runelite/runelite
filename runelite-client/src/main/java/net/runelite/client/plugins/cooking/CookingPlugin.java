@@ -176,7 +176,8 @@ public class CookingPlugin extends Plugin
 			|| message.startsWith("You successfully bake")
 			|| message.startsWith("You manage to cook")
 			|| message.startsWith("You roast a")
-			|| message.startsWith("You cook"))
+			|| message.startsWith("You cook")
+			|| message.startsWith("You dry a piece of meat"))
 		{
 			if (session == null)
 			{
