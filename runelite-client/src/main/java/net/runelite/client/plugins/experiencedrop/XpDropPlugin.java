@@ -97,15 +97,10 @@ public class XpDropPlugin extends Plugin
 		// child 0 is the xpdrop text, everything else are sprite ids for skills
 		final Widget text = children[0];
 
-		if (config.hideSkillIcons())
-		{
-			// keep only text
-			Arrays.fill(children, 1, children.length, null);
-		}
-
 		PrayerType prayer = getActivePrayerType();
 		if (prayer == null)
 		{
+			hideSkillIcons(xpdrop);
 			resetTextColor(text);
 			return;
 		}
@@ -152,6 +147,8 @@ public class XpDropPlugin extends Plugin
 		{
 			resetTextColor(text);
 		}
+
+		hideSkillIcons(xpdrop);
 	}
 
 	private void resetTextColor(Widget widget)
@@ -160,6 +157,16 @@ public class XpDropPlugin extends Plugin
 		int defaultColorId = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
 		int color = colorEnum.getIntValue(defaultColorId);
 		widget.setTextColor(color);
+	}
+
+	private void hideSkillIcons(Widget xpdrop)
+	{
+		if (config.hideSkillIcons())
+		{
+			Widget[] children = xpdrop.getChildren();
+			// keep only text
+			Arrays.fill(children, 1, children.length, null);
+		}
 	}
 
 	private PrayerType getActivePrayerType()
