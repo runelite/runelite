@@ -270,7 +270,6 @@ public class TimersPluginTest
 		captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager, times(2)).addInfoBox(captor.capture());
 		ElapsedTimer timer = (ElapsedTimer) captor.getValue();
-		timer.updateTimer();
 		assertEquals("00:01", timer.getText());
 		try
 		{
@@ -280,7 +279,6 @@ public class TimersPluginTest
 		{
 			log.debug("Thread interrupted", e);
 		}
-		timer.updateTimer();
 		assertEquals("00:01", timer.getText());
 
 		// test timer unpause
@@ -298,7 +296,6 @@ public class TimersPluginTest
 		captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
 		timer = (ElapsedTimer) captor.getValue();
-		timer.updateTimer();
 		assertEquals("00:02", timer.getText());
 
 		// test timer remove

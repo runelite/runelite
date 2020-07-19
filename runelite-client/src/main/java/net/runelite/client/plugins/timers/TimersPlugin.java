@@ -698,17 +698,15 @@ public class TimersPlugin extends Plugin
 				}
 
 				tzhaarStartTime = now;
+				createTzhaarTimer(tzhaarStartTime, tzhaarLastTime);
 			}
-
 			else if (tzhaarLastTime != null)
 			{
 				tzhaarStartTime = tzhaarStartTime.plus(Duration.between(tzhaarStartTime, now)).minus(Duration.between(tzhaarStartTime, tzhaarLastTime));
 				tzhaarLastTime = null;
+				createTzhaarTimer(tzhaarStartTime, tzhaarLastTime);
 			}
-
-			createTzhaarTimer(tzhaarStartTime, tzhaarLastTime);
 		}
-
 	}
 
 	private void updateTzhaarTimerOnLoading()
@@ -753,19 +751,27 @@ public class TimersPlugin extends Plugin
 	{
 		if (tzhaarTimer != null)
 		{
-			infoBoxManager.removeInfoBox(tzhaarTimer);
+			removeTzhaarTimer();
 		}
+
+		int imageItem = -1;
 
 		if (checkInFightCaves())
 		{
-			tzhaarTimer = new ElapsedTimer(itemManager.getImage(FIRE_CAPE), this, startTime, lastTime);
-			infoBoxManager.addInfoBox(tzhaarTimer);
+			imageItem = FIRE_CAPE;
 		}
 		else if (checkInInferno())
 		{
-			tzhaarTimer = new ElapsedTimer(itemManager.getImage(INFERNAL_CAPE), this, startTime, lastTime);
-			infoBoxManager.addInfoBox(tzhaarTimer);
+			imageItem = INFERNAL_CAPE;
 		}
+
+		if (imageItem == -1)
+		{
+			return;
+		}
+
+		tzhaarTimer = new ElapsedTimer(itemManager.getImage(imageItem), this, startTime, lastTime);
+		infoBoxManager.addInfoBox(tzhaarTimer);
 	}
 
 	@Subscribe
@@ -821,7 +827,6 @@ public class TimersPlugin extends Plugin
 			case HOPPING:
 				loggingIn = true;
 			case LOGIN_SCREEN:
-				removeTzhaarTimer();
 				saveTzhaarConfig();
 				removeTbTimers();
 				break;
@@ -831,7 +836,6 @@ public class TimersPlugin extends Plugin
 				{
 					loggingIn = false;
 					loadTzhaarConfig();
-					resetTzhaarConfig();
 				}
 				break;
 		}

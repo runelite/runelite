@@ -31,30 +31,23 @@ import java.time.Duration;
 import java.time.Instant;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
-public class ElapsedTimer extends InfoBox
+class ElapsedTimer extends InfoBox
 {
 	private final Instant startTime;
-	private Duration time;
 	private final Instant lastTime;
 
 	// Creates a timer that counts up if lastTime is null, or a paused timer if lastTime is defined
-	public ElapsedTimer(BufferedImage image, TimersPlugin plugin, Instant startTime, Instant lastTime)
+	ElapsedTimer(BufferedImage image, TimersPlugin plugin, Instant startTime, Instant lastTime)
 	{
 		super(image, plugin);
 		this.startTime = startTime;
 		this.lastTime = lastTime;
-		updateTimer();
-	}
-
-	public void updateTimer()
-	{
-		time = Duration.between(startTime, lastTime == null ? Instant.now() : lastTime);
 	}
 
 	private String formatTime(Duration time)
 	{
-		if (time.toHours() > 0) return DurationFormatUtils.formatDuration(time.toMillis(), "HH:mm", true);
-		return DurationFormatUtils.formatDuration(time.toMillis(), "mm:ss", true);
+		final String formatString = time.toHours() > 0 ? "HH:mm" : "mm:ss";
+		return DurationFormatUtils.formatDuration(time.toMillis(), formatString, true);
 	}
 
 	@Override
@@ -65,7 +58,7 @@ public class ElapsedTimer extends InfoBox
 			return "";
 		}
 
-		updateTimer();
+		Duration time = Duration.between(startTime, lastTime == null ? Instant.now() : lastTime);
 		return formatTime(time);
 	}
 
@@ -78,6 +71,7 @@ public class ElapsedTimer extends InfoBox
 	@Override
 	public String getTooltip()
 	{
+		Duration time = Duration.between(startTime, lastTime == null ? Instant.now() : lastTime);
 		return "Elapsed time: " +  DurationFormatUtils.formatDuration(time.toMillis(), "HH:mm:ss", true);
 	}
 }
