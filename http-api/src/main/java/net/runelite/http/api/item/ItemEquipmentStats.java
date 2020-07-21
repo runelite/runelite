@@ -24,6 +24,7 @@
  */
 package net.runelite.http.api.item;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Value;
 
@@ -32,6 +33,9 @@ import lombok.Value;
 public class ItemEquipmentStats
 {
 	private int slot;
+
+	@SerializedName("is2h")
+	private boolean isTwoHanded;
 
 	private int astab;
 	private int aslash;
@@ -51,4 +55,3 @@ public class ItemEquipmentStats
 	private int prayer;
 	private int aspeed;
 }
-
