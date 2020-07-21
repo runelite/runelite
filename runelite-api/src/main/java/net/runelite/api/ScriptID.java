@@ -284,4 +284,13 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 4, string = 1)
 	public static final int XPDROPS_SETDROPSIZE = 996;
+
+	/**
+	 * Main layout script for the bank
+	 * <ul>
+	 * <li>int (WidgetID) * 17, various widgets making up the bank interface</li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 17)
+	public static final int BANKMAIN_BUILD = 277;
 }
