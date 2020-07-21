@@ -34,7 +34,7 @@ public class ItemEquipmentStats
 {
 	private int slot;
 
-	@SerializedName("is_2h")
+	@SerializedName("is2h")
 	private boolean isTwoHanded;
 
 	private int astab;
@@ -55,4 +55,3 @@ public class ItemEquipmentStats
 	private int prayer;
 	private int aspeed;
 }
-
