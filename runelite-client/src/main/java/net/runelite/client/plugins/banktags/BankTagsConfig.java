@@ -65,6 +65,17 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "preventTagTabDrags",
+		name = "Prevent tag tab item dragging",
+		description = "Ignore dragged items to prevent unwanted bank item reordering",
+		position = 4
+	)
+	default boolean preventTagTabDrags()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",

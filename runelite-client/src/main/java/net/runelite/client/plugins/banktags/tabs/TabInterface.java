@@ -802,6 +802,14 @@ public class TabInterface
 		Widget draggedOn = client.getDraggedOnWidget();
 		Widget draggedWidget = client.getDraggedWidget();
 
+		// Returning early or nulling the drag release listener has no effect. Hence, we need to
+		// null the draggedOnWidget instead.
+		if (draggedWidget.getId() == WidgetInfo.BANK_ITEM_CONTAINER.getId() && isActive()
+			&& config.preventTagTabDrags())
+		{
+			client.setDraggedOnWidget(null);
+		}
+
 		if (!isDragging || draggedOn == null)
 		{
 			return;
