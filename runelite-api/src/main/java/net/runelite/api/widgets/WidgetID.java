@@ -259,6 +259,7 @@ public class WidgetID
 		static final int CONTENT_CONTAINER = 9;
 		static final int TAB_CONTAINER = 10;
 		static final int ITEM_CONTAINER = 12;
+		static final int SCROLLBAR = 13;
 		static final int SEARCH_BUTTON_BACKGROUND = 39;
 		static final int DEPOSIT_INVENTORY = 41;
 		static final int DEPOSIT_EQUIPMENT = 43;

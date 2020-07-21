@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.banktags;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Shorts;
 import com.google.inject.Provides;
@@ -33,6 +34,7 @@ import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -48,6 +50,8 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.ScriptID;
+import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.DraggingWidgetChanged;
@@ -56,6 +60,7 @@ import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
@@ -96,6 +101,10 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	public static final String ICON_SEARCH = "icon_";
 	public static final String TAG_TABS_CONFIG = "tagtabs";
 	public static final String VAR_TAG_SUFFIX = "*";
+	private static final int ITEMS_PER_ROW = 8;
+	private static final int ITEM_VERTICAL_SPACING = 36;
+	private static final int ITEM_HORIZONTAL_SPACING = 48;
+	private static final int ITEM_ROW_START = 51;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
@@ -448,6 +457,86 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				clientThread.invokeLater(tabInterface::destroy);
 			}
 		}
+	}
+
+	private boolean isSearching()
+	{
+		return client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType()
+			|| (client.getVar(VarClientInt.INPUT_TYPE) <= 0
+			&& !Strings.isNullOrEmpty(client.getVar(VarClientStr.INPUT_TEXT)));
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD || !config.removeSeparators())
+		{
+			return;
+		}
+
+		// allow time for the tab interface to become active
+		clientThread.invokeLater(() ->
+		{
+			if (!isSearching() || !tabInterface.isActive())
+			{
+				return;
+			}
+
+			Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			int items = 0;
+
+			Widget[] containerChildren = itemContainer.getDynamicChildren();
+
+			// sort the child array as the items are not in the displayed order
+			Arrays.sort(containerChildren, Comparator.comparing(Widget::getOriginalY)
+				.thenComparing(Widget::getOriginalX));
+
+			for (Widget child : containerChildren)
+			{
+				if (child.getItemId() != -1 && !child.isHidden())
+				{
+					// calculate correct item position as if this was a normal tab
+					int adjYOffset = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
+					int adjXOffset = (items % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
+
+					if (child.getOriginalY() != adjYOffset)
+					{
+						child.setOriginalY(adjYOffset);
+						child.revalidate();
+					}
+
+					if (child.getOriginalX() != adjXOffset)
+					{
+						child.setOriginalX(adjXOffset);
+						child.revalidate();
+					}
+
+					items++;
+				}
+
+				// separator line or tab text
+				if (child.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
+					|| child.getText().contains("Tab"))
+				{
+					child.setHidden(true);
+				}
+			}
+
+			int itemContainerHeight = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER).getHeight();
+			// add a second row of height here to allow users to scroll down when the last row is partially visible
+			int adjustedScrollHeight = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING;
+			itemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
+
+			client.runScript(ScriptID.UPDATE_SCROLLBAR,
+				WidgetInfo.BANK_SCROLLBAR.getId(),
+				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
+				0);
+		});
 	}
 
 	@Subscribe
