@@ -823,8 +823,6 @@ LABEL725:
    jump                   LABEL729
 LABEL726:
    sconst                 "The Bank of Gielinor"
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  5
    if_settext            
 LABEL729:
@@ -987,8 +985,6 @@ LABEL857:
    get_varbit             4150
    enum                  
    join_string            2
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  5
    if_settext            
    jump                   LABEL873
@@ -997,8 +993,6 @@ LABEL867:
    get_varbit             4150
    tostring              
    join_string            2
-   sconst                 "setBankTitle"  ;
-   runelite_callback     ;
    iload                  5
    if_settext            
 FinishBuilding:
