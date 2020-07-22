@@ -52,4 +52,15 @@ public interface DpsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 2,
+			keyName = "bossOnly",
+			name = "Boss only",
+			description = "Only track damage applied to a boss"
+	)
+	default boolean bossOnly()
+	{
+		return false;
+	}
 }
