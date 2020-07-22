@@ -208,13 +208,14 @@ public class Notifier
 
 	public void processFlash(final Graphics2D graphics)
 	{
-		if (flashStart == null || client.getGameState() != GameState.LOGGED_IN)
+		FlashNotification flashNotification = runeLiteConfig.flashNotification();
+
+		if (flashStart == null || client.getGameState() != GameState.LOGGED_IN
+			|| flashNotification == FlashNotification.DISABLED)
 		{
 			flashStart = null;
 			return;
 		}
-
-		FlashNotification flashNotification = runeLiteConfig.flashNotification();
 
 		if (Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
 		{
