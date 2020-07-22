@@ -431,7 +431,7 @@ public final class SpriteID
 	public static final int SPELL_FIRE_SURGE_DISABLED = 415;
 	/* Unmapped: 416, 417, 418 */
 	public static final int UNKNOWN_STANCE_ICON_1 = 419;
-	public static final int UNKNOWN_STANCE_ICON_2 = 320;
+	public static final int UNKNOWN_STANCE_ICON_2 = 420;
 	public static final int UNKNOWN_STANCE_ICON_3 = 421;
 	public static final int MINIMAP_DESTINATION_FLAG = 422;
 	public static final int CHATBOX_BADGE_CROWN_PLAYER_MODERATOR = 423;
