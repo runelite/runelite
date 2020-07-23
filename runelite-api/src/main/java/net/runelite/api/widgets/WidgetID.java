@@ -267,8 +267,8 @@ public class WidgetID
 		static final int INCINERATOR = 45;
 		static final int INCINERATOR_CONFIRM = 46;
 		static final int EQUIPMENT_CONTENT_CONTAINER = 68;
-		static final int SETTINGS_BUTTON = 108;
-		static final int EQUIPMENT_BUTTON = 109;
+		static final int SETTINGS_BUTTON = 111;
+		static final int EQUIPMENT_BUTTON = 112;
 	}
 
 	static class GrandExchange
