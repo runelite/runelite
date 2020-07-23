@@ -52,7 +52,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PrayerPluginTest {
+public class PrayerPluginTest
+{
 
     @Inject
     private PrayerPlugin prayerPlugin;
@@ -92,7 +93,8 @@ public class PrayerPluginTest {
     }
 
     @Test
-    public void testGetEstimatedTimeRemainingOverOneHour() {
+    public void testGetEstimatedTimeRemainingOverOneHour()
+    {
 
         String expectedString = "1:19:12";
 
@@ -117,7 +119,8 @@ public class PrayerPluginTest {
     }
 
     @Test
-    public void testGetEstimatedTimeRemainingUnderOneHour() {
+    public void testGetEstimatedTimeRemainingUnderOneHour()
+    {
 
         String expectedString = "29:42";
 
@@ -135,7 +138,8 @@ public class PrayerPluginTest {
     }
 
     @Test
-    public void testGetEstimatedTimeRemainingFormatForOrbUnderOneHour() {
+    public void testGetEstimatedTimeRemainingFormatForOrbUnderOneHour()
+    {
 
         String expectedString = "29m";
 
@@ -153,7 +157,8 @@ public class PrayerPluginTest {
     }
 
     @Test
-    public void testGetEstimatedTimeRemainingFormatForOrbOverOneHour() {
+    public void testGetEstimatedTimeRemainingFormatForOrbOverOneHour()
+    {
 
         String expectedString = "79m";
 
@@ -176,4 +181,5 @@ public class PrayerPluginTest {
 
         Assert.assertEquals(expectedString, actualString);
     }
+
 }
