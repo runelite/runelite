@@ -361,7 +361,8 @@ public class PrayerPlugin extends Plugin
 
 		LocalTime timeLeft = LocalTime.ofSecondOfDay((long) secondsLeft);
 
-		if (formatForOrb && (timeLeft.getHour() > 0 || timeLeft.getMinute() > 9)) {
+		if (formatForOrb && (timeLeft.getHour() > 0 || timeLeft.getMinute() > 9))
+		{
 			long minutes = Duration.ofSeconds((long) secondsLeft).toMinutes();
 			return String.format("%dm", minutes);
 		}
