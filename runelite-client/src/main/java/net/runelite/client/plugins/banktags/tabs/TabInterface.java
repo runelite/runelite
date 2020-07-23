@@ -512,7 +512,7 @@ public class TabInterface
 			return;
 		}
 
-		if (activeTab != null && client.getVar(VarClientInt.INPUT_TYPE) == InputType.RUNELITE.getType())
+		if (activeTab != null && client.getVar(VarClientInt.INPUT_TYPE) == InputType.RUNELITE_CHATBOX_PANEL.getType())
 		{
 			// don't reset active tab if we are editing tags
 			updateBounds();
