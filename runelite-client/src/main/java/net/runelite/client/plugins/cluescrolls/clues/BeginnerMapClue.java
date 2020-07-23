@@ -33,7 +33,7 @@ import net.runelite.api.widgets.WidgetID;
 public class BeginnerMapClue extends MapClue implements LocationClueScroll
 {
 	private static final ImmutableList<BeginnerMapClue> CLUES = ImmutableList.of(
-		new BeginnerMapClue(WidgetID.BEGINNER_CLUE_MAP_CHAMPIONS_GUILD, new WorldPoint(3166, 3361, 0), "South West of the Champion's Guild"),
+		new BeginnerMapClue(WidgetID.BEGINNER_CLUE_MAP_CHAMPIONS_GUILD, new WorldPoint(3166, 3361, 0), "West of the Champions' Guild"),
 		new BeginnerMapClue(WidgetID.BEGINNER_CLUE_MAP_VARROCK_EAST_MINE, new WorldPoint(3290, 3374, 0), "Outside Varrock East Mine"),
 		new BeginnerMapClue(WidgetID.BEGINNER_CLUE_MAP_DRAYNOR, new WorldPoint(3093, 3226, 0), "South of Draynor Village Bank"),
 		new BeginnerMapClue(WidgetID.BEGINNER_CLUE_MAP_NORTH_OF_FALADOR, new WorldPoint(3043, 3398, 0), "In the standing stones north of Falador"),
