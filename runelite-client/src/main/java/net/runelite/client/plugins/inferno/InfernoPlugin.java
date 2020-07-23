@@ -971,8 +971,12 @@ public class InfernoPlugin extends Plugin
 		final int pauseHp = 600;
 		final int resumeHp = 480;
 
-		int hp = calculateNpcHp(zuk.getHealthRatio(), zuk.getHealthScale(), npcManager.getHealth(zuk.getId()));
-
+		int hp = 0;
+		for (InfernoNPC infernoNPC : getInfernoNpcs()) {
+			if (infernoNPC.getType() == InfernoNPC.Type.ZUK) {
+				hp = calculateNpcHp(infernoNPC.getNpc().getHealthRatio(), infernoNPC.getNpc().getHealthScale(), 1200);
+			}
+		}
 		if (hp <= 0)
 		{
 			return;

@@ -327,7 +327,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean safespotsBat()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -399,7 +399,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean safespotsBlob()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -557,7 +557,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean safespotsRanger()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -617,7 +617,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean safespotsMage()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -677,7 +677,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean safespotsHealerJad()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -701,7 +701,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideHealerJadDeath()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -749,7 +749,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideJadDeath()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -773,7 +773,7 @@ public interface InfernoConfig extends Config
 	)
 	default boolean hideHealerZukDeath()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -797,7 +797,7 @@ public interface InfernoConfig extends Config
 	)
 	default InfernoZukShieldDisplayMode safespotsZukShieldBeforeHealers()
 	{
-		return InfernoZukShieldDisplayMode.PREDICT;
+		return InfernoZukShieldDisplayMode.LIVEPLUSPREDICT;
 	}
 
 	@ConfigItem(
@@ -809,7 +809,7 @@ public interface InfernoConfig extends Config
 	)
 	default InfernoZukShieldDisplayMode safespotsZukShieldAfterHealers()
 	{
-		return InfernoZukShieldDisplayMode.LIVE;
+		return InfernoZukShieldDisplayMode.LIVEPLUSPREDICT;
 	}
 
 	@ConfigItem(
