@@ -91,7 +91,6 @@ public class PrayerPluginTest {
         Assert.assertEquals(expectedString, actualString);
     }
 
-
     @Test
     public void testGetEstimatedTimeRemainingUnderOneHour() {
 
@@ -111,7 +110,7 @@ public class PrayerPluginTest {
     }
 
     @Test
-    public void testGetEstimatedTimeRemainingFormatForOrb() {
+    public void testGetEstimatedTimeRemainingFormatForOrbUnderOneHour() {
 
         String expectedString = "29m";
 
@@ -121,6 +120,31 @@ public class PrayerPluginTest {
         when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
         when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(itemContainer);
         when(itemContainer.getItems()).thenReturn(new Item[]{});
+
+        prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
+        String actualString = prayerPlugin.getEstimatedTimeRemaining(true);
+
+        Assert.assertEquals(expectedString, actualString);
+    }
+
+    @Test
+    public void testGetEstimatedTimeRemainingFormatForOrbOverOneHour() {
+
+        String expectedString = "79m";
+
+        ItemStats itemStats = new ItemStats(false, true, 1, 8,
+                ItemEquipmentStats.builder()
+                        .slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
+                        .prayer(50)
+                        .build());
+
+        ItemContainer itemContainer = mock(ItemContainer.class);
+
+        when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
+        when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
+        when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(itemContainer);
+        when(itemContainer.getItems()).thenReturn(new Item[]{ new Item(ItemID.TWISTED_BOW, 1)});
+        when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(itemStats);
 
         prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
         String actualString = prayerPlugin.getEstimatedTimeRemaining(true);
