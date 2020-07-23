@@ -74,10 +74,15 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ItemQuantityChanged;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
@@ -183,6 +188,16 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
 	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
 
+	// Serum 207/208 handling
+	private static final String SERUM_207_EVENT = "Serum 207";
+	private static final String SERUM_208_EVENT = "Serum 208";
+	private static final String SERUM_207_MESSAGE = "Oh... thank you, you used the serum";
+	private static final String SERUM_208_MESSAGE = "Oh... thank you, you used the permanent serum";
+
+	// Guthix balance handling
+	private static final String GUTHIX_BALANCE_EVENT = "Guthix balance";
+	private static final String GUTHIX_BALANCE_MESSAGE = "Thanks so much for saving me from being a vampyre.";
+
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
 
@@ -246,6 +261,8 @@ public class LootTrackerPlugin extends Plugin
 	LootRecordType lootRecordType;
 	private boolean chestLooted;
 	private String lastPickpocketTarget;
+
+	private boolean awaitingDialogue = true;
 
 	private List<String> ignoredItems = new ArrayList<>();
 	private List<String> ignoredEvents = new ArrayList<>();
@@ -479,6 +496,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final String event;
 		final ItemContainer container;
+
 		switch (widgetLoaded.getGroupId())
 		{
 			case (WidgetID.BARROWS_REWARD_GROUP_ID):
@@ -532,6 +550,9 @@ public class LootTrackerPlugin extends Plugin
 				event = "Drift Net";
 				container = client.getItemContainer(InventoryID.DRIFT_NET_FISHING_REWARD);
 				break;
+			case (WidgetID.DIALOG_NPC_GROUP_ID):
+				awaitingDialogue = true;
+				return;
 			default:
 				return;
 		}
@@ -715,6 +736,9 @@ public class LootTrackerPlugin extends Plugin
 			|| HESPORI_EVENT.equals(eventType)
 			|| SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
+			|| SERUM_207_EVENT.equals(eventType)
+			|| SERUM_208_EVENT.equals(eventType)
+			|| GUTHIX_BALANCE_EVENT.equals(eventType)
 			|| lootRecordType == LootRecordType.PICKPOCKET)
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
@@ -755,6 +779,74 @@ public class LootTrackerPlugin extends Plugin
 			eventType = CASKET_EVENT;
 			lootRecordType = LootRecordType.EVENT;
 			takeInventorySnapshot();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		handleDialogue();
+	}
+
+	public void handleDialogue()
+	{
+		if (!awaitingDialogue)
+		{
+			return;
+		}
+
+		awaitingDialogue = false;
+
+		Widget npcDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		if (npcDialogueTextWidget == null)
+		{
+			return;
+		}
+
+		final String message = npcDialogueTextWidget.getText();
+		if (message.startsWith(SERUM_207_MESSAGE))
+		{
+			takeInventorySnapshot();
+			eventType = SERUM_207_EVENT;
+		}
+		else if (message.startsWith(SERUM_208_MESSAGE))
+		{
+			takeInventorySnapshot();
+			eventType = SERUM_208_EVENT;
+		}
+		else if (message.startsWith(GUTHIX_BALANCE_MESSAGE))
+		{
+			takeInventorySnapshot();
+			eventType = GUTHIX_BALANCE_EVENT;
+		}
+	}
+
+	@Subscribe
+	public void onItemSpawned(ItemSpawned itemSpawned)
+	{
+		handleOnlyGroundItems();
+	}
+
+	@Subscribe
+	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
+	{
+		handleOnlyGroundItems();
+	}
+
+	public void handleOnlyGroundItems()
+	{
+		if (SERUM_207_EVENT.equals(eventType)
+			|| SERUM_208_EVENT.equals(eventType)
+			|| GUTHIX_BALANCE_EVENT.equals(eventType))
+		{
+			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+			Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
+			if (!groundItems.isEmpty())
+			{
+				processInventoryLoot(eventType, lootRecordType, null, groundItems);
+				eventType = null;
+				lootRecordType = null;
+			}
 		}
 	}
 
@@ -810,8 +902,11 @@ public class LootTrackerPlugin extends Plugin
 		if (inventorySnapshot != null)
 		{
 			Multiset<Integer> currentInventory = HashMultiset.create();
-			Arrays.stream(inventoryContainer.getItems())
-				.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+			if (inventoryContainer != null)
+			{
+				Arrays.stream(inventoryContainer.getItems())
+					.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+			}
 
 			groundItems.stream()
 				.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
