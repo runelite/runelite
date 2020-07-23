@@ -10,9 +10,6 @@
 ; callback "setBankScroll"
 ;	Fired before bank is calculated
 ;   Used by the TabInterface to show fake bank items for tag tabs
-;
-; callback "isTabMenuActive"
-;	Used by the TabInterface to skip setting the bank title
    sconst                 "beforeBankLayout"
    runelite_callback     
    get_varbit             5102
@@ -966,12 +963,6 @@ LABEL848:
    add                   
    istore                 20
    jump                   LABEL769
-SetTitle:
-   iconst                 0                  ; Compare variable
-   iconst                 0                  ;
-   sconst                 "isTabMenuActive"
-   runelite_callback     ; skip setting the bank title if the tag tab menu is active
-   if_icmpne              FinishBuilding
 LABEL853:
    get_varbit             4170
    iconst                 2

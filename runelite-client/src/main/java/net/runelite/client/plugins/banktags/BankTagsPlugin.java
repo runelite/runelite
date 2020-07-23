@@ -61,6 +61,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
@@ -84,6 +85,7 @@ import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
+import net.runelite.client.plugins.banktags.tabs.TagTab;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.util.Text;
 
@@ -308,8 +310,19 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				break;
 			}
 			case "bankSearchFilter":
-				int itemId = intStack[intStackSize - 1];
-				String search = stringStack[stringStackSize - 1];
+				final int itemId = intStack[intStackSize - 1];
+				final String searchfilter = stringStack[stringStackSize - 1];
+
+				// This event fires regardless of the bank being in search mode. If we have a current
+				// tab set then the bank should be not in search mode (and the filter empty). Otherwise
+				// the filter is either empty for no search or contains the search filter.
+				TagTab activeTab = tabInterface.getActiveTab();
+				String search = activeTab != null ? TAG_SEARCH + activeTab.getTag() : searchfilter;
+
+				if (search.isEmpty())
+				{
+					return;
+				}
 
 				boolean tagSearch = search.startsWith(TAG_SEARCH);
 				if (tagSearch)
@@ -324,6 +337,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				}
 				else if (tagSearch)
 				{
+					// if the item isn't tagged we return false to prevent the item matching if the item name happens
+					// to contain the tag name.
 					intStack[intStackSize - 2] = 0;
 				}
 				break;
@@ -402,8 +417,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				.map(i -> i + "*")
 				.forEach(tags::add);
 
-			boolean isSearchOpen = client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType();
-			String searchText = client.getVar(VarClientStr.INPUT_TEXT);
 			String initialValue = Text.toCSV(tags);
 
 			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
@@ -430,12 +443,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 						tabInterface.updateTabIfActive(Text.fromCSV(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
 					}))
 				.build();
-
-			if (isSearchOpen)
-			{
-				bankSearch.reset(false);
-				bankSearch.search(InputType.SEARCH, searchText, false);
-			}
 		}
 		else
 		{
@@ -464,6 +471,29 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		return client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType()
 			|| (client.getVar(VarClientInt.INPUT_TYPE) <= 0
 			&& !Strings.isNullOrEmpty(client.getVar(VarClientStr.INPUT_TEXT)));
+	}
+
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired event)
+	{
+		if (event.getScriptId() == ScriptID.BANKMAIN_FINISHBUILDING)
+		{
+			// Since we apply tag tab search filters even when the bank is not in search mode,
+			// bankkmain_build will reset the bank title to "The Bank of Gielinor". So apply our
+			// own title.
+			TagTab activeTab = tabInterface.getActiveTab();
+			if (tabInterface.isTagTabActive())
+			{
+				// Tag tab tab has its own title since it isn't a real tag
+				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+				bankTitle.setText("Tag tab tab");
+			}
+			else if (activeTab != null)
+			{
+				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+				bankTitle.setText("Tag tab <col=ff0000>" + activeTab.getTag() + "</col>");
+			}
+		}
 	}
 
 	@Subscribe
