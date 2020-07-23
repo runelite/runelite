@@ -34,15 +34,15 @@ enum CannonSpots
 {
 
 	BLOODVELDS(new WorldPoint(2439, 9821, 0), new WorldPoint(2448, 9821, 0), new WorldPoint(2472, 9832, 0), new WorldPoint(2453, 9817, 0)),
-	FIRE_GIANTS(new WorldPoint(2393, 9782, 0), new WorldPoint(2412, 9776, 0), new WorldPoint(2401, 9780, 0)),
+	FIRE_GIANTS(new WorldPoint(2393, 9782, 0), new WorldPoint(2412, 9776, 0), new WorldPoint(2401, 9780, 0), new WorldPoint(3047, 10340, 0)),
 	ABERRANT_SPECTRES(new WorldPoint(2456, 9791, 0)),
 	HELLHOUNDS(new WorldPoint(2431, 9776, 0), new WorldPoint(2413, 9786, 0), new WorldPoint(2783, 9686, 0), new WorldPoint(3198, 10071, 0)),
-	BLACK_DEMONS(new WorldPoint(2859, 9778, 0), new WorldPoint(2841, 9791, 0), new WorldPoint(1421, 10089, 1)),
-	BLACK_KNIGHTS(new WorldPoint(2906, 9685, 0)),
+	BLACK_DEMONS(new WorldPoint(2859, 9778, 0), new WorldPoint(2841, 9791, 0), new WorldPoint(1421, 10089, 1), new WorldPoint(3174, 10154, 0), new WorldPoint(3089, 9960, 0)),
+	BLACK_KNIGHTS(new WorldPoint(2906, 9685, 0), new WorldPoint(3053, 3852, 0)),
 	ELVES(new WorldPoint(2044, 4635, 0), new WorldPoint(3278, 6098, 0)),
 	SUQAHS(new WorldPoint(2114, 3943, 0)),
 	TROLLS(new WorldPoint(2401, 3856, 0), new WorldPoint(1242, 3517, 0)),
-	GREATER_DEMONS(new WorldPoint(1435, 10086, 2)),
+	GREATER_DEMONS(new WorldPoint(1435, 10086, 2), new WorldPoint(3224, 10132, 0)),
 	BRINE_RAT(new WorldPoint(2707, 10132, 0)),
 	DAGGANOTH(new WorldPoint(2524, 10020, 0)),
 	DARK_BEAST(new WorldPoint(1992, 4655, 0)),
@@ -67,7 +67,12 @@ enum CannonSpots
 	MAGIC_AXE(new WorldPoint(3190, 3960, 0)),
 	EARTH_WARRIOR(new WorldPoint(3120, 9987, 0)),
 	ICE_WARRIOR(new WorldPoint(2955, 3876, 0)),
-	BANDIT(new WorldPoint(3037, 3700, 0));
+	BANDIT(new WorldPoint(3037, 3700, 0)),
+	BEAR(new WorldPoint(3113, 3672, 0)),
+	ELDER_CHAOS_DRUID(new WorldPoint(3237, 3622, 0)),
+	HILL_GIANT(new WorldPoint(3044, 10318, 0)),
+	SCORPION(new WorldPoint(3233, 10335, 0)),
+	ZOMBIE(new WorldPoint(3172, 3677, 0));
 
 	@Getter
 	private static final List<WorldPoint> cannonSpots = new ArrayList<>();
