@@ -50,8 +50,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.text.Document;
@@ -203,26 +201,7 @@ public class IconTextField extends JPanel
 		});
 
 		// Show the clear button when text is present, and hide again when empty
-		textField.getTextField().getDocument().addDocumentListener(new DocumentListener()
-		{
-			@Override
-			public void insertUpdate(DocumentEvent e)
-			{
-				updateContextButton();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e)
-			{
-				updateContextButton();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e)
-			{
-				updateContextButton();
-			}
-		});
+		textField.getTextField().getDocument().addDocumentListener(SwingUtil.documentListener(this::updateContextButton));
 
 		JPanel rhsButtons = new JPanel();
 		rhsButtons.setBackground(new Color(0, 0, 0, 0));

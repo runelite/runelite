@@ -44,8 +44,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.Config;
@@ -67,6 +65,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.MultiplexingPluginPanel;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
@@ -138,26 +137,7 @@ class PluginListPanel extends PluginPanel
 		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		searchBar.getDocument().addDocumentListener(new DocumentListener()
-		{
-			@Override
-			public void insertUpdate(DocumentEvent e)
-			{
-				onSearchBarChanged();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e)
-			{
-				onSearchBarChanged();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e)
-			{
-				onSearchBarChanged();
-			}
-		});
+		searchBar.getDocument().addDocumentListener(SwingUtil.documentListener(this::onSearchBarChanged));
 		CATEGORY_TAGS.forEach(searchBar.getSuggestionListModel()::addElement);
 
 		setLayout(new BorderLayout());

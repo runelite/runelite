@@ -67,8 +67,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.Config;
@@ -382,26 +380,7 @@ class PluginHubPanel extends PluginPanel
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		searchBar.getDocument().addDocumentListener(new DocumentListener()
-		{
-			@Override
-			public void insertUpdate(DocumentEvent e)
-			{
-				filter();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e)
-			{
-				filter();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e)
-			{
-				filter();
-			}
-		});
+		searchBar.getDocument().addDocumentListener(SwingUtil.documentListener(this::filter));
 
 		JLabel externalPluginWarning = new JLabel("<html>External plugins are verified to not be " +
 			"malicious or rule-breaking, but are not " +
