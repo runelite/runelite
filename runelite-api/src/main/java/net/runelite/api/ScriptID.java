@@ -296,4 +296,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 19)
 	public static final int BANKMAIN_FINISHBUILDING = 505;
+
+	@ScriptArguments()
+	public static final int BANKMAIN_SEARCHING = 514;
 }
