@@ -43,6 +43,15 @@ import lombok.Getter;
 public enum Varbits
 {
 	/*
+	 * Spellbook Type
+	 * 0 Standard/Modern
+	 * 1 Ancient
+	 * 2 Lunar
+	 * 3 Arceuus
+	 */
+	SPELLBOOK(4070),
+
+	/*
 	 * If chatbox is transparent or not
 	 */
 	TRANSPARENT_CHATBOX(4608),
