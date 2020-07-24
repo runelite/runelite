@@ -235,7 +235,7 @@ class VarInspector extends JFrame
 		SwingUtilities.invokeLater(() ->
 		{
 			int lastComponentIdx = tracker.getComponentCount() - 1;
-			for (int i = lastComponentIdx; i > 1; i--)
+			for (int i = lastComponentIdx; i >= 0; i--)
 			{
 				JLabel label = (JLabel) tracker.getComponent(i);
 				String text = label.getText();
