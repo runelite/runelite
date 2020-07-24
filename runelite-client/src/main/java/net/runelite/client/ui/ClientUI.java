@@ -48,6 +48,7 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.BoxLayout;
@@ -122,6 +123,7 @@ public class ClientUI
 	private final ConfigManager configManager;
 	private final Provider<ClientThread> clientThreadProvider;
 	private final EventBus eventBus;
+	private final boolean safeMode;
 
 	private final CardLayout cardLayout = new CardLayout();
 	private final Rectangle sidebarButtonPosition = new Rectangle();
@@ -150,7 +152,8 @@ public class ClientUI
 		@Nullable Applet client,
 		ConfigManager configManager,
 		Provider<ClientThread> clientThreadProvider,
-		EventBus eventBus)
+		EventBus eventBus,
+		@Named("safeMode") boolean safeMode)
 	{
 		this.config = config;
 		this.keyManager = keyManager;
@@ -159,6 +162,7 @@ public class ClientUI
 		this.configManager = configManager;
 		this.clientThreadProvider = clientThreadProvider;
 		this.eventBus = eventBus;
+		this.safeMode = safeMode;
 	}
 
 	@Subscribe
@@ -507,7 +511,7 @@ public class ClientUI
 			trayIcon = SwingUtil.createTrayIcon(ICON, RuneLiteProperties.getTitle(), frame);
 
 			// Move frame around (needs to be done after frame is packed)
-			if (config.rememberScreenBounds())
+			if (config.rememberScreenBounds() && !safeMode)
 			{
 				try
 				{
