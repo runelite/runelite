@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -231,7 +232,14 @@ class VarInspector extends JFrame
 
 	private void updateTrackWithSearchFilter(String searchText)
 	{
-		searchPattern = Pattern.compile(searchText);
+		try
+		{
+			searchPattern = Pattern.compile(searchText);
+		}
+		catch (PatternSyntaxException e)
+		{
+			log.warn("`" + searchText + "` is an invalid regex, still using old pattern: `" + searchPattern + "`.", e);
+		}
 		SwingUtilities.invokeLater(() ->
 		{
 			int lastComponentIdx = tracker.getComponentCount() - 1;
