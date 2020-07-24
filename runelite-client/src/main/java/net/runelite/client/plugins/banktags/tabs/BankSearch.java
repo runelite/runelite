@@ -77,11 +77,14 @@ public class BankSearch
 			// selecting/changing tab
 			if (closeChat)
 			{
-				client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0);
+				// this clears the input text and type, and resets the chatbox to allow input
+				client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 1, 1);
 			}
-
-			client.setVar(VarClientInt.INPUT_TYPE, InputType.NONE.getType());
-			client.setVar(VarClientStr.INPUT_TEXT, "");
+			else
+			{
+				client.setVar(VarClientInt.INPUT_TYPE, InputType.NONE.getType());
+				client.setVar(VarClientStr.INPUT_TEXT, "");
+			}
 
 			layoutBank();
 		});

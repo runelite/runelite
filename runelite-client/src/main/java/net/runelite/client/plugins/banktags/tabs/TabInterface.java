@@ -409,13 +409,13 @@ public class TabInterface
 				if (tab.equals(activeTab))
 				{
 					activateTab(null);
+					bankSearch.reset(true);
 				}
 				else
 				{
 					openTag(Text.removeTags(clicked.getName()));
+					// openTag will reset and relayout
 				}
-
-				bankSearch.reset(true);
 
 				client.playSoundEffect(SoundEffectID.UI_BOOP);
 				break;
@@ -1170,12 +1170,15 @@ public class TabInterface
 	{
 		activateTab(tabManager.find(tag));
 		tagTabActive = BankTagsPlugin.TAG_TABS_CONFIG.equals(tag);
-		bankSearch.layoutBank();
+		bankSearch.reset(true); // clear search dialog & relayout bank for new tab.
 
-		// When tab is selected with search window open, the search window closes but the search button
-		// stays highlighted, this solves that issue
-		Widget searchBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
-		searchBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
+		// When searching the button has a script on timer to detect search end, that will set the background back
+		// and remove the timer. However since we are going from a bank search to our fake search this will not remove
+		// the timer but instead re-add it and reset the background. So remove the timer and the background. This is the
+		// same as bankmain_search_setbutton.
+		Widget searchButtonBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+		searchButtonBackground.setOnTimerListener((Object[]) null);
+		searchButtonBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
 	}
 
 	private static MenuEntry[] createMenuEntry(MenuEntryAdded event, String option, String target, MenuEntry[] entries)
