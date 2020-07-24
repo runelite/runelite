@@ -109,7 +109,7 @@ class VarInspector extends JFrame
 	private Pattern searchPattern = Pattern.compile("");
 
 	private int lastTick = 0;
-	private JLabel tickHeader;
+	private JLabel lastTickHeader;
 
 	private int[] oldVarps = null;
 	private int[] oldVarps2 = null;
@@ -249,8 +249,18 @@ class VarInspector extends JFrame
 				String text = label.getText();
 				if (text.startsWith("Tick"))
 				{
-					JLabel next = (JLabel) tracker.getComponent(i + 1); // Safe because tickHeader never comes alone
-					label.setVisible(next.isVisible() && !next.getText().startsWith("Tick"));
+					boolean tickContainsVisibleVarChange = false;
+					for (int j = i + 1; j <= lastComponentIdx; j++)
+					{
+						JLabel next = (JLabel) tracker.getComponent(j);
+						if (next.getText().startsWith("Tick")) break;
+						if (next.isVisible())
+						{
+							tickContainsVisibleVarChange = true;
+							break;
+						}
+					}
+					label.setVisible(tickContainsVisibleVarChange);
 				}
 				else
 				{
@@ -280,18 +290,18 @@ class VarInspector extends JFrame
 			if (tick != lastTick)
 			{
 				lastTick = tick;
-				tickHeader = new JLabel("Tick " + tick);
-				tickHeader.setFont(FontManager.getRunescapeSmallFont());
-				tickHeader.setBorder(new CompoundBorder(
+				lastTickHeader = new JLabel("Tick " + tick);
+				lastTickHeader.setFont(FontManager.getRunescapeSmallFont());
+				lastTickHeader.setBorder(new CompoundBorder(
 						BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
 						BorderFactory.createEmptyBorder(3, 6, 0, 0)
 				));
-				tracker.add(tickHeader);
-				tickHeader.setVisible(matchesSearchTerm);
+				tracker.add(lastTickHeader);
+				lastTickHeader.setVisible(matchesSearchTerm);
 			}
-			else if (matchesSearchTerm && tickHeader != null)
+			else if (matchesSearchTerm && lastTickHeader != null)
 			{
-				tickHeader.setVisible(true);
+				lastTickHeader.setVisible(true);
 			}
 			JLabel varChangeLbl = new JLabel(varChangeText);
 			varChangeLbl.setVisible(matchesSearchTerm);
