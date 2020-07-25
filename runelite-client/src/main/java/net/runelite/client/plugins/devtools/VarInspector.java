@@ -26,16 +26,13 @@ package net.runelite.client.plugins.devtools;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Point;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
@@ -48,7 +45,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -169,65 +165,59 @@ class VarInspector extends JFrame
 				lastMaximum = actualMax();
 			}
 		});
-
 		add(trackerScroller, BorderLayout.CENTER);
 
-		final JPanel trackerOpts = new JPanel();
-		trackerOpts.setLayout(new FlowLayout());
+		add(createTrackerOptions(), BorderLayout.SOUTH);
+
+		pack();
+	}
+
+	private JPanel createTrackerOptions()
+	{
+		JPanel optionsPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.weightx = 1;
+		c.weighty = 1;
+
+		c.gridy = 0;
 		for (VarType cb : VarType.values())
 		{
-			trackerOpts.add(cb.getCheckBox());
+			c.gridx += 1;
+			optionsPanel.add(cb.getCheckBox(), c);
 		}
 
-		final JButton clearBtn = new JButton("Clear");
+		c.gridy = 1;
+		c.gridx = 0;
+		c.gridwidth = 3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		optionsPanel.add(createSearchField(), c);
+
+		JButton clearBtn = new JButton("Clear");
 		clearBtn.addActionListener(e ->
 		{
 			tracker.removeAll();
 			tracker.revalidate();
 		});
-		trackerOpts.add(clearBtn);
+		c.gridx = 3;
+		c.gridwidth = 1;
+		c.fill = GridBagConstraints.NONE;
+		optionsPanel.add(clearBtn, c);
 
-		add(trackerOpts, BorderLayout.SOUTH);
-
-		pack();
-		initSearchField(); // Init searchfield after pack because we base our location on trackbar
+		return optionsPanel;
 	}
 
-	private void initSearchField()
+	private IconTextField createSearchField()
 	{
 		IconTextField searchField = new IconTextField();
 		searchField.setIcon(IconTextField.Icon.SEARCH);
 		searchField.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchField.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		searchField.setBorder(new MatteBorder(0, 1, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR));
+		searchField.setBorder(new MatteBorder(1, 1, 1, 1, ColorScheme.MEDIUM_GRAY_COLOR));
 
-		searchField.setText("."); // accommodate for the clear button in the base size
-		Dimension baseSize = searchField.getPreferredSize();
-		searchField.setText("");
-
-		Runnable layoutSearchField = () ->
-		{
-			int textSize = searchField.getFontMetrics(searchField.getFont()).stringWidth(searchField.getText());
-			int width = Ints.constrainToRange(baseSize.width + textSize, 75, tracker.getWidth());
-			int x = SwingUtilities.convertPoint(tracker, new Point(tracker.getWidth(), 0), getLayeredPane()).x - width;
-			searchField.setBounds(x, searchField.getY(), width, baseSize.height);
-			searchField.revalidate();
-		};
-		getLayeredPane().addComponentListener(new ComponentAdapter()
-		{
-			@Override
-			public void componentResized(ComponentEvent e)
-			{
-				layoutSearchField.run();
-			}
-		});
-		getLayeredPane().add(searchField, JLayeredPane.POPUP_LAYER);
-		layoutSearchField.run();
-
-		searchField.getDocument().addDocumentListener(SwingUtil.documentListener(() -> {
-			layoutSearchField.run();
-			updateTrackWithSearchFilter(searchField.getText());
-		}));
+		searchField.getDocument().addDocumentListener(
+				SwingUtil.documentListener(() -> updateTrackWithSearchFilter(searchField.getText()))
+		);
+		return searchField;
 	}
 
 	private void updateTrackWithSearchFilter(String searchText)
