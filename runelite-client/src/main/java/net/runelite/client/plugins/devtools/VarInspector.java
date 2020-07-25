@@ -108,7 +108,7 @@ class VarInspector extends JFrame
 	private final JPanel tracker = new JPanel();
 	private Pattern searchPattern = Pattern.compile("");
 
-	private int lastTick = 0;
+	private int lastTick = -1;
 	private JLabel lastTickHeader;
 
 	private int[] oldVarps = null;
@@ -242,29 +242,21 @@ class VarInspector extends JFrame
 		}
 		SwingUtilities.invokeLater(() ->
 		{
-			int lastComponentIdx = tracker.getComponentCount() - 1;
-			for (int i = lastComponentIdx; i >= 0; i--)
+			boolean tickContainsVisibleVarChange = false;
+			for (int i = tracker.getComponentCount() - 1; i >= 0; i--)
 			{
 				JLabel label = (JLabel) tracker.getComponent(i);
 				String text = label.getText();
 				if (text.startsWith("Tick"))
 				{
-					boolean tickContainsVisibleVarChange = false;
-					for (int j = i + 1; j <= lastComponentIdx; j++)
-					{
-						JLabel next = (JLabel) tracker.getComponent(j);
-						if (next.getText().startsWith("Tick")) break;
-						if (next.isVisible())
-						{
-							tickContainsVisibleVarChange = true;
-							break;
-						}
-					}
 					label.setVisible(tickContainsVisibleVarChange);
+					tickContainsVisibleVarChange = false;
 				}
 				else
 				{
-					label.setVisible(searchPattern.matcher(text).find());
+					boolean varChangeIsVisible = searchPattern.matcher(text).find();
+					tickContainsVisibleVarChange |= varChangeIsVisible;
+					label.setVisible(varChangeIsVisible);
 				}
 			}
 		});
@@ -299,7 +291,7 @@ class VarInspector extends JFrame
 				tracker.add(lastTickHeader);
 				lastTickHeader.setVisible(matchesSearchTerm);
 			}
-			else if (matchesSearchTerm && lastTickHeader != null)
+			else if (matchesSearchTerm)
 			{
 				lastTickHeader.setVisible(true);
 			}
