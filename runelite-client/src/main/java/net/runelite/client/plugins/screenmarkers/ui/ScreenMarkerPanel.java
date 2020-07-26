@@ -47,6 +47,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import lombok.Getter;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
@@ -103,7 +104,8 @@ class ScreenMarkerPanel extends JPanel
 	private final SpinnerModel spinnerModel = new SpinnerNumberModel(5, 0, Integer.MAX_VALUE, 1);
 	private final JSpinner thicknessSpinner = new JSpinner(spinnerModel);
 
-	private boolean visible;
+	@Getter
+	private boolean markerVisible;
 
 	static
 	{
@@ -148,7 +150,7 @@ class ScreenMarkerPanel extends JPanel
 	{
 		this.plugin = plugin;
 		this.marker = marker;
-		this.visible = marker.getMarker().isVisible();
+		this.markerVisible = marker.getMarker().isVisible();
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -374,19 +376,19 @@ class ScreenMarkerPanel extends JPanel
 		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
 		rightActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		visibilityLabel.setToolTipText(visible ? "Hide screen marker" : "Show screen marker");
+		visibilityLabel.setToolTipText(markerVisible ? "Hide screen marker" : "Show screen marker");
 		visibilityLabel.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				toggle(!visible);
+				toggle(!markerVisible);
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				visibilityLabel.setIcon(visible ? VISIBLE_HOVER_ICON : INVISIBLE_HOVER_ICON);
+				visibilityLabel.setIcon(markerVisible ? VISIBLE_HOVER_ICON : INVISIBLE_HOVER_ICON);
 			}
 
 			@Override
@@ -444,7 +446,7 @@ class ScreenMarkerPanel extends JPanel
 
 	private void preview(boolean on)
 	{
-		if (visible)
+		if (markerVisible)
 		{
 			return;
 		}
@@ -454,8 +456,8 @@ class ScreenMarkerPanel extends JPanel
 
 	public void toggle(boolean on)
 	{
-		visible = on;
-		marker.getMarker().setVisible(visible);
+		markerVisible = on;
+		marker.getMarker().setVisible(markerVisible);
 		plugin.updateConfig();
 		updateVisibility();
 	}
@@ -504,7 +506,7 @@ class ScreenMarkerPanel extends JPanel
 
 	private void updateVisibility()
 	{
-		visibilityLabel.setIcon(visible ? VISIBLE_ICON : INVISIBLE_ICON);
+		visibilityLabel.setIcon(markerVisible ? VISIBLE_ICON : INVISIBLE_ICON);
 	}
 
 	private void updateFill()
@@ -574,10 +576,4 @@ class ScreenMarkerPanel extends JPanel
 		colorPicker.setOnClose(c -> plugin.updateConfig());
 		colorPicker.setVisible(true);
 	}
-
-	public boolean isMarkerVisible()
-	{
-		return visible;
-	}
-
 }

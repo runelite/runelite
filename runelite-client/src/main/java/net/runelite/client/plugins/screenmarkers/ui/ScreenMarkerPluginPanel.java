@@ -38,7 +38,9 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicToggleButtonUI;
 import lombok.Getter;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
@@ -46,6 +48,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.SwingUtil;
 
 public class ScreenMarkerPluginPanel extends PluginPanel
 {
@@ -62,7 +65,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	private static final int DEFAULT_BORDER_THICKNESS = 3;
 
 	private final JLabel addMarker = new JLabel(ADD_ICON);
-	private final JLabel hideAllLabel = new JLabel(VISIBLE_ICON);
+	private final JToggleButton hideAllToggle = new JToggleButton(VISIBLE_ICON);
 	private final JLabel title = new JLabel();
 	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
 	private final JPanel markerView = new JPanel(new GridBagLayout());
@@ -113,7 +116,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
 		rightActions.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-		rightActions.add(hideAllLabel);
+		rightActions.add(hideAllToggle);
 		rightActions.add(addMarker);
 
 		northPanel.add(title, BorderLayout.WEST);
@@ -164,30 +167,24 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			}
 		});
 
-		hideAllLabel.setToolTipText(allHidden() ? "Show all screen markers" : "Hide all screen markers");
-		hideAllLabel.addMouseListener(new MouseAdapter()
+		SwingUtil.removeButtonDecorations(hideAllToggle);
+		hideAllToggle.setIconTextGap(0);
+		hideAllToggle.setBorderPainted(false);
+		hideAllToggle.setIcon(VISIBLE_ICON);
+		hideAllToggle.setRolloverIcon(VISIBLE_HOVER_ICON);
+		hideAllToggle.setSelectedIcon(INVISIBLE_ICON);
+		hideAllToggle.setRolloverSelectedIcon(INVISIBLE_HOVER_ICON);
+		hideAllToggle.setUI(new BasicToggleButtonUI()); // substance breaks the layout and the pressed icon
+		hideAllToggle.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		SwingUtil.addModalTooltip(hideAllToggle, "Show all screen markers", "Hide all screen markers");
+		hideAllToggle.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				toggleAllMarkers(allHidden());
-				hideAllLabel.setIcon(allHidden() ? INVISIBLE_ICON : VISIBLE_ICON);
-				hideAllLabel.setToolTipText(allHidden() ? "Show all screen markers" : "Hide all screen markers");
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent)
-			{
-				hideAllLabel.setIcon(allHidden() ? INVISIBLE_HOVER_ICON : VISIBLE_HOVER_ICON);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent mouseEvent)
-			{
-				hideAllLabel.setIcon(allHidden() ? INVISIBLE_ICON : VISIBLE_ICON);
 			}
 		});
-
 
 		centerPanel.add(markerView, BorderLayout.CENTER);
 
