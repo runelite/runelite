@@ -252,7 +252,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	}
 
 	/* Hides all the currently visible markers */
-	public void toggleAllMarkers(boolean on)
+	private void toggleAllMarkers(boolean on)
 	{
 		for (Object element: markerView.getComponents())
 		{
@@ -264,7 +264,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	}
 
 	/* Check if all the markers are currently hidden */
-	public boolean allHidden()
+	private boolean allHidden()
 	{
 		for (Object element: markerView.getComponents())
 		{
