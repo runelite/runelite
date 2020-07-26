@@ -452,7 +452,7 @@ class ScreenMarkerPanel extends JPanel
 		marker.getMarker().setVisible(on);
 	}
 
-	private void toggle(boolean on)
+	public void toggle(boolean on)
 	{
 		visible = on;
 		marker.getMarker().setVisible(visible);
@@ -574,4 +574,10 @@ class ScreenMarkerPanel extends JPanel
 		colorPicker.setOnClose(c -> plugin.updateConfig());
 		colorPicker.setVisible(true);
 	}
+
+	public boolean isMarkerVisible()
+	{
+		return visible;
+	}
+
 }

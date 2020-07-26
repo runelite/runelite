@@ -28,6 +28,7 @@ package net.runelite.client.plugins.screenmarkers.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
@@ -50,6 +51,10 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 {
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_HOVER_ICON;
+	private static final ImageIcon VISIBLE_ICON;
+	private static final ImageIcon VISIBLE_HOVER_ICON;
+	private static final ImageIcon INVISIBLE_ICON;
+	private static final ImageIcon INVISIBLE_HOVER_ICON;
 
 	private static final Color DEFAULT_BORDER_COLOR = Color.GREEN;
 	private static final Color DEFAULT_FILL_COLOR = new Color(0, 255, 0, 0);
@@ -57,6 +62,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	private static final int DEFAULT_BORDER_THICKNESS = 3;
 
 	private final JLabel addMarker = new JLabel(ADD_ICON);
+	private final JLabel hideAllLabel = new JLabel(VISIBLE_ICON);
 	private final JLabel title = new JLabel();
 	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
 	private final JPanel markerView = new JPanel(new GridBagLayout());
@@ -80,6 +86,14 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		final BufferedImage addIcon = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "add_icon.png");
 		ADD_ICON = new ImageIcon(addIcon);
 		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
+
+		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "visible_icon.png");
+		VISIBLE_ICON = new ImageIcon(visibleImg);
+		VISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(visibleImg, -100));
+
+		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "invisible_icon.png");
+		INVISIBLE_ICON = new ImageIcon(invisibleImg);
+		INVISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -100));
 	}
 
 	public ScreenMarkerPluginPanel(ScreenMarkerPlugin screenMarkerPlugin)
@@ -95,8 +109,15 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		title.setText("Screen Markers");
 		title.setForeground(Color.WHITE);
 
+		// Panel to contain the add, remove and show/hide labels.
+		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+		rightActions.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		rightActions.add(hideAllLabel);
+		rightActions.add(addMarker);
+
 		northPanel.add(title, BorderLayout.WEST);
-		northPanel.add(addMarker, BorderLayout.EAST);
+		northPanel.add(rightActions, BorderLayout.EAST);
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
 		centerPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -142,6 +163,31 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 				addMarker.setIcon(ADD_ICON);
 			}
 		});
+
+		hideAllLabel.setToolTipText(allHidden() ? "Show all screen markers" : "Hide all screen markers");
+		hideAllLabel.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				toggleAllMarkers(allHidden());
+				hideAllLabel.setIcon(allHidden() ? INVISIBLE_ICON : VISIBLE_ICON);
+				hideAllLabel.setToolTipText(allHidden() ? "Show all screen markers" : "Hide all screen markers");
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				hideAllLabel.setIcon(allHidden() ? INVISIBLE_HOVER_ICON : VISIBLE_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				hideAllLabel.setIcon(allHidden() ? INVISIBLE_ICON : VISIBLE_ICON);
+			}
+		});
+
 
 		centerPanel.add(markerView, BorderLayout.CENTER);
 
@@ -206,5 +252,31 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			plugin.setMouseListenerEnabled(true);
 			plugin.setCreatingScreenMarker(true);
 		}
+	}
+
+	/* Hides all the currently visible markers */
+	public void toggleAllMarkers(boolean on)
+	{
+		for (Object element: markerView.getComponents())
+		{
+			if (element instanceof ScreenMarkerPanel && ((ScreenMarkerPanel) element).isMarkerVisible() != on)
+			{
+				((ScreenMarkerPanel) element).toggle(on);
+			}
+		}
+	}
+
+	/* Check if all the markers are currently hidden */
+	public boolean allHidden()
+	{
+		for (Object element: markerView.getComponents())
+		{
+			if (element instanceof ScreenMarkerPanel && ((ScreenMarkerPanel) element).isMarkerVisible())
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
