@@ -110,7 +110,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
-	private static final Pattern BA_HIGH_GAMBLE_REWARD_PATTERN = Pattern.compile("(.+)!<br>High level gamble count: <col=7f0000>(.+)</col>");
+	private static final Pattern BA_HIGH_GAMBLE_REWARD_PATTERN = Pattern.compile("(?<reward>.+)!<br>High level gamble count: <col=7f0000>(?<gambleCount>.+)</col>");
 
 	private String clueType;
 	private Integer clueNumber;
