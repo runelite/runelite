@@ -188,6 +188,9 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final Pattern PICKPOCKET_REGEX = Pattern.compile("You pick (the )?(?<target>.+)'s? pocket.*");
 
+	private static final Pattern BIRDNEST_REGEX = Pattern.compile("You take (a|an) (.+) out of the bird's nest\\.");
+	private static final String BIRDNEST_EVENT = "Bird nest";
+
 	/*
 	 * This map is used when a pickpocket target has a different name in the chat message than their in-game name.
 	 * Note that if the two NPCs can be found in the same place, there is a chance of race conditions
@@ -653,6 +656,16 @@ public class LootTrackerPlugin extends Plugin
 				eventType = pickpocketTarget;
 				lootRecordType = LootRecordType.PICKPOCKET;
 			}
+
+			takeInventorySnapshot();
+			return;
+		}
+
+		final Matcher birdNestMatcher = BIRDNEST_REGEX.matcher(message);
+		if (birdNestMatcher.matches())
+		{
+			eventType = BIRDNEST_EVENT;
+			lootRecordType = LootRecordType.EVENT;
 
 			takeInventorySnapshot();
 			return;
