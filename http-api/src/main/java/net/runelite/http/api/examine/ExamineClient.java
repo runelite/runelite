@@ -45,6 +45,11 @@ public class ExamineClient
 
 	private final OkHttpClient client;
 
+	public String getObject(int id)
+	{
+		return get("object",id);
+	}
+
 	public void submitObject(int id, String text)
 	{
 		submit("object", id, text);
@@ -90,5 +95,33 @@ public class ExamineClient
 				log.debug("Submitted examine info for {} {}: {}", type, id, text);
 			}
 		});
+	}
+
+	private String get(String type, int id)
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+				.addPathSegment("examine")
+				.addPathSegment(type)
+				.addPathSegment(Integer.toString(id))
+				.build();
+
+		log.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+		try (Response response = client.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to find examine");
+			}
+			return (response.body().string());
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
