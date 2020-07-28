@@ -28,7 +28,6 @@ package net.runelite.client.plugins.prayer;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -39,7 +38,6 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.item.ItemEquipmentStats;
@@ -58,6 +56,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class PrayerPluginTest
 {
+	private static final ItemStats HIGH_PRAYER_BONUS_WEAPON = new ItemStats(false, false, 0, 0,
+		ItemEquipmentStats.builder()
+			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
+			.prayer(50)
+			.build());
 
 	@Inject
 	private PrayerPlugin prayerPlugin;
@@ -80,14 +83,6 @@ public class PrayerPluginTest
 
 	@Mock
 	@Bind
-	private SpriteManager spriteManager;
-
-	@Mock
-	@Bind
-	private ScheduledExecutorService executor;
-
-	@Mock
-	@Bind
 	private ItemManager itemManager;
 
 	@Before
@@ -99,79 +94,62 @@ public class PrayerPluginTest
 	@Test
 	public void testGetEstimatedTimeRemainingOverOneHour()
 	{
-		ItemStats itemStats = new ItemStats(false, true, 1, 8,
-			ItemEquipmentStats.builder()
-				.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
-				.prayer(50)
-				.build());
-
 		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(-1, 1)});
+		when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(itemContainer);
-		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(99999, 1)});
-		when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(itemStats);
 
 		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
-		String actualString = prayerPlugin.getEstimatedTimeRemaining(false);
 
-		assertEquals("1:19:12", actualString);
+		assertEquals("1:19:12", prayerPlugin.getEstimatedTimeRemaining(false));
 	}
 
 	@Test
 	public void testGetEstimatedTimeRemainingUnderOneHour()
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{});
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(itemContainer);
-		when(itemContainer.getItems()).thenReturn(new Item[]{});
 
 		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
-		String actualString = prayerPlugin.getEstimatedTimeRemaining(false);
 
-		assertEquals("29:42", actualString);
+		assertEquals("29:42", prayerPlugin.getEstimatedTimeRemaining(false));
 	}
 
 	@Test
 	public void testGetEstimatedTimeRemainingFormatForOrbUnderOneHour()
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{});
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(itemContainer);
-		when(itemContainer.getItems()).thenReturn(new Item[]{});
 
 		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
-		String actualString = prayerPlugin.getEstimatedTimeRemaining(true);
 
-		assertEquals("29m", actualString);
+		assertEquals("29m", prayerPlugin.getEstimatedTimeRemaining(true));
 	}
 
 	@Test
 	public void testGetEstimatedTimeRemainingFormatForOrbOverOneHour()
 	{
-		ItemStats itemStats = new ItemStats(false, true, 1, 8,
-			ItemEquipmentStats.builder()
-				.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
-				.prayer(50)
-				.build());
-
 		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(-1, 1)});
+		when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(itemContainer);
-		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(99999, 1)});
-		when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(itemStats);
 
 		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
-		String actualString = prayerPlugin.getEstimatedTimeRemaining(true);
 
-		assertEquals("79m", actualString);
+		assertEquals("79m", prayerPlugin.getEstimatedTimeRemaining(true));
 	}
-
 }
