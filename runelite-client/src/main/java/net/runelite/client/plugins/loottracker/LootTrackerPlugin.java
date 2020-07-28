@@ -188,7 +188,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final Pattern PICKPOCKET_REGEX = Pattern.compile("You pick (the )?(?<target>.+)'s? pocket.*");
 
-	private static final Pattern BIRDNEST_REGEX = Pattern.compile("You take (a|an) (.+) out of the bird's nest\\.");
+	private static final Pattern BIRDNEST_REGEX = Pattern.compile("You take an? (.+) out of the bird's nest\\.");
 	private static final String BIRDNEST_EVENT = "Bird nest";
 
 	/*
