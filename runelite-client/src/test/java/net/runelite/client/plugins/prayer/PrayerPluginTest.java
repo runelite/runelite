@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
+ * Copyright (c) 2020, Landy Chan <https://github.com/landychan>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
