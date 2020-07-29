@@ -92,50 +92,46 @@ public class ExamineOverlay extends Overlay
                        break;
                    case ITEM_GROUND:
                    case OBJECT:
-                       for (int x = 0; x < Constants.SCENE_SIZE; ++x) {
-                        for (int y = 0; y < Constants.SCENE_SIZE; ++y) {
-                            Scene scene = client.getScene();
-                            Tile[][][] tiles = scene.getTiles();
-                            int z = client.getPlane();
-                            Tile tile = tiles[z][x][y];
+                       Scene scene = client.getScene();
+                       Tile[][][] tiles = scene.getTiles();
+                       int z = client.getPlane();
 
-                            if(examine.getActionParam() == x && examine.getWidgetId() == y ){
-                                switch (type){
-                                    case ITEM_GROUND:
-                                        List<TileItem> groundItems = tile.getGroundItems();
-                                        if(groundItems!=null && !groundItems.isEmpty()){
-                                            for(TileItem tileItem: groundItems){
-                                                if(tileItem!=null){
-                                                    if(examine.getId() == tileItem.getId()){
-                                                        Point point = Perspective.localToCanvas(client,tile.getLocalLocation(),tile.getPlane());
-                                                        examineBoxManager.setExamineBox(new ExamineBox(examine.getMessage(),point.getX(),point.getY()));
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    case OBJECT:
+                       Tile tile = tiles[client.getPlane()][examine.getActionParam()][examine.getWidgetId()];
+                       if(tile != null){
+                           switch (type){
+                               case ITEM_GROUND:
+                                   List<TileItem> groundItems = tile.getGroundItems();
+                                   if(groundItems!=null && !groundItems.isEmpty()){
+                                       for(TileItem tileItem: groundItems){
+                                           if(tileItem!=null){
+                                               if(examine.getId() == tileItem.getId()){
+                                                   Point point = Perspective.localToCanvas(client,tile.getLocalLocation(),tile.getPlane());
+                                                   examineBoxManager.setExamineBox(new ExamineBox(examine.getMessage(),point.getX(),point.getY()));
+                                               }
+                                           }
+                                       }
+                                   }
+                                   break;
+                               case OBJECT:
 
-                                    GameObject[] gameObjects = tile.getGameObjects();
-                                    if (gameObjects != null) {
-                                        for (GameObject gameObject : gameObjects)
-                                        {
-                                            if (gameObject != null)
-                                            {
-                                                if(examine.getId() == gameObject.getId()){
-                                                    Shape convexHull = gameObject.getConvexHull();
-                                                    examineBoxManager.setExamineBox(new ExamineBox(examine.getMessage(),(int)convexHull.getBounds().getX(),(int)convexHull.getBounds().getY()));
+                                   GameObject[] gameObjects = tile.getGameObjects();
+                                   if (gameObjects != null) {
+                                       for (GameObject gameObject : gameObjects)
+                                       {
+                                           if (gameObject != null)
+                                           {
+                                               if(examine.getId() == gameObject.getId()){
+                                                   Shape convexHull = gameObject.getConvexHull();
+                                                   examineBoxManager.setExamineBox(new ExamineBox(examine.getMessage(),(int)convexHull.getBounds().getX(),(int)convexHull.getBounds().getY()));
 
-                                                }
-                                            }
-                                        }
-                                    }
-                                        break;
-                                }
-                            }
+                                               }
+                                           }
+                                       }
+                                   }
+                                   break;
+                           }
+                       }
 
-                        }
-                      }
                        break;
                }
             } else {
@@ -145,75 +141,6 @@ public class ExamineOverlay extends Overlay
         }
 
         return null;
-    }
-
-
-    private TileObject findTileObject(Tile tile, int id)
-    {
-        if (tile == null)
-        {
-            return null;
-        }
-
-        final GameObject[] tileGameObjects = tile.getGameObjects();
-        final DecorativeObject tileDecorativeObject = tile.getDecorativeObject();
-        final WallObject tileWallObject = tile.getWallObject();
-        final GroundObject groundObject = tile.getGroundObject();
-
-        if (objectIdEquals(tileWallObject, id))
-        {
-            return tileWallObject;
-        }
-
-        if (objectIdEquals(tileDecorativeObject, id))
-        {
-            return tileDecorativeObject;
-        }
-
-        if (objectIdEquals(groundObject, id))
-        {
-            return groundObject;
-        }
-
-        for (GameObject object : tileGameObjects)
-        {
-            if (objectIdEquals(object, id))
-            {
-                return object;
-            }
-        }
-
-        return null;
-    }
-
-    private boolean objectIdEquals(TileObject tileObject, int id)
-    {
-        if (tileObject == null)
-        {
-            return false;
-        }
-
-        if (tileObject.getId() == id)
-        {
-            return true;
-        }
-
-        // Menu action EXAMINE_OBJECT sends the transformed object id, not the base id, unlike
-        // all of the GAME_OBJECT_OPTION actions, so check the id against the impostor ids
-        final ObjectComposition comp = client.getObjectDefinition(tileObject.getId());
-
-        if (comp.getImpostorIds() != null)
-        {
-            for (int impostorId : comp.getImpostorIds())
-            {
-                if (impostorId == id)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
 }
