@@ -78,6 +78,7 @@ import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.WidgetOverlay;
+import net.runelite.client.ui.overlay.examinebox.ExamineBoxOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
@@ -171,6 +172,9 @@ public class RuneLite
 
 	@Inject
 	private Provider<LootManager> lootManager;
+
+	@Inject
+	private Provider<ExamineBoxOverlay> examineBoxOverlay;
 
 	@Inject
 	private Provider<ChatboxPanelManager> chatboxPanelManager;
@@ -393,6 +397,7 @@ public class RuneLite
 			overlayManager.add(infoBoxOverlay.get());
 			overlayManager.add(worldMapOverlay.get());
 			overlayManager.add(tooltipOverlay.get());
+			overlayManager.add(examineBoxOverlay.get());
 		}
 
 		// Start plugins

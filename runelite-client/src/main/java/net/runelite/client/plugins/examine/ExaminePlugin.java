@@ -28,11 +28,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.inject.Provides;
-import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.regex.Pattern;
-import javax.inject.Inject;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -44,9 +40,6 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.SEED_VAULT_ITEM_CONTAINER;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -56,10 +49,19 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.examine.ExamineClient;
 import okhttp3.OkHttpClient;
+
+import javax.inject.Inject;
+import java.time.Instant;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.regex.Pattern;
+
+import static net.runelite.api.widgets.WidgetInfo.*;
 
 /**
  * Submits examine info to the api
@@ -75,8 +77,9 @@ import okhttp3.OkHttpClient;
 public class ExaminePlugin extends Plugin
 {
 	private static final Pattern X_PATTERN = Pattern.compile("^\\d+ x ");
-
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
+	@Getter
+	private final Deque<ProcessedExamine> processedExamine = new ArrayDeque<>();
 	private final Cache<CacheKey, Boolean> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.build();
@@ -93,10 +96,28 @@ public class ExaminePlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private ExamineOverlay examineOverlay;
+
 	@Provides
-	ExamineClient provideExamineClient(OkHttpClient okHttpClient)
+    ExamineClient provideExamineClient(OkHttpClient okHttpClient)
 	{
 		return new ExamineClient(okHttpClient);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(examineOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(examineOverlay);
 	}
 
 	@Subscribe
@@ -114,15 +135,16 @@ public class ExaminePlugin extends Plugin
 		}
 
 		ExamineType type;
-		int id, quantity = -1;
+		int actionParam = -1, wId = -1, id, quantity = -1;
 		switch (event.getMenuAction())
 		{
 			case EXAMINE_ITEM:
 			{
 				type = ExamineType.ITEM;
 				id = event.getId();
-
+				actionParam = event.getActionParam();
 				int widgetId = event.getWidgetId();
+				wId = widgetId;
 				int widgetGroup = TO_GROUP(widgetId);
 				int widgetChild = TO_CHILD(widgetId);
 				Widget widget = client.getWidget(widgetGroup, widgetChild);
@@ -131,12 +153,14 @@ public class ExaminePlugin extends Plugin
 				break;
 			}
 			case EXAMINE_ITEM_GROUND:
-				type = ExamineType.ITEM;
+				type = ExamineType.ITEM_GROUND;
 				id = event.getId();
 				break;
 			case CC_OP_LOW_PRIORITY:
 			{
 				type = ExamineType.ITEM_BANK_EQ;
+				actionParam = event.getActionParam();
+				wId = event.getWidgetId();
 				int[] qi = findItemFromWidget(event.getWidgetId(), event.getActionParam());
 				if (qi == null)
 				{
@@ -164,6 +188,8 @@ public class ExaminePlugin extends Plugin
 		pendingExamine.setId(id);
 		pendingExamine.setQuantity(quantity);
 		pendingExamine.setCreated(Instant.now());
+		pendingExamine.setActionParam(actionParam);
+		pendingExamine.setWidgetId(wId);
 		pending.push(pendingExamine);
 	}
 
@@ -196,6 +222,15 @@ public class ExaminePlugin extends Plugin
 		}
 
 		PendingExamine pendingExamine = pending.pop();
+		ProcessedExamine processed = new ProcessedExamine();
+		processed.setMessage(event.getMessage());
+		processed.setType(pendingExamine.getType());
+		processed.setId(pendingExamine.getId());
+		processed.setQuantity(pendingExamine.getQuantity());
+		processed.setCreated(pendingExamine.getCreated());
+		processed.setActionParam(pendingExamine.getActionParam());
+		processed.setWidgetId(pendingExamine.getWidgetId());
+		processedExamine.add(processed);
 
 		if (pendingExamine.getType() != type)
 		{
@@ -399,7 +434,9 @@ public class ExaminePlugin extends Plugin
 
 		switch (examine.getType())
 		{
+
 			case ITEM:
+			case ITEM_GROUND:
 				examineClient.submitItem(id, text);
 				break;
 			case OBJECT:
