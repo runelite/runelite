@@ -174,6 +174,8 @@ public class ExaminePlugin extends Plugin
 			case EXAMINE_OBJECT:
 				type = ExamineType.OBJECT;
 				id = event.getId();
+				wId = event.getWidgetId();
+				actionParam = event.getActionParam();
 				break;
 			case EXAMINE_NPC:
 				type = ExamineType.NPC;
