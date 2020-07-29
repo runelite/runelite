@@ -59,6 +59,7 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.LMS_INFO, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.LMS_KDA, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.GAUNTLET_TIMER_CONTAINER, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.HALLOWED_SEPULCHRE_TIMER_CONTAINER, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.HEALTH_OVERLAY_BAR, OverlayPosition.TOP_CENTER)
 		.build();
 

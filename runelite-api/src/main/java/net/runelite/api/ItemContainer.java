@@ -67,4 +67,10 @@ public interface ItemContainer extends Node
 	 * @see ItemID
 	 */
 	int count(int itemId);
+
+	/**
+	 * Get the number of items in this item container. May include empty slots.
+	 * @return
+	 */
+	int size();
 }
