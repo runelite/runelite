@@ -247,4 +247,30 @@ public class ColorUtil
 		float h = (i % 360) / 360f;
 		return Color.getHSBColor(h, 1, 1);
 	}
+
+	/**
+	 * Applies the given alpha modifier to the transparency of the given color.
+	 * @param color The color to get the alpha modified version of.
+	 * @param alphaModifier The alpha modifier.
+	 * @return The alpha modified color or the passed Color object if alphaModifier == 1.0.
+	 */
+	public static Color getAlphaModdedColor(Color color, double alphaModifier)
+	{
+		if (alphaModifier == 1.0)
+		{
+			return color;
+		}
+		else
+		{
+			int newAlpha = (int) (color.getAlpha() * alphaModifier);
+			// Clamp value to 0 - 255
+			newAlpha = Math.max(0, Math.min(newAlpha, 255));
+
+			return new Color(
+				color.getRed(),
+				color.getGreen(),
+				color.getBlue(),
+				newAlpha);
+		}
+	}
 }

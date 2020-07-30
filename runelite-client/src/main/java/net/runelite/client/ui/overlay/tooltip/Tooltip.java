@@ -31,11 +31,18 @@ import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 public class Tooltip
 {
 	private String text;
+	private double alphaModifier = 1.0;
 	private LayoutableRenderableEntity component;
 
 	public Tooltip(final String text)
 	{
 		this.text = text;
+	}
+
+	public Tooltip(final String text, double alphaModifier)
+	{
+		this(text);
+		this.alphaModifier = alphaModifier;
 	}
 
 	public Tooltip(final LayoutableRenderableEntity component)

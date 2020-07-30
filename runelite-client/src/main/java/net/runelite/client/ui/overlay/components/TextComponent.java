@@ -53,6 +53,8 @@ public class TextComponent implements RenderableEntity
 	@Nullable
 	private Font font;
 
+	private double alphaMultiplier = 1.0;
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -64,6 +66,7 @@ public class TextComponent implements RenderableEntity
 		}
 
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
+		final Color shadowColor = ColorUtil.colorWithAlphaMultiplier(Color.BLACK, alphaMultiplier);
 
 		if (COL_TAG_PATTERN_W_LOOKAHEAD.matcher(text).find())
 		{
@@ -75,7 +78,7 @@ public class TextComponent implements RenderableEntity
 				final String textWithoutCol = Text.removeTags(textSplitOnCol);
 				final String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("=") + 1, textSplitOnCol.indexOf(">"));
 
-				graphics.setColor(Color.BLACK);
+				graphics.setColor(shadowColor);
 
 				if (outline)
 				{
@@ -91,7 +94,7 @@ public class TextComponent implements RenderableEntity
 				}
 
 				// actual text
-				graphics.setColor(Color.decode("#" + colColor));
+				graphics.setColor(ColorUtil.colorWithAlphaMultiplier(Color.decode("#" + colColor), alphaMultiplier));
 				graphics.drawString(textWithoutCol, x, position.y);
 
 				x += fontMetrics.stringWidth(textWithoutCol);
@@ -99,7 +102,7 @@ public class TextComponent implements RenderableEntity
 		}
 		else
 		{
-			graphics.setColor(Color.BLACK);
+			graphics.setColor(shadowColor);
 
 			if (outline)
 			{
@@ -115,7 +118,7 @@ public class TextComponent implements RenderableEntity
 			}
 
 			// actual text
-			graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
+			graphics.setColor(ColorUtil.colorWithAlphaMultiplier(ColorUtil.colorWithAlpha(color, 0xFF), alphaMultiplier));
 			graphics.drawString(text, position.x, position.y);
 		}
 
