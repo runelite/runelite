@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timers;
 
+import lombok.Getter;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
@@ -31,6 +32,7 @@ import java.time.Duration;
 import java.time.Instant;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
+@Getter
 class ElapsedTimer extends InfoBox
 {
 	private final Instant startTime;

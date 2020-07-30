@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.timers;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -81,7 +80,6 @@ import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import org.apache.commons.lang3.ArrayUtils;
-
 
 @PluginDescriptor(
 	name = "Timers",
@@ -391,6 +389,11 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ANTIPOISON);
 			removeGameTimer(ANTIVENOM);
 		}
+
+		if (!config.showTzhaarTimers())
+		{
+			removeTzhaarTimer();
+		}
 	}
 
 	@Subscribe
@@ -679,7 +682,7 @@ public class TimersPlugin extends Plugin
 			if (matcher.matches())
 			{
 				tzhaarLastTime = now;
-				createTzhaarTimer(tzhaarStartTime, now);
+				createTzhaarTimer();
 				return;
 			}
 
@@ -698,13 +701,13 @@ public class TimersPlugin extends Plugin
 				}
 
 				tzhaarStartTime = now;
-				createTzhaarTimer(tzhaarStartTime, tzhaarLastTime);
+				createTzhaarTimer();
 			}
 			else if (tzhaarLastTime != null)
 			{
-				tzhaarStartTime = tzhaarStartTime.plus(Duration.between(tzhaarStartTime, now)).minus(Duration.between(tzhaarStartTime, tzhaarLastTime));
+				tzhaarStartTime = tzhaarStartTime.plus(Duration.between(tzhaarLastTime, now));
 				tzhaarLastTime = null;
-				createTzhaarTimer(tzhaarStartTime, tzhaarLastTime);
+				createTzhaarTimer();
 			}
 		}
 	}
@@ -724,8 +727,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@VisibleForTesting
-	boolean checkInFightCaves()
+	private boolean checkInFightCaves()
 	{
 		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), FIGHT_CAVES_REGION_ID);
 	}
@@ -747,12 +749,9 @@ public class TimersPlugin extends Plugin
 		tzhaarTimer = null;
 	}
 
-	private void createTzhaarTimer(Instant startTime, Instant lastTime)
+	private void createTzhaarTimer()
 	{
-		if (tzhaarTimer != null)
-		{
-			removeTzhaarTimer();
-		}
+		removeTzhaarTimer();
 
 		int imageItem = -1;
 
@@ -770,7 +769,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		tzhaarTimer = new ElapsedTimer(itemManager.getImage(imageItem), this, startTime, lastTime);
+		tzhaarTimer = new ElapsedTimer(itemManager.getImage(imageItem), this, tzhaarStartTime, tzhaarLastTime);
 		infoBoxManager.addInfoBox(tzhaarTimer);
 	}
 
@@ -826,6 +825,7 @@ public class TimersPlugin extends Plugin
 				break;
 			case HOPPING:
 				loggingIn = true;
+				// fall through to LOGIN_SCREEN case
 			case LOGIN_SCREEN:
 				saveTzhaarConfig();
 				removeTbTimers();

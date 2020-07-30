@@ -52,7 +52,6 @@ import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -66,12 +65,6 @@ public class TimersPluginTest
 	private static final String HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 2 minutes, 30 seconds.</col>";
 	private static final String TRANSPARENT_CHATBOX_FULL_TELEBLOCK_MESSAGE = "<col=c356ef>A Tele Block spell has been cast on you by Alexsuperfly. It will expire in 5 minutes.</col>";
 	private static final String TRANSPARENT_CHATBOX_TELEBLOCK_REMOVED_MESSAGE = "<col=c356ef>Your Tele Block has been removed because you killed Alexsuperfly.</col>";
-
-	private static final int FIGHT_CAVES_REGION_ID = 9551;
-	private static final String TZHAAR_WAVE1_MESSAGE = "Wave: 1";
-	private static final String TZHAAR_WAVE2_MESSAGE = "Wave: 2";
-	private static final String TZHAAR_PAUSED_MESSAGE = "The Inferno has been paused. You may now log out.";
-	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
 
 	@Inject
 	private TimersPlugin timersPlugin;
@@ -241,66 +234,5 @@ public class TimersPluginTest
 		// some time has elapsed in the test; this should be just under 2 mins
 		int mins = (int) infoBox.getDuration().toMinutes();
 		assertTrue(mins == 1 || mins == 2);
-	}
-
-	@Test
-	public void testTzhaarTimer()
-	{
-		when(timersConfig.showTzhaarTimers()).thenReturn(true);
-		when(client.getMapRegions()).thenReturn(new int[]{FIGHT_CAVES_REGION_ID});
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", TZHAAR_WAVE1_MESSAGE, "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		// test timer creation
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		try
-		{
-			Thread.sleep(1000);
-		}
-		catch (Exception e)
-		{
-			log.debug("Thread interrupted", e);
-		}
-
-		// test timer pause
-		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", TZHAAR_PAUSED_MESSAGE, "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-		verify(infoBoxManager).removeInfoBox(captor.capture());
-		captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager, times(2)).addInfoBox(captor.capture());
-		ElapsedTimer timer = (ElapsedTimer) captor.getValue();
-		assertEquals("00:01", timer.getText());
-		try
-		{
-			Thread.sleep(1000);
-		}
-		catch (Exception e)
-		{
-			log.debug("Thread interrupted", e);
-		}
-		assertEquals("00:01", timer.getText());
-
-		// test timer unpause
-		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", TZHAAR_WAVE2_MESSAGE, "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-		try
-		{
-			Thread.sleep(1000);
-		}
-		catch (Exception e)
-		{
-			log.debug("Thread interrupted", e);
-		}
-		verify(infoBoxManager, times(2)).removeInfoBox(captor.capture());
-		captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
-		timer = (ElapsedTimer) captor.getValue();
-		assertEquals("00:02", timer.getText());
-
-		// test timer remove
-		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", TZHAAR_DEFEATED_MESSAGE, "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-		verify(infoBoxManager, times(3)).removeInfoBox(captor.capture());
 	}
 }
