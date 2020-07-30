@@ -230,10 +230,22 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "baHighGamble",
+		name = "Screenshot BA high gambles",
+		description = "Take a screenshot of your reward from a high gamble at Barbarian Assault.",
+		position = 16,
+		section = whatSection
+	)
+	default boolean screenshotHighGamble()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 16
+		position = 17
 	)
 	default Keybind hotkey()
 	{
