@@ -110,6 +110,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
+	private static final Pattern BA_HIGH_GAMBLE_REWARD_PATTERN = Pattern.compile("(?<reward>.+)!<br>High level gamble count: <col=7f0000>(?<gambleCount>.+)</col>");
 
 	private String clueType;
 	private Integer clueNumber;
@@ -238,8 +239,17 @@ public class ScreenshotPlugin extends Plugin
 		}
 		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
 		{
-			fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
-			screenshotSubDir = "Levels";
+			String text = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT).getText();
+			if (Text.removeTags(text).contains("High level gamble"))
+			{
+				fileName = parseBAHighGambleWidget(text);
+				screenshotSubDir = "BA High Gambles";
+			}
+			else
+			{
+				fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+				screenshotSubDir = "Levels";
+			}
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
@@ -378,7 +388,7 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName, "Pets");
 		}
 
-		if (config.screenshotBossKills() )
+		if (config.screenshotBossKills())
 		{
 			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
 			if (m.matches())
@@ -455,8 +465,13 @@ public class ScreenshotPlugin extends Plugin
 				}
 				break;
 			case LEVEL_UP_GROUP_ID:
-			case DIALOG_SPRITE_GROUP_ID:
 				if (!config.screenshotLevels())
+				{
+					return;
+				}
+				break;
+			case DIALOG_SPRITE_GROUP_ID:
+				if (!(config.screenshotLevels() || config.screenshotHighGamble()))
 				{
 					return;
 				}
@@ -627,11 +642,31 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	/**
+	 * Parses the Barbarian Assault high gamble reward dialog text into a shortened string for filename usage.
+	 *
+	 * @param text The {@link Widget#getText() text} of the {@link WidgetInfo#DIALOG_SPRITE_TEXT} widget.
+	 * @return Shortened string in the format "High Gamble(100)"
+	 */
+	@VisibleForTesting
+	static String parseBAHighGambleWidget(final String text)
+	{
+		final Matcher highGambleMatch = BA_HIGH_GAMBLE_REWARD_PATTERN.matcher(text);
+		if (highGambleMatch.find())
+		{
+			String gambleCount = highGambleMatch.group("gambleCount");
+			return String.format("High Gamble(%s)", gambleCount);
+		}
+
+		return "High Gamble(count not found)";
+	}
+
+
+	/**
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
 	 * and optionally uploads it to an image-hosting service.
 	 *
-	 * @param fileName    Filename to use, without file extension.
-	 * @param subDir      Subdirectory to store the captured screenshot in.
+	 * @param fileName Filename to use, without file extension.
+	 * @param subDir   Subdirectory to store the captured screenshot in.
 	 */
 	private void takeScreenshot(String fileName, String subDir)
 	{

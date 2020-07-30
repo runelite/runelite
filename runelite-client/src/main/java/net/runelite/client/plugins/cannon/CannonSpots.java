@@ -33,7 +33,7 @@ import net.runelite.api.coords.WorldPoint;
 enum CannonSpots
 {
 
-	BLOODVELDS(new WorldPoint(2439, 9821, 0), new WorldPoint(2448, 9821, 0), new WorldPoint(2472, 9832, 0), new WorldPoint(2453, 9817, 0)),
+	BLOODVELDS(new WorldPoint(2439, 9821, 0), new WorldPoint(2448, 9821, 0), new WorldPoint(2472, 9832, 0), new WorldPoint(2453, 9817, 0), new WorldPoint(3597, 9743, 0)),
 	FIRE_GIANTS(new WorldPoint(2393, 9782, 0), new WorldPoint(2412, 9776, 0), new WorldPoint(2401, 9780, 0), new WorldPoint(3047, 10340, 0)),
 	ABERRANT_SPECTRES(new WorldPoint(2456, 9791, 0)),
 	HELLHOUNDS(new WorldPoint(2431, 9776, 0), new WorldPoint(2413, 9786, 0), new WorldPoint(2783, 9686, 0), new WorldPoint(3198, 10071, 0)),

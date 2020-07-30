@@ -66,6 +66,7 @@ public class ScreenshotPluginTest
 	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
 	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
+	private static final String BA_HIGH_GAMBLE_REWARD = "Raw shark (x 300)!<br>High level gamble count: <col=7f0000>100</col>";
 
 	@Mock
 	@Bind
@@ -257,5 +258,11 @@ public class ScreenshotPluginTest
 		assertEquals("Quest(Recipe for Disaster - Another Cook's Quest)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed Another Cook's Quest!"));
 		assertEquals("Quest(Doric's Quest)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed Doric's Quest!"));
 		assertEquals("Quest(quest not found)", ScreenshotPlugin.parseQuestCompletedWidget("Sins of the Father forgiven!"));
+	}
+
+	@Test
+	public void testBAHighGambleRewardParsing()
+	{
+		assertEquals("High Gamble(100)", ScreenshotPlugin.parseBAHighGambleWidget(BA_HIGH_GAMBLE_REWARD));
 	}
 }
