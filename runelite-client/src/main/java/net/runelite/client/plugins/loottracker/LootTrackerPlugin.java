@@ -188,8 +188,8 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final Pattern PICKPOCKET_REGEX = Pattern.compile("You pick (the )?(?<target>.+)'s? pocket.*");
 
-	private static final Pattern BIRDNEST_REGEX = Pattern.compile("You take an? (.+) out of the bird's nest\\.");
 	private static final String BIRDNEST_EVENT = "Bird nest";
+	private static final Set<Integer> BIRDNEST_IDS = ImmutableSet.of(ItemID.BIRD_NEST_5074, ItemID.BIRD_NEST_22798, ItemID.CLUE_NEST_EASY, ItemID.CLUE_NEST_MEDIUM, ItemID.CLUE_NEST_HARD, ItemID.CLUE_NEST_ELITE, ItemID.CLUE_NEST_BEGINNER);
 
 	/*
 	 * This map is used when a pickpocket target has a different name in the chat message than their in-game name.
@@ -661,16 +661,6 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		final Matcher birdNestMatcher = BIRDNEST_REGEX.matcher(message);
-		if (birdNestMatcher.matches())
-		{
-			eventType = BIRDNEST_EVENT;
-			lootRecordType = LootRecordType.EVENT;
-
-			takeInventorySnapshot();
-			return;
-		}
-
 		// Check if message is for a clue scroll reward
 		final Matcher m = CLUE_SCROLL_PATTERN.matcher(Text.removeTags(message));
 		if (m.find())
@@ -760,6 +750,13 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
 		{
 			eventType = SHADE_CHEST_OBJECTS.get(event.getId());
+			lootRecordType = LootRecordType.EVENT;
+			takeInventorySnapshot();
+		}
+
+		if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
+		{
+			eventType = BIRDNEST_EVENT;
 			lootRecordType = LootRecordType.EVENT;
 			takeInventorySnapshot();
 		}
