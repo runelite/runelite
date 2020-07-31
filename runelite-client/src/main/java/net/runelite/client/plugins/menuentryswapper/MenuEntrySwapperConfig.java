@@ -562,4 +562,48 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "hideEmptyInBank",
+		name = "Hide empty in bank",
+		description = "Always hides empty in bank",
+		section = itemSection
+	)
+	default boolean hideEmptyInBank()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapEssPouch",
+		name = "Empty essence pouch",
+		description = "Always empty essence pouch in inventory",
+		section = itemSection
+	)
+	default boolean swapEssPouch()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "alwaysShiftModifyDeposit",
+		name = "Always shift deposit",
+		description = "Always shift-clicks when clicking on deposit",
+		section = itemSection
+	)
+	default boolean alwaysShiftModifyDeposit()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "alwaysShiftModifyWithdraw",
+		name = "Always shift withdraw",
+		description = "Always shift-clicks when clicking on withdraw",
+		section = itemSection
+	)
+	default boolean alwaysShiftModifyWithdraw()
+	{
+		return false;
+	}
 }
