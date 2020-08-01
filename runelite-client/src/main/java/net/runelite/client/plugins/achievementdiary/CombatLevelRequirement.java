@@ -26,6 +26,7 @@ package net.runelite.client.plugins.achievementdiary;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.Client;
 
 @RequiredArgsConstructor
 @Getter
@@ -37,5 +38,17 @@ public class CombatLevelRequirement implements Requirement
 	public String toString()
 	{
 		return level + " " + "Combat";
+	}
+
+	public boolean satisfiesRequirement(Client client)
+	{
+		try
+		{
+			return client.getLocalPlayer().getCombatLevel() >= level;
+		}
+		catch (NullPointerException e)
+		{
+			return false;
+		}
 	}
 }
