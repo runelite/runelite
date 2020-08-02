@@ -122,6 +122,18 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showHopMessage",
+		name = "Hopped Worlds Message",
+		description = "Should the logged in/out messages be replaced with a single 'player has hopped worlds' message?"
+			+ "<br/>This config option will be ignored if you are also filtering Logged In/Out Messages",
+		position = 8
+	)
+	default boolean showHopMessage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "collapseGameChat",
 		name = "Collapse Game Chat",
 		description = "Collapse duplicate game chat messages into a single line",

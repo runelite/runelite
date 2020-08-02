@@ -31,6 +31,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.inject.Inject;
+import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.ENGINE;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
@@ -50,11 +52,18 @@ import static net.runelite.api.ChatMessageType.OBJECT_EXAMINE;
 import static net.runelite.api.ChatMessageType.PUBLICCHAT;
 import static net.runelite.api.ChatMessageType.SPAM;
 import net.runelite.api.Client;
+import net.runelite.api.Friend;
+import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -90,9 +99,13 @@ public class ChatFilterPlugin extends Plugin
 		MODCHAT
 	);
 
+	private static final int MESSAGE_DELAY = 15;
+	private static final Pattern LOGIN_MESSAGE_PATTERN = Pattern.compile("(.*) has logged (in|out)\\.");
+
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private final List<Pattern> filteredPatterns = new ArrayList<>();
 	private final List<Pattern> filteredNamePatterns = new ArrayList<>();
+	private final Map<String, FriendStatus> friendStatusMap = new HashMap<>();
 
 	private static class Duplicate
 	{
@@ -113,6 +126,12 @@ public class ChatFilterPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private ChatFilterConfig config;
@@ -139,6 +158,7 @@ public class ChatFilterPlugin extends Plugin
 		filteredPatterns.clear();
 		duplicateChatCache.clear();
 		client.refreshChat();
+		expireFriends(true);
 	}
 
 	@Subscribe
@@ -255,6 +275,33 @@ public class ChatFilterPlugin extends Plugin
 			duplicate.messageId = messageNode.getId();
 			duplicateChatCache.put(key, duplicate);
 		}
+		else if (chatMessage.getType() == ChatMessageType.LOGINLOGOUTNOTIFICATION && config.showHopMessage() && !config.filterLogin())
+		{
+			final String message = Text.removeTags(chatMessage.getMessage());
+			final Matcher m = LOGIN_MESSAGE_PATTERN.matcher(message);
+			if (!m.matches())
+			{
+				return;
+			}
+
+			final String name = m.group(1);
+			final String state = m.group(2);
+			// We only care about logins after a logout
+			if (state.equals("in") && !friendStatusMap.containsKey(name))
+			{
+				return;
+			}
+
+			toggleFriendStatus(name);
+
+			// Do not display the message while we check
+			final ChatLineBuffer buffer = client.getChatLineMap().get(ChatMessageType.LOGINLOGOUTNOTIFICATION.getType());
+			if (buffer != null)
+			{
+				buffer.removeMessageNode(chatMessage.getMessageNode());
+				clientThread.invoke(() -> client.runScript(ScriptID.BUILD_CHATBOX));
+			}
+		}
 	}
 
 	boolean shouldFilterPlayerMessage(String playerName)
@@ -352,6 +399,7 @@ public class ChatFilterPlugin extends Plugin
 		}
 
 		updateFilteredPatterns();
+		expireFriends(true);
 
 		//Refresh chat after config change to reflect current rules
 		client.refreshChat();
@@ -370,5 +418,69 @@ public class ChatFilterPlugin extends Plugin
 			}
 		}
 		return false;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick t)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN || !config.showHopMessage())
+		{
+			return;
+		}
+
+		expireFriends(false);
+	}
+
+	private void toggleFriendStatus(final String friend)
+	{
+		final FriendStatus status = friendStatusMap.remove(friend);
+		final Friend f = client.getFriendContainer().findByName(friend);
+		if (f == null)
+		{
+			return;
+		}
+
+		if (status == null)
+		{
+			friendStatusMap.put(friend, new FriendStatus(client.getTickCount(), f.getWorld()));
+			return;
+		}
+
+		if (status.getWorld() == f.getWorld())
+		{
+			// Don't display a message if the player re-logged to the same world before expiring
+			return;
+		}
+
+		final QueuedMessage message = QueuedMessage.builder()
+			.type(ChatMessageType.LOGINLOGOUTNOTIFICATION)
+			.value(friend + " has hopped worlds.")
+			.build();
+		chatMessageManager.queue(message);
+	}
+
+	private void expireFriends(boolean expireAll)
+	{
+		if (friendStatusMap.isEmpty())
+		{
+			return;
+		}
+
+		final int curTick = client.getTickCount() - MESSAGE_DELAY;
+		friendStatusMap.entrySet().removeIf(e ->
+		{
+			if (expireAll || e.getValue().getTick() < curTick)
+			{
+				final QueuedMessage message = QueuedMessage.builder()
+					.type(ChatMessageType.LOGINLOGOUTNOTIFICATION)
+					// Add nbsp to prevent regex check from matching
+					.value(e.getKey() + " has logged out.\u00A0")
+					.build();
+				chatMessageManager.queue(message);
+				return true;
+			}
+
+			return false;
+		});
 	}
 }
