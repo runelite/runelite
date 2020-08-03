@@ -42,13 +42,6 @@ public class CombatLevelRequirement implements Requirement
 
 	public boolean satisfiesRequirement(Client client)
 	{
-		try
-		{
-			return client.getLocalPlayer().getCombatLevel() >= level;
-		}
-		catch (NullPointerException e)
-		{
-			return false;
-		}
+		return client.getLocalPlayer() == null ? return false : client.getLocalPlayer().getCombatLevel() >= level;
 	}
 }
