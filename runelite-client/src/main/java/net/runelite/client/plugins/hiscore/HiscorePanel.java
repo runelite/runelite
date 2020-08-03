@@ -49,6 +49,7 @@ import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -70,7 +71,10 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
 import net.runelite.http.api.hiscore.HiscoreSkillType;
 import net.runelite.http.api.hiscore.Skill;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -171,7 +175,7 @@ public class HiscorePanel extends PluginPanel
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.setMinimumSize(new Dimension(0, 30));
-		searchBar.addActionListener(e -> executor.execute(this::lookup));
+		searchBar.addActionListener(e -> SwingUtilities.invokeLater(this::lookup));
 		searchBar.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -190,10 +194,16 @@ public class HiscorePanel extends PluginPanel
 
 				if (localPlayer != null)
 				{
-					lookup(localPlayer.getName());
+					SwingUtilities.invokeLater(() -> lookup(localPlayer.getName()));
 				}
 			}
 		});
+		searchBar.addClearListener(() -> SwingUtilities.invokeLater(() ->
+		{
+			searchBar.setIcon(IconTextField.Icon.SEARCH);
+			searchBar.setEditable(true);
+			loading = false;
+		}));
 
 		add(searchBar, c);
 		c.gridy++;
@@ -364,10 +374,7 @@ public class HiscorePanel extends PluginPanel
 
 	private void lookup()
 	{
-		String lookup = searchBar.getText();
-
-		lookup = sanitize(lookup);
-
+		final String lookup = sanitize(searchBar.getText());
 		if (Strings.isNullOrEmpty(lookup))
 		{
 			return;
@@ -401,29 +408,73 @@ public class HiscorePanel extends PluginPanel
 			selectedEndPoint = HiscoreEndpoint.NORMAL;
 		}
 
-		HiscoreResult result;
+		hiscoreClient.lookup(lookup, selectedEndPoint, new Callback()
+		{
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				SwingUtilities.invokeLater(() ->
+				{
+					if (!sanitize(searchBar.getText()).equals(lookup))
+					{
+						return;
+					}
+
+					log.warn("Error fetching Hiscore data " + e.getMessage());
+					searchBar.setIcon(IconTextField.Icon.ERROR);
+					searchBar.setEditable(true);
+					loading = false;
+				});
+			}
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException
+			{
+				SwingUtilities.invokeLater(() -> handleHiscoreResponse(response, lookup));
+			}
+		});
+	}
+
+	private void handleHiscoreResponse(final Response response, final String lookup)
+	{
+		if (!sanitize(searchBar.getText()).equals(lookup))
+		{
+			return;
+		}
+
+		if (!response.isSuccessful())
+		{
+			switch (response.code())
+			{
+				case 404:
+					break;
+				default:
+					log.warn("Error retrieving data from Jagex Hiscores: " + response);
+			}
+
+			searchBar.setIcon(IconTextField.Icon.ERROR);
+			searchBar.setEditable(true);
+			loading = false;
+			return;
+		}
+
 		try
 		{
-			log.debug("Hiscore endpoint " + selectedEndPoint.name() + " selected");
-			result = hiscoreClient.lookup(lookup, selectedEndPoint);
+			final String responseStr = response.body().string();
+			final HiscoreResult result = HiscoreClient.parseHiscoreResponseString(responseStr, lookup);
+			displayHiscoreData(result);
 		}
-		catch (IOException ex)
+		catch (IOException e)
 		{
-			log.warn("Error fetching Hiscore data " + ex.getMessage());
+			log.warn("Error parsing data from Jagex Hiscores: {}", response.body());
 			searchBar.setIcon(IconTextField.Icon.ERROR);
 			searchBar.setEditable(true);
 			loading = false;
-			return;
 		}
+	}
 
-		if (result == null)
-		{
-			searchBar.setIcon(IconTextField.Icon.ERROR);
-			searchBar.setEditable(true);
-			loading = false;
-			return;
-		}
-
+	private void displayHiscoreData(final HiscoreResult result)
+	{
 		//successful player search
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setEditable(true);

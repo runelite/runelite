@@ -27,6 +27,7 @@ package net.runelite.http.api.hiscore;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -40,6 +41,17 @@ import org.apache.commons.csv.CSVRecord;
 public class HiscoreClient
 {
 	private final OkHttpClient client;
+
+	public void lookup(String username, HiscoreEndpoint endpoint, Callback callback)
+	{
+		lookup(username, endpoint.getHiscoreURL(), callback);
+	}
+
+	public void lookup(String username, HttpUrl endpoint, Callback callback)
+	{
+		final Request okrequest = createHiscoreRequest(username, endpoint);
+		client.newCall(okrequest).enqueue(callback);
+	}
 
 	public HiscoreResult lookup(String username, HiscoreEndpoint endpoint) throws IOException
 	{
@@ -89,15 +101,7 @@ public class HiscoreClient
 
 	private HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
 	{
-		HttpUrl url = hiscoreUrl.newBuilder()
-			.addQueryParameter("player", username)
-			.build();
-
-		log.debug("Built URL {}", url);
-
-		Request okrequest = new Request.Builder()
-			.url(url)
-			.build();
+		final Request okrequest = createHiscoreRequest(username, hiscoreUrl);
 
 		String responseStr;
 
@@ -117,6 +121,29 @@ public class HiscoreClient
 			responseStr = okresponse.body().string();
 		}
 
+		return parseHiscoreResponseStringIntoBuilder(responseStr, username);
+	}
+
+	private static Request createHiscoreRequest(String username, HttpUrl hiscoreUrl)
+	{
+		final HttpUrl url = hiscoreUrl.newBuilder()
+			.addQueryParameter("player", username)
+			.build();
+
+		log.debug("Built URL {}", url);
+
+		return new Request.Builder()
+			.url(url)
+			.build();
+	}
+
+	public static HiscoreResult parseHiscoreResponseString(final String responseStr, final String username) throws IOException
+	{
+		return parseHiscoreResponseStringIntoBuilder(responseStr, username).build();
+	}
+
+	private static HiscoreResultBuilder parseHiscoreResponseStringIntoBuilder(final String responseStr, final String username) throws IOException
+	{
 		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
 
 		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
