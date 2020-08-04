@@ -1,6 +1,4 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
@@ -27,20 +25,35 @@
 package net.runelite.http.api.worlds;
 
 import java.io.IOException;
-import net.runelite.http.api.RuneLiteApiClient;
-import okhttp3.OkHttpClient;
+import net.runelite.http.api.AbstractApiClientTest;
+import okhttp3.mockwebserver.MockResponse;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class WorldClient extends RuneLiteApiClient
+public class WorldClientTest extends AbstractApiClientTest
 {
-	private final static String ENDPOINT = "worlds.js";
 
-	public WorldClient(OkHttpClient client)
-	{
-		super(client.newBuilder(), ENDPOINT);
-	}
 
-	public WorldResult lookupWorlds() throws IOException
+	private static final String expectedJson =
+		"{\"worlds\":[{\"id\":385,\"types\":[\"SKILL_TOTAL\"],\"address\":" +
+			"\"oldschool85.runescape.com\",\"activity\":\"750 skill total\",\"location\":0,\"players\":95}]}";
+
+	@Test
+	public void expectedResponse() throws IOException
 	{
-		return bodyToObject(get_(), WorldResult.class);
+		server.enqueue(new MockResponse().setBody(expectedJson).setResponseCode(200));
+		WorldClient client = new WorldClient(testClient.build());
+		WorldResult result = client.lookupWorlds();
+
+		Assert.assertEquals(1, result.getWorlds().size());
+
+		World world = result.getWorlds().get(0);
+
+		Assert.assertEquals(385, world.getId());
+		Assert.assertTrue(world.getTypes().contains(WorldType.SKILL_TOTAL));
+		Assert.assertEquals("oldschool85.runescape.com", world.getAddress());
+		Assert.assertEquals("750 skill total", world.getActivity());
+		Assert.assertEquals(WorldRegion.UNITED_STATES_OF_AMERICA, WorldRegion.valueOf(world.getLocation()));
+		Assert.assertEquals(95, world.getPlayers());
 	}
 }

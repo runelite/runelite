@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
@@ -23,54 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.xtea;
+package net.runelite.http.api.loottracker;
 
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import net.runelite.http.api.RuneLiteApiClient;
+import java.util.UUID;
+import net.runelite.http.api.AbstractApiClientTest;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class XteaClient extends RuneLiteApiClient
+public class LootTrackerClientTest extends AbstractApiClientTest
 {
-	private static final String ENDPOINT = "xtea";
-	private static final Type typeToken;
-	private static final Type typeTokenList;
 
-	static
+	@Test
+	public void correctUrlBuilt()
 	{
-		typeToken = new TypeToken<XteaKey>()
-		{
-		}.getType();
-		typeTokenList = new TypeToken<List<XteaKey>>()
-		{
-		}.getType();
+		CaptureRequestInterceptor captureRequest = new CaptureRequestInterceptor();
+		LootTrackerClient lootClient = new LootTrackerClient(new OkHttpClient.Builder()
+			.addInterceptor(captureRequest)
+			.build(), UUID.randomUUID());
+
+		lootClient.delete("2056").join();
+
+		HttpUrl builtUrl = captureRequest.getRequest().url();
+
+		Assert.assertTrue(builtUrl.host().contains("api.runelite"));
+
+		List<String> pathSegments = builtUrl.pathSegments();
+		Assert.assertEquals(2, pathSegments.size());
+		Assert.assertTrue(pathSegments.get(0).contains("runelite"));
+		Assert.assertEquals("loottracker", pathSegments.get(1));
+
+		Assert.assertEquals("2056", builtUrl.queryParameter("eventId"));
 	}
 
-	public XteaClient(OkHttpClient client)
+	@Test
+	public void uuidInHeader() throws IOException, InterruptedException
 	{
-		super(client.newBuilder(), ENDPOINT);
-	}
+		server.enqueue(new MockResponse().setResponseCode(200));
+		UUID uuid = UUID.randomUUID();
+		LootTrackerClient lootClient = new LootTrackerClient(testClient.build(), uuid);
 
-	public CompletableFuture<Void> submit(XteaRequest xteaRequest)
-	{
-		RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, objectToJson(xteaRequest));
-		return postAsync_(body).thenCompose(response -> bodyToObjectFuture(response, typeTokenList));
-	}
+		lootClient.get();
 
-	public List<XteaKey> get() throws IOException
-	{
-		return bodyToObject(get_(), typeTokenList);
-	}
-
-	public XteaKey get(int region) throws IOException
-	{
-		return bodyToObject(get_(url -> url.newBuilder()
-			.addPathSegment(Integer.toString(region))
-			.build()
-		), typeToken);
+		RecordedRequest request = server.takeRequest();
+		Assert.assertEquals(uuid.toString(), request.getHeader("RUNELITE-AUTH"));
 	}
 }

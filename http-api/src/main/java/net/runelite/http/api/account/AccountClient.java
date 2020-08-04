@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,98 +25,89 @@
  */
 package net.runelite.http.api.account;
 
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
+import lombok.Setter;
+import net.runelite.http.api.RuneLiteApiClient;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-@Slf4j
-@RequiredArgsConstructor
-public class AccountClient
+public class AccountClient extends RuneLiteApiClient
 {
-	private final OkHttpClient client;
+	private static final String ENDPOINT = "account";
 	private UUID uuid;
 
-	public void setUuid(UUID uuid)
+	private final AccountClientInterceptor interceptor;
+
+	public AccountClient(OkHttpClient client)
 	{
-		this.uuid = uuid;
+		this(client, new AccountClientInterceptor());
+	}
+
+	private AccountClient(OkHttpClient client, AccountClientInterceptor interceptor)
+	{
+		super(client.newBuilder().addInterceptor(interceptor), ENDPOINT);
+		this.interceptor = interceptor;
 	}
 
 	public OAuthResponse login() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("account")
+		Response response = get_(url -> url.newBuilder()
 			.addPathSegment("login")
 			.addQueryParameter("uuid", uuid.toString())
-			.build();
+			.build()
+		);
 
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
-		{
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), OAuthResponse.class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+		return bodyToObject(response, OAuthResponse.class);
 	}
 
 	public void logout() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("account")
+		Response response = get_(url -> url.newBuilder()
 			.addPathSegment("logout")
-			.build();
+			.build()
+		);
 
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
-		{
-			log.debug("Sent logout request");
-		}
+		response.close();
 	}
 
 	public boolean sessionCheck()
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("account")
+		try (Response response = get_(url -> url.newBuilder()
 			.addPathSegment("session-check")
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
+			.build()))
 		{
 			return response.isSuccessful();
 		}
-		catch (IOException ex)
+		catch (IOException e)
 		{
-			log.debug("Unable to verify session", ex);
 			return true; // assume it is still valid if the server is unreachable
+		}
+	}
+
+	public void setUuid(UUID uuid)
+	{
+		this.uuid = uuid;
+		interceptor.setUuid(uuid);
+	}
+
+	private static class AccountClientInterceptor implements Interceptor
+	{
+
+		@Setter
+		private UUID uuid;
+
+		@Override
+		public Response intercept(Chain chain) throws IOException
+		{
+			Request request = chain.request()
+				.newBuilder()
+				.header(AUTH_HEADER, uuid.toString())
+				.build();
+
+			return chain.proceed(request);
 		}
 	}
 }

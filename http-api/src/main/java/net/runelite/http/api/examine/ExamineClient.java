@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,71 +25,43 @@
  */
 package net.runelite.http.api.examine;
 
-import java.io.IOException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
+import java.util.concurrent.CompletableFuture;
+import net.runelite.http.api.RuneLiteApiClient;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
-@Slf4j
-@RequiredArgsConstructor
-public class ExamineClient
+public class ExamineClient extends RuneLiteApiClient
 {
-	private static final MediaType TEXT = MediaType.parse("text");
+	private static final String ENDPOINT = "examine";
+	private static final MediaType TEXT = MediaType.parse("text/plain");
 
-	private final OkHttpClient client;
-
-	public void submitObject(int id, String text)
+	public ExamineClient(OkHttpClient client)
 	{
-		submit("object", id, text);
+		super(client.newBuilder(), ENDPOINT);
 	}
 
-	public void submitNpc(int id, String text)
+	public CompletableFuture<Void> submitObject(int id, String text)
 	{
-		submit("npc", id, text);
+		return submitAsync("object", id, text);
 	}
 
-	public void submitItem(int id, String text)
+	public CompletableFuture<Void> submitNpc(int id, String text)
 	{
-		submit("item", id, text);
+		return submitAsync("npc", id, text);
 	}
 
-	private void submit(String type, int id, String text)
+	public CompletableFuture<Void> submitItem(int id, String text)
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("examine")
+		return submitAsync("item", id, text);
+	}
+
+	private CompletableFuture<Void> submitAsync(String type, int id, String text)
+	{
+		return postAsync_(RequestBody.create(TEXT, text), url -> url.newBuilder()
 			.addPathSegment(type)
 			.addPathSegment(Integer.toString(id))
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.url(url)
-			.post(RequestBody.create(TEXT, text))
-			.build();
-
-		client.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("Error submitting examine", e);
-			}
-
-			@Override
-			public void onResponse(Call call, Response response)
-			{
-				response.close();
-				log.debug("Submitted examine info for {} {}: {}", type, id, text);
-			}
-		});
+			.build())
+			.thenCompose(response -> bodyToObjectFuture(response, Void.class));
 	}
 }

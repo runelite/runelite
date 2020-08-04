@@ -1,6 +1,4 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
@@ -24,23 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.worlds;
+package net.runelite.http.api.xp;
 
-import java.io.IOException;
-import net.runelite.http.api.RuneLiteApiClient;
+import java.util.List;
+import net.runelite.http.api.AbstractApiClientTest;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class WorldClient extends RuneLiteApiClient
+public class XpClientTest extends AbstractApiClientTest
 {
-	private final static String ENDPOINT = "worlds.js";
-
-	public WorldClient(OkHttpClient client)
+	@Test
+	public void correctUrlBuilt()
 	{
-		super(client.newBuilder(), ENDPOINT);
-	}
+		CaptureRequestInterceptor captureRequest = new CaptureRequestInterceptor();
+		XpClient xpClient = new XpClient(new OkHttpClient.Builder().addInterceptor(captureRequest).build());
 
-	public WorldResult lookupWorlds() throws IOException
-	{
-		return bodyToObject(get_(), WorldResult.class);
+		xpClient.update("Zezima").join();
+
+		HttpUrl builtUrl = captureRequest.getRequest().url();
+		List<String> pathSegments = builtUrl.pathSegments();
+
+		Assert.assertEquals(3, pathSegments.size());
+		Assert.assertEquals("xp", pathSegments.get(1));
+		Assert.assertEquals("update", pathSegments.get(2));
+
+		Assert.assertEquals("Zezima", builtUrl.queryParameter("username"));
+
+
 	}
 }

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,52 +25,24 @@
  */
 package net.runelite.http.api.xp;
 
-import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
+import net.runelite.http.api.RuneLiteApiClient;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 @Slf4j
-public class XpClient
+public class XpClient extends RuneLiteApiClient
 {
-	private final OkHttpClient client;
+	private static final String ENDPOINT = "xp/update";
 
 	public XpClient(OkHttpClient client)
 	{
-		this.client = client;
+		super(client.newBuilder(), ENDPOINT);
 	}
 
-	public void update(String username)
+	public CompletableFuture<Void> update(String username)
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("xp")
-			.addPathSegment("update")
-			.addQueryParameter("username", username)
-			.build();
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		client.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("Error submitting xp track", e);
-			}
-
-			@Override
-			public void onResponse(Call call, Response response)
-			{
-				response.close();
-				log.debug("Submitted xp track for {}", username);
-			}
-		});
+		return getAsync_(url -> url.newBuilder().addQueryParameter("username", username).build())
+			.thenCompose(response -> bodyToObjectFuture(response, Void.class));
 	}
 }

@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
@@ -23,62 +22,73 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.config;
+package net.runelite.http.api;
 
 import java.io.IOException;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import lombok.RequiredArgsConstructor;
-import net.runelite.http.api.RuneLiteApiClient;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
-public class ConfigClient extends RuneLiteApiClient
+public abstract class AbstractApiClientTest
 {
-	private static final String ENDPOINT = "config";
-	private static final MediaType TEXT_PLAIN = MediaType.parse("text/plain");
+	public final MockWebServer server = new MockWebServer();
+	protected OkHttpClient.Builder testClient;
 
-	public ConfigClient(OkHttpClient client, UUID uuid)
+	@Rule
+	public final ExpectedException exception = ExpectedException.none();
+
+	@Before
+	public void before() throws IOException
 	{
-		super(client.newBuilder().addInterceptor(new ConfigClientInterceptor(uuid)), ENDPOINT);
+		server.start();
+		testClient = new OkHttpClient.Builder()
+			.addInterceptor(chain ->
+			{
+				Request request = chain.request()
+					.newBuilder()
+					.url(server.url("/"))
+					.build();
+
+				return chain.proceed(request);
+			});
 	}
 
-	public Configuration get() throws IOException
+	@After
+	public void after() throws IOException
 	{
-		return bodyToObject(get_(), Configuration.class);
+		server.shutdown();
 	}
 
-	public CompletableFuture<Void> set(String key, String value)
-	{
-		return putAsync_(RequestBody.create(TEXT_PLAIN, value), url -> url.newBuilder().addPathSegment(key).build())
-			.thenCompose(response -> bodyToObjectFuture(response, Void.class));
-	}
-
-	public CompletableFuture<Void> unset(String key)
-	{
-		return deleteAsync_(url -> url.newBuilder().addPathSegment(key).build())
-			.thenCompose(response -> bodyToObjectFuture(response, Void.class));
-	}
-
-	@RequiredArgsConstructor
-	private static class ConfigClientInterceptor implements Interceptor
+	// Captures the request at this interceptor stage and short circuits the response by returning a dummy response
+	public static class CaptureRequestInterceptor implements Interceptor
 	{
 
-		private final UUID uuid;
+		private Request request;
 
 		@Override
 		public Response intercept(Chain chain) throws IOException
 		{
-			Request request = chain.request()
-				.newBuilder()
-				.header(AUTH_HEADER, uuid.toString())
+			this.request = chain.request().newBuilder().build();
+			return new Response.Builder()
+				.body(ResponseBody.create(MediaType.parse("application/json"), ""))
+				.code(200)
+				.protocol(Protocol.HTTP_2)
+				.request(chain.request())
 				.build();
+		}
 
-			return chain.proceed(request);
+		public Request getRequest()
+		{
+			return request;
 		}
 	}
 }

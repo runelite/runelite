@@ -52,17 +52,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.eventbus.EventBus;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -87,9 +84,10 @@ public class PluginManagerTest
 	@Before
 	public void before() throws IOException
 	{
-		OkHttpClient okHttpClient = mock(OkHttpClient.class);
-		when(okHttpClient.newCall(any(Request.class)))
-			.thenThrow(new RuntimeException("in plugin manager test"));
+		OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(chain ->
+		{
+			throw new IOException("in plugin manager test");
+		}).build();
 
 		Injector injector = Guice.createInjector(Modules
 			.override(new RuneLiteModule(okHttpClient, () -> null, true, false,

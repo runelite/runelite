@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Ugnius <https://github.com/UgiR>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,70 +25,73 @@
  */
 package net.runelite.http.api.ge;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
+import java.util.concurrent.CompletableFuture;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import static net.runelite.http.api.RuneLiteAPI.JSON;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
+import net.runelite.http.api.RuneLiteApiClient;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-@Slf4j
-@RequiredArgsConstructor
-public class GrandExchangeClient
+public class GrandExchangeClient extends RuneLiteApiClient
 {
-	private static final Gson GSON = RuneLiteAPI.GSON;
+	private final static String ENDPOINT = "ge";
+	private final GrandExchangeClientInterceptor interceptor;
 
-	private final OkHttpClient client;
-
-	@Setter
-	private UUID uuid;
-	@Setter
-	private String machineId;
-
-	public void submit(GrandExchangeTrade grandExchangeTrade)
+	public GrandExchangeClient(OkHttpClient client)
 	{
-		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("ge")
-			.build();
+		this(client, new GrandExchangeClientInterceptor());
+	}
 
-		Request.Builder builder = new Request.Builder();
-		if (uuid != null)
-		{
-			builder.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString());
-		}
-		if (machineId != null)
-		{
-			builder.header(RuneLiteAPI.RUNELITE_MACHINEID, machineId);
-		}
+	private GrandExchangeClient(OkHttpClient client, GrandExchangeClientInterceptor interceptor)
+	{
+		super(client.newBuilder().addInterceptor(interceptor), ENDPOINT);
+		this.interceptor = interceptor;
+	}
 
-		Request request = builder
-			.post(RequestBody.create(JSON, GSON.toJson(grandExchangeTrade)))
-			.url(url)
-			.build();
+	public CompletableFuture<Void> submit(GrandExchangeTrade grandExchangeTrade)
+	{
+		return postAsync_(RequestBody.create(MEDIA_TYPE_JSON, objectToJson(grandExchangeTrade)))
+			.thenCompose(response -> bodyToObjectFuture(response, Void.class));
+	}
 
-		client.newCall(request).enqueue(new Callback()
+	// TODO: can these be final/constructor-initialized?
+	public void setUuid(UUID uuid)
+	{
+		interceptor.setUuid(uuid);
+	}
+
+	public void setMachineId(String machineId)
+	{
+		interceptor.setMachineId(machineId);
+	}
+
+	private static class GrandExchangeClientInterceptor implements Interceptor
+	{
+
+		@Setter
+		private UUID uuid;
+		@Setter
+		private String machineId;
+
+		@Override
+		public Response intercept(Chain chain) throws IOException
 		{
-			@Override
-			public void onFailure(Call call, IOException e)
+			Request.Builder builder = chain.request().newBuilder();
+
+			if (uuid != null)
 			{
-				log.debug("unable to submit trade", e);
+				builder.header(AUTH_HEADER, uuid.toString());
+			}
+			if (machineId != null)
+			{
+				builder.header(MACHINEID_HEADER, machineId);
 			}
 
-			@Override
-			public void onResponse(Call call, Response response)
-			{
-				log.debug("Submitted trade");
-				response.close();
-			}
-		});
+			return chain.proceed(builder.build());
+		}
 	}
 }
