@@ -27,7 +27,10 @@ package net.runelite.client.plugins.tearsofguthix;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
+import com.google.common.collect.ImmutableSet;
+import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
@@ -35,6 +38,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -48,6 +52,12 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class TearsOfGuthixPlugin extends Plugin
 {
 	private static final int TOG_REGION = 12948;
+	private static final Set<Integer> TEARS_OBJECTS = new ImmutableSet.Builder<Integer>().
+			add(ObjectID.BLUE_TEARS).
+			add(ObjectID.BLUE_TEARS_6665).
+			add(ObjectID.GREEN_TEARS).
+			add(ObjectID.GREEN_TEARS_6666).
+			build();
 
 	@Inject
 	private Client client;
@@ -57,6 +67,12 @@ public class TearsOfGuthixPlugin extends Plugin
 
 	@Inject
 	private TearsOfGuthixOverlay overlay;
+
+	@Provides
+	TearsOfGuthixConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(TearsOfGuthixConfig.class);
+	}
 
 	@Getter
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
@@ -89,10 +105,7 @@ public class TearsOfGuthixPlugin extends Plugin
 	@Subscribe
 	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
-		DecorativeObject object = event.getDecorativeObject();
-
-		if (event.getDecorativeObject().getId() == ObjectID.BLUE_TEARS ||
-			event.getDecorativeObject().getId() == ObjectID.BLUE_TEARS_6665)
+		if (TEARS_OBJECTS.contains(event.getDecorativeObject().getId()))
 		{
 			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
 			{
