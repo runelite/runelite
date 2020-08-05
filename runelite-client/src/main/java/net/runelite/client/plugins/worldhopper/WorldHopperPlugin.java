@@ -161,6 +161,11 @@ public class WorldHopperPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int currentPing;
 
+	@Getter(AccessLevel.PACKAGE)
+	private int totalLevel = 2277;
+	private boolean justLoggedIn;
+	private String lastUsername;
+
 	private final Map<Integer, Integer> storedPings = new HashMap<>();
 
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
@@ -488,14 +493,27 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		// If the player has disabled the side bar plugin panel, do not update the UI
-		if (config.showSidebar() && gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		GameState state = gameStateChanged.getGameState();
+		if (state == GameState.LOGGED_IN)
 		{
-			if (lastWorld != client.getWorld())
+			// If the player has disabled the side bar plugin panel, do not update the UI
+			if (config.showSidebar())
 			{
-				int newWorld = client.getWorld();
-				panel.switchCurrentHighlight(newWorld, lastWorld);
-				lastWorld = newWorld;
+				if (lastWorld != client.getWorld())
+				{
+					int newWorld = client.getWorld();
+					panel.switchCurrentHighlight(newWorld, lastWorld);
+					lastWorld = newWorld;
+				}
+			}
+
+			// LOGGED_IN is triggered between region changes too.
+			// Check that the username changed.
+			if (!client.getUsername().equals(lastUsername))
+			{
+				lastUsername = client.getUsername();
+				// data is not available until after login is finished, so fetch it on the next gametick
+				justLoggedIn = true;
 			}
 		}
 	}
@@ -610,7 +628,7 @@ public class WorldHopperPlugin extends Plugin
 		List<World> worlds = worldResult.getWorlds();
 
 		int worldIdx = worlds.indexOf(currentWorld);
-		int totalLevel = client.getTotalLevel();
+		checkTotalLevel();
 
 		World world;
 		do
@@ -795,6 +813,21 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (justLoggedIn)
+		{
+			justLoggedIn = false;
+			checkTotalLevel();
+		}
+
+		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
+		{
+			checkTotalLevel();
+		}
+		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
+		{
+			checkTotalLevel();
+		}
+
 		if (quickHopTargetWorld == null)
 		{
 			return;
@@ -977,5 +1010,15 @@ public class WorldHopperPlugin extends Plugin
 		int ping = Ping.ping(world);
 		storedPings.put(world.getId(), ping);
 		return ping;
+	}
+
+	private void checkTotalLevel()
+	{
+		int nowLevel = client.getTotalLevel();
+		if (totalLevel != nowLevel)
+		{
+			totalLevel = nowLevel;
+			updateList();
+		}
 	}
 }

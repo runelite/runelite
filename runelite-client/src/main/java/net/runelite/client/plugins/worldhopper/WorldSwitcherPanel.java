@@ -41,6 +41,7 @@ import java.util.function.Function;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
+import lombok.extern.slf4j.Slf4j;
 import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -48,6 +49,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
 
+@Slf4j
 class WorldSwitcherPanel extends PluginPanel
 {
 	private static final Color ODD_ROW = new Color(44, 44, 44);
@@ -252,6 +254,8 @@ class WorldSwitcherPanel extends PluginPanel
 	{
 		rows.clear();
 
+		int totalLevel = plugin.getTotalLevel();
+
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
@@ -304,6 +308,22 @@ class WorldSwitcherPanel extends PluginPanel
 					|| (!skillTotalTypeFilter        && types.contains(WorldType.SKILL_TOTAL)))
 				{
 					continue;
+				}
+
+				if (types.contains(WorldType.SKILL_TOTAL))
+				{
+					try
+					{
+						int totalRequirement = Integer.parseInt(world.getActivity().substring(0, world.getActivity().indexOf(" ")));
+						if (totalLevel < totalRequirement)
+						{
+							continue;
+						}
+					}
+					catch (NumberFormatException ex)
+					{
+						log.warn("Failed to parse total level requirement for target world", ex);
+					}
 				}
 			}
 			else
