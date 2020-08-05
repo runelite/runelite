@@ -90,6 +90,8 @@ class WorldSwitcherPanel extends PluginPanel
 	private boolean skillTotalTypeFilter;
 	@Setter(AccessLevel.PACKAGE)
 	private boolean exclusiveTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private RegionFilterMode regionFilter;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -253,6 +255,13 @@ class WorldSwitcherPanel extends PluginPanel
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
+
+			// Check world region if filter is enabled
+			if (regionFilter != RegionFilterMode.NONE && world.getRegion() != regionFilter.getRegion())
+			{
+				continue;
+			}
+
 			EnumSet<WorldType> types = world.getTypes();
 
 			switch (subscriptionFilterMode)

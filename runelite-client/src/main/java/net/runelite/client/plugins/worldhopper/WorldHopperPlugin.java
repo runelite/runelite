@@ -227,6 +227,7 @@ public class WorldHopperPlugin extends Plugin
 		panel.setLeagueTypeFilter(config.leagueTypeFilter());
 		panel.setSkillTotalTypeFilter(config.skillTotalTypeFilter());
 		panel.setExclusiveTypeFilter(config.exclusiveTypeFilter());
+		panel.setRegionFilter(config.regionFilter());
 
 		// The plugin has its own executor for pings, as it blocks for a long time
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
@@ -326,6 +327,10 @@ public class WorldHopperPlugin extends Plugin
 					break;
 				case "exclusiveTypeFilter":
 					panel.setExclusiveTypeFilter(config.exclusiveTypeFilter());
+					updateList();
+					break;
+				case "regionFilter":
+					panel.setRegionFilter(config.regionFilter());
 					updateList();
 					break;
 			}
@@ -638,7 +643,7 @@ public class WorldHopperPlugin extends Plugin
 			world = worlds.get(worldIdx);
 
 			// Check world region if filter is enabled
-			if (config.quickHopRegionFilter() != RegionFilterMode.NONE && world.getRegion() != config.quickHopRegionFilter().getRegion())
+			if (config.regionFilter() != RegionFilterMode.NONE && world.getRegion() != config.regionFilter().getRegion())
 			{
 				continue;
 			}
