@@ -26,8 +26,11 @@ package net.runelite.client.plugins.tearsofguthix;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
@@ -51,13 +54,14 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class TearsOfGuthixPlugin extends Plugin
 {
-	private static final int TOG_REGION = 12948;
+	static final int TOG_REGION = 12948;
 	private static final Set<Integer> TEARS_OBJECTS = new ImmutableSet.Builder<Integer>().
 			add(ObjectID.BLUE_TEARS).
 			add(ObjectID.BLUE_TEARS_6665).
 			add(ObjectID.GREEN_TEARS).
 			add(ObjectID.GREEN_TEARS_6666).
 			build();
+	static final String WAIT_STRING = "Wait...";
 
 	@Inject
 	private Client client;
@@ -68,6 +72,9 @@ public class TearsOfGuthixPlugin extends Plugin
 	@Inject
 	private TearsOfGuthixOverlay overlay;
 
+	@Inject
+	private TearsOfGuthixRotationOverlay rotationOverlay;
+
 	@Provides
 	TearsOfGuthixConfig provideConfig(ConfigManager configManager)
 	{
@@ -76,17 +83,22 @@ public class TearsOfGuthixPlugin extends Plugin
 
 	@Getter
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
+	private static String rotation = null;
+	private static boolean initialRotation = true;
+	private static boolean finalStreamUpdate = true;
 
 	@Override
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(rotationOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(rotationOverlay);
 		streams.clear();
 	}
 
@@ -98,7 +110,10 @@ public class TearsOfGuthixPlugin extends Plugin
 			case LOADING:
 			case LOGIN_SCREEN:
 			case HOPPING:
+			case LOGGED_IN:
 				streams.clear();
+				rotation = null;
+				initialRotation = true;
 		}
 	}
 
@@ -110,6 +125,10 @@ public class TearsOfGuthixPlugin extends Plugin
 			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
 			{
 				streams.put(event.getDecorativeObject(), Instant.now());
+				if (!finalStreamUpdate)
+				{
+					finalStreamUpdate = true;
+				}
 			}
 		}
 	}
@@ -124,5 +143,76 @@ public class TearsOfGuthixPlugin extends Plugin
 
 		DecorativeObject object = event.getDecorativeObject();
 		streams.remove(object);
+	}
+
+	String getRotation()
+	{
+		if (rotation != null)
+		{
+			return rotation;
+		}
+
+		// Make certain there are 6 unique Instants. Otherwise the stream timers were set during the same Instant pre-login
+		Set<Instant> uniqueValues = new HashSet<>(streams.values());
+		if (uniqueValues.size() < 6)
+		{
+			return WAIT_STRING;
+		}
+
+		// With 6 unique Instants, the oldest is still wrong
+		if (initialRotation)
+		{
+			initialRotation = false;
+			finalStreamUpdate = false;
+			return WAIT_STRING;
+		}
+
+		// Wait for the final stream update
+		if (!finalStreamUpdate)
+		{
+			return WAIT_STRING;
+		}
+
+		// Sort the Map by the Instant
+		Map<DecorativeObject, Instant> sortedMap =
+				streams.entrySet().stream().sorted(Map.Entry.comparingByValue()).
+						collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k, v) -> k, LinkedHashMap::new));
+
+		// Generate a rotation string from the sorted Map
+		StringBuilder stringBuilder = new StringBuilder();
+		sortedMap.forEach((k, v) ->
+			{
+				if (k.getId() == ObjectID.BLUE_TEARS || k.getId() == ObjectID.BLUE_TEARS_6665)
+				{
+					stringBuilder.append("B");
+				}
+				else
+				{
+					stringBuilder.append("G");
+				}
+			});
+
+		// Check to make certain the player did not log in mid-rotation
+		// Otherwise, fix the rotation
+		String rotation = stringBuilder.toString();
+		long nowMillis = 0;
+		long prevMillis;
+		long diffMillis;
+		int idx = 0;
+		for (Map.Entry<DecorativeObject, Instant> entry : sortedMap.entrySet())
+		{
+			prevMillis = nowMillis;
+			nowMillis = entry.getValue().toEpochMilli();
+			diffMillis = nowMillis - prevMillis;
+			if (idx != 0 && diffMillis > 5000)
+			{
+				rotation = rotation.substring(idx) + rotation.substring(0, idx);
+				break;
+			}
+			idx++;
+		}
+
+		this.rotation = rotation;
+		return rotation;
 	}
 }

@@ -27,18 +27,52 @@ package net.runelite.client.plugins.tearsofguthix;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
 
 @ConfigGroup("tearsofgtuthix")
 public interface TearsOfGuthixConfig extends Config
 {
 	@ConfigItem(
+		keyName = "showRotationOverlay",
+		name = "Show rotation overlay",
+		description = "Displays the overlay of rotations",
+		position = 1
+	)
+	default boolean showRotationOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "timeGreenTears",
-		name = "Green tears timers",
-		description = "Displays timers for green tears",
+		name = "Green stream timers",
+		description = "Displays timers for green streams",
 		position = 2
 	)
 	default boolean timeGreenTears()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "goodTearsColor",
+		name = "Good rotation color",
+		description = "Color for good rotation",
+		position = 3
+	)
+	default Color goodTearsColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "badTearsColor",
+		name = "Bad rotation color",
+		description = "Color for bad rotation",
+		position = 4
+	)
+	default Color badTearsColor()
+	{
+		return Color.RED;
 	}
 }
