@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,11 +31,20 @@ import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Keybind;
 
 @ConfigGroup(WorldHopperConfig.GROUP)
 public interface WorldHopperConfig extends Config
 {
+	@ConfigSection(
+		name = "World Type Filtering",
+		description = "Filtering options for world types",
+		position = 99,
+		closedByDefault = true
+	)
+	String typeFilters = "filters";
+
 	String GROUP = "worldhopper";
 
 	@ConfigItem(
@@ -127,9 +137,10 @@ public interface WorldHopperConfig extends Config
 
 	@ConfigItem(
 		keyName = "subscriptionFilter",
-		name = "Show subscription types",
-		description = "Only show free worlds, member worlds, or both types of worlds in sidebar",
-		position = 8
+		name = "Show subscription",
+		description = "Consider free worlds, member worlds, or both types of worlds",
+		section = typeFilters,
+		position = 7
 	)
 	default SubscriptionFilterMode subscriptionFilter()
 	{
@@ -137,10 +148,130 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "PVPTypeFilter",
+		name = "Show PVP",
+		description = "Consider PVP worlds",
+		section = typeFilters,
+		position = 8
+	)
+	default boolean PVPTypeFilter()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "bountyTypeFilter",
+		name = "Show Bounty",
+		description = "Consider Bounty worlds",
+		section = typeFilters,
+		position = 9
+	)
+	default boolean bountyTypeFilter()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "skillTotalTypeFilter",
+		name = "Show Skill Total",
+		description = "Consider Skill Total worlds",
+		section = typeFilters,
+		position = 10
+	)
+	default boolean skillTotalTypeFilter()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highRiskTypeFilter",
+		name = "Show High Risk",
+		description = "Consider High Risk worlds",
+		section = typeFilters,
+		position = 11
+	)
+	default boolean highRiskTypeFilter()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "lastManStandingTypeFilter",
+		name = "Show Last Man Standing",
+		description = "Consider Last Man Standing worlds",
+		section = typeFilters,
+		position = 12
+	)
+	default boolean lastManStandingTypeFilter()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "tournamentTypeFilter",
+		name = "Show Tournament",
+		description = "Consider Tournament worlds",
+		section = typeFilters,
+		position = 13
+	)
+	default boolean tournamentTypeFilter()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "deadmanTypeFilter",
+		name = "Show Deadman",
+		description = "Consider Deadmam worlds",
+		section = typeFilters,
+		position = 14
+	)
+	default boolean deadmanTypeFilter()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "deadmanTournamentTypeFilter",
+		name = "Show Deadman Tournament",
+		description = "Consider Deadmam Tournament worlds",
+		section = typeFilters,
+		position = 15
+	)
+	default boolean deadmanTournamentTypeFilter()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "leagueTypeFilter",
+		name = "Show League",
+		description = "Consider League worlds",
+		section = typeFilters,
+		position = 15
+	)
+	default boolean leagueTypeFilter()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "exclusiveTypeFilter",
+		name = "Exclusive filtering",
+		description = "Inverts filtering to remove worlds that have no type, only showing worlds that match selected filters",
+		section = typeFilters,
+		position = 6
+	)
+	default boolean exclusiveTypeFilter()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "displayPing",
 		name = "Display current ping",
 		description = "Displays ping to current game world",
-		position = 9
+		position = 17
 	)
 	default boolean displayPing()
 	{
