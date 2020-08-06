@@ -55,13 +55,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class TearsOfGuthixPlugin extends Plugin
 {
 	static final int TOG_REGION = 12948;
-	private static final Set<Integer> TEARS_OBJECTS = new ImmutableSet.Builder<Integer>().
-			add(ObjectID.BLUE_TEARS).
-			add(ObjectID.BLUE_TEARS_6665).
-			add(ObjectID.GREEN_TEARS).
-			add(ObjectID.GREEN_TEARS_6666).
-			build();
-	static final String WAIT_STRING = "Wait...";
+	private static final Set<Integer> TEARS_OBJECTS = ImmutableSet.of(
+		ObjectID.BLUE_TEARS,
+		ObjectID.BLUE_TEARS_6665,
+		ObjectID.GREEN_TEARS,
+		ObjectID.GREEN_TEARS_6666
+	);
+	static final String WAIT_STRING = "Await changes...";
 
 	@Inject
 	private Client client;
@@ -83,7 +83,7 @@ public class TearsOfGuthixPlugin extends Plugin
 
 	@Getter
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
-	private static String rotation = null;
+	private static String rotation;
 	private static boolean initialRotation = true;
 	private static boolean finalStreamUpdate = true;
 
@@ -92,6 +92,8 @@ public class TearsOfGuthixPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(rotationOverlay);
+		initialRotation = true;
+		finalStreamUpdate = true;
 	}
 
 	@Override

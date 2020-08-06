@@ -67,7 +67,7 @@ class TearsOfGuthixOverlay extends Overlay
 			}
 
 			if (object.getId() != ObjectID.BLUE_TEARS && object.getId() != ObjectID.BLUE_TEARS_6665
-					&& !config.timeGreenTears())
+					&& !config.showGreenTearsTimers())
 			{
 				return;
 			}

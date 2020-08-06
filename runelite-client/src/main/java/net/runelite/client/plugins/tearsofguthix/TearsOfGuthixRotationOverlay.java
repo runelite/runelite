@@ -64,14 +64,17 @@ public class TearsOfGuthixRotationOverlay extends OverlayPanel
 			return null;
 		}
 
+		panelComponent.setPreferredSize(new Dimension(155, 0));
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text("Tears of Guthix")
 			.color(Color.ORANGE)
 			.build());
 		panelComponent.getChildren().add(LineComponent.builder().left("").build());
+
 		Color color = config.badTearsColor();
 		String string = plugin.getRotation();
-		if (string.equals(plugin.WAIT_STRING))
+
+		if (string == plugin.WAIT_STRING)
 		{
 			color = Color.WHITE;
 		}
@@ -79,6 +82,7 @@ public class TearsOfGuthixRotationOverlay extends OverlayPanel
 		{
 			color = config.goodTearsColor();
 		}
+
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Rotation:")
 			.leftColor(Color.WHITE)

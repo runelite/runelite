@@ -44,12 +44,12 @@ public interface TearsOfGuthixConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "timeGreenTears",
+		keyName = "showGreenTearsTimers",
 		name = "Green stream timers",
 		description = "Displays timers for green streams",
 		position = 2
 	)
-	default boolean timeGreenTears()
+	default boolean showGreenTearsTimers()
 	{
 		return false;
 	}
