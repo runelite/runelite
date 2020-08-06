@@ -188,6 +188,9 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final Pattern PICKPOCKET_REGEX = Pattern.compile("You pick (the )?(?<target>.+)'s? pocket.*");
 
+	private static final String BIRDNEST_EVENT = "Bird nest";
+	private static final Set<Integer> BIRDNEST_IDS = ImmutableSet.of(ItemID.BIRD_NEST, ItemID.BIRD_NEST_5071, ItemID.BIRD_NEST_5072, ItemID.BIRD_NEST_5073, ItemID.BIRD_NEST_5074, ItemID.BIRD_NEST_7413, ItemID.BIRD_NEST_13653, ItemID.BIRD_NEST_22798, ItemID.BIRD_NEST_22800);
+
 	/*
 	 * This map is used when a pickpocket target has a different name in the chat message than their in-game name.
 	 * Note that if the two NPCs can be found in the same place, there is a chance of race conditions
@@ -715,6 +718,7 @@ public class LootTrackerPlugin extends Plugin
 			|| HESPORI_EVENT.equals(eventType)
 			|| SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
+			|| BIRDNEST_EVENT.equals(eventType)
 			|| lootRecordType == LootRecordType.PICKPOCKET)
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
@@ -746,6 +750,13 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
 		{
 			eventType = SHADE_CHEST_OBJECTS.get(event.getId());
+			lootRecordType = LootRecordType.EVENT;
+			takeInventorySnapshot();
+		}
+
+		if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
+		{
+			eventType = BIRDNEST_EVENT;
 			lootRecordType = LootRecordType.EVENT;
 			takeInventorySnapshot();
 		}
