@@ -19396,7 +19396,6 @@ public final class ObjectID
 	public static final int DECORATIVE_WINDOW_37442 = 37442;
 	public static final int STAINEDGLASS_WINDOW_37443 = 37443;
 	public static final int LOG_PILE_37444 = 37444;
-	public static final int HOTSPOT_MARKER = 37445;
 	public static final int DECORATIVE_WINDOW_37450 = 37450;
 	public static final int STAINEDGLASS_WINDOW_37458 = 37458;
 	public static final int DECORATIVE_WINDOW_37459 = 37459;
