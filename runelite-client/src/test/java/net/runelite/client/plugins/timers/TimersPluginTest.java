@@ -29,7 +29,7 @@ import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.time.Duration;
-import lombok.extern.slf4j.Slf4j;
+import java.time.Instant;
 import java.util.EnumSet;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -43,20 +43,22 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isA;
 import org.mockito.Mock;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
-@Slf4j
 @RunWith(MockitoJUnitRunner.class)
 public class TimersPluginTest
 {
@@ -65,6 +67,12 @@ public class TimersPluginTest
 	private static final String HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 2 minutes, 30 seconds.</col>";
 	private static final String TRANSPARENT_CHATBOX_FULL_TELEBLOCK_MESSAGE = "<col=c356ef>A Tele Block spell has been cast on you by Alexsuperfly. It will expire in 5 minutes.</col>";
 	private static final String TRANSPARENT_CHATBOX_TELEBLOCK_REMOVED_MESSAGE = "<col=c356ef>Your Tele Block has been removed because you killed Alexsuperfly.</col>";
+	private static final int FIGHT_CAVES_REGION_ID = 9551;
+	private static final String TZHAAR_WAVE1_MESSAGE = "Wave: 1";
+	private static final String TZHAAR_WAVE2_MESSAGE = "Wave: 2";
+	private static final String TZHAAR_PAUSED_MESSAGE = "The Inferno has been paused. You may now log out.";
+	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
+
 
 	@Inject
 	private TimersPlugin timersPlugin;
@@ -234,5 +242,44 @@ public class TimersPluginTest
 		// some time has elapsed in the test; this should be just under 2 mins
 		int mins = (int) infoBox.getDuration().toMinutes();
 		assertTrue(mins == 1 || mins == 2);
+	}
+
+	@Test
+	public void testTzhaarTimer()
+	{
+		when(timersConfig.showTzhaarTimers()).thenReturn(true);
+		when(client.getMapRegions()).thenReturn(new int[]{FIGHT_CAVES_REGION_ID});
+
+		// test timer creation: verify the infobox was added and that it is an ElapsedTimer
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", TZHAAR_WAVE1_MESSAGE, "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager, times(1)).addInfoBox(captor.capture());
+		assertTrue(captor.getValue() instanceof ElapsedTimer);
+
+		// test timer pause: verify the added ElapsedTimer has a non-null lastTime
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", TZHAAR_PAUSED_MESSAGE, "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+		verify(infoBoxManager, times(1)).removeInfoBox(captor.capture());
+		verify(infoBoxManager, times(2)).addInfoBox(captor.capture());
+		assertTrue(captor.getValue() instanceof ElapsedTimer);
+		ElapsedTimer timer = (ElapsedTimer) captor.getValue();
+		assertNotEquals(timer.getLastTime(), null);
+		Instant oldTime = ((ElapsedTimer) captor.getValue()).getStartTime();
+
+		// test timer unpause: verify the start time is not equal to the original start time after being unpaused
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", TZHAAR_WAVE2_MESSAGE, "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+		verify(infoBoxManager, times(2)).removeInfoBox(captor.capture());
+		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
+		assertTrue(captor.getValue() instanceof ElapsedTimer);
+		timer = (ElapsedTimer) captor.getValue();
+		assertNotEquals(timer.getStartTime(), oldTime);
+
+		// test timer remove: verify the infobox was removed (and no more were added)
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", TZHAAR_DEFEATED_MESSAGE, "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+		verify(infoBoxManager, times(3)).removeInfoBox(captor.capture());
+		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
 	}
 }

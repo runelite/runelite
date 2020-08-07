@@ -745,8 +745,11 @@ public class TimersPlugin extends Plugin
 
 	private void removeTzhaarTimer()
 	{
-		infoBoxManager.removeInfoBox(tzhaarTimer);
-		tzhaarTimer = null;
+		if (tzhaarTimer != null)
+		{
+			infoBoxManager.removeInfoBox(tzhaarTimer);
+			tzhaarTimer = null;
+		}
 	}
 
 	private void createTzhaarTimer()
