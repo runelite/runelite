@@ -49,10 +49,22 @@ public interface GroundItemsConfig extends Config
 	String itemLists = "itemLists";
 
 	@ConfigItem(
+		keyName = "alphabeticalItemList",
+		name = "Alphabetical Lists",
+		description = "Configures alphabetical lists for highlighted and hidden items",
+		position = 0,
+		section = itemLists
+	)
+	default boolean alphabeticalItemList()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "highlightedItems",
 		name = "Highlighted Items",
 		description = "Configures specifically highlighted ground items. Format: (item), (item)",
-		position = 0,
+		position = 1,
 		section = itemLists
 	)
 	default String getHighlightItems()
@@ -71,7 +83,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "hiddenItems",
 		name = "Hidden Items",
 		description = "Configures hidden ground items. Format: (item), (item)",
-		position = 1,
+		position = 2,
 		section = itemLists
 	)
 	default String getHiddenItems()
