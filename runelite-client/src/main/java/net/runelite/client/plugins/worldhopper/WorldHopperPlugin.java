@@ -32,6 +32,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -166,7 +167,14 @@ public class WorldHopperPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			hop(true);
+			if (!config.favoriteHop())
+			{
+				hop(true);
+			}
+			else
+			{
+				favoriteHop(true);
+			}
 		}
 	};
 	private final HotkeyListener nextKeyListener = new HotkeyListener(() -> config.nextKey())
@@ -174,7 +182,14 @@ public class WorldHopperPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			hop(false);
+			if (!config.favoriteHop())
+			{
+				hop(false);
+			}
+			else
+			{
+				favoriteHop(false);
+			}
 		}
 	};
 
@@ -284,6 +299,62 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
+	private List<Integer> getFavoriteWorlds()
+	{
+		WorldResult worldResult = worldService.getWorlds();
+		if (worldResult == null)
+		{
+			return null;
+		}
+
+		List<Integer> worlds = new ArrayList<>();
+		for (World w : worldResult.getWorlds())
+		{
+			if (isFavorite(w))
+			{
+				worlds.add(w.getId());
+			}
+		}
+
+		return worlds;
+	}
+
+	private void favoriteHop(boolean previous)
+	{
+		final int currentWorld = getCurrentWorld();
+		List<Integer> favoriteWorlds = getFavoriteWorlds();
+
+		if (favoriteWorlds == null || favoriteWorlds.isEmpty())
+		{
+			return;
+		}
+
+		final int index = favoriteWorlds.indexOf(currentWorld);
+		final int size = favoriteWorlds.size();
+		if (!previous)
+		{
+			if (index < 0 || (index + 1) >= size)
+			{
+				hopTo(favoriteWorlds.get(0));
+			}
+			else
+			{
+				hopTo(favoriteWorlds.get(index + 1));
+			}
+		}
+		else
+		{
+			if (index <= 0)
+			{
+				hopTo(favoriteWorlds.get(size - 1));
+			}
+			else
+			{
+				hopTo(favoriteWorlds.get(index - 1));
+			}
+		}
+	}
+
 	private void setFavoriteConfig(int world)
 	{
 		configManager.setConfiguration(WorldHopperConfig.GROUP, "favorite_" + world, true);
@@ -314,6 +385,11 @@ public class WorldHopperPlugin extends Plugin
 	void hopTo(World world)
 	{
 		hop(world.getId());
+	}
+
+	void hopTo(int worldID)
+	{
+		hop(worldID);
 	}
 
 	void addToFavorites(World world)
