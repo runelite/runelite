@@ -45,6 +45,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -69,6 +70,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isNull;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.doNothing;
@@ -172,6 +174,8 @@ public class LootTrackerPluginTest
 	@Test
 	public void testHerbiboarHerbSack()
 	{
+		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(42);
+
 		for (Map.Entry<Integer, String> herb : HERB_IDS_TO_NAMES.entrySet())
 		{
 			final int id = herb.getKey();
@@ -200,12 +204,12 @@ public class LootTrackerPluginTest
 			when(client.getMessages()).thenReturn(messageTable);
 
 			LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
-			doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(Collection.class));
+			doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
 
 			ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", LootTrackerPlugin.HERBIBOAR_LOOTED_MESSAGE, "", 0);
 			lootTrackerPluginSpy.onChatMessage(chatMessage);
 
-			verify(lootTrackerPluginSpy).addLoot("Herbiboar", -1, LootRecordType.EVENT, Arrays.asList(
+			verify(lootTrackerPluginSpy).addLoot("Herbiboar", -1, LootRecordType.EVENT, 42, Arrays.asList(
 				new ItemStack(id, 1, null),
 				new ItemStack(id, 1, null)
 			));
@@ -222,7 +226,7 @@ public class LootTrackerPluginTest
 
 		LootTrackerPlugin spyPlugin = Mockito.spy(lootTrackerPlugin);
 		// Make sure we don't execute addLoot, so we don't have to mock LootTrackerPanel and everything else also
-		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), anyCollection());
+		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), isNull(), anyCollection());
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
@@ -253,7 +257,7 @@ public class LootTrackerPluginTest
 
 		LootTrackerPlugin spyPlugin = Mockito.spy(lootTrackerPlugin);
 		// Make sure we don't execute addLoot, so we don't have to mock LootTrackerPanel and everything else also
-		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), anyCollection());
+		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), isNull(), anyCollection());
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
