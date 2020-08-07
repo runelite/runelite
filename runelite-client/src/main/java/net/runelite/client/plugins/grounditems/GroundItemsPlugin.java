@@ -464,20 +464,9 @@ public class GroundItemsPlugin extends Plugin
 
 	private String alphabeticalList(String list)
 	{
-		Object[] str = Text.fromCSV(list).toArray();
-		for (int i = 0; i < str.length; i++)
-		{
-			for (int j = i + 1; j < str.length; j++)
-			{
-				if (((String) str[i]).compareTo((String) str[j]) > 0)
-				{
-					String temp = str[i].toString();
-					str[i] = str[j];
-					str[j] = temp;
-				}
-			}
-		}
-		return StringUtils.join(str, ", ");
+		List<String> itemList = Text.fromCSV(list);
+		java.util.Collections.sort(itemList);
+		return StringUtils.join(itemList, ", ");
 	}
 
 	@Subscribe
