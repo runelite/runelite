@@ -70,6 +70,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "NPC Indicators",
@@ -507,6 +508,11 @@ public class NpcIndicatorsPlugin extends Plugin
 	@VisibleForTesting
 	List<String> getHighlights()
 	{
+		if (config.alphabeticalNPCList())
+		{
+			config.setNpcToHighlight(alphabeticalList(config.getNpcToHighlight()));
+		}
+
 		final String configNpcs = config.getNpcToHighlight();
 
 		if (configNpcs.isEmpty())
@@ -515,6 +521,13 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		return Text.fromCSV(configNpcs);
+	}
+
+	private String alphabeticalList(String list)
+	{
+		List<String> itemList = Text.fromCSV(list);
+		java.util.Collections.sort(itemList);
+		return StringUtils.join(itemList, ", ");
 	}
 
 	@VisibleForTesting

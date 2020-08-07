@@ -78,7 +78,19 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		keyName = "alphabeticalNPCList",
+		name = "Alphabetical List",
+		description = "Configures alphabetical list for NPC list",
+		position = 3
+	)
+	default boolean alphabeticalNPCList()
+	{
+		return false;
+	}
+
+
+	@ConfigItem(
+		position = 4,
 		keyName = "npcToHighlight",
 		name = "NPCs to Highlight",
 		description = "List of NPC names to highlight"
@@ -96,7 +108,7 @@ public interface NpcIndicatorsConfig extends Config
 	void setNpcToHighlight(String npcsToHighlight);
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "npcColor",
 		name = "Highlight Color",
 		description = "Color of the NPC highlight"
@@ -108,7 +120,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "drawNames",
 		name = "Draw names above NPC",
 		description = "Configures whether or not NPC names should be drawn above the NPC"
@@ -119,7 +131,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not NPC names should be drawn on the minimap"
@@ -130,7 +142,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "highlightMenuNames",
 		name = "Highlight menu names",
 		description = "Highlight NPC names in right click menu"
@@ -152,7 +164,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "deadNpcMenuColor",
 		name = "Dead NPC menu color",
 		description = "Color of the NPC menus for dead NPCs"
@@ -160,7 +172,7 @@ public interface NpcIndicatorsConfig extends Config
 	Color deadNpcMenuColor();
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "showRespawnTimer",
 		name = "Show respawn timer",
 		description = "Show respawn timer of tagged NPCs")
