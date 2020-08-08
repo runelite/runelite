@@ -233,6 +233,10 @@ public class BarrowsPlugin extends Plugin
 	{
 		if (config.showPrayerDrainTimer())
 		{
+			if (barrowsPrayerDrainTimer != null)
+			{
+				stopPrayerDrainTimer();
+			}
 			final LoopTimer loopTimer = new LoopTimer(
 				PRAYER_DRAIN_INTERVAL_MS,
 				ChronoUnit.MILLIS,
