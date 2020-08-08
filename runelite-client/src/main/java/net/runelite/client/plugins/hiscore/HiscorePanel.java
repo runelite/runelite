@@ -613,7 +613,7 @@ public class HiscorePanel extends PluginPanel
 						if (requestedSkill != null)
 						{
 							rank = (requestedSkill.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getRank());
-							lvl = (requestedSkill.getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(requestedSkill.getLevel()));
+							lvl = (requestedSkill.getLevel() == -1 ? "&lt;" + getRequiredKillCount(skill) : QuantityFormatter.formatNumber(requestedSkill.getLevel()));
 						}
 						content += "<p><span style = 'color:white'>Boss:</span> " + skill.getName() + "</p>";
 						content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
@@ -673,6 +673,25 @@ public class HiscorePanel extends PluginPanel
 		}
 
 		return openingTags + content + closingTags;
+	}
+
+	private int getRequiredKillCount(HiscoreSkill skill)
+	{
+		switch(skill){
+			case TZKAL_ZUK:
+			case MIMIC:
+				return 2;
+			case CHAMBERS_OF_XERIC_CHALLENGE_MODE:
+			case HESPORI:
+			case OBOR:
+			case BRYOPHYTA:
+			case SKOTIZO:
+			case THE_CORRUPTED_GAUNTLET:
+			case TZTOK_JAD:
+				return 10;
+			default:
+				return 50;
+		}
 	}
 
 	private static String sanitize(String lookup)
