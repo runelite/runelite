@@ -677,7 +677,7 @@ public class HiscorePanel extends PluginPanel
 
 	private int getRequiredKillCount(HiscoreSkill skill)
 	{
-		switch(skill)
+		switch (skill)
 		{
 			case TZKAL_ZUK:
 			case MIMIC:
