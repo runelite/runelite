@@ -27,26 +27,36 @@ package net.runelite.client.plugins.attackstyles;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.api.Skill;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
+import net.runelite.client.ui.overlay.components.ImageComponent;
+import net.runelite.client.ui.overlay.components.TooltipComponent;
+import net.runelite.client.util.ColorUtil;
 
 class AttackStylesOverlay extends OverlayPanel
 {
 	private final AttackStylesPlugin plugin;
 	private final AttackStylesConfig config;
+	private final SkillIconManager iconManager;
 
 	@Inject
-	private AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
+	private AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config, SkillIconManager iconManager)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		this.plugin = plugin;
 		this.config = config;
+		this.iconManager = iconManager;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Attack style overlay"));
 	}
 
@@ -64,16 +74,24 @@ class AttackStylesOverlay extends OverlayPanel
 				return null;
 			}
 
-			final String attackStyleString = attackStyle.getName();
+			TooltipComponent tooltipComponent = new TooltipComponent();
+			tooltipComponent.setText(ColorUtil.wrapWithColorTag(
+				attackStyle.getName(),
+				warnedSkillSelected ? Color.RED : Color.WHITE));
+			tooltipComponent.setBackgroundColor(ComponentConstants.NO_BACKGROUND_COLOR);
+			panelComponent.getChildren().add(tooltipComponent);
 
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text(attackStyleString)
-				.color(warnedSkillSelected ? Color.RED : Color.WHITE)
-				.build());
+			for (Skill skill : attackStyle.getSkills())
+			{
+				BufferedImage bufferedImage = iconManager.getSkillImage(skill);
+				if (bufferedImage != null)
+				{
+					panelComponent.getChildren().add(new ImageComponent(bufferedImage));
+				}
+			}
 
-			panelComponent.setPreferredSize(new Dimension(
-				graphics.getFontMetrics().stringWidth(attackStyleString) + 10,
-				0));
+			panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
+			panelComponent.setGap(new Point(2,0));
 
 			return super.render(graphics);
 		}

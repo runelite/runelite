@@ -51,7 +51,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -244,11 +243,7 @@ public class AttackStylesPlugin extends Plugin
 		if (attackStyleIndex < attackStyles.length)
 		{
 			attackStyle = attackStyles[attackStyleIndex];
-			if (attackStyle == null)
-			{
-				attackStyle = OTHER;
-			}
-			else if ((attackStyle == CASTING) && (castingMode == 1))
+			if ((attackStyle == CASTING) && (castingMode == 1))
 			{
 				attackStyle = DEFENSIVE_CASTING;
 			}
