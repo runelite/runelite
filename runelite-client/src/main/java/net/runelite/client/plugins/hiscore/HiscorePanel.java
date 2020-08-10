@@ -613,7 +613,7 @@ public class HiscorePanel extends PluginPanel
 						if (requestedSkill != null)
 						{
 							rank = (requestedSkill.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getRank());
-							lvl = (requestedSkill.getLevel() == -1 ? "&lt;" + getRequiredKillCount(skill) : QuantityFormatter.formatNumber(requestedSkill.getLevel()));
+							lvl = (requestedSkill.getLevel() == -1 ? "&lt; " + getRequiredKillCount(skill) : QuantityFormatter.formatNumber(requestedSkill.getLevel()));
 						}
 						content += "<p><span style = 'color:white'>Boss:</span> " + skill.getName() + "</p>";
 						content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
