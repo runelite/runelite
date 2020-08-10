@@ -91,7 +91,7 @@ class AttackStylesOverlay extends OverlayPanel
 			}
 
 			panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
-			panelComponent.setGap(new Point(2,0));
+			panelComponent.setGap(new Point(2, 0));
 
 			return super.render(graphics);
 		}
