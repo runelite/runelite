@@ -469,6 +469,11 @@ public class LootTrackerPlugin extends Plugin
 		addLoot(name, combatLevel, type, items, 1);
 	}
 
+	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Object metadata, Collection<ItemStack> items, int amount)
+	{
+		addLoot(name, combatLevel, type, items, amount);
+	}
+
 	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Collection<ItemStack> items, int amount)
 	{
 		final LootTrackerItem[] entries = buildEntries(stack(items));
@@ -929,7 +934,6 @@ public class LootTrackerPlugin extends Plugin
 				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
 				.collect(Collectors.toList());
 
-			addLoot(event, -1, lootRecordType, metadata, items);
 			final Multiset<Integer> diffr = Multisets.difference(inventorySnapshot, currentInventory);
 			List<ItemStack> itemsr = diffr.entrySet().stream()
 				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
@@ -943,7 +947,7 @@ public class LootTrackerPlugin extends Plugin
 					amount = i.getQuantity();
 				}
 			}
-			addLoot(event, -1, lootRecordType, items, amount);
+			addLoot(event, -1, lootRecordType, metadata, items, amount);
 
 			inventorySnapshot = null;
 		}
