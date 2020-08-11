@@ -60,7 +60,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -77,7 +76,6 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -292,7 +290,6 @@ public class LootTrackerPlugin extends Plugin
 	@VisibleForTesting
 	LootRecordType lootRecordType;
 	private Object metadata;
-	private String lastInteracted;
 	private boolean chestLooted;
 	private String lastPickpocketTarget;
 
@@ -757,25 +754,10 @@ public class LootTrackerPlugin extends Plugin
 
 		if (message.equals(IMPLING_CATCH_MESSAGE))
 		{
-			eventType = lastInteracted;
+			eventType = client.getLocalPlayer().getInteracting().getName();
 			lootRecordType = LootRecordType.EVENT;
 			takeInventorySnapshot();
 			return;
-		}
-	}
-
-	@Subscribe
-	public void onInteractingChanged(InteractingChanged interactingChanged)
-	{
-		Actor target = interactingChanged.getTarget();
-		if (target == null )
-		{
-			return;
-		}
-		String name = target.getName();
-		if (IMPLING_CATCH_EVENTS.contains(name))
-		{
-			lastInteracted = name;
 		}
 	}
 
@@ -935,18 +917,11 @@ public class LootTrackerPlugin extends Plugin
 				.collect(Collectors.toList());
 
 			final Multiset<Integer> diffr = Multisets.difference(inventorySnapshot, currentInventory);
-			List<ItemStack> itemsr = diffr.entrySet().stream()
-				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
-				.collect(Collectors.toList());
+			int amount = diffr.entrySet().stream()
+				.filter(e -> IMPLING_JAR_EVENTS.containsKey(e.getElement()))
+				.mapToInt(Multiset.Entry::getCount)
+				.max().orElse(1);
 
-			int amount = 1;
-			for (ItemStack i : itemsr)
-			{
-				if (IMPLING_JAR_EVENTS.containsKey(i.getId()) && i.getQuantity() > amount)
-				{
-					amount = i.getQuantity();
-				}
-			}
 			addLoot(event, -1, lootRecordType, metadata, items, amount);
 
 			inventorySnapshot = null;
