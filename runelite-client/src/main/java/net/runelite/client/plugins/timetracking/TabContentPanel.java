@@ -26,6 +26,7 @@ package net.runelite.client.plugins.timetracking;
 
 import java.awt.Dimension;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
@@ -33,6 +34,9 @@ import javax.swing.JPanel;
 
 public abstract class TabContentPanel extends JPanel
 {
+	private static final DateTimeFormatter DATETIME_FORMATTER_24H = DateTimeFormatter.ofPattern("HH:mm");
+	private static final DateTimeFormatter DATETIME_FORMATTER_12H = DateTimeFormatter.ofPattern("h:mm a");
+
 	/**
 	 * Gets the update interval of this panel, in units of 200 milliseconds
 	 * (the plugin panel checks if its contents should be updated every 200 ms;
@@ -48,9 +52,11 @@ public abstract class TabContentPanel extends JPanel
 		return super.getPreferredSize();
 	}
 
-	public static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime)
+	public static String getFormattedEstimate(long remainingSeconds, TimeFormatMode mode)
 	{
-		if (useRelativeTime)
+		DateTimeFormatter formatter = getDateTimeFormatter(mode);
+
+		if (formatter == null)
 		{
 			StringBuilder sb = new StringBuilder("in ");
 			long duration = (remainingSeconds + 59) / 60;
@@ -80,8 +86,23 @@ public abstract class TabContentPanel extends JPanel
 			{
 				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
 			}
-			sb.append(String.format("at %d:%02d", endTime.getHour(), endTime.getMinute()));
+			sb.append("at ");
+			sb.append(formatter.format(endTime));
+
 			return sb.toString();
+		}
+	}
+
+	private static DateTimeFormatter getDateTimeFormatter(TimeFormatMode mode)
+	{
+		switch (mode)
+		{
+			case ABSOLUTE_12H:
+				return DATETIME_FORMATTER_12H;
+			case ABSOLUTE_24H:
+				return DATETIME_FORMATTER_24H;
+			default:
+				return null;
 		}
 	}
 }
