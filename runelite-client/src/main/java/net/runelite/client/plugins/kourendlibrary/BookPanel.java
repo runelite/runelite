@@ -77,6 +77,14 @@ class BookPanel extends JPanel
 
 	void setIsTarget(boolean target)
 	{
-		location.setForeground(target ? Color.GREEN : Color.WHITE);
+		location.setForeground(target ? Color.GREEN : Color.ORANGE);
+	}
+
+	void setIsHeld(boolean held)
+	{
+		if (held)
+		{
+			location.setForeground(Color.WHITE);
+		}
 	}
 }

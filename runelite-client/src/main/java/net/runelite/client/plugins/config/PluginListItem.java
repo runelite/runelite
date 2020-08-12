@@ -100,8 +100,6 @@ class PluginListItem extends JPanel
 			keywords.add(mf.getInternalName());
 		}
 
-		final List<JMenuItem> popupMenuItems = new ArrayList<>();
-
 		setLayout(new BorderLayout(3, 0));
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 

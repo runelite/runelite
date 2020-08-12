@@ -31,7 +31,7 @@ import net.runelite.api.widgets.Widget;
 
 @Data
 @EqualsAndHashCode(of = "tag")
-class TagTab
+public class TagTab
 {
 	private String tag;
 	private int iconItemId;

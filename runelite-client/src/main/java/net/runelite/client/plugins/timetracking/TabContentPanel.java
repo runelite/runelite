@@ -48,7 +48,7 @@ public abstract class TabContentPanel extends JPanel
 		return super.getPreferredSize();
 	}
 
-	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime)
+	public static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime)
 	{
 		if (useRelativeTime)
 		{

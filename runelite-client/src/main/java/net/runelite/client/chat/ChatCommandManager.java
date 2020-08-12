@@ -133,7 +133,7 @@ public class ChatCommandManager implements ChatboxInputListener
 		String message = chatboxInput.getValue();
 		if (message.startsWith("/"))
 		{
-			message = message.substring(1); // clan chat input
+			message = message.substring(1); // friends chat input
 		}
 
 		String command = extractCommand(message);

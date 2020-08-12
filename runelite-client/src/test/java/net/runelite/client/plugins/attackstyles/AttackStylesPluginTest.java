@@ -33,22 +33,18 @@ import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -171,60 +167,6 @@ public class AttackStylesPluginTest
 			WidgetInfo.COMBAT_STYLE_ONE));
 		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
 			WidgetInfo.COMBAT_STYLE_THREE));
-	}
-
-	/*
-	 * Verify that the defensive style is hidden when switching from bludgeon to bow
-	 */
-	@Test
-	public void testHiddenLongrange()
-	{
-		final ArgumentCaptor<Boolean> captor = ArgumentCaptor.forClass(Boolean.class);
-		final ConfigChanged warnForAttackEvent = new ConfigChanged();
-		warnForAttackEvent.setGroup("attackIndicator");
-		warnForAttackEvent.setKey("warnForDefensive");
-		warnForAttackEvent.setNewValue("true");
-		attackPlugin.onConfigChanged(warnForAttackEvent);
-
-		// verify there is a warned skill
-		Set<Skill> warnedSkills = attackPlugin.getWarnedSkills();
-		assertTrue(warnedSkills.contains(Skill.DEFENCE));
-
-		// Set up mock widget for strength and longrange
-		final Widget widget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.COMBAT_STYLE_FOUR)).thenReturn(widget);
-
-		// Set up hidden changed event
-		final WidgetHiddenChanged widgetHiddenChanged = new WidgetHiddenChanged();
-		widgetHiddenChanged.setWidget(widget);
-		when(widget.getId()).thenReturn(WidgetInfo.COMBAT_STYLE_FOUR.getPackedId());
-
-		// Enable hiding widgets
-		final ConfigChanged hideWidgetEvent = new ConfigChanged();
-		hideWidgetEvent.setGroup("attackIndicator");
-		hideWidgetEvent.setKey("removeWarnedStyles");
-		hideWidgetEvent.setNewValue("true");
-		attackPlugin.onConfigChanged(hideWidgetEvent);
-		when(attackConfig.removeWarnedStyles()).thenReturn(true);
-
-		// equip bludgeon on player
-		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_26.ordinal());
-		attackPlugin.onVarbitChanged(new VarbitChanged());
-		attackPlugin.onWidgetHiddenChanged(widgetHiddenChanged);
-
-		// verify that the agressive style style widget is showing
-		verify(widget, atLeastOnce()).setHidden(captor.capture());
-		assertFalse(captor.getValue());
-
-		// equip bow on player
-		// the equipped weaopn varbit will change after the hiddenChanged event has been dispatched
-		attackPlugin.onWidgetHiddenChanged(widgetHiddenChanged);
-		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_3.ordinal());
-		attackPlugin.onVarbitChanged(new VarbitChanged());
-
-		// verify that the longrange attack style widget is now hidden
-		verify(widget, atLeastOnce()).setHidden(captor.capture());
-		assertTrue(captor.getValue());
 	}
 
 	private boolean isAtkHidden()

@@ -177,6 +177,7 @@ public class GroundItemsOverlay extends Overlay
 
 		final boolean onlyShowLoot = config.onlyShowLoot();
 		final boolean groundItemTimers = config.groundItemTimers();
+		final boolean outline = config.textOutline();
 
 		for (GroundItem item : groundItemList)
 		{
@@ -243,7 +244,7 @@ public class GroundItemsOverlay extends Overlay
 			{
 				if (item.getGePrice() > 0)
 				{
-					itemStringBuilder.append(" (EX: ")
+					itemStringBuilder.append(" (GE: ")
 						.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
 						.append(" gp)");
 				}
@@ -354,6 +355,7 @@ public class GroundItemsOverlay extends Overlay
 
 			textComponent.setText(itemString);
 			textComponent.setColor(color);
+			textComponent.setOutline(outline);
 			textComponent.setPosition(new java.awt.Point(textX, textY));
 			textComponent.render(graphics);
 		}

@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Arrays;
 import java.util.Collection;
@@ -59,7 +58,6 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Slf4j
 public class HotColdClue extends ClueScroll implements LocationClueScroll, LocationsClueScroll, TextClueScroll, NpcClueScroll
 {
-	private static final int HOT_COLD_PANEL_WIDTH = 200;
 	private static final HotColdClue BEGINNER_CLUE = new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Reldo may have a clue.",
 		"Reldo",
 		"Speak to Reldo to receive a strange device.",
@@ -141,7 +139,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text("Hot/Cold Clue")
 			.build());
-		panelComponent.setPreferredSize(new Dimension(HOT_COLD_PANEL_WIDTH, 0));
 
 		// strange device has not been tested yet, show how to get it
 		if (hotColdSolver.getLastWorldPoint() == null && location == null)
@@ -215,6 +212,14 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 								.left("- " + hotColdLocation.getArea())
 								.leftColor(Color.LIGHT_GRAY)
 								.build());
+
+							if (digLocations.size() <= 5 && hotColdLocation.getEnemy() != null)
+							{
+								panelComponent.getChildren().add(LineComponent.builder()
+									.left(hotColdLocation.getEnemy().getText())
+									.leftColor(Color.YELLOW)
+									.build());
+							}
 						}
 					}
 				}

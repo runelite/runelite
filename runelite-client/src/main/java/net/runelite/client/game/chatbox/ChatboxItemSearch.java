@@ -184,6 +184,11 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	@Override
 	public void keyPressed(KeyEvent ev)
 	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return;
+		}
+
 		switch (ev.getKeyCode())
 		{
 			case KeyEvent.VK_ENTER:

@@ -29,6 +29,7 @@ import com.google.common.io.CharStreams;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;
@@ -63,7 +64,7 @@ public class ClientConfigLoaderTest
 	@Test
 	public void testFetch() throws IOException
 	{
-		final RSConfig config = ClientConfigLoader.fetch(server.url("/"));
+		final RSConfig config = new ClientConfigLoader(new OkHttpClient()).fetch(server.url("/"));
 		assertEquals("http://oldschool1.runescape.com/", config.getCodeBase());
 	}
 

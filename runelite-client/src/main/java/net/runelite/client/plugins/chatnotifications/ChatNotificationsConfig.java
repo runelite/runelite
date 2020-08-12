@@ -58,7 +58,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 2,
 		keyName = "notifyOnOwnName",
 		name = "Notify on own name",
-		description = "Notifies you whenever your name is mentioned"
+		description = "Notifies you whenever someone mentions you by name"
 	)
 	default boolean notifyOnOwnName()
 	{
@@ -94,6 +94,17 @@ public interface ChatNotificationsConfig extends Config
 		description = "Notifies you whenever you are challenged to a duel"
 	)
 	default boolean notifyOnDuel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "notifyOnBroadcast",
+		name = "Notify on broadcast",
+		description = "Notifies you whenever you receive a broadcast message"
+	)
+	default boolean notifyOnBroadcast()
 	{
 		return false;
 	}

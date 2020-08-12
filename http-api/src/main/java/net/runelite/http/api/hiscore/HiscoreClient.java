@@ -25,9 +25,10 @@
 package net.runelite.http.api.hiscore;
 
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.csv.CSVFormat;
@@ -35,8 +36,11 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 @Slf4j
+@RequiredArgsConstructor
 public class HiscoreClient
 {
+	private final OkHttpClient client;
+
 	public HiscoreResult lookup(String username, HiscoreEndpoint endpoint) throws IOException
 	{
 		return lookup(username, endpoint.getHiscoreURL());
@@ -97,7 +101,7 @@ public class HiscoreClient
 
 		String responseStr;
 
-		try (Response okresponse = RuneLiteAPI.CLIENT.newCall(okrequest).execute())
+		try (Response okresponse = client.newCall(okrequest).execute())
 		{
 			if (!okresponse.isSuccessful())
 			{

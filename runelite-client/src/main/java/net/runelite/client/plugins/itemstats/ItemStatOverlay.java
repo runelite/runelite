@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.Duration;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
@@ -36,8 +37,10 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.itemstats.potions.PotionDuration;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -46,6 +49,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.item.ItemEquipmentStats;
 import net.runelite.http.api.item.ItemStats;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public class ItemStatOverlay extends Overlay
 {
@@ -97,7 +101,7 @@ public class ItemStatOverlay extends Overlay
 				|| group == WidgetInfo.EQUIPMENT.getGroupId()
 				|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
 				|| (config.showStatsInBank()
-					&& (group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId()
+					&& ((group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() && child == WidgetInfo.BANK_ITEM_CONTAINER.getChildId())
 						|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()))))
 		{
 			return null;
@@ -105,7 +109,9 @@ public class ItemStatOverlay extends Overlay
 
 		int itemId = entry.getIdentifier();
 
-		if (group == WidgetInfo.EQUIPMENT.getGroupId())
+		if (group == WidgetInfo.EQUIPMENT.getGroupId() ||
+			// For bank worn equipment, check widget parent to differentiate from normal bank items
+			(group == WidgetID.BANK_GROUP_ID && widget.getParentId() == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getId()))
 		{
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
@@ -147,6 +153,44 @@ public class ItemStatOverlay extends Overlay
 				{
 					tooltipManager.add(new Tooltip(tooltip));
 				}
+			}
+
+			PotionDuration p = PotionDuration.get(itemId);
+			if (p != null)
+			{
+				PotionDuration.PotionDurationRange[] durationRanges = p.getDurationRanges();
+				StringBuilder sb = new StringBuilder();
+				if (durationRanges.length == 1)
+				{
+					// Only show "Duration: <time>" if there is one tooltip
+					Duration duration = durationRanges[0].getLowestDuration();
+					sb.append("Duration: ").append(DurationFormatUtils.formatDuration(duration.toMillis(), "m:ss"));
+				}
+				else
+				{
+					// List the effect names and their duration (ranges)
+					for (PotionDuration.PotionDurationRange durationRange : durationRanges)
+					{
+						if (sb.length() > 0)
+						{
+							sb.append("</br>");
+						}
+
+						sb.append(durationRange.getPotionName()).append(": ");
+
+						Duration lowestDuration = durationRange.getLowestDuration();
+						sb.append(DurationFormatUtils.formatDuration(lowestDuration.toMillis(), "m:ss"));
+
+						Duration highestDuration = durationRange.getHighestDuration();
+						if (lowestDuration != highestDuration)
+						{
+							sb.append("~");
+							sb.append(DurationFormatUtils.formatDuration(highestDuration.toMillis(), "m:ss"));
+						}
+					}
+				}
+
+				tooltipManager.add(new Tooltip(sb.toString()));
 			}
 		}
 
@@ -236,35 +280,58 @@ public class ItemStatOverlay extends Overlay
 		return b.toString();
 	}
 
+	private ItemStats getItemStatsFromContainer(ItemContainer container, int slotID)
+	{
+		final Item item = container.getItem(slotID);
+		return item != null ? itemManager.getItemStats(item.getId(), false) : null;
+	}
+
 	@VisibleForTesting
 	String buildStatBonusString(ItemStats s)
 	{
 		ItemStats other = null;
+		// Used if switching into a 2 handed weapon to store off-hand stats
+		ItemStats offHand = null;
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
 
 		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
 		if (s.isEquipable() && currentEquipment != null && c != null)
 		{
-			final Item[] items = c.getItems();
 			final int slot = currentEquipment.getSlot();
 
-			if (slot != -1 && slot < items.length)
+			other = getItemStatsFromContainer(c, slot);
+			// Check if this is a shield and there's a two-handed weapon equipped
+			if (other == null && slot == EquipmentInventorySlot.SHIELD.getSlotIdx())
 			{
-				final Item item = items[slot];
-				if (item != null)
+				other = getItemStatsFromContainer(c, EquipmentInventorySlot.WEAPON.getSlotIdx());
+				if (other != null)
 				{
-					other = itemManager.getItemStats(item.getId(), false);
+					final ItemEquipmentStats otherEquip = other.getEquipment();
+					if (otherEquip != null)
+					{
+						// Account for speed change when two handed weapon gets removed
+						// shield - (2h - unarmed) == shield - 2h + unarmed
+						other = otherEquip.isTwoHanded() ? other.subtract(UNARMED) : null;
+					}
 				}
 			}
 
-			if (other == null && slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
+			if (slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
 			{
-				// Unarmed
-				other = UNARMED;
+				if (other == null)
+				{
+					other = UNARMED;
+				}
+
+				// Get offhand's stats to be removed from equipping a 2h weapon
+				if (currentEquipment.isTwoHanded())
+				{
+					offHand = getItemStatsFromContainer(c, EquipmentInventorySlot.SHIELD.getSlotIdx());
+				}
 			}
 		}
 
-		final ItemStats subtracted = s.subtract(other);
+		final ItemStats subtracted = s.subtract(other).subtract(offHand);
 		final ItemEquipmentStats e = subtracted.getEquipment();
 
 		final StringBuilder b = new StringBuilder();

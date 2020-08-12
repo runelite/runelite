@@ -41,6 +41,8 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.function.Supplier;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -55,17 +57,18 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.api.feed.FeedItemType;
 import net.runelite.http.api.feed.FeedResult;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 @Slf4j
+@Singleton
 class FeedPanel extends PluginPanel
 {
 	private static final ImageIcon RUNELITE_ICON;
@@ -104,12 +107,15 @@ class FeedPanel extends PluginPanel
 
 	private final FeedConfig config;
 	private final Supplier<FeedResult> feedSupplier;
+	private final OkHttpClient okHttpClient;
 
-	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier)
+	@Inject
+	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier, OkHttpClient okHttpClient)
 	{
 		super(true);
 		this.config = config;
 		this.feedSupplier = feedSupplier;
+		this.okHttpClient = okHttpClient;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -158,7 +164,7 @@ class FeedPanel extends PluginPanel
 						.url(item.getAvatar())
 						.build();
 
-					RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+					okHttpClient.newCall(request).enqueue(new Callback()
 					{
 						@Override
 						public void onFailure(Call call, IOException e)

@@ -27,6 +27,7 @@ package net.runelite.cache.util;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.xtea.XteaClient;
 import net.runelite.http.api.xtea.XteaKey;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ public class XteaKeyManager
 
 	public void loadKeys()
 	{
-		XteaClient xteaClient = new XteaClient();
+		XteaClient xteaClient = new XteaClient(RuneLiteAPI.CLIENT);
 
 		try
 		{

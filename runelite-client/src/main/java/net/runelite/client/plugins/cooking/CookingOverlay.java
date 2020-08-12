@@ -29,8 +29,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
-import java.time.Instant;
 import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
 import static net.runelite.api.AnimationID.COOKING_FIRE;
 import static net.runelite.api.AnimationID.COOKING_RANGE;
@@ -39,15 +39,14 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class CookingOverlay extends Overlay
+class CookingOverlay extends OverlayPanel
 {
 	private static final int COOK_TIMEOUT = 3;
 	private static final DecimalFormat FORMAT = new DecimalFormat("#.#");
@@ -57,7 +56,6 @@ class CookingOverlay extends Overlay
 	private final CookingPlugin plugin;
 	private final CookingConfig config;
 	private final XpTrackerService xpTrackerService;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private CookingOverlay(Client client, CookingPlugin plugin, CookingConfig config, XpTrackerService xpTrackerService)
@@ -80,8 +78,6 @@ class CookingOverlay extends Overlay
 		{
 			return null;
 		}
-
-		panelComponent.getChildren().clear();
 
 		if (isCooking() || Duration.between(session.getLastCookingAction(), Instant.now()).getSeconds() < COOK_TIMEOUT)
 		{
@@ -108,7 +104,7 @@ class CookingOverlay extends Overlay
 			.right(session.getBurnAmount() + (session.getBurnAmount() >= 1 ? " (" + FORMAT.format(session.getBurntPercentage()) + "%)" : ""))
 			.build());
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	private boolean isCooking()

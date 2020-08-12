@@ -39,8 +39,8 @@ import net.runelite.client.plugins.Plugin;
 public class Timer extends InfoBox
 {
 	private final Instant startTime;
-	private final Instant endTime;
-	private final Duration duration;
+	private Instant endTime;
+	private Duration duration;
 
 	public Timer(long period, ChronoUnit unit, BufferedImage image, Plugin plugin)
 	{
@@ -94,4 +94,9 @@ public class Timer extends InfoBox
 		return timeLeft.isZero() || timeLeft.isNegative();
 	}
 
+	public void setDuration(Duration duration)
+	{
+		this.duration = duration;
+		endTime = startTime.plus(duration);
+	}
 }

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemstats.potions;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.util.Comparator;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,8 @@ public class SuperRestore implements Effect
 		CONSTRUCTION
 	};
 
-	private final double percR; //percentage restored
+	@VisibleForTesting
+	public final double percR; //percentage restored
 	private final int delta;
 
 	@Override
@@ -56,7 +58,7 @@ public class SuperRestore implements Effect
 		StatsChanges changes = new StatsChanges(0);
 
 		SimpleStatBoost calc = new SimpleStatBoost(null, false, perc(percR, delta));
-		PrayerPotion prayer = new PrayerPotion(delta);
+		PrayerPotion prayer = new PrayerPotion(delta, percR);
 		changes.setStatChanges(Stream.concat(
 			Stream.of(prayer.effect(client)),
 			Stream.of(superRestoreStats)

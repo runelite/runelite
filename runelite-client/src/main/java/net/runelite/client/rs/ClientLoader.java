@@ -49,12 +49,13 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
+import javax.annotation.Nonnull;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -66,10 +67,10 @@ import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
 import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.util.CountingInputStream;
-import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.api.worlds.World;
 import net.runelite.client.util.VerificationException;
+import net.runelite.http.api.worlds.World;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -82,15 +83,19 @@ public class ClientLoader implements Supplier<Applet>
 	private static File VANILLA_CACHE = new File(RuneLite.CACHE_DIR, "vanilla.cache");
 	private static File PATCHED_CACHE = new File(RuneLite.CACHE_DIR, "patched.cache");
 
+	private final OkHttpClient okHttpClient;
+	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
-	private Object client = null;
+	private final WorldSupplier worldSupplier;
 
-	private WorldSupplier worldSupplier = new WorldSupplier();
-	private RSConfig config;
+	private Object client;
 
-	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
+	public ClientLoader(OkHttpClient okHttpClient, ClientUpdateCheckMode updateCheckMode)
 	{
+		this.okHttpClient = okHttpClient;
+		this.clientConfigLoader = new ClientConfigLoader(okHttpClient);
 		this.updateCheckMode = updateCheckMode;
+		this.worldSupplier = new WorldSupplier(okHttpClient);
 	}
 
 	@Override
@@ -118,7 +123,7 @@ public class ClientLoader implements Supplier<Applet>
 		try
 		{
 			SplashScreen.stage(0, null, "Fetching applet viewer config");
-			downloadConfig();
+			RSConfig config = downloadConfig();
 
 			SplashScreen.stage(.05, null, "Waiting for other clients to start");
 
@@ -129,7 +134,24 @@ public class ClientLoader implements Supplier<Applet>
 				FileLock flock = lockfile.lock())
 			{
 				SplashScreen.stage(.05, null, "Downloading Old School RuneScape");
-				updateVanilla();
+				try
+				{
+					updateVanilla(config);
+				}
+				catch (IOException ex)
+				{
+					// try again with the fallback config and gamepack
+					if (!config.isFallback())
+					{
+						log.warn("Unable to download game client, attempting to use fallback config", ex);
+						config = downloadFallbackConfig();
+						updateVanilla(config);
+					}
+					else
+					{
+						throw ex;
+					}
+				}
 
 				if (updateCheckMode == AUTO)
 				{
@@ -146,7 +168,7 @@ public class ClientLoader implements Supplier<Applet>
 
 			SplashScreen.stage(.465, "Starting", "Starting Old School RuneScape");
 
-			Applet rs = loadClient(classLoader);
+			Applet rs = loadClient(config, classLoader);
 
 			SplashScreen.stage(.5, null, "Starting core classes");
 
@@ -162,7 +184,7 @@ public class ClientLoader implements Supplier<Applet>
 		}
 	}
 
-	private void downloadConfig() throws IOException
+	private RSConfig downloadConfig() throws IOException
 	{
 		HttpUrl url = HttpUrl.parse(RuneLiteProperties.getJavConfig());
 		IOException err = null;
@@ -170,14 +192,14 @@ public class ClientLoader implements Supplier<Applet>
 		{
 			try
 			{
-				config = ClientConfigLoader.fetch(url);
+				RSConfig config = clientConfigLoader.fetch(url);
 
 				if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
 				{
 					throw new IOException("Invalid or missing jav_config");
 				}
 
-				return;
+				return config;
 			}
 			catch (IOException e)
 			{
@@ -192,35 +214,42 @@ public class ClientLoader implements Supplier<Applet>
 
 		try
 		{
-			RSConfig backupConfig = ClientConfigLoader.fetch(HttpUrl.parse(RuneLiteProperties.getJavConfigBackup()));
-
-			if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar()) || Strings.isNullOrEmpty(backupConfig.getInitialClass()))
-			{
-				throw new IOException("Invalid or missing jav_config");
-			}
-
-			if (Strings.isNullOrEmpty(backupConfig.getRuneLiteGamepack()) || Strings.isNullOrEmpty(backupConfig.getRuneLiteWorldParam()))
-			{
-				throw new IOException("Backup config does not have RuneLite gamepack url");
-			}
-
-			// Randomize the codebase
-			World world = worldSupplier.get();
-			backupConfig.setCodebase("http://" + world.getAddress() + "/");
-
-			// Update the world applet parameter
-			Map<String, String> appletProperties = backupConfig.getAppletProperties();
-			appletProperties.put(backupConfig.getRuneLiteWorldParam(), Integer.toString(world.getId()));
-
-			config = backupConfig;
+			return downloadFallbackConfig();
 		}
 		catch (IOException ex)
 		{
+			log.debug("error downloading backup config", ex);
 			throw err; // use error from Jagex's servers
 		}
 	}
 
-	private void updateVanilla() throws IOException, VerificationException
+	@Nonnull
+	private RSConfig downloadFallbackConfig() throws IOException
+	{
+		RSConfig backupConfig = clientConfigLoader.fetch(HttpUrl.parse(RuneLiteProperties.getJavConfigBackup()));
+
+		if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar()) || Strings.isNullOrEmpty(backupConfig.getInitialClass()))
+		{
+			throw new IOException("Invalid or missing jav_config");
+		}
+
+		if (Strings.isNullOrEmpty(backupConfig.getRuneLiteGamepack()) || Strings.isNullOrEmpty(backupConfig.getRuneLiteWorldParam()))
+		{
+			throw new IOException("Backup config does not have RuneLite gamepack url");
+		}
+
+		// Randomize the codebase
+		World world = worldSupplier.get();
+		backupConfig.setCodebase("http://" + world.getAddress() + "/");
+
+		// Update the world applet parameter
+		Map<String, String> appletProperties = backupConfig.getAppletProperties();
+		appletProperties.put(backupConfig.getRuneLiteWorldParam(), Integer.toString(world.getId()));
+
+		return backupConfig;
+	}
+
+	private void updateVanilla(RSConfig config) throws IOException, VerificationException
 	{
 		Certificate[] jagexCertificateChain = getJagexCertificateChain();
 
@@ -256,7 +285,7 @@ public class ClientLoader implements Supplier<Applet>
 
 			// Start downloading the vanilla client
 			HttpUrl url;
-			if (config.getRuneLiteGamepack() != null)
+			if (config.isFallback())
 			{
 				// If we are using the backup config, use our own gamepack and ignore the codebase
 				url = HttpUrl.parse(config.getRuneLiteGamepack());
@@ -274,7 +303,7 @@ public class ClientLoader implements Supplier<Applet>
 					.url(url)
 					.build();
 
-				try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+				try (Response response = okHttpClient.newCall(request).execute())
 				{
 					// Its important to not close the response manually - this should be the only close or
 					// try-with-resources on this stream or it's children
@@ -366,7 +395,8 @@ public class ClientLoader implements Supplier<Applet>
 				{
 					log.warn("Failed to download gamepack from \"{}\"", url, e);
 
-					if (attempt >= NUM_ATTEMPTS)
+					// With fallback config do 1 attempt (there are no additional urls to try)
+					if (config.isFallback() || attempt >= NUM_ATTEMPTS)
 					{
 						throw e;
 					}
@@ -503,7 +533,7 @@ public class ClientLoader implements Supplier<Applet>
 		}
 	}
 
-	private Applet loadClient(ClassLoader classLoader) throws ClassNotFoundException, IllegalAccessException, InstantiationException
+	private Applet loadClient(RSConfig config, ClassLoader classLoader) throws ClassNotFoundException, IllegalAccessException, InstantiationException
 	{
 		String initialClass = config.getInitialClass();
 		Class<?> clientClass = classLoader.loadClass(initialClass);

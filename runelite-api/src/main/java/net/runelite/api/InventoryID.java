@@ -34,6 +34,14 @@ public enum InventoryID
 	 */
 	FISHING_TRAWLER_REWARD(0),
 	/**
+	 * The trade inventory.
+	 */
+	TRADE(90),
+	/**
+	 * The other trade inventory.
+	 */
+	TRADEOTHER(90 | 0x8000),
+	/**
 	 * Standard player inventory.
 	 */
 	INVENTORY(93),

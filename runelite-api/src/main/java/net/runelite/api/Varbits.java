@@ -219,7 +219,14 @@ public enum Varbits
 	HB_TRAIL_31372(5750),
 
 	HB_FINISH(5766),
-	HB_STARTED(5767), //not working
+
+	/**
+	 * Started hunting Herbiboar.
+	 * <br>
+	 * NOTE: This value remains at 0 even after starting a Herbiboar trail up until searching the first object along the
+	 * hunting path.
+	 */
+	HB_STARTED(5767),
 
 	/**
 	 * Barbarian Assault
@@ -297,6 +304,9 @@ public enum Varbits
 	PERSONAL_POINTS(5422),
 	RAID_PARTY_SIZE(5424),
 
+	// 0 = raid not started, >0 = raid started
+	RAID_STATE(5425),
+
 	/**
 	 * Making Friends with My Arm fire pits
 	 *
@@ -346,7 +356,9 @@ public enum Varbits
 	/**
 	 * Pyramid plunder
 	 */
+	PYRAMID_PLUNDER_ROOM_LOCATION(2365),
 	PYRAMID_PLUNDER_TIMER(2375),
+	PYRAMID_PLUNDER_THIEVING_LEVEL(2376),
 	PYRAMID_PLUNDER_ROOM(2377),
 
 	/**
@@ -559,26 +571,14 @@ public enum Varbits
 	TWISTED_LEAGUE_RELIC_5(10053),
 
 	/**
-	 * Minimap state
-	 * 0 = visible
-	 * 2 = hidden
+	 * Whether the Special Attack orb is disabled due to being in a PvP area
+	 *
+	 * 0 = Enabled (player is not in PvP)
+	 * 1 = Disabled (player in in PvP)
+	 *
+	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
 	 */
-	MINIMAP(6719),
-
-	/**
-	 * 0 = false
-	 * 1 = true
-	 */
-	CAMERA_BOBBING(4814),
-
-	/**
-	 * Viewport overlay
-	 * 0 = Normal visibility, no damage
-	 * 1 = Darkened, 200 opacity, no damage
-	 * 2 = Darkened, 150 opacity, no damage
-	 * 3 = Darkened, 50 opacity, player will take damage
-	 */
-	DUNGEON(278);
+	PVP_SPEC_ORB(8121);
 
 	/**
 	 * The raw varbit ID.

@@ -31,45 +31,60 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.InfoBoxMenuClicked;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @Singleton
-public class InfoBoxOverlay extends Overlay
+public class InfoBoxOverlay extends OverlayPanel
 {
-	private final PanelComponent panelComponent = new PanelComponent();
+	private static final int GAP = 1;
+	private static final int DEFAULT_WRAP_COUNT = 4;
+
 	private final InfoBoxManager infoboxManager;
 	private final TooltipManager tooltipManager;
 	private final Client client;
 	private final RuneLiteConfig config;
+	private final EventBus eventBus;
+
+	private InfoBoxComponent hoveredComponent;
 
 	@Inject
 	private InfoBoxOverlay(
 		InfoBoxManager infoboxManager,
 		TooltipManager tooltipManager,
 		Client client,
-		RuneLiteConfig config)
+		RuneLiteConfig config,
+		EventBus eventBus)
 	{
 		this.tooltipManager = tooltipManager;
 		this.infoboxManager = infoboxManager;
 		this.client = client;
 		this.config = config;
+		this.eventBus = eventBus;
 		setPosition(OverlayPosition.TOP_LEFT);
+		setClearChildren(false);
 
+		panelComponent.setWrap(true);
 		panelComponent.setBackgroundColor(null);
 		panelComponent.setBorder(new Rectangle());
-		panelComponent.setGap(new Point(1, 1));
+		panelComponent.setGap(new Point(GAP, GAP));
 	}
 
 	@Override
@@ -77,17 +92,23 @@ public class InfoBoxOverlay extends Overlay
 	{
 		final List<InfoBox> infoBoxes = infoboxManager.getInfoBoxes();
 
+		final boolean menuOpen = client.isMenuOpen();
+		if (!menuOpen)
+		{
+			hoveredComponent = null;
+		}
+
 		if (infoBoxes.isEmpty())
 		{
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-		panelComponent.setWrapping(config.infoBoxWrap());
+		// Set preferred size to the size of DEFAULT_WRAP_COUNT infoboxes, including the padding - which is applied
+		// to the last infobox prior to wrapping too.
+		panelComponent.setPreferredSize(new Dimension(DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP), DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP)));
 		panelComponent.setOrientation(config.infoBoxVertical()
 			? ComponentOrientation.VERTICAL
 			: ComponentOrientation.HORIZONTAL);
-		panelComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
 
 		for (InfoBox box : infoBoxes)
 		{
@@ -107,34 +128,68 @@ public class InfoBoxOverlay extends Overlay
 			}
 			infoBoxComponent.setImage(box.getScaledImage());
 			infoBoxComponent.setTooltip(box.getTooltip());
+			infoBoxComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
+			infoBoxComponent.setBackgroundColor(config.overlayBackgroundColor());
+			infoBoxComponent.setInfoBox(box);
 			panelComponent.getChildren().add(infoBoxComponent);
 		}
 
-		final Dimension dimension = panelComponent.render(graphics);
+		final Dimension dimension = super.render(graphics);
 
 		// Handle tooltips
 		final Point mouse = new Point(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY());
 
 		for (final LayoutableRenderableEntity child : panelComponent.getChildren())
 		{
-			if (child instanceof InfoBoxComponent)
+			final InfoBoxComponent component = (InfoBoxComponent) child;
+
+			// Create intersection rectangle
+			final Rectangle intersectionRectangle = new Rectangle(component.getBounds());
+			intersectionRectangle.translate(getBounds().x, getBounds().y);
+
+			if (intersectionRectangle.contains(mouse))
 			{
-				final InfoBoxComponent component = (InfoBoxComponent) child;
-
-				if (!Strings.isNullOrEmpty(component.getTooltip()))
+				final String tooltip = component.getTooltip();
+				if (!Strings.isNullOrEmpty(tooltip))
 				{
-					// Create intersection rectangle
-					final Rectangle intersectionRectangle = new Rectangle(component.getBounds());
-					intersectionRectangle.translate(getBounds().x, getBounds().y);
-
-					if (intersectionRectangle.contains(mouse))
-					{
-						tooltipManager.add(new Tooltip(component.getTooltip()));
-					}
+					tooltipManager.add(new Tooltip(tooltip));
 				}
+
+				if (!menuOpen)
+				{
+					hoveredComponent = component;
+				}
+				break;
 			}
 		}
 
+		panelComponent.getChildren().clear();
 		return dimension;
+	}
+
+	@Override
+	public List<OverlayMenuEntry> getMenuEntries()
+	{
+		// we dynamically build the menu options based on which infobox is hovered
+		return hoveredComponent == null ? Collections.emptyList() : hoveredComponent.getInfoBox().getMenuEntries();
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	{
+		if (menuOptionClicked.getMenuAction() != MenuAction.RUNELITE_INFOBOX)
+		{
+			return;
+		}
+
+		InfoBox infoBox = hoveredComponent.getInfoBox();
+		OverlayMenuEntry overlayMenuEntry = infoBox.getMenuEntries().stream()
+			.filter(me -> me.getOption().equals(menuOptionClicked.getMenuOption()))
+			.findAny()
+			.orElse(null);
+		if (overlayMenuEntry != null)
+		{
+			eventBus.post(new InfoBoxMenuClicked(overlayMenuEntry, infoBox));
+		}
 	}
 }

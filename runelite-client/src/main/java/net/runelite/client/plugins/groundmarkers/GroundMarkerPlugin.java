@@ -38,16 +38,15 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -75,10 +74,6 @@ public class GroundMarkerPlugin extends Plugin
 	private static final Gson GSON = new Gson();
 
 	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hotKeyPressed;
-
-	@Getter(AccessLevel.PACKAGE)
 	private final List<ColorTileMarker> points = new ArrayList<>();
 
 	@Inject
@@ -86,9 +81,6 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private GroundMarkerConfig config;
-
-	@Inject
-	private GroundMarkerInputListener inputListener;
 
 	@Inject
 	private ConfigManager configManager;
@@ -196,17 +188,9 @@ public class GroundMarkerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		if (!focusChanged.isFocused())
-		{
-			hotKeyPressed = false;
-		}
-	}
-
-	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
+		final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
 			final Tile selectedSceneTile = client.getSelectedSceneTile();
@@ -254,7 +238,6 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
-		keyManager.registerKeyListener(inputListener);
 		loadPoints();
 	}
 
@@ -263,7 +246,6 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
-		keyManager.unregisterKeyListener(inputListener);
 		points.clear();
 	}
 

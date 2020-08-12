@@ -35,24 +35,30 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.util.RunnableExceptionLogger;
+import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
 public class ClientSessionManager
 {
-	private final SessionClient sessionClient = new SessionClient();
 	private final ScheduledExecutorService executorService;
 	private final Client client;
+	private final SessionClient sessionClient;
 
 	private ScheduledFuture<?> scheduledFuture;
 	private UUID sessionId;
 
 	@Inject
-	ClientSessionManager(ScheduledExecutorService executorService, @Nullable Client client)
+	ClientSessionManager(ScheduledExecutorService executorService,
+		@Nullable Client client,
+		OkHttpClient okHttpClient)
 	{
 		this.executorService = executorService;
 		this.client = client;
+		this.sessionClient = new SessionClient(okHttpClient);
 	}
 
 	public void start()
@@ -70,22 +76,27 @@ public class ClientSessionManager
 		scheduledFuture = executorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::ping), 1, 10, TimeUnit.MINUTES);
 	}
 
-	public void shutdown()
+	@Subscribe
+	private void onClientShutdown(ClientShutdown e)
 	{
-		if (sessionId != null)
+		scheduledFuture.cancel(true);
+
+		e.waitFor(executorService.submit(() ->
 		{
 			try
 			{
-				sessionClient.delete(sessionId);
+				UUID localUuid = sessionId;
+				if (localUuid != null)
+				{
+					sessionClient.delete(localUuid);
+				}
 			}
 			catch (IOException ex)
 			{
 				log.warn(null, ex);
 			}
 			sessionId = null;
-		}
-		
-		scheduledFuture.cancel(true);
+		}));
 	}
 
 	private void ping()
@@ -108,7 +119,8 @@ public class ClientSessionManager
 		boolean loggedIn = false;
 		if (client != null)
 		{
-			loggedIn = client.getGameState() != GameState.LOGIN_SCREEN;
+			GameState gameState = client.getGameState();
+			loggedIn = gameState.getState() >= GameState.LOADING.getState();
 		}
 
 		try

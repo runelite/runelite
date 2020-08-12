@@ -62,7 +62,33 @@ public final class SoundEffectID
 	public final static int ZERO_DAMAGE_SPLAT = 511;
 	public final static int TAKE_DAMAGE_SPLAT = 510;
 	public final static int ATTACK_HIT = 2498;
-	public final static int PRAYER_ACTIVATE_VROOM = 2690;
+
+	public final static int PRAYER_ACTIVATE_THICK_SKIN = 2690;
+	public final static int PRAYER_ACTIVATE_BURST_OF_STRENGTH = 2688;
+	public final static int PRAYER_ACTIVATE_CLARITY_OF_THOUGHT = 2664;
+	public final static int PRAYER_ACTIVATE_SHARP_EYE_RIGOUR = 2685;
+	public final static int PRAYER_ACTIVATE_MYSTIC_WILL_AUGURY = 2670;
+	public final static int PRAYER_ACTIVATE_ROCK_SKIN = 2684;
+	public final static int PRAYER_ACTIVATE_SUPERHUMAN_STRENGTH = 2689;
+	public final static int PRAYER_ACTIVATE_IMPROVED_REFLEXES = 2662;
+	public final static int PRAYER_ACTIVATE_RAPID_RESTORE_PRESERVE = 2679;
+	public final static int PRAYER_ACTIVATE_RAPID_HEAL = 2678;
+	public final static int PRAYER_ACTIVATE_PROTECT_ITEM = 1982;
+	public final static int PRAYER_ACTIVATE_HAWK_EYE = 2666;
+	public final static int PRAYER_ACTIVATE_MYSTIC_LORE = 2668;
+	public final static int PRAYER_ACTIVATE_STEEL_SKIN = 2687;
+	public final static int PRAYER_ACTIVATE_ULTIMATE_STRENGTH = 2691;
+	public final static int PRAYER_ACTIVATE_INCREDIBLE_REFLEXES = 2667;
+	public final static int PRAYER_ACTIVATE_PROTECT_FROM_MAGIC = 2675;
+	public final static int PRAYER_ACTIVATE_PROTECT_FROM_MISSILES = 2677;
+	public final static int PRAYER_ACTIVATE_PROTECT_FROM_MELEE = 2676;
+	public final static int PRAYER_ACTIVATE_EAGLE_EYE = 2665;
+	public final static int PRAYER_ACTIVATE_MYSTIC_MIGHT = 2669;
+	public final static int PRAYER_ACTIVATE_RETRIBUTION = 2682;
+	public final static int PRAYER_ACTIVATE_REDEMPTION = 2680;
+	public final static int PRAYER_ACTIVATE_SMITE = 2686;
+	public final static int PRAYER_ACTIVATE_CHIVALRY = 3826;
+	public final static int PRAYER_ACTIVATE_PIETY = 3825;
 	public final static int PRAYER_DEACTIVE_VWOOP = 2663;
 	public final static int PRAYER_DEPLETE_TWINKLE = 2672;
 

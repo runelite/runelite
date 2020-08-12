@@ -106,7 +106,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	private Runnable onClose = null;
 
 	@Getter
-	private Consumer<String> onDone = null;
+	private Predicate<String> onDone = null;
 
 	@Getter
 	private Consumer<String> onChanged = null;
@@ -235,6 +235,20 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	}
 
 	public ChatboxTextInput onDone(Consumer<String> onDone)
+	{
+		this.onDone = (s) ->
+		{
+			onDone.accept(s);
+			return true;
+		};
+		return this;
+	}
+
+	/**
+	 * Called when the user attempts to close the input by pressing enter
+	 * Return false to cancel the close
+	 */
+	public ChatboxTextInput onDone(Predicate<String> onDone)
 	{
 		this.onDone = onDone;
 		return this;
@@ -595,6 +609,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return;
+		}
+
 		char c = e.getKeyChar();
 		if (charValidator.test(c))
 		{
@@ -614,6 +633,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Override
 	public void keyPressed(KeyEvent ev)
 	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return;
+		}
+
 		int code = ev.getKeyCode();
 		if (ev.isControlDown())
 		{
@@ -753,9 +777,9 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				break;
 			case KeyEvent.VK_ENTER:
 				ev.consume();
-				if (onDone != null)
+				if (onDone != null && !onDone.test(getValue()))
 				{
-					onDone.accept(getValue());
+					return;
 				}
 				chatboxPanelManager.close();
 				return;

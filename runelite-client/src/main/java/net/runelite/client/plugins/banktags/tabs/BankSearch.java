@@ -25,7 +25,8 @@
 
 package net.runelite.client.plugins.banktags.tabs;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
@@ -35,6 +36,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 
+@Singleton
 public class BankSearch
 {
 	private final Client client;
@@ -50,39 +52,41 @@ public class BankSearch
 		this.clientThread = clientThread;
 	}
 
-	public void search(InputType inputType, String search, boolean closeInput)
+	public void layoutBank()
 	{
-		clientThread.invoke(() ->
+		Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (bankContainer == null || bankContainer.isHidden())
 		{
-			Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-			if (bankContainer == null || bankContainer.isHidden())
-			{
-				return;
-			}
+			return;
+		}
 
-			Object[] scriptArgs = bankContainer.getOnInvTransmitListener();
+		Object[] scriptArgs = bankContainer.getOnInvTransmitListener();
+		if (scriptArgs == null)
+		{
+			return;
+		}
 
-			if (scriptArgs == null)
-			{
-				return;
-			}
-
-			// This ensures that any chatbox input (e.g from search) will not remain visible when
-			// selecting/changing tab
-			if (closeInput)
-			{
-				client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0);
-			}
-
-			client.setVar(VarClientInt.INPUT_TYPE, inputType.getType());
-			client.setVar(VarClientStr.INPUT_TEXT, search);
-
-			client.runScript(scriptArgs);
-		});
+		client.runScript(scriptArgs);
 	}
 
 	public void reset(boolean closeChat)
 	{
-		search(InputType.NONE, "", closeChat);
+		clientThread.invoke(() ->
+		{
+			// This ensures that any chatbox input (e.g from search) will not remain visible when
+			// selecting/changing tab
+			if (closeChat)
+			{
+				// this clears the input text and type, and resets the chatbox to allow input
+				client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 1, 1);
+			}
+			else
+			{
+				client.setVar(VarClientInt.INPUT_TYPE, InputType.NONE.getType());
+				client.setVar(VarClientStr.INPUT_TEXT, "");
+			}
+
+			layoutBank();
+		});
 	}
 }

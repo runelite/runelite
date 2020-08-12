@@ -41,7 +41,6 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
-import org.slf4j.Logger;
 
 /**
  * Represents the RuneScape client.
@@ -49,19 +48,17 @@ import org.slf4j.Logger;
 public interface Client extends GameEngine
 {
 	/**
-	 * The client invokes these callbacks to communicate to
+	 * The injected client invokes these callbacks to send events to us
 	 */
 	Callbacks getCallbacks();
 
+	/**
+	 * The injected client invokes these callbacks for scene drawing, which is
+	 * used by the gpu plugin to override the client's normal scene drawing code
+	 */
 	DrawCallbacks getDrawCallbacks();
 
 	void setDrawCallbacks(DrawCallbacks drawCallbacks);
-
-	/**
-	 * Retrieve a global logger for the client.
-	 * This is most useful for mixins which can't have their own.
-	 */
-	Logger getLogger();
 
 	String getBuildID();
 
@@ -139,6 +136,13 @@ public interface Client extends GameEngine
 	 * @param gameState
 	 */
 	void setGameState(GameState gameState);
+
+	/**
+	 * Causes the client to shutdown. It is faster than
+	 * {@link java.applet.Applet#stop()} because it doesn't wait for 4000ms.
+	 * This will call {@link System#exit} when it is done
+	 */
+	void stopNow();
 
 	/**
 	 * Gets the current logged in username.
@@ -397,6 +401,11 @@ public interface Client extends GameEngine
 	IndexDataBase getIndexScripts();
 
 	/**
+	 * Gets the config index.
+	 */
+	IndexDataBase getIndexConfig();
+
+	/**
 	 * Returns the x-axis base coordinate.
 	 * <p>
 	 * This value is the x-axis world coordinate of tile (0, 0) in
@@ -477,6 +486,7 @@ public interface Client extends GameEngine
 	 * @param widget the widget info
 	 * @return the widget
 	 */
+	@Nullable
 	Widget getWidget(WidgetInfo widget);
 
 	/**
@@ -489,6 +499,7 @@ public interface Client extends GameEngine
 	 * @param childId the child widget ID
 	 * @return the widget corresponding to the group and child pair
 	 */
+	@Nullable
 	Widget getWidget(int groupId, int childId);
 
 	/**
@@ -742,6 +753,16 @@ public interface Client extends GameEngine
 	void setVarbit(Varbits varbit, int value);
 
 	/**
+	 * Gets the varbit composition for a given varbit id
+	 *
+	 * @param id
+	 * @return
+	 */
+	@VisibleForDevtools
+	@Nullable
+	VarbitComposition getVarbit(int id);
+
+	/**
 	 * Gets the value of a given variable.
 	 *
 	 * @param varps passed varbits
@@ -861,7 +882,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the map
 	 */
-	IterableHashTable getMessages();
+	IterableHashTable<MessageNode> getMessages();
 
 	/**
 	 * Gets the viewport widget.
@@ -1148,12 +1169,12 @@ public interface Client extends GameEngine
 	boolean isFriended(String name, boolean mustBeLoggedIn);
 
 	/**
-	 * Retrieve the clan member manager
+	 * Retrieve the friends chat manager
 	 *
 	 * @return
 	 */
 	@Nullable
-	ClanMemberManager getClanMemberManager();
+	FriendsChatManager getFriendsChatManager();
 
 	/**
 	 * Retrieve the nameable container containing friends
@@ -1183,6 +1204,16 @@ public interface Client extends GameEngine
 	 * @param enabled new camera pitch relaxer value
 	 */
 	void setCameraPitchRelaxerEnabled(boolean enabled);
+
+	/**
+	 * Sets if the moving the camera horizontally should be backwards
+	 */
+	void setInvertYaw(boolean invertYaw);
+
+	/**
+	 * Sets if the moving the camera vertically should be backwards
+	 */
+	void setInvertPitch(boolean invertPitch);
 
 	/**
 	 * Gets the world map overview.
@@ -1452,11 +1483,11 @@ public interface Client extends GameEngine
 	void setFriendsHidden(boolean state);
 
 	/**
-	 * Sets whether or not clan mates are hidden.
+	 * Sets whether or not friends chat members are hidden.
 	 *
-	 * @param state the new clan mates hidden state
+	 * @param state the new friends chat member hidden state
 	 */
-	void setClanMatesHidden(boolean state);
+	void setFriendsChatMembersHidden(boolean state);
 
 	/**
 	 * Sets whether the local player is hidden.
@@ -1696,7 +1727,19 @@ public interface Client extends GameEngine
 
 	EnumComposition getEnum(int id);
 
-	void draw2010Menu();
+	/**
+	 * Draws a menu in the 2010 interface style.
+	 *
+	 * @param alpha background transparency of the menu
+	 */
+	void draw2010Menu(int alpha);
+
+	/**
+	 * Draws a menu in the OSRS interface style.
+	 *
+	 * @param alpha background transparency of the menu
+	 */
+	void drawOriginalMenu(int alpha);
 
 	void resetHealthBarCaches();
 
@@ -1724,4 +1767,24 @@ public interface Client extends GameEngine
 	 * Sets the starting index in the item id array for GE search
 	 */
 	void setGeSearchResultIndex(int index);
+
+	/**
+	 * Sets the image to be used for the login screen, provided as SpritePixels
+	 * If the image is larger than half the width of fixed mode,
+	 * it won't get mirrored to the other side of the screen
+	 */
+	void setLoginScreen(SpritePixels pixels);
+
+	/**
+	 * Sets whether the flames on the login screen should be rendered
+	 */
+	void setShouldRenderLoginScreenFire(boolean val);
+
+	/**
+	 * Test if a key is pressed
+	 * @param keycode the keycode
+	 * @return
+	 * @see KeyCode
+	 */
+	boolean isKeyPressed(int keycode);
 }

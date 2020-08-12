@@ -33,7 +33,6 @@ import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -47,6 +46,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
 
@@ -104,12 +104,25 @@ public class OverlayManager
 
 	private final ConfigManager configManager;
 	private final EventBus eventBus;
+	private final RuneLiteConfig runeLiteConfig;
 
 	@Inject
-	private OverlayManager(final ConfigManager configManager, final EventBus eventBus)
+	private OverlayManager(final ConfigManager configManager, final EventBus eventBus, final RuneLiteConfig runeLiteConfig)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
+		this.runeLiteConfig = runeLiteConfig;
+	}
+
+	@Subscribe
+	public void onConfigChanged(final ConfigChanged event)
+	{
+		if (!RuneLiteConfig.GROUP_NAME.equals(event.getGroup()) || !"overlayBackgroundColor".equals(event.getKey()))
+		{
+			return;
+		}
+
+		overlays.forEach(this::updateOverlayConfig);
 	}
 
 	@Subscribe
@@ -122,24 +135,25 @@ public class OverlayManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE_OVERLAY)
+		MenuAction menuAction = event.getMenuAction();
+		if (menuAction != MenuAction.RUNELITE_OVERLAY && menuAction != MenuAction.RUNELITE_OVERLAY_CONFIG)
 		{
 			return;
 		}
 
 		event.consume();
 
-		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlays.indexOf(o) == event.getId()).findAny();
-		if (optionalOverlay.isPresent())
+		Overlay overlay = overlays.get(event.getId());
+		if (overlay != null)
 		{
-			Overlay overlay = optionalOverlay.get();
 			List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
-			Optional<OverlayMenuEntry> optionalOverlayMenuEntry = menuEntries.stream()
+			OverlayMenuEntry overlayMenuEntry = menuEntries.stream()
 				.filter(me -> me.getOption().equals(event.getMenuOption()))
-				.findAny();
-			if (optionalOverlayMenuEntry.isPresent())
+				.findAny()
+				.orElse(null);
+			if (overlayMenuEntry != null)
 			{
-				eventBus.post(new OverlayMenuClicked(optionalOverlayMenuEntry.get(), overlay));
+				eventBus.post(new OverlayMenuClicked(overlayMenuEntry, overlay));
 			}
 		}
 	}
@@ -171,12 +185,15 @@ public class OverlayManager
 		// Add is always true
 		overlays.add(overlay);
 		loadOverlay(overlay);
+		updateOverlayConfig(overlay);
+
 		// WidgetItemOverlays have a reference to the overlay manager in order to get the WidgetItems
 		// for each frame.
 		if (overlay instanceof WidgetItemOverlay)
 		{
 			((WidgetItemOverlay) overlay).setOverlayManager(this);
 		}
+
 		rebuildOverlayLayers();
 		return true;
 	}
@@ -263,7 +280,7 @@ public class OverlayManager
 		saveOverlay(overlay);
 	}
 
-	private synchronized void rebuildOverlayLayers()
+	synchronized void rebuildOverlayLayers()
 	{
 		for (OverlayLayer l : OverlayLayer.values())
 		{
@@ -302,6 +319,15 @@ public class OverlayManager
 		overlay.setPreferredSize(size);
 		final OverlayPosition position = loadOverlayPosition(overlay);
 		overlay.setPreferredPosition(position);
+	}
+
+	private void updateOverlayConfig(final Overlay overlay)
+	{
+		if (overlay instanceof OverlayPanel)
+		{
+			// Update preferred color for overlay panels based on configuration
+			((OverlayPanel) overlay).setPreferredColor(runeLiteConfig.overlayBackgroundColor());
+		}
 	}
 
 	private void saveOverlayLocation(final Overlay overlay)

@@ -66,6 +66,7 @@ public class ScreenshotPluginTest
 	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
 	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
+	private static final String BA_HIGH_GAMBLE_REWARD = "Raw shark (x 300)!<br>High level gamble count: <col=7f0000>100</col>";
 
 	@Mock
 	@Bind
@@ -244,5 +245,24 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testQuestParsing()
+	{
+		assertEquals("Quest(The Corsair Curse)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed The Corsair Curse!"));
+		assertEquals("Quest(One Small Favour)", ScreenshotPlugin.parseQuestCompletedWidget("'One Small Favour' completed!"));
+		assertEquals("Quest(Hazeel Cult partial completion)", ScreenshotPlugin.parseQuestCompletedWidget("You have... kind of... completed the Hazeel Cult Quest!"));
+		assertEquals("Quest(Rag and Bone Man II)", ScreenshotPlugin.parseQuestCompletedWidget("You have completely completed Rag and Bone Man!"));
+		assertEquals("Quest(Recipe for Disaster - Culinaromancer)", ScreenshotPlugin.parseQuestCompletedWidget("Congratulations! You have defeated the Culinaromancer!"));
+		assertEquals("Quest(Recipe for Disaster - Another Cook's Quest)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed Another Cook's Quest!"));
+		assertEquals("Quest(Doric's Quest)", ScreenshotPlugin.parseQuestCompletedWidget("You have completed Doric's Quest!"));
+		assertEquals("Quest(quest not found)", ScreenshotPlugin.parseQuestCompletedWidget("Sins of the Father forgiven!"));
+	}
+
+	@Test
+	public void testBAHighGambleRewardParsing()
+	{
+		assertEquals("High Gamble(100)", ScreenshotPlugin.parseBAHighGambleWidget(BA_HIGH_GAMBLE_REWARD));
 	}
 }

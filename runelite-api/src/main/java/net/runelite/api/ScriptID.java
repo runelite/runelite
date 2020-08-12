@@ -110,17 +110,6 @@ public final class ScriptID
 	public static final int CHAT_PROMPT_INIT = 223;
 
 	/**
-	 * Displays the game messages when clicking on an item inside the Items Kept on Death interface
-	 * <ul>
-	 * <li> int (boolean) Item kept on death </li>
-	 * <li> int Item Quantity </li>
-	 * <li> String Item Name </li>
-	 * </ul>
-	 */
-	@ScriptArguments(integer = 2, string = 1)
-	public static final int DEATH_KEEP_ITEM_EXAMINE = 1603;
-
-	/**
 	 * Checks the state of the given stash unit.
 	 * <ul>
 	 * <li>int (loc) The stash unit object id</li>
@@ -162,8 +151,8 @@ public final class ScriptID
 	 *
 	 * Updates the VarClientInts (73, 74) to this same value
 	 * <ul>
-	 * <li> int  Reset zoom position </li>
-	 * <li> int  Reset zoom position </li>
+	 * <li> int  Reset zoom position for fixed viewport mode</li>
+	 * <li> int  Reset zoom position for resizable viewport mode</li>
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 2)
@@ -196,25 +185,19 @@ public final class ScriptID
 	public static final int XPDROP_DISABLED = 2091;
 
 	/**
-	 * Attempts to kick the specified player from the Clan Chat
+	 * Attempts to kick the specified player from the friends chat
 	 * <ul>
 	 * <li>String Players in-game name</li>
 	 * </ul>
 	 */
 	@ScriptArguments(string = 1)
-	public static final int CLAN_SEND_KICK = 215;
+	public static final int FRIENDS_CHAT_SEND_KICK = 215;
 
 	/**
-	 * Builds the items kept on death widget
-	 */
-	@ScriptArguments(integer = 4, string = 2)
-	public static final int DEATH_KEEP_BUILD = 1601;
-
-	/**
-	 * Builds the widget that holds all of the players inside a clan chat
+	 * Builds the widget that holds all of the players inside a friends chat
 	 */
 	@ScriptArguments(integer = 15)
-	public static final int CLAN_CHAT_CHANNEL_BUILD = 1658;
+	public static final int FRIENDS_CHAT_CHANNEL_REBUILD = 1658;
 
 	/**
 	 * Builds the widget for making an offer in Grand Exchange
@@ -223,16 +206,16 @@ public final class ScriptID
 	public static final int GE_OFFERS_SETUP_BUILD = 779;
 
 	/**
+	 * Builds the grand exchange item search widget
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int GE_ITEM_SEARCH = 752;
+
+	/**
 	 * Builds the quest list inside the quest tab that shows each quest's progress
 	 */
 	@ScriptArguments(integer = 3)
 	public static final int QUESTLIST_PROGRESS_LIST_SHOW = 1354;
-
-	/**
-	 * Procedure called when the toplevel interface is resized
-	 */
-	@ScriptArguments(integer = 2)
-	public static final int TOPLEVEL_RESIZE = 909;
 
 	/**
 	 * Called when the friends list is updated
@@ -265,4 +248,55 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 7)
 	public static final int IGNORE_UPDATE = 630;
+
+	/**
+	 * Called in an onTimer, determines whether to layout the bank during a search
+	 * <ul>
+	 * <li> int (WidgetID) * 16, various widgets making up the bank interface </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 17)
+	public static final int BANKMAIN_SEARCH_REFRESH = 283;
+
+	/**
+	 * Called to update the PVP widget (wilderness level/protection)
+	 */
+	@ScriptArguments(integer = 1)
+	public static final int PVP_WIDGET_BUILDER = 388;
+
+	/**
+	 * Called to build the combat interface
+	 */
+	@ScriptArguments()
+	public static final int COMBAT_INTERFACE_SETUP = 420;
+
+	/**
+	 * Called to build the toplevel interface
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int TOPLEVEL_REDRAW = 907;
+
+	/**
+	 * Called to set position of an xpdrop text and sprite(s)
+	 * <ul>
+	 * <li> XP drop parent component </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 4, string = 1)
+	public static final int XPDROPS_SETDROPSIZE = 996;
+
+	/**
+	 * Main layout script for the bank
+	 * <ul>
+	 * <li>int (WidgetID) * 17, various widgets making up the bank interface</li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 17)
+	public static final int BANKMAIN_BUILD = 277;
+
+	@ScriptArguments(integer = 19)
+	public static final int BANKMAIN_FINISHBUILDING = 505;
+
+	@ScriptArguments()
+	public static final int BANKMAIN_SEARCHING = 514;
 }

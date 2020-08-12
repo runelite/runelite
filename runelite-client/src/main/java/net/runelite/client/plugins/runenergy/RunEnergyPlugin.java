@@ -26,7 +26,10 @@ package net.runelite.client.plugins.runenergy;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
@@ -59,31 +62,36 @@ public class RunEnergyPlugin extends Plugin
 	private static final ImmutableSet<Integer> ALL_GRACEFUL_HOODS = ImmutableSet.of(
 		GRACEFUL_HOOD_11851, GRACEFUL_HOOD_13579, GRACEFUL_HOOD_13580, GRACEFUL_HOOD_13591, GRACEFUL_HOOD_13592,
 		GRACEFUL_HOOD_13603, GRACEFUL_HOOD_13604, GRACEFUL_HOOD_13615, GRACEFUL_HOOD_13616, GRACEFUL_HOOD_13627,
-		GRACEFUL_HOOD_13628, GRACEFUL_HOOD_13667, GRACEFUL_HOOD_13668, GRACEFUL_HOOD_21061, GRACEFUL_HOOD_21063
+		GRACEFUL_HOOD_13628, GRACEFUL_HOOD_13667, GRACEFUL_HOOD_13668, GRACEFUL_HOOD_21061, GRACEFUL_HOOD_21063,
+		GRACEFUL_HOOD_24743, GRACEFUL_HOOD_24745
 	);
 
 	private static final ImmutableSet<Integer> ALL_GRACEFUL_TOPS = ImmutableSet.of(
 		GRACEFUL_TOP_11855, GRACEFUL_TOP_13583, GRACEFUL_TOP_13584, GRACEFUL_TOP_13595, GRACEFUL_TOP_13596,
 		GRACEFUL_TOP_13607, GRACEFUL_TOP_13608, GRACEFUL_TOP_13619, GRACEFUL_TOP_13620, GRACEFUL_TOP_13631,
-		GRACEFUL_TOP_13632, GRACEFUL_TOP_13671, GRACEFUL_TOP_13672, GRACEFUL_TOP_21067, GRACEFUL_TOP_21069
+		GRACEFUL_TOP_13632, GRACEFUL_TOP_13671, GRACEFUL_TOP_13672, GRACEFUL_TOP_21067, GRACEFUL_TOP_21069,
+		GRACEFUL_TOP_24749, GRACEFUL_TOP_24751
 	);
 
 	private static final ImmutableSet<Integer> ALL_GRACEFUL_LEGS = ImmutableSet.of(
 		GRACEFUL_LEGS_11857, GRACEFUL_LEGS_13585, GRACEFUL_LEGS_13586, GRACEFUL_LEGS_13597, GRACEFUL_LEGS_13598,
 		GRACEFUL_LEGS_13609, GRACEFUL_LEGS_13610, GRACEFUL_LEGS_13621, GRACEFUL_LEGS_13622, GRACEFUL_LEGS_13633,
-		GRACEFUL_LEGS_13634, GRACEFUL_LEGS_13673, GRACEFUL_LEGS_13674, GRACEFUL_LEGS_21070, GRACEFUL_LEGS_21072
+		GRACEFUL_LEGS_13634, GRACEFUL_LEGS_13673, GRACEFUL_LEGS_13674, GRACEFUL_LEGS_21070, GRACEFUL_LEGS_21072,
+		GRACEFUL_LEGS_24752, GRACEFUL_LEGS_24754
 	);
 
 	private static final ImmutableSet<Integer> ALL_GRACEFUL_GLOVES = ImmutableSet.of(
 		GRACEFUL_GLOVES_11859, GRACEFUL_GLOVES_13587, GRACEFUL_GLOVES_13588, GRACEFUL_GLOVES_13599, GRACEFUL_GLOVES_13600,
 		GRACEFUL_GLOVES_13611, GRACEFUL_GLOVES_13612, GRACEFUL_GLOVES_13623, GRACEFUL_GLOVES_13624, GRACEFUL_GLOVES_13635,
-		GRACEFUL_GLOVES_13636, GRACEFUL_GLOVES_13675, GRACEFUL_GLOVES_13676, GRACEFUL_GLOVES_21073, GRACEFUL_GLOVES_21075
+		GRACEFUL_GLOVES_13636, GRACEFUL_GLOVES_13675, GRACEFUL_GLOVES_13676, GRACEFUL_GLOVES_21073, GRACEFUL_GLOVES_21075,
+		GRACEFUL_GLOVES_24755, GRACEFUL_GLOVES_24757
 	);
 
 	private static final ImmutableSet<Integer> ALL_GRACEFUL_BOOTS = ImmutableSet.of(
 		GRACEFUL_BOOTS_11861, GRACEFUL_BOOTS_13589, GRACEFUL_BOOTS_13590, GRACEFUL_BOOTS_13601, GRACEFUL_BOOTS_13602,
 		GRACEFUL_BOOTS_13613, GRACEFUL_BOOTS_13614, GRACEFUL_BOOTS_13625, GRACEFUL_BOOTS_13626, GRACEFUL_BOOTS_13637,
-		GRACEFUL_BOOTS_13638, GRACEFUL_BOOTS_13677, GRACEFUL_BOOTS_13678, GRACEFUL_BOOTS_21076, GRACEFUL_BOOTS_21078
+		GRACEFUL_BOOTS_13638, GRACEFUL_BOOTS_13677, GRACEFUL_BOOTS_13678, GRACEFUL_BOOTS_21076, GRACEFUL_BOOTS_21078,
+		GRACEFUL_BOOTS_24758, GRACEFUL_BOOTS_24760
 	);
 
 	// Agility skill capes and the non-cosmetic Max capes also count for the Graceful set effect
@@ -91,8 +99,29 @@ public class RunEnergyPlugin extends Plugin
 		GRACEFUL_CAPE_11853, GRACEFUL_CAPE_13581, GRACEFUL_CAPE_13582, GRACEFUL_CAPE_13593, GRACEFUL_CAPE_13594,
 		GRACEFUL_CAPE_13605, GRACEFUL_CAPE_13606, GRACEFUL_CAPE_13617, GRACEFUL_CAPE_13618, GRACEFUL_CAPE_13629,
 		GRACEFUL_CAPE_13630, GRACEFUL_CAPE_13669, GRACEFUL_CAPE_13670, GRACEFUL_CAPE_21064, GRACEFUL_CAPE_21066,
-		AGILITY_CAPE, AGILITY_CAPET, MAX_CAPE
+		GRACEFUL_CAPE_24746, GRACEFUL_CAPE_24748, AGILITY_CAPE, AGILITY_CAPET, MAX_CAPE
 	);
+
+	@RequiredArgsConstructor
+	@Getter
+	private enum GracefulEquipmentSlot
+	{
+		HEAD(EquipmentInventorySlot.HEAD.getSlotIdx(), ALL_GRACEFUL_HOODS, 3),
+		BODY(EquipmentInventorySlot.BODY.getSlotIdx(), ALL_GRACEFUL_TOPS, 4),
+		LEGS(EquipmentInventorySlot.LEGS.getSlotIdx(), ALL_GRACEFUL_LEGS, 4),
+		GLOVES(EquipmentInventorySlot.GLOVES.getSlotIdx(), ALL_GRACEFUL_GLOVES, 3),
+		BOOTS(EquipmentInventorySlot.BOOTS.getSlotIdx(), ALL_GRACEFUL_BOOTS, 3),
+		CAPE(EquipmentInventorySlot.CAPE.getSlotIdx(), ALL_GRACEFUL_CAPES, 3);
+
+		private final int index;
+		private final ImmutableSet<Integer> items;
+		private final int boost;
+
+		private static final int TOTAL_BOOSTS = Arrays.stream(values()).mapToInt(GracefulEquipmentSlot::getBoost).sum();
+	}
+
+	// Full set grants an extra 10% boost to recovery rate
+	private static final int GRACEFUL_FULL_SET_BOOST_BONUS = 10;
 
 	@Inject
 	private Client client;
@@ -199,30 +228,40 @@ public class RunEnergyPlugin extends Plugin
 		}
 	}
 
-	private boolean isLocalPlayerWearingFullGraceful()
+	private int getGracefulRecoveryBoost()
 	{
 		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 
 		if (equipment == null)
 		{
-			return false;
+			return 0;
 		}
 
 		final Item[] items = equipment.getItems();
 
-		// Check that the local player is wearing enough items to be using full Graceful
-		// (the Graceful boots will have the highest slot index in the worn set).
-		if (items == null || items.length <= EquipmentInventorySlot.BOOTS.getSlotIdx())
+		int boost = 0;
+
+		for (final GracefulEquipmentSlot slot : GracefulEquipmentSlot.values())
 		{
-			return false;
+			if (items.length <= slot.getIndex())
+			{
+				continue;
+			}
+
+			final Item wornItem = items[slot.getIndex()];
+
+			if (wornItem != null && slot.getItems().contains(wornItem.getId()))
+			{
+				boost += slot.getBoost();
+			}
 		}
 
-		return (ALL_GRACEFUL_HOODS.contains(items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId()) &&
-			ALL_GRACEFUL_TOPS.contains(items[EquipmentInventorySlot.BODY.getSlotIdx()].getId()) &&
-			ALL_GRACEFUL_LEGS.contains(items[EquipmentInventorySlot.LEGS.getSlotIdx()].getId()) &&
-			ALL_GRACEFUL_GLOVES.contains(items[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId()) &&
-			ALL_GRACEFUL_BOOTS.contains(items[EquipmentInventorySlot.BOOTS.getSlotIdx()].getId()) &&
-			ALL_GRACEFUL_CAPES.contains(items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId()));
+		if (boost == GracefulEquipmentSlot.TOTAL_BOOSTS)
+		{
+			boost += GRACEFUL_FULL_SET_BOOST_BONUS;
+		}
+
+		return boost;
 	}
 
 	int getEstimatedRecoverTimeRemaining()
@@ -234,11 +273,7 @@ public class RunEnergyPlugin extends Plugin
 
 		// Calculate the amount of energy recovered every second
 		double recoverRate = (48 + client.getBoostedSkillLevel(Skill.AGILITY)) / 360.0;
-
-		if (isLocalPlayerWearingFullGraceful())
-		{
-			recoverRate *= 1.3; // 30% recover rate increase from Graceful set effect
-		}
+		recoverRate *= 1.0 + getGracefulRecoveryBoost() / 100.0;
 
 		// Calculate the number of seconds left
 		final double secondsLeft = (100 - client.getEnergy()) / recoverRate;

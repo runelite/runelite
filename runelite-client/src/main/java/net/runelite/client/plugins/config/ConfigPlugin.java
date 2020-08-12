@@ -115,14 +115,13 @@ public class ConfigPlugin extends Plugin
 			}
 
 			// Expand config panel for plugin
-			PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
 			SwingUtilities.invokeLater(() ->
 			{
 				if (!navButton.isSelected())
 				{
 					navButton.getOnSelect().run();
 				}
-				pluginListPanel.openConfigurationPanel(descriptor.name());
+				pluginListPanel.openConfigurationPanel(plugin.getName());
 			});
 		}
 	}

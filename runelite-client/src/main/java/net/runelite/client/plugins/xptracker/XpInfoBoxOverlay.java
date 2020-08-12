@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
+ * Copyright (c) 2020, Anthony <https://github.com/while-loop>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,30 +34,27 @@ import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Experience;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.SkillColor;
-import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.SplitComponent;
-import net.runelite.client.util.QuantityFormatter;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
-class XpInfoBoxOverlay extends Overlay
+class XpInfoBoxOverlay extends OverlayPanel
 {
-	private static final int PANEL_PREFERRED_WIDTH = 150;
 	private static final int BORDER_SIZE = 2;
 	private static final int XP_AND_PROGRESS_BAR_GAP = 2;
 	private static final int XP_AND_ICON_GAP = 4;
 	private static final Rectangle XP_AND_ICON_COMPONENT_BORDER = new Rectangle(2, 1, 4, 0);
 
-	private final PanelComponent panel = new PanelComponent();
 	private final PanelComponent iconXpSplitPanel = new PanelComponent();
 	private final XpTrackerPlugin plugin;
 	private final XpTrackerConfig config;
@@ -76,19 +74,16 @@ class XpInfoBoxOverlay extends Overlay
 		this.config = config;
 		this.skill = skill;
 		this.icon = icon;
-		panel.setBorder(new Rectangle(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE));
-		panel.setGap(new Point(0, XP_AND_PROGRESS_BAR_GAP));
-		panel.setPreferredSize(new Dimension(PANEL_PREFERRED_WIDTH, 0));
+		panelComponent.setBorder(new Rectangle(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE));
+		panelComponent.setGap(new Point(0, XP_AND_PROGRESS_BAR_GAP));
 		iconXpSplitPanel.setBorder(XP_AND_ICON_COMPONENT_BORDER);
 		iconXpSplitPanel.setBackgroundColor(null);
-		iconXpSplitPanel.setPreferredSize(new Dimension(PANEL_PREFERRED_WIDTH, 0));
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "XP Tracker overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		panel.getChildren().clear();
 		iconXpSplitPanel.getChildren().clear();
 
 		//Setting the font to rs small font so that the overlay isn't huge
@@ -96,54 +91,20 @@ class XpInfoBoxOverlay extends Overlay
 
 		final XpSnapshotSingle snapshot = plugin.getSkillSnapshot(skill);
 
-		final String leftStr;
-		final int rightNum;
-
-		switch (config.onScreenDisplayMode())
-		{
-			case ACTIONS_DONE:
-				leftStr = snapshot.getActionType().getLabel() + " Done";
-				rightNum = snapshot.getActionsInSession();
-				break;
-			case ACTIONS_LEFT:
-				leftStr = snapshot.getActionType().getLabel() + " Left";
-				rightNum = snapshot.getActionsRemainingToGoal();
-				break;
-			case XP_LEFT:
-				leftStr = "XP Left";
-				rightNum = snapshot.getXpRemainingToGoal();
-				break;
-			case XP_GAINED:
-			default:
-				leftStr = "XP Gained";
-				rightNum = snapshot.getXpGainedInSession();
-				break;
-		}
+		final String leftStr = config.onScreenDisplayMode().getActionKey(snapshot);
+		final String rightNum = config.onScreenDisplayMode().getValueFunc().apply(snapshot);
 
 		final LineComponent xpLine = LineComponent.builder()
 			.left(leftStr + ":")
-			.right(QuantityFormatter.quantityToRSDecimalStack(rightNum, true))
+			.right(rightNum)
 			.build();
 
-		final String bottemLeftStr;
-		final int bottomRightNum;
-
-		switch (config.onScreenDisplayModeBottom())
-		{
-			case ACTIONS_HOUR:
-				bottemLeftStr = snapshot.getActionType().getLabel() + "/Hour";
-				bottomRightNum = snapshot.getActionsPerHour();
-				break;
-			case XP_HOUR:
-			default:
-				bottemLeftStr = "XP/Hour";
-				bottomRightNum = snapshot.getXpPerHour();
-				break;
-		}
+		final String bottomLeftStr = config.onScreenDisplayModeBottom().getActionKey(snapshot);
+		final String bottomRightNum = config.onScreenDisplayModeBottom().getValueFunc().apply(snapshot);
 
 		final LineComponent xpLineBottom = LineComponent.builder()
-				.left(bottemLeftStr + ":")
-				.right(QuantityFormatter.quantityToRSDecimalStack(bottomRightNum, true))
+				.left(bottomLeftStr + ":")
+				.right(bottomRightNum)
 				.build();
 
 		final SplitComponent xpSplit = SplitComponent.builder()
@@ -174,10 +135,10 @@ class XpInfoBoxOverlay extends Overlay
 
 		progressBarComponent.setValue(snapshot.getSkillProgressToGoal());
 
-		panel.getChildren().add(iconXpSplitPanel);
-		panel.getChildren().add(progressBarComponent);
+		panelComponent.getChildren().add(iconXpSplitPanel);
+		panelComponent.getChildren().add(progressBarComponent);
 
-		return panel.render(graphics);
+		return super.render(graphics);
 	}
 
 	@Override

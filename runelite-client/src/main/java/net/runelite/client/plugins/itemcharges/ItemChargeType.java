@@ -42,4 +42,5 @@ enum ItemChargeType
 	SACK,
 	RING_OF_FORGING,
 	GUTHIX_REST,
+	POTION,
 }

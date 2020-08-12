@@ -58,7 +58,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 		new FaloTheBardClue("A molten beast with fiery breath, you acquire these with its death.", item(LAVA_DRAGON_BONES)),
 		new FaloTheBardClue("A shiny helmet of flight, to obtain this with melee, struggle you might.", item(ARMADYL_HELMET)),
 		// The wiki doesn't specify whether the trimmed dragon defender will work so I've assumed that it doesn't
-		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", item(DRAGON_DEFENDER)),
+		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", any("Dragon or Avernic Defender", item(DRAGON_DEFENDER), item(AVERNIC_DEFENDER))),
 		new FaloTheBardClue("A token used to kill mythical beasts, in hopes of a blade or just for an xp feast.", item(WARRIOR_GUILD_TOKEN)),
 		new FaloTheBardClue("Green is my favourite, mature ale I do love, this takes your herblore above.", item(GREENMANS_ALEM)),
 		new FaloTheBardClue("It can hold down a boat or crush a goat, this object, you see, is quite heavy.", item(BARRELCHEST_ANCHOR)),
@@ -69,7 +69,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 		new FaloTheBardClue("These gloves of white won't help you fight, but aid in cooking, they just might.", item(COOKING_GAUNTLETS)),
 		new FaloTheBardClue("They come from some time ago, from a land unto the east. Fossilised they have become, this small and gentle beast.", item(NUMULITE)),
 		new FaloTheBardClue("To slay a dragon you must first do, before this chest piece can be put on you.", item(RUNE_PLATEBODY)),
-		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis flail", range(ROD_OF_IVANDIS_10, ROD_OF_IVANDIS_1), item(IVANDIS_FLAIL)))
+		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis/Blisterwood flail", range(ROD_OF_IVANDIS_10, ROD_OF_IVANDIS_1), item(IVANDIS_FLAIL), item(BLISTERWOOD_FLAIL)))
 	);
 
 	private static final WorldPoint LOCATION = new WorldPoint(2689, 3550, 0);

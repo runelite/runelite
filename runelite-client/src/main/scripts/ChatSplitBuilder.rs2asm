@@ -62,7 +62,7 @@ LABEL49:
    iconst                 73
    iconst                 73
    iload                  6
-   iconst                 10551327
+   iconst                 10551328
    enum                  
    if_getheight          
    add                   

@@ -91,10 +91,10 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "ccDisplay",
-		name = "CC and World in scout overlay",
-		description = "Display current Clan Chat and World in scouting overlay"
+		name = "FC and World in scout overlay",
+		description = "Display current Friends Chat and World in scouting overlay"
 	)
-	default boolean ccDisplay()
+	default boolean fcDisplay()
 	{
 		return false;
 	}
@@ -178,17 +178,6 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 13,
-		keyName = "showLootValue",
-		name = "Show Loot Value",
-		description = "Shows the value of your loot at the end of a raid"
-	)
-	default boolean showLootValue()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 14,
 		keyName = "screenshotHotkey",
 		name = "Scouter screenshot hotkey",
 		description = "Hotkey used to screenshot the scouting overlay"
@@ -199,7 +188,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 14,
 		keyName = "uploadScreenshot",
 		name = "Upload scouting screenshot",
 		description = "Uploads the scouting screenshot to Imgur or the clipboard"

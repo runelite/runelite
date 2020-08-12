@@ -31,7 +31,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -49,8 +48,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
-import net.runelite.api.ClanMember;
-import net.runelite.api.ClanMemberManager;
+import net.runelite.api.FriendsChatMember;
+import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
 import net.runelite.api.GameState;
@@ -95,13 +94,13 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDescriptor(
 	name = "World Hopper",
 	description = "Allows you to quickly hop worlds",
-	tags = {"ping"}
+	tags = {"ping", "switcher"}
 )
 @Slf4j
 public class WorldHopperPlugin extends Plugin
 {
 	private static final int REFRESH_THROTTLE = 60_000; // ms
-	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
+	private static final int MAX_PLAYER_COUNT = 1950;
 
 	private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
 
@@ -299,7 +298,6 @@ public class WorldHopperPlugin extends Plugin
 	private void clearFavoriteConfig(int world)
 	{
 		configManager.unsetConfiguration(WorldHopperConfig.GROUP, "favorite_" + world);
-		panel.resetAllFavoriteMenus();
 	}
 
 	boolean isFavorite(World world)
@@ -358,7 +356,7 @@ public class WorldHopperPlugin extends Plugin
 		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 		String option = event.getOption();
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId())
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId())
 		{
 			boolean after;
 
@@ -561,6 +559,12 @@ public class WorldHopperPlugin extends Plugin
 
 			world = worlds.get(worldIdx);
 
+			// Check world region if filter is enabled
+			if (config.quickHopRegionFilter() != RegionFilterMode.NONE && world.getRegion() != config.quickHopRegionFilter().getRegion())
+			{
+				continue;
+			}
+
 			EnumSet<WorldType> types = world.getTypes().clone();
 
 			types.remove(WorldType.BOUNTY);
@@ -582,6 +586,12 @@ public class WorldHopperPlugin extends Plugin
 				{
 					log.warn("Failed to parse total level requirement for target world", ex);
 				}
+			}
+
+			// Avoid switching to near-max population worlds, as it will refuse to allow the hop if the world is full
+			if (world.getPlayers() >= MAX_PLAYER_COUNT)
+			{
+				continue;
 			}
 
 			// Break out if we've found a good world to hop to
@@ -720,15 +730,15 @@ public class WorldHopperPlugin extends Plugin
 	{
 		String cleanName = Text.removeTags(name);
 
-		// Search clan members first, because if a friend is in the clan chat but their private
-		// chat is 'off', then the hop-to option will not get shown in the menu (issue #5679).
-		ClanMemberManager clanMemberManager = client.getClanMemberManager();
-		if (clanMemberManager != null)
+		// Search friends chat members first, because we can always get their world;
+		// friends worlds may be hidden if they have private off. (#5679)
+		FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+		if (friendsChatManager != null)
 		{
-			ClanMember clanMember = clanMemberManager.findByName(cleanName);
-			if (clanMember != null)
+			FriendsChatMember member = friendsChatManager.findByName(cleanName);
+			if (member != null)
 			{
-				return clanMember;
+				return member;
 			}
 		}
 

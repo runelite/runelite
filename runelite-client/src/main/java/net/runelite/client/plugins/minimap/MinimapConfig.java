@@ -84,10 +84,10 @@ public interface MinimapConfig extends Config
 
 	@ConfigItem(
 		keyName = "clan",
-		name = "Clan color",
-		description = "Set the minimap color your clan is drawn in"
+		name = "Friends Chat color",
+		description = "Set the minimap color your friends chat members are drawn in"
 	)
-	default Color clanColor() //mapdot 5
+	default Color friendsChatColor() //mapdot 5
 	{
 		return new Color(170, 0, 190);
 	}
