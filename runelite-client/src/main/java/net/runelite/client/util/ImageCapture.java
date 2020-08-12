@@ -105,6 +105,10 @@ public class ImageCapture
 			final EnumSet<WorldType> worldTypes = client.getWorldType();
 
 			String playerDir = client.getLocalPlayer().getName();
+			if (playerDir.startsWith("#"))
+			{
+				playerDir = "Username not set";
+			}
 			if (worldTypes.contains(WorldType.DEADMAN))
 			{
 				playerDir += "-Deadman";
