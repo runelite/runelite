@@ -105,6 +105,7 @@ public class SlayerPluginTest
 	private static final String TASK_COMPLETE_NO_POINTS = "<col=ef1020>You've completed 3 tasks; return to a Slayer master.</col>";
 	private static final String TASK_POINTS = "You've completed 9 tasks and received 0 points, giving you a total of 18,000; return to a Slayer master.";
 	private static final String TASK_LARGE_STREAK = "You've completed 2,465 tasks and received 15 points, giving you a total of 17,566,000; return to a Slayer master.";
+	private static final String TASK_COMPETE_TURAEL = "You've completed 104 tasks. You'll be eligible to earn reward points if you complete tasks from a more advanced Slayer Master.";
 
 	private static final String TASK_COMPLETE = "You need something new to hunt.";
 	private static final String TASK_CANCELED = "Your task has been cancelled.";
@@ -483,6 +484,17 @@ public class SlayerPluginTest
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
 		verify(slayerConfig).points(17_566_000);
+	}
+
+	@Test
+	public void testTaskCompleteTurael()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_COMPETE_TURAEL, null, 0);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		verify(slayerConfig).streak(104);
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
 	}
 
 	@Test
