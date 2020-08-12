@@ -462,7 +462,7 @@ public class SlayerPlugin extends Plugin
 			config.slaughter(slaughterChargeCount);
 		}
 
-		if (chatMsg.endsWith("; return to a Slayer master."))
+		if (chatMsg.startsWith("You've completed") && (chatMsg.contains("Slayer master") || chatMsg.contains("Slayer Master")))
 		{
 			Matcher mComplete = CHAT_COMPLETE_MESSAGE.matcher(chatMsg);
 
