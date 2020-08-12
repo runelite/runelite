@@ -83,7 +83,7 @@ class FarmingContractInfoBox extends InfoBox
 				break;
 			case IN_PROGRESS:
 				contractDescription = "Ready " + TabContentPanel.getFormattedEstimate(manager.getCompletionTime() - Instant.now().getEpochSecond(),
-					config.estimateRelative());
+					config.timeFormatMode());
 				contractColor = Color.GRAY;
 				break;
 			case EMPTY:

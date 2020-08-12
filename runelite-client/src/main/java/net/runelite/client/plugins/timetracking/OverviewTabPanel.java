@@ -146,7 +146,7 @@ class OverviewTabPanel extends TabContentPanel
 				}
 				else
 				{
-					panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative()), Color.GRAY);
+					panel.updateStatus("Ready " + getFormattedEstimate(duration, config.timeFormatMode()), Color.GRAY);
 				}
 				break;
 			}

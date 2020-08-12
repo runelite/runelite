@@ -39,14 +39,14 @@ public interface TimeTrackingConfig extends Config
 	String STOPWATCHES = "stopwatches";
 
 	@ConfigItem(
-		keyName = "estimateRelative",
-		name = "Show relative time",
-		description = "Show amount of time remaining instead of completion time",
+		keyName = "timeFormatMode",
+		name = "Time format",
+		description = "What format to display times in",
 		position = 1
 	)
-	default boolean estimateRelative()
+	default TimeFormatMode timeFormatMode()
 	{
-		return false;
+		return TimeFormatMode.ABSOLUTE_24H;
 	}
 
 	@ConfigItem(
