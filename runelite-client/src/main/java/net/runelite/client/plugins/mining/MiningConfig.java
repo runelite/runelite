@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2019, Jan-Willem <jan-willem@datm.nl>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,61 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.woodcutting;
+package net.runelite.client.plugins.mining;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
 
-@ConfigGroup("woodcutting")
-public interface WoodcuttingConfig extends Config
+@ConfigGroup("mining")
+public interface MiningConfig extends Config
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats",
-		description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
-	)
-	@Units(Units.MINUTES)
-	default int statTimeout()
-	{
-		return 5;
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "showNestNotification",
-		name = "Bird nest notification",
-		description = "Configures whether to notify you of a bird nest spawn"
-	)
-	default boolean showNestNotification()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "showWoodcuttingStats",
-		name = "Show session stats",
-		description = "Configures whether to display woodcutting session stats"
-	)
-	default boolean showWoodcuttingStats()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "showRedwoods",
-		name = "Show Redwood trees",
-		description = "Configures whether to show a indicator for redwood trees"
-	)
-	default boolean showRedwoodTrees()
-	{
-		return true;
-	}
-
 	@ConfigItem(
 		position = 5,
 		keyName = "showRespawnTimers",
@@ -89,10 +44,10 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "RespawnTimerSize",
-			name = "Size of Respawn timers",
-			description = "Change the size of the Respawn timers",
-			position = 10
+		keyName = "RespawnTimerSize",
+		name = "Size of Respawn timers",
+		description = "Change the size of the Respawn timers",
+		position = 10
 	)
 	@Units(Units.PIXELS)
 	default int RespawnTimerSize()

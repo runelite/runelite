@@ -122,6 +122,7 @@ class WoodcuttingTreesOverlay extends Overlay
 			ProgressPieComponent ppc = new ProgressPieComponent();
 			ppc.setBorderColor(Color.ORANGE);
 			ppc.setFill(Color.YELLOW);
+			ppc.setDiameter(config.RespawnTimerSize());
 			ppc.setPosition(point);
 			ppc.setProgress(percent);
 			ppc.render(graphics);

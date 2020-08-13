@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,7 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -73,9 +75,19 @@ public class MiningPlugin extends Plugin
 	@Inject
 	private MiningOverlay overlay;
 
+	@Inject
+	private MiningConfig config;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
+
+	@Provides
+	MiningConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(MiningConfig.class);
+	}
+
 
 	@Override
 	protected void startUp()
