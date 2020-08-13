@@ -199,6 +199,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "jatizso", config::swapTravel);
 		swap("talk-to", "neitiznot", config::swapTravel);
 		swap("talk-to", "rellekka", config::swapTravel);
+		swap("talk-to", "ungael", config::swapTravel);
+		swap("talk-to", "pirate's cove", config::swapTravel);
+		swap("talk-to", "waterbirth island", config::swapTravel);
+		swap("talk-to", "miscellania", config::swapTravel);
 		swap("talk-to", "follow", config::swapTravel);
 		swap("talk-to", "transport", config::swapTravel);
 		swap("talk-to", "pay", config::swapPay);
