@@ -39,7 +39,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
-class MiningOverlay extends Overlay
+class MiningRocksOverlay extends Overlay
 {
 	// Range of Motherlode vein respawn time - not 100% confirmed but based on observation
 	static final int ORE_VEIN_MAX_RESPAWN_TIME = 277; // Game ticks
@@ -61,7 +61,7 @@ class MiningOverlay extends Overlay
 	private final MiningPlugin plugin;
 
 	@Inject
-	private MiningOverlay(Client client, MiningPlugin plugin)
+	private MiningRocksOverlay(Client client, MiningPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);

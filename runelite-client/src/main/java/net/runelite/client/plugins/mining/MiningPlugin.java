@@ -71,7 +71,7 @@ public class MiningPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private MiningOverlay overlay;
+	private MiningRocksOverlay rocksOverlay;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
@@ -80,13 +80,13 @@ public class MiningPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(rocksOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(rocksOverlay);
 		respawns.clear();
 	}
 
