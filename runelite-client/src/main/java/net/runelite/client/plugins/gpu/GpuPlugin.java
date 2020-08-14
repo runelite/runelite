@@ -1348,7 +1348,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		vertexBuffer.clear();
 		uvBuffer.clear();
 
+		// long time = System.nanoTime();
 		sceneUploader.upload(client.getScene(), vertexBuffer, uvBuffer);
+		// System.out.println("Scene " + ((System.nanoTime() - time)/1000.0)/1000.0 + "ms");
 
 		vertexBuffer.flip();
 		uvBuffer.flip();
@@ -1512,11 +1514,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				int faces = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
 				vertexBuffer.ensureCapacity(12 * faces);
 				uvBuffer.ensureCapacity(12 * faces);
-				int len = 0;
-				for (int i = 0; i < faces; ++i)
-				{
-					len += sceneUploader.pushFace(model, i, false, vertexBuffer, uvBuffer, 0, 0, 0, 0);
-				}
+				int len = sceneUploader.pushModel(model, false, vertexBuffer, uvBuffer);
 
 				GpuIntBuffer b = bufferForTriangles(faces);
 
