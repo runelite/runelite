@@ -123,7 +123,9 @@ class Library
 		{
 			// Bookcase is set from a previous mark
 			// Check for a mismatch, unless it is now null and had a dark manuscript
-			if (book != bookcase.getBook() && !(book == null && bookcase.getBook().isDarkManuscript()))
+			// Or if it is the Varlamore envoy
+			if (book != bookcase.getBook() && !(book == null && bookcase.getBook().isDarkManuscript())
+					&& !(book == null && bookcase.getBook() == VARLAMORE_ENVOY))
 			{
 				reset();
 			}
