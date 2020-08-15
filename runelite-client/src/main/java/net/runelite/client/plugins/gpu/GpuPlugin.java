@@ -279,6 +279,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			try
 			{
 				bufferId = uvBufferId = uniformBufferId = tmpBufferId = tmpUvBufferId = tmpModelBufferId = tmpModelBufferSmallId = tmpModelBufferUnorderedId = tmpOutBufferId = tmpOutUvBufferId = -1;
+				texSceneHandle = fboSceneHandle = rboSceneHandle = -1; // AA FBO
 				unorderedModels = smallModels = largeModels = 0;
 				drawingModel = false;
 
