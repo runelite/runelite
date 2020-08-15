@@ -53,6 +53,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -67,6 +68,7 @@ public class ScreenshotPluginTest
 	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
 	private static final String BA_HIGH_GAMBLE_REWARD = "Raw shark (x 300)!<br>High level gamble count: <col=7f0000>100</col>";
+	private static final String HUNTER_LEVEL_2_TEXT = "<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.";
 
 	@Mock
 	@Bind
@@ -233,7 +235,7 @@ public class ScreenshotPluginTest
 		Widget levelChild = mock(Widget.class);
 		when(client.getWidget(eq(DIALOG_SPRITE_TEXT))).thenReturn(levelChild);
 
-		when(levelChild.getText()).thenReturn("<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.");
+		when(levelChild.getText()).thenReturn(HUNTER_LEVEL_2_TEXT);
 
 		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
 
@@ -264,5 +266,43 @@ public class ScreenshotPluginTest
 	public void testBAHighGambleRewardParsing()
 	{
 		assertEquals("High Gamble(100)", ScreenshotPlugin.parseBAHighGambleWidget(BA_HIGH_GAMBLE_REWARD));
+	}
+
+	@Test
+	public void testLevelUpScreenshotsDisabled()
+	{
+		// Level up dialogs use the same widget interface as BA high gamble results
+		when(screenshotConfig.screenshotLevels()).thenReturn(false);
+		when(screenshotConfig.screenshotHighGamble()).thenReturn(true);
+		Widget dialogChild = mock(Widget.class);
+		when(dialogChild.getText()).thenReturn(HUNTER_LEVEL_2_TEXT);
+		when(client.getWidget(DIALOG_SPRITE_TEXT)).thenReturn(dialogChild);
+
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		screenshotPlugin.onGameTick(new GameTick());
+
+		verify(drawManager, times(0)).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testBAHighGambleScreenshotsDisabled()
+	{
+		// BA high gamble results use the same widget interface as level up dialogs
+		when(screenshotConfig.screenshotLevels()).thenReturn(true);
+		when(screenshotConfig.screenshotHighGamble()).thenReturn(false);
+		Widget dialogChild = mock(Widget.class);
+		when(dialogChild.getText()).thenReturn(BA_HIGH_GAMBLE_REWARD);
+		when(client.getWidget(DIALOG_SPRITE_TEXT)).thenReturn(dialogChild);
+
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(event);
+
+		screenshotPlugin.onGameTick(new GameTick());
+
+		verify(drawManager, times(0)).requestNextFrameListener(any(Consumer.class));
 	}
 }
