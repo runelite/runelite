@@ -242,13 +242,19 @@ public class ScreenshotPlugin extends Plugin
 			String text = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT).getText();
 			if (Text.removeTags(text).contains("High level gamble"))
 			{
-				fileName = parseBAHighGambleWidget(text);
-				screenshotSubDir = "BA High Gambles";
+				if (config.screenshotHighGamble())
+				{
+					fileName = parseBAHighGambleWidget(text);
+					screenshotSubDir = "BA High Gambles";
+				}
 			}
 			else
 			{
-				fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
-				screenshotSubDir = "Levels";
+				if (config.screenshotLevels())
+				{
+					fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+					screenshotSubDir = "Levels";
+				}
 			}
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
