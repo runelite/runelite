@@ -31,8 +31,10 @@ import lombok.Value;
 import net.runelite.api.FriendsChatRank;
 import static net.runelite.api.FriendsChatRank.UNRANKED;
 import net.runelite.api.Client;
+import net.runelite.api.Ignore;
 import static net.runelite.api.MenuAction.*;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NameableContainer;
 import net.runelite.api.Player;
 import net.runelite.api.events.ClientTick;
 import net.runelite.client.config.ConfigManager;
@@ -198,12 +200,24 @@ public class PlayerIndicatorsPlugin extends Plugin
 			color = config.getOthersColor();
 		}
 
+		if (config.hideIgnoredPlayerIndicators() && isPlayerIgnored(player))
+		{
+			return null;
+		}
+
 		if (image == -1 && color == null)
 		{
 			return null;
 		}
 
 		return new Decorations(image, color);
+	}
+
+	private boolean isPlayerIgnored(Player player)
+	{
+		final NameableContainer<Ignore> ignoreContainer = client.getIgnoreContainer();
+		// Return true if the player name is on the ignore list
+		return ignoreContainer.findByName(player.getName()) != null;
 	}
 
 	private String decorateTarget(String oldTarget, Decorations decorations)

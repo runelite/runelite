@@ -214,4 +214,15 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "hideIgnoredPlayerIndicators",
+		name = "Hide ignored player indicators",
+		description = "Don't show indicators for players on the ignore list"
+	)
+	default boolean hideIgnoredPlayerIndicators()
+	{
+		return true;
+	}
 }
