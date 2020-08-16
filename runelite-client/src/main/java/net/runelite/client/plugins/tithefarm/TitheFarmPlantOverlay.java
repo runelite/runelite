@@ -38,6 +38,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ColorUtil;
 
 public class TitheFarmPlantOverlay extends Overlay
 {
@@ -66,17 +67,17 @@ public class TitheFarmPlantOverlay extends Overlay
 		fills.clear();
 
 		final Color colorUnwateredBorder = config.getColorUnwatered();
-		final Color colorUnwatered = new Color(colorUnwateredBorder.getRed(), colorUnwateredBorder.getGreen(), colorUnwateredBorder.getBlue(), 100);
+		final Color colorUnwatered = ColorUtil.colorWithAlpha(colorUnwateredBorder, (int) (colorUnwateredBorder.getAlpha() / 2.5));
 		borders.put(TitheFarmPlantState.UNWATERED, colorUnwateredBorder);
 		fills.put(TitheFarmPlantState.UNWATERED, colorUnwatered);
 
 		final Color colorWateredBorder = config.getColorWatered();
-		final Color colorWatered = new Color(colorWateredBorder.getRed(), colorWateredBorder.getGreen(), colorWateredBorder.getBlue(), 100);
+		final Color colorWatered = ColorUtil.colorWithAlpha(colorWateredBorder, (int) (colorWateredBorder.getAlpha() / 2.5));
 		borders.put(TitheFarmPlantState.WATERED, colorWateredBorder);
 		fills.put(TitheFarmPlantState.WATERED, colorWatered);
 
 		final Color colorGrownBorder = config.getColorGrown();
-		final Color colorGrown = new Color(colorGrownBorder.getRed(), colorGrownBorder.getGreen(), colorGrownBorder.getBlue(), 100);
+		final Color colorGrown = ColorUtil.colorWithAlpha(colorGrownBorder, (int) (colorGrownBorder.getAlpha() / 2.5));
 		borders.put(TitheFarmPlantState.GROWN, colorGrownBorder);
 		fills.put(TitheFarmPlantState.GROWN, colorGrown);
 	}

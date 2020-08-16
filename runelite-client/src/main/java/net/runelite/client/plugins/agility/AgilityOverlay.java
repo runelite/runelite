@@ -45,6 +45,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ColorUtil;
 
 class AgilityOverlay extends Overlay
 {
@@ -131,11 +132,10 @@ class AgilityOverlay extends Overlay
 					}
 
 					graphics.draw(objectClickbox);
-					graphics.setColor(new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 50));
+					graphics.setColor(ColorUtil.colorWithAlpha(configColor, configColor.getAlpha() / 5));
 					graphics.fill(objectClickbox);
 				}
 			}
-
 		});
 
 		if (config.highlightMarks() && !marksOfGrace.isEmpty())

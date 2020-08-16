@@ -37,6 +37,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ColorUtil;
 
 class HerbiboarOverlay extends Overlay
 {
@@ -126,7 +127,7 @@ class HerbiboarOverlay extends Overlay
 			Shape clickbox = object.getClickbox();
 			if (clickbox != null)
 			{
-				Color clickBoxColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 20);
+				Color clickBoxColor = ColorUtil.colorWithAlpha(color, color.getAlpha() / 12);
 
 				graphics.setColor(color);
 				graphics.draw(clickbox);

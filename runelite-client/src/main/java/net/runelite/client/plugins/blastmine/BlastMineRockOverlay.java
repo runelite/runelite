@@ -47,6 +47,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ColorUtil;
 
 public class BlastMineRockOverlay extends Overlay
 {
@@ -199,7 +200,7 @@ public class BlastMineRockOverlay extends Overlay
 
 					if (poly != null)
 					{
-						graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 100));
+						graphics.setColor(ColorUtil.colorWithAlpha(color, (int) (color.getAlpha() / 2.5)));
 						graphics.fillPolygon(poly);
 					}
 				}
