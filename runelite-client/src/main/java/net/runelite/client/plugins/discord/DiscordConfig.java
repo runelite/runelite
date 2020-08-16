@@ -120,4 +120,15 @@ public interface DiscordConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showRegionsActivity",
+		name = "Regions",
+		description = "Show your activity and location while in other regions",
+		position = 9
+	)
+	default boolean showRegionsActivity()
+	{
+		return true;
+	}
 }
