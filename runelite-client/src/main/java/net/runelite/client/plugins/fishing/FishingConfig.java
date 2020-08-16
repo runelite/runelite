@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.fishing;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -77,6 +78,7 @@ public interface FishingConfig extends Config
 		return false;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "overlayColor",
 		name = "Overlay Color",
@@ -88,6 +90,7 @@ public interface FishingConfig extends Config
 		return Color.CYAN;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "minnowsOverlayColor",
 		name = "Minnows Overlay Color",
@@ -99,6 +102,7 @@ public interface FishingConfig extends Config
 		return Color.RED;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "aerialOverlayColor",
 		name = "Aerial Overlay Color",

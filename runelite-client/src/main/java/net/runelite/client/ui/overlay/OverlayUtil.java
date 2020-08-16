@@ -40,6 +40,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.util.ColorUtil;
 
 
 /**
@@ -65,7 +66,7 @@ public class OverlayUtil
 	{
 		graphics.setColor(Color.BLACK);
 		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2 + 1, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
-		graphics.setColor(color);
+		graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
 		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
 	}
 
@@ -92,7 +93,7 @@ public class OverlayUtil
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(text, x + 1, y + 1);
 
-		graphics.setColor(color);
+		graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
 		graphics.drawString(text, x, y);
 	}
 

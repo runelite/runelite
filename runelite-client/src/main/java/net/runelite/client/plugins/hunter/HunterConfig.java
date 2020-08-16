@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.hunter;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -32,6 +33,7 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("hunterplugin")
 public interface HunterConfig extends Config
 {
+	@Alpha
 	@ConfigItem(
 		position = 1,
 		keyName = "hexColorOpenTrap",
@@ -43,6 +45,7 @@ public interface HunterConfig extends Config
 		return Color.YELLOW;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 2,
 		keyName = "hexColorFullTrap",
@@ -54,6 +57,7 @@ public interface HunterConfig extends Config
 		return Color.GREEN;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 3,
 		keyName = "hexColorEmptyTrap",
@@ -65,6 +69,7 @@ public interface HunterConfig extends Config
 		return Color.RED;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 4,
 		keyName = "hexColorTransTrap",
