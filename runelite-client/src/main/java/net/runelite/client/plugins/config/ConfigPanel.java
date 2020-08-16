@@ -89,6 +89,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.ColorJButton;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
@@ -407,24 +408,23 @@ class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == Color.class)
 			{
-				String existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
+				Color existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), Color.class);
 
-				Color existingColor;
-				JButton colorPickerBtn;
+				ColorJButton colorPickerBtn;
+
+				boolean alphaHidden = cid.getAlpha() == null;
 
 				if (existing == null)
 				{
-					existingColor = Color.BLACK;
-					colorPickerBtn = new JButton("Pick a color");
+					colorPickerBtn = new ColorJButton("Pick a color", Color.BLACK);
 				}
 				else
 				{
-					existingColor = ColorUtil.fromString(existing);
-					colorPickerBtn = new JButton(ColorUtil.toHexColor(existingColor).toUpperCase());
+					String colorHex = "#" + (alphaHidden ? ColorUtil.colorToHexCode(existing) : ColorUtil.colorToAlphaHexCode(existing)).toUpperCase();
+					colorPickerBtn = new ColorJButton(colorHex, existing);
 				}
 
 				colorPickerBtn.setFocusable(false);
-				colorPickerBtn.setBackground(existingColor);
 				colorPickerBtn.addMouseListener(new MouseAdapter()
 				{
 					@Override
@@ -432,14 +432,14 @@ class ConfigPanel extends PluginPanel
 					{
 						RuneliteColorPicker colorPicker = colorPickerManager.create(
 							SwingUtilities.windowForComponent(ConfigPanel.this),
-							colorPickerBtn.getBackground(),
+							colorPickerBtn.getColor(),
 							cid.getItem().name(),
-							cid.getAlpha() == null);
+							alphaHidden);
 						colorPicker.setLocation(getLocationOnScreen());
 						colorPicker.setOnColorChange(c ->
 						{
-							colorPickerBtn.setBackground(c);
-							colorPickerBtn.setText(ColorUtil.toHexColor(c).toUpperCase());
+							colorPickerBtn.setColor(c);
+							colorPickerBtn.setText("#" + (alphaHidden ? ColorUtil.colorToHexCode(c) : ColorUtil.colorToAlphaHexCode(c)).toUpperCase());
 						});
 						colorPicker.setOnClose(c -> changeConfiguration(colorPicker, cd, cid));
 						colorPicker.setVisible(true);

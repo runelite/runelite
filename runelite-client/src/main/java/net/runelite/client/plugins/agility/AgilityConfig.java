@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.agility;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -97,6 +98,7 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "overlayColor",
 		name = "Overlay Color",
@@ -119,6 +121,7 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "markHighlight",
 		name = "Mark Highlight Color",
@@ -141,6 +144,7 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "portalsHighlight",
 		name = "Portals Highlight Color",
@@ -174,6 +178,7 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "trapHighlight",
 		name = "Trap Overlay Color",
@@ -218,6 +223,7 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "stickHighlightColor",
 		name = "Stick Highlight Color",
@@ -241,6 +247,7 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "sepulchreHighlightColor",
 		name = "Projectile Color",

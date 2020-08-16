@@ -95,13 +95,13 @@ public interface NpcIndicatorsConfig extends Config
 	)
 	void setNpcToHighlight(String npcsToHighlight);
 
+	@Alpha
 	@ConfigItem(
 		position = 4,
 		keyName = "npcColor",
 		name = "Highlight Color",
 		description = "Color of the NPC highlight"
 	)
-	@Alpha
 	default Color getHighlightColor()
 	{
 		return Color.CYAN;

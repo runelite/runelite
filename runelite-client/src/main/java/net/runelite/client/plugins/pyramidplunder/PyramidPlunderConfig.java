@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.pyramidplunder;
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -64,6 +65,7 @@ public interface PyramidPlunderConfig extends Config
 		return 30;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 3,
 		keyName = "highlightDoorsColor",
@@ -86,6 +88,7 @@ public interface PyramidPlunderConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 5,
 		keyName = "highlightSpeartrapColor",
@@ -108,6 +111,7 @@ public interface PyramidPlunderConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 7,
 		keyName = "highlightContainersColor",
