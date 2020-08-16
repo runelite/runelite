@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
@@ -79,6 +80,12 @@ public class HiscorePanel extends PluginPanel
 {
 	/* The maximum allowed username length in RuneScape accounts */
 	private static final int MAX_USERNAME_LENGTH = 12;
+
+	/**
+	 * Pattern matching valid RSNs based on ingame limitations
+	 * {@see https://runescape.wiki/w/Character_name#Limitations}
+	 */
+	private static final Pattern RSN_PATTERN = Pattern.compile(String.format("^(?![ _-])[\\w -]{1,12}(?<![ _-])$", MAX_USERNAME_LENGTH));
 
 	/**
 	 * Real skills, ordered in the way they should be displayed in the panel.
@@ -373,8 +380,8 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
-		/* RuneScape usernames can't be longer than 12 characters long */
-		if (lookup.length() > MAX_USERNAME_LENGTH)
+		/* Perform Runescape username validation, or return error. */
+		if (!RSN_PATTERN.matcher(lookup).find())
 		{
 			searchBar.setIcon(IconTextField.Icon.ERROR);
 			loading = false;
