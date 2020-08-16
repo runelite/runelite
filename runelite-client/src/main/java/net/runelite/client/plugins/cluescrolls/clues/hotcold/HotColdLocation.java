@@ -135,7 +135,7 @@ public enum HotColdLocation
 	MORYTANIA_HAUNTED_MINE(new WorldPoint(3444, 3255, 0), MORYTANIA, "At Haunted Mine quest start.", BRASSICAN_MAGE),
 	MORYTANIA_MAUSOLEUM(new WorldPoint(3499, 3539, 0), MORYTANIA, "South of the Mausoleum.", BRASSICAN_MAGE),
 	MORYTANIA_MOS_LES_HARMLESS(new WorldPoint(3740, 3041, 0), MORYTANIA, "Northern area of Mos Le'Harmless, between the lakes.", BRASSICAN_MAGE),
-	MORYTANIA_MOS_LES_HARMLESS_BAR(new WorldPoint(3674, 2971, 0), MORYTANIA, "Near Mos Le'Harmless southern bar.", BRASSICAN_MAGE),
+	MORYTANIA_MOS_LES_HARMLESS_BAR(new WorldPoint(3666, 2972, 0), MORYTANIA, "Near Mos Le'Harmless southern bar.", BRASSICAN_MAGE),
 	MORYTANIA_DRAGONTOOTH_NORTH(new WorldPoint(3811, 3569, 0), MORYTANIA, "Northern part of Dragontooth Island.", BRASSICAN_MAGE),
 	MORYTANIA_DRAGONTOOTH_SOUTH(new WorldPoint(3803, 3532, 0), MORYTANIA, "Southern part of Dragontooth Island.", BRASSICAN_MAGE),
 	MORYTANIA_SLEPE_TENTS(new WorldPoint(3769, 3383, 0), MORYTANIA, "North-east of Slepe, near the tents.", BRASSICAN_MAGE),
