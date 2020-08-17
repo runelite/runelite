@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.account.OAuthMenu;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.SessionClose;
@@ -37,6 +38,7 @@ import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 
@@ -58,6 +60,9 @@ public class AccountPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
+	@Inject
+	private ClientUI clientUI;
+
 	private NavigationButton loginButton;
 	private NavigationButton logoutButton;
 
@@ -72,11 +77,13 @@ public class AccountPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		OAuthMenu oAuthMenu = new OAuthMenu(executor, sessionManager);
+
 		loginButton = NavigationButton.builder()
 			.tab(false)
 			.icon(LOGIN_IMAGE)
 			.tooltip("Log in to RuneLite")
-			.onClick(this::loginClick)
+			.onClick(() -> clientUI.showPopUpMenu(oAuthMenu))
 			.build();
 
 		logoutButton = NavigationButton.builder()
@@ -103,11 +110,6 @@ public class AccountPlugin extends Plugin
 	{
 		clientToolbar.removeNavigation(loginButton);
 		clientToolbar.removeNavigation(logoutButton);
-	}
-
-	private void loginClick()
-	{
-		executor.execute(sessionManager::login);
 	}
 
 	private void logoutClick()

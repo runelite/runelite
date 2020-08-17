@@ -104,7 +104,7 @@
 		<dependency>
 			<groupId>com.github.scribejava</groupId>
 			<artifactId>scribejava-apis</artifactId>
-			<version>4.1.0</version>
+			<version>7.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.minio</groupId>

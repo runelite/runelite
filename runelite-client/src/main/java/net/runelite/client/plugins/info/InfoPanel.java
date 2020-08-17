@@ -45,6 +45,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import net.runelite.api.Client;
+import net.runelite.client.account.AccountSession;
+import net.runelite.client.account.OAuthMenu;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLiteProperties;
@@ -52,6 +54,7 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
@@ -90,6 +93,9 @@ public class InfoPanel extends PluginPanel
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private ClientUI clientUI;
 
 	static
 	{
@@ -138,13 +144,15 @@ public class InfoPanel extends PluginPanel
 		emailLabel.setForeground(Color.WHITE);
 		emailLabel.setFont(smallFont);
 		emailLabel.enableAutoLinkHandler(false);
+
+		OAuthMenu oAuthMenu = new OAuthMenu(executor, sessionManager);
 		emailLabel.addHyperlinkListener(e ->
 		{
 			if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null)
 			{
 				if (e.getURL().toString().equals(RUNELITE_LOGIN))
 				{
-					executor.execute(sessionManager::login);
+					clientUI.showPopUpMenu(oAuthMenu);
 				}
 			}
 		});
@@ -269,8 +277,10 @@ public class InfoPanel extends PluginPanel
 
 	private void updateLoggedIn()
 	{
-		final String name = sessionManager.getAccountSession() != null
-			? sessionManager.getAccountSession().getUsername()
+		AccountSession accountSession = sessionManager.getAccountSession();
+
+		final String name = accountSession != null
+			? (accountSession.getDisplay() != null ? accountSession.getDisplay() : accountSession.getUsername())
 			: null;
 
 		if (name != null)

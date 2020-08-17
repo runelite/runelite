@@ -24,34 +24,15 @@
  */
 package net.runelite.http.service.account.beans;
 
+import lombok.Data;
+import lombok.ToString;
+import net.runelite.http.api.account.OAuthProvider;
+
+@Data
+@ToString
 public class UserEntry
 {
 	private int id;
 	private String username;
-
-	@Override
-	public String toString()
-	{
-		return "UserEntry{" + "id=" + id + ", username=" + username + '}';
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public String getUsername()
-	{
-		return username;
-	}
-
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
+	private OAuthProvider provider;
 }

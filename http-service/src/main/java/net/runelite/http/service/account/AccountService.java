@@ -24,8 +24,10 @@
  */
 package net.runelite.http.service.account;
 
+import com.github.scribejava.apis.DiscordApi;
 import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
@@ -41,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.account.OAuthResponse;
+import net.runelite.http.api.account.OAuthProvider;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.LoginResponse;
@@ -79,42 +82,48 @@ public class AccountService
 	private static final String CREATE_USERS = "CREATE TABLE IF NOT EXISTS `users` (\n"
 		+ "  `id` int(11) NOT NULL AUTO_INCREMENT,\n"
 		+ "  `username` tinytext NOT NULL,\n"
+		+ "  `oauth_provider` ENUM('GOOGLE', 'DISCORD') NOT NULL,\n"
 		+ "  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
 		+ "  PRIMARY KEY (`id`),\n"
-		+ "  UNIQUE KEY `username` (`username`(64))\n"
+		+ "  UNIQUE KEY `username` (`username`, `oauth_provider`)\n"
 		+ ") ENGINE=InnoDB";
 
 	private static final String SESSIONS_FK = "ALTER TABLE `sessions`\n"
 		+ "  ADD CONSTRAINT `id` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
 
-	private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email";
-	private static final String USERINFO = "https://www.googleapis.com/oauth2/v2/userinfo";
-	private static final String RL_REDIR = "https://runelite.net/logged-in";
-
 	private final Gson gson = RuneLiteAPI.GSON;
 	private final Gson websocketGson = WebsocketGsonFactory.build();
 
 	private final Sql2o sql2o;
-	private final String oauthClientId;
-	private final String oauthClientSecret;
+	private final String googleOauthClientId;
+	private final String googleOauthClientSecret;
+	private final String discordOauthClientId;
+	private final String discordOauthClientSecret;
 	private final String oauthCallback;
+	private final String rlRedirect;
 	private final AuthFilter auth;
 	private final RedisPool jedisPool;
 
 	@Autowired
 	public AccountService(
 		@Qualifier("Runelite SQL2O") Sql2o sql2o,
-		@Value("${oauth.client-id}") String oauthClientId,
-		@Value("${oauth.client-secret}") String oauthClientSecret,
+		@Value("${oauth.google-client-id}") String googleOauthClientId,
+		@Value("${oauth.google-client-secret}") String googleOauthClientSecret,
+		@Value("${oauth.discord-client-id}") String discordOauthClientId,
+		@Value("${oauth.discord-client-secret}") String discordOauthClientSecret,
 		@Value("${oauth.callback}") String oauthCallback,
+		@Value("${oauth.redirect}") String rlRedirect,
 		AuthFilter auth,
 		RedisPool jedisPool
 	)
 	{
 		this.sql2o = sql2o;
-		this.oauthClientId = oauthClientId;
-		this.oauthClientSecret = oauthClientSecret;
+		this.googleOauthClientId = googleOauthClientId;
+		this.googleOauthClientSecret = googleOauthClientSecret;
+		this.discordOauthClientId = discordOauthClientId;
+		this.discordOauthClientSecret = discordOauthClientSecret;
 		this.oauthCallback = oauthCallback;
+		this.rlRedirect = rlRedirect;
 		this.auth = auth;
 		this.jedisPool = jedisPool;
 
@@ -139,22 +148,27 @@ public class AccountService
 	}
 
 	@GetMapping("/login")
-	public OAuthResponse login(@RequestParam UUID uuid)
+	public OAuthResponse login(
+		@RequestParam UUID uuid,
+		@RequestParam OAuthProvider provider
+	)
 	{
 		State state = new State();
 		state.setUuid(uuid);
 		state.setApiVersion(RuneLiteAPI.getVersion());
+		state.setProvider(provider);
 
-		OAuth20Service service = new ServiceBuilder()
-			.apiKey(oauthClientId)
-			.apiSecret(oauthClientSecret)
-			.scope(SCOPE)
-			.callback(oauthCallback)
-			.state(gson.toJson(state))
-			.build(GoogleApi20.instance());
+		OAuth20Service service = generateService(state.getProvider());
+
+		if (service == null)
+		{
+			logger.info("Unknown oauth provider: {}", state.getProvider());
+			return null;
+		}
 
 		final Map<String, String> additionalParams = new HashMap<>();
 		additionalParams.put("prompt", "select_account");
+		additionalParams.put("state", gson.toJson(state));
 
 		String authorizationUrl = service.getAuthorizationUrl(additionalParams);
 
@@ -184,18 +198,18 @@ public class AccountService
 
 		logger.info("Got authorization code {} for uuid {}", code, state.getUuid());
 
-		OAuth20Service service = new ServiceBuilder()
-			.apiKey(oauthClientId)
-			.apiSecret(oauthClientSecret)
-			.scope(SCOPE)
-			.callback(oauthCallback)
-			.state(gson.toJson(state))
-			.build(GoogleApi20.instance());
+		OAuth20Service service = generateService(state.getProvider());
+
+		if (service == null)
+		{
+			logger.info("Unknown oauth provider: {}", state.getProvider());
+			return null;
+		}
 
 		OAuth2AccessToken accessToken = service.getAccessToken(code);
 
 		// Access user info
-		OAuthRequest orequest = new OAuthRequest(Verb.GET, USERINFO);
+		OAuthRequest orequest = new OAuthRequest(Verb.GET, state.getProvider().getUserinfo());
 		service.signRequest(accessToken, orequest);
 
 		Response oresponse = service.execute(orequest);
@@ -206,18 +220,39 @@ public class AccountService
 			return null;
 		}
 
-		UserInfo userInfo = gson.fromJson(oresponse.getBody(), UserInfo.class);
+		Map userInfo = gson.fromJson(oresponse.getBody(), Map.class);
 
-		logger.info("Got user info: {}", userInfo);
+		String username = (String) userInfo.get(state.getProvider().getUsernameKey());
+
+		StringBuilder displayBuilder = new StringBuilder();
+
+		for (String s : state.getProvider().getDisplayKey())
+		{
+			if (s.startsWith("\\"))
+			{
+				displayBuilder.append(s.substring(1));
+			}
+			else
+			{
+				displayBuilder.append((String) userInfo.get(s));
+			}
+		}
+
+		String display = displayBuilder.toString();
+
+		logger.info("Got user info: {}", oresponse.getBody());
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("insert ignore into users (username) values (:username)")
-				.addParameter("username", userInfo.getEmail())
+			con.createQuery("insert ignore into users (username, oauth_provider) values (:username, :oauth_provider)")
+				.addParameter("username", username)
+				.addParameter("oauth_provider", state.getProvider())
 				.executeUpdate();
 
-			UserEntry user = con.createQuery("select id from users where username = :username")
-				.addParameter("username", userInfo.getEmail())
+
+			UserEntry user = con.createQuery("select id from users where username = :username and oauth_provider = :oauth_provider")
+				.addParameter("username", username)
+				.addParameter("oauth_provider", state.getProvider())
 				.executeAndFetchFirst(UserEntry.class);
 
 			if (user == null)
@@ -232,20 +267,22 @@ public class AccountService
 				.addParameter("uuid", state.getUuid().toString())
 				.executeUpdate();
 
-			logger.info("Created session for user {}", userInfo.getEmail());
+			logger.info("Created session for user {}", username);
 		}
 
-		response.sendRedirect(RL_REDIR);
+		response.sendRedirect(rlRedirect);
 
-		notifySession(state.getUuid(), userInfo.getEmail());
+		notifySession(state.getUuid(), username, display, state.getProvider());
 
 		return "";
 	}
 
-	private void notifySession(UUID uuid, String username)
+	private void notifySession(UUID uuid, String username, String display, OAuthProvider provider)
 	{
 		LoginResponse response = new LoginResponse();
 		response.setUsername(username);
+		response.setProvider(provider);
+		response.setDisplay(display);
 
 		try (Jedis jedis = jedisPool.getResource())
 		{
@@ -277,5 +314,35 @@ public class AccountService
 	public void sessionCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		auth.handle(request, response);
+	}
+
+	private OAuth20Service generateService(OAuthProvider provider)
+	{
+		String clientId;
+		String clientSecret;
+		DefaultApi20 api20;
+
+		switch (provider)
+		{
+			case GOOGLE:
+				clientId = googleOauthClientId;
+				clientSecret = googleOauthClientSecret;
+				api20 = GoogleApi20.instance();
+				break;
+			case DISCORD:
+				clientId = discordOauthClientId;
+				clientSecret = discordOauthClientSecret;
+				api20 = DiscordApi.instance();
+				break;
+			default:
+				return null;
+		}
+
+		return new ServiceBuilder(clientId)
+			.apiSecret(clientSecret)
+			.defaultScope(provider.getScope())
+			.callback(oauthCallback)
+			.userAgent(RuneLiteAPI.userAgent)
+			.build(api20);
 	}
 }

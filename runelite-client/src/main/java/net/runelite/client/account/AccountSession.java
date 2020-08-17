@@ -28,6 +28,7 @@ import java.time.Instant;
 import java.util.UUID;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import net.runelite.http.api.account.OAuthProvider;
 
 @Data
 @EqualsAndHashCode(of = "uuid")
@@ -36,4 +37,6 @@ public class AccountSession
 	private final UUID uuid;
 	private final Instant created;
 	private String username;
+	private String display;
+	private OAuthProvider provider;
 }

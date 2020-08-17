@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.account;
+package net.runelite.http.api.account;
 
-public class UserInfo
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public enum OAuthProvider
 {
-	private String email;
+	GOOGLE(
+		"https://www.googleapis.com/auth/userinfo.email",
+		"https://www.googleapis.com/oauth2/v2/userinfo",
+		"email",
+		"email"
+	),
+	DISCORD(
+		"identify",
+		"https://discordapp.com/api/users/@me",
+		"id",
+		new String[]{"username", "\\#", "discriminator"}
+	);
 
-	@Override
-	public String toString()
-	{
-		return "UserInfo{" + "email=" + email + '}';
-	}
+	private String scope;
+	private String userinfo;
+	private String usernameKey;
+	private String[] displayKey;
 
-	public String getEmail()
+	OAuthProvider(String scope, String userinfo, String usernameKey, String displayKey)
 	{
-		return email;
-	}
-
-	public void setEmail(String email)
-	{
-		this.email = email;
+		this.scope = scope;
+		this.userinfo = userinfo;
+		this.usernameKey = usernameKey;
+		this.displayKey = new String[]{displayKey};
 	}
 }
