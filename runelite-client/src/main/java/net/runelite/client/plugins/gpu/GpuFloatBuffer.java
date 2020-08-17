@@ -27,6 +27,7 @@ package net.runelite.client.plugins.gpu;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 class GpuFloatBuffer
 {
@@ -35,6 +36,11 @@ class GpuFloatBuffer
 	void put(float texture, float u, float v, float pad)
 	{
 		buffer.put(texture).put(u).put(v).put(pad);
+	}
+
+	public void put(float[] src)
+	{
+		buffer.put(src);
 	}
 
 	void flip()
@@ -47,15 +53,27 @@ class GpuFloatBuffer
 		buffer.clear();
 	}
 
-	void ensureCapacity(int size)
+	void ensureCapacity(int requestedRemaining)
 	{
-		while (buffer.remaining() < size)
+		int capacity = buffer.capacity();
+		final int position = buffer.position();
+		if ((capacity - position) < requestedRemaining)
 		{
-			FloatBuffer newB = allocateDirect(buffer.capacity() * 2);
+			do {
+				capacity *= 2;
+			}
+			while ((capacity - position) < requestedRemaining);
+//			System.out.println("New float buffer: " + buffer.capacity() + " -> " + capacity);
+			FloatBuffer newB = allocateDirect(capacity);
 			buffer.flip();
 			newB.put(buffer);
 			buffer = newB;
 		}
+	}
+
+	public int limit()
+	{
+		return buffer.limit();
 	}
 
 	FloatBuffer getBuffer()

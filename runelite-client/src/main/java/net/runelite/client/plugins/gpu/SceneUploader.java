@@ -40,6 +40,7 @@ import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
+import net.runelite.client.RuneLite;
 
 import java.util.ArrayList;
 
@@ -53,14 +54,22 @@ class SceneUploader
 	private int offset;
 	private int uvoffset;
 
+	private int[] modelVertexArray;
+	private float[] modelUvArray;
+	private int modelVertexArrayOffset;
+	private int modelUvArrayOffset;
+
 	ArrayList<Model> models;
 
-	void upload(Scene scene, GpuIntBuffer vertexbuffer, GpuFloatBuffer uvBuffer)
+	static int[] TWELVE_ZERO_INTS = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	static float[] TWELVE_ZERO_FLOATS = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+	void upload(Scene scene, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		++sceneId;
 		offset = 0;
 		uvoffset = 0;
-		vertexbuffer.clear();
+		vertexBuffer.clear();
 		uvBuffer.clear();
 
 		models = new ArrayList<>();
@@ -78,17 +87,80 @@ class SceneUploader
 					Tile tile = tilesInRow[y];
 					if (tile != null)
 					{
-						upload(tile, vertexbuffer, uvBuffer);
+						upload(tile, vertexBuffer, uvBuffer);
 					}
 				}
 			}
 		}
 
+//		for (Model model : models) {
+//			uploadModel(model, vertexBuffer, uvBuffer);
+//		}
+
 //		long time = System.nanoTime();
-		for (Model model : models) {
-			uploadModel(model, vertexbuffer, uvBuffer);
+
+		RuneLite.timeStart("calculate array sizes");
+
+		int modelVertexArraySize = 0;
+		int modelUvArraySize = 0;
+		for (Model model : models)
+		{
+			final int triangleCount = model.getTrianglesCount();
+			modelVertexArraySize += 12 * triangleCount;
+			if (model.getFaceTextures() != null)
+			{
+				modelUvArraySize += 12 * triangleCount;
+			}
 		}
-//		System.out.println("Models: " + ((System.nanoTime() - time)/1000.0)/1000.0 + "ms");
+
+		RuneLite.timeEnd();
+
+//		int maxModelArraySize = 0;
+//		for (Model model : models) {
+//			maxModelArraySize += model.getTrianglesCount() * 12;
+//		}
+
+		boolean vertexArrayHasBeenZeroed = false;
+		if (modelVertexArray == null || modelVertexArray.length < modelVertexArraySize) {
+			RuneLite.timeStart("allocate vertex array: " + modelVertexArraySize);
+			modelVertexArray = new int[modelVertexArraySize];
+			vertexArrayHasBeenZeroed = true;
+			RuneLite.timeEnd();
+		}
+
+		boolean uvArrayHasBeenZeroed = false;
+		if (modelUvArray == null || modelUvArray.length < modelUvArraySize) {
+			// The UV data will likely never even come close to filling this array as not many faces are textured, but use the absolute max to be safe
+			RuneLite.timeStart("allocate uv array: " + modelUvArraySize);
+			modelUvArray = new float[modelUvArraySize];
+			uvArrayHasBeenZeroed = true;
+			RuneLite.timeEnd();
+		}
+
+		modelVertexArrayOffset = 0;
+		modelUvArrayOffset = 0;
+
+		RuneLite.timeStart("upload models");
+		for (Model model : models) {
+			uploadModel(model, vertexArrayHasBeenZeroed, uvArrayHasBeenZeroed);
+		}
+		RuneLite.timeEnd();
+
+		RuneLite.timeStart("ensure capacity: " + modelVertexArrayOffset + ", " + modelUvArrayOffset);
+		vertexBuffer.ensureCapacity(modelVertexArrayOffset);
+		uvBuffer.ensureCapacity(modelUvArrayOffset);
+		RuneLite.timeEnd();
+
+		RuneLite.timeStart("transfer data to buffers");
+		vertexBuffer.getBuffer().put(modelVertexArray, 0, modelVertexArrayOffset);
+		uvBuffer.getBuffer().put(modelUvArray, 0, modelUvArrayOffset);
+		RuneLite.timeEnd();
+
+		models = null;
+//		modelVertexArray = null;
+//		modelUvArray = null;
+		modelVertexArrayOffset = 0;
+		modelUvArrayOffset = 0;
 	}
 
 	private void upload(Tile tile, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
@@ -103,14 +175,7 @@ class SceneUploader
 		if (sceneTilePaint != null)
 		{
 			sceneTilePaint.setBufferOffset(offset);
-			if (sceneTilePaint.getTexture() != -1)
-			{
-				sceneTilePaint.setUvBufferOffset(uvoffset);
-			}
-			else
-			{
-				sceneTilePaint.setUvBufferOffset(-1);
-			}
+			sceneTilePaint.setUvBufferOffset(sceneTilePaint.getTexture() != -1 ? uvoffset : -1);
 			Point tilePoint = tile.getSceneLocation();
 			int len = upload(sceneTilePaint,
 				tile.getRenderLevel(), tilePoint.getX(), tilePoint.getY(),
@@ -128,14 +193,7 @@ class SceneUploader
 		if (sceneTileModel != null)
 		{
 			sceneTileModel.setBufferOffset(offset);
-			if (sceneTileModel.getTriangleTextureId() != null)
-			{
-				sceneTileModel.setUvBufferOffset(uvoffset);
-			}
-			else
-			{
-				sceneTileModel.setUvBufferOffset(-1);
-			}
+			sceneTileModel.setUvBufferOffset(sceneTileModel.getTriangleTextureId() != null ? uvoffset : -1);
 			Point tilePoint = tile.getSceneLocation();
 			int len = upload(sceneTileModel,
 				tilePoint.getX(), tilePoint.getY(),
@@ -330,9 +388,7 @@ class SceneUploader
 				}
 				else
 				{
-					uvBuffer.put(0, 0, 0, 0f);
-					uvBuffer.put(0, 0, 0, 0f);
-					uvBuffer.put(0, 0, 0, 0f);
+					uvBuffer.put(TWELVE_ZERO_FLOATS);
 				}
 			}
 		}
@@ -340,16 +396,108 @@ class SceneUploader
 		return cnt;
 	}
 
-	private void uploadModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	private void uploadModel(Model model, boolean vertexArrayHasBeenZeroed, boolean uvArrayHasBeenZeroed)
 	{
 		model.setBufferOffset(offset);
 		model.setUvBufferOffset(model.getFaceTextures() != null ? uvoffset : -1);
 
-		int size = model.getTrianglesCount() * 12;
-		vertexBuffer.ensureCapacity(size);
-		uvBuffer.ensureCapacity(size);
+		final int triangleCount = model.getTrianglesCount();
 
-		int len = pushModel(model, false, vertexBuffer, uvBuffer);
+		final int[] vertexX = model.getVerticesX();
+		final int[] vertexY = model.getVerticesY();
+		final int[] vertexZ = model.getVerticesZ();
+
+		final int[] trianglesX = model.getTrianglesX();
+		final int[] trianglesY = model.getTrianglesY();
+		final int[] trianglesZ = model.getTrianglesZ();
+
+		final int[] color1s = model.getFaceColors1();
+		final int[] color2s = model.getFaceColors2();
+		final int[] color3s = model.getFaceColors3();
+
+		final short[] faceTextures = model.getFaceTextures();
+
+		float[][] u = model.getFaceTextureUCoordinates();
+		float[][] v = model.getFaceTextureVCoordinates();
+
+		for (int i = 0; i < triangleCount; ++i)
+		{
+			int color1 = color1s[i];
+			int color2 = color2s[i];
+			int color3 = color3s[i];
+
+			if (color3 == -1)
+			{
+				color2 = color3 = color1;
+			}
+			else if (color3 == -2)
+			{
+				if (!vertexArrayHasBeenZeroed)
+				{
+					System.arraycopy(TWELVE_ZERO_INTS, 0, modelVertexArray, modelVertexArrayOffset, 12);
+				}
+				modelVertexArrayOffset += 12;
+				if (faceTextures != null)
+				{
+					if (!uvArrayHasBeenZeroed)
+					{
+						System.arraycopy(TWELVE_ZERO_FLOATS, 0, modelUvArray, modelUvArrayOffset, 12);
+					}
+					modelUvArrayOffset += 12;
+				}
+				continue;
+			}
+
+			int alphaAndPriority = this.joinAlphaAndPriorityForFace(model, i);
+
+			int triangleA = trianglesX[i];
+			int triangleB = trianglesY[i];
+			int triangleC = trianglesZ[i];
+
+			modelVertexArray[modelVertexArrayOffset + 0] = vertexX[triangleA];
+			modelVertexArray[modelVertexArrayOffset + 1] = vertexY[triangleA];
+			modelVertexArray[modelVertexArrayOffset + 2] = vertexZ[triangleA];
+			modelVertexArray[modelVertexArrayOffset + 3] = alphaAndPriority | color1;
+			modelVertexArray[modelVertexArrayOffset + 4] = vertexX[triangleB];
+			modelVertexArray[modelVertexArrayOffset + 5] = vertexY[triangleB];
+			modelVertexArray[modelVertexArrayOffset + 6] = vertexZ[triangleB];
+			modelVertexArray[modelVertexArrayOffset + 7] = alphaAndPriority | color2;
+			modelVertexArray[modelVertexArrayOffset + 8] = vertexX[triangleC];
+			modelVertexArray[modelVertexArrayOffset + 9] = vertexY[triangleC];
+			modelVertexArray[modelVertexArrayOffset + 10] = vertexZ[triangleC];
+			modelVertexArray[modelVertexArrayOffset + 11] = alphaAndPriority | color3;
+
+			modelVertexArrayOffset += 12;
+
+			if (faceTextures != null)
+			{
+				float[] uf, vf;
+				if (u != null && v != null && (uf = u[i]) != null && (vf = v[i]) != null)
+				{
+					float texture = faceTextures[i] + 1f;
+					modelUvArray[modelUvArrayOffset + 0] = texture;
+					modelUvArray[modelUvArrayOffset + 1] = uf[0];
+					modelUvArray[modelUvArrayOffset + 2] = vf[0];
+					modelUvArray[modelUvArrayOffset + 3] = 0.0f;
+					modelUvArray[modelUvArrayOffset + 4] = texture;
+					modelUvArray[modelUvArrayOffset + 5] = uf[1];
+					modelUvArray[modelUvArrayOffset + 6] = vf[1];
+					modelUvArray[modelUvArrayOffset + 7] = 0.0f;
+					modelUvArray[modelUvArrayOffset + 8] = texture;
+					modelUvArray[modelUvArrayOffset + 9] = uf[2];
+					modelUvArray[modelUvArrayOffset + 10] = vf[2];
+					modelUvArray[modelUvArrayOffset + 11] = 0.0f;
+				}
+				else if (!uvArrayHasBeenZeroed)
+				{
+					System.arraycopy(TWELVE_ZERO_FLOATS, 0, modelUvArray, modelUvArrayOffset, 12);
+				}
+				modelUvArrayOffset += 12;
+			}
+
+		}
+
+		int len = triangleCount * 3;
 
 		offset += len;
 		if (model.getFaceTextures() != null)
@@ -393,10 +541,10 @@ class SceneUploader
 			}
 			else if (color3 == -2)
 			{
-				this.padVertexBuffer(vertexBuffer);
+				vertexBuffer.put(TWELVE_ZERO_INTS);
 				if (padUvs || faceTextures != null)
 				{
-					this.padUvBuffer(uvBuffer);
+					uvBuffer.put(TWELVE_ZERO_FLOATS);
 				}
 				continue;
 			}
@@ -423,7 +571,7 @@ class SceneUploader
 				}
 				else
 				{
-					this.padUvBuffer(uvBuffer);
+					uvBuffer.put(TWELVE_ZERO_FLOATS);
 				}
 			}
 
@@ -450,10 +598,10 @@ class SceneUploader
 		}
 		else if (color3 == -2)
 		{
-			this.padVertexBuffer(vertexBuffer);
+			vertexBuffer.put(TWELVE_ZERO_INTS);
 			if (padUvs || faceTextures != null)
 			{
-				this.padUvBuffer(uvBuffer);
+				uvBuffer.put(TWELVE_ZERO_FLOATS);
 			}
 			return 3;
 		}
@@ -522,7 +670,7 @@ class SceneUploader
 			}
 			else
 			{
-				this.padUvBuffer(uvBuffer);
+				uvBuffer.put(TWELVE_ZERO_FLOATS);
 			}
 		}
 
@@ -548,20 +696,6 @@ class SceneUploader
 		}
 
 		return alpha | priority;
-	}
-
-	private void padVertexBuffer(GpuIntBuffer vertexBuffer)
-	{
-		vertexBuffer.put(0, 0, 0, 0);
-		vertexBuffer.put(0, 0, 0, 0);
-		vertexBuffer.put(0, 0, 0, 0);
-	}
-
-	private void padUvBuffer(GpuFloatBuffer uvBuffer)
-	{
-		uvBuffer.put(0f, 0f, 0f, 0f);
-		uvBuffer.put(0f, 0f, 0f, 0f);
-		uvBuffer.put(0f, 0f, 0f, 0f);
 	}
 
 }
