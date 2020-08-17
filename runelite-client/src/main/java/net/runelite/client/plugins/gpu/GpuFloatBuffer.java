@@ -63,7 +63,6 @@ class GpuFloatBuffer
 				capacity *= 2;
 			}
 			while ((capacity - position) < requestedRemaining);
-//			System.out.println("New float buffer: " + buffer.capacity() + " -> " + capacity);
 			FloatBuffer newB = allocateDirect(capacity);
 			buffer.flip();
 			newB.put(buffer);

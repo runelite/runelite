@@ -40,7 +40,6 @@ import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
-import net.runelite.client.RuneLite;
 
 import java.util.ArrayList;
 
@@ -51,6 +50,7 @@ class SceneUploader
 	private Client client;
 
 	int sceneId = (int) (System.currentTimeMillis() / 1000L);
+
 	private int offset;
 	private int uvoffset;
 
@@ -59,10 +59,8 @@ class SceneUploader
 	private int modelVertexArrayOffset;
 	private int modelUvArrayOffset;
 
-	ArrayList<Model> models;
-
-	static int[] TWELVE_ZERO_INTS = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	static float[] TWELVE_ZERO_FLOATS = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	static int[] TWELVE_ZERO_INTS = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	static float[] TWELVE_ZERO_FLOATS = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	void upload(Scene scene, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
@@ -72,7 +70,7 @@ class SceneUploader
 		vertexBuffer.clear();
 		uvBuffer.clear();
 
-		models = new ArrayList<>();
+		ArrayList<Model> models = new ArrayList<>();
 
 		Tile[][][] tiles = scene.getTiles();
 
@@ -87,88 +85,62 @@ class SceneUploader
 					Tile tile = tilesInRow[y];
 					if (tile != null)
 					{
-						upload(tile, vertexBuffer, uvBuffer);
+						upload(tile, vertexBuffer, uvBuffer, models);
 					}
 				}
 			}
 		}
 
-//		for (Model model : models) {
-//			uploadModel(model, vertexBuffer, uvBuffer);
-//		}
-
-//		long time = System.nanoTime();
-
-		RuneLite.timeStart("calculate array sizes");
-
 		int modelVertexArraySize = 0;
 		int modelUvArraySize = 0;
 		for (Model model : models)
 		{
-			final int triangleCount = model.getTrianglesCount();
-			modelVertexArraySize += 12 * triangleCount;
+			final int modelSize = model.getTrianglesCount() * 12;
+			modelVertexArraySize += modelSize;
 			if (model.getFaceTextures() != null)
 			{
-				modelUvArraySize += 12 * triangleCount;
+				modelUvArraySize += modelSize;
 			}
 		}
 
-		RuneLite.timeEnd();
-
-//		int maxModelArraySize = 0;
-//		for (Model model : models) {
-//			maxModelArraySize += model.getTrianglesCount() * 12;
-//		}
-
 		boolean vertexArrayHasBeenZeroed = false;
-		if (modelVertexArray == null || modelVertexArray.length < modelVertexArraySize) {
-			RuneLite.timeStart("allocate vertex array: " + modelVertexArraySize);
+		if (modelVertexArray == null || modelVertexArray.length < modelVertexArraySize)
+		{
 			modelVertexArray = new int[modelVertexArraySize];
 			vertexArrayHasBeenZeroed = true;
-			RuneLite.timeEnd();
 		}
 
 		boolean uvArrayHasBeenZeroed = false;
-		if (modelUvArray == null || modelUvArray.length < modelUvArraySize) {
-			// The UV data will likely never even come close to filling this array as not many faces are textured, but use the absolute max to be safe
-			RuneLite.timeStart("allocate uv array: " + modelUvArraySize);
+		if (modelUvArray == null || modelUvArray.length < modelUvArraySize)
+		{
 			modelUvArray = new float[modelUvArraySize];
 			uvArrayHasBeenZeroed = true;
-			RuneLite.timeEnd();
 		}
 
 		modelVertexArrayOffset = 0;
 		modelUvArrayOffset = 0;
 
-		RuneLite.timeStart("upload models");
-		for (Model model : models) {
+		for (Model model : models)
+		{
 			uploadModel(model, vertexArrayHasBeenZeroed, uvArrayHasBeenZeroed);
 		}
-		RuneLite.timeEnd();
 
-		RuneLite.timeStart("ensure capacity: " + modelVertexArrayOffset + ", " + modelUvArrayOffset);
 		vertexBuffer.ensureCapacity(modelVertexArrayOffset);
 		uvBuffer.ensureCapacity(modelUvArrayOffset);
-		RuneLite.timeEnd();
 
-		RuneLite.timeStart("transfer data to buffers");
 		vertexBuffer.getBuffer().put(modelVertexArray, 0, modelVertexArrayOffset);
 		uvBuffer.getBuffer().put(modelUvArray, 0, modelUvArrayOffset);
-		RuneLite.timeEnd();
 
-		models = null;
-//		modelVertexArray = null;
-//		modelUvArray = null;
 		modelVertexArrayOffset = 0;
 		modelUvArrayOffset = 0;
 	}
 
-	private void upload(Tile tile, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	private void upload(Tile tile, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer, ArrayList<Model> models)
 	{
 		Tile bridge = tile.getBridge();
 		if (bridge != null)
 		{
-			upload(bridge, vertexBuffer, uvBuffer);
+			upload(bridge, vertexBuffer, uvBuffer, models);
 		}
 
 		SceneTilePaint sceneTilePaint = tile.getSceneTilePaint();
@@ -176,6 +148,7 @@ class SceneUploader
 		{
 			sceneTilePaint.setBufferOffset(offset);
 			sceneTilePaint.setUvBufferOffset(sceneTilePaint.getTexture() != -1 ? uvoffset : -1);
+
 			Point tilePoint = tile.getSceneLocation();
 			int len = upload(sceneTilePaint,
 				tile.getRenderLevel(), tilePoint.getX(), tilePoint.getY(),
@@ -194,6 +167,7 @@ class SceneUploader
 		{
 			sceneTileModel.setBufferOffset(offset);
 			sceneTileModel.setUvBufferOffset(sceneTileModel.getTriangleTextureId() != null ? uvoffset : -1);
+
 			Point tilePoint = tile.getSceneLocation();
 			int len = upload(sceneTileModel,
 				tilePoint.getX(), tilePoint.getY(),
@@ -210,21 +184,21 @@ class SceneUploader
 		WallObject wallObject = tile.getWallObject();
 		if (wallObject != null)
 		{
-			addModel(wallObject.getRenderable1());
-			addModel(wallObject.getRenderable2());
+			addModel(models, wallObject.getRenderable1());
+			addModel(models, wallObject.getRenderable2());
 		}
 
 		GroundObject groundObject = tile.getGroundObject();
 		if (groundObject != null)
 		{
-			addModel(groundObject.getRenderable());
+			addModel(models, groundObject.getRenderable());
 		}
 
 		DecorativeObject decorativeObject = tile.getDecorativeObject();
 		if (decorativeObject != null)
 		{
-			addModel(decorativeObject.getRenderable());
-			addModel(decorativeObject.getRenderable2());
+			addModel(models, decorativeObject.getRenderable());
+			addModel(models, decorativeObject.getRenderable2());
 		}
 
 		GameObject[] gameObjects = tile.getGameObjects();
@@ -232,15 +206,18 @@ class SceneUploader
 		{
 			if (gameObject != null)
 			{
-				addModel(gameObject.getRenderable());
+				addModel(models, gameObject.getRenderable());
 			}
 		}
 	}
 
-	private void addModel(Renderable renderable) {
-		if (renderable instanceof Model) {
+	private void addModel(ArrayList<Model> models, Renderable renderable)
+	{
+		if (renderable instanceof Model)
+		{
 			Model model = (Model) renderable;
-			if (model.getSceneId() != sceneId) {
+			if (model.getSceneId() != sceneId)
+			{
 				models.add(model);
 				model.setSceneId(sceneId);
 			}
@@ -529,8 +506,6 @@ class SceneUploader
 
 		for (int i = 0; i < triangleCount; ++i)
 		{
-//			pushFace(model, i, padUvs, vertexBuffer, uvBuffer, 0, 0, 0, 0);
-
 			int color1 = color1s[i];
 			int color2 = color2s[i];
 			int color3 = color3s[i];
