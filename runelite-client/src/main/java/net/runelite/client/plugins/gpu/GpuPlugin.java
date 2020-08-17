@@ -1349,21 +1349,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		vertexBuffer.clear();
 		uvBuffer.clear();
 
-		// long time = System.nanoTime();
+		 long time = System.nanoTime();
 		sceneUploader.upload(client.getScene(), vertexBuffer, uvBuffer);
-		// System.out.println("Scene " + ((System.nanoTime() - time)/1000.0)/1000.0 + "ms");
+		 System.out.println("Scene " + ((System.nanoTime() - time)/1000.0)/1000.0 + "ms");
 
 		vertexBuffer.flip();
 		uvBuffer.flip();
 
-		IntBuffer vertexBuffer = this.vertexBuffer.getBuffer();
-		FloatBuffer uvBuffer = this.uvBuffer.getBuffer();
-
 		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, bufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexBuffer.limit() * Integer.BYTES, vertexBuffer, gl.GL_STATIC_COPY);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexBuffer.limit() * Integer.BYTES, vertexBuffer.getBuffer(), gl.GL_STATIC_COPY);
 
 		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, uvBufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, uvBuffer.limit() * Float.BYTES, uvBuffer, gl.GL_STATIC_COPY);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, uvBuffer.limit() * Float.BYTES, uvBuffer.getBuffer(), gl.GL_STATIC_COPY);
 
 		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0);
 
