@@ -31,11 +31,18 @@ class GLUtil
 	private static final int ERR_LEN = 1024;
 
 	private static final int[] buf = new int[1];
+	private static final float[] fbuf = new float[1];
 
 	static int glGetInteger(GL4 gl, int pname)
 	{
 		gl.glGetIntegerv(pname, buf, 0);
 		return buf[0];
+	}
+
+	static float glGetFloat(GL4 gl, int pname)
+	{
+		gl.glGetFloatv(pname, fbuf, 0);
+		return fbuf[0];
 	}
 
 	static int glGetShader(GL4 gl, int shader, int pname)
