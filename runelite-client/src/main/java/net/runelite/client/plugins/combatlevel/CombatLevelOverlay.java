@@ -110,17 +110,17 @@ class CombatLevelOverlay extends Overlay
 
 		if ((attackLevel + strengthLevel + meleeNeed) <= Experience.MAX_REAL_LEVEL * 2)
 		{
-			sb.append(meleeNeed).append(" ").append(attackLevel < Experience.MAX_REAL_LEVEL ? "Attack" : "")
-					.append((attackLevel < Experience.MAX_REAL_LEVEL && strengthLevel < Experience.MAX_REAL_LEVEL) ?
-							"/" : "")
-					.append(strengthLevel < Experience.MAX_REAL_LEVEL ? "Strength" : "").append("</br>");
+			sb.append(meleeNeed).append(" ")
+				.append(attackLevel < Experience.MAX_REAL_LEVEL ? "Attack" : "")
+				.append((attackLevel < Experience.MAX_REAL_LEVEL && strengthLevel < Experience.MAX_REAL_LEVEL) ? "/" : "")
+				.append(strengthLevel < Experience.MAX_REAL_LEVEL ? "Strength" : "").append("</br>");
 		}
 		if ((hitpointsLevel + defenceLevel + hpDefNeed) <= Experience.MAX_REAL_LEVEL * 2)
 		{
-			sb.append(hpDefNeed).append(" ").append(defenceLevel < Experience.MAX_REAL_LEVEL ? "Defence" : "")
-					.append((defenceLevel < Experience.MAX_REAL_LEVEL && hitpointsLevel < Experience.MAX_REAL_LEVEL) ?
-							"/" : "")
-					.append(hitpointsLevel < Experience.MAX_REAL_LEVEL ? "Hitpoints" : "").append("</br>");
+			sb.append(hpDefNeed).append(" ")
+				.append(defenceLevel < Experience.MAX_REAL_LEVEL ? "Defence" : "")
+				.append((defenceLevel < Experience.MAX_REAL_LEVEL && hitpointsLevel < Experience.MAX_REAL_LEVEL) ? "/" : "")
+				.append(hitpointsLevel < Experience.MAX_REAL_LEVEL ? "Hitpoints" : "").append("</br>");
 		}
 		if ((rangeLevel + rangeNeed) <= Experience.MAX_REAL_LEVEL)
 		{
