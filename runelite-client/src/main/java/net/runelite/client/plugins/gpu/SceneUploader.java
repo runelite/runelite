@@ -483,10 +483,8 @@ class SceneUploader
 		}
 	}
 
-	int pushModel(Model model, boolean padUvs, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	static public int pushModel(Model model, int faceCount, boolean padUvs, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
-		final int triangleCount = model.getTrianglesCount();
-
 		final int[] vertexX = model.getVerticesX();
 		final int[] vertexY = model.getVerticesY();
 		final int[] vertexZ = model.getVerticesZ();
@@ -504,7 +502,7 @@ class SceneUploader
 		float[][] u = model.getFaceTextureUCoordinates();
 		float[][] v = model.getFaceTextureVCoordinates();
 
-		for (int i = 0; i < triangleCount; ++i)
+		for (int i = 0; i < faceCount; ++i)
 		{
 			int color1 = color1s[i];
 			int color2 = color2s[i];
@@ -524,7 +522,7 @@ class SceneUploader
 				continue;
 			}
 
-			int alphaAndPriority = this.joinAlphaAndPriorityForFace(model, i);
+			int alphaAndPriority = joinAlphaAndPriorityForFace(model, i);
 
 			int triangleA = trianglesX[i];
 			int triangleB = trianglesY[i];
@@ -551,10 +549,10 @@ class SceneUploader
 			}
 
 		}
-		return triangleCount * 3;
+		return faceCount * 3;
 	}
 
-	int pushFace(Model model, int face, boolean padUvs, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
+	static int pushFace(Model model, int face, boolean padUvs, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
 		int xOffset, int yOffset, int zOffset, int orientation)
 	{
 		final int[] color1s = model.getFaceColors1();
@@ -593,7 +591,7 @@ class SceneUploader
 		int triangleB = trianglesY[face];
 		int triangleC = trianglesZ[face];
 
-		int alphaAndPriority = this.joinAlphaAndPriorityForFace(model, face);
+		int alphaAndPriority = joinAlphaAndPriorityForFace(model, face);
 
 		if (orientation == 0)
 		{
@@ -652,7 +650,7 @@ class SceneUploader
 		return 3;
 	}
 
-	private int joinAlphaAndPriorityForFace(Model model, int face)
+	static private int joinAlphaAndPriorityForFace(Model model, int face)
 	{
 		final byte[] transparencies = model.getTriangleTransparencies();
 		final short[] faceTextures = model.getFaceTextures();

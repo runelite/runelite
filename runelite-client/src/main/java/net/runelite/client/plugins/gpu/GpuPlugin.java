@@ -1510,7 +1510,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				int faces = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
 				vertexBuffer.ensureCapacity(12 * faces);
 				uvBuffer.ensureCapacity(12 * faces);
-				int len = sceneUploader.pushModel(model, false, vertexBuffer, uvBuffer);
+				int len = SceneUploader.pushModel(model, faces, false, vertexBuffer, uvBuffer);
 
 				GpuIntBuffer b = bufferForTriangles(faces);
 
@@ -1542,7 +1542,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			return false;
 		}
 
-		targetBufferOffset += sceneUploader.pushFace(model, face, true, vertexBuffer, uvBuffer, modelX, modelY, modelZ, modelOrientation);
+		targetBufferOffset += SceneUploader.pushFace(model, face, true, vertexBuffer, uvBuffer, modelX, modelY, modelZ, modelOrientation);
 		return true;
 	}
 
