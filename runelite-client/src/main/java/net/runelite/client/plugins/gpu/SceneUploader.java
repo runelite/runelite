@@ -54,8 +54,13 @@ class SceneUploader
 	private int offset;
 	private int uvoffset;
 
+	// These arrays are used as temporary scratch space to collect model data before passing it to the actual buffers.
+	// They are long-lived and will grow to the largest they will need to be for the entire session.
+	// If memory is an issue we could reallocate these occasionally or never preserve them in the first place, though
+	//  this would negate their performance benefit.
 	private int[] modelVertexArray;
 	private float[] modelUvArray;
+
 	private int modelVertexArrayOffset;
 	private int modelUvArrayOffset;
 
@@ -534,18 +539,7 @@ class SceneUploader
 
 			if (padUvs || faceTextures != null)
 			{
-				float[] uf, vf;
-				if (faceTextures != null && u != null && v != null && (uf = u[i]) != null && (vf = v[i]) != null)
-				{
-					float texture = faceTextures[i] + 1f;
-					uvBuffer.put(texture, uf[0], vf[0], 0f);
-					uvBuffer.put(texture, uf[1], vf[1], 0f);
-					uvBuffer.put(texture, uf[2], vf[2], 0f);
-				}
-				else
-				{
-					uvBuffer.put(TWELVE_ZERO_FLOATS);
-				}
+				pushUvDataForFace(uvBuffer, faceTextures, u, v, i);
 			}
 
 		}
@@ -633,21 +627,25 @@ class SceneUploader
 		{
 			float[][] u = model.getFaceTextureUCoordinates();
 			float[][] v = model.getFaceTextureVCoordinates();
-			float[] uf, vf;
-			if (faceTextures != null && u != null && v != null && (uf = u[face]) != null && (vf = v[face]) != null)
-			{
-				float texture = faceTextures[face] + 1f;
-				uvBuffer.put(texture, uf[0], vf[0], 0f);
-				uvBuffer.put(texture, uf[1], vf[1], 0f);
-				uvBuffer.put(texture, uf[2], vf[2], 0f);
-			}
-			else
-			{
-				uvBuffer.put(TWELVE_ZERO_FLOATS);
-			}
+			pushUvDataForFace(uvBuffer, faceTextures, u, v, face);
 		}
 
 		return 3;
+	}
+
+	static private void pushUvDataForFace(GpuFloatBuffer uvBuffer, short[] faceTextures, float[][] u, float[][] v, int face) {
+		float[] uf, vf;
+		if (faceTextures != null && u != null && v != null && (uf = u[face]) != null && (vf = v[face]) != null)
+		{
+			float texture = faceTextures[face] + 1f;
+			uvBuffer.put(texture, uf[0], vf[0], 0f);
+			uvBuffer.put(texture, uf[1], vf[1], 0f);
+			uvBuffer.put(texture, uf[2], vf[2], 0f);
+		}
+		else
+		{
+			uvBuffer.put(TWELVE_ZERO_FLOATS);
+		}
 	}
 
 	static private int joinAlphaAndPriorityForFace(Model model, int face)
