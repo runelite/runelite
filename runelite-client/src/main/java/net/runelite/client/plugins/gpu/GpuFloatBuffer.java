@@ -27,7 +27,6 @@ package net.runelite.client.plugins.gpu;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 
 class GpuFloatBuffer
 {
