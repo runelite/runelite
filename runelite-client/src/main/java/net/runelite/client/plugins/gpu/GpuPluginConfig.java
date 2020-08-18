@@ -117,7 +117,7 @@ public interface GpuPluginConfig extends Config
 		keyName = "anisotropicFilteringLevel",
 		name = "Anisotropic Filtering",
 		description = "Configures the anisotropic filtering level.",
-		position = 6
+		position = 7
 	)
 	default int anisotropicFilteringLevel()
 	{
