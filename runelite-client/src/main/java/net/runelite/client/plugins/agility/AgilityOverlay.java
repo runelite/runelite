@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
@@ -165,6 +166,29 @@ class AgilityOverlay extends Overlay
 				if (tilePoly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, tilePoly, color);
+				}
+			}
+		}
+
+		Collection<CrossbowmanStatue> statues = plugin.getStatues().values();
+		if (!statues.isEmpty() && config.highlightSepulchreStatues())
+		{
+			for (CrossbowmanStatue statue : statues)
+			{
+				if (statue.isAnimating())
+				{
+					// Don't need an exact clickbox so just use the convex hull since it's faster.
+					final Shape clickbox = statue.getGameObject().getConvexHull();
+
+					if (clickbox != null)
+					{
+						Color color = config.sepulchreHighlightColor();
+
+						graphics.setColor(color);
+						graphics.draw(clickbox);
+						graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 50));
+						graphics.fill(clickbox);
+					}
 				}
 			}
 		}

@@ -138,4 +138,8 @@ class Obstacles
 		// They are multilocs, thus we use the NullObjectID
 		NULL_39524, NULL_39525, NULL_39526, NULL_39527, NULL_39528, NULL_39533
 	);
+
+	static final Set<Integer> SEPULCHRE_CROSSBOWMAN_STATUES = ImmutableSet.of(
+		CROSSBOWMAN_STATUE, CROSSBOWMAN_STATUE_38445, CROSSBOWMAN_STATUE_38446
+	);
 }
