@@ -1364,14 +1364,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		vertexBuffer.flip();
 		uvBuffer.flip();
 
-		IntBuffer vertexBuffer = this.vertexBuffer.getBuffer();
-		FloatBuffer uvBuffer = this.uvBuffer.getBuffer();
-
 		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, bufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexBuffer.limit() * Integer.BYTES, vertexBuffer, gl.GL_STATIC_COPY);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexBuffer.limit() * Integer.BYTES, vertexBuffer.getBuffer(), gl.GL_STATIC_COPY);
 
 		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, uvBufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, uvBuffer.limit() * Float.BYTES, uvBuffer, gl.GL_STATIC_COPY);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, uvBuffer.limit() * Float.BYTES, uvBuffer.getBuffer(), gl.GL_STATIC_COPY);
 
 		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0);
 
@@ -1523,11 +1520,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				int faces = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
 				vertexBuffer.ensureCapacity(12 * faces);
 				uvBuffer.ensureCapacity(12 * faces);
-				int len = 0;
-				for (int i = 0; i < faces; ++i)
-				{
-					len += sceneUploader.pushFace(model, i, false, vertexBuffer, uvBuffer, 0, 0, 0, 0);
-				}
+				int len = SceneUploader.pushModel(model, faces, false, vertexBuffer, uvBuffer);
 
 				GpuIntBuffer b = bufferForTriangles(faces);
 
@@ -1559,7 +1552,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			return false;
 		}
 
-		targetBufferOffset += sceneUploader.pushFace(model, face, true, vertexBuffer, uvBuffer, modelX, modelY, modelZ, modelOrientation);
+		targetBufferOffset += SceneUploader.pushFace(model, face, true, vertexBuffer, uvBuffer, modelX, modelY, modelZ, modelOrientation);
 		return true;
 	}
 

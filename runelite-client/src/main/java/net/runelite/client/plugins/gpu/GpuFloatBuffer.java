@@ -37,6 +37,11 @@ class GpuFloatBuffer
 		buffer.put(texture).put(u).put(v).put(pad);
 	}
 
+	public void put(float[] src)
+	{
+		buffer.put(src);
+	}
+
 	void flip()
 	{
 		buffer.flip();
@@ -47,15 +52,26 @@ class GpuFloatBuffer
 		buffer.clear();
 	}
 
-	void ensureCapacity(int size)
+	void ensureCapacity(int requestedRemaining)
 	{
-		while (buffer.remaining() < size)
+		int capacity = buffer.capacity();
+		final int position = buffer.position();
+		if ((capacity - position) < requestedRemaining)
 		{
-			FloatBuffer newB = allocateDirect(buffer.capacity() * 2);
+			do {
+				capacity *= 2;
+			}
+			while ((capacity - position) < requestedRemaining);
+			FloatBuffer newB = allocateDirect(capacity);
 			buffer.flip();
 			newB.put(buffer);
 			buffer = newB;
 		}
+	}
+
+	public int limit()
+	{
+		return buffer.limit();
 	}
 
 	FloatBuffer getBuffer()
