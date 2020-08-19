@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -169,13 +170,17 @@ public class MiningPlugin extends Plugin
 	public void onAnimationChanged(final AnimationChanged event)
 	{
 		Player local = client.getLocalPlayer();
-
 		if (event.getActor() != local)
 		{
 			return;
 		}
 
 		int animId = local.getAnimation();
+		if (pickaxe != null && animId == AnimationID.DENSE_ESSENCE_CHIPPING)
+		{
+			return; // Prevent pickaxe from being modified due to animation change when chipping dense essence
+		}
+
 		Pickaxe pickaxe = Pickaxe.fromAnimation(animId);
 		if (pickaxe != null)
 		{
@@ -189,12 +194,22 @@ public class MiningPlugin extends Plugin
 		respawns.removeIf(RockRespawn::isExpired);
 		recentlyLoggedIn = false;
 
-		if (session == null || session.getLastMined() == null)
+		if (session == null)
 		{
-			return;
+			// Can't use chat messages to start mining session on Dense Essence as they don't have a chat message when mined
+			if (client.getLocalPlayer() != null && client.getLocalPlayer().getAnimation() == AnimationID.DENSE_ESSENCE_CHIPPING)
+			{
+				session = new MiningSession();
+			}
+
+			else
+			{
+				return;
+			}
 		}
 
-		if (pickaxe != null && pickaxe.matchesMiningAnimation(client.getLocalPlayer()))
+		// Addition check required as multiple animations are used when mining Dense Essence
+		if (pickaxe != null && pickaxe.matchesMiningAnimation(client.getLocalPlayer()) || client.getLocalPlayer().getAnimation() == AnimationID.DENSE_ESSENCE_CHIPPING)
 		{
 			session.setLastMined();
 			return;
