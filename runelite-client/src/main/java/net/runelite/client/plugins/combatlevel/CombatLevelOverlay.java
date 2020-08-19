@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -81,7 +82,8 @@ class CombatLevelOverlay extends Overlay
 		return null;
 	}
 
-	private String getLevelsUntilTooltip()
+	@VisibleForTesting
+	String getLevelsUntilTooltip()
 	{
 		// grab combat skills from player
 		int attackLevel = client.getRealSkillLevel(Skill.ATTACK);
