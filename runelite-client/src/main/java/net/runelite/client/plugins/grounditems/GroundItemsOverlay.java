@@ -395,7 +395,14 @@ public class GroundItemsOverlay extends Overlay
 			// Items in the KBD instance use the standard despawn timer
 			else if (isInKBD())
 			{
-				despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
+				if (groundItem.getLootType() == LootType.DROPPED)
+				{
+					despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
+				}
+				else
+				{
+					despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
+				}
 			}
 			else
 			{
