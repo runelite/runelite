@@ -63,7 +63,8 @@ class GpuIntBuffer
 		final int position = buffer.position();
 		if ((capacity - position) < requestedRemaining)
 		{
-			do {
+			do
+			{
 				capacity *= 2;
 			}
 			while ((capacity - position) < requestedRemaining);
