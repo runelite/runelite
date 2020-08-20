@@ -45,9 +45,6 @@ import net.runelite.api.WallObject;
 class SceneUploader
 {
 
-	private static final int[] TWELVE_ZERO_INTS = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	private static final float[] TWELVE_ZERO_FLOATS = { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
-
 	@Inject
 	private Client client;
 
@@ -323,7 +320,9 @@ class SceneUploader
 				}
 				else
 				{
-					uvBuffer.put(TWELVE_ZERO_FLOATS);
+					uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
+					uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
+					uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
 				}
 			}
 		}
@@ -381,11 +380,15 @@ class SceneUploader
 			}
 			else if (color3 == -2)
 			{
-				vertexBuffer.put(TWELVE_ZERO_INTS);
+				vertexBuffer.put(0, 0, 0, 0);
+				vertexBuffer.put(0, 0, 0, 0);
+				vertexBuffer.put(0, 0, 0, 0);
 
 				if (faceTextures != null)
 				{
-					uvBuffer.put(TWELVE_ZERO_FLOATS);
+					uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
+					uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
+					uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
 				}
 				len += 3;
 				continue;
@@ -458,11 +461,15 @@ class SceneUploader
 		}
 		else if (color3 == -2)
 		{
-			vertexBuffer.put(TWELVE_ZERO_INTS);
+			vertexBuffer.put(0, 0, 0, 0);
+			vertexBuffer.put(0, 0, 0, 0);
+			vertexBuffer.put(0, 0, 0, 0);
 
 			if (padUvs || faceTextures != null)
 			{
-				uvBuffer.put(TWELVE_ZERO_FLOATS);
+				uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
+				uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
+				uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
 			}
 			return 3;
 		}
@@ -563,7 +570,9 @@ class SceneUploader
 		}
 		else
 		{
-			uvBuffer.put(TWELVE_ZERO_FLOATS);
+			uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
+			uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
+			uvBuffer.put(0.0f, 0.0f, 0.0f, 0.0f);
 		}
 	}
 }
