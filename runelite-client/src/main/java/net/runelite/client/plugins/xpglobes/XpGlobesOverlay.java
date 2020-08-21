@@ -96,17 +96,15 @@ public class XpGlobesOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final int queueSize = plugin.getXpGlobesSize();
+		final List<XpGlobe> xpGlobes = plugin.getXpGlobes();
+		final int queueSize = xpGlobes.size();
 		if (queueSize == 0)
 		{
 			return null;
 		}
 
-		final List<XpGlobe> sortedXpGlobes = plugin.getXpGlobes();
-		sortedXpGlobes.sort((a, b) -> a.getSkill().compareTo(b.getSkill()));
-
 		int curDrawX = 0;
-		for (final XpGlobe xpGlobe : sortedXpGlobes)
+		for (final XpGlobe xpGlobe : xpGlobes)
 		{
 			int startXp = xpTrackerService.getStartGoalXp(xpGlobe.getSkill());
 			int goalXp = xpTrackerService.getEndGoalXp(xpGlobe.getSkill());
