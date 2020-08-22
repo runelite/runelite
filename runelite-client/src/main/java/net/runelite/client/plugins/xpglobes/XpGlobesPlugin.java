@@ -156,7 +156,21 @@ public class XpGlobesPlugin extends Plugin
 		{
 			Instant expireTime = Instant.now()
 				.minusSeconds(config.xpOrbDuration());
-			xpGlobes.removeIf(globe -> globe.getTime().isBefore(expireTime));
+			if (config.expireAtSameTime())
+			{
+				Instant latest = xpGlobes.stream()
+					.max(Comparator.comparing(XpGlobe::getTime))
+					.map(XpGlobe::getTime)
+					.get();
+				if (latest.isBefore(expireTime))
+				{
+					xpGlobes.clear();
+				}
+			}
+			else
+			{
+				xpGlobes.removeIf(globe -> globe.getTime().isBefore(expireTime));
+			}
 		}
 	}
 
