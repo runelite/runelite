@@ -25,8 +25,11 @@
 package net.runelite.http.api.hiscore;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -46,16 +49,14 @@ public class HiscoreClient
 		return lookup(username, endpoint.getHiscoreURL());
 	}
 
+	public CompletableFuture<HiscoreResult> lookupAsync(String username, HiscoreEndpoint endpoint)
+	{
+		return lookupAsync(username, endpoint.getHiscoreURL());
+	}
+
 	public HiscoreResult lookup(String username, HttpUrl endpoint) throws IOException
 	{
-		HiscoreResultBuilder resultBuilder = lookupUsername(username, endpoint);
-
-		if (resultBuilder == null)
-		{
-			return null;
-		}
-
-		return resultBuilder.build();
+		return lookupSync(username, endpoint);
 	}
 
 	public HiscoreResult lookup(String username) throws IOException
@@ -65,14 +66,12 @@ public class HiscoreClient
 
 	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill, HiscoreEndpoint endpoint) throws IOException
 	{
-		HiscoreResultBuilder resultBuilder = lookupUsername(username, endpoint.getHiscoreURL());
+		HiscoreResult result = lookupSync(username, endpoint.getHiscoreURL());
 
-		if (resultBuilder == null)
+		if (result == null)
 		{
 			return null;
 		}
-
-		HiscoreResult result = resultBuilder.build();
 
 		Skill requested = result.getSkill(skill);
 		SingleHiscoreSkillResult skillResult = new SingleHiscoreSkillResult();
@@ -87,7 +86,44 @@ public class HiscoreClient
 		return lookup(username, skill, HiscoreEndpoint.NORMAL);
 	}
 
-	private HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
+	private HiscoreResult lookupSync(String username, HttpUrl hiscoreUrl) throws IOException
+	{
+		try (Response response = client.newCall(buildRequest(username, hiscoreUrl)).execute())
+		{
+			return processResponse(username, response);
+		}
+	}
+
+	private CompletableFuture<HiscoreResult> lookupAsync(String username, HttpUrl hiscoreUrl)
+	{
+		CompletableFuture<HiscoreResult> future = new CompletableFuture<>();
+
+		client.newCall(buildRequest(username, hiscoreUrl)).enqueue(new Callback()
+		{
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				future.completeExceptionally(e);
+			}
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException
+			{
+				try
+				{
+					future.complete(processResponse(username, response));
+				}
+				finally
+				{
+					response.close();
+				}
+			}
+		});
+
+		return future;
+	}
+
+	private static Request buildRequest(String username, HttpUrl hiscoreUrl)
 	{
 		HttpUrl url = hiscoreUrl.newBuilder()
 			.addQueryParameter("player", username)
@@ -95,28 +131,29 @@ public class HiscoreClient
 
 		log.debug("Built URL {}", url);
 
-		Request okrequest = new Request.Builder()
+		return new Request.Builder()
 			.url(url)
 			.build();
+	}
 
-		String responseStr;
-
-		try (Response okresponse = client.newCall(okrequest).execute())
+	private static HiscoreResult processResponse(String username, Response response) throws IOException
+	{
+		if (!response.isSuccessful())
 		{
-			if (!okresponse.isSuccessful())
+			if (response.code() == 404)
 			{
-				switch (okresponse.code())
-				{
-					case 404:
-						return null;
-					default:
-						throw new IOException("Error retrieving data from Jagex Hiscores: " + okresponse);
-				}
+				return null;
 			}
 
-			responseStr = okresponse.body().string();
+			throw new IOException("Error retrieving data from Jagex Hiscores: " + response);
 		}
 
+		String responseStr = response.body().string();
+		return parseResponse(username, responseStr);
+	}
+
+	private static HiscoreResult parseResponse(String username, String responseStr) throws IOException
+	{
 		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
 
 		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
@@ -147,6 +184,6 @@ public class HiscoreClient
 			hiscoreBuilder.setNextSkill(skill);
 		}
 
-		return hiscoreBuilder;
+		return hiscoreBuilder.build();
 	}
 }

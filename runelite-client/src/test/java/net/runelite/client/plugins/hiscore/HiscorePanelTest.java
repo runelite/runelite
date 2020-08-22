@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.hiscore;
 
-import java.util.concurrent.ScheduledExecutorService;
 import static net.runelite.client.plugins.hiscore.HiscorePanel.formatLevel;
 import okhttp3.OkHttpClient;
 import static org.junit.Assert.assertEquals;
@@ -36,7 +35,7 @@ public class HiscorePanelTest
 	@Test
 	public void testConstructor()
 	{
-		new HiscorePanel(mock(ScheduledExecutorService.class), null, mock(HiscoreConfig.class), mock(NameAutocompleter.class), mock(OkHttpClient.class));
+		new HiscorePanel(null, mock(HiscoreConfig.class), mock(NameAutocompleter.class), mock(OkHttpClient.class));
 	}
 
 	@Test

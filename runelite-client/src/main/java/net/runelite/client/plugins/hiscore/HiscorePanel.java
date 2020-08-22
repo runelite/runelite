@@ -38,17 +38,16 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -119,7 +118,6 @@ public class HiscorePanel extends PluginPanel
 		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.TOURNAMENT
 	};
 
-	private final ScheduledExecutorService executor;
 	private final Client client;
 	private final HiscoreConfig config;
 	private final NameAutocompleter nameAutocompleter;
@@ -140,10 +138,9 @@ public class HiscorePanel extends PluginPanel
 	private boolean loading = false;
 
 	@Inject
-	public HiscorePanel(ScheduledExecutorService scheduledExecutorService, @Nullable Client client,
+	public HiscorePanel(@Nullable Client client,
 		HiscoreConfig config, NameAutocompleter nameAutocompleter, OkHttpClient okHttpClient)
 	{
-		this.executor = scheduledExecutorService;
 		this.client = client;
 		this.config = config;
 		this.nameAutocompleter = nameAutocompleter;
@@ -171,7 +168,7 @@ public class HiscorePanel extends PluginPanel
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.setMinimumSize(new Dimension(0, 30));
-		searchBar.addActionListener(e -> executor.execute(this::lookup));
+		searchBar.addActionListener(e -> lookup());
 		searchBar.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -193,6 +190,12 @@ public class HiscorePanel extends PluginPanel
 					lookup(localPlayer.getName());
 				}
 			}
+		});
+		searchBar.addClearListener(() ->
+		{
+			searchBar.setIcon(IconTextField.Icon.SEARCH);
+			searchBar.setEditable(true);
+			loading = false;
 		});
 
 		add(searchBar, c);
@@ -231,7 +234,7 @@ public class HiscorePanel extends PluginPanel
 						return;
 					}
 
-					executor.execute(HiscorePanel.this::lookup);
+					lookup();
 				}
 			});
 
@@ -359,14 +362,12 @@ public class HiscorePanel extends PluginPanel
 	{
 		searchBar.setText(username);
 		resetEndpoints();
-		executor.execute(this::lookup);
+		lookup();
 	}
 
 	private void lookup()
 	{
-		String lookup = searchBar.getText();
-
-		lookup = sanitize(lookup);
+		final String lookup = sanitize(searchBar.getText());
 
 		if (Strings.isNullOrEmpty(lookup))
 		{
@@ -401,33 +402,40 @@ public class HiscorePanel extends PluginPanel
 			selectedEndPoint = HiscoreEndpoint.NORMAL;
 		}
 
-		HiscoreResult result;
-		try
-		{
-			log.debug("Hiscore endpoint " + selectedEndPoint.name() + " selected");
-			result = hiscoreClient.lookup(lookup, selectedEndPoint);
-		}
-		catch (IOException ex)
-		{
-			log.warn("Error fetching Hiscore data " + ex.getMessage());
-			searchBar.setIcon(IconTextField.Icon.ERROR);
-			searchBar.setEditable(true);
-			loading = false;
-			return;
-		}
+		hiscoreClient.lookupAsync(lookup, selectedEndPoint).whenCompleteAsync((result, ex) ->
+			SwingUtilities.invokeLater(() ->
+			{
+				if (!sanitize(searchBar.getText()).equals(lookup))
+				{
+					// search has changed in the meantime
+					return;
+				}
 
-		if (result == null)
-		{
-			searchBar.setIcon(IconTextField.Icon.ERROR);
-			searchBar.setEditable(true);
-			loading = false;
-			return;
-		}
+				if (result == null || ex != null)
+				{
+					if (ex != null)
+					{
+						log.warn("Error fetching Hiscore data " + ex.getMessage());
+					}
 
-		//successful player search
-		searchBar.setIcon(IconTextField.Icon.SEARCH);
-		searchBar.setEditable(true);
-		loading = false;
+					searchBar.setIcon(IconTextField.Icon.ERROR);
+					searchBar.setEditable(true);
+					loading = false;
+					return;
+				}
+
+				//successful player search
+				searchBar.setIcon(IconTextField.Icon.SEARCH);
+				searchBar.setEditable(true);
+				loading = false;
+
+				applyHiscoreResult(result);
+			}));
+	}
+
+	private void applyHiscoreResult(HiscoreResult result)
+	{
+		assert SwingUtilities.isEventDispatchThread();
 
 		nameAutocompleter.addToSearchHistory(result.getPlayer().toLowerCase());
 
