@@ -102,7 +102,7 @@ public class XpGlobesPlugin extends Plugin
 		int skillIdx = skill.ordinal();
 		XpGlobe cachedGlobe = globeCache[skillIdx];
 
-		// ExperienceChanged event occurs when stats drain/boost check we have an change to actual xp
+		// StatChanged event occurs when stats drain/boost; check we have an change to actual xp
 		if (cachedGlobe != null && (cachedGlobe.getCurrentXp() >= currentXp))
 		{
 			return;
@@ -119,7 +119,7 @@ public class XpGlobesPlugin extends Plugin
 			cachedGlobe.setCurrentXp(currentXp);
 			cachedGlobe.setCurrentLevel(currentLevel);
 			cachedGlobe.setTime(Instant.now());
-			addXpGlobe(globeCache[skillIdx]);
+			addXpGlobe(cachedGlobe);
 		}
 		else
 		{
