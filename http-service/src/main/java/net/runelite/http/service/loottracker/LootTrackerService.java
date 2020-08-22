@@ -33,6 +33,7 @@ import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
@@ -75,11 +76,16 @@ public class LootTrackerService
 	private static final String DELETE_LOOT_ACCOUNT_EVENTID = "DELETE FROM loottracker_kills WHERE accountId = :accountId AND eventId = :eventId";
 
 	private final Sql2o sql2o;
+	private final int historyDays;
 
 	@Autowired
-	public LootTrackerService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public LootTrackerService(
+		@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		@Value("${runelite.loottracker.history}") int historyDays
+	)
 	{
 		this.sql2o = sql2o;
+		this.historyDays = historyDays;
 
 		// Ensure necessary tables exist
 		try (Connection con = sql2o.open())
@@ -197,7 +203,7 @@ public class LootTrackerService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from loottracker_kills where last_time < current_timestamp() - interval 30 day")
+			con.createQuery("delete from loottracker_kills where last_time < current_timestamp() - interval " + historyDays + " day")
 				.executeUpdate();
 		}
 	}
