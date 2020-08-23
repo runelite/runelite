@@ -28,6 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.List;
+import java.util.UUID;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.discord.DiscordPresence;
@@ -71,6 +72,7 @@ public class DiscordStateTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(partyService.getLocalPartyId()).thenReturn(UUID.nameUUIDFromBytes("test".getBytes()));
 	}
 
 	@Test
