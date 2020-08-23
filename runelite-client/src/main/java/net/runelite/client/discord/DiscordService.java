@@ -182,12 +182,15 @@ public class DiscordService implements AutoCloseable
 	 *
 	 * @param userId The id of the user to respond to
 	 * @param reply  The reply type
+	 * @see DiscordRPC#DISCORD_REPLY_NO
+	 * @see DiscordRPC#DISCORD_REPLY_YES
+	 * @see DiscordRPC#DISCORD_REPLY_IGNORE
 	 */
-	public void respondToRequest(String userId, DiscordReplyType reply)
+	public void respondToRequest(String userId, int reply)
 	{
 		if (discordRPC != null)
 		{
-			discordRPC.Discord_Respond(userId, reply.ordinal());
+			discordRPC.Discord_Respond(userId, reply);
 		}
 	}
 
