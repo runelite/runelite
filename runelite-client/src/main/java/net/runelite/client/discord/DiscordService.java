@@ -207,6 +207,7 @@ public class DiscordService implements AutoCloseable
 
 	private void disconnected(int errorCode, String message)
 	{
+		log.debug("Discord disconnected {}: {}", errorCode, message);
 		eventBus.post(new DiscordDisconnected(errorCode, message));
 	}
 
@@ -218,16 +219,19 @@ public class DiscordService implements AutoCloseable
 
 	private void joinGame(String joinSecret)
 	{
+		log.debug("Discord join game: {}", joinSecret);
 		eventBus.post(new DiscordJoinGame(joinSecret));
 	}
 
 	private void spectateGame(String spectateSecret)
 	{
+		log.debug("Discord spectate game: {}", spectateSecret);
 		eventBus.post(new DiscordSpectateGame(spectateSecret));
 	}
 
 	private void joinRequest(DiscordUser user)
 	{
+		log.debug("Discord join request: {}", user);
 		eventBus.post(new DiscordJoinRequest(
 			user.userId,
 			user.username,
