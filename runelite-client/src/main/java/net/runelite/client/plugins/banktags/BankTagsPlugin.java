@@ -505,69 +505,67 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			return;
 		}
 
-		// allow time for the tab interface to become active
-		clientThread.invokeLater(() ->
+		if (!tabInterface.isActive())
 		{
-			if (!tabInterface.isActive())
+			return;
+		}
+
+		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (itemContainer == null)
+		{
+			return;
+		}
+
+		int items = 0;
+
+		Widget[] containerChildren = itemContainer.getDynamicChildren();
+
+		// sort the child array as the items are not in the displayed order
+		Arrays.sort(containerChildren, Comparator.comparing(Widget::getOriginalY)
+			.thenComparing(Widget::getOriginalX));
+
+		for (Widget child : containerChildren)
+		{
+			if (child.getItemId() != -1 && !child.isHidden())
 			{
-				return;
-			}
+				// calculate correct item position as if this was a normal tab
+				int adjYOffset = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
+				int adjXOffset = (items % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
 
-			Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-			if (itemContainer == null)
-			{
-				return;
-			}
-
-			int items = 0;
-
-			Widget[] containerChildren = itemContainer.getDynamicChildren();
-
-			// sort the child array as the items are not in the displayed order
-			Arrays.sort(containerChildren, Comparator.comparing(Widget::getOriginalY)
-				.thenComparing(Widget::getOriginalX));
-
-			for (Widget child : containerChildren)
-			{
-				if (child.getItemId() != -1 && !child.isHidden())
+				if (child.getOriginalY() != adjYOffset)
 				{
-					// calculate correct item position as if this was a normal tab
-					int adjYOffset = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
-					int adjXOffset = (items % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
-
-					if (child.getOriginalY() != adjYOffset)
-					{
-						child.setOriginalY(adjYOffset);
-						child.revalidate();
-					}
-
-					if (child.getOriginalX() != adjXOffset)
-					{
-						child.setOriginalX(adjXOffset);
-						child.revalidate();
-					}
-
-					items++;
+					child.setOriginalY(adjYOffset);
+					child.revalidate();
 				}
 
-				// separator line or tab text
-				if (child.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
-					|| child.getText().contains("Tab"))
+				if (child.getOriginalX() != adjXOffset)
 				{
-					child.setHidden(true);
+					child.setOriginalX(adjXOffset);
+					child.revalidate();
 				}
+
+				items++;
 			}
 
-			int itemContainerHeight = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER).getHeight();
-			// add a second row of height here to allow users to scroll down when the last row is partially visible
-			int adjustedScrollHeight = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING;
-			itemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
+			// separator line or tab text
+			if (child.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
+				|| child.getText().contains("Tab"))
+			{
+				child.setHidden(true);
+			}
+		}
 
+		int itemContainerHeight = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER).getHeight();
+		// add a second row of height here to allow users to scroll down when the last row is partially visible
+		int adjustedScrollHeight = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING;
+		itemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
+
+		clientThread.invokeLater(() ->
 			client.runScript(ScriptID.UPDATE_SCROLLBAR,
 				WidgetInfo.BANK_SCROLLBAR.getId(),
 				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
-				0);
-		});
+				0));
+
 	}
 
 	@Subscribe
