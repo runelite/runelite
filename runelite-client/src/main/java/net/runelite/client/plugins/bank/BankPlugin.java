@@ -232,23 +232,26 @@ public class BankPlugin extends Plugin
 			final Widget[] children = bankItemContainer.getChildren();
 			long geTotal = 0, haTotal = 0;
 
-			log.debug("Computing bank price of {} items", bankContainer.size());
-
-			// The first components are the bank items, followed by tabs etc. There are always 816 components regardless
-			// of bank size, but we only need to check up to the bank size.
-			for (int i = 0; i < bankContainer.size(); ++i)
+			if (children != null)
 			{
-				Widget child = children[i];
-				if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
-				{
-					final int alchPrice = getHaPrice(child.getItemId());
-					geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
-					haTotal += (long) alchPrice * child.getItemQuantity();
-				}
-			}
+				log.debug("Computing bank price of {} items", bankContainer.size());
 
-			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-			bankTitle.setText(bankTitle.getText() + createValueText(geTotal, haTotal));
+				// The first components are the bank items, followed by tabs etc. There are always 816 components regardless
+				// of bank size, but we only need to check up to the bank size.
+				for (int i = 0; i < bankContainer.size(); ++i)
+				{
+					Widget child = children[i];
+					if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
+					{
+						final int alchPrice = getHaPrice(child.getItemId());
+						geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
+						haTotal += (long) alchPrice * child.getItemQuantity();
+					}
+				}
+
+				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+				bankTitle.setText(bankTitle.getText() + createValueText(geTotal, haTotal));
+			}
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
 		{
