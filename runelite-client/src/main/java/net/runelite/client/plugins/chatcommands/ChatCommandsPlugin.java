@@ -1673,6 +1673,9 @@ public class ChatCommandsPlugin extends Plugin
 			case "the corrupted gauntlet":
 				return "Corrupted Gauntlet";
 
+			case "nm":
+			case "tnm":
+			case "nmare":
 			case "the nightmare":
 				return "Nightmare";
 
