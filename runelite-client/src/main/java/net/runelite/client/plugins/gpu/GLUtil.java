@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.gpu;
 
 import com.jogamp.opengl.GL4;
+import java.nio.charset.StandardCharsets;
 
 class GLUtil
 {
@@ -63,14 +64,14 @@ class GLUtil
 	{
 		byte[] err = new byte[ERR_LEN];
 		gl.glGetShaderInfoLog(shader, ERR_LEN, buf, 0, err, 0);
-		return new String(err, 0, buf[0]);
+		return new String(err, 0, buf[0], StandardCharsets.UTF_8);
 	}
 
 	static String glGetProgramInfoLog(GL4 gl, int program)
 	{
 		byte[] err = new byte[ERR_LEN];
 		gl.glGetProgramInfoLog(program, ERR_LEN, buf, 0, err, 0);
-		return new String(err, 0, buf[0]);
+		return new String(err, 0, buf[0], StandardCharsets.UTF_8);
 	}
 
 	static int glGenVertexArrays(GL4 gl)

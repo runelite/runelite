@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -88,7 +89,7 @@ class Skybox
 
 	public Skybox(InputStream is, String filename) throws IOException
 	{
-		this(new InputStreamReader(is), filename);
+		this(new InputStreamReader(is, StandardCharsets.UTF_8), filename);
 	}
 
 	public Skybox(Reader reader, String filename) throws IOException

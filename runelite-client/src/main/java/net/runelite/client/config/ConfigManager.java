@@ -41,7 +41,6 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
@@ -224,7 +223,7 @@ public class ConfigManager
 		final Properties properties = new Properties();
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
-			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
+			properties.load(new InputStreamReader(in, StandardCharsets.UTF_8));
 		}
 		catch (Exception e)
 		{
@@ -295,7 +294,7 @@ public class ConfigManager
 
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
-			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
+			properties.load(new InputStreamReader(in, StandardCharsets.UTF_8));
 		}
 		catch (FileNotFoundException ex)
 		{

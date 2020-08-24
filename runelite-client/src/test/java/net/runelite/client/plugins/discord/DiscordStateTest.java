@@ -27,6 +27,7 @@ package net.runelite.client.plugins.discord;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -72,7 +73,7 @@ public class DiscordStateTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-		when(partyService.getLocalPartyId()).thenReturn(UUID.nameUUIDFromBytes("test".getBytes()));
+		when(partyService.getLocalPartyId()).thenReturn(UUID.nameUUIDFromBytes("test".getBytes(StandardCharsets.UTF_8)));
 	}
 
 	@Test

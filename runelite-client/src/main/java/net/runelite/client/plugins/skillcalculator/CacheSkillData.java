@@ -27,6 +27,7 @@ package net.runelite.client.plugins.skillcalculator;
 import com.google.gson.Gson;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -43,7 +44,7 @@ class CacheSkillData
 		}
 
 		InputStream skillDataFile = SkillCalculatorPlugin.class.getResourceAsStream(dataFile);
-		SkillData skillData = new Gson().fromJson(new InputStreamReader(skillDataFile), SkillData.class);
+		SkillData skillData = new Gson().fromJson(new InputStreamReader(skillDataFile, StandardCharsets.UTF_8), SkillData.class);
 
 		cache.put(dataFile, skillData);
 		return skillData;
