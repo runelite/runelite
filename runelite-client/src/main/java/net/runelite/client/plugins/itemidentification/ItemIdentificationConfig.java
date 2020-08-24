@@ -138,4 +138,15 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showTablets",
+		name = "Tablets",
+		description = "Show identification on Tablets",
+		section = identificationSection
+	)
+	default boolean showTablets()
+	{
+		return false;
+	}
 }
