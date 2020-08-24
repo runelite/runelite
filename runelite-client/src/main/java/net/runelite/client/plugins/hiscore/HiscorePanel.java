@@ -323,6 +323,7 @@ public class HiscorePanel extends PluginPanel
 		HiscoreSkillType skillType = skill == null ? HiscoreSkillType.SKILL : skill.getType();
 
 		JLabel label = new JLabel();
+		label.setToolTipText(skill == null ? "Combat" : skill.getName());
 		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setText(pad("--", skillType));
 
@@ -393,7 +394,7 @@ public class HiscorePanel extends PluginPanel
 			HiscoreSkillType skillType = skill == null ? HiscoreSkillType.SKILL : skill.getType();
 
 			label.setText(pad("--", skillType));
-			label.setToolTipText(null);
+			label.setToolTipText(skill == null ? "Combat" : skill.getName());
 		}
 
 		// if for some reason no endpoint was selected, default to normal
@@ -524,7 +525,7 @@ public class HiscorePanel extends PluginPanel
 				+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
 				+ result.getRanged().getExperience() + result.getPrayer().getExperience();
 
-			content += "<p><span style = 'color:white'>Skill:</span> Combat</p>";
+			content += "<p><span style = 'color:white'>Combat</span></p>";
 			content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + QuantityFormatter.formatNumber(combatLevel) + "</p>";
 			content += "<p><span style = 'color:white'>Experience:</span> " + QuantityFormatter.formatNumber(combatExperience) + "</p>";
 		}
@@ -548,6 +549,7 @@ public class HiscorePanel extends PluginPanel
 					String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollHard().getLevel()));
 					String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollElite().getLevel()));
 					String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
+					content += "<p><span style = 'color:white'>Clues</span></p>";
 					content += "<p><span style = 'color:white'>All:</span> " + all + " <span style = 'color:white'>Rank:</span> " + allRank + "</p>";
 					content += "<p><span style = 'color:white'>Beginner:</span> " + beginner + " <span style = 'color:white'>Rank:</span> " + beginnerRank + "</p>";
 					content += "<p><span style = 'color:white'>Easy:</span> " + easy + " <span style = 'color:white'>Rank:</span> " + easyRank + "</p>";
@@ -561,6 +563,7 @@ public class HiscorePanel extends PluginPanel
 				{
 					Skill bountyHunterRogue = result.getBountyHunterRogue();
 					String rank = (bountyHunterRogue.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterRogue.getRank());
+					content += "<p><span style = 'color:white'>Bounty Hunter - Rogue</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					if (bountyHunterRogue.getLevel() > -1)
 					{
@@ -572,6 +575,7 @@ public class HiscorePanel extends PluginPanel
 				{
 					Skill bountyHunterHunter = result.getBountyHunterHunter();
 					String rank = (bountyHunterHunter.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterHunter.getRank());
+					content += "<p><span style = 'color:white'>Bounty Hunter - Hunter</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					if (bountyHunterHunter.getLevel() > -1)
 					{
@@ -583,6 +587,7 @@ public class HiscorePanel extends PluginPanel
 				{
 					Skill lastManStanding = result.getLastManStanding();
 					String rank = (lastManStanding.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(lastManStanding.getRank());
+					content += "<p><span style = 'color:white'>Last Man Standing</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					if (lastManStanding.getLevel() > -1)
 					{
@@ -594,6 +599,7 @@ public class HiscorePanel extends PluginPanel
 				{
 					Skill leaguePoints = result.getLeaguePoints();
 					String rank = (leaguePoints.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(leaguePoints.getRank());
+					content += "<p><span style = 'color:white'>League Points</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					if (leaguePoints.getLevel() > -1)
 					{
@@ -606,7 +612,7 @@ public class HiscorePanel extends PluginPanel
 					Skill requestedSkill = result.getSkill(skill);
 					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getRank());
 					String exp = (requestedSkill.getExperience() == -1L) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getExperience());
-					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
+					content += "<p><span style = 'color:white'>" + skill.getName() + "</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
 					break;
@@ -615,17 +621,27 @@ public class HiscorePanel extends PluginPanel
 				{
 					if (skill.getType() == HiscoreSkillType.BOSS)
 					{
-						Skill requestedSkill = result.getSkill(skill);
 						String rank = "Unranked";
-						String lvl = "0";
+						String lvl = null;
+						Skill requestedSkill = result.getSkill(skill);
 						if (requestedSkill != null)
 						{
-							rank = (requestedSkill.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getRank());
-							lvl = (requestedSkill.getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(requestedSkill.getLevel()));
+							if (requestedSkill.getRank() > -1)
+							{
+								rank = QuantityFormatter.formatNumber(requestedSkill.getRank());
+							}
+							if (requestedSkill.getLevel() > -1)
+							{
+								lvl = QuantityFormatter.formatNumber(requestedSkill.getLevel());
+							}
 						}
+
 						content += "<p><span style = 'color:white'>Boss:</span> " + skill.getName() + "</p>";
 						content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-						content += "<p><span style = 'color:white'>KC:</span> " + lvl + "</p>";
+						if (lvl != null)
+						{
+							content += "<p><span style = 'color:white'>KC:</span> " + lvl + "</p>";
+						}
 					}
 					else
 					{
