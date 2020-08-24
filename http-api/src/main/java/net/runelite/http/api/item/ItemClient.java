@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +69,7 @@ public class ItemClient
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice[].class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ItemPrice[].class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -103,7 +104,7 @@ public class ItemClient
 			final Type typeToken = new TypeToken<Map<Integer, ItemStats>>()
 			{
 			}.getType();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), typeToken);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
 		}
 		catch (JsonParseException ex)
 		{

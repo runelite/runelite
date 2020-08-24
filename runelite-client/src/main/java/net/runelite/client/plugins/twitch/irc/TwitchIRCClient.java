@@ -27,8 +27,10 @@ package net.runelite.client.plugins.twitch.irc;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +50,7 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 
 	private Socket socket;
 	private BufferedReader in;
-	private PrintWriter out;
+	private Writer out;
 	private long last;
 	private boolean pingSent;
 
@@ -86,8 +88,8 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 			socket = socketFactory.createSocket(HOST, PORT);
 			socket.setSoTimeout(READ_TIMEOUT);
 
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			out = new PrintWriter(socket.getOutputStream());
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			out = new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8);
 		}
 		catch (IOException ex)
 		{
@@ -95,11 +97,11 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 			return;
 		}
 
-		register(username, password);
-		join(channel);
-
 		try
 		{
+			register(username, password);
+			join(channel);
+
 			String line;
 
 			while ((line = read()) != null)
@@ -162,8 +164,16 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 
 		if (!pingSent && System.currentTimeMillis() - last >= PING_TIMEOUT)
 		{
-			ping("twitch");
-			pingSent = true;
+			try
+			{
+				ping("twitch");
+				pingSent = true;
+			}
+			catch (IOException e)
+			{
+				log.debug("Ping failure, disconnecting.", e);
+				close();
+			}
 		}
 		else if (pingSent)
 		{
@@ -172,29 +182,29 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 		}
 	}
 
-	private void register(String username, String oauth)
+	private void register(String username, String oauth) throws IOException
 	{
 		send("CAP", "REQ", "twitch.tv/commands twitch.tv/tags");
 		send("PASS", oauth);
 		send("NICK", username);
 	}
 
-	private void join(String channel)
+	private void join(String channel) throws IOException
 	{
 		send("JOIN", channel);
 	}
 
-	private void ping(String destination)
+	private void ping(String destination) throws IOException
 	{
 		send("PING", destination);
 	}
 
-	public void privmsg(String message)
+	public void privmsg(String message) throws IOException
 	{
 		send("PRIVMSG", channel, message);
 	}
 
-	private void send(String command, String... args)
+	private void send(String command, String... args) throws IOException
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(command);

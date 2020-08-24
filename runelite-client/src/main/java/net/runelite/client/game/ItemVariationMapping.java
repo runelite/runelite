@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -53,7 +54,7 @@ public class ItemVariationMapping
 		};
 
 		final InputStream geLimitData = ItemVariationMapping.class.getResourceAsStream("/item_variations.json");
-		final Map<String, Collection<Integer>> itemVariations = gson.fromJson(new InputStreamReader(geLimitData), typeToken.getType());
+		final Map<String, Collection<Integer>> itemVariations = gson.fromJson(new InputStreamReader(geLimitData, StandardCharsets.UTF_8), typeToken.getType());
 
 		ImmutableMap.Builder<Integer, Integer> builder = new ImmutableMap.Builder<>();
 		ImmutableMultimap.Builder<Integer, Integer> invertedBuilder = new ImmutableMultimap.Builder<>();

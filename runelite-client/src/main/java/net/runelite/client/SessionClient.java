@@ -28,6 +28,7 @@ import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import net.runelite.http.api.RuneLiteAPI;
@@ -58,7 +59,7 @@ class SessionClient
 			ResponseBody body = response.body();
 			
 			InputStream in = body.byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), UUID.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), UUID.class);
 		}
 		catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
 		{
