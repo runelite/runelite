@@ -78,10 +78,18 @@ public interface XpDropConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "defaultXpDropColor",
+		name = "Default Color",
+		description = "XP drop color for noncombat and non-prayer-boosted combat experience drops",
+		position = 4
+	)
+	Color getDefaultXpDropColor();
+
+	@ConfigItem(
 		keyName = "fakeXpDropDelay",
 		name = "Fake Xp Drop delay",
 		description = "Configures how many ticks should pass between fake XP drops, 0 to disable",
-		position = 4
+		position = 5
 	)
 	@Units(Units.TICKS)
 	default int fakeXpDropDelay()
