@@ -72,9 +72,11 @@ public class BarrowsBrotherSlainOverlay extends OverlayPanel
 			potential.setHidden(true);
 		}
 
+		float BrotherReward = 0;
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
 			final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
+			BrotherReward += brotherSlain ? 1.0f : 0.0f;
 			String slain = brotherSlain ? "\u2713" : "\u2717";
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(brother.getName())
@@ -83,10 +85,10 @@ public class BarrowsBrotherSlainOverlay extends OverlayPanel
 				.build());
 		}
 
-		float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / 10.0f;
+		float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / (10.0f + BrotherReward*.02f);
 		panelComponent.getChildren().add(LineComponent.builder()
 				.left("Potential")
-				.right(rewardPercent != 0 ? rewardPercent + "%" : "0%")
+				.right(rewardPercent != 0 ? String.format("%.1f",rewardPercent) + "%" : "0%")
 				.rightColor(rewardPercent >= 73.0f && rewardPercent <= 88.0f ? Color.GREEN : rewardPercent < 65.6f ? Color.WHITE : Color.YELLOW)
 				.build());
 
