@@ -111,7 +111,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 					graphics.setColor(color);
 				}
 				graphics.draw(objectClickbox);
-				graphics.setColor(new Color(0xFF, 0, 0, 20));
+				graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
 				graphics.fill(objectClickbox);
 			}
 		}
