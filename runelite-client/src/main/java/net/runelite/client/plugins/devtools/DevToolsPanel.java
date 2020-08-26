@@ -112,6 +112,7 @@ class DevToolsPanel extends PluginPanel
 
 		container.add(plugin.getLineOfSight());
 		container.add(plugin.getValidMovement());
+		container.add(plugin.getMovementFlags());
 		container.add(plugin.getInteracting());
 		container.add(plugin.getExamine());
 
