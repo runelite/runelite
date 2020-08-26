@@ -34,11 +34,13 @@ mongo:
   jndiName: java:comp/env/mongodb/runelite
   database: runelite
 
-# Twitter client for feed
 runelite:
+  # Twitter client for feed
   twitter:
     consumerkey:
     secretkey:
     listid: 1185897074786742273
   ge:
+    history: 90 # days
+  loottracker:
     history: 90 # days

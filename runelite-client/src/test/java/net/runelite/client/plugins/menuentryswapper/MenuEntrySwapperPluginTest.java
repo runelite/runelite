@@ -398,4 +398,33 @@ public class MenuEntrySwapperPluginTest
 			menu("Empty", "Redwood birdhouse", MenuAction.GAME_OBJECT_THIRD_OPTION),
 		}, argumentCaptor.getValue());
 	}
+
+	@Test
+	public void testZanarisFairyRing()
+	{
+		when(config.swapFairyRing()).thenReturn(FairyRingMode.ZANARIS);
+
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Fairy ring", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
+
+			menu("Last-destination (AIQ)", "Fairy ring", MenuAction.GAME_OBJECT_SECOND_OPTION),
+			menu("Configure", "Fairy ring", MenuAction.GAME_OBJECT_FIRST_OPTION),
+		};
+
+		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+
+		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
+		verify(client).setMenuEntries(argumentCaptor.capture());
+
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Fairy ring", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
+
+			menu("Configure", "Fairy ring", MenuAction.GAME_OBJECT_FIRST_OPTION),
+			menu("Last-destination (AIQ)", "Fairy ring", MenuAction.GAME_OBJECT_SECOND_OPTION),
+		}, argumentCaptor.getValue());
+	}
 }

@@ -81,7 +81,14 @@ public class LootTrackerClient
 			@Override
 			public void onResponse(Call call, Response response)
 			{
-				log.debug("Submitted loot");
+				if (response.isSuccessful())
+				{
+					log.debug("Submitted loot");
+				}
+				else
+				{
+					log.warn("Error submitting loot: {} - {}", response.code(), response.message());
+				}
 				response.close();
 				future.complete(null);
 			}

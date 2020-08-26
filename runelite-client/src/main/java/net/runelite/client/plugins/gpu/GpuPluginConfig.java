@@ -108,4 +108,19 @@ public interface GpuPluginConfig extends Config
 	{
 		return true;
 	}
+
+	@Range(
+		min = 0,
+		max = 16
+	)
+	@ConfigItem(
+		keyName = "anisotropicFilteringLevel",
+		name = "Anisotropic Filtering",
+		description = "Configures the anisotropic filtering level.",
+		position = 7
+	)
+	default int anisotropicFilteringLevel()
+	{
+		return 0;
+	}
 }

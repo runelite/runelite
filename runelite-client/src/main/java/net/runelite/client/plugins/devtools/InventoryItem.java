@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2020, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.discord;
+package net.runelite.client.plugins.devtools;
 
-/**
- * Discord reply type for request
- */
-public enum DiscordReplyType
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import net.runelite.api.Item;
+
+@Data
+@AllArgsConstructor
+class InventoryItem
 {
-	/**
-	 * Used to decline a request
-	 */
-	NO,
-
-	/**
-	 * Used to accept a request
-	 */
-	YES,
-
-	/**
-	 * Currently unused response, treated like NO.
-	 */
-	IGNORE
+	private final int slot;
+	private Item item;
+	private final String name;
+	private final boolean stackable;
 }

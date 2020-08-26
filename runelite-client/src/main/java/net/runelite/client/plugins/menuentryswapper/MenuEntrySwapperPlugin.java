@@ -34,6 +34,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -199,6 +200,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "jatizso", config::swapTravel);
 		swap("talk-to", "neitiznot", config::swapTravel);
 		swap("talk-to", "rellekka", config::swapTravel);
+		swap("talk-to", "ungael", config::swapTravel);
+		swap("talk-to", "pirate's cove", config::swapTravel);
+		swap("talk-to", "waterbirth island", config::swapTravel);
+		swap("talk-to", "miscellania", config::swapTravel);
 		swap("talk-to", "follow", config::swapTravel);
 		swap("talk-to", "transport", config::swapTravel);
 		swap("talk-to", "pay", config::swapPay);
@@ -232,12 +237,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("view", "add-house", () -> config.swapHouseAdvertisement() == HouseAdvertisementMode.ADD_HOUSE);
 		swap("view", "visit-last", () -> config.swapHouseAdvertisement() == HouseAdvertisementMode.VISIT_LAST);
 
-		for (String option : new String[]{"zanaris", "configure", "tree"})
+		for (String option : new String[]{"zanaris", "tree"})
 		{
 			swapContains(option, alwaysTrue(), "last-destination", () -> config.swapFairyRing() == FairyRingMode.LAST_DESTINATION);
 			swapContains(option, alwaysTrue(), "configure", () -> config.swapFairyRing() == FairyRingMode.CONFIGURE);
 		}
 
+		swapContains("configure", alwaysTrue(), "last-destination", () ->
+			config.swapFairyRing() == FairyRingMode.LAST_DESTINATION || config.swapFairyRing() == FairyRingMode.ZANARIS);
 		swapContains("tree", alwaysTrue(), "zanaris", () -> config.swapFairyRing() == FairyRingMode.ZANARIS);
 
 		swap("check", "reset", config::swapBoxTrap);
@@ -264,7 +271,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("teleport menu", "duel arena", config::swapJewelleryBox);
 		swap("teleport menu", "castle wars", config::swapJewelleryBox);
-		swap("teleport menu", "clan wars", config::swapJewelleryBox);
+		swap("teleport menu", "ferox enclave", config::swapJewelleryBox);
 		swap("teleport menu", "burthorpe", config::swapJewelleryBox);
 		swap("teleport menu", "barbarian outpost", config::swapJewelleryBox);
 		swap("teleport menu", "corporeal beast", config::swapJewelleryBox);
@@ -295,27 +302,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("view offer", "abort offer", () -> shiftModifier() && config.swapGEAbort());
 
-		swap("cast", "npc contact", "honest jimmy", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "bert the sandman", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "advisor ghrim", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "dark mage", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "lanthus", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "turael", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "mazchna", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "vannaka", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "chaeldar", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "nieve", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "steve", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "duradel", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "krystilia", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "konar", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "murphy", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "cyrisus", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "smoggy", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "ginea", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "watson", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "barbarian guard", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "random", () -> shiftModifier() && config.swapNpcContact());
+		Arrays.asList(
+			"honest jimmy", "bert the sandman", "advisor ghrim", "dark mage", "lanthus", "turael", "mazchna", "vannaka",
+			"chaeldar", "nieve", "steve", "duradel", "krystilia", "konar", "murphy", "cyrisus", "smoggy", "ginea", "watson",
+			"barbarian guard", "amy", "random"
+		).forEach(npc -> swap("cast", "npc contact", npc, () -> shiftModifier() && config.swapNpcContact()));
 
 		swap("value", "buy 1", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_1);
 		swap("value", "buy 5", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_5);

@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.Duration;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
@@ -39,6 +40,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.itemstats.potions.PotionDuration;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -47,6 +49,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.item.ItemEquipmentStats;
 import net.runelite.http.api.item.ItemStats;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public class ItemStatOverlay extends Overlay
 {
@@ -150,6 +153,44 @@ public class ItemStatOverlay extends Overlay
 				{
 					tooltipManager.add(new Tooltip(tooltip));
 				}
+			}
+
+			PotionDuration p = PotionDuration.get(itemId);
+			if (p != null)
+			{
+				PotionDuration.PotionDurationRange[] durationRanges = p.getDurationRanges();
+				StringBuilder sb = new StringBuilder();
+				if (durationRanges.length == 1)
+				{
+					// Only show "Duration: <time>" if there is one tooltip
+					Duration duration = durationRanges[0].getLowestDuration();
+					sb.append("Duration: ").append(DurationFormatUtils.formatDuration(duration.toMillis(), "m:ss"));
+				}
+				else
+				{
+					// List the effect names and their duration (ranges)
+					for (PotionDuration.PotionDurationRange durationRange : durationRanges)
+					{
+						if (sb.length() > 0)
+						{
+							sb.append("</br>");
+						}
+
+						sb.append(durationRange.getPotionName()).append(": ");
+
+						Duration lowestDuration = durationRange.getLowestDuration();
+						sb.append(DurationFormatUtils.formatDuration(lowestDuration.toMillis(), "m:ss"));
+
+						Duration highestDuration = durationRange.getHighestDuration();
+						if (lowestDuration != highestDuration)
+						{
+							sb.append("~");
+							sb.append(DurationFormatUtils.formatDuration(highestDuration.toMillis(), "m:ss"));
+						}
+					}
+				}
+
+				tooltipManager.add(new Tooltip(sb.toString()));
 			}
 		}
 

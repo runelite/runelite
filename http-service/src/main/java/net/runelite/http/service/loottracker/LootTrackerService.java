@@ -33,6 +33,7 @@ import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
@@ -43,7 +44,7 @@ import org.sql2o.Sql2o;
 public class LootTrackerService
 {
 	private static final String CREATE_KILLS = "CREATE TABLE IF NOT EXISTS `loottracker_kills` (\n" +
-		"  `id` int(11) NOT NULL AUTO_INCREMENT,\n" +
+		"  `id` bigint NOT NULL AUTO_INCREMENT,\n" +
 		"  `first_time` timestamp NOT NULL DEFAULT current_timestamp(),\n" +
 		"  `last_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),\n" +
 		"  `accountId` int(11) NOT NULL,\n" +
@@ -58,7 +59,7 @@ public class LootTrackerService
 		") ENGINE=InnoDB;";
 
 	private static final String CREATE_DROPS = "CREATE TABLE IF NOT EXISTS `loottracker_drops` (\n" +
-		"  `killId` int(11),\n" +
+		"  `killId` bigint NOT NULL,\n" +
 		"  `itemId` int(11) NOT NULL,\n" +
 		"  `itemQuantity` int(11) NOT NULL,\n" +
 		"  UNIQUE INDEX idx_kill_item (`killId`, `itemId`),\n" +
@@ -75,11 +76,16 @@ public class LootTrackerService
 	private static final String DELETE_LOOT_ACCOUNT_EVENTID = "DELETE FROM loottracker_kills WHERE accountId = :accountId AND eventId = :eventId";
 
 	private final Sql2o sql2o;
+	private final int historyDays;
 
 	@Autowired
-	public LootTrackerService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public LootTrackerService(
+		@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		@Value("${runelite.loottracker.history}") int historyDays
+	)
 	{
 		this.sql2o = sql2o;
+		this.historyDays = historyDays;
 
 		// Ensure necessary tables exist
 		try (Connection con = sql2o.open())
@@ -197,7 +203,7 @@ public class LootTrackerService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from loottracker_kills where last_time < current_timestamp() - interval 30 day")
+			con.createQuery("delete from loottracker_kills where last_time < current_timestamp() - interval " + historyDays + " day")
 				.executeUpdate();
 		}
 	}

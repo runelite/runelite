@@ -66,7 +66,7 @@ public class PartyService
 	private UUID localPartyId = UUID.randomUUID();
 
 	@Getter
-	private UUID partyId = localPartyId;
+	private UUID partyId;
 
 	@Setter
 	private String username;
@@ -94,7 +94,6 @@ public class PartyService
 		if (partyId == null)
 		{
 			localPartyId = UUID.randomUUID(); // cycle local party id so that a new party is created now
-			partyId = localPartyId;
 
 			// close the websocket if the session id isn't for an account
 			if (sessionManager.getAccountSession() == null)
@@ -119,7 +118,7 @@ public class PartyService
 		wsClient.send(new Join(partyId, username));
 	}
 
-	@Subscribe
+	@Subscribe(priority = 1) // run prior to plugins so that the member is joined by the time the plugins see it.
 	public void onUserJoin(final UserJoin message)
 	{
 		if (!partyId.equals(message.getPartyId()))
@@ -206,8 +205,13 @@ public class PartyService
 		return Collections.unmodifiableList(members);
 	}
 
-	public boolean isOwner()
+	public boolean isInParty()
 	{
-		return partyId == null || localPartyId.equals(partyId);
+		return partyId != null;
+	}
+
+	public boolean isPartyOwner()
+	{
+		return localPartyId.equals(partyId);
 	}
 }

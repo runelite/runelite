@@ -49,4 +49,5 @@ public class GraphicID
 	public static final int NPC_CONTACT = 728;
 	public static final int POT_SHARE = 733;
 	public static final int BAKE_PIE = 746;
+	public static final int GRAPHICS_OBJECT_ROCKFALL = 1727;
 }
