@@ -34,6 +34,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -301,27 +302,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("view offer", "abort offer", () -> shiftModifier() && config.swapGEAbort());
 
-		swap("cast", "npc contact", "honest jimmy", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "bert the sandman", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "advisor ghrim", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "dark mage", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "lanthus", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "turael", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "mazchna", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "vannaka", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "chaeldar", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "nieve", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "steve", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "duradel", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "krystilia", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "konar", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "murphy", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "cyrisus", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "smoggy", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "ginea", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "watson", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "barbarian guard", () -> shiftModifier() && config.swapNpcContact());
-		swap("cast", "npc contact", "random", () -> shiftModifier() && config.swapNpcContact());
+		Arrays.asList(
+			"honest jimmy", "bert the sandman", "advisor ghrim", "dark mage", "lanthus", "turael", "mazchna", "vannaka",
+			"chaeldar", "nieve", "steve", "duradel", "krystilia", "konar", "murphy", "cyrisus", "smoggy", "ginea", "watson",
+			"barbarian guard", "amy", "random"
+		).forEach(npc -> swap("cast", "npc contact", npc, () -> shiftModifier() && config.swapNpcContact()));
 
 		swap("value", "buy 1", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_1);
 		swap("value", "buy 5", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_5);
