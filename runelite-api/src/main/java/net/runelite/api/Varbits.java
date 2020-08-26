@@ -578,7 +578,15 @@ public enum Varbits
 	 *
 	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
 	 */
-	PVP_SPEC_ORB(8121);
+	PVP_SPEC_ORB(8121),
+
+	/**
+	 * Hallowed Sepulchre
+	 */
+	HALLOWED_SEPULCHRE_TIMER(10392),
+	HALLOWED_SEPULCHRE_TIMER_PAUSED(10413),
+	HALLOWED_SEPULCHRE_TOTAL_DURATION(10393),
+	HALLOWED_SEPULCHRE_FLOOR_DURATION(10417);
 
 	/**
 	 * The raw varbit ID.
