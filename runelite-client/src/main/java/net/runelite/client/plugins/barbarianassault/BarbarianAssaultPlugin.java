@@ -34,7 +34,6 @@ import com.google.inject.Provides;
 import java.awt.*;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.AllArgsConstructor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
@@ -50,10 +49,12 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
@@ -72,26 +73,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	final int[] childIDsOfPointsWidgets = new int[]{33, 32, 25, 26, 24, 28, 31, 27, 29, 30, 21, 22, 19};
 
 	private int pointsHealer, pointsDefender , pointsCollector, pointsAttacker, totalEggsCollected, totalIncorrectAttacks, totalHealthReplenished;
-/*
-    @AllArgsConstructor
-	public enum RunCategory
-    {
-        SOLOHEALWR("Solo Heal WR"),
-        DUOHEALWR("Duo Heal WR"),
-        LEECHWR("Leech WR"),
-        SOLOHEALPB("Solo Heal PB"),
-        DUOHEALPB("Duo Heal PB"),
-        LEECHPB("Leech PB"),
-        CUSTOM("Custom");
-
-        private String name = "";
-
-        @Override
-        public String toString()
-        {
-            return name;
-        }
-    }*/
 
 	private static final Gson GSON = new Gson();
 
@@ -102,14 +83,16 @@ public class BarbarianAssaultPlugin extends Plugin
 	private GameTimer gameTime;
 
 	private String[] waveGoal = {"0:30", "0:37", "0:43", "0:42", "0:48", "1:01", "1:09", "1:12", "1:21", "1:48"};
-
-	//private HashMap<runCategory, Boolean> timeMap = new HashMap<>();
+	private String[] lastRun = {"", "", "", "", "", "", "", "", "", ""};
 
 	@Getter
 	private Round currentRound;
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private KeyManager keyManager;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -135,37 +118,61 @@ public class BarbarianAssaultPlugin extends Plugin
 		return configManager.getConfig(BarbarianAssaultConfig.class);
 	}
 
+	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.saveLastRunAsPB())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			if (config.category() == RunCategory.SOLOHEALPB ||
+					config.category() == RunCategory.DUOHEALPB ||
+					config.category() == RunCategory.LEECHPB)
+			{
+				saveTime(config.category(), lastRun);
+				announceMessage("Personal best saved for run type: " + config.category().toString() + ".");
+			}
+			else
+			{
+				announceMessage("Unable to save personal best - Invalid run type: " + config.category().toString() + ", save as a PB.");
+			}
+		}
+	};
+
+	private final HotkeyListener nextKeyListener = new HotkeyListener(() -> config.saveCustomAsPB())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			if (config.category() == RunCategory.SOLOHEALPB ||
+					config.category() == RunCategory.DUOHEALPB ||
+					config.category() == RunCategory.LEECHPB)
+			{
+				saveTime(config.category(), parseWaveTimesFromString(config.getDesiredWaveSplits()));
+				announceMessage("Personal best saved for run type: " + config.category().toString() + ".");
+			}
+			else
+			{
+				announceMessage("Unable to save personal best - Invalid run type: " + config.category().toString() + ", save as a PB.");
+			}
+		}
+	};
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(timerOverlay);
 		overlayManager.add(healerOverlay);
+		keyManager.registerKeyListener(previousKeyListener);
+		keyManager.registerKeyListener(nextKeyListener);
 		font = FontManager.getRunescapeFont()
 			.deriveFont(Font.BOLD, 24);
 
 		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
-
-/*
-		// Set which times to read splits for
-		timeMap.put(runCategory.SOLOHEALWR, config.soloHealWR());
-		timeMap.put(runCategory.DUOHEALWR, config.duoHealWR());
-		timeMap.put(runCategory.LEECHWR, config.leechWR());
-		timeMap.put(runCategory.SOLOHEALPB, config.soloHealPB());
-		timeMap.put(runCategory.DUOHEALPB, config.duoHealPB());
-		timeMap.put(runCategory.LEECHPB, config.leechPB());
-		timeMap.put(runCategory.CUSTOM, config.custom());
-*/
 
 		// Save splits for current WRs and custom times
 		saveTime(RunCategory.SOLOHEALWR, new String[] {"0:30", "1:10", "1:56", "2:42", "3:32", "4:40", "5:51", "7:07", "8:32", "10:20"});
 		saveTime(RunCategory.DUOHEALWR, new String[] {"0:30", "1:11", "1:57", "2:41", "3:33", "4:34", "5:38", "6:48", "8:11", "9:57"});
 		saveTime(RunCategory.LEECHWR, new String[] {"0:32", "1:14", "2:04", "2:55", "3:52", "4:57", "6:10", "7:27", "8:56", "10:50"});
 		saveTime(RunCategory.CUSTOM, parseWaveTimesFromString(config.getDesiredWaveSplits()));
-
-		// Placeholder PBs
-		saveTime(RunCategory.SOLOHEALPB, new String[] {"0:30", "1:10", "1:55", "2:42", "3:31", "4:36", "5:54", "7:12", "8:40", "10:30"});
-		saveTime(RunCategory.DUOHEALPB, new String[] {"0:30", "1:10", "1:55", "2:42", "3:31", "4:36", "5:54", "7:12", "8:40", "10:30"});
-		saveTime(RunCategory.LEECHPB, new String[] {"0:30", "1:10", "1:55", "2:42", "3:31", "4:36", "5:54", "7:12", "8:40", "10:30"});
 
 		// Read in the custom wave end times
 		if (config.category() == RunCategory.CUSTOM)
@@ -385,35 +392,31 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		if (waveNum < 1 || waveNum > BA_WAVE_COUNT)
 		{
-			final String errormsg = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("waveNum: " + waveNum)
-					.build();
-
-			chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.CONSOLE)
-					.runeLiteFormattedMessage(errormsg)
-					.build());
+			announceMessage("waveNum: " + waveNum);
 			return;
 		}
+
+		// Reset lastRun on a new round
+		if (waveNum == 1)
+		{
+			for (int i = 0; i < lastRun.length; i++)
+			{
+				lastRun[i] = "";
+			}
+		}
+
+		lastRun[waveNum-1] = gameTime.getTime(true);
 
 		// Display wave durations
 		if (config.waveTimes())
 		{
-			announceTime(waveNum, gameTime.getTime(true));
+			announceTime(waveNum, lastRun[waveNum-1]);
 		}
 
-		// Compare splits against all checked times
+		// Display wave splits against desired category
 		if (config.waveSplits())
 		{
 			announceTime(waveNum, config.category(), time);
-
-			/*
-			for (runCategory c : timeMap.keySet()) {
-				if (timeMap.get(c)) {
-					announceTime(waveNum, c, time);
-				}
-			}*/
 		}
 	}
 
@@ -491,6 +494,19 @@ public class BarbarianAssaultPlugin extends Plugin
 			.build());
 	}
 
+	private void announceMessage(String msg)
+	{
+		final String chatmsg = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(msg)
+				.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(chatmsg)
+				.build());
+	}
+
 	private Color compareSplitColor(String split, String pace)
 	{
 		if (timeToSeconds(split) < timeToSeconds(pace))
@@ -540,29 +556,6 @@ public class BarbarianAssaultPlugin extends Plugin
 		}
 		return timeArray;
 	}
-/*
-	private String runCategoryString(runCategory category)
-	{
-		switch (category)
-		{
-			case SOLOHEALWR:
-				return "Solo Heal WR";
-			case DUOHEALWR:
-				return "Duo Heal WR";
-			case LEECHWR:
-				return "Leech WR";
-			case SOLOHEALPB:
-				return "Solo Heal PB";
-			case DUOHEALPB:
-				return "Duo Heal PB";
-			case LEECHPB:
-				return "Leech PB";
-			case CUSTOM:
-				return "Custom";
-			default:
-				return "Invalid Run Category";
-		}
-	}*/
 
 	private void saveTime(RunCategory category, String[] times)
 	{
@@ -581,14 +574,14 @@ public class BarbarianAssaultPlugin extends Plugin
 		String json = configManager.getConfiguration(CONFIG_GROUP, category.toString());
 		if (Strings.isNullOrEmpty(json))
 		{
-			return new String[0];
+			announceMessage("Error getting split time, no time found for category: " + category.toString());
+			return waveGoal;
 		}
 
 		// CHECKSTYLE:OFF
 		return GSON.fromJson(json, new TypeToken<String[]>(){}.getType());
 		// CHECKSTYLE:ON
 	}
-
 
 	public Font getFont()
 	{

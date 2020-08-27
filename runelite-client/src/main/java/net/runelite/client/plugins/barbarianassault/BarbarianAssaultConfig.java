@@ -26,10 +26,10 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.*;
+
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 @ConfigGroup("barbarianAssault")
 public interface BarbarianAssaultConfig extends Config
@@ -100,91 +100,6 @@ public interface BarbarianAssaultConfig extends Config
 			position = 6
 	)
 	String splitComparison = "splitComparison";
-/*
-	@ConfigItem(
-			keyName = "soloWR",
-			name = "Solo Heal WR",
-			description = "Compare against the solo heal WR times",
-			position = 0,
-			section = splitComparison
-	)
-	default boolean soloHealWR()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			keyName = "duoWR",
-			name = "Duo Heal WR",
-			description = "Compare against the duo heal WR times",
-			position = 1,
-			section = splitComparison
-	)
-	default boolean duoHealWR()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			keyName = "leechWR",
-			name = "Leech WR",
-			description = "Compare against the leech heal WR times",
-			position = 2,
-			section = splitComparison
-	)
-	default boolean leechWR()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			keyName = "soloPB",
-			name = "Solo Heal PB",
-			description = "Compare against your solo heal personal best",
-			position = 3,
-			section = splitComparison
-	)
-	default boolean soloHealPB()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			keyName = "duoPB",
-			name = "Duo Heal PB",
-			description = "Compare against your duo heal personal best",
-			position = 4,
-			section = splitComparison
-	)
-	default boolean duoHealPB()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			keyName = "leechPB",
-			name = "Leech PB",
-			description = "Compare against your leech personal best",
-			position = 5,
-			section = splitComparison
-	)
-	default boolean leechPB()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			keyName = "custom",
-			name = "Custom Compare",
-			description = "Compare against custom splits, entered below",
-			position = 6,
-			section = splitComparison
-	)
-	default boolean custom()
-	{
-		return false;
-	}
-*/
 	@ConfigItem(
 			keyName = "category",
 			name = "Run Category",
@@ -198,7 +113,7 @@ public interface BarbarianAssaultConfig extends Config
 			keyName = "waveEndTimes",
 			name = "Wave End Times",
 			description = "Enter your desired wave end times (time for this specific wave)",
-			position = 7,
+			position = 9,
 			section = splitComparison
 	)
 	default String getDesiredWaveTimes()
@@ -218,7 +133,7 @@ public interface BarbarianAssaultConfig extends Config
 			keyName = "waveEndSplits",
 			name = "Wave Splits",
 			description = "Enter your desired wave splits (total time from start to wave finish)",
-			position = 8,
+			position = 10,
 			section = splitComparison
 	)
 	default String getDesiredWaveSplits()
@@ -233,4 +148,29 @@ public interface BarbarianAssaultConfig extends Config
 			section = splitComparison
 	)
 	void setDesiredWaveSplits(String key);
+
+	@ConfigItem(
+			keyName = "pbSaveKey",
+			name = "Save last run as PB",
+			description = "Choose the PB run category to save to, then hit this hotkey",
+			position = 7,
+			section = splitComparison
+	)
+	default Keybind saveLastRunAsPB()
+	{
+		return new Keybind(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
+	}
+
+	@ConfigItem(
+			keyName = "customPBSaveKey",
+			name = "Save custom time as PB",
+			description = "Choose the PB run category to save to, enter a custom time\n" +
+					"in the Wave Splits box, then hit this hotkey",
+			position = 8,
+			section = splitComparison
+	)
+	default Keybind saveCustomAsPB()
+	{
+		return new Keybind(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
+	}
 }
