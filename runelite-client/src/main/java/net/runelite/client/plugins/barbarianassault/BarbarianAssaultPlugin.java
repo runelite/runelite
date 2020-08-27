@@ -362,11 +362,11 @@ public class BarbarianAssaultPlugin extends Plugin
 					int curWave = 0;
 					try
 					{
-					    curWave = Integer.parseInt(currentWave);
+						curWave = Integer.parseInt(currentWave);
 					}
 					catch (NumberFormatException nfex)
 					{
-					    return;
+						return;
 					}
 
 					// Display relevant post-wave info based on plugin settings
