@@ -178,7 +178,8 @@ public class BarbarianAssaultPlugin extends Plugin
 		if (config.category() == RunCategory.CUSTOM)
 		{
 			// Only overwrite if string looks valid
-			if (parseWaveTimesFromString(config.getDesiredWaveTimes()).length == 10) {
+			if (parseWaveTimesFromString(config.getDesiredWaveTimes()).length == 10)
+			{
 				waveGoal = parseWaveTimesFromString((config.getDesiredWaveTimes()));
 			}
 		}
@@ -210,23 +211,23 @@ public class BarbarianAssaultPlugin extends Plugin
 					gameTime = null;
 					ChatMessageBuilder message = new ChatMessageBuilder()
 						.append("Attacker: ")
-						.append(Color.red, pointsAttacker+80+"")
+						.append(Color.red, pointsAttacker + 80 + "")
 						.append(" |  Healer: ")
-						.append(Color.GREEN, pointsHealer+80+"")
+						.append(Color.GREEN, pointsHealer + 80 + "")
 						.append(" | Defender: ")
-						.append(Color.blue, pointsDefender+80+"")
+						.append(Color.blue, pointsDefender + 80 + "")
 						.append(" | Collector: ")
-						.append(Color.yellow, pointsCollector+80+"")
+						.append(Color.yellow, pointsCollector + 80 + "")
 						.append(System.getProperty("line.separator"))
-						.append(totalEggsCollected + " eggs collected, "+ totalHealthReplenished + "HP vialed and " + totalIncorrectAttacks+" wrong attacks.");
+						.append(totalEggsCollected + " eggs collected, " + totalHealthReplenished + "HP vialed and " + totalIncorrectAttacks + " wrong attacks.");
 
-					if(config.pointBreakdown())
+					if (config.pointBreakdown())
 					{
 						chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.CONSOLE).runeLiteFormattedMessage(message.build()).build());
 					}
 				}
 				// Wave 1-9 ended
-				else if(pointsWidget != null && client.getVar(Varbits.IN_GAME_BA) == 0)
+				else if (pointsWidget != null && client.getVar(Varbits.IN_GAME_BA) == 0)
 				{
 					int wavePoints_Attacker, wavePoints_Defender, wavePoints_Healer, wavePoints_Collector, waveEggsCollected, waveHPReplenished, waveFailedAttacks;
 
@@ -280,17 +281,17 @@ public class BarbarianAssaultPlugin extends Plugin
 
 					ChatMessageBuilder message = new ChatMessageBuilder()
 							.append("Attacker: ")
-							.append(Color.red, wavePoints_Attacker+"")
+							.append(Color.red, wavePoints_Attacker + "")
 							.append(" |  Healer: ")
-							.append(Color.GREEN, wavePoints_Healer+"")
+							.append(Color.GREEN, wavePoints_Healer + "")
 							.append(" | Defender: ")
-							.append(Color.blue, wavePoints_Defender+"")
+							.append(Color.blue, wavePoints_Defender + "")
 							.append(" | Collector: ")
-							.append(Color.yellow, wavePoints_Collector+"")
+							.append(Color.yellow, wavePoints_Collector + "")
 							.append(System.getProperty("line.separator"))
-							.append(waveEggsCollected + " eggs collected, "+ waveHPReplenished + "HP vialed and " + waveFailedAttacks+" wrong attacks.");
+							.append(waveEggsCollected + " eggs collected, " + waveHPReplenished + "HP vialed and " + waveFailedAttacks + " wrong attacks.");
 
-					if(config.pointBreakdown())
+					if (config.pointBreakdown())
 					{
 						chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.CONSOLE).runeLiteFormattedMessage(message.build()).build());
 					}
@@ -358,18 +359,18 @@ public class BarbarianAssaultPlugin extends Plugin
 				// 0 whereas when in a real wave it changes while still in the instance.
 				if (config.waveTimes() && gameTime != null && client.isInInstancedRegion())
 				{
-				    int curWave = 0;
-				    try
-                    {
-                        curWave = Integer.parseInt(currentWave);
-                    }
-				    catch (NumberFormatException nfex)
-                    {
-                        return;
-                    }
+					int curWave = 0;
+					try
+                	{
+                	    curWave = Integer.parseInt(currentWave);
+                	}
+					catch (NumberFormatException nfex)
+                	{
+                	    return;
+                	}
 
-				    // Display relevant post-wave info based on plugin settings
-				    waveEnd(curWave, gameTime.getTime(false));
+					// Display relevant post-wave info based on plugin settings
+					waveEnd(curWave, gameTime.getTime(false));
 				}
 			}
 		}
@@ -405,12 +406,12 @@ public class BarbarianAssaultPlugin extends Plugin
 			}
 		}
 
-		lastRun[waveNum-1] = gameTime.getTime(true);
+		lastRun[waveNum - 1] = gameTime.getTime(true);
 
 		// Display wave durations
 		if (config.waveTimes())
 		{
-			announceTime(waveNum, lastRun[waveNum-1]);
+			announceTime(waveNum, lastRun[waveNum - 1]);
 		}
 
 		// Display wave splits against desired category
@@ -475,17 +476,17 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		String[] compareTimes = getTimes(category);
 		if (waveNum < 1 || waveNum > compareTimes.length)
-        {
-            return;
-        }
+    	{
+    		return;
+    	}
 
 		final String timeMessage = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
 			.append(category.toString() + " - Wave " + waveNum + " pace: ")
-			.append(Color.BLUE, compareTimes[waveNum-1])
+			.append(Color.BLUE, compareTimes[waveNum - 1])
 			.append(ChatColorType.NORMAL)
 			.append(" || Split: ")
-			.append(compareSplitColor(time, compareTimes[waveNum-1]), time + " (" + (timeToSeconds(time) - timeToSeconds(compareTimes[waveNum-1]) ) + "s)")
+			.append(compareSplitColor(time, compareTimes[waveNum - 1]), time + " (" + (timeToSeconds(time) - timeToSeconds(compareTimes[waveNum-1]) ) + "s)")
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
@@ -526,11 +527,13 @@ public class BarbarianAssaultPlugin extends Plugin
 	private int timeToSeconds(String time)
 	{
 		String times[] = time.split(":");
-		try {
-			if (times.length == 1) {
+		try
+		{
+			if (times.length == 1)
+			{
 				return Integer.parseInt(time);
 			}
-			else if(times.length == 2)
+			else if (times.length == 2)
 			{
 				return (Integer.parseInt(times[0]) * 60) + Integer.parseInt(times[1]);
 			}
@@ -552,7 +555,7 @@ public class BarbarianAssaultPlugin extends Plugin
 		if (timeArray.length != 10)
 		{
 			// bad
-            return new String[0];
+			return new String[0];
 		}
 		return timeArray;
 	}

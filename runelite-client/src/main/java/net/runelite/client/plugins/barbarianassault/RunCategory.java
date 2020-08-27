@@ -35,7 +35,6 @@ public enum RunCategory {
     DUOHEALPB("Duo Heal PB"),
     LEECHPB("Leech PB"),
     CUSTOM("Custom");
-
     private String name = "";
 
     @Override

@@ -73,7 +73,10 @@ public interface BarbarianAssaultConfig extends Config
 			description = "Displays goal wave end times",
 			position = 3
 	)
-	default boolean waveCompare() { return false; }
+	default boolean waveCompare()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			keyName = "waveSplits",
@@ -84,6 +87,7 @@ public interface BarbarianAssaultConfig extends Config
 	default boolean waveSplits()
 	{
 		return false;
+
 	}
 
 	@ConfigItem(
@@ -92,7 +96,10 @@ public interface BarbarianAssaultConfig extends Config
 			description = "Provides a detailed point breakdown for each role after every wave",
 			position = 5
 	)
-	default boolean pointBreakdown() { return false; }
+	default boolean pointBreakdown()
+	{
+		return false;
+	}
 
 	@ConfigSection(
 			name = "Split Comparisons",
@@ -107,7 +114,10 @@ public interface BarbarianAssaultConfig extends Config
 			position = 7,
 			section = splitComparison
 	)
-	default RunCategory category() { return RunCategory.SOLOHEALWR; }
+	default RunCategory category()
+	{
+		return RunCategory.SOLOHEALWR;
+	}
 
 	@ConfigItem(
 			keyName = "waveEndTimes",
