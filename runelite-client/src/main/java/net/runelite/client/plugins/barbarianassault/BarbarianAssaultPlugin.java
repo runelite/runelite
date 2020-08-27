@@ -361,13 +361,13 @@ public class BarbarianAssaultPlugin extends Plugin
 				{
 					int curWave = 0;
 					try
-                	{
-                	    curWave = Integer.parseInt(currentWave);
-                	}
+					{
+					    curWave = Integer.parseInt(currentWave);
+					}
 					catch (NumberFormatException nfex)
-                	{
-                	    return;
-                	}
+					{
+					    return;
+					}
 
 					// Display relevant post-wave info based on plugin settings
 					waveEnd(curWave, gameTime.getTime(false));
@@ -476,9 +476,9 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		String[] compareTimes = getTimes(category);
 		if (waveNum < 1 || waveNum > compareTimes.length)
-    	{
-    		return;
-    	}
+		{
+			return;
+		}
 
 		final String timeMessage = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
@@ -486,7 +486,7 @@ public class BarbarianAssaultPlugin extends Plugin
 			.append(Color.BLUE, compareTimes[waveNum - 1])
 			.append(ChatColorType.NORMAL)
 			.append(" || Split: ")
-			.append(compareSplitColor(time, compareTimes[waveNum - 1]), time + " (" + (timeToSeconds(time) - timeToSeconds(compareTimes[waveNum-1]) ) + "s)")
+			.append(compareSplitColor(time, compareTimes[waveNum - 1]), time + " (" + (timeToSeconds(time) - timeToSeconds(compareTimes[waveNum - 1]) ) + "s)")
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
