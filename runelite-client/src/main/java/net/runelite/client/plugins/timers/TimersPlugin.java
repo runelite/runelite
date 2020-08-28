@@ -831,11 +831,11 @@ public class TimersPlugin extends Plugin
 				// This is necessary because the Sire leaves the stunned
 				// state early once all all four respiratory systems are killed.
 				case NpcID.ABYSSAL_SIRE:
-				case NpcID.ABYSSAL_SIRE_5908:
+				case NpcID.ABYSSAL_SIRE_5887:
 				case NpcID.ABYSSAL_SIRE_5889:
 				case NpcID.ABYSSAL_SIRE_5890:
 				case NpcID.ABYSSAL_SIRE_5891:
-				case NpcID.ABYSSAL_SIRE_5887:
+				case NpcID.ABYSSAL_SIRE_5908:
 					removeGameTimer(ABYSSAL_SIRE_STUN);
 					break;
 			}
