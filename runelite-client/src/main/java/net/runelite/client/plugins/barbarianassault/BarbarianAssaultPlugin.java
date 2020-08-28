@@ -406,7 +406,7 @@ public class BarbarianAssaultPlugin extends Plugin
 			}
 		}
 
-		lastRun[waveNum - 1] = gameTime.getTime(true);
+		lastRun[waveNum - 1] = time;
 
 		// Display wave durations
 		if (config.waveTimes())
