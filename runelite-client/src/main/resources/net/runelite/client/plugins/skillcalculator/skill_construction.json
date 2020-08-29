@@ -1,4 +1,10 @@
 {
+  "bonuses": [
+    {
+      "name": "Carpenter's Outfit (+2.5%)",
+      "value": 0.025
+    }
+  ],
   "actions": [
     {
       "level": 1,
