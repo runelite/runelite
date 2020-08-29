@@ -411,7 +411,7 @@ public class BarbarianAssaultPlugin extends Plugin
 		// Display wave durations
 		if (config.waveTimes())
 		{
-			announceTime(waveNum, lastRun[waveNum - 1]);
+			announceTime(waveNum, gameTime.getTime(true));
 		}
 
 		// Display wave splits against desired category
