@@ -65,7 +65,7 @@ public class RuneliteColorPicker extends JDialog
 {
 	static final String CONFIG_GROUP = "colorpicker";
 
-	private final static int FRAME_WIDTH = 400;
+	private final static int FRAME_WIDTH = 410;
 	private final static int FRAME_HEIGHT = 380;
 	private final static int TONE_PANEL_SIZE = 160;
 
