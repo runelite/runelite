@@ -24,8 +24,10 @@
  */
 package net.runelite.client.plugins.gpu;
 
+import com.google.common.base.Stopwatch;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
@@ -42,6 +44,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 
 @Singleton
+@Slf4j
 class SceneUploader
 {
 	@Inject
@@ -53,6 +56,8 @@ class SceneUploader
 
 	void upload(Scene scene, GpuIntBuffer vertexbuffer, GpuFloatBuffer uvBuffer)
 	{
+		Stopwatch stopwatch = Stopwatch.createStarted();
+
 		++sceneId;
 		offset = 0;
 		uvoffset = 0;
@@ -73,6 +78,9 @@ class SceneUploader
 				}
 			}
 		}
+
+		stopwatch.stop();
+		log.debug("Scene upload time: {}", stopwatch);
 	}
 
 	private void upload(Tile tile, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
