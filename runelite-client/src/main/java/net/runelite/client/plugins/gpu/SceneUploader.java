@@ -68,89 +68,9 @@ class SceneUploader
 					Tile tile = scene.getTiles()[z][x][y];
 					if (tile != null)
 					{
-						reset(tile);
-					}
-				}
-			}
-		}
-
-		for (int z = 0; z < Constants.MAX_Z; ++z)
-		{
-			for (int x = 0; x < Constants.SCENE_SIZE; ++x)
-			{
-				for (int y = 0; y < Constants.SCENE_SIZE; ++y)
-				{
-					Tile tile = scene.getTiles()[z][x][y];
-					if (tile != null)
-					{
 						upload(tile, vertexbuffer, uvBuffer);
 					}
 				}
-			}
-		}
-	}
-
-	private void reset(Tile tile)
-	{
-		Tile bridge = tile.getBridge();
-		if (bridge != null)
-		{
-			reset(bridge);
-		}
-
-		SceneTilePaint sceneTilePaint = tile.getSceneTilePaint();
-		if (sceneTilePaint != null)
-		{
-			sceneTilePaint.setBufferOffset(-1);
-		}
-
-		SceneTileModel sceneTileModel = tile.getSceneTileModel();
-		if (sceneTileModel != null)
-		{
-			sceneTileModel.setBufferOffset(-1);
-		}
-
-		WallObject wallObject = tile.getWallObject();
-		if (wallObject != null)
-		{
-			if (wallObject.getRenderable1() instanceof Model)
-			{
-				((Model) wallObject.getRenderable1()).setBufferOffset(-1);
-			}
-			if (wallObject.getRenderable2() instanceof Model)
-			{
-				((Model) wallObject.getRenderable2()).setBufferOffset(-1);
-			}
-		}
-
-		GroundObject groundObject = tile.getGroundObject();
-		if (groundObject != null)
-		{
-			if (groundObject.getRenderable() instanceof Model)
-			{
-				((Model) groundObject.getRenderable()).setBufferOffset(-1);
-			}
-		}
-
-		DecorativeObject decorativeObject = tile.getDecorativeObject();
-		if (decorativeObject != null)
-		{
-			if (decorativeObject.getRenderable() instanceof Model)
-			{
-				((Model) decorativeObject.getRenderable()).setBufferOffset(-1);
-			}
-		}
-
-		GameObject[] gameObjects = tile.getGameObjects();
-		for (GameObject gameObject : gameObjects)
-		{
-			if (gameObject == null)
-			{
-				continue;
-			}
-			if (gameObject.getRenderable() instanceof Model)
-			{
-				((Model) gameObject.getRenderable()).setBufferOffset(-1);
 			}
 		}
 	}
@@ -424,9 +344,9 @@ class SceneUploader
 
 	private void uploadModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
-		if (model.getBufferOffset() > 0)
+		if (model.getSceneId() == sceneId)
 		{
-			return;
+			return; // model has already been uploaded
 		}
 
 		model.setBufferOffset(offset);
