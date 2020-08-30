@@ -419,7 +419,6 @@ public class GroundItemsOverlay extends Overlay
 						despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
 					}
 				}
-
 			}
 			else
 			{
@@ -515,5 +514,4 @@ public class GroundItemsOverlay extends Overlay
 	{
 		return ArrayUtils.contains(client.getMapRegions(), KBD_NMZ_REGION);
 	}
-
 }
