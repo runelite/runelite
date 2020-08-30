@@ -78,6 +78,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final Duration DESPAWN_TIME_LOOT = Duration.ofMinutes(2);
 	private static final Duration DESPAWN_TIME_DROP = Duration.ofMinutes(3);
 	private static final int KRAKEN_REGION = 9116;
+	private static final int KBD_NMZ_REGION = 9033;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -391,8 +392,39 @@ public class GroundItemsOverlay extends Overlay
 			{
 				return;
 			}
+			else if (isInKBDorNMZ())
+			{
+				// NMZ and the KBD lair uses the same region ID but NMZ uses planes 1-3 and KBD uses plane 0
+				if (client.getLocalPlayer().getWorldLocation().getPlane() == 0)
+				{
+					// Items in the KBD instance use the standard despawn timer
+					if (groundItem.getLootType() == LootType.DROPPED)
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
+					}
+					else
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
+					}
+				}
+				else
+				{
+					// Dropped items in the NMZ instance appear to never despawn?
+					if (groundItem.getLootType() == LootType.DROPPED)
+					{
+						return;
+					}
+					else
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
+					}
+				}
+			}
+			else
+			{
+				despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+			}
 
-			despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
 			fillColor = PRIVATE_TIMER_COLOR;
 		}
 		else
@@ -478,4 +510,8 @@ public class GroundItemsOverlay extends Overlay
 		return ArrayUtils.contains(client.getMapRegions(), KRAKEN_REGION);
 	}
 
+	private boolean isInKBDorNMZ()
+	{
+		return ArrayUtils.contains(client.getMapRegions(), KBD_NMZ_REGION);
+	}
 }
