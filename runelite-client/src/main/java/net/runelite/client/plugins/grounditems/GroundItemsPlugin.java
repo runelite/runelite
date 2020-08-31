@@ -615,10 +615,7 @@ public class GroundItemsPlugin extends Plugin
 	private void notifyHighlightedItem(GroundItem item)
 	{
 		final boolean shouldNotifyHighlighted = config.notifyHighlightedDrops() &&
-			config.highlightedColor().equals(getHighlighted(
-				new NamedQuantity(item),
-				item.getGePrice(),
-				item.getHaPrice()));
+			TRUE.equals(highlightedItems.getUnchecked(new NamedQuantity(item)));
 
 		final boolean shouldNotifyTier = config.notifyTier() != HighlightTier.OFF &&
 			getValueByMode(item.getGePrice(), item.getHaPrice()) > config.notifyTier().getValueFromTier(config) &&
