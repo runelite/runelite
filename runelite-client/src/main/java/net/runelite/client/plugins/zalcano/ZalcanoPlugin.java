@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
 import static net.runelite.api.GraphicID.GRAPHICS_OBJECT_ROCKFALL;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
@@ -41,6 +42,7 @@ import static net.runelite.api.ProjectileID.ZALCANO_PROJECTILE_FIREBALL;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
@@ -99,6 +101,15 @@ public class ZalcanoPlugin extends Plugin
 		if (graphicsObject.getId() == GRAPHICS_OBJECT_ROCKFALL)
 		{
 			rocks.add(graphicsObject);
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() != GameState.LOGGED_IN)
+		{
+			rocks.clear();
 		}
 	}
 
