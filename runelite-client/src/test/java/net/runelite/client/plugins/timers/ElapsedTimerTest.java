@@ -48,13 +48,13 @@ public class ElapsedTimerTest
 		assertEquals("05:00", timerText(fiveMinutesAgo, null));
 		assertEquals("55:00", timerText(oneHourAgo, fiveMinutesAgo));
 		assertEquals("59:55", timerText(oneHourAgo, fiveSecondsAgo));
-		assertEquals("01:00", timerText(oneHourAgo, now));
-		assertEquals("01:00", timerText(oneHourAgo, null));
-		assertEquals("04:00", timerText(fiveHoursAgo, oneHourAgo));
-		assertEquals("04:55", timerText(fiveHoursAgo, fiveMinutesAgo));
-		assertEquals("04:59", timerText(fiveHoursAgo, fiveSecondsAgo));
-		assertEquals("05:00", timerText(fiveHoursAgo, now));
-		assertEquals("05:00", timerText(fiveHoursAgo, null));
+		assertEquals("60:00", timerText(oneHourAgo, now));
+		assertEquals("60:00", timerText(oneHourAgo, null));
+		assertEquals("240:00", timerText(fiveHoursAgo, oneHourAgo));
+		assertEquals("295:00", timerText(fiveHoursAgo, fiveMinutesAgo));
+		assertEquals("299:55", timerText(fiveHoursAgo, fiveSecondsAgo));
+		assertEquals("300:00", timerText(fiveHoursAgo, now));
+		assertEquals("300:00", timerText(fiveHoursAgo, null));
 	}
 
 	private static String timerText(final Instant startTime, final Instant lastTime)
