@@ -1,6 +1,9 @@
 {
   "bonuses": [
-    { "name": "Lumberjack Outfit (+2.5%)", "value": 0.025 }
+    {
+      "name": "Lumberjack Outfit (+2.5%)",
+      "value": 0.025
+    }
   ],
   "actions": [
     {
@@ -62,6 +65,12 @@
       "icon": 1515,
       "name": "Yew Logs",
       "xp": 175
+    },
+    {
+      "level": 62,
+      "icon": 24691,
+      "name": "Blisterwood Logs",
+      "xp": 76
     },
     {
       "level": 65,
