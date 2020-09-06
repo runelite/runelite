@@ -117,6 +117,8 @@ public class TimersPlugin extends Plugin
 	private static final Pattern DEADMAN_HALF_TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you by (.+)\\. It will expire in 1 minute, 15 seconds\\.</col>");
 	private static final Pattern FULL_TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you by (.+)\\. It will expire in 5 minutes\\.</col>");
 	private static final Pattern HALF_TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you by (.+)\\. It will expire in 2 minutes, 30 seconds\\.</col>");
+	private static final Pattern MAGE_ARENA_FULL_TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you\\. It will expire in 2 minutes\\.</col>");
+	private static final Pattern MAGE_ARENA_HALF_TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you\\. It will expire in 1 minute\\.</col>");
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
@@ -558,6 +560,14 @@ public class TimersPlugin extends Plugin
 			else if (DEADMAN_HALF_TELEBLOCK_PATTERN.matcher(event.getMessage()).find())
 			{
 				createGameTimer(DMM_HALFTB);
+			}
+			else if (MAGE_ARENA_FULL_TELEBLOCK_PATTERN.matcher(event.getMessage()).find())
+			{
+				createGameTimer(MAGE_ARENA_FULLTB);
+			}
+			else if (MAGE_ARENA_HALF_TELEBLOCK_PATTERN.matcher(event.getMessage()).find())
+			{
+				createGameTimer(MAGE_ARENA_HALFTB);
 			}
 			else if (event.getMessage().contains(KILLED_TELEBLOCK_OPPONENT_TEXT))
 			{
@@ -1071,5 +1081,7 @@ public class TimersPlugin extends Plugin
 		removeGameTimer(HALFTB);
 		removeGameTimer(DMM_FULLTB);
 		removeGameTimer(DMM_HALFTB);
+		removeGameTimer(MAGE_ARENA_FULLTB);
+		removeGameTimer(MAGE_ARENA_HALFTB);
 	}
 }
