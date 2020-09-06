@@ -40,19 +40,26 @@ class CoreOverlay extends Overlay
 {
 	private final Client client;
 	private final CorpPlugin corpPlugin;
+	private final CorpConfig config;
 
 	@Inject
-	private CoreOverlay(Client client, CorpPlugin corpPlugin)
+	private CoreOverlay(Client client, CorpPlugin corpPlugin, CorpConfig corpConfig)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.corpPlugin = corpPlugin;
+		this.config = corpConfig;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!config.markDarkCore())
+		{
+			return null;
+		}
+
 		NPC core = corpPlugin.getCore();
 		if (core != null)
 		{
