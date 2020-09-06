@@ -123,7 +123,7 @@ enum Task
 	KURASK("Kurask", ItemID.KURASK),
 	ROGUES("Rogues", ItemID.ROGUE_MASK, "Rogue"),
 	LESSER_DEMONS("Lesser demons", ItemID.LESSER_DEMON_MASK),
-	LIZARDS("Lizards", ItemID.DESERT_LIZARD, "Desert lizard", "Sulphur lizard", "Small lizard", "Lizard"),
+	LIZARDS("Lizards", ItemID.DESERT_LIZARD, 4, ItemID.ICE_COOLER, "Desert lizard", "Sulphur lizard", "Small lizard", "Lizard"),
 	LIZARDMEN("Lizardmen", ItemID.LIZARDMAN_FANG, "Lizardman"),
 	MINIONS_OF_SCABARAS("Minions of scabaras", ItemID.GOLDEN_SCARAB, "Scarab swarm", "Locust rider", "Scarab mage"),
 	MINOTAURS("Minotaurs", ItemID.ENSOULED_MINOTAUR_HEAD),
