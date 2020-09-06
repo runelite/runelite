@@ -514,6 +514,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("transport", option, target, index);
 			}
 
+			if (config.swapStrayDog())
+			{
+				swap("pet", option, target, index);
+			}
+
 			if (config.swapPay())
 			{
 				swap("pay", option, target, index);
