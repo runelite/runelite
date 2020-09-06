@@ -323,6 +323,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapStrayDog",
+		name = "Stray Dog",
+		description = "Swap Shoo-away with Pet on Stray dogs"
+	)
+	default boolean swapStrayDog()
+	{
+		return true;
+	}
+	
+	@ConfigItem(
 		keyName = "swapEnchant",
 		name = "Enchant",
 		description = "Swap Talk-to with Enchant for Eluned"
