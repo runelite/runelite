@@ -356,6 +356,7 @@ public class DiscordPlugin extends Plugin
 	public void checkForValidStatus()
 	{
 		discordState.checkForTimeout();
+		checkForGameStateUpdate();
 	}
 
 	private void updatePresence()
