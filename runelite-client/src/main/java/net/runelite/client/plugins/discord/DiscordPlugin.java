@@ -129,6 +129,7 @@ public class DiscordPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(discordButton);
+		resetState();
 		checkForGameStateUpdate();
 		checkForAreaUpdate();
 
@@ -144,7 +145,7 @@ public class DiscordPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(discordButton);
-		discordState.reset();
+		resetState();
 		partyService.changeParty(null);
 		wsClient.unregisterMessage(DiscordUserInfo.class);
 	}
@@ -166,7 +167,6 @@ public class DiscordPlugin extends Plugin
 					loginFlag = false;
 					checkForGameStateUpdate();
 				}
-
 				break;
 		}
 
@@ -178,6 +178,7 @@ public class DiscordPlugin extends Plugin
 	{
 		if (event.getGroup().equalsIgnoreCase("discord"))
 		{
+			resetState();
 			checkForGameStateUpdate();
 			checkForAreaUpdate();
 		}
@@ -362,10 +363,13 @@ public class DiscordPlugin extends Plugin
 		discordState.refresh();
 	}
 
+	private void resetState()
+	{
+		discordState.reset();
+	}
+
 	private void checkForGameStateUpdate()
 	{
-		// Game state update does also full reset of discord state
-		discordState.reset();
 		discordState.triggerEvent(client.getGameState() == GameState.LOGGED_IN
 			? DiscordGameEventType.IN_GAME
 			: DiscordGameEventType.IN_MENU);

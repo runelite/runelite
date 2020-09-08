@@ -80,7 +80,7 @@ public class DiscordStateTest
 	public void testStatusTimeout()
 	{
 		when(discordConfig.actionTimeout()).thenReturn(0);
-		when(discordConfig.hideElapsedTime()).thenReturn(false);
+		when(discordConfig.elapsedTimeType()).thenReturn(DiscordConfig.ElapsedTimeType.HIDDEN);
 
 		discordState.triggerEvent(DiscordGameEventType.IN_MENU);
 		verify(discordService).updatePresence(any(DiscordPresence.class));

@@ -176,10 +176,24 @@ class DiscordState
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
 			.largeImageText(RuneLiteProperties.getTitle() + " v" + versionShortHand)
-			.startTimestamp(config.hideElapsedTime() ? null : event.getStart())
 			.smallImageKey(imageKey)
 			.partyMax(PARTY_MAX)
 			.partySize(party.getMembers().size());
+
+		DiscordConfig.ElapsedTimeType elapsedTimeType = config.elapsedTimeType();
+		if (elapsedTimeType == DiscordConfig.ElapsedTimeType.HIDDEN || event.getType() == DiscordGameEventType.IN_MENU)
+		{
+			presenceBuilder.startTimestamp(null);
+		}
+		else if (elapsedTimeType == DiscordConfig.ElapsedTimeType.IN_GAME &&
+			lastPresence != null && lastPresence.getStartTimestamp() != null)
+		{
+			presenceBuilder.startTimestamp(lastPresence.getStartTimestamp());
+		}
+		else
+		{
+			presenceBuilder.startTimestamp(event.getStart());
+		}
 
 		if (!party.isInParty() || party.isPartyOwner())
 		{
