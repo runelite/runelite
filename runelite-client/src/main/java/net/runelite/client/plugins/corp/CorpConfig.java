@@ -52,5 +52,4 @@ public interface CorpConfig extends Config
 	{
 		return true;
 	}
-
 }
