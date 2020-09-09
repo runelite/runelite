@@ -59,6 +59,7 @@ class DiscordState
 	private final DiscordConfig config;
 	private PartyService party;
 	private DiscordPresence lastPresence;
+	private Instant startTime;
 
 	@Inject
 	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party)
@@ -76,6 +77,7 @@ class DiscordState
 		discordService.clearPresence();
 		events.clear();
 		lastPresence = null;
+		startTime = null;
 	}
 
 	/**
@@ -181,19 +183,15 @@ class DiscordState
 			.partySize(party.getMembers().size());
 
 		DiscordConfig.ElapsedTimeType elapsedTimeType = config.elapsedTimeType();
-		if (elapsedTimeType == DiscordConfig.ElapsedTimeType.HIDDEN || event.getType() == DiscordGameEventType.IN_MENU)
+		if (elapsedTimeType == DiscordConfig.ElapsedTimeType.HIDDEN)
 		{
-			presenceBuilder.startTimestamp(null);
+			startTime = null;
 		}
-		else if (elapsedTimeType == DiscordConfig.ElapsedTimeType.IN_GAME &&
-			lastPresence != null && lastPresence.getStartTimestamp() != null)
+		else if (elapsedTimeType == DiscordConfig.ElapsedTimeType.ACTIVITY || startTime == null)
 		{
-			presenceBuilder.startTimestamp(lastPresence.getStartTimestamp());
+			startTime = event.getStart();
 		}
-		else
-		{
-			presenceBuilder.startTimestamp(event.getStart());
-		}
+		presenceBuilder.startTimestamp(startTime);
 
 		if (!party.isInParty() || party.isPartyOwner())
 		{

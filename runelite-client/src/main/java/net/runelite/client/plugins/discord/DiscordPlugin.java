@@ -156,6 +156,7 @@ public class DiscordPlugin extends Plugin
 		switch (event.getGameState())
 		{
 			case LOGIN_SCREEN:
+				resetState();
 				checkForGameStateUpdate();
 				return;
 			case LOGGING_IN:
@@ -165,6 +166,7 @@ public class DiscordPlugin extends Plugin
 				if (loginFlag)
 				{
 					loginFlag = false;
+					resetState();
 					checkForGameStateUpdate();
 				}
 				break;
@@ -356,7 +358,11 @@ public class DiscordPlugin extends Plugin
 	public void checkForValidStatus()
 	{
 		discordState.checkForTimeout();
-		checkForGameStateUpdate();
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			discordState.triggerEvent(DiscordGameEventType.IN_GAME);
+			checkForAreaUpdate();
+		}
 	}
 
 	private void updatePresence()
