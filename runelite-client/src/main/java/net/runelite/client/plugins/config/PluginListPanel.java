@@ -81,6 +81,7 @@ class PluginListPanel extends PluginPanel
 		"Item",
 		"Minigame",
 		"Notification",
+		"Plugin Hub",
 		"Skilling",
 		"XP"
 	);

@@ -97,7 +97,12 @@ class PluginListItem extends JPanel
 		ExternalPluginManifest mf = pluginConfig.getExternalPluginManifest();
 		if (mf != null)
 		{
+			keywords.add("pluginhub");
 			keywords.add(mf.getInternalName());
+		}
+		else
+		{
+			keywords.add("plugin"); // we don't want searching plugin to only show hub plugins
 		}
 
 		setLayout(new BorderLayout(3, 0));
