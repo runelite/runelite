@@ -43,7 +43,7 @@ public interface CorpConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showDarkCore",
+		keyName = "markDarkCore",
 		name = "Mark dark core",
 		description = "Marks the dark energy core.",
 		position = 1
