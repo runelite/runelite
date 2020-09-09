@@ -114,11 +114,7 @@ public class TimersPlugin extends Plugin
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 	private static final String ENDURANCE_EFFECT_MESSAGE = "Your Ring of endurance doubles the duration of your stamina potion's effect.";
 
-	private static final Pattern DEADMAN_HALF_TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you by (.+)\\. It will expire in 1 minute, 15 seconds\\.</col>");
-	private static final Pattern FULL_TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you by (.+)\\. It will expire in 5 minutes\\.</col>");
-	private static final Pattern HALF_TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you by (.+)\\. It will expire in 2 minutes, 30 seconds\\.</col>");
-	private static final Pattern MAGE_ARENA_FULL_TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you\\. It will expire in 2 minutes\\.</col>");
-	private static final Pattern MAGE_ARENA_HALF_TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you\\. It will expire in 1 minute\\.</col>");
+	private static final Pattern TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you(?: by .+)?\\. It will expire in (?<mins>\\d+) minutes?(?:, (?<secs>\\d+) seconds?)?\\.");
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
@@ -239,7 +235,7 @@ public class TimersPlugin extends Plugin
 				&& inWilderness == 0)
 			{
 				log.debug("Left wilderness in non-PVP world, clearing Teleblock timer.");
-				removeTbTimers();
+				removeGameTimer(TELEBLOCK);
 			}
 
 			lastWildernessVarb = inWilderness;
@@ -366,7 +362,7 @@ public class TimersPlugin extends Plugin
 
 		if (!config.showTeleblock())
 		{
-			removeTbTimers();
+			removeGameTimer(TELEBLOCK);
 		}
 
 		if (!config.showFreezes())
@@ -542,36 +538,18 @@ public class TimersPlugin extends Plugin
 
 		if (config.showTeleblock())
 		{
-			if (FULL_TELEBLOCK_PATTERN.matcher(event.getMessage()).find())
+			Matcher m = TELEBLOCK_PATTERN.matcher(event.getMessage());
+			if (m.find())
 			{
-				createGameTimer(FULLTB);
-			}
-			else if (HALF_TELEBLOCK_PATTERN.matcher(event.getMessage()).find())
-			{
-				if (client.getWorldType().contains(WorldType.DEADMAN))
-				{
-					createGameTimer(DMM_FULLTB);
-				}
-				else
-				{
-					createGameTimer(HALFTB);
-				}
-			}
-			else if (DEADMAN_HALF_TELEBLOCK_PATTERN.matcher(event.getMessage()).find())
-			{
-				createGameTimer(DMM_HALFTB);
-			}
-			else if (MAGE_ARENA_FULL_TELEBLOCK_PATTERN.matcher(event.getMessage()).find())
-			{
-				createGameTimer(MAGE_ARENA_FULLTB);
-			}
-			else if (MAGE_ARENA_HALF_TELEBLOCK_PATTERN.matcher(event.getMessage()).find())
-			{
-				createGameTimer(MAGE_ARENA_HALFTB);
+				String minss = m.group("mins");
+				String secss = m.group("secs");
+				int mins = Integer.parseInt(minss);
+				int secs = secss != null ? Integer.parseInt(secss) : 0;
+				createGameTimer(TELEBLOCK, Duration.ofSeconds(mins * 60 + secs));
 			}
 			else if (event.getMessage().contains(KILLED_TELEBLOCK_OPPONENT_TEXT))
 			{
-				removeTbTimers();
+				removeGameTimer(TELEBLOCK);
 			}
 		}
 
@@ -785,7 +763,7 @@ public class TimersPlugin extends Plugin
 		if (widget != null && !widget.isSelfHidden())
 		{
 			log.debug("Entered safe zone in PVP world, clearing Teleblock timer.");
-			removeTbTimers();
+			removeGameTimer(TELEBLOCK);
 		}
 	}
 
@@ -812,7 +790,7 @@ public class TimersPlugin extends Plugin
 				}
 
 				removeTzhaarTimer(); // will be readded by the wave message
-				removeTbTimers();
+				removeGameTimer(TELEBLOCK);
 				break;
 			case LOGGED_IN:
 				loggedInRace = true;
@@ -1073,15 +1051,5 @@ public class TimersPlugin extends Plugin
 	private void removeGameIndicator(GameIndicator indicator)
 	{
 		infoBoxManager.removeIf(t -> t instanceof IndicatorIndicator && ((IndicatorIndicator) t).getIndicator() == indicator);
-	}
-
-	private void removeTbTimers()
-	{
-		removeGameTimer(FULLTB);
-		removeGameTimer(HALFTB);
-		removeGameTimer(DMM_FULLTB);
-		removeGameTimer(DMM_HALFTB);
-		removeGameTimer(MAGE_ARENA_FULLTB);
-		removeGameTimer(MAGE_ARENA_HALFTB);
 	}
 }
