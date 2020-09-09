@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
-import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -38,16 +37,14 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class CoreOverlay extends Overlay
 {
-	private final Client client;
 	private final CorpPlugin corpPlugin;
 	private final CorpConfig config;
 
 	@Inject
-	private CoreOverlay(Client client, CorpPlugin corpPlugin, CorpConfig corpConfig)
+	private CoreOverlay(CorpPlugin corpPlugin, CorpConfig corpConfig)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		this.client = client;
 		this.corpPlugin = corpPlugin;
 		this.config = corpConfig;
 	}
@@ -55,13 +52,8 @@ class CoreOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.markDarkCore())
-		{
-			return null;
-		}
-
 		NPC core = corpPlugin.getCore();
-		if (core != null)
+		if (core != null && config.markDarkCore())
 		{
 			Polygon canvasTilePoly = core.getCanvasTilePoly();
 			if (canvasTilePoly != null)
