@@ -907,7 +907,7 @@ public class WidgetID
 
 	static class GenericScroll
 	{
-		static final int TEXT = 6;
+		static final int TEXT = 7;
 	}
 
 	static class GauntletTimer
