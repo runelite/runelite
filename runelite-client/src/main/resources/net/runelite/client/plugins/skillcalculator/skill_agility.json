@@ -80,7 +80,7 @@
     },
     {
       "level": 52,
-      "icon": 11849,
+      "icon": 24736,
       "name": "Hallowed Sepulchre Floor 1",
       "xp": 575
     },
@@ -98,7 +98,7 @@
     },
     {
       "level": 62,
-      "icon": 11849,
+      "icon": 24736,
       "name": "Hallowed Sepulchre Floor 2",
       "xp": 925
     },
@@ -110,7 +110,7 @@
     },
     {
       "level": 72,
-      "icon": 11849,
+      "icon": 24736,
       "name": "Hallowed Sepulchre Floor 3",
       "xp": 1500
     },
@@ -128,7 +128,7 @@
     },
     {
       "level": 82,
-      "icon": 11849,
+      "icon": 24736,
       "name": "Hallowed Sepulchre Floor 4",
       "xp": 2700
     },
@@ -140,7 +140,7 @@
     },
     {
       "level": 92,
-      "icon": 11849,
+      "icon": 24736,
       "name": "Hallowed Sepulchre Floor 5",
       "xp": 6000
     }
