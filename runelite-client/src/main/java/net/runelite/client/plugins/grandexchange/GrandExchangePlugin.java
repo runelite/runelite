@@ -38,6 +38,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -189,42 +190,14 @@ public class GrandExchangePlugin extends Plugin
 	@Inject
 	private GrandExchangeClient grandExchangeClient;
 	private boolean loginBurstGeUpdates;
-	private static String machineUuid;
 
 	@Inject
 	private OSBGrandExchangeClient osbGrandExchangeClient;
 
 	private boolean wasFuzzySearch;
 
-	static
-	{
-		try
-		{
-			Hasher hasher = Hashing.sha256().newHasher();
-			Runtime runtime = Runtime.getRuntime();
-
-			hasher.putByte((byte) OSType.getOSType().ordinal());
-			hasher.putByte((byte) runtime.availableProcessors());
-			hasher.putUnencodedChars(System.getProperty("os.arch", ""));
-			hasher.putUnencodedChars(System.getProperty("os.version", ""));
-			hasher.putUnencodedChars(System.getProperty("user.name", ""));
-			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-			while (networkInterfaces.hasMoreElements())
-			{
-				NetworkInterface networkInterface = networkInterfaces.nextElement();
-				byte[] hardwareAddress = networkInterface.getHardwareAddress();
-				if (hardwareAddress != null)
-				{
-					hasher.putBytes(hardwareAddress);
-				}
-			}
-			machineUuid = hasher.hash().toString();
-		}
-		catch (Exception ex)
-		{
-			log.warn("unable to generate machine id", ex);
-		}
-	}
+	private String machineUuid;
+	private String lastUsername;
 
 	/**
 	 * Logic from {@link org.apache.commons.text.similarity.FuzzyScore}
@@ -338,7 +311,6 @@ public class GrandExchangePlugin extends Plugin
 		{
 			grandExchangeClient.setUuid(null);
 		}
-		grandExchangeClient.setMachineId(machineUuid);
 
 		osbItem = -1;
 		osbGrandExchangeResult = null;
@@ -352,6 +324,7 @@ public class GrandExchangePlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 		grandExchangeText = null;
 		grandExchangeItem = null;
+		lastUsername = machineUuid = null;
 	}
 
 	@Subscribe
@@ -563,6 +536,10 @@ public class GrandExchangePlugin extends Plugin
 		{
 			panel.getOffersPanel().resetOffers();
 			loginBurstGeUpdates = true;
+		}
+		else if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			grandExchangeClient.setMachineId(getMachineUuid());
 		}
 	}
 
@@ -941,5 +918,48 @@ public class GrandExchangePlugin extends Plugin
 			+ "/viewitem?obj="
 			+ itemId;
 		LinkBrowser.browse(url);
+	}
+
+	private String getMachineUuid()
+	{
+		String username = client.getUsername();
+		if (lastUsername == username)
+		{
+			return machineUuid;
+		}
+
+		lastUsername = username;
+
+		try
+		{
+			Hasher hasher = Hashing.sha256().newHasher();
+			Runtime runtime = Runtime.getRuntime();
+
+			hasher.putByte((byte) OSType.getOSType().ordinal());
+			hasher.putByte((byte) runtime.availableProcessors());
+			hasher.putUnencodedChars(System.getProperty("os.arch", ""));
+			hasher.putUnencodedChars(System.getProperty("os.version", ""));
+			hasher.putUnencodedChars(System.getProperty("user.name", ""));
+
+			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+			while (networkInterfaces.hasMoreElements())
+			{
+				NetworkInterface networkInterface = networkInterfaces.nextElement();
+				byte[] hardwareAddress = networkInterface.getHardwareAddress();
+				if (hardwareAddress != null)
+				{
+					hasher.putBytes(hardwareAddress);
+				}
+			}
+			hasher.putUnencodedChars(username);
+			machineUuid = hasher.hash().toString();
+			return machineUuid;
+		}
+		catch (SocketException ex)
+		{
+			log.debug("unable to generate machine id", ex);
+			machineUuid = null;
+			return null;
+		}
 	}
 }
