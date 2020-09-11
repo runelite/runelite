@@ -42,8 +42,8 @@ import net.runelite.api.Varbits;
 enum DiscordGameEventType
 {
 
-	IN_GAME("In Game", -3),
-	IN_MENU("In Menu", -3),
+	IN_MENU("In Menu", -3, false, true, true),
+	IN_GAME("In Game", -3, false, false, true),
 	PLAYING_DEADMAN("Playing Deadman Mode", -3),
 	PLAYING_PVP("Playing in a PVP world", -3),
 	TRAINING_ATTACK(Skill.ATTACK),
@@ -453,6 +453,7 @@ enum DiscordGameEventType
 	private int priority;
 	private boolean shouldClear;
 	private boolean shouldTimeout;
+	private boolean shouldRestart;
 
 	@Nullable
 	private DiscordAreaType discordAreaType;
@@ -485,11 +486,18 @@ enum DiscordGameEventType
 		this.shouldClear = true;
 	}
 
-	DiscordGameEventType(String state, int priority)
+	DiscordGameEventType(String state, int priority, boolean shouldClear, boolean shouldTimeout, boolean shouldRestart)
 	{
 		this.state = state;
 		this.priority = priority;
-		this.shouldClear = true;
+		this.shouldClear = shouldClear;
+		this.shouldTimeout = shouldTimeout;
+		this.shouldRestart = shouldRestart;
+	}
+
+	DiscordGameEventType(String state, int priority)
+	{
+		this(state, priority, true, false, false);
 	}
 
 	DiscordGameEventType(String areaName, DiscordAreaType areaType, Varbits varbits)

@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Data;
 import net.runelite.client.RuneLiteProperties;
@@ -49,7 +51,7 @@ class DiscordState
 	private static class EventWithTime
 	{
 		private final DiscordGameEventType type;
-		private final Instant start;
+		private Instant start;
 		private Instant updated;
 	}
 
@@ -57,9 +59,8 @@ class DiscordState
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
 	private final DiscordConfig config;
-	private PartyService party;
+	private final PartyService party;
 	private DiscordPresence lastPresence;
-	private Instant startTime;
 
 	@Inject
 	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party)
@@ -77,7 +78,6 @@ class DiscordState
 		discordService.clearPresence();
 		events.clear();
 		lastPresence = null;
-		startTime = null;
 	}
 
 	/**
@@ -117,7 +117,7 @@ class DiscordState
 	void triggerEvent(final DiscordGameEventType eventType)
 	{
 		final Optional<EventWithTime> foundEvent = events.stream().filter(e -> e.type == eventType).findFirst();
-		EventWithTime event;
+		final EventWithTime event;
 
 		if (foundEvent.isPresent())
 		{
@@ -125,8 +125,8 @@ class DiscordState
 		}
 		else
 		{
-			event = new EventWithTime(eventType, Instant.now());
-
+			event = new EventWithTime(eventType);
+			event.setStart(Instant.now());
 			events.add(event);
 		}
 
@@ -137,12 +137,28 @@ class DiscordState
 			events.removeIf(e -> e.getType() != eventType && e.getType().isShouldClear());
 		}
 
+		if (event.getType().isShouldRestart())
+		{
+			event.setStart(Instant.now());
+		}
+
 		events.sort((a, b) -> ComparisonChain.start()
 			.compare(b.getType().getPriority(), a.getType().getPriority())
 			.compare(b.getUpdated(), a.getUpdated())
 			.result());
 
-		event = events.get(0);
+		updatePresenceWithLatestEvent();
+	}
+
+	private void updatePresenceWithLatestEvent()
+	{
+		if (events.isEmpty())
+		{
+			reset();
+			return;
+		}
+
+		final EventWithTime event = events.get(0);
 
 		String imageKey = null;
 		String state = null;
@@ -182,15 +198,29 @@ class DiscordState
 			.partyMax(PARTY_MAX)
 			.partySize(party.getMembers().size());
 
-		DiscordConfig.ElapsedTimeType elapsedTimeType = config.elapsedTimeType();
-		if (elapsedTimeType == DiscordConfig.ElapsedTimeType.HIDDEN)
+		final Instant startTime;
+		switch (config.elapsedTimeType())
 		{
-			startTime = null;
+			case HIDDEN:
+				startTime = null;
+				break;
+			case TOTAL:
+				// We are tracking total time spent instead of per activity time so try to find
+				// IN_GAME or IN_MENU event as this indicates start of tracking and find last updated one
+				// to determine if we are in game or menu
+				startTime = events.stream()
+					.filter(e -> e.type == DiscordGameEventType.IN_GAME || e.type == DiscordGameEventType.IN_MENU)
+					.sorted((a, b) -> b.getUpdated().compareTo(a.getUpdated()))
+					.map(EventWithTime::getStart)
+					.findFirst()
+					.orElse(event.getStart());
+				break;
+			case ACTIVITY:
+			default:
+				startTime = event.getStart();
+				break;
 		}
-		else if (elapsedTimeType == DiscordConfig.ElapsedTimeType.ACTIVITY || startTime == null)
-		{
-			startTime = event.getStart();
-		}
+
 		presenceBuilder.startTimestamp(startTime);
 
 		if (!party.isInParty() || party.isPartyOwner())
@@ -221,19 +251,28 @@ class DiscordState
 
 		final Duration actionTimeout = Duration.ofMinutes(config.actionTimeout());
 		final Instant now = Instant.now();
-		final EventWithTime eventWithTime = events.get(0);
+		final AtomicBoolean updatedAny = new AtomicBoolean();
 
-		events.removeIf(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)));
+		final boolean removedAny = events.removeAll(events.stream()
+			// Find only events that should time out
+			.filter(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)))
+			// Reset start times on timed events that should restart
+			.peek(event ->
+			{
+				if (event.getType().isShouldRestart())
+				{
+					event.setStart(null);
+					updatedAny.set(true);
+				}
+			})
+			// Now filter out events that should restart as we do not want to remove them
+			.filter(event -> !event.getType().isShouldRestart())
+			.collect(Collectors.toList())
+		);
 
-		assert DiscordGameEventType.IN_MENU.getState() != null;
-		if (DiscordGameEventType.IN_MENU.getState().equals(eventWithTime.getType().getState()) && now.isAfter(eventWithTime.getStart().plus(actionTimeout)))
+		if (removedAny || updatedAny.get())
 		{
-			final DiscordPresence presence = lastPresence
-				.toBuilder()
-				.startTimestamp(null)
-				.build();
-			lastPresence = presence;
-			discordService.updatePresence(presence);
+			updatePresenceWithLatestEvent();
 		}
 	}
 }

@@ -34,9 +34,22 @@ public interface DiscordConfig extends Config
 {
 	enum ElapsedTimeType
 	{
-		IN_GAME,
-		ACTIVITY,
-		HIDDEN
+		TOTAL("Total elapsed time"),
+		ACTIVITY("Per activity"),
+		HIDDEN("Hide elapsed time");
+
+		private final String value;
+
+		ElapsedTimeType(String value)
+		{
+			this.value = value;
+		}
+
+		@Override
+		public String toString()
+		{
+			return value;
+		}
 	}
 
 	@ConfigItem(
@@ -47,7 +60,7 @@ public interface DiscordConfig extends Config
 	)
 	default ElapsedTimeType elapsedTimeType()
 	{
-		return ElapsedTimeType.IN_GAME;
+		return ElapsedTimeType.ACTIVITY;
 	}
 
 	@ConfigItem(

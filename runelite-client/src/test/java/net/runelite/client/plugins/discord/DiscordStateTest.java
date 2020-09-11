@@ -77,10 +77,10 @@ public class DiscordStateTest
 	}
 
 	@Test
-	public void testStatusTimeout()
+	public void testStatusReset()
 	{
-		when(discordConfig.actionTimeout()).thenReturn(0);
-		when(discordConfig.elapsedTimeType()).thenReturn(DiscordConfig.ElapsedTimeType.HIDDEN);
+		when(discordConfig.actionTimeout()).thenReturn(-1);
+		when(discordConfig.elapsedTimeType()).thenReturn(DiscordConfig.ElapsedTimeType.ACTIVITY);
 
 		discordState.triggerEvent(DiscordGameEventType.IN_MENU);
 		verify(discordService).updatePresence(any(DiscordPresence.class));
@@ -90,5 +90,18 @@ public class DiscordStateTest
 		verify(discordService, times(2)).updatePresence(captor.capture());
 		List<DiscordPresence> captured = captor.getAllValues();
 		assertNull(captured.get(captured.size() - 1).getEndTimestamp());
+	}
+
+	@Test
+	public void testStatusTimeout()
+	{
+		when(discordConfig.actionTimeout()).thenReturn(-1);
+		when(discordConfig.elapsedTimeType()).thenReturn(DiscordConfig.ElapsedTimeType.ACTIVITY);
+
+		discordState.triggerEvent(DiscordGameEventType.TRAINING_AGILITY);
+		verify(discordService).updatePresence(any(DiscordPresence.class));
+
+		discordState.checkForTimeout();
+		verify(discordService, times(1)).clearPresence();
 	}
 }

@@ -106,7 +106,7 @@ public class DiscordPlugin extends Plugin
 	@Inject
 	private OkHttpClient okHttpClient;
 
-	private Map<Skill, Integer> skillExp = new HashMap<>();
+	private final Map<Skill, Integer> skillExp = new HashMap<>();
 	private NavigationButton discordButton;
 	private boolean loginFlag;
 
@@ -358,11 +358,6 @@ public class DiscordPlugin extends Plugin
 	public void checkForValidStatus()
 	{
 		discordState.checkForTimeout();
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			discordState.triggerEvent(DiscordGameEventType.IN_GAME);
-			checkForAreaUpdate();
-		}
 	}
 
 	private void updatePresence()
