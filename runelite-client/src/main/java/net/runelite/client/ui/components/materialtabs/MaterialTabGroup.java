@@ -110,10 +110,12 @@ public class MaterialTabGroup extends JPanel
 		// If the display is available, switch from the old to the new display
 		if (display != null)
 		{
+			display.setVisible(false);
 			display.removeAll();
 			display.add(selectedTab.getContent());
 			display.revalidate();
 			display.repaint();
+			display.setVisible(true);
 		}
 
 		// Unselected all other tabs
