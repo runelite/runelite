@@ -42,8 +42,8 @@ import net.runelite.api.Varbits;
 enum DiscordGameEventType
 {
 
-	IN_MENU("In Menu", -3, false, true, true),
-	IN_GAME("In Game", -3, false, false, true),
+	IN_MENU("In Menu", -3, true, true, true),
+	IN_GAME("In Game", -3, false, false, false),
 	PLAYING_DEADMAN("Playing Deadman Mode", -3),
 	PLAYING_PVP("Playing in a PVP world", -3),
 	TRAINING_ATTACK(Skill.ATTACK),

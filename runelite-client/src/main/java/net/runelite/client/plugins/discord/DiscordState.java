@@ -132,7 +132,10 @@ class DiscordState
 
 		event.setUpdated(Instant.now());
 
-		if (event.getType().isShouldClear())
+		// an IN_GAME (or IN_MENU) event should remove all other areas from events
+		// but since events is fully cleared every time before IN_MENU is added,
+		// we will never need to run this on an IN_MENU event trigger
+		if (event.getType().isShouldClear() || event.getType().equals(DiscordGameEventType.IN_GAME))
 		{
 			events.removeIf(e -> e.getType() != eventType && e.getType().isShouldClear());
 		}
