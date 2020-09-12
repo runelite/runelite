@@ -35,6 +35,7 @@ import net.runelite.api.Client;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.ws.PartyService;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
@@ -103,5 +104,27 @@ public class DiscordStateTest
 
 		discordState.checkForTimeout();
 		verify(discordService, times(1)).clearPresence();
+	}
+
+	@Test
+	public void testAreaChange()
+	{
+		when(discordConfig.elapsedTimeType()).thenReturn(DiscordConfig.ElapsedTimeType.TOTAL);
+
+		// Start with state of IN_GAME
+		ArgumentCaptor<DiscordPresence> captor = ArgumentCaptor.forClass(DiscordPresence.class);
+		discordState.triggerEvent(DiscordGameEventType.IN_GAME);
+		verify(discordService, times(1)).updatePresence(captor.capture());
+		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
+
+		// IN_GAME -> CITY
+		discordState.triggerEvent(DiscordGameEventType.CITY_VARROCK);
+		verify(discordService, times(2)).updatePresence(captor.capture());
+		assertEquals(DiscordGameEventType.CITY_VARROCK.getState(), captor.getValue().getState());
+
+		// CITY -> IN_GAME
+		discordState.triggerEvent(DiscordGameEventType.IN_GAME);
+		verify(discordService, times(3)).updatePresence(captor.capture());
+		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
 	}
 }
