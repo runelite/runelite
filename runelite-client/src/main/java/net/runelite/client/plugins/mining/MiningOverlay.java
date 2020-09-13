@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
@@ -71,7 +72,7 @@ class MiningOverlay extends OverlayPanel
 		}
 
 		Pickaxe pickaxe = plugin.getPickaxe();
-		if (pickaxe != null && pickaxe.matchesMiningAnimation(client.getLocalPlayer()))
+		if (pickaxe != null && (pickaxe.matchesMiningAnimation(client.getLocalPlayer()) || client.getLocalPlayer().getAnimation() == AnimationID.DENSE_ESSENCE_CHIPPING))
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Mining")

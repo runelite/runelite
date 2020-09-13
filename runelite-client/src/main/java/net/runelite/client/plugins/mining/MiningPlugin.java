@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -176,10 +177,24 @@ public class MiningPlugin extends Plugin
 		}
 
 		int animId = local.getAnimation();
-		Pickaxe pickaxe = Pickaxe.fromAnimation(animId);
-		if (pickaxe != null)
+		if (animId == AnimationID.DENSE_ESSENCE_CHIPPING)
 		{
-			this.pickaxe = pickaxe;
+			// Can't use chat messages to start mining session on Dense Essence as they don't have a chat message when mined,
+			// so we track the session here instead.
+			if (session == null)
+			{
+				session = new MiningSession();
+			}
+
+			session.setLastMined();
+		}
+		else
+		{
+			Pickaxe pickaxe = Pickaxe.fromAnimation(animId);
+			if (pickaxe != null)
+			{
+				this.pickaxe = pickaxe;
+			}
 		}
 	}
 
