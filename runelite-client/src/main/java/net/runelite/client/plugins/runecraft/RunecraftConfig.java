@@ -30,9 +30,11 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("runecraft")
+@ConfigGroup(RunecraftConfig.GROUP)
 public interface RunecraftConfig extends Config
 {
+	String GROUP = "runecraft";
+
 	@ConfigSection(
 		name = "Rift Settings",
 		description = "Abyss rift overlay settings",
