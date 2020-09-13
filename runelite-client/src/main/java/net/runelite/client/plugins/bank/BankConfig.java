@@ -119,4 +119,15 @@ public interface BankConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "hideMembersItems",
+			name = "Hide members items",
+			description = "Hides all members items in the bank on f2p worlds",
+			position = 9
+	)
+	default boolean hideMembersItems()
+	{
+		return false;
+	}
 }
