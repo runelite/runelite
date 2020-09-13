@@ -26,6 +26,7 @@ package net.runelite.client.plugins.runecraft;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +35,6 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
@@ -55,19 +55,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.AIR_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.BLOOD_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.BODY_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.CHAOS_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.COSMIC_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.DEATH_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.EARTH_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.FIRE_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.LAW_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.MIND_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.NATURE_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.SOUL_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.WATER_RIFT;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -96,9 +83,6 @@ public class RunecraftPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC darkMage;
-
-	@Inject
-	private Client client;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -142,7 +126,7 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("runecraft"))
+		if (event.getGroup().equals(RunecraftConfig.GROUP))
 		{
 			updateRifts();
 		}
@@ -234,57 +218,8 @@ public class RunecraftPlugin extends Plugin
 	private void updateRifts()
 	{
 		rifts.clear();
-		if (config.showAir())
-		{
-			rifts.add(AIR_RIFT);
-		}
-		if (config.showBlood())
-		{
-			rifts.add(BLOOD_RIFT);
-		}
-		if (config.showBody())
-		{
-			rifts.add(BODY_RIFT);
-		}
-		if (config.showChaos())
-		{
-			rifts.add(CHAOS_RIFT);
-		}
-		if (config.showCosmic())
-		{
-			rifts.add(COSMIC_RIFT);
-		}
-		if (config.showDeath())
-		{
-			rifts.add(DEATH_RIFT);
-		}
-		if (config.showEarth())
-		{
-			rifts.add(EARTH_RIFT);
-		}
-		if (config.showFire())
-		{
-			rifts.add(FIRE_RIFT);
-		}
-		if (config.showLaw())
-		{
-			rifts.add(LAW_RIFT);
-		}
-		if (config.showMind())
-		{
-			rifts.add(MIND_RIFT);
-		}
-		if (config.showNature())
-		{
-			rifts.add(NATURE_RIFT);
-		}
-		if (config.showSoul())
-		{
-			rifts.add(SOUL_RIFT);
-		}
-		if (config.showWater())
-		{
-			rifts.add(WATER_RIFT);
-		}
+		Arrays.stream(AbyssRifts.values())
+			.filter(r -> r.getConfigEnabled().test(config))
+			.forEach(rifts::add);
 	}
 }
