@@ -356,10 +356,22 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "infoBoxTextOutline",
+		name = "Outline infobox text",
+		description = "Draw a full outline instead of a simple shadow for infobox text",
+		position = 43,
+		section = overlaySettings
+	)
+	default boolean infoBoxTextOutline()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "overlayBackgroundColor",
 		name = "Overlay Color",
 		description = "Configures the background color of infoboxes and overlays",
-		position = 43,
+		position = 44,
 		section = overlaySettings
 	)
 	@Alpha
