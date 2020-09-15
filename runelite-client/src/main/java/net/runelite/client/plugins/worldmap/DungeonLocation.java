@@ -163,6 +163,7 @@ enum DungeonLocation
 	SMOKE_DEVIL_BOSS("Thermonuclear Smoke Devil (boss)", new WorldPoint(2377, 9452, 0)),
 	SMOKE_DUNGEON("Smoke Dungeon", new WorldPoint(3309, 2962, 0)),
 	SOPHANEM("Sophanem Dungeon", new WorldPoint(3314, 2797, 0)),
+	SOURHOG_CAVE("Sourhog Cave", new WorldPoint(3149, 3347, 0)),
 	STRONGHOLD_OF_SECURITY("Stronghold of Security", new WorldPoint(3080, 3420, 0)),
 	STRONGHOLD_SLAYER("Stronghold Slayer Dungeon", new WorldPoint(2427, 3424, 0)),
 	TAVERLEY("Taverley Dungeon", new WorldPoint(2883, 3397, 0)),

@@ -178,6 +178,7 @@ public enum Quest
 	SONG_OF_THE_ELVES(603, "Song of the Elves"),
 	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles"),
 	SINS_OF_THE_FATHER(1276, "Sins of the Father"),
+	A_PORCINE_OF_INTEREST(1690, "A Porcine of Interest"),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss"),
@@ -192,7 +193,8 @@ public enum Quest
 	LAIR_OF_TARN_RAZORLOR(328, "Lair of Tarn Razorlor"),
 	FAMILY_PEST(329, "Family Pest"),
 	THE_MAGE_ARENA_II(330, "The Mage Arena II"),
-	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge");
+	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge"),
+	DADDYS_HOME(1688, "Daddy's Home");
 
 	@Getter
 	private final int id;
