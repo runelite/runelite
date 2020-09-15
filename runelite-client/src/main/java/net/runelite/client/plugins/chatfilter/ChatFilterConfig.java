@@ -122,6 +122,17 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "filterGameChat",
+		name = "Filter Game Chat",
+		description = "Filter your game chat messages",
+		position = 8
+	)
+	default boolean filterGameChat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "collapseGameChat",
 		name = "Collapse Game Chat",
 		description = "Collapse duplicate game chat messages into a single line",
