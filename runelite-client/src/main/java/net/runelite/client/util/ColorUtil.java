@@ -131,16 +131,6 @@ public class ColorUtil
 		return String.format("%08x", color.getRGB());
 	}
 
-	static boolean isFullyTransparent(final Color color)
-	{
-		return color.getAlpha() == 0;
-	}
-
-	static boolean isNotFullyTransparent(final Color color)
-	{
-		return !isFullyTransparent(color);
-	}
-
 	/**
 	 * Determines if the passed hex string is an alpha hex color.
 	 *
