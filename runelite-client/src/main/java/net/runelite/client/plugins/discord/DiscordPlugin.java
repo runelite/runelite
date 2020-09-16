@@ -436,6 +436,7 @@ public class DiscordPlugin extends Plugin
 			case CITIES: return config.showCityActivity();
 			case DUNGEONS: return config.showDungeonActivity();
 			case MINIGAMES: return config.showMinigameActivity();
+			case REGIONS: return config.showRegionsActivity();
 		}
 
 		return false;
