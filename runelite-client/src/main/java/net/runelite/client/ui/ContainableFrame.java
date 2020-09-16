@@ -200,7 +200,8 @@ public class ContainableFrame extends JFrame
 	 * the maximized bounds.
 	 */
 	@Override
-	public void setMaximizedBounds(Rectangle bounds) {
+	public void setMaximizedBounds(Rectangle bounds)
+	{
 		super.setMaximizedBounds(getWindowAreaBounds());
 	}
 
@@ -208,10 +209,12 @@ public class ContainableFrame extends JFrame
 	 * Finds the {@link GraphicsConfiguration} of the display the window is currently on. If it's on more than
 	 * one screen, returns the one it's most on (largest area of intersection)
 	 */
-	private GraphicsConfiguration getCurrentDisplayConfiguration() {
+	private GraphicsConfiguration getCurrentDisplayConfiguration()
+	{
 		return Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
 				.map(GraphicsDevice::getDefaultConfiguration)
-				.max(Comparator.comparing(config -> {
+				.max(Comparator.comparing(config ->
+				{
 					Rectangle intersection = config.getBounds().intersection(getBounds());
 					return intersection.width * intersection.height;
 				}))
