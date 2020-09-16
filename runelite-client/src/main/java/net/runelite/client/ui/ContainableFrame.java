@@ -25,7 +25,12 @@
 package net.runelite.client.ui;
 
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import lombok.Setter;
 import net.runelite.client.config.ExpandResizeType;
@@ -186,12 +191,50 @@ public class ContainableFrame extends JFrame
 		expandedClientOppositeDirection = false;
 	}
 
+	@Override
 	public void setMaximizedBounds(Rectangle bounds) {
-		// workaround for substance ignoring high dpi when setting bounds
+		super.setMaximizedBounds(getWindowAreaBounds());
 	}
 
-	public void actuallySetMaximizedBounds(Rectangle bounds) {
-		super.setMaximizedBounds(bounds);
+	public Rectangle getWindowAreaBounds() {
+		Rectangle frameBounds = getBounds();
+		Rectangle result = null;
+
+		for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
+		{
+			GraphicsConfiguration config = gd.getDefaultConfiguration();
+
+			if (config.getBounds().intersects(frameBounds))
+			{
+				Rectangle newBounds = getWindowAreaBounds(config);
+				result = result == null ? newBounds : result.intersection(newBounds);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Calculates the bounds of the window area of the screen.
+	 * <p>
+	 * The bounds returned by {@link GraphicsEnvironment#getMaximumWindowBounds} are incorrectly calculated on
+	 * high-DPI screens.
+	 */
+	public Rectangle getWindowAreaBounds(GraphicsConfiguration config)
+	{
+		// get screen bounds
+		Rectangle bounds = config.getBounds();
+
+		// transform bounds to dpi-independent coordinates
+		bounds = config.getDefaultTransform().createTransformedShape(bounds).getBounds();
+
+		// subtract insets (taskbar, etc.)
+		Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(config);
+		bounds.x += insets.left;
+		bounds.y += insets.top;
+		bounds.height -= (insets.bottom + insets.top);
+		bounds.width -= (insets.right + insets.left);
+		return bounds;
 	}
 
 	/**
