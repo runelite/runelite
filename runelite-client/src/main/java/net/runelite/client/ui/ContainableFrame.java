@@ -31,6 +31,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.util.Arrays;
+import java.util.Comparator;
 import javax.swing.JFrame;
 import lombok.Setter;
 import net.runelite.client.config.ExpandResizeType;
@@ -191,27 +193,30 @@ public class ContainableFrame extends JFrame
 		expandedClientOppositeDirection = false;
 	}
 
+	/**
+	 * Due to Java bug JDK-4737788, maximizing an undecorated frame causes it to cover the taskbar.
+	 * As a workaround, Substance calls this method when the window is maximized to manually set the
+	 * bounds, but its calculation ignores high-DPI scaling. We're overriding it to correctly calculate
+	 * the maximized bounds.
+	 */
 	@Override
 	public void setMaximizedBounds(Rectangle bounds) {
 		super.setMaximizedBounds(getWindowAreaBounds());
 	}
 
-	public Rectangle getWindowAreaBounds() {
-		Rectangle frameBounds = getBounds();
-		Rectangle result = null;
-
-		for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
-		{
-			GraphicsConfiguration config = gd.getDefaultConfiguration();
-
-			if (config.getBounds().intersects(frameBounds))
-			{
-				Rectangle newBounds = getWindowAreaBounds(config);
-				result = result == null ? newBounds : result.intersection(newBounds);
-			}
-		}
-
-		return result;
+	/**
+	 * Finds the {@link GraphicsConfiguration} of the display the window is currently on. If it's on more than
+	 * one screen, returns the one it's most on (largest area of intersection)
+	 */
+	private GraphicsConfiguration getCurrentDisplayConfiguration() {
+		return Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
+				.max(Comparator.comparing(device -> {
+					GraphicsConfiguration config = device.getDefaultConfiguration();
+					Rectangle intersection = config.getBounds().intersection(getBounds());
+					return intersection.width * intersection.height;
+				}))
+				.map(GraphicsDevice::getDefaultConfiguration)
+				.orElseGet(this::getGraphicsConfiguration);
 	}
 
 	/**
@@ -220,8 +225,9 @@ public class ContainableFrame extends JFrame
 	 * The bounds returned by {@link GraphicsEnvironment#getMaximumWindowBounds} are incorrectly calculated on
 	 * high-DPI screens.
 	 */
-	public Rectangle getWindowAreaBounds(GraphicsConfiguration config)
+	private Rectangle getWindowAreaBounds()
 	{
+		GraphicsConfiguration config = getCurrentDisplayConfiguration();
 		// get screen bounds
 		Rectangle bounds = config.getBounds();
 
