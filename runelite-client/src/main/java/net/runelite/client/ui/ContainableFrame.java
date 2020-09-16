@@ -186,6 +186,14 @@ public class ContainableFrame extends JFrame
 		expandedClientOppositeDirection = false;
 	}
 
+	public void setMaximizedBounds(Rectangle bounds) {
+		// workaround for substance ignoring high dpi when setting bounds
+	}
+
+	public void actuallySetMaximizedBounds(Rectangle bounds) {
+		super.setMaximizedBounds(bounds);
+	}
+
 	/**
 	 * Force minimum size of frame to be it's layout manager's minimum size
 	 */

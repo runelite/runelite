@@ -37,6 +37,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -424,6 +425,7 @@ public class ClientUI
 			if (withTitleBar)
 			{
 				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+				frame.actuallySetMaximizedBounds(getWindowBounds()); // workaround for https://bugs.java.com/bugdatabase/view_bug.do?bug_id=4737788
 
 				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
 				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
@@ -497,6 +499,29 @@ public class ClientUI
 				toggleSidebar();
 			}
 		});
+	}
+
+	/**
+	 * Calculates the bounds of the window area of the screen.
+	 * <p>
+	 * The bounds returned by {@link GraphicsEnvironment#getMaximumWindowBounds} are incorrectly calculated on
+	 * high-DPI screens.
+	 */
+	private Rectangle getWindowBounds()
+	{
+		// get screen bounds
+		Rectangle bounds = getGraphicsConfiguration().getBounds();
+
+		// transform bounds to dpi-independent coordinates
+		bounds = getGraphicsConfiguration().getDefaultTransform().createTransformedShape(bounds).getBounds();
+
+		// subtract insets (taskbar, etc.)
+		Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
+		bounds.x += insets.left;
+		bounds.y += insets.top;
+		bounds.height -= insets.bottom;
+		bounds.width -= insets.right;
+		return bounds;
 	}
 
 	public void show()
