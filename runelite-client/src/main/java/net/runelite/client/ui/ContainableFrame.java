@@ -210,12 +210,11 @@ public class ContainableFrame extends JFrame
 	 */
 	private GraphicsConfiguration getCurrentDisplayConfiguration() {
 		return Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
-				.max(Comparator.comparing(device -> {
-					GraphicsConfiguration config = device.getDefaultConfiguration();
+				.map(GraphicsDevice::getDefaultConfiguration)
+				.max(Comparator.comparing(config -> {
 					Rectangle intersection = config.getBounds().intersection(getBounds());
 					return intersection.width * intersection.height;
 				}))
-				.map(GraphicsDevice::getDefaultConfiguration)
 				.orElseGet(this::getGraphicsConfiguration);
 	}
 
