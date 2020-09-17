@@ -69,9 +69,7 @@ public enum AgilityShortcut
 			// Trollweiss Mountain Cave
 			ROCKY_HANDHOLDS, ROCKY_HANDHOLDS_19847,
 			// Witchaven Dungeon
-			SHORTCUT,
-			// Gu'Tanoth
-			CRUMBLING_WALL_40355, ROCKS_40356),
+			SHORTCUT),
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2698, 9491, 0), PIPE_21727),
 	BRIMHAVEN_DUNGEON_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2655, 9573, 0), PIPE_21728),
 	BRIMHAVEN_DUNGEON_STEPPING_STONES_RETURN(1, "Pipe Squeeze", null, STEPPING_STONE_21739),
