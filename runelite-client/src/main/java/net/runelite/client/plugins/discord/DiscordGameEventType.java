@@ -272,7 +272,7 @@ enum DiscordGameEventType
 
 	// Minigames
 	MG_ARDOUGNE_RAT_PITS("Ardougne Rat Pits", DiscordAreaType.MINIGAMES, 10646),
-	MG_BARBARIAN_ASSAULT("Barbarian Assault", DiscordAreaType.MINIGAMES, 10332),
+	MG_BARBARIAN_ASSAULT("Barbarian Assault", DiscordAreaType.MINIGAMES, 7508, 7509, 10322),
 	MG_BARROWS("Barrows", DiscordAreaType.MINIGAMES, 14131, 14231),
 	MG_BLAST_FURNACE("Blast Furnace", DiscordAreaType.MINIGAMES, 7757),
 	MG_BRIMHAVEN_AGILITY_ARENA("Brimhaven Agility Arena", DiscordAreaType.MINIGAMES, 11157),
