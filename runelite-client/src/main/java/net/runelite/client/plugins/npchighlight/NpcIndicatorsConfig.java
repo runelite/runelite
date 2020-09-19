@@ -168,4 +168,14 @@ public interface NpcIndicatorsConfig extends Config
 	{
 		return false;
 	}
+	
+	@ConfigItem(
+		position = 7,
+		keyName = "drawDistance",
+		name = "Monster Render Distance",
+		description = "The distance that monsters will be highlighted up to.")
+	default int drawDistance()
+	{
+		return 3;
+	}
 }

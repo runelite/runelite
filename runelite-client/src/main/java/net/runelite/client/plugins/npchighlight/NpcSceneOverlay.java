@@ -87,7 +87,9 @@ public class NpcSceneOverlay extends Overlay
 
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, config.getHighlightColor());
+			if ((int) Math.hypot(client.getLocalPlayer().getWorldLocation().getX() - npc.getWorldLocation().getX(), client.getLocalPlayer().getWorldLocation().getY() - npc.getWorldLocation().getY()) < config.drawDistance()){
+				renderNpcOverlay(graphics, npc, config.getHighlightColor());
+			}
 		}
 
 		return null;
