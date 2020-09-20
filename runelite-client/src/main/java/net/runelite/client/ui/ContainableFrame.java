@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
@@ -49,6 +50,7 @@ public class ContainableFrame extends JFrame
 		NEVER;
 	}
 
+	private static final int SCREEN_EDGE_CLOSE_DISTANCE = 40;
 	private static boolean jdk8231564;
 
 	static
@@ -56,9 +58,7 @@ public class ContainableFrame extends JFrame
 		try
 		{
 			String javaVersion = System.getProperty("java.version");
-			String[] s = javaVersion.split("\\.");
-			int major = Integer.parseInt(s[0]), minor = Integer.parseInt(s[1]), patch = Integer.parseInt(s[2]);
-			jdk8231564 = major > 11 || (major == 11 && minor > 0) || (major == 11 && minor == 0 && patch >= 8);
+			jdk8231564 = jdk8231564(javaVersion);
 		}
 		catch (Exception ex)
 		{
@@ -66,7 +66,18 @@ public class ContainableFrame extends JFrame
 		}
 	}
 
-	private static final int SCREEN_EDGE_CLOSE_DISTANCE = 40;
+	@VisibleForTesting
+	static boolean jdk8231564(String javaVersion)
+	{
+		int idx = javaVersion.indexOf('_');
+		if (idx != -1)
+		{
+			javaVersion = javaVersion.substring(0, idx);
+		}
+		String[] s = javaVersion.split("\\.");
+		int major = Integer.parseInt(s[0]), minor = Integer.parseInt(s[1]), patch = Integer.parseInt(s[2]);
+		return major > 11 || (major == 11 && minor > 0) || (major == 11 && minor == 0 && patch >= 8);
+	}
 
 	@Setter
 	private ExpandResizeType expandResizeType;
