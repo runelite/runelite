@@ -34,8 +34,8 @@ import net.runelite.client.ui.ColorScheme;
 public enum CropState
 {
 	HARVESTABLE(ColorScheme.PROGRESS_COMPLETE_COLOR),
-	GROWING(ColorScheme.PROGRESS_COMPLETE_COLOR),
-	DISEASED(ColorScheme.PROGRESS_INPROGRESS_COLOR),
+	GROWING(ColorScheme.PROGRESS_INPROGRESS_COLOR),
+	DISEASED(ColorScheme.PROGRESS_ERROR_COLOR),
 	DEAD(ColorScheme.PROGRESS_ERROR_COLOR);
 
 	private final Color color;
