@@ -136,6 +136,8 @@ public class NightmareZonePlugin extends Plugin
 				resetPointsPerHour();
 			}
 
+			overloadNotificationSend = false;
+
 			return;
 		}
 
