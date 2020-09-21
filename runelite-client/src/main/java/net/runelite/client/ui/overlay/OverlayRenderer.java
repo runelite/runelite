@@ -77,6 +77,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private static final Color SNAP_CORNER_ACTIVE_COLOR = new Color(0, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_COLOR = new Color(255, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_ACTIVE_COLOR = new Color(255, 255, 0, 200);
+	private static final Color MOVING_OVERLAY_TARGET_COLOR = Color.RED;
 	private static final Color MOVING_OVERLAY_RESIZING_COLOR = new Color(255, 0, 255, 200);
 	private final Client client;
 	private final OverlayManager overlayManager;
@@ -87,6 +88,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private final Point overlayOffset = new Point();
 	private final Point mousePosition = new Point();
 	private Overlay currentManagedOverlay;
+	private Overlay dragTargetOverlay;
 	private Rectangle currentManagedBounds;
 	private boolean inOverlayManagingMode;
 	private boolean inOverlayResizingMode;
@@ -292,15 +294,28 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				{
 					if (inOverlayManagingMode)
 					{
+						Color boundsColor;
 						if (inOverlayResizingMode && currentManagedOverlay == overlay)
 						{
-							graphics.setColor(MOVING_OVERLAY_RESIZING_COLOR);
+							boundsColor = MOVING_OVERLAY_RESIZING_COLOR;
+						}
+						else if (inOverlayDraggingMode && currentManagedOverlay == overlay)
+						{
+							boundsColor = MOVING_OVERLAY_ACTIVE_COLOR;
+						}
+						else if (inOverlayDraggingMode && overlay.isDragTargetable() && currentManagedOverlay.isDragTargetable()
+							&& currentManagedOverlay.getBounds().intersects(bounds))
+						{
+							boundsColor = MOVING_OVERLAY_TARGET_COLOR;
+							assert currentManagedOverlay != overlay;
+							dragTargetOverlay = overlay;
 						}
 						else
 						{
-							graphics.setColor(inOverlayDraggingMode && currentManagedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
+							boundsColor = MOVING_OVERLAY_COLOR;
 						}
 
+						graphics.setColor(boundsColor);
 						graphics.draw(bounds);
 						graphics.setPaint(paint);
 					}
@@ -457,6 +472,12 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			return mouseEvent;
 		}
 
+		if (dragTargetOverlay != null && !currentManagedOverlay.getBounds().intersects(dragTargetOverlay.getBounds()))
+		{
+			// No longer over drag target
+			dragTargetOverlay = null;
+		}
+
 		final Rectangle canvasRect = new Rectangle(client.getRealDimensions());
 
 		if (!canvasRect.contains(p))
@@ -584,7 +605,17 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 		mousePosition.setLocation(-1, -1);
 
-		// do not snapcorner detached overlays
+		if (dragTargetOverlay != null)
+		{
+			if (dragTargetOverlay.onDrag(currentManagedOverlay))
+			{
+				mouseEvent.consume();
+				resetOverlayManagementMode();
+				return mouseEvent;
+			}
+		}
+
+		// Check if the overlay is over a snapcorner and move it if so, unless it is a detached overlay
 		if (currentManagedOverlay.getPosition() != OverlayPosition.DETACHED && inOverlayDraggingMode)
 		{
 			final OverlayBounds snapCorners = this.snapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
@@ -720,6 +751,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		inOverlayResizingMode = false;
 		inOverlayDraggingMode = false;
 		currentManagedOverlay = null;
+		dragTargetOverlay = null;
 		currentManagedBounds = null;
 		clientUI.setCursor(clientUI.getDefaultCursor());
 	}

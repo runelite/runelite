@@ -33,8 +33,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import java.util.concurrent.CopyOnWriteArrayList;
+import lombok.Getter;
+import lombok.NonNull;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.events.MenuOptionClicked;
@@ -42,6 +43,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.InfoBoxMenuClicked;
+import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -51,7 +53,6 @@ import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
-@Singleton
 public class InfoBoxOverlay extends OverlayPanel
 {
 	private static final int GAP = 1;
@@ -62,24 +63,33 @@ public class InfoBoxOverlay extends OverlayPanel
 	private final Client client;
 	private final RuneLiteConfig config;
 	private final EventBus eventBus;
+	private final String name;
+	private ComponentOrientation orientation;
+
+	@Getter
+	private final List<InfoBox> infoBoxes = new CopyOnWriteArrayList<>();
 
 	private InfoBoxComponent hoveredComponent;
 
-	@Inject
-	private InfoBoxOverlay(
+	InfoBoxOverlay(
 		InfoBoxManager infoboxManager,
 		TooltipManager tooltipManager,
 		Client client,
 		RuneLiteConfig config,
-		EventBus eventBus)
+		EventBus eventBus,
+		String name,
+		@NonNull ComponentOrientation orientation)
 	{
 		this.tooltipManager = tooltipManager;
 		this.infoboxManager = infoboxManager;
 		this.client = client;
 		this.config = config;
 		this.eventBus = eventBus;
+		this.name = name;
+		this.orientation = orientation;
 		setPosition(OverlayPosition.TOP_LEFT);
 		setClearChildren(false);
+		setDragTargetable(true);
 
 		panelComponent.setWrap(true);
 		panelComponent.setBackgroundColor(null);
@@ -88,10 +98,14 @@ public class InfoBoxOverlay extends OverlayPanel
 	}
 
 	@Override
+	public String getName()
+	{
+		return this.name;
+	}
+
+	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final List<InfoBox> infoBoxes = infoboxManager.getInfoBoxes();
-
 		final boolean menuOpen = client.isMenuOpen();
 		if (!menuOpen)
 		{
@@ -106,9 +120,7 @@ public class InfoBoxOverlay extends OverlayPanel
 		// Set preferred size to the size of DEFAULT_WRAP_COUNT infoboxes, including the padding - which is applied
 		// to the last infobox prior to wrapping too.
 		panelComponent.setPreferredSize(new Dimension(DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP), DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP)));
-		panelComponent.setOrientation(config.infoBoxVertical()
-			? ComponentOrientation.VERTICAL
-			: ComponentOrientation.HORIZONTAL);
+		panelComponent.setOrientation(orientation);
 
 		for (InfoBox box : infoBoxes)
 		{
@@ -177,7 +189,7 @@ public class InfoBoxOverlay extends OverlayPanel
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		if (menuOptionClicked.getMenuAction() != MenuAction.RUNELITE_INFOBOX)
+		if (menuOptionClicked.getMenuAction() != MenuAction.RUNELITE_INFOBOX || hoveredComponent == null)
 		{
 			return;
 		}
@@ -191,5 +203,22 @@ public class InfoBoxOverlay extends OverlayPanel
 		{
 			eventBus.post(new InfoBoxMenuClicked(overlayMenuEntry, infoBox));
 		}
+	}
+
+	@Override
+	public boolean onDrag(Overlay source)
+	{
+		if (!(source instanceof InfoBoxOverlay))
+		{
+			return false;
+		}
+
+		infoboxManager.mergeInfoBoxes((InfoBoxOverlay) source, this);
+		return true;
+	}
+
+	ComponentOrientation flip()
+	{
+		return orientation = orientation == ComponentOrientation.HORIZONTAL ? ComponentOrientation.VERTICAL : ComponentOrientation.HORIZONTAL;
 	}
 }

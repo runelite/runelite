@@ -334,7 +334,8 @@ public interface RuneLiteConfig extends Config
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
 		position = 40,
-		section = overlaySettings
+		section = overlaySettings,
+		hidden = true
 	)
 	default boolean infoBoxVertical()
 	{
