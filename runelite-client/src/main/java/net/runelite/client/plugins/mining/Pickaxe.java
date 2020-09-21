@@ -26,7 +26,6 @@ package net.runelite.client.plugins.mining;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.AnimationID.MINING_3A_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_ADAMANT_PICKAXE;
@@ -40,6 +39,20 @@ import static net.runelite.api.AnimationID.MINING_GILDED_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_IRON_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_MITHRIL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_3A;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_ADAMANT;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BLACK;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BRONZE;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_CRYSTAL;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_OR;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_UPGRADED;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_GILDED;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
 import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
 import static net.runelite.api.ItemID.ADAMANT_PICKAXE;
@@ -58,27 +71,26 @@ import static net.runelite.api.ItemID.STEEL_PICKAXE;
 import static net.runelite.api.ItemID._3RD_AGE_PICKAXE;
 import net.runelite.api.Player;
 
-@AllArgsConstructor
 @Getter
 enum Pickaxe
 {
-	BRONZE(MINING_BRONZE_PICKAXE, BRONZE_PICKAXE),
-	IRON(MINING_IRON_PICKAXE, IRON_PICKAXE),
-	STEEL(MINING_STEEL_PICKAXE, STEEL_PICKAXE),
-	BLACK(MINING_BLACK_PICKAXE, BLACK_PICKAXE),
-	MITHRIL(MINING_MITHRIL_PICKAXE, MITHRIL_PICKAXE),
-	ADAMANT(MINING_ADAMANT_PICKAXE, ADAMANT_PICKAXE),
-	RUNE(MINING_RUNE_PICKAXE, RUNE_PICKAXE),
-	GILDED(MINING_GILDED_PICKAXE, GILDED_PICKAXE),
-	DRAGON(MINING_DRAGON_PICKAXE, DRAGON_PICKAXE),
-	DRAGON_OR(MINING_DRAGON_PICKAXE_OR, DRAGON_PICKAXEOR),
-	DRAGON_UPGRADED(MINING_DRAGON_PICKAXE_UPGRADED, DRAGON_PICKAXE_12797),
-	INFERNAL(MINING_INFERNAL_PICKAXE, INFERNAL_PICKAXE),
-	THIRDAGE(MINING_3A_PICKAXE, _3RD_AGE_PICKAXE),
-	CRYSTAL(MINING_CRYSTAL_PICKAXE, CRYSTAL_PICKAXE);
+	BRONZE(BRONZE_PICKAXE, MINING_BRONZE_PICKAXE, MINING_MOTHERLODE_BRONZE),
+	IRON(IRON_PICKAXE, MINING_IRON_PICKAXE, MINING_MOTHERLODE_IRON),
+	STEEL(STEEL_PICKAXE, MINING_STEEL_PICKAXE, MINING_MOTHERLODE_STEEL),
+	BLACK(BLACK_PICKAXE, MINING_BLACK_PICKAXE, MINING_MOTHERLODE_BLACK),
+	MITHRIL(MITHRIL_PICKAXE, MINING_MITHRIL_PICKAXE, MINING_MOTHERLODE_MITHRIL),
+	ADAMANT(ADAMANT_PICKAXE, MINING_ADAMANT_PICKAXE, MINING_MOTHERLODE_ADAMANT),
+	RUNE(RUNE_PICKAXE, MINING_RUNE_PICKAXE, MINING_MOTHERLODE_RUNE),
+	GILDED(GILDED_PICKAXE, MINING_GILDED_PICKAXE, MINING_MOTHERLODE_GILDED),
+	DRAGON(DRAGON_PICKAXE, MINING_DRAGON_PICKAXE, MINING_MOTHERLODE_DRAGON),
+	DRAGON_OR(DRAGON_PICKAXEOR, MINING_DRAGON_PICKAXE_OR, MINING_MOTHERLODE_DRAGON_OR),
+	DRAGON_UPGRADED(DRAGON_PICKAXE_12797, MINING_DRAGON_PICKAXE_UPGRADED, MINING_MOTHERLODE_DRAGON_UPGRADED),
+	INFERNAL(INFERNAL_PICKAXE, MINING_INFERNAL_PICKAXE, MINING_MOTHERLODE_INFERNAL),
+	THIRDAGE(_3RD_AGE_PICKAXE, MINING_3A_PICKAXE, MINING_MOTHERLODE_3A),
+	CRYSTAL(CRYSTAL_PICKAXE, MINING_CRYSTAL_PICKAXE, MINING_MOTHERLODE_CRYSTAL);
 
-	private final int animId;
 	private final int itemId;
+	private final int[] animIds;
 
 	private static final Map<Integer, Pickaxe> PICKAXE_ANIM_IDS;
 
@@ -88,15 +100,24 @@ enum Pickaxe
 
 		for (Pickaxe pickaxe : values())
 		{
-			builder.put(pickaxe.animId, pickaxe);
+			for (int animId : pickaxe.animIds)
+			{
+				builder.put(animId, pickaxe);
+			}
 		}
 
 		PICKAXE_ANIM_IDS = builder.build();
 	}
 
+	Pickaxe(int itemId, int ... animIds)
+	{
+		this.itemId = itemId;
+		this.animIds = animIds;
+	}
+
 	boolean matchesMiningAnimation(final Player player)
 	{
-		return player != null && animId == player.getAnimation();
+		return player != null && fromAnimation(player.getAnimation()) == this;
 	}
 
 	static Pickaxe fromAnimation(int animId)
