@@ -78,12 +78,12 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
-import net.runelite.client.plugins.raids.events.RaidReset;
-import net.runelite.client.plugins.raids.events.RaidScouted;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.raids.events.RaidReset;
+import net.runelite.client.plugins.raids.events.RaidScouted;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -236,6 +236,7 @@ public class RaidsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(LAYOUT_COMMAND);
 		overlayManager.remove(overlay);
 		infoBoxManager.removeInfoBox(timer);
+		timer = null;
 		inRaidChambers = false;
 		reset();
 		keyManager.unregisterKeyListener(screenshotHotkeyListener);
@@ -299,7 +300,7 @@ public class RaidsPlugin extends Plugin
 
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(this, Instant.now());
+				timer = new RaidsTimer(this, Instant.now(), config);
 				spriteManager.getSpriteAsync(TAB_QUESTS_BROWN_RAIDING_PARTY, 0, timer);
 				infoBoxManager.addInfoBox(timer);
 			}
@@ -498,25 +499,9 @@ public class RaidsPlugin extends Plugin
 
 	private void updateInfoBoxState()
 	{
-		if (timer == null)
-		{
-			return;
-		}
-
-		if (inRaidChambers && config.raidsTimer())
-		{
-			if (!infoBoxManager.getInfoBoxes().contains(timer))
-			{
-				infoBoxManager.addInfoBox(timer);
-			}
-		}
-		else
+		if (timer != null && !inRaidChambers)
 		{
 			infoBoxManager.removeInfoBox(timer);
-		}
-
-		if (!inRaidChambers)
-		{
 			timer = null;
 		}
 	}
