@@ -34,6 +34,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageCapture;
 import net.runelite.client.ws.PartyService;
 import net.runelite.http.api.chat.ChatClient;
@@ -84,6 +85,10 @@ public class RaidsPluginTest
 
 	@Inject
 	RaidsPlugin raidsPlugin;
+
+	@Mock
+	@Bind
+	private InfoBoxManager infoBoxManager;
 
 	@Mock
 	@Bind
