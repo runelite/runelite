@@ -62,7 +62,7 @@ enum CannonSpots
 	LIZARDMEN(new WorldPoint(1500, 3703, 0)),
 	LIZARDMEN_SHAMAN(new WorldPoint(1423, 3715, 0)),
 	MAGIC_AXE(new WorldPoint(3190, 3960, 0)),
-	MAMMOTH(new WorldPoint(3160, 3619, 0)),
+	MAMMOTH(new WorldPoint(3168, 3595, 0)),
 	MINIONS_OF_SCARABAS(new WorldPoint(3297, 9252, 0)),
 	ROGUE(new WorldPoint(3285, 3930, 0)),
 	SCORPION(new WorldPoint(3233, 10335, 0)),
