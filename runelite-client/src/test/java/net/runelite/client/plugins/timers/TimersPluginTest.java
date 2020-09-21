@@ -63,8 +63,6 @@ import org.mockito.stubbing.Answer;
 @RunWith(MockitoJUnitRunner.class)
 public class TimersPluginTest
 {
-	private static final int FIGHT_CAVES_REGION_ID = 9551;
-
 	@Inject
 	private TimersPlugin timersPlugin;
 
@@ -270,7 +268,7 @@ public class TimersPluginTest
 	public void testTzhaarTimer()
 	{
 		when(timersConfig.showTzhaarTimers()).thenReturn(true);
-		when(client.getMapRegions()).thenReturn(new int[]{FIGHT_CAVES_REGION_ID});
+		when(client.getMapRegions()).thenReturn(new int[]{TimersPlugin.FIGHT_CAVES_REGION_ID});
 
 		class InstantRef
 		{
@@ -326,5 +324,35 @@ public class TimersPluginTest
 		timersPlugin.onChatMessage(chatMessage);
 		verify(infoBoxManager, times(3)).removeInfoBox(captor.capture());
 		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
+	}
+
+	@Test
+	public void testInfernoTimerStartOffset()
+	{
+		when(timersConfig.showTzhaarTimers()).thenReturn(true);
+		when(client.getMapRegions()).thenReturn(new int[]{TimersPlugin.INFERNO_REGION_ID});
+
+		class InstantRef
+		{
+			Instant i;
+		}
+
+		InstantRef startTime = new InstantRef();
+		when(timersConfig.tzhaarStartTime()).then(a -> startTime.i);
+		doAnswer((Answer<Void>) invocationOnMock ->
+		{
+			Object argument = invocationOnMock.getArguments()[0];
+			startTime.i = (Instant) argument;
+			return null;
+		}).when(timersConfig).tzhaarStartTime(nullable(Instant.class));
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Wave: 1</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager, times(1)).addInfoBox(captor.capture());
+		assertTrue(captor.getValue() instanceof ElapsedTimer);
+		ElapsedTimer timer = (ElapsedTimer) captor.getValue();
+		assertEquals("00:06", timer.getText());
 	}
 }

@@ -119,8 +119,8 @@ public class TimersPlugin extends Plugin
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
 
-	private static final int FIGHT_CAVES_REGION_ID = 9551;
-	private static final int INFERNO_REGION_ID = 9043;
+	static final int FIGHT_CAVES_REGION_ID = 9551;
+	static final int INFERNO_REGION_ID = 9043;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
 	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
 	private static final Pattern TZHAAR_COMPLETE_MESSAGE = Pattern.compile("Your (TzTok-Jad|TzKal-Zuk) kill count is:");
@@ -679,7 +679,16 @@ public class TimersPlugin extends Plugin
 				int wave = Integer.parseInt(matcher.group(1));
 				if (wave == 1)
 				{
-					config.tzhaarStartTime(now);
+					if (isInInferno())
+					{
+						// The first wave message of the inferno comes six seconds after the ingame timer starts counting
+						config.tzhaarStartTime(now.minus(Duration.ofSeconds(6)));
+					}
+					else
+					{
+						config.tzhaarStartTime(now);
+					}
+
 					createTzhaarTimer();
 				}
 			}

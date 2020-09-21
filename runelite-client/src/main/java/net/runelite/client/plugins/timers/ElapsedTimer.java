@@ -55,7 +55,7 @@ class ElapsedTimer extends InfoBox
 		}
 
 		Duration time = Duration.between(startTime, lastTime == null ? Instant.now() : lastTime);
-		final String formatString = time.toHours() > 0 ? "HH:mm" : "mm:ss";
+		final String formatString = "mm:ss";
 		return DurationFormatUtils.formatDuration(time.toMillis(), formatString, true);
 	}
 
