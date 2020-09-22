@@ -66,13 +66,39 @@ vec3 homogeneous_to_cartesian(vec4 v) {
   return v.xyz / v.w;
 }
 
+vec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
+  float yawSin = sin(cameraYaw * UNIT);
+  float yawCos = cos(cameraYaw * UNIT);
+
+  float pitchSin = sin(cameraPitch * UNIT);
+  float pitchCos = cos(cameraPitch * UNIT);
+
+  float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
+  float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);
+
+  float var13 = (vertex.y * pitchCos) - (rotatedZ * pitchSin);
+  float var12 = (vertex.y * pitchSin) + (rotatedZ * pitchCos);
+
+  float x = rotatedX * zoom / var12 + centerX;
+  float y = var13 * zoom / var12 + centerY;
+  float z = -var12; // in OpenGL depth is negative
+
+  return vec3(x, y, z);
+}
+
 /*
  * Test if a face is visible (not backward facing)
  */
 bool face_visible(ivec4 vA, ivec4 vB, ivec4 vC, ivec4 position) {
-  vec3 sA = homogeneous_to_cartesian(projectionMatrix * vA);
-  vec3 sB = homogeneous_to_cartesian(projectionMatrix * vB);
-  vec3 sC = homogeneous_to_cartesian(projectionMatrix * vC);
+  // Move model to scene location, and account for camera offset
+  ivec4 cameraPos = ivec4(cameraX, cameraY, cameraZ, 0);
+  vA += position - cameraPos;
+  vB += position - cameraPos;
+  vC += position - cameraPos;
+
+  vec3 sA = toScreen(vA.xyz, cameraYaw, cameraPitch, centerX, centerY, zoom);
+  vec3 sB = toScreen(vB.xyz, cameraYaw, cameraPitch, centerX, centerY, zoom);
+  vec3 sC = toScreen(vC.xyz, cameraYaw, cameraPitch, centerX, centerY, zoom);
 
   return (sA.x - sB.x) * (sC.y - sB.y) - (sC.x - sB.x) * (sA.y - sB.y) > 0;
 }
