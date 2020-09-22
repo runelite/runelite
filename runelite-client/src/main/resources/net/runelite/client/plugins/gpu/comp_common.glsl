@@ -38,6 +38,8 @@
    ivec2 sinCosTable[2048];
  };
 
+uniform mat4 projectionMatrix;
+
  struct modelinfo {
    int offset;   // offset into buffer
    int uvOffset; // offset into uv buffer

@@ -50,6 +50,8 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+
+import com.jogamp.opengl.math.Matrix4;
 import jogamp.nativewindow.SurfaceScaleUtils;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
 import jogamp.nativewindow.macosx.OSXUtil;
@@ -150,7 +152,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	static final Shader PROGRAM = new Shader()
 		.add(GL4.GL_VERTEX_SHADER, "vert.glsl")
-		.add(GL4.GL_GEOMETRY_SHADER, "geom.glsl")
 		.add(GL4.GL_FRAGMENT_SHADER, "frag.glsl");
 
 	static final Shader COMPUTE_PROGRAM = new Shader()
@@ -768,26 +769,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
-	private void createProjectionMatrix(float left, float right, float bottom, float top, float near, float far)
-	{
-		// create a standard orthographic projection
-		float tx = -((right + left) / (right - left));
-		float ty = -((top + bottom) / (top - bottom));
-		float tz = -((far + near) / (far - near));
-
-		gl.glUseProgram(glProgram);
-
-		float[] matrix = new float[]{
-			2 / (right - left), 0, 0, 0,
-			0, 2 / (top - bottom), 0, 0,
-			0, 0, -2 / (far - near), 0,
-			tx, ty, tz, 1
-		};
-		gl.glUniformMatrix4fv(uniProjectionMatrix, 1, false, matrix, 0);
-
-		gl.glUseProgram(0);
-	}
-
 	@Override
 	public void drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane)
 	{
@@ -879,14 +860,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void resize(int canvasWidth, int canvasHeight, int viewportWidth, int viewportHeight)
 	{
-		// If the viewport has changed, update the projection matrix
-		if (viewportWidth > 0 && viewportHeight > 0 && (viewportWidth != lastViewportWidth || viewportHeight != lastViewportHeight))
-		{
-			lastViewportWidth = viewportWidth;
-			lastViewportHeight = viewportHeight;
-			createProjectionMatrix(0, viewportWidth, viewportHeight, 0, 0, Constants.SCENE_SIZE * Perspective.LOCAL_TILE_SIZE);
-		}
-
 		if (canvasWidth != lastCanvasWidth || canvasHeight != lastCanvasHeight)
 		{
 			lastCanvasWidth = canvasWidth;
@@ -1150,6 +1123,16 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
 			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
+
+			// Calculate projection matrix
+			Matrix4 matrix = new Matrix4();
+			matrix.scale(0.04f / viewportWidth, 0.04f / viewportHeight, 1);
+			matrix.makeFrustum(-1, 1, -1, 1, 50f, 10000);
+			matrix.scale(client.getScale(), client.getScale(), 1);
+			matrix.rotate((float) (Math.PI - pitch * Math.PI / 1024), -1, 0, 0);
+			matrix.rotate((float) (yaw * Math.PI / 1024), 0, 1, 0);
+			matrix.translate(-client.getCameraX2(), -client.getCameraY2(), -client.getCameraZ2());
+			gl.glUniformMatrix4fv(uniProjectionMatrix, 1, false, matrix.getMatrix(), 0);
 
 			for (int id = 0; id < textures.length; ++id)
 			{
