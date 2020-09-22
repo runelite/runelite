@@ -37,19 +37,6 @@ import com.jogamp.opengl.GLDrawableFactory;
 import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLFBODrawable;
 import com.jogamp.opengl.GLProfile;
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 import com.jogamp.opengl.math.Matrix4;
 import jogamp.nativewindow.SurfaceScaleUtils;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
@@ -58,7 +45,6 @@ import jogamp.newt.awt.NewtFactoryAWT;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Model;
 import net.runelite.api.NodeCache;
@@ -78,6 +64,23 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
+import net.runelite.client.plugins.gpu.config.UIScalingMode;
+import net.runelite.client.plugins.gpu.template.Template;
+import net.runelite.client.ui.DrawManager;
+import net.runelite.client.util.OSType;
+
+import javax.inject.Inject;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteBuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
@@ -89,11 +92,6 @@ import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
 import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
-import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
-import net.runelite.client.plugins.gpu.config.UIScalingMode;
-import net.runelite.client.plugins.gpu.template.Template;
-import net.runelite.client.ui.DrawManager;
-import net.runelite.client.util.OSType;
 
 @PluginDescriptor(
 	name = "GPU",
@@ -1017,7 +1015,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// Calculate projection matrix
 		Matrix4 projectionMatrix = new Matrix4();
 		projectionMatrix.scale(client.getScale(), client.getScale(), 1);
-		projectionMatrix.multMatrix(makeProjection(viewportWidth, viewportHeight, 50, 2 * Constants.SCENE_SIZE * Perspective.LOCAL_TILE_SIZE));
+		projectionMatrix.multMatrix(makeProjection(viewportWidth, viewportHeight, 50));
 		projectionMatrix.rotate((float) (Math.PI - pitch * Perspective.UNIT), -1, 0, 0);
 		projectionMatrix.rotate((float) (yaw * Perspective.UNIT), 0, 1, 0);
 		projectionMatrix.translate(-client.getCameraX2(), -client.getCameraY2(), -client.getCameraZ2());
@@ -1219,13 +1217,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		drawManager.processDrawComplete(this::screenshot);
 	}
 
-	private float[] makeProjection(float w, float h, float n, float f) {
-		return new float[]{
-				2 / w, 0, 0, 0,
-				0, 2 / h, 0, 0,
-				0, 0, -(f + n) / (f - n), -1,
-				0, 0, -2 * (f * n) / (f - n), 0
-		};
+	private float[] makeProjection(float w, float h, float n)
+	{
+		return new float[]
+				{
+						2 / w, 0, 0, 0,
+						0, 2 / h, 0, 0,
+						0, 0, -1, -1,
+						0, 0, -2 * n, 0
+				};
 	}
 
 	private void drawUi(final int canvasHeight, final int canvasWidth)
