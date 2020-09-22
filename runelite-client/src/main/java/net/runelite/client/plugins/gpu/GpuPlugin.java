@@ -50,7 +50,6 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
-
 import com.jogamp.opengl.math.Matrix4;
 import jogamp.nativewindow.SurfaceScaleUtils;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
@@ -59,6 +58,7 @@ import jogamp.newt.awt.NewtFactoryAWT;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Model;
 import net.runelite.api.NodeCache;
@@ -271,6 +271,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockLarge;
 	private int uniBlockMain;
 	private int uniSmoothBanding;
+	private int uniProjectionMatrixSmall;
+	private int uniProjectionMatrixLarge;
 
 	@Override
 	protected void startUp()
@@ -531,6 +533,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private void initUniforms()
 	{
 		uniProjectionMatrix = gl.glGetUniformLocation(glProgram, "projectionMatrix");
+		uniProjectionMatrixSmall = gl.glGetUniformBlockIndex(glSmallComputeProgram, "projectionMatrix");
+		uniProjectionMatrixLarge = gl.glGetUniformBlockIndex(glComputeProgram, "projectionMatrix");
+
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
 		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
@@ -1009,6 +1014,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glBindBufferBase(gl.GL_UNIFORM_BUFFER, 0, uniformBufferId);
 
+		// Calculate projection matrix
+		Matrix4 projectionMatrix = new Matrix4();
+		projectionMatrix.scale(0.04f / viewportWidth, 0.04f / viewportHeight, 1);
+		projectionMatrix.makeFrustum(-1, 1, -1, 1, 50, 2 * Constants.SCENE_SIZE * Perspective.LOCAL_TILE_SIZE);
+		projectionMatrix.scale(client.getScale(), client.getScale(), 1);
+		projectionMatrix.rotate((float) (Math.PI - pitch * Perspective.UNIT), -1, 0, 0);
+		projectionMatrix.rotate((float) (yaw * Perspective.UNIT), 0, 1, 0);
+		projectionMatrix.translate(-client.getCameraX2(), -client.getCameraY2(), -client.getCameraZ2());
+
 		// Draw 3d scene
 		final TextureProvider textureProvider = client.getTextureProvider();
 		if (textureProvider != null)
@@ -1038,6 +1052,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				// small
 				gl.glUseProgram(glSmallComputeProgram);
+				gl.glUniformMatrix4fv(uniProjectionMatrixSmall, 1, false, projectionMatrix.getMatrix(), 0);
 
 				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferSmallId);
 				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
@@ -1051,6 +1066,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				// large
 				gl.glUseProgram(glComputeProgram);
+				gl.glUniformMatrix4fv(uniProjectionMatrixLarge, 1, false, projectionMatrix.getMatrix(), 0);
 
 				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferId);
 				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
@@ -1123,15 +1139,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
 			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
 
-			// Calculate projection matrix
-			Matrix4 matrix = new Matrix4();
-			matrix.scale(0.04f / viewportWidth, 0.04f / viewportHeight, 1);
-			matrix.makeFrustum(-1, 1, -1, 1, 50f, 10000);
-			matrix.scale(client.getScale(), client.getScale(), 1);
-			matrix.rotate((float) (Math.PI - pitch * Math.PI / 1024), -1, 0, 0);
-			matrix.rotate((float) (yaw * Math.PI / 1024), 0, 1, 0);
-			matrix.translate(-client.getCameraX2(), -client.getCameraY2(), -client.getCameraZ2());
-			gl.glUniformMatrix4fv(uniProjectionMatrix, 1, false, matrix.getMatrix(), 0);
+			gl.glUniformMatrix4fv(uniProjectionMatrix, 1, false, projectionMatrix.getMatrix(), 0);
 
 			for (int id = 0; id < textures.length; ++id)
 			{
