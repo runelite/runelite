@@ -23,6 +23,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include to_screen.glsl
+
 /*
  * Rotate a vertex by a given orientation in JAU
  */
@@ -60,30 +62,6 @@ int face_distance(ivec4 vA, ivec4 vB, ivec4 vC, int cameraYaw, int cameraPitch) 
   int dvC = distance(vC, cameraYaw, cameraPitch);
   int faceDistance = (dvA + dvB + dvC) / 3;
   return faceDistance;
-}
-
-vec3 homogeneous_to_cartesian(vec4 v) {
-  return v.xyz / v.w;
-}
-
-vec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
-  float yawSin = sin(cameraYaw * UNIT);
-  float yawCos = cos(cameraYaw * UNIT);
-
-  float pitchSin = sin(cameraPitch * UNIT);
-  float pitchCos = cos(cameraPitch * UNIT);
-
-  float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
-  float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);
-
-  float var13 = (vertex.y * pitchCos) - (rotatedZ * pitchSin);
-  float var12 = (vertex.y * pitchSin) + (rotatedZ * pitchCos);
-
-  float x = rotatedX * zoom / var12 + centerX;
-  float y = var13 * zoom / var12 + centerY;
-  float z = -var12; // in OpenGL depth is negative
-
-  return vec3(x, y, z);
 }
 
 /*
