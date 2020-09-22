@@ -1016,8 +1016,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		// Calculate projection matrix
 		Matrix4 projectionMatrix = new Matrix4();
-		projectionMatrix.scale(client.getScale() / 500f, client.getScale() / 500f, 1);
-		projectionMatrix.makePerspective((float) (Math.PI / 2), (float) viewportWidth / viewportHeight, 50, 2 * Constants.SCENE_SIZE * Perspective.LOCAL_TILE_SIZE);
+		projectionMatrix.scale(client.getScale(), client.getScale(), 1);
+		projectionMatrix.multMatrix(makeProjection(viewportWidth, viewportHeight, 50, 2 * Constants.SCENE_SIZE * Perspective.LOCAL_TILE_SIZE));
 		projectionMatrix.rotate((float) (Math.PI - pitch * Perspective.UNIT), -1, 0, 0);
 		projectionMatrix.rotate((float) (yaw * Perspective.UNIT), 0, 1, 0);
 		projectionMatrix.translate(-client.getCameraX2(), -client.getCameraY2(), -client.getCameraZ2());
@@ -1217,6 +1217,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glDrawable.swapBuffers();
 
 		drawManager.processDrawComplete(this::screenshot);
+	}
+
+	private float[] makeProjection(float w, float h, float n, float f) {
+		return new float[]{
+				2 / w, 0, 0, 0,
+				0, 2 / h, 0, 0,
+				0, 0, -(f + n) / (f - n), -1,
+				0, 0, -2 * (f * n) / (f - n), 0
+		};
 	}
 
 	private void drawUi(final int canvasHeight, final int canvasWidth)
