@@ -26,16 +26,16 @@
  */
 package net.runelite.client.plugins.xpupdater;
 
+import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import java.io.IOException;
-import java.util.Objects;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -72,9 +72,13 @@ public class XpUpdaterPlugin extends Plugin
 	@Inject
 	private OkHttpClient okHttpClient;
 
+	@Inject
+	ClientThread clientThread;
+
 	private String lastUsername;
-	private boolean fetchXp;
 	private long lastXp;
+	private boolean loginFlag;
+	private int logoutTickCount;
 
 	@Provides
 	XpUpdaterConfig getConfig(ConfigManager configManager)
@@ -85,23 +89,23 @@ public class XpUpdaterPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		fetchXp = true;
+		logoutTickCount = client.getTickCount();
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState state = gameStateChanged.getGameState();
-		if (state == GameState.LOGGED_IN)
+		if (!loginFlag && state == GameState.LOGGED_IN)
 		{
-			if (!Objects.equals(client.getUsername(), lastUsername))
-			{
-				lastUsername = client.getUsername();
-				fetchXp = true;
-			}
+			loginFlag = true;
+			clientThread.invokeLater(this::setUsersXP);
 		}
-		else if (state == GameState.LOGIN_SCREEN)
+		else if (loginFlag && state == GameState.LOGIN_SCREEN)
 		{
+			loginFlag = false;
+			logoutTickCount = client.getTickCount();
+
 			Player local = client.getLocalPlayer();
 			if (local == null)
 			{
@@ -119,14 +123,24 @@ public class XpUpdaterPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private boolean setUsersXP()
 	{
-		if (fetchXp)
+		// Wait for a tick to pass so client.getLocalPlayer().getName() and client.getOverallExperience()
+		// return updated values
+		if (logoutTickCount >= client.getTickCount())
 		{
-			lastXp = client.getOverallExperience();
-			fetchXp = false;
+			return false;
 		}
+
+		String username = client.getUsername();
+		if (Strings.isNullOrEmpty(lastUsername) || !lastUsername.equals(username))
+		{
+			lastUsername = username;
+			lastXp = client.getOverallExperience();
+			log.debug("Initializing XP Updater for {} with {} overall experience", lastUsername, lastXp);
+		}
+
+		return true;
 	}
 
 	private void update(String username)
