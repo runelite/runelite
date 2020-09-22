@@ -6,10 +6,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *  list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *  this list of conditions and the following disclaimer in the documentation
+ *  and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -27,21 +27,21 @@
  * Convert a vertex to screen space
  */
 vec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
-    float yawSin = sin(cameraYaw * UNIT);
-    float yawCos = cos(cameraYaw * UNIT);
+  float yawSin = sin(cameraYaw * UNIT);
+  float yawCos = cos(cameraYaw * UNIT);
 
-    float pitchSin = sin(cameraPitch * UNIT);
-    float pitchCos = cos(cameraPitch * UNIT);
+  float pitchSin = sin(cameraPitch * UNIT);
+  float pitchCos = cos(cameraPitch * UNIT);
 
-    float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
-    float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);
+  float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
+  float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);
 
-    float var13 = (vertex.y * pitchCos) - (rotatedZ * pitchSin);
-    float var12 = (vertex.y * pitchSin) + (rotatedZ * pitchCos);
+  float var13 = (vertex.y * pitchCos) - (rotatedZ * pitchSin);
+  float var12 = (vertex.y * pitchSin) + (rotatedZ * pitchCos);
 
-    float x = rotatedX * zoom / var12 + centerX;
-    float y = var13 * zoom / var12 + centerY;
-    float z = -var12; // in OpenGL depth is negative
+  float x = rotatedX * zoom / var12 + centerX;
+  float y = var13 * zoom / var12 + centerY;
+  float z = -var12; // in OpenGL depth is negative
 
-    return vec3(x, y, z);
+  return vec3(x, y, z);
 }
