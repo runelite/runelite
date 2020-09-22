@@ -533,8 +533,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private void initUniforms()
 	{
 		uniProjectionMatrix = gl.glGetUniformLocation(glProgram, "projectionMatrix");
-		uniProjectionMatrixSmall = gl.glGetUniformBlockIndex(glSmallComputeProgram, "projectionMatrix");
-		uniProjectionMatrixLarge = gl.glGetUniformBlockIndex(glComputeProgram, "projectionMatrix");
+		uniProjectionMatrixSmall = gl.glGetUniformLocation(glSmallComputeProgram, "projectionMatrix");
+		uniProjectionMatrixLarge = gl.glGetUniformLocation(glComputeProgram, "projectionMatrix");
 
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
