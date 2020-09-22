@@ -49,7 +49,7 @@ import net.runelite.api.widgets.WidgetInfo;
  */
 public class Perspective
 {
-	private static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
+	public static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
 
 	public static final int LOCAL_COORD_BITS = 7;
 	public static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates

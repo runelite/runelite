@@ -51,12 +51,12 @@ uniform float brightness;
 uniform int useFog;
 uniform int fogDepth;
 uniform int drawDistance;
+uniform mat4 projectionMatrix;
 
-out ivec3 vPosition;
-out vec4 vColor;
-out float vHsl;
-out vec4 vUv;
-out float vFogAmount;
+out vec4 Color;
+centroid out float fHsl;
+out vec4 fUv;
+out float fogAmount;
 
 #include hsl_to_rgb.glsl
 
@@ -73,10 +73,10 @@ void main()
 
   vec3 rgb = hslToRgb(hsl);
 
-  vPosition = vertex;
-  vColor = vec4(rgb, 1.f - a);
-  vHsl = float(hsl);
-  vUv = uv;
+  gl_Position = projectionMatrix * vec4(vertex, 1.f);
+  Color = vec4(rgb, 1.f - a);
+  fHsl = float(hsl);
+  fUv = uv;
 
   int fogWest = max(FOG_SCENE_EDGE_MIN, cameraX - drawDistance);
   int fogEast = min(FOG_SCENE_EDGE_MAX, cameraX + drawDistance - TILE_SIZE);
@@ -92,5 +92,5 @@ void main()
       max(0, (nearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED) /
              (secondNearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED));
 
-  vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;
+  fogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;
 }
