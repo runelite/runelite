@@ -37,6 +37,19 @@ import com.jogamp.opengl.GLDrawableFactory;
 import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLFBODrawable;
 import com.jogamp.opengl.GLProfile;
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import com.jogamp.opengl.math.Matrix4;
 import jogamp.nativewindow.SurfaceScaleUtils;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
@@ -63,24 +76,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
-import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
-import net.runelite.client.plugins.gpu.config.UIScalingMode;
-import net.runelite.client.plugins.gpu.template.Template;
-import net.runelite.client.ui.DrawManager;
-import net.runelite.client.util.OSType;
-
-import javax.inject.Inject;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteBuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
@@ -92,6 +87,12 @@ import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
 import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
+import net.runelite.client.plugins.gpu.config.UIScalingMode;
+import net.runelite.client.plugins.gpu.template.Template;
+import net.runelite.client.ui.DrawManager;
+import net.runelite.client.util.OSType;
 
 @PluginDescriptor(
 	name = "GPU",
