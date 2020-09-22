@@ -1016,9 +1016,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		// Calculate projection matrix
 		Matrix4 projectionMatrix = new Matrix4();
-		projectionMatrix.scale(0.04f / viewportWidth, 0.04f / viewportHeight, 1);
-		projectionMatrix.makeFrustum(-1, 1, -1, 1, 50, 2 * Constants.SCENE_SIZE * Perspective.LOCAL_TILE_SIZE);
-		projectionMatrix.scale(client.getScale(), client.getScale(), 1);
+		projectionMatrix.scale(client.getScale() / 500f, client.getScale() / 500f, 1);
+		projectionMatrix.makePerspective((float) (Math.PI / 2), (float) viewportWidth / viewportHeight, 50, 2 * Constants.SCENE_SIZE * Perspective.LOCAL_TILE_SIZE);
 		projectionMatrix.rotate((float) (Math.PI - pitch * Perspective.UNIT), -1, 0, 0);
 		projectionMatrix.rotate((float) (yaw * Perspective.UNIT), 0, 1, 0);
 		projectionMatrix.translate(-client.getCameraX2(), -client.getCameraY2(), -client.getCameraZ2());
