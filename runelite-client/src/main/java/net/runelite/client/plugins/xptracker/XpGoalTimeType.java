@@ -24,7 +24,8 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-public enum XpGoalTimeType {
+public enum XpGoalTimeType
+{
     DAYS,
     HOURS,
     SHORT
