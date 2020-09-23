@@ -46,6 +46,7 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
@@ -90,7 +91,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private boolean inOverlayManagingMode;
 	private boolean inOverlayResizingMode;
 	private boolean inOverlayDraggingMode;
-	private boolean inMenuEntryMode;
 	private boolean startedMovingOverlay;
 	private MenuEntry[] menuEntries;
 
@@ -130,7 +130,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				resetOverlayManagementMode();
 			}
 
-			inMenuEntryMode = false;
 			menuEntries = null;
 		}
 	}
@@ -143,7 +142,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			return;
 		}
 
-		if (!inMenuEntryMode && runeLiteConfig.menuEntryShift())
+		final boolean shift = client.isKeyPressed(KeyCode.KC_SHIFT);
+		if (!shift && runeLiteConfig.menuEntryShift())
 		{
 			return;
 		}
@@ -620,11 +620,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			inOverlayManagingMode = true;
 		}
-
-		if (e.isShiftDown() && runeLiteConfig.menuEntryShift())
-		{
-			inMenuEntryMode = true;
-		}
 	}
 
 	@Override
@@ -634,11 +629,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			inOverlayManagingMode = false;
 			resetOverlayManagementMode();
-		}
-
-		if (!e.isShiftDown())
-		{
-			inMenuEntryMode = false;
 		}
 	}
 
