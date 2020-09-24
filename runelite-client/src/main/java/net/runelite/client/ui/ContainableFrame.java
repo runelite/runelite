@@ -76,6 +76,11 @@ public class ContainableFrame extends JFrame
 		}
 		String[] s = javaVersion.split("\\.");
 		int major = Integer.parseInt(s[0]), minor = Integer.parseInt(s[1]), patch = Integer.parseInt(s[2]);
+		if (major == 12 || major == 13 || major == 14)
+		{
+			// These versions are since EOL & do not include JDK-8231564
+			return false;
+		}
 		return major > 11 || (major == 11 && minor > 0) || (major == 11 && minor == 0 && patch >= 8);
 	}
 
