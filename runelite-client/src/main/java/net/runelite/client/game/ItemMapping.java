@@ -279,7 +279,7 @@ public enum ItemMapping
 	ITEM_PROSPECTOR_LEGS(GOLDEN_NUGGET, true, 40L, PROSPECTOR_LEGS),
 	ITEM_PROSPECTOR_BOOTS(GOLDEN_NUGGET, true, 24L, PROSPECTOR_BOOTS),
 
-	// 10 golden nuggets = 100 soft clay
+	// 10 unidentified minerals = 100 soft clay
 	ITEM_UNIDENTIFIED_MINERALS(SOFT_CLAY, true, 10L, UNIDENTIFIED_MINERALS),
 
 	// Converted to coins
