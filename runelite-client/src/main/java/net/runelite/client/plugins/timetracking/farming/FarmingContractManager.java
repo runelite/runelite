@@ -257,6 +257,8 @@ public class FarmingContractManager
 					&& !hasEmptyPatch)
 				{
 					summary = SummaryState.OCCUPIED;
+					// Don't let this run into the "Completed" section!
+					continue;
 				}
 			}
 
