@@ -381,6 +381,12 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			{
 				for (Overlay overlay : overlayManager.getOverlays())
 				{
+					if (overlay.getPosition() == OverlayPosition.DYNAMIC || overlay.getPosition() == OverlayPosition.TOOLTIP)
+					{
+						// never allow moving dynamic or tooltip overlays
+						continue;
+					}
+
 					final Rectangle bounds = overlay.getBounds();
 					if (bounds.contains(mousePoint))
 					{
