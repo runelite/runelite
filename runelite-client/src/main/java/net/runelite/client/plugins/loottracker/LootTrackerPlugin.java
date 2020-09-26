@@ -201,6 +201,20 @@ public class LootTrackerPlugin extends Plugin
 	private static final String BIRDNEST_EVENT = "Bird nest";
 	private static final Set<Integer> BIRDNEST_IDS = ImmutableSet.of(ItemID.BIRD_NEST, ItemID.BIRD_NEST_5071, ItemID.BIRD_NEST_5072, ItemID.BIRD_NEST_5073, ItemID.BIRD_NEST_5074, ItemID.BIRD_NEST_7413, ItemID.BIRD_NEST_13653, ItemID.BIRD_NEST_22798, ItemID.BIRD_NEST_22800);
 
+	// Birdhouses
+	private static final Pattern BIRDHOUSE_PATTERN = Pattern.compile("You dismantle and discard the trap, retrieving (?:(?:a|\\d{1,2}) nests?, )?10 dead birds, \\d{1,3} feathers and (\\d,?\\d{1,3}) Hunter XP\\.");
+	private static final Map<Integer, String> BIRDHOUSE_XP_TO_TYPE = new ImmutableMap.Builder<Integer, String>().
+		put(280, "Regular Bird House").
+		put(420, "Oak Bird House").
+		put(560, "Willow Bird House").
+		put(700, "Teak Bird House").
+		put(820, "Maple Bird House").
+		put(960, "Mahogany Bird House").
+		put(1020, "Yew Bird House").
+		put(1140, "Magic Bird House").
+		put(1200, "Redwood Bird House").
+		build();
+
 	/*
 	 * This map is used when a pickpocket target has a different name in the chat message than their in-game name.
 	 * Note that if the two NPCs can be found in the same place, there is a chance of race conditions
@@ -708,6 +722,23 @@ public class LootTrackerPlugin extends Plugin
 		{
 			// Player didn't have the key they needed.
 			resetEvent();
+			return;
+		}
+
+		// Check if message is a birdhouse type
+		final Matcher matcher = BIRDHOUSE_PATTERN.matcher(message);
+		if (matcher.matches())
+		{
+			final int xp = Integer.parseInt(matcher.group(1));
+			final String type = BIRDHOUSE_XP_TO_TYPE.get(xp);
+			if (type == null)
+			{
+				log.debug("Unknown bird house type {}", xp);
+				return;
+			}
+
+			setEvent(LootRecordType.EVENT, type, client.getRealSkillLevel(Skill.HUNTER));
+			takeInventorySnapshot();
 		}
 	}
 
@@ -728,6 +759,7 @@ public class LootTrackerPlugin extends Plugin
 			|| SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
 			|| BIRDNEST_EVENT.equals(eventType)
+			|| eventType.endsWith("Bird House")
 			|| eventType.startsWith("H.A.M. chest")
 			|| lootRecordType == LootRecordType.PICKPOCKET)
 		{

@@ -289,4 +289,29 @@ public class LootTrackerPluginTest
 		QueuedMessage queuedMessage = captor.getValue();
 		assertEquals("<colNORMAL>Your loot is worth around <colHIGHLIGHT>60,021,020<colNORMAL> coins.", queuedMessage.getRuneLiteFormattedMessage());
 	}
+
+	@Test
+	public void testBirdhouses()
+	{
+		// No bird nests
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 10 dead birds, 30 feathers and 1140 Hunter XP.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		assertEquals("Magic Bird House", lootTrackerPlugin.eventType);
+		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+
+		// Single bird nest
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving a nest, 10 dead birds, 50 feathers and 700 Hunter XP.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		assertEquals("Teak Bird House", lootTrackerPlugin.eventType);
+		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+
+		// Multiple nests
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 2 nests, 10 dead birds, 40 feathers and 280 Hunter XP.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		assertEquals("Regular Bird House", lootTrackerPlugin.eventType);
+		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+	}
 }
