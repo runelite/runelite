@@ -171,4 +171,15 @@ public interface XpGlobesConfig extends Config
 	{
 		return 10;
 	}
+
+	@ConfigItem(
+		keyName = "expireAtSameTime",
+		name = "Expire at the same time",
+		description = "Make all orbs expire at the same time",
+		position = 12
+	)
+	default boolean expireAtSameTime()
+	{
+		return false;
+	}
 }
