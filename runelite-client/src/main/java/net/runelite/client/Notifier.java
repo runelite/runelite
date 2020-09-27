@@ -99,6 +99,10 @@ public class Notifier
 		.addEscape('"', "'")
 		.build();
 
+	// Notifier properties
+	private static final int MINIMUM_FLASH_DURATION_MILLIS = Constants.CLIENT_TICK_LENGTH;
+	private static final int MINIMUM_FLASH_DURATION_TICKS = 1;
+
 	private static final String appName = RuneLiteProperties.getTitle();
 
 	private static final File NOTIFICATION_FILE = new File(RuneLite.RUNELITE_DIR, "notification.wav");
@@ -215,36 +219,55 @@ public class Notifier
 			return;
 		}
 
-		final int minimum_flash_duration_millis = runeLiteConfig.flashNotificationDuration();
-		final int minimum_flash_duration_ticks = minimum_flash_duration_millis / Constants.CLIENT_TICK_LENGTH;
+		final int flash_notification_duration_config_val = runeLiteConfig.flashNotificationDuration();
+		final int flash_duration_millis;
+		final int flash_duration_ticks;
 
-		if (Instant.now().minusMillis(minimum_flash_duration_millis).isAfter(flashStart))
+
+		if (flash_notification_duration_config_val <= 0)
+		{
+			flash_duration_millis = 0;
+			flash_duration_ticks = 0;
+		}
+		else if (flash_notification_duration_config_val < MINIMUM_FLASH_DURATION_MILLIS)
+		{
+			flash_duration_millis = MINIMUM_FLASH_DURATION_MILLIS;
+			flash_duration_ticks = MINIMUM_FLASH_DURATION_TICKS;
+		}
+		else
+		{
+			flash_duration_millis = flash_notification_duration_config_val;
+			flash_duration_ticks = flash_duration_millis / Constants.CLIENT_TICK_LENGTH;
+		}
+
+		if (flash_duration_millis == 0 || Instant.now().minusMillis(flash_duration_millis).isAfter(flashStart))
 		{
 			switch (flashNotification)
 			{
-				case FLASH_FOR_DURATION:
-				case SOLID_FOR_DURATION:
-					flashStart = null;
-					return;
-				case SOLID_UNTIL_CANCELLED:
-				case FLASH_UNTIL_CANCELLED:
-					// Any interaction with the client since the notification started will cancel it after the minimum duration
-					if ((client.getMouseIdleTicks() < minimum_flash_duration_ticks
-						|| client.getKeyboardIdleTicks() < minimum_flash_duration_ticks
-						|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
+				case SOLID:
+				case FLASH:
+					if (flash_duration_millis == 0)
+					{
+						if ((client.getMouseIdleTicks() < flash_duration_ticks
+							|| client.getKeyboardIdleTicks() < flash_duration_ticks
+							|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
+						{
+							flashStart = null;
+							return;
+						}
+						break;
+					}
+					else
 					{
 						flashStart = null;
 						return;
 					}
-					break;
 			}
 		}
 
-		if (client.getGameCycle() % 40 >= 20
-			// For solid colour, fall through every time.
-			&& (flashNotification == FlashNotification.FLASH_FOR_DURATION
-			|| flashNotification == FlashNotification.FLASH_UNTIL_CANCELLED))
+		if (client.getGameCycle() % 40 >= 20 && flashNotification == FlashNotification.FLASH)
 		{
+			// For solid colour, fall through every time.
 			return;
 		}
 
