@@ -122,7 +122,7 @@ class XpInfoBox extends JPanel
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		// Create open xp tracker menu
-		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
+		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), skill)));
 
 		// Create reset menu
