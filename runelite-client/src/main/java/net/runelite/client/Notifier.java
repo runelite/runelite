@@ -100,8 +100,8 @@ public class Notifier
 		.build();
 
 	// Notifier properties
-	private static final int MINIMUM_FLASH_DURATION_MILLIS = Constants.CLIENT_TICK_LENGTH;
-	private static final int MINIMUM_FLASH_DURATION_TICKS = 1;
+	private static final int MINIMUM_FLASH_DURATION_MILLIS = 100;
+	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
 	private static final String appName = RuneLiteProperties.getTitle();
 
@@ -221,23 +221,20 @@ public class Notifier
 
 		final int flash_notification_duration_config_val = runeLiteConfig.flashNotificationDuration();
 		final int flash_duration_millis;
-		final int flash_duration_ticks;
 
 
 		if (flash_notification_duration_config_val <= 0)
 		{
 			flash_duration_millis = 0;
-			flash_duration_ticks = 0;
 		}
 		else if (flash_notification_duration_config_val < MINIMUM_FLASH_DURATION_MILLIS)
 		{
+			// If less than minimum duration but not set to 0 then set to minimum.
 			flash_duration_millis = MINIMUM_FLASH_DURATION_MILLIS;
-			flash_duration_ticks = MINIMUM_FLASH_DURATION_TICKS;
 		}
 		else
 		{
 			flash_duration_millis = flash_notification_duration_config_val;
-			flash_duration_ticks = flash_duration_millis / Constants.CLIENT_TICK_LENGTH;
 		}
 
 		if (flash_duration_millis == 0 || Instant.now().minusMillis(flash_duration_millis).isAfter(flashStart))
@@ -248,8 +245,8 @@ public class Notifier
 				case FLASH:
 					if (flash_duration_millis == 0)
 					{
-						if ((client.getMouseIdleTicks() < flash_duration_ticks
-							|| client.getKeyboardIdleTicks() < flash_duration_ticks
+						if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+							|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
 							|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
 						{
 							flashStart = null;
@@ -265,7 +262,7 @@ public class Notifier
 			}
 		}
 
-		if (client.getGameCycle() % 40 >= 20 && flashNotification == FlashNotification.FLASH)
+		if (client.getGameCycle() % 40 >= Constants.CLIENT_TICK_LENGTH && flashNotification == FlashNotification.FLASH)
 		{
 			// For solid colour, fall through every time.
 			return;
