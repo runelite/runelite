@@ -64,7 +64,7 @@ enum MovementFlag
 	public static Set<MovementFlag> getSetFlags(int collisionData)
 	{
 		return Arrays.stream(values())
-			.filter(movementFlag -> (movementFlag.flag & collisionData) > 0)
+			.filter(movementFlag -> (movementFlag.flag & collisionData) != 0)
 			.collect(Collectors.toSet());
 	}
 }
