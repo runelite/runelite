@@ -573,4 +573,48 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		 keyName = "swapCollectionBag",
+		 name = "Collection bag",
+		 description = "Swap Look-in with Empty on the collection bag inside barbarian assault",
+		 section = itemSection
+	)
+	default boolean swapCollectionBag()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		 keyName = "swapCollectorHorn",
+		 name = "Collector horn",
+		 description = "Swap Use with Tell-defensive on the collector horn inside barbarian assault",
+		 section = itemSection
+	)
+	default boolean swapCollectorHorn()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		 keyName = "swapDestroyEggs",
+		 name = "Collector eggs",
+		 description = "Swap Use with Destroy on eggs inside barbarian assault",
+		 section = itemSection
+	)
+	default boolean swapDestroyEggs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapGetRewards",
+		name = "Get-rewards",
+		description = "Swap Talk-to with Get-rewards for the Commander Connad",
+		section = npcSection
+	)
+	default boolean swapGetRewards()
+	{
+		return true;
+	}
 }

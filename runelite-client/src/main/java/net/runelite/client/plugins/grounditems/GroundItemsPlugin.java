@@ -79,7 +79,10 @@ import net.runelite.client.game.ItemStack;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.barbarianassault.BarbarianAssaultPlugin;
+import net.runelite.client.plugins.grounditems.config.BarbarianAssaultGroundEggsMode;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.OVERLAY;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
@@ -94,8 +97,9 @@ import net.runelite.client.util.Text;
 @PluginDescriptor(
 	name = "Ground Items",
 	description = "Highlight ground items and/or show price information",
-	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
+	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay", "b.a.", "barbarian assault", "collector"}
 )
+@PluginDependency(BarbarianAssaultPlugin.class)
 public class GroundItemsPlugin extends Plugin
 {
 	@Value
@@ -173,6 +177,9 @@ public class GroundItemsPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executor;
+
+	@Inject
+	private BarbarianAssaultPlugin baPlugin;
 
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
@@ -486,7 +493,10 @@ public class GroundItemsPlugin extends Plugin
 			final Color hidden = getHidden(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice, groundItem.isTradeable());
 			final Color highlighted = getHighlighted(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice);
 			final Color color = getItemColor(highlighted, hidden);
-			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
+			final boolean barbarianAssaultMode = config.barbarianAssaultMode();
+			final boolean canBeRecolored = (highlighted != null || (hidden != null && config.recolorMenuHiddenItems()))
+				&& (!barbarianAssaultMode || baPlugin.canHighlightGroundItem(groundItem.getItemId(),
+				config.highlightDefenderBait(), config.highlightDefenderLogsHammer(), config.baHighlightGroundEggsMode()));
 
 			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
 			{
@@ -554,6 +564,16 @@ public class GroundItemsPlugin extends Plugin
 
 	Color getHighlighted(NamedQuantity item, int gePrice, int haPrice)
 	{
+		if (config.barbarianAssaultMode() && baPlugin.getInGameBit() == 1)
+		{
+			final BarbarianAssaultGroundEggsMode barbarianAssaultGroundEggsMode = config.baHighlightGroundEggsMode();
+			final Color color = baPlugin.getColorForEggItem(item.getName(), barbarianAssaultGroundEggsMode);
+			if (color != null)
+			{
+				return color;
+			}
+		}
+
 		if (TRUE.equals(highlightedItems.getUnchecked(item)))
 		{
 			return config.highlightedColor();
@@ -660,7 +680,7 @@ public class GroundItemsPlugin extends Plugin
 					.append(")");
 			}
 		}
-		
+
 		notifier.notify(notificationStringBuilder.toString());
 	}
 

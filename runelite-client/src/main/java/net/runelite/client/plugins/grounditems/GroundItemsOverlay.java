@@ -46,7 +46,9 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.barbarianassault.BarbarianAssaultPlugin;
 import static net.runelite.client.plugins.grounditems.GroundItemsPlugin.MAX_QUANTITY;
+import net.runelite.client.plugins.grounditems.config.BarbarianAssaultGroundEggsMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
@@ -81,6 +83,7 @@ public class GroundItemsOverlay extends Overlay
 	private final Client client;
 	private final GroundItemsPlugin plugin;
 	private final GroundItemsConfig config;
+	private final BarbarianAssaultPlugin baPlugin;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 	private final TextComponent textComponent = new TextComponent();
@@ -88,13 +91,15 @@ public class GroundItemsOverlay extends Overlay
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
 
 	@Inject
-	private GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config)
+	private GroundItemsOverlay(Client client, GroundItemsPlugin plugin, GroundItemsConfig config,
+							   BarbarianAssaultPlugin baPlugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.baPlugin = baPlugin;
 	}
 
 	@Override
@@ -174,12 +179,23 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHiddenBoxBounds(null);
 		plugin.setHighlightBoxBounds(null);
 
-		final boolean onlyShowLoot = config.onlyShowLoot();
+		final boolean barbarianAssaultMode = config.barbarianAssaultMode() && baPlugin.getInGameBit() == 1;
+		final BarbarianAssaultGroundEggsMode baHighlightGroundEggsMode = config.baHighlightGroundEggsMode();
+		final boolean highlightDefenderBait = config.highlightDefenderBait();
+		final boolean highlightDefenderLogsHammer = config.highlightDefenderLogsHammer();
+
+		final boolean onlyShowLoot = config.onlyShowLoot() && !barbarianAssaultMode;
 		final boolean groundItemTimers = config.groundItemTimers();
 		final boolean outline = config.textOutline();
 
 		for (GroundItem item : groundItemList)
 		{
+			if (barbarianAssaultMode
+				&& !baPlugin.canHighlightGroundItem(item.getItemId(), highlightDefenderBait, highlightDefenderLogsHammer, baHighlightGroundEggsMode))
+			{
+				continue;
+			}
+
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 
 			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE

@@ -11122,6 +11122,7 @@ public final class ObjectID
 	public static final int EGG_HOPPER = 20264;
 	public static final int EGG_HOPPER_20265 = 20265;
 	public static final int EGG_HOPPER_20266 = 20266;
+	public static final int EGG_HOPPER_20267 = 20267;
 	public static final int FLOOR_20271 = 20271;
 	public static final int ODD_MARKINGS_20272 = 20272;
 	public static final int SPEARTRAP = 20273;

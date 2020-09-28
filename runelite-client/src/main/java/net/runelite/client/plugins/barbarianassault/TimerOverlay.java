@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2020, BegOsrs <https://github.com/begosrs>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,11 +30,11 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.MenuAction;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
@@ -49,36 +50,64 @@ class TimerOverlay extends Overlay
 		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY_CONFIG, OverlayManager.OPTION_CONFIGURE, "B.A. overlay"));
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "B.A. overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Round round = plugin.getCurrentRound();
-		if (round == null)
+		final Wave wave = plugin.getWave();
+		if (wave == null)
 		{
 			return null;
 		}
 
-		Role role = round.getRoundRole();
+		final Role role = wave.getRole();
 		if (role == null)
 		{
 			return null;
 		}
 
-		Widget roleText = client.getWidget(role.getRoleText());
-		Widget roleSprite = client.getWidget(role.getRoleSprite());
-
-		if (config.showTimer() && roleText != null && roleSprite != null)
+		final Widget roleText = client.getWidget(role.getRoleText());
+		if (roleText == null)
 		{
-			roleText.setText(String.format("00:%02d", round.getTimeToChange()));
+			return null;
+		}
+		final Widget roleSprite = client.getWidget(role.getRoleSprite());
+		if (roleSprite == null)
+		{
+			return null;
+		}
+
+		final String text = roleText.getText()
+			.replaceAll("\\(.*\\) ", ""); // to remove old count
+
+		StringBuilder stringBuilder = new StringBuilder();
+		if (config.showEggCountOverlay() && role == Role.COLLECTOR)
+		{
+			stringBuilder.append("(").append(wave.getCollectedEggsCount()).append(") ");
+		}
+		else if (config.showHpCountOverlay() && role == Role.HEALER)
+		{
+			stringBuilder.append("(").append(wave.getHpHealed()).append(") ");
+		}
+		if (config.showTimer())
+		{
+			stringBuilder.append(String.format("00:%02d", wave.getTimeUntilCallChange()));
 			Rectangle spriteBounds = roleSprite.getBounds();
 			roleSprite.setHidden(true);
 			graphics.drawImage(plugin.getClockImage(), spriteBounds.x, spriteBounds.y, null);
+		}
+		else if (stringBuilder.length() > 0)
+		{
+			stringBuilder.append(text);
+		}
+		if (stringBuilder.length() > 0)
+		{
+			roleText.setText(stringBuilder.toString());
 		}
 
 		return null;

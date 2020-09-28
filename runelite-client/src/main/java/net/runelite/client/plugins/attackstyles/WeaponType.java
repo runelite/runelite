@@ -36,7 +36,7 @@ import static net.runelite.client.plugins.attackstyles.AttackStyle.LONGRANGE;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.RANGING;
 
-enum WeaponType
+public enum WeaponType
 {
 	TYPE_0(ACCURATE, AGGRESSIVE, null, DEFENSIVE),
 	TYPE_1(ACCURATE, AGGRESSIVE, AGGRESSIVE, DEFENSIVE),

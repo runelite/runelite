@@ -29,8 +29,9 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Units;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Units;
+import net.runelite.client.plugins.grounditems.config.BarbarianAssaultGroundEggsMode;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
@@ -129,7 +130,7 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
@@ -393,5 +394,61 @@ public interface GroundItemsConfig extends Config
 	default boolean textOutline()
 	{
 		return false;
+	}
+
+	@ConfigSection(
+		name = "Barbarian Assault",
+		description = "Highlights ground items important to perform your role inside Barbarian Assault",
+		position = 30,
+		closedByDefault = true
+	)
+	String barbarianAssault = "barbarianAssault";
+
+	@ConfigItem(
+		keyName = "barbarianAssaultMode",
+		name = "Barbarian Assault mode",
+		description = "Enabled or disabled the mode inside barbarian assault",
+		position = 31,
+		section = barbarianAssault
+	)
+	default boolean barbarianAssaultMode()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightGroundEggsMode",
+		name = "Highlight eggs",
+		description = "Highlight egg colors on the ground when performing the Collector role",
+		position = 32,
+		section = barbarianAssault
+	)
+	default BarbarianAssaultGroundEggsMode baHighlightGroundEggsMode()
+	{
+		return BarbarianAssaultGroundEggsMode.CALLED;
+	}
+
+	@ConfigItem(
+		keyName = "highlightGroundBait",
+		name = "Highlight bait",
+		description = "Highlight bait dropped on the ground when performing the Defender role",
+		position = 33,
+		section = barbarianAssault
+	)
+	default boolean highlightDefenderBait()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightDefenderLogsHammer",
+		name = "Highlight logs and hammer",
+		description = "Highlight logs and hammer when performing the Defender role",
+		position = 34,
+		section = barbarianAssault
+	)
+	default boolean highlightDefenderLogsHammer()
+	{
+		return true;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2020, BegOsrs <https://github.com/begosrs>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.barbarianassault;
 
-import java.time.Instant;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
-import net.runelite.api.coords.WorldPoint;
 
 @Data
-@Builder
-public class GroundItem
+class DefenderTickTimer
 {
-	private int id;
-	private int itemId;
-	private String name;
-	private int quantity;
-	private WorldPoint location;
-	private int height;
-	private int haPrice;
-	private int gePrice;
-	private int offset;
-	private boolean tradeable;
-	@Nonnull
-	private LootType lootType;
-	@Nullable
-	private Instant spawnTime;
-	private boolean stackable;
+	private int count;
+	private boolean displaying;
 
-	int getHaPrice()
+	DefenderTickTimer()
 	{
-		return haPrice * quantity;
+		this.count = 1;
+		this.displaying = true;
 	}
 
-	int getGePrice()
+	public void incrementCount()
 	{
-		return gePrice * quantity;
+		count++;
+		if (count > 10)
+		{
+			resetCount();
+		}
 	}
 
-	boolean isMine()
+	public void resetCount()
 	{
-		return lootType != LootType.UNKNOWN;
+		count = 1;
 	}
 
-	@Value
-	static class GroundItemKey
+	public String getText()
 	{
-		private int itemId;
-		private WorldPoint location;
+		return count < 1 ? "" : String.valueOf(count);
 	}
 }

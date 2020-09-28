@@ -31,12 +31,12 @@ import javax.inject.Inject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.MenuAction;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
@@ -46,20 +46,20 @@ class HealerOverlay extends Overlay
 	@AllArgsConstructor
 	private enum HealerTeam
 	{
-		TEAMMATE1(WidgetInfo.BA_HEAL_TEAMMATE1, 28, 2, 115),
-		TEAMMATE2(WidgetInfo.BA_HEAL_TEAMMATE2, 26, 2, 115),
-		TEAMMATE3(WidgetInfo.BA_HEAL_TEAMMATE3, 26, 2, 115),
-		TEAMMATE4(WidgetInfo.BA_HEAL_TEAMMATE4, 25, 2, 115);
+		TEAMMATE1(WidgetInfo.BA_HEALER_TEAMMATE1, 28, 2, 115),
+		TEAMMATE2(WidgetInfo.BA_HEALER_TEAMMATE2, 26, 2, 115),
+		TEAMMATE3(WidgetInfo.BA_HEALER_TEAMMATE3, 26, 2, 115),
+		TEAMMATE4(WidgetInfo.BA_HEALER_TEAMMATE4, 25, 2, 115);
 
-		private WidgetInfo teammate;
-		private int offsetX;
-		private int offsetY;
-		private int width;
+		private final WidgetInfo teammate;
+		private final int offsetX;
+		private final int offsetY;
+		private final int width;
 	}
 
-	private static final Color HP_HIGH = new Color(10, 146, 5, 125);
-	private static final Color HP_MID = new Color(146, 146, 0, 230);
-	private static final Color HP_LOW = new Color(225, 35, 0, 125);
+	private static final Color HP_HIGH = new Color(10, 146, 5, 75);
+	private static final Color HP_MID = new Color(146, 146, 0, 115);
+	private static final Color HP_LOW = new Color(225, 35, 0, 75);
 
 	private final Client client;
 	private final BarbarianAssaultPlugin plugin;
@@ -71,28 +71,18 @@ class HealerOverlay extends Overlay
 		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
+		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY_CONFIG, OverlayManager.OPTION_CONFIGURE, "B.A. overlay"));
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "B.A. overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Round round = plugin.getCurrentRound();
-		if (round == null)
-		{
-			return null;
-		}
+		final Role role = plugin.getRole();
 
-		Role role = round.getRoundRole();
-		if (role == null)
-		{
-			return null;
-		}
-
-		if (config.showHealerBars() && role == Role.HEALER)
+		if (config.showTeammateHealthBars() && role == Role.HEALER)
 		{
 			for (HealerTeam teammate : HealerTeam.values())
 			{

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2020, BegOsrs <https://github.com/begosrs>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +23,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.barbarianassault;
 
 import java.time.Instant;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +34,7 @@ import net.runelite.api.coords.WorldPoint;
 
 @Data
 @Builder
-public class GroundItem
+class EggGroundItem
 {
 	private int id;
 	private int itemId;
@@ -42,35 +42,14 @@ public class GroundItem
 	private int quantity;
 	private WorldPoint location;
 	private int height;
-	private int haPrice;
-	private int gePrice;
 	private int offset;
-	private boolean tradeable;
-	@Nonnull
-	private LootType lootType;
 	@Nullable
 	private Instant spawnTime;
-	private boolean stackable;
-
-	int getHaPrice()
-	{
-		return haPrice * quantity;
-	}
-
-	int getGePrice()
-	{
-		return gePrice * quantity;
-	}
-
-	boolean isMine()
-	{
-		return lootType != LootType.UNKNOWN;
-	}
 
 	@Value
-	static class GroundItemKey
+	static class Key
 	{
-		private int itemId;
-		private WorldPoint location;
+		int itemId;
+		WorldPoint location;
 	}
 }

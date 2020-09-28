@@ -233,6 +233,10 @@ public enum Varbits
 	 */
 	IN_GAME_BA(3923),
 	BA_GC(4768),
+	BA_CANNON_GREEN_EGGS(3257),
+	BA_CANNON_RED_EGGS(3258),
+	BA_CANNON_BLUE_EGGS(3259),
+	BA_CANNON_OMEGA_EGGS(3266),
 
 	/**
 	 * 0 = Outside wilderness

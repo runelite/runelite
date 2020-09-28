@@ -215,6 +215,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "start-minigame", config::swapStartMinigame);
 		swap("talk-to", ESSENCE_MINE_NPCS::contains, "teleport", config::swapEssenceMineTeleport);
 		swap("talk-to", "collect", config::swapCollectMiscellania);
+		swap("talk-to", "get-rewards", config::swapGetRewards);
 
 		swap("leave tomb", "quick-leave", config::swapQuickLeave);
 		swap("tomb door", "quick-leave", config::swapQuickLeave);
@@ -339,6 +340,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("collect-items", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
 
 		swap("tan 1", "tan all", config::swapTan);
+
+		swap("look-in", "empty", config::swapCollectionBag);
+		swap("use", "collector horn", "tell-defensive", config::swapCollectorHorn);
+		swap("use", "red egg", "destroy", config::swapDestroyEggs);
+		swap("use", "green egg", "destroy", config::swapDestroyEggs);
+		swap("use", "blue egg", "destroy", config::swapDestroyEggs);
 
 		swapTeleport("varrock teleport", "grand exchange");
 		swapTeleport("camelot teleport", "seers'");
