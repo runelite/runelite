@@ -407,7 +407,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "barbarianAssaultMode",
 		name = "Barbarian Assault mode",
-		description = "Enabled or disabled the mode inside barbarian assault",
+		description = "Enables or disables the mode inside barbarian assault",
 		position = 31,
 		section = barbarianAssault
 	)
