@@ -129,6 +129,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton chunkBorders;
 	private DevToolsButton mapSquares;
 	private DevToolsButton validMovement;
+	private DevToolsButton movementFlags;
 	private DevToolsButton lineOfSight;
 	private DevToolsButton cameraPosition;
 	private DevToolsButton worldMapLocation;
@@ -175,6 +176,7 @@ public class DevToolsPlugin extends Plugin
 
 		lineOfSight = new DevToolsButton("Line Of Sight");
 		validMovement = new DevToolsButton("Valid Movement");
+		movementFlags = new DevToolsButton("Movement Flags");
 		interacting = new DevToolsButton("Interacting");
 		examine = new DevToolsButton("Examine");
 
