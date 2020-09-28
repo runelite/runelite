@@ -34,17 +34,20 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
@@ -54,19 +57,22 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Barbarian Assault",
 	description = "Show a timer to the next call change and game/wave duration in chat.",
-	tags = {"minigame", "overlay", "timer"}
+	tags = {"minigame", "overlay", "timer", "notifications"}
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
+	static final String CONFIG_GROUP = "barbarianAssault";
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
+	static final int CALL_DURATION = 30;
 
 	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
+	private boolean playingCue;
 
 	@Getter
 	private Round currentRound;
@@ -88,6 +94,9 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	@Inject
 	private HealerOverlay healerOverlay;
+
+	@Inject
+	private Notifier notifier;
 
 	@Provides
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
@@ -114,6 +123,21 @@ public class BarbarianAssaultPlugin extends Plugin
 		gameTime = null;
 		currentWave = START_WAVE;
 		inGameBit = 0;
+		playingCue = false;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(CONFIG_GROUP))
+		{
+			return;
+		}
+
+		if (!config.notifyCallChange())
+		{
+			playingCue = false;
+		}
 	}
 
 	@Subscribe
@@ -152,6 +176,25 @@ public class BarbarianAssaultPlugin extends Plugin
 			{
 				setRound(Role.COLLECTOR);
 				break;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		if (currentRound != null && config.notifyCallChange() && currentRound.getRoundTime() >= 10)
+		{
+			long timeToChange = currentRound.getTimeToChange();
+
+			if (timeToChange == CALL_DURATION && !playingCue)
+			{
+				playingCue = true;
+				this.notifier.notify("Call changed!");
+			}
+			else if (timeToChange != CALL_DURATION)
+			{
+				playingCue = false;
 			}
 		}
 	}

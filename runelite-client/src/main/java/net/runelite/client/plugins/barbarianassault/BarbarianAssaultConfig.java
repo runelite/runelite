@@ -43,6 +43,16 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyCallChange",
+		name = "Notify on call change",
+		description = "Notify when the role call changes"
+	)
+	default boolean notifyCallChange()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showHealerBars",
 		name = "Show health bars for teammates when healer",
 		description = "Displays team health for healer"
