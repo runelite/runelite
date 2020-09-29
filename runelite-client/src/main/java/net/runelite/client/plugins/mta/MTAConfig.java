@@ -27,15 +27,48 @@ package net.runelite.client.plugins.mta;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("mta")
 public interface MTAConfig extends Config
 {
+	@ConfigSection(
+		name = "Alchemists' Playground",
+		description = "",
+		position = 0,
+		closedByDefault = true
+	)
+	String alchemyGroup = "alchemy";
+
+	@ConfigSection(
+		name = "Creature Graveyard",
+		description = "",
+		position = 1,
+		closedByDefault = true
+	)
+	String graveyardGroup = "graveyard";
+
+	@ConfigSection(
+		name = "Telekinetic Theatre",
+		description = "",
+		position = 2,
+		closedByDefault = true
+	)
+	String telekineticGroup = "telekinetic";
+
+	@ConfigSection(
+		name = "Enchanting Chamber",
+		description = "",
+		position = 3,
+		closedByDefault = true
+	)
+	String enchantmentGroup = "enchantment";
+
 	@ConfigItem(
 		keyName = "alchemy",
-		name = "Enable alchemy room",
-		description = "Configures whether or not the alchemy room overlay is enabled.",
-		position = 0
+		name = "Enable",
+		description = "Configures whether or not the Alchemists' Playground overlay is enabled.",
+		section = alchemyGroup
 	)
 	default boolean alchemy()
 	{
@@ -44,9 +77,9 @@ public interface MTAConfig extends Config
 
 	@ConfigItem(
 		keyName = "graveyard",
-		name = "Enable graveyard room",
-		description = "Configures whether or not the graveyard room overlay is enabled.",
-		position = 1
+		name = "Enable",
+		description = "Configures whether or not the Creature Graveyard overlay is enabled.",
+		section = graveyardGroup
 	)
 	default boolean graveyard()
 	{
@@ -55,9 +88,9 @@ public interface MTAConfig extends Config
 
 	@ConfigItem(
 		keyName = "telekinetic",
-		name = "Enable telekinetic room",
-		description = "Configures whether or not the telekinetic room overlay is enabled.",
-		position = 2
+		name = "Enable",
+		description = "Configures whether or not the Telekinetic Theatre overlay is enabled.",
+		section = telekineticGroup
 	)
 	default boolean telekinetic()
 	{
@@ -66,9 +99,9 @@ public interface MTAConfig extends Config
 
 	@ConfigItem(
 		keyName = "enchantment",
-		name = "Enable enchantment room",
-		description = "Configures whether or not the enchantment room overlay is enabled.",
-		position = 3
+		name = "Enable",
+		description = "Configures whether or not the Enchanting Chamber overlay is enabled.",
+		section = enchantmentGroup
 	)
 	default boolean enchantment()
 	{
