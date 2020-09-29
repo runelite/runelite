@@ -49,6 +49,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.account.SessionManager;
@@ -313,5 +314,44 @@ public class LootTrackerPluginTest
 
 		assertEquals("Regular Bird House", lootTrackerPlugin.eventType);
 		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+	}
+
+	@Test
+	public void testGrubbyChest()
+	{
+		Player player = mock(Player.class);
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(7323 >> 2, (7323 & 0xff) << 6, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
+		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.TWISTED_BOW, 1),
+			new Item(ItemID.GRUBBY_KEY, 1)
+		});
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You unlock the chest with your key.", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.TWISTED_BOW, 1)
+		});
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have opened the Grubby Chest 2 times.", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.TWISTED_BOW, 1),
+			new Item(ItemID.SHARK, 42)
+		});
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+
+		verify(lootTrackerPluginSpy).addLoot("Grubby Chest", -1, LootRecordType.EVENT, null, Arrays.asList(
+			new ItemStack(ItemID.SHARK, 42, null)
+		));
 	}
 }

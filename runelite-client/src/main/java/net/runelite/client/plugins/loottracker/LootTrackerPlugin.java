@@ -147,7 +147,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
 	private static final String STONE_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
 	private static final String DORGESH_KAAN_CHEST_LOOTED_MESSAGE = "You find treasure inside!";
-	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You unlock the chest with your key.";
+	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You have opened the Grubby Chest";
 	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
 	private static final int HAM_STOREROOM_REGION = 10321;
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = new ImmutableMap.Builder<Integer, String>().
@@ -618,7 +618,7 @@ public class LootTrackerPlugin extends Plugin
 		final String message = event.getMessage();
 
 		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(STONE_CHEST_LOOTED_MESSAGE)
-			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.equals(GRUBBY_CHEST_LOOTED_MESSAGE)
+			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.startsWith(GRUBBY_CHEST_LOOTED_MESSAGE)
 			|| LARRAN_LOOTED_PATTERN.matcher(message).matches())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
