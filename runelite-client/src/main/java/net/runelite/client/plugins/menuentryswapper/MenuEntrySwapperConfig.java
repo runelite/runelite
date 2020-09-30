@@ -134,6 +134,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapHerbs",
+		name = "Clean",
+		description = "Swap Clean with Use on Herbs",
+		section = itemSection
+	)
+	default boolean swapHerbs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapContract",
 		name = "Contract",
 		description = "Swap Talk-to with Contract on Guildmaster Jane",
