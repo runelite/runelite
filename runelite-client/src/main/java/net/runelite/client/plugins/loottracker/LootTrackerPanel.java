@@ -279,7 +279,7 @@ class LootTrackerPanel extends PluginPanel
 		reset.addActionListener(e ->
 		{
 			final LootTrackerClient client = plugin.getLootTrackerClient();
-			final boolean syncLoot = client != null && config.syncPanel();
+			final boolean syncLoot = client.getUuid() != null && config.syncPanel();
 			final int result = JOptionPane.showOptionDialog(overallPanel,
 				syncLoot ? SYNC_RESET_ALL_WARNING_TEXT : NO_SYNC_RESET_ALL_WARNING_TEXT,
 				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
@@ -568,7 +568,7 @@ class LootTrackerPanel extends PluginPanel
 
 			LootTrackerClient client = plugin.getLootTrackerClient();
 			// Without loot being grouped we have no way to identify single kills to be deleted
-			if (client != null && groupLoot && config.syncPanel())
+			if (client.getUuid() != null && groupLoot && config.syncPanel())
 			{
 				client.delete(box.getId());
 			}

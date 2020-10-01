@@ -35,7 +35,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import static net.runelite.http.api.RuneLiteAPI.JSON;
@@ -48,13 +50,15 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LootTrackerClient
 {
 	private static final Gson GSON = RuneLiteAPI.GSON;
 
 	private final OkHttpClient client;
-	private final UUID uuid;
+	@Getter
+	@Setter
+	private UUID uuid;
 
 	public CompletableFuture<Void> submit(Collection<LootRecord> lootRecords)
 	{
@@ -64,13 +68,16 @@ public class LootTrackerClient
 			.addPathSegment("loottracker")
 			.build();
 
-		Request request = new Request.Builder()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.post(RequestBody.create(JSON, GSON.toJson(lootRecords)))
+		Request.Builder requestBuilder = new Request.Builder();
+		if (uuid != null)
+		{
+			requestBuilder.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString());
+		}
+		requestBuilder.post(RequestBody.create(JSON, GSON.toJson(lootRecords)))
 			.url(url)
 			.build();
 
-		client.newCall(request).enqueue(new Callback()
+		client.newCall(requestBuilder.build()).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)

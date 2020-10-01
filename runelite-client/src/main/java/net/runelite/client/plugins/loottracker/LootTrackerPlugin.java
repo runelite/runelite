@@ -262,9 +262,6 @@ public class LootTrackerPlugin extends Plugin
 	@Inject
 	private LootManager lootManager;
 
-	@Inject
-	private OkHttpClient okHttpClient;
-
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	@VisibleForTesting
@@ -281,6 +278,7 @@ public class LootTrackerPlugin extends Plugin
 	private Multiset<Integer> inventorySnapshot;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Inject
 	private LootTrackerClient lootTrackerClient;
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
 
@@ -314,6 +312,12 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Provides
+	LootTrackerClient provideLootTrackerClient(OkHttpClient okHttpClient)
+	{
+		return new LootTrackerClient(okHttpClient);
+	}
+
+	@Provides
 	LootTrackerConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(LootTrackerConfig.class);
@@ -325,11 +329,11 @@ public class LootTrackerPlugin extends Plugin
 		AccountSession accountSession = sessionManager.getAccountSession();
 		if (accountSession.getUuid() != null)
 		{
-			lootTrackerClient = new LootTrackerClient(okHttpClient, accountSession.getUuid());
+			lootTrackerClient.setUuid(accountSession.getUuid());
 		}
 		else
 		{
-			lootTrackerClient = null;
+			lootTrackerClient.setUuid(null);
 		}
 	}
 
@@ -337,7 +341,7 @@ public class LootTrackerPlugin extends Plugin
 	public void onSessionClose(SessionClose sessionClose)
 	{
 		submitLoot();
-		lootTrackerClient = null;
+		lootTrackerClient.setUuid(null);
 	}
 
 	@Subscribe
@@ -373,7 +377,7 @@ public class LootTrackerPlugin extends Plugin
 		AccountSession accountSession = sessionManager.getAccountSession();
 		if (accountSession != null)
 		{
-			lootTrackerClient = new LootTrackerClient(okHttpClient, accountSession.getUuid());
+			lootTrackerClient.setUuid(accountSession.getUuid());
 
 			clientThread.invokeLater(() ->
 			{
@@ -420,7 +424,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		submitLoot();
 		clientToolbar.removeNavigation(navButton);
-		lootTrackerClient = null;
+		lootTrackerClient.setUuid(null);
 		chestLooted = false;
 	}
 
@@ -831,15 +835,14 @@ public class LootTrackerPlugin extends Plugin
 			queuedLoots.clear();
 		}
 
-		if (lootTrackerClient == null || !config.saveLoot())
+		if (!config.saveLoot())
 		{
 			return null;
 		}
 
 		log.debug("Submitting {} loot records", copy.size());
 
-		CompletableFuture<Void> future = lootTrackerClient.submit(copy);
-		return future;
+		return lootTrackerClient.submit(copy);
 	}
 
 	private void setEvent(LootRecordType lootRecordType, String eventType, Object metadata)

@@ -82,7 +82,7 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Submit loot tracker data",
-		description = "Submit loot tracker data (requires being logged in)"
+		description = "Submit loot tracker data"
 	)
 	default boolean saveLoot()
 	{
