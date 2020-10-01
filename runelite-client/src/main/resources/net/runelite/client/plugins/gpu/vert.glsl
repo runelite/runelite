@@ -54,7 +54,7 @@ uniform int drawDistance;
 uniform mat4 projectionMatrix;
 
 out vec4 Color;
-centroid out float fHsl;
+noperspective centroid out float fHsl;
 flat out int textureId;
 out vec2 fUv;
 out float fogAmount;
