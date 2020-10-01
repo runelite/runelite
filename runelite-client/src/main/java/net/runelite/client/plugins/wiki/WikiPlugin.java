@@ -58,6 +58,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
 import okhttp3.HttpUrl;
@@ -370,7 +371,22 @@ public class WikiPlugin extends Plugin
 		if (wikiSelected && event.getType() == MenuAction.SPELL_CAST_ON_WIDGET.getId())
 		{
 			Widget w = getWidget(widgetID, widgetIndex);
-			if (!(w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1))
+			if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1)
+			{
+				for (int ourEntry = menuEntries.length - 1;ourEntry >= 0; ourEntry--)
+				{
+					MenuEntry entry = menuEntries[ourEntry];
+					if (entry.getType() == MenuAction.SPELL_CAST_ON_WIDGET.getId())
+					{
+						int id = itemManager.canonicalize(w.getItemId());
+						String name = itemManager.getItemComposition(id).getName();
+						entry.setTarget(JagexColors.MENU_TARGET_TAG + name);
+						break;
+					}
+				}
+				client.setMenuEntries(menuEntries);
+			}
+			else
 			{
 				// we don't support this widget
 				// remove the last SPELL_CAST_ON_WIDGET; we can't blindly remove the top action because some other

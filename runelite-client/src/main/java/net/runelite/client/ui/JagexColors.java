@@ -54,7 +54,8 @@ public class JagexColors
 	/*
 	 * Colors relating to right-click menus.
 	 */
-	public static final Color MENU_TARGET = new Color(255, 144, 64);
+	public static final Color MENU_TARGET = new Color(0xFF9040);
+	public static final String MENU_TARGET_TAG = "<col=ff9040>";
 
 	/*
 	 * Colors relating to tooltips.
