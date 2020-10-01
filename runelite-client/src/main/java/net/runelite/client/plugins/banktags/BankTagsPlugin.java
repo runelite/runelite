@@ -233,7 +233,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			return;
 		}
 
-		String replaced = value.replaceAll("[<>/]", "");
+		String replaced = value.replaceAll("[<>:/]", "");
 		if (!value.equals(replaced))
 		{
 			replaced = Text.toCSV(Text.fromCSV(replaced));

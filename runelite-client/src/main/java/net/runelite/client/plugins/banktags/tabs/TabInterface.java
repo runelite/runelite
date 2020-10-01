@@ -97,7 +97,7 @@ import net.runelite.client.util.Text;
 @Singleton
 public class TabInterface
 {
-	public static final IntPredicate FILTERED_CHARS = c -> "</>".indexOf(c) == -1;
+	public static final IntPredicate FILTERED_CHARS = c -> "</>:".indexOf(c) == -1;
 
 	private static final Color HILIGHT_COLOR = JagexColors.MENU_TARGET;
 	private static final String SCROLL_UP = "Scroll up";
