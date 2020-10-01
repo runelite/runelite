@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * Copyright (c) 2019, Aleios <https://github.com/aleios>
+ * Copyright (c) 2020, Unmoon <https://github.com/unmoon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -114,6 +115,15 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			}
 
 			charges = config.amuletOfBounty();
+		}
+		else if (itemId == ItemID.CHRONICLE)
+		{
+			if (!config.showTeleportCharges())
+			{
+				return;
+			}
+
+			charges = config.chronicle();
 		}
 		else
 		{

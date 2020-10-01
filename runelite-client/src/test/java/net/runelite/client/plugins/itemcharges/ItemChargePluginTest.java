@@ -72,6 +72,18 @@ public class ItemChargePluginTest
 	private static final String BREAK_AMULET_OF_CHEMISTRY_3_DOSES = "Your amulet of chemistry helps you create a 3-dose potion. It then crumbles to dust.";
 	private static final String BREAK_AMULET_OF_CHEMISTRY_2_DOSES = "Your amulet of chemistry helps you create a 2-dose potion. It then crumbles to dust.";
 
+	private static final String CHRONICLE_CHECK_CHARGES_FULL = "Your book has 1000 charges left.";
+	private static final String CHRONICLE_CHECK_CHARGES_ONE = "You have one charge left in your book.";
+	private static final String CHRONICLE_CHECK_CHARGES_EMPTY = "Your book has run out of charges.";
+	private static final String CHRONICLE_TELEPORT = "<col=ef1020>Your book has 999 charges left.</col>";
+	private static final String CHRONICLE_TELEPORT_ONE = "<col=ef1020>You have one charge left in your book.</col>";
+	private static final String CHRONICLE_TELEPORT_EMPTY = "<col=ef1020>Your book has run out of charges.</col>";
+	private static final String CHRONICLE_TELEPORT_FAIL = "Your book does not have any charges. Purchase some Teleport Cards from Diango.";
+	private static final String CHRONICLE_ADD_SINGLE_CHARGE = "You add a single charge to your book. It now has one charge.";
+	private static final String CHRONICLE_ADD_SINGLE_CHARGE_FULL = "You add a single charge to your book. It now has 1000 charges.";
+	private static final String CHRONICLE_ADD_MULTIPLE_CHARGES = "You add 5 charges to your book. It now has 5 charges.";
+	private static final String CHRONICLE_ADD_FULL = "Your book is fully charged! It has 1,000 charges already.";
+
 	@Mock
 	@Bind
 	private Client client;
@@ -198,5 +210,59 @@ public class ItemChargePluginTest
 		verify(config).amuletOfChemistry(eq(5));
 		reset(config);
 
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_FULL, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(1000));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_ONE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(1));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_EMPTY, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(0));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(999));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_ONE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(1));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_EMPTY, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(0));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_FAIL, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(0));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_SINGLE_CHARGE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(1));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_SINGLE_CHARGE_FULL, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(1000));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_MULTIPLE_CHARGES, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(5));
+		reset(config);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_FULL, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(config).chronicle(eq(1000));
+		reset(config);
 	}
 }
