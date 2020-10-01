@@ -390,7 +390,7 @@ public class WikiPlugin extends Plugin
 		if (WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.SKILLS_CONTAINER.getGroupId())
 		{
 			Widget w = getWidget(widgetID, widgetIndex);
-			if (w.getParentId() != WidgetInfo.SKILLS_CONTAINER.getId())
+			if (w.getActions() == null || w.getParentId() != WidgetInfo.SKILLS_CONTAINER.getId())
 			{
 				return;
 			}
