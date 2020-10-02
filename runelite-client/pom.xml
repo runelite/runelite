@@ -423,7 +423,7 @@
 					<failOnViolation>false</failOnViolation>
 					<printFailingErrors>true</printFailingErrors>
 					<rulesets>
-						<ruleset>/rulesets/java/quickstart.xml</ruleset>
+						<ruleset>../travis/pmd-ruleset.xml</ruleset>
 					</rulesets>
 				</configuration>
 				<executions>
