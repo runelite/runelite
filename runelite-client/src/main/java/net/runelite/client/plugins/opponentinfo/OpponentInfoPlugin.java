@@ -32,19 +32,12 @@ import java.util.EnumSet;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.NPC;
-import net.runelite.api.WorldType;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.InteractingChanged;
-import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -61,6 +54,9 @@ public class OpponentInfoPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private OpponentInfoConfig config;
@@ -81,6 +77,9 @@ public class OpponentInfoPlugin extends Plugin
 	private Actor lastOpponent;
 
 	private Instant lastTime;
+
+	private int lastHealth;
+	boolean update = false;
 
 	@Provides
 	OpponentInfoConfig provideConfig(ConfigManager configManager)
@@ -160,6 +159,28 @@ public class OpponentInfoPlugin extends Plugin
 			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
 			{
 				lastOpponent = null;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event) {
+		if ((client.getVar(Varbits.RAID_HEALTH_BAR_OVERLAY_VALUE) != lastHealth) || update) {
+			 lastHealth = client.getVar(Varbits.RAID_HEALTH_BAR_OVERLAY_VALUE);
+			 opponentInfoOverlay.updateRaidVars(lastHealth);
+			 update = false;
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event) {
+		if ((event.getGroup().equals("opponentinfo") && event.getKey().equals("mergeRaidOverlay")) ||
+		   (event.getGroup().equals("runelite") && event.getKey().equals("opponentinfoplugin"))) {
+			if (event.getNewValue().equals("false")) {
+				opponentInfoOverlay.unHideHPBar();
+			}
+			else {
+				update = true;
 			}
 		}
 	}

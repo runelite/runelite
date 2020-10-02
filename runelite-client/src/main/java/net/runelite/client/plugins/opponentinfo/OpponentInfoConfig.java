@@ -63,4 +63,15 @@ public interface OpponentInfoConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "mergeRaidOverlay",
+			name = "Merge raid health bar overlay",
+			description = "Hides the raid health bar overlay, but adds the info to the existing opponent info",
+			position = 4
+	)
+	default boolean mergeRaidOverlay()
+	{
+		return true;
+	}
 }

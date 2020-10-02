@@ -31,12 +31,18 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.game.NPCManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -60,11 +66,16 @@ class OpponentInfoOverlay extends OverlayPanel
 	private final OpponentInfoConfig opponentInfoConfig;
 	private final HiscoreManager hiscoreManager;
 	private final NPCManager npcManager;
+	private final ClientThread clientThread;
 
 	private Integer lastMaxHealth;
 	private int lastRatio = 0;
 	private int lastHealthScale = 0;
 	private String opponentName;
+	private int raidOpponentHealth = 0;
+	private int raidOpponentMaxHealth = 0;
+	private String raidOpponentName;
+	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 	@Inject
 	private OpponentInfoOverlay(
@@ -72,7 +83,8 @@ class OpponentInfoOverlay extends OverlayPanel
 		OpponentInfoPlugin opponentInfoPlugin,
 		OpponentInfoConfig opponentInfoConfig,
 		HiscoreManager hiscoreManager,
-		NPCManager npcManager)
+		NPCManager npcManager,
+		ClientThread clientThread)
 	{
 		super(opponentInfoPlugin);
 		this.client = client;
@@ -80,6 +92,7 @@ class OpponentInfoOverlay extends OverlayPanel
 		this.opponentInfoConfig = opponentInfoConfig;
 		this.hiscoreManager = hiscoreManager;
 		this.npcManager = npcManager;
+		this.clientThread = clientThread;
 
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
@@ -89,44 +102,118 @@ class OpponentInfoOverlay extends OverlayPanel
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay"));
 	}
 
+	public void updateRaidVars(int lastHealth) {
+		if (opponentInfoConfig.mergeRaidOverlay()) {
+			clientThread.invokeLater(() -> {
+				//hide the raid health bar, since the opponent info will take its place,
+				//and initialize the variables if they aren't loaded yet.
+				Widget raidOpponentWrapper = client.getWidget(303, 6);
+				Widget raidOpponentNameWidget = client.getWidget(303, 11);
+				Widget raidOpponentHealthWidget = client.getWidget(303, 20);
+
+				if (raidOpponentWrapper != null) {
+					raidOpponentWrapper.setHidden(true);
+				}
+
+				if (raidOpponentNameWidget != null && raidOpponentName == null) {
+					raidOpponentName = raidOpponentNameWidget.getText();
+				}
+
+				if (raidOpponentHealthWidget != null && raidOpponentMaxHealth == 0) {
+					raidOpponentMaxHealth = Integer.parseInt(raidOpponentHealthWidget.getText().split(" / ")[1]);
+				}
+
+				raidOpponentHealth = lastHealth;
+
+				if (lastHealth == 0) {
+					//if lastHealth is zero, either the Raid Health Bar is supposed to disappear,
+					//or the opponent is dead, so remove the raid opponent name and max health vars
+					raidOpponentName = null;
+					raidOpponentMaxHealth = 0;
+
+					if (raidOpponentWrapper != null) {
+						//unhide so that initial values can be read again, but wait 7 seconds so that the hp bar isn't shown
+						//while the boss is dying
+						scheduler.schedule(() -> {
+							raidOpponentWrapper.setHidden(false);
+						},7, TimeUnit.SECONDS);
+					}
+				}
+			});
+		}
+	}
+
+	public void unHideHPBar() {
+		clientThread.invokeLater(() -> {
+			Widget raidOpponentWrapper = client.getWidget(303, 6);
+			if (raidOpponentWrapper != null) {
+				raidOpponentWrapper.setHidden(false);
+			}
+
+			raidOpponentName = null;
+			raidOpponentMaxHealth = 0;
+			raidOpponentHealth = 0;
+		});
+	}
+
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		final Actor opponent = opponentInfoPlugin.getLastOpponent();
 
-		if (opponent == null)
-		{
-			opponentName = null;
-			return null;
-		}
+		if (opponent != null) {
+			if (opponent.getName() != null && opponent.getHealthScale() > 0) {
+				lastRatio = opponent.getHealthRatio();
+				lastHealthScale = opponent.getHealthScale();
+				opponentName = Text.removeTags(opponent.getName());
 
-		if (opponent.getName() != null && opponent.getHealthScale() > 0)
-		{
-			lastRatio = opponent.getHealthRatio();
-			lastHealthScale = opponent.getHealthScale();
-			opponentName = Text.removeTags(opponent.getName());
-
-			lastMaxHealth = null;
-			if (opponent instanceof NPC)
-			{
-				lastMaxHealth = npcManager.getHealth(((NPC) opponent).getId());
-			}
-			else if (opponent instanceof Player)
-			{
-				final HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(opponentName, opponentInfoPlugin.getHiscoreEndpoint());
-				if (hiscoreResult != null)
-				{
-					final int hp = hiscoreResult.getHitpoints().getLevel();
-					if (hp > 0)
-					{
-						lastMaxHealth = hp;
+				lastMaxHealth = null;
+				if (opponent instanceof NPC) {
+					lastMaxHealth = npcManager.getHealth(((NPC) opponent).getId());
+				} else if (opponent instanceof Player) {
+					final HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(opponentName, opponentInfoPlugin.getHiscoreEndpoint());
+					if (hiscoreResult != null) {
+						final int hp = hiscoreResult.getHitpoints().getLevel();
+						if (hp > 0) {
+							lastMaxHealth = hp;
+						}
 					}
 				}
 			}
+
+			if (raidOpponentName != null && opponentName == null) {
+				opponentName = raidOpponentName;
+			}
+			else if (raidOpponentName == null && opponentName == null) {
+				return null;
+			}
+
+			//update raid vars so that they can be used after the opponent vars disappear, or if a target is switched
+			//if the opponent is a glowing crystal or the meat tree, don't update vars, but rather keep using the ones in use
+			//aka: show vasa and muttadile rather than the glowing crystal and the meat tree hp
+			if (raidOpponentHealth != 0 && opponentInfoConfig.mergeRaidOverlay() && !opponentName.equals("Glowing crystal") && !opponentName.equals("Meat tree")) {
+				raidOpponentMaxHealth = lastMaxHealth != null ? lastMaxHealth : raidOpponentMaxHealth != 0 ? raidOpponentMaxHealth : 1;
+
+				if (raidOpponentMaxHealth == 1) {
+					return null;
+				}
+
+				raidOpponentName = opponentName;
+			}
+
+
 		}
 
-		if (opponentName == null)
-		{
+		if (raidOpponentHealth != 0 && opponentInfoConfig.mergeRaidOverlay()) {
+			lastMaxHealth = raidOpponentMaxHealth;
+			lastHealthScale = raidOpponentMaxHealth;
+			opponentName = raidOpponentName;
+			lastRatio = raidOpponentHealth;
+		}
+
+		if ((opponent == null && raidOpponentHealth == 0) || opponentName == null) {
+			opponentName = null;
 			return null;
 		}
 
@@ -154,8 +241,12 @@ class OpponentInfoOverlay extends OverlayPanel
 				// This is the reverse of the calculation of healthRatio done by the server
 				// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
 				// It's able to recover the exact health if maxHealth <= healthScale.
-				int health = 0;
-				if (lastRatio > 0)
+
+				//raidOpponentHealth is non-zero if the raid health overlay is active;
+				//The max and min health don't have to be calculated then
+				int health = raidOpponentHealth;
+
+				if (lastRatio > 0 && raidOpponentHealth != 0)
 				{
 					int minHealth = 1;
 					int maxHealth;

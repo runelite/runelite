@@ -304,6 +304,8 @@ public enum Varbits
 	PERSONAL_POINTS(5422),
 	RAID_PARTY_SIZE(5424),
 
+	RAID_HEALTH_BAR_OVERLAY_VALUE(6099),
+
 	// 0 = raid not started, >0 = raid started
 	RAID_STATE(5425),
 
