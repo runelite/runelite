@@ -26,10 +26,12 @@
 package net.runelite.client.plugins.opponentinfo;
 
 import com.google.inject.Provides;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.EnumSet;
 import javax.inject.Inject;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.*;
@@ -164,24 +166,39 @@ public class OpponentInfoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event) {
-		if ((client.getVar(Varbits.RAID_HEALTH_BAR_OVERLAY_VALUE) != lastHealth) || update) {
-			 lastHealth = client.getVar(Varbits.RAID_HEALTH_BAR_OVERLAY_VALUE);
-			 opponentInfoOverlay.updateRaidVars(lastHealth);
-			 update = false;
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if ((client.getVar(Varbits.RAID_HEALTH_BAR_OVERLAY_VALUE) != lastHealth) || update ||
+			(config.showVanillaPercentages() && (event.getIndex() == 1682 || event.getIndex() == 1683)))
+		{
+			if (lastHealth == 0)
+			{
+				opponentInfoOverlay.unHideHPBar();
+			}
+			lastHealth = client.getVar(Varbits.RAID_HEALTH_BAR_OVERLAY_VALUE);
+			opponentInfoOverlay.updateRaidVars(lastHealth);
+			update = false;
 		}
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event) {
-		if ((event.getGroup().equals("opponentinfo") && event.getKey().equals("mergeRaidOverlay")) ||
-		   (event.getGroup().equals("runelite") && event.getKey().equals("opponentinfoplugin"))) {
-			if (event.getNewValue().equals("false")) {
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("opponentinfo") || event.getGroup().equals("runelite"))
+		{
+			if (event.getKey().equals("opponentinfoplugin") || event.getKey().equals("mergeRaidOverlay"))
+			{
+				if (event.getNewValue().equals("false"))
+				{
+					opponentInfoOverlay.unHideHPBar();
+				}
+			}
+			else if (event.getKey().equals("vanillaHPBarOverride"))
+			{
+				//unhide since it's unknown whether to show it or not
 				opponentInfoOverlay.unHideHPBar();
 			}
-			else {
-				update = true;
-			}
+			update = true;
 		}
 	}
 

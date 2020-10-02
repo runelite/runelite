@@ -65,13 +65,37 @@ public interface OpponentInfoConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "mergeRaidOverlay",
-			name = "Merge raid health bar overlay",
-			description = "Hides the raid health bar overlay, but adds the info to the existing opponent info",
-			position = 4
+		keyName = "showVanillaPercentages",
+		name = "Show HP % on the Vanilla HP Bar",
+		description = "Adds a percentage value next to the health value of the vanilla HP Bar",
+		position = 4
 	)
+
+	default boolean showVanillaPercentages()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "mergeRaidOverlay",
+		name = "Merge raid health bar overlay",
+		description = "Hides the raid health bar overlay, but adds the info to the existing opponent info",
+		position = 5
+	)
+
 	default boolean mergeRaidOverlay()
 	{
-		return true;
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "vanillaHPBarOverride",
+		name = "Use vanilla HP Bar at these bosses",
+		description = "If merge raid health bar overlay is checked, this can allow you to still use the vanilla HP bar on certain bosses, e.g. for vanguards the vanilla HP bar is quite useful. Use '*' if you want to use the vanilla HP bar wherever possible.",
+		position = 6
+	)
+	default String vanillaHPBarOverride()
+	{
+		return "vanguard*";
 	}
 }
