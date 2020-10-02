@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Unmoon <https://github.com/Unmoon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,6 +64,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
@@ -141,6 +143,9 @@ public class GroundItemsPlugin extends Plugin
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hideAll;
 
+	@Getter(AccessLevel.PACKAGE)
+	private Instant lastTickUpdate;
+
 	private List<String> hiddenItemList = new CopyOnWriteArrayList<>();
 	private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
 
@@ -180,6 +185,11 @@ public class GroundItemsPlugin extends Plugin
 	private LoadingCache<NamedQuantity, Boolean> highlightedItems;
 	private LoadingCache<NamedQuantity, Boolean> hiddenItems;
 	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
+
+	@Getter
+	private final Map<Integer, GroundItem> memorizedGroundItemsToDisplay = new LinkedHashMap<>();
+	private final Map<GroundItem.GroundItemKey, Integer> despawnedGroundItems = new LinkedHashMap<>();
+	private final Map<GroundItem.GroundItemKey, GroundItem> memorizedGroundItems = new LinkedHashMap<>();
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -227,6 +237,13 @@ public class GroundItemsPlugin extends Plugin
 		{
 			collectedGroundItems.clear();
 		}
+		// Clear item respawn timers, as world population affects the timer
+		else if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
+		{
+			despawnedGroundItems.clear();
+			memorizedGroundItems.clear();
+			memorizedGroundItemsToDisplay.clear();
+		}
 	}
 
 	@Subscribe
@@ -248,6 +265,14 @@ public class GroundItemsPlugin extends Plugin
 		if (!config.onlyShowLoot())
 		{
 			notifyHighlightedItem(groundItem);
+		}
+
+		// Item respawned, record the time taken (in game ticks)
+		if (despawnedGroundItems.containsKey(groundItemKey))
+		{
+			groundItem.setTicksToRespawn(client.getTickCount() - despawnedGroundItems.get(groundItemKey));
+			memorizedGroundItems.put(groundItemKey, groundItem);
+			despawnedGroundItems.remove(groundItemKey);
 		}
 	}
 
@@ -275,6 +300,22 @@ public class GroundItemsPlugin extends Plugin
 			// it is not known which item is picked up, so we invalidate the spawn
 			// time
 			groundItem.setSpawnTime(null);
+		}
+
+		// Respawning items can't be monster loot or dropped items
+		if (groundItem.getLootType() == LootType.UNKNOWN)
+		{
+			// Respawn time has not been recorded yet
+			if (!memorizedGroundItems.containsKey(groundItemKey))
+			{
+				despawnedGroundItems.put(groundItemKey, client.getTickCount());
+			}
+			// Respawn time is known, so render it
+			else
+			{
+				GroundItem memorizedGroundItem = memorizedGroundItems.get(groundItemKey);
+				memorizedGroundItemsToDisplay.put(client.getTickCount() + memorizedGroundItem.getTicksToRespawn(), memorizedGroundItem);
+			}
 		}
 	}
 
@@ -355,6 +396,14 @@ public class GroundItemsPlugin extends Plugin
 
 			return entry;
 		}).toArray(MenuEntry[]::new));
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		lastTickUpdate = Instant.now();
+		// Remove expired timers
+		memorizedGroundItemsToDisplay.keySet().removeIf(x -> x < client.getTickCount());
 	}
 
 	private void lootReceived(Collection<ItemStack> items, LootType lootType)

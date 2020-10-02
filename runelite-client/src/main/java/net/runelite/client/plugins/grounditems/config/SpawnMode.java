@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Hydrox6 <ikada@protonmail.ch>
+ * Copyright (c) 2020, Unmoon <https://github.com/Unmoon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.grounditems.config;
 
-public enum DespawnTimerMode
+public enum SpawnMode
 {
 	OFF,
-	PIE,
-	TICKS,
-	SECONDS
+	DESPAWN,
+	RESPAWN,
+	BOTH,
 }

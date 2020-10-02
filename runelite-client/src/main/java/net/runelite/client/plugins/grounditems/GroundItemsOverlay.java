@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Unmoon <https://github.com/Unmoon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,15 +42,17 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.grounditems.GroundItemsPlugin.MAX_QUANTITY;
-import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
+import net.runelite.client.plugins.grounditems.config.SpawnMode;
+import net.runelite.client.plugins.grounditems.config.TimerMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -176,7 +179,8 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHighlightBoxBounds(null);
 
 		final boolean onlyShowLoot = config.onlyShowLoot();
-		final DespawnTimerMode groundItemTimers = config.groundItemTimers();
+		final TimerMode groundItemTimerMode = config.groundItemTimers();
+		final SpawnMode groundItemSpawnMode = config.groundItemSpawns();
 		final boolean outline = config.textOutline();
 
 		for (GroundItem item : groundItemList)
@@ -346,39 +350,43 @@ public class GroundItemsOverlay extends Overlay
 
 				// Draw highlight box
 				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
-			}
 
-			// When the hotkey is pressed the hidden/highlight boxes are drawn to the right of the text,
-			// so always draw the pie since it is on the left hand side.
-			if (groundItemTimers == DespawnTimerMode.PIE || plugin.isHotKeyPressed())
-			{
-				drawTimerPieOverlay(graphics, textX, textY, item);
+				// When the hotkey is pressed the hidden/highlight boxes are drawn to the right of the text,
+				// so always draw the pie since it is on the left hand side.
+				drawDespawnTimerPieOverlay(graphics, textX, textY, item);
 			}
-			else if (groundItemTimers == DespawnTimerMode.SECONDS || groundItemTimers == DespawnTimerMode.TICKS)
+			else if (groundItemSpawnMode == SpawnMode.DESPAWN || groundItemSpawnMode == SpawnMode.BOTH)
 			{
-				Instant despawnTime = calculateDespawnTime(item);
-				Color timerColor = getItemTimerColor(item);
-				if (despawnTime != null && timerColor != null)
+				if (groundItemTimerMode == TimerMode.PIE)
 				{
-					long despawnTimeMillis = despawnTime.toEpochMilli() - Instant.now().toEpochMilli();
-					final String timerText;
-					if (groundItemTimers == DespawnTimerMode.SECONDS)
+					drawDespawnTimerPieOverlay(graphics, textX, textY, item);
+				}
+				else if (groundItemTimerMode == TimerMode.SECONDS || groundItemTimerMode == TimerMode.TICKS)
+				{
+					Instant despawnTime = calculateDespawnTime(item);
+					Color timerColor = getItemDespawnTimerColor(item);
+					if (despawnTime != null && timerColor != null)
 					{
-						timerText = String.format(" - %.1f", despawnTimeMillis / 1000f);
-					}
-					else // TICKS
-					{
-						timerText = String.format(" - %d", despawnTimeMillis / 600);
-					}
+						long despawnTimeMillis = despawnTime.toEpochMilli() - Instant.now().toEpochMilli();
+						final String timerText;
+						if (groundItemTimerMode == TimerMode.SECONDS)
+						{
+							timerText = String.format(" - %.1f", despawnTimeMillis / 1000f);
+						}
+						else // TICKS
+						{
+							timerText = String.format(" - %d", despawnTimeMillis / 600);
+						}
 
-					// The timer text is drawn separately to have its own color, and is intentionally not included
-					// in the getCanvasTextLocation() call because the timer text can change per frame and we do not
-					// use a monospaced font, which causes the text location on screen to jump around slightly each frame.
-					textComponent.setText(timerText);
-					textComponent.setColor(timerColor);
-					textComponent.setOutline(outline);
-					textComponent.setPosition(new java.awt.Point(textX + fm.stringWidth(itemString), textY));
-					textComponent.render(graphics);
+						// The timer text is drawn separately to have its own color, and is intentionally not included
+						// in the getCanvasTextLocation() call because the timer text can change per frame and we do not
+						// use a monospaced font, which causes the text location on screen to jump around slightly each frame.
+						textComponent.setText(timerText);
+						textComponent.setColor(timerColor);
+						textComponent.setOutline(outline);
+						textComponent.setPosition(new java.awt.Point(textX + fm.stringWidth(itemString), textY));
+						textComponent.render(graphics);
+					}
 				}
 			}
 
@@ -387,6 +395,93 @@ public class GroundItemsOverlay extends Overlay
 			textComponent.setOutline(outline);
 			textComponent.setPosition(new java.awt.Point(textX, textY));
 			textComponent.render(graphics);
+		}
+
+		if (groundItemSpawnMode == SpawnMode.RESPAWN || groundItemSpawnMode == SpawnMode.BOTH || plugin.isHotKeyPressed())
+		{
+			for (Integer spawnTime : plugin.getMemorizedGroundItemsToDisplay().keySet())
+			{
+				GroundItem item = plugin.getMemorizedGroundItemsToDisplay().get(spawnTime);
+
+				final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
+				if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE)
+				{
+					continue;
+				}
+
+				// The timer the actual timer is intentionally not included in the getCanvasTextLocation() call
+				// because the timer text can change per frame and we do not use a monospaced font, which causes
+				// the text location on screen to jump around slightly each frame.
+				final Point textPoint = Perspective.getCanvasTextLocation(client,
+					graphics,
+					groundPoint,
+					item.getName() + " - 00.0",
+					item.getHeight() + OFFSET_Z);
+				if (textPoint == null)
+				{
+					continue;
+				}
+
+				final Color highlighted = plugin.getHighlighted(new NamedQuantity(item), item.getGePrice(), item.getHaPrice());
+				final Color hidden = plugin.getHidden(new NamedQuantity(item), item.getGePrice(), item.getHaPrice(), item.isTradeable());
+				if (highlighted == null && !plugin.isHotKeyPressed())
+				{
+					// Do not display hidden items
+					if (hidden != null)
+					{
+						continue;
+					}
+
+					// Do not display non-highlighted items
+					if (config.showHighlightedOnly())
+					{
+						continue;
+					}
+				}
+
+				final Instant now = Instant.now();
+				final double baseTick = (spawnTime - client.getTickCount()) * (Constants.GAME_TICK_LENGTH / 1000.0);
+				final double sinceLast = (now.toEpochMilli() - plugin.getLastTickUpdate().toEpochMilli()) / 1000.0;
+				final double totalTime = item.getTicksToRespawn() * (Constants.GAME_TICK_LENGTH / 1000.0);
+				final double timeLeft = baseTick - sinceLast;
+				final float percent = (float) (timeLeft / totalTime) - 1;
+
+				if (timeLeft < 0.0)
+				{
+					continue;
+				}
+
+				final Color color = plugin.getItemColor(highlighted, hidden);
+
+				final int offset = plugin.isHotKeyPressed()
+					? item.getOffset()
+					: offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
+				final int textX = textPoint.getX();
+				final int textY = textPoint.getY() - (STRING_GAP * offset);
+
+				if (groundItemTimerMode == TimerMode.PIE || plugin.isHotKeyPressed())
+				{
+					drawPie(graphics, textX, textY, percent, color);
+				}
+				else if (groundItemTimerMode == TimerMode.SECONDS || groundItemTimerMode == TimerMode.TICKS)
+				{
+					final String timerText;
+					if (groundItemTimerMode == TimerMode.SECONDS)
+					{
+						timerText = String.format("%s - %.1f", item.getName(), timeLeft);
+					}
+					else // TICKS
+					{
+						timerText = String.format("%s - %.0f", item.getName(), timeLeft / Constants.GAME_TICK_LENGTH);
+					}
+
+					textComponent.setText(timerText);
+					textComponent.setColor(color);
+					textComponent.setOutline(outline);
+					textComponent.setPosition(new java.awt.Point(textX, textY));
+					textComponent.render(graphics);
+				}
+			}
 		}
 
 		return null;
@@ -473,7 +568,7 @@ public class GroundItemsOverlay extends Overlay
 		return despawnTime;
 	}
 
-	private Color getItemTimerColor(GroundItem groundItem)
+	private Color getItemDespawnTimerColor(GroundItem groundItem)
 	{
 		// We can only accurately guess despawn times for our own pvm loot and dropped items
 		if (groundItem.getLootType() != LootType.PVM && groundItem.getLootType() != LootType.DROPPED)
@@ -500,12 +595,12 @@ public class GroundItemsOverlay extends Overlay
 		}
 	}
 
-	private void drawTimerPieOverlay(Graphics2D graphics, int textX, int textY, GroundItem groundItem)
+	private void drawDespawnTimerPieOverlay(Graphics2D graphics, int textX, int textY, GroundItem groundItem)
 	{
 		Instant now = Instant.now();
 		Instant spawnTime = groundItem.getSpawnTime();
 		Instant despawnTime = calculateDespawnTime(groundItem);
-		Color fillColor = getItemTimerColor(groundItem);
+		Color fillColor = getItemDespawnTimerColor(groundItem);
 
 		if (spawnTime == null || despawnTime == null || fillColor == null)
 		{
@@ -513,7 +608,13 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		float percent = (float) (now.toEpochMilli() - spawnTime.toEpochMilli()) / (despawnTime.toEpochMilli() - spawnTime.toEpochMilli());
+		percent = 1 - percent; // inverse so pie drains over time
 
+		drawPie(graphics, textX, textY, percent, fillColor);
+	}
+
+	private void drawPie(Graphics2D graphics, int textX, int textY, float percent, Color fillColor)
+	{
 		progressPieComponent.setDiameter(TIMER_OVERLAY_DIAMETER);
 		// Shift over to not be on top of the text
 		int x = textX - TIMER_OVERLAY_DIAMETER;
@@ -521,7 +622,7 @@ public class GroundItemsOverlay extends Overlay
 		progressPieComponent.setPosition(new Point(x, y));
 		progressPieComponent.setFill(fillColor);
 		progressPieComponent.setBorderColor(fillColor);
-		progressPieComponent.setProgress(1 - percent); // inverse so pie drains over time
+		progressPieComponent.setProgress(percent);
 		progressPieComponent.render(graphics);
 	}
 

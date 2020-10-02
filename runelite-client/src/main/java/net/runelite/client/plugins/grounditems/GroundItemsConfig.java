@@ -31,7 +31,8 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
 import net.runelite.client.config.ConfigSection;
-import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
+import net.runelite.client.plugins.grounditems.config.SpawnMode;
+import net.runelite.client.plugins.grounditems.config.TimerMode;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
@@ -375,21 +376,32 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "groundItemTimers",
-		name = "Despawn timer",
-		description = "Shows despawn timers for items you've dropped and received as loot",
+		keyName = "groundItemSpawns",
+		name = "Spawn type",
+		description = "Configure if respawn or despawn timers are shown",
 		position = 28
 	)
-	default DespawnTimerMode groundItemTimers()
+	default SpawnMode groundItemSpawns()
 	{
-		return DespawnTimerMode.OFF;
+		return SpawnMode.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "groundItemTimers",
+		name = "Timer type",
+		description = "Configures what kind of timer is shown for items that are about to despawn or respawn",
+		position = 29
+	)
+	default TimerMode groundItemTimers()
+	{
+		return TimerMode.OFF;
 	}
 
 	@ConfigItem(
 		keyName = "textOutline",
 		name = "Text Outline",
 		description = "Use an outline around text instead of a text shadow",
-		position = 29
+		position = 30
 	)
 	default boolean textOutline()
 	{
