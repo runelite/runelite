@@ -420,7 +420,7 @@
 				<artifactId>maven-pmd-plugin</artifactId>
 				<version>3.13.0</version>
 				<configuration>
-					<failOnViolation>false</failOnViolation>
+					<failOnViolation>true</failOnViolation>
 					<printFailingErrors>true</printFailingErrors>
 					<rulesets>
 						<ruleset>../travis/pmd-ruleset.xml</ruleset>
