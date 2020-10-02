@@ -260,25 +260,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.13.0</version>
-				<configuration>
-					<failOnViolation>false</failOnViolation>
-					<printFailingErrors>true</printFailingErrors>
-					<rulesets>
-						<ruleset>/rulesets/java/quickstart.xml</ruleset>
-					</rulesets>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
