@@ -113,9 +113,8 @@ class OpponentInfoOverlay extends OverlayPanel
 	{
 		if (opponentInfoConfig.mergeRaidOverlay() || opponentInfoConfig.showVanillaPercentages())
 		{
-			clientThread.invokeLater(() -> {
-				//hide the raid health bar, since the opponent info will take its place,
-				//and initialize the variables if they aren't loaded yet.
+			clientThread.invokeLater(() ->
+			{
 				Widget raidOpponentWrapper = client.getWidget(303, 6);
 				Widget raidOpponentNameWidget = client.getWidget(303, 11);
 				Widget raidOpponentHealthWidget = client.getWidget(303, 20);
@@ -250,9 +249,7 @@ class OpponentInfoOverlay extends OverlayPanel
 				return null;
 			}
 
-			//update raid vars so that they can be used after the opponent vars disappear, or if a target is switched
-			//if the opponent is a glowing crystal or the meat tree, don't update vars, but rather keep using the ones in use
-			//aka: show vasa and muttadile rather than the glowing crystal and the meat tree hp
+			//update raid vars so that they can be used after the opponent vars disappear unless the target is not one of the bosses
 			if (raidOpponentHealth != 0 && opponentInfoConfig.mergeRaidOverlay() &&
 				!opponentName.equals("Glowing crystal") &&
 				!opponentName.equals("Meat tree") &&
