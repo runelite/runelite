@@ -9,10 +9,21 @@
 		RuneLite client PMD ruleset
 	</description>
 
-	<!--<rule ref="category/java/bestpractices.xml">
+	<rule ref="category/java/bestpractices.xml">
+		<exclude name="GuardLogStatement" />
+		<exclude name="OneDeclarationPerLine" />
+		<exclude name="PositionLiteralsFirstInComparisons" />
 		<exclude name="SwitchStmtsShouldHaveDefault" />
+		<exclude name="UseVarargs" />
+
+		<!-- TODO: Reenable later, but cause a lot of noise -->
+		<exclude name="AvoidReassigningParameters" />
 	</rule>
-	-->
+	<rule ref="category/java/bestpractices.xml/UnusedPrivateMethod">
+		<properties>
+			<property name="ignoredAnnotations" value="net.runelite.client.eventbus.Subscribe" />
+		</properties>
+	</rule>
 
 	<!-- Code style rules -->
 	<rule ref="category/java/codestyle.xml">
