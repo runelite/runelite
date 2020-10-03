@@ -42,14 +42,14 @@
 		<exclude name="EmptyMethodInAbstractClassShouldBeAbstract" />
 
 	</rule>
-	<!-- Add Preloader as a legal utility class name component -->
-	<rule ref="category/java/codestyle.xml/ClassNamingConventions">
+	<!-- EXCLUDED ABOVE! Add Preloader as a legal utility class name component -->
+	<!--<rule ref="category/java/codestyle.xml/ClassNamingConventions">
 		<properties>
 			<property name="utilityClassPattern">
 				<value>[A-Z][a-zA-Z0-9]+(Utils?|Helper|Constants|Preloader)</value>
 			</property>
 		</properties>
-	</rule>
+	</rule>-->
 	<!--<rule ref="category/java/codestyle.xml/UseUnderscoresInNumericLiterals">
 		<properties>
 			<property name="acceptableDecimalLength" value="6"/>
