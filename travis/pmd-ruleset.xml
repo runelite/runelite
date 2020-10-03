@@ -54,7 +54,6 @@
 		<exclude name="CallSuperInConstructor" />
 		<exclude name="FieldDeclarationsShouldBeAtStartOfClass" />
 		<exclude name="EmptyMethodInAbstractClassShouldBeAbstract" />
-
 	</rule>
 	<!-- EXCLUDED ABOVE! Add Preloader as a legal utility class name component -->
 	<!--<rule ref="category/java/codestyle.xml/ClassNamingConventions">
@@ -63,8 +62,8 @@
 				<value>[A-Z][a-zA-Z0-9]+(Utils?|Helper|Constants|Preloader)</value>
 			</property>
 		</properties>
-	</rule>-->
-	<!--<rule ref="category/java/codestyle.xml/UseUnderscoresInNumericLiterals">
+	</rule>
+	<rule ref="category/java/codestyle.xml/UseUnderscoresInNumericLiterals">
 		<properties>
 			<property name="acceptableDecimalLength" value="6"/>
 		</properties>
@@ -75,8 +74,6 @@
 		<exclude name="ExcessiveImports" />
 		<exclude name="LawOfDemeter" />
 	</rule>
-
-	<!--<rule ref="category/java/design.xml" />-->
 
 	<rule ref="category/java/documentation.xml">
 		<exclude name="CommentSize"/>
@@ -117,7 +114,6 @@
 		<exclude name="RedundantFieldInitializer" />
 		<exclude name="TooFewBranchesForASwitchStatement" />
 	</rule>
-
 
 	<rule ref="category/java/security.xml" />
 
