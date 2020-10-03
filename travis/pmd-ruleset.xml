@@ -85,8 +85,22 @@
 		<exclude name="UncommentedEmptyMethodBody"/>
 	</rule>
 
-	<!--<rule ref="category/java/errorprone.xml">
+	<rule ref="category/java/errorprone.xml">
+		<exclude name="AvoidDuplicateLiterals" />
+		<exclude name="AvoidLiteralsInIfCondition" />
+		<exclude name="BeanMembersShouldSerialize" />
 		<exclude name="CompareObjectsWithEquals" />
+		<exclude name="DataflowAnomalyAnalysis" />
+		<exclude name="DoNotCallSystemExit" />
+		<exclude name="MissingSerialVersionUID" />
+		<exclude name="NullAssignment" />
+		<exclude name="UseLocaleWithCaseConversions" />
+		<exclude name="UseProperClassLoader" />
+	</rule>
+	<!--<rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition">
+		<properties>
+			<property name="ignoreMagicNumbers" value="-1,0,1" />
+		</properties>
 	</rule>-->
 
 	<!--<rule ref="category/java/multithreading.xml">
