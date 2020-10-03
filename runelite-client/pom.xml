@@ -425,6 +425,8 @@
 					<rulesets>
 						<ruleset>../travis/pmd-ruleset.xml</ruleset>
 					</rulesets>
+					<!-- Enable incremental analysis -->
+					<!--<analysisCache>true</analysisCache>-->
 				</configuration>
 				<executions>
 					<execution>

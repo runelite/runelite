@@ -538,6 +538,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
+	@SuppressWarnings("PMD.BooleanGetMethodName")
 	boolean getRotationMatches()
 	{
 		RaidRoom[] combatRooms = raid.getCombatRooms();

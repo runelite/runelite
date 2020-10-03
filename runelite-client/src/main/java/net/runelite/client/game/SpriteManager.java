@@ -90,6 +90,7 @@ public class SpriteManager
 		return img;
 	}
 
+	@SuppressWarnings("PMD.LinguisticNaming")
 	public void getSpriteAsync(int archive, int file, Consumer<BufferedImage> user)
 	{
 		BufferedImage cached = cache.getIfPresent((long) archive << 32 | file);
@@ -112,6 +113,7 @@ public class SpriteManager
 		});
 	}
 
+	@SuppressWarnings("PMD.LinguisticNaming")
 	public void getSpriteAsync(int archive, int file, InfoBox infoBox)
 	{
 		getSpriteAsync(archive, file, img ->

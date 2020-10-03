@@ -44,6 +44,7 @@ public abstract class ClueScroll
 
 	@Setter(AccessLevel.PROTECTED)
 	@Getter(AccessLevel.PUBLIC)
+	@SuppressWarnings("PMD.LinguisticNaming")
 	private Varbits hasFirePit;
 
 	@Setter(AccessLevel.PROTECTED)

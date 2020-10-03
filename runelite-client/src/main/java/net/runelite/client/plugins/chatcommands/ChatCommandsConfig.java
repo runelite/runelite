@@ -32,6 +32,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 @ConfigGroup("chatcommands")
+@SuppressWarnings("PMD.ShortMethodName")
 public interface ChatCommandsConfig extends Config
 {
 	@ConfigItem(

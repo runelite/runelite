@@ -9,14 +9,74 @@
 		RuneLite client PMD ruleset
 	</description>
 
-	<rule ref="category/java/bestpractices.xml" />
-	<rule ref="category/java/codestyle.xml" />
-	<rule ref="category/java/design.xml" />
-	<rule ref="category/java/documentation.xml" />
-	<rule ref="category/java/errorprone.xml" />
-	<rule ref="category/java/multithreading.xml" />
-	<rule ref="category/java/performance.xml" />
-	<rule ref="category/java/security.xml" />
+	<!--<rule ref="category/java/bestpractices.xml">
+		<exclude name="SwitchStmtsShouldHaveDefault" />
+	</rule>
+	-->
+
+	<!-- Code style rules -->
+	<rule ref="category/java/codestyle.xml">
+		<exclude name="AtLeastOneConstructor"/>
+		<exclude name="CommentDefaultAccessModifier"/>
+		<exclude name="ConfusingTernary"/>
+		<exclude name="ControlStatementBraces"/>
+		<exclude name="DefaultPackage"/>
+		<exclude name="LocalVariableCouldBeFinal"/>
+		<exclude name="LongVariable"/>
+		<exclude name="MethodArgumentCouldBeFinal"/>
+		<exclude name="OnlyOneReturn"/>
+		<exclude name="ShortClassName"/>
+		<exclude name="ShortVariable"/>
+		<exclude name="TooManyStaticImports"/>
+		<exclude name="UnnecessaryFullyQualifiedName"/>
+		<exclude name="UselessParentheses"/>
+		<exclude name="UseUnderscoresInNumericLiterals"/>
+
+		<!-- TODO: reenable later, but cause a lot of noise -->
+		<exclude name="FieldNamingConventions" />
+		<exclude name="ClassNamingConventions" />
+		<exclude name="ForLoopShouldBeWhileLoop" />
+		<exclude name="PrematureDeclaration" />
+		<exclude name="CallSuperInConstructor" />
+		<exclude name="FieldDeclarationsShouldBeAtStartOfClass" />
+		<exclude name="EmptyMethodInAbstractClassShouldBeAbstract" />
+
+	</rule>
+	<!-- Add Preloader as a legal utility class name component -->
+	<rule ref="category/java/codestyle.xml/ClassNamingConventions">
+		<properties>
+			<property name="utilityClassPattern">
+				<value>[A-Z][a-zA-Z0-9]+(Utils?|Helper|Constants|Preloader)</value>
+			</property>
+		</properties>
+	</rule>
+	<!--<rule ref="category/java/codestyle.xml/UseUnderscoresInNumericLiterals">
+		<properties>
+			<property name="acceptableDecimalLength" value="6"/>
+		</properties>
+	</rule>-->
+
+
+	<!--<rule ref="category/java/design.xml" />-->
+
+	<rule ref="category/java/documentation.xml">
+		<exclude name="CommentSize"/>
+		<exclude name="CommentRequired"/>
+		<exclude name="UncommentedEmptyMethodBody"/>
+	</rule>
+
+	<!--<rule ref="category/java/errorprone.xml">
+		<exclude name="CompareObjectsWithEquals" />
+	</rule>-->
+
+	<!--<rule ref="category/java/multithreading.xml">
+		<exclude name="AvoidUsingVolatile" />
+	</rule>-->
+
+	<!--<rule ref="category/java/performance.xml" />-->
+
+
+	<!--<rule ref="category/java/security.xml" />-->
 
 
 </ruleset>
