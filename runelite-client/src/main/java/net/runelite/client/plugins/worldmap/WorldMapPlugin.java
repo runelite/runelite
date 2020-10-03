@@ -82,7 +82,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_FARMING_PATCH_TOOLTIPS = "farmingpatchTooltips";
 	static final String CONFIG_KEY_RARE_TREE_TOOLTIPS = "rareTreeTooltips";
 	static final String CONFIG_KEY_RARE_TREE_LEVEL_ICON = "rareTreeIcon";
-	static final String CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS = "transportationTooltips";
+	static final String CONFIG_KEY_TRANSPORTATION_TELEPORT_TOOLTIPS = "transportationTooltips";
 	static final String CONFIG_KEY_RUNECRAFTING_ALTAR_ICON = "runecraftingAltarIcon";
 	static final String CONFIG_KEY_MINING_SITE_TOOLTIPS = "miningSiteTooltips";
 	static final String CONFIG_KEY_DUNGEON_TOOLTIPS = "dungeonTooltips";
