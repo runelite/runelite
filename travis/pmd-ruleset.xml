@@ -67,6 +67,11 @@
 		</properties>
 	</rule>-->
 
+	<rule ref="category/java/design.xml">
+		<exclude name="ClassWithOnlyPrivateConstructorsShouldBeFinal" />
+		<exclude name="ExcessiveImports" />
+		<exclude name="LawOfDemeter" />
+	</rule>
 
 	<!--<rule ref="category/java/design.xml" />-->
 
