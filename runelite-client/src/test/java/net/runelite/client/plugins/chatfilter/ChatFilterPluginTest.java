@@ -36,6 +36,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.FriendChatManager;
 import static net.runelite.client.plugins.chatfilter.ChatFilterPlugin.CENSOR_MESSAGE;
 import static org.junit.Assert.assertEquals;
@@ -60,6 +61,10 @@ public class ChatFilterPluginTest
 	@Mock
 	@Bind
 	private ChatFilterConfig chatFilterConfig;
+
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
 
 	@Mock
 	@Bind
