@@ -10,10 +10,13 @@
 	</description>
 
 	<rule ref="category/java/bestpractices.xml">
+		<exclude name="AbstractClassWithoutAbstractMethod" />
+		<exclude name="AvoidStringBufferField" />
 		<exclude name="GuardLogStatement" />
 		<exclude name="OneDeclarationPerLine" />
 		<exclude name="PositionLiteralsFirstInComparisons" />
 		<exclude name="SwitchStmtsShouldHaveDefault" />
+		<exclude name="UnusedFormalParameter" />
 		<exclude name="UseVarargs" />
 
 		<!-- TODO: Reenable later, but cause a lot of noise -->
