@@ -112,7 +112,11 @@
 		<exclude name="UseConcurrentHashMap" />
 	</rule>
 
-	<!--<rule ref="category/java/performance.xml" />-->
+	<rule ref="category/java/performance.xml">
+		<exclude name="AvoidInstantiatingObjectsInLoops" />
+		<exclude name="RedundantFieldInitializer" />
+		<exclude name="TooFewBranchesForASwitchStatement" />
+	</rule>
 
 
 	<!--<rule ref="category/java/security.xml" />-->
