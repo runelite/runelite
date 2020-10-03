@@ -295,4 +295,15 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_KOUREND_TASK_TOOLTIPS,
+		name = "Show Kourend task tooltips",
+		description = "Indicates the task or unlock for Kourend Favour locations",
+		position = 25
+	)
+	default boolean kourendTaskTooltips()
+	{
+		return true;
+	}
 }
