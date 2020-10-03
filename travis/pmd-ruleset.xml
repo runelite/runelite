@@ -103,9 +103,14 @@
 		</properties>
 	</rule>-->
 
-	<!--<rule ref="category/java/multithreading.xml">
+	<rule ref="category/java/multithreading.xml">
+		<exclude name="AvoidSynchronizedAtMethodLevel" />
 		<exclude name="AvoidUsingVolatile" />
-	</rule>-->
+		<exclude name="DoNotUseThreads" />
+		<exclude name="NonThreadSafeSingleton" />
+		<exclude name="UnsynchronizedStaticFormatter" />
+		<exclude name="UseConcurrentHashMap" />
+	</rule>
 
 	<!--<rule ref="category/java/performance.xml" />-->
 
