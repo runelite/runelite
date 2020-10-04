@@ -373,6 +373,7 @@ public class ImageUtil
 	 */
 	public static BufferedImage getResourceStreamFromClass(final Class c, final String path)
 	{
+		log.debug("Attempting to load image from class: {}, path: {}", c.getName(), path);
 		try
 		{
 			synchronized (ImageIO.class)
