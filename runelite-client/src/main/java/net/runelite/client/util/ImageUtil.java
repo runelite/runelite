@@ -373,6 +373,7 @@ public class ImageUtil
 	 */
 	public static BufferedImage getResourceStreamFromClass(final Class c, final String path)
 	{
+		log.debug("Attempting to load image from class: {}, path: {}", c.getName(), path);
 		try
 		{
 			synchronized (ImageIO.class)
@@ -382,10 +383,12 @@ public class ImageUtil
 		}
 		catch (IllegalArgumentException e)
 		{
+			log.error("Failed to load image from class: {}, path: {}", c.getName(), path);
 			throw new IllegalArgumentException(path, e);
 		}
 		catch (IOException e)
 		{
+			log.error("Failed to load image from class: {}, path: {}", c.getName(), path);
 			throw new RuntimeException(path, e);
 		}
 	}
