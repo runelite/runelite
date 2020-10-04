@@ -188,6 +188,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "repairs", config::swapDarkMage);
 		// make sure assignment swap is higher priority than trade swap for slayer masters
 		swap("talk-to", "assignment", config::swapAssignment);
+		// make sure buy-plank swap is higher priority than trade swap for sawmill operators
+		swap("talk-to", "buy-plank", config::swapPlank);
+		// make sure trader crewmember is of higher priority than regular travel and trade
+		swapContainsMode("talk-to", t -> t.startsWith("trader crewmember"), config::swapTraderCrewmember);
 		swap("talk-to", "trade", config::swapTrade);
 		swap("talk-to", "trade-with", config::swapTrade);
 		swap("talk-to", "shop", config::swapTrade);
@@ -209,12 +213,29 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "transport", config::swapTravel);
 		swap("talk-to", "pay", config::swapPay);
 		swapContains("talk-to", alwaysTrue(), "pay (", config::swapPay);
+		swapMode("talk-to", "zahur", config::swapZahur);
 		swap("talk-to", "decant", config::swapDecant);
 		swap("talk-to", "quick-travel", config::swapQuick);
 		swap("talk-to", "enchant", config::swapEnchant);
 		swap("talk-to", "start-minigame", config::swapStartMinigame);
 		swap("talk-to", ESSENCE_MINE_NPCS::contains, "teleport", config::swapEssenceMineTeleport);
 		swap("talk-to", "collect", config::swapCollectMiscellania);
+		swap("talk-to", t -> t.contains("thirus"), "claim", config::swapDynamite);
+		swap("talk-to", "priestess zul-gwenwynig", "collect", config::swapZulrahCollect);
+		swap("talk-to", "trade-builders-store", config::swapStore);
+		swap("talk-to", "give-sword", config::swapGiveSword);
+		swap("talk-to", "spellbook", config::swapTyssSpellbook);
+
+		swap("attack", t -> t.contains("hoop snake"), "stun", config::swapStun);
+
+		Arrays.asList("story", "start-minigame", "dream", "escort", "join")
+				.forEach(swappedOption -> swap("talk-to", swappedOption, config::swapMinigames));
+
+		Arrays.asList("close", "shut")
+				.forEach(option -> swap(option, "search", config::swapSearch));
+
+		swap("ardougne", "lever", "edgeville", config::swapWildernessLever);
+		swap("standard", "king' ladder", "slayer", config::swapDagganothKingsLadder);
 
 		swap("leave tomb", "quick-leave", config::swapQuickLeave);
 		swap("tomb door", "quick-leave", config::swapQuickLeave);
@@ -251,7 +272,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("pick-up", "chase", config::swapChase);
 
-		swap("interact", target -> target.endsWith("birdhouse"), "empty", config::swapBirdhouseEmpty);
+		swap("interact", t -> t.endsWith("birdhouse"), "empty", config::swapBirdhouseEmpty);
 
 		swap("enter", "the gauntlet", "enter-corrupted", config::swapGauntlet);
 
@@ -294,6 +315,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("teleport menu", "draynor village", config::swapJewelleryBox);
 		swap("teleport menu", "al kharid", config::swapJewelleryBox);
 
+		swapMode("activate", "obelisk", config::swapObelisk);
+
 		swap("shared", "private", config::swapPrivate);
 
 		swap("pick", "pick-lots", config::swapPick);
@@ -306,16 +329,43 @@ public class MenuEntrySwapperPlugin extends Plugin
 			"barbarian guard", "amy", "random"
 		).forEach(npc -> swap("cast", "npc contact", npc, () -> shiftModifier() && config.swapNpcContact()));
 
+		swapMode("cast", "spellbook swap", config::swapSpellbookSwap);
+
 		swapMode("value", config::shopBuy, this::shiftModifier);
 		swapMode("value", config::shopSell, this::shiftModifier);
 
+		swap("wear", t -> t.startsWith("construct. cape"), "tele to poh", config::swapConsCape);
+
+		swapMode("wear", t -> t.startsWith("ardougne "), config::swapArdougneCloak);
+		swapMode("wear", t -> t.startsWith("karamja gloves"), config::swapKaramjaGloves);
+		swapMode("wear", t -> t.startsWith("desert amulet"), config::swapDesertAmulet);
+		swapMode("wear", t -> t.startsWith("drakan's medallion"), config::swapDrakansMedallion);
+		swapMode("wear", t -> t.startsWith("morytania legs"), config::swapMorytaniaLegs);
+
 		swap("wear", "rub", config::swapTeleportItem);
 		swap("wear", "teleport", config::swapTeleportItem);
+
+		swapMode("jalsavrah", t -> t.startsWith("pharaoh's sceptre"), config::swapPharaohSceptre);
+		swapMode("equip", t -> t.startsWith("rada's blessing"), config::swapRadasBlessing);
+
+		swap("wield", t -> t.startsWith("master scroll book"), "open", config::swapMasterScrollBook);
+		swap("wield", t -> t.startsWith("skull sceptre"), "invoke", config::swapSkullSceptre);
+		swap("wield", "bloom", config::swapBloom);
 		swap("wield", "teleport", config::swapTeleportItem);
+
+		swap("lletya", "prifddinas", config::swapTeleCrystal);
+
+		swap("fill", t -> t.endsWith("seed box"), "check", config::swapSeedBox);
+
+		swapMode("check", t -> t.endsWith("potion"), config::swapNMZBarrel);
+
+		swap("fill", t -> t.endsWith("pouch"), "empty", config::swapEssencePouch);
 
 		swap("bury", "use", config::swapBones);
 
 		swap("clean", "use", config::swapHerbs);
+
+		swap("eat", "dwarven rock cake", "guzzle", config::swapGuzzle);
 
 		swap("collect-note", "collect-item", () -> config.swapGEItemCollect() == GEItemCollectMode.ITEMS);
 		swap("collect-note", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);

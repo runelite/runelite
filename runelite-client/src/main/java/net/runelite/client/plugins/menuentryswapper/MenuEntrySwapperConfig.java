@@ -466,8 +466,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapGEAbort",
 		name = "GE Abort",
-		description = "Swap abort offer on Grand Exchange offers when shift-clicking"
-		,
+		description = "Swap abort offer on Grand Exchange offers when shift-clicking",
 		section = uiSection
 	)
 	default boolean swapGEAbort()
@@ -581,6 +580,347 @@ public interface MenuEntrySwapperConfig extends Config
 		section = npcSection
 	)
 	default boolean swapCollectMiscellania()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapArdougneCloak",
+		name = "Ardougne Cloak",
+		description = "Swap wear with the monastery- or farm-teleport",
+		section = itemSection
+	)
+	default ArdougneCloakMode swapArdougneCloak()
+	{
+		return ArdougneCloakMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapConsCape",
+		name = "Cons. Cape",
+		description = "Swap wear with Tele to POH",
+		section = itemSection
+	)
+	default boolean swapConsCape()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapKaramjaGloves",
+		name = "Karamja Gloves",
+		description = "Swap wear with Tele to POH",
+		section = itemSection
+	)
+	default KaramjaGlovesMode swapKaramjaGloves()
+	{
+		return KaramjaGlovesMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapDesertAmulet",
+		name = "Desert Amulet",
+		description = "Swap wear with Tele to POH",
+		section = itemSection
+	)
+	default DesertAmuletMode swapDesertAmulet()
+	{
+		return DesertAmuletMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapDrakansMedallion",
+		name = "Drakan's Medallion",
+		description = "Swap wear with Tele to POH",
+		section = itemSection
+	)
+	default DrakansMedallionMode swapDrakansMedallion()
+	{
+		return DrakansMedallionMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapMorytaniaLegs",
+		name = "Morytania Legs",
+		description = "Swap wear with Tele to POH",
+		section = itemSection
+	)
+	default MorytaniaLegsMode swapMorytaniaLegs()
+	{
+		return MorytaniaLegsMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapObelisk",
+		name = "Obelisk",
+		description = "Swap Activate with Teleport to Destination or Set Destination",
+		section = objectSection
+	)
+	default ObeliskMode swapObelisk()
+	{
+		return ObeliskMode.ACTIVATE;
+	}
+
+	@ConfigItem(
+		keyName = "swapPharaohSceptre",
+		name = "Pharaoh's Sceptre",
+		description = "Change the left-click option on Pharaoh Sceptre",
+		section = itemSection
+	)
+	default PharaohSceptreMode swapPharaohSceptre()
+	{
+		return PharaohSceptreMode.JALSAVRAH;
+	}
+
+	@ConfigItem(
+		keyName = "swapTraderCrewmember",
+		name = "Charter Ships",
+		description = "Change the left-click option on Trader Crewmembers on Charter ships",
+		section = npcSection
+	)
+	default CharterShipsMode swapTraderCrewmember()
+	{
+		return CharterShipsMode.TALK;
+	}
+
+	@ConfigItem(
+		keyName = "swapZahur",
+		name = "Zahur",
+		description = "Zahur default option",
+		section = npcSection
+	)
+	default ZahurMode swapZahur()
+	{
+		return ZahurMode.TALK;
+	}
+
+	@ConfigItem(
+		keyName = "swapSpellbookSwap",
+		name = "Spellbook Swap",
+		description = "Change the left-click option on Spellbook Swap (Lunar Spell)",
+		section = uiSection
+	)
+	default SpellbookSwapMode swapSpellbookSwap()
+	{
+		return SpellbookSwapMode.CAST;
+	}
+
+	@ConfigItem(
+		keyName = "swapMinigames",
+		name = "Minigames",
+		description = "Swap Talk-to with actions that start Minigames",
+		section = npcSection
+	)
+	default boolean swapMinigames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapSearch",
+		name = "Search",
+		description = "Swap Close, Shut with Search on chests, cupboards, etc.",
+		section = objectSection
+	)
+	default boolean swapSearch()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapBuyPlank",
+		name = "Buy-Plank",
+		description = "Swap Talk-to with Buy-Plank on Sawmill Operator",
+		section = npcSection
+	)
+	default boolean swapPlank()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapStun",
+		name = "Stun Hoop Snakes",
+		description = "Swap Attack with Stun",
+		section = npcSection
+	)
+	default boolean swapStun()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapDynamite",
+		name = "Claim Dynamite",
+		description = "Swap Talk-to with Claim Dynamite on Thirus",
+		section = npcSection
+	)
+	default boolean swapDynamite()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapWildernessLever",
+		name = "Wilderness Lever to Edgeville",
+		description = "Swap Edgeville Lever as default for wilderness lever",
+		section = objectSection
+	)
+	default boolean swapWildernessLever()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapZulrahCollect",
+		name = "Collect (Zulrah)",
+		description = "Swap Collect with Talk-to for Priestess Zul-Gwenwynig at Zul-Andra.",
+		section = npcSection
+	)
+	default boolean swapZulrahCollect()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapDagganothKingsLadder",
+		name = "Dagganoth King Ladder",
+		description = "Change the default option to slayer in the Dagannoth Kings lair.",
+		section = objectSection
+	)
+	default boolean swapDagganothKingsLadder()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapStore",
+		name = "Builders Store",
+		description = "Swap Trade-General-Store with Trade-Builders-Store for the NPC Razmire Keelgan",
+		section = npcSection
+	)
+	default boolean swapStore()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapTeleCrystal",
+		name = "Teleport Crystal",
+		description = "Swaps the Crystal Seed Teleport to Prifddinas",
+		section = itemSection
+	)
+	default boolean swapTeleCrystal()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapGiveSword",
+		name = "Give Sword",
+		description = "Swaps Talk-To to with Give-Sword for Tindel Marchant at Port Khazard",
+		section = npcSection
+	)
+	default boolean swapGiveSword()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapTyssSpellbook",
+		name = "Tyss Spellbook",
+		description = "Swaps Talk-To to with Spellbook for Tyss at the dark altar",
+		section = npcSection
+	)
+	default boolean swapTyssSpellbook()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapMasterScrollBook",
+		name = "Master Scroll Book",
+		description = "Swaps the Master Scroll Book left click to open",
+		section = itemSection
+	)
+	default boolean swapMasterScrollBook()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapSkullSceptre",
+		name = "Skull Sceptre",
+		description = "Makes Invoke the left click option on Skull Sceptre",
+		section = itemSection
+	)
+	default boolean swapSkullSceptre()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapRadasBlessing",
+		name = "Rada's Blessing",
+		description = "Change the left-click option on Rada's Blessing",
+		section = itemSection
+	)
+	default RadasBlessingMode swapRadasBlessing()
+	{
+		return RadasBlessingMode.EQUIP;
+	}
+
+	@ConfigItem(
+		keyName = "swapSeedBox",
+		name = "Seed Box",
+		description = "Swaps the Seed Box left-click option from Fill to Check",
+		section = itemSection
+	)
+	default boolean swapSeedBox()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapBloom",
+		name = "Bloom",
+		description = "Swaps Bloom to be the left-click option on blessed weaponry (while in the inventory)",
+		section = itemSection
+	)
+	default boolean swapBloom()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapGuzzle",
+		name = "Guzzle",
+		description = "Swaps Eat with Guzzle for Dwarven rock cake",
+		section = itemSection
+	)
+	default boolean swapGuzzle()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapNMZBarrel",
+		name = "NMZ Barrel",
+		description = "Change the left-click option on the NMZ barrels",
+		section = objectSection
+	)
+	default NMZBarrelMode swapNMZBarrel()
+	{
+		return NMZBarrelMode.CHECK;
+	}
+
+	@ConfigItem(
+		keyName = "swapEssencePouch",
+		name = "Essence Pouch",
+		description = "Swaps fill with Empty on Rune Essence pouches",
+		section = itemSection
+	)
+	default boolean swapEssencePouch()
 	{
 		return false;
 	}
