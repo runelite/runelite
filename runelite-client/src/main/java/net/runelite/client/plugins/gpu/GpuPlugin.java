@@ -1303,6 +1303,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			height = dim.height;
 		}
 
+		if (OSType.getOSType() != OSType.MacOS)
+		{
+			final AffineTransform t = ((Graphics2D) canvas.getGraphics()).getTransform();
+			width = getScaledValue(t.getScaleX(), width);
+			height = getScaledValue(t.getScaleY(), height);
+		}
+
 		ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4)
 			.order(ByteOrder.nativeOrder());
 
