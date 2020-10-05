@@ -24,22 +24,9 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum DesertAmuletMode
 {
-	WEAR("Wear"),
-	NARDAH("Nardah"),
-	KALPHITE_CAVE("Kalphite cave");
-
-	private final String option;
-
-	@Override
-	public String toString()
-	{
-		return option;
-	}
+	WEAR,
+	NARDAH,
+	KALPHITE_CAVE;
 }

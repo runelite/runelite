@@ -24,22 +24,9 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum ArdougneCloakMode
 {
-	WEAR("Wear"),
-	MONASTERY_TELEPORT("Monastery Teleport"),
-	FARM_TELEPORT("Farm Teleport");
-
-	private final String option;
-
-	@Override
-	public String toString()
-	{
-		return option;
-	}
+	WEAR,
+	MONASTERY_TELEPORT,
+	FARM_TELEPORT;
 }

@@ -24,23 +24,10 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum SpellbookSwapMode
 {
-	CAST("Cast"),
-	STANDARD("Standard"),
-	ANCIENT("Ancient"),
-	ARCEUUS("Arceuus");
-
-	private final String option;
-
-	@Override
-	public String toString()
-	{
-		return option;
-	}
+	CAST,
+	STANDARD,
+	ANCIENT,
+	ARCEUUS;
 }

@@ -24,22 +24,9 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum DrakansMedallionMode
 {
-	WEAR("Wear"),
-	VER_SINHAZA("Ver Sinhaza"),
-	DARKMEYER("Darkmeyer");
-
-	private final String option;
-
-	@Override
-	public String toString()
-	{
-		return option;
-	}
+	WEAR,
+	VER_SINHAZA,
+	DARKMEYER;
 }
