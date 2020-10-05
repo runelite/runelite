@@ -263,31 +263,9 @@ class PluginListPanel extends PluginPanel
 	private void onSearchBarChanged()
 	{
 		final String text = searchBar.getText();
-
 		pluginList.forEach(mainPanel::remove);
-
-		showMatchingPlugins(true, text);
-		showMatchingPlugins(false, text);
-
+		PluginSearch.search(pluginList, text).forEach(mainPanel::add);
 		revalidate();
-	}
-
-	private void showMatchingPlugins(boolean pinned, String text)
-	{
-		if (text.isEmpty())
-		{
-			pluginList.stream().filter(item -> pinned == item.isPinned()).forEach(mainPanel::add);
-			return;
-		}
-
-		final String[] searchTerms = text.toLowerCase().split(" ");
-		pluginList.forEach(listItem ->
-		{
-			if (pinned == listItem.isPinned() && Text.matchesSearchTerms(searchTerms, listItem.getKeywords()))
-			{
-				mainPanel.add(listItem);
-			}
-		});
 	}
 
 	void openConfigurationPanel(String configGroup)

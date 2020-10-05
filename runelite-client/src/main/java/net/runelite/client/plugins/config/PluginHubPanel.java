@@ -87,7 +87,6 @@ import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
-import net.runelite.client.util.Text;
 import net.runelite.client.util.VerificationException;
 
 @Slf4j
@@ -115,13 +114,15 @@ class PluginHubPanel extends PluginPanel
 		CONFIGURE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(configureIcon, -100));
 	}
 
-	private class PluginItem extends JPanel
+	private class PluginItem extends JPanel implements SearchablePlugin
 	{
 		private static final int HEIGHT = 70;
 		private static final int ICON_WIDTH = 48;
 		private static final int BOTTOM_LINE_HEIGHT = 16;
 
 		private final ExternalPluginManifest manifest;
+
+		@Getter
 		private final List<String> keywords = new ArrayList<>();
 
 		@Getter
@@ -332,6 +333,12 @@ class PluginHubPanel extends PluginPanel
 						.addComponent(configure, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT)
 						.addComponent(addrm, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT))
 					.addGap(5)));
+		}
+
+		@Override
+		public String getSearchableName()
+		{
+			return manifest.getDisplayName();
 		}
 	}
 
@@ -547,22 +554,19 @@ class PluginHubPanel extends PluginPanel
 
 		Stream<PluginItem> stream = plugins.stream();
 
-		String search = searchBar.getText();
-		boolean isSearching = search != null && !search.trim().isEmpty();
+		String query = searchBar.getText();
+		boolean isSearching = query != null && !query.trim().isEmpty();
 		if (isSearching)
 		{
-			String[] searchArray = SPACES.split(search.toLowerCase());
-			stream = stream
-				.filter(p -> Text.matchesSearchTerms(searchArray, p.keywords))
-				.sorted(Comparator.comparing(p -> p.manifest.getDisplayName()));
+			PluginSearch.search(plugins, query).forEach(mainPanel::add);
 		}
 		else
 		{
-			stream = stream
-				.sorted(Comparator.comparing(PluginItem::isInstalled).thenComparing(p -> p.manifest.getDisplayName()));
+			stream
+				.sorted(Comparator.comparing(PluginItem::isInstalled).thenComparing(p -> p.manifest.getDisplayName()))
+				.forEach(mainPanel::add);
 		}
 
-		stream.forEach(mainPanel::add);
 		mainPanel.revalidate();
 	}
 
