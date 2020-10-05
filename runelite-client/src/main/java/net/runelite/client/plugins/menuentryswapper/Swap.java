@@ -33,7 +33,7 @@ class Swap
 {
 	private Predicate<String> optionPredicate;
 	private Predicate<String> targetPredicate;
-	private String swappedOption;
+	private Supplier<String> swappedOptionPredicate;
 	private Supplier<Boolean> enabled;
 	private boolean strict;
 }

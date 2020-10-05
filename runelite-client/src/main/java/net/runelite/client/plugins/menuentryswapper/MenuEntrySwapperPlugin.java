@@ -231,17 +231,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("big net", "harpoon", config::swapHarpoon);
 		swap("net", "harpoon", config::swapHarpoon);
 
-		swap("enter", "portal", "home", () -> config.swapHomePortal() == HouseMode.HOME);
-		swap("enter", "portal", "build mode", () -> config.swapHomePortal() == HouseMode.BUILD_MODE);
-		swap("enter", "portal", "friend's house", () -> config.swapHomePortal() == HouseMode.FRIENDS_HOUSE);
+		swapMode("enter", "portal", config::swapHomePortal);
 
-		swap("view", "add-house", () -> config.swapHouseAdvertisement() == HouseAdvertisementMode.ADD_HOUSE);
-		swap("view", "visit-last", () -> config.swapHouseAdvertisement() == HouseAdvertisementMode.VISIT_LAST);
+		swapMode("view", config::swapHouseAdvertisement);
 
 		for (String option : new String[]{"zanaris", "tree"})
 		{
-			swapContains(option, alwaysTrue(), "last-destination", () -> config.swapFairyRing() == FairyRingMode.LAST_DESTINATION);
-			swapContains(option, alwaysTrue(), "configure", () -> config.swapFairyRing() == FairyRingMode.CONFIGURE);
+			swapContainsMode(option, alwaysTrue(), config::swapFairyRing);
+			swapContainsMode(option, alwaysTrue(), config::swapFairyRing);
 		}
 
 		swapContains("configure", alwaysTrue(), "last-destination", () ->
@@ -309,15 +306,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 			"barbarian guard", "amy", "random"
 		).forEach(npc -> swap("cast", "npc contact", npc, () -> shiftModifier() && config.swapNpcContact()));
 
-		swap("value", "buy 1", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_1);
-		swap("value", "buy 5", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_5);
-		swap("value", "buy 10", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_10);
-		swap("value", "buy 50", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_50);
-
-		swap("value", "sell 1", () -> shiftModifier() && config.shopSell() == SellMode.SELL_1);
-		swap("value", "sell 5", () -> shiftModifier() && config.shopSell() == SellMode.SELL_5);
-		swap("value", "sell 10", () -> shiftModifier() && config.shopSell() == SellMode.SELL_10);
-		swap("value", "sell 50", () -> shiftModifier() && config.shopSell() == SellMode.SELL_50);
+		swapMode("value", config::shopBuy, this::shiftModifier);
+		swapMode("value", config::shopSell, this::shiftModifier);
 
 		swap("wear", "rub", config::swapTeleportItem);
 		swap("wear", "teleport", config::swapTeleportItem);
@@ -328,17 +318,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("clean", "use", config::swapHerbs);
 
 		swap("collect-note", "collect-item", () -> config.swapGEItemCollect() == GEItemCollectMode.ITEMS);
-		swap("collect-notes", "collect-items", () -> config.swapGEItemCollect() == GEItemCollectMode.ITEMS);
+		swap("collect-note", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
+		swapMode("collect-notes", config::swapGEItemCollect);
 
 		swap("collect-item", "collect-note", () -> config.swapGEItemCollect() == GEItemCollectMode.NOTES);
-		swap("collect-items", "collect-notes", () -> config.swapGEItemCollect() == GEItemCollectMode.NOTES);
+		swap("collect-item", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
+		swapMode("collect-items", config::swapGEItemCollect);
 
 		swap("collect to inventory", "collect to bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
 		swap("collect", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
-		swap("collect-note", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
-		swap("collect-notes", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
-		swap("collect-item", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
-		swap("collect-items", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
 
 		swap("tan 1", "tan all", config::swapTan);
 
@@ -360,12 +348,52 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void swap(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
 	{
-		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, true));
+		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, () -> swappedOption, enabled, true));
+	}
+
+	private void swapMode(String option, Supplier<Enum> mode)
+	{
+		swapMode(option, mode, () -> true);
+	}
+
+	private void swapMode(String option, String target, Supplier<Enum> mode)
+	{
+		swapMode(option, equalTo(target), mode);
+	}
+
+	private void swapMode(String option, Supplier<Enum> mode, Supplier<Boolean> enabled)
+	{
+		swapMode(option, alwaysTrue(), mode, enabled);
+	}
+
+	private void swapMode(String option, Predicate<String> targetPredicate, Supplier<Enum> mode)
+	{
+		swapMode(option, targetPredicate, mode, () -> true);
+	}
+
+	private void swapMode(String option, Predicate<String> targetPredicate, Supplier<Enum> mode, Supplier<Boolean> enabled)
+	{
+		swapMode(option, targetPredicate, mode, enabled, false);
+	}
+
+	private void swapMode(String option, Predicate<String> targetPredicate, Supplier<Enum> mode, Supplier<Boolean> enabled, boolean strict)
+	{
+		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, () -> optionOf(mode), enabled, strict));
+	}
+
+	private String optionOf(Supplier<Enum> mode)
+	{
+		return mode.get().toString().toLowerCase().replace('_', ' ');
+	}
+
+	private void swapContainsMode(String option, Predicate<String> targetPredicate, Supplier<Enum> mode)
+	{
+		swapMode(option, targetPredicate, mode, () -> true, false);
 	}
 
 	private void swapContains(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
 	{
-		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, false));
+		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, () -> swappedOption, enabled, false));
 	}
 
 	private void swapTeleport(String option, String swappedOption)
@@ -660,7 +688,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			if (swap.getTargetPredicate().test(target) && swap.getEnabled().get())
 			{
-				if (swap(swap.getSwappedOption(), target, index, swap.isStrict()))
+				if (swap(swap.getSwappedOptionPredicate().get(), target, index, swap.isStrict()))
 				{
 					break;
 				}
