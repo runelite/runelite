@@ -128,6 +128,21 @@ public class ExaminePlugin extends Plugin
 				Widget widget = client.getWidget(widgetGroup, widgetChild);
 				WidgetItem widgetItem = widget.getWidgetItem(event.getActionParam());
 				quantity = widgetItem != null && widgetItem.getId() >= 0 ? widgetItem.getQuantity() : 1;
+
+				// Examine on inventory items with more than 100000 quantity is handled locally and shows the item stack
+				// count, instead of sending the examine packet, so that you can see how many items are in the stack.
+				// Replace that message with one that formats the quantity using the quantity formatter instead.
+				if (quantity >= 100_000)
+				{
+					int itemId = event.getId();
+					final ChatMessageBuilder message = new ChatMessageBuilder()
+						.append(QuantityFormatter.formatNumber(quantity)).append(" x ").append(itemManager.getItemComposition(itemId).getName());
+					chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.ITEM_EXAMINE)
+						.runeLiteFormattedMessage(message.build())
+						.build());
+					event.consume();
+				}
 				break;
 			}
 			case EXAMINE_ITEM_GROUND:
