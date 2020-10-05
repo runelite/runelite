@@ -1305,9 +1305,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		if (OSType.getOSType() != OSType.MacOS)
 		{
-			final AffineTransform t = ((Graphics2D) canvas.getGraphics()).getTransform();
+			final Graphics2D graphics = (Graphics2D) canvas.getGraphics();
+			final AffineTransform t = graphics.getTransform();
 			width = getScaledValue(t.getScaleX(), width);
 			height = getScaledValue(t.getScaleY(), height);
+			graphics.dispose();
 		}
 
 		ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4)
@@ -1595,12 +1597,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		else
 		{
-			final AffineTransform t = ((Graphics2D) canvas.getGraphics()).getTransform();
+			final Graphics2D graphics = (Graphics2D) canvas.getGraphics();
+			final AffineTransform t = graphics.getTransform();
 			gl.glViewport(
 				getScaledValue(t.getScaleX(), x),
 				getScaledValue(t.getScaleY(), y),
 				getScaledValue(t.getScaleX(), width),
 				getScaledValue(t.getScaleY(), height));
+			graphics.dispose();
 		}
 	}
 
