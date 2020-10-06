@@ -107,6 +107,20 @@ public class QuantityFormatterTest
 	}
 
 	@Test
+	public void intToRSQuantity()
+	{
+		assertEquals("0", QuantityFormatter.intToRSQuantity(0));
+		assertEquals("1111", QuantityFormatter.intToRSQuantity(1111));
+		assertEquals("101K", QuantityFormatter.intToRSQuantity(101_000));
+		assertEquals("1011K", QuantityFormatter.intToRSQuantity(1_011_000));
+		assertEquals("9999K", QuantityFormatter.intToRSQuantity(9_999_999));
+		assertEquals("10M", QuantityFormatter.intToRSQuantity(10_000_000));
+		assertEquals("100M", QuantityFormatter.intToRSQuantity(100_000_000));
+		assertEquals("100M", QuantityFormatter.intToRSQuantity(100_111_111));
+		assertEquals("2147M", QuantityFormatter.intToRSQuantity(Integer.MAX_VALUE));
+	}
+
+	@Test
 	public void stackSizeToQuantity() throws ParseException
 	{
 		assertEquals(0, QuantityFormatter.parseQuantity("0"));
