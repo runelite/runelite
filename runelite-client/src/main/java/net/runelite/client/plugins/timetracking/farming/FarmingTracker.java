@@ -76,6 +76,16 @@ public class FarmingTracker
 	}
 
 	/**
+	 * Resets the tracker for a given patch.
+	 */
+	public void resetData(FarmingRegion region, Varbits patchVarbits)
+	{
+		String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + region.getRegionID();
+		configManager.unsetConfiguration(group, Integer.toString(patchVarbits.getId()));
+		updateCompletionTime();
+	}
+
+	/**
 	 * Updates tracker data for the current region. Returns true if any data was changed.
 	 */
 	public boolean updateData(WorldPoint location)
@@ -176,6 +186,7 @@ public class FarmingTracker
 				}
 				catch (NumberFormatException e)
 				{
+					// ignore
 				}
 			}
 		}

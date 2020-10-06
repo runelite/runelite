@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
@@ -102,6 +104,31 @@ public class FarmingTabPanel extends TabContentPanel
 				c.gridy++;
 				lastImpl = patch.getImplementation();
 			}
+
+			// Use the existing popup menu or create a new one
+			JPopupMenu popupMenu = p.getComponentPopupMenu();
+			if (popupMenu == null)
+			{
+				popupMenu = new JPopupMenu();
+				popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+				p.setComponentPopupMenu(popupMenu);
+			}
+
+			// Create reset menu
+			JMenuItem reset = new JMenuItem("Reset");
+			reset.addActionListener(e ->
+			{
+				farmingTracker.resetData(p.getTimeable().getRegion(), p.getTimeable().getVarbit());
+
+				itemManager.getImage(Produce.WEEDS.getItemID()).addTo(p.getIcon());
+				p.getIcon().setToolTipText("Unknown state");
+				p.getProgress().setMaximumValue(0);
+				p.getProgress().setValue(0);
+				p.getProgress().setVisible(false);
+				p.getEstimate().setText("Unknown");
+				p.getProgress().setBackground(null);
+			});
+			popupMenu.add(reset);
 
 			patchPanels.add(p);
 			add(p, c);
