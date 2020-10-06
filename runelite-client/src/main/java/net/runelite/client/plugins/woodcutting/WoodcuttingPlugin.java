@@ -90,6 +90,9 @@ public class WoodcuttingPlugin extends Plugin
 	private WoodcuttingTreesOverlay treesOverlay;
 
 	@Inject
+	private WoodcuttingClickboxOverlay clickboxOverlay;
+
+	@Inject
 	private WoodcuttingConfig config;
 
 	@Getter
@@ -119,6 +122,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(treesOverlay);
+		overlayManager.add(clickboxOverlay);
 	}
 
 	@Override
@@ -126,6 +130,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(treesOverlay);
+		overlayManager.remove(clickboxOverlay);
 		respawns.clear();
 		treeObjects.clear();
 		session = null;
@@ -201,10 +206,7 @@ public class WoodcuttingPlugin extends Plugin
 		GameObject gameObject = event.getGameObject();
 		Tree tree = Tree.findTree(gameObject.getId());
 
-		if (tree == Tree.REDWOOD)
-		{
-			treeObjects.add(gameObject);
-		}
+		treeObjects.add(gameObject);
 	}
 
 	@Subscribe
@@ -228,10 +230,7 @@ public class WoodcuttingPlugin extends Plugin
 				respawns.add(treeRespawn);
 			}
 
-			if (tree == Tree.REDWOOD)
-			{
-				treeObjects.remove(event.getGameObject());
-			}
+			treeObjects.remove(event.getGameObject());
 		}
 	}
 

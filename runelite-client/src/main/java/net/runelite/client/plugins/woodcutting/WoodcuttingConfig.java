@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -86,5 +87,27 @@ public interface WoodcuttingConfig extends Config
 	default boolean showRespawnTimers()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "showClickboxes",
+		name = "Show Clickboxes",
+		description = "Show tree clickboxes"
+	)
+	default boolean showClickboxes()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "overlayColor",
+		name = "Overlay Color",
+		description = "Color of tree overlay",
+		position = 7
+	)
+	default Color getOverlayColor()
+	{
+		return Color.GREEN;
 	}
 }
