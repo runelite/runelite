@@ -60,6 +60,16 @@ public interface KourendLibraryConfig extends Config
 	)
 	default boolean hideVarlamoreEnvoy()
 	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "hideDarkManuscript",
+		name = "Hide Dark Manuscript",
+		description = "Whether to hide Dark Manuscripts"
+	)
+	default boolean hideDarkManuscript()
+	{
 		return false;
 	}
 
