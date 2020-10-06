@@ -25,6 +25,9 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import com.google.inject.Singleton;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,7 +45,7 @@ import net.runelite.client.plugins.timetracking.Tab;
 class FarmingWorld
 {
 	@Getter
-	private Map<Integer, FarmingRegion> regions = new HashMap<>();
+	private Multimap<Integer, FarmingRegion> regions = HashMultimap.create();
 
 	@Getter
 	private Map<Tab, Set<FarmingPatch>> tabs = new HashMap<>();
@@ -83,10 +86,28 @@ class FarmingWorld
 			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
-		));
+		)
+		{
+			@Override
+			public boolean isInBounds(WorldPoint loc)
+			{
+				if (loc.getY() < 3456)
+				{
+					return loc.getX() <= 2840 && loc.getY() > 3440;
+				}
+				return true;
+			}
+		}, 11061, 11318, 11317);
 		add(new FarmingRegion("Catherby", 11317,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.FRUIT_TREE)
-		));
+		)
+		{
+			@Override
+			public boolean isInBounds(WorldPoint loc)
+			{
+				return loc.getX() > 2840 || loc.getY() < 3440;
+			}
+		});
 
 		add(new FarmingRegion("Champions' Guild", 12596,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH)
@@ -255,7 +276,7 @@ class FarmingWorld
 		));
 
 		// Finalize
-		this.regions = Collections.unmodifiableMap(regions);
+		this.regions = Multimaps.unmodifiableMultimap(regions);
 		Map<Tab, Set<FarmingPatch>> umtabs = new TreeMap<>();
 		for (Map.Entry<Tab, Set<FarmingPatch>> e : tabs.entrySet())
 		{
