@@ -117,7 +117,7 @@ class MotherlodeOverlay extends OverlayPanel
 
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Pay-dirt/hr:")
-			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "")
+			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPayDirtPerHour()) : "")
 			.build());
 
 		return super.render(graphics);
