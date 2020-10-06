@@ -24,14 +24,20 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.WorldType;
 
+@Getter
+@RequiredArgsConstructor
 enum XpWorldType
 {
-	NORMAL,
-	TOURNEY,
-	DMM,
-	LEAGUE;
+	NORMAL(1),
+	TOURNEY(1),
+	DMM(5),
+	LEAGUE(5);
+
+	private final int xpModifier;
 
 	static XpWorldType of(WorldType type)
 	{
