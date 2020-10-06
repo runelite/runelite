@@ -59,6 +59,8 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -113,6 +115,7 @@ public class KourendLibraryPlugin extends Plugin
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
 	private EnumSet<Book> playerBooks = null;
+	private QuestState depthsOfDespairState = QuestState.FINISHED;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<NPC> npcsToMark = new HashSet<>();
@@ -262,6 +265,7 @@ public class KourendLibraryPlugin extends Plugin
 			{
 				if (inRegion)
 				{
+					panel.reload();
 					clientToolbar.addNavigation(navButton);
 				}
 				else
@@ -275,6 +279,12 @@ public class KourendLibraryPlugin extends Plugin
 		if (!inRegion)
 		{
 			return;
+		}
+		else
+		{
+			//Determines state of quest The Depths of Despair when player enters or exits region (quest cannot be
+			//started or ended in the region, so this will not change while player is in region).
+			depthsOfDespairState = Quest.THE_DEPTHS_OF_DESPAIR.getState(client);
 		}
 
 		if (lastBookcaseAnimatedOn != null)
@@ -415,5 +425,33 @@ public class KourendLibraryPlugin extends Plugin
 	static boolean isLibraryCustomer(int npcId)
 	{
 		return npcId == NpcID.VILLIA || npcId == NpcID.PROFESSOR_GRACKLEBONE || npcId == NpcID.SAM_7049;
+	}
+
+	//Method for handling Varlamore Envoy as it is not always available to be found.
+	public boolean showVarlamoreEnvoy()
+	{
+		switch (depthsOfDespairState)
+		{
+			case NOT_STARTED:
+				//Don't show an overlay for the book when the quest has not been started as it can never be
+				//found at this point.
+				return false;
+			case FINISHED:
+				//Respect the config for whether to show this book, as it is not used for any favor tasks
+				//but can be acquired at the indicated location if the user wants it.
+				if (config.hideVarlamoreEnvoy())
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			case IN_PROGRESS:
+				//Show an overlay for the book as the user is likely actively searching for it.
+				return true;
+			default:
+				return true;
+		}
 	}
 }

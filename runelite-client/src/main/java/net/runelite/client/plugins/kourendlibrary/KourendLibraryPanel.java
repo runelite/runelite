@@ -89,7 +89,7 @@ class KourendLibraryPanel extends PluginPanel
 		c.gridy = 0;
 		Stream.of(Book.values())
 			.filter(b -> !b.isDarkManuscript())
-			.filter(b -> !config.hideVarlamoreEnvoy() || b != Book.VARLAMORE_ENVOY)
+			.filter(b -> plugin.showVarlamoreEnvoy() || b != Book.VARLAMORE_ENVOY)
 			.sorted(Comparator.comparing(Book::getShortName))
 			.forEach(b ->
 			{
