@@ -39,6 +39,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.client.plugins.screenmarkers.ScreenMarker;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
@@ -51,12 +52,18 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_HOVER_ICON;
 
+	private static final ImageIcon VISIBLE_ICON;
+	private static final ImageIcon VISIBLE_HOVER_ICON;
+
 	private static final Color DEFAULT_BORDER_COLOR = Color.GREEN;
 	private static final Color DEFAULT_FILL_COLOR = new Color(0, 255, 0, 0);
 
 	private static final int DEFAULT_BORDER_THICKNESS = 3;
 
 	private final JLabel addMarker = new JLabel(ADD_ICON);
+
+	private final JLabel hideAllLabel = new JLabel(VISIBLE_ICON);
+
 	private final JLabel title = new JLabel();
 	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
 	private final JPanel markerView = new JPanel(new GridBagLayout());
@@ -80,6 +87,10 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		final BufferedImage addIcon = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "add_icon.png");
 		ADD_ICON = new ImageIcon(addIcon);
 		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
+
+		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "visible_icon.png");
+		VISIBLE_ICON = new ImageIcon(visibleImg);
+		VISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(visibleImg, -100));
 	}
 
 	public ScreenMarkerPluginPanel(ScreenMarkerPlugin screenMarkerPlugin)
@@ -96,6 +107,9 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		title.setForeground(Color.WHITE);
 
 		northPanel.add(title, BorderLayout.WEST);
+
+		northPanel.add(hideAllLabel, BorderLayout.CENTER);
+
 		northPanel.add(addMarker, BorderLayout.EAST);
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
@@ -140,6 +154,26 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			public void mouseExited(MouseEvent mouseEvent)
 			{
 				addMarker.setIcon(ADD_ICON);
+			}
+		});
+
+		hideAllLabel.setToolTipText("Hide all screen markers");
+		hideAllLabel.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				hideAll();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent) {
+				hideAllLabel.setIcon(VISIBLE_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent) {
+				hideAllLabel.setIcon(VISIBLE_ICON);
 			}
 		});
 
@@ -206,5 +240,19 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			plugin.setMouseListenerEnabled(true);
 			plugin.setCreatingScreenMarker(true);
 		}
+	}
+
+	/* Sets all screen markers to hidden */
+	public void hideAll()
+	{
+		/*
+			Lazy implementation
+			Wasn't sure how to gain access to each screen marker panel so lazy route is to rebuild
+		 */
+		for (ScreenMarkerOverlay marker: plugin.getScreenMarkers())
+		{
+			marker.getMarker().setVisible(false);
+		}
+		rebuild();
 	}
 }
