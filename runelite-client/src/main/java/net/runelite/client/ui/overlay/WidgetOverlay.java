@@ -64,6 +64,8 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.NIGHTMARE_PILLAR_HEALTH, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.VOLCANIC_MINE_VENTS_INFOBOX_GROUP, OverlayPosition.BOTTOM_RIGHT)
 		.put(WidgetInfo.VOLCANIC_MINE_STABILITY_INFOBOX_GROUP, OverlayPosition.BOTTOM_LEFT)
+		.put(WidgetInfo.MULTICOMBAT_FIXED, OverlayPosition.BOTTOM_RIGHT)
+		.put(WidgetInfo.MULTICOMBAT_RESIZEABLE, OverlayPosition.CANVAS_TOP_RIGHT)
 		.build();
 
 	public static Collection<WidgetOverlay> createOverlays(final Client client)
