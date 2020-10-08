@@ -371,6 +371,7 @@ public class WidgetID
 	{
 		static final int MINIMAP = 3;
 		static final int MINIMAP_DRAW_AREA = 8;
+		static final int MULTICOMBAT_INDICATOR = 21;
 		static final int FRIENDS_CHAT_TAB = 34;
 		static final int FRIENDS_TAB = 36;
 		static final int IGNORES_TAB = 35;
@@ -407,6 +408,7 @@ public class WidgetID
 
 	static class ResizableViewport
 	{
+		static final int MULTICOMBAT_INDICATOR = 18;
 		static final int FRIENDS_CHAT_TAB = 38;
 		static final int FRIENDS_TAB = 40;
 		static final int IGNORES_TAB = 39;
