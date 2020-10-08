@@ -122,8 +122,9 @@ class Library
 		if (bookcase.isBookSet())
 		{
 			// Bookcase is set from a previous mark
-			// Check for a mismatch, unless it is now null and had a dark manuscript
-			if (book != bookcase.getBook() && !(book == null && bookcase.getBook().isDarkManuscript()))
+			// Check for a mismatch, unless it is now null and had a dark manuscript or Varlamore Envoy
+			if (book != bookcase.getBook()
+				&& !(book == null && (bookcase.getBook().isDarkManuscript() || bookcase.getBook() == VARLAMORE_ENVOY)))
 			{
 				reset();
 			}
@@ -140,8 +141,11 @@ class Library
 
 		if (state == SolvedState.COMPLETE)
 		{
-			// Reset if we found nothing when we expected something that wasn't a Dark Manuscript, since the layout has changed
-			if (book == null && !bookcase.getPossibleBooks().isEmpty() && bookcase.getPossibleBooks().stream().noneMatch(Book::isDarkManuscript))
+			// Reset if we found nothing when we expected something that wasn't a Dark Manuscript or Varlamore Envoy
+			// since the layout has changed
+			if (book == null
+				&& !bookcase.getPossibleBooks().isEmpty()
+				&& bookcase.getPossibleBooks().stream().noneMatch(b -> b.isDarkManuscript() || b == VARLAMORE_ENVOY))
 			{
 				reset();
 			}
