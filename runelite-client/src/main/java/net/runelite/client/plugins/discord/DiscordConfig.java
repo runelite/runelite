@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.discord;
 
+import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -32,6 +33,7 @@ import net.runelite.client.config.Units;
 @ConfigGroup("discord")
 public interface DiscordConfig extends Config
 {
+	@AllArgsConstructor
 	enum ElapsedTimeType
 	{
 		TOTAL("Total elapsed time"),
@@ -39,11 +41,6 @@ public interface DiscordConfig extends Config
 		HIDDEN("Hide elapsed time");
 
 		private final String value;
-
-		ElapsedTimeType(String value)
-		{
-			this.value = value;
-		}
 
 		@Override
 		public String toString()
