@@ -53,7 +53,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
-class PluginListItem extends JPanel
+class PluginListItem extends JPanel implements SearchablePlugin
 {
 	private static final ImageIcon CONFIG_ICON;
 	private static final ImageIcon CONFIG_ICON_HOVER;
@@ -188,7 +188,14 @@ class PluginListItem extends JPanel
 		}
 	}
 
-	boolean isPinned()
+	@Override
+	public String getSearchableName()
+	{
+		return pluginConfig.getName();
+	}
+
+	@Override
+	public boolean isPinned()
 	{
 		return pinButton.isSelected();
 	}

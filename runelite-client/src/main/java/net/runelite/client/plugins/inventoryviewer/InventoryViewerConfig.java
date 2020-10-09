@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
+ * Copyright (c) 2020, Matthew C <Chapman.L.Matthew@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.groundmarkers;
+package net.runelite.client.plugins.inventoryviewer;
 
-import java.awt.Color;
-import javax.annotation.Nullable;
-import lombok.Value;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
-/**
- * Used to denote marked tiles and their colors.
- * Note: This is not used for serialization of ground markers; see {@link GroundMarkerPoint}
- */
-@Value
-class ColorTileMarker
+@ConfigGroup(InventoryViewerConfig.GROUP)
+public interface InventoryViewerConfig extends Config
 {
-	private WorldPoint worldPoint;
-	@Nullable
-	private Color color;
-	@Nullable
-	private String label;
+	String GROUP = "inventoryViewer";
+
+	@ConfigItem(
+		keyName = "toggleKeybind",
+		name = "Toggle Overlay",
+		description = "Binds a key (combination) to toggle the overlay.",
+		position = 0
+	)
+	default Keybind toggleKeybind()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
+		keyName = "hiddenDefault",
+		name = "Hidden by default",
+		description = "Whether or not the overlay is hidden by default.",
+		position = 1
+	)
+	default boolean hiddenDefault()
+	{
+		return false;
+	}
 }

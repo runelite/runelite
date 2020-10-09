@@ -221,7 +221,7 @@ public class Text
 	 *
 	 * @return true if all search terms matches at least one keyword, or false if otherwise.
 	 */
-	public static boolean matchesSearchTerms(String[] searchTerms, final Collection<String> keywords)
+	public static boolean matchesSearchTerms(Iterable<String> searchTerms, final Collection<String> keywords)
 	{
 		for (String term : searchTerms)
 		{

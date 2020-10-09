@@ -49,9 +49,10 @@ class InventoryViewerOverlay extends OverlayPanel
 
 	private final Client client;
 	private final ItemManager itemManager;
+	private boolean hidden;
 
 	@Inject
-	private InventoryViewerOverlay(Client client, ItemManager itemManager)
+	private InventoryViewerOverlay(Client client, ItemManager itemManager, InventoryViewerConfig config)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrap(true);
@@ -60,11 +61,17 @@ class InventoryViewerOverlay extends OverlayPanel
 		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		this.itemManager = itemManager;
 		this.client = client;
+		this.hidden = config.hiddenDefault();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (hidden)
+		{
+			return null;
+		}
+
 		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
 
 		if (itemContainer == null)
@@ -101,5 +108,10 @@ class InventoryViewerOverlay extends OverlayPanel
 	{
 		ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
 		return itemManager.getImage(item.getId(), item.getQuantity(), itemComposition.isStackable());
+	}
+
+	protected void toggle()
+	{
+		hidden = !hidden;
 	}
 }

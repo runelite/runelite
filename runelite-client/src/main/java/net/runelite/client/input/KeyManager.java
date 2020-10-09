@@ -80,11 +80,12 @@ public class KeyManager
 				continue;
 			}
 
-			log.debug("Processing key pressed {} for key listener {}", keyEvent.paramString(), keyListener);
+			log.trace("Processing key pressed {} for key listener {}", keyEvent.paramString(), keyListener);
 
 			keyListener.keyPressed(keyEvent);
 			if (keyEvent.isConsumed())
 			{
+				log.debug("Consuming key pressed {} for key listener {}", keyEvent.paramString(), keyListener);
 				break;
 			}
 		}
@@ -104,11 +105,12 @@ public class KeyManager
 				continue;
 			}
 
-			log.debug("Processing key released {} for key listener {}", keyEvent.paramString(), keyListener);
+			log.trace("Processing key released {} for key listener {}", keyEvent.paramString(), keyListener);
 
 			keyListener.keyReleased(keyEvent);
 			if (keyEvent.isConsumed())
 			{
+				log.debug("Consuming key released {} for listener {}", keyEvent.paramString(), keyListener);
 				break;
 			}
 		}
@@ -128,11 +130,12 @@ public class KeyManager
 				continue;
 			}
 
-			log.debug("Processing key typed {} for key listener {}", keyEvent.paramString(), keyListener);
+			log.trace("Processing key typed {} for key listener {}", keyEvent.paramString(), keyListener);
 
 			keyListener.keyTyped(keyEvent);
 			if (keyEvent.isConsumed())
 			{
+				log.debug("Consuming key typed {} for key listener {}", keyEvent.paramString(), keyListener);
 				break;
 			}
 		}
