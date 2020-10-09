@@ -31,25 +31,18 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
-
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.game.NPCManager;
-
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -65,24 +58,30 @@ class OpponentInfoOverlay extends OverlayPanel
 {
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
 	private static final Color HP_RED = new Color(102, 15, 16, 230);
+	private static final Color FONT_WHITE = new Color(15395562);
+	/**
+	 * using these non-final values so that the colors can be changed. Using the HP_GREEN, HP_RED and FONT_WHITE colors
+	 * for resetting the colors
+	 */
+	private Color HP_Foreground = HP_GREEN;
+	private Color HP_Background = HP_RED;
+	private Color HP_FontColor = FONT_WHITE;
 
 	private final Client client;
 	private final OpponentInfoPlugin opponentInfoPlugin;
 	private final OpponentInfoConfig opponentInfoConfig;
 	private final HiscoreManager hiscoreManager;
 	private final NPCManager npcManager;
-	private final ClientThread clientThread;
 
 	private Integer lastMaxHealth;
-	private int lastRatio = 0;
-	private int lastHealthScale = 0;
+	private int lastRatio;
+	private int lastHealthScale;
+
 	private String opponentName;
-	private int raidOpponentHealth = 0;
-	private int raidOpponentMaxHealth = 0;
-	private String raidOpponentName;
-	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-	boolean useVanilla = false;
-	boolean shouldUnHide = false;
+	private int vanillaHealthBarHealth;
+	private int vanillaHealthBarMaxHealth;
+	private String vanillaHealthBarOpponentName;
+	boolean useVanilla;
 
 	@Inject
 	private OpponentInfoOverlay(
@@ -90,8 +89,7 @@ class OpponentInfoOverlay extends OverlayPanel
 		OpponentInfoPlugin opponentInfoPlugin,
 		OpponentInfoConfig opponentInfoConfig,
 		HiscoreManager hiscoreManager,
-		NPCManager npcManager,
-		ClientThread clientThread)
+		NPCManager npcManager)
 	{
 		super(opponentInfoPlugin);
 		this.client = client;
@@ -99,7 +97,6 @@ class OpponentInfoOverlay extends OverlayPanel
 		this.opponentInfoConfig = opponentInfoConfig;
 		this.hiscoreManager = hiscoreManager;
 		this.npcManager = npcManager;
-		this.clientThread = clientThread;
 
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
@@ -109,104 +106,116 @@ class OpponentInfoOverlay extends OverlayPanel
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay"));
 	}
 
-	public void updateRaidVars(int lastHealth)
+	public void updateHealthBarVars(int lastHealth, int maxHealth, String bossName)
 	{
-		if (opponentInfoConfig.mergeRaidOverlay() || opponentInfoConfig.showVanillaPercentages())
+		Widget vanillaHealthBar = client.getWidget(WidgetInfo.HEALTH_OVERLAY_BAR);
+
+		if (bossName != null)
 		{
-			clientThread.invokeLater(() ->
+			useVanilla = false;
+			for (String boss : opponentInfoConfig.vanillaHealthBarOverride().split(","))
 			{
-				Widget raidOpponentWrapper = client.getWidget(303, 6);
-				Widget raidOpponentNameWidget = client.getWidget(303, 11);
-				Widget raidOpponentHealthWidget = client.getWidget(303, 20);
-
-				if (raidOpponentNameWidget != null)
+				if (WildcardMatcher.matches(boss.toLowerCase().trim(), bossName.toLowerCase().trim()))
 				{
-					useVanilla = false;
-
-					if (lastHealth != 0)
-					{
-						for (String boss : opponentInfoConfig.vanillaHPBarOverride().split(","))
-						{
-							if (WildcardMatcher.matches(boss.toLowerCase().trim(), raidOpponentNameWidget.getText().toLowerCase().trim()))
-							{
-								useVanilla = true;
-								break;
-							}
-						}
-					}
+					useVanilla = true;
+					break;
 				}
+			}
+		}
 
-				if (raidOpponentWrapper != null && (!useVanilla && opponentInfoConfig.mergeRaidOverlay()))
-				{
-					raidOpponentWrapper.setHidden(true);
-					shouldUnHide = false;
-				}
+		if (vanillaHealthBar != null && (!useVanilla) && opponentInfoConfig.mergeVanillaHealthBar())
+		{
+			vanillaHealthBar.setHidden(true);
+		}
 
-				if (raidOpponentNameWidget != null && raidOpponentName == null)
-				{
-					raidOpponentName = raidOpponentNameWidget.getText();
-				}
+		vanillaHealthBarHealth = lastHealth;
+		vanillaHealthBarMaxHealth = maxHealth;
+		vanillaHealthBarOpponentName = bossName;
 
-				if (raidOpponentHealthWidget != null && raidOpponentMaxHealth == 0)
-				{
-					raidOpponentMaxHealth = Integer.parseInt(raidOpponentHealthWidget.getText().split(" / ")[1].split(" \\(")[0]);
-				}
-
-				else if (raidOpponentHealthWidget != null && opponentInfoConfig.showVanillaPercentages())
-				{
-					raidOpponentHealthWidget.setText(lastHealth + " / " + raidOpponentMaxHealth + " (" + String.format("%.1f", (lastHealth * 100.0) / raidOpponentMaxHealth) + "%)");
-				}
-
-				raidOpponentHealth = lastHealth;
-
-				if (lastHealth == 0)
-				{
-					//if lastHealth is zero, either the Raid Health Bar is supposed to disappear,
-					//or the opponent is dead, so remove the raid opponent name and max health vars
-					raidOpponentName = null;
-					raidOpponentMaxHealth = 0;
-
-					if (raidOpponentWrapper != null)
-					{
-						//unhide so that initial values can be read again, but wait 7 seconds so that the hp bar isn't shown
-						//while the boss is dying. It's possible to cancel the unhide by changing shouldUnHide back to false
-						shouldUnHide = true;
-
-						scheduler.schedule(() ->
-						{
-							if (shouldUnHide)
-							{
-								raidOpponentWrapper.setHidden(false);
-							}
-						}, 7, TimeUnit.SECONDS);
-					}
-				}
-			});
+		if (lastHealth == 0 || maxHealth == 0 || bossName == null)
+		{
+			//if any of these values are zero/null, the Vanilla Health Bar is supposed to disappear,
+			//or the opponent is dead, so remove the vanilla opponent name and max health vars,
+			//and reset the color
+			vanillaHealthBarOpponentName = null;
+			vanillaHealthBarMaxHealth = 0;
+			resetColors();
 		}
 	}
 
-	public void unHideHPBar()
+	public void setVanillaHealthText()
 	{
-		clientThread.invokeLater(() ->
-		{
-			Widget raidOpponentWrapper = client.getWidget(303, 6);
-			if (raidOpponentWrapper != null)
-			{
-				raidOpponentWrapper.setHidden(false);
-			}
+		int lastHealth = client.getVar(Varbits.HEALTH_OVERLAY_BAR_CURRENT_VALUE);
+		int maxHealth = client.getVar(Varbits.HEALTH_OVERLAY_BAR_MAX_VALUE);
 
-			raidOpponentName = null;
-			raidOpponentMaxHealth = 0;
-			raidOpponentHealth = 0;
-			shouldUnHide = true;
-		});
+		Widget vanillaHealthBarHealthText = client.getWidget(WidgetInfo.HEALTH_OVERLAY_HEALTH_TEXT);
+			if (vanillaHealthBarHealthText != null && lastHealth != 0 && maxHealth != 0)
+			{
+				vanillaHealthBarHealthText.setText(opponentInfoConfig.showVanillaPercentages() ?
+					lastHealth + " / " + maxHealth + " (" + String.format("%.1f", (lastHealth * 100.0) / maxHealth) + "%)" :
+					lastHealth + " / " + maxHealth);
+			}
+	}
+
+	public void setHealthBarColors()
+	{
+		Widget vanillaBackgroundColor = client.getWidget(WidgetInfo.HEALTH_OVERLAY_BAR_BACKGROUND);
+		Widget vanillaForegroundColor = client.getWidget(WidgetInfo.HEALTH_OVERLAY_BAR_FOREGROUND);
+		Widget vanillaHealthText = client.getWidget(WidgetInfo.HEALTH_OVERLAY_HEALTH_TEXT);
+
+		if (vanillaBackgroundColor != null)
+		{
+			HP_Background = new Color(vanillaBackgroundColor.getTextColor());
+		}
+		else
+		{
+			HP_Background = HP_RED;
+		}
+
+		if (vanillaForegroundColor != null)
+		{
+			HP_Foreground = new Color(vanillaForegroundColor.getTextColor());
+		}
+		else
+		{
+			HP_Foreground = HP_GREEN;
+		}
+
+		if (vanillaHealthText != null)
+		{
+			HP_FontColor = new Color(vanillaHealthText.getTextColor());
+		}
+		else
+		{
+			HP_FontColor = FONT_WHITE;
+		}
+	}
+
+	public void unHideVanillaHealthBar()
+	{
+		Widget vanillaHealthBar = client.getWidget(WidgetInfo.HEALTH_OVERLAY_BAR);
+
+		if (vanillaHealthBar != null)
+		{
+			vanillaHealthBar.setHidden(false);
+		}
+
+		setVanillaHealthText();
+		resetColors();
+	}
+
+	public void resetColors()
+	{
+		HP_Background = HP_RED;
+		HP_Foreground = HP_GREEN;
+		HP_FontColor = FONT_WHITE;
 	}
 
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (useVanilla && opponentInfoConfig.mergeRaidOverlay())
+		if (useVanilla && opponentInfoConfig.mergeVanillaHealthBar())
 		{
 			return null;
 		}
@@ -228,6 +237,7 @@ class OpponentInfoOverlay extends OverlayPanel
 				}
 				else if (opponent instanceof Player)
 				{
+					//this method doesn't work for the nightmare/changing health bosses
 					final HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(opponentName, opponentInfoPlugin.getHiscoreEndpoint());
 					if (hiscoreResult != null)
 					{
@@ -240,41 +250,26 @@ class OpponentInfoOverlay extends OverlayPanel
 				}
 			}
 
-			if (raidOpponentName != null && opponentName == null)
+			if (vanillaHealthBarOpponentName != null && opponentName == null)
 			{
-				opponentName = raidOpponentName;
+				opponentName = vanillaHealthBarOpponentName;
 			}
-			else if (raidOpponentName == null && opponentName == null)
+			else if (vanillaHealthBarOpponentName == null && opponentName == null)
 			{
 				return null;
 			}
-
-			//update raid vars so that they can be used after the opponent vars disappear unless the target is not one of the bosses
-			if (raidOpponentHealth != 0 && opponentInfoConfig.mergeRaidOverlay() &&
-				!opponentName.equals("Glowing crystal") &&
-				!opponentName.equals("Meat tree") &&
-				!opponentName.toLowerCase().contains("vesp"))
-			{
-				raidOpponentMaxHealth = lastMaxHealth != null ? lastMaxHealth : raidOpponentMaxHealth != 0 ? raidOpponentMaxHealth : 1;
-
-				if (raidOpponentMaxHealth == 1)
-				{
-					return null;
-				}
-
-				raidOpponentName = opponentName;
-			}
 		}
 
-		if (raidOpponentHealth != 0 && opponentInfoConfig.mergeRaidOverlay())
+		if (vanillaHealthBarMaxHealth != 0 && opponentInfoConfig.mergeVanillaHealthBar())
 		{
-			lastMaxHealth = raidOpponentMaxHealth;
-			lastHealthScale = raidOpponentMaxHealth;
-			opponentName = raidOpponentName;
-			lastRatio = raidOpponentHealth;
+			lastMaxHealth = vanillaHealthBarMaxHealth;
+			lastHealthScale = vanillaHealthBarMaxHealth;
+			opponentName = vanillaHealthBarOpponentName;
+			lastRatio = vanillaHealthBarHealth;
 		}
 
-		if ((opponent == null && raidOpponentHealth == 0) || opponentName == null)
+		if ((opponent == null && (vanillaHealthBarMaxHealth == 0 || !opponentInfoConfig.mergeVanillaHealthBar())) ||
+			opponentName == null)
 		{
 			opponentName = null;
 			return null;
@@ -293,8 +288,9 @@ class OpponentInfoOverlay extends OverlayPanel
 		if (lastRatio >= 0 && lastHealthScale > 0)
 		{
 			final ProgressBarComponent progressBarComponent = new ProgressBarComponent();
-			progressBarComponent.setBackgroundColor(HP_RED);
-			progressBarComponent.setForegroundColor(HP_GREEN);
+			progressBarComponent.setBackgroundColor(HP_Background);
+			progressBarComponent.setForegroundColor(HP_Foreground);
+			progressBarComponent.setFontColor(HP_FontColor);
 
 			final HitpointsDisplayStyle displayStyle = opponentInfoConfig.hitpointsDisplayStyle();
 
@@ -305,11 +301,14 @@ class OpponentInfoOverlay extends OverlayPanel
 				// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
 				// It's able to recover the exact health if maxHealth <= healthScale.
 
-				//raidOpponentHealth is non-zero if the raid health overlay is active;
-				//The max and min health don't have to be calculated then
-				int health = raidOpponentHealth;
+				/*
+				 * vanillaHealthBarHealth is non-zero if the vanilla health overlay is active;
+				 * The max and min health don't have to be calculated then.
+				 * If the health overlay isn't active, the health value will be zero.
+				 */
+				int health = vanillaHealthBarHealth;
 
-				if (lastRatio > 0 && raidOpponentHealth != 0)
+				if (lastRatio > 0 && vanillaHealthBarHealth != 0)
 				{
 					int minHealth = 1;
 					int maxHealth;

@@ -304,7 +304,12 @@ public enum Varbits
 	PERSONAL_POINTS(5422),
 	RAID_PARTY_SIZE(5424),
 
-	RAID_HEALTH_BAR_OVERLAY_VALUE(6099),
+	/**
+	 * 	For certain bosses, there is a custom health bar. The current health and the max healh of the monster
+	 * 	that are shown in the custom health bar are the varbits below
+	 */
+	HEALTH_OVERLAY_BAR_CURRENT_VALUE(6099),
+	HEALTH_OVERLAY_BAR_MAX_VALUE(6100),
 
 	// 0 = raid not started, >0 = raid started
 	RAID_STATE(5425),

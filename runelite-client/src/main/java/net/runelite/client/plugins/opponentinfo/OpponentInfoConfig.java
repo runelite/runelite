@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
+import net.runelite.api.Point;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -77,25 +78,27 @@ public interface OpponentInfoConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "mergeRaidOverlay",
-		name = "Merge raid health bar overlay",
-		description = "Hides the raid health bar overlay, but adds the info to the existing opponent info",
+		keyName = "mergeVanillaHealthBar",
+		name = "Merge Vanilla Health Bar Overlay",
+		description = "Hides the vanilla health bar overlay, but adds the info to the existing opponent info",
 		position = 5
 	)
 
-	default boolean mergeRaidOverlay()
+	default boolean mergeVanillaHealthBar()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		keyName = "vanillaHPBarOverride",
-		name = "Use vanilla HP Bar at these bosses",
-		description = "If merge raid health bar overlay is checked, this can allow you to still use the vanilla HP bar on certain bosses, e.g. for vanguards the vanilla HP bar is quite useful. Use '*' if you want to use the vanilla HP bar wherever possible.",
+		keyName = "vanillaHealthBarOverride",
+		name = "Use vanilla Health Bar at these bosses",
+		description = "If merge vanilla health bar overlay is checked, this can allow you to still use the vanilla HP bar on certain bosses, e.g. for vanguards the vanilla HP bar is quite useful. Use '*' if you want to use the vanilla HP bar wherever possible.",
 		position = 6
 	)
-	default String vanillaHPBarOverride()
+	default String vanillaHealthBarOverride()
 	{
 		return "vanguard*";
 	}
 }
+
+

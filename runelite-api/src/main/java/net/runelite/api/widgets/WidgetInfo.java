@@ -541,7 +541,20 @@ public enum WidgetInfo
 	GAUNTLET_TIMER_CONTAINER(WidgetID.GAUNTLET_TIMER_GROUP_ID, WidgetID.GauntletTimer.CONTAINER),
 	HALLOWED_SEPULCHRE_TIMER_CONTAINER(WidgetID.HALLOWED_SEPULCHRE_TIMER_GROUP_ID, WidgetID.HallowedSepulchreTimer.CONTAINER),
 
-	HEALTH_OVERLAY_BAR(WidgetID.HEALTH_OVERLAY_BAR_GROUP_ID, WidgetID.EncounterHealthBar.CONTAINER);
+	/**
+	 * Health bar that is shown for these bosses (and maybe future bosses)
+	 * certain bosses in raids 1
+	 * nightmare
+	 * zalcano
+	 * gauntlet
+	 * zuk
+ 	 */
+	HEALTH_OVERLAY_BAR(WidgetID.HEALTH_OVERLAY_BAR_GROUP_ID, WidgetID.EncounterHealthBar.CONTAINER),
+	HEALTH_OVERLAY_BOSS_NAME(WidgetID.HEALTH_OVERLAY_BAR_GROUP_ID, WidgetID.EncounterHealthBar.BOSS_NAME),
+	HEALTH_OVERLAY_BAR_BACKGROUND(WidgetID.HEALTH_OVERLAY_BAR_GROUP_ID, WidgetID.EncounterHealthBar.HEALTH_BAR_BACKGROUND),
+	HEALTH_OVERLAY_BAR_FOREGROUND(WidgetID.HEALTH_OVERLAY_BAR_GROUP_ID, WidgetID.EncounterHealthBar.HEALTH_BAR_FOREGROUND),
+	HEALTH_OVERLAY_HEALTH_TEXT(WidgetID.HEALTH_OVERLAY_BAR_GROUP_ID, WidgetID.EncounterHealthBar.HEALTH_TEXT);
+
 
 	private final int groupId;
 	private final int childId;

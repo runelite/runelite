@@ -185,7 +185,12 @@ public enum VarPlayer
 	/**
 	 * 0 = 2 buttons, 1 = 1 button
 	 */
-	MOUSE_BUTTONS(170);
+	MOUSE_BUTTONS(170),
+
+	/**
+	 * An opponent with a boss health bar
+	 */
+	HEALTH_BAR_OPPONENT(1683);
 
 	private final int id;
 }
