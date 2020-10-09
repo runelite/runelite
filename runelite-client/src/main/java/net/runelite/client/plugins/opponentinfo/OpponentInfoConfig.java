@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
-import net.runelite.api.Point;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
