@@ -37,6 +37,7 @@ import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
@@ -44,6 +45,7 @@ import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26668;
+import static net.runelite.api.ObjectID.DAEYALT_ROCKS;
 import static net.runelite.api.ObjectID.EMPTY_WALL;
 import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
@@ -54,6 +56,8 @@ import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -228,6 +232,46 @@ public class MiningPlugin extends Plugin
 	{
 		session = null;
 		pickaxe = null;
+	}
+
+	@Subscribe
+	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
+		{
+			return;
+		}
+
+		final DecorativeObject object = event.getDecorativeObject();
+		final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+
+		Rock rock = Rock.getRock(object.getId());
+		if (rock != null)
+		{
+			//Because of the 3 states a rock can be in while still being mineable we delete the timer on despawn
+			final WorldPoint point = object.getWorldLocation();
+			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
+
+			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
+			respawns.add(rockRespawn);
+		}
+	}
+
+	@Subscribe
+	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
+		{
+			return;
+		}
+
+		final DecorativeObject object = event.getDecorativeObject();
+		// If the Daeyalt rock respawns before the timer is up, remove it
+		if (object.getId() == DAEYALT_ROCKS)
+		{
+			final WorldPoint point = object.getWorldLocation();
+			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
+		}
 	}
 
 	@Subscribe
