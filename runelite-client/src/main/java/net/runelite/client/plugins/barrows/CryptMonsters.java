@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2020, Dan <kyrozen98@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@ package net.runelite.client.plugins.barrows;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Getter
 public enum CryptMonsters
 {
 	RAT("Crypt Rat", 43),
@@ -37,8 +37,6 @@ public enum CryptMonsters
 	SKELETON("Skeleton", 77),
 	GIANTSPIDER("Giant Spider", 79);
 
-	@Getter
 	private final String name;
-	@Getter
 	private final int combatLevel;
 }

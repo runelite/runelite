@@ -42,6 +42,7 @@ import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -106,6 +107,9 @@ public class BarrowsPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private ItemManager itemManager;
 
 	@Inject
@@ -132,6 +136,7 @@ public class BarrowsPlugin extends Plugin
 		overlayManager.add(barrowsOverlay);
 		overlayManager.add(brotherOverlay);
 		//Declare new infobox
+		clientThread.invoke(this::initializeKC);
 		this.kcInfobox = new BarrowsCryptKCInfobox(itemManager.getImage(BARROWS_TELEPORT), this, client, config);
 		infoBoxManager.addInfoBox(this.kcInfobox);
 	}
@@ -141,7 +146,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		overlayManager.remove(barrowsOverlay);
 		overlayManager.remove(brotherOverlay);
-		infoBoxManager.removeIf(t -> t instanceof BarrowsCryptKCInfobox);
+		infoBoxManager.removeInfoBox(kcInfobox);
 		puzzleAnswer = null;
 		wasInCrypt = false;
 		stopPrayerDrainTimer();
@@ -248,37 +253,40 @@ public class BarrowsPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (isInCrypt())
+		if (!isInCrypt())
 		{
-			// Get new potential after a kill
-			int newPotential = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
-			// Calculate the difference between the original potential and new potential (how much potential gained
-			// from the kill)
-			int potentialDifference = newPotential - this.barrowsStartingPotential;
-			// If the amount of potential goes down, a barrows trip has been completed and we want to reset the counters
-			// Note - this only occurs when re-entering a crypt/maze after having completed, so if a player finishes a
-			// barrows run, the kill count will still be present until they leave the crypt.  But on re-entry of a new
-			// crypt, it will have reset.
-			if (potentialDifference < 0)
-			{
-				initializeKC();
-			}
-			// Set the "original" potential to the new potential so future calculations are based on the correct value.
-			this.barrowsStartingPotential = newPotential;
+			return;
+		}
+		// Get new potential after a kill
+		int newPotential = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
+		// Calculate the difference between the original potential and new potential (how much potential gained
+		// from the kill)
+		int potentialDifference = newPotential - this.barrowsStartingPotential;
+		// If the amount of potential goes down, a barrows trip has been completed and we want to reset the counters
+		// Note - this only occurs when re-entering a crypt/maze after having completed, so if a player finishes a
+		// barrows run, the kill count will still be present until they leave the crypt.  But on re-entry of a new
+		// crypt, it will have reset.
+		if (potentialDifference < 0)
+		{
+			initializeKC();
+		}
+		// Set the "original" potential to the new potential so future calculations are based on the correct value.
+		this.barrowsStartingPotential = newPotential;
 
-			for (CryptMonsters monster : CryptMonsters.values())
+		for (CryptMonsters monster : CryptMonsters.values())
+		{
+			// To figure out which monster was killed, just check the difference in reward potential and compare it
+			// to the combat level of the monster.  This does mean, however, that if multiple unregistered kills occur
+			// (such as if the tracker is toggled off mid-run, then back on after a few kills), they will not appear.
+			if (monster.getCombatLevel() == potentialDifference)
 			{
-				// To figure out which monster was killed, just check the difference in reward potential and compare it
-				// to the combat level of the monster.  This does mean, however, that if multiple unregistered kills occur
-				// (such as if the tracker is toggled off mid-run, then back on after a few kills), they will not appear.
-				if (monster.getCombatLevel() == potentialDifference)
-				{
-					String monsterSlain = monster.getName();
-					int numKilled = monstersKilled.get(monsterSlain);
-					monstersKilled.put(monsterSlain, numKilled + 1);
-					//Update the tooltip
-					this.kcInfobox.updateTooltip();
-				}
+				String monsterSlain = monster.getName();
+				int numKilled = monstersKilled.get(monsterSlain);
+				monstersKilled.put(monsterSlain, numKilled + 1);
+				//Update the tooltip
+				this.kcInfobox.updateTooltip();
+
+				break;
 			}
 		}
 	}
@@ -290,23 +298,15 @@ public class BarrowsPlugin extends Plugin
 
 	private void initializeKC()
 	{
+		//Initialize starting barrows potential to be 0.
+		this.barrowsStartingPotential = 0;
 		//Initialize monstersKilled dictionary to have 0 kills for each monster
 		for (CryptMonsters monster : CryptMonsters.values())
 		{
 			monstersKilled.put(monster.getName(), 0);
 		}
-	}
-
-	protected String getTooltip()
-	{
-		StringBuilder tooltipBuilder = new StringBuilder();
-		for (CryptMonsters monster : CryptMonsters.values())
-		{
-			String monsterName = monster.getName();
-			tooltipBuilder.append(monsterName).append(": ").append(monstersKilled.get(monsterName))
-					.append("\n");
-		}
-		return tooltipBuilder.toString();
+		// Update the tooltip to reflect the fact that no monsters have been killed yet.
+		this.kcInfobox.updateTooltip();
 	}
 
 	private void startPrayerDrainTimer()
@@ -336,7 +336,7 @@ public class BarrowsPlugin extends Plugin
 		barrowsPrayerDrainTimer = null;
 	}
 
-	private boolean isInCrypt()
+	boolean isInCrypt()
 	{
 		Player localPlayer = client.getLocalPlayer();
 		return localPlayer != null && localPlayer.getWorldLocation().getRegionID() == CRYPT_REGION_ID;
