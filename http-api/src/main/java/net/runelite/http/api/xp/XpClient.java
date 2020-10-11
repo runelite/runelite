@@ -25,18 +25,24 @@
 package net.runelite.http.api.xp;
 
 import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class XpClient
 {
-	private static final Logger logger = LoggerFactory.getLogger(XpClient.class);
+	private final OkHttpClient client;
+
+	public XpClient(OkHttpClient client)
+	{
+		this.client = client;
+	}
 
 	public void update(String username)
 	{
@@ -50,19 +56,19 @@ public class XpClient
 			.url(url)
 			.build();
 
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		client.newCall(request).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				logger.warn("Error submitting xp track", e);
+				log.warn("Error submitting xp track", e);
 			}
 
 			@Override
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				logger.debug("Submitted xp track for {}", username);
+				log.debug("Submitted xp track for {}", username);
 			}
 		});
 	}

@@ -58,7 +58,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 2,
 		keyName = "notifyOnOwnName",
 		name = "Notify on own name",
-		description = "Notifies you whenever your name is mentioned"
+		description = "Notifies you whenever someone mentions you by name"
 	)
 	default boolean notifyOnOwnName()
 	{

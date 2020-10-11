@@ -46,6 +46,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import static net.runelite.client.plugins.grounditems.GroundItemsPlugin.MAX_QUANTITY;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
@@ -64,9 +65,6 @@ public class GroundItemsOverlay extends Overlay
 	// We must offset the text on the z-axis such that
 	// it doesn't obscure the ground items below it.
 	private static final int OFFSET_Z = 20;
-	// The game won't send anything higher than this value to the plugin -
-	// so we replace any item quantity higher with "Lots" instead.
-	private static final int MAX_QUANTITY = 65535;
 	// The 15 pixel gap between each drawn ground item.
 	private static final int STRING_GAP = 15;
 	// Size of the hidden/highlight boxes
@@ -78,6 +76,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final Duration DESPAWN_TIME_LOOT = Duration.ofMinutes(2);
 	private static final Duration DESPAWN_TIME_DROP = Duration.ofMinutes(3);
 	private static final int KRAKEN_REGION = 9116;
+	private static final int KBD_NMZ_REGION = 9033;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -177,6 +176,7 @@ public class GroundItemsOverlay extends Overlay
 
 		final boolean onlyShowLoot = config.onlyShowLoot();
 		final boolean groundItemTimers = config.groundItemTimers();
+		final boolean outline = config.textOutline();
 
 		for (GroundItem item : groundItemList)
 		{
@@ -354,6 +354,7 @@ public class GroundItemsOverlay extends Overlay
 
 			textComponent.setText(itemString);
 			textComponent.setColor(color);
+			textComponent.setOutline(outline);
 			textComponent.setPosition(new java.awt.Point(textX, textY));
 			textComponent.render(graphics);
 		}
@@ -389,8 +390,39 @@ public class GroundItemsOverlay extends Overlay
 			{
 				return;
 			}
+			else if (isInKBDorNMZ())
+			{
+				// NMZ and the KBD lair uses the same region ID but NMZ uses planes 1-3 and KBD uses plane 0
+				if (client.getLocalPlayer().getWorldLocation().getPlane() == 0)
+				{
+					// Items in the KBD instance use the standard despawn timer
+					if (groundItem.getLootType() == LootType.DROPPED)
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
+					}
+					else
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
+					}
+				}
+				else
+				{
+					// Dropped items in the NMZ instance appear to never despawn?
+					if (groundItem.getLootType() == LootType.DROPPED)
+					{
+						return;
+					}
+					else
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
+					}
+				}
+			}
+			else
+			{
+				despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+			}
 
-			despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
 			fillColor = PRIVATE_TIMER_COLOR;
 		}
 		else
@@ -476,4 +508,8 @@ public class GroundItemsOverlay extends Overlay
 		return ArrayUtils.contains(client.getMapRegions(), KRAKEN_REGION);
 	}
 
+	private boolean isInKBDorNMZ()
+	{
+		return ArrayUtils.contains(client.getMapRegions(), KBD_NMZ_REGION);
+	}
 }

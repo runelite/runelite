@@ -30,27 +30,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import javax.inject.Inject;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
+@AllArgsConstructor
 public class ItemClient
 {
-	private static final Logger logger = LoggerFactory.getLogger(ItemClient.class);
-
 	private final OkHttpClient client;
-
-	@Inject
-	public ItemClient(OkHttpClient client)
-	{
-		this.client = client;
-	}
 
 	public ItemPrice[] getPrices() throws IOException
 	{
@@ -60,7 +54,7 @@ public class ItemClient
 
 		HttpUrl url = urlBuilder.build();
 
-		logger.debug("Built URI: {}", url);
+		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -70,12 +64,12 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.warn("Error looking up prices: {}", response);
+				log.warn("Error looking up prices: {}", response);
 				return null;
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice[].class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ItemPrice[].class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -92,7 +86,7 @@ public class ItemClient
 
 		HttpUrl url = urlBuilder.build();
 
-		logger.debug("Built URI: {}", url);
+		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
 			.url(url)
@@ -102,7 +96,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.warn("Error looking up item stats: {}", response);
+				log.warn("Error looking up item stats: {}", response);
 				return null;
 			}
 
@@ -110,7 +104,7 @@ public class ItemClient
 			final Type typeToken = new TypeToken<Map<Integer, ItemStats>>()
 			{
 			}.getType();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), typeToken);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
 		}
 		catch (JsonParseException ex)
 		{

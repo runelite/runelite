@@ -72,7 +72,7 @@ enum Rock
 				return region == MINING_GUILD ? Duration.of(100, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	LOVAKITE(Duration.of(MiningOverlay.LOVAKITE_ORE_MAX_RESPAWN_TIME, GAME_TICKS), 0, ROCKS_28596, ROCKS_28597),
+	LOVAKITE(Duration.of(MiningRocksOverlay.LOVAKITE_ORE_MAX_RESPAWN_TIME, GAME_TICKS), 0, ROCKS_28596, ROCKS_28597),
 	ADAMANTITE(Duration.of(400, GAME_TICKS), 0, ROCKS_11374, ROCKS_11375, ROCKS_36208)
 		{
 			@Override
@@ -89,14 +89,15 @@ enum Rock
 				return region == MINING_GUILD ? Duration.of(600, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	ORE_VEIN(Duration.of(MiningOverlay.ORE_VEIN_MAX_RESPAWN_TIME, GAME_TICKS), 150),
+	ORE_VEIN(Duration.of(MiningRocksOverlay.ORE_VEIN_MAX_RESPAWN_TIME, GAME_TICKS), 150),
 	AMETHYST(Duration.of(125, GAME_TICKS), 120),
 	ASH_VEIN(Duration.of(50, GAME_TICKS), 0, ASH_PILE),
-	GEM_ROCK(Duration.of(100, GAME_TICKS), 0, ROCKS_11380, ROCKS_11381),
+	GEM_ROCK(Duration.of(99, GAME_TICKS), 0, ROCKS_11380, ROCKS_11381),
 	URT_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33254),
 	EFH_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33255),
 	TE_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33256),
-	BASALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33257);
+	BASALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33257),
+	DAEYALT_ESSENCE(Duration.of(MiningRocksOverlay.DAEYALT_MAX_RESPAWN_TIME, GAME_TICKS), 0, DAEYALT_ESSENCE_39095);
 
 	private static final int WILDERNESS_RESOURCE_AREA = 12605;
 	private static final int MISCELLANIA = 10044;

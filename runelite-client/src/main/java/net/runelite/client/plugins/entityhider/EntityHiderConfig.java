@@ -68,10 +68,10 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "hideClanMates",
-		name = "Hide Clan Mates",
-		description = "Configures whether or not clan mates are hidden"
+		name = "Hide Friends Chat members",
+		description = "Configures whether or not friends chat members are hidden"
 	)
-	default boolean hideClanMates()
+	default boolean hideFriendsChatMembers()
 	{
 		return false;
 	}

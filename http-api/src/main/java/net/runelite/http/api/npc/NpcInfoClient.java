@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -71,7 +72,7 @@ public class NpcInfoClient
 			final Type typeToken = new TypeToken<Map<Integer, NpcInfo>>()
 			{
 			}.getType();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), typeToken);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
 		}
 		catch (JsonParseException ex)
 		{

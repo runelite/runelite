@@ -55,28 +55,28 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class RandomEventPlugin extends Plugin
 {
 	private static final Set<Integer> EVENT_NPCS = ImmutableSet.of(
-		NpcID.DR_JEKYLL, NpcID.DR_JEKYLL_314,
 		NpcID.BEE_KEEPER_6747,
 		NpcID.CAPT_ARNAV,
-		NpcID.SERGEANT_DAMIEN_6743,
+		NpcID.DR_JEKYLL, NpcID.DR_JEKYLL_314,
 		NpcID.DRUNKEN_DWARF,
-		NpcID.FREAKY_FORESTER_6748,
-		NpcID.GENIE, NpcID.GENIE_327,
+		NpcID.DUNCE_6749,
 		NpcID.EVIL_BOB, NpcID.EVIL_BOB_6754,
-		NpcID.POSTIE_PETE_6738,
+		NpcID.FLIPPA_6744,
+		NpcID.FREAKY_FORESTER_6748,
+		NpcID.FROG_5429,
+		NpcID.GENIE, NpcID.GENIE_327,
+		NpcID.GILES, NpcID.GILES_5441,
 		NpcID.LEO_6746,
+		NpcID.MILES, NpcID.MILES_5440,
 		NpcID.MYSTERIOUS_OLD_MAN_6750, NpcID.MYSTERIOUS_OLD_MAN_6751,
 		NpcID.MYSTERIOUS_OLD_MAN_6752, NpcID.MYSTERIOUS_OLD_MAN_6753,
+		NpcID.NILES, NpcID.NILES_5439,
 		NpcID.PILLORY_GUARD,
-		NpcID.FLIPPA_6744,
+		NpcID.POSTIE_PETE_6738,
 		NpcID.QUIZ_MASTER_6755,
 		NpcID.RICK_TURPENTINE, NpcID.RICK_TURPENTINE_376,
 		NpcID.SANDWICH_LADY,
-		NpcID.DUNCE_6749,
-		NpcID.NILES, NpcID.NILES_5439,
-		NpcID.MILES, NpcID.MILES_5440,
-		NpcID.GILES, NpcID.GILES_5441,
-		NpcID.FROG_5429
+		NpcID.SERGEANT_DAMIEN_6743
 	);
 	private static final Set<String> EVENT_OPTIONS = ImmutableSet.of(
 		"Talk-to",
@@ -177,6 +177,8 @@ public class RandomEventPlugin extends Plugin
 
 		switch (id)
 		{
+			case NpcID.BEE_KEEPER_6747:
+				return config.notifyBeekeeper();
 			case NpcID.SERGEANT_DAMIEN_6743:
 				return config.notifyDemon();
 			case NpcID.FREAKY_FORESTER_6748:
@@ -186,6 +188,9 @@ public class RandomEventPlugin extends Plugin
 			case NpcID.GENIE:
 			case NpcID.GENIE_327:
 				return config.notifyGenie();
+			case NpcID.DR_JEKYLL:
+			case NpcID.DR_JEKYLL_314:
+				return config.notifyJekyll();
 			case NpcID.EVIL_BOB:
 			case NpcID.EVIL_BOB_6754:
 				return config.notifyBob();
@@ -200,6 +205,8 @@ public class RandomEventPlugin extends Plugin
 				return config.notifyQuiz();
 			case NpcID.DUNCE_6749:
 				return config.notifyDunce();
+			case NpcID.SANDWICH_LADY:
+				return config.notifySandwich();
 			default:
 				return false;
 		}

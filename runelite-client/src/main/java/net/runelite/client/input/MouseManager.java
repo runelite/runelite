@@ -41,8 +41,13 @@ public class MouseManager
 	private final List<MouseListener> mouseListeners = new CopyOnWriteArrayList<>();
 	private final List<MouseWheelListener> mouseWheelListeners = new CopyOnWriteArrayList<>();
 
+	private final RuneLiteConfig runeLiteConfig;
+
 	@Inject
-	private RuneLiteConfig runeLiteConfig;
+	private MouseManager(RuneLiteConfig runeLiteConfig)
+	{
+		this.runeLiteConfig = runeLiteConfig;
+	}
 
 	public void registerMouseListener(MouseListener mouseListener)
 	{

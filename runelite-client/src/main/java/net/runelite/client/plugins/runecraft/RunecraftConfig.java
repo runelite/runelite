@@ -30,9 +30,11 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("runecraft")
+@ConfigGroup(RunecraftConfig.GROUP)
 public interface RunecraftConfig extends Config
 {
+	String GROUP = "runecraft";
+
 	@ConfigSection(
 		name = "Rift Settings",
 		description = "Abyss rift overlay settings",
@@ -80,7 +82,8 @@ public interface RunecraftConfig extends Config
 		keyName = "showBlood",
 		name = "Show Blood rift",
 		description = "Configures whether to display the Blood rift",
-		position = 5
+		position = 5,
+		section = riftSection
 	)
 	default boolean showBlood()
 	{

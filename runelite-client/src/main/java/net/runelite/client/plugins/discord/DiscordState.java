@@ -46,7 +46,7 @@ import static net.runelite.client.ws.PartyService.PARTY_MAX;
 class DiscordState
 {
 	@Data
-	private class EventWithTime
+	private static class EventWithTime
 	{
 		private final DiscordGameEventType type;
 		private final Instant start;
@@ -97,10 +97,11 @@ class DiscordState
 			.partyMax(lastPresence.getPartyMax())
 			.partySize(party.getMembers().size());
 
-		if (party.isOwner())
+		if (!party.isInParty() || party.isPartyOwner())
 		{
+			// This is only used to identify the invites on Discord's side. Our party ids are the secret.
 			presenceBuilder.partyId(partyId.toString());
-			presenceBuilder.joinSecret(party.getPartyId().toString());
+			presenceBuilder.joinSecret(party.getLocalPartyId().toString());
 		}
 
 		discordService.updatePresence(presenceBuilder.build());
@@ -180,10 +181,10 @@ class DiscordState
 			.partyMax(PARTY_MAX)
 			.partySize(party.getMembers().size());
 
-		if (party.isOwner())
+		if (!party.isInParty() || party.isPartyOwner())
 		{
 			presenceBuilder.partyId(partyId.toString());
-			presenceBuilder.joinSecret(party.getPartyId().toString());
+			presenceBuilder.joinSecret(party.getLocalPartyId().toString());
 		}
 
 		final DiscordPresence presence = presenceBuilder.build();

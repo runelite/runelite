@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,6 +59,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -75,6 +77,9 @@ public class ImageCapture
 
 	@Inject
 	private Notifier notifier;
+
+	@Inject
+	private OkHttpClient okHttpClient;
 
 	/**
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
@@ -197,7 +202,7 @@ public class ImageCapture
 			.post(RequestBody.create(JSON, json))
 			.build();
 
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		okHttpClient.newCall(request).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException ex)
@@ -211,7 +216,7 @@ public class ImageCapture
 				try (InputStream in = response.body().byteStream())
 				{
 					ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
-						.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
+						.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ImageUploadResponse.class);
 
 					if (imageUploadResponse.isSuccess())
 					{

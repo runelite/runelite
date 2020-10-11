@@ -78,7 +78,9 @@ class AgilityOverlay extends Overlay
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
 					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
-					Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes())
+					Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
+					Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
+					Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
 			{
 				return;
 			}
@@ -107,9 +109,16 @@ class AgilityOverlay extends Overlay
 						configColor = config.getMarkColor();
 					}
 
-					if (config.highlightPortals() && Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId()))
+					if (Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId()))
 					{
-						configColor = config.getPortalsColor();
+						if (config.highlightPortals())
+						{
+							configColor = config.getPortalsColor();
+						}
+						else
+						{
+							return;
+						}
 					}
 
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
@@ -145,7 +154,7 @@ class AgilityOverlay extends Overlay
 		Set<NPC> npcs = plugin.getNpcs();
 		if (!npcs.isEmpty() && config.highlightSepulchreNpcs())
 		{
-			Color color = config.getOverlayColor();
+			Color color = config.sepulchreHighlightColor();
 			for (NPC npc : npcs)
 			{
 				NPCComposition npcComposition = npc.getComposition();

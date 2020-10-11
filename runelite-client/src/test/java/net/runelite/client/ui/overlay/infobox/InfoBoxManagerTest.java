@@ -32,6 +32,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
 import static org.junit.Assert.assertEquals;
@@ -52,6 +54,14 @@ public class InfoBoxManagerTest
 	@Mock
 	@Bind
 	private RuneLiteConfig runeLiteConfig;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private Client client;
 
 	@Before
 	public void before()
@@ -114,5 +124,8 @@ public class InfoBoxManagerTest
 		infoBoxManager.addInfoBox(new TestInfobox(InfoBoxPriority.MED, "three"));
 
 		assertEquals(3, infoBoxManager.getInfoBoxes().size());
+		assertEquals("one", infoBoxManager.getInfoBoxes().get(0).getText());
+		assertEquals("two", infoBoxManager.getInfoBoxes().get(1).getText());
+		assertEquals("three", infoBoxManager.getInfoBoxes().get(2).getText());
 	}
 }

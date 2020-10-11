@@ -172,7 +172,7 @@ public interface ScreenshotConfig extends Config
 	@ConfigItem(
 		keyName = "friendDeath",
 		name = "Screenshot Friend Deaths",
-		description = "Configures whether or not screenshots are automatically taken when friends or clan members die.",
+		description = "Configures whether or not screenshots are automatically taken when friends or friends chat members die.",
 		position = 11,
 		section = whatSection
 	)
@@ -219,12 +219,24 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "ccKick",
-		name = "Screenshot Kicks from CC",
-		description = "Take a screenshot when you kick a user from a clan chat.",
+		name = "Screenshot Kicks from FC",
+		description = "Take a screenshot when you kick a user from a friends chat.",
 		position = 15,
 		section = whatSection
 	)
-	default boolean screenshotCcKick()
+	default boolean screenshotKick()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "baHighGamble",
+		name = "Screenshot BA high gambles",
+		description = "Take a screenshot of your reward from a high gamble at Barbarian Assault.",
+		position = 16,
+		section = whatSection
+	)
+	default boolean screenshotHighGamble()
 	{
 		return false;
 	}
@@ -233,7 +245,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 16
+		position = 17
 	)
 	default Keybind hotkey()
 	{

@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
 @Setter
 public class InfoBoxComponent implements LayoutableRenderableEntity
@@ -52,8 +53,11 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 	private Dimension preferredSize = new Dimension(DEFAULT_SIZE, DEFAULT_SIZE);
 	private String text;
 	private Color color = Color.WHITE;
+	private boolean outline;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private BufferedImage image;
+	@Getter
+	private InfoBox infoBox;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -91,6 +95,7 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 		{
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(color);
+			textComponent.setOutline(outline);
 			textComponent.setText(text);
 			textComponent.setPosition(new Point(baseX + ((size - metrics.stringWidth(text)) / 2), baseY + size - SEPARATOR));
 			textComponent.render(graphics);

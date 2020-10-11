@@ -79,6 +79,12 @@
       "xp": 571
     },
     {
+      "level": 52,
+      "icon": 24736,
+      "name": "Hallowed Sepulchre Floor 1",
+      "xp": 575
+    },
+    {
       "level": 60,
       "icon": 11849,
       "name": "Seers' Village Rooftop",
@@ -91,10 +97,22 @@
       "xp": 730
     },
     {
+      "level": 62,
+      "icon": 24736,
+      "name": "Hallowed Sepulchre Floor 2",
+      "xp": 925
+    },
+    {
       "level": 70,
       "icon": 11849,
       "name": "Pollnivneach Rooftop",
       "xp": 890
+    },
+    {
+      "level": 72,
+      "icon": 24736,
+      "name": "Hallowed Sepulchre Floor 3",
+      "xp": 1500
     },
     {
       "level": 75,
@@ -109,10 +127,22 @@
       "xp": 780
     },
     {
+      "level": 82,
+      "icon": 24736,
+      "name": "Hallowed Sepulchre Floor 4",
+      "xp": 2700
+    },
+    {
       "level": 90,
       "icon": 11849,
       "name": "Ardougne Rooftop",
       "xp": 793
+    },
+    {
+      "level": 92,
+      "icon": 24736,
+      "name": "Hallowed Sepulchre Floor 5",
+      "xp": 6000
     }
   ]
 }

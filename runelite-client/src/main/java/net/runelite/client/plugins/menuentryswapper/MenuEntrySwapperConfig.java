@@ -29,9 +29,11 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("menuentryswapper")
+@ConfigGroup(MenuEntrySwapperConfig.GROUP)
 public interface MenuEntrySwapperConfig extends Config
 {
+	String GROUP = "menuentryswapper";
+
 	@ConfigSection(
 		name = "Item Swaps",
 		description = "All options that swap item menu entries",
@@ -127,6 +129,17 @@ public interface MenuEntrySwapperConfig extends Config
 		section = itemSection
 	)
 	default boolean swapBones()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapHerbs",
+		name = "Clean",
+		description = "Swap Clean with Use on Herbs",
+		section = itemSection
+	)
+	default boolean swapHerbs()
 	{
 		return false;
 	}
@@ -546,6 +559,28 @@ public interface MenuEntrySwapperConfig extends Config
 		section = objectSection
 	)
 	default boolean swapGauntlet()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapTan",
+		name = "Tan",
+		description = "Swap Tan 1 with Tan All",
+		section = uiSection
+	)
+	default boolean swapTan()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapCollectMiscellania",
+		name = "Miscellania",
+		description = "Swap Talk-to with Collect for Advisor Ghrim",
+		section = npcSection
+	)
+	default boolean swapCollectMiscellania()
 	{
 		return false;
 	}

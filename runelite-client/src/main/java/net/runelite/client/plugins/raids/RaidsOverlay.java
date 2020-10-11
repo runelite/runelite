@@ -30,7 +30,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.Getter;
-import net.runelite.api.ClanMemberManager;
+import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
@@ -101,10 +101,10 @@ public class RaidsOverlay extends OverlayPanel
 			.color(color)
 			.build());
 
-		if (config.ccDisplay())
+		if (config.fcDisplay())
 		{
 			color = Color.RED;
-			ClanMemberManager clanMemberManager = client.getClanMemberManager();
+			FriendsChatManager friendsChatManager = client.getFriendsChatManager();
 			FontMetrics metrics = graphics.getFontMetrics();
 
 			String worldString = "W" + client.getWorld();
@@ -120,17 +120,17 @@ public class RaidsOverlay extends OverlayPanel
 				}
 			}
 
-			String clanOwner = "Join a CC";
-			if (clanMemberManager != null)
+			String owner = "Join a FC";
+			if (friendsChatManager != null)
 			{
-				clanOwner = clanMemberManager.getClanOwner();
+				owner = friendsChatManager.getOwner();
 				color = Color.ORANGE;
 			}
 
-			panelComponent.setPreferredSize(new Dimension(Math.max(ComponentConstants.STANDARD_WIDTH, metrics.stringWidth(worldString) + metrics.stringWidth(clanOwner) + 14), 0));
+			panelComponent.setPreferredSize(new Dimension(Math.max(ComponentConstants.STANDARD_WIDTH, metrics.stringWidth(worldString) + metrics.stringWidth(owner) + 14), 0));
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(worldString)
-				.right(clanOwner)
+				.right(owner)
 				.leftColor(Color.ORANGE)
 				.rightColor(color)
 				.build());

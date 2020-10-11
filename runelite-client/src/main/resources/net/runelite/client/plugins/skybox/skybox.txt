@@ -931,12 +931,38 @@ p 1 2
 #8AD2DF
 C 0 0 7 15
 
-p 2
+p 0 1 2
+#2C2C29
+c 3 0
+c 0 3
+c 2 3
+c 4 3
+c 6 3
+c 7 4
+
+// 30 89 p3 Twisted League
+p 3
+#161414
+C 0 0 7 15
+// dungeon
+p 3
+#2C2C29
+c 3 0
+c 0 3
+c 2 3
+c 4 3
+c 6 3
+c 7 4
+
+
+m31 89
+
+// 31 89 p0 Hosidius
+p 0
 #8AD2DF
 C 0 0 7 15
-
-p all
-#2C2C29
+// dungeon
+#3e2c0a
 c 3 0
 c 0 3
 c 2 3

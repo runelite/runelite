@@ -43,7 +43,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -54,6 +53,7 @@ import net.runelite.client.discord.events.DiscordJoinGame;
 import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.discord.events.DiscordReady;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -65,12 +65,12 @@ import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.ws.PartyMember;
 import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.messages.party.UserJoin;
 import net.runelite.http.api.ws.messages.party.UserPart;
 import net.runelite.http.api.ws.messages.party.UserSync;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -102,6 +102,9 @@ public class DiscordPlugin extends Plugin
 
 	@Inject
 	private WSClient wsClient;
+
+	@Inject
+	private OkHttpClient okHttpClient;
 
 	private Map<Skill, Integer> skillExp = new HashMap<>();
 	private NavigationButton discordButton;
@@ -225,19 +228,20 @@ public class DiscordPlugin extends Plugin
 	@Subscribe
 	public void onDiscordJoinRequest(DiscordJoinRequest request)
 	{
-		log.debug("Got discord join request {}", request);
-		if (partyService.isOwner() && partyService.getMembers().isEmpty())
+		// In order for the "Invite to join" message to work we need to have a valid party in Discord presence.
+		// We lazily create the party here in order to avoid the (1 of 15) being permanently in the Discord status.
+		if (!partyService.isInParty())
 		{
-			// First join, join also yourself
+			// Change to my party id, which is advertised in the Discord presence secret. This will open the socket,
+			// send a join, and cause a UserJoin later for me, which will then update the presence and allow the
+			// "Invite to join" to continue.
 			partyService.changeParty(partyService.getLocalPartyId());
-			updatePresence();
 		}
 	}
 
 	@Subscribe
 	public void onDiscordJoinGame(DiscordJoinGame joinGame)
 	{
-		log.debug("Got discord join game {}", joinGame);
 		UUID partyId = UUID.fromString(joinGame.getJoinSecret());
 		partyService.changeParty(partyId);
 		updatePresence();
@@ -273,7 +277,7 @@ public class DiscordPlugin extends Plugin
 			.url(url)
 			.build();
 
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		okHttpClient.newCall(request).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)
@@ -432,6 +436,7 @@ public class DiscordPlugin extends Plugin
 			case CITIES: return config.showCityActivity();
 			case DUNGEONS: return config.showDungeonActivity();
 			case MINIGAMES: return config.showMinigameActivity();
+			case REGIONS: return config.showRegionsActivity();
 		}
 
 		return false;

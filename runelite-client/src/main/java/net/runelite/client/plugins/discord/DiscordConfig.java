@@ -57,8 +57,8 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showSkillActivity",
-		name = "Show activity while skilling",
-		description = "Configures if your activity while training skills should be shown.",
+		name = "Skilling",
+		description = "Show your activity while training skills",
 		position = 3
 	)
 	default boolean showSkillingActivity()
@@ -68,8 +68,8 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBossActivity",
-		name = "Show activity at bosses",
-		description = "Configures if your activity at bosses should be shown.",
+		name = "Bosses",
+		description = "Show your activity and location while at bosses",
 		position = 4
 	)
 	default boolean showBossActivity()
@@ -79,8 +79,8 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showCityActivity",
-		name = "Show activity at cities",
-		description = "Configures if your activity at cities should be shown.",
+		name = "Cities",
+		description = "Show your activity and location while in cities",
 		position = 5
 	)
 	default boolean showCityActivity()
@@ -90,8 +90,8 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showDungeonActivity",
-		name = "Show activity at dungeons",
-		description = "Configures if your activity at dungeons should be shown.",
+		name = "Dungeons",
+		description = "Show your activity and location while in dungeons",
 		position = 6
 	)
 	default boolean showDungeonActivity()
@@ -101,8 +101,8 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showMinigameActivity",
-		name = "Show activity at minigames",
-		description = "Configures if your activity at minigames should be shown.",
+		name = "Minigames",
+		description = "Show your activity and location while in minigames",
 		position = 7
 	)
 	default boolean showMinigameActivity()
@@ -112,11 +112,22 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showRaidingActivity",
-		name = "Show activity at raids",
-		description = "Configures if your activity at raids should be shown.",
+		name = "Raids",
+		description = "Show your activity and location while in Raids",
 		position = 8
 	)
 	default boolean showRaidingActivity()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showRegionsActivity",
+		name = "Regions",
+		description = "Show your activity and location while in other regions",
+		position = 9
+	)
+	default boolean showRegionsActivity()
 	{
 		return true;
 	}

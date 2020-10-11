@@ -27,6 +27,7 @@ package net.runelite.http.service.feed;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -66,7 +67,7 @@ public class FeedController
 			Hasher hasher = Hashing.sha256().newHasher();
 			for (FeedItem itemPrice : feedResult.getItems())
 			{
-				hasher.putBytes(itemPrice.getTitle().getBytes()).putBytes(itemPrice.getContent().getBytes());
+				hasher.putBytes(itemPrice.getTitle().getBytes(StandardCharsets.UTF_8)).putBytes(itemPrice.getContent().getBytes(StandardCharsets.UTF_8));
 			}
 			HashCode code = hasher.hash();
 			hash = code.toString();

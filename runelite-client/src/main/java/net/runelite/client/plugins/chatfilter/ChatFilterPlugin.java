@@ -58,7 +58,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.game.ClanManager;
+import net.runelite.client.game.FriendChatManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
@@ -118,7 +118,7 @@ public class ChatFilterPlugin extends Plugin
 	private ChatFilterConfig config;
 
 	@Inject
-	private ClanManager clanManager;
+	private FriendChatManager friendChatManager;
 
 	@Provides
 	ChatFilterConfig provideConfig(ConfigManager configManager)
@@ -176,6 +176,18 @@ public class ChatFilterPlugin extends Plugin
 				if (shouldFilterPlayerMessage(name))
 				{
 					message = censorMessage(name, message);
+					blockMessage = message == null;
+				}
+				break;
+			case GAMEMESSAGE:
+			case ENGINE:
+			case ITEM_EXAMINE:
+			case NPC_EXAMINE:
+			case OBJECT_EXAMINE:
+			case SPAM:
+				if (config.filterGameChat())
+				{
+					message = censorMessage(null, message);
 					blockMessage = message == null;
 				}
 				break;
@@ -237,13 +249,14 @@ public class ChatFilterPlugin extends Plugin
 		event.getActor().setOverheadText(message);
 	}
 
-	@Subscribe
+	@Subscribe(priority = -2) // run after ChatMessageManager
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (COLLAPSIBLE_MESSAGETYPES.contains(chatMessage.getType()))
 		{
+			final MessageNode messageNode = chatMessage.getMessageNode();
 			// remove and re-insert into map to move to end of list
-			final String key = chatMessage.getName() + ":" + chatMessage.getMessage();
+			final String key = messageNode.getName() + ":" + messageNode.getValue();
 			Duplicate duplicate = duplicateChatCache.remove(key);
 			if (duplicate == null)
 			{
@@ -251,7 +264,7 @@ public class ChatFilterPlugin extends Plugin
 			}
 
 			duplicate.count++;
-			duplicate.messageId = chatMessage.getMessageNode().getId();
+			duplicate.messageId = messageNode.getId();
 			duplicateChatCache.put(key, duplicate);
 		}
 	}
@@ -261,14 +274,14 @@ public class ChatFilterPlugin extends Plugin
 		boolean isMessageFromSelf = playerName.equals(client.getLocalPlayer().getName());
 		return !isMessageFromSelf &&
 			(config.filterFriends() || !client.isFriended(playerName, false)) &&
-			(config.filterClan() || !clanManager.isClanMember(playerName));
+			(config.filterFriendsChat() || !friendChatManager.isMember(playerName));
 	}
 
 	String censorMessage(final String username, final String message)
 	{
 		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
 			.replace('\u00A0', ' ');
-		if (shouldFilterByName(username))
+		if (username != null && shouldFilterByName(username))
 		{
 			switch (config.filterType())
 			{

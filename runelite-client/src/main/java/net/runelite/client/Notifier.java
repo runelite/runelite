@@ -98,7 +98,6 @@ public class Notifier
 		.build();
 
 	// Notifier properties
-	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int MINIMUM_FLASH_DURATION_MILLIS = 2000;
 	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
@@ -209,13 +208,36 @@ public class Notifier
 
 	public void processFlash(final Graphics2D graphics)
 	{
-		if (flashStart == null || client.getGameState() != GameState.LOGGED_IN)
+		FlashNotification flashNotification = runeLiteConfig.flashNotification();
+
+		if (flashStart == null || client.getGameState() != GameState.LOGGED_IN
+			|| flashNotification == FlashNotification.DISABLED)
 		{
 			flashStart = null;
 			return;
 		}
 
-		FlashNotification flashNotification = runeLiteConfig.flashNotification();
+		if (Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
+		{
+			switch (flashNotification)
+			{
+				case FLASH_TWO_SECONDS:
+				case SOLID_TWO_SECONDS:
+					flashStart = null;
+					return;
+				case SOLID_UNTIL_CANCELLED:
+				case FLASH_UNTIL_CANCELLED:
+					// Any interaction with the client since the notification started will cancel it after the minimum duration
+					if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+						|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+						|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
+					{
+						flashStart = null;
+						return;
+					}
+					break;
+			}
+		}
 
 		if (client.getGameCycle() % 40 >= 20
 			// For solid colour, fall through every time.
@@ -226,32 +248,9 @@ public class Notifier
 		}
 
 		final Color color = graphics.getColor();
-		graphics.setColor(FLASH_COLOR);
+		graphics.setColor(runeLiteConfig.notificationFlashColor());
 		graphics.fill(new Rectangle(client.getCanvas().getSize()));
 		graphics.setColor(color);
-
-		if (!Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
-		{
-			return;
-		}
-
-		switch (flashNotification)
-		{
-			case FLASH_TWO_SECONDS:
-			case SOLID_TWO_SECONDS:
-				flashStart = null;
-				break;
-			case SOLID_UNTIL_CANCELLED:
-			case FLASH_UNTIL_CANCELLED:
-				// Any interaction with the client since the notification started will cancel it after the minimum duration
-				if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
-					|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
-					|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
-				{
-					flashStart = null;
-				}
-				break;
-		}
 	}
 
 	private void sendNotification(

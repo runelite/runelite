@@ -33,9 +33,11 @@ import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
@@ -49,6 +51,7 @@ class DevToolsPanel extends PluginPanel
 	private final WidgetInspector widgetInspector;
 	private final VarInspector varInspector;
 	private final ScriptInspector scriptInspector;
+	private final InventoryInspector inventoryInspector;
 	private final InfoBoxManager infoBoxManager;
 	private final ScheduledExecutorService scheduledExecutorService;
 
@@ -59,6 +62,7 @@ class DevToolsPanel extends PluginPanel
 		WidgetInspector widgetInspector,
 		VarInspector varInspector,
 		ScriptInspector scriptInspector,
+		InventoryInspector inventoryInspector,
 		Notifier notifier,
 		InfoBoxManager infoBoxManager,
 		ScheduledExecutorService scheduledExecutorService)
@@ -68,6 +72,7 @@ class DevToolsPanel extends PluginPanel
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
 		this.varInspector = varInspector;
+		this.inventoryInspector = inventoryInspector;
 		this.scriptInspector = scriptInspector;
 		this.notifier = notifier;
 		this.infoBoxManager = infoBoxManager;
@@ -107,6 +112,7 @@ class DevToolsPanel extends PluginPanel
 
 		container.add(plugin.getLineOfSight());
 		container.add(plugin.getValidMovement());
+		container.add(plugin.getMovementFlags());
 		container.add(plugin.getInteracting());
 		container.add(plugin.getExamine());
 
@@ -166,12 +172,30 @@ class DevToolsPanel extends PluginPanel
 		});
 
 		final JButton newInfoboxBtn = new JButton("Infobox");
-		newInfoboxBtn.addActionListener(e -> infoBoxManager.addInfoBox(new Counter(ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png"), plugin, 42)));
+		newInfoboxBtn.addActionListener(e ->
+		{
+			Counter counter = new Counter(ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png"), plugin, 42);
+			counter.getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_INFOBOX, "Test", "DevTools"));
+			infoBoxManager.addInfoBox(counter);
+		});
 		container.add(newInfoboxBtn);
 
 		final JButton clearInfoboxBtn = new JButton("Clear Infobox");
 		clearInfoboxBtn.addActionListener(e -> infoBoxManager.removeIf(i -> true));
 		container.add(clearInfoboxBtn);
+
+		container.add(plugin.getInventoryInspector());
+		plugin.getInventoryInspector().addActionListener((ev) ->
+		{
+			if (plugin.getInventoryInspector().isActive())
+			{
+				inventoryInspector.close();
+			}
+			else
+			{
+				inventoryInspector.open();
+			}
+		});
 
 		return container;
 	}

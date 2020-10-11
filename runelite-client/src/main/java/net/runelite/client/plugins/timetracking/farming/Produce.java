@@ -62,7 +62,7 @@ public enum Produce
 	DWELLBERRIES("Dwellberry", "Dwellberries", PatchImplementation.BUSH, ItemID.DWELLBERRIES, 20, 8, 20, 5),
 	JANGERBERRIES("Jangerberry", "Jangerberries", PatchImplementation.BUSH, ItemID.JANGERBERRIES, 20, 9, 20, 5),
 	WHITEBERRIES("Whiteberry", "White berries", PatchImplementation.BUSH, ItemID.WHITE_BERRIES, 20, 9, 20, 5),
-	POISON_IVY("Poison", "Poison ivy berries", PatchImplementation.BUSH, ItemID.POISON_IVY_BERRIES, 20, 9, 20, 5),
+	POISON_IVY("Poison ivy", "Poison ivy berries", PatchImplementation.BUSH, ItemID.POISON_IVY_BERRIES, 20, 9, 20, 5),
 
 	// Hop crops
 	BARLEY("Barley", ItemID.BARLEY, 10, 5, 0, 3),
@@ -86,7 +86,7 @@ public enum Produce
 	SNAPDRAGON("Snapdragon", PatchImplementation.HERB, ItemID.SNAPDRAGON, 20, 5, 0, 3),
 	CADANTINE("Cadantine", PatchImplementation.HERB, ItemID.CADANTINE, 20, 5, 0, 3),
 	LANTADYME("Lantadyme", PatchImplementation.HERB, ItemID.LANTADYME, 20, 5, 0, 3),
-	DWARF_WEED("Dwarf Weed", PatchImplementation.HERB, ItemID.DWARF_WEED, 20, 5, 0, 3),
+	DWARF_WEED("Dwarf weed", PatchImplementation.HERB, ItemID.DWARF_WEED, 20, 5, 0, 3),
 	TORSTOL("Torstol", PatchImplementation.HERB, ItemID.TORSTOL, 20, 5, 0, 3),
 	GOUTWEED("Goutweed", PatchImplementation.HERB, ItemID.GOUTWEED, 20, 5, 0, 2),
 	ANYHERB("Any herb", PatchImplementation.HERB, ItemID.GUAM_LEAF, 20, 5, 0, 3),

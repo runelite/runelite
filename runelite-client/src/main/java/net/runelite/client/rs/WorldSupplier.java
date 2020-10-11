@@ -33,15 +33,18 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldType;
+import okhttp3.OkHttpClient;
 
 @Slf4j
+@RequiredArgsConstructor
 class WorldSupplier implements Supplier<World>
 {
+	private final OkHttpClient okHttpClient;
 	private final Random random = new Random(System.nanoTime());
 	private Queue<World> worlds = new ArrayDeque<>();
 
@@ -55,7 +58,7 @@ class WorldSupplier implements Supplier<World>
 
 		try
 		{
-			List<World> newWorlds = new WorldClient(RuneLiteAPI.CLIENT)
+			List<World> newWorlds = new WorldClient(okHttpClient)
 				.lookupWorlds()
 				.getWorlds()
 				.stream()

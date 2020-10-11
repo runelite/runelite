@@ -37,6 +37,7 @@ import com.jogamp.opengl.GLDrawableFactory;
 import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLFBODrawable;
 import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.math.Matrix4;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -57,7 +58,6 @@ import jogamp.newt.awt.NewtFactoryAWT;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Model;
 import net.runelite.api.NodeCache;
@@ -98,7 +98,8 @@ import net.runelite.client.util.OSType;
 	name = "GPU",
 	description = "Utilizes the GPU",
 	enabledByDefault = false,
-	tags = {"fog", "draw distance"}
+	tags = {"fog", "draw distance"},
+	loadInSafeMode = false
 )
 @Slf4j
 public class GpuPlugin extends Plugin implements DrawCallbacks
@@ -149,7 +150,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	static final Shader PROGRAM = new Shader()
 		.add(GL4.GL_VERTEX_SHADER, "vert.glsl")
-		.add(GL4.GL_GEOMETRY_SHADER, "geom.glsl")
 		.add(GL4.GL_FRAGMENT_SHADER, "frag.glsl");
 
 	static final Shader COMPUTE_PROGRAM = new Shader()
@@ -242,6 +242,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int lastStretchedCanvasWidth;
 	private int lastStretchedCanvasHeight;
 	private AntiAliasingMode lastAntiAliasingMode;
+	private int lastAnisotropicFilteringLevel = -1;
 
 	private int centerX;
 	private int centerY;
@@ -278,6 +279,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			try
 			{
 				bufferId = uvBufferId = uniformBufferId = tmpBufferId = tmpUvBufferId = tmpModelBufferId = tmpModelBufferSmallId = tmpModelBufferUnorderedId = tmpOutBufferId = tmpOutUvBufferId = -1;
+				texSceneHandle = fboSceneHandle = rboSceneHandle = -1; // AA FBO
 				unorderedModels = smallModels = largeModels = 0;
 				drawingModel = false;
 
@@ -765,26 +767,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
-	private void createProjectionMatrix(float left, float right, float bottom, float top, float near, float far)
-	{
-		// create a standard orthographic projection
-		float tx = -((right + left) / (right - left));
-		float ty = -((top + bottom) / (top - bottom));
-		float tz = -((far + near) / (far - near));
-
-		gl.glUseProgram(glProgram);
-
-		float[] matrix = new float[]{
-			2 / (right - left), 0, 0, 0,
-			0, 2 / (top - bottom), 0, 0,
-			0, 0, -2 / (far - near), 0,
-			tx, ty, tz, 1
-		};
-		gl.glUniformMatrix4fv(uniProjectionMatrix, 1, false, matrix, 0);
-
-		gl.glUseProgram(0);
-	}
-
 	@Override
 	public void drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane)
 	{
@@ -876,14 +858,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void resize(int canvasWidth, int canvasHeight, int viewportWidth, int viewportHeight)
 	{
-		// If the viewport has changed, update the projection matrix
-		if (viewportWidth > 0 && viewportHeight > 0 && (viewportWidth != lastViewportWidth || viewportHeight != lastViewportHeight))
-		{
-			lastViewportWidth = viewportWidth;
-			lastViewportHeight = viewportHeight;
-			createProjectionMatrix(0, viewportWidth, viewportHeight, 0, 0, Constants.SCENE_SIZE * Perspective.LOCAL_TILE_SIZE);
-		}
-
 		if (canvasWidth != lastCanvasWidth || canvasHeight != lastCanvasHeight)
 		{
 			lastCanvasWidth = canvasWidth;
@@ -1104,6 +1078,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			int renderViewportHeight = viewportHeight;
 			int renderViewportWidth = viewportWidth;
 
+			// Setup anisotropic filtering
+			final int anisotropicFilteringLevel = config.anisotropicFilteringLevel();
+
+			if (textureArrayId != -1 && lastAnisotropicFilteringLevel != anisotropicFilteringLevel)
+			{
+				textureManager.setAnisotropicFilteringLevel(textureArrayId, anisotropicFilteringLevel, gl);
+				lastAnisotropicFilteringLevel = anisotropicFilteringLevel;
+			}
+
 			if (client.isStretchedEnabled())
 			{
 				Dimension dim = client.getStretchedDimensions();
@@ -1138,6 +1121,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
 			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
+
+			// Calculate projection matrix
+			Matrix4 projectionMatrix = new Matrix4();
+			projectionMatrix.scale(client.getScale(), client.getScale(), 1);
+			projectionMatrix.multMatrix(makeProjectionMatrix(viewportWidth, viewportHeight, 50));
+			projectionMatrix.rotate((float) (Math.PI - pitch * Perspective.UNIT), -1, 0, 0);
+			projectionMatrix.rotate((float) (yaw * Perspective.UNIT), 0, 1, 0);
+			projectionMatrix.translate(-client.getCameraX2(), -client.getCameraY2(), -client.getCameraZ2());
+			gl.glUniformMatrix4fv(uniProjectionMatrix, 1, false, projectionMatrix.getMatrix(), 0);
 
 			for (int id = 0; id < textures.length; ++id)
 			{
@@ -1216,6 +1208,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glDrawable.swapBuffers();
 
 		drawManager.processDrawComplete(this::screenshot);
+	}
+
+	private float[] makeProjectionMatrix(float w, float h, float n)
+	{
+		return new float[]
+		{
+			2 / w, 0, 0, 0,
+			0, 2 / h, 0, 0,
+			0, 0, -1, -1,
+			0, 0, -2 * n, 0
+		};
 	}
 
 	private void drawUi(final int canvasHeight, final int canvasWidth)
@@ -1298,6 +1301,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			Dimension dim = client.getStretchedDimensions();
 			width  = dim.width;
 			height = dim.height;
+		}
+
+		if (OSType.getOSType() != OSType.MacOS)
+		{
+			final Graphics2D graphics = (Graphics2D) canvas.getGraphics();
+			final AffineTransform t = graphics.getTransform();
+			width = getScaledValue(t.getScaleX(), width);
+			height = getScaledValue(t.getScaleY(), height);
+			graphics.dispose();
 		}
 
 		ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4)
@@ -1585,12 +1597,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		else
 		{
-			final AffineTransform t = ((Graphics2D) canvas.getGraphics()).getTransform();
+			final Graphics2D graphics = (Graphics2D) canvas.getGraphics();
+			final AffineTransform t = graphics.getTransform();
 			gl.glViewport(
 				getScaledValue(t.getScaleX(), x),
 				getScaledValue(t.getScaleY(), y),
 				getScaledValue(t.getScaleX(), width),
 				getScaledValue(t.getScaleY(), height));
+			graphics.dispose();
 		}
 	}
 

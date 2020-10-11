@@ -71,9 +71,7 @@ public class PrayerPotion extends StatBoost
 				int capeId = cape.getId();
 				hasHolyWrench |= capeId == ItemID.PRAYER_CAPE;
 				hasHolyWrench |= capeId == ItemID.PRAYER_CAPET;
-				hasHolyWrench |= capeId == ItemID.PRAYER_CAPE_10643; // No idea what this is
 				hasHolyWrench |= capeId == ItemID.MAX_CAPE;
-				hasHolyWrench |= capeId == ItemID.MAX_CAPE_13282; // Or these
 				hasHolyWrench |= capeId == ItemID.MAX_CAPE_13342;
 			}
 		}
@@ -88,9 +86,7 @@ public class PrayerPotion extends StatBoost
 					hasHolyWrench = item == ItemID.HOLY_WRENCH;
 					hasHolyWrench |= item == ItemID.PRAYER_CAPE;
 					hasHolyWrench |= item == ItemID.PRAYER_CAPET;
-					hasHolyWrench |= item == ItemID.PRAYER_CAPE_10643;
 					hasHolyWrench |= item == ItemID.MAX_CAPE;
-					hasHolyWrench |= item == ItemID.MAX_CAPE_13282;
 					hasHolyWrench |= item == ItemID.MAX_CAPE_13342;
 
 					if (hasHolyWrench)

@@ -38,6 +38,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -96,6 +97,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
@@ -105,6 +107,7 @@ import net.runelite.http.api.item.ItemStats;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 import net.runelite.http.api.worlds.WorldType;
+import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.text.similarity.FuzzyScore;
 
@@ -119,7 +122,6 @@ public class GrandExchangePlugin extends Plugin
 	private static final int GE_SLOTS = 8;
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
-	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
@@ -180,6 +182,7 @@ public class GrandExchangePlugin extends Plugin
 
 	private Widget grandExchangeText;
 	private Widget grandExchangeItem;
+	private String grandExchangeExamine;
 
 	private int osbItem;
 	private OSBGrandExchangeResult osbGrandExchangeResult;
@@ -187,39 +190,14 @@ public class GrandExchangePlugin extends Plugin
 	@Inject
 	private GrandExchangeClient grandExchangeClient;
 	private boolean loginBurstGeUpdates;
-	private static String machineUuid;
+
+	@Inject
+	private OSBGrandExchangeClient osbGrandExchangeClient;
 
 	private boolean wasFuzzySearch;
 
-	static
-	{
-		try
-		{
-			Hasher hasher = Hashing.sha256().newHasher();
-			Runtime runtime = Runtime.getRuntime();
-
-			hasher.putByte((byte) OSType.getOSType().ordinal());
-			hasher.putByte((byte) runtime.availableProcessors());
-			hasher.putUnencodedChars(System.getProperty("os.arch", ""));
-			hasher.putUnencodedChars(System.getProperty("os.version", ""));
-			hasher.putUnencodedChars(System.getProperty("user.name", ""));
-			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-			while (networkInterfaces.hasMoreElements())
-			{
-				NetworkInterface networkInterface = networkInterfaces.nextElement();
-				byte[] hardwareAddress = networkInterface.getHardwareAddress();
-				if (hardwareAddress != null)
-				{
-					hasher.putBytes(hardwareAddress);
-				}
-			}
-			machineUuid = hasher.hash().toString();
-		}
-		catch (Exception ex)
-		{
-			log.warn("unable to generate machine id", ex);
-		}
-	}
+	private String machineUuid;
+	private String lastUsername;
 
 	/**
 	 * Logic from {@link org.apache.commons.text.similarity.FuzzyScore}
@@ -290,6 +268,18 @@ public class GrandExchangePlugin extends Plugin
 		return configManager.getConfig(GrandExchangeConfig.class);
 	}
 
+	@Provides
+	OSBGrandExchangeClient provideOsbGrandExchangeClient(OkHttpClient okHttpClient)
+	{
+		return new OSBGrandExchangeClient(okHttpClient);
+	}
+
+	@Provides
+	GrandExchangeClient provideGrandExchangeClient(OkHttpClient okHttpClient)
+	{
+		return new GrandExchangeClient(okHttpClient);
+	}
+
 	@Override
 	protected void startUp()
 	{
@@ -321,7 +311,6 @@ public class GrandExchangePlugin extends Plugin
 		{
 			grandExchangeClient.setUuid(null);
 		}
-		grandExchangeClient.setMachineId(machineUuid);
 
 		osbItem = -1;
 		osbGrandExchangeResult = null;
@@ -335,6 +324,7 @@ public class GrandExchangePlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 		grandExchangeText = null;
 		grandExchangeItem = null;
+		lastUsername = machineUuid = null;
 	}
 
 	@Subscribe
@@ -547,6 +537,10 @@ public class GrandExchangePlugin extends Plugin
 			panel.getOffersPanel().resetOffers();
 			loginBurstGeUpdates = true;
 		}
+		else if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			grandExchangeClient.setMachineId(getMachineUuid());
+		}
 	}
 
 	@Subscribe
@@ -601,7 +595,7 @@ public class GrandExchangePlugin extends Plugin
 			case WidgetID.GRAND_EXCHANGE_GROUP_ID:
 				Widget grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
 				grandExchangeText = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TEXT);
-				grandExchangeItem = grandExchangeOffer.getDynamicChildren()[OFFER_CONTAINER_ITEM];
+				grandExchangeItem = grandExchangeOffer.getChild(OFFER_CONTAINER_ITEM);
 				break;
 			// Grand exchange was closed (if it was open before).
 			case WidgetID.INVENTORY_GROUP_ID:
@@ -842,8 +836,13 @@ public class GrandExchangePlugin extends Plugin
 			return;
 		}
 
-		String[] lines = geText.getText().split("<br>");
-		String text = lines[0]; // remove any limit or OSB ge values
+		if (geText.getText() == grandExchangeExamine)
+		{
+			// if we've already set the text, don't set it again
+			return;
+		}
+
+		String text = geText.getText();
 
 		if (config.enableGELimits())
 		{
@@ -866,6 +865,7 @@ public class GrandExchangePlugin extends Plugin
 			}
 		}
 
+		grandExchangeExamine = text;
 		geText.setText(text);
 
 		if (!config.enableOsbPrices())
@@ -876,7 +876,8 @@ public class GrandExchangePlugin extends Plugin
 		// If we already have the result, use it
 		if (osbGrandExchangeResult != null && osbGrandExchangeResult.getItem_id() == itemId && osbGrandExchangeResult.getOverall_average() > 0)
 		{
-			geText.setText(text + OSB_GE_TEXT + QuantityFormatter.formatNumber(osbGrandExchangeResult.getOverall_average()));
+			grandExchangeExamine = text + OSB_GE_TEXT + QuantityFormatter.formatNumber(osbGrandExchangeResult.getOverall_average());
+			geText.setText(grandExchangeExamine);
 		}
 
 		if (osbItem == itemId)
@@ -894,15 +895,71 @@ public class GrandExchangePlugin extends Plugin
 		{
 			try
 			{
-				final OSBGrandExchangeResult result = CLIENT.lookupItem(itemId);
-				osbGrandExchangeResult = result;
-				// Update the text on the widget too
-				geText.setText(start + OSB_GE_TEXT + QuantityFormatter.formatNumber(result.getOverall_average()));
+				final OSBGrandExchangeResult result = osbGrandExchangeClient.lookupItem(itemId);
+				if (result != null && result.getOverall_average() > 0)
+				{
+					osbGrandExchangeResult = result;
+					// Update the text on the widget too
+					grandExchangeExamine = start + OSB_GE_TEXT + QuantityFormatter.formatNumber(result.getOverall_average());
+					geText.setText(grandExchangeExamine);
+				}
 			}
 			catch (IOException e)
 			{
 				log.debug("Error getting price of item {}", itemId, e);
 			}
 		});
+	}
+
+	static void openGeLink(String name, int itemId)
+	{
+		final String url = "https://services.runescape.com/m=itemdb_oldschool/"
+			+ name.replaceAll(" ", "+")
+			+ "/viewitem?obj="
+			+ itemId;
+		LinkBrowser.browse(url);
+	}
+
+	private String getMachineUuid()
+	{
+		String username = client.getUsername();
+		if (lastUsername == username)
+		{
+			return machineUuid;
+		}
+
+		lastUsername = username;
+
+		try
+		{
+			Hasher hasher = Hashing.sha256().newHasher();
+			Runtime runtime = Runtime.getRuntime();
+
+			hasher.putByte((byte) OSType.getOSType().ordinal());
+			hasher.putByte((byte) runtime.availableProcessors());
+			hasher.putUnencodedChars(System.getProperty("os.arch", ""));
+			hasher.putUnencodedChars(System.getProperty("os.version", ""));
+			hasher.putUnencodedChars(System.getProperty("user.name", ""));
+
+			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+			while (networkInterfaces.hasMoreElements())
+			{
+				NetworkInterface networkInterface = networkInterfaces.nextElement();
+				byte[] hardwareAddress = networkInterface.getHardwareAddress();
+				if (hardwareAddress != null)
+				{
+					hasher.putBytes(hardwareAddress);
+				}
+			}
+			hasher.putUnencodedChars(username);
+			machineUuid = hasher.hash().toString();
+			return machineUuid;
+		}
+		catch (SocketException ex)
+		{
+			log.debug("unable to generate machine id", ex);
+			machineUuid = null;
+			return null;
+		}
 	}
 }

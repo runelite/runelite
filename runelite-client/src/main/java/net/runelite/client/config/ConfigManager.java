@@ -41,7 +41,6 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
@@ -78,6 +77,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
+import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
@@ -85,10 +85,9 @@ public class ConfigManager
 {
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
-	@Inject
-	EventBus eventBus;
-
-	private final ScheduledExecutorService executor;
+	private final File settingsFileInput;
+	private final EventBus eventBus;
+	private final OkHttpClient okHttpClient;
 
 	private AccountSession session;
 	private ConfigClient client;
@@ -97,18 +96,20 @@ public class ConfigManager
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 	private final Map<String, String> pendingChanges = new HashMap<>();
-	private final File settingsFileInput;
 
 	@Inject
 	public ConfigManager(
 		@Named("config") File config,
-		ScheduledExecutorService scheduledExecutorService)
+		ScheduledExecutorService scheduledExecutorService,
+		EventBus eventBus,
+		OkHttpClient okHttpClient)
 	{
-		this.executor = scheduledExecutorService;
 		this.settingsFileInput = config;
+		this.eventBus = eventBus;
+		this.okHttpClient = okHttpClient;
 		this.propertiesFile = getPropertiesFile();
 
-		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
 
 	public final void switchSession(AccountSession session)
@@ -124,7 +125,7 @@ public class ConfigManager
 		else
 		{
 			this.session = session;
-			this.client = new ConfigClient(session.getUuid());
+			this.client = new ConfigClient(okHttpClient, session.getUuid());
 		}
 
 		this.propertiesFile = getPropertiesFile();
@@ -222,7 +223,7 @@ public class ConfigManager
 		final Properties properties = new Properties();
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
-			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
+			properties.load(new InputStreamReader(in, StandardCharsets.UTF_8));
 		}
 		catch (Exception e)
 		{
@@ -293,7 +294,7 @@ public class ConfigManager
 
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
-			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
+			properties.load(new InputStreamReader(in, StandardCharsets.UTF_8));
 		}
 		catch (FileNotFoundException ex)
 		{

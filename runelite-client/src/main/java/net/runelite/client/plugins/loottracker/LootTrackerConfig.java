@@ -82,7 +82,7 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Submit loot tracker data",
-		description = "Submit loot tracker data (requires being logged in)"
+		description = "Submit loot tracker data"
 	)
 	default boolean saveLoot()
 	{
@@ -137,5 +137,15 @@ public interface LootTrackerConfig extends Config
 	default boolean pvpKillChatMessage()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showRaidsLootValue",
+		name = "Show chat message for raids loot",
+		description = "Adds a chat message that displays the value of your loot at the end of the raid."
+	)
+	default boolean showRaidsLootValue()
+	{
+		return true;
 	}
 }

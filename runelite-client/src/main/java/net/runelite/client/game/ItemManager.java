@@ -32,6 +32,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,7 @@ import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemStats;
+import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
@@ -82,10 +84,9 @@ public class ItemManager
 	}
 
 	private final Client client;
-	private final ScheduledExecutorService scheduledExecutorService;
 	private final ClientThread clientThread;
-
 	private final ItemClient itemClient;
+
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
@@ -162,13 +163,12 @@ public class ItemManager
 		build();
 
 	@Inject
-	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread,
-		ItemClient itemClient)
+	public ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
+		OkHttpClient okHttpClient)
 	{
 		this.client = client;
-		this.scheduledExecutorService = executor;
 		this.clientThread = clientThread;
-		this.itemClient = itemClient;
+		this.itemClient = new ItemClient(okHttpClient);
 
 		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
 		scheduledExecutorService.submit(this::loadStats);
@@ -291,7 +291,7 @@ public class ItemManager
 	 * Look up an item's price
 	 *
 	 * @param itemID item id
-	 * @param ignoreUntradeableMap should the price returned ignore the {@link UntradeableItemMapping}
+	 * @param ignoreUntradeableMap should the price returned ignore items that are not tradeable for coins in regular way
 	 * @return item price
 	 */
 	public int getItemPrice(int itemID, boolean ignoreUntradeableMap)
@@ -312,22 +312,29 @@ public class ItemManager
 		}
 		itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
 
-		if (!ignoreUntradeableMap)
-		{
-			UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
-			if (p != null)
-			{
-				return getItemPrice(p.getPriceID()) * p.getQuantity();
-			}
-		}
-
 		int price = 0;
-		for (int mappedID : ItemMapping.map(itemID))
+
+		final Collection<ItemMapping> mappedItems = ItemMapping.map(itemID);
+
+		if (mappedItems == null)
 		{
-			ItemPrice ip = itemPrices.get(mappedID);
+			final ItemPrice ip = itemPrices.get(itemID);
+
 			if (ip != null)
 			{
 				price += ip.getPrice();
+			}
+		}
+		else
+		{
+			for (final ItemMapping mappedItem : mappedItems)
+			{
+				if (ignoreUntradeableMap && mappedItem.isUntradeable())
+				{
+					continue;
+				}
+
+				price += getItemPrice(mappedItem.getTradeableItem(), ignoreUntradeableMap) * mappedItem.getQuantity();
 			}
 		}
 
@@ -483,7 +490,7 @@ public class ItemManager
 	 */
 	private BufferedImage loadItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
 	{
-		final SpritePixels itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, true, 710);
+		final SpritePixels itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, false, Constants.CLIENT_DEFAULT_ZOOM);
 		return itemSprite.toBufferedOutline(outlineColor);
 	}
 

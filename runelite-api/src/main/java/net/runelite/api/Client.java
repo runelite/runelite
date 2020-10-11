@@ -401,6 +401,11 @@ public interface Client extends GameEngine
 	IndexDataBase getIndexScripts();
 
 	/**
+	 * Gets the config index.
+	 */
+	IndexDataBase getIndexConfig();
+
+	/**
 	 * Returns the x-axis base coordinate.
 	 * <p>
 	 * This value is the x-axis world coordinate of tile (0, 0) in
@@ -481,6 +486,7 @@ public interface Client extends GameEngine
 	 * @param widget the widget info
 	 * @return the widget
 	 */
+	@Nullable
 	Widget getWidget(WidgetInfo widget);
 
 	/**
@@ -493,6 +499,7 @@ public interface Client extends GameEngine
 	 * @param childId the child widget ID
 	 * @return the widget corresponding to the group and child pair
 	 */
+	@Nullable
 	Widget getWidget(int groupId, int childId);
 
 	/**
@@ -744,6 +751,16 @@ public interface Client extends GameEngine
 	 * @param value the new value
 	 */
 	void setVarbit(Varbits varbit, int value);
+
+	/**
+	 * Gets the varbit composition for a given varbit id
+	 *
+	 * @param id
+	 * @return
+	 */
+	@VisibleForDevtools
+	@Nullable
+	VarbitComposition getVarbit(int id);
 
 	/**
 	 * Gets the value of a given variable.
@@ -1152,12 +1169,12 @@ public interface Client extends GameEngine
 	boolean isFriended(String name, boolean mustBeLoggedIn);
 
 	/**
-	 * Retrieve the clan member manager
+	 * Retrieve the friends chat manager
 	 *
 	 * @return
 	 */
 	@Nullable
-	ClanMemberManager getClanMemberManager();
+	FriendsChatManager getFriendsChatManager();
 
 	/**
 	 * Retrieve the nameable container containing friends
@@ -1466,11 +1483,11 @@ public interface Client extends GameEngine
 	void setFriendsHidden(boolean state);
 
 	/**
-	 * Sets whether or not clan mates are hidden.
+	 * Sets whether or not friends chat members are hidden.
 	 *
-	 * @param state the new clan mates hidden state
+	 * @param state the new friends chat member hidden state
 	 */
-	void setClanMatesHidden(boolean state);
+	void setFriendsChatMembersHidden(boolean state);
 
 	/**
 	 * Sets whether the local player is hidden.
@@ -1762,4 +1779,12 @@ public interface Client extends GameEngine
 	 * Sets whether the flames on the login screen should be rendered
 	 */
 	void setShouldRenderLoginScreenFire(boolean val);
+
+	/**
+	 * Test if a key is pressed
+	 * @param keycode the keycode
+	 * @return
+	 * @see KeyCode
+	 */
+	boolean isKeyPressed(int keycode);
 }

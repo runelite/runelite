@@ -35,6 +35,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
@@ -114,7 +115,7 @@ class DevToolsOverlay extends Overlay
 			renderNpcs(graphics);
 		}
 
-		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive())
+		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive() || plugin.getMovementFlags().isActive())
 		{
 			renderTileObjects(graphics);
 		}
@@ -146,12 +147,12 @@ class DevToolsOverlay extends Overlay
 		{
 			if (p != local)
 			{
-				String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getGraphic() + ")";
+				String text = p.getName() + " (A: " + p.getAnimation() + ") (P: " + p.getPoseAnimation() + ") (G: " + p.getGraphic() + ")";
 				OverlayUtil.renderActorOverlay(graphics, p, text, BLUE);
 			}
 		}
 
-		String text = local.getName() + " (A: " + local.getAnimation() + ") (G: " + local.getGraphic() + ")";
+		String text = local.getName() + " (A: " + local.getAnimation() + ") (P: " + local.getPoseAnimation() + ") (G: " + local.getGraphic() + ")";
 		OverlayUtil.renderActorOverlay(graphics, local, text, CYAN);
 		renderPlayerWireframe(graphics, local, CYAN);
 	}
@@ -176,12 +177,8 @@ class DevToolsOverlay extends Overlay
 				}
 			}
 
-			String text = String.format("%s (ID: %d) (A: %d) (G: %d)",
-				composition.getName(),
-				composition.getId(),
-				npc.getAnimation(),
-				npc.getGraphic());
-
+			String text = composition.getName() + " (ID:" + composition.getId() + ")" +
+				" (A: " + npc.getAnimation() + ") (P: " + npc.getPoseAnimation() + ") (G: " + npc.getGraphic() + ")";
 			OverlayUtil.renderActorOverlay(graphics, npc, text, color);
 		}
 	}
@@ -239,6 +236,11 @@ class DevToolsOverlay extends Overlay
 				{
 					renderTileTooltip(graphics, tile);
 				}
+
+				if (plugin.getMovementFlags().isActive())
+				{
+					renderMovementInfo(graphics, tile);
+				}
 			}
 		}
 	}
@@ -249,6 +251,35 @@ class DevToolsOverlay extends Overlay
 		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
 			toolTipManager.add(new Tooltip("World Location: " + tile.getWorldLocation().getX() + ", " + tile.getWorldLocation().getY() + ", " + client.getPlane()));
+			OverlayUtil.renderPolygon(graphics, poly, GREEN);
+		}
+	}
+
+	private void renderMovementInfo(Graphics2D graphics, Tile tile)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
+
+		if (poly == null || !poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		{
+			return;
+		}
+
+		if (client.getCollisionMaps() != null)
+		{
+			int[][] flags = client.getCollisionMaps()[client.getPlane()].getFlags();
+			int data = flags[tile.getSceneLocation().getX()][tile.getSceneLocation().getY()];
+
+			Set<MovementFlag> movementFlags = MovementFlag.getSetFlags(data);
+
+			if (movementFlags.isEmpty())
+			{
+				toolTipManager.add(new Tooltip("No movement flags"));
+			}
+			else
+			{
+				movementFlags.forEach(flag -> toolTipManager.add(new Tooltip(flag.toString())));
+			}
+
 			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}
 	}

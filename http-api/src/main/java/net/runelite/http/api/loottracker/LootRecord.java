@@ -37,6 +37,7 @@ public class LootRecord
 {
 	private String eventId;
 	private LootRecordType type;
+	private Object metadata;
 	private Collection<GameItem> drops;
 	private Instant time;
 }

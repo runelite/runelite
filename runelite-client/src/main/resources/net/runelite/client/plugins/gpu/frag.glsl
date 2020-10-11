@@ -31,8 +31,9 @@ uniform float smoothBanding;
 uniform vec4 fogColor;
 
 in vec4 Color;
-centroid in float fHsl;
-in vec4 fUv;
+noperspective centroid in float fHsl;
+flat in int textureId;
+in vec2 fUv;
 in float fogAmount;
 
 out vec4 FragColor;
@@ -40,20 +41,17 @@ out vec4 FragColor;
 #include hsl_to_rgb.glsl
 
 void main() {
-  float n = fUv.x;
-
   int hsl = int(fHsl);
   vec3 rgb = hslToRgb(hsl) * smoothBanding + Color.rgb * (1.f - smoothBanding);
   vec4 smoothColor = vec4(rgb, Color.a);
 
-  if (n > 0.0) {
-    n -= 1.0;
-    int textureIdx = int(n);
+  if (textureId > 0) {
+    int textureIdx = textureId - 1;
 
-    vec2 uv = fUv.yz;
+    vec2 uv = fUv;
     vec2 animatedUv = uv + textureOffsets[textureIdx];
 
-    vec4 textureColor = texture(textures, vec3(animatedUv, n));
+    vec4 textureColor = texture(textures, vec3(animatedUv, float(textureIdx)));
     vec4 textureColorBrightness = pow(textureColor, vec4(brightness, brightness, brightness, 1.0f));
 
     smoothColor = textureColorBrightness * smoothColor;

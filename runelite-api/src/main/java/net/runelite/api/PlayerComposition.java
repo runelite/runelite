@@ -33,6 +33,13 @@ import net.runelite.api.kit.KitType;
 public interface PlayerComposition
 {
 	/**
+	 * Checks if the player is female.
+	 *
+	 * @return true if the player is female
+	 */
+	boolean isFemale();
+
+	/**
 	 * Gets an array of IDs related to equipment slots.
 	 * <p>
 	 * If the ID for a specific slot is between 256 and 512, subtracting

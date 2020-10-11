@@ -65,14 +65,22 @@ public class LootTrackerController
 	@RequestMapping(method = RequestMethod.POST)
 	public void storeLootRecord(HttpServletRequest request, HttpServletResponse response, @RequestBody Collection<LootRecord> records) throws IOException
 	{
-		SessionEntry e = auth.handle(request, response);
-		if (e == null)
+		SessionEntry session = null;
+		if (request.getHeader(RuneLiteAPI.RUNELITE_AUTH) != null)
 		{
-			response.setStatus(HttpStatusCodes.STATUS_CODE_UNAUTHORIZED);
-			return;
+			session = auth.handle(request, response);
+			if (session == null)
+			{
+				// error is set here on the response, so we shouldn't continue
+				return;
+			}
 		}
+		Integer userId = session == null ? null : session.getUser();
 
-		service.store(records, e.getUser());
+		if (userId != null)
+		{
+			service.store(records, userId);
+		}
 		response.setStatus(HttpStatusCodes.STATUS_CODE_OK);
 
 		try (Jedis jedis = redisPool.getResource())

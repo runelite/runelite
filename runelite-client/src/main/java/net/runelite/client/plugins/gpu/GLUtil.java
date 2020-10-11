@@ -25,17 +25,25 @@
 package net.runelite.client.plugins.gpu;
 
 import com.jogamp.opengl.GL4;
+import java.nio.charset.StandardCharsets;
 
 class GLUtil
 {
 	private static final int ERR_LEN = 1024;
 
 	private static final int[] buf = new int[1];
+	private static final float[] fbuf = new float[1];
 
 	static int glGetInteger(GL4 gl, int pname)
 	{
 		gl.glGetIntegerv(pname, buf, 0);
 		return buf[0];
+	}
+
+	static float glGetFloat(GL4 gl, int pname)
+	{
+		gl.glGetFloatv(pname, fbuf, 0);
+		return fbuf[0];
 	}
 
 	static int glGetShader(GL4 gl, int shader, int pname)
@@ -56,14 +64,14 @@ class GLUtil
 	{
 		byte[] err = new byte[ERR_LEN];
 		gl.glGetShaderInfoLog(shader, ERR_LEN, buf, 0, err, 0);
-		return new String(err, 0, buf[0]);
+		return new String(err, 0, buf[0], StandardCharsets.UTF_8);
 	}
 
 	static String glGetProgramInfoLog(GL4 gl, int program)
 	{
 		byte[] err = new byte[ERR_LEN];
 		gl.glGetProgramInfoLog(program, ERR_LEN, buf, 0, err, 0);
-		return new String(err, 0, buf[0]);
+		return new String(err, 0, buf[0], StandardCharsets.UTF_8);
 	}
 
 	static int glGenVertexArrays(GL4 gl)

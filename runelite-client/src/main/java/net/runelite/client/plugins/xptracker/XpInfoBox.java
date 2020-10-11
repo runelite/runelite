@@ -251,6 +251,11 @@ class XpInfoBox extends JPanel
 				panel.revalidate();
 			}
 
+			if (xpTrackerConfig.prioritizeRecentXpSkills())
+			{
+				panel.setComponentZOrder(this, 0);
+			}
+
 			paused = skillPaused;
 
 			// Update progress bar

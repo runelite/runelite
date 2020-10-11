@@ -24,10 +24,13 @@
  */
 package net.runelite.client.plugins.gpu.template;
 
+import com.google.common.io.CharStreams;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.Function;
 
 public class Template
@@ -92,7 +95,13 @@ public class Template
 
 	private static String inputStreamToString(InputStream in)
 	{
-		Scanner scanner = new Scanner(in).useDelimiter("\\A");
-		return scanner.next();
+		try
+		{
+			return CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }
