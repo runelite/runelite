@@ -351,6 +351,8 @@ public class ImageUtil
 		}
 		catch (IllegalArgumentException e)
 		{
+			String folderPath = System.getProperty("user.dir") + "\\resources\\plugins\\" + c.getPackage().getName();
+			log.error("Failed to load image from class: {}, path: {}", c.getName(), folderPath);
 			throw new IllegalArgumentException(path, e);
 		}
 		catch (IOException e)
