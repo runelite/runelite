@@ -85,8 +85,12 @@ public class ChatCommandManager implements ChatboxInputListener
 
 	public void registerCommandAlias(String command, String... aliases)
 	{
-		for (String alias : aliases) {
-			if (commandAliases.containsKey(alias.toLowerCase())) continue;
+		for (String alias : aliases)
+		{
+			if (commandAliases.containsKey(alias.toLowerCase()))
+			{
+				continue;
+			}
 			commandAliases.put(alias.toLowerCase(), command.toLowerCase());
 		}
 	}
