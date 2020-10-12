@@ -132,12 +132,9 @@ class DiscordState
 
 		event.setUpdated(Instant.now());
 
-		// An IN_GAME (or IN_MENU) event should remove all other areas from events
-		// but since events is fully cleared every time before IN_MENU is added,
-		// we will never need to run this on an IN_MENU event trigger
-		if (event.getType().isShouldClear() || event.getType() == DiscordGameEventType.IN_GAME)
+		if (event.getType().isShouldClear())
 		{
-			events.removeIf(e -> e.getType() != eventType && e.getType().isShouldClear());
+			events.removeIf(e -> e.getType() != eventType && e.getType().isShouldBeCleared());
 		}
 
 		if (event.getType().isShouldRestart())
@@ -209,10 +206,10 @@ class DiscordState
 				break;
 			case TOTAL:
 				// We are tracking total time spent instead of per activity time so try to find
-				// IN_GAME or IN_MENU event as this indicates start of tracking and find last updated one
-				// to determine if we are in game or menu
+				// root event as this indicates start of tracking and find last updated one
+				// to determine correct state we are in
 				startTime = events.stream()
-					.filter(e -> e.type == DiscordGameEventType.IN_GAME || e.type == DiscordGameEventType.IN_MENU)
+					.filter(e -> e.getType().isRoot())
 					.sorted((a, b) -> b.getUpdated().compareTo(a.getUpdated()))
 					.map(EventWithTime::getStart)
 					.findFirst()
@@ -270,6 +267,7 @@ class DiscordState
 			})
 			// Now filter out events that should restart as we do not want to remove them
 			.filter(event -> !event.getType().isShouldRestart())
+			.filter(event -> event.getType().isShouldBeCleared())
 			.collect(Collectors.toList())
 		);
 
