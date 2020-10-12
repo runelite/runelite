@@ -123,4 +123,14 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showLootIcons",
+		name = "Show ore icons",
+		description = "Display collected ores and gems as item images instead of text"
+	)
+	default boolean showLootIcons()
+	{
+		return false;
+	}
 }
