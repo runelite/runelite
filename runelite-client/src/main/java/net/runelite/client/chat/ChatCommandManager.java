@@ -44,6 +44,7 @@ import net.runelite.client.events.PrivateMessageInput;
 public class ChatCommandManager implements ChatboxInputListener
 {
 	private final Map<String, ChatCommand> commands = new ConcurrentHashMap<>();
+	private final Map<String, String> commandAliases = new ConcurrentHashMap<>();
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
@@ -82,6 +83,14 @@ public class ChatCommandManager implements ChatboxInputListener
 		commands.remove(command.toLowerCase());
 	}
 
+	public void registerCommandAlias(String command, String... aliases)
+	{
+		for (String alias : aliases) {
+			if (commandAliases.containsKey(alias.toLowerCase())) continue;
+			commandAliases.put(alias.toLowerCase(), command.toLowerCase());
+		}
+	}
+
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
@@ -111,19 +120,34 @@ public class ChatCommandManager implements ChatboxInputListener
 			return;
 		}
 
+		// Check if it's an alias, then change message to reflect the command it represents
+		if (commandAliases.containsKey(command.toLowerCase()))
+		{
+			command = commandAliases.get(command.toLowerCase());
+			if (message.indexOf(' ') == -1)
+			{
+				message = command;
+			}
+			else
+			{
+				message = command + message.substring(message.indexOf(' '));
+			}
+		}
+
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		if (chatCommand == null)
 		{
 			return;
 		}
 
+		String finalMessage = message;
 		if (chatCommand.isAsync())
 		{
-			scheduledExecutorService.execute(() -> chatCommand.getExecute().accept(chatMessage, message));
+			scheduledExecutorService.execute(() -> chatCommand.getExecute().accept(chatMessage, finalMessage));
 		}
 		else
 		{
-			chatCommand.getExecute().accept(chatMessage, message);
+			chatCommand.getExecute().accept(chatMessage, finalMessage);
 		}
 	}
 

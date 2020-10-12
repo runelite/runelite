@@ -194,6 +194,11 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(GC_COMMAND_STRING, this::gambleCountLookup, this::gambleCountSubmit);
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
+
+		chatCommandManager.registerCommandAlias(TOTAL_LEVEL_COMMAND_STRING, "!overall");
+		chatCommandManager.registerCommandAlias(PRICE_COMMAND_STRING, "!pc");
+		chatCommandManager.registerCommandAlias(LEVEL_COMMAND_STRING, "!level");
+		chatCommandManager.registerCommandAlias(CMB_COMMAND_STRING, "!cb", "!cblvl");
 	}
 
 	@Override
