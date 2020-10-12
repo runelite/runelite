@@ -351,7 +351,7 @@ public class ImageUtil
 		}
 		catch (IllegalArgumentException e)
 		{
-			String filePath;
+			final String filePath;
 
 			if (path.startsWith("/"))
 			{
