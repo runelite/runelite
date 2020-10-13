@@ -36,6 +36,7 @@ public interface MTAConfig extends Config
 	{
 		ALL,
 		NEAREST,
+		ARROW,
 		NONE
 	}
 

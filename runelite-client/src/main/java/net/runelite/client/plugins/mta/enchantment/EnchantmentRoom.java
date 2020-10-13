@@ -130,29 +130,38 @@ public class EnchantmentRoom extends MTARoom
 	@Override
 	public void under(Graphics2D graphics)
 	{
+		client.clearHintArrow();
+
 		final MarkingMode mode = config.dragonstoneMode();
 		if (mode == MarkingMode.NONE || !config.enchantment())
 		{
 			return;
 		}
 
-		if (config.dragonstoneMode() == MarkingMode.NEAREST)
-		{
-			renderStonePoly(graphics, findNearestStone());
-		}
-		else if (config.dragonstoneMode() == MarkingMode.ALL)
+		if (config.dragonstoneMode() == MarkingMode.ALL)
 		{
 			dragonstones.forEach(stone -> renderStonePoly(graphics, stone));
+		}
+		else
+		{
+			WorldPoint nearest = findNearestStone();
+			if (nearest == null)
+			{
+				return;
+			}
+			else if (config.dragonstoneMode() == MarkingMode.NEAREST)
+			{
+				renderStonePoly(graphics, nearest);
+			}
+			else
+			{
+				client.setHintArrow(nearest);
+			}
 		}
 	}
 
 	private void renderStonePoly(final Graphics2D graphics, final WorldPoint point)
 	{
-		if (point == null)
-		{
-			return;
-		}
-
 		final LocalPoint local = LocalPoint.fromWorld(client, point);
 
 		if (local == null)
