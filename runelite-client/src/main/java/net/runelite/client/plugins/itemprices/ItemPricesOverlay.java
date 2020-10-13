@@ -189,7 +189,7 @@ class ItemPricesOverlay extends Overlay
 	private String getItemStackValueText(Item item)
 	{
 		int id = itemManager.canonicalize(item.getId());
-		int qty = item.getQuantity();
+		final int qty = item.getQuantity();
 
 		// Special case for coins and platinum tokens
 		if (id == ItemID.COINS_995)
@@ -209,14 +209,14 @@ class ItemPricesOverlay extends Overlay
 			return null;
 		}
 
-		int gePrice = 0;
+		long gePrice = 0;
 		int haPrice = 0;
-		int haProfit = 0;
+		long haProfit = 0;
 		final int itemHaPrice = itemDef.getHaPrice();
 
 		if (config.showGEPrice())
 		{
-			gePrice = itemManager.getItemPrice(id);
+			gePrice = itemManager.getItemPrice(id, qty);
 		}
 		if (config.showHAValue())
 		{
@@ -235,17 +235,17 @@ class ItemPricesOverlay extends Overlay
 		return null;
 	}
 
-	private String stackValueText(int qty, int gePrice, int haValue, int haProfit)
+	private String stackValueText(int qty, long gePrice, int haValue, long haProfit)
 	{
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("GE: ")
-				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
+				.append(QuantityFormatter.quantityToStackSize(gePrice))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(gePrice))
+					.append(QuantityFormatter.quantityToStackSize(gePrice / (long) qty))
 					.append(" ea)");
 			}
 		}
@@ -289,13 +289,13 @@ class ItemPricesOverlay extends Overlay
 		return text;
 	}
 
-	private int calculateHAProfit(int haPrice, int gePrice)
+	private long calculateHAProfit(long haPrice, long gePrice)
 	{
-		int natureRunePrice = itemManager.getItemPrice(ItemID.NATURE_RUNE);
+		long natureRunePrice = itemManager.getItemPrice(ItemID.NATURE_RUNE);
 		return haPrice - gePrice - natureRunePrice;
 	}
 
-	private static Color haProfitColor(int haProfit)
+	private static Color haProfitColor(long haProfit)
 	{
 		return haProfit >= 0 ? Color.GREEN : Color.RED;
 	}

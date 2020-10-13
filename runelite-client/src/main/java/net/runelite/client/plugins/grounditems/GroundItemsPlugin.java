@@ -408,7 +408,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 		else
 		{
-			groundItem.setGePrice(itemManager.getItemPrice(realItemId));
+			groundItem.setGePrice(itemManager.getItemPrice(realItemId, item.getQuantity()));
 		}
 
 		return groundItem;
@@ -481,7 +481,7 @@ public class GroundItemsPlugin extends Plugin
 			GroundItem groundItem = collectedGroundItems.get(groundItemKey);
 			int quantity = groundItem.getQuantity();
 
-			final int gePrice = groundItem.getGePrice();
+			final long gePrice = groundItem.getGePrice();
 			final int haPrice = groundItem.getHaPrice();
 			final Color hidden = getHidden(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice, groundItem.isTradeable());
 			final Color highlighted = getHighlighted(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice);
@@ -552,7 +552,7 @@ public class GroundItemsPlugin extends Plugin
 		config.setHighlightedItem(Text.toCSV(highlightedItemSet));
 	}
 
-	Color getHighlighted(NamedQuantity item, int gePrice, int haPrice)
+	Color getHighlighted(NamedQuantity item, long gePrice, int haPrice)
 	{
 		if (TRUE.equals(highlightedItems.getUnchecked(item)))
 		{
@@ -565,7 +565,7 @@ public class GroundItemsPlugin extends Plugin
 			return null;
 		}
 
-		final int price = getValueByMode(gePrice, haPrice);
+		final long price = getValueByMode(gePrice, haPrice);
 		for (PriceHighlight highlight : priceChecks)
 		{
 			if (price > highlight.getPrice())
@@ -577,7 +577,7 @@ public class GroundItemsPlugin extends Plugin
 		return null;
 	}
 
-	Color getHidden(NamedQuantity item, int gePrice, int haPrice, boolean isTradeable)
+	Color getHidden(NamedQuantity item, long gePrice, int haPrice, boolean isTradeable)
 	{
 		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
 		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
@@ -664,7 +664,7 @@ public class GroundItemsPlugin extends Plugin
 		notifier.notify(notificationStringBuilder.toString());
 	}
 
-	private int getValueByMode(int gePrice, int haPrice)
+	private long getValueByMode(long gePrice, int haPrice)
 	{
 		switch (config.valueCalculationMode())
 		{

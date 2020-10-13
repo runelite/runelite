@@ -301,42 +301,52 @@ public class ItemManager
 	 * @param itemID item id
 	 * @return item price
 	 */
-	public int getItemPrice(int itemID)
+	public long getItemPrice(int itemID)
 	{
-		return getItemPrice(itemID, false);
+		return getItemPrice(itemID, 1);
 	}
 
 	/**
 	 * Look up an item's price
 	 *
 	 * @param itemID item id
+	 * @param quantity item quantity
+	 * @return item price
+	 */
+	public long getItemPrice(int itemID, long quantity)
+	{
+		return getItemPrice(itemID, quantity, false);
+	}
+
+	/**
+	 * Look up an item's price
+	 *
+	 * @param itemID item id
+	 * @param quantity item quantity
 	 * @param ignoreUntradeableMap should the price returned ignore items that are not tradeable for coins in regular way
 	 * @return item price
 	 */
-	public int getItemPrice(int itemID, boolean ignoreUntradeableMap)
+	public long getItemPrice(int itemID, long quantity, boolean ignoreUntradeableMap)
 	{
 		if (itemID == ItemID.COINS_995)
 		{
-			return 1;
+			return quantity;
 		}
 		if (itemID == ItemID.PLATINUM_TOKEN)
 		{
-			return 1000;
+			return 1000 * quantity;
 		}
 		if (itemID == ItemID.MASTER_SCROLL_BOOK)
 		{
 			// Can only hold 13k tradeable teleport scrolls, unlikely this overflows an int
 			// as each scroll would need to be over 165k ea
+			final long bookValue = getItemPrice(ItemID.MASTER_SCROLL_BOOK_EMPTY, quantity);
 			int scrollValues = 0;
 			for (Map.Entry<Varbits, Integer> entry : SCROLL_BOOK_VARBITS.entrySet())
 			{
-				final ItemPrice scrollPrice = itemPrices.get(entry.getValue());
-				if (scrollPrice != null)
-				{
-					scrollValues += scrollPrice.getPrice() * client.getVarbitValue(entry.getKey().getId());
-				}
+				scrollValues += getItemPrice(entry.getValue(), client.getVarbitValue(entry.getKey().getId()));
 			}
-			return scrollValues;
+			return bookValue + scrollValues;
 		}
 
 		ItemComposition itemComposition = getItemComposition(itemID);
@@ -346,7 +356,7 @@ public class ItemManager
 		}
 		itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
 
-		int price = 0;
+		long price = 0;
 
 		final Collection<ItemMapping> mappedItems = ItemMapping.map(itemID);
 
@@ -356,7 +366,7 @@ public class ItemManager
 
 			if (ip != null)
 			{
-				price += ip.getPrice();
+				price += ip.getPrice() * quantity;
 			}
 		}
 		else
@@ -368,7 +378,7 @@ public class ItemManager
 					continue;
 				}
 
-				price += getItemPrice(mappedItem.getTradeableItem(), ignoreUntradeableMap) * mappedItem.getQuantity();
+				price += getItemPrice(mappedItem.getTradeableItem(), mappedItem.getQuantity(), ignoreUntradeableMap);
 			}
 		}
 

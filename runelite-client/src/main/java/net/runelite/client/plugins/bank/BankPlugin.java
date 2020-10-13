@@ -244,7 +244,7 @@ public class BankPlugin extends Plugin
 					if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
 					{
 						final int alchPrice = getHaPrice(child.getItemId());
-						geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
+						geTotal += itemManager.getItemPrice(child.getItemId(), child.getItemQuantity());
 						haTotal += (long) alchPrice * child.getItemQuantity();
 					}
 				}
@@ -380,7 +380,7 @@ public class BankPlugin extends Plugin
 
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int qty = itemQuantities.count(itemId);
-		final long gePrice = (long) itemManager.getItemPrice(itemId) * qty;
+		final long gePrice = itemManager.getItemPrice(itemId, qty);
 		final long haPrice = (long) itemComposition.getHaPrice() * qty;
 
 		long value = Math.max(gePrice, haPrice);
@@ -481,7 +481,7 @@ public class BankPlugin extends Plugin
 			}
 
 			alch += (long) getHaPrice(id) * qty;
-			ge += (long) itemManager.getItemPrice(id) * qty;
+			ge += itemManager.getItemPrice(id, qty);
 		}
 
 		return new ContainerPrices(ge, alch);
