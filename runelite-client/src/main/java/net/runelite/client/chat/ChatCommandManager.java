@@ -85,23 +85,6 @@ public class ChatCommandManager implements ChatboxInputListener
 		}
 	}
 
-	public void registerCommandAlias(String command, String... aliases)
-	{
-		if (!commands.containsKey(command.toLowerCase()))
-		{
-			return;
-		}
-		ChatCommand chatCommand = commands.get(command.toLowerCase());
-		for (String alias : aliases)
-		{
-			if (commands.containsKey(alias.toLowerCase()))
-			{
-				continue;
-			}
-			commands.put(alias.toLowerCase(), chatCommand);
-		}
-	}
-
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
@@ -126,7 +109,6 @@ public class ChatCommandManager implements ChatboxInputListener
 		String message = chatMessage.getMessage();
 
 		String command = extractCommand(message);
-		System.out.println(command + " - " + message);
 		if (command == null)
 		{
 			return;

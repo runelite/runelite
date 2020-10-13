@@ -200,11 +200,26 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
 
-		chatCommandManager.registerCommandAlias(TOTAL_LEVEL_COMMAND_STRING, TOTAL_LEVEL_COMMAND_ALIAS);
-		chatCommandManager.registerCommandAlias(PRICE_COMMAND_STRING, PRICE_COMMAND_ALIAS);
-		chatCommandManager.registerCommandAlias(LEVEL_COMMAND_STRING, LEVEL_COMMAND_ALIAS);
-		chatCommandManager.registerCommandAlias(CMB_COMMAND_STRING, CMB_COMMAND_ALIAS);
-		chatCommandManager.registerCommandAlias(CLUES_COMMAND_STRING, CLUES_COMMAND_ALIAS);
+		for (String alias : TOTAL_LEVEL_COMMAND_ALIAS)
+		{
+			chatCommandManager.registerCommandAsync(alias, this::playerSkillLookup);
+		}
+		for (String alias : PRICE_COMMAND_ALIAS)
+		{
+			chatCommandManager.registerCommand(alias, this::itemPriceLookup);
+		}
+		for (String alias : LEVEL_COMMAND_ALIAS)
+		{
+			chatCommandManager.registerCommandAsync(alias, this::playerSkillLookup);
+		}
+		for (String alias : CMB_COMMAND_ALIAS)
+		{
+			chatCommandManager.registerCommandAsync(alias, this::combatLevelLookup);
+		}
+		for (String alias : CLUES_COMMAND_ALIAS)
+		{
+			chatCommandManager.registerCommandAsync(alias, this::clueLookup);
+		}
 	}
 
 	@Override
