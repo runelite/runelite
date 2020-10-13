@@ -299,7 +299,7 @@ public class BankPlugin extends Plugin
 			}
 			else
 			{
-				stringBuilder.append(QuantityFormatter.quantityToStackSize(gePrice));
+				stringBuilder.append(QuantityFormatter.quantityToPreciseSIStack(gePrice));
 			}
 			stringBuilder.append(')');
 		}
@@ -319,7 +319,7 @@ public class BankPlugin extends Plugin
 			}
 			else
 			{
-				stringBuilder.append(QuantityFormatter.quantityToStackSize(haPrice));
+				stringBuilder.append(QuantityFormatter.quantityToPreciseSIStack(haPrice));
 			}
 			stringBuilder.append(')');
 		}

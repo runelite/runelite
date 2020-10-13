@@ -230,7 +230,7 @@ class LootTrackerBox extends JPanel
 			priceTypeString = priceType == LootTrackerPriceType.HIGH_ALCHEMY ? "HA: " : "GE: ";
 		}
 
-		priceLabel.setText(priceTypeString + QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
+		priceLabel.setText(priceTypeString + QuantityFormatter.quantityToPreciseSIStack(totalPrice) + " gp");
 		priceLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice) + " gp");
 
 		final long kills = getTotalKills();
@@ -376,7 +376,7 @@ class LootTrackerBox extends JPanel
 		final long haPrice = item.getTotalHaPrice();
 		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
 		return "<html>" + name + " x " + quantity + ignoredLabel
-			+ "<br>GE: " + QuantityFormatter.quantityToStackSize(gePrice)
-			+ "<br>HA: " + QuantityFormatter.quantityToStackSize(haPrice) + "</html>";
+			+ "<br>GE: " + QuantityFormatter.quantityToPreciseSIStack(gePrice)
+			+ "<br>HA: " + QuantityFormatter.quantityToPreciseSIStack(haPrice) + "</html>";
 	}
 }

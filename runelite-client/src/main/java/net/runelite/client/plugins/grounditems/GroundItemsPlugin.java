@@ -656,7 +656,7 @@ public class GroundItemsPlugin extends Plugin
 			else
 			{
 				notificationStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
+					.append(QuantityFormatter.quantityToPreciseSIStack(item.getQuantity()))
 					.append(")");
 			}
 		}

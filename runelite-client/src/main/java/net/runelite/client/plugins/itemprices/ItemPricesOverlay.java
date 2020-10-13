@@ -240,12 +240,12 @@ class ItemPricesOverlay extends Overlay
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("GE: ")
-				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
+				.append(QuantityFormatter.quantityToPreciseSIStack((long) gePrice * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(gePrice))
+					.append(QuantityFormatter.quantityToPreciseSIStack(gePrice))
 					.append(" ea)");
 			}
 		}
@@ -257,12 +257,12 @@ class ItemPricesOverlay extends Overlay
 			}
 
 			itemStringBuilder.append("HA: ")
-				.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
+				.append(QuantityFormatter.quantityToPreciseSIStack((long) haValue * qty))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(haValue))
+					.append(QuantityFormatter.quantityToPreciseSIStack(haValue))
 					.append(" ea)");
 			}
 		}

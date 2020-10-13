@@ -340,7 +340,7 @@ public class ItemStatPlugin extends Plugin
 
 		createSeparator(invContainer, invContainer.getHeight() - 40);
 
-		final String coinText = "You have " + QuantityFormatter.quantityToStackSize(getCurrentGP())
+		final String coinText = "You have " + QuantityFormatter.quantityToPreciseSIStack(getCurrentGP())
 			+ (getCurrentGP() == 1 ? " coin." : " coins.");
 
 		final Widget coinWidget = createText(invContainer, coinText, FontID.PLAIN_12, ORANGE_TEXT,
