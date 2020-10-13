@@ -44,7 +44,6 @@ import net.runelite.client.events.PrivateMessageInput;
 public class ChatCommandManager implements ChatboxInputListener
 {
 	private final Map<String, ChatCommand> commands = new ConcurrentHashMap<>();
-	private final Map<String, String> commandAliases = new ConcurrentHashMap<>();
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
@@ -78,20 +77,28 @@ public class ChatCommandManager implements ChatboxInputListener
 		commands.put(command.toLowerCase(), new ChatCommand(command, true, execute, input));
 	}
 
-	public void unregisterCommand(String command)
+	public void unregisterCommand(String... cmds)
 	{
-		commands.remove(command.toLowerCase());
+		for (String command : cmds)
+		{
+			commands.remove(command.toLowerCase());
+		}
 	}
 
 	public void registerCommandAlias(String command, String... aliases)
 	{
+		if (!commands.containsKey(command.toLowerCase()))
+		{
+			return;
+		}
+		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		for (String alias : aliases)
 		{
-			if (commandAliases.containsKey(alias.toLowerCase()))
+			if (commands.containsKey(alias.toLowerCase()))
 			{
 				continue;
 			}
-			commandAliases.put(alias.toLowerCase(), command.toLowerCase());
+			commands.put(alias.toLowerCase(), chatCommand);
 		}
 	}
 
@@ -119,23 +126,10 @@ public class ChatCommandManager implements ChatboxInputListener
 		String message = chatMessage.getMessage();
 
 		String command = extractCommand(message);
+		System.out.println(command + " - " + message);
 		if (command == null)
 		{
 			return;
-		}
-
-		// Check if it's an alias, then change message to reflect the command it represents
-		if (commandAliases.containsKey(command.toLowerCase()))
-		{
-			command = commandAliases.get(command.toLowerCase());
-			if (message.indexOf(' ') == -1)
-			{
-				message = command;
-			}
-			else
-			{
-				message = command + message.substring(message.indexOf(' '));
-			}
 		}
 
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
@@ -143,15 +137,13 @@ public class ChatCommandManager implements ChatboxInputListener
 		{
 			return;
 		}
-
-		String finalMessage = message;
 		if (chatCommand.isAsync())
 		{
-			scheduledExecutorService.execute(() -> chatCommand.getExecute().accept(chatMessage, finalMessage));
+			scheduledExecutorService.execute(() -> chatCommand.getExecute().accept(chatMessage, message));
 		}
 		else
 		{
-			chatCommand.getExecute().accept(chatMessage, finalMessage);
+			chatCommand.getExecute().accept(chatMessage, message);
 		}
 	}
 

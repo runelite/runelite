@@ -129,6 +129,11 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String LEAGUE_POINTS_COMMAND = "!lp";
 	private static final String SOUL_WARS_ZEAL_COMMAND = "!sw";
 
+	private static final String[] PRICE_COMMAND_ALIAS = { "!pc" };
+	private static final String[] TOTAL_LEVEL_COMMAND_ALIAS = { "!overall" };
+	private static final String[] LEVEL_COMMAND_ALIAS = { "!level" };
+	private static final String[] CMB_COMMAND_ALIAS = { "!cb", "!cblvl" };
+	private static final String[] CLUES_COMMAND_ALIAS = { "!clue" };
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
 
@@ -195,10 +200,11 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
 
-		chatCommandManager.registerCommandAlias(TOTAL_LEVEL_COMMAND_STRING, "!overall");
-		chatCommandManager.registerCommandAlias(PRICE_COMMAND_STRING, "!pc");
-		chatCommandManager.registerCommandAlias(LEVEL_COMMAND_STRING, "!level");
-		chatCommandManager.registerCommandAlias(CMB_COMMAND_STRING, "!cb", "!cblvl");
+		chatCommandManager.registerCommandAlias(TOTAL_LEVEL_COMMAND_STRING, TOTAL_LEVEL_COMMAND_ALIAS);
+		chatCommandManager.registerCommandAlias(PRICE_COMMAND_STRING, PRICE_COMMAND_ALIAS);
+		chatCommandManager.registerCommandAlias(LEVEL_COMMAND_STRING, LEVEL_COMMAND_ALIAS);
+		chatCommandManager.registerCommandAlias(CMB_COMMAND_STRING, CMB_COMMAND_ALIAS);
+		chatCommandManager.registerCommandAlias(CLUES_COMMAND_STRING, CLUES_COMMAND_ALIAS);
 	}
 
 	@Override
@@ -224,6 +230,12 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(GC_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 		chatCommandManager.unregisterCommand(SOUL_WARS_ZEAL_COMMAND);
+
+		chatCommandManager.unregisterCommand(TOTAL_LEVEL_COMMAND_ALIAS);
+		chatCommandManager.unregisterCommand(PRICE_COMMAND_ALIAS);
+		chatCommandManager.unregisterCommand(CMB_COMMAND_ALIAS);
+		chatCommandManager.unregisterCommand(LEVEL_COMMAND_ALIAS);
+		chatCommandManager.unregisterCommand(CLUES_COMMAND_ALIAS);
 	}
 
 	@Provides
@@ -634,13 +646,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		if (message.length() <= KILLCOUNT_COMMAND_STRING.length())
+		if (message.length() <= message.indexOf(' '))
 		{
 			return;
 		}
 
 		ChatMessageType type = chatMessage.getType();
-		String search = message.substring(KILLCOUNT_COMMAND_STRING.length() + 1);
+		String search = message.substring(message.indexOf(' ') + 1);
 
 		final String player;
 		if (type.equals(ChatMessageType.PRIVATECHATOUT))
@@ -846,13 +858,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		if (message.length() <= PB_COMMAND.length())
+		if (message.length() <= message.indexOf(' '))
 		{
 			return;
 		}
 
 		ChatMessageType type = chatMessage.getType();
-		String search = message.substring(PB_COMMAND.length() + 1);
+		String search = message.substring(message.indexOf(' ') + 1);
 
 		final String player;
 		if (type.equals(ChatMessageType.PRIVATECHATOUT))
@@ -1010,13 +1022,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		if (message.length() <= PRICE_COMMAND_STRING.length())
+		if (message.length() <= message.indexOf(' '))
 		{
 			return;
 		}
 
 		MessageNode messageNode = chatMessage.getMessageNode();
-		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
+		String search = message.substring(message.indexOf(' ') + 1);
 
 		List<ItemPrice> results = itemManager.search(search);
 
@@ -1070,18 +1082,14 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		String search;
-		if (message.equalsIgnoreCase(TOTAL_LEVEL_COMMAND_STRING))
+
+		if (message.indexOf(' ') == -1)
 		{
 			search = "total";
 		}
 		else
 		{
-			if (message.length() <= LEVEL_COMMAND_STRING.length())
-			{
-				return;
-			}
-
-			search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
+			search = message.substring(message.indexOf(' ') + 1);
 		}
 
 		search = SkillAbbreviations.getFullName(search);
@@ -1364,13 +1372,13 @@ public class ChatCommandsPlugin extends Plugin
 
 		String search;
 
-		if (message.equalsIgnoreCase(CLUES_COMMAND_STRING))
+		if (message.indexOf(' ') == -1)
 		{
 			search = "total";
 		}
 		else
 		{
-			search = message.substring(CLUES_COMMAND_STRING.length() + 1);
+			search = message.substring(message.indexOf(' ') + 1);
 		}
 
 		try
