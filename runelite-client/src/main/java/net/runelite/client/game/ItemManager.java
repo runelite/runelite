@@ -54,6 +54,7 @@ import net.runelite.api.ItemComposition;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.widgets.ItemQuantityMode;
+import net.runelite.api.Varbits;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.util.AsyncBufferedImage;
@@ -173,6 +174,24 @@ public class ItemManager
 		put(AGILITY_CAPE_13340, AGILITY_CAPE).
 		build();
 
+	private static final ImmutableMap<Integer, Integer> SCROLL_BOOK_VARBITS = ImmutableMap.<Integer, Integer>builder().
+		put(Varbits.SCROLL_BOOK_NARDAH, NARDAH_TELEPORT).
+		put(Varbits.SCROLL_BOOK_DIGSITE, DIGSITE_TELEPORT).
+		put(Varbits.SCROLL_BOOK_FELDIP_HILLS, FELDIP_HILLS_TELEPORT).
+		put(Varbits.SCROLL_BOOK_LUNAR_ISLE, LUNAR_ISLE_TELEPORT).
+		put(Varbits.SCROLL_BOOK_MORTON, MORTTON_TELEPORT).
+		put(Varbits.SCROLL_BOOK_PEST_CONTROL, PEST_CONTROL_TELEPORT).
+		put(Varbits.SCROLL_BOOK_PISCATORIS, PISCATORIS_TELEPORT).
+		put(Varbits.SCROLL_BOOK_TAI_BWO_WANNAI, TAI_BWO_WANNAI_TELEPORT).
+		put(Varbits.SCROLL_BOOK_IORWERTH_CAMP, IORWERTH_CAMP_TELEPORT).
+		put(Varbits.SCROLL_BOOK_MOS_LEHARMLESS, MOS_LEHARMLESS_TELEPORT).
+		put(Varbits.SCROLL_BOOK_LUMBERYARD, LUMBERYARD_TELEPORT).
+		put(Varbits.SCROLL_BOOK_ZULANDRA, ZULANDRA_TELEPORT).
+		put(Varbits.SCROLL_BOOK_KEY_MASTER, KEY_MASTER_TELEPORT).
+		put(Varbits.SCROLL_BOOK_REVENANT_CAVES, REVENANT_CAVE_TELEPORT).
+		put(Varbits.SCROLL_BOOK_WATSON, WATSON_TELEPORT).
+		build();
+
 	@Inject
 	public ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
 		ItemClient itemClient, RuneLiteConfig runeLiteConfig)
@@ -278,6 +297,22 @@ public class ItemManager
 		if (itemID == PLATINUM_TOKEN)
 		{
 			return 1000;
+		}
+		if (itemID == MASTER_SCROLL_BOOK)
+		{
+			// Can only hold 13k tradeable teleport scrolls, unlikely this overflows an int
+			// as each scroll would need to be over 165k ea
+			int scrollValues = 0;
+			for (Map.Entry<Integer, Integer> entry : SCROLL_BOOK_VARBITS.entrySet())
+			{
+				final ItemPrice scrollIp = itemPrices.get(entry.getValue());
+				if (scrollIp != null)
+				{
+					final int scrollPrice = useWikiPrice ? getWikiPrice(scrollIp) : scrollIp.getPrice();
+					scrollValues += scrollPrice * client.getVarbitValue(entry.getKey());
+				}
+			}
+			return scrollValues;
 		}
 
 		ItemComposition itemComposition = getItemComposition(itemID);
