@@ -157,6 +157,17 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 11,
+		keyName = "sessionTime",
+		name = "Session Command",
+		description = "Configures whether the time since login command is enabled<br> !session"
+	)
+	default boolean sessionTime()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 12,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",
 		description = "Enable hot key to clear single word at a time"
@@ -167,7 +178,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "clearEntireChatBox",
 		name = "Clear Chat Box",
 		description = "Enable hotkey to clear entire chat box"

@@ -229,4 +229,22 @@ public class ChatService
 			jedis.setex("layout." + name, (int) EXPIRE.getSeconds(), Joiner.on(' ').join(rooms));
 		}
 	}
+
+	public String getSession(String name)
+	{
+		String value;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			value = jedis.get("session." + name);
+		}
+		return value;
+	}
+
+	public void setSession(String name, String sessionTime)
+	{
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("session." + name, (int) EXPIRE.getSeconds(), sessionTime);
+		}
+	}
 }

@@ -235,4 +235,27 @@ public class ChatController
 
 		return layout;
 	}
+
+	@PostMapping("/session")
+	public void submitSession(@RequestParam String name, @RequestParam String sessionTime)
+	{
+		if (sessionTime == null)
+		{
+			return;
+		}
+
+		chatService.setSession(name, sessionTime);
+	}
+
+	@GetMapping("/session")
+	public String getSession(@RequestParam String name)
+	{
+		String sessionTime = chatService.getSession(name);
+		if (sessionTime == null)
+		{
+			throw new NotFoundException();
+		}
+
+		return sessionTime;
+	}
 }
