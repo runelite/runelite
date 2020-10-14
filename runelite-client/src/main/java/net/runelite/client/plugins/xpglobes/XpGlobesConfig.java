@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Steve <steve.rs.dev@gmail.com>
+ * Copyright (c) 2019, Slay to Stay <github.com/slaytostay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -170,5 +171,16 @@ public interface XpGlobesConfig extends Config
 	default int xpOrbDuration()
 	{
 		return 10;
+	}
+
+	@ConfigItem(
+		keyName = "trackNextLevelOnly",
+		name = "Track next level only",
+		description = "Ignore the in-game skill goals for xp orbs",
+		position = 9
+	)
+	default boolean trackNextLevelOnly()
+	{
+		return false;
 	}
 }

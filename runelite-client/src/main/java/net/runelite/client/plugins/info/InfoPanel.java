@@ -114,7 +114,7 @@ public class InfoPanel extends PluginPanel
 
 		final Font smallFont = FontManager.getRunescapeSmallFont();
 
-		JLabel version = new JLabel(htmlLabel("RuneLite version: ", RuneLiteProperties.getVersion()));
+		JLabel version = new JLabel(htmlLabel("ChunkLite version: ", RuneLiteProperties.getVersion()));
 		version.setFont(smallFont);
 
 		JLabel revision = new JLabel();
@@ -131,6 +131,9 @@ public class InfoPanel extends PluginPanel
 		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
 			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
 		launcher.setFont(smallFont);
+
+		JLabel credit = new JLabel(htmlLabel("Created by: ", "Slay to Stay"));
+		credit.setFont(smallFont);
 
 		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		loggedLabel.setFont(smallFont);
@@ -152,6 +155,7 @@ public class InfoPanel extends PluginPanel
 		versionPanel.add(version);
 		versionPanel.add(revision);
 		versionPanel.add(launcher);
+		versionPanel.add(credit);
 		versionPanel.add(Box.createGlue());
 		versionPanel.add(loggedLabel);
 		versionPanel.add(emailLabel);
@@ -176,7 +180,7 @@ public class InfoPanel extends PluginPanel
 		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", RuneLiteProperties.getGithubLink()));
 		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "Discord server", RuneLiteProperties.getDiscordInvite()));
 		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", RuneLiteProperties.getPatreonLink()));
-		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", RuneLiteProperties.getWikiLink()));
+		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "ChunkLite and plugins", RuneLiteProperties.getWikiLink()));
 
 		add(versionPanel, BorderLayout.NORTH);
 		add(actionsContainer, BorderLayout.CENTER);

@@ -91,6 +91,9 @@ enum Emoji
 	GORILLA(":G"),
 	PLEADING("(n_n)"),
 	XD("Xd"),
+	PIGCHAMO("Pigchamo"),
+	FIVEHEAD("5head"),
+	CAVES(":caves:")
 	;
 
 	private static final Map<String, Emoji> emojiMap;

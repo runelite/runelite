@@ -87,9 +87,6 @@ public class CannonPlugin extends Plugin
 	private WorldPoint cannonPosition;
 
 	@Getter
-	private int cannonWorld = -1;
-
-	@Getter
 	private GameObject cannon;
 
 	@Getter
@@ -142,7 +139,6 @@ public class CannonPlugin extends Plugin
 		overlayManager.remove(cannonOverlay);
 		overlayManager.remove(cannonSpotOverlay);
 		cannonPlaced = false;
-		cannonWorld = -1;
 		cannonPosition = null;
 		cannonBallNotificationSent = false;
 		cballsLeft = 0;
@@ -251,7 +247,6 @@ public class CannonPlugin extends Plugin
 				&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
 			{
 				cannonPosition = gameObject.getWorldLocation();
-				cannonWorld = client.getWorld();
 				cannon = gameObject;
 			}
 		}
@@ -262,7 +257,7 @@ public class CannonPlugin extends Plugin
 	{
 		Projectile projectile = event.getProjectile();
 
-		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL) && cannonPosition != null && cannonWorld == client.getWorld())
+		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL) && cannonPosition != null)
 		{
 			WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 

@@ -82,23 +82,9 @@ class FarmingContractInfoBox extends InfoBox
 				contractColor = ColorScheme.PROGRESS_ERROR_COLOR;
 				break;
 			case IN_PROGRESS:
-				CropState cropState = manager.getContractCropState();
-				switch (cropState)
-				{
-					case DISEASED:
-						contractDescription = "Diseased";
-						contractColor = cropState.getColor();
-						break;
-					case DEAD:
-						contractDescription = "Dead";
-						contractColor = cropState.getColor();
-						break;
-					default:
-						contractDescription = "Ready " + TabContentPanel.getFormattedEstimate(manager.getCompletionTime() - Instant.now().getEpochSecond(),
-							config.timeFormatMode());
-						contractColor = Color.GRAY;
-						break;
-				}
+				contractDescription = "Ready " + TabContentPanel.getFormattedEstimate(manager.getCompletionTime() - Instant.now().getEpochSecond(),
+					config.timeFormatMode());
+				contractColor = Color.GRAY;
 				break;
 			case EMPTY:
 			case UNKNOWN:

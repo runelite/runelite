@@ -29,15 +29,11 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
-import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.client.game.ItemManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.ComponentOrientation;
-import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
@@ -46,17 +42,15 @@ public class MotherlodeGemOverlay extends OverlayPanel
 	private final MotherlodePlugin plugin;
 	private final MotherlodeSession motherlodeSession;
 	private final MotherlodeConfig config;
-	private final ItemManager itemManager;
 
 	@Inject
-	MotherlodeGemOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager)
+	MotherlodeGemOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
 		this.motherlodeSession = motherlodeSession;
 		this.config = config;
-		this.itemManager = itemManager;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Gem overlay"));
 	}
 
@@ -83,61 +77,38 @@ public class MotherlodeGemOverlay extends OverlayPanel
 		int emeraldsFound = session.getEmeraldsFound();
 		int sapphiresFound = session.getSapphiresFound();
 
-		if (config.showLootIcons())
+		panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
+
+		if (diamondsFound > 0)
 		{
-			panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
-			if (diamondsFound > 0)
-			{
-				panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.UNCUT_DIAMOND, diamondsFound, true)));
-			}
-			if (rubiesFound > 0)
-			{
-				panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.UNCUT_RUBY, rubiesFound, true)));
-			}
-			if (emeraldsFound > 0)
-			{
-				panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.UNCUT_EMERALD, emeraldsFound, true)));
-			}
-			if (sapphiresFound > 0)
-			{
-				panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.UNCUT_SAPPHIRE, sapphiresFound, true)));
-			}
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Diamonds:")
+				.right(Integer.toString(diamondsFound))
+				.build());
 		}
-		else
+
+		if (rubiesFound > 0)
 		{
-			panelComponent.setOrientation(ComponentOrientation.VERTICAL);
-			panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
-			if (diamondsFound > 0)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Diamonds:")
-					.right(Integer.toString(diamondsFound))
-					.build());
-			}
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Rubies:")
+				.right(Integer.toString(rubiesFound))
+				.build());
+		}
 
-			if (rubiesFound > 0)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Rubies:")
-					.right(Integer.toString(rubiesFound))
-					.build());
-			}
+		if (emeraldsFound > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Emeralds:")
+				.right(Integer.toString(emeraldsFound))
+				.build());
+		}
 
-			if (emeraldsFound > 0)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Emeralds:")
-					.right(Integer.toString(emeraldsFound))
-					.build());
-			}
-
-			if (sapphiresFound > 0)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Sapphires:")
-					.right(Integer.toString(sapphiresFound))
-					.build());
-			}
+		if (sapphiresFound > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Sapphires:")
+				.right(Integer.toString(sapphiresFound))
+				.build());
 		}
 
 		return super.render(graphics);

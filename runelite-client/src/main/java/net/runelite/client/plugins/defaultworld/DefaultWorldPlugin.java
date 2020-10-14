@@ -122,9 +122,7 @@ public class DefaultWorldPlugin extends Plugin
 			log.warn("Failed to lookup worlds.");
 			return;
 		}
-
 		final World world = worldResult.findWorld(correctedWorld);
-
 		if (world != null)
 		{
 			final net.runelite.api.World rsWorld = client.createWorld();

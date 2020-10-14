@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Steve <steve.rs.dev@gmail.com>
+ * Copyright (c) 2019, Slay to Stay <github.com/slaytostay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,6 +41,7 @@ import java.time.Instant;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Point;
 import net.runelite.client.game.SkillIconManager;
@@ -106,8 +108,12 @@ public class XpGlobesOverlay extends Overlay
 		int curDrawX = 0;
 		for (final XpGlobe xpGlobe : xpGlobes)
 		{
-			int startXp = xpTrackerService.getStartGoalXp(xpGlobe.getSkill());
-			int goalXp = xpTrackerService.getEndGoalXp(xpGlobe.getSkill());
+			int startXp = config.trackNextLevelOnly() ?
+					Experience.getXpForLevel(xpGlobe.getCurrentLevel()) :
+					xpTrackerService.getStartGoalXp(xpGlobe.getSkill());
+			int goalXp = config.trackNextLevelOnly() ?
+					Experience.getXpForLevel(xpGlobe.getCurrentLevel() + 1) :
+					xpTrackerService.getEndGoalXp(xpGlobe.getSkill());
 			renderProgressCircle(graphics, xpGlobe, startXp, goalXp, curDrawX, 0, getBounds());
 			curDrawX += MINIMUM_STEP + config.xpOrbSize();
 		}

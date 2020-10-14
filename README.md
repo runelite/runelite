@@ -1,21 +1,15 @@
-![](https://runelite.net/img/logo.png)
+![](https://cdn.discordapp.com/attachments/544989120036995072/583409161920970762/Chunklite_icon.png)
 # runelite [![Travis](https://img.shields.io/travis/runelite/runelite.svg)](https://travis-ci.org/runelite/runelite) [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/mePCs8U)
 
-RuneLite is a free, open source OldSchool RuneScape client.
+ChunkLite is a version of [RuneLite](https://github.com/runelite/runelite) which includes the Region Locker plugin. Which adds a visual aid for chunk based accounts such as [Pookaguy's OneChunkMan](https://www.youtube.com/channel/UCWX9WjEHpy2LdNt2C8spCcg).
 
-If you have any questions, please join our IRC channel on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4) or alternatively our [Discord](https://discord.gg/mePCs8U) server.
-
-## Project Layout
-
-- [cache](cache/src/main/java/net/runelite/cache) - Libraries used for reading/writing cache files, as well as the data in it
-- [http-api](http-api/src/main/java/net/runelite/http/api) - API for api.runelite.net
-- [http-service](http-service/src/main/java/net/runelite/http/service) - Service for api.runelite.net
-- [runelite-api](runelite-api/src/main/java/net/runelite/api) - RuneLite API, interfaces for accessing the client
-- [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
+If you have any questions, please join our [Discord](https://discord.gg/cB5HvXQ) server.
 
 ## Usage
 
-Open the project in your IDE as a Maven project, build the root module and then run the RuneLite class in runelite-client.  
+ChunkLite can be downloaded from the [Releases](https://github.com/Mutorials/runelite/releases) page. For more information on how to install and troubleshoot vist the [ChunkLite Wiki](https://github.com/Mutorials/runelite/wiki)
+
+If you want to build the client yourself. Open the project in your IDE as a Maven project, build the root module and then run the RuneLite class in runelite-client.  
 For more information visit the [RuneLite Wiki](https://github.com/runelite/runelite/wiki).
 
 ### License

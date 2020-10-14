@@ -58,9 +58,6 @@ public class FarmingContractManager
 	@Getter
 	private SummaryState summary = SummaryState.UNKNOWN;
 
-	@Getter
-	private CropState contractCropState;
-
 	@Inject
 	private Client client;
 
@@ -232,10 +229,7 @@ public class FarmingContractManager
 		PatchImplementation patchImplementation = contract.getPatchImplementation();
 
 		boolean hasEmptyPatch = false;
-		boolean hasDiseasedPatch = false;
-		boolean hasDeadPatch = false;
 		completionTime = Long.MAX_VALUE;
-		contractCropState = null;
 		for (FarmingPatch patch : farmingWorld.getFarmingGuildRegion().getPatches())
 		{
 			if (patch.getImplementation() != patchImplementation)
@@ -250,76 +244,43 @@ public class FarmingContractManager
 			}
 
 			Produce produce = prediction.getProduce();
-			CropState state = prediction.getCropState();
 			if (completionTime == Long.MAX_VALUE)
 			{
 				if (produce == null || produce == Produce.WEEDS)
 				{
-					// Don't report the empty state if there's a dead or diseased one
-					if (!(hasDiseasedPatch || hasDeadPatch))
-					{
-						summary = SummaryState.EMPTY;
-					}
+					summary = SummaryState.EMPTY;
 					hasEmptyPatch = true;
 					continue;
 				}
 
-				if ((contract.requiresHealthCheck() && state == CropState.HARVESTABLE)
-					&& !(hasEmptyPatch || hasDiseasedPatch || hasDeadPatch))
+				if ((contract.requiresHealthCheck() && prediction.getCropState() == CropState.HARVESTABLE)
+					&& !hasEmptyPatch)
 				{
 					summary = SummaryState.OCCUPIED;
-					// Don't let this run into the "Completed" section!
-					continue;
 				}
 			}
 
-			// Herbs always turn into ANYHERB when dead, so let them through.
-			if (produce != contract && produce != Produce.ANYHERB)
+			if (produce != contract)
 			{
-				if (!(hasEmptyPatch || hasDiseasedPatch || hasDeadPatch) && completionTime == Long.MAX_VALUE)
+				if (!hasEmptyPatch && completionTime == Long.MAX_VALUE)
 				{
 					summary = SummaryState.OCCUPIED;
 				}
 			}
 			else
 			{
-				// Ignore if crop is dead but there's another one in progress (either normal or diseased)
-				if (state == CropState.DEAD && (hasDiseasedPatch || completionTime != Long.MAX_VALUE))
-				{
-					continue;
-				}
+				long estimatedTime = Math.min(prediction.getDoneEstimate(), completionTime);
 
-				// Ignore if crop is diseased but there's another patch in progress
-				if (state == CropState.DISEASED && completionTime != Long.MAX_VALUE)
+				if (estimatedTime <= Instant.now().getEpochSecond())
 				{
-					continue;
-				}
-
-				contractCropState = state;
-				if (contractCropState == CropState.DISEASED)
-				{
-					hasDiseasedPatch = true;
-					summary = SummaryState.IN_PROGRESS;
-				}
-				else if (contractCropState == CropState.DEAD)
-				{
-					hasDeadPatch = true;
-					summary = SummaryState.IN_PROGRESS;
+					summary = SummaryState.COMPLETED;
+					completionTime = 0;
+					break;
 				}
 				else
 				{
-					long estimatedTime = Math.min(prediction.getDoneEstimate(), completionTime);
-					if (estimatedTime <= Instant.now().getEpochSecond())
-					{
-						summary = SummaryState.COMPLETED;
-						completionTime = 0;
-						break;
-					}
-					else
-					{
-						summary = SummaryState.IN_PROGRESS;
-						completionTime = estimatedTime;
-					}
+					summary = SummaryState.IN_PROGRESS;
+					completionTime = estimatedTime;
 				}
 			}
 		}

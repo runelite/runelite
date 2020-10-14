@@ -99,10 +99,10 @@ public class ConfigManager
 
 	@Inject
 	public ConfigManager(
-		@Named("config") File config,
-		ScheduledExecutorService scheduledExecutorService,
-		EventBus eventBus,
-		OkHttpClient okHttpClient)
+			@Named("config") File config,
+			ScheduledExecutorService scheduledExecutorService,
+			EventBus eventBus,
+			OkHttpClient okHttpClient)
 	{
 		this.settingsFileInput = config;
 		this.eventBus = eventBus;
@@ -369,9 +369,9 @@ public class ConfigManager
 		}
 
 		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
-			{
-				clazz
-			}, handler);
+				{
+						clazz
+				}, handler);
 
 		return t;
 	}
@@ -470,43 +470,43 @@ public class ConfigManager
 		}
 
 		final List<ConfigSectionDescriptor> sections = Arrays.stream(inter.getDeclaredFields())
-			.filter(m -> m.isAnnotationPresent(ConfigSection.class) && m.getType() == String.class)
-			.map(m ->
-			{
-				try
+				.filter(m -> m.isAnnotationPresent(ConfigSection.class) && m.getType() == String.class)
+				.map(m ->
 				{
-					return new ConfigSectionDescriptor(
-						String.valueOf(m.get(inter)),
-						m.getDeclaredAnnotation(ConfigSection.class)
-					);
-				}
-				catch (IllegalAccessException e)
-				{
-					log.warn("Unable to load section {}::{}", inter.getSimpleName(), m.getName());
-					return null;
-				}
-			})
-			.filter(Objects::nonNull)
-			.sorted((a, b) -> ComparisonChain.start()
-				.compare(a.getSection().position(), b.getSection().position())
-				.compare(a.getSection().name(), b.getSection().name())
-				.result())
-			.collect(Collectors.toList());
+					try
+					{
+						return new ConfigSectionDescriptor(
+								String.valueOf(m.get(inter)),
+								m.getDeclaredAnnotation(ConfigSection.class)
+						);
+					}
+					catch (IllegalAccessException e)
+					{
+						log.warn("Unable to load section {}::{}", inter.getSimpleName(), m.getName());
+						return null;
+					}
+				})
+				.filter(Objects::nonNull)
+				.sorted((a, b) -> ComparisonChain.start()
+						.compare(a.getSection().position(), b.getSection().position())
+						.compare(a.getSection().name(), b.getSection().name())
+						.result())
+				.collect(Collectors.toList());
 
 		final List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
-			.filter(m -> m.getParameterCount() == 0 && m.isAnnotationPresent(ConfigItem.class))
-			.map(m -> new ConfigItemDescriptor(
-				m.getDeclaredAnnotation(ConfigItem.class),
-				m.getReturnType(),
-				m.getDeclaredAnnotation(Range.class),
-				m.getDeclaredAnnotation(Alpha.class),
-				m.getDeclaredAnnotation(Units.class)
-			))
-			.sorted((a, b) -> ComparisonChain.start()
-				.compare(a.getItem().position(), b.getItem().position())
-				.compare(a.getItem().name(), b.getItem().name())
-				.result())
-			.collect(Collectors.toList());
+				.filter(m -> m.getParameterCount() == 0 && m.isAnnotationPresent(ConfigItem.class))
+				.map(m -> new ConfigItemDescriptor(
+						m.getDeclaredAnnotation(ConfigItem.class),
+						m.getReturnType(),
+						m.getDeclaredAnnotation(Range.class),
+						m.getDeclaredAnnotation(Alpha.class),
+						m.getDeclaredAnnotation(Units.class)
+				))
+				.sorted((a, b) -> ComparisonChain.start()
+						.compare(a.getItem().position(), b.getItem().position())
+						.compare(a.getItem().name(), b.getItem().name())
+						.result())
+				.collect(Collectors.toList());
 
 		return new ConfigDescriptor(group, sections, items);
 	}

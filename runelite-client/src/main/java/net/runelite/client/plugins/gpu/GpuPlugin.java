@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Slay to Stay <https://github.com/slaytostay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -91,6 +92,7 @@ import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
+import net.runelite.client.plugins.regionlocker.RegionLocker;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.util.OSType;
 
@@ -150,6 +152,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	static final Shader PROGRAM = new Shader()
 		.add(GL4.GL_VERTEX_SHADER, "vert.glsl")
+		.add(GL4.GL_GEOMETRY_SHADER, "geom.glsl")
 		.add(GL4.GL_FRAGMENT_SHADER, "frag.glsl");
 
 	static final Shader COMPUTE_PROGRAM = new Shader()
@@ -200,6 +203,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniformBufferId;
 	private final IntBuffer uniformBuffer = GpuIntBuffer.allocateDirect(5 + 3 + 2048 * 4);
 	private final float[] textureOffsets = new float[128];
+
+	private final int[] loadedLockedRegions = new int[12];
 
 	private GpuIntBuffer vertexBuffer;
 	private GpuFloatBuffer uvBuffer;
@@ -270,6 +275,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockLarge;
 	private int uniBlockMain;
 	private int uniSmoothBanding;
+
+	private int uniUseGray;
+	private int uniUseHardBorder;
+	private int uniGrayAmount;
+	private int uniGrayColor;
+	private int uniBaseX;
+	private int uniBaseY;
+	private int uniLockedRegions;
 
 	@Override
 	protected void startUp()
@@ -537,6 +550,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 
+		uniUseGray = gl.glGetUniformLocation(glProgram, "useGray");
+		uniUseHardBorder = gl.glGetUniformLocation(glProgram, "useHardBorder");
+		uniGrayAmount = gl.glGetUniformLocation(glProgram, "configGrayAmount");
+		uniGrayColor = gl.glGetUniformLocation(glProgram, "configGrayColor");
+		uniBaseX = gl.glGetUniformLocation(glProgram, "baseX");
+		uniBaseY = gl.glGetUniformLocation(glProgram, "baseY");
+		uniLockedRegions = gl.glGetUniformLocation(glProgram, "lockedRegions");
+
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
 		uniTexSamplingMode = gl.glGetUniformLocation(glUiProgram, "samplingMode");
 		uniTexTargetDimensions = gl.glGetUniformLocation(glUiProgram, "targetDimensions");
@@ -765,6 +786,61 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glDeleteRenderbuffers(gl, rboSceneHandle);
 			rboSceneHandle = -1;
 		}
+	}
+
+	private void createProjectionMatrix(float left, float right, float bottom, float top, float near, float far)
+	{
+		// create a standard orthographic projection
+		float tx = -((right + left) / (right - left));
+		float ty = -((top + bottom) / (top - bottom));
+		float tz = -((far + near) / (far - near));
+
+		gl.glUseProgram(glProgram);
+
+		float[] matrix = new float[]{
+			2 / (right - left), 0, 0, 0,
+			0, 2 / (top - bottom), 0, 0,
+			0, 0, -2 / (far - near), 0,
+			tx, ty, tz, 1
+		};
+		gl.glUniformMatrix4fv(uniProjectionMatrix, 1, false, matrix, 0);
+
+		gl.glUseProgram(0);
+	}
+
+	private boolean instanceRegionUnlocked()
+	{
+		for (int i = 0; i < client.getMapRegions().length; i++)
+		{
+			int region = client.getMapRegions()[i];
+			if (RegionLocker.hasRegion(region)) return true;
+		}
+		return false;
+	}
+
+	private void createLockedRegions()
+	{
+		int bx, by;
+		bx = client.getBaseX() * 128;
+		by = client.getBaseY() * 128;
+
+		for (int i = 0; i < loadedLockedRegions.length; i++)
+		{
+			loadedLockedRegions[i] = 0;
+		}
+
+		for (int i = 0; i < client.getMapRegions().length; i++)
+		{
+			int region = client.getMapRegions()[i];
+			if (RegionLocker.hasRegion(region))
+			{
+				loadedLockedRegions[i] = region;
+			}
+		}
+
+		gl.glUniform1i(uniBaseX, bx);
+		gl.glUniform1i(uniBaseY, by);
+		gl.glUniform1iv(uniLockedRegions, 12, loadedLockedRegions, 0);
 	}
 
 	@Override
@@ -1117,6 +1193,19 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform4f(uniFogColor, (sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
 			gl.glUniform1i(uniFogDepth, fogDepth);
 			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
+
+			gl.glUniform1i(uniUseHardBorder, RegionLocker.hardBorder ? 1 : 0);
+			gl.glUniform1f(uniGrayAmount, RegionLocker.grayAmount / 255f);
+			gl.glUniform4f(uniGrayColor, RegionLocker.grayColor.getRed() / 255f, RegionLocker.grayColor.getGreen() / 255f, RegionLocker.grayColor.getBlue() / 255f, RegionLocker.grayColor.getAlpha() / 255f);
+			if (!RegionLocker.renderLockedRegions || (client.isInInstancedRegion() && instanceRegionUnlocked()))
+			{
+				gl.glUniform1i(uniUseGray, 0);
+			}
+			else
+			{
+				gl.glUniform1i(uniUseGray, 1);
+				createLockedRegions();
+			}
 
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
