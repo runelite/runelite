@@ -49,6 +49,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.MenuAction;
@@ -586,9 +587,16 @@ public class RaidsPlugin extends Plugin
 				return null;
 			}
 
+			Integer lobbyIndex = findLobbyIndex(gridBase);
+
+			if (lobbyIndex == null)
+			{
+				return null;
+			}
+
 			raid = new Raid(
 				new WorldPoint(client.getBaseX() + gridBase.getX(), client.getBaseY() + gridBase.getY(), LOBBY_PLANE),
-				findLobbyIndex(gridBase)
+				lobbyIndex
 			);
 		}
 
@@ -894,8 +902,22 @@ public class RaidsPlugin extends Plugin
 	 *     0 1 2 3
 	 *     4 5 6 7
 	 */
-	private int findLobbyIndex(Point gridBase)
+	private Integer findLobbyIndex(Point gridBase)
 	{
+		/*
+		 * If the room to the right of the starting room can't be seen then return null
+		 * This should only happen if the user turns on the raid plugin while already inside of a raid and not in the
+		 * starting location
+		 *
+		 * The player should always be able to see both rows of rooms (on the y axis) so the second check is not needed
+		 * but is included to be safe
+		 */
+		if (Constants.SCENE_SIZE <= gridBase.getX() + RaidRoom.ROOM_MAX_SIZE
+			|| Constants.SCENE_SIZE <= gridBase.getY() + RaidRoom.ROOM_MAX_SIZE)
+		{
+			return null;
+		}
+
 		int x;
 		int y;
 
