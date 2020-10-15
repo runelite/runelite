@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.cache.definitions.ObjectDefinition;
+import net.runelite.cache.definitions.exporters.DefaultExporter;
 import net.runelite.cache.definitions.exporters.ObjectExporter;
 import net.runelite.cache.definitions.loaders.ObjectLoader;
 import net.runelite.cache.fs.Archive;
@@ -85,7 +86,7 @@ public class ObjectManager
 
 		for (ObjectDefinition def : objects.values())
 		{
-			ObjectExporter exporter = new ObjectExporter(def);
+			DefaultExporter exporter = new DefaultExporter(def);
 
 			File targ = new File(out, def.getId() + ".json");
 			exporter.exportTo(targ);

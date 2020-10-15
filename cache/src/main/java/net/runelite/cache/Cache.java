@@ -45,6 +45,7 @@ public class Cache
 		options.addOption(null, "npcs", true, "directory to dump npcs to");
 		options.addOption(null, "objects", true, "directory to dump objects to");
 		options.addOption(null, "sprites", true, "directory to dump sprites to");
+		options.addOption(null, "models", true, "directory to dump models to");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd;
@@ -115,6 +116,19 @@ public class Cache
 			System.out.println("Dumping sprites to " + spritedir);
 			dumpSprites(store, new File(spritedir));
 		}
+		else if (cmd.hasOption("models"))
+		{
+			String modelsdir = cmd.getOptionValue("models");
+
+			if (modelsdir == null)
+			{
+				System.err.println("Models directory must be specified");
+				return;
+			}
+
+			System.out.println("Dumping models to " + modelsdir);
+			dumpModels(store, new File(modelsdir));
+		}
 		else
 		{
 			System.err.println("Nothing to do");
@@ -157,5 +171,11 @@ public class Cache
 		SpriteManager dumper = new SpriteManager(store);
 		dumper.load();
 		dumper.export(spritedir);
+	}
+	private static void dumpModels(Store store, File modeldir) throws IOException
+	{
+		ModelManager dumper = new ModelManager(store);
+		dumper.load();
+		dumper.export(modeldir);
 	}
 }
