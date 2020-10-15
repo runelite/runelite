@@ -114,6 +114,25 @@ public class ChatNotificationsPluginTest
 	}
 
 	@Test
+	public void testMatchEntireMessage()
+	{
+		when(config.highlightWordsString()).thenReturn(".Your divine potion effect is about to expire.");
+
+		String message = ".Your divine potion effect is about to expire.";
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn(message);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp(); // load highlight config
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setValue("<colHIGHLIGHT>.Your divine potion effect is about to expire.<colNORMAL>");
+	}
+
+	@Test
 	public void testFullStop()
 	{
 		when(config.highlightWordsString()).thenReturn("test");
