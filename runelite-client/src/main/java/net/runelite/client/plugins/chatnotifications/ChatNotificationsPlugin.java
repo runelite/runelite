@@ -120,8 +120,8 @@ public class ChatNotificationsPlugin extends Plugin
 				.map(this::quoteAndIgnoreColor) // regex escape and ignore nested colors in the target message
 				.collect(Collectors.joining("|"));
 			// To match <word> \b doesn't work due to <> not being in \w,
-			// so match \b or \s
-			highlightMatcher = Pattern.compile("(?:\\b|(?<=\\s))(" + joined + ")(?:\\b|(?=\\s))", Pattern.CASE_INSENSITIVE);
+			// so match \b or \s, as well as \A and \z for beginning and end of input respectively
+			highlightMatcher = Pattern.compile("(?:\\b|(?<=\\s)|\\A)(?:" + joined + ")(?:\\b|(?=\\s)|\\z)", Pattern.CASE_INSENSITIVE);
 		}
 	}
 
