@@ -351,6 +351,19 @@ public class ImageUtil
 		}
 		catch (IllegalArgumentException e)
 		{
+			final String filePath;
+
+			if (path.startsWith("/"))
+			{
+				filePath = path;
+			}
+			else
+			{
+				filePath = c.getPackage().getName().replace(".", "/") + "/" + path;
+			}
+
+			log.warn("Failed to load image from class: {}, path: {}", c.getName(), filePath);
+
 			throw new IllegalArgumentException(path, e);
 		}
 		catch (IOException e)
