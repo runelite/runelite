@@ -126,6 +126,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String PB_COMMAND = "!pb";
 	private static final String GC_COMMAND_STRING = "!gc";
 	private static final String DUEL_ARENA_COMMAND = "!duels";
+	private static final String LEAGUE_POINTS_COMMAND = "!lp";
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -184,6 +185,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(BOUNTY_HUNTER_ROGUE_COMMAND, this::bountyHunterRogueLookup);
 		chatCommandManager.registerCommandAsync(CLUES_COMMAND_STRING, this::clueLookup);
 		chatCommandManager.registerCommandAsync(LAST_MAN_STANDING_COMMAND, this::lastManStandingLookup);
+		chatCommandManager.registerCommandAsync(LEAGUE_POINTS_COMMAND, this::leaguePointsLookup);
 		chatCommandManager.registerCommandAsync(KILLCOUNT_COMMAND_STRING, this::killCountLookup, this::killCountSubmit);
 		chatCommandManager.registerCommandAsync(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
 		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
@@ -202,7 +204,11 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(CMB_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(PRICE_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(LEVEL_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(BOUNTY_HUNTER_HUNTER_COMMAND);
+		chatCommandManager.unregisterCommand(BOUNTY_HUNTER_ROGUE_COMMAND);
 		chatCommandManager.unregisterCommand(CLUES_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(LAST_MAN_STANDING_COMMAND);
+		chatCommandManager.unregisterCommand(LEAGUE_POINTS_COMMAND);
 		chatCommandManager.unregisterCommand(KILLCOUNT_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(QP_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(PB_COMMAND);
@@ -1049,7 +1055,8 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param chatMessage The chat message containing the command.
 	 * @param message    The chat message
 	 */
-	private void playerSkillLookup(ChatMessage chatMessage, String message)
+	@VisibleForTesting
+	void playerSkillLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.lvl())
 		{
@@ -1214,6 +1221,16 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
+	private void leaguePointsLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.lp())
+		{
+			return;
+		}
+
+		minigameLookup(chatMessage, HiscoreSkill.LEAGUE_POINTS);
+	}
+
 	private void bountyHunterHunterLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.bh())
@@ -1250,7 +1267,13 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			final Skill hiscoreSkill;
 			final HiscoreLookup lookup = getCorrectLookupFor(chatMessage);
-			final HiscoreResult result = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
+
+			// League points only exist on the league hiscores
+			final HiscoreEndpoint endPoint = minigame == HiscoreSkill.LEAGUE_POINTS ?
+				HiscoreEndpoint.LEAGUE :
+				lookup.getEndpoint();
+
+			final HiscoreResult result = hiscoreClient.lookup(lookup.getName(), endPoint);
 
 			if (result == null)
 			{
@@ -1268,6 +1291,9 @@ public class ChatCommandsPlugin extends Plugin
 					break;
 				case LAST_MAN_STANDING:
 					hiscoreSkill = result.getLastManStanding();
+					break;
+				case LEAGUE_POINTS:
+					hiscoreSkill = result.getLeaguePoints();
 					break;
 				default:
 					log.warn("error looking up {} score: not implemented", minigame.getName().toLowerCase());
