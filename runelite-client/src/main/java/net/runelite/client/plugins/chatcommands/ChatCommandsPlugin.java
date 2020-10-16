@@ -202,7 +202,10 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(CMB_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(PRICE_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(LEVEL_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(BOUNTY_HUNTER_HUNTER_COMMAND);
+		chatCommandManager.unregisterCommand(BOUNTY_HUNTER_ROGUE_COMMAND);
 		chatCommandManager.unregisterCommand(CLUES_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(LAST_MAN_STANDING_COMMAND);
 		chatCommandManager.unregisterCommand(KILLCOUNT_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(QP_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(PB_COMMAND);
@@ -1049,7 +1052,8 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param chatMessage The chat message containing the command.
 	 * @param message    The chat message
 	 */
-	private void playerSkillLookup(ChatMessage chatMessage, String message)
+	@VisibleForTesting
+	void playerSkillLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.lvl())
 		{
