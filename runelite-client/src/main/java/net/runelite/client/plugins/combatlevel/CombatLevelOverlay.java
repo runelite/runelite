@@ -104,47 +104,38 @@ class CombatLevelOverlay extends Overlay
 		int prayerNeed = Experience.getNextCombatLevelPrayer(attackLevel, strengthLevel, defenceLevel, hitpointsLevel,
 			magicLevel, rangeLevel, prayerLevel);
 
-		if (client.getLocalPlayer().getCombatLevel() >= 125)
-		{
-			if (defenceLevel != Experience.MAX_REAL_LEVEL)
-			{
-				hpDefNeed = Experience.MAX_REAL_LEVEL - defenceLevel;
-			}
-			if (strengthLevel != Experience.MAX_REAL_LEVEL || attackLevel != Experience.MAX_REAL_LEVEL)
-			{
-				meleeNeed = (Experience.MAX_REAL_LEVEL - attackLevel) + (Experience.MAX_REAL_LEVEL - strengthLevel);
-			}
-			if (prayerLevel != Experience.MAX_REAL_LEVEL)
-			{
-				prayerNeed = Experience.getNextCombatLevelPrayer(Experience.MAX_REAL_LEVEL,
-						Experience.MAX_REAL_LEVEL, Experience.MAX_REAL_LEVEL, Experience.MAX_REAL_LEVEL,
-						Experience.MAX_REAL_LEVEL, Experience.MAX_REAL_LEVEL, prayerLevel);
-			}
-		}
-
 		// create tooltip string
 		StringBuilder sb = new StringBuilder();
-		sb.append(ColorUtil.wrapWithColorTag("Next combat level:</br>", COMBAT_LEVEL_COLOUR));
+		boolean isMeleeCombatDominating = ((attackLevel+strengthLevel) > (Experience.MAX_REAL_LEVEL / 2 + Experience.MAX_REAL_LEVEL));
 
-		if ((attackLevel + strengthLevel + meleeNeed) <= Experience.MAX_REAL_LEVEL * 2)
+		if (client.getLocalPlayer().getCombatLevel() >= Experience.MAX_COMBAT_LEVEL)
 		{
-			sb.append(meleeNeed).append(" Attack/Strength</br>");
+			sb.append(ColorUtil.wrapWithColorTag("Max combat level achieved", COMBAT_LEVEL_COLOUR));
 		}
-		if ((hitpointsLevel + defenceLevel + hpDefNeed) <= Experience.MAX_REAL_LEVEL * 2)
+		else
 		{
-			sb.append(hpDefNeed).append(" Defence/Hitpoints</br>");
-		}
-		if ((rangeLevel + rangeNeed) <= Experience.MAX_REAL_LEVEL)
-		{
-			sb.append(rangeNeed).append(" Ranged</br>");
-		}
-		if ((magicLevel + magicNeed) <= Experience.MAX_REAL_LEVEL)
-		{
-			sb.append(magicNeed).append(" Magic</br>");
-		}
-		if ((prayerLevel + prayerNeed) <= Experience.MAX_REAL_LEVEL)
-		{
-			sb.append(prayerNeed).append(" Prayer");
+			sb.append(ColorUtil.wrapWithColorTag("Next combat level:</br>", COMBAT_LEVEL_COLOUR));
+
+			if ((attackLevel + strengthLevel) < Experience.MAX_REAL_LEVEL * 2)
+			{
+				sb.append(meleeNeed).append(" Attack/Strength</br>");
+			}
+			if ((hitpointsLevel + defenceLevel) < Experience.MAX_REAL_LEVEL * 2)
+			{
+				sb.append(hpDefNeed).append(" Defence/Hitpoints</br>");
+			}
+			if (rangeLevel < Experience.MAX_REAL_LEVEL && !isMeleeCombatDominating)
+			{
+				sb.append(rangeNeed).append(" Ranged</br>");
+			}
+			if (magicLevel < Experience.MAX_REAL_LEVEL && !isMeleeCombatDominating)
+			{
+				sb.append(magicNeed).append(" Magic</br>");
+			}
+			if (prayerLevel < Experience.MAX_REAL_LEVEL)
+			{
+				sb.append(prayerNeed).append(" Prayer");
+			}
 		}
 		return sb.toString();
 	}
