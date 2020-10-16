@@ -7,7 +7,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class DefaultExporter {
+public class DefaultExporter
+{
 	private final Object item;
 	private final Gson gson;
 

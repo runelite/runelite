@@ -9,7 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class ModelExporter {
+public class ModelExporter
+{
 	private final ModelDefinition model;
 
 	public ModelExporter(ModelDefinition model)
@@ -21,7 +22,7 @@ public class ModelExporter {
 	{
 		ObjExporter exporter = new ObjExporter(tm, model);
 		try (PrintWriter objWriter = new PrintWriter(new FileWriter(objFile));
-			 PrintWriter mtlWriter = new PrintWriter(new FileWriter(mtlFile)))
+			PrintWriter mtlWriter = new PrintWriter(new FileWriter(mtlFile)))
 		{
 			exporter.export(objWriter, mtlWriter);
 		}

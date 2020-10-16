@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ModelManager {
+public class ModelManager
+{
 
 	private final Store store;
 	private final Map<Integer, ModelDefinition> models = new HashMap<>();

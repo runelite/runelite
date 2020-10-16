@@ -115,7 +115,8 @@ public class Cache
 
 			System.out.println("Dumping sprites to " + spritedir);
 			dumpSprites(store, new File(spritedir));
-		}else if (cmd.hasOption("models"))
+		}
+		else if (cmd.hasOption("models"))
 		{
 			String modelsdir = cmd.getOptionValue("models");
 
