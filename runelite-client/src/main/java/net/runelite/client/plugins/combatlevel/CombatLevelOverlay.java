@@ -104,6 +104,24 @@ class CombatLevelOverlay extends Overlay
 		int prayerNeed = Experience.getNextCombatLevelPrayer(attackLevel, strengthLevel, defenceLevel, hitpointsLevel,
 			magicLevel, rangeLevel, prayerLevel);
 
+		if (client.getLocalPlayer().getCombatLevel() >= 125)
+		{
+			if (defenceLevel != Experience.MAX_REAL_LEVEL)
+			{
+				hpDefNeed = Experience.MAX_REAL_LEVEL - defenceLevel;
+			}
+			if (strengthLevel != Experience.MAX_REAL_LEVEL || attackLevel != Experience.MAX_REAL_LEVEL)
+			{
+				meleeNeed = (Experience.MAX_REAL_LEVEL - attackLevel) + (Experience.MAX_REAL_LEVEL - strengthLevel);
+			}
+			if (prayerLevel != Experience.MAX_REAL_LEVEL)
+			{
+				prayerNeed = Experience.getNextCombatLevelPrayer(Experience.MAX_REAL_LEVEL,
+						Experience.MAX_REAL_LEVEL, Experience.MAX_REAL_LEVEL, Experience.MAX_REAL_LEVEL,
+						Experience.MAX_REAL_LEVEL, Experience.MAX_REAL_LEVEL, prayerLevel);
+			}
+		}
+
 		// create tooltip string
 		StringBuilder sb = new StringBuilder();
 		sb.append(ColorUtil.wrapWithColorTag("Next combat level:</br>", COMBAT_LEVEL_COLOUR));
