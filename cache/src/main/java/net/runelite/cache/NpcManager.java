@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.cache.definitions.NpcDefinition;
-import net.runelite.cache.definitions.exporters.NpcExporter;
+import net.runelite.cache.definitions.exporters.DefaultExporter;
 import net.runelite.cache.definitions.loaders.NpcLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
@@ -85,7 +85,7 @@ public class NpcManager
 
 		for (NpcDefinition def : npcs.values())
 		{
-			NpcExporter exporter = new NpcExporter(def);
+			DefaultExporter exporter = new DefaultExporter(def);
 
 			File targ = new File(out, def.id + ".json");
 			exporter.exportTo(targ);

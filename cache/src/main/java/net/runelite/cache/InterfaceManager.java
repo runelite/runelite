@@ -28,7 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import net.runelite.cache.definitions.InterfaceDefinition;
-import net.runelite.cache.definitions.exporters.InterfaceExporter;
+import net.runelite.cache.definitions.exporters.DefaultExporter;
 import net.runelite.cache.definitions.loaders.InterfaceLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
@@ -126,7 +126,7 @@ public class InterfaceManager
 					continue;
 				}
 
-				InterfaceExporter exporter = new InterfaceExporter(def);
+				DefaultExporter exporter = new DefaultExporter(def);
 
 				File folder = new File(out, "" + (def.id >>> 16));
 				folder.mkdirs();
