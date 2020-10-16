@@ -31,7 +31,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.cache.definitions.ItemDefinition;
-import net.runelite.cache.definitions.exporters.DefaultExporter;
 import net.runelite.cache.definitions.exporters.ItemExporter;
 import net.runelite.cache.definitions.loaders.ItemLoader;
 import net.runelite.cache.definitions.providers.ItemProvider;
@@ -87,7 +86,7 @@ public class ItemManager implements ItemProvider
 
 		for (ItemDefinition def : items.values())
 		{
-			DefaultExporter exporter = new DefaultExporter(def);
+			ItemExporter exporter = new ItemExporter(def);
 
 			File targ = new File(out, def.id + ".json");
 			exporter.exportTo(targ);
