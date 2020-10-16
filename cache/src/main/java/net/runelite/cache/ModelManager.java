@@ -16,7 +16,8 @@ public class ModelManager {
 	private final Store store;
 	private final Map<Integer, ModelDefinition> models = new HashMap<>();
 
-	public ModelManager(Store store) {
+	public ModelManager(Store store)
+	{
 		this.store = store;
 	}
 
