@@ -161,6 +161,29 @@ public class LootTrackerPluginTest
 	}
 
 	@Test
+	public void testPickPocketToSeedBox()
+	{
+		when(client.getBoostedSkillLevel(Skill.THIEVING)).thenReturn(42);
+
+		final ItemPrice seedPrice = new ItemPrice();
+		seedPrice.setId(5318);
+		seedPrice.setName("Potato seed");
+		when(itemManager.search("Potato seed")).thenReturn(Collections.singletonList(seedPrice));
+
+		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
+		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any());
+
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "The following stolen loot gets added to your seed box: Potato seed x 3.", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
+
+
+		verify(lootTrackerPluginSpy).addLoot(null, -1, LootRecordType.PICKPOCKET, 42, Arrays.asList(
+				new ItemStack(5318, 3, null)
+		));
+	}
+
+	@Test
 	public void testFirstClue()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have completed 1 master Treasure Trail.", "", 0);
