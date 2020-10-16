@@ -106,7 +106,7 @@ class CombatLevelOverlay extends Overlay
 
 		// create tooltip string
 		StringBuilder sb = new StringBuilder();
-		boolean isMeleeCombatDominating = ((attackLevel+strengthLevel) > (Experience.MAX_REAL_LEVEL / 2 + Experience.MAX_REAL_LEVEL));
+		boolean isMeleeCombatDominating = ((attackLevel + strengthLevel) > (Experience.MAX_REAL_LEVEL / 2 + Experience.MAX_REAL_LEVEL));
 
 		if (client.getLocalPlayer().getCombatLevel() >= Experience.MAX_COMBAT_LEVEL)
 		{
