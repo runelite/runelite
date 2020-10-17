@@ -27,7 +27,7 @@ package net.runelite.cache.definitions.loaders;
 import net.runelite.cache.definitions.InventoryDefinition;
 import net.runelite.cache.io.InputStream;
 
-public class InventoryLoader
+public class InventoryLoader extends Loader
 {
 	public InventoryDefinition load(int id, byte[] b)
 	{

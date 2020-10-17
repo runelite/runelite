@@ -29,7 +29,7 @@ import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SpotAnimLoader
+public class SpotAnimLoader extends Loader
 {
 	private static final Logger logger = LoggerFactory.getLogger(SpotAnimLoader.class);
 

@@ -31,7 +31,7 @@ import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ObjectLoader
+public class ObjectLoader extends Loader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ObjectLoader.class);
 

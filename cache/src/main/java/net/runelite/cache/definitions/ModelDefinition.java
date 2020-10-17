@@ -7,9 +7,8 @@ import net.runelite.cache.models.FaceNormal;
 import net.runelite.cache.models.VertexNormal;
 
 @Data
-public class ModelDefinition
+public class ModelDefinition extends Definition
 {
-	public int id;
 
 	public int vertexCount = 0;
 	public int[] vertexPositionsX;

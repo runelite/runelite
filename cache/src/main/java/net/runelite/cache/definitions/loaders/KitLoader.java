@@ -29,13 +29,14 @@ import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KitLoader
+public class KitLoader extends Loader
 {
 	private static final Logger logger = LoggerFactory.getLogger(KitLoader.class);
 
 	public KitDefinition load(int id, byte[] b)
 	{
-		KitDefinition def = new KitDefinition(id);
+		KitDefinition def = new KitDefinition();
+		def.setId(id);
 		InputStream is = new InputStream(b);
 
 		for (;;)

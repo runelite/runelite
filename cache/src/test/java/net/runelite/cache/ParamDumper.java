@@ -76,7 +76,7 @@ public class ParamDumper
 			{
 				byte[] b = file.getContents();
 
-				ParamDefinition def = loader.load(b);
+				ParamDefinition def = loader.load(0, b);
 
 				Files.asCharSink(new File(dumpDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(def));
 				++count;

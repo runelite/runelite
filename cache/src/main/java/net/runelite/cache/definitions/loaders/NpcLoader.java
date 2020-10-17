@@ -30,14 +30,16 @@ import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NpcLoader
+public class NpcLoader extends Loader
 {
 	private static final Logger logger = LoggerFactory.getLogger(NpcLoader.class);
 
 	public NpcDefinition load(int id, byte[] b)
 	{
-		NpcDefinition def = new NpcDefinition(id);
+		NpcDefinition def = new NpcDefinition();
 		InputStream is = new InputStream(b);
+
+		def.setId(id);
 
 		while (true)
 		{

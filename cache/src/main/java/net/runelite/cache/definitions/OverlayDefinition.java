@@ -28,9 +28,8 @@ package net.runelite.cache.definitions;
 import lombok.Data;
 
 @Data
-public class OverlayDefinition
+public class OverlayDefinition extends Definition
 {
-	private int id;
 	private int rgbColor = 0;
 	private int texture = -1;
 	private int secondaryRgbColor = -1;

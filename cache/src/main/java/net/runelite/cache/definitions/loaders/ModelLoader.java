@@ -3,8 +3,9 @@ package net.runelite.cache.definitions.loaders;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.io.InputStream;
 
-public class ModelLoader
+public class ModelLoader extends Loader
 {
+
 	public ModelDefinition load(int modelId, byte[] b)
 	{
 		ModelDefinition def = new ModelDefinition();

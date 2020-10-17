@@ -27,7 +27,7 @@ package net.runelite.cache.definitions.loaders;
 import net.runelite.cache.definitions.HealthBarDefinition;
 import net.runelite.cache.io.InputStream;
 
-public class HealthBarLoader
+public class HealthBarLoader extends Loader
 {
 	public HealthBarDefinition load(int id, byte[] b)
 	{

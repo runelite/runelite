@@ -76,7 +76,7 @@ public class HitSplatDumper
 			{
 				byte[] b = file.getContents();
 
-				HitSplatDefinition def = loader.load(b);
+				HitSplatDefinition def = loader.load(0, b);
 
 				Files.asCharSink(new File(dumpDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(def));
 				++count;

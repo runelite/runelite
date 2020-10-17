@@ -28,11 +28,12 @@ import java.util.HashMap;
 import net.runelite.cache.definitions.StructDefinition;
 import net.runelite.cache.io.InputStream;
 
-public class StructLoader
+public class StructLoader extends Loader
 {
 	public StructDefinition load(int id, byte[] b)
 	{
-		StructDefinition def = new StructDefinition(id);
+		StructDefinition def = new StructDefinition();
+		def.setId(id);
 		InputStream is = new InputStream(b);
 
 		while (true)

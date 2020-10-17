@@ -27,9 +27,8 @@ package net.runelite.cache.definitions;
 import lombok.Data;
 
 @Data
-public class HealthBarDefinition
+public class HealthBarDefinition extends Definition
 {
-	public int id;
 	public int field3276;
 	public int field3277 = 255;
 	public int field3278 = 255;

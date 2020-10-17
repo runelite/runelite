@@ -27,9 +27,8 @@ package net.runelite.cache.definitions;
 import lombok.Data;
 
 @Data
-public class SequenceDefinition
+public class SequenceDefinition extends Definition
 {
-	private final int id;
 	public int[] frameIDs; // top 16 bits are FrameDefinition ids
 	public int[] chatFrameIds;
 	public int[] frameLenghts;

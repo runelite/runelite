@@ -27,9 +27,8 @@ package net.runelite.cache.definitions;
 import lombok.Data;
 
 @Data
-public class KitDefinition
+public class KitDefinition extends Definition
 {
-	private final int id;
 	public short[] recolorToReplace;
 	public short[] recolorToFind;
 	public short[] retextureToFind;

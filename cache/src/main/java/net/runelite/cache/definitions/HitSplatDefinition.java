@@ -27,7 +27,7 @@ package net.runelite.cache.definitions;
 import lombok.Data;
 
 @Data
-public class HitSplatDefinition
+public class HitSplatDefinition extends Definition
 {
 	private String stringFormat = "";
 	private int varbitID = -1;

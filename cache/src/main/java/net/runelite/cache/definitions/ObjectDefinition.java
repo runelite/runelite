@@ -29,9 +29,8 @@ import java.util.Map;
 import lombok.Data;
 
 @Data
-public class ObjectDefinition
+public class ObjectDefinition extends Definition
 {
-	private int id;
 	private short[] retextureToFind;
 	private int decorDisplacement = 16;
 	private boolean isHollow = false;

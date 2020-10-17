@@ -24,16 +24,18 @@
  */
 package net.runelite.cache.definitions.loaders;
 
+import net.runelite.cache.definitions.Definition;
 import net.runelite.cache.definitions.EnumDefinition;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.util.ScriptVarType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EnumLoader
+public class EnumLoader extends Loader
 {
 	private static final Logger logger = LoggerFactory.getLogger(EnumLoader.class);
 
+	@Override
 	public EnumDefinition load(int id, byte[] b)
 	{
 		if (b.length == 1 && b[0] == 0)

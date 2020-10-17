@@ -27,7 +27,7 @@ package net.runelite.cache.definitions;
 import lombok.Data;
 
 @Data
-public class SpotAnimDefinition
+public class SpotAnimDefinition extends Definition
 {
 	public int rotaton = 0;
 	public short[] textureToReplace;

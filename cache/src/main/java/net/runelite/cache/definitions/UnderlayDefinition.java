@@ -27,9 +27,8 @@ package net.runelite.cache.definitions;
 import lombok.Data;
 
 @Data
-public class UnderlayDefinition
+public class UnderlayDefinition extends Definition
 {
-	private int id;
 	private int color;
 
 	private transient int hue;

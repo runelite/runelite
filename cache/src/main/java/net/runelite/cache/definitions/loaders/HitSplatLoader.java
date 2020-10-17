@@ -27,9 +27,9 @@ package net.runelite.cache.definitions.loaders;
 import net.runelite.cache.definitions.HitSplatDefinition;
 import net.runelite.cache.io.InputStream;
 
-public class HitSplatLoader
+public class HitSplatLoader extends Loader
 {
-	public HitSplatDefinition load(byte[] data)
+	public HitSplatDefinition load(int id1, byte[] data)
 	{
 		HitSplatDefinition def = new HitSplatDefinition();
 		InputStream stream = new InputStream(data);

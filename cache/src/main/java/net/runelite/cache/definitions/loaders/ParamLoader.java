@@ -28,9 +28,9 @@ import net.runelite.cache.definitions.ParamDefinition;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.util.ScriptVarType;
 
-public class ParamLoader
+public class ParamLoader extends Loader
 {
-	public ParamDefinition load(byte[] data)
+	public ParamDefinition load(int id, byte[] data)
 	{
 		ParamDefinition def = new ParamDefinition();
 		InputStream b = new InputStream(data);

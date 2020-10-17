@@ -27,11 +27,12 @@ package net.runelite.cache.definitions.loaders;
 import net.runelite.cache.definitions.SequenceDefinition;
 import net.runelite.cache.io.InputStream;
 
-public class SequenceLoader
+public class SequenceLoader extends Loader
 {
 	public SequenceDefinition load(int id, byte[] b)
 	{
-		SequenceDefinition def = new SequenceDefinition(id);
+		SequenceDefinition def = new SequenceDefinition();
+		def.setId(id);
 		InputStream is = new InputStream(b);
 
 		while (true)

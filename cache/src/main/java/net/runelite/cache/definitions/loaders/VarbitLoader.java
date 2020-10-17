@@ -27,7 +27,7 @@ package net.runelite.cache.definitions.loaders;
 import net.runelite.cache.definitions.VarbitDefinition;
 import net.runelite.cache.io.InputStream;
 
-public class VarbitLoader
+public class VarbitLoader extends Loader
 {
 	public VarbitDefinition load(int id, byte[] b)
 	{

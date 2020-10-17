@@ -27,9 +27,9 @@ package net.runelite.cache.definitions.loaders;
 import net.runelite.cache.definitions.AreaDefinition;
 import net.runelite.cache.io.InputStream;
 
-public class AreaLoader
+public class AreaLoader extends Loader
 {
-	public AreaDefinition load(byte[] b, int id)
+	public AreaDefinition load(int id, byte[] b)
 	{
 		InputStream in = new InputStream(b);
 		AreaDefinition def = new AreaDefinition();

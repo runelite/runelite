@@ -60,7 +60,7 @@ public class AreaManager
 		for (FSFile file : files.getFiles())
 		{
 			AreaLoader loader = new AreaLoader();
-			AreaDefinition area = loader.load(file.getContents(), file.getFileId());
+			AreaDefinition area = loader.load(file.getFileId(), file.getContents());
 			areas.put(area.id, area);
 		}
 	}

@@ -29,9 +29,8 @@ import lombok.Data;
 import net.runelite.cache.util.ScriptVarType;
 
 @Data
-public class EnumDefinition
+public class EnumDefinition extends Definition
 {
-	private int id;
 	private int[] intVals;
 	private ScriptVarType keyType;
 	private ScriptVarType valType;
