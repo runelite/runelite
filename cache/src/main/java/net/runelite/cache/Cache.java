@@ -26,6 +26,11 @@ package net.runelite.cache;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
+
+import net.runelite.cache.definitions.loaders.ModelLoader;
+import net.runelite.cache.definitions.loaders.ObjectLoader;
+import net.runelite.cache.definitions.loaders.UnderlayLoader;
 import net.runelite.cache.fs.Store;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -35,7 +40,7 @@ import org.apache.commons.cli.ParseException;
 
 public class Cache
 {
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args) throws IOException, NumberFormatException
 	{
 		Options options = new Options();
 
@@ -46,6 +51,10 @@ public class Cache
 		options.addOption(null, "objects", true, "directory to dump objects to");
 		options.addOption(null, "sprites", true, "directory to dump sprites to");
 		options.addOption(null, "models", true, "directory to dump models to");
+
+		options.addOption(null, "configIndex", true, "selects a config to dump");
+		options.addOption(null, "dir", true, "selects an output location");
+
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd;
@@ -129,6 +138,29 @@ public class Cache
 			System.out.println("Dumping models to " + modelsdir);
 			dumpModels(store, new File(modelsdir));
 		}
+		else if (cmd.hasOption("configIndex"))
+		{
+			int configIndex = Integer.parseInt(cmd.getOptionValue("configIndex"));
+			String dir = cmd.getOptionValue("dir");
+
+			if(dir == null)
+			{
+				System.err.println("Output directory must be specified");
+			}
+			try
+			{
+				ConfigType configType = ConfigType.valueOf(configIndex).get();
+				String outputDirectory = dir+"/"+configType.name();
+
+				System.out.println("Dumping "+ configType.name() +" to " + outputDirectory);
+				dumpConfig(store, configType, new File(outputDirectory));
+			}
+			catch (NoSuchElementException e)
+			{
+				System.err.println(configIndex + " config type not found");
+				return;
+			}
+		}
 		else
 		{
 			System.err.println("Nothing to do");
@@ -178,5 +210,19 @@ public class Cache
 		ModelManager dumper = new ModelManager(store);
 		dumper.load();
 		dumper.export(modeldir);
+	}
+
+	private static void dumpConfig(Store store, ConfigType configType, File directory)  throws IOException
+	{
+		ConfigManager dumper = new ConfigManager(store);
+		try
+		{
+			dumper.load(configType);
+			dumper.dump(directory);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

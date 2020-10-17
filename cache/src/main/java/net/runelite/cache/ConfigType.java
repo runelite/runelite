@@ -25,38 +25,56 @@
 
 package net.runelite.cache;
 
+import net.runelite.cache.definitions.loaders.*;
+
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum ConfigType
 {
 	// types from https://github.com/im-frizzy/OpenRS/blob/master/source/net/openrs/cache/type/ConfigArchive.java
-	UNDERLAY(1),
-	IDENTKIT(3),
-	OVERLAY(4),
-	INV(5),
-	OBJECT(6),
-	ENUM(8),
-	NPC(9),
-	ITEM(10),
-	PARAMS(11),
-	SEQUENCE(12),
-	SPOTANIM(13),
-	VARBIT(14),
-	VARCLIENT(19),
-	VARCLIENTSTRING(15),
-	VARPLAYER(16),
-	HITSPLAT(32),
-	HEALTHBAR(33),
-	STRUCT(34),
-	AREA(35);
+	UNDERLAY(1, UnderlayLoader.class),
+	IDENTKIT(3, KitLoader.class),
+	OVERLAY(4, OverlayLoader.class),
+	INV(5, InventoryLoader.class),
+	OBJECT(6, ObjectLoader.class),
+	ENUM(8, EnumLoader.class),
+	NPC(9, NpcLoader.class),
+	ITEM(10, NpcLoader.class),
+	PARAMS(11, ParamLoader.class),
+	SEQUENCE(12, SequenceLoader.class),
+	SPOTANIM(13, SpotAnimLoader.class),
+	VARBIT(14, VarbitLoader.class),
+	VARCLIENT(19, null),
+	VARCLIENTSTRING(15, null),
+	VARPLAYER(16, null),
+	HITSPLAT(32, HitSplatLoader.class),
+	HEALTHBAR(33, HealthBarLoader.class),
+	STRUCT(34, StructLoader.class),
+	AREA(35, AreaLoader.class);
 
 	private final int id;
+	private final Class loaderClass;
 
-	ConfigType(int id)
+	ConfigType(int id, Class loaderClass)
 	{
 		this.id = id;
+		this.loaderClass = loaderClass;
 	}
 
 	public int getId()
 	{
 		return id;
+	}
+
+	public Class getLoader()
+	{
+		return loaderClass;
+	}
+
+	public static Optional<ConfigType> valueOf(int value) {
+		return Arrays.stream(values())
+				.filter(configType -> configType.id == value)
+				.findFirst();
 	}
 }
