@@ -31,7 +31,6 @@ public class SpotAnimDefinition extends Definition
 {
 	public int rotaton = 0;
 	public short[] textureToReplace;
-	public int id;
 	public short[] textureToFind;
 	public int resizeY = 128;
 	public int animationId = -1;
