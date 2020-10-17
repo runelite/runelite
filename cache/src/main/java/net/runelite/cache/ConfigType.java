@@ -72,7 +72,8 @@ public enum ConfigType
 		return loaderClass;
 	}
 
-	public static Optional<ConfigType> valueOf(int value) {
+	public static Optional<ConfigType> valueOf(int value)
+	{
 		return Arrays.stream(values())
 				.filter(configType -> configType.id == value)
 				.findFirst();
