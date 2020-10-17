@@ -27,10 +27,6 @@ package net.runelite.cache;
 import java.io.File;
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
-import net.runelite.cache.definitions.loaders.ModelLoader;
-import net.runelite.cache.definitions.loaders.ObjectLoader;
-import net.runelite.cache.definitions.loaders.UnderlayLoader;
 import net.runelite.cache.fs.Store;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -143,16 +139,16 @@ public class Cache
 			int configIndex = Integer.parseInt(cmd.getOptionValue("configIndex"));
 			String dir = cmd.getOptionValue("dir");
 
-			if(dir == null)
+			if (dir == null)
 			{
 				System.err.println("Output directory must be specified");
 			}
 			try
 			{
 				ConfigType configType = ConfigType.valueOf(configIndex).get();
-				String outputDirectory = dir+"/"+configType.name();
+				String outputDirectory = dir + "/" + configType.name();
 
-				System.out.println("Dumping "+ configType.name() +" to " + outputDirectory);
+				System.out.println("Dumping " + configType.name() + " to " + outputDirectory);
 				dumpConfig(store, configType, new File(outputDirectory));
 			}
 			catch (NoSuchElementException e)

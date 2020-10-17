@@ -24,7 +24,6 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import net.runelite.cache.definitions.Definition;
 import net.runelite.cache.definitions.EnumDefinition;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.util.ScriptVarType;

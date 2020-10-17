@@ -1,11 +1,8 @@
 
 package net.runelite.cache;
 
-import net.runelite.cache.definitions.AreaDefinition;
 import net.runelite.cache.definitions.Definition;
-import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.exporters.DefaultExporter;
-import net.runelite.cache.definitions.loaders.AreaLoader;
 import net.runelite.cache.definitions.loaders.Loader;
 import net.runelite.cache.fs.*;
 
@@ -24,7 +21,8 @@ public class ConfigManager
 		this.store = store;
 	}
 
-	public void load(ConfigType config) throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+	public void load(ConfigType config) throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
+	{
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(config.getId());
