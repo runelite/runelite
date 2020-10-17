@@ -29,7 +29,7 @@ import lombok.Data;
 @Data
 public class SpotAnimDefinition extends Definition
 {
-	public int rotaton = 0;
+	public int rotation = 0;
 	public short[] textureToReplace;
 	public short[] textureToFind;
 	public int resizeY = 128;
