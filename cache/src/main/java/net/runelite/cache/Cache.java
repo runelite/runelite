@@ -142,6 +142,7 @@ public class Cache
 			if (dir == null)
 			{
 				System.err.println("Output directory must be specified");
+				return;
 			}
 			try
 			{
