@@ -45,7 +45,7 @@ enum Task
 	ALCHEMICAL_HYDRA("Alchemical Hydra", ItemID.IKKLE_HYDRA),
 	ANKOU("Ankou", ItemID.ANKOU_MASK),
 	AVIANSIES("Aviansies", ItemID.ENSOULED_AVIANSIE_HEAD),
-	BANDITS("Bandits", ItemID.BANDIT, "Bandit"),
+	BANDITS("Bandits", ItemID.BANDIT, "Bandit", "Black Heather", "Donny the Lad", "Speedy Keith"),
 	BANSHEES("Banshees", ItemID.BANSHEE),
 	BARROWS_BROTHERS("Barrows Brothers", ItemID.KARILS_COIF),
 	BASILISKS("Basilisks", ItemID.BASILISK),
