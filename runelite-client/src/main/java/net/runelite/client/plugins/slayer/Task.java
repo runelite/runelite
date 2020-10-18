@@ -164,7 +164,7 @@ enum Task
 	TEMPLE_SPIDERS("Temple Spiders", ItemID.RED_SPIDERS_EGGS),
 	TERROR_DOGS("Terror dogs", ItemID.TERROR_DOG),
 	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL),
-	TROLLS("Trolls", ItemID.TROLL_GUARD, "Dad", "Arrg"),
+	TROLLS("Trolls", ItemID.TROLL_GUARD),
 	TUROTH("Turoth", ItemID.TUROTH),
 	TZHAAR("Tzhaar", ItemID.ENSOULED_TZHAAR_HEAD),
 	UNDEAD_DRUIDS("Undead Druids", ItemID.MASK_OF_RANUL),
