@@ -84,6 +84,7 @@ import static net.runelite.client.ui.JagexColors.CHAT_FC_NAME_TRANSPARENT_BACKGR
 import static net.runelite.client.ui.JagexColors.CHAT_FC_TEXT_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_FC_TEXT_TRANSPARENT_BACKGROUND;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -295,6 +296,11 @@ public class FriendsChatPlugin extends Plugin
 
 				loadFriendsChats();
 			}
+		}
+
+		if (config.showIgnores())
+		{
+			colorIgnoredPlayersTob(config.showIgnoresColor());
 		}
 
 		if (!config.showJoinLeave())
@@ -717,6 +723,68 @@ public class FriendsChatPlugin extends Plugin
 			}
 
 			listWidget.setTextColor(ignoreColor.getRGB());
+		}
+	}
+
+	private void colorIgnoredPlayersTob(Color ignoreColor)
+	{
+		NameableContainer<Ignore> ignoreContainer = client.getIgnoreContainer();
+		Widget tobPartyBoardMemberList = client.getWidget(WidgetInfo.TOB_BOARD_MEMBERS);
+		if (tobPartyBoardMemberList != null && tobPartyBoardMemberList.getChildren() != null)
+		{
+			// Iterate every 11 widgets to land on name widget
+			for (int i = 1; i < tobPartyBoardMemberList.getChildren().length; i += 11)
+			{
+				Widget listWidget = tobPartyBoardMemberList.getChild(i);
+				String memberName = listWidget.getText();
+				if (memberName.isEmpty() || ignoreContainer.findByName(memberName) == null)
+				{
+					continue;
+				}
+
+				listWidget.setTextColor(ignoreColor.getRGB());
+			}
+		}
+
+		Widget tobPartyBoardApplicantList = client.getWidget(WidgetInfo.TOB_BOARD_APPLICANTS);
+		if (tobPartyBoardApplicantList != null && tobPartyBoardApplicantList.getChildren() != null)
+		{
+			// Iterate every 20 widgets to land on name widget
+			for (int i = 1; i < tobPartyBoardApplicantList.getChildren().length; i += 20)
+			{
+				Widget listWidget = tobPartyBoardApplicantList.getChild(i);
+				String memberName = listWidget.getText();
+				if (memberName.isEmpty() || ignoreContainer.findByName(memberName) == null)
+				{
+					continue;
+				}
+
+				listWidget.setTextColor(ignoreColor.getRGB());
+			}
+		}
+
+		Widget tobPartyMemberList = client.getWidget(WidgetInfo.TOB_PARTY_MEMBERS);
+		if (tobPartyMemberList != null)
+		{
+			// Party interface members are all in one text field, in the form "-<br>-<br>-<br>-<br>-"
+			String[] memberNames = tobPartyMemberList.getText().split("<br>");
+			String widgetText = "";
+			for (int i = 0; i < memberNames.length; i++)
+			{
+				String name = Text.removeTags(memberNames[i]);
+				if (ignoreContainer.findByName(name) == null)
+				{
+					widgetText += name;
+				}
+				else
+				{
+					widgetText += ColorUtil.wrapWithColorTag(name, ignoreColor);
+				}
+
+				if (i != 4) widgetText += "<br>";
+			}
+
+			tobPartyMemberList.setText(widgetText);
 		}
 	}
 }
