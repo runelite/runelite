@@ -107,7 +107,7 @@ enum Task
 	HYDRAS("Hydras", ItemID.HYDRA),
 	ICEFIENDS("Icefiends", ItemID.ICE_DIAMOND),
 	ICE_GIANTS("Ice giants", ItemID.ICE_DIAMOND),
-	ICE_WARRIORS("Ice warriors", ItemID.MITHRIL_FULL_HELM_T),
+	ICE_WARRIORS("Ice warriors", ItemID.MITHRIL_FULL_HELM_T, "Icelord"),
 	INFERNAL_MAGES("Infernal mages", ItemID.INFERNAL_MAGE, "Malevolent mage"),
 	IRON_DRAGONS("Iron dragons", ItemID.IRON_DRAGON_MASK),
 	JAD("TzTok-Jad", ItemID.TZREKJAD, 25250),
