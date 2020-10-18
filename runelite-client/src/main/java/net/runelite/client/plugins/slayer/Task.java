@@ -83,7 +83,7 @@ enum Task
 	DOGS("Dogs", ItemID.GUARD_DOG, "Jackal"),
 	DRAKES("Drakes", ItemID.DRAKE),
 	DUST_DEVILS("Dust devils", ItemID.DUST_DEVIL, "Choke devil"),
-	DWARVES("Dwarves", ItemID.DWARVEN_HELMET, "Dwarf"),
+	DWARVES("Dwarves", ItemID.DWARVEN_HELMET, "Dwarf", "Black Guard"),
 	EARTH_WARRIORS("Earth warriors", ItemID.BRONZE_FULL_HELM_T),
 	ELVES("Elves", ItemID.ELF, "Elf", "Iorwerth Warrior"),
 	ENTS("Ents", ItemID.NICE_TREE, "Ent"),
