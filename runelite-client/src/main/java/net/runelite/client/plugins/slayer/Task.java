@@ -85,7 +85,7 @@ enum Task
 	DUST_DEVILS("Dust devils", ItemID.DUST_DEVIL, "Choke devil"),
 	DWARVES("Dwarves", ItemID.DWARVEN_HELMET, "Dwarf", "Black Guard"),
 	EARTH_WARRIORS("Earth warriors", ItemID.BRONZE_FULL_HELM_T),
-	ELVES("Elves", ItemID.ELF, "Elf", "Iorwerth Warrior"),
+	ELVES("Elves", ItemID.ELF, "Elf", "Iorwerth Warrior", "Iorwerth Archer"),
 	ENTS("Ents", ItemID.NICE_TREE, "Ent"),
 	FEVER_SPIDERS("Fever spiders", ItemID.FEVER_SPIDER),
 	FIRE_GIANTS("Fire giants", ItemID.FIRE_BATTLESTAFF),
