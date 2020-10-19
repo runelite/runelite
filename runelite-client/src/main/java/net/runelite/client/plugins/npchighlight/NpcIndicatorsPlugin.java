@@ -90,7 +90,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION, MenuAction.SPELL_CAST_ON_NPC,
-		MenuAction.ITEM_USE_ON_NPC);
+		MenuAction.ITEM_USE_ON_NPC, MenuAction.EXAMINE_NPC);
 
 	@Inject
 	private Client client;
@@ -248,31 +248,11 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		final MenuAction menuAction = MenuAction.of(type);
 
-		if (NPC_MENU_ACTIONS.contains(menuAction))
-		{
-			NPC npc = client.getCachedNPCs()[event.getIdentifier()];
+        if (menuAction == MenuAction.EXAMINE_NPC) {
+            setMenuActionColor(event);
+        }
 
-			Color color = null;
-			if (npc.isDead())
-			{
-				color = config.deadNpcMenuColor();
-			}
-
-			if (color == null && highlightedNpcs.contains(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
-			{
-				color = config.getHighlightColor();
-			}
-
-			if (color != null)
-			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
-				final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
-				menuEntry.setTarget(target);
-				client.setMenuEntries(menuEntries);
-			}
-		}
-		else if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
+		if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
 		{
 			// Add tag and tag-all options
 			final int id = event.getIdentifier();
@@ -290,6 +270,9 @@ public class NpcIndicatorsPlugin extends Plugin
 				.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcName));
 
 			MenuEntry[] menuEntries = client.getMenuEntries();
+            Color color = getConfiguredColor(npc);
+            String target = color != null ?
+                    ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color) : event.getTarget();
 
 			// Only add Untag-All option to npcs not highlighted by a wildcard entry, because untag-all will not remove wildcards
 			if (!matchesList)
@@ -297,7 +280,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
 				final MenuEntry tagAllEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
 				tagAllEntry.setOption(highlights.stream().anyMatch(npcName::equalsIgnoreCase) ? UNTAG_ALL : TAG_ALL);
-				tagAllEntry.setTarget(event.getTarget());
+				tagAllEntry.setTarget(target);
 				tagAllEntry.setParam0(event.getActionParam0());
 				tagAllEntry.setParam1(event.getActionParam1());
 				tagAllEntry.setIdentifier(event.getIdentifier());
@@ -310,7 +293,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 			tagEntry.setOption(npcTags.contains(npc.getIndex()) ? UNTAG : TAG);
-			tagEntry.setTarget(event.getTarget());
+			tagEntry.setTarget(target);
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
 			tagEntry.setIdentifier(event.getIdentifier());
@@ -318,9 +301,13 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			client.setMenuEntries(menuEntries);
 		}
+		if (NPC_MENU_ACTIONS.contains(menuAction))
+		{
+			setMenuActionColor(event);
+		}
 	}
 
-	@Subscribe
+    @Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked click)
 	{
 		if (click.getMenuAction() != MenuAction.RUNELITE ||
@@ -663,4 +650,29 @@ public class NpcIndicatorsPlugin extends Plugin
 		despawnedNpcsThisTick.clear();
 		teleportGraphicsObjectSpawnedThisTick.clear();
 	}
+
+    private Color getConfiguredColor(NPC npc) {
+        Color color = null;
+        if (npc.isDead())
+        {
+            color = config.deadNpcMenuColor();
+        }
+
+        if (color == null && highlightedNpcs.contains(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
+        {
+            color = config.getHighlightColor();
+        }
+        return color;
+    }
+
+    private void setMenuActionColor(MenuEntryAdded event) {
+        NPC npc = client.getCachedNPCs()[event.getIdentifier()];
+        Color color = getConfiguredColor(npc);
+        if (color != null) {
+            MenuEntry[] menuEntries = client.getMenuEntries();
+            final MenuEntry menuEntry = menuEntries[menuEntries.length - 1] ;
+            menuEntry.setTarget(ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color));
+            client.setMenuEntries(menuEntries);
+        }
+    }
 }
