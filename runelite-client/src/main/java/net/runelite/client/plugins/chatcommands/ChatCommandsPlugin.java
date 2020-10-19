@@ -1731,6 +1731,112 @@ public class ChatCommandsPlugin extends Plugin
 			case "ape atoll":
 				return "Ape Atoll Agility";
 
+			// Draynor Village Rooftop Course
+			case "draynor":
+			case "draynor agility":
+				return "Draynor Village Rooftop";
+
+			// Al-Kharid Rooftop Course
+			case "al kharid":
+			case "al kharid agility":
+			case "al-kharid":
+			case "al-kharid agility":
+			case "alkharid":
+			case "alkharid agility":
+				return "Al-Kharid Rooftop";
+
+			// Varrock Rooftop Course
+			case "varrock":
+			case "varrock agility":
+				return "Varrock Rooftop";
+
+			// Canifis Rooftop Course
+			case "canifis":
+			case "canifis agility":
+				return "Canifis Rooftop";
+
+			// Falador Rooftop Course
+			case "fally":
+			case "fally agility":
+			case "falador":
+			case "falador agility":
+				return "Falador Rooftop";
+
+			// Seers' Village Rooftop Course
+			case "seers":
+			case "seers agility":
+			case "seers village":
+			case "seers village agility":
+			case "seers'":
+			case "seers' agility":
+			case "seers' village":
+			case "seers' village agility":
+			case "seer's":
+			case "seer's agility":
+			case "seer's village":
+			case "seer's village agility":
+				return "Seers' Village Rooftop";
+
+			// Pollnivneach Rooftop Course
+			case "pollnivneach":
+			case "pollnivneach agility":
+				return "Pollnivneach Rooftop";
+
+			// Rellekka Rooftop Course
+			case "rellekka":
+			case "rellekka agility":
+				return "Rellekka Rooftop";
+
+			// Ardougne Rooftop Course
+			case "ardy":
+			case "ardy agility":
+			case "ardy rooftop":
+			case "ardougne":
+			case "ardougne agility":
+				return "Ardougne Rooftop";
+
+			// Agility Pyramid
+			case "ap":
+			case "pyramid":
+				return "Agility Pyramid";
+
+			// Barbarian Outpost
+			case "barb":
+			case "barb outpost":
+				return "Barbarian Outpost";
+
+			// Brimhaven Agility Arena
+			case "brimhaven":
+			case "brimhaven agility":
+				return "Agility Arena";
+
+			// Dorgesh-Kaan Agility Course
+			case "dorg":
+			case "dorgesh kaan":
+			case "dorgesh-kaan":
+				return "Dorgesh-Kaan Agility";
+
+			// Gnome Stronghold Agility Course
+			case "gnome stronghold":
+				return "Gnome Stronghold Agility";
+
+			// Penguin Agility
+			case "penguin":
+				return "Penguin Agility";
+
+			// Werewolf Agility
+			case "werewolf":
+				return "Werewolf Agility";
+
+			// Skullball
+			case "skullball":
+				return "Werewolf Skullball";
+
+			// Wilderness Agility Course
+			case "wildy":
+			case "wildy agility":
+				return "Wilderness Agility";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}

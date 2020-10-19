@@ -25,10 +25,10 @@ minio:
   secretkey: /PZCxzmsJzwCHYlogcymuprniGCaaLUOET2n6yMP
   bucket: runelite
 
-# Redis client for temporary data storage
+# Redis client
 redis:
   pool.size: 10
-  host: http://localhost:6379
+  host: tcp://localhost:6379
 
 mongo:
   jndiName: java:comp/env/mongodb/runelite
