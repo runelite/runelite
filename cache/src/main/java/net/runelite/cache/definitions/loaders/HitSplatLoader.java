@@ -32,6 +32,7 @@ public class HitSplatLoader extends Loader
 	public HitSplatDefinition load(int id1, byte[] data)
 	{
 		HitSplatDefinition def = new HitSplatDefinition();
+		def.setId(id1);
 		InputStream stream = new InputStream(data);
 
 		for (; ; )

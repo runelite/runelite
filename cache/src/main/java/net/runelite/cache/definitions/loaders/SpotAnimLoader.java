@@ -73,7 +73,7 @@ public class SpotAnimLoader extends Loader
 		}
 		else if (opcode == 6)
 		{
-			def.rotaton = stream.readUnsignedShort();
+			def.rotation = stream.readUnsignedShort();
 		}
 		else if (opcode == 7)
 		{

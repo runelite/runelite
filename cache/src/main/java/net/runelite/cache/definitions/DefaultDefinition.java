@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class DefaultDefinition extends Definition
 {
-	public byte[] b;
+	public byte[] bytes;
 }

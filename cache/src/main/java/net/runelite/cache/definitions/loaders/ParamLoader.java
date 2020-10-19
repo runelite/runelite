@@ -34,7 +34,7 @@ public class ParamLoader extends Loader
 	{
 		ParamDefinition def = new ParamDefinition();
 		InputStream b = new InputStream(data);
-
+		def.setId(id);
 		for (; ; )
 		{
 			int opcode = b.readUnsignedByte();

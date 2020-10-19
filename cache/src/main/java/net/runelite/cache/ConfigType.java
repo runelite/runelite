@@ -45,9 +45,9 @@ public enum ConfigType
 	SEQUENCE(12, SequenceLoader.class),
 	SPOTANIM(13, SpotAnimLoader.class),
 	VARBIT(14, VarbitLoader.class),
-	VARCLIENT(19, DefaultLoader.class),
-	VARCLIENTSTRING(15, DefaultLoader.class),
-	VARPLAYER(16, DefaultLoader.class),
+	VARCLIENT(19, DefaultLoader.class), // doesn't exist anymore
+	VARCLIENTSTRING(15, DefaultLoader.class), // doesn't exist anymore
+	VARPLAYER(16, DefaultLoader.class), // doesn't exist anymore
 	HITSPLAT(32, HitSplatLoader.class),
 	HEALTHBAR(33, HealthBarLoader.class),
 	STRUCT(34, StructLoader.class),
