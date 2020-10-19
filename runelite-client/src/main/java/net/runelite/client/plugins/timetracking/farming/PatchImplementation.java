@@ -27,12 +27,10 @@ package net.runelite.client.plugins.timetracking.farming;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.timetracking.Tab;
 
 @RequiredArgsConstructor
 @Getter
-@Slf4j
 public enum PatchImplementation
 {
 	BELLADONNA(Tab.SPECIAL, "")
@@ -2614,7 +2612,7 @@ public enum PatchImplementation
 				if (value == 0)
 				{
 					// Compost bin[Examine] 7808
-					return new PatchState(Produce.COMPOST_BIN, CropState.EMPTY, 0);
+					return new PatchState(Produce.EMPTY_COMPOST_BIN, CropState.EMPTY, 0);
 				}
 				if (value >= 1 && value <= 15)
 				{
@@ -2672,7 +2670,7 @@ public enum PatchImplementation
 				if (value == 0)
 				{
 					// Big compost bin[Examine] 33762
-					return new PatchState(Produce.GIANT_COMPOST_BIN, CropState.EMPTY, 0);
+					return new PatchState(Produce.EMPTY_GIANT_COMPOST_BIN, CropState.EMPTY, 0);
 				}
 				if (value >= 1 && value <= 15)
 				{
