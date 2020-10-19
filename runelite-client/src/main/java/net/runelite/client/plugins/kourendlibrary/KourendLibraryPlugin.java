@@ -59,6 +59,8 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -113,6 +115,7 @@ public class KourendLibraryPlugin extends Plugin
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
 	private EnumSet<Book> playerBooks = null;
+	private QuestState depthsOfDespairState = QuestState.FINISHED;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<NPC> npcsToMark = new HashSet<>();
@@ -262,6 +265,7 @@ public class KourendLibraryPlugin extends Plugin
 			{
 				if (inRegion)
 				{
+					panel.reload();
 					clientToolbar.addNavigation(navButton);
 				}
 				else
@@ -276,6 +280,8 @@ public class KourendLibraryPlugin extends Plugin
 		{
 			return;
 		}
+
+		depthsOfDespairState = Quest.THE_DEPTHS_OF_DESPAIR.getState(client);
 
 		if (lastBookcaseAnimatedOn != null)
 		{
@@ -410,6 +416,11 @@ public class KourendLibraryPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	boolean showVarlamoreEnvoy()
+	{
+		return config.alwaysShowVarlamoreEnvoy() || depthsOfDespairState == QuestState.IN_PROGRESS;
 	}
 
 	static boolean isLibraryCustomer(int npcId)
