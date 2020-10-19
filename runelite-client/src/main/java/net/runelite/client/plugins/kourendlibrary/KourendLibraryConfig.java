@@ -54,11 +54,21 @@ public interface KourendLibraryConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideVarlamoreEnvoy",
-		name = "Hide Varlamore Envoy",
-		description = "Whether to hide Varlamore Envoy, as it is only required in the Depths of Despair quest, and is never asked for."
+		keyName = "alwaysShowVarlamoreEnvoy",
+		name = "Show Varlamore Envoy",
+		description = "Varlamore Envoy is only needed during the Depths of Despair, and is never asked for"
 	)
-	default boolean hideVarlamoreEnvoy()
+	default boolean alwaysShowVarlamoreEnvoy()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideDarkManuscript",
+		name = "Hide Dark Manuscript",
+		description = "Whether to hide Dark Manuscripts"
+	)
+	default boolean hideDarkManuscript()
 	{
 		return false;
 	}
