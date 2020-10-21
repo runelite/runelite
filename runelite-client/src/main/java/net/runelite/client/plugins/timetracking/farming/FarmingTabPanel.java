@@ -177,6 +177,12 @@ public class FarmingTabPanel extends TabContentPanel
 					case DEAD:
 						panel.getEstimate().setText("Dead");
 						break;
+					case EMPTY:
+						panel.getEstimate().setText("Empty");
+						break;
+					case FILLING:
+						panel.getEstimate().setText("Filling");
+						break;
 				}
 
 				/* Hide any fully grown weeds' progress bar. */
