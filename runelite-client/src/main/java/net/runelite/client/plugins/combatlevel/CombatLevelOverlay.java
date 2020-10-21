@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -81,7 +82,8 @@ class CombatLevelOverlay extends Overlay
 		return null;
 	}
 
-	private String getLevelsUntilTooltip()
+	@VisibleForTesting
+	String getLevelsUntilTooltip()
 	{
 		// grab combat skills from player
 		int attackLevel = client.getRealSkillLevel(Skill.ATTACK);
@@ -110,11 +112,17 @@ class CombatLevelOverlay extends Overlay
 
 		if ((attackLevel + strengthLevel + meleeNeed) <= Experience.MAX_REAL_LEVEL * 2)
 		{
-			sb.append(meleeNeed).append(" Attack/Strength</br>");
+			sb.append(meleeNeed).append(" ")
+				.append(attackLevel < Experience.MAX_REAL_LEVEL ? "Attack" : "")
+				.append((attackLevel < Experience.MAX_REAL_LEVEL && strengthLevel < Experience.MAX_REAL_LEVEL) ? "/" : "")
+				.append(strengthLevel < Experience.MAX_REAL_LEVEL ? "Strength" : "").append("</br>");
 		}
 		if ((hitpointsLevel + defenceLevel + hpDefNeed) <= Experience.MAX_REAL_LEVEL * 2)
 		{
-			sb.append(hpDefNeed).append(" Defence/Hitpoints</br>");
+			sb.append(hpDefNeed).append(" ")
+				.append(defenceLevel < Experience.MAX_REAL_LEVEL ? "Defence" : "")
+				.append((defenceLevel < Experience.MAX_REAL_LEVEL && hitpointsLevel < Experience.MAX_REAL_LEVEL) ? "/" : "")
+				.append(hitpointsLevel < Experience.MAX_REAL_LEVEL ? "Hitpoints" : "").append("</br>");
 		}
 		if ((rangeLevel + rangeNeed) <= Experience.MAX_REAL_LEVEL)
 		{
