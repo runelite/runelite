@@ -60,7 +60,7 @@ public interface XpTrackerConfig extends Config
 	)
 	default boolean pauseOnLogout()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
