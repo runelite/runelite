@@ -458,7 +458,7 @@ enum DiscordGameEventType
 	private boolean root;
 
 	/**
-	 * Determines if event should clear other events when triggered
+	 * Determines if event should clear other clearable events when triggered
 	 */
 	private boolean shouldClear;
 
