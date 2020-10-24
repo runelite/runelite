@@ -42,8 +42,8 @@ import net.runelite.api.Varbits;
 enum DiscordGameEventType
 {
 
-	IN_GAME("In Game", -3),
-	IN_MENU("In Menu", -3),
+	IN_MENU("In Menu", -3, true, true, true, false, true),
+	IN_GAME("In Game", -3, true, false, false, false, true),
 	PLAYING_DEADMAN("Playing Deadman Mode", -3),
 	PLAYING_PVP("Playing in a PVP world", -3),
 	TRAINING_ATTACK(Skill.ATTACK),
@@ -462,8 +462,31 @@ enum DiscordGameEventType
 	private String details;
 
 	private int priority;
+
+	/**
+	 * Marks this event as root event, e.g event that should be used for total time tracking
+	 */
+	private boolean root;
+
+	/**
+	 * Determines if event should clear other clearable events when triggered
+	 */
 	private boolean shouldClear;
+
+	/**
+	 * Determines if event should be processed when it timeouts based on action timeout
+	 */
 	private boolean shouldTimeout;
+
+	/**
+	 * Determines if event start time should be reset when processed
+	 */
+	private boolean shouldRestart;
+
+	/**
+	 * Determines if event should be cleared when processed
+	 */
+	private boolean shouldBeCleared = true;
 
 	@Nullable
 	private DiscordAreaType discordAreaType;
@@ -496,11 +519,20 @@ enum DiscordGameEventType
 		this.shouldClear = true;
 	}
 
-	DiscordGameEventType(String state, int priority)
+	DiscordGameEventType(String state, int priority, boolean shouldClear, boolean shouldTimeout, boolean shouldRestart, boolean shouldBeCleared, boolean root)
 	{
 		this.state = state;
 		this.priority = priority;
-		this.shouldClear = true;
+		this.shouldClear = shouldClear;
+		this.shouldTimeout = shouldTimeout;
+		this.shouldRestart = shouldRestart;
+		this.shouldBeCleared = shouldBeCleared;
+		this.root = root;
+	}
+
+	DiscordGameEventType(String state, int priority)
+	{
+		this(state, priority, true, false, false, true, false);
 	}
 
 	DiscordGameEventType(String areaName, DiscordAreaType areaType, Varbits varbits)
