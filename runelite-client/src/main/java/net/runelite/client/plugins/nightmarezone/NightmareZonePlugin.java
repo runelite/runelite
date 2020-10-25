@@ -89,6 +89,7 @@ public class NightmareZonePlugin extends Plugin
 		overlayManager.add(overlay);
 		overlay.removeAbsorptionCounter();
 
+		absorptionNotificationSend = true;
 		overloadNotificationSend = false;
 	}
 
