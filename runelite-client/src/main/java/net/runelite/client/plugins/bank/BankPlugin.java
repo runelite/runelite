@@ -31,6 +31,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -213,12 +214,15 @@ public class BankPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() != WidgetID.SEED_VAULT_GROUP_ID || !config.seedVaultValue())
+		if (event.getGroupId() == WidgetID.SEED_VAULT_GROUP_ID && config.seedVaultValue())
 		{
+			updateSeedVaultTotal();
 			return;
 		}
-
-		updateSeedVaultTotal();
+		if (event.getGroupId() == WidgetID.COSTUME_ROOM_GROUP_ID && config.costumeRoomTotal())
+		{
+			updateCostumeRoomTotal();
+		}
 	}
 
 	@Subscribe
@@ -278,6 +282,10 @@ public class BankPlugin extends Plugin
 		else if (containerId == InventoryID.SEED_VAULT.getId() && config.seedVaultValue())
 		{
 			updateSeedVaultTotal();
+		}
+		else if (containerId == InventoryID.COSTUME_ROOM.getId() && config.costumeRoomTotal())
+		{
+			updateCostumeRoomTotal();
 		}
 	}
 
@@ -362,6 +370,56 @@ public class BankPlugin extends Plugin
 		return itemContainer.getItems();
 	}
 
+	private void updateCostumeRoomTotal()
+	{
+		final Widget titleContainer = client.getWidget(WidgetInfo.COSTUME_ROOM_TITLE_CONTAINER);
+		if (titleContainer == null)
+		{
+			return;
+		}
+
+		final Widget title = titleContainer.getChild(1);
+		if (title == null)
+		{
+			return;
+		}
+		// Skip Toy Box, Fancy Dress Box since they are untradeable items
+		final String originalTitleText = title.getText();
+		if (originalTitleText.startsWith("Toy Box") || originalTitleText.startsWith("Fancy Dress Box"))
+		{
+			return;
+		}
+
+		final ContainerPrices prices = calculate(getCostumeRoomItems());
+		if (prices == null)
+		{
+			return;
+		}
+
+		final String titleText = createValueText(prices.getGePrice(), prices.getHighAlchPrice());
+		title.setText(originalTitleText + titleText);
+	}
+
+	private Item[] getCostumeRoomItems()
+	{
+		final Widget itemContainerWidget = client.getWidget(WidgetInfo.COSTUME_ROOM_ITEM_CONTAINER);
+		if (itemContainerWidget == null)
+		{
+			return null;
+		}
+
+		ArrayList<Item> items = new ArrayList<>();
+		for (final Widget itemWidget : itemContainerWidget.getChildren())
+		{
+			// Empty slots are mode 0, other border/title widgets are mode 2 but -1 or 0 quantity
+			if (itemWidget.getItemQuantityMode() == 0 || itemWidget.getItemQuantity() <= 0)
+			{
+				continue;
+			}
+			items.add(new Item(itemWidget.getItemId(), itemWidget.getItemQuantity()));
+		}
+		return items.toArray(new Item[0]);
+	}
 
 	@VisibleForTesting
 	boolean valueSearch(final int itemId, final String str)

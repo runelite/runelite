@@ -159,6 +159,7 @@ public class WidgetID
 	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE_GROUP_ID = 271;
 	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED_GROUP_ID = 550;
 	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_INVENTORY_GROUP_ID = 551;
+	public static final int COSTUME_ROOM_GROUP_ID = 675;
 
 	static class WorldMap
 	{
@@ -931,5 +932,11 @@ public class WidgetID
 	static class EncounterHealthBar
 	{
 		static final int CONTAINER = 6;
+	}
+
+	static class CostumeRoom
+	{
+		static final int TITLE_CONTAINER = 2;
+		static final int ITEM_CONTAINER = 4;
 	}
 }
