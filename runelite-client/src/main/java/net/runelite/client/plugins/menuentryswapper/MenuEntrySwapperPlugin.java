@@ -207,6 +207,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "miscellania", config::swapTravel);
 		swap("talk-to", "follow", config::swapTravel);
 		swap("talk-to", "transport", config::swapTravel);
+		swap("talk-to", "brimhaven", config::swapTravel);
+		swap("talk-to", "ardougne", config::swapTravel);
 		swap("talk-to", "pay", config::swapPay);
 		swapContains("talk-to", alwaysTrue(), "pay (", config::swapPay);
 		swap("talk-to", "decant", config::swapDecant);
