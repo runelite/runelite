@@ -33,7 +33,7 @@ public class ObjectDefinition
 {
 	private int id;
 	private short[] retextureToFind;
-	private int decorDisplacement = 16;
+	private int wallWidth = 16;
 	private boolean isHollow = false;
 	private String name = "null";
 	private int[] objectModels;

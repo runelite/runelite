@@ -145,7 +145,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 28)
 		{
-			def.setDecorDisplacement(is.readUnsignedByte());
+			def.setWallWidth(is.readUnsignedByte());
 		}
 		else if (opcode == 29)
 		{

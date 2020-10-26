@@ -96,7 +96,7 @@ public class ObjectSaver
 			out.writeByte(27);
 		}
 		out.writeByte(28);
-		out.writeByte(obj.getDecorDisplacement());
+		out.writeByte(obj.getWallWidth());
 		out.writeByte(29);
 		out.writeByte(obj.getAmbient());
 		out.writeByte(39);
