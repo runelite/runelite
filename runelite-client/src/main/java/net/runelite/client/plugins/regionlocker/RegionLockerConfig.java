@@ -35,14 +35,14 @@ import net.runelite.client.config.Keybind;
 public interface RegionLockerConfig extends Config
 {
 	@ConfigItem(
-			keyName = "Karamja",
-			name = "Show Karamja",
-			description = "Unlock all Karamja regions",
+			keyName = "dropdownRegions",
+			name = "Current Region",
+			description = "Show all region map limitations",
 			position = -1
 	)
-	default boolean showKaramja()
+	default TrailblazerRegion dropdownRegions()
 	{
-		return true;
+		return TrailblazerRegion.KARAMJA;
 	}
 
 	@ConfigItem(
