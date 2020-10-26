@@ -439,6 +439,7 @@ public enum Varbits
 	FARMING_7909(7909),
 	FARMING_7910(7910),
 	FARMING_7911(7911),
+	FARMING_7912(7912),
 
 	/**
 	 * Transmog controllers for grapes

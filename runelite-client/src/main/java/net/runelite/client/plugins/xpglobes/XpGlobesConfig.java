@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2017, Steve <steve.rs.dev@gmail.com>
- * Copyright (c) 2019, Slay to Stay <github.com/slaytostay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -183,4 +182,22 @@ public interface XpGlobesConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "alignOrbsVertically",
+		name = "Vertical Orbs",
+		description = "Aligns the orbs vertically instead of horizontally.",
+		hidden = true
+	)
+	default boolean alignOrbsVertically()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "alignOrbsVertically",
+		name = "",
+		description = ""
+	)
+	void setAlignOrbsVertically(Boolean alignOrbsVertically);
 }

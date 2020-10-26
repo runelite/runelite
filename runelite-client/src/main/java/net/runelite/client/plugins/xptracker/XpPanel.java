@@ -81,7 +81,7 @@ class XpPanel extends PluginPanel
 		overallPanel.setVisible(false); // this will only become visible when the player gets exp
 
 		// Create open xp tracker menu
-		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
+		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), Skill.OVERALL)));
 
 		// Create reset all menu
@@ -149,13 +149,13 @@ class XpPanel extends PluginPanel
 
 		return new HttpUrl.Builder()
 			.scheme("https")
-			.host("runelite.net")
-			.addPathSegment("xp")
-			.addPathSegment("show")
-			.addPathSegment(skill.getName().toLowerCase())
+			.host("wiseoldman.net")
+			.addPathSegment("players")
 			.addPathSegment(player.getName())
-			.addPathSegment("1week")
-			.addPathSegment("now")
+			.addPathSegment("gained")
+			.addPathSegment("skilling")
+			.addQueryParameter("metric", skill.getName().toLowerCase())
+			.addQueryParameter("period", "week")
 			.build()
 			.toString();
 	}
