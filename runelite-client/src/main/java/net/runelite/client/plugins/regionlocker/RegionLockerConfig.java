@@ -35,6 +35,17 @@ import net.runelite.client.config.Keybind;
 public interface RegionLockerConfig extends Config
 {
 	@ConfigItem(
+			keyName = "Karamja",
+			name = "Show Karamja",
+			description = "Unlock all Karamja regions",
+			position = -1
+	)
+	default boolean showKaramja()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 			keyName = "renderLockedRegions",
 			name = "Enable gray chunks",
 			description = "Adds graphical change to all chunk that are locked",
