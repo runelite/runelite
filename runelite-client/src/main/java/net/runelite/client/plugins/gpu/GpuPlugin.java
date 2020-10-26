@@ -489,6 +489,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			modelBuffer = null;
 			modelBufferUnordered = null;
 
+			lastAnisotropicFilteringLevel = -1;
+
 			// force main buffer provider rebuild to turn off alpha channel
 			client.resizeCanvas();
 		});
