@@ -60,6 +60,10 @@ class PrayerBarOverlay extends Overlay
 	private final PrayerPlugin plugin;
 
 	private boolean showingPrayerBar;
+	private boolean debounce;
+	private int xoffsetOn;
+	private int xoffsetOff;
+	private int drawRectThistick;
 
 	@Inject
 	private PrayerBarOverlay(final Client client, final PrayerConfig config, final PrayerPlugin plugin)
@@ -103,8 +107,8 @@ class PrayerBarOverlay extends Overlay
 			graphics.drawImage(HD_FRONT_BAR.getSubimage(0, 0, progressFill, barHeight), barX, barY, progressFill, barHeight, null);
 
 			if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
-				&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
-				|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+					&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
+					|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 			{
 				final double t = plugin.getTickProgress();
 				final int halfBarWidth = (barWidth / 2) - HD_PRAYER_BAR_PADDING;
@@ -134,12 +138,34 @@ class PrayerBarOverlay extends Overlay
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 
 		if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
-			&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
-			|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+				&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
+				|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 		{
 			double t = plugin.getTickProgress();
 
 			final int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
+
+			if(config.showPrayerBarHelper()) {
+				if (this.client.getMouseCurrentButton() == 1 && this.drawRectThistick < 2 && !this.debounce) {
+					this.debounce = true;
+					if (this.drawRectThistick == 1) {
+						this.xoffsetOn = xOffset;
+						++this.drawRectThistick;
+					} else {
+						this.xoffsetOff = xOffset;
+						++this.drawRectThistick;
+					}
+				} else if (this.client.getMouseCurrentButton() != 1) {
+					this.debounce = false;
+				}
+
+				graphics.setColor(Color.red);
+				graphics.fillRect(barX + this.xoffsetOn, barY, 1, barHeight);
+				graphics.setColor(Color.blue);
+				graphics.fillRect(barX + this.xoffsetOff, barY, 1, barHeight);
+
+
+			}
 
 			graphics.setColor(FLICK_HELP_COLOR);
 			graphics.fillRect(barX + xOffset, barY, 1, barHeight);

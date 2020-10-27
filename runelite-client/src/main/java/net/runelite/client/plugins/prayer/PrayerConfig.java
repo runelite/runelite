@@ -114,6 +114,8 @@ public interface PrayerConfig extends Config
 		name = "Hide bar while prayer is inactive",
 		description = "Prayer bar will be hidden while prayers are inactive."
 	)
+
+
 	default boolean hideIfNotPraying()
 	{
 		return true;
@@ -136,8 +138,19 @@ public interface PrayerConfig extends Config
 		name = "Replace orb text with prayer time left",
 		description = "Show time remaining of current prayers in the prayer orb."
 	)
+	default boolean showPrayerBarHelper() { return false; }
+	@ConfigItem(
+			position = 10,
+			keyName = "showPrayerBarFlickHelper",
+			name = "Shows click indicator for prayer bar",
+			description = "Prayer bar will display flags when clicked to show tick timing."
+
+	)
+
+
 	default boolean replaceOrbText()
 	{
 		return false;
 	}
+
 }
