@@ -231,9 +231,9 @@ public interface WorldMapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = WorldMapPlugin.CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS,
-		name = "Show transporation tooltips",
-		description = "Indicates types and destinations of Transporation",
+		keyName = WorldMapPlugin.CONFIG_KEY_TRANSPORTATION_TELEPORT_TOOLTIPS,
+		name = "Show transportation tooltips",
+		description = "Indicates types and destinations of Transportation",
 		position = 19
 	)
 	default boolean transportationTeleportTooltips()
@@ -292,6 +292,17 @@ public interface WorldMapConfig extends Config
 		position = 24
 	)
 	default boolean fishingSpotTooltips()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_KOUREND_TASK_TOOLTIPS,
+		name = "Show Kourend task tooltips",
+		description = "Indicates the task or unlock for Kourend Favour locations",
+		position = 25
+	)
+	default boolean kourendTaskTooltips()
 	{
 		return true;
 	}

@@ -180,7 +180,7 @@ public enum HotColdLocation
 	ZEAH_GOLDEN_FIELD_TAVERN(new WorldPoint(1718, 3643, 0), ZEAH, "South of the gravestone in Kingstown.", BRASSICAN_MAGE),
 	ZEAH_MESS_HALL(new WorldPoint(1656, 3621, 0), ZEAH, "East of the Mess hall.", ANCIENT_WIZARDS),
 	ZEAH_WATSONS_HOUSE(new WorldPoint(1653, 3573, 0), ZEAH, "East of Watson's house.", ANCIENT_WIZARDS),
-	ZEAH_VANNAHS_FARM_STORE(new WorldPoint(1806, 3521, 0), ZEAH, "North of Vannah's Farm Store, between the chicken coop and willow trees.", BRASSICAN_MAGE),
+	ZEAH_VANNAHS_FARM_STORE(new WorldPoint(1807, 3523, 0), ZEAH, "North of Tithe Farm, next to the pond.", BRASSICAN_MAGE),
 	ZEAH_FARMING_GUILD_W(new WorldPoint(1208, 3736, 0), ZEAH, "West of the Farming Guild.", BRASSICAN_MAGE),
 	ZEAH_DAIRY_COW(new WorldPoint(1324, 3722, 0), ZEAH, "North-east of the Kebos Lowlands, east of the dairy cow.", BRASSICAN_MAGE),
 	ZEAH_CRIMSON_SWIFTS(new WorldPoint(1187, 3580, 0), ZEAH, "South-west of the Kebos Swamp, below the crimson swifts.", BRASSICAN_MAGE);

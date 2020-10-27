@@ -131,7 +131,19 @@ public enum Produce
 	CELASTRUS("Celastrus", "Celastrus tree", PatchImplementation.CELASTRUS, ItemID.BATTLESTAFF, 160, 6, 0, 4),
 	REDWOOD("Redwood", "Redwood tree", PatchImplementation.REDWOOD, ItemID.REDWOOD_LOGS, 640, 11),
 	HESPORI("Hespori", NullItemID.NULL_23044, 640, 4, 0, 2),
-	CRYSTAL_TREE("Crystal tree", ItemID.CRYSTAL_SHARDS, 80, 7);
+	CRYSTAL_TREE("Crystal tree", ItemID.CRYSTAL_SHARDS, 80, 7),
+
+	// Compost bins
+	EMPTY_COMPOST_BIN("Compost Bin", PatchImplementation.COMPOST, ItemID.COMPOST_BIN, 0, 1, 0, 0), // Dummy produce for the empty state
+	COMPOST("Compost", PatchImplementation.COMPOST, ItemID.COMPOST, 40, 3, 0, 15),
+	SUPERCOMPOST("Supercompost", PatchImplementation.COMPOST, ItemID.SUPERCOMPOST, 40, 3, 0, 15),
+	ULTRACOMPOST("Ultracompost", PatchImplementation.COMPOST, ItemID.ULTRACOMPOST, 0, 3, 0, 15), // Ultra doesn't compost,
+	ROTTEN_TOMATO("Rotten Tomato", PatchImplementation.COMPOST, ItemID.ROTTEN_TOMATO, 40, 3, 0, 15),
+	EMPTY_GIANT_COMPOST_BIN("Giant Compost Bin", PatchImplementation.COMPOST, ItemID.COMPOST_BIN, 0, 1, 0, 0), // Dummy produce for the empty state
+	GIANT_COMPOST("Compost", PatchImplementation.GIANT_COMPOST, ItemID.COMPOST, 40, 3, 0, 30),
+	GIANT_SUPERCOMPOST("Supercompost", PatchImplementation.GIANT_COMPOST, ItemID.SUPERCOMPOST, 40, 3, 0, 30),
+	GIANT_ULTRACOMPOST("Ultracompost", PatchImplementation.GIANT_COMPOST, ItemID.ULTRACOMPOST, 0, 3, 0, 30), // Ultra doesn't compost
+	GIANT_ROTTEN_TOMATO("Rotten Tomato", PatchImplementation.GIANT_COMPOST, ItemID.ROTTEN_TOMATO, 40, 3, 0, 30);
 
 	/**
 	 * User-visible name

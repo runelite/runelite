@@ -82,12 +82,13 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_FARMING_PATCH_TOOLTIPS = "farmingpatchTooltips";
 	static final String CONFIG_KEY_RARE_TREE_TOOLTIPS = "rareTreeTooltips";
 	static final String CONFIG_KEY_RARE_TREE_LEVEL_ICON = "rareTreeIcon";
-	static final String CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS = "transportationTooltips";
+	static final String CONFIG_KEY_TRANSPORTATION_TELEPORT_TOOLTIPS = "transportationTooltips";
 	static final String CONFIG_KEY_RUNECRAFTING_ALTAR_ICON = "runecraftingAltarIcon";
 	static final String CONFIG_KEY_MINING_SITE_TOOLTIPS = "miningSiteTooltips";
 	static final String CONFIG_KEY_DUNGEON_TOOLTIPS = "dungeonTooltips";
 	static final String CONFIG_KEY_HUNTER_AREA_TOOLTIPS = "hunterAreaTooltips";
 	static final String CONFIG_KEY_FISHING_SPOT_TOOLTIPS = "fishingSpotTooltips";
+	static final String CONFIG_KEY_KOUREND_TASK_TOOLTIPS = "kourendTaskTooltips";
 
 	static
 	{
@@ -382,6 +383,14 @@ public class WorldMapPlugin extends Plugin
 					.map(point -> new FishingSpotPoint(point, location.getTooltip(), BLANK_ICON))
 					.forEach(worldMapPointManager::add)
 			);
+		}
+
+		worldMapPointManager.removeIf(KourendTaskPoint.class::isInstance);
+		if (config.kourendTaskTooltips())
+		{
+			Arrays.stream(KourendTaskLocation.values())
+				.map(KourendTaskPoint::new)
+				.forEach(worldMapPointManager::add);
 		}
 	}
 
