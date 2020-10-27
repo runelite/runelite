@@ -29,128 +29,120 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("prayer")
-public interface PrayerConfig extends Config
-{
-	@ConfigItem(
-		position = 0,
-		keyName = "prayerFlickLocation",
-		name = "Pray flick location",
-		description = "Choose where to display the prayer flick helper."
-	)
-	default PrayerFlickLocation prayerFlickLocation()
-	{
-		return PrayerFlickLocation.NONE;
-	}
+public interface PrayerConfig extends Config {
+    @ConfigItem(
+            position = 0,
+            keyName = "prayerFlickLocation",
+            name = "Pray flick location",
+            description = "Choose where to display the prayer flick helper."
+    )
+    default PrayerFlickLocation prayerFlickLocation() {
+        return PrayerFlickLocation.NONE;
+    }
 
-	@ConfigItem(
-		position = 1,
-		keyName = "prayerFlickAlwaysOn",
-		name = "Never hide prayer flick helper",
-		description = "Show prayer flick helper regardless of if you're praying or not."
-	)
-	default boolean prayerFlickAlwaysOn()
-	{
-		return false;
-	}
+    @ConfigItem(
+            position = 1,
+            keyName = "prayerFlickAlwaysOn",
+            name = "Never hide prayer flick helper",
+            description = "Show prayer flick helper regardless of if you're praying or not."
+    )
+    default boolean prayerFlickAlwaysOn() {
+        return false;
+    }
 
-	@ConfigItem(
-		position = 2,
-		keyName = "prayerIndicator",
-		name = "Boost indicator",
-		description = "Enable infoboxes for prayers."
-	)
-	default boolean prayerIndicator()
-	{
-		return false;
-	}
+    @ConfigItem(
+            position = 2,
+            keyName = "prayerIndicator",
+            name = "Boost indicator",
+            description = "Enable infoboxes for prayers."
+    )
+    default boolean prayerIndicator() {
+        return false;
+    }
 
-	@ConfigItem(
-		position = 3,
-		keyName = "prayerIndicatorOverheads",
-		name = "Overhead indicator",
-		description = "Also enable infoboxes for overheads."
-	)
-	default boolean prayerIndicatorOverheads()
-	{
-		return false;
-	}
+    @ConfigItem(
+            position = 3,
+            keyName = "prayerIndicatorOverheads",
+            name = "Overhead indicator",
+            description = "Also enable infoboxes for overheads."
+    )
+    default boolean prayerIndicatorOverheads() {
+        return false;
+    }
 
-	@ConfigItem(
-		position = 4,
-		keyName = "showPrayerDoseIndicator",
-		name = "Show prayer dose indicator",
-		description = "Enables the prayer dose indicator."
-	)
-	default boolean showPrayerDoseIndicator()
-	{
-		return true;
-	}
+    @ConfigItem(
+            position = 4,
+            keyName = "showPrayerDoseIndicator",
+            name = "Show prayer dose indicator",
+            description = "Enables the prayer dose indicator."
+    )
+    default boolean showPrayerDoseIndicator() {
+        return true;
+    }
 
-	@ConfigItem(
-		position = 5,
-		keyName = "showPrayerTooltip",
-		name = "Show prayer orb tooltip",
-		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
-	)
-	default boolean showPrayerStatistics()
-	{
-		return true;
-	}
+    @ConfigItem(
+            position = 5,
+            keyName = "showPrayerTooltip",
+            name = "Show prayer orb tooltip",
+            description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
+    )
+    default boolean showPrayerStatistics() {
+        return true;
+    }
 
-	@ConfigItem(
-		position = 6,
-		keyName = "showPrayerBar",
-		name = "Show prayer bar",
-		description = "Displays prayer bar under HP bar when praying."
-	)
-	default boolean showPrayerBar()
-	{
-		return false;
-	}
+    @ConfigItem(
+            position = 6,
+            keyName = "showPrayerBar",
+            name = "Show prayer bar",
+            description = "Displays prayer bar under HP bar when praying."
+    )
+    default boolean showPrayerBar() {
+        return false;
+    }
 
-	@ConfigItem(
-		position = 7,
-		keyName = "prayerBarHideIfNotPraying",
-		name = "Hide bar while prayer is inactive",
-		description = "Prayer bar will be hidden while prayers are inactive."
-	)
+    @ConfigItem(
+            position = 7,
+            keyName = "prayerBarHideIfNotPraying",
+            name = "Hide bar while prayer is inactive",
+            description = "Prayer bar will be hidden while prayers are inactive."
+    )
 
 
-	default boolean hideIfNotPraying()
-	{
-		return true;
-	}
+    default boolean hideIfNotPraying() {
+        return true;
+    }
 
-	@ConfigItem(
-		position = 8,
-		keyName = "prayerBarHideIfNonCombat",
-		name = "Hide bar while out-of-combat",
-		description = "Prayer bar will be hidden while out-of-combat."
-	)
-	default boolean hideIfOutOfCombat()
-	{
-		return false;
-	}
+    @ConfigItem(
+            position = 8,
+            keyName = "prayerBarHideIfNonCombat",
+            name = "Hide bar while out-of-combat",
+            description = "Prayer bar will be hidden while out-of-combat."
+    )
+    default boolean hideIfOutOfCombat() {
+        return false;
+    }
 
-	@ConfigItem(
-		position = 9,
-		keyName = "replaceOrbText",
-		name = "Replace orb text with prayer time left",
-		description = "Show time remaining of current prayers in the prayer orb."
-	)
-	default boolean showPrayerBarHelper() { return false; }
-	@ConfigItem(
-			position = 10,
-			keyName = "showPrayerBarFlickHelper",
-			name = "Shows click indicator for prayer bar",
-			description = "Prayer bar will display flags when clicked to show tick timing."
+    @ConfigItem(
+            position = 9,
+            keyName = "replaceOrbText",
+            name = "Replace orb text with prayer time left",
+            description = "Show time remaining of current prayers in the prayer orb."
+    )
+    default boolean showPrayerBarHelper() {
+        return false;
+    }
 
-	)
+    @ConfigItem(
+            position = 10,
+            keyName = "showPrayerBarFlickHelper",
+            name = "Shows click indicator for prayer bar",
+            description = "Prayer bar will display flags when clicked to show tick timing."
+
+    )
 
 
-	default boolean replaceOrbText()
-	{
-		return false;
-	}
+    default boolean replaceOrbText() {
+        return false;
+    }
 
 }
