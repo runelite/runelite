@@ -31,6 +31,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
@@ -107,8 +108,8 @@ class PrayerBarOverlay extends Overlay
 			graphics.drawImage(HD_FRONT_BAR.getSubimage(0, 0, progressFill, barHeight), barX, barY, progressFill, barHeight, null);
 
 			if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
-					&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
-					|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+				&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
+				|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 			{
 				final double t = plugin.getTickProgress();
 				final int halfBarWidth = (barWidth / 2) - HD_PRAYER_BAR_PADDING;
@@ -138,27 +139,35 @@ class PrayerBarOverlay extends Overlay
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 
 		if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
-				&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
-				|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+			&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
+			|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 		{
 			double t = plugin.getTickProgress();
 
 			final int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
 
-			if(config.showPrayerBarHelper()) {
-				if (this.client.getMouseCurrentButton() == 1 && this.rectCounter < 2 && !this.debounce) {
+			if (config.showPrayerBarHelper())
+			{
+				if (this.client.getMouseCurrentButton() == 1 && this.rectCounter < 2 && !this.debounce)
+				{
 					this.debounce = true;
-					if (this.rectCounter == 1) {
+					if (this.rectCounter == 1)
+					{
 						this.xoffsetOn = xOffset;
 						++this.rectCounter;
-					} else {
+					}
+					else
+					{
 						this.xoffsetOff = xOffset;
 						++this.rectCounter;
 					}
-				} else if (this.client.getMouseCurrentButton() != 1) {
+				}
+				else if (this.client.getMouseCurrentButton() != 1)
+				{
 					this.debounce = false;
 				}
-				if(rectCounter != 0) {
+				if (rectCounter != 0)
+				{
 					graphics.setColor(Color.red);
 					graphics.fillRect(barX + this.xoffsetOn, barY, 1, barHeight);
 					graphics.setColor(Color.blue);
