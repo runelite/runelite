@@ -78,7 +78,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.RUNE_PICKAXE),
 		item(ItemID.DRAGON_PICKAXE),
 		item(ItemID.DRAGON_PICKAXE_12797),
-		item(ItemID.DRAGON_PICKAXEOR),
+		item(ItemID.DRAGON_PICKAXE_OR),
 		item(ItemID.INFERNAL_PICKAXE),
 		item(ItemID.INFERNAL_PICKAXE_UNCHARGED),
 		item(ItemID.GILDED_PICKAXE),
