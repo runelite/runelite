@@ -41,6 +41,7 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -82,7 +83,8 @@ class XpPanel extends PluginPanel
 
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
-		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), Skill.OVERALL)));
+		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
+			client.getLocalPlayer(), Skill.OVERALL, client.getWorldType().contains(WorldType.LEAGUE))));
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
@@ -140,16 +142,18 @@ class XpPanel extends PluginPanel
 		add(errorPanel);
 	}
 
-	static String buildXpTrackerUrl(final Actor player, final Skill skill)
+	static String buildXpTrackerUrl(final Actor player, final Skill skill, boolean leagueWorld)
 	{
 		if (player == null)
 		{
 			return "";
 		}
 
+		final String host = leagueWorld ? "trailblazer.wiseoldman.net" : "wiseoldman.net";
+
 		return new HttpUrl.Builder()
 			.scheme("https")
-			.host("wiseoldman.net")
+			.host(host)
 			.addPathSegment("players")
 			.addPathSegment(player.getName())
 			.addPathSegment("gained")

@@ -34,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
@@ -172,9 +173,12 @@ public class XpUpdaterPlugin extends Plugin
 
 		if (config.wiseoldman())
 		{
+			final boolean leagueWorld = client.getWorldType().contains(WorldType.LEAGUE);
+			final String host = leagueWorld ? "trailblazer.wiseoldman.net" : "wiseoldman.net";
+
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
-				.host("wiseoldman.net")
+				.host(host)
 				.addPathSegment("api")
 				.addPathSegment("players")
 				.addPathSegment("track")
