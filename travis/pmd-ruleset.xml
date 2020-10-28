@@ -11,6 +11,7 @@
 
 	<rule ref="category/java/bestpractices.xml">
 		<exclude name="AbstractClassWithoutAbstractMethod" />
+		<exclude name="ArrayIsStoredDirectly" />
 		<exclude name="AvoidStringBufferField" />
 		<exclude name="GuardLogStatement" />
 		<exclude name="OneDeclarationPerLine" />
@@ -35,11 +36,16 @@
 		<exclude name="ConfusingTernary"/>
 		<exclude name="ControlStatementBraces"/>
 		<exclude name="DefaultPackage"/>
+		<!--
+			DuplicateImports is a good rule, but sadly catches explicitly-defined overlaps as "duplicate"...
+		-->
+		<exclude name="DuplicateImports"/>
 		<exclude name="LocalVariableCouldBeFinal"/>
 		<exclude name="LongVariable"/>
 		<exclude name="MethodArgumentCouldBeFinal"/>
 		<exclude name="OnlyOneReturn"/>
 		<exclude name="ShortClassName"/>
+		<exclude name="ShortMethodName" />
 		<exclude name="ShortVariable"/>
 		<exclude name="TooManyStaticImports"/>
 		<exclude name="UnnecessaryFullyQualifiedName"/>
@@ -70,9 +76,21 @@
 	</rule>-->
 
 	<rule ref="category/java/design.xml">
+		<!--
+			We should try to add this, but we have many reasonable cases that get flagged...
+			<exclude name="AvoidDeeplyNestedIfStmts" />
+		-->
 		<exclude name="ClassWithOnlyPrivateConstructorsShouldBeFinal" />
+		<exclude name="CyclomaticComplexity" />
 		<exclude name="ExcessiveImports" />
+		<exclude name="ExcessiveMethodLength" />
+		<exclude name="ExcessivePublicCount" />
+		<exclude name="GodClass" />
 		<exclude name="LawOfDemeter" />
+		<exclude name="NcssCount" />
+		<exclude name="NPathComplexity" />
+		<exclude name="TooManyFields" />
+		<exclude name="TooManyMethods" />
 	</rule>
 
 	<rule ref="category/java/documentation.xml">
@@ -110,6 +128,7 @@
 	</rule>
 
 	<rule ref="category/java/performance.xml">
+		<exclude name="AddEmptyString" />
 		<exclude name="AvoidInstantiatingObjectsInLoops" />
 		<exclude name="RedundantFieldInitializer" />
 		<exclude name="TooFewBranchesForASwitchStatement" />
