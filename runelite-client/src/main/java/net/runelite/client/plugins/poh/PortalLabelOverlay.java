@@ -72,13 +72,13 @@ public class PortalLabelOverlay extends Overlay
             {
                 //These portals (the ones with configurable locations thanks to diaries) don't show up under ObjectID.
                 switch (portalObject.getId()) {
-                    case 13620:
+                    case NullObjectID.NULL_13620:
                         portalName = "Yanille / Watchtower";
                         break;
-                    case 13615:
+                    case NullObjectID.NULL_13615:
                         portalName = "Varrock / Grand Exchange";
                         break;
-                    case 13618:
+                    case NullObjectID.NULL_13618:
                         portalName = "Camelot / Seers";
                         break;
                 }
