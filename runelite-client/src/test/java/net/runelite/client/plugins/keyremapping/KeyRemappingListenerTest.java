@@ -105,4 +105,22 @@ public class KeyRemappingListenerTest
 		verify(event).setKeyCode(KeyEvent.VK_RIGHT);
 		verify(event).setKeyChar(KeyEvent.CHAR_UNDEFINED);
 	}
+
+	@Test
+	public void testSpaceRemap()
+	{
+		when(keyRemappingConfig.space()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_NUMPAD1, 0));
+
+		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
+		when(keyRemappingPlugin.isDialogOpen()).thenReturn(true);
+
+		KeyEvent event = mock(KeyEvent.class);
+		when(event.getKeyChar()).thenReturn('1');
+		when(event.getKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1);
+		when(event.getExtendedKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1); // for keybind matches()
+
+		keyRemappingListener.keyPressed(event);
+
+		verify(event).setKeyCode(KeyEvent.VK_SPACE);
+	}
 }
