@@ -196,6 +196,7 @@ public class PohPlugin extends Plugin
 		{
 			pohObjects.clear();
 			incenseBurners.clear();
+			portals.clear();
 		}
 	}
 
