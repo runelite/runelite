@@ -26,6 +26,8 @@ package net.runelite.client.plugins.poh;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
+
+import java.awt.*;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -36,17 +38,7 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
-import net.runelite.api.Client;
-import net.runelite.api.Constants;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Player;
-import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.client.events.ConfigChanged;
@@ -75,12 +67,22 @@ public class PohPlugin extends Plugin
 {
 	static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(ObjectID.INCENSE_BURNER, ObjectID.INCENSE_BURNER_13210, ObjectID.INCENSE_BURNER_13212);
 	static final Set<Integer> BURNER_LIT = Sets.newHashSet(ObjectID.INCENSE_BURNER_13209, ObjectID.INCENSE_BURNER_13211, ObjectID.INCENSE_BURNER_13213);
+	static final Set<Integer> PORTALS = Sets.newHashSet(ObjectID.LUMBRIDGE_PORTAL, ObjectID.FALADOR_PORTAL,NullObjectID.NULL_13615, NullObjectID.NULL_13618,
+			ObjectID.ARDOUGNE_PORTAL, NullObjectID.NULL_13620, ObjectID.LUNAR_ISLE_PORTAL, ObjectID.WATERBIRTH_ISLAND_PORTAL, ObjectID.FISHING_GUILD_PORTAL,
+			ObjectID.SENNTISTEN_PORTAL, ObjectID.KHARYRLL_PORTAL, ObjectID.ANNAKARL_PORTAL, ObjectID.KOUREND_PORTAL, ObjectID.MARIM_PORTAL,
+			ObjectID.TROLL_STRONGHOLD_PORTAL, ObjectID.CARRALLANGAR_PORTAL, ObjectID.CATHERBY_PORTAL, ObjectID.WEISS_PORTAL, ObjectID.GHORROCK_PORTAL,
+			ObjectID.APE_ATOLL_DUNGEON_PORTAL, ObjectID.BARROWS_PORTAL, ObjectID.BATTLEFRONT_PORTAL, ObjectID.CEMETERY_PORTAL, ObjectID.DRAYNOR_MANOR_PORTAL,
+			ObjectID.FENKENSTRAINS_CASTLE_PORTAL, ObjectID.HARMONY_ISLAND_PORTAL, ObjectID.LUMBRIDGE_GRAVEYARD_PORTAL, ObjectID.MIND_ALTAR_PORTAL,
+			ObjectID.SALVE_GRAVEYARD_PORTAL, ObjectID.WEST_ARDOUGNE_PORTAL);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Tile, IncenseBurner> incenseBurners = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<Tile, TeleportPortal> portals = new HashMap<>();
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -100,6 +102,9 @@ public class PohPlugin extends Plugin
 	@Inject
 	private BurnerOverlay burnerOverlay;
 
+	@Inject
+	private PortalLabelOverlay portalLabelOverlay;
+
 	@Provides
 	PohConfig getConfig(ConfigManager configManager)
 	{
@@ -111,6 +116,7 @@ public class PohPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(burnerOverlay);
+		overlayManager.add(portalLabelOverlay);
 		overlay.updateConfig();
 	}
 
@@ -119,8 +125,10 @@ public class PohPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(burnerOverlay);
+		overlayManager.remove(portalLabelOverlay);
 		pohObjects.clear();
 		incenseBurners.clear();
+		portals.clear();
 	}
 
 	@Subscribe
@@ -136,6 +144,14 @@ public class PohPlugin extends Plugin
 
 		if (!BURNER_LIT.contains(gameObject.getId()) && !BURNER_UNLIT.contains(gameObject.getId()))
 		{
+			//Populates portal array
+			if (PORTALS.contains(gameObject.getId())) {
+				int objectID = gameObject.getId();
+				LocalPoint localPoint = gameObject.getLocalLocation();
+				Rectangle rectangleBounds = gameObject.getCanvasTilePoly().getBounds();
+
+				portals.put(event.getTile(), new TeleportPortal(objectID, localPoint, rectangleBounds));
+			}
 			if (PohIcons.getIcon(gameObject.getId()) != null)
 			{
 				pohObjects.put(gameObject, event.getTile());
