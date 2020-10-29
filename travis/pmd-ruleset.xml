@@ -87,6 +87,7 @@
 		<exclude name="ExcessivePublicCount" />
 		<exclude name="GodClass" />
 		<exclude name="LawOfDemeter" />
+		<exclude name="LoosePackageCoupling" />
 		<exclude name="NcssCount" />
 		<exclude name="NPathComplexity" />
 		<exclude name="TooManyFields" />
