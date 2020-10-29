@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<ruleset name="Custom Rules"
+<ruleset name="RuneLite Client"
 		 xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
@@ -12,6 +12,7 @@
 	<rule ref="category/java/bestpractices.xml">
 		<exclude name="AbstractClassWithoutAbstractMethod" />
 		<exclude name="ArrayIsStoredDirectly" />
+		<exclude name="AvoidReassigningParameters" />
 		<exclude name="AvoidStringBufferField" />
 		<exclude name="GuardLogStatement" />
 		<exclude name="OneDeclarationPerLine" />
@@ -19,9 +20,6 @@
 		<exclude name="SwitchStmtsShouldHaveDefault" />
 		<exclude name="UnusedFormalParameter" />
 		<exclude name="UseVarargs" />
-
-		<!-- TODO: Reenable later, but cause a lot of noise -->
-		<exclude name="AvoidReassigningParameters" />
 	</rule>
 	<rule ref="category/java/bestpractices.xml/UnusedPrivateMethod">
 		<properties>
@@ -29,7 +27,6 @@
 		</properties>
 	</rule>
 
-	<!-- Code style rules -->
 	<rule ref="category/java/codestyle.xml">
 		<exclude name="AtLeastOneConstructor"/>
 		<exclude name="CommentDefaultAccessModifier"/>
@@ -48,7 +45,7 @@
 		<exclude name="UselessParentheses"/>
 		<exclude name="UseUnderscoresInNumericLiterals"/>
 
-		<!-- TODO: reenable later, but cause a lot of noise -->
+		<!-- TODO: reenable later, but cause a lot of noise or need better configuration -->
 		<exclude name="FieldNamingConventions" />
 		<exclude name="ClassNamingConventions" />
 		<exclude name="ForLoopShouldBeWhileLoop" />
@@ -109,11 +106,6 @@
 		<exclude name="UseLocaleWithCaseConversions" />
 		<exclude name="UseProperClassLoader" />
 	</rule>
-	<!--<rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition">
-		<properties>
-			<property name="ignoreMagicNumbers" value="-1,0,1" />
-		</properties>
-	</rule>-->
 
 	<rule ref="category/java/multithreading.xml">
 		<exclude name="AvoidSynchronizedAtMethodLevel" />
