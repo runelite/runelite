@@ -78,7 +78,7 @@ public class MotherlodePluginTest
 
 	@Mock
 	@Bind
-	private MotherlodeRocksOverlay motherlodeRocksOverlay;
+	private MotherlodeSceneOverlay motherlodeSceneOverlay;
 
 	@Mock
 	@Bind

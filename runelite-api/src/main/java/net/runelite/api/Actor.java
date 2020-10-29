@@ -259,4 +259,11 @@ public interface Actor extends Renderable
 	 * @param overheadText the overhead text
 	 */
 	void setOverheadText(String overheadText);
+
+	/**
+	 * Returns true if this actor has died
+	 *
+	 * @return
+	 */
+	boolean isDead();
 }

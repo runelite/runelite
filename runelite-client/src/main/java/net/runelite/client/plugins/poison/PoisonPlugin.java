@@ -44,6 +44,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.AlternateSprites;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -70,9 +71,9 @@ public class PoisonPlugin extends Plugin
 
 	static
 	{
-		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(PoisonPlugin.class, "1067-DISEASE.png"), 26, 26);
-		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(PoisonPlugin.class, "1067-POISON.png"), 26, 26);
-		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(PoisonPlugin.class, "1067-VENOM.png"), 26, 26);
+		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.DISEASE_HEART), 26, 26);
+		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.POISON_HEART), 26, 26);
+		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.VENOM_HEART), 26, 26);
 	}
 
 	@Inject

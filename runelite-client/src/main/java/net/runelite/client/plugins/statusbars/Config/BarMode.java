@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Jos <Malevolentdev@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
+package net.runelite.client.plugins.statusbars.Config;
 
-@ConfigGroup("test")
-public interface TestConfig extends Config
+public enum BarMode
 {
-	@ConfigItem(
-		keyName = "key",
-		name = "Key Name",
-		description = "value"
-	)
-	default String key()
-	{
-		return "default";
-	}
-
-	@ConfigItem(
-		keyName = "key",
-		name = "Key Name",
-		description = "value"
-	)
-	void key(String key);
-
-	@ConfigItem(
-			keyName = "nullDefaultKey",
-			name = "Key Name",
-			description = "value"
-	)
-	void nullDefaultKey(String key);
-
-	@ConfigItem(
-			keyName = "nullDefaultKey",
-			name = "Key Name",
-			description = "value"
-	)
-	default String nullDefaultKey()
-	{
-		return null;
-	}
+	DISABLED,
+	HITPOINTS,
+	PRAYER,
+	RUN_ENERGY,
+	SPECIAL_ATTACK,
+	;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Jordan <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
+package net.runelite.client.game;
 
-@ConfigGroup("test")
-public interface TestConfig extends Config
+public class AlternateSprites
 {
-	@ConfigItem(
-		keyName = "key",
-		name = "Key Name",
-		description = "value"
-	)
-	default String key()
-	{
-		return "default";
-	}
-
-	@ConfigItem(
-		keyName = "key",
-		name = "Key Name",
-		description = "value"
-	)
-	void key(String key);
-
-	@ConfigItem(
-			keyName = "nullDefaultKey",
-			name = "Key Name",
-			description = "value"
-	)
-	void nullDefaultKey(String key);
-
-	@ConfigItem(
-			keyName = "nullDefaultKey",
-			name = "Key Name",
-			description = "value"
-	)
-	default String nullDefaultKey()
-	{
-		return null;
-	}
+	public static final String DISEASE_HEART = "1067-DISEASE.png";
+	public static final String POISON_HEART = "1067-POISON.png";
+	public static final String VENOM_HEART = "1067-VENOM.png";
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jos <Malevolentdev@gmail.com>
+ * Copyright (c) 2019, Jos <Malevolentdev@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,14 +27,15 @@ package net.runelite.client.plugins.statusbars;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.plugins.statusbars.Config.BarMode;
 
 @ConfigGroup("statusbars")
 public interface StatusBarsConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enableCounter",
-		name = "Show hitpoints & prayer counter",
-		description = "Shows current amount of hitpoints & prayer on the status bars"
+		name = "Show counters",
+		description = "Shows current value of the status on the bar"
 	)
 	default boolean enableCounter()
 	{
@@ -43,7 +44,7 @@ public interface StatusBarsConfig extends Config
 
 	@ConfigItem(
 		keyName = "enableSkillIcon",
-		name = "Show hitpoints & prayer icons",
+		name = "Show icons",
 		description = "Adds skill icons at the top of the bars."
 	)
 	default boolean enableSkillIcon()
@@ -53,11 +54,31 @@ public interface StatusBarsConfig extends Config
 
 	@ConfigItem(
 		keyName = "enableRestorationBars",
-		name = "Show amount of hitpoints and prayer restored",
-		description = "Visually shows how much a food or prayer will heal/restore you on the bars."
+		name = "Show restores",
+		description = "Visually shows how much will be restored to your status bar."
 	)
 	default boolean enableRestorationBars()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "leftBarMode",
+		name = "Left Status Bar",
+		description = "Configures the left status bar"
+	)
+	default BarMode leftBarMode()
+	{
+		return BarMode.HITPOINTS;
+	}
+
+	@ConfigItem(
+		keyName = "rightBarMode",
+		name = "Right Status Bar",
+		description = "Configures the right status bar"
+	)
+	default BarMode rightBarMode()
+	{
+		return BarMode.PRAYER;
 	}
 }
