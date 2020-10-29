@@ -218,7 +218,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	{
 		this(text, locationName, stashUnit, location, firstEmote, secondEmote, itemRequirements);
 		setRequiresLight(true);
-		setHasFirePit(firePit);
+		setFirePit(firePit);
 	}
 
 	@Override

@@ -251,7 +251,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		final CoordinateClueInfo clueInfo = CLUES.get(location);
 		if (clueInfo != null)
 		{
-			setHasFirePit(clueInfo.getLightSource());
+			setFirePit(clueInfo.getLightSource());
 			setRequiresLight(clueInfo.lightRequired);
 			setEnemy(clueInfo.getEnemy());
 		}
