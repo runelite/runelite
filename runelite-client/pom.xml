@@ -427,7 +427,7 @@
 					</rulesets>
 					<linkXRef>false</linkXRef>
 					<!-- Enable incremental analysis -->
-					<!--<analysisCache>true</analysisCache>-->
+					<analysisCache>true</analysisCache>
 				</configuration>
 				<executions>
 					<execution>
