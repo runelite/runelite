@@ -36,10 +36,6 @@
 		<exclude name="ConfusingTernary"/>
 		<exclude name="ControlStatementBraces"/>
 		<exclude name="DefaultPackage"/>
-		<!--
-			DuplicateImports is a good rule, but sadly catches explicitly-defined overlaps as "duplicate"...
-		-->
-		<exclude name="DuplicateImports"/>
 		<exclude name="LocalVariableCouldBeFinal"/>
 		<exclude name="LongVariable"/>
 		<exclude name="MethodArgumentCouldBeFinal"/>

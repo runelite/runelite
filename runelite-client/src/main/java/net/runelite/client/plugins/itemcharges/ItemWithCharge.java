@@ -31,7 +31,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.POTION;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;  //NOPMD: Duplicate Import
 
 @AllArgsConstructor
 @Getter
