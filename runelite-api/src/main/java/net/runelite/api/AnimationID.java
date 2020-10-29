@@ -186,6 +186,13 @@ public final class AnimationID
 	public static final int COW_HOME_TELEPORT_4 = 1699;
 	public static final int COW_HOME_TELEPORT_5 = 1700;
 	public static final int COW_HOME_TELEPORT_6 = 1701;
+	public static final int LEAGUE_HOME_TELEPORT_1 = 8798;
+	public static final int LEAGUE_HOME_TELEPORT_2 = 8799;
+	public static final int LEAGUE_HOME_TELEPORT_3 = 8801;
+	public static final int LEAGUE_HOME_TELEPORT_4 = 8803;
+	public static final int LEAGUE_HOME_TELEPORT_5 = 8805;
+	public static final int LEAGUE_HOME_TELEPORT_6 = 8807;
+
 	public static final int CONSTRUCTION = 3676;
 	public static final int SAND_COLLECTION = 895;
 	public static final int PISCARILIUS_CRANE_REPAIR = 7199;
