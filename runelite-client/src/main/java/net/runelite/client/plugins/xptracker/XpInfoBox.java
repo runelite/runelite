@@ -75,7 +75,7 @@ class XpInfoBox extends JPanel
 	private static final String HTML_TOOL_TIP_TEMPLATE =
 		"<html>%s %s done<br/>"
 			+ "%s %s/hr<br/>"
-			+ "%s till goal lvl</html>";
+			+ "%s %s</html>";
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
@@ -287,13 +287,16 @@ class XpInfoBox extends JPanel
 				progressBar.setPositions(Collections.emptyList());
 			}
 
+			XpProgressBarLabel tooltipLabel = xpTrackerConfig.progressBarTooltipLabel();
+
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,
 				xpSnapshotSingle.getActionsInSession(),
 				xpSnapshotSingle.getActionType().getLabel(),
 				xpSnapshotSingle.getActionsPerHour(),
 				xpSnapshotSingle.getActionType().getLabel(),
-				xpSnapshotSingle.getTimeTillGoal()));
+				tooltipLabel.getValueFunc().apply(xpSnapshotSingle),
+				tooltipLabel == XpProgressBarLabel.PERCENTAGE ? "of goal" : "till goal lvl"));
 
 			progressBar.setDimmed(skillPaused);
 

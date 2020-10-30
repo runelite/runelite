@@ -147,7 +147,7 @@ class XpStateSingle
 		return (getXpRemaining() * seconds) / xpGained;
 	}
 
-	private String getTimeTillLevel()
+	private String getTimeTillLevel(XpGoalTimeType goalTimeType)
 	{
 		long remainingSeconds = getSecondsTillLevel();
 		if (remainingSeconds < 0)
@@ -157,48 +157,43 @@ class XpStateSingle
 
 		long durationDays = remainingSeconds / (24 * 60 * 60);
 		long durationHours = (remainingSeconds % (24 * 60 * 60)) / (60 * 60);
+		long durationHoursTotal = remainingSeconds / (60 * 60);
 		long durationMinutes = (remainingSeconds % (60 * 60)) / 60;
 		long durationSeconds = remainingSeconds % 60;
 
-		if (durationDays > 1)
+		switch (goalTimeType)
 		{
-			return String.format("%d days %02d:%02d:%02d", durationDays, durationHours, durationMinutes, durationSeconds);
-		}
-		else if (durationDays == 1)
-		{
-			return String.format("1 day %02d:%02d:%02d", durationHours, durationMinutes, durationSeconds);
-		}
+			case DAYS:
+				if (durationDays > 1)
+				{
+					return String.format("%d days %02d:%02d:%02d", durationDays, durationHours, durationMinutes, durationSeconds);
+				}
+				else if (durationDays == 1)
+				{
+					return String.format("1 day %02d:%02d:%02d", durationHours, durationMinutes, durationSeconds);
+				}
+			case HOURS:
+				if (durationHoursTotal > 1)
+				{
+					return String.format("%d hours %02d:%02d", durationHoursTotal, durationMinutes, durationSeconds);
+				}
+				else if (durationHoursTotal == 1)
+				{
+					return String.format("1 hour %02d:%02d", durationMinutes, durationSeconds);
+				}
+			case SHORT:
+			default:
+				// durationDays = 0 or durationHoursTotal = 0 or goalTimeType = SHORT if we got here.
+				// return time remaining in hh:mm:ss or mm:ss format where hh can be > 24
+				if (durationHoursTotal > 0)
+				{
+					return String.format("%02d:%02d:%02d", durationHoursTotal, durationMinutes, durationSeconds);
+				}
 
-		// durationDays = 0 if we got here.
-		// return time remaining in hh:mm:ss or mm:ss format
-		return getTimeTillLevelShort();
+				// Minutes and seconds will always be present
+				return String.format("%02d:%02d", durationMinutes, durationSeconds);
+		}
 	}
-
-	/**
-	 * Get time to level in `hh:mm:ss` or `mm:ss` format,
-	 * where `hh` can be > 24.
-	 * @return
-	 */
-	private String getTimeTillLevelShort()
-	{
-		long remainingSeconds = getSecondsTillLevel();
-		if (remainingSeconds < 0)
-		{
-			return "\u221e";
-		}
-
-		long durationHours = remainingSeconds / (60 * 60);
-		long durationMinutes = (remainingSeconds % (60 * 60)) / 60;
-		long durationSeconds = remainingSeconds % 60;
-		if (durationHours > 0)
-		{
-			return String.format("%02d:%02d:%02d", durationHours, durationMinutes, durationSeconds);
-		}
-
-		// Minutes and seconds will always be present
-		return String.format("%02d:%02d", durationMinutes, durationSeconds);
-	}
-
 
 	int getXpHr()
 	{
@@ -298,8 +293,9 @@ class XpStateSingle
 			.actionsInSession(getXpAction(actionType).getActions())
 			.actionsRemainingToGoal(getActionsRemaining())
 			.actionsPerHour(getActionsHr())
-			.timeTillGoal(getTimeTillLevel())
-			.timeTillGoalShort(getTimeTillLevelShort())
+			.timeTillGoal(getTimeTillLevel(XpGoalTimeType.DAYS))
+			.timeTillGoalHours(getTimeTillLevel(XpGoalTimeType.HOURS))
+			.timeTillGoalShort(getTimeTillLevel(XpGoalTimeType.SHORT))
 			.startGoalXp(startLevelExp)
 			.endGoalXp(endLevelExp)
 			.build();
