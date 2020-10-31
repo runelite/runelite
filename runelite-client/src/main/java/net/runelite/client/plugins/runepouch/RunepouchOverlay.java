@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
+import net.runelite.api.RunePouchVarbits;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
@@ -46,14 +47,6 @@ import net.runelite.client.util.ColorUtil;
 
 public class RunepouchOverlay extends WidgetItemOverlay
 {
-	private static final Varbits[] AMOUNT_VARBITS =
-	{
-		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
-	};
-	private static final Varbits[] RUNE_VARBITS =
-	{
-		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
-	};
 	private static final Dimension IMAGE_SIZE = new Dimension(11, 11);
 
 	private final Client client;
@@ -81,16 +74,19 @@ public class RunepouchOverlay extends WidgetItemOverlay
 			return;
 		}
 
-		assert AMOUNT_VARBITS.length == RUNE_VARBITS.length;
+		Varbits[] amountVarbits = RunePouchVarbits.AMOUNTS.getVarbits();
+		Varbits[] runeVarbits = RunePouchVarbits.RUNES.getVarbits();
+
+		assert amountVarbits.length == runeVarbits.length;
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		Point location = itemWidget.getCanvasLocation();
 		StringBuilder tooltipBuilder = new StringBuilder();
 
-		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
+		for (int i = 0; i < amountVarbits.length; i++)
 		{
-			Varbits amountVarbit = AMOUNT_VARBITS[i];
+			Varbits amountVarbit = amountVarbits[i];
 
 			int amount = client.getVar(amountVarbit);
 			if (amount <= 0)
@@ -98,7 +94,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 				continue;
 			}
 
-			Varbits runeVarbit = RUNE_VARBITS[i];
+			Varbits runeVarbit = runeVarbits[i];
 			int runeId = client.getVar(runeVarbit);
 			Runes rune = Runes.getRune(runeId);
 			if (rune == null)

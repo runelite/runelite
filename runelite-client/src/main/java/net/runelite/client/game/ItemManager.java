@@ -51,11 +51,14 @@ import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import static net.runelite.api.ItemID.*;
+import net.runelite.api.RunePouchVarbits;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.plugins.runepouch.Runes;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
@@ -311,6 +314,11 @@ public class ItemManager
 		}
 		itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
 
+		if (itemID == RUNE_POUCH)
+		{
+			return getRunePouchPrice();
+		}
+
 		int price = 0;
 
 		final Collection<ItemMapping> mappedItems = ItemMapping.map(itemID);
@@ -511,5 +519,40 @@ public class ItemManager
 		{
 			return null;
 		}
+	}
+
+	/**
+	 * Calculate the price of the rune pouch
+	 *
+	 * @return int - Price
+	 */
+	private int getRunePouchPrice()
+	{
+		int price = 0;
+
+		Varbits[] amountVarbits = RunePouchVarbits.AMOUNTS.getVarbits();
+		Varbits[] runeVarbits = RunePouchVarbits.RUNES.getVarbits();
+
+		for (int i = 0; i < amountVarbits.length; i++)
+		{
+			Varbits amountVarbit = amountVarbits[i];
+			int amount = this.client.getVar(amountVarbit);
+			if (amount <= 0)
+			{
+				continue;
+			}
+
+			Varbits runeVarbit = runeVarbits[i];
+			int runeId = this.client.getVar(runeVarbit);
+			Runes rune = Runes.getRune(runeId);
+			if (rune == null)
+			{
+				continue;
+			}
+
+			price += getItemPrice(rune.getItemId()) * amount;
+		}
+
+		return price;
 	}
 }
