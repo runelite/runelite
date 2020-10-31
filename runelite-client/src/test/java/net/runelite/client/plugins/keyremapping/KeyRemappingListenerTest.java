@@ -27,6 +27,7 @@ package net.runelite.client.plugins.keyremapping;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -63,6 +64,7 @@ public class KeyRemappingListenerTest
 	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(keyRemappingConfig.control()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK));
 	}
 
 	@Test
@@ -122,5 +124,19 @@ public class KeyRemappingListenerTest
 		keyRemappingListener.keyPressed(event);
 
 		verify(event).setKeyCode(KeyEvent.VK_SPACE);
+	}
+
+	@Test
+	public void testControlRemap()
+	{
+		when(keyRemappingConfig.control()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_NUMPAD1, 0));
+		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
+
+		KeyEvent event = mock(KeyEvent.class);
+		when(event.getExtendedKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1); // for keybind matches()
+
+		keyRemappingListener.keyPressed(event);
+
+		verify(event).setKeyCode(KeyEvent.VK_CONTROL);
 	}
 }
