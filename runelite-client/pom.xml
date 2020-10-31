@@ -40,6 +40,8 @@
 		<jogl.version>2.4.0-rc-20200429</jogl.version>
 
 		<jarsigner.skip>true</jarsigner.skip>
+
+		<pmdVersion>6.29.0</pmdVersion>
 	</properties>
 
 	<dependencies>
@@ -436,6 +438,18 @@
 						</goals>
 					</execution>
 				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>net.sourceforge.pmd</groupId>
+						<artifactId>pmd-core</artifactId>
+						<version>${pmdVersion}</version>
+					</dependency>
+					<dependency>
+						<groupId>net.sourceforge.pmd</groupId>
+						<artifactId>pmd-java</artifactId>
+						<version>${pmdVersion}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
