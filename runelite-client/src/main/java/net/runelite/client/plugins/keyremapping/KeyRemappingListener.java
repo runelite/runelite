@@ -162,6 +162,11 @@ class KeyRemappingListener implements KeyListener
 				mappedKeyCode = KeyEvent.VK_SPACE;
 			}
 
+			if (config.control().matches(e))
+			{
+				mappedKeyCode = KeyEvent.VK_CONTROL;
+			}
+
 			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())
 			{
 				final char keyChar = e.getKeyChar();
