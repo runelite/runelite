@@ -60,7 +60,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
@@ -103,9 +102,6 @@ public class PartyPlugin extends Plugin
 
 	@Inject
 	private PartyPingOverlay partyPingOverlay;
-
-	@Inject
-	private KeyManager keyManager;
 
 	@Inject
 	private WSClient wsClient;

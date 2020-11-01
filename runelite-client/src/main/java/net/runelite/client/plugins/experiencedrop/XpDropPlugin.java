@@ -68,7 +68,7 @@ public class XpDropPlugin extends Plugin
 	private boolean hasDropped = false;
 	private boolean correctPrayer;
 	private Skill lastSkill = null;
-	private Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
+	private final Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
 
 	@Provides
 	XpDropConfig provideConfig(ConfigManager configManager)

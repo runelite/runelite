@@ -123,7 +123,7 @@ public class PluginManagerTest
 	@Test
 	public void testLoadPlugins() throws Exception
 	{
-		PluginManager pluginManager = new PluginManager(false, false, null, null, null, null, null);
+		PluginManager pluginManager = new PluginManager(false, false, null, null, null, null);
 		pluginManager.setOutdated(true);
 		pluginManager.loadCorePlugins();
 		Collection<Plugin> plugins = pluginManager.getPlugins();
@@ -134,7 +134,7 @@ public class PluginManagerTest
 			.count();
 		assertEquals(expected, plugins.size());
 
-		pluginManager = new PluginManager(false, false, null, null, null, null, null);
+		pluginManager = new PluginManager(false, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		plugins = pluginManager.getPlugins();
 
@@ -159,7 +159,7 @@ public class PluginManagerTest
 			RuneLite.DEFAULT_SESSION_FILE,
 			RuneLite.DEFAULT_CONFIG_FILE));
 
-		PluginManager pluginManager = new PluginManager(true, false, null, null, null, null, null);
+		PluginManager pluginManager = new PluginManager(true, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		modules.addAll(pluginManager.getPlugins());
 

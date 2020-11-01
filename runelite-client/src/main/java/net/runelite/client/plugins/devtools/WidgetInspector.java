@@ -345,7 +345,7 @@ class WidgetInspector extends JFrame
 
 			DefaultMutableTreeNode node = root;
 			deeper:
-			for (; !treePath.empty(); )
+			while (!treePath.empty())
 			{
 				Widget w = treePath.pop();
 				for (Enumeration<?> it = node.children(); it.hasMoreElements(); )

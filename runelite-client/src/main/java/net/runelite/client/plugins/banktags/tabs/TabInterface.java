@@ -113,7 +113,6 @@ public class TabInterface
 	private static final String TAG_GEAR = "Tag-equipment";
 	private static final String TAG_INVENTORY = "Tag-inventory";
 	private static final String TAB_MENU_KEY = "tagtabs";
-	private static final String TAB_MENU = TAG_SEARCH + TAB_MENU_KEY;
 	private static final String OPEN_TAB_MENU = "View tag tabs";
 	private static final String SHOW_WORN = "Show worn items";
 	private static final String SHOW_SETTINGS = "Show menu";
@@ -142,10 +141,10 @@ public class TabInterface
 	private final BankTagsConfig config;
 	private final Notifier notifier;
 	private final BankSearch bankSearch;
+	private final ChatboxItemSearch searchProvider;
 	private final Rectangle bounds = new Rectangle();
 	private final Rectangle canvasBounds = new Rectangle();
 
-	private ChatboxItemSearch searchProvider;
 	@Getter
 	private TagTab activeTab;
 	@Getter

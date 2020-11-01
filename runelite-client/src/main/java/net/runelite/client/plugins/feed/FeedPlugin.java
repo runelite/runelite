@@ -62,9 +62,6 @@ public class FeedPlugin extends Plugin
 	private ClientToolbar clientToolbar;
 
 	@Inject
-	private FeedConfig config;
-
-	@Inject
 	private ScheduledExecutorService executorService;
 
 	@Inject

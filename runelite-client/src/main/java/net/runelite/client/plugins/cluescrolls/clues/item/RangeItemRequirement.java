@@ -29,9 +29,9 @@ import net.runelite.api.Item;
 
 public class RangeItemRequirement implements ItemRequirement
 {
-	private String name;
-	private int startItemId;
-	private int endItemId;
+	private final String name;
+	private final int startItemId;
+	private final int endItemId;
 
 	public RangeItemRequirement(String name, int startItemId, int endItemId)
 	{

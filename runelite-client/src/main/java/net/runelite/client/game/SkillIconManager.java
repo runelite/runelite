@@ -40,7 +40,6 @@ public class SkillIconManager
 	public BufferedImage getSkillImage(Skill skill, boolean small)
 	{
 		int skillIdx = skill.ordinal() + (small ? Skill.values().length : 0);
-		BufferedImage skillImage = null;
 
 		if (imgCache[skillIdx] != null)
 		{
@@ -50,7 +49,7 @@ public class SkillIconManager
 		String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
 			+ skill.getName().toLowerCase() + ".png";
 		log.debug("Loading skill icon from {}", skillIconPath);
-		skillImage = ImageUtil.getResourceStreamFromClass(getClass(), skillIconPath);
+		BufferedImage skillImage = ImageUtil.getResourceStreamFromClass(getClass(), skillIconPath);
 		imgCache[skillIdx] = skillImage;
 
 		return skillImage;

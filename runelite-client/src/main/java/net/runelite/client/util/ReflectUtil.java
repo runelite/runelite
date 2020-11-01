@@ -65,7 +65,7 @@ public class ReflectUtil
 			}
 			catch (ReflectiveOperationException ex)
 			{
-				throw new RuntimeException(ex);
+				throw new RuntimeException(ex); // NOPMD: PreserveStackTrace: ignore e
 			}
 		}
 	}

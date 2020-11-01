@@ -40,6 +40,7 @@
 		<jogl.version>2.4.0-rc-20200429</jogl.version>
 
 		<jarsigner.skip>true</jarsigner.skip>
+		<pmd.skip>true</pmd.skip>
 	</properties>
 
 	<dependencies>
@@ -412,6 +413,39 @@
 							<archiveOverlayDirectory>${project.build.outputDirectory}/runelite</archiveOverlayDirectory>
 							<indexFile>${project.build.outputDirectory}/runelite/index</indexFile>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.13.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>net.sourceforge.pmd</groupId>
+						<artifactId>pmd-core</artifactId>
+						<version>6.29.0</version>
+					</dependency>
+					<dependency>
+						<groupId>net.sourceforge.pmd</groupId>
+						<artifactId>pmd-java</artifactId>
+						<version>6.29.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<failOnViolation>true</failOnViolation>
+					<printFailingErrors>true</printFailingErrors>
+					<rulesets>
+						<ruleset>${basedir}/pmd-ruleset.xml</ruleset>
+					</rulesets>
+					<linkXRef>false</linkXRef>
+					<analysisCache>true</analysisCache>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

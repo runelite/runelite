@@ -424,11 +424,11 @@ public class WorldMapPlugin extends Plugin
 
 		// Get first uncompleted quest. Else, return the last quest.
 		Quest quest = null;
-		for (int i = 0; i < quests.length; i++)
+		for (Quest q : quests)
 		{
-			if (quests[i].getState(client) != QuestState.FINISHED)
+			if (q.getState(client) != QuestState.FINISHED)
 			{
-				quest = quests[i];
+				quest = q;
 				break;
 			}
 		}

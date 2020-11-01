@@ -177,16 +177,16 @@ public class RaidsPlugin extends Plugin
 	private EventBus eventBus;
 
 	@Getter
-	private final Set<String> roomWhitelist = new HashSet<String>();
+	private final Set<String> roomWhitelist = new HashSet<>();
 
 	@Getter
-	private final Set<String> roomBlacklist = new HashSet<String>();
+	private final Set<String> roomBlacklist = new HashSet<>();
 
 	@Getter
-	private final Set<String> rotationWhitelist = new HashSet<String>();
+	private final Set<String> rotationWhitelist = new HashSet<>();
 
 	@Getter
-	private final Set<String> layoutWhitelist = new HashSet<String>();
+	private final Set<String> layoutWhitelist = new HashSet<>();
 
 	@Setter(AccessLevel.PACKAGE) // for the test
 	@Getter

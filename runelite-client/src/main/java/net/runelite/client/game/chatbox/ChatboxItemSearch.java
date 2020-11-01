@@ -63,7 +63,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	private final ItemManager itemManager;
 	private final Client client;
 
-	private Map<Integer, ItemComposition> results = new LinkedHashMap<>();
+	private final Map<Integer, ItemComposition> results = new LinkedHashMap<>();
 	private String tooltipText;
 	private int index = -1;
 

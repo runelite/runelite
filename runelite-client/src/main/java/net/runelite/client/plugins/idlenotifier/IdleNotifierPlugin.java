@@ -32,7 +32,6 @@ import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -86,7 +85,7 @@ public class IdleNotifierPlugin extends Plugin
 	private IdleNotifierConfig config;
 
 	private Instant lastAnimating;
-	private int lastAnimation = AnimationID.IDLE;
+	private int lastAnimation = IDLE;
 	private Instant lastInteracting;
 	private Actor lastInteract;
 	private Instant lastMoving;

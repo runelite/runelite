@@ -45,7 +45,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.GrandExchangeOffer;
-import net.runelite.api.GrandExchangeOfferState;
+import static net.runelite.api.GrandExchangeOfferState.BOUGHT;
+import static net.runelite.api.GrandExchangeOfferState.BUYING;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_BUY;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_SELL;
 import static net.runelite.api.GrandExchangeOfferState.EMPTY;
@@ -209,9 +210,9 @@ public class GrandExchangeOfferSlot extends JPanel
 			itemName.setText(offerItem.getName());
 			itemIcon.setIcon(new ImageIcon(itemImage));
 
-			boolean buying = newOffer.getState() == GrandExchangeOfferState.BOUGHT
-				|| newOffer.getState() == GrandExchangeOfferState.BUYING
-				|| newOffer.getState() == GrandExchangeOfferState.CANCELLED_BUY;
+			boolean buying = newOffer.getState() == BOUGHT
+				|| newOffer.getState() == BUYING
+				|| newOffer.getState() == CANCELLED_BUY;
 
 			String offerState = (buying ? "Bought " : "Sold ")
 				+ QuantityFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold()) + " / "

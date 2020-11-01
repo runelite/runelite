@@ -78,7 +78,7 @@ class WorldTableRow extends JPanel
 	private JLabel playerCountField;
 	private JLabel activityField;
 	private JLabel pingField;
-	private BiConsumer<World, Boolean> onFavorite;
+	private final BiConsumer<World, Boolean> onFavorite;
 
 	@Getter
 	private final World world;
@@ -89,11 +89,9 @@ class WorldTableRow extends JPanel
 	private int ping;
 
 	private Color lastBackground;
-	private boolean current;
 
 	WorldTableRow(World world, boolean current, boolean favorite, Integer ping, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite)
 	{
-		this.current = current;
 		this.world = world;
 		this.onFavorite = onFavorite;
 		this.updatedPlayerCount = world.getPlayers();

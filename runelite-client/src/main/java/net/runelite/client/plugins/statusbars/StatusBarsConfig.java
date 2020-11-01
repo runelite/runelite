@@ -27,7 +27,7 @@ package net.runelite.client.plugins.statusbars;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.plugins.statusbars.Config.BarMode;
+import net.runelite.client.plugins.statusbars.config.BarMode;
 
 @ConfigGroup("statusbars")
 public interface StatusBarsConfig extends Config

@@ -72,13 +72,11 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
@@ -137,12 +135,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 	@Inject
 	private TabInterface tabInterface;
-
-	@Inject
-	private BankSearch bankSearch;
-
-	@Inject
-	private KeyManager keyManager;
 
 	@Inject
 	private SpriteManager spriteManager;

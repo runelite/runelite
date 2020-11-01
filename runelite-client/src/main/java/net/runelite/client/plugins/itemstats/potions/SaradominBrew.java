@@ -40,8 +40,7 @@ import net.runelite.client.plugins.itemstats.StatsChanges;
 @RequiredArgsConstructor
 public class SaradominBrew implements Effect
 {
-	private static final Stat[] saradominBrewStats = new Stat[]
-	{
+	private static final Stat[] saradominBrewStats = {
 		ATTACK, STRENGTH, RANGED, MAGIC
 	};
 

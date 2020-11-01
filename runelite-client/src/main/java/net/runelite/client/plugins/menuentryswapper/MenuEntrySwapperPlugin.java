@@ -64,7 +64,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -133,9 +132,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
-
-	@Inject
-	private KeyManager keyManager;
 
 	@Inject
 	private MenuManager menuManager;
@@ -812,7 +808,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		sortedInsert(list2, index1);
 	}
 
-	private static <T extends Comparable<? super T>> void sortedInsert(List<T> list, T value)
+	private static <T extends Comparable<? super T>> void sortedInsert(List<T> list, T value) // NOPMD: UnusedPrivateMethod: false positive
 	{
 		int idx = Collections.binarySearch(list, value);
 		list.add(idx < 0 ? -idx - 1 : idx, value);
