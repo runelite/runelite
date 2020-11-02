@@ -53,8 +53,12 @@ import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_TRAILBLAZER;
 import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE_2;
+import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE_3;
 import static net.runelite.api.ItemID.ADAMANT_PICKAXE;
 import static net.runelite.api.ItemID.BLACK_PICKAXE;
 import static net.runelite.api.ItemID.BRONZE_PICKAXE;
@@ -69,6 +73,7 @@ import static net.runelite.api.ItemID.MITHRIL_PICKAXE;
 import static net.runelite.api.ItemID.RUNE_PICKAXE;
 import static net.runelite.api.ItemID.STEEL_PICKAXE;
 import static net.runelite.api.ItemID._3RD_AGE_PICKAXE;
+import static net.runelite.api.ItemID.TRAILBLAZER_PICKAXE;
 import net.runelite.api.Player;
 
 @Getter
@@ -87,7 +92,9 @@ enum Pickaxe
 	DRAGON_UPGRADED(DRAGON_PICKAXE_12797, MINING_DRAGON_PICKAXE_UPGRADED, MINING_MOTHERLODE_DRAGON_UPGRADED),
 	INFERNAL(INFERNAL_PICKAXE, MINING_INFERNAL_PICKAXE, MINING_MOTHERLODE_INFERNAL),
 	THIRDAGE(_3RD_AGE_PICKAXE, MINING_3A_PICKAXE, MINING_MOTHERLODE_3A),
-	CRYSTAL(CRYSTAL_PICKAXE, MINING_CRYSTAL_PICKAXE, MINING_MOTHERLODE_CRYSTAL);
+	CRYSTAL(CRYSTAL_PICKAXE, MINING_CRYSTAL_PICKAXE, MINING_MOTHERLODE_CRYSTAL),
+	TRAILBLAZER(TRAILBLAZER_PICKAXE, MINING_TRAILBLAZER_PICKAXE, MINING_TRAILBLAZER_PICKAXE_2,
+		MINING_TRAILBLAZER_PICKAXE_3, MINING_MOTHERLODE_TRAILBLAZER);
 
 	private final int itemId;
 	private final int[] animIds;

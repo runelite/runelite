@@ -40,6 +40,7 @@ import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
 import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
 import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
 import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
+import static net.runelite.api.AnimationID.WOODCUTTING_TRAILBLAZER;
 import static net.runelite.api.ItemID.ADAMANT_AXE;
 import static net.runelite.api.ItemID.BLACK_AXE;
 import static net.runelite.api.ItemID.BRONZE_AXE;
@@ -51,6 +52,7 @@ import static net.runelite.api.ItemID.IRON_AXE;
 import static net.runelite.api.ItemID.MITHRIL_AXE;
 import static net.runelite.api.ItemID.RUNE_AXE;
 import static net.runelite.api.ItemID.STEEL_AXE;
+import static net.runelite.api.ItemID.TRAILBLAZER_AXE;
 import static net.runelite.api.ItemID._3RD_AGE_AXE;
 import net.runelite.api.Player;
 
@@ -69,7 +71,8 @@ enum Axe
 	DRAGON(WOODCUTTING_DRAGON, DRAGON_AXE),
 	INFERNAL(WOODCUTTING_INFERNAL, INFERNAL_AXE),
 	THIRDAGE(WOODCUTTING_3A_AXE, _3RD_AGE_AXE),
-	CRYSTAL(WOODCUTTING_CRYSTAL, CRYSTAL_AXE);
+	CRYSTAL(WOODCUTTING_CRYSTAL, CRYSTAL_AXE),
+	TRAILBLAZER(WOODCUTTING_TRAILBLAZER, TRAILBLAZER_AXE);
 
 	private final Integer animId;
 	private final Integer itemId;
