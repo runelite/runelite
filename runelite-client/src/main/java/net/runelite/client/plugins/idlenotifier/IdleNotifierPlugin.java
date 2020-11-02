@@ -139,6 +139,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
 			case WOODCUTTING_CRYSTAL:
+			case WOODCUTTING_TRAILBLAZER:
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
@@ -198,6 +199,8 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_DRAGON_HARPOON:
 			case FISHING_INFERNAL_HARPOON:
 			case FISHING_CRYSTAL_HARPOON:
+			case FISHING_TRAILBLAZER_HARPOON:
+			case FISHING_TRAILBLAZER_HARPOON_2:
 			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
 			case FISHING_BAREHAND:
@@ -223,6 +226,9 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_INFERNAL_PICKAXE:
 			case MINING_3A_PICKAXE:
 			case MINING_CRYSTAL_PICKAXE:
+			case MINING_TRAILBLAZER_PICKAXE:
+			case MINING_TRAILBLAZER_PICKAXE_2:
+			case MINING_TRAILBLAZER_PICKAXE_3:
 			case DENSE_ESSENCE_CHIPPING:
 			case DENSE_ESSENCE_CHISELING:
 			/* Mining(Motherlode) */
@@ -240,6 +246,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_INFERNAL:
 			case MINING_MOTHERLODE_3A:
 			case MINING_MOTHERLODE_CRYSTAL:
+			case MINING_MOTHERLODE_TRAILBLAZER:
 			/* Herblore */
 			case HERBLORE_PESTLE_AND_MORTAR:
 			case HERBLORE_POTIONMAKING:
