@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,16 +24,9 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import lombok.Value;
-
-@Value
-class Swap
+public enum NMZBarrelMode
 {
-	private Predicate<String> optionPredicate;
-	private Predicate<String> targetPredicate;
-	private Supplier<String> swappedOptionPredicate;
-	private Supplier<Boolean> enabled;
-	private boolean strict;
+	CHECK,
+	TAKE,
+	STORE;
 }

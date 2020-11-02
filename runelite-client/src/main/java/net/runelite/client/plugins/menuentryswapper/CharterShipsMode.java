@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Jaakko Sirén <https://github.com/Jaakkonen>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,16 +24,23 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import lombok.Value;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Value
-class Swap
+@Getter
+@RequiredArgsConstructor
+public enum CharterShipsMode
 {
-	private Predicate<String> optionPredicate;
-	private Predicate<String> targetPredicate;
-	private Supplier<String> swappedOptionPredicate;
-	private Supplier<Boolean> enabled;
-	private boolean strict;
+	TALK("Talk-To"),
+	TRADE("Trade"),
+	CHARTER("Charter"),
+	LAST_DESTINATION("Charter-to");
+
+	private final String option;
+
+	@Override
+	public String toString()
+	{
+		return option;
+	}
 }

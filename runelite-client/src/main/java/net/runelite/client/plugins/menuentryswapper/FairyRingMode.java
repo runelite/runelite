@@ -24,23 +24,17 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum FairyRingMode
 {
-	ZANARIS("Zanaris"),
-	LAST_DESTINATION("Last-Destination"),
-	CONFIGURE("Configure"),
-	OFF("Off");
-
-	private final String name;
-
-	@Override
-	public String toString()
+	ZANARIS,
+	LAST_DESTINATION
 	{
-		return name;
-	}
+		@Override
+		public String toString()
+		{
+			return "Last-Destination";
+		}
+	},
+	CONFIGURE,
+	OFF;
 }

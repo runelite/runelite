@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, CaraPis <https://github.com/CaraPis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.menuentryswapper;
 
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import lombok.Value;
-
-@Value
-class Swap
+public enum ObeliskMode
 {
-	private Predicate<String> optionPredicate;
-	private Predicate<String> targetPredicate;
-	private Supplier<String> swappedOptionPredicate;
-	private Supplier<Boolean> enabled;
-	private boolean strict;
+	ACTIVATE,
+	TELEPORT_TO_DESTINATION,
+	SET_DESTINATION;
 }
