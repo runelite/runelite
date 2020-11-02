@@ -102,7 +102,7 @@ enum Task
 	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.MIDNIGHT, 0, ItemID.ROCK_HAMMER, "Dusk", "Dawn"),
 	HARPIE_BUG_SWARMS("Harpie bug swarms", ItemID.SWARM),
 	HELLHOUNDS("Hellhounds", ItemID.HELLHOUND),
-	HILL_GIANTS("Hill giants", ItemID.ENSOULED_GIANT_HEAD),
+	HILL_GIANTS("Hill giants", ItemID.ENSOULED_GIANT_HEAD, "Cyclops"),
 	HOBGOBLINS("Hobgoblins", ItemID.HOBGOBLIN_GUARD),
 	HYDRAS("Hydras", ItemID.HYDRA),
 	ICEFIENDS("Icefiends", ItemID.ICE_DIAMOND),
