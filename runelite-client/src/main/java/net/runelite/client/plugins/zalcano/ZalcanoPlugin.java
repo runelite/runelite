@@ -28,26 +28,32 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import static net.runelite.api.GraphicID.GRAPHICS_OBJECT_ROCKFALL;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import static net.runelite.api.NpcID.ZALCANO;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.ZALCANO_PROJECTILE_FIREBALL;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GraphicsObjectCreated;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -72,6 +78,12 @@ public class ZalcanoPlugin extends Plugin
 	@Inject
 	private ZalcanoOverlay overlay;
 
+	@Inject
+	private ZalcanoPanel panel;
+
+	@Inject
+	private ClientThread clientThread;
+
 	@Getter
 	private LocalPoint targetedGlowingRock;
 	@Getter
@@ -81,17 +93,35 @@ public class ZalcanoPlugin extends Plugin
 	@Getter
 	private final List<GraphicsObject> rocks = new ArrayList<>();
 
+	@Getter
+	private int healthDamage;
+	@Getter
+	private int shieldDamage;
+	@Getter
+	private boolean inCavern;
+
 	@Override
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(panel);
 		rocks.clear();
+
+		resetDamageCounter();
+		clientThread.invokeLater(() ->
+		{
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				inCavern = isHealthbarActive();
+			}
+		});
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(panel);
 	}
 
 	@Subscribe
@@ -107,9 +137,22 @@ public class ZalcanoPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() != GameState.LOGGED_IN)
+		GameState gameState = event.getGameState();
+		if (gameState == GameState.LOADING)
 		{
 			rocks.clear();
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		boolean wasInCavern = inCavern;
+		inCavern = isHealthbarActive();
+
+		if (!inCavern && wasInCavern)
+		{
+			resetDamageCounter();
 		}
 	}
 
@@ -140,6 +183,12 @@ public class ZalcanoPlugin extends Plugin
 				client.setHintArrow(lastGlowingRock);
 			}
 		}
+	}
+
+	private void resetDamageCounter()
+	{
+		healthDamage = 0;
+		shieldDamage = 0;
 	}
 
 	@Subscribe
@@ -182,5 +231,40 @@ public class ZalcanoPlugin extends Plugin
 			targetedGlowingRock = event.getPosition();
 			targetedGlowingRockEndCycle = projectile.getEndCycle();
 		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		final Actor actor = event.getActor();
+
+		if (!(actor instanceof NPC))
+		{
+			return;
+		}
+
+		int npcId = ((NPC) actor).getId();
+		if (!(npcId == ZALCANO_WEAKENED || npcId == ZALCANO))
+		{
+			return;
+		}
+
+		Hitsplat hitsplat = event.getHitsplat();
+		int damage = hitsplat.getAmount();
+
+		switch (hitsplat.getHitsplatType())
+		{
+			case DAMAGE_ME:
+				healthDamage += damage;
+				break;
+			case DAMAGE_ME_ORANGE:
+				shieldDamage += damage;
+				break;
+		}
+	}
+
+	private boolean isHealthbarActive()
+	{
+		return client.getVar(VarPlayer.ZALCANO_FORM) != -1;
 	}
 }
