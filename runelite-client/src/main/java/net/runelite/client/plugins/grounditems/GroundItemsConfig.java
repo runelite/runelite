@@ -31,6 +31,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
@@ -375,13 +376,13 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 		keyName = "groundItemTimers",
-		name = "Show despawn timers",
+		name = "Despawn timer",
 		description = "Shows despawn timers for items you've dropped and received as loot",
 		position = 28
 	)
-	default boolean groundItemTimers()
+	default DespawnTimerMode groundItemTimers()
 	{
-		return false;
+		return DespawnTimerMode.OFF;
 	}
 
 	@ConfigItem(
