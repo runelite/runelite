@@ -52,4 +52,26 @@ public interface DpsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "autoreset",
+		name = "Auto reset",
+		description = "Reset the DPS tracker when an NPC dies"
+	)
+	default boolean autoreset()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "npcToCountDPS",
+		name = "Specific NPC name",
+		description = "The NPC to count DPS against"
+	)
+	default String getNpcToCountDPS()
+	{
+		return "";
+	}
 }

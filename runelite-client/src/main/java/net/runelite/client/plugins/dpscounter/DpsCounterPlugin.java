@@ -182,6 +182,12 @@ public class DpsCounterPlugin extends Plugin
 			return;
 		}
 
+		if (!dpsConfig.getNpcToCountDPS().isEmpty() && !actor.getName().equalsIgnoreCase(dpsConfig.getNpcToCountDPS()))
+		{
+			return;
+		}
+		// if no NPC specified or if NPC name matches, count DPS
+
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
 
 		if (hitsplat.isMine())
@@ -266,13 +272,24 @@ public class DpsCounterPlugin extends Plugin
 	{
 		NPC npc = npcDespawned.getNpc();
 
-		if (npc.isDead() && BOSSES.contains(npc.getId()))
+		if (npc.isDead())
 		{
-			log.debug("Boss has died!");
-
-			if (dpsConfig.autopause())
+			if (BOSSES.contains(npc.getId()))
 			{
-				pause();
+				log.debug("Boss has died!");
+
+				if (dpsConfig.autopause())
+				{
+					pause();
+				}
+			}
+
+			if (dpsConfig.autoreset())
+			{
+				log.debug("Autoreset counter");
+
+				members.clear();
+				total.reset();
 			}
 		}
 	}
