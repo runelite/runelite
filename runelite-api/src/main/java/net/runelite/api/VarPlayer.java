@@ -185,7 +185,14 @@ public enum VarPlayer
 	/**
 	 * 0 = 2 buttons, 1 = 1 button
 	 */
-	MOUSE_BUTTONS(170);
+	MOUSE_BUTTONS(170),
+
+	/**
+	 * Zalcano's form
+	 * -1 : Player is outside or Zalcano is dead i.e. there's no healthbar to show
+	 * Anything else : The {@link NpcID} of the current form
+	 */
+	ZALCANO_FORM(1683);
 
 	private final int id;
 }
