@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Ben Poulson <https://github.com/benpoulson>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#version 330
+package net.runelite.client.plugins.gpu.config;
 
-uniform sampler2DArray textures;
-uniform vec2 textureOffsets[64];
-uniform float brightness;
-uniform float smoothBanding;
-uniform vec4 fogColor;
-uniform int colorBlindMode;
-
-in vec4 Color;
-noperspective centroid in float fHsl;
-flat in int textureId;
-in vec2 fUv;
-in float fogAmount;
-
-out vec4 FragColor;
-
-#include hsl_to_rgb.glsl
-#include colorblind.glsl
-
-void main() {
-  int hsl = int(fHsl);
-  vec3 rgb = hslToRgb(hsl) * smoothBanding + Color.rgb * (1.f - smoothBanding);
-  vec4 smoothColor = vec4(rgb, Color.a);
-
-  if (textureId > 0) {
-    int textureIdx = textureId - 1;
-
-    vec2 uv = fUv;
-    vec2 animatedUv = uv + textureOffsets[textureIdx];
-
-    vec4 textureColor = texture(textures, vec3(animatedUv, float(textureIdx)));
-    vec4 textureColorBrightness = pow(textureColor, vec4(brightness, brightness, brightness, 1.0f));
-
-    smoothColor = textureColorBrightness * smoothColor;
-  }
-
-  if (colorBlindMode > 0) {
-    smoothColor.rgb = colorblind(colorBlindMode, smoothColor.rgb);
-  }
-
-  vec3 mixedColor = mix(smoothColor.rgb, fogColor.rgb, fogAmount);
-  FragColor = vec4(mixedColor, smoothColor.a);
+public enum ColorBlindMode
+{
+	NONE,
+	PROTANOPE,
+	DEUTERANOPE,
+	TRITANOPE;
 }
