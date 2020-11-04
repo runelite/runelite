@@ -34,9 +34,11 @@ uniform sampler2D tex;
 uniform int samplingMode;
 uniform ivec2 sourceDimensions;
 uniform ivec2 targetDimensions;
+uniform int colorBlindMode;
 
 #include scale/bicubic.glsl
 #include scale/xbr_lv2_frag.glsl
+#include colorblind.glsl
 
 in vec2 TexCoord;
 in XBRTable xbrTable;
@@ -52,6 +54,10 @@ void main() {
         c = textureCubic(tex, TexCoord, samplingMode);
     else if (samplingMode == SAMPLING_XBR)
         c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
+
+    if (colorBlindMode > 0) {
+        c.rgb = colorblind(colorBlindMode, c.rgb);
+    }
 
     FragColor = c;
 }
