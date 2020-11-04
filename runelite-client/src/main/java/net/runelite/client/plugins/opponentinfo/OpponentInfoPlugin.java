@@ -184,7 +184,7 @@ public class OpponentInfoPlugin extends Plugin
 		if (npc.getInteracting() == client.getLocalPlayer() || lastOpponent == npc)
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries[menuEntries.length - 1].setTarget("*" + menuEntryAdded.getTarget());
+			menuEntries[menuEntries.length - 1].setTarget("*" + menuEntries[menuEntries.length - 1].getTarget());
 			client.setMenuEntries(menuEntries);
 		}
 	}
