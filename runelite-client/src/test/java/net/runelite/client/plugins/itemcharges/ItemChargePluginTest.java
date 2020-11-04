@@ -42,7 +42,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -126,143 +125,143 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).dodgyNecklace(eq(10));
+		verify(config).dodgyNecklace(10);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", PROTECT, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).dodgyNecklace(eq(9));
+		verify(config).dodgyNecklace(9);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", PROTECT_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).dodgyNecklace(eq(1));
+		verify(config).dodgyNecklace(1);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).dodgyNecklace(eq(10));
+		verify(config).dodgyNecklace(10);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_ONE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).ringOfForging(eq(1));
+		verify(config).ringOfForging(1);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).ringOfForging(eq(140));
+		verify(config).ringOfForging(140);
 		reset(config);
 
 		when(config.ringOfForging()).thenReturn(90);
 		// Create equipment inventory with ring of forging
 		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
-		when(client.getItemContainer(eq(InventoryID.EQUIPMENT))).thenReturn(equipmentItemContainer);
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentItemContainer);
 		when(equipmentItemContainer.contains(ItemID.RING_OF_FORGING)).thenReturn(true);
 		// Run message
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).ringOfForging(eq(89));
+		verify(config).ringOfForging(89);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).ringOfForging(eq(140));
+		verify(config).ringOfForging(140);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_AMULET_OF_CHEMISTRY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(eq(5));
+		verify(config).amuletOfChemistry(5);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_AMULET_OF_CHEMISTRY_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(eq(1));
+		verify(config).amuletOfChemistry(1);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_AMULET_OF_CHEMISTRY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(eq(4));
+		verify(config).amuletOfChemistry(4);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_AMULET_OF_CHEMISTRY_3_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(eq(2));
+		verify(config).amuletOfChemistry(2);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_AMULET_OF_CHEMISTRY_2_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(eq(1));
+		verify(config).amuletOfChemistry(1);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_AMULET_OF_CHEMISTRY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(eq(5));
+		verify(config).amuletOfChemistry(5);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_AMULET_OF_CHEMISTRY_3_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(eq(5));
+		verify(config).amuletOfChemistry(5);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_AMULET_OF_CHEMISTRY_2_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(eq(5));
+		verify(config).amuletOfChemistry(5);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(1000));
+		verify(config).chronicle(1000);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_ONE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(1));
+		verify(config).chronicle(1);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_EMPTY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(0));
+		verify(config).chronicle(0);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(999));
+		verify(config).chronicle(999);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_ONE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(1));
+		verify(config).chronicle(1);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_EMPTY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(0));
+		verify(config).chronicle(0);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_FAIL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(0));
+		verify(config).chronicle(0);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_SINGLE_CHARGE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(1));
+		verify(config).chronicle(1);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_SINGLE_CHARGE_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(1000));
+		verify(config).chronicle(1000);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_MULTIPLE_CHARGES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(5));
+		verify(config).chronicle(5);
 		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(eq(1000));
+		verify(config).chronicle(1000);
 		reset(config);
 	}
 }
