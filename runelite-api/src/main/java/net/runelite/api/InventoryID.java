@@ -85,7 +85,12 @@ public enum InventoryID
 	/**
 	 * Seed vault located inside the Farming Guild
 	 */
-	SEED_VAULT(626);
+	SEED_VAULT(626),
+
+	/**
+	 * A container in the costume room.
+	 */
+	COSTUME_ROOM(33405);
 
 	private final int id;
 

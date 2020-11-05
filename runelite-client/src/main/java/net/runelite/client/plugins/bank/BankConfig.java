@@ -119,4 +119,15 @@ public interface BankConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "costumeRoomTotal",
+		name = "Show costume room totals",
+		description = "Adds the total value of all items in the costume room box to the title",
+		position = 9
+	)
+	default boolean costumeRoomTotal()
+	{
+		return false;
+	}
 }

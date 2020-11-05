@@ -36,6 +36,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
@@ -54,6 +55,7 @@ class ItemPricesOverlay extends Overlay
 	private static final int EXPLORERS_RING_ITEM_WIDGETID = WidgetInfo.EXPLORERS_RING_ALCH_INVENTORY.getPackedId();
 	private static final int SEED_VAULT_ITEM_WIDGETID = WidgetInfo.SEED_VAULT_ITEM_CONTAINER.getPackedId();
 	private static final int SEED_VAULT_INVENTORY_ITEM_WIDGETID = WidgetInfo.SEED_VAULT_INVENTORY_ITEMS_CONTAINER.getPackedId();
+	private static final int COSTUME_ROOM_ITEM_WIDGETID = WidgetInfo.COSTUME_ROOM_ITEM_CONTAINER.getPackedId();
 	
 	private final Client client;
 	private final ItemPricesConfig config;
@@ -127,6 +129,7 @@ class ItemPricesOverlay extends Overlay
 					case WidgetID.BANK_INVENTORY_GROUP_ID:
 					case WidgetID.SEED_VAULT_GROUP_ID:
 					case WidgetID.SEED_VAULT_INVENTORY_GROUP_ID:
+					case WidgetID.COSTUME_ROOM_GROUP_ID:
 						// Make tooltip
 						final String text = makeValueTooltip(menuEntry);
 						if (text != null)
@@ -150,6 +153,7 @@ class ItemPricesOverlay extends Overlay
 
 		final int widgetId = menuEntry.getParam1();
 		ItemContainer container = null;
+		Widget[] containerWidgetChildren = null;
 
 		// Inventory item
 		if (widgetId == INVENTORY_ITEM_WIDGETID ||
@@ -169,21 +173,41 @@ class ItemPricesOverlay extends Overlay
 		{
 			container = client.getItemContainer(InventoryID.SEED_VAULT);
 		}
+		// Costume room item
+		else if (widgetId == COSTUME_ROOM_ITEM_WIDGETID)
+		{
+			final Widget costumeWidget = client.getWidget(WidgetInfo.COSTUME_ROOM_ITEM_CONTAINER);
+			if (costumeWidget == null)
+			{
+				return null;
+			}
+			containerWidgetChildren = costumeWidget.getChildren();
+		}
 		
-		if (container == null)
+		if (container == null && containerWidgetChildren == null)
 		{
 			return null;
 		}
 
 		// Find the item in the container to get stack size
 		final int index = menuEntry.getParam0();
-		final Item item = container.getItem(index);
+		final Item item = widgetId == COSTUME_ROOM_ITEM_WIDGETID ? makeItemFromWidget(containerWidgetChildren[index]) : container.getItem(index);
 		if (item != null)
 		{
 			return getItemStackValueText(item);
 		}
 
 		return null;
+	}
+
+	private Item makeItemFromWidget(Widget widget)
+	{
+		if (widget.getItemQuantityMode() == 0 || widget.getItemQuantity() <= 0)
+		{
+			return null;
+		}
+
+		return new Item(widget.getItemId(), widget.getItemQuantity());
 	}
 
 	private String getItemStackValueText(Item item)
