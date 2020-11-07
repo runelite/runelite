@@ -38,13 +38,20 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.ScriptID;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -61,6 +68,9 @@ public class OpponentInfoPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private OpponentInfoConfig config;
@@ -93,6 +103,19 @@ public class OpponentInfoPlugin extends Plugin
 	{
 		overlayManager.add(opponentInfoOverlay);
 		overlayManager.add(playerComparisonOverlay);
+
+		if (client.getGameState().getState() <= 0)
+		{
+			//<= 0 is either starting or unknown, so return to avoid errors
+			return;
+		}
+
+		clientThread.invokeLater(() ->
+		{
+			updateVanillaHealthBarVars();
+			opponentInfoOverlay.setVanillaHealthText();
+			opponentInfoOverlay.setHealthBarColors();
+		});
 	}
 
 	@Override
@@ -102,6 +125,9 @@ public class OpponentInfoPlugin extends Plugin
 		lastTime = null;
 		overlayManager.remove(opponentInfoOverlay);
 		overlayManager.remove(playerComparisonOverlay);
+
+		clientThread.invokeLater(() -> opponentInfoOverlay.unHideVanillaHealthBar());
+
 	}
 
 	@Subscribe
@@ -161,6 +187,62 @@ public class OpponentInfoPlugin extends Plugin
 			{
 				lastOpponent = null;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varbitChanged)
+	{
+		updateVanillaHealthBarVars();
+	}
+
+	public void updateVanillaHealthBarVars()
+	{
+		clientThread.invokeLater(() ->
+		{
+			int opponentID = client.getVar(VarPlayer.HEALTH_BAR_OPPONENT);
+			int opponentCurrentHealth = client.getVar(Varbits.HEALTH_OVERLAY_BAR_CURRENT_VALUE);
+			int opponentMaximumHealth = client.getVar(Varbits.HEALTH_OVERLAY_BAR_MAX_VALUE);
+			opponentInfoOverlay.updateHealthBarVars(
+				opponentCurrentHealth,
+				opponentMaximumHealth ,
+				client.getNpcDefinition(opponentID).getName());
+		});
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	{
+		if (scriptPostFired.getScriptId() == ScriptID.HEALTH_OVERLAY_BAR_UPDATING)
+		{
+			clientThread.invokeLater(() ->
+			{
+				opponentInfoOverlay.setVanillaHealthText();
+				opponentInfoOverlay.setHealthBarColors();
+			});
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("opponentinfo"))
+		{
+			if (event.getKey().equals("mergeVanillaHealthBar"))
+			{
+				if (event.getNewValue().equals("false"))
+				{
+					clientThread.invokeLater(() ->	opponentInfoOverlay.unHideVanillaHealthBar());
+				}
+			}
+			//reset/check values after config change.
+			clientThread.invokeLater(() ->
+			{
+				opponentInfoOverlay.setVanillaHealthText();
+				opponentInfoOverlay.setHealthBarColors();
+			});
+
+			updateVanillaHealthBarVars();
 		}
 	}
 

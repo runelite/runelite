@@ -63,4 +63,41 @@ public interface OpponentInfoConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showVanillaPercentages",
+		name = "Show HP % on the Vanilla HP Bar",
+		description = "Adds a percentage value next to the health value of the vanilla HP Bar",
+		position = 4
+	)
+
+	default boolean showVanillaPercentages()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "mergeVanillaHealthBar",
+		name = "Merge Vanilla Health Bar Overlay",
+		description = "Hides the vanilla health bar overlay, but adds the info to the existing opponent info",
+		position = 5
+	)
+
+	default boolean mergeVanillaHealthBar()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "vanillaHealthBarOverride",
+		name = "Use vanilla Health Bar at these bosses",
+		description = "If merge vanilla health bar overlay is checked, this can allow you to still use the vanilla HP bar on certain bosses, e.g. for vanguards the vanilla HP bar is quite useful. Use '*' if you want to use the vanilla HP bar wherever possible.",
+		position = 6
+	)
+	default String vanillaHealthBarOverride()
+	{
+		return "vanguard*";
+	}
 }
+
+

@@ -299,4 +299,7 @@ public final class ScriptID
 
 	@ScriptArguments()
 	public static final int BANKMAIN_SEARCHING = 514;
+
+	@ScriptArguments()
+	public static final int HEALTH_OVERLAY_BAR_UPDATING = 2103;
 }

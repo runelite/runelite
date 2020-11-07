@@ -935,5 +935,9 @@ public class WidgetID
 	static class EncounterHealthBar
 	{
 		static final int CONTAINER = 6;
+		static final int BOSS_NAME = 11;
+		static final int HEALTH_BAR_BACKGROUND = 14;
+		static final int HEALTH_BAR_FOREGROUND = 15;
+		static final int HEALTH_TEXT = 20;
 	}
 }

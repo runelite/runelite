@@ -36,6 +36,9 @@ import net.runelite.api.Actor;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.game.NPCManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -47,12 +50,21 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
+import net.runelite.client.util.WildcardMatcher;
 import net.runelite.http.api.hiscore.HiscoreResult;
 
 class OpponentInfoOverlay extends OverlayPanel
 {
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
 	private static final Color HP_RED = new Color(102, 15, 16, 230);
+	private static final Color FONT_WHITE = new Color(15395562);
+	/**
+	 * using these non-final values so that the colors can be changed. Using the HP_GREEN, HP_RED and FONT_WHITE colors
+	 * for resetting the colors
+	 */
+	private Color HP_Foreground = HP_GREEN;
+	private Color HP_Background = HP_RED;
+	private Color HP_FontColor = FONT_WHITE;
 
 	private final OpponentInfoPlugin opponentInfoPlugin;
 	private final OpponentInfoConfig opponentInfoConfig;
@@ -60,9 +72,14 @@ class OpponentInfoOverlay extends OverlayPanel
 	private final NPCManager npcManager;
 
 	private Integer lastMaxHealth;
-	private int lastRatio = 0;
-	private int lastHealthScale = 0;
+	private int lastRatio;
+	private int lastHealthScale;
+
 	private String opponentName;
+	private int vanillaHealthBarHealth;
+	private int vanillaHealthBarMaxHealth;
+	private String vanillaHealthBarOpponentName;
+	boolean useVanilla;
 
 	@Inject
 	private OpponentInfoOverlay(
@@ -85,44 +102,172 @@ class OpponentInfoOverlay extends OverlayPanel
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay"));
 	}
 
-	@Override
-	public Dimension render(Graphics2D graphics)
+	public void updateHealthBarVars(int lastHealth, int maxHealth, String bossName)
 	{
-		final Actor opponent = opponentInfoPlugin.getLastOpponent();
+		Widget vanillaHealthBar = client.getWidget(WidgetInfo.HEALTH_OVERLAY_BAR);
 
-		if (opponent == null)
+		if (bossName != null)
 		{
-			opponentName = null;
-			return null;
-		}
-
-		if (opponent.getName() != null && opponent.getHealthScale() > 0)
-		{
-			lastRatio = opponent.getHealthRatio();
-			lastHealthScale = opponent.getHealthScale();
-			opponentName = Text.removeTags(opponent.getName());
-
-			lastMaxHealth = null;
-			if (opponent instanceof NPC)
+			useVanilla = false;
+			for (String boss : opponentInfoConfig.vanillaHealthBarOverride().split(","))
 			{
-				lastMaxHealth = npcManager.getHealth(((NPC) opponent).getId());
-			}
-			else if (opponent instanceof Player)
-			{
-				final HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(opponentName, opponentInfoPlugin.getHiscoreEndpoint());
-				if (hiscoreResult != null)
+				if (WildcardMatcher.matches(boss.toLowerCase().trim(), bossName.toLowerCase().trim()))
 				{
-					final int hp = hiscoreResult.getHitpoints().getLevel();
-					if (hp > 0)
-					{
-						lastMaxHealth = hp;
-					}
+					useVanilla = true;
+					break;
 				}
 			}
 		}
 
-		if (opponentName == null)
+		if (vanillaHealthBar != null && (!useVanilla) && opponentInfoConfig.mergeVanillaHealthBar())
 		{
+			vanillaHealthBar.setHidden(true);
+		}
+
+		vanillaHealthBarHealth = lastHealth;
+		vanillaHealthBarMaxHealth = maxHealth;
+		vanillaHealthBarOpponentName = bossName;
+
+		if (lastHealth == 0 || maxHealth == 0 || bossName == null)
+		{
+			//if any of these values are zero/null, the Vanilla Health Bar is supposed to disappear,
+			//or the opponent is dead, so remove the vanilla opponent name and max health vars,
+			//and reset the color
+			vanillaHealthBarOpponentName = null;
+			vanillaHealthBarMaxHealth = 0;
+			resetColors();
+		}
+	}
+
+	public void setVanillaHealthText()
+	{
+		int lastHealth = client.getVar(Varbits.HEALTH_OVERLAY_BAR_CURRENT_VALUE);
+		int maxHealth = client.getVar(Varbits.HEALTH_OVERLAY_BAR_MAX_VALUE);
+
+		Widget vanillaHealthBarHealthText = client.getWidget(WidgetInfo.HEALTH_OVERLAY_HEALTH_TEXT);
+			if (vanillaHealthBarHealthText != null && lastHealth != 0 && maxHealth != 0)
+			{
+				vanillaHealthBarHealthText.setText(opponentInfoConfig.showVanillaPercentages() ?
+					lastHealth + " / " + maxHealth + " (" + String.format("%.1f", (lastHealth * 100.0) / maxHealth) + "%)" :
+					lastHealth + " / " + maxHealth);
+			}
+	}
+
+	public void setHealthBarColors()
+	{
+		Widget vanillaBackgroundColor = client.getWidget(WidgetInfo.HEALTH_OVERLAY_BAR_BACKGROUND);
+		Widget vanillaForegroundColor = client.getWidget(WidgetInfo.HEALTH_OVERLAY_BAR_FOREGROUND);
+		Widget vanillaHealthText = client.getWidget(WidgetInfo.HEALTH_OVERLAY_HEALTH_TEXT);
+
+		if (vanillaBackgroundColor != null)
+		{
+			HP_Background = new Color(vanillaBackgroundColor.getTextColor());
+		}
+		else
+		{
+			HP_Background = HP_RED;
+		}
+
+		if (vanillaForegroundColor != null)
+		{
+			HP_Foreground = new Color(vanillaForegroundColor.getTextColor());
+		}
+		else
+		{
+			HP_Foreground = HP_GREEN;
+		}
+
+		if (vanillaHealthText != null)
+		{
+			HP_FontColor = new Color(vanillaHealthText.getTextColor());
+		}
+		else
+		{
+			HP_FontColor = FONT_WHITE;
+		}
+	}
+
+	public void unHideVanillaHealthBar()
+	{
+		Widget vanillaHealthBar = client.getWidget(WidgetInfo.HEALTH_OVERLAY_BAR);
+
+		if (vanillaHealthBar != null)
+		{
+			vanillaHealthBar.setHidden(false);
+		}
+
+		setVanillaHealthText();
+		resetColors();
+	}
+
+	public void resetColors()
+	{
+		HP_Background = HP_RED;
+		HP_Foreground = HP_GREEN;
+		HP_FontColor = FONT_WHITE;
+	}
+
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (useVanilla && opponentInfoConfig.mergeVanillaHealthBar())
+		{
+			return null;
+		}
+
+		final Actor opponent = opponentInfoPlugin.getLastOpponent();
+
+		if (opponent != null)
+		{
+			if (opponent.getName() != null && opponent.getHealthScale() > 0)
+			{
+				lastRatio = opponent.getHealthRatio();
+				lastHealthScale = opponent.getHealthScale();
+				opponentName = Text.removeTags(opponent.getName());
+
+				lastMaxHealth = null;
+				if (opponent instanceof NPC)
+				{
+					lastMaxHealth = npcManager.getHealth(((NPC) opponent).getId());
+				}
+				else if (opponent instanceof Player)
+				{
+					//this method doesn't work for the nightmare/changing health bosses
+					final HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(opponentName, opponentInfoPlugin.getHiscoreEndpoint());
+					if (hiscoreResult != null)
+					{
+						final int hp = hiscoreResult.getHitpoints().getLevel();
+						if (hp > 0)
+						{
+							lastMaxHealth = hp;
+						}
+					}
+				}
+			}
+
+			if (vanillaHealthBarOpponentName != null && opponentName == null)
+			{
+				opponentName = vanillaHealthBarOpponentName;
+			}
+			else if (vanillaHealthBarOpponentName == null && opponentName == null)
+			{
+				return null;
+			}
+		}
+
+		if (vanillaHealthBarMaxHealth != 0 && opponentInfoConfig.mergeVanillaHealthBar())
+		{
+			lastMaxHealth = vanillaHealthBarMaxHealth;
+			lastHealthScale = vanillaHealthBarMaxHealth;
+			opponentName = vanillaHealthBarOpponentName;
+			lastRatio = vanillaHealthBarHealth;
+		}
+
+		if ((opponent == null && (vanillaHealthBarMaxHealth == 0 || !opponentInfoConfig.mergeVanillaHealthBar())) ||
+			opponentName == null)
+		{
+			opponentName = null;
 			return null;
 		}
 
@@ -139,8 +284,9 @@ class OpponentInfoOverlay extends OverlayPanel
 		if (lastRatio >= 0 && lastHealthScale > 0)
 		{
 			final ProgressBarComponent progressBarComponent = new ProgressBarComponent();
-			progressBarComponent.setBackgroundColor(HP_RED);
-			progressBarComponent.setForegroundColor(HP_GREEN);
+			progressBarComponent.setBackgroundColor(HP_Background);
+			progressBarComponent.setForegroundColor(HP_Foreground);
+			progressBarComponent.setFontColor(HP_FontColor);
 
 			final HitpointsDisplayStyle displayStyle = opponentInfoConfig.hitpointsDisplayStyle();
 
@@ -150,8 +296,15 @@ class OpponentInfoOverlay extends OverlayPanel
 				// This is the reverse of the calculation of healthRatio done by the server
 				// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
 				// It's able to recover the exact health if maxHealth <= healthScale.
-				int health = 0;
-				if (lastRatio > 0)
+
+				/*
+				 * vanillaHealthBarHealth is non-zero if the vanilla health overlay is active;
+				 * The max and min health don't have to be calculated then.
+				 * If the health overlay isn't active, the health value will be zero.
+				 */
+				int health = vanillaHealthBarHealth;
+
+				if (lastRatio > 0 && vanillaHealthBarHealth != 0)
 				{
 					int minHealth = 1;
 					int maxHealth;
