@@ -810,7 +810,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			viewportOffset + BORDER_TOP);
 
 		final Point topCenterPoint = new Point(
-			viewportOffset + viewportBounds.width / 2,
+			isResizeable ? viewportOffset + (int)client.getRealDimensions().getWidth() / 2 : viewportOffset + viewportBounds.width / 2,
 			viewportOffset + BORDER
 		);
 
