@@ -280,6 +280,8 @@ class PluginHubPanel extends PluginPanel
 							return;
 						}
 					}
+					addrm.setText("Installing");
+					addrm.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 					externalPluginManager.install(manifest.getInternalName());
 				});
 			}
@@ -287,14 +289,24 @@ class PluginHubPanel extends PluginPanel
 			{
 				addrm.setText("Remove");
 				addrm.setBackground(new Color(0xBE2828));
-				addrm.addActionListener(l -> externalPluginManager.remove(manifest.getInternalName()));
+				addrm.addActionListener(l ->
+				{
+					addrm.setText("Removing");
+					addrm.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+					externalPluginManager.remove(manifest.getInternalName());
+				});
 			}
 			else
 			{
 				assert update;
 				addrm.setText("Update");
 				addrm.setBackground(new Color(0x1F621F));
-				addrm.addActionListener(l -> externalPluginManager.update());
+				addrm.addActionListener(l ->
+				{
+					addrm.setText("Updating");
+					addrm.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+					externalPluginManager.update();
+				});
 			}
 			addrm.setBorder(new LineBorder(addrm.getBackground().darker()));
 			addrm.setFocusPainted(false);
@@ -313,7 +325,7 @@ class PluginHubPanel extends PluginPanel
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, 100)
 						.addComponent(help, 0, 24, 24)
 						.addComponent(configure, 0, 24, 24)
-						.addComponent(addrm, 0, 50, GroupLayout.PREFERRED_SIZE)
+						.addComponent(addrm, 0, 57, GroupLayout.PREFERRED_SIZE)
 						.addGap(5))));
 
 			int lineHeight = description.getFontMetrics(description.getFont()).getHeight();
