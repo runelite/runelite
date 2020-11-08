@@ -27,6 +27,7 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -44,6 +45,8 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
@@ -55,7 +58,6 @@ import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -114,12 +116,23 @@ public class ItemChargePlugin extends Plugin
 	private static final String CHRONICLE_EMPTY_TEXT = "Your book has run out of charges.";
 	private static final String CHRONICLE_NO_CHARGES_TEXT = "Your book does not have any charges. Purchase some Teleport Cards from Diango.";
 
+	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer";
+	private static final Pattern CHAT_BRACELET_SLAUGHTER_REGEX = Pattern.compile("Your bracelet of slaughter prevents your slayer count from decreasing\\. It has (\\d{1,2}) charges? left\\.");
+	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your";
+	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_REGEX = Pattern.compile("Your expeditious bracelet helps you progress your slayer (?:task )?faster\\. It has (\\d{1,2}) charges? left\\.");
+	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has ";
+	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile("Your bracelet of slaughter has (\\d{1,2}) charges? left\\.");
+	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
+	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX = Pattern.compile("Your expeditious bracelet has (\\d{1,2}) charges? left\\.");
+
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
 	private static final int MAX_EXPLORER_RING_CHARGES = 30;
 	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
+	private static final int MAX_BRACELET_OF_SLAUGHTER_CHARGES = 30;
+	private static final int MAX_EXPEDITIOUS_BRACELET_CHARGES = 30;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -148,7 +161,8 @@ public class ItemChargePlugin extends Plugin
 	private ItemChargeConfig config;
 
 	// Limits destroy callback to once per tick
-	private int lastCheckTick;
+	@VisibleForTesting
+	int lastCheckTick;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -222,6 +236,16 @@ public class ItemChargePlugin extends Plugin
 		if (!config.showRingOfForgingCount())
 		{
 			removeInfobox(ItemWithSlot.RING_OF_FORGING);
+		}
+
+		if (!config.showBraceletOfSlaughterCount())
+		{
+			removeInfobox(ItemWithSlot.BRACELET_OF_SLAUGHTER);
+		}
+
+		if (!config.showExpeditiousBraceletCount())
+		{
+			removeInfobox(ItemWithSlot.EXPEDITIOUS_BRACELET);
 		}
 	}
 
@@ -389,6 +413,55 @@ public class ItemChargePlugin extends Plugin
 			{
 				config.chronicle(1000);
 			}
+			else if (message.startsWith(CHAT_BRACELET_SLAUGHTER))
+			{
+				String strippedMessage = Text.removeTags(message);
+				Matcher mSlaughter = CHAT_BRACELET_SLAUGHTER_REGEX.matcher(strippedMessage);
+
+				final int slaughterChargeCount = mSlaughter.find() ? Integer.parseInt(mSlaughter.group(1)) : MAX_BRACELET_OF_SLAUGHTER_CHARGES;
+				if (config.braceletOfSlaughterNotification() && slaughterChargeCount == MAX_BRACELET_OF_SLAUGHTER_CHARGES)
+				{
+					notifier.notify("Your bracelet of slaughter has crumbled to dust.");
+				}
+
+				updateBraceletOfSlaughterCharges(slaughterChargeCount);
+			}
+			else if (message.startsWith(CHAT_BRACELET_EXPEDITIOUS))
+			{
+				String strippedMessage = Text.removeTags(message);
+				Matcher mExpeditious = CHAT_BRACELET_EXPEDITIOUS_REGEX.matcher(strippedMessage);
+
+				final int expeditiousChargeCount = mExpeditious.find() ? Integer.parseInt(mExpeditious.group(1)) : MAX_EXPEDITIOUS_BRACELET_CHARGES;
+				if (config.expeditiousBraceletNotification() && expeditiousChargeCount == MAX_EXPEDITIOUS_BRACELET_CHARGES)
+				{
+					notifier.notify("Your expeditious bracelet has crumbled to dust.");
+				}
+
+				updateExpeditiousBraceletCharges(expeditiousChargeCount);
+			}
+			else if (message.startsWith(CHAT_BRACELET_SLAUGHTER_CHARGE))
+			{
+				String strippedMessage = Text.removeTags(message);
+				Matcher mSlaughter = CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX.matcher(strippedMessage);
+				if (!mSlaughter.find())
+				{
+					return;
+				}
+
+				updateBraceletOfSlaughterCharges(Integer.parseInt(mSlaughter.group(1)));
+			}
+			else if (message.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
+			{
+				String strippedMessage = Text.removeTags(message);
+				Matcher mExpeditious = CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX.matcher(strippedMessage);
+
+				if (!mExpeditious.find())
+				{
+					return;
+				}
+
+				updateExpeditiousBraceletCharges(Integer.parseInt(mExpeditious.group(1)));
+			}
 		}
 	}
 
@@ -441,6 +514,16 @@ public class ItemChargePlugin extends Plugin
 		{
 			updateJewelleryInfobox(ItemWithSlot.AMULET_OF_BOUNTY, items);
 		}
+
+		if (config.showBraceletOfSlaughterCount())
+		{
+			updateJewelleryInfobox(ItemWithSlot.BRACELET_OF_SLAUGHTER, items);
+		}
+
+		if (config.showExpeditiousBraceletCount())
+		{
+			updateJewelleryInfobox(ItemWithSlot.EXPEDITIOUS_BRACELET, items);
+		}
 	}
 
 	@Subscribe
@@ -455,6 +538,32 @@ public class ItemChargePlugin extends Plugin
 		if (yesOption == 1)
 		{
 			checkDestroyWidget();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		final int currentTick = client.getTickCount();
+		if (lastCheckTick == currentTick)
+		{
+			return;
+		}
+		lastCheckTick = currentTick;
+
+		final Widget widgetBreakSpriteSprit = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+		if (widgetBreakSpriteSprit != null)
+		{
+			final int itemId = widgetBreakSpriteSprit.getItemId();
+			switch (itemId)
+			{
+				case ItemID.BRACELET_OF_SLAUGHTER:
+					updateBraceletOfSlaughterCharges(MAX_BRACELET_OF_SLAUGHTER_CHARGES);
+					break;
+				case ItemID.EXPEDITIOUS_BRACELET:
+					updateExpeditiousBraceletCharges(MAX_EXPEDITIOUS_BRACELET_CHARGES);
+					break;
+			}
 		}
 	}
 
@@ -624,6 +733,40 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
+	private void updateBraceletOfSlaughterCharges(final int value)
+	{
+		config.braceletOfSlaughter(value);
+
+		if (config.showInfoboxes() && config.showBraceletOfSlaughterCount())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.BRACELET_OF_SLAUGHTER, itemContainer.getItems());
+		}
+	}
+
+	private void updateExpeditiousBraceletCharges(final int value)
+	{
+		config.expeditiousBracelet(value);
+
+		if (config.showInfoboxes() && config.showExpeditiousBraceletCount())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.EXPEDITIOUS_BRACELET, itemContainer.getItems());
+		}
+	}
+
 	private void updateJewelleryInfobox(ItemWithSlot item, Item[] items)
 	{
 		for (final EquipmentInventorySlot equipmentInventorySlot : item.getSlots())
@@ -675,6 +818,14 @@ public class ItemChargePlugin extends Plugin
 			else if (id == ItemID.AMULET_OF_BOUNTY && type == ItemWithSlot.AMULET_OF_BOUNTY)
 			{
 				charges = config.amuletOfBounty();
+			}
+			else if (id == ItemID.BRACELET_OF_SLAUGHTER && type == ItemWithSlot.BRACELET_OF_SLAUGHTER)
+			{
+				charges = config.braceletOfSlaughter();
+			}
+			else if (id == ItemID.EXPEDITIOUS_BRACELET && type == ItemWithSlot.EXPEDITIOUS_BRACELET)
+			{
+				charges = config.expeditiousBracelet();
 			}
 		}
 		else if (itemWithCharge.getType() == type.getType())

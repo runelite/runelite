@@ -469,4 +469,89 @@ public interface ItemChargeConfig extends Config
 		description = ""
 	)
 	void chronicle(int chronicle);
+
+	@ConfigItem(
+		keyName = "showBraceletOfSlaughterCount",
+		name = "Show Bracelet of Slaughter",
+		description = "Show number of charges left for the bracelet of slaughter",
+		position = 26,
+		section = chargesSection
+	)
+
+	default boolean showBraceletOfSlaughterCount()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "braceletOfSlaughter",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int braceletOfSlaughter()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "braceletOfSlaughter",
+		name = "",
+		description = ""
+	)
+	void braceletOfSlaughter(int braceletOfSlaughter);
+
+	@ConfigItem(
+		keyName = "braceletOfSlaughterNotification",
+		name = "Bracelet of Slaughter Notification",
+		description = "Send a notification when a bracelet of slaughter breaks.",
+		position = 27,
+		section = notificationSection
+	)
+	default boolean braceletOfSlaughterNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showExpeditiousBraceletCount",
+		name = "Show Expeditious Bracelet",
+		description = "Show number of charges left for the expeditious bracelet",
+		position = 28,
+		section = chargesSection
+	)
+	default boolean showExpeditiousBraceletCount()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "expeditiousBracelet",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int expeditiousBracelet()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "expeditiousBracelet",
+		name = "",
+		description = ""
+	)
+	void expeditiousBracelet(int expeditiousBracelet);
+
+	@ConfigItem(
+		keyName = "expeditiousBraceletNotification",
+		name = "Expeditious Bracelet Notification",
+		description = "Send a notification when an expeditious bracelet breaks.",
+		position = 29,
+		section = notificationSection
+	)
+	default boolean expeditiousBraceletNotification()
+	{
+		return true;
+	}
 }

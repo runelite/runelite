@@ -30,11 +30,15 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.ChatMessageType;
+import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -82,6 +86,21 @@ public class ItemChargePluginTest
 	private static final String CHRONICLE_ADD_SINGLE_CHARGE_FULL = "You add a single charge to your book. It now has 1000 charges.";
 	private static final String CHRONICLE_ADD_MULTIPLE_CHARGES = "You add 5 charges to your book. It now has 5 charges.";
 	private static final String CHRONICLE_ADD_FULL = "Your book is fully charged! It has 1,000 charges already.";
+
+	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 9 charges left.";
+	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster. It has 9 charges left.";
+
+	private static final String BRACLET_SLAUGHTER_V2 = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 1 charge left.";
+	private static final String BRACLET_EXPEDITIOUS_V2 = "Your expeditious bracelet helps you progress your slayer faster. It has 1 charge left.";
+
+	private static final String BRACLET_SLAUGHTER_V3 = "Your bracelet of slaughter prevents your slayer count from decreasing. It then crumbles to dust.";
+	private static final String BRACLET_EXPEDITIOUS_V3 = "Your expeditious bracelet helps you progress your slayer faster. It then crumbles to dust.";
+
+	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has 12 charges left.";
+	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has 12 charges left.";
+
+	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE_ONE = "Your bracelet of slaughter has 1 charge left.";
+	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE = "Your expeditious bracelet has 1 charge left.";
 
 	@Mock
 	@Bind
@@ -262,6 +281,83 @@ public class ItemChargePluginTest
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(config).chronicle(1000);
+	}
+
+	@Test
+	public void testBraceletSlaughter()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER, null, 0);
+		itemChargePlugin.onChatMessage(chatMessageEvent);
+		verify(config).braceletOfSlaughter(9);
+		reset(config);
+
+		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_SLAUGHTER_CHARGE, null, 0);
+		itemChargePlugin.onChatMessage(chatMessageEvent);
+		verify(config).braceletOfSlaughter(12);
+		reset(config);
+
+		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_SLAUGHTER_CHARGE_ONE, null, 0);
+		itemChargePlugin.onChatMessage(chatMessageEvent);
+		verify(config).braceletOfSlaughter(1);
+		reset(config);
+
+		config.braceletOfSlaughter(1);
+		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER_V3, null, 0);
+		itemChargePlugin.onChatMessage(chatMessageEvent);
+		verify(config).braceletOfSlaughter(30);
+		reset(config);
+
+		Widget braceletBreakWidget = mock(Widget.class);
+		when(braceletBreakWidget.getItemId()).thenReturn(ItemID.BRACELET_OF_SLAUGHTER);
+		when(client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE)).thenReturn(braceletBreakWidget);
+		config.braceletOfSlaughter(-1);
+		itemChargePlugin.lastCheckTick = -1;
+		itemChargePlugin.onGameTick(new GameTick());
+		verify(config).braceletOfSlaughter(30);
+		reset(config);
+
+		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER_V2, null, 0);
+		itemChargePlugin.onChatMessage(chatMessageEvent);
+		verify(config).braceletOfSlaughter(1);
+		reset(config);
+	}
+
+	@Test
+	public void testBraceletExpeditious()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS, null, 0);
+		itemChargePlugin.onChatMessage(chatMessageEvent);
+		verify(config).expeditiousBracelet(9);
+		reset(config);
+
+		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE, null, 0);
+		itemChargePlugin.onChatMessage(chatMessageEvent);
+		verify(config).expeditiousBracelet(12);
+		reset(config);
+
+		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE, null, 0);
+		itemChargePlugin.onChatMessage(chatMessageEvent);
+		verify(config).expeditiousBracelet(1);
+		reset(config);
+
+		config.expeditiousBracelet(1);
+		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS_V3, null, 0);
+		itemChargePlugin.onChatMessage(chatMessageEvent);
+		verify(config).expeditiousBracelet(30);
+		reset(config);
+
+		Widget braceletBreakWidget = mock(Widget.class);
+		when(braceletBreakWidget.getItemId()).thenReturn(ItemID.EXPEDITIOUS_BRACELET);
+		when(client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE)).thenReturn(braceletBreakWidget);
+		config.expeditiousBracelet(-1);
+		itemChargePlugin.lastCheckTick = -1;
+		itemChargePlugin.onGameTick(new GameTick());
+		verify(config).expeditiousBracelet(30);
+		reset(config);
+
+		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS_V2, null, 0);
+		itemChargePlugin.onChatMessage(chatMessageEvent);
+		verify(config).expeditiousBracelet(1);
 		reset(config);
 	}
 }

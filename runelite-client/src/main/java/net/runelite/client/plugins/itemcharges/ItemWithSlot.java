@@ -42,7 +42,9 @@ enum ItemWithSlot
 	EXPLORER_RING(ItemChargeType.EXPLORER_RING, EquipmentInventorySlot.RING),
 	RING_OF_FORGING(ItemChargeType.RING_OF_FORGING, EquipmentInventorySlot.RING),
 	CHRONICLE(ItemChargeType.CHRONICLE, EquipmentInventorySlot.SHIELD),
-	TELEPORT(ItemChargeType.TELEPORT, EquipmentInventorySlot.WEAPON, EquipmentInventorySlot.AMULET, EquipmentInventorySlot.GLOVES, EquipmentInventorySlot.RING);
+	TELEPORT(ItemChargeType.TELEPORT, EquipmentInventorySlot.WEAPON, EquipmentInventorySlot.AMULET, EquipmentInventorySlot.GLOVES, EquipmentInventorySlot.RING),
+	BRACELET_OF_SLAUGHTER(ItemChargeType.BRACELET_OF_SLAUGHTER, EquipmentInventorySlot.GLOVES),
+	EXPEDITIOUS_BRACELET(ItemChargeType.EXPEDITIOUS_BRACELET, EquipmentInventorySlot.GLOVES);
 
 	private final ItemChargeType type;
 	private final Set<EquipmentInventorySlot> slots;
