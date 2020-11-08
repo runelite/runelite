@@ -494,7 +494,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				entry.setType(MenuAction.RUNELITE.getId());
 
-				if (option.equals(entry.getOption()))
+				if (option != null && option.equals(entry.getOption()))
 				{
 					entry.setOption("* " + option);
 				}
