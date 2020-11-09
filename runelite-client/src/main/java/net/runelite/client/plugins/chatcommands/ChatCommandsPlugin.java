@@ -1311,7 +1311,7 @@ public class ChatCommandsPlugin extends Plugin
 				.append(minigame.getName())
 				.append(" Score: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(Integer.toString(score));
+				.append(String.format("%,d", score));
 
 			int rank = hiscoreSkill.getRank();
 			if (rank != -1)
