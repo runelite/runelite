@@ -45,8 +45,7 @@ public class WildcardMatcher
 			}
 			else
 			{
-				String replacement = "\\Q" + matcher.group(0) + "\\E";
-				matcher.appendReplacement(buffer, Matcher.quoteReplacement(replacement));
+				matcher.appendReplacement(buffer, Matcher.quoteReplacement(Pattern.quote(matcher.group(0))));
 			}
 		}
 
