@@ -225,7 +225,7 @@ public class Notifier
 			switch (flashNotification)
 			{
 				case FLASH_ONE_TICK:
-					flashStart=null;
+					flashStart = null;
 					return;
 				case FLASH_TWO_SECONDS:
 				case SOLID_TWO_SECONDS:
