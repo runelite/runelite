@@ -229,7 +229,8 @@ public class Notifier
 					return;
 				case FLASH_TWO_SECONDS:
 				case SOLID_TWO_SECONDS:
-					if (Instant.now().minusMillis(FLASH_DURATION_TWO_SECONDS).isAfter(flashStart)) {
+					if (Instant.now().minusMillis(FLASH_DURATION_TWO_SECONDS).isAfter(flashStart))
+					{
 						flashStart = null;
 						return;
 					}
