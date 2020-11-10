@@ -247,6 +247,10 @@ public class Notifier
 			return;
 		}
 
+		if (flashNotification == FlashNotification.FLASH_ONCE) {
+			flashStart = null;
+		}
+
 		final Color color = graphics.getColor();
 		graphics.setColor(runeLiteConfig.notificationFlashColor());
 		graphics.fill(new Rectangle(client.getCanvas().getSize()));
