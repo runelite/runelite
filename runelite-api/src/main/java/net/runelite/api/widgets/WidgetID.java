@@ -103,7 +103,7 @@ public class WidgetID
 	public static final int THEATRE_OF_BLOOD_REWARD_GROUP_ID = 23;
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
 	public static final int TITHE_FARM_GROUP_ID = 241;
-	public static final int KINGDOM_GROUP_ID = 392;
+	public static final int KINGDOM_GROUP_ID = 616;
 	public static final int BARROWS_GROUP_ID = 24;
 	public static final int BLAST_MINE_GROUP_ID = 598;
 	public static final int MTA_ALCHEMY_GROUP_ID = 194;
