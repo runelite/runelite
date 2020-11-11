@@ -10176,7 +10176,6 @@ public final class ItemID
 	public static final int CHAOTIC_HANDEGG = 22361;
 	public static final int OCULUS_ORB = 22364;
 	public static final int SHAYZIEN_FAVOUR_CERTIFICATE = 22365;
-	public static final int CYAN_CRYSTAL_22366 = 22366;
 	public static final int KOUREND_FAVOUR_CERTIFICATE = 22367;
 	public static final int BRYOPHYTAS_STAFF_UNCHARGED = 22368;
 	public static final int BRYOPHYTAS_STAFF = 22370;
@@ -10375,7 +10374,6 @@ public final class ItemID
 	public static final int OLD_NOTES_22774 = 22774;
 	public static final int ANCIENT_LETTER = 22775;
 	public static final int ARCEUUS_FAVOUR_CERTIFICATE = 22777;
-	public static final int DARK_ALTAR_22778 = 22778;
 	public static final int WYRM_BONES = 22780;
 	public static final int DRAKE_BONES = 22783;
 	public static final int HYDRA_BONES = 22786;
@@ -11518,7 +11516,7 @@ public final class ItemID
 	public static final int TRAILBLAZER_TROPHY = 25040;
 	public static final int TRAILBLAZER_DRAGON_TROPHY = 25042;
 	public static final int TRAILBLAZER_RUNE_TROPHY = 25044;
-	public static final int TWISTED_ADAMANT_TROPHY_25046 = 25046;
+	public static final int TRAILBLAZER_ADAMANT_TROPHY = 25046;
 	public static final int TRAILBLAZER_MITHRIL_TROPHY = 25048;
 	public static final int TRAILBLAZER_STEEL_TROPHY = 25050;
 	public static final int TRAILBLAZER_IRON_TROPHY = 25052;
