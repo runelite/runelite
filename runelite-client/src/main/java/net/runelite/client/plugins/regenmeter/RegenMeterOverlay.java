@@ -34,12 +34,16 @@ import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Point;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import org.apache.commons.lang3.StringUtils;
 
 class RegenMeterOverlay extends Overlay
 {
@@ -52,6 +56,7 @@ class RegenMeterOverlay extends Overlay
 	private final Client client;
 	private final RegenMeterPlugin plugin;
 	private final RegenMeterConfig config;
+	private final TooltipManager tooltipManager;
 
 	private static Color brighter(int color)
 	{
@@ -61,13 +66,14 @@ class RegenMeterOverlay extends Overlay
 	}
 
 	@Inject
-	public RegenMeterOverlay(Client client, RegenMeterPlugin plugin, RegenMeterConfig config)
+	public RegenMeterOverlay(Client client, RegenMeterPlugin plugin, RegenMeterConfig config, TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.tooltipManager = tooltipManager;
 	}
 
 	@Override
@@ -98,6 +104,45 @@ class RegenMeterOverlay extends Overlay
 			}
 
 			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+		}
+
+		if (config.showTimeTilSpecialFull())
+		{
+			final Widget specOrb = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB);
+
+			if (specOrb == null || specOrb.isHidden())
+			{
+				return null;
+			}
+
+			final Rectangle bounds = specOrb.getBounds();
+
+			if (bounds.getX() <= 0)
+			{
+				return null;
+			}
+
+			final Point mousePosition = client.getMouseCanvasPosition();
+
+			if (bounds.contains(mousePosition.getX(), mousePosition.getY()))
+			{
+				// <10 energy takes same as 10 energy to restore
+				final int energyChunks = (int)Math.ceil((double)(1000 - client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)) / 100);
+				// Each chunk takes 30 seconds
+				final int secondsUntil100 = (energyChunks - 1) * 30 + (int)(30 * (1 - plugin.getSpecialPercentage()));
+
+				if (secondsUntil100 > 0)
+				{
+					StringBuilder sb = new StringBuilder();
+
+					final int minutes = (int) Math.floor(secondsUntil100 / 60.0);
+					final int seconds = (int) Math.floor(secondsUntil100 - (minutes * 60.0));
+
+					sb.append("100% Special In: ").append(minutes).append(':').append(StringUtils.leftPad(Integer.toString(seconds), 2, "0"));
+
+					tooltipManager.add(new Tooltip(sb.toString()));
+				}
+			}
 		}
 
 		return null;
