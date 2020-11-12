@@ -219,7 +219,7 @@ class FarmingWorld
 
 		add(new FarmingRegion("Lletya", 9265,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.FRUIT_TREE)
-		));
+		), 11103);
 
 		add(new FarmingRegion("Lumbridge", 12851,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HOPS)
