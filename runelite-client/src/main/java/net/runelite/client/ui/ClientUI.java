@@ -554,7 +554,7 @@ public class ClientUI
 					{
 						// Make sure that the bounds are correct for the current display.
 						// The method only uses the parameter on OSX so passing null is ok.
-						if (OSType.getOSType() == OSType.MacOS)
+						if (OSType.getOSType() != OSType.MacOS)
 						{
 							frame.setMaximizedBounds(null);
 						}
