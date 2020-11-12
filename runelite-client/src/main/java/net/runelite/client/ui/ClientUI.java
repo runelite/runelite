@@ -552,6 +552,12 @@ public class ClientUI
 
 					if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
 					{
+						// Make sure that the bounds are correct for the current display.
+						// The method only uses the parameter on OSX so passing null is ok.
+						if (OSType.getOSType() == OSType.MacOS)
+						{
+							frame.setMaximizedBounds(null);
+						}
 						frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 					}
 				}
