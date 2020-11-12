@@ -134,6 +134,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String[] LEVEL_COMMAND_ALIAS = { "!level" };
 	private static final String[] CMB_COMMAND_ALIAS = { "!cb", "!cblvl" };
 	private static final String[] CLUES_COMMAND_ALIAS = { "!clue" };
+
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
 
@@ -246,11 +247,26 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 		chatCommandManager.unregisterCommand(SOUL_WARS_ZEAL_COMMAND);
 
-		chatCommandManager.unregisterCommand(TOTAL_LEVEL_COMMAND_ALIAS);
-		chatCommandManager.unregisterCommand(PRICE_COMMAND_ALIAS);
-		chatCommandManager.unregisterCommand(CMB_COMMAND_ALIAS);
-		chatCommandManager.unregisterCommand(LEVEL_COMMAND_ALIAS);
-		chatCommandManager.unregisterCommand(CLUES_COMMAND_ALIAS);
+		for (String alias : TOTAL_LEVEL_COMMAND_ALIAS)
+		{
+			chatCommandManager.unregisterCommand(alias);
+		}
+		for (String alias : PRICE_COMMAND_ALIAS)
+		{
+			chatCommandManager.unregisterCommand(alias);
+		}
+		for (String alias : LEVEL_COMMAND_ALIAS)
+		{
+			chatCommandManager.unregisterCommand(alias);
+		}
+		for (String alias : CMB_COMMAND_ALIAS)
+		{
+			chatCommandManager.unregisterCommand(alias);
+		}
+		for (String alias : CLUES_COMMAND_ALIAS)
+		{
+			chatCommandManager.unregisterCommand(alias);
+		}
 	}
 
 	@Provides
@@ -661,13 +677,14 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		if (message.length() <= message.indexOf(' '))
+		int idx = message.indexOf(' ');
+		if (message.length() <= idx)
 		{
 			return;
 		}
 
 		ChatMessageType type = chatMessage.getType();
-		String search = message.substring(message.indexOf(' ') + 1);
+		String search = message.substring(idx + 1);
 
 		final String player;
 		if (type.equals(ChatMessageType.PRIVATECHATOUT))
@@ -873,13 +890,14 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		if (message.length() <= message.indexOf(' '))
+		int idx = message.indexOf(' ');
+		if (message.length() <= idx)
 		{
 			return;
 		}
 
 		ChatMessageType type = chatMessage.getType();
-		String search = message.substring(message.indexOf(' ') + 1);
+		String search = message.substring(idx + 1);
 
 		final String player;
 		if (type.equals(ChatMessageType.PRIVATECHATOUT))
@@ -1037,13 +1055,14 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		if (message.length() <= message.indexOf(' '))
+		int idx = message.indexOf(' ');
+		if (message.length() <= idx)
 		{
 			return;
 		}
 
 		MessageNode messageNode = chatMessage.getMessageNode();
-		String search = message.substring(message.indexOf(' ') + 1);
+		String search = message.substring(idx + 1);
 
 		List<ItemPrice> results = itemManager.search(search);
 
@@ -1098,13 +1117,14 @@ public class ChatCommandsPlugin extends Plugin
 
 		String search;
 
-		if (message.indexOf(' ') == -1)
+		int idx = message.indexOf(' ');
+		if (idx == -1)
 		{
 			search = "total";
 		}
 		else
 		{
-			search = message.substring(message.indexOf(' ') + 1);
+			search = message.substring(idx + 1);
 		}
 
 		search = SkillAbbreviations.getFullName(search);
@@ -1387,13 +1407,14 @@ public class ChatCommandsPlugin extends Plugin
 
 		String search;
 
-		if (message.indexOf(' ') == -1)
+		int idx = message.indexOf(' ');
+		if (idx == -1)
 		{
 			search = "total";
 		}
 		else
 		{
-			search = message.substring(message.indexOf(' ') + 1);
+			search = message.substring(idx + 1);
 		}
 
 		try
