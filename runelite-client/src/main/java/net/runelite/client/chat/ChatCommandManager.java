@@ -77,12 +77,9 @@ public class ChatCommandManager implements ChatboxInputListener
 		commands.put(command.toLowerCase(), new ChatCommand(command, true, execute, input));
 	}
 
-	public void unregisterCommand(String... cmds)
+	public void unregisterCommand(String command)
 	{
-		for (String command : cmds)
-		{
-			commands.remove(command.toLowerCase());
-		}
+		commands.remove(command.toLowerCase());
 	}
 
 	@Subscribe
