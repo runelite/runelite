@@ -53,7 +53,6 @@ vec3 colorblind(int mode, vec3 color)
     lms = LMS * lms2lmst; // blue deficiency
   }
   else {
-    // Should be impossible to get here
     return color;
   }
 
