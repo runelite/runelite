@@ -48,15 +48,25 @@ out vec4 FragColor;
 void main() {
     vec4 c;
 
-    if (samplingMode == SAMPLING_DEFAULT)
-        c = texture(tex, TexCoord);
-    else if (samplingMode == SAMPLING_CATROM || samplingMode == SAMPLING_MITCHELL)
-        c = textureCubic(tex, TexCoord, samplingMode);
-    else if (samplingMode == SAMPLING_XBR)
-        c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
+    switch (samplingMode) {
+        case SAMPLING_CATROM:
+        case SAMPLING_MITCHELL:
+            c = textureCubic(tex, TexCoord, samplingMode);
+        break;
+        case SAMPLING_XBR:
+            c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
+        break;
+        default:
+            c = texture(tex, TexCoord);
+        break;
+    }
 
+	vec4 c2;
     if (colorBlindMode > 0) {
-        c.rgb = colorblind(colorBlindMode, c.rgb);
+    	vec3 c3 = colorblind(colorBlindMode, c.rgb);
+    	c2 = vec4(c3, c.a);
+    }else{
+    	c2 = c;
     }
 
     FragColor = c;
