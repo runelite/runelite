@@ -32,10 +32,8 @@ import lombok.RequiredArgsConstructor;
 public enum FlashNotification
 {
 	DISABLED("Off"),
-	FLASH_TWO_SECONDS("Flash for 2 seconds"),
-	SOLID_TWO_SECONDS("Solid for 2 seconds"),
-	FLASH_UNTIL_CANCELLED("Flash until cancelled"),
-	SOLID_UNTIL_CANCELLED("Solid until cancelled");
+	FLASH("Flash"),
+	SOLID("Solid");
 
 	private final String type;
 

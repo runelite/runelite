@@ -245,10 +245,23 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "flashNotificationDuration",
+		name = "Notification duration",
+		description = "Duration of flash notification. Value of 0 will force notification to wait until cancelled",
+		position = 25,
+		section = notificationSettings
+	)
+	@Units(Units.MILLISECONDS)
+	default int flashNotificationDuration()
+	{
+		return 2000;
+	}
+
+	@ConfigItem(
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
 		description = "Toggles all notifications for when the client is focused",
-		position = 25,
+		position = 26,
 		section = notificationSettings
 	)
 	default boolean sendNotificationsWhenFocused()
@@ -261,7 +274,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationFlashColor",
 		name = "Notification Flash Color",
 		description = "Sets the color of the notification flashes.",
-		position = 26,
+		position = 27,
 		section = notificationSettings
 	)
 	default Color notificationFlashColor()

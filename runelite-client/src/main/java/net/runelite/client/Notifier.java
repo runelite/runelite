@@ -28,6 +28,7 @@ import com.google.common.base.Strings;
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
 import com.google.inject.Inject;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -51,6 +52,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -98,7 +100,7 @@ public class Notifier
 		.build();
 
 	// Notifier properties
-	private static final int MINIMUM_FLASH_DURATION_MILLIS = 2000;
+	private static final int MINIMUM_FLASH_DURATION_MILLIS = 100;
 	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
 	private static final String appName = RuneLiteProperties.getTitle();
@@ -140,7 +142,7 @@ public class Notifier
 		// First check if we are running in launcher
 		this.terminalNotifierAvailable =
 			!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion())
-			&& isTerminalNotifierAvailable();
+				&& isTerminalNotifierAvailable();
 
 		storeIcon();
 	}
@@ -217,33 +219,52 @@ public class Notifier
 			return;
 		}
 
-		if (Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
+		final int flash_notification_duration_config_val = runeLiteConfig.flashNotificationDuration();
+		final int flash_duration_millis;
+
+
+		if (flash_notification_duration_config_val <= 0)
+		{
+			flash_duration_millis = 0;
+		}
+		else if (flash_notification_duration_config_val < MINIMUM_FLASH_DURATION_MILLIS)
+		{
+			// If less than minimum duration but not set to 0 then set to minimum.
+			flash_duration_millis = MINIMUM_FLASH_DURATION_MILLIS;
+		}
+		else
+		{
+			flash_duration_millis = flash_notification_duration_config_val;
+		}
+
+		if (flash_duration_millis == 0 || Instant.now().minusMillis(flash_duration_millis).isAfter(flashStart))
 		{
 			switch (flashNotification)
 			{
-				case FLASH_TWO_SECONDS:
-				case SOLID_TWO_SECONDS:
-					flashStart = null;
-					return;
-				case SOLID_UNTIL_CANCELLED:
-				case FLASH_UNTIL_CANCELLED:
-					// Any interaction with the client since the notification started will cancel it after the minimum duration
-					if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
-						|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
-						|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
+				case SOLID:
+				case FLASH:
+					if (flash_duration_millis == 0)
+					{
+						if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+							|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+							|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
+						{
+							flashStart = null;
+							return;
+						}
+						break;
+					}
+					else
 					{
 						flashStart = null;
 						return;
 					}
-					break;
 			}
 		}
 
-		if (client.getGameCycle() % 40 >= 20
-			// For solid colour, fall through every time.
-			&& (flashNotification == FlashNotification.FLASH_TWO_SECONDS
-			|| flashNotification == FlashNotification.FLASH_UNTIL_CANCELLED))
+		if (client.getGameCycle() % 40 >= Constants.CLIENT_TICK_LENGTH && flashNotification == FlashNotification.FLASH)
 		{
+			// For solid colour, fall through every time.
 			return;
 		}
 
