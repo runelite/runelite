@@ -162,6 +162,7 @@ public class WidgetID
 	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_INVENTORY_GROUP_ID = 551;
 	public static final int DUEL_INVENTORY_GROUP_ID = 421;
 	public static final int DUEL_INVENTORY_OTHER_GROUP_ID = 481;
+	public static final int TRAILBLAZER_AREAS_GROUP_ID = 512;
 
 	static class WorldMap
 	{
@@ -935,5 +936,10 @@ public class WidgetID
 	static class EncounterHealthBar
 	{
 		static final int CONTAINER = 6;
+	}
+
+	static class TrailblazerAreas
+	{
+		static final int TELEPORT = 59;
 	}
 }
