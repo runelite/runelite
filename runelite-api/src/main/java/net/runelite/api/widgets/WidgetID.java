@@ -641,7 +641,7 @@ public class WidgetID
 
 	static class QuestCompleted
 	{
-		static final int NAME_TEXT = 2;
+		static final int NAME_TEXT = 4;
 	}
 
 	static class Raids
