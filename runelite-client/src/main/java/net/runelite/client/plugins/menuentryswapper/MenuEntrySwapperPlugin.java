@@ -115,7 +115,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final Set<String> ESSENCE_MINE_NPCS = ImmutableSet.of(
 		"aubury",
-		"wizard sedridor",
+		"sedridor",
 		"wizard distentor",
 		"wizard cromperty",
 		"brimstail"
