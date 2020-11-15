@@ -2,6 +2,7 @@
  * Copyright (c) 2019, Anthony Chen <https://github.com/achencoms>
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * Copyright (c) 2020, Sean Dewar <https://github.com/seandewar>
+ * Copyright (c) 2020, Shingyx <https://github.com/Shingyx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -571,7 +572,7 @@ public class MusicPlugin extends Plugin
 
 				JavaScriptCallback move = ev ->
 				{
-					int newVal = ((ev.getMouseX() - MusicSlider.PADDING - (slider.getHandle().getWidth() / 2)) * slider.getMax())
+					double newVal = ((ev.getMouseX() - MusicSlider.PADDING - (slider.getHandle().getWidth() / 2.0)) * slider.getMax())
 						/ slider.getWidth();
 					if (newVal < 0)
 					{
@@ -582,8 +583,10 @@ public class MusicPlugin extends Plugin
 						newVal = slider.getMax();
 					}
 
+					newVal = musicConfig.volumeSnapMode().snapVolume(newVal, slider.getMax());
+
 					// We store +1 so we can tell the difference between 0 and muted
-					slider.getSetter().accept(musicConfig, newVal + 1);
+					slider.getSetter().accept(musicConfig, (int) Math.round(newVal) + 1);
 					applyMusicVolumeConfig();
 				};
 

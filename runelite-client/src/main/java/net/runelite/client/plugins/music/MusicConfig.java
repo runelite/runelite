@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Shingyx <https://github.com/Shingyx>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -84,6 +85,17 @@ public interface MusicConfig extends Config
 	default boolean mutePrayerSounds()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "volumeSnapMode",
+		name = "Snap volume",
+		description = "Snap volume changes to the specified percentage increment",
+		position = 5
+	)
+	default VolumeSnapMode volumeSnapMode()
+	{
+		return VolumeSnapMode.OFF;
 	}
 
 	@ConfigItem(
