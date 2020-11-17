@@ -38,4 +38,10 @@ public interface Scene
 
 	int getDrawDistance();
 	void setDrawDistance(int drawDistance);
+
+	/**
+	 * Remove a game object from the scene
+	 * @param gameObject
+	 */
+	void removeGameObject(GameObject gameObject);
 }
