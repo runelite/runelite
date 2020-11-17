@@ -259,6 +259,7 @@ public class FishingPlugin extends Plugin
 				case ItemID.INFERNAL_HARPOON_UNCHARGED:
 				case ItemID.HARPOON:
 				case ItemID.BARBTAIL_HARPOON:
+				case ItemID.CRYSTAL_HARPOON:
 				case ItemID.BIG_FISHING_NET:
 				case ItemID.SMALL_FISHING_NET:
 				case ItemID.SMALL_FISHING_NET_6209:
