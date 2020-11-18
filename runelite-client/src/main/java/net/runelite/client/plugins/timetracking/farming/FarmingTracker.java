@@ -91,6 +91,15 @@ public class FarmingTracker
 			}
 		}
 
+		{
+			boolean botanist = client.getVar(Varbits.LEAGUE_RELIC_5) == 1;
+			if (!Boolean.valueOf(botanist).equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BOTANIST, Boolean.class)))
+			{
+				configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BOTANIST, botanist);
+				changed = true;
+			}
+		}
+
 		for (FarmingRegion region : farmingWorld.getRegions().get(location.getRegionID()))
 		{
 			if (!region.isInBounds(location))
@@ -152,6 +161,9 @@ public class FarmingTracker
 		boolean autoweed = Integer.toString(Autoweed.ON.ordinal())
 			.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.AUTOWEED));
 
+		boolean botanist = Boolean.TRUE
+			.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BOTANIST, Boolean.class));
+
 		String key = patch.getRegion().getRegionID() + "." + patch.getVarbit().getId();
 		String storedValue = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);
 
@@ -192,6 +204,7 @@ public class FarmingTracker
 		int stage = state.getStage();
 		int stages = state.getStages();
 		int tickrate = state.getTickRate() * 60;
+		int farmingTickLength = 5 * 60;
 
 		if (autoweed && state.getProduce() == Produce.WEEDS)
 		{
@@ -200,14 +213,20 @@ public class FarmingTracker
 			tickrate = 0;
 		}
 
+		if (botanist)
+		{
+			tickrate /= 5;
+			farmingTickLength /= 5;
+		}
+
 		long doneEstimate = 0;
 		if (tickrate > 0)
 		{
-			long tickNow = (unixNow + (5 * 60)) / tickrate;
-			long tickTime = (unixTime + (5 * 60)) / tickrate;
+			long tickNow = (unixNow + farmingTickLength) / tickrate;
+			long tickTime = (unixTime + farmingTickLength) / tickrate;
 			int delta = (int) (tickNow - tickTime);
 
-			doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate + (5 * 60);
+			doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate + farmingTickLength;
 
 			stage += delta;
 			if (stage >= stages)

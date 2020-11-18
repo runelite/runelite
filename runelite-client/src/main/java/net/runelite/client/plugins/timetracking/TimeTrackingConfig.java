@@ -35,6 +35,7 @@ public interface TimeTrackingConfig extends Config
 	String CONFIG_GROUP = "timetracking";
 	String AUTOWEED = "autoweed";
 	String BIRD_HOUSE = "birdhouse";
+	String BOTANIST = "botanist";
 	String TIMERS = "timers";
 	String STOPWATCHES = "stopwatches";
 
