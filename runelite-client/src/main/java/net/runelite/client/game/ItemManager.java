@@ -306,6 +306,10 @@ public class ItemManager
 		{
 			return 1000;
 		}
+		if (itemID == RUNE_POUCH)
+		{
+			return getRunePouchPrice();
+		}
 
 		ItemComposition itemComposition = getItemComposition(itemID);
 		if (itemComposition.getNote() != -1)
@@ -313,11 +317,6 @@ public class ItemManager
 			itemID = itemComposition.getLinkedNoteId();
 		}
 		itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
-
-		if (itemID == RUNE_POUCH)
-		{
-			return getRunePouchPrice();
-		}
 
 		int price = 0;
 
