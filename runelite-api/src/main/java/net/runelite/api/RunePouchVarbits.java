@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Mika <http://github.com/mkuijpers>
+ * Copyright (c) 2020, Mika <http://github.com/mkuijpers>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
