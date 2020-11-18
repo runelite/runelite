@@ -22,12 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.runepouch;
+package net.runelite.api;
 
 
-import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
-import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import static net.runelite.api.ItemID.AIR_RUNE;
@@ -85,18 +83,6 @@ public enum Runes
 	@Setter
 	private BufferedImage image;
 
-	private static final Map<Integer, Runes> runes;
-
-	static
-	{
-		ImmutableMap.Builder<Integer, Runes> builder = new ImmutableMap.Builder<>();
-		for (Runes rune : values())
-		{
-			builder.put(rune.getId(), rune);
-		}
-		runes = builder.build();
-	}
-
 	Runes(int id, int itemId)
 	{
 		this.id = id;
@@ -105,7 +91,14 @@ public enum Runes
 
 	public static Runes getRune(int varbit)
 	{
-		return runes.get(varbit);
+		for (Runes rune : values())
+		{
+			if (rune.id == varbit)
+			{
+				return rune;
+			}
+		}
+		return null;
 	}
 
 	public String getName()

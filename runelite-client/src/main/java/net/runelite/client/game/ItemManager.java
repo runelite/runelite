@@ -58,7 +58,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.plugins.runepouch.Runes;
+import net.runelite.api.Runes;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
