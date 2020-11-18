@@ -381,6 +381,10 @@ public final class NullNpcID
 	public static final int NULL_5903 = 5903;
 	public static final int NULL_5930 = 5930;
 	public static final int NULL_5953 = 5953;
+	public static final int NULL_6089 = 6089;
+	public static final int NULL_6090 = 6090;
+	public static final int NULL_6091 = 6091;
+	public static final int NULL_6092 = 6092;
 	public static final int NULL_6093 = 6093;
 	public static final int NULL_6104 = 6104;
 	public static final int NULL_6105 = 6105;
