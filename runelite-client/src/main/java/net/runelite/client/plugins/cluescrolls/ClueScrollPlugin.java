@@ -316,11 +316,22 @@ public class ClueScrollPlugin extends Plugin
 		{
 			return;
 		}
-		if (event.getMenuOption().equals("Read"))
+
+		final boolean itemClicked = event.getMenuAction() == MenuAction.ITEM_FIRST_OPTION
+			|| event.getMenuAction() == MenuAction.ITEM_SECOND_OPTION
+			|| event.getMenuAction() == MenuAction.ITEM_THIRD_OPTION
+			|| event.getMenuAction() == MenuAction.ITEM_FOURTH_OPTION
+			|| event.getMenuAction() == MenuAction.ITEM_FIFTH_OPTION;
+		final boolean isXMarksTheSpotOrb = event.getId() == ItemID.MYSTERIOUS_ORB_23069;
+
+		if (itemClicked && (isXMarksTheSpotOrb || event.getMenuOption().equals("Read")))
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
 
-			if (itemComposition != null && (itemComposition.getName().startsWith("Clue scroll") || itemComposition.getName().startsWith("Challenge scroll")))
+			if (isXMarksTheSpotOrb
+				|| itemComposition.getName().startsWith("Clue scroll")
+				|| itemComposition.getName().startsWith("Challenge scroll")
+				|| itemComposition.getName().startsWith("Treasure scroll"))
 			{
 				clueItemId = itemComposition.getId();
 				updateClue(MapClue.forItemId(clueItemId));
