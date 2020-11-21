@@ -228,7 +228,7 @@ public class FarmingTracker
 					delta = (int) (tickNow - tickTime);
 
 					doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate;
-				}	
+				}
 			}
 			
 			stage += delta;
