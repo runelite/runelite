@@ -217,15 +217,19 @@ public class FarmingTracker
 			doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate + (5 * 60);
 			// If Botanist relic active, sets new rates.
 			// TODO:: Remove after Leagues II.
-			if (client.getVarbitValue(Varbits.LEAGUE_RELIC_5.getId()) == 1)
+			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				tickrate = (state.getTickRate() / 5) * 60;
-				tickNow = (unixNow) / tickrate;
-				tickTime = (unixTime) / tickrate;
-				delta = (int) (tickNow - tickTime);
+				if (client.getVarbitValue(Varbits.LEAGUE_RELIC_5.getId()) == 1)
+				{
+					tickrate = (state.getTickRate() / 5) * 60;
+					tickNow = (unixNow) / tickrate;
+					tickTime = (unixTime) / tickrate;
+					delta = (int) (tickNow - tickTime);
 
-				doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate;
+					doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate;
+				}	
 			}
+			
 			
 			stage += delta;
 			if (stage >= stages)
