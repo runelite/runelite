@@ -231,7 +231,6 @@ public class FarmingTracker
 				}	
 			}
 			
-			
 			stage += delta;
 			if (stage >= stages)
 			{
