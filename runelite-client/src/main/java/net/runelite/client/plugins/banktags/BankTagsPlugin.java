@@ -458,7 +458,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onScriptPreFired(ScriptPreFired event)
 	{
-		if (event.getScriptId() == ScriptID.BANKMAIN_FINISHBUILDING)
+		int scriptId = event.getScriptId();
+		if (scriptId == ScriptID.BANKMAIN_FINISHBUILDING)
 		{
 			// Since we apply tag tab search filters even when the bank is not in search mode,
 			// bankkmain_build will reset the bank title to "The Bank of Gielinor". So apply our
@@ -475,6 +476,10 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 				bankTitle.setText("Tag tab <col=ff0000>" + activeTab.getTag() + "</col>");
 			}
+		}
+		else if (scriptId == ScriptID.BANKMAIN_SEARCH_TOGGLE)
+		{
+			tabInterface.handleSearch();
 		}
 	}
 
