@@ -858,7 +858,8 @@ public class TimersPlugin extends Plugin
 		if (config.showHomeMinigameTeleports()
 			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
-			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6))
+			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
+			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6))
 		{
 			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
 			{

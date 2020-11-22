@@ -48,6 +48,7 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.LinkBrowser;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -66,7 +67,6 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 	private static final int PREDICTION_DEBOUNCE_DELAY_MS = 200;
 
 	private final ChatboxPanelManager chatboxPanelManager;
-	private final OkHttpClient okHttpClient;
 	private final Gson gson = new Gson();
 
 	private Future<?> runningRequest = null;
@@ -82,7 +82,6 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 	{
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;
-		this.okHttpClient = okHttpClient;
 
 		lines(1);
 		prompt("OSRS Wiki Search");
@@ -137,7 +136,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 					public void onResponse(Call call, Response response) throws IOException
 					{
 						String body = response.body().string();
-						try
+						try // NOPMD: UseTryWithResources
 						{
 							JsonArray jar = new JsonParser().parse(body).getAsJsonArray();
 							List<String> apredictions = gson.fromJson(jar.get(1), new TypeToken<List<String>>()
@@ -221,7 +220,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 			bg.setOriginalWidth(16);
 			bg.setWidthMode(WidgetSizeMode.MINUS);
 			bg.revalidate();
-			bg.setName("<col=ff9040>" + pred);
+			bg.setName(JagexColors.MENU_TARGET_TAG + pred);
 			bg.setAction(0, "Open");
 			bg.setHasListener(true);
 			bg.setOnOpListener((JavaScriptCallback) ev -> search(pred));

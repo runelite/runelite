@@ -85,7 +85,7 @@ public class WidgetID
 	public static final int BA_REWARD_GROUP_ID = 497;
 	public static final int LEVEL_UP_GROUP_ID = 233;
 	public static final int DIALOG_SPRITE_GROUP_ID = 193;
-	public static final int QUEST_COMPLETED_GROUP_ID = 277;
+	public static final int QUEST_COMPLETED_GROUP_ID = 153;
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;
 	public static final int BARROWS_REWARD_GROUP_ID = 155;
 	public static final int RAIDS_GROUP_ID = 513;
@@ -103,7 +103,7 @@ public class WidgetID
 	public static final int THEATRE_OF_BLOOD_REWARD_GROUP_ID = 23;
 	public static final int EXPERIENCE_TRACKER_GROUP_ID = 122;
 	public static final int TITHE_FARM_GROUP_ID = 241;
-	public static final int KINGDOM_GROUP_ID = 392;
+	public static final int KINGDOM_GROUP_ID = 616;
 	public static final int BARROWS_GROUP_ID = 24;
 	public static final int BLAST_MINE_GROUP_ID = 598;
 	public static final int MTA_ALCHEMY_GROUP_ID = 194;
@@ -160,6 +160,9 @@ public class WidgetID
 	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE_GROUP_ID = 271;
 	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED_GROUP_ID = 550;
 	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_INVENTORY_GROUP_ID = 551;
+	public static final int DUEL_INVENTORY_GROUP_ID = 421;
+	public static final int DUEL_INVENTORY_OTHER_GROUP_ID = 481;
+	public static final int TRAILBLAZER_AREAS_GROUP_ID = 512;
 
 	static class WorldMap
 	{
@@ -638,7 +641,7 @@ public class WidgetID
 
 	static class QuestCompleted
 	{
-		static final int NAME_TEXT = 2;
+		static final int NAME_TEXT = 4;
 	}
 
 	static class Raids
@@ -829,7 +832,7 @@ public class WidgetID
 	static class QuestList
 	{
 		static final int BOX = 0;
-		static final int SCROLLBAR = 3;
+		static final int SCROLLBAR = 4;
 		static final int CONTAINER = 5;
 		static final int FREE_CONTAINER = 6;
 		static final int MEMBERS_CONTAINER = 7;
@@ -933,5 +936,10 @@ public class WidgetID
 	static class EncounterHealthBar
 	{
 		static final int CONTAINER = 6;
+	}
+
+	static class TrailblazerAreas
+	{
+		static final int TELEPORT = 59;
 	}
 }

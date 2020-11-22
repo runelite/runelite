@@ -206,7 +206,7 @@ class InventoryInspector extends JFrame
 		node.add(new InventoryLogNode(invLog));
 
 		// Cull very old stuff
-		for (; node.getChildCount() > MAX_LOG_ENTRIES; )
+		while (node.getChildCount() > MAX_LOG_ENTRIES)
 		{
 			node.remove(0);
 		}
@@ -317,7 +317,7 @@ class InventoryInspector extends JFrame
 				final int qty = e.getValue();
 				final ItemComposition c = itemManager.getItemComposition(e.getKey());
 
-				InventoryItem[] items = new InventoryItem[]{
+				InventoryItem[] items = {
 					new InventoryItem(-1, new Item(id, qty), c.getName(), c.isStackable())
 				};
 				if (!c.isStackable() && (qty > 1 || qty < -1))

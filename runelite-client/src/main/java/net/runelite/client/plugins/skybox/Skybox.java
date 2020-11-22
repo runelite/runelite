@@ -110,7 +110,7 @@ class Skybox
 			{
 				m.reset(line);
 				int end = 0;
-				for (; end < line.length(); )
+				while (end < line.length())
 				{
 					m.region(end, line.length());
 					if (!m.find())
@@ -377,9 +377,6 @@ class Skybox
 	{
 		x /= 8.d;
 		y /= 8.d;
-
-		int cx = (int) x;
-		int cy = (int) y;
 
 		int centerChunkData = chunkData(px / 8, py / 8, plane, chunkMapper);
 		if (centerChunkData == -1)

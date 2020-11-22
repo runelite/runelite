@@ -180,6 +180,17 @@ public interface XpTrackerConfig extends Config
 
 	@ConfigItem(
 		position = 12,
+		keyName = "progressBarTooltipLabel",
+		name = "Tooltip label",
+		description = "Configures the info box progress bar tooltip to show Time to goal or percentage complete"
+	)
+	default XpProgressBarLabel progressBarTooltipLabel()
+	{
+		return XpProgressBarLabel.TIME_TO_LEVEL;
+	}
+
+	@ConfigItem(
+		position = 13,
 		keyName = "prioritizeRecentXpSkills",
 		name = "Move recently trained skills to top",
 		description = "Configures whether skills should be organized by most recently gained xp"

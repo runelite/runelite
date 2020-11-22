@@ -49,7 +49,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.ItemStatChangesService;
 import net.runelite.client.plugins.itemstats.StatChange;
-import net.runelite.client.plugins.statusbars.Config.BarMode;
+import net.runelite.client.plugins.statusbars.config.BarMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;

@@ -29,6 +29,7 @@ uniform vec2 textureOffsets[64];
 uniform float brightness;
 uniform float smoothBanding;
 uniform vec4 fogColor;
+uniform int colorBlindMode;
 
 in vec4 Color;
 noperspective centroid in float fHsl;
@@ -39,6 +40,7 @@ in float fogAmount;
 out vec4 FragColor;
 
 #include hsl_to_rgb.glsl
+#include colorblind.glsl
 
 void main() {
   int hsl = int(fHsl);
@@ -55,6 +57,10 @@ void main() {
     vec4 textureColorBrightness = pow(textureColor, vec4(brightness, brightness, brightness, 1.0f));
 
     smoothColor = textureColorBrightness * smoothColor;
+  }
+
+  if (colorBlindMode > 0) {
+    smoothColor.rgb = colorblind(colorBlindMode, smoothColor.rgb);
   }
 
   vec3 mixedColor = mix(smoothColor.rgb, fogColor.rgb, fogAmount);

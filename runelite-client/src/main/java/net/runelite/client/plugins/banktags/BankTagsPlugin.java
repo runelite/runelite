@@ -72,13 +72,11 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
@@ -137,12 +135,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 	@Inject
 	private TabInterface tabInterface;
-
-	@Inject
-	private BankSearch bankSearch;
-
-	@Inject
-	private KeyManager keyManager;
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -466,7 +458,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onScriptPreFired(ScriptPreFired event)
 	{
-		if (event.getScriptId() == ScriptID.BANKMAIN_FINISHBUILDING)
+		int scriptId = event.getScriptId();
+		if (scriptId == ScriptID.BANKMAIN_FINISHBUILDING)
 		{
 			// Since we apply tag tab search filters even when the bank is not in search mode,
 			// bankkmain_build will reset the bank title to "The Bank of Gielinor". So apply our
@@ -483,6 +476,10 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 				bankTitle.setText("Tag tab <col=ff0000>" + activeTab.getTag() + "</col>");
 			}
+		}
+		else if (scriptId == ScriptID.BANKMAIN_SEARCH_TOGGLE)
+		{
+			tabInterface.handleSearch();
 		}
 	}
 

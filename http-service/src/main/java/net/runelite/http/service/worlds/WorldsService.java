@@ -74,7 +74,7 @@ public class WorldsService
 				.address(readString(buf))
 				.activity(readString(buf))
 				.location(buf.get() & 0xFF)
-				.players(buf.getShort() & 0xFFFF);
+				.players(buf.getShort());
 
 			worlds.add(worldBuilder.build());
 		}

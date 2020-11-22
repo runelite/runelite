@@ -291,7 +291,7 @@ public class DiscordPlugin extends Plugin
 			@Override
 			public void onResponse(Call call, Response response) throws IOException
 			{
-				try
+				try // NOPMD: UseTryWithResources
 				{
 					if (!response.isSuccessful())
 					{
