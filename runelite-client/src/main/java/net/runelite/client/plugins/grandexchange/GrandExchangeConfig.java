@@ -37,7 +37,7 @@ public interface GrandExchangeConfig extends Config
 		position = 1,
 		keyName = "quickLookup",
 		name = "Hotkey lookup (Alt + Left click)",
-		description = "Configures whether to enable the hotkey lookup for ge searches"
+		description = "When enabled, alt+left clicking compatible items will present Grand Exchange price information on the side panel."
 	)
 	default boolean quickLookup()
 	{
@@ -59,7 +59,8 @@ public interface GrandExchangeConfig extends Config
 		position = 3,
 		keyName = "enableOsbPrices",
 		name = "Enable OSB actively traded prices",
-		description = "Shows the OSBuddy actively traded price at the GE"
+		description = "Display item price information obtained from the OSBuddy client in the Grand Exchange interface."
+
 	)
 	default boolean enableOsbPrices()
 	{
@@ -92,8 +93,8 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 6,
 		keyName = "showTotal",
-		name = "Show grand exchange total",
-		description = "Show grand exchange total"
+		name = "Show GE total",
+		description = "When enabled, the total value of all items and coins will be displayed at the top of the Grand Exchange interface."
 	)
 	default boolean showTotal()
 	{
@@ -104,7 +105,7 @@ public interface GrandExchangeConfig extends Config
 		position = 7,
 		keyName = "showExact",
 		name = "Show exact total value",
-		description = "Show exact total value"
+		description = "When enabled along with the ‘Show GE total’ option, the unabbreviated value will be displayed. If disabled, while ‘Show GE total’ isenabled, the value will be abbreviated using K,M,B for thousand, million, and billion respectively."
 	)
 	default boolean showExact()
 	{
@@ -114,7 +115,7 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 8,
 		keyName = "highlightSearchMatch",
-		name = "Highlight Search Match",
+		name = "Underline Search Match",
 		description = "Highlights the search match with an underline"
 	)
 	default boolean highlightSearchMatch()
