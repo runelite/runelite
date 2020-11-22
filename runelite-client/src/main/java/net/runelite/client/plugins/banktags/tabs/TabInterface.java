@@ -83,6 +83,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.chatbox.ChatboxItemSearch;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.plugins.banktags.BankTagsConfig;
 import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
