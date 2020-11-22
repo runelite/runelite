@@ -59,7 +59,7 @@ public interface GrandExchangeConfig extends Config
 		position = 3,
 		keyName = "enableOsbPrices",
 		name = "Enable OSB actively traded prices",
-		description = "Display item price information obtained from the OSBuddy client in the Grand Exchange interface.”
+		description = "Display item price information obtained from the OSBuddy client in the Grand Exchange interface."
 
 	)
 	default boolean enableOsbPrices()
