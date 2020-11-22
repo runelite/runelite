@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.banktags.tabs;
+package net.runelite.client.plugins.bank;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

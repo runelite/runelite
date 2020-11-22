@@ -63,7 +63,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
