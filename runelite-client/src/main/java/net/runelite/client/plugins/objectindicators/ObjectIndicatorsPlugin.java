@@ -278,7 +278,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	private void checkObjectPoints(TileObject object)
 	{
-		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation(), object.getPlane());
 		final Set<ObjectPoint> objectPoints = points.get(worldPoint.getRegionID());
 
 		if (objectPoints == null)
