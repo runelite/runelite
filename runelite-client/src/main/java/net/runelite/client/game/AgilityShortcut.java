@@ -28,6 +28,7 @@ package net.runelite.client.game;
 import lombok.Getter;
 import static net.runelite.api.NullObjectID.*;
 import static net.runelite.api.ObjectID.*;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
@@ -184,7 +185,15 @@ public enum AgilityShortcut
 	TAVERLEY_DUNGEON_ROCKS_SOUTH(70, "Rocks", new WorldPoint(2887, 9631, 0), ROCKS, ROCKS_14106),
 	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole" , new WorldPoint(3712, 3828, 0), HOLE_31481, HOLE_31482),
 	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole" , new WorldPoint(3714, 3816, 0), HOLE_31481, HOLE_31482),
-	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW),
+	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3295, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
+	{
+		@Override
+		public boolean matches(TileObject object)
+		{
+			// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
+			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(getWorldLocation());
+		}
+	},
 	GWD_SARADOMIN_ROPE_NORTH(70, "Rope Descent", new WorldPoint(2912, 5300, 0), NULL_26371, NULL_26561),
 	GWD_SARADOMIN_ROPE_SOUTH(70, "Rope Descent", new WorldPoint(2951, 5267, 0), NULL_26375, NULL_26562),
 	GU_TANOTH_CRUMBLING_WALL(71, "Rocks", new WorldPoint(2545, 3032, 0), CRUMBLING_WALL_40355, ROCKS_40356),
@@ -264,5 +273,10 @@ public enum AgilityShortcut
 	public String getTooltip()
 	{
 		return description + " - Level " + level;
+	}
+
+	public boolean matches(TileObject object)
+	{
+		return true;
 	}
 }
