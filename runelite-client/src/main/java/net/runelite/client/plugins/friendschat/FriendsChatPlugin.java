@@ -120,13 +120,13 @@ public class FriendsChatPlugin extends Plugin
 	private ChatboxPanelManager chatboxPanelManager;
 
 	private List<String> chats = new ArrayList<>();
-	private List<Player> members = new ArrayList<>();
+	private final List<Player> members = new ArrayList<>();
 	private MembersIndicator membersIndicator;
 	/**
 	 * queue of temporary messages added to the client
 	 */
 	private final Deque<MemberJoinMessage> joinMessages = new ArrayDeque<>();
-	private Map<String, MemberActivity> activityBuffer = new HashMap<>();
+	private final Map<String, MemberActivity> activityBuffer = new HashMap<>();
 	private int joinedTick;
 
 	private boolean kickConfirmed = false;

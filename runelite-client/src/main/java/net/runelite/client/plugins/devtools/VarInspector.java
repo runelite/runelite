@@ -209,7 +209,7 @@ class VarInspector extends JFrame
 			tracker.add(new JLabel(String.format("%s %s changed: %s -> %s", type.getName(), name, old, neew)));
 
 			// Cull very old stuff
-			for (; tracker.getComponentCount() > MAX_LOG_ENTRIES; )
+			while (tracker.getComponentCount() > MAX_LOG_ENTRIES)
 			{
 				tracker.remove(0);
 			}

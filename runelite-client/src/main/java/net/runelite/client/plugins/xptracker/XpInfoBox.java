@@ -50,6 +50,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -74,7 +75,7 @@ class XpInfoBox extends JPanel
 	private static final String HTML_TOOL_TIP_TEMPLATE =
 		"<html>%s %s done<br/>"
 			+ "%s %s/hr<br/>"
-			+ "%s till goal lvl</html>";
+			+ "%s %s</html>";
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
@@ -123,7 +124,8 @@ class XpInfoBox extends JPanel
 
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
-		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), skill)));
+		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
+			client.getLocalPlayer(), skill, client.getWorldType().contains(WorldType.LEAGUE))));
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
@@ -285,13 +287,16 @@ class XpInfoBox extends JPanel
 				progressBar.setPositions(Collections.emptyList());
 			}
 
+			XpProgressBarLabel tooltipLabel = xpTrackerConfig.progressBarTooltipLabel();
+
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,
 				xpSnapshotSingle.getActionsInSession(),
 				xpSnapshotSingle.getActionType().getLabel(),
 				xpSnapshotSingle.getActionsPerHour(),
 				xpSnapshotSingle.getActionType().getLabel(),
-				xpSnapshotSingle.getTimeTillGoal()));
+				tooltipLabel.getValueFunc().apply(xpSnapshotSingle),
+				tooltipLabel == XpProgressBarLabel.PERCENTAGE ? "of goal" : "till goal lvl"));
 
 			progressBar.setDimmed(skillPaused);
 

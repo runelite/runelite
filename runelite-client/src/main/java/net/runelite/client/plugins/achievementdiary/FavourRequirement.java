@@ -42,6 +42,7 @@ public class FavourRequirement implements Requirement
 		return percent + "% " + house.getName() + " favour";
 	}
 
+	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
 		int realFavour = client.getVar(house.getVarbit());

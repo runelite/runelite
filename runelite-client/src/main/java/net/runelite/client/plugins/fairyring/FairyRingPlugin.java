@@ -68,9 +68,9 @@ import net.runelite.client.util.Text;
 )
 public class FairyRingPlugin extends Plugin
 {
-	private static final String[] leftDial = new String[]{"A", "D", "C", "B"};
-	private static final String[] middleDial = new String[]{"I", "L", "K", "J"};
-	private static final String[] rightDial = new String[]{"P", "S", "R", "Q"};
+	private static final String[] leftDial = {"A", "D", "C", "B"};
+	private static final String[] middleDial = {"I", "L", "K", "J"};
+	private static final String[] rightDial = {"P", "S", "R", "Q"};
 
 	private static final int ENTRY_PADDING = 3;
 

@@ -44,7 +44,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.NullNpcID;
 import net.runelite.api.Player;
-import net.runelite.api.Skill;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
@@ -159,7 +158,7 @@ public class AgilityPlugin extends Plugin
 	{
 		overlayManager.add(agilityOverlay);
 		overlayManager.add(lapCounterOverlay);
-		agilityLevel = client.getBoostedSkillLevel(Skill.AGILITY);
+		agilityLevel = client.getBoostedSkillLevel(AGILITY);
 	}
 
 	@Override

@@ -91,8 +91,8 @@ public class TearsOfGuthixPlugin extends Plugin
 	{
 		DecorativeObject object = event.getDecorativeObject();
 
-		if (event.getDecorativeObject().getId() == ObjectID.BLUE_TEARS ||
-			event.getDecorativeObject().getId() == ObjectID.BLUE_TEARS_6665)
+		if (object.getId() == ObjectID.BLUE_TEARS ||
+			object.getId() == ObjectID.BLUE_TEARS_6665)
 		{
 			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
 			{

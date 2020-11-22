@@ -76,6 +76,7 @@ class InventoryDeltaPanel extends JPanel implements Scrollable
 		// Listen for resize events
 		addComponentListener(new ComponentAdapter()
 		{
+			@Override
 			public void componentResized(final ComponentEvent componentEvent)
 			{
 				// Account for container and slot padding

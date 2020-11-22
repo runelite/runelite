@@ -640,7 +640,7 @@ public class GroundItemsPlugin extends Plugin
 
 		final Player local = client.getLocalPlayer();
 		final StringBuilder notificationStringBuilder = new StringBuilder()
-			.append("[")
+			.append('[')
 			.append(local.getName())
 			.append("] received a ")
 			.append(dropType)

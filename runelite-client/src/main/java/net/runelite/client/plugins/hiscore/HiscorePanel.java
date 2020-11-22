@@ -114,7 +114,7 @@ public class HiscorePanel extends PluginPanel
 		ZALCANO, ZULRAH
 	);
 
-	private static final HiscoreEndpoint[] ENDPOINTS = new HiscoreEndpoint[] {
+	private static final HiscoreEndpoint[] ENDPOINTS = {
 		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.LEAGUE
 	};
 
@@ -347,7 +347,7 @@ public class HiscorePanel extends PluginPanel
 
 		label.setIcon(new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(), skillIcon)));
 
-		boolean totalLabel = skill == HiscoreSkill.OVERALL || skill == null; //overall or combat
+		boolean totalLabel = skill == OVERALL || skill == null; //overall or combat
 		label.setIconTextGap(totalLabel ? 10 : 4);
 
 		JPanel skillPanel = new JPanel();

@@ -90,9 +90,6 @@ public class CorpPlugin extends Plugin
 	@Inject
 	private CoreOverlay coreOverlay;
 
-	@Inject
-	private CorpConfig config;
-
 	@Provides
 	CorpConfig getConfig(ConfigManager configManager)
 	{

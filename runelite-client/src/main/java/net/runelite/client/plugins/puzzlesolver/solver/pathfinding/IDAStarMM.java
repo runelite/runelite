@@ -38,9 +38,9 @@ import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 public class IDAStarMM extends IDAStar
 {
 	private PuzzleState currentState;
-	private List<PuzzleState> stateList = new ArrayList<>();
-	private List<List<Integer>> validRowNumbers = new ArrayList<>();
-	private List<List<Integer>> validColumnNumbers = new ArrayList<>();
+	private final List<PuzzleState> stateList = new ArrayList<>();
+	private final List<List<Integer>> validRowNumbers = new ArrayList<>();
+	private final List<List<Integer>> validColumnNumbers = new ArrayList<>();
 
 	public IDAStarMM(Heuristic heuristic)
 	{

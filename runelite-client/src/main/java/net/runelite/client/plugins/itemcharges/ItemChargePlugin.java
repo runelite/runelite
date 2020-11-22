@@ -2,6 +2,7 @@
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * Copyright (c) 2018, Hydrox6 <ikada@protonmail.ch>
  * Copyright (c) 2019, Aleios <https://github.com/aleios>
+ * Copyright (c) 2020, Unmoon <https://github.com/unmoon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,6 +61,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Item Charges",
@@ -75,7 +77,7 @@ public class ItemChargePlugin extends Plugin
 		"Your dodgy necklace protects you\\..*It has (\\d+) charges? left\\.");
 	private static final Pattern DODGY_BREAK_PATTERN = Pattern.compile(
 		"Your dodgy necklace protects you\\..*It then crumbles to dust\\.");
-	private static final String RING_OF_RECOIL_BREAK_MESSAGE = "<col=7f007f>Your Ring of Recoil has shattered.</col>";
+	private static final String RING_OF_RECOIL_BREAK_MESSAGE = "Your Ring of Recoil has shattered.";
 	private static final Pattern BINDING_CHECK_PATTERN = Pattern.compile(
 		"You have ([0-9]+|one) charges? left before your Binding necklace disintegrates\\.");
 	private static final Pattern BINDING_USED_PATTERN = Pattern.compile(
@@ -84,23 +86,33 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
 		"You can smelt ([0-9]+|one) more pieces? of iron ore before a ring melts\\.");
 	private static final String RING_OF_FORGING_USED_TEXT = "You retrieve a bar of iron.";
-	private static final String RING_OF_FORGING_BREAK_TEXT = "<col=7f007f>Your Ring of Forging has melted.</col>";
+	private static final String RING_OF_FORGING_BREAK_TEXT = "Your Ring of Forging has melted.";
 	private static final Pattern AMULET_OF_CHEMISTRY_CHECK_PATTERN = Pattern.compile(
 		"Your amulet of chemistry has (\\d) charges? left\\."
 	);
 	private static final Pattern AMULET_OF_CHEMISTRY_USED_PATTERN = Pattern.compile(
-		"Your amulet of chemistry helps you create a \\d-dose potion\\. (?:<col=ff0000>)?It has (\\d|one) charges? left\\."
+		"Your amulet of chemistry helps you create a \\d-dose potion\\. It has (\\d|one) charges? left\\."
 	);
 	private static final Pattern AMULET_OF_CHEMISTRY_BREAK_PATTERN = Pattern.compile(
-		"Your amulet of chemistry helps you create a \\d-dose potion\\. (?:<col=ff0000>)?It then crumbles to dust\\."
+		"Your amulet of chemistry helps you create a \\d-dose potion\\. It then crumbles to dust\\."
 	);
 	private static final Pattern AMULET_OF_BOUNTY_CHECK_PATTERN = Pattern.compile(
 		"Your amulet of bounty has (\\d+) charges? left\\."
 	);
 	private static final Pattern AMULET_OF_BOUNTY_USED_PATTERN = Pattern.compile(
-		"Your amulet of bounty saves some seeds for you\\. (?:<col=ff0000>)?It has (\\d) charges? left\\."
+		"Your amulet of bounty saves some seeds for you\\. It has (\\d) charges? left\\."
 	);
-	private static final String AMULET_OF_BOUNTY_BREAK_TEXT = "Your amulet of bounty saves some seeds for you. <col=ff0000>It then crumbles to dust.</col>";
+	private static final String AMULET_OF_BOUNTY_BREAK_TEXT = "Your amulet of bounty saves some seeds for you. It then crumbles to dust.";
+	private static final Pattern CHRONICLE_ADD_PATTERN = Pattern.compile(
+		"You add (?:\\d+|a single) charges? to your book\\. It now has (\\d+|one) charges?\\."
+	);
+	private static final Pattern CHRONICLE_USE_AND_CHECK_PATTERN = Pattern.compile(
+		"Your book has (\\d+) charges left\\."
+	);
+	private static final String CHRONICLE_FULL_TEXT = "Your book is fully charged! It has 1,000 charges already.";
+	private static final String CHRONICLE_ONE_CHARGE_TEXT = "You have one charge left in your book.";
+	private static final String CHRONICLE_EMPTY_TEXT = "Your book has run out of charges.";
+	private static final String CHRONICLE_NO_CHARGES_TEXT = "Your book does not have any charges. Purchase some Teleport Cards from Diango.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -218,7 +230,7 @@ public class ItemChargePlugin extends Plugin
 	{
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
-			String message = event.getMessage();
+			String message = Text.removeTags(event.getMessage());
 			Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
 			Matcher dodgyProtectMatcher = DODGY_PROTECT_PATTERN.matcher(message);
 			Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
@@ -230,6 +242,8 @@ public class ItemChargePlugin extends Plugin
 			Matcher amuletOfChemistryBreakMatcher = AMULET_OF_CHEMISTRY_BREAK_PATTERN.matcher(message);
 			Matcher amuletOfBountyCheckMatcher = AMULET_OF_BOUNTY_CHECK_PATTERN.matcher(message);
 			Matcher amuletOfBountyUsedMatcher = AMULET_OF_BOUNTY_USED_PATTERN.matcher(message);
+			Matcher chronicleAddMatcher = CHRONICLE_ADD_PATTERN.matcher(message);
+			Matcher chronicleUseAndCheckMatcher = CHRONICLE_USE_AND_CHECK_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -345,6 +359,35 @@ public class ItemChargePlugin extends Plugin
 				}
 
 				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
+			}
+			else if (chronicleAddMatcher.find())
+			{
+				final String match = chronicleAddMatcher.group(1);
+
+				if (match.equals("one"))
+				{
+					config.chronicle(1);
+				}
+				else
+				{
+					config.chronicle(Integer.parseInt(match));
+				}
+			}
+			else if (chronicleUseAndCheckMatcher.find())
+			{
+				config.chronicle(Integer.parseInt(chronicleUseAndCheckMatcher.group(1)));
+			}
+			else if (message.equals(CHRONICLE_ONE_CHARGE_TEXT))
+			{
+				config.chronicle(1);
+			}
+			else if (message.equals(CHRONICLE_EMPTY_TEXT) || message.equals(CHRONICLE_NO_CHARGES_TEXT))
+			{
+				config.chronicle(0);
+			}
+			else if (message.equals(CHRONICLE_FULL_TEXT))
+			{
+				config.chronicle(1000);
 			}
 		}
 	}

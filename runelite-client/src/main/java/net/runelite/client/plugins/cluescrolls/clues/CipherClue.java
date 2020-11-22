@@ -141,6 +141,7 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 		return null;
 	}
 
+	@Override
 	public String[] getNpcs()
 	{
 		return new String[] {npc};

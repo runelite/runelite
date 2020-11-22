@@ -114,7 +114,7 @@ public class PluginHubController
 		}
 	}
 
-	@Scheduled(fixedDelay = 1_8000_000, initialDelay = 30_000) // 30 minutes with 30 second initial delay
+	@Scheduled(fixedDelay = 1_800_000, initialDelay = 30_000) // 30 minutes with 30 second initial delay
 	public void rebuildCounts()
 	{
 		Map<String, Long> counts = new HashMap<>();
