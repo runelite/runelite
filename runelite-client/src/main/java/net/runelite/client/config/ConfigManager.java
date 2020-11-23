@@ -313,12 +313,12 @@ public class ConfigManager
 		migrateConfig();
 	}
 
-	public void importLocal()
+	public Future<Void> importLocal()
 	{
 		if (session == null)
 		{
 			// No session, no import
-			return;
+			return null;
 		}
 
 		final File file = new File(propertiesFile.getParent(), propertiesFile.getName() + "." + TIME_FORMAT.format(new Date()));
@@ -330,10 +330,12 @@ public class ConfigManager
 		catch (IOException e)
 		{
 			log.warn("Backup failed, skipping import", e);
-			return;
+			return null;
 		}
 
 		syncPropertiesFromFile(getLocalPropertiesFile());
+
+		return sendConfig();
 	}
 
 	private synchronized void loadFromFile()
