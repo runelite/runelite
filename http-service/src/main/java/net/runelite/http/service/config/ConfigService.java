@@ -25,6 +25,7 @@
 package net.runelite.http.service.config;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -38,6 +39,7 @@ import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.UpdateOptions;
+import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 import static com.mongodb.client.model.Updates.unset;
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -131,31 +134,79 @@ public class ConfigService
 		return new Configuration(config);
 	}
 
+	public List<String> patch(int userID, Configuration config)
+	{
+		List<String> failures = new ArrayList<>();
+		List<Bson> sets = new ArrayList<>(config.getConfig().size());
+		for (ConfigEntry entry : config.getConfig())
+		{
+			Bson s = setForKV(entry.getKey(), entry.getValue());
+			if (s == null)
+			{
+				failures.add(entry.getKey());
+			}
+			else
+			{
+				sets.add(s);
+			}
+		}
+
+		if (sets.size() > 0)
+		{
+			mongoCollection.updateOne(
+				eq("_userId", userID),
+				combine(sets),
+				upsertUpdateOptions
+			);
+		}
+
+		return failures;
+	}
+
+	@Nullable
+	private Bson setForKV(String key, @Nullable String value)
+	{
+		if (key.startsWith("$") || key.startsWith("_"))
+		{
+			return null;
+		}
+
+		String[] split = key.split("\\.", 2);
+		if (split.length != 2)
+		{
+			return null;
+		}
+
+		String dbKey = split[0] + "." + split[1].replace('.', ':');
+
+		if (Strings.isNullOrEmpty(value))
+		{
+			return unset(dbKey);
+		}
+
+		if (!validateJson(value))
+		{
+			return null;
+		}
+
+		Object jsonValue = parseJsonString(value);
+		return set(dbKey, jsonValue);
+	}
+
 	public boolean setKey(
 		int userId,
 		String key,
 		@Nullable String value
 	)
 	{
-		if (key.startsWith("$") || key.startsWith("_"))
+		Bson set = setForKV(key, value);
+		if (set == null)
 		{
 			return false;
 		}
 
-		String[] split = key.split("\\.", 2);
-		if (split.length != 2)
-		{
-			return false;
-		}
-
-		if (!validateJson(value))
-		{
-			return false;
-		}
-
-		Object jsonValue = parseJsonString(value);
 		mongoCollection.updateOne(eq("_userId", userId),
-			set(split[0] + "." + split[1].replace('.', ':'), jsonValue),
+			set,
 			upsertUpdateOptions);
 		return true;
 	}
@@ -165,19 +216,13 @@ public class ConfigService
 		String key
 	)
 	{
-		if (key.startsWith("$") || key.startsWith("_"))
+		Bson set = setForKV(key, null);
+		if (set == null)
 		{
 			return false;
 		}
 
-		String[] split = key.split("\\.", 2);
-		if (split.length != 2)
-		{
-			return false;
-		}
-
-		mongoCollection.updateOne(eq("_userId", userId),
-			unset(split[0] + "." + split[1].replace('.', ':')));
+		mongoCollection.updateOne(eq("_userId", userId), set);
 		return true;
 	}
 
