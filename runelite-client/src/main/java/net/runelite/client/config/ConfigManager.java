@@ -894,40 +894,32 @@ public class ConfigManager
 	private CompletableFuture<Void> sendConfig()
 	{
 		CompletableFuture<Void> future = null;
-		boolean changed;
 		synchronized (pendingChanges)
 		{
+			if (pendingChanges.isEmpty())
+			{
+				return null;
+			}
+
 			if (configClient != null)
 			{
-				future = CompletableFuture.allOf(pendingChanges.entrySet().stream().map(entry ->
-				{
-					String key = entry.getKey();
-					String value = entry.getValue();
+				Configuration patch = new Configuration(pendingChanges.entrySet().stream()
+					.map(e -> new ConfigEntry(e.getKey(), e.getValue()))
+					.collect(Collectors.toList()));
 
-					if (Strings.isNullOrEmpty(value))
-					{
-						return configClient.unset(key);
-					}
-					else
-					{
-						return configClient.set(key, value);
-					}
-				}).toArray(CompletableFuture[]::new));
+				future = configClient.patch(patch);
 			}
-			changed = !pendingChanges.isEmpty();
+
 			pendingChanges.clear();
 		}
 
-		if (changed)
+		try
 		{
-			try
-			{
-				saveToFile(propertiesFile);
-			}
-			catch (IOException ex)
-			{
-				log.warn("unable to save configuration file", ex);
-			}
+			saveToFile(propertiesFile);
+		}
+		catch (IOException ex)
+		{
+			log.warn("unable to save configuration file", ex);
 		}
 
 		return future;
