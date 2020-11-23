@@ -40,11 +40,11 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -216,7 +216,7 @@ public class TimeTrackingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onUsernameChanged(UsernameChanged e)
+	public void onRuneScapeProfileChanged(RuneScapeProfileChanged e)
 	{
 		farmingTracker.loadCompletionTimes();
 		birdHouseTracker.loadFromConfig();

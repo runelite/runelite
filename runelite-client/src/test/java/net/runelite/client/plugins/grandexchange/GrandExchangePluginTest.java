@@ -125,7 +125,6 @@ public class GrandExchangePluginTest
 	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-		when(client.getUsername()).thenReturn("adam");
 		when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));
 	}
 
@@ -148,7 +147,7 @@ public class GrandExchangePluginTest
 		savedOffer.setPrice(1000);
 		savedOffer.setSpent(25);
 		savedOffer.setState(GrandExchangeOfferState.BUYING);
-		when(configManager.getConfiguration("geoffer.adam", "0")).thenReturn(GSON.toJson(savedOffer));
+		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(GSON.toJson(savedOffer));
 
 		// buy 2 @ 10/ea
 		GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
@@ -182,7 +181,7 @@ public class GrandExchangePluginTest
 		savedOffer.setPrice(1000);
 		savedOffer.setSpent(25);
 		savedOffer.setState(GrandExchangeOfferState.BUYING);
-		when(configManager.getConfiguration("geoffer.adam", "0")).thenReturn(GSON.toJson(savedOffer));
+		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(GSON.toJson(savedOffer));
 
 		GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
 		when(grandExchangeOffer.getQuantitySold()).thenReturn(1);
@@ -206,7 +205,7 @@ public class GrandExchangePluginTest
 		savedOffer.setPrice(1000);
 		savedOffer.setSpent(25);
 		savedOffer.setState(GrandExchangeOfferState.BUYING);
-		when(configManager.getConfiguration("geoffer.adam", "0")).thenReturn(GSON.toJson(savedOffer));
+		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(GSON.toJson(savedOffer));
 
 		GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
 		when(grandExchangeOffer.getQuantitySold()).thenReturn(1);
@@ -242,6 +241,6 @@ public class GrandExchangePluginTest
 
 		grandExchangePlugin.onGrandExchangeOfferChanged(grandExchangeOfferChanged);
 
-		verify(configManager, never()).unsetConfiguration(anyString(), anyString());
+		verify(configManager, never()).unsetRSProfileConfiguration(anyString(), anyString());
 	}
 }

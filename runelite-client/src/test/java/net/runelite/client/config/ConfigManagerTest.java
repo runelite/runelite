@@ -32,8 +32,10 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Matcher;
 import javax.inject.Inject;
 import javax.inject.Named;
+import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
@@ -66,6 +68,10 @@ public class ConfigManagerTest
 	@Bind
 	@Named("config")
 	File config = RuneLite.DEFAULT_CONFIG_FILE;
+
+	@Mock
+	@Bind
+	Client client;
 
 	@Inject
 	ConfigManager manager;
@@ -131,5 +137,27 @@ public class ConfigManagerTest
 		manager.unsetConfiguration(descriptor.getGroup().value(), "nullDefaultKey");
 		manager.setDefaultConfiguration(conf, false);
 		Assert.assertNull(conf.nullDefaultKey());
+	}
+
+	@Test
+	public void testKeySplitter()
+	{
+		for (String[] test : new String[][]
+			{
+				{"rsprofile", "rsprofile.123", "rsprofileThing"},
+				{"rsprofile", null, "rsprofileThing"},
+				{"foo", "rsprofile.123", "big.bad"},
+				{"foo", null, "big.bad"},
+				{"foo", "rsprofile.123", "456"},
+				{"foo", null, "file.256"},
+			})
+		{
+			String whole = ConfigManager.getWholeKey(test[0], test[1], test[2]);
+			Matcher m = ConfigManager.KEY_SPLITTER.matcher(whole);
+			Assert.assertTrue(m.find());
+			Assert.assertEquals(m.group(1), test[0]);
+			Assert.assertEquals(m.group(2), test[1]);
+			Assert.assertEquals(m.group(3), test[2]);
+		}
 	}
 }
