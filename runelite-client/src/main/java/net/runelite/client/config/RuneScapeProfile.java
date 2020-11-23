@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.config;
 
-import javax.annotation.Nullable;
 import lombok.Data;
-import net.runelite.client.config.RuneScapeProfile;
 
 /**
- * An event where a configuration entry has been modified.
+ * A profile/save of a OSRS account. Each account can 1 profile per {@link RuneScapeProfileType}
+ * (ie Standard/League/DMM}.
  */
 @Data
-public class ConfigChanged
+public class RuneScapeProfile
 {
-	/**
-	 * The parent group for the key.
-	 * <p>
-	 * Typically set to the name of a plugin to prevent potential collisions
-	 * between other key values that may have the same name.
-	 */
-	private String group;
+	private final String displayName;
+	private final RuneScapeProfileType type;
+	private final byte[] loginHash;
 
 	/**
-	 * The profile that has changed, if any
-	 *
-	 * @see RuneScapeProfile#getKey()
+	 * Profile key used to save configs for this profile to the config store. This will
+	 * always start with {@link ConfigManager#RSPROFILE_GROUP}
 	 */
-	@Nullable
-	private String profile;
-	/**
-	 * The configuration key that has been modified.
-	 */
-	private String key;
-	/**
-	 * The previous value of the entry.
-	 */
-	private String oldValue;
-	/**
-	 * The new value of the entry, null if the entry has been unset.
-	 */
-	private String newValue;
+	private final String key;
 }

@@ -230,27 +230,23 @@ public class ChatCommandsPlugin extends Plugin
 
 	private void setKc(String boss, int killcount)
 	{
-		configManager.setConfiguration("killcount." + client.getUsername().toLowerCase(),
-			boss.toLowerCase(), killcount);
+		configManager.setRSProfileConfiguration("killcount", boss.toLowerCase(), killcount);
 	}
 
 	private int getKc(String boss)
 	{
-		Integer killCount = configManager.getConfiguration("killcount." + client.getUsername().toLowerCase(),
-			boss.toLowerCase(), int.class);
+		Integer killCount = configManager.getRSProfileConfiguration("killcount", boss.toLowerCase(), int.class);
 		return killCount == null ? 0 : killCount;
 	}
 
 	private void setPb(String boss, int seconds)
 	{
-		configManager.setConfiguration("personalbest." + client.getUsername().toLowerCase(),
-			boss.toLowerCase(), seconds);
+		configManager.setRSProfileConfiguration("personalbest", boss.toLowerCase(), seconds);
 	}
 
 	private int getPb(String boss)
 	{
-		Integer personalBest = configManager.getConfiguration("personalbest." + client.getUsername().toLowerCase(),
-			boss.toLowerCase(), int.class);
+		Integer personalBest = configManager.getRSProfileConfiguration("personalbest", boss.toLowerCase(), int.class);
 		return personalBest == null ? 0 : personalBest;
 	}
 
