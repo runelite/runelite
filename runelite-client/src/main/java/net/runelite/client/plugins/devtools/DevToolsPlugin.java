@@ -33,8 +33,10 @@ import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -42,6 +44,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.PlayerComposition;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
@@ -64,17 +67,19 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 
 @PluginDescriptor(
 	name = "Developer Tools",
 	tags = {"panel"},
 	developerPlugin = true
 )
+@Slf4j
 @Getter
 public class DevToolsPlugin extends Plugin
 {
 	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
-			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
+		MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
 
 	@Inject
 	private Client client;
@@ -225,6 +230,13 @@ public class DevToolsPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
+	private void logAndChat(String format, Object... args)
+	{
+		String msg = MessageFormatter.arrayFormat(format, args).getMessage();
+		log.info("{}", msg);
+		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", msg, null);
+	}
+
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
@@ -235,28 +247,25 @@ public class DevToolsPlugin extends Plugin
 			case "logger":
 			{
 				final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-				String message;
 				Level currentLoggerLevel = logger.getLevel();
 
 				if (args.length < 1)
 				{
-					message = "Logger level is currently set to " + currentLoggerLevel;
+					logAndChat("Logger level is currently set to {}", currentLoggerLevel);
 				}
 				else
 				{
 					Level newLoggerLevel = Level.toLevel(args[0], currentLoggerLevel);
 					logger.setLevel(newLoggerLevel);
-					message = "Logger level has been set to " + newLoggerLevel;
+					logAndChat("Logger level has been set to {}", newLoggerLevel);
 				}
-
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", message, null);
 				break;
 			}
 			case "getvarp":
 			{
 				int varp = Integer.parseInt(args[0]);
 				int value = client.getVarpValue(client.getVarps(), varp);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "VarPlayer " + varp + ": " + value, null);
+				logAndChat("VarPlayer {}: {}", varp, value);
 				break;
 			}
 			case "setvarp":
@@ -264,7 +273,7 @@ public class DevToolsPlugin extends Plugin
 				int varp = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
 				client.setVarpValue(client.getVarps(), varp, value);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set VarPlayer " + varp + " to " + value, null);
+				logAndChat("Set VarPlayer {} to {}", varp, value);
 				VarbitChanged varbitChanged = new VarbitChanged();
 				varbitChanged.setIndex(varp);
 				eventBus.post(varbitChanged); // fake event
@@ -274,7 +283,7 @@ public class DevToolsPlugin extends Plugin
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = client.getVarbitValue(client.getVarps(), varbit);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Varbit " + varbit + ": " + value, null);
+				logAndChat("Varbit {}: {}", varbit, value);
 				break;
 			}
 			case "setvarb":
@@ -282,7 +291,7 @@ public class DevToolsPlugin extends Plugin
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
 				client.setVarbitValue(client.getVarps(), varbit, value);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set varbit " + varbit + " to " + value, null);
+				logAndChat("Set Varbit {} to {}", varbit, value);
 				eventBus.post(new VarbitChanged()); // fake event
 				break;
 			}
@@ -357,12 +366,108 @@ public class DevToolsPlugin extends Plugin
 				player.setPoseAnimation(-1);
 				break;
 			}
-			case "cape":
+			case "equip":
 			{
-				int id = Integer.parseInt(args[0]);
-				Player player = client.getLocalPlayer();
-				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = id + 512;
-				player.getPlayerComposition().setHash();
+				PlayerComposition pc = client.getLocalPlayer().getPlayerComposition();
+				int[] equip = pc.getEquipmentIds();
+				int offset = 0;
+				switch (args.length)
+				{
+					case 0:
+						for (int i = 0; i < equip.length; i++)
+						{
+							final int fi = i;
+							String kitName = Stream.of(KitType.values())
+								.filter(kit -> kit.getIndex() == fi)
+								.findFirst()
+								.map(Enum::name)
+								.orElse("");
+							int value = equip[i];
+
+							String name = "";
+							offset = 0;
+							if (value >= 256 && value < 512)
+							{
+								name = "(Kit)";
+								offset = 256;
+							}
+							else if (value >= 512)
+							{
+								name = "(Item)";
+								offset = 512;
+							}
+
+							logAndChat("{}[{}] = +{}{} {}", kitName, i, offset, name, value - offset);
+						}
+						break;
+					case 3:
+					{
+						String offsetArg = args[1];
+						if (offsetArg.startsWith("+"))
+						{
+							offsetArg = offsetArg.substring(1);
+						}
+						try
+						{
+							offset = Integer.parseInt(offsetArg);
+						}
+						catch (NumberFormatException y)
+						{
+							switch (offsetArg.toLowerCase())
+							{
+								case "item":
+									offset = 512;
+									break;
+								case "kit":
+									offset = 256;
+									break;
+								default:
+									logAndChat("\"{}\" is not a number or KitType", args[2]);
+									return;
+							}
+						}
+					}
+					// fallthrough
+					case 2:
+						String kitArg = args[0];
+						int slot;
+						try
+						{
+							slot = KitType.valueOf(kitArg.toUpperCase()).getIndex();
+						}
+						catch (IllegalArgumentException v)
+						{
+							try
+							{
+								slot = Integer.parseInt(kitArg);
+							}
+							catch (NumberFormatException y)
+							{
+								logAndChat("\"{}\" is not a number or KitType", kitArg);
+								return;
+							}
+						}
+
+						String valueArg = args[args.length - 1];
+						int value;
+						try
+						{
+							value = Integer.parseInt(valueArg);
+						}
+						catch (NumberFormatException v)
+						{
+							logAndChat("\"{}\" is not a number", valueArg);
+							return;
+						}
+
+						equip[slot] = value = value + offset;
+						pc.setHash();
+
+						logAndChat("Set equip slot {} to {}", slot, value);
+						break;
+					default:
+						logAndChat("::equip <slot> [offset/type] <value>");
+				}
 				break;
 			}
 			case "sound":
