@@ -125,6 +125,16 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showBrokenStruts",
+		name = "Show broken struts",
+		description = "Shows broken water wheel struts"
+	)
+	default boolean showBrokenStruts()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showLootIcons",
 		name = "Show ore icons",
 		description = "Display collected ores and gems as item images instead of text"

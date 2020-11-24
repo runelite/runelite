@@ -70,7 +70,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private static final int BORDER = 5;
 	private static final int BORDER_TOP = BORDER + 15;
 	private static final int PADDING = 2;
-	private static final int MIN_OVERLAY_SIZE = 32;
 	private static final int OVERLAY_RESIZE_TOLERANCE = 5;
 	private static final Dimension SNAP_CORNER_SIZE = new Dimension(80, 80);
 	private static final Color SNAP_CORNER_COLOR = new Color(0, 255, 255, 50);
@@ -536,8 +535,9 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 					// center
 			}
 
-			final int widthOverflow = Math.max(0, MIN_OVERLAY_SIZE - width);
-			final int heightOverflow = Math.max(0, MIN_OVERLAY_SIZE - height);
+			final int minOverlaySize = currentManagedOverlay.getMinimumSize();
+			final int widthOverflow = Math.max(0, minOverlaySize - width);
+			final int heightOverflow = Math.max(0, minOverlaySize - height);
 			final int dx = x - originalX;
 			final int dy = y - originalY;
 
@@ -545,7 +545,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			// dimensions and adjust the x/y position accordingly as needed
 			if (widthOverflow > 0)
 			{
-				width = MIN_OVERLAY_SIZE;
+				width = minOverlaySize;
 
 				if (dx > 0)
 				{
@@ -554,7 +554,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			}
 			if (heightOverflow > 0)
 			{
-				height = MIN_OVERLAY_SIZE;
+				height = minOverlaySize;
 
 				if (dy > 0)
 				{

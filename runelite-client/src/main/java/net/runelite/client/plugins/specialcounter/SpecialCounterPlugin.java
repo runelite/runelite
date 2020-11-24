@@ -166,7 +166,6 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		Actor target = hitsplatApplied.getActor();
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
-		Hitsplat.HitsplatType hitsplatType = hitsplat.getHitsplatType();
 		// Ignore all hitsplats other than mine
 		if (!hitsplat.isMine() || target == client.getLocalPlayer())
 		{

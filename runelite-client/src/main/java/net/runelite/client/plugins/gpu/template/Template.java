@@ -37,10 +37,6 @@ public class Template
 {
 	private final List<Function<String, String>> resourceLoaders = new ArrayList<>();
 
-	public Template()
-	{
-	}
-
 	public String process(String str)
 	{
 		StringBuilder sb = new StringBuilder();

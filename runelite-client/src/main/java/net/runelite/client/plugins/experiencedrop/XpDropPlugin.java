@@ -28,6 +28,7 @@ import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -67,7 +68,7 @@ public class XpDropPlugin extends Plugin
 	private boolean hasDropped = false;
 	private boolean correctPrayer;
 	private Skill lastSkill = null;
-	private Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
+	private final Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
 
 	@Provides
 	XpDropConfig provideConfig(ConfigManager configManager)
@@ -107,6 +108,7 @@ public class XpDropPlugin extends Plugin
 		final IntStream spriteIDs =
 			Arrays.stream(children)
 				.skip(1) // skip text
+				.filter(Objects::nonNull)
 				.mapToInt(Widget::getSpriteId);
 
 		int color = 0;

@@ -40,8 +40,9 @@ public class CombatLevelRequirement implements Requirement
 		return level + " " + "Combat";
 	}
 
+	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
-		return client.getLocalPlayer() == null ? false : client.getLocalPlayer().getCombatLevel() >= level;
+		return client.getLocalPlayer() != null && client.getLocalPlayer().getCombatLevel() >= level;
 	}
 }

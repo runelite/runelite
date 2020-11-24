@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Mitchell <https://github.com/Mitchell-Kovacs>
+ * Copyright (c) 2020, Unmoon <https://github.com/unmoon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,5 +43,6 @@ enum ItemChargeType
 	SACK,
 	RING_OF_FORGING,
 	GUTHIX_REST,
+	CHRONICLE,
 	POTION,
 }

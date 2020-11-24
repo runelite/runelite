@@ -33,7 +33,6 @@ import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
@@ -64,9 +63,6 @@ public class XpGlobesPlugin extends Plugin
 
 	@Getter
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
-
-	@Inject
-	private Client client;
 
 	@Inject
 	private XpGlobesConfig config;

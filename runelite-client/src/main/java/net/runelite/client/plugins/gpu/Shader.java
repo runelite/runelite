@@ -49,10 +49,6 @@ public class Shader
 		private final String filename;
 	}
 
-	public Shader()
-	{
-	}
-
 	public Shader add(int type, String name)
 	{
 		units.add(new Unit(type, name));

@@ -41,7 +41,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-public class RegenMeterOverlay extends Overlay
+class RegenMeterOverlay extends Overlay
 {
 	private static final Color HITPOINTS_COLOR = brighter(0x9B0703);
 	private static final Color SPECIAL_COLOR = brighter(0x1E95B0);
@@ -50,8 +50,8 @@ public class RegenMeterOverlay extends Overlay
 	private static final int OFFSET = 27;
 
 	private final Client client;
-	private RegenMeterPlugin plugin;
-	private RegenMeterConfig config;
+	private final RegenMeterPlugin plugin;
+	private final RegenMeterConfig config;
 
 	private static Color brighter(int color)
 	{

@@ -78,7 +78,6 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 @PluginDependency(XpTrackerPlugin.class)
 public class MiningPlugin extends Plugin
 {
-	private static final int ROCK_DISTANCE = 14;
 	private static final Pattern MINING_PATERN = Pattern.compile(
 		"You " +
 			"(?:manage to|just)" +

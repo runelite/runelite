@@ -54,7 +54,7 @@ class PlayerComparisonOverlay extends Overlay
 	private static final Color NEUTRAL_TEXT_COLOR = Color.WHITE;
 	private static final Color HIGHLIGHT_COLOR = new Color(255, 200, 0, 255);
 
-	private static final Skill[] COMBAT_SKILLS = new Skill[]{
+	private static final Skill[] COMBAT_SKILLS = {
 		Skill.ATTACK,
 		Skill.STRENGTH,
 		Skill.DEFENCE,
@@ -64,7 +64,7 @@ class PlayerComparisonOverlay extends Overlay
 		Skill.PRAYER
 	};
 
-	private static final HiscoreSkill[] HISCORE_COMBAT_SKILLS = new HiscoreSkill[]{
+	private static final HiscoreSkill[] HISCORE_COMBAT_SKILLS = {
 		HiscoreSkill.ATTACK,
 		HiscoreSkill.STRENGTH,
 		HiscoreSkill.DEFENCE,
