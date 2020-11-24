@@ -146,6 +146,27 @@ public class QuantityFormatter
 	}
 
 	/**
+	 * Converts the int value of a stack to the RS representation of it.
+	 *
+	 * example: {@code 10000}, {@code 100K}, {@code 1000K} {@code 2147M}
+	 *
+	 * @param quantity The int to convert.
+	 * @return A string representation of it.
+	 */
+	public static String intToRSQuantity(int quantity)
+	{
+		if (quantity >= 10_000_000)
+		{
+			return Integer.toString(quantity / 1_000_000) + 'M';
+		}
+		else if (quantity >= 100_000)
+		{
+			return Integer.toString(quantity / 1_000) + 'K';
+		}
+		return Integer.toString(quantity);
+	}
+
+	/**
 	 * Converts a string representation of a stack
 	 * back to (close to) it's original value.
 	 *

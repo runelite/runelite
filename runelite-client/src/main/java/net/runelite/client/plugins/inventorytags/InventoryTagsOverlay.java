@@ -33,6 +33,8 @@ import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.inventorytags.InventoryTagsConfig.DisplayMode;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.QuantityFormatter;
 
 public class InventoryTagsOverlay extends WidgetItemOverlay
 {
@@ -63,8 +65,28 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 				Rectangle bounds = itemWidget.getCanvasBounds();
 				if (displayMode == DisplayMode.OUTLINE)
 				{
-					final BufferedImage outline = itemManager.getItemOutline(itemId, itemWidget.getQuantity(), color);
+					final int quantity = itemWidget.getQuantity();
+					final BufferedImage outline = itemManager.getItemOutline(itemId, quantity, color);
 					graphics.drawImage(outline, (int) bounds.getX(), (int) bounds.getY(), null);
+					if (itemManager.getItemComposition(itemId).isStackable())
+					{
+						graphics.setFont(FontManager.getRunescapeSmallFont());
+						String quantityText = QuantityFormatter.intToRSQuantity(quantity);
+						if (quantityText.endsWith("M"))
+						{
+							graphics.setColor(Color.green);
+						}
+						else if (quantityText.endsWith("K"))
+						{
+							graphics.setColor(Color.white);
+						}
+						else
+						{
+							graphics.setColor(Color.yellow);
+						}
+
+						graphics.drawString(quantityText, (int) bounds.getX(), (int) bounds.getY() + 10);
+					}
 				}
 				else
 				{
