@@ -193,7 +193,7 @@ public class SpecialCounterPlugin extends Plugin
 		int interactingId = npc.getId();
 
 		// If this is a new NPC reset the counters
-		if (!interactedNpcIds.contains(interactingId))
+		if (!interactedNpcIds.contains(interactingId) && resetTarget)
 		{
 			removeCounters();
 			addInteracting(interactingId);
