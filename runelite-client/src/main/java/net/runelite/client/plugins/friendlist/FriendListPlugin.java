@@ -25,6 +25,8 @@
  */
 package net.runelite.client.plugins.friendlist;
 
+import com.google.inject.Provides;
+import java.awt.Color;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
@@ -32,12 +34,16 @@ import net.runelite.api.Ignore;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Friend List",
@@ -53,6 +59,15 @@ public class FriendListPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private FriendListConfig config;
+
+	@Provides
+	FriendListConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(FriendListConfig.class);
+	}
 
 	@Override
 	protected void shutDown()
@@ -109,6 +124,15 @@ public class FriendListPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (config.showTobIgnores())
+		{
+			colorIgnoredPlayersTob(config.showIgnoresColor());
+		}
+	}
+
 	private void setFriendsListTitle(final String title)
 	{
 		Widget friendListTitleWidget = client.getWidget(WidgetInfo.FRIEND_CHAT_TITLE);
@@ -124,6 +148,68 @@ public class FriendListPlugin extends Plugin
 		if (ignoreTitleWidget != null)
 		{
 			ignoreTitleWidget.setText(title);
+		}
+	}
+
+	private void colorIgnoredPlayersTob(Color ignoreColor)
+	{
+		NameableContainer<Ignore> ignoreContainer = client.getIgnoreContainer();
+		Widget tobPartyBoardMemberList = client.getWidget(WidgetInfo.TOB_BOARD_MEMBERS);
+		if (tobPartyBoardMemberList != null && tobPartyBoardMemberList.getChildren() != null)
+		{
+			// Iterate every 11 widgets to land on name widget
+			for (int i = 1; i < tobPartyBoardMemberList.getChildren().length; i += 11)
+			{
+				Widget listWidget = tobPartyBoardMemberList.getChild(i);
+				String memberName = listWidget.getText();
+				if (memberName.isEmpty() || ignoreContainer.findByName(memberName) == null)
+				{
+					continue;
+				}
+
+				listWidget.setTextColor(ignoreColor.getRGB());
+			}
+		}
+
+		Widget tobPartyBoardApplicantList = client.getWidget(WidgetInfo.TOB_BOARD_APPLICANTS);
+		if (tobPartyBoardApplicantList != null && tobPartyBoardApplicantList.getChildren() != null)
+		{
+			// Iterate every 20 widgets to land on name widget
+			for (int i = 1; i < tobPartyBoardApplicantList.getChildren().length; i += 20)
+			{
+				Widget listWidget = tobPartyBoardApplicantList.getChild(i);
+				String memberName = listWidget.getText();
+				if (memberName.isEmpty() || ignoreContainer.findByName(memberName) == null)
+				{
+					continue;
+				}
+
+				listWidget.setTextColor(ignoreColor.getRGB());
+			}
+		}
+
+		Widget tobPartyMemberList = client.getWidget(WidgetInfo.TOB_PARTY_MEMBERS);
+		if (tobPartyMemberList != null)
+		{
+			// Party interface members are all in one text field, in the form "-<br>-<br>-<br>-<br>-"
+			String[] memberNames = tobPartyMemberList.getText().split("<br>");
+			String widgetText = "";
+			for (int i = 0; i < memberNames.length; i++)
+			{
+				String name = Text.removeTags(memberNames[i]);
+				if (ignoreContainer.findByName(name) == null)
+				{
+					widgetText += name;
+				}
+				else
+				{
+					widgetText += ColorUtil.wrapWithColorTag(name, ignoreColor);
+				}
+
+				if (i != 4) widgetText += "<br>";
+			}
+
+			tobPartyMemberList.setText(widgetText);
 		}
 	}
 }
