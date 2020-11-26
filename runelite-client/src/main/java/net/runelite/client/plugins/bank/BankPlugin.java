@@ -424,7 +424,7 @@ public class BankPlugin extends Plugin
 		}
 
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		final int qty = matcher.group("individual")!=null ? 1 :itemQuantities.count(itemId);
+		final int qty = matcher.group("individual") != null ? 1 : itemQuantities.count(itemId);
 		final long gePrice = (long) itemManager.getItemPrice(itemId) * qty;
 		final long haPrice = (long) itemComposition.getHaPrice() * qty;
 
