@@ -26,13 +26,8 @@ package net.runelite.client.plugins.config;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,14 +37,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import net.runelite.client.externalplugins.ExternalPluginManifest;
-import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.PopupMenu;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
@@ -163,7 +155,7 @@ class PluginListItem extends JPanel implements SearchablePlugin
 			uninstallItem.addActionListener(ev -> pluginListPanel.getExternalPluginManager().remove(mf.getInternalName()));
 		}
 
-		addLabelPopupMenu(nameLabel, configMenuItem, pluginConfig.createSupportMenuItem(), uninstallItem);
+		PopupMenu.create(nameLabel, null, configMenuItem, pluginConfig.createSupportMenuItem(), uninstallItem);
 		add(nameLabel, BorderLayout.CENTER);
 
 		onOffToggle = new PluginToggleButton();
@@ -213,59 +205,5 @@ class PluginListItem extends JPanel implements SearchablePlugin
 	private void openGroupConfigPanel()
 	{
 		pluginListPanel.openConfigurationPanel(pluginConfig);
-	}
-
-	/**
-	 * Adds a mouseover effect to change the text of the passed label to {@link ColorScheme#BRAND_ORANGE} color, and
-	 * adds the passed menu items to a popup menu shown when the label is clicked.
-	 *
-	 * @param label     The label to attach the mouseover and click effects to
-	 * @param menuItems The menu items to be shown when the label is clicked
-	 */
-	static void addLabelPopupMenu(JLabel label, JMenuItem... menuItems)
-	{
-		final JPopupMenu menu = new JPopupMenu();
-		final Color labelForeground = label.getForeground();
-		menu.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		for (final JMenuItem menuItem : menuItems)
-		{
-			if (menuItem == null)
-			{
-				continue;
-			}
-
-			// Some machines register mouseEntered through a popup menu, and do not register mouseExited when a popup
-			// menu item is clicked, so reset the label's color when we click one of these options.
-			menuItem.addActionListener(e -> label.setForeground(labelForeground));
-			menu.add(menuItem);
-		}
-
-		label.addMouseListener(new MouseAdapter()
-		{
-			private Color lastForeground;
-
-			@Override
-			public void mouseClicked(MouseEvent mouseEvent)
-			{
-				Component source = (Component) mouseEvent.getSource();
-				Point location = MouseInfo.getPointerInfo().getLocation();
-				SwingUtilities.convertPointFromScreen(location, source);
-				menu.show(source, location.x, location.y);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent)
-			{
-				lastForeground = label.getForeground();
-				label.setForeground(ColorScheme.BRAND_ORANGE);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent mouseEvent)
-			{
-				label.setForeground(lastForeground);
-			}
-		});
 	}
 }

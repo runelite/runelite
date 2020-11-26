@@ -90,6 +90,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
+import net.runelite.client.ui.components.PopupMenu;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ColorUtil;
@@ -206,7 +207,7 @@ class ConfigPanel extends PluginPanel
 			uninstallItem.addActionListener(ev -> externalPluginManager.remove(mf.getInternalName()));
 		}
 
-		PluginListItem.addLabelPopupMenu(title, pluginConfig.createSupportMenuItem(), uninstallItem);
+		PopupMenu.create(title, null, pluginConfig.createSupportMenuItem(), uninstallItem);
 
 		if (pluginConfig.getPlugin() != null)
 		{
@@ -330,7 +331,7 @@ class ConfigPanel extends PluginPanel
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
-			PluginListItem.addLabelPopupMenu(configEntryName, createResetMenuItem(pluginConfig, cid));
+			PopupMenu.create(configEntryName, null, createResetMenuItem(pluginConfig, cid));
 			item.add(configEntryName, BorderLayout.CENTER);
 
 			if (cid.getType() == boolean.class)
