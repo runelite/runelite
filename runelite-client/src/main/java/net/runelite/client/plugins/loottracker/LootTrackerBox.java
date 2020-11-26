@@ -55,6 +55,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.loottracker.LootRecordType;
@@ -360,6 +361,10 @@ class LootTrackerBox extends JPanel
 				});
 
 				popupMenu.add(toggle);
+
+				final JMenuItem wiki = new JMenuItem("Wiki");
+				wiki.addActionListener(e -> LinkBrowser.browse("https://oldschool.runescape.wiki/w/" + item.getName().replaceAll(" ", "_")));
+				popupMenu.add(wiki);
 			}
 
 			itemContainer.add(slotContainer);

@@ -36,11 +36,14 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.AsyncBufferedImage;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.QuantityFormatter;
 
 /**
@@ -89,11 +92,23 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				GrandExchangePlugin.openGeLink(name, itemID);
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					GrandExchangePlugin.openGeLink(name, itemID);
+				}
 			}
 		};
 
 		addMouseListener(itemPanelMouseListener);
+
+		// Create right click popup menu
+		final JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.setComponentPopupMenu(popupMenu);
+
+		final JMenuItem wiki = new JMenuItem("Wiki");
+		wiki.addActionListener(e -> LinkBrowser.browse("https://oldschool.runescape.wiki/w/" + name.replaceAll(" ", "_")));
+		popupMenu.add(wiki);
 
 		setBorder(new EmptyBorder(5, 5, 5, 0));
 
