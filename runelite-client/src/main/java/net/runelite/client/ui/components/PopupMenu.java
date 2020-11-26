@@ -42,10 +42,11 @@ import net.runelite.client.ui.ColorScheme;
 public class PopupMenu
 {
 	/**
-	 * Adds the passed menu items to a popup menu shown when the label is clicked, and
+	 * Adds the passed menu items to a popup menu shown when the component is clicked, and
 	 * adds a mouseover effect to change the text of a passed label to {@link ColorScheme#BRAND_ORANGE} color
 	 *
 	 * @param component The component to attach the mouseover and click effects to
+	 * @param trigger   The MouseEvent.BUTTON to trigger the popup
 	 * @param menuItems The menu items to be shown when the label is clicked
 	 */
 	public static <T extends JComponent> void create(T component, Integer trigger, JMenuItem... menuItems)
