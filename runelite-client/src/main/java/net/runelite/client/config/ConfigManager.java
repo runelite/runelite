@@ -1151,7 +1151,7 @@ public class ConfigManager
 			});
 		}
 
-		Set<String> keys = (Set<String>) ImmutableSet.copyOf((Set<?>) properties.keySet());
+		Set<String> keys = (Set<String>) ImmutableSet.copyOf((Set) properties.keySet());
 		keys:
 		for (String key : keys)
 		{
