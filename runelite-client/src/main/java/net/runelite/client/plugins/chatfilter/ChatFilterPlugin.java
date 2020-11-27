@@ -173,7 +173,7 @@ public class ChatFilterPlugin extends Plugin
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
 			case FRIENDSCHAT:
-				if (shouldFilterPlayerMessage(name))
+				if (shouldFilterPlayerMessage(Text.removeTags(name)))
 				{
 					message = censorMessage(name, message);
 					blockMessage = message == null;
