@@ -189,6 +189,7 @@ enum Task
 		"Abyss",
 		"Ancient Cavern",
 		"Asgarnian Ice Dungeon",
+		"Battlefront",
 		"Brimhaven Dungeon",
 		"Brine Rat Cavern",
 		"Catacombs of Kourend",
