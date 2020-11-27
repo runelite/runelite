@@ -83,7 +83,7 @@ public class BankPlugin extends Plugin
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
 
 	private static final String NUMBER_REGEX = "[0-9]+(\\.[0-9]+)?[kmb]?";
-	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>ge|ha|alch)?" + "(?<individual> i| iv| individual)?" +
+	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>ge|ha|alch)?" + "(?<individual> i| iv| individual| per)?" +
 		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
 		"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))$", Pattern.CASE_INSENSITIVE);
 
