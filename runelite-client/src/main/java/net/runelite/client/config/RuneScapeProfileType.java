@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.config;
+package net.runelite.client.config;
 
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import java.util.function.Predicate;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.Client;
+import net.runelite.api.WorldType;
 
-@Data
-@AllArgsConstructor
-public class Configuration
+@Getter
+@RequiredArgsConstructor
+public enum RuneScapeProfileType
 {
-	private List<ConfigEntry> config = new ArrayList<>();
+	STANDARD(client -> true),
+	BETA(client -> client.getWorldType().contains(WorldType.TOURNAMENT)),
+	DEADMAN(client -> client.getWorldType().contains(WorldType.DEADMAN)),
+	TRAILBLAZER_LEAGUE(client -> client.getWorldType().contains(WorldType.LEAGUE)),
+	;
+
+	private final Predicate<Client> test;
+
+	public static RuneScapeProfileType getCurrent(Client client)
+	{
+		RuneScapeProfileType[] types = values();
+		for (int i = types.length - 1; i >= 0; i--)
+		{
+			RuneScapeProfileType type = types[i];
+			if (types[i].test.test(client))
+			{
+				return type;
+			}
+		}
+
+		return STANDARD;
+	}
 }

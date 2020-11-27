@@ -331,7 +331,7 @@ public class FarmingContractManager
 	{
 		try
 		{
-			return Produce.getByItemID(Integer.parseInt(configManager.getConfiguration(getConfigGroup(), CONFIG_KEY_CONTRACT)));
+			return Produce.getByItemID(Integer.parseInt(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, CONFIG_KEY_CONTRACT)));
 		}
 		catch (NumberFormatException ignored)
 		{
@@ -343,17 +343,11 @@ public class FarmingContractManager
 	{
 		if (contract != null)
 		{
-			configManager.setConfiguration(getConfigGroup(), CONFIG_KEY_CONTRACT, String.valueOf(contract.getItemID()));
+			configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, CONFIG_KEY_CONTRACT, String.valueOf(contract.getItemID()));
 		}
 		else
 		{
-			configManager.unsetConfiguration(getConfigGroup(), CONFIG_KEY_CONTRACT);
+			configManager.unsetRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, CONFIG_KEY_CONTRACT);
 		}
-	}
-
-	@Nonnull
-	private String getConfigGroup()
-	{
-		return TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername();
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.config;
+package net.runelite.client.config;
 
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * A profile/save of a OSRS account. Each account can 1 profile per {@link RuneScapeProfileType}
+ * (ie Standard/League/DMM}.
+ */
 @Data
-@AllArgsConstructor
-public class Configuration
+public class RuneScapeProfile
 {
-	private List<ConfigEntry> config = new ArrayList<>();
+	private final String displayName;
+	private final RuneScapeProfileType type;
+	private final byte[] loginHash;
+
+	/**
+	 * Profile key used to save configs for this profile to the config store. This will
+	 * always start with {@link ConfigManager#RSPROFILE_GROUP}
+	 */
+	private final String key;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.config;
+package net.runelite.client.events;
 
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
-public class Configuration
+/**
+ * Posted when the user switches to a different RuneScape save profile
+ * This might be because they logged into a different account, or hopped
+ * to/from a Beta/Tournament/DMM/Leagues world
+ */
+public class RuneScapeProfileChanged
 {
-	private List<ConfigEntry> config = new ArrayList<>();
 }

@@ -125,7 +125,7 @@ public class GrandExchangePlugin extends Plugin
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
-	private static final String BUY_LIMIT_KEY = "buylimit_";
+	private static final String BUY_LIMIT_KEY = "buylimit";
 	private static final Gson GSON = new Gson();
 	private static final Duration BUY_LIMIT_RESET = Duration.ofHours(4);
 
@@ -244,7 +244,7 @@ public class GrandExchangePlugin extends Plugin
 
 	private SavedOffer getOffer(int slot)
 	{
-		String offer = configManager.getConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot));
+		String offer = configManager.getRSProfileConfiguration("geoffer", Integer.toString(slot));
 		if (offer == null)
 		{
 			return null;
@@ -254,12 +254,12 @@ public class GrandExchangePlugin extends Plugin
 
 	private void setOffer(int slot, SavedOffer offer)
 	{
-		configManager.setConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot), GSON.toJson(offer));
+		configManager.setRSProfileConfiguration("geoffer", Integer.toString(slot), GSON.toJson(offer));
 	}
 
 	private void deleteOffer(int slot)
 	{
-		configManager.unsetConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot));
+		configManager.unsetRSProfileConfiguration("geoffer", Integer.toString(slot));
 	}
 
 	@Provides
@@ -782,20 +782,19 @@ public class GrandExchangePlugin extends Plugin
 
 	private void setLimitResetTime(int itemId)
 	{
-		Instant lastDateTime = configManager.getConfiguration(GrandExchangeConfig.CONFIG_GROUP,
-			BUY_LIMIT_KEY + client.getUsername().toLowerCase() + "." + itemId, Instant.class);
+		Instant lastDateTime = configManager.getRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP,
+			BUY_LIMIT_KEY + "." + itemId, Instant.class);
 		if (lastDateTime == null || lastDateTime.isBefore(Instant.now()))
 		{
-			configManager.setConfiguration(GrandExchangeConfig.CONFIG_GROUP,
-				BUY_LIMIT_KEY + client.getUsername().toLowerCase() + "." + itemId,
+			configManager.setRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP, BUY_LIMIT_KEY + "." + itemId,
 				Instant.now().plus(BUY_LIMIT_RESET));
 		}
 	}
 
 	private Instant getLimitResetTime(int itemId)
 	{
-		Instant lastDateTime = configManager.getConfiguration(GrandExchangeConfig.CONFIG_GROUP,
-			BUY_LIMIT_KEY + client.getUsername().toLowerCase() + "." + itemId, Instant.class);
+		Instant lastDateTime = configManager.getRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP,
+			BUY_LIMIT_KEY + "." + itemId, Instant.class);
 		if (lastDateTime == null)
 		{
 			return null;
@@ -803,7 +802,7 @@ public class GrandExchangePlugin extends Plugin
 
 		if (lastDateTime.isBefore(Instant.now()))
 		{
-			configManager.unsetConfiguration(GrandExchangeConfig.CONFIG_GROUP, BUY_LIMIT_KEY + client.getUsername().toLowerCase() + "." + itemId);
+			configManager.unsetRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP, BUY_LIMIT_KEY + "." + itemId);
 			return null;
 		}
 

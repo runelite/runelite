@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.config;
+package net.runelite.api.events;
 
-import java.util.ArrayList;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import net.runelite.api.Client;
 
-@Data
-@AllArgsConstructor
-public class Configuration
+/**
+ * Posted when the game world the client wants to connect to has changed
+ * This is posted after the world ID and type have updated, but before a new
+ * connection is established
+ *
+ * @see Client#getWorld()
+ * @see Client#getWorldType()
+ */
+public class WorldChanged
 {
-	private List<ConfigEntry> config = new ArrayList<>();
 }

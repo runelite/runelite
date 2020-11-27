@@ -24,7 +24,9 @@
  */
 package net.runelite.client.events;
 
+import javax.annotation.Nullable;
 import lombok.Data;
+import net.runelite.client.config.RuneScapeProfile;
 
 /**
  * An event where a configuration entry has been modified.
@@ -39,6 +41,14 @@ public class ConfigChanged
 	 * between other key values that may have the same name.
 	 */
 	private String group;
+
+	/**
+	 * The profile that has changed, if any
+	 *
+	 * @see RuneScapeProfile#getKey()
+	 */
+	@Nullable
+	private String profile;
 	/**
 	 * The configuration key that has been modified.
 	 */
