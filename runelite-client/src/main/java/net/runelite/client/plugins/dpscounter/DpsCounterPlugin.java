@@ -186,6 +186,13 @@ public class DpsCounterPlugin extends Plugin
 
 		if (hitsplat.isMine())
 		{
+			final int npcId = ((NPC) actor).getId();
+			boolean isBoss = BOSSES.contains(npcId);
+			if (dpsConfig.bossDamage() && !isBoss)
+			{
+				return;
+			}
+
 			int hit = hitsplat.getAmount();
 			// Update local member
 			PartyMember localMember = partyService.getLocalMember();
@@ -207,7 +214,7 @@ public class DpsCounterPlugin extends Plugin
 		{
 			final int npcId = ((NPC) actor).getId();
 			boolean isBoss = BOSSES.contains(npcId);
-			if (actor != player.getInteracting() && !isBoss)
+			if ((dpsConfig.bossDamage() || actor != player.getInteracting()) && !isBoss)
 			{
 				// only track damage to npcs we are attacking, or is a nearby common boss
 				return;
