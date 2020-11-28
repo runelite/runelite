@@ -154,8 +154,7 @@ public class NpcSceneOverlay extends Overlay
 
 		if (config.highlightHull())
 		{
-			Shape objectClickbox = actor.getConvexHull();
-			renderPoly(graphics, color, objectClickbox);
+			OverlayUtil.renderActorHull(graphics, actor, color);
 		}
 
 		if (config.highlightTile())
