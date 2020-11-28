@@ -114,7 +114,7 @@ public class Notifier
 	private final ChatMessageManager chatMessageManager;
 	private final EventBus eventBus;
 	private final Path notifyIconPath;
-	private final boolean terminalNotifierAvailable;
+	private boolean terminalNotifierAvailable;
 	private Instant flashStart;
 	private long mouseLastPressedMillis;
 	private long lastClipMTime = CLIP_MTIME_UNLOADED;
@@ -138,9 +138,10 @@ public class Notifier
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 
 		// First check if we are running in launcher
-		this.terminalNotifierAvailable =
-			!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion())
-			&& isTerminalNotifierAvailable();
+		if (!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion()) && OSType.getOSType() == OSType.MacOS)
+		{
+			executorService.execute(() -> terminalNotifierAvailable = isTerminalNotifierAvailable());
+		}
 
 		storeIcon();
 	}
@@ -389,21 +390,19 @@ public class Notifier
 
 	private boolean isTerminalNotifierAvailable()
 	{
-		if (OSType.getOSType() == OSType.MacOS)
+		try
 		{
-			try
-			{
-				final Process exec = Runtime.getRuntime().exec(new String[]{"terminal-notifier", "-help"});
-				exec.waitFor();
-				return exec.exitValue() == 0;
-			}
-			catch (IOException | InterruptedException e)
+			final Process exec = Runtime.getRuntime().exec(new String[]{"terminal-notifier", "-help"});
+			if (!exec.waitFor(2, TimeUnit.SECONDS))
 			{
 				return false;
 			}
+			return exec.exitValue() == 0;
 		}
-
-		return false;
+		catch (IOException | InterruptedException e)
+		{
+			return false;
+		}
 	}
 
 	private static String toUrgency(TrayIcon.MessageType type)
