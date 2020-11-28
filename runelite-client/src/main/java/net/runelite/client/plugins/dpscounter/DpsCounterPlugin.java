@@ -270,7 +270,12 @@ public class DpsCounterPlugin extends Plugin
 		{
 			log.debug("Boss has died!");
 
-			if (dpsConfig.autopause())
+			if (dpsConfig.autoreset())
+			{
+				members.values().forEach(DpsMember::reset);
+				total.reset();
+			}
+			else if (dpsConfig.autopause())
 			{
 				pause();
 			}
