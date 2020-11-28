@@ -52,4 +52,15 @@ public interface DpsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "autoreset",
+		name = "Auto reset",
+		description = "Reset the DPS tracker when a boss dies"
+	)
+	default boolean autoreset()
+	{
+		return false;
+	}
 }
