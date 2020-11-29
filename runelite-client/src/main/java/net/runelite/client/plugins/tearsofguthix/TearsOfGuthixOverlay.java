@@ -36,17 +36,18 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ColorUtil;
 
 class TearsOfGuthixOverlay extends Overlay
 {
-	private static final Color CYAN_ALPHA = new Color(Color.CYAN.getRed(), Color.CYAN.getGreen(), Color.CYAN.getBlue(), 100);
-	private static final Color GREEN_ALPHA = new Color(Color.GREEN.getRed(), Color.GREEN.getGreen(), Color.GREEN.getBlue(), 100);
 	private static final Duration MAX_TIME = Duration.ofSeconds(9);
+	private final TearsOfGuthixConfig config;
 	private final TearsOfGuthixPlugin plugin;
 
 	@Inject
-	private TearsOfGuthixOverlay(TearsOfGuthixPlugin plugin)
+	private TearsOfGuthixOverlay(TearsOfGuthixConfig config, TearsOfGuthixPlugin plugin)
 	{
+		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -55,8 +56,24 @@ class TearsOfGuthixOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (plugin.getStreams().isEmpty())
+		{
+			return null;
+		}
+
+		Color blueTearsFill = config.getBlueTearsColor();
+		Color greenTearsFill = config.getGreenTearsColor();
+		Color blueTearsBorder = ColorUtil.colorWithAlpha(blueTearsFill, 255);
+		Color greenTearsBorder = ColorUtil.colorWithAlpha(greenTearsFill, 255);
+
 		plugin.getStreams().forEach((object, timer) ->
 		{
+			if ((object.getId() == ObjectID.GREEN_TEARS || object.getId() == ObjectID.GREEN_TEARS_6666)
+				&& !config.showGreenTearsTimer())
+			{
+				return;
+			}
+
 			final Point position = object.getCanvasLocation(100);
 
 			if (position == null)
@@ -70,14 +87,14 @@ class TearsOfGuthixOverlay extends Overlay
 			if (object.getId() == ObjectID.BLUE_TEARS ||
 				object.getId() == ObjectID.BLUE_TEARS_6665)
 			{
-				progressPie.setFill(CYAN_ALPHA);
-				progressPie.setBorderColor(Color.CYAN);
+				progressPie.setFill(blueTearsFill);
+				progressPie.setBorderColor(blueTearsBorder);
 			}
 			else if (object.getId() == ObjectID.GREEN_TEARS ||
 				object.getId() == ObjectID.GREEN_TEARS_6666)
 			{
-				progressPie.setFill(GREEN_ALPHA);
-				progressPie.setBorderColor(Color.GREEN);
+				progressPie.setFill(greenTearsFill);
+				progressPie.setBorderColor(greenTearsBorder);
 			}
 
 			progressPie.setPosition(position);
