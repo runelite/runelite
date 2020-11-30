@@ -256,7 +256,8 @@ public class DevToolsPlugin extends Plugin
 			case "getvarp":
 			{
 				int varp = Integer.parseInt(args[0]);
-				int value = client.getVarpValue(client.getVarps(), varp);
+				int[] varps = client.getVarps();
+				int value = varps[varp];
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "VarPlayer " + varp + ": " + value, null);
 				break;
 			}
@@ -264,7 +265,8 @@ public class DevToolsPlugin extends Plugin
 			{
 				int varp = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
-				client.setVarpValue(client.getVarps(), varp, value);
+				int[] varps = client.getVarps();
+				varps[varp] = value;
 				client.queueChangedVarp(varp);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set VarPlayer " + varp + " to " + value, null);
 				VarbitChanged varbitChanged = new VarbitChanged();
