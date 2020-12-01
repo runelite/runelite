@@ -68,12 +68,12 @@ public class MetronomePlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (config.tickCount() == 0)
+		if (config.tickInterval() == 0)
 		{
 			return;
 		}
 
-		if (++tickCounter % config.tickCount() == 0)
+		if (++tickCounter % config.tickInterval() == 0)
 		{
 			// As playSoundEffect only uses the volume argument when the in-game volume isn't muted, sound effect volume
 			// needs to be set to the value desired for ticks or tocks and afterwards reset to the previous value.

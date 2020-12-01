@@ -37,11 +37,11 @@ public interface MetronomePluginConfiguration extends Config
 	int VOLUME_MAX = SoundEffectVolume.HIGH;
 
 	@ConfigItem(
-		keyName = "tickCount",
-		name = "Tick count",
-		description = "Configures the tick on which a sound will be played."
+		keyName = "tickInterval",
+		name = "Tick interval",
+		description = "The game tick interval after which a sound will be played."
 	)
-	default int tickCount()
+	default int tickInterval()
 	{
 		return 1;
 	}
@@ -52,7 +52,7 @@ public interface MetronomePluginConfiguration extends Config
 	@ConfigItem(
 		keyName = "tickVolume",
 		name = "Tick volume",
-		description = "Configures the volume of the tick sound. A value of 0 will disable tick sounds."
+		description = "The volume of the <em>tick</em> sound. A value of 0 will disable <em>tick</em> sounds."
 	)
 	default int tickVolume()
 	{
@@ -65,7 +65,7 @@ public interface MetronomePluginConfiguration extends Config
 	@ConfigItem(
 		keyName = "tockVolume",
 		name = "Tock volume",
-		description = "Configures the volume of the tock sound. A value of 0 will disable tock sounds."
+		description = "The volume of the <em>tock</em> sound. A value of 0 will disable <em>tock</em> sounds."
 	)
 	default int tockVolume()
 	{
