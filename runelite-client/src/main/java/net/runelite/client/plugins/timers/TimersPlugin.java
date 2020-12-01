@@ -61,6 +61,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
@@ -832,35 +833,32 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onNpcChanged(NpcChanged npcChanged)
+	{
+		int id = npcChanged.getNpc().getId();
+		int oldId = npcChanged.getOld().getId();
+
+		if (id == NpcID.ABYSSAL_SIRE_5888)
+		{
+			// stunned npc type
+			log.debug("Sire is stunned");
+			if (config.showAbyssalSireStun())
+			{
+				createGameTimer(ABYSSAL_SIRE_STUN);
+			}
+		}
+		else if (oldId == NpcID.ABYSSAL_SIRE_5888)
+		{
+			// change from stunned sire to anything else
+			log.debug("Sire is unstunned");
+			removeGameTimer(ABYSSAL_SIRE_STUN);
+		}
+	}
+
+	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
 		Actor actor = event.getActor();
-
-		if (config.showAbyssalSireStun()
-			&& actor instanceof NPC)
-		{
-			int npcId = ((NPC)actor).getId();
-
-			switch (npcId)
-			{
-				// Show the countdown when the Sire enters the stunned state.
-				case NpcID.ABYSSAL_SIRE_5888:
-					createGameTimer(ABYSSAL_SIRE_STUN);
-					break;
-
-				// Hide the countdown if the Sire isn't in the stunned state.
-				// This is necessary because the Sire leaves the stunned
-				// state early once all all four respiratory systems are killed.
-				case NpcID.ABYSSAL_SIRE:
-				case NpcID.ABYSSAL_SIRE_5887:
-				case NpcID.ABYSSAL_SIRE_5889:
-				case NpcID.ABYSSAL_SIRE_5890:
-				case NpcID.ABYSSAL_SIRE_5891:
-				case NpcID.ABYSSAL_SIRE_5908:
-					removeGameTimer(ABYSSAL_SIRE_STUN);
-					break;
-			}
-		}
 
 		if (actor != client.getLocalPlayer())
 		{
