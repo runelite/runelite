@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
  * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
+ * Copyright (c) 2020, Adam Davies <https://github.com/acdvs>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,18 +26,32 @@
  */
 package net.runelite.client.plugins.metronome;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Range;
 import net.runelite.api.SoundEffectVolume;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("metronome")
 public interface MetronomePluginConfiguration extends Config
 {
 	int VOLUME_MAX = SoundEffectVolume.HIGH;
+	Color CUSTOM_GREEN = new Color(30, 210, 30);
+	Color CUSTOM_GRAY = new Color(225, 225, 225);
+	Color CUSTOM_DARKER_GRAY = new Color(210, 210, 210);
+
+	@ConfigSection(
+		name = "Visual Metronome",
+		description = "Settings relating to the visual metronome",
+		position = 4
+	)
+	String visualSettings = "visualSettings";
 
 	@ConfigItem(
+		position = 1,
 		keyName = "tickInterval",
 		name = "Tick interval",
 		description = "The game tick interval after which a sound will be played."
@@ -50,6 +65,7 @@ public interface MetronomePluginConfiguration extends Config
 		max = VOLUME_MAX
 	)
 	@ConfigItem(
+		position = 2,
 		keyName = "tickVolume",
 		name = "Tick volume",
 		description = "The volume of the <em>tick</em> sound. A value of 0 will disable <em>tick</em> sounds."
@@ -63,6 +79,7 @@ public interface MetronomePluginConfiguration extends Config
 		max = VOLUME_MAX
 	)
 	@ConfigItem(
+		position = 3,
 		keyName = "tockVolume",
 		name = "Tock volume",
 		description = "The volume of the <em>tock</em> sound. A value of 0 will disable <em>tock</em> sounds."
@@ -71,4 +88,62 @@ public interface MetronomePluginConfiguration extends Config
 	{
 		return SoundEffectVolume.MUTED;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "showVisual",
+		name = "Visual metronome",
+		description = "Show or hide the visual metronome",
+		section = visualSettings
+	)
+	default boolean showVisual()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "tickColor",
+		name = "Tick color",
+		description = "Color of the visual metronome on each <em>tick</em> sound.",
+		section = visualSettings
+	)
+	default Color tickColor()
+	{
+		return CUSTOM_GREEN;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "tockColor",
+		name = "Tock color",
+		description = "Color of the visual metronome on each <em>tock</em> sound.",
+		section = visualSettings
+	)
+	default Color tockColor()
+	{
+		return CUSTOM_DARKER_GRAY;
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "baseColor",
+		name = "Base color",
+		description = "Color of the visual metronome base.",
+		section = visualSettings
+	)
+	default Color baseColor()
+	{
+		return CUSTOM_GRAY;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "size",
+		name = "Size",
+		description = "Diameter of the visual metronome",
+		section = visualSettings
+	)
+	@Units(Units.PIXELS)
+	default int size() { return 50; }
 }
