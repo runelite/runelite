@@ -145,5 +145,8 @@ public interface MetronomePluginConfiguration extends Config
 		section = visualSettings
 	)
 	@Units(Units.PIXELS)
-	default int size() { return 50; }
+	default int size()
+	{
+		return 50;
+	}
 }
