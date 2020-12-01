@@ -287,6 +287,11 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		if (!event.getGroup().equals(TimersConfig.GROUP))
+		{
+			return;
+		}
+
 		if (!config.showHomeMinigameTeleports())
 		{
 			removeGameTimer(HOME_TELEPORT);
@@ -456,55 +461,56 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
+		final String message = event.getMessage();
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
 		}
 
-		if (event.getMessage().equals(ENDURANCE_EFFECT_MESSAGE))
+		if (message.equals(ENDURANCE_EFFECT_MESSAGE))
 		{
 			wasWearingEndurance = true;
 		}
 
-		if (config.showStamina() && (event.getMessage().equals(STAMINA_DRINK_MESSAGE) || event.getMessage().equals(STAMINA_SHARED_DRINK_MESSAGE)))
+		if (config.showStamina() && (message.equals(STAMINA_DRINK_MESSAGE) || message.equals(STAMINA_SHARED_DRINK_MESSAGE)))
 		{
 			createStaminaTimer();
 		}
 
-		if (event.getMessage().equals(STAMINA_EXPIRED_MESSAGE) || event.getMessage().equals(GAUNTLET_ENTER_MESSAGE))
+		if (message.equals(STAMINA_EXPIRED_MESSAGE) || message.equals(GAUNTLET_ENTER_MESSAGE))
 		{
 			removeGameTimer(STAMINA);
 			staminaTimer = null;
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals(ANTIFIRE_DRINK_MESSAGE))
+		if (config.showAntiFire() && message.equals(ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIFIRE);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals(EXTENDED_ANTIFIRE_DRINK_MESSAGE))
+		if (config.showAntiFire() && message.equals(EXTENDED_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(EXANTIFIRE);
 		}
 
-		if (config.showGodWarsAltar() && event.getMessage().equalsIgnoreCase(GOD_WARS_ALTAR_MESSAGE))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
+		if (config.showGodWarsAltar() && message.equalsIgnoreCase(GOD_WARS_ALTAR_MESSAGE))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
 		{
 			createGameTimer(GOD_WARS_ALTAR);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals(EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE))
+		if (config.showAntiFire() && message.equals(EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(EXSUPERANTIFIRE);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals(ANTIFIRE_EXPIRED_MESSAGE))
+		if (config.showAntiFire() && message.equals(ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			//they have the same expired message
 			removeGameTimer(ANTIFIRE);
 			removeGameTimer(EXANTIFIRE);
 		}
 
-		if (config.showOverload() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("overload"))
+		if (config.showOverload() && message.startsWith("You drink some of your") && message.contains("overload"))
 		{
 			if (client.getVar(Varbits.IN_RAID) == 1)
 			{
@@ -517,30 +523,30 @@ public class TimersPlugin extends Plugin
 
 		}
 
-		if (config.showCannon() && (event.getMessage().equals(CANNON_FURNACE_MESSAGE) || event.getMessage().contains(CANNON_REPAIR_MESSAGE)))
+		if (config.showCannon() && (message.equals(CANNON_FURNACE_MESSAGE) || message.contains(CANNON_REPAIR_MESSAGE)))
 		{
 			TimerTimer cannonTimer = createGameTimer(CANNON);
 			cannonTimer.setTooltip(cannonTimer.getTooltip() + " - World " + client.getWorld());
 		}
 
-		if (config.showCannon() && event.getMessage().equals(CANNON_PICKUP_MESSAGE))
+		if (config.showCannon() && message.equals(CANNON_PICKUP_MESSAGE))
 		{
 			removeGameTimer(CANNON);
 		}
 
-		if (config.showMagicImbue() && event.getMessage().equals(MAGIC_IMBUE_MESSAGE))
+		if (config.showMagicImbue() && message.equals(MAGIC_IMBUE_MESSAGE))
 		{
 			createGameTimer(MAGICIMBUE);
 		}
 
-		if (event.getMessage().equals(MAGIC_IMBUE_EXPIRED_MESSAGE))
+		if (message.equals(MAGIC_IMBUE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(MAGICIMBUE);
 		}
 
 		if (config.showTeleblock())
 		{
-			Matcher m = TELEBLOCK_PATTERN.matcher(event.getMessage());
+			Matcher m = TELEBLOCK_PATTERN.matcher(message);
 			if (m.find())
 			{
 				String minss = m.group("mins");
@@ -549,58 +555,58 @@ public class TimersPlugin extends Plugin
 				int secs = secss != null ? Integer.parseInt(secss) : 0;
 				createGameTimer(TELEBLOCK, Duration.ofSeconds(mins * 60 + secs));
 			}
-			else if (event.getMessage().contains(KILLED_TELEBLOCK_OPPONENT_TEXT))
+			else if (message.contains(KILLED_TELEBLOCK_OPPONENT_TEXT))
 			{
 				removeGameTimer(TELEBLOCK);
 			}
 		}
 
-		if (config.showAntiFire() && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
+		if (config.showAntiFire() && message.contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(SUPERANTIFIRE);
 		}
 
-		if (config.showAntiFire() && event.getMessage().equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
+		if (config.showAntiFire() && message.equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
-		if (config.showImbuedHeart() && event.getMessage().equals(IMBUED_HEART_READY_MESSAGE))
+		if (config.showImbuedHeart() && message.equals(IMBUED_HEART_READY_MESSAGE))
 		{
 			removeGameTimer(IMBUEDHEART);
 		}
 
-		if (config.showPrayerEnhance() && event.getMessage().startsWith("You drink some of your") && event.getMessage().contains("prayer enhance"))
+		if (config.showPrayerEnhance() && message.startsWith("You drink some of your") && message.contains("prayer enhance"))
 		{
 			createGameTimer(PRAYER_ENHANCE);
 		}
 
-		if (config.showPrayerEnhance() && event.getMessage().equals(PRAYER_ENHANCE_EXPIRED))
+		if (config.showPrayerEnhance() && message.equals(PRAYER_ENHANCE_EXPIRED))
 		{
 			removeGameTimer(PRAYER_ENHANCE);
 		}
 
-		if (config.showCharge() && event.getMessage().equals(CHARGE_MESSAGE))
+		if (config.showCharge() && message.equals(CHARGE_MESSAGE))
 		{
 			createGameTimer(CHARGE);
 		}
 
-		if (config.showCharge() && event.getMessage().equals(CHARGE_EXPIRED_MESSAGE))
+		if (config.showCharge() && message.equals(CHARGE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(CHARGE);
 		}
 
-		if (config.showStaffOfTheDead() && event.getMessage().contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
+		if (config.showStaffOfTheDead() && message.contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
 		{
 			createGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-		if (config.showStaffOfTheDead() && event.getMessage().contains(STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE))
+		if (config.showStaffOfTheDead() && message.contains(STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-		if (config.showFreezes() && event.getMessage().equals(FROZEN_MESSAGE))
+		if (config.showFreezes() && message.equals(FROZEN_MESSAGE))
 		{
 			freezeTimer = createGameTimer(ICEBARRAGE);
 			freezeTime = client.getTickCount();
@@ -608,7 +614,7 @@ public class TimersPlugin extends Plugin
 
 		if (config.showDivine())
 		{
-			Matcher mDivine = DIVINE_POTION_PATTERN.matcher(event.getMessage());
+			Matcher mDivine = DIVINE_POTION_PATTERN.matcher(message);
 			if (mDivine.find())
 			{
 				switch (mDivine.group(1))
@@ -650,7 +656,6 @@ public class TimersPlugin extends Plugin
 
 		if (config.showTzhaarTimers())
 		{
-			String message = event.getMessage();
 			Matcher matcher = TZHAAR_COMPLETE_MESSAGE.matcher(message);
 
 			if (message.contains(TZHAAR_DEFEATED_MESSAGE) || matcher.matches())

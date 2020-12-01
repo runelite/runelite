@@ -29,9 +29,11 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import java.time.Instant;
 
-@ConfigGroup("timers")
+@ConfigGroup(TimersConfig.GROUP)
 public interface TimersConfig extends Config
 {
+	String GROUP = "timers";
+
 	@ConfigItem(
 		keyName = "showHomeMinigameTeleports",
 		name = "Teleport cooldown timers",
