@@ -3,12 +3,15 @@ package net.runelite.client.plugins.autoaccount;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.defaultworld.DefaultWorldPlugin;
+import net.runelite.client.ui.ClientUI;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
@@ -18,83 +21,117 @@ import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.VK_ENTER;
 
 @PluginDescriptor(
-    name = "Auto login",
-    description = "Allows you to auto login via CLI args"
+				name = "Auto login",
+				description = "Allows you to auto login via CLI args"
 )
 @Slf4j
-public class AutoAccountPlugin extends Plugin implements KeyListener {
+public class AutoAccountPlugin extends Plugin implements KeyListener
+{
 
-  @Inject
-  @Named("username")
-  private String username;
+	@Inject
+	@Named("username")
+	private String username;
 
-  @Inject
-  @Named("password")
-  private String password;
+	@Inject
+	@Named("password")
+	private String password;
 
-  @Inject
-  @Named("world")
-  private String world;
+	@Inject
+	@Named("world")
+	private String world;
 
-  @Inject
-  private Client client;
+	@Inject
+	@Named("xPos")
+	private String xPos;
 
-  @Inject
-  private WorldService worldService;
+	@Inject
+	@Named("yPos")
+	private String yPos;
 
-  @Inject
-  private KeyManager keyManager;
+	@Inject
+	private ClientUI clientUI;
 
-  private boolean loggedIn;
+	@Inject
+	private Client client;
 
-  @Override
-  protected void startUp() throws Exception
-  {
-    keyManager.registerKeyListener(this);
-  }
+	@Inject
+	private WorldService worldService;
 
-  @Override
-  protected void shutDown() throws Exception
-  {
-    keyManager.unregisterKeyListener(this);
-  }
+	@Inject
+	private KeyManager keyManager;
 
-  @Override
-  public void keyTyped(KeyEvent e) {
+	private boolean loggedIn;
 
-  }
+	@Override
+	protected void startUp() throws Exception
+	{
+		keyManager.registerKeyListener(this);
+	}
 
-  @Override
-  public boolean isEnabledOnLoginScreen()
-  {
-    return true;
-  }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		keyManager.unregisterKeyListener(this);
+	}
 
-  @Override
-  public void keyPressed(KeyEvent e) {
-    if (client.getGameState() != GameState.LOGIN_SCREEN || e.getKeyCode() != VK_ENTER) {
-      return;
-    }
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			if (StringUtils.isNotEmpty(xPos) && StringUtils.isNotEmpty(yPos))
+			{
+				int x = Integer.parseInt(xPos);
+				int y = Integer.parseInt(yPos);
+				clientUI.getFrame().setLocation(x, y);
+			}
+		}
+	}
 
-    if (StringUtils.isNotEmpty(username)) {
-      client.setUsername(username);
-    }
+	@Override
+	public boolean isEnabledOnLoginScreen()
+	{
+		return true;
+	}
 
-    if (StringUtils.isNotEmpty(password)) {
-      client.setPassword(password);
-    }
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
 
-    if (StringUtils.isNotEmpty(world)) {
-      int newWorld = Integer.parseInt(world);
-      if (newWorld != client.getWorld()) {
-        DefaultWorldPlugin.changeWorld(newWorld, client, worldService);
-      }
+	}
 
-    }
-  }
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (client.getGameState() != GameState.LOGIN_SCREEN || e.getKeyCode() != VK_ENTER)
+		{
+			return;
+		}
 
-  @Override
-  public void keyReleased(KeyEvent e) {
+		if (StringUtils.isNotEmpty(username))
+		{
+			client.setUsername(username);
+		}
 
-  }
+		if (StringUtils.isNotEmpty(password))
+		{
+			client.setPassword(password);
+		}
+
+		if (StringUtils.isNotEmpty(world))
+		{
+			int newWorld = Integer.parseInt(world);
+			if (newWorld != client.getWorld())
+			{
+				DefaultWorldPlugin.changeWorld(newWorld, client, worldService);
+			}
+
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+
+	}
 }

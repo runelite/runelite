@@ -668,6 +668,16 @@ public class ClientUI
 	}
 
 	/**
+	 * Gets component frame.
+	 *
+	 * @return the frame
+	 */
+	public ContainableFrame getFrame()
+	{
+		return frame;
+	}
+
+	/**
 	 * Gets component width.
 	 *
 	 * @return the width

@@ -7,16 +7,17 @@ import javax.inject.Singleton;
 
 @Singleton
 @Slf4j
-public class AutoAccountConfig {
+public class AutoAccountConfig
+{
 
-  @Setter
-  private String username;
+	@Setter
+	private String username;
 
-  @Setter
-  private String password;
+	@Setter
+	private String password;
 
-  @Setter
-  private int world;
+	@Setter
+	private int world;
 
 
 
