@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
  * Copyright (c) 2018, oplosthee <https://github.com/oplosthee>
+ * Copyright (c) 2020, Adam Davies <https://github.com/acdvs>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,6 +35,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Metronome",
@@ -47,10 +49,16 @@ public class MetronomePlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private MetronomeOverlay overlay;
+
+	@Inject
 	private MetronomePluginConfiguration config;
 
 	private int tickCounter = 0;
-	private boolean shouldTock = false;
+	boolean shouldTock = false;
 
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
@@ -59,8 +67,16 @@ public class MetronomePlugin extends Plugin
 	}
 
 	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
+
+	@Override
 	protected void shutDown()
 	{
+		overlayManager.remove(overlay);
+
 		tickCounter = 0;
 		shouldTock = false;
 	}
@@ -89,6 +105,8 @@ public class MetronomePlugin extends Plugin
 				client.setSoundEffectVolume(config.tickVolume());
 				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, config.tickVolume());
 			}
+
+			overlay.resetTickFramesLeft();
 
 			client.setSoundEffectVolume(previousVolume);
 
