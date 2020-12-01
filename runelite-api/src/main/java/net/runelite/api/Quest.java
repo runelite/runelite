@@ -179,6 +179,7 @@ public enum Quest
 	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles"),
 	SINS_OF_THE_FATHER(1276, "Sins of the Father"),
 	A_PORCINE_OF_INTEREST(1690, "A Porcine of Interest"),
+	GETTING_AHEAD(752, "Getting Ahead"),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss"),
