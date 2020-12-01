@@ -33,11 +33,11 @@ import net.runelite.client.config.Range;
 public interface FpsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "limitFps",
-		name = "Limit Global FPS",
-		description = "Global FPS limit in effect regardless of<br>" +
-			"whether window is in focus or not",
-		position = 1
+			keyName = "limitFps",
+			name = "Limit Global FPS",
+			description = "Global FPS limit in effect regardless of<br>" +
+					"whether window is in focus or not",
+			position = 1
 	)
 	default boolean limitFps()
 	{
@@ -45,14 +45,14 @@ public interface FpsConfig extends Config
 	}
 
 	@Range(
-		min = 1,
-		max = 50
+			min = 1,
+			max = 50
 	)
 	@ConfigItem(
-		keyName = "maxFps",
-		name = "Global FPS target",
-		description = "Desired max global frames per second",
-		position = 2
+			keyName = "maxFps",
+			name = "Global FPS target",
+			description = "Desired max global frames per second",
+			position = 2
 	)
 	default int maxFps()
 	{
@@ -60,10 +60,10 @@ public interface FpsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "limitFpsUnfocused",
-		name = "Limit FPS unfocused",
-		description = "FPS limit while window is out of focus",
-		position = 3
+			keyName = "limitFpsUnfocused",
+			name = "Limit FPS unfocused",
+			description = "FPS limit while window is out of focus",
+			position = 3
 	)
 	default boolean limitFpsUnfocused()
 	{
@@ -71,25 +71,53 @@ public interface FpsConfig extends Config
 	}
 
 	@Range(
-		min = 1,
-		max = 50
+			min = 1,
+			max = 50
 	)
 	@ConfigItem(
-		keyName = "maxFpsUnfocused",
-		name = "Unfocused FPS target",
-		description = "Desired max frames per second for unfocused",
-		position = 4
+			keyName = "maxFpsUnfocused",
+			name = "Unfocused FPS target",
+			description = "Desired max frames per second for unfocused",
+			position = 4
 	)
 	default int maxFpsUnfocused()
 	{
 		return 50;
 	}
 
+
+
 	@ConfigItem(
-		keyName = "drawFps",
-		name = "Draw FPS indicator",
-		description = "Show a number in the corner for the current FPS",
-		position = 5
+			keyName = "limitFpsLoginScreen",
+			name = "Limit FPS login screen",
+			description = "FPS limit while on the login screen",
+			position = 5
+	)
+	default boolean limitFpsLoginScreen()
+	{
+		return false;
+	}
+
+	@Range(
+			min = 1,
+			max = 50
+	)
+	@ConfigItem(
+			keyName = "maxFpsLoginScreen",
+			name = "Login Screen FPS target",
+			description = "Desired max frames per second for login screen",
+			position = 6
+	)
+	default int maxFpsLoginScreen()
+	{
+		return 50;
+	}
+
+	@ConfigItem(
+			keyName = "drawFps",
+			name = "Draw FPS indicator",
+			description = "Show a number in the corner for the current FPS",
+			position = 7
 	)
 	default boolean drawFps()
 	{

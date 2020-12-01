@@ -39,6 +39,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
+import java.util.Optional;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -69,6 +70,7 @@ import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.autoaccount.AutoAccountConfig;
 import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
@@ -175,6 +177,9 @@ public class RuneLite
 	private Provider<Hooks> hooks;
 
 	@Inject
+	private AutoAccountConfig autoAccountConfig;
+
+	@Inject
 	@Nullable
 	private Client client;
 
@@ -187,30 +192,33 @@ public class RuneLite
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("safe-mode", "Disables external plugins and the GPU plugin");
 		parser.accepts("insecure-skip-tls-verification", "Disables TLS verification");
+		parser.accepts("username", "Autofill username").withRequiredArg();
+		parser.accepts("password", "Autofill password").withRequiredArg();
+		parser.accepts("world", "Autoset the world").withRequiredArg();
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
-			.withRequiredArg()
-			.withValuesConvertedBy(new ConfigFileConverter())
-			.defaultsTo(DEFAULT_SESSION_FILE);
+				.withRequiredArg()
+				.withValuesConvertedBy(new ConfigFileConverter())
+				.defaultsTo(DEFAULT_SESSION_FILE);
 
 		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
-			.withRequiredArg()
-			.withValuesConvertedBy(new ConfigFileConverter())
-			.defaultsTo(DEFAULT_CONFIG_FILE);
+				.withRequiredArg()
+				.withValuesConvertedBy(new ConfigFileConverter())
+				.defaultsTo(DEFAULT_CONFIG_FILE);
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
-			.accepts("rs", "Select client type")
-			.withRequiredArg()
-			.ofType(ClientUpdateCheckMode.class)
-			.defaultsTo(ClientUpdateCheckMode.AUTO)
-			.withValuesConvertedBy(new EnumConverter<ClientUpdateCheckMode>(ClientUpdateCheckMode.class)
-			{
-				@Override
-				public ClientUpdateCheckMode convert(String v)
+				.accepts("rs", "Select client type")
+				.withRequiredArg()
+				.ofType(ClientUpdateCheckMode.class)
+				.defaultsTo(ClientUpdateCheckMode.AUTO)
+				.withValuesConvertedBy(new EnumConverter<ClientUpdateCheckMode>(ClientUpdateCheckMode.class)
 				{
-					return super.convert(v.toUpperCase());
-				}
-			});
+					@Override
+					public ClientUpdateCheckMode convert(String v)
+					{
+						return super.convert(v.toUpperCase());
+					}
+				});
 
 		parser.accepts("help", "Show this text").forHelp();
 		OptionSet options = parser.parse(args);
@@ -237,7 +245,7 @@ public class RuneLite
 		});
 
 		OkHttpClient.Builder okHttpClientBuilder = RuneLiteAPI.CLIENT.newBuilder()
-			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE));
+				.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE));
 
 		final boolean insecureSkipTlsVerification = options.has("insecure-skip-tls-verification");
 		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
@@ -269,9 +277,9 @@ public class RuneLite
 				if (!assertions)
 				{
 					SwingUtilities.invokeLater(() ->
-						new FatalErrorDialog("Developers should enable assertions; Add `-ea` to your JVM arguments`")
-							.addBuildingGuide()
-							.open());
+							new FatalErrorDialog("Developers should enable assertions; Add `-ea` to your JVM arguments`")
+									.addBuildingGuide()
+									.open());
 					return;
 				}
 			}
@@ -279,18 +287,21 @@ public class RuneLite
 			PROFILES_DIR.mkdirs();
 
 			log.info("RuneLite {} (launcher version {}) starting up, args: {}",
-				RuneLiteProperties.getVersion(), RuneLiteProperties.getLauncherVersion() == null ? "unknown" : RuneLiteProperties.getLauncherVersion(),
-				args.length == 0 ? "none" : String.join(" ", args));
+					RuneLiteProperties.getVersion(), RuneLiteProperties.getLauncherVersion() == null ? "unknown" : RuneLiteProperties.getLauncherVersion(),
+					args.length == 0 ? "none" : String.join(" ", args));
 
 			final long start = System.currentTimeMillis();
 
 			injector = Guice.createInjector(new RuneLiteModule(
-				okHttpClient,
-				clientLoader,
-				developerMode,
-				options.has("safe-mode"),
-				options.valueOf(sessionfile),
-				options.valueOf(configfile)));
+					okHttpClient,
+					clientLoader,
+					developerMode,
+					options.has("safe-mode"),
+					options.valueOf(sessionfile),
+					options.valueOf(configfile),
+					(String) Optional.ofNullable(options.valueOf("username")).orElse(""),
+					(String) Optional.ofNullable(options.valueOf("password")).orElse(""),
+					(String) Optional.ofNullable(options.valueOf("world")).orElse("")));
 
 			injector.getInstance(RuneLite.class).start();
 
@@ -303,8 +314,8 @@ public class RuneLite
 		{
 			log.error("Failure during startup", e);
 			SwingUtilities.invokeLater(() ->
-				new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
-					.open());
+					new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
+							.open());
 		}
 		finally
 		{
@@ -411,8 +422,8 @@ public class RuneLite
 			final File file;
 
 			if (Paths.get(fileName).isAbsolute()
-				|| fileName.startsWith("./")
-				|| fileName.startsWith(".\\"))
+					|| fileName.startsWith("./")
+					|| fileName.startsWith(".\\"))
 			{
 				file = new File(fileName);
 			}

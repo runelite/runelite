@@ -89,13 +89,13 @@ public class PluginManagerTest
 	{
 		OkHttpClient okHttpClient = mock(OkHttpClient.class);
 		when(okHttpClient.newCall(any(Request.class)))
-			.thenThrow(new RuntimeException("in plugin manager test"));
+				.thenThrow(new RuntimeException("in plugin manager test"));
 
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(okHttpClient, () -> null, true, false,
-				RuneLite.DEFAULT_SESSION_FILE,
-				RuneLite.DEFAULT_CONFIG_FILE))
-			.with(BoundFieldModule.of(this)));
+				.override(new RuneLiteModule(okHttpClient, () -> null, true, false,
+						RuneLite.DEFAULT_SESSION_FILE,
+						RuneLite.DEFAULT_CONFIG_FILE, "", "", ""))
+				.with(BoundFieldModule.of(this)));
 
 		RuneLite.setInjector(injector);
 
@@ -128,10 +128,10 @@ public class PluginManagerTest
 		pluginManager.loadCorePlugins();
 		Collection<Plugin> plugins = pluginManager.getPlugins();
 		long expected = pluginClasses.stream()
-			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
-			.filter(Objects::nonNull)
-			.filter(PluginDescriptor::loadWhenOutdated)
-			.count();
+				.map(cl -> cl.getAnnotation(PluginDescriptor.class))
+				.filter(Objects::nonNull)
+				.filter(PluginDescriptor::loadWhenOutdated)
+				.count();
 		assertEquals(expected, plugins.size());
 
 		pluginManager = new PluginManager(false, false, null, null, null, null);
@@ -143,10 +143,10 @@ public class PluginManagerTest
 		plugins.forEach(eventBus::register);
 
 		expected = pluginClasses.stream()
-			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
-			.filter(Objects::nonNull)
-			.filter(pd -> !pd.developerPlugin())
-			.count();
+				.map(cl -> cl.getAnnotation(PluginDescriptor.class))
+				.filter(Objects::nonNull)
+				.filter(pd -> !pd.developerPlugin())
+				.count();
 		assertEquals(expected, plugins.size());
 	}
 
@@ -156,8 +156,8 @@ public class PluginManagerTest
 		List<Module> modules = new ArrayList<>();
 		modules.add(new GraphvizModule());
 		modules.add(new RuneLiteModule(mock(OkHttpClient.class), () -> null, true, false,
-			RuneLite.DEFAULT_SESSION_FILE,
-			RuneLite.DEFAULT_CONFIG_FILE));
+				RuneLite.DEFAULT_SESSION_FILE,
+				RuneLite.DEFAULT_CONFIG_FILE, "", "", ""));
 
 		PluginManager pluginManager = new PluginManager(true, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
