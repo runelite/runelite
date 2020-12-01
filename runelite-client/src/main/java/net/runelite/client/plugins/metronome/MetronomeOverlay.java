@@ -36,8 +36,8 @@ class MetronomeOverlay extends MetronomePanel
 	private final MetronomePlugin plugin;
 	private final MetronomePluginConfiguration config;
 
-	private final int TICK_FRAMES = 8;
-	private int tickFramesLeft = TICK_FRAMES;
+	private static final int TICK_FRAMES = 8;
+	private static int tickFramesLeft = TICK_FRAMES;
 
 	@Inject
 	public MetronomeOverlay(MetronomePlugin plugin, MetronomePluginConfiguration config)
