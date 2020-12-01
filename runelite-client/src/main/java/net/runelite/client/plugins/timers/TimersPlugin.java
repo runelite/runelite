@@ -124,8 +124,8 @@ public class TimersPlugin extends Plugin
 	private static final int NMZ_MAP_REGION_ID = 9033;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
 	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
-	private static final Pattern TZHAAR_COMPLETE_MESSAGE = Pattern.compile("Your (TzTok-Jad|TzKal-Zuk) kill count is:");
-	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (Inferno|Fight Cave) has been paused. You may now log out.");
+	private static final Pattern TZHAAR_COMPLETE_MESSAGE = Pattern.compile("Your (?:TzTok-Jad|TzKal-Zuk) kill count is:");
+	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (?:Inferno|Fight Cave) has been paused. You may now log out.");
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
@@ -392,6 +392,10 @@ public class TimersPlugin extends Plugin
 		{
 			removeTzhaarTimer();
 		}
+		else
+		{
+			createTzhaarTimer();
+		}
 	}
 
 	@Subscribe
@@ -654,62 +658,65 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (config.showTzhaarTimers())
+		if (message.equals(TZHAAR_DEFEATED_MESSAGE) || TZHAAR_COMPLETE_MESSAGE.matcher(message).matches())
 		{
-			Matcher matcher = TZHAAR_COMPLETE_MESSAGE.matcher(message);
+			log.debug("Stopping tzhaar timer");
+			removeTzhaarTimer();
+			config.tzhaarStartTime(null);
+			config.tzhaarLastTime(null);
+			return;
+		}
 
-			if (message.contains(TZHAAR_DEFEATED_MESSAGE) || matcher.matches())
+		if (TZHAAR_PAUSED_MESSAGE.matcher(message).find())
+		{
+			log.debug("Pausing tzhaar timer");
+			config.tzhaarLastTime(Instant.now());
+			if (config.showTzhaarTimers())
 			{
-				removeTzhaarTimer();
-				config.tzhaarStartTime(null);
-				config.tzhaarLastTime(null);
-				return;
-			}
-
-			Instant now = Instant.now();
-			matcher = TZHAAR_PAUSED_MESSAGE.matcher(message);
-			if (matcher.find())
-			{
-				config.tzhaarLastTime(now);
 				createTzhaarTimer();
-				return;
 			}
+			return;
+		}
 
-			matcher = TZHAAR_WAVE_MESSAGE.matcher(message);
-			if (!matcher.find())
+		Matcher matcher = TZHAAR_WAVE_MESSAGE.matcher(message);
+		if (matcher.find())
+		{
+			int wave = Integer.parseInt(matcher.group(1));
+			if (wave == 1)
 			{
-				return;
-			}
+				log.debug("Starting tzhaar timer");
 
-			if (config.tzhaarStartTime() == null)
-			{
-				int wave = Integer.parseInt(matcher.group(1));
-				if (wave == 1)
+				Instant now = Instant.now();
+				if (isInInferno())
 				{
-					if (isInInferno())
-					{
-						// The first wave message of the inferno comes six seconds after the ingame timer starts counting
-						config.tzhaarStartTime(now.minus(Duration.ofSeconds(6)));
-					}
-					else
-					{
-						config.tzhaarStartTime(now);
-					}
+					// The first wave message of the inferno comes six seconds after the ingame timer starts counting
+					config.tzhaarStartTime(now.minus(Duration.ofSeconds(6)));
+				}
+				else
+				{
+					config.tzhaarStartTime(now);
+				}
+				config.tzhaarLastTime(null);
 
+				if (config.showTzhaarTimers())
+				{
 					createTzhaarTimer();
 				}
 			}
-			else if (config.tzhaarLastTime() != null)
+			else if (config.tzhaarStartTime() != null && config.tzhaarLastTime() != null)
 			{
 				log.debug("Unpausing tzhaar timer");
 
 				// Advance start time by how long it has been paused
 				Instant tzhaarStartTime = config.tzhaarStartTime();
-				tzhaarStartTime = tzhaarStartTime.plus(Duration.between(config.tzhaarLastTime(), now));
+				tzhaarStartTime = tzhaarStartTime.plus(Duration.between(config.tzhaarLastTime(), Instant.now()));
 				config.tzhaarStartTime(tzhaarStartTime);
 
 				config.tzhaarLastTime(null);
-				createTzhaarTimer();
+				if (config.showTzhaarTimers())
+				{
+					createTzhaarTimer();
+				}
 			}
 		}
 	}
