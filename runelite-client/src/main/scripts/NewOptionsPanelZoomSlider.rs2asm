@@ -1,0 +1,78 @@
+.id                 3900
+.int_stack_count    5
+.string_stack_count 0
+.int_var_count      11
+.string_var_count   0
+   iconst                 896
+   sconst                 "innerZoomLimit"
+   runelite_callback
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
+   istore                 5
+   iconst                 896
+   sconst                 "innerZoomLimit"
+   runelite_callback
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
+   istore                 6
+   iload                  2
+   iconst                 16
+   sub                   
+   istore                 7
+   iconst                 0
+   istore                 8
+   iconst                 0
+   istore                 9
+   viewport_geteffectivesize
+   istore                 9
+   istore                 8
+   iconst                 0
+   istore                 10
+   iload                  8
+   iconst                 334
+   if_icmpgt              LABEL25
+   jump                   LABEL34
+LABEL25:
+   get_varc_int           74
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback
+   sub                   
+   iload                  7
+   multiply              
+   iload                  5
+   div                   
+   istore                 10
+   jump                   LABEL42
+LABEL34:
+   get_varc_int           73
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback
+   sub                   
+   iload                  7
+   multiply              
+   iload                  6
+   div                   
+   istore                 10
+LABEL42:
+   iload                  0
+   iload                  1
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL48
+   jump                   LABEL55
+LABEL48:
+   iload                  4
+   iload                  10
+   add                   
+   iload                  3
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+LABEL55:
+   return                
