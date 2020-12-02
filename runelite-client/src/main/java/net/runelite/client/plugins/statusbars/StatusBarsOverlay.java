@@ -69,6 +69,7 @@ class StatusBarsOverlay extends Overlay
 	private static final Color SPECIAL_ATTACK_COLOR = new Color(3, 153, 0, 195);
 	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
 	private static final Color DISEASE_COLOR = new Color(255, 193, 75, 181);
+	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int IMAGE_SIZE = 17;
@@ -130,6 +131,11 @@ class StatusBarsOverlay extends Overlay
 				if (client.getVar(VarPlayer.DISEASE_VALUE) > 0)
 				{
 					return DISEASE_COLOR;
+				}
+
+				if (client.getVar(Varbits.PARASITE) >= 1)
+				{
+					return PARASITE_COLOR;
 				}
 
 				return HEALTH_COLOR;
