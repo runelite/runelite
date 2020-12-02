@@ -58,7 +58,7 @@ public class MetronomePlugin extends Plugin
 	private MetronomePluginConfiguration config;
 
 	private int tickCounter = 0;
-	boolean shouldTock = false;
+	private boolean shouldTock = false;
 
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
@@ -112,5 +112,11 @@ public class MetronomePlugin extends Plugin
 
 			shouldTock = !shouldTock;
 		}
+	}
+
+	// Custom getter instead of @Getter for better naming
+	public boolean shouldTock()
+	{
+		return shouldTock;
 	}
 }

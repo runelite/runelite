@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.metronome.ui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -34,7 +35,6 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class MetronomeComponent extends PanelComponent
 {
-	private static final int BORDER_OFFSET = 2;
 	private static final float COLOR_OFFSET = 0.2f;
 	private static final float OUTER_COLOR_OFFSET = 1 - COLOR_OFFSET;
 	private static final float INNER_COLOR_OFFSET = 1 + COLOR_OFFSET;
@@ -42,6 +42,8 @@ public class MetronomeComponent extends PanelComponent
 
 	private static final int BASE_X = 0;
 	private static final int BASE_Y = 0;
+	private static final int OUTER_STROKE_WIDTH = 2;
+	private static final int INNER_STROKE_WIDTH = 3;
 
 	@Setter
 	private int diameter = 50;
@@ -71,14 +73,16 @@ public class MetronomeComponent extends PanelComponent
 		graphics.fillOval(BASE_X, BASE_Y, diameter, diameter);
 
 		// Render outside stroke
+		graphics.setStroke(new BasicStroke(OUTER_STROKE_WIDTH));
 		graphics.setColor(outsideStrokeColor);
-		graphics.drawOval(BASE_X, BASE_Y, diameter - BORDER_OFFSET / 2, diameter - BORDER_OFFSET / 2);
+		graphics.drawOval(BASE_X, BASE_Y, diameter, diameter);
 
 		// Render inside stroke
+		graphics.setStroke(new BasicStroke(INNER_STROKE_WIDTH));
 		graphics.setColor(insideStrokeColor);
-		graphics.drawOval(BASE_X + BORDER_OFFSET / 2, BASE_Y + BORDER_OFFSET / 2,
-			diameter - BORDER_OFFSET - BORDER_OFFSET / 2,
-			diameter - BORDER_OFFSET - BORDER_OFFSET / 2);
+		graphics.drawOval(BASE_X + OUTER_STROKE_WIDTH, BASE_Y + OUTER_STROKE_WIDTH,
+			diameter - (OUTER_STROKE_WIDTH * 2),
+			diameter - (OUTER_STROKE_WIDTH * 2));
 
 		return new Dimension(diameter, diameter);
 	}

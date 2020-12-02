@@ -37,7 +37,7 @@ class MetronomeOverlay extends MetronomePanel
 	private final MetronomePluginConfiguration config;
 
 	private static final int TICK_FRAMES = 8;
-	private static int tickFramesLeft = TICK_FRAMES;
+	private int tickFramesLeft = TICK_FRAMES;
 
 	@Inject
 	public MetronomeOverlay(MetronomePlugin plugin, MetronomePluginConfiguration config)
@@ -60,13 +60,13 @@ class MetronomeOverlay extends MetronomePanel
 
 		if (tickFramesLeft > 0)
 		{
-			if (config.tockVolume() == 0)
+			if (config.tockVolume() == 0 || plugin.shouldTock())
 			{
 				currentColor = config.tickColor();
 			}
 			else
 			{
-				currentColor = plugin.shouldTock ? config.tickColor() : config.tockColor();
+				currentColor = config.tockColor();
 			}
 
 			tickFramesLeft--;
