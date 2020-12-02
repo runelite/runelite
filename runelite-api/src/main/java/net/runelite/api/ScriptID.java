@@ -84,16 +84,6 @@ public final class ScriptID
 	public static final int MESSAGE_LAYER_CLOSE = 299;
 
 	/**
-	 * Sets the background for sound option bars
-	 * <ul>
-	 * <li> int  Value of the slider (0-4) </li>
-	 * <li> int (WidgetID) * 5, segments of the slider </li>
-	 * </ul>
-	 */
-	@ScriptArguments(integer = 6)
-	public static final int OPTIONS_ALLSOUNDS = 358;
-
-	/**
 	 * Readies the chatbox panel for things like the chatbox input
 	 * Inverse of MESSAGE_LAYER_CLOSE
 	 * <ul>
