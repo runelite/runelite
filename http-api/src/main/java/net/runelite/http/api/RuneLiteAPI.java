@@ -119,7 +119,7 @@ public class RuneLiteAPI
 			return HttpUrl.parse(prop);
 		}
 
-		return HttpUrl.parse(BASE + "/runelite-" + getVersion());
+		return HttpUrl.parse(BASE + "/runelite-" + getVersion().replace("-SNAPSHOT", ""));
 	}
 
 	public static HttpUrl getStaticBase()
