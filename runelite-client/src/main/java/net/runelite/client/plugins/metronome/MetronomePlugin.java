@@ -26,9 +26,12 @@
 package net.runelite.client.plugins.metronome;
 
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.SoundEffectID;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -51,6 +54,8 @@ public class MetronomePlugin extends Plugin
 
 	private int tickCounter = 0;
 	private boolean shouldTock = false;
+	private boolean offsetSound = false;
+	private Instant startOfLastTick = Instant.now();
 
 	@Provides
 	MetronomePluginConfiguration provideConfig(ConfigManager configManager)
@@ -75,24 +80,49 @@ public class MetronomePlugin extends Plugin
 
 		if (++tickCounter % config.tickCount() == 0)
 		{
-			// As playSoundEffect only uses the volume argument when the in-game volume isn't muted, sound effect volume
-			// needs to be set to the value desired for ticks or tocks and afterwards reset to the previous value.
-			int previousVolume = client.getSoundEffectVolume();
-
-			if (shouldTock && config.tockVolume() > 0)
+			if (config.soundDelay() == 0 || offsetSound)
 			{
-				client.setSoundEffectVolume(config.tockVolume());
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, config.tockVolume());
-			}
-			else if (config.tickVolume() > 0)
-			{
-				client.setSoundEffectVolume(config.tickVolume());
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, config.tickVolume());
+				playMetronomeSound();
+				offsetSound = false;
 			}
 
-			client.setSoundEffectVolume(previousVolume);
-
-			shouldTock = !shouldTock;
+			if (config.soundDelay() != 0)
+			{
+				startOfLastTick = Instant.now();
+				offsetSound = true;
+			}
 		}
+	}
+
+	@Subscribe
+	public void onClientTick(ClientTick tick)
+	{
+		if (offsetSound && Duration.between(startOfLastTick, Instant.now()).toMillis() >= config.soundDelay())
+		{
+			playMetronomeSound();
+			offsetSound = false;
+		}
+	}
+
+	private void playMetronomeSound()
+	{
+		// As playSoundEffect only uses the volume argument when the in-game volume isn't muted, sound effect volume
+		// needs to be set to the value desired for ticks or tocks and afterwards reset to the previous value.
+		int previousVolume = client.getSoundEffectVolume();
+
+		if (shouldTock && config.tockVolume() > 0)
+		{
+			client.setSoundEffectVolume(config.tockVolume());
+			client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, config.tockVolume());
+		}
+		else if (config.tickVolume() > 0)
+		{
+			client.setSoundEffectVolume(config.tickVolume());
+			client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, config.tickVolume());
+		}
+
+		client.setSoundEffectVolume(previousVolume);
+
+		shouldTock = !shouldTock;
 	}
 }
