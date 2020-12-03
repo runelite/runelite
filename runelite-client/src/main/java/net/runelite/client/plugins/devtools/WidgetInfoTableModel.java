@@ -193,6 +193,7 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		out.add(new WidgetField<>("NoClickThrough", Widget::getNoClickThrough, Widget::setNoClickThrough, Boolean.class));
 		out.add(new WidgetField<>("NoScrollThrough", Widget::getNoScrollThrough, Widget::setNoScrollThrough, Boolean.class));
 		out.add(new WidgetField<>("TargetVerb", Widget::getTargetVerb, Widget::setTargetVerb, String.class));
+		out.add(new WidgetField<>("DragParent", Widget::getDragParent));
 
 		return out;
 	}
