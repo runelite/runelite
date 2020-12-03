@@ -143,4 +143,14 @@ public interface MotherlodeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "oreValueMouseover",
+		name = "Show ore values overlay tooltip",
+		description = "Displays GE values for ores found in ore overlay tooltip"
+	)
+	default boolean oreValueMouseover()
+	{
+		return true;
+	}
 }

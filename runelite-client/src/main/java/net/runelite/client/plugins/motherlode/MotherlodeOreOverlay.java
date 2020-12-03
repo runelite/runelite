@@ -35,6 +35,9 @@ import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.QuantityFormatter;
 
 public class MotherlodeOreOverlay extends OverlayPanel
 {
@@ -42,15 +45,53 @@ public class MotherlodeOreOverlay extends OverlayPanel
 	private final MotherlodeSession motherlodeSession;
 	private final MotherlodeConfig config;
 	private final ItemManager itemManager;
+	private final TooltipManager tooltipManager;
 
 	@Inject
-	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager)
+	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager,
+						 TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
 		this.motherlodeSession = motherlodeSession;
 		this.config = config;
 		this.itemManager = itemManager;
+		this.tooltipManager = tooltipManager;
+	}
+
+	@Override
+	public void onMouseOver()
+	{
+		if (!config.oreValueMouseover())
+		{
+			return;
+		}
+
+		MotherlodeSession session = motherlodeSession;
+
+		int nuggetsFound = session.getNuggetsFound();
+		int coalFound = session.getCoalFound();
+		int goldFound = session.getGoldFound();
+		int mithrilFound = session.getMithrilFound();
+		int adamantiteFound = session.getAdamantiteFound();
+		int runiteFound = session.getRuniteFound();
+
+		int nuggetsGP = itemManager.getItemPrice(ItemID.GOLDEN_NUGGET) * nuggetsFound;
+		int coalGP = itemManager.getItemPrice(ItemID.COAL) * coalFound;
+		int goldGP = itemManager.getItemPrice(ItemID.GOLD_ORE) * goldFound;
+		int mithrilGP = itemManager.getItemPrice(ItemID.MITHRIL_ORE) * mithrilFound;
+		int adamantiteGP = itemManager.getItemPrice(ItemID.ADAMANTITE_ORE) * adamantiteFound;
+		int runiteGP = itemManager.getItemPrice(ItemID.RUNITE_ORE) * runiteFound;
+		int totalOreGP = coalGP + mithrilGP + adamantiteGP + runiteGP;
+
+		tooltipManager.add(new Tooltip("Estimated GE values"));
+		tooltipManager.add(new Tooltip("Nuggets: " + QuantityFormatter.quantityToStackSize(nuggetsGP)));
+		tooltipManager.add(new Tooltip("Coal: " + QuantityFormatter.quantityToStackSize(coalGP)));
+		tooltipManager.add(new Tooltip("Gold: " + QuantityFormatter.quantityToStackSize(goldGP)));
+		tooltipManager.add(new Tooltip("Mithril: " + QuantityFormatter.quantityToStackSize(mithrilGP)));
+		tooltipManager.add(new Tooltip("Adamantite: " + QuantityFormatter.quantityToStackSize(adamantiteGP)));
+		tooltipManager.add(new Tooltip("Runite: " + QuantityFormatter.quantityToStackSize(runiteGP)));
+		tooltipManager.add(new Tooltip("Total: " + QuantityFormatter.quantityToStackSize(totalOreGP)));
 	}
 
 	@Override
