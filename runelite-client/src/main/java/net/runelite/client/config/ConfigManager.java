@@ -112,11 +112,9 @@ public class ConfigManager
 
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
-	@VisibleForTesting
-	static final Pattern KEY_SPLITTER = Pattern.compile("([^.]+)\\.(?:(" + RSPROFILE_GROUP + "\\.[^.]+)\\.)?(.*)");
-	private static final int KEY_SPLITTER_GROUP = 1;
-	private static final int KEY_SPLITTER_PROFILE = 2;
-	private static final int KEY_SPLITTER_KEY = 3;
+	private static final int KEY_SPLITTER_GROUP = 0;
+	private static final int KEY_SPLITTER_PROFILE = 1;
+	private static final int KEY_SPLITTER_KEY = 2;
 
 	private final File settingsFileInput;
 	private final EventBus eventBus;
@@ -229,15 +227,15 @@ public class ConfigManager
 		{
 			log.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
 
-			Matcher matcher = KEY_SPLITTER.matcher(entry.getKey());
-			if (!matcher.find())
+			String[] split = splitKey(entry.getKey());
+			if (split == null)
 			{
 				continue;
 			}
 
-			final String groupName = matcher.group(KEY_SPLITTER_GROUP);
-			final String profile = matcher.group(KEY_SPLITTER_PROFILE);
-			final String key = matcher.group(KEY_SPLITTER_KEY);
+			final String groupName = split[KEY_SPLITTER_GROUP];
+			final String profile = split[KEY_SPLITTER_PROFILE];
+			final String key = split[KEY_SPLITTER_KEY];
 			final String value = entry.getValue();
 			final String oldValue = (String) properties.setProperty(entry.getKey(), value);
 
@@ -282,30 +280,30 @@ public class ConfigManager
 		{
 			if (!properties.containsKey(wholeKey))
 			{
-				Matcher matcher = KEY_SPLITTER.matcher(wholeKey);
-				if (!matcher.find())
+				String[] split = splitKey(wholeKey);
+				if (split == null)
 				{
 					return;
 				}
 
-				String groupName = matcher.group(KEY_SPLITTER_GROUP);
-				String profile = matcher.group(KEY_SPLITTER_PROFILE);
-				String key = matcher.group(KEY_SPLITTER_KEY);
+				String groupName = split[KEY_SPLITTER_GROUP];
+				String profile = split[KEY_SPLITTER_PROFILE];
+				String key = split[KEY_SPLITTER_KEY];
 				unsetConfiguration(groupName, profile, key);
 			}
 		});
 
 		properties.forEach((wholeKey, objValue) ->
 		{
-			Matcher matcher = KEY_SPLITTER.matcher((String) wholeKey);
-			if (!matcher.find())
+			String[] split = splitKey((String) wholeKey);
+			if (split == null)
 			{
 				return;
 			}
 
-			String groupName = matcher.group(KEY_SPLITTER_GROUP);
-			String profile = matcher.group(KEY_SPLITTER_PROFILE);
-			String key = matcher.group(KEY_SPLITTER_KEY);
+			String groupName = split[KEY_SPLITTER_GROUP];
+			String profile = split[KEY_SPLITTER_PROFILE];
+			String key = split[KEY_SPLITTER_KEY];
 			String value = String.valueOf(objValue);
 			setConfiguration(groupName, profile, key, value);
 		});
@@ -361,17 +359,17 @@ public class ConfigManager
 			Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
 			copy.forEach((wholeKey, value) ->
 			{
-				Matcher matcher = KEY_SPLITTER.matcher(wholeKey);
-				if (!matcher.find())
+				String[] split = splitKey(wholeKey);
+				if (split == null)
 				{
 					log.debug("Properties key malformed!: {}", wholeKey);
 					properties.remove(wholeKey);
 					return;
 				}
 
-				String groupName = matcher.group(KEY_SPLITTER_GROUP);
-				String profile = matcher.group(KEY_SPLITTER_PROFILE);
-				String key = matcher.group(KEY_SPLITTER_KEY);
+				String groupName = split[KEY_SPLITTER_GROUP];
+				String profile = split[KEY_SPLITTER_PROFILE];
+				String key = split[KEY_SPLITTER_KEY];
 
 				ConfigChanged configChanged = new ConfigChanged();
 				configChanged.setGroup(groupName);
@@ -937,13 +935,13 @@ public class ConfigManager
 				continue;
 			}
 
-			Matcher m = KEY_SPLITTER.matcher(key);
-			if (!m.find())
+			String[] split = splitKey(key);
+			if (split == null)
 			{
 				continue;
 			}
 
-			profileKeys.add(m.group(KEY_SPLITTER_PROFILE));
+			profileKeys.add(split[KEY_SPLITTER_PROFILE]);
 		}
 
 		return profileKeys.stream()
@@ -1061,6 +1059,34 @@ public class ConfigManager
 		}
 	}
 
+	/**
+	 * Split a config key into (group, profile, key)
+	 * @param key in form group.(rsprofile.profile.)?key
+	 * @return an array of {group, profile, key}
+	 */
+	@VisibleForTesting
+	@Nullable
+	static String[] splitKey(String key)
+	{
+		int i = key.indexOf('.');
+		if (i == -1)
+		{
+			// all keys must have a group and key
+			return null;
+		}
+
+		String group = key.substring(0, i);
+		String profile = null;
+		key = key.substring(i + 1);
+		if (key.startsWith(RSPROFILE_GROUP + "."))
+		{
+			i = key.indexOf('.', RSPROFILE_GROUP.length() + 2); // skip . after RSPROFILE_GROUP
+			profile = key.substring(0, i);
+			key = key.substring(i + 1);
+		}
+		return new String[]{group, profile, key};
+	}
+
 	private synchronized void migrateConfig()
 	{
 		String migrationKey = "profileMigrationDone";
@@ -1108,20 +1134,20 @@ public class ConfigManager
 				String profKey = profiles.computeIfAbsent(username, u ->
 					findRSProfile(getRSProfiles(), u, RuneScapeProfileType.STANDARD, u, true).getKey());
 
-				Matcher oldKeyM = KEY_SPLITTER.matcher(oldkey);
-				if (!oldKeyM.find())
+				String[] oldKeySplit = splitKey(oldkey);
+				if (oldKeySplit == null)
 				{
 					log.warn("skipping migration of invalid key \"{}\"", oldkey);
 					return false;
 				}
-				if (oldKeyM.group(KEY_SPLITTER_PROFILE) != null)
+				if (oldKeySplit[KEY_SPLITTER_PROFILE] != null)
 				{
 					log.debug("skipping migrated key \"{}\"", oldkey);
 					return false;
 				}
 
-				Matcher newKeyM = KEY_SPLITTER.matcher(newKey);
-				if (!newKeyM.find() || newKeyM.group(KEY_SPLITTER_PROFILE) != null)
+				String[] newKeySplit = splitKey(newKey);
+				if (newKeySplit == null || newKeySplit[KEY_SPLITTER_PROFILE] != null)
 				{
 					log.warn("migration produced a bad key: \"{}\" -> \"{}\"", oldkey, newKey);
 					return false;
@@ -1142,10 +1168,10 @@ public class ConfigManager
 					}
 				}
 
-				String oldGroup = oldKeyM.group(KEY_SPLITTER_GROUP);
-				String oldKeyPart = oldKeyM.group(KEY_SPLITTER_KEY);
+				String oldGroup = oldKeySplit[KEY_SPLITTER_GROUP];
+				String oldKeyPart = oldKeySplit[KEY_SPLITTER_KEY];
 				String value = getConfiguration(oldGroup, oldKeyPart);
-				setConfiguration(newKeyM.group(KEY_SPLITTER_GROUP), profKey, newKeyM.group(KEY_SPLITTER_KEY), value);
+				setConfiguration(newKeySplit[KEY_SPLITTER_GROUP], profKey, newKeySplit[KEY_SPLITTER_KEY], value);
 				unsetConfiguration(oldGroup, oldKeyPart);
 				return true;
 			});
