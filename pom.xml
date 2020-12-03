@@ -200,8 +200,6 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.3</version>
 			</plugin>
-			<!-- maven-release-plugin runs maven-javadoc-plugin as one of its
-			     release steps, so run it on goal jar to detect errors -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -209,7 +207,12 @@
 				<configuration>
 					<!-- Fix Javadoc on Java 11+ - JDK-8212233 -->
 					<source>8</source>
+					<!-- Fix Javadoc search feature to work without modules - https://stackoverflow.com/a/52603413 -->
+					<additionalJOption>--no-module-directories</additionalJOption>
 				</configuration>
+				<!-- maven-release-plugin runs maven-javadoc-plugin:jar as one of its
+				     release steps, so we will run it as well for the CI. Note this
+				     defaults to disabled due to the maven.javadoc.skip property above. -->
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
