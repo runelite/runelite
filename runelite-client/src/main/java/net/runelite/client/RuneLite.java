@@ -197,6 +197,7 @@ public class RuneLite
 		parser.accepts("world", "Autoset the world").withRequiredArg();
 		parser.accepts("xPos", "Set the client x position when logging in").withRequiredArg();
 		parser.accepts("yPos", "Set the client y position when logging in").withRequiredArg();
+		parser.accepts("startupTitle", "Set the title name on startup for AHK use").withRequiredArg();
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 				.withRequiredArg()
@@ -305,7 +306,8 @@ public class RuneLite
 					(String) Optional.ofNullable(options.valueOf("password")).orElse(""),
 					(String) Optional.ofNullable(options.valueOf("world")).orElse(""),
 					(String) Optional.ofNullable(options.valueOf("xPos")).orElse(""),
-					(String) Optional.ofNullable(options.valueOf("yPos")).orElse("")));
+					(String) Optional.ofNullable(options.valueOf("yPos")).orElse(""),
+					(String) Optional.ofNullable(options.valueOf("startupTitle")).orElse("")));
 
 			injector.getInstance(RuneLite.class).start();
 

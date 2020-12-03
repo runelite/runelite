@@ -49,6 +49,10 @@ public class AutoAccountPlugin extends Plugin implements KeyListener
 	private String yPos;
 
 	@Inject
+	@Named("startupTitle")
+	private String startupTitle;
+
+	@Inject
 	private ClientUI clientUI;
 
 	@Inject
@@ -66,6 +70,10 @@ public class AutoAccountPlugin extends Plugin implements KeyListener
 	protected void startUp() throws Exception
 	{
 		keyManager.registerKeyListener(this);
+		if (StringUtils.isNotEmpty(startupTitle))
+		{
+			clientUI.getFrame().setTitle(startupTitle);
+		}
 	}
 
 	@Override
