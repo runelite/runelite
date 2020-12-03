@@ -28,17 +28,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+
+import com.google.common.collect.ImmutableSet;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.GameState;
-import net.runelite.api.Hitsplat;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.NPC;
-import net.runelite.api.VarPlayer;
+import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
@@ -54,10 +47,10 @@ import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
-	name = "Special Attack Counter",
-	description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
-	tags = {"combat", "npcs", "overlay"},
-	enabledByDefault = false
+		name = "Special Attack Counter",
+		description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
+		tags = {"combat", "npcs", "overlay"},
+		enabledByDefault = false
 )
 @Slf4j
 public class SpecialCounterPlugin extends Plugin
@@ -70,6 +63,8 @@ public class SpecialCounterPlugin extends Plugin
 	private SpecialWeapon specialWeapon;
 	private final Set<Integer> interactedNpcIds = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
+	Set<Integer> IGNORED_NPCS = ImmutableSet.of(NpcID.DARK_ENERGY_CORE, NpcID.DARK_CORE, NpcID.DARK_CORE_388, NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063, NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY, NpcID.GREAT_OLM_RIGHT_CLAW, NpcID.GREAT_OLM_RIGHT_CLAW_7553, NpcID.GREAT_OLM, NpcID.GREAT_OLM_7554);
+	private boolean isOffender;
 
 	@Inject
 	private Client client;
@@ -190,20 +185,19 @@ public class SpecialCounterPlugin extends Plugin
 
 		NPC npc = (NPC) target;
 		int interactingId = npc.getId();
-
 		// If this is a new NPC reset the counters
-		if (!interactedNpcIds.contains(interactingId))
+		isOffender = IGNORED_NPCS.contains(interactingId);
+		if (!interactedNpcIds.contains(interactingId) && !isOffender)
 		{
 			removeCounters();
 			addInteracting(interactingId);
 		}
 
-		if (wasSpec && specialWeapon != null && hitsplat.getAmount() > 0)
+		if (wasSpec && specialWeapon != null && hitsplat.getAmount() > 0 && !isOffender)
 		{
 			int hit = getHit(specialWeapon, hitsplat);
 
 			updateCounter(specialWeapon, null, hit);
-
 			if (!party.getMembers().isEmpty())
 			{
 				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit);
@@ -302,7 +296,7 @@ public class SpecialCounterPlugin extends Plugin
 		if (counter == null)
 		{
 			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()), this,
-				hit, specialWeapon);
+					hit, specialWeapon);
 			infoBoxManager.addInfoBox(counter);
 			specialCounter[specialWeapon.ordinal()] = counter;
 		}
@@ -347,3 +341,4 @@ public class SpecialCounterPlugin extends Plugin
 		return specialWeapon.isDamage() ? hitsplat.getAmount() : 1;
 	}
 }
+
