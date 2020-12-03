@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.regex.Matcher;
 import javax.inject.Inject;
 import javax.inject.Named;
 import net.runelite.api.Client;
@@ -40,6 +39,7 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
 import org.junit.Assert;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -153,11 +153,11 @@ public class ConfigManagerTest
 			})
 		{
 			String whole = ConfigManager.getWholeKey(test[0], test[1], test[2]);
-			Matcher m = ConfigManager.KEY_SPLITTER.matcher(whole);
-			Assert.assertTrue(m.find());
-			Assert.assertEquals(m.group(1), test[0]);
-			Assert.assertEquals(m.group(2), test[1]);
-			Assert.assertEquals(m.group(3), test[2]);
+			String[] split = ConfigManager.splitKey(whole);
+			assertNotNull(split);
+			Assert.assertEquals(split[0], test[0]);
+			Assert.assertEquals(split[1], test[1]);
+			Assert.assertEquals(split[2], test[2]);
 		}
 	}
 }
