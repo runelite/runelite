@@ -48,8 +48,7 @@ public class MotherlodeOreOverlay extends OverlayPanel
 	private final TooltipManager tooltipManager;
 
 	@Inject
-	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager,
-						 TooltipManager tooltipManager)
+	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager, TooltipManager tooltipManager)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
