@@ -147,7 +147,8 @@ public class WidgetID
 	public static final int SEED_BOX_GROUP_ID = 128;
 	public static final int SEED_VAULT_GROUP_ID = 631;
 	public static final int EXPLORERS_RING_ALCH_GROUP_ID = 483;
-	public static final int OPTIONS_GROUP_ID = 116;
+	public static final int SETTINGS_SIDE_GROUP_ID = 116;
+	public static final int SETTINGS_GROUP_ID = 134;
 	public static final int GWD_KC_GROUP_ID = 406;
 	public static final int LMS_GROUP_ID = 333;
 	public static final int LMS_INGAME_GROUP_ID = 328;
@@ -880,7 +881,7 @@ public class WidgetID
 		static final int INVENTORY = 7;
 	}
 
-	static class Options
+	static class SettingsSide
 	{
 		static final int CAMERA_ZOOM_SLIDER_HANDLE = 55;
 	}
