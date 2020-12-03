@@ -47,10 +47,10 @@ import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
-		name = "Special Attack Counter",
-		description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
-		tags = {"combat", "npcs", "overlay"},
-		enabledByDefault = false
+	name = "Special Attack Counter",
+	description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
+	tags = {"combat", "npcs", "overlay"},
+	enabledByDefault = false
 )
 @Slf4j
 public class SpecialCounterPlugin extends Plugin
@@ -296,7 +296,7 @@ public class SpecialCounterPlugin extends Plugin
 		if (counter == null)
 		{
 			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()), this,
-					hit, specialWeapon);
+				hit, specialWeapon);
 			infoBoxManager.addInfoBox(counter);
 			specialCounter[specialWeapon.ordinal()] = counter;
 		}
