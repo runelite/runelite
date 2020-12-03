@@ -570,7 +570,6 @@ public class ClientUI
 			frame.setVisible(true);
 			frame.toFront();
 			requestFocus();
-			giveClientFocus();
 			log.info("Showing frame {}", frame);
 			frame.revalidateMinimumSize();
 		});
