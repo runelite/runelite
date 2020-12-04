@@ -1157,6 +1157,20 @@ public interface Client extends GameEngine
 	String[] getStringStack();
 
 	/**
+	 * Gets the cs2 vm's active widget
+	 *
+	 * This is used for all {@code cc_*} operations with a {@code 0} operand
+	 */
+	Widget getScriptActiveWidget();
+
+	/**
+	 * Gets the cs2 vm's "dot" widget
+	 *
+	 * This is used for all {@code .cc_*} operations with a {@code 1} operand
+	 */
+	Widget getScriptDotWidget();
+
+	/**
 	 * Checks whether a player is on the friends list.
 	 *
 	 * @param name the name of the player
