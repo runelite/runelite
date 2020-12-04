@@ -345,7 +345,7 @@ public class WikiPlugin extends Plugin
 
 	private Widget getWidget(int wid, int index)
 	{
-		Widget w = client.getWidget(WidgetInfo.TO_GROUP(wid), WidgetInfo.TO_CHILD(wid));
+		Widget w = client.getWidget(wid);
 		if (index != -1)
 		{
 			w = w.getChild(index);
