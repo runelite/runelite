@@ -898,6 +898,18 @@ public interface Client extends GameEngine
 	NPCComposition getNpcDefinition(int npcId);
 
 	/**
+	 * Gets the {@link StructComposition} for a given struct ID
+	 *
+	 * @see StructID
+	 */
+	StructComposition getStructComposition(int structID);
+
+	/**
+	 * Gets the client's cache of in memory struct compositions
+	 */
+	NodeCache getStructCompositionCache();
+
+	/**
 	 * Gets an array of all world areas
 	 *
 	 * @return the world areas
