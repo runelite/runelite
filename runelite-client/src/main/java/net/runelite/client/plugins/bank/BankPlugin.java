@@ -56,8 +56,6 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
@@ -226,7 +224,7 @@ public class BankPlugin extends Plugin
 
 				final int compId = intStack[intStackSize - 2];
 				final int buttonId = intStack[intStackSize - 1];
-				Widget button = client.getWidget(TO_GROUP(compId), TO_CHILD(compId));
+				Widget button = client.getWidget(compId);
 				Widget buttonRect = button.getChild(0);
 
 				final Object[] onOpListener = buttonRect.getOnOpListener();

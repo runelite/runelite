@@ -503,6 +503,16 @@ public interface Client extends GameEngine
 	Widget getWidget(int groupId, int childId);
 
 	/**
+	 * Gets a widget by it's packed ID.
+	 *
+	 * <p>
+	 * Note: Use {@link #getWidget(WidgetInfo)} or {@link #getWidget(int, int)} for
+	 * a more readable version of this method.
+	 */
+	@Nullable
+	Widget getWidget(int packedID);
+
+	/**
 	 * Gets an array containing the x-axis canvas positions
 	 * of all widgets.
 	 *

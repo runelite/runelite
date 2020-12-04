@@ -564,7 +564,7 @@ class WidgetInspector extends JFrame
 	{
 		if (type == MenuAction.SPELL_CAST_ON_WIDGET.getId())
 		{
-			Widget w = client.getWidget(WidgetInfo.TO_GROUP(param1), WidgetInfo.TO_CHILD(param1));
+			Widget w = client.getWidget(param1);
 			if (param0 != -1)
 			{
 				w = w.getChild(param0);
@@ -574,7 +574,7 @@ class WidgetInspector extends JFrame
 		}
 		else if (type == MenuAction.ITEM_USE_ON_WIDGET.getId())
 		{
-			Widget w = client.getWidget(WidgetInfo.TO_GROUP(param1), WidgetInfo.TO_CHILD(param1));
+			Widget w = client.getWidget(param1);
 			return w.getWidgetItem(param0);
 		}
 
