@@ -25,24 +25,11 @@
 package net.runelite.api;
 
 /**
- * @see ParamHolder
+ * @see ParamID#SETTING_ID
  */
-public class ParamID
+public class SettingID
 {
-	/**
-	 * @see SettingID
-	 */
-	public static final int SETTING_ID = 1077;
-	// defaults to 5
-	// 1 is continuous
-	public static final int SETTING_SLIDER_STEPS = 1101;
-	public static final int SETTING_CUSTOM_TRANSMIT = 1085;
-	// defaults to true
-	// track is foreground
-	public static final int SETTING_FOREGROUND_CLICKZONE = 1105;
-	public static final int SETTING_SLIDER_CUSTOM_ONOP = 1106;
-	public static final int SETTING_SLIDER_CUSTOM_SETPOS = 1107;
-	public static final int SETTING_SLIDER_IS_DRAGGABLE = 1108;
-	public static final int SETTING_SLIDER_DEADZONE = 1109;
-	public static final int SETTING_SLIDER_DEADTIME = 1110;
+	public static final int MUSIC_VOLUME = 30;
+	public static final int EFFECT_VOLUME = 31;
+	public static final int AREA_VOLUME = 32;
 }
