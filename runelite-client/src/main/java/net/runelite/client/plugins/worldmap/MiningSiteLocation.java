@@ -46,6 +46,9 @@ enum MiningSiteLocation
 	ARCEUUS_SOUTH(new WorldPoint(1763, 3844, 0), new Rock(1, Ore.DENSE_ESSENCE)),
 	ARDOUGNE_SEWERS(new WorldPoint(2670, 9680, 0), new Rock(5, Ore.IRON), new Rock(5, Ore.COAL)),
 	ARDOUGNE_SOUTH_EAST(new WorldPoint(2599, 3232, 0), new Rock(6, Ore.IRON), new Rock(4, Ore.COAL)),
+	ANCIENT_CAVERN_NORTH(new WorldPoint(1847, 5414, 0), new Rock(4, Ore.MITHRIL)),
+	ANCIENT_CAVERN_SOUTH(new WorldPoint(1826, 5392, 0), new Rock(2, Ore.MITHRIL)),
+	ANCIENT_CAVERN_MIDDLE(new WorldPoint(1840, 5397, 0), new Rock(8, Ore.MITHRIL)),
 	// ARZINIAN_MINE -- NOT AVAILABLE ON WORLD MAP
 	ASGARNIA_ICE_DUNGEON_EAST(new WorldPoint(3063, 9582, 0), new Rock(2, Ore.BLURITE)),
 	ASGARNIA_ICE_DUNGEON_WEST(new WorldPoint(3049, 9568, 0), new Rock(2, Ore.BLURITE)),
