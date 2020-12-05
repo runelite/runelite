@@ -610,6 +610,7 @@ public class WidgetID
 			static final int ROLE_SPRITE = 11;
 			static final int ROLE = 12;
 		}
+
 		static class HLR
 		{
 			static final int TEAMMATE1 = 18;
@@ -617,6 +618,7 @@ public class WidgetID
 			static final int TEAMMATE3 = 26;
 			static final int TEAMMATE4 = 30;
 		}
+
 		static final int CORRECT_STYLE = 3;
 		static final int CURRENT_WAVE_WIDGET = 4;
 		static final int CURRENT_WAVE = 5;
@@ -839,6 +841,7 @@ public class WidgetID
 		static final int MEMBERS_CONTAINER = 7;
 		static final int MINIQUEST_CONTAINER = 8;
 	}
+
 	static class Music
 	{
 		static final int CONTAINER = 0;
@@ -884,6 +887,14 @@ public class WidgetID
 	static class SettingsSide
 	{
 		static final int CAMERA_ZOOM_SLIDER_HANDLE = 55;
+		static final int MUSIC_SLIDER = 10;
+		static final int SOUND_EFFECT_SLIDER = 14;
+		static final int AREA_SOUND_SLIDER = 18;
+	}
+
+	static class Settings
+	{
+		static final int INIT = 1;
 	}
 
 	static class AchievementDiary
