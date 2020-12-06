@@ -60,7 +60,7 @@ public class ItemStatChanges
 		add(food(3), SHRIMPS, COOKED_MEAT, COOKED_CHICKEN, ROE, CHOCOLATE_BAR);
 		add(food(4), SARDINE, CAKE, _23_CAKE, SLICE_OF_CAKE, CHOCOLATEY_MILK, BAKED_POTATO, EDIBLE_SEAWEED, MOONLIGHT_MEAD);
 		add(food(5), BREAD, HERRING, CHOCOLATE_CAKE, _23_CHOCOLATE_CAKE, CHOCOLATE_SLICE, COOKED_RABBIT, CHILLI_CON_CARNE,
-			FRIED_MUSHROOMS, FRIED_ONIONS, REDBERRY_PIE, HALF_A_REDBERRY_PIE, CAVIAR, PYSK_FISH_0);
+			FRIED_MUSHROOMS, FRIED_ONIONS, REDBERRY_PIE, HALF_A_REDBERRY_PIE, CAVIAR, PYSK_FISH_0, COOKED_MYSTERY_MEAT);
 		add(food(6), CHOCICE, MACKEREL, MEAT_PIE, HALF_A_MEAT_PIE, GUANIC_BAT_0, ROAST_BIRD_MEAT,
 			SQUARE_SANDWICH, ROLL, BAGUETTE, TRIANGLE_SANDWICH, GIANT_CARP);
 		add(food(7), TROUT, COD, PLAIN_PIZZA, _12_PLAIN_PIZZA, APPLE_PIE, HALF_AN_APPLE_PIE, ROAST_RABBIT,
@@ -144,6 +144,35 @@ public class ItemStatChanges
 		add(combo(3, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), heal(HITPOINTS, -10)), DIVINE_SUPER_COMBAT_POTION1, DIVINE_SUPER_COMBAT_POTION2, DIVINE_SUPER_COMBAT_POTION3, DIVINE_SUPER_COMBAT_POTION4);
 		add(combo(2, boost(RANGED, perc(0.1, 4)), boost(DEFENCE, perc(0.15, 5)), heal(HITPOINTS, -10)), DIVINE_BASTION_POTION1, DIVINE_BASTION_POTION2, DIVINE_BASTION_POTION3, DIVINE_BASTION_POTION4);
 		add(combo(2, boost(MAGIC, 4), boost(DEFENCE, perc(0.15, 5)), heal(HITPOINTS, -10)), DIVINE_BATTLEMAGE_POTION1, DIVINE_BATTLEMAGE_POTION2, DIVINE_BATTLEMAGE_POTION3, DIVINE_BATTLEMAGE_POTION4);
+
+		// Barbarian potions
+		add(combo(food(3), boost(ATTACK, perc(.12, 0))), ATTACK_MIX1, ATTACK_MIX2);
+		add(food(3), RELICYMS_MIX1, RELICYMS_MIX2, ANTIPOISON_MIX1, ANTIPOISON_MIX2);
+		add(combo(food(3), boost(STRENGTH, perc(.10, 3))), STRENGTH_MIX1, STRENGTH_MIX2);
+		add(combo(5, food(3), heal(ATTACK, perc(.30, 10)), heal(STRENGTH, perc(.30, 10)), heal(DEFENCE, perc(.30, 10)), heal(RANGED, perc(.30, 10)), heal(MAGIC, perc(.30, 10))), RESTORE_MIX1, RESTORE_MIX2);
+		add(combo(food(6), heal(RUN_ENERGY, 10)), ENERGY_MIX1, ENERGY_MIX2);
+		add(combo(food(6), boost(DEFENCE, perc(.10, 3))), DEFENCE_MIX1, DEFENCE_MIX2);
+		add(combo(food(6), boost(AGILITY, 3)), AGILITY_MIX1, AGILITY_MIX2);
+		add(combo(2, food(6), boost(ATTACK, perc(.10, 3)), boost(STRENGTH, perc(.10, 3))), COMBAT_MIX1, COMBAT_MIX2);
+		add(combo(food(6), new PrayerPotion(7)), PRAYER_MIX1, PRAYER_MIX2);
+		add(combo(food(6), boost(ATTACK, perc(.15, 5))), SUPERATTACK_MIX1, SUPERATTACK_MIX2);
+		add(food(6), ANTIPOISON_SUPERMIX1, ANTIPOISON_SUPERMIX2);
+		add(combo(food(6), boost(FISHING, 3)), FISHING_MIX1, FISHING_MIX2);
+		add(combo(food(6), heal(RUN_ENERGY, 20)), SUPER_ENERGY_MIX1, SUPER_ENERGY_MIX2);
+		add(combo(food(6), boost(HUNTER, 3)), HUNTING_MIX1, HUNTING_MIX2);
+		add(combo(food(6), boost(STRENGTH, perc(.15, 5))), SUPER_STR_MIX1, SUPER_STR_MIX2);
+		add(combo(food(6), boost(MAGIC, 3)), MAGIC_ESSENCE_MIX1, MAGIC_ESSENCE_MIX2);
+		add(new SuperRestore(.25, 8), SUPER_RESTORE_MIX1, SUPER_RESTORE_MIX2); //TODO:add HP restoration
+		add(combo(food(6), boost(DEFENCE, perc(.15, 5))), SUPER_DEF_MIX1, SUPER_DEF_MIX2);
+		add(food(6), ANTIDOTE_MIX1, ANTIDOTE_MIX2);
+		add(food(6), ANTIFIRE_MIX1, ANTIFIRE_MIX2);
+		add(combo(food(6), boost(RANGED, perc(.10, 4))), RANGING_MIX1, RANGING_MIX2);
+		add(combo(food(6), boost(MAGIC, 4)), MAGIC_MIX1, MAGIC_MIX2);
+		add(combo(3, boost(ATTACK, perc(.20, 2)), boost(STRENGTH, perc(.12, 2)), heal(PRAYER, perc(.10, 0)), heal(DEFENCE, perc(.10, -2)), new BoostedStatBoost(HITPOINTS, false, perc(-.12, 6))), ZAMORAK_MIX1, ZAMORAK_MIX2);
+		add(combo(food(6), heal(RUN_ENERGY, 20)), STAMINA_MIX1, STAMINA_MIX2);
+		add(food(6), EXTENDED_ANTIFIRE_MIX1, EXTENDED_ANTIFIRE_MIX2);
+		add(food(6), SUPER_ANTIFIRE_MIX1, SUPER_ANTIFIRE_MIX2);
+		add(food(6), EXTENDED_SUPER_ANTIFIRE_MIX1, EXTENDED_SUPER_ANTIFIRE_MIX2);
 
 		// Regular overload (NMZ)
 		add(combo(5, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(HITPOINTS, -50)), OVERLOAD_1, OVERLOAD_2, OVERLOAD_3, OVERLOAD_4);
