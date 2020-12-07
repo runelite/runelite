@@ -277,7 +277,7 @@ public class FarmingTracker
 	{
 		for (Map.Entry<Tab, Set<FarmingPatch>> tab : farmingWorld.getTabs().entrySet())
 		{
-			long maxCompletionTime = 0;
+			long extremumCompletionTime = config.preferSoonest() ? Long.MAX_VALUE : 0;
 			boolean allUnknown = true;
 			boolean allEmpty = true;
 
@@ -296,7 +296,15 @@ public class FarmingTracker
 					allEmpty = false;
 
 					// update max duration if this patch takes longer to grow
-					maxCompletionTime = Math.max(maxCompletionTime, prediction.getDoneEstimate());
+					if (config.preferSoonest())
+					{
+						extremumCompletionTime = Math.min(extremumCompletionTime, prediction.getDoneEstimate());
+					}
+					else
+					{
+						extremumCompletionTime = Math.max(extremumCompletionTime, prediction.getDoneEstimate());
+					}
+
 				}
 			}
 
@@ -313,7 +321,7 @@ public class FarmingTracker
 				state = SummaryState.EMPTY;
 				completionTime = -1L;
 			}
-			else if (maxCompletionTime <= Instant.now().getEpochSecond())
+			else if (extremumCompletionTime <= Instant.now().getEpochSecond())
 			{
 				state = SummaryState.COMPLETED;
 				completionTime = 0;
@@ -321,7 +329,7 @@ public class FarmingTracker
 			else
 			{
 				state = SummaryState.IN_PROGRESS;
-				completionTime = maxCompletionTime;
+				completionTime = extremumCompletionTime;
 			}
 			summaries.put(tab.getKey(), state);
 			completionTimes.put(tab.getKey(), completionTime);
