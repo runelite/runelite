@@ -35,6 +35,12 @@ enum SpecialWeapon
 	DRAGON_WARHAMMER("Dragon Warhammer", ItemID.DRAGON_WARHAMMER, false),
 	ARCLIGHT("Arclight", ItemID.ARCLIGHT, false),
 	DARKLIGHT("Darklight", ItemID.DARKLIGHT, false),
+    BARRELCHEST_ANCHOR("Barrelchest Anchor", ItemID.BARRELCHEST_ANCHOR, true),
+	BONE_DAGGER("Bone Dagger", ItemID.BONE_DAGGER, true),
+    BONE_DAGGER_P("Bone Dagger (p)", ItemID.BONE_DAGGER_P, true),
+    BONE_DAGGER_P8876("Bone Dagger (p+)", ItemID.BONE_DAGGER_P_8876, true),
+    BONE_DAGGER_P8878("Bone Dagger (p++)", ItemID.BONE_DAGGER_P_8878, true),
+    DORGESHUUN_CROSSBOW("Dorgeshuun Crossbow", ItemID.DORGESHUUN_CROSSBOW, true),
 	BANDOS_GODSWORD("Bandos Godsword", ItemID.BANDOS_GODSWORD, true),
 	BANDOS_GODSWORD_OR("Bandos Godsword", ItemID.BANDOS_GODSWORD_OR, true);
 

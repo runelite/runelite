@@ -55,7 +55,7 @@ import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
-	description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
+	description = "Track DWH, Arclight, Darklight, Barrelchest Anchor, Bone Dagger, Dorgeshuun Crossbow, and BGS special attacks used on NPCs",
 	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
