@@ -57,7 +57,7 @@ class CameraOverlay extends Overlay
 	@Override
 	public Dimension render(final Graphics2D graphics)
 	{
-		final Widget slider = client.getWidget(WidgetInfo.OPTIONS_CAMERA_ZOOM_SLIDER_HANDLE);
+		final Widget slider = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_HANDLE);
 		final Point mousePos = client.getMouseCanvasPosition();
 
 		if (slider == null || slider.isHidden() || !slider.getBounds().contains(mousePos.getX(), mousePos.getY()))

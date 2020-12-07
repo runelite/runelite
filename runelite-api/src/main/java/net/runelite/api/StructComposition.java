@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,8 +24,15 @@
  */
 package net.runelite.api;
 
-public interface IterableHashTable<T extends Node> extends Iterable<T>
+/**
+ * A config type dedicated to holding params.
+ *
+ * Historically items were often used for this before structs were made
+ * available, and there are many of these still around.
+ *
+ * @see ParamHolder
+ */
+public interface StructComposition extends ParamHolder
 {
-	T get(long hash);
-	void put(T node, long hash);
+	int getId();
 }
