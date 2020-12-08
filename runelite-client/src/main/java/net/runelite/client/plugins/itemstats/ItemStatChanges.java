@@ -26,12 +26,17 @@
 package net.runelite.client.plugins.itemstats;
 
 import com.google.inject.Singleton;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+
+import static java.util.Arrays.copyOf;
 import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemstats.Builders.*;
+
+import lombok.var;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.potions.GauntletPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
@@ -162,7 +167,10 @@ public class ItemStatChanges
 		add(combo(food(6), boost(HUNTER, 3)), HUNTING_MIX1, HUNTING_MIX2);
 		add(combo(food(6), boost(STRENGTH, perc(.15, 5))), SUPER_STR_MIX1, SUPER_STR_MIX2);
 		add(combo(food(6), boost(MAGIC, 3)), MAGIC_ESSENCE_MIX1, MAGIC_ESSENCE_MIX2);
-		add(new SuperRestore(.25, 8), SUPER_RESTORE_MIX1, SUPER_RESTORE_MIX2); //TODO:add HP restoration
+		var SuperRestoreEffects = new SuperRestore(.25, 8).getSingleEffects();
+		var SuperRestoreMixEffects = copyOf(SuperRestoreEffects, SuperRestoreEffects.length + 1);
+		SuperRestoreMixEffects[SuperRestoreEffects.length] = food(6);
+		add(combo(SuperRestoreMixEffects), SUPER_RESTORE_MIX1, SUPER_RESTORE_MIX2);
 		add(combo(food(6), boost(DEFENCE, perc(.15, 5))), SUPER_DEF_MIX1, SUPER_DEF_MIX2);
 		add(food(6), ANTIDOTE_MIX1, ANTIDOTE_MIX2);
 		add(food(6), ANTIFIRE_MIX1, ANTIFIRE_MIX2);

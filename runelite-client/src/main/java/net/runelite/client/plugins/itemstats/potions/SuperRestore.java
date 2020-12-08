@@ -25,17 +25,18 @@
 package net.runelite.client.plugins.itemstats.potions;
 
 import com.google.common.annotations.VisibleForTesting;
+
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
-import static net.runelite.client.plugins.itemstats.Builders.perc;
-import net.runelite.client.plugins.itemstats.Effect;
-import net.runelite.client.plugins.itemstats.SimpleStatBoost;
+import static net.runelite.client.plugins.itemstats.Builders.*;
+
+import net.runelite.client.plugins.itemstats.*;
 import net.runelite.client.plugins.itemstats.stats.Stat;
-import net.runelite.client.plugins.itemstats.StatChange;
+
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
-import net.runelite.client.plugins.itemstats.StatsChanges;
 
 @RequiredArgsConstructor
 public class SuperRestore implements Effect
@@ -50,6 +51,13 @@ public class SuperRestore implements Effect
 	@VisibleForTesting
 	public final double percR; //percentage restored
 	private final int delta;
+
+	public SingleEffect[] getSingleEffects()
+	{
+		return Arrays.stream(this.superRestoreStats).map(stat ->
+			heal(stat, perc(this.percR, this.delta))
+		).toArray(SingleEffect[]::new);
+	}
 
 	@Override
 	public StatsChanges calculate(Client client)
