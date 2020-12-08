@@ -59,14 +59,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -166,7 +163,7 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
-	public void testTheatreOfBloodUnknownPB()
+	public void testTheatreOfBloodNoPb()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Wave 'The Final Challenge' complete! Duration: <col=ff0000>5:04</col><br>Theatre of Blood wave completion time: <col=ff0000>38:17</col><br></col>Personal best: 37:04", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
@@ -176,21 +173,6 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 37 * 60 + 4);
-	}
-
-	@Test
-	public void testTheatreOfBloodNoPB()
-	{
-		when(configManager.getRSProfileConfiguration("personalbest", "theatre of blood", int.class)).thenReturn(37 * 60 + 4); // 37:04
-
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Wave 'The Final Challenge' complete! Duration: <col=ff0000>5:04</col><br>Theatre of Blood wave completion time: <col=ff0000>38:17</col><br></col>Personal best: 37:10", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessageEvent);
-
-		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
-		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("theatre of blood"), anyInt());
 	}
 
 	@Test
@@ -428,10 +410,8 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
-	public void testCoXKillUnknownPb()
+	public void testCoXKillNoPb()
 	{
-		when(configManager.getRSProfileConfiguration("personalbest", "chambers of xeric", int.class)).thenReturn(25 * 60 + 14);
-
 		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>11-15 players</col> Duration:</col> <col=ff0000>23:25</col> Personal best: </col><col=ff0000>20:19</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
@@ -440,21 +420,6 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric", 52);
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 20 * 60 + 19);
-	}
-
-	@Test
-	public void testCoXKillNoPb()
-	{
-		when(configManager.getRSProfileConfiguration(anyString(), anyString(), any(Class.class))).thenReturn(2224);
-
-		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>3 players</col> Duration:</col> <col=ff0000>37:10</col> (new personal best)</col>", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
-		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
-		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric", 52);
-		verify(configManager, never()).setRSProfileConfiguration(eq("personalbest"), eq("chambers of xeric"), anyInt());
 	}
 
 	@Test
