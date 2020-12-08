@@ -49,6 +49,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.ParamID;
 import net.runelite.api.Player;
+import net.runelite.api.Preferences;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SettingID;
@@ -168,6 +169,7 @@ public class MusicPlugin extends Plugin
 		{
 			this.shuttingDown = false;
 
+			Preferences preferences = client.getPreferences();
 			musicChannel = new Channel("Music",
 				VarPlayer.MUSIC_VOLUME, Varbits.MUTED_MUSIC_VOLUME,
 				musicConfig::getMusicVolume, musicConfig::setMusicVolume,
@@ -176,12 +178,12 @@ public class MusicPlugin extends Plugin
 			effectChannel = new Channel("Sound Effects",
 				VarPlayer.SOUND_EFFECT_VOLUME, Varbits.MUTED_SOUND_EFFECT_VOLUME,
 				musicConfig::getSoundEffectVolume, musicConfig::setSoundEffectVolume,
-				client::setSoundEffectVolume, 127,
+				preferences::setSoundEffectVolume, 127,
 				WidgetInfo.SETTINGS_SIDE_SOUND_EFFECT_SLIDER);
 			areaChannel = new Channel("Area Sounds",
 				VarPlayer.AREA_EFFECT_VOLUME, Varbits.MUTED_AREA_EFFECT_VOLUME,
 				musicConfig::getAreaSoundEffectVolume, musicConfig::setAreaSoundEffectVolume,
-				client::setAreaSoundEffectVolume, 127,
+				preferences::setAreaSoundEffectVolume, 127,
 				WidgetInfo.SETTINGS_SIDE_AREA_SOUND_SLIDER);
 			channels = new Channel[]{musicChannel, effectChannel, areaChannel};
 
