@@ -83,11 +83,11 @@ public class BarrowsBrotherSlainOverlay extends OverlayPanel
 				.build());
 		}
 
-		float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / 10.0f;
+		float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / 10.12f;
 		panelComponent.getChildren().add(LineComponent.builder()
 				.left("Potential")
 				.right(rewardPercent != 0 ? rewardPercent + "%" : "0%")
-				.rightColor(rewardPercent >= 75.6f && rewardPercent <= 88.0f ? Color.GREEN : rewardPercent < 63.0f ? Color.WHITE : Color.YELLOW)
+				.rightColor(rewardPercent >= 74.7f && rewardPercent <= 86.96 ? Color.GREEN : rewardPercent < 62.35f ? Color.WHITE : Color.YELLOW)
 				.build());
 
 		return super.render(graphics);
