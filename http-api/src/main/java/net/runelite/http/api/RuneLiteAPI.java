@@ -64,7 +64,7 @@ public class RuneLiteAPI
 			InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
 			properties.load(in);
 
-			version = properties.getProperty("runelite.version");
+			version = "1.6.35";//properties.getProperty("runelite.version");
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
 			String commit = properties.getProperty("runelite.commit");
 			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
@@ -119,7 +119,7 @@ public class RuneLiteAPI
 			return HttpUrl.parse(prop);
 		}
 
-		return HttpUrl.parse(BASE + "/runelite-" + getVersion().replace("-SNAPSHOT", ""));
+		return HttpUrl.parse(BASE + "/runelite-" + getVersion());
 	}
 
 	public static HttpUrl getStaticBase()
