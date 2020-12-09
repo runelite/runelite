@@ -87,7 +87,7 @@ public class BarrowsBrotherSlainOverlay extends OverlayPanel
 		panelComponent.getChildren().add(LineComponent.builder()
 				.left("Potential")
 				.right(rewardPercent != 0 ? rewardPercent + "%" : "0%")
-				.rightColor(client.getVar(Varbits.BARROWS_REWARD_POTENTIAL >= 756f && client.getVar(Varbits.BARROWS_REWARD_POTENTIAL <= 880f ? Color.GREEN : client.getVar(Varbits.BARROWS_REWARD_POTENTIAL < 631f ? Color.WHITE : Color.YELLOW)
+				.rightColor(client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) >= 756f && client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) <= 880f ? Color.GREEN : client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) < 631f ? Color.WHITE : Color.YELLOW)
 				.build());
 
 		return super.render(graphics);
