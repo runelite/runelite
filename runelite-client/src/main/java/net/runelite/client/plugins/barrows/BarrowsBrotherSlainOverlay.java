@@ -83,8 +83,8 @@ public class BarrowsBrotherSlainOverlay extends OverlayPanel
 				.build());
 		}
 
-		float rewardPotential = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
-		float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / 10.12f;
+		float rewardPotential = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) + client.getVar(Varbits.BARROWS_KILLED_AHRIM) + client.getVar(Varbits.BARROWS_KILLED_DHAROK) + client.getVar(Varbits.BARROWS_KILLED_GUTHAN) + client.getVar(Varbits.BARROWS_KILLED_KARIL) + client.getVar(Varbits.BARROWS_KILLED_TORAG) + client.getVar(Varbits.BARROWS_KILLED_VERAC);
+		float rewardPercent = rewardPotential / 10.12f;
 		panelComponent.getChildren().add(LineComponent.builder()
 				.left("Potential")
 				.right(rewardPercent != 0 ? rewardPercent + "%" : "0%")
