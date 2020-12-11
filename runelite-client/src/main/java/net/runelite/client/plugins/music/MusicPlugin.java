@@ -488,6 +488,7 @@ public class MusicPlugin extends Plugin
 		{
 			if (handle != null)
 			{
+				handle.setOnMouseRepeatListener((Object[]) null);
 				handle.setDragParent(null);
 				handle.setOnDragListener((Object[]) null);
 				handle.setOnDragCompleteListener((Object[]) null);
