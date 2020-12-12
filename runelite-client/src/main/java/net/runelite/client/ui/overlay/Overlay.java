@@ -97,4 +97,15 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	{
 		return false;
 	}
+
+	/**
+	 * Get the parent bounds for overlay dragging. The overlay will
+	 * not be allowed to be moved outside of the parent bounds.
+	 * @return
+	 */
+	@Nullable
+	public Rectangle getParentBounds()
+	{
+		return null;
+	}
 }
