@@ -174,7 +174,15 @@ class DevToolsPanel extends PluginPanel
 		final JButton newInfoboxBtn = new JButton("Infobox");
 		newInfoboxBtn.addActionListener(e ->
 		{
-			Counter counter = new Counter(ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png"), plugin, 42);
+			Counter counter = new Counter(ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png"), plugin, 42)
+			{
+				@Override
+				public String getName()
+				{
+					// Give the infobox a unique name to test infobox splitting
+					return "devtools-" + hashCode();
+				}
+			};
 			counter.getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_INFOBOX, "Test", "DevTools"));
 			infoBoxManager.addInfoBox(counter);
 		});
