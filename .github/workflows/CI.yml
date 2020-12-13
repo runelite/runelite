@@ -27,6 +27,3 @@ jobs:
 
       - name: Build
         run: ./ci/build.sh
-
-      - name: Remove build artifacts
-        run: rm -rf ~/.m2/repository/net/runelite
