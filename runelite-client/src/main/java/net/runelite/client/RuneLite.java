@@ -238,6 +238,9 @@ public class RuneLite
 			logger.setLevel(Level.DEBUG);
 		}
 
+
+		boolean customConfig = options.has("config");
+
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
 		{
 			log.error("Uncaught exception:", throwable);
@@ -307,7 +310,8 @@ public class RuneLite
 					(String) Optional.ofNullable(options.valueOf("world")).orElse(""),
 					(String) Optional.ofNullable(options.valueOf("xPos")).orElse(""),
 					(String) Optional.ofNullable(options.valueOf("yPos")).orElse(""),
-					(String) Optional.ofNullable(options.valueOf("startupTitle")).orElse("")));
+					(String) Optional.ofNullable(options.valueOf("startupTitle")).orElse(""),
+					options.has("config")));
 
 			injector.getInstance(RuneLite.class).start();
 

@@ -135,21 +135,28 @@ public class ConfigManager
 	@Nullable
 	private String rsProfileKey;
 
+	private boolean customConfig;
+
 	@Inject
 	public ConfigManager(
 		@Named("config") File config,
 		ScheduledExecutorService scheduledExecutorService,
 		EventBus eventBus,
 		OkHttpClient okHttpClient,
-		@Nullable Client client)
+		@Nullable Client client,
+		@Named("customConfig") Boolean customConfig)
 	{
 		this.settingsFileInput = config;
 		this.eventBus = eventBus;
 		this.okHttpClient = okHttpClient;
 		this.client = client;
 		this.propertiesFile = getPropertiesFile();
+		this.customConfig = customConfig;
 
-		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
+		if (!this.customConfig)
+		{
+			scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
+		}
 	}
 
 	public final void switchSession(AccountSession session)
@@ -181,7 +188,7 @@ public class ConfigManager
 	private File getPropertiesFile()
 	{
 		// Sessions that aren't logged in have no username
-		if (session == null || session.getUsername() == null)
+		if (session == null || session.getUsername() == null || customConfig)
 		{
 			return getLocalPropertiesFile();
 		}
@@ -213,7 +220,7 @@ public class ConfigManager
 			return;
 		}
 
-		if (configuration.getConfig() == null || configuration.getConfig().isEmpty())
+		if (configuration.getConfig() == null || configuration.getConfig().isEmpty() || customConfig)
 		{
 			log.debug("No configuration from client, using saved configuration on disk");
 			loadFromFile();
@@ -249,6 +256,12 @@ public class ConfigManager
 		}
 
 		migrateConfig();
+
+		//If we provide custom config, always load from file first.
+		if (customConfig)
+		{
+			loadFromFile();
+		}
 
 		try
 		{
@@ -390,6 +403,11 @@ public class ConfigManager
 
 	private void saveToFile(final File propertiesFile) throws IOException
 	{
+		//Don't save it to the file with a custom config
+		if (customConfig)
+		{
+			return;
+		}
 		File parent = propertiesFile.getParentFile();
 
 		parent.mkdirs();
@@ -891,6 +909,12 @@ public class ConfigManager
 	@Nullable
 	private CompletableFuture<Void> sendConfig()
 	{
+		//Don't send changes to account
+		if (customConfig)
+		{
+			return null;
+		}
+
 		CompletableFuture<Void> future = null;
 		synchronized (pendingChanges)
 		{

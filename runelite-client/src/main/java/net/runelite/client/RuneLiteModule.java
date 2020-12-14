@@ -68,6 +68,7 @@ public class RuneLiteModule extends AbstractModule
 	private final String xPos;
 	private final String yPos;
 	private final String startupTitle;
+	private final boolean customConfig;
 
 	@Override
 	protected void configure()
@@ -82,6 +83,7 @@ public class RuneLiteModule extends AbstractModule
 		bindConstant().annotatedWith(Names.named("xPos")).to(xPos);
 		bindConstant().annotatedWith(Names.named("yPos")).to(yPos);
 		bindConstant().annotatedWith(Names.named("startupTitle")).to(startupTitle);
+		bindConstant().annotatedWith(Names.named("customConfig")).to(customConfig);
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
 		bind(OkHttpClient.class).toInstance(okHttpClient);
 		bind(MenuManager.class);
