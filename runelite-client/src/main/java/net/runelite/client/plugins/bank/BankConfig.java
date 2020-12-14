@@ -36,10 +36,10 @@ import net.runelite.client.config.Keybind;
 public interface BankConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showGE",
-		name = "Show Grand Exchange price",
-		description = "Show grand exchange price total (GE)",
-		position = 1
+			keyName = "showGE",
+			name = "Show Grand Exchange price",
+			description = "Show grand exchange price total (GE)",
+			position = 1
 	)
 	default boolean showGE()
 	{
@@ -47,10 +47,10 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showHA",
-		name = "Show high alchemy price",
-		description = "Show high alchemy price total (HA)",
-		position = 2
+			keyName = "showHA",
+			name = "Show high alchemy price",
+			description = "Show high alchemy price total (HA)",
+			position = 2
 	)
 	default boolean showHA()
 	{
@@ -58,10 +58,10 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showExact",
-		name = "Show exact bank value",
-		description = "Show exact bank value",
-		position = 3
+			keyName = "showExact",
+			name = "Show exact bank value",
+			description = "Show exact bank value",
+			position = 3
 	)
 	default boolean showExact()
 	{
@@ -69,10 +69,10 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "rightClickBankInventory",
-		name = "Disable left click bank inventory",
-		description = "Configures whether the bank inventory button will bank your inventory on left click",
-		position = 4
+			keyName = "rightClickBankInventory",
+			name = "Disable left click bank inventory",
+			description = "Configures whether the bank inventory button will bank your inventory on left click",
+			position = 4
 	)
 	default boolean rightClickBankInventory()
 	{
@@ -80,10 +80,10 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "rightClickBankEquip",
-		name = "Disable left click bank equipment",
-		description = "Configures whether the bank equipment button will bank your equipment on left click",
-		position = 5
+			keyName = "rightClickBankEquip",
+			name = "Disable left click bank equipment",
+			description = "Configures whether the bank equipment button will bank your equipment on left click",
+			position = 5
 	)
 	default boolean rightClickBankEquip()
 	{
@@ -91,10 +91,10 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "rightClickBankLoot",
-		name = "Disable left click bank looting bag",
-		description = "Configures whether the bank looting bag button will bank your looting bag contents on left click",
-		position = 6
+			keyName = "rightClickBankLoot",
+			name = "Disable left click bank looting bag",
+			description = "Configures whether the bank looting bag button will bank your looting bag contents on left click",
+			position = 6
 	)
 	default boolean rightClickBankLoot()
 	{
@@ -102,10 +102,10 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "seedVaultValue",
-		name = "Show seed vault value",
-		description = "Adds the total value of all seeds inside the seed vault to the title",
-		position = 7
+			keyName = "seedVaultValue",
+			name = "Show seed vault value",
+			description = "Adds the total value of all seeds inside the seed vault to the title",
+			position = 7
 	)
 	default boolean seedVaultValue()
 	{
@@ -113,10 +113,10 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "bankPinKeyboard",
-		name = "Keyboard Bankpin",
-		description = "Allows using the keyboard keys for bank pin input",
-		position = 8
+			keyName = "bankPinKeyboard",
+			name = "Keyboard Bankpin",
+			description = "Allows using the keyboard keys for bank pin input",
+			position = 8
 	)
 	default boolean bankPinKeyboard()
 	{
@@ -124,13 +124,24 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "searchKeybind",
-		name = "Search Shortcut",
-		description = "Keyboard shortcut for initiating a bank search",
-		position = 9
+			keyName = "searchKeybind",
+			name = "Search Shortcut",
+			description = "Keyboard shortcut for initiating a bank search",
+			position = 9
 	)
 	default Keybind searchKeybind()
 	{
 		return new Keybind(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+			keyName = "showRaw",
+			name = "Show raw price",
+			description = "Show raw price total (Raw)",
+			position = 10
+	)
+	default boolean showRaw()
+	{
+		return false;
 	}
 }
