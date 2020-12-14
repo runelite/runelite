@@ -37,15 +37,7 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientStr;
+import net.runelite.api.*;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
@@ -273,7 +265,13 @@ public class BankPlugin extends Plugin
 			final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 			final ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
 			final Widget[] children = bankItemContainer.getChildren();
-			long geTotal = 0, haTotal = 0;
+			long geTotal = 0, haTotal = 0, rawTotal = 0;
+			int smithingLevel = client.getRealSkillLevel(Skill.SMITHING);
+			int craftingLevel = client.getRealSkillLevel(Skill.CRAFTING);
+			int coalQty = 0;
+			int mithQty = 0;
+			int addyQty = 0;
+			int runeQty = 0;
 
 			if (children != null)
 			{
@@ -287,13 +285,37 @@ public class BankPlugin extends Plugin
 					if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
 					{
 						final int alchPrice = getHaPrice(child.getItemId());
+						final int rawPrice = getRawPrice((child.getItemId()), craftingLevel, smithingLevel);
 						geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
 						haTotal += (long) alchPrice * child.getItemQuantity();
+						rawTotal += (long) rawPrice * child.getItemQuantity();
+
+						//needed to capture quantity of coal, mith, addy, and rune for the getOreValue function to work properly
+						switch (child.getItemId())
+						{
+							case ItemID.COAL:
+								coalQty = child.getItemQuantity();
+								break;
+							case ItemID.MITHRIL_ORE:
+								mithQty = child.getItemQuantity();
+								break;
+							case ItemID.ADAMANTITE_ORE:
+								addyQty = child.getItemQuantity();
+								break;
+							case ItemID.RUNITE_ORE:
+								runeQty = child.getItemQuantity();
+								break;
+							default:
+								break;
+						}
 					}
 				}
 
+
+
+				rawTotal += (long) getOreValue(smithingLevel, coalQty, mithQty, addyQty, runeQty);
 				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-				bankTitle.setText(bankTitle.getText() + createValueText(geTotal, haTotal));
+				bankTitle.setText(bankTitle.getText() + createValueText(geTotal, haTotal, rawTotal));
 			}
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
@@ -324,7 +346,7 @@ public class BankPlugin extends Plugin
 		}
 	}
 
-	private String createValueText(long gePrice, long haPrice)
+	private String createValueText(long gePrice, long haPrice, long rawPrice)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		if (config.showGE() && gePrice != 0)
@@ -367,6 +389,26 @@ public class BankPlugin extends Plugin
 			stringBuilder.append(')');
 		}
 
+		if (config.showRaw() && rawPrice != 0)
+		{
+			stringBuilder.append(" (");
+
+			if (config.showGE() || config.showHA())
+			{
+				stringBuilder.append("Raw: ");
+			}
+
+			if (config.showExact())
+			{
+				stringBuilder.append(QuantityFormatter.formatNumber(rawPrice));
+			}
+			else
+			{
+				stringBuilder.append(QuantityFormatter.quantityToStackSize(rawPrice));
+			}
+			stringBuilder.append(')');
+		}
+
 		return stringBuilder.toString();
 	}
 
@@ -390,7 +432,7 @@ public class BankPlugin extends Plugin
 			return;
 		}
 
-		final String titleText = createValueText(prices.getGePrice(), prices.getHighAlchPrice());
+		final String titleText = createValueText(prices.getGePrice(), prices.getHighAlchPrice(), prices.getRawPrice());
 		title.setText(SEED_VAULT_TITLE + titleText);
 	}
 
@@ -512,6 +554,7 @@ public class BankPlugin extends Plugin
 
 		long ge = 0;
 		long alch = 0;
+		long raw = 0;
 
 		for (final Item item : items)
 		{
@@ -527,7 +570,7 @@ public class BankPlugin extends Plugin
 			ge += (long) itemManager.getItemPrice(id) * qty;
 		}
 
-		return new ContainerPrices(ge, alch);
+		return new ContainerPrices(ge, alch, raw);
 	}
 
 	private int getHaPrice(int itemId)
@@ -541,5 +584,238 @@ public class BankPlugin extends Plugin
 			default:
 				return itemManager.getItemComposition(itemId).getHaPrice();
 		}
+	}
+
+	//determines which items are deemed as alchables for the raw gp calculation
+	private boolean isAlchable(int itemId)
+	{
+		switch (itemId)
+		{
+			case ItemID.RUNE_PLATELEGS:
+			case ItemID.RUNE_PLATESKIRT:
+			case ItemID.RUNE_CHAINBODY:
+			case ItemID.RUNE_PLATEBODY:
+			case ItemID.RUNE_MED_HELM:
+			case ItemID.RUNE_FULL_HELM:
+			case ItemID.RUNE_SQ_SHIELD:
+			case ItemID.RUNE_KITESHIELD:
+			case ItemID.RUNE_DAGGER:
+			case ItemID.RUNE_DAGGERP:
+			case ItemID.RUNE_SPEAR:
+			case ItemID.RUNE_SPEARP:
+			case ItemID.RUNE_PICKAXE:
+			case ItemID.RUNE_SWORD:
+			case ItemID.RUNE_LONGSWORD:
+			case ItemID.RUNE_2H_SWORD:
+			case ItemID.RUNE_SCIMITAR:
+			case ItemID.RUNE_WARHAMMER:
+			case ItemID.RUNE_AXE:
+			case ItemID.RUNE_BATTLEAXE:
+			case ItemID.RUNE_MACE:
+			case ItemID.RUNE_HALBERD:
+			case ItemID.RUNE_BOOTS:
+			case ItemID.RUNE_CROSSBOW:
+			case ItemID.RUNE_HASTA:
+			case ItemID.RUNE_JAVELIN_HEADS:
+			case ItemID.RUNITE_LIMBS:
+			case ItemID.RUNITE_CROSSBOW_U:
+			case ItemID.DRAGON_MED_HELM:
+			case ItemID.DRAGON_DAGGER:
+			case ItemID.DRAGON_DAGGERP:
+			case ItemID.DRAGON_SPEAR:
+			case ItemID.DRAGON_LONGSWORD:
+			case ItemID.DRAGON_BATTLEAXE:
+			case ItemID.DRAGON_MACE:
+			case ItemID.DRAGON_HALBERD:
+			case ItemID.DRAGON_PLATELEGS:
+			case ItemID.DRAGON_PLATESKIRT:
+			case ItemID.DRAGON_SCIMITAR:
+			case ItemID.DRAGON_DAGGERP_5680:
+			case ItemID.DRAGON_DAGGERP_5698:
+			case ItemID.DRAGON_JAVELIN_HEADS:
+			case ItemID.GREEN_DHIDE_VAMBRACES:
+			case ItemID.GREEN_DHIDE_CHAPS:
+			case ItemID.GREEN_DHIDE_BODY:
+			case ItemID.BLUE_DHIDE_VAMBRACES:
+			case ItemID.BLUE_DHIDE_CHAPS:
+			case ItemID.BLUE_DHIDE_BODY:
+			case ItemID.RED_DHIDE_VAMBRACES:
+			case ItemID.RED_DHIDE_CHAPS:
+			case ItemID.RED_DHIDE_BODY:
+			case ItemID.BLACK_DHIDE_VAMBRACES:
+			case ItemID.BLACK_DHIDE_CHAPS:
+			case ItemID.BLACK_DHIDE_BODY:
+			case ItemID.BATTLESTAFF:
+			case ItemID.FIRE_BATTLESTAFF:
+			case ItemID.WATER_BATTLESTAFF:
+			case ItemID.AIR_BATTLESTAFF:
+			case ItemID.EARTH_BATTLESTAFF:
+			case ItemID.LAVA_BATTLESTAFF:
+			case ItemID.ONYX_BOLTS:
+			case ItemID.ONYX_BOLTS_E:
+			case ItemID.MYSTIC_FIRE_STAFF:
+			case ItemID.MYSTIC_WATER_STAFF:
+			case ItemID.MYSTIC_AIR_STAFF:
+			case ItemID.MYSTIC_EARTH_STAFF:
+			case ItemID.MYSTIC_LAVA_STAFF:
+			case ItemID.MYSTIC_HAT:
+			case ItemID.MYSTIC_ROBE_TOP:
+			case ItemID.MYSTIC_ROBE_BOTTOM:
+			case ItemID.MYSTIC_GLOVES:
+			case ItemID.MYSTIC_BOOTS:
+			case ItemID.MYSTIC_HAT_DARK:
+			case ItemID.MYSTIC_ROBE_TOP_DARK:
+			case ItemID.MYSTIC_ROBE_BOTTOM_DARK:
+			case ItemID.MYSTIC_GLOVES_DARK:
+			case ItemID.MYSTIC_BOOTS_DARK:
+			case ItemID.MYSTIC_HAT_LIGHT:
+			case ItemID.MYSTIC_ROBE_TOP_LIGHT:
+			case ItemID.MYSTIC_ROBE_BOTTOM_LIGHT:
+			case ItemID.MYSTIC_GLOVES_LIGHT:
+			case ItemID.MYSTIC_BOOTS_LIGHT:
+			case ItemID.MAPLE_LONGBOW:
+			case ItemID.YEW_LONGBOW:
+			case ItemID.MAGIC_LONGBOW:
+			case ItemID.MAPLE_LONGBOW_U:
+			case ItemID.YEW_LONGBOW_U:
+			case ItemID.MAGIC_LONGBOW_U:
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	//determines the value of ores for the raw gp option, based on quantity of ores in bank and players smithing level
+	private int getOreValue(int smithingLevel, int coalQty, int mithQty, int addyQty, int runeQty)
+	{
+		int totalValue = 0;
+
+		//begin consuming coal using the best ore available, and proceed from best to worst ore until coal is gone
+		if (smithingLevel >= 89)
+		{
+			while (coalQty >= 4 && runeQty >= 1)
+			{
+				coalQty = coalQty - 4;
+				runeQty = runeQty - 1;
+				if (smithingLevel >= 99)
+				{
+					totalValue += 12800;
+				}
+				else totalValue += 12480;
+			}
+		}
+
+		if (smithingLevel >= 88)
+		{
+			while (coalQty >= 3 && addyQty >= 1)
+			{
+				coalQty = coalQty - 3;
+				addyQty = addyQty - 1;
+				totalValue += 1996;
+			}
+		}
+
+		if (smithingLevel >= 68)
+		{
+			while (coalQty >= 2 && mithQty >= 1)
+			{
+				coalQty = coalQty - 2;
+				mithQty = mithQty - 1;
+				totalValue += 624;
+			}
+		}
+
+		return totalValue;
+	}
+
+
+	private int getRawPrice(int itemId, int craftingLevel, int smithingLevel)
+	{
+		switch (itemId)
+		{
+			case ItemID.COINS_995:
+				return 1;
+			case ItemID.PLATINUM_TOKEN:
+				return 1000;
+			case ItemID.GREEN_DRAGONHIDE:
+				if (craftingLevel >= 63)
+				{
+					return 1540;
+				}
+				else return 0;
+			case ItemID.GREEN_DRAGON_LEATHER:
+				if (craftingLevel >= 63)
+				{
+					return 1560;
+				}
+				else return 0;
+			case ItemID.BLUE_DRAGONHIDE:
+				if (craftingLevel >= 71)
+				{
+					return 1852;
+				}
+				else return 0;
+			case ItemID.BLUE_DRAGON_LEATHER:
+				if (craftingLevel >= 71)
+				{
+					return 1872;
+				}
+				else return 0;
+			case ItemID.RED_DRAGONHIDE:
+				if (craftingLevel >= 77)
+				{
+					return 2226;
+				}
+				else return 0;
+			case ItemID.RED_DRAGON_LEATHER:
+				if (craftingLevel >= 77)
+				{
+					return 2246;
+				}
+				else return 0;
+			case ItemID.BLACK_DRAGONHIDE:
+				if (craftingLevel >= 84)
+				{
+					return 2676;
+				}
+				else return 0;
+			case ItemID.BLACK_DRAGON_LEATHER:
+				if (craftingLevel >= 84)
+				{
+					return 2696;
+				}
+				else return 0;
+			case ItemID.MITHRIL_BAR:
+				if (smithingLevel >= 68)
+				{
+					return 624;
+				}
+				else return 0;
+			case ItemID.ADAMANTITE_BAR:
+				if (smithingLevel >= 88)
+				{
+					return 1996;
+				}
+				else return 0;
+			case ItemID.RUNITE_BAR:
+				if (smithingLevel >= 99)
+				{
+					return 12800;
+				}
+				else if (smithingLevel >= 89)
+				{
+					return 12480;
+				}
+				else return 0;
+			case ItemID.ONYX_BOLT_TIPS:
+				return 8179;
+			default:
+				if (isAlchable(itemId))
+				{
+					return itemManager.getItemComposition(itemId).getHaPrice();
+				}
+				else return 0;
+		}
+
 	}
 }
