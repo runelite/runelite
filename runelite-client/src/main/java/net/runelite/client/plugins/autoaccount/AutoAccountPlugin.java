@@ -131,7 +131,7 @@ public class AutoAccountPlugin extends Plugin implements KeyListener
 			int newWorld = Integer.parseInt(world);
 			if (newWorld != client.getWorld())
 			{
-				DefaultWorldPlugin.changeWorld(newWorld, client, worldService);
+				DefaultWorldPlugin.changeWorld(newWorld, client, worldService, false);
 			}
 
 		}

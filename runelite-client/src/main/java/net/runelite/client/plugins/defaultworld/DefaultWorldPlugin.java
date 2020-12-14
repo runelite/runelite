@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -60,7 +61,8 @@ public class DefaultWorldPlugin extends Plugin
 	private int worldCache;
 	private boolean worldChangeRequired;
 
-	public static void changeWorld(int newWorld, Client client, WorldService worldService) {
+	public static void changeWorld(int newWorld, Client client, WorldService worldService, boolean pvpAllowed)
+	{
 		int correctedWorld = newWorld < 300 ? newWorld + 300 : newWorld;
 
 		// Old School RuneScape worlds start on 301 so don't even bother trying to find lower id ones
@@ -90,8 +92,15 @@ public class DefaultWorldPlugin extends Plugin
 			rsWorld.setLocation(world.getLocation());
 			rsWorld.setTypes(WorldUtil.toWorldTypes(world.getTypes()));
 
-			client.changeWorld(rsWorld);
-			log.debug("Applied new world {}", correctedWorld);
+			if (!pvpAllowed && rsWorld.getTypes().contains(WorldType.PVP))
+			{
+				log.error("Attempted to hop to a pvp world when it was disallowed");
+			}
+			else
+			{
+				client.changeWorld(rsWorld);
+				log.debug("Applied new world {}", correctedWorld);
+			}
 		}
 		else
 		{
@@ -145,7 +154,7 @@ public class DefaultWorldPlugin extends Plugin
 		}
 
 		worldChangeRequired = false;
-		changeWorld(newWorld, client, worldService);
+		changeWorld(newWorld, client, worldService, true);
 	}
 
 	private void applyWorld()
