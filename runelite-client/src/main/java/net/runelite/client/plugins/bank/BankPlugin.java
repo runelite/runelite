@@ -597,7 +597,8 @@ public class BankPlugin extends Plugin
 	//determines which items are deemed as alchables for the raw gp calculation
 	private boolean isAlchable(int itemId)
 	{
-		switch (itemId){
+		switch (itemId)
+        {
 			case ItemID.RUNE_PLATELEGS:
 			case ItemID.RUNE_PLATESKIRT:
 			case ItemID.RUNE_CHAINBODY:
@@ -704,7 +705,7 @@ public class BankPlugin extends Plugin
 			{
 				coalQty = coalQty - 4;
 				runeQty = runeQty - 1;
-				if (smithingLevel>=99)
+				if (smithingLevel >= 99)
 				{
 					totalValue += 12800;
 				}
