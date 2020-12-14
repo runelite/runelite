@@ -816,8 +816,6 @@ public class BankPlugin extends Plugin
 					return 12480;
 				}
 				else return 0;
-			case ItemID.ONYX_BOLT_TIPS:
-				return 8179;
 			default:
 				if (isAlchable(itemId))
 				{
