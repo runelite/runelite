@@ -294,7 +294,7 @@ public class BankPlugin extends Plugin
 						rawTotal += (long) rawPrice * child.getItemQuantity();
 
 						//needed to capture quantity of coal, mith, addy, and rune for the getOreValue function to work properly
-						switch(child.getItemId())
+						switch (child.getItemId())
 						{
 							case ItemID.COAL:
 								coalQty = child.getItemQuantity();
@@ -320,7 +320,8 @@ public class BankPlugin extends Plugin
 			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 			bankTitle.setText(bankTitle.getText() + createValueText(geTotal, haTotal, rawTotal));
 
-		} else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
+		}
+		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
 		{
 			// vanilla only lays out the bank every 40 client ticks, so if the search input has changed,
 			// and the bank wasn't laid out this tick, lay it out early
@@ -697,12 +698,13 @@ public class BankPlugin extends Plugin
 		int totalValue = 0;
 
 		//begin consuming coal using the best ore available, and proceed from best to worst ore until coal is gone
-		if(smithingLevel>=89)
+		if (smithingLevel >= 89)
 		{
-			while (coalQty >= 4 && runeQty >= 1) {
+			while (coalQty >= 4 && runeQty >= 1)
+			{
 				coalQty = coalQty - 4;
 				runeQty = runeQty - 1;
-				if(smithingLevel>=99)
+				if (smithingLevel>=99)
 				{
 					totalValue += 12800;
 				}
@@ -710,18 +712,20 @@ public class BankPlugin extends Plugin
 			}
 		}
 
-		if(smithingLevel>=88)
+		if (smithingLevel >= 88)
 		{
-			while (coalQty >= 3 && addyQty >= 1) {
+			while (coalQty >= 3 && addyQty >= 1)
+			{
 				coalQty = coalQty - 3;
 				addyQty = addyQty - 1;
 				totalValue += 1996;
 			}
 		}
 
-		if(smithingLevel>=68)
+		if (smithingLevel >= 68)
 		{
-			while (coalQty >= 2 && mithQty >= 1) {
+			while (coalQty >= 2 && mithQty >= 1)
+			{
 				coalQty = coalQty - 2;
 				mithQty = mithQty - 1;
 				totalValue += 624;
@@ -741,49 +745,49 @@ public class BankPlugin extends Plugin
 			case ItemID.PLATINUM_TOKEN:
 				return 1000;
 			case ItemID.GREEN_DRAGONHIDE:
-				if(craftingLevel >= 63)
+				if (craftingLevel >= 63)
 				{
 					return 1540;
 				}
 				else return 0;
 			case ItemID.GREEN_DRAGON_LEATHER:
-				if(craftingLevel >= 63)
+				if (craftingLevel >= 63)
 				{
 					return 1560;
 				}
 				else return 0;
 			case ItemID.BLUE_DRAGONHIDE:
-				if(craftingLevel >= 71)
+				if (craftingLevel >= 71)
 				{
 					return 1852;
 				}
 				else return 0;
 			case ItemID.BLUE_DRAGON_LEATHER:
-				if(craftingLevel >= 71)
+				if (craftingLevel >= 71)
 				{
 					return 1872;
 				}
 				else return 0;
 			case ItemID.RED_DRAGONHIDE:
-				if(craftingLevel >= 77)
+				if (craftingLevel >= 77)
 				{
 					return 2226;
 				}
 				else return 0;
 			case ItemID.RED_DRAGON_LEATHER:
-				if(craftingLevel >= 77)
+				if (craftingLevel >= 77)
 				{
 					return 2246;
 				}
 				else return 0;
 			case ItemID.BLACK_DRAGONHIDE:
-				if(craftingLevel >= 84)
+				if (craftingLevel >= 84)
 				{
 					return 2676;
 				}
 				else return 0;
 			case ItemID.BLACK_DRAGON_LEATHER:
-				if(craftingLevel >= 84)
+				if (craftingLevel >= 84)
 				{
 					return 2696;
 				}
