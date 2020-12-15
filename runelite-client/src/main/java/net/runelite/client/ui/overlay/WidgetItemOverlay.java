@@ -69,15 +69,15 @@ public abstract class WidgetItemOverlay extends Overlay
 		super.setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
 
-	public abstract void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget);
+	public abstract void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final List<WidgetItem> itemWidgets = overlayManager.getItemWidgets();
+		final List<WidgetItem> widgetItems = overlayManager.getWidgetItems();
 		final Rectangle originalClipBounds = graphics.getClipBounds();
 		Widget curClipParent = null;
-		for (WidgetItem widgetItem : itemWidgets)
+		for (WidgetItem widgetItem : widgetItems)
 		{
 			Widget widget = widgetItem.getWidget();
 			int interfaceGroup = TO_GROUP(widget.getId());
