@@ -48,6 +48,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
@@ -184,7 +185,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			|| overlays.isEmpty()
 			|| client.getGameState() != GameState.LOGGED_IN
 			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
-			|| client.getViewportWidget() == null)
+			|| getViewportLayer() == null)
 		{
 			return;
 		}
@@ -795,11 +796,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			changed = true;
 		}
 
-		final boolean viewportChanged = !client.getViewportWidget().getBounds().equals(viewportBounds);
+		final boolean viewportChanged = !getViewportLayer().getBounds().equals(viewportBounds);
 
 		if (viewportChanged)
 		{
-			viewportBounds = client.getViewportWidget().getBounds();
+			viewportBounds = getViewportLayer().getBounds();
 			changed = true;
 		}
 
@@ -812,6 +813,22 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 
 		return changed;
+	}
+
+	private Widget getViewportLayer()
+	{
+		if (client.isResized())
+		{
+			if (client.getVar(Varbits.SIDE_PANELS) == 1)
+			{
+				return client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE);
+			}
+			else
+			{
+				return client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX);
+			}
+		}
+		return client.getWidget(WidgetInfo.FIXED_VIEWPORT);
 	}
 
 	private OverlayBounds buildSnapCorners()

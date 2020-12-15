@@ -34,7 +34,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -85,8 +84,6 @@ public class TitheFarmPlantOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget viewport = client.getViewportWidget();
-
 		for (TitheFarmPlant plant : plugin.getPlants())
 		{
 			if (plant.getState() == TitheFarmPlantState.DEAD)
@@ -103,7 +100,7 @@ public class TitheFarmPlantOverlay extends Overlay
 
 			final Point canvasLocation = Perspective.localToCanvas(client, localLocation, client.getPlane());
 
-			if (viewport != null && canvasLocation != null)
+			if (canvasLocation != null)
 			{
 				final ProgressPieComponent progressPieComponent = new ProgressPieComponent();
 				progressPieComponent.setPosition(canvasLocation);
