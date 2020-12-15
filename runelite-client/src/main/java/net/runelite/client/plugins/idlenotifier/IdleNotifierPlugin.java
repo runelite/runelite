@@ -140,6 +140,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_3A_AXE:
 			case WOODCUTTING_CRYSTAL:
 			case WOODCUTTING_TRAILBLAZER:
+			case WOODCUTTING_ENT_TRUNK:
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
