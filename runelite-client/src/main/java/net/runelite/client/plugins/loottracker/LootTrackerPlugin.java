@@ -198,6 +198,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final Pattern PICKPOCKET_REGEX = Pattern.compile("You pick (the )?(?<target>.+)'s? pocket.*");
 
+	private static final String BIRDNEST_EVENT = "Bird nest";
 	private static final Set<Integer> BIRDNEST_IDS = ImmutableSet.of(ItemID.BIRD_NEST, ItemID.BIRD_NEST_5071, ItemID.BIRD_NEST_5072, ItemID.BIRD_NEST_5073, ItemID.BIRD_NEST_5074, ItemID.BIRD_NEST_7413, ItemID.BIRD_NEST_13653, ItemID.BIRD_NEST_22798, ItemID.BIRD_NEST_22800);
 
 	// Birdhouses
@@ -476,8 +477,8 @@ public class LootTrackerPlugin extends Plugin
 		if (config.npcKillChatMessage())
 		{
 			final String prefix = VOWELS.contains(Character.toLowerCase(name.charAt(0)))
-				? "an"
-				: "a";
+					? "an"
+					: "a";
 
 			lootReceivedChatMessage(items, prefix + ' ' + name);
 		}
@@ -761,7 +762,7 @@ public class LootTrackerPlugin extends Plugin
 			|| HESPORI_EVENT.equals(eventType)
 			|| SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
-			|| eventType.contains("Bird nest")
+			|| BIRDNEST_EVENT.equals(eventType)
 			|| eventType.endsWith("Bird House")
 			|| eventType.startsWith("H.A.M. chest")
 			|| lootRecordType == LootRecordType.PICKPOCKET)
@@ -798,32 +799,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
 		{
-			final int eventId = event.getId();
-			switch (eventId)
-			{
-				case 22800:
-					setEvent(LootRecordType.EVENT, "Bird nest (Wyson)");
-					break;
-				case 22798:
-					setEvent(LootRecordType.EVENT, "Bird nest (Seed)");
-					break;
-				case 5074:
-					setEvent(LootRecordType.EVENT, "Bird nest (Ring)");
-					break;
-				case 5070:
-				case 5071:
-				case 5072:
-					setEvent(LootRecordType.EVENT, "Bird nest (Egg)");
-					break;
-				// 5073, 13653
-				case 5073:
-					setEvent(LootRecordType.EVENT, "Bird nest (Old)");
-					break;
-				case 13563:
-					setEvent(LootRecordType.EVENT, "Bird nest (Old v2)");
-					break;
-			}
-
+			setEvent(LootRecordType.EVENT, BIRDNEST_EVENT, event.getId());
 			takeInventorySnapshot();
 		}
 
