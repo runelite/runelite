@@ -99,7 +99,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	// Overlay state validation
 	private Rectangle viewportBounds;
 	private Rectangle chatboxBounds;
-	private int viewportOffset;
 	private boolean chatboxHidden;
 	private boolean isResizeable;
 	private OverlayBounds snapCorners;
@@ -804,14 +803,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			changed = true;
 		}
 
-		final boolean viewportOffsetChanged = client.getViewportXOffset() != viewportOffset;
-
-		if (viewportOffsetChanged)
-		{
-			viewportOffset = client.getViewportXOffset();
-			changed = true;
-		}
-
 		return changed;
 	}
 
@@ -834,21 +825,21 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private OverlayBounds buildSnapCorners()
 	{
 		final Point topLeftPoint = new Point(
-			viewportOffset + BORDER,
-			viewportOffset + BORDER_TOP);
+			viewportBounds.x + BORDER,
+			viewportBounds.y + BORDER_TOP);
 
 		final Point topCenterPoint = new Point(
-			viewportOffset + viewportBounds.width / 2,
-			viewportOffset + BORDER
+			viewportBounds.x + viewportBounds.width / 2,
+			viewportBounds.y + BORDER
 		);
 
 		final Point topRightPoint = new Point(
-			viewportOffset + viewportBounds.width - BORDER,
+			viewportBounds.x + viewportBounds.width - BORDER,
 			topCenterPoint.y);
 
 		final Point bottomLeftPoint = new Point(
 			topLeftPoint.x,
-			viewportOffset + viewportBounds.height - BORDER);
+			viewportBounds.y + viewportBounds.height - BORDER);
 
 		final Point bottomRightPoint = new Point(
 			topRightPoint.x,
@@ -861,7 +852,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 
 		final Point rightChatboxPoint = isResizeable ? new Point(
-			viewportOffset + chatboxBounds.width - BORDER,
+			viewportBounds.x + chatboxBounds.width - BORDER,
 			bottomLeftPoint.y) : bottomRightPoint;
 
 		final Point canvasTopRightPoint = isResizeable ? new Point(
