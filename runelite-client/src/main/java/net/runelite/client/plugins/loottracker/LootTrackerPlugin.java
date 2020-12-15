@@ -477,8 +477,8 @@ public class LootTrackerPlugin extends Plugin
 		if (config.npcKillChatMessage())
 		{
 			final String prefix = VOWELS.contains(Character.toLowerCase(name.charAt(0)))
-					? "an"
-					: "a";
+				? "an"
+				: "a";
 
 			lootReceivedChatMessage(items, prefix + ' ' + name);
 		}
