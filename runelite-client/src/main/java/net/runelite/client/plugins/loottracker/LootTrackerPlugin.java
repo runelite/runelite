@@ -198,7 +198,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final Pattern PICKPOCKET_REGEX = Pattern.compile("You pick (the )?(?<target>.+)'s? pocket.*");
 
-	private static final Set<Integer> BIRDNEST_IDS = ImmutableSet.of(ItemID.BIRD_NEST, ItemID.BIRD_NEST_5071, ItemID.BIRD_NEST_5072,ItemID.BIRD_NEST_5073, ItemID.BIRD_NEST_5074, ItemID.BIRD_NEST_7413, ItemID.BIRD_NEST_13653,ItemID.BIRD_NEST_22798, ItemID.BIRD_NEST_22800);
+	private static final Set<Integer> BIRDNEST_IDS = ImmutableSet.of(ItemID.BIRD_NEST, ItemID.BIRD_NEST_5071, ItemID.BIRD_NEST_5072, ItemID.BIRD_NEST_5073, ItemID.BIRD_NEST_5074, ItemID.BIRD_NEST_7413, ItemID.BIRD_NEST_13653, ItemID.BIRD_NEST_22798, ItemID.BIRD_NEST_22800);
 
 	// Birdhouses
 	private static final Pattern BIRDHOUSE_PATTERN = Pattern.compile("You dismantle and discard the trap, retrieving (?:(?:a|\\d{1,2}) nests?, )?10 dead birds, \\d{1,3} feathers and (\\d,?\\d{1,3}) Hunter XP\\.");
