@@ -465,7 +465,7 @@ public class Hooks implements Callbacks
 
 		// WidgetItemOverlays render at ABOVE_WIDGETS, reset widget item
 		// list for next frame.
-		overlayManager.getItemWidgets().clear();
+		overlayManager.getWidgetItems().clear();
 	}
 
 	@Subscribe
@@ -510,7 +510,7 @@ public class Hooks implements Callbacks
 		// Empty bank item
 		if (widgetItem.getId() != NullItemID.NULL_6512)
 		{
-			overlayManager.getItemWidgets().add(widgetItem);
+			overlayManager.getWidgetItems().add(widgetItem);
 		}
 	}
 

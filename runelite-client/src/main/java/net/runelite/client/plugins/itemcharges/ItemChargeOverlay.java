@@ -52,7 +52,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		if (!displayOverlay())
 		{
@@ -153,7 +153,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			charges = chargeItem.getCharges();
 		}
 
-		final Rectangle bounds = itemWidget.getCanvasBounds();
+		final Rectangle bounds = widgetItem.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + 15));
 		textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));

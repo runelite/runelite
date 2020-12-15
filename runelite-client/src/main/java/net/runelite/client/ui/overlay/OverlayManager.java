@@ -98,7 +98,7 @@ public class OverlayManager
 	@Getter(AccessLevel.PACKAGE)
 	private final List<Overlay> overlays = new ArrayList<>();
 	@Getter
-	private final List<WidgetItem> itemWidgets = new ArrayList<>();
+	private final List<WidgetItem> widgetItems = new ArrayList<>();
 
 	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new EnumMap<>(OverlayLayer.class);
 
