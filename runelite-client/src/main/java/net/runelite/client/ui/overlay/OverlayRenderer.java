@@ -39,6 +39,8 @@ import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -54,6 +56,7 @@ import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
@@ -101,7 +104,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private Rectangle chatboxBounds;
 	private boolean chatboxHidden;
 	private boolean isResizeable;
-	private OverlayBounds snapCorners;
+	private OverlayBounds emptySnapCorners, snapCorners;
 
 	@Inject
 	private OverlayRenderer(
@@ -167,35 +170,51 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	public void onBeforeRender(BeforeRender event)
 	{
 		menuEntries = null;
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+
+			if (shouldInvalidateBounds())
+			{
+				emptySnapCorners = buildSnapCorners();
+			}
+
+			// Create copy of snap corners because overlays will modify them
+			snapCorners = new OverlayBounds(emptySnapCorners);
+		}
 	}
 
-	public void render(Graphics2D graphics, final OverlayLayer layer)
+	public void renderOverlayLayer(Graphics2D graphics, final OverlayLayer layer)
 	{
-		if (layer != OverlayLayer.ABOVE_MAP
-			&& client.getWidget(WidgetInfo.FULLSCREEN_MAP_ROOT) != null
-			&& !client.getWidget(WidgetInfo.FULLSCREEN_MAP_ROOT).isHidden())
-		{
-			return;
-		}
+		final Collection<Overlay> overlays = overlayManager.getLayer(layer);
+		renderOverlays(graphics, overlays, layer);
+	}
 
-		final List<Overlay> overlays = overlayManager.getLayer(layer);
+	public void renderAfterInterface(Graphics2D graphics, int interfaceId, Collection<WidgetItem> widgetItems)
+	{
+		Collection<Overlay> overlays = overlayManager.getForInterface(interfaceId);
+		overlayManager.setWidgetItems(widgetItems);
+		renderOverlays(graphics, overlays, OverlayLayer.ABOVE_WIDGETS);
+		overlayManager.setWidgetItems(Collections.emptyList());
+	}
 
+	public void renderAfterLayer(Graphics2D graphics, Widget layer, Collection<WidgetItem> widgetItems)
+	{
+		Collection<Overlay> overlays = overlayManager.getForLayer(layer.getId());
+		overlayManager.setWidgetItems(widgetItems);
+		renderOverlays(graphics, overlays, OverlayLayer.ABOVE_WIDGETS);
+		overlayManager.setWidgetItems(Collections.emptyList());
+	}
+
+	private void renderOverlays(Graphics2D graphics, Collection<Overlay> overlays, OverlayLayer layer)
+	{
 		if (overlays == null
 			|| overlays.isEmpty()
-			|| client.getGameState() != GameState.LOGGED_IN
-			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
-			|| getViewportLayer() == null)
+			|| client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		if (shouldInvalidateBounds())
-		{
-			snapCorners = buildSnapCorners();
-		}
-
-		// Create copy of snap corners because overlays will modify them
-		OverlayBounds snapCorners = new OverlayBounds(this.snapCorners);
 		OverlayUtil.setGraphicProperties(graphics);
 
 		// Draw snap corners
@@ -629,7 +648,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		// Check if the overlay is over a snapcorner and move it if so, unless it is a detached overlay
 		if (currentManagedOverlay.getPosition() != OverlayPosition.DETACHED && inOverlayDraggingMode)
 		{
-			final OverlayBounds snapCorners = this.snapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
+			final OverlayBounds snapCorners = this.emptySnapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
 
 			for (Rectangle snapCorner : snapCorners.getBounds())
 			{
@@ -795,11 +814,13 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			changed = true;
 		}
 
-		final boolean viewportChanged = !getViewportLayer().getBounds().equals(viewportBounds);
+		Widget viewportWidget = getViewportLayer();
+		Rectangle viewport = viewportWidget != null ? viewportWidget.getBounds() : new Rectangle();
+		final boolean viewportChanged = !viewport.equals(viewportBounds);
 
 		if (viewportChanged)
 		{
-			viewportBounds = getViewportLayer().getBounds();
+			viewportBounds = viewport;
 			changed = true;
 		}
 

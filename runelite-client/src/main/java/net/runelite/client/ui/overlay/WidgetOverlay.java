@@ -80,6 +80,8 @@ public class WidgetOverlay extends Overlay
 		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPosition(overlayPosition);
+		// It's almost possible to drawAfterInterface(widgetInfo.getGroupId()) here, but that fires
+		// *after* the native components are drawn, which is too late.
 	}
 
 	@Override

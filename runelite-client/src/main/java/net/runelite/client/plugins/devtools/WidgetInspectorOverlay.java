@@ -37,6 +37,7 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -61,6 +62,7 @@ public class WidgetInspectorOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGHEST);
+		drawAfterInterface(WidgetID.FULLSCREEN_MAP_GROUP_ID);
 	}
 
 	@Override
