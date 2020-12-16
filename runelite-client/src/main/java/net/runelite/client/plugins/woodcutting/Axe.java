@@ -28,19 +28,8 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
-import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
-import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
-import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
-import static net.runelite.api.AnimationID.WOODCUTTING_CRYSTAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
-import static net.runelite.api.AnimationID.WOODCUTTING_GILDED;
-import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
-import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
-import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
-import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
-import static net.runelite.api.AnimationID.WOODCUTTING_TRAILBLAZER;
+
+import static net.runelite.api.AnimationID.*;
 import static net.runelite.api.ItemID.ADAMANT_AXE;
 import static net.runelite.api.ItemID.BLACK_AXE;
 import static net.runelite.api.ItemID.BRONZE_AXE;
@@ -56,26 +45,33 @@ import static net.runelite.api.ItemID.TRAILBLAZER_AXE;
 import static net.runelite.api.ItemID._3RD_AGE_AXE;
 import net.runelite.api.Player;
 
-@AllArgsConstructor
+
 @Getter
 enum Axe
 {
-	BRONZE(WOODCUTTING_BRONZE, BRONZE_AXE),
-	IRON(WOODCUTTING_IRON, IRON_AXE),
-	STEEL(WOODCUTTING_STEEL, STEEL_AXE),
-	BLACK(WOODCUTTING_BLACK, BLACK_AXE),
-	MITHRIL(WOODCUTTING_MITHRIL, MITHRIL_AXE),
-	ADAMANT(WOODCUTTING_ADAMANT, ADAMANT_AXE),
-	RUNE(WOODCUTTING_RUNE, RUNE_AXE),
-	GILDED(WOODCUTTING_GILDED, GILDED_AXE),
-	DRAGON(WOODCUTTING_DRAGON, DRAGON_AXE),
-	INFERNAL(WOODCUTTING_INFERNAL, INFERNAL_AXE),
-	THIRDAGE(WOODCUTTING_3A_AXE, _3RD_AGE_AXE),
-	CRYSTAL(WOODCUTTING_CRYSTAL, CRYSTAL_AXE),
-	TRAILBLAZER(WOODCUTTING_TRAILBLAZER, TRAILBLAZER_AXE);
+	BRONZE(BRONZE_AXE, WOODCUTTING_BRONZE, WOODCUTTING_ENT_BRONZE),
+	IRON(IRON_AXE, WOODCUTTING_IRON, WOODCUTTING_ENT_IRON),
+	STEEL(STEEL_AXE, WOODCUTTING_STEEL, WOODCUTTING_ENT_STEEL),
+	BLACK(BLACK_AXE, WOODCUTTING_BLACK, WOODCUTTING_ENT_BLACK),
+	MITHRIL(MITHRIL_AXE, WOODCUTTING_MITHRIL, WOODCUTTING_ENT_MITHRIL),
+	ADAMANT(ADAMANT_AXE, WOODCUTTING_ADAMANT, WOODCUTTING_ENT_ADAMANT),
+	RUNE(RUNE_AXE, WOODCUTTING_RUNE, WOODCUTTING_ENT_RUNE),
+	GILDED(GILDED_AXE, WOODCUTTING_GILDED, WOODCUTTING_ENT_GILDED),
+	DRAGON(DRAGON_AXE, WOODCUTTING_DRAGON, WOODCUTTING_ENT_DRAGON),
+	INFERNAL(INFERNAL_AXE, WOODCUTTING_INFERNAL, WOODCUTTING_ENT_INFERNAL),
+	THIRDAGE(_3RD_AGE_AXE, WOODCUTTING_3A_AXE, WOODCUTTING_ENT_3A_AXE),
+	CRYSTAL(CRYSTAL_AXE, WOODCUTTING_CRYSTAL, WOODCUTTING_ENT_CRYSTAL),
+	TRAILBLAZER(TRAILBLAZER_AXE, WOODCUTTING_TRAILBLAZER); //Ent interaction should be verified.
 
-	private final Integer animId;
+
 	private final Integer itemId;
+	private final int[] animIds;
+
+	Axe(int itemId, int ... animIds)
+	{
+		this.itemId = itemId;
+		this.animIds = animIds;
+	}
 
 	private static final Map<Integer, Axe> AXE_ANIM_IDS;
 
@@ -85,7 +81,10 @@ enum Axe
 
 		for (Axe axe : values())
 		{
-			builder.put(axe.animId, axe);
+			for (int animId : axe.animIds)
+			{
+				builder.put(animId, axe);
+			}
 		}
 
 		AXE_ANIM_IDS = builder.build();
@@ -93,7 +92,7 @@ enum Axe
 
 	boolean matchesChoppingAnimation(final Player player)
 	{
-		return player != null && animId == player.getAnimation();
+		return player != null && findAxeByAnimId(player.getAnimation()) == this;
 	}
 
 	static Axe findAxeByAnimId(int animId)
