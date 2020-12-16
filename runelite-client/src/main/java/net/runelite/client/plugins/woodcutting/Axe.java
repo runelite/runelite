@@ -26,7 +26,6 @@ package net.runelite.client.plugins.woodcutting;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import static net.runelite.api.AnimationID.*;
