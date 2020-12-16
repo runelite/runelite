@@ -35,7 +35,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
-import net.runelite.client.plugins.cluescrolls.ClueScrollService;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import org.junit.Before;
@@ -67,10 +66,6 @@ public class BankTagsPluginTest
 	@Mock
 	@Bind
 	private TabInterface tabInterface;
-
-	@Mock
-	@Bind
-	private ClueScrollService clueScrollService;
 
 	@Mock
 	@Bind

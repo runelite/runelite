@@ -27,7 +27,6 @@
 package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.base.MoreObjects;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -224,18 +223,13 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(ClueScrollService.class).to(ClueScrollServiceImpl.class);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(clueScrollOverlay);
 		overlayManager.add(clueScrollEmoteOverlay);
 		overlayManager.add(clueScrollWorldOverlay);
 		overlayManager.add(clueScrollMusicOverlay);
+		pluginBankTagService = new ClueBankTagService(this);
 		tagManager.registerTag(CLUE_TAG_NAME, this::testClueTag);
 	}
 
@@ -247,6 +241,7 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);
 		overlayManager.remove(clueScrollMusicOverlay);
+		tagManager.unregisterTag(CLUE_TAG_NAME);
 		npcsToMark.clear();
 		namedObjectsToMark.clear();
 		inventoryItems = null;

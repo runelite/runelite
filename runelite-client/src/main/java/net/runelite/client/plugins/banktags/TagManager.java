@@ -37,6 +37,7 @@ import javax.inject.Singleton;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
+import net.runelite.client.plugins.PluginBankTagService;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import net.runelite.client.util.Text;
 

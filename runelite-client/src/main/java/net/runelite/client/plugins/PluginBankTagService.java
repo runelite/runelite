@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -23,16 +23,53 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.cluescrolls;
+package net.runelite.client.plugins;
 
-import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import net.runelite.client.plugins.banktags.PluginBankTabItem;
 
-public interface ClueScrollService
+public class PluginBankTagService
 {
 	/**
-	 * Get the clue scroll
-	 *
-	 * @return ClueScroll
+	 * Get whether the provided item should be tagged
 	 */
-	ClueScroll getClue();
+	public boolean shouldTag(int itemID)
+	{
+		return false;
+	}
+
+	/**
+	 * Get a list of the plugin's current items to tag
+	 */
+	public ArrayList<Integer> itemsToTag()
+	{
+		LinkedHashMap<String, ArrayList<PluginBankTabItem>> sortedItems = tabItemsAsPluginBankTagItem();
+
+		ArrayList<Integer> flattenedList = new ArrayList<>();
+		for (String key : sortedItems.keySet())
+		{
+			for (PluginBankTabItem pluginBankTabItem : sortedItems.get(key))
+			{
+				flattenedList.add(pluginBankTabItem.getItemID());
+			}
+		}
+		return flattenedList;
+	}
+
+	/**
+	 * Get a LinkedHashMap of the current plugin's PluginBankTagItem to be tagged sorted into sections
+	 */
+	public LinkedHashMap<String, ArrayList<PluginBankTabItem>> tabItemsAsPluginBankTagItem()
+	{
+		return null;
+	}
+
+	/**
+	 * Get whether items not in the bank and without a placeholder should be represented in the plugin's bank tab
+	 */
+	public boolean shouldShowMissingItems()
+	{
+		return false;
+	}
 }

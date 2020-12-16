@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.banktags;
 
-package net.runelite.client.plugins.cluescrolls;
+import lombok.Getter;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-
-@Singleton
-class ClueScrollServiceImpl implements ClueScrollService
+public class PluginBankTabItem
 {
-	private final ClueScrollPlugin plugin;
+	@Getter
+	private final int quantity;
+	@Getter
+	private final String text;
+	@Getter
+	private final int itemID;
 
-	@Inject
-	private ClueScrollServiceImpl(ClueScrollPlugin plugin)
+	public PluginBankTabItem(int quantity, String text, int itemID)
 	{
-		this.plugin = plugin;
-	}
-
-	@Override
-	public ClueScroll getClue()
-	{
-		return plugin.getClue();
+		this.quantity = quantity;
+		this.text = text;
+		this.itemID = itemID;
 	}
 }
