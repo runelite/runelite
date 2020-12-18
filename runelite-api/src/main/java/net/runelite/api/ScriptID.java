@@ -320,4 +320,10 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 7)
 	public static final int SETTINGS_SLIDER_CHOOSE_ONOP = 3885;
+
+	/**
+	 * Position and size the wiki button, as well as hide/unhide it
+	 */
+	@ScriptArguments(integer = 4)
+	public static final int WIKI_ICON_UPDATE = 3306;
 }
