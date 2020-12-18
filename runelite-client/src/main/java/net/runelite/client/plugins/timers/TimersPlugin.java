@@ -39,7 +39,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -51,7 +50,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.AnimationChanged;
@@ -64,10 +62,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -135,15 +130,14 @@ public class TimersPlugin extends Plugin
 	private boolean wasWearingEndurance;
 
 	private int lastRaidVarb;
-	private int lastWildernessVarb;
 	private int lastVengCooldownVarb;
 	private int lastIsVengeancedVarb;
 	private int lastPoisonVarp;
+	private int lastPvpVarb;
 	private int nextPoisonTick;
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
-	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
 	private ElapsedTimer tzhaarTimer;
 
@@ -176,7 +170,6 @@ public class TimersPlugin extends Plugin
 		lastPoint = null;
 		lastTeleportClicked = null;
 		lastAnimation = -1;
-		loggedInRace = false;
 		widgetHiddenChangedOnPvpWorld = false;
 		lastPoisonVarp = 0;
 		nextPoisonTick = 0;
@@ -191,6 +184,7 @@ public class TimersPlugin extends Plugin
 		int vengCooldownVarb = client.getVar(Varbits.VENGEANCE_COOLDOWN);
 		int isVengeancedVarb = client.getVar(Varbits.VENGEANCE_ACTIVE);
 		int poisonVarp = client.getVar(VarPlayer.POISON);
+		int pvpVarb = client.getVar(Varbits.PVP_SPEC_ORB);
 
 		if (lastRaidVarb != raidVarb)
 		{
@@ -227,22 +221,6 @@ public class TimersPlugin extends Plugin
 			lastIsVengeancedVarb = isVengeancedVarb;
 		}
 
-		int inWilderness = client.getVar(Varbits.IN_WILDERNESS);
-
-		if (lastWildernessVarb != inWilderness
-			&& client.getGameState() == GameState.LOGGED_IN
-			&& !loggedInRace)
-		{
-			if (!WorldType.isPvpWorld(client.getWorldType())
-				&& inWilderness == 0)
-			{
-				log.debug("Left wilderness in non-PVP world, clearing Teleblock timer.");
-				removeGameTimer(TELEBLOCK);
-			}
-
-			lastWildernessVarb = inWilderness;
-		}
-
 		if (lastPoisonVarp != poisonVarp && config.showAntiPoison())
 		{
 			final int tickCount = client.getTickCount();
@@ -272,16 +250,16 @@ public class TimersPlugin extends Plugin
 
 			lastPoisonVarp = poisonVarp;
 		}
-	}
 
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
-	{
-		Widget widget = event.getWidget();
-		if (WorldType.isPvpWorld(client.getWorldType())
-			&& WidgetInfo.TO_GROUP(widget.getId()) == WidgetID.PVP_GROUP_ID)
+		if (lastPvpVarb != pvpVarb)
 		{
-			widgetHiddenChangedOnPvpWorld = true;
+			if (pvpVarb == 0)
+			{
+				log.debug("Left a PVP zone, clearing teleblock timer");
+				removeGameTimer(TELEBLOCK);
+			}
+
+			lastPvpVarb = pvpVarb;
 		}
 	}
 
@@ -763,8 +741,6 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		loggedInRace = false;
-
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
 
@@ -825,9 +801,6 @@ public class TimersPlugin extends Plugin
 
 				removeTzhaarTimer(); // will be readded by the wave message
 				removeGameTimer(TELEBLOCK);
-				break;
-			case LOGGED_IN:
-				loggedInRace = true;
 				break;
 		}
 	}
