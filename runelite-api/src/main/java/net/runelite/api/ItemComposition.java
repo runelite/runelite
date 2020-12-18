@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 /**
  * Represents the template of a specific item type.
  */
-public interface ItemComposition
+public interface ItemComposition extends ParamHolder
 {
 	/**
 	 * Gets the items name.

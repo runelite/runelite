@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,8 +24,25 @@
  */
 package net.runelite.api;
 
-public interface IterableHashTable<T extends Node> extends Iterable<T>
+/**
+ * @see ParamHolder
+ */
+public class ParamID
 {
-	T get(long hash);
-	void put(T node, long hash);
+	/**
+	 * @see SettingID
+	 */
+	public static final int SETTING_ID = 1077;
+	// defaults to 5
+	// 1 is continuous
+	public static final int SETTING_SLIDER_STEPS = 1101;
+	public static final int SETTING_CUSTOM_TRANSMIT = 1085;
+	// defaults to true
+	// track is foreground
+	public static final int SETTING_FOREGROUND_CLICKZONE = 1105;
+	public static final int SETTING_SLIDER_CUSTOM_ONOP = 1106;
+	public static final int SETTING_SLIDER_CUSTOM_SETPOS = 1107;
+	public static final int SETTING_SLIDER_IS_DRAGGABLE = 1108;
+	public static final int SETTING_SLIDER_DEADZONE = 1109;
+	public static final int SETTING_SLIDER_DEADTIME = 1110;
 }

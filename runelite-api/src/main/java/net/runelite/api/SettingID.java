@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,8 +24,14 @@
  */
 package net.runelite.api;
 
-public interface IterableHashTable<T extends Node> extends Iterable<T>
+/**
+ * @see ParamID#SETTING_ID
+ */
+public class SettingID
 {
-	T get(long hash);
-	void put(T node, long hash);
+	public static final int CAMERA_ZOOM = 14;
+
+	public static final int MUSIC_VOLUME = 30;
+	public static final int EFFECT_VOLUME = 31;
+	public static final int AREA_VOLUME = 32;
 }

@@ -27,28 +27,47 @@
 package net.runelite.client.plugins.music;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.ParamID;
 import net.runelite.api.Player;
+import net.runelite.api.Preferences;
+import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
+import net.runelite.api.SettingID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
+import net.runelite.api.StructComposition;
+import net.runelite.api.StructID;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.AreaSoundEffectPlayed;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.PostStructComposition;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.SoundEffectPlayed;
 import net.runelite.api.events.VarClientIntChanged;
+import net.runelite.api.events.VolumeChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -59,11 +78,15 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
+@Slf4j
 @PluginDescriptor(
 	name = "Music",
 	description = "Adds search and filter for the music list, and additional volume control",
@@ -71,6 +94,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class MusicPlugin extends Plugin
 {
+	private static final int SLIDER_HANDLE_SIZE = 16;
+
 	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
 		SoundEffectID.TELEPORT_VWOOP
 	);
@@ -117,6 +142,14 @@ public class MusicPlugin extends Plugin
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
 
+	@Inject
+	private TooltipManager tooltipManager;
+
+	private Channel musicChannel;
+	private Channel effectChannel;
+	private Channel areaChannel;
+	private Channel[] channels;
+
 	private ChatboxTextInput searchInput;
 
 	private Widget musicSearchButton;
@@ -126,12 +159,37 @@ public class MusicPlugin extends Plugin
 
 	private MusicState currentMusicFilter = MusicState.ALL;
 
+	private Tooltip sliderTooltip;
+	private boolean shuttingDown = false;
+
 	@Override
 	protected void startUp()
 	{
 		clientThread.invoke(() ->
 		{
+			this.shuttingDown = false;
+
+			Preferences preferences = client.getPreferences();
+			musicChannel = new Channel("Music",
+				VarPlayer.MUSIC_VOLUME, Varbits.MUTED_MUSIC_VOLUME,
+				musicConfig::getMusicVolume, musicConfig::setMusicVolume,
+				client::setMusicVolume, 255,
+				WidgetInfo.SETTINGS_SIDE_MUSIC_SLIDER);
+			effectChannel = new Channel("Sound Effects",
+				VarPlayer.SOUND_EFFECT_VOLUME, Varbits.MUTED_SOUND_EFFECT_VOLUME,
+				musicConfig::getSoundEffectVolume, musicConfig::setSoundEffectVolume,
+				preferences::setSoundEffectVolume, 127,
+				WidgetInfo.SETTINGS_SIDE_SOUND_EFFECT_SLIDER);
+			areaChannel = new Channel("Area Sounds",
+				VarPlayer.AREA_EFFECT_VOLUME, Varbits.MUTED_AREA_EFFECT_VOLUME,
+				musicConfig::getAreaSoundEffectVolume, musicConfig::setAreaSoundEffectVolume,
+				preferences::setAreaSoundEffectVolume, 127,
+				WidgetInfo.SETTINGS_SIDE_AREA_SOUND_SLIDER);
+			channels = new Channel[]{musicChannel, effectChannel, areaChannel};
+
 			addMusicButtons();
+			updateMusicOptions();
+			resetSettingsWindow();
 		});
 	}
 
@@ -145,6 +203,11 @@ public class MusicPlugin extends Plugin
 		}
 
 		tracks = null;
+		clientThread.invoke(() ->
+		{
+			shuttingDown = true;
+			teardownMusicOptions();
+		});
 	}
 
 	@Provides
@@ -174,6 +237,12 @@ public class MusicPlugin extends Plugin
 			// It is too early here to call updateFilter()
 			currentMusicFilter = MusicState.ALL;
 			addMusicButtons();
+		}
+
+		if ((widgetLoaded.getGroupId() == WidgetID.SETTINGS_GROUP_ID || widgetLoaded.getGroupId() == WidgetID.SETTINGS_SIDE_GROUP_ID)
+			&& musicConfig.granularSliders())
+		{
+			updateMusicOptions();
 		}
 	}
 
@@ -222,6 +291,42 @@ public class MusicPlugin extends Plugin
 		if (isChatboxOpen() && !isOnMusicTab())
 		{
 			chatboxPanelManager.close();
+		}
+	}
+
+	@Subscribe
+	public void onVolumeChanged(VolumeChanged volumeChanged)
+	{
+		if (musicConfig.granularSliders())
+		{
+			updateMusicOptions();
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if ("music".equals(configChanged.getGroup()))
+		{
+			clientThread.invoke(() ->
+			{
+				if (MusicConfig.GRANULAR_SLIDERS.equals(configChanged.getKey()))
+				{
+					if (musicConfig.granularSliders())
+					{
+						updateMusicOptions();
+						resetSettingsWindow();
+					}
+					else
+					{
+						teardownMusicOptions();
+					}
+				}
+				else
+				{
+					updateMusicOptions();
+				}
+			});
 		}
 	}
 
@@ -348,6 +453,437 @@ public class MusicPlugin extends Plugin
 		private final int color;
 		private final String name;
 		private final int spriteID;
+	}
+
+	@RequiredArgsConstructor
+	private class Slider
+	{
+		@Getter
+		protected final Channel channel;
+
+		protected Widget track;
+		protected Widget handle;
+
+		public void update()
+		{
+			handle.setOnDragListener((JavaScriptCallback) this::drag);
+			handle.setOnDragCompleteListener((JavaScriptCallback) this::drag);
+			handle.setHasListener(true);
+
+			track.setOnMouseRepeatListener((JavaScriptCallback) ev ->
+			{
+				int value = channel.getValue();
+				int percent = (int) Math.round((value * 100.0 / channel.getMax()));
+
+				sliderTooltip = new Tooltip(channel.getName() + ": " + percent + "%");
+			});
+			track.setOnClickListener((JavaScriptCallback) this::click);
+			track.setHasListener(true);
+		}
+
+		public void shutDown()
+		{
+			if (handle != null)
+			{
+				handle.setDragParent(null);
+				handle.setOnDragListener((Object[]) null);
+				handle.setOnDragCompleteListener((Object[]) null);
+			}
+			if (track != null)
+			{
+				track.setOnMouseRepeatListener((Object[]) null);
+				track.setOnClickListener((Object[]) null);
+			}
+		}
+
+		protected void drag(ScriptEvent ev)
+		{
+			moveHandle(ev.getMouseX());
+		}
+
+		protected void click(ScriptEvent ev)
+		{
+			moveHandle(ev.getMouseX() - (SLIDER_HANDLE_SIZE / 2));
+		}
+
+		protected void moveHandle(int x)
+		{
+			int level = (x * channel.max) / getWidth();
+			level = Ints.constrainToRange(level, 0, channel.max);
+			channel.setLevel(level);
+		}
+
+		protected int getWidth()
+		{
+			return track.getWidth() - SLIDER_HANDLE_SIZE;
+		}
+	}
+
+	private class SettingsSideSlider extends Slider
+	{
+		private final WidgetInfo root;
+		private Widget icon;
+
+		SettingsSideSlider(Channel channel, WidgetInfo root)
+		{
+			super(channel);
+			this.root = root;
+		}
+
+		@Override
+		public void update()
+		{
+			Widget root = client.getWidget(this.root);
+			if (root == null)
+			{
+				return;
+			}
+
+			Object[] onLoad = root.getOnLoadListener();
+			if (onLoad == null || onLoad.length != 5)
+			{
+				return;
+			}
+
+			this.icon = client.getWidget((Integer) onLoad[1]);
+			this.track = client.getWidget((Integer) onLoad[2]);
+			this.handle = client.getWidget((Integer) onLoad[3]);
+			if (this.track == null || this.handle == null)
+			{
+				return;
+			}
+
+			for (Widget w : track.getChildren())
+			{
+				if (w != null)
+				{
+					w.setAction(0, null);
+				}
+			}
+
+			handle.setOnVarTransmitListener((Object[]) null);
+			handle.setDragParent(track);
+			handle.setSpriteId(SpriteID.SETTINGS_SLIDER_HANDLE_GREEN);
+			super.update();
+
+			int val = channel.getValue();
+			handle.setOriginalX((val * getWidth()) / channel.getMax());
+			handle.revalidate();
+
+			// emulate [proc,settings_update_icon]
+			boolean unmuted = val != 0;
+			icon.getChild(1).setHidden(unmuted);
+			icon.setAction(0, unmuted ? "Unmute" : "Mute");
+			// Set name + no tooltip; we have our own for ops
+			icon.setName(channel.getName());
+			icon.setOnMouseRepeatListener((Object[]) null);
+			icon.setOnOpListener((JavaScriptCallback) ev -> channel.toggleMute());
+		}
+
+		@Override
+		public void shutDown()
+		{
+			super.shutDown();
+			handle.setSpriteId(SpriteID.SETTINGS_SLIDER_HANDLE_BLUE);
+
+			this.icon.setOnOpListener((Object[]) null);
+
+			Widget root = client.getWidget(this.root);
+			if (root != null)
+			{
+				client.createScriptEvent(root.getOnLoadListener())
+					.setSource(root)
+					.run();
+			}
+
+			this.handle = this.track = this.icon = null;
+		}
+	}
+
+	private class SettingsSlider extends Slider
+	{
+		private final int offsetX;
+		private final int offsetY;
+		private final int width;
+		private final Widget realTrack;
+
+		SettingsSlider(Channel channel, Widget handle, Widget track, int width, int offsetY, int offsetX, Widget realTrack)
+		{
+			super(channel);
+			this.handle = handle;
+			this.track = track;
+			this.width = width;
+			this.offsetX = offsetX;
+			this.offsetY = offsetY;
+			this.realTrack = realTrack;
+		}
+
+		@Override
+		public void update()
+		{
+			super.update();
+
+			int val = channel.getValue();
+			handle.setOriginalX(offsetX + (val * getWidth()) / channel.getMax());
+			handle.setOriginalY(offsetY);
+			handle.revalidate();
+		}
+
+		@Override
+		protected int getWidth()
+		{
+			return width - SLIDER_HANDLE_SIZE;
+		}
+
+		@Override
+		protected void click(ScriptEvent ev)
+		{
+			super.click(ev);
+			realTrack.setOriginalX(offsetX);
+			realTrack.setOriginalY(offsetY);
+			realTrack.setOriginalWidth(this.width);
+			realTrack.setOriginalHeight(SLIDER_HANDLE_SIZE);
+			realTrack.revalidate();
+		}
+
+		@Override
+		@SuppressWarnings("PMD.UselessOverridingMethod")
+		public void shutDown()
+		{
+			// calling settings_init will do teardown for us
+			super.shutDown();
+		}
+	}
+
+	@Subscribe
+	private void onPostStructComposition(PostStructComposition ev)
+	{
+		if (shuttingDown)
+		{
+			return;
+		}
+
+		StructComposition sc = ev.getStructComposition();
+		switch (sc.getId())
+		{
+			case StructID.SETTINGS_MUSIC_VOLUME:
+			case StructID.SETTINGS_EFFECT_VOLUME:
+			case StructID.SETTINGS_AREA_VOLUME:
+				if (!musicConfig.granularSliders())
+				{
+					return;
+				}
+
+				sc.setValue(ParamID.SETTING_SLIDER_STEPS, 1);
+				sc.setValue(ParamID.SETTING_CUSTOM_TRANSMIT, 0);
+				sc.setValue(ParamID.SETTING_FOREGROUND_CLICKZONE, 0);
+				sc.setValue(ParamID.SETTING_SLIDER_CUSTOM_ONOP, 1);
+				sc.setValue(ParamID.SETTING_SLIDER_CUSTOM_SETPOS, 1);
+				sc.setValue(ParamID.SETTING_SLIDER_IS_DRAGGABLE, 1);
+				sc.setValue(ParamID.SETTING_SLIDER_DEADZONE, 0);
+				sc.setValue(ParamID.SETTING_SLIDER_DEADZONE, 0);
+				break;
+		}
+	}
+
+	@Subscribe
+	private void onScriptPreFired(ScriptPreFired ev)
+	{
+		if (shuttingDown)
+		{
+			return;
+		}
+
+		if (ev.getScriptId() == ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP)
+		{
+			if (!musicConfig.granularSliders())
+			{
+				return;
+			}
+
+			int arg = client.getIntStackSize() - 7;
+			int[] is = client.getIntStack();
+			Channel channel;
+			switch (is[arg])
+			{
+				case SettingID.MUSIC_VOLUME:
+					channel = musicChannel;
+					break;
+				case SettingID.EFFECT_VOLUME:
+					channel = effectChannel;
+					break;
+				case SettingID.AREA_VOLUME:
+					channel = areaChannel;
+					break;
+				default:
+					return;
+			}
+
+			Widget track = client.getScriptActiveWidget();
+			Widget handle = client.getWidget(is[arg + 1])
+				.getChild(is[arg + 2]);
+			Widget realTrack = client.getWidget(is[arg + 6]);
+			SettingsSlider s = new SettingsSlider(channel, handle, track, is[arg + 3], is[arg + 4], is[arg + 5], realTrack);
+			s.update();
+			s.getChannel().setWindowSlider(s);
+		}
+	}
+
+	private class Channel
+	{
+		@Getter
+		private final String name;
+		private final VarPlayer var;
+		private final Varbits mutedVar;
+		private final IntSupplier getter;
+		private final Consumer<Integer> setter;
+		private final IntConsumer volumeChanger;
+
+		@Getter
+		private final int max;
+
+		private final Slider sideSlider;
+
+		@Setter
+		private Slider windowSlider;
+
+		Channel(String name,
+			VarPlayer var, Varbits mutedVar,
+			IntSupplier getter, Consumer<Integer> setter,
+			IntConsumer volumeChanger, int max,
+			WidgetInfo sideRoot)
+		{
+			this.name = name;
+			this.var = var;
+			this.mutedVar = mutedVar;
+			this.getter = getter;
+			this.setter = setter;
+			this.volumeChanger = volumeChanger;
+			this.max = max;
+			this.sideSlider = new SettingsSideSlider(this, sideRoot);
+		}
+
+		private int getValueRaw()
+		{
+			int value = getter.getAsInt();
+			if (value == 0)
+			{
+				// Use the vanilla value
+
+				// the varps are known by the engine and it requires they are stored so
+				// 0 = max and 4 = muted
+				int raw = 4 - client.getVar(var);
+				if (raw == 0)
+				{
+					raw = -(4 - client.getVar(mutedVar));
+				}
+				value = ((raw * max) / 4);
+
+				// readd our 1 offset for unknown's place
+				value += value < 0 ? -1 : 1;
+			}
+
+			return value;
+		}
+
+		private int getValue()
+		{
+			int value = getValueRaw();
+
+			// muted with saved restore point
+			if (value < 0)
+			{
+				return 0;
+			}
+
+			// 0 is used for unknown, so config values are 1 away from zero
+			return value - 1;
+		}
+
+		public void toggleMute()
+		{
+			int val = -getValueRaw();
+			if (val == -1)
+			{
+				// muted without a reset value
+				val = max / 2;
+			}
+			setter.accept(val);
+		}
+
+		public void setLevel(int level)
+		{
+			setter.accept(level + 1);
+			update();
+		}
+
+		public void update()
+		{
+			volumeChanger.accept(getValue());
+			sideSlider.update();
+			if (windowSlider != null)
+			{
+				windowSlider.update();
+			}
+		}
+
+		public void shutDown()
+		{
+			sideSlider.shutDown();
+			if (windowSlider != null)
+			{
+				windowSlider.shutDown();
+			}
+
+			int raw = 4 - client.getVar(var);
+			int value = ((raw * max) / 4);
+			volumeChanger.accept(value);
+		}
+	}
+
+	private void updateMusicOptions()
+	{
+		for (Channel channel : channels)
+		{
+			channel.update();
+		}
+	}
+
+	private void teardownMusicOptions()
+	{
+		// the side panel uses this too, so it has to run before they get shut down
+		client.getStructCompositionCache().reset();
+
+		for (Channel channel : channels)
+		{
+			channel.shutDown();
+		}
+
+		resetSettingsWindow();
+	}
+
+	private void resetSettingsWindow()
+	{
+		client.getStructCompositionCache().reset();
+
+		Widget init = client.getWidget(WidgetInfo.SETTINGS_INIT);
+		if (init != null)
+		{
+			// [clientscript, settings_init]
+			client.createScriptEvent(init.getOnLoadListener())
+				.setSource(init)
+				.run();
+		}
+	}
+
+	@Subscribe
+	private void onBeforeRender(BeforeRender ev)
+	{
+		if (sliderTooltip != null)
+		{
+			tooltipManager.add(sliderTooltip);
+			sliderTooltip = null;
+		}
 	}
 
 	@Subscribe

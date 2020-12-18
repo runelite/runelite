@@ -274,6 +274,11 @@ public class FishingPlugin extends Plugin
 				case ItemID.KARAMBWAN_VESSEL_3159:
 				case ItemID.CORMORANTS_GLOVE:
 				case ItemID.CORMORANTS_GLOVE_22817:
+				case ItemID.TRAILBLAZER_HARPOON:
+				case ItemID.TRAILBLAZER_HARPOON_25114:
+				case ItemID.CRYSTAL_HARPOON:
+				case ItemID.CRYSTAL_HARPOON_23864:
+				case ItemID.CRYSTAL_HARPOON_INACTIVE:
 					return true;
 			}
 		}

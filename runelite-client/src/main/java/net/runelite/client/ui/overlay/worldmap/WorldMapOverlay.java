@@ -39,6 +39,7 @@ import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.FontManager;
@@ -73,7 +74,8 @@ public class WorldMapOverlay extends Overlay
 		this.worldMapPointManager = worldMapPointManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGHEST);
-		setLayer(OverlayLayer.ABOVE_MAP);
+		setLayer(OverlayLayer.MANUAL);
+		drawAfterInterface(WidgetID.WORLD_MAP_GROUP_ID);
 		mouseManager.registerMouseListener(worldMapOverlayMouseListener);
 	}
 

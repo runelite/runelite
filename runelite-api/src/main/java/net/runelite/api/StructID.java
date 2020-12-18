@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.api;
 
-public interface IterableHashTable<T extends Node> extends Iterable<T>
+/**
+ * @see StructComposition
+ * @see Client#getStructComposition(int)
+ */
+public class StructID
 {
-	T get(long hash);
-	void put(T node, long hash);
+	public static final int SETTINGS_MUSIC_VOLUME = 2753;
+	public static final int SETTINGS_EFFECT_VOLUME = 2754;
+	public static final int SETTINGS_AREA_VOLUME = 2755;
 }

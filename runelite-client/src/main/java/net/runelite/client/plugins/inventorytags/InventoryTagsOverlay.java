@@ -51,7 +51,7 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		final String group = plugin.getTag(itemId);
 		if (group != null)
@@ -60,10 +60,10 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 			final DisplayMode displayMode = config.getDisplayMode();
 			if (color != null)
 			{
-				Rectangle bounds = itemWidget.getCanvasBounds();
+				Rectangle bounds = widgetItem.getCanvasBounds();
 				if (displayMode == DisplayMode.OUTLINE)
 				{
-					final BufferedImage outline = itemManager.getItemOutline(itemId, itemWidget.getQuantity(), color);
+					final BufferedImage outline = itemManager.getItemOutline(itemId, widgetItem.getQuantity(), color);
 					graphics.drawImage(outline, (int) bounds.getX(), (int) bounds.getY(), null);
 				}
 				else

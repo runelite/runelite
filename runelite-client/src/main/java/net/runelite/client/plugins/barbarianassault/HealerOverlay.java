@@ -87,11 +87,6 @@ class HealerOverlay extends Overlay
 		}
 
 		Role role = round.getRoundRole();
-		if (role == null)
-		{
-			return null;
-		}
-
 		if (config.showHealerBars() && role == Role.HEALER)
 		{
 			for (HealerTeam teammate : HealerTeam.values())
