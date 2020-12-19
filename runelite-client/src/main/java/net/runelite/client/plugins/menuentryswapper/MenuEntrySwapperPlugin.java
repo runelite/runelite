@@ -476,7 +476,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		ItemComposition itemComposition = client.getItemDefinition(itemId);
+		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		String itemName = itemComposition.getName();
 		String option = "Use";
 		int shiftClickActionIndex = itemComposition.getShiftClickActionIndex();
@@ -597,7 +597,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		String option = event.getMenuOption();
 		String target = event.getMenuTarget();
-		ItemComposition itemComposition = client.getItemDefinition(itemId);
+		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 
 		if (option.equals(RESET) && target.equals(MENU_TARGET))
 		{
