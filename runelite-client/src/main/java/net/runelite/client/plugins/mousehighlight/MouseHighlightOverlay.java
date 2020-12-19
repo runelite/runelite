@@ -61,7 +61,6 @@ class MouseHighlightOverlay extends Overlay
 		MenuAction.ITEM_FOURTH_OPTION,
 		MenuAction.ITEM_FIFTH_OPTION,
 		MenuAction.ITEM_USE,
-		MenuAction.ITEM_DROP,
 		MenuAction.WIDGET_FIRST_OPTION,
 		MenuAction.WIDGET_SECOND_OPTION,
 		MenuAction.WIDGET_THIRD_OPTION,
