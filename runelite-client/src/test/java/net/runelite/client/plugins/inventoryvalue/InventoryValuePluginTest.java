@@ -28,125 +28,125 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InventoryValuePluginTest {
-    @Mock
-    @Bind
-    private Client client;
+	@Mock
+	@Bind
+	private Client client;
 
-    @Mock
-    @Bind
-    private ItemManager itemManager;
+	@Mock
+	@Bind
+	private ItemManager itemManager;
 
-    @Mock
-    @Bind
-    private InventoryValueConfig config;
+	@Mock
+	@Bind
+	private InventoryValueConfig config;
 
-    @Mock
-    @Bind
-    private OverlayManager overlayManager;
+	@Mock
+	@Bind
+	private OverlayManager overlayManager;
 
-    @Mock
-    @Bind
-    private ScheduledExecutorService executor;
+	@Mock
+	@Bind
+	private ScheduledExecutorService executor;
 
-    @Mock
-    private File file;
+	@Mock
+	private File file;
 
 
-    @Inject
-    InventoryValuePlugin inventoryValuePlugin;
+	@Inject
+	InventoryValuePlugin inventoryValuePlugin;
 
-    @Mock
-    ItemContainer itemContainer;
+	@Mock
+	ItemContainer itemContainer;
 
-    @Mock
-    ItemComposition itemComposition;
+	@Mock
+	ItemComposition itemComposition;
 
-    Item coins;
-    Item testItem;
+	Item coins;
+	Item testItem;
 
-    String ignoredItemsConfig;
-    List<String> ignoredItemsList;
-    int itemId;
-    int quantity;
+	String ignoredItemsConfig;
+	List<String> ignoredItemsList;
+	int itemId;
+	int quantity;
 
-    @Before
-    public void before() {
-        Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-    }
+	@Before
+	public void before() {
+		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+	}
 
-    @Test
-    public void testBuildIgnoredItemsList() {
-        // split on comma, ignore leading whitespace
-        String ignoreItemsString = "foo, bar";
-        when(config.ignoreItems()).thenReturn(ignoreItemsString);
+	@Test
+	public void testBuildIgnoredItemsList() {
+		// split on comma, ignore leading whitespace
+		String ignoreItemsString = "foo, bar";
+		when(config.ignoreItems()).thenReturn(ignoreItemsString);
 
-        assertEquals(Arrays.asList("foo", "bar"), inventoryValuePlugin.buildIgnoredItemsList());
+		assertEquals(Arrays.asList("foo", "bar"), inventoryValuePlugin.buildIgnoredItemsList());
 
-        // split on comma or semicolon, ignore trailing whitespace
-        String ignoreItemsStringWithSemicolon = "foo,bar;baz ";
-        when(config.ignoreItems()).thenReturn(ignoreItemsStringWithSemicolon);
+		// split on comma or semicolon, ignore trailing whitespace
+		String ignoreItemsStringWithSemicolon = "foo,bar;baz ";
+		when(config.ignoreItems()).thenReturn(ignoreItemsStringWithSemicolon);
 
-        assertEquals(Arrays.asList("foo", "bar", "baz"), inventoryValuePlugin.buildIgnoredItemsList());
+		assertEquals(Arrays.asList("foo", "bar", "baz"), inventoryValuePlugin.buildIgnoredItemsList());
 
-        String ignoreItemsStringWithCasing = "FOo, BaR; BAZ";
-        when(config.ignoreItems()).thenReturn(ignoreItemsStringWithCasing);
+		String ignoreItemsStringWithCasing = "FOo, BaR; BAZ";
+		when(config.ignoreItems()).thenReturn(ignoreItemsStringWithCasing);
 
-        assertEquals(Arrays.asList("foo", "bar", "baz"), inventoryValuePlugin.buildIgnoredItemsList());
-    }
+		assertEquals(Arrays.asList("foo", "bar", "baz"), inventoryValuePlugin.buildIgnoredItemsList());
+	}
 
-    public void coinsValueTestSetup() {
-        itemId = ItemID.COINS_995;
-        quantity = 3201;
-        coins = new Item(itemId, quantity);
-        ignoredItemsList = Collections.emptyList();
+	public void coinsValueTestSetup() {
+		itemId = ItemID.COINS_995;
+		quantity = 3201;
+		coins = new Item(itemId, quantity);
+		ignoredItemsList = Collections.emptyList();
 
-        when(itemComposition.getName()).thenReturn("Coins");
-        when(itemManager.getItemPrice(itemId)).thenReturn(1);
-        when(itemManager.getItemComposition(itemId)).thenReturn(itemComposition);
-    }
+		when(itemComposition.getName()).thenReturn("Coins");
+		when(itemManager.getItemPrice(itemId)).thenReturn(1);
+		when(itemManager.getItemComposition(itemId)).thenReturn(itemComposition);
+	}
 
-    @Test
-    public void testCoinsIgnoredWhenIgnoreCoinsIsSet() {
-        coinsValueTestSetup();
+	@Test
+	public void testCoinsIgnoredWhenIgnoreCoinsIsSet() {
+		coinsValueTestSetup();
 
-        when(config.ignoreCoins()).thenReturn(true);
+		when(config.ignoreCoins()).thenReturn(true);
 
-        assertEquals(0, inventoryValuePlugin.calculateItemValue(coins, ignoredItemsList));
-    }
+		assertEquals(0, inventoryValuePlugin.calculateItemValue(coins, ignoredItemsList));
+	}
 
-    @Test
-    public void testCoinsNotIgnoredWhenIgnoreCoinsIsNotSet() {
-        coinsValueTestSetup();
+	@Test
+	public void testCoinsNotIgnoredWhenIgnoreCoinsIsNotSet() {
+		coinsValueTestSetup();
 
-        when(config.ignoreCoins()).thenReturn(false);
+		when(config.ignoreCoins()).thenReturn(false);
 
-        assertEquals(quantity, inventoryValuePlugin.calculateItemValue(coins, ignoredItemsList));
-    }
+		assertEquals(quantity, inventoryValuePlugin.calculateItemValue(coins, ignoredItemsList));
+	}
 
-    public void ignoreItemTestSetup(int itemId, String itemName, int itemValue) {
-        quantity = 1;
-        testItem = new Item(itemId, quantity);
-        ignoredItemsConfig = "Bottomless compost bucket, Leather chaps";
-        ignoredItemsList = Arrays.asList("bottomless compost bucket", "leather chaps");
+	public void ignoreItemTestSetup(int itemId, String itemName, int itemValue) {
+		quantity = 1;
+		testItem = new Item(itemId, quantity);
+		ignoredItemsConfig = "Bottomless compost bucket, Leather chaps";
+		ignoredItemsList = Arrays.asList("bottomless compost bucket", "leather chaps");
 
-        when(itemComposition.getName()).thenReturn(itemName);
-        when(itemManager.getItemPrice(itemId)).thenReturn(itemValue);
-        when(itemManager.getItemComposition(itemId)).thenReturn(itemComposition);
-    }
+		when(itemComposition.getName()).thenReturn(itemName);
+		when(itemManager.getItemPrice(itemId)).thenReturn(itemValue);
+		when(itemManager.getItemComposition(itemId)).thenReturn(itemComposition);
+	}
 
-    @Test
-    public void testItemNotIgnoredWhenNotInIgnoredItems() {
-        int testItemValue = 40000000;
-        ignoreItemTestSetup(ItemID.SARADOMIN_GODSWORD, "Saradomin godsword", testItemValue);
+	@Test
+	public void testItemNotIgnoredWhenNotInIgnoredItems() {
+		int testItemValue = 40000000;
+		ignoreItemTestSetup(ItemID.SARADOMIN_GODSWORD, "Saradomin godsword", testItemValue);
 
-        assertEquals(testItemValue, inventoryValuePlugin.calculateItemValue(testItem, ignoredItemsList));
-    }
+		assertEquals(testItemValue, inventoryValuePlugin.calculateItemValue(testItem, ignoredItemsList));
+	}
 
-    @Test
-    public void testItemIgnoredWhenInIgnoredItems() {
-        int testItemValue = 300000;
-        ignoreItemTestSetup(ItemID.BOTTOMLESS_COMPOST_BUCKET, "Bottomless compost bucket", testItemValue);
+	@Test
+	public void testItemIgnoredWhenInIgnoredItems() {
+		int testItemValue = 300000;
+		ignoreItemTestSetup(ItemID.BOTTOMLESS_COMPOST_BUCKET, "Bottomless compost bucket", testItemValue);
 
-        assertEquals(0, inventoryValuePlugin.calculateItemValue(testItem, ignoredItemsList));
-    }
+		assertEquals(0, inventoryValuePlugin.calculateItemValue(testItem, ignoredItemsList));
+	}
 }
