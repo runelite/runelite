@@ -8,27 +8,32 @@ import net.runelite.client.config.ConfigItem;
 public interface InventoryValueConfig extends Config
 {
 	@ConfigItem(
-			keyName = "useHaValue",
-			name = "Use High Alchemy Value",
-			description = "Calculate inventory value with High Alchemy. By default, the inventory value is calculated using GE price."
+		keyName = "useHaValue",
+		name = "Use High Alchemy Value",
+		description = "Calculate inventory value with High Alchemy. By default, the inventory value is calculated using GE price."
 	)
-	default boolean useHighAlchemyValue() {
+	default boolean useHighAlchemyValue()
+	{
 		return false;
 	}
 
 	@ConfigItem(
-			keyName = "ignoreCoins",
-			name = "Ignore Coins",
-			description = "Ignore coins in inventory. By default, the inventory value includes coins."
+		keyName = "ignoreCoins",
+		name = "Ignore Coins",
+		description = "Ignore coins in inventory. By default, the inventory value includes coins."
 	)
-	default boolean ignoreCoins() {
+	default boolean ignoreCoins()
+	{
 		return false;
 	}
 
 	@ConfigItem(
-			keyName = "ignoreItems",
-			name = "Ignore Items",
-			description = "Ignore particular items in inventory. By default, no items are ignored."
+		keyName = "ignoreItems",
+		name = "Ignore Items",
+		description = "Ignore particular items in inventory. By default, no items are ignored."
 	)
-	default String ignoreItems() { return ""; }
+	default String ignoreItems()
+	{
+		return "";
+	}
 }
