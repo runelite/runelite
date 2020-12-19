@@ -25,15 +25,20 @@ import java.util.stream.LongStream;
 @PluginDescriptor(name = "Inventory Value Tracker")
 @Slf4j
 public class InventoryValuePlugin extends Plugin {
-    @Inject private Client client;
+    @Inject
+    private Client client;
 
-    @Inject private InventoryValueConfig config;
+    @Inject
+    private InventoryValueConfig config;
 
-    @Inject private ItemManager itemManager;
+    @Inject
+    private ItemManager itemManager;
 
-    @Inject private OverlayManager overlayManager;
+    @Inject
+    private OverlayManager overlayManager;
 
-    @Inject private InventoryValueOverlay overlay;
+    @Inject
+    private InventoryValueOverlay overlay;
 
     @Override
     protected void startUp() throws Exception {
@@ -46,7 +51,8 @@ public class InventoryValuePlugin extends Plugin {
     }
 
     @Subscribe
-    public void onGameStateChanged(GameStateChanged gameStateChanged) {}
+    public void onGameStateChanged(GameStateChanged gameStateChanged) {
+    }
 
     @Subscribe
     public void onItemContainerChanged(ItemContainerChanged event) {
@@ -76,13 +82,14 @@ public class InventoryValuePlugin extends Plugin {
         ItemComposition itemComposition = itemManager.getItemComposition(itemId);
         String itemName = itemComposition.getName();
 
-        if ((itemId == ItemID.COINS_995 && config.ignoreCoins()) || ignoredItems.contains(itemName.toLowerCase())) return 0;
+        if ((itemId == ItemID.COINS_995 && config.ignoreCoins()) || ignoredItems.contains(itemName.toLowerCase()))
+            return 0;
         return (long) item.getQuantity() * (config.useHighAlchemyValue() ?
                 itemComposition.getHaPrice() : itemManager.getItemPrice(item.getId()));
     }
 
     @Provides
-    InventoryValueConfig provideConfig(ConfigManager configManager){
+    InventoryValueConfig provideConfig(ConfigManager configManager) {
         return configManager.getConfig(InventoryValueConfig.class);
     }
 }
