@@ -81,9 +81,8 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 		// HARD
 		// When the task is completed "the Totem" changes to "Totem" - so we add
 		// both variations.
-		add("Recharge some Jewellery at the Totem in the Legends Guild.",
-			new QuestRequirement(Quest.LEGENDS_QUEST));
-		add("Recharge some Jewellery at Totem in the Legends Guild.",
+		String[] TotemRechargeTextOptions = {"Recharge some Jewellery at the Totem in the Legends Guild.", "Recharge some Jewellery at Totem in the Legends Guild."};
+		add(TotemRechargeTextOptions,
 			new QuestRequirement(Quest.LEGENDS_QUEST));
 		add("Enter the Magic Guild.",
 			new SkillRequirement(Skill.MAGIC, 66));
