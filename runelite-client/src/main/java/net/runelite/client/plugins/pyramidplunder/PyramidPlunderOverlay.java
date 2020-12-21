@@ -50,6 +50,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ColorUtil;
 
 class PyramidPlunderOverlay extends Overlay
 {
@@ -157,8 +158,7 @@ class PyramidPlunderOverlay extends Overlay
 				}
 
 				graphics.draw(objectClickbox);
-				graphics.setColor(new Color(highlightColor.getRed(), highlightColor.getGreen(),
-					highlightColor.getBlue(), 50));
+				graphics.setColor(ColorUtil.colorWithAlpha(highlightColor, highlightColor.getAlpha() / 5));
 				graphics.fill(objectClickbox);
 			}
 		});

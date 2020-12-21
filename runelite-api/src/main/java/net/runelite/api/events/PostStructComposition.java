@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
 
-public interface IterableHashTable<T extends Node> extends Iterable<T>
+import lombok.Data;
+import net.runelite.api.StructComposition;
+
+/**
+ * An event called after a new {@link StructComposition} is created and
+ * its data is initialized.
+ */
+@Data
+public class PostStructComposition
 {
-	T get(long hash);
-	void put(T node, long hash);
+	/**
+	 * The newly created struct.
+	 */
+	private StructComposition structComposition;
 }

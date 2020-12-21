@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.6.34-SNAPSHOT</version>
+	<version>1.6.36-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -45,7 +45,7 @@
 		<checkstyle.skip>true</checkstyle.skip>
 		<glslang.path></glslang.path>
 
-		<rs.version>192</rs.version>
+		<rs.version>193</rs.version>
 	</properties>
 
 	<licenses>

@@ -37,6 +37,7 @@ import net.runelite.api.NPC;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.util.ColorUtil;
 
 public class TargetClickboxOverlay extends Overlay
 {
@@ -77,7 +78,7 @@ public class TargetClickboxOverlay extends Overlay
 			graphics.setColor(color);
 			graphics.setStroke(new BasicStroke(2));
 			graphics.draw(objectClickbox);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+			graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12));
 			graphics.fill(objectClickbox);
 		}
 	}

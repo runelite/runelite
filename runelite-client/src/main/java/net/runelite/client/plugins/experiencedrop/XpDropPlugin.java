@@ -43,8 +43,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -92,7 +90,7 @@ public class XpDropPlugin extends Plugin
 
 	private void processXpDrop(int widgetId)
 	{
-		final Widget xpdrop = client.getWidget(TO_GROUP(widgetId), TO_CHILD(widgetId));
+		final Widget xpdrop = client.getWidget(widgetId);
 		final Widget[] children = xpdrop.getChildren();
 		// child 0 is the xpdrop text, everything else are sprite ids for skills
 		final Widget text = children[0];

@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.tithefarm;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -32,6 +33,7 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("tithefarmplugin")
 public interface TitheFarmPluginConfig extends Config
 {
+	@Alpha
 	@ConfigItem(
 		position = 1,
 		keyName = "hexColorUnwatered",
@@ -43,6 +45,7 @@ public interface TitheFarmPluginConfig extends Config
 		return new Color(255, 187, 0);
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 2,
 		keyName = "hexColorWatered",
@@ -54,6 +57,7 @@ public interface TitheFarmPluginConfig extends Config
 		return new Color(0, 153, 255);
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 3,
 		keyName = "hexColorGrown",

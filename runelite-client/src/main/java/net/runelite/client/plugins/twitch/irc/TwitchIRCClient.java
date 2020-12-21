@@ -68,7 +68,10 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 	{
 		try
 		{
-			socket.close();
+			if (socket != null)
+			{
+				socket.close();
+			}
 		}
 		catch (IOException ex)
 		{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,8 +24,34 @@
  */
 package net.runelite.api;
 
-public interface IterableHashTable<T extends Node> extends Iterable<T>
+/**
+ * A composition that can hold `param` keys. This lets Jagex attach arbitrary constant
+ * data to certain items, objects, npcs, or structs for use in cs2
+ *
+ * @see ParamID
+ */
+public interface ParamHolder
 {
-	T get(long hash);
-	void put(T node, long hash);
+	IterableHashTable<Node> getParams();
+	void setParams(IterableHashTable<Node> params);
+
+	/**
+	 * Gets the value of a given {@link ParamID}, or its default if it is unset
+	 */
+	int getIntValue(int paramID);
+
+	/**
+	 * Sets the value of a given {@link ParamID}
+	 */
+	void setValue(int paramID, int value);
+
+	/**
+	 * Gets the value of a given {@link ParamID}, or its default if it is unset
+	 */
+	String getStringValue(int paramID);
+
+	/**
+	 * Sets the value of a given {@link ParamID}
+	 */
+	void setValue(int paramID, String value);
 }

@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.implings;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -63,6 +64,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 2,
 		keyName = "babyColor",
@@ -87,6 +89,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 4,
 		keyName = "youngColor",
@@ -111,6 +114,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 6,
 		keyName = "gourmetColor",
@@ -135,6 +139,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 8,
 		keyName = "earthColor",
@@ -159,6 +164,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 10,
 		keyName = "essenceColor",
@@ -183,6 +189,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 12,
 		keyName = "eclecticColor",
@@ -207,6 +214,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 14,
 		keyName = "natureColor",
@@ -231,6 +239,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 16,
 		keyName = "magpieColor",
@@ -255,6 +264,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 18,
 		keyName = "ninjaColor",
@@ -279,6 +289,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 20,
 		keyName = "crystalColor",
@@ -303,6 +314,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.HIGHLIGHT;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 22,
 		keyName = "dragonColor",
@@ -327,6 +339,7 @@ public interface ImplingsConfig extends Config
 		return ImplingMode.HIGHLIGHT;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 24,
 		keyName = "luckyColor",
@@ -350,6 +363,7 @@ public interface ImplingsConfig extends Config
 		return false;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 26,
 		keyName = "spawnColor",
