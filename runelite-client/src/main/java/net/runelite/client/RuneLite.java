@@ -25,7 +25,6 @@
 package net.runelite.client;
 
 import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -86,6 +85,7 @@ import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import org.slf4j.LoggerFactory;
+import org.slf4j.impl.StaticLoggerBinder;
 
 @Singleton
 @Slf4j
@@ -223,8 +223,22 @@ public class RuneLite
 
 		if (options.has("debug"))
 		{
-			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-			logger.setLevel(Level.DEBUG);
+			// during plugin-hub dev, not all devs use logback-classic
+			// make sure we have logback-classic before attempting to set level
+			// setting level at runtime is not supported by the slf4j-api alone
+			final org.slf4j.Logger rootLogger = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+			if (StaticLoggerBinder.getSingleton().getLoggerFactoryClassStr().equals("ch.qos.logback.classic.util.ContextSelectorStaticBinder"))
+			{
+				((ch.qos.logback.classic.Logger) rootLogger).setLevel(Level.DEBUG);
+			}
+			else
+			{
+				rootLogger.warn("==========================================================================");
+				rootLogger.warn("--debug was set, but you are not using Logback Classic.");
+				rootLogger.warn("If you are using another SLF4J implementation,");
+				rootLogger.warn("please set the root logger level manually through that implementation.");
+				rootLogger.warn("==========================================================================");
+			}
 		}
 
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
