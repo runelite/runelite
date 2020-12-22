@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import com.google.inject.Singleton;
 import java.time.Instant;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +48,7 @@ import net.runelite.client.plugins.timetracking.TimeTrackingPlugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
+@Singleton
 public class FarmingContractManager
 {
 	private static final int GUILDMASTER_JANE_NPC_ID = NullNpcID.NULL_8628;
@@ -264,7 +266,7 @@ public class FarmingContractManager
 					continue;
 				}
 
-				if ((contract.requiresHealthCheck() && state == CropState.HARVESTABLE)
+				if ((contract.getPatchImplementation().isHealthCheckRequired() && state == CropState.HARVESTABLE)
 					&& !(hasEmptyPatch || hasDiseasedPatch || hasDeadPatch))
 				{
 					summary = SummaryState.OCCUPIED;

@@ -33,6 +33,8 @@ import net.runelite.client.config.Units;
 public interface TimeTrackingConfig extends Config
 {
 	String CONFIG_GROUP = "timetracking";
+	String FARM_TICK_OFFSET = "farmTickOffset";
+	String FARM_TICK_OFFSET_PRECISION = "farmTickOffsetPrecision";
 	String AUTOWEED = "autoweed";
 	String BIRD_HOUSE = "birdhouse";
 	String BOTANIST = "botanist";
