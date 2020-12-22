@@ -26,6 +26,7 @@
 package net.runelite.client.util;
 
 import com.google.common.base.Strings;
+import com.google.gson.Gson;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
@@ -54,7 +55,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -75,6 +75,7 @@ public class ImageCapture
 	private final Client client;
 	private final Notifier notifier;
 	private final OkHttpClient okHttpClient;
+	private final Gson gson;
 	private final String imgurClientId;
 
 	@Inject
@@ -82,12 +83,14 @@ public class ImageCapture
 		final Client client,
 		final Notifier notifier,
 		final OkHttpClient okHttpClient,
+		final Gson gson,
 		@Named("runelite.imgur.client.id") final String imgurClientId
 	)
 	{
 		this.client = client;
 		this.notifier = notifier;
 		this.okHttpClient = okHttpClient;
+		this.gson = gson;
 		this.imgurClientId = imgurClientId;
 	}
 
@@ -204,7 +207,7 @@ public class ImageCapture
 	 */
 	private void uploadScreenshot(File screenshotFile, boolean notify) throws IOException
 	{
-		String json = RuneLiteAPI.GSON.toJson(new ImageUploadRequest(screenshotFile));
+		String json = gson.toJson(new ImageUploadRequest(screenshotFile));
 
 		Request request = new Request.Builder()
 			.url(IMGUR_IMAGE_UPLOAD_URL)
@@ -225,8 +228,8 @@ public class ImageCapture
 			{
 				try (InputStream in = response.body().byteStream())
 				{
-					ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
-						.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ImageUploadResponse.class);
+					ImageUploadResponse imageUploadResponse =
+						gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ImageUploadResponse.class);
 
 					if (imageUploadResponse.isSuccess())
 					{

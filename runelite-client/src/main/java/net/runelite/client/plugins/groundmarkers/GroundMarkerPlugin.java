@@ -73,8 +73,6 @@ public class GroundMarkerPlugin extends Plugin
 	private static final String WALK_HERE = "Walk here";
 	private static final String REGION_PREFIX = "region_";
 
-	private static final Gson GSON = new Gson();
-
 	@Getter(AccessLevel.PACKAGE)
 	private final List<ColorTileMarker> points = new ArrayList<>();
 
@@ -105,6 +103,9 @@ public class GroundMarkerPlugin extends Plugin
 	@Inject
 	private GroundMarkerSharingManager sharingManager;
 
+	@Inject
+	private Gson gson;
+
 	void savePoints(int regionId, Collection<GroundMarkerPoint> points)
 	{
 		if (points == null || points.isEmpty())
@@ -113,7 +114,7 @@ public class GroundMarkerPlugin extends Plugin
 			return;
 		}
 
-		String json = GSON.toJson(points);
+		String json = gson.toJson(points);
 		configManager.setConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId, json);
 	}
 
@@ -126,7 +127,7 @@ public class GroundMarkerPlugin extends Plugin
 		}
 
 		// CHECKSTYLE:OFF
-		return GSON.fromJson(json, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
+		return gson.fromJson(json, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
 		// CHECKSTYLE:ON
 	}
 
