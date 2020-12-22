@@ -128,7 +128,6 @@ public class GrandExchangePlugin extends Plugin
 
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
 	private static final String BUY_LIMIT_KEY = "buylimit";
-	private static final Gson GSON = new Gson();
 	private static final Duration BUY_LIMIT_RESET = Duration.ofHours(4);
 
 	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
@@ -182,6 +181,9 @@ public class GrandExchangePlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private Gson gson;
 
 	private Widget grandExchangeText;
 	private Widget grandExchangeItem;
@@ -253,12 +255,12 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return null;
 		}
-		return GSON.fromJson(offer, SavedOffer.class);
+		return gson.fromJson(offer, SavedOffer.class);
 	}
 
 	private void setOffer(int slot, SavedOffer offer)
 	{
-		configManager.setRSProfileConfiguration("geoffer", Integer.toString(slot), GSON.toJson(offer));
+		configManager.setRSProfileConfiguration("geoffer", Integer.toString(slot), gson.toJson(offer));
 	}
 
 	private void deleteOffer(int slot)

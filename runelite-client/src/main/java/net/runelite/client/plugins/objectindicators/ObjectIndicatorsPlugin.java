@@ -88,7 +88,6 @@ public class ObjectIndicatorsPlugin extends Plugin
 	private static final String MARK = "Mark object";
 	private static final String UNMARK = "Unmark object";
 
-	private final Gson GSON = new Gson();
 	@Getter(AccessLevel.PACKAGE)
 	private final List<ColorTileObject> objects = new ArrayList<>();
 	private final Map<Integer, Set<ObjectPoint>> points = new HashMap<>();
@@ -107,6 +106,9 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ObjectIndicatorsConfig config;
+
+	@Inject
+	private Gson gson;
 
 	@Provides
 	ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -428,7 +430,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		}
 		else
 		{
-			final String json = GSON.toJson(points);
+			final String json = gson.toJson(points);
 			configManager.setConfiguration(CONFIG_GROUP, "region_" + id, json);
 		}
 	}
@@ -442,7 +444,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return null;
 		}
 
-		Set<ObjectPoint> points = GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
+		Set<ObjectPoint> points = gson.fromJson(json, new TypeToken<Set<ObjectPoint>>()
 		{
 		}.getType());
 		// Prior to multiloc support the plugin would mark objects named "null", which breaks

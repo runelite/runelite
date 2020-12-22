@@ -32,7 +32,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -47,10 +46,12 @@ public class CrowdsourcingManager
 {
 	private static final String CROWDSOURCING_BASE = "https://crowdsource.runescape.wiki/runelite";
 	private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-	private static final Gson GSON = RuneLiteAPI.GSON;
 
 	@Inject
 	private OkHttpClient okHttpClient;
+
+	@Inject
+	private Gson gson;
 
 	private List<Object> data = new ArrayList<>();
 
@@ -77,7 +78,7 @@ public class CrowdsourcingManager
 
 		Request r = new Request.Builder()
 			.url(CROWDSOURCING_BASE)
-			.post(RequestBody.create(JSON, GSON.toJson(temp)))
+			.post(RequestBody.create(JSON, gson.toJson(temp)))
 			.build();
 
 		okHttpClient.newCall(r).enqueue(new Callback()

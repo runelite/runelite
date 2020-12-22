@@ -53,7 +53,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
-import net.runelite.http.api.RuneLiteAPI;
 
 @Slf4j
 class GroundMarkerSharingManager
@@ -61,22 +60,23 @@ class GroundMarkerSharingManager
 	private static final WidgetMenuOption EXPORT_MARKERS_OPTION = new WidgetMenuOption("Export", "Ground Markers", WORLD_MAP_OPTION);
 	private static final WidgetMenuOption IMPORT_MARKERS_OPTION = new WidgetMenuOption("Import", "Ground Markers", WORLD_MAP_OPTION);
 
-	private static final Gson GSON = RuneLiteAPI.GSON;
-
 	private final GroundMarkerPlugin plugin;
 	private final Client client;
 	private final MenuManager menuManager;
 	private final ChatMessageManager chatMessageManager;
 	private final ChatboxPanelManager chatboxPanelManager;
+	private final Gson gson;
 
 	@Inject
-	private GroundMarkerSharingManager(GroundMarkerPlugin plugin, Client client, MenuManager menuManager, ChatMessageManager chatMessageManager, ChatboxPanelManager chatboxPanelManager)
+	private GroundMarkerSharingManager(GroundMarkerPlugin plugin, Client client, MenuManager menuManager,
+		ChatMessageManager chatMessageManager, ChatboxPanelManager chatboxPanelManager, Gson gson)
 	{
 		this.plugin = plugin;
 		this.client = client;
 		this.menuManager = menuManager;
 		this.chatMessageManager = chatMessageManager;
 		this.chatboxPanelManager = chatboxPanelManager;
+		this.gson = gson;
 	}
 
 	void addMenuOptions()
@@ -135,7 +135,7 @@ class GroundMarkerSharingManager
 			return;
 		}
 
-		final String exportDump = GSON.toJson(activePoints);
+		final String exportDump = gson.toJson(activePoints);
 
 		log.debug("Exported ground markers: {}", exportDump);
 
@@ -173,7 +173,7 @@ class GroundMarkerSharingManager
 		try
 		{
 			// CHECKSTYLE:OFF
-			importPoints = GSON.fromJson(clipboardText, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
+			importPoints = gson.fromJson(clipboardText, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException e)
