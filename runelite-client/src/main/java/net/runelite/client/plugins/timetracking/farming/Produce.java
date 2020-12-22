@@ -65,13 +65,13 @@ public enum Produce
 	POISON_IVY("Poison ivy", "Poison ivy berries", PatchImplementation.BUSH, ItemID.POISON_IVY_BERRIES, 20, 9, 20, 5),
 
 	// Hop crops
-	BARLEY("Barley", ItemID.BARLEY, 10, 5, 0, 3),
-	HAMMERSTONE("Hammerstone", ItemID.HAMMERSTONE_HOPS, 10, 5, 0, 3),
-	ASGARNIAN("Asgarnian", ItemID.ASGARNIAN_HOPS, 10, 6, 0, 3),
-	JUTE("Jute", ItemID.JUTE_FIBRE, 10, 6, 0, 3),
-	YANILLIAN("Yanillian", ItemID.YANILLIAN_HOPS, 10, 7, 0, 3),
-	KRANDORIAN("Krandorian", ItemID.KRANDORIAN_HOPS, 10, 8, 0, 3),
-	WILDBLOOD("Wildblood", ItemID.WILDBLOOD_HOPS, 10, 9, 0, 3),
+	BARLEY("Barley", PatchImplementation.HOPS, ItemID.BARLEY, 10, 5, 0, 3),
+	HAMMERSTONE("Hammerstone", PatchImplementation.HOPS, ItemID.HAMMERSTONE_HOPS, 10, 5, 0, 3),
+	ASGARNIAN("Asgarnian", PatchImplementation.HOPS, ItemID.ASGARNIAN_HOPS, 10, 6, 0, 3),
+	JUTE("Jute", PatchImplementation.HOPS, ItemID.JUTE_FIBRE, 10, 6, 0, 3),
+	YANILLIAN("Yanillian", PatchImplementation.HOPS, ItemID.YANILLIAN_HOPS, 10, 7, 0, 3),
+	KRANDORIAN("Krandorian", PatchImplementation.HOPS, ItemID.KRANDORIAN_HOPS, 10, 8, 0, 3),
+	WILDBLOOD("Wildblood", PatchImplementation.HOPS, ItemID.WILDBLOOD_HOPS, 10, 9, 0, 3),
 
 	// Herb crops
 	GUAM("Guam", PatchImplementation.HERB, ItemID.GUAM_LEAF, 20, 5, 0, 3),
@@ -113,25 +113,25 @@ public enum Produce
 	POTATO_CACTUS("Potato cactus", "Potato cacti", PatchImplementation.CACTUS, ItemID.POTATO_CACTUS, 10, 8, 5, 7),
 
 	// Hardwood
-	TEAK("Teak", ItemID.TEAK_LOGS, 560, 8),
-	MAHOGANY("Mahogany", ItemID.MAHOGANY_LOGS, 640, 9),
+	TEAK("Teak", PatchImplementation.HARDWOOD_TREE, ItemID.TEAK_LOGS, 560, 8),
+	MAHOGANY("Mahogany", PatchImplementation.HARDWOOD_TREE, ItemID.MAHOGANY_LOGS, 640, 9),
 
 	// Anima
-	ATTAS("Attas", NullItemID.NULL_22940, 640, 9),
-	IASOR("Iasor", NullItemID.NULL_22939, 640, 9),
-	KRONOS("Kronos", NullItemID.NULL_22938, 640, 9),
+	ATTAS("Attas", PatchImplementation.ANIMA, NullItemID.NULL_22940, 640, 9),
+	IASOR("Iasor", PatchImplementation.ANIMA, NullItemID.NULL_22939, 640, 9),
+	KRONOS("Kronos", PatchImplementation.ANIMA, NullItemID.NULL_22938, 640, 9),
 
 	// Special crops
-	SEAWEED("Seaweed", ItemID.GIANT_SEAWEED, 10, 5, 0, 4),
-	GRAPE("Grape", ItemID.GRAPES, 5, 8, 0, 5),
-	MUSHROOM("Mushroom", ItemID.MUSHROOM, 40, 7, 0, 7),
-	BELLADONNA("Belladonna", ItemID.CAVE_NIGHTSHADE, 80, 5),
-	CALQUAT("Calquat", ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
-	SPIRIT_TREE("Spirit tree", ItemID.SPIRIT_TREE, 320, 13),
+	SEAWEED("Seaweed", PatchImplementation.SEAWEED, ItemID.GIANT_SEAWEED, 10, 5, 0, 4),
+	GRAPE("Grape", PatchImplementation.GRAPES, ItemID.GRAPES, 5, 8, 0, 5),
+	MUSHROOM("Mushroom", PatchImplementation.MUSHROOM, ItemID.MUSHROOM, 40, 7, 0, 7),
+	BELLADONNA("Belladonna", PatchImplementation.BELLADONNA, ItemID.CAVE_NIGHTSHADE, 80, 5),
+	CALQUAT("Calquat", PatchImplementation.CALQUAT, ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
+	SPIRIT_TREE("Spirit tree", PatchImplementation.SPIRIT_TREE, ItemID.SPIRIT_TREE, 320, 13),
 	CELASTRUS("Celastrus", "Celastrus tree", PatchImplementation.CELASTRUS, ItemID.BATTLESTAFF, 160, 6, 0, 4),
 	REDWOOD("Redwood", "Redwood tree", PatchImplementation.REDWOOD, ItemID.REDWOOD_LOGS, 640, 11),
-	HESPORI("Hespori", NullItemID.NULL_23044, 640, 4, 0, 2),
-	CRYSTAL_TREE("Crystal tree", ItemID.CRYSTAL_SHARDS, 80, 7),
+	HESPORI("Hespori", PatchImplementation.HESPORI, NullItemID.NULL_23044, 640, 4, 0, 2),
+	CRYSTAL_TREE("Crystal tree", PatchImplementation.CRYSTAL_TREE, ItemID.CRYSTAL_SHARDS, 80, 7),
 
 	// Compost bins
 	EMPTY_COMPOST_BIN("Compost Bin", PatchImplementation.COMPOST, ItemID.COMPOST_BIN, 0, 1, 0, 0), // Dummy produce for the empty state
@@ -202,20 +202,6 @@ public enum Produce
 	Produce(String name, int itemID, int tickrate, int stages)
 	{
 		this(name, name, null, itemID, tickrate, stages, 0, 1);
-	}
-
-	boolean requiresHealthCheck()
-	{
-		switch (this.patchImplementation)
-		{
-			case BUSH:
-			case TREE:
-			case CACTUS:
-			case REDWOOD:
-			case CELASTRUS:
-				return true;
-		}
-		return false;
 	}
 
 	@Nullable
