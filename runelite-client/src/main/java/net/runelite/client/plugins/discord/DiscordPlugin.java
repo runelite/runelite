@@ -372,6 +372,12 @@ public class DiscordPlugin extends Plugin
 
 	private void checkForGameStateUpdate()
 	{
+		if (!config.showMainMenu() && client.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			resetState();
+			return;
+		}
+
 		discordState.triggerEvent(client.getGameState() == GameState.LOGGED_IN
 			? DiscordGameEventType.IN_GAME
 			: DiscordGameEventType.IN_MENU);
