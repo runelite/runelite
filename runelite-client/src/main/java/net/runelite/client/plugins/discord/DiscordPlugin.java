@@ -372,7 +372,7 @@ public class DiscordPlugin extends Plugin
 
 	private void checkForGameStateUpdate()
 	{
-		if (!config.showMainMenu() && client.getGameState() == GameState.LOGIN_SCREEN)
+		if (!config.showMainMenu() && client.getGameState() != GameState.LOGGED_IN)
 		{
 			resetState();
 			return;
