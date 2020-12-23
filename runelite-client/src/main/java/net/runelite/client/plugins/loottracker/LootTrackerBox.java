@@ -375,8 +375,19 @@ class LootTrackerBox extends JPanel
 		final long gePrice = item.getTotalGePrice();
 		final long haPrice = item.getTotalHaPrice();
 		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
-		return "<html>" + name + " x " + quantity + ignoredLabel
-			+ "<br>GE: " + QuantityFormatter.quantityToStackSize(gePrice)
-			+ "<br>HA: " + QuantityFormatter.quantityToStackSize(haPrice) + "</html>";
+		final StringBuilder sb = new StringBuilder("<html>");
+		sb.append(name).append(" x ").append(QuantityFormatter.formatNumber(quantity)).append(ignoredLabel);
+		sb.append("<br>GE: ").append(QuantityFormatter.quantityToStackSize(gePrice));
+		if (quantity > 1)
+		{
+			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getGePrice())).append(" ea)");
+		}
+		sb.append("<br>HA: ").append(QuantityFormatter.quantityToStackSize(haPrice));
+		if (quantity > 1)
+		{
+			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getHaPrice())).append(" ea)");
+		}
+		sb.append("</html>");
+		return sb.toString();
 	}
 }
