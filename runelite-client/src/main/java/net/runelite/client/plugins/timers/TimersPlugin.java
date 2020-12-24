@@ -59,7 +59,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
@@ -84,6 +83,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @Slf4j
 public class TimersPlugin extends Plugin
 {
+	private static final String ABYSSAL_SIRE_STUN_MESSAGE = "The Sire has been disorientated temporarily.";
 	private static final String ANTIFIRE_DRINK_MESSAGE = "You drink some of your antifire potion.";
 	private static final String ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your antifire potion has expired.</col>";
 	private static final String CANNON_FURNACE_MESSAGE = "You add the furnace.";
@@ -450,6 +450,11 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
+		if (message.equals(ABYSSAL_SIRE_STUN_MESSAGE) && config.showAbyssalSireStun())
+		{
+			createGameTimer(ABYSSAL_SIRE_STUN);
+		}
+
 		if (message.equals(ENDURANCE_EFFECT_MESSAGE))
 		{
 			wasWearingEndurance = true;
@@ -805,28 +810,6 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onNpcChanged(NpcChanged npcChanged)
-	{
-		int id = npcChanged.getNpc().getId();
-		int oldId = npcChanged.getOld().getId();
-
-		if (id == NpcID.ABYSSAL_SIRE_5888)
-		{
-			// stunned npc type
-			log.debug("Sire is stunned");
-			if (config.showAbyssalSireStun())
-			{
-				createGameTimer(ABYSSAL_SIRE_STUN);
-			}
-		}
-		else if (oldId == NpcID.ABYSSAL_SIRE_5888)
-		{
-			// change from stunned sire to anything else
-			log.debug("Sire is unstunned");
-			removeGameTimer(ABYSSAL_SIRE_STUN);
-		}
-	}
 
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
