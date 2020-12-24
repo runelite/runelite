@@ -241,6 +241,20 @@ public class TimersPluginTest
 	}
 
 	@Test
+	public void testSireStunTimer()
+	{
+		when(timersConfig.showAbyssalSireStun()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "The Sire has been disorientated temporarily.", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.ABYSSAL_SIRE_STUN, infoBox.getTimer());
+		assertEquals(Duration.ofSeconds(30), infoBox.getDuration());
+	}
+
+	@Test
 	public void testEndurance()
 	{
 		when(timersConfig.showStamina()).thenReturn(true);
