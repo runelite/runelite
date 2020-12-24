@@ -195,7 +195,7 @@ public class WorldMapPlugin extends Plugin
 		{
 			case AGILITY:
 			{
-				int newAgilityLevel = statChanged.getLevel();
+				int newAgilityLevel = statChanged.getBoostedLevel();
 				if (newAgilityLevel != agilityLevel)
 				{
 					agilityLevel = newAgilityLevel;
@@ -205,7 +205,7 @@ public class WorldMapPlugin extends Plugin
 			}
 			case WOODCUTTING:
 			{
-				int newWoodcutLevel = statChanged.getLevel();
+				int newWoodcutLevel = statChanged.getBoostedLevel();
 				if (newWoodcutLevel != woodcuttingLevel)
 				{
 					woodcuttingLevel = newWoodcutLevel;
