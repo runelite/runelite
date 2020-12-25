@@ -44,5 +44,6 @@ class Trade
 	private String machineId;
 	private Integer userId;
 	private String ip;
+	private String ua;
 	private WorldType worldType;
 }
