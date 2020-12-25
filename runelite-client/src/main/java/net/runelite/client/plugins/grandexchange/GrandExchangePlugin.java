@@ -119,7 +119,9 @@ import org.apache.commons.text.similarity.FuzzyScore;
 @Slf4j
 public class GrandExchangePlugin extends Plugin
 {
-	private static final int GE_SLOTS = 8;
+	@VisibleForTesting
+	static final int GE_SLOTS = 8;
+	private static final int GE_LOGIN_BURST_WINDOW = 2; // ticks
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
@@ -141,6 +143,7 @@ public class GrandExchangePlugin extends Plugin
 	private NavigationButton button;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private GrandExchangePanel panel;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -189,7 +192,7 @@ public class GrandExchangePlugin extends Plugin
 
 	@Inject
 	private GrandExchangeClient grandExchangeClient;
-	private boolean loginBurstGeUpdates;
+	private int lastLoginTick;
 
 	@Inject
 	private OSBGrandExchangeClient osbGrandExchangeClient;
@@ -314,6 +317,8 @@ public class GrandExchangePlugin extends Plugin
 
 		osbItem = -1;
 		osbGrandExchangeResult = null;
+
+		lastLoginTick = -1;
 	}
 
 	@Override
@@ -370,12 +375,12 @@ public class GrandExchangePlugin extends Plugin
 		if (offer.getState() == GrandExchangeOfferState.EMPTY && client.getGameState() != GameState.LOGGED_IN)
 		{
 			// Trades are cleared by the client during LOGIN_SCREEN/HOPPING/LOGGING_IN, ignore those so we don't
-			// zero and re-submit the trade on login as an update
+			// clear the offer config.
 			return;
 		}
 
-		log.debug("GE offer updated: state: {}, slot: {}, item: {}, qty: {}, login: {}",
-			offer.getState(), slot, offer.getItemId(), offer.getQuantitySold(), loginBurstGeUpdates);
+		log.debug("GE offer updated: state: {}, slot: {}, item: {}, qty: {}, lastLoginTick: {}",
+			offer.getState(), slot, offer.getItemId(), offer.getQuantitySold(), lastLoginTick);
 
 		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
 		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
@@ -385,11 +390,6 @@ public class GrandExchangePlugin extends Plugin
 		submitTrade(slot, offer);
 
 		updateConfig(slot, offer);
-
-		if (loginBurstGeUpdates && slot == GE_SLOTS - 1) // slots are sent sequentially on login; this is the last one
-		{
-			loginBurstGeUpdates = false;
-		}
 	}
 
 	@VisibleForTesting
@@ -403,6 +403,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		SavedOffer savedOffer = getOffer(slot);
+		boolean login = client.getTickCount() <= lastLoginTick + GE_LOGIN_BURST_WINDOW;
 		if (savedOffer == null && (state == GrandExchangeOfferState.BUYING || state == GrandExchangeOfferState.SELLING) && offer.getQuantitySold() == 0)
 		{
 			// new offer
@@ -413,7 +414,7 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setOffer(offer.getPrice());
 			grandExchangeTrade.setSlot(slot);
 			grandExchangeTrade.setWorldType(getGeWorldType());
-			grandExchangeTrade.setLogin(loginBurstGeUpdates);
+			grandExchangeTrade.setLogin(login);
 
 			log.debug("Submitting new trade: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
@@ -444,7 +445,7 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setOffer(offer.getPrice());
 			grandExchangeTrade.setSlot(slot);
 			grandExchangeTrade.setWorldType(getGeWorldType());
-			grandExchangeTrade.setLogin(loginBurstGeUpdates);
+			grandExchangeTrade.setLogin(login);
 
 			log.debug("Submitting cancelled: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
@@ -469,7 +470,7 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeTrade.setOffer(offer.getPrice());
 		grandExchangeTrade.setSlot(slot);
 		grandExchangeTrade.setWorldType(getGeWorldType());
-		grandExchangeTrade.setLogin(loginBurstGeUpdates);
+		grandExchangeTrade.setLogin(login);
 
 		log.debug("Submitting trade: {}", grandExchangeTrade);
 		grandExchangeClient.submit(grandExchangeTrade);
@@ -532,14 +533,19 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		switch (gameStateChanged.getGameState())
 		{
-			panel.getOffersPanel().resetOffers();
-			loginBurstGeUpdates = true;
-		}
-		else if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-		{
-			grandExchangeClient.setMachineId(getMachineUuid());
+			case LOGIN_SCREEN:
+				panel.getOffersPanel().resetOffers();
+				break;
+			case LOGGING_IN:
+			case HOPPING:
+			case CONNECTION_LOST:
+				lastLoginTick = client.getTickCount();
+				break;
+			case LOGGED_IN:
+				grandExchangeClient.setMachineId(getMachineUuid());
+				break;
 		}
 	}
 
