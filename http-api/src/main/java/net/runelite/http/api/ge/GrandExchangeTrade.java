@@ -42,4 +42,5 @@ public class GrandExchangeTrade
 	private int offer;
 	private int slot;
 	private WorldType worldType;
+	private int seq;
 }
