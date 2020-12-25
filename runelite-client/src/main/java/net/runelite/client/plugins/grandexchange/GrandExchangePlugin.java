@@ -201,6 +201,7 @@ public class GrandExchangePlugin extends Plugin
 
 	private String machineUuid;
 	private String lastUsername;
+	private int tradeSeq;
 
 	/**
 	 * Logic from {@link org.apache.commons.text.similarity.FuzzyScore}
@@ -330,6 +331,7 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeText = null;
 		grandExchangeItem = null;
 		lastUsername = machineUuid = null;
+		tradeSeq = 0;
 	}
 
 	@Subscribe
@@ -415,6 +417,7 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setSlot(slot);
 			grandExchangeTrade.setWorldType(getGeWorldType());
 			grandExchangeTrade.setLogin(login);
+			grandExchangeTrade.setSeq(tradeSeq++);
 
 			log.debug("Submitting new trade: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
@@ -446,6 +449,7 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setSlot(slot);
 			grandExchangeTrade.setWorldType(getGeWorldType());
 			grandExchangeTrade.setLogin(login);
+			grandExchangeTrade.setSeq(tradeSeq++);
 
 			log.debug("Submitting cancelled: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
@@ -471,6 +475,7 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeTrade.setSlot(slot);
 		grandExchangeTrade.setWorldType(getGeWorldType());
 		grandExchangeTrade.setLogin(login);
+		grandExchangeTrade.setSeq(tradeSeq++);
 
 		log.debug("Submitting trade: {}", grandExchangeTrade);
 		grandExchangeClient.submit(grandExchangeTrade);
@@ -958,12 +963,14 @@ public class GrandExchangePlugin extends Plugin
 			}
 			hasher.putUnencodedChars(username);
 			machineUuid = hasher.hash().toString();
+			tradeSeq = 0;
 			return machineUuid;
 		}
 		catch (SocketException ex)
 		{
 			log.debug("unable to generate machine id", ex);
 			machineUuid = null;
+			tradeSeq = 0;
 			return null;
 		}
 	}

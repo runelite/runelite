@@ -103,6 +103,7 @@ public class GrandExchangeController
 		trade.setIp(request.getHeader("X-Forwarded-For"));
 		trade.setUa(request.getHeader("User-Agent"));
 		trade.setWorldType(grandExchangeTrade.getWorldType());
+		trade.setSeq(grandExchangeTrade.getSeq());
 
 		String json = GSON.toJson(trade);
 		try (Jedis jedis = redisPool.getResource())
