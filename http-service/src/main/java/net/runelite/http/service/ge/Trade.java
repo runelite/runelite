@@ -46,4 +46,5 @@ class Trade
 	private String ip;
 	private String ua;
 	private WorldType worldType;
+	private int seq;
 }
