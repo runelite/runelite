@@ -26,6 +26,7 @@ package net.runelite.http.service.ge;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -104,6 +105,8 @@ public class GrandExchangeController
 		trade.setUa(request.getHeader("User-Agent"));
 		trade.setWorldType(grandExchangeTrade.getWorldType());
 		trade.setSeq(grandExchangeTrade.getSeq());
+		Instant resetTime = grandExchangeTrade.getResetTime();
+		trade.setResetTime(resetTime == null ? 0L : resetTime.getEpochSecond());
 
 		String json = GSON.toJson(trade);
 		try (Jedis jedis = redisPool.getResource())

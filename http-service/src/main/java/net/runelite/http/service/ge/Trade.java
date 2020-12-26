@@ -47,4 +47,5 @@ class Trade
 	private String ua;
 	private WorldType worldType;
 	private int seq;
+	private long resetTime;
 }
