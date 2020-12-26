@@ -389,6 +389,8 @@ public class GrandExchangePlugin extends Plugin
 		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
 		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offer, slot));
 
+		updateLimitTimer(offer);
+
 		submitTrade(slot, offer);
 
 		updateConfig(slot, offer);
@@ -418,6 +420,7 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setWorldType(getGeWorldType());
 			grandExchangeTrade.setLogin(login);
 			grandExchangeTrade.setSeq(tradeSeq++);
+			grandExchangeTrade.setResetTime(getLimitResetTime(offer.getItemId()));
 
 			log.debug("Submitting new trade: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
@@ -450,6 +453,7 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setWorldType(getGeWorldType());
 			grandExchangeTrade.setLogin(login);
 			grandExchangeTrade.setSeq(tradeSeq++);
+			grandExchangeTrade.setResetTime(getLimitResetTime(offer.getItemId()));
 
 			log.debug("Submitting cancelled: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
@@ -476,6 +480,7 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeTrade.setWorldType(getGeWorldType());
 		grandExchangeTrade.setLogin(login);
 		grandExchangeTrade.setSeq(tradeSeq++);
+		grandExchangeTrade.setResetTime(getLimitResetTime(offer.getItemId()));
 
 		log.debug("Submitting trade: {}", grandExchangeTrade);
 		grandExchangeClient.submit(grandExchangeTrade);
@@ -514,8 +519,6 @@ public class GrandExchangePlugin extends Plugin
 			savedOffer.setSpent(offer.getSpent());
 			savedOffer.setState(offer.getState());
 			setOffer(slot, savedOffer);
-
-			updateLimitTimer(offer);
 		}
 	}
 
