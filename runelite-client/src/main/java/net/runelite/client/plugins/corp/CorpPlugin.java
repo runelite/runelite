@@ -155,10 +155,17 @@ public class CorpPlugin extends Plugin
 				if (config.notifyDarkCore() && !coreSpawned)
 				{
 					notifier.notify("Dark core has spawned!");
+
+					String message = new ChatMessageBuilder()
+							.append(ChatColorType.HIGHLIGHT)
+							.append("Dark core has spawned!")
+							.build();
+
 					chatMessageManager.queue(QueuedMessage.builder()
 							.type(ChatMessageType.CONSOLE)
-							.runeLiteFormattedMessage("Dark core has spawned!")
+							.runeLiteFormattedMessage(message)
 							.build());
+
 					coreSpawned = true;
 				}
 				break;
