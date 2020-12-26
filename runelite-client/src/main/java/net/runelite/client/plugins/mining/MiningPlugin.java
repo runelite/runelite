@@ -335,9 +335,15 @@ public class MiningPlugin extends Plugin
 				if (session == null)
 				{
 					session = new MiningSession();
+					overlay.setStartTime();
 				}
 
 				session.setLastMined();
+			}
+			final String message = event.getMessage();
+			if (message.startsWith("The Varrock platebody enabled"))
+			{
+				overlay.addOre();
 			}
 		}
 	}

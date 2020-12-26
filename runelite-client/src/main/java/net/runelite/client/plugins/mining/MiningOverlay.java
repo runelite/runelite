@@ -27,6 +27,7 @@ package net.runelite.client.plugins.mining;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
@@ -48,6 +49,10 @@ class MiningOverlay extends OverlayPanel
 	private final MiningPlugin plugin;
 	private final MiningConfig config;
 	private final XpTrackerService xpTrackerService;
+
+	private int additionalOre;
+	private int actions;
+	private Instant startInstant;
 
 	@Inject
 	private MiningOverlay(final Client client, final MiningPlugin plugin, final MiningConfig config, XpTrackerService xpTrackerService)
@@ -87,7 +92,7 @@ class MiningOverlay extends OverlayPanel
 				.build());
 		}
 
-		int actions = xpTrackerService.getActions(Skill.MINING);
+		actions = xpTrackerService.getActions(Skill.MINING) + additionalOre;
 		if (actions > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
@@ -97,13 +102,33 @@ class MiningOverlay extends OverlayPanel
 
 			if (actions > 2)
 			{
+				int actionsPerHour = xpTrackerService.getActionsHr(Skill.MINING);
+
+				if (additionalOre > 0)
+				{
+					double sessionLength = Instant.now().getEpochSecond() - startInstant.getEpochSecond();
+					actionsPerHour = (int) (actions / (sessionLength / 3600));
+				}
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Mined/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.MINING)))
+					.right(Integer.toString(actionsPerHour))
 					.build());
 			}
 		}
 
 		return super.render(graphics);
+	}
+
+	public void addOre()
+	{
+		additionalOre++;
+	}
+
+	public void setStartTime()
+	{
+		if (startInstant == null)
+		{
+			startInstant = Instant.now();
+		}
 	}
 }
