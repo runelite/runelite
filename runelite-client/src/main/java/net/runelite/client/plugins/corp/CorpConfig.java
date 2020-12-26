@@ -52,4 +52,15 @@ public interface CorpConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "notifyDarkCore",
+			name = "Notify on dark core spawn",
+			description = "Sends a notification when the dark core spawns.",
+			position = 2
+	)
+	default boolean notifyDarkCore()
+	{
+		return true;
+	}
 }

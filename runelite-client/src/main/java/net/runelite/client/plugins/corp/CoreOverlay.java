@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
+import net.runelite.client.Notifier;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -39,6 +40,9 @@ class CoreOverlay extends Overlay
 {
 	private final CorpPlugin corpPlugin;
 	private final CorpConfig config;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private CoreOverlay(CorpPlugin corpPlugin, CorpConfig corpConfig)
@@ -59,6 +63,11 @@ class CoreOverlay extends Overlay
 			if (canvasTilePoly != null)
 			{
 				OverlayUtil.renderPolygon(graphics, canvasTilePoly, Color.RED.brighter());
+			}
+
+			if (config.notifyDarkCore())
+			{
+				notifier.notify("Dark core has spawned!");
 			}
 		}
 
