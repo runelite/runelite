@@ -59,8 +59,5 @@ public interface CorpConfig extends Config
 			description = "Sends a notification when the dark core spawns.",
 			position = 2
 	)
-	default boolean notifyDarkCore()
-	{
-		return true;
-	}
+	default boolean notifyDarkCore() { return true; }
 }
