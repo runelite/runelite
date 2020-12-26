@@ -199,12 +199,14 @@ public class CorpPlugin extends Plugin
 					.type(ChatMessageType.CONSOLE)
 					.runeLiteFormattedMessage(message)
 					.build());
-
-				coreSpawned = false;
 			}
 		}
 		else if (npc == core)
 		{
+			if (npc.isDead())
+			{
+				coreSpawned = false;
+			}
 			core = null;
 		}
 	}
