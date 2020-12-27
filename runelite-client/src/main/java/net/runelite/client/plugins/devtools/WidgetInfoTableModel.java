@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.function.Function;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
+import net.runelite.api.Client;
+import net.runelite.api.WidgetNode;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 
@@ -40,10 +42,13 @@ public class WidgetInfoTableModel extends AbstractTableModel
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private Client client;
+
 	private static final int COL_FIELD = 0;
 	private static final int COL_VALUE = 1;
 
-	private static final List<WidgetField> fields = populateWidgetFields();
+	private final List<WidgetField> fields = populateWidgetFields();
 
 	private Widget widget = null;
 	private Map<WidgetField, Object> values = null;
@@ -132,7 +137,7 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		});
 	}
 
-	private static List<WidgetField> populateWidgetFields()
+	private List<WidgetField> populateWidgetFields()
 	{
 		List<WidgetField> out = new ArrayList<>();
 
@@ -194,6 +199,15 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		out.add(new WidgetField<>("NoScrollThrough", Widget::getNoScrollThrough, Widget::setNoScrollThrough, Boolean.class));
 		out.add(new WidgetField<>("TargetVerb", Widget::getTargetVerb, Widget::setTargetVerb, String.class));
 		out.add(new WidgetField<>("DragParent", Widget::getDragParent));
+		out.add(new WidgetField<>("ModalMode", w ->
+		{
+			WidgetNode attachment = client.getComponentTable().get(w.getParentId());
+			if (attachment != null)
+			{
+				return attachment.getModalMode();
+			}
+			return null;
+		}));
 
 		return out;
 	}
