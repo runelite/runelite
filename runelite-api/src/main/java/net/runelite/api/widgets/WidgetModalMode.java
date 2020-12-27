@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.widgets;
 
-/**
- * Represents a widget as an iterable node.
- */
-public interface WidgetNode extends Node
+public class WidgetModalMode
 {
-	/**
-	 * The ID of the widget.
-	 *
-	 * @return the ID of the widget
-	 * @see net.runelite.api.widgets.Widget
-	 */
-	int getId();
-
-	/**
-	 * @see net.runelite.api.widgets.WidgetModalMode
-	 */
-	int getModalMode();
+	public static final int MODAL_NOCLICKTHROUGH = 0;
+	public static final int NON_MODAL = 1;
+	public static final int MODAL_CLICKTHROUGH = 3;
 }
