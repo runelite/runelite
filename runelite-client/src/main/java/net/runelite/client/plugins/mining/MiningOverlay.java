@@ -44,15 +44,14 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 class MiningOverlay extends OverlayPanel
 {
 	static final String MINING_RESET = "Reset";
+	static final int SECONDS_PER_HOUR = 3600;
 
 	private final Client client;
 	private final MiningPlugin plugin;
 	private final MiningConfig config;
 	private final XpTrackerService xpTrackerService;
-	private final int SECONDS_PER_HOUR = 3600;
 
 	private int additionalOre;
-	private int actions;
 	private Instant startInstant;
 
 	@Inject
@@ -93,7 +92,7 @@ class MiningOverlay extends OverlayPanel
 				.build());
 		}
 
-		actions = xpTrackerService.getActions(Skill.MINING) + additionalOre;
+		int actions = xpTrackerService.getActions(Skill.MINING) + additionalOre;
 		if (actions > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
