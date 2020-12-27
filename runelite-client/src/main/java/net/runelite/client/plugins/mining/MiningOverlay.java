@@ -49,6 +49,7 @@ class MiningOverlay extends OverlayPanel
 	private final MiningPlugin plugin;
 	private final MiningConfig config;
 	private final XpTrackerService xpTrackerService;
+	private final int SECONDS_PER_HOUR = 3600;
 
 	private int additionalOre;
 	private int actions;
@@ -107,7 +108,7 @@ class MiningOverlay extends OverlayPanel
 				if (additionalOre > 0)
 				{
 					double sessionLength = Instant.now().getEpochSecond() - startInstant.getEpochSecond();
-					actionsPerHour = (int) (actions / (sessionLength / 3600));
+					actionsPerHour = (int) (actions / (sessionLength / SECONDS_PER_HOUR));
 				}
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Mined/hr:")
