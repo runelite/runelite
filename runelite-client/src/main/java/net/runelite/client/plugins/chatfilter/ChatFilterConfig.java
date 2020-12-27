@@ -78,6 +78,13 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "filteredNames",
+		name = "",
+		description = ""
+	)
+	void setNamesToFilter(String namesToFilter);
+
+	@ConfigItem(
 		keyName = "filterType",
 		name = "Filter type",
 		description = "Configures how the messages are filtered",
@@ -163,5 +170,16 @@ public interface ChatFilterConfig extends Config
 	default int maxRepeatedPublicChats()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickFilter",
+		name = "Right Click Filter",
+		description = "Add an option to filter player chat in the right click menu",
+		position = 12
+	)
+	default boolean rightClickFilter()
+	{
+		return false;
 	}
 }

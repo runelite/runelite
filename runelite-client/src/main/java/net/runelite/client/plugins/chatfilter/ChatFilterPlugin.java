@@ -31,6 +31,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,9 +51,15 @@ import static net.runelite.api.ChatMessageType.OBJECT_EXAMINE;
 import static net.runelite.api.ChatMessageType.PUBLICCHAT;
 import static net.runelite.api.ChatMessageType.SPAM;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
+import static net.runelite.api.MenuAction.RUNELITE_PLAYER;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
@@ -78,6 +85,8 @@ public class ChatFilterPlugin extends Plugin
 
 	@VisibleForTesting
 	static final String CENSOR_MESSAGE = "Hey, everyone, I just tried to say something very silly!";
+	private static final String FILTER_CHAT = "Filter chat";
+	private static final String REMOVE_FILTER = "Remove filter";
 
 	private static final Set<ChatMessageType> COLLAPSIBLE_MESSAGETYPES = ImmutableSet.of(
 		ENGINE,
@@ -119,6 +128,9 @@ public class ChatFilterPlugin extends Plugin
 
 	@Inject
 	private FriendChatManager friendChatManager;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Provides
 	ChatFilterConfig provideConfig(ConfigManager configManager)
@@ -382,5 +394,64 @@ public class ChatFilterPlugin extends Plugin
 			}
 		}
 		return false;
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (!config.rightClickFilter())
+		{
+			return;
+		}
+
+		int type = event.getType();
+
+		if (type >= MENU_ACTION_DEPRIORITIZE_OFFSET)
+		{
+			type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
+		}
+		final MenuAction menuAction = MenuAction.of(type);
+
+		if (menuAction.equals(RUNELITE_PLAYER))
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+			final String playerName = Text.standardize(event.getTarget().split("\\s+")[0]);
+			final boolean nameFiltered = shouldFilterByName(playerName);
+
+			final MenuEntry filterEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			filterEntry.setOption(nameFiltered ? REMOVE_FILTER : FILTER_CHAT);
+			filterEntry.setTarget(event.getTarget());
+			filterEntry.setType(MenuAction.RUNELITE.getId());
+
+			client.setMenuEntries(menuEntries);
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked click)
+	{
+		if (click.getMenuAction() != MenuAction.RUNELITE ||
+			!(click.getMenuOption().equals(FILTER_CHAT) || click.getMenuOption().equals(REMOVE_FILTER)))
+		{
+			return;
+		}
+
+		final String playerName = Text.standardize(click.getMenuTarget().split("\\s+")[0]);
+		String filteredNames = configManager.getConfiguration("chatfilter", "filteredNames");
+
+
+		if (click.getMenuOption().equals(FILTER_CHAT))
+		{
+			config.setNamesToFilter(filteredNames.isEmpty() ? playerName : filteredNames + "\n" + playerName);
+		}
+		else
+		{
+			filteredNames = filteredNames.replaceAll(playerName, "");
+			config.setNamesToFilter(filteredNames);
+		}
+
+		click.consume();
 	}
 }
