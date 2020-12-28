@@ -52,7 +52,21 @@ public interface DrawCallbacks
 
 	boolean drawFace(Model model, int face);
 
+	/**
+	 * Called before the scene is drawn
+	 * @param cameraX
+	 * @param cameraY
+	 * @param cameraZ
+	 * @param cameraPitch
+	 * @param cameraYaw
+	 * @param plane
+	 */
 	void drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane);
+
+	/**
+	 * Called after the scene has been drawn
+	 */
+	void postDrawScene();
 
 	void animate(Texture texture, int diff);
 }
