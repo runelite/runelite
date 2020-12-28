@@ -61,8 +61,8 @@ public class TooltipOverlay extends Overlay
 		setPosition(OverlayPosition.TOOLTIP);
 		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		// additionally allow tooltips above the world map
-		drawAfterInterface(WidgetID.WORLD_MAP_GROUP_ID);
+		// additionally allow tooltips above the full screen world map and welcome screen
+		drawAfterInterface(WidgetID.FULLSCREEN_CONTAINER_TLI);
 	}
 
 	@Override
