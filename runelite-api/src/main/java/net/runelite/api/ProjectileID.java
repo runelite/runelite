@@ -44,8 +44,22 @@ public class ProjectileID
 	public static final int VASA_RANGED_AOE = 1329;
 	public static final int TEKTON_METEOR_AOE = 660;
 
-	public static final int OLM_FALLING_CRYSTAL_AOE = -1; //please help
-	public static final int OLM_BURNING_AOE = -1;
+
+
+	public static final int OLM_MAGIC_AUTO_ATTACK = 1339;
+	public static final int OLM_RANGED_AUTO_ATTACK = 1340;
+	public static final int OLM_MAGIC_ORB = 1341;
+	public static final int OLM_RANGED_ORB = 1343;
+	public static final int OLM_MELEE_ORB = 1345;
+	public static final int OLM_FIRE_LANE_START = 1347;
+	public static final int OLM_FIRE_LANE_GROUND_FIRES = 1348;
+	public static final int OLM_BURNING_AOE = 1349;
+	public static final int OLM_SPIKE_ROOF_ATTACK = 1352; //red portal following player falling spikes
+	public static final int OLM_VENOM_LAUNCH = 1354;
+	public static final int OLM_HEALING_POOL = 1355;
+	public static final int OLM_FALLING_CRYSTAL_AOE = 1357; //please help // crystal bomb falling from the sky + crystals falling sky to damage player
+
+
 
 	public static final int VORKATH_BOMB_AOE = 1481;
 	public static final int VORKATH_POISON_POOL_AOE = 1483;

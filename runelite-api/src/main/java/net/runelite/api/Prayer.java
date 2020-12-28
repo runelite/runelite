@@ -175,4 +175,5 @@ public enum Prayer
 	{
 		return drainRate;
 	}
+
 }

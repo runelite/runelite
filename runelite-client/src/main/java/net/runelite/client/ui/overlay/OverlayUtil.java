@@ -91,9 +91,9 @@ public class OverlayUtil
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(text, x + 1, y + 1);
-
 		graphics.setColor(color);
 		graphics.drawString(text, x, y);
+
 	}
 
 	public static void renderImageLocation(Client client, Graphics2D graphics, LocalPoint localPoint, BufferedImage image, int zOffset)
