@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
+
+import lombok.Value;
 
 /**
- * Represents a widget as an iterable node.
+ * Posted when an interface is about to be closed
  */
-public interface WidgetNode extends Node
+@Value
+public class WidgetClosed
 {
 	/**
-	 * The ID of the widget.
-	 *
-	 * @return the ID of the widget
-	 * @see net.runelite.api.widgets.Widget
+	 * The ID of the interface that is closed
 	 */
-	int getId();
+	private final int groupId;
 
 	/**
 	 * @see net.runelite.api.widgets.WidgetModalMode
 	 */
-	int getModalMode();
+	private final int modalMode;
+
+	/**
+	 * If the interface will be unloaded or if it will be immediately reloaded
+	 */
+	private final boolean unload;
 }
