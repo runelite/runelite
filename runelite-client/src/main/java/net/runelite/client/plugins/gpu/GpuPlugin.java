@@ -242,8 +242,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private AntiAliasingMode lastAntiAliasingMode;
 	private int lastAnisotropicFilteringLevel = -1;
 
-	private int centerX;
-	private int centerY;
 	private int yaw;
 	private int pitch;
 	// fields for non-compute draw
@@ -776,13 +774,149 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public void drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane)
 	{
-		centerX = client.getCenterX();
-		centerY = client.getCenterY();
 		yaw = client.getCameraYaw();
 		pitch = client.getCameraPitch();
 
 		final Scene scene = client.getScene();
 		scene.setDrawDistance(getDrawDistance());
+
+		invokeOnMainThread(() ->
+		{
+			// UBO. Only the first 32 bytes get modified here, the rest is the constant sin/cos table.
+			gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, uniformBufferId);
+			uniformBuffer.clear();
+			uniformBuffer
+				.put(yaw)
+				.put(pitch)
+				.put(client.getCenterX())
+				.put(client.getCenterY())
+				.put(client.getScale())
+				.put(client.getCameraX2())
+				.put(client.getCameraY2())
+				.put(client.getCameraZ2());
+			uniformBuffer.flip();
+
+			gl.glBufferSubData(gl.GL_UNIFORM_BUFFER, 0, uniformBuffer.limit() * Integer.BYTES, uniformBuffer);
+			gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
+
+			gl.glBindBufferBase(gl.GL_UNIFORM_BUFFER, 0, uniformBufferId);
+		});
+	}
+
+	@Override
+	public void postDrawScene()
+	{
+		invokeOnMainThread(this::postDraw);
+	}
+
+	private void postDraw()
+	{
+		if (!useComputeShaders)
+		{
+			// Upload buffers
+			vertexBuffer.flip();
+			uvBuffer.flip();
+
+			IntBuffer vertexBuffer = this.vertexBuffer.getBuffer();
+			FloatBuffer uvBuffer = this.uvBuffer.getBuffer();
+
+			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpBufferId);
+			gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexBuffer.limit() * Integer.BYTES, vertexBuffer, gl.GL_DYNAMIC_DRAW);
+
+			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpUvBufferId);
+			gl.glBufferData(gl.GL_ARRAY_BUFFER, uvBuffer.limit() * Float.BYTES, uvBuffer, gl.GL_DYNAMIC_DRAW);
+
+			return;
+		}
+
+		// Upload buffers
+		vertexBuffer.flip();
+		uvBuffer.flip();
+		modelBuffer.flip();
+		modelBufferSmall.flip();
+		modelBufferUnordered.flip();
+
+		IntBuffer vertexBuffer = this.vertexBuffer.getBuffer();
+		FloatBuffer uvBuffer = this.uvBuffer.getBuffer();
+		IntBuffer modelBuffer = this.modelBuffer.getBuffer();
+		IntBuffer modelBufferSmall = this.modelBufferSmall.getBuffer();
+		IntBuffer modelBufferUnordered = this.modelBufferUnordered.getBuffer();
+
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpBufferId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexBuffer.limit() * Integer.BYTES, vertexBuffer, gl.GL_DYNAMIC_DRAW);
+
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpUvBufferId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, uvBuffer.limit() * Float.BYTES, uvBuffer, gl.GL_DYNAMIC_DRAW);
+
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpModelBufferId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBuffer.limit() * Integer.BYTES, modelBuffer, gl.GL_DYNAMIC_DRAW);
+
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpModelBufferSmallId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBufferSmall.limit() * Integer.BYTES, modelBufferSmall, gl.GL_DYNAMIC_DRAW);
+
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpModelBufferUnorderedId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBufferUnordered.limit() * Integer.BYTES, modelBufferUnordered, gl.GL_DYNAMIC_DRAW);
+
+		// Output buffers
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpOutBufferId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER,
+			targetBufferOffset * 16, // each vertex is an ivec4, which is 16 bytes
+			null,
+			gl.GL_STREAM_DRAW);
+
+		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpOutUvBufferId);
+		gl.glBufferData(gl.GL_ARRAY_BUFFER,
+			targetBufferOffset * 16,
+			null,
+			gl.GL_STREAM_DRAW);
+
+		// Bind UBO to compute programs
+		gl.glUniformBlockBinding(glSmallComputeProgram, uniBlockSmall, 0);
+		gl.glUniformBlockBinding(glComputeProgram, uniBlockLarge, 0);
+
+		/*
+		 * Compute is split into three separate programs: 'unordered', 'small', and 'large'
+		 * to save on GPU resources. Small will sort <= 512 faces, large will do <= 4096.
+		 */
+
+		// unordered
+		gl.glUseProgram(glUnorderedComputeProgram);
+
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferUnorderedId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
+
+		gl.glDispatchCompute(unorderedModels, 1, 1);
+
+		// small
+		gl.glUseProgram(glSmallComputeProgram);
+
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferSmallId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
+
+		gl.glDispatchCompute(smallModels, 1, 1);
+
+		// large
+		gl.glUseProgram(glComputeProgram);
+
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
+
+		gl.glDispatchCompute(largeModels, 1, 1);
 	}
 
 	@Override
@@ -955,121 +1089,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glClearColor((sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
 		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
 
-		// Upload buffers
-		vertexBuffer.flip();
-		uvBuffer.flip();
-		modelBuffer.flip();
-		modelBufferSmall.flip();
-		modelBufferUnordered.flip();
-
-		IntBuffer vertexBuffer = this.vertexBuffer.getBuffer();
-		FloatBuffer uvBuffer = this.uvBuffer.getBuffer();
-		IntBuffer modelBuffer = this.modelBuffer.getBuffer();
-		IntBuffer modelBufferSmall = this.modelBufferSmall.getBuffer();
-		IntBuffer modelBufferUnordered = this.modelBufferUnordered.getBuffer();
-
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpBufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, vertexBuffer.limit() * Integer.BYTES, vertexBuffer, gl.GL_DYNAMIC_DRAW);
-
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpUvBufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, uvBuffer.limit() * Float.BYTES, uvBuffer, gl.GL_DYNAMIC_DRAW);
-
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpModelBufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBuffer.limit() * Integer.BYTES, modelBuffer, gl.GL_DYNAMIC_DRAW);
-
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpModelBufferSmallId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBufferSmall.limit() * Integer.BYTES, modelBufferSmall, gl.GL_DYNAMIC_DRAW);
-
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpModelBufferUnorderedId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER, modelBufferUnordered.limit() * Integer.BYTES, modelBufferUnordered, gl.GL_DYNAMIC_DRAW);
-
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpOutBufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER,
-			targetBufferOffset * 16, // each vertex is an ivec4, which is 16 bytes
-			null,
-			gl.GL_STREAM_DRAW);
-
-		gl.glBindBuffer(gl.GL_ARRAY_BUFFER, tmpOutUvBufferId);
-		gl.glBufferData(gl.GL_ARRAY_BUFFER,
-			targetBufferOffset * 16,
-			null,
-			gl.GL_STREAM_DRAW);
-
-		// UBO. Only the first 32 bytes get modified here, the rest is the constant sin/cos table.
-		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, uniformBufferId);
-		uniformBuffer.clear();
-		uniformBuffer
-			.put(yaw)
-			.put(pitch)
-			.put(centerX)
-			.put(centerY)
-			.put(client.getScale())
-			.put(client.getCameraX2())
-			.put(client.getCameraY2())
-			.put(client.getCameraZ2());
-		uniformBuffer.flip();
-
-		gl.glBufferSubData(gl.GL_UNIFORM_BUFFER, 0, uniformBuffer.limit() * Integer.BYTES, uniformBuffer);
-		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
-
-		gl.glBindBufferBase(gl.GL_UNIFORM_BUFFER, 0, uniformBufferId);
-
 		// Draw 3d scene
 		final TextureProvider textureProvider = client.getTextureProvider();
 		if (textureProvider != null)
 		{
-			if (useComputeShaders)
-			{
-				gl.glUniformBlockBinding(glSmallComputeProgram, uniBlockSmall, 0);
-				gl.glUniformBlockBinding(glComputeProgram, uniBlockLarge, 0);
-
-				/*
-				 * Compute is split into two separate programs 'small' and 'large' to
-				 * save on GPU resources. Small will sort <= 512 faces, large will do <= 4096.
-				 */
-
-				// unordered
-				gl.glUseProgram(glUnorderedComputeProgram);
-
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferUnorderedId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
-
-				gl.glDispatchCompute(unorderedModels, 1, 1);
-
-				// small
-				gl.glUseProgram(glSmallComputeProgram);
-
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferSmallId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
-
-				gl.glDispatchCompute(smallModels, 1, 1);
-
-				// large
-				gl.glUseProgram(glComputeProgram);
-
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, this.bufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, this.uvBufferId);
-				gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBufferId);
-
-				gl.glDispatchCompute(largeModels, 1, 1);
-
-				gl.glMemoryBarrier(gl.GL_SHADER_STORAGE_BARRIER_BIT);
-			}
-
 			if (textureArrayId == -1)
 			{
 				// lazy init textures as they may not be loaded at plugin start.
@@ -1168,14 +1191,28 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// Draw buffers
 			gl.glBindVertexArray(vaoHandle);
 
-			// When using compute shaders, draw using the output buffer of the compute. Otherwise
-			// only use the temporary buffers, which will contain the full scene.
+			int vertexBuffer, uvBuffer;
+			if (useComputeShaders)
+			{
+				// Before reading the SSBOs written to from postDrawScene() we must insert a barrier
+				gl.glMemoryBarrier(gl.GL_SHADER_STORAGE_BARRIER_BIT);
+				// Draw using the output buffer of the compute
+				vertexBuffer = tmpOutBufferId;
+				uvBuffer = tmpOutUvBufferId;
+			}
+			else
+			{
+				// Only use the temporary buffers, which will contain the full scene
+				vertexBuffer = tmpBufferId;
+				uvBuffer = tmpUvBufferId;
+			}
+
 			gl.glEnableVertexAttribArray(0);
-			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, useComputeShaders ? tmpOutBufferId : tmpBufferId);
+			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, vertexBuffer);
 			gl.glVertexAttribIPointer(0, 4, gl.GL_INT, 0, 0);
 
 			gl.glEnableVertexAttribArray(1);
-			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, useComputeShaders ? tmpOutUvBufferId : tmpUvBufferId);
+			gl.glBindBuffer(gl.GL_ARRAY_BUFFER, uvBuffer);
 			gl.glVertexAttribPointer(1, 4, gl.GL_FLOAT, false, 0, 0);
 
 			gl.glDrawArrays(gl.GL_TRIANGLES, 0, targetBufferOffset);
