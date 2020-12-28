@@ -37,6 +37,7 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
@@ -80,6 +81,9 @@ class MouseHighlightOverlay extends Overlay
 	MouseHighlightOverlay(Client client, TooltipManager tooltipManager, MouseHighlightConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		// additionally allow tooltips above the full screen world map and welcome screen
+		drawAfterInterface(WidgetID.FULLSCREEN_CONTAINER_TLI);
 		this.client = client;
 		this.tooltipManager = tooltipManager;
 		this.config = config;
