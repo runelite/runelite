@@ -35,6 +35,7 @@ public class FontManager
 	private static final Font runescapeFont;
 	private static final Font runescapeSmallFont;
 	private static final Font runescapeBoldFont;
+	private static final Font runescapeMonospaceFont;
 
 	static
 	{
@@ -68,6 +69,15 @@ public class FontManager
 			runescapeBoldFont = StyleContext.getDefaultStyleContext()
 					.getFont(boldFont.getName(), Font.BOLD, 16);
 			ge.registerFont(runescapeBoldFont);
+
+			Font monospaceFont = Font.createFont(Font.TRUETYPE_FONT,
+					FontManager.class.getResourceAsStream("runescape_monospace.ttf"))
+					.deriveFont(Font.PLAIN, 16);
+			ge.registerFont(monospaceFont);
+
+			runescapeMonospaceFont = StyleContext.getDefaultStyleContext()
+					.getFont(monospaceFont.getName(), Font.PLAIN, 16);
+			ge.registerFont(runescapeMonospaceFont);
 		}
 		catch (FontFormatException ex)
 		{
@@ -92,5 +102,10 @@ public class FontManager
 	public static Font getRunescapeBoldFont()
 	{
 		return runescapeBoldFont;
+	}
+
+	public static Font getRunescapeMonospaceFont()
+	{
+		return runescapeMonospaceFont;
 	}
 }

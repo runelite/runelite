@@ -27,6 +27,7 @@ package net.runelite.client.plugins.notes;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -89,5 +90,17 @@ public class NotesPlugin extends Plugin
 		// update notes
 		String data = config.notesData();
 		panel.setNotes(data);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("notes"))
+		{
+			return;
+		}
+		
+		panel.setFont(config.font().getFont(), config.fontStyle().ordinal(), config.fontSize());
+		panel.setColour(config.fontColour());
 	}
 }
