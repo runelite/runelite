@@ -14,9 +14,12 @@ spring.jmx.enabled: false
 
 # Google OAuth client
 oauth:
-  client-id:
-  client-secret:
+  google-client-id:
+  google-client-secret:
+  discord-client-id:
+  discord-client-secret:
   callback: https://api.runelite.net/oauth/
+  redirect: https://runelite.net/logged-in
 
 # Minio client storage for cache
 minio:

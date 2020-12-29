@@ -38,6 +38,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
+import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -59,6 +60,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
@@ -857,6 +859,12 @@ public class ClientUI
 	public GraphicsConfiguration getGraphicsConfiguration()
 	{
 		return frame.getGraphicsConfiguration();
+	}
+
+	public void showPopUpMenu(JPopupMenu menu)
+	{
+		java.awt.Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+		menu.show(frame, mouseLocation.x - frame.getX(), mouseLocation.y - frame.getY());
 	}
 
 	private void toggleSidebar()

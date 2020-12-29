@@ -49,6 +49,7 @@ import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.ws.WSClient;
 import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
+import net.runelite.http.api.account.OAuthProvider;
 import net.runelite.http.api.ws.messages.LoginResponse;
 import okhttp3.OkHttpClient;
 
@@ -194,11 +195,12 @@ public class SessionManager
 		eventBus.post(new SessionClose());
 	}
 
-	public void login()
+	public void login(OAuthProvider type)
 	{
 		// If a session is already open, use that id. Otherwise generate a new id.
 		UUID uuid = wsClient.getSessionId() != null ? wsClient.getSessionId() : UUID.randomUUID();
 		accountClient.setUuid(uuid);
+		accountClient.setProvider(type);
 
 		final OAuthResponse login;
 
@@ -226,6 +228,8 @@ public class SessionManager
 
 		AccountSession session = getAccountSession();
 		session.setUsername(loginResponse.getUsername());
+		session.setDisplay(loginResponse.getDisplay());
+		session.setProvider(loginResponse.getProvider());
 
 		// Open session, again, now that we have a username
 		// This triggers onSessionOpen

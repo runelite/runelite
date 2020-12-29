@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
@@ -43,12 +44,12 @@ import okhttp3.Response;
 public class AccountClient
 {
 	private final OkHttpClient client;
+
+	@Setter
 	private UUID uuid;
 
-	public void setUuid(UUID uuid)
-	{
-		this.uuid = uuid;
-	}
+	@Setter
+	private OAuthProvider provider;
 
 	public OAuthResponse login() throws IOException
 	{
@@ -56,6 +57,7 @@ public class AccountClient
 			.addPathSegment("account")
 			.addPathSegment("login")
 			.addQueryParameter("uuid", uuid.toString())
+			.addQueryParameter("provider", provider.toString())
 			.build();
 
 		log.debug("Built URI: {}", url);

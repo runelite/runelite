@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.ws.messages;
+package net.runelite.client.account;
 
-import lombok.Data;
-import lombok.ToString;
+import java.util.concurrent.ScheduledExecutorService;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import net.runelite.http.api.account.OAuthProvider;
-import net.runelite.http.api.ws.WebsocketMessage;
 
-/**
- * Called after a successful login to the server
- * @author Adam
- */
-@Data
-@ToString
-public class LoginResponse extends WebsocketMessage
+public class OAuthMenu extends JPopupMenu
 {
-	private String username;
-	private String display;
-	private OAuthProvider provider;
+	public OAuthMenu(ScheduledExecutorService executorService, SessionManager sessionManager)
+	{
+		JMenuItem googleMenuItem = new JMenuItem("Google");
+		googleMenuItem.addActionListener(e -> executorService.execute(() -> sessionManager.login(OAuthProvider.GOOGLE)));
+
+		JMenuItem discordMenuItem = new JMenuItem("Discord");
+		discordMenuItem.addActionListener(e -> executorService.execute(() -> sessionManager.login(OAuthProvider.DISCORD)));
+
+		add(googleMenuItem);
+		add(discordMenuItem);
+	}
 }
