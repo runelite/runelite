@@ -1450,13 +1450,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			if (model != null)
 			{
 				model.calculateBoundsCylinder();
-				model.calculateExtreme(orientation);
 
 				if (!isVisible(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash))
 				{
 					return;
 				}
 
+				model.calculateExtreme(orientation);
 				client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 
 				modelX = x + client.getCameraX2();
@@ -1480,13 +1480,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			Model model = (Model) renderable;
 
 			model.calculateBoundsCylinder();
-			model.calculateExtreme(orientation);
 
 			if (!isVisible(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash))
 			{
 				return;
 			}
 
+			model.calculateExtreme(orientation);
 			client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 
 			int tc = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
@@ -1515,13 +1515,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				model.setModelHeight(model.getModelHeight());
 
 				model.calculateBoundsCylinder();
-				model.calculateExtreme(orientation);
 
 				if (!isVisible(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash))
 				{
 					return;
 				}
 
+				model.calculateExtreme(orientation);
 				client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 
 				boolean hasUv = model.getFaceTextures() != null;
