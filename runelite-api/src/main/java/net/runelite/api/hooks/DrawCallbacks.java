@@ -43,7 +43,12 @@ public interface DrawCallbacks
 						SceneTileModel model, int tileZ, int tileX, int tileY,
 						int zoom, int centerX, int centerY);
 
-	void draw();
+	/**
+	 * Called when a frame should be drawn.
+	 *
+	 * @param overlayColor Color of full-viewport overlays, if any
+	 */
+	void draw(int overlayColor);
 
 	boolean drawFace(Model model, int face);
 

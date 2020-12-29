@@ -264,6 +264,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniTexSamplingMode;
 	private int uniTexSourceDimensions;
 	private int uniTexTargetDimensions;
+	private int uniUiAlphaOverlay;
 	private int uniTextures;
 	private int uniTextureOffsets;
 	private int uniBlockSmall;
@@ -545,6 +546,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniTexTargetDimensions = gl.glGetUniformLocation(glUiProgram, "targetDimensions");
 		uniTexSourceDimensions = gl.glGetUniformLocation(glUiProgram, "sourceDimensions");
 		uniUiColorBlindMode = gl.glGetUniformLocation(glUiProgram, "colorBlindMode");
+		uniUiAlphaOverlay = gl.glGetUniformLocation(glUiProgram, "alphaOverlay");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
 		uniTextureOffsets = gl.glGetUniformLocation(glProgram, "textureOffsets");
 
@@ -855,9 +857,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	@Override
-	public void draw()
+	public void draw(int overlayColor)
 	{
-		invokeOnMainThread(this::drawFrame);
+		invokeOnMainThread(() -> drawFrame(overlayColor));
 	}
 
 	private void resize(int canvasWidth, int canvasHeight, int viewportWidth, int viewportHeight)
@@ -883,7 +885,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
-	private void drawFrame()
+	private void drawFrame(int overlayColor)
 	{
 		if (jawtWindow.getAWTComponent() != client.getCanvas())
 		{
@@ -1208,7 +1210,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		tempUvOffset = 0;
 
 		// Texture on UI
-		drawUi(canvasHeight, canvasWidth);
+		drawUi(overlayColor, canvasHeight, canvasWidth);
 
 		glDrawable.swapBuffers();
 
@@ -1226,7 +1228,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		};
 	}
 
-	private void drawUi(final int canvasHeight, final int canvasWidth)
+	private void drawUi(final int overlayColor, final int canvasHeight, final int canvasWidth)
 	{
 		final BufferProvider bufferProvider = client.getBufferProvider();
 		final int[] pixels = bufferProvider.getPixels();
@@ -1254,6 +1256,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glUniform1i(uniTexSamplingMode, uiScalingMode.getMode());
 		gl.glUniform2i(uniTexSourceDimensions, canvasWidth, canvasHeight);
 		gl.glUniform1i(uniUiColorBlindMode, config.colorBlindMode().ordinal());
+		gl.glUniform4f(uniUiAlphaOverlay,
+			(overlayColor >> 16 & 0xFF) / 255f,
+			(overlayColor >> 8 & 0xFF) / 255f,
+			(overlayColor & 0xFF) / 255f,
+			(overlayColor >>> 24) / 255f
+		);
 
 		if (client.isStretchedEnabled())
 		{
