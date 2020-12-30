@@ -34,13 +34,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.Notifier;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -69,6 +69,10 @@ public class ChatNotificationsPlugin extends Plugin
 
 	@Inject
 	private Notifier notifier;
+
+	@Inject
+	@Named("runelite.title")
+	private String runeliteTitle;
 
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
@@ -163,7 +167,7 @@ public class ChatNotificationsPlugin extends Plugin
 				break;
 			case CONSOLE:
 				// Don't notify for notification messages
-				if (chatMessage.getName().equals(RuneLiteProperties.getTitle()))
+				if (chatMessage.getName().equals(runeliteTitle))
 				{
 					return;
 				}
