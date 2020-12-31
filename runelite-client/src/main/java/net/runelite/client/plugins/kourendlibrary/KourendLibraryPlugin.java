@@ -134,7 +134,7 @@ public class KourendLibraryPlugin extends Plugin
 		panel = injector.getInstance(KourendLibraryPanel.class);
 		panel.init();
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Kourend Library")

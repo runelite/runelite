@@ -625,7 +625,7 @@ public class ClueScrollPlugin extends Plugin
 			return emoteImage;
 		}
 
-		emoteImage = ImageUtil.getResourceStreamFromClass(getClass(), "emote.png");
+		emoteImage = ImageUtil.loadImageResource(getClass(), "emote.png");
 
 		return emoteImage;
 	}
@@ -642,7 +642,7 @@ public class ClueScrollPlugin extends Plugin
 			return mapArrow;
 		}
 
-		mapArrow = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
+		mapArrow = ImageUtil.loadImageResource(getClass(), "/util/clue_arrow.png");
 
 		return mapArrow;
 	}
