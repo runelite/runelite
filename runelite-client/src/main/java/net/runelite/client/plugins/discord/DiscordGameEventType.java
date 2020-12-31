@@ -121,7 +121,7 @@ enum DiscordGameEventType
 	CITY_JATIZSO("Jatizso" , DiscordAreaType.CITIES, 9531),
 	CITY_KELDAGRIM("Keldagrim" , DiscordAreaType.CITIES, 11423, 11422, 11679, 11678),
 	CITY_LANDS_END("Land's End", DiscordAreaType.CITIES, 5941),
-	CITY_LLETYA("Lletya" , DiscordAreaType.CITIES, 9265),
+	CITY_LLETYA("Lletya" , DiscordAreaType.CITIES, 9265, 11103),
 	CITY_LOVAKENGJ_HOUSE("Lovakengj" , DiscordAreaType.CITIES, 5692, 5691, 5947, 6203, 6202, 5690, 5946),
 	CITY_LUMBRIDGE("Lumbridge" , DiscordAreaType.CITIES, 12850),
 	CITY_LUNAR_ISLE("Lunar Isle" , DiscordAreaType.CITIES, 8253, 8252, 8509, 8508),
