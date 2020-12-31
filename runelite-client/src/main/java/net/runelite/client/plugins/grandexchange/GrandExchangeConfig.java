@@ -37,7 +37,7 @@ public interface GrandExchangeConfig extends Config
 		position = 1,
 		keyName = "quickLookup",
 		name = "Hotkey lookup (Alt + Left click)",
-		description = "When enabled, alt+left clicking compatible items will present Grand Exchange price information on the side panel."
+		description = "Configures whether to enable the hotkey lookup for GE searches"
 	)
 	default boolean quickLookup()
 	{
@@ -59,7 +59,7 @@ public interface GrandExchangeConfig extends Config
 		position = 3,
 		keyName = "enableOsbPrices",
 		name = "Enable OSB actively traded prices",
-		description = "Display item price information obtained from the OSBuddy client in the Grand Exchange interface."
+		description = "Shows the OSBuddy actively traded price on the GE buy interface"
 
 	)
 	default boolean enableOsbPrices()
@@ -94,7 +94,7 @@ public interface GrandExchangeConfig extends Config
 		position = 6,
 		keyName = "showTotal",
 		name = "Show GE total",
-		description = "When enabled, the total value of all items and coins will be displayed at the top of the Grand Exchange interface."
+		description = "Display the total value of all trades at the top of the GE interface"
 	)
 	default boolean showTotal()
 	{
@@ -105,7 +105,7 @@ public interface GrandExchangeConfig extends Config
 		position = 7,
 		keyName = "showExact",
 		name = "Show exact total value",
-		description = "When enabled along with the ‘Show GE total’ option, the unabbreviated value will be displayed. If disabled, while ‘Show GE total’ isenabled, the value will be abbreviated using K,M,B for thousand, million, and billion respectively."
+		description = "When enabled along with the ‘Show GE total’ option, the unabbreviated value will be displayed"
 	)
 	default boolean showExact()
 	{
@@ -115,7 +115,7 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 8,
 		keyName = "highlightSearchMatch",
-		name = "Underline Search Match",
+		name = "Highlight Search Match",
 		description = "Highlights the search match with an underline"
 	)
 	default boolean highlightSearchMatch()
