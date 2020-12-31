@@ -332,15 +332,24 @@ public class ImageUtil
 	}
 
 	/**
+	 * @see #loadImageResource(Class, String)
+	 */
+	@Deprecated
+	public static BufferedImage getResourceStreamFromClass(Class<?> c, String path)
+	{
+		return loadImageResource(c, path);
+	}
+
+	/**
 	 * Reads an image resource from a given path relative to a given class.
 	 * This method is primarily shorthand for the synchronization and error handling required for
-	 * loading image resources from classes.
+	 * loading image resources from the classpath.
 	 *
-	 * @param c    The class to be referenced for resource path.
+	 * @param c    The class to be referenced for the package path.
 	 * @param path The path, relative to the given class.
 	 * @return     A {@link BufferedImage} of the loaded image resource from the given path.
 	 */
-	public static BufferedImage getResourceStreamFromClass(final Class c, final String path)
+	public static BufferedImage loadImageResource(final Class<?> c, final String path)
 	{
 		try
 		{
@@ -359,7 +368,7 @@ public class ImageUtil
 			}
 			else
 			{
-				filePath = c.getPackage().getName().replace(".", "/") + "/" + path;
+				filePath = c.getPackage().getName().replace('.', '/') + "/" + path;
 			}
 
 			log.warn("Failed to load image from class: {}, path: {}", c.getName(), filePath);

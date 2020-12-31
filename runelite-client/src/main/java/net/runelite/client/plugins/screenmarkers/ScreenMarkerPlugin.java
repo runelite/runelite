@@ -125,7 +125,7 @@ public class ScreenMarkerPlugin extends Plugin
 		pluginPanel = new ScreenMarkerPluginPanel(this);
 		pluginPanel.rebuild();
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), ICON_FILE);
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), ICON_FILE);
 
 		navigationButton = NavigationButton.builder()
 			.tooltip(PLUGIN_NAME)

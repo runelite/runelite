@@ -34,6 +34,6 @@ class TeleportPoint extends WorldMapPoint
 	{
 		super(data.getLocation(), WorldMapPlugin.BLANK_ICON);
 		setTooltip(data.getTooltip());
-		setImage(ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, data.getIconPath()));
+		setImage(ImageUtil.loadImageResource(WorldMapPlugin.class, data.getIconPath()));
 	}
 }
