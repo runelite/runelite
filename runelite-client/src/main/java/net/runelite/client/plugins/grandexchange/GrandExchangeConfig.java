@@ -60,7 +60,6 @@ public interface GrandExchangeConfig extends Config
 		keyName = "enableOsbPrices",
 		name = "Enable OSB actively traded prices",
 		description = "Shows the OSBuddy actively traded price on the GE buy interface"
-
 	)
 	default boolean enableOsbPrices()
 	{
@@ -93,7 +92,7 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 6,
 		keyName = "showTotal",
-		name = "Show GE total",
+		name = "Show Grand Exchange total",
 		description = "Display the total value of all trades at the top of the GE interface"
 	)
 	default boolean showTotal()
