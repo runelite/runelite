@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -39,6 +40,7 @@ import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 class TearsOfGuthixOverlay extends Overlay
 {
 	private static final Color CYAN_ALPHA = new Color(Color.CYAN.getRed(), Color.CYAN.getGreen(), Color.CYAN.getBlue(), 100);
+	private static final Color GREEN_ALPHA = new Color(Color.GREEN.getRed(), Color.GREEN.getGreen(), Color.GREEN.getBlue(), 100);
 	private static final Duration MAX_TIME = Duration.ofSeconds(9);
 	private final TearsOfGuthixPlugin plugin;
 
@@ -64,8 +66,20 @@ class TearsOfGuthixOverlay extends Overlay
 
 			final ProgressPieComponent progressPie = new ProgressPieComponent();
 			progressPie.setDiameter(15);
-			progressPie.setFill(CYAN_ALPHA);
-			progressPie.setBorderColor(Color.CYAN);
+
+			if (object.getId() == ObjectID.BLUE_TEARS ||
+				object.getId() == ObjectID.BLUE_TEARS_6665)
+			{
+				progressPie.setFill(CYAN_ALPHA);
+				progressPie.setBorderColor(Color.CYAN);
+			}
+			else if (object.getId() == ObjectID.GREEN_TEARS ||
+				object.getId() == ObjectID.GREEN_TEARS_6666)
+			{
+				progressPie.setFill(GREEN_ALPHA);
+				progressPie.setBorderColor(Color.GREEN);
+			}
+
 			progressPie.setPosition(position);
 
 			final Duration duration = Duration.between(timer, Instant.now());
