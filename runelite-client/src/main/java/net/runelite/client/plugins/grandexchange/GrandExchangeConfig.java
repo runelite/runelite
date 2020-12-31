@@ -92,7 +92,7 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 6,
 		keyName = "showTotal",
-		name = "Show Grand Exchange total",
+		name = "Show GE total",
 		description = "Display the total value of all trades at the top of the GE interface"
 	)
 	default boolean showTotal()
