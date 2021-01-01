@@ -146,4 +146,23 @@ public interface WorldHopperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "skippedWorlds",
+		name = "Skipped Worlds",
+		description = "Configures worlds to skip when quick-hopping. Format: (world),",
+		position = 10
+	)
+	default String getSkippedWorlds()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "skippedWorlds",
+		name = "",
+		description = ""
+	)
+	void setSkippedWorlds(String key);
+
 }

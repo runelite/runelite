@@ -36,6 +36,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -107,6 +108,8 @@ public class WorldHopperPlugin extends Plugin
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
+
+	private List<String> skippedWorldsList = new CopyOnWriteArrayList<>();
 
 	@Inject
 	private Client client;
@@ -221,6 +224,9 @@ public class WorldHopperPlugin extends Plugin
 		pingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingNextWorld, 15, 3, TimeUnit.SECONDS);
 		currPingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingCurrentWorld, 15, 1, TimeUnit.SECONDS);
 
+		// get skipped worlds from the text box in the config
+		skippedWorldsList = Text.fromCSV(config.getSkippedWorlds());
+
 		// populate initial world list
 		updateList();
 	}
@@ -243,6 +249,8 @@ public class WorldHopperPlugin extends Plugin
 
 		hopperExecutorService.shutdown();
 		hopperExecutorService = null;
+
+		skippedWorldsList = null;
 	}
 
 	@Subscribe
@@ -275,6 +283,9 @@ public class WorldHopperPlugin extends Plugin
 				case "subscriptionFilter":
 					panel.setFilterMode(config.subscriptionFilter());
 					updateList();
+					break;
+				case "skippedWorlds":
+					skippedWorldsList = Text.fromCSV(config.getSkippedWorlds());
 					break;
 			}
 		}
@@ -586,6 +597,12 @@ public class WorldHopperPlugin extends Plugin
 
 			// Avoid switching to near-max population worlds, as it will refuse to allow the hop if the world is full
 			if (world.getPlayers() >= MAX_PLAYER_COUNT)
+			{
+				continue;
+			}
+
+			// Don't switch to worlds specified in skipped worlds
+			if (skippedWorldsList.contains(String.valueOf(world.getId())))
 			{
 				continue;
 			}
