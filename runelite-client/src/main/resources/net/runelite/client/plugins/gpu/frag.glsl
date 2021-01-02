@@ -43,26 +43,29 @@ out vec4 FragColor;
 #include colorblind.glsl
 
 void main() {
-  int hsl = int(fHsl);
-  vec3 rgb = hslToRgb(hsl) * smoothBanding + Color.rgb * (1.f - smoothBanding);
-  vec4 smoothColor = vec4(rgb, Color.a);
+  vec4 c;
 
   if (textureId > 0) {
     int textureIdx = textureId - 1;
 
-    vec2 uv = fUv;
-    vec2 animatedUv = uv + textureOffsets[textureIdx];
+    vec2 animatedUv = fUv + textureOffsets[textureIdx];
 
     vec4 textureColor = texture(textures, vec3(animatedUv, float(textureIdx)));
     vec4 textureColorBrightness = pow(textureColor, vec4(brightness, brightness, brightness, 1.0f));
 
-    smoothColor = textureColorBrightness * smoothColor;
+    // textured triangles hsl is a 7 bit lightness 2-126
+    float light = fHsl / 127.f;
+    c = textureColorBrightness * vec4(light, light, light, 1.f);
+  } else {
+    // pick interpolated hsl or rgb depending on smooth banding setting
+    vec3 rgb = hslToRgb(int(fHsl)) * smoothBanding + Color.rgb * (1.f - smoothBanding);
+    c = vec4(rgb, Color.a);
   }
 
   if (colorBlindMode > 0) {
-    smoothColor.rgb = colorblind(colorBlindMode, smoothColor.rgb);
+    c.rgb = colorblind(colorBlindMode, c.rgb);
   }
 
-  vec3 mixedColor = mix(smoothColor.rgb, fogColor.rgb, fogAmount);
-  FragColor = vec4(mixedColor, smoothColor.a);
+  vec3 mixedColor = mix(c.rgb, fogColor.rgb, fogAmount);
+  FragColor = vec4(mixedColor, c.a);
 }
