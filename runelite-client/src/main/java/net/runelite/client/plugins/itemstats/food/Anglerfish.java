@@ -28,18 +28,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.itemstats.FoodBase;
 
-import javax.inject.Inject;
-
 public class Anglerfish extends FoodBase
 {
-	@Inject
-	private Client client;
-
-	public Anglerfish()
-	{
-
-	}
-
 	@Override
 	public int heals(Client client)
 	{
