@@ -25,21 +25,36 @@
 package net.runelite.client.plugins.itemstats.food;
 
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.client.plugins.itemstats.FoodBase;
+
+import javax.inject.Inject;
 
 public class Anglerfish extends FoodBase
 {
+	@Inject
+	private Client client;
+
 	public Anglerfish()
 	{
-		setBoost(true);
+
 	}
 
 	@Override
 	public int heals(Client client)
 	{
 		int maxHP = getStat().getMaximum(client);
-
 		int C;
+
+		if (client.getVar(Varbits.IN_WILDERNESS) == 1)
+		{
+			setBoost(false);
+		}
+		else
+		{
+			setBoost(true);
+		}
+
 		if (maxHP <= 24)
 		{
 			C = 2;
