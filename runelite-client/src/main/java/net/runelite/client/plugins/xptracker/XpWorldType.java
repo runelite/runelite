@@ -24,47 +24,20 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.WorldType;
 
+@Getter
+@RequiredArgsConstructor
 enum XpWorldType
 {
-	NORMAL,
-	TOURNEY,
-	DMM
-	{
-		@Override
-		int modifier(Client client)
-		{
-			return 5;
-		}
-	},
-	LEAGUE
-	{
-		@Override
-		int modifier(Client client)
-		{
-			if (client.getVar(Varbits.LEAGUE_RELIC_6) != 0)
-			{
-				return 16;
-			}
-			if (client.getVar(Varbits.LEAGUE_RELIC_4) != 0)
-			{
-				return 12;
-			}
-			if (client.getVar(Varbits.LEAGUE_RELIC_2) != 0)
-			{
-				return 8;
-			}
-			return 5;
-		}
-	};
+	NORMAL(1),
+	TOURNEY(1),
+	DMM(5),
+	LEAGUE(5);
 
-	int modifier(Client client)
-	{
-		return 1;
-	}
+	private final int xpModifier;
 
 	static XpWorldType of(WorldType type)
 	{
