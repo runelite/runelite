@@ -265,6 +265,7 @@ public class ZalcanoPlugin extends Plugin
 
 	private boolean isHealthbarActive()
 	{
-		return client.getVar(VarPlayer.ZALCANO_FORM) != -1;
+		int npcId = client.getVar(VarPlayer.HP_HUD_NPC_ID);
+		return npcId == ZALCANO_WEAKENED || npcId == ZALCANO;
 	}
 }
