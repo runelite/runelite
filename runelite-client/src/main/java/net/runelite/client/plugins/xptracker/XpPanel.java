@@ -27,8 +27,7 @@ package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -86,6 +85,10 @@ class XpPanel extends PluginPanel
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
 			client.getLocalPlayer(), Skill.OVERALL, client.getWorldType().contains(WorldType.LEAGUE))));
 
+		// Sort by most xp gained
+		final JMenuItem sortByXp = new JMenuItem("Sort by XP");
+		sortByXp.addActionListener(e -> xpTrackerPlugin.sortByXp());
+
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
@@ -103,6 +106,7 @@ class XpPanel extends PluginPanel
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
+		popupMenu.add(sortByXp);
 		popupMenu.add(reset);
 		popupMenu.add(pauseAll);
 		popupMenu.add(unpauseAll);
@@ -162,6 +166,16 @@ class XpPanel extends PluginPanel
 			.addQueryParameter("period", "week")
 			.build()
 			.toString();
+	}
+
+	void sortByXp(Map<Skill, Integer> skillToCurrentXpGained)
+	{
+		int i = 0;
+		for (Skill skill : skillToCurrentXpGained.keySet())
+		{
+			infoBoxes.get(skill).sortByXp(i);
+			i++;
+		}
 	}
 
 	void resetAllInfoBoxes()
