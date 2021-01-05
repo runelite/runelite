@@ -128,7 +128,7 @@ public class XpTrackerPlugin extends Plugin
 	private boolean fetchXp; // fetch lastXp for the online xp tracker
 	private long lastXp = 0;
 	private boolean initializeTracker;
-	private Map<Skill, Integer> skillToCurrentXpGained = new HashMap<>();
+	private final Map<Skill, Integer> skillToCurrentXpGained = new HashMap<>();
 
 	private final XpState xpState = new XpState();
 	private final XpPauseState xpPauseState = new XpPauseState();
