@@ -82,7 +82,7 @@ public class GrandExchangeOfferSlot extends JPanel
 
 	static
 	{
-		final BufferedImage rightArrow = ImageUtil.alphaOffset(ImageUtil.getResourceStreamFromClass(GrandExchangeOfferSlot.class, "/util/arrow_right.png"), 0.25f);
+		final BufferedImage rightArrow = ImageUtil.alphaOffset(ImageUtil.loadImageResource(GrandExchangeOfferSlot.class, "/util/arrow_right.png"), 0.25f);
 		RIGHT_ARROW_ICON = new ImageIcon(rightArrow);
 		LEFT_ARROW_ICON	= new ImageIcon(ImageUtil.flipImage(rightArrow, true, false));
 	}

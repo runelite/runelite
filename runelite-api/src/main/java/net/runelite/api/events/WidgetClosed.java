@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,21 +24,26 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
-import net.runelite.api.widgets.Widget;
+import lombok.Value;
 
 /**
- * An event where the hidden state of a {@link Widget} has been modified.
+ * Posted when an interface is about to be closed
  */
-@Data
-public class WidgetHiddenChanged
+@Value
+public class WidgetClosed
 {
 	/**
-	 * The affected widget.
+	 * The ID of the interface that is closed
 	 */
-	private Widget widget;
+	private final int groupId;
+
 	/**
-	 * The new hidden state of the widget.
+	 * @see net.runelite.api.widgets.WidgetModalMode
 	 */
-	private boolean hidden;
+	private final int modalMode;
+
+	/**
+	 * If the interface will be unloaded or if it will be immediately reloaded
+	 */
+	private final boolean unload;
 }

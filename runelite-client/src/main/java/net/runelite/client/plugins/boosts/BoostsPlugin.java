@@ -119,8 +119,8 @@ public class BoostsPlugin extends Plugin
 		Arrays.fill(lastSkillLevels, -1);
 
 		// Add infoboxes for everything at startup and then determine inside if it will be rendered
-		infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageUtil.getResourceStreamFromClass(getClass(), "debuffed.png"), this, config));
-		infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageUtil.getResourceStreamFromClass(getClass(), "buffed.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageUtil.loadImageResource(getClass(), "debuffed.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageUtil.loadImageResource(getClass(), "buffed.png"), this, config));
 
 		for (final Skill skill : Skill.values())
 		{

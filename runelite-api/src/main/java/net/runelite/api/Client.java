@@ -880,16 +880,6 @@ public interface Client extends GameEngine
 	IterableHashTable<MessageNode> getMessages();
 
 	/**
-	 * Gets the viewport widget.
-	 * <p>
-	 * The viewport is the area of the game above the chatbox
-	 * and to the left of the mini-map.
-	 *
-	 * @return the viewport widget
-	 */
-	Widget getViewportWidget();
-
-	/**
 	 * Gets the object composition corresponding to an objects ID.
 	 *
 	 * @param objectId the object ID

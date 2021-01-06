@@ -1,16 +1,15 @@
 /*
- * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2020, Martin H <pilino@posteo.de>
  * All rights reserved.
  *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *     list of conditions and the following disclaimer.
+ *    list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -23,37 +22,61 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package net.runelite.client.ui.components.colorpicker;
+package net.runelite.client.ui.components;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import javax.swing.JPanel;
+import javax.swing.JButton;
 import lombok.Getter;
 
-class PreviewPanel extends JPanel
+public class ColorJButton extends JButton
 {
+	private static final int ALPHA_TEXT_CUTOFF = 120;
 	private static final int CHECKER_SIZE = 10;
 
 	@Getter
 	private Color color;
 
-	void setColor(Color c)
+	public ColorJButton(String text, Color color)
 	{
-		this.color = c;
-		this.paintImmediately(0, 0, this.getWidth(), this.getHeight());
+		super(text);
+
+		// Tell ButtonUI to not paint the background, we do it ourselves.
+		this.setContentAreaFilled(false);
+
+		setColor(color);
+	}
+
+	public void setColor(Color color)
+	{
+		this.color = color;
+
+		// Use perceptive luminance to choose a readable font color
+		// Based on https://stackoverflow.com/a/1855903
+		double lum = (0.299 * color.getRed() + 0.587 * color.getGreen() + 0.114 * color.getBlue()) / 255;
+
+		final Color textColor;
+
+		if (lum > 0.5 || color.getAlpha() < ALPHA_TEXT_CUTOFF)
+		{
+			textColor = Color.BLACK;
+		}
+		else
+		{
+			textColor = Color.WHITE;
+		}
+
+		this.setForeground(textColor);
 	}
 
 	@Override
 	public void paint(Graphics g)
 	{
-		super.paint(g);
-
 		if (this.color.getAlpha() != 255)
 		{
-			for (int x = 0; x < getWidth(); x += CHECKER_SIZE)
+			for (int x = 0; x < this.getWidth(); x += CHECKER_SIZE)
 			{
-				for (int y = 0; y < getHeight(); y += CHECKER_SIZE)
+				for (int y = 0; y < this.getHeight(); y += CHECKER_SIZE)
 				{
 					int val = (x / CHECKER_SIZE + y / CHECKER_SIZE) % 2;
 					g.setColor(val == 0 ? Color.LIGHT_GRAY : Color.WHITE);
@@ -62,7 +85,9 @@ class PreviewPanel extends JPanel
 			}
 		}
 
-		g.setColor(color);
+		g.setColor(this.color);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+		super.paint(g);
 	}
 }

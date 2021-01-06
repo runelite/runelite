@@ -39,7 +39,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -51,7 +50,6 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.AnimationChanged;
@@ -61,13 +59,9 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -89,6 +83,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @Slf4j
 public class TimersPlugin extends Plugin
 {
+	private static final String ABYSSAL_SIRE_STUN_MESSAGE = "The Sire has been disorientated temporarily.";
 	private static final String ANTIFIRE_DRINK_MESSAGE = "You drink some of your antifire potion.";
 	private static final String ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your antifire potion has expired.</col>";
 	private static final String CANNON_FURNACE_MESSAGE = "You add the furnace.";
@@ -135,15 +130,14 @@ public class TimersPlugin extends Plugin
 	private boolean wasWearingEndurance;
 
 	private int lastRaidVarb;
-	private int lastWildernessVarb;
 	private int lastVengCooldownVarb;
 	private int lastIsVengeancedVarb;
 	private int lastPoisonVarp;
+	private int lastPvpVarb;
 	private int nextPoisonTick;
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
-	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
 	private ElapsedTimer tzhaarTimer;
 
@@ -176,7 +170,6 @@ public class TimersPlugin extends Plugin
 		lastPoint = null;
 		lastTeleportClicked = null;
 		lastAnimation = -1;
-		loggedInRace = false;
 		widgetHiddenChangedOnPvpWorld = false;
 		lastPoisonVarp = 0;
 		nextPoisonTick = 0;
@@ -191,6 +184,7 @@ public class TimersPlugin extends Plugin
 		int vengCooldownVarb = client.getVar(Varbits.VENGEANCE_COOLDOWN);
 		int isVengeancedVarb = client.getVar(Varbits.VENGEANCE_ACTIVE);
 		int poisonVarp = client.getVar(VarPlayer.POISON);
+		int pvpVarb = client.getVar(Varbits.PVP_SPEC_ORB);
 
 		if (lastRaidVarb != raidVarb)
 		{
@@ -227,22 +221,6 @@ public class TimersPlugin extends Plugin
 			lastIsVengeancedVarb = isVengeancedVarb;
 		}
 
-		int inWilderness = client.getVar(Varbits.IN_WILDERNESS);
-
-		if (lastWildernessVarb != inWilderness
-			&& client.getGameState() == GameState.LOGGED_IN
-			&& !loggedInRace)
-		{
-			if (!WorldType.isPvpWorld(client.getWorldType())
-				&& inWilderness == 0)
-			{
-				log.debug("Left wilderness in non-PVP world, clearing Teleblock timer.");
-				removeGameTimer(TELEBLOCK);
-			}
-
-			lastWildernessVarb = inWilderness;
-		}
-
 		if (lastPoisonVarp != poisonVarp && config.showAntiPoison())
 		{
 			final int tickCount = client.getTickCount();
@@ -272,16 +250,16 @@ public class TimersPlugin extends Plugin
 
 			lastPoisonVarp = poisonVarp;
 		}
-	}
 
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
-	{
-		Widget widget = event.getWidget();
-		if (WorldType.isPvpWorld(client.getWorldType())
-			&& WidgetInfo.TO_GROUP(widget.getId()) == WidgetID.PVP_GROUP_ID)
+		if (lastPvpVarb != pvpVarb)
 		{
-			widgetHiddenChangedOnPvpWorld = true;
+			if (pvpVarb == 0)
+			{
+				log.debug("Left a PVP zone, clearing teleblock timer");
+				removeGameTimer(TELEBLOCK);
+			}
+
+			lastPvpVarb = pvpVarb;
 		}
 	}
 
@@ -470,6 +448,11 @@ public class TimersPlugin extends Plugin
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
+		}
+
+		if (message.equals(ABYSSAL_SIRE_STUN_MESSAGE) && config.showAbyssalSireStun())
+		{
+			createGameTimer(ABYSSAL_SIRE_STUN);
 		}
 
 		if (message.equals(ENDURANCE_EFFECT_MESSAGE))
@@ -763,8 +746,6 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		loggedInRace = false;
-
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
 
@@ -826,34 +807,9 @@ public class TimersPlugin extends Plugin
 				removeTzhaarTimer(); // will be readded by the wave message
 				removeGameTimer(TELEBLOCK);
 				break;
-			case LOGGED_IN:
-				loggedInRace = true;
-				break;
 		}
 	}
 
-	@Subscribe
-	public void onNpcChanged(NpcChanged npcChanged)
-	{
-		int id = npcChanged.getNpc().getId();
-		int oldId = npcChanged.getOld().getId();
-
-		if (id == NpcID.ABYSSAL_SIRE_5888)
-		{
-			// stunned npc type
-			log.debug("Sire is stunned");
-			if (config.showAbyssalSireStun())
-			{
-				createGameTimer(ABYSSAL_SIRE_STUN);
-			}
-		}
-		else if (oldId == NpcID.ABYSSAL_SIRE_5888)
-		{
-			// change from stunned sire to anything else
-			log.debug("Sire is unstunned");
-			removeGameTimer(ABYSSAL_SIRE_STUN);
-		}
-	}
 
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)

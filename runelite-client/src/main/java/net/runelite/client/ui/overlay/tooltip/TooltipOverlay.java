@@ -32,6 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.TooltipPositionType;
 import net.runelite.client.ui.overlay.Overlay;
@@ -59,7 +60,9 @@ public class TooltipOverlay extends Overlay
 		this.runeLiteConfig = runeLiteConfig;
 		setPosition(OverlayPosition.TOOLTIP);
 		setPriority(OverlayPriority.HIGHEST);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		// additionally allow tooltips above the full screen world map and welcome screen
+		drawAfterInterface(WidgetID.FULLSCREEN_CONTAINER_TLI);
 	}
 
 	@Override

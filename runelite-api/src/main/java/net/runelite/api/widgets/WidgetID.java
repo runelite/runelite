@@ -131,7 +131,7 @@ public class WidgetID
 	public static final int LOOTING_BAG_GROUP_ID = 81;
 	public static final int SKOTIZO_GROUP_ID = 308;
 	public static final int ENTERING_HOUSE_GROUP_ID = 71;
-	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
+	public static final int FULLSCREEN_CONTAINER_TLI = 165;
 	public static final int QUESTLIST_GROUP_ID = 399;
 	public static final int SKILLS_GROUP_ID = 320;
 	public static final int MUSIC_GROUP_ID = 239;
@@ -303,7 +303,6 @@ public class WidgetID
 
 	static class Shop
 	{
-		static final int ITEMS_CONTAINER = 2;
 		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
@@ -371,6 +370,7 @@ public class WidgetID
 	{
 		static final int MINIMAP = 3;
 		static final int MINIMAP_DRAW_AREA = 8;
+		static final int MULTICOMBAT_INDICATOR = 21;
 		static final int FRIENDS_CHAT_TAB = 34;
 		static final int FRIENDS_TAB = 36;
 		static final int IGNORES_TAB = 35;
@@ -407,6 +407,7 @@ public class WidgetID
 
 	static class ResizableViewport
 	{
+		static final int MULTICOMBAT_INDICATOR = 18;
 		static final int FRIENDS_CHAT_TAB = 38;
 		static final int FRIENDS_TAB = 40;
 		static final int IGNORES_TAB = 39;

@@ -157,7 +157,7 @@ public class XpTrackerPlugin extends Plugin
 	{
 		xpPanel = new XpPanel(this, xpTrackerConfig, client, skillIconManager);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons/overall.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "/skill_icons/overall.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("XP Tracker")

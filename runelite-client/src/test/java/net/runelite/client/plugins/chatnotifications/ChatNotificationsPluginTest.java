@@ -30,6 +30,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
@@ -66,6 +67,10 @@ public class ChatNotificationsPluginTest
 	@Mock
 	@Bind
 	private Notifier notifier;
+
+	@Bind
+	@Named("runelite.title")
+	private String runeliteTitle = "RuneLite";
 
 	@Inject
 	private ChatNotificationsPlugin chatNotificationsPlugin;

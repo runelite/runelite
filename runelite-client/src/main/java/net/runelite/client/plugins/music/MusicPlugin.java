@@ -573,7 +573,7 @@ public class MusicPlugin extends Plugin
 			// emulate [proc,settings_update_icon]
 			boolean unmuted = val != 0;
 			icon.getChild(1).setHidden(unmuted);
-			icon.setAction(0, unmuted ? "Unmute" : "Mute");
+			icon.setAction(0, unmuted ? "Mute" : "Unmute");
 			// Set name + no tooltip; we have our own for ops
 			icon.setName(channel.getName());
 			icon.setOnMouseRepeatListener((Object[]) null);

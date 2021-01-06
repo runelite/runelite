@@ -48,6 +48,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 public class NpcSceneOverlay extends Overlay
@@ -199,7 +200,7 @@ public class NpcSceneOverlay extends Overlay
 			graphics.setColor(color);
 			graphics.setStroke(new BasicStroke(2));
 			graphics.draw(polygon);
-			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+			graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12));
 			graphics.fill(polygon);
 		}
 	}

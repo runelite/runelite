@@ -36,11 +36,12 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
+import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -198,11 +199,12 @@ public class WikiPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onWidgetHiddenChanged(WidgetHiddenChanged ev)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (ev.getWidget().getId() == WidgetInfo.MINIMAP_WIKI_BANNER.getId())
+		if (scriptPostFired.getScriptId() == ScriptID.WIKI_ICON_UPDATE)
 		{
-			ev.getWidget().setHidden(true);
+			Widget w = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+			w.setHidden(true);
 		}
 	}
 

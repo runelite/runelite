@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.game;
+package net.runelite.api.widgets;
 
-import java.awt.image.BufferedImage;
-import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Skill;
-import net.runelite.client.util.ImageUtil;
-
-@Singleton
-@Slf4j
-public class SkillIconManager
+public class WidgetModalMode
 {
-	// * 2 to account for the small version of each icon
-	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length * 2];
-
-	public BufferedImage getSkillImage(Skill skill, boolean small)
-	{
-		int skillIdx = skill.ordinal() + (small ? Skill.values().length : 0);
-
-		if (imgCache[skillIdx] != null)
-		{
-			return imgCache[skillIdx];
-		}
-
-		String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
-			+ skill.getName().toLowerCase() + ".png";
-		log.debug("Loading skill icon from {}", skillIconPath);
-		BufferedImage skillImage = ImageUtil.loadImageResource(getClass(), skillIconPath);
-		imgCache[skillIdx] = skillImage;
-
-		return skillImage;
-	}
-
-	public BufferedImage getSkillImage(Skill skill)
-	{
-		return getSkillImage(skill, false);
-	}
-
+	public static final int MODAL_NOCLICKTHROUGH = 0;
+	public static final int NON_MODAL = 1;
+	public static final int MODAL_CLICKTHROUGH = 3;
 }

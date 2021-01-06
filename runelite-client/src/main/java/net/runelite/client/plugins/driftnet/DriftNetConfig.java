@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.driftnet;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -84,6 +85,7 @@ public interface DriftNetConfig extends Config
 		return 60;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "untaggedFishColor",
 		name = "Untagged fish color",
@@ -106,6 +108,7 @@ public interface DriftNetConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "annetteTagColor",
 		name = "Annette tag color",
