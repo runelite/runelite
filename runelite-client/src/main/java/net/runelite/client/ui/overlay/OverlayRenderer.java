@@ -265,14 +265,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			}
 			else
 			{
-				final Rectangle bounds = overlay.getBounds();
-				final Point location = bounds.getLocation();
-				final Dimension dimension = bounds.getSize();
-
-				final Point preferredLocation = overlay.getPreferredLocation();
+				final Point location = overlay.getBounds().getLocation();
+				final Dimension dimension = overlay.getBounds().getSize();
 
 				// If the final position is not modified, layout it
-				if (overlayPosition != OverlayPosition.DETACHED && (preferredLocation == null || overlay.getPreferredPosition() != null))
+				if (overlayPosition != OverlayPosition.DETACHED && (overlay.getPreferredLocation() == null || overlay.getPreferredPosition() != null))
 				{
 					final Rectangle snapCorner = snapCorners.forPosition(overlayPosition);
 					final Point translation = OverlayUtil.transformPosition(overlayPosition, dimension);
@@ -282,18 +279,21 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				}
 				else
 				{
+					final Point preferredLocation = overlay.getPreferredLocation();
+
 					if (preferredLocation != null)
 					{
 						location.setLocation(preferredLocation);
 					}
 
-					// Clamp the overlay position to ensure it is on screen or within parent bounds
-					clampOverlayLocation(location, dimension.width, dimension.height, overlay);
+					final Dimension realDimensions = client.getRealDimensions();
+					location.x = Ints.constrainToRange(location.x, 0, Math.max(0, realDimensions.width - dimension.width));
+					location.y = Ints.constrainToRange(location.y, 0, Math.max(0, realDimensions.height - dimension.height));
 				}
 
 				if (overlay.getPreferredSize() != null)
 				{
-					bounds.setSize(overlay.getPreferredSize());
+					overlay.getBounds().setSize(overlay.getPreferredSize());
 				}
 
 				safeRender(client, overlay, layer, graphics, location);
@@ -305,6 +305,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				graphics.setPaint(paint);
 				graphics.setRenderingHints(renderingHints);
 				graphics.setBackground(background);
+
+				final Rectangle bounds = overlay.getBounds();
 
 				if (!bounds.isEmpty())
 				{
@@ -600,14 +602,12 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 		else if (inOverlayDraggingMode)
 		{
-			Point overlayPosition = new Point(p);
-			overlayPosition.translate(-overlayOffset.x, -overlayOffset.y); // adjust by mouse offset to get overlay position
-
-			// Clamp drag to parent component
-			final Rectangle overlayBounds = currentManagedOverlay.getBounds();
-			clampOverlayLocation(overlayPosition, overlayBounds.width, overlayBounds.height, currentManagedOverlay);
+			final Dimension realDimension = client.getRealDimensions();
+			p.translate(-overlayOffset.x, -overlayOffset.y);
+			p.x = Ints.constrainToRange(p.x, 0, Math.max(0, realDimension.width - currentManagedOverlay.getBounds().width));
+			p.y = Ints.constrainToRange(p.y, 0, Math.max(0, realDimension.height - currentManagedOverlay.getBounds().height));
 			currentManagedOverlay.setPreferredPosition(null);
-			currentManagedOverlay.setPreferredLocation(overlayPosition);
+			currentManagedOverlay.setPreferredLocation(p);
 		}
 		else
 		{
@@ -915,30 +915,5 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 
 		return entries;
-	}
-
-	/**
-	 * Adjust the given overlay position to be within its parent's bounds.
-	 *
-	 * @param overlayPosition  the overlay position, which is modified in place
-	 * @param overlayWidth
-	 * @param overlayHeight
-	 * @param overlay          the overlay
-	 */
-	private void clampOverlayLocation(Point overlayPosition, int overlayWidth, int overlayHeight, Overlay overlay)
-	{
-		Rectangle parentBounds = overlay.getParentBounds();
-		if (parentBounds == null || parentBounds.isEmpty())
-		{
-			// If no bounds are set, use the full client bounds
-			Dimension dim = client.getRealDimensions();
-			parentBounds = new Rectangle(0, 0, dim.width, dim.height);
-		}
-
-		// Constrain overlay position to be within the parent bounds
-		overlayPosition.x = Ints.constrainToRange(overlayPosition.x, parentBounds.x,
-			Math.max(parentBounds.x, parentBounds.width - overlayWidth));
-		overlayPosition.y = Ints.constrainToRange(overlayPosition.y, parentBounds.y,
-			Math.max(parentBounds.y, parentBounds.height - overlayHeight));
 	}
 }
