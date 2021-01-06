@@ -316,7 +316,6 @@ public class ExaminePlugin extends Plugin
 		}
 		else if (WidgetID.SHOP_GROUP_ID == widgetGroup)
 		{
-
 			Widget widgetItem = widget.getChild(actionParam);
 			if (widgetItem != null)
 			{
