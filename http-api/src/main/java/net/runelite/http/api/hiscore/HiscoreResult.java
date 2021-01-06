@@ -65,6 +65,7 @@ public class HiscoreResult
 	private Skill clueScrollElite;
 	private Skill clueScrollMaster;
 	private Skill lastManStanding;
+	private Skill soulWarsZeal;
 	private Skill abyssalSire;
 	private Skill alchemicalHydra;
 	private Skill barrowsChests;
@@ -184,6 +185,8 @@ public class HiscoreResult
 				return getClueScrollMaster();
 			case LAST_MAN_STANDING:
 				return getLastManStanding();
+			case SOUL_WARS_ZEAL:
+				return getSoulWarsZeal();
 			case ABYSSAL_SIRE:
 				return abyssalSire;
 			case ALCHEMICAL_HYDRA:
