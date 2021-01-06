@@ -102,14 +102,14 @@ class PluginHubPanel extends PluginPanel
 
 	static
 	{
-		BufferedImage missingIcon = ImageUtil.getResourceStreamFromClass(PluginHubPanel.class, "pluginhub_missingicon.png");
+		BufferedImage missingIcon = ImageUtil.loadImageResource(PluginHubPanel.class, "pluginhub_missingicon.png");
 		MISSING_ICON = new ImageIcon(missingIcon);
 
-		BufferedImage helpIcon = ImageUtil.getResourceStreamFromClass(PluginHubPanel.class, "pluginhub_help.png");
+		BufferedImage helpIcon = ImageUtil.loadImageResource(PluginHubPanel.class, "pluginhub_help.png");
 		HELP_ICON = new ImageIcon(helpIcon);
 		HELP_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(helpIcon, -100));
 
-		BufferedImage configureIcon = ImageUtil.getResourceStreamFromClass(PluginHubPanel.class, "pluginhub_configure.png");
+		BufferedImage configureIcon = ImageUtil.loadImageResource(PluginHubPanel.class, "pluginhub_configure.png");
 		CONFIGURE_ICON = new ImageIcon(configureIcon);
 		CONFIGURE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(configureIcon, -100));
 	}

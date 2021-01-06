@@ -416,7 +416,7 @@ public class FriendNotesPlugin extends Plugin
 			return;
 		}
 
-		final BufferedImage iconImg = ImageUtil.getResourceStreamFromClass(getClass(), "note_icon.png");
+		final BufferedImage iconImg = ImageUtil.loadImageResource(getClass(), "note_icon.png");
 		if (iconImg == null)
 		{
 			return;

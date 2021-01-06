@@ -100,7 +100,7 @@ public class BarbarianAssaultPlugin extends Plugin
 		overlayManager.add(timerOverlay);
 		overlayManager.add(healerOverlay);
 
-		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
+		clockImage = ImageUtil.loadImageResource(getClass(), "clock.png");
 	}
 
 	@Override

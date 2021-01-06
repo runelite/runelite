@@ -308,7 +308,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		try
 		{
 			log.debug("Loading: {}", file);
-			BufferedImage image = ImageUtil.getResourceStreamFromClass(this.getClass(), file);
+			BufferedImage image = ImageUtil.loadImageResource(this.getClass(), file);
 			return ImageUtil.getImageSpritePixels(image, client);
 		}
 		catch (RuntimeException ex)

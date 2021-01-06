@@ -289,7 +289,7 @@ public class GrandExchangePlugin extends Plugin
 	{
 		panel = injector.getInstance(GrandExchangePanel.class);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "ge_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "ge_icon.png");
 
 		button = NavigationButton.builder()
 			.tooltip("Grand Exchange")

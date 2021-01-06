@@ -174,7 +174,7 @@ class DevToolsPanel extends PluginPanel
 		final JButton newInfoboxBtn = new JButton("Infobox");
 		newInfoboxBtn.addActionListener(e ->
 		{
-			Counter counter = new Counter(ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png"), plugin, 42)
+			Counter counter = new Counter(ImageUtil.loadImageResource(getClass(), "devtools_icon.png"), plugin, 42)
 			{
 				@Override
 				public String getName()
