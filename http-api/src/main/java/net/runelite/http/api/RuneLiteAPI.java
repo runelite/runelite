@@ -64,7 +64,7 @@ public class RuneLiteAPI
 			InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
 			properties.load(in);
 
-			version = "1.6.35";//properties.getProperty("runelite.version");
+			version = properties.getProperty("runelite.version");
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
 			String commit = properties.getProperty("runelite.commit");
 			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
@@ -148,6 +148,24 @@ public class RuneLiteAPI
 
 	public static String getVersion()
 	{
+		// Hack to make this always work in dev mode whenever you pull
+		if (version.endsWith("-SNAPSHOT"))
+		{
+			String strippedVersion = version.replace("-SNAPSHOT", "");
+			String[] versionNumbers = strippedVersion.split("\\.");
+
+			StringBuilder lastVersion = new StringBuilder();
+			for (int i = 0; i < versionNumbers.length - 1; i++)
+			{
+				lastVersion.append(versionNumbers[i]);
+				lastVersion.append(".");
+			}
+
+			lastVersion.append(Integer.parseInt(versionNumbers[versionNumbers.length - 1]) - 1);
+
+			return lastVersion.toString();
+		}
+
 		return version;
 	}
 
