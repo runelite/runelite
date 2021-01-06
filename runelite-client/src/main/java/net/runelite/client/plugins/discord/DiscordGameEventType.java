@@ -297,6 +297,7 @@ enum DiscordGameEventType
 	MG_PYRAMID_PLUNDER("Pyramid Plunder", DiscordAreaType.MINIGAMES, 7749),
 	MG_ROGUES_DEN("Rogues' Den", DiscordAreaType.MINIGAMES, 11855, 11854, 12111, 12110),
 	MG_SORCERESS_GARDEN("Sorceress's Garden", DiscordAreaType.MINIGAMES, 11605),
+	MG_SOUL_WARS("Soul Wars", DiscordAreaType.MINIGAMES, 8493, 8748, 8749, 9005),
 	MG_TEMPLE_TREKKING("Temple Trekking", DiscordAreaType.MINIGAMES, 8014, 8270, 8256, 8782, 9038, 9294, 9550, 9806),
 	MG_TITHE_FARM("Tithe Farm", DiscordAreaType.MINIGAMES, 7222),
 	MG_TROUBLE_BREWING("Trouble Brewing", DiscordAreaType.MINIGAMES, 15150),
