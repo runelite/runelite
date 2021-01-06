@@ -1623,7 +1623,7 @@
     11046,
     20587
   ],
-  "flier": [
+  "flyer": [
     956,
     23670
   ],
@@ -4838,6 +4838,10 @@
     23595,
     25264
   ],
+  "dragon axe": [
+    6739,
+    25378
+  ],
   "darklight": [
     6746,
     8281
@@ -5877,6 +5881,14 @@
   "mahogany armchair": [
     8315,
     8508
+  ],
+  "rug": [
+    8317,
+    25362
+  ],
+  "opulent rug": [
+    8318,
+    25363
   ],
   "wooden bookcase": [
     8319,
@@ -7470,7 +7482,8 @@
   "dragon pickaxe": [
     11920,
     12797,
-    23677
+    23677,
+    25376
   ],
   "malediction ward": [
     11924,
@@ -7936,11 +7949,15 @@
   ],
   "infernal axe": [
     13241,
-    13242
+    13242,
+    25066,
+    25371
   ],
   "infernal pickaxe": [
     13243,
-    13244
+    13244,
+    25063,
+    25369
   ],
   "abyssal dagger": [
     13265,
@@ -8530,9 +8547,15 @@
     21009,
     21206
   ],
+  "dragon harpoon": [
+    21028,
+    25373
+  ],
   "infernal harpoon": [
     21031,
-    21033
+    21033,
+    25059,
+    25367
   ],
   "medium storage unit": [
     21038,
@@ -9510,7 +9533,7 @@
     25016,
     25028
   ],
-  "trailblazer coat": [
+  "trailblazer top": [
     25004,
     25019,
     25031
@@ -9525,17 +9548,13 @@
     25025,
     25037
   ],
-  "trailblazer harpoon": [
-    25059,
-    25114
+  "trailblazer globe": [
+    25093,
+    25361
   ],
-  "trailblazer pickaxe": [
-    25063,
-    25112
-  ],
-  "trailblazer axe": [
-    25066,
-    25110
+  "trailblazer rug": [
+    25096,
+    25364
   ],
   "extradimensional bag": [
     25106,
@@ -9599,5 +9618,22 @@
     25241,
     25242,
     25243
+  ],
+  "gnome child icon": [
+    25319,
+    25338
+  ],
+  "gnome child": [
+    25320,
+    25321
+  ],
+  "soul cape": [
+    25344,
+    25346
+  ],
+  "trailblazer relic hunter armour set": [
+    25380,
+    25383,
+    25386
   ]
 }
