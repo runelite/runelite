@@ -282,6 +282,7 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.add(makeHiscorePanel(CLUE_SCROLL_ALL));
 		minigamePanel.add(makeHiscorePanel(LEAGUE_POINTS));
 		minigamePanel.add(makeHiscorePanel(LAST_MAN_STANDING));
+		minigamePanel.add(makeHiscorePanel(SOUL_WARS_ZEAL));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_HUNTER));
 
@@ -592,6 +593,18 @@ public class HiscorePanel extends PluginPanel
 					if (lastManStanding.getLevel() > -1)
 					{
 						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(lastManStanding.getLevel()) + "</p>";
+					}
+					break;
+				}
+				case SOUL_WARS_ZEAL:
+				{
+					Skill soulWarsZeal = result.getSoulWarsZeal();
+					String rank = (soulWarsZeal.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(soulWarsZeal.getRank());
+					content += "<p><span style = 'color:white'>Soul Wars Zeal</span></p>";
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					if (soulWarsZeal.getLevel() > -1)
+					{
+						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(soulWarsZeal.getLevel()) + "</p>";
 					}
 					break;
 				}
