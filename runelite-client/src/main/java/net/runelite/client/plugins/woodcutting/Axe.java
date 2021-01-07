@@ -34,6 +34,7 @@ import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
 import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
 import static net.runelite.api.AnimationID.WOODCUTTING_CRYSTAL;
 import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON_OR;
 import static net.runelite.api.AnimationID.WOODCUTTING_GILDED;
 import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
 import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
@@ -46,6 +47,7 @@ import static net.runelite.api.ItemID.BLACK_AXE;
 import static net.runelite.api.ItemID.BRONZE_AXE;
 import static net.runelite.api.ItemID.CRYSTAL_AXE;
 import static net.runelite.api.ItemID.DRAGON_AXE;
+import static net.runelite.api.ItemID.DRAGON_AXE_OR;
 import static net.runelite.api.ItemID.GILDED_AXE;
 import static net.runelite.api.ItemID.INFERNAL_AXE;
 import static net.runelite.api.ItemID.IRON_AXE;
@@ -69,6 +71,7 @@ enum Axe
 	RUNE(WOODCUTTING_RUNE, RUNE_AXE),
 	GILDED(WOODCUTTING_GILDED, GILDED_AXE),
 	DRAGON(WOODCUTTING_DRAGON, DRAGON_AXE),
+	DRAGON_OR(WOODCUTTING_DRAGON_OR, DRAGON_AXE_OR),
 	INFERNAL(WOODCUTTING_INFERNAL, INFERNAL_AXE),
 	THIRDAGE(WOODCUTTING_3A_AXE, _3RD_AGE_AXE),
 	CRYSTAL(WOODCUTTING_CRYSTAL, CRYSTAL_AXE),

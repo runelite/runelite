@@ -255,8 +255,10 @@ public class FishingPlugin extends Plugin
 			switch (item.getId())
 			{
 				case ItemID.DRAGON_HARPOON:
+				case ItemID.DRAGON_HARPOON_OR:
 				case ItemID.INFERNAL_HARPOON:
 				case ItemID.INFERNAL_HARPOON_UNCHARGED:
+				case ItemID.INFERNAL_HARPOON_UNCHARGED_25367:
 				case ItemID.HARPOON:
 				case ItemID.BARBTAIL_HARPOON:
 				case ItemID.BIG_FISHING_NET:
