@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
+import com.google.common.collect.ImmutableSet;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +39,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.HitsplatApplied;
@@ -62,6 +64,11 @@ import net.runelite.client.ws.WSClient;
 @Slf4j
 public class SpecialCounterPlugin extends Plugin
 {
+	private static final Set<Integer> IGNORED_NPCS = ImmutableSet.of(
+		NpcID.DARK_ENERGY_CORE, NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063,
+		NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY
+	);
+
 	private int currentWorld;
 	private int specialPercentage;
 	private Actor lastSpecTarget;
@@ -190,6 +197,11 @@ public class SpecialCounterPlugin extends Plugin
 
 		NPC npc = (NPC) target;
 		int interactingId = npc.getId();
+
+		if (IGNORED_NPCS.contains(interactingId))
+		{
+			return;
+		}
 
 		// If this is a new NPC reset the counters
 		if (!interactedNpcIds.contains(interactingId))
