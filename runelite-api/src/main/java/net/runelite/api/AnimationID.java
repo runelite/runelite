@@ -109,7 +109,6 @@ public final class AnimationID
 	public static final int FISHING_INFERNAL_HARPOON = 7402;
 	public static final int FISHING_CRYSTAL_HARPOON = 8336;
 	public static final int FISHING_TRAILBLAZER_HARPOON = 8784;
-	public static final int FISHING_TRAILBLAZER_HARPOON_2 = 8785;
 	public static final int FISHING_OILY_ROD = 622;
 	public static final int FISHING_KARAMBWAN = 1193;
 	public static final int FISHING_CRUSHING_INFERNAL_EELS = 7553;
