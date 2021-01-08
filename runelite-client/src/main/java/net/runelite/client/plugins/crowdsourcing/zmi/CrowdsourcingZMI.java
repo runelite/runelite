@@ -90,7 +90,6 @@ public class CrowdsourcingZMI
 			case GROUND_ITEM_THIRD_OPTION:
 			case GROUND_ITEM_FOURTH_OPTION:
 			case GROUND_ITEM_FIFTH_OPTION:
-			case ITEM_DROP:
 				illegalActionTick = client.getTickCount();
 				break;
 		}

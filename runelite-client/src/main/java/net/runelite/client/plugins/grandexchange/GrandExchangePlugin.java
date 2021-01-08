@@ -119,13 +119,15 @@ import org.apache.commons.text.similarity.FuzzyScore;
 @Slf4j
 public class GrandExchangePlugin extends Plugin
 {
-	private static final int GE_SLOTS = 8;
+	@VisibleForTesting
+	static final int GE_SLOTS = 8;
+	private static final int GE_LOGIN_BURST_WINDOW = 2; // ticks
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
-	private static final String BUY_LIMIT_KEY = "buylimit_";
+	private static final String BUY_LIMIT_KEY = "buylimit";
 	private static final Gson GSON = new Gson();
 	private static final Duration BUY_LIMIT_RESET = Duration.ofHours(4);
 
@@ -141,6 +143,7 @@ public class GrandExchangePlugin extends Plugin
 	private NavigationButton button;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private GrandExchangePanel panel;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -189,7 +192,7 @@ public class GrandExchangePlugin extends Plugin
 
 	@Inject
 	private GrandExchangeClient grandExchangeClient;
-	private boolean loginBurstGeUpdates;
+	private int lastLoginTick;
 
 	@Inject
 	private OSBGrandExchangeClient osbGrandExchangeClient;
@@ -198,6 +201,7 @@ public class GrandExchangePlugin extends Plugin
 
 	private String machineUuid;
 	private String lastUsername;
+	private int tradeSeq;
 
 	/**
 	 * Logic from {@link org.apache.commons.text.similarity.FuzzyScore}
@@ -244,7 +248,7 @@ public class GrandExchangePlugin extends Plugin
 
 	private SavedOffer getOffer(int slot)
 	{
-		String offer = configManager.getConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot));
+		String offer = configManager.getRSProfileConfiguration("geoffer", Integer.toString(slot));
 		if (offer == null)
 		{
 			return null;
@@ -254,12 +258,12 @@ public class GrandExchangePlugin extends Plugin
 
 	private void setOffer(int slot, SavedOffer offer)
 	{
-		configManager.setConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot), GSON.toJson(offer));
+		configManager.setRSProfileConfiguration("geoffer", Integer.toString(slot), GSON.toJson(offer));
 	}
 
 	private void deleteOffer(int slot)
 	{
-		configManager.unsetConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot));
+		configManager.unsetRSProfileConfiguration("geoffer", Integer.toString(slot));
 	}
 
 	@Provides
@@ -285,7 +289,7 @@ public class GrandExchangePlugin extends Plugin
 	{
 		panel = injector.getInstance(GrandExchangePanel.class);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "ge_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "ge_icon.png");
 
 		button = NavigationButton.builder()
 			.tooltip("Grand Exchange")
@@ -314,6 +318,8 @@ public class GrandExchangePlugin extends Plugin
 
 		osbItem = -1;
 		osbGrandExchangeResult = null;
+
+		lastLoginTick = -1;
 	}
 
 	@Override
@@ -325,6 +331,7 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeText = null;
 		grandExchangeItem = null;
 		lastUsername = machineUuid = null;
+		tradeSeq = 0;
 	}
 
 	@Subscribe
@@ -370,26 +377,23 @@ public class GrandExchangePlugin extends Plugin
 		if (offer.getState() == GrandExchangeOfferState.EMPTY && client.getGameState() != GameState.LOGGED_IN)
 		{
 			// Trades are cleared by the client during LOGIN_SCREEN/HOPPING/LOGGING_IN, ignore those so we don't
-			// zero and re-submit the trade on login as an update
+			// clear the offer config.
 			return;
 		}
 
-		log.debug("GE offer updated: state: {}, slot: {}, item: {}, qty: {}, login: {}",
-			offer.getState(), slot, offer.getItemId(), offer.getQuantitySold(), loginBurstGeUpdates);
+		log.debug("GE offer updated: state: {}, slot: {}, item: {}, qty: {}, lastLoginTick: {}",
+			offer.getState(), slot, offer.getItemId(), offer.getQuantitySold(), lastLoginTick);
 
 		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
 		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
 		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
 		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offer, slot));
 
+		updateLimitTimer(offer);
+
 		submitTrade(slot, offer);
 
 		updateConfig(slot, offer);
-
-		if (loginBurstGeUpdates && slot == GE_SLOTS - 1) // slots are sent sequentially on login; this is the last one
-		{
-			loginBurstGeUpdates = false;
-		}
 	}
 
 	@VisibleForTesting
@@ -403,6 +407,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		SavedOffer savedOffer = getOffer(slot);
+		boolean login = client.getTickCount() <= lastLoginTick + GE_LOGIN_BURST_WINDOW;
 		if (savedOffer == null && (state == GrandExchangeOfferState.BUYING || state == GrandExchangeOfferState.SELLING) && offer.getQuantitySold() == 0)
 		{
 			// new offer
@@ -413,7 +418,9 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setOffer(offer.getPrice());
 			grandExchangeTrade.setSlot(slot);
 			grandExchangeTrade.setWorldType(getGeWorldType());
-			grandExchangeTrade.setLogin(loginBurstGeUpdates);
+			grandExchangeTrade.setLogin(login);
+			grandExchangeTrade.setSeq(tradeSeq++);
+			grandExchangeTrade.setResetTime(getLimitResetTime(offer.getItemId()));
 
 			log.debug("Submitting new trade: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
@@ -444,7 +451,9 @@ public class GrandExchangePlugin extends Plugin
 			grandExchangeTrade.setOffer(offer.getPrice());
 			grandExchangeTrade.setSlot(slot);
 			grandExchangeTrade.setWorldType(getGeWorldType());
-			grandExchangeTrade.setLogin(loginBurstGeUpdates);
+			grandExchangeTrade.setLogin(login);
+			grandExchangeTrade.setSeq(tradeSeq++);
+			grandExchangeTrade.setResetTime(getLimitResetTime(offer.getItemId()));
 
 			log.debug("Submitting cancelled: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
@@ -469,7 +478,9 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeTrade.setOffer(offer.getPrice());
 		grandExchangeTrade.setSlot(slot);
 		grandExchangeTrade.setWorldType(getGeWorldType());
-		grandExchangeTrade.setLogin(loginBurstGeUpdates);
+		grandExchangeTrade.setLogin(login);
+		grandExchangeTrade.setSeq(tradeSeq++);
+		grandExchangeTrade.setResetTime(getLimitResetTime(offer.getItemId()));
 
 		log.debug("Submitting trade: {}", grandExchangeTrade);
 		grandExchangeClient.submit(grandExchangeTrade);
@@ -508,8 +519,6 @@ public class GrandExchangePlugin extends Plugin
 			savedOffer.setSpent(offer.getSpent());
 			savedOffer.setState(offer.getState());
 			setOffer(slot, savedOffer);
-
-			updateLimitTimer(offer);
 		}
 	}
 
@@ -532,14 +541,19 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		switch (gameStateChanged.getGameState())
 		{
-			panel.getOffersPanel().resetOffers();
-			loginBurstGeUpdates = true;
-		}
-		else if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-		{
-			grandExchangeClient.setMachineId(getMachineUuid());
+			case LOGIN_SCREEN:
+				panel.getOffersPanel().resetOffers();
+				break;
+			case LOGGING_IN:
+			case HOPPING:
+			case CONNECTION_LOST:
+				lastLoginTick = client.getTickCount();
+				break;
+			case LOGGED_IN:
+				grandExchangeClient.setMachineId(getMachineUuid());
+				break;
 		}
 	}
 
@@ -782,20 +796,19 @@ public class GrandExchangePlugin extends Plugin
 
 	private void setLimitResetTime(int itemId)
 	{
-		Instant lastDateTime = configManager.getConfiguration(GrandExchangeConfig.CONFIG_GROUP,
-			BUY_LIMIT_KEY + client.getUsername().toLowerCase() + "." + itemId, Instant.class);
+		Instant lastDateTime = configManager.getRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP,
+			BUY_LIMIT_KEY + "." + itemId, Instant.class);
 		if (lastDateTime == null || lastDateTime.isBefore(Instant.now()))
 		{
-			configManager.setConfiguration(GrandExchangeConfig.CONFIG_GROUP,
-				BUY_LIMIT_KEY + client.getUsername().toLowerCase() + "." + itemId,
+			configManager.setRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP, BUY_LIMIT_KEY + "." + itemId,
 				Instant.now().plus(BUY_LIMIT_RESET));
 		}
 	}
 
 	private Instant getLimitResetTime(int itemId)
 	{
-		Instant lastDateTime = configManager.getConfiguration(GrandExchangeConfig.CONFIG_GROUP,
-			BUY_LIMIT_KEY + client.getUsername().toLowerCase() + "." + itemId, Instant.class);
+		Instant lastDateTime = configManager.getRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP,
+			BUY_LIMIT_KEY + "." + itemId, Instant.class);
 		if (lastDateTime == null)
 		{
 			return null;
@@ -803,7 +816,7 @@ public class GrandExchangePlugin extends Plugin
 
 		if (lastDateTime.isBefore(Instant.now()))
 		{
-			configManager.unsetConfiguration(GrandExchangeConfig.CONFIG_GROUP, BUY_LIMIT_KEY + client.getUsername().toLowerCase() + "." + itemId);
+			configManager.unsetRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP, BUY_LIMIT_KEY + "." + itemId);
 			return null;
 		}
 
@@ -953,12 +966,14 @@ public class GrandExchangePlugin extends Plugin
 			}
 			hasher.putUnencodedChars(username);
 			machineUuid = hasher.hash().toString();
+			tradeSeq = 0;
 			return machineUuid;
 		}
 		catch (SocketException ex)
 		{
 			log.debug("unable to generate machine id", ex);
 			machineUuid = null;
+			tradeSeq = 0;
 			return null;
 		}
 	}

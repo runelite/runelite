@@ -34,13 +34,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.Notifier;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -69,6 +69,10 @@ public class ChatNotificationsPlugin extends Plugin
 
 	@Inject
 	private Notifier notifier;
+
+	@Inject
+	@Named("runelite.title")
+	private String runeliteTitle;
 
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
@@ -120,8 +124,8 @@ public class ChatNotificationsPlugin extends Plugin
 				.map(this::quoteAndIgnoreColor) // regex escape and ignore nested colors in the target message
 				.collect(Collectors.joining("|"));
 			// To match <word> \b doesn't work due to <> not being in \w,
-			// so match \b or \s
-			highlightMatcher = Pattern.compile("(?:\\b|(?<=\\s))(" + joined + ")(?:\\b|(?=\\s))", Pattern.CASE_INSENSITIVE);
+			// so match \b or \s, as well as \A and \z for beginning and end of input respectively
+			highlightMatcher = Pattern.compile("(?:\\b|(?<=\\s)|\\A)(?:" + joined + ")(?:\\b|(?=\\s)|\\z)", Pattern.CASE_INSENSITIVE);
 		}
 	}
 
@@ -163,7 +167,7 @@ public class ChatNotificationsPlugin extends Plugin
 				break;
 			case CONSOLE:
 				// Don't notify for notification messages
-				if (chatMessage.getName().equals(RuneLiteProperties.getTitle()))
+				if (chatMessage.getName().equals(runeliteTitle))
 				{
 					return;
 				}

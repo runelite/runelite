@@ -26,11 +26,13 @@
 package net.runelite.client.plugins.grounditems;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
@@ -218,6 +220,7 @@ public interface GroundItemsConfig extends Config
 		return 0;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "defaultColor",
 		name = "Default items color",
@@ -229,6 +232,7 @@ public interface GroundItemsConfig extends Config
 		return Color.WHITE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "highlightedColor",
 		name = "Highlighted items color",
@@ -240,6 +244,7 @@ public interface GroundItemsConfig extends Config
 		return Color.decode("#AA00FF");
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "hiddenColor",
 		name = "Hidden items color",
@@ -251,6 +256,7 @@ public interface GroundItemsConfig extends Config
 		return Color.GRAY;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "lowValueColor",
 		name = "Low value items color",
@@ -273,6 +279,7 @@ public interface GroundItemsConfig extends Config
 		return 20000;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "mediumValueColor",
 		name = "Medium value items color",
@@ -295,6 +302,7 @@ public interface GroundItemsConfig extends Config
 		return 100000;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "highValueColor",
 		name = "High value items color",
@@ -317,6 +325,7 @@ public interface GroundItemsConfig extends Config
 		return 1000000;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "insaneValueColor",
 		name = "Insane value items color",
@@ -375,13 +384,13 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 		keyName = "groundItemTimers",
-		name = "Show despawn timers",
+		name = "Despawn timer",
 		description = "Shows despawn timers for items you've dropped and received as loot",
 		position = 28
 	)
-	default boolean groundItemTimers()
+	default DespawnTimerMode groundItemTimers()
 	{
-		return false;
+		return DespawnTimerMode.OFF;
 	}
 
 	@ConfigItem(

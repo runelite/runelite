@@ -274,7 +274,7 @@ class Library
 		assert bookSequence >= 0;
 
 		bookcaseIndex -= step * bookSequence;
-		for (; bookcaseIndex < 0; )
+		while (bookcaseIndex < 0)
 		{
 			bookcaseIndex += byIndex.size();
 		}

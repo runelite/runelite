@@ -137,6 +137,7 @@ public class ChatCommandsPlugin extends Plugin
 	private String pohOwner;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
+	private int lastBossTime = -1;
 	private int lastPb = -1;
 
 	@Inject
@@ -197,6 +198,7 @@ public class ChatCommandsPlugin extends Plugin
 	public void shutDown()
 	{
 		lastBossKill = null;
+		lastBossTime = -1;
 
 		keyManager.unregisterKeyListener(chatKeyboardListener);
 
@@ -230,27 +232,23 @@ public class ChatCommandsPlugin extends Plugin
 
 	private void setKc(String boss, int killcount)
 	{
-		configManager.setConfiguration("killcount." + client.getUsername().toLowerCase(),
-			boss.toLowerCase(), killcount);
+		configManager.setRSProfileConfiguration("killcount", boss.toLowerCase(), killcount);
 	}
 
 	private int getKc(String boss)
 	{
-		Integer killCount = configManager.getConfiguration("killcount." + client.getUsername().toLowerCase(),
-			boss.toLowerCase(), int.class);
+		Integer killCount = configManager.getRSProfileConfiguration("killcount", boss.toLowerCase(), int.class);
 		return killCount == null ? 0 : killCount;
 	}
 
 	private void setPb(String boss, int seconds)
 	{
-		configManager.setConfiguration("personalbest." + client.getUsername().toLowerCase(),
-			boss.toLowerCase(), seconds);
+		configManager.setRSProfileConfiguration("personalbest", boss.toLowerCase(), seconds);
 	}
 
 	private int getPb(String boss)
 	{
-		Integer personalBest = configManager.getConfiguration("personalbest." + client.getUsername().toLowerCase(),
-			boss.toLowerCase(), int.class);
+		Integer personalBest = configManager.getRSProfileConfiguration("personalbest", boss.toLowerCase(), int.class);
 		return personalBest == null ? 0 : personalBest;
 	}
 
@@ -283,6 +281,7 @@ public class ChatCommandsPlugin extends Plugin
 			else
 			{
 				lastBossKill = boss;
+				lastBossTime = client.getTickCount();
 			}
 			return;
 		}
@@ -304,16 +303,11 @@ public class ChatCommandsPlugin extends Plugin
 			setKc(boss, kc);
 			if (lastPb > -1)
 			{
-				// lastPb contains the last raid duration and not the personal best, because the raid
-				// complete message does not include the pb. We have to check if it is a new pb:
-				int currentPb = getPb(boss);
-				if (currentPb <= 0 || lastPb < currentPb)
-				{
-					setPb(boss, lastPb);
-				}
+				setPb(boss, lastPb);
 				lastPb = -1;
 			}
 			lastBossKill = boss;
+			lastBossTime = client.getTickCount();
 			return;
 		}
 
@@ -432,7 +426,11 @@ public class ChatCommandsPlugin extends Plugin
 			setKc("Hallowed Sepulchre", kc);
 		}
 
-		lastBossKill = null;
+		if (lastBossKill != null && lastBossTime != client.getTickCount())
+		{
+			lastBossKill = null;
+			lastBossTime = -1;
+		}
 	}
 
 	private static int timeStringToSeconds(String timeString)
@@ -1311,7 +1309,7 @@ public class ChatCommandsPlugin extends Plugin
 				.append(minigame.getName())
 				.append(" Score: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(Integer.toString(score));
+				.append(String.format("%,d", score));
 
 			int rank = hiscoreSkill.getRank();
 			if (rank != -1)
@@ -1457,7 +1455,7 @@ public class ChatCommandsPlugin extends Plugin
 			}
 		}
 
-		// Get ironman status from their icon in chat
+		// Get ironman status from their icon in chat, this handles leagues too
 		HiscoreEndpoint endpoint = getHiscoreEndpointByName(chatMessage.getName());
 		return new HiscoreLookup(player, endpoint);
 	}
@@ -1517,19 +1515,23 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		if (name.contains(IconID.IRONMAN.toString()))
 		{
-			return toEndPoint(AccountType.IRONMAN);
+			return HiscoreEndpoint.IRONMAN;
 		}
 		else if (name.contains(IconID.ULTIMATE_IRONMAN.toString()))
 		{
-			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
+			return HiscoreEndpoint.ULTIMATE_IRONMAN;
 		}
 		else if (name.contains(IconID.HARDCORE_IRONMAN.toString()))
 		{
-			return toEndPoint(AccountType.HARDCORE_IRONMAN);
+			return HiscoreEndpoint.HARDCORE_IRONMAN;
+		}
+		else if (name.contains(IconID.LEAGUE.toString()))
+		{
+			return HiscoreEndpoint.LEAGUE;
 		}
 		else
 		{
-			return toEndPoint(AccountType.NORMAL);
+			return HiscoreEndpoint.NORMAL;
 		}
 	}
 

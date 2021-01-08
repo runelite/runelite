@@ -53,7 +53,6 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -95,9 +94,6 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private GroundMarkerMinimapOverlay minimapOverlay;
-
-	@Inject
-	private KeyManager keyManager;
 
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;

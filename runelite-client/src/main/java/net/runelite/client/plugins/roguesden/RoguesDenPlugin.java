@@ -28,7 +28,6 @@ import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
@@ -63,9 +62,6 @@ public class RoguesDenPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean hasGem;
-
-	@Inject
-	private Client client;
 
 	@Inject
 	private OverlayManager overlayManager;

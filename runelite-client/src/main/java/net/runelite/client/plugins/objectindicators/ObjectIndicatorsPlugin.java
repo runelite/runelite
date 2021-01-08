@@ -71,7 +71,6 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -105,9 +104,6 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ObjectIndicatorsOverlay overlay;
-
-	@Inject
-	private KeyManager keyManager;
 
 	@Inject
 	private ObjectIndicatorsConfig config;
@@ -282,7 +278,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	private void checkObjectPoints(TileObject object)
 	{
-		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation(), object.getPlane());
 		final Set<ObjectPoint> objectPoints = points.get(worldPoint.getRegionID());
 
 		if (objectPoints == null)

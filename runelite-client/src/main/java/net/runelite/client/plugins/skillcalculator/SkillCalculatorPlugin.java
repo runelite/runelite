@@ -64,7 +64,7 @@ public class SkillCalculatorPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "calc.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
 		final SkillCalculatorPanel uiPanel = new SkillCalculatorPanel(skillIconManager, client, spriteManager, itemManager);
 
 		uiNavigationButton = NavigationButton.builder()

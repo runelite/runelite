@@ -33,7 +33,7 @@ class RunecraftingAltarPoint extends WorldMapPoint
 	RunecraftingAltarPoint(RunecraftingAltarLocation point)
 	{
 		super(point.getLocation(), WorldMapPlugin.BLANK_ICON);
-		setImage(ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, point.getIconPath()));
+		setImage(ImageUtil.loadImageResource(WorldMapPlugin.class, point.getIconPath()));
 		setTooltip(point.getTooltip());
 	}
 }

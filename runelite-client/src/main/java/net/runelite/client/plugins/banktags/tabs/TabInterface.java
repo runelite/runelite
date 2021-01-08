@@ -83,6 +83,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.chatbox.ChatboxItemSearch;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.plugins.banktags.BankTagsConfig;
 import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
@@ -113,7 +114,6 @@ public class TabInterface
 	private static final String TAG_GEAR = "Tag-equipment";
 	private static final String TAG_INVENTORY = "Tag-inventory";
 	private static final String TAB_MENU_KEY = "tagtabs";
-	private static final String TAB_MENU = TAG_SEARCH + TAB_MENU_KEY;
 	private static final String OPEN_TAB_MENU = "View tag tabs";
 	private static final String SHOW_WORN = "Show worn items";
 	private static final String SHOW_SETTINGS = "Show menu";
@@ -142,10 +142,10 @@ public class TabInterface
 	private final BankTagsConfig config;
 	private final Notifier notifier;
 	private final BankSearch bankSearch;
+	private final ChatboxItemSearch searchProvider;
 	private final Rectangle bounds = new Rectangle();
 	private final Rectangle canvasBounds = new Rectangle();
 
-	private ChatboxItemSearch searchProvider;
 	@Getter
 	private TagTab activeTab;
 	@Getter
@@ -347,7 +347,7 @@ public class TabInterface
 
 					final Iterator<String> dataIter = Text.fromCSV(dataString).iterator();
 					String name = dataIter.next();
-					StringBuffer sb = new StringBuffer();
+					StringBuilder sb = new StringBuilder();
 					for (char c : name.toCharArray())
 					{
 						if (FILTERED_CHARS.test(c))
@@ -369,7 +369,7 @@ public class TabInterface
 
 					while (dataIter.hasNext())
 					{
-						final int itemId = Integer.valueOf(dataIter.next());
+						final int itemId = Integer.parseInt(dataIter.next());
 						tagManager.addTag(itemId, name, itemId < 0);
 					}
 
@@ -656,16 +656,6 @@ public class TabInterface
 		}
 
 		if (activeTab != null
-			&& event.getMenuOption().equals("Search")
-			&& client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND).getSpriteId() != SpriteID.EQUIPMENT_SLOT_SELECTED)
-		{
-			activateTab(null);
-			// This ensures that when clicking Search when tab is selected, the search input is opened rather
-			// than client trying to close it first
-			client.setVar(VarClientStr.INPUT_TEXT, "");
-			client.setVar(VarClientInt.INPUT_TYPE, 0);
-		}
-		else if (activeTab != null
 			&& (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items")))
 		{
 			activateTab(null);
@@ -693,6 +683,18 @@ public class TabInterface
 			|| (event.getWidgetId() == WidgetInfo.BANK_TUTORIAL_BUTTON.getId() && event.getMenuOption().equals(SHOW_TUTORIAL))))
 		{
 			saveTab();
+		}
+	}
+
+	public void handleSearch()
+	{
+		if (activeTab != null)
+		{
+			activateTab(null);
+			// This ensures that when clicking Search when tab is selected, the search input is opened rather
+			// than client trying to close it first
+			client.setVar(VarClientStr.INPUT_TEXT, "");
+			client.setVar(VarClientInt.INPUT_TYPE, 0);
 		}
 	}
 
@@ -1158,11 +1160,10 @@ public class TabInterface
 		t.revalidate();
 	}
 
-
 	private ItemComposition getItem(int idx)
 	{
 		ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-		Item item = bankContainer.getItems()[idx];
+		Item item = bankContainer.getItem(idx);
 		return itemManager.getItemComposition(item.getId());
 	}
 

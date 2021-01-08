@@ -503,6 +503,16 @@ public interface Client extends GameEngine
 	Widget getWidget(int groupId, int childId);
 
 	/**
+	 * Gets a widget by it's packed ID.
+	 *
+	 * <p>
+	 * Note: Use {@link #getWidget(WidgetInfo)} or {@link #getWidget(int, int)} for
+	 * a more readable version of this method.
+	 */
+	@Nullable
+	Widget getWidget(int packedID);
+
+	/**
 	 * Gets an array containing the x-axis canvas positions
 	 * of all widgets.
 	 *
@@ -774,28 +784,6 @@ public interface Client extends GameEngine
 	int getVarbitValue(int[] varps, int varbitId);
 
 	/**
-	 * Gets the value of a given VarPlayer.
-	 *
-	 * @param varps passed varps
-	 * @param varpId the VarpPlayer id
-	 * @return the value
-	 * @see VarPlayer#id
-	 */
-	@VisibleForDevtools
-	int getVarpValue(int[] varps, int varpId);
-
-	/**
-	 * Sets the value of a given VarPlayer.
-	 *
-	 * @param varps passed varps
-	 * @param varpId the VarpPlayer id
-	 * @param value the value
-	 * @see VarPlayer#id
-	 */
-	@VisibleForDevtools
-	void setVarpValue(int[] varps, int varpId, int value);
-
-	/**
 	 * Sets the value of a given variable.
 	 *
 	 * @param varps passed varbits
@@ -805,6 +793,13 @@ public interface Client extends GameEngine
 	 */
 	@VisibleForDevtools
 	void setVarbitValue(int[] varps, int varbit, int value);
+
+	/**
+	 * Mark the given varp as changed, causing var listeners to be
+	 * triggered next tick
+	 * @param varp
+	 */
+	void queueChangedVarp(int varp);
 
 	/**
 	 * Gets the widget flags table.
@@ -885,16 +880,6 @@ public interface Client extends GameEngine
 	IterableHashTable<MessageNode> getMessages();
 
 	/**
-	 * Gets the viewport widget.
-	 * <p>
-	 * The viewport is the area of the game above the chatbox
-	 * and to the left of the mini-map.
-	 *
-	 * @return the viewport widget
-	 */
-	Widget getViewportWidget();
-
-	/**
 	 * Gets the object composition corresponding to an objects ID.
 	 *
 	 * @param objectId the object ID
@@ -911,6 +896,18 @@ public interface Client extends GameEngine
 	 * @see NpcID
 	 */
 	NPCComposition getNpcDefinition(int npcId);
+
+	/**
+	 * Gets the {@link StructComposition} for a given struct ID
+	 *
+	 * @see StructID
+	 */
+	StructComposition getStructComposition(int structID);
+
+	/**
+	 * Gets the client's cache of in memory struct compositions
+	 */
+	NodeCache getStructCompositionCache();
 
 	/**
 	 * Gets an array of all world areas
@@ -1014,30 +1011,6 @@ public interface Client extends GameEngine
 	 * @param volume 0-255 inclusive
 	 */
 	void setMusicVolume(int volume);
-
-	/**
-	 * Gets the sound effect volume
-	 * @return volume 0-127 inclusive
-	 */
-	int getSoundEffectVolume();
-
-	/**
-	 * Sets the sound effect volume
-	 * @param volume 0-127 inclusive
-	 */
-	void setSoundEffectVolume(int volume);
-
-	/**
-	 * Gets the area sound effect volume
-	 * @return volume 0-127 inclusive
-	 */
-	int getAreaSoundEffectVolume();
-
-	/**
-	 * Sets the area sound effect volume
-	 * @param volume 0-127 inclusive
-	 */
-	void setAreaSoundEffectVolume(int volume);
 
 	/**
 	 * Play a sound effect at the player's current location. This is how UI,
@@ -1158,6 +1131,20 @@ public interface Client extends GameEngine
 	 * Gets the cs2 vm's string stack
 	 */
 	String[] getStringStack();
+
+	/**
+	 * Gets the cs2 vm's active widget
+	 *
+	 * This is used for all {@code cc_*} operations with a {@code 0} operand
+	 */
+	Widget getScriptActiveWidget();
+
+	/**
+	 * Gets the cs2 vm's "dot" widget
+	 *
+	 * This is used for all {@code .cc_*} operations with a {@code 1} operand
+	 */
+	Widget getScriptDotWidget();
 
 	/**
 	 * Checks whether a player is on the friends list.
@@ -1326,10 +1313,20 @@ public interface Client extends GameEngine
 	 *
 	 * This method must be ran on the client thread and is not reentrant
 	 *
+	 * This method is shorthand for {@code client.createScriptEvent(args).run()}
+	 *
 	 * @param args the script id, then any additional arguments to execute the script with
 	 * @see ScriptID
 	 */
 	void runScript(Object... args);
+
+	/**
+	 * Creates a blank ScriptEvent for executing a ClientScript2 script
+	 *
+	 * @param args the script id, then any additional arguments to execute the script with
+	 * @see ScriptID
+	 */
+	ScriptEvent createScriptEvent(Object ...args);
 
 	/**
 	 * Checks whether or not there is any active hint arrow.

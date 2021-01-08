@@ -91,7 +91,7 @@ void main()
   float nearestEdgeDistance = min(xDist, zDist);
   float secondNearestEdgeDistance = max(xDist, zDist);
   float fogDistance = nearestEdgeDistance - FOG_CORNER_ROUNDING * TILE_SIZE *
-      max(0, (nearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED) /
+      max(0.f, (nearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED) /
              (secondNearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED));
 
   fogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;

@@ -53,14 +53,18 @@ import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_TRAILBLAZER;
 import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE_2;
+import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE_3;
 import static net.runelite.api.ItemID.ADAMANT_PICKAXE;
 import static net.runelite.api.ItemID.BLACK_PICKAXE;
 import static net.runelite.api.ItemID.BRONZE_PICKAXE;
 import static net.runelite.api.ItemID.CRYSTAL_PICKAXE;
 import static net.runelite.api.ItemID.DRAGON_PICKAXE;
-import static net.runelite.api.ItemID.DRAGON_PICKAXEOR;
+import static net.runelite.api.ItemID.DRAGON_PICKAXE_OR;
 import static net.runelite.api.ItemID.DRAGON_PICKAXE_12797;
 import static net.runelite.api.ItemID.GILDED_PICKAXE;
 import static net.runelite.api.ItemID.INFERNAL_PICKAXE;
@@ -69,6 +73,7 @@ import static net.runelite.api.ItemID.MITHRIL_PICKAXE;
 import static net.runelite.api.ItemID.RUNE_PICKAXE;
 import static net.runelite.api.ItemID.STEEL_PICKAXE;
 import static net.runelite.api.ItemID._3RD_AGE_PICKAXE;
+import static net.runelite.api.ItemID.INFERNAL_PICKAXE_OR;
 import net.runelite.api.Player;
 
 @Getter
@@ -83,11 +88,13 @@ enum Pickaxe
 	RUNE(RUNE_PICKAXE, MINING_RUNE_PICKAXE, MINING_MOTHERLODE_RUNE),
 	GILDED(GILDED_PICKAXE, MINING_GILDED_PICKAXE, MINING_MOTHERLODE_GILDED),
 	DRAGON(DRAGON_PICKAXE, MINING_DRAGON_PICKAXE, MINING_MOTHERLODE_DRAGON),
-	DRAGON_OR(DRAGON_PICKAXEOR, MINING_DRAGON_PICKAXE_OR, MINING_MOTHERLODE_DRAGON_OR),
+	DRAGON_OR(DRAGON_PICKAXE_OR, MINING_DRAGON_PICKAXE_OR, MINING_MOTHERLODE_DRAGON_OR),
 	DRAGON_UPGRADED(DRAGON_PICKAXE_12797, MINING_DRAGON_PICKAXE_UPGRADED, MINING_MOTHERLODE_DRAGON_UPGRADED),
 	INFERNAL(INFERNAL_PICKAXE, MINING_INFERNAL_PICKAXE, MINING_MOTHERLODE_INFERNAL),
 	THIRDAGE(_3RD_AGE_PICKAXE, MINING_3A_PICKAXE, MINING_MOTHERLODE_3A),
-	CRYSTAL(CRYSTAL_PICKAXE, MINING_CRYSTAL_PICKAXE, MINING_MOTHERLODE_CRYSTAL);
+	CRYSTAL(CRYSTAL_PICKAXE, MINING_CRYSTAL_PICKAXE, MINING_MOTHERLODE_CRYSTAL),
+	TRAILBLAZER(INFERNAL_PICKAXE_OR, MINING_TRAILBLAZER_PICKAXE, MINING_TRAILBLAZER_PICKAXE_2,
+		MINING_TRAILBLAZER_PICKAXE_3, MINING_MOTHERLODE_TRAILBLAZER);
 
 	private final int itemId;
 	private final int[] animIds;

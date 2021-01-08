@@ -57,7 +57,7 @@ public class RegenMeterPlugin extends Plugin
 	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
 
-	private static final int TWISTED_LEAGUE_ENDLESS_ENDURANCE_RELIC = 2;
+	private static final int TRAILBLAZER_LEAGUE_FLUID_STRIKES_RELIC = 2;
 
 	@Inject
 	private Client client;
@@ -144,7 +144,7 @@ public class RegenMeterPlugin extends Plugin
 			ticksPerHPRegen /= 2;
 		}
 
-		if (client.getVar(Varbits.TWISTED_LEAGUE_RELIC_1) == TWISTED_LEAGUE_ENDLESS_ENDURANCE_RELIC)
+		if (client.getVar(Varbits.LEAGUE_RELIC_3) == TRAILBLAZER_LEAGUE_FLUID_STRIKES_RELIC)
 		{
 			ticksPerHPRegen /= 4;
 		}

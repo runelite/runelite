@@ -64,7 +64,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -106,6 +105,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
+	private static final Set<MenuAction> ITEM_MENU_TYPES = ImmutableSet.of(
+		MenuAction.ITEM_FIRST_OPTION,
+		MenuAction.ITEM_SECOND_OPTION,
+		MenuAction.ITEM_THIRD_OPTION,
+		MenuAction.ITEM_FOURTH_OPTION,
+		MenuAction.ITEM_FIFTH_OPTION,
+		MenuAction.EXAMINE_ITEM,
+		MenuAction.ITEM_USE
+	);
+
 	private static final Set<MenuAction> NPC_MENU_TYPES = ImmutableSet.of(
 		MenuAction.NPC_FIRST_OPTION,
 		MenuAction.NPC_SECOND_OPTION,
@@ -116,7 +125,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final Set<String> ESSENCE_MINE_NPCS = ImmutableSet.of(
 		"aubury",
-		"wizard sedridor",
+		"sedridor",
 		"wizard distentor",
 		"wizard cromperty",
 		"brimstail"
@@ -133,9 +142,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
-
-	@Inject
-	private KeyManager keyManager;
 
 	@Inject
 	private MenuManager menuManager;
@@ -215,6 +221,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "start-minigame", config::swapStartMinigame);
 		swap("talk-to", ESSENCE_MINE_NPCS::contains, "teleport", config::swapEssenceMineTeleport);
 		swap("talk-to", "collect", config::swapCollectMiscellania);
+		swap("talk-to", "deposit-items", config::swapDepositItems);
 
 		swap("leave tomb", "quick-leave", config::swapQuickLeave);
 		swap("tomb door", "quick-leave", config::swapQuickLeave);
@@ -326,6 +333,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("bury", "use", config::swapBones);
 
 		swap("clean", "use", config::swapHerbs);
+
+		swap("read", "recite-prayer", config::swapPrayerBook);
 
 		swap("collect-note", "collect-item", () -> config.swapGEItemCollect() == GEItemCollectMode.ITEMS);
 		swap("collect-notes", "collect-items", () -> config.swapGEItemCollect() == GEItemCollectMode.ITEMS);
@@ -477,28 +486,28 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		ItemComposition itemComposition = client.getItemDefinition(itemId);
-		String itemName = itemComposition.getName();
-		String option = "Use";
-		int shiftClickActionIndex = itemComposition.getShiftClickActionIndex();
-		String[] inventoryActions = itemComposition.getInventoryActions();
+		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		MenuAction shiftClickAction = MenuAction.ITEM_USE;
+		final int shiftClickActionIndex = itemComposition.getShiftClickActionIndex();
 
-		if (shiftClickActionIndex >= 0 && shiftClickActionIndex < inventoryActions.length)
+		if (shiftClickActionIndex >= 0)
 		{
-			option = inventoryActions[shiftClickActionIndex];
+			shiftClickAction = MenuAction.of(MenuAction.ITEM_FIRST_OPTION.getId() + shiftClickActionIndex);
 		}
 
 		MenuEntry[] entries = event.getMenuEntries();
 
 		for (MenuEntry entry : entries)
 		{
-			if (itemName.equals(Text.removeTags(entry.getTarget())))
+			final MenuAction menuAction = MenuAction.of(entry.getType());
+
+			if (ITEM_MENU_TYPES.contains(menuAction) && entry.getIdentifier() == itemId)
 			{
 				entry.setType(MenuAction.RUNELITE.getId());
 
-				if (option.equals(entry.getOption()))
+				if (shiftClickAction == menuAction)
 				{
-					entry.setOption("* " + option);
+					entry.setOption("* " + entry.getOption());
 				}
 			}
 		}
@@ -598,7 +607,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		String option = event.getMenuOption();
 		String target = event.getMenuTarget();
-		ItemComposition itemComposition = client.getItemDefinition(itemId);
+		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 
 		if (option.equals(RESET) && target.equals(MENU_TARGET))
 		{
@@ -812,7 +821,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		sortedInsert(list2, index1);
 	}
 
-	private static <T extends Comparable<? super T>> void sortedInsert(List<T> list, T value)
+	private static <T extends Comparable<? super T>> void sortedInsert(List<T> list, T value) // NOPMD: UnusedPrivateMethod: false positive
 	{
 		int idx = Collections.binarySearch(list, value);
 		list.add(idx < 0 ? -idx - 1 : idx, value);

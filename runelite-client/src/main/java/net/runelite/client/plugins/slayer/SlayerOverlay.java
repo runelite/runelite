@@ -94,7 +94,7 @@ class SlayerOverlay extends WidgetItemOverlay
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		if (!ALL_SLAYER_ITEMS.contains(itemId))
 		{
@@ -117,7 +117,7 @@ class SlayerOverlay extends WidgetItemOverlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		final Rectangle bounds = itemWidget.getCanvasBounds();
+		final Rectangle bounds = widgetItem.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
 
 		switch (itemId)

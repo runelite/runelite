@@ -48,7 +48,7 @@ class ClientConfigLoader
 
 		final RSConfig config = new RSConfig();
 
-		try (final Response response = okHttpClient.newCall(request).execute())
+		try (Response response = okHttpClient.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{

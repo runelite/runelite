@@ -23,9 +23,9 @@
    runelite_callback     
    sub                   
    istore                 1
-   iconst                 17104910
+   iconst                 7602235
    if_getwidth           
-   iconst                 17104911
+   iconst                 7602236
    if_getwidth           
    sub                   
    istore                 2
@@ -78,6 +78,6 @@ LABEL44:
    iconst                 0
    iconst                 0
    iconst                 0
-   iconst                 17104911
+   iconst                 7602236
    if_setposition        
    return                

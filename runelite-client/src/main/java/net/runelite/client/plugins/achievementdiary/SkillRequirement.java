@@ -42,6 +42,7 @@ public class SkillRequirement implements Requirement
 		return level + " " + skill.getName();
 	}
 
+	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
 		return client.getRealSkillLevel(skill) >= level;

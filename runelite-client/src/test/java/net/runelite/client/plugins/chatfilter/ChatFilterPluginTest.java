@@ -46,6 +46,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -405,5 +406,19 @@ public class ChatFilterPluginTest
 
 		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]);
 		assertEquals("<col=000000>testMessage</col> (4)", client.getStringStack()[client.getStringStackSize() - 1]);
+	}
+
+	@Test
+	public void testChatIcons()
+	{
+		when(chatFilterConfig.filteredWords()).thenReturn("test");
+		// if this test is broken, this stubbing is required to trip the assert
+		lenient().when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		when(friendChatManager.isMember("Lazark")).thenReturn(true);
+
+		chatFilterPlugin.updateFilteredPatterns();
+		ScriptCallbackEvent event = createCallbackEvent("<img=22>Lazark", "test", ChatMessageType.PUBLICCHAT);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]); // not filtered
 	}
 }

@@ -200,6 +200,8 @@ enum DungeonLocation
 	WHITE_WOLF_TUNNEL_W("White Wolf Tunnel", new WorldPoint(2819, 3484, 0)),
 	WILDERNESS_AGILITY("Wilderness Agility Course Dungeon", new WorldPoint(3004, 3963, 0)),
 	WILDERNESS_GOD_WARS("Wilderness God Wars Dungeon", new WorldPoint(3016, 3739, 0)),
+	WILDERNESS_SLAYER_CAVE_NORTH("Wilderness Slayer Cave", new WorldPoint(3292, 3746, 0)),
+	WILDERNESS_SLAYER_CAVE_SOUTH("Wilderness Slayer Cave", new WorldPoint(3259, 3666, 0)),
 	WITCHAVEN("Witchaven Dungeon", new WorldPoint(2695, 3283, 0)),
 	WIZARDS_GUILD("Wizards' Guild basement", new WorldPoint(2593, 3085, 0)),
 	WIZARDS_TOWER("Wizards' Tower basement", new WorldPoint(3103, 3162, 0)),

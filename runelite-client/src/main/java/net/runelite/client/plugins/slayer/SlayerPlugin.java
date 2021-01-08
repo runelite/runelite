@@ -213,7 +213,7 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp = -1;
 	private Instant infoTimer;
 	private boolean loginFlag;
-	private List<String> targetNames = new ArrayList<>();
+	private final List<String> targetNames = new ArrayList<>();
 
 	@Override
 	protected void startUp() throws Exception

@@ -28,7 +28,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -79,9 +78,6 @@ public class HiscorePlugin extends Plugin
 	private ClientToolbar clientToolbar;
 
 	@Inject
-	private ScheduledExecutorService executor;
-
-	@Inject
 	private HiscoreConfig config;
 
 	private NavigationButton navButton;
@@ -98,7 +94,7 @@ public class HiscorePlugin extends Plugin
 	{
 		hiscorePanel = injector.getInstance(HiscorePanel.class);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "normal.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "normal.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Hiscore")

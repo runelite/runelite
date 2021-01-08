@@ -52,8 +52,8 @@ class PrayerBarOverlay extends Overlay
 	private static final Color FLICK_HELP_COLOR = Color.white;
 	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5);
 	private static final int HD_PRAYER_BAR_PADDING = 1;
-	private static final BufferedImage HD_FRONT_BAR = ImageUtil.getResourceStreamFromClass(PrayerPlugin.class, "front.png");
-	private static final BufferedImage HD_BACK_BAR = ImageUtil.getResourceStreamFromClass(PrayerPlugin.class, "back.png");
+	private static final BufferedImage HD_FRONT_BAR = ImageUtil.loadImageResource(PrayerPlugin.class, "front.png");
+	private static final BufferedImage HD_BACK_BAR = ImageUtil.loadImageResource(PrayerPlugin.class, "back.png");
 
 	private final Client client;
 	private final PrayerConfig config;

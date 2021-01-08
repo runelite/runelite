@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 logarrhytmic <https://github.com/logarrhythmic>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.skybox;
 
-import lombok.Data;
-import net.runelite.api.widgets.Widget;
+import java.awt.Color;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-/**
- * An event where the hidden state of a {@link Widget} has been modified.
- */
-@Data
-public class WidgetHiddenChanged
+@ConfigGroup("skybox")
+public interface SkyboxPluginConfig extends Config
 {
-	/**
-	 * The affected widget.
-	 */
-	private Widget widget;
-	/**
-	 * The new hidden state of the widget.
-	 */
-	private boolean hidden;
+	@ConfigItem(
+		keyName = "customOverworldColor",
+		name = "Overworld sky color",
+		description = "Sets the color to use for the sky in overworld areas.",
+		position = 1
+	)
+	Color customOverworldColor();
+
+	@ConfigItem(
+		keyName = "customOtherColor",
+		name = "Cave sky color",
+		description = "Sets the color to use for the sky in non-overworld areas.",
+		position = 2
+	)
+	Color customOtherColor();
 }

@@ -30,6 +30,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
@@ -66,6 +67,10 @@ public class ChatNotificationsPluginTest
 	@Mock
 	@Bind
 	private Notifier notifier;
+
+	@Bind
+	@Named("runelite.title")
+	private String runeliteTitle = "RuneLite";
 
 	@Inject
 	private ChatNotificationsPlugin chatNotificationsPlugin;
@@ -111,6 +116,25 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.onChatMessage(chatMessage);
 
 		verify(messageNode).setValue("test <colHIGHLIGHT><lt>test<gt><colNORMAL> test");
+	}
+
+	@Test
+	public void testMatchEntireMessage()
+	{
+		when(config.highlightWordsString()).thenReturn(".Your divine potion effect is about to expire.");
+
+		String message = ".Your divine potion effect is about to expire.";
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn(message);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp(); // load highlight config
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setValue("<colHIGHLIGHT>.Your divine potion effect is about to expire.<colNORMAL>");
 	}
 
 	@Test

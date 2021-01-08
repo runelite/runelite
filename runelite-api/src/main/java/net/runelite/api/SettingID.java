@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Jos <Malevolentdev@gmail.com>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.statusbars.Config;
+package net.runelite.api;
 
-public enum BarMode
+/**
+ * @see ParamID#SETTING_ID
+ */
+public class SettingID
 {
-	DISABLED,
-	HITPOINTS,
-	PRAYER,
-	RUN_ENERGY,
-	SPECIAL_ATTACK,
-	;
+	public static final int CAMERA_ZOOM = 14;
+
+	public static final int MUSIC_VOLUME = 30;
+	public static final int EFFECT_VOLUME = 31;
+	public static final int AREA_VOLUME = 32;
 }

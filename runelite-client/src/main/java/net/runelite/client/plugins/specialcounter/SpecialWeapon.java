@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
+import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -32,13 +33,14 @@ import net.runelite.api.ItemID;
 @Getter
 enum SpecialWeapon
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", ItemID.DRAGON_WARHAMMER, false),
-	ARCLIGHT("Arclight", ItemID.ARCLIGHT, false),
-	DARKLIGHT("Darklight", ItemID.DARKLIGHT, false),
-	BANDOS_GODSWORD("Bandos Godsword", ItemID.BANDOS_GODSWORD, true),
-	BANDOS_GODSWORD_OR("Bandos Godsword", ItemID.BANDOS_GODSWORD_OR, true);
+	DRAGON_WARHAMMER("Dragon Warhammer", ItemID.DRAGON_WARHAMMER, false, SpecialCounterConfig::dragonWarhammerThreshold),
+	ARCLIGHT("Arclight", ItemID.ARCLIGHT, false, SpecialCounterConfig::arclightThreshold),
+	DARKLIGHT("Darklight", ItemID.DARKLIGHT, false, SpecialCounterConfig::darklightThreshold),
+	BANDOS_GODSWORD("Bandos Godsword", ItemID.BANDOS_GODSWORD, true, SpecialCounterConfig::bandosGodswordThreshold),
+	BANDOS_GODSWORD_OR("Bandos Godsword", ItemID.BANDOS_GODSWORD_OR, true, SpecialCounterConfig::bandosGodswordThreshold);
 
 	private final String name;
 	private final int itemID;
 	private final boolean damage;
+	private final Function<SpecialCounterConfig, Integer> threshold;
 }

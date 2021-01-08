@@ -144,6 +144,11 @@ public class KeyRemappingPlugin extends Plugin
 			|| !isHidden(WidgetInfo.BANK_PIN_CONTAINER);
 	}
 
+	boolean isOptionsDialogOpen()
+	{
+		return client.getWidget(WidgetInfo.DIALOG_OPTION) != null;
+	}
+
 	private boolean isHidden(WidgetInfo widgetInfo)
 	{
 		Widget w = client.getWidget(widgetInfo);

@@ -40,8 +40,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class PohOverlay extends Overlay
 {
-	private static final PohIcons[] PORTALS = new PohIcons[]
-	{
+	private static final PohIcons[] PORTALS = {
 		PohIcons.LUMBRIDGE, PohIcons.FALADOR, PohIcons.VARROCK, PohIcons.CAMELOT, PohIcons.ARDOUGNE,
 		PohIcons.YANILLE, PohIcons.LUNARISLE, PohIcons.WATERBIRTH, PohIcons.FISHINGGUILD,
 		PohIcons.SENNTISTEN, PohIcons.KHARYLL, PohIcons.ANNAKARL, PohIcons.KOUREND, PohIcons.MARIM,
