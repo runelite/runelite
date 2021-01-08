@@ -41,15 +41,15 @@ public class Cache
 		Options options = new Options();
 
 		options.addOption("c", "cache", true, "cache base");
+		options.addOption(null, "out", true, "selects an output location");
 
-		options.addOption(null, "items", true, "directory to dump items to");
-		options.addOption(null, "npcs", true, "directory to dump npcs to");
-		options.addOption(null, "objects", true, "directory to dump objects to");
-		options.addOption(null, "sprites", true, "directory to dump sprites to");
-		options.addOption(null, "models", true, "directory to dump models to");
+		options.addOption("i", "items", false, "set flag to dump items");
+		options.addOption("n", "npcs", false, "set flag to dump npcs");
+		options.addOption("o", "objects", false, "set flag to dump objects");
+		options.addOption("s", "sprites", false, "set flag to dump sprites");
+		options.addOption("m", "models", false, "set flag to dump models");
 
 		options.addOption(null, "configIndex", true, "selects a config to dump");
-		options.addOption(null, "dir", true, "selects an output location");
 
 
 		CommandLineParser parser = new DefaultParser();
@@ -65,89 +65,55 @@ public class Cache
 			return;
 		}
 
+		String outdir = cmd.getOptionValue("out");
+		if (outdir == null)
+		{
+			System.err.println("Output directory must be specified");
+			System.exit(-1);
+			return;
+		}
+
 		String cache = cmd.getOptionValue("cache");
 
 		Store store = loadStore(cache);
 
 		if (cmd.hasOption("items"))
 		{
-			String itemdir = cmd.getOptionValue("items");
-
-			if (itemdir == null)
-			{
-				System.err.println("Item directory must be specified");
-				return;
-			}
-
+			String itemdir = outdir + "\\" + "Items";
 			System.out.println("Dumping items to " + itemdir);
 			dumpItems(store, new File(itemdir));
 		}
-		else if (cmd.hasOption("npcs"))
+		if (cmd.hasOption("npcs"))
 		{
-			String npcdir = cmd.getOptionValue("npcs");
-
-			if (npcdir == null)
-			{
-				System.err.println("NPC directory must be specified");
-				return;
-			}
-
+			String npcdir = outdir + "\\" + "Npcs";
 			System.out.println("Dumping npcs to " + npcdir);
 			dumpNpcs(store, new File(npcdir));
 		}
-		else if (cmd.hasOption("objects"))
+		if (cmd.hasOption("objects"))
 		{
-			String objectdir = cmd.getOptionValue("objects");
-
-			if (objectdir == null)
-			{
-				System.err.println("Object directory must be specified");
-				return;
-			}
-
+			String objectdir = outdir + "\\" + "Objects";
 			System.out.println("Dumping objects to " + objectdir);
 			dumpObjects(store, new File(objectdir));
 		}
-		else if (cmd.hasOption("sprites"))
+		if (cmd.hasOption("sprites"))
 		{
-			String spritedir = cmd.getOptionValue("sprites");
-
-			if (spritedir == null)
-			{
-				System.err.println("Sprite directory must be specified");
-				return;
-			}
-
+			String spritedir = outdir + "\\" + "Sprites";
 			System.out.println("Dumping sprites to " + spritedir);
 			dumpSprites(store, new File(spritedir));
 		}
-		else if (cmd.hasOption("models"))
+		if (cmd.hasOption("models"))
 		{
-			String modelsdir = cmd.getOptionValue("models");
-
-			if (modelsdir == null)
-			{
-				System.err.println("Models directory must be specified");
-				return;
-			}
-
+			String modelsdir = outdir + "\\" + "Models";
 			System.out.println("Dumping models to " + modelsdir);
 			dumpModels(store, new File(modelsdir));
 		}
-		else if (cmd.hasOption("configIndex"))
+		if (cmd.hasOption("configIndex"))
 		{
 			int configIndex = Integer.parseInt(cmd.getOptionValue("configIndex"));
-			String dir = cmd.getOptionValue("dir");
-
-			if (dir == null)
-			{
-				System.err.println("Output directory must be specified");
-				return;
-			}
 			try
 			{
 				ConfigType configType = ConfigType.valueOf(configIndex).get();
-				String outputDirectory = dir + "/" + configType.name();
+				String outputDirectory = outdir + "\\" + configType.name();
 
 				System.out.println("Dumping " + configType.name() + " to " + outputDirectory);
 				dumpConfig(store, configType, new File(outputDirectory));
@@ -158,10 +124,8 @@ public class Cache
 				return;
 			}
 		}
-		else
-		{
-			System.err.println("Nothing to do");
-		}
+
+		System.out.println("Finished dumping");
 	}
 
 	private static Store loadStore(String cache) throws IOException
@@ -206,6 +170,7 @@ public class Cache
 	{
 		ModelManager dumper = new ModelManager(store);
 		dumper.load();
+		dumper.exportModelInfo(modeldir);
 		dumper.export(modeldir);
 	}
 
