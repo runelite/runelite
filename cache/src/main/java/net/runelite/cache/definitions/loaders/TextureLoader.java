@@ -38,7 +38,7 @@ public class TextureLoader
 		TextureDefinition def = new TextureDefinition();
 		InputStream is = new InputStream(b);
 
-		def.field1777 = is.readUnsignedShort();
+		def.averageRGB = is.readUnsignedShort();
 		def.field1778 = is.readByte() != 0;
 		def.setId(id);
 
@@ -77,8 +77,8 @@ public class TextureLoader
 			def.field1786[var3] = is.readInt();
 		}
 
-		def.field1783 = is.readUnsignedByte();
-		def.field1782 = is.readUnsignedByte();
+		def.animationDirection = is.readUnsignedByte();
+		def.animationSpeed = is.readUnsignedByte();
 
 		return def;
 	}
