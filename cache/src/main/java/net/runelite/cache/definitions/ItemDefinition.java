@@ -28,9 +28,8 @@ import java.util.Map;
 import lombok.Data;
 
 @Data
-public class ItemDefinition
+public class ItemDefinition extends Definition
 {
-	public final int id;
 
 	public String name = "null";
 

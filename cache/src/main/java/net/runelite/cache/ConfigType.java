@@ -40,7 +40,7 @@ public enum ConfigType
 	OBJECT(6, ObjectLoader.class),
 	ENUM(8, EnumLoader.class),
 	NPC(9, NpcLoader.class),
-	ITEM(10, NpcLoader.class),
+	ITEM(10, ItemLoader.class),
 	PARAMS(11, ParamLoader.class),
 	SEQUENCE(12, SequenceLoader.class),
 	SPOTANIM(13, SpotAnimLoader.class),

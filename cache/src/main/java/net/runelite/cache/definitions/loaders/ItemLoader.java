@@ -32,13 +32,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
-public class ItemLoader
+public class ItemLoader extends Loader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ItemLoader.class);
 
 	public ItemDefinition load(int id, byte[] b)
 	{
-		ItemDefinition def = new ItemDefinition(id);
+		ItemDefinition def = new ItemDefinition();
+		def.setId(id);
 		InputStream is = new InputStream(b);
 		
 		while (true)
