@@ -45,6 +45,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.QuantityFormatter;
+import okhttp3.HttpUrl;
 
 /**
  * This panel displays an individual item result in the
@@ -52,6 +53,10 @@ import net.runelite.client.util.QuantityFormatter;
  */
 class GrandExchangeItemPanel extends JPanel
 {
+	private static final HttpUrl WIKI_BASE = HttpUrl.parse("https://oldschool.runescape.wiki");
+	private static final String UTM_SOURCE_KEY = "utm_source";
+	private static final String UTM_SOURCE_VALUE = "runelite";
+
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
 	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
@@ -107,7 +112,18 @@ class GrandExchangeItemPanel extends JPanel
 		this.setComponentPopupMenu(popupMenu);
 
 		final JMenuItem wiki = new JMenuItem("Wiki");
-		wiki.addActionListener(e -> LinkBrowser.browse("https://oldschool.runescape.wiki/w/" + name.replaceAll(" ", "_")));
+		wiki.addActionListener(e -> {
+			HttpUrl.Builder urlBuilder = WIKI_BASE.newBuilder();
+			urlBuilder.addPathSegments("w/Special:Lookup")
+				.addQueryParameter("type", "item")
+				.addQueryParameter("id", "" + itemID)
+				.addQueryParameter("name", name)
+				.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
+
+			HttpUrl url = urlBuilder.build();
+
+			LinkBrowser.browse(url.toString());
+		});
 		popupMenu.add(wiki);
 
 		setBorder(new EmptyBorder(5, 5, 5, 0));

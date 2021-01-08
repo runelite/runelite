@@ -59,6 +59,7 @@ import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.loottracker.LootRecordType;
+import okhttp3.HttpUrl;
 
 class LootTrackerBox extends JPanel
 {
@@ -83,6 +84,10 @@ class LootTrackerBox extends JPanel
 	private long totalPrice;
 	private final boolean hideIgnoredItems;
 	private final BiConsumer<String, Boolean> onItemToggle;
+
+	private static final HttpUrl WIKI_BASE = HttpUrl.parse("https://oldschool.runescape.wiki");
+	private static final String UTM_SOURCE_KEY = "utm_source";
+	private static final String UTM_SOURCE_VALUE = "runelite";
 
 	LootTrackerBox(
 		final ItemManager itemManager,
@@ -363,7 +368,18 @@ class LootTrackerBox extends JPanel
 				popupMenu.add(toggle);
 
 				final JMenuItem wiki = new JMenuItem("Wiki");
-				wiki.addActionListener(e -> LinkBrowser.browse("https://oldschool.runescape.wiki/w/" + item.getName().replaceAll(" ", "_")));
+				wiki.addActionListener(e -> {
+					HttpUrl.Builder urlBuilder = WIKI_BASE.newBuilder();
+					urlBuilder.addPathSegments("w/Special:Lookup")
+						.addQueryParameter("type", "item")
+						.addQueryParameter("id", "" + item.getId())
+						.addQueryParameter("name", item.getName())
+						.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
+
+					HttpUrl url = urlBuilder.build();
+
+					LinkBrowser.browse(url.toString());
+				});
 				popupMenu.add(wiki);
 			}
 
