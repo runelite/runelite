@@ -1,5 +1,6 @@
 package net.runelite.cache;
 
+import com.google.gson.*;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.exporters.DefaultExporter;
 import net.runelite.cache.definitions.exporters.ModelExporter;
@@ -7,6 +8,7 @@ import net.runelite.cache.definitions.loaders.ModelLoader;
 import net.runelite.cache.fs.*;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +52,49 @@ public class ModelManager
 			File objFile = new File(outDir, model.id + ".obj");
 			File mtlFile = new File(outDir, model.id + ".mtl");
 			exporter.exportTo(tm, objFile, mtlFile);
+		}
+	}
+
+	//used to export relevant info like bones
+	public void exportModelInfo(File outDir) throws IOException
+	{
+		ExclusionStrategy strategy = new ExclusionStrategy()
+		{
+			@Override
+			public boolean shouldSkipField(FieldAttributes field)
+			{
+				if (!field.getName().equals("vertexGroups"))
+				{
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public boolean shouldSkipClass(Class<?> clazz)
+			{
+				return false;
+			}
+		};
+
+
+		outDir.mkdirs();
+		for (ModelDefinition model : models.values())
+		{
+			GsonBuilder builder = new GsonBuilder()
+					.addSerializationExclusionStrategy(strategy)
+					.setPrettyPrinting();
+			Gson gson = builder.create();
+
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.add("vertexGroups", gson.toJsonTree(model.getVertexGroups()));
+			jsonObject.add("faceAlphas", gson.toJsonTree(model.getFaceAlphas()));
+
+			try (FileWriter fw = new FileWriter(new File(outDir, model.id + ".json")))
+			{
+				fw.write(gson.toJson(jsonObject));
+			}
+
 		}
 	}
 
