@@ -59,6 +59,9 @@ public class SpriteManager implements SpriteProvider
 		{
 			byte[] contents = a.decompress(storage.loadArchive(a));
 
+			if (contents == null)
+				continue;
+
 			SpriteLoader loader = new SpriteLoader();
 			SpriteDefinition[] defs = loader.load(a.getArchiveId(), contents);
 

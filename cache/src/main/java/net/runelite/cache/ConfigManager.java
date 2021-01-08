@@ -35,7 +35,8 @@ public class ConfigManager
 		for (FSFile file : files.getFiles())
 		{
 			Definition def = loader.load(file.getFileId(), file.getContents());
-			definitions.put(def.id, def);
+			if (def != null)
+				definitions.put(def.id, def);
 		}
 	}
 
