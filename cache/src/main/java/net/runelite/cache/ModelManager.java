@@ -58,31 +58,10 @@ public class ModelManager
 	//used to export relevant info like bones
 	public void exportModelInfo(File outDir) throws IOException
 	{
-		ExclusionStrategy strategy = new ExclusionStrategy()
-		{
-			@Override
-			public boolean shouldSkipField(FieldAttributes field)
-			{
-				if (!field.getName().equals("vertexGroups"))
-				{
-					return true;
-				}
-				return false;
-			}
-
-			@Override
-			public boolean shouldSkipClass(Class<?> clazz)
-			{
-				return false;
-			}
-		};
-
-
 		outDir.mkdirs();
 		for (ModelDefinition model : models.values())
 		{
 			GsonBuilder builder = new GsonBuilder()
-					.addSerializationExclusionStrategy(strategy)
 					.setPrettyPrinting();
 			Gson gson = builder.create();
 
