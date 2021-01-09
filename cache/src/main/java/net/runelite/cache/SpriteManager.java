@@ -98,6 +98,7 @@ public class SpriteManager implements SpriteProvider
 
 	public void export(File outDir) throws IOException
 	{
+		outDir.mkdirs();
 		for (SpriteDefinition sprite : sprites.values())
 		{
 			// I don't know why this happens
