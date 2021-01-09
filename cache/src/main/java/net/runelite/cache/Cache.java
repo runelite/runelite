@@ -28,11 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import net.runelite.cache.fs.Store;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 
 public class Cache
 {
@@ -40,19 +36,22 @@ public class Cache
 	{
 		Options options = new Options();
 
-		options.addOption("c", "cache", true, "cache base");
-		options.addOption(null, "out", true, "selects an output location");
+		options.addOption("?", "help", false, "display info about all of the options");
 
-		options.addOption("i", "items", false, "set flag to dump items");
-		options.addOption("n", "npcs", false, "set flag to dump npcs");
-		options.addOption("o", "objects", false, "set flag to dump objects");
-		options.addOption("s", "sprites", false, "set flag to dump sprites");
-		options.addOption("t", "textures", false, "set flag to dump textures");
-		options.addOption("m", "models", false, "set flag to dump models");
-		options.addOption("f", "frames", false, "set flag to dump animation frames");
-		options.addOption("a", "animations", false, "set flag to dump animations");
+		options.addOption("c", "cache", true, "select the cache directory");
+		options.addOption(null, "out", true, "select the output directory");
 
-		options.addOption(null, "configIndex", true, "selects a config to dump");
+		options.addOption("i", "items", false, "dump all items");
+		options.addOption("n", "npcs", false, "dump all npcs");
+		options.addOption("o", "objects", false, "dump all objects");
+		options.addOption("s", "sprites", false, "dump all sprites");
+		options.addOption("t", "textures", false, "dump all textures");
+		options.addOption("m", "models", false, "dump all models");
+		options.addOption("f", "frames", false, "dump all animation frames");
+		options.addOption("a", "animations", false, "dump all animations");
+
+
+		options.addOption(null, "configIndex", true, "set a config index to dump");
 
 
 		CommandLineParser parser = new DefaultParser();
@@ -65,6 +64,21 @@ public class Cache
 		{
 			System.err.println("Error parsing command line options: " + ex.getMessage());
 			System.exit(-1);
+			return;
+		}
+
+		if (cmd.hasOption("help"))
+		{
+			for (Option option : options.getOptions())
+			{
+				if (option.getOpt() != null)
+					System.out.print("-" + option.getOpt() + " or ");
+
+				System.out.print("-" + option.getLongOpt());
+				System.out.print(": ");
+				System.out.println(option.getDescription());
+			}
+			System.exit(0);
 			return;
 		}
 
