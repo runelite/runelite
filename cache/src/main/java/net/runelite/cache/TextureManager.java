@@ -24,10 +24,12 @@
  */
 package net.runelite.cache;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.definitions.TextureDefinition;
+import net.runelite.cache.definitions.exporters.DefaultExporter;
 import net.runelite.cache.definitions.loaders.TextureLoader;
 import net.runelite.cache.definitions.providers.TextureProvider;
 import net.runelite.cache.fs.Archive;
@@ -80,6 +82,18 @@ public class TextureManager implements TextureProvider
 			}
 		}
 		return null;
+	}
+
+
+	public void exportJson(File outDir) throws IOException
+	{
+		outDir.mkdirs();
+		for (TextureDefinition texture : textures)
+		{
+			DefaultExporter exporter = new DefaultExporter(texture);
+			File targ = new File(outDir, texture.id + ".json");
+			exporter.exportTo(targ);
+		}
 	}
 
 	@Override

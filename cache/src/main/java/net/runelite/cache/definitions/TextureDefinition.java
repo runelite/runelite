@@ -29,11 +29,10 @@ import lombok.Data;
 import net.runelite.cache.definitions.providers.SpriteProvider;
 
 @Data
-public class TextureDefinition
+public class TextureDefinition extends Definition
 {
 	public int averageRGB;
 	public boolean field1778;
-	private int id;
 	private int[] fileIds;
 	public int[] field1780;
 	public int[] field1781;
