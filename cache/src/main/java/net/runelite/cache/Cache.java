@@ -47,7 +47,10 @@ public class Cache
 		options.addOption("n", "npcs", false, "set flag to dump npcs");
 		options.addOption("o", "objects", false, "set flag to dump objects");
 		options.addOption("s", "sprites", false, "set flag to dump sprites");
+		options.addOption("t", "textures", false, "set flag to dump textures");
 		options.addOption("m", "models", false, "set flag to dump models");
+		options.addOption("f", "frames", false, "set flag to dump animation frames");
+		options.addOption("a", "animations", false, "set flag to dump animations");
 
 		options.addOption(null, "configIndex", true, "selects a config to dump");
 
@@ -106,6 +109,24 @@ public class Cache
 			String modelsdir = outdir + "\\" + "Models";
 			System.out.println("Dumping models to " + modelsdir);
 			dumpModels(store, new File(modelsdir));
+		}
+		if (cmd.hasOption("frames"))
+		{
+			String framesdir = outdir + "\\" + "Frames";
+			System.out.println("Dumping frames to " + framesdir);
+			dumpAnimationFrames(store, new File(framesdir));
+		}
+		if (cmd.hasOption("animations"))
+		{
+			String animsdir = outdir + "\\" + "Animations";
+			System.out.println("Dumping animations to " + animsdir);
+			dumpAnimations(store, new File(animsdir));
+		}
+		if (cmd.hasOption("textures"))
+		{
+			String texturesdir = outdir + "\\" + "Textures";
+			System.out.println("Dumping textures to " + texturesdir);
+			dumpTextures(store, new File(texturesdir));
 		}
 		if (cmd.hasOption("configIndex"))
 		{
@@ -172,6 +193,27 @@ public class Cache
 		dumper.load();
 		dumper.exportModelInfo(modeldir);
 		dumper.export(modeldir);
+	}
+
+	private static void dumpAnimations(Store store, File animsdir) throws IOException
+	{
+		AnimationManager dumper = new AnimationManager(store);
+		dumper.load();
+		dumper.export(animsdir);
+	}
+
+	private static void dumpAnimationFrames(Store store, File framesdir) throws IOException
+	{
+		FramesManager dumper = new FramesManager(store);
+		dumper.load();
+		dumper.dump(framesdir);
+	}
+
+	private static void dumpTextures(Store store, File framesdir) throws IOException
+	{
+		TextureManager dumper = new TextureManager(store);
+		dumper.load();
+		dumper.exportJson(framesdir);
 	}
 
 	private static void dumpConfig(Store store, ConfigType configType, File directory)  throws IOException
