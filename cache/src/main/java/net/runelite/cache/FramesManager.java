@@ -47,7 +47,8 @@ public class FramesManager
 				FramemapLoader fmloader = new FramemapLoader();
 				FramemapDefinition framemap = fmloader.load(framemapArchive.getArchiveId(), framemapContents);
 
-				try {
+				try
+				{
 					FrameLoader frameLoader = new FrameLoader();
 					FrameDefinition frame = frameLoader.load(framemap, archiveFile.getFileId(), contents);
 
