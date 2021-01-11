@@ -66,4 +66,9 @@ public interface Preferences
 	 * @param volume 0-127 inclusive
 	 */
 	void setAreaSoundEffectVolume(int volume);
+
+	/**
+	 * Gets if the login name should be replaced with asterisks
+	 */
+	boolean getHideUsername();
 }
