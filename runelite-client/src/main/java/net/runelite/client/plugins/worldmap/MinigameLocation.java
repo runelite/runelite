@@ -71,7 +71,13 @@ enum MinigameLocation
 	CATAPULT_ROOM("Catapult Room", new WorldPoint(2842, 3545, 0)),
 	SHOT_PUT_ROOM("Shot Put Room", new WorldPoint(2863, 3550, 0)),
 	HALLOWED_SEPULCHRE("Hallowed Sepulchre", new WorldPoint(3653, 3386, 1)),
-	THE_GAUNTLET("The Gauntlet", new WorldPoint(3223, 12505, 1));
+	THE_GAUNTLET("The Gauntlet", new WorldPoint(3223, 12505, 1)),
+	MAHOGANY_HOMES_ARDOUGNE("Mahogany Homes", new WorldPoint(2634, 3295, 0)),
+	MAHOGANY_HOMES_FALADOR("Mahogany Homes", new WorldPoint(2989, 3363, 0)),
+	MAHOGANY_HOMES_HOSIDIUS("Mahogany Homes", new WorldPoint(1780, 3623, 0)),
+	MAHOGANY_HOMES_VARROCK("Mahogany Homes", new WorldPoint(3240, 3471, 0)),
+	SOUL_WARS("Soul Wars", new WorldPoint(2209, 2855, 0)),
+	SOUL_WARS_EDGEVILLE_PORTAL("Soul Wars", new WorldPoint(3082, 3474, 0));
 
 	private final String tooltip;
 	private final WorldPoint location;
