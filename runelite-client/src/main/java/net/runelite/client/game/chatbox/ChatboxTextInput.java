@@ -753,11 +753,25 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				return;
 			case KeyEvent.VK_LEFT:
 				ev.consume();
-				newPos--;
+				if (cursorStart != cursorEnd)
+				{
+					newPos = cursorStart;
+				}
+				else
+				{
+					newPos--;
+				}
 				break;
 			case KeyEvent.VK_RIGHT:
 				ev.consume();
-				newPos++;
+				if (cursorStart != cursorEnd)
+				{
+					newPos = cursorEnd;
+				}
+				else
+				{
+					newPos++;
+				}
 				break;
 			case KeyEvent.VK_UP:
 				ev.consume();
