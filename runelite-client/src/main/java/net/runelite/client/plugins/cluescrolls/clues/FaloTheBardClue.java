@@ -50,7 +50,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcClueScroll
 {
 	private static final List<FaloTheBardClue> CLUES = ImmutableList.of(
-		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", item(DRAGON_SCIMITAR)),
+		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", any("Dragon scimitar", item(DRAGON_SCIMITAR), item(DRAGON_SCIMITAR_OR))),
 		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any god book (must be complete)", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS))),
 		new FaloTheBardClue("A bow of elven craft was made, it shimmers bright, but will soon fade.", any("Crystal Bow", item(CRYSTAL_BOW), item(CRYSTAL_BOW_24123))),
 		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", item(INFERNAL_AXE)),
