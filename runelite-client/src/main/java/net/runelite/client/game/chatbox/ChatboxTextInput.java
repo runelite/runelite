@@ -689,6 +689,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 						log.warn("Unable to get clipboard", ex);
 					}
 					return;
+				case KeyEvent.VK_A:
+					selectionStart = 0;
+					selectionEnd = value.length();
+					cursorAt(0, selectionEnd);
+					return;
 			}
 			return;
 		}
