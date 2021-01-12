@@ -33,7 +33,14 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -285,7 +292,7 @@ public class XpTrackerPlugin extends Plugin
 	{
 		for (Skill skill : Skill.values())
 		{
-			if (xpState.getSkillSnapshot(skill).getXpGainedInSession() != 0 && !skill.getName().equals("Overall"))
+			if (xpState.getSkillSnapshot(skill).getXpGainedInSession() != 0 && skill != Skill.OVERALL)
 			{
 				skillToCurrentXpGained.put(skill, xpState.getSkillSnapshot(skill).getXpGainedInSession());
 			}

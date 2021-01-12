@@ -27,7 +27,8 @@ package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
