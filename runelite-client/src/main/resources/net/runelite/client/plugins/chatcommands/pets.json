@@ -1,0 +1,192 @@
+{
+  "pets": [
+    {
+      "icon": 13262,
+      "name": "Abyssal orphan"
+    },
+    {
+      "icon": 22746,
+      "name": "Ikkle hydra"
+    },
+    {
+      "icon": 13178,
+      "name": "Callisto cub"
+    },
+    {
+      "icon": 13247,
+      "name": "Hellpuppy"
+    },
+    {
+      "icon": 11995,
+      "name": "Pet chaos elemental"
+    },
+    {
+      "icon": 12651,
+      "name": "Pet zilyana"
+    },
+    {
+      "icon": 12816,
+      "name": "Pet dark core"
+    },
+    {
+      "icon": 12644,
+      "name": "Pet dagannoth prime"
+    },
+    {
+      "icon": 12643,
+      "name": "Pet dagannoth supreme"
+    },
+    {
+      "icon": 12645,
+      "name": "Pet dagannoth rex"
+    },
+    {
+      "icon": 13225,
+      "name": "Tzrek-jad"
+    },
+    {
+      "icon": 12650,
+      "name": "Pet general graardor"
+    },
+    {
+      "icon": 12646,
+      "name": "Baby mole"
+    },
+    {
+      "icon": 21748,
+      "name": "Noon"
+    },
+    {
+      "icon": 21291,
+      "name": "Jal-nib-rek"
+    },
+    {
+      "icon": 12647,
+      "name": "Kalphite princess"
+    },
+    {
+      "icon": 12653,
+      "name": "Prince black dragon"
+    },
+    {
+      "icon": 12655,
+      "name": "Pet kraken"
+    },
+    {
+      "icon": 12649,
+      "name": "Pet kree'arra"
+    },
+    {
+      "icon": 12652,
+      "name": "Pet k'ril tsutsaroth"
+    },
+    {
+      "icon": 13181,
+      "name": "Scorpia's offspring"
+    },
+    {
+      "icon": 21273,
+      "name": "Skotos"
+    },
+    {
+      "icon": 12648,
+      "name": "Pet smoke devil"
+    },
+    {
+      "icon": 13177,
+      "name": "Venenatis spiderling"
+    },
+    {
+      "icon": 13179,
+      "name": "Vet'ion jr."
+    },
+    {
+      "icon": 21992,
+      "name": "Vorki"
+    },
+    {
+      "icon": 20693,
+      "name": "Phoenix"
+    },
+    {
+      "icon": 12921,
+      "name": "Pet snakeling"
+    },
+    {
+      "icon": 20851,
+      "name": "Olmlet"
+    },
+    {
+      "icon": 22473,
+      "name": "Lil' zik"
+    },
+    {
+      "icon": 19730,
+      "name": "Bloodhound"
+    },
+    {
+      "icon": 12703,
+      "name": "Pet penance queen"
+    },
+    {
+      "icon": 13320,
+      "name": "Heron"
+    },
+    {
+      "icon": 13321,
+      "name": "Rock golem"
+    },
+    {
+      "icon": 13322,
+      "name": "Beaver"
+    },
+    {
+      "icon": 13324,
+      "name": "Baby chinchompa"
+    },
+    {
+      "icon": 20659,
+      "name": "Giant squirrel"
+    },
+    {
+      "icon": 20661,
+      "name": "Tangleroot"
+    },
+    {
+      "icon": 20663,
+      "name": "Rocky"
+    },
+    {
+      "icon": 20665,
+      "name": "Rift guardian"
+    },
+    {
+      "icon": 21509,
+      "name": "Herbi"
+    },
+    {
+      "icon": 13071,
+      "name": "Chompy chick"
+    },
+    {
+      "icon": 23495,
+      "name": "Sraracha"
+    },
+    {
+      "icon": 23760,
+      "name": "Smolcano"
+    },
+    {
+      "icon": 23757,
+      "name": "Youngllef"
+    },
+    {
+      "icon": 24491,
+      "name": "Little nightmare"
+    },
+    {
+      "icon": 25348,
+      "name": "Lil' creator"
+    }
+  ]
+}

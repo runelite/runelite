@@ -229,4 +229,22 @@ public class ChatService
 			jedis.setex("layout." + name, (int) EXPIRE.getSeconds(), Joiner.on(' ').join(rooms));
 		}
 	}
+
+	public Integer getPetCount(String name)
+	{
+		String value;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			value = jedis.get("pets." + name);
+		}
+		return value == null ? null : Integer.parseInt(value);
+	}
+
+	public void setPetCount(String name, int petCount)
+	{
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("pets." + name, (int) EXPIRE.getSeconds(), Integer.toString(petCount));
+		}
+	}
 }

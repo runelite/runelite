@@ -165,7 +165,7 @@ public interface ChatCommandsConfig extends Config
 	{
 		return true;
 	}
-
+	
 	@ConfigItem(
 		position = 12,
 		keyName = "sw",
@@ -173,6 +173,18 @@ public interface ChatCommandsConfig extends Config
 		description = "Configures whether the Soul Wars Zeal command is enabled<br> !sw"
 	)
 	default boolean sw()
+	{
+		return true;
+	}
+	
+	@ConfigItem(
+		position = 12,
+		keyName = "pets",
+		name = "Pets Command",
+		description = "Configures whether the pet count command is enabled<br> !pets<br>" +
+			" Note: Update pet count by looking at All Pets tab in Collection Log"
+	)
+	default boolean pets()
 	{
 		return true;
 	}
