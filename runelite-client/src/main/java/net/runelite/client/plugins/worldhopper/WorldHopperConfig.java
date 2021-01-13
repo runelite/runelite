@@ -149,17 +149,12 @@ public interface WorldHopperConfig extends Config
 
 	@ConfigItem(
 		keyName = "presetWorldCycleList",
-		name = "Preset World Cycle List",
-		description = "Set a custom world cycle list to hop between too<br>Separate each world by commas<br>Example: 428,415,etc...",
+		name = "World cycle list",
+		description = "Set a custom world cycle list to hop between. Separate each world by commas. Example: 428,415,etc...",
 		position = 10
 	)
-	default String presetWorldCycleList() { return ""; }
-
-	@ConfigItem(
-			keyName = "blade",
-			name = "Blade",
-			description = "Blade",
-			position = 11
-	)
-	default String blade() { return "Nino & chat are my sensei"; }
+	default String presetWorldCycleList()
+	{
+		return "";
+	}
 }
