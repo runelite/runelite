@@ -168,6 +168,17 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 12,
+		keyName = "sw",
+		name = "SW Command",
+		description = "Configures whether the Soul Wars Zeal command is enabled<br> !sw"
+	)
+	default boolean sw()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 13,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",
 		description = "Enable hot key to clear single word at a time"
@@ -178,7 +189,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 14,
 		keyName = "clearEntireChatBox",
 		name = "Clear Chat Box",
 		description = "Enable hotkey to clear entire chat box"
