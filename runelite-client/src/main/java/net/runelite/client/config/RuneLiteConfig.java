@@ -32,6 +32,7 @@ import net.runelite.api.Constants;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.ContainableFrame;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
+import net.runelite.client.util.OSType;
 
 @ConfigGroup(RuneLiteConfig.GROUP_NAME)
 public interface RuneLiteConfig extends Config
@@ -122,14 +123,14 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "uiEnableCustomChrome",
 		name = "Enable custom window chrome",
-		description = "Use Runelite's custom window title and borders.",
+		description = "Use RuneLite's custom window title and borders.",
 		warning = "Please restart your client after changing this setting",
 		position = 15,
 		section = windowSettings
 	)
 	default boolean enableCustomChrome()
 	{
-		return true;
+		return OSType.getOSType() == OSType.Windows;
 	}
 
 	@Range(

@@ -61,7 +61,6 @@ import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -278,38 +277,46 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
-   private void parseConfigAndSetWorldCycleList() {
-     this.worldCycleList.clear();
+	private void parseConfigAndSetWorldCycleList()
+	{
+		this.worldCycleList.clear();
+		String presetWorldCfg = this.config.presetWorldCycleList();
 
-     String presetWorldCfg = this.config.presetWorldCycleList();
-     if (presetWorldCfg.isEmpty())
-       return;
-     WorldResult worldResult = this.worldService.getWorlds();
-     if (worldResult == null)
-       return;
-     for (String worldNumString : Text.fromCSV(presetWorldCfg)) {
-       int worldNum;
+		if (presetWorldCfg.isEmpty())
+		{
+			return;
+		}
 
+		WorldResult worldResult = this.worldService.getWorlds();
 
+		if (worldResult == null)
+		{
+			return;
+		}
 
-       try {
-         worldNum = Integer.parseInt(worldNumString);
-	       }
-       catch (NumberFormatException e) {
+		for (String worldNumString : Text.fromCSV(presetWorldCfg))
+		{
+			int worldNum;
 
-         log.debug("Invalid World Input: {}", e.getMessage());
+			try
+			{
+				worldNum = Integer.parseInt(worldNumString);
+			}
+			catch (NumberFormatException e)
+			{
+				log.debug("Invalid World Input: {}", e.getMessage());
+				continue;
+			}
 
-	         continue;
-	       }
-       World world = worldResult.findWorld(worldNum);
+			World world = worldResult.findWorld(worldNum);
 
-       if (world != null)
-	       {
-         this.worldCycleList.add(world);
-	       }
-     }
-   }
-	
+			if (world != null)
+			{
+				this.worldCycleList.add(world);
+			}
+		}
+	}
+
 	private void setFavoriteConfig(int world)
 	{
 		configManager.setConfiguration(WorldHopperConfig.GROUP, "favorite_" + world, true);
