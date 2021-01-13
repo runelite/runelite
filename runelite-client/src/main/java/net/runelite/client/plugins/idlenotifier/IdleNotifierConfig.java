@@ -90,7 +90,7 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "hitpoints",
-		name = "Hitpoints Notification Threshold",
+		name = "Hitpoints Threshold",
 		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
 		position = 6
 	)
@@ -101,7 +101,7 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "prayer",
-		name = "Prayer Notification Threshold",
+		name = "Prayer Threshold",
 		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
 		position = 7
 	)
@@ -112,7 +112,7 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "oxygen",
-		name = "Oxygen Notification Threshold",
+		name = "Oxygen Threshold",
 		position = 8,
 		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification."
 	)
@@ -124,9 +124,9 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "spec",
-		name = "Special Attack Energy Notification Threshold",
+		name = "Spec Threshold",
 		position = 9,
-		description = "The amount of spec energy reached to send a notification at. A value of 0 will disable notification."
+		description = "The amount of special attack energy reached to send a notification at. A value of 0 will disable notification."
 	)
 	@Units(Units.PERCENT)
 	default int getSpecEnergyThreshold()

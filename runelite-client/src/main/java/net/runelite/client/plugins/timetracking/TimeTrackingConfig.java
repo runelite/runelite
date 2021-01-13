@@ -110,7 +110,7 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "timerWarningThreshold",
-		name = "Timer Warning Threshold",
+		name = "Warning Threshold",
 		description = "The time at which to change the timer color to the warning color",
 		position = 6
 	)

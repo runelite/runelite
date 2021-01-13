@@ -151,7 +151,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "gameAlwaysOnTop",
-		name = "Enable client always on top",
+		name = "Always on top",
 		description = "The game will always be on the top of the screen",
 		position = 17,
 		section = windowSettings
@@ -163,8 +163,8 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "warningOnExit",
-		name = "Display warning on exit",
-		description = "Toggles a warning popup when trying to exit the client",
+		name = "Exit warning",
+		description = "Shows a warning popup when trying to exit the client",
 		position = 18,
 		section = windowSettings
 	)
@@ -199,7 +199,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "notificationRequestFocus",
-		name = "Request focus on notification",
+		name = "Request focus",
 		description = "Configures the window focus request type on notification",
 		position = 21,
 		section = notificationSettings
@@ -223,8 +223,8 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "notificationGameMessage",
-		name = "Enable game message notifications",
-		description = "Puts a notification message in the chatbox",
+		name = "Game message notifications",
+		description = "Adds a notification message to the chatbox",
 		position = 23,
 		section = notificationSettings
 	)
@@ -235,7 +235,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "flashNotification",
-		name = "Flash notification",
+		name = "Flash",
 		description = "Flashes the game frame as a notification",
 		position = 24,
 		section = notificationSettings
@@ -260,7 +260,7 @@ public interface RuneLiteConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "notificationFlashColor",
-		name = "Notification Flash Color",
+		name = "Notification Flash",
 		description = "Sets the color of the notification flashes.",
 		position = 26,
 		section = notificationSettings
@@ -296,7 +296,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "interfaceFontType",
-		name = "Interface Overlay Font",
+		name = "Interface Font",
 		description = "Configures what font type is used for in-game interface overlays such as panels, opponent info, clue scrolls etc.",
 		position = 32,
 		section = overlaySettings

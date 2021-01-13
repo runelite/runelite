@@ -93,7 +93,7 @@ public interface FishingConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "minnowsOverlayColor",
-		name = "Minnows Overlay Color",
+		name = "Minnows Overlay",
 		description = "Color of overlays for Minnows",
 		position = 5
 	)
@@ -105,7 +105,7 @@ public interface FishingConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "aerialOverlayColor",
-		name = "Aerial Overlay Color",
+		name = "Aerial Overlay",
 		description = "Color of overlays when 1-tick aerial fishing",
 		position = 6
 	)

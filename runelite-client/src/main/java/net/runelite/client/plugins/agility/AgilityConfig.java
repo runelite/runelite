@@ -147,7 +147,7 @@ public interface AgilityConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "portalsHighlight",
-		name = "Portals Highlight Color",
+		name = "Portals Color",
 		description = "Color of highlighted Prifddinas portals",
 		position = 9
 	)
