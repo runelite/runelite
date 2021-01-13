@@ -32,10 +32,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -64,6 +61,7 @@ import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -156,6 +154,7 @@ public class WorldHopperPlugin extends Plugin
 	private int currentPing;
 
 	private final Map<Integer, Integer> storedPings = new HashMap<>();
+	private final List<World> worldCycleList = new ArrayList<>();
 
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
@@ -218,6 +217,7 @@ public class WorldHopperPlugin extends Plugin
 
 		// populate initial world list
 		updateList();
+		parseConfigAndSetWorldCycleList();
 	}
 
 	@Override
@@ -271,10 +271,45 @@ public class WorldHopperPlugin extends Plugin
 					panel.setFilterMode(config.subscriptionFilter());
 					updateList();
 					break;
+				case "presetWorldCycleList":
+					parseConfigAndSetWorldCycleList();
+					break;
 			}
 		}
 	}
 
+   private void parseConfigAndSetWorldCycleList() {
+     this.worldCycleList.clear();
+
+     String presetWorldCfg = this.config.presetWorldCycleList();
+     if (presetWorldCfg.isEmpty())
+       return;
+     WorldResult worldResult = this.worldService.getWorlds();
+     if (worldResult == null)
+       return;
+     for (String worldNumString : Text.fromCSV(presetWorldCfg)) {
+       int worldNum;
+
+
+
+       try {
+         worldNum = Integer.parseInt(worldNumString);
+	       }
+       catch (NumberFormatException e) {
+
+         log.debug("Invalid World Input: {}", e.getMessage());
+
+	         continue;
+	       }
+       World world = worldResult.findWorld(worldNum);
+
+       if (world != null)
+	       {
+         this.worldCycleList.add(world);
+	       }
+     }
+   }
+	
 	private void setFavoriteConfig(int world)
 	{
 		configManager.setConfiguration(WorldHopperConfig.GROUP, "favorite_" + world, true);
@@ -515,7 +550,7 @@ public class WorldHopperPlugin extends Plugin
 		currentWorldTypes.remove(WorldType.SKILL_TOTAL);
 		currentWorldTypes.remove(WorldType.LAST_MAN_STANDING);
 
-		List<World> worlds = worldResult.getWorlds();
+		List<World> worlds = !this.worldCycleList.isEmpty() ? this.worldCycleList : worldResult.getWorlds();
 
 		int worldIdx = worlds.indexOf(currentWorld);
 		int totalLevel = client.getTotalLevel();
