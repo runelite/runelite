@@ -91,6 +91,7 @@ enum Emoji
 	GORILLA(":G"),
 	PLEADING("(n_n)"),
 	XD("Xd"),
+	WEARY_FACE("<lt>_<gt>"), // <_>
 	;
 
 	private static final Map<String, Emoji> emojiMap;
