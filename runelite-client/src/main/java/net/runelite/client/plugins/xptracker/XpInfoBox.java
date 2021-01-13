@@ -231,9 +231,10 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.NORTH);
 	}
 
-	void sortByXp(int position)
+	void setInfoBoxPosition(int position)
 	{
 		panel.setComponentZOrder(this, position);
+		panel.revalidate();
 	}
 
 	void reset()

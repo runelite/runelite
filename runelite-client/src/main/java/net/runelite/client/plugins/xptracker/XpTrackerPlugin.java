@@ -292,9 +292,10 @@ public class XpTrackerPlugin extends Plugin
 	{
 		for (Skill skill : Skill.values())
 		{
-			if (xpState.getSkillSnapshot(skill).getXpGainedInSession() != 0 && skill != Skill.OVERALL)
+			int xpGained = xpState.getSkillSnapshot(skill).getXpGainedInSession();
+			if (xpGained != 0 && skill != Skill.OVERALL)
 			{
-				skillToCurrentXpGained.put(skill, xpState.getSkillSnapshot(skill).getXpGainedInSession());
+				skillToCurrentXpGained.put(skill, xpGained);
 			}
 		}
 		xpPanel.sortByXp(sortMapByValue(skillToCurrentXpGained));

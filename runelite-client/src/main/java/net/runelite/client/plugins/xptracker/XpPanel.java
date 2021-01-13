@@ -174,7 +174,7 @@ class XpPanel extends PluginPanel
 		int i = 0;
 		for (Skill skill : skillToCurrentXpGained.keySet())
 		{
-			infoBoxes.get(skill).sortByXp(i);
+			infoBoxes.get(skill).setInfoBoxPosition(i);
 			i++;
 		}
 	}
