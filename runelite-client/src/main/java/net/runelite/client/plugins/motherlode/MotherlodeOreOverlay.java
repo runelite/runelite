@@ -28,7 +28,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
@@ -45,6 +47,10 @@ public class MotherlodeOreOverlay extends OverlayPanel
 	private final ItemManager itemManager;
 	boolean isMouseOver = false;
 
+	static final OverlayMenuEntry DISABLED_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Values disabled", "Motherlode Mine");
+	static final OverlayMenuEntry MOUSEOVER_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Values on mouseover", "Motherlode Mine");
+	static final OverlayMenuEntry REPLACE_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Values only", "Motherlode Mine");
+
 	@Inject
 	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager)
 	{
@@ -53,17 +59,18 @@ public class MotherlodeOreOverlay extends OverlayPanel
 		this.motherlodeSession = motherlodeSession;
 		this.config = config;
 		this.itemManager = itemManager;
+		getMenuEntries().add(DISABLED_ENTRY);
+		getMenuEntries().add(MOUSEOVER_ENTRY);
+		getMenuEntries().add(REPLACE_ENTRY);
 	}
 
 	@Override
 	public void onMouseOver()
 	{
-		if (!config.oreValueMouseover())
+		if (config.oreValueType() == MotherlodeConfig.MotherlodeOreValueType.MOUSEOVER)
 		{
-			return;
+			isMouseOver = true;
 		}
-
-		isMouseOver = true;
 	}
 
 	@Override
@@ -121,7 +128,7 @@ public class MotherlodeOreOverlay extends OverlayPanel
 		}
 		else
 		{
-			if (isMouseOver)
+			if (isMouseOver || config.oreValueType() == MotherlodeConfig.MotherlodeOreValueType.REPLACE)
 			{
 				nuggetsFound = itemManager.getItemPrice(ItemID.GOLDEN_NUGGET) * nuggetsFound;
 				coalFound = itemManager.getItemPrice(ItemID.COAL) * coalFound;

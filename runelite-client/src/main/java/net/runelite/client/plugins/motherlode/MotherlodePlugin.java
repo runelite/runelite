@@ -130,6 +130,9 @@ public class MotherlodePlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private ConfigManager configManager;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
 
@@ -207,6 +210,19 @@ public class MotherlodePlugin extends Plugin
 			&& overlayMenuClicked.getOverlay() == overlay)
 		{
 			session.resetRecent();
+		}
+
+		if (overlayMenuClicked.getEntry() == MotherlodeOreOverlay.DISABLED_ENTRY)
+		{
+			configManager.setConfiguration("motherlode", "oreValueType", MotherlodeConfig.MotherlodeOreValueType.DISABLED);
+		}
+		else if (overlayMenuClicked.getEntry() == MotherlodeOreOverlay.MOUSEOVER_ENTRY)
+		{
+			configManager.setConfiguration("motherlode", "oreValueType", MotherlodeConfig.MotherlodeOreValueType.MOUSEOVER);
+		}
+		else if (overlayMenuClicked.getEntry() == MotherlodeOreOverlay.REPLACE_ENTRY)
+		{
+			configManager.setConfiguration("motherlode", "oreValueType", MotherlodeConfig.MotherlodeOreValueType.REPLACE);
 		}
 	}
 
