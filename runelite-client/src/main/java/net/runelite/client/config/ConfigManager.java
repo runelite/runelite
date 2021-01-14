@@ -152,6 +152,11 @@ public class ConfigManager
 		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
 
+	public String getRSProfileKey()
+	{
+		return rsProfileKey;
+	}
+
 	public final void switchSession(AccountSession session)
 	{
 		// Ensure existing config is saved
