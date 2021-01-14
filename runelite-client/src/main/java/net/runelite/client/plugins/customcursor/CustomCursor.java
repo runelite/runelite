@@ -56,4 +56,10 @@ public enum CustomCursor
 		this.name = name;
 		this.cursorImage = ImageUtil.loadImageResource(CustomCursorPlugin.class, icon);
 	}
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }
