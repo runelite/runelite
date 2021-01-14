@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.motherlode;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
@@ -36,8 +35,6 @@ import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
-import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QuantityFormatter;
 
 public class MotherlodeOreOverlay extends OverlayPanel
@@ -46,18 +43,16 @@ public class MotherlodeOreOverlay extends OverlayPanel
 	private final MotherlodeSession motherlodeSession;
 	private final MotherlodeConfig config;
 	private final ItemManager itemManager;
-	private final TooltipManager tooltipManager;
 	boolean isMouseOver = false;
 
 	@Inject
-	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager, TooltipManager tooltipManager)
+	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
 		this.motherlodeSession = motherlodeSession;
 		this.config = config;
 		this.itemManager = itemManager;
-		this.tooltipManager = tooltipManager;
 	}
 
 	@Override
