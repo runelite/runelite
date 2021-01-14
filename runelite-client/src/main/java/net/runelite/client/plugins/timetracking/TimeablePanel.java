@@ -29,22 +29,29 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Constants;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
+import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.SwingUtil;
 
+@Slf4j
 @Getter
 public class TimeablePanel<T> extends JPanel
 {
 	private final T timeable;
 	private final JLabel icon = new JLabel();
 	private final JLabel farmingContractIcon = new JLabel();
+	private final JToggleButton notifyButton = new JToggleButton();
 	private final JLabel estimate = new JLabel();
 	private final ThinProgressBar progress = new ThinProgressBar();
 	private final JLabel text;
@@ -79,8 +86,29 @@ public class TimeablePanel<T> extends JPanel
 		infoPanel.add(text);
 		infoPanel.add(estimate);
 
+		ImageIcon notifyIcon = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_icon.png"));
+		ImageIcon notifySelectedIcon = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_selected_icon.png"));
+
+		notifyButton.setPreferredSize(new Dimension(30, 16));
+		notifyButton.setBorder(new EmptyBorder(0, 0, 0, 10));
+		notifyButton.setIcon(notifyIcon);
+		notifyButton.setSelectedIcon(notifySelectedIcon);
+		SwingUtil.removeButtonDecorations(notifyButton);
+		SwingUtil.addModalTooltip(notifyButton, "Disable notifications", "Enable notifications");
+
+		JPanel notifyPanel = new JPanel();
+		notifyPanel.setLayout(new BorderLayout());
+		notifyPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		notifyPanel.add(notifyButton, BorderLayout.CENTER);
+
+		JPanel iconPanel = new JPanel();
+		iconPanel.setLayout(new BorderLayout());
+		iconPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		iconPanel.add(notifyPanel, BorderLayout.EAST);
+		iconPanel.add(farmingContractIcon, BorderLayout.WEST);
+
+		topContainer.add(iconPanel, BorderLayout.EAST);
 		topContainer.add(icon, BorderLayout.WEST);
-		topContainer.add(farmingContractIcon, BorderLayout.EAST);
 		topContainer.add(infoPanel, BorderLayout.CENTER);
 
 		progress.setValue(0);

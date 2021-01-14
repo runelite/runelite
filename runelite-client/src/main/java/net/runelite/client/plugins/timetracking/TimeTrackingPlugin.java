@@ -139,7 +139,7 @@ public class TimeTrackingPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 		panelUpdateFuture = executorService.scheduleAtFixedRate(this::updatePanel, 200, 200, TimeUnit.MILLISECONDS);
-		notifierFuture = executorService.scheduleAtFixedRate(this::checkCompletion, 0, 10, TimeUnit.SECONDS);
+		notifierFuture = executorService.scheduleAtFixedRate(this::checkCompletion, 10, 10, TimeUnit.SECONDS);
 	}
 
 	@Override
@@ -270,6 +270,8 @@ public class TimeTrackingPlugin extends Plugin
 		{
 			panel.update();
 		}
+
+		farmingTracker.checkCompletion();
 	}
 
 	private void updatePanel()

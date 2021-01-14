@@ -41,6 +41,7 @@ public interface TimeTrackingConfig extends Config
 	String TIMERS = "timers";
 	String STOPWATCHES = "stopwatches";
 	String PREFER_SOONEST = "preferSoonest";
+	String NOTIFY = "notify";
 
 	@ConfigItem(
 		keyName = "timeFormatMode",
