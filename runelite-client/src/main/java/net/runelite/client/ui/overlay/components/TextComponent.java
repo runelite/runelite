@@ -32,6 +32,7 @@ import java.awt.Point;
 import java.util.regex.Pattern;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @Setter
@@ -100,7 +101,7 @@ public class TextComponent implements RenderableEntity
 			}
 
 			// actual text
-			graphics.setColor(color);
+			graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
 			graphics.drawString(text, position.x, position.y);
 		}
 

@@ -1591,4 +1591,8 @@ public final class SpriteID
 	public static final int FRIENDS_CHAT_RANK_TRIPLE_CHEVRON_SERGEANT = 2831;
 	public static final int FRIENDS_CHAT_RANK_DOUBLE_CHEVRON_CORPORAL = 2832;
 	public static final int FRIENDS_CHAT_RANK_SINGLE_CHEVRON_RECRUIT = 2833;
+
+	public static final int SETTINGS_SLIDER_HANDLE_BLUE = 2858;
+	public static final int SETTINGS_SLIDER_HANDLE_RED = 2859;
+	public static final int SETTINGS_SLIDER_HANDLE_GREEN = 2860;
 }

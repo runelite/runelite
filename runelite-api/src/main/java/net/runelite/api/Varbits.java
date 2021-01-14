@@ -573,6 +573,22 @@ public enum Varbits
 	LEAGUE_RELIC_6(11696),
 
 	/**
+	 * Muted volume restore values
+	 */
+	MUTED_MUSIC_VOLUME(9666),
+	MUTED_SOUND_EFFECT_VOLUME(9674),
+	MUTED_AREA_EFFECT_VOLUME(9675),
+
+	/**
+	 * Parasite infection status during nightmare of ashihama bossfight
+	 *
+	 * 0 = not infected
+	 * 1 = infected
+	 *
+	 */
+	PARASITE(10151),
+
+	/**
 	 * Whether the Special Attack orb is disabled due to being in a PvP area
 	 *
 	 * 0 = Enabled (player is not in PvP)

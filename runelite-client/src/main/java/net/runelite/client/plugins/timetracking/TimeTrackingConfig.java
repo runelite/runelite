@@ -33,6 +33,8 @@ import net.runelite.client.config.Units;
 public interface TimeTrackingConfig extends Config
 {
 	String CONFIG_GROUP = "timetracking";
+	String FARM_TICK_OFFSET = "farmTickOffset";
+	String FARM_TICK_OFFSET_PRECISION = "farmTickOffsetPrecision";
 	String AUTOWEED = "autoweed";
 	String BIRD_HOUSE = "birdhouse";
 	String BOTANIST = "botanist";
@@ -108,7 +110,7 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "timerWarningThreshold",
-		name = "Timer Warning Threshold",
+		name = "Warning Threshold",
 		description = "The time at which to change the timer color to the warning color",
 		position = 6
 	)

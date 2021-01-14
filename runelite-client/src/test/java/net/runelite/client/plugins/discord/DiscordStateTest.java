@@ -31,6 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.Client;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
@@ -69,6 +70,14 @@ public class DiscordStateTest
 	@Mock
 	@Bind
 	PartyService partyService;
+
+	@Bind
+	@Named("runelite.title")
+	private String runeliteTitle = "RuneLite";
+
+	@Bind
+	@Named("runelite.version")
+	private String runeliteVersion = "version";
 
 	@Before
 	public void before()

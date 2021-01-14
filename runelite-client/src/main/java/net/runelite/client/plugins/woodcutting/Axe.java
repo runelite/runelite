@@ -52,7 +52,7 @@ import static net.runelite.api.ItemID.IRON_AXE;
 import static net.runelite.api.ItemID.MITHRIL_AXE;
 import static net.runelite.api.ItemID.RUNE_AXE;
 import static net.runelite.api.ItemID.STEEL_AXE;
-import static net.runelite.api.ItemID.TRAILBLAZER_AXE;
+import static net.runelite.api.ItemID.INFERNAL_AXE_OR;
 import static net.runelite.api.ItemID._3RD_AGE_AXE;
 import net.runelite.api.Player;
 
@@ -72,7 +72,7 @@ enum Axe
 	INFERNAL(WOODCUTTING_INFERNAL, INFERNAL_AXE),
 	THIRDAGE(WOODCUTTING_3A_AXE, _3RD_AGE_AXE),
 	CRYSTAL(WOODCUTTING_CRYSTAL, CRYSTAL_AXE),
-	TRAILBLAZER(WOODCUTTING_TRAILBLAZER, TRAILBLAZER_AXE);
+	TRAILBLAZER(WOODCUTTING_TRAILBLAZER, INFERNAL_AXE_OR);
 
 	private final Integer animId;
 	private final Integer itemId;

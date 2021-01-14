@@ -185,7 +185,12 @@ public enum VarPlayer
 	/**
 	 * 0 = 2 buttons, 1 = 1 button
 	 */
-	MOUSE_BUTTONS(170);
+	MOUSE_BUTTONS(170),
+
+	/**
+	 * {@link NpcID} for the HP HUD
+	 */
+	HP_HUD_NPC_ID(1683);
 
 	private final int id;
 }

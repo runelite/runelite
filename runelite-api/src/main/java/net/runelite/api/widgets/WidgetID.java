@@ -131,7 +131,7 @@ public class WidgetID
 	public static final int LOOTING_BAG_GROUP_ID = 81;
 	public static final int SKOTIZO_GROUP_ID = 308;
 	public static final int ENTERING_HOUSE_GROUP_ID = 71;
-	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
+	public static final int FULLSCREEN_CONTAINER_TLI = 165;
 	public static final int QUESTLIST_GROUP_ID = 399;
 	public static final int SKILLS_GROUP_ID = 320;
 	public static final int MUSIC_GROUP_ID = 239;
@@ -147,7 +147,8 @@ public class WidgetID
 	public static final int SEED_BOX_GROUP_ID = 128;
 	public static final int SEED_VAULT_GROUP_ID = 631;
 	public static final int EXPLORERS_RING_ALCH_GROUP_ID = 483;
-	public static final int OPTIONS_GROUP_ID = 116;
+	public static final int SETTINGS_SIDE_GROUP_ID = 116;
+	public static final int SETTINGS_GROUP_ID = 134;
 	public static final int GWD_KC_GROUP_ID = 406;
 	public static final int LMS_GROUP_ID = 333;
 	public static final int LMS_INGAME_GROUP_ID = 328;
@@ -302,7 +303,6 @@ public class WidgetID
 
 	static class Shop
 	{
-		static final int ITEMS_CONTAINER = 2;
 		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
@@ -370,6 +370,7 @@ public class WidgetID
 	{
 		static final int MINIMAP = 3;
 		static final int MINIMAP_DRAW_AREA = 8;
+		static final int MULTICOMBAT_INDICATOR = 21;
 		static final int FRIENDS_CHAT_TAB = 34;
 		static final int FRIENDS_TAB = 36;
 		static final int IGNORES_TAB = 35;
@@ -406,6 +407,7 @@ public class WidgetID
 
 	static class ResizableViewport
 	{
+		static final int MULTICOMBAT_INDICATOR = 18;
 		static final int FRIENDS_CHAT_TAB = 38;
 		static final int FRIENDS_TAB = 40;
 		static final int IGNORES_TAB = 39;
@@ -609,6 +611,7 @@ public class WidgetID
 			static final int ROLE_SPRITE = 11;
 			static final int ROLE = 12;
 		}
+
 		static class HLR
 		{
 			static final int TEAMMATE1 = 18;
@@ -616,6 +619,7 @@ public class WidgetID
 			static final int TEAMMATE3 = 26;
 			static final int TEAMMATE4 = 30;
 		}
+
 		static final int CORRECT_STYLE = 3;
 		static final int CURRENT_WAVE_WIDGET = 4;
 		static final int CURRENT_WAVE = 5;
@@ -838,6 +842,7 @@ public class WidgetID
 		static final int MEMBERS_CONTAINER = 7;
 		static final int MINIQUEST_CONTAINER = 8;
 	}
+
 	static class Music
 	{
 		static final int CONTAINER = 0;
@@ -880,9 +885,17 @@ public class WidgetID
 		static final int INVENTORY = 7;
 	}
 
-	static class Options
+	static class SettingsSide
 	{
-		static final int CAMERA_ZOOM_SLIDER_HANDLE = 55;
+		static final int CAMERA_ZOOM_SLIDER_TRACK = 59;
+		static final int MUSIC_SLIDER = 13;
+		static final int SOUND_EFFECT_SLIDER = 17;
+		static final int AREA_SOUND_SLIDER = 21;
+	}
+
+	static class Settings
+	{
+		static final int INIT = 1;
 	}
 
 	static class AchievementDiary

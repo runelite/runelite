@@ -198,7 +198,7 @@ class ItemPricesOverlay extends Overlay
 		}
 		else if (id == ItemID.PLATINUM_TOKEN)
 		{
-			return QuantityFormatter.formatNumber(qty * 1000) + " gp";
+			return QuantityFormatter.formatNumber(qty * 1000L) + " gp";
 		}
 
 		ItemComposition itemDef = itemManager.getItemComposition(id);

@@ -137,6 +137,7 @@ public class ChatCommandsPlugin extends Plugin
 	private String pohOwner;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
+	private int lastBossTime = -1;
 	private int lastPb = -1;
 
 	@Inject
@@ -197,6 +198,7 @@ public class ChatCommandsPlugin extends Plugin
 	public void shutDown()
 	{
 		lastBossKill = null;
+		lastBossTime = -1;
 
 		keyManager.unregisterKeyListener(chatKeyboardListener);
 
@@ -279,6 +281,7 @@ public class ChatCommandsPlugin extends Plugin
 			else
 			{
 				lastBossKill = boss;
+				lastBossTime = client.getTickCount();
 			}
 			return;
 		}
@@ -300,16 +303,11 @@ public class ChatCommandsPlugin extends Plugin
 			setKc(boss, kc);
 			if (lastPb > -1)
 			{
-				// lastPb contains the last raid duration and not the personal best, because the raid
-				// complete message does not include the pb. We have to check if it is a new pb:
-				int currentPb = getPb(boss);
-				if (currentPb <= 0 || lastPb < currentPb)
-				{
-					setPb(boss, lastPb);
-				}
+				setPb(boss, lastPb);
 				lastPb = -1;
 			}
 			lastBossKill = boss;
+			lastBossTime = client.getTickCount();
 			return;
 		}
 
@@ -428,7 +426,11 @@ public class ChatCommandsPlugin extends Plugin
 			setKc("Hallowed Sepulchre", kc);
 		}
 
-		lastBossKill = null;
+		if (lastBossKill != null && lastBossTime != client.getTickCount())
+		{
+			lastBossKill = null;
+			lastBossTime = -1;
+		}
 	}
 
 	private static int timeStringToSeconds(String timeString)

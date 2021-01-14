@@ -59,6 +59,8 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.SpriteID;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -562,7 +564,7 @@ class WidgetInspector extends JFrame
 	{
 		if (type == MenuAction.SPELL_CAST_ON_WIDGET.getId())
 		{
-			Widget w = client.getWidget(WidgetInfo.TO_GROUP(param1), WidgetInfo.TO_CHILD(param1));
+			Widget w = client.getWidget(param1);
 			if (param0 != -1)
 			{
 				w = w.getChild(param0);
@@ -572,10 +574,29 @@ class WidgetInspector extends JFrame
 		}
 		else if (type == MenuAction.ITEM_USE_ON_WIDGET.getId())
 		{
-			Widget w = client.getWidget(WidgetInfo.TO_GROUP(param1), WidgetInfo.TO_CHILD(param1));
+			Widget w = client.getWidget(param1);
 			return w.getWidgetItem(param0);
 		}
 
 		return null;
+	}
+
+	public static String getWidgetIdentifier(Widget widget)
+	{
+		int id = widget.getId();
+		String str = TO_GROUP(id) + "." + TO_CHILD(id);
+
+		if (widget.getIndex() != -1)
+		{
+			str += "[" + widget.getIndex() + "]";
+		}
+
+		WidgetInfo info = WidgetInspector.getWidgetInfo(id);
+		if (info != null)
+		{
+			str += " " + info.name();
+		}
+
+		return str;
 	}
 }

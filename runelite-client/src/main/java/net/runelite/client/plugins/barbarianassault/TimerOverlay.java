@@ -65,11 +65,6 @@ class TimerOverlay extends Overlay
 		}
 
 		Role role = round.getRoundRole();
-		if (role == null)
-		{
-			return null;
-		}
-
 		Widget roleText = client.getWidget(role.getRoleText());
 		Widget roleSprite = client.getWidget(role.getRoleSprite());
 

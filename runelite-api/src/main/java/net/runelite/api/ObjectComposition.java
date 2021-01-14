@@ -27,7 +27,7 @@ package net.runelite.api;
 /**
  * Information about a specific {@link ObjectID}
  */
-public interface ObjectComposition
+public interface ObjectComposition extends ParamHolder
 {
 	/**
 	 * Gets ID for the object.

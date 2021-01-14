@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -101,8 +102,6 @@ public class Notifier
 	private static final int MINIMUM_FLASH_DURATION_MILLIS = 2000;
 	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
-	private static final String appName = RuneLiteProperties.getTitle();
-
 	private static final File NOTIFICATION_FILE = new File(RuneLite.RUNELITE_DIR, "notification.wav");
 	private static final long CLIP_MTIME_UNLOADED = -2;
 	private static final long CLIP_MTIME_BUILTIN = -1;
@@ -113,6 +112,7 @@ public class Notifier
 	private final ScheduledExecutorService executorService;
 	private final ChatMessageManager chatMessageManager;
 	private final EventBus eventBus;
+	private final String appName;
 	private final Path notifyIconPath;
 	private boolean terminalNotifierAvailable;
 	private Instant flashStart;
@@ -127,7 +127,9 @@ public class Notifier
 		final RuneLiteConfig runeliteConfig,
 		final ScheduledExecutorService executorService,
 		final ChatMessageManager chatMessageManager,
-		final EventBus eventBus)
+		final EventBus eventBus,
+		@Named("runelite.title") final String appName
+	)
 	{
 		this.client = client;
 		this.clientUI = clientUI;
@@ -135,6 +137,7 @@ public class Notifier
 		this.executorService = executorService;
 		this.chatMessageManager = chatMessageManager;
 		this.eventBus = eventBus;
+		this.appName = appName;
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 
 		// First check if we are running in launcher

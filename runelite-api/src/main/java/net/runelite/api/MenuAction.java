@@ -187,10 +187,6 @@ public enum MenuAction
 	 */
 	ITEM_FIFTH_OPTION(37),
 	/**
-	 * Menu action to drop an item (identical to ITEM_FIFTH_OPTION).
-	 */
-	ITEM_DROP(37),
-	/**
 	 * Menu action to use an item.
 	 */
 	ITEM_USE(38),

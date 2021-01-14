@@ -55,7 +55,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		ItemIdentification iden = findItemIdentification(itemId);
 		if (iden == null)
@@ -116,7 +116,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
-		renderText(graphics, itemWidget.getCanvasBounds(), iden);
+		renderText(graphics, widgetItem.getCanvasBounds(), iden);
 	}
 
 	private void renderText(Graphics2D graphics, Rectangle bounds, ItemIdentification iden)

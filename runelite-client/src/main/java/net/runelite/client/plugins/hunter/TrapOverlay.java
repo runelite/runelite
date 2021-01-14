@@ -37,6 +37,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ColorUtil;
 
 /**
  * Represents the overlay that shows timers on traps that are placed by the
@@ -81,13 +82,13 @@ public class TrapOverlay extends Overlay
 	public void updateConfig()
 	{
 		colorEmptyBorder = config.getEmptyTrapColor();
-		colorEmpty = new Color(colorEmptyBorder.getRed(), colorEmptyBorder.getGreen(), colorEmptyBorder.getBlue(), 100);
+		colorEmpty = ColorUtil.colorWithAlpha(colorEmptyBorder, (int)(colorEmptyBorder.getAlpha() / 2.5));
 		colorFullBorder = config.getFullTrapColor();
-		colorFull = new Color(colorFullBorder.getRed(), colorFullBorder.getGreen(), colorFullBorder.getBlue(), 100);
+		colorFull = ColorUtil.colorWithAlpha(colorFullBorder, (int)(colorFullBorder.getAlpha() / 2.5));
 		colorOpenBorder = config.getOpenTrapColor();
-		colorOpen = new Color(colorOpenBorder.getRed(), colorOpenBorder.getGreen(), colorOpenBorder.getBlue(), 100);
+		colorOpen = ColorUtil.colorWithAlpha(colorOpenBorder, (int)(colorOpenBorder.getAlpha() / 2.5));
 		colorTransBorder = config.getTransTrapColor();
-		colorTrans = new Color(colorTransBorder.getRed(), colorTransBorder.getGreen(), colorTransBorder.getBlue(), 100);
+		colorTrans = ColorUtil.colorWithAlpha(colorTransBorder, (int)(colorTransBorder.getAlpha() / 2.5));
 	}
 
 	/**

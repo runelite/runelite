@@ -50,9 +50,9 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		add("Claim a ticket from the Agility Arena in Brimhaven.",
 			new SkillRequirement(Skill.AGILITY, 30));
 		add("Discover hidden wall in the dungeon below the volcano.",
-			new QuestRequirement(Quest.DRAGON_SLAYER, true));
+			new QuestRequirement(Quest.DRAGON_SLAYER_I, true));
 		add("Visit the Isle of Crandor via the dungeon below the volcano.",
-			new QuestRequirement(Quest.DRAGON_SLAYER, true));
+			new QuestRequirement(Quest.DRAGON_SLAYER_I, true));
 		add("Use Vigroy and Hajedy's cart service.",
 			new QuestRequirement(Quest.SHILO_VILLAGE));
 		add("Earn 100% favour in the village of Tai Bwo Wannai.",

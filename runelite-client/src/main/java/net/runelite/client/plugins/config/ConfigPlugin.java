@@ -83,7 +83,7 @@ public class ConfigPlugin extends Plugin
 			));
 		pluginListPanel.rebuildPluginList();
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "config_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "config_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Configuration")

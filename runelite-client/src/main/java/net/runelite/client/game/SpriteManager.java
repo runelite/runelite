@@ -162,7 +162,7 @@ public class SpriteManager
 			Class<?> owner = add[0].getClass();
 			for (SpriteOverride o : add)
 			{
-				BufferedImage image = ImageUtil.getResourceStreamFromClass(owner, o.getFileName());
+				BufferedImage image = ImageUtil.loadImageResource(owner, o.getFileName());
 				SpritePixels sp = ImageUtil.getImageSpritePixels(image, client);
 				overrides.put(o.getSpriteId(), sp);
 			}

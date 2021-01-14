@@ -94,7 +94,7 @@ public class HiscorePlugin extends Plugin
 	{
 		hiscorePanel = injector.getInstance(HiscorePanel.class);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "normal.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "normal.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Hiscore")

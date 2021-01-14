@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 
@@ -49,6 +50,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
 	private OverlayPriority priority = OverlayPriority.NONE;
 	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
+	private final List<Integer> drawHooks = new ArrayList<>();
 	private final List<OverlayMenuEntry> menuEntries = new ArrayList<>();
 	private boolean resizable;
 	private int minimumSize = 32;
@@ -81,6 +83,16 @@ public abstract class Overlay implements LayoutableRenderableEntity
 		return this.getClass().getSimpleName();
 	}
 
+	protected void drawAfterInterface(int interfaceId)
+	{
+		drawHooks.add(interfaceId << 16 | 0xffff);
+	}
+
+	protected void drawAfterLayer(WidgetInfo layer)
+	{
+		drawHooks.add(layer.getId());
+	}
+
 	public void onMouseOver()
 	{
 	}
@@ -96,5 +108,16 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	public boolean onDrag(Overlay other)
 	{
 		return false;
+	}
+
+	/**
+	 * Get the parent bounds for overlay dragging. The overlay will
+	 * not be allowed to be moved outside of the parent bounds.
+	 * @return
+	 */
+	@Nullable
+	public Rectangle getParentBounds()
+	{
+		return null;
 	}
 }

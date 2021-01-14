@@ -51,7 +51,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "veryLowWarningColor",
-		name = "Very Low Warning Color",
+		name = "Very Low Warning",
 		description = "The color of the overlay when charges are very low",
 		position = 1
 	)
@@ -62,7 +62,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "lowWarningColor",
-		name = "Low Warning Color",
+		name = "Low Warning",
 		description = "The color of the overlay when charges are low",
 		position = 2
 	)
@@ -95,7 +95,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showTeleportCharges",
-		name = "Show Teleport Charges",
+		name = "Teleport Charges",
 		description = "Show teleport item charge counts",
 		position = 5,
 		section = chargesSection
@@ -149,7 +149,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showImpCharges",
-		name = "Show Imp-in-a-box charges",
+		name = "Imp-in-a-box charges",
 		description = "Show Imp-in-a-box item charges",
 		position = 8,
 		section = chargesSection
@@ -161,7 +161,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showFungicideCharges",
-		name = "Show Fungicide Charges",
+		name = "Fungicide Charges",
 		description = "Show Fungicide item charges",
 		position = 9,
 		section = chargesSection
@@ -173,7 +173,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showWateringCanCharges",
-		name = "Show Watering Can Charges",
+		name = "Watering Can Charges",
 		description = "Show Watering can item charges",
 		position = 10,
 		section = chargesSection
@@ -185,7 +185,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showWaterskinCharges",
-		name = "Show Waterskin Charges",
+		name = "Waterskin Charges",
 		description = "Show Waterskin dose counts",
 		position = 11,
 		section = chargesSection
@@ -197,7 +197,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBellowCharges",
-		name = "Show Bellows Charges",
+		name = "Bellows Charges",
 		description = "Show Ogre bellows item charges",
 		position = 12,
 		section = chargesSection
@@ -209,7 +209,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBasketCharges",
-		name = "Show Basket Charges",
+		name = "Basket Charges",
 		description = "Show Fruit basket item counts",
 		position = 13,
 		section = chargesSection
@@ -221,7 +221,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showSackCharges",
-		name = "Show Sack Charges",
+		name = "Sack Charges",
 		description = "Show Sack item counts",
 		position = 14,
 		section = chargesSection
@@ -233,7 +233,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAbyssalBraceletCharges",
-		name = "Show Abyssal Bracelet Charges",
+		name = "Abyssal Bracelet Charges",
 		description = "Show Abyssal bracelet item charges",
 		position = 15,
 		section = chargesSection
@@ -245,7 +245,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAmuletOfChemistryCharges",
-		name = "Show Amulet of Chemistry Charges",
+		name = "Amulet of Chemistry Charges",
 		description = "Show Amulet of chemistry item charges",
 		position = 16,
 		section = chargesSection
@@ -275,7 +275,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAmuletOfBountyCharges",
-		name = "Show Amulet of Bounty Charges",
+		name = "Amulet of Bounty Charges",
 		description = "Show Amulet of bounty item charges",
 		position = 17,
 		section = chargesSection
@@ -317,7 +317,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBindingNecklaceCharges",
-		name = "Show Binding Necklace Charges",
+		name = "Binding Necklace Charges",
 		description = "Show Binding necklace item charges",
 		position = 19,
 		section = chargesSection
@@ -359,7 +359,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showExplorerRingCharges",
-		name = "Show Explorer's Ring Alch Charges",
+		name = "Explorer's Ring Alch Charges",
 		description = "Show Explorer's ring alchemy charges",
 		position = 21,
 		section = chargesSection
@@ -389,7 +389,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showRingOfForgingCount",
-		name = "Show Ring of Forging Charges",
+		name = "Ring of Forging Charges",
 		description = "Show Ring of forging item charges",
 		position = 22,
 		section = chargesSection
@@ -431,7 +431,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showInfoboxes",
-		name = "Show Infoboxes",
+		name = "Infoboxes",
 		description = "Show an infobox with remaining charges for equipped items",
 		position = 24
 	)
@@ -442,7 +442,7 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPotionDoseCount",
-		name = "Show Potion Doses",
+		name = "Potion Doses",
 		description = "Show remaining potion doses",
 		position = 25,
 		section = chargesSection

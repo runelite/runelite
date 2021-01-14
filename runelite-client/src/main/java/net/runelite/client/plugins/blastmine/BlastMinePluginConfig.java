@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.blastmine;
 
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -77,6 +78,7 @@ public interface BlastMinePluginConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 4,
 		keyName = "hexTimerColor",
@@ -88,6 +90,7 @@ public interface BlastMinePluginConfig extends Config
 		return new Color(217, 54, 0);
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 5,
 		keyName = "hexWarningColor",

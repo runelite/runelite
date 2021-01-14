@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
-
-import lombok.Data;
-import net.runelite.api.widgets.Widget;
+package net.runelite.api;
 
 /**
- * An event where the hidden state of a {@link Widget} has been modified.
+ * @see ParamID#SETTING_ID
  */
-@Data
-public class WidgetHiddenChanged
+public class SettingID
 {
-	/**
-	 * The affected widget.
-	 */
-	private Widget widget;
-	/**
-	 * The new hidden state of the widget.
-	 */
-	private boolean hidden;
+	public static final int CAMERA_ZOOM = 14;
+
+	public static final int MUSIC_VOLUME = 30;
+	public static final int EFFECT_VOLUME = 31;
+	public static final int AREA_VOLUME = 32;
 }
