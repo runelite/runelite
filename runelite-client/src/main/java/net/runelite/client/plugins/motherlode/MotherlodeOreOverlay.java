@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
@@ -46,6 +47,7 @@ public class MotherlodeOreOverlay extends OverlayPanel
 	private final MotherlodeConfig config;
 	private final ItemManager itemManager;
 	private final TooltipManager tooltipManager;
+	boolean isMouseOver = false;
 
 	@Inject
 	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager, TooltipManager tooltipManager)
@@ -66,31 +68,7 @@ public class MotherlodeOreOverlay extends OverlayPanel
 			return;
 		}
 
-		MotherlodeSession session = motherlodeSession;
-
-		int nuggetsFound = session.getNuggetsFound();
-		int coalFound = session.getCoalFound();
-		int goldFound = session.getGoldFound();
-		int mithrilFound = session.getMithrilFound();
-		int adamantiteFound = session.getAdamantiteFound();
-		int runiteFound = session.getRuniteFound();
-
-		int nuggetsGP = itemManager.getItemPrice(ItemID.GOLDEN_NUGGET) * nuggetsFound;
-		int coalGP = itemManager.getItemPrice(ItemID.COAL) * coalFound;
-		int goldGP = itemManager.getItemPrice(ItemID.GOLD_ORE) * goldFound;
-		int mithrilGP = itemManager.getItemPrice(ItemID.MITHRIL_ORE) * mithrilFound;
-		int adamantiteGP = itemManager.getItemPrice(ItemID.ADAMANTITE_ORE) * adamantiteFound;
-		int runiteGP = itemManager.getItemPrice(ItemID.RUNITE_ORE) * runiteFound;
-		int totalOreGP = coalGP + mithrilGP + adamantiteGP + runiteGP;
-
-		tooltipManager.add(new Tooltip("Estimated GE values"));
-		tooltipManager.add(new Tooltip("Nuggets: " + QuantityFormatter.quantityToStackSize(nuggetsGP)));
-		tooltipManager.add(new Tooltip("Coal: " + QuantityFormatter.quantityToStackSize(coalGP)));
-		tooltipManager.add(new Tooltip("Gold: " + QuantityFormatter.quantityToStackSize(goldGP)));
-		tooltipManager.add(new Tooltip("Mithril: " + QuantityFormatter.quantityToStackSize(mithrilGP)));
-		tooltipManager.add(new Tooltip("Adamantite: " + QuantityFormatter.quantityToStackSize(adamantiteGP)));
-		tooltipManager.add(new Tooltip("Runite: " + QuantityFormatter.quantityToStackSize(runiteGP)));
-		tooltipManager.add(new Tooltip("Total: " + QuantityFormatter.quantityToStackSize(totalOreGP)));
+		isMouseOver = true;
 	}
 
 	@Override
@@ -109,6 +87,7 @@ public class MotherlodeOreOverlay extends OverlayPanel
 		int mithrilFound = session.getMithrilFound();
 		int adamantiteFound = session.getAdamantiteFound();
 		int runiteFound = session.getRuniteFound();
+		String overlayTitle = "Ores found";
 
 		// If no ores have even been collected, don't bother showing anything
 		if (nuggetsFound == 0 && coalFound == 0 && goldFound == 0 && mithrilFound == 0
@@ -147,51 +126,64 @@ public class MotherlodeOreOverlay extends OverlayPanel
 		}
 		else
 		{
+			if (isMouseOver)
+			{
+				nuggetsFound = itemManager.getItemPrice(ItemID.GOLDEN_NUGGET) * nuggetsFound;
+				coalFound = itemManager.getItemPrice(ItemID.COAL) * coalFound;
+				goldFound = itemManager.getItemPrice(ItemID.GOLD_ORE) * goldFound;
+				mithrilFound = itemManager.getItemPrice(ItemID.MITHRIL_ORE) * mithrilFound;
+				adamantiteFound = itemManager.getItemPrice(ItemID.ADAMANTITE_ORE) * adamantiteFound;
+				runiteFound = itemManager.getItemPrice(ItemID.RUNITE_ORE) * runiteFound;
+				overlayTitle = "Ore values";
+			}
+
 			panelComponent.setOrientation(ComponentOrientation.VERTICAL);
-			panelComponent.getChildren().add(TitleComponent.builder().text("Ores found").build());
+			panelComponent.getChildren().add(TitleComponent.builder().text(overlayTitle).build());
 			if (nuggetsFound > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Nuggets:")
-					.right(Integer.toString(nuggetsFound))
+					.right(QuantityFormatter.quantityToStackSize(nuggetsFound))
 					.build());
 			}
 			if (coalFound > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Coal:")
-					.right(Integer.toString(coalFound))
+					.right(QuantityFormatter.quantityToStackSize(coalFound))
 					.build());
 			}
 			if (goldFound > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Gold:")
-					.right(Integer.toString(goldFound))
+					.right(QuantityFormatter.quantityToStackSize(goldFound))
 					.build());
 			}
 			if (mithrilFound > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Mithril:")
-					.right(Integer.toString(mithrilFound))
+					.right(QuantityFormatter.quantityToStackSize(mithrilFound))
 					.build());
 			}
 			if (adamantiteFound > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Adamantite:")
-					.right(Integer.toString(adamantiteFound))
+					.right(QuantityFormatter.quantityToStackSize(adamantiteFound))
 					.build());
 			}
 			if (runiteFound > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Runite:")
-					.right(Integer.toString(runiteFound))
+					.right(QuantityFormatter.quantityToStackSize(runiteFound))
 					.build());
 			}
 		}
+
+		isMouseOver = false;
 
 		return super.render(graphics);
 	}
