@@ -177,6 +177,7 @@ class XpPanel extends PluginPanel
 			infoBoxes.get(skill).setInfoBoxPosition(i);
 			i++;
 		}
+		revalidate();
 	}
 
 	void resetAllInfoBoxes()

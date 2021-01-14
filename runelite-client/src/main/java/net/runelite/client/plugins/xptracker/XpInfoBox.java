@@ -234,7 +234,6 @@ class XpInfoBox extends JPanel
 	void setInfoBoxPosition(int position)
 	{
 		panel.setComponentZOrder(this, position);
-		panel.revalidate();
 	}
 
 	void reset()
