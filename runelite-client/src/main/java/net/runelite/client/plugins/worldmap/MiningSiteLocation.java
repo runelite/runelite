@@ -55,7 +55,7 @@ enum MiningSiteLocation
 	BANDIT_CAMP_MINE(new WorldPoint(3086, 3763, 0), new Rock(16, Ore.IRON), new Rock(20, Ore.COAL), new Rock(22, Ore.MITHRIL), new Rock(8, Ore.ADAMANTITE)),
 	BANDIT_CAMP_QUARRY(new WorldPoint(3171, 2912, 0), new Rock(4, Ore.CLAY), new Rock(2, Ore.COAL), new Rock(32, Ore.SANDSTONE), new Rock(28, Ore.GRANITE)),
 	BARBARIAN_VILLAGE(new WorldPoint(3078, 3421, 0), new Rock(5, Ore.TIN), new Rock(4, Ore.COAL)),
-	BATTLEFIELD(new WorldPoint(2471, 3255, 0), new Rock(2, Ore.COPPER), new Rock(1, Ore.TIN)),
+	BATTLEFIELD(new WorldPoint(2471, 3255, 0), new Rock(3, Ore.COPPER), new Rock(1, Ore.TIN)),
 	BLAST_MINE_EAST(new WorldPoint(1502, 3869, 0), new Rock(20, Ore.HARD_ROCK)),
 	BLAST_MINE_NORTH(new WorldPoint(1485, 3882, 0), new Rock(17, Ore.HARD_ROCK)),
 	BLAST_MINE_WEST(new WorldPoint(1471, 3865, 0), new Rock(22, Ore.HARD_ROCK)),
