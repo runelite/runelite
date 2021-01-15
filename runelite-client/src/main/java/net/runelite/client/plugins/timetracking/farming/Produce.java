@@ -43,9 +43,9 @@ public enum Produce
 	ONION("Onion", "Onions", PatchImplementation.ALLOTMENT, ItemID.ONION, 10, 5, 0, 3),
 	CABBAGE("Cabbage", "Cabbages", PatchImplementation.ALLOTMENT, ItemID.CABBAGE, 10, 5, 0, 3),
 	TOMATO("Tomato", "Tomatoes", PatchImplementation.ALLOTMENT, ItemID.TOMATO, 10, 5, 0, 3),
-	SWEETCORN("Sweetcorn", PatchImplementation.ALLOTMENT, ItemID.SWEETCORN, 10, 6, 0, 3),
+	SWEETCORN("Sweetcorn", PatchImplementation.ALLOTMENT, ItemID.SWEETCORN, 10, 7, 0, 3),
 	STRAWBERRY("Strawberry", "Strawberries", PatchImplementation.ALLOTMENT, ItemID.STRAWBERRY, 10, 7, 0, 3),
-	WATERMELON("Watermelon", "Watermelons", PatchImplementation.ALLOTMENT, ItemID.WATERMELON, 10, 8, 0, 3),
+	WATERMELON("Watermelon", "Watermelons", PatchImplementation.ALLOTMENT, ItemID.WATERMELON, 10, 9, 0, 3),
 	SNAPE_GRASS("Snape grass", PatchImplementation.ALLOTMENT, ItemID.SNAPE_GRASS, 10, 8, 0, 3),
 
 	// Flower crops
