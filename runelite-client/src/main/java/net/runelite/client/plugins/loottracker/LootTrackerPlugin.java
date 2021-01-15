@@ -804,7 +804,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
 		{
-			setEvent(LootRecordType.EVENT, BIRDNEST_EVENT);
+			setEvent(LootRecordType.EVENT, BIRDNEST_EVENT, event.getId());
 			takeInventorySnapshot();
 		}
 
