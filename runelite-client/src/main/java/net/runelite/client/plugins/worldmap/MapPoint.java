@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Spedwards <https://github.com/Spedwards>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,20 +25,32 @@
  */
 package net.runelite.client.plugins.worldmap;
 
-import net.runelite.api.coords.WorldPoint;
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
-import java.awt.image.BufferedImage;
-
-class RareTreePoint extends WorldMapPoint
+@SuperBuilder
+class MapPoint extends WorldMapPoint
 {
-	RareTreePoint(WorldPoint point, String tooltip, BufferedImage icon, boolean showTooltip)
+	enum Type
 	{
-		super(point, icon);
-
-		if (showTooltip)
-		{
-			setTooltip(tooltip);
-		}
+		TELEPORT,
+		RUNECRAFT_ALTAR,
+		MINING_SITE,
+		DUNGEON,
+		HUNTER,
+		FISHING,
+		KOUREND_TASK,
+		FARMING_PATCH,
+		TRANSPORTATION,
+		MINIGAME,
+		FAIRY_RING,
+		AGILITY_COURSE,
+		AGILITY_SHORTCUT,
+		QUEST,
+		RARE_TREE
 	}
+
+	@Getter
+	private final Type type;
 }

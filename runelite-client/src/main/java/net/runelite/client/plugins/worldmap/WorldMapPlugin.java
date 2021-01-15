@@ -29,21 +29,23 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.function.Predicate;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -161,18 +163,7 @@ public class WorldMapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
-		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
-		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
-		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
-		worldMapPointManager.removeIf(TransportationPoint.class::isInstance);
-		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
-		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
-		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
-		worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
-		worldMapPointManager.removeIf(DungeonPoint.class::isInstance);
-		worldMapPointManager.removeIf(FishingSpotPoint.class::isInstance);
-		worldMapPointManager.removeIf(AgilityCoursePoint.class::isInstance);
+		worldMapPointManager.removeIf(MapPoint.class::isInstance);
 		agilityLevel = 0;
 		woodcuttingLevel = 0;
 	}
@@ -229,47 +220,61 @@ public class WorldMapPlugin extends Plugin
 
 	private void updateAgilityIcons()
 	{
-		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.AGILITY_SHORTCUT));
 
 		if (config.agilityShortcutLevelIcon() || config.agilityShortcutTooltips())
 		{
 			Arrays.stream(AgilityShortcut.values())
 				.filter(value -> value.getWorldMapLocation() != null)
-				.map(value -> new AgilityShortcutPoint(value,
-					agilityLevel > 0 && config.agilityShortcutLevelIcon() && value.getLevel() > agilityLevel ? NOPE_ICON : BLANK_ICON,
-					config.agilityShortcutTooltips()))
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.AGILITY_SHORTCUT)
+						.worldPoint(l.getWorldMapLocation())
+						.image(agilityLevel > 0 && config.agilityShortcutLevelIcon() && l.getLevel() > agilityLevel ? NOPE_ICON : BLANK_ICON)
+						.tooltip(config.agilityShortcutTooltips() ? l.getTooltip() : null)
+						.build()
+				)
 				.forEach(worldMapPointManager::add);
 		}
 	}
 
 	private void updateAgilityCourseIcons()
 	{
-		worldMapPointManager.removeIf(AgilityCoursePoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.AGILITY_COURSE));
 
 		if (config.agilityCourseTooltip() || config.agilityCourseRooftop())
 		{
 			Arrays.stream(AgilityCourseLocation.values())
 				.filter(value -> value.getLocation() != null)
-				.map(value -> new AgilityCoursePoint(value,
-					config.agilityCourseRooftop() && value.isRooftopCourse() ? ROOFTOP_COURSE_ICON : BLANK_ICON,
-					config.agilityCourseTooltip()))
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.AGILITY_COURSE)
+						.worldPoint(l.getLocation())
+						.image(config.agilityCourseRooftop() && l.isRooftopCourse() ? ROOFTOP_COURSE_ICON : BLANK_ICON)
+						.tooltip(config.agilityCourseTooltip() ? l.getTooltip() : null)
+						.build()
+				)
 				.forEach(worldMapPointManager::add);
 		}
 	}
 
 	private void updateRareTreeIcons()
 	{
-		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.RARE_TREE));
 
 		if (config.rareTreeLevelIcon() || config.rareTreeTooltips())
 		{
 			Arrays.stream(RareTreeLocation.values()).forEach(rareTree ->
 				Arrays.stream(rareTree.getLocations())
-					.map(point -> new RareTreePoint(point,
-						rareTree.getTooltip(),
-						woodcuttingLevel > 0 && config.rareTreeLevelIcon() &&
-							rareTree.getLevelReq() > woodcuttingLevel ? NOPE_ICON : BLANK_ICON,
-						config.rareTreeTooltips()))
+					.map(point ->
+						MapPoint.builder()
+							.type(MapPoint.Type.RARE_TREE)
+							.worldPoint(point)
+							.image(woodcuttingLevel > 0 && config.rareTreeLevelIcon() &&
+								rareTree.getLevelReq() > woodcuttingLevel ? NOPE_ICON : BLANK_ICON)
+							.tooltip(config.rareTreeTooltips() ? rareTree.getTooltip() : null)
+							.build()
+					)
 					.forEach(worldMapPointManager::add));
 		}
 	}
@@ -281,43 +286,71 @@ public class WorldMapPlugin extends Plugin
 		updateRareTreeIcons();
 		updateQuestStartPointIcons();
 
-		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.FAIRY_RING));
 		if (config.fairyRingIcon() || config.fairyRingTooltips())
 		{
 			Arrays.stream(FairyRingLocation.values())
-				.map(value -> new FairyRingPoint(value,
-					config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON,
-					config.fairyRingTooltips()))
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.FAIRY_RING)
+						.worldPoint(l.getLocation())
+						.image(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON)
+						.tooltip(config.fairyRingTooltips() ? "Fairy Ring - " + l.getCode() : null)
+						.build()
+				)
 				.forEach(worldMapPointManager::add);
 		}
 
-		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.MINIGAME));
 		if (config.minigameTooltip())
 		{
 			Arrays.stream(MinigameLocation.values())
-				.map(value -> new MinigamePoint(value, BLANK_ICON))
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.MINIGAME)
+						.worldPoint(l.getLocation())
+						.image(BLANK_ICON)
+						.tooltip(l.getTooltip())
+						.build()
+				)
 				.forEach(worldMapPointManager::add);
 		}
 
-		worldMapPointManager.removeIf(TransportationPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.TRANSPORTATION));
 		if (config.transportationTeleportTooltips())
 		{
 			Arrays.stream(TransportationPointLocation.values())
-					.map(value -> new TransportationPoint(value, BLANK_ICON))
-					.forEach((worldMapPointManager::add));
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.TRANSPORTATION)
+						.worldPoint(l.getLocation())
+						.image(BLANK_ICON)
+						.target(l.getTarget())
+						.jumpOnClick(l.getTarget() != null)
+						.tooltip(l.getTooltip())
+						.build()
+				)
+				.forEach((worldMapPointManager::add));
 		}
 
-		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.FARMING_PATCH));
 		if (config.farmingPatchTooltips())
 		{
 			Arrays.stream(FarmingPatchLocation.values()).forEach(location ->
 				Arrays.stream(location.getLocations())
-					.map(point -> new FarmingPatchPoint(point, location.getTooltip(), BLANK_ICON))
+					.map(point ->
+						MapPoint.builder()
+							.type(MapPoint.Type.FARMING_PATCH)
+							.worldPoint(point)
+							.image(BLANK_ICON)
+							.tooltip(location.getTooltip())
+							.build()
+					)
 					.forEach(worldMapPointManager::add)
 			);
 		}
 
-		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.TELEPORT));
 		Arrays.stream(TeleportLocationData.values())
 			.filter(data ->
 			{
@@ -340,63 +373,113 @@ public class WorldMapPlugin extends Plugin
 					default:
 						return false;
 				}
-			}).map(TeleportPoint::new)
+			})
+			.map(l ->
+				MapPoint.builder()
+					.type(MapPoint.Type.TELEPORT)
+					.worldPoint(l.getLocation())
+					.tooltip(l.getTooltip())
+					.image(ImageUtil.loadImageResource(WorldMapPlugin.class, l.getIconPath()))
+					.build()
+			)
 			.forEach(worldMapPointManager::add);
 
-		worldMapPointManager.removeIf(RunecraftingAltarPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.RUNECRAFT_ALTAR));
 		if (config.runecraftingAltarIcon())
 		{
 			Arrays.stream(RunecraftingAltarLocation.values())
-				.map(RunecraftingAltarPoint::new)
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.RUNECRAFT_ALTAR)
+						.worldPoint(l.getLocation())
+						.image(ImageUtil.loadImageResource(WorldMapPlugin.class, l.getIconPath()))
+						.tooltip(l.getTooltip())
+						.build()
+				)
 				.forEach(worldMapPointManager::add);
 		}
 
-		worldMapPointManager.removeIf(MiningSitePoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.MINING_SITE));
 		if (config.miningSiteTooltips())
 		{
 			Arrays.stream(MiningSiteLocation.values())
-				.map(value -> new MiningSitePoint(value, value.isIconRequired() ? MINING_SITE_ICON : BLANK_ICON))
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.MINING_SITE)
+						.worldPoint(l.getLocation())
+						.image(l.isIconRequired() ? MINING_SITE_ICON : BLANK_ICON)
+						.tooltip(l.getTooltip())
+						.build()
+				)
 				.forEach(worldMapPointManager::add);
 		}
 
-		worldMapPointManager.removeIf(DungeonPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.DUNGEON));
 		if (config.dungeonTooltips())
 		{
 			Arrays.stream(DungeonLocation.values())
-				.map(value -> new DungeonPoint(value, BLANK_ICON))
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.DUNGEON)
+						.worldPoint(l.getLocation())
+						.image(BLANK_ICON)
+						.tooltip(l.getTooltip())
+						.build()
+				)
 				.forEach(worldMapPointManager::add);
 		}
 
-		worldMapPointManager.removeIf(HunterAreaPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.HUNTER));
 		if (config.hunterAreaTooltips())
 		{
 			Arrays.stream(HunterAreaLocation.values())
-				.map(value -> new HunterAreaPoint(value, BLANK_ICON))
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.HUNTER)
+						.worldPoint(l.getLocation())
+						.image(BLANK_ICON)
+						.tooltip(l.getTooltip())
+						.build()
+				)
 				.forEach(worldMapPointManager::add);
 		}
 
-		worldMapPointManager.removeIf(FishingSpotPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.FISHING));
 		if (config.fishingSpotTooltips())
 		{
 			Arrays.stream(FishingSpotLocation.values()).forEach(location ->
 				Arrays.stream(location.getLocations())
-					.map(point -> new FishingSpotPoint(point, location.getTooltip(), BLANK_ICON))
+					.map(point ->
+						MapPoint.builder()
+							.type(MapPoint.Type.FISHING)
+							.worldPoint(point)
+							.image(BLANK_ICON)
+							.tooltip(location.getTooltip())
+							.build()
+					)
 					.forEach(worldMapPointManager::add)
 			);
 		}
 
-		worldMapPointManager.removeIf(KourendTaskPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.KOUREND_TASK));
 		if (config.kourendTaskTooltips())
 		{
 			Arrays.stream(KourendTaskLocation.values())
-				.map(KourendTaskPoint::new)
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.KOUREND_TASK)
+						.worldPoint(l.getLocation())
+						.image(BLANK_ICON)
+						.tooltip(l.getTooltip())
+						.build()
+				)
 				.forEach(worldMapPointManager::add);
 		}
 	}
 
 	private void updateQuestStartPointIcons()
 	{
-		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
+		worldMapPointManager.removeIf(isType(MapPoint.Type.QUEST));
 
 		if (!config.questStartTooltips())
 		{
@@ -418,7 +501,7 @@ public class WorldMapPlugin extends Plugin
 		});
 	}
 
-	private QuestStartPoint createQuestStartPoint(QuestStartLocation data)
+	private MapPoint createQuestStartPoint(QuestStartLocation data)
 	{
 		Quest[] quests = data.getQuests();
 
@@ -459,6 +542,16 @@ public class WorldMapPlugin extends Plugin
 			}
 		}
 
-		return new QuestStartPoint(data.getLocation(), icon, tooltip);
+		return MapPoint.builder()
+			.type(MapPoint.Type.QUEST)
+			.worldPoint(data.getLocation())
+			.image(icon)
+			.tooltip(tooltip)
+			.build();
+	}
+
+	private static Predicate<WorldMapPoint> isType(MapPoint.Type type)
+	{
+		return w -> w instanceof MapPoint && ((MapPoint) w).getType() == type;
 	}
 }
