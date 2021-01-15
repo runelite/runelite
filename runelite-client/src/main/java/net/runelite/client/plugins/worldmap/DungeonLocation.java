@@ -55,7 +55,7 @@ enum DungeonLocation
 	CORSAIR_COVE_E("Corsair Cove Dungeon", new WorldPoint(2522, 2861, 0)),
 	CORSAIR_COVE_N("Corsair Cove Dungeon", new WorldPoint(2482, 2891, 0)),
 	CRABCLAW_CAVES("Crabclaw Caves", new WorldPoint(1643, 3449, 0)),
-	CRABCLAW_CAVES_TUNNEL("Crabclaw Caves Tunnel (quest)", new WorldPoint(1643, 3449, 0)),
+	CRABCLAW_CAVES_TUNNEL("Crabclaw Caves Tunnel (quest)", new WorldPoint(1671, 9800, 0)),
 	CRANDOR("Crandor Dungeon", new WorldPoint(2833, 3256, 0)),
 	CRASH_ISLAND("Crash Island Dungeon", new WorldPoint(2920, 2721, 0)),
 	DEEP_WILDERNESS("Deep Wilderness Dungeon", new WorldPoint(3044, 3924, 0)),
