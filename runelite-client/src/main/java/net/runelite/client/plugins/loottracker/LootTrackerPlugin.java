@@ -745,7 +745,7 @@ public class LootTrackerPlugin extends Plugin
 				return;
 			}
 
-			setEvent(LootRecordType.EVENT, type, client.getRealSkillLevel(Skill.HUNTER));
+			setEvent(LootRecordType.EVENT, type, client.getBoostedSkillLevel(Skill.HUNTER));
 			takeInventorySnapshot();
 		}
 	}
