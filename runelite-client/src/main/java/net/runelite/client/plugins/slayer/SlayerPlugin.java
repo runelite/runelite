@@ -156,6 +156,7 @@ public class SlayerPlugin extends Plugin
 		ItemID.TWISTED_SLAYER_HELMET,
 		ItemID.TWISTED_SLAYER_HELMET_I
 	);
+	// can item be substituted with slayer helmet?
 	private static final List<Integer> SLAYER_HELMET_ITEMS = ImmutableList.of(
 		ItemID.EARMUFFS,
 		ItemID.FACEMASK,
@@ -830,20 +831,13 @@ public class SlayerPlugin extends Plugin
 			slayerItemName = client.getItemDefinition(Task.getTask(taskName).getWeaknessItem()).getName();
 
 			taskTooltip += ColorUtil.wrapWithColorTag("Slayer Item: ", Color.YELLOW)
-				+ ColorUtil.wrapWithColorTag(slayerItemName, itemColor)
-				+ " </br>"
-				+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
-				+ " %s</br>"
-				+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
-				+ " %s";
+				+ ColorUtil.wrapWithColorTag(slayerItemName, itemColor) + " </br>";
 		}
-		else
-		{
-			taskTooltip += ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
-				+ " %s</br>"
-				+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
-				+ " %s";
-		}
+
+		taskTooltip += ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
+			+ " %s</br>"
+			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
+			+ " %s";
 
 		if (initialAmount > 0)
 		{
@@ -982,7 +976,6 @@ public class SlayerPlugin extends Plugin
 	private boolean checkItemContainer(InventoryID id, int itemID)
 	{
 		final ItemContainer itemContainer = client.getItemContainer(id);
-		// can item be substituted with slayer helmet?
 		final boolean useSlayerHelm = SLAYER_HELMET_ITEMS.contains(itemID);
 		boolean hasSlayerHelmet = false;
 
@@ -990,7 +983,6 @@ public class SlayerPlugin extends Plugin
 		{
 			return false;
 		}
-
 
 		for (int helmet : SLAYER_HELMET)
 		{
