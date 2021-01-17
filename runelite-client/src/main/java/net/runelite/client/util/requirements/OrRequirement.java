@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.questlist;
+package net.runelite.client.util.requirements;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;

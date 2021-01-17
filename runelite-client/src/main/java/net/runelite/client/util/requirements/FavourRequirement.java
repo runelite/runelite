@@ -23,11 +23,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.questlist;
+package net.runelite.client.util.requirements;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
+import net.runelite.api.Favour;
 
-public interface Requirement
+@RequiredArgsConstructor
+@Getter
+public class FavourRequirement implements Requirement
 {
-	boolean satisfiesRequirement(Client client);
+	private final Favour house;
+	private final int percent;
+
+	@Override
+	public String toString()
+	{
+		return percent + "% " + house.getName() + " favour";
+	}
+
+	@Override
+	public boolean satisfiesRequirement(Client client)
+	{
+		int realFavour = client.getVar(house.getVarbit());
+		return (realFavour / 10) >= percent;
+	}
 }

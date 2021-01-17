@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Jordan Zomerlei <<https://github.com/JZomerlei>
+ * Copyright (c) 2020, Jordan Zomerlei <https://github.com/JZomerlei>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,52 +23,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.questlist;
+package net.runelite.client.util.requirements;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
-import net.runelite.api.Quest;
-import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
 
-@Getter
 @RequiredArgsConstructor
-public class QuestStatusRequirement implements Requirement
+@Getter
+public class SkillRequirement implements Requirement
 {
-	private final Quest quest;
-	private final QuestState questStatus;
-
-	public QuestStatusRequirement(Quest quest)
-	{
-		this(quest, QuestState.NOT_STARTED);
-	}
+	private final Skill skill;
+	private final int level;
 
 	@Override
 	public String toString()
 	{
-		if (questStatus == QuestState.FINISHED)
-		{
-			return "Completed " + quest.getName();
-		}
-		else if (questStatus == QuestState.IN_PROGRESS)
-		{
-			return "Started " + quest.getName();
-		}
-		else
-		{
-			return quest.getName();
-		}
+		return level + " " + skill.getName();
 	}
 
 	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
-		net.runelite.api.QuestState state = quest.getState(client);
-		if (state.equals(net.runelite.api.QuestState.FINISHED) && quest.getState(client).equals(net.runelite.api.QuestState.IN_PROGRESS))
-		{
-			return true;
-		}
-		return state == quest.getState(client);
+		return client.getRealSkillLevel(skill) >= level;
 	}
-
 }
+

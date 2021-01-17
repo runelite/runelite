@@ -26,11 +26,12 @@
 package net.runelite.client.plugins.achievementdiary.diaries;
 
 import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.client.plugins.achievementdiary.CombatLevelRequirement;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.QuestRequirement;
-import net.runelite.client.plugins.achievementdiary.SkillRequirement;
+import net.runelite.client.util.requirements.SkillRequirement;
+import net.runelite.client.util.requirements.QuestStatusRequirement;
+import net.runelite.client.util.requirements.CombatLevelRequirement;
 
 public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 {
@@ -42,17 +43,17 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 		add("Slay a Cave bug beneath Lumbridge Swamp.",
 			new SkillRequirement(Skill.SLAYER, 7));
 		add("Have Sedridor teleport you to the Essence Mine.",
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
+			new QuestStatusRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
 		add("Craft some water runes.",
 			new SkillRequirement(Skill.RUNECRAFT, 5),
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
+			new QuestStatusRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
 		add("Chop and burn some oak logs in Lumbridge.",
 			new SkillRequirement(Skill.WOODCUTTING, 15),
 			new SkillRequirement(Skill.FIREMAKING, 15));
 		add("Catch some Anchovies in Al Kharid.",
 			new SkillRequirement(Skill.FISHING, 15));
 		add("Bake some Bread on the Lumbridge kitchen range.",
-			new QuestRequirement(Quest.COOKS_ASSISTANT));
+			new QuestStatusRequirement(Quest.COOKS_ASSISTANT, QuestState.FINISHED));
 		add("Mine some Iron ore at the Al Kharid mine.",
 			new SkillRequirement(Skill.MINING, 15));
 
@@ -65,9 +66,9 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.RANGED, 37));
 		add("Purchase an upgraded device from Ava.",
 			new SkillRequirement(Skill.RANGED, 50),
-			new QuestRequirement(Quest.ANIMAL_MAGNETISM));
+			new QuestStatusRequirement(Quest.ANIMAL_MAGNETISM, QuestState.FINISHED));
 		add("Travel to the Wizards' Tower by Fairy ring.",
-			new QuestRequirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, true));
+			new QuestStatusRequirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, QuestState.IN_PROGRESS));
 		add("Cast the teleport to Lumbridge spell.",
 			new SkillRequirement(Skill.MAGIC, 31));
 		add("Catch some Salmon in Lumbridge.",
@@ -80,31 +81,31 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.THIEVING, 38));
 		add("Get a slayer task from Chaeldar.",
 			new CombatLevelRequirement(70),
-			new QuestRequirement(Quest.LOST_CITY));
+			new QuestStatusRequirement(Quest.LOST_CITY, QuestState.FINISHED));
 		add("Catch an Essence or Eclectic impling in Puro-Puro.",
 			new SkillRequirement(Skill.HUNTER, 42),
-			new QuestRequirement(Quest.LOST_CITY));
+			new QuestStatusRequirement(Quest.LOST_CITY));
 		add("Craft some Lava runes at the fire altar in Al Kharid.",
 			new SkillRequirement(Skill.RUNECRAFT, 23),
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
+			new QuestStatusRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
 
 		// HARD
 		add("Cast Bones to Peaches in Al Kharid palace.",
 			new SkillRequirement(Skill.MAGIC, 60));
 		add("Squeeze past the jutting wall on your way to the cosmic altar.",
 			new SkillRequirement(Skill.AGILITY, 46),
-			new QuestRequirement(Quest.LOST_CITY));
+			new QuestStatusRequirement(Quest.LOST_CITY, QuestState.FINISHED));
 		add("Craft 56 Cosmic runes simultaneously.",
 			new SkillRequirement(Skill.RUNECRAFT, 59),
-			new QuestRequirement(Quest.LOST_CITY));
+			new QuestStatusRequirement(Quest.LOST_CITY));
 		add("Travel from Lumbridge to Edgeville on a Waka Canoe.",
 			new SkillRequirement(Skill.WOODCUTTING, 57));
 		add("Collect at least 100 Tears of Guthix in one visit.",
-			new QuestRequirement(Quest.TEARS_OF_GUTHIX));
+			new QuestStatusRequirement(Quest.TEARS_OF_GUTHIX, QuestState.FINISHED));
 		add("Take the train from Dorgesh-Kaan to Keldagrim.",
-			new QuestRequirement(Quest.ANOTHER_SLICE_OF_HAM));
+			new QuestStatusRequirement(Quest.ANOTHER_SLICE_OF_HAM, QuestState.FINISHED));
 		add("Purchase some Barrows gloves from the Lumbridge bank chest.",
-			new QuestRequirement(Quest.RECIPE_FOR_DISASTER));
+			new QuestStatusRequirement(Quest.RECIPE_FOR_DISASTER, QuestState.FINISHED));
 		add("Pick some Belladonna from the farming patch at Draynor Manor.",
 			new SkillRequirement(Skill.FARMING, 63));
 		add("Light your mining helmet in the Lumbridge castle basement.",
@@ -118,18 +119,18 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 		// ELITE
 		add("Steal from a Dorgesh-Kaan rich chest.",
 			new SkillRequirement(Skill.THIEVING, 78),
-			new QuestRequirement(Quest.DEATH_TO_THE_DORGESHUUN));
+			new QuestStatusRequirement(Quest.DEATH_TO_THE_DORGESHUUN, QuestState.FINISHED));
 		add("Pickpocket Movario on the Dorgesh-Kaan Agility course.",
 			new SkillRequirement(Skill.AGILITY, 70),
 			new SkillRequirement(Skill.RANGED, 70),
 			new SkillRequirement(Skill.STRENGTH, 70),
-			new QuestRequirement(Quest.DEATH_TO_THE_DORGESHUUN));
+			new QuestStatusRequirement(Quest.DEATH_TO_THE_DORGESHUUN, QuestState.FINISHED));
 		add("Chop some magic logs at the Mage Training Arena.",
 			new SkillRequirement(Skill.WOODCUTTING, 75));
 		add("Smith an Adamant platebody down Draynor sewer.",
 			new SkillRequirement(Skill.SMITHING, 88));
 		add("Craft 140 or more Water runes at once.",
 			new SkillRequirement(Skill.RUNECRAFT, 76),
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
+			new QuestStatusRequirement(Quest.RUNE_MYSTERIES, QuestState.FINISHED));
 	}
 }

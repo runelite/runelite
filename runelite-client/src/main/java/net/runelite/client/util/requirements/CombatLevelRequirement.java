@@ -23,30 +23,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.questlist;
+package net.runelite.client.util.requirements;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
-import net.runelite.api.Skill;
 
 @RequiredArgsConstructor
 @Getter
-public class SkillRequirement implements Requirement
+public class CombatLevelRequirement implements Requirement
 {
-	private final Skill skill;
 	private final int level;
 
 	@Override
 	public String toString()
 	{
-		return level + " " + skill.getName();
+		return level + " " + "Combat";
 	}
 
 	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
-		return client.getRealSkillLevel(skill) >= level;
+		try
+		{
+			return client.getLocalPlayer().getCombatLevel() >= level;
+		}
+		catch (NullPointerException e)
+		{
+			return false;
+		}
 	}
 }
 

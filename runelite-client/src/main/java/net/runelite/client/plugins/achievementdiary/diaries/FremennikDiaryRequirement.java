@@ -26,10 +26,11 @@
 package net.runelite.client.plugins.achievementdiary.diaries;
 
 import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.QuestRequirement;
-import net.runelite.client.plugins.achievementdiary.SkillRequirement;
+import net.runelite.client.util.requirements.QuestStatusRequirement;
+import net.runelite.client.util.requirements.SkillRequirement;
 
 public class FremennikDiaryRequirement extends GenericDiaryRequirement
 {
@@ -39,20 +40,20 @@ public class FremennikDiaryRequirement extends GenericDiaryRequirement
 		add("Catch a Cerulean twitch.",
 			new SkillRequirement(Skill.HUNTER, 11));
 		add("Change your boots at Yrsa's Shoe Store.",
-			new QuestRequirement(Quest.THE_FREMENNIK_TRIALS));
+			new QuestStatusRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		add("Craft a tiara from scratch in Rellekka.",
 			new SkillRequirement(Skill.CRAFTING, 23),
 			new SkillRequirement(Skill.MINING, 20),
 			new SkillRequirement(Skill.SMITHING, 20),
-			new QuestRequirement(Quest.THE_FREMENNIK_TRIALS));
+			new QuestStatusRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		add("Browse the Stonemasons shop.",
-			new QuestRequirement(Quest.THE_GIANT_DWARF, true));
+			new QuestStatusRequirement(Quest.THE_GIANT_DWARF, QuestState.IN_PROGRESS));
 		add("Steal from the Keldagrim crafting or baker's stall.",
 			new SkillRequirement(Skill.THIEVING, 5),
-			new QuestRequirement(Quest.THE_GIANT_DWARF, true));
+			new QuestStatusRequirement(Quest.THE_GIANT_DWARF, QuestState.IN_PROGRESS));
 		add("Enter the Troll Stronghold.",
-			new QuestRequirement(Quest.DEATH_PLATEAU),
-			new QuestRequirement(Quest.TROLL_STRONGHOLD, true));
+			new QuestStatusRequirement(Quest.DEATH_PLATEAU, QuestState.FINISHED),
+			new QuestStatusRequirement(Quest.TROLL_STRONGHOLD, QuestState.IN_PROGRESS));
 		add("Chop and burn some oak logs in the Fremennik Province.",
 			new SkillRequirement(Skill.WOODCUTTING, 15),
 			new SkillRequirement(Skill.FIREMAKING, 15));
@@ -60,63 +61,63 @@ public class FremennikDiaryRequirement extends GenericDiaryRequirement
 		// MEDIUM
 		add("Slay a Brine rat.",
 			new SkillRequirement(Skill.SLAYER, 47),
-			new QuestRequirement(Quest.OLAFS_QUEST, true));
+			new QuestStatusRequirement(Quest.OLAFS_QUEST, QuestState.IN_PROGRESS));
 		add("Travel to the Snowy Hunter Area via Eagle.",
-			new QuestRequirement(Quest.EAGLES_PEAK));
+			new QuestStatusRequirement(Quest.EAGLES_PEAK, QuestState.FINISHED));
 		add("Mine some coal in Rellekka.",
 			new SkillRequirement(Skill.MINING, 30),
-			new QuestRequirement(Quest.THE_FREMENNIK_TRIALS));
+			new QuestStatusRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		add("Steal from the Rellekka Fish stalls.",
 			new SkillRequirement(Skill.THIEVING, 42),
-			new QuestRequirement(Quest.THE_FREMENNIK_TRIALS));
+			new QuestStatusRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		add("Travel to Miscellania by Fairy ring.",
-			new QuestRequirement(Quest.THE_FREMENNIK_TRIALS),
-			new QuestRequirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, true));
+			new QuestStatusRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED),
+			new QuestStatusRequirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, QuestState.IN_PROGRESS));
 		add("Catch a Snowy knight.",
 			new SkillRequirement(Skill.HUNTER, 35));
 		add("Pick up your Pet Rock from your POH Menagerie.",
 			new SkillRequirement(Skill.CONSTRUCTION, 37),
-			new QuestRequirement(Quest.THE_FREMENNIK_TRIALS));
+			new QuestStatusRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.FINISHED));
 		add("Visit the Lighthouse from Waterbirth island.",
-			new QuestRequirement(Quest.HORROR_FROM_THE_DEEP),
-			new QuestRequirement(Quest.THE_FREMENNIK_TRIALS, true));
+			new QuestStatusRequirement(Quest.HORROR_FROM_THE_DEEP, QuestState.FINISHED),
+			new QuestStatusRequirement(Quest.THE_FREMENNIK_TRIALS, QuestState.IN_PROGRESS));
 		add("Mine some gold at the Arzinian mine.",
 			new SkillRequirement(Skill.MINING, 40),
-			new QuestRequirement(Quest.BETWEEN_A_ROCK, true));
+			new QuestStatusRequirement(Quest.BETWEEN_A_ROCK, QuestState.IN_PROGRESS));
 
 		// HARD
 		add("Teleport to Trollheim.",
 			new SkillRequirement(Skill.MAGIC, 61),
-			new QuestRequirement(Quest.EADGARS_RUSE));
+			new QuestStatusRequirement(Quest.EADGARS_RUSE, QuestState.FINISHED));
 		add("Catch a Sabre-toothed Kyatt.",
 			new SkillRequirement(Skill.HUNTER, 55));
 		add("Mix a super defence potion in the Fremennik province.",
 			new SkillRequirement(Skill.HERBLORE, 66));
 		add("Steal from the Keldagrim Gem Stall.",
 			new SkillRequirement(Skill.THIEVING, 75),
-			new QuestRequirement(Quest.THE_GIANT_DWARF, true));
+			new QuestStatusRequirement(Quest.THE_GIANT_DWARF, QuestState.IN_PROGRESS));
 		add("Craft a Fremennik shield on Neitiznot.",
 			new SkillRequirement(Skill.WOODCUTTING, 56),
-			new QuestRequirement(Quest.THE_FREMENNIK_ISLES));
+			new QuestStatusRequirement(Quest.THE_FREMENNIK_ISLES, QuestState.FINISHED));
 		add("Mine 5 Adamantite ores on Jatizso.",
 			new SkillRequirement(Skill.MINING, 70),
-			new QuestRequirement(Quest.THE_FREMENNIK_ISLES));
+			new QuestStatusRequirement(Quest.THE_FREMENNIK_ISLES, QuestState.FINISHED));
 		add("Obtain 100% support from your kingdom subjects.",
-			new QuestRequirement(Quest.THRONE_OF_MISCELLANIA));
+			new QuestStatusRequirement(Quest.THRONE_OF_MISCELLANIA, QuestState.FINISHED));
 		add("Teleport to Waterbirth Island.",
 			new SkillRequirement(Skill.MAGIC, 72),
-			new QuestRequirement(Quest.LUNAR_DIPLOMACY));
+			new QuestStatusRequirement(Quest.LUNAR_DIPLOMACY, QuestState.FINISHED));
 		add("Obtain the Blast Furnace Foreman's permission to use the Blast Furnace for free.",
 			new SkillRequirement(Skill.SMITHING, 60),
-			new QuestRequirement(Quest.THE_GIANT_DWARF, true));
+			new QuestStatusRequirement(Quest.THE_GIANT_DWARF, QuestState.IN_PROGRESS));
 
 		// ELITE
 		add("Craft 56 astral runes at once.",
 			new SkillRequirement(Skill.RUNECRAFT, 82),
-			new QuestRequirement(Quest.LUNAR_DIPLOMACY));
+			new QuestStatusRequirement(Quest.LUNAR_DIPLOMACY, QuestState.FINISHED));
 		add("Create a dragonstone amulet in the Neitiznot furnace.",
 			new SkillRequirement(Skill.CRAFTING, 80),
-			new QuestRequirement(Quest.THE_FREMENNIK_ISLES, true));
+			new QuestStatusRequirement(Quest.THE_FREMENNIK_ISLES, QuestState.IN_PROGRESS));
 		add("Complete a lap of the Rellekka agility course.",
 			new SkillRequirement(Skill.AGILITY, 80));
 		add("Kill each of the Godwars generals.",
@@ -124,9 +125,9 @@ public class FremennikDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.STRENGTH, 70),
 			new SkillRequirement(Skill.HITPOINTS, 70),
 			new SkillRequirement(Skill.RANGED, 70),
-			new QuestRequirement(Quest.TROLL_STRONGHOLD));
+			new QuestStatusRequirement(Quest.TROLL_STRONGHOLD, QuestState.FINISHED));
 		add("Slay a Spiritual mage within the Godwars Dungeon.",
 			new SkillRequirement(Skill.SLAYER, 83),
-			new QuestRequirement(Quest.TROLL_STRONGHOLD));
+			new QuestStatusRequirement(Quest.TROLL_STRONGHOLD, QuestState.FINISHED));
 	}
 }

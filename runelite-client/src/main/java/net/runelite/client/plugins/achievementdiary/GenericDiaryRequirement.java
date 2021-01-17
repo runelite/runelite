@@ -28,6 +28,7 @@ package net.runelite.client.plugins.achievementdiary;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
+import net.runelite.client.util.requirements.Requirement;
 
 public abstract class GenericDiaryRequirement
 {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Abex
+ * Copyright (c) 2020, Jordan Zomerlei <<https://github.com/JZomerlei>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+
+package net.runelite.client.util.requirements;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
-import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
 
 @RequiredArgsConstructor
 @Getter
-public class SkillRequirement implements Requirement
+public class QuestPointRequirement implements Requirement
 {
-	private final Skill skill;
-	private final int level;
+	private final int qp;
 
 	@Override
 	public String toString()
 	{
-		return level + " " + skill.getName();
+		return qp + " " + "Quest points";
 	}
 
 	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
-		return client.getRealSkillLevel(skill) >= level;
+		return client.getVar(VarPlayer.QUEST_POINTS) >= qp;
 	}
 }

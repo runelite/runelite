@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 import lombok.Getter;
 import net.runelite.api.Quest;
+import net.runelite.client.util.requirements.Requirement;
 
 @Getter
 public class QuestRequirement
@@ -36,7 +37,7 @@ public class QuestRequirement
 	private final Quest quest;
 	private final List<Requirement> requirements;
 
-	QuestRequirement(Quest quest, Requirement[] requirements)
+	public QuestRequirement(Quest quest, Requirement[] requirements)
 	{
 		this.quest = quest;
 		this.requirements = ImmutableList.copyOf(requirements);

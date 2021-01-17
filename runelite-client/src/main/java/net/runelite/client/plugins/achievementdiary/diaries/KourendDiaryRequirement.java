@@ -26,11 +26,12 @@ package net.runelite.client.plugins.achievementdiary.diaries;
 
 import net.runelite.api.Favour;
 import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.SkillRequirement;
-import net.runelite.client.plugins.achievementdiary.QuestRequirement;
-import net.runelite.client.plugins.achievementdiary.FavourRequirement;
+import net.runelite.client.util.requirements.SkillRequirement;
+import net.runelite.client.util.requirements.QuestStatusRequirement;
+import net.runelite.client.util.requirements.FavourRequirement;
 
 public class KourendDiaryRequirement extends GenericDiaryRequirement
 {
@@ -43,7 +44,7 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.THIEVING, 25),
 			new FavourRequirement(Favour.HOSIDIUS, 15));
 		add("Browse the Warrens General Store.",
-			new QuestRequirement(Quest.THE_QUEEN_OF_THIEVES, true));
+			new QuestStatusRequirement(Quest.THE_QUEEN_OF_THIEVES, QuestState.IN_PROGRESS));
 		add("Enter your Player Owned House from Hosidius.",
 			new SkillRequirement(Skill.CONSTRUCTION, 25));
 		add("Create a Strength potion in the Lovakengj Pub.",
@@ -53,13 +54,13 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 
 		//MEDIUM
 		add("Travel to the Fairy Ring south of Mount Karuulm.",
-			new QuestRequirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, true));
+			new QuestStatusRequirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, QuestState.IN_PROGRESS));
 		add("Use Kharedst's memoirs to teleport to all five cities in Great Kourend.",
-			new QuestRequirement(Quest.THE_DEPTHS_OF_DESPAIR),
-			new QuestRequirement(Quest.THE_QUEEN_OF_THIEVES),
-			new QuestRequirement(Quest.TALE_OF_THE_RIGHTEOUS),
-			new QuestRequirement(Quest.THE_FORSAKEN_TOWER),
-			new QuestRequirement(Quest.THE_ASCENT_OF_ARCEUUS));
+			new QuestStatusRequirement(Quest.THE_DEPTHS_OF_DESPAIR, QuestState.FINISHED),
+			new QuestStatusRequirement(Quest.THE_QUEEN_OF_THIEVES, QuestState.FINISHED),
+			new QuestStatusRequirement(Quest.TALE_OF_THE_RIGHTEOUS, QuestState.FINISHED),
+			new QuestStatusRequirement(Quest.THE_FORSAKEN_TOWER, QuestState.FINISHED),
+			new QuestStatusRequirement(Quest.THE_ASCENT_OF_ARCEUUS, QuestState.FINISHED));
 		add("Mine some Volcanic sulphur.",
 			new SkillRequirement(Skill.MINING, 42));
 		add("Enter the Farming Guild.",
@@ -79,7 +80,7 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FIREMAKING, 50));
 		add("Catch a Chinchompa in the Kourend Woodland.",
 			new SkillRequirement(Skill.HUNTER, 53),
-			new QuestRequirement(Quest.EAGLES_PEAK));
+			new QuestStatusRequirement(Quest.EAGLES_PEAK, QuestState.FINISHED));
 		add("Chop some Mahogany logs north of the Farming Guild.",
 			new SkillRequirement(Skill.WOODCUTTING, 50));
 
@@ -89,7 +90,7 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new FavourRequirement(Favour.HOSIDIUS, 75));
 		add("Smelt an Adamantite bar in The Forsaken Tower.",
 			new SkillRequirement(Skill.SMITHING, 70),
-			new QuestRequirement(Quest.THE_FORSAKEN_TOWER, true));
+			new QuestStatusRequirement(Quest.THE_FORSAKEN_TOWER, QuestState.IN_PROGRESS));
 		add("Kill a Lizardman Shaman in Molch.",
 			new FavourRequirement(Favour.SHAYZIEN, 100));
 		add("Mine some Lovakite.",
@@ -99,7 +100,7 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FARMING, 74),
 			new FavourRequirement(Favour.HOSIDIUS, 100));
 		add("Teleport to Xeric's Heart using Xeric's Talisman.",
-			new QuestRequirement(Quest.ARCHITECTURAL_ALLIANCE));
+			new QuestStatusRequirement(Quest.ARCHITECTURAL_ALLIANCE, QuestState.FINISHED));
 		add("Deliver an artefact to Captain Khaled.",
 			new SkillRequirement(Skill.THIEVING, 49),
 			new FavourRequirement(Favour.PISCARILIUS, 75));
@@ -107,7 +108,7 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.SLAYER, 62));
 		add("Cast Monster Examine on a Troll south of Mount Quidamortem.",
 			new SkillRequirement(Skill.MAGIC, 66),
-			new QuestRequirement(Quest.DREAM_MENTOR));
+			new QuestStatusRequirement(Quest.DREAM_MENTOR));
 
 		//ELITE
 		add("Craft one or more Blood runes.",

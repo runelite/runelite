@@ -26,12 +26,13 @@
 package net.runelite.client.plugins.achievementdiary.diaries;
 
 import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
-import net.runelite.client.plugins.achievementdiary.CombatLevelRequirement;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.OrRequirement;
-import net.runelite.client.plugins.achievementdiary.QuestRequirement;
-import net.runelite.client.plugins.achievementdiary.SkillRequirement;
+import net.runelite.client.util.requirements.CombatLevelRequirement;
+import net.runelite.client.util.requirements.OrRequirement;
+import net.runelite.client.util.requirements.QuestStatusRequirement;
+import net.runelite.client.util.requirements.SkillRequirement;
 
 public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 {
@@ -49,9 +50,9 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 		add("Place a Scarecrow in the Morytania flower patch.",
 			new SkillRequirement(Skill.FARMING, 23));
 		add("Kill a werewolf in its human form using the Wolfbane Dagger.",
-			new QuestRequirement(Quest.PRIEST_IN_PERIL));
+			new QuestStatusRequirement(Quest.PRIEST_IN_PERIL, QuestState.IN_PROGRESS));
 		add("Restore your prayer points at the nature altar.",
-			new QuestRequirement(Quest.NATURE_SPIRIT));
+			new QuestStatusRequirement(Quest.NATURE_SPIRIT, QuestState.IN_PROGRESS));
 
 		// MEDIUM
 		add("Catch a swamp lizard.",
@@ -62,66 +63,66 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.WOODCUTTING, 45));
 		add("Kill a Terror Dog.",
 			new SkillRequirement(Skill.SLAYER, 40),
-			new QuestRequirement(Quest.LAIR_OF_TARN_RAZORLOR));
+			new QuestStatusRequirement(Quest.LAIR_OF_TARN_RAZORLOR, QuestState.IN_PROGRESS));
 		add("Complete a game of trouble brewing.",
 			new SkillRequirement(Skill.COOKING, 40),
-			new QuestRequirement(Quest.CABIN_FEVER));
+			new QuestStatusRequirement(Quest.CABIN_FEVER));
 		add("Make a batch of cannonballs at the Port Phasmatys furnace.",
 			new SkillRequirement(Skill.SMITHING, 35),
-			new QuestRequirement(Quest.DWARF_CANNON),
-			new QuestRequirement(Quest.GHOSTS_AHOY, true));
+			new QuestStatusRequirement(Quest.DWARF_CANNON, QuestState.FINISHED),
+			new QuestStatusRequirement(Quest.GHOSTS_AHOY, QuestState.IN_PROGRESS));
 		add("Kill a Fever Spider on Braindeath Island.",
 			new SkillRequirement(Skill.SLAYER, 42),
-			new QuestRequirement(Quest.RUM_DEAL));
+			new QuestStatusRequirement(Quest.RUM_DEAL));
 		add("Use an ectophial to return to Port Phasmatys.",
-			new QuestRequirement(Quest.GHOSTS_AHOY));
+			new QuestStatusRequirement(Quest.GHOSTS_AHOY));
 		add("Mix a Guthix Balance potion while in Morytania.",
 			new SkillRequirement(Skill.HERBLORE, 22),
-			new QuestRequirement(Quest.IN_AID_OF_THE_MYREQUE, true));
+			new QuestStatusRequirement(Quest.IN_AID_OF_THE_MYREQUE, QuestState.IN_PROGRESS));
 
 		// HARD
 		add("Enter the Kharyrll portal in your POH.",
 			new SkillRequirement(Skill.MAGIC, 66),
 			new SkillRequirement(Skill.CONSTRUCTION, 50),
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestStatusRequirement(Quest.DESERT_TREASURE, QuestState.FINISHED));
 		add("Climb the advanced spike chain within Slayer Tower.",
 			new SkillRequirement(Skill.AGILITY, 71));
 		add("Harvest some Watermelon from the Allotment patch on Harmony Island.",
 			new SkillRequirement(Skill.FARMING, 47),
-			new QuestRequirement(Quest.THE_GREAT_BRAIN_ROBBERY, true));
+			new QuestStatusRequirement(Quest.THE_GREAT_BRAIN_ROBBERY, QuestState.IN_PROGRESS));
 		add("Chop and burn some mahogany logs on Mos Le'Harmless.",
 			new SkillRequirement(Skill.WOODCUTTING, 50),
 			new SkillRequirement(Skill.FIREMAKING, 50),
-			new QuestRequirement(Quest.CABIN_FEVER));
+			new QuestStatusRequirement(Quest.CABIN_FEVER));
 		add("Complete a temple trek with a hard companion.",
-			new QuestRequirement(Quest.IN_AID_OF_THE_MYREQUE));
+			new QuestStatusRequirement(Quest.IN_AID_OF_THE_MYREQUE, QuestState.FINISHED));
 		add("Kill a Cave Horror.",
 			new SkillRequirement(Skill.SLAYER, 58),
-			new QuestRequirement(Quest.CABIN_FEVER));
+			new QuestStatusRequirement(Quest.CABIN_FEVER, QuestState.FINISHED));
 		add("Harvest some Bittercap Mushrooms from the patch in Canifis.",
 			new SkillRequirement(Skill.FARMING, 53));
 		add("Pray at the Altar of Nature with Piety activated.",
 			new SkillRequirement(Skill.PRAYER, 70),
 			new SkillRequirement(Skill.DEFENCE, 70),
-			new QuestRequirement(Quest.NATURE_SPIRIT),
-			new QuestRequirement(Quest.KINGS_RANSOM));
+			new QuestStatusRequirement(Quest.NATURE_SPIRIT, QuestState.FINISHED),
+			new QuestStatusRequirement(Quest.KINGS_RANSOM, QuestState.FINISHED));
 		add("Use the shortcut to get to the bridge over the Salve.",
 			new SkillRequirement(Skill.AGILITY, 65));
 		add("Mine some Mithril ore in the Abandoned Mine.",
 			new SkillRequirement(Skill.MINING, 55),
-			new QuestRequirement(Quest.HAUNTED_MINE));
+			new QuestStatusRequirement(Quest.HAUNTED_MINE, QuestState.FINISHED));
 
 		// ELITE
 		add("Catch a shark in Burgh de Rott with your bare hands.",
 			new SkillRequirement(Skill.FISHING, 96),
 			new SkillRequirement(Skill.STRENGTH, 76),
-			new QuestRequirement(Quest.IN_AID_OF_THE_MYREQUE));
+			new QuestStatusRequirement(Quest.IN_AID_OF_THE_MYREQUE, QuestState.FINISHED));
 		add("Cremate any Shade remains on a Magic or Redwood pyre.",
 			new SkillRequirement(Skill.FIREMAKING, 80),
-			new QuestRequirement(Quest.SHADES_OF_MORTTON));
+			new QuestStatusRequirement(Quest.SHADES_OF_MORTTON, QuestState.FINISHED));
 		add("Fertilize the Morytania herb patch using Lunar Magic.",
 			new SkillRequirement(Skill.MAGIC, 83),
-			new QuestRequirement(Quest.LUNAR_DIPLOMACY));
+			new QuestStatusRequirement(Quest.LUNAR_DIPLOMACY, QuestState.FINISHED));
 		add("Craft a Black dragonhide body in Canifis bank.",
 			new SkillRequirement(Skill.CRAFTING, 84));
 		add("Kill an Abyssal demon in the Slayer Tower.",

@@ -60,6 +60,8 @@ import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
+import net.runelite.client.plugins.questlist.quests.QuestRequirement;
+import net.runelite.client.util.requirements.Requirement;
 
 @PluginDescriptor(
 	name = "Quest List",
@@ -102,7 +104,7 @@ public class QuestListPlugin extends Plugin
 	{
 		currentFilterState = QuestState.ALL;
 		clientThread.invoke(this::addQuestButtons);
-		requirements = new QuestListRequirementList();
+		requirements = new QuestRequirement();
 	}
 
 	@Override
@@ -370,7 +372,7 @@ public class QuestListPlugin extends Plugin
 				}
 				else if (currentFilterState == QuestState.NOT_COMPLETED_DOABLE)
 				{
-					Quest curQuest = Quest.valueOf(questInfo.getQuest().getText().toUpperCase().replaceAll("[^A-Z ]", "").replaceAll(" ",  "_"));
+					Quest curQuest = Quest.valueOf(questInfo.getQuest().getText().toUpperCase().replaceAll("[^A-Z ]", "").replaceAll(" ", "_"));
 					hidden = questState == QuestState.COMPLETE || !getRequirementsMet(curQuest);
 				}
 				else
@@ -442,7 +444,7 @@ public class QuestListPlugin extends Plugin
 
 	private boolean getRequirementsMet(Quest quest)
 	{
-		QuestRequirement questRequirements = requirements.getRequirements().get(quest);
+		net.runelite.client.plugins.questlist.QuestRequirement questRequirements = requirements.getRequirements().get(quest);
 
 		if (questRequirements != null)
 		{

@@ -23,16 +23,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.questlist;
+package net.runelite.client.plugins.questlist.quests;
 
 import net.runelite.api.Favour;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.questlist.GenericQuestRequirement;
+import net.runelite.client.util.requirements.CombatLevelRequirement;
+import net.runelite.client.util.requirements.FavourRequirement;
+import net.runelite.client.util.requirements.KudosRequirement;
+import net.runelite.client.util.requirements.OrRequirement;
+import net.runelite.client.util.requirements.QuestPointRequirement;
+import net.runelite.client.util.requirements.QuestStatusRequirement;
+import net.runelite.client.util.requirements.SkillRequirement;
 
-public class QuestListRequirementList extends GenericQuestRequirement
+public class QuestRequirement extends GenericQuestRequirement
 {
-	public QuestListRequirementList()
+	public QuestRequirement()
 	{
 		// quests
 		add(Quest.DORICS_QUEST,

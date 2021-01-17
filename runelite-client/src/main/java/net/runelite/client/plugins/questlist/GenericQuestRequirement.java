@@ -28,6 +28,7 @@ package net.runelite.client.plugins.questlist;
 import java.util.HashMap;
 import lombok.Getter;
 import net.runelite.api.Quest;
+import net.runelite.client.util.requirements.Requirement;
 
 public abstract class GenericQuestRequirement
 {

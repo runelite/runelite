@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Abex
+ * Copyright (c) 2020, Jordan Zomerlei <<https://github.com/JZomerlei>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+
+package net.runelite.client.util.requirements;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 
-@RequiredArgsConstructor
 @Getter
-public class CombatLevelRequirement implements Requirement
+@RequiredArgsConstructor
+public class QuestStatusRequirement implements Requirement
 {
-	private final int level;
+	private final Quest quest;
+	private final QuestState questStatus;
+
+	public QuestStatusRequirement(Quest quest)
+	{
+		this(quest, QuestState.NOT_STARTED);
+	}
 
 	@Override
 	public String toString()
 	{
-		return level + " " + "Combat";
+		if (questStatus == QuestState.FINISHED)
+		{
+			return "Completed " + quest.getName();
+		}
+		else if (questStatus == QuestState.IN_PROGRESS)
+		{
+			return "Started " + quest.getName();
+		}
+		else
+		{
+			return quest.getName();
+		}
 	}
 
 	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
-		return client.getLocalPlayer() != null && client.getLocalPlayer().getCombatLevel() >= level;
+		net.runelite.api.QuestState state = quest.getState(client);
+		if (state.equals(net.runelite.api.QuestState.FINISHED) && quest.getState(client).equals(net.runelite.api.QuestState.IN_PROGRESS))
+		{
+			return true;
+		}
+		return state == quest.getState(client);
 	}
+
 }

@@ -26,10 +26,11 @@
 package net.runelite.client.plugins.achievementdiary.diaries;
 
 import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.QuestRequirement;
-import net.runelite.client.plugins.achievementdiary.SkillRequirement;
+import net.runelite.client.util.requirements.QuestStatusRequirement;
+import net.runelite.client.util.requirements.SkillRequirement;
 
 public class DesertDiaryRequirement extends GenericDiaryRequirement
 {
@@ -42,7 +43,7 @@ public class DesertDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MINING, 5));
 		add("Open the Sarcophagus in the first room of Pyramid Plunder.",
 			new SkillRequirement(Skill.THIEVING, 21),
-			new QuestRequirement(Quest.ICTHLARINS_LITTLE_HELPER, true));
+			new QuestStatusRequirement(Quest.ICTHLARINS_LITTLE_HELPER, QuestState.IN_PROGRESS));
 
 		// MEDIUM
 		add("Climb to the summit of the Agility Pyramid.",
@@ -54,17 +55,17 @@ public class DesertDiaryRequirement extends GenericDiaryRequirement
 		add("Steal a feather from the Desert Phoenix.",
 			new SkillRequirement(Skill.THIEVING, 25));
 		add("Travel to Uzer via Magic Carpet.",
-			new QuestRequirement(Quest.THE_GOLEM));
+			new QuestStatusRequirement(Quest.THE_GOLEM, QuestState.FINISHED));
 		add("Travel to the Desert via Eagle.",
-			new QuestRequirement(Quest.EAGLES_PEAK));
+			new QuestStatusRequirement(Quest.EAGLES_PEAK, QuestState.FINISHED));
 		add("Pray at the Elidinis statuette in Nardah.",
-			new QuestRequirement(Quest.SPIRITS_OF_THE_ELID));
+			new QuestStatusRequirement(Quest.SPIRITS_OF_THE_ELID, QuestState.FINISHED));
 		add("Create a combat potion in the desert.",
 			new SkillRequirement(Skill.HERBLORE, 36));
 		add("Teleport to Enakhra's Temple with the Camulet.",
-			new QuestRequirement(Quest.ENAKHRAS_LAMENT));
+			new QuestStatusRequirement(Quest.ENAKHRAS_LAMENT, QuestState.FINISHED));
 		add("Visit the Genie.",
-			new QuestRequirement(Quest.SPIRITS_OF_THE_ELID));
+			new QuestStatusRequirement(Quest.SPIRITS_OF_THE_ELID));
 		add("Teleport to Pollnivneach with a redirected teleport to house tablet.",
 			new SkillRequirement(Skill.CONSTRUCTION, 20));
 		add("Chop some Teak logs near Uzer.",
@@ -73,24 +74,24 @@ public class DesertDiaryRequirement extends GenericDiaryRequirement
 		// HARD
 		add("Knock out and pickpocket a Menaphite Thug.",
 			new SkillRequirement(Skill.THIEVING, 65),
-			new QuestRequirement(Quest.THE_FEUD));
+			new QuestStatusRequirement(Quest.THE_FEUD, QuestState.FINISHED));
 		add("Mine some Granite.",
 			new SkillRequirement(Skill.MINING, 45));
 		add("Refill your waterskins in the Desert using Lunar magic.",
 			new SkillRequirement(Skill.MAGIC, 68),
-			new QuestRequirement(Quest.DREAM_MENTOR));
+			new QuestStatusRequirement(Quest.DREAM_MENTOR, QuestState.FINISHED));
 		add("Complete a lap of the Pollnivneach agility course.",
 			new SkillRequirement(Skill.AGILITY, 70));
 		add("Slay a Dust Devil with a Slayer helmet equipped.",
 			new SkillRequirement(Skill.SLAYER, 65),
 			new SkillRequirement(Skill.DEFENCE, 10),
 			new SkillRequirement(Skill.CRAFTING, 55),
-			new QuestRequirement(Quest.DESERT_TREASURE, true));
+			new QuestStatusRequirement(Quest.DESERT_TREASURE, QuestState.IN_PROGRESS));
 		add("Activate Ancient Magicks at the altar in the Jaldraocht Pyramid.",
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestStatusRequirement(Quest.DESERT_TREASURE));
 		add("Defeat a Locust Rider with Keris.",
 			new SkillRequirement(Skill.ATTACK, 50),
-			new QuestRequirement(Quest.CONTACT));
+			new QuestStatusRequirement(Quest.CONTACT));
 		add("Burn some yew logs on the Nardah Mayor's balcony.",
 			new SkillRequirement(Skill.FIREMAKING, 60));
 		add("Create a Mithril Platebody in Nardah.",
@@ -101,18 +102,18 @@ public class DesertDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.COOKING, 85));
 		add("Cast Ice Barrage against a foe in the Desert.",
 			new SkillRequirement(Skill.MAGIC, 94),
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestStatusRequirement(Quest.DESERT_TREASURE));
 		add("Fletch some Dragon darts at the Bedabin Camp.",
 			new SkillRequirement(Skill.FLETCHING, 95),
-			new QuestRequirement(Quest.THE_TOURIST_TRAP));
+			new QuestStatusRequirement(Quest.THE_TOURIST_TRAP));
 		add("Speak to the KQ head in your POH.",
 			new SkillRequirement(Skill.CONSTRUCTION, 78),
-			new QuestRequirement(Quest.PRIEST_IN_PERIL));
+			new QuestStatusRequirement(Quest.PRIEST_IN_PERIL, QuestState.FINISHED));
 		add("Steal from the Grand Gold Chest in the final room of Pyramid Plunder.",
 			new SkillRequirement(Skill.THIEVING, 91),
-			new QuestRequirement(Quest.ICTHLARINS_LITTLE_HELPER, true));
+			new QuestStatusRequirement(Quest.ICTHLARINS_LITTLE_HELPER, QuestState.IN_PROGRESS));
 		add("Restore at least 85 Prayer points when praying at the Altar in Sophanem.",
 			new SkillRequirement(Skill.PRAYER, 85),
-			new QuestRequirement(Quest.ICTHLARINS_LITTLE_HELPER, true));
+			new QuestStatusRequirement(Quest.ICTHLARINS_LITTLE_HELPER, QuestState.IN_PROGRESS));
 	}
 }

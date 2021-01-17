@@ -28,6 +28,7 @@ package net.runelite.client.plugins.achievementdiary;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import lombok.Getter;
+import net.runelite.client.util.requirements.Requirement;
 
 @Getter
 class DiaryRequirement
