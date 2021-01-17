@@ -48,6 +48,8 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
+import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
+import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.events.ClientTick;
@@ -720,6 +722,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 		for (MenuEntry entry : menuEntries)
 		{
 			swapMenuEntry(idx++, entry);
+		}
+		else if (config.swapRune() && option.equals("craft-rune"))
+		{
+			if (event.getType() < WALK.getId())
+			{
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
+				menuEntry.setType(event.getType() + MENU_ACTION_DEPRIORITIZE_OFFSET);
+ 				client.setMenuEntries(menuEntries);
+			}
+			return;
 		}
 	}
 
