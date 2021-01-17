@@ -40,6 +40,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.ENGINE;
@@ -448,7 +449,9 @@ public class ChatFilterPlugin extends Plugin
 		}
 		else
 		{
-			filteredNames = filteredNames.replaceAll(playerName, "");
+			filteredNames = NEWLINE_SPLITTER.splitToList(filteredNames).stream()
+				.filter(n -> !n.equals(playerName))
+				.collect(Collectors.joining("\n"));
 			config.setNamesToFilter(filteredNames);
 		}
 
