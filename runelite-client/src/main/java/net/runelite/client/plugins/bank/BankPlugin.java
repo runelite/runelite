@@ -275,7 +275,7 @@ public class BankPlugin extends Plugin
 			final Widget[] children = bankItemContainer.getChildren();
 			long geTotal = 0, haTotal = 0;
 
-			if (children != null)
+			if (bankContainer != null && children != null)
 			{
 				log.debug("Computing bank price of {} items", bankContainer.size());
 
