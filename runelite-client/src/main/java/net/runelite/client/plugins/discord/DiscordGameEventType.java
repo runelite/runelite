@@ -26,16 +26,12 @@
  */
 package net.runelite.client.plugins.discord;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 
 @AllArgsConstructor
 @Getter
@@ -430,20 +426,12 @@ enum DiscordGameEventType
 	REGION_WRATH_ALTAR("Wrath Altar", DiscordAreaType.REGIONS, 9291);
 
 	private static final Map<Integer, DiscordGameEventType> FROM_REGION;
-	private static final List<DiscordGameEventType> FROM_VARBITS;
 
 	static
 	{
 		ImmutableMap.Builder<Integer, DiscordGameEventType> regionMapBuilder = new ImmutableMap.Builder<>();
-		ImmutableList.Builder<DiscordGameEventType> fromVarbitsBuilder = ImmutableList.builder();
 		for (DiscordGameEventType discordGameEventType : DiscordGameEventType.values())
 		{
-			if (discordGameEventType.getVarbits() != null)
-			{
-				fromVarbitsBuilder.add(discordGameEventType);
-				continue;
-			}
-
 			if (discordGameEventType.getRegionIds() == null)
 			{
 				continue;
@@ -455,7 +443,6 @@ enum DiscordGameEventType
 			}
 		}
 		FROM_REGION = regionMapBuilder.build();
-		FROM_VARBITS = fromVarbitsBuilder.build();
 	}
 
 	@Nullable
@@ -498,9 +485,6 @@ enum DiscordGameEventType
 	private DiscordAreaType discordAreaType;
 
 	@Nullable
-	private Varbits varbits;
-
-	@Nullable
 	private int[] regionIds;
 
 	DiscordGameEventType(Skill skill)
@@ -539,15 +523,6 @@ enum DiscordGameEventType
 	DiscordGameEventType(String state, int priority)
 	{
 		this(state, priority, true, false, false, true, false);
-	}
-
-	DiscordGameEventType(String areaName, DiscordAreaType areaType, Varbits varbits)
-	{
-		this.state = exploring(areaType, areaName);
-		this.priority = -2;
-		this.discordAreaType = areaType;
-		this.varbits = varbits;
-		this.shouldClear = true;
 	}
 
 	private static String training(final Skill skill)
@@ -608,18 +583,5 @@ enum DiscordGameEventType
 	public static DiscordGameEventType fromRegion(final int regionId)
 	{
 		return FROM_REGION.get(regionId);
-	}
-
-	public static DiscordGameEventType fromVarbit(final Client client)
-	{
-		for (DiscordGameEventType fromVarbit : FROM_VARBITS)
-		{
-			if (client.getVar(fromVarbit.getVarbits()) != 0)
-			{
-				return fromVarbit;
-			}
-		}
-
-		return null;
 	}
 }
