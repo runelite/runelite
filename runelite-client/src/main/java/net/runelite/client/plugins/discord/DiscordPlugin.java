@@ -46,7 +46,6 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.StatChanged;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.discord.events.DiscordJoinGame;
@@ -205,22 +204,6 @@ public class DiscordPlugin extends Plugin
 		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromSkill(skill);
 
 		if (discordGameEventType != null && config.showSkillingActivity())
-		{
-			discordState.triggerEvent(discordGameEventType);
-		}
-	}
-
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
-		if (!config.showRaidingActivity())
-		{
-			return;
-		}
-
-		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromVarbit(client);
-
-		if (discordGameEventType != null)
 		{
 			discordState.triggerEvent(discordGameEventType);
 		}
