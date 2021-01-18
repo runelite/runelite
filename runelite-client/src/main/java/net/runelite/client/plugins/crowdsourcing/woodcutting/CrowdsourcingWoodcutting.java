@@ -85,6 +85,7 @@ public class CrowdsourcingWoodcutting
 		put(AnimationID.WOODCUTTING_ADAMANT, ItemID.ADAMANT_AXE).
 		put(AnimationID.WOODCUTTING_RUNE, ItemID.RUNE_AXE).
 		put(AnimationID.WOODCUTTING_DRAGON, ItemID.DRAGON_AXE).
+		put(AnimationID.WOODCUTTING_DRAGON_OR, ItemID.DRAGON_AXE_OR).
 		put(AnimationID.WOODCUTTING_INFERNAL, ItemID.INFERNAL_AXE).
 		put(AnimationID.WOODCUTTING_3A_AXE, ItemID._3RD_AGE_AXE).
 		put(AnimationID.WOODCUTTING_CRYSTAL, ItemID.CRYSTAL_AXE).
