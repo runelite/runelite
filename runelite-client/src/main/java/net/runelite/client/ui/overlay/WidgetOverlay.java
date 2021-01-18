@@ -65,7 +65,8 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.VOLCANIC_MINE_VENTS_INFOBOX_GROUP, OverlayPosition.BOTTOM_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.VOLCANIC_MINE_STABILITY_INFOBOX_GROUP, OverlayPosition.BOTTOM_LEFT),
 			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_FIXED, OverlayPosition.BOTTOM_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZEABLE, OverlayPosition.CANVAS_TOP_RIGHT)
+			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZEABLE_MODERN, OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZEABLE_CLASSIC, OverlayPosition.CANVAS_TOP_RIGHT)
 		);
 	}
 
