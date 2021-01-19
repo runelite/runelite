@@ -155,6 +155,20 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Delombok after generating ANTLR sources, if they are not available
+			delombok fails due to the missing classes -->
+			<plugin>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<!-- Include generated ANTLR sources in javadoc generation -->
+					<sourcepath>${project.build.directory}/delombok;${project.build.directory}/generated-sources/antlr4</sourcepath>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
