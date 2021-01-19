@@ -42,6 +42,7 @@ public enum KitType
 	WEAPON(3),
 	TORSO(4),
 	SHIELD(5),
+	ARMS(6),
 	LEGS(7),
 	HAIR(8),
 	HANDS(9),
