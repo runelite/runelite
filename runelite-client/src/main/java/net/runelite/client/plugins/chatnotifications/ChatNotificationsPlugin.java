@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.chatnotifications;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import java.util.Arrays;
@@ -76,7 +77,6 @@ public class ChatNotificationsPlugin extends Plugin
 
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
-	private String usernameReplacer = "";
 	private Pattern highlightMatcher = null;
 
 	@Provides
@@ -181,15 +181,19 @@ public class ChatNotificationsPlugin extends Plugin
 				.map(s -> s.isEmpty() ? "" : Pattern.quote(s))
 				.collect(Collectors.joining("[\u00a0\u0020]")); // space or nbsp
 			usernameMatcher = Pattern.compile("\\b" + pattern + "\\b", Pattern.CASE_INSENSITIVE);
-			usernameReplacer = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u><col" + ChatColorType.NORMAL.name() + ">";
 		}
 
 		if (config.highlightOwnName() && usernameMatcher != null)
 		{
-			Matcher matcher = usernameMatcher.matcher(messageNode.getValue());
+			final String message = messageNode.getValue();
+			Matcher matcher = usernameMatcher.matcher(message);
 			if (matcher.find())
 			{
-				messageNode.setValue(matcher.replaceAll(usernameReplacer));
+				final int start = matcher.start();
+				final String username = client.getLocalPlayer().getName();
+				final String closeColor = MoreObjects.firstNonNull(getLastColor(message.substring(0, start)), "</col>");
+				final String replacement = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u>" + closeColor;
+				messageNode.setValue(matcher.replaceAll(replacement));
 				update = true;
 				if (config.notifyOnOwnName() && (chatMessage.getType() == ChatMessageType.PUBLICCHAT
 					|| chatMessage.getType() == ChatMessageType.PRIVATECHAT
