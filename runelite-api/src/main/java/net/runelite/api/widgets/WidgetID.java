@@ -603,16 +603,16 @@ public class WidgetID
 
 	static class BarbarianAssault
 	{
-		static class ATK
+		static class Attacker
 		{
-			static final int CALL_TEXT = 8;
-			static final int TO_CALL_WIDGET = 9;
+			static final int LISTEN_TOP = 8;
+			static final int LISTEN_BOTTOM = 9;
 			static final int TO_CALL = 10;
 			static final int ROLE_SPRITE = 11;
 			static final int ROLE = 12;
 		}
 
-		static class HLR
+		static class Healer
 		{
 			static final int TEAMMATE1 = 18;
 			static final int TEAMMATE2 = 22;
@@ -620,15 +620,12 @@ public class WidgetID
 			static final int TEAMMATE4 = 30;
 		}
 
-		static final int CORRECT_STYLE = 3;
-		static final int CURRENT_WAVE_WIDGET = 4;
-		static final int CURRENT_WAVE = 5;
-		static final int CALL_WIDGET = 6;
-		static final int CALL_TEXT = 7;
-		static final int TO_CALL_WIDGET = 8;
-		static final int TO_CALL = 9;
-		static final int ROLE_SPRITE = 10;
-		static final int ROLE = 11;
+		static final int CORRECT_STYLE = 4;
+		static final int CURRENT_WAVE = 6;
+		static final int LISTEN = 8;
+		static final int TO_CALL = 10;
+		static final int ROLE_SPRITE = 11;
+		static final int ROLE = 12;
 		static final int REWARD_TEXT = 57;
 	}
 
