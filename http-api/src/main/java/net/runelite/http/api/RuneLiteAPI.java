@@ -161,7 +161,7 @@ public class RuneLiteAPI
 				lastVersion.append(".");
 			}
 
-			lastVersion.append(Integer.parseInt(versionNumbers[versionNumbers.length - 1]) - 1);
+			lastVersion.append(Integer.parseInt(versionNumbers[versionNumbers.length - 1]));
 
 			return lastVersion.toString();
 		}
