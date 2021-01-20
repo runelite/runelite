@@ -124,7 +124,7 @@ public class RuneLiteProperties
 				lastVersion.append(".");
 			}
 
-			lastVersion.append(Integer.parseInt(versionNumbers[versionNumbers.length - 1]) - 1);
+			lastVersion.append(Integer.parseInt(versionNumbers[versionNumbers.length - 1]));
 
 			version = lastVersion.toString();
 		}
