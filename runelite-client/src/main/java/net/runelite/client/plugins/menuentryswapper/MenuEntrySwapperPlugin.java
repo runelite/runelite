@@ -310,7 +310,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("view offer", "abort offer", () -> shiftModifier() && config.swapGEAbort());
 
-		Arrays.asList( //newlines in accordance to UI-layout
+		Arrays.asList(
 			"honest jimmy", "bert the sandman", "advisor ghrim", "dark mage", "lanthus", "spria", "turael",
 			"mazchna", "vannaka", "chaeldar", "nieve", "steve", "duradel", "krystilia", "konar",
 			"murphy", "cyrisus", "smoggy", "ginea", "watson", "barbarian guard", "amy",
