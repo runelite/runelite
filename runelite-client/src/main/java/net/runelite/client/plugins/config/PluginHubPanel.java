@@ -126,9 +126,12 @@ class PluginHubPanel extends PluginPanel
 		private final List<String> keywords = new ArrayList<>();
 
 		@Getter
+		private final int userCount;
+
+		@Getter
 		private final boolean installed;
 
-		PluginItem(ExternalPluginManifest newManifest, Collection<Plugin> loadedPlugins, boolean installed)
+		PluginItem(ExternalPluginManifest newManifest, Collection<Plugin> loadedPlugins, int userCount, boolean installed)
 		{
 			ExternalPluginManifest loaded = null;
 			if (!loadedPlugins.isEmpty())
@@ -137,6 +140,7 @@ class PluginHubPanel extends PluginPanel
 			}
 
 			manifest = newManifest == null ? loaded : newManifest;
+			this.userCount = userCount;
 			this.installed = installed;
 
 			if (manifest != null)
@@ -194,10 +198,7 @@ class PluginHubPanel extends PluginPanel
 					{
 						BufferedImage img = externalPluginClient.downloadIcon(manifest);
 
-						SwingUtilities.invokeLater(() ->
-						{
-							icon.setIcon(new ImageIcon(img));
-						});
+						SwingUtilities.invokeLater(() -> icon.setIcon(new ImageIcon(img)));
 					}
 					catch (IOException e)
 					{
@@ -521,11 +522,21 @@ class PluginHubPanel extends PluginPanel
 				return;
 			}
 
-			reloadPluginList(manifest);
+			Map<String, Integer> pluginCounts = Collections.emptyMap();
+			try
+			{
+				pluginCounts = externalPluginClient.getPluginCounts();
+			}
+			catch (IOException e)
+			{
+				log.warn("unable to download plugin counts", e);
+			}
+
+			reloadPluginList(manifest, pluginCounts);
 		});
 	}
 
-	private void reloadPluginList(List<ExternalPluginManifest> manifest)
+	private void reloadPluginList(List<ExternalPluginManifest> manifest, Map<String, Integer> pluginCounts)
 	{
 		Map<String, ExternalPluginManifest> manifests = manifest.stream()
 			.collect(ImmutableMap.toImmutableMap(ExternalPluginManifest::getInternalName, Function.identity()));
@@ -547,7 +558,8 @@ class PluginHubPanel extends PluginPanel
 		{
 			plugins = Sets.union(manifests.keySet(), loadedPlugins.keySet())
 				.stream()
-				.map(id -> new PluginItem(manifests.get(id), loadedPlugins.get(id), installed.contains(id)))
+				.map(id -> new PluginItem(manifests.get(id), loadedPlugins.get(id),
+					pluginCounts.getOrDefault(id, -1), installed.contains(id)))
 				.collect(Collectors.toList());
 
 			refreshing.setVisible(false);
@@ -575,7 +587,11 @@ class PluginHubPanel extends PluginPanel
 		else
 		{
 			stream
-				.sorted(Comparator.comparing(PluginItem::isInstalled).thenComparing(p -> p.manifest.getDisplayName()))
+				.sorted(Comparator.comparing(PluginItem::isInstalled)
+					.thenComparingInt(PluginItem::getUserCount)
+					.reversed()
+					.thenComparing(p -> p.manifest.getDisplayName())
+				)
 				.forEach(mainPanel::add);
 		}
 
@@ -594,6 +610,13 @@ class PluginHubPanel extends PluginPanel
 	@Subscribe
 	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
 	{
-		SwingUtilities.invokeLater(() -> reloadPluginList(ev.getLoadedManifest()));
+		Map<String, Integer> pluginCounts = Collections.emptyMap();
+		if (plugins != null)
+		{
+			pluginCounts = plugins.stream()
+				.collect(Collectors.toMap(pi -> pi.manifest.getInternalName(), PluginItem::getUserCount));
+		}
+
+		reloadPluginList(ev.getLoadedManifest(), pluginCounts);
 	}
 }

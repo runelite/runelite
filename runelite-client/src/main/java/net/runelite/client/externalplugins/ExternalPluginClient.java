@@ -25,9 +25,11 @@
 package net.runelite.client.externalplugins;
 
 import com.google.common.reflect.TypeToken;
+import com.google.gson.JsonSyntaxException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -37,6 +39,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.List;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -171,5 +174,28 @@ public class ExternalPluginClient
 				response.close();
 			}
 		});
+	}
+
+	public Map<String, Integer> getPluginCounts() throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase()
+			.newBuilder()
+			.addPathSegments("pluginhub")
+			.build();
+		try (Response res = okHttpClient.newCall(new Request.Builder().url(url).build()).execute())
+		{
+			if (res.code() != 200)
+			{
+				throw new IOException("Non-OK response code: " + res.code());
+			}
+
+			// CHECKSTYLE:OFF
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(res.body().byteStream()), new TypeToken<Map<String, Integer>>(){}.getType());
+			// CHECKSTYLE:ON
+		}
+		catch (JsonSyntaxException ex)
+		{
+			throw new IOException(ex);
+		}
 	}
 }
