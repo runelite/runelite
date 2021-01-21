@@ -29,15 +29,20 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.runelite.client.util.ImageUtil;
 
 @RequiredArgsConstructor
 @Setter
 public class ImageComponent implements LayoutableRenderableEntity
 {
 	private final BufferedImage image;
+
+	@Setter(AccessLevel.NONE)
+	private BufferedImage scaledImage;
 
 	@Getter
 	private final Rectangle bounds = new Rectangle();
@@ -52,7 +57,8 @@ public class ImageComponent implements LayoutableRenderableEntity
 			return null;
 		}
 
-		graphics.drawImage(image, preferredLocation.x, preferredLocation.y, null);
+		BufferedImage toRender = scaledImage != null ? scaledImage : image;
+		graphics.drawImage(toRender, preferredLocation.x, preferredLocation.y, null);
 		final Dimension dimension = new Dimension(image.getWidth(), image.getHeight());
 		bounds.setLocation(preferredLocation);
 		bounds.setSize(dimension);
@@ -60,8 +66,15 @@ public class ImageComponent implements LayoutableRenderableEntity
 	}
 
 	@Override
-	public void setPreferredSize(Dimension dimension)
+	public void setPreferredSize(Dimension preferredSize)
 	{
-		// Just use image dimensions for now
+		if (preferredSize != null && image != null)
+		{
+			scaledImage = ImageUtil.resizeImage(image, preferredSize.width, preferredSize.height);
+		}
+		else
+		{
+			scaledImage = null;
+		}
 	}
 }
