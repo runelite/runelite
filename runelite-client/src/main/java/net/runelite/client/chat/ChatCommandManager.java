@@ -116,6 +116,7 @@ public class ChatCommandManager implements ChatboxInputListener
 		{
 			return;
 		}
+
 		if (chatCommand.isAsync())
 		{
 			scheduledExecutorService.execute(() -> chatCommand.getExecute().accept(chatMessage, message));
