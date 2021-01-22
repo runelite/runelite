@@ -114,8 +114,6 @@ public interface PrayerConfig extends Config
 		name = "Hide bar while prayer is inactive",
 		description = "Prayer bar will be hidden while prayers are inactive."
 	)
-
-
 	default boolean hideIfNotPraying()
 	{
 		return true;
