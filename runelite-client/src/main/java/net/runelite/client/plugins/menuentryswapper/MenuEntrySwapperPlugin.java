@@ -722,6 +722,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swapMenuEntry(idx++, entry);
 		}
+		else if (config.swapReleaseSalamander() && target.contains("salamander"))
+		{
+			swap("release", option, target, true);
+		}
 	}
 
 	@Subscribe
