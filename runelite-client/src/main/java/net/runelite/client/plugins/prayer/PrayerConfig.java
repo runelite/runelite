@@ -148,8 +148,6 @@ public interface PrayerConfig extends Config
 		description = "Prayer bar will display flags when clicked to show tick timing."
 
 	)
-
-
 	default boolean replaceOrbText()
 	{
 		return false;
