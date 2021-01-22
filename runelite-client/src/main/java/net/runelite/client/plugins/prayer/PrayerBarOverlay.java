@@ -172,8 +172,6 @@ class PrayerBarOverlay extends Overlay
 					graphics.setColor(Color.blue);
 					graphics.fillRect(barX + this.xoffsetOff, barY, 1, barHeight);
 				}
-
-
 			}
 
 			graphics.setColor(FLICK_HELP_COLOR);
