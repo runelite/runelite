@@ -152,5 +152,4 @@ public interface PrayerConfig extends Config
 	{
 		return false;
 	}
-
 }
