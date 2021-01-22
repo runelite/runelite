@@ -124,9 +124,9 @@ public class CookingPlugin extends Plugin
 		}
 
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastCookingAction(), Instant.now());
+		Duration sinceCooked = Duration.between(session.getLastCookingAction(), Instant.now());
 
-		if (sinceCut.compareTo(statTimeout) >= 0)
+		if (sinceCooked.compareTo(statTimeout) >= 0)
 		{
 			session = null;
 		}

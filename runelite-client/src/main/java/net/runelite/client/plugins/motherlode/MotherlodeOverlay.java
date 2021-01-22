@@ -86,9 +86,9 @@ class MotherlodeOverlay extends OverlayPanel
 		}
 
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastPayDirtMined(), Instant.now());
+		Duration sinceLastPayDirt = Duration.between(session.getLastPayDirtMined(), Instant.now());
 
-		if (sinceCut.compareTo(statTimeout) >= 0)
+		if (sinceLastPayDirt.compareTo(statTimeout) >= 0)
 		{
 			return null;
 		}
