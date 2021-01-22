@@ -336,7 +336,7 @@ class XpInfoBox extends JPanel
 
 	static String htmlLabel(String key, int value)
 	{
-		String valueStr = QuantityFormatter.quantityToRSDecimalStack(value, true);
+		String valueStr = QuantityFormatter.quantityToPreciseSIStack(value);
 		return htmlLabel(key, valueStr);
 	}
 

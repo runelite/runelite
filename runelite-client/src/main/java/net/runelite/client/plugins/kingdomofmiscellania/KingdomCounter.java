@@ -48,6 +48,6 @@ public class KingdomCounter extends Counter
 	public String getTooltip()
 	{
 		return "Favor: " + plugin.getFavor() + "/127" + "</br>"
-			+ "Coffer: " + QuantityFormatter.quantityToStackSize(plugin.getCoffer());
+			+ "Coffer: " + QuantityFormatter.quantityToPreciseSIStack(plugin.getCoffer());
 	}
 }

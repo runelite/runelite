@@ -782,7 +782,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 		else
 		{
-			titleBuilder.append(QuantityFormatter.quantityToStackSize(total));
+			titleBuilder.append(QuantityFormatter.quantityToPreciseSIStack(total));
 		}
 
 		titleBuilder.append(')');

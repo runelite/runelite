@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, arlyon <https://github.com/arlyon>
+ * Copyright (c) 2020, winterdaze <https://github.com/winterdaze>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,85 +50,69 @@ public class QuantityFormatter
 
 	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance(Locale.ENGLISH);
 
-	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat(
-		"#,###.#",
-		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
-	);
-
-	private static final NumberFormat PRECISE_DECIMAL_FORMATTER = new DecimalFormat(
-		"#,###.###",
-		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
-	);
-
 	/**
-	 * Convert a quantity to a short, comma separated, SI-prefix style string
+	 * Converts a quantity to a short SI-prefix style string,
+	 * with at most thousandth place decimal precision for numbers greater than 1 million
+	 * and at most tenth place decimal precision otherwise,
+	 * with K after 10_000, M after 1_000_000, and B after 1_000_000_000.
 	 *
-	 * example: {@code 9,450}, {@code 2.14B}, {@code 100K}
+	 * <br>Example:
+	 * <br>{@code 9450 -> 9450}
+	 * <br>{@code 100_100 -> 100.1K}
+	 * <br>{@code 2_147_000_000 -> 2.147B}
 	 *
-	 * @param quantity The quantity to convert.
-	 * @return a 6 or less character string, possibly with a decimal point, commas or K/M/B suffix
+	 * @see #quantityToSIStack(long, int)
 	 */
-	public static synchronized String quantityToStackSize(long quantity)
+	public static synchronized String quantityToPreciseSIStack(long quantity)
 	{
-		if (quantity < 0)
-		{
-			// Long.MIN_VALUE = -1 * Long.MIN_VALUE so we need to correct for it.
-			return "-" + quantityToStackSize(quantity == Long.MIN_VALUE ? Long.MAX_VALUE : -quantity);
-		}
-		else if (quantity < 10_000)
-		{
-			return NUMBER_FORMATTER.format(quantity);
-		}
-
-		String suffix = SUFFIXES[0];
-		long divideBy = 1;
-
-		// determine correct suffix by iterating backward through the list
-		// of suffixes until the suffix results in a value >= 1
-		for (int i = (SUFFIXES.length - 1); i >= 0; i--)
-		{
-			divideBy = (long) Math.pow(10, i * 3);
-			if ((double) quantity / divideBy >= 1)
-			{
-				suffix = SUFFIXES[i];
-				break;
-			}
-		}
-
-		// get locale formatted string
-		String formattedString = NUMBER_FORMATTER.format((double) quantity / divideBy);
-
-		// strip down any digits past the 4 first
-		formattedString = (formattedString.length() > 4 ? formattedString.substring(0, 4) : formattedString);
-
-		// make sure the last character is not a "."
-		return (formattedString.endsWith(".") ? formattedString.substring(0, 3) : formattedString) + suffix;
+		return quantityToSIStack(quantity, 3);
 	}
 
 	/**
-	 * Convert a quantity to a short SI-prefix style string, possibly with a decimal,
-	 * with K after 100,000 and M after 10,000,000
+	 * Converts a quantity to a short SI-prefix style string, with at most tenth place decimal precision for all numbers,
+	 * with K after 10_000, M after 1_000_000, and B after 1_000_000_000.
 	 * 
-	 * example: {@code 9,450}, {@code 2.1B}, {@code 100K}
+	 * <br>Example:
+	 * <br>{@code 9450 -> 9450}
+	 * <br>{@code 99_999 -> 99.9K}
+	 * <br>{@code 8_411_000 -> 8.4M}
+	 * <br>{@code 2_147_000_000 -> 2.1B}
 	 * 
-	 * @see #quantityToRSDecimalStack(int, boolean) 
+	 * @see #quantityToSIStack(long, int)
 	 */
-	public static String quantityToRSDecimalStack(int quantity)
+	public static String quantityToSIStack(long quantity)
 	{
-		return quantityToRSDecimalStack(quantity, false);
+		return quantityToSIStack(quantity, 1);
 	}
 
 	/**
-	 * Convert a quantity to a short SI-prefix style string, possibly with decimals,
-	 * with K after 100,000 and M after 10,000,000
+	 * Converts a quantity to a short SI-prefix style string, with decimal precision specified by numDecimalPlaces,
+	 * with K after 10_000, M after 1_000_000, and B after 1_000_000_000.
 	 *
-	 * example without {@code precise}: {@code 9,450}, {@code 2.1B}, {@code 8.4M}
-	 * example with {@code precise}: {@code 9,450}, {@code 2.147B}, {@code 8.32M}
+	 * <br>Example with {@code numDecimalPlaces = 0}:
+	 * <br>{@code 9450 -> 9450}
+	 * <br>{@code 99_999 -> 99.9K}
+	 * <br>{@code 8_400_000 -> 8M}
+	 * <br>{@code 2_100_000_000 -> 2B}
 	 *
-	 * @param precise If true, allow thousandths precision if {@code quantity} is larger than 1 million.
-	 *                Otherwise have at most a single decimal
+	 * <br><br>Example with {@code numDecimalPlaces = 1}:
+	 * <br>{@code 9450 -> 9450}
+	 * <br>{@code 99_999 -> 99.9K}
+	 * <br>{@code 8_411_000 -> 8.4M}
+	 * <br>{@code 2_147_000_000 -> 2.1B}
+	 *
+	 * <br><br>Example with {@code numDecimalPlaces = 3}:
+	 * <br>{@code 9450 -> 9450}
+	 * <br>{@code 99_999 -> 99.9K}
+	 * <br>{@code 811_000 -> 811K}
+	 * <br>{@code 811_111 -> 811.1K}
+	 * <br>{@code 8_411_000 -> 8.411M}
+	 * <br>{@code 2_147_000_000 -> 2.147B}
+	 *
+	 * @param numDecimalPlaces Number of decimal places (0-3) to include for numbers greater than 1 million. Otherwise have at most a single decimal.
+	 * <br>Example: 0 for no decimals, 1  for tenth place precision, 2 for hundredth, etc.
 	 */
-	public static synchronized String quantityToRSDecimalStack(int quantity, boolean precise)
+	public static synchronized String quantityToSIStack(long quantity, int numDecimalPlaces)
 	{
 		String quantityStr = String.valueOf(quantity);
 		if (quantityStr.length() <= 4)
@@ -137,32 +122,80 @@ public class QuantityFormatter
 
 		int power = (int) Math.log10(quantity);
 
-		// Output thousandths for values above a million
-		NumberFormat format = precise && power >= 6
-			? PRECISE_DECIMAL_FORMATTER
-			: DECIMAL_FORMATTER;
+		NumberFormat format;
+		if (power >= 6)
+		{
+			switch (numDecimalPlaces)
+			{
+				case 0:
+					format = new DecimalFormat("#,###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+					break;
+				case 1:
+					format = new DecimalFormat("#,###.#", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+					break;
+				case 2:
+					format = new DecimalFormat("#,###.##", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+					break;
+				case 3:
+					format = new DecimalFormat("#,###.###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+					break;
+				default:
+					throw new IllegalArgumentException("numDecimalPlaces must be between 0 and 3");
+			}
+		}
+		else
+		{
+			format = new DecimalFormat("#,###.#", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+		}
 
 		return format.format(quantity / (Math.pow(10, (power / 3) * 3))) + SUFFIXES[power / 3];
 	}
 
 	/**
-	 * Converts a string representation of a stack
-	 * back to (close to) it's original value.
+	 * Converts a quantity to the RS representation of it (no decimal precision).
 	 *
-	 * @param string The string to convert.
+	 * <br>Example:
+	 * <br>{@code 10_000 -> 10_000}
+	 * <br>{@code 100_000 -> 100K}
+	 * <br>{@code 1_000_000 -> 1000K} (instead of 1M)
+	 * <br>{@code 2_147_483_647 -> 2147M} (instead of 2.147B)
+	 *
+	 * @param quantity The value to convert.
+	 * @return A RS string representation of it.
+	 */
+	public static String quantityToRSStack(long quantity)
+	{
+		if (quantity >= 10_000_000)
+		{
+			return Long.toString(quantity / 1_000_000) + 'M';
+		}
+		else if (quantity >= 100_000)
+		{
+			return Long.toString(quantity / 1_000) + 'K';
+		}
+		return Long.toString(quantity);
+	}
+
+	/**
+	 * Converts a string representation of a stack (with "", "K", "M", or "B" suffixes)
+	 * back to its long value.
+	 *
+	 * @param string The string of the stack to convert.
 	 * @return A long representation of it.
 	 */
 	public static synchronized long parseQuantity(String string) throws ParseException
 	{
 		int multiplier = getMultiplier(string);
-		float parsedValue = NUMBER_FORMATTER.parse(string).floatValue();
+		double parsedValue = NUMBER_FORMATTER.parse(string).doubleValue();
 		return (long) (parsedValue * multiplier);
 	}
 
 	/**
-	 * Formats a number to be comma delimited. No suffixes are given
+	 * Formats a number to be comma delimited. No suffixes are given.
 	 *
-	 * example: {@code 10,123,351}, {@code 5}
+	 * <br>Example:
+	 * <br>{@code 10_123_351 -> 10,123,351}
+	 * <br>{@code 5 -> 5}
 	 */
 	public static synchronized String formatNumber(final long number)
 	{
@@ -172,9 +205,11 @@ public class QuantityFormatter
 
 	/**
 	 * Formats a number to be comma delimited. No suffixes are given. Has at
-	 * most 3 decimal places
+	 * most 3 decimal places.
 	 *
-	 * example: {@code 10,123,351}, {@code 5.612}
+	 * <br>Example:
+	 * <br>{@code 10_123_351 -> 10,123,351}
+	 * <br>{@code 1005.612 -> 1,005.612}
 	 */
 	public static synchronized String formatNumber(double number)
 	{
@@ -182,11 +217,11 @@ public class QuantityFormatter
 	}
 
 	/**
-	 * Calculates, given a string with a value denominator (ex. 20K)
-	 * the multiplier that the denominator represents (in this case 1000).
+	 * Calculates, given a string with a value suffix ("", "K", "M", "B"),
+	 * the multiplier that the denominator represents (ex. 1000 for "K", 1 if no suffix).
 	 *
 	 * @param string The string to check.
-	 * @return The value of the value denominator.
+	 * @return The multiplier value of the value suffix.
 	 * @throws ParseException When the denominator does not match a known value.
 	 */
 	private static int getMultiplier(String string) throws ParseException

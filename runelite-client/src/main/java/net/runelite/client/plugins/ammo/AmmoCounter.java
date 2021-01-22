@@ -46,7 +46,7 @@ class AmmoCounter extends Counter
 	@Override
 	public String getText()
 	{
-		return QuantityFormatter.quantityToRSDecimalStack(getCount());
+		return QuantityFormatter.quantityToSIStack(getCount());
 	}
 
 	@Override

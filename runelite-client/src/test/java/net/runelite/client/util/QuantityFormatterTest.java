@@ -40,74 +40,75 @@ public class QuantityFormatterTest
 	}
 
 	@Test
-	public void quantityToRSDecimalStackSize()
+	public void quantityToPreciseSISize()
 	{
-		assertEquals("0", QuantityFormatter.quantityToRSDecimalStack(0));
-		assertEquals("8500", QuantityFormatter.quantityToRSDecimalStack(8_500));
-		assertEquals("10K", QuantityFormatter.quantityToRSDecimalStack(10_000));
-		assertEquals("21.7K", QuantityFormatter.quantityToRSDecimalStack(21_700));
-		assertEquals("100K", QuantityFormatter.quantityToRSDecimalStack(100_000));
-		assertEquals("100.3K", QuantityFormatter.quantityToRSDecimalStack(100_300));
-		assertEquals("1M", QuantityFormatter.quantityToRSDecimalStack(1_000_000));
-		assertEquals("8.4M", QuantityFormatter.quantityToRSDecimalStack(8_450_000));
-		assertEquals("10M", QuantityFormatter.quantityToRSDecimalStack(10_000_000));
-		assertEquals("12.8M", QuantityFormatter.quantityToRSDecimalStack(12_800_000));
-		assertEquals("100M", QuantityFormatter.quantityToRSDecimalStack(100_000_000));
-		assertEquals("250.1M", QuantityFormatter.quantityToRSDecimalStack(250_100_000));
-		assertEquals("1B", QuantityFormatter.quantityToRSDecimalStack(1_000_000_000));
-		assertEquals("1.5B", QuantityFormatter.quantityToRSDecimalStack(1500_000_000));
-		assertEquals("2.1B", QuantityFormatter.quantityToRSDecimalStack(Integer.MAX_VALUE));
+		assertEquals("0", QuantityFormatter.quantityToPreciseSIStack(0));
+		assertEquals("999", QuantityFormatter.quantityToPreciseSIStack(999));
+		assertEquals("1000", QuantityFormatter.quantityToPreciseSIStack(1000));
+		assertEquals("9450", QuantityFormatter.quantityToPreciseSIStack(9450));
+		assertEquals("14.5K", QuantityFormatter.quantityToPreciseSIStack(14_500));
+		assertEquals("99.9K", QuantityFormatter.quantityToPreciseSIStack(99_920));
+		assertEquals("100K", QuantityFormatter.quantityToPreciseSIStack(100_000));
+		assertEquals("10M", QuantityFormatter.quantityToPreciseSIStack(10_000_000));
+		assertEquals("2.147B", QuantityFormatter.quantityToPreciseSIStack(Integer.MAX_VALUE));
+		assertEquals("100B", QuantityFormatter.quantityToPreciseSIStack(100_000_000_000L));
 	}
 
 	@Test
-	public void quantityToStackSize()
+	public void quantityToSIStackSize()
 	{
-		assertEquals("0", QuantityFormatter.quantityToStackSize(0));
-		assertEquals("999", QuantityFormatter.quantityToStackSize(999));
-		assertEquals("1,000", QuantityFormatter.quantityToStackSize(1000));
-		assertEquals("9,450", QuantityFormatter.quantityToStackSize(9450));
-		assertEquals("14.5K", QuantityFormatter.quantityToStackSize(14_500));
-		assertEquals("99.9K", QuantityFormatter.quantityToStackSize(99_920));
-		assertEquals("100K", QuantityFormatter.quantityToStackSize(100_000));
-		assertEquals("10M", QuantityFormatter.quantityToStackSize(10_000_000));
-		assertEquals("2.14B", QuantityFormatter.quantityToStackSize(Integer.MAX_VALUE));
-		assertEquals("100B", QuantityFormatter.quantityToStackSize(100_000_000_000L));
-
-		assertEquals("0", QuantityFormatter.quantityToStackSize(-0));
-		assertEquals("-400", QuantityFormatter.quantityToStackSize(-400));
-		assertEquals("-400K", QuantityFormatter.quantityToStackSize(-400_000));
-		assertEquals("-40M", QuantityFormatter.quantityToStackSize(-40_000_000));
-		assertEquals("-2.14B", QuantityFormatter.quantityToStackSize(Integer.MIN_VALUE));
-		assertEquals("-400B", QuantityFormatter.quantityToStackSize(-400_000_000_000L));
+		assertEquals("0", QuantityFormatter.quantityToSIStack(0));
+		assertEquals("8500", QuantityFormatter.quantityToSIStack(8_500, 0));
+		assertEquals("8500", QuantityFormatter.quantityToSIStack(8_500, 1));
+		assertEquals("10K", QuantityFormatter.quantityToSIStack(10_000, 1));
+		assertEquals("10K", QuantityFormatter.quantityToSIStack(10_000, 2));
+		assertEquals("10.1K", QuantityFormatter.quantityToSIStack(10_100, 1));
+		assertEquals("10.1K", QuantityFormatter.quantityToSIStack(10_100, 2));
+		assertEquals("21.7K", QuantityFormatter.quantityToSIStack(21_700, 0));
+		assertEquals("21.7K", QuantityFormatter.quantityToSIStack(21_700, 3));
+		assertEquals("100K", QuantityFormatter.quantityToSIStack(100_000, 1));
+		assertEquals("100.3K", QuantityFormatter.quantityToSIStack(100_310, 1));
+		assertEquals("1M", QuantityFormatter.quantityToSIStack(1_000_000, 0));
+		assertEquals("1M", QuantityFormatter.quantityToSIStack(1_000_000, 1));
+		assertEquals("1M", QuantityFormatter.quantityToSIStack(1_000_000, 2));
+		assertEquals("8.45M", QuantityFormatter.quantityToSIStack(8_450_000, 2));
+		assertEquals("8.451M", QuantityFormatter.quantityToSIStack(8_451_000, 3));
+		assertEquals("10M", QuantityFormatter.quantityToSIStack(10_000_000, 0));
+		assertEquals("10M", QuantityFormatter.quantityToSIStack(10_000_000, 1));
+		assertEquals("10M", QuantityFormatter.quantityToSIStack(10_000_000, 2));
+		assertEquals("12.8M", QuantityFormatter.quantityToSIStack(12_800_000, 1));
+		assertEquals("12.85M", QuantityFormatter.quantityToSIStack(12_850_000, 2));
+		assertEquals("12.851M", QuantityFormatter.quantityToSIStack(12_851_000, 3));
+		assertEquals("100M", QuantityFormatter.quantityToSIStack(100_000_000, 0));
+		assertEquals("100M", QuantityFormatter.quantityToSIStack(100_000_000, 1));
+		assertEquals("100M", QuantityFormatter.quantityToSIStack(100_000_000, 2));
+		assertEquals("250.1M", QuantityFormatter.quantityToSIStack(250_100_000, 1));
+		assertEquals("250.1M", QuantityFormatter.quantityToSIStack(250_100_000, 3));
+		assertEquals("250.151M", QuantityFormatter.quantityToSIStack(250_151_000, 3));
+		assertEquals("1B", QuantityFormatter.quantityToSIStack(1_000_000_000, 1));
+		assertEquals("1.5B", QuantityFormatter.quantityToSIStack(1500_000_000, 1));
+		assertEquals("1.5B", QuantityFormatter.quantityToSIStack(1500_000_000, 2));
+		assertEquals("1.55B", QuantityFormatter.quantityToSIStack(1550_000_000, 2));
+		assertEquals("1.55B", QuantityFormatter.quantityToSIStack(1550_000_000, 3));
+		assertEquals("2.147B", QuantityFormatter.quantityToSIStack(Integer.MAX_VALUE, 3));
 	}
 
 	@Test
-	public void quantityToPreciseStackSize()
+	public void quantityToRSStackSize()
 	{
-		assertEquals("0", QuantityFormatter.quantityToRSDecimalStack(0));
-		assertEquals("8500", QuantityFormatter.quantityToRSDecimalStack(8_500, true));
-		assertEquals("10K", QuantityFormatter.quantityToRSDecimalStack(10_000, true));
-		assertEquals("21.7K", QuantityFormatter.quantityToRSDecimalStack(21_710, true));
-		assertEquals("100K", QuantityFormatter.quantityToRSDecimalStack(100_000, true));
-		assertEquals("100.3K", QuantityFormatter.quantityToRSDecimalStack(100_310, true));
-		assertEquals("1M", QuantityFormatter.quantityToRSDecimalStack(1_000_000, true));
-		assertEquals("8.45M", QuantityFormatter.quantityToRSDecimalStack(8_450_000, true));
-		assertEquals("8.451M", QuantityFormatter.quantityToRSDecimalStack(8_451_000, true));
-		assertEquals("10M", QuantityFormatter.quantityToRSDecimalStack(10_000_000, true));
-		assertEquals("12.8M", QuantityFormatter.quantityToRSDecimalStack(12_800_000, true));
-		assertEquals("12.85M", QuantityFormatter.quantityToRSDecimalStack(12_850_000, true));
-		assertEquals("12.851M", QuantityFormatter.quantityToRSDecimalStack(12_851_000, true));
-		assertEquals("100M", QuantityFormatter.quantityToRSDecimalStack(100_000_000, true));
-		assertEquals("250.1M", QuantityFormatter.quantityToRSDecimalStack(250_100_000, true));
-		assertEquals("250.151M", QuantityFormatter.quantityToRSDecimalStack(250_151_000, true));
-		assertEquals("1B", QuantityFormatter.quantityToRSDecimalStack(1_000_000_000, true));
-		assertEquals("1.5B", QuantityFormatter.quantityToRSDecimalStack(1500_000_000, true));
-		assertEquals("1.55B", QuantityFormatter.quantityToRSDecimalStack(1550_000_000, true));
-		assertEquals("2.147B", QuantityFormatter.quantityToRSDecimalStack(Integer.MAX_VALUE, true));
+		assertEquals("0", QuantityFormatter.quantityToRSStack(0));
+		assertEquals("1111", QuantityFormatter.quantityToRSStack(1111));
+		assertEquals("101K", QuantityFormatter.quantityToRSStack(101_000));
+		assertEquals("1011K", QuantityFormatter.quantityToRSStack(1_011_000));
+		assertEquals("9999K", QuantityFormatter.quantityToRSStack(9_999_999));
+		assertEquals("10M", QuantityFormatter.quantityToRSStack(10_000_000));
+		assertEquals("100M", QuantityFormatter.quantityToRSStack(100_000_000));
+		assertEquals("100M", QuantityFormatter.quantityToRSStack(100_111_111));
+		assertEquals("2147M", QuantityFormatter.quantityToRSStack(Integer.MAX_VALUE));
 	}
 
 	@Test
-	public void stackSizeToQuantity() throws ParseException
+	public void stackToQuantity() throws ParseException
 	{
 		assertEquals(0, QuantityFormatter.parseQuantity("0"));
 		assertEquals(907, QuantityFormatter.parseQuantity("907"));
@@ -116,11 +117,6 @@ public class QuantityFormatterTest
 		assertEquals(10_500, QuantityFormatter.parseQuantity("10.5K"));
 		assertEquals(33_560_000, QuantityFormatter.parseQuantity("33.56M"));
 		assertEquals(2_000_000_000, QuantityFormatter.parseQuantity("2B"));
-
-		assertEquals(0, QuantityFormatter.parseQuantity("-0"));
-		assertEquals(-400, QuantityFormatter.parseQuantity("-400"));
-		assertEquals(-400_000, QuantityFormatter.parseQuantity("-400k"));
-		assertEquals(-40_543_000, QuantityFormatter.parseQuantity("-40.543M"));
 
 		try
 		{

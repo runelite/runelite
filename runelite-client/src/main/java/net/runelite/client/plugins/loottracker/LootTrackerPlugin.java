@@ -1064,7 +1064,7 @@ public class LootTrackerPlugin extends Plugin
 			.append("You've killed ")
 			.append(name)
 			.append(" for ")
-			.append(QuantityFormatter.quantityToStackSize(getTotalPrice(items)))
+			.append(QuantityFormatter.quantityToPreciseSIStack(getTotalPrice(items)))
 			.append(" loot.")
 			.build();
 

@@ -660,7 +660,7 @@ class LootTrackerPanel extends PluginPanel
 
 	private static String htmlLabel(String key, long value)
 	{
-		final String valueStr = QuantityFormatter.quantityToStackSize(value);
+		final String valueStr = QuantityFormatter.quantityToPreciseSIStack(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 }

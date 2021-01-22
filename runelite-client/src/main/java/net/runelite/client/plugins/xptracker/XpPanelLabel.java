@@ -66,6 +66,6 @@ public enum XpPanelLabel
 
 	private static String format(int val)
 	{
-		return QuantityFormatter.quantityToRSDecimalStack(val, true);
+		return QuantityFormatter.quantityToPreciseSIStack(val);
 	}
 }

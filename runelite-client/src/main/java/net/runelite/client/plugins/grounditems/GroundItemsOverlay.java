@@ -238,7 +238,7 @@ public class GroundItemsOverlay extends Overlay
 				else
 				{
 					itemStringBuilder.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
+						.append(QuantityFormatter.quantityToPreciseSIStack(item.getQuantity()))
 						.append(")");
 				}
 			}
@@ -248,14 +248,14 @@ public class GroundItemsOverlay extends Overlay
 				if (item.getGePrice() > 0)
 				{
 					itemStringBuilder.append(" (GE: ")
-						.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
+						.append(QuantityFormatter.quantityToPreciseSIStack(item.getGePrice()))
 						.append(" gp)");
 				}
 
 				if (item.getHaPrice() > 0)
 				{
 					itemStringBuilder.append(" (HA: ")
-						.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
+						.append(QuantityFormatter.quantityToPreciseSIStack(item.getHaPrice()))
 						.append(" gp)");
 				}
 			}
@@ -269,7 +269,7 @@ public class GroundItemsOverlay extends Overlay
 				{
 					itemStringBuilder
 						.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(price))
+						.append(QuantityFormatter.quantityToPreciseSIStack(price))
 						.append(" gp)");
 				}
 			}
