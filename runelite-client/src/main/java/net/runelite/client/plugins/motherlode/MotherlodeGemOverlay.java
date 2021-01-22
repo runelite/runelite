@@ -71,9 +71,9 @@ public class MotherlodeGemOverlay extends OverlayPanel
 		}
 
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastGemFound(), Instant.now());
+		Duration sinceLastGem = Duration.between(session.getLastGemFound(), Instant.now());
 
-		if (sinceCut.compareTo(statTimeout) >= 0)
+		if (sinceLastGem.compareTo(statTimeout) >= 0)
 		{
 			return null;
 		}
