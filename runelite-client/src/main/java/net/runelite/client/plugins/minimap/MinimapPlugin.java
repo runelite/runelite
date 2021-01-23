@@ -28,6 +28,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ScriptID;
@@ -36,12 +37,15 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.game.SpriteManager;
 
+@Slf4j
 @PluginDescriptor(
 	name = "Minimap",
 	description = "Customize the color of minimap dots",
@@ -55,7 +59,13 @@ public class MinimapPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private MinimapConfig config;
+
+	@Inject
+	private SpriteManager spriteManager;
 
 	private SpritePixels[] originalDotSprites;
 
@@ -71,6 +81,10 @@ public class MinimapPlugin extends Plugin
 		updateMinimapWidgetVisibility(config.hideMinimap());
 		storeOriginalDots();
 		replaceMapDots();
+		if (config.circleMap())
+		{
+			clientThread.invokeLater(this::circleMinimap);
+		}
 	}
 
 	@Override
@@ -78,6 +92,7 @@ public class MinimapPlugin extends Plugin
 	{
 		updateMinimapWidgetVisibility(false);
 		restoreOriginalDots();
+		restoreSprites();
 	}
 
 	@Subscribe
@@ -105,6 +120,19 @@ public class MinimapPlugin extends Plugin
 		}
 
 		replaceMapDots();
+
+		if (event.getGroup().equals("minimap") && event.getKey().equals("circleMap"))
+		{
+			if (config.circleMap())
+			{
+				circleMinimap();
+				return;
+			}
+			if (!config.circleMap())
+			{
+				restoreSprites();
+			}
+		}
 	}
 
 	@Subscribe
@@ -113,6 +141,7 @@ public class MinimapPlugin extends Plugin
 		if (scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_REDRAW)
 		{
 			updateMinimapWidgetVisibility(config.hideMinimap());
+			loadCustomMask();
 		}
 	}
 
@@ -190,5 +219,64 @@ public class MinimapPlugin extends Plugin
 		}
 
 		System.arraycopy(originalDotSprites, 0, mapDots, 0, mapDots.length);
+	}
+
+	private void restoreSprites()
+	{
+		client.getWidgetSpriteCache().reset();
+		for (MinimapSprites minimapSprites : MinimapSprites.values())
+		{
+			client.getSpriteOverrides().remove(minimapSprites.getSpriteId());
+		}
+		clientThread.invokeLater(this::restoreAlpha);
+	}
+
+	private void circleMinimap()
+	{
+		if (config.circleMap())
+		{
+			restoreSprites();
+			spriteManager.addSpriteOverrides(MinimapSprites.values());
+			clientThread.invokeLater(this::loadCustomMask);
+		}
+	}
+
+	private void loadCustomMask()
+	{
+		if (config.circleMap())
+		{
+			try
+			{
+				Widget alphaMap = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+				if (alphaMap != null)
+				{
+					alphaMap.setSpriteId(-1183);
+					alphaMap.revalidate();
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void restoreAlpha()
+	{
+		{
+			try
+			{
+				Widget alphaMap = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+				if (alphaMap != null)
+				{
+					alphaMap.setSpriteId(1183);
+					alphaMap.revalidate();
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 }
