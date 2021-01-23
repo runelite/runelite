@@ -107,6 +107,7 @@ public class CrowdsourcingWoodcutting
 			add(ObjectID.BURNT_TREE).
 			add(ObjectID.BURNT_TREE_30854).
 
+			add(ObjectID.MATURE_JUNIPER_TREE).
 
 			add(ObjectID.WILLOW).
 			add(ObjectID.WILLOW_10829).
@@ -167,6 +168,7 @@ public class CrowdsourcingWoodcutting
 			add("You get some bark.").
 			add("You get a bruma root.").
 			add("You get an arctic pine log").
+			add("You get some juniper logs.").
 			build();
 
 	@Inject
