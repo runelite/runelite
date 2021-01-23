@@ -24,8 +24,6 @@
  */
 package net.runelite.client;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -33,7 +31,6 @@ import com.google.inject.Injector;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.nio.file.Paths;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -46,12 +43,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.swing.SwingUtilities;
-import joptsimple.ArgumentAcceptingOptionSpec;
-import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import joptsimple.ValueConversionException;
-import joptsimple.ValueConverter;
-import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -70,7 +62,6 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientLoader;
-import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.FatalErrorDialog;
@@ -81,11 +72,11 @@ import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
+import net.runelite.client.util.ArgumentParser;
 import net.runelite.client.ws.PartyService;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 @Slf4j
@@ -182,50 +173,8 @@ public class RuneLite
 	{
 		Locale.setDefault(Locale.ENGLISH);
 
-		final OptionParser parser = new OptionParser();
-		parser.accepts("developer-mode", "Enable developer tools");
-		parser.accepts("debug", "Show extra debugging output");
-		parser.accepts("safe-mode", "Disables external plugins and the GPU plugin");
-		parser.accepts("insecure-skip-tls-verification", "Disables TLS verification");
-
-		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
-			.withRequiredArg()
-			.withValuesConvertedBy(new ConfigFileConverter())
-			.defaultsTo(DEFAULT_SESSION_FILE);
-
-		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
-			.withRequiredArg()
-			.withValuesConvertedBy(new ConfigFileConverter())
-			.defaultsTo(DEFAULT_CONFIG_FILE);
-
-		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
-			.accepts("rs", "Select client type")
-			.withRequiredArg()
-			.ofType(ClientUpdateCheckMode.class)
-			.defaultsTo(ClientUpdateCheckMode.AUTO)
-			.withValuesConvertedBy(new EnumConverter<ClientUpdateCheckMode>(ClientUpdateCheckMode.class)
-			{
-				@Override
-				public ClientUpdateCheckMode convert(String v)
-				{
-					return super.convert(v.toUpperCase());
-				}
-			});
-
-		parser.accepts("help", "Show this text").forHelp();
-		OptionSet options = parser.parse(args);
-
-		if (options.has("help"))
-		{
-			parser.printHelpOn(System.out);
-			System.exit(0);
-		}
-
-		if (options.has("debug"))
-		{
-			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-			logger.setLevel(Level.DEBUG);
-		}
+		ArgumentParser argumentParser = new ArgumentParser(args);
+		OptionSet argumentOptionSet = argumentParser.getOptionSet();
 
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
 		{
@@ -239,7 +188,7 @@ public class RuneLite
 		OkHttpClient.Builder okHttpClientBuilder = RuneLiteAPI.CLIENT.newBuilder()
 			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE));
 
-		final boolean insecureSkipTlsVerification = options.has("insecure-skip-tls-verification");
+		final boolean insecureSkipTlsVerification = argumentOptionSet.has("insecure-skip-tls-verification");
 		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
 		{
 			setupInsecureTrustManager(okHttpClientBuilder);
@@ -252,7 +201,7 @@ public class RuneLite
 
 		try
 		{
-			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode));
+			final ClientLoader clientLoader = new ClientLoader(okHttpClient, argumentOptionSet.valueOf(argumentParser.getUpdateMode()));
 
 			new Thread(() ->
 			{
@@ -260,7 +209,7 @@ public class RuneLite
 				ClassPreloader.preload();
 			}, "Preloader").start();
 
-			final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
+			final boolean developerMode = argumentOptionSet.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
 
 			if (developerMode)
 			{
@@ -288,9 +237,9 @@ public class RuneLite
 				okHttpClient,
 				clientLoader,
 				developerMode,
-				options.has("safe-mode"),
-				options.valueOf(sessionfile),
-				options.valueOf(configfile)));
+				argumentOptionSet.has("safe-mode"),
+				argumentOptionSet.valueOf(argumentParser.getSessionFile()),
+				argumentOptionSet.valueOf(argumentParser.getConfigFile())));
 
 			injector.getInstance(RuneLite.class).start();
 
@@ -401,45 +350,6 @@ public class RuneLite
 	public static void setInjector(Injector injector)
 	{
 		RuneLite.injector = injector;
-	}
-
-	private static class ConfigFileConverter implements ValueConverter<File>
-	{
-		@Override
-		public File convert(String fileName)
-		{
-			final File file;
-
-			if (Paths.get(fileName).isAbsolute()
-				|| fileName.startsWith("./")
-				|| fileName.startsWith(".\\"))
-			{
-				file = new File(fileName);
-			}
-			else
-			{
-				file = new File(RuneLite.RUNELITE_DIR, fileName);
-			}
-
-			if (file.exists() && (!file.isFile() || !file.canWrite()))
-			{
-				throw new ValueConversionException(String.format("File %s is not accessible", file.getAbsolutePath()));
-			}
-
-			return file;
-		}
-
-		@Override
-		public Class<? extends File> valueType()
-		{
-			return File.class;
-		}
-
-		@Override
-		public String valuePattern()
-		{
-			return null;
-		}
 	}
 
 	private static void setupInsecureTrustManager(OkHttpClient.Builder okHttpClientBuilder)
