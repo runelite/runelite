@@ -151,7 +151,7 @@ public class XpDropPlugin extends Plugin
 
 	private void resetTextColor(Widget widget)
 	{
-		EnumComposition colorEnum = client.getEnum(EnumID.XPDROP_COLORS);
+		EnumComposition colorEnum = client.getEnum(EnumID.XP_DROP_COLORS);
 		int defaultColorId = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
 		int color = colorEnum.getIntValue(defaultColorId);
 		widget.setTextColor(color);

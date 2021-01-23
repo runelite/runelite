@@ -40,7 +40,7 @@ public enum InventoryID
 	/**
 	 * The other trade inventory.
 	 */
-	TRADEOTHER(90 | 0x8000),
+	TRADE_OTHER(90 | 0x8000),
 	/**
 	 * Standard player inventory.
 	 */

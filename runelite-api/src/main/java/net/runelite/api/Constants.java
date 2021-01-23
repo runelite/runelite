@@ -91,7 +91,7 @@ public class Constants
 	 * The number of milliseconds in a client tick.
 	 * <p>
 	 * This is the length of a single frame when the client is running at
-	 * the maximum framerate of 50 fps.
+	 * the maximum frame rate of 50 fps.
 	 */
 	public static final int CLIENT_TICK_LENGTH = 20;
 

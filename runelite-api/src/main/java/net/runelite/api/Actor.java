@@ -60,7 +60,7 @@ public interface Actor extends Renderable
 	 * Examples of interaction include:
 	 * <ul>
 	 *     <li>A monster focusing an Actor to attack</li>
-	 *     <li>Targetting a player to trade</li>
+	 *     <li>Targeting a player to trade</li>
 	 *     <li>Following a player</li>
 	 * </ul>
 	 *

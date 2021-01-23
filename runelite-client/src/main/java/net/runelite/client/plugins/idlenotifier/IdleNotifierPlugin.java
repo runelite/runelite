@@ -148,7 +148,7 @@ public class IdleNotifierPlugin extends Plugin
 			/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves, Pottery) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
-			case GEM_CUTTING_REDTOPAZ:
+			case GEM_CUTTING_RED_TOPAZ:
 			case GEM_CUTTING_SAPPHIRE:
 			case GEM_CUTTING_EMERALD:
 			case GEM_CUTTING_RUBY:
@@ -174,7 +174,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_STRING_MAPLE_LONGBOW:
 			case FLETCHING_STRING_YEW_LONGBOW:
 			case FLETCHING_STRING_MAGIC_LONGBOW:
-			case FLETCHING_ATTACH_FEATHERS_TO_ARROWSHAFT:
+			case FLETCHING_ATTACH_FEATHERS_TO_ARROW_SHAFT:
 			case FLETCHING_ATTACH_HEADS:
 			case FLETCHING_ATTACH_BOLT_TIPS_TO_BRONZE_BOLT:
 			case FLETCHING_ATTACH_BOLT_TIPS_TO_IRON_BROAD_BOLT:
@@ -252,7 +252,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_TRAILBLAZER:
 			/* Herblore */
 			case HERBLORE_PESTLE_AND_MORTAR:
-			case HERBLORE_POTIONMAKING:
+			case HERBLORE_POTION_MAKING:
 			case HERBLORE_MAKE_TAR:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:

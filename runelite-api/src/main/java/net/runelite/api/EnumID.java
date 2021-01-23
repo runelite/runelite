@@ -33,5 +33,5 @@ public final class EnumID
 {
 	public static final int MUSIC_TRACK_NAMES = 812;
 	public static final int MUSIC_TRACK_IDS = 819;
-	public static final int XPDROP_COLORS = 1169;
+	public static final int XP_DROP_COLORS = 1169;
 }

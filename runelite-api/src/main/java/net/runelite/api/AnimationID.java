@@ -55,9 +55,9 @@ public final class AnimationID
 	public static final int COOKING_RANGE = 896;
 	public static final int COOKING_WINE = 7529;
 	public static final int FLETCHING_BOW_CUTTING = 1248;
-	public static final int HUNTER_LAY_BOXTRAP_BIRDSNARE = 5208; //same for laying bird snares and box traps
-	public static final int HUNTER_LAY_DEADFALLTRAP = 5212; //setting up deadfall trap
-	public static final int HUNTER_LAY_NETTRAP = 5215; //setting up net trap
+	public static final int HUNTER_LAY_BOX_TRAP_BIRD_SNARE = 5208; //same for laying bird snares and box traps
+	public static final int HUNTER_LAY_DEADFALL_TRAP = 5212; //setting up deadfall trap
+	public static final int HUNTER_LAY_NET_TRAP = 5215; //setting up net trap
 	public static final int HUNTER_LAY_MANIACAL_MONKEY_BOULDER_TRAP = 7259; // setting up maniacal monkey boulder trap
 	public static final int HUNTER_CHECK_BIRD_SNARE = 5207;
 	public static final int HUNTER_CHECK_BOX_TRAP = 5212;
@@ -83,10 +83,10 @@ public final class AnimationID
 	public static final int FLETCHING_ATTACH_BOLT_TIPS_TO_RUNE_BOLT = 8478;
 	public static final int FLETCHING_ATTACH_BOLT_TIPS_TO_DRAGON_BOLT = 8479;
 	public static final int FLETCHING_ATTACH_HEADS = 8480;
-	public static final int FLETCHING_ATTACH_FEATHERS_TO_ARROWSHAFT = 8481;
+	public static final int FLETCHING_ATTACH_FEATHERS_TO_ARROW_SHAFT = 8481;
 	public static final int GEM_CUTTING_OPAL = 890;
 	public static final int GEM_CUTTING_JADE = 891;
-	public static final int GEM_CUTTING_REDTOPAZ = 892;
+	public static final int GEM_CUTTING_RED_TOPAZ = 892;
 	public static final int GEM_CUTTING_SAPPHIRE = 888;
 	public static final int GEM_CUTTING_EMERALD = 889;
 	public static final int GEM_CUTTING_RUBY = 887;
@@ -98,7 +98,7 @@ public final class AnimationID
 	public static final int CRAFTING_POTTERS_WHEEL = 883;
 	public static final int CRAFTING_POTTERY_OVEN = 24975;
 	public static final int SMITHING_SMELTING = 899;
-	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
+	public static final int SMITHING_CANNONBALL = 827; //cannonball smithing uses this and SMITHING_SMELTING
 	public static final int SMITHING_ANVIL = 898;
 	public static final int FISHING_BIG_NET = 620;
 	public static final int FISHING_NET = 621;
@@ -167,7 +167,7 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_TRAILBLAZER = 8786; // Same animation as Infernal pickaxe (or)
 	public static final int DENSE_ESSENCE_CHIPPING = 7201;
 	public static final int DENSE_ESSENCE_CHISELING = 7202;
-	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
+	public static final int HERBLORE_POTION_MAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_MAKE_TABLET = 4068;
 	public static final int MAGIC_ENCHANTING_JEWELRY = 931;
