@@ -124,6 +124,9 @@ public class FishingPlugin extends Plugin
 	@Inject
 	private FishingSpotMinimapOverlay fishingSpotMinimapOverlay;
 
+	@Inject
+	private MinnowConversionOverlay minnowConversionOverlay;
+
 	private boolean trawlerNotificationSent;
 
 	@Provides
@@ -138,6 +141,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(spotOverlay);
 		overlayManager.add(fishingSpotMinimapOverlay);
+		overlayManager.add(minnowConversionOverlay);
 	}
 
 	@Override
@@ -148,6 +152,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(spotOverlay);
 		overlayManager.remove(fishingSpotMinimapOverlay);
+		overlayManager.remove(minnowConversionOverlay);
 		fishingSpots.clear();
 		minnowSpots.clear();
 		trawlerNotificationSent = false;
