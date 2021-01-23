@@ -223,7 +223,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2538, 3739, 0), new CoordinateClueInfo("Waterbirth Island. Bring a pet rock and rune thrownaxe.", BRASSICAN_MAGE))
 		.put(new WorldPoint(1248, 3751, 0), new CoordinateClueInfo("In the north wing of the Farming Guild.", BRASSICAN_MAGE))
 		.put(new WorldPoint(1698, 3792, 0), new CoordinateClueInfo("Arceuus church.", ANCIENT_WIZARDS))
-		.put(new WorldPoint(2951, 3820, 0), new CoordinateClueInfo("Wilderness. Chaos Temple (level 38).", ANCIENT_WIZARDS))
+		.put(new WorldPoint(2951, 3820, 0), new CoordinateClueInfo("Wilderness. Behind the Chaos Altar.", ANCIENT_WIZARDS))
 		.put(new WorldPoint(2202, 3825, 0), new CoordinateClueInfo("Pirates' Cove, between Lunar Isle and Rellekka.", ANCIENT_WIZARDS))
 		.put(new WorldPoint(1761, 3853, 0), new CoordinateClueInfo("Arceuus essence mine (CIS).", BRASSICAN_MAGE))
 		.put(new WorldPoint(2090, 3863, 0), new CoordinateClueInfo("South of Lunar Isle, west of Astral altar.", ANCIENT_WIZARDS))
