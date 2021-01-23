@@ -55,22 +55,76 @@ public class CrowdsourcingWoodcutting
 	private static final String INVENTORY_FULL_MESSAGE = "Your inventory is too full to hold any more logs.";
 	private static final String NEST_MESSAGE = "A bird's nest falls out of the tree";
 	private static final Set<Integer> TREE_OBJECTS = new ImmutableSet.Builder<Integer>().
+			add(ObjectID.OAK).
 			add(ObjectID.OAK_10820).
+			add(ObjectID.OAK_8467).
+			add(ObjectID.OAK_9734).
+
 			add(ObjectID.YEW).
+			add(ObjectID.YEW_TREE_8513).
+
 			add(ObjectID.TREE).
+			add(ObjectID.TREE_1277).
 			add(ObjectID.TREE_1278).
+			add(ObjectID.TREE_1279).
+			add(ObjectID.TREE_1280).
+			add(ObjectID.DEAD_TREE).
+			add(ObjectID.DEAD_TREE_1283).
+			add(ObjectID.DEAD_TREE_1284).
+			add(ObjectID.DEAD_TREE_1285).
+			add(ObjectID.DEAD_TREE_1286).
+			add(ObjectID.DEAD_TREE_1289).
+			add(ObjectID.DEAD_TREE_1290).
+			add(ObjectID.DEAD_TREE_1291).
+			add(ObjectID.EVERGREEN).
+			add(ObjectID.EVERGREEN_1319).
+			add(ObjectID.TREE_1330).
+			add(ObjectID.TREE_1331).
+			add(ObjectID.TREE_1332).
+			add(ObjectID.DEAD_TREE_1365).
+			add(ObjectID.DEAD_TREE_1383).
+			add(ObjectID.DEAD_TREE_1384).
+			add(ObjectID.EVERGREEN_2091).
+			add(ObjectID.EVERGREEN_2092).
+			add(ObjectID.TREE_2409).
+			add(ObjectID.TREE_3879).
+			add(ObjectID.TREE_3881).
+			add(ObjectID.TREE_3882).
+			add(ObjectID.TREE_3883).
+			add(ObjectID.DEAD_TREE_5902).
+			add(ObjectID.DEAD_TREE_5903).
+			add(ObjectID.DEAD_TREE_5904).
+			add(ObjectID.TREE_9730).
+			add(ObjectID.TREE_9731).
+			add(ObjectID.TREE_9732).
+			add(ObjectID.TREE_9733).
+			add(ObjectID.TREE_10041).
+			add(ObjectID.TREE_14308).
+			add(ObjectID.TREE_14309).
+			add(ObjectID.TREE_16264).
+			add(ObjectID.TREE_16265).
+			add(ObjectID.EVERGREEN_27060).
+			add(ObjectID.BURNT_TREE).
+			add(ObjectID.BURNT_TREE_30854).
+
+
 			add(ObjectID.WILLOW).
 			add(ObjectID.WILLOW_10829).
 			add(ObjectID.WILLOW_10831).
 			add(ObjectID.WILLOW_10833).
+			add(ObjectID.WILLOW_TREE_8488).
 			add(ObjectID.SCRAPEY_TREE).
 			add(ObjectID.JUNGLE_TREE_15951).
 			add(ObjectID.JUNGLE_TREE_15954).
 			add(ObjectID.JUNGLE_TREE_15948).
 			add(ObjectID.MAPLE_TREE_10832).
+			add(ObjectID.MAPLE_TREE_4674).
+			add(ObjectID.MAPLE_TREE_8444).
 			add(ObjectID.MAHOGANY).
 			add(ObjectID.TEAK).
+			add(ObjectID.TEAK_15062).
 			add(ObjectID.MAGIC_TREE_10834).
+			add(ObjectID.MAGIC_TREE_8409).
 			add(ObjectID.HOLLOW_TREE_10821).
 			add(ObjectID.HOLLOW_TREE_10830).
 			add(ObjectID.ACHEY_TREE).
