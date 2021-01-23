@@ -77,6 +77,7 @@ public class CrowdsourcingCooking
 			|| message.startsWith("You successfully bake")
 			|| message.startsWith("You manage to cook")
 			|| message.startsWith("You roast a")
+			|| message.startsWith("You spit-roast")
 			|| message.startsWith("You cook")
 			|| message.startsWith("You accidentally burn")
 			|| message.startsWith("You accidentally spoil"))
