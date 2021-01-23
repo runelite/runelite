@@ -134,6 +134,7 @@ public class CrowdsourcingWoodcutting
 			add(34633, 34635, 34637, 34639). //redwood tree patch farming guild
 			add(ObjectID.BRUMA_ROOTS).
 			add(ObjectID.ARCTIC_PINE).
+			add(ObjectID.SULLIUSCEP).
 			build();
 
 	private static final Map<Integer, Integer> AXE_ANIMS = new ImmutableMap.Builder<Integer, Integer>().
@@ -169,6 +170,7 @@ public class CrowdsourcingWoodcutting
 			add("You get a bruma root.").
 			add("You get an arctic pine log").
 			add("You get some juniper logs.").
+			add("You get some mushrooms.").
 			build();
 
 	@Inject
