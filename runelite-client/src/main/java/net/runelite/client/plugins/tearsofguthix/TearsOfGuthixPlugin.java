@@ -28,6 +28,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
@@ -35,6 +36,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -60,6 +62,12 @@ public class TearsOfGuthixPlugin extends Plugin
 
 	@Getter
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
+
+	@Provides
+	TearsOfGuthixConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(TearsOfGuthixConfig.class);
+	}
 
 	@Override
 	protected void startUp()
