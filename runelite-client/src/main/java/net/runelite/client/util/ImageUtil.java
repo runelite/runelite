@@ -395,8 +395,9 @@ public class ImageUtil
 		{
 			for (int y = 0; y < filledImage.getHeight(); y++)
 			{
-				final Color pixelColor = new Color(image.getRGB(x, y), true);
-				if (pixelColor.getAlpha() == 0)
+				int pixel = image.getRGB(x, y);
+				int a = pixel >>> 24;
+				if (a == 0)
 				{
 					continue;
 				}
