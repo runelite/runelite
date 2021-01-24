@@ -262,15 +262,7 @@ public class ColorUtil
 		}
 		else
 		{
-			int newAlpha = (int) (color.getAlpha() * alphaModifier);
-			// Clamp value to 0 - 255
-			newAlpha = Math.max(0, Math.min(newAlpha, 255));
-
-			return new Color(
-				color.getRed(),
-				color.getGreen(),
-				color.getBlue(),
-				newAlpha);
+			return colorWithAlpha(color, (int) (color.getAlpha() * alphaModifier));
 		}
 	}
 }
