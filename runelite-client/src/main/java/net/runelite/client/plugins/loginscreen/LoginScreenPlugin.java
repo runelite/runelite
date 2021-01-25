@@ -33,6 +33,15 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryIteratorException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +60,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.OSType;
 
@@ -63,7 +73,11 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 {
 	private static final int MAX_USERNAME_LENGTH = 254;
 	private static final int MAX_PIN_LENGTH = 6;
+	private static final File LOGIN_SCREEN_FOLDER = new File(RuneLite.RUNELITE_DIR, "backgrounds");
 	private static final File CUSTOM_LOGIN_SCREEN_FILE = new File(RuneLite.RUNELITE_DIR, "login.png");
+	private static List<SpritePixels> customBackgrounds = new ArrayList<SpritePixels>();
+	private Timer timer = new Timer();
+
 
 	@Inject
 	private Client client;
@@ -84,7 +98,9 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	{
 		applyUsername();
 		keyManager.registerKeyListener(this);
+		loadImages();
 		clientThread.invoke(this::overrideLoginScreen);
+		startRandom();
 	}
 
 	@Override
@@ -112,15 +128,29 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		if (event.getKey().equals("includeCustom"))
+		{
+			loadImages();
+			return;
+		}
+		if (event.getKey().equals("delay"))
+		{
+			timer.cancel();
+			startRandom();
+			return;
+		}
+
 		if (event.getGroup().equals("loginscreen"))
 		{
 			clientThread.invoke(this::overrideLoginScreen);
 		}
+
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
+
 		if (!config.syncUsername())
 		{
 			return;
@@ -154,6 +184,41 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	{
 		// configuation for the account is available now, so update the username
 		applyUsername();
+	}
+
+
+	public void startRandom()
+	{
+		if (config.delay() == 0)
+		{
+			return;
+		}
+		TimerTask doAsynchronousTask = new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				pixels = getRandom();
+				client.setLoginScreen(pixels);
+			}
+		};
+		timer = new Timer();
+		timer.schedule(doAsynchronousTask, 0, 1000 * config.delay());
+	}
+
+	public void loadImages()
+	{
+		if (config.loginScreen() == LoginScreenOverride.RANDOM)
+		{
+			for (LoginScreenOverride background : LoginScreenOverride.values())
+			{
+				if (background.getFileName() != null)
+				{
+					customBackgrounds.add(getClassPathFileSpritePixels(background.getFileName()));
+				}
+			}
+			loadCustomImages();
+		}
 	}
 
 	private void applyUsername()
@@ -199,7 +264,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	{
 		if (!config.pasteEnabled() || (
 			client.getGameState() != GameState.LOGIN_SCREEN &&
-			client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR))
+				client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR))
 		{
 			return;
 		}
@@ -249,47 +314,31 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 
 	}
 
+	private SpritePixels pixels = null;
+
 	private void overrideLoginScreen()
 	{
 		client.setShouldRenderLoginScreenFire(config.showLoginFire());
-
-		if (config.loginScreen() == LoginScreenOverride.OFF)
+		switch (config.loginScreen())
 		{
-			restoreLoginScreen();
-			return;
-		}
-
-		SpritePixels pixels = null;
-		if (config.loginScreen() == LoginScreenOverride.CUSTOM)
-		{
-			if (CUSTOM_LOGIN_SCREEN_FILE.exists())
-			{
-				try
+			case OFF:
+				restoreLoginScreen();
+				return;
+			case CUSTOM:
+				if (CUSTOM_LOGIN_SCREEN_FILE.exists())
 				{
-					BufferedImage image;
-					synchronized (ImageIO.class)
-					{
-						image = ImageIO.read(CUSTOM_LOGIN_SCREEN_FILE);
-					}
-
-					if (image.getHeight() > Constants.GAME_FIXED_HEIGHT)
-					{
-						final double scalar = Constants.GAME_FIXED_HEIGHT / (double) image.getHeight();
-						image = ImageUtil.resizeImage(image, (int) (image.getWidth() * scalar), Constants.GAME_FIXED_HEIGHT);
-					}
-					pixels = ImageUtil.getImageSpritePixels(image, client);
+					pixels = getFileSpritePixels(CUSTOM_LOGIN_SCREEN_FILE);
 				}
-				catch (IOException e)
+				break;
+			case RANDOM:
+				if (config.delay() == 0)
 				{
-					log.error("error loading custom login screen", e);
-					restoreLoginScreen();
-					return;
+					pixels = getRandom();
+					client.setLoginScreen(pixels);
 				}
-			}
-		}
-		else
-		{
-			pixels = getFileSpritePixels(config.loginScreen().getFileName());
+				break;
+			default:
+				pixels = getClassPathFileSpritePixels(config.loginScreen().getFileName());
 		}
 
 		if (pixels != null)
@@ -298,12 +347,58 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		}
 	}
 
+	private void loadCustomImages()
+	{
+
+		if (!config.showCustom())
+		{
+			return;
+		}
+
+		if (!LOGIN_SCREEN_FOLDER.exists())
+		{
+			return;
+		}
+
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(LOGIN_SCREEN_FOLDER.toPath(), "*.{png,jpg,jpeg}"))
+		{
+			for (Path entry: stream)
+			{
+				customBackgrounds.add(getFileSpritePixels(entry.toFile()));
+			}
+		}
+		catch (DirectoryIteratorException | IOException ex)
+		{
+			log.error("error loading custom images", ex);
+			restoreLoginScreen();
+			return;
+		}
+
+		if (customBackgrounds.size() > 0)
+		{
+			log.info("Loaded: " + customBackgrounds.size() + " Custom Images");
+		}
+
+	}
+
+	private SpritePixels getRandom()
+	{
+		Random random = new Random();
+		return customBackgrounds.get(random.nextInt(customBackgrounds.size()));
+	}
+
 	private void restoreLoginScreen()
 	{
 		client.setLoginScreen(null);
 	}
 
-	private SpritePixels getFileSpritePixels(String file)
+	/**
+	 * Takes the name of an image file and returns a SpritePixels object of the image data
+	 *
+	 * @param file The name of the file
+	 * @return A SpritePixels object containing the image data
+	 */
+	private SpritePixels getClassPathFileSpritePixels(String file)
 	{
 		try
 		{
@@ -318,4 +413,37 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 
 		return null;
 	}
+
+	/**
+	 * Takes an image file and returns a SpritePixels object of the image data
+	 *
+	 * @param file A File object for the image
+	 * @return A SpritePixels object containing the image data
+	 */
+	private SpritePixels getFileSpritePixels(File file)
+	{
+		try
+		{
+			BufferedImage image;
+			synchronized (ImageIO.class)
+			{
+				image = ImageIO.read(file);
+			}
+
+			if (image.getHeight() > Constants.GAME_FIXED_HEIGHT)
+			{
+				final double scalar = Constants.GAME_FIXED_HEIGHT / (double) image.getHeight();
+				image = ImageUtil.resizeImage(image, (int) (image.getWidth() * scalar), Constants.GAME_FIXED_HEIGHT);
+			}
+
+			return ImageUtil.getImageSpritePixels(image, client);
+		}
+		catch (IOException | NullPointerException e)
+		{
+			log.error("error loading custom login screen: " + file, e);
+			restoreLoginScreen();
+			return null;
+		}
+	}
+
 }

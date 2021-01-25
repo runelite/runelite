@@ -80,6 +80,26 @@ public interface LoginScreenConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "delay",
+		name = "Background delay",
+		description = "Delay of the background changing (0 = Static per Load)"
+	)
+	default int delay()
+	{
+		return 60;
+	}
+
+	@ConfigItem(
+		keyName = "includeCustom",
+		name = "Include Custom",
+		description = "Whether or not the custom images are displayed in random"
+	)
+	default boolean showCustom()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showLoginFire",
 		name = "Display Fire",
 		description = "Whether or not the fire in the braziers at the sides of the login screen should be on fire."
@@ -88,4 +108,6 @@ public interface LoginScreenConfig extends Config
 	{
 		return true;
 	}
+
+
 }
