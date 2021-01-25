@@ -27,12 +27,16 @@ package net.runelite.client.plugins.chatnotifications;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -77,7 +81,7 @@ public class ChatNotificationsPlugin extends Plugin
 
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
-	private Pattern highlightMatcher = null;
+	private final List<Pattern> highlightPatterns = new ArrayList<>();
 
 	@Provides
 	ChatNotificationsConfig provideConfig(ConfigManager configManager)
@@ -89,6 +93,13 @@ public class ChatNotificationsPlugin extends Plugin
 	public void startUp()
 	{
 		updateHighlights();
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		usernameMatcher = null;
+		highlightPatterns.clear();
 	}
 
 	@Subscribe
@@ -114,7 +125,7 @@ public class ChatNotificationsPlugin extends Plugin
 
 	private void updateHighlights()
 	{
-		highlightMatcher = null;
+		highlightPatterns.clear();
 
 		if (!config.highlightWordsString().trim().equals(""))
 		{
@@ -125,7 +136,28 @@ public class ChatNotificationsPlugin extends Plugin
 				.collect(Collectors.joining("|"));
 			// To match <word> \b doesn't work due to <> not being in \w,
 			// so match \b or \s, as well as \A and \z for beginning and end of input respectively
-			highlightMatcher = Pattern.compile("(?:\\b|(?<=\\s)|\\A)(?:" + joined + ")(?:\\b|(?=\\s)|\\z)", Pattern.CASE_INSENSITIVE);
+			highlightPatterns.add(Pattern.compile("(?:\\b|(?<=\\s)|\\A)(?:" + joined + ")(?:\\b|(?=\\s)|\\z)", Pattern.CASE_INSENSITIVE));
+		}
+
+		Splitter
+			.on("\n")
+			.omitEmptyStrings()
+			.trimResults()
+			.splitToList(config.highlightRegexString()).stream()
+			.map(ChatNotificationsPlugin::compilePattern)
+			.filter(Objects::nonNull)
+			.forEach(highlightPatterns::add);
+	}
+
+	private static Pattern compilePattern(String pattern)
+	{
+		try
+		{
+			return Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+		}
+		catch (PatternSyntaxException ex)
+		{
+			return null;
 		}
 	}
 
@@ -225,14 +257,22 @@ public class ChatNotificationsPlugin extends Plugin
 			}
 		}
 
-		if (highlightMatcher != null)
+		boolean matchesHighlight = false;
+		// Get nodeValue to store and update in between the different pattern passes
+		// The messageNode value is only set after all patterns have been processed
+		String nodeValue = messageNode.getValue();
+
+		for (Pattern pattern : highlightPatterns)
 		{
-			String nodeValue = messageNode.getValue();
-			Matcher matcher = highlightMatcher.matcher(nodeValue);
-			boolean found = false;
+			Matcher matcher = pattern.matcher(nodeValue);
+			if (!matcher.find())
+			{
+				continue;
+			}
+
 			StringBuffer stringBuffer = new StringBuffer();
 
-			while (matcher.find())
+			do
 			{
 				String value = matcher.group();
 
@@ -256,18 +296,21 @@ public class ChatNotificationsPlugin extends Plugin
 				stringBuffer.append(endColor == null ? "<col" + ChatColorType.NORMAL + ">" : endColor);
 
 				update = true;
-				found = true;
+				matchesHighlight = true;
 			}
+			while (matcher.find());
 
-			if (found)
+			// Append stringBuffer with remainder of message and update nodeValue
+			matcher.appendTail(stringBuffer);
+			nodeValue = stringBuffer.toString();
+		}
+
+		if (matchesHighlight)
+		{
+			messageNode.setValue(nodeValue);
+			if (config.notifyOnHighlight())
 			{
-				matcher.appendTail(stringBuffer);
-				messageNode.setValue(stringBuffer.toString());
-
-				if (config.notifyOnHighlight())
-				{
-					sendNotification(chatMessage);
-				}
+				sendNotification(chatMessage);
 			}
 		}
 
@@ -288,7 +331,7 @@ public class ChatNotificationsPlugin extends Plugin
 		{
 			stringBuilder.append('[').append(sender).append("] ");
 		}
-		
+
 		if (!Strings.isNullOrEmpty(name))
 		{
 			stringBuilder.append(name).append(": ");
