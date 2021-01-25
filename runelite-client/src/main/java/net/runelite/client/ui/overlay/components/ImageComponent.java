@@ -68,13 +68,15 @@ public class ImageComponent implements LayoutableRenderableEntity
 	@Override
 	public void setPreferredSize(Dimension preferredSize)
 	{
-		if (preferredSize != null && image != null)
+		boolean nulled = preferredSize == null || image == null;
+		boolean sameSize = !nulled && (preferredSize.width == image.getWidth() && preferredSize.height == image.getHeight());
+		if (nulled || sameSize)
 		{
-			scaledImage = ImageUtil.resizeImage(image, preferredSize.width, preferredSize.height);
+			scaledImage = null;
 		}
 		else
 		{
-			scaledImage = null;
+			scaledImage = ImageUtil.resizeImage(image, preferredSize.width, preferredSize.height);
 		}
 	}
 }
