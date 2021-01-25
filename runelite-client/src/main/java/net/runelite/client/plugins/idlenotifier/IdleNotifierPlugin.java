@@ -93,6 +93,8 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyPosition = false;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
+	private boolean shouldNotifyLowEnergy = false;
+	private boolean shouldNotifyHighEnergy = false;
 	private boolean notifyOxygen = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
@@ -471,6 +473,16 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
 
+		if (checkLowEnergy())
+		{
+			notifier.notify("[" + local.getName() + "] has low run energy!");
+		}
+
+		if (checkHighEnergy())
+		{
+			notifier.notify("[" + local.getName() + "] has restored run energy!");
+		}
+
 		if (checkLowOxygen())
 		{
 			notifier.notify("[" + local.getName() + "] has low oxygen!");
@@ -567,6 +579,52 @@ public class IdleNotifierPlugin extends Plugin
 			{
 				notifyPrayer = false;
 			}
+		}
+
+		return false;
+	}
+
+	private boolean checkLowEnergy()
+	{
+		if (config.getLowEnergyThreshold() >= 100)
+		{
+			return false;
+		}
+
+		if (client.getEnergy() <= config.getLowEnergyThreshold())
+		{
+			if (shouldNotifyLowEnergy)
+			{
+				shouldNotifyLowEnergy = false;
+				return true;
+			}
+		}
+		else
+		{
+			shouldNotifyLowEnergy = true;
+		}
+
+		return false;
+	}
+
+	private boolean checkHighEnergy()
+	{
+		if (config.getHighEnergyThreshold() == 0)
+		{
+			return false;
+		}
+
+		if (client.getEnergy() >= config.getHighEnergyThreshold())
+		{
+			if (shouldNotifyHighEnergy)
+			{
+				shouldNotifyHighEnergy = false;
+				return true;
+			}
+		}
+		else
+		{
+			shouldNotifyHighEnergy = true;
 		}
 
 		return false;
