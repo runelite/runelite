@@ -25,19 +25,26 @@
  */
 package net.runelite.client.plugins.friendlist;
 
+import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.ChatPlayer;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
 import net.runelite.api.Ignore;
+import net.runelite.api.MessageNode;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Friend List",
@@ -53,6 +60,15 @@ public class FriendListPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private FriendListConfig config;
+
+	@Provides
+	FriendListConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(FriendListConfig.class);
+	}
 
 	@Override
 	protected void shutDown()
@@ -109,6 +125,25 @@ public class FriendListPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onChatMessage(ChatMessage message)
+	{
+		if (message.getType() == ChatMessageType.LOGINLOGOUTNOTIFICATION && config.showWorldOnLogin())
+		{
+			MessageNode messageNode = message.getMessageNode();
+			// get the player name out of the notification
+			String name = messageNode.getValue()
+				.substring(0, messageNode.getValue().indexOf(" "));
+			ChatPlayer player = findFriend(name);
+
+			if (player != null && player.getWorld() > 0)
+			{
+				messageNode
+					.setValue(messageNode.getValue() + String.format(" (World %d)", player.getWorld()));
+			}
+		}
+	}
+
 	private void setFriendsListTitle(final String title)
 	{
 		Widget friendListTitleWidget = client.getWidget(WidgetInfo.FRIEND_CHAT_TITLE);
@@ -125,5 +160,17 @@ public class FriendListPlugin extends Plugin
 		{
 			ignoreTitleWidget.setText(title);
 		}
+	}
+
+	private ChatPlayer findFriend(String name)
+	{
+		NameableContainer<Friend> friendContainer = client.getFriendContainer();
+		if (friendContainer != null)
+		{
+			String cleanName = Text.removeTags(name);
+			return friendContainer.findByName(cleanName);
+		}
+
+		return null;
 	}
 }
