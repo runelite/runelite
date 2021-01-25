@@ -37,7 +37,7 @@ public class MenuEntry
 	 */
 	private String option;
 	/**
-	 * The target of the action (ie. Item or Actor name).
+	 * The target of the action. (ie. Item or Actor name).
 	 * <p>
 	 * If the option does not apply to any target, this field
 	 * will be set to empty string.
