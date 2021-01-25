@@ -40,6 +40,7 @@ public interface TimeTrackingConfig extends Config
 	String BOTANIST = "botanist";
 	String TIMERS = "timers";
 	String STOPWATCHES = "stopwatches";
+	String PREFER_SOONEST = "preferSoonest";
 
 	@ConfigItem(
 		keyName = "timeFormatMode",
@@ -118,6 +119,17 @@ public interface TimeTrackingConfig extends Config
 	default int timerWarningThreshold()
 	{
 		return 10;
+	}
+
+	@ConfigItem(
+		keyName = PREFER_SOONEST,
+		name = "Prefer soonest completion",
+		description = "When displaying completion times on the overview, prefer showing the soonest any patch will complete.",
+		position = 7
+	)
+	default boolean preferSoonest()
+	{
+		return false;
 	}
 
 	@ConfigItem(

@@ -51,6 +51,7 @@ import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.CONFIG_GROUP;
+import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.PREFER_SOONEST;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.STOPWATCHES;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.TIMERS;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
@@ -172,6 +173,10 @@ public class TimeTrackingPlugin extends Plugin
 		else if (clockManager.getStopwatches().isEmpty() && e.getKey().equals(STOPWATCHES))
 		{
 			clockManager.loadStopwatches();
+		}
+		else if (e.getKey().equals(PREFER_SOONEST))
+		{
+			farmingTracker.loadCompletionTimes();
 		}
 	}
 
