@@ -47,10 +47,10 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
-import net.runelite.api.FriendsChatMember;
-import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
+import net.runelite.api.FriendsChatManager;
+import net.runelite.api.FriendsChatMember;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -60,7 +60,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.PlayerMenuOptionClicked;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.widgets.WidgetInfo;
@@ -408,9 +408,9 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals(HOP_TO))
+		if (event.getMenuAction() != MenuAction.RUNELITE || !event.getMenuOption().equals(HOP_TO))
 		{
 			return;
 		}

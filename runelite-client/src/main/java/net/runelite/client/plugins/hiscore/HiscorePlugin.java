@@ -38,9 +38,10 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.PlayerMenuOptionClicked;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -174,11 +175,30 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuOption().equals(LOOKUP))
+		if ((event.getMenuAction() == MenuAction.RUNELITE || event.getMenuAction() == MenuAction.RUNELITE_PLAYER)
+			&& event.getMenuOption().equals(LOOKUP))
 		{
-			lookupPlayer(Text.removeTags(event.getMenuTarget()));
+			final String target;
+			if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER)
+			{
+				// The player id is included in the event, so we can use that to get the player name,
+				// which avoids having to parse out the combat level and any icons preceding the name.
+				Player player = client.getCachedPlayers()[event.getId()];
+				if (player == null)
+				{
+					return;
+				}
+
+				target = player.getName();
+			}
+			else
+			{
+				target = Text.removeTags(event.getMenuTarget());
+			}
+
+			lookupPlayer(target);
 		}
 	}
 

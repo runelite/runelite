@@ -34,25 +34,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcActionChanged;
-import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.util.Text;
 
 @Singleton
 @Slf4j
@@ -63,8 +59,6 @@ public class MenuManager
 	 */
 	private static final int IDX_LOWER = 4;
 	private static final int IDX_UPPER = 8;
-
-	private static final Pattern BOUNTY_EMBLEM_TAG_AND_TIER_REGEXP = Pattern.compile(String.format("%s[1-9]0?", IconID.BOUNTY_HUNTER_EMBLEM.toString()));
 
 	private final Client client;
 	private final EventBus eventBus;
@@ -235,10 +229,9 @@ public class MenuManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE
-			&& event.getMenuAction() != MenuAction.RUNELITE_PLAYER)
+		if (event.getMenuAction() != MenuAction.RUNELITE)
 		{
-			return; // not a managed widget option or custom player option
+			return;
 		}
 
 		int widgetId = event.getWidgetId();
@@ -254,23 +247,9 @@ public class MenuManager
 				customMenu.setMenuTarget(event.getMenuTarget());
 				customMenu.setWidget(curMenuOption.getWidget());
 				eventBus.post(customMenu);
-				return; // don't continue because it's not a player option
+				return;
 			}
 		}
-
-		// removes bounty hunter emblem tag and tier from player name, e.g:
-		// "username<img=20>5<col=40ff00>  (level-42)" -> "username<col=40ff00>  (level-42)"
-		String target = BOUNTY_EMBLEM_TAG_AND_TIER_REGEXP.matcher(event.getMenuTarget()).replaceAll("");
-
-		// removes tags and level from player names for example:
-		// <col=ffffff>username<col=40ff00>  (level-42) or <col=ffffff><img=2>username</col>
-		String username = Text.removeTags(target).split("[(]")[0].trim();
-
-		PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
-		playerMenuOptionClicked.setMenuOption(event.getMenuOption());
-		playerMenuOptionClicked.setMenuTarget(username);
-
-		eventBus.post(playerMenuOptionClicked);
 	}
 
 	private void addPlayerMenuItem(int playerOptionIndex, String menuText)
