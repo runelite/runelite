@@ -216,7 +216,7 @@ public class BoostsPlugin extends Plugin
 			int boost = cur - real;
 			if (boost <= boostThreshold && boostThreshold < lastBoost)
 			{
-				notifier.notify(skill.getName() + " level is getting low!");
+				notifier.notify("[" + client.getLocalPlayer().getName() + "] " + skill.getName() + " level is getting low!");
 			}
 		}
 	}
