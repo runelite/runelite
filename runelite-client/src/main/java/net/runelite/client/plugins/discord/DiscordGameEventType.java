@@ -470,7 +470,7 @@ enum DiscordGameEventType
 	private int priority;
 
 	/**
-	 * Marks this event as root event, e.g event that should be used for total time tracking
+	 * Marks this event as root event. (eg. event that should be used for total time tracking)
 	 */
 	private boolean root;
 

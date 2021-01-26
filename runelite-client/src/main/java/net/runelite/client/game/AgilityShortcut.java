@@ -237,7 +237,7 @@ public enum AgilityShortcut
 	@Getter
 	private final int level;
 	/**
-	 * Brief description of the shortcut (e.g. 'Rocks', 'Stepping Stones', 'Jump')
+	 * Brief description of the shortcut. (e.g. 'Rocks', 'Stepping Stones', 'Jump')
 	 */
 	@Getter
 	private final String description;
