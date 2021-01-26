@@ -52,7 +52,10 @@ import lombok.Setter;
 import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -180,6 +183,7 @@ public class GroundItemsPlugin extends Plugin
 	private LoadingCache<NamedQuantity, Boolean> highlightedItems;
 	private LoadingCache<NamedQuantity, Boolean> hiddenItems;
 	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
+	private int lastUsedItem;
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -194,6 +198,7 @@ public class GroundItemsPlugin extends Plugin
 		mouseManager.registerMouseListener(inputListener);
 		keyManager.registerKeyListener(inputListener);
 		executor.execute(this::reset);
+		lastUsedItem = -1;
 	}
 
 	@Override
@@ -384,6 +389,7 @@ public class GroundItemsPlugin extends Plugin
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = itemComposition.getHaPrice();
 		final boolean dropped = tile.getWorldLocation().equals(client.getLocalPlayer().getWorldLocation()) && droppedItemQueue.remove(itemId);
+		final boolean table = itemId == lastUsedItem && tile.getItemLayer().getHeight() > 0;
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -394,11 +400,10 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
-			.lootType(dropped ? LootType.DROPPED : LootType.UNKNOWN)
+			.lootType(dropped ? LootType.DROPPED : (table ? LootType.TABLE : LootType.UNKNOWN))
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())
 			.build();
-
 
 		// Update item price in case it is coins
 		if (realItemId == COINS)
@@ -686,6 +691,22 @@ public class GroundItemsPlugin extends Plugin
 			// Keep a queue of recently dropped items to better detect
 			// item spawns that are drops
 			droppedItemQueue.add(itemId);
+		}
+		else if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_USE_ON_GAME_OBJECT)
+		{
+			final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			if (inventory == null)
+			{
+				return;
+			}
+
+			final Item clickedItem = inventory.getItem(menuOptionClicked.getSelectedItemIndex());
+			if (clickedItem == null)
+			{
+				return;
+			}
+
+			lastUsedItem = clickedItem.getId();
 		}
 	}
 }
