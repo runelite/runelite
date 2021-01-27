@@ -215,7 +215,7 @@ public class ItemStatChanges
 		add(new GauntletPotion(), EGNIOL_POTION_1, EGNIOL_POTION_2, EGNIOL_POTION_3, EGNIOL_POTION_4);
 
 		// Soul Wars
-		add(combo(2, heal(HITPOINTS, perc(.20, 2)), heal(RUN_ENERGY, 100)), BANDAGES_25202);
+		add(combo(2, heal(HITPOINTS, perc(.15, 1)), heal(RUN_ENERGY, 100)), BANDAGES_25202);
 		add(combo(6, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(PRAYER, perc(.25, 8))), POTION_OF_POWER1, POTION_OF_POWER2, POTION_OF_POWER3, POTION_OF_POWER4);
 
 		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
