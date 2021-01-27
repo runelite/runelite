@@ -26,7 +26,7 @@ package net.runelite.client.menus;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Arrays;
 import java.util.Collection;
@@ -66,7 +66,7 @@ public class MenuManager
 	//Maps the indexes that are being used to the menu option.
 	private final Map<Integer, String> playerMenuIndexMap = new HashMap<>();
 	//Used to manage custom non-player menu options
-	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = HashMultimap.create();
+	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = LinkedHashMultimap.create();
 	private final Set<String> npcMenuOptions = new HashSet<>();
 
 	@Inject
@@ -117,7 +117,7 @@ public class MenuManager
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (client.getSpellSelected())
+		if (client.getSpellSelected() || event.getType() != MenuAction.CC_OP.getId())
 		{
 			return;
 		}
