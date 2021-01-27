@@ -186,6 +186,11 @@ public class LootTrackerPlugin extends Plugin
 		put(ObjectID.SILVER_CHEST_4128, "Silver key crimson").
 		put(ObjectID.SILVER_CHEST_4129, "Silver key black").
 		put(ObjectID.SILVER_CHEST_4130, "Silver key purple").
+		put(ObjectID.GOLD_CHEST, "Gold key red").
+		put(ObjectID.GOLD_CHEST_41213, "Gold key brown").
+		put(ObjectID.GOLD_CHEST_41214, "Gold key crimson").
+		put(ObjectID.GOLD_CHEST_41215, "Gold key black").
+		put(ObjectID.GOLD_CHEST_41216, "Gold key purple").
 		build();
 
 	// Hallow Sepulchre Coffin handling
