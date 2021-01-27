@@ -55,6 +55,7 @@ enum MinigameLocation
 	PYRAMID_PLUNDER("Pyramid Plunder", new WorldPoint(3288, 2787, 0)),
 	RANGING_GUILD("Ranging Guild", new WorldPoint(2671, 3419, 0)),
 	ROGUES_DEN("Rogues' Den", new WorldPoint(2905, 3537, 0)),
+	SHADES_OF_MORTTON("Shades of Mort'ton", new WorldPoint(3505, 3315, 0)),
 	SORCERESSS_GARDEN("Sorceress's Garden", new WorldPoint(3285, 3180, 0)),
 	TROUBLE_BREWING("Trouble Brewing", new WorldPoint(3811, 3021, 0)),
 	VOLCANIC_MINE("Volcanic Mine", new WorldPoint(3812, 3810, 0)),
