@@ -36,6 +36,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.Text;
 
 public class NpcMinimapOverlay extends Overlay
 {
@@ -56,7 +57,7 @@ public class NpcMinimapOverlay extends Overlay
 	{
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
+			renderNpcOverlay(graphics, npc, Text.removeTags(npc.getName()), config.getHighlightColor());
 		}
 
 		return null;
