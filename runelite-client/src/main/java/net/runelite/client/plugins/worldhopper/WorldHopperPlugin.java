@@ -64,6 +64,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -110,6 +111,9 @@ public class WorldHopperPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ConfigManager configManager;
@@ -162,7 +166,7 @@ public class WorldHopperPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			hop(true);
+			clientThread.invoke(() -> hop(true));
 		}
 	};
 	private final HotkeyListener nextKeyListener = new HotkeyListener(() -> config.nextKey())
@@ -170,7 +174,7 @@ public class WorldHopperPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			hop(false);
+			clientThread.invoke(() -> hop(false));
 		}
 	};
 
@@ -304,7 +308,7 @@ public class WorldHopperPlugin extends Plugin
 
 	void hopTo(World world)
 	{
-		hop(world.getId());
+		clientThread.invoke(() -> hop(world.getId()));
 	}
 
 	void addToFavorites(World world)
@@ -613,6 +617,8 @@ public class WorldHopperPlugin extends Plugin
 
 	private void hop(int worldId)
 	{
+		assert client.isClientThread();
+
 		WorldResult worldResult = worldService.getWorlds();
 		// Don't try to hop if the world doesn't exist
 		World world = worldResult.findWorld(worldId);
