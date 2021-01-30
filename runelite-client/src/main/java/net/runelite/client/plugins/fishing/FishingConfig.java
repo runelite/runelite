@@ -150,6 +150,14 @@ public interface FishingConfig extends Config
 
 	@ConfigItem(
 		position = 10,
+		keyName = "flyingFish",
+		name = "Flying fish notification",
+		description = "Send a notification when there is a flying fish."
+	)
+	default boolean flyingFishNotification() { return true; }
+
+	@ConfigItem(
+		position = 11,
 		keyName = "trawlerNotification",
 		name = "Trawler activity notification",
 		description = "Send a notification when fishing trawler activity drops below 15%."
@@ -160,7 +168,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "trawlerTimer",
 		name = "Trawler timer in MM:SS",
 		description = "Trawler Timer will display a more accurate timer in MM:SS format."
