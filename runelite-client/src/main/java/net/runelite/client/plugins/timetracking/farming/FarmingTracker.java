@@ -104,15 +104,6 @@ public class FarmingTracker
 			}
 		}
 
-		{
-			boolean botanist = client.getVar(Varbits.LEAGUE_RELIC_5) == 1;
-			if (!Boolean.valueOf(botanist).equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BOTANIST, Boolean.class)))
-			{
-				configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BOTANIST, botanist);
-				changed = true;
-			}
-		}
-
 		Collection<FarmingRegion> newRegions = farmingWorld.getRegionsForLocation(location);
 
 		if (!newRegions.equals(lastRegions))
@@ -264,9 +255,6 @@ public class FarmingTracker
 		boolean autoweed = Integer.toString(Autoweed.ON.ordinal())
 			.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.AUTOWEED));
 
-		boolean botanist = Boolean.TRUE
-			.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BOTANIST, Boolean.class));
-
 		String key = patch.getRegion().getRegionID() + "." + patch.getVarbit().getId();
 		String storedValue = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);
 
@@ -313,11 +301,6 @@ public class FarmingTracker
 			stage = 0;
 			stages = 1;
 			tickrate = 0;
-		}
-
-		if (botanist)
-		{
-			tickrate /= 5;
 		}
 
 		long doneEstimate = 0;
