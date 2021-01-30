@@ -34,6 +34,7 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.ui.FontManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -82,6 +83,7 @@ public class BarrowsBrotherSlainOverlay extends OverlayPanel
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(brother.getName())
 				.right(slain)
+				.rightFont(FontManager.getDefaultFont())
 				.rightColor(brotherSlain ? Color.GREEN : Color.RED)
 				.build());
 		}

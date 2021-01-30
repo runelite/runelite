@@ -41,6 +41,7 @@ import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollecti
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.RangeItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -134,6 +135,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 				.left(requirement.getCollectiveName(plugin.getClient()))
 				.leftColor(TITLED_CONTENT_COLOR)
 				.right(inventoryFulfilled ? "\u2713" : "\u2717")
+				.rightFont(FontManager.getDefaultFont())
 				.rightColor(inventoryFulfilled ? Color.GREEN : Color.RED)
 				.build());
 		}

@@ -45,6 +45,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
@@ -53,7 +54,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
-import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -258,6 +259,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("STASH Unit:")
 					.right(stashUnitBuilt ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
+					.rightFont(FontManager.getDefaultFont())
 					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
 					.build());
 			}
@@ -292,6 +294,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 					.left(requirement.getCollectiveName(client))
 					.leftColor(TITLED_CONTENT_COLOR)
 					.right(combinedFulfilled ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
+					.rightFont(FontManager.getDefaultFont())
 					.rightColor(equipmentFulfilled ? Color.GREEN : (combinedFulfilled ? Color.ORANGE : Color.RED))
 					.build());
 			}
