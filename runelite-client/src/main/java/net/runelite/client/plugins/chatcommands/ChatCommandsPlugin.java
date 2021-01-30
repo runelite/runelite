@@ -55,6 +55,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
+import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.GENERIC_SCROLL_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -71,6 +72,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.chat.Cats;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -112,6 +114,8 @@ public class ChatCommandsPlugin extends Plugin
 		"(?:<br>Overall time: <col=ff0000>(?<otime>[0-9:]+)</col>(?: \\(new personal best\\)|. Personal best: (?<opb>[0-9:]+)))?");
 	private static final Pattern HS_KC_FLOOR_PATTERN = Pattern.compile("You have completed Floor (\\d) of the Hallowed Sepulchre! Total completions: <col=ff0000>(\\d+)</col>\\.");
 	private static final Pattern HS_KC_GHC_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin <col=ff0000>(\\d+)</col> times?!");
+	private static final Pattern CAT_TRADED_PATTERN = Pattern.compile("You hand over the cat\\.<br>You are given (\\d+) Death Runes\\.");
+	private static final Pattern KITTEN_RAN_AWAY_PATTERN = Pattern.compile("Your kitten got lonely and ran off\\.|Your kitten has run away to look for food\\.");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -128,6 +132,11 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String DUEL_ARENA_COMMAND = "!duels";
 	private static final String LEAGUE_POINTS_COMMAND = "!lp";
 	private static final String SOUL_WARS_ZEAL_COMMAND = "!sw";
+	private static final String CATS_TRADED_COMMAND = "!cats";
+
+	private static final String CATS_KC_NAME = "Traded Cats";
+	private static final String CATS_RUNES_KC_NAME = "Death Runes From Trading Cats";
+	private static final String LOST_KITTENS_KC_NAME = "Lost Kittens";
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -135,6 +144,7 @@ public class ChatCommandsPlugin extends Plugin
 	private boolean bossLogLoaded;
 	private boolean advLogLoaded;
 	private boolean scrollInterfaceLoaded;
+	private boolean dialogSpriteLoaded;
 	private String pohOwner;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
@@ -194,6 +204,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(GC_COMMAND_STRING, this::gambleCountLookup, this::gambleCountSubmit);
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
+		chatCommandManager.registerCommandAsync(CATS_TRADED_COMMAND, this::catsCountLookup, this::catsCountSubmit);
 	}
 
 	@Override
@@ -414,6 +425,12 @@ public class ChatCommandsPlugin extends Plugin
 			}
 		}
 
+		matcher = KITTEN_RAN_AWAY_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			setKc(LOST_KITTENS_KC_NAME, Math.max(0, getKc(LOST_KITTENS_KC_NAME) + 1));
+		}
+
 		matcher = HS_KC_FLOOR_PATTERN.matcher(message);
 		if (matcher.find())
 		{
@@ -554,6 +571,12 @@ public class ChatCommandsPlugin extends Plugin
 				}
 			}
 		}
+
+		if (dialogSpriteLoaded)
+		{
+			dialogSpriteLoaded = false;
+			checkTradedCats();
+		}
 	}
 
 	@Subscribe
@@ -569,6 +592,9 @@ public class ChatCommandsPlugin extends Plugin
 				break;
 			case GENERIC_SCROLL_GROUP_ID:
 				scrollInterfaceLoaded = true;
+				break;
+			case DIALOG_SPRITE_GROUP_ID:
+				dialogSpriteLoaded = true;
 				break;
 		}
 	}
@@ -620,6 +646,28 @@ public class ChatCommandsPlugin extends Plugin
 		});
 
 		return true;
+	}
+
+	private void checkTradedCats()
+	{
+		Widget dialog = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+		if (dialog == null)
+		{
+			return;
+		}
+
+		String text = dialog.getText();
+		if (text != null)
+		{
+			Matcher matcher = CAT_TRADED_PATTERN.matcher(text);
+			if (matcher.find())
+			{
+				int runes = Integer.parseInt(matcher.group(1));
+
+				setKc(CATS_KC_NAME, Math.max(0, getKc(CATS_KC_NAME)) + 1);
+				setKc(CATS_RUNES_KC_NAME, Math.max(0, getKc(CATS_RUNES_KC_NAME)) + runes);
+			}
+		}
 	}
 
 	private void killCountLookup(ChatMessage chatMessage, String message)
@@ -1442,6 +1490,89 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			log.warn("error looking up clues", ex);
 		}
+	}
+
+	private boolean catsCountSubmit(ChatInput chatInput, String value)
+	{
+		final int catsTraded = getKc(CATS_KC_NAME);
+		final int runesObtained = getKc(CATS_RUNES_KC_NAME);
+		final int lostKittens = getKc(LOST_KITTENS_KC_NAME);
+
+		if (catsTraded <= 0 && runesObtained <= 0)
+		{
+			return false;
+		}
+
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.sumbitCats(playerName, catsTraded, runesObtained, lostKittens);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit cats", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
+	}
+
+	private void catsCountLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.cats())
+		{
+			return;
+		}
+
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type == ChatMessageType.PRIVATECHATOUT)
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = Text.sanitize(chatMessage.getName());
+		}
+
+		Cats cats;
+		try
+		{
+			cats = chatClient.getCats(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup cats", ex);
+			return;
+		}
+
+		final int catsTraded = cats.getCatsTraded();
+		final int runesObtained = cats.getRunesObtained();
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Cats traded: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(catsTraded))
+			.append(ChatColorType.NORMAL)
+			.append("   Total Death Runes: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(runesObtained))
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
 	}
 
 	/**

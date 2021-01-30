@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import net.runelite.http.api.chat.Cats;
 import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.chat.Task;
 import net.runelite.http.api.chat.Duels;
@@ -199,6 +200,44 @@ public class ChatService
 		try (Jedis jedis = jedisPool.getResource())
 		{
 			jedis.hmset(key, duelsMap);
+			jedis.expire(key, (int) EXPIRE.getSeconds());
+		}
+	}
+
+	public Cats getCats(String name)
+	{
+		Map<String, String> map;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			map = jedis.hgetAll("cats." + name);
+		}
+
+		if (map.isEmpty())
+		{
+			return null;
+		}
+
+		Cats cats = new Cats();
+		cats.setCatsTraded(Integer.parseInt(map.get("catsTraded")));
+		cats.setRunesObtained(Integer.parseInt(map.get("runesObtained")));
+		cats.setLostKittens(Integer.parseInt(map.get("lostKittens")));
+		return cats;
+	}
+
+	public void setCats(String name, Cats cats)
+	{
+		Map<String, String> catsMap = ImmutableMap.<String, String>builderWithExpectedSize(3)
+			.put("catsTraded", Integer.toString(cats.getCatsTraded()))
+			.put("runesObtained", Integer.toString(cats.getCatsTraded()))
+			.put("lostKittens", Integer.toString(cats.getLostKittens()))
+			.build();
+
+		String key = "cats." + name;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.hmset(key, catsMap);
 			jedis.expire(key, (int) EXPIRE.getSeconds());
 		}
 	}

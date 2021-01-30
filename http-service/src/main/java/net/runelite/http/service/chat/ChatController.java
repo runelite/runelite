@@ -29,6 +29,7 @@ import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.runelite.http.api.chat.Cats;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.chat.Task;
@@ -222,6 +223,36 @@ public class ChatController
 			throw new NotFoundException();
 		}
 		return duels;
+	}
+
+	@PostMapping("/cats")
+	public void submitCats(@RequestParam String name,
+							@RequestParam int catsTraded,
+							@RequestParam int runesObtained,
+							@RequestParam int lostKittens)
+	{
+		if (catsTraded < 0 || runesObtained < 0 || lostKittens < 0)
+		{
+			return;
+		}
+
+		Cats cats = new Cats();
+		cats.setCatsTraded(catsTraded);
+		cats.setRunesObtained(runesObtained);
+		cats.setLostKittens(lostKittens);
+
+		chatService.setCats(name, cats);
+	}
+
+	@GetMapping("/cats")
+	public Cats getCats(@RequestParam String name)
+	{
+		Cats cats = chatService.getCats(name);
+		if (cats == null)
+		{
+			throw new NotFoundException();
+		}
+		return cats;
 	}
 
 	@PostMapping("/layout")

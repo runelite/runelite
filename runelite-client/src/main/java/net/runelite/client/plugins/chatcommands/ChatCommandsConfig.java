@@ -179,6 +179,17 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 13,
+		keyName = "cats",
+		name = "Cats Command",
+		description = "Configures whether the Cats command is enabled<br> !cats"
+	)
+	default boolean cats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 14,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",
 		description = "Enable hot key to clear single word at a time"
@@ -189,7 +200,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 15,
 		keyName = "clearEntireChatBox",
 		name = "Clear Chat Box",
 		description = "Enable hotkey to clear entire chat box"
