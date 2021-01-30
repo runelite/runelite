@@ -230,6 +230,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(GC_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 		chatCommandManager.unregisterCommand(SOUL_WARS_ZEAL_COMMAND);
+		chatCommandManager.unregisterCommand(CATS_TRADED_COMMAND);
 	}
 
 	@Provides
