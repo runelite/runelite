@@ -154,7 +154,10 @@ public interface FishingConfig extends Config
 		name = "Flying fish notification",
 		description = "Send a notification when there is a flying fish."
 	)
-	default boolean flyingFishNotification() { return true; }
+	default boolean flyingFishNotification()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		position = 11,
