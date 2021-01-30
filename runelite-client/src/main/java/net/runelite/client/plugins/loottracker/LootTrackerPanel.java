@@ -85,6 +85,10 @@ class LootTrackerPanel extends PluginPanel
 	private static final ImageIcon INVISIBLE_ICON_HOVER;
 	private static final ImageIcon COLLAPSE_ICON;
 	private static final ImageIcon EXPAND_ICON;
+	private static final ImageIcon SESSION_ONLY_ICON;
+	private static final ImageIcon SESSION_ONLY_ICON_HOVER;
+	private static final ImageIcon ARCHIVE_ICON;
+	private static final ImageIcon ARCHIVE_ICON_HOVER;
 
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -113,6 +117,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JRadioButton singleLootBtn = new JRadioButton();
 	private final JRadioButton groupedLootBtn = new JRadioButton();
 	private final JButton collapseBtn = new JButton();
+	private final JButton sessionOnlyBtn = new JButton();
 
 	// Aggregate of all kills
 	private final List<LootTrackerRecord> aggregateRecords = new ArrayList<>();
@@ -128,6 +133,7 @@ class LootTrackerPanel extends PluginPanel
 	private boolean hideIgnoredItems;
 	private String currentView;
 	private LootRecordType currentType;
+	private boolean sessionOnly;
 
 	static
 	{
@@ -138,6 +144,8 @@ class LootTrackerPanel extends PluginPanel
 		final BufferedImage invisibleImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "invisible_icon.png");
 		final BufferedImage collapseImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "collapsed.png");
 		final BufferedImage expandedImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "expanded.png");
+		final BufferedImage sessionOnlyIcon = ImageUtil.loadImageResource(LootTrackerPlugin.class, "session_only_icon.png");
+		final BufferedImage archiveIcon = ImageUtil.loadImageResource(LootTrackerPlugin.class, "archive_icon.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
 		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));
@@ -158,6 +166,12 @@ class LootTrackerPanel extends PluginPanel
 
 		COLLAPSE_ICON = new ImageIcon(collapseImg);
 		EXPAND_ICON = new ImageIcon(expandedImg);
+
+		SESSION_ONLY_ICON = new ImageIcon(sessionOnlyIcon);
+		SESSION_ONLY_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(sessionOnlyIcon, -220));
+
+		ARCHIVE_ICON = new ImageIcon(archiveIcon);
+		ARCHIVE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(archiveIcon, -220));
 	}
 
 	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
@@ -273,6 +287,22 @@ class LootTrackerPanel extends PluginPanel
 		overallInfo.add(overallGpLabel);
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
+
+		SwingUtil.removeButtonDecorations(sessionOnlyBtn);
+		sessionOnlyBtn.setIcon(ARCHIVE_ICON);
+		sessionOnlyBtn.setRolloverIcon(ARCHIVE_ICON_HOVER);
+		sessionOnlyBtn.setSelectedIcon(SESSION_ONLY_ICON);
+		sessionOnlyBtn.setRolloverSelectedIcon(SESSION_ONLY_ICON_HOVER);
+		sessionOnlyBtn.setUI(new BasicToggleButtonUI());
+		sessionOnlyBtn.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		SwingUtil.addModalTooltip(sessionOnlyBtn, "Only showing loot from this session", "Showing all loot");
+		sessionOnlyBtn.addActionListener(e ->
+		{
+			sessionOnly = !sessionOnlyBtn.isSelected();
+			sessionOnlyBtn.setSelected(sessionOnly);
+			rebuild();
+		});
+		overallPanel.add(sessionOnlyBtn, BorderLayout.EAST);
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
@@ -453,7 +483,10 @@ class LootTrackerPanel extends PluginPanel
 
 		if (groupLoot)
 		{
-			aggregateRecords.forEach(this::buildBox);
+			if (!sessionOnly)
+			{
+				aggregateRecords.forEach(this::buildBox);
+			}
 			sessionRecords.forEach(this::buildBox);
 		}
 		else
@@ -608,7 +641,7 @@ class LootTrackerPanel extends PluginPanel
 		long overallHa = 0;
 
 		Iterable<LootTrackerRecord> records = sessionRecords;
-		if (groupLoot)
+		if (groupLoot && !sessionOnly)
 		{
 			records = concat(aggregateRecords, sessionRecords);
 		}
