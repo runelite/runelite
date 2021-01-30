@@ -484,6 +484,10 @@ public class ClueScrollPlugin extends Plugin
 		{
 			resetClue(true);
 		}
+		else if (state == GameState.HOPPING)
+		{
+			namedObjectCheckThisTick = true;
+		}
 	}
 
 	@Subscribe
@@ -550,6 +554,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// Load the current plane's tiles if a tick has elapsed since the player has changed planes
+		// or upon reaching a logged in state after hopping worlds
 		if (namedObjectCheckThisTick)
 		{
 			namedObjectCheckThisTick = false;
