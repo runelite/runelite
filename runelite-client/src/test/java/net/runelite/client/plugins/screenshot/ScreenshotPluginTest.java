@@ -57,6 +57,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -67,7 +68,8 @@ public class ScreenshotPluginTest
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
 	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
 	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
-	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
+	private static final String NOT_SO_VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
+	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: Rune scimitar (25,600 coins)</col>";
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
 	private static final String BA_HIGH_GAMBLE_REWARD = "Raw shark (x 300)!<br>High level gamble count: <col=7f0000>100</col>";
 	private static final String HUNTER_LEVEL_2_TEXT = "<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.";
@@ -121,6 +123,7 @@ public class ScreenshotPluginTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(screenshotConfig.screenshotLevels()).thenReturn(true);
 		when(screenshotConfig.screenshotValuableDrop()).thenReturn(true);
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(1000);
 		when(screenshotConfig.screenshotUntradeableDrop()).thenReturn(true);
 	}
 
@@ -162,9 +165,29 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
+	public void testNotSoValuableDrop()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", NOT_SO_VALUABLE_DROP, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verifyNoInteractions(drawManager);
+
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
 	public void testValuableDrop()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", VALUABLE_DROP, null, 0);
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(100_000);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verifyNoInteractions(drawManager);
+
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(1000);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(drawManager).requestNextFrameListener(any(Consumer.class));
