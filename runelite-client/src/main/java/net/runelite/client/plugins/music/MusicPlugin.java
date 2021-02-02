@@ -474,7 +474,7 @@ public class MusicPlugin extends Plugin
 				sliderTooltip = new Tooltip(channel.getName() + ": " + percent + "%");
 			};
 
-			handle.setOnMouseRepeatListener(setSliderTooltip);
+			handle.setNoClickThrough(false);
 			handle.setOnDragListener((JavaScriptCallback) this::drag);
 			handle.setOnDragCompleteListener((JavaScriptCallback) this::drag);
 			handle.setHasListener(true);
