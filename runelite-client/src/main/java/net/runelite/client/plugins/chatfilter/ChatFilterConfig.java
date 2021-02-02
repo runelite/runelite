@@ -156,7 +156,7 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "maxRepeatedPublicChats",
-		name = "Max repeated public chats",
+		name = "Repeat filter",
 		description = "Block player chat message if repeated this many times. 0 is off",
 		position = 11
 	)

@@ -101,11 +101,14 @@ public class SlayerPluginTest
 
 	private static final String REWARD_POINTS = "Reward points: 17,566";
 
-	private static final String TASK_ONE = "You've completed one task; return to a Slayer master.";
-	private static final String TASK_COMPLETE_NO_POINTS = "<col=ef1020>You've completed 3 tasks; return to a Slayer master.</col>";
-	private static final String TASK_POINTS = "You've completed 9 tasks and received 0 points, giving you a total of 18,000; return to a Slayer master.";
-	private static final String TASK_LARGE_STREAK = "You've completed 2,465 tasks and received 15 points, giving you a total of 17,566,000; return to a Slayer master.";
-	private static final String TASK_COMPETE_TURAEL = "You've completed 104 tasks. You'll be eligible to earn reward points if you complete tasks from a more advanced Slayer Master.";
+	private static final String TASK_ONE = "<col=ef1020>You've completed </col>1 task<col=ef1020> and will need</col> 4 more <col=ef1020>before you start receiving Slayer points; return to a Slayer master.</col>";
+	private static final String TASK_COMPLETE_NO_POINTS = "<col=ef1020>You've completed </col>3 tasks<col=ef1020> and will need </col>2 more<col=ef1020> before you start receiving Slayer points; return to a Slayer master.";
+	private static final String TASK_POINTS = "<col=ef1020>You've completed </col>9 tasks <col=ef1020>and received </col>10 points<col=ef1020>, giving you a total of </col>18,000<col=ef1020>; return to a Slayer master.";
+	private static final String TASK_LARGE_STREAK = "<col=ef1020>You've completed </col>2,465 tasks <col=ef1020>and received </col>15 points<col=ef1020>, giving you a total of </col>131,071<col=ef1020>; return to a Slayer master.";
+	private static final String TASK_COMPETE_TURAEL = "<col=ef1020>You've completed </col>104 tasks <col=ef1020>. You'll be eligible to earn reward points if you complete tasks from a more advanced Slayer Master.";
+	private static final String TASK_MAX_STREAK = "<col=ef1020>You've completed at least </col>16,000 tasks <col=ef1020>and received </col>15 points<col=ef1020>, giving you a total of </col>131,071<col=ef1020>; return to a Slayer master.";
+	private static final String TASK_MAX_POINTS = "<col=ef1020>You've completed </col>9 tasks <col=ef1020>and reached the maximum amount of Slayer points </col>(131,071)<col=ef1020>; return to a Slayer master.";
+	private static final String TASK_WILDERNESS = "<col=ef1020>You've completed </col>9 Wilderness tasks <col=ef1020>and received </col>10 points<col=ef1020>, giving you a total of </col>18,000<col=ef1020>; return to a Slayer master.";
 
 	private static final String TASK_COMPLETE = "You need something new to hunt.";
 	private static final String TASK_CANCELED = "Your task has been cancelled.";
@@ -483,7 +486,7 @@ public class SlayerPluginTest
 		verify(slayerConfig).streak(2465);
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
-		verify(slayerConfig).points(17_566_000);
+		verify(slayerConfig).points(131_071);
 	}
 
 	@Test
@@ -493,6 +496,42 @@ public class SlayerPluginTest
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		verify(slayerConfig).streak(104);
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testTaskMaxStreak()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", TASK_MAX_STREAK, null, 0);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		verify(slayerConfig).streak(16_000);
+		verify(slayerConfig).points(131_071);
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testTaskMaxPoints()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", TASK_MAX_POINTS, null, 0);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		verify(slayerConfig).streak(9);
+		verify(slayerConfig).points(131_071);
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testTaskWilderness()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", TASK_WILDERNESS, null, 0);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		verify(slayerConfig).streak(9);
+		verify(slayerConfig).points(18_000);
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
 	}

@@ -93,6 +93,8 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyPosition = false;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
+	private boolean shouldNotifyLowEnergy = false;
+	private boolean shouldNotifyHighEnergy = false;
 	private boolean notifyOxygen = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
@@ -136,6 +138,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_RUNE:
 			case WOODCUTTING_GILDED:
 			case WOODCUTTING_DRAGON:
+			case WOODCUTTING_DRAGON_OR:
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
 			case WOODCUTTING_CRYSTAL:
@@ -197,10 +200,10 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_HARPOON:
 			case FISHING_BARBTAIL_HARPOON:
 			case FISHING_DRAGON_HARPOON:
+			case FISHING_DRAGON_HARPOON_OR:
 			case FISHING_INFERNAL_HARPOON:
 			case FISHING_CRYSTAL_HARPOON:
 			case FISHING_TRAILBLAZER_HARPOON:
-			case FISHING_TRAILBLAZER_HARPOON_2:
 			case FISHING_OILY_ROD:
 			case FISHING_KARAMBWAN:
 			case FISHING_BAREHAND:
@@ -223,6 +226,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_DRAGON_PICKAXE:
 			case MINING_DRAGON_PICKAXE_UPGRADED:
 			case MINING_DRAGON_PICKAXE_OR:
+			case MINING_DRAGON_PICKAXE_OR_TRAILBLAZER:
 			case MINING_INFERNAL_PICKAXE:
 			case MINING_3A_PICKAXE:
 			case MINING_CRYSTAL_PICKAXE:
@@ -243,6 +247,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_DRAGON:
 			case MINING_MOTHERLODE_DRAGON_UPGRADED:
 			case MINING_MOTHERLODE_DRAGON_OR:
+			case MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER:
 			case MINING_MOTHERLODE_INFERNAL:
 			case MINING_MOTHERLODE_3A:
 			case MINING_MOTHERLODE_CRYSTAL:
@@ -468,6 +473,16 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
 
+		if (checkLowEnergy())
+		{
+			notifier.notify("[" + local.getName() + "] has low run energy!");
+		}
+
+		if (checkHighEnergy())
+		{
+			notifier.notify("[" + local.getName() + "] has restored run energy!");
+		}
+
 		if (checkLowOxygen())
 		{
 			notifier.notify("[" + local.getName() + "] has low oxygen!");
@@ -564,6 +579,52 @@ public class IdleNotifierPlugin extends Plugin
 			{
 				notifyPrayer = false;
 			}
+		}
+
+		return false;
+	}
+
+	private boolean checkLowEnergy()
+	{
+		if (config.getLowEnergyThreshold() >= 100)
+		{
+			return false;
+		}
+
+		if (client.getEnergy() <= config.getLowEnergyThreshold())
+		{
+			if (shouldNotifyLowEnergy)
+			{
+				shouldNotifyLowEnergy = false;
+				return true;
+			}
+		}
+		else
+		{
+			shouldNotifyLowEnergy = true;
+		}
+
+		return false;
+	}
+
+	private boolean checkHighEnergy()
+	{
+		if (config.getHighEnergyThreshold() == 0)
+		{
+			return false;
+		}
+
+		if (client.getEnergy() >= config.getHighEnergyThreshold())
+		{
+			if (shouldNotifyHighEnergy)
+			{
+				shouldNotifyHighEnergy = false;
+				return true;
+			}
+		}
+		else
+		{
+			shouldNotifyHighEnergy = true;
 		}
 
 		return false;

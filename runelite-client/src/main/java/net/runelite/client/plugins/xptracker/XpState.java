@@ -159,8 +159,8 @@ class XpState
 	}
 
 	/**
-	 * Update number of actions performed for skill (e.g amount of kills in this case) if last interacted
-	 * NPC died
+	 * Update number of actions performed for skill if last interacted NPC died.
+	 * (eg. amount of kills in this case)
 	 * @param skill skill to update actions for
 	 * @param npc npc that just died
 	 * @param npcHealth max health of npc that just died

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.idlenotifier;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("idlenotifier")
@@ -90,7 +91,7 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "hitpoints",
-		name = "Hitpoints Notification Threshold",
+		name = "Hitpoints Threshold",
 		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
 		position = 6
 	)
@@ -101,7 +102,7 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "prayer",
-		name = "Prayer Notification Threshold",
+		name = "Prayer Threshold",
 		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
 		position = 7
 	)
@@ -111,9 +112,35 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "lowEnergy",
+		name = "Low Energy Threshold",
+		description = "The amount of energy points remaining to send a notification at. A value of 100 will disable notification.",
+		position = 8
+	)
+	@Units(Units.PERCENT)
+	@Range(max = 100)
+	default int getLowEnergyThreshold()
+	{
+		return 100;
+	}
+
+	@ConfigItem(
+		keyName = "highEnergy",
+		name = "High Energy Threshold",
+		description = "The amount of energy points reached to send a notification. A value of 0 will disable notification.",
+		position = 9
+	)
+	@Units(Units.PERCENT)
+	@Range(max = 100)
+	default int getHighEnergyThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
 		keyName = "oxygen",
-		name = "Oxygen Notification Threshold",
-		position = 8,
+		name = "Oxygen Threshold",
+		position = 10,
 		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification."
 	)
 	@Units(Units.PERCENT)
@@ -124,9 +151,9 @@ public interface IdleNotifierConfig extends Config
 
 	@ConfigItem(
 		keyName = "spec",
-		name = "Special Attack Energy Notification Threshold",
-		position = 9,
-		description = "The amount of spec energy reached to send a notification at. A value of 0 will disable notification."
+		name = "Spec Threshold",
+		position = 11,
+		description = "The amount of special attack energy reached to send a notification at. A value of 0 will disable notification."
 	)
 	@Units(Units.PERCENT)
 	default int getSpecEnergyThreshold()

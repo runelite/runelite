@@ -227,6 +227,10 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final String CASKET_EVENT = "Casket";
 
+	// Soul Wars
+	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
+	private static final Set<Integer> SOUL_WARS_REGIONS = ImmutableSet.of(8493, 8749, 9005);
+
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
 	@Inject
@@ -363,7 +367,7 @@ public class LootTrackerPlugin extends Plugin
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Loot Tracker")
@@ -487,8 +491,8 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
-		// Ignore Last Man Standing player loots
-		if (isPlayerWithinMapRegion(LAST_MAN_STANDING_REGIONS))
+		// Ignore Last Man Standing and Soul Wars player loots
+		if (isPlayerWithinMapRegion(LAST_MAN_STANDING_REGIONS) || isPlayerWithinMapRegion(SOUL_WARS_REGIONS))
 		{
 			return;
 		}
@@ -741,7 +745,7 @@ public class LootTrackerPlugin extends Plugin
 				return;
 			}
 
-			setEvent(LootRecordType.EVENT, type, client.getRealSkillLevel(Skill.HUNTER));
+			setEvent(LootRecordType.EVENT, type, client.getBoostedSkillLevel(Skill.HUNTER));
 			takeInventorySnapshot();
 		}
 	}
@@ -763,6 +767,7 @@ public class LootTrackerPlugin extends Plugin
 			|| SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
 			|| BIRDNEST_EVENT.equals(eventType)
+			|| SPOILS_OF_WAR_EVENT.equals(eventType)
 			|| eventType.endsWith("Bird House")
 			|| eventType.startsWith("H.A.M. chest")
 			|| lootRecordType == LootRecordType.PICKPOCKET)
@@ -799,13 +804,19 @@ public class LootTrackerPlugin extends Plugin
 
 		if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
 		{
-			setEvent(LootRecordType.EVENT, BIRDNEST_EVENT);
+			setEvent(LootRecordType.EVENT, BIRDNEST_EVENT, event.getId());
 			takeInventorySnapshot();
 		}
 
 		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.CASKET)
 		{
 			setEvent(LootRecordType.EVENT, CASKET_EVENT);
+			takeInventorySnapshot();
+		}
+
+		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.SPOILS_OF_WAR)
+		{
+			setEvent(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT);
 			takeInventorySnapshot();
 		}
 	}

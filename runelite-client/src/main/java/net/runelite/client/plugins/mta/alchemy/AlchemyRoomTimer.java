@@ -48,7 +48,7 @@ public class AlchemyRoomTimer extends Timer
 			return image;
 		}
 
-		image = ImageUtil.getResourceStreamFromClass(AlchemyRoomTimer.class, "/util/reset.png");
+		image = ImageUtil.loadImageResource(AlchemyRoomTimer.class, "/util/reset.png");
 
 		return image;
 	}

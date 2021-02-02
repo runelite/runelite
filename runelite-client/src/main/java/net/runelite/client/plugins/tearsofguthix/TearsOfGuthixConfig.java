@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, cgati <https://github.com/cgati>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.tearsofguthix;
 
-import lombok.Data;
-import net.runelite.api.widgets.Widget;
+import java.awt.Color;
+import net.runelite.client.config.Alpha;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.util.ColorUtil;
 
-/**
- * An event where the hidden state of a {@link Widget} has been modified.
- */
-@Data
-public class WidgetHiddenChanged
+@ConfigGroup("tearsofguthix")
+public interface TearsOfGuthixConfig extends Config
 {
-	/**
-	 * The affected widget.
-	 */
-	private Widget widget;
-	/**
-	 * The new hidden state of the widget.
-	 */
-	private boolean hidden;
+	@ConfigItem(
+		keyName = "showGreenTearsTimer",
+		name = "Enable Green Tears Timer",
+		description = "Configures whether to display a timer for green tears or not",
+		position = 1
+	)
+	default boolean showGreenTearsTimer()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "blueTearsColor",
+		name = "Blue Tears Color",
+		description = "Color of Blue Tears timer",
+		position = 2
+	)
+	default Color getBlueTearsColor()
+	{
+		return ColorUtil.colorWithAlpha(Color.CYAN, 100);
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "greenTearsColor",
+		name = "Green Tears Color",
+		description = "Color of Green Tears timer",
+		position = 3
+	)
+	default Color getGreenTearsColor()
+	{
+		return ColorUtil.colorWithAlpha(Color.GREEN, 100);
+	}
+
 }

@@ -680,7 +680,7 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_DROP)
+		if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_FIFTH_OPTION)
 		{
 			int itemId = menuOptionClicked.getId();
 			// Keep a queue of recently dropped items to better detect

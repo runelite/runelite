@@ -23,16 +23,63 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.worldmap;
+package net.runelite.client.plugins.zalcano;
 
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import net.runelite.client.ui.overlay.OverlayPanel;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.LineComponent;
 
-class MiningSitePoint extends WorldMapPoint
+class ZalcanoPanel extends OverlayPanel
 {
-	MiningSitePoint(MiningSiteLocation point, BufferedImage icon)
+	private final ZalcanoPlugin plugin;
+
+	@Inject
+	public ZalcanoPanel(ZalcanoPlugin plugin)
 	{
-		super(point.getLocation(), icon);
-		setTooltip(point.getTooltip());
+		super(plugin);
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
+		this.plugin = plugin;
+	}
+
+	@Override
+	public Dimension render(Graphics2D g)
+	{
+		if (!plugin.isInCavern())
+		{
+			return null;
+		}
+
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Health damage:")
+			.leftColor(colorFromCount(plugin.getHealthDamage()))
+			.right(Integer.toString(plugin.getHealthDamage()))
+			.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Shield damage:")
+			.leftColor(colorFromCount(plugin.getShieldDamage()))
+			.right(Integer.toString(plugin.getShieldDamage()))
+			.build());
+
+		return super.render(g);
+	}
+
+	private static Color colorFromCount(int damage)
+	{
+		if (damage >= 50)
+		{
+			// Eligible for uniques/pet
+			return Color.GREEN;
+		}
+		if (damage >= 30)
+		{
+			// Eligible for drops
+			return Color.YELLOW;
+		}
+		return Color.RED;
 	}
 }

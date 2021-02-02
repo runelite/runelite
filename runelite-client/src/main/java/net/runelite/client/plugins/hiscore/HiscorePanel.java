@@ -206,7 +206,7 @@ public class HiscorePanel extends PluginPanel
 
 		for (HiscoreEndpoint endpoint : ENDPOINTS)
 		{
-			final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), endpoint.name().toLowerCase() + ".png");
+			final BufferedImage iconImage = ImageUtil.loadImageResource(getClass(), endpoint.name().toLowerCase() + ".png");
 
 			MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), tabGroup, null);
 			tab.setToolTipText(endpoint.getName() + " Hiscores");
@@ -282,6 +282,7 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.add(makeHiscorePanel(CLUE_SCROLL_ALL));
 		minigamePanel.add(makeHiscorePanel(LEAGUE_POINTS));
 		minigamePanel.add(makeHiscorePanel(LAST_MAN_STANDING));
+		minigamePanel.add(makeHiscorePanel(SOUL_WARS_ZEAL));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_HUNTER));
 
@@ -345,7 +346,7 @@ public class HiscorePanel extends PluginPanel
 		String skillIcon = directory + skillName + ".png";
 		log.debug("Loading skill icon from {}", skillIcon);
 
-		label.setIcon(new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(), skillIcon)));
+		label.setIcon(new ImageIcon(ImageUtil.loadImageResource(getClass(), skillIcon)));
 
 		boolean totalLabel = skill == OVERALL || skill == null; //overall or combat
 		label.setIconTextGap(totalLabel ? 10 : 4);
@@ -592,6 +593,18 @@ public class HiscorePanel extends PluginPanel
 					if (lastManStanding.getLevel() > -1)
 					{
 						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(lastManStanding.getLevel()) + "</p>";
+					}
+					break;
+				}
+				case SOUL_WARS_ZEAL:
+				{
+					Skill soulWarsZeal = result.getSoulWarsZeal();
+					String rank = (soulWarsZeal.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(soulWarsZeal.getRank());
+					content += "<p><span style = 'color:white'>Soul Wars Zeal</span></p>";
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					if (soulWarsZeal.getLevel() > -1)
+					{
+						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(soulWarsZeal.getLevel()) + "</p>";
 					}
 					break;
 				}

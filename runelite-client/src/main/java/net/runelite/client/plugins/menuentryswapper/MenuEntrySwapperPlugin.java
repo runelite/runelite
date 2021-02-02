@@ -105,6 +105,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
+	private static final Set<MenuAction> ITEM_MENU_TYPES = ImmutableSet.of(
+		MenuAction.ITEM_FIRST_OPTION,
+		MenuAction.ITEM_SECOND_OPTION,
+		MenuAction.ITEM_THIRD_OPTION,
+		MenuAction.ITEM_FOURTH_OPTION,
+		MenuAction.ITEM_FIFTH_OPTION,
+		MenuAction.EXAMINE_ITEM,
+		MenuAction.ITEM_USE
+	);
+
 	private static final Set<MenuAction> NPC_MENU_TYPES = ImmutableSet.of(
 		MenuAction.NPC_FIRST_OPTION,
 		MenuAction.NPC_SECOND_OPTION,
@@ -115,7 +125,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final Set<String> ESSENCE_MINE_NPCS = ImmutableSet.of(
 		"aubury",
-		"wizard sedridor",
+		"sedridor",
 		"wizard distentor",
 		"wizard cromperty",
 		"brimstail"
@@ -301,9 +311,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("view offer", "abort offer", () -> shiftModifier() && config.swapGEAbort());
 
 		Arrays.asList(
-			"honest jimmy", "bert the sandman", "advisor ghrim", "dark mage", "lanthus", "turael", "mazchna", "vannaka",
-			"chaeldar", "nieve", "steve", "duradel", "krystilia", "konar", "murphy", "cyrisus", "smoggy", "ginea", "watson",
-			"barbarian guard", "amy", "random"
+			"honest jimmy", "bert the sandman", "advisor ghrim", "dark mage", "lanthus", "spria", "turael",
+			"mazchna", "vannaka", "chaeldar", "nieve", "steve", "duradel", "krystilia", "konar",
+			"murphy", "cyrisus", "smoggy", "ginea", "watson", "barbarian guard", "amy",
+			"random"
 		).forEach(npc -> swap("cast", "npc contact", npc, () -> shiftModifier() && config.swapNpcContact()));
 
 		swap("value", "buy 1", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_1);
@@ -319,6 +330,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("wear", "rub", config::swapTeleportItem);
 		swap("wear", "teleport", config::swapTeleportItem);
 		swap("wield", "teleport", config::swapTeleportItem);
+		swap("wield", "invoke", config::swapTeleportItem);
 
 		swap("bury", "use", config::swapBones);
 
@@ -345,6 +357,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swapTeleport("camelot teleport", "seers'");
 		swapTeleport("watchtower teleport", "yanille");
 		swapTeleport("teleport to house", "outside");
+
+		swap("eat", "guzzle", config::swapRockCake);
 	}
 
 	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
@@ -476,28 +490,28 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		ItemComposition itemComposition = client.getItemDefinition(itemId);
-		String itemName = itemComposition.getName();
-		String option = "Use";
-		int shiftClickActionIndex = itemComposition.getShiftClickActionIndex();
-		String[] inventoryActions = itemComposition.getInventoryActions();
+		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		MenuAction shiftClickAction = MenuAction.ITEM_USE;
+		final int shiftClickActionIndex = itemComposition.getShiftClickActionIndex();
 
-		if (shiftClickActionIndex >= 0 && shiftClickActionIndex < inventoryActions.length)
+		if (shiftClickActionIndex >= 0)
 		{
-			option = inventoryActions[shiftClickActionIndex];
+			shiftClickAction = MenuAction.of(MenuAction.ITEM_FIRST_OPTION.getId() + shiftClickActionIndex);
 		}
 
 		MenuEntry[] entries = event.getMenuEntries();
 
 		for (MenuEntry entry : entries)
 		{
-			if (itemName.equals(Text.removeTags(entry.getTarget())))
+			final MenuAction menuAction = MenuAction.of(entry.getType());
+
+			if (ITEM_MENU_TYPES.contains(menuAction) && entry.getIdentifier() == itemId)
 			{
 				entry.setType(MenuAction.RUNELITE.getId());
 
-				if (option.equals(entry.getOption()))
+				if (shiftClickAction == menuAction)
 				{
-					entry.setOption("* " + option);
+					entry.setOption("* " + entry.getOption());
 				}
 			}
 		}
@@ -597,7 +611,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		String option = event.getMenuOption();
 		String target = event.getMenuTarget();
-		ItemComposition itemComposition = client.getItemDefinition(itemId);
+		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 
 		if (option.equals(RESET) && target.equals(MENU_TARGET))
 		{

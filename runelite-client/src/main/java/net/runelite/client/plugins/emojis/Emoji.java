@@ -116,7 +116,7 @@ enum Emoji
 
 	BufferedImage loadImage()
 	{
-		return ImageUtil.getResourceStreamFromClass(getClass(), this.name().toLowerCase() + ".png");
+		return ImageUtil.loadImageResource(getClass(), this.name().toLowerCase() + ".png");
 	}
 
 	static Emoji getEmoji(String trigger)

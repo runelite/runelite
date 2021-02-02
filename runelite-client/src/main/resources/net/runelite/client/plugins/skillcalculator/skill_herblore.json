@@ -361,6 +361,12 @@
       "xp": 82.5
     },
     {
+      "level": 84,
+      "icon": 11951,
+      "name": "Extended Antifire (4)",
+      "xp": 110
+    },
+    {
       "level": 86,
       "icon": 24635,
       "name": "Divine bastion potion(4)",
@@ -379,6 +385,12 @@
       "xp": 90
     },
     {
+      "level": 87,
+      "icon": 12905,
+      "name": "Anti-venom(4)",
+      "xp": 120
+    },
+    {
       "level": 90,
       "icon": 12695,
       "name": "Super Combat Potion(4)",
@@ -386,14 +398,14 @@
     },
     {
       "level": 92,
-      "icon": 21981,
-      "name": "Super Antifire (3)",
+      "icon": 21978,
+      "name": "Super Antifire (4)",
       "xp": 130
     },
     {
       "level": 94,
-      "icon": 12915,
-      "name": "Anti-venom+(3)",
+      "icon": 12913,
+      "name": "Anti-venom+(4)",
       "xp": 125
     },
     {

@@ -433,7 +433,7 @@ public interface Client extends GameEngine
 	int getMouseCurrentButton();
 
 	/**
-	 * Gets the currently selected tile (ie. last right clicked tile).
+	 * Gets the currently selected tile. (ie. last right clicked tile)
 	 *
 	 * @return the selected tile
 	 */
@@ -878,16 +878,6 @@ public interface Client extends GameEngine
 	 * @return the map
 	 */
 	IterableHashTable<MessageNode> getMessages();
-
-	/**
-	 * Gets the viewport widget.
-	 * <p>
-	 * The viewport is the area of the game above the chatbox
-	 * and to the left of the mini-map.
-	 *
-	 * @return the viewport widget
-	 */
-	Widget getViewportWidget();
 
 	/**
 	 * Gets the object composition corresponding to an objects ID.
@@ -1475,8 +1465,8 @@ public interface Client extends GameEngine
 	void setPlayersHidden(boolean state);
 
 	/**
-	 * Sets whether 2D sprites (ie. overhead prayers, PK skull) related to
-	 * the other players are hidden.
+	 * Sets whether 2D sprites related to the other players are hidden.
+	 * (ie. overhead prayers, PK skull)
 	 *
 	 * @param state the new player 2D hidden state
 	 */
@@ -1504,8 +1494,8 @@ public interface Client extends GameEngine
 	void setLocalPlayerHidden(boolean state);
 
 	/**
-	 * Sets whether 2D sprites (ie. overhead prayers, PK skull) related to
-	 * the local player are hidden.
+	 * Sets whether 2D sprites related to the local player are hidden.
+	 * (ie. overhead prayers, PK skull)
 	 *
 	 * @param state new local player 2D hidden state
 	 */
@@ -1519,8 +1509,8 @@ public interface Client extends GameEngine
 	void setNPCsHidden(boolean state);
 
 	/**
-	 * Sets whether 2D sprites (ie. overhead prayers) related to
-	 * the NPCs are hidden.
+	 * Sets whether 2D sprites related to the NPCs are hidden.
+	 * (ie. overhead prayers)
 	 *
 	 * @param state new NPC 2D hidden state
 	 */

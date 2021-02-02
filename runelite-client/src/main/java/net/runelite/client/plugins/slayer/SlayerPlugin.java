@@ -99,7 +99,7 @@ public class SlayerPlugin extends Plugin
 	//Chat messages
 	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("^(?:You're assigned to kill|You have received a new Slayer assignment from .*:) (?:[Tt]he )?(?<name>.+?)(?: (?:in|on|south of) (?:the )?(?<location>[^;]+))?(?:; only | \\()(?<amount>\\d+)(?: more to go\\.|\\))$");
 	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
-	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("(?:\\d+,)*\\d+");
+	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("You've completed (?:at least )?(?<tasks>[\\d,]+) (?:Wilderness )?tasks?(?: and received \\d+ points, giving you a total of (?<points>[\\d,]+)| and reached the maximum amount of Slayer points \\((?<points2>[\\d,]+)\\))?");
 	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
 	private static final String CHAT_CANCEL_MESSAGE_JAD = "You no longer have a slayer task as you left the fight cave.";
 	private static final String CHAT_CANCEL_MESSAGE_ZUK = "You no longer have a slayer task as you left the Inferno.";
@@ -450,6 +450,7 @@ public class SlayerPlugin extends Plugin
 			expeditiousChargeCount = Integer.parseInt(mExpeditious.group(1));
 			config.expeditious(expeditiousChargeCount);
 		}
+
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER_CHARGE))
 		{
 			Matcher mSlaughter = CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX.matcher(chatMsg);
@@ -466,35 +467,25 @@ public class SlayerPlugin extends Plugin
 		{
 			Matcher mComplete = CHAT_COMPLETE_MESSAGE.matcher(chatMsg);
 
-			List<String> matches = new ArrayList<>();
-			while (mComplete.find())
+			if (mComplete.find())
 			{
-				matches.add(mComplete.group(0).replaceAll(",", ""));
-			}
+				String mTasks = mComplete.group("tasks");
+				String mPoints = mComplete.group("points");
+				if (mPoints == null)
+				{
+					mPoints = mComplete.group("points2");
+				}
 
-			int streak = -1, points = -1;
-			switch (matches.size())
-			{
-				case 0:
-					streak = 1;
-					break;
-				case 1:
-					streak = Integer.parseInt(matches.get(0));
-					break;
-				case 3:
-					streak = Integer.parseInt(matches.get(0));
-					points = Integer.parseInt(matches.get(2));
-					break;
-				default:
-					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
-			}
-			if (streak != -1)
-			{
-				config.streak(streak);
-			}
-			if (points != -1)
-			{
-				config.points(points);
+				if (mTasks != null)
+				{
+					int streak = Integer.parseInt(mTasks.replace(",", ""));
+					config.streak(streak);
+				}
+				if (mPoints != null)
+				{
+					int points = Integer.parseInt(mPoints.replace(",", ""));
+					config.points(points);
+				}
 			}
 
 			setTask("", 0, 0);

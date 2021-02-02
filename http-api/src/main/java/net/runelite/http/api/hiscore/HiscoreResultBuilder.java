@@ -87,6 +87,7 @@ class HiscoreResultBuilder
 		hiscoreResult.setClueScrollElite(skills.get(index++));
 		hiscoreResult.setClueScrollMaster(skills.get(index++));
 		hiscoreResult.setLastManStanding(skills.get(index++));
+		hiscoreResult.setSoulWarsZeal(skills.get(index++));
 		// seasonal doesn't have boss hiscores
 		if (index < skills.size())
 		{

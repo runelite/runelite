@@ -64,6 +64,7 @@ public class SessionManager
 	private final WSClient wsClient;
 	private final File sessionFile;
 	private final AccountClient accountClient;
+	private final Gson gson;
 
 	@Inject
 	private SessionManager(
@@ -71,13 +72,15 @@ public class SessionManager
 		ConfigManager configManager,
 		EventBus eventBus,
 		WSClient wsClient,
-		OkHttpClient okHttpClient)
+		OkHttpClient okHttpClient,
+		Gson gson)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
 		this.wsClient = wsClient;
 		this.sessionFile = sessionfile;
 		this.accountClient = new AccountClient(okHttpClient);
+		this.gson = gson;
 
 		eventBus.register(this);
 	}
@@ -94,7 +97,7 @@ public class SessionManager
 
 		try (FileInputStream in = new FileInputStream(sessionFile))
 		{
-			session = new Gson().fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), AccountSession.class);
+			session = gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), AccountSession.class);
 
 			log.debug("Loaded session for {}", session.getUsername());
 		}
@@ -124,7 +127,7 @@ public class SessionManager
 
 		try (Writer fw = new OutputStreamWriter(new FileOutputStream(sessionFile), StandardCharsets.UTF_8))
 		{
-			new Gson().toJson(accountSession, fw);
+			gson.toJson(accountSession, fw);
 
 			log.debug("Saved session to {}", sessionFile);
 		}

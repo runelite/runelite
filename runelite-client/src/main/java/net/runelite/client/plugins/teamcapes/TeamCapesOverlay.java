@@ -39,7 +39,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 
-public class TeamCapesOverlay extends OverlayPanel
+class TeamCapesOverlay extends OverlayPanel
 {
 	private final TeamCapesPlugin plugin;
 	private final TeamCapesConfig config;

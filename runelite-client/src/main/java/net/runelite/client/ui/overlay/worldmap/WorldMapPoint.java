@@ -27,12 +27,14 @@ package net.runelite.client.ui.overlay.worldmap;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import javax.annotation.Nullable;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
-import javax.annotation.Nullable;
 
 @Data
+@SuperBuilder
 public class WorldMapPoint
 {
 	private BufferedImage image;

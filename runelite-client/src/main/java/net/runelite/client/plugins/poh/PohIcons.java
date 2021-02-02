@@ -143,7 +143,7 @@ public enum PohIcons
 			return image;
 		}
 
-		image = ImageUtil.getResourceStreamFromClass(getClass(), getImageResource() + ".png");
+		image = ImageUtil.loadImageResource(getClass(), getImageResource() + ".png");
 
 		return image;
 	}

@@ -688,6 +688,7 @@ public class Perspective
 	{
 		int[] x2d = new int[m.getVerticesCount()];
 		int[] y2d = new int[m.getVerticesCount()];
+		final int[] faceColors3 = m.getFaceColors3();
 
 		Perspective.modelToCanvas(client,
 			m.getVerticesCount(),
@@ -714,6 +715,11 @@ public class Perspective
 		nextTri:
 		for (int tri = 0; tri < m.getTrianglesCount(); tri++)
 		{
+			if (faceColors3[tri] == -2)
+			{
+				continue;
+			}
+
 			int
 				minX = Integer.MAX_VALUE,
 				minY = Integer.MAX_VALUE,

@@ -55,7 +55,7 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "ownNameColor",
-		name = "Own player color",
+		name = "Own player",
 		description = "Color of your own player",
 		section = highlightSection
 	)
@@ -79,7 +79,7 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "friendNameColor",
-		name = "Friend color",
+		name = "Friend",
 		description = "Color of friend names",
 		section = highlightSection
 	)
@@ -103,7 +103,7 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "clanMemberColor",
-		name = "Friends chat member color",
+		name = "Friends chat",
 		description = "Color of friends chat members",
 		section = highlightSection
 	)
@@ -127,7 +127,7 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "teamMemberColor",
-		name = "Team member color",
+		name = "Team member",
 		description = "Color of team members",
 		section = highlightSection
 	)
@@ -151,7 +151,7 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 9,
 		keyName = "nonClanMemberColor",
-		name = "Others color",
+		name = "Others",
 		description = "Color of other players names",
 		section = highlightSection
 	)

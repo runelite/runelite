@@ -74,7 +74,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		if (itemId != ItemID.RUNE_POUCH && itemId != ItemID.RUNE_POUCH_L)
 		{
@@ -85,7 +85,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		Point location = itemWidget.getCanvasLocation();
+		Point location = widgetItem.getCanvasLocation();
 		StringBuilder tooltipBuilder = new StringBuilder();
 
 		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
@@ -142,7 +142,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 		String tooltip = tooltipBuilder.toString();
 
 		if (!tooltip.isEmpty()
-			&& itemWidget.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY())
+			&& widgetItem.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY())
 			&& (config.runePouchOverlayMode() == MOUSE_HOVER || config.runePouchOverlayMode() == BOTH))
 		{
 			tooltipManager.add(new Tooltip(tooltip));

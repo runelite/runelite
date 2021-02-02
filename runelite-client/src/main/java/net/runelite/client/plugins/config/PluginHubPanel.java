@@ -102,14 +102,14 @@ class PluginHubPanel extends PluginPanel
 
 	static
 	{
-		BufferedImage missingIcon = ImageUtil.getResourceStreamFromClass(PluginHubPanel.class, "pluginhub_missingicon.png");
+		BufferedImage missingIcon = ImageUtil.loadImageResource(PluginHubPanel.class, "pluginhub_missingicon.png");
 		MISSING_ICON = new ImageIcon(missingIcon);
 
-		BufferedImage helpIcon = ImageUtil.getResourceStreamFromClass(PluginHubPanel.class, "pluginhub_help.png");
+		BufferedImage helpIcon = ImageUtil.loadImageResource(PluginHubPanel.class, "pluginhub_help.png");
 		HELP_ICON = new ImageIcon(helpIcon);
 		HELP_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(helpIcon, -100));
 
-		BufferedImage configureIcon = ImageUtil.getResourceStreamFromClass(PluginHubPanel.class, "pluginhub_configure.png");
+		BufferedImage configureIcon = ImageUtil.loadImageResource(PluginHubPanel.class, "pluginhub_configure.png");
 		CONFIGURE_ICON = new ImageIcon(configureIcon);
 		CONFIGURE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(configureIcon, -100));
 	}
@@ -126,9 +126,12 @@ class PluginHubPanel extends PluginPanel
 		private final List<String> keywords = new ArrayList<>();
 
 		@Getter
+		private final int userCount;
+
+		@Getter
 		private final boolean installed;
 
-		PluginItem(ExternalPluginManifest newManifest, Collection<Plugin> loadedPlugins, boolean installed)
+		PluginItem(ExternalPluginManifest newManifest, Collection<Plugin> loadedPlugins, int userCount, boolean installed)
 		{
 			ExternalPluginManifest loaded = null;
 			if (!loadedPlugins.isEmpty())
@@ -137,6 +140,7 @@ class PluginHubPanel extends PluginPanel
 			}
 
 			manifest = newManifest == null ? loaded : newManifest;
+			this.userCount = userCount;
 			this.installed = installed;
 
 			if (manifest != null)
@@ -194,10 +198,7 @@ class PluginHubPanel extends PluginPanel
 					{
 						BufferedImage img = externalPluginClient.downloadIcon(manifest);
 
-						SwingUtilities.invokeLater(() ->
-						{
-							icon.setIcon(new ImageIcon(img));
-						});
+						SwingUtilities.invokeLater(() -> icon.setIcon(new ImageIcon(img)));
 					}
 					catch (IOException e)
 					{
@@ -280,6 +281,8 @@ class PluginHubPanel extends PluginPanel
 							return;
 						}
 					}
+					addrm.setText("Installing");
+					addrm.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 					externalPluginManager.install(manifest.getInternalName());
 				});
 			}
@@ -287,14 +290,24 @@ class PluginHubPanel extends PluginPanel
 			{
 				addrm.setText("Remove");
 				addrm.setBackground(new Color(0xBE2828));
-				addrm.addActionListener(l -> externalPluginManager.remove(manifest.getInternalName()));
+				addrm.addActionListener(l ->
+				{
+					addrm.setText("Removing");
+					addrm.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+					externalPluginManager.remove(manifest.getInternalName());
+				});
 			}
 			else
 			{
 				assert update;
 				addrm.setText("Update");
 				addrm.setBackground(new Color(0x1F621F));
-				addrm.addActionListener(l -> externalPluginManager.update());
+				addrm.addActionListener(l ->
+				{
+					addrm.setText("Updating");
+					addrm.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+					externalPluginManager.update();
+				});
 			}
 			addrm.setBorder(new LineBorder(addrm.getBackground().darker()));
 			addrm.setFocusPainted(false);
@@ -313,7 +326,7 @@ class PluginHubPanel extends PluginPanel
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, 100)
 						.addComponent(help, 0, 24, 24)
 						.addComponent(configure, 0, 24, 24)
-						.addComponent(addrm, 0, 50, GroupLayout.PREFERRED_SIZE)
+						.addComponent(addrm, 0, 57, GroupLayout.PREFERRED_SIZE)
 						.addGap(5))));
 
 			int lineHeight = description.getFontMetrics(description.getFont()).getHeight();
@@ -509,11 +522,21 @@ class PluginHubPanel extends PluginPanel
 				return;
 			}
 
-			reloadPluginList(manifest);
+			Map<String, Integer> pluginCounts = Collections.emptyMap();
+			try
+			{
+				pluginCounts = externalPluginClient.getPluginCounts();
+			}
+			catch (IOException e)
+			{
+				log.warn("unable to download plugin counts", e);
+			}
+
+			reloadPluginList(manifest, pluginCounts);
 		});
 	}
 
-	private void reloadPluginList(List<ExternalPluginManifest> manifest)
+	private void reloadPluginList(List<ExternalPluginManifest> manifest, Map<String, Integer> pluginCounts)
 	{
 		Map<String, ExternalPluginManifest> manifests = manifest.stream()
 			.collect(ImmutableMap.toImmutableMap(ExternalPluginManifest::getInternalName, Function.identity()));
@@ -535,7 +558,8 @@ class PluginHubPanel extends PluginPanel
 		{
 			plugins = Sets.union(manifests.keySet(), loadedPlugins.keySet())
 				.stream()
-				.map(id -> new PluginItem(manifests.get(id), loadedPlugins.get(id), installed.contains(id)))
+				.map(id -> new PluginItem(manifests.get(id), loadedPlugins.get(id),
+					pluginCounts.getOrDefault(id, -1), installed.contains(id)))
 				.collect(Collectors.toList());
 
 			refreshing.setVisible(false);
@@ -563,7 +587,11 @@ class PluginHubPanel extends PluginPanel
 		else
 		{
 			stream
-				.sorted(Comparator.comparing(PluginItem::isInstalled).thenComparing(p -> p.manifest.getDisplayName()))
+				.sorted(Comparator.comparing(PluginItem::isInstalled)
+					.thenComparingInt(PluginItem::getUserCount)
+					.reversed()
+					.thenComparing(p -> p.manifest.getDisplayName())
+				)
 				.forEach(mainPanel::add);
 		}
 
@@ -582,6 +610,13 @@ class PluginHubPanel extends PluginPanel
 	@Subscribe
 	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
 	{
-		SwingUtilities.invokeLater(() -> reloadPluginList(ev.getLoadedManifest()));
+		Map<String, Integer> pluginCounts = Collections.emptyMap();
+		if (plugins != null)
+		{
+			pluginCounts = plugins.stream()
+				.collect(Collectors.toMap(pi -> pi.manifest.getInternalName(), PluginItem::getUserCount));
+		}
+
+		reloadPluginList(ev.getLoadedManifest(), pluginCounts);
 	}
 }

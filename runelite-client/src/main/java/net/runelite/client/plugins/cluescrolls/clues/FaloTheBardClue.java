@@ -41,6 +41,7 @@ import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollecti
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.RangeItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -50,10 +51,10 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcClueScroll
 {
 	private static final List<FaloTheBardClue> CLUES = ImmutableList.of(
-		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", item(DRAGON_SCIMITAR)),
+		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", any("Dragon scimitar", item(DRAGON_SCIMITAR), item(DRAGON_SCIMITAR_OR))),
 		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any god book (must be complete)", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS))),
 		new FaloTheBardClue("A bow of elven craft was made, it shimmers bright, but will soon fade.", any("Crystal Bow", item(CRYSTAL_BOW), item(CRYSTAL_BOW_24123))),
-		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", item(INFERNAL_AXE)),
+		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", any("Infernal axe", item(INFERNAL_AXE), item(INFERNAL_AXE_OR))),
 		new FaloTheBardClue("A mark used to increase one's grace, found atop a seer's place.", item(MARK_OF_GRACE)),
 		new FaloTheBardClue("A molten beast with fiery breath, you acquire these with its death.", item(LAVA_DRAGON_BONES)),
 		new FaloTheBardClue("A shiny helmet of flight, to obtain this with melee, struggle you might.", item(ARMADYL_HELMET)),
@@ -134,6 +135,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 				.left(requirement.getCollectiveName(plugin.getClient()))
 				.leftColor(TITLED_CONTENT_COLOR)
 				.right(inventoryFulfilled ? "\u2713" : "\u2717")
+				.rightFont(FontManager.getDefaultFont())
 				.rightColor(inventoryFulfilled ? Color.GREEN : Color.RED)
 				.build());
 		}
