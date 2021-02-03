@@ -32,18 +32,27 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +63,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
+import java.util.Arrays;
+import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClueScrollPluginTest
@@ -162,5 +173,42 @@ public class ClueScrollPluginTest
 		// scene
 		verify(client, times(++clueSetupHintArrowClears)).clearHintArrow();
 		verify(client, times(1)).setHintArrow(any(WorldPoint.class));
+	}
+
+	@Test
+	public void testThatRunepouchIsAddedToInventory()
+	{
+		ItemContainer container = mock(ItemContainer.class);
+		ItemContainerChanged event = new ItemContainerChanged(InventoryID.INVENTORY.getId(), container);
+
+		final Item[] inventory = new Item[]{
+			new Item(ItemID.COINS_995, 100),
+			new Item(ItemID.MITHRIL_BAR, 1),
+			new Item(ItemID.MITHRIL_BAR, 1),
+			new Item(ItemID.MITHRIL_BAR, 1),
+			new Item(ItemID.SOUL_RUNE, 30),
+			new Item(ItemID.COSMIC_RUNE, 100),
+			new Item(ItemID.RUNE_POUCH, 1),
+			new Item(ItemID.SPADE, 1),
+			new Item(ItemID.CLUE_SCROLL_MASTER, 1)
+		};
+
+		when(container.getItems()).thenReturn(inventory);
+		when(container.contains(ItemID.RUNE_POUCH)).thenReturn(true);
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(container);
+
+		when(client.getVar(Varbits.RUNE_POUCH_RUNE1)).thenReturn(9); // Cosmic Rune
+		when(client.getVar(Varbits.RUNE_POUCH_AMOUNT1)).thenReturn(20);
+		when(client.getVar(Varbits.RUNE_POUCH_RUNE3)).thenReturn(4); // Fire Rune
+		when(client.getVar(Varbits.RUNE_POUCH_AMOUNT3)).thenReturn(4000);
+
+		plugin.onItemContainerChanged(event);
+
+		assertFalse(Arrays.equals(inventory, plugin.getInventoryItems()));
+
+		List<Item> inventoryList = Arrays.asList(plugin.getInventoryItems());
+
+		assertThat(inventoryList, hasItem(new Item(ItemID.COSMIC_RUNE, 120)));
+		assertThat(inventoryList, hasItem(new Item(ItemID.FIRE_RUNE, 4000)));
 	}
 }
