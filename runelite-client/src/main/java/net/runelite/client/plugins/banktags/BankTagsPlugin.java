@@ -75,13 +75,11 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.banktags.tabs.TagTab;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -89,7 +87,6 @@ import net.runelite.client.util.Text;
 	description = "Enable tagging of bank items and searching of bank tags",
 	tags = {"searching", "tagging"}
 )
-@PluginDependency(ClueScrollPlugin.class)
 public class BankTagsPlugin extends Plugin implements MouseWheelListener
 {
 	public static final String CONFIG_GROUP = "banktags";
