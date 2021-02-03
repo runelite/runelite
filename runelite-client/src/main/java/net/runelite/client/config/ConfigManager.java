@@ -394,7 +394,7 @@ public class ConfigManager
 
 		parent.mkdirs();
 
-		File tempFile = new File(parent, RuneLite.DEFAULT_CONFIG_FILE.getName() + ".tmp");
+		File tempFile = File.createTempFile("runelite", null, parent);
 
 		try (FileOutputStream out = new FileOutputStream(tempFile))
 		{
