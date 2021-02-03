@@ -62,7 +62,7 @@ public class WidgetInspectorOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGHEST);
-		drawAfterInterface(WidgetID.FULLSCREEN_MAP_GROUP_ID);
+		drawAfterInterface(WidgetID.FULLSCREEN_CONTAINER_TLI);
 	}
 
 	@Override

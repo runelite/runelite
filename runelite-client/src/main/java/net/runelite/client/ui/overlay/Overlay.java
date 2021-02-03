@@ -57,7 +57,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	private boolean resettable = true;
 
 	/**
-	 * Whether this overlay can be dragged onto other overlays & have
+	 * Whether this overlay can be dragged onto other overlays &amp; have
 	 * other overlays dragged onto it.
 	 */
 	@Setter(AccessLevel.PROTECTED)

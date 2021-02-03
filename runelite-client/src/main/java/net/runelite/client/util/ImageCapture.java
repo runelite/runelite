@@ -26,6 +26,7 @@
 package net.runelite.client.util;
 
 import com.google.common.base.Strings;
+import com.google.gson.Gson;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
@@ -45,6 +46,7 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -53,8 +55,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
-import net.runelite.client.RuneLiteProperties;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -72,14 +72,27 @@ public class ImageCapture
 	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
 	private static final MediaType JSON = MediaType.parse("application/json");
 
-	@Inject
-	private Client client;
+	private final Client client;
+	private final Notifier notifier;
+	private final OkHttpClient okHttpClient;
+	private final Gson gson;
+	private final String imgurClientId;
 
 	@Inject
-	private Notifier notifier;
-
-	@Inject
-	private OkHttpClient okHttpClient;
+	private ImageCapture(
+		final Client client,
+		final Notifier notifier,
+		final OkHttpClient okHttpClient,
+		final Gson gson,
+		@Named("runelite.imgur.client.id") final String imgurClientId
+	)
+	{
+		this.client = client;
+		this.notifier = notifier;
+		this.okHttpClient = okHttpClient;
+		this.gson = gson;
+		this.imgurClientId = imgurClientId;
+	}
 
 	/**
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
@@ -194,11 +207,11 @@ public class ImageCapture
 	 */
 	private void uploadScreenshot(File screenshotFile, boolean notify) throws IOException
 	{
-		String json = RuneLiteAPI.GSON.toJson(new ImageUploadRequest(screenshotFile));
+		String json = gson.toJson(new ImageUploadRequest(screenshotFile));
 
 		Request request = new Request.Builder()
 			.url(IMGUR_IMAGE_UPLOAD_URL)
-			.addHeader("Authorization", "Client-ID " + RuneLiteProperties.getImgurClientId())
+			.addHeader("Authorization", "Client-ID " + imgurClientId)
 			.post(RequestBody.create(JSON, json))
 			.build();
 
@@ -215,8 +228,8 @@ public class ImageCapture
 			{
 				try (InputStream in = response.body().byteStream())
 				{
-					ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
-						.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ImageUploadResponse.class);
+					ImageUploadResponse imageUploadResponse =
+						gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ImageUploadResponse.class);
 
 					if (imageUploadResponse.isSuccess())
 					{

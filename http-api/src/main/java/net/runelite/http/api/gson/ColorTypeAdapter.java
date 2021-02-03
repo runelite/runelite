@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.http.api.gson;
 
-import lombok.Data;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
+import java.awt.Color;
+import java.io.IOException;
 
-/**
- * An event where a player menu option that was added by RuneLite has
- * been clicked (ie. HiScore Lookup).
- */
-@Data
-public class PlayerMenuOptionClicked
+public class ColorTypeAdapter extends TypeAdapter<Color>
 {
-	/**
-	 * The menu option clicked.
-	 */
-	private String menuOption;
-	/**
-	 * The target player.
-	 */
-	private String menuTarget;
+	@Override
+	public void write(JsonWriter out, Color value) throws IOException
+	{
+		if (value == null)
+		{
+			out.nullValue();
+			return;
+		}
+
+		int rgba = value.getRGB();
+		out.beginObject()
+			.name("value")
+			.value(rgba)
+			.endObject();
+	}
+
+	@Override
+	public Color read(JsonReader in) throws IOException
+	{
+		switch (in.peek())
+		{
+			case NULL:
+				in.nextNull();
+				return null;
+			case BEGIN_OBJECT:
+				in.beginObject();
+				double value = 0;
+				while (in.peek() != JsonToken.END_OBJECT)
+				{
+					switch (in.nextName())
+					{
+						case "value":
+							value = in.nextDouble();
+							break;
+						default:
+							in.skipValue();
+							break;
+					}
+				}
+				in.endObject();
+				return new Color((int) value, true);
+		}
+		return null; // throws
+	}
 }

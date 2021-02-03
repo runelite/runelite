@@ -36,27 +36,18 @@ import net.runelite.api.PlayerComposition;
  */
 public enum KitType
 {
-	HEAD(0),
-	CAPE(1),
-	AMULET(2),
-	WEAPON(3),
-	TORSO(4),
-	SHIELD(5),
-	LEGS(7),
-	HAIR(8),
-	HANDS(9),
-	BOOTS(10),
-	JAW(11);
-
-	/**
-	 * Raw equipment index.
-	 */
-	private final int index;
-
-	KitType(int index)
-	{
-		this.index = index;
-	}
+	HEAD,
+	CAPE,
+	AMULET,
+	WEAPON,
+	TORSO,
+	SHIELD,
+	ARMS,
+	LEGS,
+	HAIR,
+	HANDS,
+	BOOTS,
+	JAW;
 
 	/**
 	 * Gets the raw equipment index for use in {@link PlayerComposition#getEquipmentIds()}.
@@ -65,6 +56,6 @@ public enum KitType
 	 */
 	public int getIndex()
 	{
-		return index;
+		return ordinal();
 	}
 }

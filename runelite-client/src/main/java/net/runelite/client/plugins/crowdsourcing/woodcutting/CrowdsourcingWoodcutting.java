@@ -85,10 +85,11 @@ public class CrowdsourcingWoodcutting
 		put(AnimationID.WOODCUTTING_ADAMANT, ItemID.ADAMANT_AXE).
 		put(AnimationID.WOODCUTTING_RUNE, ItemID.RUNE_AXE).
 		put(AnimationID.WOODCUTTING_DRAGON, ItemID.DRAGON_AXE).
+		put(AnimationID.WOODCUTTING_DRAGON_OR, ItemID.DRAGON_AXE_OR).
 		put(AnimationID.WOODCUTTING_INFERNAL, ItemID.INFERNAL_AXE).
 		put(AnimationID.WOODCUTTING_3A_AXE, ItemID._3RD_AGE_AXE).
 		put(AnimationID.WOODCUTTING_CRYSTAL, ItemID.CRYSTAL_AXE).
-		put(AnimationID.WOODCUTTING_TRAILBLAZER, ItemID.TRAILBLAZER_AXE).build();
+		put(AnimationID.WOODCUTTING_TRAILBLAZER, ItemID.INFERNAL_AXE_OR).build();
 
 	private static final Set<String> SUCCESS_MESSAGES = new ImmutableSet.Builder<String>().
 		add("You get some logs.").

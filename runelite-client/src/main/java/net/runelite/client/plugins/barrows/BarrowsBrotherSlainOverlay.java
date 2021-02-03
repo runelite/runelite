@@ -27,12 +27,14 @@ package net.runelite.client.plugins.barrows;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.ui.FontManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -42,6 +44,8 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class BarrowsBrotherSlainOverlay extends OverlayPanel
 {
+	private static final DecimalFormat REWARD_POTENTIAL_FORMATTER = new DecimalFormat("##0.00%");
+
 	private final Client client;
 
 	@Inject
@@ -79,15 +83,15 @@ public class BarrowsBrotherSlainOverlay extends OverlayPanel
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(brother.getName())
 				.right(slain)
+				.rightFont(FontManager.getDefaultFont())
 				.rightColor(brotherSlain ? Color.GREEN : Color.RED)
 				.build());
 		}
 
 		final int rewardPotential = rewardPotential();
-		float rewardPercent = rewardPotential / 10.12f;
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Potential")
-			.right(rewardPercent != 0 ? rewardPercent + "%" : "0%")
+			.right(REWARD_POTENTIAL_FORMATTER.format(rewardPotential / 1012f))
 			.rightColor(rewardPotential >= 756 && rewardPotential < 881 ? Color.GREEN : rewardPotential < 631 ? Color.WHITE : Color.YELLOW)
 			.build());
 

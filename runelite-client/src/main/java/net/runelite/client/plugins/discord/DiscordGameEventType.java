@@ -121,7 +121,7 @@ enum DiscordGameEventType
 	CITY_JATIZSO("Jatizso" , DiscordAreaType.CITIES, 9531),
 	CITY_KELDAGRIM("Keldagrim" , DiscordAreaType.CITIES, 11423, 11422, 11679, 11678),
 	CITY_LANDS_END("Land's End", DiscordAreaType.CITIES, 5941),
-	CITY_LLETYA("Lletya" , DiscordAreaType.CITIES, 9265),
+	CITY_LLETYA("Lletya" , DiscordAreaType.CITIES, 9265, 11103),
 	CITY_LOVAKENGJ_HOUSE("Lovakengj" , DiscordAreaType.CITIES, 5692, 5691, 5947, 6203, 6202, 5690, 5946),
 	CITY_LUMBRIDGE("Lumbridge" , DiscordAreaType.CITIES, 12850),
 	CITY_LUNAR_ISLE("Lunar Isle" , DiscordAreaType.CITIES, 8253, 8252, 8509, 8508),
@@ -297,6 +297,7 @@ enum DiscordGameEventType
 	MG_PYRAMID_PLUNDER("Pyramid Plunder", DiscordAreaType.MINIGAMES, 7749),
 	MG_ROGUES_DEN("Rogues' Den", DiscordAreaType.MINIGAMES, 11855, 11854, 12111, 12110),
 	MG_SORCERESS_GARDEN("Sorceress's Garden", DiscordAreaType.MINIGAMES, 11605),
+	MG_SOUL_WARS("Soul Wars", DiscordAreaType.MINIGAMES, 8493, 8748, 8749, 9005),
 	MG_TEMPLE_TREKKING("Temple Trekking", DiscordAreaType.MINIGAMES, 8014, 8270, 8256, 8782, 9038, 9294, 9550, 9806),
 	MG_TITHE_FARM("Tithe Farm", DiscordAreaType.MINIGAMES, 7222),
 	MG_TROUBLE_BREWING("Trouble Brewing", DiscordAreaType.MINIGAMES, 15150),
@@ -469,7 +470,7 @@ enum DiscordGameEventType
 	private int priority;
 
 	/**
-	 * Marks this event as root event, e.g event that should be used for total time tracking
+	 * Marks this event as root event. (eg. event that should be used for total time tracking)
 	 */
 	private boolean root;
 

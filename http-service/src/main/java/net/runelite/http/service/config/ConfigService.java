@@ -233,8 +233,11 @@ public class ConfigService
 		try
 		{
 			jsonValue = RuneLiteAPI.GSON.fromJson(value, Object.class);
-
-			if (jsonValue instanceof Double || jsonValue instanceof Float)
+			if (jsonValue == null)
+			{
+				return value;
+			}
+			else if (jsonValue instanceof Double || jsonValue instanceof Float)
 			{
 				Number number = (Number) jsonValue;
 				if (Math.floor(number.doubleValue()) == number.doubleValue() && !Double.isInfinite(number.doubleValue()))
@@ -272,6 +275,10 @@ public class ConfigService
 		{
 			// I couldn't figure out a better way to do this than a second json parse
 			JsonElement jsonElement = RuneLiteAPI.GSON.fromJson(value, JsonElement.class);
+			if (jsonElement == null)
+			{
+				return value.length() < MAX_VALUE_LENGTH;
+			}
 			return validateObject(jsonElement, 1);
 		}
 		catch (JsonSyntaxException ex)

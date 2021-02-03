@@ -69,7 +69,7 @@ public interface PyramidPlunderConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "highlightDoorsColor",
-		name = "Highlight doors color",
+		name = "Highlight doors",
 		description = "Selects the color for highlighting tomb doors"
 	)
 	default Color highlightDoorsColor()
@@ -92,7 +92,7 @@ public interface PyramidPlunderConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "highlightSpeartrapColor",
-		name = "Highlight speartrap color",
+		name = "Highlight speartrap",
 		description = "Selects the color for highlighting speartraps"
 	)
 	default Color highlightSpeartrapsColor()
@@ -115,7 +115,7 @@ public interface PyramidPlunderConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "highlightContainersColor",
-		name = "Highlight containers color",
+		name = "Highlight containers",
 		description = "Selects the color for highlighting urns, chests and sarcophagus"
 	)
 	default Color highlightContainersColor()

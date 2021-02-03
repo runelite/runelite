@@ -117,7 +117,7 @@ public enum ChatMessageType
 	 */
 	MODAUTOTYPER(91),
 	/**
-	 * A game message (ie. when a setting is changed).
+	 * A game message. (ie. when a setting is changed)
 	 */
 	CONSOLE(99),
 	/**

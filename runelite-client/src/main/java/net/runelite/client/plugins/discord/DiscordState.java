@@ -35,8 +35,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.Data;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.ws.PartyService;
@@ -60,14 +60,24 @@ class DiscordState
 	private final DiscordService discordService;
 	private final DiscordConfig config;
 	private final PartyService party;
+	private final String runeliteTitle;
+	private final String runeliteVersion;
 	private DiscordPresence lastPresence;
 
 	@Inject
-	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party)
+	private DiscordState(
+		final DiscordService discordService,
+		final DiscordConfig config,
+		final PartyService party,
+		@Named("runelite.title") final String runeliteTitle,
+		@Named("runelite.version") final String runeliteVersion
+	)
 	{
 		this.discordService = discordService;
 		this.config = config;
 		this.party = party;
+		this.runeliteTitle = runeliteTitle;
+		this.runeliteVersion = runeliteVersion;
 	}
 
 	/**
@@ -188,12 +198,12 @@ class DiscordState
 		}
 
 		// Replace snapshot with + to make tooltip shorter (so it will span only 1 line)
-		final String versionShortHand = RuneLiteProperties.getVersion().replace("-SNAPSHOT", "+");
+		final String versionShortHand = runeliteVersion.replace("-SNAPSHOT", "+");
 
 		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
-			.largeImageText(RuneLiteProperties.getTitle() + " v" + versionShortHand)
+			.largeImageText(runeliteTitle + " v" + versionShortHand)
 			.smallImageKey(imageKey)
 			.partyMax(PARTY_MAX)
 			.partySize(party.getMembers().size());

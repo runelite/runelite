@@ -24,18 +24,32 @@
  */
 package net.runelite.client.externalplugins;
 
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.net.URLClassLoader;
 import lombok.Getter;
+import lombok.Setter;
+import net.runelite.client.util.ReflectUtil;
 
-class ExternalPluginClassLoader extends URLClassLoader
+class ExternalPluginClassLoader extends URLClassLoader implements ReflectUtil.PrivateLookupableClassLoader
 {
 	@Getter
 	private final ExternalPluginManifest manifest;
+
+	@Getter
+	@Setter
+	private MethodHandles.Lookup lookup;
 
 	ExternalPluginClassLoader(ExternalPluginManifest manifest, URL[] urls)
 	{
 		super(urls, ExternalPluginClassLoader.class.getClassLoader());
 		this.manifest = manifest;
+		ReflectUtil.installLookupHelper(this);
+	}
+
+	@Override
+	public Class<?> defineClass0(String name, byte[] b, int off, int len) throws ClassFormatError
+	{
+		return super.defineClass(name, b, off, len);
 	}
 }

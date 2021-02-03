@@ -64,7 +64,7 @@ public interface StatusBarsConfig extends Config
 
 	@ConfigItem(
 		keyName = "leftBarMode",
-		name = "Left Status Bar",
+		name = "Left Bar",
 		description = "Configures the left status bar"
 	)
 	default BarMode leftBarMode()
@@ -74,7 +74,7 @@ public interface StatusBarsConfig extends Config
 
 	@ConfigItem(
 		keyName = "rightBarMode",
-		name = "Right Status Bar",
+		name = "Right Bar",
 		description = "Configures the right status bar"
 	)
 	default BarMode rightBarMode()

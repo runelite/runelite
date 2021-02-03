@@ -134,11 +134,11 @@ class ConfigPanel extends PluginPanel
 
 	static
 	{
-		final BufferedImage backIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_back_icon.png");
+		final BufferedImage backIcon = ImageUtil.loadImageResource(ConfigPanel.class, "config_back_icon.png");
 		BACK_ICON = new ImageIcon(backIcon);
 		BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
 
-		BufferedImage sectionRetractIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "/util/arrow_right.png");
+		BufferedImage sectionRetractIcon = ImageUtil.loadImageResource(ConfigPanel.class, "/util/arrow_right.png");
 		sectionRetractIcon = ImageUtil.luminanceOffset(sectionRetractIcon, -121);
 		SECTION_EXPAND_ICON = new ImageIcon(sectionRetractIcon);
 		SECTION_EXPAND_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(sectionRetractIcon, -100));
@@ -487,15 +487,19 @@ class ConfigPanel extends PluginPanel
 			if (cid.getType().isEnum())
 			{
 				Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
-				JComboBox box = new JComboBox(type.getEnumConstants());
+
+				JComboBox<Enum<?>> box = new JComboBox<Enum<?>>(type.getEnumConstants()); // NOPMD: UseDiamondOperator
+				// set renderer prior to calling box.getPreferredSize(), since it will invoke the renderer
+				// to build components for each combobox element in order to compute the display size of the
+				// combobox
+				box.setRenderer(new ComboBoxListRenderer<>());
 				box.setPreferredSize(new Dimension(box.getPreferredSize().width, 25));
-				box.setRenderer(new ComboBoxListRenderer());
 				box.setForeground(Color.WHITE);
 				box.setFocusable(false);
-				box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
+
 				try
 				{
-					Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+					Enum<?> selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 					box.setSelectedItem(selectedItem);
 					box.setToolTipText(Text.titleCase(selectedItem));
 				}
@@ -508,7 +512,7 @@ class ConfigPanel extends PluginPanel
 					if (e.getStateChange() == ItemEvent.SELECTED)
 					{
 						changeConfiguration(box, cd, cid);
-						box.setToolTipText(Text.titleCase((Enum) box.getSelectedItem()));
+						box.setToolTipText(Text.titleCase((Enum<?>) box.getSelectedItem()));
 					}
 				});
 				item.add(box, BorderLayout.EAST);

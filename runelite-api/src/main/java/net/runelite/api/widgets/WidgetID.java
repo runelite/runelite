@@ -131,7 +131,7 @@ public class WidgetID
 	public static final int LOOTING_BAG_GROUP_ID = 81;
 	public static final int SKOTIZO_GROUP_ID = 308;
 	public static final int ENTERING_HOUSE_GROUP_ID = 71;
-	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
+	public static final int FULLSCREEN_CONTAINER_TLI = 165;
 	public static final int QUESTLIST_GROUP_ID = 399;
 	public static final int SKILLS_GROUP_ID = 320;
 	public static final int MUSIC_GROUP_ID = 239;
@@ -303,7 +303,6 @@ public class WidgetID
 
 	static class Shop
 	{
-		static final int ITEMS_CONTAINER = 2;
 		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
@@ -606,30 +605,21 @@ public class WidgetID
 	{
 		static class ATK
 		{
-			static final int CALL_TEXT = 8;
-			static final int TO_CALL_WIDGET = 9;
-			static final int TO_CALL = 10;
-			static final int ROLE_SPRITE = 11;
-			static final int ROLE = 12;
+			static final int ROLE_SPRITE = 12;
+			static final int ROLE = 13;
 		}
 
 		static class HLR
 		{
-			static final int TEAMMATE1 = 18;
-			static final int TEAMMATE2 = 22;
-			static final int TEAMMATE3 = 26;
-			static final int TEAMMATE4 = 30;
+			static final int TEAMMATE1 = 19;
+			static final int TEAMMATE2 = 23;
+			static final int TEAMMATE3 = 27;
+			static final int TEAMMATE4 = 31;
 		}
 
-		static final int CORRECT_STYLE = 3;
-		static final int CURRENT_WAVE_WIDGET = 4;
-		static final int CURRENT_WAVE = 5;
-		static final int CALL_WIDGET = 6;
-		static final int CALL_TEXT = 7;
-		static final int TO_CALL_WIDGET = 8;
-		static final int TO_CALL = 9;
-		static final int ROLE_SPRITE = 10;
-		static final int ROLE = 11;
+		static final int ROLE_SPRITE = 11;
+		static final int ROLE = 12;
+
 		static final int REWARD_TEXT = 57;
 	}
 

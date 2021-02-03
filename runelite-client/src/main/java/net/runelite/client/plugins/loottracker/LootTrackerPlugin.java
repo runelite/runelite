@@ -145,7 +145,8 @@ public class LootTrackerPlugin extends Plugin
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
-	private static final String STONE_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
+	// Used by Stone Chest, Isle of Souls chest, Dark Chest
+	private static final String OTHER_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
 	private static final String DORGESH_KAAN_CHEST_LOOTED_MESSAGE = "You find treasure inside!";
 	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You have opened the Grubby Chest";
 	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
@@ -161,6 +162,8 @@ public class LootTrackerPlugin extends Plugin
 		put(10835, "Dorgesh-Kaan Chest").
 		put(10834, "Dorgesh-Kaan Chest").
 		put(7323, "Grubby Chest").
+		put(8593, "Isle of Souls Chest").
+		put(7827, "Dark Chest").
 		build();
 
 	// Shade chest loot handling
@@ -186,6 +189,11 @@ public class LootTrackerPlugin extends Plugin
 		put(ObjectID.SILVER_CHEST_4128, "Silver key crimson").
 		put(ObjectID.SILVER_CHEST_4129, "Silver key black").
 		put(ObjectID.SILVER_CHEST_4130, "Silver key purple").
+		put(ObjectID.GOLD_CHEST, "Gold key red").
+		put(ObjectID.GOLD_CHEST_41213, "Gold key brown").
+		put(ObjectID.GOLD_CHEST_41214, "Gold key crimson").
+		put(ObjectID.GOLD_CHEST_41215, "Gold key black").
+		put(ObjectID.GOLD_CHEST_41216, "Gold key purple").
 		build();
 
 	// Hallow Sepulchre Coffin handling
@@ -226,6 +234,10 @@ public class LootTrackerPlugin extends Plugin
 	);
 
 	private static final String CASKET_EVENT = "Casket";
+
+	// Soul Wars
+	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
+	private static final Set<Integer> SOUL_WARS_REGIONS = ImmutableSet.of(8493, 8749, 9005);
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
@@ -363,7 +375,7 @@ public class LootTrackerPlugin extends Plugin
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Loot Tracker")
@@ -487,8 +499,8 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
-		// Ignore Last Man Standing player loots
-		if (isPlayerWithinMapRegion(LAST_MAN_STANDING_REGIONS))
+		// Ignore Last Man Standing and Soul Wars player loots
+		if (isPlayerWithinMapRegion(LAST_MAN_STANDING_REGIONS) || isPlayerWithinMapRegion(SOUL_WARS_REGIONS))
 		{
 			return;
 		}
@@ -621,7 +633,7 @@ public class LootTrackerPlugin extends Plugin
 
 		final String message = event.getMessage();
 
-		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(STONE_CHEST_LOOTED_MESSAGE)
+		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(OTHER_CHEST_LOOTED_MESSAGE)
 			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.startsWith(GRUBBY_CHEST_LOOTED_MESSAGE)
 			|| LARRAN_LOOTED_PATTERN.matcher(message).matches())
 		{
@@ -741,7 +753,7 @@ public class LootTrackerPlugin extends Plugin
 				return;
 			}
 
-			setEvent(LootRecordType.EVENT, type, client.getRealSkillLevel(Skill.HUNTER));
+			setEvent(LootRecordType.EVENT, type, client.getBoostedSkillLevel(Skill.HUNTER));
 			takeInventorySnapshot();
 		}
 	}
@@ -763,6 +775,7 @@ public class LootTrackerPlugin extends Plugin
 			|| SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
 			|| BIRDNEST_EVENT.equals(eventType)
+			|| SPOILS_OF_WAR_EVENT.equals(eventType)
 			|| eventType.endsWith("Bird House")
 			|| eventType.startsWith("H.A.M. chest")
 			|| lootRecordType == LootRecordType.PICKPOCKET)
@@ -799,13 +812,19 @@ public class LootTrackerPlugin extends Plugin
 
 		if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
 		{
-			setEvent(LootRecordType.EVENT, BIRDNEST_EVENT);
+			setEvent(LootRecordType.EVENT, BIRDNEST_EVENT, event.getId());
 			takeInventorySnapshot();
 		}
 
 		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.CASKET)
 		{
 			setEvent(LootRecordType.EVENT, CASKET_EVENT);
+			takeInventorySnapshot();
+		}
+
+		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.SPOILS_OF_WAR)
+		{
+			setEvent(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT);
 			takeInventorySnapshot();
 		}
 	}

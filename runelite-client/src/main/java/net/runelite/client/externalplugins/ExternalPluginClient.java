@@ -25,9 +25,12 @@
 package net.runelite.client.externalplugins;
 
 import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -37,6 +40,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.List;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -56,11 +60,13 @@ import okio.BufferedSource;
 public class ExternalPluginClient
 {
 	private final OkHttpClient okHttpClient;
+	private final Gson gson;
 
 	@Inject
-	private ExternalPluginClient(OkHttpClient okHttpClient)
+	private ExternalPluginClient(OkHttpClient okHttpClient, Gson gson)
 	{
 		this.okHttpClient = okHttpClient;
+		this.gson = gson;
 	}
 
 	public List<ExternalPluginManifest> downloadManifest() throws IOException, VerificationException
@@ -91,7 +97,7 @@ public class ExternalPluginClient
 				throw new VerificationException("Unable to verify external plugin manifest");
 			}
 
-			return RuneLiteAPI.GSON.fromJson(new String(data, StandardCharsets.UTF_8),
+			return gson.fromJson(new String(data, StandardCharsets.UTF_8),
 				new TypeToken<List<ExternalPluginManifest>>()
 				{
 				}.getType());
@@ -153,7 +159,7 @@ public class ExternalPluginClient
 
 		Request request = new Request.Builder()
 			.url(url)
-			.post(RequestBody.create(RuneLiteAPI.JSON, RuneLiteAPI.GSON.toJson(plugins)))
+			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(plugins)))
 			.build();
 
 		okHttpClient.newCall(request).enqueue(new Callback()
@@ -171,5 +177,28 @@ public class ExternalPluginClient
 				response.close();
 			}
 		});
+	}
+
+	public Map<String, Integer> getPluginCounts() throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase()
+			.newBuilder()
+			.addPathSegments("pluginhub")
+			.build();
+		try (Response res = okHttpClient.newCall(new Request.Builder().url(url).build()).execute())
+		{
+			if (res.code() != 200)
+			{
+				throw new IOException("Non-OK response code: " + res.code());
+			}
+
+			// CHECKSTYLE:OFF
+			return gson.fromJson(new InputStreamReader(res.body().byteStream()), new TypeToken<Map<String, Integer>>(){}.getType());
+			// CHECKSTYLE:ON
+		}
+		catch (JsonSyntaxException ex)
+		{
+			throw new IOException(ex);
+		}
 	}
 }

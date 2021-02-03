@@ -29,6 +29,7 @@ package net.runelite.client.ui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -125,7 +126,7 @@ public class IconTextField extends JPanel
 		textField.addMouseListener(hoverEffect);
 		innerTxt.addMouseListener(hoverEffect);
 
-		clearButton = createRHSButton(ColorScheme.PROGRESS_ERROR_COLOR, Color.PINK);
+		clearButton = createRHSButton(ColorScheme.PROGRESS_ERROR_COLOR, Color.PINK, FontManager.getRunescapeBoldFont());
 		clearButton.setText("×");
 		clearButton.addActionListener(evt ->
 		{
@@ -192,7 +193,7 @@ public class IconTextField extends JPanel
 			}
 		});
 
-		suggestionButton = createRHSButton(ColorScheme.LIGHT_GRAY_COLOR, ColorScheme.MEDIUM_GRAY_COLOR);
+		suggestionButton = createRHSButton(ColorScheme.LIGHT_GRAY_COLOR, ColorScheme.MEDIUM_GRAY_COLOR, FontManager.getDefaultBoldFont());
 		suggestionButton.setText("▾");
 		suggestionButton.addActionListener(e ->
 		{
@@ -237,11 +238,11 @@ public class IconTextField extends JPanel
 		add(rhsButtons, BorderLayout.EAST);
 	}
 
-	private JButton createRHSButton(Color fg, Color rollover)
+	private JButton createRHSButton(Color fg, Color rollover, Font font)
 	{
 		JButton b = new JButton();
 		b.setPreferredSize(new Dimension(30, 0));
-		b.setFont(FontManager.getRunescapeBoldFont());
+		b.setFont(font);
 		b.setBorder(null);
 		b.setRolloverEnabled(true);
 		SwingUtil.removeButtonDecorations(b);

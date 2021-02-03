@@ -55,7 +55,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "showbaby",
-		name = "Show Baby implings",
+		name = "Baby implings",
 		description = "Configures whether or not Baby impling tags are displayed",
 		section = implingSection
 	)
@@ -80,7 +80,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "showyoung",
-		name = "Show Young implings",
+		name = "Young implings",
 		description = "Configures whether or not Young impling tags are displayed",
 		section = implingSection
 	)
@@ -105,7 +105,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "showgourmet",
-		name = "Show Gourmet implings",
+		name = "Gourmet implings",
 		description = "Configures whether or not Gourmet impling tags are displayed",
 		section = implingSection
 	)
@@ -130,7 +130,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "showearth",
-		name = "Show Earth implings",
+		name = "Earth implings",
 		description = "Configures whether or not Earth impling tags are displayed",
 		section = implingSection
 	)
@@ -155,7 +155,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 9,
 		keyName = "showessence",
-		name = "Show Essence implings",
+		name = "Essence implings",
 		description = "Configures whether or not Essence impling tags are displayed",
 		section = implingSection
 	)
@@ -180,7 +180,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 11,
 		keyName = "showeclectic",
-		name = "Show Eclectic implings",
+		name = "Eclectic implings",
 		description = "Configures whether or not Eclectic impling tags are displayed",
 		section = implingSection
 	)
@@ -205,7 +205,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 13,
 		keyName = "shownature",
-		name = "Show Nature implings",
+		name = "Nature implings",
 		description = "Configures whether or not Nature impling tags are displayed",
 		section = implingSection
 	)
@@ -230,7 +230,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 15,
 		keyName = "showmagpie",
-		name = "Show Magpie implings",
+		name = "Magpie implings",
 		description = "Configures whether or not Magpie impling tags are displayed",
 		section = implingSection
 	)
@@ -255,7 +255,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 17,
 		keyName = "showninja",
-		name = "Show Ninja implings",
+		name = "Ninja implings",
 		description = "Configures whether or not Ninja impling tags are displayed",
 		section = implingSection
 	)
@@ -280,7 +280,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 19,
 		keyName = "showCrystal",
-		name = "Show Crystal implings",
+		name = "Crystal implings",
 		description = "Configures whether or not Crystal implings are displayed",
 		section = implingSection
 	)
@@ -305,7 +305,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 21,
 		keyName = "showdragon",
-		name = "Show Dragon implings",
+		name = "Dragon implings",
 		description = "Configures whether or not Dragon impling tags are displayed",
 		section = implingSection
 	)
@@ -330,7 +330,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 23,
 		keyName = "showlucky",
-		name = "Show Lucky implings",
+		name = "Lucky implings",
 		description = "Configures whether or not Lucky impling tags are displayed",
 		section = implingSection
 	)

@@ -466,6 +466,7 @@ public class MusicPlugin extends Plugin
 
 		public void update()
 		{
+			handle.setNoClickThrough(false);
 			handle.setOnDragListener((JavaScriptCallback) this::drag);
 			handle.setOnDragCompleteListener((JavaScriptCallback) this::drag);
 			handle.setHasListener(true);
@@ -511,6 +512,9 @@ public class MusicPlugin extends Plugin
 			int level = (x * channel.max) / getWidth();
 			level = Ints.constrainToRange(level, 0, channel.max);
 			channel.setLevel(level);
+
+			int percent = (int) Math.round((level * 100.0 / channel.getMax()));
+			sliderTooltip = new Tooltip(channel.getName() + ": " + percent + "%");
 		}
 
 		protected int getWidth()
