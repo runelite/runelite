@@ -29,11 +29,11 @@ package net.runelite.client.ui;
  *
  * Provides a tooltip for the entries in the combo box.
  */
-public interface ToolTipProvider
+public interface TooltipProvider
 {
 	/**
-	 * Gets the ToolTip text for this object.
-	 * @return The ToolTip text for this object.
+	 * Gets the Tooltip text for this object.
+	 * @return The Tooltip text for this object.
 	 */
-	String getToolTipText();
+	String getTooltipText();
 }

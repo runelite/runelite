@@ -30,7 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.ui.ToolTipProvider;
+import net.runelite.client.ui.TooltipProvider;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.Text;
 
@@ -71,9 +71,9 @@ public final class ComboBoxListRenderer<T> extends JLabel implements ListCellRen
 
 		setText(text);
 
-		if (o instanceof ToolTipProvider)
+		if (o instanceof TooltipProvider)
 		{
-			setToolTipText(((ToolTipProvider) o).getToolTipText());
+			setToolTipText(((TooltipProvider) o).getTooltipText());
 		}
 
 		return this;
