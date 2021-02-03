@@ -83,6 +83,9 @@ enum RareTreeLocation
 		new WorldPoint(2748, 3466, 0),
 		new WorldPoint(2710, 3570, 0),
 
+		// Isle of Souls
+		new WorldPoint(2254, 2808, 0),
+
 		// Prifddinas
 		new WorldPoint(2209, 3427, 0),
 		new WorldPoint(3233, 6179, 0)),
@@ -110,6 +113,9 @@ enum RareTreeLocation
 
 		// Mos Le'Harmless
 		new WorldPoint(3810, 3058, 0),
+
+		// Isle of Souls
+		new WorldPoint(2194, 2991, 0),
 
 		// Karamja
 		new WorldPoint(2821, 3084, 0)),
@@ -179,6 +185,10 @@ enum RareTreeLocation
 		// Morytania
 		new WorldPoint(3674, 3447, 0),
 		new WorldPoint(3684, 3385, 0),
+
+		// Isle of Souls
+		new WorldPoint(2147, 2972, 0),
+		new WorldPoint(2165, 2863, 0),
 
 		// Zanaris
 		new WorldPoint(2412, 4464, 0),
