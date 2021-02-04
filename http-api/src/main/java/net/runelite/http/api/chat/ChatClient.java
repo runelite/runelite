@@ -128,7 +128,7 @@ public class ChatClient
 		}
 	}
 
-	public boolean submitTask(String username, String task, int amount, int initialAmount, String location) throws IOException
+	public boolean submitTask(String username, String task, int amount, int initialAmount, String location, int streak, int points) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
@@ -138,6 +138,8 @@ public class ChatClient
 			.addQueryParameter("amount", Integer.toString(amount))
 			.addQueryParameter("initialAmount", Integer.toString(initialAmount))
 			.addQueryParameter("location", location)
+			.addQueryParameter("streak", Integer.toString(streak))
+			.addQueryParameter("points", Integer.toString(points))
 			.build();
 
 		Request request = new Request.Builder()

@@ -33,4 +33,6 @@ public class Task
 	private int amount;
 	private int initialAmount;
 	private String location;
+	private int streak;
+	private int points;
 }

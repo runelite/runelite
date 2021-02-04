@@ -30,9 +30,9 @@ import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.chat.Task;
-import net.runelite.http.api.chat.Duels;
 import net.runelite.http.service.util.redis.RedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,6 +106,9 @@ public class ChatService
 		task.setAmount(Integer.parseInt(map.get("amount")));
 		task.setInitialAmount(Integer.parseInt(map.get("initialAmount")));
 		task.setLocation(map.get("location"));
+		task.setStreak(Integer.parseInt(map.get("streak")));
+		task.setPoints(Integer.parseInt(map.get("points")));
+
 		return task;
 	}
 
@@ -116,6 +119,8 @@ public class ChatService
 			.put("amount", Integer.toString(task.getAmount()))
 			.put("initialAmount", Integer.toString(task.getInitialAmount()))
 			.put("location", task.getLocation())
+			.put("streak", Integer.toString(task.getStreak()))
+			.put("points", Integer.toString(task.getPoints()))
 			.build();
 
 		String key = "task." + name;

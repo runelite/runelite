@@ -132,6 +132,7 @@ public class SlayerPlugin extends Plugin
 	private static final String TASK_COMMAND_STRING = "!task";
 	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int TASK_STRING_MAX_LENGTH = 50;
+	private static final String SLAYER_COMMAND_STRING = "!slayer";
 
 	@Inject
 	private Client client;
@@ -237,6 +238,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
+		chatCommandManager.registerCommandAsync(SLAYER_COMMAND_STRING, this::taskLookup, this::taskSubmit);
 	}
 
 	@Override
@@ -252,6 +254,7 @@ public class SlayerPlugin extends Plugin
 		cachedXp = -1;
 
 		chatCommandManager.unregisterCommand(TASK_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(SLAYER_COMMAND_STRING);
 	}
 
 	@Provides
@@ -829,27 +832,38 @@ public class SlayerPlugin extends Plugin
 
 		int killed = task.getInitialAmount() - task.getAmount();
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(task.getTask());
+		StringBuilder taskSb = new StringBuilder();
+		taskSb.append(task.getTask());
 		if (!Strings.isNullOrEmpty(task.getLocation()))
 		{
-			sb.append(" (").append(task.getLocation()).append(")");
+			taskSb.append(" (").append(task.getLocation()).append(")");
 		}
-		sb.append(": ");
+		taskSb.append(": ");
 		if (killed < 0)
 		{
-			sb.append(task.getAmount()).append(" left");
+			taskSb.append(task.getAmount()).append(" left");
 		}
 		else
 		{
-			sb.append(killed).append('/').append(task.getInitialAmount()).append(" killed");
+			taskSb.append(killed).append('/').append(task.getInitialAmount()).append(" killed");
 		}
+
+		int taskStreak = task.getStreak();
+		int taskPoints = task.getPoints();
 
 		String response = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
 			.append("Slayer Task: ")
 			.append(ChatColorType.HIGHLIGHT)
-			.append(sb.toString())
+			.append(taskSb.toString())
+			.append(ChatColorType.NORMAL)
+			.append(" Streak: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(taskStreak))
+			.append(ChatColorType.NORMAL)
+			.append(" Points: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(taskPoints))
 			.build();
 
 		final MessageNode messageNode = chatMessage.getMessageNode();
@@ -871,7 +885,7 @@ public class SlayerPlugin extends Plugin
 		{
 			try
 			{
-				chatClient.submitTask(playerName, capsString(taskName), amount, initialAmount, taskLocation);
+				chatClient.submitTask(playerName, capsString(taskName), amount, initialAmount, taskLocation, config.streak(), config.points());
 			}
 			catch (Exception ex)
 			{
