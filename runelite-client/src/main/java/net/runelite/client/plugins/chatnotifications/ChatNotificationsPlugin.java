@@ -165,6 +165,13 @@ public class ChatNotificationsPlugin extends Plugin
 					notifier.notify(Text.removeFormattingTags(broadcast));
 				}
 				break;
+			case PRIVATECHAT:
+			case MODPRIVATECHAT:
+				if (config.notifyOnPM())
+				{
+					notifier.notify(Text.removeTags(chatMessage.getName()) + ": " + chatMessage.getMessage());
+				}
+				break;
 			case CONSOLE:
 				// Don't notify for notification messages
 				if (chatMessage.getName().equals(runeliteTitle))
