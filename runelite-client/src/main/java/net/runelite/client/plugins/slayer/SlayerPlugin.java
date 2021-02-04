@@ -793,7 +793,7 @@ public class SlayerPlugin extends Plugin
 
 	void taskLookup(ChatMessage chatMessage, String message)
 	{
-		if (!config.taskCommand())
+		if (!config.taskCommands())
 		{
 			return;
 		}
@@ -851,20 +851,29 @@ public class SlayerPlugin extends Plugin
 		int taskStreak = task.getStreak();
 		int taskPoints = task.getPoints();
 
-		String response = new ChatMessageBuilder()
+		ChatMessageBuilder messageBuilder = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
 			.append("Slayer Task: ")
 			.append(ChatColorType.HIGHLIGHT)
-			.append(taskSb.toString())
-			.append(ChatColorType.NORMAL)
-			.append(" Streak: ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(Integer.toString(taskStreak))
-			.append(ChatColorType.NORMAL)
-			.append(" Points: ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(Integer.toString(taskPoints))
-			.build();
+			.append(taskSb.toString());
+		if (taskStreak >= 0)
+		{
+			messageBuilder
+				.append(ChatColorType.NORMAL)
+				.append(" Streak: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(taskStreak));
+		}
+		if (taskPoints >= 0)
+		{
+			messageBuilder
+				.append(ChatColorType.NORMAL)
+				.append(" Points: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(taskPoints));
+		}
+
+		String response = messageBuilder.build();
 
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
