@@ -24,8 +24,11 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.item;
 
+import java.util.ArrayList;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.client.plugins.banktags.CustomBankTabItem;
+import net.runelite.client.plugins.banktags.CustomBankTabItems;
 
 public class AnyRequirementCollection implements ItemRequirement
 {
@@ -64,6 +67,51 @@ public class AnyRequirementCollection implements ItemRequirement
 		}
 
 		return false;
+	}
+
+	@Override
+	public ArrayList<CustomBankTabItems> getPluginBankTabItems(Client client)
+	{
+		ArrayList<CustomBankTabItems> newSections = new ArrayList<>();
+
+		ArrayList<CustomBankTabItems> allRequirementsResults = new ArrayList<>();
+
+		boolean isSingleObjects = true;
+		for (ItemRequirement requirement : requirements)
+		{
+			ArrayList<CustomBankTabItems> itemTabSections = requirement.getPluginBankTabItems(client);
+			allRequirementsResults.addAll(itemTabSections);
+			if (itemTabSections.size() > 1)
+			{
+				isSingleObjects = false;
+			}
+
+			for (CustomBankTabItems section : itemTabSections)
+			{
+				if (section.getItems().size() > 1)
+				{
+					isSingleObjects = false;
+					break;
+				}
+			}
+		}
+
+		// If all requirements are just 1 object, combine together into a single item req
+		if (isSingleObjects)
+		{
+			CustomBankTabItem combinedItems = allRequirementsResults.get(0).getItems().get(0);
+			combinedItems.setText(name);
+
+			for (int i = 1; i < allRequirementsResults.size(); i++)
+			{
+				combinedItems.addItemIDs(allRequirementsResults.get(i).getItems().get(0).getItemIDs());
+			}
+
+			newSections.add(new CustomBankTabItems(name, combinedItems));
+			return newSections;
+		}
+
+		return allRequirementsResults;
 	}
 
 	@Override

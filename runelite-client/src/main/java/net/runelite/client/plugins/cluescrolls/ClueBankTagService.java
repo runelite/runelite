@@ -25,8 +25,14 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.ItemID;
-import net.runelite.client.plugins.PluginBankTagService;
+import net.runelite.client.plugins.CustomBankTagService;
+import net.runelite.client.plugins.banktags.CustomBankTabItem;
+import net.runelite.client.plugins.banktags.CustomBankTabItems;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
@@ -35,53 +41,103 @@ import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
-public class ClueBankTagService extends PluginBankTagService
+@Singleton
+public class ClueBankTagService extends CustomBankTagService
 {
 	private final ClueScrollPlugin plugin;
 
+	private final HashMap<ClueScroll, ArrayList<CustomBankTabItems>> solutions = new HashMap<>();
+
+	private static final String EMOTE_CLUE_START = "Emote clue solution";
+	private static final String DIG_CLUE = "Clue items";
+
+	@Inject
 	public ClueBankTagService(ClueScrollPlugin plugin)
 	{
 		this.plugin = plugin;
 	}
 
 	@Override
-	public boolean shouldTag(int itemId)
+	public boolean shouldTag(int itemID)
 	{
-		if (this.itemsToTag().contains(itemId))
-		{
-			return true;
-		}
+		return itemsToTag().contains(itemID);
+	}
 
+	@Override
+	public ArrayList<CustomBankTabItems> getCustomBankTagItemsForSections()
+	{
+		ArrayList<CustomBankTabItems> newList = new ArrayList<>();
 		ClueScroll c = plugin.getClue();
+
+		if (solutions.get(c) != null)
+		{
+			return solutions.get(c);
+		}
 
 		if (c == null)
 		{
-			return false;
+			return newList;
 		}
-
-		if (c instanceof EmoteClue)
+		else if (c instanceof EmoteClue)
 		{
 			EmoteClue emote = (EmoteClue) c;
+			ItemRequirement[] requirements = emote.getItemRequirements();
 
-			for (ItemRequirement ir : emote.getItemRequirements())
+			newList = requirements[0].getPluginBankTabItems(plugin.getClient());
+
+			for (int i = 1; i < requirements.length; i++)
 			{
-				if (ir.fulfilledBy(itemId))
+				ArrayList<CustomBankTabItems> nextNewSections = new ArrayList<>();
+				ArrayList<CustomBankTabItems> currentSectionBeingAdded = requirements[i].getPluginBankTabItems(plugin.getClient());
+				for (CustomBankTabItems newSection : newList)
 				{
-					return true;
+					for (CustomBankTabItems customBankTabItems : currentSectionBeingAdded)
+					{
+						nextNewSections.add(newSection.combineWith(customBankTabItems));
+					}
+				}
+				newList = nextNewSections;
+			}
+
+			if (newList.size() == 1)
+			{
+				newList.get(0).setName(EMOTE_CLUE_START);
+			}
+			else
+			{
+				int i = 1;
+				for (CustomBankTabItems customBankTabItems : newList)
+				{
+					customBankTabItems.setName(EMOTE_CLUE_START + " " + i);
+					i++;
 				}
 			}
 		}
 		else if (c instanceof CoordinateClue || c instanceof HotColdClue || c instanceof FairyRingClue)
 		{
-			return itemId == ItemID.SPADE;
+			newList.add(new CustomBankTabItems(DIG_CLUE, new CustomBankTabItem(1, "Spade", ItemID.SPADE)));
 		}
 		else if (c instanceof MapClue)
 		{
 			MapClue mapClue = (MapClue) c;
-
-			return mapClue.getObjectId() == -1 && itemId == ItemID.SPADE;
+			if (mapClue.getObjectId() == -1)
+			{
+				newList.add(new CustomBankTabItems(DIG_CLUE, new CustomBankTabItem(1, "Spade", ItemID.SPADE)));
+			}
 		}
+		solutions.put(c, newList);
+		return newList;
+	}
 
-		return false;
+	@Override
+	public boolean shouldSortTabIntoSections()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean shouldShowMissingItems()
+	{
+		return true;
 	}
 }

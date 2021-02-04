@@ -34,10 +34,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
-import net.runelite.client.plugins.PluginBankTagService;
+import net.runelite.client.plugins.CustomBankTagService;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import net.runelite.client.util.Text;
 
@@ -47,7 +48,8 @@ public class TagManager
 	static final String ITEM_KEY_PREFIX = "item_";
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
-	private final Map<String, BankTag> customTags = new HashMap<>();
+	@Getter
+	private final Map<String, CustomBankTagService> customTags = new HashMap<>();
 
 	@Inject
 	private TagManager(
@@ -115,10 +117,12 @@ public class TagManager
 
 	boolean findTag(int itemId, String search)
 	{
-		BankTag bankTag = customTags.get(search);
-		if (bankTag != null)
+		for (String tag : customTags.keySet())
 		{
-			return bankTag.contains(itemId);
+			if (search.equals(tag) && customTags.get(tag).shouldTag(itemId))
+			{
+				return true;
+			}
 		}
 
 		Collection<String> tags = getTags(itemId, false);
@@ -187,7 +191,7 @@ public class TagManager
 		return itemId;
 	}
 
-	public void registerTag(String name, BankTag tag)
+	public void registerTag(String name, CustomBankTagService tag)
 	{
 		customTags.put(name, tag);
 	}

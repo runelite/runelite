@@ -40,4 +40,14 @@ public interface ClueScrollConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "generateBankTabs",
+		name = "Generate bank tab",
+		description = "Configures whether or not the 'clue' bank tab should automatically fill with relevant items"
+	)
+	default boolean generateBankTabs()
+	{
+		return true;
+	}
 }

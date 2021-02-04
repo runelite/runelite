@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.ItemID.ABYSSAL_WHIP;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
@@ -50,6 +51,10 @@ public class BankTagsPluginTest
 	@Mock
 	@Bind
 	private Client client;
+
+	@Mock
+	@Bind
+	private ChatColorConfig chatColorConfig;
 
 	@Mock
 	@Bind

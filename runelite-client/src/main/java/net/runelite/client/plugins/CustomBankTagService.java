@@ -26,10 +26,10 @@
 package net.runelite.client.plugins;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import net.runelite.client.plugins.banktags.PluginBankTabItem;
+import net.runelite.client.plugins.banktags.CustomBankTabItem;
+import net.runelite.client.plugins.banktags.CustomBankTabItems;
 
-public class PluginBankTagService
+public class CustomBankTagService
 {
 	/**
 	 * Get whether the provided item should be tagged
@@ -40,30 +40,55 @@ public class PluginBankTagService
 	}
 
 	/**
-	 * Get a list of the plugin's current items to tag
+	 * Get a list of the custom tab's items to tag
 	 */
 	public ArrayList<Integer> itemsToTag()
 	{
-		LinkedHashMap<String, ArrayList<PluginBankTabItem>> sortedItems = tabItemsAsPluginBankTagItem();
+		ArrayList<CustomBankTabItems> sortedItems = getCustomBankTagItemsForSections();
+
+		if (sortedItems == null)
+		{
+			return null;
+		}
 
 		ArrayList<Integer> flattenedList = new ArrayList<>();
-		for (String key : sortedItems.keySet())
+
+		for (CustomBankTabItems sortedItem : sortedItems)
 		{
-			for (PluginBankTabItem pluginBankTabItem : sortedItems.get(key))
+			for (CustomBankTabItem customBankTabItem : sortedItem.getItems())
 			{
-				flattenedList.add(pluginBankTabItem.getItemID());
+				ArrayList<Integer> itemIds = customBankTabItem.getItemIDs();
+				if (itemIds != null)
+				{
+					for (Integer itemId : itemIds)
+					{
+						if (!flattenedList.contains(itemId))
+						{
+							flattenedList.add(itemId);
+						}
+					}
+				}
 			}
 		}
 		return flattenedList;
 	}
 
 	/**
-	 * Get a LinkedHashMap of the current plugin's PluginBankTagItem to be tagged sorted into sections
+	 * Get an ArrayList of the current custom tab's CustomBankTagItems to be tagged sorted into sections
 	 */
-	public LinkedHashMap<String, ArrayList<PluginBankTabItem>> tabItemsAsPluginBankTagItem()
+	public ArrayList<CustomBankTabItems> getCustomBankTagItemsForSections()
 	{
 		return null;
 	}
+
+	/**
+	 * Get whether or not the bank's tab should be sorted into sections, or left to whatever the default Bank Tab behaviour is
+	 */
+	public boolean shouldSortTabIntoSections()
+	{
+		return false;
+	}
+
 
 	/**
 	 * Get whether items not in the bank and without a placeholder should be represented in the plugin's bank tab

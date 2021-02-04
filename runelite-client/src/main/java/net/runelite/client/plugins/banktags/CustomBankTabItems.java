@@ -24,21 +24,49 @@
  */
 package net.runelite.client.plugins.banktags;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import lombok.Getter;
+import lombok.Setter;
 
-public class PluginBankTabItem
+public class CustomBankTabItems
 {
 	@Getter
-	private final int quantity;
-	@Getter
-	private final String text;
-	@Getter
-	private final int itemID;
+	@Setter
 
-	public PluginBankTabItem(int quantity, String text, int itemID)
+	private String name;
+
+	@Getter
+	private final ArrayList<CustomBankTabItem> items;
+
+	public CustomBankTabItems(String name, ArrayList<CustomBankTabItem> items)
 	{
-		this.quantity = quantity;
-		this.text = text;
-		this.itemID = itemID;
+		this.name = name;
+		this.items = items;
+	}
+
+	public CustomBankTabItems(String name, CustomBankTabItem... items)
+	{
+		this.name = name;
+		this.items = new ArrayList<>(Arrays.asList(items));
+	}
+
+	public void addItems(CustomBankTabItem... items)
+	{
+		this.items.addAll(Arrays.asList(items));
+	}
+
+	public void addItems(ArrayList<CustomBankTabItem> items)
+	{
+		this.items.addAll(items);
+	}
+
+	public CustomBankTabItems combineWith(CustomBankTabItems customBankTabItems)
+	{
+		String newName = name + " & " + customBankTabItems.getName();
+		ArrayList<CustomBankTabItem> newItems = new ArrayList<>(getItems());
+		newItems.addAll(customBankTabItems.getItems());
+
+		return new CustomBankTabItems(newName, newItems);
 	}
 }

@@ -24,14 +24,18 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.item;
 
+import java.util.ArrayList;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.client.plugins.banktags.CustomBankTabItems;
 
 public interface ItemRequirement
 {
 	boolean fulfilledBy(int itemId);
 
 	boolean fulfilledBy(Item[] items);
+
+	ArrayList<CustomBankTabItems> getPluginBankTabItems(Client client);
 
 	String getCollectiveName(Client client);
 }
