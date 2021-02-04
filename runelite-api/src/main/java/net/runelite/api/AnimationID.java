@@ -97,6 +97,7 @@ public final class AnimationID
 	public static final int CRAFTING_SPINNING = 894;
 	public static final int CRAFTING_POTTERS_WHEEL = 883;
 	public static final int CRAFTING_POTTERY_OVEN = 24975;
+	public static final int CRAFTING_LOOM = 2270;
 	public static final int SMITHING_SMELTING = 899;
 	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
 	public static final int SMITHING_ANVIL = 898;
