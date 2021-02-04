@@ -40,6 +40,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
@@ -80,6 +81,10 @@ public class ClueScrollPluginTest
 	@Mock
 	@Bind
 	ItemManager itemManager;
+
+	@Mock
+	@Bind
+	TagManager tagManager;
 
 	@Before
 	public void before()
