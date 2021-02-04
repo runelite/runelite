@@ -56,8 +56,6 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
@@ -82,7 +80,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	private static final int CYCLE_HOTKEY = KeyEvent.VK_TAB;
 	private static final int FRIENDS_MAX_SIZE = 5;
 
-	private Queue<QueuedMessage> messageQueue;
+	private Queue<MessageNode> messageQueue;
 	private Deque<String> friends;
 
 	private String currentMessage = null;
@@ -99,9 +97,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Inject
 	private KeyManager keyManager;
 
-	@Inject
-	private ChatMessageManager chatMessageManager;
-
 	@Provides
 	ChatHistoryConfig getConfig(ConfigManager configManager)
 	{
@@ -111,6 +106,9 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp()
 	{
+		// The client reuses MessageNodes after 100 chat messages of
+		// the same type, so this must be 100 (or maybe a map of
+		// size 100 evicting queues)
 		messageQueue = EvictingQueue.create(100);
 		friends = new ArrayDeque<>(FRIENDS_MAX_SIZE + 1);
 		keyManager.registerKeyListener(this);
@@ -140,11 +138,16 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 				return;
 			}
 
-			QueuedMessage queuedMessage;
-
-			while ((queuedMessage = messageQueue.poll()) != null)
+			for (MessageNode queuedMessage : messageQueue)
 			{
-				chatMessageManager.queue(queuedMessage);
+				final MessageNode node = client.addChatMessage(
+					queuedMessage.getType(),
+					queuedMessage.getName(),
+					queuedMessage.getValue(),
+					queuedMessage.getSender(),
+					false);
+				node.setRuneLiteFormatMessage(queuedMessage.getRuneLiteFormatMessage());
+				node.setTimestamp(queuedMessage.getTimestamp());
 			}
 
 			return;
@@ -171,19 +174,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			case MODCHAT:
 			case FRIENDSCHAT:
 			case CONSOLE:
-				final QueuedMessage queuedMessage = QueuedMessage.builder()
-					.type(chatMessageType)
-					.name(chatMessage.getName())
-					.sender(chatMessage.getSender())
-					.value(nbsp(chatMessage.getMessage()))
-					.runeLiteFormattedMessage(nbsp(chatMessage.getMessageNode().getRuneLiteFormatMessage()))
-					.timestamp(chatMessage.getTimestamp())
-					.build();
-
-				if (!messageQueue.contains(queuedMessage))
-				{
-					messageQueue.offer(queuedMessage);
-				}
+				messageQueue.offer(chatMessage.getMessageNode());
 		}
 	}
 
@@ -346,21 +337,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		}
 
 		clearMessageQueue(tab);
-	}
-
-	/**
-	 * Small hack to prevent plugins checking for specific messages to match
-	 * @param message message
-	 * @return message with nbsp
-	 */
-	private static String nbsp(final String message)
-	{
-		if (message != null)
-		{
-			return message.replace(' ', '\u00A0');
-		}
-
-		return null;
 	}
 
 	@Override
