@@ -73,10 +73,10 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showMainMenu",
-			name = "Main Menu",
-			description = "Show status when in main menu",
-			position = 3
+		keyName = "showMainMenu",
+		name = "Main Menu",
+		description = "Show status when in main menu",
+		position = 3
 	)
 	default boolean showMainMenu()
 	{
