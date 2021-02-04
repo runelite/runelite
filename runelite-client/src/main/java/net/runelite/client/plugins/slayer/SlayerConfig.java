@@ -116,11 +116,11 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "taskCommand",
-		name = "Task Command",
-		description = "Configures whether the slayer task command is enabled<br> !task / !slayer"
+		keyName = "taskCommands",
+		name = "Task Commands",
+		description = "Configures whether the slayer task commands are enabled<br> !task / !slayer"
 	)
-	default boolean taskCommand()
+	default boolean taskCommands()
 	{
 		return true;
 	}
@@ -206,7 +206,7 @@ public interface SlayerConfig extends Config
 	)
 	default int streak()
 	{
-		return 0;
+		return -1;
 	}
 
 	@ConfigItem(
@@ -224,7 +224,7 @@ public interface SlayerConfig extends Config
 	)
 	default int points()
 	{
-		return 0;
+		return -1;
 	}
 
 	@ConfigItem(
