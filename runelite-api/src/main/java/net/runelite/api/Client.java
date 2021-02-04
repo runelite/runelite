@@ -120,8 +120,21 @@ public interface Client extends GameEngine
 	 * @param name the name of the player that sent the message
 	 * @param message the message contents
 	 * @param sender the sender/channel name
+	 * @return the message node for the message
 	 */
-	void addChatMessage(ChatMessageType type, String name, String message, String sender);
+	MessageNode addChatMessage(ChatMessageType type, String name, String message, String sender);
+
+	/**
+	 * Adds a new chat message to the chatbox.
+	 *
+	 * @param type the type of message
+	 * @param name the name of the player that sent the message
+	 * @param message the message contents
+	 * @param sender the sender/channel name
+	 * @param postEvent whether to post the chat message event
+	 * @return the message node for the message
+	 */
+	MessageNode addChatMessage(ChatMessageType type, String name, String message, String sender, boolean postEvent);
 
 	/**
 	 * Gets the current game state.
