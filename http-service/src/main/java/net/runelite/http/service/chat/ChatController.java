@@ -198,8 +198,8 @@ public class ChatController
 
 	@PostMapping("/duels")
 	public void submitDuels(@RequestParam String name, @RequestParam int wins,
-		@RequestParam int losses,
-		@RequestParam int winningStreak, @RequestParam int losingStreak)
+							@RequestParam int losses,
+							@RequestParam int winningStreak, @RequestParam int losingStreak)
 	{
 		if (wins < 0 || losses < 0 || winningStreak < 0 || losingStreak < 0)
 		{

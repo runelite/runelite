@@ -172,6 +172,7 @@ public interface SlayerConfig extends Config
 	{
 		return -1;
 	}
+
 	@ConfigItem(
 		keyName = "initialAmount",
 		name = "",
