@@ -24,9 +24,13 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.item;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
+import net.runelite.client.plugins.banktags.CustomBankTabItem;
+import net.runelite.client.plugins.banktags.CustomBankTabItems;
 
 public class MultipleOfItemRequirement implements ItemRequirement
 {
@@ -75,5 +79,14 @@ public class MultipleOfItemRequirement implements ItemRequirement
 		}
 
 		return definition.getName() + " x" + this.quantity;
+	}
+
+	@Override
+	public ArrayList<CustomBankTabItems> getPluginBankTabItems(Client client)
+	{
+		String name = getCollectiveName(client);
+		CustomBankTabItem item = new CustomBankTabItem(quantity, name, itemId);
+
+		return new ArrayList<>(Collections.singletonList(new CustomBankTabItems(name, item)));
 	}
 }

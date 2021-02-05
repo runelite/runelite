@@ -29,10 +29,12 @@ package net.runelite.client.plugins.banktags;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Shorts;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -41,14 +43,18 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.FontID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
@@ -61,10 +67,16 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -75,11 +87,13 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.CustomBankTagService;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.banktags.tabs.TagTab;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -99,6 +113,11 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private static final int ITEM_VERTICAL_SPACING = 36;
 	private static final int ITEM_HORIZONTAL_SPACING = 48;
 	private static final int ITEM_ROW_START = 51;
+	private static final int LINE_VERTICAL_SPACING = 5;
+	private static final int LINE_HEIGHT = 2;
+	private static final int TEXT_HEIGHT = 15;
+	private static final int ITEM_HEIGHT = 32;
+	private static final int ITEM_WIDTH = 36;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
@@ -108,6 +127,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
 		"Show items whose names or tags contain the following text: (%d found)<br>" +
 			"(To show only tagged items, start your search with 'tag:')";
+
+	private final ArrayList<Widget> addedWidgets = new ArrayList<>();
 
 	@Inject
 	private ItemManager itemManager;
@@ -138,6 +159,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Provides
 	BankTagsConfig getConfig(ConfigManager configManager)
@@ -173,7 +197,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			tabInterface.init();
 		});
 	}
-
 
 	@Override
 	public void startUp()
@@ -256,8 +279,22 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 		event.consume();
 
+		final List<Integer> idsList = new ArrayList<>();
+		for (String tag : tagManager.getCustomTags().keySet())
+		{
+			if (input.equals(TAG_SEARCH + tag))
+			{
+				List<Integer> customTabItemIds = tagManager.getCustomTags().get(tag).itemsToTag();
+				if (customTabItemIds != null)
+				{
+					idsList.addAll(customTabItemIds);
+				}
+			}
+		}
+
 		final String tag = input.substring(TAG_SEARCH.length()).trim();
-		final Set<Integer> ids = tagManager.getItemsForTag(tag)
+		idsList.addAll(tagManager.getItemsForTag(tag));
+		final Set<Integer> ids = idsList
 			.stream()
 			.mapToInt(Math::abs)
 			.mapToObj(ItemVariationMapping::getVariations)
@@ -491,10 +528,18 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			{
 				client.getIntStack()[client.getIntStackSize() - 1] = 1; // true
 			}
+			else if (!addedWidgets.isEmpty())
+			{
+				for (Widget addedWidget : addedWidgets)
+				{
+					addedWidget.setHidden(true);
+				}
+				addedWidgets.clear();
+			}
 			return;
 		}
 
-		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD || !config.removeSeparators())
+		if (event.getScriptId() != ScriptID.BANKMAIN_FINISHBUILDING)
 		{
 			return;
 		}
@@ -510,9 +555,42 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			return;
 		}
 
-		int items = 0;
+		if (!addedWidgets.isEmpty())
+		{
+
+			for (Widget addedWidget : addedWidgets)
+			{
+				addedWidget.setHidden(true);
+			}
+			addedWidgets.clear();
+		}
 
 		Widget[] containerChildren = itemContainer.getDynamicChildren();
+
+		ArrayList<CustomBankTabItems> tabLayout = null;
+
+		if (tagManager.getCustomTags().containsKey(tabInterface.getActiveTab().getTag()))
+		{
+			CustomBankTagService customBankTagService = tagManager.getCustomTags().get(tabInterface.getActiveTab().getTag());
+			if (customBankTagService.shouldSortTabIntoSections())
+			{
+				tabLayout = customBankTagService.getCustomBankTagItemsForSections();
+				if (tabLayout != null)
+				{
+					sortCustomBankTabItems(customBankTagService, itemContainer, containerChildren, tabLayout);
+				}
+			}
+		}
+
+		if (config.removeSeparators() && tabLayout == null)
+		{
+			defaultSort(itemContainer, containerChildren);
+		}
+	}
+
+	private void defaultSort(Widget itemContainer, Widget[] containerChildren)
+	{
+		int items = 0;
 
 		// sort the child array as the items are not in the displayed order
 		Arrays.sort(containerChildren, Comparator.comparing(Widget::getOriginalY)
@@ -523,20 +601,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			if (child.getItemId() != -1 && !child.isHidden())
 			{
 				// calculate correct item position as if this was a normal tab
-				int adjYOffset = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
-				int adjXOffset = (items % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
-
-				if (child.getOriginalY() != adjYOffset)
-				{
-					child.setOriginalY(adjYOffset);
-					child.revalidate();
-				}
-
-				if (child.getOriginalX() != adjXOffset)
-				{
-					child.setOriginalX(adjXOffset);
-					child.revalidate();
-				}
+				placeItem(child, items, 0);
 
 				items++;
 			}
@@ -561,7 +626,249 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				WidgetInfo.BANK_SCROLLBAR.getId(),
 				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
 				itemContainerScroll));
+	}
 
+	private void sortCustomBankTabItems(CustomBankTagService customBankTagService, Widget itemContainer,
+										Widget[] containerChildren, ArrayList<CustomBankTabItems> newLayout)
+	{
+		int totalSectionsHeight = 0;
+
+		ArrayList<Integer> itemList = new ArrayList<>();
+		for (Widget itemWidget : containerChildren)
+		{
+			if (itemWidget.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
+				|| itemWidget.getText().contains("Tab"))
+			{
+				itemWidget.setHidden(true);
+			}
+			else if (!itemWidget.isHidden() && itemWidget.getItemId() != -1
+				&& !itemList.contains(itemWidget.getItemId()))
+			{
+				itemList.add(itemWidget.getItemId());
+			}
+		}
+
+		for (CustomBankTabItems customBankTabItems : newLayout)
+		{
+			totalSectionsHeight = addCustomTabSection(customBankTagService, itemContainer,
+				customBankTabItems.getItems(), itemList, customBankTabItems.getName(), totalSectionsHeight,
+				true);
+		}
+
+		totalSectionsHeight = addGeneralSection(itemContainer, itemList, totalSectionsHeight);
+
+		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		int itemContainerHeight = bankItemContainer.getHeight();
+
+		itemContainer.setScrollHeight(Math.max(totalSectionsHeight, itemContainerHeight));
+
+		final int itemContainerScroll = bankItemContainer.getScrollY();
+		clientThread.invokeLater(() ->
+			client.runScript(ScriptID.UPDATE_SCROLLBAR,
+				WidgetInfo.BANK_SCROLLBAR.getId(),
+				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
+				itemContainerScroll));
+	}
+
+	private int addCustomTabSection(CustomBankTagService customBankTagService, Widget itemContainer,
+									ArrayList<CustomBankTabItem> items, ArrayList<Integer> itemIds,
+									String title, int totalSectionsHeight, boolean shouldShowMissingItems)
+	{
+		int totalItemsAdded = 0;
+
+		if (items == null)
+		{
+			return 0;
+		}
+
+		for (CustomBankTabItem customBankTabItem : items)
+		{
+			boolean foundItem = false;
+			if (!Collections.disjoint(itemIds, customBankTabItem.getItemIDs()))
+			{
+				for (Widget widget : itemContainer.getDynamicChildren())
+				{
+					if (!widget.isHidden() && (customBankTabItem.getItemIDs().contains(widget.getItemId())))
+					{
+						foundItem = true;
+						if (totalItemsAdded == 0)
+						{
+							totalSectionsHeight = addSectionHeader(itemContainer, title, totalSectionsHeight);
+						}
+
+						placeItem(widget, totalItemsAdded, totalSectionsHeight);
+						totalItemsAdded++;
+						itemIds.removeAll(Collections.singletonList(widget.getItemId()));
+						break;
+					}
+				}
+			}
+			if (!foundItem && customBankTagService.shouldShowMissingItems() && shouldShowMissingItems)
+			{
+				if (totalItemsAdded == 0)
+				{
+					totalSectionsHeight = addSectionHeader(itemContainer, title, totalSectionsHeight);
+				}
+
+				// calculate correct item position as if this was a normal tab
+				int adjXOffset = (totalItemsAdded % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
+				int adjYOffset = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
+
+				addedWidgets.add(createMissingItem(itemContainer, customBankTabItem, adjXOffset, adjYOffset));
+				itemIds.removeAll(customBankTabItem.getItemIDs());
+				totalItemsAdded++;
+			}
+		}
+		int newHeight = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
+		newHeight = totalItemsAdded % ITEMS_PER_ROW != 0 ? newHeight + ITEM_VERTICAL_SPACING : newHeight;
+
+		return newHeight;
+	}
+
+	private int addGeneralSection(Widget itemContainer, ArrayList<Integer> items, int totalSectionsHeight)
+	{
+		int totalItemsAdded = 0;
+
+		if (items.isEmpty())
+		{
+			return totalSectionsHeight;
+		}
+
+		for (Integer itemID : items)
+		{
+			for (Widget widget : itemContainer.getDynamicChildren())
+			{
+				if (!widget.isHidden() && widget.getItemId() == itemID)
+				{
+					if (totalItemsAdded == 0)
+					{
+						totalSectionsHeight = addSectionHeader(itemContainer, "General", totalSectionsHeight);
+					}
+
+					placeItem(widget, totalItemsAdded, totalSectionsHeight);
+					totalItemsAdded++;
+				}
+			}
+		}
+		int newHeight = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
+		newHeight = totalItemsAdded % ITEMS_PER_ROW != 0 ? newHeight + ITEM_VERTICAL_SPACING : newHeight;
+
+		return newHeight;
+	}
+
+	private int addSectionHeader(Widget itemContainer, String title, int totalSectionsHeight)
+	{
+		addedWidgets.add(createGraphic(itemContainer, SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND, ITEMS_PER_ROW * ITEM_HORIZONTAL_SPACING, LINE_HEIGHT, ITEM_ROW_START, totalSectionsHeight));
+		addedWidgets.add(createText(itemContainer, title, (ITEMS_PER_ROW * ITEM_HORIZONTAL_SPACING) + ITEM_ROW_START, TEXT_HEIGHT, ITEM_ROW_START, totalSectionsHeight + LINE_VERTICAL_SPACING));
+
+		return totalSectionsHeight + LINE_VERTICAL_SPACING + TEXT_HEIGHT;
+	}
+
+	private void placeItem(Widget widget, int totalItemsAdded, int totalSectionsHeight)
+	{
+		int adjYOffset = totalSectionsHeight + (totalItemsAdded / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
+		int adjXOffset = (totalItemsAdded % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
+
+		if (widget.getOriginalY() != adjYOffset)
+		{
+			widget.setOriginalY(adjYOffset);
+			widget.revalidate();
+		}
+
+		if (widget.getOriginalX() != adjXOffset)
+		{
+			widget.setOriginalX(adjXOffset);
+			widget.revalidate();
+		}
+	}
+
+	private Widget createGraphic(Widget container, int spriteId, int width, int height, int x, int y)
+	{
+		Widget widget = container.createChild(-1, WidgetType.GRAPHIC);
+		widget.setOriginalWidth(width);
+		widget.setOriginalHeight(height);
+		widget.setOriginalX(x);
+		widget.setOriginalY(y);
+
+		widget.setSpriteId(spriteId);
+
+		widget.revalidate();
+
+		return widget;
+	}
+
+	private Widget createMissingItem(Widget container, CustomBankTabItem customBankTabItem, int x, int y)
+	{
+		Widget widget = container.createChild(-1, WidgetType.GRAPHIC);
+		widget.setOriginalWidth(ITEM_WIDTH);
+		widget.setOriginalHeight(ITEM_HEIGHT);
+		widget.setOriginalX(x);
+		widget.setOriginalY(y);
+
+		ArrayList<Integer> itemIDs = customBankTabItem.getItemIDs();
+		if (itemIDs.size() == 0)
+		{
+			itemIDs.add(ItemID.CAKE_OF_GUIDANCE);
+		}
+
+		widget.setItemId(customBankTabItem.getItemIDs().get(0));
+		widget.setName("<col=ff9040>" + customBankTabItem.getText() + "</col>");
+		widget.setItemQuantity(customBankTabItem.getQuantity());
+		widget.setOpacity(150);
+		widget.setOnOpListener(ScriptID.NULL);
+		widget.setHasListener(true);
+
+		addTabActions(widget);
+
+		widget.revalidate();
+
+		return widget;
+	}
+
+	private void addTabActions(Widget w)
+	{
+		w.setAction(1, "Details");
+
+		w.setOnOpListener((JavaScriptCallback) this::handleTagTab);
+	}
+
+	private void handleTagTab(ScriptEvent event)
+	{
+		Widget widget = event.getSource();
+		if (widget.getItemId() != -1)
+		{
+			String name = widget.getName();
+			int quantity = widget.getItemQuantity();
+
+			final ChatMessageBuilder message = new ChatMessageBuilder()
+				.append("You need ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(QuantityFormatter.formatNumber(quantity))
+				.append(" x ").append(Text.removeTags(name))
+				.append(".");
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.ITEM_EXAMINE)
+				.runeLiteFormattedMessage(message.build())
+				.build());
+		}
+	}
+
+	private Widget createText(Widget container, String text, int width, int height, int x, int y)
+	{
+		Widget widget = container.createChild(-1, WidgetType.TEXT);
+		widget.setOriginalWidth(width);
+		widget.setOriginalHeight(height);
+		widget.setOriginalX(x);
+		widget.setOriginalY(y);
+
+		widget.setText(text);
+		widget.setFontId(FontID.PLAIN_11);
+		widget.setTextColor(new Color(228, 216, 162).getRGB());
+
+		widget.revalidate();
+
+		return widget;
 	}
 
 	@Subscribe

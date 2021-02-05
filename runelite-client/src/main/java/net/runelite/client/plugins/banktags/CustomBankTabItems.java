@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.banktags;
 
-package net.runelite.client.plugins.cluescrolls;
+import java.util.ArrayList;
+import java.util.Arrays;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-
-@Singleton
-class ClueScrollServiceImpl implements ClueScrollService
+public class CustomBankTabItems
 {
-	private final ClueScrollPlugin plugin;
+	@Getter
+	@Setter
 
-	@Inject
-	private ClueScrollServiceImpl(ClueScrollPlugin plugin)
+	private String name;
+
+	@Getter
+	private final ArrayList<CustomBankTabItem> items;
+
+	public CustomBankTabItems(String name, ArrayList<CustomBankTabItem> items)
 	{
-		this.plugin = plugin;
+		this.name = name;
+		this.items = items;
 	}
 
-	@Override
-	public ClueScroll getClue()
+	public CustomBankTabItems(String name, CustomBankTabItem... items)
 	{
-		return plugin.getClue();
+		this.name = name;
+		this.items = new ArrayList<>(Arrays.asList(items));
+	}
+
+	public void addItems(CustomBankTabItem... items)
+	{
+		this.items.addAll(Arrays.asList(items));
+	}
+
+	public void addItems(ArrayList<CustomBankTabItem> items)
+	{
+		this.items.addAll(items);
+	}
+
+	public CustomBankTabItems combineWith(CustomBankTabItems customBankTabItems)
+	{
+		String newName = name + " & " + customBankTabItems.getName();
+		ArrayList<CustomBankTabItem> newItems = new ArrayList<>(getItems());
+		newItems.addAll(customBankTabItems.getItems());
+
+		return new CustomBankTabItems(newName, newItems);
 	}
 }

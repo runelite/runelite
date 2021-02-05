@@ -24,11 +24,16 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.item;
 
+import java.util.ArrayList;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.client.plugins.banktags.CustomBankTabItem;
+import net.runelite.client.plugins.banktags.CustomBankTabItems;
 
 public class RangeItemRequirement implements ItemRequirement
 {
+	@Getter
 	private final String name;
 	private final int startItemId;
 	private final int endItemId;
@@ -58,6 +63,28 @@ public class RangeItemRequirement implements ItemRequirement
 		}
 
 		return false;
+	}
+
+	@Override
+	public ArrayList<CustomBankTabItems> getPluginBankTabItems(Client client)
+	{
+		String name = getCollectiveName(client);
+
+		if (name == null)
+		{
+			name = client.getItemDefinition(startItemId).getName();
+		}
+
+		CustomBankTabItem items = new CustomBankTabItem(1, name, startItemId);
+		for (int i = startItemId + 1; i <= endItemId; i++)
+		{
+			items.addItemIDs(i);
+		}
+
+		ArrayList<CustomBankTabItems> itemsList = new ArrayList<>();
+		itemsList.add(new CustomBankTabItems(name, items));
+
+		return itemsList;
 	}
 
 	@Override

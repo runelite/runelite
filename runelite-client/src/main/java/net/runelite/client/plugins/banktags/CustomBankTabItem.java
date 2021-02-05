@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2020, Zoinkwiz <https://github.com/Zoinkwiz>
  * All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.banktags;
 
-package net.runelite.client.plugins.cluescrolls;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import lombok.Getter;
+import lombok.Setter;
 
-import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-
-public interface ClueScrollService
+public class CustomBankTabItem
 {
-	/**
-	 * Get the clue scroll
-	 *
-	 * @return ClueScroll
-	 */
-	ClueScroll getClue();
+	@Getter
+	private final int quantity;
+
+	@Getter
+	@Setter
+	private String text;
+
+	@Getter
+	private final ArrayList<Integer> itemIDs;
+
+	public CustomBankTabItem(int quantity, String text, int itemID)
+	{
+		this.quantity = quantity;
+		this.text = text;
+		this.itemIDs = new ArrayList<>(Collections.singleton(itemID));
+	}
+
+	public CustomBankTabItem(int quantity, String text, ArrayList<Integer> itemIDs)
+	{
+		this.quantity = quantity;
+		this.text = text;
+		this.itemIDs = itemIDs;
+	}
+
+	public void addItemIDs(Integer... itemIDs)
+	{
+		this.itemIDs.addAll(Arrays.asList(itemIDs));
+	}
+
+	public void addItemIDs(ArrayList<Integer> itemIDs)
+	{
+		this.itemIDs.addAll(itemIDs);
+	}
 }

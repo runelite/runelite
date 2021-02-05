@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.item;
 
+import java.util.ArrayList;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
+import net.runelite.client.plugins.banktags.CustomBankTabItems;
 
 public class SlotLimitationRequirement implements ItemRequirement
 {
@@ -62,6 +64,12 @@ public class SlotLimitationRequirement implements ItemRequirement
 		}
 
 		return true;
+	}
+
+	@Override
+	public ArrayList<CustomBankTabItems> getPluginBankTabItems(Client client)
+	{
+		return new ArrayList<>();
 	}
 
 	@Override

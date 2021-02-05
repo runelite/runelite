@@ -95,6 +95,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.CustomBankTagService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -120,7 +121,6 @@ import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.SkillChallengeClue;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
-import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -139,6 +139,8 @@ import org.apache.commons.lang3.ArrayUtils;
 @Slf4j
 public class ClueScrollPlugin extends Plugin
 {
+	private static final String CONFIG_GROUP = "cluescroll";
+	private static final String CLUE_BANK_TAG = "clue";
 	private static final Color HIGHLIGHT_BORDER_COLOR = Color.ORANGE;
 	private static final Color HIGHLIGHT_HOVER_BORDER_COLOR = HIGHLIGHT_BORDER_COLOR.darker();
 	private static final Color HIGHLIGHT_FILL_COLOR = new Color(0, 255, 0, 20);
@@ -201,6 +203,9 @@ public class ClueScrollPlugin extends Plugin
 	private TagManager tagManager;
 
 	@Inject
+	private ClueBankTagService clueBankTagService;
+
+	@Inject
 	@Named("developerMode")
 	boolean developerMode;
 
@@ -226,7 +231,7 @@ public class ClueScrollPlugin extends Plugin
 	@Override
 	public void configure(Binder binder)
 	{
-		binder.bind(ClueScrollService.class).to(ClueScrollServiceImpl.class);
+		binder.bind(CustomBankTagService.class).to(ClueBankTagService.class);
 	}
 
 	@Override
@@ -236,7 +241,11 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.add(clueScrollEmoteOverlay);
 		overlayManager.add(clueScrollWorldOverlay);
 		overlayManager.add(clueScrollMusicOverlay);
-		tagManager.registerTag(CLUE_TAG_NAME, this::testClueTag);
+		customBankTagService = new ClueBankTagService(this);
+		if (config.generateBankTabs())
+		{
+			tagManager.registerTag(CLUE_TAG_NAME, clueBankTagService);
+		}
 	}
 
 	@Override
@@ -247,6 +256,7 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);
 		overlayManager.remove(clueScrollMusicOverlay);
+		tagManager.unregisterTag(CLUE_TAG_NAME);
 		npcsToMark.clear();
 		namedObjectsToMark.clear();
 		inventoryItems = null;
@@ -475,9 +485,23 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("cluescroll") && !config.displayHintArrows())
+		if (event.getGroup().equals(CONFIG_GROUP))
 		{
-			client.clearHintArrow();
+			if (event.getKey().equals("displayHintArrows") && !config.displayHintArrows())
+			{
+				client.clearHintArrow();
+			}
+			else if (event.getKey().equals("generateBankTabs"))
+			{
+				if (config.generateBankTabs())
+				{
+					tagManager.registerTag(CLUE_BANK_TAG, customBankTagService);
+				}
+				else
+				{
+					tagManager.unregisterTag(CLUE_BANK_TAG);
+				}
+			}
 		}
 	}
 
@@ -1119,39 +1143,5 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 		return worldPoint;
-	}
-
-	private boolean testClueTag(int itemId)
-	{
-		ClueScroll c = clue;
-		if (c == null)
-		{
-			return false;
-		}
-
-		if (c instanceof EmoteClue)
-		{
-			EmoteClue emote = (EmoteClue) c;
-
-			for (ItemRequirement ir : emote.getItemRequirements())
-			{
-				if (ir.fulfilledBy(itemId))
-				{
-					return true;
-				}
-			}
-		}
-		else if (c instanceof CoordinateClue || c instanceof HotColdClue || c instanceof FairyRingClue)
-		{
-			return itemId == ItemID.SPADE;
-		}
-		else if (c instanceof MapClue)
-		{
-			MapClue mapClue = (MapClue) c;
-
-			return mapClue.getObjectId() == -1 && itemId == ItemID.SPADE;
-		}
-
-		return false;
 	}
 }

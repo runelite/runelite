@@ -31,6 +31,7 @@ import com.google.inject.Module;
 public abstract class Plugin implements Module
 {
 	protected Injector injector;
+	protected CustomBankTagService customBankTagService = new CustomBankTagService();
 
 	@Override
 	public void configure(Binder binder)
