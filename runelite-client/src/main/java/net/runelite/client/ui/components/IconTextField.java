@@ -33,14 +33,12 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -333,30 +331,6 @@ public class IconTextField extends JPanel
 	public void addClearListener(Runnable clearListener)
 	{
 		clearListeners.add(clearListener);
-	}
-
-	public void addKeyListener(Consumer<KeyEvent> keyEventConsumer)
-	{
-		addKeyListener(new net.runelite.client.input.KeyListener()
-		{
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-				keyEventConsumer.accept(e);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				keyEventConsumer.accept(e);
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
-				keyEventConsumer.accept(e);
-			}
-		});
 	}
 
 	@Override
