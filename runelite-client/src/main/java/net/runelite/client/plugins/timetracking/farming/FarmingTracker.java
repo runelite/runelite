@@ -29,20 +29,28 @@ import com.google.inject.Singleton;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.vars.Autoweed;
 import net.runelite.api.widgets.WidgetModalMode;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneScapeProfile;
+import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import net.runelite.client.util.Text;
 
 @Slf4j
 @Singleton
@@ -53,6 +61,7 @@ public class FarmingTracker
 	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
 	private final FarmingWorld farmingWorld;
+	private final Notifier notifier;
 
 	private final Map<Tab, SummaryState> summaries = new EnumMap<>(Tab.class);
 
@@ -61,23 +70,26 @@ public class FarmingTracker
 	 * or {@code -1} if we have no data about any patch of the given type.
 	 */
 	private final Map<Tab, Long> completionTimes = new EnumMap<>(Tab.class);
+	Map<ProfilePatch, Boolean> wasNotified = new HashMap<>();
 
 	private boolean newRegionLoaded;
 	private Collection<FarmingRegion> lastRegions;
+	private boolean firstNotifyCheck = true;
 
 	@Inject
-	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager, TimeTrackingConfig config, FarmingWorld farmingWorld)
+	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager, TimeTrackingConfig config, FarmingWorld farmingWorld, Notifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
 		this.configManager = configManager;
 		this.config = config;
 		this.farmingWorld = farmingWorld;
+		this.notifier = notifier;
 	}
 
 	public FarmingTabPanel createTabPanel(Tab tab, FarmingContractManager farmingContractManager)
 	{
-		return new FarmingTabPanel(this, itemManager, config, farmingWorld.getTabs().get(tab), farmingContractManager);
+		return new FarmingTabPanel(this, itemManager, configManager, config, farmingWorld.getTabs().get(tab), farmingContractManager);
 	}
 
 	/**
@@ -130,7 +142,7 @@ public class FarmingTracker
 			{
 				// Write the config value if it doesn't match what is current, or it is more than 5 minutes old
 				Varbits varbit = patch.getVarbit();
-				String key = region.getRegionID() + "." + varbit.getId();
+				String key = patch.configKey();
 				String strVarbit = Integer.toString(client.getVar(varbit));
 				String storedValue = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);
 
@@ -188,6 +200,12 @@ public class FarmingTracker
 									configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, patchTickRate);
 									configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET, offsetMins);
 								}
+							}
+							if (currentPatchState.getTickRate() != 0
+								// Don't set wasNotified to false if witnessing a check-health action
+								&& !(previousPatchState.getCropState() == CropState.GROWING && currentPatchState.getCropState() == CropState.HARVESTABLE && currentPatchState.getProduce().getPatchImplementation().isHealthCheckRequired()))
+							{
+								wasNotified.put(new ProfilePatch(patch, configManager.getRSProfileKey()), false);
 							}
 						}
 						else
@@ -259,16 +277,22 @@ public class FarmingTracker
 	@Nullable
 	public PatchPrediction predictPatch(FarmingPatch patch)
 	{
+		return predictPatch(patch, configManager.getRSProfileKey());
+	}
+
+	@Nullable
+	public PatchPrediction predictPatch(FarmingPatch patch, String profile)
+	{
 		long unixNow = Instant.now().getEpochSecond();
 
 		boolean autoweed = Integer.toString(Autoweed.ON.ordinal())
-			.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.AUTOWEED));
+			.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, TimeTrackingConfig.AUTOWEED));
 
 		boolean botanist = Boolean.TRUE
-			.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BOTANIST, Boolean.class));
+			.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, TimeTrackingConfig.BOTANIST, Boolean.class));
 
-		String key = patch.getRegion().getRegionID() + "." + patch.getVarbit().getId();
-		String storedValue = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);
+		String key = patch.configKey();
+		String storedValue = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, key);
 
 		if (storedValue == null)
 		{
@@ -323,11 +347,11 @@ public class FarmingTracker
 		long doneEstimate = 0;
 		if (tickrate > 0)
 		{
-			long tickNow = getTickTime(tickrate, 0, unixNow);
-			long tickTime = getTickTime(tickrate, 0, unixTime);
+			long tickNow = getTickTime(tickrate, 0, unixNow, profile);
+			long tickTime = getTickTime(tickrate, 0, unixTime, profile);
 			int delta = (int) (tickNow - tickTime) / (tickrate * 60);
 
-			doneEstimate = getTickTime(tickrate, stages - 1 - stage, tickTime);
+			doneEstimate = getTickTime(tickrate, stages - 1 - stage, tickTime, profile);
 
 			stage += delta;
 			if (stage >= stages)
@@ -347,13 +371,13 @@ public class FarmingTracker
 
 	public long getTickTime(int tickRate, int ticks)
 	{
-		return getTickTime(tickRate, ticks, Instant.now().getEpochSecond());
+		return getTickTime(tickRate, ticks, Instant.now().getEpochSecond(), configManager.getRSProfileKey());
 	}
 
-	public long getTickTime(int tickRate, int ticks, long requestedTime)
+	public long getTickTime(int tickRate, int ticks, long requestedTime, String profile)
 	{
-		Integer offsetPrecisionMins = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, int.class);
-		Integer offsetTimeMins = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET, int.class);
+		Integer offsetPrecisionMins = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, int.class);
+		Integer offsetTimeMins = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, TimeTrackingConfig.FARM_TICK_OFFSET, int.class);
 
 		//All offsets are negative but are stored as positive
 		long calculatedOffsetTime = 0L;
@@ -464,5 +488,125 @@ public class FarmingTracker
 			summaries.put(tab.getKey(), state);
 			completionTimes.put(tab.getKey(), completionTime);
 		}
+	}
+
+	public void checkCompletion()
+	{
+		List<RuneScapeProfile> rsProfiles = configManager.getRSProfiles();
+		long unixNow = Instant.now().getEpochSecond();
+
+		for (RuneScapeProfile profile : rsProfiles)
+		{
+			Integer offsetPrecisionMins = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, int.class);
+			Integer offsetTimeMins = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), TimeTrackingConfig.FARM_TICK_OFFSET, int.class);
+
+			RuneScapeProfileType profileType = profile.getType();
+
+			for (Map.Entry<Tab, Set<FarmingPatch>> tab : farmingWorld.getTabs().entrySet())
+			{
+				for (FarmingPatch patch : tab.getValue())
+				{
+					ProfilePatch profilePatch = new ProfilePatch(patch, profile.getKey());
+					boolean patchNotified = (wasNotified.get(profilePatch) != null ? wasNotified.get(profilePatch) : false);
+					String configKey = patch.notifyConfigKey();
+					boolean shouldNotify = Boolean.TRUE
+						.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), configKey, Boolean.class));
+					PatchPrediction prediction = predictPatch(patch, profile.getKey());
+
+					if (prediction == null)
+					{
+						continue;
+					}
+
+					int tickRate = prediction.getProduce().getTickrate();
+					
+					if (offsetPrecisionMins == null || offsetTimeMins == null || (offsetPrecisionMins < tickRate && offsetPrecisionMins < 40) || prediction.getProduce() == Produce.WEEDS
+						|| unixNow <= prediction.getDoneEstimate() || patchNotified || prediction.getCropState() == CropState.FILLING)
+					{
+						continue;
+					}
+
+					wasNotified.put(profilePatch, true);
+
+					if (!firstNotifyCheck  && shouldNotify)
+					{
+						final StringBuilder notificationStringBuilder = new StringBuilder();
+						// Same RS account
+						if (client.getGameState() == GameState.LOGGED_IN && profile.getDisplayName().equals(client.getLocalPlayer().getName()))
+						{
+							// Same RS account but different profile type
+							if (profileType != RuneScapeProfileType.getCurrent(client))
+							{
+								notificationStringBuilder.append("(")
+									.append(Text.titleCase(profile.getType()))
+									.append(") ");
+							}
+							// Same RS account AND profile falls through here so no bracketed prefix is added
+						}
+						else
+						{
+							// Different RS account AND profile type
+							if (profileType != RuneScapeProfileType.getCurrent(client) || client.getGameState() == GameState.LOGIN_SCREEN)
+							{
+								//Don't print profile type when logged out if is STANDARD
+								if (client.getGameState() == GameState.LOGIN_SCREEN && profileType == RuneScapeProfileType.STANDARD)
+								{
+									notificationStringBuilder.append("(")
+										.append(profile.getDisplayName())
+										.append(") ");
+								}
+								else
+								{
+									notificationStringBuilder.append("(")
+										.append(profile.getDisplayName())
+										.append(" - ")
+										.append(Text.titleCase(profile.getType()))
+										.append(") ");
+								}
+							}
+							// Different RS account but same profile type
+							else
+							{
+								notificationStringBuilder.append("(")
+									.append(profile.getDisplayName())
+									.append(") ");
+							}
+						}
+
+						notificationStringBuilder
+							.append("Your ")
+							.append(prediction.getProduce().getName());
+
+						switch (prediction.getCropState())
+						{
+							case HARVESTABLE:
+							case GROWING:
+								if (prediction.getProduce().getName().toLowerCase(Locale.ENGLISH).contains("compost"))
+								{
+									notificationStringBuilder.append(" is ready to collect in ");
+								}
+								else
+								{
+									notificationStringBuilder.append(" is ready to harvest in ");
+								}
+								break;
+							case DISEASED:
+								notificationStringBuilder.append(" has become diseased in ");
+								break;
+							case DEAD:
+								notificationStringBuilder.append(" has died in ");
+								break;
+						}
+
+						notificationStringBuilder.append(patch.getRegion().isDefinite() ? "the " : "")
+						.append(patch.getRegion().getName())
+						.append(".");
+
+						notifier.notify(notificationStringBuilder.toString());
+					}
+				}
+			}
+		}
+		firstNotifyCheck = false;
 	}
 }
