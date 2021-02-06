@@ -375,7 +375,7 @@ public class Perspective
 	 */
 	public static Polygon getCanvasTilePoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int zOffset)
 	{
-		return getCanvasTileAreaPoly(client, localLocation, 1, zOffset);
+		return getCanvasTileAreaPoly(client, localLocation, 1, 1, zOffset);
 	}
 
 	/**
@@ -388,7 +388,7 @@ public class Perspective
 	 */
 	public static Polygon getCanvasTileAreaPoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int size)
 	{
-		return getCanvasTileAreaPoly(client, localLocation, size, 0);
+		return getCanvasTileAreaPoly(client, localLocation, size, size, 0);
 	}
 
 	/**
@@ -396,23 +396,25 @@ public class Perspective
 	 *
 	 * @param client the game client
 	 * @param localLocation the center location of the AoE
-	 * @param size the size of the area (ie. 3x3 AoE evaluates to size 3)
+	 * @param sizeX the size of the area in tiles on the x axis
+	 * @param sizeY the size of the area in tiles on the y axis
 	 * @param zOffset offset from ground plane
 	 * @return a polygon representing the tiles in the area
 	 */
 	public static Polygon getCanvasTileAreaPoly(
 		@Nonnull Client client,
 		@Nonnull LocalPoint localLocation,
-		int size,
+		int sizeX,
+		int sizeY,
 		int zOffset)
 	{
 		final int plane = client.getPlane();
 
-		final int swX = localLocation.getX() - (size * LOCAL_TILE_SIZE / 2);
-		final int swY = localLocation.getY() - (size * LOCAL_TILE_SIZE / 2);
+		final int swX = localLocation.getX() - (sizeX * LOCAL_TILE_SIZE / 2);
+		final int swY = localLocation.getY() - (sizeY * LOCAL_TILE_SIZE / 2);
 
-		final int neX = localLocation.getX() + (size * LOCAL_TILE_SIZE / 2);
-		final int neY = localLocation.getY() + (size * LOCAL_TILE_SIZE / 2);
+		final int neX = localLocation.getX() + (sizeX * LOCAL_TILE_SIZE / 2);
+		final int neY = localLocation.getY() + (sizeY * LOCAL_TILE_SIZE / 2);
 
 		final int seX = swX;
 		final int seY = neY;
