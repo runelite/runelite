@@ -580,7 +580,7 @@ public class ClueScrollPlugin extends Plugin
 		if (chatDialogClueItem != null
 			&& (chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_BEGINNER || chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_MASTER))
 		{
-			resetClue(true);
+			resetClue(false);
 		}
 
 		final Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
