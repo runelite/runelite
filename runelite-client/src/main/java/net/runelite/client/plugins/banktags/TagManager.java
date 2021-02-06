@@ -115,9 +115,9 @@ public class TagManager
 	boolean findTag(int itemId, String search)
 	{
 		BankTag bankTag = customTags.get(search);
-		if (bankTag != null)
+		if (bankTag != null && bankTag.contains(itemId))
 		{
-			return bankTag.contains(itemId);
+			return true;
 		}
 
 		Collection<String> tags = getTags(itemId, false);
