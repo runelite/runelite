@@ -206,10 +206,22 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "valuableDropThreshold",
+		name = "Valuable Threshold",
+		description = "The minimum value to save screenshots of valuable drops.",
+		position = 14,
+		section = whatSection
+	)
+	default int valuableDropThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
 		keyName = "untradeableDrop",
 		name = "Screenshot Untradeable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
-		position = 14,
+		position = 15,
 		section = whatSection
 	)
 	default boolean screenshotUntradeableDrop()
@@ -221,7 +233,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "ccKick",
 		name = "Screenshot Kicks from FC",
 		description = "Take a screenshot when you kick a user from a friends chat.",
-		position = 15,
+		position = 16,
 		section = whatSection
 	)
 	default boolean screenshotKick()
@@ -233,7 +245,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "baHighGamble",
 		name = "Screenshot BA high gambles",
 		description = "Take a screenshot of your reward from a high gamble at Barbarian Assault.",
-		position = 16,
+		position = 17,
 		section = whatSection
 	)
 	default boolean screenshotHighGamble()
@@ -245,7 +257,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 17
+		position = 18
 	)
 	default Keybind hotkey()
 	{
