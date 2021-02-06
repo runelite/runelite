@@ -27,13 +27,26 @@ package net.runelite.http.api.gson;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import java.lang.reflect.Modifier;
+import java.util.HashSet;
+import java.util.Set;
 
 public class IllegalReflectionExclusion implements ExclusionStrategy
 {
+	private static final Set<ClassLoader> PRIVATE_CLASSLOADERS = new HashSet<>();
+
+	static
+	{
+		for (ClassLoader cl = ClassLoader.getSystemClassLoader(); cl != null; )
+		{
+			cl = cl.getParent();
+			PRIVATE_CLASSLOADERS.add(cl);
+		}
+	}
+
 	@Override
 	public boolean shouldSkipField(FieldAttributes f)
 	{
-		if (f.getDeclaringClass().getName().startsWith("net.runelite"))
+		if (!PRIVATE_CLASSLOADERS.contains(f.getDeclaringClass().getClassLoader()))
 		{
 			return false;
 		}
