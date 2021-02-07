@@ -138,7 +138,7 @@ public class ChatController
 
 	@PostMapping("/task")
 	public void submitTask(@RequestParam String name, @RequestParam("task") String taskName, @RequestParam int amount,
-		@RequestParam int initialAmount, @RequestParam String location)
+			@RequestParam int initialAmount, @RequestParam String location, @RequestParam int streak, @RequestParam int points)
 	{
 		Matcher mTask = STRING_VALIDATION.matcher(taskName);
 		Matcher mLocation = STRING_VALIDATION.matcher(location);
@@ -153,6 +153,8 @@ public class ChatController
 		task.setAmount(amount);
 		task.setInitialAmount(initialAmount);
 		task.setLocation(location);
+		task.setStreak(streak);
+		task.setPoints(points);
 
 		chatService.setTask(name, task);
 	}

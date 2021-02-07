@@ -116,11 +116,11 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "taskCommand",
-		name = "Task Command",
-		description = "Configures whether the slayer task command is enabled<br> !task"
+		keyName = "taskCommands",
+		name = "Task Commands",
+		description = "Configures whether the slayer task commands are enabled<br> !task / !slayer"
 	)
-	default boolean taskCommand()
+	default boolean taskCommands()
 	{
 		return true;
 	}

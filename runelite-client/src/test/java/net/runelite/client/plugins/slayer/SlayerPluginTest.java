@@ -852,7 +852,7 @@ public class SlayerPluginTest
 		task.setAmount(42);
 		task.setInitialAmount(42);
 
-		when(slayerConfig.taskCommand()).thenReturn(true);
+		when(slayerConfig.taskCommands()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
 
 		ChatMessage setMessage = new ChatMessage();
@@ -874,7 +874,7 @@ public class SlayerPluginTest
 		task.setAmount(42);
 		task.setInitialAmount(42);
 
-		when(slayerConfig.taskCommand()).thenReturn(true);
+		when(slayerConfig.taskCommands()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
 
 		ChatMessage chatMessage = new ChatMessage();
