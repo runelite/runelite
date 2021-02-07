@@ -150,6 +150,18 @@ public class ColorUtil
 	}
 
 	/**
+	 * Gets the same RGB color with the specified alpha multiplier.
+	 *
+	 * @param color           The RGB color to use.
+	 * @param alphaMultiplier The alpha multiplier.
+	 * @return                A Color with the given RGB and multiplied alpha.
+	 */
+	public static Color colorWithAlphaMultiplier(Color color, double alphaMultiplier)
+	{
+		return colorWithAlpha(color, (int) (color.getAlpha() * alphaMultiplier));
+	}
+
+	/**
 	 * Determines if the passed hex string is an alpha hex color.
 	 *
 	 * @param hex The hex to test.
@@ -246,16 +258,5 @@ public class ColorUtil
 		int i = object.hashCode();
 		float h = (i % 360) / 360f;
 		return Color.getHSBColor(h, 1, 1);
-	}
-
-	/**
-	 * Applies the given alpha modifier to the transparency of the given color.
-	 * @param color The color to get the alpha modified version of.
-	 * @param alphaModifier The alpha modifier, has effectively no effect if the value is 1.0.
-	 * @return The alpha modified color.
-	 */
-	public static Color alphaModdedColor(Color color, double alphaModifier)
-	{
-		return colorWithAlpha(color, (int) (color.getAlpha() * alphaModifier));
 	}
 }

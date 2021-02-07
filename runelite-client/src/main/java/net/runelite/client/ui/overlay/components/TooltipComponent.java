@@ -47,7 +47,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private Point position = new Point();
 	private IndexedSprite[] modIcons;
-	private double alphaModifier = 1.0;
+	private double alphaMultiplier = 1.0;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -81,7 +81,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 		final Rectangle tooltipBackground = new Rectangle(x, y,
 			tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
-		backgroundComponent.setBackgroundColor(ColorUtil.alphaModdedColor(backgroundColor, alphaModifier));
+		backgroundComponent.setBackgroundColor(ColorUtil.colorWithAlphaMultiplier(backgroundColor, alphaMultiplier));
 		backgroundComponent.setRectangle(tooltipBackground);
 		backgroundComponent.render(graphics);
 		graphics.setColor(Color.WHITE);
@@ -90,7 +90,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 		int textX = x + OFFSET;
 		int textY = y + OFFSET;
 		int lineX;
-		final Color defaultColor = ColorUtil.alphaModdedColor(Color.WHITE, alphaModifier);
+		final Color defaultColor = ColorUtil.colorWithAlphaMultiplier(Color.WHITE, alphaMultiplier);
 		Color nextColor = defaultColor;
 		for (int i = 0; i < lines.length; i++)
 		{
@@ -106,7 +106,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 				{
 					TextComponent textComponent = new TextComponent();
 					textComponent.setColor(nextColor);
-					textComponent.setAlphaModifier(alphaModifier);
+					textComponent.setAlphaMultiplier(alphaMultiplier);
 					String text = line.substring(begin, j);
 					textComponent.setText(text);
 					textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
@@ -124,7 +124,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 					if (subLine.startsWith("col="))
 					{
 						String argument = subLine.substring(4);
-						nextColor = ColorUtil.alphaModdedColor(Color.decode("#" + argument), alphaModifier);
+						nextColor = ColorUtil.colorWithAlphaMultiplier(Color.decode("#" + argument), alphaMultiplier);
 					}
 					else if (subLine.equals("/col"))
 					{
@@ -145,7 +145,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 					{
 						TextComponent textComponent = new TextComponent();
 						textComponent.setColor(nextColor);
-						textComponent.setAlphaModifier(alphaModifier);
+						textComponent.setAlphaMultiplier(alphaMultiplier);
 						String text = line.substring(begin, j + 1);
 						textComponent.setText(text);
 						textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
@@ -162,7 +162,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 			// Draw trailing text (after last tag)
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(nextColor);
-			textComponent.setAlphaModifier(alphaModifier);
+			textComponent.setAlphaMultiplier(alphaMultiplier);
 			textComponent.setText(line.substring(begin));
 			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
 			textComponent.render(graphics);
