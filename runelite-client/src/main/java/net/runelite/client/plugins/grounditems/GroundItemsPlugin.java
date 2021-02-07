@@ -59,7 +59,6 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
@@ -643,11 +642,8 @@ public class GroundItemsPlugin extends Plugin
 			return;
 		}
 
-		final Player local = client.getLocalPlayer();
 		final StringBuilder notificationStringBuilder = new StringBuilder()
-			.append('[')
-			.append(local.getName())
-			.append("] received a ")
+			.append("You received a ")
 			.append(dropType)
 			.append(" drop: ")
 			.append(item.getName());

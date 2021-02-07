@@ -59,6 +59,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -175,7 +176,7 @@ public class Notifier
 
 		if (runeLiteConfig.enableTrayNotifications())
 		{
-			sendNotification(appName, message, type);
+			sendNotification(buildTitle(), message, type);
 		}
 
 		switch (runeLiteConfig.notificationSound())
@@ -208,6 +209,23 @@ public class Notifier
 		}
 
 		log.debug(message);
+	}
+
+	private String buildTitle()
+	{
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return appName;
+		}
+
+		String name = player.getName();
+		if (Strings.isNullOrEmpty(name))
+		{
+			return appName;
+		}
+
+		return appName + " - " + name;
 	}
 
 	public void processFlash(final Graphics2D graphics)

@@ -372,7 +372,7 @@ public class FishingPlugin extends Plugin
 		{
 			if (!trawlerNotificationSent)
 			{
-				notifier.notify("[" + client.getLocalPlayer().getName() + "] has low Fishing Trawler activity!");
+				notifier.notify("You have low Fishing Trawler activity!");
 				trawlerNotificationSent = true;
 			}
 		}

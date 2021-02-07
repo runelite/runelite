@@ -62,8 +62,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class IdleNotifierPluginTest
 {
-	private static final String PLAYER_NAME = "Deathbeam";
-
 	@Mock
 	@Bind
 	private Client client;
@@ -116,7 +114,6 @@ public class IdleNotifierPluginTest
 		when(fishingSpot.getName()).thenReturn("Fishing spot");
 
 		// Mock player
-		when(player.getName()).thenReturn(PLAYER_NAME);
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
 		when(client.getLocalPlayer()).thenReturn(player);
 
@@ -145,7 +142,7 @@ public class IdleNotifierPluginTest
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
 		plugin.onAnimationChanged(animationChanged);
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify("[" + PLAYER_NAME + "] is now idle!");
+		verify(notifier).notify("You are now idle!");
 	}
 
 	@Test
@@ -201,7 +198,7 @@ public class IdleNotifierPluginTest
 		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify("[" + PLAYER_NAME + "] is now out of combat!");
+		verify(notifier).notify("You are now out of combat!");
 	}
 
 	@Test
@@ -292,7 +289,7 @@ public class IdleNotifierPluginTest
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
 
-		verify(notifier).notify("[" + PLAYER_NAME + "] is now idle!");
+		verify(notifier).notify("You are now idle!");
 	}
 
 	@Test
@@ -306,7 +303,7 @@ public class IdleNotifierPluginTest
 
 		when(client.getVar(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify(eq("[" + PLAYER_NAME + "] has restored spec energy!"));
+		verify(notifier).notify(eq("You have restored spec energy!"));
 	}
 
 	@Test
@@ -321,6 +318,6 @@ public class IdleNotifierPluginTest
 		// No movement here
 		plugin.onGameTick(new GameTick());
 
-		verify(notifier).notify(eq("[" + PLAYER_NAME + "] has stopped moving!"));
+		verify(notifier).notify(eq("You have stopped moving!"));
 	}
 }
