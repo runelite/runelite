@@ -251,18 +251,11 @@ public class ColorUtil
 	/**
 	 * Applies the given alpha modifier to the transparency of the given color.
 	 * @param color The color to get the alpha modified version of.
-	 * @param alphaModifier The alpha modifier.
-	 * @return The alpha modified color or the passed Color object if alphaModifier == 1.0.
+	 * @param alphaModifier The alpha modifier, has effectively no effect if the value is 1.0.
+	 * @return The alpha modified color.
 	 */
-	public static Color getAlphaModdedColor(Color color, double alphaModifier)
+	public static Color alphaModdedColor(Color color, double alphaModifier)
 	{
-		if (alphaModifier == 1.0)
-		{
-			return color;
-		}
-		else
-		{
-			return colorWithAlpha(color, (int) (color.getAlpha() * alphaModifier));
-		}
+		return colorWithAlpha(color, (int) (color.getAlpha() * alphaModifier));
 	}
 }

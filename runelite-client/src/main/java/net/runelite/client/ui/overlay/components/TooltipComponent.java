@@ -81,7 +81,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 		final Rectangle tooltipBackground = new Rectangle(x, y,
 			tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
-		backgroundComponent.setBackgroundColor(ColorUtil.getAlphaModdedColor(backgroundColor, alphaModifier));
+		backgroundComponent.setBackgroundColor(ColorUtil.alphaModdedColor(backgroundColor, alphaModifier));
 		backgroundComponent.setRectangle(tooltipBackground);
 		backgroundComponent.render(graphics);
 		graphics.setColor(Color.WHITE);
@@ -90,7 +90,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 		int textX = x + OFFSET;
 		int textY = y + OFFSET;
 		int lineX;
-		final Color defaultColor = ColorUtil.getAlphaModdedColor(Color.WHITE, alphaModifier);
+		final Color defaultColor = ColorUtil.alphaModdedColor(Color.WHITE, alphaModifier);
 		Color nextColor = defaultColor;
 		for (int i = 0; i < lines.length; i++)
 		{
@@ -124,7 +124,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 					if (subLine.startsWith("col="))
 					{
 						String argument = subLine.substring(4);
-						nextColor = ColorUtil.getAlphaModdedColor(Color.decode("#" + argument), alphaModifier);
+						nextColor = ColorUtil.alphaModdedColor(Color.decode("#" + argument), alphaModifier);
 					}
 					else if (subLine.equals("/col"))
 					{
