@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
+ * Copyright (c) 2019, Sophie Buckley <https://github.com/sophiebuckley>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,6 +27,7 @@ package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -35,6 +37,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -61,10 +64,19 @@ public class KingdomPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private KingdomPluginConfiguration config;
+
 	@Getter
 	private int favor = 0, coffer = 0;
 
 	private KingdomCounter counter;
+
+	@Provides
+	KingdomPluginConfiguration getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(KingdomPluginConfiguration.class);
+	}
 
 	@Override
 	protected void shutDown() throws Exception
@@ -106,7 +118,7 @@ public class KingdomPlugin extends Plugin
 	{
 		if (counter == null)
 		{
-			counter = new KingdomCounter(itemManager.getImage(TEAK_CHEST), this);
+			counter = new KingdomCounter(itemManager.getImage(TEAK_CHEST), this, config);
 			infoBoxManager.addInfoBox(counter);
 			log.debug("Added Kingdom Infobox");
 		}

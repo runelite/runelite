@@ -25,35 +25,20 @@
  */
 package net.runelite.client.plugins.kingdomofmiscellania;
 
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.Counter;
-import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public class KingdomCounter extends Counter
+@ConfigGroup("kingdomOfMiscellania")
+public interface KingdomPluginConfiguration extends Config
 {
-	private final KingdomPlugin plugin;
-	private final KingdomPluginConfiguration config;
-
-	KingdomCounter(BufferedImage image, KingdomPlugin plugin, KingdomPluginConfiguration config)
+	@ConfigItem(
+		keyName = "maxCofferAmount",
+		name = "Max coffer amount",
+		description = "Set the max amount of coins that you would like in your coffer"
+	)
+	default int maxCofferAmount()
 	{
-		super(image, plugin, plugin.getFavor());
-		this.plugin = plugin;
-		this.config = config;
-	}
-
-	@Override
-	public String getText()
-	{
-		return KingdomPlugin.getFavorPercent(plugin.getFavor()) + "%";
-	}
-
-	@Override
-	public String getTooltip()
-	{
-		int topUpAmount = config.maxCofferAmount() - plugin.getCoffer();
-
-		return "Favor: " + plugin.getFavor() + "/127" + "</br>"
-			+ "Coffer: " + QuantityFormatter.quantityToStackSize(plugin.getCoffer()) + "</br>"
-			+ "Top up: " + topUpAmount;
+		return 750000;
 	}
 }
