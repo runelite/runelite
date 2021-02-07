@@ -90,6 +90,7 @@ public class WidgetID
 	public static final int BARROWS_REWARD_GROUP_ID = 155;
 	public static final int RAIDS_GROUP_ID = 513;
 	public static final int TOB_PARTY_GROUP_ID = 28;
+	public static final int TOB_PARTY_BOARD_GROUP_ID = 50;
 	public static final int MOTHERLODE_MINE_GROUP_ID = 382;
 	public static final int EXPERIENCE_DROP_GROUP_ID = 122;
 	public static final int PUZZLE_BOX_GROUP_ID = 306;
@@ -648,6 +649,13 @@ public class WidgetID
 	{
 		static final int PARTY_INTERFACE = 6;
 		static final int PARTY_STATS = 10;
+		static final int PARTY_MEMBERS = 9;
+	}
+
+	static class TobBoard
+	{
+		static final int PARTY_MEMBERS = 26;
+		static final int PARTY_APPLICANTS = 41;
 	}
 
 	static class ExperienceDrop
