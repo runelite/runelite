@@ -57,6 +57,8 @@ public class WidgetID
 	public static final int ACHIEVEMENT_DIARY_GROUP_ID = 259;
 	public static final int PEST_CONTROL_BOAT_GROUP_ID = 407;
 	public static final int PEST_CONTROL_GROUP_ID = 408;
+	public static final int PEST_CONTROL_EXCHANGE_WINDOW_GROUP_ID = 243;
+	public static final int PEST_CONTROL_DIALOG_GROUP_ID = 229;
 	public static final int FRIENDS_CHAT_GROUP_ID = 7;
 	public static final int MINIMAP_GROUP_ID = 160;
 	public static final int LOGIN_CLICK_TO_PLAY_GROUP_ID = 378;
@@ -197,11 +199,30 @@ public class WidgetID
 	static class PestControlBoat
 	{
 		static final int INFO = 3;
+		static final int NEXT_DEPARTURE = 4;
+		static final int PLAYERS_READY = 5;
+		static final int POINTS = 6;
+	}
+
+	static class PestControlExchangeWindow
+	{
+		static final int ITEM_LIST = 2;
+		static final int BOTTOM = 5;
+		static final int POINTS = 8;
+		static final int CONFIRM_BUTTON = 6;
+	}
+
+	static class PestControlDialog
+	{
+		static final int TEXT = 1;
+		static final int CONTINUE = 2;
 	}
 
 	static class PestControl
 	{
 		static final int INFO = 3;
+
+		static final int TIME = 6;
 
 		static final int ACTIVITY_BAR = 12;
 		static final int ACTIVITY_PROGRESS = 14;
