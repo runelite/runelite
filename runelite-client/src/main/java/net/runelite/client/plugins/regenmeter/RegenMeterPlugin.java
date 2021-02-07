@@ -166,7 +166,7 @@ public class RegenMeterPlugin extends Plugin
 
 		if (config.getNotifyBeforeHpRegenSeconds() > 0 && currentHP < maxHP && shouldNotifyHpRegenThisTick(ticksPerHPRegen))
 		{
-			notifier.notify("[" + client.getLocalPlayer().getName() + "] regenerates their next hitpoint soon!");
+			notifier.notify("Your next hitpoint will regenerate soon!");
 		}
 	}
 

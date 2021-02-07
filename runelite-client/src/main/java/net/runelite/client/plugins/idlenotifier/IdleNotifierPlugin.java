@@ -438,64 +438,64 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (config.logoutIdle() && checkIdleLogout())
 		{
-			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!");
+			notifier.notify("You are about to log out from idling too long!");
 		}
 
 		if (check6hrLogout())
 		{
-			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
+			notifier.notify("You are about to log out from being online for 6 hours!");
 		}
 
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] is now idle!");
+			notifier.notify("You are now idle!");
 		}
 
 		if (config.movementIdle() && checkMovementIdle(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] has stopped moving!");
+			notifier.notify("You have stopped moving!");
 		}
 
 		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
 		{
 			if (lastInteractWasCombat)
 			{
-				notifier.notify("[" + local.getName() + "] is now out of combat!");
+				notifier.notify("You are now out of combat!");
 			}
 			else
 			{
-				notifier.notify("[" + local.getName() + "] is now idle!");
+				notifier.notify("You are now idle!");
 			}
 		}
 
 		if (checkLowHitpoints())
 		{
-			notifier.notify("[" + local.getName() + "] has low hitpoints!");
+			notifier.notify("You have low hitpoints!");
 		}
 
 		if (checkLowPrayer())
 		{
-			notifier.notify("[" + local.getName() + "] has low prayer!");
+			notifier.notify("You have low prayer!");
 		}
 
 		if (checkLowEnergy())
 		{
-			notifier.notify("[" + local.getName() + "] has low run energy!");
+			notifier.notify("You have low run energy!");
 		}
 
 		if (checkHighEnergy())
 		{
-			notifier.notify("[" + local.getName() + "] has restored run energy!");
+			notifier.notify("You have restored run energy!");
 		}
 
 		if (checkLowOxygen())
 		{
-			notifier.notify("[" + local.getName() + "] has low oxygen!");
+			notifier.notify("You have low oxygen!");
 		}
 
 		if (checkFullSpecEnergy())
 		{
-			notifier.notify("[" + local.getName() + "] has restored spec energy!");
+			notifier.notify("You have restored spec energy!");
 		}
 	}
 
