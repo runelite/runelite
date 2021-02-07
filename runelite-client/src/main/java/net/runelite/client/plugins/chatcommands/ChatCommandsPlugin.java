@@ -481,10 +481,13 @@ public class ChatCommandsPlugin extends Plugin
 			advLogLoaded = false;
 
 			Widget adventureLog = client.getWidget(WidgetInfo.ADVENTURE_LOG);
-			Matcher advLogExploitsText = ADVENTURE_LOG_TITLE_PATTERN.matcher(adventureLog.getChild(ADV_LOG_EXPLOITS_TEXT_INDEX).getText());
-			if (advLogExploitsText.find())
+			if (adventureLog.getChild() != null) 
 			{
-				pohOwner = advLogExploitsText.group(1);
+				Matcher advLogExploitsText = ADVENTURE_LOG_TITLE_PATTERN.matcher(adventureLog.getChild(ADV_LOG_EXPLOITS_TEXT_INDEX).getText());
+				if (advLogExploitsText.find())
+				{
+					pohOwner = advLogExploitsText.group(1);
+				}
 			}
 		}
 
