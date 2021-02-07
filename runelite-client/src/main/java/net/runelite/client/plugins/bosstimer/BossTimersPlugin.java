@@ -27,13 +27,22 @@ package net.runelite.client.plugins.bosstimer;
 
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 @PluginDescriptor(
 	name = "Boss Timers",
@@ -44,15 +53,22 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class BossTimersPlugin extends Plugin
 {
 	@Inject
+	private Client client;
+
+	@Inject
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private RespawnTimersSession session;
+
 	@Override
 	protected void shutDown() throws Exception
 	{
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer);
+		session = null;
 	}
 
 	@Subscribe
@@ -74,13 +90,108 @@ public class BossTimersPlugin extends Plugin
 			return;
 		}
 
-		// remove existing timer
-		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
-
 		log.debug("Creating spawn timer for {} ({} seconds)", npc.getName(), boss.getSpawnTime());
 
-		RespawnTimer timer = new RespawnTimer(boss, itemManager.getImage(boss.getItemSpriteId()), this);
-		timer.setTooltip(npc.getName());
-		infoBoxManager.addInfoBox(timer);
+		RespawnTimer timer = new RespawnTimer(boss, this.getCurrentWorld(), npc.getName(), itemManager.getImage(boss.getItemSpriteId()), this);
+
+		if (session == null)
+		{
+			session = new RespawnTimersSession();
+		}
+
+		session.addBossTimer(timer);
+		updateInfoBoxes();
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (session == null)
+		{
+			return;
+		}
+
+		session.cull();
+
+		if (session.isEmpty())
+		{
+			session = null;
+		}
+
+		updateInfoBoxes();
+	}
+
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case HOPPING:
+			case LOGGED_IN:
+				updateInfoBoxes();
+				break;
+		}
+	}
+
+	private void updateInfoBoxes()
+	{
+		if (session == null)
+		{
+			return;
+		}
+
+		infoBoxManager.removeIf(t -> t instanceof RespawnTimer);
+		Map<String, ArrayList<RespawnTimer>> timersMap = session.getTimersMap();
+
+		for (HashMap.Entry<String, ArrayList<RespawnTimer>> entry : timersMap.entrySet())
+		{
+			Iterator<RespawnTimer> valueIterator = entry.getValue().iterator();
+
+			Instant longest = Instant.now();
+			RespawnTimer longestTimer = null;
+			RespawnTimer worldTimer = null;
+
+			StringBuilder sb = new StringBuilder();
+			sb.append(entry.getKey());
+
+			while (valueIterator.hasNext())
+			{
+				final RespawnTimer respawnTimer = valueIterator.next();
+
+				if (respawnTimer.getWorld() != getCurrentWorld())
+				{
+					sb.append("</br>World ").append(respawnTimer.getWorld());
+				}
+				else
+				{
+					worldTimer = respawnTimer;
+				}
+
+				if (respawnTimer.getEndTime().compareTo(longest) > 0)
+				{
+					longest = respawnTimer.getEndTime();
+					longestTimer = respawnTimer;
+				}
+			}
+
+			if (worldTimer != null)
+			{
+				worldTimer.setTooltip(sb.toString());
+				worldTimer.setShowTimer(true);
+				infoBoxManager.addInfoBox(worldTimer);
+			}
+			else if (longestTimer != null)
+			{
+				longestTimer.setTooltip(sb.toString());
+				longestTimer.setShowTimer(false);
+				infoBoxManager.addInfoBox(longestTimer);
+			}
+		}
+	}
+
+	private int getCurrentWorld()
+	{
+		return client.getWorld();
 	}
 }
