@@ -268,6 +268,9 @@ public class IdleNotifierPlugin extends Plugin
 			case MAGIC_ENCHANTING_BOLTS:
 			/* Prayer */
 			case USING_GILDED_ALTAR:
+			case ECTOFUNGUS_FILL_SLIME_BUCKET:
+			case ECTOFUNGUS_EMPTY_BIN:
+			case ECTOFUNGUS_GRIND_BONES:
 			/* Farming */
 			case FARMING_MIX_ULTRACOMPOST:
 			case FARMING_HARVEST_BUSH:
