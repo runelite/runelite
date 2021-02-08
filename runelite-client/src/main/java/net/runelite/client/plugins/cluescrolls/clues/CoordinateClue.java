@@ -227,7 +227,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2202, 3825, 0), new CoordinateClueInfo("Pirates' Cove, between Lunar Isle and Rellekka.", ANCIENT_WIZARDS))
 		.put(new WorldPoint(1761, 3853, 0), new CoordinateClueInfo("Arceuus essence mine (CIS).", BRASSICAN_MAGE))
 		.put(new WorldPoint(2090, 3863, 0), new CoordinateClueInfo("South of Lunar Isle, west of Astral altar.", ANCIENT_WIZARDS))
-		.put(new WorldPoint(1442, 3878, 0), new CoordinateClueInfo("Sulphur Mine.", BRASSICAN_MAGE))
+		.put(new WorldPoint(1442, 3878, 0), new CoordinateClueInfo("Northern area of the Lovakengj Sulphur Mine. Facemask or Slayer Helmet recommended.", BRASSICAN_MAGE))
 		.put(new WorldPoint(3380, 3929, 0), new CoordinateClueInfo("Wilderness. Near Volcano.", ANCIENT_WIZARDS))
 		.put(new WorldPoint(3188, 3939, 0), new CoordinateClueInfo("Wilderness. Resource Area.", BRASSICAN_MAGE))
 		.put(new WorldPoint(3304, 3941, 0), new CoordinateClueInfo("Wilderness. East of Rogues' Castle.", ANCIENT_WIZARDS))
