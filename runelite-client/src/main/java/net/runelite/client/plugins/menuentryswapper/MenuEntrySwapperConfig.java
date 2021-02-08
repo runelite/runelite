@@ -332,6 +332,14 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName= "swapPortalNexus",
+			name = "Portal Nexus",
+			description =  "Swap Left Click option with Teleport Menu",
+			section = objectSection
+	)
+	default boolean swapPortalNexus() { return false; }
+
+	@ConfigItem(
 		keyName = "swapPrivate",
 		name = "Private",
 		description = "Swap Shared with Private on the Chambers of Xeric storage units.",
