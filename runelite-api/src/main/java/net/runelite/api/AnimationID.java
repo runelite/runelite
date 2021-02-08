@@ -209,10 +209,10 @@ public final class AnimationID
 	public static final int HOME_MAKE_TABLET = 4067;
 	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
 
-	// Ectofungus animations
-	public static final int ECTOFUNGUS_FILL_SLIME_BUCKET = 4471;
-	public static final int ECTOFUNGUS_GRIND_BONES = 1648;
-	public static final int ECTOFUNGUS_EMPTY_BIN = 1650;
+	// Ectofuntus animations
+	public static final int ECTOFUNTUS_FILL_SLIME_BUCKET = 4471;
+	public static final int ECTOFUNTUS_GRIND_BONES = 1648;
+	public static final int ECTOFUNTUS_EMPTY_BIN = 1650;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
