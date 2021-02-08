@@ -332,12 +332,15 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName= "swapPortalNexus",
-			name = "Portal Nexus",
-			description =  "Swap Left Click option with Teleport Menu",
-			section = objectSection
+		keyName= "swapPortalNexus",
+		name = "Portal Nexus",
+		description =  "Swap Left Click option with Teleport Menu",
+		section = objectSection
 	)
-	default boolean swapPortalNexus() { return false; }
+	default boolean swapPortalNexus()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "swapPrivate",
