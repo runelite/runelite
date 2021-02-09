@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.time.Instant;
@@ -500,14 +501,12 @@ public class FarmingTracker
 			Integer offsetPrecisionMins = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, int.class);
 			Integer offsetTimeMins = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), TimeTrackingConfig.FARM_TICK_OFFSET, int.class);
 
-			RuneScapeProfileType profileType = profile.getType();
-
 			for (Map.Entry<Tab, Set<FarmingPatch>> tab : farmingWorld.getTabs().entrySet())
 			{
 				for (FarmingPatch patch : tab.getValue())
 				{
 					ProfilePatch profilePatch = new ProfilePatch(patch, profile.getKey());
-					boolean patchNotified = (wasNotified.get(profilePatch) != null ? wasNotified.get(profilePatch) : false);
+					boolean patchNotified = wasNotified.getOrDefault(profilePatch, false);
 					String configKey = patch.notifyConfigKey();
 					boolean shouldNotify = Boolean.TRUE
 						.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), configKey, Boolean.class));
@@ -519,94 +518,105 @@ public class FarmingTracker
 					}
 
 					int tickRate = prediction.getProduce().getTickrate();
-					
+
 					if (offsetPrecisionMins == null || offsetTimeMins == null || (offsetPrecisionMins < tickRate && offsetPrecisionMins < 40) || prediction.getProduce() == Produce.WEEDS
-						|| unixNow <= prediction.getDoneEstimate() || patchNotified || prediction.getCropState() == CropState.FILLING)
+						|| unixNow <= prediction.getDoneEstimate() || patchNotified || prediction.getCropState() == CropState.FILLING || prediction.getCropState() == CropState.EMPTY)
 					{
 						continue;
 					}
 
 					wasNotified.put(profilePatch, true);
 
-					if (!firstNotifyCheck  && shouldNotify)
+					if (!firstNotifyCheck && shouldNotify)
 					{
-						final StringBuilder notificationStringBuilder = new StringBuilder();
-						// Same RS account
-						if (client.getGameState() == GameState.LOGGED_IN && profile.getDisplayName().equals(client.getLocalPlayer().getName()))
-						{
-							// Same RS account but different profile type
-							if (profileType != RuneScapeProfileType.getCurrent(client))
-							{
-								notificationStringBuilder.append("(")
-									.append(Text.titleCase(profile.getType()))
-									.append(") ");
-							}
-							// Same RS account AND profile falls through here so no bracketed prefix is added
-						}
-						else
-						{
-							// Different RS account AND profile type
-							if (profileType != RuneScapeProfileType.getCurrent(client) || client.getGameState() == GameState.LOGIN_SCREEN)
-							{
-								//Don't print profile type when logged out if is STANDARD
-								if (client.getGameState() == GameState.LOGIN_SCREEN && profileType == RuneScapeProfileType.STANDARD)
-								{
-									notificationStringBuilder.append("(")
-										.append(profile.getDisplayName())
-										.append(") ");
-								}
-								else
-								{
-									notificationStringBuilder.append("(")
-										.append(profile.getDisplayName())
-										.append(" - ")
-										.append(Text.titleCase(profile.getType()))
-										.append(") ");
-								}
-							}
-							// Different RS account but same profile type
-							else
-							{
-								notificationStringBuilder.append("(")
-									.append(profile.getDisplayName())
-									.append(") ");
-							}
-						}
-
-						notificationStringBuilder
-							.append("Your ")
-							.append(prediction.getProduce().getName());
-
-						switch (prediction.getCropState())
-						{
-							case HARVESTABLE:
-							case GROWING:
-								if (prediction.getProduce().getName().toLowerCase(Locale.ENGLISH).contains("compost"))
-								{
-									notificationStringBuilder.append(" is ready to collect in ");
-								}
-								else
-								{
-									notificationStringBuilder.append(" is ready to harvest in ");
-								}
-								break;
-							case DISEASED:
-								notificationStringBuilder.append(" has become diseased in ");
-								break;
-							case DEAD:
-								notificationStringBuilder.append(" has died in ");
-								break;
-						}
-
-						notificationStringBuilder.append(patch.getRegion().isDefinite() ? "the " : "")
-						.append(patch.getRegion().getName())
-						.append(".");
-
-						notifier.notify(notificationStringBuilder.toString());
+						sendNotification(profile, prediction, patch);
 					}
 				}
 			}
 		}
 		firstNotifyCheck = false;
+	}
+
+	@VisibleForTesting
+	void sendNotification(RuneScapeProfile profile, PatchPrediction prediction, FarmingPatch patch)
+	{
+		final RuneScapeProfileType profileType = profile.getType();
+
+		final StringBuilder stringBuilder = new StringBuilder();
+		// Same RS account
+		if (client.getGameState() == GameState.LOGGED_IN && profile.getDisplayName().equals(client.getLocalPlayer().getName()))
+		{
+			// Same RS account but different profile type
+			if (profileType != RuneScapeProfileType.getCurrent(client))
+			{
+				stringBuilder.append("(")
+					.append(Text.titleCase(profile.getType()))
+					.append(") ");
+			}
+			// Same RS account AND profile falls through here so no bracketed prefix is added
+		}
+		else
+		{
+			// Different RS account AND profile type
+			if (profileType != RuneScapeProfileType.getCurrent(client) || client.getGameState() == GameState.LOGIN_SCREEN)
+			{
+				//Don't print profile type when logged out if is STANDARD
+				if (client.getGameState() == GameState.LOGIN_SCREEN && profileType == RuneScapeProfileType.STANDARD)
+				{
+					stringBuilder.append("(")
+						.append(profile.getDisplayName())
+						.append(") ");
+				}
+				else
+				{
+					stringBuilder.append("(")
+						.append(profile.getDisplayName())
+						.append(" - ")
+						.append(Text.titleCase(profile.getType()))
+						.append(") ");
+				}
+			}
+			// Different RS account but same profile type
+			else
+			{
+				stringBuilder.append("(")
+					.append(profile.getDisplayName())
+					.append(") ");
+			}
+		}
+
+		stringBuilder
+			.append("Your ")
+			.append(prediction.getProduce().getName());
+
+		switch (prediction.getCropState())
+		{
+			case HARVESTABLE:
+			case GROWING:
+				if (prediction.getProduce().getName().toLowerCase(Locale.ENGLISH).contains("compost"))
+				{
+					stringBuilder.append(" is ready to collect in ");
+				}
+				else
+				{
+					stringBuilder.append(" is ready to harvest in ");
+				}
+				break;
+			case DISEASED:
+				stringBuilder.append(" has become diseased in ");
+				break;
+			case DEAD:
+				stringBuilder.append(" has died in ");
+				break;
+			default:
+				// EMPTY and FILLING are caught above
+				throw new IllegalStateException();
+		}
+
+		stringBuilder.append(patch.getRegion().isDefinite() ? "the " : "")
+			.append(patch.getRegion().getName())
+			.append(".");
+
+		notifier.notify(stringBuilder.toString());
 	}
 }
