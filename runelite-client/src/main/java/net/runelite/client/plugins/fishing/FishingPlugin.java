@@ -218,7 +218,7 @@ public class FishingPlugin extends Plugin
 
 		if (event.getMessage().contains("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
 		{
-			notifier.notify("A flying fish jumps up and eats some of your minnows!");
+			notifier.notify("A flying fish is eating your minnows!");
 		}
 	}
 
