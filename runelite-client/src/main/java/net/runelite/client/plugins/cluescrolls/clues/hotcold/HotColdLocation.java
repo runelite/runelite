@@ -165,7 +165,7 @@ public enum HotColdLocation
 	ZEAH_BLASTMINE_NORTH(new WorldPoint(1488, 3881, 0), ZEAH, "Northern part of the Lovakengj blast mine.", BRASSICAN_MAGE),
 	ZEAH_LOVAKITE_FURNACE(new WorldPoint(1507, 3819, 0), ZEAH, "Next to the lovakite furnace in Lovakengj.", ANCIENT_WIZARDS),
 	ZEAH_LOVAKENGJ_MINE(new WorldPoint(1477, 3778, 0), ZEAH, "Next to mithril rock in the Lovakengj mine.", ANCIENT_WIZARDS),
-	ZEAH_SULPHR_MINE(new WorldPoint(1428, 3869, 0), ZEAH, "Western entrance in the Lovakengj sulphur mine.", BRASSICAN_MAGE),
+	ZEAH_SULPHR_MINE(new WorldPoint(1428, 3869, 0), ZEAH, "Western entrance in the Lovakengj sulphur mine. Facemask or Slayer Helmet recommended.", BRASSICAN_MAGE),
 	ZEAH_SHAYZIEN_BANK(new WorldPoint(1517, 3603, 0), ZEAH, "South-east of the bank in Shayzien.", ANCIENT_WIZARDS),
 	ZEAH_OVERPASS(new WorldPoint(1467, 3714, 0), ZEAH, "Overpass between Lovakengj and Shayzien.", BRASSICAN_MAGE),
 	ZEAH_LIZARDMAN(new WorldPoint(1490, 3698, 0), ZEAH, "Within Lizardman Canyon, east of the ladder. Requires 5% favour with Shayzien.", ANCIENT_WIZARDS),
