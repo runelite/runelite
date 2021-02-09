@@ -152,7 +152,7 @@ public interface FishingConfig extends Config
 		position = 10,
 		keyName = "flyingFish",
 		name = "Flying fish notification",
-		description = "Send a notification when there is a flying fish."
+		description = "Send a notification when a flying fish spawns on your fishing spot."
 	)
 	default boolean flyingFishNotification()
 	{
