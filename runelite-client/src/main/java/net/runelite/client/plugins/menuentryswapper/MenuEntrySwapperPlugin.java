@@ -304,41 +304,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("teleport menu", "draynor village", config::swapJewelleryBox);
 		swap("teleport menu", "al kharid", config::swapJewelleryBox);
 
-		swap("grand exchange", "teleport menu", config::swapPortalNexus);
-		swap("varrock", "teleport menu", config::swapPortalNexus);
-		swap("lumbridge grave'", "teleport menu", config::swapPortalNexus);
-		swap("draynor manor", "teleport menu", config::swapPortalNexus);
-		swap("battlefront", "teleport menu", config::swapPortalNexus);
-		swap("mind altar", "teleport menu", config::swapPortalNexus);
-		swap("lumbridge", "teleport menu", config::swapPortalNexus);
-		swap("falador", "teleport menu", config::swapPortalNexus);
-		swap("salve graveyard", "teleport menu", config::swapPortalNexus);
-		swap("camelot", "teleport menu", config::swapPortalNexus);
-		swap("seers' village", "teleport menu", config::swapPortalNexus);
-		swap("fenken' castle", "teleport menu", config::swapPortalNexus);
-		swap("east ardougne", "teleport menu", config::swapPortalNexus);
-		swap("watchtower", "teleport menu", config::swapPortalNexus);
-		swap("yanille", "teleport menu", config::swapPortalNexus);
-		swap("senntisten", "teleport menu", config::swapPortalNexus);
-		swap("west ardougne", "teleport menu", config::swapPortalNexus);
-		swap("marim", "teleport menu", config::swapPortalNexus);
-		swap("harmony island", "teleport menu", config::swapPortalNexus);
-		swap("kharyll", "teleport menu", config::swapPortalNexus);
-		swap("lunar isle", "teleport menu", config::swapPortalNexus);
-		swap("kourend castle", "teleport menu", config::swapPortalNexus);
-		swap("the forgotten cemetery", "teleport menu", config::swapPortalNexus);
-		swap("waterbirth island", "teleport menu", config::swapPortalNexus);
-		swap("barrows", "teleport menu", config::swapPortalNexus);
-		swap("carrallangar", "teleport menu", config::swapPortalNexus);
-		swap("fishing guild", "teleport menu", config::swapPortalNexus);
-		swap("catherby", "teleport menu", config::swapPortalNexus);
-		swap("annakarl", "teleport menu", config::swapPortalNexus);
-		swap("ape atoll dungeon", "teleport menu", config::swapPortalNexus);
-		swap("ghorrok", "teleport menu", config::swapPortalNexus);
-		swap("troll stronghold", "teleport menu", config::swapPortalNexus);
-		swap("weiss", "teleport menu", config::swapPortalNexus);
-
-
+		Arrays.asList(
+				"grand exchange", "varrock", "lumbridge grave'", "draynor manor", "battlefront", "mind altar",
+				"lumbridge", "falador", "salve graveyard", "camelot", "seers' village", "fenken' castle",
+				"east ardougne", "watchtower", "yanille", "senntisten", "west ardougne", "marim", "harmony island",
+				"kharyll", "lunar isle", "kourend castle", "the forgotten cemetery", "waterbirth island", "barrows",
+				"carrallangar", "fishing guild", "catherby", "annakarl", "ape atoll dungeon", "ghorrok",
+				"troll stronghold", "weiss"
+			).forEach(location -> swap(location, "teleport menu", config::swapPortalNexus));
 
 		swap("shared", "private", config::swapPrivate);
 
