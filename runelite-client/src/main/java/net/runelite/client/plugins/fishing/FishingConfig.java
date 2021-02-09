@@ -150,7 +150,7 @@ public interface FishingConfig extends Config
 
 	@ConfigItem(
 		position = 10,
-		keyName = "flyingFish",
+		keyName = "flyingFishNotification",
 		name = "Flying fish notification",
 		description = "Send a notification when a flying fish spawns on your fishing spot."
 	)
