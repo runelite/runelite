@@ -269,8 +269,9 @@ public class IdleNotifierPlugin extends Plugin
 			/* Prayer */
 			case USING_GILDED_ALTAR:
 			case ECTOFUNTUS_FILL_SLIME_BUCKET:
-			case ECTOFUNTUS_EMPTY_BIN:
+			case ECTOFUNTUS_INSERT_BONES:
 			case ECTOFUNTUS_GRIND_BONES:
+			case ECTOFUNTUS_EMPTY_BIN:
 			/* Farming */
 			case FARMING_MIX_ULTRACOMPOST:
 			case FARMING_HARVEST_BUSH:

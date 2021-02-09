@@ -212,6 +212,7 @@ public final class AnimationID
 	// Ectofuntus animations
 	public static final int ECTOFUNTUS_FILL_SLIME_BUCKET = 4471;
 	public static final int ECTOFUNTUS_GRIND_BONES = 1648;
+	public static final int ECTOFUNTUS_INSERT_BONES = 1649;
 	public static final int ECTOFUNTUS_EMPTY_BIN = 1650;
 
 	// NPC animations
