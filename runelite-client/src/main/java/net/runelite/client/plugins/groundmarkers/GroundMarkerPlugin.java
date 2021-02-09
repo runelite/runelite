@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -313,20 +314,21 @@ public class GroundMarkerPlugin extends Plugin
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
 		final int regionId = worldPoint.getRegionID();
 
+		GroundMarkerPoint searchPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), null, null);
+		Collection<GroundMarkerPoint> points = getPoints(regionId);
+		GroundMarkerPoint existing = points.stream()
+			.filter(p -> p.equals(searchPoint))
+			.findFirst().orElse(null);
+		if (existing == null)
+		{
+			return;
+		}
+
 		chatboxPanelManager.openTextInput("Tile label")
+			.value(Optional.ofNullable(existing.getLabel()).orElse(""))
 			.onDone((input) ->
 			{
 				input = Strings.emptyToNull(input);
-
-				GroundMarkerPoint searchPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), null, null);
-				Collection<GroundMarkerPoint> points = getPoints(regionId);
-				GroundMarkerPoint existing = points.stream()
-					.filter(p -> p.equals(searchPoint))
-					.findFirst().orElse(null);
-				if (existing == null)
-				{
-					return;
-				}
 
 				GroundMarkerPoint newPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), existing.getColor(), input);
 				points.remove(searchPoint);
