@@ -92,6 +92,7 @@ enum Emoji
 	PLEADING("(n_n)"),
 	XD("Xd"),
 	SPOON("--o"),
+	WEARY_FACE("Dx"),
 	;
 
 	private static final Map<String, Emoji> emojiMap;
