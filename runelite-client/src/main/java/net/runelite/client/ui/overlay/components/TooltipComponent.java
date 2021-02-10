@@ -37,7 +37,7 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.client.util.ColorUtil;
 
 @Setter
-public class TooltipComponent implements LayoutableRenderableEntity
+public class TooltipComponent implements LayoutableRenderableEntity, AlphaRenderableEntity
 {
 	private static final Pattern BR = Pattern.compile("</br>");
 	private static final int OFFSET = 4;
