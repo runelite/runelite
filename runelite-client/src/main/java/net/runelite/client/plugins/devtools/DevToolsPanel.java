@@ -129,30 +129,10 @@ class DevToolsPanel extends PluginPanel
 		});
 
 		container.add(plugin.getWidgetInspector());
-		plugin.getWidgetInspector().addActionListener((ev) ->
-		{
-			if (plugin.getWidgetInspector().isActive())
-			{
-				widgetInspector.close();
-			}
-			else
-			{
-				widgetInspector.open();
-			}
-		});
+		plugin.getWidgetInspector().addFrame(widgetInspector);
 
 		container.add(plugin.getVarInspector());
-		plugin.getVarInspector().addActionListener((ev) ->
-		{
-			if (plugin.getVarInspector().isActive())
-			{
-				varInspector.close();
-			}
-			else
-			{
-				varInspector.open();
-			}
-		});
+		plugin.getVarInspector().addFrame(varInspector);
 
 		container.add(plugin.getSoundEffects());
 
@@ -164,17 +144,7 @@ class DevToolsPanel extends PluginPanel
 		container.add(notificationBtn);
 
 		container.add(plugin.getScriptInspector());
-		plugin.getScriptInspector().addActionListener((ev) ->
-		{
-			if (plugin.getScriptInspector().isActive())
-			{
-				scriptInspector.close();
-			}
-			else
-			{
-				scriptInspector.open();
-			}
-		});
+		plugin.getScriptInspector().addFrame(scriptInspector);
 
 		final JButton newInfoboxBtn = new JButton("Infobox");
 		newInfoboxBtn.addActionListener(e ->
@@ -198,17 +168,7 @@ class DevToolsPanel extends PluginPanel
 		container.add(clearInfoboxBtn);
 
 		container.add(plugin.getInventoryInspector());
-		plugin.getInventoryInspector().addActionListener((ev) ->
-		{
-			if (plugin.getInventoryInspector().isActive())
-			{
-				inventoryInspector.close();
-			}
-			else
-			{
-				inventoryInspector.open();
-			}
-		});
+		plugin.getInventoryInspector().addFrame(inventoryInspector);
 
 		final JButton disconnectBtn = new JButton("Disconnect");
 		disconnectBtn.addActionListener(e -> clientThread.invoke(() -> client.setGameState(GameState.CONNECTION_LOST)));
