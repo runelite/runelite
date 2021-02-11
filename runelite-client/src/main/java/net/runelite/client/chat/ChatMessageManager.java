@@ -54,6 +54,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
 
 @Singleton
 public class ChatMessageManager
@@ -125,7 +126,8 @@ public class ChatMessageManager
 			case PUBLICCHAT:
 			case MODCHAT:
 			{
-				boolean isFriend = client.isFriended(chatMessage.getName(), true) && !client.getLocalPlayer().getName().equals(chatMessage.getName());
+				String sanitizedUsername = Text.removeTags(chatMessage.getName());
+				boolean isFriend = client.isFriended(sanitizedUsername, true) && !client.getLocalPlayer().getName().equals(sanitizedUsername);
 
 				if (isFriend)
 				{
