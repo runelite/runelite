@@ -43,6 +43,7 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -61,11 +62,14 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class CorpPlugin extends Plugin
 {
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC corp;
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC core;
+
+	private boolean coreSpawned;
 
 	private int yourDamage;
 
@@ -79,10 +83,16 @@ public class CorpPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private Notifier notifier;
+
+	@Inject
 	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private CorpConfig config;
 
 	@Inject
 	private CorpDamageOverlay corpOverlay;
@@ -140,6 +150,22 @@ public class CorpPlugin extends Plugin
 				break;
 			case NpcID.DARK_ENERGY_CORE:
 				core = npc;
+				if (config.notifyDarkCore() && !coreSpawned)
+				{
+					notifier.notify("Dark core has spawned!");
+
+					String message = new ChatMessageBuilder()
+							.append(ChatColorType.HIGHLIGHT)
+							.append("Dark core has spawned!")
+							.build();
+
+					chatMessageManager.queue(QueuedMessage.builder()
+							.type(ChatMessageType.CONSOLE)
+							.runeLiteFormattedMessage(message)
+							.build());
+
+					coreSpawned = true;
+				}
 				break;
 		}
 	}
@@ -177,6 +203,10 @@ public class CorpPlugin extends Plugin
 		}
 		else if (npc == core)
 		{
+			if (npc.isDead())
+			{
+				coreSpawned = false;
+			}
 			core = null;
 		}
 	}
