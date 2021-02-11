@@ -372,15 +372,15 @@ public class WidgetID
 		static final int MINIMAP_DRAW_AREA = 8;
 		static final int MULTICOMBAT_INDICATOR = 21;
 		static final int FRIENDS_CHAT_TAB = 34;
+		static final int ACCOUNT_TAB = 35;
 		static final int FRIENDS_TAB = 36;
-		static final int IGNORES_TAB = 35;
 		static final int LOGOUT_TAB = 37;
 		static final int OPTIONS_TAB = 38;
 		static final int EMOTES_TAB = 39;
 		static final int MUSIC_TAB = 40;
 		static final int FRIENDS_CHAT_ICON = 41;
+		static final int ACCOUNT_ICON = 42;
 		static final int FRIENDS_ICON = 43;
-		static final int IGNORES_ICON = 42;
 		static final int LOGOUT_ICON = 44;
 		static final int OPTIONS_ICON = 45;
 		static final int EMOTES_ICON = 46;
@@ -409,15 +409,15 @@ public class WidgetID
 	{
 		static final int MULTICOMBAT_INDICATOR = 18;
 		static final int FRIENDS_CHAT_TAB = 38;
+		static final int ACCOUNT_TAB = 39;
 		static final int FRIENDS_TAB = 40;
-		static final int IGNORES_TAB = 39;
 		static final int LOGOUT_TAB = 41;
 		static final int OPTIONS_TAB = 42;
 		static final int EMOTES_TAB = 43;
 		static final int MUSIC_TAB = 44;
 		static final int FRIENDS_CHAT_ICON = 45;
+		static final int ACCOUNT_ICON = 46;
 		static final int FRIENDS_ICON = 47;
-		static final int IGNORES_ICON = 46;
 		static final int LOGOUT_ICON = 48;
 		static final int OPTIONS_ICON = 49;
 		static final int EMOTES_ICON = 50;
@@ -444,14 +444,14 @@ public class WidgetID
 	{
 		static final int LOGOUT_BUTTON_OVERLAY = 32;
 		static final int FRIENDS_CHAT_TAB = 38;
+		static final int ACCOUNT_TAB = 39;
 		static final int FRIENDS_TAB = 40;
-		static final int IGNORES_TAB = 39;
 		static final int OPTIONS_TAB = 41;
 		static final int EMOTES_TAB = 42;
 		static final int MUSIC_TAB = 43;
 		static final int FRIENDS_CHAT_ICON = 44;
+		static final int ACCOUNT_ICON = 45;
 		static final int FRIENDS_ICON = 46;
-		static final int IGNORES_ICON = 45;
 		static final int OPTIONS_ICON = 47;
 		static final int EMOTES_ICON = 48;
 		static final int MUSIC_ICON = 49;
