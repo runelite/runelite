@@ -32,6 +32,7 @@ import java.awt.Color;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.config.ChatColorConfig;
 import org.junit.Before;
@@ -83,5 +84,68 @@ public class ChatMessageManagerTest
 		chatMessageManager.onChatMessage(chatMessage);
 
 		verify(messageNode).setValue(eq("<col=b20000>Your dodgy necklace protects you. It has <col=ff0000>1<col=b20000> charge left.</col>"));
+	}
+
+	@Test
+	public void testPublicFriendUsernameRecolouring()
+	{
+		final String localPlayerName = "RuneLite";
+		final String friendName = "Zezima";
+
+		when(chatColorConfig.opaquePublicFriendUsernames()).thenReturn(Color.decode("#b20000"));
+
+		chatMessageManager.loadColors();
+
+		// Setup message
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setName(friendName);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		chatMessage.setMessageNode(messageNode);
+		when(messageNode.getName()).thenReturn(friendName);
+
+		// Setup friend checking
+		Player localPlayer = mock(Player.class);
+
+		when(client.isFriended(friendName, true)).thenReturn(true);
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
+		when(localPlayer.getName()).thenReturn(localPlayerName);
+
+		chatMessageManager.onChatMessage(chatMessage);
+
+		verify(messageNode).setName("<col=b20000>" + friendName + "</col>");
+	}
+
+	@Test
+	public void testPublicIronmanFriendUsernameRecolouring()
+	{
+		final String localPlayerName = "RuneLite";
+		final String friendName = "<img=3>BuddhaPuck";
+		final String sanitizedFriendName = "BuddhaPuck";
+
+		when(chatColorConfig.opaquePublicFriendUsernames()).thenReturn(Color.decode("#b20000"));
+
+		chatMessageManager.loadColors();
+
+		// Setup message
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setName(friendName);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		chatMessage.setMessageNode(messageNode);
+		when(messageNode.getName()).thenReturn(friendName);
+
+		// Setup friend checking
+		Player localPlayer = mock(Player.class);
+
+		when(client.isFriended(sanitizedFriendName, true)).thenReturn(true);
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
+		when(localPlayer.getName()).thenReturn(localPlayerName);
+
+		chatMessageManager.onChatMessage(chatMessage);
+
+		verify(messageNode).setName("<col=b20000>" + friendName + "</col>");
 	}
 }
