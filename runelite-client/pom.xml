@@ -178,6 +178,25 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>net.runelite.jocl</groupId>
+			<artifactId>jocl</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite.jocl</groupId>
+			<artifactId>jocl</artifactId>
+			<version>1.0</version>
+			<classifier>macos-x64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite.jocl</groupId>
+			<artifactId>jocl</artifactId>
+			<version>1.0</version>
+			<classifier>macos-arm64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>archive-patcher</artifactId>
 			<version>1.0</version>
