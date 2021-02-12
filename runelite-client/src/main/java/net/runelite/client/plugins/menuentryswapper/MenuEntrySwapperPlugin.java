@@ -238,6 +238,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("big net", "harpoon", config::swapHarpoon);
 		swap("net", "harpoon", config::swapHarpoon);
 
+		swap("lure", "bait", config::swapBait);
+
 		swap("enter", "portal", "home", () -> config.swapHomePortal() == HouseMode.HOME);
 		swap("enter", "portal", "build mode", () -> config.swapHomePortal() == HouseMode.BUILD_MODE);
 		swap("enter", "portal", "friend's house", () -> config.swapHomePortal() == HouseMode.FRIENDS_HOUSE);
