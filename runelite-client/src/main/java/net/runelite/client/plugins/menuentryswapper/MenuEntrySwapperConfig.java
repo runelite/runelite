@@ -288,10 +288,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "swapBait",
-			name = "Bait",
-			description = "Swap Lure with with Bait on Fishing spot",
-			section = objectSection
+		keyName = "swapBait",
+		name = "Bait",
+		description = "Swap Lure with with Bait on Fishing spot",
+		section = objectSection
 	)
 	default boolean swapBait()
 	{
