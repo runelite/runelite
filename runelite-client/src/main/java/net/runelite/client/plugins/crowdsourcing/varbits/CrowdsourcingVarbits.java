@@ -89,7 +89,8 @@ public class CrowdsourcingVarbits
 		System.arraycopy(client.getVarps(), 0, oldVarps2, 0, oldVarps2.length);
 
 		// For all varbits, add their ids to the multimap with the varp index as their key
-		clientThread.invoke(() -> {
+		clientThread.invoke(() ->
+		{
 			if (client.getIndexConfig() == null)
 			{
 				return false;
