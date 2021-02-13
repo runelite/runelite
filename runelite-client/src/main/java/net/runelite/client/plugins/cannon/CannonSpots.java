@@ -49,7 +49,7 @@ enum CannonSpots
 	DUST_DEVIL(new WorldPoint(3218, 9366, 0)),
 	EARTH_WARRIOR(new WorldPoint(3120, 9987, 0)),
 	ELDER_CHAOS_DRUID(new WorldPoint(3237, 3622, 0)),
-	ELVES(new WorldPoint(2044, 4635, 0), new WorldPoint(3278, 6098, 0)),
+	ELVES(new WorldPoint(3278, 6098, 0)),
 	FIRE_GIANTS(new WorldPoint(2393, 9782, 0), new WorldPoint(2412, 9776, 0), new WorldPoint(2401, 9780, 0), new WorldPoint(3047, 10340, 0)),
 	GREATER_DEMONS(new WorldPoint(1435, 10086, 2), new WorldPoint(3224, 10132, 0)),
 	GREEN_DRAGON(new WorldPoint(3225, 10068, 0)),
