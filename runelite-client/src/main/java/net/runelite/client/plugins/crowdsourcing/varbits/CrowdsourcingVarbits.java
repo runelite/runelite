@@ -129,7 +129,7 @@ public class CrowdsourcingVarbits
 		}
 	}
 
-	private void pushVarChange(int varType, int varbitNumber, int oldValue, int newValue, int tick)
+	private void pushVarChange(int varType, int varIndex, int oldValue, int newValue, int tick)
 	{
 		/* Wait a tick before grabbing location.
 		 *
@@ -145,7 +145,7 @@ public class CrowdsourcingVarbits
 			WorldPoint location = WorldPoint.fromLocalInstance(client, local);
 			boolean isInInstance = client.isInInstancedRegion();
 
-			VarData varbitData = new VarData(varType, varbitNumber, oldValue, newValue, tick, isInInstance, location);
+			VarData varbitData = new VarData(varType, varIndex, oldValue, newValue, tick, isInInstance, location);
 			crowdsourcingManager.storeEvent(varbitData);
 		});
 	}
