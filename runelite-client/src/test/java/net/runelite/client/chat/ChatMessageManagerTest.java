@@ -38,7 +38,6 @@ import net.runelite.client.config.ChatColorConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -68,14 +67,14 @@ public class ChatMessageManagerTest
 	}
 
 	@Test
-	public void onChatMessage()
+	public void testMessageRecoloring()
 	{
-		when(chatColorConfig.opaquePublicChat()).thenReturn(Color.decode("#b20000"));
+		when(chatColorConfig.opaqueServerMessage()).thenReturn(Color.decode("#b20000"));
 
 		chatMessageManager.loadColors();
 
 		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setType(ChatMessageType.GAMEMESSAGE);
 
 		MessageNode messageNode = mock(MessageNode.class);
 		chatMessage.setMessageNode(messageNode);
@@ -83,7 +82,7 @@ public class ChatMessageManagerTest
 		when(messageNode.getValue()).thenReturn("Your dodgy necklace protects you. It has <col=ff0000>1</col> charge left.");
 		chatMessageManager.onChatMessage(chatMessage);
 
-		verify(messageNode).setValue(eq("<col=b20000>Your dodgy necklace protects you. It has <col=ff0000>1<col=b20000> charge left.</col>"));
+		verify(messageNode).setValue("<col=b20000>Your dodgy necklace protects you. It has <col=ff0000>1<col=b20000> charge left.</col>");
 	}
 
 	@Test
