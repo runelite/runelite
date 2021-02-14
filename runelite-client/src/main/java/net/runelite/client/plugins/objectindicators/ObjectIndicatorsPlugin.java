@@ -292,16 +292,15 @@ public class ObjectIndicatorsPlugin extends Plugin
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
 					&& worldPoint.getRegionY() == objectPoint.getRegionY()
-					&& worldPoint.getPlane() == objectPoint.getZ())
+					&& worldPoint.getPlane() == objectPoint.getZ()
+					&& objectPoint.getId() == object.getId())
 			{
-				// Transform object to get the name which matches against what we've stored
-				ObjectComposition composition = getObjectComposition(object.getId());
-				if (composition != null && objectPoint.getName().equals(composition.getName()))
-				{
-					log.debug("Marking object {} due to matching {}", object, objectPoint);
-					objects.add(new ColorTileObject(object, objectPoint.getColor()));
-					break;
-				}
+				log.debug("Marking object {} due to matching {}", object, objectPoint);
+				objects.add(new ColorTileObject(object,
+					client.getObjectDefinition(object.getId()),
+					objectPoint.getName(),
+					objectPoint.getColor()));
+				break;
 			}
 		}
 	}
@@ -415,7 +414,10 @@ public class ObjectIndicatorsPlugin extends Plugin
 		else
 		{
 			objectPoints.add(point);
-			objects.add(new ColorTileObject(object, color));
+			objects.add(new ColorTileObject(object,
+				client.getObjectDefinition(object.getId()),
+				name,
+				color));
 			log.debug("Marking object: {}", point);
 		}
 
