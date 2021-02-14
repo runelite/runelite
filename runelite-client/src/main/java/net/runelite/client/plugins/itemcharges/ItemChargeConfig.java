@@ -40,8 +40,10 @@ public interface ItemChargeConfig extends Config
 	String KEY_AMULET_OF_BOUNTY = "amuletOfBounty";
 	String KEY_AMULET_OF_CHEMISTRY = "amuletOfChemistry";
 	String KEY_BINDING_NECKLACE = "bindingNecklace";
+	String KEY_BRACELET_OF_SLAUGHTER = "braceletOfSlaughter";
 	String KEY_CHRONICLE = "chronicle";
 	String KEY_DODGY_NECKLACE = "dodgyNecklace";
+	String KEY_EXPEDITIOUS_BRACELET = "expeditiousBracelet";
 	String KEY_EXPLORERS_RING = "explorerRing";
 	String KEY_RING_OF_FORGING = "ringOfForging";
 
@@ -352,5 +354,53 @@ public interface ItemChargeConfig extends Config
 	default boolean showPotionDoseCount()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showBraceletOfSlaughterCharges",
+		name = "Bracelet of Slaughter Charges",
+		description = "Show Bracelet of Slaughter item charges",
+		position = 26,
+		section = chargesSection
+	)
+	default boolean showBraceletOfSlaughterCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "slaughterNotification",
+		name = "Bracelet of Slaughter Notification",
+		description = "Send a notification when a Bracelet of Slaughter breaks",
+		position = 27,
+		section = notificationSection
+	)
+	default boolean slaughterNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showExpeditiousBraceletCharges",
+		name = "Expeditious Bracelet Charges",
+		description = "Show Expeditious Bracelet item charges",
+		position = 28,
+		section = chargesSection
+	)
+	default boolean showExpeditiousBraceletCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "expeditiousNotification",
+		name = "Expeditious Bracelet Notification",
+		description = "Send a notification when an Expeditious Bracelet breaks",
+		position = 29,
+		section = notificationSection
+	)
+	default boolean expeditiousNotification()
+	{
+		return true;
 	}
 }
