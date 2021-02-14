@@ -44,8 +44,6 @@ public interface SlayerConfig extends Config
 	String TASK_LOC_KEY = "taskLocation";
 	String STREAK_KEY = "streak";
 	String POINTS_KEY = "points";
-	String EXPEDITIOUS_CHARGES_KEY = "expeditious";
-	String SLAUGHTER_CHARGES_KEY = "slaughter";
 
 	@ConfigItem(
 		position = 1,

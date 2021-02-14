@@ -120,21 +120,6 @@ public class SlayerPluginTest
 	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 9 charges left.";
 	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster. It has 9 charges left.";
 
-	private static final String BRACLET_SLAUGHTER_V2 = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 1 charge left.";
-	private static final String BRACLET_EXPEDITIOUS_V2 = "Your expeditious bracelet helps you progress your slayer faster. It has 1 charge left.";
-
-	private static final String BRACLET_SLAUGHTER_V3 = "Your bracelet of slaughter prevents your slayer count from decreasing. It then crumbles to dust.";
-	private static final String BRACLET_EXPEDITIOUS_V3 = "Your expeditious bracelet helps you progress your slayer faster. It then crumbles to dust.";
-
-	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has 12 charges left.";
-	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has 12 charges left.";
-
-	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE_ONE = "Your bracelet of slaughter has 1 charge left.";
-	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE = "Your expeditious bracelet has 1 charge left.";
-
-	private static final String BREAK_SLAUGHTER = "The bracelet shatters. Your next bracelet of slaughter<br>will start afresh from 30 charges.";
-	private static final String BREAK_EXPEDITIOUS = "The bracelet shatters. Your next expeditious bracelet<br>will start afresh from 30 charges.";
-
 	@Mock
 	@Bind
 	Client client;
@@ -730,47 +715,10 @@ public class SlayerPluginTest
 	public void testBraceletSlaughter()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER, null, 0);
-
 		slayerPlugin.setAmount(42);
-		slayerPlugin.setSlaughterChargeCount(10);
 
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(9, slayerPlugin.getSlaughterChargeCount());
-		assertEquals(43, slayerPlugin.getAmount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_SLAUGHTER_CHARGE, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(12, slayerPlugin.getSlaughterChargeCount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_SLAUGHTER_CHARGE_ONE, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(1, slayerPlugin.getSlaughterChargeCount());
-
-		slayerPlugin.setSlaughterChargeCount(1);
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER_V3, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(30, slayerPlugin.getSlaughterChargeCount());
-
-		Widget braceletBreakWidget = mock(Widget.class);
-		when(braceletBreakWidget.getText()).thenReturn(BREAK_SLAUGHTER);
-		when(client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT)).thenReturn(braceletBreakWidget);
-
-		slayerPlugin.setSlaughterChargeCount(-1);
-		slayerPlugin.onGameTick(new GameTick());
-		assertEquals(30, slayerPlugin.getSlaughterChargeCount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER_V2, null, 0);
-
-		slayerPlugin.setAmount(42);
-		slayerPlugin.setSlaughterChargeCount(2);
-
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(1, slayerPlugin.getSlaughterChargeCount());
 		assertEquals(43, slayerPlugin.getAmount());
 	}
 
@@ -778,48 +726,11 @@ public class SlayerPluginTest
 	public void testBraceletExpeditious()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS, null, 0);
-
 		slayerPlugin.setAmount(42);
-		slayerPlugin.setExpeditiousChargeCount(10);
 
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(41, slayerPlugin.getAmount());
-		assertEquals(9, slayerPlugin.getExpeditiousChargeCount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(12, slayerPlugin.getExpeditiousChargeCount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(1, slayerPlugin.getExpeditiousChargeCount());
-
-		slayerPlugin.setExpeditiousChargeCount(1);
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS_V3, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(30, slayerPlugin.getExpeditiousChargeCount());
-
-		Widget braceletBreakWidget = mock(Widget.class);
-		when(braceletBreakWidget.getText()).thenReturn(BREAK_EXPEDITIOUS);
-		when(client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT)).thenReturn(braceletBreakWidget);
-
-		slayerPlugin.setExpeditiousChargeCount(-1);
-		slayerPlugin.onGameTick(new GameTick());
-		assertEquals(30, slayerPlugin.getExpeditiousChargeCount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS_V2, null, 0);
-
-		slayerPlugin.setAmount(42);
-		slayerPlugin.setExpeditiousChargeCount(2);
-
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(41, slayerPlugin.getAmount());
-		assertEquals(1, slayerPlugin.getExpeditiousChargeCount());
 	}
 
 	@Test
