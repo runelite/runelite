@@ -105,13 +105,7 @@ public class SlayerPlugin extends Plugin
 	private static final String CHAT_CANCEL_MESSAGE_ZUK = "You no longer have a slayer task as you left the Inferno.";
 	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
 	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer";
-	private static final Pattern CHAT_BRACELET_SLAUGHTER_REGEX = Pattern.compile("Your bracelet of slaughter prevents your slayer count from decreasing. It has (\\d{1,2}) charges? left\\.");
 	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your";
-	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_REGEX = Pattern.compile("Your expeditious bracelet helps you progress your slayer (?:task )?faster. It has (\\d{1,2}) charges? left\\.");
-	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has ";
-	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile("Your bracelet of slaughter has (\\d{1,2}) charges? left\\.");
-	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
-	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX = Pattern.compile("Your expeditious bracelet has (\\d{1,2}) charges? left\\.");
 	private static final Pattern COMBAT_BRACELET_TASK_UPDATE_MESSAGE = Pattern.compile("^You still need to kill (\\d+) monsters to complete your current Slayer assignment");
 
 	//NPC messages
@@ -124,9 +118,6 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: ((?:\\d+,)*\\d+)");
 
 	private static final int GROTESQUE_GUARDIANS_REGION = 6727;
-
-	private static final int EXPEDITIOUS_CHARGE = 30;
-	private static final int SLAUGHTER_CHARGE = 30;
 
 	// Chat Command
 	private static final String TASK_COMMAND_STRING = "!task";
@@ -202,14 +193,6 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
-	private int expeditiousChargeCount;
-
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private int slaughterChargeCount;
-
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
 	private String taskName;
 
 	private TaskCounter counter;
@@ -235,8 +218,6 @@ public class SlayerPlugin extends Plugin
 			if (getIntProfileConfig(SlayerConfig.AMOUNT_KEY) != -1
 				&& !getStringProfileConfig(SlayerConfig.TASK_NAME_KEY).isEmpty())
 			{
-				setExpeditiousChargeCount(getIntProfileConfig(SlayerConfig.EXPEDITIOUS_CHARGES_KEY));
-				setSlaughterChargeCount(getIntProfileConfig(SlayerConfig.SLAUGHTER_CHARGES_KEY));
 				clientThread.invoke(() -> setTask(getStringProfileConfig(SlayerConfig.TASK_NAME_KEY),
 					getIntProfileConfig(SlayerConfig.AMOUNT_KEY),
 					getIntProfileConfig(SlayerConfig.INIT_AMOUNT_KEY),
@@ -288,8 +269,6 @@ public class SlayerPlugin extends Plugin
 					&& !getStringProfileConfig(SlayerConfig.TASK_NAME_KEY).isEmpty()
 					&& loginFlag)
 				{
-					setExpeditiousChargeCount(getIntProfileConfig(SlayerConfig.EXPEDITIOUS_CHARGES_KEY));
-					setSlaughterChargeCount(getIntProfileConfig(SlayerConfig.SLAUGHTER_CHARGES_KEY));
 					setTask(getStringProfileConfig(SlayerConfig.TASK_NAME_KEY),
 						getIntProfileConfig(SlayerConfig.AMOUNT_KEY),
 						getIntProfileConfig(SlayerConfig.INIT_AMOUNT_KEY),
@@ -332,8 +311,6 @@ public class SlayerPlugin extends Plugin
 		setProfileConfig(SlayerConfig.INIT_AMOUNT_KEY, initialAmount);
 		setProfileConfig(SlayerConfig.TASK_NAME_KEY, taskName);
 		setProfileConfig(SlayerConfig.TASK_LOC_KEY, taskLocation);
-		setProfileConfig(SlayerConfig.EXPEDITIOUS_CHARGES_KEY, expeditiousChargeCount);
-		setProfileConfig(SlayerConfig.SLAUGHTER_CHARGES_KEY, slaughterChargeCount);
 	}
 
 	@Subscribe
@@ -394,22 +371,6 @@ public class SlayerPlugin extends Plugin
 			}
 		}
 
-		Widget braceletBreakWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
-		if (braceletBreakWidget != null)
-		{
-			String braceletText = Text.removeTags(braceletBreakWidget.getText()); //remove color and linebreaks
-			if (braceletText.contains("bracelet of slaughter"))
-			{
-				slaughterChargeCount = SLAUGHTER_CHARGE;
-				setProfileConfig(SlayerConfig.SLAUGHTER_CHARGES_KEY, slaughterChargeCount);
-			}
-			else if (braceletText.contains("expeditious bracelet"))
-			{
-				expeditiousChargeCount = EXPEDITIOUS_CHARGE;
-				setProfileConfig(SlayerConfig.EXPEDITIOUS_CHARGES_KEY, expeditiousChargeCount);
-			}
-		}
-
 		Widget rewardsBarWidget = client.getWidget(WidgetInfo.SLAYER_REWARDS_TOPBAR);
 		if (rewardsBarWidget != null)
 		{
@@ -460,45 +421,11 @@ public class SlayerPlugin extends Plugin
 
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER))
 		{
-			Matcher mSlaughter = CHAT_BRACELET_SLAUGHTER_REGEX.matcher(chatMsg);
-
 			amount++;
-			slaughterChargeCount = mSlaughter.find() ? Integer.parseInt(mSlaughter.group(1)) : SLAUGHTER_CHARGE;
-			setProfileConfig(SlayerConfig.SLAUGHTER_CHARGES_KEY, slaughterChargeCount);
 		}
-
-		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
+		else if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
 		{
-			Matcher mExpeditious = CHAT_BRACELET_EXPEDITIOUS_REGEX.matcher(chatMsg);
-
 			amount--;
-			expeditiousChargeCount = mExpeditious.find() ? Integer.parseInt(mExpeditious.group(1)) : EXPEDITIOUS_CHARGE;
-			setProfileConfig(SlayerConfig.EXPEDITIOUS_CHARGES_KEY, expeditiousChargeCount);
-		}
-
-		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
-		{
-			Matcher mExpeditious = CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX.matcher(chatMsg);
-
-			if (!mExpeditious.find())
-			{
-				return;
-			}
-
-			expeditiousChargeCount = Integer.parseInt(mExpeditious.group(1));
-			setProfileConfig(SlayerConfig.EXPEDITIOUS_CHARGES_KEY, expeditiousChargeCount);
-		}
-
-		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER_CHARGE))
-		{
-			Matcher mSlaughter = CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX.matcher(chatMsg);
-			if (!mSlaughter.find())
-			{
-				return;
-			}
-
-			slaughterChargeCount = Integer.parseInt(mSlaughter.group(1));
-			setProfileConfig(SlayerConfig.SLAUGHTER_CHARGES_KEY, slaughterChargeCount);
 		}
 
 		if (chatMsg.startsWith("You've completed") && (chatMsg.contains("Slayer master") || chatMsg.contains("Slayer Master")))
@@ -939,8 +866,10 @@ public class SlayerPlugin extends Plugin
 		migrateConfigKey(SlayerConfig.TASK_LOC_KEY);
 		migrateConfigKey(SlayerConfig.STREAK_KEY);
 		migrateConfigKey(SlayerConfig.POINTS_KEY);
-		migrateConfigKey(SlayerConfig.EXPEDITIOUS_CHARGES_KEY);
-		migrateConfigKey(SlayerConfig.SLAUGHTER_CHARGES_KEY);
+		configManager.unsetConfiguration(SlayerConfig.GROUP_NAME, "expeditious");
+		configManager.unsetConfiguration(SlayerConfig.GROUP_NAME, "slaughter");
+		configManager.unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, "expeditious");
+		configManager.unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, "slaughter");
 	}
 
 	private void migrateConfigKey(String key)
