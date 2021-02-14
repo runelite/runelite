@@ -113,6 +113,20 @@ public class ItemChargePlugin extends Plugin
 	private static final String CHRONICLE_ONE_CHARGE_TEXT = "You have one charge left in your book.";
 	private static final String CHRONICLE_EMPTY_TEXT = "Your book has run out of charges.";
 	private static final String CHRONICLE_NO_CHARGES_TEXT = "Your book does not have any charges. Purchase some Teleport Cards from Diango.";
+	private static final Pattern BRACELET_OF_SLAUGHTER_ACTIVATE_PATTERN = Pattern.compile(
+		"Your bracelet of slaughter prevents your slayer count from decreasing. (?:(?:It has (\\d{1,2}) charges? left)|(It then crumbles to dust))\\."
+	);
+	private static final Pattern BRACELET_OF_SLAUGHTER_CHECK_PATTERN = Pattern.compile(
+		"Your bracelet of slaughter has (\\d{1,2}) charges? left\\."
+	);
+	private static final String BRACELET_OF_SLAUGHTER_BREAK_TEXT = "Your Bracelet of Slaughter has crumbled to dust.";
+	private static final Pattern EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN = Pattern.compile(
+		"Your expeditious bracelet helps you progress your slayer (?:task )?faster. (?:(?:It has (\\d{1,2}) charges? left)|(It then crumbles to dust))\\."
+	);
+	private static final Pattern EXPEDITIOUS_BRACELET_CHECK_PATTERN = Pattern.compile(
+		"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
+	);
+	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -120,6 +134,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
+	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -247,6 +262,10 @@ public class ItemChargePlugin extends Plugin
 			Matcher amuletOfBountyUsedMatcher = AMULET_OF_BOUNTY_USED_PATTERN.matcher(message);
 			Matcher chronicleAddMatcher = CHRONICLE_ADD_PATTERN.matcher(message);
 			Matcher chronicleUseAndCheckMatcher = CHRONICLE_USE_AND_CHECK_PATTERN.matcher(message);
+			Matcher slaughterActivateMatcher = BRACELET_OF_SLAUGHTER_ACTIVATE_PATTERN.matcher(message);
+			Matcher slaughterCheckMatcher = BRACELET_OF_SLAUGHTER_CHECK_PATTERN.matcher(message);
+			Matcher expeditiousActivateMatcher = EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN.matcher(message);
+			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -392,6 +411,46 @@ public class ItemChargePlugin extends Plugin
 			{
 				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1000);
 			}
+			else if (slaughterActivateMatcher.find())
+			{
+				final String found = slaughterActivateMatcher.group(1);
+				if (found == null)
+				{
+					updateBraceletOfSlaughterCharges(MAX_SLAYER_BRACELET_CHARGES);
+					if (config.slaughterNotification())
+					{
+						notifier.notify(BRACELET_OF_SLAUGHTER_BREAK_TEXT);
+					}
+				}
+				else
+				{
+					updateBraceletOfSlaughterCharges(Integer.parseInt(found));
+				}
+			}
+			else if (slaughterCheckMatcher.find())
+			{
+				updateBraceletOfSlaughterCharges(Integer.parseInt(slaughterCheckMatcher.group(1)));
+			}
+			else if (expeditiousActivateMatcher.find())
+			{
+				final String found = expeditiousActivateMatcher.group(1);
+				if (found == null)
+				{
+					updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
+					if (config.expeditiousNotification())
+					{
+						notifier.notify(EXPEDITIOUS_BRACELET_BREAK_TEXT);
+					}
+				}
+				else
+				{
+					updateExpeditiousBraceletCharges(Integer.parseInt(found));
+				}
+			}
+			else if (expeditiousCheckMatcher.find())
+			{
+				updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
+			}
 		}
 	}
 
@@ -444,6 +503,16 @@ public class ItemChargePlugin extends Plugin
 		{
 			updateJewelleryInfobox(ItemWithSlot.AMULET_OF_BOUNTY, items);
 		}
+
+		if (config.showBraceletOfSlaughterCharges())
+		{
+			updateJewelleryInfobox(ItemWithSlot.BRACELET_OF_SLAUGHTER, items);
+		}
+
+		if (config.showExpeditiousBraceletCharges())
+		{
+			updateJewelleryInfobox(ItemWithSlot.EXPEDITIOUS_BRACELET, items);
+		}
 	}
 
 	@Subscribe
@@ -495,6 +564,14 @@ public class ItemChargePlugin extends Plugin
 						case ItemID.AMULET_OF_CHEMISTRY:
 							log.debug("Reset amulet of chemistry");
 							updateAmuletOfChemistryCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
+							break;
+						case ItemID.BRACELET_OF_SLAUGHTER:
+							log.debug("Reset bracelet of slaughter");
+							updateBraceletOfSlaughterCharges(MAX_SLAYER_BRACELET_CHARGES);
+							break;
+						case ItemID.EXPEDITIOUS_BRACELET:
+							log.debug("Reset expeditious bracelet");
+							updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
 							break;
 					}
 				}
@@ -605,6 +682,40 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
+	private void updateBraceletOfSlaughterCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, value);
+
+		if (config.showInfoboxes() && config.showBraceletOfSlaughterCharges())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.BRACELET_OF_SLAUGHTER, itemContainer.getItems());
+		}
+	}
+
+	private void updateExpeditiousBraceletCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, value);
+
+		if (config.showInfoboxes() && config.showExpeditiousBraceletCharges())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.EXPEDITIOUS_BRACELET, itemContainer.getItems());
+		}
+	}
+
 	private void checkDestroyWidget()
 	{
 		final int currentTick = client.getTickCount();
@@ -678,6 +789,14 @@ public class ItemChargePlugin extends Plugin
 			else if (id == ItemID.AMULET_OF_BOUNTY && type == ItemWithSlot.AMULET_OF_BOUNTY)
 			{
 				charges = getItemCharges(ItemChargeConfig.KEY_AMULET_OF_BOUNTY);
+			}
+			else if (id == ItemID.BRACELET_OF_SLAUGHTER && type == ItemWithSlot.BRACELET_OF_SLAUGHTER)
+			{
+				charges = getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER);
+			}
+			else if (id == ItemID.EXPEDITIOUS_BRACELET && type == ItemWithSlot.EXPEDITIOUS_BRACELET)
+			{
+				charges = getItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET);
 			}
 		}
 		else if (itemWithCharge.getType() == type.getType())

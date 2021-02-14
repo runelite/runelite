@@ -125,6 +125,24 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_CHRONICLE);
 		}
+		else if (itemId == ItemID.BRACELET_OF_SLAUGHTER)
+		{
+			if (!config.showBraceletOfSlaughterCharges())
+			{
+				return;
+			}
+
+			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER);
+		}
+		else if (itemId == ItemID.EXPEDITIOUS_BRACELET)
+		{
+			if (!config.showExpeditiousBraceletCharges())
+			{
+				return;
+			}
+
+			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET);
+		}
 		else
 		{
 			ItemWithCharge chargeItem = ItemWithCharge.findItem(itemId);
@@ -167,7 +185,8 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
 			|| config.showBellowCharges() || config.showBasketCharges() || config.showSackCharges()
 			|| config.showAbyssalBraceletCharges() || config.showExplorerRingCharges() || config.showRingOfForgingCount()
-			|| config.showAmuletOfChemistryCharges() || config.showAmuletOfBountyCharges() || config.showPotionDoseCount();
+			|| config.showAmuletOfChemistryCharges() || config.showAmuletOfBountyCharges() || config.showPotionDoseCount()
+			|| config.showBraceletOfSlaughterCharges() || config.showExpeditiousBraceletCharges();
 
 	}
 }
