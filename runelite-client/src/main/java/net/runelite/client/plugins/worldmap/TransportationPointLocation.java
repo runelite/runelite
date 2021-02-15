@@ -122,17 +122,18 @@ enum TransportationPointLocation
 	CHARTER_PRIFDDINAS_INSTANCE("Charter Ship", new WorldPoint(3180, 6083, 0)),
 
 	//Minecarts/Carts
-	MINE_CART_ARCEUUS("Minecart", new WorldPoint(1673, 3832, 0)),
+	MINE_CART_ARCEUUS("Lovakengj Minecart Network", new WorldPoint(1673, 3832, 0)),
 	MINE_CART_GRANDEXCHANGE("Minecart to Keldagrim", new WorldPoint(3139, 3504, 0)),
-	MINE_CART_HOSIDIUS("Minecart", new WorldPoint(1656, 3542, 0)),
-	MINE_CART_KELDAGRIM("Minecart", new WorldPoint(2908, 10170, 0)),
-	MINE_CART_LOVAKENGJ("Minecart", new WorldPoint(1524, 3721, 0)),
-	MINE_CART_PORT_PISCARILIUS("Minecart", new WorldPoint(1760, 3708, 0)),
-	MINE_CART_QUIDAMORTEM("Minecart", new WorldPoint(1253, 3550, 0)),
-	MINE_CART_SHAYZIEN("Minecart", new WorldPoint(1586, 3622, 0)),
-	MINE_CART_TAVERLEY_UNDERGROUND("Minecart", new WorldPoint(2874, 9870, 0)),
+	MINE_CART_HOSIDIUS("Lovakengj Minecart Network", new WorldPoint(1656, 3542, 0)),
+	MINE_CART_ICE_MOUNTAIN("Minecart to Keldagrim", new WorldPoint(2995, 9836, 0)),
+	MINE_CART_KELDAGRIM("Keldagrim Minecart System", new WorldPoint(2908, 10170, 0)),
+	MINE_CART_LOVAKENGJ("Lovakengj Minecart Network", new WorldPoint(1524, 3721, 0)),
+	MINE_CART_PORT_PISCARILIUS("Lovakengj Minecart Network", new WorldPoint(1760, 3708, 0)),
+	MINE_CART_QUIDAMORTEM("Lovakengj Minecart Network", new WorldPoint(1253, 3550, 0)),
+	MINE_CART_SHAYZIEN("Lovakengj Minecart Network", new WorldPoint(1586, 3622, 0)),
+	MINE_CART_WHITE_WOLF_MOUNTAIN("Minecart to Keldagrim", new WorldPoint(2874, 9870, 0)),
 	CART_TO_BRIMHAVEN("Cart to Brimhaven", new WorldPoint(2833, 2958, 0), new WorldPoint(2780, 3214, 0)),
-	CART_TO_SHILO("Cart to Shilo", new WorldPoint(2780, 3214, 0), new WorldPoint(2833, 2958, 0)),
+	CART_TO_SHILO("Cart to Shilo Village", new WorldPoint(2780, 3214, 0), new WorldPoint(2833, 2958, 0)),
 
 	//Canoes
 	CANOE_BARBVILLAGE("Canoe", new WorldPoint(3111, 3409, 0)),
