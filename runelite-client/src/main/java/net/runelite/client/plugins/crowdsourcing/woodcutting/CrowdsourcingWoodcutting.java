@@ -132,7 +132,6 @@ public class CrowdsourcingWoodcutting
 		add(ObjectID.ACHEY_TREE).
 		add(ObjectID.REDWOOD).
 		add(ObjectID.REDWOOD_29670).
-		add(NullObjectID.NULL_34633, NullObjectID.NULL_34635, NullObjectID.NULL_34637, NullObjectID.NULL_34639). //redwood tree patch farming guild
 		add(ObjectID.BRUMA_ROOTS).
 		add(ObjectID.ARCTIC_PINE).
 		add(ObjectID.SULLIUSCEP).
