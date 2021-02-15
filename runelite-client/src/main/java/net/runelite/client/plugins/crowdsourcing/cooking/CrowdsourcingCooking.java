@@ -85,6 +85,9 @@ public class CrowdsourcingCooking
 			|| message.startsWith("Unfortunately the Jubbly")
 			|| message.startsWith("You accidentally burn")
 			|| message.startsWith("You half-cook")
+			|| message.startsWith("The undead meat is now cooked")
+			|| message.startsWith("The undead chicken is now cooked")
+			|| message.startsWith("You successfully scramble")
 			|| message.startsWith("You accidentally spoil"))
 		{
 			boolean inHosidiusKitchen = false;
