@@ -290,7 +290,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapBait",
 		name = "Bait",
-		description = "Swap Small Net, Net, Lure with Bait on Fishing spot",
+		description = "Swap Lure, Small Net with Bait on Fishing spot",
 		section = objectSection
 	)
 	default boolean swapBait()
