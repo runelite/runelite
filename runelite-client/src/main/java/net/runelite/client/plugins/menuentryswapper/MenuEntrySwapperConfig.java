@@ -288,6 +288,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapBait",
+		name = "Bait",
+		description = "Swap Lure, Small Net with Bait on Fishing spot",
+		section = objectSection
+	)
+	default boolean swapBait()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapHelp",
 		name = "Help",
 		description = "Swap Talk-to with Help on Arceuus library customers",
