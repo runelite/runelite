@@ -96,7 +96,7 @@ public enum HotColdLocation
 	FREMENNIK_PROVINCE_LUNAR_VILLAGE(new WorldPoint(2084, 3916, 0), FREMENNIK_PROVINCE, "Lunar Isle, inside the village.", ANCIENT_WIZARDS),
 	FREMENNIK_PROVINCE_LUNAR_NORTH(new WorldPoint(2106, 3949, 0), FREMENNIK_PROVINCE, "Lunar Isle, north of the village.", ANCIENT_WIZARDS),
 	ICE_MOUNTAIN(new WorldPoint(3007, 3475, 0), MISTHALIN, "Atop Ice Mountain"),
-	ISLE_OF_SOULS_MINE(new WorldPoint(2189, 2794, 0), KANDARIN, "Isle of Souls Mine, south of the Soul Wars lobby"),
+	ISLE_OF_SOULS_MINE(new WorldPoint(2189, 2794, 0), KANDARIN, "Isle of Souls Mine, south of the Soul Wars lobby", BRASSICAN_MAGE),
 	KANDARIN_SINCLAR_MANSION(new WorldPoint(2730, 3588, 0), KANDARIN, "North-west of the Sinclair Mansion, near the log balance shortcut.", BRASSICAN_MAGE),
 	KANDARIN_CATHERBY(new WorldPoint(2774, 3436, 0), KANDARIN, "Catherby, between the bank and the beehives, near small rock formation.", BRASSICAN_MAGE),
 	KANDARIN_GRAND_TREE(new WorldPoint(2448, 3503, 0), KANDARIN, "Grand Tree, just east of the terrorchick gnome enclosure.", BRASSICAN_MAGE),
