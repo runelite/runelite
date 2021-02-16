@@ -90,9 +90,9 @@ public class MenuManager
 		managedMenuOptions.remove(customMenuOption.getWidgetId(), customMenuOption);
 	}
 
-	private boolean menuContainsCustomMenu(WidgetMenuOption customMenuOption)
+	private static boolean menuContainsCustomMenu(MenuEntry[] menuEntries, WidgetMenuOption customMenuOption)
 	{
-		for (MenuEntry menuEntry : client.getMenuEntries())
+		for (MenuEntry menuEntry : menuEntries)
 		{
 			String option = menuEntry.getOption();
 			String target = menuEntry.getTarget();
@@ -115,23 +115,36 @@ public class MenuManager
 
 		int widgetId = event.getActionParam1();
 		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
+		if (options.isEmpty())
+		{
+			return;
+		}
 
+		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		MenuEntry[] newMenuEntries = Arrays.copyOf(menuEntries, menuEntries.length + options.size());
+		// Menu entries are sorted with higher-index entries appearing toward the top of the minimenu, so insert older
+		// managed menu entries at higher indices and work backward for newer entries so newly-added entries appear at
+		// the bottom
+		int insertIdx = newMenuEntries.length - 1;
 		for (WidgetMenuOption currentMenu : options)
 		{
-			if (!menuContainsCustomMenu(currentMenu))//Don't add if we have already added it to this widget
+			// Exit if we've inserted the managed menu entries already
+			if (menuContainsCustomMenu(menuEntries, currentMenu))
 			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
-				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
-				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-				menuEntry.setOption(currentMenu.getMenuOption());
-				menuEntry.setParam1(widgetId);
-				menuEntry.setTarget(currentMenu.getMenuTarget());
-				menuEntry.setType(MenuAction.RUNELITE.getId());
-
-				client.setMenuEntries(menuEntries);
+				return;
 			}
+
+			MenuEntry menuEntry = new MenuEntry();
+			menuEntry.setOption(currentMenu.getMenuOption());
+			menuEntry.setParam1(widgetId);
+			menuEntry.setTarget(currentMenu.getMenuTarget());
+			menuEntry.setType(MenuAction.RUNELITE.getId());
+
+			newMenuEntries[insertIdx--] = menuEntry;
 		}
+
+		client.setMenuEntries(newMenuEntries);
 	}
 
 	public void addPlayerMenuItem(String menuText)
