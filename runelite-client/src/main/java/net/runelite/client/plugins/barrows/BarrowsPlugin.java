@@ -27,6 +27,8 @@ package net.runelite.client.plugins.barrows;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -35,8 +37,12 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import static net.runelite.api.ItemID.BARROWS_TELEPORT;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -73,10 +79,15 @@ public class BarrowsPlugin extends Plugin
 	);
 
 	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
-	private static final int CRYPT_REGION_ID = 14231;
+	static final int CRYPT_REGION_ID = 14231;
 
 	private LoopTimer barrowsPrayerDrainTimer;
 	private boolean wasInCrypt = false;
+
+	private int barrowsStartingPotential = 0;
+
+	@Getter
+	private static Map<String, Integer> monstersKilled = new HashMap<>();
 
 	@Getter
 	private Widget puzzleAnswer;
@@ -90,8 +101,13 @@ public class BarrowsPlugin extends Plugin
 	@Inject
 	private BarrowsBrotherSlainOverlay brotherOverlay;
 
+	private BarrowsCryptKCInfobox kcInfobox;
+
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ItemManager itemManager;
@@ -119,6 +135,10 @@ public class BarrowsPlugin extends Plugin
 	{
 		overlayManager.add(barrowsOverlay);
 		overlayManager.add(brotherOverlay);
+		//Declare new infobox
+		clientThread.invoke(this::initializeKC);
+		this.kcInfobox = new BarrowsCryptKCInfobox(itemManager.getImage(BARROWS_TELEPORT), this, client, config);
+		infoBoxManager.addInfoBox(this.kcInfobox);
 	}
 
 	@Override
@@ -126,6 +146,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		overlayManager.remove(barrowsOverlay);
 		overlayManager.remove(brotherOverlay);
+		infoBoxManager.removeInfoBox(kcInfobox);
 		puzzleAnswer = null;
 		wasInCrypt = false;
 		stopPrayerDrainTimer();
@@ -159,6 +180,11 @@ public class BarrowsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			wasInCrypt = isInCrypt();
+			//When entering crypt, initialize reward potential
+			if (isInCrypt())
+			{
+				initializeRewardPotential();
+			}
 			// on region changes the tiles get set to null
 			puzzleAnswer = null;
 		}
@@ -171,6 +197,9 @@ public class BarrowsPlugin extends Plugin
 			}
 			else if (!wasInCrypt && isInCrypt)
 			{
+				//On login into crypt, initialize reward potential and kill count
+				initializeRewardPotential();
+				initializeKC();
 				startPrayerDrainTimer();
 			}
 		}
@@ -221,6 +250,65 @@ public class BarrowsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		if (!isInCrypt())
+		{
+			return;
+		}
+		// Get new potential after a kill
+		int newPotential = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
+		// Calculate the difference between the original potential and new potential (how much potential gained
+		// from the kill)
+		int potentialDifference = newPotential - this.barrowsStartingPotential;
+		// If the amount of potential goes down, a barrows trip has been completed and we want to reset the counters
+		// Note - this only occurs when re-entering a crypt/maze after having completed, so if a player finishes a
+		// barrows run, the kill count will still be present until they leave the crypt.  But on re-entry of a new
+		// crypt, it will have reset.
+		if (potentialDifference < 0)
+		{
+			initializeKC();
+		}
+		// Set the "original" potential to the new potential so future calculations are based on the correct value.
+		this.barrowsStartingPotential = newPotential;
+
+		for (CryptMonsters monster : CryptMonsters.values())
+		{
+			// To figure out which monster was killed, just check the difference in reward potential and compare it
+			// to the combat level of the monster.  This does mean, however, that if multiple unregistered kills occur
+			// (such as if the tracker is toggled off mid-run, then back on after a few kills), they will not appear.
+			if (monster.getCombatLevel() == potentialDifference)
+			{
+				String monsterSlain = monster.getName();
+				int numKilled = monstersKilled.get(monsterSlain);
+				monstersKilled.put(monsterSlain, numKilled + 1);
+				//Update the tooltip
+				this.kcInfobox.updateTooltip();
+
+				break;
+			}
+		}
+	}
+
+	private void initializeRewardPotential()
+	{
+		this.barrowsStartingPotential = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
+	}
+
+	private void initializeKC()
+	{
+		//Initialize starting barrows potential to be 0.
+		this.barrowsStartingPotential = 0;
+		//Initialize monstersKilled dictionary to have 0 kills for each monster
+		for (CryptMonsters monster : CryptMonsters.values())
+		{
+			monstersKilled.put(monster.getName(), 0);
+		}
+		// Update the tooltip to reflect the fact that no monsters have been killed yet.
+		this.kcInfobox.updateTooltip();
+	}
+
 	private void startPrayerDrainTimer()
 	{
 		if (config.showPrayerDrainTimer())
@@ -248,7 +336,7 @@ public class BarrowsPlugin extends Plugin
 		barrowsPrayerDrainTimer = null;
 	}
 
-	private boolean isInCrypt()
+	boolean isInCrypt()
 	{
 		Player localPlayer = client.getLocalPlayer();
 		return localPlayer != null && localPlayer.getWorldLocation().getRegionID() == CRYPT_REGION_ID;
