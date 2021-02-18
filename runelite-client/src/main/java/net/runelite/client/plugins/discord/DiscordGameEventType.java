@@ -385,7 +385,7 @@ enum DiscordGameEventType
 	REGION_MCGRUBORS_WOOD("McGrubor's Wood", DiscordAreaType.REGIONS, 10550),
 	REGION_MIME_STAGE("Mime's Stage", DiscordAreaType.REGIONS, 8010),
 	REGION_MIND_ALTAR("Mind Altar", DiscordAreaType.REGIONS, 11083),
-	REGION_MISTHALIN("Misthalin", DiscordAreaType.REGIONS, 12594, 12595),
+	REGION_MISTHALIN("Misthalin", DiscordAreaType.REGIONS, 12594, 12595, 12851),
 	REGION_MOLCH("Molch", DiscordAreaType.REGIONS, 5177),
 	REGION_MOLCH_ISLAND("Molch Island", DiscordAreaType.REGIONS, 5432),
 	REGION_MORYTANIA("Morytania", DiscordAreaType.REGIONS, 13619, 13620, 13621, 13622, 13876, 13877, 13879, 14133, 14134, 14389, 14390, 14391, 14645, 14647),
