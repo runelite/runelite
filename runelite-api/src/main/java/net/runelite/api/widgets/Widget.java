@@ -26,6 +26,7 @@ package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
 import java.util.Collection;
+import javax.annotation.Nullable;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
 
@@ -116,6 +117,7 @@ public interface Widget
 	/**
 	 * Gets the dynamic children of this widget in a sparse array
 	 */
+	@Nullable
 	Widget[] getChildren();
 
 	/**
