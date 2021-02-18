@@ -100,7 +100,7 @@ public class PuzzleSolverOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if ((!config.displaySolution() && !config.displayRemainingMoves())
+		if ((!config.displaySliderSolution() && !config.displayRemainingMoves())
 				|| client.getGameState() != GameState.LOGGED_IN)
 		{
 			return null;
@@ -213,7 +213,7 @@ public class PuzzleSolverOverlay extends Overlay
 							infoString = null;
 						}
 
-						if (config.displaySolution())
+						if (config.displaySliderSolution())
 						{
 							if (config.drawDots())
 							{

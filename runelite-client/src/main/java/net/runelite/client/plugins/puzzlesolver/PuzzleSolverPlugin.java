@@ -70,6 +70,9 @@ public class PuzzleSolverPlugin extends Plugin
 	private static final Color CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR = new Color(0, 248, 128);
 
 	@Inject
+	private PuzzleSolverConfig config;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -139,7 +142,7 @@ public class PuzzleSolverPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		int widgetId = menuOptionClicked.getWidgetId();
-		if (TO_GROUP(widgetId) != WidgetID.LIGHT_BOX_GROUP_ID)
+		if (TO_GROUP(widgetId) != WidgetID.LIGHT_BOX_GROUP_ID || !config.displayLightBoxSolution())
 		{
 			return;
 		}
@@ -196,7 +199,7 @@ public class PuzzleSolverPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		Widget lightboxWidget = client.getWidget(WidgetInfo.LIGHT_BOX_CONTENTS);
-		if (lightboxWidget == null)
+		if (lightboxWidget == null || !config.displayLightBoxSolution())
 		{
 			if (lightbox != null)
 			{
