@@ -165,7 +165,8 @@ public class KeyRemappingPlugin extends Plugin
 	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded ev)
 	{
-		if (ev.getGroupId() == WidgetID.BANK_PIN_GROUP_ID) {
+		if (ev.getGroupId() == WidgetID.BANK_PIN_GROUP_ID)
+		{
 			isBankPinWindowOpen = true;
 		}
 	}
@@ -173,7 +174,8 @@ public class KeyRemappingPlugin extends Plugin
 	@Subscribe
 	private void onWidgetClosed(WidgetClosed ev)
 	{
-		if (ev.getGroupId() == WidgetID.BANK_PIN_GROUP_ID) {
+		if (ev.getGroupId() == WidgetID.BANK_PIN_GROUP_ID)
+		{
 			isBankPinWindowOpen = false;
 		}
 	}
