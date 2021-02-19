@@ -37,7 +37,10 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.WidgetClosed;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -75,6 +78,10 @@ public class KeyRemappingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean typing;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean isBankPinWindowOpen;
 
 	@Override
 	protected void startUp() throws Exception
@@ -141,7 +148,7 @@ public class KeyRemappingPlugin extends Plugin
 		return isHidden(WidgetInfo.CHATBOX_MESSAGES) || isHidden(WidgetInfo.CHATBOX_TRANSPARENT_LINES)
 			// We want to block F-key remapping in the bank pin interface too, so it does not interfere with the
 			// Keyboard Bankpin feature of the Bank plugin
-			|| !isHidden(WidgetInfo.BANK_PIN_CONTAINER);
+			|| isBankPinWindowOpen;
 	}
 
 	boolean isOptionsDialogOpen()
@@ -153,6 +160,22 @@ public class KeyRemappingPlugin extends Plugin
 	{
 		Widget w = client.getWidget(widgetInfo);
 		return w == null || w.isSelfHidden();
+	}
+
+	@Subscribe
+	private void onWidgetLoaded(WidgetLoaded ev)
+	{
+		if (ev.getGroupId() == WidgetID.BANK_PIN_GROUP_ID) {
+			isBankPinWindowOpen = true;
+		}
+	}
+
+	@Subscribe
+	private void onWidgetClosed(WidgetClosed ev)
+	{
+		if (ev.getGroupId() == WidgetID.BANK_PIN_GROUP_ID) {
+			isBankPinWindowOpen = false;
+		}
 	}
 
 	@Subscribe
