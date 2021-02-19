@@ -84,6 +84,7 @@ public class LootManager
 	{
 		this.eventBus = eventBus;
 		this.client = client;
+		eventBus.register(this);
 	}
 
 	@Subscribe

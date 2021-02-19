@@ -24,7 +24,6 @@
  */
 package net.runelite.client.menus;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -65,11 +64,11 @@ public class MenuManager
 	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = LinkedHashMultimap.create();
 
 	@Inject
-	@VisibleForTesting
-	MenuManager(Client client, EventBus eventBus)
+	private MenuManager(Client client, EventBus eventBus)
 	{
 		this.client = client;
 		this.eventBus = eventBus;
+		eventBus.register(this);
 	}
 
 	/**

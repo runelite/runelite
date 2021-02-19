@@ -78,6 +78,7 @@ public class PartyService
 		this.sessionManager = sessionManager;
 		this.eventBus = eventBus;
 		this.chat = chat;
+		eventBus.register(this);
 	}
 
 	public void changeParty(UUID newParty)

@@ -45,6 +45,7 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.FriendsChatChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
@@ -93,10 +94,11 @@ public class FriendChatManager
 	private int offset;
 
 	@Inject
-	private FriendChatManager(Client client, SpriteManager spriteManager)
+	private FriendChatManager(Client client, SpriteManager spriteManager, EventBus eventBus)
 	{
 		this.client = client;
 		this.spriteManager = spriteManager;
+		eventBus.register(this);
 	}
 
 	public boolean isMember(String name)

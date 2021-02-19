@@ -63,6 +63,7 @@ public class CommandManager
 		this.client = client;
 		this.eventBus = eventBus;
 		this.clientThread = clientThread;
+		eventBus.register(this);
 	}
 
 	public void register(ChatboxInputListener chatboxInputListener)

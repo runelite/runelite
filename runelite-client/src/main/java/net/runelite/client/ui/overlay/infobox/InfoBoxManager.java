@@ -95,6 +95,7 @@ public class InfoBoxManager
 		this.eventBus = eventBus;
 		this.overlayManager = overlayManager;
 		this.configManager = configManager;
+		eventBus.register(this);
 	}
 
 	@Subscribe

@@ -58,6 +58,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -113,7 +114,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		final RuneLiteConfig runeLiteConfig,
 		final MouseManager mouseManager,
 		final KeyManager keyManager,
-		final ClientUI clientUI)
+		final ClientUI clientUI,
+		final EventBus eventBus)
 	{
 		this.client = client;
 		this.overlayManager = overlayManager;
@@ -121,6 +123,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		this.clientUI = clientUI;
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
+		eventBus.register(this);
 	}
 
 	@Subscribe

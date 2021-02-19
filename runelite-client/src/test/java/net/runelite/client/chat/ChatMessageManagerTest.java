@@ -35,6 +35,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.events.ConfigChanged;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,8 +63,6 @@ public class ChatMessageManagerTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-
-		chatMessageManager.loadColors();
 	}
 
 	@Test
@@ -71,7 +70,10 @@ public class ChatMessageManagerTest
 	{
 		when(chatColorConfig.opaqueServerMessage()).thenReturn(Color.decode("#b20000"));
 
-		chatMessageManager.loadColors();
+		// rebuild color cache
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup("textrecolor");
+		chatMessageManager.onConfigChanged(configChanged);
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.GAMEMESSAGE);
@@ -92,8 +94,6 @@ public class ChatMessageManagerTest
 		final String friendName = "Zezima";
 
 		when(chatColorConfig.opaquePublicFriendUsernames()).thenReturn(Color.decode("#b20000"));
-
-		chatMessageManager.loadColors();
 
 		// Setup message
 		ChatMessage chatMessage = new ChatMessage();
@@ -124,8 +124,6 @@ public class ChatMessageManagerTest
 		final String sanitizedFriendName = "BuddhaPuck";
 
 		when(chatColorConfig.opaquePublicFriendUsernames()).thenReturn(Color.decode("#b20000"));
-
-		chatMessageManager.loadColors();
 
 		// Setup message
 		ChatMessage chatMessage = new ChatMessage();
