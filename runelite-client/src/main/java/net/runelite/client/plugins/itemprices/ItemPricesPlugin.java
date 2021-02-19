@@ -25,11 +25,33 @@
 package net.runelite.client.plugins.itemprices;
 
 import com.google.inject.Provides;
-import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.Constants;
+import net.runelite.api.FontID;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetSizeMode;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.StackFormatter;
+
+import javax.inject.Inject;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
+import java.util.Locale;
 
 @PluginDescriptor(
 	name = "Item Prices",
@@ -39,11 +61,25 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class ItemPricesPlugin extends Plugin
 {
+
+	private static final DecimalFormat FORMATTER = new DecimalFormat("#,###.#", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
 	private ItemPricesOverlay overlay;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private ItemPricesConfig itemPricesConfig;
+
+	private Widget totalHighAlchValueWidget;
 
 	@Provides
 	ItemPricesConfig getConfig(ConfigManager configManager)
@@ -61,5 +97,76 @@ public class ItemPricesPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(final WidgetLoaded event)
+	{
+		if (itemPricesConfig.showHighAlchOnGuidePrices())
+		{
+			if (WidgetID.GUIDE_PRICES_GROUP_ID == event.getGroupId())
+			{
+
+				final Widget parentWidget = client.getWidget(WidgetInfo.GUIDE_PRICES_MAIN_CONTAINER);
+
+				final Widget totalGePricesWidget = client.getWidget(WidgetInfo.GUIDE_PRICES_ITEMS_VALUE);
+				totalGePricesWidget.setWidthMode(WidgetSizeMode.ABSOLUTE);
+				totalGePricesWidget.setOriginalWidth(totalGePricesWidget.getWidth() / 2);
+				totalGePricesWidget.revalidate();
+
+				this.totalHighAlchValueWidget = parentWidget.createChild(-1, WidgetType.TEXT);
+				totalHighAlchValueWidget.setFontId(FontID.PLAIN_12);
+				totalHighAlchValueWidget.setTextShadowed(true);
+				totalHighAlchValueWidget.setTextColor(0xFF981F);
+				totalHighAlchValueWidget.setXTextAlignment(1);
+				totalHighAlchValueWidget.setYTextAlignment(1);
+				totalHighAlchValueWidget.setText(createHighAlchemyValueText(0L));
+				totalHighAlchValueWidget.setOriginalWidth(totalGePricesWidget.getWidth());
+				totalHighAlchValueWidget.setOriginalHeight(totalGePricesWidget.getHeight());
+				totalHighAlchValueWidget.setOriginalX(totalGePricesWidget.getOriginalX() + totalGePricesWidget.getWidth());
+				totalHighAlchValueWidget.setOriginalY(totalGePricesWidget.getOriginalY());
+			}
+		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(final ItemContainerChanged event)
+	{
+		if (itemPricesConfig.showHighAlchOnGuidePrices())
+		{
+			if (InventoryID.GUIDE_PRICES.getId() == event.getContainerId())
+			{
+				final ItemContainer itemContainer = event.getItemContainer();
+				final Item[] items = itemContainer.getItems();
+				final long totalHighAlchValue = calculateTotalHighAlchValue(items);
+				this.totalHighAlchValueWidget.setText(createHighAlchemyValueText(totalHighAlchValue));
+			}
+		}
+	}
+
+	private long calculateTotalHighAlchValue(final Item[] items)
+	{
+		return Arrays.stream(items)
+				.map(this::toHighAlchValue)
+				.reduce(Long::sum)
+				.orElse(0L);
+	}
+
+	private long toHighAlchValue(final Item item)
+	{
+		final int itemId = itemManager.canonicalize(item.getId());
+		return calculateHighAlchValue(itemId) * item.getQuantity();
+	}
+
+	private int calculateHighAlchValue(final int itemId)
+	{
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		return Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
+	}
+
+	private String createHighAlchemyValueText(final long value)
+	{
+		final String formattedValue = StackFormatter.formatNumber(value);
+		return String.format("Total High Alchemy value:<br><col=ffffff>%s</col>", formattedValue);
 	}
 }
