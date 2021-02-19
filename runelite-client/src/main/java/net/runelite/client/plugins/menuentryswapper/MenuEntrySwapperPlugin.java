@@ -373,6 +373,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swapTeleport("teleport to house", "outside");
 
 		swap("eat", "guzzle", config::swapRockCake);
+
+		swap("travel", "dive", config::swapRowboatDive);
 	}
 
 	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
