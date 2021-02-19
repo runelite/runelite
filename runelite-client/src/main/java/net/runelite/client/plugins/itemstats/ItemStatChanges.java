@@ -38,6 +38,8 @@ import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
 import net.runelite.client.plugins.itemstats.potions.SuperRestore;
 import net.runelite.client.plugins.itemstats.special.CastleWarsBandage;
+import net.runelite.client.plugins.itemstats.special.DwarvenRockCake;
+import net.runelite.client.plugins.itemstats.special.LocatorOrb;
 import net.runelite.client.plugins.itemstats.special.SpicyStew;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 
@@ -209,6 +211,8 @@ public class ItemStatChanges
 		add(new SpicyStew(), SPICY_STEW);
 		add(boost(MAGIC, perc(.10, 1)), IMBUED_HEART);
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(DEFENCE, -1)), JANGERBERRIES);
+		add(new DwarvenRockCake(), DWARVEN_ROCK_CAKE_7510);
+		add(new LocatorOrb(), LOCATOR_ORB);
 
 		// Gauntlet items
 		add(heal(HITPOINTS, 20), PADDLEFISH);
