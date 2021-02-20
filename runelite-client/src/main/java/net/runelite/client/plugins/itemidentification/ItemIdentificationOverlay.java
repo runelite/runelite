@@ -89,6 +89,12 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case COMPOST:
+				if (!config.showComposts())
+				{
+					return;
+				}
+				break;
 			case ORE:
 				if (!config.showOres())
 				{

@@ -106,6 +106,17 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showComposts",
+		name = "Composts",
+		description = "Show identification on Composts",
+		section = identificationSection
+	)
+	default boolean showComposts()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showOres",
 		name = "Ores",
 		description = "Show identification on Ores",
