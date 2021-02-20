@@ -147,6 +147,16 @@ enum ItemIdentification
 	DAEYALT_ORE(Type.ORE, "Daeyalt", "DAE", ItemID.DAEYALT_ORE),
 	LUNAR_ORE(Type.ORE, "Lunar", "LUN", ItemID.LUNAR_ORE),
 
+	//Bars
+	BRONZE_BAR(Type.BAR, "Bronze", "BRO", ItemID.BRONZE_BAR),
+	IRON_BAR(Type.BAR, "Iron", "IRO", ItemID.IRON_BAR),
+	SILVER_BAR(Type.BAR, "Silver", "SIL", ItemID.SILVER_BAR),
+	STEEL_BAR(Type.BAR, "Steel", "STE", ItemID.STEEL_BAR),
+	GOLD_BAR(Type.BAR, "Gold", "GOL", ItemID.GOLD_BAR),
+	MITHRIL_BAR(Type.BAR, "Mithril", "MIT", ItemID.MITHRIL_BAR),
+	ADAMANTITE_BAR(Type.BAR, "Adaman", "ADA", ItemID.ADAMANTITE_BAR),
+	RUNITE_BAR(Type.BAR, "Runite", "RUN", ItemID.RUNITE_BAR),
+
 	//Gems
 	SAPPHIRE(Type.GEM, "Sapphir", "S", ItemID.UNCUT_SAPPHIRE, ItemID.SAPPHIRE),
 	EMERALD(Type.GEM, "Emerald", "E", ItemID.UNCUT_EMERALD, ItemID.EMERALD),
@@ -356,6 +366,7 @@ enum ItemIdentification
 		SAPLING,
 		COMPOST,
 		ORE,
+		BAR,
 		GEM,
 		POTION,
 		IMPLING_JAR,

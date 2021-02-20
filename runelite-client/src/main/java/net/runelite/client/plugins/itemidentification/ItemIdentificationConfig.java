@@ -128,6 +128,17 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showBars",
+		name = "Bars",
+		description = "Show identification on Bars",
+		section = identificationSection
+	)
+	default boolean showBars()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showGems",
 		name = "Gems",
 		description = "Show identification on Gems",

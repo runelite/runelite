@@ -101,6 +101,12 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case BAR:
+				if (!config.showBars())
+				{
+					return;
+				}
+				break;
 			case GEM:
 				if (!config.showGems())
 				{
