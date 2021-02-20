@@ -172,10 +172,9 @@ public class DiscordPlugin extends Plugin
 					resetState();
 					checkForGameStateUpdate();
 				}
+				checkForAreaUpdate();
 				break;
 		}
-
-		checkForAreaUpdate();
 	}
 
 	@Subscribe
