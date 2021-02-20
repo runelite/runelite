@@ -83,6 +83,18 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case LOGS:
+				if (!config.showLogs())
+				{
+					return;
+				}
+				break;
+			case PLANK:
+				if (!config.showPlanks())
+				{
+					return;
+				}
+				break;
 			case SAPLING:
 				if (!config.showSaplings())
 				{

@@ -95,6 +95,28 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showLogs",
+		name = "Logs",
+		description = "Show identification on Logs",
+		section = identificationSection
+	)
+	default boolean showLogs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showPlanks",
+		name = "Planks",
+		description = "Show identification on Planks",
+		section = identificationSection
+	)
+	default boolean showPlanks()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showSaplings",
 		name = "Saplings",
 		description = "Show identification on Saplings and Seedlings",
