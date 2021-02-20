@@ -560,7 +560,7 @@ public class ConfigManager
 		{
 			return Boolean.parseBoolean(str);
 		}
-		if (type == int.class)
+		if (type == int.class || type == Integer.class)
 		{
 			return Integer.parseInt(str);
 		}
