@@ -30,6 +30,16 @@ import lombok.Value;
 @Value
 public class ItemStats
 {
+	// Unarmed attack speed is 4
+	public static final ItemStats UNARMED = new ItemStats(false, true, 0, 0,
+			ItemEquipmentStats.builder()
+					.aspeed(4)
+					.build());
+
+	public static final ItemStats NOTHING = new ItemStats(false, true, 0, 0,
+			ItemEquipmentStats.builder()
+					.build());
+
 	private boolean quest;
 	private boolean equipable;
 	private double weight;
@@ -53,7 +63,7 @@ public class ItemStats
 		{
 			final ItemEquipmentStats equipment = this.equipment != null
 				? this.equipment
-				: new ItemEquipmentStats.ItemEquipmentStatsBuilder().build();
+				: NOTHING.getEquipment();
 
 			newEquipment = new ItemEquipmentStats.ItemEquipmentStatsBuilder()
 				.slot(equipment.getSlot())
@@ -73,6 +83,50 @@ public class ItemStats
 				.prayer(equipment.getPrayer() - other.equipment.getPrayer())
 				.aspeed(equipment.getAspeed() - other.equipment.getAspeed())
 				.build();
+		}
+		else
+		{
+			newEquipment = equipment;
+		}
+
+		return new ItemStats(quest, equipable, newWeight, 0, newEquipment);
+	}
+
+	public ItemStats add(ItemStats other)
+	{
+		if (other == null)
+		{
+			return this;
+		}
+
+		final double newWeight = weight + other.weight;
+		final ItemEquipmentStats newEquipment;
+
+
+		if (other.equipment != null)
+		{
+			final ItemEquipmentStats equipment = this.equipment != null
+					? this.equipment
+					: NOTHING.getEquipment();
+
+			newEquipment = new ItemEquipmentStats.ItemEquipmentStatsBuilder()
+					.slot(equipment.getSlot())
+					.astab(equipment.getAstab() + other.equipment.getAstab())
+					.aslash(equipment.getAslash() + other.equipment.getAslash())
+					.acrush(equipment.getAcrush() + other.equipment.getAcrush())
+					.amagic(equipment.getAmagic() + other.equipment.getAmagic())
+					.arange(equipment.getArange() + other.equipment.getArange())
+					.dstab(equipment.getDstab() + other.equipment.getDstab())
+					.dslash(equipment.getDslash() + other.equipment.getDslash())
+					.dcrush(equipment.getDcrush() + other.equipment.getDcrush())
+					.dmagic(equipment.getDmagic() + other.equipment.getDmagic())
+					.drange(equipment.getDrange() + other.equipment.getDrange())
+					.str(equipment.getStr() + other.equipment.getStr())
+					.rstr(equipment.getRstr() + other.equipment.getRstr())
+					.mdmg(equipment.getMdmg() + other.equipment.getMdmg())
+					.prayer(equipment.getPrayer() + other.equipment.getPrayer())
+					.aspeed(equipment.getAspeed() + other.equipment.getAspeed())
+					.build();
 		}
 		else
 		{

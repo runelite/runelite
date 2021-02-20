@@ -31,7 +31,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Duration;
 import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -50,16 +49,11 @@ import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.item.ItemEquipmentStats;
 import net.runelite.http.api.item.ItemStats;
 import org.apache.commons.lang3.time.DurationFormatUtils;
+import static net.runelite.api.EquipmentInventorySlot.SHIELD;
+import static net.runelite.api.EquipmentInventorySlot.WEAPON;
 
 public class ItemStatOverlay extends Overlay
 {
-	// Unarmed attack speed is 4
-	@VisibleForTesting
-	static final ItemStats UNARMED = new ItemStats(false, true, 0, 0,
-		ItemEquipmentStats.builder()
-			.aspeed(4)
-			.build());
-
 	@Inject
 	private Client client;
 
@@ -200,7 +194,7 @@ public class ItemStatOverlay extends Overlay
 
 			if (stats != null)
 			{
-				final String tooltip = buildStatBonusString(stats);
+				final String tooltip = equipmentStatsTooltip(stats, group);
 
 				if (!tooltip.isEmpty())
 				{
@@ -210,6 +204,18 @@ public class ItemStatOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private String equipmentStatsTooltip(ItemStats stats, int groupId)
+	{
+		if (groupId == WidgetID.EQUIPMENT_GROUP_ID)
+		{
+			return config.showStatsInEquipment() ? unequipItemTooltip(stats) : "";
+		}
+		else
+		{
+			return equipItemTooltip(stats);
+		}
 	}
 
 	private String getChangeString(
@@ -283,79 +289,86 @@ public class ItemStatOverlay extends Overlay
 	private ItemStats getItemStatsFromContainer(ItemContainer container, int slotID)
 	{
 		final Item item = container.getItem(slotID);
-		return item != null ? itemManager.getItemStats(item.getId(), false) : null;
+
+		return item != null ? itemManager.getItemStats(item.getId(), false) : defaultItemStats(slotID);
 	}
 
 	@VisibleForTesting
-	String buildStatBonusString(ItemStats s)
+	String unequipItemTooltip(ItemStats unequipItem)
 	{
-		ItemStats other = null;
-		// Used if switching into a 2 handed weapon to store off-hand stats
-		ItemStats offHand = null;
-		final ItemEquipmentStats currentEquipment = s.getEquipment();
+		int slot = unequipItem.getEquipment().getSlot();
+
+		final ItemStats equipItem = defaultItemStats(slot);
+
+		return buildItemTooltip(unequipItem, equipItem.subtract(unequipItem));
+	}
+
+	@VisibleForTesting
+	String equipItemTooltip(ItemStats equipStats)
+	{
+		final ItemEquipmentStats equipment = equipStats.getEquipment();
 
 		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
-		if (s.isEquipable() && currentEquipment != null && c != null)
+		if (!equipStats.isEquipable() || equipment == null || c == null)
 		{
-			final int slot = currentEquipment.getSlot();
-
-			other = getItemStatsFromContainer(c, slot);
-			// Check if this is a shield and there's a two-handed weapon equipped
-			if (other == null && slot == EquipmentInventorySlot.SHIELD.getSlotIdx())
-			{
-				other = getItemStatsFromContainer(c, EquipmentInventorySlot.WEAPON.getSlotIdx());
-				if (other != null)
-				{
-					final ItemEquipmentStats otherEquip = other.getEquipment();
-					if (otherEquip != null)
-					{
-						// Account for speed change when two handed weapon gets removed
-						// shield - (2h - unarmed) == shield - 2h + unarmed
-						other = otherEquip.isTwoHanded() ? other.subtract(UNARMED) : null;
-					}
-				}
-			}
-
-			if (slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
-			{
-				if (other == null)
-				{
-					other = UNARMED;
-				}
-
-				// Get offhand's stats to be removed from equipping a 2h weapon
-				if (currentEquipment.isTwoHanded())
-				{
-					offHand = getItemStatsFromContainer(c, EquipmentInventorySlot.SHIELD.getSlotIdx());
-				}
-			}
+			return "";
 		}
 
-		final ItemStats subtracted = s.subtract(other).subtract(offHand);
-		final ItemEquipmentStats e = subtracted.getEquipment();
+		final int slot = equipment.getSlot();
+
+		ItemStats unequipStats = getItemStatsFromContainer(c, slot);
+		ItemStats currentWeapon = getItemStatsFromContainer(c, WEAPON.getSlotIdx());
+
+		if (equipStats.getEquipment().isTwoHanded())
+		{
+			// unequip the current shield
+			ItemStats currentShield = getItemStatsFromContainer(c, SHIELD.getSlotIdx());
+			unequipStats = unequipStats.add(currentShield);
+		}
+		else if (currentWeapon.getEquipment().isTwoHanded() && equipStats.getEquipment().getSlot() == SHIELD.getSlotIdx())
+		{
+			// unequip the current 2H weapon
+			unequipStats = currentWeapon;
+		}
+
+		return buildItemTooltip(equipStats, equipStats.subtract(unequipStats));
+	}
+
+	/**
+	 * Get a tooltip that shows the stat differences if the selected item is equipped or unequipped
+	 *
+	 * @param selectedStats The ItemStats for the item that is being targeted
+	 * @param diff The change in the stats should the targeted item be equipped/unequipped
+	 * @return A tooltip showing the stat changes
+	 */
+	private String buildItemTooltip(ItemStats selectedStats, ItemStats diff)
+	{
+		final ItemEquipmentStats selectedEquipment = selectedStats.getEquipment();
+
+		final ItemEquipmentStats equipmentDiff = diff.getEquipment();
 
 		final StringBuilder b = new StringBuilder();
 
 		if (config.showWeight())
 		{
-			double sw = config.alwaysShowBaseStats() ? subtracted.getWeight() : s.getWeight();
-			b.append(buildStatRow("Weight", s.getWeight(), sw, true, false, s.isEquipable()));
+			double weightDiff = config.alwaysShowBaseStats() ? diff.getWeight() : selectedStats.getWeight();
+			b.append(buildStatRow("Weight", selectedStats.getWeight(), weightDiff, true, false, selectedStats.isEquipable()));
 		}
 
-		if (subtracted.isEquipable() && e != null)
+		if (diff.isEquipable() && equipmentDiff != null)
 		{
-			b.append(buildStatRow("Prayer", currentEquipment.getPrayer(), e.getPrayer(), false, false));
-			b.append(buildStatRow("Speed", currentEquipment.getAspeed(), e.getAspeed(), true, false));
-			b.append(buildStatRow("Melee Str", currentEquipment.getStr(), e.getStr(), false, false));
-			b.append(buildStatRow("Range Str", currentEquipment.getRstr(), e.getRstr(), false, false));
-			b.append(buildStatRow("Magic Dmg", currentEquipment.getMdmg(), e.getMdmg(), false, true));
+			b.append(buildStatRow("Prayer", selectedEquipment.getPrayer(), equipmentDiff.getPrayer(), false, false));
+			b.append(buildStatRow("Speed", selectedEquipment.getAspeed(), equipmentDiff.getAspeed(), true, false));
+			b.append(buildStatRow("Melee Str", selectedEquipment.getStr(), equipmentDiff.getStr(), false, false));
+			b.append(buildStatRow("Range Str", selectedEquipment.getRstr(), equipmentDiff.getRstr(), false, false));
+			b.append(buildStatRow("Magic Dmg", selectedEquipment.getMdmg(), equipmentDiff.getMdmg(), false, true));
 
 			final StringBuilder abb = new StringBuilder();
-			abb.append(buildStatRow("Stab", currentEquipment.getAstab(), e.getAstab(), false, false));
-			abb.append(buildStatRow("Slash", currentEquipment.getAslash(), e.getAslash(), false, false));
-			abb.append(buildStatRow("Crush", currentEquipment.getAcrush(), e.getAcrush(), false, false));
-			abb.append(buildStatRow("Magic", currentEquipment.getAmagic(), e.getAmagic(), false, false));
-			abb.append(buildStatRow("Range", currentEquipment.getArange(), e.getArange(), false, false));
+			abb.append(buildStatRow("Stab", selectedEquipment.getAstab(), equipmentDiff.getAstab(), false, false));
+			abb.append(buildStatRow("Slash", selectedEquipment.getAslash(), equipmentDiff.getAslash(), false, false));
+			abb.append(buildStatRow("Crush", selectedEquipment.getAcrush(), equipmentDiff.getAcrush(), false, false));
+			abb.append(buildStatRow("Magic", selectedEquipment.getAmagic(), equipmentDiff.getAmagic(), false, false));
+			abb.append(buildStatRow("Range", selectedEquipment.getArange(), equipmentDiff.getArange(), false, false));
 
 			if (abb.length() > 0)
 			{
@@ -363,11 +376,11 @@ public class ItemStatOverlay extends Overlay
 			}
 
 			final StringBuilder dbb = new StringBuilder();
-			dbb.append(buildStatRow("Stab", currentEquipment.getDstab(), e.getDstab(), false, false));
-			dbb.append(buildStatRow("Slash", currentEquipment.getDslash(), e.getDslash(), false, false));
-			dbb.append(buildStatRow("Crush", currentEquipment.getDcrush(), e.getDcrush(), false, false));
-			dbb.append(buildStatRow("Magic", currentEquipment.getDmagic(), e.getDmagic(), false, false));
-			dbb.append(buildStatRow("Range", currentEquipment.getDrange(), e.getDrange(), false, false));
+			dbb.append(buildStatRow("Stab", selectedEquipment.getDstab(), equipmentDiff.getDstab(), false, false));
+			dbb.append(buildStatRow("Slash", selectedEquipment.getDslash(), equipmentDiff.getDslash(), false, false));
+			dbb.append(buildStatRow("Crush", selectedEquipment.getDcrush(), equipmentDiff.getDcrush(), false, false));
+			dbb.append(buildStatRow("Magic", selectedEquipment.getDmagic(), equipmentDiff.getDmagic(), false, false));
+			dbb.append(buildStatRow("Range", selectedEquipment.getDrange(), equipmentDiff.getDrange(), false, false));
 
 			if (dbb.length() > 0)
 			{
@@ -414,5 +427,10 @@ public class ItemStatOverlay extends Overlay
 		b.append("</br>");
 
 		return b.toString();
+	}
+
+	private ItemStats defaultItemStats(int slot)
+	{
+		return slot == WEAPON.getSlotIdx() ? ItemStats.UNARMED : ItemStats.NOTHING;
 	}
 }
