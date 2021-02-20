@@ -33,8 +33,10 @@ import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -45,6 +47,7 @@ import net.runelite.client.util.ImageUtil;
 class DevToolsPanel extends PluginPanel
 {
 	private final Client client;
+	private final ClientThread clientThread;
 	private final Notifier notifier;
 	private final DevToolsPlugin plugin;
 
@@ -58,6 +61,7 @@ class DevToolsPanel extends PluginPanel
 	@Inject
 	private DevToolsPanel(
 		Client client,
+		ClientThread clientThread,
 		DevToolsPlugin plugin,
 		WidgetInspector widgetInspector,
 		VarInspector varInspector,
@@ -69,6 +73,7 @@ class DevToolsPanel extends PluginPanel
 	{
 		super();
 		this.client = client;
+		this.clientThread = clientThread;
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
 		this.varInspector = varInspector;
@@ -204,6 +209,10 @@ class DevToolsPanel extends PluginPanel
 				inventoryInspector.open();
 			}
 		});
+
+		final JButton disconnectBtn = new JButton("Disconnect");
+		disconnectBtn.addActionListener(e -> clientThread.invoke(() -> client.setGameState(GameState.CONNECTION_LOST)));
+		container.add(disconnectBtn);
 
 		return container;
 	}
