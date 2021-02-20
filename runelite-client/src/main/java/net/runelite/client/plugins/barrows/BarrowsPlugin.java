@@ -37,8 +37,8 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -49,6 +49,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -159,8 +160,6 @@ public class BarrowsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			wasInCrypt = isInCrypt();
-			// on region changes the tiles get set to null
-			puzzleAnswer = null;
 		}
 		else if (event.getGameState() == GameState.LOGGED_IN)
 		{
@@ -218,6 +217,15 @@ public class BarrowsPlugin extends Plugin
 					break;
 				}
 			}
+		}
+	}
+
+	@Subscribe
+	public void onWidgetClosed(WidgetClosed widgetClosed)
+	{
+		if (widgetClosed.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
+		{
+			puzzleAnswer = null;
 		}
 	}
 
