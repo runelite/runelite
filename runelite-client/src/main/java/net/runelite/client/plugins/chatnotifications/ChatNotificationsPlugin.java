@@ -172,6 +172,18 @@ public class ChatNotificationsPlugin extends Plugin
 					notifier.notify(Text.removeTags(chatMessage.getName()) + ": " + chatMessage.getMessage());
 				}
 				break;
+			case PRIVATECHATOUT:
+				return;
+			case MODCHAT:
+			case PUBLICCHAT:
+			case FRIENDSCHAT:
+			case AUTOTYPER:
+			case MODAUTOTYPER:
+				if (client.getLocalPlayer() != null && Text.toJagexName(Text.removeTags(chatMessage.getName())).equals(client.getLocalPlayer().getName()))
+				{
+					return;
+				}
+				break;
 			case CONSOLE:
 				// Don't notify for notification messages
 				if (chatMessage.getName().equals(runeliteTitle))
