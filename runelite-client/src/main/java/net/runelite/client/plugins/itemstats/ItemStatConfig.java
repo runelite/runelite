@@ -117,7 +117,10 @@ public interface ItemStatConfig extends Config
 			name = "Show Stats in Equipment",
 			description = "Show item stats on equipment tooltip"
 	)
-	default boolean showStatsInEquipment() {return true;}
+	default boolean showStatsInEquipment()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "alwaysShowBaseStats",
