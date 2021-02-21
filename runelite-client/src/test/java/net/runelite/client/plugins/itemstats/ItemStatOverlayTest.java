@@ -406,10 +406,6 @@ public class ItemStatOverlayTest
 	{
 		when(config.showWeight()).thenReturn(true);
 
-		// Empty equipment (fully unarmed)
-		final ItemContainer equipment = mock(ItemContainer.class);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
-
 		String tooltip = overlay.buildWeightRow(ABYSSAL_DAGGER.getWeight(), ItemID.ABYSSAL_DAGGER, true);
 		String sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 		assertTrue(sanitizedTooltip.contains("Weight: 0.453"));
