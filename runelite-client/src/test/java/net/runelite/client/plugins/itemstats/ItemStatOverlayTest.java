@@ -151,7 +151,7 @@ public class ItemStatOverlayTest
 		String tooltip;
 		String sanitizedTooltip;
 
-		tooltip = overlay.buildStatBonusString(ABYSSAL_DAGGER);
+		tooltip = overlay.equipItemTooltip(ABYSSAL_DAGGER);
 		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 		assertTrue(sanitizedTooltip.contains("Stab: +75"));
 		assertTrue(sanitizedTooltip.contains("Slash: +40"));
@@ -160,7 +160,7 @@ public class ItemStatOverlayTest
 		assertTrue(sanitizedTooltip.contains("Melee Str: +75"));
 		assertFalse(sanitizedTooltip.contains("Speed:"));
 
-		tooltip = overlay.buildStatBonusString(KATANA);
+		tooltip = overlay.equipItemTooltip(KATANA);
 		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 		assertTrue(sanitizedTooltip.contains("Stab: +7"));
 		assertTrue(sanitizedTooltip.contains("Slash: +45"));
@@ -171,14 +171,14 @@ public class ItemStatOverlayTest
 		assertTrue(sanitizedTooltip.contains("Melee Str: +40"));
 		assertFalse(sanitizedTooltip.contains("Speed:"));
 
-		tooltip = overlay.buildStatBonusString(BLOWPIPE);
+		tooltip = overlay.equipItemTooltip(BLOWPIPE);
 		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 		assertTrue(sanitizedTooltip.contains("Range: +60"));
 		assertTrue(sanitizedTooltip.contains("Range Str: +40"));
 		assertTrue(sanitizedTooltip.contains("Speed: -1"));
 		assertFalse(sanitizedTooltip.contains("Stab:"));
 
-		tooltip = overlay.buildStatBonusString(HEAVY_BALLISTA);
+		tooltip = overlay.equipItemTooltip(HEAVY_BALLISTA);
 		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 		assertTrue(sanitizedTooltip.contains("Range: +110"));
 		assertTrue(sanitizedTooltip.contains("Speed: +3"));
@@ -202,7 +202,7 @@ public class ItemStatOverlayTest
 		when(itemManager.getItemStats(1, false))
 				.thenReturn(DFS);
 
-		final String tooltip = overlay.buildStatBonusString(BLOWPIPE);
+		final String tooltip = overlay.equipItemTooltip(BLOWPIPE);
 		final String sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 
 		// Attack Bonuses
@@ -237,7 +237,7 @@ public class ItemStatOverlayTest
 		when(itemManager.getItemStats(1, false))
 				.thenReturn(DFS);
 
-		final String tooltip = overlay.buildStatBonusString(BLOWPIPE);
+		final String tooltip = overlay.equipItemTooltip(BLOWPIPE);
 		final String sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 
 		// Attack Bonuses
@@ -265,7 +265,7 @@ public class ItemStatOverlayTest
 		String tooltip;
 		String sanitizedTooltip;
 
-		tooltip = overlay.buildStatBonusString(ABYSSAL_DAGGER);
+		tooltip = overlay.equipItemTooltip(ABYSSAL_DAGGER);
 		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 		assertTrue(sanitizedTooltip.contains("Stab: 75 (+75)"));
 		assertTrue(sanitizedTooltip.contains("Slash: 40 (+40)"));
@@ -274,7 +274,7 @@ public class ItemStatOverlayTest
 		assertTrue(sanitizedTooltip.contains("Melee Str: 75 (+75)"));
 		assertTrue(sanitizedTooltip.contains("Speed: 4"));
 
-		tooltip = overlay.buildStatBonusString(KATANA);
+		tooltip = overlay.equipItemTooltip(KATANA);
 		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 		assertTrue(sanitizedTooltip.contains("Stab: 7 (+7)"));
 		assertTrue(sanitizedTooltip.contains("Slash: 45 (+45)"));
@@ -285,14 +285,14 @@ public class ItemStatOverlayTest
 		assertTrue(sanitizedTooltip.contains("Melee Str: 40 (+40)"));
 		assertTrue(sanitizedTooltip.contains("Speed: 4"));
 
-		tooltip = overlay.buildStatBonusString(BLOWPIPE);
+		tooltip = overlay.equipItemTooltip(BLOWPIPE);
 		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 		assertTrue(sanitizedTooltip.contains("Range: 60 (+60)"));
 		assertTrue(sanitizedTooltip.contains("Range Str: 40 (+40)"));
 		assertTrue(sanitizedTooltip.contains("Speed: 3 (-1)"));
 		assertFalse(sanitizedTooltip.contains("Stab:"));
 
-		tooltip = overlay.buildStatBonusString(HEAVY_BALLISTA);
+		tooltip = overlay.equipItemTooltip(HEAVY_BALLISTA);
 		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
 		assertTrue(sanitizedTooltip.contains("Range: 110 (+110)"));
 		assertTrue(sanitizedTooltip.contains("Speed: 7 (+3)"));
