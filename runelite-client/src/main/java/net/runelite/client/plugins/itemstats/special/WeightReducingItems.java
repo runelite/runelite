@@ -7,7 +7,9 @@ import java.util.Set;
 
 public class WeightReducingItems
 {
-	private WeightReducingItems() {}
+	private WeightReducingItems()
+	{
+	}
 
 	private static final Set<Integer> WEIGHT_REDUCING_ITEMS = ImmutableSet.of(
 		ItemID.BOOTS_OF_LIGHTNESS,

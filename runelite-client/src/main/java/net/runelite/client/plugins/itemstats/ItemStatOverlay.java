@@ -31,7 +31,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Duration;
 
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
