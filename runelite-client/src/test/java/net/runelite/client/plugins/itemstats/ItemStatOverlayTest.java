@@ -29,11 +29,8 @@ import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.awt.Color;
-import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.Item;
+
+import net.runelite.api.*;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.item.ItemEquipmentStats;
@@ -106,6 +103,10 @@ public class ItemStatOverlayTest
 			.dmagic(10)
 			.drange(22)
 			.str(7)
+			.build());
+	private static final ItemStats GRACEFUL_CAPE = new ItemStats(false, true, -4, 0,
+		ItemEquipmentStats.builder()
+			.slot(EquipmentInventorySlot.CAPE.getSlotIdx())
 			.build());
 
 	@Inject
@@ -394,5 +395,33 @@ public class ItemStatOverlayTest
 		assertFalse(sanitizedTooltip.contains("Crush:"));
 		assertFalse(sanitizedTooltip.contains("Slash:"));
 		assertFalse(sanitizedTooltip.contains("Magic:"));
+	}
+
+	@Test
+	public void testEquipItemTooltip_ShowWeight()
+	{
+		when(config.showWeight()).thenReturn(true);
+
+		// Empty equipment (fully unarmed)
+		final ItemContainer equipment = mock(ItemContainer.class);
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+
+		String tooltip = overlay.buildWeightRow(ABYSSAL_DAGGER.getWeight(), ItemID.ABYSSAL_DAGGER, true);
+		String sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Weight: 0.453"));
+
+		tooltip = overlay.buildWeightRow(ABYSSAL_DAGGER.getWeight(), ItemID.ABYSSAL_DAGGER, false);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Weight: 0.453"));
+
+		// Equip
+		tooltip = overlay.buildWeightRow(GRACEFUL_CAPE.getWeight(), ItemID.GRACEFUL_CAPE, true);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Weight: -4"));
+
+		//Unequip
+		tooltip = overlay.buildWeightRow(GRACEFUL_CAPE.getWeight(), ItemID.GRACEFUL_CAPE, false);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Weight: +4"));
 	}
 }

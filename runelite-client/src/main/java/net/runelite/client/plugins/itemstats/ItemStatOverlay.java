@@ -37,6 +37,7 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.itemstats.potions.PotionDuration;
+import net.runelite.client.plugins.itemstats.special.WeightReducingItems;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -201,7 +202,7 @@ public class ItemStatOverlay extends Overlay
 
 			if (stats != null)
 			{
-				final String tooltip = equipmentStatsTooltip(stats, group);
+				final String tooltip = equipmentStatsTooltip(stats, group, itemId);
 
 				if (!tooltip.isEmpty())
 				{
@@ -213,16 +214,54 @@ public class ItemStatOverlay extends Overlay
 		return null;
 	}
 
-	private String equipmentStatsTooltip(ItemStats stats, int groupId)
+	private String equipmentStatsTooltip(ItemStats stats, int groupId, int itemId)
 	{
+		StringBuilder tooltip = new StringBuilder();
+
+		if (config.showWeight())
+		{
+			tooltip.append(buildWeightRow(stats.getWeight(), itemId, groupId != WidgetID.EQUIPMENT_GROUP_ID));
+		}
+
 		if (groupId == WidgetID.EQUIPMENT_GROUP_ID)
 		{
-			return config.showStatsInEquipment() ? unequipItemTooltip(stats) : "";
+			tooltip.append(config.showStatsInEquipment() ? unequipItemTooltip(stats) : "");
 		}
 		else
 		{
-			return equipItemTooltip(stats);
+			tooltip.append(equipItemTooltip(stats));
 		}
+
+		return tooltip.toString();
+	}
+
+	/**
+	 * Build the weight row of the tooltip.
+	 * @param weight The weight of the current item
+	 * @param itemId The ID of the current item
+	 * @param equip True if the item will be equipped, false if it will be unequipped
+	 * @return A row describing the weight of the item
+	 */
+	@VisibleForTesting
+	String buildWeightRow(final double weight, int itemId, boolean equip)
+	{
+		final StringBuilder b = new StringBuilder();
+
+		b.append("Weight: ");
+
+		double diff = weight * (equip ? 1 : -1);
+
+		if (WeightReducingItems.contains(itemId))
+		{
+			b.append(getChangeString(diff, true, false));
+		}
+		else
+		{
+			b.append(QuantityFormatter.formatNumber(weight));
+		}
+		b.append("</br>");
+
+		return b.toString();
 	}
 
 	private String getChangeString(
@@ -262,24 +301,13 @@ public class ItemStatOverlay extends Overlay
 		final boolean inverse,
 		final boolean showPercent)
 	{
-		return buildStatRow(label, value, diffValue, inverse, showPercent, true);
-	}
-
-	private String buildStatRow(
-		final String label,
-		final double value,
-		final double diffValue,
-		final boolean inverse,
-		final boolean showPercent,
-		final boolean showBase)
-	{
 		final StringBuilder b = new StringBuilder();
 
 		if (value != 0 || diffValue != 0)
 		{
 			final String changeStr = getChangeString(diffValue, inverse, showPercent);
 
-			if (config.alwaysShowBaseStats() && showBase)
+			if (config.alwaysShowBaseStats())
 			{
 				final String valueStr = QuantityFormatter.formatNumber(value);
 				b.append(label).append(": ").append(valueStr).append((!changeStr.isEmpty() ? " (" + changeStr + ") " : "")).append("</br>");
@@ -366,12 +394,6 @@ public class ItemStatOverlay extends Overlay
 		final ItemEquipmentStats equipmentDiff = diff.getEquipment();
 
 		final StringBuilder b = new StringBuilder();
-
-		if (config.showWeight())
-		{
-			double weightDiff = diff.getWeight();
-			b.append(buildStatRow("Weight", selectedStats.getWeight(), weightDiff, true, false, selectedStats.isEquipable()));
-		}
 
 		if (diff.isEquipable() && equipmentDiff != null)
 		{
