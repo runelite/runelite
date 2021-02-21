@@ -39,6 +39,7 @@ import net.runelite.client.util.Text;
 import net.runelite.http.api.item.ItemEquipmentStats;
 import net.runelite.http.api.item.ItemStats;
 import org.apache.commons.lang3.StringUtils;
+import static net.runelite.client.plugins.itemstats.ItemStatOverlay.UNARMED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -296,5 +297,102 @@ public class ItemStatOverlayTest
 		assertTrue(sanitizedTooltip.contains("Range: 110 (+110)"));
 		assertTrue(sanitizedTooltip.contains("Speed: 7 (+3)"));
 		assertFalse(sanitizedTooltip.contains("Stab:"));
+	}
+
+	@Test
+	public void testUnequipItemTooltip()
+	{
+		String tooltip = overlay.unequipItemTooltip(ABYSSAL_DAGGER);
+		String sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Stab: -75"));
+		assertTrue(sanitizedTooltip.contains("Slash: -40"));
+		assertTrue(sanitizedTooltip.contains("Crush: +4"));
+		assertEquals(2, StringUtils.countMatches(sanitizedTooltip, "Magic: -1")); // Attack and defense
+		assertTrue(sanitizedTooltip.contains("Melee Str: -75"));
+		assertFalse(sanitizedTooltip.contains("Speed:"));
+
+		tooltip = overlay.unequipItemTooltip(KATANA);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Stab: -7"));
+		assertTrue(sanitizedTooltip.contains("Slash: -45"));
+		assertTrue(sanitizedTooltip.contains("Stab: -3")); // Defense
+		assertTrue(sanitizedTooltip.contains("Slash: -7")); // Defense
+		assertTrue(sanitizedTooltip.contains("Crush: -7")); // Defense
+		assertTrue(sanitizedTooltip.contains("Range: +3")); // Defense
+		assertTrue(sanitizedTooltip.contains("Melee Str: -40"));
+		assertFalse(sanitizedTooltip.contains("Speed:"));
+
+		tooltip = overlay.unequipItemTooltip(BLOWPIPE);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Range: -60"));
+		assertTrue(sanitizedTooltip.contains("Range Str: -40"));
+		assertTrue(sanitizedTooltip.contains("Speed: +1"));
+		assertFalse(sanitizedTooltip.contains("Stab:"));
+
+		tooltip = overlay.unequipItemTooltip(HEAVY_BALLISTA);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Range: -110"));
+		assertTrue(sanitizedTooltip.contains("Speed: -3"));
+		assertFalse(sanitizedTooltip.contains("Stab:"));
+	}
+
+	@Test
+	public void testUnequipItemTooltip_Weapon()
+	{
+		final String tooltip = overlay.unequipItemTooltip(HEAVY_BALLISTA);
+		final String sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Range: -110"));
+		assertTrue(sanitizedTooltip.contains("Speed: -3"));
+
+		assertFalse(sanitizedTooltip.contains("Range Str:"));
+		assertFalse(sanitizedTooltip.contains("Stab:"));
+		assertFalse(sanitizedTooltip.contains("Crush:"));
+		assertFalse(sanitizedTooltip.contains("Slash:"));
+		assertFalse(sanitizedTooltip.contains("Magic:"));
+	}
+
+	@Test
+	public void testUnequipItemTooltip_ShowBaseStats()
+	{
+		when(config.alwaysShowBaseStats()).thenReturn(true);
+
+		String tooltip = overlay.unequipItemTooltip(ABYSSAL_DAGGER);
+		String sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Stab: 75 (-75)"));
+		assertTrue(sanitizedTooltip.contains("Slash: 40 (-40)"));
+		assertTrue(sanitizedTooltip.contains("Crush: -4 (+4)"));
+		assertEquals(2, StringUtils.countMatches(sanitizedTooltip, "Magic: 1 (-1)")); // Attack and defense
+		assertTrue(sanitizedTooltip.contains("Melee Str: 75 (-75)"));
+		assertTrue(sanitizedTooltip.contains("Speed: 4"));
+
+		tooltip = overlay.unequipItemTooltip(KATANA);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Stab: 7 (-7)"));
+		assertTrue(sanitizedTooltip.contains("Slash: 45 (-45)"));
+		assertTrue(sanitizedTooltip.contains("Stab: 3 (-3)")); // Defense
+		assertTrue(sanitizedTooltip.contains("Slash: 7 (-7)")); // Defense
+		assertTrue(sanitizedTooltip.contains("Crush: 7 (-7)")); // Defense
+		assertTrue(sanitizedTooltip.contains("Range: -3 (+3)")); // Defense
+		assertTrue(sanitizedTooltip.contains("Melee Str: 40 (-40)"));
+		assertTrue(sanitizedTooltip.contains("Speed: 4"));
+
+		tooltip = overlay.unequipItemTooltip(BLOWPIPE);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Range: 60 (-60)"));
+		assertTrue(sanitizedTooltip.contains("Range Str: 40 (-40)"));
+		assertTrue(sanitizedTooltip.contains("Speed: 3 (+1)"));
+		assertFalse(sanitizedTooltip.contains("Stab:"));
+
+
+		tooltip = overlay.unequipItemTooltip(HEAVY_BALLISTA);
+		sanitizedTooltip = Text.sanitizeMultilineText(tooltip);
+		assertTrue(sanitizedTooltip.contains("Range: 110 (-110)"));
+		assertTrue(sanitizedTooltip.contains("Speed: 7 (-3)"));
+
+		assertFalse(sanitizedTooltip.contains("Range Str:"));
+		assertFalse(sanitizedTooltip.contains("Stab:"));
+		assertFalse(sanitizedTooltip.contains("Crush:"));
+		assertFalse(sanitizedTooltip.contains("Slash:"));
+		assertFalse(sanitizedTooltip.contains("Magic:"));
 	}
 }

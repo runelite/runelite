@@ -287,6 +287,12 @@ public class ItemStatOverlay extends Overlay
 	}
 
 	@VisibleForTesting
+	String unequipItemTooltip(ItemStats unequipStats)
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@VisibleForTesting
 	String buildStatBonusString(ItemStats s)
 	{
 		ItemStats other = null;
