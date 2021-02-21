@@ -40,7 +40,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -69,6 +68,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NotificationFired;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.OSType;
 
 @Singleton
@@ -102,6 +102,7 @@ public class Notifier
 	// Notifier properties
 	private static final int MINIMUM_FLASH_DURATION_MILLIS = 2000;
 	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
+	private static final int FLASH_CYCLE_TICK_LENGTH = 50;
 
 	private static final File NOTIFICATION_FILE = new File(RuneLite.RUNELITE_DIR, "notification.wav");
 	private static final long CLIP_MTIME_UNLOADED = -2;
@@ -116,7 +117,8 @@ public class Notifier
 	private final String appName;
 	private final Path notifyIconPath;
 	private boolean terminalNotifierAvailable;
-	private Instant flashStart;
+	private int flashStartTick;
+	private int flashEndTick = Integer.MAX_VALUE;
 	private long mouseLastPressedMillis;
 	private long lastClipMTime = CLIP_MTIME_UNLOADED;
 	private Clip clip = null;
@@ -204,7 +206,8 @@ public class Notifier
 
 		if (runeLiteConfig.flashNotification() != FlashNotification.DISABLED)
 		{
-			flashStart = Instant.now();
+			flashStartTick = client.getGameCycle();
+			flashEndTick = Integer.MAX_VALUE;
 			mouseLastPressedMillis = client.getMouseLastPressedMillis();
 		}
 
@@ -232,21 +235,38 @@ public class Notifier
 	{
 		FlashNotification flashNotification = runeLiteConfig.flashNotification();
 
-		if (flashStart == null || client.getGameState() != GameState.LOGGED_IN
+		int currentTick = client.getGameCycle();
+		if (flashStartTick == 0 || currentTick >= flashEndTick || client.getGameState() != GameState.LOGGED_IN
 			|| flashNotification == FlashNotification.DISABLED)
 		{
-			flashStart = null;
+			flashStartTick = 0;
+			flashEndTick = Integer.MAX_VALUE;
 			return;
 		}
 
-		if (Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
+		boolean isSmoothFlash = runeLiteConfig.smoothFlashNotification();
+		boolean isFlashingType = flashNotification == FlashNotification.FLASH_TWO_SECONDS
+			|| flashNotification == FlashNotification.FLASH_UNTIL_CANCELLED;
+
+		// Calculate position in flash cycle (0.0 to 1.0 exclusive, 0.5 is peak)
+		double cyclePos = getCyclePos(currentTick, isFlashingType, isSmoothFlash);
+
+		if (flashEndTick == Integer.MAX_VALUE && (currentTick - flashStartTick) >= MINIMUM_FLASH_DURATION_TICKS)
 		{
 			switch (flashNotification)
 			{
 				case FLASH_TWO_SECONDS:
 				case SOLID_TWO_SECONDS:
-					flashStart = null;
-					return;
+					flashEndTick = currentTick;
+					if (isSmoothFlash)
+					{
+						flashEndTick += getRemainingTicksForCycle(cyclePos);
+					}
+					else
+					{
+						return;
+					}
+					break;
 				case SOLID_UNTIL_CANCELLED:
 				case FLASH_UNTIL_CANCELLED:
 					// Any interaction with the client since the notification started will cancel it after the minimum duration
@@ -254,25 +274,68 @@ public class Notifier
 						|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
 						|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
 					{
-						flashStart = null;
-						return;
+						flashEndTick = currentTick;
+						if (isSmoothFlash)
+						{
+							flashEndTick += getRemainingTicksForCycle(cyclePos);
+						}
+						else
+						{
+							return;
+						}
 					}
 					break;
 			}
 		}
 
-		if (client.getGameCycle() % 40 >= 20
-			// For solid colour, fall through every time.
-			&& (flashNotification == FlashNotification.FLASH_TWO_SECONDS
-			|| flashNotification == FlashNotification.FLASH_UNTIL_CANCELLED))
+		if (cyclePos > 0.0)
 		{
-			return;
+			Color configColor = runeLiteConfig.notificationFlashColor();
+
+			// Create new color with interpolated Alpha using a Cosine function
+			Color flashColor = ColorUtil.colorWithAlpha(configColor,
+				(int) (configColor.getAlpha() * ((Math.cos(2 * Math.PI * (cyclePos + 0.5)) / 2) + 0.5)));
+
+			final Color color = graphics.getColor();
+			graphics.setColor(flashColor);
+			graphics.fill(new Rectangle(client.getCanvas().getSize()));
+			graphics.setColor(color);
+		}
+	}
+
+	private double getCyclePos(int currentTick, boolean isFlashingType, boolean isSmoothFlash)
+	{
+		final int ticksSinceStart = currentTick - flashStartTick;
+
+		if (isSmoothFlash)
+		{
+			// If it's a flashing type or is the rising part of the first cycle, get the position
+			if (isFlashingType || ticksSinceStart <= (FLASH_CYCLE_TICK_LENGTH / 2))
+			{
+				return ticksSinceStart % FLASH_CYCLE_TICK_LENGTH / (double) FLASH_CYCLE_TICK_LENGTH;
+			}
+			// If it's the last cycle, get the fade out (for Solid)
+			else if (currentTick >= (flashEndTick - FLASH_CYCLE_TICK_LENGTH))
+			{
+				return (flashEndTick - currentTick) / (double) FLASH_CYCLE_TICK_LENGTH;
+			}
+			// Solid color otherwise
+			else
+			{
+				return 0.5;
+			}
+		}
+		else if (isFlashingType && (ticksSinceStart % FLASH_CYCLE_TICK_LENGTH) >= (FLASH_CYCLE_TICK_LENGTH / 2))
+		{
+			return 0.0;
 		}
 
-		final Color color = graphics.getColor();
-		graphics.setColor(runeLiteConfig.notificationFlashColor());
-		graphics.fill(new Rectangle(client.getCanvas().getSize()));
-		graphics.setColor(color);
+		return 0.5;
+	}
+
+	private int getRemainingTicksForCycle(double cyclePos)
+	{
+		return ((FLASH_CYCLE_TICK_LENGTH - (int) (cyclePos * FLASH_CYCLE_TICK_LENGTH)) % FLASH_CYCLE_TICK_LENGTH);
 	}
 
 	private void sendNotification(
