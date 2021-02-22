@@ -51,26 +51,20 @@ import net.runelite.client.util.ReflectUtil;
 @ThreadSafe
 public class EventBus
 {
-	@FunctionalInterface
-	public interface SubscriberMethod
-	{
-		void invoke(Object event);
-	}
-
 	@Value
-	private static class Subscriber
+	public static class Subscriber
 	{
 		private final Object object;
 		private final Method method;
 		private final float priority;
 		@EqualsAndHashCode.Exclude
-		private final SubscriberMethod lamda;
+		private final Consumer<Object> lambda;
 
 		void invoke(final Object arg) throws Exception
 		{
-			if (lamda != null)
+			if (lambda != null)
 			{
-				lamda.invoke(arg);
+				lambda.accept(arg);
 			}
 			else
 			{
@@ -80,7 +74,9 @@ public class EventBus
 	}
 
 	private final Consumer<Throwable> exceptionHandler;
-	private ImmutableMultimap<Class, Subscriber> subscribers = ImmutableMultimap.of();
+
+	@Nonnull
+	private ImmutableMultimap<Class<?>, Subscriber> subscribers = ImmutableMultimap.of();
 
 	/**
 	 * Instantiates EventBus with default exception handler
@@ -99,13 +95,8 @@ public class EventBus
 	 */
 	public synchronized void register(@Nonnull final Object object)
 	{
-		final ImmutableMultimap.Builder<Class, Subscriber> builder = ImmutableMultimap.builder();
-
-		if (subscribers != null)
-		{
-			builder.putAll(subscribers);
-		}
-
+		final ImmutableMultimap.Builder<Class<?>, Subscriber> builder = ImmutableMultimap.builder();
+		builder.putAll(subscribers);
 		builder.orderValuesBy(Comparator.comparing(Subscriber::getPriority).reversed()
 			.thenComparing(s -> s.object.getClass().getName()));
 
@@ -141,7 +132,7 @@ public class EventBus
 				Preconditions.checkArgument(method.getName().equals(preferredName), "Subscribed method " + method + " should be named " + preferredName);
 
 				method.setAccessible(true);
-				SubscriberMethod lambda = null;
+				Consumer<Object> lambda = null;
 
 				try
 				{
@@ -150,14 +141,14 @@ public class EventBus
 					final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
 					final CallSite site = LambdaMetafactory.metafactory(
 						caller,
-						"invoke",
-						MethodType.methodType(SubscriberMethod.class, clazz),
+						"accept",
+						MethodType.methodType(Consumer.class, clazz),
 						subscription.changeParameterType(0, Object.class),
 						target,
 						subscription);
 
 					final MethodHandle factory = site.getTarget();
-					lambda = (SubscriberMethod) factory.bindTo(object).invokeExact();
+					lambda = (Consumer<Object>) factory.bindTo(object).invokeExact();
 				}
 				catch (Throwable e)
 				{
@@ -173,6 +164,21 @@ public class EventBus
 		subscribers = builder.build();
 	}
 
+	public synchronized <T> Subscriber register(Class<T> clazz, Consumer<T> subFn, float priority)
+	{
+		final ImmutableMultimap.Builder<Class<?>, Subscriber> builder = ImmutableMultimap.builder();
+		builder.putAll(subscribers);
+		builder.orderValuesBy(Comparator.comparing(Subscriber::getPriority).reversed()
+			.thenComparing(s -> s.object.getClass().getName()));
+
+		Subscriber sub = new Subscriber(subFn, null, priority, (Consumer<Object>) subFn);
+		builder.put(clazz, sub);
+
+		subscribers = builder.build();
+
+		return sub;
+	}
+
 	/**
 	 * Unregisters all subscribed methods from provided subscriber object.
 	 *
@@ -180,12 +186,7 @@ public class EventBus
 	 */
 	public synchronized void unregister(@Nonnull final Object object)
 	{
-		if (subscribers == null)
-		{
-			return;
-		}
-
-		final Multimap<Class, Subscriber> map = HashMultimap.create();
+		final Multimap<Class<?>, Subscriber> map = HashMultimap.create();
 		map.putAll(subscribers);
 
 		for (Class<?> clazz = object.getClass(); clazz != null; clazz = clazz.getSuperclass())
@@ -203,6 +204,21 @@ public class EventBus
 				map.remove(parameterClazz, new Subscriber(object, method, sub.priority(), null));
 			}
 		}
+
+		subscribers = ImmutableMultimap.copyOf(map);
+	}
+
+	public synchronized void unregister(Subscriber sub)
+	{
+		if (sub == null)
+		{
+			return;
+		}
+
+		final Multimap<Class<?>, Subscriber> map = HashMultimap.create();
+		map.putAll(subscribers);
+
+		map.values().remove(sub);
 
 		subscribers = ImmutableMultimap.copyOf(map);
 	}
