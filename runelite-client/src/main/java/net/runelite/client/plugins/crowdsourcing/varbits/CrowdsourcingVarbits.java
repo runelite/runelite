@@ -131,13 +131,8 @@ public class CrowdsourcingVarbits
 
 	private void pushVarChange(int varType, int varIndex, int oldValue, int newValue, int tick)
 	{
-		/* Wait a tick before grabbing location.
-		 *
-		 * This seems to cause fewer issues than not waiting a tick.
-		 * Only noticeable issues seem to be in places like Dorgesh-Kaan, where you can go up and down
-		 * stairs quickly to trick it into thinking varbs were updated in a different location.
-		 * Without waiting a tick, certain loads/instances are messed up, including the Dorgesh-Kaan light
-		 * varbs when loading a part of the map you haven't been to.
+		/* Queues up varbit or varplayer changes to be pushed out to the crowdsourcing manager during the next client
+		 * tick.
 		 */
 		clientThread.invokeLater(() ->
 		{
