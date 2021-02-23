@@ -51,7 +51,7 @@ class TextureManager
 
 		int textureArrayId = GLUtil.glGenTexture(gl);
 		gl.glBindTexture(gl.GL_TEXTURE_2D_ARRAY, textureArrayId);
-		gl.glTexStorage3D(gl.GL_TEXTURE_2D_ARRAY, 1, gl.GL_RGBA8, TEXTURE_SIZE, TEXTURE_SIZE, textures.length);
+		gl.glTexStorage3D(gl.GL_TEXTURE_2D_ARRAY, 8, gl.GL_RGBA8, TEXTURE_SIZE, TEXTURE_SIZE, textures.length);
 
 		gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
 		gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST);
@@ -68,9 +68,38 @@ class TextureManager
 
 		gl.glActiveTexture(gl.GL_TEXTURE1);
 		gl.glBindTexture(gl.GL_TEXTURE_2D_ARRAY, textureArrayId);
+		gl.glGenerateMipmap(gl.GL_TEXTURE_2D_ARRAY);
 		gl.glActiveTexture(gl.GL_TEXTURE0);
 
 		return textureArrayId;
+	}
+
+	void setAnisotropicFilteringLevel(int textureArrayId, int level, GL4 gl)
+	{
+		gl.glBindTexture(gl.GL_TEXTURE_2D_ARRAY, textureArrayId);
+
+		//level = 0 means no mipmaps and no anisotropic filtering
+		if (level == 0)
+		{
+			gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
+		}
+		//level = 1 means with mipmaps but without anisotropic filtering GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT defaults to 1.0 which is off
+		//level > 1 enables anisotropic filtering. It's up to the vendor what the values mean
+		//Even if anisotropic filtering isn't supported, mipmaps will be enabled with any level >= 1
+		else
+		{
+			// Set on GL_NEAREST_MIPMAP_LINEAR (bilinear filtering with mipmaps) since the pixel nature of the game means that nearest filtering
+			// looks best for objects up close but allows linear filtering to resolve possible aliasing and noise with mipmaps from far away objects.
+			gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST_MIPMAP_LINEAR);
+		}
+
+		if (gl.isExtensionAvailable("GL_EXT_texture_filter_anisotropic"))
+		{
+			final float maxSamples = GLUtil.glGetFloat(gl, gl.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+			//Clamp from 1 to max GL says it supports.
+			final float anisoLevel = Math.max(1, Math.min(maxSamples, level));
+			gl.glTexParameterf(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, anisoLevel);
+		}
 	}
 
 	void freeTextureArray(GL4 gl, int textureArrayId)

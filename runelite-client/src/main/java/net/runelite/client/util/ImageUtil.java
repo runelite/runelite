@@ -40,7 +40,6 @@ import java.util.Arrays;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.GrayFilter;
-import java.util.function.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.IndexedSprite;
@@ -294,21 +293,7 @@ public class ImageUtil
 	 */
 	public static BufferedImage outlineImage(final BufferedImage image, final Color color)
 	{
-		return outlineImage(image, color, ColorUtil::isNotFullyTransparent, false);
-	}
-
-	/**
-	 * Outlines pixels of a BufferedImage with the given color, using a given predicate to colorize
-	 * the given image for outlining.
-	 *
-	 * @param image         The image to be outlined.
-	 * @param color         The color to use for the outline.
-	 * @param fillCondition The predicate to be consumed by {@link #fillImage(BufferedImage, Color, Predicate) fillImage(BufferedImage, Color, Predicate)}
-	 * @return              The BufferedImage with its edges outlined with the given color.
-	 */
-	public static BufferedImage outlineImage(final BufferedImage image, final Color color, final Predicate<Color> fillCondition)
-	{
-		return outlineImage(image, color, fillCondition, false);
+		return outlineImage(image, color, false);
 	}
 
 	/**
@@ -323,23 +308,7 @@ public class ImageUtil
 	 */
 	public static BufferedImage outlineImage(final BufferedImage image, final Color color, final Boolean outlineCorners)
 	{
-		return outlineImage(image, color, ColorUtil::isNotFullyTransparent, outlineCorners);
-	}
-
-	/**
-	 * Outlines pixels of a BufferedImage with the given color, using a given predicate to colorize
-	 * the given image for outlining. Optionally outlines corners in addition to edges.
-	 *
-	 * @param image          The image to be outlined.
-	 * @param color          The color to use for the outline.
-	 * @param fillCondition  The predicate to be consumed by {@link #fillImage(BufferedImage, Color, Predicate) fillImage(BufferedImage, Color, Predicate)}
-	 * @param outlineCorners Whether to draw an outline around corners, or only around edges.
-	 * @return               The BufferedImage with its edges--and optionally, corners--outlined
-	 * 	                     with the given color.
-	 */
-	public static BufferedImage outlineImage(final BufferedImage image, final Color color, final Predicate<Color> fillCondition, final Boolean outlineCorners)
-	{
-		final BufferedImage filledImage = fillImage(image, color, fillCondition);
+		final BufferedImage filledImage = fillImage(image, color);
 		final BufferedImage outlinedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
 		final Graphics2D g2d = outlinedImage.createGraphics();
@@ -363,15 +332,24 @@ public class ImageUtil
 	}
 
 	/**
+	 * @see #loadImageResource(Class, String)
+	 */
+	@Deprecated
+	public static BufferedImage getResourceStreamFromClass(Class<?> c, String path)
+	{
+		return loadImageResource(c, path);
+	}
+
+	/**
 	 * Reads an image resource from a given path relative to a given class.
 	 * This method is primarily shorthand for the synchronization and error handling required for
-	 * loading image resources from classes.
+	 * loading image resources from the classpath.
 	 *
-	 * @param c    The class to be referenced for resource path.
+	 * @param c    The class to be referenced for the package path.
 	 * @param path The path, relative to the given class.
 	 * @return     A {@link BufferedImage} of the loaded image resource from the given path.
 	 */
-	public static BufferedImage getResourceStreamFromClass(final Class c, final String path)
+	public static BufferedImage loadImageResource(final Class<?> c, final String path)
 	{
 		try
 		{
@@ -382,6 +360,19 @@ public class ImageUtil
 		}
 		catch (IllegalArgumentException e)
 		{
+			final String filePath;
+
+			if (path.startsWith("/"))
+			{
+				filePath = path;
+			}
+			else
+			{
+				filePath = c.getPackage().getName().replace('.', '/') + "/" + path;
+			}
+
+			log.warn("Failed to load image from class: {}, path: {}", c.getName(), filePath);
+
 			throw new IllegalArgumentException(path, e);
 		}
 		catch (IOException e)
@@ -399,28 +390,14 @@ public class ImageUtil
 	 */
 	public static BufferedImage fillImage(final BufferedImage image, final Color color)
 	{
-		return fillImage(image, color, ColorUtil::isNotFullyTransparent);
-	}
-
-	/**
-	 * 	Fills pixels of the given image with the given color based on a given fill condition
-	 * 	predicate.
-	 *
-	 * @param image         The image which should have its non-transparent pixels filled.
-	 * @param color         The color with which to fill pixels.
-	 * @param fillCondition The condition on which to fill pixels with the given color.
-	 * @return              The given image with all pixels fulfilling the fill condition predicate
-	 *                      set to the given color.
-	 */
-	static BufferedImage fillImage(final BufferedImage image, final Color color, final Predicate<Color> fillCondition)
-	{
 		final BufferedImage filledImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		for (int x = 0; x < filledImage.getWidth(); x++)
 		{
 			for (int y = 0; y < filledImage.getHeight(); y++)
 			{
-				final Color pixelColor = new Color(image.getRGB(x, y), true);
-				if (!fillCondition.test(pixelColor))
+				int pixel = image.getRGB(x, y);
+				int a = pixel >>> 24;
+				if (a == 0)
 				{
 					continue;
 				}

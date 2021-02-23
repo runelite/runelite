@@ -49,10 +49,6 @@ public class Shader
 		private final String filename;
 	}
 
-	public Shader()
-	{
-	}
-
 	public Shader add(int type, String name)
 	{
 		units.add(new Unit(type, name));
@@ -71,6 +67,11 @@ public class Shader
 			{
 				Unit unit = units.get(i);
 				int shader = gl.glCreateShader(unit.type);
+				if (shader == 0)
+				{
+					throw new ShaderException("Unable to create shader of type " + unit.type);
+				}
+
 				String source = template.load(unit.filename);
 				gl.glShaderSource(shader, 1, new String[]{source}, null);
 				gl.glCompileShader(shader);

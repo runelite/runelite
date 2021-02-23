@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.fishing;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -77,6 +78,7 @@ public interface FishingConfig extends Config
 		return false;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "overlayColor",
 		name = "Overlay Color",
@@ -88,9 +90,10 @@ public interface FishingConfig extends Config
 		return Color.CYAN;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "minnowsOverlayColor",
-		name = "Minnows Overlay Color",
+		name = "Minnows Overlay",
 		description = "Color of overlays for Minnows",
 		position = 5
 	)
@@ -99,9 +102,10 @@ public interface FishingConfig extends Config
 		return Color.RED;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "aerialOverlayColor",
-		name = "Aerial Overlay Color",
+		name = "Aerial Overlay",
 		description = "Color of overlays when 1-tick aerial fishing",
 		position = 6
 	)
@@ -146,6 +150,17 @@ public interface FishingConfig extends Config
 
 	@ConfigItem(
 		position = 10,
+		keyName = "flyingFishNotification",
+		name = "Flying fish notification",
+		description = "Send a notification when a flying fish spawns on your fishing spot."
+	)
+	default boolean flyingFishNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 11,
 		keyName = "trawlerNotification",
 		name = "Trawler activity notification",
 		description = "Send a notification when fishing trawler activity drops below 15%."
@@ -156,7 +171,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "trawlerTimer",
 		name = "Trawler timer in MM:SS",
 		description = "Trawler Timer will display a more accurate timer in MM:SS format."

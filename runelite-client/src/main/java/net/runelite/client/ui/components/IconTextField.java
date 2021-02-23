@@ -29,16 +29,16 @@ package net.runelite.client.ui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
+import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -76,6 +76,8 @@ public class IconTextField extends JPanel
 
 	@Getter
 	private final DefaultListModel<String> suggestionListModel;
+
+	private final List<Runnable> clearListeners = new ArrayList<>();
 
 	public IconTextField()
 	{
@@ -122,9 +124,17 @@ public class IconTextField extends JPanel
 		textField.addMouseListener(hoverEffect);
 		innerTxt.addMouseListener(hoverEffect);
 
-		clearButton = createRHSButton(ColorScheme.PROGRESS_ERROR_COLOR, Color.PINK);
+		clearButton = createRHSButton(ColorScheme.PROGRESS_ERROR_COLOR, Color.PINK, FontManager.getRunescapeBoldFont());
 		clearButton.setText("×");
-		clearButton.addActionListener(evt -> setText(null));
+		clearButton.addActionListener(evt ->
+		{
+			setText(null);
+
+			for (Runnable l : clearListeners)
+			{
+				l.run();
+			}
+		});
 
 		suggestionListModel = new DefaultListModel<>();
 		suggestionListModel.addListDataListener(new ListDataListener()
@@ -181,7 +191,7 @@ public class IconTextField extends JPanel
 			}
 		});
 
-		suggestionButton = createRHSButton(ColorScheme.LIGHT_GRAY_COLOR, ColorScheme.MEDIUM_GRAY_COLOR);
+		suggestionButton = createRHSButton(ColorScheme.LIGHT_GRAY_COLOR, ColorScheme.MEDIUM_GRAY_COLOR, FontManager.getDefaultBoldFont());
 		suggestionButton.setText("▾");
 		suggestionButton.addActionListener(e ->
 		{
@@ -226,11 +236,11 @@ public class IconTextField extends JPanel
 		add(rhsButtons, BorderLayout.EAST);
 	}
 
-	private JButton createRHSButton(Color fg, Color rollover)
+	private JButton createRHSButton(Color fg, Color rollover, Font font)
 	{
 		JButton b = new JButton();
 		b.setPreferredSize(new Dimension(30, 0));
-		b.setFont(FontManager.getRunescapeBoldFont());
+		b.setFont(font);
 		b.setBorder(null);
 		b.setRolloverEnabled(true);
 		SwingUtil.removeButtonDecorations(b);
@@ -318,33 +328,9 @@ public class IconTextField extends JPanel
 		textField.addKeyListener(keyListener);
 	}
 
-	public void addClearListener(Consumer<ActionEvent> actionEventConsumer)
+	public void addClearListener(Runnable clearListener)
 	{
-		clearButton.addActionListener(actionEventConsumer::accept);
-	}
-
-	public void addKeyListener(Consumer<KeyEvent> keyEventConsumer)
-	{
-		addKeyListener(new net.runelite.client.input.KeyListener()
-		{
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-				keyEventConsumer.accept(e);
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				keyEventConsumer.accept(e);
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
-				keyEventConsumer.accept(e);
-			}
-		});
+		clearListeners.add(clearListener);
 	}
 
 	@Override

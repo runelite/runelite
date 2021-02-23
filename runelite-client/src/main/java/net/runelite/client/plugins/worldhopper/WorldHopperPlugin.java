@@ -40,7 +40,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
@@ -48,10 +47,10 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
-import net.runelite.api.ClanMember;
-import net.runelite.api.ClanMemberManager;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
+import net.runelite.api.FriendsChatManager;
+import net.runelite.api.FriendsChatMember;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -61,7 +60,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.PlayerMenuOptionClicked;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.widgets.WidgetInfo;
@@ -84,6 +83,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.client.util.HotkeyListener;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
@@ -166,7 +166,7 @@ public class WorldHopperPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			hop(true);
+			clientThread.invoke(() -> hop(true));
 		}
 	};
 	private final HotkeyListener nextKeyListener = new HotkeyListener(() -> config.nextKey())
@@ -174,7 +174,7 @@ public class WorldHopperPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			hop(false);
+			clientThread.invoke(() -> hop(false));
 		}
 	};
 
@@ -194,12 +194,7 @@ public class WorldHopperPlugin extends Plugin
 
 		panel = new WorldSwitcherPanel(this);
 
-		final BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("icon.png"));
-		}
-
+		BufferedImage icon = ImageUtil.loadImageResource(WorldHopperPlugin.class, "icon.png");
 		navButton = NavigationButton.builder()
 			.tooltip("World Switcher")
 			.icon(icon)
@@ -298,7 +293,6 @@ public class WorldHopperPlugin extends Plugin
 	private void clearFavoriteConfig(int world)
 	{
 		configManager.unsetConfiguration(WorldHopperConfig.GROUP, "favorite_" + world);
-		panel.resetAllFavoriteMenus();
 	}
 
 	boolean isFavorite(World world)
@@ -314,7 +308,7 @@ public class WorldHopperPlugin extends Plugin
 
 	void hopTo(World world)
 	{
-		hop(world.getId());
+		clientThread.invoke(() -> hop(world.getId()));
 	}
 
 	void addToFavorites(World world)
@@ -357,7 +351,7 @@ public class WorldHopperPlugin extends Plugin
 		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 		String option = event.getOption();
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId())
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId())
 		{
 			boolean after;
 
@@ -418,9 +412,9 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals(HOP_TO))
+		if (event.getMenuAction() != MenuAction.RUNELITE || !event.getMenuOption().equals(HOP_TO))
 		{
 			return;
 		}
@@ -623,6 +617,8 @@ public class WorldHopperPlugin extends Plugin
 
 	private void hop(int worldId)
 	{
+		assert client.isClientThread();
+
 		WorldResult worldResult = worldService.getWorlds();
 		// Don't try to hop if the world doesn't exist
 		World world = worldResult.findWorld(worldId);
@@ -731,15 +727,15 @@ public class WorldHopperPlugin extends Plugin
 	{
 		String cleanName = Text.removeTags(name);
 
-		// Search clan members first, because if a friend is in the clan chat but their private
-		// chat is 'off', then the hop-to option will not get shown in the menu (issue #5679).
-		ClanMemberManager clanMemberManager = client.getClanMemberManager();
-		if (clanMemberManager != null)
+		// Search friends chat members first, because we can always get their world;
+		// friends worlds may be hidden if they have private off. (#5679)
+		FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+		if (friendsChatManager != null)
 		{
-			ClanMember clanMember = clanMemberManager.findByName(cleanName);
-			if (clanMember != null)
+			FriendsChatMember member = friendsChatManager.findByName(cleanName);
+			if (member != null)
 			{
-				return clanMember;
+				return member;
 			}
 		}
 

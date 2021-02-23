@@ -24,8 +24,10 @@
  */
 package net.runelite.client.plugins.examine;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -34,7 +36,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
@@ -58,6 +59,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.examine.ExamineClient;
+import okhttp3.OkHttpClient;
 
 /**
  * Submits examine info to the api
@@ -91,6 +93,12 @@ public class ExaminePlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Provides
+	ExamineClient provideExamineClient(OkHttpClient okHttpClient)
+	{
+		return new ExamineClient(okHttpClient);
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
@@ -120,6 +128,21 @@ public class ExaminePlugin extends Plugin
 				Widget widget = client.getWidget(widgetGroup, widgetChild);
 				WidgetItem widgetItem = widget.getWidgetItem(event.getActionParam());
 				quantity = widgetItem != null && widgetItem.getId() >= 0 ? widgetItem.getQuantity() : 1;
+
+				// Examine on inventory items with more than 100000 quantity is handled locally and shows the item stack
+				// count, instead of sending the examine packet, so that you can see how many items are in the stack.
+				// Replace that message with one that formats the quantity using the quantity formatter instead.
+				if (quantity >= 100_000)
+				{
+					int itemId = event.getId();
+					final ChatMessageBuilder message = new ChatMessageBuilder()
+						.append(QuantityFormatter.formatNumber(quantity)).append(" x ").append(itemManager.getItemComposition(itemId).getName());
+					chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.ITEM_EXAMINE)
+						.runeLiteFormattedMessage(message.build())
+						.build());
+					event.consume();
+				}
 				break;
 			}
 			case EXAMINE_ITEM_GROUND:
@@ -285,28 +308,25 @@ public class ExaminePlugin extends Plugin
 			|| WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID == widgetGroup
 			|| WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID == widgetGroup)
 		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
+			Widget widgetItem = widget.getChild(actionParam);
+			if (widgetItem != null)
 			{
-				Widget widgetItem = children[actionParam];
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+		else if (WidgetID.SHOP_GROUP_ID == widgetGroup)
 		{
-			Widget[] children = widget.getDynamicChildren();
-			if (actionParam < children.length)
+			Widget widgetItem = widget.getChild(actionParam);
+			if (widgetItem != null)
 			{
-				Widget widgetItem = children[actionParam];
 				return new int[]{1, widgetItem.getItemId()};
 			}
 		}
 		else if (WidgetID.SEED_VAULT_GROUP_ID == widgetGroup)
 		{
-			Widget[] children = client.getWidget(SEED_VAULT_ITEM_CONTAINER).getDynamicChildren();
-			if (actionParam < children.length)
+			Widget widgetItem = client.getWidget(SEED_VAULT_ITEM_CONTAINER).getChild(actionParam);
+			if (widgetItem != null)
 			{
-				Widget widgetItem = children[actionParam];
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
@@ -314,13 +334,13 @@ public class ExaminePlugin extends Plugin
 		return null;
 	}
 
-	private void getItemPrice(int id, ItemComposition itemComposition, int quantity)
+	@VisibleForTesting
+	void getItemPrice(int id, ItemComposition itemComposition, int quantity)
 	{
 		// quantity is at least 1
 		quantity = Math.max(1, quantity);
-		int itemCompositionPrice = itemComposition.getPrice();
-		final long gePrice = itemManager.getItemPrice(id);
-		final long alchPrice = itemCompositionPrice <= 0 ? 0 : Math.round(itemCompositionPrice * Constants.HIGH_ALCHEMY_MULTIPLIER);
+		final int gePrice = itemManager.getItemPrice(id);
+		final int alchPrice = itemComposition.getHaPrice();
 
 		if (gePrice > 0 || alchPrice > 0)
 		{
@@ -347,7 +367,7 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" GE average ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(QuantityFormatter.formatNumber(gePrice * quantity));
+					.append(QuantityFormatter.formatNumber((long) gePrice * quantity));
 
 				if (quantity > 1)
 				{
@@ -367,7 +387,7 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(QuantityFormatter.formatNumber(alchPrice * quantity));
+					.append(QuantityFormatter.formatNumber((long) alchPrice * quantity));
 
 				if (quantity > 1)
 				{

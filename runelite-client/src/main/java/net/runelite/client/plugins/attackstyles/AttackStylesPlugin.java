@@ -203,7 +203,7 @@ public class AttackStylesPlugin extends Plugin
 	{
 		if (event.getGroup().equals("attackIndicator"))
 		{
-			boolean enabled = event.getNewValue().equals("true");
+			boolean enabled = Boolean.TRUE.toString().equals(event.getNewValue());
 			switch (event.getKey())
 			{
 				case "warnForDefensive":
@@ -278,7 +278,7 @@ public class AttackStylesPlugin extends Plugin
 				if (warnedSkills.contains(skill))
 				{
 					if (weaponSwitch)
-					{
+					{ // NOPMD EmptyIfStmt
 						// TODO : chat message to warn players that their weapon switch also caused an unwanted attack style change
 					}
 					warnedSkillSelected = true;
@@ -319,7 +319,7 @@ public class AttackStylesPlugin extends Plugin
 			}
 
 			// Magic staves defensive casting mode
-			if (attackStyle == AttackStyle.DEFENSIVE_CASTING || !enabled)
+			if (attackStyle == DEFENSIVE_CASTING || !enabled)
 			{
 				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_BOX, enabled && warnedSkill);
 				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_ICON, enabled && warnedSkill);

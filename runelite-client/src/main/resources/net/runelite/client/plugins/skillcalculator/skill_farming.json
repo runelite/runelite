@@ -8,6 +8,102 @@
   "actions": [
     {
       "level": 1,
+      "icon": 8180,
+      "name": "Plant",
+      "xp": 31
+    },
+    {
+      "level": 1,
+      "icon": 8186,
+      "name": "Fern (big plant)",
+      "xp": 31
+    },
+    {
+      "level": 1,
+      "icon": 8189,
+      "name": "Short Plant",
+      "xp": 31
+    },
+    {
+      "level": 1,
+      "icon": 8183,
+      "name": "Dock Leaf",
+      "xp": 31
+    },
+    {
+      "level": 1,
+      "icon": 8181,
+      "name": "Small Fern",
+      "xp": 70
+    },
+    {
+      "level": 1,
+      "icon": 8184,
+      "name": "Thistle",
+      "xp": 70
+    },
+    {
+      "level": 1,
+      "icon": 8187,
+      "name": "Bush",
+      "xp": 70
+    },
+    {
+      "level": 1,
+      "icon": 8190,
+      "name": "Large Leaf Bush",
+      "xp": 70
+    },
+    {
+      "level": 1,
+      "icon": 8191,
+      "name": "Huge Plant",
+      "xp": 100
+    },
+    {
+      "level": 1,
+      "icon": 8188,
+      "name": "Tall Plant",
+      "xp": 100
+    },
+    {
+      "level": 1,
+      "icon": 8185,
+      "name": "Reeds",
+      "xp": 100
+    },
+    {
+      "level": 1,
+      "icon": 8182,
+      "name": "Fern (small plant)",
+      "xp": 100
+    },
+    {
+      "level": 1,
+      "icon": 10847,
+      "name": "Winter Sq'irk",
+      "xp": 30
+    },
+    {
+      "level": 1,
+      "icon": 10844,
+      "name": "Spring Sq'irk",
+      "xp": 40
+    },
+    {
+      "level": 1,
+      "icon": 10846,
+      "name": "Autumn Sq'irk",
+      "xp": 50
+    },
+    {
+      "level": 1,
+      "icon": 10845,
+      "name": "Summer Sq'irk",
+      "xp": 60
+    },
+    {
+      "level": 1,
       "icon": 1942,
       "name": "Potatoes",
       "xp": 8

@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.6.19-SNAPSHOT</version>
+		<version>1.7.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -37,9 +37,9 @@
 
 	<properties>
 		<guice.version>4.1.0</guice.version>
-		<jogl.version>2.4.0-rc-20200429</jogl.version>
 
 		<jarsigner.skip>true</jarsigner.skip>
+		<pmd.skip>true</pmd.skip>
 	</properties>
 
 	<dependencies>
@@ -116,67 +116,84 @@
 		<dependency>
 			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
-			<version>${jogl.version}</version>
+			<version>2.4.0-rc-20200429</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
-			<version>${jogl.version}</version>
+			<version>2.4.0-rc-20200429</version>
 			<classifier>natives-windows-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
-			<version>${jogl.version}</version>
+			<version>2.4.0-rc-20200429</version>
 			<classifier>natives-windows-i586</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
-			<version>${jogl.version}</version>
+			<version>2.4.0-rc-20200429</version>
 			<classifier>natives-linux-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>${jogl.version}</version>
-			<classifier>natives-macosx-universal</classifier>
+			<artifactId>jogl-all-natives-macosx</artifactId>
+			<version>2.4.0-rc-20210117</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
-			<version>${jogl.version}</version>
+			<version>2.4.0-rc-20200429</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
-			<version>${jogl.version}</version>
+			<version>2.4.0-rc-20200429</version>
 			<classifier>natives-windows-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
-			<version>${jogl.version}</version>
+			<version>2.4.0-rc-20200429</version>
 			<classifier>natives-windows-i586</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
-			<version>${jogl.version}</version>
+			<version>2.4.0-rc-20200429</version>
 			<classifier>natives-linux-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>${jogl.version}</version>
-			<classifier>natives-macosx-universal</classifier>
+			<artifactId>gluegen-rt-natives-macosx</artifactId>
+			<version>2.4.0-rc-20210117</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite.jocl</groupId>
+			<artifactId>jocl</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite.jocl</groupId>
+			<artifactId>jocl</artifactId>
+			<version>1.0</version>
+			<classifier>macos-x64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite.jocl</groupId>
+			<artifactId>jocl</artifactId>
+			<version>1.0</version>
+			<classifier>macos-arm64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -199,7 +216,6 @@
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 			<version>3.0.2</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -221,7 +237,7 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>discord</artifactId>
-			<version>1.1</version>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -413,6 +429,39 @@
 							<archiveOverlayDirectory>${project.build.outputDirectory}/runelite</archiveOverlayDirectory>
 							<indexFile>${project.build.outputDirectory}/runelite/index</indexFile>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.13.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>net.sourceforge.pmd</groupId>
+						<artifactId>pmd-core</artifactId>
+						<version>6.29.0</version>
+					</dependency>
+					<dependency>
+						<groupId>net.sourceforge.pmd</groupId>
+						<artifactId>pmd-java</artifactId>
+						<version>6.29.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<failOnViolation>true</failOnViolation>
+					<printFailingErrors>true</printFailingErrors>
+					<rulesets>
+						<ruleset>${basedir}/pmd-ruleset.xml</ruleset>
+					</rulesets>
+					<linkXRef>false</linkXRef>
+					<analysisCache>true</analysisCache>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

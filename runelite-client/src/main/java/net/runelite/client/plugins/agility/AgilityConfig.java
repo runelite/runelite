@@ -25,14 +25,23 @@
 package net.runelite.client.plugins.agility;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
+	@ConfigSection(
+		name = "Hallowed Sepulchre",
+		description = "Settings for Hallowed Sepulchre highlights",
+		position = 17
+	)
+	String sepulchreSection = "Hallowed Sepulchre";
+
 	@ConfigItem(
 		keyName = "showClickboxes",
 		name = "Show Clickboxes",
@@ -89,6 +98,7 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "overlayColor",
 		name = "Overlay Color",
@@ -111,6 +121,7 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "markHighlight",
 		name = "Mark Highlight Color",
@@ -133,9 +144,10 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "portalsHighlight",
-		name = "Portals Highlight Color",
+		name = "Portals Color",
 		description = "Color of highlighted Prifddinas portals",
 		position = 9
 	)
@@ -166,6 +178,7 @@ public interface AgilityConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "trapHighlight",
 		name = "Trap Overlay Color",
@@ -203,21 +216,71 @@ public interface AgilityConfig extends Config
 		keyName = "highlightStick",
 		name = "Highlight Stick",
 		description = "Highlight the retrievable stick in the Werewolf Agility Course",
-		position = 13
+		position = 15
 	)
 	default boolean highlightStick()
 	{
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "stickHighlightColor",
 		name = "Stick Highlight Color",
 		description = "Color of highlighted stick",
-		position = 14
+		position = 16
 	)
 	default Color stickHighlightColor()
 	{
 		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreNpcs",
+		name = "Highlight Projectiles",
+		description = "Highlights arrows and swords in the Sepulchre",
+		position = 17,
+		section = sepulchreSection
+	)
+	default boolean highlightSepulchreNpcs()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "sepulchreHighlightColor",
+		name = "Projectile Color",
+		description = "Overlay color for arrows and swords",
+		position = 18,
+		section = sepulchreSection
+	)
+	default Color sepulchreHighlightColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreObstacles",
+		name = "Highlight Obstacles",
+		description = "Highlights pillars and stairs in the Sepulchre",
+		position = 19,
+		section = sepulchreSection
+	)
+	default boolean highlightSepulchreObstacles()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreSkilling",
+		name = "Highlight Skill Challenges",
+		description = "Highlights skilling challenges in the Sepulchre",
+		position = 20,
+		section = sepulchreSection
+	)
+	default boolean highlightSepulchreSkilling()
+	{
+		return true;
 	}
 }

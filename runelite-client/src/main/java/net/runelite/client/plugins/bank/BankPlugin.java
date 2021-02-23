@@ -28,18 +28,16 @@ package net.runelite.client.plugins.bank;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import static net.runelite.api.Constants.HIGH_ALCHEMY_MULTIPLIER;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -48,7 +46,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
@@ -59,15 +56,15 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
@@ -78,18 +75,6 @@ import net.runelite.client.util.QuantityFormatter;
 @Slf4j
 public class BankPlugin extends Plugin
 {
-	private static final List<Varbits> TAB_VARBITS = ImmutableList.of(
-		Varbits.BANK_TAB_ONE_COUNT,
-		Varbits.BANK_TAB_TWO_COUNT,
-		Varbits.BANK_TAB_THREE_COUNT,
-		Varbits.BANK_TAB_FOUR_COUNT,
-		Varbits.BANK_TAB_FIVE_COUNT,
-		Varbits.BANK_TAB_SIX_COUNT,
-		Varbits.BANK_TAB_SEVEN_COUNT,
-		Varbits.BANK_TAB_EIGHT_COUNT,
-		Varbits.BANK_TAB_NINE_COUNT
-	);
-
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
 	private static final String DEPOSIT_LOOT = "Deposit loot";
@@ -116,14 +101,43 @@ public class BankPlugin extends Plugin
 	private BankSearch bankSearch;
 
 	@Inject
-	private ContainerCalculation bankCalculation;
-
-	@Inject
-	private ContainerCalculation seedVaultCalculation;
+	private KeyManager keyManager;
 
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
+
+	private final KeyListener searchHotkeyListener = new KeyListener()
+	{
+		@Override
+		public void keyTyped(KeyEvent e)
+		{
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e)
+		{
+			Keybind keybind = config.searchKeybind();
+			if (keybind.matches(e))
+			{
+				Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+				if (bankContainer == null || bankContainer.isSelfHidden())
+				{
+					return;
+				}
+
+				log.debug("Search hotkey pressed");
+
+				bankSearch.initSearch();
+				e.consume();
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e)
+		{
+		}
+	};
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -132,8 +146,15 @@ public class BankPlugin extends Plugin
 	}
 
 	@Override
+	protected void startUp()
+	{
+		keyManager.registerKeyListener(searchHotkeyListener);
+	}
+
+	@Override
 	protected void shutDown()
 	{
+		keyManager.unregisterKeyListener(searchHotkeyListener);
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
 		itemQuantities = null;
@@ -183,17 +204,6 @@ public class BankPlugin extends Plugin
 
 		switch (event.getEventName())
 		{
-			case "setBankTitle":
-				final ContainerPrices prices = bankCalculation.calculate(getBankTabItems());
-				if (prices == null)
-				{
-					return;
-				}
-
-				final String strCurrentTab = createValueText(prices);
-
-				stringStack[stringStackSize - 1] += strCurrentTab;
-				break;
 			case "bankSearchFilter":
 				int itemId = intStack[intStackSize - 1];
 				String search = stringStack[stringStackSize - 1];
@@ -214,7 +224,7 @@ public class BankPlugin extends Plugin
 
 				final int compId = intStack[intStackSize - 2];
 				final int buttonId = intStack[intStackSize - 1];
-				Widget button = client.getWidget(TO_GROUP(compId), TO_CHILD(compId));
+				Widget button = client.getWidget(compId);
 				Widget buttonRect = button.getChild(0);
 
 				final Object[] onOpListener = buttonRect.getOnOpListener();
@@ -257,18 +267,45 @@ public class BankPlugin extends Plugin
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired event)
 	{
-		if (event.getScriptId() != ScriptID.BANKMAIN_SEARCH_REFRESH)
+		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			return;
-		}
+			// Compute bank prices using only the shown items so that we can show bank value during searches
+			final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+			final ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
+			final Widget[] children = bankItemContainer.getChildren();
+			long geTotal = 0, haTotal = 0;
 
-		// vanilla only lays out the bank every 40 client ticks, so if the search input has changed,
-		// and the bank wasn't laid out this tick, lay it out early
-		final String inputText = client.getVar(VarClientStr.INPUT_TEXT);
-		if (searchString != inputText && client.getGameCycle() % 40 != 0)
+			if (bankContainer != null && children != null)
+			{
+				log.debug("Computing bank price of {} items", bankContainer.size());
+
+				// The first components are the bank items, followed by tabs etc. There are always 816 components regardless
+				// of bank size, but we only need to check up to the bank size.
+				for (int i = 0; i < bankContainer.size(); ++i)
+				{
+					Widget child = children[i];
+					if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
+					{
+						final int alchPrice = getHaPrice(child.getItemId());
+						geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
+						haTotal += (long) alchPrice * child.getItemQuantity();
+					}
+				}
+
+				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+				bankTitle.setText(bankTitle.getText() + createValueText(geTotal, haTotal));
+			}
+		}
+		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
 		{
-			clientThread.invokeLater(bankSearch::layoutBank);
-			searchString = inputText;
+			// vanilla only lays out the bank every 40 client ticks, so if the search input has changed,
+			// and the bank wasn't laid out this tick, lay it out early
+			final String inputText = client.getVar(VarClientStr.INPUT_TEXT);
+			if (searchString != inputText && client.getGameCycle() % 40 != 0)
+			{
+				clientThread.invokeLater(bankSearch::layoutBank);
+				searchString = inputText;
+			}
 		}
 	}
 
@@ -287,78 +324,50 @@ public class BankPlugin extends Plugin
 		}
 	}
 
-	private String createValueText(final ContainerPrices prices)
+	private String createValueText(long gePrice, long haPrice)
 	{
-		final long gePrice = prices.getGePrice();
-		final long haPrice = prices.getHighAlchPrice();
-
-		String strCurrentTab = "";
+		StringBuilder stringBuilder = new StringBuilder();
 		if (config.showGE() && gePrice != 0)
 		{
-			strCurrentTab += " (";
+			stringBuilder.append(" (");
 
 			if (config.showHA())
 			{
-				strCurrentTab += "GE: ";
+				stringBuilder.append("GE: ");
 			}
 
 			if (config.showExact())
 			{
-				strCurrentTab += QuantityFormatter.formatNumber(gePrice) + ")";
+				stringBuilder.append(QuantityFormatter.formatNumber(gePrice));
 			}
 			else
 			{
-				strCurrentTab += QuantityFormatter.quantityToStackSize(gePrice) + ")";
+				stringBuilder.append(QuantityFormatter.quantityToStackSize(gePrice));
 			}
+			stringBuilder.append(')');
 		}
 
 		if (config.showHA() && haPrice != 0)
 		{
-			strCurrentTab += " (";
+			stringBuilder.append(" (");
 
 			if (config.showGE())
 			{
-				strCurrentTab += "HA: ";
+				stringBuilder.append("HA: ");
 			}
 
 			if (config.showExact())
 			{
-				strCurrentTab += QuantityFormatter.formatNumber(haPrice) + ")";
+				stringBuilder.append(QuantityFormatter.formatNumber(haPrice));
 			}
 			else
 			{
-				strCurrentTab += QuantityFormatter.quantityToStackSize(haPrice) + ")";
+				stringBuilder.append(QuantityFormatter.quantityToStackSize(haPrice));
 			}
+			stringBuilder.append(')');
 		}
 
-		return strCurrentTab;
-	}
-
-	private Item[] getBankTabItems()
-	{
-		final ItemContainer container = client.getItemContainer(InventoryID.BANK);
-		if (container == null)
-		{
-			return null;
-		}
-
-		final Item[] items = container.getItems();
-		int currentTab = client.getVar(Varbits.CURRENT_BANK_TAB);
-
-		if (currentTab > 0)
-		{
-			int startIndex = 0;
-
-			for (int i = currentTab - 1; i > 0; i--)
-			{
-				startIndex += client.getVar(TAB_VARBITS.get(i - 1));
-			}
-
-			int itemCount = client.getVar(TAB_VARBITS.get(currentTab - 1));
-			return Arrays.copyOfRange(items, startIndex, startIndex + itemCount);
-		}
-
-		return items;
+		return stringBuilder.toString();
 	}
 
 	private void updateSeedVaultTotal()
@@ -369,21 +378,19 @@ public class BankPlugin extends Plugin
 			return;
 		}
 
-		final Widget[] children = titleContainer.getDynamicChildren();
-		if (children == null || children.length < 2)
+		final Widget title = titleContainer.getChild(1);
+		if (title == null)
 		{
 			return;
 		}
 
-		final ContainerPrices prices = seedVaultCalculation.calculate(getSeedVaultItems());
+		final ContainerPrices prices = calculate(getSeedVaultItems());
 		if (prices == null)
 		{
 			return;
 		}
 
-		final String titleText = createValueText(prices);
-
-		final Widget title = children[1];
+		final String titleText = createValueText(prices.getGePrice(), prices.getHighAlchPrice());
 		title.setText(SEED_VAULT_TITLE + titleText);
 	}
 
@@ -415,8 +422,9 @@ public class BankPlugin extends Plugin
 		}
 
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		long gePrice = (long) itemManager.getItemPrice(itemId) * (long) itemQuantities.count(itemId);
-		long haPrice = (long) (itemComposition.getPrice() * HIGH_ALCHEMY_MULTIPLIER) * (long) itemQuantities.count(itemId);
+		final int qty = itemQuantities.count(itemId);
+		final long gePrice = (long) itemManager.getItemPrice(itemId) * qty;
+		final long haPrice = (long) itemComposition.getHaPrice() * qty;
 
 		long value = Math.max(gePrice, haPrice);
 
@@ -492,5 +500,46 @@ public class BankPlugin extends Plugin
 			}
 		}
 		return set;
+	}
+
+	@Nullable
+	ContainerPrices calculate(@Nullable Item[] items)
+	{
+		if (items == null)
+		{
+			return null;
+		}
+
+		long ge = 0;
+		long alch = 0;
+
+		for (final Item item : items)
+		{
+			final int qty = item.getQuantity();
+			final int id = item.getId();
+
+			if (id <= 0 || qty == 0)
+			{
+				continue;
+			}
+
+			alch += (long) getHaPrice(id) * qty;
+			ge += (long) itemManager.getItemPrice(id) * qty;
+		}
+
+		return new ContainerPrices(ge, alch);
+	}
+
+	private int getHaPrice(int itemId)
+	{
+		switch (itemId)
+		{
+			case ItemID.COINS_995:
+				return 1;
+			case ItemID.PLATINUM_TOKEN:
+				return 1000;
+			default:
+				return itemManager.getItemComposition(itemId).getHaPrice();
+		}
 	}
 }

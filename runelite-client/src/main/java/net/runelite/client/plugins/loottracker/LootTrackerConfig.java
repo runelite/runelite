@@ -28,14 +28,24 @@ package net.runelite.client.plugins.loottracker;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("loottracker")
 public interface LootTrackerConfig extends Config
 {
+	@ConfigSection(
+		name = "Ignored Entries",
+		description = "The Ignore items and Ignore groups options",
+		position = -2,
+		closedByDefault = true
+	)
+	String ignored = "ignored";
+
 	@ConfigItem(
 		keyName = "ignoredItems",
 		name = "Ignored items",
-		description = "Configures which items should be ignored when calculating loot prices."
+		description = "Configures which items should be ignored when calculating loot prices.",
+		section = ignored
 	)
 	default String getIgnoredItems()
 	{
@@ -72,7 +82,7 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Submit loot tracker data",
-		description = "Submit loot tracker data (requires being logged in)"
+		description = "Submit loot tracker data"
 	)
 	default boolean saveLoot()
 	{
@@ -94,7 +104,8 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "ignoredEvents",
 		name = "Ignored Loot Sources",
-		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member)."
+		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member).",
+		section = ignored
 	)
 	default String getIgnoredEvents()
 	{
@@ -126,5 +137,15 @@ public interface LootTrackerConfig extends Config
 	default boolean pvpKillChatMessage()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showRaidsLootValue",
+		name = "Show chat message for raids loot",
+		description = "Adds a chat message that displays the value of your loot at the end of the raid."
+	)
+	default boolean showRaidsLootValue()
+	{
+		return true;
 	}
 }

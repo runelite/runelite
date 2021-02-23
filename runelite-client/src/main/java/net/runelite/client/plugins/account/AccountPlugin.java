@@ -65,8 +65,8 @@ public class AccountPlugin extends Plugin
 
 	static
 	{
-		LOGIN_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "login_icon.png");
-		LOGOUT_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "logout_icon.png");
+		LOGIN_IMAGE = ImageUtil.loadImageResource(AccountPlugin.class, "login_icon.png");
+		LOGOUT_IMAGE = ImageUtil.loadImageResource(AccountPlugin.class, "logout_icon.png");
 	}
 
 	@Override

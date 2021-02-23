@@ -55,7 +55,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		ItemIdentification iden = findItemIdentification(itemId);
 		if (iden == null)
@@ -71,8 +71,26 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case SACK:
+				if (!config.showSacks())
+				{
+					return;
+				}
+				break;
 			case HERB:
 				if (!config.showHerbs())
+				{
+					return;
+				}
+				break;
+			case LOGS:
+				if (!config.showLogs())
+				{
+					return;
+				}
+				break;
+			case PLANK:
+				if (!config.showPlanks())
 				{
 					return;
 				}
@@ -83,8 +101,20 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case COMPOST:
+				if (!config.showComposts())
+				{
+					return;
+				}
+				break;
 			case ORE:
 				if (!config.showOres())
+				{
+					return;
+				}
+				break;
+			case BAR:
+				if (!config.showBars())
 				{
 					return;
 				}
@@ -107,10 +137,16 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case TABLET:
+				if (!config.showTablets())
+				{
+					return;
+				}
+				break;
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
-		renderText(graphics, itemWidget.getCanvasBounds(), iden);
+		renderText(graphics, widgetItem.getCanvasBounds(), iden);
 	}
 
 	private void renderText(Graphics2D graphics, Rectangle bounds, ItemIdentification iden)

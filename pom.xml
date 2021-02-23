@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.6.19-SNAPSHOT</version>
+	<version>1.7.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -38,13 +38,14 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<java.release>8</java.release>
 		<lombok.version>1.18.4</lombok.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 		<glslang.path></glslang.path>
 
-		<rs.version>189</rs.version>
+		<rs.version>193</rs.version>
 	</properties>
 
 	<licenses>
@@ -151,6 +152,25 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<profiles>
+		<profile>
+			<id>java9</id>
+			<activation>
+				<jdk>[1.9,)</jdk>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<release>${java.release}</release>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -180,8 +200,30 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.3</version>
 			</plugin>
-			<!-- maven-release-plugin runs maven-javadoc-plugin as one of its
-			     release steps, so run it on goal jar to detect errors -->
+			<plugin>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok-maven-plugin</artifactId>
+				<version>1.18.16.0</version>
+				<configuration>
+					<!-- Delomboked sources are only used for javadoc generation, and can be
+					skipped when javadoc is not being run. -->
+					<skip>${maven.javadoc.skip}</skip>
+					<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+					<!-- The default output directory is in generated-sources, which is
+					treated as a source root, even with addOutputDirectory false. So,
+					place it in top level build directory instead. -->
+					<outputDirectory>${project.build.directory}/delombok</outputDirectory>
+					<addOutputDirectory>false</addOutputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>delombok</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -189,7 +231,14 @@
 				<configuration>
 					<!-- Fix Javadoc on Java 11+ - JDK-8212233 -->
 					<source>8</source>
+					<!-- Fix Javadoc search feature to work without modules - https://stackoverflow.com/a/52603413 -->
+					<additionalJOption>--no-module-directories</additionalJOption>
+					<!-- Javadoc the delombok sources -->
+					<sourcepath>${project.build.directory}/delombok</sourcepath>
 				</configuration>
+				<!-- maven-release-plugin runs maven-javadoc-plugin:jar as one of its
+				     release steps, so we will run it as well for the CI. Note this
+				     defaults to disabled due to the maven.javadoc.skip property above. -->
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>

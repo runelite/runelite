@@ -30,8 +30,10 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 
@@ -48,9 +50,18 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
 	private OverlayPriority priority = OverlayPriority.NONE;
 	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
+	private final List<Integer> drawHooks = new ArrayList<>();
 	private final List<OverlayMenuEntry> menuEntries = new ArrayList<>();
 	private boolean resizable;
+	private int minimumSize = 32;
 	private boolean resettable = true;
+
+	/**
+	 * Whether this overlay can be dragged onto other overlays &amp; have
+	 * other overlays dragged onto it.
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean dragTargetable;
 
 	protected Overlay()
 	{
@@ -64,6 +75,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 
 	/**
 	 * Overlay name, used for saving the overlay, needs to be unique
+	 *
 	 * @return overlay name
 	 */
 	public String getName()
@@ -71,7 +83,41 @@ public abstract class Overlay implements LayoutableRenderableEntity
 		return this.getClass().getSimpleName();
 	}
 
+	protected void drawAfterInterface(int interfaceId)
+	{
+		drawHooks.add(interfaceId << 16 | 0xffff);
+	}
+
+	protected void drawAfterLayer(WidgetInfo layer)
+	{
+		drawHooks.add(layer.getId());
+	}
+
 	public void onMouseOver()
 	{
+	}
+
+	/**
+	 * Called when an overlay is dragged onto this, if dragTargetable is true.
+	 * Return true to consume the mouse event and prevent the other
+	 * overlay from being moved
+	 *
+	 * @param other the overlay being dragged
+	 * @return
+	 */
+	public boolean onDrag(Overlay other)
+	{
+		return false;
+	}
+
+	/**
+	 * Get the parent bounds for overlay dragging. The overlay will
+	 * not be allowed to be moved outside of the parent bounds.
+	 * @return
+	 */
+	@Nullable
+	public Rectangle getParentBounds()
+	{
+		return null;
 	}
 }

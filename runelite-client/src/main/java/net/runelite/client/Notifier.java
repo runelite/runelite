@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -58,6 +59,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -98,11 +100,8 @@ public class Notifier
 		.build();
 
 	// Notifier properties
-	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int MINIMUM_FLASH_DURATION_MILLIS = 2000;
 	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
-
-	private static final String appName = RuneLiteProperties.getTitle();
 
 	private static final File NOTIFICATION_FILE = new File(RuneLite.RUNELITE_DIR, "notification.wav");
 	private static final long CLIP_MTIME_UNLOADED = -2;
@@ -114,8 +113,9 @@ public class Notifier
 	private final ScheduledExecutorService executorService;
 	private final ChatMessageManager chatMessageManager;
 	private final EventBus eventBus;
+	private final String appName;
 	private final Path notifyIconPath;
-	private final boolean terminalNotifierAvailable;
+	private boolean terminalNotifierAvailable;
 	private Instant flashStart;
 	private long mouseLastPressedMillis;
 	private long lastClipMTime = CLIP_MTIME_UNLOADED;
@@ -128,7 +128,9 @@ public class Notifier
 		final RuneLiteConfig runeliteConfig,
 		final ScheduledExecutorService executorService,
 		final ChatMessageManager chatMessageManager,
-		final EventBus eventBus)
+		final EventBus eventBus,
+		@Named("runelite.title") final String appName
+	)
 	{
 		this.client = client;
 		this.clientUI = clientUI;
@@ -136,12 +138,14 @@ public class Notifier
 		this.executorService = executorService;
 		this.chatMessageManager = chatMessageManager;
 		this.eventBus = eventBus;
+		this.appName = appName;
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 
 		// First check if we are running in launcher
-		this.terminalNotifierAvailable =
-			!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion())
-			&& isTerminalNotifierAvailable();
+		if (!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion()) && OSType.getOSType() == OSType.MacOS)
+		{
+			executorService.execute(() -> terminalNotifierAvailable = isTerminalNotifierAvailable());
+		}
 
 		storeIcon();
 	}
@@ -172,7 +176,7 @@ public class Notifier
 
 		if (runeLiteConfig.enableTrayNotifications())
 		{
-			sendNotification(appName, message, type);
+			sendNotification(buildTitle(), message, type);
 		}
 
 		switch (runeLiteConfig.notificationSound())
@@ -207,15 +211,55 @@ public class Notifier
 		log.debug(message);
 	}
 
+	private String buildTitle()
+	{
+		Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return appName;
+		}
+
+		String name = player.getName();
+		if (Strings.isNullOrEmpty(name))
+		{
+			return appName;
+		}
+
+		return appName + " - " + name;
+	}
+
 	public void processFlash(final Graphics2D graphics)
 	{
-		if (flashStart == null || client.getGameState() != GameState.LOGGED_IN)
+		FlashNotification flashNotification = runeLiteConfig.flashNotification();
+
+		if (flashStart == null || client.getGameState() != GameState.LOGGED_IN
+			|| flashNotification == FlashNotification.DISABLED)
 		{
 			flashStart = null;
 			return;
 		}
 
-		FlashNotification flashNotification = runeLiteConfig.flashNotification();
+		if (Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
+		{
+			switch (flashNotification)
+			{
+				case FLASH_TWO_SECONDS:
+				case SOLID_TWO_SECONDS:
+					flashStart = null;
+					return;
+				case SOLID_UNTIL_CANCELLED:
+				case FLASH_UNTIL_CANCELLED:
+					// Any interaction with the client since the notification started will cancel it after the minimum duration
+					if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+						|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+						|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
+					{
+						flashStart = null;
+						return;
+					}
+					break;
+			}
+		}
 
 		if (client.getGameCycle() % 40 >= 20
 			// For solid colour, fall through every time.
@@ -226,32 +270,9 @@ public class Notifier
 		}
 
 		final Color color = graphics.getColor();
-		graphics.setColor(FLASH_COLOR);
+		graphics.setColor(runeLiteConfig.notificationFlashColor());
 		graphics.fill(new Rectangle(client.getCanvas().getSize()));
 		graphics.setColor(color);
-
-		if (!Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
-		{
-			return;
-		}
-
-		switch (flashNotification)
-		{
-			case FLASH_TWO_SECONDS:
-			case SOLID_TWO_SECONDS:
-				flashStart = null;
-				break;
-			case SOLID_UNTIL_CANCELLED:
-			case FLASH_UNTIL_CANCELLED:
-				// Any interaction with the client since the notification started will cancel it after the minimum duration
-				if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
-					|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
-					|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
-				{
-					flashStart = null;
-				}
-				break;
-		}
 	}
 
 	private void sendNotification(
@@ -390,21 +411,19 @@ public class Notifier
 
 	private boolean isTerminalNotifierAvailable()
 	{
-		if (OSType.getOSType() == OSType.MacOS)
+		try
 		{
-			try
-			{
-				final Process exec = Runtime.getRuntime().exec(new String[]{"terminal-notifier", "-help"});
-				exec.waitFor();
-				return exec.exitValue() == 0;
-			}
-			catch (IOException | InterruptedException e)
+			final Process exec = Runtime.getRuntime().exec(new String[]{"terminal-notifier", "-help"});
+			if (!exec.waitFor(2, TimeUnit.SECONDS))
 			{
 				return false;
 			}
+			return exec.exitValue() == 0;
 		}
-
-		return false;
+		catch (IOException | InterruptedException e)
+		{
+			return false;
+		}
 	}
 
 	private static String toUrgency(TrayIcon.MessageType type)

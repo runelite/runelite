@@ -19,6 +19,15 @@ LABEL8:
    string_length         
    iconst                 0
    if_icmpgt              LABEL15
+   ; this is a bank search with no input string. the bank tag plugin uses it to perform its tab searches.
+   iconst                 1                  ; return value - default to true to match anything
+   iload                  0                  ; load item id
+   sconst                 ""                 ; we are not searching, so there is no search string
+   sconst                 "bankSearchFilter" ; push event name
+   runelite_callback                         ; invoke callback
+   pop_int                                   ; pop item id
+   pop_string                                ; pop search string
+   return                                    ; return rv
    jump                   LABEL34
 LABEL15:
    iload                  0
@@ -32,13 +41,11 @@ LABEL19:
    sstore                 0
    iconst                 -1                 ; load return value
    iload                  0                  ; load item id
-   sload                  0                  ; load item name
    sload                  1                  ; load search string
    sconst                 "bankSearchFilter" ; push event name
    runelite_callback     ; invoke callback
    pop_int               ; pop item id
    pop_string            ; pop search string
-   pop_string            ; pop item name
    istore                 1 ; store return value for the below comparisons
    iload                  1
    iconst                 0

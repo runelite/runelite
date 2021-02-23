@@ -25,9 +25,12 @@
  */
 package net.runelite.client.plugins.bank;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("bank")
 public interface BankConfig extends Config
@@ -118,5 +121,16 @@ public interface BankConfig extends Config
 	default boolean bankPinKeyboard()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "searchKeybind",
+		name = "Search Shortcut",
+		description = "Keyboard shortcut for initiating a bank search",
+		position = 9
+	)
+	default Keybind searchKeybind()
+	{
+		return new Keybind(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
 	}
 }

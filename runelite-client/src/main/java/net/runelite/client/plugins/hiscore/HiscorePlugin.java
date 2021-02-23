@@ -28,7 +28,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -39,9 +38,10 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.PlayerMenuOptionClicked;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -79,9 +79,6 @@ public class HiscorePlugin extends Plugin
 	private ClientToolbar clientToolbar;
 
 	@Inject
-	private ScheduledExecutorService executor;
-
-	@Inject
 	private HiscoreConfig config;
 
 	private NavigationButton navButton;
@@ -98,7 +95,7 @@ public class HiscorePlugin extends Plugin
 	{
 		hiscorePanel = injector.getInstance(HiscorePanel.class);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "normal.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "normal.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Hiscore")
@@ -155,7 +152,7 @@ public class HiscorePlugin extends Plugin
 		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
 		String option = event.getOption();
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId() ||
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId() ||
 				groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
 				groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId() ||
 				groupId == WidgetInfo.IGNORE_LIST.getGroupId())
@@ -178,11 +175,30 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
+	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuOption().equals(LOOKUP))
+		if ((event.getMenuAction() == MenuAction.RUNELITE || event.getMenuAction() == MenuAction.RUNELITE_PLAYER)
+			&& event.getMenuOption().equals(LOOKUP))
 		{
-			lookupPlayer(Text.removeTags(event.getMenuTarget()));
+			final String target;
+			if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER)
+			{
+				// The player id is included in the event, so we can use that to get the player name,
+				// which avoids having to parse out the combat level and any icons preceding the name.
+				Player player = client.getCachedPlayers()[event.getId()];
+				if (player == null)
+				{
+					return;
+				}
+
+				target = player.getName();
+			}
+			else
+			{
+				target = Text.removeTags(event.getMenuTarget());
+			}
+
+			lookupPlayer(target);
 		}
 	}
 

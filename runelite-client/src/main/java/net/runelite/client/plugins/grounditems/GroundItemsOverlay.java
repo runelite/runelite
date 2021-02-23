@@ -46,6 +46,8 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import static net.runelite.client.plugins.grounditems.GroundItemsPlugin.MAX_QUANTITY;
+import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
@@ -56,7 +58,6 @@ import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QuantityFormatter;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class GroundItemsOverlay extends Overlay
 {
@@ -64,9 +65,6 @@ public class GroundItemsOverlay extends Overlay
 	// We must offset the text on the z-axis such that
 	// it doesn't obscure the ground items below it.
 	private static final int OFFSET_Z = 20;
-	// The game won't send anything higher than this value to the plugin -
-	// so we replace any item quantity higher with "Lots" instead.
-	private static final int MAX_QUANTITY = 65535;
 	// The 15 pixel gap between each drawn ground item.
 	private static final int STRING_GAP = 15;
 	// Size of the hidden/highlight boxes
@@ -77,7 +75,14 @@ public class GroundItemsOverlay extends Overlay
 	private static final Duration DESPAWN_TIME_INSTANCE = Duration.ofMinutes(30);
 	private static final Duration DESPAWN_TIME_LOOT = Duration.ofMinutes(2);
 	private static final Duration DESPAWN_TIME_DROP = Duration.ofMinutes(3);
+	private static final Duration DESPAWN_TIME_TABLE = Duration.ofMinutes(10);
 	private static final int KRAKEN_REGION = 9116;
+	private static final int KBD_NMZ_REGION = 9033;
+	private static final int ZILYANA_REGION = 11602;
+	private static final int GRAARDOR_REGION = 11347;
+	private static final int KRIL_TSUTSAROTH_REGION = 11603;
+	private static final int KREEARRA_REGION = 11346;
+	private static final int NIGHTMARE_REGION = 15515;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -111,7 +116,7 @@ public class GroundItemsOverlay extends Overlay
 		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
-		if (player == null || client.getViewportWidget() == null)
+		if (player == null)
 		{
 			return null;
 		}
@@ -176,7 +181,8 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHighlightBoxBounds(null);
 
 		final boolean onlyShowLoot = config.onlyShowLoot();
-		final boolean groundItemTimers = config.groundItemTimers();
+		final DespawnTimerMode groundItemTimers = config.groundItemTimers();
+		final boolean outline = config.textOutline();
 
 		for (GroundItem item : groundItemList)
 		{
@@ -210,7 +216,7 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.highlightTiles())
 			{
-				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
+				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint, item.getHeight());
 
 				if (poly != null)
 				{
@@ -347,13 +353,43 @@ public class GroundItemsOverlay extends Overlay
 				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
 			}
 
-			if (groundItemTimers || plugin.isHotKeyPressed())
+			// When the hotkey is pressed the hidden/highlight boxes are drawn to the right of the text,
+			// so always draw the pie since it is on the left hand side.
+			if (groundItemTimers == DespawnTimerMode.PIE || plugin.isHotKeyPressed())
 			{
-				drawTimerOverlay(graphics, textX, textY, item);
+				drawTimerPieOverlay(graphics, textX, textY, item);
+			}
+			else if (groundItemTimers == DespawnTimerMode.SECONDS || groundItemTimers == DespawnTimerMode.TICKS)
+			{
+				Instant despawnTime = calculateDespawnTime(item);
+				Color timerColor = getItemTimerColor(item);
+				if (despawnTime != null && timerColor != null)
+				{
+					long despawnTimeMillis = despawnTime.toEpochMilli() - Instant.now().toEpochMilli();
+					final String timerText;
+					if (groundItemTimers == DespawnTimerMode.SECONDS)
+					{
+						timerText = String.format(" - %.1f", despawnTimeMillis / 1000f);
+					}
+					else // TICKS
+					{
+						timerText = String.format(" - %d", despawnTimeMillis / 600);
+					}
+
+					// The timer text is drawn separately to have its own color, and is intentionally not included
+					// in the getCanvasTextLocation() call because the timer text can change per frame and we do not
+					// use a monospaced font, which causes the text location on screen to jump around slightly each frame.
+					textComponent.setText(timerText);
+					textComponent.setColor(timerColor);
+					textComponent.setOutline(outline);
+					textComponent.setPosition(new java.awt.Point(textX + fm.stringWidth(itemString), textY));
+					textComponent.render(graphics);
+				}
 			}
 
 			textComponent.setText(itemString);
 			textComponent.setColor(color);
+			textComponent.setOutline(outline);
 			textComponent.setPosition(new java.awt.Point(textX, textY));
 			textComponent.render(graphics);
 		}
@@ -361,12 +397,15 @@ public class GroundItemsOverlay extends Overlay
 		return null;
 	}
 
-	private void drawTimerOverlay(Graphics2D graphics, int textX, int textY, GroundItem groundItem)
+	private Instant calculateDespawnTime(GroundItem groundItem)
 	{
-		// We can only accurately guess despawn times for our own pvm loot and dropped items
-		if (groundItem.getLootType() != LootType.PVM && groundItem.getLootType() != LootType.DROPPED)
+		// We can only accurately guess despawn times for our own pvm loot, dropped items,
+		// and items we placed on tables
+		if (groundItem.getLootType() != LootType.PVM
+			&& groundItem.getLootType() != LootType.DROPPED
+			&& groundItem.getLootType() != LootType.TABLE)
 		{
-			return;
+			return null;
 		}
 
 		// Loot appears to others after 1 minute, and despawns after 2 minutes
@@ -376,48 +415,119 @@ public class GroundItemsOverlay extends Overlay
 		Instant spawnTime = groundItem.getSpawnTime();
 		if (spawnTime == null)
 		{
-			return;
+			return null;
 		}
 
-		Instant despawnTime;
+		final Instant despawnTime;
 		Instant now = Instant.now();
-		Color fillColor;
 		if (client.isInInstancedRegion())
 		{
-			// Items in the Kraken instance appear to never despawn?
-			if (isInKraken())
+			final int playerRegionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+			if (playerRegionID == KRAKEN_REGION)
 			{
-				return;
+				// Items in the Kraken instance never despawn
+				return null;
 			}
-
-			despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
-			fillColor = PRIVATE_TIMER_COLOR;
+			else if (playerRegionID == KBD_NMZ_REGION)
+			{
+				// NMZ and the KBD lair uses the same region ID but NMZ uses planes 1-3 and KBD uses plane 0
+				if (client.getLocalPlayer().getWorldLocation().getPlane() == 0)
+				{
+					// Items in the KBD instance use the standard despawn timer
+					despawnTime = spawnTime.plus(groundItem.getLootType() == LootType.DROPPED
+						? DESPAWN_TIME_DROP
+						: DESPAWN_TIME_LOOT);
+				}
+				else
+				{
+					if (groundItem.getLootType() == LootType.DROPPED)
+					{
+						// Dropped items in the NMZ instance never despawn
+						return null;
+					}
+					else
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
+					}
+				}
+			}
+			else if (playerRegionID == ZILYANA_REGION || playerRegionID == GRAARDOR_REGION ||
+				playerRegionID == KRIL_TSUTSAROTH_REGION || playerRegionID == KREEARRA_REGION || playerRegionID == NIGHTMARE_REGION)
+			{
+				// GWD and Nightmare instances use the normal despawn timers
+				despawnTime = spawnTime.plus(groundItem.getLootType() == LootType.DROPPED
+					? DESPAWN_TIME_DROP
+					: DESPAWN_TIME_LOOT);
+			}
+			else
+			{
+				despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+			}
 		}
 		else
 		{
-			if (groundItem.getLootType() == LootType.DROPPED)
+			switch (groundItem.getLootType())
 			{
-				despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
-			}
-			else
-			{
-				despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
-			}
-
-			// If it has not yet been a minute, the item is private
-			if (spawnTime.plus(1, ChronoUnit.MINUTES).isAfter(now))
-			{
-				fillColor = PRIVATE_TIMER_COLOR;
-			}
-			else
-			{
-				fillColor = PUBLIC_TIMER_COLOR;
+				case DROPPED:
+					despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
+					break;
+				case TABLE:
+					despawnTime = spawnTime.plus(DESPAWN_TIME_TABLE);
+					break;
+				default:
+					despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
+					break;
 			}
 		}
 
 		if (now.isBefore(spawnTime) || now.isAfter(despawnTime))
 		{
 			// that's weird
+			return null;
+		}
+
+		return despawnTime;
+	}
+
+	private Color getItemTimerColor(GroundItem groundItem)
+	{
+		// We can only accurately guess despawn times for our own pvm loot, dropped items,
+		// and items we placed on tables
+		if (groundItem.getLootType() != LootType.PVM
+			&& groundItem.getLootType() != LootType.DROPPED
+			&& groundItem.getLootType() != LootType.TABLE)
+		{
+			return null;
+		}
+
+		final Instant spawnTime = groundItem.getSpawnTime();
+		if (spawnTime == null)
+		{
+			return null;
+		}
+
+		final Instant now = Instant.now();
+
+		// If it has not yet been a minute, the item is private
+		if (client.isInInstancedRegion() || spawnTime.plus(1, ChronoUnit.MINUTES).isAfter(now))
+		{
+			return PRIVATE_TIMER_COLOR;
+		}
+		else
+		{
+			return PUBLIC_TIMER_COLOR;
+		}
+	}
+
+	private void drawTimerPieOverlay(Graphics2D graphics, int textX, int textY, GroundItem groundItem)
+	{
+		Instant now = Instant.now();
+		Instant spawnTime = groundItem.getSpawnTime();
+		Instant despawnTime = calculateDespawnTime(groundItem);
+		Color fillColor = getItemTimerColor(groundItem);
+
+		if (spawnTime == null || despawnTime == null || fillColor == null)
+		{
 			return;
 		}
 
@@ -470,10 +580,4 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 	}
-
-	private boolean isInKraken()
-	{
-		return ArrayUtils.contains(client.getMapRegions(), KRAKEN_REGION);
-	}
-
 }

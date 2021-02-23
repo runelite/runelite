@@ -24,16 +24,19 @@
  */
 package net.runelite.client;
 
+import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
 import java.applet.Applet;
 import java.io.File;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
+import lombok.AllArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.client.account.SessionManager;
@@ -50,42 +53,42 @@ import net.runelite.client.task.Scheduler;
 import net.runelite.client.util.DeferredEventBus;
 import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Cache;
+import net.runelite.http.api.chat.ChatClient;
 import okhttp3.OkHttpClient;
 
+@AllArgsConstructor
 public class RuneLiteModule extends AbstractModule
 {
-	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
-
+	private final OkHttpClient okHttpClient;
 	private final Supplier<Applet> clientLoader;
 	private final boolean developerMode;
+	private final boolean safeMode;
 	private final File sessionfile;
 	private final File config;
-
-	public RuneLiteModule(Supplier<Applet> clientLoader, boolean developerMode, File sessionfile, File config)
-	{
-		this.clientLoader = clientLoader;
-		this.developerMode = developerMode;
-		this.sessionfile = sessionfile;
-		this.config = config;
-	}
 
 	@Override
 	protected void configure()
 	{
+		Properties properties = RuneLiteProperties.getProperties();
+		for (String key : properties.stringPropertyNames())
+		{
+			String value = properties.getProperty(key);
+			bindConstant().annotatedWith(Names.named(key)).to(value);
+		}
 		bindConstant().annotatedWith(Names.named("developerMode")).to(developerMode);
+		bindConstant().annotatedWith(Names.named("safeMode")).to(safeMode);
 		bind(File.class).annotatedWith(Names.named("sessionfile")).toInstance(sessionfile);
 		bind(File.class).annotatedWith(Names.named("config")).toInstance(config);
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
-		bind(OkHttpClient.class).toInstance(RuneLiteAPI.CLIENT.newBuilder()
-			.cache(new Cache(new File(RuneLite.CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE))
-			.build());
+		bind(OkHttpClient.class).toInstance(okHttpClient);
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
 		bind(ItemManager.class);
 		bind(Scheduler.class);
 		bind(PluginManager.class);
 		bind(SessionManager.class);
+
+		bind(Gson.class).toInstance(RuneLiteAPI.GSON);
 
 		bind(Callbacks.class).to(Hooks.class);
 
@@ -123,5 +126,12 @@ public class RuneLiteModule extends AbstractModule
 	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatColorConfig.class);
+	}
+
+	@Provides
+	@Singleton
+	ChatClient provideChatClient(OkHttpClient okHttpClient)
+	{
+		return new ChatClient(okHttpClient);
 	}
 }

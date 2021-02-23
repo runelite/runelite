@@ -66,26 +66,29 @@ public class Ping
 	{
 		IPHlpAPI ipHlpAPI = IPHlpAPI.INSTANCE;
 		Pointer ptr = ipHlpAPI.IcmpCreateFile();
-		InetAddress inetAddress = InetAddress.getByName(world.getAddress());
-		byte[] address = inetAddress.getAddress();
-		String dataStr = RUNELITE_PING;
-		int dataLength = dataStr.length() + 1;
-		Pointer data = new Memory(dataLength);
-		data.setString(0L, dataStr);
-		IcmpEchoReply icmpEchoReply = new IcmpEchoReply(new Memory(IcmpEchoReply.SIZE + dataLength));
-		assert icmpEchoReply.size() == IcmpEchoReply.SIZE;
-		int packed = (address[0] & 0xff) | ((address[1] & 0xff) << 8) | ((address[2] & 0xff) << 16) | ((address[3] & 0xff) << 24);
-		int ret = ipHlpAPI.IcmpSendEcho(ptr, packed, data, (short) (dataLength), Pointer.NULL, icmpEchoReply, IcmpEchoReply.SIZE + dataLength, TIMEOUT);
-		if (ret != 1)
+		try
+		{
+			InetAddress inetAddress = InetAddress.getByName(world.getAddress());
+			byte[] address = inetAddress.getAddress();
+			String dataStr = RUNELITE_PING;
+			int dataLength = dataStr.length() + 1;
+			Pointer data = new Memory(dataLength);
+			data.setString(0L, dataStr);
+			IcmpEchoReply icmpEchoReply = new IcmpEchoReply(new Memory(IcmpEchoReply.SIZE + dataLength));
+			assert icmpEchoReply.size() == IcmpEchoReply.SIZE;
+			int packed = (address[0] & 0xff) | ((address[1] & 0xff) << 8) | ((address[2] & 0xff) << 16) | ((address[3] & 0xff) << 24);
+			int ret = ipHlpAPI.IcmpSendEcho(ptr, packed, data, (short) (dataLength), Pointer.NULL, icmpEchoReply, IcmpEchoReply.SIZE + dataLength, TIMEOUT);
+			if (ret != 1)
+			{
+				return -1;
+			}
+
+			return Math.toIntExact(icmpEchoReply.roundTripTime.longValue());
+		}
+		finally
 		{
 			ipHlpAPI.IcmpCloseHandle(ptr);
-			return -1;
 		}
-
-		int rtt = Math.toIntExact(icmpEchoReply.roundTripTime.longValue());
-		ipHlpAPI.IcmpCloseHandle(ptr);
-
-		return rtt;
 	}
 
 	private static int tcpPing(World world) throws IOException

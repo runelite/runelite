@@ -32,6 +32,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
 import static org.junit.Assert.assertEquals;
@@ -40,6 +42,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -52,6 +55,14 @@ public class InfoBoxManagerTest
 	@Bind
 	private RuneLiteConfig runeLiteConfig;
 
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private Client client;
+
 	@Before
 	public void before()
 	{
@@ -60,16 +71,31 @@ public class InfoBoxManagerTest
 
 	private static class TestInfobox extends InfoBox
 	{
-		public TestInfobox(InfoBoxPriority infoBoxPriority)
+		private static final Plugin PLUGIN = mock(Plugin.class);
+
+		static
 		{
-			super(null, mock(Plugin.class));
+			when(PLUGIN.getName()).thenReturn("");
+		}
+
+		private final String text;
+
+		private TestInfobox(InfoBoxPriority infoBoxPriority)
+		{
+			this(infoBoxPriority, null);
+		}
+
+		private TestInfobox(InfoBoxPriority infoBoxPriority, String text)
+		{
+			super(null, PLUGIN);
 			setPriority(infoBoxPriority);
+			this.text = text;
 		}
 
 		@Override
 		public String getText()
 		{
-			return null;
+			return text;
 		}
 
 		@Override
@@ -88,5 +114,18 @@ public class InfoBoxManagerTest
 
 		List<InfoBoxPriority> order = infoBoxManager.getInfoBoxes().stream().map(InfoBox::getPriority).collect(Collectors.toList());
 		assertEquals(Arrays.asList(InfoBoxPriority.HIGH, InfoBoxPriority.MED, InfoBoxPriority.LOW), order);
+	}
+
+	@Test
+	public void testSamePluginAndPriority()
+	{
+		infoBoxManager.addInfoBox(new TestInfobox(InfoBoxPriority.MED, "one"));
+		infoBoxManager.addInfoBox(new TestInfobox(InfoBoxPriority.MED, "two"));
+		infoBoxManager.addInfoBox(new TestInfobox(InfoBoxPriority.MED, "three"));
+
+		assertEquals(3, infoBoxManager.getInfoBoxes().size());
+		assertEquals("one", infoBoxManager.getInfoBoxes().get(0).getText());
+		assertEquals("two", infoBoxManager.getInfoBoxes().get(1).getText());
+		assertEquals("three", infoBoxManager.getInfoBoxes().get(2).getText());
 	}
 }

@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.config;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.primitives.Ints;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -36,8 +37,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -55,14 +60,20 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigDescriptor;
+import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.ConfigObject;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.ConfigSectionDescriptor;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
@@ -76,7 +87,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.ColorJButton;
 import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
@@ -89,8 +102,14 @@ import net.runelite.client.util.Text;
 class ConfigPanel extends PluginPanel
 {
 	private static final int SPINNER_FIELD_WIDTH = 6;
+	private static final ImageIcon SECTION_EXPAND_ICON;
+	private static final ImageIcon SECTION_EXPAND_ICON_HOVER;
+	private static final ImageIcon SECTION_RETRACT_ICON;
+	private static final ImageIcon SECTION_RETRACT_ICON_HOVER;
 	static final ImageIcon BACK_ICON;
 	static final ImageIcon BACK_ICON_HOVER;
+
+	private static final Map<ConfigSectionDescriptor, Boolean> sectionExpandStates = new HashMap<>();
 
 	private final FixedWidthPanel mainPanel;
 	private final JLabel title;
@@ -115,9 +134,17 @@ class ConfigPanel extends PluginPanel
 
 	static
 	{
-		final BufferedImage backIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_back_icon.png");
+		final BufferedImage backIcon = ImageUtil.loadImageResource(ConfigPanel.class, "config_back_icon.png");
 		BACK_ICON = new ImageIcon(backIcon);
 		BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
+
+		BufferedImage sectionRetractIcon = ImageUtil.loadImageResource(ConfigPanel.class, "/util/arrow_right.png");
+		sectionRetractIcon = ImageUtil.luminanceOffset(sectionRetractIcon, -121);
+		SECTION_EXPAND_ICON = new ImageIcon(sectionRetractIcon);
+		SECTION_EXPAND_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(sectionRetractIcon, -100));
+		final BufferedImage sectionExpandIcon = ImageUtil.rotateImage(sectionRetractIcon, Math.PI / 2);
+		SECTION_RETRACT_ICON = new ImageIcon(sectionExpandIcon);
+		SECTION_RETRACT_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(sectionExpandIcon, -100));
 	}
 
 	public ConfigPanel()
@@ -205,11 +232,91 @@ class ConfigPanel extends PluginPanel
 		rebuild();
 	}
 
+	private void toggleSection(ConfigSectionDescriptor csd, JButton button, JPanel contents)
+	{
+		boolean newState = !contents.isVisible();
+		contents.setVisible(newState);
+		button.setIcon(newState ? SECTION_RETRACT_ICON : SECTION_EXPAND_ICON);
+		button.setRolloverIcon(newState ? SECTION_RETRACT_ICON_HOVER : SECTION_EXPAND_ICON_HOVER);
+		button.setToolTipText(newState ? "Retract" : "Expand");
+		sectionExpandStates.put(csd, newState);
+		SwingUtilities.invokeLater(contents::revalidate);
+	}
+
 	private void rebuild()
 	{
 		mainPanel.removeAll();
 
 		ConfigDescriptor cd = pluginConfig.getConfigDescriptor();
+
+		final Map<String, JPanel> sectionWidgets = new HashMap<>();
+		final Map<ConfigObject, JPanel> topLevelPanels = new TreeMap<>((a, b) ->
+			ComparisonChain.start()
+			.compare(a.position(), b.position())
+			.compare(a.name(), b.name())
+			.result());
+
+		for (ConfigSectionDescriptor csd : cd.getSections())
+		{
+			ConfigSection cs = csd.getSection();
+			final boolean isOpen = sectionExpandStates.getOrDefault(csd, !cs.closedByDefault());
+
+			final JPanel section = new JPanel();
+			section.setLayout(new BoxLayout(section, BoxLayout.Y_AXIS));
+			section.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+
+			final JPanel sectionHeader = new JPanel();
+			sectionHeader.setLayout(new BorderLayout());
+			sectionHeader.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+			// For whatever reason, the header extends out by a single pixel when closed. Adding a single pixel of
+			// border on the right only affects the width when closed, fixing the issue.
+			sectionHeader.setBorder(new CompoundBorder(
+				new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
+				new EmptyBorder(0, 0, 3, 1)));
+			section.add(sectionHeader, BorderLayout.NORTH);
+
+			final JButton sectionToggle = new JButton(isOpen ? SECTION_RETRACT_ICON : SECTION_EXPAND_ICON);
+			sectionToggle.setRolloverIcon(isOpen ? SECTION_RETRACT_ICON_HOVER : SECTION_EXPAND_ICON_HOVER);
+			sectionToggle.setPreferredSize(new Dimension(18, 0));
+			sectionToggle.setBorder(new EmptyBorder(0, 0, 0, 5));
+			sectionToggle.setToolTipText(isOpen ? "Retract" : "Expand");
+			SwingUtil.removeButtonDecorations(sectionToggle);
+			sectionHeader.add(sectionToggle, BorderLayout.WEST);
+
+			String name = cs.name();
+			final JLabel sectionName = new JLabel(name);
+			sectionName.setForeground(ColorScheme.BRAND_ORANGE);
+			sectionName.setFont(FontManager.getRunescapeBoldFont());
+			sectionName.setToolTipText("<html>" + name + ":<br>" + cs.description() + "</html>");
+			sectionHeader.add(sectionName, BorderLayout.CENTER);
+
+			final JPanel sectionContents = new JPanel();
+			sectionContents.setLayout(new DynamicGridLayout(0, 1, 0, 5));
+			sectionContents.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+			sectionContents.setBorder(new CompoundBorder(
+				new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
+				new EmptyBorder(BORDER_OFFSET, 0, BORDER_OFFSET, 0)));
+			sectionContents.setVisible(isOpen);
+			section.add(sectionContents, BorderLayout.SOUTH);
+
+			// Add listeners to each part of the header so that it's easier to toggle them
+			final MouseAdapter adapter = new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(MouseEvent e)
+				{
+					toggleSection(csd, sectionToggle, sectionContents);
+				}
+			};
+			sectionToggle.addActionListener(actionEvent -> toggleSection(csd, sectionToggle, sectionContents));
+			sectionName.addMouseListener(adapter);
+			sectionHeader.addMouseListener(adapter);
+
+			sectionWidgets.put(csd.getKey(), sectionContents);
+
+			topLevelPanels.put(csd, section);
+		}
+
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
 			if (cid.getItem().hidden())
@@ -224,6 +331,7 @@ class ConfigPanel extends PluginPanel
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
+			PluginListItem.addLabelPopupMenu(configEntryName, createResetMenuItem(pluginConfig, cid));
 			item.add(configEntryName, BorderLayout.CENTER);
 
 			if (cid.getType() == boolean.class)
@@ -300,24 +408,23 @@ class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == Color.class)
 			{
-				String existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
+				Color existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), Color.class);
 
-				Color existingColor;
-				JButton colorPickerBtn;
+				ColorJButton colorPickerBtn;
+
+				boolean alphaHidden = cid.getAlpha() == null;
 
 				if (existing == null)
 				{
-					existingColor = Color.BLACK;
-					colorPickerBtn = new JButton("Pick a color");
+					colorPickerBtn = new ColorJButton("Pick a color", Color.BLACK);
 				}
 				else
 				{
-					existingColor = ColorUtil.fromString(existing);
-					colorPickerBtn = new JButton(ColorUtil.toHexColor(existingColor).toUpperCase());
+					String colorHex = "#" + (alphaHidden ? ColorUtil.colorToHexCode(existing) : ColorUtil.colorToAlphaHexCode(existing)).toUpperCase();
+					colorPickerBtn = new ColorJButton(colorHex, existing);
 				}
 
 				colorPickerBtn.setFocusable(false);
-				colorPickerBtn.setBackground(existingColor);
 				colorPickerBtn.addMouseListener(new MouseAdapter()
 				{
 					@Override
@@ -325,14 +432,14 @@ class ConfigPanel extends PluginPanel
 					{
 						RuneliteColorPicker colorPicker = colorPickerManager.create(
 							SwingUtilities.windowForComponent(ConfigPanel.this),
-							colorPickerBtn.getBackground(),
+							colorPickerBtn.getColor(),
 							cid.getItem().name(),
-							cid.getAlpha() == null);
+							alphaHidden);
 						colorPicker.setLocation(getLocationOnScreen());
 						colorPicker.setOnColorChange(c ->
 						{
-							colorPickerBtn.setBackground(c);
-							colorPickerBtn.setText(ColorUtil.toHexColor(c).toUpperCase());
+							colorPickerBtn.setColor(c);
+							colorPickerBtn.setText("#" + (alphaHidden ? ColorUtil.colorToHexCode(c) : ColorUtil.colorToAlphaHexCode(c)).toUpperCase());
 						});
 						colorPicker.setOnClose(c -> changeConfiguration(colorPicker, cd, cid));
 						colorPicker.setVisible(true);
@@ -380,15 +487,19 @@ class ConfigPanel extends PluginPanel
 			if (cid.getType().isEnum())
 			{
 				Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
-				JComboBox box = new JComboBox(type.getEnumConstants());
+
+				JComboBox<Enum<?>> box = new JComboBox<Enum<?>>(type.getEnumConstants()); // NOPMD: UseDiamondOperator
+				// set renderer prior to calling box.getPreferredSize(), since it will invoke the renderer
+				// to build components for each combobox element in order to compute the display size of the
+				// combobox
+				box.setRenderer(new ComboBoxListRenderer<>());
 				box.setPreferredSize(new Dimension(box.getPreferredSize().width, 25));
-				box.setRenderer(new ComboBoxListRenderer());
 				box.setForeground(Color.WHITE);
 				box.setFocusable(false);
-				box.setPrototypeDisplayValue("XXXXXXXX"); //sorry but this is the way to keep the size of the combobox in check.
+
 				try
 				{
-					Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+					Enum<?> selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 					box.setSelectedItem(selectedItem);
 					box.setToolTipText(Text.titleCase(selectedItem));
 				}
@@ -401,7 +512,7 @@ class ConfigPanel extends PluginPanel
 					if (e.getStateChange() == ItemEvent.SELECTED)
 					{
 						changeConfiguration(box, cd, cid);
-						box.setToolTipText(Text.titleCase((Enum) box.getSelectedItem()));
+						box.setToolTipText(Text.titleCase((Enum<?>) box.getSelectedItem()));
 					}
 				});
 				item.add(box, BorderLayout.EAST);
@@ -427,8 +538,18 @@ class ConfigPanel extends PluginPanel
 				item.add(button, BorderLayout.EAST);
 			}
 
-			mainPanel.add(item);
+			JPanel section = sectionWidgets.get(cid.getItem().section());
+			if (section == null)
+			{
+				topLevelPanels.put(cid, item);
+			}
+			else
+			{
+				section.add(item);
+			}
 		}
+
+		topLevelPanels.values().forEach(mainPanel::add);
 
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) ->
@@ -536,5 +657,23 @@ class ConfigPanel extends PluginPanel
 			pluginList.getMuxer().popState();
 		}
 		SwingUtilities.invokeLater(this::rebuild);
+	}
+
+	private JMenuItem createResetMenuItem(PluginConfigurationDescriptor pluginConfig, ConfigItemDescriptor configItemDescriptor)
+	{
+		JMenuItem menuItem = new JMenuItem("Reset");
+		menuItem.addActionListener(e ->
+		{
+			ConfigDescriptor configDescriptor = pluginConfig.getConfigDescriptor();
+			ConfigGroup configGroup = configDescriptor.getGroup();
+			ConfigItem configItem = configItemDescriptor.getItem();
+
+			// To reset one item we'll just unset it and then apply defaults over the whole group
+			configManager.unsetConfiguration(configGroup.value(), configItem.keyName());
+			configManager.setDefaultConfiguration(pluginConfig.getConfig(), false);
+
+			rebuild();
+		});
+		return menuItem;
 	}
 }

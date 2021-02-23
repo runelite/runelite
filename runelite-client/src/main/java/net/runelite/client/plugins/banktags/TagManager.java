@@ -27,24 +27,17 @@ package net.runelite.client.plugins.banktags;
 
 import com.google.common.base.Strings;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
-import net.runelite.client.plugins.cluescrolls.ClueScrollService;
-import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
-import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
-import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
-import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
-import net.runelite.client.plugins.cluescrolls.clues.MapClue;
-import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -53,17 +46,15 @@ public class TagManager
 	static final String ITEM_KEY_PREFIX = "item_";
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
-	private final ClueScrollService clueScrollService;
+	private final Map<String, BankTag> customTags = new HashMap<>();
 
 	@Inject
 	private TagManager(
 		final ItemManager itemManager,
-		final ConfigManager configManager,
-		final ClueScrollService clueScrollService)
+		final ConfigManager configManager)
 	{
 		this.itemManager = itemManager;
 		this.configManager = configManager;
-		this.clueScrollService = clueScrollService;
 	}
 
 	String getTagString(int itemId, boolean variation)
@@ -123,7 +114,8 @@ public class TagManager
 
 	boolean findTag(int itemId, String search)
 	{
-		if (search.equals("clue") && testClue(itemId))
+		BankTag bankTag = customTags.get(search);
+		if (bankTag != null && bankTag.contains(itemId))
 		{
 			return true;
 		}
@@ -194,38 +186,13 @@ public class TagManager
 		return itemId;
 	}
 
-	private boolean testClue(int itemId)
+	public void registerTag(String name, BankTag tag)
 	{
-		ClueScroll c = clueScrollService.getClue();
+		customTags.put(name, tag);
+	}
 
-		if (c == null)
-		{
-			return false;
-		}
-
-		if (c instanceof EmoteClue)
-		{
-			EmoteClue emote = (EmoteClue) c;
-
-			for (ItemRequirement ir : emote.getItemRequirements())
-			{
-				if (ir.fulfilledBy(itemId))
-				{
-					return true;
-				}
-			}
-		}
-		else if (c instanceof CoordinateClue || c instanceof HotColdClue || c instanceof FairyRingClue)
-		{
-			return itemId == ItemID.SPADE;
-		}
-		else if (c instanceof MapClue)
-		{
-			MapClue mapClue = (MapClue) c;
-
-			return mapClue.getObjectId() == -1 && itemId == ItemID.SPADE;
-		}
-
-		return false;
+	public void unregisterTag(String name)
+	{
+		customTags.remove(name);
 	}
 }

@@ -25,6 +25,8 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.io.ByteStreams;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -36,7 +38,7 @@ public class ReflectUtil
 	{
 	}
 
-	public static MethodHandles.Lookup privateLookupIn(Class clazz)
+	public static MethodHandles.Lookup privateLookupIn(Class<?> clazz)
 	{
 		try
 		{
@@ -44,7 +46,16 @@ public class ReflectUtil
 			// we need to access it via reflection. This is preferred way because it's Java 9+ public api and is
 			// likely to not change
 			final Method privateLookupIn = MethodHandles.class.getMethod("privateLookupIn", Class.class, MethodHandles.Lookup.class);
-			return (MethodHandles.Lookup) privateLookupIn.invoke(null, clazz, MethodHandles.lookup());
+			MethodHandles.Lookup caller;
+			if (clazz.getClassLoader() instanceof PrivateLookupableClassLoader)
+			{
+				caller = ((PrivateLookupableClassLoader) clazz.getClassLoader()).getLookup();
+			}
+			else
+			{
+				caller = MethodHandles.lookup();
+			}
+			return (MethodHandles.Lookup) privateLookupIn.invoke(null, clazz, caller);
 		}
 		catch (InvocationTargetException | IllegalAccessException e)
 		{
@@ -65,8 +76,55 @@ public class ReflectUtil
 			}
 			catch (ReflectiveOperationException ex)
 			{
-				throw new RuntimeException(ex);
+				throw new RuntimeException(ex); // NOPMD: PreserveStackTrace: ignore e
 			}
+		}
+	}
+
+	public interface PrivateLookupableClassLoader
+	{
+		// define class is protected final so this needs a different name to become public
+		Class<?> defineClass0(String name, byte[] b, int off, int len) throws ClassFormatError;
+
+		MethodHandles.Lookup getLookup();
+		void setLookup(MethodHandles.Lookup lookup);
+	}
+
+	/**
+	 * Allows private Lookups to be created for classes in this ClassLoader
+	 * <p>
+	 * Due to JDK-8173978 it is impossible to create get a lookup with module scoped permissions when teleporting
+	 * between modules. Since external plugins are loaded in a separate classloader to us they are contained in unique
+	 * unnamed modules. Since we (via LambdaMetafactory) are creating a hidden class in that module, we require module
+	 * scoped access to it, and since the methods can be private, we also require private access. The only way to get
+	 * MODULE|PRIVATE is to either 1) invokedynamic in that class, 2) call MethodHandles.lookup() from that class, or
+	 * 3) call privateLookupIn with an existing lookup with PRIVATE|MODULE created from a class in the same module.
+	 * Our solution is to make classloaders call this method which will define a class in the classloader's unnamed
+	 * module that calls MethodHandles.lookup() and stores it in the classloader for later use.
+	 */
+	public static void installLookupHelper(PrivateLookupableClassLoader cl)
+	{
+		try
+		{
+			String name = PrivateLookupHelper.class.getName();
+			byte[] classData = ByteStreams.toByteArray(ReflectUtil.class.getResourceAsStream("/" + name.replace('.', '/') + ".class"));
+			Class<?> clazz = cl.defineClass0(name, classData, 0, classData.length);
+
+			// force <clinit> to run
+			clazz.getConstructor().newInstance();
+		}
+		catch (IOException | ReflectiveOperationException e)
+		{
+			throw new RuntimeException("unable to install lookup helper", e);
+		}
+	}
+	
+	public static class PrivateLookupHelper
+	{
+		static
+		{
+			PrivateLookupableClassLoader pcl = (PrivateLookupableClassLoader) PrivateLookupHelper.class.getClassLoader();
+			pcl.setLookup(MethodHandles.lookup());
 		}
 	}
 }

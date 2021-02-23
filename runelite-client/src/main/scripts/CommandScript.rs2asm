@@ -38,7 +38,7 @@ LABEL20:
    iconst                 1
    if_icmpeq              LABEL31
    iconst                 0                 ; Modified to enable clanchat input
-   sconst                 "clanchatInput"
+   sconst                 "friendsChatInput"
    runelite_callback     
    iconst                 1
    if_icmpeq              LABEL31           ; Compare to 1

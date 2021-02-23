@@ -24,27 +24,28 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
-import java.util.HashMap;
 import java.util.Map;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class ColorUtilTest
 {
-	private static final Map<Color, String> COLOR_HEXSTRING_MAP = new HashMap<Color, String>()
-	{{
-		put(Color.BLACK, "000000");
-		put(new Color(0x1), "000001");
-		put(new Color(0x100000), "100000");
-		put(Color.RED, "ff0000");
-		put(Color.GREEN, "00ff00");
-		put(Color.BLUE, "0000ff");
-		put(new Color(0xA1B2C3), "a1b2c3");
-		put(Color.WHITE, "ffffff");
-	}};
+	private static final Map<Color, String> COLOR_HEXSTRING_MAP = new ImmutableMap.Builder<Color, String>().
+		put(Color.BLACK, "000000").
+		put(new Color(0x1), "000001").
+		put(new Color(0x100000), "100000").
+		put(Color.RED, "ff0000").
+		put(Color.GREEN, "00ff00").
+		put(Color.BLUE, "0000ff").
+		put(new Color(0xA1B2C3), "a1b2c3").
+		put(Color.WHITE, "ffffff").build();
+
+	private static final Map<Color, String> COLOR_ALPHA_HEXSTRING_MAP = ImmutableMap.of(
+		new Color(0x00000000, true), "00000000",
+		new Color(0xA1B2C3D4, true), "a1b2c3d4"
+	);
 
 	@Test
 	public void colorTag()
@@ -87,6 +88,28 @@ public class ColorUtilTest
 	}
 
 	@Test
+	public void colorWithAlpha()
+	{
+		int[] alpha = {73};
+
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
+			assertEquals(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha[0]),
+				ColorUtil.colorWithAlpha(color, alpha[0]));
+			alpha[0] += 73;
+			alpha[0] %= 255;
+		});
+
+		COLOR_ALPHA_HEXSTRING_MAP.forEach((color, hex) ->
+		{
+			assertEquals(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha[0]),
+				ColorUtil.colorWithAlpha(color, alpha[0]));
+			alpha[0] += 73;
+			alpha[0] %= 255;
+		});
+	}
+
+	@Test
 	public void colorLerp()
 	{
 		assertEquals(Color.WHITE, ColorUtil.colorLerp(Color.WHITE, Color.WHITE, 0.9));
@@ -102,27 +125,5 @@ public class ColorUtilTest
 		{
 			assertEquals(hex, ColorUtil.colorToHexCode(color));
 		});
-	}
-
-	@Test
-	public void isFullyTransparent()
-	{
-		for (Color color : COLOR_HEXSTRING_MAP.keySet())
-		{
-			assertFalse(ColorUtil.isFullyTransparent(color));
-		}
-		assertTrue(ColorUtil.isFullyTransparent(new Color(0, 0, 0, 0)));
-		assertFalse(ColorUtil.isFullyTransparent(new Color(0, 0, 0, 1)));
-	}
-
-	@Test
-	public void isNotFullyTransparent()
-	{
-		for (Color color : COLOR_HEXSTRING_MAP.keySet())
-		{
-			assertTrue(ColorUtil.isNotFullyTransparent(color));
-		}
-		assertFalse(ColorUtil.isNotFullyTransparent(new Color(0, 0, 0, 0)));
-		assertTrue(ColorUtil.isNotFullyTransparent(new Color(0, 0, 0, 1)));
 	}
 }

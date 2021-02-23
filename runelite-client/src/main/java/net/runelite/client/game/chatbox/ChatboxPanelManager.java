@@ -79,6 +79,8 @@ public class ChatboxPanelManager
 
 		this.chatboxTextMenuInputProvider = chatboxTextMenuInputProvider;
 		this.chatboxTextInputProvider = chatboxTextInputProvider;
+
+		eventBus.register(this);
 	}
 
 	public void close()
@@ -198,5 +200,13 @@ public class ChatboxPanelManager
 	public Widget getContainerWidget()
 	{
 		return client.getWidget(WidgetInfo.CHATBOX_CONTAINER);
+	}
+
+	public boolean shouldTakeInput()
+	{
+		// the search box on the world map can be focused, and chat input goes there, even
+		// though the chatbox still has its key listener.
+		Widget worldMapSearch = client.getWidget(WidgetInfo.WORLD_MAP_SEARCH);
+		return worldMapSearch == null || client.getVar(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
 	}
 }

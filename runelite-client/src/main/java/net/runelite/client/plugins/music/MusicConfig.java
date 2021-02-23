@@ -31,6 +31,8 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("music")
 public interface MusicConfig extends Config
 {
+	String GRANULAR_SLIDERS = "granularSliders";
+
 	@ConfigItem(
 		keyName = "muteOwnAreaSounds",
 		name = "Mute player area sounds",
@@ -84,6 +86,17 @@ public interface MusicConfig extends Config
 	default boolean mutePrayerSounds()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = GRANULAR_SLIDERS,
+		name = "Granular volume sliders",
+		description = "Make the volume sliders allow better control of volume",
+		position = 5
+	)
+	default boolean granularSliders()
+	{
+		return true;
 	}
 
 	@ConfigItem(

@@ -37,11 +37,14 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.http.api.examine.ExamineClient;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
@@ -114,5 +117,24 @@ public class ExaminePluginTest
 		examinePlugin.onChatMessage(chatMessage);
 
 		verify(examineClient, never()).submitItem(anyInt(), anyString());
+	}
+
+	@Test
+	public void testGetItemPrice()
+	{
+		ItemComposition itemComposition = mock(ItemComposition.class);
+		when(itemComposition.getName()).thenReturn("Abyssal whip");
+		when(itemComposition.getHaPrice()).thenReturn(2);
+		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP)).thenReturn(3);
+		examinePlugin.getItemPrice(ItemID.ABYSSAL_WHIP, itemComposition, 2_000_000_000);
+
+		ArgumentCaptor<QueuedMessage> argumentCaptor = ArgumentCaptor.forClass(QueuedMessage.class);
+		verify(chatMessageManager).queue(argumentCaptor.capture());
+
+		QueuedMessage queuedMessage = argumentCaptor.getValue();
+		assertEquals(
+			"<colNORMAL>Price of <colHIGHLIGHT>2,000,000,000 x Abyssal whip<colNORMAL>:<colNORMAL> GE average <colHIGHLIGHT>6,000,000,000<colNORMAL> (<colHIGHLIGHT>3<colNORMAL>ea)<colNORMAL> HA value <colHIGHLIGHT>4,000,000,000<colNORMAL> (<colHIGHLIGHT>2<colNORMAL>ea)",
+			queuedMessage.getRuneLiteFormattedMessage()
+		);
 	}
 }

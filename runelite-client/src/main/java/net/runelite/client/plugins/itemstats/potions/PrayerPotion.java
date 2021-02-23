@@ -35,12 +35,20 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.PRAYER;
 
 public class PrayerPotion extends StatBoost
 {
+	private static final double BASE_PERC = .25;
 	private final int delta;
+	private final double perc;
 
 	public PrayerPotion(int delta)
 	{
+		this(delta, BASE_PERC);
+	}
+
+	PrayerPotion(int delta, double perc)
+	{
 		super(PRAYER, false);
 		this.delta = delta;
+		this.perc = perc;
 	}
 
 	private static final int RING_SLOT = EquipmentInventorySlot.RING.getSlotIdx();
@@ -63,9 +71,7 @@ public class PrayerPotion extends StatBoost
 				int capeId = cape.getId();
 				hasHolyWrench |= capeId == ItemID.PRAYER_CAPE;
 				hasHolyWrench |= capeId == ItemID.PRAYER_CAPET;
-				hasHolyWrench |= capeId == ItemID.PRAYER_CAPE_10643; // No idea what this is
 				hasHolyWrench |= capeId == ItemID.MAX_CAPE;
-				hasHolyWrench |= capeId == ItemID.MAX_CAPE_13282; // Or these
 				hasHolyWrench |= capeId == ItemID.MAX_CAPE_13342;
 			}
 		}
@@ -80,9 +86,7 @@ public class PrayerPotion extends StatBoost
 					hasHolyWrench = item == ItemID.HOLY_WRENCH;
 					hasHolyWrench |= item == ItemID.PRAYER_CAPE;
 					hasHolyWrench |= item == ItemID.PRAYER_CAPET;
-					hasHolyWrench |= item == ItemID.PRAYER_CAPE_10643;
 					hasHolyWrench |= item == ItemID.MAX_CAPE;
-					hasHolyWrench |= item == ItemID.MAX_CAPE_13282;
 					hasHolyWrench |= item == ItemID.MAX_CAPE_13342;
 
 					if (hasHolyWrench)
@@ -93,9 +97,9 @@ public class PrayerPotion extends StatBoost
 			}
 		}
 
-		double perc = hasHolyWrench ? .27 : .25;
+		double percent = hasHolyWrench ? perc + .02 : perc;
 		int max = getStat().getMaximum(client);
-		return (((int) (max * perc)) * (delta >= 0 ? 1 : -1)) + delta;
+		return (((int) (max * percent)) * (delta >= 0 ? 1 : -1)) + delta;
 	}
 
 }

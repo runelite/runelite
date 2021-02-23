@@ -106,11 +106,6 @@ public class ChatCommandManager implements ChatboxInputListener
 		String message = chatMessage.getMessage();
 
 		String command = extractCommand(message);
-		if (command == null)
-		{
-			return;
-		}
-
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		if (chatCommand == null)
 		{
@@ -133,15 +128,10 @@ public class ChatCommandManager implements ChatboxInputListener
 		String message = chatboxInput.getValue();
 		if (message.startsWith("/"))
 		{
-			message = message.substring(1); // clan chat input
+			message = message.substring(1); // friends chat input
 		}
 
 		String command = extractCommand(message);
-		if (command == null)
-		{
-			return false;
-		}
-
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		if (chatCommand == null)
 		{
@@ -163,11 +153,6 @@ public class ChatCommandManager implements ChatboxInputListener
 		final String message = privateMessageInput.getMessage();
 
 		String command = extractCommand(message);
-		if (command == null)
-		{
-			return false;
-		}
-
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		if (chatCommand == null)
 		{

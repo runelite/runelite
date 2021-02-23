@@ -37,23 +37,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import javax.imageio.ImageIO;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.StatChanged;
-import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.discord.events.DiscordJoinGame;
 import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.discord.events.DiscordReady;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -65,12 +64,12 @@ import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.ws.PartyMember;
 import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.messages.party.UserJoin;
 import net.runelite.http.api.ws.messages.party.UserPart;
 import net.runelite.http.api.ws.messages.party.UserSync;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -103,7 +102,14 @@ public class DiscordPlugin extends Plugin
 	@Inject
 	private WSClient wsClient;
 
-	private Map<Skill, Integer> skillExp = new HashMap<>();
+	@Inject
+	private OkHttpClient okHttpClient;
+
+	@Inject
+	@Named("runelite.discord.invite")
+	private String discordInvite;
+
+	private final Map<Skill, Integer> skillExp = new HashMap<>();
 	private NavigationButton discordButton;
 	private boolean loginFlag;
 
@@ -116,16 +122,17 @@ public class DiscordPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "discord.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "discord.png");
 
 		discordButton = NavigationButton.builder()
 			.tab(false)
 			.tooltip("Join Discord")
 			.icon(icon)
-			.onClick(() -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()))
+			.onClick(() -> LinkBrowser.browse(discordInvite))
 			.build();
 
 		clientToolbar.addNavigation(discordButton);
+		resetState();
 		checkForGameStateUpdate();
 		checkForAreaUpdate();
 
@@ -141,7 +148,7 @@ public class DiscordPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(discordButton);
-		discordState.reset();
+		resetState();
 		partyService.changeParty(null);
 		wsClient.unregisterMessage(DiscordUserInfo.class);
 	}
@@ -152,6 +159,7 @@ public class DiscordPlugin extends Plugin
 		switch (event.getGameState())
 		{
 			case LOGIN_SCREEN:
+				resetState();
 				checkForGameStateUpdate();
 				return;
 			case LOGGING_IN:
@@ -161,13 +169,12 @@ public class DiscordPlugin extends Plugin
 				if (loginFlag)
 				{
 					loginFlag = false;
+					resetState();
 					checkForGameStateUpdate();
 				}
-
+				checkForAreaUpdate();
 				break;
 		}
-
-		checkForAreaUpdate();
 	}
 
 	@Subscribe
@@ -175,6 +182,7 @@ public class DiscordPlugin extends Plugin
 	{
 		if (event.getGroup().equalsIgnoreCase("discord"))
 		{
+			resetState();
 			checkForGameStateUpdate();
 			checkForAreaUpdate();
 		}
@@ -201,22 +209,6 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
-		if (!config.showRaidingActivity())
-		{
-			return;
-		}
-
-		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromVarbit(client);
-
-		if (discordGameEventType != null)
-		{
-			discordState.triggerEvent(discordGameEventType);
-		}
-	}
-
-	@Subscribe
 	public void onDiscordReady(DiscordReady event)
 	{
 		partyService.setUsername(event.getUsername() + "#" + event.getDiscriminator());
@@ -225,19 +217,20 @@ public class DiscordPlugin extends Plugin
 	@Subscribe
 	public void onDiscordJoinRequest(DiscordJoinRequest request)
 	{
-		log.debug("Got discord join request {}", request);
-		if (partyService.isOwner() && partyService.getMembers().isEmpty())
+		// In order for the "Invite to join" message to work we need to have a valid party in Discord presence.
+		// We lazily create the party here in order to avoid the (1 of 15) being permanently in the Discord status.
+		if (!partyService.isInParty())
 		{
-			// First join, join also yourself
+			// Change to my party id, which is advertised in the Discord presence secret. This will open the socket,
+			// send a join, and cause a UserJoin later for me, which will then update the presence and allow the
+			// "Invite to join" to continue.
 			partyService.changeParty(partyService.getLocalPartyId());
-			updatePresence();
 		}
 	}
 
 	@Subscribe
 	public void onDiscordJoinGame(DiscordJoinGame joinGame)
 	{
-		log.debug("Got discord join game {}", joinGame);
 		UUID partyId = UUID.fromString(joinGame.getJoinSecret());
 		partyService.changeParty(partyId);
 		updatePresence();
@@ -273,7 +266,7 @@ public class DiscordPlugin extends Plugin
 			.url(url)
 			.build();
 
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		okHttpClient.newCall(request).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)
@@ -284,7 +277,7 @@ public class DiscordPlugin extends Plugin
 			@Override
 			public void onResponse(Call call, Response response) throws IOException
 			{
-				try
+				try // NOPMD: UseTryWithResources
 				{
 					if (!response.isSuccessful())
 					{
@@ -358,10 +351,13 @@ public class DiscordPlugin extends Plugin
 		discordState.refresh();
 	}
 
+	private void resetState()
+	{
+		discordState.reset();
+	}
+
 	private void checkForGameStateUpdate()
 	{
-		// Game state update does also full reset of discord state
-		discordState.reset();
 		discordState.triggerEvent(client.getGameState() == GameState.LOGGED_IN
 			? DiscordGameEventType.IN_GAME
 			: DiscordGameEventType.IN_MENU);
@@ -432,6 +428,8 @@ public class DiscordPlugin extends Plugin
 			case CITIES: return config.showCityActivity();
 			case DUNGEONS: return config.showDungeonActivity();
 			case MINIGAMES: return config.showMinigameActivity();
+			case REGIONS: return config.showRegionsActivity();
+			case RAIDS: return config.showRaidingActivity();
 		}
 
 		return false;

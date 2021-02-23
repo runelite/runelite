@@ -51,13 +51,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
@@ -106,6 +107,9 @@ public class GroundItemsPlugin extends Plugin
 		private final Color color;
 	}
 
+	// The game won't send anything higher than this value to the plugin -
+	// so we replace any item quantity higher with "Lots" instead.
+	static final int MAX_QUANTITY = 65535;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
 	// Ground item menu options
@@ -178,6 +182,7 @@ public class GroundItemsPlugin extends Plugin
 	private LoadingCache<NamedQuantity, Boolean> highlightedItems;
 	private LoadingCache<NamedQuantity, Boolean> hiddenItems;
 	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
+	private int lastUsedItem;
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -192,10 +197,11 @@ public class GroundItemsPlugin extends Plugin
 		mouseManager.registerMouseListener(inputListener);
 		keyManager.registerKeyListener(inputListener);
 		executor.execute(this::reset);
+		lastUsedItem = -1;
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		mouseManager.unregisterMouseListener(inputListener);
@@ -380,8 +386,9 @@ public class GroundItemsPlugin extends Plugin
 		final int itemId = item.getId();
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final int alchPrice = Math.round(itemComposition.getPrice() * Constants.HIGH_ALCHEMY_MULTIPLIER);
+		final int alchPrice = itemComposition.getHaPrice();
 		final boolean dropped = tile.getWorldLocation().equals(client.getLocalPlayer().getWorldLocation()) && droppedItemQueue.remove(itemId);
+		final boolean table = itemId == lastUsedItem && tile.getItemLayer().getHeight() > 0;
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -392,11 +399,10 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
-			.lootType(dropped ? LootType.DROPPED : LootType.UNKNOWN)
+			.lootType(dropped ? LootType.DROPPED : (table ? LootType.TABLE : LootType.UNKNOWN))
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())
 			.build();
-
 
 		// Update item price in case it is coins
 		if (realItemId == COINS)
@@ -616,10 +622,7 @@ public class GroundItemsPlugin extends Plugin
 	private void notifyHighlightedItem(GroundItem item)
 	{
 		final boolean shouldNotifyHighlighted = config.notifyHighlightedDrops() &&
-			config.highlightedColor().equals(getHighlighted(
-				new NamedQuantity(item),
-				item.getGePrice(),
-				item.getHaPrice()));
+			TRUE.equals(highlightedItems.getUnchecked(new NamedQuantity(item)));
 
 		final boolean shouldNotifyTier = config.notifyTier() != HighlightTier.OFF &&
 			getValueByMode(item.getGePrice(), item.getHaPrice()) > config.notifyTier().getValueFromTier(config) &&
@@ -639,18 +642,15 @@ public class GroundItemsPlugin extends Plugin
 			return;
 		}
 
-		final Player local = client.getLocalPlayer();
 		final StringBuilder notificationStringBuilder = new StringBuilder()
-			.append("[")
-			.append(local.getName())
-			.append("] received a ")
+			.append("You received a ")
 			.append(dropType)
 			.append(" drop: ")
 			.append(item.getName());
 
 		if (item.getQuantity() > 1)
 		{
-			if (item.getQuantity() > (int) Character.MAX_VALUE)
+			if (item.getQuantity() >= MAX_QUANTITY)
 			{
 				notificationStringBuilder.append(" (Lots!)");
 			}
@@ -681,12 +681,28 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_DROP)
+		if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_FIFTH_OPTION)
 		{
 			int itemId = menuOptionClicked.getId();
 			// Keep a queue of recently dropped items to better detect
 			// item spawns that are drops
 			droppedItemQueue.add(itemId);
+		}
+		else if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_USE_ON_GAME_OBJECT)
+		{
+			final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			if (inventory == null)
+			{
+				return;
+			}
+
+			final Item clickedItem = inventory.getItem(menuOptionClicked.getSelectedItemIndex());
+			if (clickedItem == null)
+			{
+				return;
+			}
+
+			lastUsedItem = clickedItem.getId();
 		}
 	}
 }

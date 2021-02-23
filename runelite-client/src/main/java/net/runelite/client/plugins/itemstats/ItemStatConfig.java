@@ -136,14 +136,13 @@ public interface ItemStatConfig extends Config
 	@ConfigItem(
 		keyName = "colorBetterSomecapped",
 		name = "Better (Some capped)",
-		description = "Color to show when some stat changes are capped, but some ar not",
+		description = "Color to show when some stat changes are capped, but some are not",
 		position = 11
 	)
 	default Color colorBetterSomeCapped()
 	{
 		return new Color(0x9CEE33);
 	}
-
 
 	@ConfigItem(
 		keyName = "colorBetterCapped",
@@ -155,6 +154,7 @@ public interface ItemStatConfig extends Config
 	{
 		return new Color(0xEEEE33);
 	}
+
 	@ConfigItem(
 		keyName = "colorNoChange",
 		name = "No change",

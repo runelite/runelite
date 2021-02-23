@@ -38,17 +38,16 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -70,6 +69,7 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
 import net.runelite.http.api.hiscore.HiscoreSkillType;
 import net.runelite.http.api.hiscore.Skill;
+import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -114,19 +114,14 @@ public class HiscorePanel extends PluginPanel
 		ZALCANO, ZULRAH
 	);
 
-	private static final HiscoreEndpoint[] ENDPOINTS = new HiscoreEndpoint[] {
-		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.TOURNAMENT
+	private static final HiscoreEndpoint[] ENDPOINTS = {
+		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.LEAGUE
 	};
 
-	@Inject
-	ScheduledExecutorService executor;
-
-	@Inject
-	@Nullable
-	private Client client;
-
+	private final Client client;
 	private final HiscoreConfig config;
 	private final NameAutocompleter nameAutocompleter;
+	private final HiscoreClient hiscoreClient;
 
 	private final IconTextField searchBar;
 
@@ -136,10 +131,6 @@ public class HiscorePanel extends PluginPanel
 	/* Container of all the selectable endpoints (ironman, deadman, etc) */
 	private final MaterialTabGroup tabGroup;
 
-	private final HiscoreClient hiscoreClient = new HiscoreClient();
-
-	private HiscoreResult result;
-
 	/* The currently selected endpoint */
 	private HiscoreEndpoint selectedEndPoint;
 
@@ -147,11 +138,13 @@ public class HiscorePanel extends PluginPanel
 	private boolean loading = false;
 
 	@Inject
-	public HiscorePanel(HiscoreConfig config, NameAutocompleter nameAutocompleter)
+	public HiscorePanel(@Nullable Client client,
+		HiscoreConfig config, NameAutocompleter nameAutocompleter, OkHttpClient okHttpClient)
 	{
-		super();
+		this.client = client;
 		this.config = config;
 		this.nameAutocompleter = nameAutocompleter;
+		this.hiscoreClient = new HiscoreClient(okHttpClient);
 
 		// The layout seems to be ignoring the top margin and only gives it
 		// a 2-3 pixel margin, so I set the value to 18 to compensate
@@ -175,7 +168,7 @@ public class HiscorePanel extends PluginPanel
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.setMinimumSize(new Dimension(0, 30));
-		searchBar.addActionListener(e -> executor.execute(this::lookup));
+		searchBar.addActionListener(e -> lookup());
 		searchBar.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -198,6 +191,12 @@ public class HiscorePanel extends PluginPanel
 				}
 			}
 		});
+		searchBar.addClearListener(() ->
+		{
+			searchBar.setIcon(IconTextField.Icon.SEARCH);
+			searchBar.setEditable(true);
+			loading = false;
+		});
 
 		add(searchBar, c);
 		c.gridy++;
@@ -207,7 +206,7 @@ public class HiscorePanel extends PluginPanel
 
 		for (HiscoreEndpoint endpoint : ENDPOINTS)
 		{
-			final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), endpoint.name().toLowerCase() + ".png");
+			final BufferedImage iconImage = ImageUtil.loadImageResource(getClass(), endpoint.name().toLowerCase() + ".png");
 
 			MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), tabGroup, null);
 			tab.setToolTipText(endpoint.getName() + " Hiscores");
@@ -235,7 +234,7 @@ public class HiscorePanel extends PluginPanel
 						return;
 					}
 
-					executor.execute(HiscorePanel.this::lookup);
+					lookup();
 				}
 			});
 
@@ -283,6 +282,7 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.add(makeHiscorePanel(CLUE_SCROLL_ALL));
 		minigamePanel.add(makeHiscorePanel(LEAGUE_POINTS));
 		minigamePanel.add(makeHiscorePanel(LAST_MAN_STANDING));
+		minigamePanel.add(makeHiscorePanel(SOUL_WARS_ZEAL));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_HUNTER));
 
@@ -324,6 +324,7 @@ public class HiscorePanel extends PluginPanel
 		HiscoreSkillType skillType = skill == null ? HiscoreSkillType.SKILL : skill.getType();
 
 		JLabel label = new JLabel();
+		label.setToolTipText(skill == null ? "Combat" : skill.getName());
 		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setText(pad("--", skillType));
 
@@ -345,9 +346,9 @@ public class HiscorePanel extends PluginPanel
 		String skillIcon = directory + skillName + ".png";
 		log.debug("Loading skill icon from {}", skillIcon);
 
-		label.setIcon(new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(), skillIcon)));
+		label.setIcon(new ImageIcon(ImageUtil.loadImageResource(getClass(), skillIcon)));
 
-		boolean totalLabel = skill == HiscoreSkill.OVERALL || skill == null; //overall or combat
+		boolean totalLabel = skill == OVERALL || skill == null; //overall or combat
 		label.setIconTextGap(totalLabel ? 10 : 4);
 
 		JPanel skillPanel = new JPanel();
@@ -363,14 +364,12 @@ public class HiscorePanel extends PluginPanel
 	{
 		searchBar.setText(username);
 		resetEndpoints();
-		executor.execute(this::lookup);
+		lookup();
 	}
 
 	private void lookup()
 	{
-		String lookup = searchBar.getText();
-
-		lookup = sanitize(lookup);
+		final String lookup = sanitize(searchBar.getText());
 
 		if (Strings.isNullOrEmpty(lookup))
 		{
@@ -396,7 +395,7 @@ public class HiscorePanel extends PluginPanel
 			HiscoreSkillType skillType = skill == null ? HiscoreSkillType.SKILL : skill.getType();
 
 			label.setText(pad("--", skillType));
-			label.setToolTipText(null);
+			label.setToolTipText(skill == null ? "Combat" : skill.getName());
 		}
 
 		// if for some reason no endpoint was selected, default to normal
@@ -405,32 +404,40 @@ public class HiscorePanel extends PluginPanel
 			selectedEndPoint = HiscoreEndpoint.NORMAL;
 		}
 
-		try
-		{
-			log.debug("Hiscore endpoint " + selectedEndPoint.name() + " selected");
-			result = hiscoreClient.lookup(lookup, selectedEndPoint);
-		}
-		catch (IOException ex)
-		{
-			log.warn("Error fetching Hiscore data " + ex.getMessage());
-			searchBar.setIcon(IconTextField.Icon.ERROR);
-			searchBar.setEditable(true);
-			loading = false;
-			return;
-		}
+		hiscoreClient.lookupAsync(lookup, selectedEndPoint).whenCompleteAsync((result, ex) ->
+			SwingUtilities.invokeLater(() ->
+			{
+				if (!sanitize(searchBar.getText()).equals(lookup))
+				{
+					// search has changed in the meantime
+					return;
+				}
 
-		if (result == null)
-		{
-			searchBar.setIcon(IconTextField.Icon.ERROR);
-			searchBar.setEditable(true);
-			loading = false;
-			return;
-		}
+				if (result == null || ex != null)
+				{
+					if (ex != null)
+					{
+						log.warn("Error fetching Hiscore data " + ex.getMessage());
+					}
 
-		//successful player search
-		searchBar.setIcon(IconTextField.Icon.SEARCH);
-		searchBar.setEditable(true);
-		loading = false;
+					searchBar.setIcon(IconTextField.Icon.ERROR);
+					searchBar.setEditable(true);
+					loading = false;
+					return;
+				}
+
+				//successful player search
+				searchBar.setIcon(IconTextField.Icon.SEARCH);
+				searchBar.setEditable(true);
+				loading = false;
+
+				applyHiscoreResult(result);
+			}));
+	}
+
+	private void applyHiscoreResult(HiscoreResult result)
+	{
+		assert SwingUtilities.isEventDispatchThread();
 
 		nameAutocompleter.addToSearchHistory(result.getPlayer().toLowerCase());
 
@@ -519,7 +526,7 @@ public class HiscorePanel extends PluginPanel
 				+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
 				+ result.getRanged().getExperience() + result.getPrayer().getExperience();
 
-			content += "<p><span style = 'color:white'>Skill:</span> Combat</p>";
+			content += "<p><span style = 'color:white'>Combat</span></p>";
 			content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + QuantityFormatter.formatNumber(combatLevel) + "</p>";
 			content += "<p><span style = 'color:white'>Experience:</span> " + QuantityFormatter.formatNumber(combatExperience) + "</p>";
 		}
@@ -543,6 +550,7 @@ public class HiscorePanel extends PluginPanel
 					String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollHard().getLevel()));
 					String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollElite().getLevel()));
 					String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
+					content += "<p><span style = 'color:white'>Clues</span></p>";
 					content += "<p><span style = 'color:white'>All:</span> " + all + " <span style = 'color:white'>Rank:</span> " + allRank + "</p>";
 					content += "<p><span style = 'color:white'>Beginner:</span> " + beginner + " <span style = 'color:white'>Rank:</span> " + beginnerRank + "</p>";
 					content += "<p><span style = 'color:white'>Easy:</span> " + easy + " <span style = 'color:white'>Rank:</span> " + easyRank + "</p>";
@@ -556,6 +564,7 @@ public class HiscorePanel extends PluginPanel
 				{
 					Skill bountyHunterRogue = result.getBountyHunterRogue();
 					String rank = (bountyHunterRogue.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterRogue.getRank());
+					content += "<p><span style = 'color:white'>Bounty Hunter - Rogue</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					if (bountyHunterRogue.getLevel() > -1)
 					{
@@ -567,6 +576,7 @@ public class HiscorePanel extends PluginPanel
 				{
 					Skill bountyHunterHunter = result.getBountyHunterHunter();
 					String rank = (bountyHunterHunter.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterHunter.getRank());
+					content += "<p><span style = 'color:white'>Bounty Hunter - Hunter</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					if (bountyHunterHunter.getLevel() > -1)
 					{
@@ -578,6 +588,7 @@ public class HiscorePanel extends PluginPanel
 				{
 					Skill lastManStanding = result.getLastManStanding();
 					String rank = (lastManStanding.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(lastManStanding.getRank());
+					content += "<p><span style = 'color:white'>Last Man Standing</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					if (lastManStanding.getLevel() > -1)
 					{
@@ -585,10 +596,23 @@ public class HiscorePanel extends PluginPanel
 					}
 					break;
 				}
+				case SOUL_WARS_ZEAL:
+				{
+					Skill soulWarsZeal = result.getSoulWarsZeal();
+					String rank = (soulWarsZeal.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(soulWarsZeal.getRank());
+					content += "<p><span style = 'color:white'>Soul Wars Zeal</span></p>";
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					if (soulWarsZeal.getLevel() > -1)
+					{
+						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(soulWarsZeal.getLevel()) + "</p>";
+					}
+					break;
+				}
 				case LEAGUE_POINTS:
 				{
 					Skill leaguePoints = result.getLeaguePoints();
 					String rank = (leaguePoints.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(leaguePoints.getRank());
+					content += "<p><span style = 'color:white'>League Points</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					if (leaguePoints.getLevel() > -1)
 					{
@@ -601,7 +625,7 @@ public class HiscorePanel extends PluginPanel
 					Skill requestedSkill = result.getSkill(skill);
 					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getRank());
 					String exp = (requestedSkill.getExperience() == -1L) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getExperience());
-					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
+					content += "<p><span style = 'color:white'>" + skill.getName() + "</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
 					break;
@@ -610,17 +634,27 @@ public class HiscorePanel extends PluginPanel
 				{
 					if (skill.getType() == HiscoreSkillType.BOSS)
 					{
-						Skill requestedSkill = result.getSkill(skill);
 						String rank = "Unranked";
-						String lvl = "0";
+						String lvl = null;
+						Skill requestedSkill = result.getSkill(skill);
 						if (requestedSkill != null)
 						{
-							rank = (requestedSkill.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getRank());
-							lvl = (requestedSkill.getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(requestedSkill.getLevel()));
+							if (requestedSkill.getRank() > -1)
+							{
+								rank = QuantityFormatter.formatNumber(requestedSkill.getRank());
+							}
+							if (requestedSkill.getLevel() > -1)
+							{
+								lvl = QuantityFormatter.formatNumber(requestedSkill.getLevel());
+							}
 						}
+
 						content += "<p><span style = 'color:white'>Boss:</span> " + skill.getName() + "</p>";
 						content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-						content += "<p><span style = 'color:white'>KC:</span> " + lvl + "</p>";
+						if (lvl != null)
+						{
+							content += "<p><span style = 'color:white'>KC:</span> " + lvl + "</p>";
+						}
 					}
 					else
 					{

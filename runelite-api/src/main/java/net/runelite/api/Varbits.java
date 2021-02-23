@@ -356,7 +356,9 @@ public enum Varbits
 	/**
 	 * Pyramid plunder
 	 */
+	PYRAMID_PLUNDER_ROOM_LOCATION(2365),
 	PYRAMID_PLUNDER_TIMER(2375),
+	PYRAMID_PLUNDER_THIEVING_LEVEL(2376),
 	PYRAMID_PLUNDER_ROOM(2377),
 
 	/**
@@ -437,6 +439,7 @@ public enum Varbits
 	FARMING_7909(7909),
 	FARMING_7910(7910),
 	FARMING_7911(7911),
+	FARMING_7912(7912),
 
 	/**
 	 * Transmog controllers for grapes
@@ -560,13 +563,30 @@ public enum Varbits
 	WINTERTODT_TIMER(7980),
 
 	/**
-	 * Twisted league
+	 * League relics
 	 */
-	TWISTED_LEAGUE_RELIC_1(10049),
-	TWISTED_LEAGUE_RELIC_2(10050),
-	TWISTED_LEAGUE_RELIC_3(10051),
-	TWISTED_LEAGUE_RELIC_4(10052),
-	TWISTED_LEAGUE_RELIC_5(10053),
+	LEAGUE_RELIC_1(10049),
+	LEAGUE_RELIC_2(10050),
+	LEAGUE_RELIC_3(10051),
+	LEAGUE_RELIC_4(10052),
+	LEAGUE_RELIC_5(10053),
+	LEAGUE_RELIC_6(11696),
+
+	/**
+	 * Muted volume restore values
+	 */
+	MUTED_MUSIC_VOLUME(9666),
+	MUTED_SOUND_EFFECT_VOLUME(9674),
+	MUTED_AREA_EFFECT_VOLUME(9675),
+
+	/**
+	 * Parasite infection status during nightmare of ashihama bossfight
+	 *
+	 * 0 = not infected
+	 * 1 = infected
+	 *
+	 */
+	PARASITE(10151),
 
 	/**
 	 * Whether the Special Attack orb is disabled due to being in a PvP area

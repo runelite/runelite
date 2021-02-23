@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -40,10 +41,12 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.LinkBrowser;
 import okhttp3.HttpUrl;
@@ -79,8 +82,9 @@ class XpPanel extends PluginPanel
 		overallPanel.setVisible(false); // this will only become visible when the player gets exp
 
 		// Create open xp tracker menu
-		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
-		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), Skill.OVERALL)));
+		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
+		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
+			client.getLocalPlayer(), Skill.OVERALL, client.getWorldType().contains(WorldType.LEAGUE))));
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
@@ -120,9 +124,8 @@ class XpPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
+		final JComponent infoBoxPanel = new DragAndDropReorderPane();
 
-		final JPanel infoBoxPanel = new JPanel();
-		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(infoBoxPanel);
 
@@ -139,22 +142,24 @@ class XpPanel extends PluginPanel
 		add(errorPanel);
 	}
 
-	static String buildXpTrackerUrl(final Actor player, final Skill skill)
+	static String buildXpTrackerUrl(final Actor player, final Skill skill, boolean leagueWorld)
 	{
 		if (player == null)
 		{
 			return "";
 		}
 
+		final String host = leagueWorld ? "trailblazer.wiseoldman.net" : "wiseoldman.net";
+
 		return new HttpUrl.Builder()
 			.scheme("https")
-			.host("runelite.net")
-			.addPathSegment("xp")
-			.addPathSegment("show")
-			.addPathSegment(skill.getName().toLowerCase())
+			.host(host)
+			.addPathSegment("players")
 			.addPathSegment(player.getName())
-			.addPathSegment("1week")
-			.addPathSegment("now")
+			.addPathSegment("gained")
+			.addPathSegment("skilling")
+			.addQueryParameter("metric", skill.getName().toLowerCase())
+			.addQueryParameter("period", "week")
 			.build()
 			.toString();
 	}

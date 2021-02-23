@@ -24,17 +24,25 @@
  */
 package net.runelite.client.ui;
 
-import javax.swing.text.StyleContext;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
+import javax.swing.text.StyleContext;
+import lombok.Getter;
 
 public class FontManager
 {
+	@Getter
 	private static final Font runescapeFont;
+	@Getter
 	private static final Font runescapeSmallFont;
+	@Getter
 	private static final Font runescapeBoldFont;
+	@Getter
+	private static final Font defaultFont;
+	@Getter
+	private static final Font defaultBoldFont;
 
 	static
 	{
@@ -48,7 +56,7 @@ public class FontManager
 			ge.registerFont(font);
 
 			runescapeFont = StyleContext.getDefaultStyleContext()
-					.getFont(font.getName(), Font.PLAIN, 16);
+				.getFont(font.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeFont);
 
 			Font smallFont = Font.createFont(Font.TRUETYPE_FONT,
@@ -57,16 +65,16 @@ public class FontManager
 			ge.registerFont(smallFont);
 
 			runescapeSmallFont = StyleContext.getDefaultStyleContext()
-					.getFont(smallFont.getName(), Font.PLAIN, 16);
+				.getFont(smallFont.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeSmallFont);
 
 			Font boldFont = Font.createFont(Font.TRUETYPE_FONT,
-					FontManager.class.getResourceAsStream("runescape_bold.ttf"))
-					.deriveFont(Font.BOLD, 16);
+				FontManager.class.getResourceAsStream("runescape_bold.ttf"))
+				.deriveFont(Font.BOLD, 16);
 			ge.registerFont(boldFont);
 
 			runescapeBoldFont = StyleContext.getDefaultStyleContext()
-					.getFont(boldFont.getName(), Font.BOLD, 16);
+				.getFont(boldFont.getName(), Font.BOLD, 16);
 			ge.registerFont(runescapeBoldFont);
 		}
 		catch (FontFormatException ex)
@@ -77,20 +85,8 @@ public class FontManager
 		{
 			throw new RuntimeException("Font file not found.", ex);
 		}
-	}
 
-	public static Font getRunescapeFont()
-	{
-		return runescapeFont;
-	}
-
-	public static Font getRunescapeSmallFont()
-	{
-		return runescapeSmallFont;
-	}
-
-	public static Font getRunescapeBoldFont()
-	{
-		return runescapeBoldFont;
+		defaultFont = new Font(Font.DIALOG, Font.PLAIN, 16);
+		defaultBoldFont = new Font(Font.DIALOG, Font.BOLD, 16);
 	}
 }

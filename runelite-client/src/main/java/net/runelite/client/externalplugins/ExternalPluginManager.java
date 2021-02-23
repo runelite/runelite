@@ -40,10 +40,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -63,8 +66,8 @@ import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.util.CountingInputStream;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.VerificationException;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -76,19 +79,36 @@ public class ExternalPluginManager
 	private static Class<? extends Plugin>[] builtinExternals = null;
 
 	@Inject
-	private ConfigManager configManager;
+	@Named("safeMode")
+	private boolean safeMode;
+
+	private final ConfigManager configManager;
+	private final ExternalPluginClient externalPluginClient;
+	private final ScheduledExecutorService executor;
+	private final PluginManager pluginManager;
+	private final EventBus eventBus;
+	private final OkHttpClient okHttpClient;
 
 	@Inject
-	private ExternalPluginClient externalPluginClient;
+	private ExternalPluginManager(
+		ConfigManager configManager,
+		ExternalPluginClient externalPluginClient,
+		ScheduledExecutorService executor,
+		PluginManager pluginManager,
+		EventBus eventBus,
+		OkHttpClient okHttpClient
+	)
+	{
+		this.configManager = configManager;
+		this.externalPluginClient = externalPluginClient;
+		this.executor = executor;
+		this.pluginManager = pluginManager;
+		this.eventBus = eventBus;
+		this.okHttpClient = okHttpClient;
 
-	@Inject
-	private PluginManager pluginManager;
-
-	@Inject
-	private ScheduledExecutorService executor;
-
-	@Inject
-	private EventBus eventBus;
+		executor.scheduleWithFixedDelay(() -> externalPluginClient.submitPlugins(getInstalledExternalPlugins()),
+			new Random().nextInt(60), 180, TimeUnit.MINUTES);
+	}
 
 	public void loadExternalPlugins() throws PluginInstantiationException
 	{
@@ -115,6 +135,12 @@ public class ExternalPluginManager
 
 	private void refreshPlugins()
 	{
+		if (safeMode)
+		{
+			log.debug("External plugins are disabled in safe mode!");
+			return;
+		}
+
 		Multimap<ExternalPluginManifest, Plugin> loadedExternalPlugins = HashMultimap.create();
 		for (Plugin p : pluginManager.getPlugins())
 		{
@@ -197,7 +223,7 @@ public class ExternalPluginManager
 						.addPathSegment(manifest.getCommit() + ".jar")
 						.build();
 
-					try (Response res = RuneLiteAPI.CLIENT.newCall(new Request.Builder().url(url).build()).execute())
+					try (Response res = okHttpClient.newCall(new Request.Builder().url(url).build()).execute())
 					{
 						int fdownloaded = downloaded;
 						downloaded += manifest.getSize();

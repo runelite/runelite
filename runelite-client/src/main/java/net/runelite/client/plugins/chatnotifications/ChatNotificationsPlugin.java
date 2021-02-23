@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.chatnotifications;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import java.util.Arrays;
@@ -34,12 +35,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.Notifier;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -69,9 +71,12 @@ public class ChatNotificationsPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	@Named("runelite.title")
+	private String runeliteTitle;
+
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
-	private String usernameReplacer = "";
 	private Pattern highlightMatcher = null;
 
 	@Provides
@@ -119,8 +124,8 @@ public class ChatNotificationsPlugin extends Plugin
 				.map(this::quoteAndIgnoreColor) // regex escape and ignore nested colors in the target message
 				.collect(Collectors.joining("|"));
 			// To match <word> \b doesn't work due to <> not being in \w,
-			// so match \b or \s
-			highlightMatcher = Pattern.compile("(?:\\b|(?<=\\s))(" + joined + ")(?:\\b|(?=\\s))", Pattern.CASE_INSENSITIVE);
+			// so match \b or \s, as well as \A and \z for beginning and end of input respectively
+			highlightMatcher = Pattern.compile("(?:\\b|(?<=\\s)|\\A)(?:" + joined + ")(?:\\b|(?=\\s)|\\z)", Pattern.CASE_INSENSITIVE);
 		}
 	}
 
@@ -144,9 +149,32 @@ public class ChatNotificationsPlugin extends Plugin
 					notifier.notify(chatMessage.getMessage());
 				}
 				break;
+			case BROADCAST:
+				if (config.notifyOnBroadcast())
+				{
+					// Some broadcasts have links attached, notated by `|` followed by a number, while others contain color tags.
+					// We don't want to see either in the printed notification.
+					String broadcast = chatMessage.getMessage();
+
+					int urlTokenIndex = broadcast.lastIndexOf('|');
+					if (urlTokenIndex != -1)
+					{
+						broadcast = broadcast.substring(0, urlTokenIndex);
+					}
+
+					notifier.notify(Text.removeFormattingTags(broadcast));
+				}
+				break;
+			case PRIVATECHAT:
+			case MODPRIVATECHAT:
+				if (config.notifyOnPM())
+				{
+					notifier.notify(Text.removeTags(chatMessage.getName()) + ": " + chatMessage.getMessage());
+				}
+				break;
 			case CONSOLE:
 				// Don't notify for notification messages
-				if (chatMessage.getName().equals(RuneLiteProperties.getTitle()))
+				if (chatMessage.getName().equals(runeliteTitle))
 				{
 					return;
 				}
@@ -160,18 +188,25 @@ public class ChatNotificationsPlugin extends Plugin
 				.map(s -> s.isEmpty() ? "" : Pattern.quote(s))
 				.collect(Collectors.joining("[\u00a0\u0020]")); // space or nbsp
 			usernameMatcher = Pattern.compile("\\b" + pattern + "\\b", Pattern.CASE_INSENSITIVE);
-			usernameReplacer = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u><col" + ChatColorType.NORMAL.name() + ">";
 		}
 
 		if (config.highlightOwnName() && usernameMatcher != null)
 		{
-			Matcher matcher = usernameMatcher.matcher(messageNode.getValue());
+			final String message = messageNode.getValue();
+			Matcher matcher = usernameMatcher.matcher(message);
 			if (matcher.find())
 			{
-				messageNode.setValue(matcher.replaceAll(usernameReplacer));
+				final int start = matcher.start();
+				final String username = client.getLocalPlayer().getName();
+				final String closeColor = MoreObjects.firstNonNull(getLastColor(message.substring(0, start)), "</col>");
+				final String replacement = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u>" + closeColor;
+				messageNode.setValue(matcher.replaceAll(replacement));
 				update = true;
-
-				if (config.notifyOnOwnName())
+				if (config.notifyOnOwnName() && (chatMessage.getType() == ChatMessageType.PUBLICCHAT
+					|| chatMessage.getType() == ChatMessageType.PRIVATECHAT
+					|| chatMessage.getType() == ChatMessageType.FRIENDSCHAT
+					|| chatMessage.getType() == ChatMessageType.MODCHAT
+					|| chatMessage.getType() == ChatMessageType.MODPRIVATECHAT))
 				{
 					sendNotification(chatMessage);
 				}

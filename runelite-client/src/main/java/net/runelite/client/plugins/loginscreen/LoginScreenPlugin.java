@@ -184,6 +184,12 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	}
 
 	@Override
+	public boolean isEnabledOnLoginScreen()
+	{
+		return true;
+	}
+
+	@Override
 	public void keyTyped(KeyEvent e)
 	{
 	}
@@ -302,7 +308,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		try
 		{
 			log.debug("Loading: {}", file);
-			BufferedImage image = ImageUtil.getResourceStreamFromClass(this.getClass(), file);
+			BufferedImage image = ImageUtil.loadImageResource(this.getClass(), file);
 			return ImageUtil.getImageSpritePixels(image, client);
 		}
 		catch (RuntimeException ex)

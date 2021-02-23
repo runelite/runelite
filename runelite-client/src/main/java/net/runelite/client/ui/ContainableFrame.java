@@ -24,12 +24,23 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.util.Arrays;
+import java.util.Comparator;
 import javax.swing.JFrame;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ExpandResizeType;
+import net.runelite.client.util.OSType;
 
+@Slf4j
 public class ContainableFrame extends JFrame
 {
 	public enum Mode
@@ -40,6 +51,38 @@ public class ContainableFrame extends JFrame
 	}
 
 	private static final int SCREEN_EDGE_CLOSE_DISTANCE = 40;
+	private static boolean jdk8231564;
+
+	static
+	{
+		try
+		{
+			String javaVersion = System.getProperty("java.version");
+			jdk8231564 = jdk8231564(javaVersion);
+		}
+		catch (Exception ex)
+		{
+			log.error("error checking java version", ex);
+		}
+	}
+
+	@VisibleForTesting
+	static boolean jdk8231564(String javaVersion)
+	{
+		int idx = javaVersion.indexOf('_');
+		if (idx != -1)
+		{
+			javaVersion = javaVersion.substring(0, idx);
+		}
+		String[] s = javaVersion.split("\\.");
+		int major = Integer.parseInt(s[0]), minor = Integer.parseInt(s[1]), patch = Integer.parseInt(s[2]);
+		if (major == 12 || major == 13 || major == 14)
+		{
+			// These versions are since EOL & do not include JDK-8231564
+			return false;
+		}
+		return major > 11 || (major == 11 && minor > 0) || (major == 11 && minor == 0 && patch >= 8);
+	}
 
 	@Setter
 	private ExpandResizeType expandResizeType;
@@ -184,6 +227,97 @@ public class ContainableFrame extends JFrame
 
 		setBounds(newWindowX, getY(), newWindowWidth, getHeight());
 		expandedClientOppositeDirection = false;
+	}
+
+	/**
+	 * Due to Java bug JDK-4737788, maximizing an undecorated frame causes it to cover the taskbar.
+	 * As a workaround, Substance calls this method when the window is maximized to manually set the
+	 * bounds, but its calculation ignores high-DPI scaling. We're overriding it to correctly calculate
+	 * the maximized bounds.
+	 */
+	@Override
+	public void setMaximizedBounds(Rectangle bounds)
+	{
+		if (OSType.getOSType() == OSType.MacOS)
+		{
+			// OSX seems to correctly handle DPI scaling already
+			super.setMaximizedBounds(bounds);
+		}
+		else
+		{
+			super.setMaximizedBounds(getWindowAreaBounds());
+		}
+	}
+
+	/**
+	 * Finds the {@link GraphicsConfiguration} of the display the window is currently on. If it's on more than
+	 * one screen, returns the one it's most on (largest area of intersection)
+	 */
+	private GraphicsConfiguration getCurrentDisplayConfiguration()
+	{
+		return Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
+			.map(GraphicsDevice::getDefaultConfiguration)
+			.max(Comparator.comparing(config ->
+			{
+				Rectangle intersection = config.getBounds().intersection(getBounds());
+				return intersection.width * intersection.height;
+			}))
+			.orElseGet(this::getGraphicsConfiguration);
+	}
+
+	/**
+	 * Calculates the bounds of the window area of the screen.
+	 * <p>
+	 * The bounds returned by {@link GraphicsEnvironment#getMaximumWindowBounds} are incorrectly calculated on
+	 * high-DPI screens.
+	 */
+	private Rectangle getWindowAreaBounds()
+	{
+		log.trace("Current bounds: {}", getBounds());
+		for (GraphicsDevice device : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
+		{
+			log.trace("Device: {} bounds {}", device, device.getDefaultConfiguration().getBounds());
+		}
+
+		GraphicsConfiguration config = getCurrentDisplayConfiguration();
+		// get screen bounds
+		Rectangle bounds = config.getBounds();
+		log.trace("Chosen device: {} bounds {}", config, bounds);
+
+		// transform bounds to dpi-independent coordinates
+		if (!jdk8231564)
+		{
+			// JDK-8231564 fixed setMaximizedBounds to scale the bounds, so this must only be done on <11.0.8
+			bounds = config.getDefaultTransform().createTransformedShape(bounds).getBounds();
+			log.trace("Transformed bounds {}", bounds);
+		}
+
+		// subtract insets (taskbar, etc.)
+		Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(config);
+		if (!jdk8231564)
+		{
+			// Prior to JDK-8231564, WFramePeer expects the bounds to be relative to the current monitor instead of the
+			// primary display.
+			bounds.x = bounds.y = 0;
+		}
+		else
+		{
+			// The insets from getScreenInsets are not scaled, we must convert them to DPI scaled pixels on 11.0.8 due
+			// to JDK-8231564 which expects the bounds to be in DPI-aware pixels.
+			double scaleX = config.getDefaultTransform().getScaleX();
+			double scaleY = config.getDefaultTransform().getScaleY();
+			insets.top /= scaleY;
+			insets.bottom /= scaleY;
+			insets.left /= scaleX;
+			insets.right /= scaleX;
+		}
+		bounds.x += insets.left;
+		bounds.y += insets.top;
+		bounds.height -= (insets.bottom + insets.top);
+		bounds.width -= (insets.right + insets.left);
+
+		log.trace("Final bounds: {}", bounds);
+		return bounds;
 	}
 
 	/**

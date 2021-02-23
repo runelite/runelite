@@ -52,7 +52,7 @@ public interface RegenMeterConfig extends Config
 
 	@ConfigItem(
 		keyName = "showWhenNoChange",
-		name = "Show hitpoints regen at full hitpoints",
+		name = "Show at full hitpoints",
 		description = "Always show the hitpoints regen orb, even if there will be no stat change")
 	default boolean showWhenNoChange()
 	{
@@ -61,7 +61,7 @@ public interface RegenMeterConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyBeforeHpRegenDuration",
-		name = "Hitpoint Regen Notification",
+		name = "Hitpoint Notification",
 		description = "Notify approximately when your next hitpoint is about to regen. A value of 0 will disable notification."
 	)
 	@Units(Units.SECONDS)

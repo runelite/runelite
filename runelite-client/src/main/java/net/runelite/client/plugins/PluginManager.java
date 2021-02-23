@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -88,10 +87,10 @@ public class PluginManager
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
 
 	private final boolean developerMode;
+	private final boolean safeMode;
 	private final EventBus eventBus;
 	private final Scheduler scheduler;
 	private final ConfigManager configManager;
-	private final ScheduledExecutorService executor;
 	private final Provider<GameEventManager> sceneTileManager;
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
@@ -103,17 +102,17 @@ public class PluginManager
 	@VisibleForTesting
 	PluginManager(
 		@Named("developerMode") final boolean developerMode,
+		@Named("safeMode") final boolean safeMode,
 		final EventBus eventBus,
 		final Scheduler scheduler,
 		final ConfigManager configManager,
-		final ScheduledExecutorService executor,
 		final Provider<GameEventManager> sceneTileManager)
 	{
 		this.developerMode = developerMode;
+		this.safeMode = safeMode;
 		this.eventBus = eventBus;
 		this.scheduler = scheduler;
 		this.configManager = configManager;
-		this.executor = executor;
 		this.sceneTileManager = sceneTileManager;
 	}
 
@@ -306,6 +305,14 @@ public class PluginManager
 
 			if (pluginDescriptor.developerPlugin() && !developerMode)
 			{
+				continue;
+			}
+
+			if (safeMode && !pluginDescriptor.loadInSafeMode())
+			{
+				log.debug("Disabling {} due to safe mode", clazz);
+				// also disable the plugin from autostarting later
+				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME, clazz.getSimpleName().toLowerCase());
 				continue;
 			}
 
@@ -514,7 +521,6 @@ public class PluginManager
 				binder.install(plugin);
 			};
 			Injector pluginInjector = parent.createChildInjector(pluginModule);
-			pluginInjector.injectMembers(plugin);
 			plugin.injector = pluginInjector;
 		}
 		catch (CreationException ex)

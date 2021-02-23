@@ -43,6 +43,7 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -89,9 +90,6 @@ public class CorpPlugin extends Plugin
 
 	@Inject
 	private CoreOverlay coreOverlay;
-
-	@Inject
-	private CorpConfig config;
 
 	@Provides
 	CorpConfig getConfig(ConfigManager configManager)
@@ -194,12 +192,6 @@ public class CorpPlugin extends Plugin
 			return;
 		}
 
-		int myDamage = client.getVar(Varbits.CORP_DAMAGE);
-		// sometimes hitsplats are applied after the damage counter has been reset
-		if (myDamage > 0)
-		{
-			yourDamage = myDamage;
-		}
 		totalDamage += hitsplatApplied.getHitsplat().getAmount();
 	}
 
@@ -215,5 +207,19 @@ public class CorpPlugin extends Plugin
 		}
 
 		players.add(source);
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varbitChanged)
+	{
+		if (corp != null)
+		{
+			int myDamage = client.getVar(Varbits.CORP_DAMAGE);
+			// avoid resetting our counter when the client's is reset
+			if (myDamage > 0)
+			{
+				yourDamage = myDamage;
+			}
+		}
 	}
 }

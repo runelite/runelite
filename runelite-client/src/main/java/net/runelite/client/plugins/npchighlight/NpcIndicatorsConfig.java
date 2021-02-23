@@ -25,26 +25,60 @@
 package net.runelite.client.plugins.npchighlight;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("npcindicators")
 public interface NpcIndicatorsConfig extends Config
 {
+	@ConfigSection(
+		name = "Render style",
+		description = "The render style of NPC highlighting",
+		position = 0
+	)
+	String renderStyleSection = "renderStyleSection";
+
 	@ConfigItem(
 		position = 0,
-		keyName = "highlightStyle",
-		name = "Highlight Style",
-		description = "Highlight setting"
+		keyName = "highlightHull",
+		name = "Highlight hull",
+		description = "Configures whether or not NPC should be highlighted by hull",
+		section = renderStyleSection
 	)
-	default RenderStyle renderStyle()
+	default boolean highlightHull()
 	{
-		return RenderStyle.HULL;
+		return true;
 	}
 
 	@ConfigItem(
 		position = 1,
+		keyName = "highlightTile",
+		name = "Highlight tile",
+		description = "Configures whether or not NPC should be highlighted by tile",
+		section = renderStyleSection
+	)
+	default boolean highlightTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "highlightSouthWestTile",
+		name = "Highlight south west tile",
+		description = "Configures whether or not NPC should be highlighted by south western tile",
+		section = renderStyleSection
+	)
+	default boolean highlightSouthWestTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 3,
 		keyName = "npcToHighlight",
 		name = "NPCs to Highlight",
 		description = "List of NPC names to highlight"
@@ -55,7 +89,15 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		keyName = "npcToHighlight",
+		name = "",
+		description = ""
+	)
+	void setNpcToHighlight(String npcsToHighlight);
+
+	@Alpha
+	@ConfigItem(
+		position = 4,
 		keyName = "npcColor",
 		name = "Highlight Color",
 		description = "Color of the NPC highlight"
@@ -66,7 +108,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 5,
 		keyName = "drawNames",
 		name = "Draw names above NPC",
 		description = "Configures whether or not NPC names should be drawn above the NPC"
@@ -77,7 +119,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 6,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not NPC names should be drawn on the minimap"
@@ -88,7 +130,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 7,
 		keyName = "highlightMenuNames",
 		name = "Highlight menu names",
 		description = "Highlight NPC names in right click menu"
@@ -99,18 +141,26 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
-		keyName = "highlightDeadNPCs",
-		name = "Highlight dead NPCs",
-		description = "Highlight dead NPCs"
+		position = 8,
+		keyName = "ignoreDeadNpcs",
+		name = "Ignore dead NPCs",
+		description = "Prevents highlighting NPCs after they are dead"
 	)
-	default boolean highlightDeadNpcs()
+	default boolean ignoreDeadNpcs()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 9,
+		keyName = "deadNpcMenuColor",
+		name = "Dead NPC menu color",
+		description = "Color of the NPC menus for dead NPCs"
+	)
+	Color deadNpcMenuColor();
+
+	@ConfigItem(
+		position = 10,
 		keyName = "showRespawnTimer",
 		name = "Show respawn timer",
 		description = "Show respawn timer of tagged NPCs")

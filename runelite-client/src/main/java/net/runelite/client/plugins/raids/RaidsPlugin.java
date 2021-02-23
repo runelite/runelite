@@ -49,10 +49,9 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NullObjectID;
@@ -67,8 +66,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
@@ -77,20 +74,21 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.raids.events.RaidReset;
+import net.runelite.client.plugins.raids.events.RaidScouted;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.Text;
@@ -105,7 +103,7 @@ import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
 	description = "Show helpful information for the Chambers of Xeric raid",
-	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses"}
+	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -171,25 +169,25 @@ public class RaidsPlugin extends Plugin
 	private ScheduledExecutorService scheduledExecutorService;
 
 	@Inject
-	private ItemManager itemManager;
-
-	@Inject
 	private KeyManager keyManager;
 
 	@Inject
 	private ImageCapture imageCapture;
 
-	@Getter
-	private final Set<String> roomWhitelist = new HashSet<String>();
+	@Inject
+	private EventBus eventBus;
 
 	@Getter
-	private final Set<String> roomBlacklist = new HashSet<String>();
+	private final Set<String> roomWhitelist = new HashSet<>();
 
 	@Getter
-	private final Set<String> rotationWhitelist = new HashSet<String>();
+	private final Set<String> roomBlacklist = new HashSet<>();
 
 	@Getter
-	private final Set<String> layoutWhitelist = new HashSet<String>();
+	private final Set<String> rotationWhitelist = new HashSet<>();
+
+	@Getter
+	private final Set<String> layoutWhitelist = new HashSet<>();
 
 	@Setter(AccessLevel.PACKAGE) // for the test
 	@Getter
@@ -201,14 +199,12 @@ public class RaidsPlugin extends Plugin
 
 	/*
 	 * if the player is in a raid party or not
-	 * This will be set when someone in the clan chat clicks the "make party" button on the raids widget
-	 * It will change again when someone from your clan enters the raid to generate it
+	 * This will be set when someone in the friends chat clicks the "make party" button on the raids widget
+	 * It will change again when someone from your friends chat enters the raid to generate it
 	 * It will be reset when the raid starts but not if they leave the raid while it has not started yet
 	 */
 	@Getter
 	private int raidPartyID;
-
-	private boolean chestOpened;
 	private RaidsTimer timer;
 	boolean checkInRaid;
 	private boolean loggedIn;
@@ -241,6 +237,7 @@ public class RaidsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(LAYOUT_COMMAND);
 		overlayManager.remove(overlay);
 		infoBoxManager.removeInfoBox(timer);
+		timer = null;
 		inRaidChambers = false;
 		reset();
 		keyManager.unregisterKeyListener(screenshotHotkeyListener);
@@ -261,44 +258,6 @@ public class RaidsPlugin extends Plugin
 		}
 
 		updateLists();
-	}
-
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		if (event.getGroupId() != WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID ||
-			!config.showLootValue() ||
-			chestOpened)
-		{
-			return;
-		}
-
-		chestOpened = true;
-
-		ItemContainer rewardItemContainer = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
-		if (rewardItemContainer == null)
-		{
-			return;
-		}
-
-		long totalValue = Arrays.stream(rewardItemContainer.getItems())
-			.filter(item -> item.getId() > -1)
-			.mapToLong(item -> (long) itemManager.getItemPrice(item.getId()) * item.getQuantity())
-			.sum();
-
-		String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append("Your loot is worth around ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(QuantityFormatter.formatNumber(totalValue))
-			.append(ChatColorType.NORMAL)
-			.append(" coins.")
-			.build();
-
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-			.runeLiteFormattedMessage(chatMessage)
-			.build());
 	}
 
 	@Subscribe
@@ -342,7 +301,7 @@ public class RaidsPlugin extends Plugin
 
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(this, Instant.now());
+				timer = new RaidsTimer(this, Instant.now(), config);
 				spriteManager.getSpriteAsync(TAB_QUESTS_BROWN_RAIDING_PARTY, 0, timer);
 				infoBoxManager.addInfoBox(timer);
 			}
@@ -476,7 +435,6 @@ public class RaidsPlugin extends Plugin
 		updateInfoBoxState();
 		boolean firstSolve = (raid == null);
 		raid = buildRaid(raid);
-		chestOpened = false;
 
 		if (raid == null)
 		{
@@ -506,6 +464,8 @@ public class RaidsPlugin extends Plugin
 		{
 			sendRaidLayoutMessage();
 		}
+
+		eventBus.post(new RaidScouted(raid, firstSolve));
 	}
 
 	private void sendRaidLayoutMessage()
@@ -540,25 +500,9 @@ public class RaidsPlugin extends Plugin
 
 	private void updateInfoBoxState()
 	{
-		if (timer == null)
-		{
-			return;
-		}
-
-		if (inRaidChambers && config.raidsTimer())
-		{
-			if (!infoBoxManager.getInfoBoxes().contains(timer))
-			{
-				infoBoxManager.addInfoBox(timer);
-			}
-		}
-		else
+		if (timer != null && !inRaidChambers)
 		{
 			infoBoxManager.removeInfoBox(timer);
-		}
-
-		if (!inRaidChambers)
-		{
 			timer = null;
 		}
 	}
@@ -643,9 +587,16 @@ public class RaidsPlugin extends Plugin
 				return null;
 			}
 
+			Integer lobbyIndex = findLobbyIndex(gridBase);
+
+			if (lobbyIndex == null)
+			{
+				return null;
+			}
+
 			raid = new Raid(
 				new WorldPoint(client.getBaseX() + gridBase.getX(), client.getBaseY() + gridBase.getY(), LOBBY_PLANE),
-				findLobbyIndex(gridBase)
+				lobbyIndex
 			);
 		}
 
@@ -951,8 +902,22 @@ public class RaidsPlugin extends Plugin
 	 *     0 1 2 3
 	 *     4 5 6 7
 	 */
-	private int findLobbyIndex(Point gridBase)
+	private Integer findLobbyIndex(Point gridBase)
 	{
+		/*
+		 * If the room to the right of the starting room can't be seen then return null
+		 * This should only happen if the user turns on the raid plugin while already inside of a raid and not in the
+		 * starting location
+		 *
+		 * The player should always be able to see both rows of rooms (on the y axis) so the second check is not needed
+		 * but is included to be safe
+		 */
+		if (Constants.SCENE_SIZE <= gridBase.getX() + RaidRoom.ROOM_MAX_SIZE
+			|| Constants.SCENE_SIZE <= gridBase.getY() + RaidRoom.ROOM_MAX_SIZE)
+		{
+			return null;
+		}
+
 		int x;
 		int y;
 
@@ -1006,7 +971,7 @@ public class RaidsPlugin extends Plugin
 	private void reset()
 	{
 		raid = null;
-		chestOpened = false;
 		updateInfoBoxState();
+		eventBus.post(new RaidReset());
 	}
 }

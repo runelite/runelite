@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
 import net.runelite.client.ui.overlay.Overlay;
@@ -69,6 +70,18 @@ class ObjectIndicatorsOverlay extends Overlay
 			if (object.getPlane() != client.getPlane())
 			{
 				continue;
+			}
+
+			ObjectComposition composition = colorTileObject.getComposition();
+			if (composition.getImpostorIds() != null)
+			{
+				// This is a multiloc
+				composition = composition.getImpostor();
+				// Only mark the object if the name still matches
+				if (composition == null || !composition.getName().equals(colorTileObject.getName()))
+				{
+					continue;
+				}
 			}
 
 			if (color == null || !config.rememberObjectColors())

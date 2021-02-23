@@ -47,8 +47,9 @@ class MotherlodeOverlay extends OverlayPanel
 		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
 		MINING_MOTHERLODE_BLACK, MINING_MOTHERLODE_MITHRIL, MINING_MOTHERLODE_ADAMANT,
 		MINING_MOTHERLODE_RUNE, MINING_MOTHERLODE_GILDED, MINING_MOTHERLODE_DRAGON,
-		MINING_MOTHERLODE_DRAGON_UPGRADED, MINING_MOTHERLODE_DRAGON_OR, MINING_MOTHERLODE_INFERNAL,
-		MINING_MOTHERLODE_CRYSTAL
+		MINING_MOTHERLODE_DRAGON_UPGRADED, MINING_MOTHERLODE_DRAGON_OR, MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER,
+		MINING_MOTHERLODE_INFERNAL, MINING_MOTHERLODE_3A, MINING_MOTHERLODE_CRYSTAL,
+		MINING_MOTHERLODE_TRAILBLAZER
 	);
 	static final String MINING_RESET = "Reset";
 
@@ -85,9 +86,9 @@ class MotherlodeOverlay extends OverlayPanel
 		}
 
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastPayDirtMined(), Instant.now());
+		Duration sinceLastPayDirt = Duration.between(session.getLastPayDirtMined(), Instant.now());
 
-		if (sinceCut.compareTo(statTimeout) >= 0)
+		if (sinceLastPayDirt.compareTo(statTimeout) >= 0)
 		{
 			return null;
 		}

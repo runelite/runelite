@@ -59,7 +59,8 @@ public class CookingPluginTest
 		"You cook the karambwan. It looks delicious.",
 		"You roast a lobster.",
 		"You cook a bass.",
-		"You successfully bake a tasty garden pie."
+		"You successfully bake a tasty garden pie.",
+		"You dry a piece of meat and extract the sinew."
 	};
 
 	@Inject

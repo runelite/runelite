@@ -26,10 +26,13 @@
 package net.runelite.client.plugins.grounditems;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
@@ -39,11 +42,20 @@ import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 @ConfigGroup("grounditems")
 public interface GroundItemsConfig extends Config
 {
+	@ConfigSection(
+		name = "Item Lists",
+		description = "The highlighted and hidden item lists",
+		position = 0,
+		closedByDefault = true
+	)
+	String itemLists = "itemLists";
+
 	@ConfigItem(
 		keyName = "highlightedItems",
 		name = "Highlighted Items",
 		description = "Configures specifically highlighted ground items. Format: (item), (item)",
-		position = 0
+		position = 0,
+		section = itemLists
 	)
 	default String getHighlightItems()
 	{
@@ -61,7 +73,8 @@ public interface GroundItemsConfig extends Config
 		keyName = "hiddenItems",
 		name = "Hidden Items",
 		description = "Configures hidden ground items. Format: (item), (item)",
-		position = 1
+		position = 1,
+		section = itemLists
 	)
 	default String getHiddenItems()
 	{
@@ -143,7 +156,7 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyTier",
-		name = "Notify >= Tier",
+		name = "Notify tier",
 		description = "Configures which price tiers will trigger a notification on drop",
 		position = 8
 	)
@@ -198,7 +211,7 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 		keyName = "hideUnderValue",
-		name = "Hide < Value",
+		name = "Hide under value",
 		description = "Configures hidden ground items under both GE and HA value",
 		position = 13
 	)
@@ -207,9 +220,10 @@ public interface GroundItemsConfig extends Config
 		return 0;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "defaultColor",
-		name = "Default items color",
+		name = "Default items",
 		description = "Configures the color for default, non-highlighted items",
 		position = 14
 	)
@@ -218,9 +232,10 @@ public interface GroundItemsConfig extends Config
 		return Color.WHITE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "highlightedColor",
-		name = "Highlighted items color",
+		name = "Highlighted items",
 		description = "Configures the color for highlighted items",
 		position = 15
 	)
@@ -229,9 +244,10 @@ public interface GroundItemsConfig extends Config
 		return Color.decode("#AA00FF");
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "hiddenColor",
-		name = "Hidden items color",
+		name = "Hidden items",
 		description = "Configures the color for hidden items in right-click menu and when holding ALT",
 		position = 16
 	)
@@ -240,9 +256,10 @@ public interface GroundItemsConfig extends Config
 		return Color.GRAY;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "lowValueColor",
-		name = "Low value items color",
+		name = "Low value items",
 		description = "Configures the color for low value items",
 		position = 17
 	)
@@ -262,9 +279,10 @@ public interface GroundItemsConfig extends Config
 		return 20000;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "mediumValueColor",
-		name = "Medium value items color",
+		name = "Medium value items",
 		description = "Configures the color for medium value items",
 		position = 19
 	)
@@ -284,9 +302,10 @@ public interface GroundItemsConfig extends Config
 		return 100000;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "highValueColor",
-		name = "High value items color",
+		name = "High value items",
 		description = "Configures the color for high value items",
 		position = 21
 	)
@@ -306,9 +325,10 @@ public interface GroundItemsConfig extends Config
 		return 1000000;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "insaneValueColor",
-		name = "Insane value items color",
+		name = "Insane value items",
 		description = "Configures the color for insane value items",
 		position = 23
 	)
@@ -341,8 +361,8 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 		keyName = "doubleTapDelay",
-		name = "Delay for double-tap ALT to hide",
-		description = "Decrease this number if you accidentally hide ground items often. (0 = Disabled)",
+		name = "Double-tap delay",
+		description = "Delay for the double-tap ALT to hide ground items. 0 to disable.",
 		position = 26
 	)
 	@Units(Units.MILLISECONDS)
@@ -353,7 +373,7 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 		keyName = "collapseEntries",
-		name = "Collapse ground item menu entries",
+		name = "Collapse ground item menu",
 		description = "Collapses ground item menu entries together and appends count",
 		position = 27
 	)
@@ -364,11 +384,22 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 		keyName = "groundItemTimers",
-		name = "Show despawn timers",
+		name = "Despawn timer",
 		description = "Shows despawn timers for items you've dropped and received as loot",
 		position = 28
 	)
-	default boolean groundItemTimers()
+	default DespawnTimerMode groundItemTimers()
+	{
+		return DespawnTimerMode.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "textOutline",
+		name = "Text Outline",
+		description = "Use an outline around text instead of a text shadow",
+		position = 29
+	)
+	default boolean textOutline()
 	{
 		return false;
 	}

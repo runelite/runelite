@@ -31,7 +31,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
 
-class Raid
+public class Raid
 {
 	@Getter
 	private final RaidRoom[] rooms = new RaidRoom[16];

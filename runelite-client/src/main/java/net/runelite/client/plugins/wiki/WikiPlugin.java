@@ -36,11 +36,12 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
+import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -54,10 +55,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SpriteManager;
-import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
 import okhttp3.HttpUrl;
@@ -69,24 +69,12 @@ import okhttp3.HttpUrl;
 )
 public class WikiPlugin extends Plugin
 {
-	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
-		{
-			WidgetInfo.QUESTLIST_FREE_CONTAINER.getId(),
-			WidgetInfo.QUESTLIST_MEMBERS_CONTAINER.getId(),
-			WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER.getId(),
-		};
-
 	static final HttpUrl WIKI_BASE = HttpUrl.parse("https://oldschool.runescape.wiki");
 	static final HttpUrl WIKI_API = WIKI_BASE.newBuilder().addPathSegments("api.php").build();
 	static final String UTM_SORUCE_KEY = "utm_source";
 	static final String UTM_SORUCE_VALUE = "runelite";
 
-	private static final String MENUOP_GUIDE = "Guide";
-	private static final String MENUOP_QUICKGUIDE = "Quick Guide";
 	private static final String MENUOP_WIKI = "Wiki";
-
-	@Inject
-	private SpriteManager spriteManager;
 
 	@Inject
 	private WikiConfig config;
@@ -96,9 +84,6 @@ public class WikiPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private ChatboxPanelManager chatboxPanelManager;
 
 	@Inject
 	private ItemManager itemManager;
@@ -214,11 +199,12 @@ public class WikiPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onWidgetHiddenChanged(WidgetHiddenChanged ev)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (ev.getWidget().getId() == WidgetInfo.MINIMAP_WIKI_BANNER.getId())
+		if (scriptPostFired.getScriptId() == ScriptID.WIKI_ICON_UPDATE)
 		{
-			ev.getWidget().setHidden(true);
+			Widget w = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+			w.setHidden(true);
 		}
 	}
 
@@ -340,25 +326,8 @@ public class WikiPlugin extends Plugin
 
 		if (ev.getMenuAction() == MenuAction.RUNELITE)
 		{
-			boolean quickguide = false;
 			switch (ev.getMenuOption())
 			{
-				case MENUOP_QUICKGUIDE:
-					quickguide = true;
-					//fallthrough;
-				case MENUOP_GUIDE:
-					ev.consume();
-					String quest = Text.removeTags(ev.getMenuTarget());
-					HttpUrl.Builder ub = WIKI_BASE.newBuilder()
-						.addPathSegment("w")
-						.addPathSegment(quest)
-						.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE);
-					if (quickguide)
-					{
-						ub.addPathSegment("Quick_guide");
-					}
-					LinkBrowser.browse(ub.build().toString());
-					break;
 				case MENUOP_WIKI:
 					LinkBrowser.browse(WIKI_BASE.newBuilder()
 						.addPathSegment("w")
@@ -378,7 +347,7 @@ public class WikiPlugin extends Plugin
 
 	private Widget getWidget(int wid, int index)
 	{
-		Widget w = client.getWidget(WidgetInfo.TO_GROUP(wid), WidgetInfo.TO_CHILD(wid));
+		Widget w = client.getWidget(wid);
 		if (index != -1)
 		{
 			w = w.getChild(index);
@@ -396,7 +365,22 @@ public class WikiPlugin extends Plugin
 		if (wikiSelected && event.getType() == MenuAction.SPELL_CAST_ON_WIDGET.getId())
 		{
 			Widget w = getWidget(widgetID, widgetIndex);
-			if (!(w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1))
+			if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1)
+			{
+				for (int ourEntry = menuEntries.length - 1;ourEntry >= 0; ourEntry--)
+				{
+					MenuEntry entry = menuEntries[ourEntry];
+					if (entry.getType() == MenuAction.SPELL_CAST_ON_WIDGET.getId())
+					{
+						int id = itemManager.canonicalize(w.getItemId());
+						String name = itemManager.getItemComposition(id).getName();
+						entry.setTarget(JagexColors.MENU_TARGET_TAG + name);
+						break;
+					}
+				}
+				client.setMenuEntries(menuEntries);
+			}
+			else
 			{
 				// we don't support this widget
 				// remove the last SPELL_CAST_ON_WIDGET; we can't blindly remove the top action because some other
@@ -416,7 +400,7 @@ public class WikiPlugin extends Plugin
 		if (WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.SKILLS_CONTAINER.getGroupId())
 		{
 			Widget w = getWidget(widgetID, widgetIndex);
-			if (w.getParentId() != WidgetInfo.SKILLS_CONTAINER.getId())
+			if (w.getActions() == null || w.getParentId() != WidgetInfo.SKILLS_CONTAINER.getId())
 			{
 				return;
 			}

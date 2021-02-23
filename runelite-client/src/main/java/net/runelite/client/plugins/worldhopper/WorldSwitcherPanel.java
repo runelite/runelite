@@ -63,8 +63,8 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldOrder orderIndex = WorldOrder.WORLD;
 	private boolean ascendingOrder = true;
 
-	private ArrayList<WorldTableRow> rows = new ArrayList<>();
-	private WorldHopperPlugin plugin;
+	private final ArrayList<WorldTableRow> rows = new ArrayList<>();
+	private final WorldHopperPlugin plugin;
 	@Setter(AccessLevel.PACKAGE)
 	private SubscriptionFilterMode filterMode;
 
@@ -223,15 +223,6 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 	}
 
-	void resetAllFavoriteMenus()
-	{
-		for (WorldTableRow row : rows)
-		{
-			row.setFavoriteMenu(false);
-		}
-
-	}
-
 	void populate(List<World> worlds)
 	{
 		rows.clear();
@@ -379,10 +370,7 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
 	{
 		WorldTableRow row = new WorldTableRow(world, current, favorite, plugin.getStoredPing(world),
-			world1 ->
-			{
-				plugin.hopTo(world1);
-			},
+			plugin::hopTo,
 			(world12, add) ->
 			{
 				if (add)

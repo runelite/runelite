@@ -43,6 +43,7 @@ import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
+import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
@@ -59,12 +60,12 @@ public class WorldService
 	private WorldResult worlds;
 
 	@Inject
-	private WorldService(Client client, ScheduledExecutorService scheduledExecutorService, WorldClient worldClient,
+	private WorldService(Client client, ScheduledExecutorService scheduledExecutorService, OkHttpClient okHttpClient,
 		EventBus eventBus)
 	{
 		this.client = client;
 		this.scheduledExecutorService = scheduledExecutorService;
-		this.worldClient = worldClient;
+		this.worldClient = new WorldClient(okHttpClient);
 		this.eventBus = eventBus;
 
 		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::tick), 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);

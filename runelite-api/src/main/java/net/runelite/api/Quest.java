@@ -36,7 +36,7 @@ public enum Quest
 	THE_CORSAIR_CURSE(301, "The Corsair Curse"),
 	DEMON_SLAYER(302, "Demon Slayer"),
 	DORICS_QUEST(303, "Doric's Quest"),
-	DRAGON_SLAYER(304, "Dragon Slayer"),
+	DRAGON_SLAYER_I(304, "Dragon Slayer I"),
 	ERNEST_THE_CHICKEN(305, "Ernest the Chicken"),
 	GOBLIN_DIPLOMACY(306, "Goblin Diplomacy"),
 	IMP_CATCHER(307, "Imp Catcher"),
@@ -133,7 +133,7 @@ public enum Quest
 	PLAGUE_CITY(407, "Plague City"),
 	PRIEST_IN_PERIL(408, "Priest in Peril"),
 	THE_QUEEN_OF_THIEVES(409, "The Queen of Thieves"),
-	RAG_AND_BONE_MAN(410, "Rag and Bone Man"),
+	RAG_AND_BONE_MAN_I(410, "Rag and Bone Man I"),
 	RAG_AND_BONE_MAN_II(411, "Rag and Bone Man II"),
 	RATCATCHERS(412, "Ratcatchers"),
 	RECIPE_FOR_DISASTER(413, "Recipe for Disaster"),
@@ -178,6 +178,8 @@ public enum Quest
 	SONG_OF_THE_ELVES(603, "Song of the Elves"),
 	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles"),
 	SINS_OF_THE_FATHER(1276, "Sins of the Father"),
+	A_PORCINE_OF_INTEREST(1690, "A Porcine of Interest"),
+	GETTING_AHEAD(752, "Getting Ahead"),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss"),
@@ -192,7 +194,8 @@ public enum Quest
 	LAIR_OF_TARN_RAZORLOR(328, "Lair of Tarn Razorlor"),
 	FAMILY_PEST(329, "Family Pest"),
 	THE_MAGE_ARENA_II(330, "The Mage Arena II"),
-	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge");
+	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge"),
+	DADDYS_HOME(1688, "Daddy's Home");
 
 	@Getter
 	private final int id;
