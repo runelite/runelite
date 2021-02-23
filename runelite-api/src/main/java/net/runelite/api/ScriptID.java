@@ -326,4 +326,54 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 4)
 	public static final int WIKI_ICON_UPDATE = 3306;
+
+	/**
+	 * Handles dragging settings window camera zoom slider
+	 *
+	 * <li>int (WidgetID) Slider handle ID</li>
+	 * <li>int (widget index) Slider handle index</li>
+	 * <li>int track width</li>
+	 * <li>int mouse position x</li>
+	 * <li>int y offset</li>
+	 * <li>int x offset</li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 6)
+	public static final int SETTINGS_ZOOM_SLIDER_ONDRAG = 3896;
+
+	/**
+	 * Handles dragging settings side camera zoom slider
+	 *
+	 * <li>int (WidgetID) Slider handle ID</li>
+	 * <li>int (WidgetID) Slider handle parent ID</li>
+	 * <li>int mouse position x</li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int SETTINGS_SIDE_ZOOM_SLIDER_ONDRAG = 833;
+
+	/**
+	 * Updates settings window camera zoom slider
+	 *
+	 * <li>int {@link VarClientInt#CAMERA_ZOOM_FIXED_VIEWPORT}</li>
+	 * <li>int {@link VarClientInt#CAMERA_ZOOM_RESIZABLE_VIEWPORT}</li>
+	 * <li>int (WidgetID) Slider handle ID</li>
+	 * <li>int (widget index) Slider handle index</li>
+	 * <li>int track width</li>
+	 * <li>int y offset</li>
+	 * <li>int x offset</li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 7)
+	public static final int SETTINGS_ZOOM_POSITION_TIMER = 3894;
+
+	/**
+	 * Updates settings side camera zoom slider
+	 *
+	 * <li>int {@link VarClientInt#CAMERA_ZOOM_FIXED_VIEWPORT}</li>
+	 * <li>int {@link VarClientInt#CAMERA_ZOOM_RESIZABLE_VIEWPORT}</li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int SETTINGS_SIDE_ZOOM_TIMER = 3943;
 }

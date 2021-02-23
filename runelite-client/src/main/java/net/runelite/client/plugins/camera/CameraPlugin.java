@@ -28,11 +28,6 @@ package net.runelite.client.plugins.camera;
 
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.util.Arrays;
-import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -64,11 +59,17 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
+import javax.inject.Inject;
+import javax.swing.SwingUtilities;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
+
 @PluginDescriptor(
-	name = "Camera",
-	description = "Expands zoom limit, provides vertical camera, and remaps mouse input keys",
-	tags = {"zoom", "limit", "vertical", "click", "mouse"},
-	enabledByDefault = false
+		name = "Camera",
+		description = "Expands zoom limit, provides vertical camera, and remaps mouse input keys",
+		tags = {"zoom", "limit", "vertical", "click", "mouse"},
+		enabledByDefault = false
 )
 public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {
@@ -89,7 +90,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 * Whether or not the current menu has any non-ignored menu entries
 	 */
 	private boolean menuHasEntries;
-	
+	private boolean holding;
+
 	@Inject
 	private Client client;
 
@@ -122,23 +124,25 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		rightClick = false;
 		middleClick = false;
 		menuHasEntries = false;
+		holding = false;
 		copyConfigs();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
 		clientThread.invoke(() ->
 		{
-			Widget sideSlider = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
-			if (sideSlider != null)
+			Widget sideTrack = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
+			Widget sideHandle = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_HANDLE);
+			if (sideTrack != null && sideHandle != null)
 			{
-				addZoomTooltip(sideSlider);
+				addZoomTooltip();
 			}
 
 			Widget settingsInit = client.getWidget(WidgetInfo.SETTINGS_INIT);
 			if (settingsInit != null)
 			{
 				client.createScriptEvent(settingsInit.getOnLoadListener())
-					.setSource(settingsInit)
-					.run();
+						.setSource(settingsInit)
+						.run();
 			}
 		});
 	}
@@ -155,18 +159,34 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 
 		clientThread.invoke(() ->
 		{
-			Widget sideSlider = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
+			Widget sideTrack = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
+			if (sideTrack != null)
+			{
+				sideTrack.setOnTimerListener((Object[]) null);
+				sideTrack.setOnMouseRepeatListener((Object[]) null);
+				sideTrack.setOnHoldListener((Object[]) null);
+			}
+
+			Widget sideSlider = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_HANDLE);
 			if (sideSlider != null)
 			{
-				sideSlider.setOnMouseRepeatListener((Object[]) null);
+				sideSlider.setOnDragListener((Object[]) null);
+			}
+
+			Widget component0 = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_MOUSE_SCROLL_WHEEL);
+			if (component0 != null)
+			{
+				client.createScriptEvent(component0.getOnLoadListener())
+						.setSource(component0)
+						.run();
 			}
 
 			Widget settingsInit = client.getWidget(WidgetInfo.SETTINGS_INIT);
 			if (settingsInit != null)
 			{
 				client.createScriptEvent(settingsInit.getOnLoadListener())
-					.setSource(settingsInit)
-					.run();
+						.setSource(settingsInit)
+						.run();
 			}
 		});
 	}
@@ -368,7 +388,45 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 
 			if (is[arg] == SettingID.CAMERA_ZOOM)
 			{
-				addZoomTooltip(client.getScriptActiveWidget());
+
+				final int sliderHandleID = is[1];
+				final int sliderHandleIndex = is[2];
+				final int trackWidth = is[3];
+				final int yOffset = is[4];
+				final int xOffset = is[5];
+
+				Widget track = client.getScriptActiveWidget();
+				Widget handle = client.getWidget(sliderHandleID).getDynamicChildren()[sliderHandleIndex];
+				track.setOnMouseRepeatListener((JavaScriptCallback) z ->
+				{
+					int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+					int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
+					sliderTooltip = new Tooltip("Camera Zoom: " + value + " / " + max);
+				});
+				track.setOnTimerListener((JavaScriptCallback) z ->
+				{
+					int fixedViewport = client.getVar(VarClientInt.CAMERA_ZOOM_FIXED_VIEWPORT);
+					int resizableViewport = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+					clientThread.invokeLater(() -> client.createScriptEvent(ScriptID.SETTINGS_ZOOM_POSITION_TIMER, fixedViewport, resizableViewport, sliderHandleID, sliderHandleIndex, trackWidth, yOffset, xOffset)
+							.setSource(handle)
+							.run());
+				});
+				track.setOnHoldListener((JavaScriptCallback) z ->
+				{
+					int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+					int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
+					sliderTooltip = new Tooltip("Camera Zoom: " + value + " / " + max);
+					holding = true;
+				});
+				handle.setOnDragListener((JavaScriptCallback) z -> clientThread.invokeLater(() ->
+				{
+					client.createScriptEvent(ScriptID.SETTINGS_ZOOM_SLIDER_ONDRAG, sliderHandleID, sliderHandleIndex, trackWidth, z.getMouseX(), yOffset, xOffset)
+							.setSource(handle)
+							.run();
+					int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+					int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
+					sliderTooltip = new Tooltip("Camera Zoom: " + value + " / " + max);
+				}));
 			}
 		}
 	}
@@ -378,18 +436,44 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	{
 		if (ev.getGroupId() == WidgetID.SETTINGS_SIDE_GROUP_ID)
 		{
-			addZoomTooltip(client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK));
+			addZoomTooltip();
 		}
 	}
 
-	private void addZoomTooltip(Widget w)
+	private void addZoomTooltip()
 	{
-		w.setOnMouseRepeatListener((JavaScriptCallback) ev ->
+		Widget track = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
+		Widget handle = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_HANDLE);
+		track.setOnMouseRepeatListener((JavaScriptCallback) z ->
 		{
 			int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
 			int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
 			sliderTooltip = new Tooltip("Camera Zoom: " + value + " / " + max);
 		});
+		track.setOnTimerListener((JavaScriptCallback) z ->
+		{
+			int fixedViewport = client.getVar(VarClientInt.CAMERA_ZOOM_FIXED_VIEWPORT);
+			int resizableViewport = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+			clientThread.invokeLater(() -> client.createScriptEvent(ScriptID.SETTINGS_SIDE_ZOOM_TIMER, fixedViewport, resizableViewport)
+					.setSource(track)
+					.run());
+		});
+		track.setOnHoldListener((JavaScriptCallback) z ->
+		{
+			int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+			int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
+			sliderTooltip = new Tooltip("Camera Zoom: " + value + " / " + max);
+			holding = true;
+		});
+		handle.setOnDragListener((JavaScriptCallback) z -> clientThread.invokeLater(() ->
+		{
+			client.createScriptEvent(ScriptID.SETTINGS_SIDE_ZOOM_SLIDER_ONDRAG, handle.getId(), handle.getParentId(), z.getMouseX())
+					.setSource(handle)
+					.run();
+			int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+			int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
+			sliderTooltip = new Tooltip("Camera Zoom: " + value + " / " + max);
+		}));
 	}
 
 	@Subscribe
@@ -398,7 +482,10 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		if (sliderTooltip != null)
 		{
 			tooltipManager.add(sliderTooltip);
-			sliderTooltip = null;
+			if (!holding)
+			{
+				sliderTooltip = null;
+			}
 		}
 	}
 
@@ -423,14 +510,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 				rightClick = true;
 				// Change the mousePressed() MouseEvent to the middle mouse button
 				mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-					mouseEvent.getID(),
-					mouseEvent.getWhen(),
-					mouseEvent.getModifiersEx(),
-					mouseEvent.getX(),
-					mouseEvent.getY(),
-					mouseEvent.getClickCount(),
-					mouseEvent.isPopupTrigger(),
-					MouseEvent.BUTTON2);
+						mouseEvent.getID(),
+						mouseEvent.getWhen(),
+						mouseEvent.getModifiersEx(),
+						mouseEvent.getX(),
+						mouseEvent.getY(),
+						mouseEvent.getClickCount(),
+						mouseEvent.isPopupTrigger(),
+						MouseEvent.BUTTON2);
 			}
 		}
 		else if (SwingUtilities.isMiddleMouseButton((mouseEvent)) && config.middleClickMenu())
@@ -439,14 +526,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			middleClick = true;
 			// Chance the middle mouse button MouseEvent to a right-click
 			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-				mouseEvent.getID(),
-				mouseEvent.getWhen(),
-				mouseEvent.getModifiersEx(),
-				mouseEvent.getX(),
-				mouseEvent.getY(),
-				mouseEvent.getClickCount(),
-				mouseEvent.isPopupTrigger(),
-				MouseEvent.BUTTON3);
+					mouseEvent.getID(),
+					mouseEvent.getWhen(),
+					mouseEvent.getModifiersEx(),
+					mouseEvent.getX(),
+					mouseEvent.getY(),
+					mouseEvent.getClickCount(),
+					mouseEvent.isPopupTrigger(),
+					MouseEvent.BUTTON3);
 		}
 		return mouseEvent;
 	}
@@ -457,19 +544,20 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Override
 	public MouseEvent mouseReleased(MouseEvent mouseEvent)
 	{
+		holding = false;
 		if (rightClick)
 		{
 			rightClick = false;
 			// Change the MouseEvent to button 2 so the middle mouse button will be released
 			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-				mouseEvent.getID(),
-				mouseEvent.getWhen(),
-				mouseEvent.getModifiersEx(),
-				mouseEvent.getX(),
-				mouseEvent.getY(),
-				mouseEvent.getClickCount(),
-				mouseEvent.isPopupTrigger(),
-				MouseEvent.BUTTON2);
+					mouseEvent.getID(),
+					mouseEvent.getWhen(),
+					mouseEvent.getModifiersEx(),
+					mouseEvent.getX(),
+					mouseEvent.getY(),
+					mouseEvent.getClickCount(),
+					mouseEvent.isPopupTrigger(),
+					MouseEvent.BUTTON2);
 
 		}
 		if (middleClick)
@@ -477,14 +565,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			middleClick = false;
 			// Change the MouseEvent ot button 3 so the right mouse button will be released
 			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-				mouseEvent.getID(),
-				mouseEvent.getWhen(),
-				mouseEvent.getModifiersEx(),
-				mouseEvent.getX(),
-				mouseEvent.getY(),
-				mouseEvent.getClickCount(),
-				mouseEvent.isPopupTrigger(),
-				MouseEvent.BUTTON3);
+					mouseEvent.getID(),
+					mouseEvent.getWhen(),
+					mouseEvent.getModifiersEx(),
+					mouseEvent.getX(),
+					mouseEvent.getY(),
+					mouseEvent.getClickCount(),
+					mouseEvent.isPopupTrigger(),
+					MouseEvent.BUTTON3);
 		}
 		return mouseEvent;
 	}
