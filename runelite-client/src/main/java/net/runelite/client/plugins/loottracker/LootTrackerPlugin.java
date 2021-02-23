@@ -993,7 +993,7 @@ public class LootTrackerPlugin extends Plugin
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		final int gePrice = itemManager.getItemPrice(itemId);
+		final long gePrice = itemManager.getItemPrice(itemId, quantity);
 		final int haPrice = itemComposition.getHaPrice();
 		final boolean ignored = ignoredItems.contains(itemComposition.getName());
 

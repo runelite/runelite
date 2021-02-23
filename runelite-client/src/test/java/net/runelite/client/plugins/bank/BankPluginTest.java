@@ -76,9 +76,10 @@ public class BankPluginTest
 	public void testValueSearch()
 	{
 		int itemId = ItemID.ABYSSAL_WHIP;
+		int quantity = 30;
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(itemId, 30)});
+		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(itemId, quantity)});
 		when(client.getItemContainer(InventoryID.BANK)).thenReturn(itemContainer);
 
 		ItemComposition comp = mock(ItemComposition.class);
@@ -88,8 +89,8 @@ public class BankPluginTest
 			.thenReturn(60_000);
 
 		// 400k GE Price * 30 = 12m
-		when(itemManager.getItemPrice(itemId))
-			.thenReturn(400_000);
+		when(itemManager.getItemPrice(itemId, quantity))
+			.thenReturn(400_000L * quantity);
 		when(itemManager.getItemComposition(itemId))
 			.thenReturn(comp);
 
@@ -125,8 +126,10 @@ public class BankPluginTest
 			.thenReturn(4); // 4 * 1m overflows
 		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP))
 			.thenReturn(whipComp);
-		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP))
-			.thenReturn(3); // 1b * 3 overflows
+		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP, whip.getQuantity()))
+			.thenReturn(3L * whip.getQuantity()); // 1b * 3 overflows
+		when(itemManager.getItemPrice(ItemID.COINS_995, coins.getQuantity()))
+			.thenReturn((long)coins.getQuantity());
 
 		final ContainerPrices prices = bankPlugin.calculate(items);
 		assertNotNull(prices);
