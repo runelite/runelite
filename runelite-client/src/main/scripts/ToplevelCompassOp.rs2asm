@@ -47,6 +47,8 @@ LOOK:
    iconst                 0
    sound_synth           
    iconst                 225
+   sconst                 "lookPreservePitch"
+   runelite_callback
    iconst                 5
    randominc             
    add
