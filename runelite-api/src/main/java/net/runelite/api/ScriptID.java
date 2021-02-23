@@ -330,6 +330,7 @@ public final class ScriptID
 	/**
 	 * Handles dragging settings window camera zoom slider
 	 *
+	 * <ul>
 	 * <li>int (WidgetID) Slider handle ID</li>
 	 * <li>int (widget index) Slider handle index</li>
 	 * <li>int track width</li>
@@ -344,6 +345,7 @@ public final class ScriptID
 	/**
 	 * Handles dragging settings side camera zoom slider
 	 *
+	 * <ul>
 	 * <li>int (WidgetID) Slider handle ID</li>
 	 * <li>int (WidgetID) Slider handle parent ID</li>
 	 * <li>int mouse position x</li>
@@ -355,6 +357,7 @@ public final class ScriptID
 	/**
 	 * Updates settings window camera zoom slider
 	 *
+	 * <ul>
 	 * <li>int {@link VarClientInt#CAMERA_ZOOM_FIXED_VIEWPORT}</li>
 	 * <li>int {@link VarClientInt#CAMERA_ZOOM_RESIZABLE_VIEWPORT}</li>
 	 * <li>int (WidgetID) Slider handle ID</li>
@@ -370,6 +373,7 @@ public final class ScriptID
 	/**
 	 * Updates settings side camera zoom slider
 	 *
+	 * <ul>
 	 * <li>int {@link VarClientInt#CAMERA_ZOOM_FIXED_VIEWPORT}</li>
 	 * <li>int {@link VarClientInt#CAMERA_ZOOM_RESIZABLE_VIEWPORT}</li>
 	 * </ul>
