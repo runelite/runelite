@@ -191,7 +191,7 @@ public class IconTextField extends JPanel
 			}
 		});
 
-		suggestionButton = createRHSButton(ColorScheme.LIGHT_GRAY_COLOR, ColorScheme.MEDIUM_GRAY_COLOR, FontManager.getDefaultBoldFont());
+		suggestionButton = createRHSButton(ColorScheme.LIGHT_GRAY_COLOR, ColorScheme.MEDIUM_GRAY_COLOR, FontManager.getDefaultBoldFont().deriveFont(16.f));
 		suggestionButton.setText("▾");
 		suggestionButton.addActionListener(e ->
 		{
