@@ -35,13 +35,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
 
@@ -54,6 +55,8 @@ class WorldSwitcherPanel extends PluginPanel
 	private static final int PING_COLUMN_WIDTH = 47;
 
 	private final JPanel listContainer = new JPanel();
+	private final JPanel activityFilterContainer = new JPanel();
+	private final IconTextField activityFilterTextField = new IconTextField();
 
 	private WorldTableHeader worldHeader;
 	private WorldTableHeader playersHeader;
@@ -75,10 +78,12 @@ class WorldSwitcherPanel extends PluginPanel
 		setBorder(null);
 		setLayout(new DynamicGridLayout(0, 1));
 
+		buildActivityFilter();
 		JPanel headerContainer = buildHeader();
 
 		listContainer.setLayout(new GridLayout(0, 1));
 
+		add(activityFilterContainer);
 		add(headerContainer);
 		add(listContainer);
 	}
@@ -190,15 +195,33 @@ class WorldSwitcherPanel extends PluginPanel
 
 		listContainer.removeAll();
 
+		displayRows();
+
+		listContainer.revalidate();
+		listContainer.repaint();
+	}
+
+	private void displayRows()
+	{
+		String activityFilterText = activityFilterTextField.getText().toLowerCase();
+
 		for (int i = 0; i < rows.size(); i++)
 		{
 			WorldTableRow row = rows.get(i);
 			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
-			listContainer.add(row);
-		}
 
-		listContainer.revalidate();
-		listContainer.repaint();
+			// if the filter is empty, display the whole list
+			if (activityFilterText == "")
+			{
+				listContainer.add(row);
+			}
+
+			// only display rows where the activity contains the filtered text
+			else if (row.getActivity().toLowerCase().contains(activityFilterText))
+			{
+				listContainer.add(row);
+			}
+		}
 	}
 
 	private int getCompareValue(WorldTableRow row1, WorldTableRow row2, Function<WorldTableRow, Comparable> compareByFn)
@@ -398,5 +421,22 @@ class WorldSwitcherPanel extends PluginPanel
 		PLAYERS,
 		ACTIVITY,
 		PING
+	}
+
+	private void buildActivityFilter()
+	{
+		// try to add a gap between the filter and the world list
+		activityFilterContainer.setLayout(new BorderLayout(8, 8));
+		activityFilterContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		activityFilterTextField.setIcon(IconTextField.Icon.SEARCH);
+		activityFilterTextField.setPreferredSize(new Dimension(100, 30));
+		activityFilterTextField.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		activityFilterTextField.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		activityFilterTextField.setToolTipText("Filter the World List based on the Activity.");
+		activityFilterTextField.addActionListener(a -> updateList());
+		activityFilterTextField.addClearListener(() -> updateList());
+
+		activityFilterContainer.add(activityFilterTextField, BorderLayout.CENTER);
 	}
 }

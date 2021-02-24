@@ -361,4 +361,6 @@ class WorldTableRow extends JPanel
 				return null;
 		}
 	}
+
+	public String getActivity() { return world.getActivity(); }
 }
