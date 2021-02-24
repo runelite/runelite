@@ -179,14 +179,14 @@ public class ChatClient
 		}
 	}
 
-	public boolean submitPb(String username, String boss, int pb) throws IOException
+	public boolean submitPb(String username, String boss, double pb) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("pb")
 			.addQueryParameter("name", username)
 			.addQueryParameter("boss", boss)
-			.addQueryParameter("pb", Integer.toString(pb))
+			.addQueryParameter("pb", Double.toString(pb))
 			.build();
 
 		Request request = new Request.Builder()
@@ -200,7 +200,7 @@ public class ChatClient
 		}
 	}
 
-	public int getPb(String username, String boss) throws IOException
+	public double getPb(String username, String boss) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
@@ -219,7 +219,7 @@ public class ChatClient
 			{
 				throw new IOException("Unable to look up personal best!");
 			}
-			return Integer.parseInt(response.body().string());
+			return Double.parseDouble(response.body().string());
 		}
 	}
 
