@@ -146,4 +146,15 @@ public interface WorldHopperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "displayActivityFilter",
+			name = "Display Activity Filter",
+			description = "Displays a search bar to filter the world list on each world's activity",
+			position = 10
+	)
+	default boolean displayActivityFilter()
+	{
+		return false;
+	}
 }

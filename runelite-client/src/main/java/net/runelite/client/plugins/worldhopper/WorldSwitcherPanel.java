@@ -78,12 +78,10 @@ class WorldSwitcherPanel extends PluginPanel
 		setBorder(null);
 		setLayout(new DynamicGridLayout(0, 1));
 
-		buildActivityFilter();
 		JPanel headerContainer = buildHeader();
 
 		listContainer.setLayout(new GridLayout(0, 1));
 
-		add(activityFilterContainer);
 		add(headerContainer);
 		add(listContainer);
 	}
@@ -423,20 +421,28 @@ class WorldSwitcherPanel extends PluginPanel
 		PING
 	}
 
-	private void buildActivityFilter()
+	public void buildActivityFilter(boolean displayFilter)
 	{
-		// try to add a gap between the filter and the world list
-		activityFilterContainer.setLayout(new BorderLayout(8, 8));
-		activityFilterContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		if (displayFilter) {
+			// try to add a gap between the filter and the world list
+			activityFilterContainer.setLayout(new BorderLayout(8, 8));
+			activityFilterContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		activityFilterTextField.setIcon(IconTextField.Icon.SEARCH);
-		activityFilterTextField.setPreferredSize(new Dimension(100, 30));
-		activityFilterTextField.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		activityFilterTextField.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		activityFilterTextField.setToolTipText("Filter the World List based on the Activity.");
-		activityFilterTextField.addActionListener(a -> updateList());
-		activityFilterTextField.addClearListener(() -> updateList());
+			activityFilterTextField.setIcon(IconTextField.Icon.SEARCH);
+			activityFilterTextField.setPreferredSize(new Dimension(100, 30));
+			activityFilterTextField.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			activityFilterTextField.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+			activityFilterTextField.setToolTipText("Filter the World List based on the Activity.");
+			activityFilterTextField.addActionListener(a -> updateList());
+			activityFilterTextField.addClearListener(() -> updateList());
 
-		activityFilterContainer.add(activityFilterTextField, BorderLayout.CENTER);
+			activityFilterContainer.add(activityFilterTextField, BorderLayout.CENTER);
+
+			add(activityFilterContainer, 0);
+		}
+		else
+		{
+			remove(activityFilterContainer);
+		}
 	}
 }
