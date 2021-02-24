@@ -211,7 +211,7 @@ class WorldSwitcherPanel extends PluginPanel
 			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 
 			// if the filter is empty, display the whole list
-			if (activityFilterText == "")
+			if (activityFilterText.equals(""))
 			{
 				listContainer.add(row);
 			}
