@@ -705,7 +705,7 @@ public class MusicPlugin extends Plugin
 				return;
 			}
 
-			int arg = client.getIntStackSize() - 7;
+			int arg = client.getIntStackSize() - 8;
 			int[] is = client.getIntStack();
 			Channel channel;
 			switch (is[arg])
