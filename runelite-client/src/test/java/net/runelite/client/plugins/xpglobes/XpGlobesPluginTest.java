@@ -28,6 +28,8 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
+
+import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.events.StatChanged;
@@ -54,6 +56,10 @@ public class XpGlobesPluginTest
 	@Mock
 	@Bind
 	private OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	private Client client;
 
 	@Mock
 	@Bind
