@@ -43,9 +43,9 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-		name = "Configuration",
-		loadWhenOutdated = true,
-		hidden = true // prevent users from disabling
+	name = "Configuration",
+	loadWhenOutdated = true,
+	hidden = true // prevent users from disabling
 )
 public class ConfigPlugin extends Plugin
 {

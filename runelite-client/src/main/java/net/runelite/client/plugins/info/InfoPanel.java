@@ -27,7 +27,6 @@ package net.runelite.client.plugins.info;
 
 import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -46,7 +45,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.events.SessionClose;
@@ -197,55 +195,57 @@ public class InfoPanel extends PluginPanel
 		restoreLabel.enableAutoLinkHandler(false);
 		restoreLabel.addHyperlinkListener(e ->
 		{
-			if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()))
+			if (!HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()))
 			{
-				final int result = JOptionPane.showOptionDialog(null,
-							"This will disable all plugins except the default ones.",
-							"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-							null, new String[]{"Yes", "No"}, "No");
+				return;
+			}
+			final int result = JOptionPane.showOptionDialog(null,
+		"This will disable all plugins except the default ones.",
+			"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+			null, new String[]{"Yes", "No"}, "No");
 
-				if (result == JOptionPane.YES_OPTION)
+			if (result != JOptionPane.YES_OPTION)
+			{
+				return;
+			}
+			for (Plugin plugin : pluginManager.getPlugins())
+			{
+				PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+				boolean stopPlugin = !pluginDescriptor.enabledByDefault();
+				ExternalPluginManifest manifest = ExternalPluginManager.getExternalPluginManifest(plugin.getClass());
+				if (manifest != null)
 				{
-					for (Plugin plugin : pluginManager.getPlugins())
+					if (externalPluginManager.getInstalledExternalPlugins().contains(manifest.getInternalName()))
 					{
-						PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-						boolean stopPlugin = !pluginDescriptor.enabledByDefault();
-						ExternalPluginManifest manifest = ExternalPluginManager.getExternalPluginManifest(plugin.getClass());
-						if (manifest != null)
-						{
-							if (externalPluginManager.getInstalledExternalPlugins().contains(manifest.getInternalName()))
-							{
-								stopPlugin = true;
-							}
-						}
-						if (stopPlugin)
-						{
-							try
-							{
-								pluginManager.setPluginEnabled(plugin, false);
-								pluginManager.stopPlugin(plugin);
-							}
-							catch (PluginInstantiationException ex)
-							{
-								log.warn("Unable to stop {}", plugin.getClass().getSimpleName());
-							}
-						}
-						else if (!pluginManager.isPluginEnabled(plugin))
-						{
-							try
-							{
-								pluginManager.setPluginEnabled(plugin, true);
-								pluginManager.startPlugin(plugin);
-							}
-							catch (PluginInstantiationException ex)
-							{
-								log.warn("Unable to start {}", plugin.getClass().getSimpleName());
-							}
-						}
+						stopPlugin = true;
 					}
-					log.debug("Restored default plugins");
+				}
+				if (stopPlugin)
+				{
+					pluginManager.setPluginEnabled(plugin, false);
+					try
+					{
+						pluginManager.stopPlugin(plugin);
+					}
+					catch (PluginInstantiationException ex)
+					{
+						log.warn("Error when stopping plugin {}", plugin.getClass().getSimpleName(), ex);
+					}
+				}
+				else if (!pluginManager.isPluginEnabled(plugin))
+				{
+					pluginManager.setPluginEnabled(plugin, true);
+					try
+					{
+						pluginManager.startPlugin(plugin);
+					}
+					catch (PluginInstantiationException ex)
+					{
+						log.warn("Error when starting plugin {}", plugin.getClass().getSimpleName(), ex);
+					}
 				}
 			}
+			log.debug("Restored default plugins");
 		});
 		restoreLabel.setContentType("text/html");
 		restoreLabel.setText("<a href=>Restore</a> default plugins.");
