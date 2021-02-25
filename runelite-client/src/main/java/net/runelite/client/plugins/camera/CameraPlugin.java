@@ -383,7 +383,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	{
 		if (ev.getScriptId() == ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP)
 		{
-			int arg = client.getIntStackSize() - 7;
+			int arg = client.getIntStackSize() - 8;
 			int[] is = client.getIntStack();
 
 			if (is[arg] == SettingID.CAMERA_ZOOM)
