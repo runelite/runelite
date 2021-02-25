@@ -73,24 +73,24 @@ public class ConfigPlugin extends Plugin
 	{
 		pluginListPanel = pluginListPanelProvider.get();
 		pluginListPanel.addFakePlugin(new PluginConfigurationDescriptor(
-						"RuneLite", "RuneLite client settings",
-						new String[]{"client", "notification", "size", "position", "window", "chrome", "focus", "font", "overlay", "tooltip", "infobox"},
-						null, runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig)
-				),
-				new PluginConfigurationDescriptor(
-						"Chat Color", "Recolor chat text", new String[]{"colour", "messages"},
-						null, chatColorConfig, configManager.getConfigDescriptor(chatColorConfig)
-				));
+				"RuneLite", "RuneLite client settings",
+				new String[]{"client", "notification", "size", "position", "window", "chrome", "focus", "font", "overlay", "tooltip", "infobox"},
+				null, runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig)
+			),
+			new PluginConfigurationDescriptor(
+				"Chat Color", "Recolor chat text", new String[]{"colour", "messages"},
+				null, chatColorConfig, configManager.getConfigDescriptor(chatColorConfig)
+			));
 		pluginListPanel.rebuildPluginList();
 
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "config_icon.png");
 
 		navButton = NavigationButton.builder()
-				.tooltip("Configuration")
-				.icon(icon)
-				.priority(0)
-				.panel(pluginListPanel.getMuxer())
-				.build();
+			.tooltip("Configuration")
+			.icon(icon)
+			.priority(0)
+			.panel(pluginListPanel.getMuxer())
+			.build();
 
 		clientToolbar.addNavigation(navButton);
 	}
