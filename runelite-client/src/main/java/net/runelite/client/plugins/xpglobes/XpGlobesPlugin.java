@@ -33,7 +33,9 @@ import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
@@ -73,6 +75,9 @@ public class XpGlobesPlugin extends Plugin
 	@Inject
 	private XpGlobesOverlay overlay;
 
+	@Inject
+	private Client client;
+
 	@Provides
 	XpGlobesConfig getConfig(ConfigManager configManager)
 	{
@@ -83,6 +88,42 @@ public class XpGlobesPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		if (!client.getGameState().equals(GameState.LOGGED_IN))
+		{
+			return;
+		}
+
+		for (Skill skill : Skill.values())
+		{
+			if (skill.equals(Skill.OVERALL))
+			{
+				continue;
+			}
+			int currentXp = client.getSkillExperience(skill);
+			int currentLevel = client.getRealSkillLevel(skill);
+			int skillIdx = skill.ordinal();
+
+			XpGlobe cachedGlobe = globeCache[skillIdx];
+
+			if (cachedGlobe != null && (cachedGlobe.getCurrentXp() >= currentXp))
+			{
+				continue;
+			}
+
+			if (currentLevel >= Experience.MAX_REAL_LEVEL)
+			{
+				if (config.hideMaxed())
+				{
+					continue;
+				}
+
+				if (config.showVirtualLevel())
+				{
+					currentLevel = Experience.getLevelForXp(currentXp);
+				}
+			}
+			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, Instant.now());
+		}
 	}
 
 	@Override
