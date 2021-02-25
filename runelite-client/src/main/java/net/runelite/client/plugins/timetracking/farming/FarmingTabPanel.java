@@ -235,6 +235,7 @@ public class FarmingTabPanel extends TabContentPanel
 			boolean notifyEnabled = Boolean.TRUE
 				.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, configKey, Boolean.class));
 
+			toggleNotify.setVisible(true);
 			toggleNotify.setSelected(notifyEnabled);
 		}
 	}

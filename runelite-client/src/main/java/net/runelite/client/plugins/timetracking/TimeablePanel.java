@@ -89,6 +89,7 @@ public class TimeablePanel<T> extends JPanel
 		ImageIcon notifyIcon = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_icon.png"));
 		ImageIcon notifySelectedIcon = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_selected_icon.png"));
 
+		notifyButton.setVisible(false);
 		notifyButton.setPreferredSize(new Dimension(30, 16));
 		notifyButton.setBorder(new EmptyBorder(0, 0, 0, 10));
 		notifyButton.setIcon(notifyIcon);
