@@ -200,9 +200,9 @@ public class InfoPanel extends PluginPanel
 				return;
 			}
 			final int result = JOptionPane.showOptionDialog(null,
-		"This will disable all plugins except the default ones.",
-			"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-			null, new String[]{"Yes", "No"}, "No");
+				"This will disable all plugins except the default ones.",
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
 
 			if (result != JOptionPane.YES_OPTION)
 			{
