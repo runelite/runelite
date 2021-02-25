@@ -27,6 +27,7 @@ package net.runelite.client.plugins.info;
 
 import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -45,6 +46,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
+
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -53,6 +56,12 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.externalplugins.ExternalPluginManager;
+import net.runelite.client.externalplugins.ExternalPluginManifest;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginInstantiationException;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
@@ -60,6 +69,7 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 
 @Singleton
+@Slf4j
 public class InfoPanel extends PluginPanel
 {
 	private static final String RUNELITE_LOGIN = "https://runelite_login/";
@@ -91,6 +101,12 @@ public class InfoPanel extends PluginPanel
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private PluginManager pluginManager;
+
+	@Inject
+	private ExternalPluginManager externalPluginManager;
 
 	@Inject
 	@Named("runelite.version")
@@ -126,7 +142,7 @@ public class InfoPanel extends PluginPanel
 	{
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
-		setBorder(new EmptyBorder(10, 10, 10, 10));
+		setBorder(new EmptyBorder(10, 10, 10, 5));
 
 		JPanel versionPanel = new JPanel();
 		versionPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -170,12 +186,79 @@ public class InfoPanel extends PluginPanel
 			}
 		});
 
+		JLabel pluginLabel = new JLabel();
+		pluginLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		pluginLabel.setFont(smallFont);
+		pluginLabel.setText("Plugins");
+
+		JRichTextPane restoreLabel = new JRichTextPane();
+		restoreLabel.setForeground(Color.WHITE);
+		restoreLabel.setFont(smallFont);
+		restoreLabel.enableAutoLinkHandler(false);
+		restoreLabel.addHyperlinkListener(e ->
+		{
+			if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()))
+			{
+				final int result = JOptionPane.showOptionDialog(null,
+							"This will disable all plugins except the default ones.",
+							"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+							null, new String[]{"Yes", "No"}, "No");
+
+				if (result == JOptionPane.YES_OPTION)
+				{
+					for (Plugin plugin : pluginManager.getPlugins())
+					{
+						PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+						boolean stopPlugin = !pluginDescriptor.enabledByDefault();
+						ExternalPluginManifest manifest = ExternalPluginManager.getExternalPluginManifest(plugin.getClass());
+						if (manifest != null)
+						{
+							if (externalPluginManager.getInstalledExternalPlugins().contains(manifest.getInternalName()))
+							{
+								stopPlugin = true;
+							}
+						}
+						if (stopPlugin)
+						{
+							try
+							{
+								pluginManager.setPluginEnabled(plugin, false);
+								pluginManager.stopPlugin(plugin);
+							}
+							catch (PluginInstantiationException ex)
+							{
+								log.warn("Unable to stop {}", plugin.getClass().getSimpleName());
+							}
+						}
+						else if (!pluginManager.isPluginEnabled(plugin))
+						{
+							try
+							{
+								pluginManager.setPluginEnabled(plugin, true);
+								pluginManager.startPlugin(plugin);
+							}
+							catch (PluginInstantiationException ex)
+							{
+								log.warn("Unable to start {}", plugin.getClass().getSimpleName());
+							}
+						}
+					}
+					log.debug("Restored default plugins");
+				}
+			}
+		});
+		restoreLabel.setContentType("text/html");
+		restoreLabel.setText("<a href=>Restore</a> default plugins.");
+
 		versionPanel.add(version);
 		versionPanel.add(revision);
 		versionPanel.add(launcher);
 		versionPanel.add(Box.createGlue());
 		versionPanel.add(loggedLabel);
 		versionPanel.add(emailLabel);
+		versionPanel.add(Box.createGlue());
+		versionPanel.add(pluginLabel);
+		versionPanel.add(restoreLabel);
 
 		actionsContainer = new JPanel();
 		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
