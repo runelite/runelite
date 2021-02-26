@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,49 +24,43 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import java.awt.Color;
-import javax.swing.JButton;
-import lombok.Getter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import lombok.AccessLevel;
+import lombok.Setter;
+import net.runelite.client.ui.ClientUI;
 
-public class DevToolsButton extends JButton
+public class DevToolsFrame extends JFrame
 {
-	@Getter
-	private boolean active;
+	@Setter(AccessLevel.PACKAGE)
+	protected DevToolsButton devToolsButton;
 
-	DevToolsButton(String title)
+	public DevToolsFrame()
 	{
-		super(title);
-		addActionListener((ev) -> setActive(!active));
-		this.setToolTipText(title);
-	}
+		setIconImage(ClientUI.ICON);
 
-	void setActive(boolean active)
-	{
-		this.active = active;
-
-		if (active)
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter()
 		{
-			setBackground(Color.GREEN);
-		}
-		else
-		{
-			setBackground(null);
-		}
-	}
-
-	void addFrame(DevToolsFrame frame)
-	{
-		frame.setDevToolsButton(this);
-		addActionListener(ev ->
-		{
-			if (isActive())
+			@Override
+			public void windowClosing(WindowEvent e)
 			{
-				frame.close();
-			}
-			else
-			{
-				frame.open();
+				close();
+				devToolsButton.setActive(false);
 			}
 		});
+	}
+
+	public void open()
+	{
+		setVisible(true);
+		toFront();
+		repaint();
+	}
+
+	public void close()
+	{
+		setVisible(false);
 	}
 }

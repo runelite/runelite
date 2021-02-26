@@ -36,8 +36,6 @@
 	<name>RuneLite Client</name>
 
 	<properties>
-		<guice.version>4.1.0</guice.version>
-
 		<jarsigner.skip>true</jarsigner.skip>
 		<pmd.skip>true</pmd.skip>
 	</properties>
@@ -85,7 +83,6 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<version>${guice.version}</version>
 			<classifier>no_aop</classifier>
 		</dependency>
 		<dependency>
@@ -215,13 +212,18 @@
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>runelite-api</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>jshell</artifactId>
+			<version>${project.version}</version>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -267,13 +269,11 @@
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-testlib</artifactId>
-			<version>${guice.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-grapher</artifactId>
-			<version>${guice.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -318,7 +318,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<phase>package</phase>

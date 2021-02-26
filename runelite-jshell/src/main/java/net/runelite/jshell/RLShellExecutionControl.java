@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.devtools;
+package net.runelite.jshell;
 
-import java.awt.Color;
-import javax.swing.JButton;
-import lombok.Getter;
+import java.util.Map;
+import jdk.jshell.execution.DirectExecutionControl;
+import jdk.jshell.spi.ExecutionControl;
+import jdk.jshell.spi.ExecutionControlProvider;
+import jdk.jshell.spi.ExecutionEnv;
 
-public class DevToolsButton extends JButton
+public class RLShellExecutionControl extends DirectExecutionControl implements ExecutionControlProvider
 {
-	@Getter
-	private boolean active;
-
-	DevToolsButton(String title)
+	public RLShellExecutionControl()
 	{
-		super(title);
-		addActionListener((ev) -> setActive(!active));
-		this.setToolTipText(title);
 	}
 
-	void setActive(boolean active)
+	@Override
+	public String name()
 	{
-		this.active = active;
-
-		if (active)
-		{
-			setBackground(Color.GREEN);
-		}
-		else
-		{
-			setBackground(null);
-		}
+		return getClass().getName();
 	}
 
-	void addFrame(DevToolsFrame frame)
+	@Override
+	public ExecutionControl generate(ExecutionEnv env, Map<String, String> parameters) throws Throwable
 	{
-		frame.setDevToolsButton(this);
-		addActionListener(ev ->
-		{
-			if (isActive())
-			{
-				frame.close();
-			}
-			else
-			{
-				frame.open();
-			}
-		});
+		return this;
 	}
 }

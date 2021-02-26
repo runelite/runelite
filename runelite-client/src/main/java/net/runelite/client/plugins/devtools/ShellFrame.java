@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,49 +24,47 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import java.awt.Color;
-import javax.swing.JButton;
-import lombok.Getter;
+import java.util.concurrent.ScheduledExecutorService;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.client.RuneLite;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.jshell.ShellPanel;
 
-public class DevToolsButton extends JButton
+@Singleton
+class ShellFrame extends DevToolsFrame
 {
-	@Getter
-	private boolean active;
+	private final ShellPanel shellPanel;
 
-	DevToolsButton(String title)
+	@Inject
+	ShellFrame(ClientThread clientThread, ScheduledExecutorService executor)
 	{
-		super(title);
-		addActionListener((ev) -> setActive(!active));
-		this.setToolTipText(title);
+		this.shellPanel = new ShellPanel(executor)
+		{
+			@Override
+			protected void invokeOnClientThread(Runnable r)
+			{
+				clientThread.invoke(r);
+			}
+		};
+		setContentPane(shellPanel);
+
+		setTitle("RuneLite Shell");
+
+		pack();
 	}
 
-	void setActive(boolean active)
+	@Override
+	public void open()
 	{
-		this.active = active;
-
-		if (active)
-		{
-			setBackground(Color.GREEN);
-		}
-		else
-		{
-			setBackground(null);
-		}
+		shellPanel.switchContext(RuneLite.getInjector());
+		super.open();
 	}
 
-	void addFrame(DevToolsFrame frame)
+	@Override
+	public void close()
 	{
-		frame.setDevToolsButton(this);
-		addActionListener(ev ->
-		{
-			if (isActive())
-			{
-				frame.close();
-			}
-			else
-			{
-				frame.open();
-			}
-		});
+		super.close();
+		shellPanel.freeContext();
 	}
 }
