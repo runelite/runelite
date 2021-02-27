@@ -426,7 +426,8 @@ class WorldSwitcherPanel extends PluginPanel
 
 	public void buildActivityFilter(boolean displayFilter)
 	{
-		if (displayFilter) {
+		if (displayFilter)
+		{
 			// try to add a gap between the filter and the world list
 			activityFilterContainer.setLayout(new BorderLayout(8, 8));
 			activityFilterContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
