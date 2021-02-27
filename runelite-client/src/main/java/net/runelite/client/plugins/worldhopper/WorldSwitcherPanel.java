@@ -220,6 +220,9 @@ class WorldSwitcherPanel extends PluginPanel
 				listContainer.add(row);
 			}
 		}
+
+		listContainer.revalidate();
+		listContainer.repaint();
 	}
 
 	private int getCompareValue(WorldTableRow row1, WorldTableRow row2, Function<WorldTableRow, Comparable> compareByFn)
