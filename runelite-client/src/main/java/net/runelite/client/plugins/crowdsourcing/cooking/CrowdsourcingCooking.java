@@ -80,7 +80,7 @@ public class CrowdsourcingCooking
 			|| message.startsWith("You roast a")
 			|| message.startsWith("You spit-roast")
 			|| message.startsWith("You cook")
-			|| message.startsWith("You burn")
+			|| (message.startsWith("You burn") && !message.contains("incense burner"))
 			|| message.startsWith("Eventually the Jubbly")
 			|| message.startsWith("Unfortunately the Jubbly")
 			|| message.startsWith("You accidentally burn")

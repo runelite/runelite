@@ -60,7 +60,8 @@ public class CookingPluginTest
 		"You roast a lobster.",
 		"You cook a bass.",
 		"You successfully bake a tasty garden pie.",
-		"You dry a piece of meat and extract the sinew."
+		"You dry a piece of meat and extract the sinew.",
+		"You burn some marrentill in the incense burner."
 	};
 
 	@Inject
@@ -107,7 +108,8 @@ public class CookingPluginTest
 
 		CookingSession cookingSession = cookingPlugin.getSession();
 		assertNotNull(cookingSession);
-		assertEquals(COOKING_MESSAGES.length, cookingSession.getCookAmount());
+		assertEquals(COOKING_MESSAGES.length - 1, cookingSession.getCookAmount());
+		assertEquals(0, cookingSession.getBurnAmount());
 	}
 
 	@Test

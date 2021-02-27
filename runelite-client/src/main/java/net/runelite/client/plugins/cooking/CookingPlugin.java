@@ -196,7 +196,7 @@ public class CookingPlugin extends Plugin
 
 		}
 		else if (message.startsWith("You accidentally burn")
-			|| message.startsWith("You burn")
+			|| (message.startsWith("You burn") && !message.contains("incense burner"))
 			|| message.startsWith("Unfortunately the Jubbly")
 			|| message.startsWith("You accidentally spoil"))
 		{
