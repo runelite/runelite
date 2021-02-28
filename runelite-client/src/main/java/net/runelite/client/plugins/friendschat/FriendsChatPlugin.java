@@ -66,6 +66,7 @@ import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientStrChanged;
+import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
@@ -77,6 +78,8 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.FriendChatManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.menus.MenuManager;
+import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.ui.JagexColors.CHAT_FC_NAME_OPAQUE_BACKGROUND;
@@ -97,6 +100,17 @@ public class FriendsChatPlugin extends Plugin
 	private static final String TITLE = "FC";
 	private static final String RECENT_TITLE = "Recent FCs";
 	private static final int MESSAGE_DELAY = 10;
+	private static final String CLEAR_RECENT_OPTION = "Clear";
+	private static final String CLEAR_RECENT_TARGET = "recent channels";
+
+	private static final WidgetMenuOption CLEAR_FIXED = new WidgetMenuOption(CLEAR_RECENT_OPTION,
+		CLEAR_RECENT_TARGET, WidgetInfo.FIXED_VIEWPORT_FRIENDS_CHAT_TAB);
+
+	private static final WidgetMenuOption CLEAR_RESIZABLE_CLASSIC = new WidgetMenuOption(CLEAR_RECENT_OPTION,
+		CLEAR_RECENT_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_FRIENDS_CHAT_TAB);
+
+	private static final WidgetMenuOption CLEAR_RESIZABLE_RESIZABLE_MODERN = new WidgetMenuOption(CLEAR_RECENT_OPTION,
+		CLEAR_RECENT_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_FRIEND_CHAT_TAB);
 
 	@Inject
 	private Client client;
@@ -109,6 +123,9 @@ public class FriendsChatPlugin extends Plugin
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private MenuManager menuManager;
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -146,6 +163,7 @@ public class FriendsChatPlugin extends Plugin
 		{
 			clientThread.invoke(() -> colorIgnoredPlayers(config.showIgnoresColor()));
 		}
+		updateMenuOptions();
 	}
 
 	@Override
@@ -162,6 +180,7 @@ public class FriendsChatPlugin extends Plugin
 	{
 		if (configChanged.getGroup().equals("clanchat"))
 		{
+			updateMenuOptions();
 			if (!config.recentChats())
 			{
 				resetChats();
@@ -713,6 +732,41 @@ public class FriendsChatPlugin extends Plugin
 			}
 
 			listWidget.setTextColor(ignoreColor.getRGB());
+		}
+	}
+
+	@Subscribe
+	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
+	{
+		if ((event.getWidget() == WidgetInfo.FIXED_VIEWPORT_FRIENDS_CHAT_TAB
+			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_FRIENDS_CHAT_TAB
+			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_FRIEND_CHAT_TAB)
+			&& CLEAR_RECENT_OPTION.equals(event.getMenuOption())
+			&& CLEAR_RECENT_TARGET.equals(Text.removeTags(event.getMenuTarget())))
+		{
+			Widget chatList = client.getWidget(WidgetInfo.FRIENDS_CHAT_LIST);
+			if (chatList != null)
+			{
+				chatList.setChildren(null);
+			}
+			chats.clear();
+			config.chatsData("");
+		}
+	}
+
+	private void updateMenuOptions()
+	{
+		if (config.recentChats())
+		{
+			menuManager.addManagedCustomMenu(CLEAR_FIXED);
+			menuManager.addManagedCustomMenu(CLEAR_RESIZABLE_CLASSIC);
+			menuManager.addManagedCustomMenu(CLEAR_RESIZABLE_RESIZABLE_MODERN);
+		}
+		else
+		{
+			menuManager.removeManagedCustomMenu(CLEAR_FIXED);
+			menuManager.removeManagedCustomMenu(CLEAR_RESIZABLE_CLASSIC);
+			menuManager.removeManagedCustomMenu(CLEAR_RESIZABLE_RESIZABLE_MODERN);
 		}
 	}
 }
