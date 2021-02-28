@@ -80,7 +80,7 @@ enum DungeonLocation
 	FREMENNIK_SLAYER("Fremennik Slayer Dungeon", new WorldPoint(2796, 3615, 0)),
 	GOBLIN_CAVE("Goblin Cave", new WorldPoint(2622, 3393, 0)),
 	GOD_WARS("God Wars Dungeon", new WorldPoint(2917, 3747, 0)),
-	GRAND_TREE("Grand Tree Tunnels", new WorldPoint(2464, 3496, 0)),
+	GRAND_TREE("Grand Tree Tunnels", new WorldPoint(2462, 3496, 0)),
 	GAUNTLET("The Gauntlet", new WorldPoint(3227, 6116, 0)),
 	HAM_HIDEOUT("H.A.M. Hideout", new WorldPoint(3164, 3252, 0)),
 	HEROES_GUILD("Heroes' Guild mine", new WorldPoint(2891, 3507, 0)),
