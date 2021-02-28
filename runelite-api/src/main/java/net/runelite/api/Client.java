@@ -1804,4 +1804,17 @@ public interface Client extends GameEngine
 	 * @see KeyCode
 	 */
 	boolean isKeyPressed(int keycode);
+
+	/**
+	 * Sets all the sprites used by the login screen
+	 * Setting all of them to null will reset the sprites to default
+	 * Setting one of them to null will leave the previously set sprite (switching to GameState.UNKNOWN then GameState.LOGIN_SCREEN will reset that sprite to default)
+	 * @param logo RuneScape logo
+	 * @param box The background of the box that users log in with
+	 * @param button The buttons for New and Existing users
+	 * @param musicUnmuted The music button when it's unmuted
+	 * @param musicMuted The music button when it's muted
+	 * @param worldSwitcher The background to the world switcher button
+	 */
+	void setLoginUISprites(IndexedSprite logo, IndexedSprite box, IndexedSprite button, IndexedSprite musicUnmuted, IndexedSprite musicMuted, IndexedSprite worldSwitcher);
 }
