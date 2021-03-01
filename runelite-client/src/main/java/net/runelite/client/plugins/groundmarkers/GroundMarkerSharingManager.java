@@ -79,7 +79,7 @@ class GroundMarkerSharingManager
 		this.gson = gson;
 	}
 
-	void addMenuOptions()
+	void addImportExportMenuOptions()
 	{
 		menuManager.addManagedCustomMenu(EXPORT_MARKERS_OPTION);
 		menuManager.addManagedCustomMenu(IMPORT_MARKERS_OPTION);

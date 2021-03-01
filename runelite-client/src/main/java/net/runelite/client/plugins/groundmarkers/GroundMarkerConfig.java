@@ -31,9 +31,12 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("groundMarker")
+@ConfigGroup(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
 public interface GroundMarkerConfig extends Config
 {
+	String GROUND_MARKER_CONFIG_GROUP = "groundMarker";
+	String SHOW_IMPORT_EXPORT_KEY_NAME = "showImportExport";
+
 	@Alpha
 	@ConfigItem(
 		keyName = "markerColor",
@@ -63,5 +66,15 @@ public interface GroundMarkerConfig extends Config
 	default boolean drawTileOnMinimmap()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
+		name = "Show Import/Export options",
+		description = "Show the Import/Export options on the minimap right-click menu"
+	)
+	default boolean showImportExport()
+	{
+		return true;
 	}
 }

@@ -54,6 +54,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -190,7 +191,10 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
-		sharingManager.addMenuOptions();
+		if (config.showImportExport())
+		{
+			sharingManager.addImportExportMenuOptions();
+		}
 		loadPoints();
 		eventBus.register(sharingManager);
 	}
@@ -277,6 +281,21 @@ public class GroundMarkerPlugin extends Plugin
 		else if (option.equals(LABEL))
 		{
 			labelTile(target);
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
+			&& event.getKey().equals(GroundMarkerConfig.SHOW_IMPORT_EXPORT_KEY_NAME))
+		{
+			sharingManager.removeMenuOptions();
+
+			if (config.showImportExport())
+			{
+				sharingManager.addImportExportMenuOptions();
+			}
 		}
 	}
 
