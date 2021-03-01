@@ -170,7 +170,7 @@ public class LootTrackerPlugin extends Plugin
 		build();
 
 	private static final int SHADE_PYRE_REGION = 13875;
-	private static final Set<Integer> SHADE_PYRE_OBJECTS = ImmutableSet.of(ObjectID.FUNERAL_PYRE_4094, ObjectID.FUNERAL_PYRE_4095, ObjectID.FUNERAL_PYRE_4096, ObjectID.FUNERAL_PYRE_4097, ObjectID.FUNERAL_PYRE_4098, ObjectID.FUNERAL_PYRE_4099, ObjectID.FUNERAL_PYRE_21271, ObjectID.FUNERAL_PYRE_9006, ObjectID.FUNERAL_PYRE_9007, ObjectID.FUNERAL_PYRE_25265, ObjectID.FUNERAL_PYRE_28865);
+	private static final Set<Integer> SHADE_PYRE_OBJECTS = ImmutableSet.of(ObjectID.FUNERAL_PYRE_4094, ObjectID.FUNERAL_PYRE_4095, ObjectID.FUNERAL_PYRE_4096, ObjectID.FUNERAL_PYRE_4097, ObjectID.FUNERAL_PYRE_4098, ObjectID.FUNERAL_PYRE_4099, ObjectID.FUNERAL_PYRE_21271, ObjectID.FUNERAL_PYRE_9006, ObjectID.FUNERAL_PYRE_9007, ObjectID.FUNERAL_PYRE_28865);
 	private static final Map<Integer, String> SHADE_REMAINS_IDS = new ImmutableMap.Builder<Integer, String>().
 		put(ItemID.LOAR_REMAINS, "Loar remains").
 		put(ItemID.PHRIN_REMAINS, "Phrin remains").
