@@ -63,9 +63,11 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectID;
@@ -76,6 +78,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -164,6 +167,17 @@ public class LootTrackerPlugin extends Plugin
 		put(7323, "Grubby Chest").
 		put(8593, "Isle of Souls Chest").
 		put(7827, "Dark Chest").
+		build();
+
+	private static final int SHADE_PYRE_REGION = 13875;
+	private static final Set<Integer> SHADE_PYRE_OBJECTS = ImmutableSet.of(ObjectID.FUNERAL_PYRE_4094, ObjectID.FUNERAL_PYRE_4095, ObjectID.FUNERAL_PYRE_4096, ObjectID.FUNERAL_PYRE_4097, ObjectID.FUNERAL_PYRE_4098, ObjectID.FUNERAL_PYRE_4099, ObjectID.FUNERAL_PYRE_21271, ObjectID.FUNERAL_PYRE_9006, ObjectID.FUNERAL_PYRE_9007, ObjectID.FUNERAL_PYRE_25265, ObjectID.FUNERAL_PYRE_28865);
+	private static final Map<Integer, String> SHADE_REMAINS_IDS = new ImmutableMap.Builder<Integer, String>().
+		put(ItemID.LOAR_REMAINS, "Loar remains").
+		put(ItemID.PHRIN_REMAINS, "Phrin remains").
+		put(ItemID.RIYL_REMAINS, "Riyl remains").
+		put(ItemID.ASYN_REMAINS, "Asyn remains").
+		put(ItemID.FIYR_REMAINS, "Fiyr remains").
+		put(ItemID.URIUM_REMAINS, "Urium remains").
 		build();
 
 	// Shade chest loot handling
@@ -827,6 +841,19 @@ public class LootTrackerPlugin extends Plugin
 			setEvent(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT);
 			takeInventorySnapshot();
 		}
+
+		if (event.getMenuAction() == MenuAction.ITEM_USE_ON_GAME_OBJECT && SHADE_PYRE_OBJECTS.contains(event.getId()))
+		{
+			final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			if (inventory == null)
+			{
+				return;
+			}
+			final Item selectedItem = inventory.getItem(event.getSelectedItemIndex());
+			int objectID = event.getId();
+			String eventType = SHADE_REMAINS_IDS.get(selectedItem.getId());
+			setEvent(LootRecordType.EVENT, eventType, objectID);
+		}
 	}
 
 	@Schedule(
@@ -914,6 +941,22 @@ public class LootTrackerPlugin extends Plugin
 			addLoot(event, -1, lootRecordType, metadata, items);
 
 			inventorySnapshot = null;
+		}
+	}
+
+	@Subscribe
+	private void onItemSpawned(ItemSpawned itemSpawned)
+	{
+		int region = itemSpawned.getTile().getWorldLocation().getRegionID();
+
+		if (region == SHADE_PYRE_REGION)
+		{
+			Collection<ItemStack> shadeLoot = lootManager.getItemSpawns(itemSpawned.getTile().getWorldLocation());
+			if (!shadeLoot.isEmpty())
+			{
+				addLoot(eventType, -1, lootRecordType, null, shadeLoot);
+				resetEvent();
+			}
 		}
 	}
 
