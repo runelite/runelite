@@ -195,6 +195,10 @@ public class GroundMarkerPlugin extends Plugin
 		{
 			sharingManager.addImportExportMenuOptions();
 		}
+		if (config.showClear())
+		{
+			sharingManager.addClearMenuOption();
+		}
 		loadPoints();
 		eventBus.register(sharingManager);
 	}
@@ -288,13 +292,19 @@ public class GroundMarkerPlugin extends Plugin
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
-			&& event.getKey().equals(GroundMarkerConfig.SHOW_IMPORT_EXPORT_KEY_NAME))
+			&& (event.getKey().equals(GroundMarkerConfig.SHOW_IMPORT_EXPORT_KEY_NAME)
+				|| event.getKey().equals(GroundMarkerConfig.SHOW_CLEAR_KEY_NAME)))
 		{
+			// Maintain consistent menu option order by removing everything then adding according to config
 			sharingManager.removeMenuOptions();
 
 			if (config.showImportExport())
 			{
 				sharingManager.addImportExportMenuOptions();
+			}
+			if (config.showClear())
+			{
+				sharingManager.addClearMenuOption();
 			}
 		}
 	}

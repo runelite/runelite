@@ -36,6 +36,7 @@ public interface GroundMarkerConfig extends Config
 {
 	String GROUND_MARKER_CONFIG_GROUP = "groundMarker";
 	String SHOW_IMPORT_EXPORT_KEY_NAME = "showImportExport";
+	String SHOW_CLEAR_KEY_NAME = "showClear";
 
 	@Alpha
 	@ConfigItem(
@@ -76,5 +77,15 @@ public interface GroundMarkerConfig extends Config
 	default boolean showImportExport()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = SHOW_CLEAR_KEY_NAME,
+		name = "Show Clear option",
+		description = "Show the Clear option on the minimap right-click menu, which deletes all currently loaded markers"
+	)
+	default boolean showClear()
+	{
+		return false;
 	}
 }
