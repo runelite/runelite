@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -52,6 +53,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
@@ -63,6 +66,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.StatChanged;
@@ -132,6 +136,33 @@ public class SlayerPlugin extends Plugin
 	private static final String TASK_COMMAND_STRING = "!task";
 	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int TASK_STRING_MAX_LENGTH = 50;
+
+	// slayer helmet list
+	private static final List<Integer> SLAYER_HELMET = ImmutableList.of(
+		ItemID.SLAYER_HELMET,
+		ItemID.SLAYER_HELMET_I,
+		ItemID.BLACK_SLAYER_HELMET,
+		ItemID.BLACK_SLAYER_HELMET_I,
+		ItemID.GREEN_SLAYER_HELMET,
+		ItemID.GREEN_SLAYER_HELMET_I,
+		ItemID.PURPLE_SLAYER_HELMET,
+		ItemID.PURPLE_SLAYER_HELMET_I,
+		ItemID.RED_SLAYER_HELMET,
+		ItemID.RED_SLAYER_HELMET_I,
+		ItemID.TURQUOISE_SLAYER_HELMET,
+		ItemID.TURQUOISE_SLAYER_HELMET_I,
+		ItemID.HYDRA_SLAYER_HELMET,
+		ItemID.HYDRA_SLAYER_HELMET_I,
+		ItemID.TWISTED_SLAYER_HELMET,
+		ItemID.TWISTED_SLAYER_HELMET_I
+	);
+	// can item be substituted with slayer helmet?
+	private static final List<Integer> SLAYER_HELMET_ITEMS = ImmutableList.of(
+		ItemID.EARMUFFS,
+		ItemID.FACEMASK,
+		ItemID.NOSE_PEG,
+		ItemID.SPINY_HELMET
+	);
 
 	@Inject
 	private Client client;
@@ -595,6 +626,20 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		{
+			return;
+		}
+		if (counter != null)
+		{
+			removeCounter();
+			addCounter();
+		}
+	}
+
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("slayer") || !event.getKey().equals("infobox"))
@@ -759,6 +804,27 @@ public class SlayerPlugin extends Plugin
 			taskTooltip += taskLocation + "</br>";
 		}
 
+		String slayerItemName = "";
+		int slayerItemID = Task.getTask(taskName).getWeaknessItem();
+		Color itemColor;
+
+		if (slayerItemID != -1)
+		{
+			if (itemOnPlayer(slayerItemID))
+			{
+				itemColor = Color.GREEN;
+			}
+			else
+			{
+				itemColor = Color.RED;
+			}
+
+			slayerItemName = client.getItemDefinition(Task.getTask(taskName).getWeaknessItem()).getName();
+
+			taskTooltip += ColorUtil.wrapWithColorTag("Slayer Item: ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag(slayerItemName, itemColor) + " </br>";
+		}
+
 		taskTooltip += ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
 			+ " %s</br>"
 			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
@@ -890,5 +956,34 @@ public class SlayerPlugin extends Plugin
 	private String capsString(String str)
 	{
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	}
+
+	// check if player is carrying the item
+	private boolean itemOnPlayer(int itemID)
+	{
+		return checkItemContainer(InventoryID.INVENTORY, itemID) || checkItemContainer(InventoryID.EQUIPMENT, itemID);
+	}
+
+	private boolean checkItemContainer(InventoryID id, int itemID)
+	{
+		final ItemContainer itemContainer = client.getItemContainer(id);
+		final boolean useSlayerHelm = SLAYER_HELMET_ITEMS.contains(itemID);
+		boolean hasSlayerHelmet = false;
+
+		if (itemContainer == null)
+		{
+			return false;
+		}
+
+		for (int helmet : SLAYER_HELMET)
+		{
+			if (itemContainer.contains(helmet))
+			{
+				hasSlayerHelmet = true;
+			}
+		}
+
+		// player has a slayer helmet or the item itself
+		return useSlayerHelm && hasSlayerHelmet || itemContainer.contains(itemID);
 	}
 }
