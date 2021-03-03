@@ -67,6 +67,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.BeforePluginChanged;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -378,6 +379,8 @@ public class PluginManager
 			return false;
 		}
 
+		eventBus.post(new BeforePluginChanged(plugin, true));
+
 		activePlugins.add(plugin);
 
 		try
@@ -415,11 +418,14 @@ public class PluginManager
 		// plugins always stop in the EDT
 		assert SwingUtilities.isEventDispatchThread();
 
-		if (!activePlugins.remove(plugin))
+		if (activePlugins.contains(plugin))
 		{
 			return false;
 		}
 
+		eventBus.post(new BeforePluginChanged(plugin, false));
+
+		activePlugins.remove(plugin);
 		unschedule(plugin);
 		eventBus.unregister(plugin);
 
