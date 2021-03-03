@@ -66,10 +66,10 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 @PluginDescriptor(
-		name = "Camera",
-		description = "Expands zoom limit, provides vertical camera, and remaps mouse input keys",
-		tags = {"zoom", "limit", "vertical", "click", "mouse"},
-		enabledByDefault = false
+	name = "Camera",
+	description = "Expands zoom limit, provides vertical camera, and remaps mouse input keys",
+	tags = {"zoom", "limit", "vertical", "click", "mouse"},
+	enabledByDefault = false
 )
 public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {
@@ -141,8 +141,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			if (settingsInit != null)
 			{
 				client.createScriptEvent(settingsInit.getOnLoadListener())
-						.setSource(settingsInit)
-						.run();
+					.setSource(settingsInit)
+					.run();
 			}
 		});
 	}
@@ -177,16 +177,16 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			if (component0 != null)
 			{
 				client.createScriptEvent(component0.getOnLoadListener())
-						.setSource(component0)
-						.run();
+					.setSource(component0)
+					.run();
 			}
 
 			Widget settingsInit = client.getWidget(WidgetInfo.SETTINGS_INIT);
 			if (settingsInit != null)
 			{
 				client.createScriptEvent(settingsInit.getOnLoadListener())
-						.setSource(settingsInit)
-						.run();
+					.setSource(settingsInit)
+					.run();
 			}
 		});
 	}
@@ -408,8 +408,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 					int fixedViewport = client.getVar(VarClientInt.CAMERA_ZOOM_FIXED_VIEWPORT);
 					int resizableViewport = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
 					clientThread.invokeLater(() -> client.createScriptEvent(ScriptID.SETTINGS_ZOOM_POSITION_TIMER, fixedViewport, resizableViewport, sliderHandleID, sliderHandleIndex, trackWidth, yOffset, xOffset)
-							.setSource(handle)
-							.run());
+						.setSource(handle)
+						.run());
 				});
 				track.setOnHoldListener((JavaScriptCallback) z ->
 				{
@@ -421,8 +421,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 				handle.setOnDragListener((JavaScriptCallback) z -> clientThread.invokeLater(() ->
 				{
 					client.createScriptEvent(ScriptID.SETTINGS_ZOOM_SLIDER_ONDRAG, sliderHandleID, sliderHandleIndex, trackWidth, z.getMouseX(), yOffset, xOffset)
-							.setSource(handle)
-							.run();
+						.setSource(handle)
+						.run();
 					int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
 					int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
 					sliderTooltip = new Tooltip("Camera Zoom: " + value + " / " + max);
@@ -455,8 +455,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			int fixedViewport = client.getVar(VarClientInt.CAMERA_ZOOM_FIXED_VIEWPORT);
 			int resizableViewport = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
 			clientThread.invokeLater(() -> client.createScriptEvent(ScriptID.SETTINGS_SIDE_ZOOM_TIMER, fixedViewport, resizableViewport)
-					.setSource(track)
-					.run());
+				.setSource(track)
+				.run());
 		});
 		track.setOnHoldListener((JavaScriptCallback) z ->
 		{
@@ -468,8 +468,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		handle.setOnDragListener((JavaScriptCallback) z -> clientThread.invokeLater(() ->
 		{
 			client.createScriptEvent(ScriptID.SETTINGS_SIDE_ZOOM_SLIDER_ONDRAG, handle.getId(), handle.getParentId(), z.getMouseX())
-					.setSource(handle)
-					.run();
+				.setSource(handle)
+				.run();
 			int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
 			int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
 			sliderTooltip = new Tooltip("Camera Zoom: " + value + " / " + max);
@@ -510,14 +510,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 				rightClick = true;
 				// Change the mousePressed() MouseEvent to the middle mouse button
 				mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-						mouseEvent.getID(),
-						mouseEvent.getWhen(),
-						mouseEvent.getModifiersEx(),
-						mouseEvent.getX(),
-						mouseEvent.getY(),
-						mouseEvent.getClickCount(),
-						mouseEvent.isPopupTrigger(),
-						MouseEvent.BUTTON2);
+					mouseEvent.getID(),
+					mouseEvent.getWhen(),
+					mouseEvent.getModifiersEx(),
+					mouseEvent.getX(),
+					mouseEvent.getY(),
+					mouseEvent.getClickCount(),
+					mouseEvent.isPopupTrigger(),
+					MouseEvent.BUTTON2);
 			}
 		}
 		else if (SwingUtilities.isMiddleMouseButton((mouseEvent)) && config.middleClickMenu())
@@ -526,14 +526,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			middleClick = true;
 			// Chance the middle mouse button MouseEvent to a right-click
 			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-					mouseEvent.getID(),
-					mouseEvent.getWhen(),
-					mouseEvent.getModifiersEx(),
-					mouseEvent.getX(),
-					mouseEvent.getY(),
-					mouseEvent.getClickCount(),
-					mouseEvent.isPopupTrigger(),
-					MouseEvent.BUTTON3);
+				mouseEvent.getID(),
+				mouseEvent.getWhen(),
+				mouseEvent.getModifiersEx(),
+				mouseEvent.getX(),
+				mouseEvent.getY(),
+				mouseEvent.getClickCount(),
+				mouseEvent.isPopupTrigger(),
+				MouseEvent.BUTTON3);
 		}
 		return mouseEvent;
 	}
@@ -550,14 +550,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			rightClick = false;
 			// Change the MouseEvent to button 2 so the middle mouse button will be released
 			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-					mouseEvent.getID(),
-					mouseEvent.getWhen(),
-					mouseEvent.getModifiersEx(),
-					mouseEvent.getX(),
-					mouseEvent.getY(),
-					mouseEvent.getClickCount(),
-					mouseEvent.isPopupTrigger(),
-					MouseEvent.BUTTON2);
+				mouseEvent.getID(),
+				mouseEvent.getWhen(),
+				mouseEvent.getModifiersEx(),
+				mouseEvent.getX(),
+				mouseEvent.getY(),
+				mouseEvent.getClickCount(),
+				mouseEvent.isPopupTrigger(),
+				MouseEvent.BUTTON2);
 
 		}
 		if (middleClick)
@@ -565,14 +565,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			middleClick = false;
 			// Change the MouseEvent ot button 3 so the right mouse button will be released
 			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-					mouseEvent.getID(),
-					mouseEvent.getWhen(),
-					mouseEvent.getModifiersEx(),
-					mouseEvent.getX(),
-					mouseEvent.getY(),
-					mouseEvent.getClickCount(),
-					mouseEvent.isPopupTrigger(),
-					MouseEvent.BUTTON3);
+				mouseEvent.getID(),
+				mouseEvent.getWhen(),
+				mouseEvent.getModifiersEx(),
+				mouseEvent.getX(),
+				mouseEvent.getY(),
+				mouseEvent.getClickCount(),
+				mouseEvent.isPopupTrigger(),
+				MouseEvent.BUTTON3);
 		}
 		return mouseEvent;
 	}
