@@ -73,10 +73,21 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showMainMenu",
+		name = "Main Menu",
+		description = "Show status when in main menu",
+		position = 3
+	)
+	default boolean showMainMenu()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showSkillActivity",
 		name = "Skilling",
 		description = "Show your activity while training skills",
-		position = 3
+		position = 4
 	)
 	default boolean showSkillingActivity()
 	{
@@ -87,7 +98,7 @@ public interface DiscordConfig extends Config
 		keyName = "showBossActivity",
 		name = "Bosses",
 		description = "Show your activity and location while at bosses",
-		position = 4
+		position = 5
 	)
 	default boolean showBossActivity()
 	{
@@ -98,7 +109,7 @@ public interface DiscordConfig extends Config
 		keyName = "showCityActivity",
 		name = "Cities",
 		description = "Show your activity and location while in cities",
-		position = 5
+		position = 6
 	)
 	default boolean showCityActivity()
 	{
@@ -109,7 +120,7 @@ public interface DiscordConfig extends Config
 		keyName = "showDungeonActivity",
 		name = "Dungeons",
 		description = "Show your activity and location while in dungeons",
-		position = 6
+		position = 7
 	)
 	default boolean showDungeonActivity()
 	{
@@ -120,7 +131,7 @@ public interface DiscordConfig extends Config
 		keyName = "showMinigameActivity",
 		name = "Minigames",
 		description = "Show your activity and location while in minigames",
-		position = 7
+		position = 8
 	)
 	default boolean showMinigameActivity()
 	{
@@ -131,7 +142,7 @@ public interface DiscordConfig extends Config
 		keyName = "showRaidingActivity",
 		name = "Raids",
 		description = "Show your activity and location while in Raids",
-		position = 8
+		position = 9
 	)
 	default boolean showRaidingActivity()
 	{
@@ -142,7 +153,7 @@ public interface DiscordConfig extends Config
 		keyName = "showRegionsActivity",
 		name = "Regions",
 		description = "Show your activity and location while in other regions",
-		position = 9
+		position = 10
 	)
 	default boolean showRegionsActivity()
 	{
