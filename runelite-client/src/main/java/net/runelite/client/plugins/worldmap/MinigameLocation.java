@@ -78,7 +78,8 @@ enum MinigameLocation
 	MAHOGANY_HOMES_HOSIDIUS("Mahogany Homes", new WorldPoint(1780, 3623, 0)),
 	MAHOGANY_HOMES_VARROCK("Mahogany Homes", new WorldPoint(3240, 3471, 0)),
 	SOUL_WARS("Soul Wars", new WorldPoint(2209, 2855, 0)),
-	SOUL_WARS_EDGEVILLE_PORTAL("Soul Wars", new WorldPoint(3082, 3474, 0));
+	SOUL_WARS_EDGEVILLE_PORTAL("Soul Wars", new WorldPoint(3082, 3474, 0)),
+	TZHAAR_KET_RAKS_CHALLENGES("TzHaar-Ket-Rak's Challenges", new WorldPoint(2544, 5111, 0));
 
 	private final String tooltip;
 	private final WorldPoint location;
