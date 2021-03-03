@@ -59,6 +59,7 @@ class GroundMarkerSharingManager
 {
 	private static final WidgetMenuOption EXPORT_MARKERS_OPTION = new WidgetMenuOption("Export", "Ground Markers", WORLD_MAP_OPTION);
 	private static final WidgetMenuOption IMPORT_MARKERS_OPTION = new WidgetMenuOption("Import", "Ground Markers", WORLD_MAP_OPTION);
+	private static final WidgetMenuOption CLEAR_MARKERS_OPTION = new WidgetMenuOption("Clear", "Ground Markers", WORLD_MAP_OPTION);
 
 	private final GroundMarkerPlugin plugin;
 	private final Client client;
@@ -79,16 +80,22 @@ class GroundMarkerSharingManager
 		this.gson = gson;
 	}
 
-	void addMenuOptions()
+	void addImportExportMenuOptions()
 	{
 		menuManager.addManagedCustomMenu(EXPORT_MARKERS_OPTION);
 		menuManager.addManagedCustomMenu(IMPORT_MARKERS_OPTION);
+	}
+
+	void addClearMenuOption()
+	{
+		menuManager.addManagedCustomMenu(CLEAR_MARKERS_OPTION);
 	}
 
 	void removeMenuOptions()
 	{
 		menuManager.removeManagedCustomMenu(EXPORT_MARKERS_OPTION);
 		menuManager.removeManagedCustomMenu(IMPORT_MARKERS_OPTION);
+		menuManager.removeManagedCustomMenu(CLEAR_MARKERS_OPTION);
 	}
 
 	private boolean widgetMenuClickedEquals(final WidgetMenuOptionClicked event, final WidgetMenuOption target)
@@ -113,6 +120,10 @@ class GroundMarkerSharingManager
 		else if (widgetMenuClickedEquals(event, IMPORT_MARKERS_OPTION))
 		{
 			promptForImport();
+		}
+		else if (widgetMenuClickedEquals(event, CLEAR_MARKERS_OPTION))
+		{
+			promptForClear();
 		}
 	}
 
@@ -231,6 +242,41 @@ class GroundMarkerSharingManager
 		log.debug("Reloading points after import");
 		plugin.loadPoints();
 		sendChatMessage(importPoints.size() + " ground markers were imported from the clipboard.");
+	}
+
+	private void promptForClear()
+	{
+		int[] regions = client.getMapRegions();
+		if (regions == null)
+		{
+			return;
+		}
+
+		long numActivePoints = Arrays.stream(regions)
+			.mapToLong(regionId -> plugin.getPoints(regionId).size())
+			.sum();
+
+		if (numActivePoints == 0)
+		{
+			sendChatMessage("You have no ground markers to clear.");
+			return;
+		}
+
+		chatboxPanelManager.openTextMenuInput("Are you sure you want to clear the<br>" + numActivePoints + " currently loaded ground markers?")
+			.option("Yes", () ->
+			{
+				for (int regionId : regions)
+				{
+					plugin.savePoints(regionId, null);
+				}
+
+				plugin.loadPoints();
+				sendChatMessage(numActivePoints + " ground marker"
+					+ (numActivePoints == 1 ? " was cleared." : "s were cleared."));
+
+			})
+			.option("No", Runnables::doNothing)
+			.build();
 	}
 
 	private void sendChatMessage(final String message)

@@ -37,9 +37,12 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -136,5 +139,43 @@ public class NpcIndicatorsPluginTest
 		MenuEntry target = new MenuEntry();
 		target.setTarget("<col=0000ff>Goblin"); // blue
 		verify(client).setMenuEntries(new MenuEntry[]{target});
+	}
+
+	@Test
+	public void taggedNpcChanges()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Joseph");
+
+		npcIndicatorsPlugin.rebuildAllNpcs();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Joseph");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+
+		when(npc.getName()).thenReturn("Werewolf");
+		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
+
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+	}
+
+	@Test
+	public void npcChangesToTagged()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Werewolf");
+
+		npcIndicatorsPlugin.rebuildAllNpcs();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Joseph");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+
+		when(npc.getName()).thenReturn("Werewolf");
+		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
+
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
 	}
 }

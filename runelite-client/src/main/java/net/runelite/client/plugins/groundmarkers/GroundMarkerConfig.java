@@ -31,9 +31,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("groundMarker")
+@ConfigGroup(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
 public interface GroundMarkerConfig extends Config
 {
+	String GROUND_MARKER_CONFIG_GROUP = "groundMarker";
+	String SHOW_IMPORT_EXPORT_KEY_NAME = "showImportExport";
+	String SHOW_CLEAR_KEY_NAME = "showClear";
+
 	@Alpha
 	@ConfigItem(
 		keyName = "markerColor",
@@ -61,6 +65,26 @@ public interface GroundMarkerConfig extends Config
 		description = "Configures whether marked tiles should be drawn on minimap"
 	)
 	default boolean drawTileOnMinimmap()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
+		name = "Show Import/Export options",
+		description = "Show the Import/Export options on the minimap right-click menu"
+	)
+	default boolean showImportExport()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = SHOW_CLEAR_KEY_NAME,
+		name = "Show Clear option",
+		description = "Show the Clear option on the minimap right-click menu, which deletes all currently loaded markers"
+	)
+	default boolean showClear()
 	{
 		return false;
 	}

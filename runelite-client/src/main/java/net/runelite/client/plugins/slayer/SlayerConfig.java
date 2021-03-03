@@ -32,9 +32,21 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
 
-@ConfigGroup("slayer")
+@ConfigGroup(SlayerConfig.GROUP_NAME)
 public interface SlayerConfig extends Config
 {
+	String GROUP_NAME = "slayer";
+
+	// Key names for stored task values
+	String TASK_NAME_KEY = "taskName";
+	String AMOUNT_KEY = "amount";
+	String INIT_AMOUNT_KEY = "initialAmount";
+	String TASK_LOC_KEY = "taskLocation";
+	String STREAK_KEY = "streak";
+	String POINTS_KEY = "points";
+	String EXPEDITIOUS_CHARGES_KEY = "expeditious";
+	String SLAUGHTER_CHARGES_KEY = "slaughter";
+
 	@ConfigItem(
 		position = 1,
 		keyName = "infobox",
@@ -124,148 +136,4 @@ public interface SlayerConfig extends Config
 	{
 		return true;
 	}
-
-	// Stored data
-	@ConfigItem(
-		keyName = "taskName",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String taskName()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "taskName",
-		name = "",
-		description = ""
-	)
-	void taskName(String key);
-
-	@ConfigItem(
-		keyName = "amount",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int amount()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "amount",
-		name = "",
-		description = ""
-	)
-	void amount(int amt);
-
-	@ConfigItem(
-		keyName = "initialAmount",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int initialAmount()
-	{
-		return -1;
-	}
-	@ConfigItem(
-		keyName = "initialAmount",
-		name = "",
-		description = ""
-	)
-	void initialAmount(int initialAmount);
-
-	@ConfigItem(
-		keyName = "taskLocation",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String taskLocation()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "taskLocation",
-		name = "",
-		description = ""
-	)
-	void taskLocation(String key);
-
-	@ConfigItem(
-		keyName = "streak",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int streak()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "streak",
-		name = "",
-		description = ""
-	)
-	void streak(int streak);
-
-	@ConfigItem(
-		keyName = "points",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int points()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "points",
-		name = "",
-		description = ""
-	)
-	void points(int points);
-
-	@ConfigItem(
-		keyName = "expeditious",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int expeditious()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "expeditious",
-		name = "",
-		description = ""
-	)
-	void expeditious(int expeditious);
-
-	@ConfigItem(
-		keyName = "slaughter",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int slaughter()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "slaughter",
-		name = "",
-		description = ""
-	)
-	void slaughter(int slaughter);
 }

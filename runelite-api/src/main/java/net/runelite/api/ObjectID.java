@@ -20940,6 +20940,7 @@ public final class ObjectID
 	public static final int CAGED_MONKEY_SHEEP = 40971;
 	public static final int FIREWORKS = 40972;
 	public static final int POST_40982 = 40982;
+	public static final int SCOREBOARD_41013 = 41013;
 	public static final int POTION_OF_POWER_TABLE_41023 = 41023;
 	public static final int PEDESTAL_SPACE = 41024;
 	public static final int PEDESTAL_SPACE_41025 = 41025;
