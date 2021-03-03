@@ -44,7 +44,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -285,5 +288,47 @@ public class ChatNotificationsPluginTest
 
 		// set value uses our player name, which has nbsp replaced
 		verify(messageNode).setValue("<col=005f00><colHIGHLIGHT><u>Logic Knot</u><col=005f00> received a drop: Adamant longsword</col>");
+	}
+
+	@Test
+	public void testLocalPlayerSelfMention()
+	{
+		final String localPlayerName = "Broo klyn";
+
+		MessageNode messageNode = mock(MessageNode.class);
+
+		Player localPlayer = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
+		when(localPlayer.getName()).thenReturn(localPlayerName);
+
+		lenient().when(config.highlightOwnName()).thenReturn(true);
+		lenient().when(messageNode.getValue()).thenReturn("Spread love it's the Broo klyn way");
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setName("Broo\u00a0klyn");
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode, times(0)).setValue(any());
+	}
+
+	@Test
+	public void testPrivateChatOutReturn()
+	{
+		MessageNode messageNode = mock(MessageNode.class);
+
+		lenient().when(config.highlightWordsString()).thenReturn("Brooklyn");
+		lenient().when(messageNode.getValue()).thenReturn("Spread love it's the Brooklyn way");
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PRIVATECHATOUT);
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp();
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode, times(0)).setValue(any());
 	}
 }

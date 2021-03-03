@@ -70,7 +70,7 @@ import net.runelite.client.util.QuantityFormatter;
 @PluginDescriptor(
 	name = "Bank",
 	description = "Modifications to the banking interface",
-	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit"}
+	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit", "pin"}
 )
 @Slf4j
 public class BankPlugin extends Plugin
@@ -238,12 +238,15 @@ public class BankPlugin extends Plugin
 
 					log.debug("Bank pin keypress");
 
-					final String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+					final String chatboxTypedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+					final String inputText = client.getVar(VarClientStr.INPUT_TEXT);
 					clientThread.invokeLater(() ->
 					{
 						// reset chatbox input to avoid pin going to chatbox..
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, input);
+						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, chatboxTypedText);
 						client.runScript(ScriptID.CHAT_PROMPT_INIT);
+						client.setVar(VarClientStr.INPUT_TEXT, inputText);
+						client.runScript(ScriptID.CHAT_TEXT_INPUT_REBUILD, "");
 
 						client.runScript(onOpListener);
 					});

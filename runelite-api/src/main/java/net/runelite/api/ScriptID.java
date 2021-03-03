@@ -124,7 +124,7 @@ public final class ScriptID
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 1)
-	public static final int QUESTLIST_PROGRESS = 2267;
+	public static final int QUEST_STATUS_GET = 4029;
 
 	/**
 	 * Updates the Diary/Quest interface's scrollbar
