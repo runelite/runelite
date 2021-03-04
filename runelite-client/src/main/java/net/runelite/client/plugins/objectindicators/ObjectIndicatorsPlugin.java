@@ -208,7 +208,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			}
 		}
 
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		if (gameStateChanged.getGameState() != GameState.LOGGED_IN && gameStateChanged.getGameState() != GameState.CONNECTION_LOST)
 		{
 			objects.clear();
 		}
