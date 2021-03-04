@@ -597,6 +597,7 @@ public class ConfigManager
 
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(groupName);
+		configChanged.setProfile(profile);
 		configChanged.setKey(key);
 		configChanged.setOldValue(oldValue);
 
