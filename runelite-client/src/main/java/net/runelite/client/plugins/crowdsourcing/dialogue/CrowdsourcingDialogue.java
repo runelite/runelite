@@ -64,7 +64,7 @@ public class CrowdsourcingDialogue
 		{
 			clientThread.invokeLater(this::handlePlayerDialogueOptions);
 		}
-		else if (event.getGroupId() == WidgetInfo.DIALOG_NPC_TEXT.getGroupId())
+		else if (event.getGroupId() == WidgetID.DIALOG_NPC_GROUP_ID)
 		{
 			clientThread.invokeLater(this::handleNpcDialogue);
 		}
