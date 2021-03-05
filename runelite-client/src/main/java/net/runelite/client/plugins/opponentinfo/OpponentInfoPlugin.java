@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2021, Andre Araya <araya.andre7@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +26,7 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -80,6 +82,8 @@ public class OpponentInfoPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Actor lastOpponent;
 
+	@Getter(AccessLevel.PACKAGE)
+	@VisibleForTesting
 	private Instant lastTime;
 
 	@Provides
@@ -134,33 +138,50 @@ public class OpponentInfoPlugin extends Plugin
 	@Subscribe
 	public void onInteractingChanged(InteractingChanged event)
 	{
-		if (event.getSource() != client.getLocalPlayer())
+		final Actor player = client.getLocalPlayer();
+		if (player == null)
 		{
 			return;
 		}
+		final Actor opponent = player.getInteracting();
+		final Actor source = event.getSource();
+		final Actor target = event.getTarget();
 
-		Actor opponent = event.getTarget();
-
-		if (opponent == null)
+		if (source == player)
+		{
+			// You have attacked an enemy
+			if (target != null)
+			{
+				lastOpponent = target;
+				lastTime = null;
+			}
+			// You have stopped attacking an enemy which is not attacking you
+			else if (lastOpponent != null && lastOpponent.getInteracting() != player)
+			{
+				lastTime = Instant.now();
+			}
+		}
+		// You are attacked while not attacking anything
+		else if (target == player && opponent == null)
+		{
+			lastOpponent = source;
+			lastTime = null;
+		}
+		// An enemy which was previously attacking you (which you were not attacking back) has changed its target
+		else if (source == lastOpponent && opponent != lastOpponent)
 		{
 			lastTime = Instant.now();
-			return;
 		}
-
-		lastOpponent = opponent;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (lastOpponent != null
-			&& lastTime != null
-			&& client.getLocalPlayer().getInteracting() == null)
+		if (lastTime != null
+			&& Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
 		{
-			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
-			{
-				lastOpponent = null;
-			}
+			lastOpponent = null;
+			lastTime = null;
 		}
 	}
 
