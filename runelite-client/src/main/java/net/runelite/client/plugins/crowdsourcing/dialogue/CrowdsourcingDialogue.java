@@ -63,10 +63,12 @@ public class CrowdsourcingDialogue
 		if (event.getGroupId() == WidgetID.DIALOG_OPTION_GROUP_ID)
 		{
 			clientThread.invokeLater(this::handlePlayerDialogueOptions);
-		} else if (event.getGroupId() == WidgetInfo.DIALOG_NPC_TEXT.getGroupId())
+		}
+		else if (event.getGroupId() == WidgetInfo.DIALOG_NPC_TEXT.getGroupId())
 		{
 			clientThread.invokeLater(this::handleNpcDialogue);
-		} else if (event.getGroupId() == WidgetID.DIALOG_PLAYER_GROUP_ID)
+		}
+		else if (event.getGroupId() == WidgetID.DIALOG_PLAYER_GROUP_ID)
 		{
 			clientThread.invokeLater(this::handlePlayerDialogue);
 		}
