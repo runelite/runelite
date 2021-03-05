@@ -25,12 +25,15 @@
 
 package net.runelite.client.plugins.crowdsourcing.dialogue;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 
@@ -42,11 +45,11 @@ public class CrowdsourcingDialogue
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private CrowdsourcingManager manager;
 
-	private String lastNpcDialogueText = null;
-	private String lastPlayerDialogueText = null;
-	private Widget[] dialogueOptions;
 
 	private String sanitize(String dialogue)
 	{
@@ -55,36 +58,52 @@ public class CrowdsourcingDialogue
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		Widget npcDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
-		if (npcDialogueTextWidget != null && !npcDialogueTextWidget.getText().equals(lastNpcDialogueText))
+		if (event.getGroupId() == WidgetID.DIALOG_OPTION_GROUP_ID)
 		{
-			lastNpcDialogueText = npcDialogueTextWidget.getText();
-			String npcName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME).getText();
-			NpcDialogueData data = new NpcDialogueData(sanitize(lastNpcDialogueText), npcName);
-			manager.storeEvent(data);
-		}
-
-		Widget playerDialogueTextWidget = client.getWidget(WidgetID.DIALOG_PLAYER_GROUP_ID, 4);
-		if (playerDialogueTextWidget != null && !playerDialogueTextWidget.getText().equals(lastPlayerDialogueText))
+			clientThread.invokeLater(this::handlePlayerDialogueOptions);
+		} else if (event.getGroupId() == WidgetInfo.DIALOG_NPC_TEXT.getGroupId())
 		{
-			lastPlayerDialogueText = playerDialogueTextWidget.getText();
-			PlayerDialogueData data = new PlayerDialogueData(sanitize(lastPlayerDialogueText));
-			manager.storeEvent(data);
-		}
-
-		Widget playerDialogueOptionsWidget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
-		if (playerDialogueOptionsWidget != null && playerDialogueOptionsWidget.getChildren() != dialogueOptions)
+			clientThread.invokeLater(this::handleNpcDialogue);
+		} else if (event.getGroupId() == WidgetID.DIALOG_PLAYER_GROUP_ID)
 		{
-			dialogueOptions = playerDialogueOptionsWidget.getChildren();
-			String[] optionsText = new String[dialogueOptions.length];
-			for (int i = 0; i < dialogueOptions.length; i++)
-			{
-				optionsText[i] = sanitize(dialogueOptions[i].getText());
-			}
-			DialogueOptionsData data = new DialogueOptionsData(optionsText);
-			manager.storeEvent(data);
+			clientThread.invokeLater(this::handlePlayerDialogue);
 		}
 	}
+
+	private void handlePlayerDialogueOptions()
+	{
+		Widget playerDialogueOptionsWidget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
+		Widget[] dialogueOptions = playerDialogueOptionsWidget.getChildren();
+		List<String> options = new ArrayList<>();
+		for (Widget dialogueOption : dialogueOptions)
+		{
+			String text = dialogueOption.getText();
+			if (!text.isEmpty())
+			{
+				options.add(sanitize(text));
+			}
+		}
+		DialogueOptionsData data = new DialogueOptionsData(options.toArray(new String[0]));
+		manager.storeEvent(data);
+	}
+
+	private void handleNpcDialogue()
+	{
+		Widget npcDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		String npcDialogueText = npcDialogueTextWidget.getText();
+		String npcName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME).getText();
+		NpcDialogueData data = new NpcDialogueData(sanitize(npcDialogueText), npcName);
+		manager.storeEvent(data);
+	}
+
+	private void handlePlayerDialogue()
+	{
+		Widget playerDialogueTextWidget = client.getWidget(WidgetID.DIALOG_PLAYER_GROUP_ID, 4);
+		String playerDialogueText = playerDialogueTextWidget.getText();
+		PlayerDialogueData data = new PlayerDialogueData(sanitize(playerDialogueText));
+		manager.storeEvent(data);
+	}
+
 }
