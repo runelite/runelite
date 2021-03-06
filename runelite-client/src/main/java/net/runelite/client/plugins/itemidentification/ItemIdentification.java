@@ -377,8 +377,7 @@ enum ItemIdentification
 	IORWERTH_CAMP_TELEPORT(Type.SCROLL, "Iorwerth", "IOR", ItemID.IORWERTH_CAMP_TELEPORT),
 	MOS_LEHARMLESS_TELEPORT(Type.SCROLL, "M.Leharmless", "ML", ItemID.MOS_LEHARMLESS_TELEPORT),
 	LUMBERYARD_TELEPORT(Type.SCROLL, "Lumber", "LUMB", ItemID.LUMBERYARD_TELEPORT);
-
-
+	
 	final Type type;
 	final String medName;
 	final String shortName;
