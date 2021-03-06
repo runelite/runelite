@@ -64,6 +64,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
+	private static final String LEVEL_SUBSTRING = " (level-";
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Delete", KICK_OPTION);
 	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
@@ -186,12 +187,26 @@ public class HiscorePlugin extends Plugin
 				// The player id is included in the event, so we can use that to get the player name,
 				// which avoids having to parse out the combat level and any icons preceding the name.
 				Player player = client.getCachedPlayers()[event.getId()];
-				if (player == null)
+				if (player != null)
 				{
-					return;
+					target = player.getName();
 				}
-
-				target = player.getName();
+				// If the player is no longer cached (e.g. moved out of view), fallback to parsing.
+				else
+				{
+					// Remove icons/colors
+					String nameWithLevel = Text.removeTags(event.getMenuTarget());
+					// Remove combat level
+					int idx = nameWithLevel.indexOf(LEVEL_SUBSTRING);
+					if (idx >= 0)
+					{
+						target = nameWithLevel.substring(0, idx).trim();
+					}
+					else
+					{
+						return;
+					}
+				}
 			}
 			else
 			{
