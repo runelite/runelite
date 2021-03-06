@@ -36,6 +36,7 @@ import javax.inject.Provider;
 import javax.swing.SwingUtilities;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
@@ -64,10 +65,10 @@ import org.apache.commons.lang3.ArrayUtils;
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
-	private static final String LEVEL_SUBSTRING = " (level-";
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Delete", KICK_OPTION);
 	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
+	private static final Pattern BOUNTY_EMBLEM_TAG_AND_TIER_REGEXP = Pattern.compile(String.format("%s[1-9]0?", IconID.BOUNTY_HUNTER_EMBLEM.toString()));
 
 	@Inject
 	@Nullable
@@ -194,18 +195,13 @@ public class HiscorePlugin extends Plugin
 				// If the player is no longer cached (e.g. moved out of view), fallback to parsing.
 				else
 				{
-					// Remove icons/colors
-					String nameWithLevel = Text.removeTags(event.getMenuTarget());
-					// Remove combat level
-					int idx = nameWithLevel.indexOf(LEVEL_SUBSTRING);
-					if (idx >= 0)
-					{
-						target = nameWithLevel.substring(0, idx).trim();
-					}
-					else
-					{
-						return;
-					}
+					// removes bounty hunter emblem tag and tier from player name, e.g:
+					// "username<img=20>5<col=40ff00>  (level-42)" -> "username<col=40ff00>  (level-42)"
+					String menuEntry = BOUNTY_EMBLEM_TAG_AND_TIER_REGEXP.matcher(event.getMenuTarget()).replaceAll("");
+
+					// removes tags and level from player names for example:
+					// <col=ffffff>username<col=40ff00>  (level-42) or <col=ffffff><img=2>username</col>
+					target = Text.removeTags(menuEntry).split("[(]")[0].trim();
 				}
 			}
 			else
