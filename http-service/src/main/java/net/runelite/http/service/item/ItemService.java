@@ -268,7 +268,7 @@ public class ItemService
 		fetchPrice(id);
 	}
 
-	@Scheduled(fixedDelay = 1_8000_000) // 30 minutes
+	@Scheduled(fixedDelay = 1_800_000) // 30 minutes
 	public void reloadItems() throws IOException
 	{
 		List<ItemDefinition> items = cacheService.getItems();
