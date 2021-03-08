@@ -31,11 +31,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.http.api.RuneLiteAPI;
@@ -108,60 +106,6 @@ public class ItemService
 			return con.createQuery("select id, name, description, type from items where id = :id")
 				.addParameter("id", itemId)
 				.executeAndFetchFirst(ItemEntry.class);
-		}
-	}
-
-	private PriceEntry getPrice(Connection con, int itemId, Instant time)
-	{
-		if (time != null)
-		{
-			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item and time <= :time order by time desc limit 1")
-				.addParameter("item", itemId)
-				.addParameter("time", time.toString())
-				.executeAndFetchFirst(PriceEntry.class);
-		}
-		else
-		{
-			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item order by time desc limit 1")
-				.addParameter("item", itemId)
-				.executeAndFetchFirst(PriceEntry.class);
-		}
-	}
-
-	public PriceEntry getPrice(int itemId, Instant time)
-	{
-		try (Connection con = sql2o.open())
-		{
-			return getPrice(con, itemId, time);
-		}
-	}
-
-	public List<PriceEntry> getPrices(int... itemIds)
-	{
-		try (Connection con = sql2o.open())
-		{
-			Set<Integer> seen = new HashSet<>();
-			List<PriceEntry> priceEntries = new ArrayList<>(itemIds.length);
-
-			for (int itemId : itemIds)
-			{
-				if (seen.contains(itemId))
-				{
-					continue;
-				}
-				seen.add(itemId);
-
-				PriceEntry priceEntry = getPrice(con, itemId, null);
-
-				if (priceEntry == null)
-				{
-					continue;
-				}
-
-				priceEntries.add(priceEntry);
-			}
-
-			return priceEntries;
 		}
 	}
 
