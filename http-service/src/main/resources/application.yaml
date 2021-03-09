@@ -44,3 +44,6 @@ runelite:
     history: 90 # days
   loottracker:
     history: 90 # days
+  wiki:
+    poll.ms: 300000 # 5 minutes
+    url: https://prices.runescape.wiki/osrs/latest
