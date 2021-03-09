@@ -49,6 +49,7 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreSkill;
@@ -105,6 +106,10 @@ public class ChatCommandsPluginTest
 	@Mock
 	@Bind
 	ChatClient chatClient;
+
+	@Mock
+	@Bind
+	RuneLiteConfig runeLiteConfig;
 
 	@Mock
 	@Bind
