@@ -38,7 +38,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.PluginErrorPanel;
 
-public class GrandExchangeOffersPanel extends JPanel
+class GrandExchangeOffersPanel extends JPanel
 {
 	private static final String ERROR_PANEL = "ERROR_PANEL";
 	private static final String OFFERS_PANEL = "OFFERS_PANEL";
