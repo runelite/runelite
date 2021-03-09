@@ -24,12 +24,12 @@
  */
 package net.runelite.http.service.item;
 
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import net.runelite.http.api.item.ItemPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,9 +83,22 @@ public class ItemController
 				itemPrice.setId(priceEntry.getItem());
 				itemPrice.setName(priceEntry.getName());
 				itemPrice.setPrice(priceEntry.getPrice());
+				itemPrice.setWikiPrice(computeWikiPrice(priceEntry));
 				return itemPrice;
 			})
 			.toArray(ItemPrice[]::new)), priceCache, TimeUnit.MINUTES);
+	}
+
+	private static int computeWikiPrice(PriceEntry priceEntry)
+	{
+		if (priceEntry.getLow() > 0 && priceEntry.getHigh() > 0)
+		{
+			return (priceEntry.getLow() + priceEntry.getHigh()) / 2;
+		}
+		else
+		{
+			return Math.max(priceEntry.getLow(), priceEntry.getHigh());
+		}
 	}
 
 	@GetMapping("/prices")
