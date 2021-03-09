@@ -382,17 +382,6 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "blockExtraMouseButtons",
-		name = "Block Extra Mouse Buttons",
-		description = "Blocks extra mouse buttons (4 and above)",
-		position = 44
-	)
-	default boolean blockExtraMouseButtons()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "sidebarToggleKey",
 		name = "Sidebar Toggle Key",
 		description = "The key that will toggle the sidebar (accepts modifiers)",
@@ -414,5 +403,27 @@ public interface RuneLiteConfig extends Config
 	default Keybind panelToggleKey()
 	{
 		return new Keybind(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+		keyName = "blockExtraMouseButtons",
+		name = "Block extra mouse buttons",
+		description = "Blocks extra mouse buttons (4 and above)",
+		position = 50
+	)
+	default boolean blockExtraMouseButtons()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "useWikiItemPrices",
+		name = "Use actively traded price",
+		description = "Use actively traded prices, sourced from the RuneScape wiki, for item prices",
+		position = 51
+	)
+	default boolean useWikiItemPrices()
+	{
+		return true;
 	}
 }
