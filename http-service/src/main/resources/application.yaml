@@ -47,3 +47,5 @@ runelite:
   wiki:
     poll.ms: 300000 # 5 minutes
     url: https://prices.runescape.wiki/osrs/latest
+  price:
+    cache: 30 # minutes

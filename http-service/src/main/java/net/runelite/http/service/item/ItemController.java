@@ -32,6 +32,7 @@ import com.google.common.hash.Hashing;
 import java.util.concurrent.TimeUnit;
 import net.runelite.http.api.item.ItemPrice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,13 +63,18 @@ public class ItemController
 	}
 
 	private final ItemService itemService;
+	private final int priceCache;
 
 	private final Supplier<MemoizedPrices> memoizedPrices;
 
 	@Autowired
-	public ItemController(ItemService itemService)
+	public ItemController(
+		ItemService itemService,
+		@Value("${runelite.price.cache}") int priceCache
+	)
 	{
 		this.itemService = itemService;
+		this.priceCache = priceCache;
 
 		memoizedPrices = Suppliers.memoizeWithExpiration(() -> new MemoizedPrices(itemService.fetchPrices().stream()
 			.map(priceEntry ->
@@ -79,7 +85,7 @@ public class ItemController
 				itemPrice.setPrice(priceEntry.getPrice());
 				return itemPrice;
 			})
-			.toArray(ItemPrice[]::new)), 30, TimeUnit.MINUTES);
+			.toArray(ItemPrice[]::new)), priceCache, TimeUnit.MINUTES);
 	}
 
 	@GetMapping("/prices")
@@ -88,7 +94,7 @@ public class ItemController
 		MemoizedPrices memorizedPrices = this.memoizedPrices.get();
 		return ResponseEntity.ok()
 			.eTag(memorizedPrices.hash)
-			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+			.cacheControl(CacheControl.maxAge(priceCache, TimeUnit.MINUTES).cachePublic())
 			.body(memorizedPrices.prices);
 	}
 }
