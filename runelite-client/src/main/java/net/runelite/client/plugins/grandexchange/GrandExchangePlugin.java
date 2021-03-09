@@ -36,7 +36,6 @@ import com.google.gson.Gson;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.time.Duration;
@@ -48,7 +47,6 @@ import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -105,7 +103,6 @@ import net.runelite.http.api.ge.GrandExchangeClient;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.api.item.ItemStats;
 import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
-import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 import net.runelite.http.api.worlds.WorldType;
 import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -124,7 +121,6 @@ public class GrandExchangePlugin extends Plugin
 	private static final int GE_LOGIN_BURST_WINDOW = 2; // ticks
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
-	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
 	private static final String BUY_LIMIT_KEY = "buylimit";
@@ -174,9 +170,6 @@ public class GrandExchangePlugin extends Plugin
 	private Notifier notifier;
 
 	@Inject
-	private ScheduledExecutorService executorService;
-
-	@Inject
 	private SessionManager sessionManager;
 
 	@Inject
@@ -189,15 +182,9 @@ public class GrandExchangePlugin extends Plugin
 	private Widget grandExchangeItem;
 	private String grandExchangeExamine;
 
-	private int osbItem;
-	private OSBGrandExchangeResult osbGrandExchangeResult;
-
 	@Inject
 	private GrandExchangeClient grandExchangeClient;
 	private int lastLoginTick;
-
-	@Inject
-	private OSBGrandExchangeClient osbGrandExchangeClient;
 
 	private boolean wasFuzzySearch;
 
@@ -317,9 +304,6 @@ public class GrandExchangePlugin extends Plugin
 		{
 			grandExchangeClient.setUuid(null);
 		}
-
-		osbItem = -1;
-		osbGrandExchangeResult = null;
 
 		lastLoginTick = -1;
 	}
@@ -880,50 +864,17 @@ public class GrandExchangePlugin extends Plugin
 			}
 		}
 
+		if (config.showActivelyTradedPrice())
+		{
+			final int price = itemManager.getItemPriceWithSource(itemId, true);
+			if (price > 0)
+			{
+				text += "<br>Actively traded price: " + QuantityFormatter.formatNumber(price);
+			}
+		}
+
 		grandExchangeExamine = text;
 		geText.setText(text);
-
-		if (!config.enableOsbPrices())
-		{
-			return;
-		}
-
-		// If we already have the result, use it
-		if (osbGrandExchangeResult != null && osbGrandExchangeResult.getItem_id() == itemId && osbGrandExchangeResult.getOverall_average() > 0)
-		{
-			grandExchangeExamine = text + OSB_GE_TEXT + QuantityFormatter.formatNumber(osbGrandExchangeResult.getOverall_average());
-			geText.setText(grandExchangeExamine);
-		}
-
-		if (osbItem == itemId)
-		{
-			// avoid starting duplicate lookups
-			return;
-		}
-
-		osbItem = itemId;
-
-		log.debug("Looking up OSB item price {}", itemId);
-
-		final String start = text;
-		executorService.submit(() ->
-		{
-			try
-			{
-				final OSBGrandExchangeResult result = osbGrandExchangeClient.lookupItem(itemId);
-				if (result != null && result.getOverall_average() > 0)
-				{
-					osbGrandExchangeResult = result;
-					// Update the text on the widget too
-					grandExchangeExamine = start + OSB_GE_TEXT + QuantityFormatter.formatNumber(result.getOverall_average());
-					geText.setText(grandExchangeExamine);
-				}
-			}
-			catch (IOException e)
-			{
-				log.debug("Error getting price of item {}", itemId, e);
-			}
-		});
 	}
 
 	static void openGeLink(String name, int itemId)
