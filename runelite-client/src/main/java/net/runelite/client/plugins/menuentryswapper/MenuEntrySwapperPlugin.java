@@ -344,6 +344,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("wield", "teleport", config::swapTeleportItem);
 		swap("wield", "invoke", config::swapTeleportItem);
 
+		swap("wear", "farm teleport", () -> config.swapArdougneCloakMode() == ArdougneCloakMode.FARM);
+		swap("wear", "monastery teleport", () -> config.swapArdougneCloakMode() == ArdougneCloakMode.MONASTERY);
+
+		swap("wear", "gem mine", () -> config.swapKaramjaGlovesMode() == KaramjaGlovesMode.GEM_MINE);
+		swap("wear", "duradel", () -> config.swapKaramjaGlovesMode() == KaramjaGlovesMode.DURADEL);
+
+		swap("equip", "kourend woodland", () -> config.swapRadasBlessingMode() == RadasBlessingMode.WOODLAND);
+		swap("equip", "mount karuulm", () -> config.swapRadasBlessingMode() == RadasBlessingMode.KARUULM);
+
+		swap("wear", "ecto teleport", () -> config.swapMorytaniaLegsMode() == MorytaniaLegsMode.ECTO);
+		swap("wear", "burgh teleport", () -> config.swapMorytaniaLegsMode() == MorytaniaLegsMode.BURGH);
+
 		swap("bury", "use", config::swapBones);
 
 		swap("wield", "battlestaff", "use", config::swapBattlestaves);

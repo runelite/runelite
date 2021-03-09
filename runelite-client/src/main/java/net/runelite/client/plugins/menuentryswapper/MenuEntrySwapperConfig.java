@@ -420,6 +420,42 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapKaramjaGloves",
+			name = "Karamja Gloves",
+			description = "Swap Wear with the Gem Mine or Duradel teleport on the Karamja Gloves 3 and 4",
+			section = itemSection
+	)
+	default KaramjaGlovesMode swapKaramjaGlovesMode()
+	{ return KaramjaGlovesMode.WEAR; }
+
+	@ConfigItem(
+			keyName = "swapArdougneCloak",
+			name = "Ardougne Cloak",
+			description = "Swap Wear with Monastery Teleport or Farm Teleport on the Ardougne cloak.",
+			section = itemSection
+	)
+	default ArdougneCloakMode swapArdougneCloakMode()
+	{ return ArdougneCloakMode.WEAR; }
+
+	@ConfigItem(
+			keyName = "swapRadasBlessing",
+			name = "Rada's Blessing",
+			description = "Swap Equip with the Woodland or Mount Karuulm teleport on Rada's Blessing.",
+			section = itemSection
+	)
+	default RadasBlessingMode swapRadasBlessingMode()
+	{ return RadasBlessingMode.EQUIP; }
+
+	@ConfigItem(
+			keyName = "swapMorytaniaLegs",
+			name = "Morytania Legs",
+			description = "Swap Wear with the Woodland or Mount Karuulm teleport on Rada's Blessing.",
+			section = itemSection
+	)
+	default MorytaniaLegsMode swapMorytaniaLegsMode()
+	{ return MorytaniaLegsMode.WEAR; }
+
+	@ConfigItem(
 		keyName = "swapAbyssTeleport",
 		name = "Teleport to Abyss",
 		description = "Swap Talk-to with Teleport for the Mage of Zamorak",
