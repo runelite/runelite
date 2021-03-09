@@ -120,7 +120,6 @@ public class CacheUpdater implements CommandLineRunner
 			CacheEntry newCache = created ? cache : cacheDao.createCache(con, rsVersion, Instant.now());
 
 			storage.setCacheEntry(newCache);
-			store.save();
 
 			// ensure objects are added to the store before they become
 			// visible in the database
@@ -129,6 +128,10 @@ public class CacheUpdater implements CommandLineRunner
 			{
 				logger.debug("Waiting for termination of executor...");
 			}
+
+			// CacheStorage requires archive hashes to be set, which is set in the executor tasks, so it must be
+			// run after shutdown
+			store.save();
 
 			// commit database
 			con.commit();

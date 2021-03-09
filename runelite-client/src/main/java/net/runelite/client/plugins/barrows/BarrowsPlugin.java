@@ -77,7 +77,6 @@ public class BarrowsPlugin extends Plugin
 	private static final int CRYPT_REGION_ID = 14231;
 
 	private LoopTimer barrowsPrayerDrainTimer;
-	private boolean wasInCrypt = false;
 
 	@Getter
 	private Widget puzzleAnswer;
@@ -128,7 +127,6 @@ public class BarrowsPlugin extends Plugin
 		overlayManager.remove(barrowsOverlay);
 		overlayManager.remove(brotherOverlay);
 		puzzleAnswer = null;
-		wasInCrypt = false;
 		stopPrayerDrainTimer();
 
 		// Restore widgets
@@ -157,18 +155,14 @@ public class BarrowsPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOADING)
-		{
-			wasInCrypt = isInCrypt();
-		}
-		else if (event.getGameState() == GameState.LOGGED_IN)
+		if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			boolean isInCrypt = isInCrypt();
-			if (wasInCrypt && !isInCrypt)
+			if (!isInCrypt && barrowsPrayerDrainTimer != null)
 			{
 				stopPrayerDrainTimer();
 			}
-			else if (!wasInCrypt && isInCrypt)
+			else if (isInCrypt && barrowsPrayerDrainTimer == null)
 			{
 				startPrayerDrainTimer();
 			}
@@ -233,6 +227,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		if (config.showPrayerDrainTimer())
 		{
+			assert barrowsPrayerDrainTimer == null;
 			final LoopTimer loopTimer = new LoopTimer(
 				PRAYER_DRAIN_INTERVAL_MS,
 				ChronoUnit.MILLIS,
