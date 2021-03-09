@@ -29,26 +29,19 @@ import com.google.common.base.Suppliers;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import net.runelite.http.api.item.ItemPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/item")
 public class ItemController
 {
-	private static final int MAX_BATCH_LOOKUP = 1024;
-
 	private static class MemoizedPrices
 	{
 		final ItemPrice[] prices;
@@ -84,77 +77,9 @@ public class ItemController
 				itemPrice.setId(priceEntry.getItem());
 				itemPrice.setName(priceEntry.getName());
 				itemPrice.setPrice(priceEntry.getPrice());
-				itemPrice.setTime(priceEntry.getTime());
 				return itemPrice;
 			})
 			.toArray(ItemPrice[]::new)), 30, TimeUnit.MINUTES);
-	}
-
-	@GetMapping("/{itemId}/price")
-	public ResponseEntity<ItemPrice> itemPrice(
-		@PathVariable int itemId,
-		@RequestParam(required = false) Instant time
-	)
-	{
-		Instant now = Instant.now();
-
-		if (time != null && time.isAfter(now))
-		{
-			time = now;
-		}
-
-		PriceEntry priceEntry = itemService.getPrice(itemId, time);
-
-		if (time != null)
-		{
-			if (priceEntry == null)
-			{
-				// we maybe can't backfill this
-				return ResponseEntity.notFound()
-					.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-					.build();
-			}
-		}
-		else if (priceEntry == null)
-		{
-			// Price is unknown
-			return ResponseEntity.notFound()
-				.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-				.build();
-		}
-
-		ItemPrice itemPrice = new ItemPrice();
-		itemPrice.setId(itemId);
-		itemPrice.setName(priceEntry.getName());
-		itemPrice.setPrice(priceEntry.getPrice());
-		itemPrice.setTime(priceEntry.getTime());
-
-		return ResponseEntity.ok()
-			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-			.body(itemPrice);
-	}
-
-	@GetMapping("/price")
-	public ItemPrice[] prices(@RequestParam("id") int[] itemIds)
-	{
-		if (itemIds.length > MAX_BATCH_LOOKUP)
-		{
-			itemIds = Arrays.copyOf(itemIds, MAX_BATCH_LOOKUP);
-		}
-
-		List<PriceEntry> prices = itemService.getPrices(itemIds);
-
-		return prices.stream()
-			.map(priceEntry ->
-			{
-				ItemPrice itemPrice = new ItemPrice();
-				itemPrice.setId(priceEntry.getItem());
-				itemPrice.setName(priceEntry.getName());
-				itemPrice.setPrice(priceEntry.getPrice());
-				itemPrice.setTime(priceEntry.getTime());
-				return itemPrice;
-			})
-			.toArray(ItemPrice[]::new);
 	}
 
 	@GetMapping("/prices")
