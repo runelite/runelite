@@ -316,7 +316,14 @@ public class SlayerPlugin extends Plugin
 
 	private void setProfileConfig(String key, Object value)
 	{
-		configManager.setRSProfileConfiguration(SlayerConfig.GROUP_NAME, key, value);
+		if (value != null)
+		{
+			configManager.setRSProfileConfiguration(SlayerConfig.GROUP_NAME, key, value);
+		}
+		else
+		{
+			configManager.unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, key);
+		}
 	}
 
 	private void save()

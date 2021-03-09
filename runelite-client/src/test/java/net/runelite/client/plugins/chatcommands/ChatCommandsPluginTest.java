@@ -660,4 +660,30 @@ public class ChatCommandsPluginTest
 		verify(configManager).setRSProfileConfiguration("personalbest", "tztok-jad", 21 * 60 + 58);
 		verify(configManager).setRSProfileConfiguration("killcount", "tztok-jad", 2);
 	}
+
+	@Test
+	public void testJadChallengeNewPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completion count for TzHaar-Ket-Rak's First Challenge is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>1:46</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "TzHaar-Ket-Rak's First Challenge".toLowerCase(), 1);
+		verify(configManager).setRSProfileConfiguration("personalbest", "TzHaar-Ket-Rak's First Challenge".toLowerCase(), 60 + 46);
+	}
+
+	@Test
+	public void testJadChallengeNoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completion count for TzHaar-Ket-Rak's First Challenge is: <col=ff0000>3</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>1:10</col>. Personal best: <col=ff0000>0:59</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "TzHaar-Ket-Rak's First Challenge".toLowerCase(), 3);
+		verify(configManager).setRSProfileConfiguration("personalbest", "TzHaar-Ket-Rak's First Challenge".toLowerCase(), 59);
+	}
 }

@@ -34,17 +34,24 @@ public class ColorTypeAdapterTest
 	@Test
 	public void test()
 	{
-		test("null", null);
-		test("{\"value\":-13347208,\"falpha\":0.0}", new Color(0x12345678, false));
-		test("{\"value\":305419896,\"falpha\":0.0}", new Color(0x12345678, true));
-		test("{\"value\":-1.4221317E7,\"falpha\":0.0}", new Color(0xFF26FFFB, true));
+		test("null", null, true);
+		test("{\"value\":-13347208,\"falpha\":0.0}", new Color(0x12345678, false), false);
+		test("{\"value\":305419896,\"falpha\":0.0}", new Color(0x12345678, true), false);
+		test("{\"value\":-1.4221317E7,\"falpha\":0.0}", new Color(0xFF26FFFB, true), false);
+		test("\"#FF345678\"", new Color(0x12345678, false), true);
+		test("\"#12345678\"", new Color(0x12345678, true), true);
+		test("\"#FF26FFFB\"", new Color(0xFF26FFFB, true), true);
 	}
 
-	private void test(String json, Color object)
+	private void test(String json, Color object, boolean exactEncoding)
 	{
 		Color parsed = RuneLiteAPI.GSON.fromJson(json, Color.class);
 		Assert.assertEquals(object, parsed);
 		String serialized = RuneLiteAPI.GSON.toJson(object);
+		if (exactEncoding)
+		{
+			Assert.assertEquals(json, serialized);
+		}
 		Color roundTripped = RuneLiteAPI.GSON.fromJson(serialized, Color.class);
 		Assert.assertEquals(object, roundTripped);
 	}
