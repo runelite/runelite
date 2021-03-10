@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2021, Jordan Atwood <jordan.atwood423@gmail.com>
- * Copyright (c) 2021, Andre Araya <araya.andre7@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -89,14 +88,13 @@ public class OpponentInfoPluginTest
 
 		interactingChanged(npc, localPlayer);
 
-		assertSame(npc, plugin.getLastOpponent());
+		assertNull(plugin.getLastOpponent());
 		assertNull(plugin.getLastTime());
 
 		interactingChanged(npc, null);
 
-		// last opponent is remembered for 5 seconds
-		assertSame(npc, plugin.getLastOpponent());
-		assertNotNull(plugin.getLastTime());
+		assertNull(plugin.getLastOpponent());
+		assertNull(plugin.getLastTime());
 
 		interactingChanged(localPlayer, npc);
 
@@ -110,9 +108,9 @@ public class OpponentInfoPluginTest
 
 		interactingChanged(localPlayer, null);
 
-		// last opponent is remembered as it is still attacking the player
+		// last opponent is remembered for 5 seconds
 		assertSame(npc, plugin.getLastOpponent());
-		assertNull(plugin.getLastTime());
+		assertNotNull(plugin.getLastTime());
 	}
 
 	@Test
@@ -122,14 +120,13 @@ public class OpponentInfoPluginTest
 
 		interactingChanged(otherPlayer, localPlayer);
 
-		assertSame(otherPlayer, plugin.getLastOpponent());
+		assertNull(plugin.getLastOpponent());
 		assertNull(plugin.getLastTime());
 
 		interactingChanged(otherPlayer, null);
 
-		// last opponent is remembered for 5 seconds
-		assertSame(otherPlayer, plugin.getLastOpponent());
-		assertNotNull(plugin.getLastTime());
+		assertNull(plugin.getLastOpponent());
+		assertNull(plugin.getLastTime());
 
 		interactingChanged(localPlayer, otherPlayer);
 
@@ -143,9 +140,9 @@ public class OpponentInfoPluginTest
 
 		interactingChanged(localPlayer, null);
 
-		// last opponent is remembered as it is still attacking the player
+		// last opponent is remembered for 5 seconds
 		assertSame(otherPlayer, plugin.getLastOpponent());
-		assertNull(plugin.getLastTime());
+		assertNotNull(plugin.getLastTime());
 	}
 
 	@Test
@@ -173,180 +170,6 @@ public class OpponentInfoPluginTest
 
 		assertNull(plugin.getLastOpponent());
 		assertNull(plugin.getLastTime());
-	}
-
-	/*
-	 * Verify that the current opponent in multi is always the npc that the player is attacking
-	 */
-	@Test
-	public void testAttackingEnemyInMulti()
-	{
-		final Player otherPlayer = mock(Player.class);
-		final NPC aggro = mock(NPC.class), attacked = mock(NPC.class);
-
-		interactingChanged(localPlayer, null);
-
-		// verify that there is currently no opponent
-		assertNull(plugin.getLastOpponent());
-
-		// some npc attacks the player
-		interactingChanged(aggro, localPlayer);
-
-		// verify that the current opponent is the aggressive npc
-		assertSame(aggro, plugin.getLastOpponent());
-
-		// the player attacks a different npc
-		interactingChanged(localPlayer, attacked);
-
-		// verify the attacked npc is now considered the current opponent
-		assertSame(attacked, plugin.getLastOpponent());
-
-		// the npc attacks them back
-		interactingChanged(attacked, localPlayer);
-
-		// verify that the current opponent is still the attacked npc
-		assertSame(attacked, plugin.getLastOpponent());
-
-		// the player is attacked by an aggressive npc while attacking a different npc
-		interactingChanged(aggro, localPlayer);
-
-		// verify that the current opponent is still the npc the player is attacking
-		assertSame(attacked, plugin.getLastOpponent());
-
-		// the npc attacking the player that is not the current opponent attacks a different player
-		interactingChanged(aggro, otherPlayer);
-
-		// verify that the current opponent is still the npc the player is attacking
-		assertSame(attacked, plugin.getLastOpponent());
-
-		// the npc the player is attacking, the current opponent, attacks a different player
-		interactingChanged(attacked, otherPlayer);
-
-		// verify that the current opponent is still the npc the player is attacking
-		assertSame(attacked, plugin.getLastOpponent());
-	}
-
-	/*
-	 * Verify that the current opponent is the expected npc while the player is not attacking anything
-	 */
-	@Test
-	public void testIdleInMulti()
-	{
-		final Player otherPlayer = mock(Player.class);
-		final NPC aggroFirst = mock(NPC.class), aggroRecent = mock(NPC.class);
-
-		interactingChanged(localPlayer, null);
-
-		// verify that there is currently no opponent
-		assertNull(plugin.getLastOpponent());
-
-		// some npc attacks the player
-		interactingChanged(aggroFirst, localPlayer);
-
-		// verify that the current opponent is the aggressive npc
-		assertSame(aggroFirst, plugin.getLastOpponent());
-
-		// the player is attacked by a different npc
-		interactingChanged(aggroRecent, localPlayer);
-
-		// verify that the current opponent is the most recent aggressor
-		assertSame(aggroRecent, plugin.getLastOpponent());
-
-		// an npc that is not the current opponent targets another player
-		interactingChanged(aggroFirst, otherPlayer);
-
-		// verify that the current opponent is still the most recent aggressor
-		assertSame(aggroRecent, plugin.getLastOpponent());
-
-		// the current opponent switches targets to another player
-		interactingChanged(aggroRecent, otherPlayer);
-
-		// verify that there is no longer an opponent
-		// (if lastTime is not null, then the lastOpponent will become null after OpponentInfoPlugin.WAIT time)
-		assertNotNull(plugin.getLastTime());
-	}
-
-	/*
-	 * Verify that the current opponent is the expected npc in singles
-	 */
-	@Test
-	public void testSingles()
-	{
-		final Player otherPlayer = mock(Player.class);
-		final NPC npc = mock(NPC.class);
-
-		interactingChanged(localPlayer, null);
-
-		// verify that there is currently no opponent
-		assertNull(plugin.getLastOpponent());
-
-		// some npc attacks the player
-		interactingChanged(npc, localPlayer);
-
-		// verify that the attacking npc is the current opponent
-		assertSame(npc, plugin.getLastOpponent());
-
-		// the npc stops attacking the player
-		interactingChanged(npc, null);
-
-		// verify that there is no longer an opponent
-		// (if lastTime is not null, then the lastOpponent will become null after OpponentInfoPlugin.WAIT time)
-		assertNotNull(plugin.getLastTime());
-
-		// the player attacks the npc
-		interactingChanged(localPlayer, npc);
-
-		// verify that the attacked npc is the current opponent
-		assertSame(npc, plugin.getLastOpponent());
-		// verify that the hp bar will no longer be hidden
-		assertNull(plugin.getLastTime());
-
-		// the npc attacks them back
-		interactingChanged(npc, localPlayer);
-
-		// verify that the attacked npc is still the current opponent
-		assertSame(npc, plugin.getLastOpponent());
-
-		// the player stops attacking the npc
-		interactingChanged(localPlayer, null);
-
-		// verify that the npc attacking the player is still the current opponent
-		assertSame(npc, plugin.getLastOpponent());
-		// verify that the hp bar will not be hidden (because the npc is still attacking the player)
-		assertNull(plugin.getLastTime());
-
-		// the player attacks the npc again
-		interactingChanged(localPlayer, npc);
-
-		// verify the npc is still the opponent
-		assertSame(npc, plugin.getLastOpponent());
-
-		// the npc stops attacking the player
-		interactingChanged(npc, null);
-
-		// verify that the attacked npc is still the current opponent
-		assertSame(npc, plugin.getLastOpponent());
-
-		// the player stops attacking the npc while the npc is not attacking the player
-		interactingChanged(localPlayer, null);
-
-		// verify that there is no longer an opponent
-		// (if lastTime is not null, then the lastOpponent will become null after OpponentInfoPlugin.WAIT time)
-		assertNotNull(plugin.getLastTime());
-
-		// the npc attacks a different player
-		interactingChanged(npc, otherPlayer);
-
-		// verify there is still no opponent
-		// (if lastTime is not null, then the lastOpponent will become null after OpponentInfoPlugin.WAIT time)
-		assertNotNull(plugin.getLastTime());
-
-		// the npc stops attacking the other player
-		interactingChanged(npc, null);
-
-		// verify there is still no opponent
-		// (if lastTime is not null, then the lastOpponent will become null after OpponentInfoPlugin.WAIT time)
-		assertNotNull(plugin.getLastTime());
 	}
 
 	private void interactingChanged(final Actor source, final Actor target)
