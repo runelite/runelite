@@ -112,10 +112,16 @@ class BarRenderer
 			if (config.enableSkillIcon())
 			{
 				graphics.drawImage(icon, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - icon.getWidth(null), null);
+				graphics.setColor(Color.BLACK);
+				graphics.drawString(counterText, x + centerText + PADDING + 1, y + SKILL_ICON_HEIGHT + 1);
+				graphics.setColor(Color.WHITE);
 				graphics.drawString(counterText, x + centerText + PADDING, y + SKILL_ICON_HEIGHT);
 			}
 			else
 			{
+				graphics.setColor(Color.BLACK);
+				graphics.drawString(counterText, x + centerText + PADDING + 1, y + COUNTER_ICON_HEIGHT + 1);
+				graphics.setColor(Color.WHITE);
 				graphics.drawString(counterText, x + centerText + PADDING, y + COUNTER_ICON_HEIGHT);
 			}
 		}
