@@ -27,6 +27,7 @@ package net.runelite.client.plugins.banktags;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.plugins.banktags.tabs.TopLeftButtonLeftClick;
 
 @ConfigGroup("banktags")
 public interface BankTagsConfig extends Config
@@ -73,6 +74,17 @@ public interface BankTagsConfig extends Config
 	default boolean preventTagTabDrags()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+			keyName = "topLeftButton",
+			name = "Top left button",
+			description = "Change the left-click option on the top left button.",
+			position = 5
+	)
+	default TopLeftButtonLeftClick topLeftButtonClick()
+	{
+		return TopLeftButtonLeftClick.NEW_TAB;
 	}
 
 	@ConfigItem(

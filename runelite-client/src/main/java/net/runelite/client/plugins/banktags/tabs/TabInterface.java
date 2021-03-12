@@ -7,10 +7,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -85,11 +85,9 @@ import net.runelite.client.game.chatbox.ChatboxItemSearch;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.bank.BankSearch;
 import net.runelite.client.plugins.banktags.BankTagsConfig;
-import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.VAR_TAG_SUFFIX;
 import net.runelite.client.plugins.banktags.TagManager;
-import static net.runelite.client.plugins.banktags.tabs.MenuIndexes.NewTab;
 import static net.runelite.client.plugins.banktags.tabs.MenuIndexes.Tab;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
@@ -161,7 +159,7 @@ public class TabInterface
 	private Widget downButton;
 
 	@Getter
-	private Widget newTab;
+	private Widget topLeftButton;
 
 	@Getter
 	private Widget parent;
@@ -222,11 +220,9 @@ public class TabInterface
 		downButton.setClickMask(clickmask);
 		downButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(1));
 
-		newTab = createGraphic("", TabSprites.NEW_TAB.getSpriteId(), -1, TAB_WIDTH, 39, bounds.x, 0, true);
-		newTab.setAction(1, NEW_TAB);
-		newTab.setAction(2, IMPORT_TAB);
-		newTab.setAction(3, OPEN_TAB_MENU);
-		newTab.setOnOpListener((JavaScriptCallback) this::handleNewTab);
+		topLeftButton = createGraphic("", config.topLeftButtonClick().spriteId, -1, TAB_WIDTH, 39, bounds.x, 0, true);
+		updateTopLeftButton();
+		topLeftButton.setOnOpListener((JavaScriptCallback) this::handleTopLeftButton);
 
 		tabManager.clear();
 		tabManager.getAllTabs().forEach(this::loadTab);
@@ -268,6 +264,14 @@ public class TabInterface
 		titleBar.setOriginalX(equipmentButton.getWidth() / 2);
 		titleBar.setOriginalWidth(titleBar.getWidth() - equipmentButton.getWidth());
 		titleBar.revalidate();
+	}
+
+	public void updateTopLeftButton()
+	{
+		topLeftButton.setSpriteId(config.topLeftButtonClick().spriteId);
+		topLeftButton.setAction(config.topLeftButtonClick().newTagIndex, NEW_TAB);
+		topLeftButton.setAction(config.topLeftButtonClick().importTagIndex, IMPORT_TAB);
+		topLeftButton.setAction(config.topLeftButtonClick().openTabMenuIndex, OPEN_TAB_MENU);
 	}
 
 	private void handleDeposit(MenuOptionClicked event, Boolean inventory)
@@ -317,12 +321,12 @@ public class TabInterface
 			.build();
 	}
 
-	private void handleNewTab(ScriptEvent event)
+	private void handleTopLeftButton(ScriptEvent event)
 	{
-		switch (event.getOp())
+		int op = event.getOp() - 1;
+		if (op == config.topLeftButtonClick().newTagIndex)
 		{
-			case NewTab.NEW_TAB:
-				chatboxPanelManager.openTextInput("Tag name")
+			chatboxPanelManager.openTextInput("Tag name")
 					.addCharValidator(FILTERED_CHARS)
 					.onDone((Consumer<String>) (tagName) -> clientThread.invoke(() ->
 					{
@@ -334,65 +338,74 @@ public class TabInterface
 						}
 					}))
 					.build();
-				break;
-			case NewTab.IMPORT_TAB:
-				try
-				{
-					final String dataString = Toolkit
+		}
+		else if (op == config.topLeftButtonClick().importTagIndex)
+		{
+			try
+			{
+				final String dataString = Toolkit
 						.getDefaultToolkit()
 						.getSystemClipboard()
 						.getData(DataFlavor.stringFlavor)
 						.toString()
 						.trim();
 
-					final Iterator<String> dataIter = Text.fromCSV(dataString).iterator();
-					String name = dataIter.next();
-					StringBuilder sb = new StringBuilder();
-					for (char c : name.toCharArray())
+				final Iterator<String> dataIter = Text.fromCSV(dataString).iterator();
+				String name = dataIter.next();
+				StringBuilder sb = new StringBuilder();
+				for (char c : name.toCharArray())
+				{
+					if (FILTERED_CHARS.test(c))
 					{
-						if (FILTERED_CHARS.test(c))
-						{
-							sb.append(c);
-						}
+						sb.append(c);
 					}
-
-					if (sb.length() == 0)
-					{
-						notifier.notify("Failed to import tag tab from clipboard, invalid format.");
-						return;
-					}
-
-					name = sb.toString();
-
-					final String icon = dataIter.next();
-					tabManager.setIcon(name, icon);
-
-					while (dataIter.hasNext())
-					{
-						final int itemId = Integer.parseInt(dataIter.next());
-						tagManager.addTag(itemId, name, itemId < 0);
-					}
-
-					loadTab(name);
-					tabManager.save();
-					scrollTab(0);
-
-					if (activeTab != null && name.equals(activeTab.getTag()))
-					{
-						openTag(activeTab.getTag());
-					}
-
-					notifier.notify("Tag tab " + name + " has been imported from your clipboard!");
 				}
-				catch (UnsupportedFlavorException | NoSuchElementException | IOException | NumberFormatException ex)
+
+				if (sb.length() == 0)
 				{
 					notifier.notify("Failed to import tag tab from clipboard, invalid format.");
+					return;
 				}
-				break;
-			case NewTab.OPEN_TAB_MENU:
+
+				name = sb.toString();
+
+				final String icon = dataIter.next();
+				tabManager.setIcon(name, icon);
+
+				while (dataIter.hasNext())
+				{
+					final int itemId = Integer.parseInt(dataIter.next());
+					tagManager.addTag(itemId, name, itemId < 0);
+				}
+
+				loadTab(name);
+				tabManager.save();
+				scrollTab(0);
+
+				if (activeTab != null && name.equals(activeTab.getTag()))
+				{
+					openTag(activeTab.getTag());
+				}
+
+				notifier.notify("Tag tab " + name + " has been imported from your clipboard!");
+			}
+			catch (UnsupportedFlavorException | NoSuchElementException | IOException | NumberFormatException ex)
+			{
+				notifier.notify("Failed to import tag tab from clipboard, invalid format.");
+			}
+		}
+		else if (op == config.topLeftButtonClick().openTabMenuIndex)
+		{
+			if (!tagTabActive)
+			{
 				client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
 				openTag(TAB_MENU_KEY);
-				break;
+			}
+			else
+			{
+				activateTab(null);
+				bankSearch.reset(true);
+			}
 		}
 	}
 
@@ -472,6 +485,29 @@ public class TabInterface
 		}
 	}
 
+	/**
+	 * Scrolls the tab interface so that the tab is visible.
+	 * Centers the tab in the list if the tab is not currently visible.
+	 * @param tab the tab to scroll to.
+	 */
+	private void scrollToTag(TagTab tab)
+	{
+		int tabIndex = tabManager.getTabs().indexOf(tab);
+		if (tabIndex == -1 || (tabIndex >= currentTabIndex && tabIndex < currentTabIndex + maxTabs))
+		{
+			return; // already in view, or it's not a real tab (e.g. the "tag tab tab").
+		}
+
+		if (tabIndex < currentTabIndex)
+		{
+			scrollTab(tabIndex - currentTabIndex - (maxTabs / 2) + (maxTabs % 2 == 0 ? 1 : 0));
+		}
+		else
+		{
+			scrollTab(tabIndex - (currentTabIndex + maxTabs) + (maxTabs / 2) + 1);
+		}
+	}
+
 	public void destroy()
 	{
 		activeTab = null;
@@ -483,7 +519,7 @@ public class TabInterface
 		{
 			upButton.setHidden(true);
 			downButton.setHidden(true);
-			newTab.setHidden(true);
+			topLeftButton.setHidden(true);
 		}
 
 		tabManager.clear();
@@ -543,11 +579,6 @@ public class TabInterface
 		}
 	}
 
-	private boolean isTabMenuActive()
-	{
-		return tagTabActive;
-	}
-
 	public void handleScriptEvent(final ScriptCallbackEvent event)
 	{
 		String eventName = event.getEventName();
@@ -558,7 +589,7 @@ public class TabInterface
 		switch (eventName)
 		{
 			case "setBankScroll":
-				if (!isTabMenuActive())
+				if (!isTagTabActive())
 				{
 					setTabMenuVisible(false);
 					return;
@@ -655,7 +686,7 @@ public class TabInterface
 			chatboxPanelManager.close();
 		}
 
-		if (activeTab != null
+		if ((activeTab != null || isTagTabActive())
 			&& (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items")))
 		{
 			activateTab(null);
@@ -732,7 +763,7 @@ public class TabInterface
 		// is dragging widget and mouse button released
 		if (client.getMouseCurrentButton() == 0)
 		{
-			if (!isTabMenuActive() && draggedWidget.getItemId() > 0 && draggedWidget.getId() != parent.getId())
+			if (!isTagTabActive() && draggedWidget.getItemId() > 0 && draggedWidget.getId() != parent.getId())
 			{
 				// Tag an item dragged on a tag tab
 				if (draggedOn.getId() == parent.getId())
@@ -741,7 +772,7 @@ public class TabInterface
 					updateTabIfActive(Lists.newArrayList(Text.standardize(draggedOn.getName())));
 				}
 			}
-			else if ((isTabMenuActive() && draggedWidget.getId() == draggedOn.getId() && draggedOn.getId() != parent.getId())
+			else if ((isTagTabActive() && draggedWidget.getId() == draggedOn.getId() && draggedOn.getId() != parent.getId())
 				|| (parent.getId() == draggedOn.getId() && parent.getId() == draggedWidget.getId()))
 			{
 				// Reorder tag tabs
@@ -871,6 +902,11 @@ public class TabInterface
 		}
 
 		tabManager.add(tagTab);
+
+		if (tagTabActive)
+		{
+			setTabMenuVisible(true); // make the new tab visible.
+		}
 	}
 
 	private void deleteTab(String tag)
@@ -1170,7 +1206,7 @@ public class TabInterface
 	private void openTag(final String tag)
 	{
 		activateTab(tabManager.find(tag));
-		tagTabActive = BankTagsPlugin.TAG_TABS_CONFIG.equals(tag);
+		tagTabActive = TAB_MENU_KEY.equals(tag);
 		bankSearch.reset(true); // clear search dialog & relayout bank for new tab.
 
 		// When searching the button has a script on timer to detect search end, that will set the background back
@@ -1180,6 +1216,8 @@ public class TabInterface
 		Widget searchButtonBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
 		searchButtonBackground.setOnTimerListener((Object[]) null);
 		searchButtonBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
+
+		scrollToTag(tabManager.find(tag));
 	}
 
 	private static MenuEntry[] createMenuEntry(MenuEntryAdded event, String option, String target, MenuEntry[] entries)
