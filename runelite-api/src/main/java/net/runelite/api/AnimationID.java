@@ -258,4 +258,7 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+
+	// Shades of Mort'ton Animations
+	public static final int REINFORCE_TEMPLE_WALL = 832;
 }
