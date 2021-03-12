@@ -50,8 +50,6 @@ class InventoryGridOverlay extends Overlay
 	private static final int INVENTORY_SIZE = 28;
 	private static final int DISTANCE_TO_ACTIVATE_HOVER = 5;
 
-	private static final Color HIGHLIGHT = new Color(0, 255, 0, 45);
-
 	private final InventoryGridConfig config;
 	private final Client client;
 	private final ItemManager itemManager;
@@ -73,81 +71,58 @@ class InventoryGridOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		final Color HIGHLIGHT = config.highlightColor();
 		final Color GRID = config.gridColor();
 
-		if (config.showGrid() == GridMode.ALWAYS)
-		{
-			Widget backpack = client.getWidget(WidgetInfo.INVENTORY);
-			Widget bank = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
-
-			if (backpack.isHidden() && bank.isHidden()) return null;
-
-			Widget activeInventoryWidget = backpack.isHidden() ? bank : backpack;
-		
-			for (int i = 0; i < INVENTORY_SIZE; ++i)
-			{
-				final WidgetItem targetWidgetItem = getWidgetItem(activeInventoryWidget, i);
-				final Rectangle bounds = targetWidgetItem.getCanvasBounds(false);
-
-				graphics.setColor(GRID);
-
-				switch (config.gridStyle())
-				{
-					case FILL: graphics.fill(bounds); break;
-					case OUTLINE:
-					{
-						graphics.setStroke(new BasicStroke(2));
-						graphics.draw(bounds);
-					}
-				}
-			}
-		}
-
 		final Widget draggingWidget = getDraggedWidget();
-		if (draggingWidget == null)
+		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+		final Widget bankInventoryWidget = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
+		if (inventoryWidget.isHidden() && bankInventoryWidget.isHidden()) return null;
+
+		Widget activeInventoryWidget = null;
+		WidgetItem draggedItem = null;
+		Rectangle initialBounds = null;
+		Point mousePoint = null;
+		if (draggingWidget != null)
 		{
-			initialMousePoint = null;
-			hoverActive = false;
-			// not dragging
-			return null;
-		}
+			activeInventoryWidget = draggingWidget.isIf3() ? bankInventoryWidget : inventoryWidget;
+			// with if3 the dragged widget is a child of the inventory, with if1 it is an item of the inventory (and the same widget)
+			if (draggingWidget.isIf3() ? draggingWidget.getParent() != activeInventoryWidget : draggingWidget != activeInventoryWidget) return null;
 
-		// grid is only supported on bank inventory and inventory
-		Widget inventoryWidget = draggingWidget.isIf3() ?
-			client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) :
-			client.getWidget(WidgetInfo.INVENTORY);
+			final int draggedItemIndex = draggingWidget.isIf3() ? draggingWidget.getIndex() : client.getIf1DraggedItemIndex();
+			draggedItem = getWidgetItem(activeInventoryWidget, draggedItemIndex);
+			initialBounds = draggedItem.getCanvasBounds(false);
 
-		// with if3 the dragged widget is a child of the inventory, with if1 it is an item of the inventory (and the same widget)
-		if (inventoryWidget == null || (draggingWidget.isIf3() ? draggingWidget.getParent() != inventoryWidget : draggingWidget != inventoryWidget))
-		{
-			return null;
-		}
-
-		final net.runelite.api.Point mouse = client.getMouseCanvasPosition();
-		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
-		final int draggedItemIndex = draggingWidget.isIf3() ? draggingWidget.getIndex() : client.getIf1DraggedItemIndex();
-		final WidgetItem draggedItem = getWidgetItem(inventoryWidget, draggedItemIndex);
-		final Rectangle initialBounds = draggedItem.getCanvasBounds(false);
-
-		if (initialMousePoint == null)
-		{
-			initialMousePoint = mousePoint;
-		}
-
-		if (draggedItem.getId() == -1
+			if (draggedItem.getId() == -1
 			|| client.getItemPressedDuration() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
 			|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
+			{
+				return null;
+			}
+			
+			final net.runelite.api.Point mouse = client.getMouseCanvasPosition();
+			mousePoint = new Point(mouse.getX(), mouse.getY());
+			if (initialMousePoint == null)
+			{
+				initialMousePoint = mousePoint;
+			}
+		}
+		else
+		{
+			activeInventoryWidget = inventoryWidget.isHidden() ? bankInventoryWidget : inventoryWidget;
+		}
+
+		if (activeInventoryWidget == null)
 		{
 			return null;
 		}
 
 		hoverActive = true;
-
 		for (int i = 0; i < INVENTORY_SIZE; ++i)
 		{
-			final WidgetItem targetWidgetItem = getWidgetItem(inventoryWidget, i);
+			final WidgetItem targetWidgetItem = getWidgetItem(activeInventoryWidget, i);
 			final Rectangle bounds = targetWidgetItem.getCanvasBounds(false);
-			boolean inBounds = bounds.contains(mousePoint);
+			boolean inBounds = mousePoint == null ? false : bounds.contains(mousePoint);
 
 			if (config.showItem() && inBounds)
 			{
@@ -157,13 +132,11 @@ class InventoryGridOverlay extends Overlay
 
 			if (config.showHighlight() && inBounds)
 			{
-				graphics.setColor(HIGHLIGHT);
-				graphics.fill(bounds);
+				drawGridSquare(graphics, bounds, HIGHLIGHT);
 			}
-			else if (config.showGrid() == GridMode.WHILE_DRAGGING)
+			else if (config.showGrid() == GridMode.ALWAYS || (config.showGrid() == GridMode.WHILE_DRAGGING && draggedItem != null))
 			{
-				graphics.setColor(GRID);
-				graphics.fill(bounds);
+				drawGridSquare(graphics, bounds, GRID);
 			}
 		}
 
@@ -207,5 +180,16 @@ class InventoryGridOverlay extends Overlay
 		graphics.setComposite(AlphaComposite.SrcOver.derive(0.3f));
 		graphics.drawImage(draggedItemImage, x, y, null);
 		graphics.setComposite(AlphaComposite.SrcOver);
+	}
+
+	private void drawGridSquare(Graphics2D graphics, Rectangle bounds, Color color)
+	{
+		graphics.setColor(color);
+		if (config.gridStyle() == GridStyleMode.FILL) graphics.fill(bounds);
+		else
+		{
+			graphics.setStroke(new BasicStroke(2));
+			graphics.draw(bounds);
+		}
 	}
 }

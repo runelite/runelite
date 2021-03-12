@@ -57,11 +57,23 @@ public interface InventoryGridConfig extends Config
 		return true;
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "highlightColour",
+		name = "Highlight color",
+		description = "Configures the color of highlighted grid squares",
+		position = 3
+	)
+	default Color highlightColor()
+	{
+		return new Color(0, 255, 0, 45);
+	}
+
 	@ConfigItem(
 		keyName = "showGrid",
 		name = "Show grid",
 		description = "Show a grid on the inventory",
-		position = 3
+		position = 4
 	)
 	default GridMode showGrid()
 	{
@@ -73,7 +85,7 @@ public interface InventoryGridConfig extends Config
 		keyName = "gridColor",
 		name = "Grid color",
 		description = "Configures the color of grid",
-		position = 4
+		position = 5
 	)
 	default Color gridColor()
 	{
@@ -84,7 +96,7 @@ public interface InventoryGridConfig extends Config
 		keyName = "gridStyle",
 		name = "Grid style",
 		description = "Switch between fill and outline styles",
-		position = 5
+		position = 6
 	)
 	default GridStyleMode gridStyle()
 	{
@@ -95,7 +107,7 @@ public interface InventoryGridConfig extends Config
 		keyName = "dragDelay",
 		name = "Drag delay",
 		description = "Time to wait after an item press before the overlay is enabled",
-		position = 6
+		position = 7
 	)
 	@Units(Units.MILLISECONDS)
 	default int dragDelay()
