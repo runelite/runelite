@@ -75,9 +75,13 @@ class InventoryGridOverlay extends Overlay
 	{
 		final Color GRID = config.gridColor();
 
-		if (config.showGrid() == GridMode.ALWAYS) {
+		if (config.showGrid() == GridMode.ALWAYS)
+		{
 			Widget backpack = client.getWidget(WidgetInfo.INVENTORY);
 			Widget bank = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
+
+			if (backpack.isHidden() && bank.isHidden()) return null;
+
 			Widget activeInventoryWidget = backpack.isHidden() ? bank : backpack;
 		
 			for (int i = 0; i < INVENTORY_SIZE; ++i)
@@ -86,10 +90,12 @@ class InventoryGridOverlay extends Overlay
 				final Rectangle bounds = targetWidgetItem.getCanvasBounds(false);
 
 				graphics.setColor(GRID);
-				
-				switch (config.gridStyle()) {
+
+				switch (config.gridStyle())
+				{
 					case FILL: graphics.fill(bounds); break;
-					case OUTLINE: {
+					case OUTLINE:
+					{
 						graphics.setStroke(new BasicStroke(2));
 						graphics.draw(bounds);
 					}
