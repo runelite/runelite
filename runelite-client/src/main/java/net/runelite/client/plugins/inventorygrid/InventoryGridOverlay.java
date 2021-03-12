@@ -71,9 +71,6 @@ class InventoryGridOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Color HIGHLIGHT = config.highlightColor();
-		final Color GRID = config.gridColor();
-
 		final Widget draggingWidget = getDraggedWidget();
 		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 		final Widget bankInventoryWidget = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
@@ -129,11 +126,11 @@ class InventoryGridOverlay extends Overlay
 
 			if (config.showHighlight() && inBounds)
 			{
-				drawGridSquare(graphics, bounds, HIGHLIGHT);
+				drawGridSquare(graphics, bounds, config.highlightColor());
 			}
 			else if (config.showGrid() == GridMode.ALWAYS || (config.showGrid() == GridMode.WHILE_DRAGGING && draggedItem != null))
 			{
-				drawGridSquare(graphics, bounds, GRID);
+				drawGridSquare(graphics, bounds, config.gridColor());
 			}
 		}
 
