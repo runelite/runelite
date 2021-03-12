@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.inventorygrid;
 
+import java.awt.Color;
+
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -34,8 +37,9 @@ public interface InventoryGridConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showItem",
-		name = "Show item",
-		description = "Show a preview of the item in the new slot"
+		name = "Show item preview",
+		description = "Show a preview of the item in the new slot",
+		position = 1
 	)
 	default boolean showItem()
 	{
@@ -43,19 +47,10 @@ public interface InventoryGridConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showGrid",
-		name = "Show grid",
-		description = "Show a grid on the inventory while dragging"
-	)
-	default boolean showGrid()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showHighlight",
 		name = "Highlight background",
-		description = "Show a green background highlight on the new slot"
+		description = "Show a green background highlight on the new slot",
+		position = 2
 	)
 	default boolean showHighlight()
 	{
@@ -63,9 +58,44 @@ public interface InventoryGridConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showGrid",
+		name = "Show grid",
+		description = "Show a grid on the inventory",
+		position = 3
+	)
+	default GridMode showGrid()
+	{
+		return GridMode.WHILE_DRAGGING;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "gridColor",
+		name = "Grid color",
+		description = "Configures the color of grid",
+		position = 4
+	)
+	default Color gridColor()
+	{
+		return new Color(255, 255, 255, 30);
+	}
+
+	@ConfigItem(
+		keyName = "gridStyle",
+		name = "Grid style",
+		description = "Switch between fill and outline styles",
+		position = 5
+	)
+	default GridStyleMode gridStyle()
+	{
+		return GridStyleMode.FILL;
+	}
+
+	@ConfigItem(
 		keyName = "dragDelay",
 		name = "Drag delay",
-		description = "Time to wait after an item press before the overlay is enabled"
+		description = "Time to wait after an item press before the overlay is enabled",
+		position = 6
 	)
 	@Units(Units.MILLISECONDS)
 	default int dragDelay()

@@ -26,7 +26,9 @@
 package net.runelite.client.plugins.inventorygrid;
 
 import com.google.inject.Inject;
+
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -49,7 +51,6 @@ class InventoryGridOverlay extends Overlay
 	private static final int DISTANCE_TO_ACTIVATE_HOVER = 5;
 
 	private static final Color HIGHLIGHT = new Color(0, 255, 0, 45);
-	private static final Color GRID = new Color(255, 255, 255, 45);
 
 	private final InventoryGridConfig config;
 	private final Client client;
@@ -72,6 +73,30 @@ class InventoryGridOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		final Color GRID = config.gridColor();
+
+		if (config.showGrid() == GridMode.ALWAYS) {
+			Widget backpack = client.getWidget(WidgetInfo.INVENTORY);
+			Widget bank = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
+			Widget activeInventoryWidget = backpack.isHidden() ? bank : backpack;
+		
+			for (int i = 0; i < INVENTORY_SIZE; ++i)
+			{
+				final WidgetItem targetWidgetItem = getWidgetItem(activeInventoryWidget, i);
+				final Rectangle bounds = targetWidgetItem.getCanvasBounds(false);
+
+				graphics.setColor(GRID);
+				
+				switch (config.gridStyle()) {
+					case FILL: graphics.fill(bounds); break;
+					case OUTLINE: {
+						graphics.setStroke(new BasicStroke(2));
+						graphics.draw(bounds);
+					}
+				}
+			}
+		}
+
 		final Widget draggingWidget = getDraggedWidget();
 		if (draggingWidget == null)
 		{
@@ -129,7 +154,7 @@ class InventoryGridOverlay extends Overlay
 				graphics.setColor(HIGHLIGHT);
 				graphics.fill(bounds);
 			}
-			else if (config.showGrid())
+			else if (config.showGrid() == GridMode.WHILE_DRAGGING)
 			{
 				graphics.setColor(GRID);
 				graphics.fill(bounds);
