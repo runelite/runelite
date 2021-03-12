@@ -112,10 +112,7 @@ class InventoryGridOverlay extends Overlay
 			activeInventoryWidget = inventoryWidget.isHidden() ? bankInventoryWidget : inventoryWidget;
 		}
 
-		if (activeInventoryWidget == null)
-		{
-			return null;
-		}
+		if (activeInventoryWidget == null) return null;
 
 		hoverActive = true;
 		for (int i = 0; i < INVENTORY_SIZE; ++i)
