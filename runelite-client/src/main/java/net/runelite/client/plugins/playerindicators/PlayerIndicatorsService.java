@@ -29,6 +29,8 @@ import java.util.function.BiConsumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.Ignore;
+import net.runelite.api.NameableContainer;
 import net.runelite.api.Player;
 
 @Singleton
@@ -59,6 +61,16 @@ public class PlayerIndicatorsService
 			if (player == null || player.getName() == null)
 			{
 				continue;
+			}
+
+			if (config.hideIgnoredPlayerIndicators())
+			{
+				final NameableContainer<Ignore> ignoreContainer = client.getIgnoreContainer();
+				// If the player is found on the ignore list, skip drawing indicators for them
+				if (ignoreContainer.findByName(player.getName()) != null)
+				{
+					continue;
+				}
 			}
 
 			boolean isFriendsChatMember = player.isFriendsChatMember();
