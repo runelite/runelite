@@ -33,6 +33,7 @@ package net.runelite.api;
 public final class AnimationID
 {
 	public static final int IDLE = -1;
+	public static final int UNUSED = -2;
 	public static final int HERBLORE_PESTLE_AND_MORTAR = 364;
 	public static final int WOODCUTTING_BRONZE = 879;
 	public static final int WOODCUTTING_IRON = 877;
@@ -178,7 +179,7 @@ public final class AnimationID
 	public static final int MAGIC_ENCHANTING_BOLTS = 4462;
 	public static final int BURYING_BONES = 827;
 	public static final int USING_GILDED_ALTAR = 3705;
-	public static final int LOOKING_INTO = 832;
+	public static final int LOOKING_INTO = 832; // Same as reinforcing temple wall in Shades of Mort'ton minigame
 	public static final int DIG = 830;
 	public static final int DEMONIC_GORILLA_MAGIC_ATTACK = 7225;
 	public static final int DEMONIC_GORILLA_MELEE_ATTACK = 7226;
@@ -258,7 +259,4 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
-
-	// Shades of Mort'ton Animations
-	public static final int REINFORCE_TEMPLE_WALL = 832;
 }

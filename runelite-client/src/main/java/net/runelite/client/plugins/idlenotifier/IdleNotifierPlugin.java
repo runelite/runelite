@@ -281,7 +281,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FARMING_HARVEST_FLOWER:
 			case FARMING_HARVEST_ALLOTMENT:
 			/* Shades of Mort'ton */
-			case REINFORCE_TEMPLE_WALL:
+			case LOOKING_INTO:
 			/* Misc */
 			case PISCARILIUS_CRANE_REPAIR:
 			case HOME_MAKE_TABLET:
