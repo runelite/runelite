@@ -25,13 +25,20 @@
  */
 package net.runelite.http.service.wiki;
 
+import java.util.Map;
 import lombok.Data;
 
 @Data
-class ItemPrice
+class PriceResult
 {
-	private int high;
-	private int highTime;
-	private int low;
-	private int lowTime;
+	@Data
+	static class Item
+	{
+		private int high;
+		private int highTime;
+		private int low;
+		private int lowTime;
+	}
+
+	private Map<Integer, Item> data;
 }
