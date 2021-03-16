@@ -30,6 +30,8 @@ import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import javax.inject.Inject;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.GrandExchangeOffer;
@@ -56,7 +58,8 @@ class GrandExchangeOffersPanel extends JPanel
 
 	private final GrandExchangeOfferSlot[] offerSlotPanels = new GrandExchangeOfferSlot[MAX_OFFERS];
 
-	GrandExchangeOffersPanel()
+	@Inject
+	private GrandExchangeOffersPanel()
 	{
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -96,10 +99,7 @@ class GrandExchangeOffersPanel extends JPanel
 	void resetOffers()
 	{
 		offerPanel.removeAll();
-		for (int i = 0; i < offerSlotPanels.length; i++)
-		{
-			offerSlotPanels[i] = null;
-		}
+		Arrays.fill(offerSlotPanels, null);
 		updateEmptyOffersPanel();
 	}
 
@@ -122,15 +122,16 @@ class GrandExchangeOffersPanel extends JPanel
 		}
 
 		/* If slot was empty, and is now filled, add it to the list */
-		if (offerSlotPanels[slot] == null)
+		GrandExchangeOfferSlot offerSlot = offerSlotPanels[slot];
+		if (offerSlot == null)
 		{
-			GrandExchangeOfferSlot newSlot = new GrandExchangeOfferSlot();
-			offerSlotPanels[slot] = newSlot;
-			offerPanel.add(newSlot, constraints);
+			offerSlot = new GrandExchangeOfferSlot();
+			offerSlotPanels[slot] = offerSlot;
+			offerPanel.add(offerSlot, constraints);
 			constraints.gridy++;
 		}
 
-		offerSlotPanels[slot].updateOffer(item, itemImage, newOffer);
+		offerSlot.updateOffer(item, itemImage, newOffer);
 
 		removeTopMargin();
 

@@ -252,7 +252,6 @@ public class GrandExchangeOfferSlot extends JPanel
 		}
 
 		revalidate();
-		repaint();
 	}
 
 	private String htmlTooltip(String value)
