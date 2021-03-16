@@ -215,9 +215,10 @@ class GrandExchangeSearchPanel extends JPanel
 
 			int itemPrice = useActivelyTradedPrice && item.getWikiPrice() > 0 ? item.getWikiPrice() : item.getPrice();
 			int itemLimit = itemStats != null ? itemStats.getGeLimit() : 0;
+			final int haPrice = itemComp.getHaPrice();
 			AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
-			itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, itemComp.getPrice() * 0.6, itemLimit));
+			itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, haPrice, itemLimit));
 
 			// If using hotkey to lookup item, stop after finding match.
 			if (exactMatch && item.getName().equalsIgnoreCase(lookup))
