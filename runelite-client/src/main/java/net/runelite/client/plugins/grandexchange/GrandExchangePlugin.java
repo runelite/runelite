@@ -82,6 +82,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.SessionClose;
@@ -177,6 +178,9 @@ public class GrandExchangePlugin extends Plugin
 
 	@Inject
 	private Gson gson;
+
+	@Inject
+	private RuneLiteConfig runeLiteConfig;
 
 	private Widget grandExchangeText;
 	private Widget grandExchangeItem;
@@ -877,12 +881,14 @@ public class GrandExchangePlugin extends Plugin
 		geText.setText(text);
 	}
 
-	static void openGeLink(String name, int itemId)
+	void openGeLink(String name, int itemId)
 	{
-		final String url = "https://services.runescape.com/m=itemdb_oldschool/"
-			+ name.replaceAll(" ", "+")
-			+ "/viewitem?obj="
-			+ itemId;
+		final String url = runeLiteConfig.useWikiItemPrices() ?
+			"https://prices.runescape.wiki/osrs/item/" + itemId :
+			"https://services.runescape.com/m=itemdb_oldschool/"
+				+ name.replaceAll(" ", "+")
+				+ "/viewitem?obj="
+				+ itemId;
 		LinkBrowser.browse(url);
 	}
 
