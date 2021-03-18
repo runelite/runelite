@@ -92,6 +92,11 @@ public class ItemChargePluginTest
 	private static final String CHECK_EXPEDITIOUS_BRACELET_1 = "Your expeditious bracelet has 1 charge left.";
 	private static final String ACTIVATE_EXPEDITIOUS_BRACELET = "Your expeditious bracelet helps you progress your slayer task faster. It has 11 charges left.";
 	private static final String BREAK_EXPEDITIOUS_BRACELET = "Your expeditious bracelet helps you progress your slayer task faster. <col=ff0000>It then crumbles to dust.</col>";
+	
+	private static final String CHECK_FLAMTAER_BRACELET = "Your flamtaer bracelet has 6 charges left.";
+	private static final String CHECK_FLAMTAER_BRACELET_1 = "Your flamtaer bracelet has 1 charge left.";
+	private static final String ACTIVATE_FLAMTAER_BRACELET = "Your Flamtaer bracelet helps you build the temple quicker. It has 11 charges left.";
+	private static final String BREAK_FLAMTAER_BRACELET = "Your Flamtaer bracelet helps you build the temple quicker. <col=ff0000>It then crumbles to dust.</col>";
 
 	@Mock
 	@Bind
@@ -420,5 +425,38 @@ public class ItemChargePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_EXPEDITIOUS_BRACELET, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, 30);
+	}
+
+	// Flamtaer Bracelet
+	@Test
+	public void testFlamtaerCheck()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_FLAMTAER_BRACELET, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_FLAMTAER_BRACELET, 6);
+	}
+
+	@Test
+	public void testFlamtaerCheck1()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_FLAMTAER_BRACELET_1, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_FLAMTAER_BRACELET, 1);
+	}
+
+	@Test
+	public void testFlamtaerActivate()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", ACTIVATE_FLAMTAER_BRACELET, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_FLAMTAER_BRACELET, 11);
+	}
+
+	@Test
+	public void testFlamtaerBreak()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_FLAMTAER_BRACELET, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_FLAMTAER_BRACELET, 80);
 	}
 }

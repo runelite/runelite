@@ -45,6 +45,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_DODGY_NECKLACE = "dodgyNecklace";
 	String KEY_EXPEDITIOUS_BRACELET = "expeditiousBracelet";
 	String KEY_EXPLORERS_RING = "explorerRing";
+	String KEY_FLAMTAER_BRACELET = "flamtaerBracelet";
 	String KEY_RING_OF_FORGING = "ringOfForging";
 
 	@ConfigSection(
@@ -412,6 +413,30 @@ public interface ItemChargeConfig extends Config
 		section = chargesSection
 	)
 	default boolean showGuthixRestDoses()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showFlamtaerBraceletCharges",
+		name = "Flamtaer Bracelet Charges",
+		description = "Show Flamtaer Bracelet item charges",
+		position = 30,
+		section = chargesSection
+	)
+	default boolean showFlamtaerBraceletCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "flamtaerNotification",
+		name = "Flamtaer Bracelet Notification",
+		description = "Send a notification when a Flamtaer Bracelet breaks",
+		position = 30,
+		section = notificationSection
+	)
+	default boolean flamtaerNotification()
 	{
 		return true;
 	}
