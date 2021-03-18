@@ -36,6 +36,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -111,6 +112,10 @@ public class ItemChargePluginTest
 	@Bind
 	private ItemChargeConfig config;
 
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
 	@Inject
 	private ItemChargePlugin itemChargePlugin;
 
@@ -125,35 +130,35 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).dodgyNecklace(10);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE, 10);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", PROTECT, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).dodgyNecklace(9);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE, 9);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", PROTECT_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).dodgyNecklace(1);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE, 1);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).dodgyNecklace(10);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE, 10);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_ONE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).ringOfForging(1);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 1);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).ringOfForging(140);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 140);
+		reset(configManager);
 
-		when(config.ringOfForging()).thenReturn(90);
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(90);
 		// Create equipment inventory with ring of forging
 		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentItemContainer);
@@ -161,107 +166,107 @@ public class ItemChargePluginTest
 		// Run message
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).ringOfForging(89);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 89);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).ringOfForging(140);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 140);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_AMULET_OF_CHEMISTRY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(5);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 5);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_AMULET_OF_CHEMISTRY_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(1);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 1);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_AMULET_OF_CHEMISTRY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(4);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 4);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_AMULET_OF_CHEMISTRY_3_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(2);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 2);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_AMULET_OF_CHEMISTRY_2_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(1);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 1);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_AMULET_OF_CHEMISTRY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(5);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 5);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_AMULET_OF_CHEMISTRY_3_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(5);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 5);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_AMULET_OF_CHEMISTRY_2_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).amuletOfChemistry(5);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 5);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(1000);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1000);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_ONE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(1);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_EMPTY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(0);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 0);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(999);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 999);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_ONE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(1);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_EMPTY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(0);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 0);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_FAIL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(0);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 0);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_SINGLE_CHARGE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(1);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_SINGLE_CHARGE_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(1000);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1000);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_MULTIPLE_CHARGES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(5);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 5);
+		reset(configManager);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(config).chronicle(1000);
-		reset(config);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1000);
+		reset(configManager);
 	}
 }
