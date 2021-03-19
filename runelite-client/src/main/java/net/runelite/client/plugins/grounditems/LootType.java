@@ -30,5 +30,6 @@ enum LootType
 	TABLE,
 	DROPPED,
 	PVP,
-	PVM;
+	PVM,
+	SHADE_CREMATION
 }
