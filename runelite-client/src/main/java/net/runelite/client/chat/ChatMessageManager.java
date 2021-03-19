@@ -41,6 +41,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.FriendsChatManager;
+import net.runelite.api.FriendsChatMember;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
@@ -132,10 +134,22 @@ public class ChatMessageManager
 			{
 				String sanitizedUsername = Text.removeTags(chatMessage.getName());
 				boolean isFriend = client.isFriended(sanitizedUsername, true) && !client.getLocalPlayer().getName().equals(sanitizedUsername);
-
 				if (isFriend)
 				{
 					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPublicFriendUsernames() : chatColorConfig.opaquePublicFriendUsernames();
+				}
+				else
+				{
+					final FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+					if (friendsChatManager != null)
+					{
+						FriendsChatMember friendsChatMember = friendsChatManager.findByName(sanitizedUsername);
+						boolean isFriendsChatMember = friendsChatMember != null && !client.getLocalPlayer().getName().equals(sanitizedUsername);
+						if (isFriendsChatMember)
+						{
+							usernameColor = isChatboxTransparent ? chatColorConfig.transparentPublicFriendsChatUsernames() : chatColorConfig.opaquePublicFriendsChatUsernames();
+						}
+					}
 				}
 				if (usernameColor == null)
 				{

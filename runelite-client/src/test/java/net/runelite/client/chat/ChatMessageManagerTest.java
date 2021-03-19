@@ -31,6 +31,8 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.awt.Color;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.FriendsChatManager;
+import net.runelite.api.FriendsChatMember;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
@@ -144,5 +146,37 @@ public class ChatMessageManagerTest
 		chatMessageManager.onChatMessage(chatMessage);
 
 		verify(messageNode).setName("<col=b20000>" + friendName + "</col>");
+	}
+
+	@Test
+	public void testPublicFriendsChatUsernameRecolouring()
+	{
+		final String localPlayerName = "RuneLite";
+		final String friendsChatMemberName = "Zezima";
+
+		when(chatColorConfig.opaquePublicFriendsChatUsernames()).thenReturn(Color.decode("#ffc307"));
+
+		// Setup message
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setName(friendsChatMemberName);
+
+		MessageNode messageNode = mock(MessageNode.class);
+		chatMessage.setMessageNode(messageNode);
+		when(messageNode.getName()).thenReturn(friendsChatMemberName);
+
+		// Setup friends chat member checking
+		Player localPlayer = mock(Player.class);
+		FriendsChatManager friendsChatManager = mock(FriendsChatManager.class);
+		FriendsChatMember friendsChatMember = mock(FriendsChatMember.class);
+
+		when(client.getFriendsChatManager()).thenReturn(friendsChatManager);
+		when(client.getFriendsChatManager().findByName(friendsChatMemberName)).thenReturn(friendsChatMember);
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
+		when(localPlayer.getName()).thenReturn(localPlayerName);
+
+		chatMessageManager.onChatMessage(chatMessage);
+
+		verify(messageNode).setName("<col=ffc307>" + friendsChatMemberName + "</col>");
 	}
 }
