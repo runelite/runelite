@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.4.1-SNAPSHOT</version>
+		<version>1.7.3-SNAPSHOT</version>
 	</parent>
 
 	<name>Web Service</name>
@@ -44,19 +44,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>${spring.boot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<version>${spring.boot.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-			<version>${spring.boot.version}</version>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
 		</dependency>
 
 		<dependency>
@@ -82,14 +83,15 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>2.2.3</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.sql2o</groupId>
 			<artifactId>sql2o</artifactId>
 			<version>1.5.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-csv</artifactId>
-			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -98,7 +100,6 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.12</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.scribejava</groupId>
@@ -110,17 +111,27 @@
 			<artifactId>minio</artifactId>
 			<version>3.0.6</version>
 		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.10.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-pool2</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-sync</artifactId>
+			<version>3.10.2</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>${spring.boot.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.43</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -129,7 +140,24 @@
 			<version>3.7.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<finalName>runelite-${project.version}</finalName>
@@ -159,14 +187,54 @@
 				<version>${spring.boot.version}</version>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
+				<groupId>com.github.kongchen</groupId>
+				<artifactId>swagger-maven-plugin</artifactId>
+				<version>3.1.8</version>
+				<dependencies>
+					<!-- Java 11+ does not include this anymore -->
+					<dependency>
+						<groupId>javax.xml.bind</groupId>
+						<artifactId>jaxb-api</artifactId>
+						<version>2.3.1</version>
+					</dependency>
+				</dependencies>
 				<configuration>
-					<url>${runelite.tomcat.url}</url>
-					<server>runelite-tomcat</server>
-					<path>/runelite-${project.version}</path>
+					<apiSources>
+						<apiSource>
+							<springmvc>true</springmvc>
+							<locations>
+								<location>net.runelite</location>
+							</locations>
+							<schemes>
+								<scheme>https</scheme>
+							</schemes>
+							<host>api.runelite.net</host>
+							<basePath>/runelite-${project.version}</basePath>
+							<info>
+								<title>${project.parent.name} HTTP API</title>
+								<version>${project.version}</version>
+								<description>${project.description}</description>
+								<license>
+									<url>https://tldrlegal.com/license/bsd-2-clause-license-(freebsd)</url>
+									<name>BSD 2-Clause "Simplified"</name>
+								</license>
+							</info>
+							<templatePath>${basedir}/src/main/templates/template.html.hbs</templatePath>
+							<swaggerDirectory>${project.build.directory}/swagger-ui</swaggerDirectory>
+							<outputPath>${project.build.directory}/site/api.html</outputPath>
+							<attachSwaggerArtifact>true</attachSwaggerArtifact>
+							<outputFormats>json</outputFormats>
+						</apiSource>
+					</apiSources>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

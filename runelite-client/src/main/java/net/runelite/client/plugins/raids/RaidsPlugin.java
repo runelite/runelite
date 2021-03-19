@@ -24,74 +24,107 @@
  */
 package net.runelite.client.plugins.raids;
 
-import com.google.common.eventbus.Subscribe;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Joiner;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
+import java.util.Set;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Point;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Tile;
-import net.runelite.api.Varbits;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MessageNode;
+import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
+import net.runelite.api.Point;
+import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
+import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.chat.ChatColor;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ChatInput;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.game.SpriteManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.raids.events.RaidReset;
+import net.runelite.client.plugins.raids.events.RaidScouted;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
-import net.runelite.client.plugins.raids.solver.RotationSolver;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.HotkeyListener;
+import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.Text;
+import static net.runelite.client.util.Text.sanitize;
+import net.runelite.client.ws.PartyMember;
+import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
+import net.runelite.http.api.chat.ChatClient;
+import net.runelite.http.api.chat.LayoutRoom;
+import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 
 @PluginDescriptor(
-	name = "Chambers Of Xeric"
+	name = "Chambers Of Xeric",
+	description = "Show helpful information for the Chambers of Xeric raid",
+	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
 {
 	private static final int LOBBY_PLANE = 3;
+	private static final int SECOND_FLOOR_PLANE = 2;
+	private static final int ROOMS_PER_PLANE = 8;
+	private static final int AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE = 4;
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	public static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
-	private static final String SPLIT_REGEX = "\\s*,\\s*";
-	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
+	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
+	private static final String LAYOUT_COMMAND = "!layout";
+	private static final int MAX_LAYOUT_LEN = 300;
+	// (x=3360, y=5152, plane=2) is the temp location the game puts the player on login into while it decides whether
+	// to put the player into a raid or not.
+	private static final WorldPoint TEMP_LOCATION = new WorldPoint(3360, 5152, 2);
 
-	private BufferedImage raidsIcon;
-	private RaidsTimer timer;
-
-	@Getter
-	private boolean inRaidChambers;
+	@Inject
+	private RuneLiteConfig runeLiteConfig;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -106,28 +139,75 @@ public class RaidsPlugin extends Plugin
 	private RaidsConfig config;
 
 	@Inject
-	private RaidsOverlay overlay;
+	private OverlayManager overlayManager;
 
 	@Inject
-	private RaidsPointsOverlay pointsOverlay;
+	private RaidsOverlay overlay;
 
 	@Inject
 	private LayoutSolver layoutSolver;
 
+	@Inject
+	private SpriteManager spriteManager;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private PartyService party;
+
+	@Inject
+	private WSClient ws;
+
+	@Inject
+	private ChatCommandManager chatCommandManager;
+
+	@Inject
+	private ChatClient chatClient;
+
+	@Inject
+	private ScheduledExecutorService scheduledExecutorService;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private ImageCapture imageCapture;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Getter
+	private final Set<String> roomWhitelist = new HashSet<>();
+
+	@Getter
+	private final Set<String> roomBlacklist = new HashSet<>();
+
+	@Getter
+	private final Set<String> rotationWhitelist = new HashSet<>();
+
+	@Getter
+	private final Set<String> layoutWhitelist = new HashSet<>();
+
+	@Setter(AccessLevel.PACKAGE) // for the test
 	@Getter
 	private Raid raid;
 
+	// if the player is inside of a raid or not
 	@Getter
-	private ArrayList<String> roomWhitelist = new ArrayList<>();
+	private boolean inRaidChambers;
 
+	/*
+	 * if the player is in a raid party or not
+	 * This will be set when someone in the friends chat clicks the "make party" button on the raids widget
+	 * It will change again when someone from your friends chat enters the raid to generate it
+	 * It will be reset when the raid starts but not if they leave the raid while it has not started yet
+	 */
 	@Getter
-	private ArrayList<String> roomBlacklist = new ArrayList<>();
-
-	@Getter
-	private ArrayList<String> rotationWhitelist = new ArrayList<>();
-
-	@Getter
-	private ArrayList<String> layoutWhitelist = new ArrayList<>();
+	private int raidPartyID;
+	private RaidsTimer timer;
+	boolean checkInRaid;
+	private boolean loggedIn;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -142,143 +222,87 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Override
-	public List<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, pointsOverlay);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			inRaidChambers = client.getVar(Varbits.IN_RAID) == 1;
-			updateInfoBoxState();
-		}
-
-		if (config.pointsMessage())
-		{
-			cacheColors();
-		}
-
+		overlayManager.add(overlay);
 		updateLists();
+		clientThread.invokeLater(() -> checkRaidPresence());
+		chatCommandManager.registerCommandAsync(LAYOUT_COMMAND, this::lookupRaid, this::submitRaid);
+		keyManager.registerKeyListener(screenshotHotkeyListener);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		if (timer != null)
-		{
-			infoBoxManager.removeInfoBox(timer);
-		}
+		chatCommandManager.unregisterCommand(LAYOUT_COMMAND);
+		overlayManager.remove(overlay);
+		infoBoxManager.removeInfoBox(timer);
+		timer = null;
+		inRaidChambers = false;
+		reset();
+		keyManager.unregisterKeyListener(screenshotHotkeyListener);
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (config.pointsMessage())
+		if (!event.getGroup().equals("raids"))
 		{
-			cacheColors();
+			return;
 		}
 
 		if (event.getKey().equals("raidsTimer"))
 		{
 			updateInfoBoxState();
-		}
-
-		if (event.getKey().equals("whitelistedRooms"))
-		{
-			updateList(roomWhitelist, config.whitelistedRooms());
-		}
-
-		if (event.getKey().equals("blacklistedRooms"))
-		{
-			updateList(roomBlacklist, config.blacklistedRooms());
-		}
-
-		if (event.getKey().equals("whitelistedRotations"))
-		{
-			updateList(rotationWhitelist, config.whitelistedRotations());
-		}
-
-		if (event.getKey().equals("whitelistedLayouts"))
-		{
-			updateList(layoutWhitelist, config.whitelistedLayouts());
-		}
-	}
-
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
-	{
-		if (!inRaidChambers || event.isHidden())
-		{
 			return;
 		}
 
-		Widget widget = event.getWidget();
-
-		if (widget == client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX))
-		{
-			widget.setHidden(true);
-		}
+		updateLists();
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
-		boolean setting = client.getVar(Varbits.IN_RAID) == 1;
+		int tempPartyID = client.getVar(VarPlayer.IN_RAID_PARTY);
+		boolean tempInRaid = client.getVar(Varbits.IN_RAID) == 1;
 
-		if (inRaidChambers != setting)
+		// if the player's party state has changed
+		if (tempPartyID != raidPartyID)
 		{
-			inRaidChambers = setting;
-			updateInfoBoxState();
-
-			if (inRaidChambers)
+			// if the player is outside of a raid when the party state changed
+			if (loggedIn
+				&& !tempInRaid)
 			{
-				raid = buildRaid();
-
-				if (raid == null)
-				{
-					log.debug("Failed to build raid");
-					return;
-				}
-
-				Layout layout = layoutSolver.findLayout(raid.toCode());
-
-				if (layout == null)
-				{
-					log.debug("Could not find layout match");
-					return;
-				}
-
-				raid.updateLayout(layout);
-				RotationSolver.solve(raid.getCombatRooms());
-				overlay.setScoutOverlayShown(true);
+				reset();
 			}
-			else if (!config.scoutOverlayAtBank())
-			{
-				overlay.setScoutOverlayShown(false);
-				raid = null;
-			}
+
+			raidPartyID = tempPartyID;
 		}
 
-		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1)
+		// if the player's raid state has changed
+		if (tempInRaid != inRaidChambers)
 		{
-			overlay.setScoutOverlayShown(false);
-			raid = null;
+			// if the player is inside of a raid then check the raid
+			if (tempInRaid && loggedIn)
+			{
+				checkRaidPresence();
+			}
+
+			inRaidChambers = tempInRaid;
 		}
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
+		if (inRaidChambers && event.getType() == ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
 			String message = Text.removeTags(event.getMessage());
 
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(getRaidsIcon(), this, Instant.now());
+				timer = new RaidsTimer(this, Instant.now(), config);
+				spriteManager.getSpriteAsync(TAB_QUESTS_BROWN_RAIDING_PARTY, 0, timer);
 				infoBoxManager.addInfoBox(timer);
 			}
 
@@ -291,7 +315,7 @@ public class RaidsPlugin extends Plugin
 			{
 				if (timer != null)
 				{
-					timer.timeFloor();
+					timer.timeOlm();
 					timer.setStopped(true);
 				}
 
@@ -303,24 +327,24 @@ public class RaidsPlugin extends Plugin
 					double percentage = personalPoints / (totalPoints / 100.0);
 
 					String chatMessage = new ChatMessageBuilder()
-							.append(ChatColorType.NORMAL)
-							.append("Total points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(totalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(", Personal points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(personalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(" (")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(DECIMAL_FORMAT.format(percentage))
-							.append(ChatColorType.NORMAL)
-							.append("%)")
-							.build();
+						.append(ChatColorType.NORMAL)
+						.append("Total points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(totalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(", Personal points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(personalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(DECIMAL_FORMAT.format(percentage))
+						.append(ChatColorType.NORMAL)
+						.append("%)")
+						.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CLANCHAT_INFO)
+						.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 						.runeLiteFormattedMessage(chatMessage)
 						.build());
 				}
@@ -328,106 +352,207 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void updateInfoBoxState()
+	@Subscribe
+	public void onOverlayMenuClicked(final OverlayMenuClicked event)
 	{
-		if (timer != null)
+		if (!(event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY
+			&& event.getOverlay() == overlay))
 		{
-			if (inRaidChambers && config.raidsTimer())
+			return;
+		}
+
+		if (event.getEntry().getOption().equals(RaidsOverlay.BROADCAST_ACTION))
+		{
+			sendRaidLayoutMessage();
+		}
+		else if (event.getEntry().getOption().equals(RaidsOverlay.SCREENSHOT_ACTION))
+		{
+			screenshotScoutOverlay();
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			// skip event while the game decides if the player belongs in a raid or not
+			if (client.getLocalPlayer() == null
+				|| client.getLocalPlayer().getWorldLocation().equals(TEMP_LOCATION))
 			{
-				infoBoxManager.addInfoBox(timer);
+				return;
+			}
+
+			checkInRaid = true;
+		}
+		else if (client.getGameState() == GameState.LOGIN_SCREEN
+			|| client.getGameState() == GameState.CONNECTION_LOST)
+		{
+			loggedIn = false;
+		}
+		else if (client.getGameState() == GameState.HOPPING)
+		{
+			reset();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (checkInRaid)
+		{
+			loggedIn = true;
+			checkInRaid = false;
+
+			if (inRaidChambers)
+			{
+				checkRaidPresence();
 			}
 			else
 			{
-				infoBoxManager.removeInfoBox(timer);
-			}
-
-			if (!inRaidChambers)
-			{
-				timer = null;
+				if (raidPartyID == -1)
+				{
+					reset();
+				}
 			}
 		}
 	}
 
-	private void updateLists()
+	private void checkRaidPresence()
 	{
-		updateList(roomWhitelist, config.whitelistedRooms());
-		updateList(roomBlacklist, config.blacklistedRooms());
-		updateList(rotationWhitelist, config.whitelistedRotations());
-		updateList(layoutWhitelist, config.whitelistedLayouts());
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		inRaidChambers = client.getVar(Varbits.IN_RAID) == 1;
+
+		if (!inRaidChambers)
+		{
+			return;
+		}
+
+		updateInfoBoxState();
+		boolean firstSolve = (raid == null);
+		raid = buildRaid(raid);
+
+		if (raid == null)
+		{
+			log.debug("Failed to build raid");
+			return;
+		}
+
+		if (raid.getLayout() == null)
+		{
+			Layout layout = layoutSolver.findLayout(raid.toCode());
+
+			if (layout == null)
+			{
+				log.debug("Could not find layout match");
+				raid = null;
+				return;
+			}
+
+			raid.updateLayout(layout);
+		}
+
+		RaidRoom[] rooms = raid.getCombatRooms();
+		RotationSolver.solve(rooms);
+		raid.setCombatRooms(rooms);
+
+		if (config.layoutMessage() && firstSolve)
+		{
+			sendRaidLayoutMessage();
+		}
+
+		eventBus.post(new RaidScouted(raid, firstSolve));
 	}
 
-	private void updateList(ArrayList<String> list, String input)
+	private void sendRaidLayoutMessage()
 	{
-		list.clear();
+		final String layout = getRaid().getLayout().toCodeString();
+		final String rooms = getRaid().toRoomString();
+		final String raidData = "[" + layout + "]: " + rooms;
 
-		if (list == rotationWhitelist)
+		final String layoutMessage = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Layout: ")
+			.append(ChatColorType.NORMAL)
+			.append(raidData)
+			.build();
+
+		final PartyMember localMember = party.getLocalMember();
+
+		if (party.getMembers().isEmpty() || localMember == null)
 		{
-			Matcher m = ROTATION_REGEX.matcher(input);
-			while (m.find())
-			{
-				String rotation = m.group(1).toLowerCase();
-
-				if (!list.contains(rotation))
-				{
-					list.add(rotation);
-				}
-			}
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+				.runeLiteFormattedMessage(layoutMessage)
+				.build());
 		}
 		else
 		{
-			list.addAll(Arrays.asList(input.toLowerCase().split(SPLIT_REGEX)));
+			final PartyChatMessage message = new PartyChatMessage(layoutMessage);
+			message.setMemberId(localMember.getMemberId());
+			ws.send(message);
 		}
 	}
 
-	private void cacheColors()
+	private void updateInfoBoxState()
 	{
-		chatMessageManager.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.BLACK, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
-				.refreshAll();
+		if (timer != null && !inRaidChambers)
+		{
+			infoBoxManager.removeInfoBox(timer);
+			timer = null;
+		}
 	}
 
-	public int getRotationMatches()
+	@VisibleForTesting
+	void updateLists()
 	{
-		String rotation = raid.getRotationString().toLowerCase();
-		String[] bosses = rotation.split(SPLIT_REGEX);
+		updateList(roomWhitelist, config.whitelistedRooms());
+		updateList(roomBlacklist, config.blacklistedRooms());
+		updateList(layoutWhitelist, config.whitelistedLayouts());
 
-		if (rotationWhitelist.contains(rotation))
+		// Update rotation whitelist
+		rotationWhitelist.clear();
+		for (String line : config.whitelistedRotations().split("\\n"))
 		{
-			return bosses.length;
+			rotationWhitelist.add(line.toLowerCase().replace(" ", ""));
 		}
+	}
 
-		for (String whitelisted : rotationWhitelist)
+	private void updateList(Collection<String> list, String input)
+	{
+		list.clear();
+		for (String s : Text.fromCSV(input.toLowerCase()))
 		{
-			int matches = 0;
-			String[] whitelistedBosses = whitelisted.split(SPLIT_REGEX);
-
-			for (int i = 0; i < whitelistedBosses.length; i++)
+			if (s.equals("unknown"))
 			{
-				if (i < bosses.length && whitelistedBosses[i].equals(bosses[i]))
-				{
-					matches++;
-				}
-				else
-				{
-					matches = 0;
-					break;
-				}
+				list.add("unknown (combat)");
+				list.add("unknown (puzzle)");
 			}
-
-			if (matches >= 2)
+			else
 			{
-				return matches;
+				list.add(s);
 			}
 		}
+	}
 
-		return 0;
+	boolean getRotationMatches()
+	{
+		RaidRoom[] combatRooms = raid.getCombatRooms();
+		String rotation = Arrays.stream(combatRooms)
+			.map(RaidRoom::getName)
+			.map(String::toLowerCase)
+			.collect(Collectors.joining(","));
+
+		return rotationWhitelist.contains(rotation);
 	}
 
 	private Point findLobbyBase()
 	{
-		Tile[][] tiles = client.getRegion().getTiles()[LOBBY_PLANE];
+		Tile[][] tiles = client.getScene().getTiles()[LOBBY_PLANE];
 
 		for (int x = 0; x < SCENE_SIZE; x++)
 		{
@@ -438,9 +563,9 @@ public class RaidsPlugin extends Plugin
 					continue;
 				}
 
-				if (tiles[x][y].getWallObject().getId() == ObjectID.NULL_12231)
+				if (tiles[x][y].getWallObject().getId() == NullObjectID.NULL_12231)
 				{
-					return tiles[x][y].getRegionLocation();
+					return tiles[x][y].getSceneLocation();
 				}
 			}
 		}
@@ -448,77 +573,138 @@ public class RaidsPlugin extends Plugin
 		return null;
 	}
 
-	private Raid buildRaid()
+	private Raid buildRaid(Raid from)
 	{
-		Point gridBase = findLobbyBase();
+		Raid raid = from;
 
-		if (gridBase == null)
+		if (raid == null)
 		{
-			return null;
+			// The south-west tile of the lobby room in the scene
+			Point gridBase = findLobbyBase();
+
+			if (gridBase == null)
+			{
+				return null;
+			}
+
+			Integer lobbyIndex = findLobbyIndex(gridBase);
+
+			if (lobbyIndex == null)
+			{
+				return null;
+			}
+
+			raid = new Raid(
+				new WorldPoint(client.getBaseX() + gridBase.getX(), client.getBaseY() + gridBase.getY(), LOBBY_PLANE),
+				lobbyIndex
+			);
 		}
 
-		Raid raid = new Raid();
-		Tile[][] tiles;
-		int position, x, y, offsetX;
-		int startX = -2;
+		/*
+		 * The x position of the starting room relative to other rooms
+		 * The west most room will have a value of 0 and the east most will have a value of 3
+		 * The rooms have the following x values
+		 *     0 1 2 3
+		 *     0 1 2 3
+		 */
+		int baseX = raid.getLobbyIndex() % AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE;
 
-		for (int plane = 3; plane > 1; plane--)
+		/*
+		 * The y position of the starting room relative to other rooms
+		 * The north rooms will have a y value of 0 and the south will have a value of 1
+		 * The rooms have the following y values
+		 *     0 0 0 0
+		 *     1 1 1 1
+ 		 */
+		int baseY = raid.getLobbyIndex() % ROOMS_PER_PLANE > (AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE - 1) ? 1 : 0;
+
+		/*
+		 * i is the position of the room in the raid room array, the raid rooms are in order of north to south,
+		 * west to east, and plane 3 to plane 2. For example the 0th room is the north-west room on plane 3 and
+		 * the 15th room is the south-east room of plane 2
+		 *
+		 * The indexes of the rooms of plane 3 (the first/lobby floor) will look like
+		 *     0  1  2  3
+		 *     4  5  6  7
+		 *
+		 * The indexes of the rooms of plane 2 (the second floor) will look like
+		 *     8  9  10 11
+		 *     12 13 14 15
+		 */
+		for (int i = 0; i < raid.getRooms().length; i++)
 		{
-			tiles = client.getRegion().getTiles()[plane];
+			/*
+			 * The x position of the current room relative to other rooms
+			 * The west most room will have a value of 0 and the east most will have a value of 3
+			 * The rooms have the following x values
+			 *     0 1 2 3
+			 *     0 1 2 3
+			 */
+			int x = i % AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE;
 
-			if (tiles[gridBase.getX() + RaidRoom.ROOM_MAX_SIZE][gridBase.getY()] == null)
+			/*
+			 * The y position of the current room relative to other rooms
+			 * The north rooms will have a y value of 0 and the south will have a value of 1
+			 * The rooms have the following y values
+			 *     0 0 0 0
+			 *     1 1 1 1
+			 */
+			int y = i % ROOMS_PER_PLANE > (AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE - 1) ? 1 : 0;
+
+			/*
+			 * The plane of the current room
+			 * The rooms on the lobby/first floor will have a plane of 3
+			 * The rooms on the second floor will have a plane of 2
+			 */
+			int plane = i > (ROOMS_PER_PLANE - 1) ? SECOND_FLOOR_PLANE : LOBBY_PLANE;
+
+			// The x position of the current room relative to starting room
+			x = x - baseX;
+
+			// The y position of the current room relative to starting room
+			y = y - baseY;
+
+			// The x coord (world point) of the south west tile of the current room
+			x = raid.getGridBase().getX() + x * RaidRoom.ROOM_MAX_SIZE;
+
+			// The y coord (world point) of the south west tile of the current room
+			y = raid.getGridBase().getY() - y * RaidRoom.ROOM_MAX_SIZE;
+
+			// The x coord (scene) of the south west tile of the current room
+			x = x - client.getBaseX();
+
+			// The y coord (scene) of the south west tile of the current room
+			y = y - client.getBaseY();
+
+			// If the west tile of the current room is not in the scene but the room itself has tiles in the scene
+			// then make x a tile of the room that is actually in the scene
+			if (x < (1 - RaidRoom.ROOM_MAX_SIZE) || x >= SCENE_SIZE)
 			{
-				position = 1;
+				continue;
 			}
-			else
+			else if (x < 1)
 			{
-				position = 0;
+				x = 1;
 			}
 
-			for (int i = 1; i > -2; i--)
+			// If the south tile of the current room is not in the scene
+			// then make y a tile of the room that is actually in the scene
+			if (y < 1)
 			{
-				y = gridBase.getY() + (i * RaidRoom.ROOM_MAX_SIZE);
-
-				for (int j = startX; j < 4; j++)
-				{
-					x = gridBase.getX() + (j * RaidRoom.ROOM_MAX_SIZE);
-					offsetX = 0;
-
-					if (x > SCENE_SIZE && position > 1 && position < 4)
-					{
-						position++;
-					}
-
-					if (x < 0)
-					{
-						offsetX = Math.abs(x) + 1; //add 1 because the tile at x=0 will always be null
-					}
-
-					if (x < SCENE_SIZE && y >= 0 && y < SCENE_SIZE)
-					{
-						if (tiles[x + offsetX][y] == null)
-						{
-							if (position == 4)
-							{
-								position++;
-								break;
-							}
-
-							continue;
-						}
-
-						if (position == 0 && startX != j)
-						{
-							startX = j;
-						}
-
-						Tile base = tiles[offsetX > 0 ? 1 : x][y];
-						RaidRoom room = determineRoom(base);
-						raid.setRoom(room, position + Math.abs((plane - 3) * 8));
-						position++;
-					}
-				}
+				y = 1;
 			}
+
+			// The scene tile of the current room to check for
+			Tile tile = client.getScene().getTiles()[plane][x][y];
+
+			if (tile == null)
+			{
+				continue;
+			}
+
+			// scout the room
+			RaidRoom room = determineRoom(tile);
+			raid.setRoom(room, i);
 		}
 
 		return raid;
@@ -526,118 +712,266 @@ public class RaidsPlugin extends Plugin
 
 	private RaidRoom determineRoom(Tile base)
 	{
-		RaidRoom room = new RaidRoom(base, RaidRoom.Type.EMPTY);
-		int chunkData = client.getInstanceTemplateChunks()[base.getPlane()][(base.getRegionLocation().getX()) / 8][base.getRegionLocation().getY() / 8];
+		int chunkData = client.getInstanceTemplateChunks()[base.getPlane()][(base.getSceneLocation().getX()) / 8][base.getSceneLocation().getY() / 8];
 		InstanceTemplates template = InstanceTemplates.findMatch(chunkData);
 
 		if (template == null)
 		{
-			return room;
+			return RaidRoom.EMPTY;
 		}
 
 		switch (template)
 		{
 			case RAIDS_LOBBY:
 			case RAIDS_START:
-				room.setType(RaidRoom.Type.START);
-				break;
+				return RaidRoom.START;
 
 			case RAIDS_END:
-				room.setType(RaidRoom.Type.END);
-				break;
+				return RaidRoom.END;
 
 			case RAIDS_SCAVENGERS:
 			case RAIDS_SCAVENGERS2:
-				room.setType(RaidRoom.Type.SCAVENGERS);
-				break;
+				return RaidRoom.SCAVENGERS;
 
 			case RAIDS_SHAMANS:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.SHAMANS);
-				break;
+				return RaidRoom.SHAMANS;
 
 			case RAIDS_VASA:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.VASA);
-				break;
+				return RaidRoom.VASA;
 
 			case RAIDS_VANGUARDS:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.VANGUARDS);
-				break;
+				return RaidRoom.VANGUARDS;
 
 			case RAIDS_ICE_DEMON:
-				room.setType(RaidRoom.Type.PUZZLE);
-				room.setPuzzle(RaidRoom.Puzzle.ICE_DEMON);
-				break;
+				return RaidRoom.ICE_DEMON;
 
 			case RAIDS_THIEVING:
-				room.setType(RaidRoom.Type.PUZZLE);
-				room.setPuzzle(RaidRoom.Puzzle.THIEVING);
-				break;
+				return RaidRoom.THIEVING;
 
 			case RAIDS_FARMING:
 			case RAIDS_FARMING2:
-				room.setType(RaidRoom.Type.FARMING);
-				break;
+				return RaidRoom.FARMING;
 
 			case RAIDS_MUTTADILES:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.MUTTADILES);
-				break;
+				return RaidRoom.MUTTADILES;
 
 			case RAIDS_MYSTICS:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.MYSTICS);
-				break;
+				return RaidRoom.MYSTICS;
 
 			case RAIDS_TEKTON:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.TEKTON);
-				break;
+				return RaidRoom.TEKTON;
 
 			case RAIDS_TIGHTROPE:
-				room.setType(RaidRoom.Type.PUZZLE);
-				room.setPuzzle(RaidRoom.Puzzle.TIGHTROPE);
-				break;
+				return RaidRoom.TIGHTROPE;
 
 			case RAIDS_GUARDIANS:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.GUARDIANS);
-				break;
+				return RaidRoom.GUARDIANS;
 
 			case RAIDS_CRABS:
-				room.setType(RaidRoom.Type.PUZZLE);
-				room.setPuzzle(RaidRoom.Puzzle.CRABS);
-				break;
+				return RaidRoom.CRABS;
 
 			case RAIDS_VESPULA:
-				room.setType(RaidRoom.Type.COMBAT);
-				room.setBoss(RaidRoom.Boss.VESPULA);
-				break;
-		}
+				return RaidRoom.VESPULA;
 
-		return room;
+			default:
+				return RaidRoom.EMPTY;
+		}
 	}
 
-	private BufferedImage getRaidsIcon()
+	private void lookupRaid(ChatMessage chatMessage, String s)
 	{
-		if (raidsIcon != null)
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
 		{
-			return raidsIcon;
+			player = client.getLocalPlayer().getName();
 		}
+		else
+		{
+			player = sanitize(chatMessage.getName());
+		}
+
+		LayoutRoom[] layout;
 		try
 		{
-			synchronized (ImageIO.class)
-			{
-				raidsIcon = ImageIO.read(RaidsPlugin.class.getResourceAsStream("raids_icon.png"));
-			}
+			layout = chatClient.getLayout(player);
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to load image", ex);
+			log.debug("unable to lookup layout", ex);
+			return;
 		}
 
-		return raidsIcon;
+		if (layout == null || layout.length == 0)
+		{
+			return;
+		}
+
+		String layoutMessage = Joiner.on(", ").join(Arrays.stream(layout)
+			.map(l -> RaidRoom.valueOf(l.name()))
+			.filter(room -> room.getType() == RoomType.COMBAT || room.getType() == RoomType.PUZZLE)
+			.map(RaidRoom::getName)
+			.toArray());
+
+		if (layoutMessage.length() > MAX_LAYOUT_LEN)
+		{
+			log.debug("layout message too long! {}", layoutMessage.length());
+			return;
+		}
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Layout: ")
+			.append(ChatColorType.NORMAL)
+			.append(layoutMessage)
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	private boolean submitRaid(ChatInput chatInput, String s)
+	{
+		if (raid == null)
+		{
+			return false;
+		}
+
+		final String playerName = client.getLocalPlayer().getName();
+		List<RaidRoom> orderedRooms = raid.getOrderedRooms();
+
+		LayoutRoom[] layoutRooms = orderedRooms.stream()
+			.map(room -> LayoutRoom.valueOf(room.name()))
+			.toArray(LayoutRoom[]::new);
+
+		scheduledExecutorService.execute(() ->
+		{
+			try
+			{
+				chatClient.submitLayout(playerName, layoutRooms);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit layout", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
+	}
+
+	private final HotkeyListener screenshotHotkeyListener = new HotkeyListener(() -> config.screenshotHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			screenshotScoutOverlay();
+		}
+	};
+
+	private void screenshotScoutOverlay()
+	{
+		if (!overlay.isScoutOverlayShown())
+		{
+			return;
+		}
+
+		Rectangle overlayDimensions = overlay.getBounds();
+		BufferedImage overlayImage = new BufferedImage(overlayDimensions.width, overlayDimensions.height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphic = overlayImage.createGraphics();
+		graphic.setFont(runeLiteConfig.interfaceFontType().getFont());
+		graphic.setColor(Color.BLACK);
+		graphic.fillRect(0, 0, overlayDimensions.width, overlayDimensions.height);
+		overlay.render(graphic);
+
+		imageCapture.takeScreenshot(overlayImage, "CoX_scout-", false, config.uploadScreenshot());
+		graphic.dispose();
+	}
+
+	/**
+	 * Finds the lobby room index in the room array
+	 * There are 8 rooms per floor in a 4 wide (x) and 2 high (y) rectangle
+	 * The rooms on plane 3 (the lobby plane) have the following indexes
+	 *     0 1 2 3
+	 *     4 5 6 7
+	 */
+	private Integer findLobbyIndex(Point gridBase)
+	{
+		/*
+		 * If the room to the right of the starting room can't be seen then return null
+		 * This should only happen if the user turns on the raid plugin while already inside of a raid and not in the
+		 * starting location
+		 *
+		 * The player should always be able to see both rows of rooms (on the y axis) so the second check is not needed
+		 * but is included to be safe
+		 */
+		if (Constants.SCENE_SIZE <= gridBase.getX() + RaidRoom.ROOM_MAX_SIZE
+			|| Constants.SCENE_SIZE <= gridBase.getY() + RaidRoom.ROOM_MAX_SIZE)
+		{
+			return null;
+		}
+
+		int x;
+		int y;
+
+		// the lobby will always be on the top/first floor (plane 3)
+		Tile[][] tiles = client.getScene().getTiles()[LOBBY_PLANE];
+
+		/*
+		 * if there is no room north the lobby then it is the north most room
+		 * The north rooms will have a y value of 0 and the south will have a value of 1
+		 * The rooms have the following y values
+		 *     0 0 0 0
+		 *     1 1 1 1
+		 */
+		if (tiles[gridBase.getX()][gridBase.getY() + RaidRoom.ROOM_MAX_SIZE] == null)
+		{
+			y = 0;
+		}
+		else
+		{
+			y = 1;
+		}
+
+		/*
+		 * if there is no room east of the lobby then it is the east most room
+		 * The west most room will have a value of 0 and the east most will have a value of 3
+		 * The rooms have the following x values
+		 *     0 1 2 3
+		 *     0 1 2 3
+		 */
+		if (tiles[gridBase.getX() + RaidRoom.ROOM_MAX_SIZE][gridBase.getY()] == null)
+		{
+			x = 3;
+		}
+		else
+		{
+			// determine x based on how many rooms are to the west of it.
+			for (x = 0; x < 3; x++)
+			{
+				int sceneX = gridBase.getX() - 1 - RaidRoom.ROOM_MAX_SIZE * x;
+				if (sceneX < 0 || tiles[sceneX][gridBase.getY()] == null)
+				{
+					break;
+				}
+			}
+		}
+
+		// the room index based on its x and y values
+		return x + y * AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE;
+	}
+
+	private void reset()
+	{
+		raid = null;
+		updateInfoBoxState();
+		eventBus.post(new RaidReset());
 	}
 }

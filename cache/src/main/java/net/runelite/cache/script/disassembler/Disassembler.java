@@ -24,6 +24,8 @@
  */
 package net.runelite.cache.script.disassembler;
 
+import com.google.common.escape.Escaper;
+import com.google.common.escape.Escapers;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,6 +39,10 @@ import org.slf4j.LoggerFactory;
 public class Disassembler
 {
 	private static final Logger logger = LoggerFactory.getLogger(Disassembler.class);
+	private static final Escaper ESCAPER = Escapers.builder()
+		.addEscape('"', "\\\"")
+		.addEscape('\\', "\\\\")
+		.build();
 
 	private final Instructions instructions = new Instructions();
 
@@ -165,7 +171,7 @@ public class Disassembler
 
 			if (sop != null)
 			{
-				writer.append(" \"").append(sop).append("\"");
+				writer.append(" \"").append(ESCAPER.escape(sop)).append("\"");
 			}
 
 			if (opcode == Opcodes.SWITCH)
@@ -204,7 +210,7 @@ public class Disassembler
 
 		switch (opcode)
 		{
-			case Opcodes.LOAD_INT:
+			case Opcodes.ICONST:
 			case Opcodes.ILOAD:
 			case Opcodes.SLOAD:
 			case Opcodes.ISTORE:
@@ -218,11 +224,13 @@ public class Disassembler
 
 	private void writerHeader(StringBuilder writer, ScriptDefinition script)
 	{
+		int id = script.getId();
 		int intStackCount = script.getIntStackCount();
 		int stringStackCount = script.getStringStackCount();
 		int localIntCount = script.getLocalIntCount();
 		int localStringCount = script.getLocalStringCount();
 
+		writer.append(".id                 ").append(id).append('\n');
 		writer.append(".int_stack_count    ").append(intStackCount).append('\n');
 		writer.append(".string_stack_count ").append(stringStackCount).append('\n');
 		writer.append(".int_var_count      ").append(localIntCount).append('\n');

@@ -28,10 +28,13 @@ import java.time.Instant;
 import lombok.Data;
 
 @Data
-public class PriceEntry
+class PriceEntry
 {
 	private int item;
+	private String name;
 	private int price;
 	private Instant time;
 	private Instant fetched_time;
+	private int high;
+	private int low;
 }

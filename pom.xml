@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.4.1-SNAPSHOT</version>
+	<version>1.7.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -38,12 +38,14 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<lombok.version>1.16.20</lombok.version>
+		<java.release>8</java.release>
+		<lombok.version>1.18.4</lombok.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
+		<glslang.path></glslang.path>
 
-		<rs.version>170</rs.version>
+		<rs.version>194</rs.version>
 	</properties>
 
 	<licenses>
@@ -83,12 +85,12 @@
 	<repositories>
 		<repository>
 			<id>maven-central</id>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
 		<repository>
 			<id>runelite</id>
 			<name>RuneLite</name>
-			<url>http://repo.runelite.net</url>
+			<url>https://repo.runelite.net</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -98,12 +100,12 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>maven-central-plugins</id>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>https://repo.maven.apache.org/maven2</url>
 		</pluginRepository>
 		<pluginRepository>
 			<id>runelite-plugins</id>
 			<name>RuneLite Plugins</name>
-			<url>http://repo.runelite.net</url>
+			<url>https://repo.runelite.net</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -114,19 +116,13 @@
 	<modules>
 		<module>cache</module>
 		<module>cache-client</module>
-		<module>cache-server</module>
 		<module>cache-updater</module>
-		<module>model-viewer</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
-		<module>runelite-mixins</module>
+		<module>runelite-jshell</module>
 		<module>runelite-script-assembler-plugin</module>
-		<module>runelite-scripts</module>
-		<module>runescape-api</module>
 		<module>http-api</module>
 		<module>http-service</module>
-		<module>protocol-api</module>
-		<module>protocol</module>
 	</modules>
 
 	<dependencyManagement>
@@ -142,6 +138,30 @@
 				<version>${lombok.version}</version>
 				<scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.8.5</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.findbugs</groupId>
+				<artifactId>jsr305</artifactId>
+				<version>3.0.2</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-parent</artifactId>
+				<version>1.2.3</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.inject</groupId>
+				<artifactId>guice-bom</artifactId>
+				<version>4.1.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -150,10 +170,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.1</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+					<release>${java.release}</release>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -164,6 +184,9 @@
 				<configuration>
 					<enableAssertions>true</enableAssertions>
 					<argLine>-Xmx512m</argLine>
+					<systemProperties>
+						<glslang.path>${glslang.path}</glslang.path>
+					</systemProperties>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -171,12 +194,45 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.3</version>
 			</plugin>
-			<!-- maven-release-plugin runs maven-javadoc-plugin as one of its
-			     release steps, so run it on goal jar to detect errors -->
+			<plugin>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok-maven-plugin</artifactId>
+				<version>1.18.16.0</version>
+				<configuration>
+					<!-- Delomboked sources are only used for javadoc generation, and can be
+					skipped when javadoc is not being run. -->
+					<skip>${maven.javadoc.skip}</skip>
+					<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+					<!-- The default output directory is in generated-sources, which is
+					treated as a source root, even with addOutputDirectory false. So,
+					place it in top level build directory instead. -->
+					<outputDirectory>${project.build.directory}/delombok</outputDirectory>
+					<addOutputDirectory>false</addOutputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>delombok</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.0.0-M1</version>
+				<configuration>
+					<!-- Fix Javadoc on Java 11+ - JDK-8212233 -->
+					<source>8</source>
+					<!-- Fix Javadoc search feature to work without modules - https://stackoverflow.com/a/52603413 -->
+					<additionalJOption>--no-module-directories</additionalJOption>
+					<!-- Javadoc the delombok sources -->
+					<sourcepath>${project.build.directory}/delombok</sourcepath>
+				</configuration>
+				<!-- maven-release-plugin runs maven-javadoc-plugin:jar as one of its
+				     release steps, so we will run it as well for the CI. Note this
+				     defaults to disabled due to the maven.javadoc.skip property above. -->
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -210,7 +266,22 @@
 					<configLocation>checkstyle.xml</configLocation>
 					<!-- exclude generated sources from checkstyle https://stackoverflow.com/a/30406454/7189686 -->
 					<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.github.zlika</groupId>
+				<artifactId>reproducible-build-maven-plugin</artifactId>
+				<version>0.7</version>
+				<executions>
+					<execution>
+						<!-- Move from pre-integration-test to place before jarsigning -->
+						<phase>package</phase>
+						<goals>
+							<goal>strip-jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>

@@ -24,192 +24,90 @@
  */
 package net.runelite.http.service.item;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
+import com.google.common.base.Suppliers;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.item.Item;
+import java.util.function.Supplier;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.item.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/item")
-@Slf4j
 public class ItemController
 {
-	private static final Duration CACHE_DUATION = Duration.ofMinutes(30);
-	private static final String RUNELITE_CACHE = "RuneLite-Cache";
-	private static final int MAX_BATCH_LOOKUP = 1024;
+	private static class MemoizedPrices
+	{
+		final ItemPrice[] prices;
+		final String hash;
 
-	private final Cache<Integer, Integer> cachedEmpty = CacheBuilder.newBuilder()
-		.maximumSize(1024L)
-		.build();
+		MemoizedPrices(ItemPrice[] prices)
+		{
+			this.prices = prices;
+
+			Hasher hasher = Hashing.sha256().newHasher();
+			for (ItemPrice itemPrice : prices)
+			{
+				hasher.putInt(itemPrice.getId()).putInt(itemPrice.getPrice());
+			}
+			HashCode code = hasher.hash();
+			hash = code.toString();
+		}
+	}
 
 	private final ItemService itemService;
+	private final int priceCache;
+
+	private final Supplier<MemoizedPrices> memoizedPrices;
 
 	@Autowired
-	public ItemController(ItemService itemService)
-	{
-		this.itemService = itemService;
-	}
-
-	@RequestMapping("/{itemId}")
-	public Item getItem(HttpServletResponse response, @PathVariable int itemId)
-	{
-		ItemEntry item = itemService.getItem(itemId);
-		if (item != null)
-		{
-			return item.toItem();
-		}
-
-		itemService.queueItem(itemId);
-		return null;
-	}
-
-	@RequestMapping(path = "/{itemId}/icon", produces = "image/gif")
-	public ResponseEntity<byte[]> getIcon(@PathVariable int itemId)
-	{
-		ItemEntry item = itemService.getItem(itemId);
-		if (item != null && item.getIcon() != null)
-		{
-			return ResponseEntity.ok(item.getIcon());
-		}
-
-		itemService.queueItem(itemId);
-		return ResponseEntity.notFound().build();
-	}
-
-	@RequestMapping(path = "/{itemId}/icon/large", produces = "image/gif")
-	public ResponseEntity<byte[]> getIconLarge(HttpServletResponse response, @PathVariable int itemId)
-	{
-		ItemEntry item = itemService.getItem(itemId);
-		if (item != null && item.getIcon_large() != null)
-		{
-			return ResponseEntity.ok(item.getIcon_large());
-		}
-
-		itemService.queueItem(itemId);
-		return ResponseEntity.notFound().build();
-	}
-
-	@RequestMapping("/{itemId}/price")
-	public ResponseEntity<ItemPrice> itemPrice(
-		@PathVariable int itemId,
-		@RequestParam(required = false) Instant time
+	public ItemController(
+		ItemService itemService,
+		@Value("${runelite.price.cache}") int priceCache
 	)
 	{
-		if (cachedEmpty.getIfPresent(itemId) != null)
-		{
-			return ResponseEntity.notFound()
-				.header(RUNELITE_CACHE, "HIT")
-				.build();
-		}
+		this.itemService = itemService;
+		this.priceCache = priceCache;
 
-		Instant now = Instant.now();
-
-		if (time != null && time.isAfter(now))
-		{
-			time = now;
-		}
-
-		ItemEntry item = itemService.getItem(itemId);
-		if (item == null)
-		{
-			itemService.queueItem(itemId); // queue lookup
-			cachedEmpty.put(itemId, itemId); // cache empty
-			return ResponseEntity.notFound()
-				.header(RUNELITE_CACHE, "MISS")
-				.build();
-		}
-
-		PriceEntry priceEntry = itemService.getPrice(itemId, time);
-
-		if (time != null)
-		{
-			if (priceEntry == null)
-			{
-				// we maybe can't backfill this
-				return ResponseEntity.notFound()
-					.header(RUNELITE_CACHE, "MISS")
-					.build();
-			}
-		}
-		else if (priceEntry == null)
-		{
-			// Price is unknown
-			itemService.queuePriceLookup(itemId); // queue lookup
-			cachedEmpty.put(itemId, itemId);
-			return ResponseEntity.notFound()
-				.header(RUNELITE_CACHE, "MISS")
-				.build();
-		}
-
-		Instant cacheTime = now.minus(CACHE_DUATION);
-		if (priceEntry.getFetched_time().isBefore(cacheTime))
-		{
-			// Queue a check for the price
-			itemService.queuePriceLookup(itemId);
-		}
-
-		ItemPrice itemPrice = new ItemPrice();
-		itemPrice.setItem(item.toItem());
-		itemPrice.setPrice(priceEntry.getPrice());
-		itemPrice.setTime(priceEntry.getTime());
-
-		return ResponseEntity.ok()
-			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-			.body(itemPrice);
-	}
-
-	@RequestMapping("/search")
-	public SearchResult search(@RequestParam String query)
-	{
-		List<ItemEntry> result = itemService.search(query);
-
-		itemService.queueSearch(query);
-
-		SearchResult searchResult = new SearchResult();
-		searchResult.setItems(result.stream()
-			.map(ItemEntry::toItem)
-			.collect(Collectors.toList()));
-		return searchResult;
-	}
-
-	@RequestMapping("/price")
-	public ItemPrice[] prices(@RequestParam("id") int[] itemIds)
-	{
-		if (itemIds.length > MAX_BATCH_LOOKUP)
-		{
-			itemIds = Arrays.copyOf(itemIds, MAX_BATCH_LOOKUP);
-		}
-
-		List<PriceEntry> prices = itemService.getPrices(itemIds);
-
-		return prices.stream()
+		memoizedPrices = Suppliers.memoizeWithExpiration(() -> new MemoizedPrices(itemService.fetchPrices().stream()
 			.map(priceEntry ->
 			{
-				Item item = new Item();
-				item.setId(priceEntry.getItem()); // fake item
-
 				ItemPrice itemPrice = new ItemPrice();
-				itemPrice.setItem(item);
+				itemPrice.setId(priceEntry.getItem());
+				itemPrice.setName(priceEntry.getName());
 				itemPrice.setPrice(priceEntry.getPrice());
-				itemPrice.setTime(priceEntry.getTime());
+				itemPrice.setWikiPrice(computeWikiPrice(priceEntry));
 				return itemPrice;
 			})
-			.toArray(ItemPrice[]::new);
+			.toArray(ItemPrice[]::new)), priceCache, TimeUnit.MINUTES);
+	}
+
+	private static int computeWikiPrice(PriceEntry priceEntry)
+	{
+		if (priceEntry.getLow() > 0 && priceEntry.getHigh() > 0)
+		{
+			return (priceEntry.getLow() + priceEntry.getHigh()) / 2;
+		}
+		else
+		{
+			return Math.max(priceEntry.getLow(), priceEntry.getHigh());
+		}
+	}
+
+	@GetMapping("/prices")
+	public ResponseEntity<ItemPrice[]> prices()
+	{
+		MemoizedPrices memorizedPrices = this.memoizedPrices.get();
+		return ResponseEntity.ok()
+			.eTag(memorizedPrices.hash)
+			.cacheControl(CacheControl.maxAge(priceCache, TimeUnit.MINUTES).cachePublic())
+			.body(memorizedPrices.prices);
 	}
 }

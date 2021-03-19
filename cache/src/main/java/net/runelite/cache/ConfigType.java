@@ -36,12 +36,16 @@ public enum ConfigType
 	ENUM(8),
 	NPC(9),
 	ITEM(10),
+	PARAMS(11),
 	SEQUENCE(12),
 	SPOTANIM(13),
 	VARBIT(14),
 	VARCLIENT(19),
 	VARCLIENTSTRING(15),
 	VARPLAYER(16),
+	HITSPLAT(32),
+	HEALTHBAR(33),
+	STRUCT(34),
 	AREA(35);
 
 	private final int id;

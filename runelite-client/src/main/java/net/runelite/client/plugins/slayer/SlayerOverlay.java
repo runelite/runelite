@@ -25,27 +25,20 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.collect.ImmutableSet;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Collection;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
-class SlayerOverlay extends Overlay
+class SlayerOverlay extends WidgetItemOverlay
 {
-	private final SlayerConfig config;
-	private final SlayerPlugin plugin;
-
-	private final Set<Integer> slayerJewelry = ImmutableSet.of(
+	private final static Set<Integer> SLAYER_JEWELRY = ImmutableSet.of(
 		ItemID.SLAYER_RING_1,
 		ItemID.SLAYER_RING_2,
 		ItemID.SLAYER_RING_3,
@@ -56,47 +49,75 @@ class SlayerOverlay extends Overlay
 		ItemID.SLAYER_RING_8
 	);
 
-	private final Set<Integer> slayerEquipment = ImmutableSet.of(
+	private final static Set<Integer> ALL_SLAYER_ITEMS = ImmutableSet.of(
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
+		ItemID.SLAYER_HELMET_I_25177,
 		ItemID.BLACK_SLAYER_HELMET,
 		ItemID.BLACK_SLAYER_HELMET_I,
+		ItemID.BLACK_SLAYER_HELMET_I_25179,
 		ItemID.GREEN_SLAYER_HELMET,
 		ItemID.GREEN_SLAYER_HELMET_I,
+		ItemID.GREEN_SLAYER_HELMET_I_25181,
 		ItemID.PURPLE_SLAYER_HELMET,
 		ItemID.PURPLE_SLAYER_HELMET_I,
+		ItemID.PURPLE_SLAYER_HELMET_I_25185,
 		ItemID.RED_SLAYER_HELMET,
 		ItemID.RED_SLAYER_HELMET_I,
+		ItemID.RED_SLAYER_HELMET_I_25183,
 		ItemID.TURQUOISE_SLAYER_HELMET,
 		ItemID.TURQUOISE_SLAYER_HELMET_I,
+		ItemID.TURQUOISE_SLAYER_HELMET_I_25187,
+		ItemID.TWISTED_SLAYER_HELMET,
+		ItemID.TWISTED_SLAYER_HELMET_I,
+		ItemID.TWISTED_SLAYER_HELMET_I_25191,
+		ItemID.HYDRA_SLAYER_HELMET,
+		ItemID.HYDRA_SLAYER_HELMET_I,
+		ItemID.HYDRA_SLAYER_HELMET_I_25189,
 		ItemID.SLAYER_RING_ETERNAL,
 		ItemID.ENCHANTED_GEM,
 		ItemID.ETERNAL_GEM,
 		ItemID.BRACELET_OF_SLAUGHTER,
-		ItemID.EXPEDITIOUS_BRACELET
+		ItemID.EXPEDITIOUS_BRACELET,
+		ItemID.SLAYER_RING_1,
+		ItemID.SLAYER_RING_2,
+		ItemID.SLAYER_RING_3,
+		ItemID.SLAYER_RING_4,
+		ItemID.SLAYER_RING_5,
+		ItemID.SLAYER_RING_6,
+		ItemID.SLAYER_RING_7,
+		ItemID.SLAYER_RING_8
 	);
+
+	private final SlayerConfig config;
+	private final SlayerPlugin plugin;
 
 	@Inject
 	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.plugin = plugin;
 		this.config = config;
+		showOnInventory();
+		showOnEquipment();
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
+		if (!ALL_SLAYER_ITEMS.contains(itemId))
+		{
+			return;
+		}
+
 		if (!config.showItemOverlay())
 		{
-			return null;
+			return;
 		}
 
 		int amount = plugin.getAmount();
 		if (amount <= 0)
 		{
-			return null;
+			return;
 		}
 
 		int slaughterCount = plugin.getSlaughterChargeCount();
@@ -104,39 +125,26 @@ class SlayerOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		Collection<WidgetItem> items = plugin.getSlayerItems();
-		for (WidgetItem item : items)
+		final Rectangle bounds = widgetItem.getCanvasBounds();
+		final TextComponent textComponent = new TextComponent();
+
+		switch (itemId)
 		{
-			int itemId = item.getId();
-
-			if (!slayerEquipment.contains(itemId) && !slayerJewelry.contains(itemId))
-			{
-				continue;
-			}
-
-			final Rectangle bounds = item.getCanvasBounds();
-			final TextComponent textComponent = new TextComponent();
-
-			switch (item.getId())
-			{
-				case ItemID.EXPEDITIOUS_BRACELET:
-					textComponent.setText(String.valueOf(expeditiousCount));
-					break;
-				case ItemID.BRACELET_OF_SLAUGHTER:
-					textComponent.setText(String.valueOf(slaughterCount));
-					break;
-				default:
-					textComponent.setText(String.valueOf(amount));
-					break;
-			}
-
-			// Draw the counter in the bottom left for equipment, and top left for jewelry
-			textComponent.setPosition(new Point(bounds.x, bounds.y + (slayerJewelry.contains(itemId)
-				? bounds.height
-				: graphics.getFontMetrics().getHeight())));
-			textComponent.render(graphics);
+			case ItemID.EXPEDITIOUS_BRACELET:
+				textComponent.setText(String.valueOf(expeditiousCount));
+				break;
+			case ItemID.BRACELET_OF_SLAUGHTER:
+				textComponent.setText(String.valueOf(slaughterCount));
+				break;
+			default:
+				textComponent.setText(String.valueOf(amount));
+				break;
 		}
 
-		return null;
+		// Draw the counter in the bottom left for equipment, and top left for jewelry
+		textComponent.setPosition(new Point(bounds.x - 1, bounds.y - 1 + (SLAYER_JEWELRY.contains(itemId)
+			? bounds.height
+			: graphics.getFontMetrics().getHeight())));
+		textComponent.render(graphics);
 	}
 }

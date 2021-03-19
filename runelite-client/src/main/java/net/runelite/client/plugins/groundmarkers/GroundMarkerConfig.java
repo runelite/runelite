@@ -23,22 +23,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.groundmarkers;
 
+import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-import java.awt.Color;
-
-@ConfigGroup(
-	keyName = "groundMarker",
-	name = "Ground Marker",
-	description = "Mark ground tiles"
-)
+@ConfigGroup(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
 public interface GroundMarkerConfig extends Config
 {
+	String GROUND_MARKER_CONFIG_GROUP = "groundMarker";
+	String SHOW_IMPORT_EXPORT_KEY_NAME = "showImportExport";
+	String SHOW_CLEAR_KEY_NAME = "showClear";
+
+	@Alpha
 	@ConfigItem(
 		keyName = "markerColor",
 		name = "Color of the tile",
@@ -47,5 +47,45 @@ public interface GroundMarkerConfig extends Config
 	default Color markerColor()
 	{
 		return Color.YELLOW;
+	}
+
+	@ConfigItem(
+		keyName = "rememberTileColors",
+		name = "Remember color per tile",
+		description = "Color tiles using the color from time of placement"
+	)
+	default boolean rememberTileColors()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "drawOnMinimap",
+		name = "Draw tiles on minimap",
+		description = "Configures whether marked tiles should be drawn on minimap"
+	)
+	default boolean drawTileOnMinimmap()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
+		name = "Show Import/Export options",
+		description = "Show the Import/Export options on the minimap right-click menu"
+	)
+	default boolean showImportExport()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = SHOW_CLEAR_KEY_NAME,
+		name = "Show Clear option",
+		description = "Show the Clear option on the minimap right-click menu, which deletes all currently loaded markers"
+	)
+	default boolean showClear()
+	{
+		return false;
 	}
 }

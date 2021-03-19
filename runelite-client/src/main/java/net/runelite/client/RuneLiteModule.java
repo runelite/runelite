@@ -24,46 +24,94 @@
  */
 package net.runelite.client;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionContext;
+import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.name.Names;
+import java.applet.Applet;
+import java.io.File;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
+import lombok.AllArgsConstructor;
 import net.runelite.api.Client;
+import net.runelite.api.hooks.Callbacks;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.task.Scheduler;
-import net.runelite.client.util.QueryRunner;
+import net.runelite.client.util.DeferredEventBus;
+import net.runelite.client.util.ExecutorServiceExceptionLogger;
+import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.chat.ChatClient;
+import okhttp3.OkHttpClient;
 
-@Slf4j
+@AllArgsConstructor
 public class RuneLiteModule extends AbstractModule
 {
+	private final OkHttpClient okHttpClient;
+	private final Supplier<Applet> clientLoader;
+	private final boolean developerMode;
+	private final boolean safeMode;
+	private final File sessionfile;
+	private final File config;
+
 	@Override
 	protected void configure()
 	{
-		bind(ScheduledExecutorService.class).toInstance(Executors.newSingleThreadScheduledExecutor());
-		bind(QueryRunner.class);
+		Properties properties = RuneLiteProperties.getProperties();
+		for (String key : properties.stringPropertyNames())
+		{
+			String value = properties.getProperty(key);
+			bindConstant().annotatedWith(Names.named(key)).to(value);
+		}
+		bindConstant().annotatedWith(Names.named("developerMode")).to(developerMode);
+		bindConstant().annotatedWith(Names.named("safeMode")).to(safeMode);
+		bind(File.class).annotatedWith(Names.named("sessionfile")).toInstance(sessionfile);
+		bind(File.class).annotatedWith(Names.named("config")).toInstance(config);
+		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
+		bind(OkHttpClient.class).toInstance(okHttpClient);
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
 		bind(ItemManager.class);
 		bind(Scheduler.class);
 		bind(PluginManager.class);
-		bind(RuneLiteProperties.class);
 		bind(SessionManager.class);
+
+		bind(Gson.class).toInstance(RuneLiteAPI.GSON);
+
+		bind(Callbacks.class).to(Hooks.class);
+
+		bind(EventBus.class)
+			.toInstance(new EventBus());
+
+		bind(EventBus.class)
+			.annotatedWith(Names.named("Deferred EventBus"))
+			.to(DeferredEventBus.class);
 	}
 
 	@Provides
-	Client provideClient(RuneLite runeLite)
+	@Singleton
+	Applet provideApplet()
 	{
-		return runeLite.client;
+		return clientLoader.get();
+	}
+
+	@Provides
+	@Singleton
+	Client provideClient(@Nullable Applet applet)
+	{
+		return applet instanceof Client ? (Client) applet : null;
 	}
 
 	@Provides
@@ -75,13 +123,15 @@ public class RuneLiteModule extends AbstractModule
 
 	@Provides
 	@Singleton
-	EventBus provideEventBus()
+	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
 	{
-		return new EventBus(RuneLiteModule::eventExceptionHandler);
+		return configManager.getConfig(ChatColorConfig.class);
 	}
 
-	private static void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
+	@Provides
+	@Singleton
+	ChatClient provideChatClient(OkHttpClient okHttpClient)
 	{
-		log.warn("uncaught exception in event subscriber", exception);
+		return new ChatClient(okHttpClient);
 	}
 }

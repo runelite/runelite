@@ -24,15 +24,12 @@
  */
 package net.runelite.client.plugins.antidrag;
 
+import net.runelite.api.Constants;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "antiDrag",
-	name = "Anti Drag",
-	description = "Configuration for the anti drag plugin (shift only)"
-)
+@ConfigGroup(AntiDragPlugin.CONFIG_GROUP)
 public interface AntiDragConfig extends Config
 {
 	@ConfigItem(
@@ -43,13 +40,28 @@ public interface AntiDragConfig extends Config
 	)
 	default int dragDelay()
 	{
-		return 600 / 20; // one game tick
+		return Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH; // one game tick
 	}
 
 	@ConfigItem(
-		keyName = "dragDelay",
-		name = "",
-		description = ""
+		keyName = "onShiftOnly",
+		name = "On Shift Only",
+		description = "Configures whether to only adjust the delay while holding shift in non-PvP scenarios. Shift is required in PvP regardless of this config setting",
+		position = 2
 	)
-	void dragDelay(int delay);
+	default boolean onShiftOnly()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "disableOnCtrl",
+		name = "Disable On Control Pressed",
+		description = "Configures whether to ignore the delay while holding control.",
+		position = 3
+	)
+	default boolean disableOnCtrl()
+	{
+		return false;
+	}
 }

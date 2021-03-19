@@ -27,10 +27,12 @@ package net.runelite.client.plugins.reportbutton;
 public enum TimeStyle
 {
 	OFF("Off"),
+	DATE("Date"),
 	LOGIN_TIME("Login Timer"),
 	UTC("UTC Time"),
 	JAGEX("Jagex HQ Time"),
-	LOCAL_TIME("Local Time");
+	LOCAL_TIME("Local Time"),
+	GAME_TICKS("Game Ticks");
 
 	private final String name;
 

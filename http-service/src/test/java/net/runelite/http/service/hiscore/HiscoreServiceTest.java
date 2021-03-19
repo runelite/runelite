@@ -60,15 +60,62 @@ public class HiscoreServiceTest
 			+ "638177,1,0\n"
 			+ "516239,9,1000\n"
 			+ "492790,1,0\n"
+			+ "2,2460\n" // leagues
 			+ "-1,-1\n"
-			+ "-1,-1\n"
+			+ "73,1738\n"
 			+ "531,1432\n"
+			+ "324,212\n"
+			+ "8008,131\n"
+			+ "1337,911\n"
+			+ "42,14113\n"
+			+ "1,777\n"
+			+ "254,92\n"
+			+ "-1,-1\n" // lms
+			+ "1,241\n" // soul wars
+			+ "24870,37\n"
+			+ "15020,388\n"
+			+ "50463,147\n"
+			+ "-1,-1\n"
+			+ "92357,1\n"
+			+ "22758,637\n"
+			+ "22744,107\n"
+			+ "-1,-1\n"
+			+ "20150,17\n"
+			+ "29400,18\n"
+			+ "13465,172\n"
+			+ "1889,581\n"
+			+ "42891,11\n"
+			+ "1624,1957\n"
+			+ "1243,2465\n"
+			+ "1548,2020\n"
+			+ "-1,-1\n"
+			+ "16781,327\n"
+			+ "19004,149\n"
+			+ "-1,-1\n"
+			+ "72046,5\n"
+			+ "5158,374\n"
+			+ "20902,279\n"
+			+ "702,6495\n"
+			+ "10170,184\n"
+			+ "8064,202\n"
+			+ "6936,2\n"
+			+ "2335,9\n"
+			+ "-1,-1\n"
+			+ "-1,-1\n"
+			+ "19779,22\n"
+			+ "58283,10\n"
 			+ "-1,-1\n"
 			+ "-1,-1\n"
 			+ "-1,-1\n"
-			+ "-1,-1\n"
-			+ "-1,-1\n"
-			+ "254,92";
+			+ "29347,130\n"
+			+ "723,4\n"
+			+ "1264,38\n"
+			+ "44595,4\n"
+			+ "24820,4\n"
+			+ "12116,782\n"
+			+ "2299,724\n"
+			+ "19301,62\n"
+			+ "1498,5847\n";
 
 	private final MockWebServer server = new MockWebServer();
 
@@ -91,13 +138,24 @@ public class HiscoreServiceTest
 	{
 		HiscoreTestService hiscores = new HiscoreTestService(server.url("/"));
 
-		HiscoreResult result = hiscores.lookupUsername("zezima", HiscoreEndpoint.NORMAL).build();
+		HiscoreResult result = hiscores.lookupUsername("zezima", HiscoreEndpoint.NORMAL.getHiscoreURL());
 
 		Assert.assertEquals(50, result.getAttack().getLevel());
 		Assert.assertEquals(159727L, result.getFishing().getExperience());
 		Assert.assertEquals(492790, result.getConstruction().getRank());
 		Assert.assertEquals(1432, result.getClueScrollAll().getLevel());
+		Assert.assertEquals(324, result.getClueScrollBeginner().getRank());
+		Assert.assertEquals(8008, result.getClueScrollEasy().getRank());
+		Assert.assertEquals(911, result.getClueScrollMedium().getLevel());
+		Assert.assertEquals(42, result.getClueScrollHard().getRank());
+		Assert.assertEquals(777, result.getClueScrollElite().getLevel());
 		Assert.assertEquals(254, result.getClueScrollMaster().getRank());
+		Assert.assertEquals(-1, result.getLastManStanding().getLevel());
+		Assert.assertEquals(241, result.getSoulWarsZeal().getLevel());
+		Assert.assertEquals(2460, result.getLeaguePoints().getLevel());
+		Assert.assertEquals(37, result.getAbyssalSire().getLevel());
+		Assert.assertEquals(92357, result.getCallisto().getRank());
+		Assert.assertEquals(5847, result.getZulrah().getLevel());
 	}
 
 }

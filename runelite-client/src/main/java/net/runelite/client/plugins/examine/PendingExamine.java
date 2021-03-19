@@ -32,7 +32,6 @@ class PendingExamine
 {
 	private ExamineType type;
 	private int id;
-	private int widgetId;
-	private int actionParam;
+	private int quantity;
 	private Instant created;
 }

@@ -40,23 +40,23 @@ import net.runelite.client.plugins.itemstats.StatsChanges;
 @RequiredArgsConstructor
 public class SaradominBrew implements Effect
 {
-	private static final Stat[] saradominBrewStats = new Stat[]
-	{
+	private static final Stat[] saradominBrewStats = {
 		ATTACK, STRENGTH, RANGED, MAGIC
 	};
 
 	private final double percH; //percentage heal
 	private final double percD; //percentage defence boost
 	private final double percSD; //percentage stat drain
-	private final int delta;
+	private final int deltaB; //delta boosted
+	private final int deltaR; //delta reduced
 
 	@Override
 	public StatsChanges calculate(Client client)
 	{
 		StatsChanges changes = new StatsChanges(0);
-		SimpleStatBoost hitpoints = new SimpleStatBoost(HITPOINTS, true, perc(percH, delta));
-		SimpleStatBoost defence = new SimpleStatBoost(DEFENCE, true, perc(percD, delta));
-		BoostedStatBoost calc = new BoostedStatBoost(null, false, perc(percSD, -delta));
+		SimpleStatBoost hitpoints = new SimpleStatBoost(HITPOINTS, true, perc(percH, deltaB));
+		SimpleStatBoost defence = new SimpleStatBoost(DEFENCE, true, perc(percD, deltaB));
+		BoostedStatBoost calc = new BoostedStatBoost(null, false, perc(percSD, -deltaR));
 		changes.setStatChanges(Stream.concat(
 			Stream.of(hitpoints.effect(client)),
 			Stream.concat(

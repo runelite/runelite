@@ -27,7 +27,6 @@ package net.runelite.client.plugins.hunter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -38,6 +37,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ColorUtil;
 
 /**
  * Represents the overlay that shows timers on traps that are placed by the
@@ -82,13 +82,13 @@ public class TrapOverlay extends Overlay
 	public void updateConfig()
 	{
 		colorEmptyBorder = config.getEmptyTrapColor();
-		colorEmpty = new Color(colorEmptyBorder.getRed(), colorEmptyBorder.getGreen(), colorEmptyBorder.getBlue(), 100);
+		colorEmpty = ColorUtil.colorWithAlpha(colorEmptyBorder, (int)(colorEmptyBorder.getAlpha() / 2.5));
 		colorFullBorder = config.getFullTrapColor();
-		colorFull = new Color(colorFullBorder.getRed(), colorFullBorder.getGreen(), colorFullBorder.getBlue(), 100);
+		colorFull = ColorUtil.colorWithAlpha(colorFullBorder, (int)(colorFullBorder.getAlpha() / 2.5));
 		colorOpenBorder = config.getOpenTrapColor();
-		colorOpen = new Color(colorOpenBorder.getRed(), colorOpenBorder.getGreen(), colorOpenBorder.getBlue(), 100);
+		colorOpen = ColorUtil.colorWithAlpha(colorOpenBorder, (int)(colorOpenBorder.getAlpha() / 2.5));
 		colorTransBorder = config.getTransTrapColor();
-		colorTrans = new Color(colorTransBorder.getRed(), colorTransBorder.getGreen(), colorTransBorder.getBlue(), 100);
+		colorTrans = ColorUtil.colorWithAlpha(colorTransBorder, (int)(colorTransBorder.getAlpha() / 2.5));
 	}
 
 	/**
@@ -99,10 +99,8 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawTraps(Graphics2D graphics)
 	{
-		Iterator<Map.Entry<WorldPoint, HunterTrap>> it = plugin.getTraps().entrySet().iterator();
-		while (it.hasNext())
+		for (Map.Entry<WorldPoint, HunterTrap> entry : plugin.getTraps().entrySet())
 		{
-			Map.Entry<WorldPoint, HunterTrap> entry = it.next();
 			HunterTrap trap = entry.getValue();
 
 			switch (trap.getState())
@@ -144,7 +142,12 @@ public class TrapOverlay extends Overlay
 		{
 			return;
 		}
-		net.runelite.api.Point loc = Perspective.worldToCanvas(client, localLoc.getX(), localLoc.getY(), trap.getWorldLocation().getPlane());
+		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
+
+		if (loc == null)
+		{
+			return;
+		}
 
 		double timeLeft = 1 - trap.getTrapTimeRelative();
 
@@ -175,7 +178,7 @@ public class TrapOverlay extends Overlay
 		{
 			return;
 		}
-		net.runelite.api.Point loc = Perspective.worldToCanvas(client, localLoc.getX(), localLoc.getY(), trap.getWorldLocation().getPlane());
+		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
 
 		ProgressPieComponent pie = new ProgressPieComponent();
 		pie.setFill(fill);

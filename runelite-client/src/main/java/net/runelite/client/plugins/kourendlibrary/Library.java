@@ -57,7 +57,7 @@ import static net.runelite.client.plugins.kourendlibrary.Book.*;
  */
 @Singleton
 @Slf4j
-public class Library
+class Library
 {
 	private final Map<WorldPoint, Bookcase> byPoint = new HashMap<>();
 	private final Map<Integer, ArrayList<Bookcase>> byLevel = new HashMap<>();
@@ -74,7 +74,7 @@ public class Library
 	private Book customerBook;
 
 	@Getter
-	private LibraryCustomer customer;
+	private int customerId;
 
 	Library()
 	{
@@ -83,23 +83,23 @@ public class Library
 		reset();
 	}
 
-	public synchronized List<Bookcase> getBookcasesOnLevel(int z)
+	synchronized List<Bookcase> getBookcasesOnLevel(int z)
 	{
 		return Collections.unmodifiableList(byLevel.get(z));
 	}
 
-	public synchronized List<Bookcase> getBookcases()
+	synchronized List<Bookcase> getBookcases()
 	{
 		return Collections.unmodifiableList(byIndex);
 	}
 
-	public void setCustomer(LibraryCustomer customer, Book book)
+	void setCustomer(int customerId, Book book)
 	{
-		this.customer = customer;
+		this.customerId = customerId;
 		this.customerBook = book;
 	}
 
-	public synchronized void reset()
+	synchronized void reset()
 	{
 		state = SolvedState.NO_DATA;
 		for (Bookcase b : byIndex)
@@ -110,7 +110,7 @@ public class Library
 		log.info("Library is now reset");
 	}
 
-	public synchronized void mark(WorldPoint loc, Book book)
+	synchronized void mark(WorldPoint loc, Book book)
 	{
 		Bookcase bookcase = byPoint.get(loc);
 		if (bookcase == null)
@@ -122,29 +122,38 @@ public class Library
 		if (bookcase.isBookSet())
 		{
 			// Bookcase is set from a previous mark
-			// Check for a mismatch, unless it is now null and had a dark manuscript
-			if (book != bookcase.getBook() && !(book == null && bookcase.getBook().isDarkManuscript()))
+			// Check for a mismatch, unless it is now null and had a dark manuscript or Varlamore Envoy
+			if (book != bookcase.getBook()
+				&& !(book == null && (bookcase.getBook().isDarkManuscript() || bookcase.getBook() == VARLAMORE_ENVOY)))
 			{
 				reset();
 			}
 		}
 		else if (state != SolvedState.NO_DATA)
 		{
-			// We know all of the possible things in this shelf.
-			if (book != null)
+			// Reset if the book we found isn't what we expected
+
+			if (book != null && !bookcase.getPossibleBooks().contains(book))
 			{
-				// Check to see if our guess is wrong
-				if (!bookcase.getPossibleBooks().contains(book))
-				{
-					reset();
-				}
+				reset();
 			}
 		}
 
-		// Everything is known, nothing to do
 		if (state == SolvedState.COMPLETE)
 		{
-			return;
+			// Reset if we found nothing when we expected something that wasn't a Dark Manuscript or Varlamore Envoy
+			// since the layout has changed
+			if (book == null
+				&& !bookcase.getPossibleBooks().isEmpty()
+				&& bookcase.getPossibleBooks().stream().noneMatch(b -> b.isDarkManuscript() || b == VARLAMORE_ENVOY))
+			{
+				reset();
+			}
+			else
+			{
+				// Everything is known, nothing to do
+				return;
+			}
 		}
 
 		log.info("Setting bookcase {} to {}", bookcase.getIndex(), book);
@@ -265,7 +274,7 @@ public class Library
 		assert bookSequence >= 0;
 
 		bookcaseIndex -= step * bookSequence;
-		for (; bookcaseIndex < 0; )
+		while (bookcaseIndex < 0)
 		{
 			bookcaseIndex += byIndex.size();
 		}
@@ -299,7 +308,7 @@ public class Library
 				DARK_MANUSCRIPT_13515,
 				BYRNES_CORONATION_SPEECH,
 				DARK_MANUSCRIPT_13517,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS
 			),
@@ -322,7 +331,7 @@ public class Library
 				DARK_MANUSCRIPT_13514,
 				EATHRAM_RADA_EXTRACT,
 				DARK_MANUSCRIPT_13522,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
 				DARK_MANUSCRIPT_13515,
@@ -348,7 +357,7 @@ public class Library
 				DARK_MANUSCRIPT_13519,
 				BYRNES_CORONATION_SPEECH,
 				DARK_MANUSCRIPT_13517,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13522,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
@@ -384,7 +393,7 @@ public class Library
 				TREACHERY_OF_ROYALTY,
 				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				VARLAMORE_ENVOY
 			),
 			Arrays.asList(
@@ -409,7 +418,7 @@ public class Library
 				IDEOLOGY_OF_DARKNESS,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13515,
 				EATHRAM_RADA_EXTRACT,
 				DARK_MANUSCRIPT_13518,

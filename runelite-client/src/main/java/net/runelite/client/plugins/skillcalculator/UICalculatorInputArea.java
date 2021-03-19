@@ -32,16 +32,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
 
+@Getter
 class UICalculatorInputArea extends JPanel
 {
-	JTextField uiFieldCurrentLevel;
-	JTextField uiFieldCurrentXP;
-	JTextField uiFieldTargetLevel;
-	JTextField uiFieldTargetXP;
+	private final JTextField uiFieldCurrentLevel;
+	private final JTextField uiFieldCurrentXP;
+	private final JTextField uiFieldTargetLevel;
+	private final JTextField uiFieldTargetXP;
 
 	UICalculatorInputArea()
 	{
@@ -92,11 +94,16 @@ class UICalculatorInputArea extends JPanel
 		setInput(uiFieldTargetXP, value);
 	}
 
+	void setNeededXP(Object value)
+	{
+		uiFieldTargetXP.setToolTipText((String) value);
+	}
+
 	private int getInput(JTextField field)
 	{
 		try
 		{
-			return Integer.parseInt(field.getText());
+			return Integer.parseInt(field.getText().replaceAll("\\D", ""));
 		}
 		catch (NumberFormatException e)
 		{

@@ -26,14 +26,11 @@ package net.runelite.client.plugins.fishing;
 
 import java.time.Instant;
 import lombok.Getter;
+import lombok.Setter;
 
-public class FishingSession
+class FishingSession
 {
 	@Getter
+	@Setter
 	private Instant lastFishCaught;
-
-	public void setLastFishCaught()
-	{
-		lastFishCaught = Instant.now();
-	}
 }

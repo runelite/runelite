@@ -24,90 +24,71 @@
  */
 package net.runelite.client.plugins.barrows;
 
-import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
+import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.ItemID.COINS_995;
-import net.runelite.api.ObjectID;
-import net.runelite.api.WallObject;
-import net.runelite.api.events.GameObjectChanged;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.Player;
+import net.runelite.api.SpriteID;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.WallObjectChanged;
-import net.runelite.api.events.WallObjectDespawned;
-import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.item.ItemPrice;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import net.runelite.client.ui.overlay.infobox.LoopTimer;
+import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
-	name = "Barrows Brothers"
+	name = "Barrows Brothers",
+	description = "Show helpful information for the Barrows minigame",
+	tags = {"combat", "minigame", "bosses", "pve", "pvm"}
 )
-@Slf4j
 public class BarrowsPlugin extends Plugin
 {
-	@Getter(AccessLevel.PACKAGE)
-	private static final Set<Integer> BARROWS_WALLS = Sets.newHashSet
-	(
-		ObjectID.DOOR_20678, ObjectID.NULL_20681, ObjectID.NULL_20682, ObjectID.NULL_20683, ObjectID.NULL_20684, ObjectID.NULL_20685, ObjectID.NULL_20686, ObjectID.NULL_20687,
-		ObjectID.NULL_20688, ObjectID.NULL_20689, ObjectID.NULL_20690, ObjectID.NULL_20691, ObjectID.NULL_20692, ObjectID.NULL_20693, ObjectID.NULL_20694, ObjectID.NULL_20695,
-		ObjectID.NULL_20696, ObjectID.DOOR_20697, ObjectID.NULL_20700, ObjectID.NULL_20701, ObjectID.NULL_20702, ObjectID.NULL_20703, ObjectID.NULL_20704, ObjectID.NULL_20705,
-		ObjectID.NULL_20706, ObjectID.NULL_20707, ObjectID.NULL_20708, ObjectID.NULL_20709, ObjectID.NULL_20710, ObjectID.NULL_20711, ObjectID.NULL_20712, ObjectID.NULL_20713,
-		ObjectID.NULL_20714, ObjectID.NULL_20715, ObjectID.NULL_20728, ObjectID.NULL_20730
+	private static final ImmutableList<WidgetInfo> POSSIBLE_SOLUTIONS = ImmutableList.of(
+		WidgetInfo.BARROWS_PUZZLE_ANSWER1,
+		WidgetInfo.BARROWS_PUZZLE_ANSWER2,
+		WidgetInfo.BARROWS_PUZZLE_ANSWER3
 	);
 
-	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(ObjectID.NULL_20675, ObjectID.NULL_20676, ObjectID.NULL_20677);
+	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
+	private static final int CRYPT_REGION_ID = 14231;
 
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<WallObject> walls = new HashSet<>();
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<GameObject> ladders = new HashSet<>();
+	private LoopTimer barrowsPrayerDrainTimer;
+
+	@Getter
+	private Widget puzzleAnswer;
+
+	@Inject
+	private OverlayManager overlayManager;
+
 	@Inject
 	private BarrowsOverlay barrowsOverlay;
 
 	@Inject
 	private BarrowsBrotherSlainOverlay brotherOverlay;
-
-	@Provides
-	BarrowsConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(BarrowsConfig.class);
-	}
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(barrowsOverlay, brotherOverlay);
-	}
 
 	@Inject
 	private Client client;
@@ -116,88 +97,75 @@ public class BarrowsPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
+	private SpriteManager spriteManager;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
 	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private BarrowsConfig config;
 
-	private long chestPrice;
+	@Provides
+	BarrowsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BarrowsConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(barrowsOverlay);
+		overlayManager.add(brotherOverlay);
+	}
 
 	@Override
 	protected void shutDown()
 	{
-		walls.clear();
-		ladders.clear();
-	}
+		overlayManager.remove(barrowsOverlay);
+		overlayManager.remove(brotherOverlay);
+		puzzleAnswer = null;
+		stopPrayerDrainTimer();
 
-	@Subscribe
-	public void onWallObjectSpanwed(WallObjectSpawned event)
-	{
-		WallObject wallObject = event.getWallObject();
-		if (BARROWS_WALLS.contains(wallObject.getId()))
+		// Restore widgets
+		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
+		if (potential != null)
 		{
-			walls.add(wallObject);
+			potential.setHidden(false);
+		}
+
+		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
+		if (barrowsBrothers != null)
+		{
+			barrowsBrothers.setHidden(false);
 		}
 	}
 
 	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
-		WallObject previous = event.getPrevious();
-		WallObject wallObject = event.getWallObject();
-
-		walls.remove(previous);
-		if (BARROWS_WALLS.contains(wallObject.getId()))
+		if (event.getGroup().equals("barrows") && !config.showPrayerDrainTimer())
 		{
-			walls.add(wallObject);
+			stopPrayerDrainTimer();
 		}
-	}
-
-	@Subscribe
-	public void onWallObjectDespawned(WallObjectDespawned event)
-	{
-		WallObject wallObject = event.getWallObject();
-		walls.remove(wallObject);
-	}
-
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
-	{
-		GameObject gameObject = event.getGameObject();
-		if (BARROWS_LADDERS.contains(gameObject.getId()))
-		{
-			ladders.add(gameObject);
-		}
-	}
-
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
-	{
-		GameObject previous = event.getPrevious();
-		GameObject gameObject = event.getGameObject();
-
-		ladders.remove(previous);
-		if (BARROWS_LADDERS.contains(gameObject.getId()))
-		{
-			ladders.add(gameObject);
-		}
-	}
-
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
-	{
-		GameObject gameObject = event.getGameObject();
-		ladders.remove(gameObject);
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOADING)
+		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			// on region changes the tiles get set to null
-			walls.clear();
-			ladders.clear();
+			boolean isInCrypt = isInCrypt();
+			if (!isInCrypt && barrowsPrayerDrainTimer != null)
+			{
+				stopPrayerDrainTimer();
+			}
+			else if (isInCrypt && barrowsPrayerDrainTimer == null)
+			{
+				startPrayerDrainTimer();
+			}
 		}
 	}
 
@@ -207,69 +175,85 @@ public class BarrowsPlugin extends Plugin
 		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
 		{
 			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
-			Map<Integer, Integer> itemMap = new HashMap<>();
-			chestPrice = 0;
+			Item[] items = barrowsRewardContainer.getItems();
+			long chestPrice = 0;
 
-			for (Item item : barrowsRewardContainer.getItems())
+			for (Item item : items)
 			{
-				if (item.getId() != -1)
-				{
-					if (item.getId() == COINS_995)
-					{
-						chestPrice += item.getQuantity();
-						continue;
-					}
-					itemMap.put(item.getId(), item.getQuantity());
-				}
+				long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
+				chestPrice += itemStack;
 			}
 
-			CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(itemMap.keySet());
-			future.whenComplete((ItemPrice[] itemPrices, Throwable ex) ->
-			{
-				if (ex != null)
-				{
-					log.debug("Error looking up item prices", ex);
-					return;
-				}
+			final ChatMessageBuilder message = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Your chest is worth around ")
+				.append(QuantityFormatter.formatNumber(chestPrice))
+				.append(" coins.")
+				.append(ChatColorType.NORMAL);
 
-				if (itemPrices == null)
-				{
-					log.debug("Error looking up item prices");
-					return;
-				}
-
-				log.debug("Price lookup is complete. {} prices.", itemPrices.length);
-
-				try
-				{
-					for (ItemPrice itemPrice : itemPrices)
-					{
-						if (itemPrice.getItem() == null)
-						{
-							continue; // cached no price
-						}
-
-						long itemStack = (long) itemPrice.getPrice() * (long) itemMap.get(itemPrice.getItem().getId());
-						chestPrice += itemStack;
-					}
-
-					final ChatMessageBuilder message = new ChatMessageBuilder()
-						.append(ChatColorType.HIGHLIGHT)
-						.append("Your chest is worth around ")
-						.append(StackFormatter.formatNumber(chestPrice))
-						.append(" coins.")
-						.append(ChatColorType.NORMAL);
-
-					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.EXAMINE_ITEM)
-						.runeLiteFormattedMessage(message.build())
-						.build());
-				}
-				catch (Exception ex2)
-				{
-					log.warn("error calculating price", ex2);
-				}
-			});
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.ITEM_EXAMINE)
+				.runeLiteFormattedMessage(message.build())
+				.build());
 		}
+		else if (event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
+		{
+			final int answer = client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE).getModelId() - 3;
+			puzzleAnswer = null;
+
+			for (WidgetInfo puzzleNode : POSSIBLE_SOLUTIONS)
+			{
+				final Widget widgetToCheck = client.getWidget(puzzleNode);
+
+				if (widgetToCheck != null && widgetToCheck.getModelId() == answer)
+				{
+					puzzleAnswer = client.getWidget(puzzleNode);
+					break;
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onWidgetClosed(WidgetClosed widgetClosed)
+	{
+		if (widgetClosed.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
+		{
+			puzzleAnswer = null;
+		}
+	}
+
+	private void startPrayerDrainTimer()
+	{
+		if (config.showPrayerDrainTimer())
+		{
+			assert barrowsPrayerDrainTimer == null;
+			final LoopTimer loopTimer = new LoopTimer(
+				PRAYER_DRAIN_INTERVAL_MS,
+				ChronoUnit.MILLIS,
+				null,
+				this,
+				true);
+
+			spriteManager.getSpriteAsync(SpriteID.TAB_PRAYER, 0, loopTimer);
+
+			loopTimer.setPriority(InfoBoxPriority.MED);
+			loopTimer.setTooltip("Prayer Drain");
+
+			infoBoxManager.addInfoBox(loopTimer);
+			barrowsPrayerDrainTimer = loopTimer;
+		}
+	}
+
+	private void stopPrayerDrainTimer()
+	{
+		infoBoxManager.removeInfoBox(barrowsPrayerDrainTimer);
+		barrowsPrayerDrainTimer = null;
+	}
+
+	private boolean isInCrypt()
+	{
+		Player localPlayer = client.getLocalPlayer();
+		return localPlayer != null && localPlayer.getWorldLocation().getRegionID() == CRYPT_REGION_ID;
 	}
 }

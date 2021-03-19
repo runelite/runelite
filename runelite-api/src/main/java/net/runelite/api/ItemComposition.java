@@ -24,10 +24,12 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
+
 /**
  * Represents the template of a specific item type.
  */
-public interface ItemComposition
+public interface ItemComposition extends ParamHolder
 {
 	/**
 	 * Gets the items name.
@@ -87,8 +89,19 @@ public interface ItemComposition
 	 * alchemy values, respectively.
 	 *
 	 * @return the general store value of the item
+	 *
+	 * @see Constants#HIGH_ALCHEMY_MULTIPLIER
+	 * @see ItemComposition#getHaPrice()
 	 */
 	int getPrice();
+
+	/**
+	 * Get the high alchemy price for this item. All items have a high alchemy price,
+	 * but not all items can be alched.
+	 *
+	 * @return the high alch price
+	 */
+	int getHaPrice();
 
 	/**
 	 * Checks whether the item is members only.
@@ -103,6 +116,11 @@ public interface ItemComposition
 	 * @return true if stackable, false otherwise
 	 */
 	boolean isStackable();
+
+	/**
+	 * Returns whether or not the item can be sold on the grand exchange.
+	 */
+	boolean isTradeable();
 
 	/**
 	 * Gets an array of possible right-click menu actions the item
@@ -122,13 +140,38 @@ public interface ItemComposition
 	/**
 	 * Sets the menu action index of the shift-click action.
 	 *
-	 * @param shiftclickActionIndex the new index of the shift-click action
+	 * @param shiftClickActionIndex the new index of the shift-click action
 	 */
-	void setShiftClickActionIndex(int shiftclickActionIndex);
+	void setShiftClickActionIndex(int shiftClickActionIndex);
 
 	/**
 	 * Resets the menu action index of the shift-click action to its
 	 * default value.
 	 */
 	void resetShiftClickActionIndex();
+
+	/**
+	 * Gets the model ID of the inventory item.
+	 *
+	 * @return the model ID
+	 */
+	int getInventoryModel();
+
+	/**
+	 * Since the client reuses item models, it stores colors that can be replaced.
+	 * This returns what colors the item model will be replaced with.
+	 *
+	 * @return the colors to replace with
+	 */
+	@Nullable
+	short[] getColorToReplaceWith();
+
+	/**
+	 * Since the client reuses item models, it stores textures that can be replaced.
+	 * This returns what textures the item model will be replaced with.
+	 *
+	 * @return the textures to replace with
+	 */
+	@Nullable
+	short[] getTextureToReplaceWith();
 }

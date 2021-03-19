@@ -1,0 +1,109 @@
+.id                 396
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      3
+.string_var_count   2
+   invoke                 1007
+   istore                 2
+   sconst                 "Total level:"
+   sconst                 "<br>"
+   iload                  2
+   tostring              
+   join_string            3
+   iload                  0
+   sconst                 "skillTabTotalLevel" ; push event name
+   runelite_callback     ; invoke callback
+   if_settext            
+   iload                  0
+   if_clearops           
+   sconst                 ""
+   sstore                 0
+   sconst                 ""
+   sstore                 1
+   map_members           
+   iconst                 1
+   if_icmpeq              LABEL22
+   get_varc_int           103
+   iconst                 1
+   if_icmpeq              LABEL22
+   jump                   LABEL28
+LABEL22:
+   sconst                 "Total XP:"
+   sstore                 0
+   invoke                 1008
+   invoke                 1009
+   sstore                 1
+   jump                   LABEL37
+LABEL28:
+   sconst                 "Total XP:|Free Total Level:"
+   sstore                 0
+   invoke                 1008
+   invoke                 1009
+   sconst                 "|"
+   invoke                 1320
+   tostring              
+   join_string            3
+   sstore                 1
+LABEL37:
+   invoke                 1972
+   iconst                 1
+   if_icmpeq              LABEL41
+   jump                   LABEL72
+LABEL41:
+   iconst                 1
+   sconst                 "Toggle Total XP"
+   iload                  0
+   if_setop              
+   iconst                 2367
+   iconst                 -2147483644
+   iconst                 -2147483645
+   iconst                 -1
+   iload                  1
+   sload                  0
+   sload                  1
+   iconst                 495
+   sconst                 "iIiIssf"
+   iload                  0
+   if_setonop            
+   get_varc_int           218
+   iload                  0
+   if_icmpeq              LABEL60
+   jump                   LABEL71
+LABEL60:
+   get_varc_int           217
+   iconst                 -1
+   if_icmpeq              LABEL64
+   jump                   LABEL71
+LABEL64:
+   iload                  0
+   iconst                 -1
+   iload                  1
+   sload                  0
+   sload                  1
+   iconst                 495
+   invoke                 2344
+LABEL71:
+   jump                   LABEL92
+LABEL72:
+   iconst                 992
+   iconst                 -2147483645
+   iconst                 -1
+   iload                  1
+   sload                  0
+   sload                  1
+   iconst                 495
+   iconst                 25
+   iconst                 5
+   div                   
+   sconst                 "IiIssfi"
+   iload                  0
+   if_setonmouserepeat   
+   iconst                 40
+   iload                  1
+   sconst                 "I"
+   iload                  0
+   if_setonmouseleave    
+   iconst                 0
+   set_varc_int           2
+LABEL92:
+   return                

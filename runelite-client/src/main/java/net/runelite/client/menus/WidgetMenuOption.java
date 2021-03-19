@@ -27,21 +27,23 @@ package net.runelite.client.menus;
 import net.runelite.api.widgets.WidgetInfo;
 
 import java.awt.Color;
+import net.runelite.client.ui.JagexColors;
+import net.runelite.client.util.ColorUtil;
 
 public final class WidgetMenuOption
 {
 	/**
-	 * The left hand text to be displayed on the menu option. Ex. the menuOption of "Drop Bones" is "Drop"
+	 * The left hand text to be displayed on the menu option. (ex. the menuOption of "Drop Bones" is "Drop")
 	 */
 	private String menuOption;
 	/**
-	 * The right hand text to be displayed on the menu option Ex. the menuTarget of "Drop Bones" is "Bones"
+	 * The right hand text to be displayed on the menu option. (ex. the menuTarget of "Drop Bones" is "Bones")
 	 */
 	private String menuTarget;
 	/**
 	 * The color that the menuTarget should be. Defaults to the brownish color that most menu options have.
 	 */
-	private Color color = Color.decode("#ff9040");
+	private Color color = JagexColors.MENU_TARGET;
 
 	/**
 	 * The widget to add the option to
@@ -74,8 +76,7 @@ public final class WidgetMenuOption
 	 */
 	public void setMenuTarget(String target)
 	{
-		menuTarget = String.format("<col=%02x%02x%02x>%s</col>",
-			color.getRed(), color.getGreen(), color.getBlue(), target);
+		menuTarget = ColorUtil.wrapWithColorTag(target, color);
 	}
 
 	public String getMenuOption()

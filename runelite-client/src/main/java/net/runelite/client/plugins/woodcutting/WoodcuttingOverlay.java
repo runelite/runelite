@@ -29,30 +29,37 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
-import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class WoodcuttingOverlay extends Overlay
+class WoodcuttingOverlay extends OverlayPanel
 {
+	static final String WOODCUTTING_RESET = "Reset";
+
 	private final Client client;
 	private final WoodcuttingPlugin plugin;
 	private final WoodcuttingConfig config;
 	private final XpTrackerService xpTrackerService;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 		this.xpTrackerService = xpTrackerService;
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Woodcutting overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, WOODCUTTING_RESET, "Woodcutting overlay"));
 	}
 
 	@Override
@@ -69,10 +76,8 @@ class WoodcuttingOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
 		Axe axe = plugin.getAxe();
-		if (axe != null && axe.getAnimId() == client.getLocalPlayer().getAnimation())
+		if (axe != null && axe.matchesChoppingAnimation(client.getLocalPlayer()))
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Woodcutting")
@@ -104,7 +109,7 @@ class WoodcuttingOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 }

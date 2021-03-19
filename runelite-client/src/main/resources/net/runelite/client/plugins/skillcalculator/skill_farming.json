@@ -8,6 +8,102 @@
   "actions": [
     {
       "level": 1,
+      "icon": 8180,
+      "name": "Plant",
+      "xp": 31
+    },
+    {
+      "level": 1,
+      "icon": 8186,
+      "name": "Fern (big plant)",
+      "xp": 31
+    },
+    {
+      "level": 1,
+      "icon": 8189,
+      "name": "Short Plant",
+      "xp": 31
+    },
+    {
+      "level": 1,
+      "icon": 8183,
+      "name": "Dock Leaf",
+      "xp": 31
+    },
+    {
+      "level": 1,
+      "icon": 8181,
+      "name": "Small Fern",
+      "xp": 70
+    },
+    {
+      "level": 1,
+      "icon": 8184,
+      "name": "Thistle",
+      "xp": 70
+    },
+    {
+      "level": 1,
+      "icon": 8187,
+      "name": "Bush",
+      "xp": 70
+    },
+    {
+      "level": 1,
+      "icon": 8190,
+      "name": "Large Leaf Bush",
+      "xp": 70
+    },
+    {
+      "level": 1,
+      "icon": 8191,
+      "name": "Huge Plant",
+      "xp": 100
+    },
+    {
+      "level": 1,
+      "icon": 8188,
+      "name": "Tall Plant",
+      "xp": 100
+    },
+    {
+      "level": 1,
+      "icon": 8185,
+      "name": "Reeds",
+      "xp": 100
+    },
+    {
+      "level": 1,
+      "icon": 8182,
+      "name": "Fern (small plant)",
+      "xp": 100
+    },
+    {
+      "level": 1,
+      "icon": 10847,
+      "name": "Winter Sq'irk",
+      "xp": 30
+    },
+    {
+      "level": 1,
+      "icon": 10844,
+      "name": "Spring Sq'irk",
+      "xp": 40
+    },
+    {
+      "level": 1,
+      "icon": 10846,
+      "name": "Autumn Sq'irk",
+      "xp": 50
+    },
+    {
+      "level": 1,
+      "icon": 10845,
+      "name": "Summer Sq'irk",
+      "xp": 60
+    },
+    {
+      "level": 1,
       "icon": 1942,
       "name": "Potatoes",
       "xp": 8
@@ -59,6 +155,12 @@
       "icon": 5986,
       "name": "Sweetcorn",
       "xp": 17
+    },
+    {
+      "level": 23,
+      "icon": 21504,
+      "name": "Giant seaweed",
+      "xp": 21
     },
     {
       "level": 26,
@@ -181,16 +283,34 @@
       "xp": 6218.4
     },
     {
+      "level": 58,
+      "icon": 22932,
+      "name": "White lily",
+      "xp": 292
+    },
+    {
       "level": 60,
       "icon": 1515,
       "name": "Yew Tree",
       "xp": 7150.9
     },
     {
+      "level": 61,
+      "icon": 231,
+      "name": "Snape grass",
+      "xp": 82
+    },
+    {
       "level": 62,
       "icon": 3000,
       "name": "Snapdragon",
       "xp": 87.5
+    },
+    {
+      "level": 65,
+      "icon": 23044,
+      "name": "Hespori",
+      "xp": 12662
     },
     {
       "level": 67,
@@ -217,6 +337,12 @@
       "xp": 134.5
     },
     {
+      "level": 74,
+      "icon": 23962,
+      "name": "Crystal Tree",
+      "xp": 13366
+    },
+    {
       "level": 75,
       "icon": 1513,
       "name": "Magic Tree",
@@ -229,6 +355,12 @@
       "xp": 170.5
     },
     {
+      "level": 81,
+      "icon": 22929,
+      "name": "Dragonfruit Tree",
+      "xp": 17895
+    },
+    {
       "level": 83,
       "icon": 6063,
       "name": "Spirit Tree",
@@ -236,9 +368,21 @@
     },
     {
       "level": 85,
+      "icon": 22935,
+      "name": "Celastrus Tree",
+      "xp": 14334
+    },
+    {
+      "level": 85,
       "icon": 269,
       "name": "Torstol",
       "xp": 199.5
+    },
+    {
+      "level": 90,
+      "icon": 19669,
+      "name": "Redwood Tree",
+      "xp": 22680
     }
   ]
 }

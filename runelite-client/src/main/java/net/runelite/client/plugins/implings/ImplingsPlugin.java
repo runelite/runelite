@@ -24,12 +24,9 @@
  */
 package net.runelite.client.plugins.implings;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -37,24 +34,28 @@ import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.util.QueryRunner;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-/**
- * @author robin
- */
 @PluginDescriptor(
-	name = "Implings"
+	name = "Implings",
+	description = "Highlight nearby implings on the minimap and on-screen",
+	tags = {"hunter", "minimap", "overlay", "imp"}
 )
 public class ImplingsPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> implings = new ArrayList<>();
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private ImplingsOverlay overlay;
@@ -66,7 +67,7 @@ public class ImplingsPlugin extends Plugin
 	private ImplingsConfig config;
 
 	@Inject
-	private QueryRunner queryRunner;
+	private Notifier notifier;
 
 	@Provides
 	ImplingsConfig getConfig(ConfigManager configManager)
@@ -75,9 +76,18 @@ public class ImplingsPlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void startUp()
 	{
-		return Arrays.asList(overlay, minimapOverlay);
+		overlayManager.add(overlay);
+		overlayManager.add(minimapOverlay);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		implings.clear();
+		overlayManager.remove(overlay);
+		overlayManager.remove(minimapOverlay);
 	}
 
 	@Subscribe
@@ -88,12 +98,37 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null)
 		{
+			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
+			{
+				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+			}
+
 			implings.add(npc);
 		}
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onNpcChanged(NpcChanged npcCompositionChanged)
+	{
+		NPC npc = npcCompositionChanged.getNpc();
+		Impling impling = Impling.findImpling(npc.getId());
+
+		if (impling != null)
+		{
+			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
+			{
+				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+			}
+
+			if (!implings.contains(npc))
+			{
+				implings.add(npc);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
 		{
@@ -121,10 +156,11 @@ public class ImplingsPlugin extends Plugin
 			return false;
 		}
 
-		return showImplingType(impling.getImplingType());
+		ImplingsConfig.ImplingMode impMode = showImplingType(impling.getImplingType());
+		return impMode == ImplingsConfig.ImplingMode.HIGHLIGHT || impMode == ImplingsConfig.ImplingMode.NOTIFY;
 	}
 
-	boolean showImplingType(ImplingType implingType)
+	ImplingsConfig.ImplingMode showImplingType(ImplingType implingType)
 	{
 		switch (implingType)
 		{
@@ -146,12 +182,14 @@ public class ImplingsPlugin extends Plugin
 				return config.showMagpie();
 			case NINJA:
 				return config.showNinja();
+			case CRYSTAL:
+				return config.showCrystal();
 			case DRAGON:
 				return config.showDragon();
 			case LUCKY:
 				return config.showLucky();
 			default:
-				return false;
+				return ImplingsConfig.ImplingMode.NONE;
 		}
 	}
 
@@ -184,6 +222,8 @@ public class ImplingsPlugin extends Plugin
 				return config.getMagpieColor();
 			case NINJA:
 				return config.getNinjaColor();
+			case CRYSTAL:
+				return config.getCrystalColor();
 			case DRAGON:
 				return config.getDragonColor();
 			case LUCKY:

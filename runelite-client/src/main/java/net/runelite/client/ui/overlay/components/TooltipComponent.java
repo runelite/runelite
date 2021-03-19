@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay.components;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -33,10 +34,9 @@ import java.awt.Rectangle;
 import java.util.regex.Pattern;
 import lombok.Setter;
 import net.runelite.api.IndexedSprite;
-import net.runelite.client.ui.overlay.RenderableEntity;
 
 @Setter
-public class TooltipComponent implements RenderableEntity
+public class TooltipComponent implements LayoutableRenderableEntity
 {
 	private static final Pattern BR = Pattern.compile("</br>");
 	private static final int OFFSET = 4;
@@ -96,6 +96,7 @@ public class TooltipComponent implements RenderableEntity
 			char[] chars = line.toCharArray();
 
 			int begin = 0;
+			boolean inTag = false;
 			for (int j = 0; j < chars.length; j++)
 			{
 				if (chars[j] == '<')
@@ -110,8 +111,9 @@ public class TooltipComponent implements RenderableEntity
 					lineX += metrics.stringWidth(text);
 
 					begin = j;
+					inTag = true;
 				}
-				else if (chars[j] == '>')
+				else if (chars[j] == '>' && inTag)
 				{
 					String subLine = line.substring(begin + 1, j);
 
@@ -148,13 +150,14 @@ public class TooltipComponent implements RenderableEntity
 					}
 
 					begin = j + 1;
+					inTag = false;
 				}
 			}
 
 			// Draw trailing text (after last tag)
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(nextColor);
-			textComponent.setText(line.substring(begin, line.length()));
+			textComponent.setText(line.substring(begin));
 			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
 			textComponent.render(graphics);
 		}
@@ -162,12 +165,14 @@ public class TooltipComponent implements RenderableEntity
 		return new Dimension(tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
 	}
 
-	private static int calculateTextWidth(FontMetrics metrics, String line)
+	@VisibleForTesting
+	static int calculateTextWidth(FontMetrics metrics, String line)
 	{
 		char[] chars = line.toCharArray();
 		int textWidth = 0;
 
 		int begin = 0;
+		boolean inTag = false;
 		for (int j = 0; j < chars.length; j++)
 		{
 			if (chars[j] == '<')
@@ -175,8 +180,9 @@ public class TooltipComponent implements RenderableEntity
 				textWidth += metrics.stringWidth(line.substring(begin, j));
 
 				begin = j;
+				inTag = true;
 			}
-			else if (chars[j] == '>')
+			else if (chars[j] == '>' && inTag)
 			{
 				String subLine = line.substring(begin + 1, j);
 
@@ -190,11 +196,12 @@ public class TooltipComponent implements RenderableEntity
 				}
 
 				begin = j + 1;
+				inTag = false;
 			}
 		}
 
 		// Include trailing text (after last tag)
-		textWidth += metrics.stringWidth(line.substring(begin, line.length()));
+		textWidth += metrics.stringWidth(line.substring(begin));
 
 		return textWidth;
 	}
@@ -216,5 +223,22 @@ public class TooltipComponent implements RenderableEntity
 				}
 			}
 		}
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		return null;
+	}
+
+	@Override
+	public void setPreferredLocation(Point position)
+	{
+		this.position = position;
+	}
+
+	@Override
+	public void setPreferredSize(Dimension dimension)
+	{
 	}
 }

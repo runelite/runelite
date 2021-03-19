@@ -24,20 +24,23 @@
  */
 package net.runelite.client.plugins.config;
 
-import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.swing.SwingUtilities;
+import net.runelite.api.MenuAction;
+import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.events.PluginChanged;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Configuration",
@@ -47,53 +50,79 @@ import net.runelite.client.ui.PluginToolbar;
 public class ConfigPlugin extends Plugin
 {
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
+
+	@Inject
+	private Provider<PluginListPanel> pluginListPanelProvider;
 
 	@Inject
 	private ConfigManager configManager;
 
 	@Inject
-	private PluginManager pluginManager;
-
-	@Inject
-	private ScheduledExecutorService executorService;
-
-	@Inject
 	private RuneLiteConfig runeLiteConfig;
 
-	private ConfigPanel configPanel;
+	@Inject
+	private ChatColorConfig chatColorConfig;
+
+	private PluginListPanel pluginListPanel;
+
 	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		configPanel = new ConfigPanel(pluginManager, configManager, executorService, runeLiteConfig);
+		pluginListPanel = pluginListPanelProvider.get();
+		pluginListPanel.addFakePlugin(new PluginConfigurationDescriptor(
+				"RuneLite", "RuneLite client settings",
+				new String[]{"client", "notification", "size", "position", "window", "chrome", "focus", "font", "overlay", "tooltip", "infobox"},
+				null, runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig)
+			),
+			new PluginConfigurationDescriptor(
+				"Chat Color", "Recolor chat text", new String[]{"colour", "messages"},
+				null, chatColorConfig, configManager.getConfigDescriptor(chatColorConfig)
+			));
+		pluginListPanel.rebuildPluginList();
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("config_icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "config_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Configuration")
 			.icon(icon)
 			.priority(0)
-			.panel(configPanel)
+			.panel(pluginListPanel.getMuxer())
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
-	public void onPluginChanged(PluginChanged event)
+	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
 	{
-		SwingUtilities.invokeLater(configPanel::rebuildPluginList);
+		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
+		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY_CONFIG)
+		{
+			Overlay overlay = overlayMenuClicked.getOverlay();
+			Plugin plugin = overlay.getPlugin();
+			if (plugin == null)
+			{
+				return;
+			}
+
+			// Expand config panel for plugin
+			SwingUtilities.invokeLater(() ->
+			{
+				if (!navButton.isSelected())
+				{
+					navButton.getOnSelect().run();
+				}
+				pluginListPanel.openConfigurationPanel(plugin.getName());
+			});
+		}
 	}
 }

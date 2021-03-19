@@ -24,9 +24,6 @@
  */
 package net.runelite.api;
 
-import static java.lang.Math.floor;
-import static java.lang.Math.max;
-
 /**
  * A utility class used for calculating experience related values.
  * <p>
@@ -37,9 +34,20 @@ import static java.lang.Math.max;
 public class Experience
 {
 	/**
+	 * Maximum effective skill level at 13,034,431 experience.
+	 */
+	public static final int MAX_REAL_LEVEL = 99;
+
+	/**
 	 * The maximum virtual skill level for any skill (200M experience).
 	 */
 	public static final int MAX_VIRT_LEVEL = 126;
+	public static final int MAX_SKILL_XP = 200_000_000;
+
+	/**
+	 * The maximum possible combat level.
+	 */
+	public static final int MAX_COMBAT_LEVEL = 126;
 
 	/**
 	 * The total experience required for each skill level.
@@ -116,6 +124,15 @@ public class Experience
 		return high + 1;
 	}
 
+	private static double getMeleeRangeOrMagicCombatLevelContribution(int attackLevel, int strengthLevel, int magicLevel, int rangeLevel)
+	{
+		double melee = 0.325 * (attackLevel + strengthLevel);
+		double range = 0.325 * (rangeLevel / 2 + rangeLevel);
+		double magic = 0.325 * (magicLevel / 2 + magicLevel);
+
+		return Math.max(melee, Math.max(range, magic));
+	}
+
 	/**
 	 * Calculates a non-virtual high-precision combat level without integer
 	 * rounding.
@@ -135,13 +152,11 @@ public class Experience
 		int defenceLevel, int hitpointsLevel, int magicLevel,
 		int rangeLevel, int prayerLevel)
 	{
-		double base = 0.25 * (defenceLevel + hitpointsLevel + floor(prayerLevel / 2));
+		double base = 0.25 * (defenceLevel + hitpointsLevel + (prayerLevel / 2));
 
-		double melee = 0.325 * (attackLevel + strengthLevel);
-		double range = 0.325 * (floor(rangeLevel / 2) + rangeLevel);
-		double magic = 0.325 * (floor(magicLevel / 2) + magicLevel);
+		double typeContribution = getMeleeRangeOrMagicCombatLevelContribution(attackLevel, strengthLevel, magicLevel, rangeLevel);
 
-		return base + max(melee, max(range, magic));
+		return base + typeContribution;
 	}
 
 	/**
@@ -161,5 +176,102 @@ public class Experience
 		int rangeLevel, int prayerLevel)
 	{
 		return (int) getCombatLevelPrecise(attackLevel, strengthLevel, defenceLevel, hitpointsLevel, magicLevel, rangeLevel, prayerLevel);
+	}
+
+	/**
+	 * Calculate number of attack/strength levels required to increase combat level.
+	 *
+	 * @param attackLevel    the attack level
+	 * @param strengthLevel  the strength level
+	 * @param defenceLevel   the defence level
+	 * @param hitpointsLevel the hitpoints level
+	 * @param magicLevel     the magic level
+	 * @param rangeLevel     the range level
+	 * @param prayerLevel    the prayer level
+	 * @return the number of levels required
+	 */
+	public static int getNextCombatLevelMelee(int attackLevel, int strengthLevel, int defenceLevel, int hitpointsLevel,
+		int magicLevel, int rangeLevel, int prayerLevel)
+	{
+		int nextCombatLevel = Experience.getCombatLevel(attackLevel, strengthLevel, defenceLevel, hitpointsLevel, magicLevel, rangeLevel, prayerLevel) + 1;
+		return (int) Math.ceil(-10. / 13 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2) - 4 * nextCombatLevel)) - strengthLevel - attackLevel;
+	}
+
+	/**
+	 * Calculate number of hitpoints/defence levels required to increase combat level.
+	 *
+	 * @param attackLevel    the attack level
+	 * @param strengthLevel  the strength level
+	 * @param defenceLevel   the defence level
+	 * @param hitpointsLevel the hitpoints level
+	 * @param magicLevel     the magic level
+	 * @param rangeLevel     the range level
+	 * @param prayerLevel    the prayer level
+	 * @return the number of levels required
+	 */
+	public static int getNextCombatLevelHpDef(int attackLevel, int strengthLevel, int defenceLevel, int hitpointsLevel,
+		int magicLevel, int rangeLevel, int prayerLevel)
+	{
+		int nextCombatLevel = Experience.getCombatLevel(attackLevel, strengthLevel, defenceLevel, hitpointsLevel, magicLevel, rangeLevel, prayerLevel) + 1;
+		double typeContribution = Experience.getMeleeRangeOrMagicCombatLevelContribution(attackLevel, strengthLevel, magicLevel, rangeLevel);
+		return (int) Math.ceil(4 * nextCombatLevel - Math.floor(prayerLevel / 2) - 4 * typeContribution) - hitpointsLevel - defenceLevel;
+	}
+
+	/**
+	 * Calculate number of magic levels required to increase combat level.
+	 *
+	 * @param attackLevel    the attack level
+	 * @param strengthLevel  the strength level
+	 * @param defenceLevel   the defence level
+	 * @param hitpointsLevel the hitpoints level
+	 * @param magicLevel     the magic level
+	 * @param rangeLevel     the range level
+	 * @param prayerLevel    the prayer level
+	 * @return the number of levels required
+	 */
+	public static int getNextCombatLevelMagic(int attackLevel, int strengthLevel, int defenceLevel, int hitpointsLevel,
+		int magicLevel, int rangeLevel, int prayerLevel)
+	{
+		int nextCombatLevel = Experience.getCombatLevel(attackLevel, strengthLevel, defenceLevel, hitpointsLevel, magicLevel, rangeLevel, prayerLevel) + 1;
+		return (int) Math.ceil(2. / 3 * Math.ceil(-10. / 13 * (hitpointsLevel + defenceLevel - 4 * nextCombatLevel + Math.floor(prayerLevel / 2)))) - magicLevel;
+	}
+
+	/**
+	 * Calculate number of ranged levels required to increase combat level.
+	 *
+	 * @param attackLevel    the attack level
+	 * @param strengthLevel  the strength level
+	 * @param defenceLevel   the defence level
+	 * @param hitpointsLevel the hitpoints level
+	 * @param magicLevel     the magic level
+	 * @param rangeLevel     the range level
+	 * @param prayerLevel    the prayer level
+	 * @return the number of levels required
+	 */
+	public static int getNextCombatLevelRange(int attackLevel, int strengthLevel, int defenceLevel, int hitpointsLevel,
+		int magicLevel, int rangeLevel, int prayerLevel)
+	{
+		int nextCombatLevel = Experience.getCombatLevel(attackLevel, strengthLevel, defenceLevel, hitpointsLevel, magicLevel, rangeLevel, prayerLevel) + 1;
+		return (int) Math.ceil(2. / 3 * Math.ceil(-10. / 13 * (hitpointsLevel + defenceLevel - 4 * nextCombatLevel + Math.floor(prayerLevel / 2)))) - rangeLevel;
+	}
+
+	/**
+	 * Calculate number of prayer levels required to increase combat level.
+	 *
+	 * @param attackLevel    the attack level
+	 * @param strengthLevel  the strength level
+	 * @param defenceLevel   the defence level
+	 * @param hitpointsLevel the hitpoints level
+	 * @param magicLevel     the magic level
+	 * @param rangeLevel     the range level
+	 * @param prayerLevel    the prayer level
+	 * @return the number of levels required
+	 */
+	public static int getNextCombatLevelPrayer(int attackLevel, int strengthLevel, int defenceLevel, int hitpointsLevel,
+		int magicLevel, int rangeLevel, int prayerLevel)
+	{
+		int nextCombatLevel = Experience.getCombatLevel(attackLevel, strengthLevel, defenceLevel, hitpointsLevel, magicLevel, rangeLevel, prayerLevel) + 1;
+		double typeContribution = Experience.getMeleeRangeOrMagicCombatLevelContribution(attackLevel, strengthLevel, magicLevel, rangeLevel);
+		return 2 * (int) Math.ceil(-hitpointsLevel - defenceLevel + 4 * nextCombatLevel - 4 * typeContribution) - prayerLevel;
 	}
 }

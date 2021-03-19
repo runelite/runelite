@@ -24,18 +24,24 @@
  */
 package net.runelite.http.service.xp;
 
-import java.io.IOException;
+import com.google.common.hash.BloomFilter;
+import com.google.common.hash.Funnels;
+import java.nio.charset.Charset;
+import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.xp.XpData;
-import net.runelite.http.service.hiscore.HiscoreResultBuilder;
 import net.runelite.http.service.hiscore.HiscoreService;
 import net.runelite.http.service.xp.beans.PlayerEntity;
 import net.runelite.http.service.xp.beans.XpEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -44,6 +50,9 @@ import org.sql2o.Sql2o;
 @Slf4j
 public class XpTrackerService
 {
+	private static final int QUEUE_LIMIT = 32768;
+	private static final int BLOOMFILTER_EXPECTED_INSERTIONS = 100_000;
+
 	@Autowired
 	@Qualifier("Runelite XP Tracker SQL2O")
 	private Sql2o sql2o;
@@ -51,11 +60,48 @@ public class XpTrackerService
 	@Autowired
 	private HiscoreService hiscoreService;
 
-	public void update(String username) throws IOException
+	private final Queue<String> usernameUpdateQueue = new ArrayDeque<>();
+	private BloomFilter<String> usernameFilter = createFilter();
+
+	public void update(String username) throws ExecutionException
 	{
-		HiscoreResultBuilder hiscoreResultBuilder = hiscoreService.lookupUsername(username, HiscoreEndpoint.NORMAL);
-		HiscoreResult hiscoreResult = hiscoreResultBuilder.build();
+		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(username, HiscoreEndpoint.NORMAL);
 		update(username, hiscoreResult);
+	}
+
+	public void tryUpdate(String username)
+	{
+		if (usernameFilter.mightContain(username))
+		{
+			return;
+		}
+
+		try (Connection con = sql2o.open())
+		{
+			PlayerEntity playerEntity = findOrCreatePlayer(con, username);
+			Duration frequency = updateFrequency(playerEntity);
+			Instant now = Instant.now();
+			Duration timeSinceLastUpdate = Duration.between(playerEntity.getLast_updated(), now);
+			if (timeSinceLastUpdate.toMillis() < frequency.toMillis())
+			{
+				log.debug("User {} updated too recently", username);
+				usernameFilter.put(username);
+				return;
+			}
+
+			synchronized (usernameUpdateQueue)
+			{
+				if (usernameUpdateQueue.size() >= QUEUE_LIMIT)
+				{
+					log.warn("Username update queue is full ({})", QUEUE_LIMIT);
+					return;
+				}
+
+				usernameUpdateQueue.add(username);
+			}
+		}
+
+		usernameFilter.put(username);
 	}
 
 	public void update(String username, HiscoreResult hiscoreResult)
@@ -64,7 +110,8 @@ public class XpTrackerService
 		{
 			PlayerEntity playerEntity = findOrCreatePlayer(con, username);
 
-			XpEntity currentXp = findXpAtTime(con, username, Instant.now());
+			Instant now = Instant.now();
+			XpEntity currentXp = findXpAtTime(con, username, now);
 			if (currentXp != null)
 			{
 				XpData hiscoreData = XpMapper.INSTANCE.hiscoreResultToXpData(hiscoreResult);
@@ -136,6 +183,11 @@ public class XpTrackerService
 				.addParameter("construction_rank", hiscoreResult.getConstruction().getRank())
 				.addParameter("overall_rank", hiscoreResult.getOverall().getRank())
 				.executeUpdate();
+
+			con.createQuery("update player set rank = :rank, last_updated = CURRENT_TIMESTAMP where id = :id")
+				.addParameter("id", playerEntity.getId())
+				.addParameter("rank", hiscoreResult.getOverall().getRank())
+				.executeUpdate();
 		}
 	}
 
@@ -161,6 +213,7 @@ public class XpTrackerService
 		playerEntity.setId(id);
 		playerEntity.setName(username);
 		playerEntity.setTracked_since(now);
+		playerEntity.setLast_updated(now);
 		return playerEntity;
 	}
 
@@ -178,6 +231,77 @@ public class XpTrackerService
 		try (Connection con = sql2o.open())
 		{
 			return findXpAtTime(con, username, time);
+		}
+	}
+
+	@Scheduled(fixedDelay = 1000)
+	public void update() throws ExecutionException
+	{
+		String next;
+		synchronized (usernameUpdateQueue)
+		{
+			next = usernameUpdateQueue.poll();
+		}
+
+		if (next == null)
+		{
+			return;
+		}
+
+		update(next);
+	}
+
+	@Scheduled(fixedDelay = 6 * 60 * 60 * 1000) // 6 hours
+	public void clearFilter()
+	{
+		usernameFilter = createFilter();
+	}
+
+	private BloomFilter<String> createFilter()
+	{
+		final BloomFilter<String> filter = BloomFilter.create(
+			Funnels.stringFunnel(Charset.defaultCharset()),
+			BLOOMFILTER_EXPECTED_INSERTIONS
+		);
+
+		synchronized (usernameUpdateQueue)
+		{
+			for (String toUpdate : usernameUpdateQueue)
+			{
+				filter.put(toUpdate);
+			}
+		}
+
+		return filter;
+	}
+
+	/**
+	 * scale how often to check hiscore updates for players based on their rank
+	 * @param playerEntity
+	 * @return
+	 */
+	private static Duration updateFrequency(PlayerEntity playerEntity)
+	{
+		Integer rank = playerEntity.getRank();
+		if (rank == null || rank == -1)
+		{
+			return Duration.ofDays(7);
+		}
+		else if (rank < 10_000)
+		{
+			return Duration.ofHours(6);
+		}
+		else if (rank < 50_000)
+		{
+			return Duration.ofDays(2);
+		}
+		else if (rank < 100_000)
+		{
+			return Duration.ofDays(5);
+		}
+		else
+		{
+			return Duration.ofDays(7);
 		}
 	}
 }

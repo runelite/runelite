@@ -24,109 +24,266 @@
  */
 package net.runelite.client.plugins.discord;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ComparisonChain;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+import javax.inject.Named;
+import lombok.Data;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.ws.PartyService;
+import static net.runelite.client.ws.PartyService.PARTY_MAX;
 
-public class DiscordState
+/**
+ * This class contains data about currently active discord state.
+ */
+class DiscordState
 {
-	private final List<DiscordGameEventType> lastQueue = new ArrayList<>();
-	private DiscordGameEventType lastEvent;
-	private Instant startOfAction;
-	private Instant lastAction;
-	private DiscordPresence lastPresence;
-	private boolean needsFlush;
+	@Data
+	private static class EventWithTime
+	{
+		private final DiscordGameEventType type;
+		private Instant start;
+		private Instant updated;
+	}
 
+	private final UUID partyId = UUID.randomUUID();
+	private final List<EventWithTime> events = new ArrayList<>();
+	private final DiscordService discordService;
+	private final DiscordConfig config;
+	private final PartyService party;
+	private final String runeliteTitle;
+	private final String runeliteVersion;
+	private DiscordPresence lastPresence;
+
+	@Inject
+	private DiscordState(
+		final DiscordService discordService,
+		final DiscordConfig config,
+		final PartyService party,
+		@Named("runelite.title") final String runeliteTitle,
+		@Named("runelite.version") final String runeliteVersion
+	)
+	{
+		this.discordService = discordService;
+		this.config = config;
+		this.party = party;
+		this.runeliteTitle = runeliteTitle;
+		this.runeliteVersion = runeliteVersion;
+	}
+
+	/**
+	 * Reset state.
+	 */
 	void reset()
 	{
-		lastQueue.clear();
-		lastEvent = null;
-		startOfAction = null;
-		lastAction = null;
+		discordService.clearPresence();
+		events.clear();
 		lastPresence = null;
-		needsFlush = false;
 	}
 
-	void flushEvent(DiscordService discordService)
+	/**
+	 * Force refresh discord presence
+	 */
+	void refresh()
 	{
-		if (lastPresence != null && needsFlush)
+		if (lastPresence == null)
 		{
-			needsFlush = false;
-			discordService.updatePresence(lastPresence);
+			return;
 		}
+
+		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
+			.state(lastPresence.getState())
+			.details(lastPresence.getDetails())
+			.largeImageText(lastPresence.getLargeImageText())
+			.startTimestamp(lastPresence.getStartTimestamp())
+			.smallImageKey(lastPresence.getSmallImageKey())
+			.partyMax(lastPresence.getPartyMax())
+			.partySize(party.getMembers().size());
+
+		if (!party.isInParty() || party.isPartyOwner())
+		{
+			// This is only used to identify the invites on Discord's side. Our party ids are the secret.
+			presenceBuilder.partyId(partyId.toString());
+			presenceBuilder.joinSecret(party.getLocalPartyId().toString());
+		}
+
+		discordService.updatePresence(presenceBuilder.build());
 	}
 
-	void triggerEvent(final DiscordGameEventType eventType, int delay)
+	/**
+	 * Trigger new discord state update.
+	 *
+	 * @param eventType discord event type
+	 */
+	void triggerEvent(final DiscordGameEventType eventType)
 	{
-		final boolean first = startOfAction == null;
-		final boolean changed = eventType != lastEvent && eventType.getIsChanged().apply(lastEvent);
-		boolean reset = false;
+		final Optional<EventWithTime> foundEvent = events.stream().filter(e -> e.type == eventType).findFirst();
+		final EventWithTime event;
 
-		if (first)
+		if (foundEvent.isPresent())
 		{
-			reset = true;
+			event = foundEvent.get();
 		}
-		else if (changed)
+		else
 		{
-			if (eventType.isConsiderDelay())
+			event = new EventWithTime(eventType);
+			event.setStart(Instant.now());
+			events.add(event);
+		}
+
+		event.setUpdated(Instant.now());
+
+		if (event.getType().isShouldClear())
+		{
+			events.removeIf(e -> e.getType() != eventType && e.getType().isShouldBeCleared());
+		}
+
+		if (event.getType().isShouldRestart())
+		{
+			event.setStart(Instant.now());
+		}
+
+		events.sort((a, b) -> ComparisonChain.start()
+			.compare(b.getType().getPriority(), a.getType().getPriority())
+			.compare(b.getUpdated(), a.getUpdated())
+			.result());
+
+		updatePresenceWithLatestEvent();
+	}
+
+	private void updatePresenceWithLatestEvent()
+	{
+		if (events.isEmpty())
+		{
+			reset();
+			return;
+		}
+
+		final EventWithTime event = events.get(0);
+
+		String imageKey = null;
+		String state = null;
+		String details = null;
+
+		for (EventWithTime eventWithTime : events)
+		{
+			if (imageKey == null)
 			{
-				final Duration actionDelay = Duration.ofSeconds(delay);
-				final Duration sinceLastAction = Duration.between(lastAction, Instant.now());
+				imageKey = eventWithTime.getType().getImageKey();
+			}
 
-				if (sinceLastAction.compareTo(actionDelay) >= 0)
+			if (details == null)
+			{
+				details = eventWithTime.getType().getDetails();
+			}
+
+			if (state == null)
+			{
+				state = eventWithTime.getType().getState();
+			}
+
+			if (imageKey != null && details != null && state != null)
+			{
+				break;
+			}
+		}
+
+		// Replace snapshot with + to make tooltip shorter (so it will span only 1 line)
+		final String versionShortHand = runeliteVersion.replace("-SNAPSHOT", "+");
+
+		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
+			.state(MoreObjects.firstNonNull(state, ""))
+			.details(MoreObjects.firstNonNull(details, ""))
+			.largeImageText(runeliteTitle + " v" + versionShortHand)
+			.smallImageKey(imageKey)
+			.partyMax(PARTY_MAX)
+			.partySize(party.getMembers().size());
+
+		final Instant startTime;
+		switch (config.elapsedTimeType())
+		{
+			case HIDDEN:
+				startTime = null;
+				break;
+			case TOTAL:
+				// We are tracking total time spent instead of per activity time so try to find
+				// root event as this indicates start of tracking and find last updated one
+				// to determine correct state we are in
+				startTime = events.stream()
+					.filter(e -> e.getType().isRoot())
+					.sorted((a, b) -> b.getUpdated().compareTo(a.getUpdated()))
+					.map(EventWithTime::getStart)
+					.findFirst()
+					.orElse(event.getStart());
+				break;
+			case ACTIVITY:
+			default:
+				startTime = event.getStart();
+				break;
+		}
+
+		presenceBuilder.startTimestamp(startTime);
+
+		if (!party.isInParty() || party.isPartyOwner())
+		{
+			presenceBuilder.partyId(partyId.toString());
+			presenceBuilder.joinSecret(party.getLocalPartyId().toString());
+		}
+
+		final DiscordPresence presence = presenceBuilder.build();
+
+		// This is to reduce amount of RPC calls
+		if (!presence.equals(lastPresence))
+		{
+			lastPresence = presence;
+			discordService.updatePresence(presence);
+		}
+	}
+
+	/**
+	 * Check for current state timeout and act upon it.
+	 */
+	void checkForTimeout()
+	{
+		if (events.isEmpty())
+		{
+			return;
+		}
+
+		final Duration actionTimeout = Duration.ofMinutes(config.actionTimeout());
+		final Instant now = Instant.now();
+		final AtomicBoolean updatedAny = new AtomicBoolean();
+
+		final boolean removedAny = events.removeAll(events.stream()
+			// Find only events that should time out
+			.filter(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)))
+			// Reset start times on timed events that should restart
+			.peek(event ->
+			{
+				if (event.getType().isShouldRestart())
 				{
-					reset = true;
+					event.setStart(null);
+					updatedAny.set(true);
 				}
-			}
-			else
-			{
-				reset = true;
-			}
-		}
+			})
+			// Now filter out events that should restart as we do not want to remove them
+			.filter(event -> !event.getType().isShouldRestart())
+			.filter(event -> event.getType().isShouldBeCleared())
+			.collect(Collectors.toList())
+		);
 
-		if (reset)
+		if (removedAny || updatedAny.get())
 		{
-			lastQueue.clear();
-			startOfAction = Instant.now();
+			updatePresenceWithLatestEvent();
 		}
-
-		if (!lastQueue.contains(eventType))
-		{
-			lastQueue.add(eventType);
-			lastQueue.sort(Comparator.comparingInt(DiscordGameEventType::getPriority));
-		}
-
-		lastAction = Instant.now();
-		final DiscordGameEventType newEvent = lastQueue.get(lastQueue.size() - 1);
-
-		if (lastEvent != newEvent)
-		{
-			lastEvent = newEvent;
-
-			lastPresence = DiscordPresence.builder()
-				.state(lastEvent.getState())
-				.details(lastEvent.getDetails())
-				.startTimestamp(startOfAction)
-				.smallImageKey(newEvent.getImageKey())
-				.build();
-
-			needsFlush = true;
-		}
-	}
-
-	boolean checkForTimeout(final int timeout)
-	{
-		if (lastAction == null)
-		{
-			return false;
-		}
-
-		final Duration actionTimeout = Duration.ofMinutes(timeout);
-
-		return Instant.now().isAfter(lastAction.plus(actionTimeout));
 	}
 }

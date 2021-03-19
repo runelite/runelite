@@ -33,9 +33,10 @@ import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
@@ -43,16 +44,7 @@ import org.sql2o.quirks.NoQuirks;
 @Configuration
 public class CacheConfiguration
 {
-	@Value("${jdbc.url}")
-	private String jdbcUrl;
-
-	@Value("${jdbc.username}")
-	private String jdbcUsername;
-
-	@Value("${jdbc.password}")
-	private String jdbcPassword;
-
-	@Value("${minio.url}")
+	@Value("${minio.endpoint}")
 	private String minioUrl;
 
 	@Value("${minio.accesskey}")
@@ -62,13 +54,10 @@ public class CacheConfiguration
 	private String minioSecretKey;
 
 	@Bean
+	@ConfigurationProperties(prefix = "datasource.runelite-cache")
 	public DataSource dataSource()
 	{
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setUrl(jdbcUrl);
-		dataSource.setUsername(jdbcUsername);
-		dataSource.setPassword(jdbcPassword);
-		return dataSource;
+		return DataSourceBuilder.create().build();
 	}
 
 	@Bean

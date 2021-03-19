@@ -24,29 +24,35 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
-import net.runelite.api.Client;
+import lombok.Getter;
 import net.runelite.api.Experience;
+import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.StatChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "XP Globes"
+	name = "XP Globes",
+	description = "Show XP globes for the respective skill when gaining XP",
+	tags = {"experience", "levels", "overlay"},
+	enabledByDefault = false
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class XpGlobesPlugin extends Plugin
@@ -54,13 +60,15 @@ public class XpGlobesPlugin extends Plugin
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
 
 	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
+
+	@Getter
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
 
 	@Inject
-	private Client client;
+	private XpGlobesConfig config;
 
 	@Inject
-	private XpGlobesConfig config;
+	private OverlayManager overlayManager;
 
 	@Inject
 	private XpGlobesOverlay overlay;
@@ -72,69 +80,76 @@ public class XpGlobesPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	protected void startUp() throws Exception
 	{
-		return overlay;
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 
 	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
+	public void onStatChanged(StatChanged statChanged)
 	{
-		Skill skill = event.getSkill();
-		int currentXp = client.getSkillExperience(skill);
-		int currentLevel = Experience.getLevelForXp(currentXp);
+		Skill skill = statChanged.getSkill();
+		int currentXp = statChanged.getXp();
+		int currentLevel = statChanged.getLevel();
 		int skillIdx = skill.ordinal();
 		XpGlobe cachedGlobe = globeCache[skillIdx];
 
-		// ExperienceChanged event occurs when stats drain/boost check we have an change to actual xp
+		// StatChanged event occurs when stats drain/boost; check we have an change to actual xp
 		if (cachedGlobe != null && (cachedGlobe.getCurrentXp() >= currentXp))
 		{
 			return;
 		}
 
-		int startingXp = Experience.getXpForLevel(currentLevel);
-		int goalXp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
+		if (currentLevel >= Experience.MAX_REAL_LEVEL)
+		{
+			if (config.hideMaxed())
+			{
+				return;
+			}
+
+			if (config.showVirtualLevel())
+			{
+				currentLevel = Experience.getLevelForXp(currentXp);
+			}
+		}
 
 		if (cachedGlobe != null)
 		{
 			cachedGlobe.setSkill(skill);
 			cachedGlobe.setCurrentXp(currentXp);
 			cachedGlobe.setCurrentLevel(currentLevel);
-			cachedGlobe.setGoalXp(goalXp);
 			cachedGlobe.setTime(Instant.now());
-			cachedGlobe.setSkillProgressRadius(startingXp, currentXp, goalXp);
-
-			this.addXpGlobe(globeCache[skillIdx], MAXIMUM_SHOWN_GLOBES);
+			addXpGlobe(cachedGlobe);
 		}
 		else
 		{
-			//dont draw non cached globes, this is triggered on login to setup all of the initial values
-			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, goalXp);
+			// dont draw non cached globes, this is triggered on login to setup all of the initial values
+			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, Instant.now());
 		}
 	}
 
-	public List<XpGlobe> getXpGlobes()
+	private void addXpGlobe(XpGlobe xpGlobe)
 	{
-		return xpGlobes;
-	}
-
-	public void addXpGlobe(XpGlobe xpGlobe, int maxLength)
-	{
-		if (xpGlobes.contains(xpGlobe))
+		// insert the globe, ordered by skill, if it isn't already in the list to be drawn
+		int idx = Collections.binarySearch(xpGlobes, xpGlobe, Comparator.comparing(XpGlobe::getSkill));
+		if (idx < 0)
 		{
-			//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
-			xpGlobes.remove(xpGlobe);
-		}
-		if (getXpGlobesSize() >= maxLength)
-		{
-			xpGlobes.remove(0);
-		}
-		xpGlobes.add(xpGlobe);
-	}
+			xpGlobes.add(-idx - 1, xpGlobe);
 
-	public int getXpGlobesSize()
-	{
-		return xpGlobes.size();
+			// remove the oldest globe if there are too many
+			if (xpGlobes.size() > MAXIMUM_SHOWN_GLOBES)
+			{
+				xpGlobes.stream()
+					.min(Comparator.comparing(XpGlobe::getTime))
+					.ifPresent(xpGlobes::remove);
+			}
+		}
 	}
 
 	@Schedule(
@@ -145,25 +160,31 @@ public class XpGlobesPlugin extends Plugin
 	{
 		if (!xpGlobes.isEmpty())
 		{
-			Instant currentTime = Instant.now();
-			for (Iterator<XpGlobe> it = xpGlobes.iterator(); it.hasNext();)
-			{
-				XpGlobe globe = it.next();
-				Instant globeCreationTime = globe.getTime();
-				if (currentTime.isBefore(globeCreationTime.plusSeconds(config.xpOrbDuration())))
-				{
-					//if a globe is not expired, stop checking newer globes
-					return;
-				}
-				it.remove();
-			}
+			Instant expireTime = Instant.now()
+				.minusSeconds(config.xpOrbDuration());
+			xpGlobes.removeIf(globe -> globe.getTime().isBefore(expireTime));
 		}
 	}
 
-	public void resetGlobeState()
+	private void resetGlobeState()
 	{
 		xpGlobes.clear();
 		globeCache = new XpGlobe[Skill.values().length - 1];
+	}
+
+	@Subscribe
+	public void onOverlayMenuClicked(final OverlayMenuClicked event)
+	{
+		if (!(event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY
+			&& event.getOverlay() == overlay))
+		{
+			return;
+		}
+
+		if (event.getEntry().getOption().equals(XpGlobesOverlay.FLIP_ACTION))
+		{
+			config.setAlignOrbsVertically(!config.alignOrbsVertically());
+		}
 	}
 
 	@Subscribe

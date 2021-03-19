@@ -28,36 +28,31 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class CameraOverlay extends Overlay
+public class CameraOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final DevToolsPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	CameraOverlay(Client client, DevToolsPlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;
-		panelComponent.setPreferredSize(new Dimension(150, 0));
 		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isToggleCamera())
+		if (!plugin.getCameraPosition().isActive())
 		{
 			return null;
 		}
-
-		panelComponent.getChildren().clear();
 
 		panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Camera")
@@ -93,6 +88,6 @@ public class CameraOverlay extends Overlay
 				.right("" + client.getScale())
 				.build());
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

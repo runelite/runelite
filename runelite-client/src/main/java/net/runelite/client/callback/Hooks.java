@@ -24,8 +24,6 @@
  */
 package net.runelite.client.callback;
 
-import com.google.common.eventbus.EventBus;
-import com.google.inject.Injector;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -33,44 +31,33 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
-import net.runelite.api.Actor;
-import net.runelite.api.ChatMessageType;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicsObject;
-import net.runelite.api.Hitsplat;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MessageNode;
-import net.runelite.api.PacketBuffer;
-import net.runelite.api.Projectile;
-import net.runelite.api.Region;
 import net.runelite.api.RenderOverview;
-import net.runelite.api.TextureProvider;
+import net.runelite.api.Skill;
 import net.runelite.api.WorldMapManager;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.FakeXpDrop;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GraphicsObjectCreated;
-import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.MenuOpened;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.PostItemComposition;
-import net.runelite.api.events.ProjectileMoved;
-import net.runelite.api.events.SetMessage;
+import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.Notifier;
-import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
@@ -80,57 +67,134 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.DeferredEventBus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.runelite.client.util.RSTimeUnit;
 
-public class Hooks
+/**
+ * This class contains field required for mixins and runelite hooks to work.
+ * All remaining method hooks in this class are performance-critical or contain client-specific logic and so they
+ * can't just be placed in mixins or sent through event bus.
+ */
+@Singleton
+@Slf4j
+public class Hooks implements Callbacks
 {
-	// must be public as the mixins use it
-	public static final Logger log = LoggerFactory.getLogger(Hooks.class);
+	private static final long CHECK = RSTimeUnit.GAME_TICKS.getDuration().toNanos(); // ns - how often to run checks
 
-	private static final long CHECK = 600; // ms - how often to run checks
+	private static final GameTick GAME_TICK = new GameTick();
+	private static final BeforeRender BEFORE_RENDER = new BeforeRender();
 
-	private static final Injector injector = RuneLite.getInjector();
-	private static final Client client = injector.getInstance(Client.class);
-	public static final EventBus eventBus = injector.getInstance(EventBus.class); // symbol must match mixin Hook
-	private static final DeferredEventBus _deferredEventBus = injector.getInstance(DeferredEventBus.class);
-	public static final EventBus deferredEventBus = _deferredEventBus; // symbol must match mixin Hook
-	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
-	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
-	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
-	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
-	private static final MouseManager mouseManager = injector.getInstance(MouseManager.class);
-	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
-	private static final ClientThread clientThread = injector.getInstance(ClientThread.class);
-	private static final GameTick tick = new GameTick();
-	private static final DrawManager renderHooks = injector.getInstance(DrawManager.class);
-	private static final Notifier notifier = injector.getInstance(Notifier.class);
-	private static final ClientUI clientUi = injector.getInstance(ClientUI.class);
+	private final Client client;
+	private final OverlayRenderer renderer;
+	private final EventBus eventBus;
+	private final DeferredEventBus deferredEventBus;
+	private final Scheduler scheduler;
+	private final InfoBoxManager infoBoxManager;
+	private final ChatMessageManager chatMessageManager;
+	private final MouseManager mouseManager;
+	private final KeyManager keyManager;
+	private final ClientThread clientThread;
+	private final DrawManager drawManager;
+	private final Notifier notifier;
+	private final ClientUI clientUi;
 
-	private static Dimension lastStretchedDimensions;
-	private static VolatileImage stretchedImage;
-	private static Graphics2D stretchedGraphics;
+	private Dimension lastStretchedDimensions;
+	private VolatileImage stretchedImage;
+	private Graphics2D stretchedGraphics;
 
-	private static long lastCheck;
-	private static boolean shouldProcessGameTick;
+	private long lastCheck;
+	private boolean ignoreNextNpcUpdate;
+	private boolean shouldProcessGameTick;
 
-	public static void clientMainLoop(Client client, boolean arg1)
+	private static MainBufferProvider lastMainBufferProvider;
+	private static Graphics2D lastGraphics;
+
+	/**
+	 * Get the Graphics2D for the MainBufferProvider image
+	 * This caches the Graphics2D instance so it can be reused
+	 * @param mainBufferProvider
+	 * @return
+	 */
+	private static Graphics2D getGraphics(MainBufferProvider mainBufferProvider)
+	{
+		if (lastGraphics == null || lastMainBufferProvider != mainBufferProvider)
+		{
+			if (lastGraphics != null)
+			{
+				log.debug("Graphics reset!");
+				lastGraphics.dispose();
+			}
+
+			lastMainBufferProvider = mainBufferProvider;
+			lastGraphics = (Graphics2D) mainBufferProvider.getImage().getGraphics();
+		}
+		return lastGraphics;
+	}
+
+	@Inject
+	private Hooks(
+		Client client,
+		OverlayRenderer renderer,
+		EventBus eventBus,
+		DeferredEventBus deferredEventBus,
+		Scheduler scheduler,
+		InfoBoxManager infoBoxManager,
+		ChatMessageManager chatMessageManager,
+		MouseManager mouseManager,
+		KeyManager keyManager,
+		ClientThread clientThread,
+		DrawManager drawManager,
+		Notifier notifier,
+		ClientUI clientUi
+	)
+	{
+		this.client = client;
+		this.renderer = renderer;
+		this.eventBus = eventBus;
+		this.deferredEventBus = deferredEventBus;
+		this.scheduler = scheduler;
+		this.infoBoxManager = infoBoxManager;
+		this.chatMessageManager = chatMessageManager;
+		this.mouseManager = mouseManager;
+		this.keyManager = keyManager;
+		this.clientThread = clientThread;
+		this.drawManager = drawManager;
+		this.notifier = notifier;
+		this.clientUi = clientUi;
+		eventBus.register(this);
+	}
+
+	@Override
+	public void post(Object event)
+	{
+		eventBus.post(event);
+	}
+
+	@Override
+	public void postDeferred(Object event)
+	{
+		deferredEventBus.post(event);
+	}
+
+	@Override
+	public void clientMainLoop()
 	{
 		if (shouldProcessGameTick)
 		{
 			shouldProcessGameTick = false;
 
-			_deferredEventBus.replay();
+			deferredEventBus.replay();
 
-			eventBus.post(tick);
+			eventBus.post(GAME_TICK);
 
 			int tick = client.getTickCount();
 			client.setTickCount(tick + 1);
 		}
 
+		eventBus.post(BEFORE_RENDER);
+
 		clientThread.invoke();
 
-		long now = System.currentTimeMillis();
+		long now = System.nanoTime();
 
 		if (now - lastCheck < CHECK)
 		{
@@ -161,11 +225,11 @@ public class Hooks
 	 * When the world map opens it loads about ~100mb of data into memory, which
 	 * represents about half of the total memory allocated by the client.
 	 * This gets cached and never released, which causes GC pressure which can affect
-	 * performance. This method reinitailzies the world map cache, which allows the
-	 * data to be garbage collecged, and causes the map data from disk each time
+	 * performance. This method reinitializes the world map cache, which allows the
+	 * data to be garbage collected, and causes the map data from disk each time
 	 * is it opened.
 	 */
-	private static void checkWorldMap()
+	private void checkWorldMap()
 	{
 		Widget widget = client.getWidget(WORLD_MAP_VIEW);
 
@@ -190,90 +254,85 @@ public class Hooks
 		}
 	}
 
-	public static MouseEvent mousePressed(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMousePressed(mouseEvent);
 	}
 
-	public static MouseEvent mouseReleased(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseReleased(mouseEvent);
 	}
 
-	public static MouseEvent mouseClicked(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseClicked(mouseEvent);
 	}
 
-	public static MouseEvent mouseEntered(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseEntered(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseEntered(mouseEvent);
 	}
 
-	public static MouseEvent mouseExited(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseExited(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseExited(mouseEvent);
 	}
 
-	public static MouseEvent mouseDragged(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseDragged(mouseEvent);
 	}
 
-	public static MouseEvent mouseMoved(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseMoved(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseMoved(mouseEvent);
 	}
 
-	public static MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
+	@Override
+	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
 		return mouseManager.processMouseWheelMoved(event);
 	}
 
-	public static void keyPressed(KeyEvent keyEvent)
+	@Override
+	public void keyPressed(KeyEvent keyEvent)
 	{
 		keyManager.processKeyPressed(keyEvent);
 	}
 
-	public static void keyReleased(KeyEvent keyEvent)
+	@Override
+	public void keyReleased(KeyEvent keyEvent)
 	{
 		keyManager.processKeyReleased(keyEvent);
 	}
 
-	public static void keyTyped(KeyEvent keyEvent)
+	@Override
+	public void keyTyped(KeyEvent keyEvent)
 	{
 		keyManager.processKeyTyped(keyEvent);
 	}
 
-	public static void focusGained(KeyFocusListener l, FocusEvent focusEvent)
-	{
-		FocusChanged focusChanged = new FocusChanged();
-		focusChanged.setFocused(true);
-
-		eventBus.post(focusChanged);
-	}
-
-	public static void focusLost(KeyFocusListener l, FocusEvent focusEvent)
-	{
-		FocusChanged focusChanged = new FocusChanged();
-		focusChanged.setFocused(false);
-
-		eventBus.post(focusChanged);
-	}
-
-	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
+	@Override
+	public void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
 		if (graphics == null)
 		{
 			return;
 		}
 
-		Image image = mainBufferProvider.getImage();
-		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+		final Graphics2D graphics2d = getGraphics(mainBufferProvider);
 
 		try
 		{
-			renderer.render(graphics2d, OverlayLayer.ALWAYS_ON_TOP);
+			renderer.renderOverlayLayer(graphics2d, OverlayLayer.ALWAYS_ON_TOP);
 		}
 		catch (Exception ex)
 		{
@@ -282,8 +341,20 @@ public class Hooks
 
 		notifier.processFlash(graphics2d);
 
+		// Draw clientUI overlays
+		clientUi.paintOverlays(graphics2d);
+
+		if (client.isGpu())
+		{
+			// processDrawComplete gets called on GPU by the gpu plugin at the end of its
+			// drawing cycle, which is later on.
+			return;
+		}
+
 		// Stretch the game image if the user has that enabled
-		if (!client.isResized() && client.isStretchedEnabled())
+		Image image = mainBufferProvider.getImage();
+		final Image finalImage;
+		if (client.isStretchedEnabled())
 		{
 			GraphicsConfiguration gc = clientUi.getGraphicsConfiguration();
 			Dimension stretchedDimensions = client.getStretchedDimensions();
@@ -303,7 +374,7 @@ public class Hooks
 				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
 
 				lastStretchedDimensions = stretchedDimensions;
-				
+
 				/*
 					Fill Canvas before drawing stretched image to prevent artifacts.
 				*/
@@ -312,193 +383,161 @@ public class Hooks
 			}
 
 			stretchedGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					client.isStretchedFast()
-							? RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
-							: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				client.isStretchedFast()
+					? RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
+					: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
 
-			image = stretchedImage;
+			finalImage = stretchedImage;
+		}
+		else
+		{
+			finalImage = image;
 		}
 
 		// Draw the image onto the game canvas
-		graphics.drawImage(image, 0, 0, client.getCanvas());
+		graphics.drawImage(finalImage, 0, 0, client.getCanvas());
 
-		renderHooks.processDrawComplete(image);
-	}
-
-	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)
-	{
-		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
-		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
-
-		try
-		{
-			renderer.render(graphics2d, OverlayLayer.ABOVE_SCENE);
-		}
-		catch (Exception ex)
-		{
-			log.warn("Error during overlay rendering", ex);
-		}
-	}
-
-	public static void drawAboveOverheads(TextureProvider textureProvider, int var1)
-	{
-		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
-		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
-
-		try
-		{
-			renderer.render(graphics2d, OverlayLayer.UNDER_WIDGETS);
-		}
-		catch (Exception ex)
-		{
-			log.warn("Error during overlay rendering", ex);
-		}
-	}
-
-	public static void drawAfterWidgets()
-	{
-		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
-		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
-
-		try
-		{
-			renderer.render(graphics2d, OverlayLayer.ABOVE_WIDGETS);
-		}
-		catch (Exception ex)
-		{
-			log.warn("Error during overlay rendering", ex);
-		}
-	}
-
-	public static boolean menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
-	{
-		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
-		 * I have no idea why, but it does. Their code contains the same conditional statement.
-		 */
-		if (menuAction >= 2000)
-		{
-			menuAction -= 2000;
-		}
-
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setActionParam(actionParam);
-		menuOptionClicked.setMenuOption(menuOption);
-		menuOptionClicked.setMenuTarget(menuTarget);
-		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
-		menuOptionClicked.setId(id);
-		menuOptionClicked.setWidgetId(widgetId);
-
-		log.debug("Menu action clicked: {}", menuOptionClicked);
-
-		eventBus.post(menuOptionClicked);
-
-		return menuOptionClicked.isConsumed();
-	}
-
-	public static void addChatMessage(int type, String name, String message, String sender)
-	{
-		if (log.isDebugEnabled())
-		{
-			log.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
-		}
-
-		ChatMessageType chatMessageType = ChatMessageType.of(type);
-		ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
-
-		eventBus.post(chatMessage);
+		// finalImage is backed by the client buffer which will change soon. make a copy
+		// so that callbacks can safely use it later from threads.
+		drawManager.processDrawComplete(() -> copy(finalImage));
 	}
 
 	/**
-	 * Called when a projectile is set to move towards a point. For
-	 * projectiles that target the ground, like AoE projectiles from
-	 * Lizardman Shamans, this is only called once
-	 *
-	 * @param projectile The projectile being moved
-	 * @param targetX X position of where the projectile is being moved to
-	 * @param targetY Y position of where the projectile is being moved to
-	 * @param targetZ Z position of where the projectile is being moved to
-	 * @param cycle
+	 * Copy an image
+	 * @param src
+	 * @return
 	 */
-	public static void projectileMoved(Projectile projectile, int targetX, int targetY, int targetZ, int cycle)
+	private static Image copy(Image src)
 	{
-		LocalPoint position = new LocalPoint(targetX, targetY);
-		ProjectileMoved projectileMoved = new ProjectileMoved();
-		projectileMoved.setProjectile(projectile);
-		projectileMoved.setPosition(position);
-		projectileMoved.setZ(targetZ);
-		eventBus.post(projectileMoved);
+		final int width = src.getWidth(null);
+		final int height = src.getHeight(null);
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Graphics graphics = image.getGraphics();
+		graphics.drawImage(src, 0, 0, width, height, null);
+		graphics.dispose();
+		return image;
 	}
 
-	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)
+	@Override
+	public void drawScene()
 	{
-		SetMessage setMessage = new SetMessage();
-		setMessage.setMessageNode(messageNode);
-		setMessage.setType(ChatMessageType.of(type));
-		setMessage.setName(name);
-		setMessage.setSender(sender);
-		setMessage.setValue(value);
+		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		Graphics2D graphics2d = getGraphics(bufferProvider);
 
-		eventBus.post(setMessage);
+		try
+		{
+			renderer.renderOverlayLayer(graphics2d, OverlayLayer.ABOVE_SCENE);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+		}
 	}
 
-	public static void onNpcUpdate(boolean var0, PacketBuffer var1)
+	@Override
+	public void drawAboveOverheads()
 	{
-		// The NPC update event seem to run every server tick,
-		// but having the game tick event after all packets
-		// have been processed is typically more useful.
-		shouldProcessGameTick = true;
+		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		Graphics2D graphics2d = getGraphics(bufferProvider);
+
+		try
+		{
+			renderer.renderOverlayLayer(graphics2d, OverlayLayer.UNDER_WIDGETS);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+		}
 	}
 
-	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
+		switch (gameStateChanged.getGameState())
+		{
+			case LOGGING_IN:
+			case HOPPING:
+				ignoreNextNpcUpdate = true;
+		}
 	}
 
-	public static void postItemComposition(ItemComposition itemComposition)
+	@Override
+	public void updateNpcs()
 	{
-		PostItemComposition event = new PostItemComposition();
-		event.setItemComposition(itemComposition);
-		eventBus.post(event);
+		if (ignoreNextNpcUpdate)
+		{
+			// After logging in an NPC update happens outside of the normal game tick, which
+			// is sent prior to skills and vars being bursted, so ignore it.
+			ignoreNextNpcUpdate = false;
+			log.debug("Skipping login updateNpc");
+		}
+		else
+		{
+			// The NPC update event seem to run every server tick,
+			// but having the game tick event after all packets
+			// have been processed is typically more useful.
+			shouldProcessGameTick = true;
+		}
+
+		// Replay deferred events, otherwise if two npc
+		// update packets get processed in one client tick, a
+		// despawn event could be published prior to the
+		// spawn event, which is deferred
+		deferredEventBus.replay();
 	}
 
-	public static void menuOpened(Client client, int var1, int var2)
+	@Override
+	public void drawInterface(int interfaceId, List<WidgetItem> widgetItems)
 	{
-		MenuOpened event = new MenuOpened();
-		event.setMenuEntries(client.getMenuEntries());
-		eventBus.post(event);
+		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		Graphics2D graphics2d = getGraphics(bufferProvider);
+
+		try
+		{
+			renderer.renderAfterInterface(graphics2d, interfaceId, widgetItems);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+		}
 	}
 
-	/**
-	 * Called after a hitsplat has been processed on an actor.
-	 * Note that this event runs even if the hitsplat didn't show up,
-	 * i.e. the actor already had 4 visible hitsplats.
-	 *
-	 * @param actor The actor the hitsplat was applied to
-	 * @param type The hitsplat type (i.e. color)
-	 * @param value The value of the hitsplat (i.e. how high the hit was)
-	 * @param var3
-	 * @param var4
-	 * @param gameCycle The gamecycle the hitsplat was applied on
-	 * @param duration The amount of gamecycles the hitsplat will last for
-	 */
-	public static void onActorHitsplat(Actor actor, int type, int value, int var3, int var4,
-		int gameCycle, int duration)
+	@Override
+	public void drawLayer(Widget layer, List<WidgetItem> widgetItems)
 	{
-		Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value,
-			gameCycle + duration);
+		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
+		Graphics2D graphics2d = getGraphics(bufferProvider);
 
-		HitsplatApplied event = new HitsplatApplied();
-		event.setActor(actor);
-		event.setHitsplat(hitsplat);
-		eventBus.post(event);
+		try
+		{
+			renderer.renderAfterLayer(graphics2d, layer, widgetItems);
+		}
+		catch (Exception ex)
+		{
+			log.warn("Error during overlay rendering", ex);
+		}
 	}
 
-	public static void onGraphicsObjectCreated(GraphicsObject go, int var1, int var2, int var3, int var4, int var5, int var6, int var7)
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
-		GraphicsObjectCreated event = new GraphicsObjectCreated(go);
-		eventBus.post(event);
+		if (!scriptCallbackEvent.getEventName().equals("fakeXpDrop"))
+		{
+			return;
+		}
+
+		final int[] intStack = client.getIntStack();
+		final int intStackSize = client.getIntStackSize();
+
+		final int statId = intStack[intStackSize - 2];
+		final int xp = intStack[intStackSize - 1];
+
+		Skill skill = Skill.values()[statId];
+		FakeXpDrop fakeXpDrop = new FakeXpDrop(
+			skill,
+			xp
+		);
+		eventBus.post(fakeXpDrop);
 	}
 }

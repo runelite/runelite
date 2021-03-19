@@ -34,6 +34,8 @@ public class ProjectileID
 	public static final int CANNONBALL = 53;
 	public static final int GRANITE_CANNONBALL = 1443;
 
+	public static final int TELEKINETIC_SPELL = 143;
+
 	public static final int LIZARDMAN_SHAMAN_AOE = 1293;
 	public static final int CRAZY_ARCHAEOLOGIST_AOE = 1260;
 	public static final int ICE_DEMON_RANGED_AOE = 1324;
@@ -82,4 +84,6 @@ public class ProjectileID
 	public static final int VORKATH_PRAYER_DISABLE = 1471;
 	public static final int VORKATH_VENOM = 1470;
 	public static final int VORKATH_ICE = 350;
+
+	public static final int ZALCANO_PROJECTILE_FIREBALL = 1728;
 }

@@ -36,16 +36,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GrandExchangeOffer;
-import net.runelite.api.GrandExchangeOfferState;
+import static net.runelite.api.GrandExchangeOfferState.BOUGHT;
+import static net.runelite.api.GrandExchangeOfferState.BUYING;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_BUY;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_SELL;
 import static net.runelite.api.GrandExchangeOfferState.EMPTY;
@@ -53,10 +54,10 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
-import net.runelite.client.util.StackFormatter;
-import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.QuantityFormatter;
 
-@Slf4j
 public class GrandExchangeOfferSlot extends JPanel
 {
 	private static final String FACE_CARD = "FACE_CARD";
@@ -65,17 +66,17 @@ public class GrandExchangeOfferSlot extends JPanel
 	private static final ImageIcon RIGHT_ARROW_ICON;
 	private static final ImageIcon LEFT_ARROW_ICON;
 
+	private final GrandExchangePlugin grandExchangePlugin;
+
 	private final JPanel container = new JPanel();
 	private final CardLayout cardLayout = new CardLayout();
 
 	private final JLabel itemIcon = new JLabel();
 	private final JLabel itemName = new JLabel();
 	private final JLabel offerInfo = new JLabel();
-	private final JLabel switchFaceViewIcon = new JLabel();
 
 	private final JLabel itemPrice = new JLabel();
 	private final JLabel offerSpent = new JLabel();
-	private final JLabel switchDetailsViewIcon = new JLabel();
 
 	private final ThinProgressBar progressBar = new ThinProgressBar();
 
@@ -83,31 +84,19 @@ public class GrandExchangeOfferSlot extends JPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				RIGHT_ARROW_ICON = new ImageIcon(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("arrow_right.png")));
-				LEFT_ARROW_ICON = new ImageIcon(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("arrow_left.png")));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		final BufferedImage rightArrow = ImageUtil.alphaOffset(ImageUtil.loadImageResource(GrandExchangeOfferSlot.class, "/util/arrow_right.png"), 0.25f);
+		RIGHT_ARROW_ICON = new ImageIcon(rightArrow);
+		LEFT_ARROW_ICON	= new ImageIcon(ImageUtil.flipImage(rightArrow, true, false));
 	}
 
 	/**
 	 * This (sub)panel is used for each GE slot displayed
 	 * in the sidebar
 	 */
-	GrandExchangeOfferSlot()
+	GrandExchangeOfferSlot(GrandExchangePlugin grandExchangePlugin)
 	{
-		buildPanel();
-	}
+		this.grandExchangePlugin = grandExchangePlugin;
 
-	private void buildPanel()
-	{
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setBorder(new EmptyBorder(7, 0, 0, 0));
@@ -117,30 +106,30 @@ public class GrandExchangeOfferSlot extends JPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				super.mousePressed(mouseEvent);
-				switchPanel();
+				if (SwingUtilities.isLeftMouseButton(mouseEvent))
+				{
+					switchPanel();
+				}
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				super.mouseEntered(mouseEvent);
-				container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
+				container.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				super.mouseExited(mouseEvent);
-				container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			}
 		};
 
 		container.setLayout(cardLayout);
-		container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		JPanel faceCard = new JPanel();
-		faceCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		faceCard.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		faceCard.setLayout(new BorderLayout());
 		faceCard.addMouseListener(ml);
 
@@ -156,13 +145,14 @@ public class GrandExchangeOfferSlot extends JPanel
 		offerInfo.setVerticalAlignment(JLabel.TOP);
 		offerInfo.setFont(FontManager.getRunescapeSmallFont());
 
+		JLabel switchFaceViewIcon = new JLabel();
 		switchFaceViewIcon.setIcon(RIGHT_ARROW_ICON);
 		switchFaceViewIcon.setVerticalAlignment(JLabel.CENTER);
 		switchFaceViewIcon.setHorizontalAlignment(JLabel.CENTER);
 		switchFaceViewIcon.setPreferredSize(new Dimension(30, 45));
 
 		JPanel offerFaceDetails = new JPanel();
-		offerFaceDetails.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		offerFaceDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		offerFaceDetails.setLayout(new GridLayout(2, 1, 0, 2));
 
 		offerFaceDetails.add(itemName);
@@ -173,7 +163,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		faceCard.add(switchFaceViewIcon, BorderLayout.EAST);
 
 		JPanel detailsCard = new JPanel();
-		detailsCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		detailsCard.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		detailsCard.setLayout(new BorderLayout());
 		detailsCard.setBorder(new EmptyBorder(0, 15, 0, 0));
 		detailsCard.addMouseListener(ml);
@@ -186,13 +176,14 @@ public class GrandExchangeOfferSlot extends JPanel
 		offerSpent.setVerticalAlignment(JLabel.TOP);
 		offerSpent.setFont(FontManager.getRunescapeSmallFont());
 
+		JLabel switchDetailsViewIcon = new JLabel();
 		switchDetailsViewIcon.setIcon(LEFT_ARROW_ICON);
 		switchDetailsViewIcon.setVerticalAlignment(JLabel.CENTER);
 		switchDetailsViewIcon.setHorizontalAlignment(JLabel.CENTER);
 		switchDetailsViewIcon.setPreferredSize(new Dimension(30, 45));
 
 		JPanel offerDetails = new JPanel();
-		offerDetails.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		offerDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		offerDetails.setLayout(new GridLayout(2, 1));
 
 		offerDetails.add(itemPrice);
@@ -209,7 +200,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		add(container, BorderLayout.CENTER);
 		add(progressBar, BorderLayout.SOUTH);
 	}
-	
+
 	void updateOffer(ItemComposition offerItem, BufferedImage itemImage, @Nullable GrandExchangeOffer newOffer)
 	{
 		if (newOffer == null || newOffer.getState() == EMPTY)
@@ -223,27 +214,33 @@ public class GrandExchangeOfferSlot extends JPanel
 			itemName.setText(offerItem.getName());
 			itemIcon.setIcon(new ImageIcon(itemImage));
 
-			boolean buying = newOffer.getState() == GrandExchangeOfferState.BOUGHT
-				|| newOffer.getState() == GrandExchangeOfferState.BUYING
-				|| newOffer.getState() == GrandExchangeOfferState.CANCELLED_BUY;
+			boolean buying = newOffer.getState() == BOUGHT
+				|| newOffer.getState() == BUYING
+				|| newOffer.getState() == CANCELLED_BUY;
 
 			String offerState = (buying ? "Bought " : "Sold ")
-				+ StackFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold()) + " / "
-				+ StackFormatter.quantityToRSDecimalStack(newOffer.getTotalQuantity());
+				+ QuantityFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold()) + " / "
+				+ QuantityFormatter.quantityToRSDecimalStack(newOffer.getTotalQuantity());
 
 			offerInfo.setText(offerState);
 
-			itemPrice.setText(htmlLabel("Price each: ", StackFormatter.formatNumber(newOffer.getPrice())));
+			itemPrice.setText(htmlLabel("Price each: ", QuantityFormatter.formatNumber(newOffer.getPrice())));
 
 			String action = buying ? "Spent: " : "Received: ";
 
-			offerSpent.setText(htmlLabel(action, StackFormatter.formatNumber(newOffer.getSpent()) + " / "
-				+ StackFormatter.formatNumber(newOffer.getPrice() * newOffer.getTotalQuantity())));
+			offerSpent.setText(htmlLabel(action, QuantityFormatter.formatNumber(newOffer.getSpent()) + " / "
+				+ QuantityFormatter.formatNumber(newOffer.getPrice() * newOffer.getTotalQuantity())));
 
 			progressBar.setForeground(getProgressColor(newOffer));
 			progressBar.setMaximumValue(newOffer.getTotalQuantity());
 			progressBar.setValue(newOffer.getQuantitySold());
-			progressBar.update();
+
+			final JPopupMenu popupMenu = new JPopupMenu();
+			popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+			final JMenuItem openGeLink = new JMenuItem("Open Grand Exchange website");
+			openGeLink.addActionListener(e -> grandExchangePlugin.openGeLink(offerItem.getName(), offerItem.getId()));
+			popupMenu.add(openGeLink);
 
 			/* Couldn't set the tooltip for the container panel as the children override it, so I'm setting
 			 * the tooltips on the children instead. */
@@ -253,22 +250,22 @@ public class GrandExchangeOfferSlot extends JPanel
 				{
 					JPanel panel = (JPanel) c;
 					panel.setToolTipText(htmlTooltip(((int) progressBar.getPercentage()) + "%"));
+					panel.setComponentPopupMenu(popupMenu);
 				}
 			}
 		}
 
 		revalidate();
-		repaint();
 	}
 
 	private String htmlTooltip(String value)
 	{
-		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>Progress: <span style = 'color:white'>" + value + "</span></body></html>";
+		return "<html><body style = 'color:" + ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>Progress: <span style = 'color:white'>" + value + "</span></body></html>";
 	}
 
 	private String htmlLabel(String key, String value)
 	{
-		return "<html><body style = 'color:white'>" + key + "<span style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + value + "</span></body></html>";
+		return "<html><body style = 'color:white'>" + key + "<span style = 'color:" + ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + value + "</span></body></html>";
 	}
 
 	private void switchPanel()

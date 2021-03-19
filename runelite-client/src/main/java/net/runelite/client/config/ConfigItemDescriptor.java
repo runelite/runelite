@@ -24,24 +24,32 @@
  */
 package net.runelite.client.config;
 
-public class ConfigItemDescriptor
+import lombok.Value;
+
+@Value
+public class ConfigItemDescriptor implements ConfigObject
 {
 	private final ConfigItem item;
 	private final Class<?> type;
+	private final Range range;
+	private final Alpha alpha;
+	private final Units units;
 
-	public ConfigItemDescriptor(ConfigItem item, Class<?> type)
+	@Override
+	public String key()
 	{
-		this.item = item;
-		this.type = type;
+		return item.keyName();
 	}
 
-	public ConfigItem getItem()
+	@Override
+	public String name()
 	{
-		return item;
+		return item.name();
 	}
 
-	public Class<?> getType()
+	@Override
+	public int position()
 	{
-		return type;
+		return item.position();
 	}
 }

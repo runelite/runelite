@@ -24,8 +24,9 @@
  */
 package net.runelite.client.plugins.reportbutton;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -33,31 +34,36 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Report Button"
+	name = "Report Button",
+	description = "Replace the text on the Report button with the current time",
+	tags = {"time", "utc", "clock"}
 )
-@Slf4j
 public class ReportButtonPlugin extends Plugin
 {
 	private static final ZoneId UTC = ZoneId.of("UTC");
 	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
 
-	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
-
+	private DateTimeFormatter timeFormat;
 	private Instant loginTime;
+	private int ticksSinceLogin;
 	private boolean ready;
 
 	@Inject
@@ -78,13 +84,14 @@ public class ReportButtonPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		clientThread.invokeLater(this::updateReportButtonTime);
+		clientThread.invoke(this::updateReportButtonTime);
+		updateTimeFormat();
 	}
 
 	@Override
 	public void shutDown()
 	{
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			Widget reportButton = client.getWidget(WidgetInfo.CHATBOX_REPORT_TEXT);
 			if (reportButton != null)
@@ -95,7 +102,7 @@ public class ReportButtonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();
 
@@ -110,9 +117,30 @@ public class ReportButtonPlugin extends Plugin
 				if (ready)
 				{
 					loginTime = Instant.now();
+					ticksSinceLogin = 0;
 					ready = false;
 				}
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		ticksSinceLogin++;
+
+		if (config.time() == TimeStyle.GAME_TICKS)
+		{
+			updateReportButtonTime();
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("reportButton") && event.getKey().equals("switchTimeFormat"))
+		{
+			updateTimeFormat();
 		}
 	}
 
@@ -152,15 +180,16 @@ public class ReportButtonPlugin extends Plugin
 			case LOGIN_TIME:
 				reportButton.setText(getLoginTime());
 				break;
+			case DATE:
+				reportButton.setText(getDate());
+				break;
+			case GAME_TICKS:
+				reportButton.setText(getGameTicks());
+				break;
 			case OFF:
 				reportButton.setText("Report");
 				break;
 		}
-	}
-
-	private String getLocalTime()
-	{
-		return LocalTime.now().format(DATE_TIME_FORMAT);
 	}
 
 	private String getLoginTime()
@@ -175,15 +204,42 @@ public class ReportButtonPlugin extends Plugin
 		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
+	private String getGameTicks()
+	{
+		return Integer.toString(ticksSinceLogin);
+	}
+
+	private String getLocalTime()
+	{
+		return LocalTime.now().format(timeFormat);
+	}
+
 	private String getUTCTime()
 	{
 		LocalTime time = LocalTime.now(UTC);
-		return time.format(DATE_TIME_FORMAT);
+		return time.format(timeFormat);
 	}
 
 	private String getJagexTime()
 	{
 		LocalTime time = LocalTime.now(JAGEX);
-		return time.format(DATE_TIME_FORMAT);
+		return time.format(timeFormat);
+	}
+
+	private static String getDate()
+	{
+		return DATE_FORMAT.format(new Date());
+	}
+
+	private void updateTimeFormat()
+	{
+		if (config.switchTimeFormat() == TimeFormat.TIME_24H)
+		{
+			timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+		}
+		else
+		{
+			timeFormat = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
+		}
 	}
 }

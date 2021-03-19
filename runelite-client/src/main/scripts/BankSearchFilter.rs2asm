@@ -1,0 +1,74 @@
+.id                 279
+.int_stack_count    1
+.string_stack_count 0
+.int_var_count      2 ; +1 for storage of search filter result
+.string_var_count   2
+   sconst                 ""
+   sstore                 0
+   sconst                 ""
+   sstore                 1
+   invoke                 514
+   iconst                 1
+   if_icmpeq              LABEL8
+   jump                   LABEL34
+LABEL8:
+   get_varc_string        359                ; Skip truncating of varcstr 22 by not calling 280
+   lowercase             ; instead get the var directly and lowercase it
+   sstore                 1
+   sload                  1
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL15
+   ; this is a bank search with no input string. the bank tag plugin uses it to perform its tab searches.
+   iconst                 1                  ; return value - default to true to match anything
+   iload                  0                  ; load item id
+   sconst                 ""                 ; we are not searching, so there is no search string
+   sconst                 "bankSearchFilter" ; push event name
+   runelite_callback                         ; invoke callback
+   pop_int                                   ; pop item id
+   pop_string                                ; pop search string
+   return                                    ; return rv
+   jump                   LABEL34
+LABEL15:
+   iload                  0
+   iconst                 -1
+   if_icmpne              LABEL19
+   jump                   LABEL23
+LABEL19:
+   iload                  0
+   oc_name               
+   lowercase             
+   sstore                 0
+   iconst                 -1                 ; load return value
+   iload                  0                  ; load item id
+   sload                  1                  ; load search string
+   sconst                 "bankSearchFilter" ; push event name
+   runelite_callback     ; invoke callback
+   pop_int               ; pop item id
+   pop_string            ; pop search string
+   istore                 1 ; store return value for the below comparisons
+   iload                  1
+   iconst                 0
+   if_icmpeq              LABEL32 ; return 0
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL30 ; return 1
+LABEL23:
+   sload                  0
+   sload                  1
+   iconst                 0
+   string_indexof_string 
+   iconst                 -1
+   if_icmpne              LABEL30
+   jump                   LABEL32
+LABEL30:
+   iconst                 1
+   return                
+LABEL32:
+   iconst                 0
+   return                
+LABEL34:
+   iconst                 1
+   return                
+   iconst                 -1
+   return                

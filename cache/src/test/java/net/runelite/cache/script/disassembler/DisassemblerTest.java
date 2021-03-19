@@ -27,6 +27,7 @@ package net.runelite.cache.script.disassembler;
 import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.StoreLocation;
 import net.runelite.cache.definitions.ScriptDefinition;
@@ -71,14 +72,14 @@ public class DisassemblerTest
 					continue;
 				}
 
-				ScriptDefinition script = loader.load(0, contents);
+				ScriptDefinition script = loader.load(archive.getArchiveId(), contents);
 
 				File outFile = new File(outDir, archive.getArchiveId() + ".rs2asm");
 
 				Disassembler disassembler = new Disassembler();
 				String out = disassembler.disassemble(script);
 
-				Files.write(out.getBytes(), outFile);
+				Files.write(out.getBytes(StandardCharsets.UTF_8), outFile);
 
 				++count;
 			}

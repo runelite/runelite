@@ -27,8 +27,15 @@ package net.runelite.api;
 /**
  * Represents a message in the chatbox.
  */
-public interface MessageNode
+public interface MessageNode extends Node
 {
+	/**
+	 * Get the id for this message node
+	 *
+	 * @return
+	 */
+	int getId();
+
 	/**
 	 * Gets the type of message.
 	 *
@@ -51,7 +58,7 @@ public interface MessageNode
 	void setName(String name);
 
 	/**
-	 * Gets the sender of the message (ie. clan name).
+	 * Gets the sender of the message. (ie. friends chat name)
 	 *
 	 * @return the message sender
 	 */
@@ -95,4 +102,18 @@ public interface MessageNode
 	 * @param runeLiteFormatMessage the new message format
 	 */
 	void setRuneLiteFormatMessage(String runeLiteFormatMessage);
+
+	/**
+	 * Get the timestamp for the message, in seconds from the unix epoch.
+	 *
+	 * @return
+	 */
+	int getTimestamp();
+
+	/**
+	 * Set the timestamp of the message
+	 *
+	 * @param timestamp
+	 */
+	void setTimestamp(int timestamp);
 }

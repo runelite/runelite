@@ -25,15 +25,12 @@
 package net.runelite.client.plugins.herbiboars;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "herbiboar",
-	name = "Herbiboar",
-	description = "Configuration for the herbiboar plugin"
-)
+@ConfigGroup("herbiboar")
 public interface HerbiboarConfig extends Config
 {
 	@ConfigItem(
@@ -58,6 +55,7 @@ public interface HerbiboarConfig extends Config
 		return false;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 2,
 		keyName = "colorStart",
@@ -80,6 +78,7 @@ public interface HerbiboarConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 4,
 		keyName = "colorTunnel",
@@ -102,6 +101,7 @@ public interface HerbiboarConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 6,
 		keyName = "colorGameObject",
@@ -124,6 +124,7 @@ public interface HerbiboarConfig extends Config
 		return true;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 8,
 		keyName = "colorTrail",

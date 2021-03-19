@@ -25,18 +25,21 @@
  */
 package net.runelite.client.plugins.metronome;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Preferences;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Metronome",
+	description = "Play a sound on a specified tick to aid in efficient skilling",
+	tags = {"skilling", "tick", "timers"},
 	enabledByDefault = false
 )
 public class MetronomePlugin extends Plugin
@@ -56,8 +59,15 @@ public class MetronomePlugin extends Plugin
 		return configManager.getConfig(MetronomePluginConfiguration.class);
 	}
 
+	@Override
+	protected void shutDown()
+	{
+		tickCounter = 0;
+		shouldTock = false;
+	}
+
 	@Subscribe
-	void onTick(GameTick tick)
+	public void onGameTick(GameTick tick)
 	{
 		if (config.tickCount() == 0)
 		{
@@ -66,14 +76,24 @@ public class MetronomePlugin extends Plugin
 
 		if (++tickCounter % config.tickCount() == 0)
 		{
-			if (config.enableTock() && shouldTock)
+			// As playSoundEffect only uses the volume argument when the in-game volume isn't muted, sound effect volume
+			// needs to be set to the value desired for ticks or tocks and afterwards reset to the previous value.
+			Preferences preferences = client.getPreferences();
+			int previousVolume = preferences.getSoundEffectVolume();
+
+			if (shouldTock && config.tockVolume() > 0)
 			{
-				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP);
+				preferences.setSoundEffectVolume(config.tockVolume());
+				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, config.tockVolume());
 			}
-			else
+			else if (config.tickVolume() > 0)
 			{
-				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
+				preferences.setSoundEffectVolume(config.tickVolume());
+				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, config.tickVolume());
 			}
+
+			preferences.setSoundEffectVolume(previousVolume);
+
 			shouldTock = !shouldTock;
 		}
 	}

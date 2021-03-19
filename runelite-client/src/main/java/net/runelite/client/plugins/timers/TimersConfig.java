@@ -27,19 +27,27 @@ package net.runelite.client.plugins.timers;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import java.time.Instant;
 
-@ConfigGroup(
-	keyName = "timers",
-	name = "Timers",
-	description = "Configuration for the timers plugin"
-)
+@ConfigGroup(TimersConfig.GROUP)
 public interface TimersConfig extends Config
 {
+	String GROUP = "timers";
+
 	@ConfigItem(
-		position = 0,
+		keyName = "showHomeMinigameTeleports",
+		name = "Teleport cooldown timers",
+		description = "Configures whether timers for home and minigame teleport cooldowns are displayed"
+	)
+	default boolean showHomeMinigameTeleports()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showAntipoison",
-		name = "Antipoison timer",
-		description = "Configures whether Antipoison timer is displayed"
+		name = "Antipoison/Venom timers",
+		description = "Configures whether timers for poison and venom protection are displayed"
 	)
 	default boolean showAntiPoison()
 	{
@@ -47,73 +55,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "showSuperantipoison",
-		name = "Superantipoison timer",
-		description = "Configures whether Superantipoison timer is displayed"
-	)
-	default boolean showSuperantipoison()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "showAntidotePlus",
-		name = "Antidote+ timer",
-		description = "Configures whether antidote+ timer is displayed"
-	)
-	default boolean showAntidotePlus()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "showAntidotePlusPlus",
-		name = "Antidote++ timer",
-		description = "Configures whether antidote++ timer is displayed"
-	)
-	default boolean showAntidotePlusPlus()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "showSanfew",
-		name = "Sanfew serum timer",
-		description = "Configures whether sanfew serum timer is displayed"
-	)
-	default boolean showSanfew()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "showAntiVenom",
-		name = "Anti-venom timer",
-		description = "Configures whether antivenom timer is displayed"
-	)
-	default boolean showAntiVenom()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "showAntiVenomPlus",
-		name = "Anti-venom+ timer",
-		description = "Configures whether anti venom+ timer is displayed"
-	)
-	default boolean showAntiVenomPlus()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 7,
 		keyName = "showAntiFire",
 		name = "Antifire timer",
 		description = "Configures whether antifire timer is displayed"
@@ -124,40 +65,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
-		keyName = "showExAntiFire",
-		name = "Extended antifire timer",
-		description = "Configures whether extended antifire timer is displayed"
-	)
-	default boolean showExAntiFire()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 9,
-		keyName = "showSuperAntiFire",
-		name = "Super antifire timer",
-		description = "Configures whether super antifire timer is displayed"
-	)
-	default boolean showSuperAntiFire()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 10,
-		keyName = "showExSuperAntifire",
-		name = "Extended super antifire timer",
-		description = "Configures whether extended super antifire timer is displayed"
-	)
-	default boolean showExSuperAntifire()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 11,
 		keyName = "showStamina",
 		name = "Stamina timer",
 		description = "Configures whether stamina timer is displayed"
@@ -168,7 +75,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
 		keyName = "showOverload",
 		name = "Overload timer",
 		description = "Configures whether overload timer is displayed"
@@ -179,7 +85,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
 		keyName = "showPrayerEnhance",
 		name = "Prayer enhance timer",
 		description = "Configures whether prayer enhance timer is displayed"
@@ -190,7 +95,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		keyName = "showDivine",
+		name = "Divine potion timer",
+		description = "Configures whether divine potion timer is displayed"
+	)
+	default boolean showDivine()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showCannon",
 		name = "Cannon timer",
 		description = "Configures whether cannon timer is displayed"
@@ -201,7 +115,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
 		keyName = "showMagicImbue",
 		name = "Magic imbue timer",
 		description = "Configures whether magic imbue timer is displayed"
@@ -212,7 +125,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		keyName = "showCharge",
+		name = "Charge timer",
+		description = "Configures whether to show a timer for the Charge spell"
+	)
+	default boolean showCharge()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showImbuedHeart",
 		name = "Imbued heart timer",
 		description = "Configures whether imbued heart timer is displayed"
@@ -223,10 +145,9 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
 		keyName = "showVengeance",
 		name = "Vengeance timer",
-		description = "Configures whether vengeance timer is displayed"
+		description = "Configures whether vengeance and vengeance other timer is displayed"
 	)
 	default boolean showVengeance()
 	{
@@ -234,18 +155,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 18,
-		keyName = "showVengeanceOther",
-		name = "Vengeance Other timer",
-		description = "Configures whether vengeance other timer is displayed"
+		keyName = "showVengeanceActive",
+		name = "Vengeance active",
+		description = "Configures whether an indicator for vengeance being active is displayed"
 	)
-	default boolean showVengeanceOther()
+	default boolean showVengeanceActive()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		position = 19,
 		keyName = "showTeleblock",
 		name = "Teleblock timer",
 		description = "Configures whether teleblock timer is displayed"
@@ -256,7 +175,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 20,
 		keyName = "showFreezes",
 		name = "Freeze timer",
 		description = "Configures whether freeze timer is displayed"
@@ -267,12 +185,81 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 21,
 		keyName = "showGodWarsAltar",
 		name = "God wars altar timer",
 		description = "Configures whether god wars altar timer is displayed"
 	)
 	default boolean showGodWarsAltar()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showTzhaarTimers",
+		name = "Fight Caves and Inferno timers",
+		description = "Display elapsed time in the Fight Caves and Inferno"
+	)
+	default boolean showTzhaarTimers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "tzhaarStartTime",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	Instant tzhaarStartTime();
+
+	@ConfigItem(
+		keyName = "tzhaarStartTime",
+		name = "",
+		description = ""
+	)
+	void tzhaarStartTime(Instant tzhaarStartTime);
+
+	@ConfigItem(
+		keyName = "tzhaarLastTime",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	Instant tzhaarLastTime();
+
+	@ConfigItem(
+		keyName = "tzhaarLastTime",
+		name = "",
+		description = ""
+	)
+	void tzhaarLastTime(Instant tzhaarLastTime);
+
+	@ConfigItem(
+		keyName = "showStaffOfTheDead",
+		name = "Staff of the Dead timer",
+		description = "Configures whether staff of the dead timer is displayed"
+	)
+	default boolean showStaffOfTheDead()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showAbyssalSireStun",
+		name = "Abyssal Sire stun timer",
+		description = "Configures whether Abyssal Sire stun timer is displayed"
+	)
+	default boolean showAbyssalSireStun()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDfsSpecial",
+		name = "Dragonfire Shield special timer",
+		description = "Configures whether the special attack cooldown timer for the Dragonfire Shield is displayed"
+	)
+	default boolean showDFSSpecial()
 	{
 		return true;
 	}

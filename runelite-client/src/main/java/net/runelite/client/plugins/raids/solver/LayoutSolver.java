@@ -55,15 +55,9 @@ public class LayoutSolver
 	private static final Pattern regex = Pattern.compile("^([A-Z]*)\\.([A-Z]*) - #([A-Z]*)#([A-Z]*)$");
 	private static final String[] codes =
 	{
-		"CFSCP.PCSCF - #ENWWWS#NEESEN",
-		"CFSCPC.PCSCPF - #WSEENES#WWWNEEE",
-		"CSFCP.CSCPF - #ENESEN#WWWSEE",
-		"CSPFC.CCSSF - #NEESEN#WSWWNE",
-		"FCPCC.PSCSF - #WWWSEE#ENWWSW",
 		"FSCCP.PCSCF - #WNWSWN#ESEENW",
 		"FSCCS.PCPSF - #WSEEEN#WSWNWS",
 		"FSCPC.CSCPF - #WNWWSE#EENWWW",
-		"PCSFC.PCSCF - #WNEEES#NWSWNW",
 		"SCCFC.PSCSF - #EEENWW#WSEEEN",
 		"SCCFP.CCSPF - #NESEEN#WSWNWS",
 		"SCFCP.CCSPF - #ESEENW#ESWWNW",
@@ -81,6 +75,12 @@ public class LayoutSolver
 		"SPCFC.CSPCF - #WWNEEE#WSWNWS",
 		"SPCFC.SCCPF - #ESENES#WWWNEE",
 		"SPSFP.CCCSF - #NWSWWN#ESEENW",
+		"SCFCP.CSCPF - #ENESEN#WWWSEE",
+		"SCPFC.PCSCF - #WNEEES#NWSWNW",
+		"SFCCPC.PCSCPF - #WSEENES#WWWNEEE",
+		"FSPCC.PSCCF - #WWWSEE#ENWWSW",
+		"FSCCP.PCSCF - #ENWWWS#NEESEN",
+		"SCPFC.CCSSF - #NEESEN#WSWWNE",
 	};
 
 	public LayoutSolver()

@@ -29,18 +29,17 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
-import net.runelite.api.GameObject;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
 import static net.runelite.api.ObjectID.CRATE_18506;
 import static net.runelite.api.ObjectID.CRATE_2620;
 import static net.runelite.api.ObjectID.CRATE_354;
 import static net.runelite.api.ObjectID.CRATE_357;
+import static net.runelite.api.ObjectID.CRATE_6616;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
@@ -53,43 +52,50 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class MapClue extends ClueScroll implements ObjectClueScroll
 {
+	public static final String CHAMPIONS_GUILD = "West of the Champions' Guild";
+	public static final String VARROCK_EAST_MINE = "Outside Varrock East Mine";
+	public static final String STANDING_STONES = "At the standing stones north of Falador";
+	public static final String WIZARDS_TOWER_DIS = "On the south side of the Wizard's Tower (DIS)";
+	public static final String SOUTH_OF_DRAYNOR_BANK = "South of Draynor Village Bank";
+
 	private static final Set<MapClue> CLUES = ImmutableSet.of(
-		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0)),
-		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0)),
-		new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0)),
-		new MapClue(CLUE_SCROLL_EASY_2719, new WorldPoint(3043, 3398, 0)),
-		new MapClue(CLUE_SCROLL_EASY_3516, new WorldPoint(2612, 3482, 0)),
-		new MapClue(CLUE_SCROLL_EASY_3518, new WorldPoint(3110, 3152, 0)),
-		new MapClue(CLUE_SCROLL_EASY_7236, new WorldPoint(2970, 3415, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_2827, new WorldPoint(3091, 3227, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_3596, new WorldPoint(2907, 3295, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_3598, new WorldPoint(2658, 3488, 0), CRATE_357),
-		new MapClue(CLUE_SCROLL_MEDIUM_3599, new WorldPoint(2651, 3231, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_3601, new WorldPoint(2565, 3248, 0), CRATE_354),
-		new MapClue(CLUE_SCROLL_MEDIUM_3602, new WorldPoint(2924, 3210, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_7286, new WorldPoint(2536, 3865, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_7288, new WorldPoint(3434, 3265, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_7290, new WorldPoint(2454, 3230, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_7292, new WorldPoint(2578, 3597, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_7294, new WorldPoint(2666, 3562, 0)),
-		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3503, 0), CRATE_2620),
-		new MapClue(CLUE_SCROLL_HARD_2729, new WorldPoint(3190, 3963, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2615, 3078, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(2457, 3182, 0), CRATE_18506),
-		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3628, 0), CRATE_354),
-		new MapClue(CLUE_SCROLL_HARD_7239, new WorldPoint(3021, 3912, 0)),
-		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19782, new WorldPoint(2953, 9523, 1)),
-		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0))
+		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0), "Al Kharid mine"),
+		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0), CHAMPIONS_GUILD),
+		new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0), VARROCK_EAST_MINE),
+		new MapClue(CLUE_SCROLL_EASY_2719, new WorldPoint(3043, 3398, 0), STANDING_STONES),
+		new MapClue(CLUE_SCROLL_EASY_3516, new WorldPoint(2612, 3482, 0), "Brother Galahad's house, West of McGrubor's Wood."),
+		new MapClue(CLUE_SCROLL_EASY_3518, new WorldPoint(3110, 3152, 0), WIZARDS_TOWER_DIS),
+		new MapClue(CLUE_SCROLL_EASY_7236, new WorldPoint(2970, 3415, 0), "North of Falador."),
+		new MapClue(CLUE_SCROLL_MEDIUM_2827, new WorldPoint(3091, 3227, 0), SOUTH_OF_DRAYNOR_BANK),
+		new MapClue(CLUE_SCROLL_MEDIUM_3596, new WorldPoint(2907, 3295, 0), "West of the Crafting Guild"),
+		new MapClue(CLUE_SCROLL_MEDIUM_3598, new WorldPoint(2658, 3488, 0), CRATE_357, "The crate in McGrubor's Wood. Fairy ring ALS"),
+		new MapClue(CLUE_SCROLL_MEDIUM_3599, new WorldPoint(2651, 3231, 0), "North of the Tower of Life. Fairy ring DJP"),
+		new MapClue(CLUE_SCROLL_MEDIUM_3601, new WorldPoint(2565, 3248, 0), CRATE_354, "The crate west of the Clocktower."),
+		new MapClue(CLUE_SCROLL_MEDIUM_3602, new WorldPoint(2924, 3210, 0), "Behind the Chemist's house in Rimmington."),
+		new MapClue(CLUE_SCROLL_MEDIUM_7286, new WorldPoint(2536, 3865, 0), "Miscellania. Fairy ring CIP"),
+		new MapClue(CLUE_SCROLL_MEDIUM_7288, new WorldPoint(3434, 3265, 0), "Mort Myre Swamp, west of Mort'ton. Fairy ring BIP"),
+		new MapClue(CLUE_SCROLL_MEDIUM_7290, new WorldPoint(2454, 3230, 0), "At the entrance to the Ourania Cave."),
+		new MapClue(CLUE_SCROLL_MEDIUM_7292, new WorldPoint(2578, 3597, 0), "South-east of the Lighthouse. Fairy ring ALP"),
+		new MapClue(CLUE_SCROLL_MEDIUM_7294, new WorldPoint(2666, 3562, 0), "Between Seers' Village and Rellekka. South-west of Fairy ring CJR"),
+		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3503, 0), CRATE_2620, "A crate in the Lumber Yard, north-east of Varrock."),
+		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2615, 3078, 0), "Yanille anvils, south of the bank. You can dig from inside the building."),
+		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0), "In the western section of West Ardougne."),
+		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(2457, 3182, 0), CRATE_18506, "In a crate by the stairs to the Observatory Dungeon."),
+		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3628, 0), CRATE_354, "In a crate at the Dark Warriors' Fortress in level 14 Wilderness."),
+		new MapClue(CLUE_SCROLL_HARD_7239, new WorldPoint(3021, 3912, 0), "South-east of the Wilderness Agility Course in level 50 Wilderness."),
+		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0), "South of the Legends' Guild. Fairy ring BLR"),
+		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0), "South-west of Tree Gnome Village."),
+		new MapClue(CLUE_SCROLL_ELITE_19782, new WorldPoint(2953, 9523, 1), "In the Mogre Camp, near Port Khazard. You require a Diving Apparatus and a Fishbowl Helmet"),
+		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0), "Zul-Andra. Fairy ring BJS"),
+		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0), "At the Soul Altar, north-east of the Arceuus essence mine."),
+		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0), "East of Burgh de Rott."),
+		new MapClue(CLUE_SCROLL_ELITE_19786, new WorldPoint(2703, 2716, 0), CRATE_6616, "The crate in south-western Ape Atoll")
 	);
 
-	private int itemId;
-	private WorldPoint location;
-	private int objectId;
+	private final int itemId;
+	private final WorldPoint location;
+	private final int objectId;
+	private final String description;
 
 	private MapClue(int itemId, WorldPoint location)
 	{
@@ -98,15 +104,31 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 
 	private MapClue(int itemId, WorldPoint location, int objectId)
 	{
+		this(itemId, location, objectId, null);
+	}
+
+	MapClue(int itemId, WorldPoint location, String description)
+	{
+		this(itemId, location, -1, description);
+	}
+
+	private MapClue(int itemId, WorldPoint location, int objectId, String description)
+	{
 		this.itemId = itemId;
 		this.location = location;
 		this.objectId = objectId;
+		this.description = description;
+		setRequiresSpade(objectId == -1);
 	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Map Clue").build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Click the clue scroll along the edge of your world map to see your destination.")
+			.build());
 
 		if (objectId != -1)
 		{
@@ -129,6 +151,14 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 				.left("Travel to the destination and dig on the marked tile.")
 				.build());
 		}
+
+		if (description != null)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(description)
+				.build());
+		}
 	}
 
 	@Override
@@ -148,19 +178,19 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 
 			if (plugin.getObjectsToMark() != null)
 			{
-				for (GameObject gameObject : plugin.getObjectsToMark())
+				for (TileObject gameObject : plugin.getObjectsToMark())
 				{
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 						CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
 
-					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), CLUE_SCROLL_IMAGE, IMAGE_Z_OFFSET);
+					OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), plugin.getClueScrollImage(), IMAGE_Z_OFFSET);
 				}
 			}
 		}
 		// Mark tile
 		else
 		{
-			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 		}
 	}
 
@@ -175,5 +205,11 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		}
 
 		return null;
+	}
+
+	@Override
+	public int[] getObjectIds()
+	{
+		return new int[] {objectId};
 	}
 }

@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "attackIndicator",
-	name = "Attack Styles",
-	description = "Configuration for the attack styles plugin"
-)
+@ConfigGroup("attackIndicator")
 public interface AttackStylesConfig extends Config
 {
 	@ConfigItem(
@@ -102,10 +98,21 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "hideAutoRetaliate",
+		name = "Hide auto retaliate",
+		description = "Hide auto retaliate from the combat options tab",
+		position = 7
+	)
+	default boolean hideAutoRetaliate()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "removeWarnedStyles",
 		name = "Remove warned styles",
 		description = "Remove warned styles from the combat options tab",
-		position = 7
+		position = 8
 	)
 	default boolean removeWarnedStyles()
 	{

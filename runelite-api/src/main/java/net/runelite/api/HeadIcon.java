@@ -54,7 +54,7 @@ public enum HeadIcon
 	 */
 	REDEMPTION,
 	/**
-	 * Protect from range and mage (ie. used by Kalphite Queen).
+	 * Protect from range and mage. (ie. used by Kalphite Queen)
 	 */
 	RANGE_MAGE
 }

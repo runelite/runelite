@@ -1,0 +1,16 @@
+---
+# Database
+datasource:
+  runelite-cache:
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+    url: jdbc:mysql://localhost/runelite-cache
+    username: runelite
+    password: runelite
+
+# Minio client storage for cache
+minio:
+  endpoint: http://localhost:9000
+  accesskey: AM54M27O4WZK65N6F8IP
+  secretkey: /PZCxzmsJzwCHYlogcymuprniGCaaLUOET2n6yMP
+  bucket: runelite

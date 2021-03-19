@@ -128,6 +128,12 @@
     },
     {
       "level": 70,
+      "icon": 1761,
+      "name": "Soft Clay",
+      "xp": 5
+    },
+    {
+      "level": 70,
       "icon": 449,
       "name": "Adamantite Ore",
       "xp": 95

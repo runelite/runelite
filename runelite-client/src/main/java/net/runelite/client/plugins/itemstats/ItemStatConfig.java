@@ -29,19 +29,44 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "itemstat",
-	name = "Item Stats",
-	description = "Show stat changes on items"
-)
+@ConfigGroup("itemstat")
 public interface ItemStatConfig extends Config
 {
+	@ConfigItem(
+		keyName = "consumableStats",
+		name = "Enable consumable stats",
+		description = "Enables tooltips for consumable items (food, boosts)"
+	)
+	default boolean consumableStats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "equipmentStats",
+		name = "Enable equipment stats",
+		description = "Enables tooltips for equipment items (combat bonuses, weight, prayer bonuses)"
+	)
+	default boolean equipmentStats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "geStats",
+		name = "Enable GE item information",
+		description = "Shows an item information panel when buying items in the GE"
+	)
+	default boolean geStats()
+	{
+		return true;
+	}
+
 	@ConfigItem(
 		keyName = "relative",
 		name = "Show Relative",
 		description = "Show relative stat change in tooltip"
 	)
-
 	default boolean relative()
 	{
 		return true;
@@ -52,7 +77,6 @@ public interface ItemStatConfig extends Config
 		name = "Show Absolute",
 		description = "Show absolute stat change in tooltip"
 	)
-
 	default boolean absolute()
 	{
 		return true;
@@ -63,8 +87,37 @@ public interface ItemStatConfig extends Config
 		name = "Show Theoretical",
 		description = "Show theoretical stat change in tooltip"
 	)
-
 	default boolean theoretical()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showWeight",
+		name = "Show Weight",
+		description = "Show weight in tooltip"
+	)
+	default boolean showWeight()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showStatsInBank",
+		name = "Show Stats In Bank",
+		description = "Show item stats on bank items tooltip"
+	)
+	default boolean showStatsInBank()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "alwaysShowBaseStats",
+		name = "Always Show Base Stats",
+		description = "Always include the base items stats in the tooltip"
+	)
+	default boolean alwaysShowBaseStats()
 	{
 		return false;
 	}
@@ -83,14 +136,13 @@ public interface ItemStatConfig extends Config
 	@ConfigItem(
 		keyName = "colorBetterSomecapped",
 		name = "Better (Some capped)",
-		description = "Color to show when some stat changes are capped, but some ar not",
+		description = "Color to show when some stat changes are capped, but some are not",
 		position = 11
 	)
 	default Color colorBetterSomeCapped()
 	{
 		return new Color(0x9CEE33);
 	}
-
 
 	@ConfigItem(
 		keyName = "colorBetterCapped",
@@ -102,6 +154,7 @@ public interface ItemStatConfig extends Config
 	{
 		return new Color(0xEEEE33);
 	}
+
 	@ConfigItem(
 		keyName = "colorNoChange",
 		name = "No change",

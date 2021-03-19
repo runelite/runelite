@@ -28,10 +28,6 @@ public class Instruction
 {
 	private final int opcode;
 	private String name;
-	private int intStackPops;
-	private int stringStackPops;
-	private int intStackPushes;
-	private int stringStackPushes;
 
 	public Instruction(int opcode)
 	{
@@ -51,45 +47,5 @@ public class Instruction
 	public void setName(String name)
 	{
 		this.name = name;
-	}
-
-	public int getIntStackPops()
-	{
-		return intStackPops;
-	}
-
-	public void setIntStackPops(int intStackPops)
-	{
-		this.intStackPops = intStackPops;
-	}
-
-	public int getStringStackPops()
-	{
-		return stringStackPops;
-	}
-
-	public void setStringStackPops(int stringStackPops)
-	{
-		this.stringStackPops = stringStackPops;
-	}
-
-	public int getIntStackPushes()
-	{
-		return intStackPushes;
-	}
-
-	public void setIntStackPushes(int intStackPushes)
-	{
-		this.intStackPushes = intStackPushes;
-	}
-
-	public int getStringStackPushes()
-	{
-		return stringStackPushes;
-	}
-
-	public void setStringStackPushes(int stringStackPushes)
-	{
-		this.stringStackPushes = stringStackPushes;
 	}
 }

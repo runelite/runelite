@@ -33,7 +33,6 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -62,6 +61,7 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 	{
 		this.text = text;
 		this.location = location;
+		setRequiresSpade(true);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 			return;
 		}
 
-		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+		OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 	}
 
 	public static FairyRingClue forText(String text)

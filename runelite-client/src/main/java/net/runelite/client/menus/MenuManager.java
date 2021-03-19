@@ -25,33 +25,25 @@
 package net.runelite.client.menus;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.NpcActionChanged;
-import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.util.Text;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 
 @Singleton
 @Slf4j
@@ -63,58 +55,20 @@ public class MenuManager
 	private static final int IDX_LOWER = 4;
 	private static final int IDX_UPPER = 8;
 
-	private final Provider<Client> clientProvider;
+	private final Client client;
 	private final EventBus eventBus;
 
 	//Maps the indexes that are being used to the menu option.
 	private final Map<Integer, String> playerMenuIndexMap = new HashMap<>();
 	//Used to manage custom non-player menu options
-	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = HashMultimap.create();
-	private final Set<String> npcMenuOptions = new HashSet<>();
+	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = LinkedHashMultimap.create();
 
 	@Inject
-	public MenuManager(Provider<Client> clientProvider, EventBus eventBus)
+	private MenuManager(Client client, EventBus eventBus)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 		this.eventBus = eventBus;
-	}
-
-	public void addNpcMenuOption(String option)
-	{
-		npcMenuOptions.add(option);
-
-		// add to surrounding npcs
-		Client client = clientProvider.get();
-
-		if (client == null)
-		{
-			return;
-		}
-
-		for (NPC npc : client.getNpcs())
-		{
-			NPCComposition composition = npc.getComposition();
-			addNpcOption(composition, option);
-		}
-	}
-
-	public void removeNpcMenuOption(String option)
-	{
-		npcMenuOptions.remove(option);
-
-		// remove this option from all npc compositions
-		Client client = clientProvider.get();
-
-		if (client == null)
-		{
-			return;
-		}
-
-		for (NPC npc : client.getNpcs())
-		{
-			NPCComposition composition = npc.getComposition();
-			removeNpcOption(composition, option);
-		}
+		eventBus.register(this);
 	}
 
 	/**
@@ -141,13 +95,6 @@ public class MenuManager
 
 	private boolean menuContainsCustomMenu(WidgetMenuOption customMenuOption)
 	{
-		Client client = clientProvider.get();
-
-		if (client == null)
-		{
-			return false;
-		}
-
 		for (MenuEntry menuEntry : client.getMenuEntries())
 		{
 			String option = menuEntry.getOption();
@@ -164,14 +111,13 @@ public class MenuManager
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		int widgetId = event.getActionParam1();
-		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
-		Client client = clientProvider.get();
-
-		if (client == null)
+		if (client.getSpellSelected() || event.getType() != MenuAction.CC_OP.getId())
 		{
 			return;
 		}
+
+		int widgetId = event.getActionParam1();
+		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
 
 		for (WidgetMenuOption currentMenu : options)
 		{
@@ -243,61 +189,11 @@ public class MenuManager
 	}
 
 	@Subscribe
-	public void onNpcActionChanged(NpcActionChanged event)
-	{
-		NPCComposition composition = event.getNpcComposition();
-		for (String npcOption : npcMenuOptions)
-		{
-			addNpcOption(composition, npcOption);
-		}
-	}
-
-	private void addNpcOption(NPCComposition composition, String npcOption)
-	{
-		String[] actions = composition.getActions();
-		int unused = -1;
-		for (int i = 0; i < actions.length; ++i)
-		{
-			if (actions[i] == null && unused == -1)
-			{
-				unused = i;
-			}
-			else if (actions[i] != null && actions[i].equals(npcOption))
-			{
-				return;
-			}
-		}
-		if (unused == -1)
-		{
-			return;
-		}
-		actions[unused] = npcOption;
-	}
-
-	private void removeNpcOption(NPCComposition composition, String npcOption)
-	{
-		String[] actions = composition.getActions();
-
-		if (composition.getActions() == null)
-		{
-			return;
-		}
-
-		for (int i = 0; i < actions.length; ++i)
-		{
-			if (actions[i] != null && actions[i].equals(npcOption))
-			{
-				actions[i] = null;
-			}
-		}
-	}
-
-	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() != MenuAction.RUNELITE)
 		{
-			return; // not a player menu
+			return;
 		}
 
 		int widgetId = event.getWidgetId();
@@ -313,66 +209,32 @@ public class MenuManager
 				customMenu.setMenuTarget(event.getMenuTarget());
 				customMenu.setWidget(curMenuOption.getWidget());
 				eventBus.post(customMenu);
-				return; // don't continue because it's not a player option
+				return;
 			}
 		}
-
-		String target = event.getMenuTarget();
-
-		// removes tags and level from player names for example:
-		// <col=ffffff>username<col=40ff00>  (level-42) or <col=ffffff><img=2>username</col>
-		String username = Text.removeTags(target).split("[(]")[0].trim();
-
-		PlayerMenuOptionClicked playerMenuOptionClicked = new PlayerMenuOptionClicked();
-		playerMenuOptionClicked.setMenuOption(event.getMenuOption());
-		playerMenuOptionClicked.setMenuTarget(username);
-
-		eventBus.post(playerMenuOptionClicked);
 	}
 
 	private void addPlayerMenuItem(int playerOptionIndex, String menuText)
 	{
-		Client client = clientProvider.get();
-
-		if (client == null)
-		{
-			return;
-		}
-
 		client.getPlayerOptions()[playerOptionIndex] = menuText;
 		client.getPlayerOptionsPriorities()[playerOptionIndex] = true;
-		client.getPlayerMenuTypes()[playerOptionIndex] = MenuAction.RUNELITE.getId();
+		client.getPlayerMenuTypes()[playerOptionIndex] = MenuAction.RUNELITE_PLAYER.getId();
 
 		playerMenuIndexMap.put(playerOptionIndex, menuText);
 	}
 
 	private void removePlayerMenuItem(int playerOptionIndex)
 	{
-		Client client = clientProvider.get();
-
-		if (client == null)
-		{
-			return;
-		}
-
 		client.getPlayerOptions()[playerOptionIndex] = null;
 		playerMenuIndexMap.remove(playerOptionIndex);
 	}
 
 	/**
 	 * Find the next empty player menu slot index
-	 *
-	 * @return
 	 */
 	private int findEmptyPlayerMenuIndex()
 	{
 		int index = IDX_LOWER;
-		Client client = clientProvider.get();
-
-		if (client == null)
-		{
-			return IDX_UPPER;
-		}
 
 		String[] playerOptions = client.getPlayerOptions();
 		while (index < IDX_UPPER && playerOptions[index] != null)

@@ -26,7 +26,6 @@ package net.runelite.client.ui.overlay.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -37,23 +36,28 @@ import lombok.Setter;
 
 public class PanelComponent implements LayoutableRenderableEntity
 {
-	public enum Orientation
-	{
-		HORIZONTAL,
-		VERTICAL;
-	}
+	@Getter
+	private final Rectangle bounds = new Rectangle();
 
 	@Setter
-	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
+	private Point preferredLocation = new Point();
 
 	@Setter
+	@Getter
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
+	@Setter
 	@Getter
-	private List<LayoutableRenderableEntity> children = new ArrayList<>();
+	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
+
+	@Getter
+	private final List<LayoutableRenderableEntity> children = new ArrayList<>();
 
 	@Setter
-	private Orientation orientation = Orientation.VERTICAL;
+	private ComponentOrientation orientation = ComponentOrientation.VERTICAL;
+
+	@Setter
+	private boolean wrap = false;
 
 	@Setter
 	private Rectangle border = new Rectangle(
@@ -75,21 +79,23 @@ public class PanelComponent implements LayoutableRenderableEntity
 			return null;
 		}
 
-		final FontMetrics metrics = graphics.getFontMetrics();
-
-		// Render background
+		// Calculate panel dimension
 		final Dimension dimension = new Dimension(
 			border.x + childDimensions.width + border.width,
 			border.y + childDimensions.height + border.height);
 
-		final BackgroundComponent backgroundComponent = new BackgroundComponent();
-		backgroundComponent.setRectangle(new Rectangle(dimension));
-		backgroundComponent.setBackgroundColor(backgroundColor);
-		backgroundComponent.render(graphics);
+		// Render background
+		if (backgroundColor != null)
+		{
+			final BackgroundComponent backgroundComponent = new BackgroundComponent();
+			backgroundComponent.setRectangle(new Rectangle(preferredLocation, dimension));
+			backgroundComponent.setBackgroundColor(backgroundColor);
+			backgroundComponent.render(graphics);
+		}
 
 		// Offset children
-		final int baseX = border.x;
-		final int baseY = border.y + metrics.getHeight();
+		final int baseX = preferredLocation.x + border.x;
+		final int baseY = preferredLocation.y + border.y;
 		int width = 0;
 		int height = 0;
 		int x = baseX;
@@ -100,29 +106,29 @@ public class PanelComponent implements LayoutableRenderableEntity
 			preferredSize.width - border.x - border.width,
 			preferredSize.height - border.y - border.height);
 
-		// Adjust preferred size of children based on orientation and children
-		// sizes exceeding the parent size
-		switch (orientation)
-		{
-			case VERTICAL:
-				childPreferredSize.setSize(
-					Math.max(childDimensions.width, childPreferredSize.width),
-					childPreferredSize.height);
-				break;
-			case HORIZONTAL:
-				childPreferredSize.setSize(
-					childPreferredSize.width,
-					Math.max(childDimensions.height, childPreferredSize.height));
-				break;
-		}
+		// Calculate max width/height for infoboxes
+		int totalHeight = 0;
+		int totalWidth = 0;
 
 		// Render all children
 		for (final LayoutableRenderableEntity child : children)
 		{
-			child.setPreferredSize(childPreferredSize);
-			graphics.translate(x, y);
+			// Correctly propagate child dimensions based on orientation and wrapping
+			if (!wrap)
+			{
+				switch (orientation)
+				{
+					case VERTICAL:
+						child.setPreferredSize(new Dimension(childPreferredSize.width, 0));
+						break;
+					case HORIZONTAL:
+						child.setPreferredSize(new Dimension(0, childPreferredSize.height));
+						break;
+				}
+			}
+
+			child.setPreferredLocation(new Point(x, y));
 			final Dimension childDimension = child.render(graphics);
-			graphics.translate(-x, -y);
 
 			switch (orientation)
 			{
@@ -137,15 +143,63 @@ public class PanelComponent implements LayoutableRenderableEntity
 					height = Math.max(height, childDimension.height);
 					break;
 			}
+
+			// Calculate total size
+			totalWidth = Math.max(totalWidth, width);
+			totalHeight = Math.max(totalHeight, height);
+
+			if (!wrap)
+			{
+				continue;
+			}
+
+			switch (orientation)
+			{
+				case VERTICAL:
+				{
+					if (childPreferredSize.height > 0 && height >= childPreferredSize.height)
+					{
+						height = 0;
+						y = baseY;
+						int diff = childDimension.width + gap.x;
+						x += diff;
+						width += diff;
+					}
+
+					break;
+				}
+				case HORIZONTAL:
+				{
+					if (childPreferredSize.width > 0 && width >= childPreferredSize.width)
+					{
+						width = 0;
+						x = baseX;
+						int diff = childDimension.height + gap.y;
+						y += diff;
+						height += diff;
+					}
+
+					break;
+				}
+			}
 		}
 
 		// Remove last child gap
-		width -= gap.x;
-		height -= gap.y;
+		if (orientation == ComponentOrientation.HORIZONTAL)
+		{
+			totalWidth -= gap.x;
+		}
+		else // VERTICAL
+		{
+			totalHeight -= gap.y;
+		}
 
 		// Cache children bounds
-		childDimensions.setSize(width, height);
+		childDimensions.setSize(totalWidth, totalHeight);
 
+		// Cache bounds
+		bounds.setLocation(preferredLocation);
+		bounds.setSize(dimension);
 		return dimension;
 	}
 }

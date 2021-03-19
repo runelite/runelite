@@ -26,47 +26,65 @@ package net.runelite.client.plugins.devtools;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import com.google.common.collect.ImmutableList;
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
 import java.util.Arrays;
-import java.util.Collection;
-import javax.imageio.ImageIO;
+import java.util.List;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.VarbitComposition;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.kit.KitType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
 	name = "Developer Tools",
+	tags = {"panel"},
 	developerPlugin = true
 )
-@Slf4j
+@Getter
 public class DevToolsPlugin extends Plugin
 {
+	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
+			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
+
 	@Inject
 	private Client client;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private DevToolsOverlay overlay;
@@ -81,29 +99,51 @@ public class DevToolsPlugin extends Plugin
 	private CameraOverlay cameraOverlay;
 
 	@Inject
+	private WorldMapLocationOverlay worldMapLocationOverlay;
+
+	@Inject
+	private WorldMapRegionOverlay mapRegionOverlay;
+
+	@Inject
+	private SoundEffectOverlay soundEffectOverlay;
+
+	@Inject
 	private EventBus eventBus;
 
-	private boolean togglePlayers;
-	private boolean toggleNpcs;
-	private boolean toggleGroundItems;
-	private boolean toggleGroundObjects;
-	private boolean toggleGameObjects;
-	private boolean toggleWalls;
-	private boolean toggleDecor;
-	private boolean toggleInventory;
-	private boolean toggleProjectiles;
-	private boolean toggleLocation;
-	private boolean toggleChunkBorders;
-	private boolean toggleMapSquares;
-	private boolean toggleValidMovement;
-	private boolean toggleLineOfSight;
-	private boolean toggleGraphicsObjects;
-	private boolean toggleCamera;
+	@Inject
+	private ConfigManager configManager;
 
-	Widget currentWidget;
-	int itemIndex = -1;
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
-	private Font font;
+	private DevToolsButton players;
+	private DevToolsButton npcs;
+	private DevToolsButton groundItems;
+	private DevToolsButton groundObjects;
+	private DevToolsButton gameObjects;
+	private DevToolsButton graphicsObjects;
+	private DevToolsButton walls;
+	private DevToolsButton decorations;
+	private DevToolsButton inventory;
+	private DevToolsButton projectiles;
+	private DevToolsButton location;
+	private DevToolsButton chunkBorders;
+	private DevToolsButton mapSquares;
+	private DevToolsButton validMovement;
+	private DevToolsButton movementFlags;
+	private DevToolsButton lineOfSight;
+	private DevToolsButton cameraPosition;
+	private DevToolsButton worldMapLocation;
+	private DevToolsButton tileLocation;
+	private DevToolsButton interacting;
+	private DevToolsButton examine;
+	private DevToolsButton detachedCamera;
+	private DevToolsButton widgetInspector;
+	private DevToolsButton varInspector;
+	private DevToolsButton soundEffects;
+	private DevToolsButton scriptInspector;
+	private DevToolsButton inventoryInspector;
+	private DevToolsButton shell;
 	private NavigationButton navButton;
 
 	@Provides
@@ -115,13 +155,52 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		players = new DevToolsButton("Players");
+		npcs = new DevToolsButton("NPCs");
+
+		groundItems = new DevToolsButton("Ground Items");
+		groundObjects = new DevToolsButton("Ground Objects");
+		gameObjects = new DevToolsButton("Game Objects");
+		graphicsObjects = new DevToolsButton("Graphics Objects");
+		walls = new DevToolsButton("Walls");
+		decorations = new DevToolsButton("Decorations");
+
+		inventory = new DevToolsButton("Inventory");
+		projectiles = new DevToolsButton("Projectiles");
+
+		location = new DevToolsButton("Location");
+		worldMapLocation = new DevToolsButton("World Map Location");
+		tileLocation = new DevToolsButton("Tile Location");
+		cameraPosition = new DevToolsButton("Camera Position");
+
+		chunkBorders = new DevToolsButton("Chunk Borders");
+		mapSquares = new DevToolsButton("Map Squares");
+
+		lineOfSight = new DevToolsButton("Line Of Sight");
+		validMovement = new DevToolsButton("Valid Movement");
+		movementFlags = new DevToolsButton("Movement Flags");
+		interacting = new DevToolsButton("Interacting");
+		examine = new DevToolsButton("Examine");
+
+		detachedCamera = new DevToolsButton("Detached Camera");
+		widgetInspector = new DevToolsButton("Widget Inspector");
+		varInspector = new DevToolsButton("Var Inspector");
+		soundEffects = new DevToolsButton("Sound Effects");
+		scriptInspector = new DevToolsButton("Script Inspector");
+		inventoryInspector = new DevToolsButton("Inventory Inspector");
+		shell = new DevToolsButton("Shell");
+
+		overlayManager.add(overlay);
+		overlayManager.add(locationOverlay);
+		overlayManager.add(sceneOverlay);
+		overlayManager.add(cameraOverlay);
+		overlayManager.add(worldMapLocationOverlay);
+		overlayManager.add(mapRegionOverlay);
+		overlayManager.add(soundEffectOverlay);
+
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("devtools_icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "devtools_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Developer Tools")
@@ -130,26 +209,27 @@ public class DevToolsPlugin extends Plugin
 			.panel(panel)
 			.build();
 
-		pluginToolbar.addNavigation(navButton);
+		clientToolbar.addNavigation(navButton);
 
-		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 16);
+		eventBus.register(soundEffectOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		pluginToolbar.removeNavigation(navButton);
-	}
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, locationOverlay, sceneOverlay, cameraOverlay);
+		eventBus.unregister(soundEffectOverlay);
+		overlayManager.remove(overlay);
+		overlayManager.remove(locationOverlay);
+		overlayManager.remove(sceneOverlay);
+		overlayManager.remove(cameraOverlay);
+		overlayManager.remove(worldMapLocationOverlay);
+		overlayManager.remove(mapRegionOverlay);
+		overlayManager.remove(soundEffectOverlay);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
-	public void onCommand(CommandExecuted commandExecuted)
+	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		String[] args = commandExecuted.getArguments();
 
@@ -172,22 +252,45 @@ public class DevToolsPlugin extends Plugin
 					message = "Logger level has been set to " + newLoggerLevel;
 				}
 
-				client.addChatMessage(ChatMessageType.SERVER, "", message, null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", message, null);
 				break;
 			}
-			case "getvar":
+			case "getvarp":
+			{
+				int varp = Integer.parseInt(args[0]);
+				int[] varps = client.getVarps();
+				int value = varps[varp];
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "VarPlayer " + varp + ": " + value, null);
+				break;
+			}
+			case "setvarp":
+			{
+				int varp = Integer.parseInt(args[0]);
+				int value = Integer.parseInt(args[1]);
+				int[] varps = client.getVarps();
+				varps[varp] = value;
+				client.queueChangedVarp(varp);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set VarPlayer " + varp + " to " + value, null);
+				VarbitChanged varbitChanged = new VarbitChanged();
+				varbitChanged.setIndex(varp);
+				eventBus.post(varbitChanged); // fake event
+				break;
+			}
+			case "getvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = client.getVarbitValue(client.getVarps(), varbit);
-				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Varbit " + varbit + ": " + value, null);
 				break;
 			}
-			case "setvar":
+			case "setvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
 				client.setVarbitValue(client.getVarps(), varbit, value);
-				client.addChatMessage(ChatMessageType.SERVER, "", "Set varbit " + varbit + " to " + value, null);
+				VarbitComposition varbitComposition = client.getVarbit(varbit);
+				client.queueChangedVarp(varbitComposition.getIndex());
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set varbit " + varbit + " to " + value, null);
 				eventBus.post(new VarbitChanged()); // fake event
 				break;
 			}
@@ -203,14 +306,38 @@ public class DevToolsPlugin extends Plugin
 				client.getRealSkillLevels()[skill.ordinal()] = level;
 				client.getSkillExperiences()[skill.ordinal()] = totalXp;
 
-				int[] skills = client.getChangedSkills();
-				int count = client.getChangedSkillsCount();
-				skills[++count - 1 & 31] = skill.ordinal();
-				client.setChangedSkillsCount(count);
+				client.queueChangedSkill(skill);
 
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setSkill(skill);
-				eventBus.post(experienceChanged);
+				StatChanged statChanged = new StatChanged(
+					skill,
+					totalXp,
+					level,
+					level
+				);
+				eventBus.post(statChanged);
+				break;
+			}
+			case "setstat":
+			{
+				Skill skill = Skill.valueOf(args[0].toUpperCase());
+				int level = Integer.parseInt(args[1]);
+
+				level = Ints.constrainToRange(level, 1, Experience.MAX_REAL_LEVEL);
+				int xp = Experience.getXpForLevel(level);
+
+				client.getBoostedSkillLevels()[skill.ordinal()] = level;
+				client.getRealSkillLevels()[skill.ordinal()] = level;
+				client.getSkillExperiences()[skill.ordinal()] = xp;
+
+				client.queueChangedSkill(skill);
+
+				StatChanged statChanged = new StatChanged(
+					skill,
+					xp,
+					level,
+					level
+				);
+				eventBus.post(statChanged);
 				break;
 			}
 			case "anim":
@@ -229,171 +356,117 @@ public class DevToolsPlugin extends Plugin
 				localPlayer.setSpotAnimFrame(0);
 				break;
 			}
+			case "transform":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().setTransformedNpcId(id);
+				player.setIdlePoseAnimation(-1);
+				player.setPoseAnimation(-1);
+				break;
+			}
+			case "cape":
+			{
+				int id = Integer.parseInt(args[0]);
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = id + 512;
+				player.getPlayerComposition().setHash();
+				break;
+			}
+			case "sound":
+			{
+				int id = Integer.parseInt(args[0]);
+				client.playSoundEffect(id);
+				break;
+			}
+			case "msg":
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", String.join(" ", args), "");
+				break;
+			}
+			case "setconf":
+			{
+				// setconf group.key name = value
+				String group = args[0];
+				String key = args[1], value = "";
+				for (int i = 2; i < args.length; ++i)
+				{
+					if (args[i].equals("="))
+					{
+						value = String.join(" ", Arrays.copyOfRange(args, i + 1, args.length));
+						break;
+					}
+
+					key += " " + args[i];
+				}
+				String current = configManager.getConfiguration(group, key);
+				final String message;
+				if (value.isEmpty())
+				{
+					configManager.unsetConfiguration(group, key);
+					message = String.format("Unset configuration %s.%s (was: %s)", group, key, current);
+				}
+				else
+				{
+					configManager.setConfiguration(group, key, value);
+					message = String.format("Set configuration %s.%s to %s (was: %s)", group, key, value, current);
+				}
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.GAMEMESSAGE)
+					.runeLiteFormattedMessage(new ChatMessageBuilder().append(message).build())
+					.build());
+				break;
+			}
+			case "getconf":
+			{
+				String group = args[0], key = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+				String value = configManager.getConfiguration(group, key);
+				final String message = String.format("%s.%s = %s", group, key, value);
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.GAMEMESSAGE)
+					.runeLiteFormattedMessage(new ChatMessageBuilder().append(message).build())
+					.build());
+				break;
+			}
 		}
 	}
 
-	Font getFont()
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		return font;
-	}
+		if (!examine.isActive())
+		{
+			return;
+		}
 
-	void togglePlayers()
-	{
-		togglePlayers = !togglePlayers;
-	}
+		MenuAction action = MenuAction.of(event.getType());
 
-	void toggleNpcs()
-	{
-		toggleNpcs = !toggleNpcs;
-	}
+		if (EXAMINE_MENU_ACTIONS.contains(action))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+			MenuEntry entry = entries[entries.length - 1];
 
-	void toggleGroundItems()
-	{
-		toggleGroundItems = !toggleGroundItems;
-	}
+			final int identifier = event.getIdentifier();
+			String info = "ID: ";
 
-	void toggleGroundObjects()
-	{
-		toggleGroundObjects = !toggleGroundObjects;
-	}
+			if (action == MenuAction.EXAMINE_NPC)
+			{
+				NPC npc = client.getCachedNPCs()[identifier];
+				info += npc.getId();
+			}
+			else
+			{
+				info += identifier;
 
-	void toggleGameObjects()
-	{
-		toggleGameObjects = !toggleGameObjects;
-	}
+				if (action == MenuAction.EXAMINE_OBJECT)
+				{
+					WorldPoint point = WorldPoint.fromScene(client, entry.getParam0(), entry.getParam1(), client.getPlane());
+					info += " X: " + point.getX() + " Y: " + point.getY();
+				}
+			}
 
-	void toggleWalls()
-	{
-		toggleWalls = !toggleWalls;
-	}
-
-	void toggleDecor()
-	{
-		toggleDecor = !toggleDecor;
-	}
-
-	void toggleInventory()
-	{
-		toggleInventory = !toggleInventory;
-	}
-
-	void toggleProjectiles()
-	{
-		toggleProjectiles = !toggleProjectiles;
-	}
-
-	void toggleLocation()
-	{
-		toggleLocation = !toggleLocation;
-	}
-
-	void toggleChunkBorders()
-	{
-		toggleChunkBorders = !toggleChunkBorders;
-	}
-
-	void toggleMapSquares()
-	{
-		toggleMapSquares = !toggleMapSquares;
-	}
-
-	void toggleValidMovement()
-	{
-		toggleValidMovement = !toggleValidMovement;
-	}
-
-	void toggleLineOfSight()
-	{
-		toggleLineOfSight = !toggleLineOfSight;
-	}
-
-	void toggleGraphicsObjects()
-	{
-		toggleGraphicsObjects = !toggleGraphicsObjects;
-	}
-
-	void toggleCamera()
-	{
-		toggleCamera = !toggleCamera;
-	}
-
-	boolean isTogglePlayers()
-	{
-		return togglePlayers;
-	}
-
-	boolean isToggleNpcs()
-	{
-		return toggleNpcs;
-	}
-
-	boolean isToggleGroundItems()
-	{
-		return toggleGroundItems;
-	}
-
-	boolean isToggleGroundObjects()
-	{
-		return toggleGroundObjects;
-	}
-
-	boolean isToggleGameObjects()
-	{
-		return toggleGameObjects;
-	}
-
-	boolean isToggleWalls()
-	{
-		return toggleWalls;
-	}
-
-	boolean isToggleDecor()
-	{
-		return toggleDecor;
-	}
-
-	boolean isToggleInventory()
-	{
-		return toggleInventory;
-	}
-
-	boolean isToggleProjectiles()
-	{
-		return toggleProjectiles;
-	}
-
-	boolean isToggleLocation()
-	{
-		return toggleLocation;
-	}
-
-	boolean isToggleChunkBorders()
-	{
-		return toggleChunkBorders;
-	}
-
-	boolean isToggleMapSquares()
-	{
-		return toggleMapSquares;
-	}
-
-	boolean isToggleValidMovement()
-	{
-		return toggleValidMovement;
-	}
-
-	boolean isToggleLineOfSight()
-	{
-		return toggleLineOfSight;
-	}
-
-	boolean isToggleGraphicsObjects()
-	{
-		return toggleGraphicsObjects;
-	}
-
-	boolean isToggleCamera()
-	{
-		return toggleCamera;
+			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
+			client.setMenuEntries(entries);
+		}
 	}
 }

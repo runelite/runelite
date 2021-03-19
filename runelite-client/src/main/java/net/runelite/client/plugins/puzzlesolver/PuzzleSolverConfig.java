@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "puzzlesolver",
-	name = "Puzzle Solver",
-	description = "Shows you where to press to solve puzzle boxes"
-)
+@ConfigGroup("puzzlesolver")
 public interface PuzzleSolverConfig extends Config
 {
 	@ConfigItem(

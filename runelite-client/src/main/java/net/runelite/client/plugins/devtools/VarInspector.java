@@ -24,20 +24,20 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
@@ -47,20 +47,24 @@ import javax.swing.border.CompoundBorder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.IndexDataBase;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.VarbitComposition;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.ui.ClientUI;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 
 @Slf4j
-class VarInspector extends JFrame
+class VarInspector extends DevToolsFrame
 {
 	@Getter
 	private enum VarType
@@ -81,8 +85,10 @@ class VarInspector extends JFrame
 	}
 
 	private final static int MAX_LOG_ENTRIES = 10_000;
+	private static final int VARBITS_ARCHIVE_ID = 14;
 
 	private final Client client;
+	private final ClientThread clientThread;
 	private final EventBus eventBus;
 
 	private final JPanel tracker = new JPanel();
@@ -91,31 +97,20 @@ class VarInspector extends JFrame
 
 	private int[] oldVarps = null;
 	private int[] oldVarps2 = null;
-	private int numVarbits = 10000;
 
-	private int[] oldIntVarcs = null;
-	private String[] oldStrVarcs = null;
+	private Multimap<Integer, Integer> varbits;
+	private Map<Integer, Object> varcs = null;
 
 	@Inject
-	VarInspector(Client client, EventBus eventBus)
+	VarInspector(Client client, ClientThread clientThread, EventBus eventBus)
 	{
-		this.eventBus = eventBus;
 		this.client = client;
+		this.clientThread = clientThread;
+		this.eventBus = eventBus;
 
 		setTitle("RuneLite Var Inspector");
-		setIconImage(ClientUI.ICON);
 
 		setLayout(new BorderLayout());
-
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				close();
-			}
-		});
 
 		tracker.setLayout(new DynamicGridLayout(0, 1, 0, 3));
 
@@ -155,6 +150,15 @@ class VarInspector extends JFrame
 		{
 			trackerOpts.add(cb.getCheckBox());
 		}
+
+		final JButton clearBtn = new JButton("Clear");
+		clearBtn.addActionListener(e ->
+		{
+			tracker.removeAll();
+			tracker.revalidate();
+		});
+		trackerOpts.add(clearBtn);
+
 		add(trackerOpts, BorderLayout.SOUTH);
 
 		pack();
@@ -189,7 +193,7 @@ class VarInspector extends JFrame
 			tracker.add(new JLabel(String.format("%s %s changed: %s -> %s", type.getName(), name, old, neew)));
 
 			// Cull very old stuff
-			for (; tracker.getComponentCount() > MAX_LOG_ENTRIES; )
+			while (tracker.getComponentCount() > MAX_LOG_ENTRIES)
 			{
 				tracker.remove(0);
 			}
@@ -199,63 +203,51 @@ class VarInspector extends JFrame
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged ev)
+	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
+		int index = varbitChanged.getIndex();
 		int[] varps = client.getVarps();
 
 		// Check varbits
-		for (int i = 0; i < numVarbits; i++)
+		for (int i : varbits.get(index))
 		{
-			try
+			int old = client.getVarbitValue(oldVarps, i);
+			int neew = client.getVarbitValue(varps, i);
+			if (old != neew)
 			{
-				int old = client.getVarbitValue(oldVarps, i);
-				int neew = client.getVarbitValue(varps, i);
-				if (old != neew)
-				{
-					// Set the varbit so it doesn't show in the varp changes
-					// However, some varbits share common bits, so we only do it in oldVarps2
-					// Example: 4101 collides with 4104-4129
-					client.setVarbitValue(oldVarps2, i, neew);
+				// Set the varbit so it doesn't show in the varp changes
+				// However, some varbits share common bits, so we only do it in oldVarps2
+				// Example: 4101 collides with 4104-4129
+				client.setVarbitValue(oldVarps2, i, neew);
 
-					String name = String.format("%d", i);
-					for (Varbits varbit : Varbits.values())
+				String name = Integer.toString(i);
+				for (Varbits varbit : Varbits.values())
+				{
+					if (varbit.getId() == i)
 					{
-						if (varbit.getId() == i)
-						{
-							name = String.format("%s(%d)", varbit.name(), i);
-							break;
-						}
+						name = String.format("%s(%d)", varbit.name(), i);
+						break;
 					}
-					addVarLog(VarType.VARBIT, name, old, neew);
 				}
-			}
-			catch (IndexOutOfBoundsException e)
-			{
-				// We don't know what the last varbit is, so we just hit the end, then set it for future iterations
-				log.debug("Hit OOB at varbit {}", i);
-				numVarbits = i;
-				break;
+				addVarLog(VarType.VARBIT, name, old, neew);
 			}
 		}
 
 		// Check varps
-		for (int i = 0; i < varps.length; i++)
+		int old = oldVarps2[index];
+		int neew = varps[index];
+		if (old != neew)
 		{
-			int old = oldVarps2[i];
-			int neew = varps[i];
-			if (old != neew)
+			String name = Integer.toString(index);
+			for (VarPlayer varp : VarPlayer.values())
 			{
-				String name = String.format("%d", i);
-				for (VarPlayer varp : VarPlayer.values())
+				if (varp.getId() == index)
 				{
-					if (varp.getId() == i)
-					{
-						name = String.format("%s(%d)", varp.name(), i);
-						break;
-					}
+					name = String.format("%s(%d)", varp.name(), index);
+					break;
 				}
-				addVarLog(VarType.VARP, name, old, neew);
 			}
+			addVarLog(VarType.VARP, name, old, neew);
 		}
 
 		System.arraycopy(client.getVarps(), 0, oldVarps, 0, oldVarps.length);
@@ -266,9 +258,9 @@ class VarInspector extends JFrame
 	public void onVarClientIntChanged(VarClientIntChanged e)
 	{
 		int idx = e.getIndex();
-		int neew = client.getIntVarcs()[idx];
-		int old = oldIntVarcs[idx];
-		oldIntVarcs[idx] = neew;
+		int neew = (Integer) client.getVarcMap().getOrDefault(idx, 0);
+		int old = (Integer) varcs.getOrDefault(idx, 0);
+		varcs.put(idx, neew);
 
 		if (old != neew)
 		{
@@ -289,9 +281,9 @@ class VarInspector extends JFrame
 	public void onVarClientStrChanged(VarClientStrChanged e)
 	{
 		int idx = e.getIndex();
-		String neew = client.getStrVarcs()[idx];
-		String old = oldStrVarcs[idx];
-		oldStrVarcs[idx] = neew;
+		String neew = (String) client.getVarcMap().getOrDefault(idx, "");
+		String old = (String) varcs.getOrDefault(idx, "");
+		varcs.put(idx, neew);
 
 		if (!Objects.equals(old, neew))
 		{
@@ -324,31 +316,46 @@ class VarInspector extends JFrame
 		}
 	}
 
+	@Override
 	public void open()
 	{
 		if (oldVarps == null)
 		{
 			oldVarps = new int[client.getVarps().length];
 			oldVarps2 = new int[client.getVarps().length];
-			oldIntVarcs = new int[client.getIntVarcs().length];
-			oldStrVarcs = new String[client.getStrVarcs().length];
 		}
 
 		System.arraycopy(client.getVarps(), 0, oldVarps, 0, oldVarps.length);
 		System.arraycopy(client.getVarps(), 0, oldVarps2, 0, oldVarps2.length);
-		System.arraycopy(client.getIntVarcs(), 0, oldIntVarcs, 0, oldIntVarcs.length);
-		System.arraycopy(client.getStrVarcs(), 0, oldStrVarcs, 0, oldStrVarcs.length);
+		varcs = new HashMap<>(client.getVarcMap());
+		varbits = HashMultimap.create();
+
+		clientThread.invoke(() ->
+		{
+			// Build varp index -> varbit id map
+			IndexDataBase indexVarbits = client.getIndexConfig();
+			final int[] varbitIds = indexVarbits.getFileIds(VARBITS_ARCHIVE_ID);
+			for (int id : varbitIds)
+			{
+				VarbitComposition varbit = client.getVarbit(id);
+				if (varbit != null)
+				{
+					varbits.put(varbit.getIndex(), id);
+				}
+			}
+		});
 
 		eventBus.register(this);
-		setVisible(true);
-		toFront();
-		repaint();
+		super.open();
 	}
 
+	@Override
 	public void close()
 	{
+		super.close();
 		tracker.removeAll();
 		eventBus.unregister(this);
-		setVisible(false);
+		varcs = null;
+		varbits = null;
 	}
 }

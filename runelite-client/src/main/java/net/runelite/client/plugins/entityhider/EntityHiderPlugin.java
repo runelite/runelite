@@ -25,17 +25,19 @@
  */
 package net.runelite.client.plugins.entityhider;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Entity Hider",
+	description = "Hide players, NPCs, and/or projectiles",
+	tags = {"npcs", "players", "projectiles"},
 	enabledByDefault = false
 )
 public class EntityHiderPlugin extends Plugin
@@ -61,24 +63,30 @@ public class EntityHiderPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged e)
 	{
-		updateConfig();
+		if (e.getGroup().equals(EntityHiderConfig.GROUP))
+		{
+			updateConfig();
+		}
 	}
 
 	private void updateConfig()
 	{
 		client.setIsHidingEntities(true);
 
-		client.setPlayersHidden(config.hidePlayers());
-		client.setPlayersHidden2D(config.hidePlayers2D());
+		client.setOthersHidden(config.hideOthers());
+		client.setOthersHidden2D(config.hideOthers2D());
 
 		client.setFriendsHidden(config.hideFriends());
-		client.setClanMatesHidden(config.hideClanMates());
+		client.setFriendsChatMembersHidden(config.hideFriendsChatMembers());
+		client.setIgnoresHidden(config.hideIgnores());
 
 		client.setLocalPlayerHidden(config.hideLocalPlayer());
 		client.setLocalPlayerHidden2D(config.hideLocalPlayer2D());
 
 		client.setNPCsHidden(config.hideNPCs());
 		client.setNPCsHidden2D(config.hideNPCs2D());
+
+		client.setPetsHidden(config.hidePets());
 
 		client.setAttackersHidden(config.hideAttackers());
 
@@ -90,17 +98,20 @@ public class EntityHiderPlugin extends Plugin
 	{
 		client.setIsHidingEntities(false);
 
-		client.setPlayersHidden(false);
-		client.setPlayersHidden2D(false);
+		client.setOthersHidden(false);
+		client.setOthersHidden2D(false);
 
 		client.setFriendsHidden(false);
-		client.setClanMatesHidden(false);
+		client.setFriendsChatMembersHidden(false);
+		client.setIgnoresHidden(false);
 
 		client.setLocalPlayerHidden(false);
 		client.setLocalPlayerHidden2D(false);
 
 		client.setNPCsHidden(false);
 		client.setNPCsHidden2D(false);
+
+		client.setPetsHidden(false);
 
 		client.setAttackersHidden(false);
 

@@ -37,15 +37,27 @@ public @interface PluginDescriptor
 {
 	String name();
 
+	/**
+	 * A short, one-line summary of the plugin.
+	 */
+	String description() default "";
+
+	/**
+	 * A list of plugin keywords, used (together with the name) when searching for plugins.
+	 * Each tag should not contain any spaces, and should be fully lowercase.
+	 */
+	String[] tags() default {};
+
 	boolean enabledByDefault() default true;
 
 	/**
 	 * Whether or not plugin is hidden from configuration panel
-	 * @return
 	 */
 	boolean hidden() default false;
 
 	boolean developerPlugin() default false;
 
 	boolean loadWhenOutdated() default false;
+
+	boolean loadInSafeMode() default true;
 }

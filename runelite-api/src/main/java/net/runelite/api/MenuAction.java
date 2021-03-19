@@ -187,10 +187,6 @@ public enum MenuAction
 	 */
 	ITEM_FIFTH_OPTION(37),
 	/**
-	 * Menu action to drop an item (identical to ITEM_FIFTH_OPTION).
-	 */
-	ITEM_DROP(37),
-	/**
 	 * Menu action to use an item.
 	 */
 	ITEM_USE(38),
@@ -226,9 +222,14 @@ public enum MenuAction
 	PLAYER_EIGTH_OPTION(51),
 
 	/**
-	 * Default menu action for a widget.
+	 * Menu action for normal priority child component actions.
 	 */
-	WIDGET_DEFAULT(57),
+	CC_OP(57),
+
+	/**
+	 * Casting a spell / op target on a widget
+	 */
+	SPELL_CAST_ON_WIDGET(58),
 
 	/**
 	 * Menu action triggered by examining an object.
@@ -251,23 +252,38 @@ public enum MenuAction
 	 */
 	CANCEL(1006),
 	/**
-	 * Menu action triggered by either examining item in bank, examining
-	 * item in inventory while having bank open, or examining equipped item.
+	 * Menu action for low priority child component actions.
 	 */
-	EXAMINE_ITEM_BANK_EQ(1007),
+	CC_OP_LOW_PRIORITY(1007),
 
 	/**
 	 * Menu action injected by runelite for its menu items.
 	 */
 	RUNELITE(1500),
-
-	FOLLOW(2046),
-	TRADE(2047),
+	/**
+	 * Menu action injected by runelite for overlay menu items.
+	 */
+	RUNELITE_OVERLAY(1501),
+	/**
+	 * Menu action for configuring runelite overlays.
+	 */
+	RUNELITE_OVERLAY_CONFIG(1502),
+	/**
+	 * Menu action injected by runelite for menu items which target
+	 * a player and have its identifier set to a player index.
+	 */
+	RUNELITE_PLAYER(1503),
+	/**
+	 * Menu action for InfoBox menu entries
+	 */
+	RUNELITE_INFOBOX(1504),
 
 	/**
 	 * Menu action triggered when the id is not defined in this class.
 	 */
 	UNKNOWN(-1);
+
+	public static final int MENU_ACTION_DEPRIORITIZE_OFFSET = 2000;
 
 	private static final Map<Integer, MenuAction> map = new HashMap<>();
 

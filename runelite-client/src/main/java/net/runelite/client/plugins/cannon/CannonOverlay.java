@@ -62,7 +62,7 @@ class CannonOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null)
+		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null || plugin.getCannonWorld() != client.getWorld())
 		{
 			return null;
 		}
@@ -81,7 +81,7 @@ class CannonOverlay extends Overlay
 			Point cannonLoc = Perspective.getCanvasTextLocation(client,
 				graphics,
 				cannonPoint,
-				String.valueOf(plugin.getCballsLeft()), 200);
+				String.valueOf(plugin.getCballsLeft()), 150);
 
 			if (cannonLoc != null)
 			{

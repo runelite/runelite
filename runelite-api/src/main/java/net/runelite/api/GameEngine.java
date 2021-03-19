@@ -51,4 +51,6 @@ public interface GameEngine
 	 * @return true if on the main thread, false otherwise
 	 */
 	boolean isClientThread();
+
+	void resizeCanvas();
 }

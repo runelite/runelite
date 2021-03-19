@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**
@@ -56,6 +57,62 @@ public interface SpritePixels
 	int getHeight();
 
 	/**
+	 * Gets the max width of the sprite image in pixels.
+	 *
+	 * @return the width
+	 */
+	int getMaxWidth();
+
+	/**
+	 * Gets the max height of the sprite image in pixels.
+	 *
+	 * @return the height
+	 */
+	int getMaxHeight();
+
+	/**
+	 * Gets the x offset of the sprite image in pixels.
+	 *
+	 * @return the offset
+	 */
+	int getOffsetX();
+
+	/**
+	 * Gets the y offset of the sprite image in pixels.
+	 *
+	 * @return the offset
+	 */
+	int getOffsetY();
+
+	/**
+	 * Sets the max width of the sprite image in pixels.
+	 *
+	 * @param maxWidth the width
+	 */
+	void setMaxWidth(int maxWidth);
+
+	/**
+	 * Sets the max height of the sprite image in pixels.
+	 *
+	 * @param maxHeight the height
+	 */
+	void setMaxHeight(int maxHeight);
+
+	/**
+	 * Sets the x offset of the sprite image in pixels.
+	 *
+	 * @param offsetX the offset
+	 */
+	void setOffsetX(int offsetX);
+
+	/**
+	 * Sets the y offset of the sprite image in pixels.
+	 *
+	 * @param offsetY the offset
+	 */
+	void setOffsetY(int offsetY);
+
+	/**
 	 * Gets an array of all pixels data in the sprite.
 	 *
 	 * @return the pixel data
@@ -76,4 +133,19 @@ public interface SpritePixels
 	 * @throws IllegalArgumentException if the width or height do not match
  	 */
 	void toBufferedImage(BufferedImage img) throws IllegalArgumentException;
+
+	/**
+	 * Writes the contents of the SpritePixels with chosen outline to the BufferedImage
+	 *
+	 * @param color target color
+	 */
+	BufferedImage toBufferedOutline(Color color);
+
+	/**
+	 * Writes the contents of the SpritePixels with chosen outline to the BufferedImage
+	 *
+	 * @param img target image
+	 * @param color target color
+	 */
+	void toBufferedOutline(BufferedImage img, int color);
 }

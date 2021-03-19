@@ -27,9 +27,6 @@ package net.runelite.client.plugins;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import java.util.Collection;
-import java.util.Collections;
-import net.runelite.client.ui.overlay.Overlay;
 
 public abstract class Plugin implements Module
 {
@@ -48,19 +45,17 @@ public abstract class Plugin implements Module
 	{
 	}
 
+	public void resetConfiguration()
+	{
+	}
+
 	public final Injector getInjector()
 	{
 		return injector;
 	}
 
-	public Overlay getOverlay()
+	public String getName()
 	{
-		return null;
-	}
-
-	public Collection<Overlay> getOverlays()
-	{
-		Overlay overlay = getOverlay();
-		return overlay != null ? Collections.singletonList(overlay) : Collections.EMPTY_LIST;
+		return getClass().getAnnotation(PluginDescriptor.class).name();
 	}
 }

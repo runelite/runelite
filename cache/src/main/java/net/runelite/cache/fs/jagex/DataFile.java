@@ -66,7 +66,7 @@ public class DataFile implements Closeable
 	 * @return
 	 * @throws IOException
 	 */
-	public byte[] read(int indexId, int archiveId, int sector, int size) throws IOException
+	public synchronized byte[] read(int indexId, int archiveId, int sector, int size) throws IOException
 	{
 		if (sector <= 0L || dat.length() / SECTOR_SIZE < (long) sector)
 		{
@@ -169,7 +169,7 @@ public class DataFile implements Closeable
 		return buffer.array();
 	}
 
-	public DataFileWriteResult write(int indexId, int archiveId, byte[] compressedData) throws IOException
+	public synchronized DataFileWriteResult write(int indexId, int archiveId, byte[] compressedData) throws IOException
 	{
 		int sector;
 		int startSector;
@@ -186,22 +186,8 @@ public class DataFile implements Closeable
 
 		for (int part = 0; data.hasRemaining(); ++part)
 		{
-			int nextSector = 0;
+			int nextSector = sector + 1; // we always just append sectors
 			int dataToWrite;
-
-			if (nextSector == 0)
-			{
-				nextSector = (int) ((dat.length() + (long) (SECTOR_SIZE - 1)) / (long) SECTOR_SIZE);
-				if (nextSector == 0)
-				{
-					++nextSector;
-				}
-
-				if (nextSector == sector)
-				{
-					++nextSector;
-				}
-			}
 
 			if (0xFFFF < archiveId)
 			{

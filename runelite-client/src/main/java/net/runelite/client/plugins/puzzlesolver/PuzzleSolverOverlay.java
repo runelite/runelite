@@ -32,27 +32,27 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import static net.runelite.api.SpriteID.MINIMAP_DESTINATION_FLAG;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
+import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStarMM;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -60,8 +60,8 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.ImageUtil;
 
-@Slf4j
 public class PuzzleSolverOverlay extends Overlay
 {
 	private static final int INFO_BOX_WIDTH = 100;
@@ -72,24 +72,21 @@ public class PuzzleSolverOverlay extends Overlay
 	private static final int PUZZLE_TILE_SIZE = 39;
 	private static final int DOT_MARKER_SIZE = 16;
 
-	private static final int BLANK_TILE_VALUE = -1;
-	private static final int DIMENSION = 5;
-
 	private final Client client;
 	private final PuzzleSolverConfig config;
 	private final ScheduledExecutorService executorService;
+	private final SpriteManager spriteManager;
 
 	private PuzzleSolver solver;
 	private Future<?> solverFuture;
 	private int[] cachedItems;
 
-	private BufferedImage downArrow;
 	private BufferedImage upArrow;
 	private BufferedImage leftArrow;
 	private BufferedImage rightArrow;
 
 	@Inject
-	public PuzzleSolverOverlay(Client client, PuzzleSolverConfig config, ScheduledExecutorService executorService)
+	public PuzzleSolverOverlay(Client client, PuzzleSolverConfig config, ScheduledExecutorService executorService, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
@@ -97,6 +94,7 @@ public class PuzzleSolverOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.executorService = executorService;
+		this.spriteManager = spriteManager;
 	}
 
 	@Override
@@ -108,11 +106,18 @@ public class PuzzleSolverOverlay extends Overlay
 			return null;
 		}
 
+		boolean useNormalSolver = true;
 		ItemContainer container = client.getItemContainer(InventoryID.PUZZLE_BOX);
 
 		if (container == null)
 		{
-			return null;
+			useNormalSolver = false;
+			container = client.getItemContainer(InventoryID.MONKEY_MADNESS_PUZZLE_BOX);
+
+			if (container == null)
+			{
+				return null;
+			}
 		}
 
 		Widget puzzleBox = client.getWidget(WidgetInfo.PUZZLE_BOX);
@@ -126,7 +131,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 		String infoString = "Solving..";
 
-		int[] itemIds = getItemIds(container);
+		int[] itemIds = getItemIds(container, useNormalSolver);
 		boolean shouldCache = false;
 
 		if (solver != null)
@@ -294,6 +299,11 @@ public class PuzzleSolverOverlay extends Overlay
 										arrow = getUpArrow();
 									}
 
+									if (arrow == null)
+									{
+										continue;
+									}
+
 									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
 											+ PUZZLE_TILE_SIZE / 2 - arrow.getWidth() / 2;
 
@@ -335,9 +345,10 @@ public class PuzzleSolverOverlay extends Overlay
 		}
 
 		// Solve the puzzle if we don't have an up to date solution
-		if (solver == null || cachedItems == null || (!shouldCache && !Arrays.equals(cachedItems, itemIds)))
+		if (solver == null || cachedItems == null
+			|| (!shouldCache && solver.hasExceededWaitDuration() && !Arrays.equals(cachedItems, itemIds)))
 		{
-			solve(itemIds);
+			solve(itemIds, useNormalSolver);
 			shouldCache = true;
 		}
 
@@ -349,7 +360,7 @@ public class PuzzleSolverOverlay extends Overlay
 		return null;
 	}
 
-	private int[] getItemIds(ItemContainer container)
+	private int[] getItemIds(ItemContainer container, boolean useNormalSolver)
 	{
 		int[] itemIds = new int[DIMENSION * DIMENSION];
 
@@ -366,13 +377,10 @@ public class PuzzleSolverOverlay extends Overlay
 			itemIds[items.length] = BLANK_TILE_VALUE;
 		}
 
-		return convertToSolverFormat(itemIds);
+		return convertToSolverFormat(itemIds, useNormalSolver);
 	}
 
-	/**
-	 * This depends on there being no gaps in between item ids in puzzles.
-	 */
-	private int[] convertToSolverFormat(int[] items)
+	private int[] convertToSolverFormat(int[] items, boolean useNormalSolver)
 	{
 		int lowestId = Integer.MAX_VALUE;
 
@@ -395,7 +403,15 @@ public class PuzzleSolverOverlay extends Overlay
 		{
 			if (items[i] != BLANK_TILE_VALUE)
 			{
-				convertedItems[i] = items[i] - lowestId;
+				int value = items[i] - lowestId;
+
+				// The MM puzzle has gaps
+				if (!useNormalSolver)
+				{
+					value /= 2;
+				}
+
+				convertedItems[i] = value;
 			}
 			else
 			{
@@ -412,7 +428,7 @@ public class PuzzleSolverOverlay extends Overlay
 		System.arraycopy(items, 0, cachedItems, 0, cachedItems.length);
 	}
 
-	private void solve(int[] items)
+	private void solve(int[] items, boolean useNormalSolver)
 	{
 		if (solverFuture != null)
 		{
@@ -421,34 +437,28 @@ public class PuzzleSolverOverlay extends Overlay
 
 		PuzzleState puzzleState = new PuzzleState(items);
 
-		solver = new PuzzleSolver(new IDAStar(new ManhattanDistance()), puzzleState);
+		if (useNormalSolver)
+		{
+			solver = new PuzzleSolver(new IDAStar(new ManhattanDistance()), puzzleState);
+		}
+		else
+		{
+			solver = new PuzzleSolver(new IDAStarMM(new ManhattanDistance()), puzzleState);
+		}
+
 		solverFuture = executorService.submit(solver);
 	}
 
 	private BufferedImage getDownArrow()
 	{
-		if (downArrow == null)
-		{
-			try
-			{
-				synchronized (ImageIO.class)
-				{
-					downArrow = ImageIO.read(PuzzleSolverOverlay.class.getResourceAsStream("arrow.png"));
-				}
-			}
-			catch (IOException e)
-			{
-				log.warn("Error loading image", e);
-			}
-		}
-		return downArrow;
+		return spriteManager.getSprite(MINIMAP_DESTINATION_FLAG, 1);
 	}
 
 	private BufferedImage getUpArrow()
 	{
 		if (upArrow == null)
 		{
-			upArrow = getRotatedImage(getDownArrow(), Math.PI);
+			upArrow = ImageUtil.rotateImage(getDownArrow(), Math.PI);
 		}
 		return upArrow;
 	}
@@ -457,7 +467,7 @@ public class PuzzleSolverOverlay extends Overlay
 	{
 		if (leftArrow == null)
 		{
-			leftArrow = getRotatedImage(getDownArrow(), Math.PI / 2);
+			leftArrow = ImageUtil.rotateImage(getDownArrow(), Math.PI / 2);
 		}
 		return leftArrow;
 	}
@@ -466,16 +476,8 @@ public class PuzzleSolverOverlay extends Overlay
 	{
 		if (rightArrow == null)
 		{
-			rightArrow = getRotatedImage(getDownArrow(), 3 * Math.PI / 2);
+			rightArrow = ImageUtil.rotateImage(getDownArrow(), 3 * Math.PI / 2);
 		}
 		return rightArrow;
-	}
-
-	private BufferedImage getRotatedImage(BufferedImage image, double theta)
-	{
-		AffineTransform transform = new AffineTransform();
-		transform.rotate(theta, image.getWidth() / 2, image.getHeight() / 2);
-		AffineTransformOp transformOp = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
-		return transformOp.filter(image, null);
 	}
 }

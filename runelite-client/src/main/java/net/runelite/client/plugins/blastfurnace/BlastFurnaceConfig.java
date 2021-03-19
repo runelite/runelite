@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "blastfurnace",
-	name = "Blast Furnace",
-	description = "Configuration for the Blast furnace plugin"
-)
+@ConfigGroup("blastfurnace")
 public interface BlastFurnaceConfig extends Config
 {
 	@ConfigItem(
@@ -43,7 +39,7 @@ public interface BlastFurnaceConfig extends Config
 	)
 	default boolean showConveyorBelt()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -53,6 +49,17 @@ public interface BlastFurnaceConfig extends Config
 		position = 2
 	)
 	default boolean showBarDispenser()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showCofferTime",
+		name = "Show coffer time remaining",
+		description = "Configures whether or not the coffer time remaining is displayed",
+		position = 3
+	)
+	default boolean showCofferTime()
 	{
 		return true;
 	}

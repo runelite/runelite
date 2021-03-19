@@ -28,12 +28,10 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
-@ConfigGroup(
-	keyName = "nightmareZone",
-	name = "Nightmare Zone",
-	description = "Configuration for the nightmare zone plugin"
-)
+@ConfigGroup("nightmareZone")
 public interface NightmareZoneConfig extends Config
 {
 	@ConfigItem(
@@ -81,21 +79,48 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "ultimateforcenotification",
+		name = "Ultimate Force notification",
+		description = "Toggles notifications when an ultimate force power-up appears",
+		position = 5
+	)
+	default boolean ultimateForceNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "overloadnotification",
 		name = "Overload notification",
 		description = "Toggles notifications when your overload runs out",
-		position = 5
+		position = 6
 	)
 	default boolean overloadNotification()
 	{
 		return true;
 	}
 
+	@Range(
+		min = 0,
+		max = 300
+	)
+	@ConfigItem(
+		keyName = "overloadearlywarningseconds",
+		name = "Overload early warning",
+		description = "You will be notified this many seconds before your overload potion expires",
+		position = 7
+	)
+	@Units(Units.SECONDS)
+	default int overloadEarlyWarningSeconds()
+	{
+		return 10;
+	}
+
 	@ConfigItem(
 		keyName = "absorptionnotification",
 		name = "Absorption notification",
 		description = "Toggles notifications when your absorption points gets below your threshold",
-		position = 6
+		position = 8
 	)
 	default boolean absorptionNotification()
 	{
@@ -106,7 +131,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptionthreshold",
 		name = "Absorption Threshold",
 		description = "The amount of absorption points to send a notification at",
-		position = 7
+		position = 9
 	)
 	default int absorptionThreshold()
 	{
@@ -117,7 +142,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncoloroverthreshold",
 		name = "Color above threshold",
 		description = "Configures the color for the absorption widget when above the threshold",
-		position = 8
+		position = 10
 	)
 	default Color absorptionColorAboveThreshold()
 	{
@@ -128,7 +153,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncolorbelowthreshold",
 		name = "Color below threshold",
 		description = "Configures the color for the absorption widget when below the threshold",
-		position = 9
+		position = 11
 	)
 	default Color absorptionColorBelowThreshold()
 	{

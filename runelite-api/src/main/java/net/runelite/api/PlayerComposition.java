@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.kit.KitType;
 
 /**
@@ -31,6 +32,13 @@ import net.runelite.api.kit.KitType;
  */
 public interface PlayerComposition
 {
+	/**
+	 * Checks if the player is female.
+	 *
+	 * @return true if the player is female
+	 */
+	boolean isFemale();
+
 	/**
 	 * Gets an array of IDs related to equipment slots.
 	 * <p>
@@ -57,4 +65,14 @@ public interface PlayerComposition
 	 * @return the kit ID
 	 */
 	int getKitId(KitType type);
+
+	/**
+	 * Update the cached hash value for player equipment
+	 * Used to cache the player models based on equipment.
+	 */
+	@VisibleForDevtools
+	void setHash();
+
+	@VisibleForDevtools
+	void setTransformedNpcId(int id);
 }

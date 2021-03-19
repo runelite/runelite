@@ -77,7 +77,7 @@ public class WorldMapDumperTest
 				WorldMapLoader loader = new WorldMapLoader();
 				WorldMapDefinition def = loader.load(file.getContents(), file.getFileId());
 
-				Files.write(gson.toJson(def), new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(def));
 				++count;
 			}
 		}

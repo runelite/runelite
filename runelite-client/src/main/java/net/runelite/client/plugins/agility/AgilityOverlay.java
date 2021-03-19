@@ -29,30 +29,37 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.geom.Area;
+import java.awt.Shape;
+import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ColorUtil;
 
-@Slf4j
-public class AgilityOverlay extends Overlay
+class AgilityOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
+	private static final Color SHORTCUT_HIGH_LEVEL_COLOR = Color.ORANGE;
 
 	private final Client client;
 	private final AgilityPlugin plugin;
 	private final AgilityConfig config;
 
 	@Inject
-	public AgilityOverlay(Client client, AgilityPlugin plugin, AgilityConfig config)
+	private AgilityOverlay(Client client, AgilityPlugin plugin, AgilityConfig config)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
@@ -65,15 +72,21 @@ public class AgilityOverlay extends Overlay
 	{
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
-		final Tile markOfGrace = plugin.getMarkOfGrace();
-		plugin.getObstacles().forEach((object, tile) ->
+		final List<Tile> marksOfGrace = plugin.getMarksOfGrace();
+		final Tile stickTile = plugin.getStickTile();
+
+		plugin.getObstacles().forEach((object, obstacle) ->
 		{
-			if (Obstacles.SHORTCUT_OBSTACLE_IDS.contains(object.getId()) && !config.highlightShortcuts() ||
-					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay())
+			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
+					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
+					Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
+					Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
+					Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
 			{
 				return;
 			}
 
+			Tile tile = obstacle.getTile();
 			if (tile.getPlane() == client.getPlane()
 				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
@@ -87,14 +100,26 @@ public class AgilityOverlay extends Overlay
 					}
 					return;
 				}
-
-				Area objectClickbox = object.getClickbox();
+				Shape objectClickbox = object.getClickbox();
 				if (objectClickbox != null)
 				{
-					Color configColor = config.getOverlayColor();
-					if (config.highlightMarks() && markOfGrace != null)
+					AgilityShortcut agilityShortcut = obstacle.getShortcut();
+					Color configColor = agilityShortcut == null || agilityShortcut.getLevel() <= plugin.getAgilityLevel() ? config.getOverlayColor() : SHORTCUT_HIGH_LEVEL_COLOR;
+					if (config.highlightMarks() && !marksOfGrace.isEmpty())
 					{
 						configColor = config.getMarkColor();
+					}
+
+					if (Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId()))
+					{
+						if (config.highlightPortals())
+						{
+							configColor = config.getPortalsColor();
+						}
+						else
+						{
+							return;
+						}
 					}
 
 					if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
@@ -107,29 +132,57 @@ public class AgilityOverlay extends Overlay
 					}
 
 					graphics.draw(objectClickbox);
-					graphics.setColor(new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 50));
+					graphics.setColor(ColorUtil.colorWithAlpha(configColor, configColor.getAlpha() / 5));
 					graphics.fill(objectClickbox);
 				}
 			}
-
 		});
 
-		if (markOfGrace != null && config.highlightMarks())
+		if (config.highlightMarks() && !marksOfGrace.isEmpty())
 		{
-			if (markOfGrace.getPlane() == client.getPlane() && markOfGrace.getItemLayer() != null
-				&& markOfGrace.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+			for (Tile markOfGraceTile : marksOfGrace)
 			{
-				final Polygon poly = markOfGrace.getItemLayer().getCanvasTilePoly();
+				highlightTile(graphics, playerLocation, markOfGraceTile, config.getMarkColor());
+			}
+		}
 
-				if (poly == null)
+		if (stickTile != null && config.highlightStick())
+		{
+			highlightTile(graphics, playerLocation, stickTile, config.stickHighlightColor());
+		}
+
+		Set<NPC> npcs = plugin.getNpcs();
+		if (!npcs.isEmpty() && config.highlightSepulchreNpcs())
+		{
+			Color color = config.sepulchreHighlightColor();
+			for (NPC npc : npcs)
+			{
+				NPCComposition npcComposition = npc.getComposition();
+				int size = npcComposition.getSize();
+				LocalPoint lp = npc.getLocalLocation();
+
+				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+				if (tilePoly != null)
 				{
-					return null;
+					OverlayUtil.renderPolygon(graphics, tilePoly, color);
 				}
-
-				OverlayUtil.renderPolygon(graphics, poly, config.getMarkColor());
 			}
 		}
 
 		return null;
+	}
+
+	private void highlightTile(Graphics2D graphics, LocalPoint playerLocation, Tile tile, Color color)
+	{
+		if (tile.getPlane() == client.getPlane() && tile.getItemLayer() != null
+			&& tile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+		{
+			final Polygon poly = tile.getItemLayer().getCanvasTilePoly();
+
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, color);
+			}
+		}
 	}
 }

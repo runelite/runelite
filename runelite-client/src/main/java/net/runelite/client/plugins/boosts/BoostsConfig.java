@@ -28,22 +28,33 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "boosts",
-	name = "Boosts Information",
-	description = "Configuration for the Boosts plugin"
-)
+@ConfigGroup("boosts")
 public interface BoostsConfig extends Config
 {
+	enum DisplayChangeMode
+	{
+		ALWAYS,
+		BOOSTED,
+		NEVER
+	}
+
+	enum DisplayBoosts
+	{
+		NONE,
+		COMBAT,
+		NON_COMBAT,
+		BOTH
+	}
+
 	@ConfigItem(
-		keyName = "enableSkill",
-		name = "Enable Skill Boosts",
-		description = "Configures whether or not to display skill boost information",
+		keyName = "displayBoosts",
+		name = "Display Boosts",
+		description = "Configures which skill boosts to display",
 		position = 1
 	)
-	default boolean enableSkill()
+	default DisplayBoosts displayBoosts()
 	{
-		return true;
+		return DisplayBoosts.BOTH;
 	}
 
 	@ConfigItem(
@@ -59,22 +70,55 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "displayIndicators",
-		name = "Display as indicators",
-		description = "Configures whether or not to display the boost as indicators",
+		name = "Display as infoboxes",
+		description = "Configures whether or not to display the boost as infoboxes",
 		position = 3
 	)
-	default boolean displayIndicators()
+	default boolean displayInfoboxes()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		keyName = "displayNextChange",
-		name = "Display next change",
-		description = "Configures whether or not to display when the next stat change will be",
+		keyName = "displayNextBuffChange",
+		name = "Next buff change",
+		description = "Configures whether or not to display when the next buffed stat change will be",
 		position = 4
 	)
-	default boolean displayNextChange()
+	default DisplayChangeMode displayNextBuffChange()
+	{
+		return DisplayChangeMode.BOOSTED;
+	}
+
+	@ConfigItem(
+		keyName = "displayNextDebuffChange",
+		name = "Next debuff change",
+		description = "Configures whether or not to display when the next debuffed stat change will be",
+		position = 5
+	)
+	default DisplayChangeMode displayNextDebuffChange()
+	{
+		return DisplayChangeMode.NEVER;
+	}
+
+	@ConfigItem(
+		keyName = "boostThreshold",
+		name = "Boost threshold",
+		description = "The threshold at which boosted levels will be displayed in a different color. A value of 0 will disable the feature.",
+		position = 6
+	)
+	default int boostThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "notifyOnBoost",
+		name = "Notify on boost threshold",
+		description = "Configures whether or not a notification will be sent for boosted stats.",
+		position = 7
+	)
+	default boolean notifyOnBoost()
 	{
 		return true;
 	}

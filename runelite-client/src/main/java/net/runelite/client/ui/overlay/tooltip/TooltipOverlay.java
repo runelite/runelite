@@ -30,33 +30,39 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.TooltipPositionType;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TooltipComponent;
 
 @Singleton
-@Slf4j
 public class TooltipOverlay extends Overlay
 {
-	private static final int OFFSET = 24;
+	private static final int UNDER_OFFSET = 24;
 	private static final int PADDING = 2;
 	private final TooltipManager tooltipManager;
-	private final Provider<Client> clientProvider;
+	private final Client client;
+	private final RuneLiteConfig runeLiteConfig;
 
 	@Inject
-	public TooltipOverlay(Provider<Client> clientProvider, TooltipManager tooltipManager)
+	private TooltipOverlay(Client client, TooltipManager tooltipManager, final RuneLiteConfig runeLiteConfig)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 		this.tooltipManager = tooltipManager;
+		this.runeLiteConfig = runeLiteConfig;
 		setPosition(OverlayPosition.TOOLTIP);
-		setPriority(OverlayPriority.HIGH);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setPriority(OverlayPriority.HIGHEST);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		// additionally allow tooltips above the full screen world map and welcome screen
+		drawAfterInterface(WidgetID.FULLSCREEN_CONTAINER_TLI);
 	}
 
 	@Override
@@ -69,55 +75,60 @@ public class TooltipOverlay extends Overlay
 			return null;
 		}
 
-		final Client client = clientProvider.get();
-		final Rectangle clientCanvasBounds = new Rectangle(client.getRealDimensions());
-		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
-		final Point mousePosition = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + OFFSET);
-		final Rectangle bounds = new Rectangle(getBounds());
-		bounds.setLocation(mousePosition);
-
-		if (!clientCanvasBounds.contains(bounds))
+		try
 		{
-			final int clientX = (int) clientCanvasBounds.getMaxX();
-			final int clientY = (int) clientCanvasBounds.getMaxY();
-			final int boundsX = (int) bounds.getMaxX();
-			final int boundsY = (int) bounds.getMaxY();
-
-			if (boundsY > clientY)
-			{
-				graphics.translate(0, -bounds.height - OFFSET);
-			}
-
-			if (boundsX > clientX)
-			{
-				graphics.translate(-bounds.width + clientCanvasBounds.width - bounds.x, 0);
-			}
+			return renderTooltips(graphics, tooltips);
 		}
+		finally
+		{
+			// Tooltips must always be cleared each frame
+			tooltipManager.clear();
+		}
+	}
 
-		final Rectangle newBounds = new Rectangle(-1, -1, 0, 0);
+	private Dimension renderTooltips(Graphics2D graphics, List<Tooltip> tooltips)
+	{
+		final int canvasWidth = client.getCanvasWidth();
+		final int canvasHeight = client.getCanvasHeight();
+		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
+		final Rectangle prevBounds = getBounds();
+
+		final int tooltipX = Math.min(canvasWidth - prevBounds.width, mouseCanvasPosition.getX());
+		final int tooltipY = runeLiteConfig.tooltipPosition() == TooltipPositionType.ABOVE_CURSOR
+			? Math.max(0, mouseCanvasPosition.getY() - prevBounds.height)
+			: Math.min(canvasHeight - prevBounds.height, mouseCanvasPosition.getY() + UNDER_OFFSET);
+
+		final Rectangle newBounds = new Rectangle(tooltipX, tooltipY, 0, 0);
 
 		for (Tooltip tooltip : tooltips)
 		{
-			final TooltipComponent tooltipComponent = new TooltipComponent();
-			tooltipComponent.setModIcons(client.getModIcons());
-			tooltipComponent.setText(tooltip.getText());
+			final LayoutableRenderableEntity entity;
 
-			if (newBounds.contains(mousePosition))
+			if (tooltip.getComponent() != null)
 			{
-				mousePosition.move(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + OFFSET + newBounds.height);
+				entity = tooltip.getComponent();
+				if (entity instanceof PanelComponent)
+				{
+					((PanelComponent) entity).setBackgroundColor(runeLiteConfig.overlayBackgroundColor());
+				}
+			}
+			else
+			{
+				final TooltipComponent tooltipComponent = new TooltipComponent();
+				tooltipComponent.setModIcons(client.getModIcons());
+				tooltipComponent.setText(tooltip.getText());
+				tooltipComponent.setBackgroundColor(runeLiteConfig.overlayBackgroundColor());
+				entity = tooltipComponent;
 			}
 
-			tooltipComponent.setPosition(mousePosition);
-			final Dimension dimension = tooltipComponent.render(graphics);
+			entity.setPreferredLocation(new Point(tooltipX, tooltipY + newBounds.height));
+			final Dimension dimension = entity.render(graphics);
 
 			// Create incremental tooltip newBounds
-			newBounds.x = newBounds.x != -1 ? Math.min(newBounds.x, mousePosition.x) : mousePosition.x;
-			newBounds.y = newBounds.y != -1 ? Math.min(newBounds.y, mousePosition.y) : mousePosition.y;
 			newBounds.height += dimension.height + PADDING;
 			newBounds.width = Math.max(newBounds.width, dimension.width);
 		}
 
-		tooltipManager.clear();
 		return newBounds.getSize();
 	}
 }

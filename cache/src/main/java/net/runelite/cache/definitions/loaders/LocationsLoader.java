@@ -47,7 +47,7 @@ public class LocationsLoader
 		int id = -1;
 		int idOffset;
 
-		while ((idOffset = buf.readUnsignedShortSmart()) != 0)
+		while ((idOffset = buf.readUnsignedIntSmartShortCompat()) != 0)
 		{
 			id += idOffset;
 

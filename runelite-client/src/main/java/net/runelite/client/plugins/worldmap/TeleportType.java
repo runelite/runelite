@@ -35,6 +35,7 @@ public enum TeleportType
 	LUNAR_MAGIC("Lunar - "),
 	ARCEUUS_MAGIC("Arceuus - "),
 	JEWELLERY("Jewellery - "),
+	SCROLL(""),
 	OTHER("");
 
 	private String prefix;

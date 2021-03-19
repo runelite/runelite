@@ -38,6 +38,8 @@ public interface XpMapper
 
 	XpData xpEntityToXpData(XpEntity xpEntity);
 
+	@Mapping(target = "time", ignore = true)
+
 	@Mapping(source = "attack.experience", target = "attack_xp")
 	@Mapping(source = "defence.experience", target = "defence_xp")
 	@Mapping(source = "strength.experience", target = "strength_xp")

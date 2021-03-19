@@ -31,7 +31,7 @@ import lombok.Value;
 /**
  * Represents Discord Rich Presence RPC data
  */
-@Builder
+@Builder(toBuilder = true)
 @Value
 public class DiscordPresence
 {
@@ -57,7 +57,7 @@ public class DiscordPresence
 	private Instant startTimestamp;
 
 	/**
-	 * Unix timestamp (seconds) for the start of the game.
+	 * Unix timestamp (seconds) for the end of the game.
 	 */
 	private Instant endTimestamp;
 

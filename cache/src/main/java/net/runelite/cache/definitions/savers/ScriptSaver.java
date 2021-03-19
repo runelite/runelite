@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.OutputStream;
-import static net.runelite.cache.script.Opcodes.LOAD_STRING;
+import static net.runelite.cache.script.Opcodes.SCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
 import static net.runelite.cache.script.Opcodes.POP_STRING;
 import static net.runelite.cache.script.Opcodes.RETURN;
@@ -48,7 +48,7 @@ public class ScriptSaver
 		{
 			int opcode = instructions[i];
 			out.writeShort(opcode);
-			if (opcode == LOAD_STRING)
+			if (opcode == SCONST)
 			{
 				out.writeString(stringOperands[i]);
 			}

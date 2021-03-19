@@ -27,31 +27,42 @@ package net.runelite.client.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.eventbus.Subscribe;
+import com.google.common.collect.ImmutableMap;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.PostItemComposition;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.item.SearchResult;
+import net.runelite.http.api.item.ItemStats;
+import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
@@ -65,49 +76,111 @@ public class ItemManager
 		private final boolean stackable;
 	}
 
-	/**
-	 * not yet looked up
-	 */
-	static final ItemPrice EMPTY = new ItemPrice();
-
-	/**
-	 * has no price
-	 */
-	static final ItemPrice NONE = new ItemPrice();
+	@Value
+	private static class OutlineKey
+	{
+		private final int itemId;
+		private final int itemQuantity;
+		private final Color outlineColor;
+	}
 
 	private final Client client;
-	private final ScheduledExecutorService scheduledExecutorService;
 	private final ClientThread clientThread;
+	private final ItemClient itemClient;
+	private final RuneLiteConfig runeLiteConfig;
 
-	private final ItemClient itemClient = new ItemClient();
-	private final LoadingCache<String, SearchResult> itemSearches;
-	private final LoadingCache<Integer, ItemPrice> itemPriceCache;
+	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
+	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
+	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
+
+	// Worn items with weight reducing property have a different worn and inventory ItemID
+	private static final ImmutableMap<Integer, Integer> WORN_ITEMS = ImmutableMap.<Integer, Integer>builder().
+		put(BOOTS_OF_LIGHTNESS_89, BOOTS_OF_LIGHTNESS).
+		put(PENANCE_GLOVES_10554, PENANCE_GLOVES).
+
+		put(GRACEFUL_HOOD_11851, GRACEFUL_HOOD).
+		put(GRACEFUL_CAPE_11853, GRACEFUL_CAPE).
+		put(GRACEFUL_TOP_11855, GRACEFUL_TOP).
+		put(GRACEFUL_LEGS_11857, GRACEFUL_LEGS).
+		put(GRACEFUL_GLOVES_11859, GRACEFUL_GLOVES).
+		put(GRACEFUL_BOOTS_11861, GRACEFUL_BOOTS).
+		put(GRACEFUL_HOOD_13580, GRACEFUL_HOOD_13579).
+		put(GRACEFUL_CAPE_13582, GRACEFUL_CAPE_13581).
+		put(GRACEFUL_TOP_13584, GRACEFUL_TOP_13583).
+		put(GRACEFUL_LEGS_13586, GRACEFUL_LEGS_13585).
+		put(GRACEFUL_GLOVES_13588, GRACEFUL_GLOVES_13587).
+		put(GRACEFUL_BOOTS_13590, GRACEFUL_BOOTS_13589).
+		put(GRACEFUL_HOOD_13592, GRACEFUL_HOOD_13591).
+		put(GRACEFUL_CAPE_13594, GRACEFUL_CAPE_13593).
+		put(GRACEFUL_TOP_13596, GRACEFUL_TOP_13595).
+		put(GRACEFUL_LEGS_13598, GRACEFUL_LEGS_13597).
+		put(GRACEFUL_GLOVES_13600, GRACEFUL_GLOVES_13599).
+		put(GRACEFUL_BOOTS_13602, GRACEFUL_BOOTS_13601).
+		put(GRACEFUL_HOOD_13604, GRACEFUL_HOOD_13603).
+		put(GRACEFUL_CAPE_13606, GRACEFUL_CAPE_13605).
+		put(GRACEFUL_TOP_13608, GRACEFUL_TOP_13607).
+		put(GRACEFUL_LEGS_13610, GRACEFUL_LEGS_13609).
+		put(GRACEFUL_GLOVES_13612, GRACEFUL_GLOVES_13611).
+		put(GRACEFUL_BOOTS_13614, GRACEFUL_BOOTS_13613).
+		put(GRACEFUL_HOOD_13616, GRACEFUL_HOOD_13615).
+		put(GRACEFUL_CAPE_13618, GRACEFUL_CAPE_13617).
+		put(GRACEFUL_TOP_13620, GRACEFUL_TOP_13619).
+		put(GRACEFUL_LEGS_13622, GRACEFUL_LEGS_13621).
+		put(GRACEFUL_GLOVES_13624, GRACEFUL_GLOVES_13623).
+		put(GRACEFUL_BOOTS_13626, GRACEFUL_BOOTS_13625).
+		put(GRACEFUL_HOOD_13628, GRACEFUL_HOOD_13627).
+		put(GRACEFUL_CAPE_13630, GRACEFUL_CAPE_13629).
+		put(GRACEFUL_TOP_13632, GRACEFUL_TOP_13631).
+		put(GRACEFUL_LEGS_13634, GRACEFUL_LEGS_13633).
+		put(GRACEFUL_GLOVES_13636, GRACEFUL_GLOVES_13635).
+		put(GRACEFUL_BOOTS_13638, GRACEFUL_BOOTS_13637).
+		put(GRACEFUL_HOOD_13668, GRACEFUL_HOOD_13667).
+		put(GRACEFUL_CAPE_13670, GRACEFUL_CAPE_13669).
+		put(GRACEFUL_TOP_13672, GRACEFUL_TOP_13671).
+		put(GRACEFUL_LEGS_13674, GRACEFUL_LEGS_13673).
+		put(GRACEFUL_GLOVES_13676, GRACEFUL_GLOVES_13675).
+		put(GRACEFUL_BOOTS_13678, GRACEFUL_BOOTS_13677).
+		put(GRACEFUL_HOOD_21063, GRACEFUL_HOOD_21061).
+		put(GRACEFUL_CAPE_21066, GRACEFUL_CAPE_21064).
+		put(GRACEFUL_TOP_21069, GRACEFUL_TOP_21067).
+		put(GRACEFUL_LEGS_21072, GRACEFUL_LEGS_21070).
+		put(GRACEFUL_GLOVES_21075, GRACEFUL_GLOVES_21073).
+		put(GRACEFUL_BOOTS_21078, GRACEFUL_BOOTS_21076).
+		put(GRACEFUL_HOOD_24745, GRACEFUL_HOOD_24743).
+		put(GRACEFUL_CAPE_24748, GRACEFUL_CAPE_24746).
+		put(GRACEFUL_TOP_24751, GRACEFUL_TOP_24749).
+		put(GRACEFUL_LEGS_24754, GRACEFUL_LEGS_24752).
+		put(GRACEFUL_GLOVES_24757, GRACEFUL_GLOVES_24755).
+		put(GRACEFUL_BOOTS_24760, GRACEFUL_BOOTS_24758).
+		put(GRACEFUL_HOOD_25071, GRACEFUL_HOOD_25069).
+		put(GRACEFUL_CAPE_25074, GRACEFUL_CAPE_25072).
+		put(GRACEFUL_TOP_25077, GRACEFUL_TOP_25075).
+		put(GRACEFUL_LEGS_25080, GRACEFUL_LEGS_25078).
+		put(GRACEFUL_GLOVES_25083, GRACEFUL_GLOVES_25081).
+		put(GRACEFUL_BOOTS_25086, GRACEFUL_BOOTS_25084).
+
+		put(MAX_CAPE_13342, MAX_CAPE).
+
+		put(SPOTTED_CAPE_10073, SPOTTED_CAPE).
+		put(SPOTTIER_CAPE_10074, SPOTTIER_CAPE).
+
+		put(AGILITY_CAPET_13341, AGILITY_CAPET).
+		put(AGILITY_CAPE_13340, AGILITY_CAPE).
+		build();
 
 	@Inject
-	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
+	public ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
+		OkHttpClient okHttpClient, EventBus eventBus, RuneLiteConfig runeLiteConfig)
 	{
 		this.client = client;
-		this.scheduledExecutorService = executor;
 		this.clientThread = clientThread;
+		this.itemClient = new ItemClient(okHttpClient);
+		this.runeLiteConfig = runeLiteConfig;
 
-		itemPriceCache = CacheBuilder.newBuilder()
-			.maximumSize(1024L)
-			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new ItemPriceLoader(executor, itemClient));
-
-		itemSearches = CacheBuilder.newBuilder()
-			.maximumSize(512L)
-			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<String, SearchResult>()
-			{
-				@Override
-				public SearchResult load(String key) throws Exception
-				{
-					return itemClient.search(key);
-				}
-			});
+		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
+		scheduledExecutorService.submit(this::loadStats);
 
 		itemImages = CacheBuilder.newBuilder()
 			.maximumSize(128L)
@@ -132,7 +205,63 @@ public class ItemManager
 					return client.getItemDefinition(key);
 				}
 			});
+
+		itemOutlines = CacheBuilder.newBuilder()
+			.maximumSize(128L)
+			.expireAfterAccess(1, TimeUnit.HOURS)
+			.build(new CacheLoader<OutlineKey, BufferedImage>()
+			{
+				@Override
+				public BufferedImage load(OutlineKey key) throws Exception
+				{
+					return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
+				}
+			});
+
+		eventBus.register(this);
 	}
+
+	private void loadPrices()
+	{
+		try
+		{
+			ItemPrice[] prices = itemClient.getPrices();
+			if (prices != null)
+			{
+				ImmutableMap.Builder<Integer, ItemPrice> map = ImmutableMap.builderWithExpectedSize(prices.length);
+				for (ItemPrice price : prices)
+				{
+					map.put(price.getId(), price);
+				}
+				itemPrices = map.build();
+			}
+
+			log.debug("Loaded {} prices", itemPrices.size());
+		}
+		catch (IOException e)
+		{
+			log.warn("error loading prices!", e);
+		}
+	}
+
+	private void loadStats()
+	{
+		try
+		{
+			final Map<Integer, ItemStats> stats = itemClient.getStats();
+			if (stats != null)
+			{
+				itemStats = ImmutableMap.copyOf(stats);
+			}
+
+			log.debug("Loaded {} stats", itemStats.size());
+		}
+		catch (IOException e)
+		{
+			log.warn("error loading stats!", e);
+		}
+	}
+
 
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
@@ -143,125 +272,119 @@ public class ItemManager
 		}
 	}
 
-	/**
-	 * Look up an item's price asynchronously.
-	 *
-	 * @param itemId item id
-	 * @return the price, or null if the price is not yet loaded
-	 */
-	public ItemPrice getItemPriceAsync(int itemId)
+	@Subscribe
+	public void onPostItemComposition(PostItemComposition event)
 	{
-		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-		if (itemPrice != null && itemPrice != EMPTY)
-		{
-			return itemPrice == NONE ? null : itemPrice;
-		}
-
-		itemPriceCache.refresh(itemId);
-		return null;
+		itemCompositions.put(event.getItemComposition().getId(), event.getItemComposition());
 	}
 
 	/**
-	 * Look up bulk item prices asynchronously
-	 *
-	 * @param itemIds array of item Ids
-	 * @return a future called with the looked up prices
+	 * Invalidates internal item manager item composition cache (but not client item composition cache)
+	 * @see Client#getItemCompositionCache()
 	 */
-	public CompletableFuture<ItemPrice[]> getItemPriceBatch(Collection<Integer> itemIds)
+	public void invalidateItemCompositionCache()
 	{
-		final List<Integer> lookup = new ArrayList<>();
-		final List<ItemPrice> existing = new ArrayList<>();
-		for (int itemId : itemIds)
-		{
-			ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-			if (itemPrice != null)
-			{
-				existing.add(itemPrice);
-			}
-			else
-			{
-				lookup.add(itemId);
-			}
-		}
-		// All cached?
-		if (lookup.isEmpty())
-		{
-			return CompletableFuture.completedFuture(existing.toArray(new ItemPrice[existing.size()]));
-		}
-
-		final CompletableFuture<ItemPrice[]> future = new CompletableFuture<>();
-		scheduledExecutorService.execute(() ->
-		{
-			try
-			{
-				// Do a query for the items not in the cache
-				ItemPrice[] itemPrices = itemClient.lookupItemPrice(lookup.toArray(new Integer[lookup.size()]));
-				if (itemPrices != null)
-				{
-					for (int itemId : lookup)
-					{
-						itemPriceCache.put(itemId, NONE);
-					}
-					for (ItemPrice itemPrice : itemPrices)
-					{
-						itemPriceCache.put(itemPrice.getItem().getId(), itemPrice);
-					}
-					// Append these to the already cached items
-					Arrays.stream(itemPrices).forEach(existing::add);
-				}
-				future.complete(existing.toArray(new ItemPrice[existing.size()]));
-			}
-			catch (Exception ex)
-			{
-				// cache unable to lookup
-				for (int itemId : lookup)
-				{
-					itemPriceCache.put(itemId, NONE);
-				}
-
-				future.completeExceptionally(ex);
-			}
-		});
-		return future;
+		itemCompositions.invalidateAll();
 	}
 
 	/**
-	 * Look up an item's price synchronously
+	 * Look up an item's price
 	 *
-	 * @param itemId item id
+	 * @param itemID item id
 	 * @return item price
-	 * @throws IOException
 	 */
-	public ItemPrice getItemPrice(int itemId) throws IOException
+	public int getItemPrice(int itemID)
 	{
-		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-		if (itemPrice != null && itemPrice != EMPTY)
+		return getItemPriceWithSource(itemID, runeLiteConfig.useWikiItemPrices());
+	}
+
+	/**
+	 * Look up an item's price
+	 *
+	 * @param itemID item id
+	 * @param useWikiPrice use the actively traded/wiki price
+	 * @return item price
+	 */
+	public int getItemPriceWithSource(int itemID, boolean useWikiPrice)
+	{
+		if (itemID == COINS_995)
 		{
-			return itemPrice == NONE ? null : itemPrice;
+			return 1;
+		}
+		if (itemID == PLATINUM_TOKEN)
+		{
+			return 1000;
 		}
 
-		itemPrice = itemClient.lookupItemPrice(itemId);
-		if (itemPrice == null)
+		ItemComposition itemComposition = getItemComposition(itemID);
+		if (itemComposition.getNote() != -1)
 		{
-			itemPriceCache.put(itemId, NONE);
+			itemID = itemComposition.getLinkedNoteId();
+		}
+		itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
+
+		int price = 0;
+
+		final Collection<ItemMapping> mappedItems = ItemMapping.map(itemID);
+
+		if (mappedItems == null)
+		{
+			final ItemPrice ip = itemPrices.get(itemID);
+
+			if (ip != null)
+			{
+				price = useWikiPrice && ip.getWikiPrice() > 0 ? ip.getWikiPrice() : ip.getPrice();
+			}
+		}
+		else
+		{
+			for (final ItemMapping mappedItem : mappedItems)
+			{
+				price += getItemPriceWithSource(mappedItem.getTradeableItem(), useWikiPrice) * mappedItem.getQuantity();
+			}
+		}
+
+		return price;
+	}
+
+	/**
+	 * Look up an item's stats
+	 * @param itemId item id
+	 * @return item stats
+	 */
+	@Nullable
+	public ItemStats getItemStats(int itemId, boolean allowNote)
+	{
+		ItemComposition itemComposition = getItemComposition(itemId);
+
+		if (itemComposition == null || itemComposition.getName() == null || (!allowNote && itemComposition.getNote() != -1))
+		{
 			return null;
 		}
 
-		itemPriceCache.put(itemId, itemPrice);
-		return itemPrice;
+		return itemStats.get(canonicalize(itemId));
 	}
 
 	/**
-	 * Look up an item's composition
+	 * Search for tradeable items based on item name
 	 *
 	 * @param itemName item name
-	 * @return item search result
-	 * @throws java.util.concurrent.ExecutionException exception when item
-	 * is not found
+	 * @return
 	 */
-	public SearchResult searchForItem(String itemName) throws ExecutionException
+	public List<ItemPrice> search(String itemName)
 	{
-		return itemSearches.get(itemName);
+		itemName = itemName.toLowerCase();
+
+		List<ItemPrice> result = new ArrayList<>();
+		for (ItemPrice itemPrice : itemPrices.values())
+		{
+			final String name = itemPrice.getName();
+			if (name.toLowerCase().contains(itemName))
+			{
+				result.add(itemPrice);
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -270,9 +393,31 @@ public class ItemManager
 	 * @param itemId item id
 	 * @return item composition
 	 */
+	@Nonnull
 	public ItemComposition getItemComposition(int itemId)
 	{
+		assert client.isClientThread() : "getItemComposition must be called on client thread";
 		return itemCompositions.getUnchecked(itemId);
+	}
+
+	/**
+	 * Get an item's un-noted, un-placeholdered ID
+	 */
+	public int canonicalize(int itemID)
+	{
+		ItemComposition itemComposition = getItemComposition(itemID);
+
+		if (itemComposition.getNote() != -1)
+		{
+			return itemComposition.getLinkedNoteId();
+		}
+
+		if (itemComposition.getPlaceholderTemplateId() != -1)
+		{
+			return itemComposition.getPlaceholderId();
+		}
+
+		return WORN_ITEMS.getOrDefault(itemID, itemID);
 	}
 
 	/**
@@ -283,8 +428,8 @@ public class ItemManager
 	 */
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		AsyncBufferedImage img = new AsyncBufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
-		clientThread.invokeLater(() ->
+		AsyncBufferedImage img = new AsyncBufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		clientThread.invoke(() ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())
 			{
@@ -297,7 +442,7 @@ public class ItemManager
 				return false;
 			}
 			sprite.toBufferedImage(img);
-			img.changed();
+			img.loaded();
 			return true;
 		});
 		return img;
@@ -336,6 +481,40 @@ public class ItemManager
 			return itemImages.get(new ImageKey(itemId, quantity, stackable));
 		}
 		catch (ExecutionException ex)
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Create item sprite and applies an outline.
+	 *
+	 * @param itemId item id
+	 * @param itemQuantity item quantity
+	 * @param outlineColor outline color
+	 * @return image
+	 */
+	private BufferedImage loadItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
+	{
+		final SpritePixels itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, false, CLIENT_DEFAULT_ZOOM);
+		return itemSprite.toBufferedOutline(outlineColor);
+	}
+
+	/**
+	 * Get item outline with a specific color.
+	 *
+	 * @param itemId item id
+	 * @param itemQuantity item quantity
+	 * @param outlineColor outline color
+	 * @return image
+	 */
+	public BufferedImage getItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
+	{
+		try
+		{
+			return itemOutlines.get(new OutlineKey(itemId, itemQuantity, outlineColor));
+		}
+		catch (ExecutionException e)
 		{
 			return null;
 		}

@@ -24,9 +24,9 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <!DOCTYPE suppressions PUBLIC
-    "-//Puppy Crawl//DTD Suppressions 1.1//EN"
-    "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+	"-//Checkstyle//DTD SuppressionFilter Configuration 1.1//EN"
+	"https://checkstyle.org/dtds/suppressions_1_1.dtd">
 <suppressions>
-    <suppress files="RuntimeTypeAdapterFactory\.java" checks="[a-zA-Z0-9]*"/>
-    <suppress files="[\\/]runescape-client[\\/]" checks="[a-zA-Z0-9]*"/>
+	<suppress files="RuntimeTypeAdapterFactory\.java" checks="[a-zA-Z0-9]*"/>
+	<suppress files="[\\/]runescape-client[\\/]" checks="[a-zA-Z0-9]*"/>
 </suppressions>

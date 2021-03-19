@@ -28,11 +28,15 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
+import net.runelite.client.util.Text;
 
 @Setter
 @Builder
@@ -47,8 +51,19 @@ public class LineComponent implements LayoutableRenderableEntity
 	@Builder.Default
 	private Color rightColor = Color.WHITE;
 
+	private Font leftFont;
+
+	private Font rightFont;
+
+	@Builder.Default
+	private Point preferredLocation = new Point();
+
 	@Builder.Default
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
+
+	@Builder.Default
+	@Getter
+	private final Rectangle bounds = new Rectangle();
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -57,11 +72,17 @@ public class LineComponent implements LayoutableRenderableEntity
 		final String left = MoreObjects.firstNonNull(this.left, "");
 		final String right = MoreObjects.firstNonNull(this.right, "");
 
-		final FontMetrics metrics = graphics.getFontMetrics();
-		int x = 0;
-		int y = 0;
-		final int leftFullWidth = getLineWidth(left, metrics);
-		final int rightFullWidth = getLineWidth(right, metrics);
+		final Font leftFont = MoreObjects.firstNonNull(this.leftFont, graphics.getFont());
+		final Font rightFont = MoreObjects.firstNonNull(this.rightFont, graphics.getFont());
+		final FontMetrics lfm = graphics.getFontMetrics(leftFont), rfm = graphics.getFontMetrics(rightFont);
+		final int fmHeight = Math.max(lfm.getHeight(), rfm.getHeight());
+		final int baseX = preferredLocation.x;
+		final int baseY = preferredLocation.y + fmHeight;
+		int x = baseX;
+		int y = baseY;
+		final int leftFullWidth = getLineWidth(left, lfm);
+		final int rightFullWidth = getLineWidth(right, rfm);
+		final TextComponent textComponent = new TextComponent();
 
 		if (preferredSize.width < leftFullWidth + rightFullWidth)
 		{
@@ -74,62 +95,71 @@ public class LineComponent implements LayoutableRenderableEntity
 				leftSmallWidth -= rightSmallWidth;
 			}
 
-			final String[] leftSplitLines = lineBreakText(left, leftSmallWidth, metrics);
-			final String[] rightSplitLines = lineBreakText(right, rightSmallWidth, metrics);
+			final String[] leftSplitLines = lineBreakText(left, leftSmallWidth, lfm);
+			final String[] rightSplitLines = lineBreakText(right, rightSmallWidth, rfm);
 
 			int lineCount = Math.max(leftSplitLines.length, rightSplitLines.length);
 
 			for (int i = 0; i < lineCount; i++)
 			{
-				String leftText = "";
-				String rightText = "";
-
 				if (i < leftSplitLines.length)
 				{
-					leftText = leftSplitLines[i];
+					final String leftText = leftSplitLines[i];
+					textComponent.setPosition(new Point(x, y));
+					textComponent.setText(leftText);
+					textComponent.setColor(leftColor);
+					textComponent.setFont(leftFont);
+					textComponent.render(graphics);
 				}
 
 				if (i < rightSplitLines.length)
 				{
-					rightText = rightSplitLines[i];
+					final String rightText = rightSplitLines[i];
+					textComponent.setPosition(new Point(x + preferredSize.width - getLineWidth(rightText, rfm), y));
+					textComponent.setText(rightText);
+					textComponent.setColor(rightColor);
+					textComponent.setFont(rightFont);
+					textComponent.render(graphics);
 				}
 
-				final TextComponent leftLineComponent = new TextComponent();
-				leftLineComponent.setPosition(new Point(x, y));
-				leftLineComponent.setText(leftText);
-				leftLineComponent.setColor(leftColor);
-				leftLineComponent.render(graphics);
-
-				final TextComponent rightLineComponent = new TextComponent();
-				rightLineComponent.setPosition(new Point(x + leftSmallWidth + rightFullWidth - getLineWidth(rightText, metrics), y));
-				rightLineComponent.setText(rightText);
-				rightLineComponent.setColor(rightColor);
-				rightLineComponent.render(graphics);
-				y += metrics.getHeight();
+				y += fmHeight;
 			}
 
-			return new Dimension(preferredSize.width, y);
+			final Dimension dimension = new Dimension(preferredSize.width, y - baseY);
+			bounds.setLocation(preferredLocation);
+			bounds.setSize(dimension);
+			return dimension;
 		}
 
-		final TextComponent leftLineComponent = new TextComponent();
-		leftLineComponent.setPosition(new Point(x, y));
-		leftLineComponent.setText(left);
-		leftLineComponent.setColor(leftColor);
-		leftLineComponent.render(graphics);
+		if (!left.isEmpty())
+		{
+			textComponent.setPosition(new Point(x, y));
+			textComponent.setText(left);
+			textComponent.setColor(leftColor);
+			textComponent.setFont(leftFont);
+			textComponent.render(graphics);
+		}
 
-		final TextComponent rightLineComponent = new TextComponent();
-		rightLineComponent.setPosition(new Point(x + preferredSize.width - getLineWidth(right, metrics), y));
-		rightLineComponent.setText(right);
-		rightLineComponent.setColor(rightColor);
-		rightLineComponent.render(graphics);
-		y += metrics.getHeight();
+		if (!right.isEmpty())
+		{
+			textComponent.setPosition(new Point(x + preferredSize.width - rightFullWidth, y));
+			textComponent.setText(right);
+			textComponent.setColor(rightColor);
+			textComponent.setFont(rightFont);
+			textComponent.render(graphics);
+		}
 
-		return new Dimension(preferredSize.width, y);
+		y += fmHeight;
+
+		final Dimension dimension = new Dimension(preferredSize.width, y - baseY);
+		bounds.setLocation(preferredLocation);
+		bounds.setSize(dimension);
+		return dimension;
 	}
 
 	private static int getLineWidth(final String line, final FontMetrics metrics)
 	{
-		return metrics.stringWidth(TextComponent.textWithoutColTags(line));
+		return metrics.stringWidth(Text.removeTags(line));
 	}
 
 	private static String[] lineBreakText(String text, int maxWidth, FontMetrics metrics)

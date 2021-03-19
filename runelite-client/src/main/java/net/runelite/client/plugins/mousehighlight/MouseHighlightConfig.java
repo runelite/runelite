@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "mousehighlight",
-	name = "Mouse Tooltips",
-	description = "Configures the Mouse Tooltips plugin"
-)
+@ConfigGroup("mousehighlight")
 public interface MouseHighlightConfig extends Config
 {
 	@ConfigItem(
@@ -55,5 +51,16 @@ public interface MouseHighlightConfig extends Config
 	default boolean chatboxTooltip()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "disableSpellbooktooltip",
+		name = "Disable Spellbook Tooltips",
+		description = "Disable Spellbook Tooltips so they don't cover descriptions"
+	)
+	default boolean disableSpellbooktooltip()
+	{
+		return false;
 	}
 }

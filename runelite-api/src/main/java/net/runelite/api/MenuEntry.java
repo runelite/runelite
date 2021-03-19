@@ -33,11 +33,11 @@ import lombok.Data;
 public class MenuEntry
 {
 	/**
-	 * The option text added to the menu (ie. "Walk here", "Use").
+	 * The option text added to the menu. (ie. "Walk here", "Use")
 	 */
 	private String option;
 	/**
-	 * The target of the action (ie. Item or Actor name).
+	 * The target of the action. (ie. Item or Actor name)
 	 * <p>
 	 * If the option does not apply to any target, this field
 	 * will be set to empty string.
@@ -59,11 +59,11 @@ public class MenuEntry
 	 * A second additional parameter for the action.
 	 */
 	private int param1;
-
-	@Override
-	public String toString()
-	{
-		return "MenuEntry{" + "option=" + option + ", target=" + target + ", identifier=" + identifier + ", type=" + type + ", param0=" + param0 + ", param1=" + param1 + '}';
-	}
-
+	/**
+	 * If this field is true and you have single mouse button on and this entry is
+	 * the top entry the right click menu will not be opened when you left click
+	 *
+	 * This is used  for shift click
+	 */
+	private boolean forceLeftClick;
 }

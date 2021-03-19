@@ -24,7 +24,7 @@
  */
 package net.runelite.cache.io;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class OutputStreamTest
@@ -38,9 +38,22 @@ public class OutputStreamTest
 		os.writeBigSmart(65535);
 
 		InputStream is = new InputStream(os.getArray());
-		Assert.assertEquals(42, is.readBigSmart());
-		Assert.assertEquals(70000, is.readBigSmart());
-		Assert.assertEquals(65535, is.readBigSmart());
+		assertEquals(42, is.readBigSmart());
+		assertEquals(70000, is.readBigSmart());
+		assertEquals(65535, is.readBigSmart());
+	}
+
+	@Test
+	public void testWriteString()
+	{
+		char[] c = new char[]{32, 160};
+		String str = new String(c, 0, c.length);
+
+		OutputStream os = new OutputStream();
+		os.writeString(str);
+
+		// 1 byte length + 32 + 160
+		assertEquals(3, os.getOffset());
 	}
 
 }

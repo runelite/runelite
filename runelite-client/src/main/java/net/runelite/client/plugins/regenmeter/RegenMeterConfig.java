@@ -27,12 +27,9 @@ package net.runelite.client.plugins.regenmeter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
-@ConfigGroup(
-	keyName = "regenmeter",
-	name = "Regeneration Meter",
-	description = "Configuration for the data orb regeneration meters"
-)
+@ConfigGroup("regenmeter")
 public interface RegenMeterConfig extends Config
 {
 	@ConfigItem(
@@ -55,10 +52,21 @@ public interface RegenMeterConfig extends Config
 
 	@ConfigItem(
 		keyName = "showWhenNoChange",
-		name = "Show hitpoints regen at full hitpoints",
+		name = "Show at full hitpoints",
 		description = "Always show the hitpoints regen orb, even if there will be no stat change")
 	default boolean showWhenNoChange()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyBeforeHpRegenDuration",
+		name = "Hitpoint Notification",
+		description = "Notify approximately when your next hitpoint is about to regen. A value of 0 will disable notification."
+	)
+	@Units(Units.SECONDS)
+	default int getNotifyBeforeHpRegenSeconds()
+	{
+		return 0;
 	}
 }

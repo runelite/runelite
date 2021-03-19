@@ -41,9 +41,13 @@ import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.cache.ConfigType;
 import net.runelite.cache.IndexType;
+import net.runelite.cache.definitions.ItemDefinition;
+import net.runelite.cache.definitions.loaders.ItemLoader;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.Container;
 import net.runelite.cache.fs.FSFile;
@@ -100,7 +104,7 @@ public class CacheService
 	{
 		String hashStr = BaseEncoding.base16().encode(archiveEntry.getHash());
 		String path = new StringBuilder()
-			.append(hashStr.substring(0, 2))
+			.append(hashStr, 0, 2)
 			.append('/')
 			.append(hashStr.substring(2))
 			.toString();
@@ -225,5 +229,26 @@ public class CacheService
 			CacheDAO cacheDao = new CacheDAO();
 			return cacheDao.findArchiveByName(con, cache, index, nameHash);
 		}
+	}
+
+	public List<ItemDefinition> getItems() throws IOException
+	{
+		CacheEntry cache = findMostRecent();
+		if (cache == null)
+		{
+			return Collections.emptyList();
+		}
+
+		IndexEntry indexEntry = findIndexForCache(cache, IndexType.CONFIGS.getNumber());
+		ArchiveEntry archiveEntry = findArchiveForIndex(indexEntry, ConfigType.ITEM.getId());
+		ArchiveFiles archiveFiles = getArchiveFiles(archiveEntry);
+		final ItemLoader itemLoader = new ItemLoader();
+		final List<ItemDefinition> result = new ArrayList<>(archiveFiles.getFiles().size());
+		for (FSFile file : archiveFiles.getFiles())
+		{
+			ItemDefinition itemDef = itemLoader.load(file.getFileId(), file.getContents());
+			result.add(itemDef);
+		}
+		return result;
 	}
 }

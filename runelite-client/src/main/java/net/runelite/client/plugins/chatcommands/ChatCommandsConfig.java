@@ -24,23 +24,21 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
-import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
-@ConfigGroup(
-	keyName = "chatcommands",
-	name = "Chat Commands",
-	description = "Configuration for chat commands"
-)
+@ConfigGroup("chatcommands")
 public interface ChatCommandsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
 		keyName = "price",
 		name = "Price Command",
-		description = "Configures whether the Price command is enabled"
+		description = "Configures whether the Price command is enabled<br> !price [item]"
 	)
 	default boolean price()
 	{
@@ -51,7 +49,7 @@ public interface ChatCommandsConfig extends Config
 		position = 1,
 		keyName = "lvl",
 		name = "Level Command",
-		description = "Configures whether the Level command is enabled"
+		description = "Configures whether the Level command is enabled<br> !lvl [skill]"
 	)
 	default boolean lvl()
 	{
@@ -60,133 +58,144 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "hexColorPublic",
-		name = "Public chat",
-		description = "Color of Public chat"
+		keyName = "clue",
+		name = "Clue Command",
+		description = "Configures whether the Clue command is enabled<br> !clues"
 	)
-	default Color getPublicRecolor()
+	default boolean clue()
 	{
-		return Color.decode("#0000FF");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 3,
-		keyName = "hexColorPublicH",
-		name = "Public chat highlight",
-		description = "Color of Public chat highlight"
+		keyName = "killcount",
+		name = "Killcount Command",
+		description = "Configures whether the Killcount command is enabled<br> !kc [boss]"
 	)
-	default Color getPublicHRecolor()
+	default boolean killcount()
 	{
-		return Color.decode("#000000");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 4,
-		keyName = "hexColorPrivate",
-		name = "Private chat",
-		description = "Color of Private chat"
+		keyName = "qp",
+		name = "QP Command",
+		description = "Configures whether the quest point command is enabled<br> !qp"
 	)
-	default Color getPrivateRecolor()
+	default boolean qp()
 	{
-		return Color.decode("#0088FF");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 5,
-		keyName = "hexColorPrivateH",
-		name = "Private chat highlight",
-		description = "Color of Private chat highlight"
+		keyName = "pb",
+		name = "PB Command",
+		description = "Configures whether the personal best command is enabled<br> !pb"
 	)
-	default Color getPrivateHRecolor()
+	default boolean pb()
 	{
-		return Color.decode("#002783");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 6,
-		keyName = "hexColorCc",
-		name = "Clan chat",
-		description = "Color of Clan chat"
+		keyName = "gc",
+		name = "GC Command",
+		description = "Configures whether the Barbarian Assault High gamble count command is enabled<br> !gc"
 	)
-	default Color getCcRecolor()
+	default boolean gc()
 	{
-		return Color.decode("#7f0000");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 7,
-		keyName = "hexColorCcH",
-		name = "Clan chat Highlight",
-		description = "Color of Clan chat highlight"
+		keyName = "duels",
+		name = "Duels Command",
+		description = "Configures whether the duel arena command is enabled<br> !duels"
 	)
-	default Color getCcHRecolor()
+	default boolean duels()
 	{
-		return Color.decode("#000000");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 8,
-		keyName = "transparentHexColorPublic",
-		name = "Transparent public chat",
-		description = "Color of Public chat"
+		keyName = "bh",
+		name = "BH Command",
+		description = "Configures whether the Bounty Hunter - Hunter command is enabled<br> !bh"
 	)
-	default Color getTransparentPublicRecolor()
+	default boolean bh()
 	{
-		return Color.decode("#9090FF");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 9,
-		keyName = "transparentHexColorPublicH",
-		name = "Transparent public chat highlight",
-		description = "Color of Public chat highlight"
+		keyName = "bhRogue",
+		name = "BH Rogue Command",
+		description = "Configures whether the Bounty Hunter - Rogue command is enabled<br> !bhrogue"
 	)
-	default Color getTransparentPublicHRecolor()
+	default boolean bhRogue()
 	{
-		return Color.decode("#FFFFFF");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 10,
-		keyName = "transparentHexColorPrivate",
-		name = "Transparent private chat",
-		description = "Color of Private chat"
+		keyName = "lms",
+		name = "LMS Command",
+		description = "Configures whether the Last Man Standing command is enabled<br> !lms"
 	)
-	default Color getTransparentPrivateRecolor()
+	default boolean lms()
 	{
-		return Color.decode("#FFFFFF");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 11,
-		keyName = "transparentHexColorPrivateH",
-		name = "Transparent private chat highlight",
-		description = "Color of Private chat highlight"
+		keyName = "lp",
+		name = "LP Command",
+		description = "Configures whether the League Points command is enabled<br> !lp"
 	)
-	default Color getTransparentPrivateHRecolor()
+	default boolean lp()
 	{
-		return Color.decode("#00FFFF");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 12,
-		keyName = "transparentHexColorCc",
-		name = "Transparent clan chat",
-		description = "Color of Clan chat"
+		keyName = "sw",
+		name = "SW Command",
+		description = "Configures whether the Soul Wars Zeal command is enabled<br> !sw"
 	)
-	default Color getTransparentCcRecolor()
+	default boolean sw()
 	{
-		return Color.decode("#Ef5050");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 13,
-		keyName = "transparentHexColorCcH",
-		name = "Transparent clan chat Highlight",
-		description = "Color of Clan chat highlight"
+		keyName = "clearSingleWord",
+		name = "Clear Single Word",
+		description = "Enable hot key to clear single word at a time"
 	)
-	default Color getTransparentCcHRecolor()
+	default Keybind clearSingleWord()
 	{
-		return Color.decode("#FFFFFF");
+		return new Keybind(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "clearEntireChatBox",
+		name = "Clear Chat Box",
+		description = "Enable hotkey to clear entire chat box"
+	)
+	default Keybind clearChatBox()
+	{
+		return new Keybind(KeyEvent.VK_BACK_SPACE, InputEvent.CTRL_DOWN_MASK);
 	}
 }

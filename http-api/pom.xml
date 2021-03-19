@@ -28,11 +28,16 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.4.1-SNAPSHOT</version>
+		<version>1.7.3-SNAPSHOT</version>
 	</parent>
 
 	<name>Web API</name>
 	<artifactId>http-api</artifactId>
+
+	<properties>
+		<git.commit.id.abbrev>nogit</git.commit.id.abbrev>
+		<git.dirty>false</git.dirty>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -43,17 +48,20 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.12</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.4</version>
 		</dependency>
 
 		<dependency>
@@ -68,6 +76,12 @@
 			<version>1.7.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>mockwebserver</artifactId>
+			<version>3.7.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -77,5 +91,31 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
+		<plugins>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>2.2.6</version>
+				<executions>
+					<execution>
+						<id>query-git-info</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<configuration>
+							<failOnNoGitDirectory>false</failOnNoGitDirectory>
+							<failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+							<gitDescribe>
+								<skip>true</skip>
+							</gitDescribe>
+							<includeOnlyProperties>
+								<includeOnlyProperty>git.commit.id.abbrev</includeOnlyProperty>
+								<includeOnlyProperty>git.dirty</includeOnlyProperty>
+							</includeOnlyProperties>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 </project>

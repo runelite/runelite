@@ -36,14 +36,14 @@ import net.runelite.api.Client;
 @Slf4j
 public class ClientThread
 {
-	private ConcurrentLinkedQueue<BooleanSupplier> invokes = new ConcurrentLinkedQueue<>();
+	private final ConcurrentLinkedQueue<BooleanSupplier> invokes = new ConcurrentLinkedQueue<>();
 
 	@Inject
 	private Client client;
 
-	public void invokeLater(Runnable r)
+	public void invoke(Runnable r)
 	{
-		invokeLater(() ->
+		invoke(() ->
 		{
 			r.run();
 			return true;
@@ -54,16 +54,35 @@ public class ClientThread
 	 * Will run r on the game thread, at a unspecified point in the future.
 	 * If r returns false, r will be ran again, at a later point
 	 */
-	public void invokeLater(BooleanSupplier r)
+	public void invoke(BooleanSupplier r)
 	{
 		if (client.isClientThread())
 		{
-			if (r.getAsBoolean())
+			if (!r.getAsBoolean())
 			{
 				invokes.add(r);
 			}
 			return;
 		}
+
+		invokeLater(r);
+	}
+
+	/**
+	 * Will run r on the game thread after this method returns
+	 * If r returns false, r will be ran again, at a later point
+	 */
+	public void invokeLater(Runnable r)
+	{
+		invokeLater(() ->
+		{
+			r.run();
+			return true;
+		});
+	}
+
+	public void invokeLater(BooleanSupplier r)
+	{
 		invokes.add(r);
 	}
 
@@ -71,7 +90,7 @@ public class ClientThread
 	{
 		assert client.isClientThread();
 		Iterator<BooleanSupplier> ir = invokes.iterator();
-		for (; ir.hasNext(); )
+		while (ir.hasNext())
 		{
 			BooleanSupplier r = ir.next();
 			boolean remove = true;
@@ -85,7 +104,7 @@ public class ClientThread
 			}
 			catch (Throwable e)
 			{
-				log.warn("Exception in invokeLater", e);
+				log.warn("Exception in invoke", e);
 			}
 			if (remove)
 			{

@@ -24,34 +24,58 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
-public class SpecialCounter extends Counter
+class SpecialCounter extends Counter
 {
-	private int hitValue;
-	private SpecialWeapon weapon;
+	private final SpecialWeapon weapon;
+	private final SpecialCounterConfig config;
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<String, Integer> partySpecs = new HashMap<>();
 
-	public SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, int hitValue, SpecialWeapon weapon)
+	SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, SpecialCounterConfig config, int hitValue, SpecialWeapon weapon)
 	{
-		super(image, plugin, null);
+		super(image, plugin, hitValue);
 		this.weapon = weapon;
-		this.hitValue = hitValue;
+		this.config = config;
 	}
 
-	public void addHits(double hit)
+	void addHits(double hit)
 	{
-		this.hitValue += hit;
-	}
-
-	@Override
-	public String getText()
-	{
-		return Integer.toString(hitValue);
+		int count = getCount();
+		setCount(count + (int) hit);
 	}
 
 	@Override
 	public String getTooltip()
+	{
+		int hitValue = getCount();
+
+		if (partySpecs.isEmpty())
+		{
+			return buildTooltip(hitValue);
+		}
+
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(buildTooltip(hitValue));
+
+		for (Map.Entry<String, Integer> entry : partySpecs.entrySet())
+		{
+			stringBuilder.append("</br>")
+				.append(entry.getKey() == null ? "You" : entry.getKey()).append(": ")
+				.append(buildTooltip(entry.getValue()));
+		}
+
+		return stringBuilder.toString();
+	}
+
+	private String buildTooltip(int hitValue)
 	{
 		if (!weapon.isDamage())
 		{
@@ -68,5 +92,17 @@ public class SpecialCounter extends Counter
 		{
 			return weapon.getName() + " special has hit " + hitValue + " total.";
 		}
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		int threshold = weapon.getThreshold().apply(config);
+		if (threshold > 0)
+		{
+			int count = getCount();
+			return count >= threshold ? Color.GREEN : Color.RED;
+		}
+		return super.getTextColor();
 	}
 }

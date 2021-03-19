@@ -24,45 +24,16 @@
  */
 package net.runelite.api;
 
+import lombok.Value;
+
 /**
  * A two-dimensional coordinate on the canvas.
  */
+@Value
 public class Point
 {
 	private final int x;
 	private final int y;
-
-	public Point(int x, int y)
-	{
-		this.x = x;
-		this.y = y;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "Point{" + "x=" + x + ", y=" + y + '}';
-	}
-
-	/**
-	 * Gets the x-axis coordinate of the point.
-	 *
-	 * @return the x-axis coordinate
-	 */
-	public int getX()
-	{
-		return x;
-	}
-
-	/**
-	 * Gets the y-axis coordinate of the point.
-	 *
-	 * @return the y-axis coordinate
-	 */
-	public int getY()
-	{
-		return y;
-	}
 
 	/**
 	 * Gets the distance between this point and another.
@@ -73,41 +44,5 @@ public class Point
 	public int distanceTo(Point other)
 	{
 		return (int) Math.hypot(getX() - other.getX(), getY() - other.getY());
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 3;
-		hash = 23 * hash + this.x;
-		hash = 23 * hash + this.y;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Point other = (Point) obj;
-		if (this.x != other.x)
-		{
-			return false;
-		}
-		if (this.y != other.y)
-		{
-			return false;
-		}
-		return true;
 	}
 }

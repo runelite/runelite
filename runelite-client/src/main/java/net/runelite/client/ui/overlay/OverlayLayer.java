@@ -27,6 +27,12 @@ package net.runelite.client.ui.overlay;
 public enum OverlayLayer
 {
 	/**
+	 * Overlay is not rendered. Requires using drawAfterInterface() or drawAfterLayer()
+	 * to specify when to draw.
+	 */
+	MANUAL,
+
+	/**
 	 * Render right above the scene (that contains actors and the surface)
 	 */
 	ABOVE_SCENE,

@@ -24,39 +24,16 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
-public class PortalContext
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+@RequiredArgsConstructor
+@Getter
+@Setter
+class PortalContext
 {
 	private final Portal portal;
 	private boolean isShielded = true;
 	private boolean isDead;
-
-	public PortalContext(Portal portal)
-	{
-		this.portal = portal;
-	}
-
-	public Portal getPortal()
-	{
-		return portal;
-	}
-
-	public boolean isShielded()
-	{
-		return isShielded;
-	}
-
-	public void setIsShielded(boolean isShielded)
-	{
-		this.isShielded = isShielded;
-	}
-
-	public boolean isIsDead()
-	{
-		return isDead;
-	}
-
-	public void setIsDead(boolean isDead)
-	{
-		this.isDead = isDead;
-	}
 }

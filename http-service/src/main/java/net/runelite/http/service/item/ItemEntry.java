@@ -26,7 +26,6 @@ package net.runelite.http.service.item;
 
 import java.time.Instant;
 import lombok.Data;
-import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemType;
 
 @Data
@@ -36,17 +35,5 @@ public class ItemEntry
 	private String name;
 	private String description;
 	private ItemType type;
-	private byte[] icon;
-	private byte[] icon_large;
 	private Instant timestamp;
-
-	public Item toItem()
-	{
-		Item item = new Item();
-		item.setId(id);
-		item.setName(name);
-		item.setDescription(description);
-		item.setType(type);
-		return item;
-	}
 }

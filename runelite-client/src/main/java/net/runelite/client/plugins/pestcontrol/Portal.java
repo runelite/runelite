@@ -23,9 +23,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package net.runelite.client.plugins.pestcontrol;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 import net.runelite.api.widgets.WidgetInfo;
 
-public enum Portal
+@AllArgsConstructor
+@Getter
+@ToString
+enum Portal
 {
 	PURPLE(WidgetInfo.PEST_CONTROL_PURPLE_SHIELD, WidgetInfo.PEST_CONTROL_PURPLE_HEALTH, WidgetInfo.PEST_CONTROL_PURPLE_ICON),
 	BLUE(WidgetInfo.PEST_CONTROL_BLUE_SHIELD, WidgetInfo.PEST_CONTROL_BLUE_HEALTH, WidgetInfo.PEST_CONTROL_BLUE_ICON),
@@ -35,32 +41,4 @@ public enum Portal
 	private final WidgetInfo shield;
 	private final WidgetInfo hitpoints;
 	private final WidgetInfo icon;
-
-	private Portal(WidgetInfo shield, WidgetInfo hitpoints, WidgetInfo icon)
-	{
-		this.shield = shield;
-		this.hitpoints = hitpoints;
-		this.icon = icon;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "Portal(" + name() + ")";
-	}
-
-	public WidgetInfo getShield()
-	{
-		return shield;
-	}
-
-	public WidgetInfo getHitpoints()
-	{
-		return hitpoints;
-	}
-
-	public WidgetInfo getIcon()
-	{
-		return icon;
-	}
 }

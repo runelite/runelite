@@ -42,7 +42,7 @@ public class ColorScheme
 	public static final Color MEDIUM_GRAY_COLOR = new Color(77, 77, 77);
 	public static final Color LIGHT_GRAY_COLOR = new Color(165, 165, 165);
 
-	public static final Color DARKER_GRAY_HOVER_COLOR = new Color(60,  60 , 60);
+	public static final Color DARKER_GRAY_HOVER_COLOR = new Color(60, 60, 60);
 	public static final Color DARK_GRAY_HOVER_COLOR = new Color(35, 35, 35);
 
 	/* The color for the green progress bar (used in ge offers, farming tracker, etc)*/
@@ -60,6 +60,10 @@ public class ColorScheme
 	/* The color for the high alch indicator in the ge search results */
 	public static final Color GRAND_EXCHANGE_ALCH = new Color(240, 207, 123);
 
+	/* The color for the limit indicator in the ge search results */
+	public static final Color GRAND_EXCHANGE_LIMIT = new Color(50, 160, 250);
+
 	/* The background color of the scrollbar's track */
 	public static final Color SCROLL_TRACK_COLOR = new Color(25, 25, 25);
+
 }

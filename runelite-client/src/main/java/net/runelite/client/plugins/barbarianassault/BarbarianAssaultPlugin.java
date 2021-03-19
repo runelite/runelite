@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2018, Jacob M <https://github.com/jacoblairm>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,50 +25,68 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Font;
 import java.awt.Image;
-import java.util.ArrayList;
-import java.util.List;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.kit.KitType;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Barbarian Assault"
+	name = "Barbarian Assault",
+	description = "Show a timer to the next call change and game/wave duration in chat.",
+	tags = {"minigame", "overlay", "timer"}
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
-	private final List<MenuEntry> entries = new ArrayList<>();
+	private static final int BA_WAVE_NUM_INDEX = 2;
+	private static final String START_WAVE = "1";
+	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
 
-	private static final int BA_ALL_KILLED_INDEX = 4;
-
-	private Font font;
+	@Getter(AccessLevel.PACKAGE)
 	private Image clockImage;
 	private int inGameBit = 0;
+	private String currentWave = START_WAVE;
+	private GameTimer gameTime;
+
+	@Getter
+	private Round currentRound;
 
 	@Inject
 	private Client client;
 
 	@Inject
+	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private BarbarianAssaultConfig config;
 
 	@Inject
-	private BarbarianAssaultOverlay overlay;
+	private TimerOverlay timerOverlay;
+
+	@Inject
+	private HealerOverlay healerOverlay;
 
 	@Provides
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
@@ -78,96 +97,130 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 24);
+		overlayManager.add(timerOverlay);
+		overlayManager.add(healerOverlay);
 
-		synchronized (ImageIO.class)
-		{
-			clockImage = ImageIO.read(getClass().getResourceAsStream("clock.png"));
-		}
-	}
-
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		if (client.getVar(Varbits.IN_GAME_BA) == 1 &&
-				overlay.getCurrentRound() == null &&
-				client.getLocalPlayer() != null)
-		{
-			switch (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE))
-			{
-				case ItemID.ATTACKER_ICON:
-					overlay.setCurrentRound(new Round(Role.ATTACKER));
-					break;
-				case ItemID.COLLECTOR_ICON:
-					overlay.setCurrentRound(new Round(Role.COLLECTOR));
-					break;
-				case ItemID.DEFENDER_ICON:
-					overlay.setCurrentRound(new Round(Role.DEFENDER));
-					break;
-				case ItemID.HEALER_ICON:
-					overlay.setCurrentRound(new Round(Role.HEALER));
-					break;
-			}
-		}
-	}
-
-	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
-	{
-		int inGame = client.getVar(Varbits.IN_GAME_BA);
-
-		if (inGameBit != inGame && inGameBit == 1)
-		{
-			// end of game
-			overlay.setCurrentRound(null);
-		}
-
-		inGameBit = inGame;
-	}
-
-	@Subscribe
-	public void onMessageEvent(ChatMessage event)
-	{
-		if (event.getType() == ChatMessageType.SERVER
-			&& event.getMessage().startsWith("All of the Penance"))
-		{
-			String[] message = event.getMessage().split(" ");
-			Round round = overlay.getCurrentRound();
-			if (round != null)
-			{
-				switch (message[BA_ALL_KILLED_INDEX])
-				{
-					case "Healers":
-						round.setHealersKilled(true);
-						break;
-					case "Runners":
-						round.setRunnersKilled(true);
-						break;
-					case "Fighters":
-						round.setFightersKilled(true);
-						break;
-					case "Rangers":
-						round.setRangersKilled(true);
-						break;
-				}
-			}
-		}
+		clockImage = ImageUtil.loadImageResource(getClass(), "clock.png");
 	}
 
 	@Override
-	public Overlay getOverlay()
+	protected void shutDown() throws Exception
 	{
-		return overlay;
+		overlayManager.remove(timerOverlay);
+		overlayManager.remove(healerOverlay);
+		gameTime = null;
+		currentWave = START_WAVE;
+		inGameBit = 0;
+		clockImage = null;
 	}
 
-	public Font getFont()
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		return font;
+		switch (event.getGroupId())
+		{
+			case WidgetID.BA_REWARD_GROUP_ID:
+			{
+				Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
+
+				if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
+				{
+					announceTime("Game finished, duration: ", gameTime.getTime(false));
+					gameTime = null;
+				}
+
+				break;
+			}
+			case WidgetID.BA_ATTACKER_GROUP_ID:
+			{
+				setRound(Role.ATTACKER);
+				break;
+			}
+			case WidgetID.BA_DEFENDER_GROUP_ID:
+			{
+				setRound(Role.DEFENDER);
+				break;
+			}
+			case WidgetID.BA_HEALER_GROUP_ID:
+			{
+				setRound(Role.HEALER);
+				break;
+			}
+			case WidgetID.BA_COLLECTOR_GROUP_ID:
+			{
+				setRound(Role.COLLECTOR);
+				break;
+			}
+		}
 	}
 
-	public Image getClockImage()
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
 	{
-		return clockImage;
+		if (event.getType() == ChatMessageType.GAMEMESSAGE
+			&& event.getMessage().startsWith("---- Wave:"))
+		{
+			String[] message = event.getMessage().split(" ");
+			currentWave = message[BA_WAVE_NUM_INDEX];
+
+			if (currentWave.equals(START_WAVE))
+			{
+				gameTime = new GameTimer();
+			}
+			else if (gameTime != null)
+			{
+				gameTime.setWaveStartTime();
+			}
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		int inGame = client.getVar(Varbits.IN_GAME_BA);
+
+		if (inGameBit != inGame)
+		{
+			if (inGameBit == 1)
+			{
+				currentRound = null;
+
+				// Use an instance check to determine if this is exiting a game or a tutorial
+				// After exiting tutorials there is a small delay before changing IN_GAME_BA back to
+				// 0 whereas when in a real wave it changes while still in the instance.
+				if (config.waveTimes() && gameTime != null && client.isInInstancedRegion())
+				{
+					announceTime("Wave " + currentWave + " duration: ", gameTime.getTime(true));
+				}
+			}
+
+			inGameBit = inGame;
+		}
+	}
+
+	private void setRound(Role role)
+	{
+		// Prevent changing rounds when a round is already set, as widgets can be
+		// loaded multiple times in game from eg. opening and closing the horn
+		// of glory.
+		if (currentRound == null)
+		{
+			currentRound = new Round(role);
+		}
+	}
+
+	private void announceTime(String preText, String time)
+	{
+		final String chatMessage = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append(preText)
+			.append(ChatColorType.HIGHLIGHT)
+			.append(time)
+			.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.CONSOLE)
+			.runeLiteFormattedMessage(chatMessage)
+			.build());
 	}
 }

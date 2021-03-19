@@ -29,13 +29,13 @@ package net.runelite.api.events;
 import lombok.Data;
 
 /**
- * An event where the client window has been resized.
+ * An event where the game has changed from fixed to resizable mode or vice versa.
  */
 @Data
 public class ResizeableChanged
 {
 	/**
-	 * Whether the window is resized.
+	 * Whether the game is in resizable mode.
 	 */
 	private boolean isResized;
 }

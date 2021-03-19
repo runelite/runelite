@@ -29,7 +29,10 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.Client;
 import static net.runelite.api.ItemID.CANNONBALL;
 import net.runelite.api.Perspective;
@@ -41,7 +44,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class CannonSpotOverlay extends Overlay
+class CannonSpotOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
 
@@ -51,6 +54,9 @@ public class CannonSpotOverlay extends Overlay
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hidden;
 
 	@Inject
 	CannonSpotOverlay(Client client, CannonPlugin plugin, CannonConfig config)
@@ -64,12 +70,14 @@ public class CannonSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showCannonSpots() || plugin.isCannonPlaced())
+		List<WorldPoint> spotPoints = plugin.getSpotPoints();
+
+		if (hidden || spotPoints.isEmpty() || !config.showCannonSpots() || plugin.isCannonPlaced())
 		{
 			return null;
 		}
 
-		for (WorldPoint spot : plugin.getSpotPoints())
+		for (WorldPoint spot : spotPoints)
 		{
 			if (spot.getPlane() != client.getPlane())
 			{
@@ -99,7 +107,7 @@ public class CannonSpotOverlay extends Overlay
 		}
 
 		//Render icon
-		Point imageLoc = Perspective.getCanvasImageLocation(client, graphics, point, image, 0);
+		Point imageLoc = Perspective.getCanvasImageLocation(client, point, image, 0);
 
 		if (imageLoc != null)
 		{

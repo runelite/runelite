@@ -24,7 +24,7 @@
  */
 package net.runelite.http.service.hiscore;
 
-import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
@@ -34,6 +34,7 @@ import net.runelite.http.service.util.HiscoreEndpointEditor;
 import net.runelite.http.service.xp.XpTrackerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,11 +51,10 @@ public class HiscoreController
 	@Autowired
 	private XpTrackerService xpTrackerService;
 
-	@RequestMapping("/{endpoint}")
-	public HiscoreResult lookup(@PathVariable HiscoreEndpoint endpoint, @RequestParam String username) throws IOException
+	@GetMapping("/{endpoint}")
+	public HiscoreResult lookup(@PathVariable HiscoreEndpoint endpoint, @RequestParam String username) throws ExecutionException
 	{
-		HiscoreResultBuilder resultBuilder = hiscoreService.lookupUsername(username, endpoint);
-		HiscoreResult result = resultBuilder.build();
+		HiscoreResult result = hiscoreService.lookupUsername(username, endpoint);
 
 		// Submit to xp tracker?
 		switch (endpoint)
@@ -69,16 +69,16 @@ public class HiscoreController
 		return result;
 	}
 
-	@RequestMapping("/{endpoint}/{skillName}")
-	public SingleHiscoreSkillResult singleSkillLookup(@PathVariable HiscoreEndpoint endpoint, @PathVariable String skillName, @RequestParam String username) throws IOException
+	@GetMapping("/{endpoint}/{skillName}")
+	public SingleHiscoreSkillResult singleSkillLookup(@PathVariable HiscoreEndpoint endpoint, @PathVariable String skillName, @RequestParam String username) throws ExecutionException
 	{
 		HiscoreSkill skill = HiscoreSkill.valueOf(skillName.toUpperCase());
 
 		// RS api only supports looking up all stats
-		HiscoreResultBuilder result = hiscoreService.lookupUsername(username, endpoint);
+		HiscoreResult result = hiscoreService.lookupUsername(username, endpoint);
 
 		// Find the skill to return
-		Skill requested = result.getSkill(skill.ordinal());
+		Skill requested = result.getSkill(skill);
 
 		SingleHiscoreSkillResult skillResult = new SingleHiscoreSkillResult();
 		skillResult.setPlayer(username);

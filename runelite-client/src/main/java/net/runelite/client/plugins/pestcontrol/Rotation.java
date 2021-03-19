@@ -29,7 +29,7 @@ import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
 import static net.runelite.client.plugins.pestcontrol.Portal.RED;
 import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 
-public enum Rotation
+enum Rotation
 {
 	PBYR(PURPLE, BLUE, YELLOW, RED),
 	PYBR(PURPLE, YELLOW, BLUE, RED),
@@ -40,7 +40,7 @@ public enum Rotation
 
 	private final Portal[] portals;
 
-	private Rotation(Portal first, Portal second, Portal third, Portal fourth)
+	Rotation(Portal first, Portal second, Portal third, Portal fourth)
 	{
 		portals = new Portal[]
 		{

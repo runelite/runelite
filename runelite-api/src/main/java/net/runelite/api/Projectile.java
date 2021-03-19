@@ -25,7 +25,7 @@
 package net.runelite.api;
 
 /**
- * Represents a projectile entity (ie. cannonball, arrow).
+ * Represents a projectile entity. (ie. cannonball, arrow)
  */
 public interface Projectile extends Renderable
 {
@@ -36,13 +36,6 @@ public interface Projectile extends Renderable
 	 * @see ProjectileID
 	 */
 	int getId();
-
-	/**
-	 * Gets the actor that is targeted by this projectile.
-	 *
-	 * @return the target actor, or null if this projectile is an AoE attack
-	 */
-	Actor getInteracting();
 
 	/**
 	 * Gets the original x-axis coordinate that this projectile started from.

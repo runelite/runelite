@@ -28,7 +28,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * An enumeration of local client variables.
+ * Server controlled "content-developer" integers.
+ *
+ * @see VarPlayer
+ *
+ * These differ from a {@link VarPlayer} in that VarBits can be
+ * less than 32 bits. One or more VarBits can be assigned to a
+ * backing VarPlayer, each with a static range of bits that it is
+ * allowed to access. This allows a more compact representation
+ * of small values, like booleans
  */
 @AllArgsConstructor
 @Getter
@@ -39,13 +47,15 @@ public enum Varbits
 	 */
 	TRANSPARENT_CHATBOX(4608),
 
-	/**
-	 * Runecraft pouches
+	/*
+	 * If the player has an active stamina potion effect or not
 	 */
-	POUCH_SMALL(603),
-	POUCH_MEDIUM(604),
-	POUCH_LARGE(605),
-	POUCH_GIANT(606),
+	RUN_SLOWED_DEPLETION_ACTIVE(25),
+
+	/**
+	 * If scrollbar in resizable mode chat is on the left
+	 */
+	CHAT_SCROLLBAR_ON_LEFT(6374),
 
 	/**
 	 * Runepouch
@@ -60,6 +70,7 @@ public enum Varbits
 	/**
 	 * Prayers
 	 */
+	QUICK_PRAYER(4103),
 	PRAYER_THICK_SKIN(4104),
 	PRAYER_BURST_OF_STRENGTH(4105),
 	PRAYER_CLARITY_OF_THOUGHT(4106),
@@ -123,6 +134,11 @@ public enum Varbits
 	DIARY_KARAMJA_HARD(3611),
 	DIARY_KARAMJA_ELITE(4566),
 
+	DIARY_KOUREND_EASY(7925),
+	DIARY_KOUREND_MEDIUM(7926),
+	DIARY_KOUREND_HARD(7927),
+	DIARY_KOUREND_ELITE(7928),
+
 	DIARY_LUMBRIDGE_EASY(4495),
 	DIARY_LUMBRIDGE_MEDIUM(4496),
 	DIARY_LUMBRIDGE_HARD(4497),
@@ -147,6 +163,15 @@ public enum Varbits
 	DIARY_WILDERNESS_MEDIUM(4467),
 	DIARY_WILDERNESS_HARD(4468),
 	DIARY_WILDERNESS_ELITE(4469),
+
+	/**
+	 * Kourend house favours
+	 */
+	KOUREND_FAVOR_ARCEUUS(4896),
+	KOUREND_FAVOR_HOSIDIUS(4895),
+	KOUREND_FAVOR_LOVAKENGJ(4898),
+	KOUREND_FAVOR_PISCARILIUS(4899),
+	KOUREND_FAVOR_SHAYZIEN(4894),
 
 	/**
 	 * Equipped weapon type
@@ -194,12 +219,32 @@ public enum Varbits
 	HB_TRAIL_31372(5750),
 
 	HB_FINISH(5766),
-	HB_STARTED(5767), //not working
+
+	/**
+	 * Started hunting Herbiboar.
+	 * <br>
+	 * NOTE: This value remains at 0 even after starting a Herbiboar trail up until searching the first object along the
+	 * hunting path.
+	 */
+	HB_STARTED(5767),
 
 	/**
 	 * Barbarian Assault
 	 */
 	IN_GAME_BA(3923),
+	BA_GC(4768),
+
+	/**
+	 * 0 = Outside wilderness
+	 * 1 = In wilderness
+	 */
+	IN_WILDERNESS(5963),
+
+	/**
+	 * Fishing Trawler
+	 * FISHING_TRAWLER_ACTIVITY Expected values: 0-255
+	 */
+	FISHING_TRAWLER_ACTIVITY(3377),
 
 	/**
 	 * Blast Furnace Bar Dispenser
@@ -220,6 +265,11 @@ public enum Varbits
 
 	/**
 	 * Experience tracker
+	 *
+	 * EXPERIENCE_TRACKER_POSITION expected values:
+	 *   0 = Right
+	 *   1 = Middle
+	 *   2 = Left
 	 */
 	EXPERIENCE_TRACKER_POSITION(4692),
 	EXPERIENCE_TRACKER_COUNTER(4697),
@@ -236,6 +286,15 @@ public enum Varbits
 	TITHE_FARM_SACK_AMOUNT(4900),
 	TITHE_FARM_SACK_ICON(5370),
 	TITHE_FARM_POINTS(4893),
+	
+	/**
+	 * Blast Mine
+	 */
+	BLAST_MINE_COAL(4924),
+	BLAST_MINE_GOLD(4925),
+	BLAST_MINE_MITHRIL(4926),
+	BLAST_MINE_ADAMANTITE(4921),
+	BLAST_MINE_RUNITE(4922),
 
 	/**
 	 * Raids
@@ -244,6 +303,25 @@ public enum Varbits
 	TOTAL_POINTS(5431),
 	PERSONAL_POINTS(5422),
 	RAID_PARTY_SIZE(5424),
+
+	// 0 = raid not started, >0 = raid started
+	RAID_STATE(5425),
+
+	/**
+	 * Making Friends with My Arm fire pits
+	 *
+	 * Expected values:
+	 *  0 = Not built
+	 *  1 = Built
+	 */
+	FIRE_PIT_GIANT_MOLE(6532),
+	FIRE_PIT_LUMBRIDGE_SWAMP(6533),
+	FIRE_PIT_MOS_LE_HARMLESS(6544),
+
+	/**
+	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
+	 */
+	THEATRE_OF_BLOOD(6440),
 
 	/**
 	 * Nightmare Zone
@@ -278,7 +356,9 @@ public enum Varbits
 	/**
 	 * Pyramid plunder
 	 */
+	PYRAMID_PLUNDER_ROOM_LOCATION(2365),
 	PYRAMID_PLUNDER_TIMER(2375),
+	PYRAMID_PLUNDER_THIEVING_LEVEL(2376),
 	PYRAMID_PLUNDER_ROOM(2377),
 
 	/**
@@ -290,6 +370,8 @@ public enum Varbits
 	BARROWS_KILLED_KARIL(460),
 	BARROWS_KILLED_TORAG(461),
 	BARROWS_KILLED_VERAC(462),
+	BARROWS_REWARD_POTENTIAL(463),
+	BARROWS_NPCS_SLAIN(464),
 
 	/**
 	 * Spicy stew ingredients
@@ -305,18 +387,34 @@ public enum Varbits
 	MULTICOMBAT_AREA(4605),
 
 	/**
-	 * Kingdom Management
+	 * Kingdom of Miscellania Management
+	 * Kingdom Approval is represented as a 7-bit unsigned integer; 127 corresponds to 100% approval
 	 */
-	KINGDOM_FAVOR(72),
+	KINGDOM_APPROVAL(72),
 	KINGDOM_COFFER(74),
-	THRONE_OF_MISCELLANIA_QUEST(359),
+
+	/**
+	 * The Hand in the Sand quest status
+	 */
+	QUEST_THE_HAND_IN_THE_SAND(1527),
 
 	/**
 	 * Daily Tasks (Collection availability)
 	 */
-	DAILY_HERB_BOX(3961),
-	DAILY_STAVES(4539),
-	DAILY_ESSENCE(4547),
+	DAILY_HERB_BOXES_COLLECTED(3961),
+	DAILY_STAVES_COLLECTED(4539),
+	DAILY_ESSENCE_COLLECTED(4547),
+	DAILY_RUNES_COLLECTED(4540),
+	DAILY_SAND_COLLECTED(4549),
+	DAILY_FLAX_STATE(4559),
+	DAILY_ARROWS_STATE(4563),
+	/**
+	 * This varbit tracks how much bonemeal has been redeemed from Robin
+	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
+ 	*/
+	DAILY_BONEMEAL_STATE(4543),
+
+	DAILY_DYNAMITE_COLLECTED(7939),
 
 	/**
 	 * Fairy Ring
@@ -333,6 +431,16 @@ public enum Varbits
 	FARMING_4772(4772),
 	FARMING_4773(4773),
 	FARMING_4774(4774),
+	FARMING_4775(4775),
+	FARMING_7904(7904),
+	FARMING_7905(7905),
+	FARMING_7906(7906),
+	FARMING_7907(7907),
+	FARMING_7908(7908),
+	FARMING_7909(7909),
+	FARMING_7910(7910),
+	FARMING_7911(7911),
+	FARMING_7912(7912),
 
 	/**
 	 * Transmog controllers for grapes
@@ -358,7 +466,138 @@ public enum Varbits
 	/**
 	 * The varbit that stores the players {@code AccountType}.
 	 */
-	ACCOUNT_TYPE(1777);
+	ACCOUNT_TYPE(1777),
+
+	/**
+	 * The varbit that stores the oxygen percentage for player
+	 */
+	OXYGEN_LEVEL(5811),
+
+	/**
+	 * Drift net status
+	 *
+	 * Expected values
+	 *  0 = Unset
+	 *  1 = Set up
+	 *  2 = Caught some fish
+	 *  3 = Full
+	 */
+	NORTH_NET_STATUS(5812),
+	SOUTH_NET_STATUS(5814),
+
+	/**
+	 * Drift net catch count
+	 */
+	NORTH_NET_CATCH_COUNT(5813),
+	SOUTH_NET_CATCH_COUNT(5815),
+
+	/**
+	 * Drift net collect interface
+	 *
+	 * Expected values:
+	 *  0 = Not open
+	 *  1 = North interface open
+	 *  2 = South interface open
+	 */
+	DRIFT_NET_COLLECT(5933),
+
+	/**
+	 * Corp beast damage
+	 */
+	CORP_DAMAGE(999),
+
+	/**
+	 * Toggleable slayer unlocks
+	 */
+	SUPERIOR_ENABLED(5362),
+	FOSSIL_ISLAND_WYVERN_DISABLE(6251),
+
+	BANK_REARRANGE_MODE(3959),
+	CURRENT_BANK_TAB(4150),
+
+	WORLDHOPPER_FAVROITE_1(4597),
+	WORLDHOPPER_FAVROITE_2(4598),
+
+	/**
+	 * Vengeance is active
+	 */
+	VENGEANCE_ACTIVE(2450),
+
+	/**
+	 * Spell cooldowns
+	 */
+	VENGEANCE_COOLDOWN(2451),
+
+	/**
+	 * Amount of items in each bank tab
+	 */
+	BANK_TAB_ONE_COUNT(4171),
+	BANK_TAB_TWO_COUNT(4172),
+	BANK_TAB_THREE_COUNT(4173),
+	BANK_TAB_FOUR_COUNT(4174),
+	BANK_TAB_FIVE_COUNT(4175),
+	BANK_TAB_SIX_COUNT(4176),
+	BANK_TAB_SEVEN_COUNT(4177),
+	BANK_TAB_EIGHT_COUNT(4178),
+	BANK_TAB_NINE_COUNT(4179),
+
+	/**
+	 * Type of GE offer currently being created
+	 * 0 = buy
+	 * 1 = sell
+	 */
+	GE_OFFER_CREATION_TYPE(4397),
+
+	/**
+	 * The active tab within the quest interface
+	 */
+	QUEST_TAB(8168),
+
+	/**
+	 * Explorer ring
+	 */
+	EXPLORER_RING_ALCHTYPE(5398),
+	EXPLORER_RING_TELEPORTS(4552),
+	EXPLORER_RING_ALCHS(4554),
+	EXPLORER_RING_RUNENERGY(4553),
+
+	WINTERTODT_TIMER(7980),
+
+	/**
+	 * League relics
+	 */
+	LEAGUE_RELIC_1(10049),
+	LEAGUE_RELIC_2(10050),
+	LEAGUE_RELIC_3(10051),
+	LEAGUE_RELIC_4(10052),
+	LEAGUE_RELIC_5(10053),
+	LEAGUE_RELIC_6(11696),
+
+	/**
+	 * Muted volume restore values
+	 */
+	MUTED_MUSIC_VOLUME(9666),
+	MUTED_SOUND_EFFECT_VOLUME(9674),
+	MUTED_AREA_EFFECT_VOLUME(9675),
+
+	/**
+	 * Parasite infection status during nightmare of ashihama bossfight
+	 *
+	 * 0 = not infected
+	 * 1 = infected
+	 *
+	 */
+	PARASITE(10151),
+
+	/**
+	 * Whether the Special Attack orb is disabled due to being in a PvP area
+	 *
+	 * 0 = Enabled (player is not in PvP)
+	 * 1 = Disabled (player in in PvP)
+	 *
+	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
+	 */
+	PVP_SPEC_ORB(8121);
 
 	/**
 	 * The raw varbit ID.

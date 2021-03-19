@@ -26,33 +26,46 @@ package net.runelite.client.ui.overlay.infobox;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Nonnull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 
 public abstract class InfoBox
 {
-	private final BufferedImage image;
-
-	@Getter
+	@Nonnull
+	@Getter(AccessLevel.PACKAGE)
 	private final Plugin plugin;
 
 	@Getter
 	@Setter
+	private BufferedImage image;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private BufferedImage scaledImage;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
 	private InfoBoxPriority priority;
 
+	@Getter
+	@Setter
 	private String tooltip;
 
-	public InfoBox(BufferedImage image, Plugin plugin)
-	{
-		this.image = image;
-		this.plugin = plugin;
-		setPriority(InfoBoxPriority.NONE);
-	}
+	@Getter
+	@Setter
+	private List<OverlayMenuEntry> menuEntries = new ArrayList<>();
 
-	public BufferedImage getImage()
+	public InfoBox(BufferedImage image, @Nonnull Plugin plugin)
 	{
-		return image;
+		this.plugin = plugin;
+		setImage(image);
+		setPriority(InfoBoxPriority.NONE);
 	}
 
 	public abstract String getText();
@@ -69,13 +82,10 @@ public abstract class InfoBox
 		return false;
 	}
 
-	public String getTooltip()
+	public String getName()
 	{
-		return tooltip;
-	}
-
-	public void setTooltip(String tooltip)
-	{
-		this.tooltip = tooltip;
+		// Use a combination of plugin name and infobox implementation name to try and make each infobox as unique
+		// as possible by default
+		return plugin.getClass().getSimpleName() + "_" + getClass().getSimpleName();
 	}
 }

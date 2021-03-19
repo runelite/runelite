@@ -26,15 +26,18 @@ package net.runelite.client.chat;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 import net.runelite.api.ChatMessageType;
 
 @Data
 @Builder
 public class QueuedMessage
 {
+	@NonNull
 	private final ChatMessageType type;
 	private final String value;
 	private String name;
 	private String sender;
 	private String runeLiteFormattedMessage;
+	private int timestamp;
 }

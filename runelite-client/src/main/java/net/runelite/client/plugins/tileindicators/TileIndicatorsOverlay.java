@@ -24,12 +24,15 @@
  */
 package net.runelite.client.plugins.tileindicators;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -41,32 +44,67 @@ public class TileIndicatorsOverlay extends Overlay
 	private final Client client;
 	private final TileIndicatorsConfig config;
 
-	TileIndicatorsOverlay(Client client, TileIndicatorsConfig config)
+	@Inject
+	private TileIndicatorsOverlay(Client client, TileIndicatorsConfig config)
 	{
 		this.client = client;
 		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(OverlayPriority.LOW);
+		setPriority(OverlayPriority.MED);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		LocalPoint dest = client.getLocalDestinationLocation();
-		if (dest == null)
+		if (config.highlightHoveredTile())
 		{
-			return null;
+			// If we have tile "selected" render it
+			if (client.getSelectedSceneTile() != null)
+			{
+				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), config.highlightHoveredColor());
+			}
 		}
 
-		Polygon poly = Perspective.getCanvasTilePoly(client, dest);
-		if (poly == null)
+		if (config.highlightDestinationTile())
 		{
-			return null;
+			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor());
 		}
-		
-		OverlayUtil.renderPolygon(graphics, poly, config.highlightDestinationColor());
+
+		if (config.highlightCurrentTile())
+		{
+			final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
+			if (playerPos == null)
+			{
+				return null;
+			}
+
+			final LocalPoint playerPosLocal = LocalPoint.fromWorld(client, playerPos);
+			if (playerPosLocal == null)
+			{
+				return null;
+			}
+
+			renderTile(graphics, playerPosLocal, config.highlightCurrentColor());
+		}
 
 		return null;
+	}
+
+	private void renderTile(final Graphics2D graphics, final LocalPoint dest, final Color color)
+	{
+		if (dest == null)
+		{
+			return;
+		}
+
+		final Polygon poly = Perspective.getCanvasTilePoly(client, dest);
+
+		if (poly == null)
+		{
+			return;
+		}
+
+		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 }

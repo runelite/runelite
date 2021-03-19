@@ -1,0 +1,51 @@
+.id                 96
+.int_stack_count    1
+.string_stack_count 1
+.int_var_count      1
+.string_var_count   1
+   sload                  0              ; load input
+   iload                  0              ; load chat type
+   sconst                 "chatboxInput" ; event name
+   runelite_callback     ; invoke callback
+   pop_int               ; pop chat type
+   string_length         ; get string length of chat message
+   iconst                 0              ; load 0
+   if_icmpne              LABEL100       ; if length is not 0, continue
+   return                
+LABEL100:
+   get_varbit             4394
+   iconst                 1
+   if_icmpeq              LABEL4
+   jump                   LABEL24
+LABEL4:
+   iload                  0
+   iconst                 1
+   if_icmpeq              LABEL8
+   jump                   LABEL16
+LABEL8:
+   chat_playername       
+   sconst                 ": "
+   sconst                 "<col=2020ef>"
+   sload                  0
+   sconst                 "</col>"
+   join_string            5
+   mes                   
+   jump                   LABEL23
+LABEL16:
+   chat_playername       
+   sconst                 ": "
+   sconst                 "<col=0000ff>"
+   sload                  0
+   sconst                 "</col>"
+   join_string            5
+   mes                   
+LABEL23:
+   jump                   LABEL27
+LABEL24:
+   sload                  0
+   iload                  0
+   chat_sendpublic       
+LABEL27:
+   clientclock           
+   set_varc_int           61
+   return                

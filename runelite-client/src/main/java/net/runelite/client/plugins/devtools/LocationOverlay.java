@@ -32,35 +32,31 @@ import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class LocationOverlay extends Overlay
+public class LocationOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final DevToolsPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	LocationOverlay(Client client, DevToolsPlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;
-		panelComponent.setPreferredSize(new Dimension(150, 0));
 		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isToggleLocation())
+		if (!plugin.getLocation().isActive())
 		{
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
 		WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
 		LocalPoint localPoint = client.getLocalPlayer().getLocalLocation();
 
@@ -74,14 +70,14 @@ public class LocationOverlay extends Overlay
 
 			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
 			int z = client.getPlane();
-			int chunkData = instanceTemplateChunks[z][localPoint.getRegionX() / CHUNK_SIZE][localPoint.getRegionY() / CHUNK_SIZE];
+			int chunkData = instanceTemplateChunks[z][localPoint.getSceneX() / CHUNK_SIZE][localPoint.getSceneY() / CHUNK_SIZE];
 
 			int rotation = chunkData >> 1 & 0x3;
 			int chunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
 			int chunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Chunk " + localPoint.getRegionX() / CHUNK_SIZE + "," + localPoint.getRegionY() / CHUNK_SIZE)
+				.left("Chunk " + localPoint.getSceneX() / CHUNK_SIZE + "," + localPoint.getSceneY() / CHUNK_SIZE)
 				.right(rotation + " " + chunkX + " " + chunkY)
 				.build());
 		}
@@ -97,8 +93,8 @@ public class LocationOverlay extends Overlay
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Region")
-				.right(localPoint.getRegionX() + ", " + localPoint.getRegionY())
+				.left("Scene")
+				.right(localPoint.getSceneX() + ", " + localPoint.getSceneY())
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
@@ -117,6 +113,6 @@ public class LocationOverlay extends Overlay
 				.build());
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

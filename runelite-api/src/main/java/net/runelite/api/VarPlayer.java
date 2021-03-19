@@ -28,20 +28,64 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * An enumeration of local player variables.
+ * Server controlled "content-developer" integers.
+ *
+ * VarPlayers are stored per RuneScape player save, and synchronized
+ * from the server to the client. The client can change them preemptively
+ * if it thinks they will change the next tick as a lag-hiding measure.
+ * The client CANNOT directly make the server change a varbit.
  */
 @AllArgsConstructor
 @Getter
 public enum VarPlayer
 {
 	ATTACK_STYLE(43),
+	QUEST_POINTS(101),
+	IS_POISONED(102),
+	/**
+	 * Seems to start at 50(10 splash) and goes down by 1 every 30 seconds
+	 */
+	DISEASE_VALUE(456),
 
 	BANK_TAB(115),
+
+	MEMBERSHIP_DAYS(1780),
 
 	SPECIAL_ATTACK_PERCENT(300),
 	SPECIAL_ATTACK_ENABLED(301),
 
+	/**
+	 * The ID of the party. This Var is only set in the raid bank area and the raid lobby
+	 *
+	 * This gets set to -1 when the raid starts. This is first set when the first player of the friends chat forms a party
+	 * on the recruiting board and it changes again when the first person actually enters the raid.
+	 *
+	 * -1 : Not in a party or in the middle of an ongoing raid
+	 * Anything else : This means that your friends chat has a raid party being formed and has not started yet
+	 */
 	IN_RAID_PARTY(1427),
+
+	NMZ_REWARD_POINTS(1060),
+
+	/**
+	 * -1 : Poison immune
+	 *  Normal poison damage is ceil( this / 5.0f )
+	 *  If this is greater than or equal to 1000000, the player is envenomed.
+	 *  Venom damage is (this - 999997) * 2
+	 */
+	POISON(102),
+
+	/**
+	 * 0 : not started
+	 * greater than 0 : in progress
+	 * greater than 99 : completed
+	 */
+	THRONE_OF_MISCELLANIA(359),
+
+	/**
+	 * Item currently active in the creation of a buy or sell offer
+	 */
+	CURRENT_GE_ITEM(1151),
 
 	/**
 	 * Experience tracker goal start.
@@ -95,7 +139,58 @@ public enum VarPlayer
 	SLAYER_GOAL_END(1272),
 	FARMING_GOAL_END(1273),
 	CONSTRUCTION_GOAL_END(1274),
-	HUNTER_GOAL_END(1275);
+	HUNTER_GOAL_END(1275),
+
+	/**
+	 * Bird house states
+	 */
+	BIRD_HOUSE_MEADOW_NORTH(1626),
+	BIRD_HOUSE_MEADOW_SOUTH(1627),
+	BIRD_HOUSE_VALLEY_NORTH(1628),
+	BIRD_HOUSE_VALLEY_SOUTH(1629),
+
+	/**
+	 * Slayer unlock bitfields
+	 */
+	SLAYER_UNLOCK_1(1076),
+	SLAYER_UNLOCK_2(1344),
+
+	/**
+	 * Music track unlock bitfields
+	 */
+	MUSIC_TRACKS_UNLOCKED_1(20),
+	MUSIC_TRACKS_UNLOCKED_2(21),
+	MUSIC_TRACKS_UNLOCKED_3(22),
+	MUSIC_TRACKS_UNLOCKED_4(23),
+	MUSIC_TRACKS_UNLOCKED_5(24),
+	MUSIC_TRACKS_UNLOCKED_6(25),
+	MUSIC_TRACKS_UNLOCKED_7(298),
+	MUSIC_TRACKS_UNLOCKED_8(311),
+	MUSIC_TRACKS_UNLOCKED_9(346),
+	MUSIC_TRACKS_UNLOCKED_10(414),
+	MUSIC_TRACKS_UNLOCKED_11(464),
+	MUSIC_TRACKS_UNLOCKED_12(598),
+	MUSIC_TRACKS_UNLOCKED_13(662),
+	MUSIC_TRACKS_UNLOCKED_14(721),
+	MUSIC_TRACKS_UNLOCKED_15(906),
+	MUSIC_TRACKS_UNLOCKED_16(1009),
+	MUSIC_TRACKS_UNLOCKED_17(1338),
+	MUSIC_TRACKS_UNLOCKED_18(1681),
+	MUSIC_TRACKS_UNLOCKED_19(2065),
+
+	MUSIC_VOLUME(168),
+	SOUND_EFFECT_VOLUME(169),
+	AREA_EFFECT_VOLUME(872),
+
+	/**
+	 * 0 = 2 buttons, 1 = 1 button
+	 */
+	MOUSE_BUTTONS(170),
+
+	/**
+	 * {@link NpcID} for the HP HUD
+	 */
+	HP_HUD_NPC_ID(1683);
 
 	private final int id;
 }
