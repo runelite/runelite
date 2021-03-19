@@ -24,18 +24,16 @@
  */
 package net.runelite.client.plugins.barrows;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Perspective;
+
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class BarrowsOverlay extends Overlay
 {
@@ -68,6 +66,11 @@ class BarrowsOverlay extends Overlay
 			Rectangle answerRect = puzzleAnswer.getBounds();
 			graphics.setColor(Color.GREEN);
 			graphics.draw(answerRect);
+		}
+
+		if (client.getPlane() == 0 && config.highlightDoors() != BarrowsConfig.HighlightDoors.NEITHER)
+		{
+			renderDoors(graphics);
 		}
 
 		return null;
@@ -103,6 +106,34 @@ class BarrowsOverlay extends Overlay
 				}
 
 				graphics.drawString(brotherLetter, minimapText.getX(), minimapText.getY());
+			}
+		}
+	}
+
+	private void renderDoors(Graphics2D graphics)
+	{
+		for (WallObject door : plugin.getDoors())
+		{
+			ObjectComposition objectComp = client.getObjectDefinition(door.getId());
+			ObjectComposition impostor = objectComp.getImpostorIds() != null ? objectComp.getImpostor() : null;
+
+			if (impostor == null) {
+				continue;
+			}
+
+			final Shape polygon;
+			final boolean isUnlockedDoor = impostor.getActions()[0] != null;
+			final Color color = isUnlockedDoor ? Color.GREEN : Color.RED;
+
+			if ((config.highlightDoors() == BarrowsConfig.HighlightDoors.UNLOCKED && !isUnlockedDoor)
+				|| (config.highlightDoors() == BarrowsConfig.HighlightDoors.LOCKED && isUnlockedDoor)) {
+				continue;
+			}
+
+			polygon = door.getConvexHull();
+
+			if (polygon != null) {
+				OverlayUtil.renderPolygon(graphics, polygon, color);
 			}
 		}
 	}

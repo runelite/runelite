@@ -32,6 +32,15 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("barrows")
 public interface BarrowsConfig extends Config
 {
+
+	enum HighlightDoors
+	{
+		LOCKED,
+		UNLOCKED,
+		BOTH,
+		NEITHER,
+	}
+
 	@ConfigItem(
 		keyName = "showBrotherLoc",
 		name = "Show Brothers location",
@@ -96,5 +105,16 @@ public interface BarrowsConfig extends Config
 	default boolean showPrayerDrainTimer()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			keyName = "highlightDoors",
+			name = "Highlight doors",
+			description = "Configure whether or not to highlight the doors",
+			position = 7
+	)
+	default HighlightDoors highlightDoors()
+	{
+		return HighlightDoors.BOTH;
 	}
 }
