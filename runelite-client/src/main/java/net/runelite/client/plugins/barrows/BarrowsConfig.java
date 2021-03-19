@@ -108,10 +108,10 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "highlightDoors",
-			name = "Highlight doors",
-			description = "Configure whether or not to highlight the doors",
-			position = 7
+		keyName = "highlightDoors",
+		name = "Highlight doors",
+		description = "Configure whether or not to highlight the doors",
+		position = 7
 	)
 	default HighlightDoors highlightDoors()
 	{

@@ -117,7 +117,8 @@ class BarrowsOverlay extends Overlay
 			ObjectComposition objectComp = client.getObjectDefinition(door.getId());
 			ObjectComposition impostor = objectComp.getImpostorIds() != null ? objectComp.getImpostor() : null;
 
-			if (impostor == null) {
+			if (impostor == null)
+			{
 				continue;
 			}
 
@@ -126,13 +127,15 @@ class BarrowsOverlay extends Overlay
 			final Color color = isUnlockedDoor ? Color.GREEN : Color.RED;
 
 			if ((config.highlightDoors() == BarrowsConfig.HighlightDoors.UNLOCKED && !isUnlockedDoor)
-				|| (config.highlightDoors() == BarrowsConfig.HighlightDoors.LOCKED && isUnlockedDoor)) {
+				|| (config.highlightDoors() == BarrowsConfig.HighlightDoors.LOCKED && isUnlockedDoor))
+			{
 				continue;
 			}
 
 			polygon = door.getConvexHull();
 
-			if (polygon != null) {
+			if (polygon != null)
+			{
 				OverlayUtil.renderPolygon(graphics, polygon, color);
 			}
 		}
