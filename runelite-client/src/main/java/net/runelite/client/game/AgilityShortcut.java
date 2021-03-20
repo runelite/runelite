@@ -189,13 +189,13 @@ public enum AgilityShortcut
 	TAVERLEY_DUNGEON_ROCKS_SOUTH(70, "Rocks", new WorldPoint(2887, 9631, 0), ROCKS, ROCKS_14106),
 	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole" , new WorldPoint(3712, 3828, 0), HOLE_31481, HOLE_31482),
 	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole" , new WorldPoint(3714, 3816, 0), HOLE_31481, HOLE_31482),
-	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3295, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
+	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
 	{
 		@Override
 		public boolean matches(TileObject object)
 		{
 			// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
-			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(getWorldLocation());
+			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(new WorldPoint(3295, 3158, 0));
 		}
 	},
 	GWD_SARADOMIN_ROPE_NORTH(70, "Rope Descent", new WorldPoint(2912, 5300, 0), NULL_26371, NULL_26561),
