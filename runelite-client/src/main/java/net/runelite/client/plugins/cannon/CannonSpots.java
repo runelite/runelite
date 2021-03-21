@@ -66,7 +66,7 @@ enum CannonSpots
 	MINIONS_OF_SCARABAS(new WorldPoint(3297, 9252, 0)),
 	ROGUE(new WorldPoint(3285, 3930, 0)),
 	SCORPION(new WorldPoint(3233, 10335, 0)),
-	SKELETON(new WorldPoint(3018, 3592, 0)),
+	SKELETON(new WorldPoint(3017, 3589, 0)),
 	SMOKE_DEVIL(new WorldPoint(2398, 9444, 0)),
 	SPIDER(new WorldPoint(3169, 3886, 0)),
 	SUQAHS(new WorldPoint(2114, 3943, 0)),
