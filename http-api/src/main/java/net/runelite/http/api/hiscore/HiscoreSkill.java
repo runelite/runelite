@@ -102,6 +102,7 @@ public enum HiscoreSkill
 	SARACHNIS("Sarachnis", BOSS),
 	SCORPIA("Scorpia", BOSS),
 	SKOTIZO("Skotizo", BOSS),
+	TEMPOROSS("Tempoross", BOSS),
 	THE_GAUNTLET("The Gauntlet", BOSS),
 	THE_CORRUPTED_GAUNTLET("The Corrupted Gauntlet", BOSS),
 	THEATRE_OF_BLOOD("Theatre of Blood", BOSS),

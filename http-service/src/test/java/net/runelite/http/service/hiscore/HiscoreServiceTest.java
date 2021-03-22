@@ -104,6 +104,7 @@ public class HiscoreServiceTest
 			+ "-1,-1\n"
 			+ "19779,22\n"
 			+ "58283,10\n"
+			+ "1234,5678\n" // Tempoross
 			+ "-1,-1\n"
 			+ "-1,-1\n"
 			+ "-1,-1\n"
@@ -155,6 +156,7 @@ public class HiscoreServiceTest
 		Assert.assertEquals(2460, result.getLeaguePoints().getLevel());
 		Assert.assertEquals(37, result.getAbyssalSire().getLevel());
 		Assert.assertEquals(92357, result.getCallisto().getRank());
+		Assert.assertEquals(5678, result.getTempoross().getLevel());
 		Assert.assertEquals(5847, result.getZulrah().getLevel());
 	}
 

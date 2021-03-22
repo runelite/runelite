@@ -98,6 +98,7 @@ public class HiscoreResult
 	private Skill sarachnis;
 	private Skill scorpia;
 	private Skill skotizo;
+	private Skill tempoross;
 	private Skill gauntlet;
 	private Skill corruptedGauntlet;
 	private Skill theatreOfBlood;
@@ -251,6 +252,8 @@ public class HiscoreResult
 				return scorpia;
 			case SKOTIZO:
 				return skotizo;
+			case TEMPOROSS:
+				return tempoross;
 			case THE_GAUNTLET:
 				return gauntlet;
 			case THE_CORRUPTED_GAUNTLET:
