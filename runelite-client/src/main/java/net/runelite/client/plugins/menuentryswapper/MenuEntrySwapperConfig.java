@@ -661,4 +661,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "swapBarbarianAssaultScroll",
+		name = "Barbarian Assault scroll",
+		description = "Swap Read with Use on the Barbarian Assault recruitment scroll",
+		section = itemSection
+	)
+	default boolean swapBarbarianAssaultScroll()
+	{
+		return false;
+	}
 }

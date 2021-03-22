@@ -375,6 +375,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("eat", "guzzle", config::swapRockCake);
 
 		swap("travel", "dive", config::swapRowboatDive);
+
+		swap("read", "scroll", "use", config::swapBarbarianAssaultScroll);
 	}
 
 	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
