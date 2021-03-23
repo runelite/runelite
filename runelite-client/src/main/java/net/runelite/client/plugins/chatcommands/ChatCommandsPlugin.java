@@ -394,14 +394,14 @@ public class ChatCommandsPlugin extends Plugin
 		if (matcher.find())
 		{
 			int floor = Integer.parseInt(matcher.group(1));
-			int kc = Integer.parseInt(matcher.group(2).replaceAll(",",""));
+			int kc = Integer.parseInt(matcher.group(2).replaceAll(",", ""));
 			setKc("Hallowed Sepulchre Floor " + floor, kc);
 		}
 
 		matcher = HS_KC_GHC_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			int kc = Integer.parseInt(matcher.group(1).replaceAll(",",""));
+			int kc = Integer.parseInt(matcher.group(1).replaceAll(",", ""));
 			setKc("Hallowed Sepulchre", kc);
 		}
 
