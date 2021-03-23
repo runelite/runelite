@@ -635,19 +635,19 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testHsFloorKc()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have completed Floor 5 of the Hallowed Sepulchre! Total completions: <col=ff0000>81</col>.", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have completed Floor 5 of the Hallowed Sepulchre! Total completions: <col=ff0000>1,114</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setRSProfileConfiguration("killcount", "hallowed sepulchre floor 5", 81);
+		verify(configManager).setRSProfileConfiguration("killcount", "hallowed sepulchre floor 5", 1114);
 	}
 
 	@Test
 	public void testHsGhcKc()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have opened the Grand Hallowed Coffin <col=ff0000>36</col> times!", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have opened the Grand Hallowed Coffin <col=ff0000>1,542</col> times!", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setRSProfileConfiguration("killcount", "hallowed sepulchre", 36);
+		verify(configManager).setRSProfileConfiguration("killcount", "hallowed sepulchre", 1542);
 	}
 
 	@Test
