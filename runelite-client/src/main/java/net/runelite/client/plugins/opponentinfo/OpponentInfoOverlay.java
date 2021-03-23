@@ -32,10 +32,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
+
+import net.runelite.api.*;
+
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.NPC;
-import net.runelite.api.Player;
+
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.game.NPCManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -54,6 +55,7 @@ class OpponentInfoOverlay extends OverlayPanel
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
 	private static final Color HP_RED = new Color(102, 15, 16, 230);
 
+	private final Client client;
 	private final OpponentInfoPlugin opponentInfoPlugin;
 	private final OpponentInfoConfig opponentInfoConfig;
 	private final HiscoreManager hiscoreManager;
@@ -63,15 +65,18 @@ class OpponentInfoOverlay extends OverlayPanel
 	private int lastRatio = 0;
 	private int lastHealthScale = 0;
 	private String opponentName;
+	private String opponentsOpponentName;
 
 	@Inject
 	private OpponentInfoOverlay(
+		Client client,
 		OpponentInfoPlugin opponentInfoPlugin,
 		OpponentInfoConfig opponentInfoConfig,
 		HiscoreManager hiscoreManager,
 		NPCManager npcManager)
 	{
 		super(opponentInfoPlugin);
+		this.client = client;
 		this.opponentInfoPlugin = opponentInfoPlugin;
 		this.opponentInfoConfig = opponentInfoConfig;
 		this.hiscoreManager = hiscoreManager;
@@ -118,6 +123,17 @@ class OpponentInfoOverlay extends OverlayPanel
 						lastMaxHealth = hp;
 					}
 				}
+			}
+
+			final Actor opponentsOpponent = opponent.getInteracting();
+			if (opponentsOpponent != null
+					&& (opponentsOpponent !=  client.getLocalPlayer() || client.getVar(Varbits.MULTICOMBAT_AREA) == 1))
+			{
+				opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());
+			}
+			else
+			{
+				opponentsOpponentName = null;
 			}
 		}
 
@@ -194,6 +210,16 @@ class OpponentInfoOverlay extends OverlayPanel
 			}
 
 			panelComponent.getChildren().add(progressBarComponent);
+		}
+
+		// Opponents opponent
+		if (opponentsOpponentName != null && opponentInfoConfig.showOpponentsOpponent())
+		{
+			panelWidth = Math.max(panelWidth, fontMetrics.stringWidth(opponentsOpponentName));
+			panelComponent.setPreferredSize(new Dimension(panelWidth, 0));
+			panelComponent.getChildren().add(TitleComponent.builder()
+					.text(opponentsOpponentName)
+					.build());
 		}
 
 		return super.render(graphics);

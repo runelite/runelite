@@ -332,6 +332,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapPickpocket",
+		name = "Pickpocket",
+		description = "Swap Talk-to with Pickpocket"
+	)
+	default boolean swapPickpocket()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapPay",
 		name = "Pay",
 		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth",

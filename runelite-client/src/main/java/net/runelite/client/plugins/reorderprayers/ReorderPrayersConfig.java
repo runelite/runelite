@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.opponentinfo;
+package net.runelite.client.plugins.reorderprayers;
 
+import net.runelite.api.Prayer;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("opponentinfo")
-public interface OpponentInfoConfig extends Config
+@ConfigGroup(ReorderPrayersPlugin.CONFIG_GROUP_KEY)
+public interface ReorderPrayersConfig extends Config
 {
-	@ConfigItem(
-		keyName = "lookupOnInteraction",
-		name = "Lookup players on interaction",
-		description = "Display a combat stat comparison panel on player interaction. (follow, trade, challenge, attack, etc.)",
-		position = 0
-	)
-	default boolean lookupOnInteraction()
-	{
-		return false;
-	}
 
-	@ConfigItem(
-		keyName = "hitpointsDisplayStyle",
-		name = "Display style",
-		description = "Show opponent's hitpoints as a value (if known), percentage, or both",
-		position = 1
-	)
-	default HitpointsDisplayStyle hitpointsDisplayStyle()
-	{
-		return HitpointsDisplayStyle.HITPOINTS;
-	}
+    @ConfigItem(
+            keyName = ReorderPrayersPlugin.CONFIG_UNLOCK_REORDERING_KEY,
+            name = "Unlock Prayer Reordering",
+            description = "Configures whether or not you can reorder the prayers",
+            position = 1
+    )
+    default boolean unlockPrayerReordering()
+    {
+        return false;
+    }
 
-	@ConfigItem(
-		keyName = "showOpponentsOpponent",
-		name = "Show opponent's opponent",
-		description = "Toggle showing opponent's opponent if within a multi-combat area",
-		position = 2
-	)
-	default boolean showOpponentsOpponent()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = ReorderPrayersPlugin.CONFIG_UNLOCK_REORDERING_KEY,
+            name = "",
+            description = ""
+    )
+    void unlockPrayerReordering(boolean unlock);
 
-	@ConfigItem(
-		keyName = "showOpponentsInMenu",
-		name = "Show opponents in menu",
-		description = "Marks opponents names in the menu which you are attacking or are attacking you (NPC only)",
-		position = 3
-	)
-	default boolean showOpponentsInMenu()
-	{
-		return false;
-	}
+    @ConfigItem(
+            keyName = ReorderPrayersPlugin.CONFIG_PRAYER_ORDER_KEY,
+            name = "Prayer Order",
+            description = "Configures the order of the prayers",
+            hidden = true,
+            position = 2
+    )
+    default String prayerOrder()
+    {
+        return ReorderPrayersPlugin.prayerOrderToString(Prayer.values());
+    }
+
+    @ConfigItem(
+            keyName = ReorderPrayersPlugin.CONFIG_PRAYER_ORDER_KEY,
+            name = "",
+            description = ""
+    )
+    void prayerOrder(String prayerOrder);
+
 }

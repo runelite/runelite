@@ -183,6 +183,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@VisibleForTesting
 	void setupSwaps()
 	{
+		swap("talk-to", "villager", "pickpocket", config::swapPickpocket);
+		swap("talk-to", "bandit", "pickpocket", config::swapPickpocket);
+		swap("talk-to", "menaphite thug", "pickpocket", config::swapPickpocket);
 		swap("talk-to", "mage of zamorak", "teleport", config::swapAbyssTeleport);
 		swap("talk-to", "rionasta", "send-parcel", config::swapHardWoodGroveParcel);
 		swap("talk-to", "captain khaled", "task", config::swapCaptainKhaled);
@@ -377,24 +380,33 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("travel", "dive", config::swapRowboatDive);
 	}
 
-	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
+	public Swap swap(String option, String swappedOption, Supplier<Boolean> enabled)
 	{
-		swap(option, alwaysTrue(), swappedOption, enabled);
+		return swap(option, alwaysTrue(), swappedOption, enabled);
 	}
 
-	private void swap(String option, String target, String swappedOption, Supplier<Boolean> enabled)
+	public Swap swap(String option, String target, String swappedOption, Supplier<Boolean> enabled)
 	{
-		swap(option, equalTo(target), swappedOption, enabled);
+		return swap(option, equalTo(target), swappedOption, enabled);
 	}
 
-	private void swap(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
+	public Swap swap(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
 	{
-		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, true));
+		Swap swap = new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, true);
+		swaps.put(option, swap);
+		return swap;
 	}
 
-	private void swapContains(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
+	public Swap swapContains(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
 	{
-		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, false));
+		Swap swap = new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, false);
+		swaps.put(option, swap);
+		return swap;
+	}
+
+	public void remove(String option, Swap swap)
+	{
+		swaps.remove(option, swap);
 	}
 
 	private void swapTeleport(String option, String swappedOption)

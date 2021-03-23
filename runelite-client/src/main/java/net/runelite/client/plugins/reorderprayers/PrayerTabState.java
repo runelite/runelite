@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.menuentryswapper;
+package net.runelite.client.plugins.reorderprayers;
 
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import lombok.Value;
-
-@Value
-public class Swap
+public enum PrayerTabState
 {
-	private Predicate<String> optionPredicate;
-	private Predicate<String> targetPredicate;
-	private String swappedOption;
-	private Supplier<Boolean> enabled;
-	private boolean strict;
+    NONE,
+    PRAYERS,
+    QUICK_PRAYERS
 }
