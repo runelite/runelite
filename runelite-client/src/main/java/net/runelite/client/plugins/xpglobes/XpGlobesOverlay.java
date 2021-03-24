@@ -268,15 +268,13 @@ public class XpGlobesOverlay extends Overlay
 		}
 
 		final int size = orbSize - config.progressArcStrokeWidth();
-		final int width = (int) (size * GLOBE_ICON_RATIO);
-		final int height = (int) (size * GLOBE_ICON_RATIO);
-
-		if (width <= 0 || height <= 0)
+		final int scaledIconSize = (int) (size * GLOBE_ICON_RATIO);
+		if (scaledIconSize <= 0)
 		{
 			return null;
 		}
 
-		icon = ImageUtil.resizeImage(icon, width, height);
+		icon = ImageUtil.resizeImage(icon, scaledIconSize, scaledIconSize, true);
 
 		xpGlobe.setSkillIcon(icon);
 		xpGlobe.setSize(orbSize);
