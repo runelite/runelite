@@ -183,6 +183,8 @@ enum MiningSiteLocation
 	RIMMINGTON(new WorldPoint(2977, 3240, 0),
 		new Rock(2, Ore.CLAY), new Rock(5, Ore.COPPER), new Rock(2, Ore.TIN), new Rock(6, Ore.IRON),
 		new Rock(2, Ore.GOLD)),
+	RUINS_OF_UNKAH(new WorldPoint(3172, 2871, 0),
+		new Rock(1, Ore.COPPER), new Rock(1, Ore.TIN), new Rock(5, Ore.IRON), new Rock(2, Ore.SILVER), new Rock(1, Ore.COAL)),
 	SALT_MINE(new WorldPoint(2835, 10334, 0),
 		new Rock(7, Ore.BASALT), new Rock(15, Ore.TE_SALT), new Rock(12, Ore.EFH_SALT), new Rock(12, Ore.URT_SALT)),
 	SHAYZIEN_EAST(new WorldPoint(1597, 3653, 0), new Rock(3, Ore.CLAY), new Rock(1, Ore.MITHRIL), new Rock(1, Ore.ADAMANTITE)),
