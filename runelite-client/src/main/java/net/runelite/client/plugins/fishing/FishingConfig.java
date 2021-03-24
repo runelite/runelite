@@ -114,6 +114,18 @@ public interface FishingConfig extends Config
 		return Color.GREEN;
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "harpoonfishOverlayColor",
+		name = "Harpoonfish Overlay",
+		description = "Color of overlays for bubbling Harpoonfish spots",
+		position = 6
+	)
+	default Color getHarpoonfishOverlayColor()
+	{
+		return Color.GREEN;
+	}
+
 	@ConfigItem(
 		position = 7,
 		keyName = "statTimeout",
