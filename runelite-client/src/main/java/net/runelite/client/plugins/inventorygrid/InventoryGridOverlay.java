@@ -74,7 +74,9 @@ class InventoryGridOverlay extends Overlay
 		final Widget draggingWidget = getDraggedWidget();
 		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 		final Widget bankInventoryWidget = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
-		if (inventoryWidget.isHidden() && bankInventoryWidget.isHidden()) return null;
+		if (inventoryWidget.isHidden() && bankInventoryWidget.isHidden()) {
+			return null;
+		}
 
 		Widget activeInventoryWidget = null;
 		WidgetItem draggedItem = null;
@@ -84,7 +86,9 @@ class InventoryGridOverlay extends Overlay
 		{
 			activeInventoryWidget = draggingWidget.isIf3() ? bankInventoryWidget : inventoryWidget;
 			// with if3 the dragged widget is a child of the inventory, with if1 it is an item of the inventory (and the same widget)
-			if (draggingWidget.isIf3() ? draggingWidget.getParent() != activeInventoryWidget : draggingWidget != activeInventoryWidget) return null;
+			if (draggingWidget.isIf3() ? draggingWidget.getParent() != activeInventoryWidget : draggingWidget != activeInventoryWidget) {
+				return null;
+			}
 
 			final int draggedItemIndex = draggingWidget.isIf3() ? draggingWidget.getIndex() : client.getIf1DraggedItemIndex();
 			draggedItem = getWidgetItem(activeInventoryWidget, draggedItemIndex);
@@ -109,7 +113,9 @@ class InventoryGridOverlay extends Overlay
 			activeInventoryWidget = inventoryWidget.isHidden() ? bankInventoryWidget : inventoryWidget;
 		}
 
-		if (activeInventoryWidget == null) return null;
+		if (activeInventoryWidget == null) {
+			return null;
+		}
 
 		hoverActive = true;
 		for (int i = 0; i < INVENTORY_SIZE; ++i)
@@ -179,7 +185,9 @@ class InventoryGridOverlay extends Overlay
 	private void drawGridSquare(Graphics2D graphics, Rectangle bounds, Color color)
 	{
 		graphics.setColor(color);
-		if (config.gridStyle() == GridStyleMode.FILL) graphics.fill(bounds);
+		if (config.gridStyle() == GridStyleMode.FILL) {
+			graphics.fill(bounds);
+		}
 		else
 		{
 			graphics.setStroke(new BasicStroke(2));
