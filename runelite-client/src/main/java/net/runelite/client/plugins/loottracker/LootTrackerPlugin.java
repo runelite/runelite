@@ -240,6 +240,12 @@ public class LootTrackerPlugin extends Plugin
 	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
 	private static final Set<Integer> SOUL_WARS_REGIONS = ImmutableSet.of(8493, 8749, 9005);
 
+	// Tempoross
+	private static final String TEMPOROSS_EVENT = "Reward pool (Tempoross)";
+	private static final String TEMPOROSS_CASKET_EVENT = "Casket (Tempoross)";
+	private static final String TEMPOROSS_LOOT_STRING = "You found some loot: ";
+	private static final int TEMPOROSS_REGION = 12588;
+
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
 	@Inject
@@ -757,6 +763,12 @@ public class LootTrackerPlugin extends Plugin
 			setEvent(LootRecordType.EVENT, type, client.getBoostedSkillLevel(Skill.HUNTER));
 			takeInventorySnapshot();
 		}
+
+		if (regionID == TEMPOROSS_REGION && message.startsWith(TEMPOROSS_LOOT_STRING))
+		{
+			setEvent(LootRecordType.EVENT, TEMPOROSS_EVENT, client.getBoostedSkillLevel(Skill.FISHING));
+			takeInventorySnapshot();
+		}
 	}
 
 	@Subscribe
@@ -787,7 +799,9 @@ public class LootTrackerPlugin extends Plugin
 		else if (SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
 			|| BIRDNEST_EVENT.equals(eventType)
-			|| SPOILS_OF_WAR_EVENT.equals(eventType))
+			|| SPOILS_OF_WAR_EVENT.equals(eventType)
+			|| TEMPOROSS_EVENT.equals(eventType)
+			|| TEMPOROSS_CASKET_EVENT.equals(eventType))
 		{
 			processInventoryLoot(eventType, lootRecordType, metadata, event.getItemContainer(), Collections.emptyList());
 			resetEvent();
@@ -831,6 +845,12 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.SPOILS_OF_WAR)
 		{
 			setEvent(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT);
+			takeInventorySnapshot();
+		}
+
+		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.CASKET_25590)
+		{
+			setEvent(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT);
 			takeInventorySnapshot();
 		}
 	}
