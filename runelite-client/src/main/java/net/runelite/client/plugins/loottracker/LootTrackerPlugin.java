@@ -41,6 +41,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -772,10 +773,6 @@ public class LootTrackerPlugin extends Plugin
 			|| HALLOWED_SEPULCHRE_COFFIN_EVENT.equals(eventType)
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
-			|| SEEDPACK_EVENT.equals(eventType)
-			|| CASKET_EVENT.equals(eventType)
-			|| BIRDNEST_EVENT.equals(eventType)
-			|| SPOILS_OF_WAR_EVENT.equals(eventType)
 			|| eventType.endsWith("Bird House")
 			|| eventType.startsWith("H.A.M. chest")
 			|| lootRecordType == LootRecordType.PICKPOCKET)
@@ -784,6 +781,15 @@ public class LootTrackerPlugin extends Plugin
 			Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
 
 			processInventoryLoot(eventType, lootRecordType, metadata, event.getItemContainer(), groundItems);
+			resetEvent();
+		}
+		// Events that do not produce ground items
+		else if (SEEDPACK_EVENT.equals(eventType)
+			|| CASKET_EVENT.equals(eventType)
+			|| BIRDNEST_EVENT.equals(eventType)
+			|| SPOILS_OF_WAR_EVENT.equals(eventType))
+		{
+			processInventoryLoot(eventType, lootRecordType, metadata, event.getItemContainer(), Collections.emptyList());
 			resetEvent();
 		}
 	}
