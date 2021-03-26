@@ -553,6 +553,8 @@ public class SlayerPluginTest
 
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
+
+		verify(configManager).unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.TASK_LOC_KEY);
 	}
 
 	@Test

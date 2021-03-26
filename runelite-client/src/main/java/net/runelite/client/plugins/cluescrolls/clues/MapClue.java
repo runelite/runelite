@@ -78,7 +78,6 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(CLUE_SCROLL_MEDIUM_7292, new WorldPoint(2578, 3597, 0), "South-east of the Lighthouse. Fairy ring ALP"),
 		new MapClue(CLUE_SCROLL_MEDIUM_7294, new WorldPoint(2666, 3562, 0), "Between Seers' Village and Rellekka. South-west of Fairy ring CJR"),
 		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3503, 0), CRATE_2620, "A crate in the Lumber Yard, north-east of Varrock."),
-		new MapClue(CLUE_SCROLL_HARD_2729, new WorldPoint(3190, 3963, 0), "Behind the Magic axe hut in level 56 Wilderness."),
 		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2615, 3078, 0), "Yanille anvils, south of the bank. You can dig from inside the building."),
 		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0), "In the western section of West Ardougne."),
 		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(2457, 3182, 0), CRATE_18506, "In a crate by the stairs to the Observatory Dungeon."),

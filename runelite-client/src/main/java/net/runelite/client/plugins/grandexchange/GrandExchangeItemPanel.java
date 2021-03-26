@@ -51,8 +51,8 @@ class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
-		haPrice, int geItemLimit)
+	GrandExchangeItemPanel(GrandExchangePlugin grandExchangePlugin, AsyncBufferedImage icon, String name, int itemID,
+		int gePrice, int haPrice, int geItemLimit)
 	{
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(5);
@@ -89,7 +89,7 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				GrandExchangePlugin.openGeLink(name, itemID);
+				grandExchangePlugin.openGeLink(name, itemID);
 			}
 		};
 
@@ -138,7 +138,7 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
-		haPriceLabel.setText(QuantityFormatter.formatNumber(haPrice.intValue()) + " alch");
+		haPriceLabel.setText(QuantityFormatter.formatNumber(haPrice) + " alch");
 		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
 		alchAndLimitPanel.add(haPriceLabel, BorderLayout.WEST);
 

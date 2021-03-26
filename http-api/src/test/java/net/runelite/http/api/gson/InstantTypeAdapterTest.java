@@ -34,15 +34,20 @@ public class InstantTypeAdapterTest
 	@Test
 	public void test()
 	{
-		test("null", null);
-		test("{\"seconds\":1609538310,\"nanos\":291698903}", Instant.ofEpochSecond(1609538310, 291698903));
+		test("null", null, true);
+		test("{\"seconds\":1609538310,\"nanos\":291000000}", Instant.ofEpochSecond(1609538310, 291_000_000), false);
+		test("1609538310291", Instant.ofEpochSecond(1609538310, 291_000_000), true);
 	}
 
-	private void test(String json, Instant object)
+	private void test(String json, Instant object, boolean exactEncoding)
 	{
 		Instant parsed = RuneLiteAPI.GSON.fromJson(json, Instant.class);
 		Assert.assertEquals(object, parsed);
 		String serialized = RuneLiteAPI.GSON.toJson(object);
+		if (exactEncoding)
+		{
+			Assert.assertEquals(json, serialized);
+		}
 		Instant roundTripped = RuneLiteAPI.GSON.fromJson(serialized, Instant.class);
 		Assert.assertEquals(object, roundTripped);
 	}

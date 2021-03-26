@@ -35,6 +35,19 @@ import net.runelite.api.coords.Angle;
  */
 public interface GameObject extends TileObject
 {
+	/**
+	 * Get the size of this object, in tiles, on the x axis
+	 *
+	 * @return
+	 */
+	int sizeX();
+
+	/**
+	 * Get the size of this object, in tiles, on the y axis
+	 *
+	 * @return
+	 */
+	int sizeY();
 
 	/**
 	 * Gets the minimum x and y scene coordinate pair for this game object.
