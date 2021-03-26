@@ -1233,4 +1233,9 @@ public class TabInterface
 		entries[entries.length - 1] = entry;
 		return entries;
 	}
+
+	public int getTabCount()
+	{
+		return tabManager.getTabs().size();
+	}
 }
