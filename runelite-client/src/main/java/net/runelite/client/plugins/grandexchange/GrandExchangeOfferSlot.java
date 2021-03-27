@@ -51,6 +51,7 @@ import static net.runelite.api.GrandExchangeOfferState.CANCELLED_BUY;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_SELL;
 import static net.runelite.api.GrandExchangeOfferState.EMPTY;
 import net.runelite.api.ItemComposition;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
@@ -67,6 +68,7 @@ public class GrandExchangeOfferSlot extends JPanel
 	private static final ImageIcon LEFT_ARROW_ICON;
 
 	private final GrandExchangePlugin grandExchangePlugin;
+	private final RuneLiteConfig runeLiteConfig;
 
 	private final JPanel container = new JPanel();
 	private final CardLayout cardLayout = new CardLayout();
@@ -93,10 +95,10 @@ public class GrandExchangeOfferSlot extends JPanel
 	 * This (sub)panel is used for each GE slot displayed
 	 * in the sidebar
 	 */
-	GrandExchangeOfferSlot(GrandExchangePlugin grandExchangePlugin)
+	GrandExchangeOfferSlot(GrandExchangePlugin grandExchangePlugin, RuneLiteConfig runeLiteConfig)
 	{
 		this.grandExchangePlugin = grandExchangePlugin;
-
+		this.runeLiteConfig = runeLiteConfig;
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setBorder(new EmptyBorder(7, 0, 0, 0));
@@ -238,7 +240,8 @@ public class GrandExchangeOfferSlot extends JPanel
 			final JPopupMenu popupMenu = new JPopupMenu();
 			popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-			final JMenuItem openGeLink = new JMenuItem("Open Grand Exchange website");
+			final String menuName = runeLiteConfig.useWikiItemPrices() ? "Open RuneScape Wiki prices website" : "Open Grand Exchange website";
+			final JMenuItem openGeLink = new JMenuItem(menuName);
 			openGeLink.addActionListener(e -> grandExchangePlugin.openGeLink(offerItem.getName(), offerItem.getId()));
 			popupMenu.add(openGeLink);
 

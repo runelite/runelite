@@ -37,6 +37,7 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.PluginErrorPanel;
 
@@ -48,6 +49,7 @@ class GrandExchangeOffersPanel extends JPanel
 	private static final int MAX_OFFERS = 8;
 
 	private final GrandExchangePlugin grandExchangePlugin;
+	private final RuneLiteConfig runeLiteconfig;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	private final CardLayout cardLayout = new CardLayout();
@@ -61,9 +63,10 @@ class GrandExchangeOffersPanel extends JPanel
 	private final GrandExchangeOfferSlot[] offerSlotPanels = new GrandExchangeOfferSlot[MAX_OFFERS];
 
 	@Inject
-	private GrandExchangeOffersPanel(final GrandExchangePlugin grandExchangePlugin)
+	private GrandExchangeOffersPanel(final GrandExchangePlugin grandExchangePlugin, final RuneLiteConfig runeLiteconfig)
 	{
 		this.grandExchangePlugin = grandExchangePlugin;
+		this.runeLiteconfig = runeLiteconfig;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -129,7 +132,7 @@ class GrandExchangeOffersPanel extends JPanel
 		GrandExchangeOfferSlot offerSlot = offerSlotPanels[slot];
 		if (offerSlot == null)
 		{
-			offerSlot = new GrandExchangeOfferSlot(grandExchangePlugin);
+			offerSlot = new GrandExchangeOfferSlot(grandExchangePlugin, runeLiteconfig);
 			offerSlotPanels[slot] = offerSlot;
 			offerPanel.add(offerSlot, constraints);
 			constraints.gridy++;
