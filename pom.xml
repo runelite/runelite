@@ -84,8 +84,12 @@
 
 	<repositories>
 		<repository>
-			<id>maven-central</id>
+			<id>central</id>
+			<name>Central Repository</name>
 			<url>https://repo.maven.apache.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>runelite</id>
@@ -99,8 +103,15 @@
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>maven-central-plugins</id>
+			<id>central</id>
+			<name>Central Repository</name>
 			<url>https://repo.maven.apache.org/maven2</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</pluginRepository>
 		<pluginRepository>
 			<id>runelite-plugins</id>
