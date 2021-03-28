@@ -133,4 +133,16 @@ public interface BankConfig extends Config
 	{
 		return new Keybind(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
 	}
+
+	@ConfigItem(
+			keyName = "showRaw",
+			name = "Show Raw Price",
+			description = "Show total raw GP banked in alchables/processables",
+			position = 10
+	)
+	default boolean showRaw()
+	{
+		return false;
+	}
+
 }
