@@ -145,6 +145,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapDroppedLogs",
+		name = "Dropped Logs",
+		description = "Swap Light with Take on Dropped Logs",
+		section = itemSection
+	)
+	default boolean swapDroppedLogs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapBattlestaves",
 		name = "Battlestaff",
 		description = "Swap Wield with Use on Battlestaves without orbs",
@@ -356,7 +367,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapPortalNexus",
 		name = "Portal Nexus",
-		description =  "Swap Teleport options with Teleport Menu on the Portal Nexus",
+		description = "Swap Teleport options with Teleport Menu on the Portal Nexus",
 		section = objectSection
 	)
 	default boolean swapPortalNexus()
