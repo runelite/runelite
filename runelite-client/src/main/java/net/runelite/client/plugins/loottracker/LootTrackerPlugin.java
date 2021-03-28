@@ -766,7 +766,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (regionID == TEMPOROSS_REGION && message.startsWith(TEMPOROSS_LOOT_STRING))
 		{
-			setEvent(LootRecordType.EVENT, TEMPOROSS_EVENT, client.getBoostedSkillLevel(Skill.FISHING));
+			setEvent(LootRecordType.EVENT, TEMPOROSS_EVENT, client.getRealSkillLevel(Skill.FISHING));
 			takeInventorySnapshot();
 		}
 	}

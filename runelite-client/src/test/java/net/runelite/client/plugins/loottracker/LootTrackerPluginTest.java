@@ -366,7 +366,7 @@ public class LootTrackerPluginTest
 		Player player = mock(Player.class);
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(client.getLocalPlayer().getWorldLocation()).thenReturn(new WorldPoint(3153, 2833, 0));
-		when(client.getBoostedSkillLevel(Skill.FISHING)).thenReturn(69);
+		when(client.getRealSkillLevel(Skill.FISHING)).thenReturn(69);
 
 		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
 		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
