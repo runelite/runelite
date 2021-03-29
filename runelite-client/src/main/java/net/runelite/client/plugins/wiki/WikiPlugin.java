@@ -38,6 +38,7 @@ import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -131,7 +132,7 @@ public class WikiPlugin extends Plugin
 		children[0] = null;
 
 		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
-		if (vanilla != null)
+		if (vanilla != null && client.getVar(Varbits.WIKI_ENTITY_LOOKUP) == 0)
 		{
 			vanilla.setHidden(false);
 		}
