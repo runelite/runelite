@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.starlink;
+package net.runelite.client.plugins.shootingstars;
 
 import lombok.Value;
 import net.runelite.api.coords.WorldPoint;

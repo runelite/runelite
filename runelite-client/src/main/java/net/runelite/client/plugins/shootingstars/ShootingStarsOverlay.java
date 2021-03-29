@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.starlink;
+package net.runelite.client.plugins.shootingstars;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,14 +15,14 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class StarlinkOverlay extends Overlay
+public class ShootingStarsOverlay extends Overlay
 {
 
 	private final Client client;
 	private final ShootingStars shootingStars;
 
 	@Inject
-	public StarlinkOverlay(Client client, ShootingStars shootingStars)
+	public ShootingStarsOverlay(Client client, ShootingStars shootingStars)
 	{
 		this.client = client;
 		this.shootingStars = shootingStars;

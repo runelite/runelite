@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.starlink.event;
+package net.runelite.client.plugins.shootingstars.event;
 
 import lombok.Value;
 

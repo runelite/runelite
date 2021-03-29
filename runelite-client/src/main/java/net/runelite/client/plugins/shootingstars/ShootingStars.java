@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.starlink;
+package net.runelite.client.plugins.shootingstars;
 
 import com.google.common.primitives.Ints;
 import javax.inject.Inject;
@@ -40,9 +40,9 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.starlink.event.StarCrashEvent;
-import net.runelite.client.plugins.starlink.event.StarDowngradeEvent;
-import net.runelite.client.plugins.starlink.event.StarScoutEvent;
+import net.runelite.client.plugins.shootingstars.event.StarCrashEvent;
+import net.runelite.client.plugins.shootingstars.event.StarDowngradeEvent;
+import net.runelite.client.plugins.shootingstars.event.StarScoutEvent;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -72,7 +72,7 @@ public class ShootingStars extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private StarlinkOverlay overlay;
+	private ShootingStarsOverlay overlay;
 
 	@Inject
 	private Client client;
