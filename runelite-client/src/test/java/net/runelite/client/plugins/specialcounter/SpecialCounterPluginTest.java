@@ -258,6 +258,11 @@ public class SpecialCounterPluginTest
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
 
+		// Set up spec weapon as BGS(OR)
+		ItemContainer equipment = mock(ItemContainer.class);
+		when(equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(ItemID.BANDOS_GODSWORD_OR, 1));
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+
 		// Second special attack
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());

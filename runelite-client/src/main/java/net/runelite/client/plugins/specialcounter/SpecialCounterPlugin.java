@@ -26,6 +26,7 @@ package net.runelite.client.plugins.specialcounter;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -314,7 +315,7 @@ public class SpecialCounterPlugin extends Plugin
 
 		for (SpecialWeapon specialWeapon : SpecialWeapon.values())
 		{
-			if (specialWeapon.getItemID() == weapon.getId())
+			if (Arrays.stream(specialWeapon.getItemID()).anyMatch(id -> id == weapon.getId()))
 			{
 				return specialWeapon;
 			}
@@ -328,7 +329,7 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (counter == null)
 		{
-			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()), this, config,
+			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()[0]), this, config,
 				hit, specialWeapon);
 			infoBoxManager.addInfoBox(counter);
 			specialCounter[specialWeapon.ordinal()] = counter;
