@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * Copyright (c) 2018, PandahRS <https://github.com/PandahRS>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +51,6 @@ import net.runelite.api.events.StatChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.discord.events.DiscordJoinGame;
-import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.discord.events.DiscordReady;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -216,20 +216,6 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDiscordJoinRequest(DiscordJoinRequest request)
-	{
-		// In order for the "Invite to join" message to work we need to have a valid party in Discord presence.
-		// We lazily create the party here in order to avoid the (1 of 15) being permanently in the Discord status.
-		if (!partyService.isInParty())
-		{
-			// Change to my party id, which is advertised in the Discord presence secret. This will open the socket,
-			// send a join, and cause a UserJoin later for me, which will then update the presence and allow the
-			// "Invite to join" to continue.
-			partyService.changeParty(partyService.getLocalPartyId());
-		}
-	}
-
-	@Subscribe
 	public void onDiscordJoinGame(DiscordJoinGame joinGame)
 	{
 		UUID partyId = UUID.fromString(joinGame.getJoinSecret());
@@ -303,7 +289,8 @@ public class DiscordPlugin extends Plugin
 					{
 						image = ImageIO.read(inputStream);
 					}
-					memberById.setAvatar(image);
+
+					partyService.setPartyMemberAvatar(memberById.getMemberId(), image);
 				}
 				finally
 				{
