@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,9 +33,7 @@ import java.awt.Rectangle;
 import java.util.Map;
 import java.util.UUID;
 import javax.inject.Inject;
-import net.runelite.api.MenuAction;
 import net.runelite.client.plugins.party.data.PartyData;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -62,17 +61,11 @@ public class PartyStatsOverlay extends OverlayPanel
 		this.config = config;
 		panelComponent.setBorder(new Rectangle());
 		panelComponent.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
-		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, "Leave", "Party"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.stats())
-		{
-			return null;
-		}
-
 		final Map<UUID, PartyData> partyDataMap = plugin.getPartyDataMap();
 		if (partyDataMap.isEmpty())
 		{
@@ -81,22 +74,14 @@ public class PartyStatsOverlay extends OverlayPanel
 
 		panelComponent.setBackgroundColor(null);
 
-		boolean only1 = plugin.getPartyDataMap().size() == 1;
-
 		synchronized (plugin.getPartyDataMap())
 		{
 			partyDataMap.forEach((k, v) ->
 			{
-				if (party.getLocalMember() != null && party.getLocalMember().getMemberId().equals(k))
-				{
-					if (only1)
-					{
-						panelComponent.getChildren().add(TitleComponent.builder()
-							.text("No other party members")
-							.color(Color.RED)
-							.build());
-					}
+				boolean isSelf = party.getLocalMember() != null && party.getLocalMember().getMemberId().equals(k);
 
+				if (!v.isShowOverlay() || (!config.includeSelf() && isSelf))
+				{
 					return;
 				}
 
@@ -104,7 +89,7 @@ public class PartyStatsOverlay extends OverlayPanel
 				panel.getChildren().clear();
 
 				final TitleComponent name = TitleComponent.builder()
-					.text(v.getName())
+					.text(v.getCharacterName().isEmpty() ? v.getMember().getName() : v.getCharacterName())
 					.color(config.recolorNames() ? v.getColor() : Color.WHITE)
 					.build();
 
