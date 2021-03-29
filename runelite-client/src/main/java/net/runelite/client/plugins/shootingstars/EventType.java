@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.starlink;
+package net.runelite.client.plugins.shootingstars;
 
 public enum EventType
 {

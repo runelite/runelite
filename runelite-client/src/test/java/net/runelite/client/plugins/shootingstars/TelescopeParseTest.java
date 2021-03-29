@@ -1,7 +1,9 @@
-package net.runelite.client.plugins.starlink;
+package net.runelite.client.plugins.shootingstars;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+@Slf4j
 public class TelescopeParseTest
 {
 
@@ -25,5 +27,21 @@ public class TelescopeParseTest
 	@Test
 	public void testExtractRegion()
 	{
+		String locationStartBound = "You see a shooting star! The star looks like it will land";
+		String timeStartBound = "in the next";
+
+		for (String message : MESSAGES)
+		{
+			String cleanMessage = message.replaceAll("<br>", " ");
+			int idx = cleanMessage.indexOf(locationStartBound);
+
+			if (idx > -1)
+			{
+				int timeIdx = cleanMessage.indexOf(timeStartBound);
+				String location = cleanMessage.substring(idx + locationStartBound.length() + 4, timeIdx).trim();
+				String time = cleanMessage.substring(timeIdx + timeStartBound.length() + 1).trim();
+				log.info("location={}, time={}", location, time);
+			}
+		}
 	}
 }

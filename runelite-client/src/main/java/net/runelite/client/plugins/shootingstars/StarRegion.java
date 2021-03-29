@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.starlink;
+package net.runelite.client.plugins.shootingstars;
 
 import java.util.Arrays;
 import java.util.List;
