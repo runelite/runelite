@@ -214,4 +214,15 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "randomizeColor",
+		name = "Randomize Player Colours",
+		description = "Put a Random Colour for every new player seen"
+	)
+	default boolean randomizeColor()
+	{
+		return false;
+	}
 }
