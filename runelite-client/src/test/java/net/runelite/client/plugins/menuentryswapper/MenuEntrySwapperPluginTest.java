@@ -427,4 +427,34 @@ public class MenuEntrySwapperPluginTest
 			menu("Last-destination (AIQ)", "Fairy ring", MenuAction.GAME_OBJECT_SECOND_OPTION),
 		}, argumentCaptor.getValue());
 	}
+
+	@Test
+	public void testTemporossLeave()
+	{
+		when(config.swapTemporossLeave()).thenReturn(true);
+
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Captain Dudi", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
+
+			menu("Leave", "Captain Dudi", MenuAction.NPC_SECOND_OPTION),
+			menu("Talk-to", "Captain Dudi", MenuAction.NPC_FIRST_OPTION),
+		};
+
+		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+
+		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
+		verify(client).setMenuEntries(argumentCaptor.capture());
+
+		// check the leave is hit first instead of talk-to
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Captain Dudi", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
+
+			menu("Talk-to", "Captain Dudi", MenuAction.NPC_FIRST_OPTION),
+			menu("Leave", "Captain Dudi", MenuAction.NPC_SECOND_OPTION),
+		}, argumentCaptor.getValue());
+	}
 }
