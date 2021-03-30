@@ -345,7 +345,7 @@ public class DevToolsPlugin extends Plugin
 				int id = Integer.parseInt(args[0]);
 				Player localPlayer = client.getLocalPlayer();
 				localPlayer.setAnimation(id);
-				localPlayer.setActionFrame(0);
+				localPlayer.setAnimationFrame(0);
 				break;
 			}
 			case "gfx":
