@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -45,6 +46,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLI
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
+import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
@@ -121,6 +123,14 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.CRYSTAL_HARPOON)
 	);
 
+	@VisibleForTesting
+	static final AllRequirementsCollection ANGLER_OUTFIT = all("Angler's outfit",
+		any("", item(ItemID.ANGLER_HAT), item(ItemID.SPIRIT_ANGLER_HEADBAND)),
+		any("", item(ItemID.ANGLER_TOP), item(ItemID.SPIRIT_ANGLER_TOP)),
+		any("", item(ItemID.ANGLER_WADERS), item(ItemID.SPIRIT_ANGLER_WADERS)),
+		any("", item(ItemID.ANGLER_BOOTS), item(ItemID.SPIRIT_ANGLER_BOOTS))
+	);
+
 	private static final Set<SkillChallengeClue> CLUES = ImmutableSet.of(
 		// Charlie Tasks
 		new SkillChallengeClue("Cook a Pike", "i need to cook charlie a pike.", "i need to take the cooked pike to charlie.", item(ItemID.PIKE), item(ItemID.RAW_PIKE)),
@@ -188,7 +198,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Cremate a set of fiyr remains.", any("Magic or Redwood Pyre Logs", item(ItemID.MAGIC_PYRE_LOGS), item(ItemID.REDWOOD_PYRE_LOGS)), item(ItemID.TINDERBOX), item(ItemID.FIYR_REMAINS)),
 		new SkillChallengeClue("Dissect a sacred eel.", item(ItemID.KNIFE), any("Fishing rod", item(ItemID.FISHING_ROD), item(ItemID.PEARL_FISHING_ROD)), item(ItemID.FISHING_BAIT)),
 		new SkillChallengeClue("Kill a lizardman shaman."),
-		new SkillChallengeClue("Catch an Anglerfish.", "angle for an anglerfish whilst sporting the finest fishing gear.", true, any("Fishing rod", item(ItemID.FISHING_ROD), item(ItemID.PEARL_FISHING_ROD)), item(ItemID.SANDWORMS), all("Angler's outfit", item(ItemID.ANGLER_HAT), item(ItemID.ANGLER_TOP), item(ItemID.ANGLER_WADERS), item(ItemID.ANGLER_BOOTS))),
+		new SkillChallengeClue("Catch an Anglerfish.", "angle for an anglerfish whilst sporting the finest fishing gear.", true, any("Fishing rod", item(ItemID.FISHING_ROD), item(ItemID.PEARL_FISHING_ROD)), item(ItemID.SANDWORMS), ANGLER_OUTFIT),
 		new SkillChallengeClue("Chop a redwood log.", "chop a redwood log whilst sporting the finest lumberjack gear.", true, ANY_AXE, all("Lumberjack outfit", item(ItemID.LUMBERJACK_HAT), item(ItemID.LUMBERJACK_TOP), item(ItemID.LUMBERJACK_LEGS), item(ItemID.LUMBERJACK_BOOTS))),
 		new SkillChallengeClue("Craft a light orb in the Dorgesh-Kaan bank.", item(ItemID.CAVE_GOBLIN_WIRE), item(ItemID.EMPTY_LIGHT_ORB)),
 		new SkillChallengeClue("Kill a reanimated Abyssal Demon.", "kill a reanimated abyssal.", xOfItem(ItemID.SOUL_RUNE, 4), xOfItem(ItemID.BLOOD_RUNE, 1), any("Nature Rune x4", xOfItem(ItemID.NATURE_RUNE, 4), item(ItemID.BRYOPHYTAS_STAFF)), range("Ensouled abyssal head", ItemID.ENSOULED_ABYSSAL_HEAD, ItemID.ENSOULED_ABYSSAL_HEAD_13508)),

@@ -24,8 +24,14 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import net.runelite.api.Item;
+import net.runelite.api.ItemID;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
+import java.util.Arrays;
 
 public class SkillChallengeClueTest
 {
@@ -33,5 +39,30 @@ public class SkillChallengeClueTest
 	public void forTextEmptyString()
 	{
 		assertNull(SkillChallengeClue.forText("", ""));
+	}
+
+	@Test
+	public void testAnglerOutfitRequirement()
+	{
+		assertTrue("regular angler outfit should meet requirement", fulfilledBy(SkillChallengeClue.ANGLER_OUTFIT,
+			ItemID.ANGLER_HAT, ItemID.ANGLER_TOP, ItemID.ANGLER_WADERS, ItemID.ANGLER_BOOTS));
+		assertTrue("spirit angler outfit should meet requirement", fulfilledBy(SkillChallengeClue.ANGLER_OUTFIT,
+			ItemID.SPIRIT_ANGLER_HEADBAND, ItemID.SPIRIT_ANGLER_TOP, ItemID.SPIRIT_ANGLER_WADERS, ItemID.SPIRIT_ANGLER_BOOTS));
+		assertTrue("mixed angler outfit should meet requirement", fulfilledBy(SkillChallengeClue.ANGLER_OUTFIT,
+			ItemID.ANGLER_HAT, ItemID.SPIRIT_ANGLER_TOP, ItemID.ANGLER_WADERS, ItemID.SPIRIT_ANGLER_BOOTS));
+		assertTrue("multiple angler outfits should meet requirement", fulfilledBy(SkillChallengeClue.ANGLER_OUTFIT,
+			ItemID.ANGLER_HAT, ItemID.ANGLER_TOP, ItemID.ANGLER_WADERS, ItemID.ANGLER_BOOTS,
+			ItemID.SPIRIT_ANGLER_HEADBAND, ItemID.SPIRIT_ANGLER_TOP, ItemID.SPIRIT_ANGLER_WADERS, ItemID.SPIRIT_ANGLER_BOOTS));
+
+		assertFalse("incomplete angler outfit shouldn't meet requirement", fulfilledBy(SkillChallengeClue.ANGLER_OUTFIT,
+			ItemID.ANGLER_HAT, ItemID.SPIRIT_ANGLER_HEADBAND, ItemID.ANGLER_WADERS, ItemID.SPIRIT_ANGLER_WADERS));
+	}
+
+	private boolean fulfilledBy(ItemRequirement itemRequirement, int... itemIDs)
+	{
+		final Item[] items = Arrays.stream(itemIDs)
+			.mapToObj(itemID -> new Item(itemID, 1))
+			.toArray(Item[]::new);
+		return itemRequirement.fulfilledBy(items);
 	}
 }
