@@ -59,6 +59,7 @@ class PluginListItem extends JPanel implements SearchablePlugin
 	private static final ImageIcon CONFIG_ICON_HOVER;
 	private static final ImageIcon ON_STAR;
 	private static final ImageIcon OFF_STAR;
+	private static final ImageIcon HUB_PLUGIN_ICON;
 
 	private final PluginListPanel pluginListPanel;
 
@@ -84,6 +85,8 @@ class PluginListItem extends JPanel implements SearchablePlugin
 			0.77f
 		);
 		OFF_STAR = new ImageIcon(offStar);
+
+		HUB_PLUGIN_ICON = new ImageIcon(ImageUtil.loadImageResource(ConfigPanel.class, "hub_plugin_icon.png"));
 	}
 
 	PluginListItem(PluginListPanel pluginListPanel, PluginConfigurationDescriptor pluginConfig)
@@ -110,6 +113,12 @@ class PluginListItem extends JPanel implements SearchablePlugin
 
 		JLabel nameLabel = new JLabel(pluginConfig.getName());
 		nameLabel.setForeground(Color.WHITE);
+		if (mf != null)
+		{
+			nameLabel.setIcon(HUB_PLUGIN_ICON);
+			nameLabel.setHorizontalAlignment(JLabel.LEFT);
+			nameLabel.setIconTextGap(2);
+		}
 
 		if (!pluginConfig.getDescription().isEmpty())
 		{
