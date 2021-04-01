@@ -27,10 +27,18 @@ package net.runelite.client.plugins.dpscounter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("dpscounter")
 public interface DpsConfig extends Config
 {
+	@ConfigSection(
+		position = 1,
+		name = "Boss",
+		description = "Boss related settings"
+	)
+	String bossSection = "Boss";
+
 	@ConfigItem(
 		position = 0,
 		keyName = "showDamage",
@@ -46,7 +54,8 @@ public interface DpsConfig extends Config
 		position = 1,
 		keyName = "autopause",
 		name = "Auto pause",
-		description = "Pause the DPS tracker when a boss dies"
+		description = "Pause the DPS tracker when a boss dies",
+		section = bossSection
 	)
 	default boolean autopause()
 	{
@@ -57,7 +66,8 @@ public interface DpsConfig extends Config
 		position = 2,
 		keyName = "autoreset",
 		name = "Auto reset",
-		description = "Reset the DPS tracker when a boss dies"
+		description = "Reset the DPS tracker when a boss dies",
+		section = bossSection
 	)
 	default boolean autoreset()
 	{
@@ -68,7 +78,8 @@ public interface DpsConfig extends Config
 		position = 3,
 		keyName = "bossDamage",
 		name = "Only boss damage",
-		description = "Only count damage done to the boss, and not to other NPCs"
+		description = "Only count damage done to the boss, and not to other NPCs",
+		section = bossSection
 	)
 	default boolean bossDamage()
 	{
