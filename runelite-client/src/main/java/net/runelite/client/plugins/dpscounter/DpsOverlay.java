@@ -42,6 +42,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.ws.PartyMember;
 import net.runelite.client.ws.PartyService;
 
 class DpsOverlay extends OverlayPanel
@@ -119,11 +120,21 @@ class DpsOverlay extends OverlayPanel
 			String left = dpsMember.getName();
 			String right = showDamage ? QuantityFormatter.formatNumber(dpsMember.getDamage()) : DPS_FORMAT.format(dpsMember.getDps());
 			maxWidth = Math.max(maxWidth, fontMetrics.stringWidth(left) + fontMetrics.stringWidth(right));
-			panelComponent.getChildren().add(
-				LineComponent.builder()
-					.left(left)
-					.right(right)
-					.build());
+			LineComponent.LineComponentBuilder damageLineBuilder = LineComponent.builder()
+				.left(left)
+				.right(right);
+
+			if(inParty)
+			{
+				PartyMember self = partyService.getLocalMember();
+				if (self != null && dpsMember.getName().equals(self.getName()))
+				{
+					damageLineBuilder.leftColor(dpsConfig.selfColor())
+						.rightColor(dpsConfig.selfColor());
+				}
+			}
+
+			panelComponent.getChildren().add(damageLineBuilder.build());
 		}
 
 		panelComponent.setPreferredSize(new Dimension(maxWidth + PANEL_WIDTH_OFFSET, 0));

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.dpscounter;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -38,6 +39,13 @@ public interface DpsConfig extends Config
 		description = "Boss related settings"
 	)
 	String bossSection = "Boss";
+
+	@ConfigSection(
+		position = 4,
+		name = "Party",
+		description = "Party related settings"
+	)
+	String partySection = "Party";
 
 	@ConfigItem(
 		position = 0,
@@ -84,5 +92,17 @@ public interface DpsConfig extends Config
 	default boolean bossDamage()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "selfColor",
+		name = "Self color",
+		description = "Change your own damage line color",
+		section = partySection
+	)
+	default Color selfColor()
+	{
+		return Color.white;
 	}
 }
