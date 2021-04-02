@@ -190,7 +190,7 @@ public class DpsCounterPlugin extends Plugin
 		final int npcId = ((NPC) actor).getId();
 		boolean isBoss = BOSSES.contains(npcId);
 
-		// Reset if someone hit a boss and the previous on is dead
+		// Reset if someone hit a boss and the previous one is dead
 		if (bossDied && isBoss && dpsConfig.autoresetNextHit())
 		{
 			bossDied = false;
@@ -255,6 +255,7 @@ public class DpsCounterPlugin extends Plugin
 			return;
 		}
 
+		// Reset if someone hit a boss and the previous one is dead
 		if (bossDied && dpsUpdate.isBoss() && dpsConfig.autoresetNextHit())
 		{
 			bossDied = false;
