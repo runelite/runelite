@@ -205,9 +205,9 @@ public class DpsCounterPlugin extends Plugin
 			// broadcast damage
 			if (localMember != null)
 			{
-				final DpsUpdate specialCounterUpdate = new DpsUpdate(hit);
-				specialCounterUpdate.setMemberId(localMember.getMemberId());
-				wsClient.send(specialCounterUpdate);
+				final DpsUpdate dpsUpdate = new DpsUpdate(hit);
+				dpsUpdate.setMemberId(localMember.getMemberId());
+				wsClient.send(dpsUpdate);
 			}
 			// apply to total
 		}
