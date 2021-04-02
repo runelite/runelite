@@ -84,30 +84,33 @@ public interface DpsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
+		keyName = "autoresetNextHit",
+		name = "Auto reset on next hit",
+		description = "Reset the DPS tracker on next boss hit after a boss dies",
+		section = bossSection
+	)
+	default boolean autoresetNextHit() { return false; }
+
+	@ConfigItem(
+		position = 4,
 		keyName = "bossDamage",
 		name = "Only boss damage",
 		description = "Only count damage done to the boss, and not to other NPCs",
 		section = bossSection
 	)
-	default boolean bossDamage()
-	{
-		return false;
-	}
+	default boolean bossDamage() { return false; }
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "selfColor",
 		name = "Self color",
 		description = "Change your own damage line color",
 		section = partySection
 	)
-	default Color selfColor()
-	{
-		return Color.white;
-	}
+	default Color selfColor() { return Color.white; }
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "sortByDps",
 		name = "Sort by DPS",
 		description = "Sort the members list by DPS",
