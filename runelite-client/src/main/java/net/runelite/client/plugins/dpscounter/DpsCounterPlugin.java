@@ -189,26 +189,28 @@ public class DpsCounterPlugin extends Plugin
 		{
 			final int npcId = ((NPC) actor).getId();
 			boolean isBoss = BOSSES.contains(npcId);
+
+			int hit = hitsplat.getAmount();
+			PartyMember localMember = partyService.getLocalMember();
+
+			// broadcast damage
+			if (localMember != null)
+			{
+				final DpsUpdate dpsUpdate = new DpsUpdate(hit, isBoss);
+				dpsUpdate.setMemberId(localMember.getMemberId());
+				wsClient.send(dpsUpdate);
+			}
+
 			if (dpsConfig.bossDamage() && !isBoss)
 			{
 				return;
 			}
 
-			int hit = hitsplat.getAmount();
-			// Update local member
-			PartyMember localMember = partyService.getLocalMember();
 			// If not in a party, user local player name
 			final String name = localMember == null ? player.getName() : localMember.getName();
 			DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
 			dpsMember.addDamage(hit);
 
-			// broadcast damage
-			if (localMember != null)
-			{
-				final DpsUpdate dpsUpdate = new DpsUpdate(hit);
-				dpsUpdate.setMemberId(localMember.getMemberId());
-				wsClient.send(dpsUpdate);
-			}
 			// apply to total
 		}
 		else if (hitsplat.isOthers())
@@ -241,6 +243,12 @@ public class DpsCounterPlugin extends Plugin
 
 		String name = partyService.getMemberById(dpsUpdate.getMemberId()).getName();
 		if (name == null)
+		{
+			return;
+		}
+
+		// Received non-boss damage, but we only want boss damage
+		if (!dpsUpdate.isBoss() && dpsConfig.bossDamage())
 		{
 			return;
 		}

@@ -33,4 +33,5 @@ import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 public class DpsUpdate extends PartyMemberMessage
 {
 	private int hit;
+	private boolean isBoss;
 }
