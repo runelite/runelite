@@ -105,4 +105,16 @@ public interface DpsConfig extends Config
 	{
 		return Color.white;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "sortByDps",
+		name = "Sort by DPS",
+		description = "Sort the members list by DPS",
+		section = partySection
+	)
+	default boolean sortByDps()
+	{
+		return false;
+	}
 }

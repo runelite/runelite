@@ -29,7 +29,10 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
 import java.time.Duration;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
@@ -115,7 +118,21 @@ class DpsOverlay extends OverlayPanel
 		int maxWidth = ComponentConstants.STANDARD_WIDTH;
 		FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		for (DpsMember dpsMember : dpsMembers.values())
+		Collection<DpsMember> dpsMembersValues;
+
+		if (inParty && dpsConfig.sortByDps())
+		{
+			dpsMembersValues = dpsMembers.values()
+				.stream()
+				.sorted(Comparator.reverseOrder())
+				.collect(Collectors.toList());
+		}
+		else
+		{
+			dpsMembersValues = dpsMembers.values();
+		}
+
+		for (DpsMember dpsMember : dpsMembersValues)
 		{
 			String left = dpsMember.getName();
 			String right = showDamage ? QuantityFormatter.formatNumber(dpsMember.getDamage()) : DPS_FORMAT.format(dpsMember.getDps());

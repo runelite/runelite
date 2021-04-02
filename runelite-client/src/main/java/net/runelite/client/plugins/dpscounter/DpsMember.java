@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-class DpsMember
+class DpsMember implements Comparable<DpsMember>
 {
 	private final String name;
 	private Instant start;
@@ -95,5 +95,11 @@ class DpsMember
 	Duration elapsed()
 	{
 		return Duration.between(start, end == null ? Instant.now() : end);
+	}
+
+	@Override
+	public int compareTo(DpsMember o)
+	{
+		return Integer.compare(damage, o.getDamage());
 	}
 }
