@@ -39,7 +39,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<java.release>8</java.release>
-		<lombok.version>1.18.4</lombok.version>
+		<lombok.version>1.18.20</lombok.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
@@ -208,7 +208,7 @@
 			<plugin>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok-maven-plugin</artifactId>
-				<version>1.18.16.0</version>
+				<version>1.18.20.0</version>
 				<configuration>
 					<!-- Delomboked sources are only used for javadoc generation, and can be
 					skipped when javadoc is not being run. -->
