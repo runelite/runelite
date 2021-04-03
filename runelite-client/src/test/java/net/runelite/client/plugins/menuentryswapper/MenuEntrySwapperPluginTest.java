@@ -441,8 +441,8 @@ public class MenuEntrySwapperPluginTest
 			menu("Message", "player", MenuAction.WIDGET_FIRST_OPTION)
 		};
 
-		menuEntrySwapperPlugin.onMenuOpened(new MenuOpened());
 		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());
 
