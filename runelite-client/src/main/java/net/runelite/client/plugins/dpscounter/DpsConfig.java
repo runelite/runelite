@@ -90,7 +90,10 @@ public interface DpsConfig extends Config
 		description = "Reset the DPS tracker on next boss hit after a boss dies",
 		section = bossSection
 	)
-	default boolean autoresetNextHit() { return false; }
+	default boolean autoresetNextHit()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		position = 4,
@@ -99,7 +102,10 @@ public interface DpsConfig extends Config
 		description = "Only count damage done to the boss, and not to other NPCs",
 		section = bossSection
 	)
-	default boolean bossDamage() { return false; }
+	default boolean bossDamage()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		position = 5,
@@ -108,7 +114,10 @@ public interface DpsConfig extends Config
 		description = "Change your own damage line color",
 		section = partySection
 	)
-	default Color selfColor() { return Color.white; }
+	default Color selfColor()
+	{
+		return Color.white;
+	}
 
 	@ConfigItem(
 		position = 6,

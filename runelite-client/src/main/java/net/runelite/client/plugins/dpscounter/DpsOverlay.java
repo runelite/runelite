@@ -142,7 +142,7 @@ class DpsOverlay extends OverlayPanel
 				.left(left)
 				.right(right);
 
-			if(inParty)
+			if (inParty)
 			{
 				PartyMember self = partyService.getLocalMember();
 				if (self != null && dpsMember.getName().equals(self.getName()))
