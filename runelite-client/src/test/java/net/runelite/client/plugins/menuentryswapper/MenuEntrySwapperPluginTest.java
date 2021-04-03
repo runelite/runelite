@@ -430,7 +430,8 @@ public class MenuEntrySwapperPluginTest
 	}
 
 	@Test
-	public void testFriendsListDeleteEnabled() {
+	public void testFriendsListDeleteEnabled()
+	{
 		when(config.swapFriendsListDelete()).thenReturn(true);
 
 		entries = new MenuEntry[] {
