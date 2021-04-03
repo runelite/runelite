@@ -661,4 +661,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "swapFriendsListDelete",
+		name = "Friends List Delete",
+		description = "Swap Message with Delete on the Friends List",
+		section = uiSection
+	)
+	default boolean swapFriendsListDelete()
+	{
+		return false;
+	}
 }

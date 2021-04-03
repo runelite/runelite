@@ -35,6 +35,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import static org.junit.Assert.assertArrayEquals;
@@ -425,6 +426,30 @@ public class MenuEntrySwapperPluginTest
 
 			menu("Configure", "Fairy ring", MenuAction.GAME_OBJECT_FIRST_OPTION),
 			menu("Last-destination (AIQ)", "Fairy ring", MenuAction.GAME_OBJECT_SECOND_OPTION),
+		}, argumentCaptor.getValue());
+	}
+
+	@Test
+	public void testFriendsListDeleteEnabled() {
+		when(config.swapFriendsListDelete()).thenReturn(true);
+
+		entries = new MenuEntry[] {
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Lookup", "player", MenuAction.WIDGET_THIRD_OPTION),
+			menu("Delete", "player", MenuAction.WIDGET_SECOND_OPTION),
+			menu("Message", "player", MenuAction.WIDGET_FIRST_OPTION)
+		};
+
+		menuEntrySwapperPlugin.onMenuOpened(new MenuOpened());
+		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
+		verify(client).setMenuEntries(argumentCaptor.capture());
+
+		assertArrayEquals(new MenuEntry[] {
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Lookup", "player", MenuAction.WIDGET_THIRD_OPTION),
+			menu("Message", "player", MenuAction.WIDGET_FIRST_OPTION),
+			menu("Delete", "player", MenuAction.WIDGET_SECOND_OPTION)
 		}, argumentCaptor.getValue());
 	}
 }
