@@ -314,6 +314,15 @@ public interface ChatColorConfig extends Config
 	Color opaquePublicFriendUsernames();
 
 	@ConfigItem(
+		position = 28,
+		keyName = "opaquePublicFriendsChatUsernames",
+		name = "Public friends chat usernames",
+		description = "Color of Friends Chat Usernames in Public Chat",
+		section = opaqueSection
+	)
+	Color opaquePublicFriendsChatUsernames();
+
+	@ConfigItem(
 		position = 51,
 		keyName = "transparentPublicChat",
 		name = "Public chat (transparent)",
@@ -579,4 +588,13 @@ public interface ChatColorConfig extends Config
 		section = transparentSection
 	)
 	Color transparentPublicFriendUsernames();
+
+	@ConfigItem(
+		position = 78,
+		keyName = "transparentPublicFriendsChatUsernames",
+		name = "Public friends chat usernames (transparent)",
+		description = "Color of Friends Chat Usernames in Public Chat (transparent)",
+		section = transparentSection
+	)
+	Color transparentPublicFriendsChatUsernames();
 }
