@@ -138,7 +138,7 @@ public class ChatMessageManager
 				{
 					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPublicFriendUsernames() : chatColorConfig.opaquePublicFriendUsernames();
 				}
-				if(isUser)
+				if (isUser)
 				{
 					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPlayerUsername() : chatColorConfig.opaquePlayerUsername();
 				}
