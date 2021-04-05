@@ -316,8 +316,8 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 28,
 		keyName = "opaquePlayerUsername",
-		name = "Your Username",
-		description = "Color of Your Username",
+		name = "Your username",
+		description = "Color of your username",
 		section = opaqueSection
 	)
 	Color opaquePlayerUsername();
@@ -592,8 +592,8 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 78,
 		keyName = "transparentPlayerUsername",
-		name = "Your Username (transparent)",
-		description = "Color of Your Username (transparent)",
+		name = "Your username (transparent)",
+		description = "Color of your username (transparent)",
 		section = transparentSection
 	)
 	Color transparentPlayerUsername();

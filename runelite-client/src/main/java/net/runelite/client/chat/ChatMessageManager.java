@@ -131,18 +131,16 @@ public class ChatMessageManager
 			case MODCHAT:
 			{
 				String sanitizedUsername = Text.removeTags(chatMessage.getName());
-				boolean isUser = client.getLocalPlayer().getName().equals(sanitizedUsername);
-				boolean isFriend = client.isFriended(sanitizedUsername, true) && !isUser;
 
-				if (isFriend)
-				{
-					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPublicFriendUsernames() : chatColorConfig.opaquePublicFriendUsernames();
-				}
-				if (isUser)
+				if (client.getLocalPlayer().getName().equals(sanitizedUsername))
 				{
 					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPlayerUsername() : chatColorConfig.opaquePlayerUsername();
 				}
-				if (usernameColor == null)
+				else if (client.isFriended(sanitizedUsername, true))
+				{
+					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPublicFriendUsernames() : chatColorConfig.opaquePublicFriendUsernames();
+				}
+				else
 				{
 					usernameColor = isChatboxTransparent ? chatColorConfig.transparentUsername() : chatColorConfig.opaqueUsername();
 				}
