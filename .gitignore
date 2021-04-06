@@ -8,3 +8,5 @@ project.properties
 .project
 .settings/
 .classpath
+.vscode
+.factorypath

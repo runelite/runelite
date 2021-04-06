@@ -34,6 +34,7 @@ import static net.runelite.api.widgets.WidgetID.LOOTING_BAG_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SEED_BOX_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -41,20 +42,22 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 class ItemIdentificationOverlay extends WidgetItemOverlay
 {
 	private final ItemIdentificationConfig config;
+	private final ItemManager itemManager;
 
 	@Inject
-	ItemIdentificationOverlay(ItemIdentificationConfig config)
+	ItemIdentificationOverlay(ItemIdentificationConfig config, ItemManager itemManager)
 	{
 		this.config = config;
+		this.itemManager = itemManager;
 		showOnInventory();
 		showOnBank();
 		showOnInterfaces(KEPT_ON_DEATH_GROUP_ID, GUIDE_PRICE_GROUP_ID, LOOTING_BAG_GROUP_ID, SEED_BOX_GROUP_ID, KINGDOM_GROUP_ID);
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
-		ItemIdentification iden = ItemIdentification.get(itemId);
+		ItemIdentification iden = findItemIdentification(itemId);
 		if (iden == null)
 		{
 			return;
@@ -68,8 +71,26 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case SACK:
+				if (!config.showSacks())
+				{
+					return;
+				}
+				break;
 			case HERB:
 				if (!config.showHerbs())
+				{
+					return;
+				}
+				break;
+			case LOGS:
+				if (!config.showLogs())
+				{
+					return;
+				}
+				break;
+			case PLANK:
+				if (!config.showPlanks())
 				{
 					return;
 				}
@@ -80,11 +101,52 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 					return;
 				}
 				break;
+			case COMPOST:
+				if (!config.showComposts())
+				{
+					return;
+				}
+				break;
+			case ORE:
+				if (!config.showOres())
+				{
+					return;
+				}
+				break;
+			case BAR:
+				if (!config.showBars())
+				{
+					return;
+				}
+				break;
+			case GEM:
+				if (!config.showGems())
+				{
+					return;
+				}
+				break;
+			case POTION:
+				if (!config.showPotions())
+				{
+					return;
+				}
+				break;
+			case IMPLING_JAR:
+				if (!config.showImplingJars())
+				{
+					return;
+				}
+				break;
+			case TABLET:
+				if (!config.showTablets())
+				{
+					return;
+				}
+				break;
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
-		renderText(graphics, itemWidget.getCanvasBounds(), iden);
-
+		renderText(graphics, widgetItem.getCanvasBounds(), iden);
 	}
 
 	private void renderText(Graphics2D graphics, Rectangle bounds, ItemIdentification iden)
@@ -102,5 +164,11 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 				break;
 		}
 		textComponent.render(graphics);
+	}
+
+	private ItemIdentification findItemIdentification(final int itemID)
+	{
+		final int realItemId = itemManager.canonicalize(itemID);
+		return ItemIdentification.get(realItemId);
 	}
 }

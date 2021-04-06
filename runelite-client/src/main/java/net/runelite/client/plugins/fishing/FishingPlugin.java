@@ -46,6 +46,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
@@ -64,11 +65,14 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.game.FishingSpot;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 
 @PluginDescriptor(
 	name = "Fishing",
@@ -163,6 +167,18 @@ public class FishingPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
+	{
+		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
+		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY
+			&& overlayMenuClicked.getEntry().getOption().equals(FishingOverlay.FISHING_RESET)
+			&& overlayMenuClicked.getOverlay() == overlay)
+		{
+			session.setLastFishCaught(null);
+		}
+	}
+
+	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY)
@@ -199,6 +215,11 @@ public class FishingPlugin extends Plugin
 			spotOverlay.setHidden(false);
 			fishingSpotMinimapOverlay.setHidden(false);
 		}
+
+		if (event.getMessage().equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
+		{
+			notifier.notify("A flying fish is eating your minnows!");
+		}
 	}
 
 	@Subscribe
@@ -217,7 +238,7 @@ public class FishingPlugin extends Plugin
 		}
 
 		final NPC npc = (NPC) target;
-		FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
+		FishingSpot spot = FishingSpot.findSpot(npc.getId());
 
 		if (spot == null)
 		{
@@ -236,15 +257,13 @@ public class FishingPlugin extends Plugin
 
 		for (Item item : itemContainer.getItems())
 		{
-			if (item == null)
-			{
-				continue;
-			}
 			switch (item.getId())
 			{
 				case ItemID.DRAGON_HARPOON:
+				case ItemID.DRAGON_HARPOON_OR:
 				case ItemID.INFERNAL_HARPOON:
 				case ItemID.INFERNAL_HARPOON_UNCHARGED:
+				case ItemID.INFERNAL_HARPOON_UNCHARGED_25367:
 				case ItemID.HARPOON:
 				case ItemID.BARBTAIL_HARPOON:
 				case ItemID.BIG_FISHING_NET:
@@ -262,6 +281,11 @@ public class FishingPlugin extends Plugin
 				case ItemID.KARAMBWAN_VESSEL_3159:
 				case ItemID.CORMORANTS_GLOVE:
 				case ItemID.CORMORANTS_GLOVE_22817:
+				case ItemID.INFERNAL_HARPOON_OR:
+				case ItemID.TRAILBLAZER_HARPOON:
+				case ItemID.CRYSTAL_HARPOON:
+				case ItemID.CRYSTAL_HARPOON_23864:
+				case ItemID.CRYSTAL_HARPOON_INACTIVE:
 					return true;
 			}
 		}
@@ -289,7 +313,7 @@ public class FishingPlugin extends Plugin
 
 		for (NPC npc : fishingSpots)
 		{
-			if (FishingSpot.getSPOTS().get(npc.getId()) == FishingSpot.MINNOW && config.showMinnowOverlay())
+			if (FishingSpot.findSpot(npc.getId()) == FishingSpot.MINNOW && config.showMinnowOverlay())
 			{
 				final int id = npc.getIndex();
 				final MinnowSpot minnowSpot = minnowSpots.get(id);
@@ -315,7 +339,7 @@ public class FishingPlugin extends Plugin
 	{
 		final NPC npc = event.getNpc();
 
-		if (!FishingSpot.getSPOTS().containsKey(npc.getId()))
+		if (FishingSpot.findSpot(npc.getId()) == null)
 		{
 			return;
 		}
@@ -353,7 +377,7 @@ public class FishingPlugin extends Plugin
 		{
 			if (!trawlerNotificationSent)
 			{
-				notifier.notify("[" + client.getLocalPlayer().getName() + "] has low Fishing Trawler activity!");
+				notifier.notify("You have low Fishing Trawler activity!");
 				trawlerNotificationSent = true;
 			}
 		}
@@ -386,6 +410,7 @@ public class FishingPlugin extends Plugin
 		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING)
 		{
 			log.debug("Trawler session ended");
+			trawlerStartTime = null;
 			return;
 		}
 
@@ -430,7 +455,21 @@ public class FishingPlugin extends Plugin
 
 	private void inverseSortSpotDistanceFromPlayer()
 	{
+		if (fishingSpots.isEmpty())
+		{
+			return;
+		}
+
 		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
-		fishingSpots.sort(Comparator.comparing(npc -> -1 * npc.getLocalLocation().distanceTo(cameraPoint)));
+		fishingSpots.sort(
+			Comparator.comparing(
+				// Negate to have the furthest first
+				(NPC npc) -> -npc.getLocalLocation().distanceTo(cameraPoint))
+				// Order by position
+				.thenComparing(NPC::getLocalLocation, Comparator.comparing(LocalPoint::getX)
+					.thenComparing(LocalPoint::getY))
+				// And then by id
+				.thenComparing(NPC::getId)
+		);
 	}
 }

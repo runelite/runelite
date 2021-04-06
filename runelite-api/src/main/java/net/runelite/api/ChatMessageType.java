@@ -69,11 +69,11 @@ public enum ChatMessageType
 	 */
 	MODPRIVATECHAT(7),
 	/**
-	 * A message received in clan chat.
+	 * A message received in friends chat.
 	 */
 	FRIENDSCHAT(9),
 	/**
-	 * A message received with information about the current clan chat.
+	 * A message received with information about the current friends chat.
 	 */
 	FRIENDSCHATNOTIFICATION(11),
 	/**
@@ -117,7 +117,7 @@ public enum ChatMessageType
 	 */
 	MODAUTOTYPER(91),
 	/**
-	 * A game message (ie. when a setting is changed).
+	 * A game message. (ie. when a setting is changed)
 	 */
 	CONSOLE(99),
 	/**
@@ -133,7 +133,7 @@ public enum ChatMessageType
 	 */
 	CHALREQ_TRADE(103),
 	/**
-	 * A message received when someone sends a clan challenge offer.
+	 * A message received when someone sends a friends chat challenge offer.
 	 */
 	CHALREQ_FRIENDSCHAT(104),
 	/**
@@ -148,6 +148,10 @@ public enum ChatMessageType
 	 * A message that times out after 10 seconds.
 	 */
 	TENSECTIMEOUT(107),
+	/**
+	 * The "Welcome to RuneScape" message
+	 */
+	WELCOME(108),
 	/**
 	 * An unknown message type.
 	 */

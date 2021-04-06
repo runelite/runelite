@@ -32,6 +32,7 @@ import java.util.List;
 import lombok.Value;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
+import static net.runelite.api.Constants.REGION_SIZE;
 import net.runelite.api.Perspective;
 
 /**
@@ -163,6 +164,20 @@ public class WorldPoint
 	 */
 	public static WorldPoint fromLocalInstance(Client client, LocalPoint localPoint)
 	{
+		return fromLocalInstance(client, localPoint, client.getPlane());
+	}
+
+	/**
+	 * Gets the coordinate of the tile that contains the passed local point,
+	 * accounting for instances.
+	 *
+	 * @param client the client
+	 * @param localPoint the local coordinate
+	 * @param plane the plane for the returned point, if it is not an instance
+	 * @return the tile coordinate containing the local point
+	 */
+	public static WorldPoint fromLocalInstance(Client client, LocalPoint localPoint, int plane)
+	{
 		if (client.isInInstancedRegion())
 		{
 			// get position in the scene
@@ -180,18 +195,18 @@ public class WorldPoint
 			int rotation = templateChunk >> 1 & 0x3;
 			int templateChunkY = (templateChunk >> 3 & 0x7FF) * CHUNK_SIZE;
 			int templateChunkX = (templateChunk >> 14 & 0x3FF) * CHUNK_SIZE;
-			int plane = templateChunk >> 24 & 0x3;
+			int templateChunkPlane = templateChunk >> 24 & 0x3;
 
 			// calculate world point of the template
 			int x = templateChunkX + (sceneX & (CHUNK_SIZE - 1));
 			int y = templateChunkY + (sceneY & (CHUNK_SIZE - 1));
 
 			// create and rotate point back to 0, to match with template
-			return rotate(new WorldPoint(x, y, plane), 4 - rotation);
+			return rotate(new WorldPoint(x, y, templateChunkPlane), 4 - rotation);
 		}
 		else
 		{
-			return fromLocal(client, localPoint);
+			return fromLocal(client, localPoint.getX(), localPoint.getY(), plane);
 		}
 	}
 
@@ -356,6 +371,6 @@ public class WorldPoint
 
 	private static int getRegionOffset(final int position)
 	{
-		return position & 0x3f;
+		return position & (REGION_SIZE - 1);
 	}
 }

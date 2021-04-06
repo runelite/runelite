@@ -33,17 +33,6 @@ import net.runelite.client.config.ConfigItem;
 public interface BarrowsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showMinimap",
-		name = "Show Minimap in tunnels",
-		description = "Configures whether or not the minimap is displayed",
-		position = 0
-	)
-	default boolean showMinimap()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showBrotherLoc",
 		name = "Show Brothers location",
 		description = "Configures whether or not the brothers location is displayed",

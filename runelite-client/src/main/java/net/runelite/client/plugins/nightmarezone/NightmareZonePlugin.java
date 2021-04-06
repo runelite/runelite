@@ -25,13 +25,16 @@
 package net.runelite.client.plugins.nightmarezone;
 
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -51,6 +54,8 @@ import net.runelite.client.util.Text;
 public class NightmareZonePlugin extends Plugin
 {
 	private static final int[] NMZ_MAP_REGION = {9033};
+	private static final Duration HOUR = Duration.ofHours(1);
+	private static final Duration OVERLOAD_DURATION = Duration.ofMinutes(5);
 
 	@Inject
 	private Notifier notifier;
@@ -67,15 +72,25 @@ public class NightmareZonePlugin extends Plugin
 	@Inject
 	private NightmareZoneOverlay overlay;
 
+	@Getter
+	private int pointsPerHour;
+
+	private Instant nmzSessionStartTime;
+
 	// This starts as true since you need to get
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
+	private boolean overloadNotificationSend = false;
+	private Instant lastOverload;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
 		overlay.removeAbsorptionCounter();
+
+		absorptionNotificationSend = true;
+		overloadNotificationSend = false;
 	}
 
 	@Override
@@ -90,6 +105,8 @@ public class NightmareZonePlugin extends Plugin
 		{
 			nmzWidget.setHidden(false);
 		}
+
+		resetPointsPerHour();
 	}
 
 	@Subscribe
@@ -114,19 +131,38 @@ public class NightmareZonePlugin extends Plugin
 				absorptionNotificationSend = true;
 			}
 
+			if (nmzSessionStartTime != null)
+			{
+				resetPointsPerHour();
+			}
+
+			overloadNotificationSend = false;
+
 			return;
 		}
+
 		if (config.absorptionNotification())
 		{
 			checkAbsorption();
+		}
+
+		if (overloadNotificationSend && config.overloadNotification() && config.overloadEarlyWarningSeconds() > 0)
+		{
+			checkOverload();
+		}
+
+		if (config.moveOverlay())
+		{
+			pointsPerHour = calculatePointsPerHour();
 		}
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.GAMEMESSAGE
-				|| !isInNightmareZone())
+		if (!isInNightmareZone()
+			|| (event.getType() != ChatMessageType.GAMEMESSAGE
+			&& event.getType() != ChatMessageType.SPAM))
 		{
 			return;
 		}
@@ -134,6 +170,9 @@ public class NightmareZonePlugin extends Plugin
 		String msg = Text.removeTags(event.getMessage()); //remove color
 		if (msg.contains("The effects of overload have worn off, and you feel normal again."))
 		{
+			// Prevents notification from being sent after overload expiry, if the user disables and re-enables warnings
+			overloadNotificationSend = false;
+
 			if (config.overloadNotification())
 			{
 				notifier.notify("Your overload has worn off");
@@ -170,6 +209,21 @@ public class NightmareZonePlugin extends Plugin
 				}
 			}
 		}
+		else if (msg.contains("You drink some of your overload potion."))
+		{
+			lastOverload = Instant.now();  // Save time of last overload
+			overloadNotificationSend = true;  // Queue up a overload notification once time threshold is reached
+		}
+	}
+
+	private void checkOverload()
+	{
+		if (Instant.now().isAfter(lastOverload.plus(OVERLOAD_DURATION).
+			minus(Duration.ofSeconds(config.overloadEarlyWarningSeconds()))))
+		{
+			notifier.notify("Your overload potion is about to expire!");
+			overloadNotificationSend = false;
+		}
 	}
 
 	private void checkAbsorption()
@@ -193,8 +247,40 @@ public class NightmareZonePlugin extends Plugin
 		}
 	}
 
+	private int calculatePointsPerHour()
+	{
+		Instant now = Instant.now();
+		final int currentPoints = client.getVar(Varbits.NMZ_POINTS);
+
+		if (nmzSessionStartTime == null)
+		{
+			nmzSessionStartTime = now;
+		}
+
+		Duration timeSinceStart = Duration.between(nmzSessionStartTime, now);
+
+		if (!timeSinceStart.isZero())
+		{
+			return (int) ((double) currentPoints * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+		}
+
+		return 0;
+	}
+
+	private void resetPointsPerHour()
+	{
+		nmzSessionStartTime = null;
+		pointsPerHour = 0;
+	}
+
 	public boolean isInNightmareZone()
 	{
-		return Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
+		if (client.getLocalPlayer() == null)
+		{
+			return false;
+		}
+
+		// NMZ and the KBD lair uses the same region ID but NMZ uses planes 1-3 and KBD uses plane 0
+		return client.getLocalPlayer().getWorldLocation().getPlane() > 0 && Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
 	}
 }

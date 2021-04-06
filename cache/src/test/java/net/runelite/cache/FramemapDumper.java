@@ -36,6 +36,7 @@ import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -52,6 +53,7 @@ public class FramemapDumper
 	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Test
+	@Ignore
 	public void extract() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
@@ -74,7 +76,7 @@ public class FramemapDumper
 				FramemapLoader loader = new FramemapLoader();
 				FramemapDefinition framemap = loader.load(0, contents);
 
-				Files.write(gson.toJson(framemap), new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset()).write(gson.toJson(framemap));
 				++count;
 			}
 		}

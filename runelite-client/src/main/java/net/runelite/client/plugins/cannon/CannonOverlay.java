@@ -62,7 +62,7 @@ class CannonOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null)
+		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null || plugin.getCannonWorld() != client.getWorld())
 		{
 			return null;
 		}

@@ -32,9 +32,11 @@ import net.runelite.http.api.loottracker.LootRecordType;
 class LootResult
 {
 	private int killId;
-	private Instant time;
+	private Instant first_time;
+	private Instant last_time;
 	private LootRecordType type;
 	private String eventId;
+	private int amount;
 	private int itemId;
 	private int itemQuantity;
 }

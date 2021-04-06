@@ -24,10 +24,15 @@
  */
 package net.runelite.http.service.chat;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
+import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.chat.Task;
+import net.runelite.http.api.chat.Duels;
 import net.runelite.http.service.util.redis.RedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,21 +127,106 @@ public class ChatService
 		}
 	}
 
-	public Integer getPb(String name, String boss)
+	public Double getPb(String name, String boss)
 	{
 		String value;
 		try (Jedis jedis = jedisPool.getResource())
 		{
 			value = jedis.get("pb." + boss + "." + name);
 		}
-		return value == null ? null : Integer.parseInt(value);
+		return value == null ? null : Double.parseDouble(value);
 	}
 
-	public void setPb(String name, String boss, int pb)
+	public void setPb(String name, String boss, double pb)
 	{
 		try (Jedis jedis = jedisPool.getResource())
 		{
-			jedis.setex("pb." + boss + "." + name, (int) EXPIRE.getSeconds(), Integer.toString(pb));
+			jedis.setex("pb." + boss + "." + name, (int) EXPIRE.getSeconds(), Double.toString(pb));
+		}
+	}
+
+	public Integer getGc(String name)
+	{
+		String value;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			value = jedis.get("gc." + name);
+		}
+		return value == null ? null : Integer.parseInt(value);
+	}
+
+	public void setGc(String name, int gc)
+	{
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("gc." + name, (int) EXPIRE.getSeconds(), Integer.toString(gc));
+		}
+	}
+
+	public Duels getDuels(String name)
+	{
+		Map<String, String> map;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			map = jedis.hgetAll("duels." + name);
+		}
+
+		if (map.isEmpty())
+		{
+			return null;
+		}
+
+		Duels duels = new Duels();
+		duels.setWins(Integer.parseInt(map.get("wins")));
+		duels.setLosses(Integer.parseInt(map.get("losses")));
+		duels.setWinningStreak(Integer.parseInt(map.get("winningStreak")));
+		duels.setLosingStreak(Integer.parseInt(map.get("losingStreak")));
+		return duels;
+	}
+
+	public void setDuels(String name, Duels duels)
+	{
+		Map<String, String> duelsMap = ImmutableMap.<String, String>builderWithExpectedSize(4)
+			.put("wins", Integer.toString(duels.getWins()))
+			.put("losses", Integer.toString(duels.getLosses()))
+			.put("winningStreak", Integer.toString(duels.getWinningStreak()))
+			.put("losingStreak", Integer.toString(duels.getLosingStreak()))
+			.build();
+
+		String key = "duels." + name;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.hmset(key, duelsMap);
+			jedis.expire(key, (int) EXPIRE.getSeconds());
+		}
+	}
+
+	public LayoutRoom[] getLayout(String name)
+	{
+		String layout;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			layout = jedis.get("layout." + name);
+		}
+
+		if (layout == null)
+		{
+			return null;
+		}
+
+		List<String> roomList = Splitter.on(' ').splitToList(layout);
+		return roomList.stream()
+			.map(LayoutRoom::valueOf)
+			.toArray(LayoutRoom[]::new);
+	}
+
+	public void setLayout(String name, LayoutRoom[] rooms)
+	{
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("layout." + name, (int) EXPIRE.getSeconds(), Joiner.on(' ').join(rooms));
 		}
 	}
 }

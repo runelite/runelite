@@ -49,7 +49,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
@@ -80,7 +80,7 @@ public class PohPlugin extends Plugin
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Map<Tile, IncenseBurner> incenseBurners =  new HashMap<>();
+	private final Map<Tile, IncenseBurner> incenseBurners = new HashMap<>();
 
 	@Inject
 	private OverlayManager overlayManager;

@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.cooking;
 
 import java.awt.Color;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import net.runelite.client.plugins.Plugin;
@@ -37,7 +37,7 @@ final class FermentTimer extends InfoBox
 
 	private Instant fermentTime;
 
-	FermentTimer(Image image, Plugin plugin)
+	FermentTimer(BufferedImage image, Plugin plugin)
 	{
 		super(image, plugin);
 		reset();

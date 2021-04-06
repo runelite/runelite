@@ -24,10 +24,12 @@
  */
 package net.runelite.client.plugins.timetracking.clocks;
 
+import com.google.common.collect.Comparators;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
@@ -36,6 +38,7 @@ import joptsimple.internal.Strings;
 import lombok.Getter;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.timetracking.SortOrder;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 
 @Singleton
@@ -49,6 +52,9 @@ public class ClockManager
 
 	@Inject
 	private Notifier notifier;
+
+	@Inject
+	private Gson gson;
 
 	@Getter
 	private final List<Timer> timers = new CopyOnWriteArrayList<>();
@@ -119,6 +125,11 @@ public class ClockManager
 				{
 					notifier.notify("[" + timer.getName() + "] has finished counting down.");
 				}
+
+				if (timer.isLoop())
+				{
+					timer.start();
+				}
 			}
 		}
 
@@ -131,13 +142,50 @@ public class ClockManager
 		return changed;
 	}
 
+	/**
+	 * Checks to ensure the timers are in the correct order.
+	 * If they are not, sort them and rebuild the clock panel
+	 *
+	 * @return whether the timer order was changed or not
+	 */
+	public boolean checkTimerOrder()
+	{
+		SortOrder sortOrder = config.sortOrder();
+		if (sortOrder != SortOrder.NONE)
+		{
+			Comparator<Timer> comparator = Comparator.comparingLong(Timer::getDisplayTime);
+			if (sortOrder == SortOrder.DESC)
+			{
+				comparator = comparator.reversed();
+			}
+
+			if (!Comparators.isInOrder(timers, comparator))
+			{
+				timers.sort(comparator);
+				SwingUtilities.invokeLater(clockTabPanel::rebuild);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Sets the warning flag on each timer that should be in the warning state
+	 */
+	public void checkForWarnings()
+	{
+		for (Timer timer : timers)
+		{
+			timer.setWarning(timer.getDisplayTime() <= config.timerWarningThreshold());
+		}
+	}
+
 	public void loadTimers()
 	{
 		final String timersJson = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.TIMERS);
 
 		if (!Strings.isNullOrEmpty(timersJson))
 		{
-			final Gson gson = new Gson();
 			final List<Timer> timers = gson.fromJson(timersJson, new TypeToken<ArrayList<Timer>>()
 			{
 			}.getType());
@@ -154,7 +202,6 @@ public class ClockManager
 
 		if (!Strings.isNullOrEmpty(stopwatchesJson))
 		{
-			final Gson gson = new Gson();
 			final List<Stopwatch> stopwatches = gson.fromJson(stopwatchesJson, new TypeToken<ArrayList<Stopwatch>>()
 			{
 			}.getType());
@@ -181,14 +228,12 @@ public class ClockManager
 
 	void saveTimers()
 	{
-		final Gson gson = new Gson();
 		final String json = gson.toJson(timers);
 		configManager.setConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.TIMERS, json);
 	}
 
 	void saveStopwatches()
 	{
-		final Gson gson = new Gson();
 		final String json = gson.toJson(stopwatches);
 		configManager.setConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.STOPWATCHES, json);
 	}

@@ -31,8 +31,8 @@ import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -59,18 +59,6 @@ public class TileIndicatorsOverlay extends Overlay
 	{
 		if (config.highlightHoveredTile())
 		{
-			// Update selected scene tile
-			if (!client.isMenuOpen())
-			{
-				Point p = client.getMouseCanvasPosition();
-				p = new Point(
-					p.getX() - client.getViewportXOffset(),
-					p.getY() - client.getViewportYOffset());
-
-				client.setCheckClick(true);
-				client.setMouseCanvasHoverPosition(p);
-			}
-
 			// If we have tile "selected" render it
 			if (client.getSelectedSceneTile() != null)
 			{
@@ -81,6 +69,23 @@ public class TileIndicatorsOverlay extends Overlay
 		if (config.highlightDestinationTile())
 		{
 			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor());
+		}
+
+		if (config.highlightCurrentTile())
+		{
+			final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
+			if (playerPos == null)
+			{
+				return null;
+			}
+
+			final LocalPoint playerPosLocal = LocalPoint.fromWorld(client, playerPos);
+			if (playerPosLocal == null)
+			{
+				return null;
+			}
+
+			renderTile(graphics, playerPosLocal, config.highlightCurrentColor());
 		}
 
 		return null;

@@ -74,7 +74,7 @@ class Library
 	private Book customerBook;
 
 	@Getter
-	private LibraryCustomer customer;
+	private int customerId;
 
 	Library()
 	{
@@ -93,9 +93,9 @@ class Library
 		return Collections.unmodifiableList(byIndex);
 	}
 
-	void setCustomer(LibraryCustomer customer, Book book)
+	void setCustomer(int customerId, Book book)
 	{
-		this.customer = customer;
+		this.customerId = customerId;
 		this.customerBook = book;
 	}
 
@@ -122,29 +122,38 @@ class Library
 		if (bookcase.isBookSet())
 		{
 			// Bookcase is set from a previous mark
-			// Check for a mismatch, unless it is now null and had a dark manuscript
-			if (book != bookcase.getBook() && !(book == null && bookcase.getBook().isDarkManuscript()))
+			// Check for a mismatch, unless it is now null and had a dark manuscript or Varlamore Envoy
+			if (book != bookcase.getBook()
+				&& !(book == null && (bookcase.getBook().isDarkManuscript() || bookcase.getBook() == VARLAMORE_ENVOY)))
 			{
 				reset();
 			}
 		}
 		else if (state != SolvedState.NO_DATA)
 		{
-			// We know all of the possible things in this shelf.
-			if (book != null)
+			// Reset if the book we found isn't what we expected
+
+			if (book != null && !bookcase.getPossibleBooks().contains(book))
 			{
-				// Check to see if our guess is wrong
-				if (!bookcase.getPossibleBooks().contains(book))
-				{
-					reset();
-				}
+				reset();
 			}
 		}
 
-		// Everything is known, nothing to do
 		if (state == SolvedState.COMPLETE)
 		{
-			return;
+			// Reset if we found nothing when we expected something that wasn't a Dark Manuscript or Varlamore Envoy
+			// since the layout has changed
+			if (book == null
+				&& !bookcase.getPossibleBooks().isEmpty()
+				&& bookcase.getPossibleBooks().stream().noneMatch(b -> b.isDarkManuscript() || b == VARLAMORE_ENVOY))
+			{
+				reset();
+			}
+			else
+			{
+				// Everything is known, nothing to do
+				return;
+			}
 		}
 
 		log.info("Setting bookcase {} to {}", bookcase.getIndex(), book);
@@ -265,7 +274,7 @@ class Library
 		assert bookSequence >= 0;
 
 		bookcaseIndex -= step * bookSequence;
-		for (; bookcaseIndex < 0; )
+		while (bookcaseIndex < 0)
 		{
 			bookcaseIndex += byIndex.size();
 		}

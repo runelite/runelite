@@ -39,10 +39,14 @@ import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.GrandExchangeOffer;
-import net.runelite.api.GrandExchangeOfferState;
+import static net.runelite.api.GrandExchangeOfferState.BOUGHT;
+import static net.runelite.api.GrandExchangeOfferState.BUYING;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_BUY;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_SELL;
 import static net.runelite.api.GrandExchangeOfferState.EMPTY;
@@ -52,7 +56,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
 public class GrandExchangeOfferSlot extends JPanel
 {
@@ -61,6 +65,8 @@ public class GrandExchangeOfferSlot extends JPanel
 
 	private static final ImageIcon RIGHT_ARROW_ICON;
 	private static final ImageIcon LEFT_ARROW_ICON;
+
+	private final GrandExchangePlugin grandExchangePlugin;
 
 	private final JPanel container = new JPanel();
 	private final CardLayout cardLayout = new CardLayout();
@@ -78,7 +84,7 @@ public class GrandExchangeOfferSlot extends JPanel
 
 	static
 	{
-		final BufferedImage rightArrow = ImageUtil.alphaOffset(ImageUtil.getResourceStreamFromClass(GrandExchangeOfferSlot.class, "/util/arrow_right.png"), 0.25f);
+		final BufferedImage rightArrow = ImageUtil.alphaOffset(ImageUtil.loadImageResource(GrandExchangeOfferSlot.class, "/util/arrow_right.png"), 0.25f);
 		RIGHT_ARROW_ICON = new ImageIcon(rightArrow);
 		LEFT_ARROW_ICON	= new ImageIcon(ImageUtil.flipImage(rightArrow, true, false));
 	}
@@ -87,8 +93,10 @@ public class GrandExchangeOfferSlot extends JPanel
 	 * This (sub)panel is used for each GE slot displayed
 	 * in the sidebar
 	 */
-	GrandExchangeOfferSlot()
+	GrandExchangeOfferSlot(GrandExchangePlugin grandExchangePlugin)
 	{
+		this.grandExchangePlugin = grandExchangePlugin;
+
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setBorder(new EmptyBorder(7, 0, 0, 0));
@@ -98,21 +106,21 @@ public class GrandExchangeOfferSlot extends JPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				super.mousePressed(mouseEvent);
-				switchPanel();
+				if (SwingUtilities.isLeftMouseButton(mouseEvent))
+				{
+					switchPanel();
+				}
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				super.mouseEntered(mouseEvent);
 				container.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				super.mouseExited(mouseEvent);
 				container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			}
 		};
@@ -206,26 +214,33 @@ public class GrandExchangeOfferSlot extends JPanel
 			itemName.setText(offerItem.getName());
 			itemIcon.setIcon(new ImageIcon(itemImage));
 
-			boolean buying = newOffer.getState() == GrandExchangeOfferState.BOUGHT
-				|| newOffer.getState() == GrandExchangeOfferState.BUYING
-				|| newOffer.getState() == GrandExchangeOfferState.CANCELLED_BUY;
+			boolean buying = newOffer.getState() == BOUGHT
+				|| newOffer.getState() == BUYING
+				|| newOffer.getState() == CANCELLED_BUY;
 
 			String offerState = (buying ? "Bought " : "Sold ")
-				+ StackFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold()) + " / "
-				+ StackFormatter.quantityToRSDecimalStack(newOffer.getTotalQuantity());
+				+ QuantityFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold()) + " / "
+				+ QuantityFormatter.quantityToRSDecimalStack(newOffer.getTotalQuantity());
 
 			offerInfo.setText(offerState);
 
-			itemPrice.setText(htmlLabel("Price each: ", StackFormatter.formatNumber(newOffer.getPrice())));
+			itemPrice.setText(htmlLabel("Price each: ", QuantityFormatter.formatNumber(newOffer.getPrice())));
 
 			String action = buying ? "Spent: " : "Received: ";
 
-			offerSpent.setText(htmlLabel(action, StackFormatter.formatNumber(newOffer.getSpent()) + " / "
-				+ StackFormatter.formatNumber(newOffer.getPrice() * newOffer.getTotalQuantity())));
+			offerSpent.setText(htmlLabel(action, QuantityFormatter.formatNumber(newOffer.getSpent()) + " / "
+				+ QuantityFormatter.formatNumber(newOffer.getPrice() * newOffer.getTotalQuantity())));
 
 			progressBar.setForeground(getProgressColor(newOffer));
 			progressBar.setMaximumValue(newOffer.getTotalQuantity());
 			progressBar.setValue(newOffer.getQuantitySold());
+
+			final JPopupMenu popupMenu = new JPopupMenu();
+			popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+			final JMenuItem openGeLink = new JMenuItem("Open Grand Exchange website");
+			openGeLink.addActionListener(e -> grandExchangePlugin.openGeLink(offerItem.getName(), offerItem.getId()));
+			popupMenu.add(openGeLink);
 
 			/* Couldn't set the tooltip for the container panel as the children override it, so I'm setting
 			 * the tooltips on the children instead. */
@@ -235,12 +250,12 @@ public class GrandExchangeOfferSlot extends JPanel
 				{
 					JPanel panel = (JPanel) c;
 					panel.setToolTipText(htmlTooltip(((int) progressBar.getPercentage()) + "%"));
+					panel.setComponentPopupMenu(popupMenu);
 				}
 			}
 		}
 
 		revalidate();
-		repaint();
 	}
 
 	private String htmlTooltip(String value)

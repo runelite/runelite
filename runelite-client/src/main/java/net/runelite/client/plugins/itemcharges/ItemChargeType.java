@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Mitchell <https://github.com/Mitchell-Kovacs>
+ * Copyright (c) 2020, Unmoon <https://github.com/unmoon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,6 +28,8 @@ package net.runelite.client.plugins.itemcharges;
 enum ItemChargeType
 {
 	ABYSSAL_BRACELET,
+	AMULET_OF_CHEMISTRY,
+	AMULET_OF_BOUNTY,
 	BELLOWS,
 	FUNGICIDE_SPRAY,
 	IMPBOX,
@@ -35,5 +38,11 @@ enum ItemChargeType
 	WATERSKIN,
 	DODGY_NECKLACE,
 	BINDING_NECKLACE,
-	EXPLORER_RING
+	EXPLORER_RING,
+	FRUIT_BASKET,
+	SACK,
+	RING_OF_FORGING,
+	GUTHIX_REST,
+	CHRONICLE,
+	POTION,
 }

@@ -24,12 +24,14 @@
  */
 package net.runelite.client.plugins.agility;
 
-import java.time.Instant;
+import com.google.common.collect.EvictingQueue;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
+import java.time.Duration;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -38,34 +40,66 @@ class AgilitySession
 	private final Courses course;
 	private Instant lastLapCompleted;
 	private int totalLaps;
-	private int lapsTillLevel;
+	private int lapsTillGoal;
+	private final EvictingQueue<Duration> lastLapTimes = EvictingQueue.create(30);
+	private int lapsPerHour;
 
 	AgilitySession(Courses course)
 	{
 		this.course = course;
 	}
 
-	void incrementLapCount(Client client)
+	void incrementLapCount(Client client, XpTrackerService xpTrackerService)
 	{
-		lastLapCompleted = Instant.now();
+		calculateLapsPerHour();
+
 		++totalLaps;
 
-		int currentExp = client.getSkillExperience(Skill.AGILITY);
-		int nextLevel = client.getRealSkillLevel(Skill.AGILITY) + 1;
-
-		int remainingXp;
-		do
+		final int currentExp = client.getSkillExperience(Skill.AGILITY);
+		final int goalXp = xpTrackerService.getEndGoalXp(Skill.AGILITY);
+		final int goalRemainingXp = goalXp - currentExp;
+		double courseTotalExp = course.getTotalXp();
+		if (course == Courses.PYRAMID)
 		{
-			remainingXp = nextLevel <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(nextLevel) - currentExp : 0;
-			nextLevel++;
-		} while (remainingXp < 0);
+			// agility pyramid has a bonus exp drop on the last obstacle that scales with player level and caps at 1000
+			// the bonus is not already accounted for in the total exp number in the courses enum
+			courseTotalExp += Math.min(300 + 8 * client.getRealSkillLevel(Skill.AGILITY), 1000);
+		}
 
-		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp()) : 0;
+		lapsTillGoal = goalRemainingXp > 0 ? (int) Math.ceil(goalRemainingXp / courseTotalExp) : 0;
+	}
+
+	void calculateLapsPerHour()
+	{
+		Instant now = Instant.now();
+
+		if (lastLapCompleted != null)
+		{
+			Duration timeSinceLastLap = Duration.between(lastLapCompleted, now);
+
+			if (!timeSinceLastLap.isNegative())
+			{
+				lastLapTimes.add(timeSinceLastLap);
+
+				Duration sum = Duration.ZERO;
+				for (Duration lapTime : lastLapTimes)
+				{
+					sum = sum.plus(lapTime);
+				}
+
+				Duration averageLapTime = sum.dividedBy(lastLapTimes.size());
+				lapsPerHour = (int) (Duration.ofHours(1).toMillis() / averageLapTime.toMillis());
+			}
+		}
+
+		lastLapCompleted = now;
 	}
 
 	void resetLapCount()
 	{
 		totalLaps = 0;
-		lapsTillLevel = 0;
+		lapsTillGoal = 0;
+		lastLapTimes.clear();
+		lapsPerHour = 0;
 	}
 }

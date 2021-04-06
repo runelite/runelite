@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.function.Function;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
+import net.runelite.api.Client;
+import net.runelite.api.WidgetNode;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 
@@ -40,10 +42,13 @@ public class WidgetInfoTableModel extends AbstractTableModel
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private Client client;
+
 	private static final int COL_FIELD = 0;
 	private static final int COL_VALUE = 1;
 
-	private static final List<WidgetField> fields = populateWidgetFields();
+	private final List<WidgetField> fields = populateWidgetFields();
 
 	private Widget widget = null;
 	private Map<WidgetField, Object> values = null;
@@ -132,7 +137,7 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		});
 	}
 
-	private static List<WidgetField> populateWidgetFields()
+	private List<WidgetField> populateWidgetFields()
 	{
 		List<WidgetField> out = new ArrayList<>();
 
@@ -155,8 +160,15 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		out.add(new WidgetField<>("ItemId", Widget::getItemId, Widget::setItemId, Integer.class));
 		out.add(new WidgetField<>("ItemQuantity", Widget::getItemQuantity, Widget::setItemQuantity, Integer.class));
 		out.add(new WidgetField<>("ItemQuantityMode", Widget::getItemQuantityMode, Widget::setItemQuantityMode, Integer.class));
-		out.add(new WidgetField<>("ModelId", Widget::getModelId));
+		out.add(new WidgetField<>("ModelId", Widget::getModelId, Widget::setModelId, Integer.class));
+		out.add(new WidgetField<>("ModelType", Widget::getModelType, Widget::setModelType, Integer.class));
+		out.add(new WidgetField<>("AnimationId", Widget::getAnimationId, Widget::setAnimationId, Integer.class));
+		out.add(new WidgetField<>("RotationX", Widget::getRotationX, Widget::setRotationX, Integer.class));
+		out.add(new WidgetField<>("RotationY", Widget::getRotationY, Widget::setRotationY, Integer.class));
+		out.add(new WidgetField<>("RotationZ", Widget::getRotationZ, Widget::setRotationZ, Integer.class));
+		out.add(new WidgetField<>("ModelZoom", Widget::getModelZoom, Widget::setModelZoom, Integer.class));
 		out.add(new WidgetField<>("SpriteId", Widget::getSpriteId, Widget::setSpriteId, Integer.class));
+		out.add(new WidgetField<>("SpriteTiling", Widget::getSpriteTiling, Widget::setSpriteTiling, Boolean.class));
 		out.add(new WidgetField<>("BorderType", Widget::getBorderType, Widget::setBorderType, Integer.class));
 		out.add(new WidgetField<>("IsIf3", Widget::isIf3));
 		out.add(new WidgetField<>("HasListener", Widget::hasListener, Widget::setHasListener, Boolean.class));
@@ -186,6 +198,16 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		out.add(new WidgetField<>("NoClickThrough", Widget::getNoClickThrough, Widget::setNoClickThrough, Boolean.class));
 		out.add(new WidgetField<>("NoScrollThrough", Widget::getNoScrollThrough, Widget::setNoScrollThrough, Boolean.class));
 		out.add(new WidgetField<>("TargetVerb", Widget::getTargetVerb, Widget::setTargetVerb, String.class));
+		out.add(new WidgetField<>("DragParent", Widget::getDragParent));
+		out.add(new WidgetField<>("ModalMode", w ->
+		{
+			WidgetNode attachment = client.getComponentTable().get(w.getParentId());
+			if (attachment != null)
+			{
+				return attachment.getModalMode();
+			}
+			return null;
+		}));
 
 		return out;
 	}

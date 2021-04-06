@@ -24,31 +24,46 @@
  */
 package net.runelite.client.menus;
 
-import net.runelite.api.widgets.WidgetInfo;
-
 import java.awt.Color;
+import javax.annotation.Nullable;
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 public final class WidgetMenuOption
 {
 	/**
-	 * The left hand text to be displayed on the menu option. Ex. the menuOption of "Drop Bones" is "Drop"
+	 * The left hand text to be displayed on the menu option. (ex. the menuOption of "Drop Bones" is "Drop")
 	 */
+	@Getter
+	@Setter
 	private String menuOption;
 	/**
-	 * The right hand text to be displayed on the menu option Ex. the menuTarget of "Drop Bones" is "Bones"
+	 * The right hand text to be displayed on the menu option. (ex. the menuTarget of "Drop Bones" is "Bones")
 	 */
+	@Getter
 	private String menuTarget;
 	/**
 	 * The color that the menuTarget should be. Defaults to the brownish color that most menu options have.
 	 */
+	@Getter
+	@Setter
 	private Color color = JagexColors.MENU_TARGET;
+
+	/**
+	 * The widgetinfo to add the option to, if available
+	 */
+	@Nullable
+	@Getter
+	private final WidgetInfo widget;
 
 	/**
 	 * The widget to add the option to
 	 */
-	private final WidgetInfo widget;
+	@Getter
+	private final int widgetId;
 
 	/**
 	 * Creates a menu to be added to right click menus. The menu will only be added if match is found within the menu options
@@ -62,11 +77,22 @@ public final class WidgetMenuOption
 		this.menuOption = menuOption;
 		setMenuTarget(menuTarget);
 		this.widget = widget;
+		this.widgetId = widget.getId();
 	}
 
-	public void setMenuOption(String option)
+	/**
+	 * Creates a menu to be added to right click menus. The menu will only be added if match is found within the menu options
+	 *
+	 * @param menuOption Option text of this right click option
+	 * @param menuTarget Target text of this right click option
+	 * @param widgetId   The widget to attach this option to
+	 */
+	public WidgetMenuOption(String menuOption, String menuTarget, int widgetId)
 	{
-		menuOption = option;
+		this.menuOption = menuOption;
+		setMenuTarget(menuTarget);
+		this.widget = null;
+		this.widgetId = widgetId;
 	}
 
 	/**
@@ -77,30 +103,5 @@ public final class WidgetMenuOption
 	public void setMenuTarget(String target)
 	{
 		menuTarget = ColorUtil.wrapWithColorTag(target, color);
-	}
-
-	public String getMenuOption()
-	{
-		return menuOption;
-	}
-
-	public String getMenuTarget()
-	{
-		return menuTarget;
-	}
-
-	public WidgetInfo getWidget()
-	{
-		return widget;
-	}
-
-	public Color getColor()
-	{
-		return color;
-	}
-
-	public void setColor(Color col)
-	{
-		color = col;
 	}
 }

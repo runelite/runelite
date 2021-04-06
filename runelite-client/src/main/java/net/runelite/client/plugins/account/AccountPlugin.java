@@ -65,8 +65,8 @@ public class AccountPlugin extends Plugin
 
 	static
 	{
-		LOGIN_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "login_icon.png");
-		LOGOUT_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "logout_icon.png");
+		LOGIN_IMAGE = ImageUtil.loadImageResource(AccountPlugin.class, "login_icon.png");
+		LOGOUT_IMAGE = ImageUtil.loadImageResource(AccountPlugin.class, "logout_icon.png");
 	}
 
 	@Override
@@ -75,14 +75,14 @@ public class AccountPlugin extends Plugin
 		loginButton = NavigationButton.builder()
 			.tab(false)
 			.icon(LOGIN_IMAGE)
-			.tooltip("Login to RuneLite")
+			.tooltip("Log in to RuneLite")
 			.onClick(this::loginClick)
 			.build();
 
 		logoutButton = NavigationButton.builder()
 			.tab(false)
 			.icon(LOGOUT_IMAGE)
-			.tooltip("Logout of RuneLite")
+			.tooltip("Log out of RuneLite")
 			.onClick(this::logoutClick)
 			.build();
 
@@ -113,7 +113,7 @@ public class AccountPlugin extends Plugin
 	private void logoutClick()
 	{
 		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
-			"Are you sure you want to logout from RuneLite?", "Logout Confirmation",
+			"Are you sure you want to log out from RuneLite?", "Logout Confirmation",
 			JOptionPane.YES_NO_OPTION))
 		{
 			executor.execute(sessionManager::logout);

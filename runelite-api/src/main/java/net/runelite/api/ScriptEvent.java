@@ -40,12 +40,18 @@ public interface ScriptEvent
 	String NAME = "event_opbase";
 
 	/**
-	 * Gets the widget of the event.
-	 *
-	 * @return the widget
-	 * @see net.runelite.api.widgets.Widget
+	 * Gets the widget the {@link #WIDGET_ID} and {@link #WIDGET_INDEX} args
+	 * are substituted with
 	 */
 	Widget getSource();
+
+	/**
+	 * Sets the widget the {@link #WIDGET_ID} and {@link #WIDGET_INDEX} args
+	 * are substituted with. This is useful for running widget listeners
+	 *
+	 * @see Widget#getOnLoadListener()
+	 */
+	ScriptEvent setSource(Widget widget);
 
 	/**
 	 * Gets the menu index of the event
@@ -61,4 +67,30 @@ public interface ScriptEvent
 	 * @see net.runelite.api.events.MenuOptionClicked
 	 */
 	String getOpbase();
+
+	/**
+	 * Parent relative x coordinate for mouse related events
+	 */
+	int getMouseX();
+
+	/**
+	 * Jagex typed keycode
+	 *
+	 * @return
+	 */
+	int getTypedKeyCode();
+
+	/**
+	 * Get the typed character, ascii.
+	 *
+	 * @return
+	 */
+	int getTypedKeyChar();
+
+	/**
+	 * Executes a cs2 script specified by this event
+	 *
+	 * This method must be ran on the client thread and is not reentrant
+	 */
+	void run();
 }

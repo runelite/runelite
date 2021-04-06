@@ -24,11 +24,16 @@
  */
 package net.runelite.client.plugins.lowmemory;
 
+import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -43,27 +48,60 @@ public class LowMemoryPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private LowMemoryConfig config;
+
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			client.changeMemoryMode(true);
+			clientThread.invoke(() -> client.changeMemoryMode(config.lowDetail()));
 		}
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		client.changeMemoryMode(false);
+		clientThread.invoke(() -> client.changeMemoryMode(false));
+	}
+
+	@Provides
+	LowMemoryConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LowMemoryConfig.class);
 	}
 
 	@Subscribe
-	private void onGameStateChanged(GameStateChanged event)
+	public void onConfigChanged(ConfigChanged configChanged)
 	{
+		if (configChanged.getGroup().equals(LowMemoryConfig.GROUP))
+		{
+			clientThread.invoke(() -> client.changeMemoryMode(config.lowDetail()));
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		// When the client starts it initializes the texture size based on the memory mode setting.
+		// Don't set low memory before the login screen is ready to prevent loading the low detail textures,
+		// which breaks the gpu plugin due to it requiring the 128x128px textures
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			client.changeMemoryMode(true);
+			client.changeMemoryMode(config.lowDetail());
 		}
+	}
+
+	@Subscribe
+	public void onBeforeRender(BeforeRender beforeRender)
+	{
+		// This needs to be set to the current plane, but there is no event for plane change, so
+		// just set it each render.
+		client.getScene().
+			setMinLevel(config.hideLowerPlanes() ? client.getPlane() : 0);
 	}
 }

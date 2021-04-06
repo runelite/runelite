@@ -33,8 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.swing.JLabel;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ItemID;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
@@ -47,20 +50,26 @@ public class FarmingTabPanel extends TabContentPanel
 {
 	private final FarmingTracker farmingTracker;
 	private final ItemManager itemManager;
+	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
 	private final List<TimeablePanel<FarmingPatch>> patchPanels;
+	private final FarmingContractManager farmingContractManager;
 
 	FarmingTabPanel(
 		FarmingTracker farmingTracker,
 		ItemManager itemManager,
+		ConfigManager configManager,
 		TimeTrackingConfig config,
-		Set<FarmingPatch> patches
+		Set<FarmingPatch> patches,
+		FarmingContractManager farmingContractManager
 	)
 	{
 		this.farmingTracker = farmingTracker;
 		this.itemManager = itemManager;
+		this.configManager = configManager;
 		this.config = config;
 		this.patchPanels = new ArrayList<>();
+		this.farmingContractManager = farmingContractManager;
 
 		setLayout(new GridBagLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -100,6 +109,18 @@ public class FarmingTabPanel extends TabContentPanel
 				c.gridy++;
 				lastImpl = patch.getImplementation();
 			}
+
+			// Set toggle state of notification menu on icon click;
+			JToggleButton toggleNotify = p.getNotifyButton();
+			String configKey = patch.notifyConfigKey();
+
+			toggleNotify.addActionListener(e ->
+			{
+				if (configManager.getRSProfileKey() != null)
+				{
+					configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, configKey, toggleNotify.isSelected());
+				}
+			});
 
 			patchPanels.add(p);
 			add(p, c);
@@ -166,7 +187,7 @@ public class FarmingTabPanel extends TabContentPanel
 						}
 						else
 						{
-							panel.getEstimate().setText("Done " + getFormattedEstimate(prediction.getDoneEstimate() - unixNow, config.estimateRelative()));
+							panel.getEstimate().setText("Done " + getFormattedEstimate(prediction.getDoneEstimate() - unixNow, config.timeFormatMode()));
 						}
 						break;
 					case DISEASED:
@@ -174,6 +195,12 @@ public class FarmingTabPanel extends TabContentPanel
 						break;
 					case DEAD:
 						panel.getEstimate().setText("Dead");
+						break;
+					case EMPTY:
+						panel.getEstimate().setText("Empty");
+						break;
+					case FILLING:
+						panel.getEstimate().setText("Filling");
 						break;
 				}
 
@@ -190,6 +217,25 @@ public class FarmingTabPanel extends TabContentPanel
 					panel.getProgress().setVisible(false);
 				}
 			}
+
+			JLabel farmingContractIcon = panel.getFarmingContractIcon();
+			if (farmingContractManager.shouldHighlightFarmingTabPanel(patch))
+			{
+				itemManager.getImage(ItemID.SEED_PACK).addTo(farmingContractIcon);
+				farmingContractIcon.setToolTipText(farmingContractManager.getContract().getName());
+			}
+			else
+			{
+				farmingContractIcon.setIcon(null);
+				farmingContractIcon.setToolTipText("");
+			}
+
+			String configKey = patch.notifyConfigKey();
+			JToggleButton toggleNotify = panel.getNotifyButton();
+			boolean notifyEnabled = Boolean.TRUE
+				.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, configKey, Boolean.class));
+
+			toggleNotify.setSelected(notifyEnabled);
 		}
 	}
 }

@@ -25,15 +25,16 @@
 package net.runelite.http.api.ws;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.messages.Handshake;
 import net.runelite.http.api.ws.messages.LoginResponse;
 import net.runelite.http.api.ws.messages.party.Join;
 import net.runelite.http.api.ws.messages.party.Part;
+import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 import net.runelite.http.api.ws.messages.party.UserJoin;
 import net.runelite.http.api.ws.messages.party.UserPart;
 import net.runelite.http.api.ws.messages.party.UserSync;
@@ -52,6 +53,7 @@ public class WebsocketGsonFactory
 		messages.add(UserJoin.class);
 		messages.add(UserPart.class);
 		messages.add(UserSync.class);
+		messages.add(PartyChatMessage.class);
 		MESSAGES = messages;
 	}
 
@@ -74,7 +76,7 @@ public class WebsocketGsonFactory
 
 	public static Gson build(final RuntimeTypeAdapterFactory<WebsocketMessage> factory)
 	{
-		return new GsonBuilder()
+		return RuneLiteAPI.GSON.newBuilder()
 			.registerTypeAdapterFactory(factory)
 			.create();
 	}

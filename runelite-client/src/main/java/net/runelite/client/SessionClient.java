@@ -28,30 +28,38 @@ import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+@AllArgsConstructor
 class SessionClient
 {
+	private final OkHttpClient okHttpClient;
+
 	UUID open() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
 			.build();
 
 		Request request = new Request.Builder()
+			.post(RequestBody.create(null, new byte[0]))
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = okHttpClient.newCall(request).execute())
 		{
 			ResponseBody body = response.body();
 			
 			InputStream in = body.byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), UUID.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), UUID.class);
 		}
 		catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
 		{
@@ -59,18 +67,20 @@ class SessionClient
 		}
 	}
 
-	void ping(UUID uuid) throws IOException
+	void ping(UUID uuid, boolean loggedIn) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
 			.addPathSegment("ping")
 			.addQueryParameter("session", uuid.toString())
+			.addQueryParameter("logged-in", String.valueOf(loggedIn))
 			.build();
 
 		Request request = new Request.Builder()
+			.post(RequestBody.create(null, new byte[0]))
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = okHttpClient.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -90,6 +100,6 @@ class SessionClient
 			.url(url)
 			.build();
 
-		RuneLiteAPI.CLIENT.newCall(request).execute().close();
+		okHttpClient.newCall(request).execute().close();
 	}
 }

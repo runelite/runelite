@@ -33,10 +33,10 @@ import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -46,7 +46,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AttackStylesPluginTest
@@ -161,7 +161,6 @@ public class AttackStylesPluginTest
 		hideWidgetEvent.setKey("removeWarnedStyles");
 		hideWidgetEvent.setNewValue("false");
 		attackPlugin.onConfigChanged(hideWidgetEvent);
-		when(attackConfig.removeWarnedStyles()).thenReturn(false);
 
 		// verify that the aggressive and accurate attack style widgets are no longer hidden
 		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,

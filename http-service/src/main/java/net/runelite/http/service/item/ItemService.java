@@ -28,14 +28,11 @@ import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.http.api.RuneLiteAPI;
@@ -59,18 +56,14 @@ public class ItemService
 	private static final String BASE = "https://services.runescape.com/m=itemdb_oldschool";
 	private static final HttpUrl RS_ITEM_URL = HttpUrl.parse(BASE + "/api/catalogue/detail.json");
 	private static final HttpUrl RS_PRICE_URL = HttpUrl.parse(BASE + "/api/graph");
-	private static final HttpUrl RS_SEARCH_URL = HttpUrl.parse(BASE + "/api/catalogue/items.json?category=1");
 
 	private static final String CREATE_ITEMS = "CREATE TABLE IF NOT EXISTS `items` (\n"
 		+ "  `id` int(11) NOT NULL,\n"
 		+ "  `name` tinytext NOT NULL,\n"
 		+ "  `description` tinytext NOT NULL,\n"
 		+ "  `type` enum('DEFAULT') NOT NULL,\n"
-		+ "  `icon` blob,\n"
-		+ "  `icon_large` blob,\n"
 		+ "  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-		+ "  PRIMARY KEY (`id`),\n"
-		+ "  FULLTEXT idx_name (name)\n"
+		+ "  PRIMARY KEY (`id`)\n"
 		+ ") ENGINE=InnoDB";
 
 	private static final String CREATE_PRICES = "CREATE TABLE IF NOT EXISTS `prices` (\n"
@@ -82,12 +75,9 @@ public class ItemService
 		+ "  KEY `item_fetched_time` (`item`,`fetched_time`)\n"
 		+ ") ENGINE=InnoDB";
 
-	private static final int MAX_PENDING = 512;
-
 	private final Sql2o sql2o;
 	private final CacheService cacheService;
 
-	private final ConcurrentLinkedQueue<PendingLookup> pendingLookups = new ConcurrentLinkedQueue<PendingLookup>();
 	private int[] tradeableItems;
 	private final Random random = new Random();
 
@@ -112,77 +102,9 @@ public class ItemService
 	{
 		try (Connection con = sql2o.open())
 		{
-			ItemEntry item = con.createQuery("select id, name, description, type, icon, icon_large from items where id = :id")
+			return con.createQuery("select id, name, description, type from items where id = :id")
 				.addParameter("id", itemId)
 				.executeAndFetchFirst(ItemEntry.class);
-
-			return item;
-		}
-	}
-
-	private PriceEntry getPrice(Connection con, int itemId, Instant time)
-	{
-		if (time != null)
-		{
-			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item and time <= :time order by time desc limit 1")
-				.addParameter("item", itemId)
-				.addParameter("time", time.toString())
-				.executeAndFetchFirst(PriceEntry.class);
-		}
-		else
-		{
-			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item order by time desc limit 1")
-				.addParameter("item", itemId)
-				.executeAndFetchFirst(PriceEntry.class);
-		}
-	}
-
-	public PriceEntry getPrice(int itemId, Instant time)
-	{
-		try (Connection con = sql2o.open())
-		{
-			return getPrice(con, itemId, time);
-		}
-	}
-
-	public List<PriceEntry> getPrices(int... itemIds)
-	{
-		try (Connection con = sql2o.open())
-		{
-			Set<Integer> seen = new HashSet<>();
-			List<PriceEntry> priceEntries = new ArrayList<>(itemIds.length);
-
-			for (int itemId : itemIds)
-			{
-				if (seen.contains(itemId))
-				{
-					continue;
-				}
-				seen.add(itemId);
-
-				PriceEntry priceEntry = getPrice(con, itemId, null);
-
-				if (priceEntry == null)
-				{
-					continue;
-				}
-
-				priceEntries.add(priceEntry);
-			}
-
-			return priceEntries;
-		}
-	}
-
-	public List<ItemEntry> search(String search)
-	{
-		try (Connection con = sql2o.open())
-		{
-			return con.createQuery("select id, name, description, type, match (name) against (:search) as score from items "
-				+ "where match (name) against (:search) order by score desc limit 10")
-				.throwOnMappingFailure(false) // otherwise it tries to map 'score'
-				.addParameter("search", search)
-				.executeAndFetch(ItemEntry.class);
 		}
 	}
 
@@ -191,37 +113,16 @@ public class ItemService
 		try
 		{
 			RSItem rsItem = fetchRSItem(itemId);
-			byte[] icon = null, iconLarge = null;
-
-			try
-			{
-				icon = fetchImage(rsItem.getIcon());
-			}
-			catch (IOException ex)
-			{
-				log.warn("error fetching image", ex);
-			}
-
-			try
-			{
-				iconLarge = fetchImage(rsItem.getIcon_large());
-			}
-			catch (IOException ex)
-			{
-				log.warn("error fetching image", ex);
-			}
 
 			try (Connection con = sql2o.open())
 			{
-				con.createQuery("insert into items (id, name, description, type, icon, icon_large) values (:id,"
-					+ " :name, :description, :type, :icon, :icon_large) ON DUPLICATE KEY UPDATE name = :name,"
-					+ " description = :description, type = :type, icon = :icon, icon_large = :icon_large")
+				con.createQuery("insert into items (id, name, description, type) values (:id,"
+					+ " :name, :description, :type) ON DUPLICATE KEY UPDATE name = :name,"
+					+ " description = :description, type = :type")
 					.addParameter("id", rsItem.getId())
 					.addParameter("name", rsItem.getName())
 					.addParameter("description", rsItem.getDescription())
 					.addParameter("type", rsItem.getType())
-					.addParameter("icon", icon)
-					.addParameter("icon_large", iconLarge)
 					.executeUpdate();
 			}
 
@@ -230,8 +131,6 @@ public class ItemService
 			item.setName(rsItem.getName());
 			item.setDescription(rsItem.getDescription());
 			item.setType(ItemType.of(rsItem.getType()));
-			item.setIcon(icon);
-			item.setIcon_large(iconLarge);
 			return item;
 		}
 		catch (IOException ex)
@@ -241,7 +140,7 @@ public class ItemService
 		}
 	}
 
-	public List<PriceEntry> fetchPrice(int itemId)
+	private void fetchPrice(int itemId)
 	{
 		RSPrices rsprice;
 		try
@@ -251,12 +150,11 @@ public class ItemService
 		catch (IOException ex)
 		{
 			log.warn("unable to fetch price for item {}", itemId, ex);
-			return null;
+			return;
 		}
 
 		try (Connection con = sql2o.beginTransaction())
 		{
-			List<PriceEntry> entries = new ArrayList<>();
 			Instant now = Instant.now();
 
 			Query query = con.createQuery("insert into prices (item, price, time, fetched_time) values (:item, :price, :time, :fetched_time) "
@@ -269,13 +167,6 @@ public class ItemService
 
 				Instant time = Instant.ofEpochMilli(ts);
 
-				PriceEntry priceEntry = new PriceEntry();
-				priceEntry.setItem(itemId);
-				priceEntry.setPrice(price);
-				priceEntry.setTime(time);
-				priceEntry.setFetched_time(now);
-				entries.add(priceEntry);
-
 				query
 					.addParameter("item", itemId)
 					.addParameter("price", price)
@@ -286,8 +177,6 @@ public class ItemService
 
 			query.executeBatch();
 			con.commit(false);
-
-			return entries;
 		}
 	}
 
@@ -295,9 +184,11 @@ public class ItemService
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
-			Query query = con.createQuery("select t2.item, t3.name, t2.time, prices.price, prices.fetched_time from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2 " +
-					" join prices on t2.item=prices.item and t2.time=prices.time" +
-					" join items t3 on t2.item=t3.id");
+			Query query = con.createQuery("select t2.item, t3.name, t2.time, prices.price, prices.fetched_time, t4.high, t4.low" +
+				"  from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2" +
+				"  join prices on t2.item=prices.item and t2.time=prices.time" +
+				"  join items t3 on t2.item=t3.id" +
+				"  join wiki_prices t4 on t2.item=t4.item_id");
 			return query.executeAndFetch(PriceEntry.class);
 		}
 	}
@@ -332,46 +223,7 @@ public class ItemService
 		return fetchJson(request, RSPrices.class);
 	}
 
-	public RSSearch fetchRSSearch(String query) throws IOException
-	{
-		// rs api seems to require lowercase
-		query = query.toLowerCase();
-
-		HttpUrl searchUrl = RS_SEARCH_URL
-			.newBuilder()
-			.addQueryParameter("alpha", query)
-			.build();
-
-		Request request = new Request.Builder()
-			.url(searchUrl)
-			.build();
-
-		return fetchJson(request, RSSearch.class);
-	}
-
-	private void batchInsertItems(RSSearch search)
-	{
-		try (Connection con = sql2o.beginTransaction())
-		{
-			Query q = con.createQuery("insert into items (id, name, description, type) values (:id,"
-				+ " :name, :description, :type) ON DUPLICATE KEY UPDATE name = :name,"
-				+ " description = :description, type = :type");
-
-			for (RSItem rsItem : search.getItems())
-			{
-				q.addParameter("id", rsItem.getId())
-					.addParameter("name", rsItem.getName())
-					.addParameter("description", rsItem.getDescription())
-					.addParameter("type", rsItem.getType())
-					.addToBatch();
-			}
-
-			q.executeBatch();
-			con.commit(false);
-		}
-	}
-
-	private <T> T fetchJson(Request request, Class<T> clazz) throws IOException
+	private static <T> T fetchJson(Request request, Class<T> clazz) throws IOException
 	{
 		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
@@ -381,83 +233,11 @@ public class ItemService
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), clazz);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), clazz);
 		}
 		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
-		}
-	}
-
-	private byte[] fetchImage(String url) throws IOException
-	{
-		HttpUrl httpUrl = HttpUrl.parse(url);
-
-		Request request = new Request.Builder()
-			.url(httpUrl)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-		{
-			if (!response.isSuccessful())
-			{
-				throw new IOException("Unsuccessful http response: " + response);
-			}
-
-			return response.body().bytes();
-		}
-	}
-
-	public void queueSearch(String search)
-	{
-		if (pendingLookups.size() < MAX_PENDING)
-		{
-			pendingLookups.add(new PendingLookup(search, PendingLookup.Type.SEARCH));
-		}
-		else
-		{
-			log.debug("Dropping pending search for {}", search);
-		}
-	}
-
-	public void queueItem(int itemId)
-	{
-		if (pendingLookups.size() < MAX_PENDING)
-		{
-			pendingLookups.add(new PendingLookup(itemId, PendingLookup.Type.ITEM));
-		}
-		else
-		{
-			log.debug("Dropping pending item lookup for {}", itemId);
-		}
-	}
-
-	@Scheduled(fixedDelay = 5000)
-	public void check()
-	{
-		PendingLookup pendingLookup = pendingLookups.poll();
-		if (pendingLookup == null)
-		{
-			return;
-		}
-
-		switch (pendingLookup.getType())
-		{
-			case SEARCH:
-				try
-				{
-					RSSearch reSearch = fetchRSSearch(pendingLookup.getSearch());
-
-					batchInsertItems(reSearch);
-				}
-				catch (IOException ex)
-				{
-					log.warn("error while searching items", ex);
-				}
-				break;
-			case ITEM:
-				fetchItem(pendingLookup.getItemId());
-				break;
 		}
 	}
 
@@ -472,20 +252,14 @@ public class ItemService
 		int idx = random.nextInt(tradeableItems.length);
 		int id = tradeableItems[idx];
 
-		if (getItem(id) == null)
-		{
-			// This is a new item..
-			log.debug("Fetching new item {}", id);
-			queueItem(id);
-			return;
-		}
-
 		log.debug("Fetching price for {}", id);
 
+		// check if the item name or description has changed
+		fetchItem(id);
 		fetchPrice(id);
 	}
 
-	@Scheduled(fixedDelay = 1_8000_000) // 30 minutes
+	@Scheduled(fixedDelay = 1_800_000) // 30 minutes
 	public void reloadItems() throws IOException
 	{
 		List<ItemDefinition> items = cacheService.getItems();
@@ -495,11 +269,10 @@ public class ItemService
 		}
 
 		tradeableItems = items.stream()
-			.filter(item -> item.isTradeable)
-			.mapToInt(item -> item.id)
+			.filter(ItemDefinition::isTradeable)
+			.mapToInt(ItemDefinition::getId)
 			.toArray();
 
 		log.debug("Loaded {} tradeable items", tradeableItems.length);
 	}
-
 }

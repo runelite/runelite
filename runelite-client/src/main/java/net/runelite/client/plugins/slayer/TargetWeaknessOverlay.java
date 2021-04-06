@@ -40,7 +40,6 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.util.Text;
 
 class TargetWeaknessOverlay extends Overlay
 {
@@ -107,10 +106,9 @@ class TargetWeaknessOverlay extends Overlay
 			return -1;
 		}
 
-		final int healthScale = target.getHealth();
+		final int healthScale = target.getHealthScale();
 		final int healthRatio = target.getHealthRatio();
-		final String targetName = Text.removeTags(target.getName());
-		final Integer maxHealth = npcManager.getHealth(targetName, target.getCombatLevel());
+		final Integer maxHealth = npcManager.getHealth(target.getId());
 
 		if (healthRatio < 0 || healthScale <= 0 || maxHealth == null)
 		{

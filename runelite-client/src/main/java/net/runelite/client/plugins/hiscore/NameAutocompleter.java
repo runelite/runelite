@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import com.google.common.collect.EvictingQueue;
 import com.google.inject.Inject;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -32,17 +33,22 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
+import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ClanMember;
+import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
+import net.runelite.api.Nameable;
+import net.runelite.api.NameableContainer;
 import net.runelite.api.Player;
 
 @Slf4j
+@Singleton
 class NameAutocompleter implements KeyListener
 {
 	/**
@@ -55,7 +61,12 @@ class NameAutocompleter implements KeyListener
 	 */
 	private static final Pattern INVALID_CHARS = Pattern.compile("[^a-zA-Z0-9_ -]");
 
+	private static final int MAX_SEARCH_HISTORY = 25;
+
 	private final Client client;
+	private final HiscoreConfig hiscoreConfig;
+
+	private final EvictingQueue<String> searchHistory = EvictingQueue.create(MAX_SEARCH_HISTORY);
 
 	/**
 	 * The name currently being autocompleted.
@@ -68,9 +79,10 @@ class NameAutocompleter implements KeyListener
 	private Pattern autocompleteNamePattern;
 
 	@Inject
-	private NameAutocompleter(@Nullable Client client)
+	private NameAutocompleter(@Nullable Client client, HiscoreConfig hiscoreConfig)
 	{
 		this.client = client;
+		this.hiscoreConfig = hiscoreConfig;
 	}
 
 	@Override
@@ -88,6 +100,11 @@ class NameAutocompleter implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
+		if (!hiscoreConfig.autocomplete())
+		{
+			return;
+		}
+
 		final JTextComponent input = (JTextComponent)e.getSource();
 		final String inputText = input.getText();
 
@@ -187,35 +204,38 @@ class NameAutocompleter implements KeyListener
 			return false;
 		}
 
-		autocompleteName = Optional.empty();
+		// Search all previous successful queries
+		autocompleteName = searchHistory.stream()
+			.filter(n -> pattern.matcher(n).matches())
+			.findFirst();
 
-		// TODO: Search lookup history
-
-		Friend[] friends = client.getFriends();
-		if (friends != null)
-		{
-			autocompleteName = Arrays.stream(friends)
-				.filter(Objects::nonNull)
-				.map(Friend::getName)
-				.filter(n -> pattern.matcher(n).matches())
-				.findFirst();
-		}
-
-		// Search clan if a friend wasn't found
+		// Search friends if previous searches weren't matched
 		if (!autocompleteName.isPresent())
 		{
-			final ClanMember[] clannies = client.getClanMembers();
-			if (clannies != null)
+			NameableContainer<Friend> friendContainer = client.getFriendContainer();
+			if (friendContainer != null)
 			{
-				autocompleteName = Arrays.stream(clannies)
-					.filter(Objects::nonNull)
-					.map(ClanMember::getUsername)
+				autocompleteName = Arrays.stream(friendContainer.getMembers())
+					.map(Nameable::getName)
 					.filter(n -> pattern.matcher(n).matches())
 					.findFirst();
 			}
 		}
 
-		// Search cached players if a clannie wasn't found.
+		// Search friends chat if a friend wasn't found
+		if (!autocompleteName.isPresent())
+		{
+			final FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+			if (friendsChatManager != null)
+			{
+				autocompleteName = Arrays.stream(friendsChatManager.getMembers())
+					.map(Nameable::getName)
+					.filter(n -> pattern.matcher(n).matches())
+					.findFirst();
+			}
+		}
+
+		// Search cached players if a friend wasn't found
 		if (!autocompleteName.isPresent())
 		{
 			final Player[] cachedPlayers = client.getCachedPlayers();
@@ -239,6 +259,14 @@ class NameAutocompleter implements KeyListener
 		}
 
 		return autocompleteName.isPresent();
+	}
+
+	void addToSearchHistory(@NonNull String name)
+	{
+		if (!searchHistory.contains(name))
+		{
+			searchHistory.offer(name);
+		}
 	}
 
 	private boolean isExpectedNext(JTextComponent input, String nextChar)

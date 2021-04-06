@@ -35,7 +35,7 @@ public class ColorUtil
 	public static final int MIN_RGB_VALUE = 0;
 	private static final String OPENING_COLOR_TAG_START = "<col=";
 	private static final String OPENING_COLOR_TAG_END = ">";
-	private static final String CLOSING_COLOR_TAG = "</col>";
+	public static final String CLOSING_COLOR_TAG = "</col>";
 	private final static Pattern ALPHA_HEX_PATTERN = Pattern.compile("^(#|0x)?[0-9a-fA-F]{7,8}");
 	private final static Pattern HEX_PATTERN = Pattern.compile("^(#|0x)?[0-9a-fA-F]{1,8}");
 
@@ -75,10 +75,10 @@ public class ColorUtil
 	}
 
 	/**
-	 * Converts a given color to it's hexidecimal equivalent.
+	 * Converts a given color to it's hexadecimal equivalent.
 	 *
-	 * @param color Color to get hexidecimal string from.
-	 * @return      Hexidecimal string representing the given color, in the form "#abcdef".
+	 * @param color Color to get hexadecimal string from.
+	 * @return      Hexadecimal string representing the given color, in the form "#abcdef".
 	 */
 	public static String toHexColor(final Color color)
 	{
@@ -131,14 +131,22 @@ public class ColorUtil
 		return String.format("%08x", color.getRGB());
 	}
 
-	static boolean isFullyTransparent(final Color color)
+	/**
+	 * Gets the same RGB color with the specified alpha value.
+	 *
+	 * @param color The RGB color to use.
+	 * @param alpha The alpha value to use (0-255).
+	 * @return      A Color with the given RGB and alpha.
+	 */
+	public static Color colorWithAlpha(final Color color, int alpha)
 	{
-		return color.getAlpha() == 0;
-	}
+		if (color.getAlpha() == alpha)
+		{
+			return color;
+		}
 
-	static boolean isNotFullyTransparent(final Color color)
-	{
-		return !isFullyTransparent(color);
+		alpha = constrainValue(alpha);
+		return new Color((color.getRGB() & 0x00ffffff) | (alpha << 24), true);
 	}
 
 	/**

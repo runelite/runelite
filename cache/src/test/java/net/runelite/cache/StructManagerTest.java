@@ -64,7 +64,7 @@ public class StructManagerTest
 			{
 				StructDefinition def = struct.getValue();
 
-				Files.write(gson.toJson(def), new File(dumpDir, struct.getKey() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(dumpDir, struct.getKey() + ".json"), Charset.defaultCharset()).write(gson.toJson(def));
 				++count;
 			}
 		}

@@ -26,13 +26,9 @@ package net.runelite.cache.definitions.loaders;
 
 import net.runelite.cache.definitions.SequenceDefinition;
 import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SequenceLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(SequenceLoader.class);
-
 	public SequenceDefinition load(int id, byte[] b)
 	{
 		SequenceDefinition def = new SequenceDefinition(id);
@@ -129,26 +125,26 @@ public class SequenceLoader
 		else if (opcode == 12)
 		{
 			var3 = stream.readUnsignedByte();
-			def.field3048 = new int[var3];
+			def.chatFrameIds = new int[var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.field3048[var4] = stream.readUnsignedShort();
+				def.chatFrameIds[var4] = stream.readUnsignedShort();
 			}
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.field3048[var4] += stream.readUnsignedShort() << 16;
+				def.chatFrameIds[var4] += stream.readUnsignedShort() << 16;
 			}
 		}
 		else if (opcode == 13)
 		{
 			var3 = stream.readUnsignedByte();
-			def.field3056 = new int[var3];
+			def.frameSounds = new int[var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.field3056[var4] = stream.read24BitInt();
+				def.frameSounds[var4] = stream.read24BitInt();
 			}
 		}
 

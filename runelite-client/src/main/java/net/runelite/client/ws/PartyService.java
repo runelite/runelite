@@ -33,13 +33,18 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
+import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 import net.runelite.http.api.ws.messages.party.Join;
 import net.runelite.http.api.ws.messages.party.Part;
+import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 import net.runelite.http.api.ws.messages.party.UserJoin;
 import net.runelite.http.api.ws.messages.party.UserPart;
 import net.runelite.http.api.ws.messages.party.UserSync;
@@ -49,27 +54,31 @@ import net.runelite.http.api.ws.messages.party.UserSync;
 public class PartyService
 {
 	public static final int PARTY_MAX = 15;
+	private static final int MAX_MESSAGE_LEN = 150;
 
 	private final WSClient wsClient;
 	private final SessionManager sessionManager;
 	private final EventBus eventBus;
+	private final ChatMessageManager chat;
 	private final List<PartyMember> members = new ArrayList<>();
 
 	@Getter
 	private UUID localPartyId = UUID.randomUUID();
 
 	@Getter
-	private UUID partyId = localPartyId;
+	private UUID partyId;
 
 	@Setter
 	private String username;
 
 	@Inject
-	private PartyService(final WSClient wsClient, final SessionManager sessionManager, final EventBus eventBus)
+	private PartyService(final WSClient wsClient, final SessionManager sessionManager, final EventBus eventBus, final ChatMessageManager chat)
 	{
 		this.wsClient = wsClient;
 		this.sessionManager = sessionManager;
 		this.eventBus = eventBus;
+		this.chat = chat;
+		eventBus.register(this);
 	}
 
 	public void changeParty(UUID newParty)
@@ -86,7 +95,6 @@ public class PartyService
 		if (partyId == null)
 		{
 			localPartyId = UUID.randomUUID(); // cycle local party id so that a new party is created now
-			partyId = localPartyId;
 
 			// close the websocket if the session id isn't for an account
 			if (sessionManager.getAccountSession() == null)
@@ -111,7 +119,7 @@ public class PartyService
 		wsClient.send(new Join(partyId, username));
 	}
 
-	@Subscribe
+	@Subscribe(priority = 1) // run prior to plugins so that the member is joined by the time the plugins see it.
 	public void onUserJoin(final UserJoin message)
 	{
 		if (!partyId.equals(message.getPartyId()))
@@ -139,6 +147,27 @@ public class PartyService
 	public void onUserPart(final UserPart message)
 	{
 		members.removeIf(member -> member.getMemberId().equals(message.getMemberId()));
+	}
+
+	@Subscribe
+	public void onPartyChatMessage(final PartyChatMessage message)
+	{
+		// Remove non-printable characters, and <img> tags from message
+		String sentMesage = JAGEX_PRINTABLE_CHAR_MATCHER.retainFrom(message.getValue())
+			.replaceAll("<img=.+>", "");
+
+		// Cap the mesage length
+		if (sentMesage.length() > MAX_MESSAGE_LEN)
+		{
+			sentMesage = sentMesage.substring(0, MAX_MESSAGE_LEN);
+		}
+
+		chat.queue(QueuedMessage.builder()
+			.type(ChatMessageType.FRIENDSCHAT)
+			.sender("Party")
+			.name(getMemberById(message.getMemberId()).getName())
+			.runeLiteFormattedMessage(sentMesage)
+			.build());
 	}
 
 	public PartyMember getLocalMember()
@@ -177,8 +206,13 @@ public class PartyService
 		return Collections.unmodifiableList(members);
 	}
 
-	public boolean isOwner()
+	public boolean isInParty()
 	{
-		return partyId == null || localPartyId.equals(partyId);
+		return partyId != null;
+	}
+
+	public boolean isPartyOwner()
+	{
+		return localPartyId.equals(partyId);
 	}
 }

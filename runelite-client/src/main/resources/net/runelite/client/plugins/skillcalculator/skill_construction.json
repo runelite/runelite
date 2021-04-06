@@ -1,4 +1,10 @@
 {
+  "bonuses": [
+    {
+      "name": "Carpenter's Outfit (+2.5%)",
+      "value": 0.025
+    }
+  ],
   "actions": [
     {
       "level": 1,
@@ -39,7 +45,7 @@
     {
       "level": 1,
       "icon": 8186,
-      "name": "Fern",
+      "name": "Fern (big plant)",
       "xp": 31
     },
     {
@@ -128,7 +134,7 @@
     },
     {
       "level": 6,
-      "icon": 8187,
+      "icon": 8190,
       "name": "Large Leaf Bush",
       "xp": 70
     },
@@ -200,9 +206,9 @@
     },
     {
       "level": 12,
-      "icon": 8186,
-      "name": "Fern",
-      "xp": 70
+      "icon": 8182,
+      "name": "Fern (small plant)",
+      "xp": 100
     },
     {
       "level": 12,
@@ -401,6 +407,18 @@
       "icon": 8032,
       "name": "Oak Bed",
       "xp": 210
+    },
+    {
+      "level": 30,
+      "icon": 10976,
+      "name": "Long Bone",
+      "xp": 4500
+    },
+    {
+      "level": 30,
+      "icon": 10977,
+      "name": "Curved Bone",
+      "xp": 6750
     },
     {
       "level": 31,
@@ -788,6 +806,12 @@
     },
     {
       "level": 60,
+      "icon": 24479,
+      "name": "Spice Rack",
+      "xp": 374
+    },
+    {
+      "level": 60,
       "icon": 8178,
       "name": "Yew Tree",
       "xp": 141
@@ -929,6 +953,12 @@
       "icon": 8341,
       "name": "Armillary Globe",
       "xp": 960
+    },
+    {
+      "level": 77,
+      "icon": 20650,
+      "name": "Gnome Bench",
+      "xp": 840
     },
     {
       "level": 80,

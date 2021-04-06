@@ -27,7 +27,6 @@ package net.runelite.client.plugins.party;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,10 +38,10 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Skill;
@@ -50,9 +49,9 @@ import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -61,8 +60,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
-import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
@@ -86,8 +83,7 @@ import net.runelite.http.api.ws.messages.party.UserSync;
 	name = "Party",
 	description = "Shows useful information about current party"
 )
-@Slf4j
-public class PartyPlugin extends Plugin implements KeyListener
+public class PartyPlugin extends Plugin
 {
 	@Inject
 	private Client client;
@@ -108,9 +104,6 @@ public class PartyPlugin extends Plugin implements KeyListener
 	private PartyPingOverlay partyPingOverlay;
 
 	@Inject
-	private KeyManager keyManager;
-
-	@Inject
 	private WSClient wsClient;
 
 	@Inject
@@ -123,6 +116,9 @@ public class PartyPlugin extends Plugin implements KeyListener
 	private ChatMessageManager chatMessageManager;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	@Named("developerMode")
 	boolean developerMode;
 
@@ -133,7 +129,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
 
 	private int lastHp, lastPray;
-	private boolean hotkeyDown, doSync;
+	private boolean doSync;
 	private boolean sendAlert;
 
 	@Override
@@ -150,7 +146,6 @@ public class PartyPlugin extends Plugin implements KeyListener
 		wsClient.registerMessage(SkillUpdate.class);
 		wsClient.registerMessage(TilePing.class);
 		wsClient.registerMessage(LocationUpdate.class);
-		keyManager.registerKeyListener(this);
 		doSync = true; // Delay sync so eventbus can process correctly.
 	}
 
@@ -165,8 +160,6 @@ public class PartyPlugin extends Plugin implements KeyListener
 		wsClient.unregisterMessage(SkillUpdate.class);
 		wsClient.unregisterMessage(TilePing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
-		keyManager.unregisterKeyListener(this);
-		hotkeyDown = false;
 		doSync = false;
 		sendAlert = false;
 	}
@@ -206,7 +199,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!hotkeyDown || client.isMenuOpen() || party.getMembers().isEmpty() || !config.pings())
+		if (!client.isKeyPressed(KeyCode.KC_SHIFT) || client.isMenuOpen() || party.getMembers().isEmpty() || !config.pings())
 		{
 			return;
 		}
@@ -262,7 +255,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 				return;
 			}
 
-			client.playSoundEffect(SoundEffectID.SMITH_ANVIL_TINK);
+			clientThread.invoke(() -> client.playSoundEffect(SoundEffectID.SMITH_ANVIL_TINK));
 		}
 	}
 
@@ -499,39 +492,6 @@ public class PartyPlugin extends Plugin implements KeyListener
 
 			return new PartyData(u, name, worldMapPoint, ColorUtil.fromObject(name));
 		});
-	}
-
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
-	{
-		if (!event.isFocused())
-		{
-			hotkeyDown = false;
-		}
-	}
-
-	@Override
-	public void keyTyped(KeyEvent keyEvent)
-	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent keyEvent)
-	{
-		if (keyEvent.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			hotkeyDown = true;
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent keyEvent)
-	{
-		if (keyEvent.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			hotkeyDown = false;
-		}
 	}
 
 	private void sendInstructionMessage()

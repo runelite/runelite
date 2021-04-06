@@ -32,13 +32,16 @@ import net.runelite.api.widgets.WidgetInfo;
 enum TeleportWidget
 {
 	HOME_TELEPORT,
-	MINIGAME_TELEPORT;
+	MINIGAME_TELEPORT,
+	TRAILBLAZER_AREA_TELEPORT,
+	;
 
 	private static final Collection HOME_TELEPORT_IDS = ImmutableList.of(
 		WidgetInfo.SPELL_LUMBRIDGE_HOME_TELEPORT.getId(),
 		WidgetInfo.SPELL_EDGEVILLE_HOME_TELEPORT.getId(),
 		WidgetInfo.SPELL_LUNAR_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_ARCEUUS_HOME_TELEPORT.getId()
+		WidgetInfo.SPELL_ARCEUUS_HOME_TELEPORT.getId(),
+		WidgetInfo.SPELL_KOUREND_HOME_TELEPORT.getId()
 	);
 	private static final Collection MINIGAME_TELEPORT_IDS = ImmutableList.of(
 		WidgetInfo.MINIGAME_TELEPORT_BUTTON.getId()
@@ -54,6 +57,10 @@ enum TeleportWidget
 		else if (MINIGAME_TELEPORT_IDS.contains(widgetId))
 		{
 			return MINIGAME_TELEPORT;
+		}
+		else if (widgetId == WidgetInfo.TRAILBLAZER_AREA_TELEPORT.getId())
+		{
+			return TRAILBLAZER_AREA_TELEPORT;
 		}
 		return null;
 	}

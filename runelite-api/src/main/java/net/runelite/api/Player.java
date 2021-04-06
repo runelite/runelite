@@ -57,12 +57,12 @@ public interface Player extends Actor
 	int getTeam();
 
 	/**
-	 * Checks whether this player is a member of the same clan as
+	 * Checks whether this player is a member of the same friends chat
 	 * the local player.
 	 *
-	 * @return true if the player is a clan member, false otherwise
+	 * @return true if the player is a friends chat member, false otherwise
 	 */
-	boolean isClanMember();
+	boolean isFriendsChatMember();
 
 	/**
 	 * Checks whether this player is a friend of the local player.

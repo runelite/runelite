@@ -39,10 +39,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.util.LinkBrowser;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.AsyncBufferedImage;
+import net.runelite.client.util.QuantityFormatter;
 
 /**
  * This panel displays an individual item result in the
@@ -52,8 +51,8 @@ class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
-		haPrice, int geItemLimit)
+	GrandExchangeItemPanel(GrandExchangePlugin grandExchangePlugin, AsyncBufferedImage icon, String name, int itemID,
+		int gePrice, int haPrice, int geItemLimit)
 	{
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(5);
@@ -90,7 +89,7 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				geLink(name, itemID);
+				grandExchangePlugin.openGeLink(name, itemID);
 			}
 		};
 
@@ -124,7 +123,7 @@ class GrandExchangeItemPanel extends JPanel
 		JLabel gePriceLabel = new JLabel();
 		if (gePrice > 0)
 		{
-			gePriceLabel.setText(StackFormatter.formatNumber(gePrice) + " gp");
+			gePriceLabel.setText(QuantityFormatter.formatNumber(gePrice) + " gp");
 		}
 		else
 		{
@@ -139,13 +138,13 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
-		haPriceLabel.setText(StackFormatter.formatNumber(haPrice.intValue()) + " alch");
+		haPriceLabel.setText(QuantityFormatter.formatNumber(haPrice) + " alch");
 		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
 		alchAndLimitPanel.add(haPriceLabel, BorderLayout.WEST);
 
 		// GE Limit
 		JLabel geLimitLabel = new JLabel();
-		String limitLabelText = geItemLimit == 0 ? "" : "Limit " + StackFormatter.formatNumber(geItemLimit);
+		String limitLabelText = geItemLimit == 0 ? "" : "Limit " + QuantityFormatter.formatNumber(geItemLimit);
 		geLimitLabel.setText(limitLabelText);
 		geLimitLabel.setForeground(ColorScheme.GRAND_EXCHANGE_LIMIT);
 		geLimitLabel.setBorder(new CompoundBorder(geLimitLabel.getBorder(), new EmptyBorder(0, 0, 0, 7)));
@@ -163,15 +162,5 @@ class GrandExchangeItemPanel extends JPanel
 		{
 			c.setBackground(color);
 		}
-	}
-
-	private static void geLink(String name, int itemID)
-	{
-		final String url = "http://services.runescape.com/m=itemdb_oldschool/"
-			+ name.replaceAll(" ", "_")
-			+ "/viewitem?obj="
-			+ itemID;
-
-		LinkBrowser.browse(url);
 	}
 }

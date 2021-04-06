@@ -77,7 +77,7 @@ public class UnderlayDumper
 				UnderlayLoader loader = new UnderlayLoader();
 				UnderlayDefinition underlay = loader.load(file.getFileId(), file.getContents());
 
-				Files.write(gson.toJson(underlay), new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(underlay));
 				++count;
 			}
 		}

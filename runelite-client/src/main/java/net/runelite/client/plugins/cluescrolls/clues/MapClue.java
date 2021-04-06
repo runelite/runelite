@@ -52,39 +52,44 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class MapClue extends ClueScroll implements ObjectClueScroll
 {
+	public static final String CHAMPIONS_GUILD = "West of the Champions' Guild";
+	public static final String VARROCK_EAST_MINE = "Outside Varrock East Mine";
+	public static final String STANDING_STONES = "At the standing stones north of Falador";
+	public static final String WIZARDS_TOWER_DIS = "On the south side of the Wizard's Tower (DIS)";
+	public static final String SOUTH_OF_DRAYNOR_BANK = "South of Draynor Village Bank";
+
 	private static final Set<MapClue> CLUES = ImmutableSet.of(
-		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0)),
-		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0)),
-		new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0)),
-		new MapClue(CLUE_SCROLL_EASY_2719, new WorldPoint(3043, 3398, 0)),
-		new MapClue(CLUE_SCROLL_EASY_3516, new WorldPoint(2612, 3482, 0)),
-		new MapClue(CLUE_SCROLL_EASY_3518, new WorldPoint(3110, 3152, 0)),
-		new MapClue(CLUE_SCROLL_EASY_7236, new WorldPoint(2970, 3415, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_2827, new WorldPoint(3091, 3227, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_3596, new WorldPoint(2907, 3295, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_3598, new WorldPoint(2658, 3488, 0), CRATE_357),
-		new MapClue(CLUE_SCROLL_MEDIUM_3599, new WorldPoint(2651, 3231, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_3601, new WorldPoint(2565, 3248, 0), CRATE_354),
-		new MapClue(CLUE_SCROLL_MEDIUM_3602, new WorldPoint(2924, 3210, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_7286, new WorldPoint(2536, 3865, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_7288, new WorldPoint(3434, 3265, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_7290, new WorldPoint(2454, 3230, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_7292, new WorldPoint(2578, 3597, 0)),
-		new MapClue(CLUE_SCROLL_MEDIUM_7294, new WorldPoint(2666, 3562, 0)),
-		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3503, 0), CRATE_2620),
-		new MapClue(CLUE_SCROLL_HARD_2729, new WorldPoint(3190, 3963, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2615, 3078, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0)),
-		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(2457, 3182, 0), CRATE_18506),
-		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3628, 0), CRATE_354),
-		new MapClue(CLUE_SCROLL_HARD_7239, new WorldPoint(3021, 3912, 0)),
-		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0)),
+		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0), "Al Kharid mine"),
+		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0), CHAMPIONS_GUILD),
+		new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0), VARROCK_EAST_MINE),
+		new MapClue(CLUE_SCROLL_EASY_2719, new WorldPoint(3043, 3398, 0), STANDING_STONES),
+		new MapClue(CLUE_SCROLL_EASY_3516, new WorldPoint(2612, 3482, 0), "Brother Galahad's house, West of McGrubor's Wood."),
+		new MapClue(CLUE_SCROLL_EASY_3518, new WorldPoint(3110, 3152, 0), WIZARDS_TOWER_DIS),
+		new MapClue(CLUE_SCROLL_EASY_7236, new WorldPoint(2970, 3415, 0), "North of Falador."),
+		new MapClue(CLUE_SCROLL_MEDIUM_2827, new WorldPoint(3091, 3227, 0), SOUTH_OF_DRAYNOR_BANK),
+		new MapClue(CLUE_SCROLL_MEDIUM_3596, new WorldPoint(2907, 3295, 0), "West of the Crafting Guild"),
+		new MapClue(CLUE_SCROLL_MEDIUM_3598, new WorldPoint(2658, 3488, 0), CRATE_357, "The crate in McGrubor's Wood. Fairy ring ALS"),
+		new MapClue(CLUE_SCROLL_MEDIUM_3599, new WorldPoint(2651, 3231, 0), "North of the Tower of Life. Fairy ring DJP"),
+		new MapClue(CLUE_SCROLL_MEDIUM_3601, new WorldPoint(2565, 3248, 0), CRATE_354, "The crate west of the Clocktower."),
+		new MapClue(CLUE_SCROLL_MEDIUM_3602, new WorldPoint(2924, 3210, 0), "Behind the Chemist's house in Rimmington."),
+		new MapClue(CLUE_SCROLL_MEDIUM_7286, new WorldPoint(2536, 3865, 0), "Miscellania. Fairy ring CIP"),
+		new MapClue(CLUE_SCROLL_MEDIUM_7288, new WorldPoint(3434, 3265, 0), "Mort Myre Swamp, west of Mort'ton. Fairy ring BIP"),
+		new MapClue(CLUE_SCROLL_MEDIUM_7290, new WorldPoint(2454, 3230, 0), "At the entrance to the Ourania Cave."),
+		new MapClue(CLUE_SCROLL_MEDIUM_7292, new WorldPoint(2578, 3597, 0), "South-east of the Lighthouse. Fairy ring ALP"),
+		new MapClue(CLUE_SCROLL_MEDIUM_7294, new WorldPoint(2666, 3562, 0), "Between Seers' Village and Rellekka. South-west of Fairy ring CJR"),
+		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3503, 0), CRATE_2620, "A crate in the Lumber Yard, north-east of Varrock."),
+		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2615, 3078, 0), "Yanille anvils, south of the bank. You can dig from inside the building."),
+		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0), "In the western section of West Ardougne."),
+		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(2457, 3182, 0), CRATE_18506, "In a crate by the stairs to the Observatory Dungeon."),
+		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3628, 0), CRATE_354, "In a crate at the Dark Warriors' Fortress in level 14 Wilderness."),
+		new MapClue(CLUE_SCROLL_HARD_7239, new WorldPoint(3021, 3912, 0), "South-east of the Wilderness Agility Course in level 50 Wilderness."),
+		new MapClue(CLUE_SCROLL_HARD_7241, new WorldPoint(2722, 3338, 0), "South of the Legends' Guild. Fairy ring BLR"),
+		new MapClue(CLUE_SCROLL_ELITE_12130, new WorldPoint(2449, 3130, 0), "South-west of Tree Gnome Village."),
 		new MapClue(CLUE_SCROLL_ELITE_19782, new WorldPoint(2953, 9523, 1), "In the Mogre Camp, near Port Khazard. You require a Diving Apparatus and a Fishbowl Helmet"),
-		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0)),
-		new MapClue(CLUE_SCROLL_ELITE_19786, new WorldPoint(2703, 2716, 0), CRATE_6616)
+		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0), "Zul-Andra. Fairy ring BJS"),
+		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0), "At the Soul Altar, north-east of the Arceuus essence mine."),
+		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0), "East of Burgh de Rott."),
+		new MapClue(CLUE_SCROLL_ELITE_19786, new WorldPoint(2703, 2716, 0), CRATE_6616, "The crate in south-western Ape Atoll")
 	);
 
 	private final int itemId;
@@ -202,6 +207,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		return null;
 	}
 
+	@Override
 	public int[] getObjectIds()
 	{
 		return new int[] {objectId};

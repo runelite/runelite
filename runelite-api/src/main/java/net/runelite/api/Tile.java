@@ -62,6 +62,13 @@ public interface Tile
 	GroundObject getGroundObject();
 
 	/**
+	 * Sets the object on the ground layer of the tile.
+	 *
+	 * @param groundObject the ground object
+	 */
+	void setGroundObject(GroundObject groundObject);
+
+	/**
 	 * Gets the wall of the tile.
 	 *
 	 * @return the wall object
@@ -130,7 +137,7 @@ public interface Tile
 	 *
 	 * @return the ground items
 	 */
-	List<Item> getGroundItems();
+	List<TileItem> getGroundItems();
 
 	/**
 	 * Return the tile under this one, if this tile is a bridge

@@ -29,6 +29,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +39,13 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
+import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -51,6 +53,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.client.eventbus.EventBus;
@@ -73,17 +76,28 @@ public class LootManager
 	private WorldPoint playerLocationLastTick;
 	private WorldPoint krakenPlayerLocation;
 
+	private NPC delayedLootNpc;
+	private int delayedLootTickLimit;
+
 	@Inject
 	private LootManager(EventBus eventBus, Client client)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
+		eventBus.register(this);
 	}
 
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
+
+		if (npc == delayedLootNpc)
+		{
+			delayedLootNpc = null;
+			delayedLootTickLimit = 0;
+		}
+
 		if (!npc.isDead())
 		{
 			int id = npc.getId();
@@ -156,26 +170,26 @@ public class LootManager
 	@Subscribe
 	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
-		final Item item = itemSpawned.getItem();
+		final TileItem item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
 		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity(), location));
-		log.debug("Item spawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
+		log.debug("Item spawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
 
 	@Subscribe
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		final Item item = itemDespawned.getItem();
+		final TileItem item = itemDespawned.getItem();
 		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
-		log.debug("Item despawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
+		log.debug("Item despawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
 
 	@Subscribe
 	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
 	{
-		final Item item = itemQuantityChanged.getItem();
+		final TileItem item = itemQuantityChanged.getItem();
 		final Tile tile = itemQuantityChanged.getTile();
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
@@ -220,11 +234,58 @@ public class LootManager
 	}
 
 	@Subscribe
+	public void onNpcChanged(NpcChanged npcChanged)
+	{
+		final NPC npc = npcChanged.getNpc();
+		if (npc.getId() == NpcID.THE_NIGHTMARE_9433)
+		{
+			delayedLootNpc = npc;
+			delayedLootTickLimit = 15;
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		if (delayedLootNpc != null && delayedLootTickLimit-- > 0)
+		{
+			processDelayedLoot();
+		}
+
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
+
 		itemSpawns.clear();
 		killPoints.clear();
+	}
+
+	private void processDelayedLoot()
+	{
+		final WorldPoint adjacentLootTile = getAdjacentSquareLootTile(delayedLootNpc);
+		final LocalPoint localPoint = LocalPoint.fromWorld(client, adjacentLootTile);
+
+		if (localPoint == null)
+		{
+			log.debug("Scene changed away from delayed loot location");
+			delayedLootNpc = null;
+			delayedLootTickLimit = 0;
+			return;
+		}
+
+		final int sceneX = localPoint.getSceneX();
+		final int sceneY = localPoint.getSceneY();
+		final int packed = sceneX << 8 | sceneY;
+		final List<ItemStack> itemStacks = itemSpawns.get(packed);
+		if (itemStacks.isEmpty())
+		{
+			// no loot yet
+			return;
+		}
+
+		log.debug("Got delayed loot stack from {}: {}", delayedLootNpc.getName(), itemStacks);
+		eventBus.post(new NpcLootReceived(delayedLootNpc, itemStacks));
+
+		delayedLootNpc = null;
+		delayedLootTickLimit = 0;
 	}
 
 	private void processNpcLoot(NPC npc)
@@ -315,5 +376,54 @@ public class LootManager
 		}
 
 		return worldLocation;
+	}
+
+	private WorldPoint getAdjacentSquareLootTile(NPC npc)
+	{
+		final NPCComposition composition = npc.getComposition();
+		final WorldPoint worldLocation = npc.getWorldLocation();
+		int x = worldLocation.getX();
+		int y = worldLocation.getY();
+
+		if (playerLocationLastTick.getX() < x)
+		{
+			x -= 1;
+		}
+		else
+		{
+			x += Math.min(playerLocationLastTick.getX() - x, composition.getSize());
+		}
+
+		if (playerLocationLastTick.getY() < y)
+		{
+			y -= 1;
+		}
+		else
+		{
+			y += Math.min(playerLocationLastTick.getY() - y, composition.getSize());
+		}
+
+		return new WorldPoint(x, y, worldLocation.getPlane());
+	}
+
+	/**
+	 * Get the list of items present at the provided WorldPoint that spawned this tick.
+	 *
+	 * @param worldPoint the location in question
+	 * @return the list of item stacks
+	 */
+	public Collection<ItemStack> getItemSpawns(WorldPoint worldPoint)
+	{
+		LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
+		if (localPoint == null)
+		{
+			return Collections.emptyList();
+		}
+
+		final int sceneX = localPoint.getSceneX();
+		final int sceneY = localPoint.getSceneY();
+		final int packed = sceneX << 8 | sceneY;
+		final List<ItemStack> itemStacks = itemSpawns.get(packed);
+		return Collections.unmodifiableList(itemStacks);
 	}
 }

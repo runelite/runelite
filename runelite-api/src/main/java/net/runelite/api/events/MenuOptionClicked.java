@@ -68,6 +68,10 @@ public class MenuOptionClicked
 	 */
 	private int widgetId;
 	/**
+	 * The selected item index at the time of the option click.
+	 */
+	private int selectedItemIndex;
+	/**
 	 * Whether or not the event has been consumed by a subscriber.
 	 */
 	private boolean consumed;

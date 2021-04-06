@@ -27,18 +27,30 @@ package net.runelite.client.plugins.npchighlight;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.NpcChanged;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NpcIndicatorsPluginTest
@@ -58,6 +70,10 @@ public class NpcIndicatorsPluginTest
 	@Inject
 	private NpcIndicatorsPlugin npcIndicatorsPlugin;
 
+	@Mock
+	@Bind
+	private OverlayManager overlayManager;
+
 	@Before
 	public void setUp()
 	{
@@ -75,5 +91,91 @@ public class NpcIndicatorsPluginTest
 		assertEquals("goblin", iterator.next());
 		assertEquals("zulrah", iterator.next());
 		assertEquals("*wyvern", iterator.next());
+	}
+
+	@Test
+	public void testDeadNpcMenuHighlight()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
+		when(npcIndicatorsConfig.deadNpcMenuColor()).thenReturn(Color.RED);
+
+		npcIndicatorsPlugin.rebuildAllNpcs();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Goblin");
+		when(npc.isDead()).thenReturn(true);
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		when(client.getCachedNPCs()).thenReturn(new NPC[]{npc}); // id 0
+
+		when(client.getMenuEntries()).thenReturn(new MenuEntry[]{new MenuEntry()});
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded("", "Goblin", MenuAction.NPC_FIRST_OPTION.getId(), 0, -1, -1);
+		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
+
+		MenuEntry target = new MenuEntry();
+		target.setTarget("<col=ff0000>Goblin"); // red
+		verify(client).setMenuEntries(new MenuEntry[]{target});
+	}
+
+	@Test
+	public void testAliveNpcMenuHighlight()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
+		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(true);
+		when(npcIndicatorsConfig.getHighlightColor()).thenReturn(Color.BLUE);
+
+		npcIndicatorsPlugin.rebuildAllNpcs();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Goblin");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		when(client.getCachedNPCs()).thenReturn(new NPC[]{npc}); // id 0
+
+		when(client.getMenuEntries()).thenReturn(new MenuEntry[]{new MenuEntry()});
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded("", "Goblin", MenuAction.NPC_FIRST_OPTION.getId(), 0, -1, -1);
+		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
+
+		MenuEntry target = new MenuEntry();
+		target.setTarget("<col=0000ff>Goblin"); // blue
+		verify(client).setMenuEntries(new MenuEntry[]{target});
+	}
+
+	@Test
+	public void taggedNpcChanges()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Joseph");
+
+		npcIndicatorsPlugin.rebuildAllNpcs();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Joseph");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+
+		when(npc.getName()).thenReturn("Werewolf");
+		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
+
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+	}
+
+	@Test
+	public void npcChangesToTagged()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Werewolf");
+
+		npcIndicatorsPlugin.rebuildAllNpcs();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Joseph");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+
+		when(npc.getName()).thenReturn("Werewolf");
+		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
+
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
 	}
 }

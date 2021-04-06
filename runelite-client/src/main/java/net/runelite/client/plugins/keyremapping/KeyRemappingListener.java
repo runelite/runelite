@@ -28,32 +28,17 @@ package net.runelite.client.plugins.keyremapping;
 import com.google.common.base.Strings;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.MouseAdapter;
 
-class KeyRemappingListener extends MouseAdapter implements KeyListener
+class KeyRemappingListener implements KeyListener
 {
-	private static final Keybind ONE = new ModifierlessKeybind(KeyEvent.VK_1, 0);
-	private static final Keybind TWO = new ModifierlessKeybind(KeyEvent.VK_2, 0);
-	private static final Keybind THREE = new ModifierlessKeybind(KeyEvent.VK_3, 0);
-	private static final Keybind FOUR = new ModifierlessKeybind(KeyEvent.VK_4, 0);
-	private static final Keybind FIVE = new ModifierlessKeybind(KeyEvent.VK_5, 0);
-	private static final Keybind SIX = new ModifierlessKeybind(KeyEvent.VK_6, 0);
-	private static final Keybind SEVEN = new ModifierlessKeybind(KeyEvent.VK_7, 0);
-	private static final Keybind EIGHT = new ModifierlessKeybind(KeyEvent.VK_8, 0);
-	private static final Keybind NINE = new ModifierlessKeybind(KeyEvent.VK_9, 0);
-	private static final Keybind ZERO = new ModifierlessKeybind(KeyEvent.VK_0, 0);
-	private static final Keybind MINUS = new ModifierlessKeybind(KeyEvent.VK_MINUS, 0);
-	private static final Keybind EQUALS = new ModifierlessKeybind(KeyEvent.VK_EQUALS, 0);
-
 	@Inject
 	private KeyRemappingPlugin plugin;
 
@@ -67,43 +52,47 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 	private ClientThread clientThread;
 
 	private final Map<Integer, Integer> modified = new HashMap<>();
+	private final Set<Character> blockedChars = new HashSet<>();
 
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
+		char keyChar = e.getKeyChar();
+		if (keyChar != KeyEvent.CHAR_UNDEFINED && blockedChars.contains(keyChar) && plugin.chatboxFocused())
+		{
+			e.consume();
+		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (client.getGameState() == GameState.LOGIN_SCREEN || !plugin.chatboxFocused())
+		if (!plugin.chatboxFocused())
 		{
 			return;
 		}
 
 		if (!plugin.isTyping())
 		{
+			int mappedKeyCode = KeyEvent.VK_UNDEFINED;
+
 			if (config.cameraRemap())
 			{
 				if (config.up().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_UP);
-					e.setKeyCode(KeyEvent.VK_UP);
+					mappedKeyCode = KeyEvent.VK_UP;
 				}
 				else if (config.down().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_DOWN);
-					e.setKeyCode(KeyEvent.VK_DOWN);
+					mappedKeyCode = KeyEvent.VK_DOWN;
 				}
 				else if (config.left().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_LEFT);
-					e.setKeyCode(KeyEvent.VK_LEFT);
+					mappedKeyCode = KeyEvent.VK_LEFT;
 				}
 				else if (config.right().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_RIGHT);
-					e.setKeyCode(KeyEvent.VK_RIGHT);
+					mappedKeyCode = KeyEvent.VK_RIGHT;
 				}
 			}
 
@@ -112,65 +101,84 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 			// to select options
 			if (config.fkeyRemap() && !plugin.isDialogOpen())
 			{
-				if (ONE.matches(e))
+				if (config.f1().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F1);
-					e.setKeyCode(KeyEvent.VK_F1);
+					mappedKeyCode = KeyEvent.VK_F1;
 				}
-				else if (TWO.matches(e))
+				else if (config.f2().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F2);
-					e.setKeyCode(KeyEvent.VK_F2);
+					mappedKeyCode = KeyEvent.VK_F2;
 				}
-				else if (THREE.matches(e))
+				else if (config.f3().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F3);
-					e.setKeyCode(KeyEvent.VK_F3);
+					mappedKeyCode = KeyEvent.VK_F3;
 				}
-				else if (FOUR.matches(e))
+				else if (config.f4().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F4);
-					e.setKeyCode(KeyEvent.VK_F4);
+					mappedKeyCode = KeyEvent.VK_F4;
 				}
-				else if (FIVE.matches(e))
+				else if (config.f5().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F5);
-					e.setKeyCode(KeyEvent.VK_F5);
+					mappedKeyCode = KeyEvent.VK_F5;
 				}
-				else if (SIX.matches(e))
+				else if (config.f6().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F6);
-					e.setKeyCode(KeyEvent.VK_F6);
+					mappedKeyCode = KeyEvent.VK_F6;
 				}
-				else if (SEVEN.matches(e))
+				else if (config.f7().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F7);
-					e.setKeyCode(KeyEvent.VK_F7);
+					mappedKeyCode = KeyEvent.VK_F7;
 				}
-				else if (EIGHT.matches(e))
+				else if (config.f8().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F8);
-					e.setKeyCode(KeyEvent.VK_F8);
+					mappedKeyCode = KeyEvent.VK_F8;
 				}
-				else if (NINE.matches(e))
+				else if (config.f9().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F9);
-					e.setKeyCode(KeyEvent.VK_F9);
+					mappedKeyCode = KeyEvent.VK_F9;
 				}
-				else if (ZERO.matches(e))
+				else if (config.f10().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F10);
-					e.setKeyCode(KeyEvent.VK_F10);
+					mappedKeyCode = KeyEvent.VK_F10;
 				}
-				else if (MINUS.matches(e))
+				else if (config.f11().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F11);
-					e.setKeyCode(KeyEvent.VK_F11);
+					mappedKeyCode = KeyEvent.VK_F11;
 				}
-				else if (EQUALS.matches(e))
+				else if (config.f12().matches(e))
 				{
-					modified.put(e.getKeyCode(), KeyEvent.VK_F12);
-					e.setKeyCode(KeyEvent.VK_F12);
+					mappedKeyCode = KeyEvent.VK_F12;
+				}
+				else if (config.esc().matches(e))
+				{
+					mappedKeyCode = KeyEvent.VK_ESCAPE;
+				}
+			}
+
+			// Do not remap to space key when the options dialog is open, since the options dialog never
+			// listens for space, and the remapped key may be one of keys it listens for.
+			if (plugin.isDialogOpen() && !plugin.isOptionsDialogOpen() && config.space().matches(e))
+			{
+				mappedKeyCode = KeyEvent.VK_SPACE;
+			}
+
+			if (config.control().matches(e))
+			{
+				mappedKeyCode = KeyEvent.VK_CONTROL;
+			}
+
+			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())
+			{
+				final char keyChar = e.getKeyChar();
+				modified.put(e.getKeyCode(), mappedKeyCode);
+				e.setKeyCode(mappedKeyCode);
+				// arrow keys and fkeys do not have a character
+				e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
+				if (keyChar != KeyEvent.CHAR_UNDEFINED)
+				{
+					// If this key event has a valid key char then a key typed event may be received next,
+					// we must block it
+					blockedChars.add(keyChar);
 				}
 			}
 
@@ -190,8 +198,18 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 		{
 			switch (e.getKeyCode())
 			{
-				case KeyEvent.VK_ENTER:
 				case KeyEvent.VK_ESCAPE:
+					// When exiting typing mode, block the escape key
+					// so that it doesn't trigger the in-game hotkeys
+					e.consume();
+					plugin.setTyping(false);
+					clientThread.invoke(() ->
+					{
+						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+						plugin.lockChat();
+					});
+					break;
+				case KeyEvent.VK_ENTER:
 					plugin.setTyping(false);
 					clientThread.invoke(plugin::lockChat);
 					break;
@@ -210,96 +228,19 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (client.getGameState() == GameState.LOGIN_SCREEN)
+		final int keyCode = e.getKeyCode();
+		final char keyChar = e.getKeyChar();
+
+		if (keyChar != KeyEvent.CHAR_UNDEFINED)
 		{
-			return;
+			blockedChars.remove(keyChar);
 		}
 
-		if (plugin.chatboxFocused() && !plugin.isTyping())
+		final Integer mappedKeyCode = modified.remove(keyCode);
+		if (mappedKeyCode != null)
 		{
-			modified.remove(e.getKeyCode());
-
-			if (config.cameraRemap())
-			{
-				if (config.up().matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_UP);
-				}
-				else if (config.down().matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_DOWN);
-				}
-				else if (config.left().matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_LEFT);
-				}
-				else if (config.right().matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_RIGHT);
-				}
-			}
-
-			if (config.fkeyRemap())
-			{
-				if (ONE.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F1);
-				}
-				else if (TWO.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F2);
-				}
-				else if (THREE.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F3);
-				}
-				else if (FOUR.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F4);
-				}
-				else if (FIVE.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F5);
-				}
-				else if (SIX.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F6);
-				}
-				else if (SEVEN.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F7);
-				}
-				else if (EIGHT.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F8);
-				}
-				else if (NINE.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F9);
-				}
-				else if (ZERO.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F10);
-				}
-				else if (MINUS.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F11);
-				}
-				else if (EQUALS.matches(e))
-				{
-					e.setKeyCode(KeyEvent.VK_F12);
-				}
-			}
-		}
-		else
-		{
-			// press d + enter + release d - causes the right arrow to never be released
-			Integer m = modified.get(e.getKeyCode());
-			if (m != null)
-			{
-				modified.remove(e.getKeyCode());
-				e.setKeyCode(m);
-			}
+			e.setKeyCode(mappedKeyCode);
+			e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
 		}
 	}
 }

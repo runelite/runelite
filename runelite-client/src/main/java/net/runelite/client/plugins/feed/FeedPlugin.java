@@ -25,7 +25,9 @@
 package net.runelite.client.plugins.feed;
 
 import com.google.common.base.Suppliers;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
+import com.google.inject.TypeLiteral;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.temporal.ChronoUnit;
@@ -34,9 +36,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -45,6 +47,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.feed.FeedClient;
 import net.runelite.http.api.feed.FeedResult;
+import okhttp3.OkHttpClient;
 
 @PluginDescriptor(
 	name = "News Feed",
@@ -59,16 +62,15 @@ public class FeedPlugin extends Plugin
 	private ClientToolbar clientToolbar;
 
 	@Inject
-	private FeedConfig config;
+	private ScheduledExecutorService executorService;
 
 	@Inject
-	private ScheduledExecutorService executorService;
+	private FeedClient feedClient;
 
 	private FeedPanel feedPanel;
 	private NavigationButton navButton;
 
-	private FeedClient feedClient = new FeedClient();
-	private Supplier<FeedResult> feedSupplier = Suppliers.memoizeWithExpiration(() ->
+	private final Supplier<FeedResult> feedSupplier = Suppliers.memoizeWithExpiration(() ->
 	{
 		try
 		{
@@ -82,11 +84,20 @@ public class FeedPlugin extends Plugin
 	}, 10, TimeUnit.MINUTES);
 
 	@Override
+	public void configure(Binder binder)
+	{
+		// CHECKSTYLE:OFF
+		binder.bind(new TypeLiteral<Supplier<FeedResult>>(){})
+			.toInstance(feedSupplier);
+		// CHECKSTYLE:ON
+	}
+
+	@Override
 	protected void startUp() throws Exception
 	{
-		feedPanel = new FeedPanel(config, feedSupplier);
+		feedPanel = injector.getInstance(FeedPanel.class);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("News Feed")
@@ -133,5 +144,11 @@ public class FeedPlugin extends Plugin
 	FeedConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(FeedConfig.class);
+	}
+
+	@Provides
+	FeedClient provideFeedClient(OkHttpClient okHttpClient)
+	{
+		return new FeedClient(okHttpClient);
 	}
 }

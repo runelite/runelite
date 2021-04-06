@@ -27,25 +27,31 @@ package net.runelite.client.plugins.timetracking;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("timetracking")
 public interface TimeTrackingConfig extends Config
 {
 	String CONFIG_GROUP = "timetracking";
+	String FARM_TICK_OFFSET = "farmTickOffset";
+	String FARM_TICK_OFFSET_PRECISION = "farmTickOffsetPrecision";
 	String AUTOWEED = "autoweed";
 	String BIRD_HOUSE = "birdhouse";
+	String BOTANIST = "botanist";
 	String TIMERS = "timers";
 	String STOPWATCHES = "stopwatches";
+	String PREFER_SOONEST = "preferSoonest";
+	String NOTIFY = "notify";
 
 	@ConfigItem(
-		keyName = "estimateRelative",
-		name = "Show relative time",
-		description = "Show amount of time remaining instead of completion time",
+		keyName = "timeFormatMode",
+		name = "Time format",
+		description = "What format to display times in",
 		position = 1
 	)
-	default boolean estimateRelative()
+	default TimeFormatMode timeFormatMode()
 	{
-		return false;
+		return TimeFormatMode.ABSOLUTE_24H;
 	}
 
 	@ConfigItem(
@@ -71,14 +77,60 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "defaultTimerMinutes",
-		name = "Default Time (Minutes)",
-		description = "The default time for the timer in minutes",
+		keyName = "farmingContractInfoBox",
+		name = "Show farming contract infobox",
+		description = "Show an infobox of your current farming contract when inside the farming guild",
 		position = 4
 	)
+	default boolean farmingContractInfoBox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "defaultTimerMinutes",
+		name = "Default Time",
+		description = "The default time for the timer in minutes",
+		position = 5
+	)
+	@Units(Units.MINUTES)
 	default int defaultTimerMinutes()
 	{
 		return 5;
+	}
+
+	@ConfigItem(
+		keyName = "sortOrder",
+		name = "Sort Order",
+		description = "The order in which to sort the timers",
+		position = 6
+	)
+	default SortOrder sortOrder()
+	{
+		return SortOrder.NONE;
+	}
+
+	@ConfigItem(
+		keyName = "timerWarningThreshold",
+		name = "Warning Threshold",
+		description = "The time at which to change the timer color to the warning color",
+		position = 6
+	)
+	@Units(Units.SECONDS)
+	default int timerWarningThreshold()
+	{
+		return 10;
+	}
+
+	@ConfigItem(
+		keyName = PREFER_SOONEST,
+		name = "Prefer soonest completion",
+		description = "When displaying completion times on the overview, prefer showing the soonest any patch will complete.",
+		position = 7
+	)
+	default boolean preferSoonest()
+	{
+		return false;
 	}
 
 	@ConfigItem(

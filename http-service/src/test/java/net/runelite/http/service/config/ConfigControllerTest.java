@@ -27,7 +27,6 @@ package net.runelite.http.service.config;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
 import org.junit.Before;
@@ -35,6 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -51,7 +51,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ConfigController.class)
-@Slf4j
 @ActiveProfiles("test")
 public class ConfigControllerTest
 {
@@ -69,6 +68,8 @@ public class ConfigControllerTest
 	{
 		when(authFilter.handle(any(HttpServletRequest.class), any(HttpServletResponse.class)))
 			.thenReturn(mock(SessionEntry.class));
+
+		when(configService.setKey(anyInt(), anyString(), anyString())).thenReturn(true);
 	}
 
 	@Test

@@ -26,6 +26,8 @@ package net.runelite.client.plugins.runecraft;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import java.util.function.Predicate;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ItemID.AIR_RUNE;
 import static net.runelite.api.ItemID.BLOOD_RUNE;
@@ -42,27 +44,31 @@ import static net.runelite.api.ItemID.SOUL_RUNE;
 import static net.runelite.api.ItemID.WATER_RUNE;
 import net.runelite.api.ObjectID;
 
-public enum AbyssRifts
+@AllArgsConstructor
+enum AbyssRifts
 {
-	AIR_RIFT(ObjectID.AIR_RIFT, AIR_RUNE),
-	BLOOD_RIFT(ObjectID.BLOOD_RIFT, BLOOD_RUNE),
-	BODY_RIFT(ObjectID.BODY_RIFT, BODY_RUNE),
-	CHAOS_RIFT(ObjectID.CHAOS_RIFT, CHAOS_RUNE),
-	COSMIC_RIFT(ObjectID.COSMIC_RIFT, COSMIC_RUNE),
-	DEATH_RIFT(ObjectID.DEATH_RIFT, DEATH_RUNE),
-	EARTH_RIFT(ObjectID.EARTH_RIFT, EARTH_RUNE),
-	FIRE_RIFT(ObjectID.FIRE_RIFT, FIRE_RUNE),
-	LAW_RIFT(ObjectID.LAW_RIFT, LAW_RUNE),
-	MIND_RIFT(ObjectID.MIND_RIFT, MIND_RUNE),
-	NATURE_RIFT(ObjectID.NATURE_RIFT, NATURE_RUNE),
-	SOUL_RIFT(ObjectID.SOUL_RIFT, SOUL_RUNE),
-	WATER_RIFT(ObjectID.WATER_RIFT, WATER_RUNE);
+	AIR_RIFT(ObjectID.AIR_RIFT, AIR_RUNE, RunecraftConfig::showAir),
+	BLOOD_RIFT(ObjectID.BLOOD_RIFT, BLOOD_RUNE, RunecraftConfig::showBlood),
+	BODY_RIFT(ObjectID.BODY_RIFT, BODY_RUNE, RunecraftConfig::showBody),
+	CHAOS_RIFT(ObjectID.CHAOS_RIFT, CHAOS_RUNE, RunecraftConfig::showChaos),
+	COSMIC_RIFT(ObjectID.COSMIC_RIFT, COSMIC_RUNE, RunecraftConfig::showCosmic),
+	DEATH_RIFT(ObjectID.DEATH_RIFT, DEATH_RUNE, RunecraftConfig::showDeath),
+	EARTH_RIFT(ObjectID.EARTH_RIFT, EARTH_RUNE, RunecraftConfig::showEarth),
+	FIRE_RIFT(ObjectID.FIRE_RIFT, FIRE_RUNE, RunecraftConfig::showFire),
+	LAW_RIFT(ObjectID.LAW_RIFT, LAW_RUNE, RunecraftConfig::showLaw),
+	MIND_RIFT(ObjectID.MIND_RIFT, MIND_RUNE, RunecraftConfig::showMind),
+	NATURE_RIFT(ObjectID.NATURE_RIFT, NATURE_RUNE, RunecraftConfig::showNature),
+	SOUL_RIFT(ObjectID.SOUL_RIFT, SOUL_RUNE, RunecraftConfig::showSoul),
+	WATER_RIFT(ObjectID.WATER_RIFT, WATER_RUNE, RunecraftConfig::showWater);
 
 	@Getter
 	private final int objectId;
 
 	@Getter
 	private final int itemId;
+
+	@Getter
+	private final Predicate<RunecraftConfig> configEnabled;
 
 	private static final Map<Integer, AbyssRifts> rifts;
 
@@ -78,13 +84,7 @@ public enum AbyssRifts
 		rifts = builder.build();
 	}
 
-	AbyssRifts(int objectId, int itemId)
-	{
-		this.objectId = objectId;
-		this.itemId = itemId;
-	}
-
-	public static AbyssRifts getRift(int id)
+	static AbyssRifts getRift(int id)
 	{
 		return rifts.get(id);
 	}

@@ -28,10 +28,18 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("itemidentification")
 public interface ItemIdentificationConfig extends Config
 {
+	@ConfigSection(
+		name = "Categories",
+		description = "The categories of items to identify",
+		position = 99
+	)
+	String identificationSection = "identification";
+
 	@ConfigItem(
 		keyName = "identificationType",
 		name = "Identification Type",
@@ -57,7 +65,8 @@ public interface ItemIdentificationConfig extends Config
 	@ConfigItem(
 		keyName = "showSeeds",
 		name = "Seeds",
-		description = "Show identification on Seeds"
+		description = "Show identification on Seeds",
+		section = identificationSection
 	)
 	default boolean showSeeds()
 	{
@@ -65,9 +74,20 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showSacks",
+		name = "Sacks",
+		description = "Show identification on Sacks"
+	)
+	default boolean showSacks()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showHerbs",
 		name = "Herbs",
-		description = "Show identification on Herbs"
+		description = "Show identification on Herbs",
+		section = identificationSection
 	)
 	default boolean showHerbs()
 	{
@@ -75,12 +95,112 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showLogs",
+		name = "Logs",
+		description = "Show identification on Logs",
+		section = identificationSection
+	)
+	default boolean showLogs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showPlanks",
+		name = "Planks",
+		description = "Show identification on Planks",
+		section = identificationSection
+	)
+	default boolean showPlanks()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showSaplings",
 		name = "Saplings",
-		description = "Show identification on Saplings and Seedlings"
+		description = "Show identification on Saplings and Seedlings",
+		section = identificationSection
 	)
 	default boolean showSaplings()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showComposts",
+		name = "Composts",
+		description = "Show identification on Composts",
+		section = identificationSection
+	)
+	default boolean showComposts()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showOres",
+		name = "Ores",
+		description = "Show identification on Ores",
+		section = identificationSection
+	)
+	default boolean showOres()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showBars",
+		name = "Bars",
+		description = "Show identification on Bars",
+		section = identificationSection
+	)
+	default boolean showBars()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showGems",
+		name = "Gems",
+		description = "Show identification on Gems",
+		section = identificationSection
+	)
+	default boolean showGems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showPotions",
+		name = "Potions",
+		description = "Show identification on Potions",
+		section = identificationSection
+	)
+	default boolean showPotions()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showImplingJars",
+		name = "Impling jars",
+		description = "Show identification on Impling jars",
+		section = identificationSection
+	)
+	default boolean showImplingJars()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showTablets",
+		name = "Tablets",
+		description = "Show identification on Tablets",
+		section = identificationSection
+	)
+	default boolean showTablets()
+	{
+		return false;
 	}
 }

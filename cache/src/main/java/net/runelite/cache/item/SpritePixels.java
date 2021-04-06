@@ -108,7 +108,7 @@ class SpritePixels
 
 	}
 
-	public void drawAtOn(Rasterizer2D graphics,  int x, int y)
+	public void drawAtOn(Rasterizer2D graphics, int x, int y)
 	{
 		x += this.offsetX;
 		y += this.offsetY;

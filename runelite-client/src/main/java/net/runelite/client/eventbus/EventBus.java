@@ -26,18 +26,16 @@
 package net.runelite.client.eventbus;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.Iterables;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Comparator;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -45,31 +43,27 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.ReflectUtil;
 
 @Slf4j
 @RequiredArgsConstructor
 @ThreadSafe
 public class EventBus
 {
-	@FunctionalInterface
-	public interface SubscriberMethod
-	{
-		void invoke(Object event);
-	}
-
 	@Value
-	private static class Subscriber
+	public static class Subscriber
 	{
 		private final Object object;
 		private final Method method;
+		private final float priority;
 		@EqualsAndHashCode.Exclude
-		private final SubscriberMethod lamda;
+		private final Consumer<Object> lambda;
 
 		void invoke(final Object arg) throws Exception
 		{
-			if (lamda != null)
+			if (lambda != null)
 			{
-				lamda.invoke(arg);
+				lambda.accept(arg);
 			}
 			else
 			{
@@ -79,7 +73,9 @@ public class EventBus
 	}
 
 	private final Consumer<Throwable> exceptionHandler;
-	private ImmutableMultimap<Class, Subscriber> subscribers = ImmutableMultimap.of();
+
+	@Nonnull
+	private ImmutableMultimap<Class<?>, Subscriber> subscribers = ImmutableMultimap.of();
 
 	/**
 	 * Instantiates EventBus with default exception handler
@@ -98,12 +94,10 @@ public class EventBus
 	 */
 	public synchronized void register(@Nonnull final Object object)
 	{
-		final ImmutableMultimap.Builder<Class, Subscriber> builder = ImmutableMultimap.builder();
-
-		if (subscribers != null)
-		{
-			builder.putAll(subscribers);
-		}
+		final ImmutableMultimap.Builder<Class<?>, Subscriber> builder = ImmutableMultimap.builder();
+		builder.putAll(subscribers);
+		builder.orderValuesBy(Comparator.comparing(Subscriber::getPriority).reversed()
+			.thenComparing(s -> s.object.getClass().getName()));
 
 		for (Class<?> clazz = object.getClass(); clazz != null; clazz = clazz.getSuperclass())
 		{
@@ -137,36 +131,51 @@ public class EventBus
 				Preconditions.checkArgument(method.getName().equals(preferredName), "Subscribed method " + method + " should be named " + preferredName);
 
 				method.setAccessible(true);
-				SubscriberMethod lambda = null;
+				Consumer<Object> lambda = null;
 
 				try
 				{
-					final MethodHandles.Lookup caller = privateLookupIn(clazz);
+					final MethodHandles.Lookup caller = ReflectUtil.privateLookupIn(clazz);
 					final MethodType subscription = MethodType.methodType(void.class, parameterClazz);
 					final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
 					final CallSite site = LambdaMetafactory.metafactory(
 						caller,
-						"invoke",
-						MethodType.methodType(SubscriberMethod.class, clazz),
+						"accept",
+						MethodType.methodType(Consumer.class, clazz),
 						subscription.changeParameterType(0, Object.class),
 						target,
 						subscription);
 
 					final MethodHandle factory = site.getTarget();
-					lambda = (SubscriberMethod) factory.bindTo(object).invokeExact();
+					lambda = (Consumer<Object>) factory.bindTo(object).invokeExact();
 				}
 				catch (Throwable e)
 				{
 					log.warn("Unable to create lambda for method {}", method, e);
 				}
 
-				final Subscriber subscriber = new Subscriber(object, method, lambda);
+				final Subscriber subscriber = new Subscriber(object, method, sub.priority(), lambda);
 				builder.put(parameterClazz, subscriber);
 				log.debug("Registering {} - {}", parameterClazz, subscriber);
 			}
 		}
 
 		subscribers = builder.build();
+	}
+
+	public synchronized <T> Subscriber register(Class<T> clazz, Consumer<T> subFn, float priority)
+	{
+		final ImmutableMultimap.Builder<Class<?>, Subscriber> builder = ImmutableMultimap.builder();
+		builder.putAll(subscribers);
+		builder.orderValuesBy(Comparator.comparing(Subscriber::getPriority).reversed()
+			.thenComparing(s -> s.object.getClass().getName()));
+
+		Subscriber sub = new Subscriber(subFn, null, priority, (Consumer<Object>) subFn);
+		builder.put(clazz, sub);
+
+		subscribers = builder.build();
+
+		return sub;
 	}
 
 	/**
@@ -176,36 +185,28 @@ public class EventBus
 	 */
 	public synchronized void unregister(@Nonnull final Object object)
 	{
-		if (subscribers == null)
+		subscribers = ImmutableMultimap.copyOf(Iterables.filter(
+			subscribers.entries(),
+			e -> e.getValue().getObject() != object
+		));
+	}
+
+	public synchronized void unregister(Subscriber sub)
+	{
+		if (sub == null)
 		{
 			return;
 		}
 
-		final Multimap<Class, Subscriber> map = HashMultimap.create();
-		map.putAll(subscribers);
-
-		for (Class<?> clazz = object.getClass(); clazz != null; clazz = clazz.getSuperclass())
-		{
-			for (final Method method : clazz.getDeclaredMethods())
-			{
-				final Subscribe sub = method.getAnnotation(Subscribe.class);
-
-				if (sub == null)
-				{
-					continue;
-				}
-
-				final Class<?> parameterClazz = method.getParameterTypes()[0];
-				map.remove(parameterClazz, new Subscriber(object, method, null));
-			}
-		}
-
-		subscribers = ImmutableMultimap.copyOf(map);
+		subscribers = ImmutableMultimap.copyOf(Iterables.filter(
+			subscribers.entries(),
+			e -> sub != e.getValue()
+		));
 	}
 
 	/**
-	 * Posts provided event to all registered subscribers. Subscriber calls are invoked immediately and in order
-	 * in which subscribers were registered.
+	 * Posts provided event to all registered subscribers. Subscriber calls are invoked immediately,
+	 * ordered by priority then their declaring class' name.
 	 *
 	 * @param event event to post
 	 */
@@ -221,29 +222,6 @@ public class EventBus
 			{
 				exceptionHandler.accept(e);
 			}
-		}
-	}
-
-	private static MethodHandles.Lookup privateLookupIn(Class clazz) throws IllegalAccessException, NoSuchFieldException, InvocationTargetException
-	{
-		try
-		{
-			// Java 9+ has privateLookupIn method on MethodHandles, but since we are shipping and using Java 8
-			// we need to access it via reflection. This is preferred way because it's Java 9+ public api and is
-			// likely to not change
-			final Method privateLookupIn = MethodHandles.class.getMethod("privateLookupIn", Class.class, MethodHandles.Lookup.class);
-			return (MethodHandles.Lookup) privateLookupIn.invoke(null, clazz, MethodHandles.lookup());
-		}
-		catch (NoSuchMethodException e)
-		{
-			// In Java 8 we first do standard lookupIn class
-			final MethodHandles.Lookup lookupIn = MethodHandles.lookup().in(clazz);
-
-			// and then we mark it as trusted for private lookup via reflection on private field
-			final Field modes = MethodHandles.Lookup.class.getDeclaredField("allowedModes");
-			modes.setAccessible(true);
-			modes.setInt(lookupIn, -1); // -1 == TRUSTED
-			return lookupIn;
 		}
 	}
 }

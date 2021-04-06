@@ -29,11 +29,17 @@ import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.runelite.http.api.chat.Duels;
+import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.chat.Task;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +50,7 @@ public class ChatController
 {
 	private static final Pattern STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int STRING_MAX_LENGTH = 50;
+	private static final int MAX_LAYOUT_ROOMS = 16;
 
 	private final Cache<KillCountKey, Integer> killCountCache = CacheBuilder.newBuilder()
 		.expireAfterWrite(2, TimeUnit.MINUTES)
@@ -107,6 +114,28 @@ public class ChatController
 		return kc;
 	}
 
+	@PostMapping("/gc")
+	public void submitGc(@RequestParam String name, @RequestParam int gc)
+	{
+		if (gc < 0)
+		{
+			return;
+		}
+
+		chatService.setGc(name, gc);
+	}
+
+	@GetMapping("/gc")
+	public int getKc(@RequestParam String name)
+	{
+		Integer gc = chatService.getGc(name);
+		if (gc == null)
+		{
+			throw new NotFoundException();
+		}
+		return gc;
+	}
+
 	@PostMapping("/task")
 	public void submitTask(@RequestParam String name, @RequestParam("task") String taskName, @RequestParam int amount,
 		@RequestParam int initialAmount, @RequestParam String location)
@@ -129,13 +158,22 @@ public class ChatController
 	}
 
 	@GetMapping("/task")
-	public Task getTask(@RequestParam String name)
+	public ResponseEntity<Task> getTask(@RequestParam String name)
 	{
-		return chatService.getTask(name);
+		Task task = chatService.getTask(name);
+		if (task == null)
+		{
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.build();
+		}
+
+		return ResponseEntity.ok()
+			.cacheControl(CacheControl.maxAge(2, TimeUnit.MINUTES).cachePublic())
+			.body(task);
 	}
 
 	@PostMapping("/pb")
-	public void submitPb(@RequestParam String name, @RequestParam String boss, @RequestParam int pb)
+	public void submitPb(@RequestParam String name, @RequestParam String boss, @RequestParam double pb)
 	{
 		if (pb < 0)
 		{
@@ -146,13 +184,67 @@ public class ChatController
 	}
 
 	@GetMapping("/pb")
-	public int getPb(@RequestParam String name, @RequestParam String boss)
+	public double getPb(@RequestParam String name, @RequestParam String boss)
 	{
-		Integer pb = chatService.getPb(name, boss);
+		Double pb = chatService.getPb(name, boss);
 		if (pb == null)
 		{
 			throw new NotFoundException();
 		}
 		return pb;
+	}
+
+	@PostMapping("/duels")
+	public void submitDuels(@RequestParam String name, @RequestParam int wins,
+		@RequestParam int losses,
+		@RequestParam int winningStreak, @RequestParam int losingStreak)
+	{
+		if (wins < 0 || losses < 0 || winningStreak < 0 || losingStreak < 0)
+		{
+			return;
+		}
+
+		Duels duels = new Duels();
+		duels.setWins(wins);
+		duels.setLosses(losses);
+		duels.setWinningStreak(winningStreak);
+		duels.setLosingStreak(losingStreak);
+
+		chatService.setDuels(name, duels);
+	}
+
+	@GetMapping("/duels")
+	public Duels getDuels(@RequestParam String name)
+	{
+		Duels duels = chatService.getDuels(name);
+		if (duels == null)
+		{
+			throw new NotFoundException();
+		}
+		return duels;
+	}
+
+	@PostMapping("/layout")
+	public void submitLayout(@RequestParam String name, @RequestBody LayoutRoom[] rooms)
+	{
+		if (rooms.length > MAX_LAYOUT_ROOMS)
+		{
+			return;
+		}
+
+		chatService.setLayout(name, rooms);
+	}
+
+	@GetMapping("/layout")
+	public LayoutRoom[] getLayout(@RequestParam String name)
+	{
+		LayoutRoom[] layout = chatService.getLayout(name);
+
+		if (layout == null)
+		{
+			throw new NotFoundException();
+		}
+
+		return layout;
 	}
 }

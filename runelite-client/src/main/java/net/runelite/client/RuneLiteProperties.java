@@ -28,82 +28,88 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
+import lombok.AccessLevel;
+import lombok.Getter;
+import okhttp3.HttpUrl;
 
-@Singleton
-@Slf4j
 public class RuneLiteProperties
 {
-	private static final String RUNELITE_TITLE = "runelite.title";
 	private static final String RUNELITE_VERSION = "runelite.version";
-	private static final String RUNESCAPE_VERSION = "runescape.version";
-	private static final String DISCORD_APP_ID = "runelite.discord.appid";
 	private static final String DISCORD_INVITE = "runelite.discord.invite";
-	private static final String GITHUB_LINK = "runelite.github.link";
-	private static final String WIKI_LINK = "runelite.wiki.link";
-	private static final String PATREON_LINK = "runelite.patreon.link";
 	private static final String LAUNCHER_VERSION_PROPERTY = "runelite.launcher.version";
+	private static final String INSECURE_SKIP_TLS_VERIFICATION_PROPERTY = "runelite.insecure-skip-tls-verification";
+	private static final String TROUBLESHOOTING_LINK = "runelite.wiki.troubleshooting.link";
+	private static final String BUILDING_LINK = "runelite.wiki.building.link";
+	private static final String DNS_CHANGE_LINK = "runelite.dnschange.link";
+	private static final String JAV_CONFIG = "runelite.jav_config";
+	private static final String JAV_CONFIG_BACKUP = "runelite.jav_config_backup";
+	private static final String PLUGINHUB_BASE = "runelite.pluginhub.url";
+	private static final String PLUGINHUB_VERSION = "runelite.pluginhub.version";
 
-	private final Properties properties = new Properties();
+	@Getter(AccessLevel.PACKAGE)
+	private static final Properties properties = new Properties();
 
-	@Inject
-	public RuneLiteProperties()
+	static
 	{
-		try (InputStream in = getClass().getResourceAsStream("runelite.properties"))
+		try (InputStream in = RuneLiteProperties.class.getResourceAsStream("runelite.properties"))
 		{
 			properties.load(in);
 		}
 		catch (IOException ex)
 		{
-			log.warn("unable to load propertries", ex);
+			throw new RuntimeException(ex);
 		}
 	}
 
-	public String getTitle()
-	{
-		return properties.getProperty(RUNELITE_TITLE);
-	}
-
-	public String getVersion()
+	public static String getVersion()
 	{
 		return properties.getProperty(RUNELITE_VERSION);
 	}
 
-	public String getRunescapeVersion()
-	{
-		return properties.getProperty(RUNESCAPE_VERSION);
-	}
-
-	public String getDiscordAppId()
-	{
-		return properties.getProperty(DISCORD_APP_ID);
-	}
-
-	public String getDiscordInvite()
+	public static String getDiscordInvite()
 	{
 		return properties.getProperty(DISCORD_INVITE);
-	}
-
-	public String getGithubLink()
-	{
-		return properties.getProperty(GITHUB_LINK);
-	}
-
-	public String getWikiLink()
-	{
-		return properties.getProperty(WIKI_LINK);
-	}
-
-	public String getPatreonLink()
-	{
-		return properties.getProperty(PATREON_LINK);
 	}
 
 	@Nullable
 	public static String getLauncherVersion()
 	{
 		return System.getProperty(LAUNCHER_VERSION_PROPERTY);
+	}
+
+	public static boolean isInsecureSkipTlsVerification()
+	{
+		return Boolean.getBoolean(INSECURE_SKIP_TLS_VERIFICATION_PROPERTY);
+	}
+
+	public static String getTroubleshootingLink()
+	{
+		return properties.getProperty(TROUBLESHOOTING_LINK);
+	}
+
+	public static String getBuildingLink()
+	{
+		return properties.getProperty(BUILDING_LINK);
+	}
+
+	public static String getDNSChangeLink()
+	{
+		return properties.getProperty(DNS_CHANGE_LINK);
+	}
+
+	public static String getJavConfig()
+	{
+		return properties.getProperty(JAV_CONFIG);
+	}
+
+	public static String getJavConfigBackup()
+	{
+		return properties.getProperty(JAV_CONFIG_BACKUP);
+	}
+
+	public static HttpUrl getPluginHubBase()
+	{
+		String version = System.getProperty(PLUGINHUB_VERSION, properties.getProperty(PLUGINHUB_VERSION));
+		return HttpUrl.parse(properties.get(PLUGINHUB_BASE) + "/" + version);
 	}
 }

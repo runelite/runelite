@@ -28,6 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -36,6 +37,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -45,21 +47,21 @@ import net.runelite.client.Notifier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IdleNotifierPluginTest
 {
-	private static final String PLAYER_NAME = "Deathbeam";
-
 	@Mock
 	@Bind
 	private Client client;
@@ -82,6 +84,9 @@ public class IdleNotifierPluginTest
 	private NPC randomEvent;
 
 	@Mock
+	private NPC fishingSpot;
+
+	@Mock
 	private Player player;
 
 	@Before
@@ -101,8 +106,14 @@ public class IdleNotifierPluginTest
 		when(randomEventComp.getActions()).thenReturn(randomEventActions);
 		when(randomEvent.getComposition()).thenReturn(randomEventComp);
 
+		// Mock Fishing Spot
+		final String[] fishingSpotActions = new String[] { "Use-rod", "Examine" };
+		final NPCComposition fishingSpotComp = mock(NPCComposition.class);
+		when(fishingSpotComp.getActions()).thenReturn(fishingSpotActions);
+		when(fishingSpot.getComposition()).thenReturn(fishingSpotComp);
+		when(fishingSpot.getName()).thenReturn("Fishing spot");
+
 		// Mock player
-		when(player.getName()).thenReturn(PLAYER_NAME);
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
 		when(client.getLocalPlayer()).thenReturn(player);
 
@@ -131,7 +142,7 @@ public class IdleNotifierPluginTest
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
 		plugin.onAnimationChanged(animationChanged);
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify("[" + PLAYER_NAME + "] is now idle!");
+		verify(notifier).notify("You are now idle!");
 	}
 
 	@Test
@@ -187,19 +198,17 @@ public class IdleNotifierPluginTest
 		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify("[" + PLAYER_NAME + "] is now out of combat!");
+		verify(notifier).notify("You are now out of combat!");
 	}
 
 	@Test
 	public void checkCombatReset()
 	{
-		when(player.getInteracting()).thenReturn(monster);
+		when(player.getInteracting()).thenReturn(mock(Actor.class));
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
 		plugin.onGameTick(new GameTick());
-		when(player.getInteracting()).thenReturn(randomEvent);
 		plugin.onInteractingChanged(new InteractingChanged(player, randomEvent));
 		plugin.onGameTick(new GameTick());
-		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
 		verify(notifier, times(0)).notify(any());
@@ -209,7 +218,7 @@ public class IdleNotifierPluginTest
 	public void checkCombatLogout()
 	{
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
-		when(player.getInteracting()).thenReturn(monster);
+		when(player.getInteracting()).thenReturn(mock(Actor.class));
 		plugin.onGameTick(new GameTick());
 
 		// Logout
@@ -224,7 +233,6 @@ public class IdleNotifierPluginTest
 		plugin.onGameStateChanged(gameStateChanged);
 
 		// Tick
-		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
 		verify(notifier, times(0)).notify(any());
@@ -239,7 +247,7 @@ public class IdleNotifierPluginTest
 		// But player is being damaged (is in combat)
 		final HitsplatApplied hitsplatApplied = new HitsplatApplied();
 		hitsplatApplied.setActor(player);
-		hitsplatApplied.setHitsplat(new Hitsplat(Hitsplat.HitsplatType.DAMAGE, 0, 0));
+		hitsplatApplied.setHitsplat(new Hitsplat(Hitsplat.HitsplatType.DAMAGE_ME, 0, 0));
 		plugin.onHitsplatApplied(hitsplatApplied);
 		plugin.onGameTick(new GameTick());
 		verify(notifier, times(0)).notify(any());
@@ -260,16 +268,56 @@ public class IdleNotifierPluginTest
 	}
 
 	@Test
+	public void testSendOneNotificationForAnimationAndInteract()
+	{
+		when(player.getInteracting()).thenReturn(fishingSpot);
+		when(player.getAnimation()).thenReturn(AnimationID.FISHING_POLE_CAST);
+
+		AnimationChanged animationChanged = new AnimationChanged();
+		animationChanged.setActor(player);
+
+		plugin.onInteractingChanged(new InteractingChanged(player, fishingSpot));
+		plugin.onAnimationChanged(animationChanged);
+		plugin.onGameTick(new GameTick());
+
+		verify(notifier, never()).notify(anyString());
+
+		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
+		lenient().when(player.getInteracting()).thenReturn(null);
+
+		plugin.onAnimationChanged(animationChanged);
+		plugin.onInteractingChanged(new InteractingChanged(player, null));
+		plugin.onGameTick(new GameTick());
+
+		verify(notifier).notify("You are now idle!");
+	}
+
+	@Test
 	public void testSpecRegen()
 	{
 		when(config.getSpecEnergyThreshold()).thenReturn(50);
 
-		when(client.getVar(Matchers.eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
+		when(client.getVar(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
 		plugin.onGameTick(new GameTick()); // once to set lastSpecEnergy to 400
 		verify(notifier, never()).notify(any());
 
-		when(client.getVar(Matchers.eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
+		when(client.getVar(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify(Matchers.eq("[" + PLAYER_NAME + "] has restored spec energy!"));
+		verify(notifier).notify(eq("You have restored spec energy!"));
+	}
+
+	@Test
+	public void testMovementIdle()
+	{
+		when(config.movementIdle()).thenReturn(true);
+
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
+		plugin.onGameTick(new GameTick());
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(1, 0, 0));
+		plugin.onGameTick(new GameTick());
+		// No movement here
+		plugin.onGameTick(new GameTick());
+
+		verify(notifier).notify(eq("You have stopped moving!"));
 	}
 }

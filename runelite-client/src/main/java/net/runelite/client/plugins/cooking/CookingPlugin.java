@@ -36,18 +36,21 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicID;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -101,6 +104,18 @@ public class CookingPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
+	{
+		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
+		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY
+			&& overlayMenuClicked.getEntry().getOption().equals(CookingOverlay.COOKING_RESET)
+			&& overlayMenuClicked.getOverlay() == overlay)
+		{
+			session = null;
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
 		if (session == null || config.statTimeout() == 0)
@@ -109,9 +124,9 @@ public class CookingPlugin extends Plugin
 		}
 
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastCookingAction(), Instant.now());
+		Duration sinceCooked = Duration.between(session.getLastCookingAction(), Instant.now());
 
-		if (sinceCut.compareTo(statTimeout) >= 0)
+		if (sinceCooked.compareTo(statTimeout) >= 0)
 		{
 			session = null;
 		}
@@ -159,9 +174,17 @@ public class CookingPlugin extends Plugin
 
 		if (message.startsWith("You successfully cook")
 			|| message.startsWith("You successfully bake")
+			|| message.startsWith("You successfully fry")
 			|| message.startsWith("You manage to cook")
 			|| message.startsWith("You roast a")
-			|| message.startsWith("You cook"))
+			|| message.startsWith("You spit-roast")
+			|| message.startsWith("You cook")
+			|| message.startsWith("Eventually the Jubbly")
+			|| message.startsWith("You half-cook")
+			|| message.startsWith("The undead meat is now cooked")
+			|| message.startsWith("The undead chicken is now cooked")
+			|| message.startsWith("You successfully scramble")
+			|| message.startsWith("You dry a piece of meat"))
 		{
 			if (session == null)
 			{
@@ -172,7 +195,10 @@ public class CookingPlugin extends Plugin
 			session.increaseCookAmount();
 
 		}
-		else if (message.startsWith("You accidentally burn"))
+		else if (message.startsWith("You accidentally burn")
+			|| message.equals("You burn the mushroom in the fire.")
+			|| message.startsWith("Unfortunately the Jubbly")
+			|| message.startsWith("You accidentally spoil"))
 		{
 			if (session == null)
 			{

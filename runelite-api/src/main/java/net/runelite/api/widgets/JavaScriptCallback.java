@@ -26,6 +26,10 @@ package net.runelite.api.widgets;
 
 import net.runelite.api.ScriptEvent;
 
+/**
+ * An object that can be set as the first argument to a {@link Widget} listener
+ * to handle ScriptEvents with Java code, rather than cs2.
+ */
 @FunctionalInterface
 public interface JavaScriptCallback
 {

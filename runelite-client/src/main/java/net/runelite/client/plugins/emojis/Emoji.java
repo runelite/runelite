@@ -79,7 +79,21 @@ enum Emoji
 	PARTY_POPPER("@@@"),
 	EYES("O.O"),
 	SWEAT(";;"),
-	PILE_OF_POO("~@~");
+	PILE_OF_POO("~@~"),
+	FIRE("(/\\)"),
+	ALIEN("(@.@)"),
+	EGGPLANT("8=D"),
+	WAVE("(^_^)/"),
+	HEART_EYES("(*.*)"),
+	FACEPALM("M-)"),
+	PENSIVE("V_V"),
+	ACORN("<lt>D~"), // <D~
+	GORILLA(":G"),
+	PLEADING("(n_n)"),
+	XD("Xd"),
+	SPOON("--o"),
+	WEARY_FACE("Dx"),
+	;
 
 	private static final Map<String, Emoji> emojiMap;
 
@@ -104,7 +118,7 @@ enum Emoji
 
 	BufferedImage loadImage()
 	{
-		return ImageUtil.getResourceStreamFromClass(getClass(), this.name().toLowerCase() + ".png");
+		return ImageUtil.loadImageResource(getClass(), this.name().toLowerCase() + ".png");
 	}
 
 	static Emoji getEmoji(String trigger)

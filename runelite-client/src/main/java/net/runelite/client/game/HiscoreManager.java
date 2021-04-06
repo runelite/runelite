@@ -33,11 +33,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
+import okhttp3.OkHttpClient;
 
 @Singleton
 public class HiscoreManager
@@ -53,12 +52,13 @@ public class HiscoreManager
 	static final HiscoreResult EMPTY = new HiscoreResult();
 	static final HiscoreResult NONE = new HiscoreResult();
 
-	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final LoadingCache<HiscoreKey, HiscoreResult> hiscoreCache;
+	private final HiscoreClient hiscoreClient;
 
 	@Inject
-	public HiscoreManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
+	public HiscoreManager(ScheduledExecutorService executor, OkHttpClient okHttpClient)
 	{
+		hiscoreClient = new HiscoreClient(okHttpClient);
 		hiscoreCache = CacheBuilder.newBuilder()
 			.maximumSize(128L)
 			.expireAfterWrite(1, TimeUnit.HOURS)

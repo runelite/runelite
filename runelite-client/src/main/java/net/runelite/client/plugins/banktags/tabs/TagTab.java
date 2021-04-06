@@ -31,12 +31,13 @@ import net.runelite.api.widgets.Widget;
 
 @Data
 @EqualsAndHashCode(of = "tag")
-class TagTab
+public class TagTab
 {
 	private String tag;
 	private int iconItemId;
 	private Widget background;
 	private Widget icon;
+	private Widget menu;
 
 	TagTab(int iconItemId, String tag)
 	{
@@ -54,6 +55,11 @@ class TagTab
 		if (icon != null)
 		{
 			icon.setHidden(hide);
+		}
+
+		if (menu != null)
+		{
+			menu.setHidden(hide);
 		}
 	}
 }

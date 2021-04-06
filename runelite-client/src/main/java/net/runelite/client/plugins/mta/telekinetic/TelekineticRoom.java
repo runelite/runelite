@@ -46,8 +46,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.Perspective;
-import net.runelite.api.Projectile;
-import net.runelite.api.ProjectileID;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.Angle;
 import net.runelite.api.coords.Direction;
@@ -178,14 +176,6 @@ public class TelekineticRoom extends MTARoom
 			}
 			else
 			{
-				for (Projectile projectile : client.getProjectiles())
-				{
-					if (projectile.getId() == ProjectileID.TELEKINETIC_SPELL)
-					{
-						return;
-					}
-				}
-
 				log.debug("Rebuilding moves due to guardian move");
 				this.moves = build();
 			}

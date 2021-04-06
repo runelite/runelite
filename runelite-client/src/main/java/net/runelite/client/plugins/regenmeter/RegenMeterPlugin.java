@@ -36,6 +36,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
@@ -55,6 +56,8 @@ public class RegenMeterPlugin extends Plugin
 {
 	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
+
+	private static final int TRAILBLAZER_LEAGUE_FLUID_STRIKES_RELIC = 2;
 
 	@Inject
 	private Client client;
@@ -141,6 +144,11 @@ public class RegenMeterPlugin extends Plugin
 			ticksPerHPRegen /= 2;
 		}
 
+		if (client.getVar(Varbits.LEAGUE_RELIC_3) == TRAILBLAZER_LEAGUE_FLUID_STRIKES_RELIC)
+		{
+			ticksPerHPRegen /= 4;
+		}
+
 		ticksSinceHPRegen = (ticksSinceHPRegen + 1) % ticksPerHPRegen;
 		hitpointsPercentage = ticksSinceHPRegen / (double) ticksPerHPRegen;
 
@@ -158,7 +166,7 @@ public class RegenMeterPlugin extends Plugin
 
 		if (config.getNotifyBeforeHpRegenSeconds() > 0 && currentHP < maxHP && shouldNotifyHpRegenThisTick(ticksPerHPRegen))
 		{
-			notifier.notify("[" + client.getLocalPlayer().getName() + "] regenerates their next hitpoint soon!");
+			notifier.notify("Your next hitpoint will regenerate soon!");
 		}
 	}
 

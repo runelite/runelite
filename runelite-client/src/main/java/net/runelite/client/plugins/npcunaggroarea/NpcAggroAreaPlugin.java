@@ -38,7 +38,6 @@ import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.ItemID;
@@ -48,11 +47,12 @@ import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.geometry.Geometry;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -62,7 +62,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.WildcardMatcher;
 
-@Slf4j
 @PluginDescriptor(
 	name = "NPC Aggression Timer",
 	description = "Highlights the unaggressive area of NPCs nearby and timer until it becomes active",
@@ -112,6 +111,9 @@ public class NpcAggroAreaPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	private Notifier notifier;
+
 	@Getter
 	private final WorldPoint[] safeCenters = new WorldPoint[2];
 
@@ -127,6 +129,8 @@ public class NpcAggroAreaPlugin extends Plugin
 	private WorldPoint lastPlayerLocation;
 	private WorldPoint previousUnknownCenter;
 	private boolean loggingIn;
+	private boolean notifyOnce;
+
 	private List<String> npcNamePatterns;
 
 	@Provides
@@ -225,6 +229,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	{
 		infoBoxManager.removeInfoBox(currentTimer);
 		currentTimer = null;
+		notifyOnce = false;
 	}
 
 	private void createTimer(Duration duration)
@@ -233,6 +238,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		BufferedImage image = itemManager.getImage(ItemID.ENSOULED_DEMON_HEAD);
 		currentTimer = new AggressionTimer(duration, image, this, active && config.showTimer());
 		infoBoxManager.addInfoBox(currentTimer);
+		notifyOnce = true;
 	}
 
 	private void resetTimer()
@@ -319,6 +325,17 @@ public class NpcAggroAreaPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		WorldPoint newLocation = client.getLocalPlayer().getWorldLocation();
+
+		if (active && currentTimer != null && currentTimer.cull() && notifyOnce)
+		{
+			if (config.notifyExpire())
+			{
+				notifier.notify("NPC aggression has expired!");
+			}
+
+			notifyOnce = false;
+		}
+
 		if (lastPlayerLocation != null)
 		{
 			if (safeCenters[1] == null && newLocation.distanceTo2D(lastPlayerLocation) > SAFE_AREA_RADIUS * 4)

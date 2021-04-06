@@ -34,26 +34,29 @@ import java.util.Set;
 import javax.inject.Inject;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class MotherlodeOverlay extends Overlay
+class MotherlodeOverlay extends OverlayPanel
 {
 	private static final Set<Integer> MINING_ANIMATION_IDS = ImmutableSet.of(
 		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
 		MINING_MOTHERLODE_BLACK, MINING_MOTHERLODE_MITHRIL, MINING_MOTHERLODE_ADAMANT,
-		MINING_MOTHERLODE_RUNE, MINING_MOTHERLODE_DRAGON, MINING_MOTHERLODE_DRAGON_ORN,
-		MINING_MOTHERLODE_INFERNAL
+		MINING_MOTHERLODE_RUNE, MINING_MOTHERLODE_GILDED, MINING_MOTHERLODE_DRAGON,
+		MINING_MOTHERLODE_DRAGON_UPGRADED, MINING_MOTHERLODE_DRAGON_OR, MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER,
+		MINING_MOTHERLODE_INFERNAL, MINING_MOTHERLODE_3A, MINING_MOTHERLODE_CRYSTAL,
+		MINING_MOTHERLODE_TRAILBLAZER
 	);
+	static final String MINING_RESET = "Reset";
 
 	private final Client client;
 	private final MotherlodePlugin plugin;
 	private final MotherlodeSession motherlodeSession;
 	private final MotherlodeConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	MotherlodeOverlay(Client client, MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
@@ -64,6 +67,7 @@ class MotherlodeOverlay extends Overlay
 		this.plugin = plugin;
 		this.motherlodeSession = motherlodeSession;
 		this.config = config;
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, MINING_RESET, "Motherlode mine overlay"));
 	}
 
 	@Override
@@ -82,14 +86,12 @@ class MotherlodeOverlay extends Overlay
 		}
 
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastPayDirtMined(), Instant.now());
+		Duration sinceLastPayDirt = Duration.between(session.getLastPayDirtMined(), Instant.now());
 
-		if (sinceCut.compareTo(statTimeout) >= 0)
+		if (sinceLastPayDirt.compareTo(statTimeout) >= 0)
 		{
 			return null;
 		}
-
-		panelComponent.getChildren().clear();
 
 		if (config.showMiningState())
 		{
@@ -119,6 +121,6 @@ class MotherlodeOverlay extends Overlay
 			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "")
 			.build());
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

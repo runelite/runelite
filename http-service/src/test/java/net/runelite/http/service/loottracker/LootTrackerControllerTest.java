@@ -26,16 +26,18 @@ package net.runelite.http.service.loottracker;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.temporal.ChronoField;
 import java.util.Collections;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
+import net.runelite.http.service.util.redis.RedisPool;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,10 +56,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import redis.clients.jedis.Jedis;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(LootTrackerController.class)
-@Slf4j
 @ActiveProfiles("test")
 public class LootTrackerControllerTest
 {
@@ -70,11 +72,16 @@ public class LootTrackerControllerTest
 	@MockBean
 	private AuthFilter authFilter;
 
+	@MockBean
+	private RedisPool redisPool;
+
 	@Before
 	public void before() throws IOException
 	{
 		when(authFilter.handle(any(HttpServletRequest.class), any(HttpServletResponse.class)))
 			.thenReturn(mock(SessionEntry.class));
+
+		when(redisPool.getResource()).thenReturn(mock(Jedis.class));
 	}
 
 	@Test
@@ -82,13 +89,16 @@ public class LootTrackerControllerTest
 	{
 		LootRecord lootRecord = new LootRecord();
 		lootRecord.setType(LootRecordType.NPC);
-		lootRecord.setTime(Instant.now());
+		lootRecord.setTime(Instant.now().with(ChronoField.NANO_OF_SECOND, 0));
 		lootRecord.setDrops(Collections.singletonList(new GameItem(4151, 1)));
 
-		String data = RuneLiteAPI.GSON.toJson(lootRecord);
-		mockMvc.perform(post("/loottracker").content(data).contentType(MediaType.APPLICATION_JSON))
+		String data = RuneLiteAPI.GSON.toJson(Collections.singletonList(lootRecord));
+		mockMvc.perform(post("/loottracker")
+			.header(RuneLiteAPI.RUNELITE_AUTH, UUID.nameUUIDFromBytes("test".getBytes()))
+			.content(data)
+			.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
 
-		verify(lootTrackerService).store(eq(lootRecord), anyInt());
+		verify(lootTrackerService).store(eq(Collections.singletonList(lootRecord)), anyInt());
 	}
 }

@@ -31,7 +31,7 @@ import com.google.common.cache.LoadingCache;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -39,10 +39,9 @@ import okhttp3.HttpUrl;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class HiscoreService
 {
-	private final HiscoreClient hiscoreClient = new HiscoreClient();
+	private final HiscoreClient hiscoreClient = new HiscoreClient(RuneLiteAPI.CLIENT);
 	private final LoadingCache<HiscoreKey, HiscoreResult> hiscoreCache = CacheBuilder.newBuilder()
 		.maximumSize(128)
 		.expireAfterWrite(1, TimeUnit.MINUTES)

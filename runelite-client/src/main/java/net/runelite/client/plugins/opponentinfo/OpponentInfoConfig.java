@@ -44,7 +44,7 @@ public interface OpponentInfoConfig extends Config
 
 	@ConfigItem(
 		keyName = "hitpointsDisplayStyle",
-		name = "Hitpoints display style",
+		name = "Display style",
 		description = "Show opponent's hitpoints as a value (if known), percentage, or both",
 		position = 1
 	)
@@ -54,13 +54,13 @@ public interface OpponentInfoConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showOpponentsOpponent",
-		name = "Show opponent's opponent",
-		description = "Toggle showing opponent's opponent if within a multi-combat area",
-		position = 2
+		keyName = "showOpponentsInMenu",
+		name = "Show opponents in menu",
+		description = "Marks opponents names in the menu which you are attacking or are attacking you (NPC only)",
+		position = 3
 	)
-	default boolean showOpponentsOpponent()
+	default boolean showOpponentsInMenu()
 	{
-		return true;
+		return false;
 	}
 }

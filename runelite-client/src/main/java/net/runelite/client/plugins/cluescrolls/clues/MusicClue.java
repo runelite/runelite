@@ -61,7 +61,7 @@ public class MusicClue extends ClueScroll implements NpcClueScroll
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
-		panelComponent.getChildren().add(LineComponent.builder().left("Area:").build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Falador Park")
 			.leftColor(TITLED_CONTENT_COLOR)

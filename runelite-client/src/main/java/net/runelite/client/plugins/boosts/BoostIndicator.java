@@ -87,11 +87,12 @@ public class BoostIndicator extends InfoBox
 	@Override
 	public boolean render()
 	{
-		if (config.displayInfoboxes() && plugin.canShowBoosts() && plugin.getShownSkills().contains(getSkill()))
-		{
-			return client.getBoostedSkillLevel(skill) != client.getRealSkillLevel(skill);
-		}
+		return config.displayInfoboxes() && plugin.canShowBoosts() && plugin.getSkillsToDisplay().contains(getSkill());
+	}
 
-		return false;
+	@Override
+	public String getName()
+	{
+		return "Boost " + skill.getName();
 	}
 }

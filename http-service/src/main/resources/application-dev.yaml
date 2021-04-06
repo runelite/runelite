@@ -26,6 +26,11 @@ datasource:
     username: runelite
     password: runelite
 
+# Development mongo
+mongo:
+  jndiName:
+  host: mongodb://localhost:27017
+
 # Development oauth callback (without proxy)
 oauth:
   callback: http://localhost:8080/account/callback

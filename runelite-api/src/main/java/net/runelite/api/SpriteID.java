@@ -431,7 +431,7 @@ public final class SpriteID
 	public static final int SPELL_FIRE_SURGE_DISABLED = 415;
 	/* Unmapped: 416, 417, 418 */
 	public static final int UNKNOWN_STANCE_ICON_1 = 419;
-	public static final int UNKNOWN_STANCE_ICON_2 = 320;
+	public static final int UNKNOWN_STANCE_ICON_2 = 420;
 	public static final int UNKNOWN_STANCE_ICON_3 = 421;
 	public static final int MINIMAP_DESTINATION_FLAG = 422;
 	public static final int CHATBOX_BADGE_CROWN_PLAYER_MODERATOR = 423;
@@ -725,7 +725,7 @@ public final class SpriteID
 	public static final int EMOTE_GOBLIN_SALUTE = 727;
 	public static final int EMOTE_SCARED = 728;
 	public static final int EMOTE_SLAP_HEAD = 729;
-	public static final int EMOTE_STOMP = 730;
+	public static final int EMOTE_STAMP = 730;
 	public static final int EMOTE_FLAP = 731;
 	public static final int EMOTE_IDEA = 732;
 	public static final int EMOTE_ZOMBIE_WALK = 733;
@@ -745,7 +745,7 @@ public final class SpriteID
 	public static final int EMOTE_GOBLIN_SALUTE_LOCKED = 747;
 	public static final int EMOTE_SCARED_LOCKED = 748;
 	public static final int EMOTE_SLAP_HEAD_LOCKED = 749;
-	public static final int EMOTE_STOMP_LOCKED = 750;
+	public static final int EMOTE_STAMP_LOCKED = 750;
 	public static final int EMOTE_FLAP_LOCKED = 751;
 	public static final int EMOTE_IDEA_LOCKED = 752;
 	public static final int EMOTE_ZOMBIE_WALK_LOCKED = 753;
@@ -776,7 +776,7 @@ public final class SpriteID
 	public static final int RS2_TAB_EQUIPMENT = 778;
 	public static final int RS2_TAB_PRAYER = 779;
 	public static final int TAB_MAGIC = 780;
-	public static final int RS2_TAB_CLAN_CHAT = 781;
+	public static final int RS2_TAB_FRIENDS_CHAT = 781;
 	public static final int TAB_FRIENDS = 782;
 	public static final int TAB_IGNORES = 783;
 	public static final int RS2_TAB_LOGOUT = 784;
@@ -888,7 +888,7 @@ public final class SpriteID
 	public static final int TAB_EQUIPMENT = 901;
 	public static final int TAB_PRAYER = 902;
 	public static final int UNUSED_TAB_MAGIC_903 = 903;
-	public static final int TAB_CLAN_CHAT = 904;
+	public static final int TAB_FRIENDS_CHAT = 904;
 	public static final int TAB_LOGOUT = 907;
 	public static final int TAB_OPTIONS = 908;
 	public static final int TAB_EMOTES = 909;
@@ -977,15 +977,6 @@ public final class SpriteID
 	public static final int STASH_UNITS_SLANTED_TAB_EDGE_LEFT_HOVERED = 1001;
 	public static final int STASH_UNITS_SLANTED_TAB_MIDDLE_HOVERED = 1002;
 	public static final int STASH_UNITS_SLANTED_TAB_EDGE_RIGHT_HOVERED = 1003;
-	public static final int CLAN_CHAT_RANK_SMILEY_FRIEND = 1004;
-	public static final int CLAN_CHAT_RANK_CROWN_JAGEX_MODERATOR = 1005;
-	public static final int CLAN_CHAT_RANK_KEY_CHANNEL_OWNER = 1006;
-	public static final int CLAN_CHAT_RANK_GOLD_STAR_GENERAL = 1007;
-	public static final int CLAN_CHAT_RANK_SILVER_STAR_CAPTAIN = 1008;
-	public static final int CLAN_CHAT_RANK_BRONZE_STAR_LIEUTENANT = 1009;
-	public static final int CLAN_CHAT_RANK_TRIPLE_CHEVRON_SERGEANT = 1010;
-	public static final int CLAN_CHAT_RANK_DOUBLE_CHEVRON_CORPORAL = 1011;
-	public static final int CLAN_CHAT_RANK_SINGLE_CHEVRON_RECRUIT = 1012;
 	public static final int UNKNOWN_BUTTON_METAL_CORNERS = 1013;
 	public static final int UNKNOWN_BUTTON_METAL_CORNERS_HOVERED = 1014;
 	public static final int UNKNOWN_SLANTED_TAB_LONG = 1015;
@@ -1017,7 +1008,7 @@ public final class SpriteID
 	public static final int BANK_DEPOSIT_INVENTORY = 1041;
 	public static final int BANK_DEPOSIT_EQUIPMENT = 1042;
 	public static final int BANK_SEARCH = 1043;
-	public static final int MINIMAP_MARKER_PURPLE_PLAYER_CLAN_CHAT = 1044;
+	public static final int MINIMAP_MARKER_PURPLE_PLAYER_FRIENDS_CHAT = 1044;
 	public static final int OPTIONS_PROFANITY_FILTER = 1045;
 	public static final int PLAYER_KILLER_SKULL_1046 = 1046;
 	public static final int PLAYER_KILLING_DISABLED_OVERLAY = 1047;
@@ -1042,8 +1033,8 @@ public final class SpriteID
 	public static final int MINIMAP_ORB_PRAYER_ACTIVATED = 1066;
 	public static final int MINIMAP_ORB_HITPOINTS_ICON = 1067;
 	public static final int MINIMAP_ORB_PRAYER_ICON = 1068;
+	public static final int MINIMAP_ORB_WALK_ICON = 1069;
 	public static final int MINIMAP_ORB_RUN_ICON = 1070;
-	public static final int MINIMAP_ORB_RUN_ICON_ACTIVATED = 1070;
 	public static final int MINIMAP_ORB_FRAME = 1071;
 	public static final int MINIMAP_ORB_FRAME_HOVERED = 1072;
 	public static final int OPTIONS_CAMERA = 1073;
@@ -1293,7 +1284,7 @@ public final class SpriteID
 	public static final int SPELL_REANIMATE_CROPS_DISABLED = 1327;
 	/* Unmapped: 1328~1337 */
 	public static final int WORLD_SWITCHER_WORLD_STAR_BLUE = 1338;
-	public static final int GAMEBLAST16_PROMO_BANNER = 1339;
+	public static final int HITSPLAT_DARK_GREEN_VENOM = 1339;
 	public static final int FAIRY_RING_REMOVE_FAVOURITE = 1340;
 	public static final int FAIRY_RING_ADD_FAVOURITE = 1341;
 	public static final int BANK_PLACEHOLDERS_LOCK = 1342;
@@ -1317,7 +1308,7 @@ public final class SpriteID
 	public static final int HITSPLAT_GREEN_POISON = 1360;
 	public static final int HITSPLAT_ORANGE = 1361;
 	public static final int HITSPLAT_ORANGE_DISEASE = 1362;
-	public static final int HITSPLAT_DARK_GREEN_VENOM = 1363;
+	public static final int HITSPLAT_GREY = 1363;
 	public static final int BOUNTY_HUNTER_SKIP_TARGET = 1364;
 	public static final int BOUNTY_HUNTER_SKIP_TARGET_HOVERED = 1365;
 	public static final int HOUSE_VIEWER_ROTATE_CLOCKWISE = 1366;
@@ -1564,7 +1555,11 @@ public final class SpriteID
 	public static final int MOBILE_FUNCTION_MODE_DISABLED = 1624;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_1 = 1625;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_2 = 1626;
-	/* Unmapped: 1627~1707 */
+	public static final int MOBILE_FINGER_ON_INTERFACE = 1653;
+	/* Unmapped: 1627~1701 */
+	public static final int BUTTON_FRIENDS = 1702;
+	public static final int BUTTON_IGNORES = 1703;
+	/* Unmapped: 1704~1707 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS_UNUSED = 1708;
 	/* Unmapped: 1709, 1710 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS = 1711;
@@ -1585,4 +1580,19 @@ public final class SpriteID
 	public static final int HEALTHBAR_DEFAULT_BACK_140PX = 2189;
 	public static final int HEALTHBAR_DEFAULT_FRONT_160PX = 2190;
 	public static final int HEALTHBAR_DEFAULT_BACK_160PX = 2191;
+	public static final int WIKI_DESELECTED = 2420;
+	public static final int WIKI_SELECTED = 2421;
+	public static final int FRIENDS_CHAT_RANK_SMILEY_FRIEND = 2825;
+	public static final int FRIENDS_CHAT_RANK_CROWN_JAGEX_MODERATOR = 2826;
+	public static final int FRIENDS_CHAT_RANK_KEY_CHANNEL_OWNER = 2827;
+	public static final int FRIENDS_CHAT_RANK_GOLD_STAR_GENERAL = 2828;
+	public static final int FRIENDS_CHAT_RANK_SILVER_STAR_CAPTAIN = 2829;
+	public static final int FRIENDS_CHAT_RANK_BRONZE_STAR_LIEUTENANT = 2830;
+	public static final int FRIENDS_CHAT_RANK_TRIPLE_CHEVRON_SERGEANT = 2831;
+	public static final int FRIENDS_CHAT_RANK_DOUBLE_CHEVRON_CORPORAL = 2832;
+	public static final int FRIENDS_CHAT_RANK_SINGLE_CHEVRON_RECRUIT = 2833;
+
+	public static final int SETTINGS_SLIDER_HANDLE_BLUE = 2858;
+	public static final int SETTINGS_SLIDER_HANDLE_RED = 2859;
+	public static final int SETTINGS_SLIDER_HANDLE_GREEN = 2860;
 }

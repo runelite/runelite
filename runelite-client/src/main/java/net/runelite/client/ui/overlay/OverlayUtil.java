@@ -31,8 +31,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -40,6 +40,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.util.ColorUtil;
 
 
 /**
@@ -50,14 +51,14 @@ public class OverlayUtil
 	private static final int MINIMAP_DOT_RADIUS = 4;
 	private static final double UNIT = Math.PI / 1024.0d;
 
-	public static void renderPolygon(Graphics2D graphics, Polygon poly, Color color)
+	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color)
 	{
 		graphics.setColor(color);
 		final Stroke originalStroke = graphics.getStroke();
 		graphics.setStroke(new BasicStroke(2));
-		graphics.drawPolygon(poly);
+		graphics.draw(poly);
 		graphics.setColor(new Color(0, 0, 0, 50));
-		graphics.fillPolygon(poly);
+		graphics.fill(poly);
 		graphics.setStroke(originalStroke);
 	}
 
@@ -65,7 +66,7 @@ public class OverlayUtil
 	{
 		graphics.setColor(Color.BLACK);
 		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2 + 1, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
-		graphics.setColor(color);
+		graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
 		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
 	}
 
@@ -92,7 +93,7 @@ public class OverlayUtil
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(text, x + 1, y + 1);
 
-		graphics.setColor(color);
+		graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
 		graphics.drawString(text, x, y);
 	}
 
@@ -175,7 +176,7 @@ public class OverlayUtil
 		renderImageLocation(client, graphics, localLocation, image, 0);
 	}
 
-	public static void renderHoverableArea(Graphics2D graphics, Area area, net.runelite.api.Point mousePosition, Color fillColor, Color borderColor, Color borderHoverColor)
+	public static void renderHoverableArea(Graphics2D graphics, Shape area, net.runelite.api.Point mousePosition, Color fillColor, Color borderColor, Color borderHoverColor)
 	{
 		if (area != null)
 		{
@@ -216,8 +217,6 @@ public class OverlayUtil
 				break;
 			case TOP_LEFT:
 			case TOP_CENTER:
-				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
-				break;
 			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
 				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
@@ -241,18 +240,18 @@ public class OverlayUtil
 			case TOP_LEFT:
 				break;
 			case TOP_CENTER:
-				result.x = result.x - dimension.width / 2;
+				result.x = -dimension.width / 2;
 				break;
 			case BOTTOM_LEFT:
-				result.y = result.y - dimension.height;
+				result.y = -dimension.height;
 				break;
 			case BOTTOM_RIGHT:
 			case ABOVE_CHATBOX_RIGHT:
-				result.y = result.y - dimension.height;
+				result.y = -dimension.height;
 				// FALLTHROUGH
 			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
-				result.x = result.x - dimension.width;
+				result.x = -dimension.width;
 				break;
 		}
 

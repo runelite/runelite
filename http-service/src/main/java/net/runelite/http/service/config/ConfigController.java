@@ -25,6 +25,7 @@
 package net.runelite.http.service.config;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.config.Configuration;
@@ -32,6 +33,7 @@ import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +68,29 @@ public class ConfigController
 		return configService.get(session.getUser());
 	}
 
+	@PatchMapping
+	public List<String> patch(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		@RequestBody Configuration changes
+	) throws IOException
+	{
+		SessionEntry session = authFilter.handle(request, response);
+		if (session == null)
+		{
+			return null;
+		}
+
+		List<String> failures = configService.patch(session.getUser(), changes);
+		if (failures.size() != 0)
+		{
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return failures;
+		}
+
+		return null;
+	}
+
 	@RequestMapping(path = "/{key:.+}", method = PUT)
 	public void setKey(
 		HttpServletRequest request,
@@ -81,7 +106,10 @@ public class ConfigController
 			return;
 		}
 
-		configService.setKey(session.getUser(), key, value);
+		if (!configService.setKey(session.getUser(), key, value))
+		{
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@RequestMapping(path = "/{key:.+}", method = DELETE)
@@ -98,6 +126,9 @@ public class ConfigController
 			return;
 		}
 
-		configService.unsetKey(session.getUser(), key);
+		if (!configService.unsetKey(session.getUser(), key))
+		{
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 	}
 }

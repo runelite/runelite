@@ -30,14 +30,17 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.text.WordUtils;
+import org.apache.commons.text.similarity.JaroWinklerDistance;
 
 /**
  * A set of utilities to use when dealing with text.
  */
 public class Text
 {
+	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 	private static final Splitter COMMA_SPLITTER = Splitter
 		.on(",")
@@ -45,6 +48,8 @@ public class Text
 		.trimResults();
 
 	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
+
+	public static final CharMatcher JAGEX_PRINTABLE_CHAR_MATCHER = new JagexPrintableCharMatcher();
 
 	/**
 	 * Splits comma separated values to list of strings
@@ -77,6 +82,32 @@ public class Text
 	public static String removeTags(String str)
 	{
 		return TAG_REGEXP.matcher(str).replaceAll("");
+	}
+
+	/**
+	 * Remove tags from the given string, except for &lt;lt&gt; and &lt;gt&gt;
+	 *
+	 * @param str The string to remove formatting tags from.
+	 * @return The given string with all formatting tags removed from it.
+	 */
+	public static String removeFormattingTags(String str)
+	{
+		StringBuffer stringBuffer = new StringBuffer();
+		Matcher matcher = TAG_REGEXP.matcher(str);
+		while (matcher.find())
+		{
+			matcher.appendReplacement(stringBuffer, "");
+			String match = matcher.group(0);
+			switch (match)
+			{
+				case "<lt>":
+				case "<gt>":
+					stringBuffer.append(match);
+					break;
+			}
+		}
+		matcher.appendTail(stringBuffer);
+		return stringBuffer.toString();
 	}
 
 	/**
@@ -183,5 +214,23 @@ public class Text
 		}
 
 		return toString;
+	}
+
+	/**
+	 * Checks if all the search terms in the given list matches at least one keyword.
+	 *
+	 * @return true if all search terms matches at least one keyword, or false if otherwise.
+	 */
+	public static boolean matchesSearchTerms(Iterable<String> searchTerms, final Collection<String> keywords)
+	{
+		for (String term : searchTerms)
+		{
+			if (keywords.stream().noneMatch((t) -> t.contains(term) ||
+				DISTANCE.apply(t, term) > 0.9))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

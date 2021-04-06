@@ -36,8 +36,9 @@ public interface TileIndicatorsConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "highlightDestinationColor",
-		name = "Color of current destination highlighting",
-		description = "Configures the highlight color of current destination"
+		name = "Destination tile",
+		description = "Configures the highlight color of current destination",
+		position = 1
 	)
 	default Color highlightDestinationColor()
 	{
@@ -47,7 +48,8 @@ public interface TileIndicatorsConfig extends Config
 	@ConfigItem(
 		keyName = "highlightDestinationTile",
 		name = "Highlight destination tile",
-		description = "Highlights tile player is walking to"
+		description = "Highlights tile player is walking to",
+		position = 2
 	)
 	default boolean highlightDestinationTile()
 	{
@@ -57,8 +59,9 @@ public interface TileIndicatorsConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "highlightHoveredColor",
-		name = "Color of current hovered highlighting",
-		description = "Configures the highlight color of hovered tile"
+		name = "Hovered tile",
+		description = "Configures the highlight color of hovered tile",
+		position = 3
 	)
 	default Color highlightHoveredColor()
 	{
@@ -68,9 +71,33 @@ public interface TileIndicatorsConfig extends Config
 	@ConfigItem(
 		keyName = "highlightHoveredTile",
 		name = "Highlight hovered tile",
-		description = "Highlights tile player is hovering with mouse"
+		description = "Highlights tile player is hovering with mouse",
+		position = 4
 	)
 	default boolean highlightHoveredTile()
+	{
+		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "highlightCurrentColor",
+		name = "True tile",
+		description = "Configures the highlight color of current true tile",
+		position = 5
+	)
+	default Color highlightCurrentColor()
+	{
+		return Color.CYAN;
+	}
+
+	@ConfigItem(
+		keyName = "highlightCurrentTile",
+		name = "Highlight true tile",
+		description = "Highlights true tile player is on as seen by server",
+		position = 6
+	)
+	default boolean highlightCurrentTile()
 	{
 		return false;
 	}

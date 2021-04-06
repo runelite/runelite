@@ -28,7 +28,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * An enumeration of local client variables.
+ * Server controlled "content-developer" integers.
+ *
+ * @see VarPlayer
+ *
+ * These differ from a {@link VarPlayer} in that VarBits can be
+ * less than 32 bits. One or more VarBits can be assigned to a
+ * backing VarPlayer, each with a static range of bits that it is
+ * allowed to access. This allows a more compact representation
+ * of small values, like booleans
  */
 @AllArgsConstructor
 @Getter
@@ -211,12 +219,20 @@ public enum Varbits
 	HB_TRAIL_31372(5750),
 
 	HB_FINISH(5766),
-	HB_STARTED(5767), //not working
+
+	/**
+	 * Started hunting Herbiboar.
+	 * <br>
+	 * NOTE: This value remains at 0 even after starting a Herbiboar trail up until searching the first object along the
+	 * hunting path.
+	 */
+	HB_STARTED(5767),
 
 	/**
 	 * Barbarian Assault
 	 */
 	IN_GAME_BA(3923),
+	BA_GC(4768),
 
 	/**
 	 * 0 = Outside wilderness
@@ -288,6 +304,20 @@ public enum Varbits
 	PERSONAL_POINTS(5422),
 	RAID_PARTY_SIZE(5424),
 
+	// 0 = raid not started, >0 = raid started
+	RAID_STATE(5425),
+
+	/**
+	 * Making Friends with My Arm fire pits
+	 *
+	 * Expected values:
+	 *  0 = Not built
+	 *  1 = Built
+	 */
+	FIRE_PIT_GIANT_MOLE(6532),
+	FIRE_PIT_LUMBRIDGE_SWAMP(6533),
+	FIRE_PIT_MOS_LE_HARMLESS(6544),
+
 	/**
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
 	 */
@@ -326,7 +356,9 @@ public enum Varbits
 	/**
 	 * Pyramid plunder
 	 */
+	PYRAMID_PLUNDER_ROOM_LOCATION(2365),
 	PYRAMID_PLUNDER_TIMER(2375),
+	PYRAMID_PLUNDER_THIEVING_LEVEL(2376),
 	PYRAMID_PLUNDER_ROOM(2377),
 
 	/**
@@ -355,9 +387,10 @@ public enum Varbits
 	MULTICOMBAT_AREA(4605),
 
 	/**
-	 * Kingdom Management
+	 * Kingdom of Miscellania Management
+	 * Kingdom Approval is represented as a 7-bit unsigned integer; 127 corresponds to 100% approval
 	 */
-	KINGDOM_FAVOR(72),
+	KINGDOM_APPROVAL(72),
 	KINGDOM_COFFER(74),
 
 	/**
@@ -374,6 +407,7 @@ public enum Varbits
 	DAILY_RUNES_COLLECTED(4540),
 	DAILY_SAND_COLLECTED(4549),
 	DAILY_FLAX_STATE(4559),
+	DAILY_ARROWS_STATE(4563),
 	/**
 	 * This varbit tracks how much bonemeal has been redeemed from Robin
 	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
@@ -406,6 +440,7 @@ public enum Varbits
 	FARMING_7909(7909),
 	FARMING_7910(7910),
 	FARMING_7911(7911),
+	FARMING_7912(7912),
 
 	/**
 	 * Transmog controllers for grapes
@@ -437,7 +472,35 @@ public enum Varbits
 	 * The varbit that stores the oxygen percentage for player
 	 */
 	OXYGEN_LEVEL(5811),
-	
+
+	/**
+	 * Drift net status
+	 *
+	 * Expected values
+	 *  0 = Unset
+	 *  1 = Set up
+	 *  2 = Caught some fish
+	 *  3 = Full
+	 */
+	NORTH_NET_STATUS(5812),
+	SOUTH_NET_STATUS(5814),
+
+	/**
+	 * Drift net catch count
+	 */
+	NORTH_NET_CATCH_COUNT(5813),
+	SOUTH_NET_CATCH_COUNT(5815),
+
+	/**
+	 * Drift net collect interface
+	 *
+	 * Expected values:
+	 *  0 = Not open
+	 *  1 = North interface open
+	 *  2 = South interface open
+	 */
+	DRIFT_NET_COLLECT(5933),
+
 	/**
 	 * Corp beast damage
 	 */
@@ -449,6 +512,7 @@ public enum Varbits
 	SUPERIOR_ENABLED(5362),
 	FOSSIL_ISLAND_WYVERN_DISABLE(6251),
 
+	BANK_REARRANGE_MODE(3959),
 	CURRENT_BANK_TAB(4150),
 
 	WORLDHOPPER_FAVROITE_1(4597),
@@ -495,7 +559,54 @@ public enum Varbits
 	EXPLORER_RING_ALCHTYPE(5398),
 	EXPLORER_RING_TELEPORTS(4552),
 	EXPLORER_RING_ALCHS(4554),
-	EXPLORER_RING_RUNENERGY(4553);
+	EXPLORER_RING_RUNENERGY(4553),
+
+	WINTERTODT_TIMER(7980),
+
+	/**
+	 * League relics
+	 */
+	LEAGUE_RELIC_1(10049),
+	LEAGUE_RELIC_2(10050),
+	LEAGUE_RELIC_3(10051),
+	LEAGUE_RELIC_4(10052),
+	LEAGUE_RELIC_5(10053),
+	LEAGUE_RELIC_6(11696),
+
+	/**
+	 * Muted volume restore values
+	 */
+	MUTED_MUSIC_VOLUME(9666),
+	MUTED_SOUND_EFFECT_VOLUME(9674),
+	MUTED_AREA_EFFECT_VOLUME(9675),
+
+	/**
+	 * Parasite infection status during nightmare of ashihama bossfight
+	 *
+	 * 0 = not infected
+	 * 1 = infected
+	 *
+	 */
+	PARASITE(10151),
+
+	/**
+	 * Whether the vanilla wiki entity lookup is displayed under the minimap
+	 *
+	 * 0 = Enabled
+	 * 1 = Disabled
+	 *
+	 */
+	WIKI_ENTITY_LOOKUP(10113),
+
+	/**
+	 * Whether the Special Attack orb is disabled due to being in a PvP area
+	 *
+	 * 0 = Enabled (player is not in PvP)
+	 * 1 = Disabled (player in in PvP)
+	 *
+	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
+	 */
+	PVP_SPEC_ORB(8121);
 
 	/**
 	 * The raw varbit ID.

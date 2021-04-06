@@ -24,32 +24,66 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.Set;
 import javax.inject.Inject;
+import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
+import net.runelite.api.GraphicID;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class FishingOverlay extends Overlay
+class FishingOverlay extends OverlayPanel
 {
 	private static final String FISHING_SPOT = "Fishing spot";
+	static final String FISHING_RESET = "Reset";
+
+	private static final Set<Integer> FISHING_ANIMATIONS = ImmutableSet.of(
+		AnimationID.FISHING_BARBTAIL_HARPOON,
+		AnimationID.FISHING_BAREHAND,
+		AnimationID.FISHING_BAREHAND_CAUGHT_SHARK_1,
+		AnimationID.FISHING_BAREHAND_CAUGHT_SHARK_2,
+		AnimationID.FISHING_BAREHAND_CAUGHT_SWORDFISH_1,
+		AnimationID.FISHING_BAREHAND_CAUGHT_SWORDFISH_2,
+		AnimationID.FISHING_BAREHAND_CAUGHT_TUNA_1,
+		AnimationID.FISHING_BAREHAND_CAUGHT_TUNA_2,
+		AnimationID.FISHING_BAREHAND_WINDUP_1,
+		AnimationID.FISHING_BAREHAND_WINDUP_2,
+		AnimationID.FISHING_BIG_NET,
+		AnimationID.FISHING_CAGE,
+		AnimationID.FISHING_CRYSTAL_HARPOON,
+		AnimationID.FISHING_DRAGON_HARPOON,
+		AnimationID.FISHING_DRAGON_HARPOON_OR,
+		AnimationID.FISHING_HARPOON,
+		AnimationID.FISHING_INFERNAL_HARPOON,
+		AnimationID.FISHING_TRAILBLAZER_HARPOON,
+		AnimationID.FISHING_KARAMBWAN,
+		AnimationID.FISHING_NET,
+		AnimationID.FISHING_OILY_ROD,
+		AnimationID.FISHING_POLE_CAST,
+		AnimationID.FISHING_PEARL_ROD,
+		AnimationID.FISHING_PEARL_FLY_ROD,
+		AnimationID.FISHING_PEARL_BARBARIAN_ROD,
+		AnimationID.FISHING_PEARL_ROD_2,
+		AnimationID.FISHING_PEARL_FLY_ROD_2,
+		AnimationID.FISHING_PEARL_BARBARIAN_ROD_2,
+		AnimationID.FISHING_PEARL_OILY_ROD);
 
 	private final Client client;
 	private final FishingPlugin plugin;
 	private final FishingConfig config;
 	private final XpTrackerService xpTrackerService;
-
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	public FishingOverlay(Client client, FishingPlugin plugin, FishingConfig config, XpTrackerService xpTrackerService)
@@ -61,6 +95,7 @@ class FishingOverlay extends Overlay
 		this.config = config;
 		this.xpTrackerService = xpTrackerService;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Fishing overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, FISHING_RESET, "Fishing overlay"));
 	}
 
 	@Override
@@ -71,9 +106,10 @@ class FishingOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-		if (client.getLocalPlayer().getInteracting() != null && client.getLocalPlayer().getInteracting().getName()
-			.contains(FISHING_SPOT))
+		if (client.getLocalPlayer().getInteracting() != null
+			&& client.getLocalPlayer().getInteracting().getName().contains(FISHING_SPOT)
+			&& client.getLocalPlayer().getInteracting().getGraphic() != GraphicID.FLYING_FISH
+			&& FISHING_ANIMATIONS.contains(client.getLocalPlayer().getAnimation()))
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Fishing")
@@ -105,6 +141,6 @@ class FishingOverlay extends Overlay
 			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

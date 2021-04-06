@@ -28,10 +28,9 @@ import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -65,9 +64,6 @@ public class RoguesDenPlugin extends Plugin
 	private boolean hasGem;
 
 	@Inject
-	private Client client;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -91,21 +87,13 @@ public class RoguesDenPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		if (event.getContainerId() != InventoryID.INVENTORY.getId())
 		{
 			return;
 		}
 
-		for (Item item : event.getItemContainer().getItems())
-		{
-			if (item.getId() == ItemID.MYSTIC_JEWEL)
-			{
-				hasGem = true;
-				return;
-			}
-		}
-
-		hasGem = false;
+		ItemContainer itemContainer = event.getItemContainer();
+		hasGem = itemContainer.contains(ItemID.MYSTIC_JEWEL);
 	}
 
 	@Subscribe

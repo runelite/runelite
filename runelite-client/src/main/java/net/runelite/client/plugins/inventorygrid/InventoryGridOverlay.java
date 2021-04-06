@@ -46,6 +46,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 class InventoryGridOverlay extends Overlay
 {
 	private static final int INVENTORY_SIZE = 28;
+	private static final int DISTANCE_TO_ACTIVATE_HOVER = 5;
 
 	private static final Color HIGHLIGHT = new Color(0, 255, 0, 45);
 	private static final Color GRID = new Color(255, 255, 255, 45);
@@ -53,6 +54,9 @@ class InventoryGridOverlay extends Overlay
 	private final InventoryGridConfig config;
 	private final Client client;
 	private final ItemManager itemManager;
+
+	private Point initialMousePoint;
+	private boolean hoverActive = false;
 
 	@Inject
 	private InventoryGridOverlay(InventoryGridConfig config, Client client, ItemManager itemManager)
@@ -68,35 +72,56 @@ class InventoryGridOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget if1DraggingWidget = client.getIf1DraggedWidget();
-		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+		final Widget draggingWidget = getDraggedWidget();
+		if (draggingWidget == null)
+		{
+			initialMousePoint = null;
+			hoverActive = false;
+			// not dragging
+			return null;
+		}
 
-		if (if1DraggingWidget == null || if1DraggingWidget != inventoryWidget
-			|| client.getItemPressedDuration() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH)
+		// grid is only supported on bank inventory and inventory
+		Widget inventoryWidget = draggingWidget.isIf3() ?
+			client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) :
+			client.getWidget(WidgetInfo.INVENTORY);
+
+		// with if3 the dragged widget is a child of the inventory, with if1 it is an item of the inventory (and the same widget)
+		if (inventoryWidget == null || (draggingWidget.isIf3() ? draggingWidget.getParent() != inventoryWidget : draggingWidget != inventoryWidget))
 		{
 			return null;
 		}
 
 		final net.runelite.api.Point mouse = client.getMouseCanvasPosition();
 		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
+		final int draggedItemIndex = draggingWidget.isIf3() ? draggingWidget.getIndex() : client.getIf1DraggedItemIndex();
+		final WidgetItem draggedItem = getWidgetItem(inventoryWidget, draggedItemIndex);
+		final Rectangle initialBounds = draggedItem.getCanvasBounds(false);
+
+		if (initialMousePoint == null)
+		{
+			initialMousePoint = mousePoint;
+		}
+
+		if (draggedItem.getId() == -1
+			|| client.getItemPressedDuration() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
+			|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
+		{
+			return null;
+		}
+
+		hoverActive = true;
 
 		for (int i = 0; i < INVENTORY_SIZE; ++i)
 		{
-			WidgetItem widgetItem = inventoryWidget.getWidgetItem(i);
-
-			final Rectangle bounds = widgetItem.getCanvasBounds();
+			final WidgetItem targetWidgetItem = getWidgetItem(inventoryWidget, i);
+			final Rectangle bounds = targetWidgetItem.getCanvasBounds(false);
 			boolean inBounds = bounds.contains(mousePoint);
 
 			if (config.showItem() && inBounds)
 			{
-				final WidgetItem draggedItem = inventoryWidget.getWidgetItem(client.getIf1DraggedItemIndex());
-				final BufferedImage draggedItemImage = itemManager.getImage(draggedItem.getId());
-				final int x = (int) bounds.getX();
-				final int y = (int) bounds.getY();
-
-				graphics.setComposite(AlphaComposite.SrcOver.derive(0.3f));
-				graphics.drawImage(draggedItemImage, x, y, null);
-				graphics.setComposite(AlphaComposite.SrcOver);
+				drawItem(graphics, bounds, draggedItem);
+				drawItem(graphics, initialBounds, targetWidgetItem);
 			}
 
 			if (config.showHighlight() && inBounds)
@@ -112,5 +137,44 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private Widget getDraggedWidget()
+	{
+		Widget widget = client.getIf1DraggedWidget(); // if1 drag
+		if (widget != null)
+		{
+			return widget;
+		}
+		return client.getDraggedWidget(); // if3 drag
+	}
+
+	private static WidgetItem getWidgetItem(Widget parentWidget, int idx)
+	{
+		if (parentWidget.isIf3())
+		{
+			Widget wi = parentWidget.getChild(idx);
+			return new WidgetItem(wi.getItemId(), wi.getItemQuantity(), -1, wi.getBounds(), parentWidget, wi.getBounds());
+		}
+		else
+		{
+			return parentWidget.getWidgetItem(idx);
+		}
+	}
+
+	private void drawItem(Graphics2D graphics, Rectangle bounds, WidgetItem item)
+	{
+		if (item.getId() == -1)
+		{
+			return;
+		}
+
+		final BufferedImage draggedItemImage = itemManager.getImage(item.getId(), item.getQuantity(), false);
+		final int x = (int) bounds.getX();
+		final int y = (int) bounds.getY();
+
+		graphics.setComposite(AlphaComposite.SrcOver.derive(0.3f));
+		graphics.drawImage(draggedItemImage, x, y, null);
+		graphics.setComposite(AlphaComposite.SrcOver);
 	}
 }

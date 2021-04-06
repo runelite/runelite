@@ -77,7 +77,7 @@ public class OverlayDumper
 				OverlayLoader loader = new OverlayLoader();
 				OverlayDefinition overlay = loader.load(file.getFileId(), file.getContents());
 
-				Files.write(gson.toJson(overlay), new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(overlay));
 				++count;
 			}
 		}

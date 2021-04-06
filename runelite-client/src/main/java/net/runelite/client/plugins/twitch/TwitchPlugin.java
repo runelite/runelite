@@ -26,6 +26,7 @@ package net.runelite.client.plugins.twitch;
 
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
+import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import javax.inject.Inject;
@@ -33,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -170,6 +171,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			.sender("Twitch")
 			.name(sender)
 			.runeLiteFormattedMessage(chatMessage)
+			.timestamp((int) (System.currentTimeMillis() / 1000))
 			.build());
 	}
 
@@ -217,8 +219,15 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 				return true;
 			}
 
-			twitchIRCClient.privmsg(message);
-			addChatMessage(twitchConfig.username(), message);
+			try
+			{
+				twitchIRCClient.privmsg(message);
+				addChatMessage(twitchConfig.username(), message);
+			}
+			catch (IOException e)
+			{
+				log.warn("failed to send message", e);
+			}
 
 			return true;
 		}

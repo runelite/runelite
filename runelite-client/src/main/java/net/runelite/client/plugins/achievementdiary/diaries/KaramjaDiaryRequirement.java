@@ -50,9 +50,9 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		add("Claim a ticket from the Agility Arena in Brimhaven.",
 			new SkillRequirement(Skill.AGILITY, 30));
 		add("Discover hidden wall in the dungeon below the volcano.",
-			new QuestRequirement(Quest.DRAGON_SLAYER, true));
+			new QuestRequirement(Quest.DRAGON_SLAYER_I, true));
 		add("Visit the Isle of Crandor via the dungeon below the volcano.",
-			new QuestRequirement(Quest.DRAGON_SLAYER, true));
+			new QuestRequirement(Quest.DRAGON_SLAYER_I, true));
 		add("Use Vigroy and Hajedy's cart service.",
 			new QuestRequirement(Quest.SHILO_VILLAGE));
 		add("Earn 100% favour in the village of Tai Bwo Wannai.",
@@ -120,9 +120,6 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 			new CombatLevelRequirement(100),
 			new SkillRequirement(Skill.SLAYER, 50),
 			new QuestRequirement(Quest.SHILO_VILLAGE));
-		add("Kill a metal dragon in Brimhaven Dungeon.",
-			new SkillRequirement(Skill.AGILITY, 12),
-			new SkillRequirement(Skill.WOODCUTTING, 34));
 
 		// ELITE
 		add("Craft 56 Nature runes at once.",

@@ -76,15 +76,11 @@ class NpcAggroAreaOverlay extends Overlay
 			return null;
 		}
 
-		Color outlineColor = config.aggroAreaColor();
+		Color outlineColor = config.unaggroAreaColor();
 		AggressionTimer timer = plugin.getCurrentTimer();
-		if (timer == null || Instant.now().compareTo(timer.getEndTime()) < 0)
+		if (outlineColor == null || timer == null || Instant.now().compareTo(timer.getEndTime()) < 0)
 		{
-			outlineColor = new Color(
-				outlineColor.getRed(),
-				outlineColor.getGreen(),
-				outlineColor.getBlue(),
-				100);
+			outlineColor = config.aggroAreaColor();
 		}
 
 		renderPath(graphics, lines, outlineColor);

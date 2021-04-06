@@ -28,12 +28,44 @@ package net.runelite.client.plugins.chatnotifications;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("chatnotification")
 public interface ChatNotificationsConfig extends Config
 {
+	@ConfigSection(
+		name = "Highlight Lists",
+		description = "Custom single word and regex filter lists",
+		position = 0
+	)
+	String highlightLists = "highlightLists";
+
 	@ConfigItem(
-		position = 0,
+		position = 1,
+		keyName = "highlightWordsString",
+		name = "Highlight words",
+		description = "Highlights the following words in chat",
+		section = highlightLists
+	)
+	default String highlightWordsString()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "highlightRegexString",
+		name = "Highlight Regex",
+		description = "Highlights the following regular expressions in chat, one per line",
+		section = highlightLists
+	)
+	default String highlightRegexString()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 1,
 		keyName = "highlightOwnName",
 		name = "Highlight own name",
 		description = "Highlights any instance of your username in chat"
@@ -44,21 +76,10 @@ public interface ChatNotificationsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "highlightWordsString",
-		name = "Highlight words",
-		description = "Highlights the following words in chat"
-	)
-	default String highlightWordsString()
-	{
-		return "";
-	}
-
-	@ConfigItem(
 		position = 2,
 		keyName = "notifyOnOwnName",
 		name = "Notify on own name",
-		description = "Notifies you whenever your name is mentioned"
+		description = "Notifies you whenever someone mentions you by name"
 	)
 	default boolean notifyOnOwnName()
 	{
@@ -94,6 +115,28 @@ public interface ChatNotificationsConfig extends Config
 		description = "Notifies you whenever you are challenged to a duel"
 	)
 	default boolean notifyOnDuel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "notifyOnBroadcast",
+		name = "Notify on broadcast",
+		description = "Notifies you whenever you receive a broadcast message"
+	)
+	default boolean notifyOnBroadcast()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "notifyOnPM",
+		name = "Notify on private message",
+		description = "Notifies you whenever you receive a private message"
+	)
+	default boolean notifyOnPM()
 	{
 		return false;
 	}

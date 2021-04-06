@@ -36,7 +36,7 @@ public enum Quest
 	THE_CORSAIR_CURSE(301, "The Corsair Curse"),
 	DEMON_SLAYER(302, "Demon Slayer"),
 	DORICS_QUEST(303, "Doric's Quest"),
-	DRAGON_SLAYER(304, "Dragon Slayer"),
+	DRAGON_SLAYER_I(304, "Dragon Slayer I"),
 	ERNEST_THE_CHICKEN(305, "Ernest the Chicken"),
 	GOBLIN_DIPLOMACY(306, "Goblin Diplomacy"),
 	IMP_CATCHER(307, "Imp Catcher"),
@@ -49,7 +49,7 @@ public enum Quest
 	RUNE_MYSTERIES(314, "Rune Mysteries"),
 	SHEEP_SHEARER(315, "Sheep Shearer"),
 	SHIELD_OF_ARRAV(316, "Shield of Arrav"),
-	VAMPIRE_SLAYER(317, "Vampire Slayer"),
+	VAMPYRE_SLAYER(1278, "Vampyre Slayer"),
 	WITCHS_POTION(318, "Witch's Potion"),
 	X_MARKS_THE_SPOT(550, "X Marks the Spot"),
 
@@ -122,8 +122,8 @@ public enum Quest
 	MONKEY_MADNESS_II(396, "Monkey Madness II"),
 	MONKS_FRIEND(397, "Monk's Friend"),
 	MOUNTAIN_DAUGHTER(398, "Mountain Daughter"),
-	MOURNINGS_ENDS_PART_I(399, "Mourning's Ends Part I"),
-	MOURNINGS_ENDS_PART_II(400, "Mourning's Ends Part II"),
+	MOURNINGS_END_PART_I(399, "Mourning's End Part I"),
+	MOURNINGS_END_PART_II(400, "Mourning's End Part II"),
 	MURDER_MYSTERY(401, "Murder Mystery"),
 	MY_ARMS_BIG_ADVENTURE(402, "My Arm's Big Adventure"),
 	NATURE_SPIRIT(403, "Nature Spirit"),
@@ -133,7 +133,7 @@ public enum Quest
 	PLAGUE_CITY(407, "Plague City"),
 	PRIEST_IN_PERIL(408, "Priest in Peril"),
 	THE_QUEEN_OF_THIEVES(409, "The Queen of Thieves"),
-	RAG_AND_BONE_MAN(410, "Rag and Bone Man"),
+	RAG_AND_BONE_MAN_I(410, "Rag and Bone Man I"),
 	RAG_AND_BONE_MAN_II(411, "Rag and Bone Man II"),
 	RATCATCHERS(412, "Ratcatchers"),
 	RECIPE_FOR_DISASTER(413, "Recipe for Disaster"),
@@ -175,6 +175,11 @@ public enum Quest
 	ZOGRE_FLESH_EATERS(449, "Zogre Flesh Eaters"),
 	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus"),
 	THE_FORSAKEN_TOWER(543, "The Forsaken Tower"),
+	SONG_OF_THE_ELVES(603, "Song of the Elves"),
+	THE_FREMENNIK_EXILES(718, "The Fremennik Exiles"),
+	SINS_OF_THE_FATHER(1276, "Sins of the Father"),
+	A_PORCINE_OF_INTEREST(1690, "A Porcine of Interest"),
+	GETTING_AHEAD(752, "Getting Ahead"),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss"),
@@ -188,7 +193,9 @@ public enum Quest
 	THE_MAGE_ARENA(327, "The Mage Arena"),
 	LAIR_OF_TARN_RAZORLOR(328, "Lair of Tarn Razorlor"),
 	FAMILY_PEST(329, "Family Pest"),
-	THE_MAGE_ARENA_II(330, "The Mage Arena II");
+	THE_MAGE_ARENA_II(330, "The Mage Arena II"),
+	IN_SEARCH_OF_KNOWLEDGE(602, "In Search of Knowledge"),
+	DADDYS_HOME(1688, "Daddy's Home");
 
 	@Getter
 	private final int id;
@@ -198,7 +205,7 @@ public enum Quest
 
 	public QuestState getState(Client client)
 	{
-		client.runScript(ScriptID.QUESTLIST_PROGRESS, id);
+		client.runScript(ScriptID.QUEST_STATUS_GET, id);
 		switch (client.getIntStack()[0])
 		{
 			case 2:

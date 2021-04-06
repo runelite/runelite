@@ -5,13 +5,16 @@
 .string_var_count   1
    get_varc_int           5
    iconst                 14
-   if_icmpeq              LABEL4
-   jump                   LABEL7
-LABEL4:
+   if_icmpeq              LABEL7
+   get_varc_int           5
+   iconst                 17
+   if_icmpeq              LABEL7
+   jump                   LABEL10
+LABEL7:
    iconst                 1
    set_varc_int           66
    return                
-LABEL7:
+LABEL10:
    iconst                 -1
    istore                 0
    sconst                 ""
@@ -21,108 +24,108 @@ LABEL7:
    istore                 1
    iload                  1
    iconst                 0
-   if_icmpgt              LABEL18
-   jump                   LABEL184
-LABEL18:
+   if_icmpgt              LABEL21
+   jump                   LABEL187
+LABEL21:
    get_varc_int           5
    switch                
-      1: LABEL21
-      2: LABEL44
-      3: LABEL44
-      4: LABEL23
-      5: LABEL23
-      6: LABEL44
-      7: LABEL107
-      8: LABEL111
-      9: LABEL117
-      10: LABEL120
-      11: LABEL176
-      12: LABEL136
-      13: LABEL154
-      15: LABEL117
-      16: LABEL181
-   jump                   LABEL183
-LABEL21:
+      1: LABEL24
+      2: LABEL47
+      3: LABEL47
+      4: LABEL26
+      5: LABEL26
+      6: LABEL47
+      7: LABEL110
+      8: LABEL114
+      9: LABEL120
+      10: LABEL123
+      11: LABEL179
+      12: LABEL139
+      13: LABEL157
+      15: LABEL120
+      16: LABEL184
+   jump                   LABEL186
+LABEL24:
    return                
-   jump                   LABEL183
-LABEL23:
+   jump                   LABEL186
+LABEL26:
    ignore_count          
    iconst                 0
-   if_icmplt              LABEL27
-   jump                   LABEL30
-LABEL27:
+   if_icmplt              LABEL30
+   jump                   LABEL33
+LABEL30:
    sconst                 "Unable to update ignore list - system busy."
    mes                   
-   jump                   LABEL43
-LABEL30:
+   jump                   LABEL46
+LABEL33:
    get_varc_int           5
    iconst                 4
-   if_icmpeq              LABEL34
-   jump                   LABEL37
-LABEL34:
+   if_icmpeq              LABEL37
+   jump                   LABEL40
+LABEL37:
    get_varc_string        359
    ignore_add            
-   jump                   LABEL43
-LABEL37:
+   jump                   LABEL46
+LABEL40:
    get_varc_int           5
    iconst                 5
-   if_icmpeq              LABEL41
-   jump                   LABEL43
-LABEL41:
+   if_icmpeq              LABEL44
+   jump                   LABEL46
+LABEL44:
    get_varc_string        359
    ignore_del            
-LABEL43:
-   jump                   LABEL183
-LABEL44:
+LABEL46:
+   jump                   LABEL186
+LABEL47:
    friend_count          
    iconst                 0
-   if_icmplt              LABEL48
-   jump                   LABEL51
-LABEL48:
+   if_icmplt              LABEL51
+   jump                   LABEL54
+LABEL51:
    sconst                 "Unable to complete action - system busy."
    mes                   
-   jump                   LABEL106
-LABEL51:
+   jump                   LABEL109
+LABEL54:
    get_varc_int           5
    iconst                 2
-   if_icmpeq              LABEL55
-   jump                   LABEL58
-LABEL55:
+   if_icmpeq              LABEL58
+   jump                   LABEL61
+LABEL58:
    get_varc_string        359
    friend_add            
-   jump                   LABEL106
-LABEL58:
+   jump                   LABEL109
+LABEL61:
    get_varc_int           5
    iconst                 3
-   if_icmpeq              LABEL62
-   jump                   LABEL65
-LABEL62:
+   if_icmpeq              LABEL65
+   jump                   LABEL68
+LABEL65:
    get_varc_string        359
    friend_del            
-   jump                   LABEL106
-LABEL65:
+   jump                   LABEL109
+LABEL68:
    get_varc_int           5
    iconst                 6
-   if_icmpeq              LABEL69
-   jump                   LABEL106
-LABEL69:
+   if_icmpeq              LABEL72
+   jump                   LABEL109
+LABEL72:
    get_varbit             8119
    iconst                 0
-   if_icmpeq              LABEL73
-   jump                   LABEL79
-LABEL73:
+   if_icmpeq              LABEL76
+   jump                   LABEL82
+LABEL76:
    iconst                 1
    iconst                 1
    invoke                 299
    sconst                 "You must set a name before you can chat."
    mes                   
    return                
-LABEL79:
+LABEL82:
    chat_getfilter_private
    iconst                 2
-   if_icmpeq              LABEL83
-   jump                   LABEL94
-LABEL83:
+   if_icmpeq              LABEL86
+   jump                   LABEL97
+LABEL86:
    chat_getfilter_public 
    iconst                 1
    chat_getfilter_trade  
@@ -134,99 +137,99 @@ LABEL83:
    invoke                 84
    iload                  0
    invoke                 89
-LABEL94:
+LABEL97:
    get_varbit             4394
    iconst                 1
-   if_icmpeq              LABEL98
-   jump                   LABEL101
-LABEL98:
-   get_varc_string        360
-   friend_del            
+   if_icmpeq              LABEL101
    jump                   LABEL104
 LABEL101:
+   get_varc_string        360
+   friend_del            
+   jump                   LABEL107
+LABEL104:
    get_varc_string        360
    get_varc_string        359
    sconst                 "privateMessage" ; load event name
    iconst                 0                ; whether or not to skip
    runelite_callback     ; invoke callback
    iconst                 1
-   if_icmpeq              LABEL104         ; if skipped, do not message
+   if_icmpeq              LABEL107         ; if skipped, do not message
    chat_sendprivate      
-LABEL104:
+LABEL107:
    clientclock           
    set_varc_int           61
-LABEL106:
-   jump                   LABEL183
-LABEL107:
+LABEL109:
+   jump                   LABEL186
+LABEL110:
    get_varc_string        359
    invoke                 212
    resume_countdialog    
-   jump                   LABEL183
-LABEL111:
+   jump                   LABEL186
+LABEL114:
    get_varc_string        359
    removetags            
    set_varc_string        361
    get_varc_string        359
    resume_namedialog     
-   jump                   LABEL183
-LABEL117:
+   jump                   LABEL186
+LABEL120:
    get_varc_string        359
    resume_stringdialog   
-   jump                   LABEL183
-LABEL120:
+   jump                   LABEL186
+LABEL123:
    get_varbit             8119
    iconst                 0
-   if_icmpeq              LABEL124
-   jump                   LABEL130
-LABEL124:
+   if_icmpeq              LABEL127
+   jump                   LABEL133
+LABEL127:
    iconst                 1
    iconst                 1
    invoke                 299
    sconst                 "You must set a name before you can chat."
    mes                   
    return                
-LABEL130:
+LABEL133:
    get_varc_string        359
    removetags            
    set_varc_string        362
    get_varc_string        359
    clan_joinchat         
-   jump                   LABEL183
-LABEL136:
+   jump                   LABEL186
+LABEL139:
    iload                  1
    iconst                 10
-   if_icmpgt              LABEL140
-   jump                   LABEL146
-LABEL140:
+   if_icmpgt              LABEL143
+   jump                   LABEL149
+LABEL143:
    get_varc_string        359
    iconst                 0
    iconst                 9
    substring             
    sstore                 0
-   jump                   LABEL148
-LABEL146:
+   jump                   LABEL151
+LABEL149:
    get_varc_string        359
    sstore                 0
-LABEL148:
+LABEL151:
    sload                  0
    lowercase             
    chat_setmessagefilter 
    invoke                 553
    invoke                 84
-   jump                   LABEL183
-LABEL154:
+   jump                   LABEL186
+LABEL157:
    get_varbit             8119
    iconst                 0
-   if_icmpeq              LABEL158
-   jump                   LABEL164
-LABEL158:
+   if_icmpeq              LABEL161
+   jump                   LABEL167
+LABEL161:
    iconst                 1
    iconst                 1
    invoke                 299
    sconst                 "You must set a name before you can chat."
    mes                   
    return                
-LABEL164:
+LABEL167:
    get_varc_string        359
    iconst                 0
    set_varc_int           62
@@ -238,33 +241,33 @@ LABEL164:
    sconst                 "I1"
    iconst                 10616845
    if_setontimer         
-   jump                   LABEL183
-LABEL176:
+   jump                   LABEL186
+LABEL179:
    iconst                 0
    iconst                 1
    invoke                 299
    return                
-   jump                   LABEL183
-LABEL181:
+   jump                   LABEL186
+LABEL184:
    get_varc_string        359
    invoke                 2061
-LABEL183:
-   jump                   LABEL190
-LABEL184:
+LABEL186:
+   jump                   LABEL193
+LABEL187:
    get_varc_int           5
    switch                
-      16: LABEL189
-      7: LABEL187
-      8: LABEL187
-      9: LABEL187
-      15: LABEL187
-   jump                   LABEL190
-LABEL187:
-   return                
-   jump                   LABEL190
-LABEL189:
-   return                
+      16: LABEL192
+      7: LABEL190
+      8: LABEL190
+      9: LABEL190
+      15: LABEL190
+   jump                   LABEL193
 LABEL190:
+   return                
+   jump                   LABEL193
+LABEL192:
+   return                
+LABEL193:
    iconst                 1
    iconst                 1
    invoke                 299

@@ -25,24 +25,29 @@
 package net.runelite.client.ui.overlay.infobox;
 
 import java.awt.Color;
-import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 
 public abstract class InfoBox
 {
+	@Nonnull
 	@Getter(AccessLevel.PACKAGE)
 	private final Plugin plugin;
 
 	@Getter
 	@Setter
-	private Image image;
+	private BufferedImage image;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
-	private Image scaledImage;
+	private BufferedImage scaledImage;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter
@@ -52,7 +57,11 @@ public abstract class InfoBox
 	@Setter
 	private String tooltip;
 
-	public InfoBox(Image image, Plugin plugin)
+	@Getter
+	@Setter
+	private List<OverlayMenuEntry> menuEntries = new ArrayList<>();
+
+	public InfoBox(BufferedImage image, @Nonnull Plugin plugin)
 	{
 		this.plugin = plugin;
 		setImage(image);
@@ -71,5 +80,12 @@ public abstract class InfoBox
 	public boolean cull()
 	{
 		return false;
+	}
+
+	public String getName()
+	{
+		// Use a combination of plugin name and infobox implementation name to try and make each infobox as unique
+		// as possible by default
+		return plugin.getClass().getSimpleName() + "_" + getClass().getSimpleName();
 	}
 }

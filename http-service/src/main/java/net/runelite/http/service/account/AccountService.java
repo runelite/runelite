@@ -263,6 +263,8 @@ public class AccountService
 			return;
 		}
 
+		auth.invalidate(session.getUuid());
+
 		try (Connection con = sql2o.open())
 		{
 			con.createQuery("delete from sessions where uuid = :uuid")

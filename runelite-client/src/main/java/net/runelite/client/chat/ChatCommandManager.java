@@ -24,14 +24,13 @@
  */
 package net.runelite.client.chat;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
@@ -42,10 +41,9 @@ import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 
 @Singleton
-@Slf4j
 public class ChatCommandManager implements ChatboxInputListener
 {
-	private final Map<String, ChatCommand> commands = new HashMap<>();
+	private final Map<String, ChatCommand> commands = new ConcurrentHashMap<>();
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
@@ -108,11 +106,6 @@ public class ChatCommandManager implements ChatboxInputListener
 		String message = chatMessage.getMessage();
 
 		String command = extractCommand(message);
-		if (command == null)
-		{
-			return;
-		}
-
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		if (chatCommand == null)
 		{
@@ -135,15 +128,10 @@ public class ChatCommandManager implements ChatboxInputListener
 		String message = chatboxInput.getValue();
 		if (message.startsWith("/"))
 		{
-			message = message.substring(1); // clan chat input
+			message = message.substring(1); // friends chat input
 		}
 
 		String command = extractCommand(message);
-		if (command == null)
-		{
-			return false;
-		}
-
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		if (chatCommand == null)
 		{
@@ -165,11 +153,6 @@ public class ChatCommandManager implements ChatboxInputListener
 		final String message = privateMessageInput.getMessage();
 
 		String command = extractCommand(message);
-		if (command == null)
-		{
-			return false;
-		}
-
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		if (chatCommand == null)
 		{

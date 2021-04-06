@@ -26,6 +26,7 @@ package net.runelite.client.plugins.runecraft;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +35,6 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
@@ -43,7 +43,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -53,6 +52,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -76,19 +76,22 @@ public class RunecraftPlugin extends Plugin
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
 
 	@Getter(AccessLevel.PACKAGE)
+	private final Set<AbyssRifts> rifts = new HashSet<>();
+
+	@Getter(AccessLevel.PACKAGE)
 	private boolean degradedPouchInInventory;
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC darkMage;
 
 	@Inject
-	private Client client;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
 	private AbyssOverlay abyssOverlay;
+
+	@Inject
+	private AbyssMinimapOverlay abyssMinimapOverlay;
 
 	@Inject
 	private RunecraftConfig config;
@@ -106,13 +109,15 @@ public class RunecraftPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(abyssOverlay);
-		abyssOverlay.updateConfig();
+		overlayManager.add(abyssMinimapOverlay);
+		updateRifts();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(abyssOverlay);
+		overlayManager.remove(abyssMinimapOverlay);
 		abyssObjects.clear();
 		darkMage = null;
 		degradedPouchInInventory = false;
@@ -121,7 +126,10 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		abyssOverlay.updateConfig();
+		if (event.getGroup().equals(RunecraftConfig.GROUP))
+		{
+			updateRifts();
+		}
 	}
 
 	@Subscribe
@@ -178,7 +186,7 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		if (event.getContainerId() != InventoryID.INVENTORY.getId())
 		{
 			return;
 		}
@@ -205,5 +213,13 @@ public class RunecraftPlugin extends Plugin
 		{
 			darkMage = null;
 		}
+	}
+
+	private void updateRifts()
+	{
+		rifts.clear();
+		Arrays.stream(AbyssRifts.values())
+			.filter(r -> r.getConfigEnabled().test(config))
+			.forEach(rifts::add);
 	}
 }

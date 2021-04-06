@@ -26,57 +26,86 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.BANK_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.BANK_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.DEPOSIT_BOX_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.DUEL_INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.DUEL_INVENTORY_OTHER_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.EQUIPMENT_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.EQUIPMENT_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.GRAND_EXCHANGE_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.GUIDE_PRICES_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SEED_VAULT_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SHOP_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 
 public abstract class WidgetItemOverlay extends Overlay
 {
 	@Setter(AccessLevel.PACKAGE)
 	private OverlayManager overlayManager;
-	/**
-	 * Interfaces to draw overlay over.
-	 */
-	private final Set<Integer> interfaceGroups = new HashSet<>();
 
 	protected WidgetItemOverlay()
 	{
 		super.setPosition(OverlayPosition.DYNAMIC);
 		super.setPriority(OverlayPriority.LOW);
-		super.setLayer(OverlayLayer.ABOVE_WIDGETS);
+		super.setLayer(OverlayLayer.MANUAL);
 	}
 
-	public abstract void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget);
+	public abstract void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final List<WidgetItem> itemWidgets = overlayManager.getItemWidgets();
-		for (WidgetItem widgetItem : itemWidgets)
+		final Collection<WidgetItem> widgetItems = overlayManager.getWidgetItems();
+		final Rectangle originalClipBounds = graphics.getClipBounds();
+		Widget curClipParent = null;
+		for (WidgetItem widgetItem : widgetItems)
 		{
 			Widget widget = widgetItem.getWidget();
-			int interfaceGroup = TO_GROUP(widget.getId());
+			Widget parent = widget.getParent();
+			Rectangle parentBounds = parent.getBounds();
+			Rectangle itemCanvasBounds = widgetItem.getCanvasBounds();
+			boolean dragging = widgetItem.getDraggingCanvasBounds() != null;
 
-			// Don't draw if this widget isn't one of the allowed
-			if (!interfaceGroups.contains(interfaceGroup))
+			boolean shouldClip;
+			if (dragging)
 			{
-				continue;
+				// If dragging, clip if the dragged item is outside of the parent bounds
+				shouldClip = itemCanvasBounds.x < parentBounds.x;
+				shouldClip |= itemCanvasBounds.x + itemCanvasBounds.width >= parentBounds.x + parentBounds.width;
+				shouldClip |= itemCanvasBounds.y < parentBounds.y;
+				shouldClip |= itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y + parentBounds.height;
+			}
+			else
+			{
+				// Otherwise, we only need to clip the overlay if it intersects the parent bounds,
+				// since items completely outside of the parent bounds are not drawn
+				shouldClip = itemCanvasBounds.y < parentBounds.y && itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y;
+				shouldClip |= itemCanvasBounds.y < parentBounds.y + parentBounds.height && itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y + parentBounds.height;
+				shouldClip |= itemCanvasBounds.x < parentBounds.x && itemCanvasBounds.x + itemCanvasBounds.width >= parentBounds.x;
+				shouldClip |= itemCanvasBounds.x < parentBounds.x + parentBounds.width && itemCanvasBounds.x + itemCanvasBounds.width >= parentBounds.x + parentBounds.width;
+			}
+			if (shouldClip)
+			{
+				if (curClipParent != parent)
+				{
+					graphics.setClip(parentBounds);
+					curClipParent = parent;
+				}
+			}
+			else if (curClipParent != null && curClipParent != parent)
+			{
+				graphics.setClip(originalClipBounds);
+				curClipParent = null;
 			}
 
 			renderItemOverlay(graphics, widgetItem.getId(), widgetItem);
@@ -94,12 +123,16 @@ public abstract class WidgetItemOverlay extends Overlay
 			GUIDE_PRICES_INVENTORY_GROUP_ID,
 			EQUIPMENT_INVENTORY_GROUP_ID,
 			INVENTORY_GROUP_ID,
-			SEED_VAULT_INVENTORY_GROUP_ID);
+			SEED_VAULT_INVENTORY_GROUP_ID,
+			DUEL_INVENTORY_GROUP_ID,
+			DUEL_INVENTORY_OTHER_GROUP_ID,
+			PLAYER_TRADE_SCREEN_GROUP_ID,
+			PLAYER_TRADE_INVENTORY_GROUP_ID);
 	}
 
 	protected void showOnBank()
 	{
-		showOnInterfaces(BANK_GROUP_ID);
+		drawAfterLayer(WidgetInfo.BANK_ITEM_CONTAINER);
 	}
 
 	protected void showOnEquipment()
@@ -109,7 +142,7 @@ public abstract class WidgetItemOverlay extends Overlay
 
 	protected void showOnInterfaces(int... ids)
 	{
-		Arrays.stream(ids).forEach(interfaceGroups::add);
+		Arrays.stream(ids).forEach(this::drawAfterInterface);
 	}
 
 	// Don't allow setting position, priority, or layer
