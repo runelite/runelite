@@ -78,10 +78,18 @@ public interface XpDropConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "defaultColor",
+			name = "Default Color",
+			description = "XP drop color when no prayer is active",
+			position = 4
+	)
+	default Color getDefaultColor() {return new Color(0xFF, 0xFF, 0xFF); }
+
+	@ConfigItem(
 		keyName = "fakeXpDropDelay",
 		name = "Fake Xp Drop delay",
 		description = "Configures how many ticks should pass between fake XP drops, 0 to disable",
-		position = 4
+		position = 5
 	)
 	@Units(Units.TICKS)
 	default int fakeXpDropDelay()
