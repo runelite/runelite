@@ -248,7 +248,7 @@ LABEL189:
    sconst                 ""
    set_varc_string        335
 LABEL193:
-   jump                   LABEL262
+   jump                   LABEL269
 LABEL194:
    iload                  0
    iconst                 104
@@ -262,7 +262,7 @@ LABEL198:
 LABEL202:
    invoke                 75
 LABEL203:
-   jump                   LABEL262
+   jump                   LABEL269
 LABEL204:
    iload                  0
    iconst                 105
@@ -276,36 +276,45 @@ LABEL208:
 LABEL212:
    invoke                 76
 LABEL213:
-   jump                   LABEL262
+   jump                   LABEL269
 LABEL214:
    iload                  0
    iconst                 80
    if_icmpeq              LABEL218
-   jump                   LABEL256
+   jump                   LABEL263
 LABEL218:
+   iconst                 40697935
+   iconst                 1
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL224
+   jump                   LABEL225
+LABEL224:
+   return                
+LABEL225:
    get_varc_string        356
    string_length         
    iconst                 0
-   if_icmpgt              LABEL223
-   jump                   LABEL243
-LABEL223:
+   if_icmpgt              LABEL230
+   jump                   LABEL250
+LABEL230:
    get_varc_string        356
    friend_test           
    iconst                 1
-   if_icmpeq              LABEL228
-   jump                   LABEL231
-LABEL228:
+   if_icmpeq              LABEL235
+   jump                   LABEL238
+LABEL235:
    get_varc_string        356
    invoke                 107
    return                
-LABEL231:
+LABEL238:
    get_varc_int           60
    clientclock           
-   if_icmpgt              LABEL235
-   jump                   LABEL236
-LABEL235:
+   if_icmpgt              LABEL242
+   jump                   LABEL243
+LABEL242:
    return                
-LABEL236:
+LABEL243:
    clientclock           
    iconst                 50
    add                   
@@ -313,14 +322,14 @@ LABEL236:
    sconst                 "That player was not found on your Friends list."
    mes                   
    return                
-LABEL243:
+LABEL250:
    get_varc_int           60
    clientclock           
-   if_icmpgt              LABEL247
-   jump                   LABEL248
-LABEL247:
+   if_icmpgt              LABEL254
+   jump                   LABEL255
+LABEL254:
    return                
-LABEL248:
+LABEL255:
    clientclock           
    iconst                 50
    add                   
@@ -328,8 +337,8 @@ LABEL248:
    sconst                 "You haven't received any messages to which you can reply."
    mes                   
    return                
-   jump                   LABEL262
-LABEL256:
+   jump                   LABEL269
+LABEL263:
    get_varc_string        335
    iconst                 0
    iload                  0
@@ -341,9 +350,9 @@ LABEL256:
    runelite_callback     ;
    if_icmpeq              SKIPSETVARC       ; skip setting varc with input
    set_varc_string        335
-   jump                   LABEL262          ; jump over SKIPSETVARC
+   jump                   LABEL269          ; jump over SKIPSETVARC
 SKIPSETVARC:
    pop_string            ; pop message
-LABEL262:
+LABEL269:
    invoke                 223
    return                
