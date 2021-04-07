@@ -80,10 +80,13 @@ public interface XpDropConfig extends Config
 	@ConfigItem(
 			keyName = "defaultColor",
 			name = "Default Color",
-			description = "XP drop color when no prayer is active",
+			description = "Default XP drop color when no prayer is active",
 			position = 4
 	)
-	default Color getDefaultColor() {return new Color(0xFF, 0xFF, 0xFF); }
+	default Color getDefaultColor()
+	{
+		return new Color(0xFF, 0xFF, 0xFF);
+	}
 
 	@ConfigItem(
 		keyName = "fakeXpDropDelay",
