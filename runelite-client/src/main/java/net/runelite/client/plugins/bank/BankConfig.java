@@ -102,10 +102,21 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "rightClickSearch",
+		name = "Disable left click search",
+		description = "Configures whether the search button will perform a search on left click",
+		position = 7
+	)
+	default boolean rightClickSearch()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "seedVaultValue",
 		name = "Show seed vault value",
 		description = "Adds the total value of all seeds inside the seed vault to the title",
-		position = 7
+		position = 8
 	)
 	default boolean seedVaultValue()
 	{
