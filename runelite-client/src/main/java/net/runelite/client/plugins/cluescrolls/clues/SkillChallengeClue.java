@@ -180,7 +180,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 				any("", item(ItemID.GRACEFUL_BOOTS), item(ItemID.GRACEFUL_BOOTS_11861), item(ItemID.GRACEFUL_BOOTS_13589), item(ItemID.GRACEFUL_BOOTS_13590), item(ItemID.GRACEFUL_BOOTS_13601), item(ItemID.GRACEFUL_BOOTS_13602), item(ItemID.GRACEFUL_BOOTS_13613), item(ItemID.GRACEFUL_BOOTS_13614), item(ItemID.GRACEFUL_BOOTS_13625), item(ItemID.GRACEFUL_BOOTS_13626), item(ItemID.GRACEFUL_BOOTS_13637), item(ItemID.GRACEFUL_BOOTS_13638), item(ItemID.GRACEFUL_BOOTS_13677), item(ItemID.GRACEFUL_BOOTS_13678), item(ItemID.GRACEFUL_BOOTS_21076), item(ItemID.GRACEFUL_BOOTS_21078), item(ItemID.GRACEFUL_BOOTS_24758), item(ItemID.GRACEFUL_BOOTS_24760), item(ItemID.GRACEFUL_BOOTS_25084), item(ItemID.GRACEFUL_BOOTS_25086)))),
 		new SkillChallengeClue("Mix an anti-venom potion.", item(ItemID.ANTIDOTE4_5952), xOfItem(ItemID.ZULRAHS_SCALES, 20)),
 		new SkillChallengeClue("Mine a piece of Runite ore", "mine a piece of runite ore whilst sporting the finest mining gear.", true, ANY_PICKAXE,
-			all("Prospector's Outfit",
+			all("Prospector kit",
 				any("", item(ItemID.PROSPECTOR_HELMET), item(ItemID.GOLDEN_PROSPECTOR_HELMET)),
 				any("", item(ItemID.PROSPECTOR_JACKET), item(ItemID.VARROCK_ARMOUR_4), item(ItemID.GOLDEN_PROSPECTOR_JACKET)),
 				any("", item(ItemID.PROSPECTOR_LEGS), item(ItemID.GOLDEN_PROSPECTOR_LEGS)),
