@@ -420,6 +420,14 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapConstructionCapeToPOH",
+			name = "Construction Cape",
+			description = "Swap Wear with Teleport to POH on the Construction Cape",
+			section = itemSection
+	)
+	default boolean swapConstructionCapeToPOH() { return false; }
+
+	@ConfigItem(
 		keyName = "swapAbyssTeleport",
 		name = "Teleport to Abyss",
 		description = "Swap Talk-to with Teleport for the Mage of Zamorak",

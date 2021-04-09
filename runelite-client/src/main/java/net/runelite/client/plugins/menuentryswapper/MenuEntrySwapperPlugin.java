@@ -344,6 +344,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("wield", "teleport", config::swapTeleportItem);
 		swap("wield", "invoke", config::swapTeleportItem);
 
+		swap("wear", "tele to poh", config::swapConstructionCapeToPOH);
+
 		swap("bury", "use", config::swapBones);
 
 		swap("wield", "battlestaff", "use", config::swapBattlestaves);
