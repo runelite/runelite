@@ -425,7 +425,10 @@ public interface MenuEntrySwapperConfig extends Config
 			description = "Swap Wear with Teleport to POH on the Construction Cape",
 			section = itemSection
 	)
-	default boolean swapConstructionCapeToPOH() { return false; }
+	default boolean swapConstructionCapeToPOH()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "swapAbyssTeleport",
