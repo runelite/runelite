@@ -47,9 +47,9 @@ public class MotherlodeOreOverlay extends OverlayPanel
 	private final ItemManager itemManager;
 	boolean isMouseOver = false;
 
-	static final OverlayMenuEntry DISABLED_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Values disabled", "Motherlode Mine");
-	static final OverlayMenuEntry MOUSEOVER_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Values on mouseover", "Motherlode Mine");
-	static final OverlayMenuEntry REPLACE_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Values only", "Motherlode Mine");
+	static final OverlayMenuEntry DISABLED_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Values disabled", "Motherlode Mine overlay");
+	static final OverlayMenuEntry MOUSEOVER_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Values on mouseover", "Motherlode Mine overlay");
+	static final OverlayMenuEntry REPLACE_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Values only", "Motherlode Mine overlay");
 
 	@Inject
 	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager)
