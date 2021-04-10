@@ -25,11 +25,24 @@
 package net.runelite.client.plugins.shootingstars;
 
 import com.google.common.primitives.Ints;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
+import net.runelite.api.Tile;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
@@ -38,13 +51,20 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.shootingstars.event.StarCrashEvent;
+import net.runelite.client.plugins.shootingstars.event.StarDepletionEvent;
 import net.runelite.client.plugins.shootingstars.event.StarDowngradeEvent;
 import net.runelite.client.plugins.shootingstars.event.StarScoutEvent;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.AsyncBufferedImage;
+import net.runelite.client.util.ImageUtil;
 
+@Slf4j
 @PluginDescriptor(
 	name = "Shooting Stars",
 	description = "Helps you track shooting stars",
@@ -53,23 +73,32 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class ShootingStars extends Plugin
 {
 
+	private static final int MINIMUM_EVICTION_DISTANCE = 26;
 	private static final int HINT_ARROW_CLEAR_DISTANCE = 6;
+
 	private static final int CHATBOX_MESSAGE_INTERFACE = 229;
 	private static final int CHATBOX_MESSAGE_COMPONENT = 1;
+
 	private static final int[] CRASHED_STARS = {
-		41229,
-		41228,
-		41227,
-		41226,
-		41225,
-		41224,
-		41223,
-		41021,
-		41020
+		ObjectID.CRASHED_STAR_41229,
+		ObjectID.CRASHED_STAR_41228,
+		ObjectID.CRASHED_STAR_41227,
+		ObjectID.CRASHED_STAR_41226,
+		ObjectID.CRASHED_STAR_41225,
+		ObjectID.CRASHED_STAR_41224,
+		ObjectID.CRASHED_STAR_41223,
+		ObjectID.CRASHED_STAR_41021,
+		ObjectID.CRASHED_STAR
 	};
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private WorldMapPointManager worldMapPointManager;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Inject
 	private ShootingStarsOverlay overlay;
@@ -85,6 +114,10 @@ public class ShootingStars extends Plugin
 
 	@Getter
 	private CrashedStar crashedStar;
+
+	private final List<WorldMapPoint> possibleSites = new ArrayList<>();
+
+	private BufferedImage worldMapImage;
 
 	@Override
 	protected void startUp() throws Exception
@@ -102,10 +135,26 @@ public class ShootingStars extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		Player localPlayer = client.getLocalPlayer();
-		if (crashedStar != null && localPlayer != null
-			&& client.hasHintArrow() && localPlayer.getWorldLocation().distanceTo(crashedStar.getWorldPoint()) < HINT_ARROW_CLEAR_DISTANCE)
+
+		if (localPlayer == null)
 		{
-			client.clearHintArrow();
+			return;
+		}
+		if (crashedStar == null)
+		{
+			evaluatePossibleCrashSites(localPlayer);
+		}
+		else
+		{
+			if (client.hasHintArrow() && localPlayer.getWorldLocation().distanceTo(crashedStar.getWorldPoint()) < HINT_ARROW_CLEAR_DISTANCE)
+			{
+				client.clearHintArrow();
+			}
+			if (!possibleSites.isEmpty())
+			{
+				log.debug("Clearing possible landing sites as we've found the star already.");
+				clearPossibleSites();
+			}
 		}
 	}
 
@@ -130,27 +179,25 @@ public class ShootingStars extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		int locId = event.getGameObject().getId();
-		int starTier = Ints.indexOf(CRASHED_STARS, locId) + 1;
-		WorldPoint worldLocation = event.getTile().getWorldLocation();
-		int world = client.getWorld();
-
-		CrashedStar newStar = new CrashedStar(world, worldLocation, starTier);
+		int starTier = getStarTier(event.getGameObject().getId());
 
 		if (starTier > 0)
 		{
+			CrashedStar newStar = new CrashedStar(client.getWorld(), event.getTile().getWorldLocation(), starTier);
+
 			if (crashedStar == null || crashedStar.depleted() || !crashedStar.isSame(newStar))
 			{
-				System.out.println("NEW STAR TIER " + starTier);
-				System.out.println(newStar);
+				int distance = client.getLocalPlayer().getWorldLocation().distanceTo(newStar.getWorldPoint());
+				log.debug("New shooting star spotted {}", newStar);
 				this.crashedStar = newStar;
 				client.setHintArrow(newStar.getWorldPoint());
 				eventBus.post(new StarCrashEvent());
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Spotted the shooting star from a distance of " + distance + " tiles", null);
 			}
 			else if (starTier != this.crashedStar.getTier() && newStar.isSame(crashedStar))
 			{
 				this.crashedStar = this.crashedStar.reduceTier();
-				System.out.println("STAR REDUCED TIER TO " + this.crashedStar.getTier());
+				log.debug("Shooting star degraded to tier {}, world={}, worldPoint={}", crashedStar.getTier(), crashedStar.getWorld(), crashedStar.getWorldPoint());
 				eventBus.post(new StarDowngradeEvent());
 			}
 		}
@@ -159,12 +206,141 @@ public class ShootingStars extends Plugin
 	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
-		int locId = event.getGameObject().getId();
-		if (Ints.contains(CRASHED_STARS, locId) && crashedStar.getTier() == CrashedStar.MIN_TIER)
+		if (isShootingStar(event.getGameObject().getId()) && crashedStar.getTier() == CrashedStar.MIN_TIER)
 		{
-			System.out.println("STAR DEPLETED");
+			log.debug("Shooting star depleted, world={}, worldPoint={}", crashedStar.getWorld(), crashedStar.getWorldPoint());
 			crashedStar = null;
-			eventBus.post(new StarCrashEvent());
+			eventBus.post(new StarDepletionEvent());
+		}
+	}
+
+	@Subscribe
+	public void onCommandExecuted(CommandExecuted commandExecuted)
+	{
+		if (commandExecuted.getCommand().equals("ssregion"))
+		{
+			String[] args = commandExecuted.getArguments();
+
+			if (args.length < 1)
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Insufficient parameters, usage: ssregion <regionname>", null);
+			}
+			String region = args[0].toUpperCase();
+			try
+			{
+				StarRegion starRegion = StarRegion.valueOf(region);
+				setupPossibleCrashSites(starRegion);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Star region set to: " + starRegion, null);
+			}
+			catch (IllegalArgumentException e)
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "No star region could be found with name: " + region, null);
+			}
+		}
+		else if (commandExecuted.getCommand().equals("ssclear"))
+		{
+			crashedStar = null;
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cleared current crashed star", null);
+		}
+	}
+
+	/**
+	 * Returns the shooting star tier for a given locId. Returns -1 if the loc isn't a shooting star.
+	 *
+	 * @param locId The locId.
+	 * @return The star tier or -1 if the loc isn't a shooting star.
+	 */
+	private int getStarTier(int locId)
+	{
+		return Ints.indexOf(CRASHED_STARS, locId) + 1;
+	}
+
+	private boolean isShootingStar(int locId)
+	{
+		return getStarTier(locId) > 0;
+	}
+
+	/**
+	 * Evaluates and excludes crash sites where a star isn't found.
+	 */
+	private void evaluatePossibleCrashSites(Player localPlayer)
+	{
+		Iterator<WorldMapPoint> iterator = possibleSites.iterator();
+		while (iterator.hasNext())
+		{
+			WorldMapPoint possibleSite = iterator.next();
+			WorldPoint worldPoint = possibleSite.getWorldPoint();
+
+			if (worldPoint.distanceTo(localPlayer.getWorldLocation()) < MINIMUM_EVICTION_DISTANCE && !checkForShootingStar(worldPoint))
+			{
+				log.debug("Removing possible crash site as no star was found at {}", worldPoint);
+				worldMapPointManager.remove(possibleSite);
+				iterator.remove();
+			}
+		}
+	}
+
+	private void clearPossibleSites()
+	{
+		possibleSites.forEach(worldMapPointManager::remove);
+		possibleSites.clear();
+	}
+
+	private boolean checkForShootingStar(WorldPoint worldPoint)
+	{
+		LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
+
+		if (localPoint == null)
+		{
+			return false;
+		}
+		Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+
+		for (GameObject gameObject : tile.getGameObjects())
+		{
+			if (gameObject != null && isShootingStar(gameObject.getId()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private BufferedImage createWorldMapImage()
+	{
+		BufferedImage background = ImageUtil.loadImageResource(ShootingStars.class, "/util/clue_arrow.png");
+		AsyncBufferedImage starFragment = itemManager.getImage(ItemID.STAR_FRAGMENT);
+
+		BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_RGB);
+		Graphics graphics = image.getGraphics();
+
+		graphics.drawImage(background, 0, 0, null);
+		graphics.drawImage(starFragment, 0, 0, null);
+		return image;
+	}
+
+	private void setupPossibleCrashSites(StarRegion region)
+	{
+		List<StarCrashSite> crashSites = region.getCrashSites();
+		clearPossibleSites();
+
+		if (worldMapImage == null)
+		{
+			worldMapImage = createWorldMapImage();
+		}
+
+		for (StarCrashSite crashSite : crashSites)
+		{
+			WorldMapPoint mapPoint = WorldMapPoint.builder()
+				.worldPoint(crashSite.getLocation())
+				.tooltip("Shooting Star")
+				.image(worldMapImage)
+				.jumpOnClick(true)
+				.snapToEdge(true)
+				.build();
+
+			possibleSites.add(mapPoint);
+			worldMapPointManager.add(mapPoint);
 		}
 	}
 }
