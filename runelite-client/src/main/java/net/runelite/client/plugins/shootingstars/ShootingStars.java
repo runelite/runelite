@@ -187,18 +187,19 @@ public class ShootingStars extends Plugin
 
 			if (crashedStar == null || crashedStar.depleted() || !crashedStar.isSame(newStar))
 			{
-				int distance = client.getLocalPlayer().getWorldLocation().distanceTo(newStar.getWorldPoint());
 				log.debug("New shooting star spotted {}", newStar);
 				this.crashedStar = newStar;
 				client.setHintArrow(newStar.getWorldPoint());
-				eventBus.post(new StarCrashEvent());
+				eventBus.post(StarCrashEvent.from(crashedStar));
+
+				int distance = client.getLocalPlayer().getWorldLocation().distanceTo(newStar.getWorldPoint());
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Spotted the shooting star from a distance of " + distance + " tiles", null);
 			}
 			else if (starTier != this.crashedStar.getTier() && newStar.isSame(crashedStar))
 			{
 				this.crashedStar = this.crashedStar.reduceTier();
 				log.debug("Shooting star degraded to tier {}, world={}, worldPoint={}", crashedStar.getTier(), crashedStar.getWorld(), crashedStar.getWorldPoint());
-				eventBus.post(new StarDowngradeEvent());
+				eventBus.post(StarDowngradeEvent.from(crashedStar));
 			}
 		}
 	}
@@ -209,8 +210,8 @@ public class ShootingStars extends Plugin
 		if (isShootingStar(event.getGameObject().getId()) && crashedStar.getTier() == CrashedStar.MIN_TIER)
 		{
 			log.debug("Shooting star depleted, world={}, worldPoint={}", crashedStar.getWorld(), crashedStar.getWorldPoint());
+			eventBus.post(StarDepletionEvent.from(crashedStar));
 			crashedStar = null;
-			eventBus.post(new StarDepletionEvent());
 		}
 	}
 
