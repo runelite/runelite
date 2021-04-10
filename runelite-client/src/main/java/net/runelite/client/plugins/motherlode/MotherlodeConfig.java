@@ -145,6 +145,16 @@ public interface MotherlodeConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		keyName = "oreValueType",
+		name = "Show ore values",
+		description = "Displays GE values for ores found"
+	)
+	default MotherlodeOreValueType oreValueType()
+	{
+		return MotherlodeOreValueType.DISABLED;
+	}
+	
 	@AllArgsConstructor
 	enum MotherlodeOreValueType
 	{
@@ -159,16 +169,6 @@ public interface MotherlodeConfig extends Config
 		{
 			return value;
 		}
-	}
-
-	@ConfigItem(
-		keyName = "oreValueType",
-		name = "Show ore values",
-		description = "Displays GE values for ores found"
-	)
-	default MotherlodeOreValueType oreValueType()
-	{
-		return MotherlodeOreValueType.DISABLED;
 	}
 
 }
