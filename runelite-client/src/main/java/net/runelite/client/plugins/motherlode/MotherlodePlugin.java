@@ -212,17 +212,21 @@ public class MotherlodePlugin extends Plugin
 			session.resetRecent();
 		}
 
-		if (overlayMenuClicked.getEntry() == MotherlodeOreOverlay.DISABLED_ENTRY)
+		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY
+			&& overlayMenuClicked.getOverlay() == overlay)
 		{
-			configManager.setConfiguration("motherlode", "oreValueType", MotherlodeConfig.MotherlodeOreValueType.DISABLED);
-		}
-		else if (overlayMenuClicked.getEntry() == MotherlodeOreOverlay.MOUSEOVER_ENTRY)
-		{
-			configManager.setConfiguration("motherlode", "oreValueType", MotherlodeConfig.MotherlodeOreValueType.MOUSEOVER);
-		}
-		else if (overlayMenuClicked.getEntry() == MotherlodeOreOverlay.REPLACE_ENTRY)
-		{
-			configManager.setConfiguration("motherlode", "oreValueType", MotherlodeConfig.MotherlodeOreValueType.REPLACE);
+			if (overlayMenuClicked.getEntry() == MotherlodeOreOverlay.DISABLED_ENTRY)
+			{
+				configManager.setConfiguration("motherlode", "oreValueType", MotherlodeConfig.MotherlodeOreValueType.DISABLED);
+			}
+			else if (overlayMenuClicked.getEntry() == MotherlodeOreOverlay.MOUSEOVER_ENTRY)
+			{
+				configManager.setConfiguration("motherlode", "oreValueType", MotherlodeConfig.MotherlodeOreValueType.MOUSEOVER);
+			}
+			else if (overlayMenuClicked.getEntry() == MotherlodeOreOverlay.REPLACE_ENTRY)
+			{
+				configManager.setConfiguration("motherlode", "oreValueType", MotherlodeConfig.MotherlodeOreValueType.REPLACE);
+			}
 		}
 	}
 
