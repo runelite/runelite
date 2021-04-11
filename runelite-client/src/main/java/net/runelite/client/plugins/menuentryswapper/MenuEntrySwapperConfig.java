@@ -661,4 +661,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "swapMerfolkTridentChannel",
+			name = "Merfolk trident channel",
+			description = "Swap Wield with Channel on Merfolk trident",
+			section = itemSection
+	)
+	default boolean swapMerfolkTridentChannel()
+	{
+		return false;
+	}
 }
