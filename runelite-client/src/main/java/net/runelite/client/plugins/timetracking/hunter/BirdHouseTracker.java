@@ -84,7 +84,7 @@ public class BirdHouseTracker
 
 	public BirdHouseTabPanel createBirdHouseTabPanel()
 	{
-		return new BirdHouseTabPanel(itemManager, this, config);
+		return new BirdHouseTabPanel(configManager, itemManager, this, config);
 	}
 
 	public void loadFromConfig()
@@ -180,7 +180,7 @@ public class BirdHouseTracker
 			summary = SummaryState.COMPLETED;
 			completionTime = 0;
 
-			if (config.birdHouseNotification())
+			if (Boolean.TRUE.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BIRDHOUSE_NOTIFY, boolean.class)))
 			{
 				notifier.notify("Your bird houses are ready to be dismantled.");
 			}
