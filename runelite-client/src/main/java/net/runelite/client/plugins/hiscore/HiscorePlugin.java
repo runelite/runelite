@@ -190,6 +190,7 @@ public class HiscorePlugin extends Plugin
 			&& event.getMenuOption().equals(LOOKUP))
 		{
 			final String target;
+			HiscoreEndpoint endpoint = HiscoreEndpoint.NORMAL;
 			if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER)
 			{
 				// The player id is included in the event, so we can use that to get the player name,
@@ -204,10 +205,13 @@ public class HiscorePlugin extends Plugin
 			}
 			else
 			{
+				// Determine proper endpoint from player name.
+				// TODO: look at target's world and determine if tournament/dmm endpoint should be used instead.
+				endpoint = findHiscoreEndpointFromPlayerName(event.getMenuTarget());
 				target = Text.removeTags(event.getMenuTarget());
 			}
 
-			lookupPlayer(target, HiscoreEndpoint.NORMAL);
+			lookupPlayer(target, endpoint);
 		}
 	}
 
@@ -294,6 +298,27 @@ public class HiscorePlugin extends Plugin
 				case HARDCORE_IRONMAN:
 					return HiscoreEndpoint.HARDCORE_IRONMAN;
 			}
+		}
+		return HiscoreEndpoint.NORMAL;
+	}
+
+	private HiscoreEndpoint findHiscoreEndpointFromPlayerName(String name)
+	{
+		if (name.contains(IconID.IRONMAN.toString()))
+		{
+			return HiscoreEndpoint.IRONMAN;
+		}
+		if (name.contains(IconID.ULTIMATE_IRONMAN.toString()))
+		{
+			return HiscoreEndpoint.ULTIMATE_IRONMAN;
+		}
+		if (name.contains(IconID.HARDCORE_IRONMAN.toString()))
+		{
+			return HiscoreEndpoint.HARDCORE_IRONMAN;
+		}
+		if (name.contains(IconID.LEAGUE.toString()))
+		{
+			return HiscoreEndpoint.LEAGUE;
 		}
 		return HiscoreEndpoint.NORMAL;
 	}
