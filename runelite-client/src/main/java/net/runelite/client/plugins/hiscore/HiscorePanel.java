@@ -38,7 +38,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +52,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Player;
-import net.runelite.api.WorldType;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
@@ -118,7 +116,7 @@ public class HiscorePanel extends PluginPanel
 		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.LEAGUE
 	};
 
-	private final Client client;
+	private final HiscorePlugin plugin;
 	private final HiscoreConfig config;
 	private final NameAutocompleter nameAutocompleter;
 	private final HiscoreClient hiscoreClient;
@@ -138,10 +136,10 @@ public class HiscorePanel extends PluginPanel
 	private boolean loading = false;
 
 	@Inject
-	public HiscorePanel(@Nullable Client client,
-		HiscoreConfig config, NameAutocompleter nameAutocompleter, OkHttpClient okHttpClient)
+	public HiscorePanel(@Nullable Client client, HiscorePlugin plugin, HiscoreConfig config,
+		NameAutocompleter nameAutocompleter, OkHttpClient okHttpClient)
 	{
-		this.client = client;
+		this.plugin = plugin;
 		this.config = config;
 		this.nameAutocompleter = nameAutocompleter;
 		this.hiscoreClient = new HiscoreClient(okHttpClient);
@@ -187,7 +185,7 @@ public class HiscorePanel extends PluginPanel
 
 				if (localPlayer != null)
 				{
-					lookup(localPlayer.getName());
+					lookup(localPlayer.getName(), plugin.getLocalHiscoreEndpoint());
 				}
 			}
 		});
@@ -360,10 +358,10 @@ public class HiscorePanel extends PluginPanel
 		return skillPanel;
 	}
 
-	public void lookup(String username)
+	public void lookup(String username, HiscoreEndpoint endpoint)
 	{
 		searchBar.setText(username);
-		resetEndpoints();
+		tabGroup.select(tabGroup.getTab(ArrayUtils.indexOf(ENDPOINTS, endpoint)));
 		lookup();
 	}
 
@@ -720,31 +718,9 @@ public class HiscorePanel extends PluginPanel
 	private void resetEndpoints()
 	{
 		// Select the correct tab based on the world type.
-		HiscoreEndpoint endpoint = selectWorldEndpoint();
+		HiscoreEndpoint endpoint = plugin.getWorldEndpoint();
 		int idx = ArrayUtils.indexOf(ENDPOINTS, endpoint);
 		tabGroup.select(tabGroup.getTab(idx));
-	}
-
-	private HiscoreEndpoint selectWorldEndpoint()
-	{
-		if (client != null)
-		{
-			EnumSet<WorldType> wTypes = client.getWorldType();
-
-			if (wTypes.contains(WorldType.DEADMAN_TOURNAMENT))
-			{
-				return HiscoreEndpoint.TOURNAMENT;
-			}
-			else if (wTypes.contains(WorldType.DEADMAN))
-			{
-				return HiscoreEndpoint.DEADMAN;
-			}
-			else if (wTypes.contains(WorldType.LEAGUE))
-			{
-				return HiscoreEndpoint.LEAGUE;
-			}
-		}
-		return HiscoreEndpoint.NORMAL;
 	}
 
 	@VisibleForTesting
