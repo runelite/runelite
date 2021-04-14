@@ -84,7 +84,7 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MAGIC, 37));
 
 		// HARD
-		add("Craft 140 Mind runes simultaneously.",
+		add("Craft 140 Mind runes simultaneously from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 56));
 		add("Change your family crest to the Saradomin symbol.",
 			new SkillRequirement(Skill.PRAYER, 70));
