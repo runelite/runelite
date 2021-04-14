@@ -31,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 public enum Quest
 {
 	//Free Quests
+	BELOW_ICE_MOUNTAIN(2874, "Below Ice Mountain"),
 	BLACK_KNIGHTS_FORTRESS(299, "Black Knights' Fortress"),
 	COOKS_ASSISTANT(300, "Cook's Assistant"),
 	THE_CORSAIR_CURSE(301, "The Corsair Curse"),
