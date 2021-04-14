@@ -241,6 +241,7 @@ enum DiscordGameEventType
 	DUNGEON_OURANIA("Ourania Cave", DiscordAreaType.DUNGEONS, 12119),
 	DUNGEON_QUIDAMORTEM_CAVE("Quidamortem Cave", DiscordAreaType.DUNGEONS, 4763),
 	DUNGEON_RASHILIYIAS_TOMB("Rashiliyta's Tomb", DiscordAreaType.DUNGEONS, 11668),
+	DUNGEON_RUINS_OF_CAMDOZAAL("Ruins of Camdozaal", DiscordAreaType.DUNGEONS, 11609, 11610, 11611, 11865, 11866, 11867, 12121, 12122, 12123),
 	DUNGEON_SALT_MINE("Salt Mine", DiscordAreaType.DUNGEONS, 11425),
 	DUNGEON_SARADOMINSHRINE("Saradomin Shrine (Paterdomus)", DiscordAreaType.DUNGEONS, 13722),
 	DUNGEON_SHADE_CATACOMBS("Shade Catacombs", DiscordAreaType.DUNGEONS, 13975),

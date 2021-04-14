@@ -26,14 +26,15 @@
 package net.runelite.client.plugins.worldmap;
 
 import lombok.Getter;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.Quest;
+import net.runelite.api.coords.WorldPoint;
 
 // Some quests are in the same spot, but they are done in order. If multiple
 // quests start in the same location, an array of quests is expected.
 enum QuestStartLocation
 {
 	//Free Quests
+	BELOW_ICE_MOUNTAIN(Quest.BELOW_ICE_MOUNTAIN, new WorldPoint(3001, 3436, 0)),
 	COOKS_ASSISTANT_RFD(Quest.COOKS_ASSISTANT, new WorldPoint(3211, 3216, 0)),
 	THE_CORSAIR_CURSE(Quest.THE_CORSAIR_CURSE, new WorldPoint(3029, 3273, 0)),
 	DEMON_SLAYER(Quest.DEMON_SLAYER, new WorldPoint(3204, 3424, 0)),
