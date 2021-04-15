@@ -106,7 +106,7 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.GRIM_TALES));
 
 		// ELITE
-		add("Craft 252 Air Runes simultaneously.",
+		add("Craft 252 Air Runes simultaneously from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 88));
 		add("Purchase a White 2h Sword from Sir Vyvin.",
 			new QuestRequirement(Quest.WANTED));
