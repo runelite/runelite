@@ -40,6 +40,13 @@ public interface PlayerComposition
 	boolean isFemale();
 
 	/**
+	 * Get the body part colors for this player composition.
+	 *
+	 * @return an array of the colors, always size 5
+	 */
+	int[] getColors();
+
+	/**
 	 * Gets an array of IDs related to equipment slots.
 	 * <p>
 	 * If the ID for a specific slot is between 256 and 512, subtracting
