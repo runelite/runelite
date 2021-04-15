@@ -189,6 +189,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_ATTACH_BOLT_TIPS_TO_DRAGON_BOLT:
 			/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
+			case SMITHING_IMCANDO_HAMMER:
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
 			/* Fishing */
