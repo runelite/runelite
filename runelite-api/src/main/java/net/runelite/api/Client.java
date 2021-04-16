@@ -1804,4 +1804,19 @@ public interface Client extends GameEngine
 	 * @see KeyCode
 	 */
 	boolean isKeyPressed(int keycode);
+
+	/**
+	 * Get the list of message ids for the recently received cross-world messages. The upper 32 bits of the
+	 * id is the world id, the lower is a sequence number per-world.
+	 *
+	 * @return
+	 */
+	long[] getCrossWorldMessageIds();
+
+	/**
+	 * Get the index of the next message to be inserted in the cross world message id list
+	 *
+	 * @return
+	 */
+	int getCrossWorldMessageIdsIndex();
 }
