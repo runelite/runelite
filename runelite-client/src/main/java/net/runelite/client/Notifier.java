@@ -100,7 +100,8 @@ public class Notifier
 		.build();
 
 	// Notifier properties
-	private static final int MINIMUM_FLASH_DURATION_MILLIS = 2000;
+	private static final int MINIMUM_FLASH_DURATION_MILLIS = 600;
+	private static final int FLASH_DURATION_TWO_SECONDS = 2000;
 	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
 	private static final File NOTIFICATION_FILE = new File(RuneLite.RUNELITE_DIR, "notification.wav");
@@ -239,14 +240,22 @@ public class Notifier
 			return;
 		}
 
+		// If minimum flash duration has surpassed
 		if (Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
 		{
+
 			switch (flashNotification)
 			{
-				case FLASH_TWO_SECONDS:
-				case SOLID_TWO_SECONDS:
+				case FLASH_ONE_TICK:
 					flashStart = null;
 					return;
+				case FLASH_TWO_SECONDS:
+				case SOLID_TWO_SECONDS:
+					if (Instant.now().minusMillis(FLASH_DURATION_TWO_SECONDS).isAfter(flashStart))
+					{
+						flashStart = null;
+						return;
+					}
 				case SOLID_UNTIL_CANCELLED:
 				case FLASH_UNTIL_CANCELLED:
 					// Any interaction with the client since the notification started will cancel it after the minimum duration
@@ -264,7 +273,8 @@ public class Notifier
 		if (client.getGameCycle() % 40 >= 20
 			// For solid colour, fall through every time.
 			&& (flashNotification == FlashNotification.FLASH_TWO_SECONDS
-			|| flashNotification == FlashNotification.FLASH_UNTIL_CANCELLED))
+			|| flashNotification == FlashNotification.FLASH_UNTIL_CANCELLED
+			|| flashNotification == FlashNotification.FLASH_ONE_TICK))
 		{
 			return;
 		}
