@@ -105,7 +105,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 		add("Smith a Dragon sq shield in West Ardougne.",
 			new SkillRequirement(Skill.SMITHING, 60),
 			new QuestRequirement(Quest.LEGENDS_QUEST));
-		add("Craft some Death runes.",
+		add("Craft some Death runes from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 65),
 			new QuestRequirement(Quest.MOURNINGS_END_PART_II));
 
