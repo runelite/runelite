@@ -384,6 +384,15 @@ public class CannonPlugin extends Plugin
 			}
 		}
 
+		if (event.getMessage().startsWith("Your cannon contains"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
+			if (m.find())
+			{
+				cballsLeft = Integer.parseInt(m.group());
+			}
+		}
+
 		if (event.getMessage().startsWith("You unload your cannon and receive Cannonball")
 			|| event.getMessage().startsWith("You unload your cannon and receive Granite cannonball"))
 		{

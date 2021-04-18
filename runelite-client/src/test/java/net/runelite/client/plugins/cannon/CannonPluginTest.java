@@ -105,6 +105,18 @@ public class CannonPluginTest
 	}
 
 	@Test
+	public void addWrongTypeOfCannonballs()
+	{
+		final ChatMessage message = new ChatMessage();
+		message.setType(ChatMessageType.GAMEMESSAGE);
+		message.setMessage("Your cannon contains 20 x Cannonball.<br>You can only add cannonballs of the same kind.");
+
+		plugin.onChatMessage(message);
+
+		assertEquals(20, plugin.getCballsLeft());
+	}
+
+	@Test
 	public void addMaxCannonballs()
 	{
 		final ItemContainer inventory = mock(ItemContainer.class);
