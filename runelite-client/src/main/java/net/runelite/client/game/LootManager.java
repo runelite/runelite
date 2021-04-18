@@ -271,10 +271,12 @@ public class LootManager
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
 
 		//Prevents shade drops from being cleared before shade is registered as killed
-		if(shadeRemainsDropped)
+		if (shadeRemainsDropped)
 		{
-			if(shadeDropTickDelay-- <= 0)
+			if (shadeDropTickDelay-- <= 0)
+			{
 				shadeRemainsDropped = false;
+			}
 			return;
 		}
 		itemSpawns.clear();
