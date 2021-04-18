@@ -79,6 +79,9 @@ public class LootManager
 	private NPC delayedLootNpc;
 	private int delayedLootTickLimit;
 
+	private boolean shadeRemainsDropped;
+	private int shadeDropTickDelay;
+
 	@Inject
 	private LootManager(EventBus eventBus, Client client)
 	{
@@ -176,6 +179,19 @@ public class LootManager
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
 		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity(), location));
 		log.debug("Item spawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
+
+		switch (item.getId())
+		{
+			case ItemID.LOAR_REMAINS:
+			case ItemID.PHRIN_REMAINS:
+			case ItemID.RIYL_REMAINS:
+			case ItemID.ASYN_REMAINS:
+			case ItemID.FIYR_REMAINS:
+			case ItemID.URIUM_REMAINS:
+				shadeRemainsDropped = true;
+				shadeDropTickDelay = 2;
+				break;
+		}
 	}
 
 	@Subscribe
@@ -254,6 +270,13 @@ public class LootManager
 
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
 
+		//Prevents shade drops from being cleared before shade is registered as killed
+		if(shadeRemainsDropped)
+		{
+			if(shadeDropTickDelay-- <= 0)
+				shadeRemainsDropped = false;
+			return;
+		}
 		itemSpawns.clear();
 		killPoints.clear();
 	}
