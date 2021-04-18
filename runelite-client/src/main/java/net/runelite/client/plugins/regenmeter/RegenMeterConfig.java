@@ -69,4 +69,13 @@ public interface RegenMeterConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "showTimeTilSpecialFull",
+		name = "Show time for full special",
+		description = "Show a tooltip indicating time til special energy is at 100%")
+	default boolean showTimeTilSpecialFull()
+	{
+		return false;
+	}
 }
