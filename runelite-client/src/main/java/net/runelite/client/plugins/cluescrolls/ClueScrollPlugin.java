@@ -1156,6 +1156,18 @@ public class ClueScrollPlugin extends Plugin
 
 			return mapClue.getObjectId() == -1 && itemId == ItemID.SPADE;
 		}
+		else if (c instanceof SkillChallengeClue)
+		{
+			SkillChallengeClue challengeClue = (SkillChallengeClue) c;
+
+			for (ItemRequirement ir : challengeClue.getItemRequirements())
+			{
+				if (ir.fulfilledBy(itemId))
+				{
+					return true;
+				}
+			}
+		}
 
 		return false;
 	}
