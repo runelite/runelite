@@ -2,6 +2,7 @@
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,6 +33,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -159,6 +161,11 @@ public class WorldHopperPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int currentPing;
 
+	@Getter(AccessLevel.PACKAGE)
+	private int totalLevel = 2277;
+	private boolean justLoggedIn;
+	private String lastUsername;
+
 	private final Map<Integer, Integer> storedPings = new HashMap<>();
 
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
@@ -209,7 +216,18 @@ public class WorldHopperPlugin extends Plugin
 
 		overlayManager.add(worldHopperOverlay);
 
-		panel.setFilterMode(config.subscriptionFilter());
+		panel.setSubscriptionFilterMode(config.subscriptionFilter());
+		panel.setPVPTypeFilter(config.PVPTypeFilter());
+		panel.setHighRiskTypeFilter(config.highRiskTypeFilter());
+		panel.setBountyTypeFilter(config.bountyTypeFilter());
+		panel.setLastManStandingTypeFilter(config.lastManStandingTypeFilter());
+		panel.setTournamentTypeFilter(config.tournamentTypeFilter());
+		panel.setDeadmanTypeFilter(config.deadmanTypeFilter());
+		panel.setDeadmanTournamentTypeFilter(config.deadmanTournamentTypeFilter());
+		panel.setLeagueTypeFilter(config.leagueTypeFilter());
+		panel.setSkillTotalTypeFilter(config.skillTotalTypeFilter());
+		panel.setExclusiveTypeFilter(config.exclusiveTypeFilter());
+		panel.setRegionFilter(config.regionFilter());
 
 		// The plugin has its own executor for pings, as it blocks for a long time
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
@@ -272,7 +290,47 @@ public class WorldHopperPlugin extends Plugin
 					}
 					break;
 				case "subscriptionFilter":
-					panel.setFilterMode(config.subscriptionFilter());
+					panel.setSubscriptionFilterMode(config.subscriptionFilter());
+					updateList();
+					break;
+				case "PVPTypeFilter":
+					panel.setPVPTypeFilter(config.PVPTypeFilter());
+					updateList();
+					break;
+				case "highRiskTypeFilter":
+					panel.setHighRiskTypeFilter(config.highRiskTypeFilter());
+					updateList();
+					break;
+				case "bountyTypeFilter":
+					panel.setBountyTypeFilter(config.bountyTypeFilter());
+					updateList();
+					break;
+				case "lastManStandingTypeFilter":
+					panel.setLastManStandingTypeFilter(config.lastManStandingTypeFilter());
+					updateList();
+					break;
+				case "tournamentTypeFilter":
+					panel.setTournamentTypeFilter(config.tournamentTypeFilter());
+					updateList();
+					break;
+				case "deadmanTypeFilter":
+					panel.setDeadmanTypeFilter(config.deadmanTypeFilter());
+					updateList();
+					break;
+				case "leagueTypeFilter":
+					panel.setLeagueTypeFilter(config.leagueTypeFilter());
+					updateList();
+					break;
+				case "skillTotalTypeFilter":
+					panel.setSkillTotalTypeFilter(config.skillTotalTypeFilter());
+					updateList();
+					break;
+				case "exclusiveTypeFilter":
+					panel.setExclusiveTypeFilter(config.exclusiveTypeFilter());
+					updateList();
+					break;
+				case "regionFilter":
+					panel.setRegionFilter(config.regionFilter());
 					updateList();
 					break;
 			}
@@ -430,14 +488,27 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		// If the player has disabled the side bar plugin panel, do not update the UI
-		if (config.showSidebar() && gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		GameState state = gameStateChanged.getGameState();
+		if (state == GameState.LOGGED_IN)
 		{
-			if (lastWorld != client.getWorld())
+			// If the player has disabled the side bar plugin panel, do not update the UI
+			if (config.showSidebar())
 			{
-				int newWorld = client.getWorld();
-				panel.switchCurrentHighlight(newWorld, lastWorld);
-				lastWorld = newWorld;
+				if (lastWorld != client.getWorld())
+				{
+					int newWorld = client.getWorld();
+					panel.switchCurrentHighlight(newWorld, lastWorld);
+					lastWorld = newWorld;
+				}
+			}
+
+			// LOGGED_IN is triggered between region changes too.
+			// Check that the username changed.
+			if (!client.getUsername().equals(lastUsername))
+			{
+				lastUsername = client.getUsername();
+				// data is not available until after login is finished, so fetch it on the next gametick
+				justLoggedIn = true;
 			}
 		}
 	}
@@ -507,22 +578,52 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		EnumSet<WorldType> currentWorldTypes = currentWorld.getTypes().clone();
+		EnumSet<WorldType> allWorldTypes = EnumSet.allOf(WorldType.class);
+		//do not filter out MEMBERS type worlds
+		allWorldTypes.remove(WorldType.MEMBERS);
+		EnumSet<WorldType> targetWorldTypes = currentWorld.getTypes().clone();
+		if (config.exclusiveTypeFilter())
+		{
+			targetWorldTypes = allWorldTypes.clone();
+			// This removes world types that don't match any of the selected filter(s)
+			if (!config.PVPTypeFilter())
+				targetWorldTypes.remove(WorldType.PVP);
+			if (!config.highRiskTypeFilter())
+				targetWorldTypes.remove(WorldType.HIGH_RISK);
+			if (!config.bountyTypeFilter())
+				targetWorldTypes.remove(WorldType.BOUNTY);
+			if (!config.lastManStandingTypeFilter())
+				targetWorldTypes.remove(WorldType.LAST_MAN_STANDING);
+			if (!config.tournamentTypeFilter())
+				targetWorldTypes.remove(WorldType.TOURNAMENT);
+			if (!config.deadmanTypeFilter())
+				targetWorldTypes.remove(WorldType.DEADMAN);
+			if (!config.deadmanTournamentTypeFilter())
+				targetWorldTypes.remove(WorldType.DEADMAN_TOURNAMENT);
+			if (!config.leagueTypeFilter())
+				targetWorldTypes.remove(WorldType.LEAGUE);
+			if (!config.skillTotalTypeFilter())
+				targetWorldTypes.remove(WorldType.SKILL_TOTAL);
+		}
+
 		// Make it so you always hop out of PVP and high risk worlds
 		if (config.quickhopOutOfDanger())
 		{
-			currentWorldTypes.remove(WorldType.PVP);
-			currentWorldTypes.remove(WorldType.HIGH_RISK);
+			targetWorldTypes.remove(WorldType.PVP);
+			targetWorldTypes.remove(WorldType.HIGH_RISK);
 		}
-		// Don't regard these worlds as a type that must be hopped between
-		currentWorldTypes.remove(WorldType.BOUNTY);
-		currentWorldTypes.remove(WorldType.SKILL_TOTAL);
-		currentWorldTypes.remove(WorldType.LAST_MAN_STANDING);
+		// If exclusive filter is off, don't regard these worlds as a type that must be hopped between
+		if (!config.exclusiveTypeFilter())
+		{
+			targetWorldTypes.remove(WorldType.BOUNTY);
+			targetWorldTypes.remove(WorldType.SKILL_TOTAL);
+			targetWorldTypes.remove(WorldType.LAST_MAN_STANDING);
+		}
 
 		List<World> worlds = worldResult.getWorlds();
 
 		int worldIdx = worlds.indexOf(currentWorld);
-		int totalLevel = client.getTotalLevel();
+		checkTotalLevel();
 
 		World world;
 		do
@@ -555,24 +656,45 @@ public class WorldHopperPlugin extends Plugin
 			world = worlds.get(worldIdx);
 
 			// Check world region if filter is enabled
-			if (config.quickHopRegionFilter() != RegionFilterMode.NONE && world.getRegion() != config.quickHopRegionFilter().getRegion())
+			if (config.regionFilter() != RegionFilterMode.NONE && world.getRegion() != config.regionFilter().getRegion())
 			{
 				continue;
 			}
 
 			EnumSet<WorldType> types = world.getTypes().clone();
 
-			types.remove(WorldType.BOUNTY);
-			// Treat LMS world like casual world
-			types.remove(WorldType.LAST_MAN_STANDING);
+			// Filter subscription mode using the plugin setting
+			boolean members = types.contains(WorldType.MEMBERS);
+			switch (config.subscriptionFilter())
+			{
+				case FREE:
+					if (members)
+					{
+						continue;
+					}
+					break;
+				case MEMBERS:
+					if (!members)
+					{
+						continue;
+					}
+					break;
+			}
 
 			if (types.contains(WorldType.SKILL_TOTAL))
 			{
 				try
 				{
 					int totalRequirement = Integer.parseInt(world.getActivity().substring(0, world.getActivity().indexOf(" ")));
-
-					if (totalLevel >= totalRequirement)
+					// If exclusive filer is off, origin world has skill_total type removed
+					// To ensure a match, only remove skill_total type from destination world if the player can enter the world
+					if (totalLevel >= totalRequirement && !config.exclusiveTypeFilter())
+					{
+						types.remove(WorldType.SKILL_TOTAL);
+					}
+					// If exclusive filter is on, origin world keeps all origin types
+					// To ensure a match, only remove skill_total from destination world if the player cannot enter the world
+					else if (totalLevel < totalRequirement && config.exclusiveTypeFilter())
 					{
 						types.remove(WorldType.SKILL_TOTAL);
 					}
@@ -589,10 +711,31 @@ public class WorldHopperPlugin extends Plugin
 				continue;
 			}
 
-			// Break out if we've found a good world to hop to
-			if (currentWorldTypes.equals(types))
+			if (config.exclusiveTypeFilter())
 			{
-				break;
+				// This skips worlds that have no type, as they will not match any filter(s)
+				if (Collections.disjoint(types, allWorldTypes))
+				{
+					continue;
+				}
+
+				// Breaks out if a world is found that matches any filter(s)
+				if (types.stream().anyMatch(targetWorldTypes::contains))
+				{
+					break;
+				}
+			}
+			else
+			{
+				types.remove(WorldType.BOUNTY);
+				// Treat LMS world like casual world
+				types.remove(WorldType.LAST_MAN_STANDING);
+
+				// Break out if we've found a good world to hop to
+				if (targetWorldTypes.equals(types))
+				{
+					break;
+				}
 			}
 		}
 		while (world != currentWorld);
@@ -667,6 +810,21 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (justLoggedIn)
+		{
+			justLoggedIn = false;
+			checkTotalLevel();
+		}
+
+		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
+		{
+			checkTotalLevel();
+		}
+		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
+		{
+			checkTotalLevel();
+		}
+
 		if (quickHopTargetWorld == null)
 		{
 			return;
@@ -849,5 +1007,15 @@ public class WorldHopperPlugin extends Plugin
 		int ping = Ping.ping(world);
 		storedPings.put(world.getId(), ping);
 		return ping;
+	}
+
+	private void checkTotalLevel()
+	{
+		int nowLevel = client.getTotalLevel();
+		if (totalLevel != nowLevel)
+		{
+			totalLevel = nowLevel;
+			updateList();
+		}
 	}
 }

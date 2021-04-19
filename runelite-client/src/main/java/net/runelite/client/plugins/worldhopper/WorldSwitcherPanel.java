@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Psikoi <https://github.com/Psikoi>
+ * Copyright (c) 2020, Truth Forger <https://github.com/Blackberry0Pie>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,12 +33,15 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
+import lombok.extern.slf4j.Slf4j;
 import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -45,6 +49,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
 
+@Slf4j
 class WorldSwitcherPanel extends PluginPanel
 {
 	private static final Color ODD_ROW = new Color(44, 44, 44);
@@ -66,7 +71,29 @@ class WorldSwitcherPanel extends PluginPanel
 	private final ArrayList<WorldTableRow> rows = new ArrayList<>();
 	private final WorldHopperPlugin plugin;
 	@Setter(AccessLevel.PACKAGE)
-	private SubscriptionFilterMode filterMode;
+	private SubscriptionFilterMode subscriptionFilterMode;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean PVPTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean highRiskTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean bountyTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean lastManStandingTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean tournamentTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean deadmanTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean deadmanTournamentTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean leagueTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean skillTotalTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean exclusiveTypeFilter;
+	@Setter(AccessLevel.PACKAGE)
+	private RegionFilterMode regionFilter;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -227,24 +254,116 @@ class WorldSwitcherPanel extends PluginPanel
 	{
 		rows.clear();
 
+		int totalLevel = plugin.getTotalLevel();
+
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
 
-			switch (filterMode)
+			// Check world region if filter is enabled
+			if (regionFilter != RegionFilterMode.NONE && world.getRegion() != regionFilter.getRegion())
+			{
+				continue;
+			}
+
+			EnumSet<WorldType> types = world.getTypes();
+
+			switch (subscriptionFilterMode)
 			{
 				case FREE:
-					if (world.getTypes().contains(WorldType.MEMBERS))
+					if (types.contains(WorldType.MEMBERS))
 					{
 						continue;
 					}
 					break;
 				case MEMBERS:
-					if (!world.getTypes().contains(WorldType.MEMBERS))
+					if (!types.contains(WorldType.MEMBERS))
 					{
 						continue;
 					}
 					break;
+			}
+
+			if (exclusiveTypeFilter)
+			{
+				EnumSet<WorldType> allWorldTypes = EnumSet.allOf(WorldType.class);
+				//do not filter out MEMBERS type worlds
+				allWorldTypes.remove(WorldType.MEMBERS);
+
+				// This removes worlds that have no type, as they will not match any filter(s)
+				if (Collections.disjoint(types, allWorldTypes))
+				{
+					continue;
+				}
+
+				// This removes worlds that don't match any of the selected filter(s)
+				if (   (!PVPTypeFilter               && types.contains(WorldType.PVP))
+					|| (!highRiskTypeFilter          && types.contains(WorldType.HIGH_RISK))
+					|| (!bountyTypeFilter            && types.contains(WorldType.BOUNTY))
+					|| (!lastManStandingTypeFilter   && types.contains(WorldType.LAST_MAN_STANDING))
+					|| (!tournamentTypeFilter        && types.contains(WorldType.TOURNAMENT))
+					|| (!deadmanTypeFilter           && types.contains(WorldType.DEADMAN))
+					|| (!deadmanTournamentTypeFilter && types.contains(WorldType.DEADMAN_TOURNAMENT))
+					|| (!leagueTypeFilter            && types.contains(WorldType.LEAGUE))
+					|| (!skillTotalTypeFilter        && types.contains(WorldType.SKILL_TOTAL)))
+				{
+					continue;
+				}
+
+				if (types.contains(WorldType.SKILL_TOTAL))
+				{
+					try
+					{
+						int totalRequirement = Integer.parseInt(world.getActivity().substring(0, world.getActivity().indexOf(" ")));
+						if (totalLevel < totalRequirement)
+						{
+							continue;
+						}
+					}
+					catch (NumberFormatException ex)
+					{
+						log.warn("Failed to parse total level requirement for target world", ex);
+					}
+				}
+			}
+			else
+			{
+				if (!PVPTypeFilter && types.contains(WorldType.PVP))
+				{
+					continue;
+				}
+				if (!highRiskTypeFilter && types.contains(WorldType.HIGH_RISK))
+				{
+					continue;
+				}
+				if (!bountyTypeFilter && types.contains(WorldType.BOUNTY))
+				{
+					continue;
+				}
+				if (!lastManStandingTypeFilter && types.contains(WorldType.LAST_MAN_STANDING))
+				{
+					continue;
+				}
+				if (!tournamentTypeFilter && types.contains(WorldType.TOURNAMENT))
+				{
+					continue;
+				}
+				if (!deadmanTypeFilter && types.contains(WorldType.DEADMAN))
+				{
+					continue;
+				}
+				if (!deadmanTournamentTypeFilter && types.contains(WorldType.DEADMAN_TOURNAMENT))
+				{
+					continue;
+				}
+				if (!leagueTypeFilter && types.contains(WorldType.LEAGUE))
+				{
+					continue;
+				}
+				if (!skillTotalTypeFilter && types.contains(WorldType.SKILL_TOTAL))
+				{
+					continue;
+				}
 			}
 
 			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
