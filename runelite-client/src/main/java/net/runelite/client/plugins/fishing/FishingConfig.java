@@ -173,22 +173,22 @@ public interface FishingConfig extends Config
 
 	@ConfigItem(
 		position = 11,
-		keyName = "trawlerNotification",
-		name = "Trawler activity notification",
-		description = "Send a notification when fishing trawler activity drops below 15%."
+		keyName = "trawlerTimer",
+		name = "Trawler timer in M:SS",
+		description = "Trawler timer will display a more accurate timer in M:SS format."
 	)
-	default boolean trawlerNotification()
+	default boolean trawlerTimer()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		position = 12,
-		keyName = "trawlerTimer",
-		name = "Trawler timer in MM:SS",
-		description = "Trawler Timer will display a more accurate timer in MM:SS format."
+		keyName = "trawlerContribution",
+		name = "Trawler contribution",
+		description = "Display the exact number of trawler contribution points gained."
 	)
-	default boolean trawlerTimer()
+	default boolean trawlerContribution()
 	{
 		return true;
 	}
