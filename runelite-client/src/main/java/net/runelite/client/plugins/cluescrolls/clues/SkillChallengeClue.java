@@ -87,7 +87,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.INFERNAL_PICKAXE_UNCHARGED_25369),
 		item(ItemID.GILDED_PICKAXE),
 		item(ItemID._3RD_AGE_PICKAXE),
-		item(ItemID.CRYSTAL_PICKAXE)
+		item(ItemID.CRYSTAL_PICKAXE),
+		item(ItemID.CRYSTAL_PICKAXE_INACTIVE)
 	);
 
 	private static final AnyRequirementCollection ANY_AXE = any("Any Axe",
