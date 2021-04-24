@@ -107,7 +107,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.INFERNAL_AXE_UNCHARGED_25371),
 		item(ItemID.GILDED_AXE),
 		item(ItemID._3RD_AGE_AXE),
-		item(ItemID.CRYSTAL_AXE)
+		item(ItemID.CRYSTAL_AXE),
+		item(ItemID.CRYSTAL_AXE_INACTIVE)
 	);
 
 	private static final AnyRequirementCollection ANY_HARPOON = any("Harpoon",
@@ -119,7 +120,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.INFERNAL_HARPOON_OR),
 		item(ItemID.INFERNAL_HARPOON_UNCHARGED),
 		item(ItemID.INFERNAL_HARPOON_UNCHARGED_25367),
-		item(ItemID.CRYSTAL_HARPOON)
+		item(ItemID.CRYSTAL_HARPOON),
+		item(ItemID.CRYSTAL_HARPOON_INACTIVE)
 	);
 
 	private static final Set<SkillChallengeClue> CLUES = ImmutableSet.of(
