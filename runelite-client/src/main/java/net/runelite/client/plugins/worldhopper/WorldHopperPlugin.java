@@ -209,7 +209,8 @@ public class WorldHopperPlugin extends Plugin
 
 		overlayManager.add(worldHopperOverlay);
 
-		panel.setFilterMode(config.subscriptionFilter());
+		panel.setSubscriptionFilterMode(config.subscriptionFilter());
+		panel.setRegionFilterMode(config.regionFilter());
 
 		// The plugin has its own executor for pings, as it blocks for a long time
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
@@ -272,7 +273,11 @@ public class WorldHopperPlugin extends Plugin
 					}
 					break;
 				case "subscriptionFilter":
-					panel.setFilterMode(config.subscriptionFilter());
+					panel.setSubscriptionFilterMode(config.subscriptionFilter());
+					updateList();
+					break;
+				case "regionFilter":
+					panel.setRegionFilterMode(config.regionFilter());
 					updateList();
 					break;
 			}
