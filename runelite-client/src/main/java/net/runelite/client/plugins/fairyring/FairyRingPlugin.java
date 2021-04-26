@@ -108,7 +108,8 @@ public class FairyRingPlugin extends Plugin
 	private Widget searchBtn;
 	private Collection<CodeWidgets> codes = null;
 
-	/** Maps from fairy ring code config key to original text description. Used to immediately reset code descriptions
+	/**
+	 * Maps from fairy ring code config key to original text description. Used to immediately reset code descriptions
 	 * when they are deleted (these descriptions are not cached anywhere else)
 	 */
 	private Map<String, String> originalPanelText = new HashMap<>();
@@ -503,7 +504,8 @@ public class FairyRingPlugin extends Plugin
 		}
 	}
 
-	private void setTagMenuOpen(String code) {
+	private void setTagMenuOpen(String code)
+	{
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
 		searchInput = chatboxPanelManager.openTextInput("Code " + code + ": Enter a name (empty to reset)")
 			.onDone(s -> {
