@@ -311,6 +311,11 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localPoint, plugin.getEmoteImage(), Color.ORANGE);
 		}
 
+		makeSTASHOverlay(graphics, plugin);
+	}
+
+	public void makeSTASHOverlay(Graphics2D graphics, ClueScrollPlugin plugin)
+	{
 		if (stashUnit != null)
 		{
 			final WorldPoint[] worldPoints = stashUnit.getWorldPoints();
