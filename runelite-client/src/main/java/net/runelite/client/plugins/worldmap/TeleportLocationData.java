@@ -59,7 +59,7 @@ enum TeleportLocationData
 	FISHING_GUILD(TeleportType.LUNAR_MAGIC, "Fishing Guild", 85, new WorldPoint(2612, 3391, 0), "fishing_guild_teleport_icon.png"),
 	CATHERBY(TeleportType.LUNAR_MAGIC, "Catherby", 87, new WorldPoint(2802, 3449, 0), "catherby_teleport_icon.png"),
 	ICE_PLATEAU(TeleportType.LUNAR_MAGIC, "Ice Plateau", 89, new WorldPoint(2973, 3939, 0), "ice_plateau_teleport_icon.png"),
-	LUMBRIDGE_GRAVEYARD(TeleportType.ARCEUUS_MAGIC, "Lumbridge Graveyard", 6, new WorldPoint(3241, 3194, 0), "lumbridge_graveyard_teleport_icon.png"),
+	ARCEUUS_LIBRARY(TeleportType.ARCEUUS_MAGIC, "Arceuus Library", 6, new WorldPoint(1632, 3838, 0), "arceuus_library_teleport_icon_arceuus.png"),
 	DRAYNOR_MANOR(TeleportType.ARCEUUS_MAGIC, "Draynor Manor", 17, new WorldPoint(3108, 3352, 0), "draynor_manor_teleport_icon.png"),
 	BATTLEFRONT(TeleportType.ARCEUUS_MAGIC, "Battlefront", 23, new WorldPoint(1349, 3739, 0), "battlefront_teleport_icon.png"),
 	MIND_ALTAR(TeleportType.ARCEUUS_MAGIC, "Mind Altar", 28, new WorldPoint(2979, 3509, 0), "mind_altar_teleport_icon.png"),
