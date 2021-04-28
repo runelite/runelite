@@ -471,6 +471,7 @@ public class WidgetID
 		static final int MUSIC_TAB = 40;
 		static final int MUSIC_ICON = 49;
 		static final int MAGIC_ICON = 66;
+		static final int INTERFACE_CONTAINER = 68;
 		static final int INVENTORY_CONTAINER = 74;
 	}
 
