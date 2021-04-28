@@ -25,18 +25,23 @@
  */
 package net.runelite.client.plugins.mining;
 
-import net.runelite.client.config.*;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Alpha;
 
-import java.awt.*;
+import java.awt.Color;
 
 @ConfigGroup("mining")
 public interface MiningConfig extends Config
 {
 	@ConfigItem(
-			position = 1,
-			keyName = "statTimeout",
-			name = "Reset stats",
-			description = "Duration the mining indicator and session stats are displayed before being reset"
+		position = 1,
+		keyName = "statTimeout",
+		name = "Reset stats",
+		description = "Duration the mining indicator and session stats are displayed before being reset"
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
@@ -45,10 +50,10 @@ public interface MiningConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "showMiningStats",
-			name = "Show session stats",
-			description = "Configures whether to display mining session stats"
+		position = 2,
+		keyName = "showMiningStats",
+		name = "Show session stats",
+		description = "Configures whether to display mining session stats"
 	)
 	default boolean showMiningStats()
 	{
@@ -56,19 +61,19 @@ public interface MiningConfig extends Config
 	}
 
 	@ConfigSection(
-			name = "Graphics Settings",
-			description = "Overlay Graphics settings",
-			position = 10
+		name = "Graphics Settings",
+		description = "Overlay Graphics settings",
+		position = 10
 	)
 	String visualSection = "Graphics";
 
 	@Alpha
 	@ConfigItem(
-			position = 11,
-			keyName = "hexColorRockOverlay",
-			name = "Overlay color",
-			description = "Color of the rock overlay",
-			section = visualSection
+		position = 11,
+		keyName = "hexColorRockOverlay",
+		name = "Overlay color",
+		description = "Color of the rock overlay",
+		section = visualSection
 	)
 	default Color getRockOverlayColor()
 	{
@@ -77,11 +82,11 @@ public interface MiningConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 12,
-			keyName = "hexColorRockOverlayOutline",
-			name = "Overlay outline color",
-			description = "Color of the rock outline overlay",
-			section = visualSection
+		position = 12,
+		keyName = "hexColorRockOverlayOutline",
+		name = "Overlay outline color",
+		description = "Color of the rock outline overlay",
+		section = visualSection
 	)
 	default Color getRockOverlayOutlineColor()
 	{
@@ -90,11 +95,11 @@ public interface MiningConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 13,
-			keyName = "hexColorRockOverlayMLM",
-			name = "MLM Overlay color",
-			description = "Color of the rock overlay (Motherload Mine, Lovakite)",
-			section = visualSection
+		position = 13,
+		keyName = "hexColorRockOverlayMLM",
+		name = "MLM Overlay color",
+		description = "Color of the rock overlay (Motherload Mine, Lovakite)",
+		section = visualSection
 	)
 	default Color getRockOverlayColorMLM()
 	{
@@ -103,11 +108,11 @@ public interface MiningConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 14,
-			keyName = "hexColorRockOutlineOverlayMLM",
-			name = "MLM Overlay outline color",
-			description = "Color of the outline for the rock overlay (Motherload Mine, Lovakite)",
-			section = visualSection
+		position = 14,
+		keyName = "hexColorRockOutlineOverlayMLM",
+		name = "MLM Overlay outline color",
+		description = "Color of the outline for the rock overlay (Motherload Mine, Lovakite)",
+		section = visualSection
 	)
 	default Color getRockOverlayOutlineColorMLM()
 	{
@@ -115,12 +120,13 @@ public interface MiningConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 15,
-			keyName = "getRockOverlayDiameter",
-			name = "Rock overlay diameter",
-			description = "Adjust the size of the rock overlay",
-			section = visualSection
+		position = 15,
+		keyName = "getRockOverlayDiameter",
+		name = "Rock overlay diameter",
+		description = "Adjust the size of the rock overlay",
+		section = visualSection
 	)
+
 	default int getRockOverlayDiameter()
 	{
 		return 25;

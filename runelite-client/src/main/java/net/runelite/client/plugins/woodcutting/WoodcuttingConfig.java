@@ -24,18 +24,23 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import net.runelite.client.config.*;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Alpha;
 
-import java.awt.*;
+import java.awt.Color;
 
 @ConfigGroup("woodcutting")
 public interface WoodcuttingConfig extends Config
 {
 	@ConfigItem(
-			position = 1,
-			keyName = "statTimeout",
-			name = "Reset stats",
-			description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
+		position = 1,
+		keyName = "statTimeout",
+		name = "Reset stats",
+		description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
@@ -44,10 +49,10 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "showNestNotification",
-			name = "Bird nest notification",
-			description = "Configures whether to notify you of a bird nest spawn"
+		position = 2,
+		keyName = "showNestNotification",
+		name = "Bird nest notification",
+		description = "Configures whether to notify you of a bird nest spawn"
 	)
 	default boolean showNestNotification()
 	{
@@ -55,10 +60,10 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 3,
-			keyName = "showWoodcuttingStats",
-			name = "Show session stats",
-			description = "Configures whether to display woodcutting session stats"
+		position = 3,
+		keyName = "showWoodcuttingStats",
+		name = "Show session stats",
+		description = "Configures whether to display woodcutting session stats"
 	)
 	default boolean showWoodcuttingStats()
 	{
@@ -66,10 +71,10 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
-			keyName = "showRedwoods",
-			name = "Show Redwood trees",
-			description = "Configures whether to show a indicator for redwood trees"
+		position = 4,
+		keyName = "showRedwoods",
+		name = "Show Redwood trees",
+		description = "Configures whether to show a indicator for redwood trees"
 	)
 	default boolean showRedwoodTrees()
 	{
@@ -77,31 +82,30 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "showRespawnTimers",
-			name = "Show respawn timers",
-			description = "Configures whether to display the respawn timer overlay"
+		position = 5,
+		keyName = "showRespawnTimers",
+		name = "Show respawn timers",
+		description = "Configures whether to display the respawn timer overlay"
 	)
 	default boolean showRespawnTimers()
 	{
 		return true;
 	}
 
-
 	@ConfigSection(
-			name = "Graphics Settings",
-			description = "Overlay graphics settings",
-			position = 10
+		name = "Graphics Settings",
+		description = "Overlay graphics settings",
+		position = 10
 	)
 	String visualSection = "Graphics";
 
 	@Alpha
 	@ConfigItem(
-			position = 11,
-			keyName = "hexColorTreeOverlay",
-			name = "Overlay color",
-			description = "Color of the tree overlay",
-			section = visualSection
+		position = 11,
+		keyName = "hexColorTreeOverlay",
+		name = "Overlay color",
+		description = "Color of the tree overlay",
+		section = visualSection
 	)
 	default Color getTreeOverlayColor()
 	{
@@ -110,11 +114,11 @@ public interface WoodcuttingConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 12,
-			keyName = "hexColorTreeOverlayOutline",
-			name = "Overlay outline color",
-			description = "Color of the tree stump outline overlay",
-			section = visualSection
+		position = 12,
+		keyName = "hexColorTreeOverlayOutline",
+		name = "Overlay outline color",
+		description = "Color of the tree stump outline overlay",
+		section = visualSection
 	)
 	default Color getTreeOverlayOutlineColor()
 	{
@@ -122,11 +126,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 13,
-			keyName = "getTreeOverlayDiameter",
-			name = "Overlay diameter",
-			description = "Adjust the size of the tree stump overlay",
-			section = visualSection
+		position = 13,
+		keyName = "getTreeOverlayDiameter",
+		name = "Overlay diameter",
+		description = "Adjust the size of the tree stump overlay",
+		section = visualSection
 	)
 	default int getTreeOverlayDiameter()
 	{

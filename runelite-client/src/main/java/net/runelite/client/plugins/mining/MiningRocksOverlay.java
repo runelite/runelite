@@ -34,12 +34,10 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.plugins.hunter.HunterConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
-import net.runelite.client.plugins.mining.MiningPlugin;
 
 class MiningRocksOverlay extends Overlay
 {
@@ -56,7 +54,6 @@ class MiningRocksOverlay extends Overlay
 	private static final int LOVAKITE_ORE_MIN_RESPAWN_TIME = 50; // Game ticks
 	private static final float LOVAKITE_ORE_RANDOM_PERCENT_THRESHOLD = (float) LOVAKITE_ORE_MIN_RESPAWN_TIME / LOVAKITE_ORE_MAX_RESPAWN_TIME;
 
-	//private static final Color DARK_GREEN = config;
 	private static final int MOTHERLODE_UPPER_FLOOR_HEIGHT = -500;
 
 	private final Client client;
@@ -112,11 +109,11 @@ class MiningRocksOverlay extends Overlay
 
 			// Recolour pie on motherlode veins or Lovakite ore during the portion of the timer where they may respawn
 			if ((rock == Rock.ORE_VEIN && percent > ORE_VEIN_RANDOM_PERCENT_THRESHOLD)
-					|| (rock == Rock.DAEYALT_ESSENCE && percent > DAEYALT_RANDOM_PERCENT_THRESHOLD)
-					|| (rock == Rock.LOVAKITE && percent > LOVAKITE_ORE_RANDOM_PERCENT_THRESHOLD))
+				|| (rock == Rock.DAEYALT_ESSENCE && percent > DAEYALT_RANDOM_PERCENT_THRESHOLD)
+				|| (rock == Rock.LOVAKITE && percent > LOVAKITE_ORE_RANDOM_PERCENT_THRESHOLD))
 			{
-				pieFillColor = config.getRockOverlayColorMLM();//Color.GREEN;
-				pieBorderColor = config.getRockOverlayOutlineColorMLM();//DARK_GREEN;
+				pieFillColor = config.getRockOverlayColorMLM();
+				pieBorderColor = config.getRockOverlayOutlineColorMLM();
 			}
 
 			ProgressPieComponent ppc = new ProgressPieComponent();
