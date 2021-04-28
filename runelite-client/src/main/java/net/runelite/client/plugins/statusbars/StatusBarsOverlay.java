@@ -74,8 +74,8 @@ class StatusBarsOverlay extends Overlay
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int IMAGE_SIZE = 17;
 	private static final int ICON_DIMENSIONS = 26;
-	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
-	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
+	private static final int RESIZED_BOTTOM_OFFSET_Y = 19;
+	private static final int RESIZED_BOTTOM_OFFSET_X = 5;
 	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
 	private static final int MAX_RUN_ENERGY_VALUE = 100;
 
