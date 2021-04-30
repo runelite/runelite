@@ -1078,8 +1078,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				shutdownAAFbo();
 
+				// Bind default FBO to check whether anti-aliasing is forced
+				gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
+				final int forcedAASamples = glGetInteger(gl, gl.GL_SAMPLES);
 				final int maxSamples = glGetInteger(gl, gl.GL_MAX_SAMPLES);
-				final int samples = Math.min(antiAliasingMode.getSamples(), maxSamples);
+				final int samples = forcedAASamples != 0 ? forcedAASamples :
+					Math.min(antiAliasingMode.getSamples(), maxSamples);
+
+				log.debug("AA samples: {}, max samples: {}, forced samples: {}", samples, maxSamples, forcedAASamples);
 
 				initAAFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
 
