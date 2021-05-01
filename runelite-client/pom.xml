@@ -29,15 +29,13 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.7.1-SNAPSHOT</version>
+		<version>1.7.7-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
 	<name>RuneLite Client</name>
 
 	<properties>
-		<guice.version>4.1.0</guice.version>
-
 		<jarsigner.skip>true</jarsigner.skip>
 		<pmd.skip>true</pmd.skip>
 	</properties>
@@ -85,7 +83,6 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<version>${guice.version}</version>
 			<classifier>no_aop</classifier>
 		</dependency>
 		<dependency>
@@ -215,13 +212,18 @@
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version>
 		</dependency>
 
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>runelite-api</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>jshell</artifactId>
+			<version>${project.version}</version>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -267,13 +269,11 @@
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-testlib</artifactId>
-			<version>${guice.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-grapher</artifactId>
-			<version>${guice.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -318,7 +318,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -326,51 +326,9 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<minimizeJar>true</minimizeJar>
-
 							<shadedArtifactAttached>true</shadedArtifactAttached>
 							<shadedClassifierName>shaded</shadedClassifierName>
 
-							<filters>
-								<!-- include runtime apis -->
-								<filter>
-									<!-- net.runelite:client-patch and net.runelite:api -->
-									<artifact>net.runelite:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>net.runelite.pushingpixels:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>com.google.guava:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>ch.qos.logback:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>net.runelite.jogl:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>net.runelite.gluegen:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-							</filters>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<mainClass>net.runelite.client.RuneLite</mainClass>

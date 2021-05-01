@@ -69,7 +69,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				return;
 			}
 
-			charges = config.dodgyNecklace();
+			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_DODGY_NECKLACE);
 		}
 		else if (itemId == ItemID.BINDING_NECKLACE)
 		{
@@ -78,7 +78,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				return;
 			}
 
-			charges = config.bindingNecklace();
+			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE);
 		}
 		else if (itemId >= ItemID.EXPLORERS_RING_1 && itemId <= ItemID.EXPLORERS_RING_4)
 		{
@@ -87,7 +87,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				return;
 			}
 
-			charges = config.explorerRing();
+			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING);
 		}
 		else if (itemId == ItemID.RING_OF_FORGING)
 		{
@@ -96,7 +96,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				return;
 			}
 
-			charges = config.ringOfForging();
+			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING);
 		}
 		else if (itemId == ItemID.AMULET_OF_CHEMISTRY)
 		{
@@ -105,7 +105,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				return;
 			}
 
-			charges = config.amuletOfChemistry();
+			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY);
 		}
 		else if (itemId == ItemID.AMULET_OF_BOUNTY)
 		{
@@ -114,7 +114,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				return;
 			}
 
-			charges = config.amuletOfBounty();
+			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_AMULET_OF_BOUNTY);
 		}
 		else if (itemId == ItemID.CHRONICLE)
 		{
@@ -123,7 +123,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				return;
 			}
 
-			charges = config.chronicle();
+			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_CHRONICLE);
 		}
 		else
 		{

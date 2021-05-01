@@ -39,6 +39,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
 import net.runelite.api.Player;
@@ -301,6 +302,23 @@ public class CannonPlugin extends Plugin
 			cannonPlaced = true;
 			addCounter();
 			cballsLeft = 0;
+
+			final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			if (inventory != null)
+			{
+				int invCballs = inventory.count(ItemID.GRANITE_CANNONBALL) > 0
+						? inventory.count(ItemID.GRANITE_CANNONBALL)
+						: inventory.count(ItemID.CANNONBALL);
+				// Cannonballs are always forcibly loaded after the furnace is added. If the player has more than
+				// the max number of cannon balls in their inventory, the cannon will always be fully filled.
+				// This is preferable to using the proceeding "You load the cannon with x cannon balls" message
+				// since it will show a lower number of cannon balls if the cannon is already partially-filled
+				// prior to being placed.
+				if (invCballs >= MAX_CBALLS)
+				{
+					cballsLeft = MAX_CBALLS;
+				}
+			}
 		}
 
 		if (event.getMessage().contains("You pick up the cannon")
@@ -363,6 +381,15 @@ public class CannonPlugin extends Plugin
 			if (config.showCannonNotifications())
 			{
 				notifier.notify("Your cannon is out of ammo!");
+			}
+		}
+
+		if (event.getMessage().startsWith("Your cannon contains"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
+			if (m.find())
+			{
+				cballsLeft = Integer.parseInt(m.group());
 			}
 		}
 

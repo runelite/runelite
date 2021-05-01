@@ -359,4 +359,52 @@ public class LootTrackerPluginTest
 			new ItemStack(ItemID.SHARK, 42, null)
 		));
 	}
+
+	@Test
+	public void testTemporossRewardPool()
+	{
+		Player player = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(player);
+		when(client.getLocalPlayer().getWorldLocation()).thenReturn(new WorldPoint(3153, 2833, 0));
+		when(client.getBoostedSkillLevel(Skill.FISHING)).thenReturn(69);
+
+		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
+		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.BUCKET_OF_WATER, 1),
+			new Item(ItemID.ROPE, 1)
+		});
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 30 x Raw tuna", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.BUCKET_OF_WATER, 1),
+			new Item(ItemID.ROPE, 1),
+			new Item(ItemID.RAW_TUNA, 30)
+		});
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+
+		verify(lootTrackerPluginSpy).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
+			new ItemStack(ItemID.RAW_TUNA, 30, null)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: <col=ef1020>Tome of water (empty)</col>", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.BUCKET_OF_WATER, 1),
+			new Item(ItemID.ROPE, 1),
+			new Item(ItemID.RAW_TUNA, 30),
+			new Item(ItemID.TOME_OF_WATER_EMPTY, 1)
+		});
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+
+		verify(lootTrackerPluginSpy).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
+			new ItemStack(ItemID.TOME_OF_WATER_EMPTY, 1, null)
+		));
+	}
 }

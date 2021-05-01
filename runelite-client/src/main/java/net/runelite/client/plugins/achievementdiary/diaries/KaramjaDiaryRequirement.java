@@ -96,7 +96,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		);
 
 		// HARD
-		add("Craft some nature runes.",
+		add("Craft some nature runes from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 44),
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Cook a karambwan thoroughly.",
@@ -122,7 +122,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.SHILO_VILLAGE));
 
 		// ELITE
-		add("Craft 56 Nature runes at once.",
+		add("Craft 56 Nature runes at once from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 91));
 		add("Check the health of a palm tree in Brimhaven.",
 			new SkillRequirement(Skill.FARMING, 68));

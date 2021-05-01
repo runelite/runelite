@@ -42,8 +42,6 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.THIEVING, 5));
 		add("Enter the Combat Training Camp north of W. Ardougne.",
 			new QuestRequirement(Quest.BIOHAZARD));
-		add("Go out fishing on the Fishing Trawler.",
-			new SkillRequirement(Skill.FISHING, 15));
 
 		// MEDIUM
 		add("Enter the Unicorn pen in Ardougne zoo using Fairy rings.",
@@ -107,7 +105,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 		add("Smith a Dragon sq shield in West Ardougne.",
 			new SkillRequirement(Skill.SMITHING, 60),
 			new QuestRequirement(Quest.LEGENDS_QUEST));
-		add("Craft some Death runes.",
+		add("Craft some Death runes from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 65),
 			new QuestRequirement(Quest.MOURNINGS_END_PART_II));
 

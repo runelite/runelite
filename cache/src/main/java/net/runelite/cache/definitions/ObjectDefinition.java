@@ -75,5 +75,6 @@ public class ObjectDefinition
 	private int anInt2112 = 0;
 	private int anInt2113 = 0;
 	private boolean blocksProjectile = true;
+	private boolean randomizeAnimStart;
 	private Map<Integer, Object> params = null;
 }

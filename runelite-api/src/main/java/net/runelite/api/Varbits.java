@@ -387,9 +387,10 @@ public enum Varbits
 	MULTICOMBAT_AREA(4605),
 
 	/**
-	 * Kingdom Management
+	 * Kingdom of Miscellania Management
+	 * Kingdom Approval is represented as a 7-bit unsigned integer; 127 corresponds to 100% approval
 	 */
-	KINGDOM_FAVOR(72),
+	KINGDOM_APPROVAL(72),
 	KINGDOM_COFFER(74),
 
 	/**
@@ -587,6 +588,15 @@ public enum Varbits
 	 *
 	 */
 	PARASITE(10151),
+
+	/**
+	 * Whether the vanilla wiki entity lookup is displayed under the minimap
+	 *
+	 * 0 = Enabled
+	 * 1 = Disabled
+	 *
+	 */
+	WIKI_ENTITY_LOOKUP(10113),
 
 	/**
 	 * Whether the Special Attack orb is disabled due to being in a PvP area

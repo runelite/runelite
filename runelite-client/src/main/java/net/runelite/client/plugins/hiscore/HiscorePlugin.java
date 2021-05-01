@@ -28,20 +28,25 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.util.EnumSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.swing.SwingUtilities;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -53,6 +58,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
@@ -83,6 +89,9 @@ public class HiscorePlugin extends Plugin
 
 	private NavigationButton navButton;
 	private HiscorePanel hiscorePanel;
+
+	@Getter
+	private HiscoreEndpoint localHiscoreEndpoint;
 
 	@Provides
 	HiscoreConfig provideConfig(ConfigManager configManager)
@@ -181,6 +190,7 @@ public class HiscorePlugin extends Plugin
 			&& event.getMenuOption().equals(LOOKUP))
 		{
 			final String target;
+			HiscoreEndpoint endpoint = HiscoreEndpoint.NORMAL;
 			if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER)
 			{
 				// The player id is included in the event, so we can use that to get the player name,
@@ -195,10 +205,13 @@ public class HiscorePlugin extends Plugin
 			}
 			else
 			{
+				// Determine proper endpoint from player name.
+				// TODO: look at target's world and determine if tournament/dmm endpoint should be used instead.
+				endpoint = findHiscoreEndpointFromPlayerName(event.getMenuTarget());
 				target = Text.removeTags(event.getMenuTarget());
 			}
 
-			lookupPlayer(target);
+			lookupPlayer(target, endpoint);
 		}
 	}
 
@@ -214,8 +227,14 @@ public class HiscorePlugin extends Plugin
 		Matcher m = BOUNTY_PATTERN.matcher(message);
 		if (m.matches())
 		{
-			lookupPlayer(m.group(1));
+			lookupPlayer(m.group(1), HiscoreEndpoint.NORMAL);
 		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		localHiscoreEndpoint = findHiscoreEndpointFromLocalPlayer();
 	}
 
 	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries)
@@ -226,7 +245,7 @@ public class HiscorePlugin extends Plugin
 		client.setMenuEntries(newMenu);
 	}
 
-	private void lookupPlayer(String playerName)
+	private void lookupPlayer(String playerName, HiscoreEndpoint endpoint)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
@@ -234,7 +253,73 @@ public class HiscorePlugin extends Plugin
 			{
 				navButton.getOnSelect().run();
 			}
-			hiscorePanel.lookup(playerName);
+			hiscorePanel.lookup(playerName, endpoint);
 		});
+	}
+
+	HiscoreEndpoint getWorldEndpoint()
+	{
+		if (client != null)
+		{
+			EnumSet<WorldType> wTypes = client.getWorldType();
+
+			if (wTypes.contains(WorldType.DEADMAN_TOURNAMENT))
+			{
+				return HiscoreEndpoint.TOURNAMENT;
+			}
+			else if (wTypes.contains(WorldType.DEADMAN))
+			{
+				return HiscoreEndpoint.DEADMAN;
+			}
+			else if (wTypes.contains(WorldType.LEAGUE))
+			{
+				return HiscoreEndpoint.LEAGUE;
+			}
+		}
+		return HiscoreEndpoint.NORMAL;
+	}
+
+	private HiscoreEndpoint findHiscoreEndpointFromLocalPlayer()
+	{
+		final HiscoreEndpoint profile = getWorldEndpoint();
+		if (profile != HiscoreEndpoint.NORMAL)
+		{
+			return profile;
+		}
+
+		if (client != null)
+		{
+			switch (client.getAccountType())
+			{
+				case IRONMAN:
+					return HiscoreEndpoint.IRONMAN;
+				case ULTIMATE_IRONMAN:
+					return HiscoreEndpoint.ULTIMATE_IRONMAN;
+				case HARDCORE_IRONMAN:
+					return HiscoreEndpoint.HARDCORE_IRONMAN;
+			}
+		}
+		return HiscoreEndpoint.NORMAL;
+	}
+
+	private HiscoreEndpoint findHiscoreEndpointFromPlayerName(String name)
+	{
+		if (name.contains(IconID.IRONMAN.toString()))
+		{
+			return HiscoreEndpoint.IRONMAN;
+		}
+		if (name.contains(IconID.ULTIMATE_IRONMAN.toString()))
+		{
+			return HiscoreEndpoint.ULTIMATE_IRONMAN;
+		}
+		if (name.contains(IconID.HARDCORE_IRONMAN.toString()))
+		{
+			return HiscoreEndpoint.HARDCORE_IRONMAN;
+		}
+		if (name.contains(IconID.LEAGUE.toString()))
+		{
+			return HiscoreEndpoint.LEAGUE;
+		}
+		return HiscoreEndpoint.NORMAL;
 	}
 }

@@ -375,7 +375,7 @@ public class Perspective
 	 */
 	public static Polygon getCanvasTilePoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int zOffset)
 	{
-		return getCanvasTileAreaPoly(client, localLocation, 1, 1, zOffset);
+		return getCanvasTileAreaPoly(client, localLocation, 1, 1, client.getPlane(), zOffset);
 	}
 
 	/**
@@ -388,7 +388,7 @@ public class Perspective
 	 */
 	public static Polygon getCanvasTileAreaPoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int size)
 	{
-		return getCanvasTileAreaPoly(client, localLocation, size, size, 0);
+		return getCanvasTileAreaPoly(client, localLocation, size, size, client.getPlane(), 0);
 	}
 
 	/**
@@ -398,6 +398,7 @@ public class Perspective
 	 * @param localLocation the center location of the AoE
 	 * @param sizeX the size of the area in tiles on the x axis
 	 * @param sizeY the size of the area in tiles on the y axis
+	 * @param plane the plane of the area
 	 * @param zOffset offset from ground plane
 	 * @return a polygon representing the tiles in the area
 	 */
@@ -406,10 +407,9 @@ public class Perspective
 		@Nonnull LocalPoint localLocation,
 		int sizeX,
 		int sizeY,
+		int plane,
 		int zOffset)
 	{
-		final int plane = client.getPlane();
-
 		final int swX = localLocation.getX() - (sizeX * LOCAL_TILE_SIZE / 2);
 		final int swY = localLocation.getY() - (sizeY * LOCAL_TILE_SIZE / 2);
 

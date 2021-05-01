@@ -66,7 +66,9 @@ class WorldSwitcherPanel extends PluginPanel
 	private final ArrayList<WorldTableRow> rows = new ArrayList<>();
 	private final WorldHopperPlugin plugin;
 	@Setter(AccessLevel.PACKAGE)
-	private SubscriptionFilterMode filterMode;
+	private SubscriptionFilterMode subscriptionFilterMode;
+	@Setter(AccessLevel.PACKAGE)
+	private RegionFilterMode regionFilterMode;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -231,7 +233,7 @@ class WorldSwitcherPanel extends PluginPanel
 		{
 			World world = worlds.get(i);
 
-			switch (filterMode)
+			switch (subscriptionFilterMode)
 			{
 				case FREE:
 					if (world.getTypes().contains(WorldType.MEMBERS))
@@ -245,6 +247,11 @@ class WorldSwitcherPanel extends PluginPanel
 						continue;
 					}
 					break;
+			}
+
+			if (regionFilterMode.getRegion() != null && !regionFilterMode.getRegion().equals(world.getRegion()))
+			{
+				continue;
 			}
 
 			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));

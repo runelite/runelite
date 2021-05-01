@@ -306,6 +306,10 @@ public class ObjectLoader
 		{
 			def.setMapAreaId(is.readUnsignedShort());
 		}
+		else if (opcode == 89)
+		{
+			def.setRandomizeAnimStart(true);
+		}
 		else if (opcode == 92)
 		{
 			int varpID = is.readUnsignedShort();

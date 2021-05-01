@@ -28,12 +28,44 @@ package net.runelite.client.plugins.chatnotifications;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("chatnotification")
 public interface ChatNotificationsConfig extends Config
 {
+	@ConfigSection(
+		name = "Highlight Lists",
+		description = "Custom single word and regex filter lists",
+		position = 0
+	)
+	String highlightLists = "highlightLists";
+
 	@ConfigItem(
-		position = 0,
+		position = 1,
+		keyName = "highlightWordsString",
+		name = "Highlight words",
+		description = "Highlights the following words in chat",
+		section = highlightLists
+	)
+	default String highlightWordsString()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "highlightRegexString",
+		name = "Highlight Regex",
+		description = "Highlights the following regular expressions in chat, one per line",
+		section = highlightLists
+	)
+	default String highlightRegexString()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 1,
 		keyName = "highlightOwnName",
 		name = "Highlight own name",
 		description = "Highlights any instance of your username in chat"
@@ -41,17 +73,6 @@ public interface ChatNotificationsConfig extends Config
 	default boolean highlightOwnName()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		position = 1,
-		keyName = "highlightWordsString",
-		name = "Highlight words",
-		description = "Highlights the following words in chat"
-	)
-	default String highlightWordsString()
-	{
-		return "";
 	}
 
 	@ConfigItem(

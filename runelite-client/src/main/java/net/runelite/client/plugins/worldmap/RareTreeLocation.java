@@ -199,6 +199,10 @@ enum RareTreeLocation
 		// Feldip Hills
 		new WorldPoint(2476, 2893, 0)),
 
+	BLISTERWOOD("Blisterwood tree", 62,
+		// Darkmeyer
+		new WorldPoint(3631, 3362, 0)),
+
 	SULLIUSCEP("Sulliuscep", 65,
 		// Fossil Island
 		new WorldPoint(3662, 3802, 0),

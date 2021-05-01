@@ -44,7 +44,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -79,6 +82,8 @@ public class ChatNotificationsPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(config.highlightRegexString()).thenReturn("");
+		when(config.highlightWordsString()).thenReturn("");
 	}
 
 	@Test
@@ -97,6 +102,42 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.onChatMessage(chatMessage);
 
 		verify(messageNode).setValue("<colHIGHLIGHT>Deathbeam<colNORMAL>, <colHIGHLIGHT>Deathbeam<colNORMAL> OSRS");
+	}
+
+	@Test
+	public void testRegexMultiplePatternsMessage()
+	{
+		when(config.highlightRegexString()).thenReturn("brandie+\ntest");
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("brandieeee testing");
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp();
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setValue("<colHIGHLIGHT>brandieeee<colNORMAL> <colHIGHLIGHT>test<colNORMAL>ing");
+	}
+
+	@Test
+	public void testRegexMultiplePatternsWithOnlyOneMatch()
+	{
+		when(config.highlightRegexString()).thenReturn("brandie+\nwillNotMatch");
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("brandieeee testing");
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp();
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setValue("<colHIGHLIGHT>brandieeee<colNORMAL> testing");
 	}
 
 	@Test
@@ -176,7 +217,7 @@ public class ChatNotificationsPluginTest
 	}
 
 	@Test
-	public void testPreceedingColor()
+	public void testPrecedingColor()
 	{
 		when(config.highlightWordsString()).thenReturn("you. It");
 
@@ -236,10 +277,10 @@ public class ChatNotificationsPluginTest
 	public void highlightListTest()
 	{
 		when(config.highlightWordsString()).thenReturn("this,is, a                   , test, ");
-		final List<String> higlights = Text.fromCSV(config.highlightWordsString());
-		assertEquals(4, higlights.size());
+		final List<String> highlights = Text.fromCSV(config.highlightWordsString());
+		assertEquals(4, highlights.size());
 
-		final Iterator<String> iterator = higlights.iterator();
+		final Iterator<String> iterator = highlights.iterator();
 		assertEquals("this", iterator.next());
 		assertEquals("is", iterator.next());
 		assertEquals("a", iterator.next());
@@ -285,5 +326,47 @@ public class ChatNotificationsPluginTest
 
 		// set value uses our player name, which has nbsp replaced
 		verify(messageNode).setValue("<col=005f00><colHIGHLIGHT><u>Logic Knot</u><col=005f00> received a drop: Adamant longsword</col>");
+	}
+
+	@Test
+	public void testLocalPlayerSelfMention()
+	{
+		final String localPlayerName = "Broo klyn";
+
+		MessageNode messageNode = mock(MessageNode.class);
+
+		Player localPlayer = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
+		when(localPlayer.getName()).thenReturn(localPlayerName);
+
+		lenient().when(config.highlightOwnName()).thenReturn(true);
+		lenient().when(messageNode.getValue()).thenReturn("Spread love it's the Broo klyn way");
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setName("Broo\u00a0klyn");
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode, times(0)).setValue(any());
+	}
+
+	@Test
+	public void testPrivateChatOutReturn()
+	{
+		MessageNode messageNode = mock(MessageNode.class);
+
+		lenient().when(config.highlightWordsString()).thenReturn("Brooklyn");
+		lenient().when(messageNode.getValue()).thenReturn("Spread love it's the Brooklyn way");
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PRIVATECHATOUT);
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp();
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode, times(0)).setValue(any());
 	}
 }
