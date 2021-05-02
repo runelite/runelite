@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.friendschat;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Runnables;
@@ -71,6 +72,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -118,6 +120,9 @@ public class FriendsChatPlugin extends Plugin
 
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
+
+	@Inject
+	private ChatColorConfig chatColorConfig;
 
 	private List<String> chats = new ArrayList<>();
 	private final List<Player> members = new ArrayList<>();
@@ -388,14 +393,19 @@ public class FriendsChatPlugin extends Plugin
 	{
 		final String activityMessage = activityType == ActivityType.JOINED ? " has joined." : " has left.";
 		final FriendsChatRank rank = member.getRank();
-		Color textColor = CHAT_FC_TEXT_OPAQUE_BACKGROUND;
-		Color channelColor = CHAT_FC_NAME_OPAQUE_BACKGROUND;
+		final Color textColor, channelColor;
 		int rankIcon = -1;
 
+		// Use configured friends chat info colors if set, otherwise default to the jagex text and fc name colors
 		if (client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1)
 		{
-			textColor = CHAT_FC_TEXT_TRANSPARENT_BACKGROUND;
-			channelColor = CHAT_FC_NAME_TRANSPARENT_BACKGROUND;
+			textColor = MoreObjects.firstNonNull(chatColorConfig.transparentFriendsChatInfo(), CHAT_FC_TEXT_TRANSPARENT_BACKGROUND);
+			channelColor = MoreObjects.firstNonNull(chatColorConfig.transparentFriendsChatChannelName(), CHAT_FC_NAME_TRANSPARENT_BACKGROUND);
+		}
+		else
+		{
+			textColor = MoreObjects.firstNonNull(chatColorConfig.opaqueFriendsChatInfo(), CHAT_FC_TEXT_OPAQUE_BACKGROUND);
+			channelColor = MoreObjects.firstNonNull(chatColorConfig.opaqueFriendsChatChannelName(), CHAT_FC_NAME_OPAQUE_BACKGROUND);
 		}
 
 		if (config.chatIcons() && rank != null && rank != FriendsChatRank.UNRANKED)
