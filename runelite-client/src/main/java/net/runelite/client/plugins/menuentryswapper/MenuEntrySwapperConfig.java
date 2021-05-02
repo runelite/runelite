@@ -670,6 +670,6 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapTemporossLeave()
 	{
-		return true;
+		return false;
 	}
 }
