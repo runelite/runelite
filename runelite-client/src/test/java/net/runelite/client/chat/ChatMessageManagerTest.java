@@ -145,4 +145,41 @@ public class ChatMessageManagerTest
 
 		verify(messageNode).setName("<col=b20000>" + friendName + "</col>");
 	}
+
+	@Test
+	public void testDefaultFriendsChatInfoColors()
+	{
+		// no color is configured for opaqueFriendsChatInfo
+		when(chatColorConfig.opaqueFriendsChatInfoHighlight()).thenReturn(Color.RED);
+
+		// rebuild color cache
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup("textrecolor");
+		chatMessageManager.onConfigChanged(configChanged);
+
+		String chatMessage = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Total points: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append("42")
+			.append(ChatColorType.NORMAL)
+			.append(", Personal points: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append("43")
+			.append(ChatColorType.NORMAL)
+			.append(" (")
+			.append(ChatColorType.HIGHLIGHT)
+			.append("44")
+			.append(ChatColorType.NORMAL)
+			.append("%)")
+			.build();
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getType()).thenReturn(ChatMessageType.FRIENDSCHATNOTIFICATION);
+		when(messageNode.getRuneLiteFormatMessage()).thenReturn(chatMessage);
+
+		chatMessageManager.update(messageNode);
+
+		verify(messageNode).setValue("<col=000000>Total points: <col=ff0000>42<col=000000>, Personal points: <col=ff0000>43<col=000000> (<col=ff0000>44<col=000000>%)");
+	}
 }

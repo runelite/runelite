@@ -231,6 +231,7 @@ public class ChatMessageManager
 				case OBJECT_EXAMINE:
 				case NPC_EXAMINE:
 				case CONSOLE:
+				case FRIENDSCHATNOTIFICATION:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
 			}
 		}
@@ -251,6 +252,7 @@ public class ChatMessageManager
 				case OBJECT_EXAMINE:
 				case NPC_EXAMINE:
 				case CONSOLE:
+				case FRIENDSCHATNOTIFICATION:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
 			}
 		}

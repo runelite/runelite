@@ -25,7 +25,6 @@
 package net.runelite.client.config;
 
 import java.awt.Color;
-import net.runelite.client.ui.JagexColors;
 
 @ConfigGroup("textrecolor")
 public interface ChatColorConfig extends Config
@@ -111,15 +110,12 @@ public interface ChatColorConfig extends Config
 
 	@ConfigItem(
 		position = 7,
-		keyName = "opaqueClanChatInfo",
+		keyName = "opaqueFriendsChatInfo",
 		name = "Friends chat info",
 		description = "Friends Chat Information (eg. when joining a channel)",
 		section = opaqueSection
 	)
-	default Color opaqueFriendsChatInfo()
-	{
-		return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
-	}
+	Color opaqueFriendsChatInfo();
 
 	@ConfigItem(
 		position = 8,
@@ -387,15 +383,12 @@ public interface ChatColorConfig extends Config
 
 	@ConfigItem(
 		position = 57,
-		keyName = "transparentClanChatInfo",
+		keyName = "transparentFriendsChatInfo",
 		name = "Friends chat info (transparent)",
 		description = "Friends chat information (eg. when joining a channel) (transparent)",
 		section = transparentSection
 	)
-	default Color transparentFriendsChatInfo()
-	{
-		return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
-	}
+	Color transparentFriendsChatInfo();
 
 	@ConfigItem(
 		position = 58,
