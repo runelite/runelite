@@ -211,6 +211,12 @@
       "xp": 41.5
     },
     {
+      "level": 40,
+      "icon": 1391,
+      "name": "Battlestaff",
+      "xp": 80
+    },
+    {
       "level": 41,
       "icon": 880,
       "name": "Pearl Bolts",
