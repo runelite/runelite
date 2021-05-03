@@ -100,7 +100,7 @@ public enum HotColdLocation
 	KANDARIN_SINCLAR_MANSION(new WorldPoint(2730, 3588, 0), KANDARIN, "North-west of the Sinclair Mansion, near the log balance shortcut.", BRASSICAN_MAGE),
 	KANDARIN_CATHERBY(new WorldPoint(2774, 3436, 0), KANDARIN, "Catherby, between the bank and the beehives, near small rock formation.", BRASSICAN_MAGE),
 	KANDARIN_GRAND_TREE(new WorldPoint(2448, 3503, 0), KANDARIN, "Grand Tree, just east of the terrorchick gnome enclosure.", BRASSICAN_MAGE),
-	KANDARIN_SEERS(new WorldPoint(2735, 3486, 0), KANDARIN, "Between the Seers' Village bank and Camelot.", BRASSICAN_MAGE),
+	KANDARIN_SEERS(new WorldPoint(2732, 3485, 0), KANDARIN, "Outside Seers' Village bank.", BRASSICAN_MAGE),
 	KANDARIN_MCGRUBORS_WOOD(new WorldPoint(2653, 3485, 0), KANDARIN, "McGrubor's Wood", BRASSICAN_MAGE),
 	KANDARIN_FISHING_BUILD(new WorldPoint(2590, 3369, 0), KANDARIN, "South of Fishing Guild", BRASSICAN_MAGE),
 	KANDARIN_WITCHHAVEN(new WorldPoint(2707, 3306, 0), KANDARIN, "Outside Witchaven, west of Jeb, Holgart, and Caroline.", BRASSICAN_MAGE),
