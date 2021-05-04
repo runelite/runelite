@@ -45,7 +45,7 @@ public interface AgilityConfig extends Config
 	@ConfigItem(
 		keyName = "showClickboxes",
 		name = "Show Clickboxes",
-		description = "Show agility course obstacle clickboxes",
+		description = "Show agility course and other obstacle clickboxes",
 		position = 0
 	)
 	default boolean showClickboxes()
