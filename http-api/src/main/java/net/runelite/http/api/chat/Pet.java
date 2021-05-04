@@ -22,13 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.chatcommands.beans;
+package net.runelite.http.api.chat;
 
+import java.util.Objects;
 import lombok.Getter;
 
 @Getter
-public class PetDataEntry
+public class Pet
 {
-	private String name;
-	private int icon;
+	private final String name;
+	private final Integer icon;
+
+	public Pet(String name, Integer icon)
+	{
+		this.name = name;
+		this.icon = icon;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Pet{" +
+			"name='" + name + '\'' +
+			", icon=" + icon +
+			'}';
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o)
+		{
+			return true;
+		}
+		if (o == null || getClass() != o.getClass())
+		{
+			return false;
+		}
+		Pet pet = (Pet) o;
+		return Objects.equals(name, pet.name) && Objects.equals(icon, pet.icon);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(name, icon);
+	}
 }

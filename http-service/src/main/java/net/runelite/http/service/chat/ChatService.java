@@ -230,21 +230,29 @@ public class ChatService
 		}
 	}
 
-	public Integer getPetCount(String name)
+	public Integer[] getPetList(String name)
 	{
-		String value;
+		String petIds;
 		try (Jedis jedis = jedisPool.getResource())
 		{
-			value = jedis.get("pets." + name);
+			petIds = jedis.get("pets." + name);
 		}
-		return value == null ? null : Integer.parseInt(value);
+		if (petIds == null)
+		{
+			return null;
+		}
+
+		List<String> petList = Splitter.on(' ').splitToList(petIds);
+		return petList.stream()
+			.map(Integer::parseInt)
+			.toArray(Integer[]::new);
 	}
 
-	public void setPetCount(String name, int petCount)
+	public void setPetList(String name, Integer[] petList)
 	{
 		try (Jedis jedis = jedisPool.getResource())
 		{
-			jedis.setex("pets." + name, (int) EXPIRE.getSeconds(), Integer.toString(petCount));
+			jedis.setex("pets." + name, (int) EXPIRE.getSeconds(), Joiner.on(' ').join(petList));
 		}
 	}
 }

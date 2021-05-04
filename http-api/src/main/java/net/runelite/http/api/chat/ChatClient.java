@@ -363,17 +363,16 @@ public class ChatClient
 		}
 	}
 
-	public boolean submitPetList(String username, int petList) throws IOException
+	public boolean submitPetList(String username, Integer[] petList) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("pets")
 			.addQueryParameter("name", username)
-			.addQueryParameter("petList", Integer.toString(petList))
 			.build();
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
+			.post(RequestBody.create(RuneLiteAPI.JSON, RuneLiteAPI.GSON.toJson(petList)))
 			.url(url)
 			.build();
 
@@ -383,7 +382,7 @@ public class ChatClient
 		}
 	}
 
-	public int getPetList(String username) throws IOException
+	public Integer[] getPetList(String username) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
@@ -399,9 +398,11 @@ public class ChatClient
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Unable to look up pet count!");
+				throw new IOException("Unable to look up pet list!");
 			}
-			return Integer.parseInt(response.body().string());
+
+			InputStream in = response.body().byteStream();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Integer[].class);
 		}
 	}
 }

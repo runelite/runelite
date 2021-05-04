@@ -28,8 +28,8 @@ package net.runelite.client.plugins.chatcommands;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -37,13 +37,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +49,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.IconID;
+import net.runelite.api.IndexedSprite;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
@@ -68,6 +67,7 @@ import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
 import static net.runelite.api.widgets.WidgetID.GENERIC_SCROLL_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -80,12 +80,13 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.chatcommands.beans.PetData;
-import net.runelite.client.plugins.chatcommands.beans.PetDataEntry;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.Duels;
+import net.runelite.http.api.chat.Pet;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -139,7 +140,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String DUEL_ARENA_COMMAND = "!duels";
 	private static final String LEAGUE_POINTS_COMMAND = "!lp";
 	private static final String SOUL_WARS_ZEAL_COMMAND = "!sw";
-	private static final String PET_COUNT_COMMAND = "!pets";
+	private static final String PET_LIST_COMMAND = "!pets";
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -158,9 +159,13 @@ public class ChatCommandsPlugin extends Plugin
 	private String lastBossKill;
 	private int lastBossTime = -1;
 	private double lastPb = -1;
+	private int modIconIdx = -1;
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ChatCommandsConfig config;
@@ -215,7 +220,9 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(GC_COMMAND_STRING, this::gambleCountLookup, this::gambleCountSubmit);
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
-		chatCommandManager.registerCommandAsync(PET_COUNT_COMMAND, this::petListLookup, this::petListSubmit);
+		chatCommandManager.registerCommandAsync(PET_LIST_COMMAND, this::petListLookup, this::petListSubmit);
+
+		clientThread.invoke(this::loadPetIcons);
 	}
 
 	@Override
@@ -241,7 +248,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(GC_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 		chatCommandManager.unregisterCommand(SOUL_WARS_ZEAL_COMMAND);
-		chatCommandManager.unregisterCommand(PET_COUNT_COMMAND);
+		chatCommandManager.unregisterCommand(PET_LIST_COMMAND);
 	}
 
 	@Provides
@@ -278,62 +285,79 @@ public class ChatCommandsPlugin extends Plugin
 		return personalBest == null ? 0 : personalBest;
 	}
 
+	private void loadPetIcons()
+	{
+		final IndexedSprite[] modIcons = client.getModIcons();
+		if (modIconIdx != -1 || modIcons == null)
+		{
+			return;
+		}
+		final Pet[] pets = getPets();
+		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + pets.length);
+		modIconIdx = modIcons.length;
+
+		for (int i = 0; i < pets.length; i++)
+		{
+			final Pet pet = pets[i];
+
+			try
+			{
+				final BufferedImage image = ImageUtil.resizeImage(itemManager.getImage(pet.getIcon()), 18, 16);
+				final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
+				newModIcons[modIconIdx + i] = sprite;
+			}
+			catch (Exception ex)
+			{
+				log.warn("Failed to load the sprite for " + pet.getName(), ex);
+			}
+		}
+
+		log.debug("Adding pet icons");
+		client.setModIcons(newModIcons);
+	}
+
 	/**
 	 * Sets the list of owned pets in local storage for the local player.
 	 *
-	 * @param totalPetList The list of owned pets for the local player
+	 * @param totalPetList The widget containing the list of owned pets for the local player
 	 */
 	private void setPetList(Widget[] totalPetList)
 	{
-		StringBuilder petListStr = new StringBuilder();
-		boolean atLeastOnePet = false;
+		List<Pet> petList = new ArrayList<>();
 		for (Widget child : totalPetList)
 		{
 			if (child.getOpacity() == 0)
 			{
-				if (atLeastOnePet)
-				{
-					petListStr.append(",").append(child.getItemId());
-				}
-				else
-				{
-					petListStr.append(child.getItemId());
-					atLeastOnePet = true;
-				}
+				Pet pet = new Pet(
+					child.getName().replace("<col=ff9040>", "").replace("</col>", ""),
+					child.getItemId());
+				petList.add(pet);
 			}
 		}
 
-		configManager.setRSProfileConfiguration("pets", client.getUsername().toLowerCase(), petListStr.toString());
+		configManager.setRSProfileConfiguration("pets", client.getUsername().toLowerCase(),
+			RuneLiteAPI.GSON.toJson(petList.toArray(new Pet[0])));
 	}
 
 	/**
 	 * Looks up the list of owned pets in local storage for the local player
 	 */
-	private List<Integer> getPetList()
+	private Pet[] getPetList()
 	{
-		final String group = "chatcommands." + client.getUsername().toLowerCase();
-		String petListStr = configManager.getRSProfileConfiguration("pets",
+		String petListJson = configManager.getRSProfileConfiguration("pets",
 			client.getUsername().toLowerCase(), String.class);
-		// One or more pets
-		if (petListStr != null && petListStr.length() > 2)
-		{
-			List<String> petIdStr = Arrays.asList(petListStr.split(","));
-			List<Integer> petList = petIdStr.stream().map(Integer::parseInt).collect(Collectors.toList());
-			return petList;
-		}
-		// No pets
-		else
-		{
-			return new ArrayList<Integer>();
-		}
+
+		Pet[] petList = RuneLiteAPI.GSON.fromJson(petListJson, Pet[].class);
+
+		return petList != null ? petList : new Pet[0];
 	}
 
-	private PetData getPetData()
+	private Pet[] getPets()
 	{
 		String dataFile = "pets.json";
 		try (InputStream petDataFile = ChatCommandsPlugin.class.getResourceAsStream(dataFile))
 		{
-			return new Gson().fromJson(new InputStreamReader(petDataFile, StandardCharsets.UTF_8), PetData.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(petDataFile, StandardCharsets.UTF_8), Pet[].class);
 		}
 		catch (IOException e)
 		{
@@ -661,6 +685,9 @@ public class ChatCommandsPlugin extends Plugin
 			case LOADING:
 			case HOPPING:
 				pohOwner = null;
+			case LOGGED_IN:
+				loadPetIcons();
+				break;
 		}
 	}
 
@@ -1076,86 +1103,6 @@ public class ChatCommandsPlugin extends Plugin
 
 		return true;
 	}
-	
-	/**
-	 * Looks up the pet count for the player who triggered !pets
-	 *
-	 * @param chatMessage The chat message containing the command.
-	 * @param message     The chat message
-	 */
-	private void petCountLookup(ChatMessage chatMessage, String message)
-	{
-		if (!config.pets())
-		{
-			return;
-		}
-
-		ChatMessageType type = chatMessage.getType();
-
-		final String player;
-		if (type.equals(ChatMessageType.PRIVATECHATOUT))
-		{
-			player = client.getLocalPlayer().getName();
-		}
-		else
-		{
-			player = Text.sanitize(chatMessage.getName());
-		}
-
-		int playerPetCount;
-		try
-		{
-			playerPetCount = chatClient.getPetCount(player);
-		}
-		catch (IOException ex)
-		{
-			log.debug("unable to lookup total pet count", ex);
-			return;
-		}
-
-		String response = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append("Total pet count: ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(Integer.toString(playerPetCount))
-			.build();
-
-		log.debug("Setting response {}", response);
-		final MessageNode messageNode = chatMessage.getMessageNode();
-		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
-		client.refreshChat();
-	}
-
-	/**
-	 * Submits the pet count value for the local player
-	 *
-	 * @param chatInput The chat message containing the command.
-	 * @param value     The chat message
-	 */
-	private boolean petCountSubmit(ChatInput chatInput, String value)
-	{
-		final int petCount = getPc();
-		final String playerName = client.getLocalPlayer().getName();
-
-		executor.execute(() ->
-		{
-			try
-			{
-				chatClient.submitPetCount(playerName, petCount);
-			}
-			catch (Exception ex)
-			{
-				log.warn("unable to submit pet count", ex);
-			}
-			finally
-			{
-				chatInput.resume();
-			}
-		});
-
-		return true;
-	}
 
 	/**
 	 * Checks if the Entry Header widget within the Collection Log is currently loaded
@@ -1169,9 +1116,8 @@ public class ChatCommandsPlugin extends Plugin
 	 * Looks up the pet list for the player who triggered !pets
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message     The chat message
+	 * @param message     The chat message in string format
 	 *                    <p>
-	 *                    Credit to "AsukaYen OSRS" for !pets cmd chat message format
 	 */
 	private void petListLookup(ChatMessage chatMessage, String message)
 	{
@@ -1181,8 +1127,6 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		ChatMessageType type = chatMessage.getType();
-		// retrieve timestamp of message so to implement client-side !pets cooldown
-		Integer chatMessageTimestamp = chatMessage.getTimestamp();
 
 		final String player;
 		if (type.equals(ChatMessageType.PRIVATECHATOUT))
@@ -1194,61 +1138,53 @@ public class ChatCommandsPlugin extends Plugin
 			player = Text.sanitize(chatMessage.getName());
 		}
 
-		List<Integer> playerPetList;
-//		try
-//		{
-//			playerPetList = chatClient.getPetList(player);
-//		}
-//		catch (IOException ex)
-//		{
-//			log.debug("unable to lookup total pet count", ex);
-//			return;
-//		}
-		// Pet list should at least be an empty list
-		playerPetList = getPetList();
+		Integer[] playerPetList;
+		try
+		{
+			playerPetList = chatClient.getPetList(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup pet list", ex);
+			return;
+		}
 
 		// Construct the list of pets the player owns
-		PetDataEntry[] petDataEntries = getPetData().getPets();
+		Pet[] pets = getPets();
 
-		StringBuilder petListStr = new StringBuilder();
+		ChatMessageBuilder responseBuilder = new ChatMessageBuilder().append("Pets: ")
+			.append("(" + playerPetList.length + ") ");
 
 		boolean atLeastOneEntry = false;
 
-		for (PetDataEntry petDataEntry : petDataEntries)
+		int petIdx = 0;
+
+		for (Pet pet : pets)
 		{
-			if (atLeastOneEntry && playerPetList.contains(petDataEntry.getIcon()))
+			boolean playerHasPet = Arrays.asList(playerPetList).contains(pet.getIcon());
+			if (atLeastOneEntry && playerHasPet)
 			{
-				petListStr.append(", ").append(petDataEntry.getName());
+				responseBuilder.append(" ").img(modIconIdx + petIdx);
 			}
-			else if (playerPetList.contains(petDataEntry.getIcon()))
+			else if (playerHasPet)
 			{
 				atLeastOneEntry = true;
-				petListStr.append(petDataEntry.getName());
+				responseBuilder.img(modIconIdx + petIdx);
 			}
+			petIdx += 1;
 		}
 
 		// Construct a cmd help message if this is the player's first time using the command
-		String petCmdHelpMsg = "";
-		if (player != null && player.equals(client.getLocalPlayer().getName()) && playerPetList.size() == 0)
+		if (player != null && player.equals(client.getLocalPlayer().getName()) && playerPetList.length == 0)
 		{
-			petCmdHelpMsg = " (Open the 'All Pets' tab in the Collection Log to update)";
+			responseBuilder.append(" (Open the 'All Pets' tab in the Collection Log to update your pet list)");
 		}
 
-		String response = new ChatMessageBuilder()
-			.append(ChatColorType.HIGHLIGHT)
-			.append("Pets: ")
-			.append(ChatColorType.NORMAL)
-			.append("(" + Integer.toString(playerPetList.size()) + ") ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(petListStr.toString())
-			.append(ChatColorType.NORMAL)
-			.append(petCmdHelpMsg)
-			.build();
+		String response = responseBuilder.build();
 
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
-		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
+		messageNode.setValue(response);
 		client.refreshChat();
 	}
 
@@ -1260,18 +1196,18 @@ public class ChatCommandsPlugin extends Plugin
 	 */
 	private boolean petListSubmit(ChatInput chatInput, String value)
 	{
-//		final Integer[] petList = getPetList();
-////		final String playerName = client.getLocalPlayer().getName();
+		Integer[] petIds = Arrays.stream(getPetList()).map(Pet::getIcon).toArray(Integer[]::new);
+		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
 		{
 			try
 			{
-//				chatClient.submitPetCount(playerName, petList);
+				chatClient.submitPetList(playerName, petIds);
 			}
 			catch (Exception ex)
 			{
-				log.warn("unable to submit pet count", ex);
+				log.warn("unable to submit pet list", ex);
 			}
 			finally
 			{
@@ -1283,19 +1219,11 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	/**
-	 * Checks if the Entry Header widget within the Collection Log is currently loaded
-	 */
-	private boolean isCollectionLogEntryHeaderLoaded()
-	{
-		return client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER) != null;
-	}
-
-	/**
 	 * Looks up the item price and changes the original message to the
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message     The chat message
+	 * @param message    The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -1353,7 +1281,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message     The chat message
+	 * @param message    The chat message
 	 */
 	@VisibleForTesting
 	void playerSkillLookup(ChatMessage chatMessage, String message)

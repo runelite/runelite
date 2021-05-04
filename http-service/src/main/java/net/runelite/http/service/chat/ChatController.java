@@ -249,24 +249,24 @@ public class ChatController
 	}
 
 	@PostMapping("/pets")
-	public void submitPetCount(@RequestParam String name, @RequestParam int petCount)
+	public void submitPetList(@RequestParam String name, @RequestParam Integer[] petList)
 	{
-		if (petCount < 0)
+		if (petList == null)
 		{
 			return;
 		}
 
-		chatService.setPetCount(name, petCount);
+		chatService.setPetList(name, petList);
 	}
 
 	@GetMapping("/pets")
-	public int getPetCount(@RequestParam String name)
+	public Integer[] getPetList(@RequestParam String name)
 	{
-		Integer petCount = chatService.getPetCount(name);
-		if (petCount == null)
+		Integer[] petList = chatService.getPetList(name);
+		if (petList == null)
 		{
 			throw new NotFoundException();
 		}
-		return petCount;
+		return petList;
 	}
 }
