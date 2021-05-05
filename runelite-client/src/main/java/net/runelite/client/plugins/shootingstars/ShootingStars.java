@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -115,7 +116,8 @@ public class ShootingStars extends Plugin
 	@Getter
 	private CrashedStar crashedStar;
 
-	private final List<WorldMapPoint> possibleSites = new ArrayList<>();
+	@Getter
+	private final List<PossibleCrashSite> possibleSites = new ArrayList<>();
 
 	private BufferedImage worldMapImage;
 
@@ -266,16 +268,16 @@ public class ShootingStars extends Plugin
 	 */
 	private void evaluatePossibleCrashSites(Player localPlayer)
 	{
-		Iterator<WorldMapPoint> iterator = possibleSites.iterator();
+		Iterator<PossibleCrashSite> iterator = possibleSites.iterator();
 		while (iterator.hasNext())
 		{
-			WorldMapPoint possibleSite = iterator.next();
+			PossibleCrashSite possibleSite = iterator.next();
 			WorldPoint worldPoint = possibleSite.getWorldPoint();
 
 			if (worldPoint.distanceTo(localPlayer.getWorldLocation()) < MINIMUM_EVICTION_DISTANCE && !checkForShootingStar(worldPoint))
 			{
 				log.debug("Removing possible crash site as no star was found at {}", worldPoint);
-				worldMapPointManager.remove(possibleSite);
+				worldMapPointManager.remove(possibleSite.getWorldMapPoint());
 				iterator.remove();
 			}
 		}
@@ -283,7 +285,9 @@ public class ShootingStars extends Plugin
 
 	private void clearPossibleSites()
 	{
-		possibleSites.forEach(worldMapPointManager::remove);
+		possibleSites.stream()
+			.map(PossibleCrashSite::getWorldMapPoint)
+			.forEach(worldMapPointManager::remove);
 		possibleSites.clear();
 	}
 
@@ -340,8 +344,16 @@ public class ShootingStars extends Plugin
 				.snapToEdge(true)
 				.build();
 
-			possibleSites.add(mapPoint);
 			worldMapPointManager.add(mapPoint);
+			possibleSites.add(PossibleCrashSite.of(crashSite.getName(), crashSite.getLocation(), mapPoint));
 		}
+	}
+
+	@Value(staticConstructor = "of")
+	private static class PossibleCrashSite
+	{
+		String name;
+		WorldPoint worldPoint;
+		WorldMapPoint worldMapPoint;
 	}
 }
