@@ -246,6 +246,9 @@ public class LootTrackerPlugin extends Plugin
 	private static final String TEMPOROSS_LOOT_STRING = "You found some loot: ";
 	private static final int TEMPOROSS_REGION = 12588;
 
+	// Mahogany Homes
+	private static final String MAHOGANY_CRATE_EVENT = "Supply crate (Mahogany Homes)";
+
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
 	@Inject
@@ -806,6 +809,11 @@ public class LootTrackerPlugin extends Plugin
 			processInventoryLoot(eventType, lootRecordType, metadata, event.getItemContainer(), Collections.emptyList());
 			resetEvent();
 		}
+
+		if (MAHOGANY_CRATE_EVENT.equals(eventType))
+		{
+			processInventoryLoot(eventType, lootRecordType, metadata, event.getItemContainer(), Collections.emptyList());
+		}
 	}
 
 	@Subscribe
@@ -851,6 +859,11 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.CASKET_25590)
 		{
 			setEvent(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT);
+			takeInventorySnapshot();
+		}
+		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.SUPPLY_CRATE_24884)
+		{
+			setEvent(LootRecordType.EVENT, MAHOGANY_CRATE_EVENT);
 			takeInventorySnapshot();
 		}
 	}
