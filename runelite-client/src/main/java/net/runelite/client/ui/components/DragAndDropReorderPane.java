@@ -82,17 +82,57 @@ public class DragAndDropReorderPane extends JLayeredPane
 	{
 		moveDraggingComponent(point);
 
-		// reorder components overlapping with the dragging components mid-point
-		Point draggingComponentMidPoint = SwingUtilities.convertPoint(
+		final Point draggingComponentTopPoint = SwingUtilities.convertPoint(
 			draggingComponent,
-			new Point(draggingComponent.getWidth() / 2, draggingComponent.getHeight() / 2),
+			new Point(draggingComponent.getWidth() / 2, 0),
 			this
 		);
-		Component component = getDefaultLayerComponentAt(draggingComponentMidPoint);
-		if (component != null)
+		final Component topComponent = getDefaultLayerComponentAt(draggingComponentTopPoint);
+		final Component bottomComponent = getDefaultLayerComponentAt(new Point(draggingComponentTopPoint.x, draggingComponentTopPoint.y + draggingComponent.getHeight()));
+		final int initialDragIndex = dragIndex;
+
+		if (topComponent == null && bottomComponent == null)
 		{
-			int index = getPosition(component);
-			dragIndex = index < dragIndex ? index : index + 1;
+			// Dragging component either has no siblings or has not been dragged vertically to overlap other components
+			return;
+		}
+
+		// Drag reordering is handled in three cases: the dragged component being fully on top of some component larger
+		// than it, or the dragged component having one edge (top or bottom) partially over another component.
+		if (topComponent == bottomComponent)
+		{
+			// Dragging component is dragged fully over some larger neighboring component
+			final int topComponentBottom = topComponent.getY() + topComponent.getHeight();
+			final int draggingComponentBottom = draggingComponent.getY() + draggingComponent.getHeight();
+			final int index = getPosition(topComponent);
+
+			dragIndex = draggingComponent.getY() - topComponent.getY() < topComponentBottom - draggingComponentBottom
+				// Dragging component is closer to the top than the bottom of larger component
+				? index
+				: index + 1;
+		}
+		else if (topComponent != null)
+		{
+			// Dragging component is dragged partially over one of its previous neighbors
+			final int index = getPosition(topComponent);
+
+			dragIndex = draggingComponent.getY() < topComponent.getY() + topComponent.getHeight() / 2
+				? index
+				: index + 1;
+		}
+		else
+		{
+			// Dragging component is dragged partially over one of its following neighbors
+			final int draggingComponentBottom = draggingComponent.getY() + draggingComponent.getHeight();
+			final int index = getPosition(bottomComponent);
+
+			dragIndex = draggingComponentBottom > bottomComponent.getY() + bottomComponent.getHeight() / 2
+				? index + 1
+				: index;
+		}
+
+		if (dragIndex != initialDragIndex)
+		{
 			revalidate();
 		}
 	}
@@ -148,6 +188,11 @@ public class DragAndDropReorderPane extends JLayeredPane
 				// temporarily move the dragging component to the default layer for correct layout calculation
 				Point location = draggingComponent.getLocation();
 				setLayer(draggingComponent, DEFAULT_LAYER, dragIndex);
+				// Without revalidating before this temporary layout, Swing will cause draggingComponent to take on the
+				// size of whatever component is present at dragIndex. This can result in it being cut off or being
+				// rendered with excessive "white space" covering components below it when this component contains
+				// draggable items of mixed sizes.
+				revalidate();
 				super.layoutContainer(target);
 				setLayer(draggingComponent, DRAG_LAYER);
 				draggingComponent.setLocation(location);
