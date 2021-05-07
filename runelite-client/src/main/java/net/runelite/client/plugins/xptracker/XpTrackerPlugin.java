@@ -323,6 +323,7 @@ public class XpTrackerPlugin extends Plugin
 	/**
 	 * Reset an individual skill with the client's current known state of the skill
 	 * Will also clear the skill from the UI.
+	 *
 	 * @param skill Skill to reset
 	 */
 	void resetSkillState(Skill skill)
@@ -335,6 +336,7 @@ public class XpTrackerPlugin extends Plugin
 
 	/**
 	 * Reset all skills except for the one provided
+	 *
 	 * @param skill Skill to ignore during reset
 	 */
 	void resetOtherSkillState(Skill skill)
@@ -346,6 +348,29 @@ public class XpTrackerPlugin extends Plugin
 			{
 				resetSkillState(s);
 			}
+		}
+	}
+
+	/**
+	 * Reset the xp gained since last reset of the skill
+	 * Does not clear the skill from the UI.
+	 *
+	 * @param skill Skill to reset per hour rate
+	 */
+	void resetSkillPerHourState(Skill skill)
+	{
+		xpState.resetSkillPerHour(skill);
+	}
+
+	/**
+	 * Reset the xp gained since last reset of all skills including OVERALL
+	 * Does not clear the UI.
+	 */
+	void resetAllSkillsPerHourState()
+	{
+		for (Skill skill : Skill.values())
+		{
+			resetSkillPerHourState(skill);
 		}
 	}
 
@@ -377,7 +402,7 @@ public class XpTrackerPlugin extends Plugin
 		final Actor interacting = client.getLocalPlayer().getInteracting();
 		if (interacting instanceof NPC && COMBAT.contains(skill))
 		{
-			final int xpModifier = worldSetToType(client.getWorldType()).modifier(client);;
+			final int xpModifier = worldSetToType(client.getWorldType()).modifier(client);
 			final NPC npc = (NPC) interacting;
 			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getId()), xpModifier);
 		}
