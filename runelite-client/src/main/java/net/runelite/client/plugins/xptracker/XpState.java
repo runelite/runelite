@@ -32,7 +32,7 @@ import net.runelite.api.Skill;
 
 /**
  * Internal state for the XpTrackerPlugin
- *
+ * <p>
  * Note: This class's operations are not currently synchronized.
  * It is intended to be called by the XpTrackerPlugin on the client thread.
  */
@@ -53,7 +53,8 @@ class XpState
 
 	/**
 	 * Resets a single skill
-	 * @param skill Skill to reset
+	 *
+	 * @param skill     Skill to reset
 	 * @param currentXp Current XP to set to, if unknown set to -1
 	 */
 	void resetSkill(Skill skill, long currentXp)
@@ -63,14 +64,25 @@ class XpState
 	}
 
 	/**
+	 * Resets the per hour rates of a single skill
+	 *
+	 * @param skill Skill to reset per hour rates
+	 */
+	void resetSkillPerHour(Skill skill)
+	{
+		xpSkills.get(skill).resetPerHour();
+	}
+
+	/**
 	 * Updates a skill with the current known XP.
 	 * When the result of this operation is XpUpdateResult.UPDATED, the UI should be updated accordingly.
 	 * This is to distinguish events that reload all the skill's current values (such as world hopping)
 	 * and also first-login when the skills are not initialized (the start XP will be -1 in this case).
-	 * @param skill Skill to update
-	 * @param currentXp Current known XP for this skill
+	 *
+	 * @param skill       Skill to update
+	 * @param currentXp   Current known XP for this skill
 	 * @param goalStartXp Possible XP start goal
-	 * @param goalEndXp Possible XP end goal
+	 * @param goalEndXp   Possible XP end goal
 	 * @return Whether or not the skill has been initialized, there was no change, or it has been updated
 	 */
 	XpUpdateResult updateSkill(Skill skill, long currentXp, int goalStartXp, int goalEndXp)
@@ -92,7 +104,7 @@ class XpState
 		else
 		{
 			long startXp = state.getStartXp();
-			int gainedXp = state.getXpGained();
+			int gainedXp = state.getTotalXpGained();
 
 			if (startXp + gainedXp > currentXp)
 			{
@@ -119,8 +131,9 @@ class XpState
 
 	/**
 	 * Updates skill with average actions based on currently interacted NPC.
-	 * @param skill experience gained skill
-	 * @param npc currently interacted NPC
+	 *
+	 * @param skill     experience gained skill
+	 * @param npc       currently interacted NPC
 	 * @param npcHealth health of currently interacted NPC
 	 */
 	void updateNpcExperience(Skill skill, NPC npc, Integer npcHealth, int xpModifier)
@@ -161,8 +174,9 @@ class XpState
 	/**
 	 * Update number of actions performed for skill if last interacted NPC died.
 	 * (eg. amount of kills in this case)
-	 * @param skill skill to update actions for
-	 * @param npc npc that just died
+	 *
+	 * @param skill     skill to update actions for
+	 * @param npc       npc that just died
 	 * @param npcHealth max health of npc that just died
 	 * @return UPDATED in case new kill was successfully added
 	 */
@@ -170,13 +184,13 @@ class XpState
 	{
 		XpStateSingle state = getSkill(skill);
 
-		if (state.getXpGained() <= 0 || npcHealth == null || npc != interactedNPC)
+		if (state.getXpGainedSinceReset() <= 0 || npcHealth == null || npc != interactedNPC)
 		{
 			return XpUpdateResult.NO_CHANGE;
 		}
 
 		final XpAction xpAction = state.getXpAction(XpActionType.ACTOR_HEALTH);
-		xpAction.setActions(xpAction.getActions() + 1);
+		xpAction.setActionsSinceReset(xpAction.getActionsSinceReset() + 1);
 		return xpAction.isActionsHistoryInitialized() ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
 	}
 
@@ -188,7 +202,8 @@ class XpState
 	/**
 	 * Forcefully initialize a skill with a known start XP from the current XP.
 	 * This is used in resetAndInitState by the plugin. It should not result in showing the XP in the UI.
-	 * @param skill Skill to initialize
+	 *
+	 * @param skill     Skill to initialize
 	 * @param currentXp Current known XP for the skill
 	 */
 	void initializeSkill(Skill skill, long currentXp)
@@ -211,6 +226,7 @@ class XpState
 	/**
 	 * Obtain an immutable snapshot of the provided skill
 	 * intended for use with the UI which operates on another thread
+	 *
 	 * @param skill Skill to obtain the snapshot for
 	 * @return An immutable snapshot of the specified skill for this session since first login or last reset
 	 */
@@ -223,6 +239,7 @@ class XpState
 	/**
 	 * Obtain an immutable snapshot of the provided skill
 	 * intended for use with the UI which operates on another thread
+	 *
 	 * @return An immutable snapshot of total information for this session since first login or last reset
 	 */
 	@NonNull
