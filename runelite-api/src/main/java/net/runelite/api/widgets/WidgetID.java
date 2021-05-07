@@ -611,6 +611,7 @@ public class WidgetID
 			static final int ROLE_SPRITE = 12;
 			static final int ROLE = 13;
 		}
+
 		static class HLR
 		{
 			static final int TEAMMATE1 = 19;
@@ -835,6 +836,7 @@ public class WidgetID
 		static final int MEMBERS_CONTAINER = 7;
 		static final int MINIQUEST_CONTAINER = 8;
 	}
+
 	static class Music
 	{
 		static final int CONTAINER = 0;

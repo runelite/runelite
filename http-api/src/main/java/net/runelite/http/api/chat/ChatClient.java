@@ -404,5 +404,9 @@ public class ChatClient
 			InputStream in = response.body().byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Integer[].class);
 		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
 	}
 }

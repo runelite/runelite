@@ -37,12 +37,14 @@ import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Pet;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
+import static net.runelite.api.widgets.WidgetID.COLLECTION_LOG_ID;
 import static net.runelite.api.widgets.WidgetID.GENERIC_SCROLL_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatCommandManager;
@@ -50,6 +52,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreSkill;
@@ -948,6 +951,82 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 5 * 60 + 42.6);
+	}
+
+	@Test
+	public void testPlayerPetList()
+	{
+		Widget logEntryHeaderWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+
+		Widget[] logEntryHeaderItemsWidget = new Widget[1];
+		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
+
+		Widget logEntryHeaderTitleWidget = mock(Widget.class);
+		when(logEntryHeaderWidget.getChild(ChatCommandsPlugin.COL_LOG_ENTRY_HEADER_TITLE_INDEX))
+			.thenReturn(logEntryHeaderTitleWidget);
+		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
+
+		Widget logEntryItemsWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+
+		Widget[] logPetEntriesWidget = new Widget[3];
+		for (int i = 0; i < 3; i++)
+		{
+			logPetEntriesWidget[i] = mock(Widget.class);
+			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
+		}
+
+		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
+		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
+
+		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
+
+		WidgetLoaded logEvent = new WidgetLoaded();
+		logEvent.setGroupId(COLLECTION_LOG_ID);
+		chatCommandsPlugin.onWidgetLoaded(logEvent);
+
+		chatCommandsPlugin.onGameTick(new GameTick());
+
+		Pet[] playerPetList = new Pet[1];
+		playerPetList[0] = Pet.IKKLE_HYDRA;
+
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", RuneLiteAPI.GSON.toJson(playerPetList));
+	}
+
+	@Test
+	public void testEmptyPlayerPetList()
+	{
+		Widget logEntryHeaderWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+
+		Widget[] logEntryHeaderItemsWidget = new Widget[1];
+		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
+
+		Widget logEntryHeaderTitleWidget = mock(Widget.class);
+		when(logEntryHeaderWidget.getChild(ChatCommandsPlugin.COL_LOG_ENTRY_HEADER_TITLE_INDEX))
+			.thenReturn(logEntryHeaderTitleWidget);
+		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
+
+		Widget logEntryItemsWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+
+		Widget[] logPetEntriesWidget = new Widget[3];
+		for (int i = 0; i < 3; i++)
+		{
+			logPetEntriesWidget[i] = mock(Widget.class);
+			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
+		}
+
+		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
+
+		WidgetLoaded logEvent = new WidgetLoaded();
+		logEvent.setGroupId(COLLECTION_LOG_ID);
+		chatCommandsPlugin.onWidgetLoaded(logEvent);
+
+		chatCommandsPlugin.onGameTick(new GameTick());
+
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", RuneLiteAPI.GSON.toJson(new Pet[0]));
 	}
 
 	@Test
