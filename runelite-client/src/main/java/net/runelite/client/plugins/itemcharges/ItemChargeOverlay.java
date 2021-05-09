@@ -30,9 +30,19 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import javax.inject.Inject;
-import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.ABYSSAL_BRACELET;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.AMULET_OF_BOUNTY;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.AMULET_OF_CHEMISTRY;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FRUIT_BASKET;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.POTION;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.SACK;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -62,86 +72,15 @@ class ItemChargeOverlay extends WidgetItemOverlay
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		int charges;
-		if (itemId == ItemID.DODGY_NECKLACE)
+		ItemWithConfig itemWithConfig = ItemWithConfig.findItem(itemId);
+		if (itemWithConfig != null)
 		{
-			if (!config.showDodgyCount())
+			if (!itemWithConfig.getType().getEnabled().apply(config))
 			{
 				return;
 			}
 
-			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_DODGY_NECKLACE);
-		}
-		else if (itemId == ItemID.BINDING_NECKLACE)
-		{
-			if (!config.showBindingNecklaceCharges())
-			{
-				return;
-			}
-
-			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE);
-		}
-		else if (itemId >= ItemID.EXPLORERS_RING_1 && itemId <= ItemID.EXPLORERS_RING_4)
-		{
-			if (!config.showExplorerRingCharges())
-			{
-				return;
-			}
-
-			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING);
-		}
-		else if (itemId == ItemID.RING_OF_FORGING)
-		{
-			if (!config.showRingOfForgingCount())
-			{
-				return;
-			}
-
-			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING);
-		}
-		else if (itemId == ItemID.AMULET_OF_CHEMISTRY)
-		{
-			if (!config.showAmuletOfChemistryCharges())
-			{
-				return;
-			}
-
-			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY);
-		}
-		else if (itemId == ItemID.AMULET_OF_BOUNTY)
-		{
-			if (!config.showAmuletOfBountyCharges())
-			{
-				return;
-			}
-
-			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_AMULET_OF_BOUNTY);
-		}
-		else if (itemId == ItemID.CHRONICLE)
-		{
-			if (!config.showTeleportCharges())
-			{
-				return;
-			}
-
-			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_CHRONICLE);
-		}
-		else if (itemId == ItemID.BRACELET_OF_SLAUGHTER)
-		{
-			if (!config.showBraceletOfSlaughterCharges())
-			{
-				return;
-			}
-
-			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER);
-		}
-		else if (itemId == ItemID.EXPEDITIOUS_BRACELET)
-		{
-			if (!config.showExpeditiousBraceletCharges())
-			{
-				return;
-			}
-
-			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET);
+			charges = itemChargePlugin.getItemCharges(itemWithConfig.getConfigKey());
 		}
 		else
 		{

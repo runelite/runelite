@@ -32,6 +32,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
@@ -173,6 +174,7 @@ public class ItemChargePluginTest
 		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentItemContainer);
 		when(equipmentItemContainer.contains(ItemID.RING_OF_FORGING)).thenReturn(true);
+		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
 		// Run message
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
