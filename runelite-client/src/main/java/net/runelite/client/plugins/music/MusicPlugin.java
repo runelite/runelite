@@ -599,10 +599,7 @@ public class MusicPlugin extends Plugin
 				handle.setSpriteId(SpriteID.SETTINGS_SLIDER_HANDLE_BLUE);
 			}
 
-			if(this.icon != null)
-			{
-				this.icon.setOnOpListener((Object[]) null);
-			}
+			this.icon.setOnOpListener((Object[]) null);
 
 			Widget root = client.getWidget(this.root);
 			if (root != null)

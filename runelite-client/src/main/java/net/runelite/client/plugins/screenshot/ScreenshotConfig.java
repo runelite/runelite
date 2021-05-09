@@ -273,7 +273,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 			keyName = "bossSeparate",
-			name = "Separate boss screenshots",
+			name = "Separate Boss Screenshots",
 			description = "Separate screenshots into specific boss folders",
 			position = 1,
 			section = screenshotConfigSection
