@@ -682,7 +682,43 @@ public class ConfigManager
 			return;
 		}
 
-		for (Method method : clazz.getDeclaredMethods())
+		Method[] unsortedDefaultConfigs = clazz.getDeclaredMethods();
+
+		// If default values depend on other default values we must reset them in the right order
+		final List<Method> sortedMethods = Arrays.stream(unsortedDefaultConfigs)
+				.sorted((m1, m2) ->
+				{
+					ConfigItem i1 = m1.getAnnotation(ConfigItem.class);
+					ConfigItem i2 = m2.getAnnotation(ConfigItem.class);
+
+					if(i1 == null && i2 == null)
+					{
+						return 0;
+					}
+					if(i1 == null)
+					{
+						return -1;
+					}
+					if(i2 == null)
+					{
+						return 1;
+					}
+
+
+					// First order by explicit reset order
+					int resetOrder1 = i1.resetOrder();
+					int resetOrder2 = i2.resetOrder();
+
+					if(resetOrder1 != resetOrder2)
+					{
+						return resetOrder1 - resetOrder2;
+					}
+
+					// Then order by position
+					return i1.position() - i2.position();
+				}).collect(Collectors.toList());
+
+		for (Method method : sortedMethods)
 		{
 			ConfigItem item = method.getAnnotation(ConfigItem.class);
 

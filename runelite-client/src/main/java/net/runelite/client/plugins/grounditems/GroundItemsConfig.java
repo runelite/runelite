@@ -224,7 +224,8 @@ public interface GroundItemsConfig extends Config
 			keyName = "hideStackableUnderValue",
 			name = "Hide stackable under value",
 			description = "Configures stackable hidden ground items under both GE and HA value",
-			position = 14
+			position = 14,
+			resetOrder = 1
 	)
 	default int getStackableHideUnderValue()
 	{
