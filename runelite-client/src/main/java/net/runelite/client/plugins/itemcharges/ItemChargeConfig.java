@@ -341,7 +341,10 @@ public interface ItemChargeConfig extends Config
 			position = 24,
 			section = notificationSection
 	)
-	default boolean braceletOfClayNotification() { return true; }
+	default boolean braceletOfClayNotification()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 			keyName = "braceletOfClayCharges",
@@ -350,7 +353,10 @@ public interface ItemChargeConfig extends Config
 			position = 25,
 			section = chargesSection
 	)
-	default boolean braceletOfClayCharges() { return true; }
+	default boolean braceletOfClayCharges()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showInfoboxes",
