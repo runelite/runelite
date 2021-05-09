@@ -50,6 +50,7 @@ enum ItemChargeType
 	FRUIT_BASKET(ItemChargeConfig::showBasketCharges),
 	SACK(ItemChargeConfig::showSackCharges),
 	RING_OF_FORGING(ItemChargeConfig::showRingOfForgingCount),
+	BRACELET_OF_CLAY(ItemChargeConfig::braceletOfClayCharges),
 	POTION(ItemChargeConfig::showPotionDoseCount);
 
 	private final Function<ItemChargeConfig, Boolean> enabled;
