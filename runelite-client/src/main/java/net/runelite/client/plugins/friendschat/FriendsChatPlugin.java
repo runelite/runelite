@@ -413,9 +413,22 @@ public class FriendsChatPlugin extends Plugin
 			rankIcon = friendChatManager.getIconNumber(rank);
 		}
 
+		String friendsChatName = friendsChatManager.getName();
+
+		if (config.senderLimit())
+		{
+			friendsChatName = friendsChatName.substring(0, config.senderLength());
+		}
+
+		// Name replacement overrides character limit
+		if (!config.senderReplace().isEmpty())
+		{
+			friendsChatName = config.senderReplace();
+		}
+
 		ChatMessageBuilder message = new ChatMessageBuilder()
 			.append("[")
-			.append(channelColor, friendsChatManager.getName());
+			.append(channelColor, friendsChatName);
 		if (rankIcon > -1)
 		{
 			message
@@ -473,6 +486,24 @@ public class FriendsChatPlugin extends Plugin
 				}
 				break;
 			case FRIENDSCHAT:
+				if (config.senderLimit())
+				{
+					chatMessage.getMessageNode()
+						.setSender(chatMessage.getMessageNode()
+							.getSender().substring(0, config.senderLength()));
+				}
+				// Name replacement overrides character limit
+				if (!config.senderReplace().isEmpty())
+				{
+					chatMessage.getMessageNode()
+						.setSender(config.senderReplace());
+				}
+
+				if (config.senderLimit() || !config.senderReplace().isEmpty())
+				{
+					client.refreshChat();
+				}
+
 				if (!config.chatIcons())
 				{
 					return;
