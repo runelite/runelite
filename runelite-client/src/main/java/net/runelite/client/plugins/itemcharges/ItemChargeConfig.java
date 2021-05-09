@@ -46,6 +46,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_EXPEDITIOUS_BRACELET = "expeditiousBracelet";
 	String KEY_EXPLORERS_RING = "explorerRing";
 	String KEY_RING_OF_FORGING = "ringOfForging";
+	String KEY_BRACELET_OF_CLAY = "braceletOfClay";
 
 	@ConfigSection(
 		name = "Charge Settings",
@@ -334,10 +335,28 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "braceletOfClayNotification",
+			name = "Bracelet of Clay Notification",
+			description = "Send a notification when a bracelet of clay breaks",
+			position = 24,
+			section = notificationSection
+	)
+	default boolean braceletOfClayNotification() { return true; }
+
+	@ConfigItem(
+			keyName = "braceletOfClayCharges",
+			name = "Bracelet of Clay Charges",
+			description = "Show the Bracelet of Clay Charges",
+			position = 25,
+			section = chargesSection
+	)
+	default boolean braceletOfClayCharges() { return true; }
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Infoboxes",
 		description = "Show an infobox with remaining charges for equipped items",
-		position = 24
+		position = 26
 	)
 	default boolean showInfoboxes()
 	{
@@ -348,7 +367,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "showPotionDoseCount",
 		name = "Potion Doses",
 		description = "Show remaining potion doses",
-		position = 25,
+		position = 27,
 		section = chargesSection
 	)
 	default boolean showPotionDoseCount()

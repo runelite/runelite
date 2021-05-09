@@ -111,6 +111,14 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern CHRONICLE_USE_AND_CHECK_PATTERN = Pattern.compile(
 		"Your book has (\\d+) charges left\\."
 	);
+	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
+		"You can mine (\\d+) more pieces? of soft clay before your bracelet crumbles to dust."
+	);
+	private static final Pattern BRACELET_OF_CLAY_BREAK_PATTERN = Pattern.compile(
+		"Your bracelet of clay crumbles to dust."
+	);
+	private static final String BRACELET_OF_CLAY_USE_TEXT = "You manage to mine some clay.";
+
 	private static final String CHRONICLE_FULL_TEXT = "Your book is fully charged! It has 1,000 charges already.";
 	private static final String CHRONICLE_ONE_CHARGE_TEXT = "You have one charge left in your book.";
 	private static final String CHRONICLE_EMPTY_TEXT = "Your book has run out of charges.";
@@ -137,6 +145,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
+	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 40;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -226,6 +235,8 @@ public class ItemChargePlugin extends Plugin
 			Matcher slaughterCheckMatcher = BRACELET_OF_SLAUGHTER_CHECK_PATTERN.matcher(message);
 			Matcher expeditiousActivateMatcher = EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN.matcher(message);
 			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
+			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
+			Matcher braceletOfClayBreakMatcher = BRACELET_OF_CLAY_BREAK_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -411,6 +422,39 @@ public class ItemChargePlugin extends Plugin
 			{
 				updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
 			}
+			else if (braceletOfClayCheckMatcher.find())
+			{
+				final String match = braceletOfClayCheckMatcher.group(1);
+
+				int charges = Integer.parseInt(match);
+
+				updateBraceletOfClayCharges(charges);
+			}
+			else if (message.equals(BRACELET_OF_CLAY_USE_TEXT))
+			{
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+				// Determine if the player mined clay with a bracelet of clay equipped.
+				if (equipment == null)
+				{
+					return;
+				}
+
+				if (equipment.contains(ItemID.BRACELET_OF_CLAY))
+				{
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
+					updateBraceletOfClayCharges(charges);
+				}
+			}
+			else if (braceletOfClayBreakMatcher.find())
+			{
+				if (config.braceletOfClayNotification())
+				{
+					notifier.notify("Your bracelet of clay has crumbled to dust.");
+				}
+
+				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
+			}
 		}
 	}
 
@@ -536,6 +580,23 @@ public class ItemChargePlugin extends Plugin
 	{
 		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, value);
 		updateInfoboxes();
+	}
+
+	private void updateBraceletOfClayCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+
+		if (config.showInfoboxes() && config.braceletOfClayCharges())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.BRACELET_OF_CLAY, itemContainer.getItems());
+		}
 	}
 
 	private void checkDestroyWidget()
