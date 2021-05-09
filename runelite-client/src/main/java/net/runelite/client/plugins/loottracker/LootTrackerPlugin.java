@@ -128,6 +128,7 @@ public class LootTrackerPlugin extends Plugin
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails?\\.");
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
+	private static final int THEATRE_OF_BLOOD_LOBBY = 14642;
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -551,7 +552,7 @@ public class LootTrackerPlugin extends Plugin
 					return;
 				}
 				int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-				if (region != THEATRE_OF_BLOOD_REGION)
+				if (region != THEATRE_OF_BLOOD_REGION && region != THEATRE_OF_BLOOD_LOBBY)
 				{
 					return;
 				}
