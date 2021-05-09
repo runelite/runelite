@@ -588,23 +588,6 @@ public class ItemChargePlugin extends Plugin
 		updateInfoboxes();
 	}
 
-	private void updateBraceletOfClayCharges(final int value)
-	{
-		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
-
-		if (config.showInfoboxes() && config.braceletOfClayCharges())
-		{
-			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
-
-			if (itemContainer == null)
-			{
-				return;
-			}
-
-			updateJewelleryInfobox(ItemWithSlot.BRACELET_OF_CLAY, itemContainer.getItems());
-		}
-	}
-
 	private void checkDestroyWidget()
 	{
 		final int currentTick = client.getTickCount();
