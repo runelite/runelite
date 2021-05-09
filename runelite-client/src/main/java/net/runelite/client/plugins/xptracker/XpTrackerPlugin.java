@@ -120,6 +120,9 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	private XpClient xpClient;
 
+	@Inject
+	private XpState xpState;
+
 	private NavigationButton navButton;
 	@Setter(AccessLevel.PACKAGE)
 	@VisibleForTesting
@@ -131,7 +134,6 @@ public class XpTrackerPlugin extends Plugin
 	private long lastXp = 0;
 	private boolean initializeTracker;
 
-	private final XpState xpState = new XpState();
 	private final XpPauseState xpPauseState = new XpPauseState();
 
 	@Provides

@@ -54,6 +54,8 @@ class XpStateSingle
 
 	@Setter
 	private long skillTime = 0;
+	@Getter
+	private long lastChangeMillis;
 
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
@@ -73,6 +75,12 @@ class XpStateSingle
 	long getCurrentXp()
 	{
 		return startXp + getTotalXpGained();
+	}
+
+	void setXpGainedSinceReset(int xpGainedSinceReset)
+	{
+		this.xpGainedSinceReset = xpGainedSinceReset;
+		lastChangeMillis = System.currentTimeMillis();
 	}
 
 	int getTotalXpGained()
@@ -220,7 +228,7 @@ class XpStateSingle
 
 		//reset xp per hour
 		xpGainedBeforeReset += xpGainedSinceReset;
-		xpGainedSinceReset = 0;
+		setXpGainedSinceReset(0);
 		setSkillTime(0);
 	}
 
@@ -264,7 +272,7 @@ class XpStateSingle
 		action.setActionsSinceReset(action.getActionsSinceReset() + 1);
 
 		// Calculate experience gained
-		xpGainedSinceReset = (int) (currentXp - (startXp + xpGainedBeforeReset));
+		setXpGainedSinceReset((int) (currentXp - (startXp + xpGainedBeforeReset)));
 
 		// Determine XP goals, overall has no goals
 		if (skill != Skill.OVERALL)

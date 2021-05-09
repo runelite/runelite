@@ -26,6 +26,7 @@ package net.runelite.client.plugins.xptracker;
 
 import java.util.EnumMap;
 import java.util.Map;
+import javax.inject.Inject;
 import lombok.NonNull;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
@@ -42,6 +43,9 @@ class XpState
 	private static final double SHARED_XP_MODIFIER = DEFAULT_XP_MODIFIER / 3.0;
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
 	private NPC interactedNPC;
+
+	@Inject
+	private XpTrackerConfig xpTrackerConfig;
 
 	/**
 	 * Destroys all internal state, however any XpSnapshotSingle or XpSnapshotTotal remain unaffected.
@@ -196,7 +200,22 @@ class XpState
 
 	void tick(Skill skill, long delta)
 	{
-		getSkill(skill).tick(delta);
+		final XpStateSingle state = getSkill(skill);
+
+		state.tick(delta);
+
+		int resetAfterMinutes = xpTrackerConfig.resetSkillRateAfter();
+		if (resetAfterMinutes > 0)
+		{
+			final long now = System.currentTimeMillis();
+			final int resetAfterMillis = resetAfterMinutes * 60 * 1000;
+			final long lastChangeMillis = state.getLastChangeMillis();
+			// When pauseSkillAfter is 0, it is effectively disabled
+			if (lastChangeMillis != 0 && (now - lastChangeMillis) >= resetAfterMillis)
+			{
+				state.resetPerHour();
+			}
+		}
 	}
 
 	/**
