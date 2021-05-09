@@ -125,6 +125,15 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_CHRONICLE);
 		}
+		else if (itemId == ItemID.BRACELET_OF_CLAY)
+		{
+			if(!config.braceletOfClayCharges())
+			{
+				return;
+			}
+
+			charges = itemChargePlugin.getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY);
+		}
 		else
 		{
 			ItemWithCharge chargeItem = ItemWithCharge.findItem(itemId);

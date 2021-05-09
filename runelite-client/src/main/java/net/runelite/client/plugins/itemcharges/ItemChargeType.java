@@ -45,4 +45,5 @@ enum ItemChargeType
 	GUTHIX_REST,
 	CHRONICLE,
 	POTION,
+	BRACELET_OF_CLAY,
 }
