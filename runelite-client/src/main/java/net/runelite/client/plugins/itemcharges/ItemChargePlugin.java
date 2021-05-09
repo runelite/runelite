@@ -236,7 +236,7 @@ public class ItemChargePlugin extends Plugin
 			removeInfobox(ItemWithSlot.RING_OF_FORGING);
 		}
 
-		if(!config.braceletOfClayNotification())
+		if (!config.braceletOfClayNotification())
 		{
 			removeInfobox(ItemWithSlot.BRACELET_OF_CLAY);
 		}
