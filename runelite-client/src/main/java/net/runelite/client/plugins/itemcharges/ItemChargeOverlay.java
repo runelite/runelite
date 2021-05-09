@@ -84,7 +84,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 		}
 		else if (itemId == ItemID.BRACELET_OF_CLAY)
 		{
-			if(!config.braceletOfClayCharges())
+			if (!config.braceletOfClayCharges())
 			{
 				return;
 			}
