@@ -145,7 +145,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
-	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 40;
+	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 
 	private int lastExplorerRingCharge = -1;
 
