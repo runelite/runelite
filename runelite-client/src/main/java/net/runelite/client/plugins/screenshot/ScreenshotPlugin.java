@@ -398,7 +398,14 @@ public class ScreenshotPlugin extends Plugin
 				String bossName = m.group(1);
 				String bossKillcount = m.group(2);
 				String fileName = bossName + "(" + bossKillcount + ")";
-				takeScreenshot(fileName, "Boss Kills");
+				String subDir = "Boss Kills";
+
+				if(config.separateBossScreenshots())
+				{
+					subDir = String.format("%s\\%s", subDir, bossName);
+				}
+
+				takeScreenshot(fileName, subDir);
 			}
 		}
 
