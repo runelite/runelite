@@ -403,7 +403,6 @@ public class ScreenshotPlugin extends Plugin
 
 				if (config.separateBossScreenshots())
 				{
-
 					subDir = String.format("%s%s%s", subDir, File.separator, bossName);
 				}
 
