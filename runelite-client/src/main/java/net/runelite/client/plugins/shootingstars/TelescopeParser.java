@@ -30,7 +30,7 @@ public class TelescopeParser
 	{
 		text = text.replace("<br>", " ");
 		int start = text.lastIndexOf(START_OF_TIME);
-		int separator = text.lastIndexOf("to");
+		int separator = text.lastIndexOf(TIME_SEPARATOR);
 
 		return parseDuration(text.substring(start, separator).trim());
 	}
