@@ -1,6 +1,6 @@
 package net.runelite.client.plugins.shootingstars.event;
 
-import java.time.ZonedDateTime;
+import java.time.Duration;
 import lombok.Value;
 import net.runelite.client.plugins.shootingstars.StarRegion;
 
@@ -11,6 +11,6 @@ import net.runelite.client.plugins.shootingstars.StarRegion;
 public class StarScoutEvent
 {
 	int worldId;
-	ZonedDateTime timestamp;
+	Duration offset;
 	StarRegion region;
 }

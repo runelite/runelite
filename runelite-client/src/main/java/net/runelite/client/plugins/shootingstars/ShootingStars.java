@@ -25,12 +25,11 @@
 package net.runelite.client.plugins.shootingstars;
 
 import com.google.common.primitives.Ints;
+import com.google.inject.name.Named;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.time.Clock;
 import java.time.Duration;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -121,6 +120,10 @@ public class ShootingStars extends Plugin
 
 	@Inject
 	private EventBus eventBus;
+
+	@Inject
+	@Named("developerMode")
+	private boolean developerMode;
 
 	@Getter
 	private CrashedStar crashedStar;
@@ -228,6 +231,10 @@ public class ShootingStars extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
+		if (!developerMode)
+		{
+			return;
+		}
 		if (commandExecuted.getCommand().equals("ssregion"))
 		{
 			String[] args = commandExecuted.getArguments();
@@ -256,6 +263,23 @@ public class ShootingStars extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onStarScoutEvent(StarScoutEvent event)
+	{
+		StarRegion region = event.getRegion();
+		setupPossibleCrashSites(region);
+
+		String chatMessage = new ChatMessageBuilder()
+			.append("A new shooting star has been scouted, it'll land at ")
+			.append(Color.CYAN, region.getShortName())
+			.append(" in approximately ")
+			.append(Color.CYAN, DurationFormatUtils.formatDurationWords(event.getOffset().toMillis(), true, true))
+			.append(".")
+			.build();
+
+		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", chatMessage, null);
+	}
+
 	private void parseTelescopeWidget()
 	{
 		int world = client.getWorld();
@@ -271,18 +295,7 @@ public class ShootingStars extends Plugin
 			return;
 		}
 		Duration earliest = TelescopeParser.extractDuration(widget.getText());
-		setupPossibleCrashSites(region);
-
-		String chatMessage = new ChatMessageBuilder()
-			.append("A new shooting star has been scouted, it'll land at ")
-			.append(Color.CYAN, region.getShortName())
-			.append(" in approximately ")
-			.append(Color.CYAN, DurationFormatUtils.formatDurationWords(earliest.toMillis(), true, true))
-			.append(".")
-			.build();
-
-		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", chatMessage, null);
-		eventBus.post(StarScoutEvent.of(world, ZonedDateTime.now(Clock.systemUTC()).plus(earliest), region));
+		eventBus.post(StarScoutEvent.of(world, earliest, region));
 	}
 
 	/**
