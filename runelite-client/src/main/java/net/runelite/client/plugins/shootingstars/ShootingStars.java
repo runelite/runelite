@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.shootingstars;
 
 import com.google.common.primitives.Ints;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.AsyncBufferedImage;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
 @Slf4j
@@ -165,13 +167,20 @@ public class ShootingStars extends Plugin
 	{
 		if (event.getGroupId() == CHATBOX_MESSAGE_INTERFACE)
 		{
-			clientThread.invokeLater(() -> {
+			clientThread.invokeLater(() ->
+			{
 				int world = client.getWorld();
 				Widget widget = client.getWidget(CHATBOX_MESSAGE_INTERFACE, CHATBOX_MESSAGE_COMPONENT);
 
 				if (widget == null)
 				{
 					return;
+				}
+				StarRegion region = TelescopeParser.extractStarRegion(widget.getText());
+				if (region != null)
+				{
+					setupPossibleCrashSites(region);
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "A new shooting star has been scouted, it'll land at " + region.getShortName() + " in approximately x minutes.", null);
 				}
 				eventBus.post(new StarScoutEvent());
 			});
@@ -192,7 +201,7 @@ public class ShootingStars extends Plugin
 				log.debug("New shooting star spotted {}", newStar);
 				this.crashedStar = newStar;
 				client.setHintArrow(newStar.getWorldPoint());
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "A shooting star has been spotted nearby!", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", ColorUtil.wrapWithColorTag("A shooting star has been spotted nearby!", Color.CYAN), null);
 				eventBus.post(StarCrashEvent.from(crashedStar));
 			}
 			else if (starTier != this.crashedStar.getTier() && newStar.isSame(crashedStar))
@@ -274,7 +283,7 @@ public class ShootingStars extends Plugin
 
 			if (worldPoint.distanceTo(localPlayer.getWorldLocation()) < MINIMUM_EVICTION_DISTANCE && !checkForShootingStar(worldPoint))
 			{
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "No shooting star was found nearby, ignoring this crash site.", null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", ColorUtil.wrapWithColorTag("No shooting star was found nearby, ignoring this crash site.", Color.ORANGE), null);
 				log.debug("Removing possible crash site as no star was found at {}", worldPoint);
 				worldMapPointManager.remove(possibleSite.getWorldMapPoint());
 				iterator.remove();
