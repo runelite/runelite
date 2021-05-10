@@ -207,7 +207,7 @@ public class ShootingStars extends Plugin
 	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
-		if (isShootingStar(event.getGameObject().getId()) && crashedStar.getTier() == CrashedStar.MIN_TIER)
+		if (isShootingStar(event.getGameObject().getId()) && crashedStar != null && crashedStar.getTier() == CrashedStar.MIN_TIER)
 		{
 			log.debug("Shooting star depleted, world={}, worldPoint={}", crashedStar.getWorld(), crashedStar.getWorldPoint());
 			eventBus.post(StarDepletionEvent.from(crashedStar));
