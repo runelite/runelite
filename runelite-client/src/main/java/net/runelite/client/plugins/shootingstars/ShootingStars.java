@@ -38,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
@@ -47,6 +48,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -136,6 +138,15 @@ public class ShootingStars extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.HOPPING)
+		{
+			resetState();
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		Player localPlayer = client.getLocalPlayer();
@@ -180,7 +191,12 @@ public class ShootingStars extends Plugin
 				if (region != null)
 				{
 					setupPossibleCrashSites(region);
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "A new shooting star has been scouted, it'll land at " + region.getShortName() + " in approximately x minutes.", null);
+					client.addChatMessage(
+						ChatMessageType.GAMEMESSAGE,
+						"",
+						"A new shooting star has been scouted, it'll land at " + ColorUtil.wrapWithColorTag(region.getShortName(), Color.RED) + " in approximately x minutes.",
+						null
+					);
 				}
 				eventBus.post(new StarScoutEvent());
 			});
@@ -220,7 +236,7 @@ public class ShootingStars extends Plugin
 		{
 			log.debug("Shooting star depleted, world={}, worldPoint={}", crashedStar.getWorld(), crashedStar.getWorldPoint());
 			eventBus.post(StarDepletionEvent.from(crashedStar));
-			crashedStar = null;
+			resetState();
 		}
 	}
 
@@ -239,6 +255,7 @@ public class ShootingStars extends Plugin
 			try
 			{
 				StarRegion starRegion = StarRegion.valueOf(region);
+				resetState();
 				setupPossibleCrashSites(starRegion);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Star region set to: " + starRegion, null);
 			}
@@ -249,7 +266,7 @@ public class ShootingStars extends Plugin
 		}
 		else if (commandExecuted.getCommand().equals("ssclear"))
 		{
-			crashedStar = null;
+			resetState();
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cleared current crashed star", null);
 		}
 	}
@@ -283,12 +300,21 @@ public class ShootingStars extends Plugin
 
 			if (worldPoint.distanceTo(localPlayer.getWorldLocation()) < MINIMUM_EVICTION_DISTANCE && !checkForShootingStar(worldPoint))
 			{
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", ColorUtil.wrapWithColorTag("No shooting star was found nearby, ignoring this crash site.", Color.ORANGE), null);
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", ColorUtil.wrapWithColorTag("No shooting star was found, ignoring nearby crash site.", Color.ORANGE), null);
 				log.debug("Removing possible crash site as no star was found at {}", worldPoint);
 				worldMapPointManager.remove(possibleSite.getWorldMapPoint());
 				iterator.remove();
 			}
 		}
+	}
+
+	/**
+	 * Resets all the plugin state to the default values.
+	 */
+	private void resetState()
+	{
+		crashedStar = null;
+		clearPossibleSites();
 	}
 
 	private void clearPossibleSites()
@@ -297,6 +323,30 @@ public class ShootingStars extends Plugin
 			.map(PossibleCrashSite::getWorldMapPoint)
 			.forEach(worldMapPointManager::remove);
 		possibleSites.clear();
+	}
+
+	private void setupPossibleCrashSites(StarRegion region)
+	{
+		List<StarCrashSite> crashSites = region.getCrashSites();
+
+		if (worldMapImage == null)
+		{
+			worldMapImage = createWorldMapImage();
+		}
+
+		for (StarCrashSite crashSite : crashSites)
+		{
+			WorldMapPoint mapPoint = WorldMapPoint.builder()
+				.worldPoint(crashSite.getLocation())
+				.tooltip("Shooting Star")
+				.image(worldMapImage)
+				.jumpOnClick(true)
+				.snapToEdge(true)
+				.build();
+
+			worldMapPointManager.add(mapPoint);
+			possibleSites.add(PossibleCrashSite.of(crashSite.getName(), crashSite.getLocation(), mapPoint));
+		}
 	}
 
 	private boolean checkForShootingStar(WorldPoint worldPoint)
@@ -332,30 +382,6 @@ public class ShootingStars extends Plugin
 		return image;
 	}
 
-	private void setupPossibleCrashSites(StarRegion region)
-	{
-		List<StarCrashSite> crashSites = region.getCrashSites();
-		clearPossibleSites();
-
-		if (worldMapImage == null)
-		{
-			worldMapImage = createWorldMapImage();
-		}
-
-		for (StarCrashSite crashSite : crashSites)
-		{
-			WorldMapPoint mapPoint = WorldMapPoint.builder()
-				.worldPoint(crashSite.getLocation())
-				.tooltip("Shooting Star")
-				.image(worldMapImage)
-				.jumpOnClick(true)
-				.snapToEdge(true)
-				.build();
-
-			worldMapPointManager.add(mapPoint);
-			possibleSites.add(PossibleCrashSite.of(crashSite.getName(), crashSite.getLocation(), mapPoint));
-		}
-	}
 
 	@Value(staticConstructor = "of")
 	private static class PossibleCrashSite
