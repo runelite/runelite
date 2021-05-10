@@ -1030,6 +1030,59 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testUpdatePlayerPetList()
+	{
+		Widget logEntryHeaderWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+
+		Widget[] logEntryHeaderItemsWidget = new Widget[1];
+		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
+
+		Widget logEntryHeaderTitleWidget = mock(Widget.class);
+		when(logEntryHeaderWidget.getChild(ChatCommandsPlugin.COL_LOG_ENTRY_HEADER_TITLE_INDEX))
+			.thenReturn(logEntryHeaderTitleWidget);
+		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
+
+		Widget logEntryItemsWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+
+		Widget[] logPetEntriesWidget = new Widget[3];
+		for (int i = 0; i < 3; i++)
+		{
+			logPetEntriesWidget[i] = mock(Widget.class);
+			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
+		}
+
+		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
+		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
+
+		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
+
+		WidgetLoaded logEvent = new WidgetLoaded();
+		logEvent.setGroupId(COLLECTION_LOG_ID);
+		chatCommandsPlugin.onWidgetLoaded(logEvent);
+
+		chatCommandsPlugin.onGameTick(new GameTick());
+
+		Pet[] playerPetList = new Pet[1];
+		playerPetList[0] = Pet.IKKLE_HYDRA;
+
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", RuneLiteAPI.GSON.toJson(playerPetList));
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setMessage("New item added to your collection log: Chompy chick");
+		chatMessage.setType(GAMEMESSAGE);
+		when(configManager.getRSProfileConfiguration("chatcommands", "pets",
+			String.class)).thenReturn(RuneLiteAPI.GSON.toJson(playerPetList));
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		playerPetList = new Pet[2];
+		playerPetList[0] = Pet.IKKLE_HYDRA;
+		playerPetList[1] = Pet.CHOMPY_CHICK;
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", RuneLiteAPI.GSON.toJson(playerPetList));
+	}
+
+	@Test
 	public void testTimeStringToSeconds()
 	{
 		final double DELTA = 0.0001;

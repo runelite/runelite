@@ -121,6 +121,7 @@ public class ChatCommandsPlugin extends Plugin
 		"(?:<br>Overall time: <col=ff0000>(?<otime>[0-9:]+(?:\\.[0-9]+)?)</col>(?: \\(new personal best\\)|. Personal best: (?<opb>[0-9:]+(?:\\.[0-9]+)?)))?");
 	private static final Pattern HS_KC_FLOOR_PATTERN = Pattern.compile("You have completed Floor (\\d) of the Hallowed Sepulchre! Total completions: <col=ff0000>([0-9,]+)</col>\\.");
 	private static final Pattern HS_KC_GHC_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin <col=ff0000>([0-9,]+)</col> times?!");
+	private static final Pattern COLLECTION_LOG_ITEM_PATTERN = Pattern.compile("New item added to your collection log: (.*)");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -312,17 +313,40 @@ public class ChatCommandsPlugin extends Plugin
 	/**
 	 * Sets the list of owned pets in local storage for the local player.
 	 *
-	 * @param totalPetList The widget containing the list of owned pets for the local player
+	 * @param petList The total list of owned pets for the local player
 	 */
-	private void setPetList(Widget[] totalPetList)
+	private void setPetList(Pet[] petList)
 	{
-		if (totalPetList == null)
+		if (petList == null)
 		{
 			return;
 		}
 
+		configManager.setRSProfileConfiguration("chatcommands", "pets",
+			gson.toJson(petList));
+	}
+
+	/**
+	 * Looks up the list of owned pets in local storage for the local player
+	 */
+	private Pet[] getPetList()
+	{
+		String petListJson = configManager.getRSProfileConfiguration("chatcommands", "pets",
+			String.class);
+		Pet[] petList = gson.fromJson(petListJson, Pet[].class);
+
+		return petList != null ? petList : new Pet[0];
+	}
+
+	/**
+	 * Extracts the list of owned pets from a Collection Log widget for the local player
+	 *
+	 * @param petEntries A widget array of pet entries
+	 */
+	private Pet[] extractPetList(Widget[] petEntries)
+	{
 		List<Pet> petList = new ArrayList<>();
-		for (Widget child : totalPetList)
+		for (Widget child : petEntries != null ? petEntries : new Widget[0])
 		{
 			if (child.getOpacity() == 0)
 			{
@@ -333,22 +357,25 @@ public class ChatCommandsPlugin extends Plugin
 				}
 			}
 		}
-
-		configManager.setRSProfileConfiguration("chatcommands", "pets",
-			gson.toJson(petList.toArray(new Pet[0])));
+		return petList.toArray(new Pet[0]);
 	}
 
 	/**
-	 * Looks up the list of owned pets in local storage for the local player
+	 * Updates the list of owned pets in local storage for the local player if they have received a new, unique pet
+	 *
+	 * @param newPet The new, unique pet the local player has received
 	 */
-	private Pet[] getPetList()
+	private void updatePetList(Pet newPet)
 	{
-		String petListJson = configManager.getRSProfileConfiguration("chatcommands", "pets",
-			String.class);
+		if (newPet == null)
+		{
+			return;
+		}
 
-		Pet[] petList = gson.fromJson(petListJson, Pet[].class);
+		List<Pet> petList = new ArrayList<>(Arrays.asList(getPetList()));
+		petList.add(newPet);
 
-		return petList != null ? petList : new Pet[0];
+		setPetList(petList.toArray(new Pet[0]));
 	}
 
 	@Subscribe
@@ -499,6 +526,19 @@ public class ChatCommandsPlugin extends Plugin
 			lastBossKill = null;
 			lastBossTime = -1;
 		}
+
+		matcher = COLLECTION_LOG_ITEM_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			String item = matcher.group(1);
+			Pet pet = Pet.getPet(item);
+
+			if (pet != null)
+			{
+				updatePetList(pet);
+			}
+
+		}
 	}
 
 	@VisibleForTesting
@@ -569,7 +609,13 @@ public class ChatCommandsPlugin extends Plugin
 				{
 					collectionLogLoaded = false;
 					Widget collectionLogEntryItems = client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS);
-					setPetList(collectionLogEntryItems.getChildren());
+					if (collectionLogEntryItems != null)
+					{
+						Widget[] petEntries = collectionLogEntryItems.getChildren();
+						Pet[] petList = extractPetList(petEntries);
+
+						setPetList(petList);
+					}
 				}
 			}
 			else
@@ -1136,17 +1182,14 @@ public class ChatCommandsPlugin extends Plugin
 		ChatMessageBuilder responseBuilder = new ChatMessageBuilder().append("Pets: ")
 			.append("(" + playerPetList.length + ")");
 
-		int petIdx = 0;
-
 		// Append pets that the player owns
 		for (Pet pet : pets)
 		{
 			boolean playerHasPet = Arrays.asList(playerPetList).contains(pet.getIconID());
 			if (playerHasPet)
 			{
-				responseBuilder.append(" ").img(modIconIdx + petIdx);
+				responseBuilder.append(" ").img(modIconIdx + pet.ordinal());
 			}
-			petIdx += 1;
 		}
 
 		// Construct a cmd help message if this is the player's first time using the command
