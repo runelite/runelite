@@ -210,7 +210,7 @@ public class ShootingStars extends Plugin
 
 		if (starTier > 0)
 		{
-			CrashedStar newStar = new CrashedStar(client.getWorld(), event.getTile().getWorldLocation(), starTier);
+			CrashedStar newStar = CrashedStar.of(client.getWorld(), event.getTile().getWorldLocation(), starTier);
 
 			if (crashedStar == null || crashedStar.depleted() || !crashedStar.isSame(newStar))
 			{

@@ -3,7 +3,7 @@ package net.runelite.client.plugins.shootingstars;
 import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
 
-@Value
+@Value(staticConstructor = "of")
 public class CrashedStar
 {
 	public static final int MIN_TIER = 1;

@@ -2,7 +2,9 @@ package net.runelite.client.plugins.shootingstars;
 
 import java.time.Duration;
 import java.util.regex.Pattern;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class TelescopeParser
 {
 	private static final Pattern TIME_PATTERN = Pattern.compile("\\d+ ?(hours?|minutes?)?");
