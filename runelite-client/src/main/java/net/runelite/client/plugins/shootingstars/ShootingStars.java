@@ -196,24 +196,25 @@ public class ShootingStars extends Plugin
 	{
 		int starTier = getStarTier(event.getGameObject().getId());
 
-		if (starTier > 0)
+		if (starTier <= 0)
 		{
-			CrashedStar newStar = CrashedStar.of(client.getWorld(), event.getTile().getWorldLocation(), starTier);
+			return;
+		}
+		CrashedStar newStar = CrashedStar.of(client.getWorld(), event.getTile().getWorldLocation(), starTier);
 
-			if (crashedStar == null || crashedStar.depleted() || !crashedStar.isSame(newStar))
-			{
-				log.debug("New shooting star spotted {}", newStar);
-				this.crashedStar = newStar;
-				client.setHintArrow(newStar.getWorldPoint());
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", ColorUtil.wrapWithColorTag("A shooting star has been spotted nearby!", Color.CYAN), null);
-				eventBus.post(StarCrashEvent.from(crashedStar));
-			}
-			else if (starTier != this.crashedStar.getTier() && newStar.isSame(crashedStar))
-			{
-				this.crashedStar = this.crashedStar.reduceTier();
-				log.debug("Shooting star degraded to tier {}, world={}, worldPoint={}", crashedStar.getTier(), crashedStar.getWorld(), crashedStar.getWorldPoint());
-				eventBus.post(StarDowngradeEvent.from(crashedStar));
-			}
+		if (crashedStar == null || crashedStar.depleted() || !crashedStar.isSame(newStar))
+		{
+			log.debug("New shooting star spotted {}", newStar);
+			this.crashedStar = newStar;
+			client.setHintArrow(newStar.getWorldPoint());
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", ColorUtil.wrapWithColorTag("A shooting star has been spotted nearby!", Color.CYAN), null);
+			eventBus.post(StarCrashEvent.from(crashedStar));
+		}
+		else if (starTier != this.crashedStar.getTier() && newStar.isSame(crashedStar))
+		{
+			this.crashedStar = this.crashedStar.reduceTier();
+			log.debug("Shooting star degraded to tier {}, world={}, worldPoint={}", crashedStar.getTier(), crashedStar.getWorld(), crashedStar.getWorldPoint());
+			eventBus.post(StarDowngradeEvent.from(crashedStar));
 		}
 	}
 
@@ -242,6 +243,7 @@ public class ShootingStars extends Plugin
 			if (args.length < 1)
 			{
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Insufficient parameters, usage: ssregion <regionname>", null);
+				return;
 			}
 			String region = args[0].toUpperCase();
 			try
@@ -325,13 +327,14 @@ public class ShootingStars extends Plugin
 			PossibleCrashSite possibleSite = iterator.next();
 			WorldPoint worldPoint = possibleSite.getWorldPoint();
 
-			if (worldPoint.distanceTo(localPlayer.getWorldLocation()) < MINIMUM_EVICTION_DISTANCE && !checkForShootingStar(worldPoint))
+			if (worldPoint.distanceTo(localPlayer.getWorldLocation()) >= MINIMUM_EVICTION_DISTANCE || checkForShootingStar(worldPoint))
 			{
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", ColorUtil.wrapWithColorTag("No shooting star was found, ignoring nearby crash site.", Color.ORANGE), null);
-				log.debug("Removing possible crash site as no star was found at {}", worldPoint);
-				worldMapPointManager.remove(possibleSite.getWorldMapPoint());
-				iterator.remove();
+				continue;
 			}
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", ColorUtil.wrapWithColorTag("No shooting star was found, ignoring nearby crash site.", Color.ORANGE), null);
+			log.debug("Removing possible crash site as no star was found at {}", worldPoint);
+			worldMapPointManager.remove(possibleSite.getWorldMapPoint());
+			iterator.remove();
 		}
 	}
 
