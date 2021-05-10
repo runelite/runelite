@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jos <Malevolentdev@gmail.com>
+ * Copyright (c) 2021, Hexagon <hexagon@fking.work>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
