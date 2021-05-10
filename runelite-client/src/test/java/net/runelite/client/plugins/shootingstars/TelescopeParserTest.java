@@ -17,7 +17,7 @@ import org.junit.runners.Parameterized.Parameters;
 public class TelescopeParserTest
 {
 
-	@Parameters
+	@Parameters(name = "{index}: Region {1}")
 	public static List<Object[]> testTable()
 	{
 		return Arrays.asList(new Object[][]{
