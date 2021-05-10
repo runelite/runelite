@@ -28,6 +28,7 @@ import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -53,6 +54,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -68,6 +70,7 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 @Slf4j
 @PluginDescriptor(
@@ -190,11 +193,21 @@ public class ShootingStars extends Plugin
 				StarRegion region = TelescopeParser.extractStarRegion(widget.getText());
 				if (region != null)
 				{
+					Duration earliest = TelescopeParser.extractDuration(widget.getText());
 					setupPossibleCrashSites(region);
+
+					String chatMessage = new ChatMessageBuilder()
+						.append("A new shooting star has been scouted, it'll land at ")
+						.append(Color.CYAN, region.getShortName())
+						.append(" in approximately ")
+						.append(Color.CYAN, DurationFormatUtils.formatDurationWords(earliest.toMillis(), true, true))
+						.append(".")
+						.build();
+
 					client.addChatMessage(
 						ChatMessageType.GAMEMESSAGE,
 						"",
-						"A new shooting star has been scouted, it'll land at " + ColorUtil.wrapWithColorTag(region.getShortName(), Color.RED) + " in approximately x minutes.",
+						chatMessage,
 						null
 					);
 				}
