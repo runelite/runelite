@@ -28,7 +28,9 @@ import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.time.Clock;
 import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -179,41 +181,11 @@ public class ShootingStars extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == CHATBOX_MESSAGE_INTERFACE)
+		if (event.getGroupId() != CHATBOX_MESSAGE_INTERFACE)
 		{
-			clientThread.invokeLater(() ->
-			{
-				int world = client.getWorld();
-				Widget widget = client.getWidget(CHATBOX_MESSAGE_INTERFACE, CHATBOX_MESSAGE_COMPONENT);
-
-				if (widget == null)
-				{
-					return;
-				}
-				StarRegion region = TelescopeParser.extractStarRegion(widget.getText());
-				if (region != null)
-				{
-					Duration earliest = TelescopeParser.extractDuration(widget.getText());
-					setupPossibleCrashSites(region);
-
-					String chatMessage = new ChatMessageBuilder()
-						.append("A new shooting star has been scouted, it'll land at ")
-						.append(Color.CYAN, region.getShortName())
-						.append(" in approximately ")
-						.append(Color.CYAN, DurationFormatUtils.formatDurationWords(earliest.toMillis(), true, true))
-						.append(".")
-						.build();
-
-					client.addChatMessage(
-						ChatMessageType.GAMEMESSAGE,
-						"",
-						chatMessage,
-						null
-					);
-				}
-				eventBus.post(new StarScoutEvent());
-			});
+			return;
 		}
+		clientThread.invokeLater(this::parseTelescopeWidget);
 	}
 
 	@Subscribe
@@ -282,6 +254,35 @@ public class ShootingStars extends Plugin
 			resetState();
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cleared current crashed star", null);
 		}
+	}
+
+	private void parseTelescopeWidget()
+	{
+		int world = client.getWorld();
+		Widget widget = client.getWidget(CHATBOX_MESSAGE_INTERFACE, CHATBOX_MESSAGE_COMPONENT);
+
+		if (widget == null)
+		{
+			return;
+		}
+		StarRegion region = TelescopeParser.extractStarRegion(widget.getText());
+		if (region == null)
+		{
+			return;
+		}
+		Duration earliest = TelescopeParser.extractDuration(widget.getText());
+		setupPossibleCrashSites(region);
+
+		String chatMessage = new ChatMessageBuilder()
+			.append("A new shooting star has been scouted, it'll land at ")
+			.append(Color.CYAN, region.getShortName())
+			.append(" in approximately ")
+			.append(Color.CYAN, DurationFormatUtils.formatDurationWords(earliest.toMillis(), true, true))
+			.append(".")
+			.build();
+
+		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", chatMessage, null);
+		eventBus.post(StarScoutEvent.of(world, ZonedDateTime.now(Clock.systemUTC()).plus(earliest), region));
 	}
 
 	/**
