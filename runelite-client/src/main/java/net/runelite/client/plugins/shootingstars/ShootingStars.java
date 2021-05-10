@@ -194,9 +194,6 @@ public class ShootingStars extends Plugin
 				client.setHintArrow(newStar.getWorldPoint());
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "A shooting star has been spotted nearby!", null);
 				eventBus.post(StarCrashEvent.from(crashedStar));
-
-				int distance = client.getLocalPlayer().getWorldLocation().distanceTo(newStar.getWorldPoint());
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Spotted the shooting star from a distance of " + distance + " tiles", null);
 			}
 			else if (starTier != this.crashedStar.getTier() && newStar.isSame(crashedStar))
 			{
