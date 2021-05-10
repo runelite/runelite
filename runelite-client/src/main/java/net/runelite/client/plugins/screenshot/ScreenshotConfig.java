@@ -278,5 +278,8 @@ public interface ScreenshotConfig extends Config
 			position = 1,
 			section = screenshotConfigSection
 	)
-	default boolean separateBossScreenshots() { return false; }
+	default boolean separateBossScreenshots()
+	{
+		return false;
+	}
 }
