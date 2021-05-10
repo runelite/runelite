@@ -192,6 +192,7 @@ public class ShootingStars extends Plugin
 				log.debug("New shooting star spotted {}", newStar);
 				this.crashedStar = newStar;
 				client.setHintArrow(newStar.getWorldPoint());
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "A shooting star has been spotted nearby!", null);
 				eventBus.post(StarCrashEvent.from(crashedStar));
 
 				int distance = client.getLocalPlayer().getWorldLocation().distanceTo(newStar.getWorldPoint());
@@ -276,6 +277,7 @@ public class ShootingStars extends Plugin
 
 			if (worldPoint.distanceTo(localPlayer.getWorldLocation()) < MINIMUM_EVICTION_DISTANCE && !checkForShootingStar(worldPoint))
 			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "No shooting star was found nearby, ignoring this crash site.", null);
 				log.debug("Removing possible crash site as no star was found at {}", worldPoint);
 				worldMapPointManager.remove(possibleSite.getWorldMapPoint());
 				iterator.remove();
