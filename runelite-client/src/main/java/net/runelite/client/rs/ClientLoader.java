@@ -143,7 +143,7 @@ public class ClientLoader implements Supplier<Applet>
 				catch (IOException ex)
 				{
 					// try again with the fallback config and gamepack
-					if (!config.isFallback())
+					if (javConfigUrl.equals(RuneLiteProperties.getJavConfig()) && !config.isFallback())
 					{
 						log.warn("Unable to download game client, attempting to use fallback config", ex);
 						config = downloadFallbackConfig();
@@ -404,7 +404,7 @@ public class ClientLoader implements Supplier<Applet>
 					log.warn("Failed to download gamepack from \"{}\"", url, e);
 
 					// With fallback config do 1 attempt (there are no additional urls to try)
-					if (config.isFallback() || attempt >= NUM_ATTEMPTS)
+					if (!javConfigUrl.equals(RuneLiteProperties.getJavConfig()) || config.isFallback() || attempt >= NUM_ATTEMPTS)
 					{
 						throw e;
 					}
