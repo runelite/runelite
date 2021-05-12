@@ -599,7 +599,7 @@ public class ItemChargePlugin extends Plugin
 				}
 			}
 
-			boolean enabled = type != null && type.getEnabled().apply(config);
+			boolean enabled = type != null && type.getEnabled().test(config);
 
 			if (showInfoboxes && enabled && charges > 0)
 			{

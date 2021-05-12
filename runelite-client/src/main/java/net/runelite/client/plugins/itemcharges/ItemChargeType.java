@@ -25,7 +25,7 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-import java.util.function.Function;
+import java.util.function.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -50,7 +50,8 @@ enum ItemChargeType
 	FRUIT_BASKET(ItemChargeConfig::showBasketCharges),
 	SACK(ItemChargeConfig::showSackCharges),
 	RING_OF_FORGING(ItemChargeConfig::showRingOfForgingCount),
-	POTION(ItemChargeConfig::showPotionDoseCount);
+	POTION(ItemChargeConfig::showPotionDoseCount),
+	GUTHIX_REST(ItemChargeConfig::showGuthixRestDoses);
 
-	private final Function<ItemChargeConfig, Boolean> enabled;
+	private final Predicate<ItemChargeConfig> enabled;
 }

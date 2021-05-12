@@ -31,18 +31,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.widgets.WidgetItem;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.ABYSSAL_BRACELET;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.AMULET_OF_BOUNTY;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.AMULET_OF_CHEMISTRY;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.FRUIT_BASKET;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.POTION;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.SACK;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -64,18 +52,11 @@ class ItemChargeOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
-		if (!displayOverlay())
-		{
-			return;
-		}
-
-		graphics.setFont(FontManager.getRunescapeSmallFont());
-
 		int charges;
 		ItemWithConfig itemWithConfig = ItemWithConfig.findItem(itemId);
 		if (itemWithConfig != null)
 		{
-			if (!itemWithConfig.getType().getEnabled().apply(config))
+			if (!itemWithConfig.getType().getEnabled().test(config))
 			{
 				return;
 			}
@@ -91,18 +72,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			}
 
 			ItemChargeType type = chargeItem.getType();
-			if ((type == TELEPORT && !config.showTeleportCharges())
-				|| (type == FUNGICIDE_SPRAY && !config.showFungicideCharges())
-				|| (type == IMPBOX && !config.showImpCharges())
-				|| (type == WATERCAN && !config.showWateringCanCharges())
-				|| (type == WATERSKIN && !config.showWaterskinCharges())
-				|| (type == BELLOWS && !config.showBellowCharges())
-				|| (type == FRUIT_BASKET && !config.showBasketCharges())
-				|| (type == SACK && !config.showSackCharges())
-				|| (type == ABYSSAL_BRACELET && !config.showAbyssalBraceletCharges())
-				|| (type == AMULET_OF_CHEMISTRY && !config.showAmuletOfChemistryCharges())
-				|| (type == AMULET_OF_BOUNTY && !config.showAmuletOfBountyCharges())
-				|| (type == POTION && !config.showPotionDoseCount()))
+			if (!type.getEnabled().test(config))
 			{
 				return;
 			}
@@ -110,22 +80,13 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			charges = chargeItem.getCharges();
 		}
 
+		graphics.setFont(FontManager.getRunescapeSmallFont());
+
 		final Rectangle bounds = widgetItem.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + 15));
 		textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
 		textComponent.setColor(itemChargePlugin.getColor(charges));
 		textComponent.render(graphics);
-	}
-
-	private boolean displayOverlay()
-	{
-		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
-			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges() || config.showBasketCharges() || config.showSackCharges()
-			|| config.showAbyssalBraceletCharges() || config.showExplorerRingCharges() || config.showRingOfForgingCount()
-			|| config.showAmuletOfChemistryCharges() || config.showAmuletOfBountyCharges() || config.showPotionDoseCount()
-			|| config.showBraceletOfSlaughterCharges() || config.showExpeditiousBraceletCharges();
-
 	}
 }

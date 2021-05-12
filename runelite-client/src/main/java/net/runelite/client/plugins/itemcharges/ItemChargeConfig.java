@@ -403,4 +403,16 @@ public interface ItemChargeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showGuthixRestDoses",
+		name = "Guthix Rest Doses",
+		description = "Show Guthix Rest doses",
+		position = 29,
+		section = chargesSection
+	)
+	default boolean showGuthixRestDoses()
+	{
+		return true;
+	}
 }
