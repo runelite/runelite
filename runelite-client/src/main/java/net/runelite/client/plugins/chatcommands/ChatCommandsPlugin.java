@@ -50,7 +50,6 @@ import net.runelite.api.IconID;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
-import net.runelite.api.Pet;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
@@ -617,9 +616,7 @@ public class ChatCommandsPlugin extends Plugin
 						setPetList(petList);
 					}
 				}
-			}
 			else
-			{
 				collectionLogLoaded = false;
 			}
 		}
