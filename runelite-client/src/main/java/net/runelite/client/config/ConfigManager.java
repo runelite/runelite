@@ -691,15 +691,15 @@ public class ConfigManager
 					ConfigItem i1 = m1.getAnnotation(ConfigItem.class);
 					ConfigItem i2 = m2.getAnnotation(ConfigItem.class);
 
-					if(i1 == null && i2 == null)
+					if (i1 == null && i2 == null)
 					{
 						return 0;
 					}
-					if(i1 == null)
+					if (i1 == null)
 					{
 						return -1;
 					}
-					if(i2 == null)
+					if (i2 == null)
 					{
 						return 1;
 					}
@@ -709,7 +709,7 @@ public class ConfigManager
 					int resetOrder1 = i1.resetOrder();
 					int resetOrder2 = i2.resetOrder();
 
-					if(resetOrder1 != resetOrder2)
+					if (resetOrder1 != resetOrder2)
 					{
 						return resetOrder1 - resetOrder2;
 					}
