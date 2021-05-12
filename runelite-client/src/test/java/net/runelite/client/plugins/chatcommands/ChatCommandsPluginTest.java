@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.collect.Sets;
+import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
@@ -37,7 +38,6 @@ import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
-import net.runelite.api.Pet;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
@@ -52,7 +52,6 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreSkill;
@@ -120,6 +119,9 @@ public class ChatCommandsPluginTest
 
 	@Inject
 	ChatCommandsPlugin chatCommandsPlugin;
+
+	@Inject
+	Gson gson;
 
 	@Before
 	public void before()
@@ -991,7 +993,7 @@ public class ChatCommandsPluginTest
 		Pet[] playerPetList = new Pet[1];
 		playerPetList[0] = Pet.IKKLE_HYDRA;
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", RuneLiteAPI.GSON.toJson(playerPetList));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
 	}
 
 	@Test
@@ -1026,7 +1028,7 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", RuneLiteAPI.GSON.toJson(new Pet[0]));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(new Pet[0]));
 	}
 
 	@Test
@@ -1067,19 +1069,19 @@ public class ChatCommandsPluginTest
 		Pet[] playerPetList = new Pet[1];
 		playerPetList[0] = Pet.IKKLE_HYDRA;
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", RuneLiteAPI.GSON.toJson(playerPetList));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setMessage("New item added to your collection log: Chompy chick");
 		chatMessage.setType(GAMEMESSAGE);
 		when(configManager.getRSProfileConfiguration("chatcommands", "pets",
-			String.class)).thenReturn(RuneLiteAPI.GSON.toJson(playerPetList));
+			String.class)).thenReturn(gson.toJson(playerPetList));
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		playerPetList = new Pet[2];
 		playerPetList[0] = Pet.IKKLE_HYDRA;
 		playerPetList[1] = Pet.CHOMPY_CHICK;
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", RuneLiteAPI.GSON.toJson(playerPetList));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
 	}
 
 	@Test
