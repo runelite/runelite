@@ -56,6 +56,8 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -111,6 +113,9 @@ public class ShootingStars extends Plugin
 
 	@Inject
 	private ShootingStarsOverlay overlay;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private Client client;
@@ -207,8 +212,14 @@ public class ShootingStars extends Plugin
 			log.debug("New shooting star spotted {}", newStar);
 			this.crashedStar = newStar;
 			client.setHintArrow(newStar.getWorldPoint());
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", ColorUtil.wrapWithColorTag("A shooting star has been spotted nearby!", Color.CYAN), null);
 			eventBus.post(StarCrashEvent.from(crashedStar));
+
+			QueuedMessage queuedMessage = QueuedMessage.builder()
+				.type(ChatMessageType.GAMEMESSAGE)
+				.runeLiteFormattedMessage(ColorUtil.wrapWithColorTag("A shooting star has been spotted nearby!", Color.CYAN))
+				.build();
+
+			chatMessageManager.queue(queuedMessage);
 		}
 		else if (starTier != this.crashedStar.getTier() && newStar.isSame(crashedStar))
 		{
@@ -279,7 +290,12 @@ public class ShootingStars extends Plugin
 			.append(".")
 			.build();
 
-		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", chatMessage, null);
+		QueuedMessage queuedMessage = QueuedMessage.builder()
+			.type(ChatMessageType.GAMEMESSAGE)
+			.runeLiteFormattedMessage(chatMessage)
+			.build();
+
+		chatMessageManager.queue(queuedMessage);
 	}
 
 	private void parseTelescopeWidget()
@@ -331,7 +347,12 @@ public class ShootingStars extends Plugin
 			{
 				continue;
 			}
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", ColorUtil.wrapWithColorTag("No shooting star was found, ignoring nearby crash site.", Color.ORANGE), null);
+			QueuedMessage queuedMessage = QueuedMessage.builder()
+				.type(ChatMessageType.GAMEMESSAGE)
+				.runeLiteFormattedMessage(ColorUtil.wrapWithColorTag("No shooting star was found, ignoring nearby crash site.", Color.ORANGE))
+				.build();
+
+			chatMessageManager.queue(queuedMessage);
 			log.debug("Removing possible crash site as no star was found at {}", worldPoint);
 			worldMapPointManager.remove(possibleSite.getWorldMapPoint());
 			iterator.remove();
