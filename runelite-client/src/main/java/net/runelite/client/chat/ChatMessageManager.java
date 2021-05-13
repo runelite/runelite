@@ -130,7 +130,7 @@ public class ChatMessageManager
 			case PUBLICCHAT:
 			case MODCHAT:
 			{
-				String sanitizedUsername = Text.removeTags(chatMessage.getName());
+				String sanitizedUsername = Text.removeTags(chatMessage.getName()).replace('\u00A0', ' ');
 
 				if (client.getLocalPlayer().getName().equals(sanitizedUsername))
 				{
