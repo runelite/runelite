@@ -86,10 +86,36 @@ public interface FpsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "limitFpsLoginScreen",
+			name = "Limit FPS login screen",
+			description = "FPS limit while on the login screen",
+			position = 5
+	)
+	default boolean limitFpsLoginScreen()
+	{
+		return false;
+	}
+
+	@Range(
+			min = 1,
+			max = 50
+	)
+	@ConfigItem(
+			keyName = "maxFpsLoginScreen",
+			name = "Login Screen FPS target",
+			description = "Desired max frames per second for login screen",
+			position = 6
+	)
+	default int maxFpsLoginScreen()
+	{
+		return 50;
+	}
+
+	@ConfigItem(
 		keyName = "drawFps",
 		name = "Draw FPS indicator",
 		description = "Show a number in the corner for the current FPS",
-		position = 5
+		position = 7
 	)
 	default boolean drawFps()
 	{

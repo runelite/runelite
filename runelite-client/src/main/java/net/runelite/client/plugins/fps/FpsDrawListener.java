@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.fps;
 
 import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.FocusChanged;
 
 /**
@@ -64,13 +66,21 @@ public class FpsDrawListener implements Runnable
 		reloadConfig();
 	}
 
+	@Inject
+	private Client client;
+
 	void reloadConfig()
 	{
 		lastMillis = System.currentTimeMillis();
 
-		int fps = config.limitFpsUnfocused() && !isFocused
-			? config.maxFpsUnfocused()
-			: config.maxFps();
+		int fps = config.maxFps();
+
+		if (config.limitFpsUnfocused() && !isFocused) {
+			config.maxFpsUnfocused();
+		} else if (config.limitFpsLoginScreen() &&
+				(client == null || client.getGameState() != GameState.LOGGED_IN)) {
+			fps = config.maxFpsLoginScreen();
+		}
 
 		targetDelay = 1000 / Math.max(1, fps);
 		
@@ -91,7 +101,8 @@ public class FpsDrawListener implements Runnable
 	private boolean isEnforced()
 	{
 		return config.limitFps()
-			|| (config.limitFpsUnfocused() && !isFocused);
+				|| (config.limitFpsUnfocused() && !isFocused)
+				|| (config.limitFpsLoginScreen() && client.getGameState() == GameState.LOGIN_SCREEN);
 	}
 
 	@Override
