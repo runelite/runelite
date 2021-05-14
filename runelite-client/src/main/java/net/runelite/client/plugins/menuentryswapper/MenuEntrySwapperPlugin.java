@@ -322,7 +322,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			"grand exchange", "great kourend", "harmony island", "kharyrll", "lumbridge", "arceuus library",
 			"lunar isle", "marim", "mind altar", "salve graveyard", "seers' village", "senntisten", "troll stronghold",
 			"varrock", "watchtower", "waterbirth island", "weiss", "west ardougne", "yanille"
-		).forEach(location -> swap(location, "portal nexus", "teleport menu", () -> !shiftModifier() && config.swapPortalNexus()));
+		).forEach(location -> swap(location, "portal nexus", "teleport menu", (() -> ((!shiftModifier() && config.swapPortalNexus()) || (!config.swapPortalNexus() && shiftModifier())))));
 
 		swap("shared", "private", config::swapPrivate);
 
