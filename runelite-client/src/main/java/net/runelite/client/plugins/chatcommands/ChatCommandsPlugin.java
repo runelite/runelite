@@ -1730,6 +1730,8 @@ public class ChatCommandsPlugin extends Plugin
 			case "hs5":
 			case "hs 5":
 				return "Hallowed Sepulchre Floor 5";
+			case "zalc":
+				return "Zalcano";
 
 			// Ape Atoll Agility
 			case "aa":
