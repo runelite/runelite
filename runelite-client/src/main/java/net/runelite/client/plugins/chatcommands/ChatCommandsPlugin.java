@@ -1625,6 +1625,9 @@ public class ChatCommandsPlugin extends Plugin
 
 			case "hydra":
 				return "Alchemical Hydra";
+				
+			case "zalc":
+				return "Zalcano";
 
 			// gwd
 			case "sara":
@@ -1730,9 +1733,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "hs5":
 			case "hs 5":
 				return "Hallowed Sepulchre Floor 5";
-			case "zalc":
-				return "Zalcano";
-
+			
 			// Ape Atoll Agility
 			case "aa":
 			case "ape atoll":
