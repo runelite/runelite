@@ -153,6 +153,7 @@ public class PartyPlugin extends Plugin
 
 	private int lastHp, lastPray;
 	private String lastCharacterName = "";
+	private WorldPoint lastLocation;
 	private boolean sendAlert;
 
 	@Override
@@ -204,6 +205,7 @@ public class PartyPlugin extends Plugin
 		wsClient.unregisterMessage(LocationUpdate.class);
 		wsClient.unregisterMessage(CharacterNameUpdate.class);
 		sendAlert = false;
+		lastLocation = null;
 	}
 
 	@Provides
@@ -348,7 +350,15 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		final LocationUpdate locationUpdate = new LocationUpdate(client.getLocalPlayer().getWorldLocation());
+		WorldPoint location = client.getLocalPlayer().getWorldLocation();
+		if (location.equals(lastLocation))
+		{
+			return;
+		}
+
+		lastLocation = location;
+
+		final LocationUpdate locationUpdate = new LocationUpdate(location);
 		locationUpdate.setMemberId(localMember.getMemberId());
 		wsClient.send(locationUpdate);
 	}
@@ -463,6 +473,7 @@ public class PartyPlugin extends Plugin
 	public void onUserSync(final UserSync event)
 	{
 		checkStateChanged(true);
+		lastLocation = null;
 	}
 
 	private void checkStateChanged(boolean forceSend)
