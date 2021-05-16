@@ -33,6 +33,13 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +70,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 {
 	private static final int MAX_USERNAME_LENGTH = 254;
 	private static final int MAX_PIN_LENGTH = 6;
+	private static final File CUSTOM_LOGIN_SCREEN_FOLDER = new File(RuneLite.RUNELITE_DIR, "login-screens");
 	private static final File CUSTOM_LOGIN_SCREEN_FILE = new File(RuneLite.RUNELITE_DIR, "login.png");
 
 	@Inject
@@ -78,6 +86,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	private KeyManager keyManager;
 
 	private String usernameCache;
+
+	private boolean setNewRandomBackground = true; // bool prevents infinite loop in onGameStateChanged
 
 	@Override
 	protected void startUp() throws Exception
@@ -129,9 +139,20 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			applyUsername();
+
+			if ((setNewRandomBackground &&
+				config.loginScreen() == LoginScreenOverride.RANDOM) ||
+				(setNewRandomBackground &&
+					config.loginScreen() == LoginScreenOverride.RANDOM_CUSTOM))
+			{
+				setNewRandomBackground = false;
+				overrideLoginScreen();
+			}
 		}
 		else if (event.getGameState() == GameState.LOGGED_IN)
 		{
+			setNewRandomBackground = true;    // So Background will be changed on logout if RANDOM OR RANDOM_CUSTOM
+
 			String username = "";
 
 			if (client.getPreferences().getRememberedUsername() != null)
@@ -253,31 +274,54 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	{
 		client.setShouldRenderLoginScreenFire(config.showLoginFire());
 
-		if (config.loginScreen() == LoginScreenOverride.OFF)
-		{
-			restoreLoginScreen();
-			return;
-		}
-
 		SpritePixels pixels = null;
-		if (config.loginScreen() == LoginScreenOverride.CUSTOM)
-		{
-			if (CUSTOM_LOGIN_SCREEN_FILE.exists())
-			{
-				try
-				{
-					BufferedImage image;
-					synchronized (ImageIO.class)
-					{
-						image = ImageIO.read(CUSTOM_LOGIN_SCREEN_FILE);
-					}
+		Random random = new Random();
 
-					if (image.getHeight() > Constants.GAME_FIXED_HEIGHT)
+		switch (config.loginScreen())
+		{
+			case OFF:
+				restoreLoginScreen();
+				return;
+			case CUSTOM:
+				if (CUSTOM_LOGIN_SCREEN_FILE.exists())
+				{
+					pixels = getFileSpritePixels(CUSTOM_LOGIN_SCREEN_FILE);
+				}
+				break;
+			case RANDOM:
+				ArrayList<String> loginScreenOverrides = new ArrayList<>();
+
+				for (LoginScreenOverride loginScreenOverride : LoginScreenOverride.values())
+				{
+					if (loginScreenOverride.getFileName() != null)
 					{
-						final double scalar = Constants.GAME_FIXED_HEIGHT / (double) image.getHeight();
-						image = ImageUtil.resizeImage(image, (int) (image.getWidth() * scalar), Constants.GAME_FIXED_HEIGHT);
+						loginScreenOverrides.add(loginScreenOverride.getFileName());
 					}
-					pixels = ImageUtil.getImageSpritePixels(image, client);
+				}
+
+				pixels = getClassPathFileSpritePixels(loginScreenOverrides.get(random.nextInt(loginScreenOverrides.size())));
+				break;
+
+			case RANDOM_CUSTOM:
+
+				try (Stream<Path> paths = Files.walk(CUSTOM_LOGIN_SCREEN_FOLDER.toPath()))
+				{
+					List<File> customScreens = paths.filter(Files::isRegularFile)
+						.filter(p -> p.getFileName().toString().toLowerCase().endsWith(".png") ||
+							p.getFileName().toString().toLowerCase().endsWith(".jpg") ||
+							p.getFileName().toString().toLowerCase().endsWith(".jpeg"))
+						.map(Path::toFile)
+						.collect(Collectors.toList());
+
+					if (customScreens.size() > 0)
+					{
+						File selectedCustomScreen = customScreens.get(random.nextInt(customScreens.size()));
+						pixels = getFileSpritePixels(selectedCustomScreen);
+					}
+					else
+					{
+						log.error("Random Custom selected but no images were found in \"login-screen\" folder");
+					}
 				}
 				catch (IOException e)
 				{
@@ -285,11 +329,9 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 					restoreLoginScreen();
 					return;
 				}
-			}
-		}
-		else
-		{
-			pixels = getFileSpritePixels(config.loginScreen().getFileName());
+				break;
+			default:
+				pixels = getClassPathFileSpritePixels(config.loginScreen().getFileName());
 		}
 
 		if (pixels != null)
@@ -303,7 +345,13 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		client.setLoginScreen(null);
 	}
 
-	private SpritePixels getFileSpritePixels(String file)
+	/**
+	 * Takes the name of an image file and returns a SpritePixels object of the image data
+	 *
+	 * @param file The name of the file
+	 * @return A SpritePixels object containing the image data
+	 */
+	private SpritePixels getClassPathFileSpritePixels(String file)
 	{
 		try
 		{
@@ -317,5 +365,36 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		}
 
 		return null;
+	}
+
+	/**
+	 * Takes an image file and returns a SpritePixels object of the image data
+	 *
+	 * @param file A File object for the image
+	 * @return A SpritePixels object containing the image data
+	 */
+	private SpritePixels getFileSpritePixels(File file)
+	{
+		try
+		{
+			BufferedImage image;
+			synchronized (ImageIO.class)
+			{
+				image = ImageIO.read(file);
+			}
+
+			if (image.getHeight() > Constants.GAME_FIXED_HEIGHT)
+			{
+				final double scalar = Constants.GAME_FIXED_HEIGHT / (double) image.getHeight();
+				image = ImageUtil.resizeImage(image, (int) (image.getWidth() * scalar), Constants.GAME_FIXED_HEIGHT);
+			}
+
+			return ImageUtil.getImageSpritePixels(image, client);
+		}
+		catch (IOException | NullPointerException e)
+		{
+			log.error("error loading custom login screen: " + file, e);
+			return null;
+		}
 	}
 }
