@@ -26,7 +26,8 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,7 +39,7 @@ import net.runelite.api.Skill;
 class XpStateSingle
 {
 	private final Skill skill;
-	private final Map<XpActionType, XpAction> actions = new HashMap<>();
+	private final Map<XpActionType, XpAction> actions = new EnumMap<>(XpActionType.class);
 
 	@Getter
 	@Setter
@@ -68,8 +69,7 @@ class XpStateSingle
 
 	XpAction getXpAction(final XpActionType type)
 	{
-		actions.putIfAbsent(type, new XpAction());
-		return actions.get(type);
+		return actions.computeIfAbsent(type, k -> new XpAction());
 	}
 
 	long getCurrentXp()
@@ -148,9 +148,6 @@ class XpStateSingle
 
 	private long getSecondsTillLevel()
 	{
-		// Java 8 doesn't have good duration / period objects to represent spans of time that can be formatted
-		// Rather than importing another dependency like joda time (which is practically built into java 10)
-		// below will be a custom formatter that handles spans larger than 1 day
 		long seconds = getTimeElapsedInSeconds();
 
 		if (seconds <= 0 || xpGainedSinceReset <= 0)
@@ -172,6 +169,9 @@ class XpStateSingle
 			return "\u221e";
 		}
 
+		// Java 8 doesn't have good duration / period objects to represent spans of time that can be formatted
+		// Rather than importing another dependency like joda time (which is practically built into java 10)
+		// below will be a custom formatter that handles spans larger than 1 day
 		long durationDays = remainingSeconds / (24 * 60 * 60);
 		long durationHours = (remainingSeconds % (24 * 60 * 60)) / (60 * 60);
 		long durationHoursTotal = remainingSeconds / (60 * 60);
@@ -236,7 +236,7 @@ class XpStateSingle
 	{
 		if (startXp == -1)
 		{
-			log.warn("Attempted to update skill state " + skill + " but was not initialized with current xp");
+			log.warn("Attempted to update skill state {} but was not initialized with current xp", skill);
 			return false;
 		}
 
@@ -260,10 +260,7 @@ class XpStateSingle
 		{
 			// populate all values in our action history array with this first value that we see
 			// so the average value of our action history starts out as this first value we see
-			for (int i = 0; i < action.getActionExps().length; i++)
-			{
-				action.getActionExps()[i] = actionExp;
-			}
+			Arrays.fill(action.getActionExps(), actionExp);
 
 			action.setActionsHistoryInitialized(true);
 		}
