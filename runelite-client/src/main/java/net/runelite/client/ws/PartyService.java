@@ -41,6 +41,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
+import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 import net.runelite.http.api.ws.messages.party.Join;
 import net.runelite.http.api.ws.messages.party.Part;
@@ -55,6 +56,7 @@ public class PartyService
 {
 	public static final int PARTY_MAX = 15;
 	private static final int MAX_MESSAGE_LEN = 150;
+	private static final int MAX_USERNAME_LEN = 32; // same as Discord
 
 	private final WSClient wsClient;
 	private final SessionManager sessionManager;
@@ -129,7 +131,7 @@ public class PartyService
 			return;
 		}
 
-		final PartyMember partyMember = new PartyMember(message.getMemberId(), message.getName());
+		final PartyMember partyMember = new PartyMember(message.getMemberId(), cleanUsername(message.getName()));
 		members.add(partyMember);
 
 		final PartyMember localMember = getLocalMember();
@@ -214,5 +216,15 @@ public class PartyService
 	public boolean isPartyOwner()
 	{
 		return localPartyId.equals(partyId);
+	}
+
+	private static String cleanUsername(String username)
+	{
+		String s = Text.removeTags(JAGEX_PRINTABLE_CHAR_MATCHER.retainFrom(username));
+		if (s.length() >= MAX_USERNAME_LEN)
+		{
+			s = s.substring(0, MAX_USERNAME_LEN);
+		}
+		return s;
 	}
 }
