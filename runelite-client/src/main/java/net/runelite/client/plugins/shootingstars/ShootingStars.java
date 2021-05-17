@@ -155,7 +155,7 @@ public class ShootingStars extends Plugin
 	{
 		if (event.getGameState() == GameState.HOPPING)
 		{
-			resetState();
+			resetStarTrackingState();
 		}
 	}
 
@@ -207,36 +207,30 @@ public class ShootingStars extends Plugin
 		}
 		CrashedStar newStar = CrashedStar.of(client.getWorld(), event.getTile().getWorldLocation(), starTier);
 
-		if (crashedStar == null || crashedStar.depleted() || !crashedStar.isSame(newStar))
+		if (crashedStar == null || !crashedStar.equals(newStar))
 		{
-			log.debug("New shooting star spotted {}", newStar);
-			this.crashedStar = newStar;
-			client.setHintArrow(newStar.getWorldPoint());
-			eventBus.post(StarCrashEvent.from(crashedStar));
-
-			QueuedMessage queuedMessage = QueuedMessage.builder()
-				.type(ChatMessageType.GAMEMESSAGE)
-				.runeLiteFormattedMessage(ColorUtil.wrapWithColorTag("A shooting star has been spotted nearby!", Color.CYAN))
-				.build();
-
-			chatMessageManager.queue(queuedMessage);
+			handleNewSpottedStar(newStar);
 		}
-		else if (starTier != this.crashedStar.getTier() && newStar.isSame(crashedStar))
+		else if (newStar.equals(crashedStar) && starTier < this.crashedStar.getTier())
 		{
-			this.crashedStar = this.crashedStar.reduceTier();
-			log.debug("Shooting star degraded to tier {}, world={}, worldPoint={}", crashedStar.getTier(), crashedStar.getWorld(), crashedStar.getWorldPoint());
-			eventBus.post(StarDowngradeEvent.from(crashedStar));
+			handleDowngradedStar(newStar);
 		}
 	}
 
 	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
-		if (isShootingStar(event.getGameObject().getId()) && crashedStar != null && crashedStar.getTier() == CrashedStar.MIN_TIER)
+		int starTier = getStarTier(event.getGameObject().getId());
+
+		if (starTier <= 0)
 		{
-			log.debug("Shooting star depleted, world={}, worldPoint={}", crashedStar.getWorld(), crashedStar.getWorldPoint());
-			eventBus.post(StarDepletionEvent.from(crashedStar));
-			resetState();
+			return;
+		}
+		CrashedStar crashedStar = CrashedStar.of(client.getWorld(), event.getTile().getWorldLocation(), starTier);
+
+		if (crashedStar.getTier() == CrashedStar.MIN_TIER)
+		{
+			handleDepletedStar(crashedStar);
 		}
 	}
 
@@ -260,7 +254,7 @@ public class ShootingStars extends Plugin
 			try
 			{
 				StarRegion starRegion = StarRegion.valueOf(region);
-				resetState();
+				resetStarTrackingState();
 				setupPossibleCrashSites(starRegion);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Star region set to: " + starRegion, null);
 			}
@@ -271,7 +265,7 @@ public class ShootingStars extends Plugin
 		}
 		else if (commandExecuted.getCommand().equals("ssclear"))
 		{
-			resetState();
+			resetStarTrackingState();
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cleared current crashed star", null);
 		}
 	}
@@ -362,7 +356,7 @@ public class ShootingStars extends Plugin
 	/**
 	 * Resets all the plugin state to the default values.
 	 */
-	private void resetState()
+	private void resetStarTrackingState()
 	{
 		crashedStar = null;
 		clearPossibleSites();
@@ -418,6 +412,35 @@ public class ShootingStars extends Plugin
 			}
 		}
 		return false;
+	}
+
+	private void handleNewSpottedStar(CrashedStar star)
+	{
+		log.debug("New shooting star spotted {}", star);
+		this.crashedStar = star;
+
+		QueuedMessage queuedMessage = QueuedMessage.builder()
+			.type(ChatMessageType.GAMEMESSAGE)
+			.runeLiteFormattedMessage(ColorUtil.wrapWithColorTag("A shooting star has been spotted nearby!", Color.CYAN))
+			.build();
+
+		chatMessageManager.queue(queuedMessage);
+		client.setHintArrow(star.getWorldPoint());
+		eventBus.post(StarCrashEvent.from(crashedStar));
+	}
+
+	private void handleDowngradedStar(CrashedStar star)
+	{
+		this.crashedStar = star;
+		log.debug("Shooting star degraded to tier {}, world={}, worldPoint={}", crashedStar.getTier(), crashedStar.getWorld(), crashedStar.getWorldPoint());
+		eventBus.post(StarDowngradeEvent.from(crashedStar));
+	}
+
+	private void handleDepletedStar(CrashedStar star)
+	{
+		log.debug("Shooting star depleted, world={}, worldPoint={}", crashedStar.getWorld(), crashedStar.getWorldPoint());
+		eventBus.post(StarDepletionEvent.from(crashedStar));
+		resetStarTrackingState();
 	}
 
 	private BufferedImage createWorldMapImage()
