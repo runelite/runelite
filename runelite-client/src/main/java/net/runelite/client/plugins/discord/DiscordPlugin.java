@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.discord;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
@@ -246,18 +247,30 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		String url = "https://cdn.discordapp.com/avatars/" + event.getUserId() + "/" + event.getAvatarId() + ".png";
+		CharMatcher matcher = CharMatcher.anyOf("abcdef0123456789");
+		if (!matcher.matchesAllOf(event.getUserId()) || !matcher.matchesAllOf(event.getAvatarId()))
+		{
+			// userid is actually a snowflake, but the matcher is sufficient
+			return;
+		}
+
+		final String url;
 
 		if (Strings.isNullOrEmpty(event.getAvatarId()))
 		{
 			final String[] split = memberById.getName().split("#", 2);
-
-			if (split.length == 2)
+			if (split.length != 2)
 			{
-				int disc = Integer.valueOf(split[1]);
-				int avatarId = disc % 5;
-				url = "https://cdn.discordapp.com/embed/avatars/" + avatarId + ".png";
+				return;
 			}
+
+			int disc = Integer.parseInt(split[1]);
+			int avatarId = disc % 5;
+			url = "https://cdn.discordapp.com/embed/avatars/" + avatarId + ".png";
+		}
+		else
+		{
+			url = "https://cdn.discordapp.com/avatars/" + event.getUserId() + "/" + event.getAvatarId() + ".png";
 		}
 
 		log.debug("Got user avatar {}", url);
