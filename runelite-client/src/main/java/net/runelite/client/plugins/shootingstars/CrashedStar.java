@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.shootingstars;
 
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
 
@@ -34,5 +35,6 @@ public class CrashedStar
 
 	int world;
 	WorldPoint worldPoint;
+	@EqualsAndHashCode.Exclude
 	int tier;
 }
