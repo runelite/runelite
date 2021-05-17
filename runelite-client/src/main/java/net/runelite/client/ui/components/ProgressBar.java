@@ -33,7 +33,6 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import lombok.Setter;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
@@ -42,13 +41,8 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
  */
 public class ProgressBar extends DimmableJPanel
 {
-	@Setter
 	private int maximumValue;
-
-	@Setter
 	private int value;
-
-	@Setter
 	private List<Integer> positions = Collections.emptyList();
 
 	private final JLabel leftLabel = new JShadowedLabel();
@@ -156,5 +150,23 @@ public class ProgressBar extends DimmableJPanel
 		}
 
 		return (value * 100) / maximumValue;
+	}
+
+	public void setMaximumValue(int maximumValue)
+	{
+		this.maximumValue = maximumValue;
+		repaint();
+	}
+
+	public void setValue(int value)
+	{
+		this.value = value;
+		repaint();
+	}
+
+	public void setPositions(List<Integer> positions)
+	{
+		this.positions = positions;
+		repaint();
 	}
 }
