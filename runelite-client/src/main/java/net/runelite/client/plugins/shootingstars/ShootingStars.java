@@ -311,9 +311,9 @@ public class ShootingStars extends Plugin
 	}
 
 	/**
-	 * Returns the shooting star tier for a given locId. Returns -1 if the loc isn't a shooting star.
+	 * Returns the shooting star tier for a given locId (gameObjectId). Returns -1 if the loc isn't a shooting star.
 	 *
-	 * @param locId The locId.
+	 * @param locId The locId (gameObjectId).
 	 * @return The star tier or -1 if the loc isn't a shooting star.
 	 */
 	private int getStarTier(int locId)
@@ -321,6 +321,11 @@ public class ShootingStars extends Plugin
 		return Ints.indexOf(CRASHED_STARS, locId) + 1;
 	}
 
+	/**
+	 * Returns if the given locId (gameObjectId) is a shooting star.
+	 * @param locId The locId (gameObjectId)
+	 * @return If the given locId is a shooting star or not.
+	 */
 	private boolean isShootingStar(int locId)
 	{
 		return getStarTier(locId) > 0;
