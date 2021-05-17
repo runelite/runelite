@@ -36,7 +36,7 @@ public interface FpsConfig extends Config
 		keyName = "limitFps",
 		name = "Limit Global FPS",
 		description = "Global FPS limit in effect regardless of<br>" +
-			"whether window is in focus or not",
+				"whether window is in focus or not",
 		position = 1
 	)
 	default boolean limitFps()
@@ -86,36 +86,21 @@ public interface FpsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "limitFpsLoginScreen",
-			name = "Limit FPS login screen",
-			description = "FPS limit while on the login screen",
-			position = 5
+		keyName = "applyTargetWhenLoading",
+		name = "Limit FPS when loading",
+		description = "FPS limit while runelite is starting up",
+		position = 5
 	)
-	default boolean limitFpsLoginScreen()
+	default boolean applyTargetWhenLoading()
 	{
 		return false;
-	}
-
-	@Range(
-			min = 1,
-			max = 50
-	)
-	@ConfigItem(
-			keyName = "maxFpsLoginScreen",
-			name = "Login Screen FPS target",
-			description = "Desired max frames per second for login screen",
-			position = 6
-	)
-	default int maxFpsLoginScreen()
-	{
-		return 50;
 	}
 
 	@ConfigItem(
 		keyName = "drawFps",
 		name = "Draw FPS indicator",
 		description = "Show a number in the corner for the current FPS",
-		position = 7
+		position = 6
 	)
 	default boolean drawFps()
 	{

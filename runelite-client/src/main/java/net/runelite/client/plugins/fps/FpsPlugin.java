@@ -26,14 +26,25 @@ package net.runelite.client.plugins.fps;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayManager;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+
+import static java.awt.event.KeyEvent.VK_ENTER;
 
 /**
  * FPS Control has two primary areas, this plugin class just keeps those areas up to date and handles setup / teardown.
@@ -51,7 +62,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"frames", "framerate", "limit", "overlay"},
 	enabledByDefault = false
 )
-public class FpsPlugin extends Plugin
+public class FpsPlugin extends Plugin implements KeyListener, MouseListener
 {
 	static final String CONFIG_GROUP_KEY = "fpscontrol";
 
@@ -66,6 +77,15 @@ public class FpsPlugin extends Plugin
 
 	@Inject
 	private DrawManager drawManager;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
+	private Client client;
 
 	@Provides
 	FpsConfig provideConfig(ConfigManager configManager)
@@ -89,12 +109,21 @@ public class FpsPlugin extends Plugin
 		overlay.onFocusChanged(event);
 	}
 
+	private void setClientInteracted()
+	{
+		drawListener.setClientInteracted();
+		keyManager.unregisterKeyListener(this);
+		mouseManager.registerMouseListener(this);
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
 		drawManager.registerEveryFrameListener(drawListener);
 		drawListener.reloadConfig();
+		keyManager.registerKeyListener(this);
+		mouseManager.registerMouseListener(this);
 	}
 
 	@Override
@@ -102,5 +131,73 @@ public class FpsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		drawManager.unregisterEveryFrameListener(drawListener);
+		keyManager.unregisterKeyListener(this);
+		mouseManager.registerMouseListener(this);
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (client.getGameState() != GameState.LOGIN_SCREEN || e.getKeyCode() != VK_ENTER)
+		{
+			return;
+		}
+		setClientInteracted();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+
+	}
+
+	@Override
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
+	{
+
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
+	{
+		setClientInteracted();
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseEntered(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseExited(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseMoved(MouseEvent mouseEvent)
+	{
+		return mouseEvent;
 	}
 }
