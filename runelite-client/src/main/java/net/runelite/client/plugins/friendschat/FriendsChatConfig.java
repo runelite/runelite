@@ -140,17 +140,6 @@ public interface FriendsChatConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "clanTabChat",
-		name = "Tab Chat",
-		description = "Message friends chat without appending '/' when the friends chat tab is selected.",
-		position = 9
-	)
-	default boolean friendsChatTabChat()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "confirmKicks",
 		name = "Confirm Kicks",
 		description = "Shows a chat prompt to confirm kicks",

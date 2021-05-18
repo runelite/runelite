@@ -542,15 +542,6 @@ public class FriendsChatPlugin extends Plugin
 	{
 		switch (scriptCallbackEvent.getEventName())
 		{
-			case "friendsChatInput":
-			{
-				final int[] intStack = client.getIntStack();
-				final int size = client.getIntStackSize();
-				// If the user accidentally adds a / when the config and the friends chat chat tab is active, handle it like a normal message
-				boolean alterDispatch = config.friendsChatTabChat() && !client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).startsWith("/");
-				intStack[size - 1] = alterDispatch ? 1 : 0;
-				break;
-			}
 			case "confirmFriendsChatKick":
 			{
 				if (!config.confirmKicks() || kickConfirmed)
