@@ -251,10 +251,8 @@ public class WidgetID
 
 	static class FriendsChat
 	{
-		static final int TITLE = 1;
-		static final int NAME = 4;
-		static final int OWNER = 6;
-		static final int LIST = 16;
+		static final int OWNER = 2;
+		static final int LIST = 12;
 	}
 
 	static class Bank
@@ -480,23 +478,23 @@ public class WidgetID
 		static final int PARENT = 0;
 		static final int BUTTONS = 1;
 		static final int TAB_ALL = 4;
-		static final int TAB_GAME = 8;
-		static final int TAB_PUBLIC = 13;
-		static final int TAB_PRIVATE = 18;
+		static final int TAB_GAME = 7;
+		static final int TAB_PUBLIC = 11;
+		static final int TAB_PRIVATE = 19;
 		static final int TAB_CLAN = 23;
-		static final int TAB_TRADE = 28;
-		static final int REPORT_TEXT = 36;
-		static final int FRAME = 37;
-		static final int TRANSPARENT_BACKGROUND = 38;
-		static final int CONTAINER = 40;
-		static final int TITLE = 44;
-		static final int FULL_INPUT = 45;
-		static final int GE_SEARCH_RESULTS = 53;
-		static final int MESSAGES = 56;
-		static final int TRANSPARENT_BACKGROUND_LINES = 57;
-		static final int INPUT = 58;
-		static final int MESSAGE_LINES = 59;
-		static final int FIRST_MESSAGE = 60;
+		static final int TAB_TRADE = 27;
+		static final int REPORT_TEXT = 33;
+		static final int FRAME = 34;
+		static final int TRANSPARENT_BACKGROUND = 35;
+		static final int CONTAINER = 37;
+		static final int TITLE = 41;
+		static final int FULL_INPUT = 42;
+		static final int GE_SEARCH_RESULTS = 50;
+		static final int MESSAGES = 53;
+		static final int TRANSPARENT_BACKGROUND_LINES = 54;
+		static final int INPUT = 55;
+		static final int MESSAGE_LINES = 56;
+		static final int FIRST_MESSAGE = 57;
 	}
 
 	static class Prayer
