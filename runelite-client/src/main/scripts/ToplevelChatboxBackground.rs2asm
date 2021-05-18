@@ -45,7 +45,7 @@ LABEL26:
    invoke                 183
 LABEL31:
    iload                  0
-   iconst                 10616869
+   iconst                 10616866
    if_sethide            
    get_varbit             6374
    iconst                 1
@@ -61,13 +61,13 @@ LABEL42:
    iconst                 0
    iconst                 2
    iconst                 0
-   iconst                 10616891
+   iconst                 10616888
    if_setposition        
    iconst                 -1
    iconst                 0
    iconst                 0
    iconst                 0
-   iconst                 10617392
+   iconst                 10617389
    if_setposition        
    jump                   LABEL67
 LABEL55:
@@ -75,18 +75,18 @@ LABEL55:
    iconst                 0
    iconst                 0
    iconst                 0
-   iconst                 10616891
+   iconst                 10616888
    if_setposition        
    iconst                 0
    iconst                 0
    iconst                 2
    iconst                 0
-   iconst                 10617392
+   iconst                 10617389
    if_setposition        
 LABEL67:
-   iconst                 10616870
+   iconst                 10616867
    cc_deleteall          
-   iconst                 10616889
+   iconst                 10616886
    cc_deleteall          
    iconst                 0
    istore                 1
@@ -105,13 +105,13 @@ LABEL81:
    iconst                 2155
    get_varc_int           223
    sconst                 "i"
-   iconst                 10616870
+   iconst                 10616867
    if_setontimer         
    jump                   LABEL93
 LABEL89:
    iconst                 -1
    sconst                 ""
-   iconst                 10616870
+   iconst                 10616867
    if_setontimer         
 LABEL93:
    invoke                 921
@@ -120,14 +120,14 @@ LABEL93:
    jump                   LABEL163
 LABEL97:
    iconst                 1
-   iconst                 10616870
+   iconst                 10616867
    if_setnoclickthrough  
    iload                  1
    iconst                 0
    if_icmpeq              LABEL104
    jump                   LABEL142
 LABEL104:
-   iconst                 10616870
+   iconst                 10616867
    iconst                 5
    iconst                 0
    cc_create             
@@ -147,7 +147,7 @@ LABEL104:
    cc_settiling          
    iconst                 0
    cc_settrans           
-   iconst                 10616889
+   iconst                 10616886
    iconst                 3
    iconst                 0
    cc_create             
@@ -166,7 +166,7 @@ LABEL104:
    iconst                 1
    cc_setfill            
 LABEL142:
-   iconst                 10617392
+   iconst                 10617389
    iconst                 792
    iconst                 789
    iconst                 790
@@ -203,15 +203,15 @@ LABEL163:
    jump                   LABEL177
 LABEL173:
    iconst                 1
-   iconst                 10616870
+   iconst                 10616867
    if_setnoclickthrough  
    jump                   LABEL183
 LABEL177:
    iconst                 0
-   iconst                 10616870
+   iconst                 10616867
    if_setnoclickthrough  
    iconst                 1
-   iconst                 10616870
+   iconst                 10616867
    2006                  
 LABEL183:
    iconst                 0
@@ -231,7 +231,7 @@ LABEL193:
    if_icmplt              LABEL197
    jump                   LABEL272
 LABEL197:
-   iconst                 10616870
+   iconst                 10616867
    iconst                 3
    iload                  4
    cc_create             
@@ -251,13 +251,13 @@ LABEL197:
    cc_setfill            
    iconst                 254
    cc_settrans           
-   iconst                 10616889
+   iconst                 10616886
    iconst                 3
    iload                  4
    iconst                 2
    multiply              
    cc_create             
-   iconst                 10616889
+   iconst                 10616886
    iconst                 3
    iload                  4
    iconst                 2
@@ -311,7 +311,7 @@ LABEL272:
    runelite_callback     
    jump                   LABEL339
 LABEL273:
-   iconst                 10616870
+   iconst                 10616867
    iconst                 3
    iload                  4
    cc_create             
@@ -331,13 +331,13 @@ LABEL273:
    cc_setfill            
    iconst                 225
    cc_settrans           
-   iconst                 10616889
+   iconst                 10616886
    iconst                 3
    iload                  4
    iconst                 2
    multiply              
    cc_create             
-   iconst                 10616889
+   iconst                 10616886
    iconst                 3
    iload                  4
    iconst                 2
@@ -378,7 +378,7 @@ LABEL273:
    iconst                 130
    cc_settrans            1
 LABEL339:
-   iconst                 10617392
+   iconst                 10617389
    iconst                 1190
    iconst                 1187
    iconst                 1188

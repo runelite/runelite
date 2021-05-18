@@ -40,12 +40,26 @@ LABEL16:
    join_string            5
    mes                   
 LABEL23:
-   jump                   LABEL27
+   jump                   LABEL39
 LABEL24:
+   iload                  0
+   iconst                 3
+   if_icmpeq              LABEL31
+   iload                  0
+   iconst                 4
+   if_icmpeq              LABEL31
+   jump                   LABEL36
+LABEL31:
+   sload                  0
+   iload                  0
+   iconst                 0
+   5010                  
+   jump                   LABEL39
+LABEL36:
    sload                  0
    iload                  0
    chat_sendpublic       
-LABEL27:
+LABEL39:
    clientclock           
    set_varc_int           61
    return                

@@ -25,7 +25,7 @@ LABEL10:
    iload                  1
    iconst                 0
    if_icmpgt              LABEL21
-   jump                   LABEL187
+   jump                   LABEL255
 LABEL21:
    get_varc_int           5
    switch                
@@ -36,18 +36,22 @@ LABEL21:
       5: LABEL26
       6: LABEL47
       7: LABEL110
-      8: LABEL114
-      9: LABEL120
-      10: LABEL123
-      11: LABEL179
-      12: LABEL139
-      13: LABEL157
-      15: LABEL120
-      16: LABEL184
-   jump                   LABEL186
+      8: LABEL116
+      9: LABEL124
+      10: LABEL191
+      11: LABEL247
+      12: LABEL207
+      13: LABEL225
+      15: LABEL124
+      16: LABEL252
+      18: LABEL247
+      19: LABEL110
+      20: LABEL124
+      21: LABEL124
+   jump                   LABEL254
 LABEL24:
    return                
-   jump                   LABEL186
+   jump                   LABEL254
 LABEL26:
    ignore_count          
    iconst                 0
@@ -75,7 +79,7 @@ LABEL44:
    get_varc_string        359
    ignore_del            
 LABEL46:
-   jump                   LABEL186
+   jump                   LABEL254
 LABEL47:
    friend_count          
    iconst                 0
@@ -159,77 +163,149 @@ LABEL107:
    clientclock           
    set_varc_int           61
 LABEL109:
-   jump                   LABEL186
+   jump                   LABEL254
 LABEL110:
    get_varc_string        359
    invoke                 212
    resume_countdialog    
-   jump                   LABEL186
-LABEL114:
+   iconst                 0
+   set_varc_int           5
+   jump                   LABEL254
+LABEL116:
    get_varc_string        359
    removetags            
    set_varc_string        361
    get_varc_string        359
    resume_namedialog     
+   iconst                 0
+   set_varc_int           5
+   jump                   LABEL254
+LABEL124:
+   get_varc_int           5
+   iconst                 20
+   if_icmpeq              LABEL128
+   jump                   LABEL132
+LABEL128:
+   get_varc_string        359
+   removetags            
+   invoke                 4394
    jump                   LABEL186
-LABEL120:
+LABEL132:
+   get_varc_int           5
+   iconst                 21
+   if_icmpeq              LABEL136
+   jump                   LABEL186
+LABEL136:
+   get_varc_string        359
+   sconst                 "jagex"
+   sconst                 " "
+   invoke                 4191
+   set_varc_string        359
+   get_varc_string        359
+   sconst                 "jaqex"
+   sconst                 " "
+   invoke                 4191
+   set_varc_string        359
+   get_varc_string        359
+   sconst                 "jagx"
+   sconst                 " "
+   invoke                 4191
+   set_varc_string        359
+   get_varc_string        359
+   sconst                 "jgex"
+   sconst                 " "
+   invoke                 4191
+   set_varc_string        359
+   get_varc_string        359
+   sconst                 "jgx"
+   sconst                 " "
+   invoke                 4191
+   set_varc_string        359
+   get_varc_string        359
+   sconst                 "admin"
+   sconst                 " "
+   invoke                 4191
+   set_varc_string        359
+   get_varc_string        359
+   sconst                 "staff"
+   sconst                 " "
+   invoke                 4191
+   set_varc_string        359
+   get_varc_string        359
+   sconst                 "-"
+   sconst                 " "
+   invoke                 4191
+   set_varc_string        359
+   get_varc_string        359
+   sconst                 "_"
+   sconst                 " "
+   invoke                 4191
+   set_varc_string        359
+   get_varc_string        359
+   sconst                 "  "
+   sconst                 " "
+   invoke                 4191
+   set_varc_string        359
+LABEL186:
    get_varc_string        359
    resume_stringdialog   
-   jump                   LABEL186
-LABEL123:
+   iconst                 0
+   set_varc_int           5
+   jump                   LABEL254
+LABEL191:
    get_varbit             8119
    iconst                 0
-   if_icmpeq              LABEL127
-   jump                   LABEL133
-LABEL127:
+   if_icmpeq              LABEL195
+   jump                   LABEL201
+LABEL195:
    iconst                 1
    iconst                 1
    invoke                 299
    sconst                 "You must set a name before you can chat."
    mes                   
    return                
-LABEL133:
+LABEL201:
    get_varc_string        359
    removetags            
    set_varc_string        362
    get_varc_string        359
    clan_joinchat         
-   jump                   LABEL186
-LABEL139:
+   jump                   LABEL254
+LABEL207:
    iload                  1
    iconst                 10
-   if_icmpgt              LABEL143
-   jump                   LABEL149
-LABEL143:
+   if_icmpgt              LABEL211
+   jump                   LABEL217
+LABEL211:
    get_varc_string        359
    iconst                 0
    iconst                 9
    substring             
    sstore                 0
-   jump                   LABEL151
-LABEL149:
+   jump                   LABEL219
+LABEL217:
    get_varc_string        359
    sstore                 0
-LABEL151:
+LABEL219:
    sload                  0
    lowercase             
    chat_setmessagefilter 
    invoke                 553
    invoke                 84
-   jump                   LABEL186
-LABEL157:
+   jump                   LABEL254
+LABEL225:
    get_varbit             8119
    iconst                 0
-   if_icmpeq              LABEL161
-   jump                   LABEL167
-LABEL161:
+   if_icmpeq              LABEL229
+   jump                   LABEL235
+LABEL229:
    iconst                 1
    iconst                 1
    invoke                 299
    sconst                 "You must set a name before you can chat."
    mes                   
    return                
-LABEL167:
+LABEL235:
    get_varc_string        359
    iconst                 0
    set_varc_int           62
@@ -239,35 +315,37 @@ LABEL167:
    iconst                 -2147483645
    iconst                 1
    sconst                 "I1"
-   iconst                 10616845
+   iconst                 10616843
    if_setontimer         
-   jump                   LABEL186
-LABEL179:
+   jump                   LABEL254
+LABEL247:
    iconst                 0
    iconst                 1
    invoke                 299
    return                
-   jump                   LABEL186
-LABEL184:
+   jump                   LABEL254
+LABEL252:
    get_varc_string        359
    invoke                 2061
-LABEL186:
-   jump                   LABEL193
-LABEL187:
+LABEL254:
+   jump                   LABEL261
+LABEL255:
    get_varc_int           5
    switch                
-      16: LABEL192
-      7: LABEL190
-      8: LABEL190
-      9: LABEL190
-      15: LABEL190
-   jump                   LABEL193
-LABEL190:
+      16: LABEL260
+      20: LABEL258
+      21: LABEL258
+      7: LABEL258
+      8: LABEL258
+      9: LABEL258
+      15: LABEL258
+   jump                   LABEL261
+LABEL258:
    return                
-   jump                   LABEL193
-LABEL192:
+   jump                   LABEL261
+LABEL260:
    return                
-LABEL193:
+LABEL261:
    iconst                 1
    iconst                 1
    invoke                 299

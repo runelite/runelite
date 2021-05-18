@@ -12,23 +12,23 @@
    jump                   CONFIRM_KICK  ; Jump to our new label instead
 LABEL4:
    sconst                 "You can't kick players from your team during Wilderness Wars."
-   mes
-   return
+   mes                   
+   return                
 LABEL7:
-   sconst                 "-Attempting to kick player from friends chat..."
+   sconst                 "-Attempting to kick player from chat-channel..."
    iconst                 2
    invoke                 96
    sload                  0
-   clan_kickuser
+   clan_kickuser         
    jump                   LABEL73
 LABEL73:
-   return
+   return                
 CONFIRM_KICK:
    sload                  0             ; Username we are trying to kick
    iconst                 0             ; Modified if we are confirming the kick inside the plugin
    sconst                 "confirmFriendsChatKick"
-   runelite_callback
-   pop_string                           ; Pop username
+   runelite_callback     
+   pop_string            ; Pop username
    iconst                 0             ; Compare against zero
    if_icmpgt              LABEL73       ; Early return for chatbox panel confirmation
    jump                   LABEL7
