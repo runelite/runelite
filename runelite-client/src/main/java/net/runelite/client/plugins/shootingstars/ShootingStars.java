@@ -210,10 +210,12 @@ public class ShootingStars extends Plugin
 		if (crashedStar == null || !crashedStar.equals(newStar))
 		{
 			handleNewSpottedStar(newStar);
+			this.crashedStar = newStar;
 		}
 		else if (newStar.equals(crashedStar) && starTier < this.crashedStar.getTier())
 		{
 			handleDowngradedStar(newStar);
+			this.crashedStar = newStar;
 		}
 	}
 
@@ -422,8 +424,6 @@ public class ShootingStars extends Plugin
 	private void handleNewSpottedStar(CrashedStar star)
 	{
 		log.debug("New shooting star spotted {}", star);
-		this.crashedStar = star;
-
 		QueuedMessage queuedMessage = QueuedMessage.builder()
 			.type(ChatMessageType.GAMEMESSAGE)
 			.runeLiteFormattedMessage(ColorUtil.wrapWithColorTag("A shooting star has been spotted nearby!", Color.CYAN))
@@ -431,20 +431,19 @@ public class ShootingStars extends Plugin
 
 		chatMessageManager.queue(queuedMessage);
 		client.setHintArrow(star.getWorldPoint());
-		eventBus.post(StarCrashEvent.from(crashedStar));
+		eventBus.post(StarCrashEvent.from(star));
 	}
 
 	private void handleDowngradedStar(CrashedStar star)
 	{
-		this.crashedStar = star;
-		log.debug("Shooting star degraded to tier {}, world={}, worldPoint={}", crashedStar.getTier(), crashedStar.getWorld(), crashedStar.getWorldPoint());
-		eventBus.post(StarDowngradeEvent.from(crashedStar));
+		log.debug("Shooting star degraded to tier {}, world={}, worldPoint={}", star.getTier(), star.getWorld(), star.getWorldPoint());
+		eventBus.post(StarDowngradeEvent.from(star));
 	}
 
 	private void handleDepletedStar(CrashedStar star)
 	{
-		log.debug("Shooting star depleted, world={}, worldPoint={}", crashedStar.getWorld(), crashedStar.getWorldPoint());
-		eventBus.post(StarDepletionEvent.from(crashedStar));
+		log.debug("Shooting star depleted, world={}, worldPoint={}", star.getWorld(), star.getWorldPoint());
+		eventBus.post(StarDepletionEvent.from(star));
 		resetStarTrackingState();
 	}
 
