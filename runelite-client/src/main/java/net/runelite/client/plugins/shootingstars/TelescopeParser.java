@@ -34,8 +34,8 @@ public class TelescopeParser
 {
 	private static final Pattern TIME_PATTERN = Pattern.compile("(\\d+) ?(hours?|minutes?)?");
 
-	private static final String START_OF_TIME = "in the next";
-	private static final String TIME_SEPARATOR = "to";
+	private static final String START_OF_TIME = "in the next ";
+	private static final String TIME_SEPARATOR = " to ";
 
 	public static StarRegion extractStarRegion(String text)
 	{
@@ -53,10 +53,18 @@ public class TelescopeParser
 	public static Duration extractDuration(String text)
 	{
 		text = text.replace("<br>", " ");
-		int start = text.lastIndexOf(START_OF_TIME);
-		int separator = text.lastIndexOf(TIME_SEPARATOR);
+		int start = text.indexOf(START_OF_TIME) + START_OF_TIME.length();
+		int separator = text.indexOf(TIME_SEPARATOR);
 
-		return parseDuration(text.substring(start, separator).trim());
+		String earliest = text.substring(start, separator).trim();
+		String latest = text.substring(separator + TIME_SEPARATOR.length()).trim();
+
+		Duration earliestDuration = parseDuration(earliest);
+		Duration latestDuration = parseDuration(latest);
+
+		Duration delta = latestDuration.minus(earliestDuration);
+
+		return earliestDuration.plus(delta.dividedBy(2));
 	}
 
 	private static Duration parseDuration(String text)
