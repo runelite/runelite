@@ -54,7 +54,7 @@ public class TelescopeParser
 	{
 		text = text.replace("<br>", " ");
 		int start = text.indexOf(START_OF_TIME) + START_OF_TIME.length();
-		int separator = text.indexOf(TIME_SEPARATOR);
+		int separator = text.lastIndexOf(TIME_SEPARATOR);
 
 		String earliest = text.substring(start, separator).trim();
 		String latest = text.substring(separator + TIME_SEPARATOR.length()).trim();
