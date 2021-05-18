@@ -284,27 +284,16 @@ public class FriendsChatPlugin extends Plugin
 			return;
 		}
 
-		Widget chatTitleWidget = client.getWidget(WidgetInfo.FRIENDS_CHAT_TITLE);
-		if (chatTitleWidget != null)
+		Widget chatList = client.getWidget(WidgetInfo.FRIENDS_CHAT_LIST);
+		if (chatList != null)
 		{
-			Widget chatList = client.getWidget(WidgetInfo.FRIENDS_CHAT_LIST);
 			Widget owner = client.getWidget(WidgetInfo.FRIENDS_CHAT_OWNER);
 			FriendsChatManager friendsChatManager = client.getFriendsChatManager();
-			if (friendsChatManager != null && friendsChatManager.getCount() > 0)
+			if ((friendsChatManager == null || friendsChatManager.getCount() <= 0)
+				&& chatList.getChildren() == null && !Strings.isNullOrEmpty(owner.getText())
+				&& config.recentChats())
 			{
-				chatTitleWidget.setText(TITLE + " (" + friendsChatManager.getCount() + "/100)");
-			}
-			else if (chatList.getChildren() == null && !Strings.isNullOrEmpty(owner.getText()))
-			{
-				if (config.recentChats())
-				{
-					chatTitleWidget.setText(RECENT_TITLE);
-					loadFriendsChats();
-				}
-				else
-				{
-					chatTitleWidget.setText(TITLE);
-				}
+				loadFriendsChats();
 			}
 		}
 
@@ -605,7 +594,6 @@ public class FriendsChatPlugin extends Plugin
 	private void resetChats()
 	{
 		Widget chatList = client.getWidget(WidgetInfo.FRIENDS_CHAT_LIST);
-		Widget chatTitleWidget = client.getWidget(WidgetInfo.FRIENDS_CHAT_TITLE);
 
 		if (chatList == null)
 		{
@@ -617,8 +605,6 @@ public class FriendsChatPlugin extends Plugin
 		{
 			chatList.setChildren(null);
 		}
-
-		chatTitleWidget.setText(TITLE);
 	}
 
 	private void loadFriendsChats()
