@@ -96,8 +96,6 @@ import net.runelite.client.util.Text;
 public class FriendsChatPlugin extends Plugin
 {
 	private static final int MAX_CHATS = 10;
-	private static final String TITLE = "FC";
-	private static final String RECENT_TITLE = "Recent FCs";
 	private static final int MESSAGE_DELAY = 10;
 
 	@Inject
