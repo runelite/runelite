@@ -487,6 +487,11 @@ public interface Client extends GameEngine
 	void setDraggedOnWidget(Widget widget);
 
 	/**
+	 * Gets Interface ID of the root widget
+	 */
+	int getTopLevelInterfaceId();
+
+	/**
 	 * Gets the root widgets.
 	 *
 	 * @return the root widgets
