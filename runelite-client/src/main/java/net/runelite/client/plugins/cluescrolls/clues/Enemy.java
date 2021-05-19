@@ -42,7 +42,7 @@ public enum Enemy
 	//appears for hard clue coordinate steps not in the wilderness
 	SARADOMIN_WIZARD("Saradomin Wizard"),
 	//appears for elite clue coordinate steps all areas
-	ARMADYLIAN_OR_BANDOSIAN_GUARD("Armadylian OR Bandosian Guard"),
+	ARMADYLEAN_OR_BANDOSIAN_GUARD("Armadylean OR Bandosian Guard"),
 	//appears for master clue coordinate and hot cold clues when single-way combat
 	BRASSICAN_MAGE("Brassican Mage"),
 	//appears for master clue coordinate and hot cold clues when multi-way combat
