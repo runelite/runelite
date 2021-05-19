@@ -672,4 +672,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "swapCropProtection",
+		name = "Crop Protection",
+		description = "Swap Pick/Remove with Inspect on crop protectors in flower patches",
+		section = objectSection
+	)
+	default boolean swapCropProtection()
+	{
+		return false;
+	}
 }

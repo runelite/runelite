@@ -328,6 +328,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("pick", "pick-lots", config::swapPick);
 
+		swap("pick", "marigold", "inspect", config::swapCropProtection);
+		swap("pick", "rosemary", "inspect", config::swapCropProtection);
+		swap("remove", "scarecrow", "inspect", config::swapCropProtection);
+		swap("pick", "nasturtium", "inspect", config::swapCropProtection);
+		swap("pick", "white lily", "inspect", config::swapCropProtection);
+
 		swap("view offer", "abort offer", () -> shiftModifier() && config.swapGEAbort());
 
 		Arrays.asList(
