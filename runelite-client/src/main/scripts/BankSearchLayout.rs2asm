@@ -794,7 +794,7 @@ LABEL703:
    sconst                 "setSearchBankInputTextFound"  ; load event name
    runelite_callback     ; invoke callback
    pop_int               ; pop number of matches
-   iconst                 10616876
+   iconst                 10616873
    if_settext            
 LABEL710:
    jump                   LABEL725
@@ -814,7 +814,7 @@ LABEL722:
    sconst                 "Show items whose names contain the following text:"
    sconst                 "setSearchBankInputText"  ; load event name
    runelite_callback     ; invoke callback
-   iconst                 10616876
+   iconst                 10616873
    if_settext            
 LABEL725:
    jump                   LABEL729

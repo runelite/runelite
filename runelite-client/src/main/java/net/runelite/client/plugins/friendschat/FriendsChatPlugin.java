@@ -96,8 +96,6 @@ import net.runelite.client.util.Text;
 public class FriendsChatPlugin extends Plugin
 {
 	private static final int MAX_CHATS = 10;
-	private static final String TITLE = "FC";
-	private static final String RECENT_TITLE = "Recent FCs";
 	private static final int MESSAGE_DELAY = 10;
 
 	@Inject
@@ -284,27 +282,16 @@ public class FriendsChatPlugin extends Plugin
 			return;
 		}
 
-		Widget chatTitleWidget = client.getWidget(WidgetInfo.FRIENDS_CHAT_TITLE);
-		if (chatTitleWidget != null)
+		Widget chatList = client.getWidget(WidgetInfo.FRIENDS_CHAT_LIST);
+		if (chatList != null)
 		{
-			Widget chatList = client.getWidget(WidgetInfo.FRIENDS_CHAT_LIST);
 			Widget owner = client.getWidget(WidgetInfo.FRIENDS_CHAT_OWNER);
 			FriendsChatManager friendsChatManager = client.getFriendsChatManager();
-			if (friendsChatManager != null && friendsChatManager.getCount() > 0)
+			if ((friendsChatManager == null || friendsChatManager.getCount() <= 0)
+				&& chatList.getChildren() == null && !Strings.isNullOrEmpty(owner.getText())
+				&& config.recentChats())
 			{
-				chatTitleWidget.setText(TITLE + " (" + friendsChatManager.getCount() + "/100)");
-			}
-			else if (chatList.getChildren() == null && !Strings.isNullOrEmpty(owner.getText()))
-			{
-				if (config.recentChats())
-				{
-					chatTitleWidget.setText(RECENT_TITLE);
-					loadFriendsChats();
-				}
-				else
-				{
-					chatTitleWidget.setText(TITLE);
-				}
+				loadFriendsChats();
 			}
 		}
 
@@ -542,15 +529,6 @@ public class FriendsChatPlugin extends Plugin
 	{
 		switch (scriptCallbackEvent.getEventName())
 		{
-			case "friendsChatInput":
-			{
-				final int[] intStack = client.getIntStack();
-				final int size = client.getIntStackSize();
-				// If the user accidentally adds a / when the config and the friends chat chat tab is active, handle it like a normal message
-				boolean alterDispatch = config.friendsChatTabChat() && !client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).startsWith("/");
-				intStack[size - 1] = alterDispatch ? 1 : 0;
-				break;
-			}
 			case "confirmFriendsChatKick":
 			{
 				if (!config.confirmKicks() || kickConfirmed)
@@ -614,7 +592,6 @@ public class FriendsChatPlugin extends Plugin
 	private void resetChats()
 	{
 		Widget chatList = client.getWidget(WidgetInfo.FRIENDS_CHAT_LIST);
-		Widget chatTitleWidget = client.getWidget(WidgetInfo.FRIENDS_CHAT_TITLE);
 
 		if (chatList == null)
 		{
@@ -626,8 +603,6 @@ public class FriendsChatPlugin extends Plugin
 		{
 			chatList.setChildren(null);
 		}
-
-		chatTitleWidget.setText(TITLE);
 	}
 
 	private void loadFriendsChats()
