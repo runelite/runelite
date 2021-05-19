@@ -1570,66 +1570,48 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		switch (boss.toLowerCase())
 		{
+			// Bosses
+			// Barrows
+			case "barrows":
+				return "Barrows Chests";
+
+			// Corporeal Beast
 			case "corp":
 				return "Corporeal Beast";
 
-			case "jad":
-			case "tzhaar fight cave":
-				return "TzTok-Jad";
+			// Dagannoth Kings
+			case "supreme":
+				return "Dagannoth Supreme";
+			case "rex":
+				return "Dagannoth Rex";
+			case "prime":
+				return "Dagannoth Prime";
 
-			case "kq":
-				return "Kalphite Queen";
+			// The Gauntlet
+			case "gaunt":
+			case "gauntlet":
+			case "the gauntlet":
+				return "Gauntlet";
 
-			case "chaos ele":
-				return "Chaos Elemental";
+			// The Corrupted Gauntlet
+			case "cgaunt":
+			case "cgauntlet":
+			case "the corrupted gauntlet":
+				return "Corrupted Gauntlet";
 
-			case "dusk":
-			case "dawn":
-			case "gargs":
-				return "Grotesque Guardians";
-
-			case "crazy arch":
-				return "Crazy Archaeologist";
-
+			// Fossil Island
+			// Deranged Archaeologist
 			case "deranged arch":
 				return "Deranged Archaeologist";
+			// Herbiboar
+			case "herbi":
+				return "Herbiboar";
 
+			// Giant Mole
 			case "mole":
 				return "Giant Mole";
 
-			case "vetion":
-				return "Vet'ion";
-
-			case "vene":
-				return "Venenatis";
-
-			case "kbd":
-				return "King Black Dragon";
-
-			case "vork":
-				return "Vorkath";
-
-			case "sire":
-				return "Abyssal Sire";
-
-			case "smoke devil":
-			case "thermy":
-				return "Thermonuclear Smoke Devil";
-
-			case "cerb":
-				return "Cerberus";
-
-			case "zuk":
-			case "inferno":
-				return "TzKal-Zuk";
-
-			case "hydra":
-				return "Alchemical Hydra";
-				
-			case "zalc":
-				return "Zalcano";
-
-			// gwd
+			// God Wars Dungeon
 			case "sara":
 			case "saradomin":
 			case "zilyana":
@@ -1650,30 +1632,49 @@ public class ChatCommandsPlugin extends Plugin
 			case "graardor":
 				return "General Graardor";
 
-			// dks
-			case "supreme":
-				return "Dagannoth Supreme";
-			case "rex":
-				return "Dagannoth Rex";
-			case "prime":
-				return "Dagannoth Prime";
+			// Kalphite Queen
+			case "kq":
+				return "Kalphite Queen";
 
-			case "wt":
-				return "Wintertodt";
-			case "barrows":
-				return "Barrows Chests";
-			case "herbi":
-				return "Herbiboar";
+			// Mor Ul Rek
+			// Jad
+			case "jad":
+			case "tzhaar fight cave":
+				return "TzTok-Jad";
+			// Zuk
+			case "zuk":
+			case "inferno":
+				return "TzKal-Zuk";
+			// TzHaar-Ket-Rak's Challenges
+			case "jad 1":
+				return "TzHaar-Ket-Rak's First Challenge";
+			case "jad 2":
+				return "TzHaar-Ket-Rak's Second Challenge";
+			case "jad 3":
+				return "TzHaar-Ket-Rak's Third Challenge";
+			case "jad 4":
+				return "TzHaar-Ket-Rak's Fourth Challenge";
+			case "jad 5":
+				return "TzHaar-Ket-Rak's Fifth Challenge";
+			case "jad 6":
+				return "TzHaar-Ket-Rak's Sixth Challenge";
 
-			// cox
+			// The Nightmare
+			case "nm":
+			case "tnm":
+			case "nmare":
+			case "the nightmare":
+				return "Nightmare";
+
+			// Raids
+			// Chambers of Xeric
 			case "cox":
 			case "xeric":
 			case "chambers":
 			case "olm":
 			case "raids":
 				return "Chambers of Xeric";
-
-			// cox cm
+			// Chambers of Xeric Challenge Mode
 			case "cox cm":
 			case "xeric cm":
 			case "chambers cm":
@@ -1681,8 +1682,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "raids cm":
 			case "chambers of xeric - challenge mode":
 				return "Chambers of Xeric Challenge Mode";
-
-			// tob
+			// Theatre of Blood
 			case "tob":
 			case "theatre":
 			case "verzik":
@@ -1690,28 +1690,98 @@ public class ChatCommandsPlugin extends Plugin
 			case "raids 2":
 				return "Theatre of Blood";
 
-			// agility course
-			case "prif":
-			case "prifddinas":
-				return "Prifddinas Agility Course";
+			// Skilling Bosses
+			// Wintertodt
+			case "wt":
+				return "Wintertodt";
+			// Zalcano
+			case "zalc":
+				return "Zalcano";
+			// Tempoross
+			case "tempo":
+				return "Tempoross";
 
-			// The Gauntlet
-			case "gaunt":
-			case "gauntlet":
-			case "the gauntlet":
-				return "Gauntlet";
+			// Slayer Bosses
+			// Grotesque Guardians
+			case "dusk":
+			case "dawn":
+			case "gargs":
+				return "Grotesque Guardians";
+			// Thermonuclear Smoke Devil
+			case "smoke devil":
+			case "thermy":
+				return "Thermonuclear Smoke Devil";
+			// Cerberus
+			case "cerb":
+				return "Cerberus";
+			// Abyssal Sire
+			case "sire":
+				return "Abyssal Sire";
+			// Alchemical Hydra
+			case "hydra":
+				return "Alchemical Hydra";
 
-			// Corrupted Gauntlet
-			case "cgaunt":
-			case "cgauntlet":
-			case "the corrupted gauntlet":
-				return "Corrupted Gauntlet";
+			// Vorkath
+			case "vork":
+				return "Vorkath";
 
-			case "nm":
-			case "tnm":
-			case "nmare":
-			case "the nightmare":
-				return "Nightmare";
+			// Wilderness Bosses
+			// Callisto
+			case "calli"
+				return "Callisto";
+			// Chaos Elemental
+			case "chaos ele":
+				return "Chaos Elemental";
+			// Crazy Archaeologist
+			case "crazy arch":
+				return "Crazy Archaeologist";
+			// King Black Dragon
+			case "kbd":
+				return "King Black Dragon";
+			// Venenatis
+			case "vene":
+				return "Venenatis";
+			// Vet'ion
+			case "vetion":
+				return "Vet'ion";
+
+			// Agility Courses
+			// Gnome Stronghold Agility Course
+			case "gnome stronghold":
+				return "Gnome Stronghold Agility";
+
+			// Brimhaven Agility Arena
+			case "brimhaven":
+			case "brimhaven agility":
+				return "Agility Arena";
+
+			// Werewolf Skullball
+			case "skullball":
+				return "Werewolf Skullball";
+
+			// Agility Pyramid
+			case "ap":
+			case "pyramid":
+				return "Agility Pyramid";
+
+			// Penguin Agility Course
+			case "penguin":
+				return "Penguin Agility";
+
+			// Barbarian Outpost Agility Course
+			case "barb":
+			case "barb outpost":
+				return "Barbarian Outpost";
+
+			// Ape Atoll Agility Course
+			case "aa":
+			case "ape atoll":
+				return "Ape Atoll Agility";
+
+			// Wilderness Agility Course
+			case "wildy":
+			case "wildy agility":
+				return "Wilderness Agility";
 
 			// Hallowed Sepulchre
 			case "hs":
@@ -1733,12 +1803,23 @@ public class ChatCommandsPlugin extends Plugin
 			case "hs5":
 			case "hs 5":
 				return "Hallowed Sepulchre Floor 5";
-			
-			// Ape Atoll Agility
-			case "aa":
-			case "ape atoll":
-				return "Ape Atoll Agility";
 
+			// Werewolf Agility Course
+			case "werewolf":
+				return "Werewolf Agility";
+
+			// Dorgesh-Kaan Agility Course
+			case "dorg":
+			case "dorgesh kaan":
+			case "dorgesh-kaan":
+				return "Dorgesh-Kaan Agility";
+
+			// Prifddinas Agility Course
+			case "prif":
+			case "prifddinas":
+				return "Prifddinas Agility Course";
+
+			// Rooftop Agility Courses
 			// Draynor Village Rooftop Course
 			case "draynor":
 			case "draynor agility":
@@ -1802,62 +1883,6 @@ public class ChatCommandsPlugin extends Plugin
 			case "ardougne":
 			case "ardougne agility":
 				return "Ardougne Rooftop";
-
-			// Agility Pyramid
-			case "ap":
-			case "pyramid":
-				return "Agility Pyramid";
-
-			// Barbarian Outpost
-			case "barb":
-			case "barb outpost":
-				return "Barbarian Outpost";
-
-			// Brimhaven Agility Arena
-			case "brimhaven":
-			case "brimhaven agility":
-				return "Agility Arena";
-
-			// Dorgesh-Kaan Agility Course
-			case "dorg":
-			case "dorgesh kaan":
-			case "dorgesh-kaan":
-				return "Dorgesh-Kaan Agility";
-
-			// Gnome Stronghold Agility Course
-			case "gnome stronghold":
-				return "Gnome Stronghold Agility";
-
-			// Penguin Agility
-			case "penguin":
-				return "Penguin Agility";
-
-			// Werewolf Agility
-			case "werewolf":
-				return "Werewolf Agility";
-
-			// Skullball
-			case "skullball":
-				return "Werewolf Skullball";
-
-			// Wilderness Agility Course
-			case "wildy":
-			case "wildy agility":
-				return "Wilderness Agility";
-
-			// Jad challenge
-			case "jad 1":
-				return "TzHaar-Ket-Rak's First Challenge";
-			case "jad 2":
-				return "TzHaar-Ket-Rak's Second Challenge";
-			case "jad 3":
-				return "TzHaar-Ket-Rak's Third Challenge";
-			case "jad 4":
-				return "TzHaar-Ket-Rak's Fourth Challenge";
-			case "jad 5":
-				return "TzHaar-Ket-Rak's Fifth Challenge";
-			case "jad 6":
-				return "TzHaar-Ket-Rak's Sixth Challenge";
 
 			default:
 				return WordUtils.capitalize(boss);
