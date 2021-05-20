@@ -33,7 +33,9 @@ import java.awt.Rectangle;
 import java.util.Map;
 import java.util.UUID;
 import javax.inject.Inject;
+import net.runelite.api.MenuAction;
 import net.runelite.client.plugins.party.data.PartyData;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -61,6 +63,7 @@ public class PartyStatsOverlay extends OverlayPanel
 		this.config = config;
 		panelComponent.setBorder(new Rectangle());
 		panelComponent.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
+		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, "Leave", "Party"));
 	}
 
 	@Override

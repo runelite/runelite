@@ -105,7 +105,7 @@ class PartyPanel extends PluginPanel
 
 				if (result == JOptionPane.YES_OPTION)
 				{
-					party.changeParty(null);
+					plugin.leaveParty();
 				}
 			}
 			else

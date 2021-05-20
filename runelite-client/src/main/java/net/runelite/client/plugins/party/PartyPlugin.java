@@ -46,6 +46,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
@@ -65,6 +66,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
@@ -212,6 +214,37 @@ public class PartyPlugin extends Plugin
 	public PartyConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PartyConfig.class);
+	}
+
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked event)
+	{
+		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+			event.getEntry().getTarget().equals("Party") &&
+			event.getEntry().getOption().equals("Leave"))
+		{
+			leaveParty();
+		}
+	}
+
+	void leaveParty()
+	{
+		party.changeParty(null);
+
+		if (!config.messages())
+		{
+			return;
+		}
+
+		final String leaveMessage = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("You have left the party.")
+			.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.runeLiteFormattedMessage(leaveMessage)
+			.build());
 	}
 
 	@Subscribe
