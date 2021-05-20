@@ -63,6 +63,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
@@ -876,7 +877,7 @@ public class LootTrackerPlugin extends Plugin
 	private void onGraphicsObjectCreated(GraphicsObjectCreated event)
 	{
 		final GraphicsObject object = event.getGraphicsObject();
-		if (object.getId() == 188)
+		if (object.getId() == GraphicID.SHADE_DROP_ANIM)
 		{
 			WorldPoint dropLocation = WorldPoint.fromLocal(client, object.getLocation());
 			Collection<ItemStack> items = lootManager.getItemSpawns(dropLocation);
