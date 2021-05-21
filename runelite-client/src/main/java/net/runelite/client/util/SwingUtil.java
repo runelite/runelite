@@ -57,6 +57,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FixedWidthLabelUI;
+import net.runelite.client.ui.FixedWidthToolTipUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.CustomScrollBarUI;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -89,6 +91,8 @@ public class SwingUtil
 		UIManager.put("FormattedTextField.selectionForeground", Color.WHITE);
 		UIManager.put("TextArea.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
 		UIManager.put("TextArea.selectionForeground", Color.WHITE);
+		UIManager.put("LabelUI", FixedWidthLabelUI.class.getName());
+		UIManager.put("ToolTipUI", FixedWidthToolTipUI.class.getName());
 
 		// Do not render shadows under popups/tooltips.
 		// Fixes black boxes under popups that are above the game applet.
