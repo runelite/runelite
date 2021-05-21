@@ -208,19 +208,19 @@ LABEL165:
    iconst                 126
    istore                 20
    iconst                 0
-   3801                  
+   activeclansettings_find_affined
    iconst                 1
    if_icmpeq              LABEL202
    jump                   LABEL222
 LABEL202:
    iconst                 0
-   3851                  
+   activeclanchannel_find_affined
    iconst                 1
    if_icmpeq              LABEL207
    jump                   LABEL222
 LABEL207:
    sload                  0
-   3860                  
+   activeclanchannel_getuserslot
    istore                 17
    iload                  17
    iconst                 -1
@@ -228,10 +228,10 @@ LABEL207:
    jump                   LABEL217
 LABEL214:
    iload                  17
-   3857                  
+   activeclanchannel_getuserrank
    istore                 18
 LABEL217:
-   3853                  
+   activeclanchannel_getrankkick
    iconst                 2956
    invoke                 4456
    istore                 20
@@ -562,20 +562,20 @@ LABEL432:
    jump                   LABEL942
 LABEL458:
    iconst                 0
-   3801                  
+   activeclansettings_find_affined
    iconst                 1
    if_icmpeq              LABEL463
    jump                   LABEL583
 LABEL463:
    iconst                 0
-   3851                  
+   activeclanchannel_find_affined
    iconst                 1
    if_icmpeq              LABEL468
    jump                   LABEL583
 LABEL468:
    sload                  12
    removetags            
-   3860                  
+   activeclanchannel_getuserslot
    istore                 17
    iload                  17
    iconst                 -1
@@ -583,7 +583,7 @@ LABEL468:
    jump                   LABEL549
 LABEL476:
    iload                  17
-   3857                  
+   activeclanchannel_getuserrank
    invoke                 4302
    istore                 16
    sstore                 16
@@ -732,19 +732,19 @@ LABEL583:
 LABEL612:
    jump                   LABEL942
 LABEL613:
-   3800                  
+   activeclansettings_find_listened
    iconst                 1
    if_icmpeq              LABEL617
    jump                   LABEL736
 LABEL617:
-   3850                  
+   activeclanchannel_find_listened
    iconst                 1
    if_icmpeq              LABEL621
    jump                   LABEL736
 LABEL621:
    sload                  12
    removetags            
-   3860                  
+   activeclanchannel_getuserslot
    istore                 17
    iload                  17
    iconst                 -1
@@ -752,7 +752,7 @@ LABEL621:
    jump                   LABEL702
 LABEL629:
    iload                  17
-   3857                  
+   activeclanchannel_getuserrank
    invoke                 4302
    istore                 16
    sstore                 16
@@ -897,14 +897,14 @@ LABEL765:
    jump                   LABEL942
 LABEL766:
    iconst                 0
-   3851                  
+   activeclanchannel_find_affined
    iconst                 1
    if_icmpeq              LABEL771
    jump                   LABEL796
 LABEL771:
    sconst                 "["
    sload                  7
-   3852                  
+   activeclanchannel_getclanname
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -950,14 +950,14 @@ LABEL796:
 LABEL815:
    jump                   LABEL942
 LABEL816:
-   3850                  
+   activeclanchannel_find_listened
    iconst                 1
    if_icmpeq              LABEL820
    jump                   LABEL845
 LABEL820:
    sconst                 "["
    sload                  7
-   3852                  
+   activeclanchannel_getclanname
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -1080,7 +1080,7 @@ LABEL928:
    iload                  10                 ; The id of the messageNode of the message being built
    sconst                 ""
    sconst                 "addTimestamp"
-   runelite_callback
+   runelite_callback     
    pop_int                                   ; pop message id
    sload                  14
    join_string            2                  ; prepend the timestamp
@@ -1207,20 +1207,20 @@ LABEL1017:
    jump                   LABEL1050
 LABEL1021:
    iconst                 0
-   3851                  
+   activeclanchannel_find_affined
    iconst                 1
    if_icmpeq              LABEL1026
    jump                   LABEL1050
 LABEL1026:
    sload                  12
    removetags            
-   3860                  
+   activeclanchannel_getuserslot
    istore                 17
    iload                  17
    iconst                 -1
    if_icmpeq              LABEL1038
    iload                  17
-   3857                  
+   activeclanchannel_getuserrank
    iconst                 -1
    if_icmple              LABEL1038
    jump                   LABEL1050
