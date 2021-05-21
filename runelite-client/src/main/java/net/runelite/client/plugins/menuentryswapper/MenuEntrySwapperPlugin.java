@@ -138,6 +138,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		"first mate peri"
 	);
 
+	private static final Set<String> PROTECTIVE_FLOWERS = ImmutableSet.of(
+		"marigold",
+		"rosemary",
+		"scarecrow",
+		"nasturtium",
+		"white lily"
+	);
+
 	@Inject
 	private Client client;
 
@@ -383,6 +391,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("eat", "guzzle", config::swapRockCake);
 
 		swap("travel", "dive", config::swapRowboatDive);
+
+		swap("pick", PROTECTIVE_FLOWERS::contains, "inspect", config::swapFlowerPick);
 	}
 
 	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)

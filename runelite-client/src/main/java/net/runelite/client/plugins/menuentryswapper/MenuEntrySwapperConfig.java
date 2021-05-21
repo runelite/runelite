@@ -672,4 +672,12 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "swapFlowerPick",
+		name = "Flower Patch Pick",
+		description = "Swap Pick with Inspect on protective flower patches",
+		section = objectSection
+	)
+	default boolean swapFlowerPick() { return false; }
 }
