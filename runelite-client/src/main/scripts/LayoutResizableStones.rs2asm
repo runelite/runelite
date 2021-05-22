@@ -43,7 +43,8 @@ LABEL9:
    sconst                 "forceStackStones" ; push event name
    runelite_callback     ; invoke callback
    iconst                 0                  ; if 0 is returned, continue normal layout
-   if_icmpeq              LABEL49
+   if_icmpne              LABEL29
+   jump                   LABEL49
 LABEL29:
    iconst                 0
    iload                  3
