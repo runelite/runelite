@@ -1000,6 +1000,13 @@ public interface Widget
 	void setDragParent(Widget dragParent);
 
 	/**
+	 * Gets the script and arguments to be ran when one of the listened for vars changes.
+	 *
+	 * @return
+	 */
+	Object[] getOnVarTransmitListener();
+
+	/**
 	 * Sets a script to be ran when a varplayer changes
 	 *
 	 * @param args A ScriptID, then the args for the script
