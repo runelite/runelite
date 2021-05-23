@@ -89,6 +89,7 @@ import net.runelite.client.util.ColorUtil;
 public class WintertodtPlugin extends Plugin
 {
 	private static final int WINTERTODT_REGION = 6462;
+	private static final int WINTERTODT_CAMP_REGION = 6461;
 
 	@Inject
 	private Notifier notifier;
@@ -129,6 +130,7 @@ public class WintertodtPlugin extends Plugin
 	private Instant lastActionTime;
 
 	private int previousTimerValue;
+	private boolean notifiedOutsideWt;
 
 	@Provides
 	WintertodtConfig getConfig(ConfigManager configManager)
@@ -158,6 +160,7 @@ public class WintertodtPlugin extends Plugin
 		numKindling = 0;
 		currentActivity = WintertodtActivity.IDLE;
 		lastActionTime = null;
+		notifiedOutsideWt = false;
 	}
 
 	private boolean isInWintertodtRegion()
@@ -167,6 +170,16 @@ public class WintertodtPlugin extends Plugin
 			return client.getLocalPlayer().getWorldLocation().getRegionID() == WINTERTODT_REGION;
 		}
 
+		return false;
+	}
+	
+	private boolean isInCampRegion()
+	{
+		if (client.getLocalPlayer() != null)
+		{
+			return client.getLocalPlayer().getWorldLocation().getRegionID() == WINTERTODT_CAMP_REGION;
+		}
+		
 		return false;
 	}
 
@@ -201,6 +214,7 @@ public class WintertodtPlugin extends Plugin
 		int timerValue = client.getVar(Varbits.WINTERTODT_TIMER);
 		if (timerValue != previousTimerValue)
 		{
+			
 			int timeToNotify = config.roundNotification();
 			if (timeToNotify > 0)
 			{
@@ -211,7 +225,14 @@ public class WintertodtPlugin extends Plugin
 
 				if (prevTimeInSeconds > timeToNotify && timeInSeconds <= timeToNotify)
 				{
-					notifier.notify("Wintertodt round is about to start");
+					// runelite/runelite#13626
+					// prevent repeat notifs outside wintertodt
+					boolean outsideWt = !isInWintertodtRegion() && !isInCampRegion();
+					if (!(outsideWt && notifiedOutsideWt))
+					{
+						notifier.notify("Wintertodt round is about to start");
+					}
+					notifiedOutsideWt = outsideWt;
 				}
 			}
 
