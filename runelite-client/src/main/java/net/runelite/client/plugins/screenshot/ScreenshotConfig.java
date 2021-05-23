@@ -254,10 +254,22 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "collectionLogEntries",
+		name = "Screenshot collection log entries",
+		description = "Configures whether or not screenshots are automatically taken of new collection log entries",
+		position = 18,
+		section = whatSection
+	)
+	default boolean screenshotCollectionLogEntries()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 18
+		position = 19
 	)
 	default Keybind hotkey()
 	{

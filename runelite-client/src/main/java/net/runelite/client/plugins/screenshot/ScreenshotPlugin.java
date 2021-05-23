@@ -456,6 +456,13 @@ public class ScreenshotPlugin extends Plugin
 				takeScreenshot(fileName, "Duels");
 			}
 		}
+
+		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith("New item added to your collection log: "))
+		{
+			String entry = chatMessage.substring(51, chatMessage.length() - 6);
+			String fileName = "Collection log: " + entry;
+			takeScreenshot(fileName, "Collection Log");
+		}
 	}
 
 	@Subscribe
