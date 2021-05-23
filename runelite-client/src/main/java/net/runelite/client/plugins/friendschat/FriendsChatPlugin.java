@@ -350,7 +350,7 @@ public class FriendsChatPlugin extends Plugin
 
 		if (removed)
 		{
-			clientThread.invoke(() -> client.runScript(ScriptID.BUILD_CHATBOX));
+			clientThread.invoke(() -> client.runScript(ScriptID.SPLITPM_CHANGED));
 		}
 	}
 

@@ -48,10 +48,10 @@ public final class ScriptID
 	public static final int CHATBOX_INPUT = 96;
 
 	/**
-	 * Rebuilds the chatbox
+	 * Rebuilds the chatbox and the Split PM box.
 	 */
 	@ScriptArguments()
-	public static final int BUILD_CHATBOX = 216;
+	public static final int SPLITPM_CHANGED = 83;
 
 	/**
 	 * Opens the Private Message chat interface
