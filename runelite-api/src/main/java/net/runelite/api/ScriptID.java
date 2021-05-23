@@ -48,6 +48,12 @@ public final class ScriptID
 	public static final int CHATBOX_INPUT = 96;
 
 	/**
+	 * Rebuilds the chatbox and the pmbox
+	 */
+	@ScriptArguments()
+	public static final int SPLITPM_CHANGED = 83;
+
+	/**
 	 * Rebuilds the chatbox
 	 */
 	@ScriptArguments()

@@ -317,6 +317,14 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 
 		log.debug("Clearing chatbox history for tab {}", tab);
 
+		clearMessageQueue(tab);
+
+		if (tab.getAfter() == null)
+		{
+			// if the tab has a vanilla Clear option, it isn't necessary to delete the messages ourselves.
+			return;
+		}
+
 		boolean removed = false;
 		for (ChatMessageType msgType : tab.getMessageTypes())
 		{
@@ -339,10 +347,9 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 
 		if (removed)
 		{
-			clientThread.invoke(() -> client.runScript(ScriptID.BUILD_CHATBOX));
+			// this rebuilds both the chatbox and the pmbox
+			clientThread.invoke(() -> client.runScript(ScriptID.SPLITPM_CHANGED));
 		}
-
-		clearMessageQueue(tab);
 	}
 
 	@Override
