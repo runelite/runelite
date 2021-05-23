@@ -251,6 +251,8 @@ public class WidgetID
 
 	static class FriendsChat
 	{
+		static final int ROOT = 0;
+		static final int TITLE = 1;
 		static final int OWNER = 2;
 		static final int LIST = 12;
 	}
