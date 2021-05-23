@@ -480,7 +480,8 @@ public class WidgetID
 		static final int TAB_ALL = 4;
 		static final int TAB_GAME = 7;
 		static final int TAB_PUBLIC = 11;
-		static final int TAB_PRIVATE = 19;
+		static final int TAB_PRIVATE = 15;
+		static final int TAB_CHANNEL = 19;
 		static final int TAB_CLAN = 23;
 		static final int TAB_TRADE = 27;
 		static final int REPORT_TEXT = 33;

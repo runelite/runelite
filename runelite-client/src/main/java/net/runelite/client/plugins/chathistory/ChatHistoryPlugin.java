@@ -37,6 +37,7 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.Queue;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -72,6 +73,7 @@ import org.apache.commons.lang3.StringUtils;
 	description = "Retain your chat history when logging in/out or world hopping",
 	tags = {"chat", "history", "retain", "cycle", "pm"}
 )
+@Slf4j
 public class ChatHistoryPlugin extends Plugin implements KeyListener
 {
 	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape";
@@ -173,6 +175,8 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			case PUBLICCHAT:
 			case MODCHAT:
 			case FRIENDSCHAT:
+			case CLANCHANNEL_LISTENED:
+			case CLANCHANNEL_AFFINED:
 			case CONSOLE:
 				messageQueue.offer(chatMessage.getMessageNode());
 		}
@@ -262,7 +266,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	{
 		final ChatboxTab tab = ChatboxTab.of(entry.getActionParam1());
 
-		if (tab == null || !config.clearHistory() || !Text.removeTags(entry.getOption()).equals(tab.getAfter()))
+		if (tab == null || tab.getAfter() == null || !config.clearHistory() || !Text.removeTags(entry.getOption()).equals(tab.getAfter()))
 		{
 			return;
 		}
@@ -310,6 +314,8 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		{
 			return;
 		}
+
+		log.debug("Clearing chatbox history for tab {}", tab);
 
 		boolean removed = false;
 		for (ChatMessageType msgType : tab.getMessageTypes())

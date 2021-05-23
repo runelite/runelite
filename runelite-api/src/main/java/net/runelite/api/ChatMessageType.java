@@ -109,6 +109,22 @@ public enum ChatMessageType
 	 */
 	IGNORENOTIFICATION(31),
 	/**
+	 * A chat message in a guest clan chat.
+	 */
+	CLANCHANNEL_AFFINED(41),
+	/**
+	 * A system message in a guest clan chat.
+	 */
+	CLANCHANNEL_SYSTEM_AFFINED(43),
+	/**
+	 * A chat message in the primary clan chat.
+	 */
+	CLANCHANNEL_LISTENED(44),
+	/**
+	 * A system message in the primary clan chat.
+	 */
+	CLANCHANNEL_SYSTEM_LISTENED(46),
+	/**
 	 * An autotyper message from a player.
 	 */
 	AUTOTYPER(90),
