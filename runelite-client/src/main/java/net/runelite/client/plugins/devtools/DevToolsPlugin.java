@@ -38,6 +38,7 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.IndexedSprite;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -425,6 +426,25 @@ public class DevToolsPlugin extends Plugin
 				chatMessageManager.queue(QueuedMessage.builder()
 					.type(ChatMessageType.GAMEMESSAGE)
 					.runeLiteFormattedMessage(new ChatMessageBuilder().append(message).build())
+					.build());
+				break;
+			}
+			case "modicons":
+			{
+				final ChatMessageBuilder builder = new ChatMessageBuilder();
+				final IndexedSprite[] modIcons = client.getModIcons();
+				for (int i = 0; i < modIcons.length; i++)
+				{
+					builder.append(i + "=").img(i);
+
+					if (i != modIcons.length - 1)
+					{
+						builder.append(", ");
+					}
+				}
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.GAMEMESSAGE)
+					.runeLiteFormattedMessage(builder.build())
 					.build());
 				break;
 			}
