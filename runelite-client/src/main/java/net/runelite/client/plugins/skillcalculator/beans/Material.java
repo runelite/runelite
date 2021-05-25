@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2021, Pristit <https://github.com/pristit>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.skillcalculator.beans;
+
 
 import lombok.Getter;
 
 @Getter
-public class SkillDataEntry
+public class Material
 {
+	private Integer id;
 	private String name;
-	private int level;
-	private double xp;
-	private Material[] materials;
-	private Integer icon;
-	private Integer sprite;
-	private boolean ignoreBonus;
+	private Integer amount;
 }

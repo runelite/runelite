@@ -11,13 +11,13 @@
       "icon": 8168,
       "name": "Exit Portal",
       "xp": 100,
-	  "materials": [
-			{
-				"id": 2351,
-				"matName": "Iron bar",
-				"amount": 10
-			}
-		]
+      "materials": [
+        {
+          "id": 2351,
+          "name": "Iron bar",
+          "amount": 10
+        }
+      ]
     },
     {
       "level": 1,
@@ -25,7 +25,7 @@
       "name": "Plank",
       "xp": 29
     },
-	{
+    {
       "level": 1,
       "icon": 8778,
       "name": "Oak Plank",
@@ -72,129 +72,129 @@
       "icon": 8309,
       "name": "Crude Wooden Chair",
       "xp": 58,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 2
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 2
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 2
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 2
+        }
+      ]
     },
     {
       "level": 2,
       "icon": 8316,
       "name": "Brown Rug",
       "xp": 30,
-	  "materials": [
-			{
-				"id": 8790,
-				"matName": "Bolt of cloth",
-				"amount": 2
-			}
-		]
+      "materials": [
+        {
+          "id": 8790,
+          "name": "Bolt of cloth",
+          "amount": 2
+        }
+      ]
     },
     {
       "level": 2,
       "icon": 8322,
       "name": "Torn Curtains",
       "xp": 132,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 3
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 3
-			},
-			{
-				"id": 8790,
-				"matName": "Bolt of cloth",
-				"amount": 3
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 3
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 3
+        },
+        {
+          "id": 8790,
+          "name": "Bolt of cloth",
+          "amount": 3
+        }
+      ]
     },
     {
       "level": 3,
       "icon": 8325,
       "name": "Clay Fireplace",
       "xp": 30,
-	  "materials": [
-			{
-				"id": 1761,
-				"matName": "Soft Clay",
-				"amount": 3
-			}
-		]
+      "materials": [
+        {
+          "id": 1761,
+          "name": "Soft Clay",
+          "amount": 3
+        }
+      ]
     },
     {
       "level": 4,
       "icon": 8319,
       "name": "Wooden Bookcase",
       "xp": 115,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 4
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 4
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 4
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 4
+        }
+      ]
     },
     {
       "level": 5,
       "icon": 8216,
       "name": "Firepit",
       "xp": 40,
-	  "materials": [
-			{
-				"id": 1761,
-				"matName": "Soft Clay",
-				"amount": 2
-			},
-			{
-				"id": 2353,
-				"matName": "Steel bar",
-				"amount": 1
-			}
-		]
+      "materials": [
+        {
+          "id": 1761,
+          "name": "Soft Clay",
+          "amount": 2
+        },
+        {
+          "id": 2353,
+          "name": "Steel bar",
+          "amount": 1
+        }
+      ]
     },
     {
       "level": 5,
       "icon": 8236,
       "name": "Cat Blanket",
       "xp": 15,
-	  "materials": [
-			{
-				"id": 8790,
-				"matName": "Bolt of cloth",
-				"amount": 1
-			}
-		]
+      "materials": [
+        {
+          "id": 8790,
+          "name": "Bolt of cloth",
+          "amount": 1
+        }
+      ]
     },
     {
       "level": 5,
       "icon": 8169,
       "name": "Decorative Rock",
       "xp": 100,
-	  "materials": [
-			{
-				"id": 3211,
-				"matName": "Limestone brick",
-				"amount": 5
-			}
-		]
+      "materials": [
+        {
+          "id": 3211,
+          "name": "Limestone brick",
+          "amount": 5
+        }
+      ]
     },
     {
       "level": 5,
@@ -231,103 +231,103 @@
       "icon": 8223,
       "name": "Wooden Shelves 1",
       "xp": 87,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 3
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 3
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 3
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 3
+        }
+      ]
     },
     {
       "level": 7,
       "icon": 8230,
       "name": "Pump and Drain",
       "xp": 100,
-	  "materials": [
-			{
-				"id": 2353,
-				"matName": "Steel bar",
-				"amount": 5
-			}
-		]
+      "materials": [
+        {
+          "id": 2353,
+          "name": "Steel bar",
+          "amount": 5
+        }
+      ]
     },
     {
       "level": 7,
       "icon": 8239,
       "name": "Beer Barrel",
       "xp": 87,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 3
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 3
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 3
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 3
+        }
+      ]
     },
     {
       "level": 8,
       "icon": 8310,
       "name": "Wooden Chair",
       "xp": 87,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 3
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 3
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 3
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 3
+        }
+      ]
     },
     {
       "level": 9,
       "icon": 8233,
       "name": "Wooden Larder",
       "xp": 228,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 8
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 8
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 8
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 8
+        }
+      ]
     },
     {
       "level": 10,
       "icon": 8115,
       "name": "Wood Dining Table",
       "xp": 115,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 4
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 4
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 4
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 4
+        }
+      ]
     },
     {
       "level": 10,
@@ -346,36 +346,36 @@
       "icon": 8108,
       "name": "Wooden Bench",
       "xp": 115,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 4
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 4
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 4
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 4
+        }
+      ]
     },
     {
       "level": 11,
       "icon": 8217,
       "name": "Firepit with Hook",
       "xp": 60,
-	  "materials": [
-			{
-				"id": 1761,
-				"matName": "Soft Clay",
-				"amount": 2
-			},
-			{
-				"id": 2353,
-				"matName": "Steel bar",
-				"amount": 2
-			}
-		]
+      "materials": [
+        {
+          "id": 1761,
+          "name": "Soft Clay",
+          "amount": 2
+        },
+        {
+          "id": 2353,
+          "name": "Steel bar",
+          "amount": 2
+        }
+      ]
     },
     {
       "level": 12,
@@ -394,64 +394,64 @@
       "icon": 8240,
       "name": "Cider Barrel",
       "xp": 91,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 3
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 3
-			},
-			{
-				"id": 5763,
-				"matName": "Cider",
-				"amount": 8
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 3
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 3
+        },
+        {
+          "id": 5763,
+          "name": "Cider",
+          "amount": 8
+        }
+      ]
     },
     {
       "level": 12,
       "icon": 8224,
       "name": "Wooden Shelves 2",
       "xp": 147,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 3
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 3
-			},
-			{
-				"id": 1761,
-				"matName": "Soft Clay",
-				"amount": 6
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 3
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 3
+        },
+        {
+          "id": 1761,
+          "name": "Soft Clay",
+          "amount": 6
+        }
+      ]
     },
     {
       "level": 12,
       "icon": 8115,
       "name": "Wood Table",
       "xp": 87,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 3
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 3
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 3
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 3
+        }
+      ]
     },
     {
       "level": 12,
@@ -470,49 +470,49 @@
       "icon": 8317,
       "name": "Rug",
       "xp": 60,
-	  "materials": [
-			{
-				"id": 8790,
-				"matName": "Bolt of cloth",
-				"amount": 4
-			}
-		]
+      "materials": [
+        {
+          "id": 8790,
+          "name": "Bolt of cloth",
+          "amount": 4
+        }
+      ]
     },
     {
       "level": 14,
       "icon": 8311,
       "name": "Rocking Chair",
       "xp": 87,
-	  "materials": [
-			{
-				"id": 960,
-				"matName": "Plank",
-				"amount": 3
-			},
-			{
-				"id": 4820,
-				"matName": "Iron nail",
-				"amount": 3
-			}
-		]
+      "materials": [
+        {
+          "id": 960,
+          "name": "Plank",
+          "amount": 3
+        },
+        {
+          "id": 4820,
+          "name": "Iron nail",
+          "amount": 3
+        }
+      ]
     },
     {
       "level": 15,
       "icon": 8171,
       "name": "Imp Statue",
       "xp": 150,
-	  "materials": [
-			{
-				"id": 3211,
-				"matName": "Limestone brick",
-				"amount": 5
-			},
-			{
-				"id": 1761,
-				"matName": "Soft Clay",
-				"amount": 5
-			}
-		]
+      "materials": [
+        {
+          "id": 3211,
+          "name": "Limestone brick",
+          "amount": 5
+        },
+        {
+          "id": 1761,
+          "name": "Soft Clay",
+          "amount": 5
+        }
+      ]
     },
     {
       "level": 15,
@@ -921,13 +921,13 @@
       "icon": 21913,
       "name": "Mounted Mythical Cape",
       "xp": 370,
-	  "materials": [
-			{
-				"id": 8780,
-				"matName": "Teak Plank",
-				"amount": 3
-			}
-		]
+      "materials": [
+        {
+          "id": 8780,
+          "name": "Teak Plank",
+          "amount": 3
+        }
+      ]
     },
     {
       "level": 48,
