@@ -98,6 +98,10 @@ class BurnerOverlay extends Overlay
 
 			if (certainSec > 0)
 			{
+				if (certainSec < 10)
+				{
+					burner.setBurnerCloseToExpiration(true);
+				}
 				pieComponent.setProgress(certainSec / burner.getCountdownTimer());
 				pieComponent.setFill(Color.GREEN);
 				pieComponent.setBorderColor(Color.GREEN);
