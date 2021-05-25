@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
@@ -50,14 +50,13 @@ import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.plugins.skillcalculator.beans.SkillData;
-import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
-import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
+import net.runelite.client.plugins.skillcalculator.beans.*;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.QuantityFormatter;
 
 class SkillCalculator extends JPanel
 {
@@ -328,7 +327,6 @@ class SkillCalculator extends JPanel
 					{
 						combinedActionSlots.add(slot);
 					}
-
 					slot.setSelected(!slot.isSelected());
 					updateCombinedAction();
 				}
@@ -353,8 +351,33 @@ class SkillCalculator extends JPanel
 			{
 				actionCount = (int) Math.ceil(neededXP / xp);
 			}
+			int actionCost = 0;
+			int finalCost = 0;
+			String materials = "";
+			if (action.getMaterials() != null)
+			{
+				for (MaterialTuple materialTuple : action.getMaterials()) {
+					if (materialTuple != null)
+					{
+						actionCost += (itemManager.getItemPrice(materialTuple.getId()) * materialTuple.getAmount());
+						materials += (materialTuple.getMatName() + " x" + materialTuple.getAmount() * actionCount + "<br>");
+					}
 
+				}
+				finalCost = actionCost * actionCount;
+			}
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+
+			if (finalCost == 0)
+				slot.setCost(null);
+			else
+				slot.setCost("Cost: " + QuantityFormatter.quantityToStackSize(finalCost) + " GP");
+
+			if (materials.compareTo("") == 0)
+				slot.setToolTipText(null);
+			else
+				slot.setToolTipText("<html>" + materials + "</html>");
+
 			slot.setAvailable(currentLevel >= action.getLevel());
 			slot.setOverlapping(action.getLevel() < targetLevel);
 			slot.setValue(xp);

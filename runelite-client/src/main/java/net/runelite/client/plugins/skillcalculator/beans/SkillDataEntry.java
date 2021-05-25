@@ -32,6 +32,7 @@ public class SkillDataEntry
 	private String name;
 	private int level;
 	private double xp;
+	private MaterialTuple[] materials;
 	private Integer icon;
 	private Integer sprite;
 	private boolean ignoreBonus;

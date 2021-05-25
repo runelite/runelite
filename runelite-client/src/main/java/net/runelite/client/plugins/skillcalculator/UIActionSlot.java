@@ -66,6 +66,7 @@ class UIActionSlot extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillDataEntry action;
 	private final JShadowedLabel uiLabelActions;
+	private final JShadowedLabel uiLabelCost;
 
 	private final JPanel uiInfo;
 
@@ -117,7 +118,7 @@ class UIActionSlot extends JPanel
 		uiIcon.setPreferredSize(ICON_SIZE);
 		uiIcon.setHorizontalAlignment(JLabel.CENTER);
 
-		uiInfo = new JPanel(new GridLayout(2, 1));
+		uiInfo = new JPanel(new GridLayout(3, 1));
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 
@@ -128,8 +129,13 @@ class UIActionSlot extends JPanel
 		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
 		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
+		uiLabelCost = new JShadowedLabel("Unknown");
+		uiLabelCost.setFont(FontManager.getRunescapeSmallFont());
+		uiLabelCost.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+
 		uiInfo.add(uiLabelName);
 		uiInfo.add(uiLabelActions);
+		uiInfo.add(uiLabelCost);
 
 		add(uiIcon, BorderLayout.LINE_START);
 		add(uiInfo, BorderLayout.CENTER);
@@ -156,6 +162,11 @@ class UIActionSlot extends JPanel
 	void setText(String text)
 	{
 		uiLabelActions.setText(text);
+	}
+
+	void setCost(String cost)
+	{
+		uiLabelCost.setText(cost);
 	}
 
 	private void updateBackground()
