@@ -34,7 +34,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -153,9 +153,9 @@ public class ChatboxPanelManager
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent ev)
+	public void onScriptPreFired(ScriptPreFired ev)
 	{
-		if (currentInput != null && "resetChatboxInput".equals(ev.getEventName()))
+		if (currentInput != null && ev.getScriptId() == ScriptID.MESSAGE_LAYER_CLOSE)
 		{
 			killCurrentPanel();
 		}
