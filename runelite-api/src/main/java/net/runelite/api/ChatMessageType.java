@@ -109,21 +109,21 @@ public enum ChatMessageType
 	 */
 	IGNORENOTIFICATION(31),
 	/**
-	 * A chat message in a guest clan chat.
+	 * A chat message in a clan chat.
 	 */
-	CLANCHANNEL_AFFINED(41),
+	CLAN_CHAT(41),
 	/**
-	 * A system message in a guest clan chat.
+	 * A system message in a clan chat.
 	 */
-	CLANCHANNEL_SYSTEM_AFFINED(43),
+	CLAN_MESSAGE(43),
 	/**
-	 * A chat message in the primary clan chat.
+	 * A chat message in the guest clan chat.
 	 */
-	CLANCHANNEL_LISTENED(44),
+	CLAN_GUEST_CHAT(44),
 	/**
-	 * A system message in the primary clan chat.
+	 * A system message in the guest clan chat.
 	 */
-	CLANCHANNEL_SYSTEM_LISTENED(46),
+	CLAN_GUEST_MESSAGE(46),
 	/**
 	 * An autotyper message from a player.
 	 */
@@ -168,6 +168,14 @@ public enum ChatMessageType
 	 * The "Welcome to RuneScape" message
 	 */
 	WELCOME(108),
+	/**
+	 * Clan creation invitation.
+	 */
+	CLAN_CREATION_INVITATION(109),
+	/**
+	 * Clan wars challenge for clans rather than FCs
+	 */
+	CLAN_CLAN_WARS_CHALLENGE(110),
 	/**
 	 * An unknown message type.
 	 */

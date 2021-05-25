@@ -58,7 +58,7 @@ enum ChatboxTab
 		ChatMessageType.FRIENDSCHATNOTIFICATION, ChatMessageType.FRIENDSCHAT, ChatMessageType.CHALREQ_FRIENDSCHAT),
 
 	CLAN("Clan", null, WidgetInfo.CHATBOX_TAB_CLAN,
-		ChatMessageType.CLANCHANNEL_AFFINED, ChatMessageType.CLANCHANNEL_SYSTEM_AFFINED, ChatMessageType.CLANCHANNEL_LISTENED, ChatMessageType.CLANCHANNEL_SYSTEM_LISTENED),
+		ChatMessageType.CLAN_CHAT, ChatMessageType.CLAN_MESSAGE, ChatMessageType.CLAN_GUEST_CHAT, ChatMessageType.CLAN_GUEST_MESSAGE),
 
 	TRADE("Trade", "Trade: Show none", WidgetInfo.CHATBOX_TAB_TRADE,
 		ChatMessageType.TRADE_SENT, ChatMessageType.TRADEREQ, ChatMessageType.TRADE, ChatMessageType.CHALREQ_TRADE),
