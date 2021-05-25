@@ -127,6 +127,10 @@ public class ImageCapture
 			{
 				playerDir += "-League";
 			}
+			else if (worldTypes.contains(WorldType.TOURNAMENT))
+			{
+				playerDir += "-Tournament";
+			}
 
 			if (!Strings.isNullOrEmpty(subDir))
 			{
