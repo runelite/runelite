@@ -25,6 +25,7 @@
 package net.runelite.client.plugins;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
@@ -312,7 +313,8 @@ public class PluginManager
 			{
 				log.debug("Disabling {} due to safe mode", clazz);
 				// also disable the plugin from autostarting later
-				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME, clazz.getSimpleName().toLowerCase());
+				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME,
+					(Strings.isNullOrEmpty(pluginDescriptor.configName()) ? clazz.getSimpleName() : pluginDescriptor.configName()).toLowerCase());
 				continue;
 			}
 
@@ -440,22 +442,17 @@ public class PluginManager
 
 	public void setPluginEnabled(Plugin plugin, boolean enabled)
 	{
-		final String keyName = plugin.getClass().getSimpleName().toLowerCase();
-		configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, keyName, String.valueOf(enabled));
+		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+		final String keyName = Strings.isNullOrEmpty(pluginDescriptor.configName()) ? plugin.getClass().getSimpleName() : pluginDescriptor.configName();
+		configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, keyName.toLowerCase(), String.valueOf(enabled));
 	}
 
 	public boolean isPluginEnabled(Plugin plugin)
 	{
-		final String keyName = plugin.getClass().getSimpleName().toLowerCase();
-		final String value = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, keyName);
-
-		if (value != null)
-		{
-			return Boolean.valueOf(value);
-		}
-
 		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-		return pluginDescriptor == null || pluginDescriptor.enabledByDefault();
+		final String keyName = Strings.isNullOrEmpty(pluginDescriptor.configName()) ? plugin.getClass().getSimpleName() : pluginDescriptor.configName();
+		final String value = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, keyName.toLowerCase());
+		return value != null ? Boolean.parseBoolean(value) : pluginDescriptor.enabledByDefault();
 	}
 
 	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz) throws PluginInstantiationException

@@ -96,6 +96,7 @@ import net.runelite.http.api.ws.messages.party.UserSync;
 
 @PluginDescriptor(
 	name = "Party",
+	configName = "PartyPlugin2",
 	description = "Party management and basic info",
 	enabledByDefault = false
 )
