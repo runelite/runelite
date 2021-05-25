@@ -34,7 +34,7 @@ import javax.inject.Singleton;
 import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.client.game.FriendChatManager;
+import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -49,15 +49,15 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
-	private final FriendChatManager friendChatManager;
+	private final ChatIconManager chatIconManager;
 
 	@Inject
 	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
-		FriendChatManager friendChatManager)
+		ChatIconManager chatIconManager)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
-		this.friendChatManager = friendChatManager;
+		this.chatIconManager = chatIconManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
 	}
@@ -108,13 +108,13 @@ public class PlayerIndicatorsOverlay extends Overlay
 			return;
 		}
 
-		if (config.showFriendsChatRanks() && actor.isFriendsChatMember())
+		if (actor.isFriendsChatMember() && config.showFriendsChatRanks())
 		{
-			final FriendsChatRank rank = friendChatManager.getRank(name);
+			final FriendsChatRank rank = playerIndicatorsService.getFriendsChatRank(actor);
 
 			if (rank != FriendsChatRank.UNRANKED)
 			{
-				final BufferedImage rankImage = friendChatManager.getRankImage(rank);
+				final BufferedImage rankImage = chatIconManager.getRankImage(rank);
 
 				if (rankImage != null)
 				{

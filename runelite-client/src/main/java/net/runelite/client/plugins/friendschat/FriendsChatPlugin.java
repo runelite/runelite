@@ -76,7 +76,7 @@ import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.game.FriendChatManager;
+import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
@@ -103,7 +103,7 @@ public class FriendsChatPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private FriendChatManager friendChatManager;
+	private ChatIconManager chatIconManager;
 
 	@Inject
 	private FriendsChatConfig config;
@@ -398,7 +398,7 @@ public class FriendsChatPlugin extends Plugin
 
 		if (config.chatIcons() && rank != null && rank != FriendsChatRank.UNRANKED)
 		{
-			rankIcon = friendChatManager.getIconNumber(rank);
+			rankIcon = chatIconManager.getIconNumber(rank);
 		}
 
 		ChatMessageBuilder message = new ChatMessageBuilder()
@@ -580,11 +580,11 @@ public class FriendsChatPlugin extends Plugin
 
 	private void insertRankIcon(final ChatMessage message)
 	{
-		final FriendsChatRank rank = friendChatManager.getRank(message.getName());
+		final FriendsChatRank rank = getRank(message.getName());
 
 		if (rank != null && rank != FriendsChatRank.UNRANKED)
 		{
-			int iconNumber = friendChatManager.getIconNumber(rank);
+			int iconNumber = chatIconManager.getIconNumber(rank);
 			final String img = "<img=" + iconNumber + ">";
 			if (message.getType() == ChatMessageType.FRIENDSCHAT)
 			{
@@ -598,6 +598,18 @@ public class FriendsChatPlugin extends Plugin
 			}
 			client.refreshChat();
 		}
+	}
+
+	private FriendsChatRank getRank(String playerName)
+	{
+		final FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+		if (friendsChatManager == null)
+		{
+			return FriendsChatRank.UNRANKED;
+		}
+
+		FriendsChatMember friendsChatMember = friendsChatManager.findByName(playerName);
+		return friendsChatMember != null ? friendsChatMember.getRank() : FriendsChatRank.UNRANKED;
 	}
 
 	private void rebuildFriendsChat()

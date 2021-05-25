@@ -29,6 +29,9 @@ import java.util.function.BiConsumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.FriendsChatManager;
+import net.runelite.api.FriendsChatMember;
+import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Player;
 
 @Singleton
@@ -87,5 +90,17 @@ public class PlayerIndicatorsService
 				consumer.accept(player, config.getOthersColor());
 			}
 		}
+	}
+
+	FriendsChatRank getFriendsChatRank(Player player)
+	{
+		final FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+		if (friendsChatManager == null)
+		{
+			return FriendsChatRank.UNRANKED;
+		}
+
+		FriendsChatMember friendsChatMember = friendsChatManager.findByName(player.getName());
+		return friendsChatMember != null ? friendsChatMember.getRank() : FriendsChatRank.UNRANKED;
 	}
 }
