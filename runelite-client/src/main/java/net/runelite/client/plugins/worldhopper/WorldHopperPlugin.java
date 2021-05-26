@@ -29,6 +29,7 @@ package net.runelite.client.plugins.worldhopper;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
@@ -159,6 +160,7 @@ public class WorldHopperPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int currentPing;
 
+	@Getter
 	private final Map<Integer, Integer> storedPings = new HashMap<>();
 
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
@@ -182,6 +184,12 @@ public class WorldHopperPlugin extends Plugin
 	WorldHopperConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(WorldHopperConfig.class);
+	}
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(WorldHopperService.class).to(WorldHopperServiceImpl.class);
 	}
 
 	@Override
