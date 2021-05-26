@@ -111,10 +111,21 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "filterClanChat",
+		name = "Filter clan Chat Members",
+		description = "Filter your clan chat members' messages",
+		position = 7
+	)
+	default boolean filterClanChat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "filterLogin",
 		name = "Filter Logged In/Out Messages",
 		description = "Filter your private chat to remove logged in/out messages",
-		position = 7
+		position = 8
 	)
 	default boolean filterLogin()
 	{
@@ -125,7 +136,7 @@ public interface ChatFilterConfig extends Config
 		keyName = "filterGameChat",
 		name = "Filter Game Chat",
 		description = "Filter your game chat messages",
-		position = 8
+		position = 9
 	)
 	default boolean filterGameChat()
 	{
@@ -136,7 +147,7 @@ public interface ChatFilterConfig extends Config
 		keyName = "collapseGameChat",
 		name = "Collapse Game Chat",
 		description = "Collapse duplicate game chat messages into a single line",
-		position = 9
+		position = 10
 	)
 	default boolean collapseGameChat()
 	{
@@ -147,7 +158,7 @@ public interface ChatFilterConfig extends Config
 		keyName = "collapsePlayerChat",
 		name = "Collapse Player Chat",
 		description = "Collapse duplicate player chat messages into a single line",
-		position = 10
+		position = 11
 	)
 	default boolean collapsePlayerChat()
 	{
@@ -158,7 +169,7 @@ public interface ChatFilterConfig extends Config
 		keyName = "maxRepeatedPublicChats",
 		name = "Repeat filter",
 		description = "Block player chat message if repeated this many times. 0 is off",
-		position = 11
+		position = 12
 	)
 	default int maxRepeatedPublicChats()
 	{

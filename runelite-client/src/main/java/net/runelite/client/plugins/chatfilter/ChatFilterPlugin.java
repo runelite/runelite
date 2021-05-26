@@ -53,6 +53,7 @@ import net.runelite.api.Client;
 import net.runelite.api.FriendsChatManager;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -170,6 +171,8 @@ public class ChatFilterPlugin extends Plugin
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
 			case FRIENDSCHAT:
+			case CLAN_CHAT:
+			case CLAN_GUEST_CHAT:
 				if (shouldFilterPlayerMessage(Text.removeTags(name)))
 				{
 					message = censorMessage(name, message);
@@ -271,13 +274,31 @@ public class ChatFilterPlugin extends Plugin
 		boolean isMessageFromSelf = playerName.equals(client.getLocalPlayer().getName());
 		return !isMessageFromSelf &&
 			(config.filterFriends() || !client.isFriended(playerName, false)) &&
-			(config.filterFriendsChat() || !isFriendsChatMember(playerName));
+			(config.filterFriendsChat() || !isFriendsChatMember(playerName)) &&
+			(config.filterClanChat() || !isClanChatMember(playerName));
 	}
 
 	private boolean isFriendsChatMember(String name)
 	{
 		FriendsChatManager friendsChatManager = client.getFriendsChatManager();
 		return friendsChatManager != null && friendsChatManager.findByName(name) != null;
+	}
+
+	private boolean isClanChatMember(String name)
+	{
+		ClanChannel clanChannel = client.getClanChannel();
+		if (clanChannel != null && clanChannel.findMember(name) != null)
+		{
+			return true;
+		}
+
+		clanChannel = client.getGuestClanChannel();
+		if (clanChannel != null && clanChannel.findMember(name) != null)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	String censorMessage(final String username, final String message)
