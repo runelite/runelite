@@ -21293,6 +21293,8 @@ public final class ObjectID
 	public static final int BOXES_41605 = 41605;
 	public static final int SIGNPOST_41606 = 41606;
 	public static final int TABLE_41607 = 41607;
+	public static final int BUSH_41610 = 41610;
+	public static final int BUSH_41611 = 41611;
 	public static final int RED_BARRIER_41613 = 41613;
 	public static final int POSTER_41615 = 41615;
 	public static final int PORTAL_41617 = 41617;
