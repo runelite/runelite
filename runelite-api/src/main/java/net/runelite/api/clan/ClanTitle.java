@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Shaun Dreclin <https://github.com/ShaunDreclin>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.clan;
+
+import lombok.Value;
 
 /**
- * Utility class used for mapping enum IDs.
- * <p>
- * Note: This class is not complete and may be missing mapped IDs.
+ * A clan title, such as Owner, Administrator, Anchor, etc.
  */
-public final class EnumID
+@Value
+public class ClanTitle
 {
-	public static final int MUSIC_TRACK_NAMES = 812;
-	public static final int MUSIC_TRACK_IDS = 819;
-	public static final int XPDROP_COLORS = 1169;
-	public static final int FRIENDS_CHAT_RANK_ICONS = 1543;
-	public static final int CLAN_RANK_NAME = 3797;
-	public static final int CLAN_RANK_GRAPHIC = 3798;
+	/**
+	 * The id of the title
+	 */
+	int id;
+	/**
+	 * The name of the title
+	 */
+	String name;
 }

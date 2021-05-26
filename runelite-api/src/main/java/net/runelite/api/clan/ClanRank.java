@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Shaun Dreclin <https://github.com/ShaunDreclin>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.clan;
 
 /**
- * Utility class used for mapping enum IDs.
- * <p>
- * Note: This class is not complete and may be missing mapped IDs.
+ * The ranks in a clan. Clan ranks 1-14 are mapped to corresponding titles via
+ * the clan settings.
  */
-public final class EnumID
+public enum ClanRank
 {
-	public static final int MUSIC_TRACK_NAMES = 812;
-	public static final int MUSIC_TRACK_IDS = 819;
-	public static final int XPDROP_COLORS = 1169;
-	public static final int FRIENDS_CHAT_RANK_ICONS = 1543;
-	public static final int CLAN_RANK_NAME = 3797;
-	public static final int CLAN_RANK_GRAPHIC = 3798;
+	GUEST,
+	CLAN_RANK_1,
+	CLAN_RANK_2,
+	CLAN_RANK_3,
+	CLAN_RANK_4,
+	CLAN_RANK_5,
+	CLAN_RANK_6,
+	CLAN_RANK_7,
+	CLAN_RANK_8,
+	CLAN_RANK_9,
+	CLAN_RANK_10,
+	ADMINISTRATOR,
+	CLAN_RANK_11,
+	CLAN_RANK_12,
+	CLAN_RANK_13,
+	CLAN_RANK_14,
+	DEPUTY_OWNER,
+	OWNER,
+	JMOD;
 }

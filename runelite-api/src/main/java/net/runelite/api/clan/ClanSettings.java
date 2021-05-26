@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,75 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.clan;
 
-import java.awt.Polygon;
+import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * Represents a player entity in the game.
+ * A clan's settings.
  */
-public interface Player extends Actor
+public interface ClanSettings
 {
-	@Override
-	int getCombatLevel();
-
 	/**
-	 * Gets the composition of this player.
-	 *
-	 * @return the composition
-	 */
-	PlayerComposition getPlayerComposition();
-
-	/**
-	 * Gets the polygons that make up the players model.
-	 *
-	 * @return the model polygons
-	 */
-	Polygon[] getPolygons();
-
-	/**
-	 * Gets the current team cape team number the player is on.
-	 *
-	 * @return team number, or 0 if not on any team
-	 */
-	int getTeam();
-
-	/**
-	 * Checks whether this player is a member of the same friends chat
-	 * the local player.
-	 *
-	 * @return true if the player is a friends chat member, false otherwise
-	 */
-	boolean isFriendsChatMember();
-
-	/**
-	 * Checks whether this player is a friend of the local player.
-	 *
-	 * @return true if the player is a friend, false otherwise
-	 */
-	boolean isFriend();
-
-	/**
-	 * Checks whether the player is a member of the same clan as the local player.
-	 *
+	 * The clan name
 	 * @return
 	 */
-	boolean isClanMember();
+	String getName();
 
 	/**
-	 * Gets the displayed overhead icon of the player.
-	 *
-	 * @return the overhead icon
+	 * The members of the clan. This includes all members, whether online or offline.
+	 * @return
 	 */
-	HeadIcon getOverheadIcon();
+	List<ClanMember> getMembers();
 
 	/**
-	 * Gets the displayed skull icon of the player.
-	 * Only works on the local player.
-	 *
-	 * @return the skull icon
+	 * Find a member of the clan.
+	 * @param name
+	 * @return
 	 */
 	@Nullable
-	SkullIcon getSkullIcon();
+	ClanMember findMember(String name);
+
+	/**
+	 * Get the clan title for a clan rank.
+	 * @param clanRank the rank
+	 * @see ClanRank
+	 * @return
+	 */
+	ClanTitle titleForRank(ClanRank clanRank);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Shaun Dreclin <https://github.com/ShaunDreclin>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.clan;
+
+import net.runelite.api.ChatPlayer;
 
 /**
- * Utility class used for mapping enum IDs.
- * <p>
- * Note: This class is not complete and may be missing mapped IDs.
+ * A member of a clan channel
  */
-public final class EnumID
+public interface ClanChannelMember extends ChatPlayer
 {
-	public static final int MUSIC_TRACK_NAMES = 812;
-	public static final int MUSIC_TRACK_IDS = 819;
-	public static final int XPDROP_COLORS = 1169;
-	public static final int FRIENDS_CHAT_RANK_ICONS = 1543;
-	public static final int CLAN_RANK_NAME = 3797;
-	public static final int CLAN_RANK_GRAPHIC = 3798;
+	/**
+	 * The member name
+	 * @return
+	 */
+	String getName();
+
+	/**
+	 * The member's rank relative to the other members. To get the member title,
+	 * see ClanSettings.
+	 * @see ClanRank
+	 * @see ClanSettings#titleForRank(ClanRank)
+	 * @return
+	 */
+	ClanRank getRank();
+
+	/**
+	 * The world the member is on
+	 * @return
+	 */
+	int getWorld();
 }
