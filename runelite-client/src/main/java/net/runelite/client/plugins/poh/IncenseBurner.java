@@ -37,6 +37,8 @@ class IncenseBurner
 
 	private Instant start;
 	private boolean lit;
+	private boolean burnerExpirationNotificationSent;
+	private boolean burnerCloseToExpiration;
 	private double countdownTimer;
 	private double randomTimer;
 	private Instant end;
@@ -45,5 +47,7 @@ class IncenseBurner
 	{
 		countdownTimer = DEFAULT_COUNTDOWN_TIMER;
 		randomTimer = DEFAULT_RANDOM_TIMER;
+		burnerExpirationNotificationSent = false;
+		burnerCloseToExpiration = false;
 	}
 }

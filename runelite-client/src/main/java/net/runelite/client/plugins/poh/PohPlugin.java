@@ -49,12 +49,8 @@ import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.DecorativeObjectDespawned;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.*;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -67,9 +63,9 @@ import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.Skill;
 
 @PluginDescriptor(
-	name = "Player-owned House",
-	description = "Show minimap icons and mark unlit/lit burners",
-	tags = {"construction", "poh", "minimap", "overlay"}
+		name = "Player-owned House",
+		description = "Show minimap icons and mark unlit/lit burners",
+		tags = {"construction", "poh", "minimap", "overlay"}
 )
 @Slf4j
 public class PohPlugin extends Plugin
@@ -100,6 +96,12 @@ public class PohPlugin extends Plugin
 
 	@Inject
 	private BurnerOverlay burnerOverlay;
+
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	PohConfig config;
 
 	@Provides
 	PohConfig getConfig(ConfigManager configManager)
@@ -163,6 +165,18 @@ public class PohPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameTick(GameTick event) {
+		incenseBurners.forEach((tile, burner) ->
+		{
+			if (config.toggleBurnerNotificationExpiration() && burner.isLit() && burner.isBurnerCloseToExpiration() && !burner.isBurnerExpirationNotificationSent())
+			{
+				notifier.notify("Burner entering random phase soon!");
+				burner.setBurnerExpirationNotificationSent(true);
+			}
+		});
+	}
+
+	@Subscribe
 	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		DecorativeObject decorativeObject = event.getDecorativeObject();
@@ -204,22 +218,22 @@ public class PohPlugin extends Plugin
 
 		// Find burner closest to player
 		incenseBurners.keySet()
-			.stream()
-			.min(Comparator.comparingInt(a -> loc.distanceTo(a.getLocalLocation())))
-			.ifPresent(tile ->
-			{
-				final IncenseBurner incenseBurner = incenseBurners.get(tile);
+				.stream()
+				.min(Comparator.comparingInt(a -> loc.distanceTo(a.getLocalLocation())))
+				.ifPresent(tile ->
+				{
+					final IncenseBurner incenseBurner = incenseBurners.get(tile);
 
-				if (actor == client.getLocalPlayer())
-				{
-					int level = client.getRealSkillLevel(net.runelite.api.Skill.FIREMAKING);
-					updateBurner(incenseBurner, level);
-				}
-				else if (actorName != null)
-				{
-					lookupPlayer(actorName, incenseBurner);
-				}
-			});
+					if (actor == client.getLocalPlayer())
+					{
+						int level = client.getRealSkillLevel(net.runelite.api.Skill.FIREMAKING);
+						updateBurner(incenseBurner, level);
+					}
+					else if (actorName != null)
+					{
+						lookupPlayer(actorName, incenseBurner);
+					}
+				});
 
 	}
 
@@ -251,6 +265,6 @@ public class PohPlugin extends Plugin
 	{
 		final double tickLengthSeconds = Constants.GAME_TICK_LENGTH / 1000.0;
 		incenseBurner.setCountdownTimer((200 + fmLevel) * tickLengthSeconds);
-		incenseBurner.setRandomTimer(fmLevel * tickLengthSeconds);
+		incenseBurner.setRandomTimer((fmLevel - 1) * tickLengthSeconds);
 	}
 }
