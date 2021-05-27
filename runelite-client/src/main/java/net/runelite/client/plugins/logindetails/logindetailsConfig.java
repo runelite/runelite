@@ -11,7 +11,7 @@ import net.runelite.client.config.ConfigItem;
                 position = 1,
                 keyName = "storeUsername",
                 name = "Username",
-                description = "Save your username"
+                description = "Save your username."
         )
         default String storeUsername() { return ""; }
 
@@ -19,7 +19,7 @@ import net.runelite.client.config.ConfigItem;
                 position = 2,
                 keyName = "storePassword",
                 name = "Password",
-                description = "Save your password"
+                description = "Save your password."
         )
         default String storePassword() { return ""; }
 
@@ -28,7 +28,7 @@ import net.runelite.client.config.ConfigItem;
                         position = 3,
                         keyName = "saveDetails",
                         name = "Store details",
-                        description = "Toggle saving login info"
+                        description = "Toggle saving login info."
                 )
         default boolean toggleDetails() { return true; }
     }
