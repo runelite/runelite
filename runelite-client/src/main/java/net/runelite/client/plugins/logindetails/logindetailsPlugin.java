@@ -31,11 +31,6 @@ public class logindetailsPlugin extends Plugin {
     @Inject
     private Client client;
 
-    @Inject
-    private Notifier notify;
-
-
-
     @Provides
     logindetailsConfig provideConfig(ConfigManager configManager) {
         return configManager.getConfig(logindetailsConfig.class);
