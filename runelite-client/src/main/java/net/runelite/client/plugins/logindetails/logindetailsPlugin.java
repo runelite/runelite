@@ -17,7 +17,7 @@ import javax.inject.Inject;
 @PluginDescriptor(
         name = "Login Details",
         description = "Allows you to save both Username & Password on Runelite.",
-        tags = {"world", "overlay"},
+        tags = {"password", "username", "login", "details"},
         loadWhenOutdated = true,
         enabledByDefault = false
 )
