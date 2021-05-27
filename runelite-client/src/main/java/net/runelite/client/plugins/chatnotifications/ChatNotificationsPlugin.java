@@ -209,6 +209,8 @@ public class ChatNotificationsPlugin extends Plugin
 			case MODCHAT:
 			case PUBLICCHAT:
 			case FRIENDSCHAT:
+			case CLAN_CHAT:
+			case CLAN_GUEST_CHAT:
 			case AUTOTYPER:
 			case MODAUTOTYPER:
 				if (client.getLocalPlayer() != null && Text.toJagexName(Text.removeTags(chatMessage.getName())).equals(client.getLocalPlayer().getName()))
@@ -250,7 +252,9 @@ public class ChatNotificationsPlugin extends Plugin
 					|| chatMessage.getType() == ChatMessageType.PRIVATECHAT
 					|| chatMessage.getType() == ChatMessageType.FRIENDSCHAT
 					|| chatMessage.getType() == ChatMessageType.MODCHAT
-					|| chatMessage.getType() == ChatMessageType.MODPRIVATECHAT))
+					|| chatMessage.getType() == ChatMessageType.MODPRIVATECHAT
+					|| chatMessage.getType() == ChatMessageType.CLAN_CHAT
+					|| chatMessage.getType() == ChatMessageType.CLAN_GUEST_CHAT))
 				{
 					sendNotification(chatMessage);
 				}

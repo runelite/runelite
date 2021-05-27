@@ -165,6 +165,8 @@ public class WidgetID
 	public static final int DUEL_INVENTORY_OTHER_GROUP_ID = 481;
 	public static final int TRAILBLAZER_AREAS_GROUP_ID = 512;
 	public static final int TEMPOROSS_GROUP_ID = 437;
+	public static final int CLAN_GROUP_ID = 701;
+	public static final int CLAN_GUEST_GROUP_ID = 702;
 
 	static class WorldMap
 	{
@@ -950,5 +952,15 @@ public class WidgetID
 	static class TemporossStatus
 	{
 		static final int STATUS_INDICATOR = 4;
+	}
+
+	static class Clan
+	{
+		static final int MEMBERS = 8;
+	}
+
+	static class ClanGuest
+	{
+		static final int MEMBERS = 8;
 	}
 }

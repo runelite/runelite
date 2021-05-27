@@ -124,6 +124,8 @@ public class EmojiPlugin extends Plugin
 			case PUBLICCHAT:
 			case MODCHAT:
 			case FRIENDSCHAT:
+			case CLAN_CHAT:
+			case CLAN_GUEST_CHAT:
 			case PRIVATECHAT:
 			case PRIVATECHATOUT:
 			case MODPRIVATECHAT:

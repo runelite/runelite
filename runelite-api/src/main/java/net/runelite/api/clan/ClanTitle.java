@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.api.clan;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import lombok.Value;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Documented
-public @interface PluginDescriptor
+/**
+ * A clan title, such as Owner, Administrator, Anchor, etc.
+ */
+@Value
+public class ClanTitle
 {
-	String name();
-
 	/**
-	 * Internal name used in the config.
+	 * The id of the title
 	 */
-	String configName() default "";
-
+	int id;
 	/**
-	 * A short, one-line summary of the plugin.
+	 * The name of the title
 	 */
-	String description() default "";
-
-	/**
-	 * A list of plugin keywords, used (together with the name) when searching for plugins.
-	 * Each tag should not contain any spaces, and should be fully lowercase.
-	 */
-	String[] tags() default {};
-
-	boolean enabledByDefault() default true;
-
-	/**
-	 * Whether or not plugin is hidden from configuration panel
-	 */
-	boolean hidden() default false;
-
-	boolean developerPlugin() default false;
-
-	boolean loadWhenOutdated() default false;
-
-	boolean loadInSafeMode() default true;
+	String name;
 }

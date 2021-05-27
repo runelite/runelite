@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins;
+package net.runelite.api.clan;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Documented
-public @interface PluginDescriptor
+/**
+ * The ranks in a clan. Clan ranks 1-14 are mapped to corresponding titles via
+ * the clan settings.
+ */
+public enum ClanRank
 {
-	String name();
-
-	/**
-	 * Internal name used in the config.
-	 */
-	String configName() default "";
-
-	/**
-	 * A short, one-line summary of the plugin.
-	 */
-	String description() default "";
-
-	/**
-	 * A list of plugin keywords, used (together with the name) when searching for plugins.
-	 * Each tag should not contain any spaces, and should be fully lowercase.
-	 */
-	String[] tags() default {};
-
-	boolean enabledByDefault() default true;
-
-	/**
-	 * Whether or not plugin is hidden from configuration panel
-	 */
-	boolean hidden() default false;
-
-	boolean developerPlugin() default false;
-
-	boolean loadWhenOutdated() default false;
-
-	boolean loadInSafeMode() default true;
+	GUEST,
+	CLAN_RANK_1,
+	CLAN_RANK_2,
+	CLAN_RANK_3,
+	CLAN_RANK_4,
+	CLAN_RANK_5,
+	CLAN_RANK_6,
+	CLAN_RANK_7,
+	CLAN_RANK_8,
+	CLAN_RANK_9,
+	CLAN_RANK_10,
+	ADMINISTRATOR,
+	CLAN_RANK_11,
+	CLAN_RANK_12,
+	CLAN_RANK_13,
+	CLAN_RANK_14,
+	DEPUTY_OWNER,
+	OWNER,
+	JMOD;
 }
