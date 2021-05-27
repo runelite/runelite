@@ -599,7 +599,19 @@
       "level": 63,
       "icon": 1135,
       "name": "Green D'hide Body",
-      "xp": 186
+      "xp": 186,
+      "materials": [
+        {
+          "id": 1745,
+          "name": "Green dragon leather",
+          "amount": 3
+        },
+        {
+          "id": 1734,
+          "name": "Thread",
+          "amount": 1
+        }
+      ]
     },
     {
       "level": 66,

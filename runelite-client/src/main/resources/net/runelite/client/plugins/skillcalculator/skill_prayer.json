@@ -265,7 +265,14 @@
       "level": 1,
       "icon": 536,
       "name": "Dragon Bones",
-      "xp": 72
+      "xp": 72,
+      "materials": [
+        {
+          "id": 536,
+          "name": "Dragon Bones",
+          "amount": 1
+        }
+      ]
     },
     {
       "level": 1,
