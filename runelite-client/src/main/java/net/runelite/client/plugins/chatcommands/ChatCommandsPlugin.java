@@ -113,21 +113,22 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern HS_KC_FLOOR_PATTERN = Pattern.compile("You have completed Floor (\\d) of the Hallowed Sepulchre! Total completions: <col=ff0000>([0-9,]+)</col>\\.");
 	private static final Pattern HS_KC_GHC_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin <col=ff0000>([0-9,]+)</col> times?!");
 
-	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
-	private static final String PRICE_COMMAND_STRING = "!price";
-	private static final String LEVEL_COMMAND_STRING = "!lvl";
 	private static final String BOUNTY_HUNTER_HUNTER_COMMAND = "!bh";
 	private static final String BOUNTY_HUNTER_ROGUE_COMMAND = "!bhrogue";
-	private static final String CLUES_COMMAND_STRING = "!clues";
 	private static final String LAST_MAN_STANDING_COMMAND = "!lms";
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
-	private static final String CMB_COMMAND_STRING = "!cmb";
 	private static final String QP_COMMAND_STRING = "!qp";
 	private static final String PB_COMMAND = "!pb";
 	private static final String GC_COMMAND_STRING = "!gc";
 	private static final String DUEL_ARENA_COMMAND = "!duels";
 	private static final String LEAGUE_POINTS_COMMAND = "!lp";
 	private static final String SOUL_WARS_ZEAL_COMMAND = "!sw";
+
+	private static final String[] PRICE_COMMAND_STRINGS = { "!price", "!pc" };
+	private static final String[] TOTAL_LEVEL_COMMAND_STRINGS = { "!total", "!overall" };
+	private static final String[] LEVEL_COMMAND_STRINGS = { "!level", "!lvl" };
+	private static final String[] CMB_COMMAND_STRINGS = { "!cb", "!cmb", "!cblvl" };
+	private static final String[] CLUES_COMMAND_STRINGS = { "!clue", "!clues" };
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -186,13 +187,8 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		keyManager.registerKeyListener(chatKeyboardListener);
 
-		chatCommandManager.registerCommandAsync(TOTAL_LEVEL_COMMAND_STRING, this::playerSkillLookup);
-		chatCommandManager.registerCommandAsync(CMB_COMMAND_STRING, this::combatLevelLookup);
-		chatCommandManager.registerCommand(PRICE_COMMAND_STRING, this::itemPriceLookup);
-		chatCommandManager.registerCommandAsync(LEVEL_COMMAND_STRING, this::playerSkillLookup);
 		chatCommandManager.registerCommandAsync(BOUNTY_HUNTER_HUNTER_COMMAND, this::bountyHunterHunterLookup);
 		chatCommandManager.registerCommandAsync(BOUNTY_HUNTER_ROGUE_COMMAND, this::bountyHunterRogueLookup);
-		chatCommandManager.registerCommandAsync(CLUES_COMMAND_STRING, this::clueLookup);
 		chatCommandManager.registerCommandAsync(LAST_MAN_STANDING_COMMAND, this::lastManStandingLookup);
 		chatCommandManager.registerCommandAsync(LEAGUE_POINTS_COMMAND, this::leaguePointsLookup);
 		chatCommandManager.registerCommandAsync(KILLCOUNT_COMMAND_STRING, this::killCountLookup, this::killCountSubmit);
@@ -201,6 +197,27 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(GC_COMMAND_STRING, this::gambleCountLookup, this::gambleCountSubmit);
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
+
+		for (String command : TOTAL_LEVEL_COMMAND_STRINGS)
+		{
+			chatCommandManager.registerCommandAsync(command, this::playerSkillLookup);
+		}
+		for (String command : PRICE_COMMAND_STRINGS)
+		{
+			chatCommandManager.registerCommand(command, this::itemPriceLookup);
+		}
+		for (String command : LEVEL_COMMAND_STRINGS)
+		{
+			chatCommandManager.registerCommandAsync(command, this::playerSkillLookup);
+		}
+		for (String command : CMB_COMMAND_STRINGS)
+		{
+			chatCommandManager.registerCommandAsync(command, this::combatLevelLookup);
+		}
+		for (String command : CLUES_COMMAND_STRINGS)
+		{
+			chatCommandManager.registerCommandAsync(command, this::clueLookup);
+		}
 	}
 
 	@Override
@@ -211,13 +228,8 @@ public class ChatCommandsPlugin extends Plugin
 
 		keyManager.unregisterKeyListener(chatKeyboardListener);
 
-		chatCommandManager.unregisterCommand(TOTAL_LEVEL_COMMAND_STRING);
-		chatCommandManager.unregisterCommand(CMB_COMMAND_STRING);
-		chatCommandManager.unregisterCommand(PRICE_COMMAND_STRING);
-		chatCommandManager.unregisterCommand(LEVEL_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(BOUNTY_HUNTER_HUNTER_COMMAND);
 		chatCommandManager.unregisterCommand(BOUNTY_HUNTER_ROGUE_COMMAND);
-		chatCommandManager.unregisterCommand(CLUES_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(LAST_MAN_STANDING_COMMAND);
 		chatCommandManager.unregisterCommand(LEAGUE_POINTS_COMMAND);
 		chatCommandManager.unregisterCommand(KILLCOUNT_COMMAND_STRING);
@@ -226,6 +238,27 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(GC_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 		chatCommandManager.unregisterCommand(SOUL_WARS_ZEAL_COMMAND);
+
+		for (String command : TOTAL_LEVEL_COMMAND_STRINGS)
+		{
+			chatCommandManager.unregisterCommand(command);
+		}
+		for (String command : PRICE_COMMAND_STRINGS)
+		{
+			chatCommandManager.unregisterCommand(command);
+		}
+		for (String command : LEVEL_COMMAND_STRINGS)
+		{
+			chatCommandManager.unregisterCommand(command);
+		}
+		for (String command : CMB_COMMAND_STRINGS)
+		{
+			chatCommandManager.unregisterCommand(command);
+		}
+		for (String command : CLUES_COMMAND_STRINGS)
+		{
+			chatCommandManager.unregisterCommand(command);
+		}
 	}
 
 	@Provides
@@ -610,13 +643,14 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		if (message.length() <= KILLCOUNT_COMMAND_STRING.length())
+		int idx = message.indexOf(' ');
+		if (message.length() <= idx + 1)
 		{
 			return;
 		}
 
 		ChatMessageType type = chatMessage.getType();
-		String search = message.substring(KILLCOUNT_COMMAND_STRING.length() + 1);
+		String search = message.substring(idx + 1);
 
 		final String player;
 		if (type.equals(ChatMessageType.PRIVATECHATOUT))
@@ -822,13 +856,14 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		if (message.length() <= PB_COMMAND.length())
+		int idx = message.indexOf(' ');
+		if (message.length() <= idx)
 		{
 			return;
 		}
 
 		ChatMessageType type = chatMessage.getType();
-		String search = message.substring(PB_COMMAND.length() + 1);
+		String search = message.substring(idx + 1);
 
 		final String player;
 		if (type.equals(ChatMessageType.PRIVATECHATOUT))
@@ -992,13 +1027,14 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		if (message.length() <= PRICE_COMMAND_STRING.length())
+		int idx = message.indexOf(' ');
+		if (message.length() <= idx)
 		{
 			return;
 		}
 
 		MessageNode messageNode = chatMessage.getMessageNode();
-		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
+		String search = message.substring(idx + 1);
 
 		List<ItemPrice> results = itemManager.search(search);
 
@@ -1052,18 +1088,15 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		String search;
-		if (message.equalsIgnoreCase(TOTAL_LEVEL_COMMAND_STRING))
+
+		int idx = message.indexOf(' ');
+		if (idx == -1)
 		{
 			search = "total";
 		}
 		else
 		{
-			if (message.length() <= LEVEL_COMMAND_STRING.length())
-			{
-				return;
-			}
-
-			search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
+			search = message.substring(idx + 1);
 		}
 
 		search = SkillAbbreviations.getFullName(search);
@@ -1346,13 +1379,14 @@ public class ChatCommandsPlugin extends Plugin
 
 		String search;
 
-		if (message.equalsIgnoreCase(CLUES_COMMAND_STRING))
+		int idx = message.indexOf(' ');
+		if (idx == -1)
 		{
 			search = "total";
 		}
 		else
 		{
-			search = message.substring(CLUES_COMMAND_STRING.length() + 1);
+			search = message.substring(idx + 1);
 		}
 
 		try
