@@ -5,7 +5,6 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 
-
 @ConfigGroup("logindetails")
     public interface logindetailsConfig extends Config
     {

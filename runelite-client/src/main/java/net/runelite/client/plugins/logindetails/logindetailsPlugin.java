@@ -39,14 +39,12 @@ public class logindetailsPlugin extends Plugin {
     @Subscribe
     public void onConfigChanged(ConfigChanged event)
     {
-
     }
 
 
     @Subscribe
     public void onGameTick(GameTick event)
     {
-
     }
 
 
