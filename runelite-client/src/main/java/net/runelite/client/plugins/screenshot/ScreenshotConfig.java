@@ -256,7 +256,7 @@ public interface ScreenshotConfig extends Config
 	@ConfigItem(
 		keyName = "collectionLogEntries",
 		name = "Screenshot collection log entries",
-		description = "Configures whether or not screenshots are automatically taken of new collection log entries",
+		description = "Take a screenshot when completing an entry in the collection log",
 		position = 18,
 		section = whatSection
 	)

@@ -95,6 +95,7 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class ScreenshotPlugin extends Plugin
 {
+	private static final String COLLECTION_LOG_TEXT = "New item added to your collection log: ";
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Map<Integer, String> CHEST_LOOT_EVENTS = ImmutableMap.of(12127, "The Gauntlet");
 	private static final int GAUNTLET_REGION = 7512;
@@ -457,10 +458,10 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith("New item added to your collection log: "))
+		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith(COLLECTION_LOG_TEXT))
 		{
-			String entry = chatMessage.substring(51, chatMessage.length() - 6);
-			String fileName = "Collection log: " + entry;
+			String entry = Text.removeTags(chatMessage).substring(COLLECTION_LOG_TEXT.length());
+			String fileName = "Collection log (" + entry + ")";
 			takeScreenshot(fileName, "Collection Log");
 		}
 	}
