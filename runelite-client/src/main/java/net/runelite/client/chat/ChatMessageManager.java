@@ -196,12 +196,14 @@ public class ChatMessageManager
 	{
 		final String eventName = scriptCallbackEvent.getEventName();
 
+		boolean wrap;
 		switch (eventName)
 		{
-			case "privateChatFrom":
-			case "privateChatTo":
-			case "privateChatSplitFrom":
-			case "privateChatSplitTo":
+			case "splitPrivChatUsernameColor":
+				wrap = false;
+				break;
+			case "privChatUsername":
+				wrap = true;
 				break;
 			default:
 				return;
@@ -216,10 +218,17 @@ public class ChatMessageManager
 
 		final String[] stringStack = client.getStringStack();
 		final int stringStackSize = client.getStringStackSize();
-
-		// Stack is: To/From playername :
-		String toFrom = stringStack[stringStackSize - 3];
-		stringStack[stringStackSize - 3] = ColorUtil.prependColorTag(toFrom, usernameColor);
+		
+		String fromToUsername = stringStack[stringStackSize - 1];
+		if (wrap)
+		{
+			fromToUsername = ColorUtil.wrapWithColorTag(fromToUsername, usernameColor);
+		}
+		else
+		{
+			fromToUsername = ColorUtil.colorTag(usernameColor);
+		}
+		stringStack[stringStackSize - 1] = fromToUsername;
 	}
 
 	private static Color getDefaultColor(ChatMessageType type, boolean transparent)

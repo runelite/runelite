@@ -10,6 +10,7 @@
    iconst                 1
    if_icmpeq              LABEL4
    jump                   CONFIRM_KICK  ; Jump to our new label instead
+   jump                   LABEL7
 LABEL4:
    sconst                 "You can't kick players from your team during Wilderness Wars."
    mes                   
@@ -20,8 +21,7 @@ LABEL7:
    invoke                 96
    sload                  0
    clan_kickuser         
-   jump                   LABEL73
-LABEL73:
+RETURN:
    return                
 CONFIRM_KICK:
    sload                  0             ; Username we are trying to kick
@@ -30,5 +30,5 @@ CONFIRM_KICK:
    runelite_callback     
    pop_string            ; Pop username
    iconst                 0             ; Compare against zero
-   if_icmpgt              LABEL73       ; Early return for chatbox panel confirmation
+   if_icmpgt              RETURN       ; Early return for chatbox panel confirmation
    jump                   LABEL7
