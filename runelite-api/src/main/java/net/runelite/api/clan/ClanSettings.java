@@ -58,5 +58,6 @@ public interface ClanSettings
 	 * @see ClanRank
 	 * @return
 	 */
+	@Nullable
 	ClanTitle titleForRank(ClanRank clanRank);
 }
