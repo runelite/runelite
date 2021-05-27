@@ -92,6 +92,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Ground Items",
@@ -420,6 +421,12 @@ public class GroundItemsPlugin extends Plugin
 
 	private void reset()
 	{
+		if (config.alphabeticalItemList())
+		{
+			config.setHiddenItems(alphabeticalList(config.getHiddenItems()));
+			config.setHighlightedItem(alphabeticalList(config.getHighlightItems()));
+		}
+
 		// gets the hidden items from the text box in the config
 		hiddenItemList = Text.fromCSV(config.getHiddenItems());
 
@@ -460,6 +467,13 @@ public class GroundItemsPlugin extends Plugin
 		}
 
 		priceChecks = priceCheckBuilder.build();
+	}
+
+	private String alphabeticalList(String list)
+	{
+		List<String> itemList = Text.fromCSV(list);
+		java.util.Collections.sort(itemList);
+		return StringUtils.join(itemList, ", ");
 	}
 
 	@Subscribe
