@@ -3,16 +3,16 @@
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * Copyright (c) 2021, Pristit <https://github.com/pristit>
  * All rights reserved.
- *
+ * <p>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * <p>
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * <p>
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -355,12 +355,12 @@ class SkillCalculator extends JPanel
 			{
 				actionCount = (int) Math.ceil(neededXP / xp);
 			}
-			int actionCost = 0;
-			int finalCost;
-			String materials = "";
 			// check whether or not this skill action has a material cost field in the resource json file.
 			if (action.getMaterials() != null)
 			{
+				int actionCost = 0;
+				int finalCost;
+				String materials = "";
 				for (Material material : action.getMaterials())
 				{
 					if (material != null)

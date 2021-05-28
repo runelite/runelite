@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2021, Pristit <https://github.com/pristit>
  * All rights reserved.
  *
