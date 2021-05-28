@@ -786,7 +786,7 @@ public class ChatChannelPlugin extends Plugin
 
 	private void insertRankIcon(final ChatMessage message)
 	{
-		final FriendsChatRank rank = getRank(message.getName());
+		final FriendsChatRank rank = getRank(Text.removeTags(message.getName()));
 
 		if (rank != null && rank != FriendsChatRank.UNRANKED)
 		{

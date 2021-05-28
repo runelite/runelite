@@ -38,6 +38,7 @@ import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanRank;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.clan.ClanTitle;
+import net.runelite.client.util.Text;
 
 @Singleton
 public class PlayerIndicatorsService
@@ -130,7 +131,7 @@ public class PlayerIndicatorsService
 			return FriendsChatRank.UNRANKED;
 		}
 
-		FriendsChatMember friendsChatMember = friendsChatManager.findByName(player.getName());
+		FriendsChatMember friendsChatMember = friendsChatManager.findByName(Text.removeTags(player.getName()));
 		return friendsChatMember != null ? friendsChatMember.getRank() : FriendsChatRank.UNRANKED;
 	}
 }
