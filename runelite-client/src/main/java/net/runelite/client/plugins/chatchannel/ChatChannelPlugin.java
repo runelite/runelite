@@ -41,6 +41,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.AllArgsConstructor;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
@@ -80,6 +81,8 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -131,6 +134,9 @@ public class ChatChannelPlugin extends Plugin
 	@Inject
 	private ChatColorConfig chatColorConfig;
 
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
 	private List<String> chats;
 	private final List<Player> members = new ArrayList<>();
 	private MembersIndicator membersIndicator;
@@ -142,6 +148,21 @@ public class ChatChannelPlugin extends Plugin
 	private int joinedTick;
 
 	private boolean kickConfirmed = false;
+
+	private boolean inputWarning;
+
+	@AllArgsConstructor
+	private enum InputMode
+	{
+		FRIEND("Friends Chat", ChatMessageType.FRIENDSCHAT),
+		CLAN("Clan Chat", ChatMessageType.CLAN_CHAT),
+		GUEST("Guest Clan Chat", ChatMessageType.CLAN_GUEST_CHAT);
+
+		private final String prompt;
+		private final ChatMessageType chatMessageType;
+	}
+
+	private InputMode inputMode;
 
 	@Provides
 	ChatChannelConfig getConfig(ConfigManager configManager)
@@ -168,6 +189,7 @@ public class ChatChannelPlugin extends Plugin
 		members.clear();
 		resetCounter();
 		rebuildFriendsChat();
+		inputMode = null;
 	}
 
 	@Subscribe
@@ -674,6 +696,67 @@ public class ChatChannelPlugin extends Plugin
 				clientThread.invokeLater(() -> confirmKickPlayer(kickPlayerName));
 				break;
 			}
+			case "preChatSendpublic":
+			{
+				final String chatboxInput = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+				switch (chatboxInput)
+				{
+					case "/p":
+						switchTypingMode(null);
+						break;
+					case "/f":
+						switchTypingMode(InputMode.FRIEND);
+						break;
+					case "/c":
+						switchTypingMode(InputMode.CLAN);
+						break;
+					case "/g":
+						switchTypingMode(InputMode.GUEST);
+						break;
+					default:
+						if (inputMode != null)
+						{
+							final int[] intStack = client.getIntStack();
+							final int intStackSize = client.getIntStackSize();
+							intStack[intStackSize - 1] = inputMode.chatMessageType.getType(); // chat message type
+							intStack[intStackSize - 2] = 0; // prefix length
+						}
+						break;
+				}
+				break;
+			}
+			case "setChatboxInput":
+			{
+				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+				if (chatboxInput != null && inputMode != null)
+				{
+					String text = chatboxInput.getText();
+					int idx = text.indexOf(": ");
+					if (idx != -1)
+					{
+						String newText = inputMode.prompt + ": " + text.substring(idx + 2);
+						chatboxInput.setText(newText);
+					}
+				}
+				break;
+			}
+		}
+	}
+
+	private void switchTypingMode(InputMode mode)
+	{
+		inputMode = mode;
+		client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+
+		if (mode != null && !inputWarning)
+		{
+			inputWarning = true;
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage("You've entered " + inputMode.prompt + " typing mode. All typed messages will be sent to your " +
+					inputMode.prompt.toLowerCase() + ". Use /p to reset to public chat.")
+				.build());
 		}
 	}
 

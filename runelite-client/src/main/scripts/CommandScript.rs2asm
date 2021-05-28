@@ -270,6 +270,16 @@ LABEL222:
    istore                 5
    istore                 6
 LABEL226:
+   iload                  6                    ; prefix length
+   iload                  5                    ; chat type
+   sconst                 "preChatSendpublic"
+   runelite_callback
+   istore                 5                    ; chat type
+   istore                 6                    ; prefix length
+   get_varc_string        335                  ; load input string
+   string_length                               ; get length
+   iconst                 0                    ; load 0
+   if_icmpeq              LABEL420             ; if (%varcstring355 == 0) jump to script223 call
    iload                  5
    iconst                 44
    if_icmpeq              LABEL230
