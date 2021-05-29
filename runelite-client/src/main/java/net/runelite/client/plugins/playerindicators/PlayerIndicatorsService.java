@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.playerindicators;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -38,6 +40,7 @@ import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanRank;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.clan.ClanTitle;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -63,6 +66,8 @@ public class PlayerIndicatorsService
 		}
 
 		final Player localPlayer = client.getLocalPlayer();
+		Map<LocalPoint, Integer> indicatorsAtLoc = new HashMap<>();
+		int drawnIndicators = 0;
 
 		for (Player player : client.getPlayers())
 		{
@@ -71,35 +76,40 @@ public class PlayerIndicatorsService
 				continue;
 			}
 
+			LocalPoint playerLoc = player.getLocalLocation();
+			boolean skipIfNotPlayer = (config.maxPlayerIndicatorsPerTile() > 0 && indicatorsAtLoc.getOrDefault(playerLoc, 0) >= config.maxPlayerIndicatorsPerTile())
+					|| (config.maxPlayerIndicators() > 0 && drawnIndicators >= config.maxPlayerIndicators());
+
 			boolean isFriendsChatMember = player.isFriendsChatMember();
 			boolean isClanMember = player.isClanMember();
-
 			if (player == localPlayer)
 			{
 				if (config.highlightOwnPlayer())
 				{
+					indicatorsAtLoc.put(playerLoc, indicatorsAtLoc.getOrDefault(playerLoc, 0) + 1);
 					consumer.accept(player, config.getOwnPlayerColor());
 				}
 			}
-			else if (config.highlightFriends() && player.isFriend())
-			{
-				consumer.accept(player, config.getFriendColor());
-			}
-			else if (config.highlightFriendsChat() && isFriendsChatMember)
-			{
-				consumer.accept(player, config.getFriendsChatMemberColor());
-			}
-			else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
-			{
-				consumer.accept(player, config.getTeamMemberColor());
-			}
-			else if (config.highlightClanMembers() && isClanMember)
-			{
-				consumer.accept(player, config.getClanMemberColor());
-			}
-			else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember)
-			{
-				consumer.accept(player, config.getOthersColor());
+			else if (!skipIfNotPlayer) {
+				drawnIndicators++;
+				if (config.highlightFriends() && player.isFriend()) {
+					indicatorsAtLoc.put(playerLoc, indicatorsAtLoc.getOrDefault(playerLoc, 0) + 1);
+					consumer.accept(player, config.getFriendColor());
+				} else if (config.highlightFriendsChat() && isFriendsChatMember) {
+					indicatorsAtLoc.put(playerLoc, indicatorsAtLoc.getOrDefault(playerLoc, 0) + 1);
+					consumer.accept(player, config.getFriendsChatMemberColor());
+				} else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam()) {
+					indicatorsAtLoc.put(playerLoc, indicatorsAtLoc.getOrDefault(playerLoc, 0) + 1);
+					consumer.accept(player, config.getTeamMemberColor());
+				} else if (config.highlightClanMembers() && isClanMember) {
+					indicatorsAtLoc.put(playerLoc, indicatorsAtLoc.getOrDefault(playerLoc, 0) + 1);
+					consumer.accept(player, config.getClanMemberColor());
+				} else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember) {
+					indicatorsAtLoc.put(playerLoc, indicatorsAtLoc.getOrDefault(playerLoc, 0) + 1);
+					consumer.accept(player, config.getOthersColor());
+				} else {
+					drawnIndicators--;
+				}
 			}
 		}
 	}

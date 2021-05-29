@@ -249,4 +249,20 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 16,
+			keyName = "maxPlayerIndicators",
+			name = "Max player indicators",
+			description = "Maximum number of player indicators to draw (0 = no limit)"
+	)
+	default int maxPlayerIndicators() { return 0; }
+
+	@ConfigItem(
+			position = 17,
+			keyName = "maxPlayerIndicatorsPerTile",
+			name = "Max indicators per tile",
+			description = "Maximum number of player indicators to draw per tile (0 = no limit)"
+	)
+	default int maxPlayerIndicatorsPerTile() { return 0; }
 }
