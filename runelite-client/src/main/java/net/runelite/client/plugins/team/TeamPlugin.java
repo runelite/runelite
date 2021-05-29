@@ -105,7 +105,9 @@ public class TeamPlugin extends Plugin
 
 	private final BiMap<String, Player> players = HashBiMap.create();
 	private int friendsChatCount;
+	private int clanChatCount;
 	private MembersIndicator friendsChatIndicator;
+	private MembersIndicator clanChatIndicator;
 
 	@Provides
 	TeamConfig provideConfig(ConfigManager configManager)
@@ -129,7 +131,9 @@ public class TeamPlugin extends Plugin
 		playerTeam.clear();
 		players.clear();
 		removeFriendsChatCounter();
+		removeClanChatCounter();
 		friendsChatCount = 0;
+		clanChatCount = 0;
 	}
 
 	@Subscribe
@@ -145,6 +149,15 @@ public class TeamPlugin extends Plugin
 			{
 				removeFriendsChatCounter();
 			}
+
+			if (config.clanChatMemberCounter())
+			{
+				clientThread.invoke(this::addClanChatCounter);
+			}
+			else
+			{
+				removeClanChatCounter();
+			}
 		}
 	}
 
@@ -157,6 +170,7 @@ public class TeamPlugin extends Plugin
 		{
 			players.clear();
 			removeFriendsChatCounter();
+			removeClanChatCounter();
 		}
 	}
 
@@ -174,6 +188,12 @@ public class TeamPlugin extends Plugin
 			{
 				++friendsChatCount;
 				addFriendsChatCounter();
+			}
+
+			if (player.isClanMember())
+			{
+				++clanChatCount;
+				addClanChatCounter();
 			}
 		}
 	}
@@ -198,6 +218,17 @@ public class TeamPlugin extends Plugin
 				if (--friendsChatCount == 0)
 				{
 					removeFriendsChatCounter();
+				}
+			}
+		}
+
+		if (player.isClanMember())
+		{
+			if (clanChatCount > 0)
+			{
+				if (--clanChatCount == 0)
+				{
+					removeClanChatCounter();
 				}
 			}
 		}
@@ -257,6 +288,33 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onClanChannelChanged(ClanChannelChanged event)
+	{
+		if (!event.isGuest())
+		{
+			removeClanChatCounter();
+			clanChatCount = 0;
+
+			ClanChannel clanChannel = event.getClanChannel();
+			if (clanChannel != null)
+			{
+				for (ClanChannelMember member : clanChannel.getMembers())
+				{
+					final String memberName = Text.toJagexName(member.getName());
+
+					final Player player = players.get(memberName);
+					if (player != null)
+					{
+						++clanChatCount;
+					}
+				}
+
+				addClanChatCounter();
+			}
+		}
+	}
+
+	@Subscribe
 	public void onFriendsChatMemberJoined(FriendsChatMemberJoined event)
 	{
 		final FriendsChatMember member = event.getMember();
@@ -296,6 +354,46 @@ public class TeamPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onClanMemberJoined(ClanMemberJoined clanMemberJoined)
+	{
+		final ClanChannelMember member = clanMemberJoined.getClanMember();
+
+		if (member.getWorld() == client.getWorld())
+		{
+			final String memberName = Text.toJagexName(member.getName());
+
+			final Player player = players.get(memberName);
+			if (player != null)
+			{
+				++clanChatCount;
+				addClanChatCounter();
+			}
+		}
+	}
+
+	@Subscribe
+	public void onClanMemberLeft(ClanMemberLeft clanMemberLeft)
+	{
+		final ClanChannelMember member = clanMemberLeft.getClanMember();
+
+		if (member.getWorld() == client.getWorld())
+		{
+			final String memberName = Text.toJagexName(member.getName());
+			final Player player = players.get(memberName);
+			if (player != null)
+			{
+				if (clanChatCount > 0)
+				{
+					if (--clanChatCount == 0)
+					{
+						removeClanChatCounter();
+					}
+				}
+			}
+		}
+	}
+
 	private void addFriendsChatCounter()
 	{
 		if (!config.friendsChatMemberCounter() || friendsChatIndicator != null || friendsChatCount == 0)
@@ -325,5 +423,36 @@ public class TeamPlugin extends Plugin
 	{
 		infoBoxManager.removeInfoBox(friendsChatIndicator);
 		friendsChatIndicator = null;
+	}
+
+	private void addClanChatCounter()
+	{
+		if (!config.clanChatMemberCounter() || clanChatIndicator != null || clanChatCount == 0)
+		{
+			return;
+		}
+
+		final BufferedImage image = spriteManager.getSprite(SpriteID.TAB_CLAN_CHAT, 0);
+		clanChatIndicator = new MembersIndicator(image, this)
+		{
+			@Override
+			public String getText()
+			{
+				return Integer.toString(clanChatCount);
+			}
+
+			@Override
+			public String getTooltip()
+			{
+				return clanChatCount + " clan chat member(s) near you";
+			}
+		};
+		infoBoxManager.addInfoBox(clanChatIndicator);
+	}
+
+	private void removeClanChatCounter()
+	{
+		infoBoxManager.removeInfoBox(clanChatIndicator);
+		clanChatIndicator = null;
 	}
 }

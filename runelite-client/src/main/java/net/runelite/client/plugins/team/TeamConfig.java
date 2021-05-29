@@ -48,6 +48,13 @@ public interface TeamConfig extends Config
 	)
 	String friendsChatSection = "friendsChatSection";
 
+	@ConfigSection(
+		name = "Clan Chat",
+		description = "Configuration for clan chat",
+		position = 30
+	)
+	String clanChatSection = "clanChatSection";
+
 	@ConfigItem(
 		keyName = "teamCapesOverlay",
 		name = "Team cape overlay",
@@ -80,6 +87,18 @@ public interface TeamConfig extends Config
 		section = friendsChatSection
 	)
 	default boolean friendsChatMemberCounter()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "clanChatMemberCounter",
+		name = "Clan Chat Members Counter",
+		description = "Show the amount of clan chat members near you.",
+		position = 0,
+		section = clanChatSection
+	)
+	default boolean clanChatMemberCounter()
 	{
 		return false;
 	}
