@@ -93,18 +93,6 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "clanCounter",
-		name = "Members Counter",
-		description = "Show the amount of friends chat members near you.",
-		position = 3,
-		section = friendsChatSection
-	)
-	default boolean showCounter()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "chatsData",
 		name = "",
 		description = "",

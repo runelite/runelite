@@ -32,7 +32,6 @@ import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Runnables;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -53,9 +52,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Ignore;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NameableContainer;
-import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
-import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanChannel;
@@ -71,8 +68,6 @@ import net.runelite.api.events.FriendsChatMemberJoined;
 import net.runelite.api.events.FriendsChatMemberLeft;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.PlayerDespawned;
-import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientStrChanged;
@@ -88,7 +83,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ChatIconManager;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -96,7 +90,6 @@ import static net.runelite.client.ui.JagexColors.CHAT_FC_NAME_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_FC_NAME_TRANSPARENT_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_FC_TEXT_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_FC_TEXT_TRANSPARENT_BACKGROUND;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -120,12 +113,6 @@ public class ChatChannelPlugin extends Plugin
 	private ChatChannelConfig config;
 
 	@Inject
-	private InfoBoxManager infoBoxManager;
-
-	@Inject
-	private SpriteManager spriteManager;
-
-	@Inject
 	private ClientThread clientThread;
 
 	@Inject
@@ -138,8 +125,6 @@ public class ChatChannelPlugin extends Plugin
 	private ChatMessageManager chatMessageManager;
 
 	private List<String> chats;
-	private final List<Player> members = new ArrayList<>();
-	private MembersIndicator membersIndicator;
 	/**
 	 * queue of temporary messages added to the client
 	 */
@@ -186,8 +171,6 @@ public class ChatChannelPlugin extends Plugin
 	{
 		chats = null;
 		clientThread.invoke(() -> colorIgnoredPlayers(Color.WHITE));
-		members.clear();
-		resetCounter();
 		rebuildFriendsChat();
 		inputMode = null;
 	}
@@ -202,15 +185,6 @@ public class ChatChannelPlugin extends Plugin
 				rebuildFriendsChat();
 			}
 
-			if (config.showCounter())
-			{
-				clientThread.invoke(this::addCounter);
-			}
-			else
-			{
-				resetCounter();
-			}
-
 			Color ignoreColor = config.showIgnores() ? config.showIgnoresColor() : Color.WHITE;
 			clientThread.invoke(() -> colorIgnoredPlayers(ignoreColor));
 		}
@@ -220,22 +194,6 @@ public class ChatChannelPlugin extends Plugin
 	public void onFriendsChatMemberJoined(FriendsChatMemberJoined event)
 	{
 		final FriendsChatMember member = event.getMember();
-
-		if (member.getWorld() == client.getWorld())
-		{
-			final Player local = client.getLocalPlayer();
-			final String memberName = Text.toJagexName(member.getName());
-
-			for (final Player player : client.getPlayers())
-			{
-				if (player != null && player != local && memberName.equals(Text.toJagexName(player.getName())))
-				{
-					members.add(player);
-					addCounter();
-					break;
-				}
-			}
-		}
 
 		// members getting initialized isn't relevant
 		if (joinedTick == client.getTickCount())
@@ -257,27 +215,6 @@ public class ChatChannelPlugin extends Plugin
 	public void onFriendsChatMemberLeft(FriendsChatMemberLeft event)
 	{
 		final FriendsChatMember member = event.getMember();
-
-		if (member.getWorld() == client.getWorld())
-		{
-			final String memberName = Text.toJagexName(member.getName());
-			final Iterator<Player> each = members.iterator();
-
-			while (each.hasNext())
-			{
-				if (memberName.equals(Text.toJagexName(each.next().getName())))
-				{
-					each.remove();
-
-					if (members.isEmpty())
-					{
-						resetCounter();
-					}
-
-					break;
-				}
-			}
-		}
 
 		if (!config.showJoinLeave() ||
 			member.getRank().getValue() < config.joinLeaveRank().getValue())
@@ -625,32 +562,7 @@ public class ChatChannelPlugin extends Plugin
 
 		if (gameState == GameState.LOGIN_SCREEN || gameState == GameState.CONNECTION_LOST || gameState == GameState.HOPPING)
 		{
-			members.clear();
-			resetCounter();
-
 			joinMessages.clear();
-		}
-	}
-
-	@Subscribe
-	public void onPlayerSpawned(PlayerSpawned event)
-	{
-		final Player local = client.getLocalPlayer();
-		final Player player = event.getPlayer();
-
-		if (player != local && player.isFriendsChatMember())
-		{
-			members.add(player);
-			addCounter();
-		}
-	}
-
-	@Subscribe
-	public void onPlayerDespawned(PlayerDespawned event)
-	{
-		if (members.remove(event.getPlayer()) && members.isEmpty())
-		{
-			resetCounter();
 		}
 	}
 
@@ -660,11 +572,6 @@ public class ChatChannelPlugin extends Plugin
 		if (event.isJoined())
 		{
 			joinedTick = client.getTickCount();
-		}
-		else
-		{
-			members.clear();
-			resetCounter();
 		}
 
 		activityBuffer.clear();
@@ -779,11 +686,6 @@ public class ChatChannelPlugin extends Plugin
 		}
 	}
 
-	int getMembersSize()
-	{
-		return members.size();
-	}
-
 	private void insertRankIcon(final ChatMessage message)
 	{
 		final FriendsChatRank rank = getRank(Text.removeTags(message.getName()));
@@ -877,24 +779,6 @@ public class ChatChannelPlugin extends Plugin
 		}
 
 		config.chatsData(Text.toCSV(chats));
-	}
-
-	private void resetCounter()
-	{
-		infoBoxManager.removeInfoBox(membersIndicator);
-		membersIndicator = null;
-	}
-
-	private void addCounter()
-	{
-		if (!config.showCounter() || membersIndicator != null || members.isEmpty())
-		{
-			return;
-		}
-
-		final BufferedImage image = spriteManager.getSprite(SpriteID.TAB_FRIENDS_CHAT, 0);
-		membersIndicator = new MembersIndicator(image, this);
-		infoBoxManager.addInfoBox(membersIndicator);
 	}
 
 	private void confirmKickPlayer(final String kickPlayerName)
