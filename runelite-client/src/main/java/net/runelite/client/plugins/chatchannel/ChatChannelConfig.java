@@ -117,7 +117,7 @@ public interface ChatChannelConfig extends Config
 		position = 4,
 		section = friendsChatSection
 	)
-	default boolean showJoinLeave()
+	default boolean showFriendsChatJoinLeave()
 	{
 		return false;
 	}

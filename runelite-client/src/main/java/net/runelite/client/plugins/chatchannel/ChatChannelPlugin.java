@@ -201,7 +201,7 @@ public class ChatChannelPlugin extends Plugin
 			return;
 		}
 
-		if (!config.showJoinLeave() ||
+		if (!config.showFriendsChatJoinLeave() ||
 			member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
 			return;
@@ -216,7 +216,7 @@ public class ChatChannelPlugin extends Plugin
 	{
 		final FriendsChatMember member = event.getMember();
 
-		if (!config.showJoinLeave() ||
+		if (!config.showFriendsChatJoinLeave() ||
 			member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
 			return;
@@ -313,11 +313,6 @@ public class ChatChannelPlugin extends Plugin
 			{
 				loadFriendsChats();
 			}
-		}
-
-		if (!config.showJoinLeave())
-		{
-			return;
 		}
 
 		timeoutMessages();
