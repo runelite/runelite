@@ -91,6 +91,7 @@ public class WidgetID
 	public static final int RAIDS_GROUP_ID = 513;
 	public static final int TOB_PARTY_GROUP_ID = 28;
 	public static final int MOTHERLODE_MINE_GROUP_ID = 382;
+	public static final int MOTHERLODE_MINE_SACK_GROUP_ID = 229;
 	public static final int EXPERIENCE_DROP_GROUP_ID = 122;
 	public static final int PUZZLE_BOX_GROUP_ID = 306;
 	public static final int LIGHT_BOX_GROUP_ID = 322;
@@ -604,6 +605,12 @@ public class WidgetID
 		static final int VENT_A_STATUS = 23;
 		static final int VENT_B_STATUS = 24;
 		static final int VENT_C_STATUS = 25;
+	}
+
+	static class MotherlodeMineSack
+	{
+		static final int TEXT = 1;
+		static final int CONTINUE = 2;
 	}
 
 	static class BarbarianAssault
