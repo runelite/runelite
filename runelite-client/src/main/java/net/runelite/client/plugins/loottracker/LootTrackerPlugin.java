@@ -460,7 +460,8 @@ public class LootTrackerPlugin extends Plugin
 		eventBus.post(new LootReceived(name, combatLevel, type, items));
 	}
 
-	private Integer getCurrentCurrency(int ItemID) {
+	private Integer getCurrentCurrency(int ItemID)
+	{
 		Optional<Item> coins = Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems()).filter(item -> item.getId() == ItemID).findFirst();
 		return !coins.isPresent() ? 0 : coins.get().getQuantity();
 	}
@@ -473,9 +474,12 @@ public class LootTrackerPlugin extends Plugin
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
 
-		if (config.trackCoinsFromRingOfWealth()) {
+		if (config.trackCoinsFromRingOfWealth())
+		{
 			lastLoot = Optional.of(new LootLast(npc.getId(), name, combat, LootRecordType.NPC, items));
-		} else {
+		}
+		else
+		{
 			addLoot(name, combat, LootRecordType.NPC, npc.getId(), items);
 		}
 
@@ -514,7 +518,8 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (config.trackCoinsFromRingOfWealth() && ringOfWeathEquiped) {
+		if (config.trackCoinsFromRingOfWealth() && ringOfWeathEquiped)
+		{
 			lastLoot.ifPresent(loot -> {
 				log.debug("Tick - {}", loot.getName());
 				Integer coinsThisTick = getCurrentCurrency(ItemID.COINS_995);
@@ -524,14 +529,17 @@ public class LootTrackerPlugin extends Plugin
 				Collection<ItemStack> items = loot.getItems();
 				ItemStack firstItem = items.stream().findFirst().get();
 
-				if (coinsThisTick > coinsLastTick) {
-					items.add(new ItemStack(ItemID.COINS_995, coinsThisTick-coinsLastTick, firstItem.getLocation()));
+				if (coinsThisTick > coinsLastTick)
+				{
+					items.add(new ItemStack(ItemID.COINS_995, coinsThisTick - coinsLastTick, firstItem.getLocation()));
 				}
-				if (numulitesThisTick > numulitesLastTick) {
-					items.add(new ItemStack(ItemID.NUMULITE, numulitesThisTick-numulitesLastTick, firstItem.getLocation()));
+				if (numulitesThisTick > numulitesLastTick)
+				{
+					items.add(new ItemStack(ItemID.NUMULITE, numulitesThisTick - numulitesLastTick, firstItem.getLocation()));
 				}
-				if (tokkulThisTick > tokkulLastTick) {
-					items.add(new ItemStack(ItemID.TOKKUL, tokkulThisTick-tokkulLastTick, firstItem.getLocation()));
+				if (tokkulThisTick > tokkulLastTick)
+				{
+					items.add(new ItemStack(ItemID.TOKKUL, tokkulThisTick - tokkulLastTick, firstItem.getLocation()));
 				}
 
 				addLoot(loot.getName(), loot.getCombatLevel(), loot.getType(), loot.getId(), items);
@@ -794,14 +802,17 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT)) {
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
 			Item ring = event.getItemContainer().getItem(EquipmentInventorySlot.RING.getSlotIdx());
 
-			if (ring == null) {
+			if (ring == null)
+			{
 				ringOfWeathEquiped = false;
 				return;
 			}
-			if (ItemVariationMapping.getVariations(ItemID.RING_OF_WEALTH).contains(ring.getId())) {
+			if (ItemVariationMapping.getVariations(ItemID.RING_OF_WEALTH).contains(ring.getId()))
+			{
 				ringOfWeathEquiped = true;
 				return;
 			}

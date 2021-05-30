@@ -80,9 +80,9 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "trackCoinsFromRingOfWealth",
-			name = "Track Coins From Ring Of Wealth",
-			description = "Whether to track coins automatically collected from ring of wealth"
+		keyName = "trackCoinsFromRingOfWealth",
+		name = "Track Coins From Ring Of Wealth",
+		description = "Whether to track coins automatically collected from ring of wealth"
 	)
 	default boolean trackCoinsFromRingOfWealth()
 	{
