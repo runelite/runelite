@@ -29,6 +29,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.util.Arrays;
 import java.util.function.Function;
 
 /**
@@ -77,7 +78,8 @@ public class DynamicGridLayout extends GridLayout
 		synchronized (parent.getTreeLock())
 		{
 			final Insets insets = parent.getInsets();
-			final int ncomponents = parent.getComponentCount();
+			int[] indexMap = getVisibleIndexMapping(parent);
+			final int ncomponents = indexMap.length;
 			int nrows = getRows();
 			int ncols = getColumns();
 
@@ -114,7 +116,7 @@ public class DynamicGridLayout extends GridLayout
 			{
 				final int r = i / ncols;
 				final int c = i % ncols;
-				final Component comp = parent.getComponent(i);
+				final Component comp = parent.getComponent(indexMap[i]);
 				final Dimension d = comp.getPreferredSize();
 				d.width = (int) (sw * d.width);
 				d.height = (int) (sh * d.height);
@@ -139,7 +141,7 @@ public class DynamicGridLayout extends GridLayout
 
 					if (i < ncomponents)
 					{
-						parent.getComponent(i).setBounds(x, y, w[c], h[r]);
+						parent.getComponent(indexMap[i]).setBounds(x, y, w[c], h[r]);
 					}
 
 					y += h[r] + vgap;
@@ -158,7 +160,8 @@ public class DynamicGridLayout extends GridLayout
 	 */
 	private Dimension calculateSize(final Container parent, final Function<Component, Dimension> sizer)
 	{
-		final int ncomponents = parent.getComponentCount();
+		int[] indexMap = getVisibleIndexMapping(parent);
+		final int ncomponents = indexMap.length;
 		int nrows = getRows();
 		int ncols = getColumns();
 
@@ -179,7 +182,7 @@ public class DynamicGridLayout extends GridLayout
 		{
 			final int r = i / ncols;
 			final int c = i % ncols;
-			final Component comp = parent.getComponent(i);
+			final Component comp = parent.getComponent(indexMap[i]);
 			final Dimension d = sizer.apply(comp);
 
 			if (w[c] < d.width)
@@ -214,5 +217,23 @@ public class DynamicGridLayout extends GridLayout
 		return new Dimension(
 			insets.left + insets.right + nw + (ncols - 1) * getHgap(),
 			insets.top + insets.bottom + nh + (nrows - 1) * getVgap());
+	}
+
+	/**
+	 * Used to map from an index for a visible component to original index in {@link Container#getComponent(int)}
+	 */
+	private int[] getVisibleIndexMapping(Container parent)
+	{
+		int componentCount = parent.getComponentCount();
+		int[] indexes = new int[componentCount];
+		int size = 0;
+		for (int origIdx = 0; origIdx < componentCount; origIdx++)
+		{
+			if (parent.getComponent(origIdx).isVisible())
+			{
+				indexes[size++] = origIdx;
+			}
+		}
+		return Arrays.copyOf(indexes, size);
 	}
 }

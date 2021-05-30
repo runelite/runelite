@@ -42,6 +42,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Enumeration;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.AbstractButton;
@@ -54,6 +55,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
@@ -301,5 +304,40 @@ public class SwingUtil
 			SwingUtilities.invokeLater(l::exit);
 			l.enter();
 		}
+	}
+
+	/**
+	 * @see #documentListener(Consumer)
+	 */
+	public static DocumentListener documentListener(Runnable listener)
+	{
+		return documentListener(ignored -> listener.run());
+	}
+
+	/**
+	 * Convenience method to create a {@link DocumentListener} which notifies the {@code listener} for every {@code *Update}.
+	 */
+	public static DocumentListener documentListener(Consumer<DocumentEvent> listener)
+	{
+		return new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				listener.accept(e);
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				listener.accept(e);
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				listener.accept(e);
+			}
+		};
 	}
 }
