@@ -53,7 +53,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
 import net.runelite.api.widgets.WidgetID;
@@ -520,7 +519,8 @@ public class LootTrackerPlugin extends Plugin
 	{
 		if (config.trackCoinsFromRingOfWealth() && ringOfWeathEquiped)
 		{
-			lastLoot.ifPresent(loot -> {
+			lastLoot.ifPresent(loot ->
+			{
 				log.debug("Tick - {}", loot.getName());
 				Integer coinsThisTick = getCurrentCurrency(ItemID.COINS_995);
 				Integer numulitesThisTick = getCurrentCurrency(ItemID.NUMULITE);
