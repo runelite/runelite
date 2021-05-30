@@ -96,6 +96,8 @@ public class LootTrackerPlugin extends Plugin
 {
 	// Tracking coin drops while wearing Ring of Wealth
 	private Integer coinsLastTick;
+	private Integer tokkulLastTick;
+	private Integer numulitesLastTick;
 	private Optional<LootLast> lastLoot = Optional.empty();
 	private boolean ringOfWeathEquiped;
 
@@ -458,8 +460,8 @@ public class LootTrackerPlugin extends Plugin
 		eventBus.post(new LootReceived(name, combatLevel, type, items));
 	}
 
-	private Integer getCurrentCoins() {
-		Optional<Item> coins = Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems()).filter(item -> item.getId() == 995).findFirst();
+	private Integer getCurrentCurrency(int ItemID) {
+		Optional<Item> coins = Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems()).filter(item -> item.getId() == ItemID).findFirst();
 		return !coins.isPresent() ? 0 : coins.get().getQuantity();
 	}
 
@@ -515,20 +517,30 @@ public class LootTrackerPlugin extends Plugin
 		if (config.trackCoinsFromRingOfWealth() && ringOfWeathEquiped) {
 			lastLoot.ifPresent(loot -> {
 				log.debug("Tick - {}", loot.getName());
-				Integer coinsThisTick = getCurrentCoins();
+				Integer coinsThisTick = getCurrentCurrency(ItemID.COINS_995);
+				Integer numulitesThisTick = getCurrentCurrency(ItemID.NUMULITE);
+				Integer tokkulThisTick = getCurrentCurrency(ItemID.TOKKUL);
 
 				Collection<ItemStack> items = loot.getItems();
 				ItemStack firstItem = items.stream().findFirst().get();
 
 				if (coinsThisTick > coinsLastTick) {
-					log.debug("Last: {}, This: {}, NPC:{}", coinsLastTick, coinsThisTick);
-					items.add(new ItemStack(995, coinsThisTick-coinsLastTick, firstItem.getLocation()));
+					items.add(new ItemStack(ItemID.COINS_995, coinsThisTick-coinsLastTick, firstItem.getLocation()));
 				}
+				if (numulitesThisTick > numulitesLastTick) {
+					items.add(new ItemStack(ItemID.NUMULITE, numulitesThisTick-numulitesLastTick, firstItem.getLocation()));
+				}
+				if (tokkulThisTick > tokkulLastTick) {
+					items.add(new ItemStack(ItemID.TOKKUL, tokkulThisTick-tokkulLastTick, firstItem.getLocation()));
+				}
+
 				addLoot(loot.getName(), loot.getCombatLevel(), loot.getType(), loot.getId(), items);
 				lastLoot = Optional.empty();
 			});
 
-			coinsLastTick = getCurrentCoins();
+			coinsLastTick = getCurrentCurrency(ItemID.COINS_995);
+			numulitesLastTick = getCurrentCurrency(ItemID.NUMULITE);
+			tokkulLastTick = getCurrentCurrency(ItemID.TOKKUL);
 		}
 	}
 
