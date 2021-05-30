@@ -55,6 +55,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
@@ -140,6 +141,19 @@ public class ChatFilterPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		switch (gameStateChanged.getGameState())
+		{
+			// Login drops references to all messages and also resets the global message id counter.
+			// Invalidate the message id so it doesn't collide later when rebuilding the chatfilter.
+			case HOPPING:
+			case LOGGING_IN:
+				duplicateChatCache.values().forEach(d -> d.messageId = -1);
+		}
+	}
+
+	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!"chatFilterCheck".equals(event.getEventName()))
@@ -205,7 +219,10 @@ public class ChatFilterPlugin extends Plugin
 		if (!blockMessage && shouldCollapse)
 		{
 			Duplicate duplicateCacheEntry = duplicateChatCache.get(name + ":" + message);
-			if (duplicateCacheEntry != null)
+			// If messageId is -1 then this is a replayed message, which we can't easily collapse since we don't know
+			// the most recent message. This is only for public chat since it is the only thing both replayed and also
+			// collapsed. Just allow uncollapsed playback.
+			if (duplicateCacheEntry != null && duplicateCacheEntry.messageId != -1)
 			{
 				blockMessage = duplicateCacheEntry.messageId != messageId ||
 					((chatMessageType == PUBLICCHAT || chatMessageType == MODCHAT) &&
