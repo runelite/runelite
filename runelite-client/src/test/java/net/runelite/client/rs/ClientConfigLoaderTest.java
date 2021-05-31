@@ -32,14 +32,15 @@ import java.io.InputStreamReader;
 import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class ClientConfigLoaderTest
 {
-	private final MockWebServer server = new MockWebServer();
+	@Rule
+	public final MockWebServer server = new MockWebServer();
 
 	@Before
 	public void before() throws IOException
@@ -51,14 +52,6 @@ public class ClientConfigLoaderTest
 				in, Charsets.UTF_8));
 		}
 		server.enqueue(new MockResponse().setBody(response));
-
-		server.start();
-	}
-
-	@After
-	public void after() throws IOException
-	{
-		server.shutdown();
 	}
 
 	@Test

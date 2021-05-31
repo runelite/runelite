@@ -28,27 +28,20 @@ import java.io.IOException;
 import okhttp3.Request;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.After;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class RuneLiteAPITest
 {
-	private final MockWebServer server = new MockWebServer();
+	@Rule
+	public final MockWebServer server = new MockWebServer();
 
 	@Before
 	public void before() throws IOException
 	{
 		server.enqueue(new MockResponse().setBody("OK"));
-
-		server.start();
-	}
-
-	@After
-	public void after() throws IOException
-	{
-		server.shutdown();
 	}
 
 	@Test
