@@ -26,12 +26,12 @@ package net.runelite.client.game;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.inject.Inject;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -48,19 +48,22 @@ import net.runelite.client.util.ImageUtil;
 @Singleton
 public class SpriteManager
 {
-	@Inject
-	private Client client;
+	private final Client client;
+	private final ClientThread clientThread;
+	private final InfoBoxManager infoBoxManager;
 
-	@Inject
-	private ClientThread clientThread;
-
-	@Inject
-	private InfoBoxManager infoBoxManager;
-
-	public Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
+	private final Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.expireAfterAccess(1, TimeUnit.HOURS)
 		.build();
+
+	@Inject
+	private SpriteManager(Client client, ClientThread clientThread, InfoBoxManager infoBoxManager)
+	{
+		this.client = client;
+		this.clientThread = clientThread;
+		this.infoBoxManager = infoBoxManager;
+	}
 
 	@Nullable
 	public BufferedImage getSprite(int archive, int file)
