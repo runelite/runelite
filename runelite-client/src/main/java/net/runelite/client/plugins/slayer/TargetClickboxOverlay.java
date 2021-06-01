@@ -30,23 +30,29 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Shape;
 import java.util.List;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.util.ColorUtil;
 
 public class TargetClickboxOverlay extends Overlay
 {
+	private final Client client;
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 
 	@Inject
-	TargetClickboxOverlay(SlayerConfig config, SlayerPlugin plugin)
+	TargetClickboxOverlay(Client client, SlayerConfig config, SlayerPlugin plugin)
 	{
+		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
@@ -56,7 +62,7 @@ public class TargetClickboxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.highlightTargets())
+		if (config.highlightTargets() == SlayerTaskHighlightMode.NONE)
 		{
 			return null;
 		}
@@ -64,7 +70,14 @@ public class TargetClickboxOverlay extends Overlay
 		List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{
-			renderTargetOverlay(graphics, target, config.getTargetColor());
+			if (config.highlightTargets() == SlayerTaskHighlightMode.HULL)
+			{
+				renderTargetOverlay(graphics, target, config.getTargetColor());
+			}
+			else
+			{
+				renderTargetTiles(graphics, target, config.getTargetColor());
+			}
 		}
 
 		return null;
@@ -75,11 +88,28 @@ public class TargetClickboxOverlay extends Overlay
 		Shape objectClickbox = actor.getConvexHull();
 		if (objectClickbox != null)
 		{
-			graphics.setColor(color);
-			graphics.setStroke(new BasicStroke(2));
-			graphics.draw(objectClickbox);
-			graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12));
-			graphics.fill(objectClickbox);
+			renderPoly(graphics, objectClickbox, color);
 		}
+	}
+
+	private void renderTargetTiles(Graphics2D graphics, NPC actor, Color color)
+	{
+		NPCComposition npcComposition = actor.getTransformedComposition();
+		if (npcComposition != null)
+		{
+			int size = npcComposition.getSize();
+			LocalPoint lp = actor.getLocalLocation();
+			Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+			renderPoly(graphics, tilePoly, color);
+		}
+	}
+
+	private void renderPoly(Graphics2D graphics, Shape shape, Color color)
+	{
+		graphics.setColor(color);
+		graphics.setStroke(new BasicStroke(2));
+		graphics.draw(shape);
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+		graphics.fill(shape);
 	}
 }

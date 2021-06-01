@@ -94,11 +94,11 @@ public interface SlayerConfig extends Config
 		position = 5,
 		keyName = "highlightTargets",
 		name = "Highlight Targets",
-		description = "Highlight monsters you can kill for your current slayer assignment"
+		description = "Highlight the hull or tiles of monsters you can kill for your current slayer assignment"
 	)
-	default boolean highlightTargets()
+	default SlayerTaskHighlightMode highlightTargets()
 	{
-		return false;
+		return SlayerTaskHighlightMode.NONE;
 	}
 
 	@Alpha
