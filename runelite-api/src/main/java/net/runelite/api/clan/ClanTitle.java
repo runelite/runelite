@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, trimbe <github.com/trimbe>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.friendschat;
+package net.runelite.api.clan;
 
-import lombok.AllArgsConstructor;
 import lombok.Value;
-import net.runelite.api.FriendsChatMember;
 
+/**
+ * A clan title, such as Owner, Administrator, Anchor, etc.
+ */
 @Value
-@AllArgsConstructor
-class MemberActivity
+public class ClanTitle
 {
-	private ActivityType activityType;
-	private FriendsChatMember member;
-	private Integer tick;
+	/**
+	 * The id of the title
+	 */
+	int id;
+	/**
+	 * The name of the title
+	 */
+	String name;
 }

@@ -165,6 +165,8 @@ public class WidgetID
 	public static final int DUEL_INVENTORY_OTHER_GROUP_ID = 481;
 	public static final int TRAILBLAZER_AREAS_GROUP_ID = 512;
 	public static final int TEMPOROSS_GROUP_ID = 437;
+	public static final int CLAN_GROUP_ID = 701;
+	public static final int CLAN_GUEST_GROUP_ID = 702;
 
 	static class WorldMap
 	{
@@ -251,6 +253,8 @@ public class WidgetID
 
 	static class FriendsChat
 	{
+		static final int ROOT = 0;
+		static final int TITLE = 1;
 		static final int OWNER = 2;
 		static final int LIST = 12;
 	}
@@ -480,7 +484,8 @@ public class WidgetID
 		static final int TAB_ALL = 4;
 		static final int TAB_GAME = 7;
 		static final int TAB_PUBLIC = 11;
-		static final int TAB_PRIVATE = 19;
+		static final int TAB_PRIVATE = 15;
+		static final int TAB_CHANNEL = 19;
 		static final int TAB_CLAN = 23;
 		static final int TAB_TRADE = 27;
 		static final int REPORT_TEXT = 33;
@@ -947,5 +952,15 @@ public class WidgetID
 	static class TemporossStatus
 	{
 		static final int STATUS_INDICATOR = 4;
+	}
+
+	static class Clan
+	{
+		static final int MEMBERS = 8;
+	}
+
+	static class ClanGuest
+	{
+		static final int MEMBERS = 8;
 	}
 }

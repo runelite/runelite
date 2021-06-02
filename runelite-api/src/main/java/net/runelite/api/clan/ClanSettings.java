@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Sebastiaan <https://github.com/SebastiaanVanspauwen>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.friendschat;
+package net.runelite.api.clan;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.Counter;
+import java.util.List;
+import javax.annotation.Nullable;
 
-class MembersIndicator extends Counter
+/**
+ * A clan's settings.
+ */
+public interface ClanSettings
 {
-	private final FriendsChatPlugin plugin;
+	/**
+	 * The clan name
+	 * @return
+	 */
+	String getName();
 
-	MembersIndicator(BufferedImage image, FriendsChatPlugin plugin)
-	{
-		super(image, plugin, plugin.getMembersSize());
-		this.plugin = plugin;
-	}
+	/**
+	 * The members of the clan. This includes all members, whether online or offline.
+	 * @return
+	 */
+	List<ClanMember> getMembers();
 
-	@Override
-	public int getCount()
-	{
-		return plugin.getMembersSize();
-	}
+	/**
+	 * Find a member of the clan.
+	 * @param name
+	 * @return
+	 */
+	@Nullable
+	ClanMember findMember(String name);
 
-	@Override
-	public String getTooltip()
-	{
-		return plugin.getMembersSize() + " friends chat member(s) near you";
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		return Color.WHITE;
-	}
+	/**
+	 * Get the clan title for a clan rank.
+	 * @param clanRank the rank
+	 * @see ClanRank
+	 * @return
+	 */
+	@Nullable
+	ClanTitle titleForRank(ClanRank clanRank);
 }

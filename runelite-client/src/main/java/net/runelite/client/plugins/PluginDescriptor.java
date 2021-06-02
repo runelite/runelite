@@ -38,6 +38,11 @@ public @interface PluginDescriptor
 	String name();
 
 	/**
+	 * Internal name used in the config.
+	 */
+	String configName() default "";
+
+	/**
 	 * A short, one-line summary of the plugin.
 	 */
 	String description() default "";

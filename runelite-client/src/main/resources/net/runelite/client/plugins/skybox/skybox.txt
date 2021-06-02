@@ -990,6 +990,8 @@ R 49 193 51 194
 // Braindeath Island
 #8AD2DF
 R 33 79 33 80
+// Clan Hall
+r 27 85
 
 // Nightmare dungeon (Morytania underground)
 #0a0a0a

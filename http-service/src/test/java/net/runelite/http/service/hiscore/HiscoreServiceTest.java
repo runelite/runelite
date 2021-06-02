@@ -29,9 +29,9 @@ import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class HiscoreServiceTest
@@ -118,20 +118,13 @@ public class HiscoreServiceTest
 			+ "19301,62\n"
 			+ "1498,5847\n";
 
-	private final MockWebServer server = new MockWebServer();
+	@Rule
+	public final MockWebServer server = new MockWebServer();
 
 	@Before
 	public void before() throws IOException
 	{
 		server.enqueue(new MockResponse().setBody(RESPONSE));
-
-		server.start();
-	}
-
-	@After
-	public void after() throws IOException
-	{
-		server.shutdown();
 	}
 
 	@Test

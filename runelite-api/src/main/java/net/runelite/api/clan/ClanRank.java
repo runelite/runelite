@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Mathieu Bernier <https://github.com/Matsyir>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.teamcapes;
+package net.runelite.api.clan;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup("teamCapes")
-public interface TeamCapesConfig extends Config
+/**
+ * The ranks in a clan. Clan ranks 1-14 are mapped to corresponding titles via
+ * the clan settings.
+ */
+public enum ClanRank
 {
-	@ConfigItem(
-		keyName = "minimumCapeCount",
-		name = "Minimum Cape Count",
-		description = "Configures the minimum number of team capes which must be present before being displayed.",
-		position = 0
-	)
-	default int getMinimumCapeCount()
-	{
-		return 1;
-	}
+	GUEST,
+	CLAN_RANK_1,
+	CLAN_RANK_2,
+	CLAN_RANK_3,
+	CLAN_RANK_4,
+	CLAN_RANK_5,
+	CLAN_RANK_6,
+	CLAN_RANK_7,
+	CLAN_RANK_8,
+	CLAN_RANK_9,
+	CLAN_RANK_10,
+	ADMINISTRATOR,
+	CLAN_RANK_11,
+	CLAN_RANK_12,
+	CLAN_RANK_13,
+	CLAN_RANK_14,
+	DEPUTY_OWNER,
+	OWNER,
+	JMOD;
 }

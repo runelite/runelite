@@ -191,7 +191,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void onFailure(WebSocket webSocket, Throwable t, Response response)
 	{
-		log.warn("Error in websocket {}:{}", response, t);
+		log.warn("Error in websocket: {}", response, t);
 		this.webSocket = null;
 	}
 }

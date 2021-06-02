@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.teamcapes;
+package net.runelite.client.plugins.team;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -41,12 +41,12 @@ import net.runelite.client.ui.overlay.components.ImageComponent;
 
 class TeamCapesOverlay extends OverlayPanel
 {
-	private final TeamCapesPlugin plugin;
-	private final TeamCapesConfig config;
+	private final TeamPlugin plugin;
+	private final TeamConfig config;
 	private final ItemManager manager;
 
 	@Inject
-	private TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config, ItemManager manager)
+	private TeamCapesOverlay(TeamPlugin plugin, TeamConfig config, ItemManager manager)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
@@ -63,7 +63,7 @@ class TeamCapesOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		Map<Integer, Integer> teams = plugin.getTeams();
-		if (teams.isEmpty())
+		if (teams.isEmpty() || !config.teamCapesOverlay())
 		{
 			return null;
 		}

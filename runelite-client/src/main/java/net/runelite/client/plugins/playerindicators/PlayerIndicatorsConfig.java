@@ -95,7 +95,7 @@ public interface PlayerIndicatorsConfig extends Config
 		description = "Configures if friends chat members should be highlighted",
 		section = highlightSection
 	)
-	default boolean drawFriendsChatMemberNames()
+	default boolean highlightFriendsChat()
 	{
 		return true;
 	}
@@ -138,6 +138,30 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
+		keyName = "drawClanChatMemberNames",
+		name = "Highlight clan members",
+		description = "Configures whether or not clan members should be highlighted",
+		section = highlightSection
+	)
+	default boolean highlightClanMembers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "clanChatMemberColor",
+		name = "Clan member",
+		description = "Color of clan members",
+		section = highlightSection
+	)
+	default Color getClanMemberColor()
+	{
+		return new Color(36, 15, 171);
+	}
+
+	@ConfigItem(
+		position = 10,
 		keyName = "drawNonClanMemberNames",
 		name = "Highlight others",
 		description = "Configures whether or not other players should be highlighted",
@@ -149,7 +173,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 11,
 		keyName = "nonClanMemberColor",
 		name = "Others",
 		description = "Color of other players names",
@@ -211,6 +235,17 @@ public interface PlayerIndicatorsConfig extends Config
 		description = "Add friends chat rank to right click menu and next to player names"
 	)
 	default boolean showFriendsChatRanks()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "clanchatMenuIcons",
+		name = "Show clan chat ranks",
+		description = "Add clan chat rank to right click menu and next to player names"
+	)
+	default boolean showClanChatRanks()
 	{
 		return true;
 	}

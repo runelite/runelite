@@ -29,6 +29,7 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -53,7 +54,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.components.MouseDragEventForwarder;
@@ -190,7 +190,7 @@ class XpInfoBox extends JPanel
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
 
-		statsPanel.setLayout(new DynamicGridLayout(2, 2));
+		statsPanel.setLayout(new GridLayout(2, 2));
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
 
@@ -304,14 +304,11 @@ class XpInfoBox extends JPanel
 				tooltipLabel == XpProgressBarLabel.PERCENTAGE ? "of goal" : "till goal lvl"));
 
 			progressBar.setDimmed(skillPaused);
-
-			progressBar.repaint();
 		}
 		else if (!paused && skillPaused)
 		{
 			// React to the skill state now being paused
 			progressBar.setDimmed(true);
-			progressBar.repaint();
 			paused = true;
 			pauseSkill.setText("Unpause");
 		}
@@ -319,7 +316,6 @@ class XpInfoBox extends JPanel
 		{
 			// React to the skill being unpaused (without update)
 			progressBar.setDimmed(false);
-			progressBar.repaint();
 			paused = false;
 			pauseSkill.setText("Pause");
 		}
