@@ -188,6 +188,10 @@ public class ChatChannelPlugin extends Plugin
 			Color ignoreColor = config.showIgnores() ? config.showIgnoresColor() : Color.WHITE;
 			clientThread.invoke(() -> colorIgnoredPlayers(ignoreColor));
 		}
+		else if (!config.typingModeShortcuts())
+		{
+			inputMode = null;
+		}
 	}
 
 	@Subscribe
@@ -600,30 +604,33 @@ public class ChatChannelPlugin extends Plugin
 			}
 			case "preChatSendpublic":
 			{
-				final String chatboxInput = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-				switch (chatboxInput)
+				if (config.typingModeShortcuts())
 				{
-					case "/p":
-						switchTypingMode(null);
-						break;
-					case "/f":
-						switchTypingMode(InputMode.FRIEND);
-						break;
-					case "/c":
-						switchTypingMode(InputMode.CLAN);
-						break;
-					case "/g":
-						switchTypingMode(InputMode.GUEST);
-						break;
-					default:
-						if (inputMode != null)
-						{
-							final int[] intStack = client.getIntStack();
-							final int intStackSize = client.getIntStackSize();
-							intStack[intStackSize - 1] = inputMode.chatMessageType.getType(); // chat message type
-							intStack[intStackSize - 2] = 0; // prefix length
-						}
-						break;
+					final String chatboxInput = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+					switch (chatboxInput)
+					{
+						case "/p":
+							switchTypingMode(null);
+							break;
+						case "/f":
+							switchTypingMode(InputMode.FRIEND);
+							break;
+						case "/c":
+							switchTypingMode(InputMode.CLAN);
+							break;
+						case "/g":
+							switchTypingMode(InputMode.GUEST);
+							break;
+						default:
+							if (inputMode != null)
+							{
+								final int[] intStack = client.getIntStack();
+								final int intStackSize = client.getIntStackSize();
+								intStack[intStackSize - 1] = inputMode.chatMessageType.getType(); // chat message type
+								intStack[intStackSize - 2] = 0; // prefix length
+							}
+							break;
+					}
 				}
 				break;
 			}

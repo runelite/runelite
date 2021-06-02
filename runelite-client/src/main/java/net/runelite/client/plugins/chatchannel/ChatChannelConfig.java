@@ -69,6 +69,17 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "typingModeShortcuts",
+		name = "Typing mode shortcuts",
+		description = "Typing '/p', '/f', '/c', or '/g' changes chat input to public, friends, clan, or guest clan.",
+		position = 1
+	)
+	default boolean typingModeShortcuts()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "clanChatIcons",
 		name = "Chat Icons",
 		description = "Show rank icons next to friends chat members.",
