@@ -109,7 +109,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FARMING, 63));
 		add("Light your mining helmet in the Lumbridge castle basement.",
 			new SkillRequirement(Skill.FIREMAKING, 65));
-		add("Recharge your prayer at Clan Wars with Smite activated.",
+		add("Recharge your prayer at the Duel Arena with Smite activated.",
 			new SkillRequirement(Skill.PRAYER, 52));
 		add("Craft, string and enchant an Amulet of Power in Lumbridge.",
 			new SkillRequirement(Skill.CRAFTING, 70),
