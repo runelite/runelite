@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2021 andmcadams
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,10 +25,10 @@
  */
 package net.runelite.client.plugins.crowdsourcing.varbits;
 
+import com.google.common.collect.ImmutableSet;
 import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import java.util.HashSet;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -64,18 +65,15 @@ public class CrowdsourcingVarbits
 
 	private int initializingTick = 0;
 
-	private static HashSet<Integer> blackList;
+	/* Blacklist certain common varbs that give us little useful data.
+	 * 357 - Equipped weapon type
+	 * 5983 - Dialogue option appear/disappear
+	 */
+	private static final ImmutableSet<Integer> BLACKLIST = ImmutableSet.of(357, 5983);
 
 	public void startUp()
 	{
 
-		/* Blacklist certain common varbs that give us little useful data.
-		 * 357 - Equipped weapon type
-		 * 5983 - Dialogue option appear/disappear
-		 */
-		blackList = new HashSet<>();
-		blackList.add(357);
-		blackList.add(5983);
 		varbits = HashMultimap.create();
 
 		if (oldVarps == null)
@@ -114,7 +112,6 @@ public class CrowdsourcingVarbits
 		varbits = null;
 		oldVarps = null;
 		oldVarps2 = null;
-		blackList = null;
 	}
 
 	@Subscribe
@@ -165,7 +162,7 @@ public class CrowdsourcingVarbits
 				client.setVarbitValue(oldVarps2, i, newValue);
 
 				// If the varbit is being changed on an initializing tick (when logging in), don't push out a change
-				if (tick != initializingTick && !blackList.contains(i))
+				if (tick != initializingTick && !BLACKLIST.contains(i))
 				{
 					pushVarChange(VARBIT, i, oldValue, newValue, tick);
 				}
