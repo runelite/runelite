@@ -107,7 +107,8 @@ public class HiscoreServiceTest
 			+ "1234,5678\n" // Tempoross
 			+ "-1,-1\n"
 			+ "-1,-1\n"
-			+ "-1,-1\n"
+			+ "-1,-1\n" // TOB
+			+ "42,42\n" // TOB: Hard Mode
 			+ "29347,130\n"
 			+ "723,4\n"
 			+ "1264,38\n"
@@ -150,6 +151,7 @@ public class HiscoreServiceTest
 		Assert.assertEquals(37, result.getAbyssalSire().getLevel());
 		Assert.assertEquals(92357, result.getCallisto().getRank());
 		Assert.assertEquals(5678, result.getTempoross().getLevel());
+		Assert.assertEquals(42, result.getTheatreOfBloodHardMode().getLevel());
 		Assert.assertEquals(5847, result.getZulrah().getLevel());
 	}
 
