@@ -93,6 +93,10 @@ public class CrowdsourcingVarbits
 			{
 				return false;
 			}
+			if (client.getGameState() == GameState.STARTING || client.getGameState() == GameState.UNKNOWN)
+			{
+				return false;
+			}
 			IndexDataBase indexVarbits = client.getIndexConfig();
 			final int[] varbitIds = indexVarbits.getFileIds(VARBITS_ARCHIVE_ID);
 			for (int id : varbitIds)
@@ -137,6 +141,7 @@ public class CrowdsourcingVarbits
 			WorldPoint location = WorldPoint.fromLocalInstance(client, local);
 			boolean isInInstance = client.isInInstancedRegion();
 
+			log.debug(String.format("Storing VarData (tick %d): %d, %d, %d->%d", tick, varType, varIndex, oldValue, newValue));
 			VarData varbitData = new VarData(varType, varIndex, oldValue, newValue, tick, isInInstance, location);
 			crowdsourcingManager.storeEvent(varbitData);
 		});
