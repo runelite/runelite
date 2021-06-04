@@ -51,9 +51,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Barbarian Assault",
-	description = "Show a timer to the next call change and game/wave duration in chat.",
-	tags = {"minigame", "overlay", "timer"}
+		name = "Barbarian Assault",
+		description = "Show a timer to the next call change and game/wave duration in chat.",
+		tags = {"minigame", "overlay", "timer"}
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
@@ -87,6 +87,9 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	@Inject
 	private HealerOverlay healerOverlay;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Provides
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
@@ -125,6 +128,16 @@ public class BarbarianAssaultPlugin extends Plugin
 
 				if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 				{
+					try {
+						double currentpb = configManager.getRSProfileConfiguration("personalbest", "barbarian assault",double.class);
+						double newpb = gameTime.getPBTime();
+						if(newpb < currentpb){
+							configManager.setRSProfileConfiguration("personalbest", "barbarian assault", gameTime.getPBTime());
+						}
+					} catch (Exception e) {
+						configManager.setRSProfileConfiguration("personalbest", "barbarian assault", gameTime.getPBTime());
+					}
+
 					announceTime("Game finished, duration: ", gameTime.getTime(false));
 					gameTime = null;
 				}
@@ -158,7 +171,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.GAMEMESSAGE
-			&& event.getMessage().startsWith("---- Wave:"))
+				&& event.getMessage().startsWith("---- Wave:"))
 		{
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
@@ -212,15 +225,15 @@ public class BarbarianAssaultPlugin extends Plugin
 	private void announceTime(String preText, String time)
 	{
 		final String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append(preText)
-			.append(ChatColorType.HIGHLIGHT)
-			.append(time)
-			.build();
+				.append(ChatColorType.NORMAL)
+				.append(preText)
+				.append(ChatColorType.HIGHLIGHT)
+				.append(time)
+				.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CONSOLE)
-			.runeLiteFormattedMessage(chatMessage)
-			.build());
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
 	}
 }

@@ -52,6 +52,14 @@ class GameTimer
 		return formatTime(LocalTime.ofSecondOfDay(elapsed.getSeconds()));
 	}
 
+	double getPBTime()
+	{
+		final Instant now = Instant.now();
+		final Duration elapsed;
+		elapsed = Duration.between(startTime, now).minus(Duration.of(1, GAME_TICKS));
+		return elapsed.getSeconds();
+	}
+
 	void setWaveStartTime()
 	{
 		prevWave = Instant.now();
