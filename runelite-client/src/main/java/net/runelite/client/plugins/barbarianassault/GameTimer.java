@@ -54,10 +54,7 @@ class GameTimer
 
 	double getPBTime()
 	{
-		final Instant now = Instant.now();
-		final Duration elapsed;
-		elapsed = Duration.between(startTime, now).minus(Duration.of(1, GAME_TICKS));
-		return elapsed.getSeconds();
+		return Duration.between(startTime, Instant.now()).minus(Duration.of(1, GAME_TICKS)).getSeconds();
 	}
 
 	void setWaveStartTime()
