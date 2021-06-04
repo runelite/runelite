@@ -129,12 +129,7 @@ public class BarbarianAssaultPlugin extends Plugin
 				if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 				{
 
-					if (currentpb == 0.0)
-					{
-						configManager.setRSProfileConfiguration("personalbest", "barbarian assault", gameTime.getPBTime());
-					}
-					double newpb = gameTime.getPBTime();
-					if (newpb < currentpb)
+					if (gameTime.getPBTime() < currentpb || currentpb == 0.0)
 					{
 						configManager.setRSProfileConfiguration("personalbest", "barbarian assault", gameTime.getPBTime());
 					}
