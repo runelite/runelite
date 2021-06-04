@@ -60,6 +60,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
+	private double currentpb = getCurrentPB();
 
 	@Getter(AccessLevel.PACKAGE)
 	private Image clockImage;
@@ -102,7 +103,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		overlayManager.add(timerOverlay);
 		overlayManager.add(healerOverlay);
-
 		clockImage = ImageUtil.loadImageResource(getClass(), "clock.png");
 	}
 
@@ -128,16 +128,13 @@ public class BarbarianAssaultPlugin extends Plugin
 
 				if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 				{
-					try
+
+					if (currentpb == 0.0)
 					{
-						double currentpb = configManager.getRSProfileConfiguration("personalbest", "barbarian assault", double.class);
-						double newpb = gameTime.getPBTime();
-						if (newpb < currentpb)
-						{
-							configManager.setRSProfileConfiguration("personalbest", "barbarian assault", gameTime.getPBTime());
-						}
+						configManager.setRSProfileConfiguration("personalbest", "barbarian assault", gameTime.getPBTime());
 					}
-					catch (Exception e)
+					double newpb = gameTime.getPBTime();
+					if (newpb < currentpb)
 					{
 						configManager.setRSProfileConfiguration("personalbest", "barbarian assault", gameTime.getPBTime());
 					}
@@ -212,6 +209,20 @@ public class BarbarianAssaultPlugin extends Plugin
 			}
 
 			inGameBit = inGame;
+		}
+	}
+
+
+	private double getCurrentPB()
+	{
+		try
+		{
+			return configManager.getRSProfileConfiguration("personalbest", "barbarian assault", double.class);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0.0;
 		}
 	}
 
