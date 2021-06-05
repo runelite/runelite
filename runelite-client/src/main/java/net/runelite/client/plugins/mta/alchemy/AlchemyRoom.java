@@ -96,6 +96,7 @@ public class AlchemyRoom extends MTARoom
 
 	private AlchemyItem best;
 	private Cupboard suggestion;
+	private boolean hintSet;
 
 	@Inject
 	private AlchemyRoom(Client client, MTAConfig config, MTAPlugin plugin, ItemManager itemManager, InfoBoxManager infoBoxManager)
@@ -221,6 +222,11 @@ public class AlchemyRoom extends MTARoom
 			if (!inside())
 			{
 				reset();
+				if (hintSet)
+				{
+					client.clearHintArrow();
+					hintSet = false;
+				}
 			}
 		}
 	}
@@ -381,6 +387,7 @@ public class AlchemyRoom extends MTARoom
 			{
 				client.setHintArrow(object.getWorldLocation());
 				found = true;
+				hintSet = true;
 			}
 
 			BufferedImage image = itemManager.getImage(alchemyItem.getId());
@@ -395,6 +402,7 @@ public class AlchemyRoom extends MTARoom
 		if (!found && suggestion != null)
 		{
 			client.setHintArrow(suggestion.gameObject.getWorldLocation());
+			hintSet = true;
 		}
 
 	}
