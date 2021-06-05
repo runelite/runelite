@@ -195,6 +195,21 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testTheatreOfBloodStoryMode()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
+			"Theatre of Blood wave completion time: <col=ff0000>5:04</col> (new personal best)<br>" +
+			"Theatre of Blood total completion time: <col=ff0000>24:39</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood: Story Mode count is: <col=ff0000>73</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood story mode", 73);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood story mode", 5 * 60 + 4.0);
+	}
+
+	@Test
 	public void testWintertodt()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your subdued Wintertodt count is: <col=ff0000>4</col>.", null, 0);
