@@ -61,4 +61,14 @@ public interface BarbarianAssaultConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "baPB",
+		name = "Save role PB different then Overall PB",
+		description = "Turning this on will save your round time into a specific role round time as well as into the overall pb"
+	)
+	default boolean Seperate()
+	{
+		return false;
+	}
 }

@@ -60,13 +60,15 @@ public class BarbarianAssaultPlugin extends Plugin
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
-	private double currentpb = getCurrentPB();
+	private double currentpb = getCurrentPB("barbarian assault"); //This is to load overall pb
+	private double rolecurrentpb; //This is to load role specific pb's and gets set when the role is determined
 
 	@Getter(AccessLevel.PACKAGE)
 	private Image clockImage;
 	private int inGameBit = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
+	private String round_role;
 
 	@Getter
 	private Round currentRound;
@@ -115,6 +117,7 @@ public class BarbarianAssaultPlugin extends Plugin
 		currentWave = START_WAVE;
 		inGameBit = 0;
 		clockImage = null;
+		round_role = "";
 	}
 
 	@Subscribe
@@ -129,8 +132,11 @@ public class BarbarianAssaultPlugin extends Plugin
 				if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 				{
 
-					if (gameTime.getPBTime() < currentpb || currentpb == 0.0)
+					if ((gameTime.getPBTime() < currentpb || currentpb == 0.0) && !(round_role == ""))
 					{
+						if(config.Seperate()){
+							configManager.setRSProfileConfiguration("personalbest", round_role, gameTime.getPBTime());
+						}
 						configManager.setRSProfileConfiguration("personalbest", "barbarian assault", gameTime.getPBTime());
 					}
 
@@ -143,21 +149,29 @@ public class BarbarianAssaultPlugin extends Plugin
 			case WidgetID.BA_ATTACKER_GROUP_ID:
 			{
 				setRound(Role.ATTACKER);
+				round_role = "Ba Attacker";
+				rolecurrentpb = getCurrentPB(round_role);
 				break;
 			}
 			case WidgetID.BA_DEFENDER_GROUP_ID:
 			{
 				setRound(Role.DEFENDER);
+				round_role = "Ba Defender";
+				rolecurrentpb = getCurrentPB(round_role);
 				break;
 			}
 			case WidgetID.BA_HEALER_GROUP_ID:
 			{
 				setRound(Role.HEALER);
+				round_role = "Ba Healer";
+				rolecurrentpb = getCurrentPB(round_role);
 				break;
 			}
 			case WidgetID.BA_COLLECTOR_GROUP_ID:
 			{
 				setRound(Role.COLLECTOR);
+				round_role = "Ba Collector";
+				rolecurrentpb = getCurrentPB(round_role);
 				break;
 			}
 		}
@@ -208,11 +222,11 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 
-	private double getCurrentPB()
+	private double getCurrentPB(String pbKey)
 	{
 		try
 		{
-			return configManager.getRSProfileConfiguration("personalbest", "barbarian assault", double.class);
+			return configManager.getRSProfileConfiguration("personalbest", pbKey, double.class);
 		}
 		catch (Exception e)
 		{

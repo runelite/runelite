@@ -1625,6 +1625,19 @@ public class ChatCommandsPlugin extends Plugin
 
 			case "hydra":
 				return "Alchemical Hydra";
+
+			case "ba attacker":
+				return "Ba Attacker";
+
+			case "ba defender":
+				return "Ba Defender";
+
+			case "ba Collector":
+				return "Ba Collector";
+
+			case "ba healer":
+				return "Ba Healer";
+
 			//Barbaraian assault
 			case "barb assault":
 			case "barbarian assault":
