@@ -983,7 +983,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -1041,7 +1041,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	@VisibleForTesting
 	void playerSkillLookup(ChatMessage chatMessage, String message)
@@ -1625,7 +1625,11 @@ public class ChatCommandsPlugin extends Plugin
 
 			case "hydra":
 				return "Alchemical Hydra";
-
+			//Barbaraian assault
+			case "barb assault":
+			case "barbarian assault":
+			case "ba":
+				return "Barbarian Assault";
 			// gwd
 			case "sara":
 			case "saradomin":
