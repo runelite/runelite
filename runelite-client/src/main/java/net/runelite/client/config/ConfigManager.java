@@ -485,7 +485,7 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String profile, String key, @NonNull String value)
 	{
-		if (Strings.isNullOrEmpty(groupName) || Strings.isNullOrEmpty(key))
+		if (Strings.isNullOrEmpty(groupName) || Strings.isNullOrEmpty(key) || key.indexOf(':') != -1)
 		{
 			throw new IllegalArgumentException();
 		}
