@@ -60,7 +60,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
-	private double currentpb //This is to load overall pb
+	private double currentpb; //This is to load overall pb
 	private double rolecurrentpb; //This is to load role specific pb's and gets set when the role is determined
 
 	@Getter(AccessLevel.PACKAGE)
