@@ -3,6 +3,12 @@
 .string_stack_count 1
 .int_var_count      3
 .string_var_count   1
+; callback "confirmClanChatKick"
+; 	Used by the chat channel plugin to show a chatbox panel confirming the requested kick
+;	Also requires the "clanChatConfirmKick" option of ChatChannelConfig to be enabled
+; callback "confirmClanChatBan"
+; 	Used by the chat channel plugin to show a chatbox panel confirming the requested ban
+;	Also requires the "clanChatConfirmBan" option of ChatChannelConfig to be enabled
    iload                  0
    switch                
       7: LABEL3
@@ -84,3 +90,21 @@ LABEL55:
    ignore_add            
 LABEL57:
    return                
+CONFIRM_KICK:
+   sload                  0             ; Username we are trying to kick
+   iconst                 0             ; Modified if we are confirming the kick inside the plugin
+   sconst                 "confirmClanChatKick"
+   runelite_callback
+   pop_string            ; Pop username
+   iconst                 0             ; Compare against zero
+   if_icmpgt              LABEL57       ; Early return for chatbox panel confirmation
+   jump                   LABEL7
+CONFIRM_BAN:
+   sload                  0             ; Username we are trying to kick
+   iconst                 0             ; Modified if we are confirming the kick inside the plugin
+   sconst                 "confirmClanChatKick"
+   runelite_callback
+   pop_string            ; Pop username
+   iconst                 0             ; Compare against zero
+   if_icmpgt              LABEL57       ; Early return for chatbox panel confirmation
+   jump                   LABEL25
