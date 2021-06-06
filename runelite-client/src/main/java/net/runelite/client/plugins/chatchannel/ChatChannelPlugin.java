@@ -666,7 +666,8 @@ public class ChatChannelPlugin extends Plugin
 			}
 			case "confirmClanChatKick":
 			{
-				if (!config.clanChatConfirmKicks() || kickConfirmed) {
+				if (!config.clanChatConfirmKicks() || kickConfirmed)
+				{
 					break;
 				}
 
@@ -686,7 +687,8 @@ public class ChatChannelPlugin extends Plugin
 			}
 			case "confirmClanChatBan":
 			{
-				if (!config.clanChatConfirmBans() || kickConfirmed) {
+				if (!config.clanChatConfirmBans() || kickConfirmed)
+				{
 					break;
 				}
 
@@ -860,7 +862,7 @@ public class ChatChannelPlugin extends Plugin
 						clientThread.invoke(() ->
 						{
 							kickConfirmed = true;
-							final int kickPlayerSlot=client.getClanChannel().getMembers().indexOf(client.getClanChannel().findMember(kickPlayerName));
+							final int kickPlayerSlot = client.getClanChannel().getMembers().indexOf(client.getClanChannel().findMember(kickPlayerName));
 							client.runScript(ScriptID.CLAN_SIDE_PANEL_OP, 7, 0, kickPlayerName, kickPlayerSlot);
 							kickConfirmed = false;
 						})
@@ -876,7 +878,7 @@ public class ChatChannelPlugin extends Plugin
 						clientThread.invoke(() ->
 						{
 							kickConfirmed = true;
-							final int banPlayerSlot=client.getClanChannel().getMembers().indexOf(client.getClanChannel().findMember(banPlayerName));
+							final int banPlayerSlot = client.getClanChannel().getMembers().indexOf(client.getClanChannel().findMember(banPlayerName));
 							client.runScript(ScriptID.CLAN_SIDE_PANEL_OP, 8, 0, banPlayerName, banPlayerSlot);
 							kickConfirmed = false;
 						})
