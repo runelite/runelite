@@ -133,7 +133,7 @@ public class BarbarianAssaultPlugin extends Plugin
 				{
 					if (gameTime.getPBTime() < rolecurrentpb && config.Seperate() || rolecurrentpb == 0.0)
 					{
-
+						configManager.setRSProfileConfiguration("personalbest", round_role, gameTime.getPBTime());
 					}
 					currentpb = getCurrentPB("barbarian assault");
 					if ((gameTime.getPBTime() < currentpb || currentpb == 0.0))

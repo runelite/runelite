@@ -64,11 +64,7 @@ class GameTimer
 
 	private static String formatTime(LocalTime time)
 	{
-		if (time.getHour() > 0)
-		{
-			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
-		}
-		else if (time.getMinute() > 9)
+		if (time.getMinute() > 9)
 		{
 			return time.format(DateTimeFormatter.ofPattern("mm:ss"));
 		}
