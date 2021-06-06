@@ -185,7 +185,7 @@ public interface ChatColorConfig extends Config
 
 	@ConfigItem(
 		position = 14,
-		keyName = "opaqueClanChatMessageHighlight",
+		keyName = "opaqueClanMessageHighlight",
 		name = "Clan chat message highlight",
 		description = "Color of highlights in Clan Chat messages",
 		section = opaqueSection
@@ -582,7 +582,7 @@ public interface ChatColorConfig extends Config
 
 	@ConfigItem(
 		position = 64,
-		keyName = "transparentClanChatMessageHighlight",
+		keyName = "transparentClanMessageHighlight",
 		name = "Clan chat message highlight (transparent)",
 		description = "Color of highlights in Clan Chat messages (transparent)",
 		section = transparentSection
