@@ -60,7 +60,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
-	private double currentpb = getCurrentPB("barbarian assault"); //This is to load overall pb
+	private double currentpb //This is to load overall pb
 	private double rolecurrentpb; //This is to load role specific pb's and gets set when the role is determined
 
 	@Getter(AccessLevel.PACKAGE)
@@ -131,12 +131,13 @@ public class BarbarianAssaultPlugin extends Plugin
 
 				if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 				{
-
-					if ((gameTime.getPBTime() < currentpb || currentpb == 0.0) && !(round_role == ""))
+					if (gameTime.getPBTime() < rolecurrentpb && config.Seperate() || rolecurrentpb == 0.0)
 					{
-						if(config.Seperate()){
-							configManager.setRSProfileConfiguration("personalbest", round_role, gameTime.getPBTime());
-						}
+
+					}
+					currentpb = getCurrentPB("barbarian assault");
+					if ((gameTime.getPBTime() < currentpb || currentpb == 0.0))
+					{
 						configManager.setRSProfileConfiguration("personalbest", "barbarian assault", gameTime.getPBTime());
 					}
 
@@ -226,11 +227,18 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		try
 		{
-			return configManager.getRSProfileConfiguration("personalbest", pbKey, double.class);
+			if (rolecurrentpb == 0.0)
+			{
+				return 0.0;
+			}
+			else
+			{
+				return configManager.getRSProfileConfiguration("personalbest", pbKey, double.class);
+			}
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+
 			return 0.0;
 		}
 	}
