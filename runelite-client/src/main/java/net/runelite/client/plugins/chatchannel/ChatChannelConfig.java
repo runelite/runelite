@@ -224,10 +224,10 @@ public interface ChatChannelConfig extends Config
 			position = 1,
 			section = clanChatSection
 	)
-    default boolean clanChatConfirmKicks()
-    {
-        return false;
-    }
+	default boolean clanChatConfirmKicks()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			keyName = "clanChatConfirmBans",
