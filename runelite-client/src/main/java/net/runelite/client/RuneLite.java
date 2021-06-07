@@ -39,7 +39,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
-import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.net.ssl.SSLContext;
@@ -126,10 +125,6 @@ public class RuneLite
 
 	@Inject
 	private Provider<WorldMapOverlay> worldMapOverlay;
-
-	@Inject
-	@Nullable
-	private Client client;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -248,7 +243,7 @@ public class RuneLite
 				options.valueOf(sessionfile),
 				options.valueOf(configfile)));
 
-			injector.getInstance(RuneLite.class).start();
+			injector.getInstance(RuneLite.class).start(clientLoader);
 
 			final long end = System.currentTimeMillis();
 			final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
@@ -268,9 +263,17 @@ public class RuneLite
 		}
 	}
 
-	public void start() throws Exception
+	private void start(ClientLoader clientLoader) throws Exception
 	{
+		Object loaderObject = clientLoader.get();
+		if (loaderObject == null || loaderObject instanceof Throwable)
+		{
+			SwingUtilities.invokeLater(() -> FatalErrorDialog.showNetErrorWindow("loading the client", (Throwable) loaderObject));
+			return;
+		}
+
 		// Load RuneLite or Vanilla client
+		final Client client = loaderObject instanceof Client ? (Client) loaderObject : null;
 		final boolean isOutdated = client == null;
 
 		if (!isOutdated)

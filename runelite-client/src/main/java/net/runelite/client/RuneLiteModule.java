@@ -60,7 +60,7 @@ import okhttp3.OkHttpClient;
 public class RuneLiteModule extends AbstractModule
 {
 	private final OkHttpClient okHttpClient;
-	private final Supplier<Applet> clientLoader;
+	private final Supplier<Object> clientLoader;
 	private final boolean developerMode;
 	private final boolean safeMode;
 	private final File sessionfile;
@@ -104,7 +104,8 @@ public class RuneLiteModule extends AbstractModule
 	@Singleton
 	Applet provideApplet()
 	{
-		return clientLoader.get();
+		Object object = clientLoader.get();
+		return object instanceof Applet ? (Applet) object : null;
 	}
 
 	@Provides
