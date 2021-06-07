@@ -61,6 +61,7 @@ public class RuneLiteModule extends AbstractModule
 {
 	private final OkHttpClient okHttpClient;
 	private final Supplier<Object> clientLoader;
+	private final Supplier<RuntimeConfig> runtimeConfigSupplier;
 	private final boolean developerMode;
 	private final boolean safeMode;
 	private final File sessionfile;
@@ -113,6 +114,13 @@ public class RuneLiteModule extends AbstractModule
 	Client provideClient(@Nullable Applet applet)
 	{
 		return applet instanceof Client ? (Client) applet : null;
+	}
+
+	@Provides
+	@Singleton
+	RuntimeConfig provideRuntimeConfig()
+	{
+		return runtimeConfigSupplier.get();
 	}
 
 	@Provides

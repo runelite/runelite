@@ -92,7 +92,7 @@ public class PluginManagerTest
 			.thenThrow(new RuntimeException("in plugin manager test"));
 
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(okHttpClient, () -> null, true, false,
+			.override(new RuneLiteModule(okHttpClient, () -> null, () -> null, true, false,
 				RuneLite.DEFAULT_SESSION_FILE,
 				RuneLite.DEFAULT_CONFIG_FILE))
 			.with(BoundFieldModule.of(this)));
@@ -155,7 +155,7 @@ public class PluginManagerTest
 	{
 		List<Module> modules = new ArrayList<>();
 		modules.add(new GraphvizModule());
-		modules.add(new RuneLiteModule(mock(OkHttpClient.class), () -> null, true, false,
+		modules.add(new RuneLiteModule(mock(OkHttpClient.class), () -> null, () -> null, true, false,
 			RuneLite.DEFAULT_SESSION_FILE,
 			RuneLite.DEFAULT_CONFIG_FILE));
 

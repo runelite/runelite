@@ -422,6 +422,7 @@ public class ClientLoader implements Supplier<Object>
 				SwingUtilities.invokeLater(() ->
 					new FatalErrorDialog("The client-patch is missing from the classpath. If you are building " +
 						"the client you need to re-run maven")
+						.addHelpButtons()
 						.addBuildingGuide()
 						.open());
 				throw new NullPointerException();
