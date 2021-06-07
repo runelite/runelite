@@ -227,7 +227,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		try
 		{
-			if (rolecurrentpb == 0.0 && config.Seperate())
+			if ((rolecurrentpb == 0.0 && config.Seperate()) || !(pbKey == "barbarian assault"))
 			{
 				return 0.0;
 			}
