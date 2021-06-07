@@ -13,8 +13,8 @@
       "value": 6
     },
     {
-      "name": "Morytania Dairy 3 Shades(120%)",
-      "value": .2
+      "name": "Morytania Dairy 3 Shades(150%)",
+      "value": 0.5
     }
   ],
   "actions": [
@@ -332,7 +332,7 @@
       "level": 1,
       "icon": 25419,
       "name": "Urium Remains",
-      "xp": 150
+      "xp": 120
     }
   ]
 }
