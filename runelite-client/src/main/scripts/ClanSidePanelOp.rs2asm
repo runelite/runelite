@@ -1,0 +1,110 @@
+.id                 4401
+.int_stack_count    3
+.string_stack_count 1
+.int_var_count      3
+.string_var_count   1
+; callback "confirmClanChatKick"
+; 	Used by the chat channel plugin to show a chatbox panel confirming the requested kick
+;	Also requires the "clanChatConfirmKick" option of ChatChannelConfig to be enabled
+; callback "confirmClanChatBan"
+; 	Used by the chat channel plugin to show a chatbox panel confirming the requested ban
+;	Also requires the "clanChatConfirmBan" option of ChatChannelConfig to be enabled
+   iload                  0
+   switch                
+      7: LABEL3
+      8: LABEL16
+      9: LABEL38
+      10: LABEL48
+   jump                   LABEL57
+LABEL3:
+   iload                  2
+   iconst                 -1
+   if_icmpne              LABEL7
+   jump                   LABEL13
+LABEL7:
+   sconst                 "Attempting to kick player from clan chat..."
+   iconst                 3
+   invoke                 96
+   iload                  2
+   3859                  
+   jump                   LABEL15
+LABEL13:
+   sconst                 "That player appears to have left the channel."
+   mes                   
+LABEL15:
+   jump                   LABEL57
+LABEL16:
+   iconst                 0
+   3801                  
+   iconst                 1
+   if_icmpeq              LABEL21
+   jump                   LABEL35
+LABEL21:
+   iload                  2
+   iconst                 -1
+   if_icmpne              LABEL25
+   jump                   LABEL32
+LABEL25:
+   sconst                 "Attempting to ban player from clan chat..."
+   iconst                 3
+   invoke                 96
+   iload                  2
+   iconst                 0
+   3819                  
+   jump                   LABEL34
+LABEL32:
+   sconst                 "That player appears to have left the channel."
+   mes                   
+LABEL34:
+   jump                   LABEL37
+LABEL35:
+   sconst                 "The game cannot process your Ban request now."
+   mes                   
+LABEL37:
+   jump                   LABEL57
+LABEL38:
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL42
+   jump                   LABEL45
+LABEL42:
+   sload                  0
+   friend_del            
+   jump                   LABEL47
+LABEL45:
+   sload                  0
+   friend_add            
+LABEL47:
+   jump                   LABEL57
+LABEL48:
+   iload                  1
+   iconst                 2
+   if_icmpeq              LABEL52
+   jump                   LABEL55
+LABEL52:
+   sload                  0
+   ignore_del            
+   jump                   LABEL57
+LABEL55:
+   sload                  0
+   ignore_add            
+LABEL57:
+   return                
+CONFIRM_KICK:
+   sload                  0             ; Username we are trying to kick
+   iconst                 0             ; Modified if we are confirming the kick inside the plugin
+   sconst                 "confirmClanChatKick"
+   runelite_callback
+   pop_string            ; Pop username
+   iconst                 0             ; Compare against zero
+   if_icmpgt              LABEL57       ; Early return for chatbox panel confirmation
+   jump                   LABEL7
+CONFIRM_BAN:
+   sload                  0             ; Username we are trying to kick
+   iconst                 0             ; Modified if we are confirming the kick inside the plugin
+   sconst                 "confirmClanChatKick"
+   runelite_callback
+   pop_string            ; Pop username
+   iconst                 0             ; Compare against zero
+   if_icmpgt              LABEL57       ; Early return for chatbox panel confirmation
+   jump                   LABEL25

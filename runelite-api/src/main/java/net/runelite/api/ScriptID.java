@@ -363,4 +363,16 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 6)
 	public static final int SETTINGS_ZOOM_SLIDER_ONDRAG = 3896;
+
+	/**
+	 * Manages Clan Chat Guest, responsible for kicks/bans
+	 * <ul>
+	 * <li>int Menu option clicked 7/8/9/10</li>
+	 * <li>int If the selected player is a friend or not, 1 for friend, 2 for not</li>
+	 * <li>String Players in-game Name</li>
+	 * <li>int The index of the selected player</li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 3, string = 1)
+	public static final int CLAN_SIDE_PANEL_OP = 4401;
 }

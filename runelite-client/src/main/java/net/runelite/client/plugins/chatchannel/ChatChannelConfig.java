@@ -218,6 +218,30 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "clanChatConfirmKicks",
+			name = "Confirm Kicks",
+			description = "Shows a chat prompt to confirm kicks.",
+			position = 1,
+			section = clanChatSection
+	)
+	default boolean clanChatConfirmKicks()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "clanChatConfirmBans",
+			name = "Confirm Bans",
+			description = "Shows a chat prompt to confirm bans from right click action.",
+			position = 2,
+			section = clanChatSection
+	)
+	default boolean clanChatConfirmBans()
+	{
+	return false;
+	}
+
+	@ConfigItem(
 		keyName = "guestClanChatShowJoinLeave",
 		name = "Show Join/Leave",
 		description = "Adds a temporary message notifying when a member joins or leaves.",

@@ -664,6 +664,48 @@ public class ChatChannelPlugin extends Plugin
 				}
 				break;
 			}
+			case "confirmClanChatKick":
+			{
+				if (!config.clanChatConfirmKicks() || kickConfirmed)
+				{
+					break;
+				}
+
+				// Set a flag so the script doesn't instantly kick them
+				final int[] intStack = client.getIntStack();
+				final int size = client.getIntStackSize();
+				intStack[size - 1] = 1;
+
+				// Get name and slot of player we are trying to kick
+				final String[] stringStack = client.getStringStack();
+				final int stringSize = client.getStringStackSize();
+				final String kickPlayerName = stringStack[stringSize - 1];
+
+				// Show a chatbox panel confirming the kick
+				clientThread.invokeLater(() -> confirmClanChatKickPlayer(kickPlayerName));
+				break;
+			}
+			case "confirmClanChatBan":
+			{
+				if (!config.clanChatConfirmBans() || kickConfirmed)
+				{
+					break;
+				}
+
+				// Set a flag so the script doesn't instantly kick them
+				final int[] intStack = client.getIntStack();
+				final int size = client.getIntStackSize();
+				intStack[size - 1] = 1;
+
+				// Get name and slot of player we are trying to kick
+				final String[] stringStack = client.getStringStack();
+				final int stringSize = client.getStringStackSize();
+				final String banPlayerName = stringStack[stringSize - 1];
+
+				// Show a chatbox panel confirming the ban
+				clientThread.invokeLater(() -> confirmClanChatBanPlayer(banPlayerName));
+				break;
+			}
 		}
 	}
 
@@ -811,6 +853,38 @@ public class ChatChannelPlugin extends Plugin
 			)
 			.option("2. Cancel", Runnables::doNothing)
 			.build();
+	}
+
+	private void confirmClanChatKickPlayer(final String kickPlayerName)
+	{
+		chatboxPanelManager.openTextMenuInput("Attempting to kick: " + kickPlayerName)
+				.option("1. Confirm kick", () ->
+						clientThread.invoke(() ->
+						{
+							kickConfirmed = true;
+							final int kickPlayerSlot = client.getClanChannel().getMembers().indexOf(client.getClanChannel().findMember(kickPlayerName));
+							client.runScript(ScriptID.CLAN_SIDE_PANEL_OP, 7, 0, kickPlayerName, kickPlayerSlot);
+							kickConfirmed = false;
+						})
+				)
+				.option("2. Cancel", Runnables::doNothing)
+				.build();
+	}
+
+	private void confirmClanChatBanPlayer(final String banPlayerName)
+	{
+		chatboxPanelManager.openTextMenuInput("Attempting to ban: " + banPlayerName)
+				.option("1. Confirm ban", () ->
+						clientThread.invoke(() ->
+						{
+							kickConfirmed = true;
+							final int banPlayerSlot = client.getClanChannel().getMembers().indexOf(client.getClanChannel().findMember(banPlayerName));
+							client.runScript(ScriptID.CLAN_SIDE_PANEL_OP, 8, 0, banPlayerName, banPlayerSlot);
+							kickConfirmed = false;
+						})
+				)
+				.option("2. Cancel", Runnables::doNothing)
+				.build();
 	}
 
 	private void colorIgnoredPlayers(Color ignoreColor)
