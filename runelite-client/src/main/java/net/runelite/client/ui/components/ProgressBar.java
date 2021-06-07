@@ -24,10 +24,10 @@
  */
 package net.runelite.client.ui.components;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JLabel;
@@ -53,7 +53,7 @@ public class ProgressBar extends DimmableJPanel
 
 	public ProgressBar()
 	{
-		setLayout(new BorderLayout());
+		setLayout(new GridLayout(1, 3));
 		// The background color should be overridden
 		setBackground(Color.GREEN.darker());
 		setForeground(Color.GREEN.brighter());
@@ -66,6 +66,7 @@ public class ProgressBar extends DimmableJPanel
 
 		rightLabel.setFont(FontManager.getRunescapeSmallFont());
 		rightLabel.setForeground(Color.WHITE);
+		rightLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		rightLabel.setBorder(new EmptyBorder(2, 0, 0, 5));
 
 		centerLabel.setFont(FontManager.getRunescapeSmallFont());
@@ -74,9 +75,9 @@ public class ProgressBar extends DimmableJPanel
 		centerLabel.setBorder(new EmptyBorder(2, 0, 0, 0));
 
 		// Adds components to be automatically redrawn when paintComponents is called
-		add(leftLabel, BorderLayout.WEST);
-		add(centerLabel, BorderLayout.CENTER);
-		add(rightLabel, BorderLayout.EAST);
+		add(leftLabel);
+		add(centerLabel);
+		add(rightLabel);
 	}
 
 	@Override

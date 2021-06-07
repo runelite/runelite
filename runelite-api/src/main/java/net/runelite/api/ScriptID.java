@@ -332,4 +332,35 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 4)
 	public static final int WIKI_ICON_UPDATE = 3306;
+
+	/**
+	 * Builds a line in the chatbox when there is no username: prefix, such as 
+	 * a game or system message
+	 */
+	@ScriptArguments(integer = 11, string = 1)
+	public static final int CHATBOX_BUILD_LINE_WITHOUT_USER = 199;
+	
+	/**
+	 * Builds a line in the chatbox when there is a username: prefix
+	 */
+	@ScriptArguments(integer = 11, string = 2)
+	public static final int CHATBOX_BUILD_LINE_WITH_USER = 203;
+
+	/**
+	 * Builds a line in the chatbox when it from a clan
+	 */
+	@ScriptArguments(integer = 14, string = 3)
+	public static final int CHATBOX_BUILD_LINE_WITH_CLAN = 4483;
+
+	/**
+	 * Drag callback for the camera zoom slider in the options side panel.
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int ZOOM_SLIDER_ONDRAG = 833;
+
+	/**
+	 * Drag callback for the camera zoom slider in the settings.
+	 */
+	@ScriptArguments(integer = 6)
+	public static final int SETTINGS_ZOOM_SLIDER_ONDRAG = 3896;
 }

@@ -106,6 +106,7 @@ public enum HiscoreSkill
 	THE_GAUNTLET("The Gauntlet", BOSS),
 	THE_CORRUPTED_GAUNTLET("The Corrupted Gauntlet", BOSS),
 	THEATRE_OF_BLOOD("Theatre of Blood", BOSS),
+	THEATRE_OF_BLOOD_HARD_MODE("Theatre of Blood: Hard Mode", BOSS),
 	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", BOSS),
 	TZKAL_ZUK("TzKal-Zuk", BOSS),
 	TZTOK_JAD("TzTok-Jad", BOSS),

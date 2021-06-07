@@ -60,6 +60,12 @@ public class WorldMapOverlayMouseListener extends MouseAdapter
 		if (SwingUtilities.isLeftMouseButton(e) && !worldMapPoints.isEmpty())
 		{
 			Point mousePos = client.getMouseCanvasPosition();
+			final Widget view = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
+
+			if (view == null)
+			{
+				return e;
+			}
 
 			for (WorldMapPoint worldMapPoint : worldMapPoints)
 			{
@@ -77,6 +83,7 @@ public class WorldMapOverlayMouseListener extends MouseAdapter
 						RenderOverview renderOverview = client.getRenderOverview();
 						renderOverview.setWorldMapPositionTarget(target);
 					}
+					e.consume();
 					return worldMapPoint.onClick(e);
 				}
 			}

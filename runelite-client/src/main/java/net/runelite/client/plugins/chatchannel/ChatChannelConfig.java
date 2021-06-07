@@ -22,22 +22,69 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.friendschat;
+package net.runelite.client.plugins.chatchannel;
 
 import java.awt.Color;
 import net.runelite.api.FriendsChatRank;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("clanchat") // group name from the old plugin
-public interface FriendsChatConfig extends Config
+@ConfigGroup(ChatChannelConfig.GROUP)
+public interface ChatChannelConfig extends Config
 {
+	String GROUP = "clanchat"; // group name from the old plugin
+
+	@ConfigSection(
+		name = "Friends Chat",
+		description = "Configuration for friends chat",
+		position = 10
+	)
+	String friendsChatSection = "friendsChat";
+
+	@ConfigSection(
+		name = "Clan Chat",
+		description = "Configuration for clan chat",
+		position = 20
+	)
+	String clanChatSection = "clanChat";
+
+	@ConfigSection(
+		name = "Guest Clan Chat",
+		description = "Configuration for guest clan chat",
+		position = 30
+	)
+	String guestClanChatSection = "guestClanChat";
+
+	@ConfigItem(
+		keyName = "joinLeaveTimeout",
+		name = "Join/Leave timeout",
+		description = "Set the timeout duration of join/leave messages. A value of 0 will make the messages permanent.",
+		position = 0
+	)
+	default int joinLeaveTimeout()
+	{
+		return 20;
+	}
+
+	@ConfigItem(
+		keyName = "targetMode",
+		name = "Target mode",
+		description = "Enables target changing mode via /f, /c, and /g which controls which channel messages are sent to.",
+		position = 1
+	)
+	default boolean targetMode()
+	{
+		return true;
+	}
+
 	@ConfigItem(
 		keyName = "clanChatIcons",
 		name = "Chat Icons",
 		description = "Show rank icons next to friends chat members.",
-		position = 1
+		position = 1,
+		section = friendsChatSection
 	)
 	default boolean chatIcons()
 	{
@@ -48,22 +95,12 @@ public interface FriendsChatConfig extends Config
 		keyName = "recentChats",
 		name = "Recent Chats",
 		description = "Show recent friends chats.",
-		position = 2
+		position = 2,
+		section = friendsChatSection
 	)
 	default boolean recentChats()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "clanCounter",
-		name = "Members Counter",
-		description = "Show the amount of friends chat members near you.",
-		position = 3
-	)
-	default boolean showCounter()
-	{
-		return false;
 	}
 
 	@ConfigItem(
@@ -88,9 +125,10 @@ public interface FriendsChatConfig extends Config
 		keyName = "showJoinLeave",
 		name = "Show Join/Leave",
 		description = "Adds a temporary message notifying when a member joins or leaves.",
-		position = 4
+		position = 4,
+		section = friendsChatSection
 	)
-	default boolean showJoinLeave()
+	default boolean showFriendsChatJoinLeave()
 	{
 		return false;
 	}
@@ -99,7 +137,8 @@ public interface FriendsChatConfig extends Config
 		keyName = "joinLeaveRank",
 		name = "Join/Leave rank",
 		description = "Only show join/leave messages for members at or above this rank.",
-		position = 5
+		position = 5,
+		section = friendsChatSection
 	)
 	default FriendsChatRank joinLeaveRank()
 	{
@@ -107,21 +146,11 @@ public interface FriendsChatConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "joinLeaveTimeout",
-		name = "Join/Leave timeout",
-		description = "Set the timeout duration of join/leave messages. A value of 0 will make the messages permanent.",
-		position = 6
-	)
-	default int joinLeaveTimeout()
-	{
-		return 20;
-	}
-
-	@ConfigItem(
 		keyName = "privateMessageIcons",
 		name = "Private Message Icons",
 		description = "Add rank icons to private messages received from members.",
-		position = 7
+		position = 7,
+		section = friendsChatSection
 	)
 	default boolean privateMessageIcons()
 	{
@@ -132,7 +161,8 @@ public interface FriendsChatConfig extends Config
 		keyName = "publicChatIcons",
 		name = "Public Chat Icons",
 		description = "Add rank icons to public chat messages from members.",
-		position = 8
+		position = 8,
+		section = friendsChatSection
 	)
 	default boolean publicChatIcons()
 	{
@@ -143,7 +173,8 @@ public interface FriendsChatConfig extends Config
 		keyName = "confirmKicks",
 		name = "Confirm Kicks",
 		description = "Shows a chat prompt to confirm kicks",
-		position = 10
+		position = 10,
+		section = friendsChatSection
 	)
 	default boolean confirmKicks()
 	{
@@ -154,7 +185,8 @@ public interface FriendsChatConfig extends Config
 		keyName = "showIgnores",
 		name = "Recolor ignored players",
 		description = "Recolor members who are on your ignore list",
-		position = 11
+		position = 11,
+		section = friendsChatSection
 	)
 	default boolean showIgnores()
 	{
@@ -165,10 +197,35 @@ public interface FriendsChatConfig extends Config
 		keyName = "showIgnoresColor",
 		name = "Ignored color",
 		description = "Allows you to change the color of the ignored players in your friends chat",
-		position = 12
+		position = 12,
+		section = friendsChatSection
 	)
 	default Color showIgnoresColor()
 	{
 		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "clanChatShowJoinLeave",
+		name = "Show Join/Leave",
+		description = "Adds a temporary message notifying when a member joins or leaves.",
+		position = 0,
+		section = clanChatSection
+	)
+	default boolean clanChatShowJoinLeave()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "guestClanChatShowJoinLeave",
+		name = "Show Join/Leave",
+		description = "Adds a temporary message notifying when a member joins or leaves.",
+		position = 0,
+		section = guestClanChatSection
+	)
+	default boolean guestClanChatShowJoinLeave()
+	{
+		return false;
 	}
 }

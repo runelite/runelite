@@ -22,42 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.clan;
+package net.runelite.client.config;
 
-import java.util.List;
-import javax.annotation.Nullable;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
+import static org.junit.Assert.fail;
+import org.junit.Test;
 
-/**
- * A clan's settings.
- */
-public interface ClanSettings
+public class ChatColorConfigTest
 {
-	/**
-	 * The clan name
-	 * @return
-	 */
-	String getName();
+	@Test
+	public void testUniqueKeys()
+	{
+		final Set<String> configKeyNames = new HashSet<>();
 
-	/**
-	 * The members of the clan. This includes all members, whether online or offline.
-	 * @return
-	 */
-	List<ClanMember> getMembers();
+		for (Method method : ChatColorConfig.class.getMethods())
+		{
+			final ConfigItem annotation = method.getAnnotation(ConfigItem.class);
+			if (annotation == null)
+			{
+				continue;
+			}
 
-	/**
-	 * Find a member of the clan.
-	 * @param name
-	 * @return
-	 */
-	@Nullable
-	ClanMember findMember(String name);
+			final String configKeyName = annotation.keyName();
+			if (configKeyNames.contains(configKeyName))
+			{
+				fail("keyName " + configKeyName + " is duplicated in " + ChatColorConfig.class);
+			}
 
-	/**
-	 * Get the clan title for a clan rank.
-	 * @param clanRank the rank
-	 * @see ClanRank
-	 * @return
-	 */
-	@Nullable
-	ClanTitle titleForRank(ClanRank clanRank);
+			configKeyNames.add(configKeyName);
+		}
+	}
 }

@@ -122,17 +122,6 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "filterLogin",
-		name = "Filter Logged In/Out Messages",
-		description = "Filter your private chat to remove logged in/out messages",
-		position = 8
-	)
-	default boolean filterLogin()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "filterGameChat",
 		name = "Filter Game Chat",
 		description = "Filter your game chat messages",

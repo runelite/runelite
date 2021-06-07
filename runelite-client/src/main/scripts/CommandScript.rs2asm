@@ -270,17 +270,27 @@ LABEL222:
    istore                 5
    istore                 6
 LABEL226:
+   iload                  6                    ; prefix length
+   iload                  5                    ; chat type
+   sconst                 "preChatSendpublic"
+   runelite_callback
+   istore                 5                    ; chat type
+   istore                 6                    ; prefix length
+   get_varc_string        335                  ; load input string
+   string_length                               ; get length
+   iconst                 0                    ; load 0
+   if_icmpeq              LABEL420             ; if (%varcstring355 == 0) jump to script223 call
    iload                  5
    iconst                 44
    if_icmpeq              LABEL230
    jump                   LABEL260
 LABEL230:
-   3800                  
+   activeclansettings_find_listened
    iconst                 1
    if_icmpeq              LABEL234
    jump                   LABEL257
 LABEL234:
-   3850                  
+   activeclanchannel_find_listened
    iconst                 1
    if_icmpeq              LABEL238
    jump                   LABEL257
@@ -292,7 +302,7 @@ LABEL238:
 LABEL242:
    return                
 LABEL243:
-   3803                  
+   activeclansettings_getallowunaffined
    iconst                 1
    if_icmpeq              LABEL247
    jump                   LABEL254
@@ -321,7 +331,7 @@ LABEL260:
    jump                   LABEL307
 LABEL264:
    iconst                 0
-   3851                  
+   activeclanchannel_find_affined
    iconst                 1
    if_icmpeq              LABEL269
    jump                   LABEL304
@@ -340,7 +350,7 @@ LABEL277:
 LABEL278:
    chat_playername       
    removetags            
-   3860                  
+   activeclanchannel_getuserslot
    istore                 7
    iload                  7
    iconst                 -1
@@ -348,8 +358,8 @@ LABEL278:
    jump                   LABEL298
 LABEL286:
    iload                  7
-   3857                  
-   3854                  
+   activeclanchannel_getuserrank
+   activeclanchannel_getranktalk
    if_icmpge              LABEL291
    jump                   LABEL298
 LABEL291:

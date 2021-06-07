@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, trimbe <github.com/trimbe>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.friendschat;
+package net.runelite.api.events;
 
-enum ActivityType
+import javax.annotation.Nullable;
+import lombok.Value;
+import net.runelite.api.clan.ClanChannel;
+
+/**
+ * An event fired when the local player joins or leaves a clan channel.
+ */
+@Value
+public class ClanChannelChanged
 {
-	JOINED,
-	LEFT
+	/**
+	 * The clan channel
+	 */
+	@Nullable
+	private final ClanChannel clanChannel;
+	/**
+	 * Whether or not this was the guest clan channel
+	 */
+	private boolean guest;
 }

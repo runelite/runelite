@@ -212,7 +212,7 @@ LABEL177:
    if_setnoclickthrough  
    iconst                 1
    iconst                 10616867
-   2006                  
+   if_setnoscrollthrough 
 LABEL183:
    iconst                 0
    istore                 4

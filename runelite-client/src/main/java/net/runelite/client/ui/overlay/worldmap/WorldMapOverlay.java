@@ -131,7 +131,24 @@ public class WorldMapOverlay extends Overlay
 
 				if (worldPoint.isSnapToEdge())
 				{
-					if (worldMapRectangle.contains(drawPoint.getX(), drawPoint.getY()))
+					// Get a smaller rect for edge-snapped icons so they display correctly at the edge
+					final Rectangle snappedRect = widget.getBounds();
+					snappedRect.grow(-image.getWidth() / 2, -image.getHeight() / 2);
+
+					final Rectangle unsnappedRect = new Rectangle(snappedRect);
+					if (worldPoint.getImagePoint() != null)
+					{
+						int dx = worldPoint.getImagePoint().getX() - (image.getWidth() / 2);
+						int dy = worldPoint.getImagePoint().getY() - (image.getHeight() / 2);
+						unsnappedRect.translate(dx, dy);
+					}
+					// Make the unsnap rect slightly smaller so a smaller snapped image doesn't cause a freak out
+					if (worldPoint.isCurrentlyEdgeSnapped())
+					{
+						unsnappedRect.grow(-image.getWidth(), -image.getHeight());
+					}
+
+					if (unsnappedRect.contains(drawPoint.getX(), drawPoint.getY()))
 					{
 						if (worldPoint.isCurrentlyEdgeSnapped())
 						{
@@ -141,7 +158,7 @@ public class WorldMapOverlay extends Overlay
 					}
 					else
 					{
-						drawPoint = clipToRectangle(drawPoint, worldMapRectangle);
+						drawPoint = clipToRectangle(drawPoint, snappedRect);
 						if (!worldPoint.isCurrentlyEdgeSnapped())
 						{
 							worldPoint.setCurrentlyEdgeSnapped(true);

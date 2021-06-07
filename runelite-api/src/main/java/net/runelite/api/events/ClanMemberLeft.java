@@ -22,42 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.clan;
+package net.runelite.api.events;
 
-import java.util.List;
-import javax.annotation.Nullable;
+import lombok.Value;
+import net.runelite.api.clan.ClanChannel;
+import net.runelite.api.clan.ClanChannelMember;
 
 /**
- * A clan's settings.
+ * An event when a clan member leaves a channel.
  */
-public interface ClanSettings
+@Value
+public class ClanMemberLeft
 {
-	/**
-	 * The clan name
-	 * @return
-	 */
-	String getName();
-
-	/**
-	 * The members of the clan. This includes all members, whether online or offline.
-	 * @return
-	 */
-	List<ClanMember> getMembers();
-
-	/**
-	 * Find a member of the clan.
-	 * @param name
-	 * @return
-	 */
-	@Nullable
-	ClanMember findMember(String name);
-
-	/**
-	 * Get the clan title for a clan rank.
-	 * @param clanRank the rank
-	 * @see ClanRank
-	 * @return
-	 */
-	@Nullable
-	ClanTitle titleForRank(ClanRank clanRank);
+	private final ClanChannel clanChannel;
+	private final ClanChannelMember clanMember;
 }

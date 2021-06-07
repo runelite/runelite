@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Mathieu Bernier <https://github.com/Matsyir>
+ * Copyright (c) 2018 Sebastiaan <https://github.com/SebastiaanVanspauwen>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.teamcapes;
+package net.runelite.client.plugins.team;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-@ConfigGroup("teamCapes")
-public interface TeamCapesConfig extends Config
+abstract class MembersIndicator extends InfoBox
 {
-	@ConfigItem(
-		keyName = "minimumCapeCount",
-		name = "Minimum Cape Count",
-		description = "Configures the minimum number of team capes which must be present before being displayed.",
-		position = 0
-	)
-	default int getMinimumCapeCount()
+	MembersIndicator(BufferedImage image, Plugin plugin)
 	{
-		return 1;
+		super(image, plugin);
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return Color.WHITE;
 	}
 }

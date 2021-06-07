@@ -32,18 +32,18 @@ import net.runelite.http.api.worlds.WorldType;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okio.Buffer;
-import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.sql2o.tools.IOUtils;
 
 public class WorldsServiceTest
 {
-
-	private final MockWebServer server = new MockWebServer();
+	@Rule
+	public final MockWebServer server = new MockWebServer();
 
 	@Before
 	public void before() throws IOException
@@ -55,14 +55,6 @@ public class WorldsServiceTest
 		buffer.write(worldData);
 
 		server.enqueue(new MockResponse().setBody(buffer));
-
-		server.start();
-	}
-
-	@After
-	public void after() throws IOException
-	{
-		server.shutdown();
 	}
 
 	@Test

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.clan;
+package net.runelite.client.plugins.chatchannel;
 
-import java.util.List;
-import javax.annotation.Nullable;
+import lombok.AllArgsConstructor;
+import lombok.Value;
+import net.runelite.api.ChatPlayer;
 
-/**
- * A clan's settings.
- */
-public interface ClanSettings
+@Value
+@AllArgsConstructor
+class MemberActivity
 {
-	/**
-	 * The clan name
-	 * @return
-	 */
-	String getName();
+	enum ChatType
+	{
+		FRIENDS_CHAT,
+		CLAN_CHAT,
+		GUEST_CHAT
+	}
 
-	/**
-	 * The members of the clan. This includes all members, whether online or offline.
-	 * @return
-	 */
-	List<ClanMember> getMembers();
-
-	/**
-	 * Find a member of the clan.
-	 * @param name
-	 * @return
-	 */
-	@Nullable
-	ClanMember findMember(String name);
-
-	/**
-	 * Get the clan title for a clan rank.
-	 * @param clanRank the rank
-	 * @see ClanRank
-	 * @return
-	 */
-	@Nullable
-	ClanTitle titleForRank(ClanRank clanRank);
+	private ActivityType activityType;
+	private ChatType chatType;
+	private ChatPlayer member;
+	private Integer tick;
 }

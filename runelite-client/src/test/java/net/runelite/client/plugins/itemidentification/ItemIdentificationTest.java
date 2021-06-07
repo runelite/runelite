@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.friendschat;
+package net.runelite.client.plugins.itemidentification;
 
-import lombok.Value;
-import net.runelite.api.MessageNode;
+import net.runelite.api.ItemID;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
-@Value
-class MemberJoinMessage
+public class ItemIdentificationTest
 {
-	private final MessageNode messageNode;
-	private final int getMessageId;
-	private final int tick;
+	@Test
+	public void testInit()
+	{
+		assertEquals(ItemIdentification.YEW_SEED, ItemIdentification.get(ItemID.YEW_SEED));
+	}
 }
