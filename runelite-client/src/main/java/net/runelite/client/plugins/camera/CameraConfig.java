@@ -191,4 +191,15 @@ public interface CameraConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "preserveYaw",
+		name = "Preserve yaw on world hop",
+		description = "Preserves the camera yaw (left/right) when world hopping.",
+		position = 14
+	)
+	default boolean preserveYaw()
+	{
+		return false;
+	}
 }

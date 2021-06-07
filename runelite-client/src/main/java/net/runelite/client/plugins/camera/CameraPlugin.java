@@ -43,6 +43,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
@@ -89,7 +90,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 * Whether or not the current menu has any non-ignored menu entries
 	 */
 	private boolean menuHasEntries;
-	
+	private int savedCameraYaw;
+
 	@Inject
 	private Client client;
 
@@ -415,6 +417,24 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		{
 			tooltipManager.add(sliderTooltip);
 			sliderTooltip = null;
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		switch (gameStateChanged.getGameState())
+		{
+			case HOPPING:
+				savedCameraYaw = client.getMapAngle();
+				break;
+			case LOGGED_IN:
+				if (savedCameraYaw != 0 && config.preserveYaw())
+				{
+					client.setCameraYawTarget(savedCameraYaw);
+				}
+				savedCameraYaw = 0;
+				break;
 		}
 	}
 
