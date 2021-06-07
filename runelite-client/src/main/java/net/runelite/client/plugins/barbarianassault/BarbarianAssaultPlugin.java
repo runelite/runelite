@@ -150,28 +150,28 @@ public class BarbarianAssaultPlugin extends Plugin
 			case WidgetID.BA_ATTACKER_GROUP_ID:
 			{
 				setRound(Role.ATTACKER);
-				round_role = "Ba Attacker";
+				round_role = "ba attacker";
 				rolecurrentpb = getCurrentPB(round_role);
 				break;
 			}
 			case WidgetID.BA_DEFENDER_GROUP_ID:
 			{
 				setRound(Role.DEFENDER);
-				round_role = "Ba Defender";
+				round_role = "ba defender";
 				rolecurrentpb = getCurrentPB(round_role);
 				break;
 			}
 			case WidgetID.BA_HEALER_GROUP_ID:
 			{
 				setRound(Role.HEALER);
-				round_role = "Ba Healer";
+				round_role = "ba healer";
 				rolecurrentpb = getCurrentPB(round_role);
 				break;
 			}
 			case WidgetID.BA_COLLECTOR_GROUP_ID:
 			{
 				setRound(Role.COLLECTOR);
-				round_role = "Ba Collector";
+				round_role = "ba collector";
 				rolecurrentpb = getCurrentPB(round_role);
 				break;
 			}
@@ -227,7 +227,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		try
 		{
-			if (rolecurrentpb == 0.0)
+			if (rolecurrentpb == 0.0 && config.Seperate())
 			{
 				return 0.0;
 			}
