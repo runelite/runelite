@@ -227,8 +227,9 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		try
 		{
-			if ((rolecurrentpb == 0.0 && config.Seperate()) || !(pbKey == "barbarian assault"))
+			if ((rolecurrentpb == 0.0 && config.Seperate()) && !(pbKey == "barbarian assault"))
 			{
+				configManager.setRSProfileConfiguration("personalbest", pbKey, 0.0);
 				return 0.0;
 			}
 			else
