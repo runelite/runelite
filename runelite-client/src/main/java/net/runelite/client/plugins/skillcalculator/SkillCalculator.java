@@ -49,6 +49,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -86,12 +87,15 @@ class SkillCalculator extends JPanel
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
 
-	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
+	private final ClientThread clientThread;
+
+	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager, ClientThread clientThread)
 	{
 		this.client = client;
 		this.uiInput = uiInput;
 		this.spriteManager = spriteManager;
 		this.itemManager = itemManager;
+		this.clientThread = clientThread;
 
 		combinedActionSlot = new UICombinedActionSlot(spriteManager);
 
@@ -358,21 +362,25 @@ class SkillCalculator extends JPanel
 			// check whether or not this skill action has a material cost field in the resource json file.
 			if (action.getMaterials() != null)
 			{
-				int actionCost = 0;
-				int finalCost;
-				String materials = "";
-				for (Material material : action.getMaterials())
+				int finalActionCount = actionCount;
+				clientThread.invoke(() ->
 				{
-					if (material != null)
+					int actionCost = 0;
+					int finalCost;
+					String materials = "";
+					for (Material material : action.getMaterials())
 					{
-						actionCost += (itemManager.getItemPrice(material.getId()) * material.getAmount());
-						materials += (material.getName() + " x" + material.getAmount() * actionCount + "<br>");
-					}
+						if (material != null)
+						{
+							actionCost += (itemManager.getItemPrice(material.getId()) * material.getAmount());
+							materials += (material.getName() + " x" + material.getAmount() * finalActionCount + "<br>");
+						}
 
-				}
-				finalCost = actionCost * actionCount;
-				slot.setCost("Cost: " + QuantityFormatter.quantityToStackSize(finalCost) + " GP");
-				slot.setToolTipText("<html>" + materials + "</html>");
+					}
+					finalCost = actionCost * finalActionCount;
+					slot.setCost("Cost: " + QuantityFormatter.quantityToStackSize(finalCost) + " GP");
+					slot.setToolTipText("<html>" + materials + "</html>");
+				});
 			}
 			// If this skill action doesn't have material cost for actions (like hunter for example)
 			else
@@ -388,7 +396,6 @@ class SkillCalculator extends JPanel
 			slot.setOverlapping(action.getLevel() < targetLevel);
 			slot.setValue(xp);
 		}
-
 		updateCombinedAction();
 	}
 
