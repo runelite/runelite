@@ -42,6 +42,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.util.ColorUtil;
 
 public class TargetClickboxOverlay extends Overlay
 {
@@ -109,7 +110,7 @@ public class TargetClickboxOverlay extends Overlay
 		graphics.setColor(color);
 		graphics.setStroke(new BasicStroke(2));
 		graphics.draw(shape);
-		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+		graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12));
 		graphics.fill(shape);
 	}
 }
