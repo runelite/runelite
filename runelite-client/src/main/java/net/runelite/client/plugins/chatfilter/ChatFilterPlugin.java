@@ -205,12 +205,6 @@ public class ChatFilterPlugin extends Plugin
 					blockMessage = message == null;
 				}
 				break;
-			case LOGINLOGOUTNOTIFICATION:
-				if (config.filterLogin())
-				{
-					blockMessage = true;
-				}
-				break;
 		}
 
 		boolean shouldCollapse = chatMessageType == PUBLICCHAT || chatMessageType == MODCHAT

@@ -157,7 +157,7 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testTheatreOfBlood()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Wave 'The Final Challenge' complete! Duration: <col=ff0000>5:04</col><br>Theatre of Blood wave completion time: <col=ff0000>37:04</col> (Personal best!)", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Wave 'The Final Challenge' complete! Duration: <col=ff0000>5:04</col><br>Theatre of Blood wave completion time: <col=ff0000>37:04</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
@@ -167,7 +167,7 @@ public class ChatCommandsPluginTest
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 37 * 60 + 4.0);
 
 		// Precise times
-		ChatMessage chatMessagePrecise = new ChatMessage(null, GAMEMESSAGE, "", "Wave 'The Final Challenge' complete! Duration: <col=ff0000>5:04</col><br>Theatre of Blood wave completion time: <col=ff0000>37:04.20</col> (Personal best!)", null, 0);
+		ChatMessage chatMessagePrecise = new ChatMessage(null, GAMEMESSAGE, "", "Wave 'The Final Challenge' complete! Duration: <col=ff0000>5:04</col><br>Theatre of Blood wave completion time: <col=ff0000>37:04.20</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessagePrecise);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
@@ -192,6 +192,21 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 37 * 60 + 4.4);
+	}
+
+	@Test
+	public void testTheatreOfBloodStoryMode()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
+			"Theatre of Blood wave completion time: <col=ff0000>5:04</col> (new personal best)<br>" +
+			"Theatre of Blood total completion time: <col=ff0000>24:39</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood: Story Mode count is: <col=ff0000>73</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood story mode", 73);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood story mode", 5 * 60 + 4.0);
 	}
 
 	@Test

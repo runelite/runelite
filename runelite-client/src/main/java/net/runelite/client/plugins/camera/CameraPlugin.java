@@ -43,6 +43,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
@@ -89,7 +90,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 * Whether or not the current menu has any non-ignored menu entries
 	 */
 	private boolean menuHasEntries;
-	
+	private int savedCameraYaw;
+
 	@Inject
 	private Client client;
 
@@ -367,15 +369,23 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Subscribe
 	private void onScriptPreFired(ScriptPreFired ev)
 	{
-		if (ev.getScriptId() == ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP)
+		switch (ev.getScriptId())
 		{
-			int arg = client.getIntStackSize() - 7;
-			int[] is = client.getIntStack();
-
-			if (is[arg] == SettingID.CAMERA_ZOOM)
+			case ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP:
 			{
-				addZoomTooltip(client.getScriptActiveWidget());
+				int arg = client.getIntStackSize() - 7;
+				int[] is = client.getIntStack();
+
+				if (is[arg] == SettingID.CAMERA_ZOOM)
+				{
+					addZoomTooltip(client.getScriptActiveWidget());
+				}
+				break;
 			}
+			case ScriptID.ZOOM_SLIDER_ONDRAG:
+			case ScriptID.SETTINGS_ZOOM_SLIDER_ONDRAG:
+				sliderTooltip = makeSliderTooltip();
+				break;
 		}
 	}
 
@@ -390,12 +400,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 
 	private void addZoomTooltip(Widget w)
 	{
-		w.setOnMouseRepeatListener((JavaScriptCallback) ev ->
-		{
-			int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
-			int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
-			sliderTooltip = new Tooltip("Camera Zoom: " + value + " / " + max);
-		});
+		w.setOnMouseRepeatListener((JavaScriptCallback) ev -> sliderTooltip = makeSliderTooltip());
+	}
+
+	private Tooltip makeSliderTooltip()
+	{
+		int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+		int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
+		return new Tooltip("Camera Zoom: " + value + " / " + max);
 	}
 
 	@Subscribe
@@ -405,6 +417,24 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		{
 			tooltipManager.add(sliderTooltip);
 			sliderTooltip = null;
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		switch (gameStateChanged.getGameState())
+		{
+			case HOPPING:
+				savedCameraYaw = client.getMapAngle();
+				break;
+			case LOGGED_IN:
+				if (savedCameraYaw != 0 && config.preserveYaw())
+				{
+					client.setCameraYawTarget(savedCameraYaw);
+				}
+				savedCameraYaw = 0;
+				break;
 		}
 	}
 

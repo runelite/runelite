@@ -351,4 +351,16 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 14, string = 3)
 	public static final int CHATBOX_BUILD_LINE_WITH_CLAN = 4483;
+
+	/**
+	 * Drag callback for the camera zoom slider in the options side panel.
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int ZOOM_SLIDER_ONDRAG = 833;
+
+	/**
+	 * Drag callback for the camera zoom slider in the settings.
+	 */
+	@ScriptArguments(integer = 6)
+	public static final int SETTINGS_ZOOM_SLIDER_ONDRAG = 3896;
 }

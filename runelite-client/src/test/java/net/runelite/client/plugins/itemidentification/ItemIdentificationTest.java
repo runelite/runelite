@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2021, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package net.runelite.client.plugins.itemidentification;
 
-import com.google.common.base.Joiner;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.util.Text;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import net.runelite.api.ItemID;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
-public class ThreeStepCrypticClueTest
+public class ItemIdentificationTest
 {
 	@Test
-	public void forTextEmptyString()
+	public void testInit()
 	{
-		assertNull(ThreeStepCrypticClue.forText("", ""));
-	}
-
-	@Test
-	public void nonNullLocations()
-	{
-		final String clueText = Joiner.on("<br><br>").join(CrypticClue.CLUES.stream().map(CrypticClue::getText).toArray());
-		final ThreeStepCrypticClue clue = ThreeStepCrypticClue.forText(Text.sanitizeMultilineText(clueText).toLowerCase(), clueText);
-
-		assertNotNull(clue);
-		for (final WorldPoint location : clue.getLocations())
-		{
-			assertNotNull(location);
-		}
+		assertEquals(ItemIdentification.YEW_SEED, ItemIdentification.get(ItemID.YEW_SEED));
 	}
 }

@@ -330,6 +330,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final String text;
 	private final String npc;
 	private final int objectId;
+	@Nullable
 	private final WorldPoint location;
 	private final String solution;
 	@Nullable
@@ -371,7 +372,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		this(text, npc, objectId, location, solution, null);
 	}
 
-	private CrypticClue(String text, String npc, int objectId, WorldPoint location, String solution, @Nullable String questionText)
+	private CrypticClue(String text, String npc, int objectId, @Nullable WorldPoint location, String solution, @Nullable String questionText)
 	{
 		this.text = text;
 		this.npc = npc;

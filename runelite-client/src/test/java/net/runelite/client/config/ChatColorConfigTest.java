@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package net.runelite.client.config;
 
-import com.google.common.base.Joiner;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.util.Text;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 
-public class ThreeStepCrypticClueTest
+public class ChatColorConfigTest
 {
 	@Test
-	public void forTextEmptyString()
+	public void testUniqueKeys()
 	{
-		assertNull(ThreeStepCrypticClue.forText("", ""));
-	}
+		final Set<String> configKeyNames = new HashSet<>();
 
-	@Test
-	public void nonNullLocations()
-	{
-		final String clueText = Joiner.on("<br><br>").join(CrypticClue.CLUES.stream().map(CrypticClue::getText).toArray());
-		final ThreeStepCrypticClue clue = ThreeStepCrypticClue.forText(Text.sanitizeMultilineText(clueText).toLowerCase(), clueText);
-
-		assertNotNull(clue);
-		for (final WorldPoint location : clue.getLocations())
+		for (Method method : ChatColorConfig.class.getMethods())
 		{
-			assertNotNull(location);
+			final ConfigItem annotation = method.getAnnotation(ConfigItem.class);
+			if (annotation == null)
+			{
+				continue;
+			}
+
+			final String configKeyName = annotation.keyName();
+			if (configKeyNames.contains(configKeyName))
+			{
+				fail("keyName " + configKeyName + " is duplicated in " + ChatColorConfig.class);
+			}
+
+			configKeyNames.add(configKeyName);
 		}
 	}
 }
