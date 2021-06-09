@@ -199,7 +199,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int vboUiHandle;
 
 	private int fboSceneHandle;
-	private int texSceneHandle;
 	private int rboSceneHandle;
 
 	// scene vertex buffer
@@ -297,7 +296,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			try
 			{
-				texSceneHandle = fboSceneHandle = rboSceneHandle = -1; // AA FBO
+				fboSceneHandle = rboSceneHandle = -1; // AA FBO
 				unorderedModels = smallModels = largeModels = 0;
 				drawingModel = false;
 
@@ -737,28 +736,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glRenderbufferStorageMultisample(gl.GL_RENDERBUFFER, aaSamples, gl.GL_RGBA, width, height);
 		gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_RENDERBUFFER, rboSceneHandle);
 
-		// Create texture
-		texSceneHandle = glGenTexture(gl);
-		gl.glBindTexture(gl.GL_TEXTURE_2D_MULTISAMPLE, texSceneHandle);
-		gl.glTexImage2DMultisample(gl.GL_TEXTURE_2D_MULTISAMPLE, aaSamples, gl.GL_RGBA, width, height, true);
-
-		// Bind texture
-		gl.glFramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_TEXTURE_2D_MULTISAMPLE, texSceneHandle, 0);
-
 		// Reset
-		gl.glBindTexture(gl.GL_TEXTURE_2D_MULTISAMPLE, 0);
 		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
 		gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, 0);
 	}
 
 	private void shutdownAAFbo()
 	{
-		if (texSceneHandle != -1)
-		{
-			glDeleteTexture(gl, texSceneHandle);
-			texSceneHandle = -1;
-		}
-
 		if (fboSceneHandle != -1)
 		{
 			glDeleteFrameBuffer(gl, fboSceneHandle);
