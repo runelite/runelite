@@ -101,7 +101,10 @@ public class TargetClickboxOverlay extends Overlay
 			int size = npcComposition.getSize();
 			LocalPoint lp = actor.getLocalLocation();
 			Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
-			renderPoly(graphics, tilePoly, color);
+			if(tilePoly != null)
+			{
+				renderPoly(graphics, tilePoly, color);
+			}
 		}
 	}
 
