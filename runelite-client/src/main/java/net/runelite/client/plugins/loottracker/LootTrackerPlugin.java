@@ -983,14 +983,12 @@ public class LootTrackerPlugin extends Plugin
 		return true;
 	}
 
-	private boolean processMasterFarmerSeedBoxLoot(Matcher matcher)
+	private void processMasterFarmerSeedBoxLoot(Matcher matcher)
 	{
 		int quantityStolen = Integer.parseInt(matcher.group(2));
 		List<ItemStack> seeds = Collections.singletonList(new ItemStack(itemManager.search(matcher.group(1)).get(0).getId(), quantityStolen, client.getLocalPlayer().getLocalLocation()));
 
-		int thievingLevelLevel = client.getBoostedSkillLevel(Skill.THIEVING);
-		addLoot(lastPickpocketTarget, -1, LootRecordType.PICKPOCKET, thievingLevelLevel, seeds);
-		return true;
+		addLoot(lastPickpocketTarget, -1, LootRecordType.PICKPOCKET, client.getBoostedSkillLevel(Skill.THIEVING), seeds);
 	}
 
 	void toggleItem(String name, boolean ignore)
@@ -1130,4 +1128,3 @@ public class LootTrackerPlugin extends Plugin
 				.build());
 	}
 }
-

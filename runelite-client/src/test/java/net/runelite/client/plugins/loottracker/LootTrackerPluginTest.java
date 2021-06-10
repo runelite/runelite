@@ -166,20 +166,18 @@ public class LootTrackerPluginTest
 		when(client.getBoostedSkillLevel(Skill.THIEVING)).thenReturn(42);
 
 		final ItemPrice seedPrice = new ItemPrice();
-		seedPrice.setId(5318);
+		seedPrice.setId(ItemID.POTATO_SEED);
 		seedPrice.setName("Potato seed");
 		when(itemManager.search("Potato seed")).thenReturn(Collections.singletonList(seedPrice));
 
 		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
 		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any());
 
-
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "The following stolen loot gets added to your seed box: Potato seed x 3.", "", 0);
 		lootTrackerPluginSpy.onChatMessage(chatMessage);
 
-
 		verify(lootTrackerPluginSpy).addLoot(null, -1, LootRecordType.PICKPOCKET, 42, Arrays.asList(
-				new ItemStack(5318, 3, null)
+				new ItemStack(ItemID.POTATO_SEED, 3, null)
 		));
 	}
 
