@@ -68,6 +68,7 @@ public class ObjectDefinition
 	private int contouredGround = -1;
 	private int supportsItems = -1;
 	private int[] configChangeDest;
+	private int category;
 	private boolean isRotated = false;
 	private int varpID = -1;
 	private int ambientSoundId = -1;
