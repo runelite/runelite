@@ -130,7 +130,7 @@ public class Text
 	 */
 	public static String toJagexName(String str)
 	{
-		return CharMatcher.ascii().retainFrom(str.replace('\u00A0', ' ')).replaceAll("[_-]+", " ").trim();
+		return CharMatcher.ascii().retainFrom(str.replaceAll("[\u00A0_-]", " ")).trim();
 	}
 
 	/**
