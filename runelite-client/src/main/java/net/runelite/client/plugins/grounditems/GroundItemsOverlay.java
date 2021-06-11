@@ -83,6 +83,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final int KRIL_TSUTSAROTH_REGION = 11603;
 	private static final int KREEARRA_REGION = 11346;
 	private static final int NIGHTMARE_REGION = 15515;
+	private static final int TEMPOROSS_REGION = 12078;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -452,9 +453,10 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 			else if (playerRegionID == ZILYANA_REGION || playerRegionID == GRAARDOR_REGION ||
-				playerRegionID == KRIL_TSUTSAROTH_REGION || playerRegionID == KREEARRA_REGION || playerRegionID == NIGHTMARE_REGION)
+				playerRegionID == KRIL_TSUTSAROTH_REGION || playerRegionID == KREEARRA_REGION ||
+				playerRegionID == NIGHTMARE_REGION ||  playerRegionID == TEMPOROSS_REGION)
 			{
-				// GWD and Nightmare instances use the normal despawn timers
+				// GWD, Nightmare, and Tempoross instances use the normal despawn timers
 				despawnTime = spawnTime.plus(groundItem.getLootType() == LootType.DROPPED
 					? DESPAWN_TIME_DROP
 					: DESPAWN_TIME_LOOT);
