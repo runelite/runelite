@@ -809,7 +809,7 @@ public class ChatChannelPlugin extends Plugin
 					kickConfirmed = false;
 				})
 			)
-			.option("2. Cancel", Runnables::doNothing)
+			.option("2. Cancel", Runnables.doNothing())
 			.build();
 	}
 
