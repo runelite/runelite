@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Tanlines <tanlines@outlook.com.au>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,20 +41,19 @@ public class StaminaPotion extends StatBoost
 		super(RUN_ENERGY, false);
 	}
 
-	private static final int RING_SLOT = EquipmentInventorySlot.RING.getSlotIdx();
-
 	@Override
 	public int heals(Client client)
 	{
-		boolean hasEquippedChargedRingOfEndurance = false;
-
 		ItemContainer equipContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 		if (equipContainer != null)
 		{
-			Item ring = equipContainer.getItem(RING_SLOT);
-			hasEquippedChargedRingOfEndurance = ring != null && ring.getId() == ItemID.RING_OF_ENDURANCE;
+			Item ring = equipContainer.getItem(EquipmentInventorySlot.RING.getSlotIdx());
+			if (ring != null && ring.getId() == ItemID.RING_OF_ENDURANCE)
+			{
+				return 40;
+			}
 		}
-		return hasEquippedChargedRingOfEndurance ? 40 : 20;
+		return 20;
 	}
 
 }
