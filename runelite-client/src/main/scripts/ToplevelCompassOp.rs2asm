@@ -47,11 +47,11 @@ LOOK:
    iconst                 0
    sound_synth           
    iconst                 225
-   sconst                 "lookPreservePitch"
-   runelite_callback     
    iconst                 5
    randominc             
    add                   
+   sconst                 "lookPreservePitch"
+   runelite_callback     
    iload                  1 ; load target angle
    cam_forceangle        
    return                
