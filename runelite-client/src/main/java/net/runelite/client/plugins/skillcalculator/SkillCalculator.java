@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
