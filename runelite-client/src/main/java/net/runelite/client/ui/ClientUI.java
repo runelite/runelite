@@ -210,7 +210,6 @@ public class ClientUI
 					contract();
 					currentButton.setSelected(false);
 					currentNavButton.setSelected(false);
-					currentButton = null;
 				}
 				else
 				{
