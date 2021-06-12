@@ -66,6 +66,46 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	String uiSection = "ui";
 
+	enum ArdougneCloakMode
+	{
+		WEAR,
+		MONASTERY,
+		FARM,
+	}
+
+	enum KaramjaGlovesMode
+	{
+		WEAR,
+		GEM_MINE,
+		DURADEL,
+	}
+
+	enum MorytaniaLegsMode
+	{
+		WEAR,
+		ECTOFUNTUS,
+		BURGH_DE_ROTT;
+
+		@Override
+		public String toString()
+		{
+			switch (this)
+			{
+				case BURGH_DE_ROTT:
+					return "Burgh de Rott";
+				default:
+					return name();
+			}
+		}
+	}
+
+	enum RadasBlessingMode
+	{
+		EQUIP,
+		KOUREND_WOODLAND,
+		MOUNT_KARUULM,
+	}
+
 	@ConfigItem(
 		position = -2,
 		keyName = "shiftClickCustomization",
@@ -428,6 +468,50 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapTeleToPoh()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapKaramjaGloves",
+		name = "Karamja Gloves",
+		description = "Swap Wear with the Gem Mine or Duradel teleport on the Karamja Gloves 3 and 4",
+		section = itemSection
+	)
+	default KaramjaGlovesMode swapKaramjaGlovesMode()
+	{
+		return KaramjaGlovesMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapArdougneCloak",
+		name = "Ardougne Cloak",
+		description = "Swap Wear with Monastery Teleport or Farm Teleport on the Ardougne cloak.",
+		section = itemSection
+	)
+	default ArdougneCloakMode swapArdougneCloakMode()
+	{
+		return ArdougneCloakMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapRadasBlessing",
+		name = "Rada's Blessing",
+		description = "Swap Equip with the Woodland or Mount Karuulm teleport on Rada's Blessing.",
+		section = itemSection
+	)
+	default RadasBlessingMode swapRadasBlessingMode()
+	{
+		return RadasBlessingMode.EQUIP;
+	}
+
+	@ConfigItem(
+		keyName = "swapMorytaniaLegs",
+		name = "Morytania Legs",
+		description = "Swap Wear with the Ectofunctus or Burgh de Rott teleport on the Morytania Legs.",
+		section = itemSection
+	)
+	default MorytaniaLegsMode swapMorytaniaLegsMode()
+	{
+		return MorytaniaLegsMode.WEAR;
 	}
 
 	@ConfigItem(
