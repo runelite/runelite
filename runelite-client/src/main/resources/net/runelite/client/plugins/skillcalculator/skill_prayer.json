@@ -19,7 +19,24 @@
       "icon": 13447,
       "name": "Ensouled Goblin Head",
       "xp": 130,
-      "ignoreBonus": true
+      "ignoreBonus": true,
+      "materials": [
+        {
+          "id": 13447,
+          "name": "Ensouled Monkey Head",
+          "amount": 1
+        },
+        {
+          "id": 559,
+          "name": "Body rune",
+          "amount": 4
+        },
+        {
+          "id": 561,
+          "name": "Nature rune",
+          "amount": 2
+        }
+      ]
     },
     {
       "level": 1,

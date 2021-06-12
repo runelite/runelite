@@ -42,8 +42,12 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 class UICombinedActionSlot extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
+	private final JPanel uiInfo;
+	private final GridLayout thinLayout;
+	private final GridLayout thickLayout;
 	private final JShadowedLabel uiLabelActions;
 	private final JShadowedLabel uiLabelTitle;
+	private final JShadowedLabel uiLabelCosts;
 
 	UICombinedActionSlot(SpriteManager spriteManager)
 	{
@@ -61,7 +65,10 @@ class UICombinedActionSlot extends JPanel
 		uiIcon.setHorizontalAlignment(JLabel.CENTER);
 		add(uiIcon, BorderLayout.LINE_START);
 
-		JPanel uiInfo = new JPanel(new GridLayout(2, 1));
+		thinLayout = new GridLayout(2, 1);
+		thickLayout = new GridLayout(3, 1);
+
+		uiInfo = new JPanel(thinLayout);
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		uiLabelTitle = new JShadowedLabel("No Action Selected");
@@ -70,6 +77,10 @@ class UICombinedActionSlot extends JPanel
 		uiLabelActions = new JShadowedLabel("Shift-click to select multiple");
 		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
 		uiLabelActions.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+
+		uiLabelCosts = new JShadowedLabel("");
+		uiLabelCosts.setFont(FontManager.getRunescapeSmallFont());
+		uiLabelCosts.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 
 		uiInfo.add(uiLabelTitle);
 		uiInfo.add(uiLabelActions);
@@ -85,5 +96,20 @@ class UICombinedActionSlot extends JPanel
 	void setTitle(String text)
 	{
 		uiLabelTitle.setText(text);
+	}
+
+	void setCosts(String text)
+	{
+		if (text == null)
+		{
+			uiInfo.setLayout(thinLayout);
+			uiInfo.remove(uiLabelCosts);
+		}
+		else
+		{
+			uiInfo.setLayout(thickLayout);
+			uiLabelCosts.setText(text);
+			uiInfo.add(uiLabelCosts);
+		}
 	}
 }

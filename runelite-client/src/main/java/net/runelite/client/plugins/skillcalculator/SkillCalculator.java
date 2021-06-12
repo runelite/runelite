@@ -59,6 +59,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.QuantityFormatter;
 
 class SkillCalculator extends JPanel
 {
@@ -144,7 +145,7 @@ class SkillCalculator extends JPanel
 			currentSkill = calculatorType.getSkill();
 
 			// Load the skill data.
-			skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
+			skillData = cacheSkillData.getSkillData(calculatorType.getDataFile(), itemManager);
 
 			// Reset the XP factor, removing bonuses.
 			xpFactor = 1.0f;
@@ -203,16 +204,19 @@ class SkillCalculator extends JPanel
 		{
 			combinedActionSlot.setTitle("No action selected");
 			combinedActionSlot.setText("Shift-click to select multiple");
+			combinedActionSlot.setCosts(null);
 			return;
 		}
 
 		int actionCount = 0;
 		int neededXP = targetXP - currentXP;
 		double xp = 0;
+		int cost = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
 		{
 			xp += slot.getValue();
+			cost += slot.getAction().getCost();
 		}
 
 		if (neededXP > 0)
@@ -222,6 +226,16 @@ class SkillCalculator extends JPanel
 		}
 
 		combinedActionSlot.setText(formatXPActionString(xp, actionCount, "exp - "));
+
+		if (cost > 0)
+		{
+			combinedActionSlot.setCosts(formatCostActionString(cost, xp, actionCount));
+		}
+		else
+		{
+			combinedActionSlot.setCosts(null);
+		}
+
 	}
 
 	private void clearCombinedSlots()
@@ -357,12 +371,23 @@ class SkillCalculator extends JPanel
 			}
 
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+			if (slot.hasCosts())
+			{
+				String costs = formatCostActionString(action.getCost(), action.getXp(), actionCount);
+				slot.setCosts(costs);
+			}
+
 			slot.setAvailable(currentLevel >= action.getLevel());
 			slot.setOverlapping(action.getLevel() < targetLevel);
 			slot.setValue(xp);
 		}
 
 		updateCombinedAction();
+	}
+
+	private String formatCostActionString(int cost, double xp, int count)
+	{
+		return QuantityFormatter.formatNumber(cost * count) + " gp (" + XP_FORMAT.format(cost / xp) + " gp/xp)";
 	}
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
