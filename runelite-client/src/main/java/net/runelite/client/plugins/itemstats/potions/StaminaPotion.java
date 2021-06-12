@@ -55,5 +55,4 @@ public class StaminaPotion extends StatBoost
 		}
 		return 20;
 	}
-
 }
