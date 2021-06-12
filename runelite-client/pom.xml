@@ -282,6 +282,11 @@
 			<version>3.7.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-translate</artifactId>
+			<version>1.66.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
