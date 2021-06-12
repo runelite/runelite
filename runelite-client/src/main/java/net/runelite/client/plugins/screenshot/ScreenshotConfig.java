@@ -41,6 +41,13 @@ public interface ScreenshotConfig extends Config
 	)
 	String whatSection = "what";
 
+	@ConfigSection(
+			name = "Screenshot Configuration",
+			description = "Configure screenshot options",
+			position = 100
+	)
+	String screenshotConfigSection = "ssConfig";
+
 	@ConfigItem(
 		keyName = "includeFrame",
 		name = "Include Client Frame",
@@ -274,5 +281,17 @@ public interface ScreenshotConfig extends Config
 	default Keybind hotkey()
 	{
 		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
+			keyName = "bossSeparate",
+			name = "Separate Boss Screenshots",
+			description = "Separate screenshots into specific boss folders",
+			position = 1,
+			section = screenshotConfigSection
+	)
+	default boolean separateBossScreenshots()
+	{
+		return false;
 	}
 }

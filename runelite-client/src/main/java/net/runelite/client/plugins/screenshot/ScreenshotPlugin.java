@@ -32,6 +32,7 @@ import com.google.inject.Provides;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.Map;
@@ -406,7 +407,14 @@ public class ScreenshotPlugin extends Plugin
 				String bossName = m.group(1);
 				String bossKillcount = m.group(2);
 				String fileName = bossName + "(" + bossKillcount + ")";
-				takeScreenshot(fileName, "Boss Kills");
+				String subDir = "Boss Kills";
+
+				if (config.separateBossScreenshots())
+				{
+					subDir = String.format("%s%s%s", subDir, File.separator, bossName);
+				}
+
+				takeScreenshot(fileName, subDir);
 			}
 		}
 
