@@ -177,7 +177,7 @@ public class LootTrackerPluginTest
 		lootTrackerPluginSpy.onChatMessage(chatMessage);
 
 		verify(lootTrackerPluginSpy).addLoot(null, -1, LootRecordType.PICKPOCKET, 42, Arrays.asList(
-				new ItemStack(ItemID.POTATO_SEED, 3, null)
+			new ItemStack(ItemID.POTATO_SEED, 3, null)
 		));
 	}
 
