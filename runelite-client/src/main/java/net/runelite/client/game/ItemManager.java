@@ -307,6 +307,36 @@ public class ItemManager
 	 */
 	public int getItemPriceWithSource(int itemID, boolean useWikiPrice)
 	{
+		return getItemPrice(itemID, false, useWikiPrice);
+	}
+
+	/**
+	 * Look up an item's price, without canonicalizing the item's ID.
+	 * @see ItemManager#canonicalize
+	 *
+	 * @param itemID canonical item id
+	 * @return item price
+	 */
+	public int getCanonicalItemPrice(int itemID)
+	{
+		return getCanonicalItemPriceWithSource(itemID, runeLiteConfig.useWikiItemPrices());
+	}
+
+	/**
+	 * Look up an item's price, without canonicalizing the item's ID.
+	 * @see ItemManager#canonicalize
+	 *
+	 * @param itemID canonical item id
+	 * @param useWikiPrice use the actively traded/wiki price
+	 * @return item price
+	 */
+	public int getCanonicalItemPriceWithSource(int itemID, boolean useWikiPrice)
+	{
+		return getItemPrice(itemID, true, useWikiPrice);
+	}
+
+	private int getItemPrice(int itemID, boolean idIsCanonical, boolean useWikiPrice)
+	{
 		if (itemID == COINS_995)
 		{
 			return 1;
@@ -316,12 +346,15 @@ public class ItemManager
 			return 1000;
 		}
 
-		ItemComposition itemComposition = getItemComposition(itemID);
-		if (itemComposition.getNote() != -1)
+		if (!idIsCanonical)
 		{
-			itemID = itemComposition.getLinkedNoteId();
+			ItemComposition itemComposition = getItemComposition(itemID);
+			if (itemComposition.getNote() != -1)
+			{
+				itemID = itemComposition.getLinkedNoteId();
+			}
+			itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
 		}
-		itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
 
 		int price = 0;
 
@@ -340,7 +373,7 @@ public class ItemManager
 		{
 			for (final ItemMapping mappedItem : mappedItems)
 			{
-				price += getItemPriceWithSource(mappedItem.getTradeableItem(), useWikiPrice) * mappedItem.getQuantity();
+				price += getItemPrice(mappedItem.getTradeableItem(), idIsCanonical, useWikiPrice) * mappedItem.getQuantity();
 			}
 		}
 
