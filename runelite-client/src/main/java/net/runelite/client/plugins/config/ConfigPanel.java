@@ -375,6 +375,20 @@ class ConfigPanel extends PluginPanel
 				item.add(spinner, BorderLayout.EAST);
 			}
 
+			else if (cid.getType() == double.class)
+			{
+				double value = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), double.class);
+
+				SpinnerModel model = new SpinnerNumberModel(value, 0, Double.MAX_VALUE, 0.1);
+				JSpinner spinner = new JSpinner(model);
+				Component editor = spinner.getEditor();
+				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
+				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+				spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
+
+				item.add(spinner, BorderLayout.EAST);
+			}
+
 			if (cid.getType() == String.class)
 			{
 				JTextComponent textField;

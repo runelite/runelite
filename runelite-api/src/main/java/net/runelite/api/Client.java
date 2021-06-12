@@ -619,11 +619,18 @@ public interface Client extends GameEngine
 	boolean isMenuOpen();
 
 	/**
-	 * Gets the angle of the map, or camera yaw.
+	 * Gets the angle of the map, or target camera yaw.
 	 *
 	 * @return the map angle
 	 */
 	int getMapAngle();
+
+	/**
+	 * Set the target camera yaw
+	 *
+	 * @param cameraYawTarget
+	 */
+	void setCameraYawTarget(int cameraYawTarget);
 
 	/**
 	 * Checks whether the client window is currently resized.

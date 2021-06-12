@@ -846,6 +846,20 @@ public interface Widget
 	void setYPositionMode(int ypm);
 
 	/**
+	 * Get the line height for this widget.
+	 *
+	 * @return
+	 */
+	int getLineHeight();
+
+	/**
+	 * Set the line height for this widget. If set to 0, the line height is taken from the font instead.
+	 *
+	 * @param lineHeight
+	 */
+	void setLineHeight(int lineHeight);
+
+	/**
 	 * Gets the X axis text position mode
 	 *
 	 * @see WidgetTextAlignment

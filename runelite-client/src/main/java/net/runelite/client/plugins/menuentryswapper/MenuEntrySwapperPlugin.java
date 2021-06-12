@@ -347,6 +347,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("value", "sell 10", () -> shiftModifier() && config.shopSell() == SellMode.SELL_10);
 		swap("value", "sell 50", () -> shiftModifier() && config.shopSell() == SellMode.SELL_50);
 
+		swap("wear", "tele to poh", config::swapTeleToPoh);
+
 		swap("wear", "rub", config::swapTeleportItem);
 		swap("wear", "teleport", config::swapTeleportItem);
 		swap("wield", "teleport", config::swapTeleportItem);

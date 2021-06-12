@@ -447,7 +447,7 @@ public class TabInterface
 						})
 					)
 					.option("2. Only tab", () -> clientThread.invoke(() -> deleteTab(target)))
-					.option("3. Cancel", Runnables::doNothing)
+					.option("3. Cancel", Runnables.doNothing())
 					.build();
 				break;
 			case Tab.EXPORT_TAB:

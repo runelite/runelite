@@ -221,8 +221,10 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		// Convert current message static widget id to dynamic widget id of message node with message contents
 		// When message is right clicked, we are actually right clicking static widget that contains only sender.
 		// The actual message contents are stored in dynamic widgets that follow same order as static widgets.
-		// Every first dynamic widget is message sender and every second one is message contents.
-		final int dynamicChildId = (childId - first) * 2 + 1;
+		// Every first dynamic widget is message sender, every second one is message contents,
+		// every third one is clan name and every fourth one is clan rank icon.
+		// The last two are hidden when the message is not from a clan chat or guest clan chat.
+		final int dynamicChildId = (childId - first) * 4 + 1;
 
 		// Extract and store message contents when menu is opened because dynamic children can change while right click
 		// menu is open and dynamicChildId will be outdated

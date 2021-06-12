@@ -202,7 +202,7 @@ class GroundMarkerSharingManager
 
 		chatboxPanelManager.openTextMenuInput("Are you sure you want to import " + importPoints.size() + " ground markers?")
 			.option("Yes", () -> importGroundMarkers(importPoints))
-			.option("No", Runnables::doNothing)
+			.option("No", Runnables.doNothing())
 			.build();
 	}
 
@@ -275,7 +275,7 @@ class GroundMarkerSharingManager
 					+ (numActivePoints == 1 ? " was cleared." : "s were cleared."));
 
 			})
-			.option("No", Runnables::doNothing)
+			.option("No", Runnables.doNothing())
 			.build();
 	}
 
