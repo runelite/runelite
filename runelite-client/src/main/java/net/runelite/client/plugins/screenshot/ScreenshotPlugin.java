@@ -139,7 +139,9 @@ public class ScreenshotPlugin extends Plugin
 		BARROWS,
 		COX,
 		COX_CM,
-		TOB
+		TOB,
+		TOB_SM,
+		TOB_HM
 	}
 
 	private KillType killType;
@@ -389,12 +391,12 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (chatMessage.startsWith("Your completed Theatre of Blood count is:"))
+		if (chatMessage.startsWith("Your completed Theatre of Blood"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				killType = KillType.TOB;
+				killType = chatMessage.contains("Hard Mode") ? KillType.TOB_HM : (chatMessage.contains("Story Mode") ? KillType.TOB_SM : KillType.TOB);
 				killCountNumber = Integer.valueOf(m.group());
 				return;
 			}
@@ -554,7 +556,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
 			{
-				if (killType != KillType.TOB)
+				if (killType != KillType.TOB && killType != KillType.TOB_SM && killType != KillType.TOB_HM)
 				{
 					return;
 				}
@@ -786,6 +788,12 @@ public class ScreenshotPlugin extends Plugin
 	String getClueType()
 	{
 		return clueType;
+	}
+
+	@VisibleForTesting
+	KillType getKillType()
+	{
+		return killType;
 	}
 
 	@VisibleForTesting
