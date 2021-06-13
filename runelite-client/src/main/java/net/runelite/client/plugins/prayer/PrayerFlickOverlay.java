@@ -89,7 +89,7 @@ class PrayerFlickOverlay extends Overlay
 
 		int yOffset = (orbInnerHeight / 2) - (indicatorHeight / 2);
 
-		graphics.setColor(Color.cyan);
+		graphics.setColor(Color.red);
 		graphics.fillRect(orbInnerX + xOffset, orbInnerY + yOffset, 1, indicatorHeight);
 
 		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());

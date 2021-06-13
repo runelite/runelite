@@ -60,6 +60,10 @@ class PrayerBarOverlay extends Overlay
 	private final PrayerPlugin plugin;
 
 	private boolean showingPrayerBar;
+	private boolean debounce;
+	private int xoffsetOn;
+	private int xoffsetOff;
+	private int rectCounter;
 
 	@Inject
 	private PrayerBarOverlay(final Client client, final PrayerConfig config, final PrayerPlugin plugin)
@@ -141,6 +145,35 @@ class PrayerBarOverlay extends Overlay
 
 			final int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
 
+			if (config.showPrayerBarHelper())
+			{
+				if (this.client.getMouseCurrentButton() == 1 && this.rectCounter < 2 && !this.debounce)
+				{
+					this.debounce = true;
+					if (this.rectCounter == 1)
+					{
+						this.xoffsetOn = xOffset;
+						++this.rectCounter;
+					}
+					else
+					{
+						this.xoffsetOff = xOffset;
+						++this.rectCounter;
+					}
+				}
+				else if (this.client.getMouseCurrentButton() != 1)
+				{
+					this.debounce = false;
+				}
+				if (rectCounter != 0)
+				{
+					graphics.setColor(Color.red);
+					graphics.fillRect(barX + this.xoffsetOn, barY, 1, barHeight);
+					graphics.setColor(Color.blue);
+					graphics.fillRect(barX + this.xoffsetOff, barY, 1, barHeight);
+				}
+			}
+
 			graphics.setColor(FLICK_HELP_COLOR);
 			graphics.fillRect(barX + xOffset, barY, 1, barHeight);
 		}
@@ -152,6 +185,8 @@ class PrayerBarOverlay extends Overlay
 	{
 		final Player localPlayer = client.getLocalPlayer();
 		showingPrayerBar = true;
+		this.rectCounter = 0;
+		this.debounce = false;
 
 		if (localPlayer == null)
 		{

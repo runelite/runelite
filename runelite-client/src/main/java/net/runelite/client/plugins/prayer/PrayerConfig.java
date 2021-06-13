@@ -136,6 +136,18 @@ public interface PrayerConfig extends Config
 		name = "Show time left",
 		description = "Show time remaining of current prayers in the prayer orb."
 	)
+	default boolean showPrayerBarHelper()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "showPrayerBarFlickHelper",
+		name = "Shows click indicator for prayer bar",
+		description = "Prayer bar will display flags when clicked to show tick timing."
+
+	)
 	default boolean replaceOrbText()
 	{
 		return false;
