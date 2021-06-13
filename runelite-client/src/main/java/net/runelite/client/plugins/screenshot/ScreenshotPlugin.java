@@ -122,13 +122,16 @@ public class ScreenshotPlugin extends Plugin
 	private String clueType;
 	private Integer clueNumber;
 
-	private Integer barrowsNumber;
+	enum KillType
+	{
+		BARROWS,
+		COX,
+		COX_CM,
+		TOB
+	}
 
-	private Integer chambersOfXericNumber;
-
-	private Integer chambersOfXericChallengeNumber;
-
-	private Integer theatreOfBloodNumber;
+	private KillType killType;
+	private Integer killCountNumber;
 
 	private boolean shouldTakeScreenshot;
 
@@ -346,7 +349,8 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				barrowsNumber = Integer.valueOf(m.group());
+				killType = KillType.BARROWS;
+				killCountNumber = Integer.valueOf(m.group());
 				return;
 			}
 		}
@@ -356,7 +360,8 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				chambersOfXericNumber = Integer.valueOf(m.group());
+				killType = KillType.COX;
+				killCountNumber = Integer.valueOf(m.group());
 				return;
 			}
 		}
@@ -366,7 +371,8 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				chambersOfXericChallengeNumber = Integer.valueOf(m.group());
+				killType = KillType.COX_CM;
+				killCountNumber = Integer.valueOf(m.group());
 				return;
 			}
 		}
@@ -376,7 +382,8 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				theatreOfBloodNumber = Integer.valueOf(m.group());
+				killType = KillType.TOB;
+				killCountNumber = Integer.valueOf(m.group());
 				return;
 			}
 		}
@@ -515,47 +522,48 @@ public class ScreenshotPlugin extends Plugin
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			{
-				if (chambersOfXericNumber != null)
+				if (killType == KillType.COX)
 				{
-					fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
+					fileName = "Chambers of Xeric(" + killCountNumber + ")";
 					screenshotSubDir = "Boss Kills";
-					chambersOfXericNumber = null;
+					killType = null;
+					killCountNumber = 0;
 					break;
 				}
-				else if (chambersOfXericChallengeNumber != null)
+				else if (killType == KillType.COX_CM)
 				{
-					fileName = "Chambers of Xeric Challenge Mode(" + chambersOfXericChallengeNumber + ")";
+					fileName = "Chambers of Xeric Challenge Mode(" + killCountNumber + ")";
 					screenshotSubDir = "Boss Kills";
-					chambersOfXericChallengeNumber = null;
+					killType = null;
+					killCountNumber = 0;
 					break;
 				}
-				else
-				{
-					return;
-				}
+				return;
 			}
 			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
 			{
-				if (theatreOfBloodNumber == null)
+				if (killType != KillType.TOB)
 				{
 					return;
 				}
 
-				fileName = "Theatre of Blood(" + theatreOfBloodNumber + ")";
+				fileName = "Theatre of Blood(" + killCountNumber + ")";
 				screenshotSubDir = "Boss Kills";
-				theatreOfBloodNumber = null;
+				killType = null;
+				killCountNumber = 0;
 				break;
 			}
 			case BARROWS_REWARD_GROUP_ID:
 			{
-				if (barrowsNumber == null)
+				if (killType != KillType.BARROWS)
 				{
 					return;
 				}
 
-				fileName = "Barrows(" + barrowsNumber + ")";
+				fileName = "Barrows(" + killCountNumber + ")";
 				screenshotSubDir = "Boss Kills";
-				barrowsNumber = null;
+				killType = null;
+				killCountNumber = 0;
 				break;
 			}
 			case LEVEL_UP_GROUP_ID:
@@ -769,26 +777,8 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	int getBarrowsNumber()
+	int getKillCountNumber()
 	{
-		return barrowsNumber;
-	}
-
-	@VisibleForTesting
-	int getChambersOfXericNumber()
-	{
-		return chambersOfXericNumber;
-	}
-
-	@VisibleForTesting
-	int getChambersOfXericChallengeNumber()
-	{
-		return chambersOfXericChallengeNumber;
-	}
-
-	@VisibleForTesting
-	int gettheatreOfBloodNumber()
-	{
-		return theatreOfBloodNumber;
+		return killCountNumber;
 	}
 }

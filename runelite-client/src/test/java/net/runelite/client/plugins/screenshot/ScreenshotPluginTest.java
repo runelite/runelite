@@ -143,7 +143,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Seth", BARROWS_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(310, screenshotPlugin.getBarrowsNumber());
+		assertEquals(310, screenshotPlugin.getKillCountNumber());
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Seth", CHAMBERS_OF_XERIC_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(489, screenshotPlugin.getChambersOfXericNumber());
+		assertEquals(489, screenshotPlugin.getKillCountNumber());
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Magic fTail", THEATRE_OF_BLOOD_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
+		assertEquals(73, screenshotPlugin.getKillCountNumber());
 	}
 
 	@Test
