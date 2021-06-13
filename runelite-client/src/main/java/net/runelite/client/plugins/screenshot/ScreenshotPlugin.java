@@ -561,7 +561,21 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 
-				fileName = "Theatre of Blood(" + killCountNumber + ")";
+				switch (killType)
+				{
+					case TOB:
+						fileName = "Theatre of Blood(" + killCountNumber + ")";
+						break;
+					case TOB_SM:
+						fileName = "Theatre of Blood Story Mode(" + killCountNumber + ")";
+						break;
+					case TOB_HM:
+						fileName = "Theatre of Blood Hard Mode(" + killCountNumber + ")";
+						break;
+					default:
+						throw new IllegalStateException();
+				}
+
 				screenshotSubDir = SD_BOSS_KILLS;
 				killType = null;
 				killCountNumber = 0;
