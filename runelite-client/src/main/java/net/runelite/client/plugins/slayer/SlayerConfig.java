@@ -113,7 +113,6 @@ public interface SlayerConfig extends Config
 		return "";
 	}
 
-
 	@ConfigItem(
 		position = 7,
 		keyName = "targetColor",
