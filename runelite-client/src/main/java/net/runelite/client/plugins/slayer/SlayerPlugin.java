@@ -200,6 +200,7 @@ public class SlayerPlugin extends Plugin
 	private Instant infoTimer;
 	private boolean loginFlag;
 	private final List<String> targetNames = new ArrayList<>();
+	private final List<String> targetLevels = new ArrayList<>();
 
 	@Override
 	protected void startUp() throws Exception
@@ -562,6 +563,13 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
+
+		if (event.getKey().equals("targetLevels"))
+		{
+			rebuildTargetLevels();
+			// need to rebuild target list with updated target levels
+			rebuildTargetList();
+		}
 		if (!event.getGroup().equals(SlayerConfig.GROUP_NAME) || !event.getKey().equals("infobox"))
 		{
 			return;
@@ -631,6 +639,14 @@ public class SlayerPlugin extends Plugin
 		{
 			if (name.contains(target))
 			{
+				if (!targetLevels.isEmpty())
+				{
+					if (!targetLevels.contains(String.valueOf(npc.getCombatLevel())))
+					{
+						return false;
+					}
+				}
+
 				NPCComposition composition = npc.getTransformedComposition();
 
 				if (composition != null)
@@ -673,6 +689,12 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
+	private void rebuildTargetLevels()
+	{
+		targetLevels.clear();
+		targetLevels.addAll(Text.fromCSV(config.highlightCombatLevels()));
+	}
+
 	private void setTask(String name, int amt, int initAmt)
 	{
 		setTask(name, amt, initAmt, null);
@@ -700,6 +722,7 @@ public class SlayerPlugin extends Plugin
 
 		Task task = Task.getTask(name);
 		rebuildTargetNames(task);
+		rebuildTargetLevels();
 		rebuildTargetList();
 	}
 

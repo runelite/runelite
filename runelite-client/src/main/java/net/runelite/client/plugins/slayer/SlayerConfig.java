@@ -103,7 +103,19 @@ public interface SlayerConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 6,
+			position = 6,
+			keyName = "targetLevels",
+			name = "Highlight Combat Levels",
+			description = "Configure which combat levels are highlighted"
+	)
+	default String highlightCombatLevels()
+	{
+		return "";
+	}
+
+
+	@ConfigItem(
+		position = 7,
 		keyName = "targetColor",
 		name = "Target Color",
 		description = "Color of the highlighted targets"
@@ -114,7 +126,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "weaknessPrompt",
 		name = "Show Monster Weakness",
 		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)"
@@ -125,7 +137,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "taskCommand",
 		name = "Task Command",
 		description = "Configures whether the slayer task command is enabled<br> !task"
