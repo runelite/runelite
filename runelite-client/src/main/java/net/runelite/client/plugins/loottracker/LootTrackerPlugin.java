@@ -237,6 +237,9 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final String CASKET_EVENT = "Casket";
 
+	// Wintertodt
+	private static final String WT_SUPPLY_CRATE_EVENT = "Supply crate (Wintertodt)";
+
 	// Soul Wars
 	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
 	private static final Set<Integer> SOUL_WARS_REGIONS = ImmutableSet.of(8493, 8749, 9005);
@@ -800,6 +803,7 @@ public class LootTrackerPlugin extends Plugin
 		else if (SEEDPACK_EVENT.equals(eventType)
 			|| CASKET_EVENT.equals(eventType)
 			|| BIRDNEST_EVENT.equals(eventType)
+			|| WT_SUPPLY_CRATE_EVENT.equals(eventType)
 			|| SPOILS_OF_WAR_EVENT.equals(eventType)
 			|| TEMPOROSS_EVENT.equals(eventType)
 			|| TEMPOROSS_CASKET_EVENT.equals(eventType))
@@ -840,6 +844,12 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.CASKET)
 		{
 			setEvent(LootRecordType.EVENT, CASKET_EVENT);
+			takeInventorySnapshot();
+		}
+
+		if (event.getMenuOption().equals("Open") && (event.getId() == ItemID.SUPPLY_CRATE || event.getId() == ItemID.EXTRA_SUPPLY_CRATE))
+		{
+			setEvent(LootRecordType.EVENT, WT_SUPPLY_CRATE_EVENT);
 			takeInventorySnapshot();
 		}
 
