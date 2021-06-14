@@ -111,7 +111,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2363, 3531, 0), new CoordinateClueInfo("North-east of Eagles' Peak (AKQ)."))
 		.put(new WorldPoint(2919, 3535, 0), new CoordinateClueInfo("East of Burthorpe pub."))
 		.put(new WorldPoint(3548, 3560, 0), new CoordinateClueInfo("Inside Fenkenstrain's Castle."))
-		.put(new WorldPoint(1456, 3620, 0), new CoordinateClueInfo("Graveyard west of Shayzien (DJR)."))
+		.put(new WorldPoint(1476, 3566, 0), new CoordinateClueInfo("Graveyard of Heroes west of Shayzien (DJR)."))
 		.put(new WorldPoint(2735, 3638, 0), new CoordinateClueInfo("East of Rellekka, north-west of Golden Apple Tree (AJR)."))
 		.put(new WorldPoint(2681, 3653, 0), new CoordinateClueInfo("Rellekka, in the garden of the south-east house."))
 		.put(new WorldPoint(2537, 3881, 0), new CoordinateClueInfo("Miscellania (CIP)."))
@@ -147,7 +147,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3305, 3692, 0), new CoordinateClueInfo("Wilderness. West of eastern green dragon.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(3055, 3696, 0), new CoordinateClueInfo("Wilderness. Bandit Camp.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(3302, 3696, 0), new CoordinateClueInfo("Wilderness. West of eastern green dragon.", ZAMORAK_WIZARD))
-		.put(new WorldPoint(1479, 3696, 0), new CoordinateClueInfo("Lizardman Canyon (DJR).", SARADOMIN_WIZARD))
+		.put(new WorldPoint(1479, 3699, 0), new CoordinateClueInfo("Lizardman Canyon (DJR).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2712, 3732, 0), new CoordinateClueInfo("North-east of Rellekka (DKS).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2970, 3749, 0), new CoordinateClueInfo("Wilderness. Forgotten Cemetery.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(3094, 3764, 0), new CoordinateClueInfo("Wilderness. Mining site north of Bandit Camp.", ZAMORAK_WIZARD))
@@ -170,6 +170,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2341, 3697, 0), new CoordinateClueInfo("North-east of the Piscatoris Fishing Colony bank.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3143, 3774, 0), new CoordinateClueInfo("In level 32 Wilderness, by the black chinchompa hunting area.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(2992, 3941, 0), new CoordinateClueInfo("Wilderness Agility Course, past the log balance.", ZAMORAK_WIZARD))
+		.put(new WorldPoint(1410, 3611, 0), new CoordinateClueInfo("Lake Molch dock west of Shayzien Encampment.", SARADOMIN_WIZARD))
 		// Elite
 		.put(new WorldPoint(2357, 3151, 0), new CoordinateClueInfo("Lletya.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3587, 3180, 0), new CoordinateClueInfo("Meiyerditch.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
@@ -207,6 +208,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3560, 3987, 0), new CoordinateClueInfo("Lithkren. Digsite pendant teleport if unlocked, otherwise take rowboat from west of Mushroom Meadow Mushtree.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2318, 2954, 0), new CoordinateClueInfo("North-east corner of the Isle of Souls.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2094, 2889, 0), new CoordinateClueInfo("West side of the Isle of Souls.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(1451, 3509, 0), new CoordinateClueInfo("Ruins of Morra.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		// Master
 		.put(new WorldPoint(2178, 3209, 0), new CoordinateClueInfo("South of Iorwerth Camp.", BRASSICAN_MAGE))
 		.put(new WorldPoint(2155, 3100, 0), new CoordinateClueInfo("South of Port Tyras (BJS if 76 Agility).", BRASSICAN_MAGE))
@@ -234,6 +236,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3188, 3939, 0), new CoordinateClueInfo("Wilderness. Resource Area.", BRASSICAN_MAGE))
 		.put(new WorldPoint(3304, 3941, 0), new CoordinateClueInfo("Wilderness. East of Rogues' Castle.", ANCIENT_WIZARDS))
 		.put(new WorldPoint(2994, 3961, 0), new CoordinateClueInfo("Wilderness. Inside Agility Training Area.", BRASSICAN_MAGE))
+		.put(new WorldPoint(1770, 3417, 0), new CoordinateClueInfo("Crabclaw Isle", ANCIENT_WIZARDS))
 		.build();
 
 	private final String text;
