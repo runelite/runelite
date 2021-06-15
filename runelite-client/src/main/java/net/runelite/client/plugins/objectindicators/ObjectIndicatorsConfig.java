@@ -54,4 +54,14 @@ public interface ObjectIndicatorsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "borderWidth",
+		name = "Border Width",
+		description = "Width of the marked object border"
+	)
+	default double borderWidth()
+	{
+		return 2;
+	}
 }

@@ -24,10 +24,12 @@
  */
 package net.runelite.client.plugins.objectindicators;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.Stroke;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
@@ -62,6 +64,7 @@ class ObjectIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		Stroke stroke = new BasicStroke((float) config.borderWidth());
 		for (ColorTileObject colorTileObject : plugin.getObjects())
 		{
 			TileObject object = colorTileObject.getTileObject();
@@ -118,12 +121,12 @@ class ObjectIndicatorsOverlay extends Overlay
 
 			if (polygon != null)
 			{
-				OverlayUtil.renderPolygon(graphics, polygon, color);
+				OverlayUtil.renderPolygon(graphics, polygon, color, stroke);
 			}
 
 			if (polygon2 != null)
 			{
-				OverlayUtil.renderPolygon(graphics, polygon2, color);
+				OverlayUtil.renderPolygon(graphics, polygon2, color, stroke);
 			}
 		}
 
