@@ -249,6 +249,9 @@ public class LootTrackerPlugin extends Plugin
 	private static final String TEMPOROSS_LOOT_STRING = "You found some loot: ";
 	private static final int TEMPOROSS_REGION = 12588;
 
+	// Camdozaal Vault lockbox
+	private static final Set<Integer> LOCKBOX_IDS = ImmutableSet.of( ItemID.SIMPLE_LOCKBOX_25647, ItemID.ELABORATE_LOCKBOX_25649, ItemID.ORNATE_LOCKBOX_25651);
+
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
 	@Inject
@@ -791,7 +794,8 @@ public class LootTrackerPlugin extends Plugin
 			|| WINTERTODT_SUPPLY_CRATE_EVENT.equals(eventType)
 			|| eventType.endsWith("Bird House")
 			|| eventType.startsWith("H.A.M. chest")
-			|| lootRecordType == LootRecordType.PICKPOCKET)
+			|| lootRecordType == LootRecordType.PICKPOCKET
+			|| eventType.endsWith("lockbox"))
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 			Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
@@ -861,6 +865,12 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.CASKET_25590)
 		{
 			setEvent(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT);
+			takeInventorySnapshot();
+		}
+
+		if (event.getMenuOption().equals("Open") && LOCKBOX_IDS.contains(event.getId()))
+		{
+			setEvent(LootRecordType.EVENT, event.getMenuTarget());
 			takeInventorySnapshot();
 		}
 	}
