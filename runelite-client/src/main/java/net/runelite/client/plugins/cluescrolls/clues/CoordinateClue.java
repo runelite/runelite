@@ -140,7 +140,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3441, 3419, 0), new CoordinateClueInfo("Mort Myre Swamp (BKR).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2950, 2902, 0), new CoordinateClueInfo("South-east of Kharazi Jungle.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2775, 2891, 0), new CoordinateClueInfo("South-west of Kharazi Jungle.", SARADOMIN_WIZARD))
-		.put(new WorldPoint(3113, 3602, 0), new CoordinateClueInfo("Wilderness. North of Edgeville (level 11).", ZAMORAK_WIZARD))
+		.put(new WorldPoint(3113, 3602, 0), new CoordinateClueInfo("Wilderness. South-west of Ferox Enclave (level 11).", ZAMORAK_WIZARD))
 		.put(new WorldPoint(2892, 3675, 0), new CoordinateClueInfo("On the summit of Trollheim.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3168, 3677, 0), new CoordinateClueInfo("Wilderness. Graveyard of Shadows.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(2853, 3690, 0), new CoordinateClueInfo("Entrance to the troll Stronghold.", SARADOMIN_WIZARD))
