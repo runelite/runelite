@@ -109,6 +109,17 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 5,
+		keyName = "borderWidth",
+		name = "Border Width",
+		description = "Width of the highlighted NPC border"
+	)
+	default double borderWidth()
+	{
+		return 2;
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "drawNames",
 		name = "Draw names above NPC",
 		description = "Configures whether or not NPC names should be drawn above the NPC"
@@ -119,7 +130,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not NPC names should be drawn on the minimap"
@@ -130,7 +141,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "highlightMenuNames",
 		name = "Highlight menu names",
 		description = "Highlight NPC names in right click menu"
@@ -141,7 +152,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "ignoreDeadNpcs",
 		name = "Ignore dead NPCs",
 		description = "Prevents highlighting NPCs after they are dead"
@@ -152,7 +163,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "deadNpcMenuColor",
 		name = "Dead NPC menu color",
 		description = "Color of the NPC menus for dead NPCs"
@@ -160,7 +171,7 @@ public interface NpcIndicatorsConfig extends Config
 	Color deadNpcMenuColor();
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "showRespawnTimer",
 		name = "Show respawn timer",
 		description = "Show respawn timer of tagged NPCs")
