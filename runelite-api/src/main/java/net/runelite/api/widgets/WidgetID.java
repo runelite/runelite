@@ -172,6 +172,7 @@ public class WidgetID
 	{
 		static final int MAPVIEW = 7;
 		static final int OVERVIEW_MAP = 10;
+		static final int BOTTOM_BAR = 22;
 		static final int SEARCH = 25;
 		static final int SURFACE_SELECTOR = 33;
 		static final int TOOLTIP = 41;
