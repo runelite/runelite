@@ -138,6 +138,9 @@ enum RareTreeLocation
 		new WorldPoint(1642, 3533, 0),
 		new WorldPoint(1671, 3657, 0),
 		new WorldPoint(1680, 3657, 0),
+		new WorldPoint(1572, 3618, 0),
+		new WorldPoint(1553, 3551, 0),
+		new WorldPoint(1496, 3582, 0),
 
 		// Tirannwn
 		new WorldPoint(2217, 3141, 0),
