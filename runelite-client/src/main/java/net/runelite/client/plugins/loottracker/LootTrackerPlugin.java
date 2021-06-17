@@ -67,6 +67,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectID;
@@ -817,52 +818,70 @@ public class LootTrackerPlugin extends Plugin
 	{
 		// There are some pickpocket targets who show up in the chat box with a different name (e.g. H.A.M. members -> man/woman)
 		// We use the value selected from the right-click menu as a fallback for the event lookup in those cases.
-		if (event.getMenuOption().equals("Pickpocket"))
+		if (isNPCOp(event.getMenuAction()) && event.getMenuOption().equals("Pickpocket"))
 		{
 			lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
 		}
-
-		if (event.getMenuOption().equals("Take") && event.getId() == ItemID.SEED_PACK)
-		{
-			setEvent(LootRecordType.EVENT, SEEDPACK_EVENT);
-			takeInventorySnapshot();
-		}
-
-		if (event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
+		else if (isObjectOp(event.getMenuAction()) && event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
 		{
 			setEvent(LootRecordType.EVENT, SHADE_CHEST_OBJECTS.get(event.getId()));
 			takeInventorySnapshot();
 		}
-
-		if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
+		else if (isItemOp(event.getMenuAction()))
 		{
-			setEvent(LootRecordType.EVENT, BIRDNEST_EVENT, event.getId());
-			takeInventorySnapshot();
+			if (event.getMenuOption().equals("Take") && event.getId() == ItemID.SEED_PACK)
+			{
+				setEvent(LootRecordType.EVENT, SEEDPACK_EVENT);
+				takeInventorySnapshot();
+			}
+			else if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
+			{
+				setEvent(LootRecordType.EVENT, BIRDNEST_EVENT, event.getId());
+				takeInventorySnapshot();
+			}
+			else if (event.getMenuOption().equals("Open"))
+			{
+				switch (event.getId())
+				{
+					case ItemID.CASKET:
+						setEvent(LootRecordType.EVENT, CASKET_EVENT);
+						takeInventorySnapshot();
+						break;
+					case ItemID.SUPPLY_CRATE:
+					case ItemID.EXTRA_SUPPLY_CRATE:
+						setEvent(LootRecordType.EVENT, WINTERTODT_SUPPLY_CRATE_EVENT);
+						takeInventorySnapshot();
+						break;
+					case ItemID.SPOILS_OF_WAR:
+						setEvent(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT);
+						takeInventorySnapshot();
+						break;
+					case ItemID.CASKET_25590:
+						setEvent(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT);
+						takeInventorySnapshot();
+						break;
+				}
+			}
 		}
+	}
 
-		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.CASKET)
-		{
-			setEvent(LootRecordType.EVENT, CASKET_EVENT);
-			takeInventorySnapshot();
-		}
+	private static boolean isItemOp(MenuAction menuAction)
+	{
+		final int id = menuAction.getId();
+		return id >= MenuAction.ITEM_FIRST_OPTION.getId() && id <= MenuAction.ITEM_FIFTH_OPTION.getId();
+	}
 
-		if (event.getMenuOption().equals("Open") && (event.getId() == ItemID.SUPPLY_CRATE || event.getId() == ItemID.EXTRA_SUPPLY_CRATE))
-		{
-			setEvent(LootRecordType.EVENT, WINTERTODT_SUPPLY_CRATE_EVENT);
-			takeInventorySnapshot();
-		}
+	private static boolean isNPCOp(MenuAction menuAction)
+	{
+		final int id = menuAction.getId();
+		return id >= MenuAction.NPC_FIRST_OPTION.getId() && id <= MenuAction.NPC_FIFTH_OPTION.getId();
+	}
 
-		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.SPOILS_OF_WAR)
-		{
-			setEvent(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT);
-			takeInventorySnapshot();
-		}
-
-		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.CASKET_25590)
-		{
-			setEvent(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT);
-			takeInventorySnapshot();
-		}
+	private static boolean isObjectOp(MenuAction menuAction)
+	{
+		final int id = menuAction.getId();
+		return (id >= MenuAction.GAME_OBJECT_FIRST_OPTION.getId() && id <= MenuAction.GAME_OBJECT_FOURTH_OPTION.getId())
+			|| id == MenuAction.GAME_OBJECT_FIFTH_OPTION.getId();
 	}
 
 	@Schedule(
