@@ -134,7 +134,7 @@ enum TeleportLocationData
 	TROLL_STRONGHOLD_STONY_BASALT_OUTSIDE(TeleportType.OTHER, "Stony Basalt", "Troll Stronghold", new WorldPoint(2844, 3693, 0), "stony_basalt_teleport_icon.png"),
 	KHAREDSTS_MEMOIRS_HOSIDIUS(TeleportType.OTHER, "Kharedst's Memoirs", "Lunch by the Lancalliums (Hosidius)", new WorldPoint(1713, 3612, 0), "kharedsts_memoirs_teleport_icon.png"),
 	KHAREDSTS_MEMOIRS_PISCARILIUS(TeleportType.OTHER, "Kharedst's Memoirs", "The Fisher's Flute (Piscarilius)", new WorldPoint(1802, 3748, 0), "kharedsts_memoirs_teleport_icon.png"),
-	KHAREDSTS_MEMOIRS_SHAYZIEN(TeleportType.OTHER, "Kharedst's Memoirs", "History and Hearsay (Shayzien)", new WorldPoint(1476, 3580, 0), "kharedsts_memoirs_teleport_icon.png"),
+	KHAREDSTS_MEMOIRS_SHAYZIEN(TeleportType.OTHER, "Kharedst's Memoirs", "History and Hearsay (Shayzien)", new WorldPoint(1478, 3576, 0), "kharedsts_memoirs_teleport_icon.png"),
 	KHAREDSTS_MEMOIRS_LOVAKENGJ(TeleportType.OTHER, "Kharedst's Memoirs", "Jewelry of Jubilation (Lovakengj)", new WorldPoint(1544, 3762, 0), "kharedsts_memoirs_teleport_icon.png"),
 	KHAREDSTS_MEMOIRS_ARCEUUS(TeleportType.OTHER, "Kharedst's Memoirs", "A Dark Disposition (Arceuus)", new WorldPoint(1680, 3746, 0), "kharedsts_memoirs_teleport_icon.png"),
 	PHARAOHS_SCEPTRE_JALSAVRAH(TeleportType.OTHER, "Pharaoh's Sceptre", "Jalsavrah (Pyramid Plunder)", new WorldPoint(3288, 2795, 0), "pharaohs_sceptre_teleport_icon.png"),
