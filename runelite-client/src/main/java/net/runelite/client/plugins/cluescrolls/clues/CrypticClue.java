@@ -325,7 +325,11 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("A general who sets a 'shining' example.", "General Hining", new WorldPoint(2186, 3148, 0), "Talk to General Hining in Tyras Camp."),
 		new CrypticClue("Has no one told you it is rude to ask a lady her age?", "Mawrth", new WorldPoint(2333, 3165, 0), "Talk to Mawrth in Lletya."),
 		new CrypticClue("Elvish onions.", new WorldPoint(3303, 6092, 0), "Dig in the onion patch east of the Prifddinas allotments."),
-		new CrypticClue("Dig by the Giant's Den entrance, looking out over Lake Molch.", new WorldPoint(1418, 3591, 0), "South-east of Lake Molch in Zeah, outside the cave entrance.")
+		new CrypticClue("Dig by the Giant's Den entrance, looking out over Lake Molch.", new WorldPoint(1418, 3591, 0), "South-east of Lake Molch in Zeah, outside the cave entrance."),
+		new CrypticClue("Search the crates in the fruit store just east of the Hosidius town centre.", CRATES_27533, new WorldPoint(1798, 3612, 0), "Search the crates in the back room of the Hosidius fruit store."),
+		new CrypticClue("A graceful man of many colours, his crates must be full of many delights.", "Hill Giant", CRATE_42067, new WorldPoint(1506, 3591, 2), "Kill any Hill Giant for a medium key. Then search the crate on the top floor of Osten's clothing shop in Shayzien."),
+		new CrypticClue("Search the basket of apples in an orchard, south of the unknown grave surrounded by white roses.", APPLE_BASKET, new WorldPoint(1718, 3626, 0), "Search the middle apple basket in the apple orchard north of Hosidius."),
+		new CrypticClue("Dig in the lair of red wings, within the temple of the Sun and Moon.", new WorldPoint(1820, 9935, 0), "Forthos Dungeon. In the center of the red dragons.")
 	);
 
 	private final String text;
