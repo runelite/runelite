@@ -111,7 +111,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2363, 3531, 0), new CoordinateClueInfo("North-east of Eagles' Peak (AKQ)."))
 		.put(new WorldPoint(2919, 3535, 0), new CoordinateClueInfo("East of Burthorpe pub."))
 		.put(new WorldPoint(3548, 3560, 0), new CoordinateClueInfo("Inside Fenkenstrain's Castle."))
-		.put(new WorldPoint(1476, 3566, 0), new CoordinateClueInfo("Graveyard of Heroes west of Shayzien (DJR)."))
+		.put(new WorldPoint(1476, 3566, 0), new CoordinateClueInfo("Graveyard of Heroes in west Shayzien."))
 		.put(new WorldPoint(2735, 3638, 0), new CoordinateClueInfo("East of Rellekka, north-west of Golden Apple Tree (AJR)."))
 		.put(new WorldPoint(2681, 3653, 0), new CoordinateClueInfo("Rellekka, in the garden of the south-east house."))
 		.put(new WorldPoint(2537, 3881, 0), new CoordinateClueInfo("Miscellania (CIP)."))
