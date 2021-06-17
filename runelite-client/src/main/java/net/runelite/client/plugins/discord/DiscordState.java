@@ -32,7 +32,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -250,27 +249,16 @@ class DiscordState
 
 		final Duration actionTimeout = Duration.ofMinutes(config.actionTimeout());
 		final Instant now = Instant.now();
-		final AtomicBoolean updatedAny = new AtomicBoolean();
 
 		final boolean removedAny = events.removeAll(events.stream()
+			// Only include clearable events
+			.filter(event -> event.getType().isShouldBeCleared())
 			// Find only events that should time out
 			.filter(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)))
-			// Reset start times on timed events that should restart
-			.peek(event ->
-			{
-				if (event.getType().isShouldRestart())
-				{
-					event.setStart(null);
-					updatedAny.set(true);
-				}
-			})
-			// Now filter out events that should restart as we do not want to remove them
-			.filter(event -> !event.getType().isShouldRestart())
-			.filter(event -> event.getType().isShouldBeCleared())
 			.collect(Collectors.toList())
 		);
 
-		if (removedAny || updatedAny.get())
+		if (removedAny)
 		{
 			updatePresenceWithLatestEvent();
 		}
