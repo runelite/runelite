@@ -167,7 +167,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("TAUNT ROOF", "Fortunato", new WorldPoint(3080, 3250, 0), "Draynor Village Market"),
 		new AnagramClue("HICK JET", "Jethick", new WorldPoint(2541, 3305, 0), "West Ardougne", "How many graves are there in the city graveyard?", "38"),
 		new AnagramClue("RUE GO", "Goreu", new WorldPoint(2335, 3162, 0), "Lletya"),
-		new AnagramClue("BRUCIE CATNAP", "Captain Bruce", new WorldPoint(1520, 3558, 0), "Graveyard of Heroes")
+		new AnagramClue("BRUCIE CATNAP", "Captain Bruce", new WorldPoint(1520, 3558, 0), "Graveyard of Heroes"),
+		new AnagramClue("UESNKRL NRIEDDO", "Drunken soldier", new WorldPoint(1551, 3565, 0), "Shayzien pub", "If 13 Shayzien Soldiers kill 46 Lizardmen each in a day, how many Lizardmen have they killed in total in a single day?", "598")
 	);
 
 	private final String text;
