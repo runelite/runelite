@@ -263,4 +263,24 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showArceuus",
+		name = "Arceuus spells duration",
+		description = "Whether to show Arceuus spellbook spell timers"
+	)
+	default boolean showArceuus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showArceuusCooldown",
+		name = "Arceuus spells cooldown",
+		description = "Whether to show cooldown timers for Arceuus spellbook spells"
+	)
+	default boolean showArceuusCooldown()
+	{
+		return false;
+	}
 }

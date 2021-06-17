@@ -76,6 +76,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.RSTimeUnit;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
@@ -113,6 +114,14 @@ public class TimersPlugin extends Plugin
 	private static final String KILLED_TELEBLOCK_OPPONENT_TEXT = "Your Tele Block has been removed because you killed ";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 	private static final String ENDURANCE_EFFECT_MESSAGE = "Your Ring of endurance doubles the duration of your stamina potion's effect.";
+	private static final String SHADOW_VEIL_MESSAGE = ">Your thieving abilities have been enhanced.</col>";
+	private static final String DEATH_CHARGE_MESSAGE = ">Upon the death of your next foe, some of your special attack energy will be restored.</col>";
+	private static final String DEATH_CHARGE_ACTIVATE_MESSAGE = ">Some of your special attack energy has been restored.</col>";
+	private static final String RESURRECT_THRALL_MESSAGE_START = ">You resurrect a ";
+	private static final String RESURRECT_THRALL_MESSAGE_END = " thrall.</col>";
+	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_START = ">Your ";
+	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_END = " thrall returns to the grave.</col>";
+	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
 
 	private static final Pattern TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you(?: by .+)?\\. It will expire in (?<mins>\\d+) minutes?(?:, (?<secs>\\d+) seconds?)?\\.");
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
@@ -138,6 +147,7 @@ public class TimersPlugin extends Plugin
 	private int lastIsVengeancedVarb;
 	private int lastPoisonVarp;
 	private int lastPvpVarb;
+	private int lastCorruptionVarb;
 	private int nextPoisonTick;
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
@@ -202,6 +212,7 @@ public class TimersPlugin extends Plugin
 		int isVengeancedVarb = client.getVar(Varbits.VENGEANCE_ACTIVE);
 		int poisonVarp = client.getVar(VarPlayer.POISON);
 		int pvpVarb = client.getVar(Varbits.PVP_SPEC_ORB);
+		int corruptionCooldownVarb = client.getVar(Varbits.CORRUPTION_COOLDOWN);
 
 		if (lastRaidVarb != raidVarb)
 		{
@@ -222,6 +233,20 @@ public class TimersPlugin extends Plugin
 			}
 
 			lastVengCooldownVarb = vengCooldownVarb;
+		}
+
+		if (lastCorruptionVarb != corruptionCooldownVarb && config.showArceuusCooldown())
+		{
+			if (corruptionCooldownVarb == 1)
+			{
+				createGameTimer(CORRUPTION_COOLDOWN);
+			}
+			else
+			{
+				removeGameTimer(CORRUPTION_COOLDOWN);
+			}
+
+			lastCorruptionVarb = corruptionCooldownVarb;
 		}
 
 		if (lastIsVengeancedVarb != isVengeancedVarb && config.showVengeanceActive())
@@ -662,6 +687,55 @@ public class TimersPlugin extends Plugin
 						createGameTimer(DIVINE_BATTLEMAGE);
 						break;
 				}
+			}
+		}
+
+		if (config.showArceuus())
+		{
+			Duration duration = Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS);
+			if (message.endsWith(SHADOW_VEIL_MESSAGE))
+			{
+				createGameTimer(SHADOW_VEIL, duration);
+			}
+			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
+			{
+				createGameTimer(WARD_OF_ARCEUUS, duration);
+			}
+			else if (message.endsWith(DEATH_CHARGE_MESSAGE))
+			{
+				createGameTimer(DEATH_CHARGE, duration);
+			}
+			else if (message.endsWith(DEATH_CHARGE_ACTIVATE_MESSAGE))
+			{
+				removeGameTimer(DEATH_CHARGE);
+			}
+			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
+			{
+				createGameTimer(RESURRECT_THRALL, duration);
+			}
+			else if (message.contains(RESURRECT_THRALL_DISAPPEAR_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_DISAPPEAR_MESSAGE_END))
+			{
+				removeGameTimer(RESURRECT_THRALL);
+			}
+		}
+
+		if (config.showArceuusCooldown())
+		{
+			if (message.endsWith(SHADOW_VEIL_MESSAGE))
+			{
+				createGameTimer(SHADOW_VEIL_COOLDOWN);
+			}
+			else if (message.endsWith(DEATH_CHARGE_MESSAGE))
+			{
+				createGameTimer(DEATH_CHARGE_COOLDOWN);
+			}
+			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
+			{
+				createGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
+			}
+			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
+			{
+				createGameTimer(RESURRECT_THRALL_COOLDOWN);
 			}
 		}
 
