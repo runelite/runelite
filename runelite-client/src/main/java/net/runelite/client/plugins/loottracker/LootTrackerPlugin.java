@@ -63,6 +63,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.GraphicID;
+import net.runelite.api.GraphicsObject;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
@@ -76,6 +78,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -167,6 +170,10 @@ public class LootTrackerPlugin extends Plugin
 		put(8593, "Isle of Souls Chest").
 		put(7827, "Dark Chest").
 		build();
+
+	// Shade remains
+	private static final Set<Integer> SHADE_PYRE_OBJECTS = ImmutableSet.of(ObjectID.FUNERAL_PYRE_4094, ObjectID.FUNERAL_PYRE_4095, ObjectID.FUNERAL_PYRE_4096, ObjectID.FUNERAL_PYRE_4097, ObjectID.FUNERAL_PYRE_4098, ObjectID.FUNERAL_PYRE_4099, ObjectID.FUNERAL_PYRE_21271, ObjectID.FUNERAL_PYRE_9006, ObjectID.FUNERAL_PYRE_9007, ObjectID.FUNERAL_PYRE_28865);
+	private static final Pattern SHADE_PYRE_PATTERN = Pattern.compile("(\\w+ remains)");
 
 	// Shade chest loot handling
 	private static final Pattern SHADE_CHEST_NO_KEY_PATTERN = Pattern.compile("You need a [a-z]+ key with a [a-z]+ trim to open this chest .*");
@@ -862,6 +869,32 @@ public class LootTrackerPlugin extends Plugin
 		{
 			setEvent(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT);
 			takeInventorySnapshot();
+		}
+
+		if (SHADE_PYRE_OBJECTS.contains(event.getId()))
+		{
+			final Matcher pyreMatcher = SHADE_PYRE_PATTERN.matcher(event.getMenuTarget());
+			if (pyreMatcher.find())
+			{
+				setEvent(LootRecordType.EVENT, pyreMatcher.group());
+			}
+
+		}
+	}
+
+	@Subscribe
+	private void onGraphicsObjectCreated(GraphicsObjectCreated event)
+	{
+		final GraphicsObject object = event.getGraphicsObject();
+		if (object.getId() == GraphicID.SHADE_DROP_ANIM)
+		{
+			WorldPoint dropLocation = WorldPoint.fromLocal(client, object.getLocation());
+			Collection<ItemStack> items = lootManager.getItemSpawns(dropLocation);
+			if (!items.isEmpty())
+			{
+				addLoot(eventType, -1, lootRecordType, null, items);
+				resetEvent();
+			}
 		}
 	}
 
