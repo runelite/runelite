@@ -165,7 +165,7 @@ public class ChatIconManager
 
 	private static int clanRankToIdx(int key)
 	{
-		// keys are -5 to 264, with no 0
-		return key < 0 ? ~key : (key + 4);
+		// keys are -6 to 265, with no 0
+		return key < 0 ? ~key : (key + 5);
 	}
 }
