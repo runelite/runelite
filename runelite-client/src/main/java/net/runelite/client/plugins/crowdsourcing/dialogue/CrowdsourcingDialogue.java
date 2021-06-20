@@ -62,17 +62,16 @@ public class CrowdsourcingDialogue
 		Widget playerDialogueTextWidget = client.getWidget(WidgetID.DIALOG_PLAYER_GROUP_ID, 5);
 		Widget playerDialogueOptionsWidget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
 
-		// If we were not in a conversation, but now one of these widgets is not null
+		// If we were not in a conversation, but now one of these widgets is not null, we have started a conversation.
+		// Else if we were in a conversation, but now there is no widget, we have left the conversation.
 		if (!inDialogue && (npcDialogueTextWidget != null || playerDialogueTextWidget != null || playerDialogueOptionsWidget != null))
 		{
 			inDialogue = true;
 			manager.storeEvent(new StartEndData(true));
 		}
-		// If we were in a conversation, but now there is no widget, we have left the conversation.
 		else if (inDialogue && npcDialogueTextWidget == null && playerDialogueTextWidget == null
 			&& playerDialogueOptionsWidget == null)
 		{
-
 			inDialogue = false;
 			manager.storeEvent(new StartEndData(false));
 		}
