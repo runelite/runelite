@@ -59,8 +59,8 @@ public class CrowdsourcingDialogue
 	public void onGameTick(GameTick tick)
 	{
 		Widget npcDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
-		Widget playerDialogueTextWidget = client.getWidget(WidgetID.DIALOG_PLAYER_GROUP_ID, 5);
-		Widget playerDialogueOptionsWidget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
+		Widget playerDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_PLAYER_TEXT);
+		Widget playerDialogueOptionsWidget = client.getWidget(WidgetInfo.DIALOG_OPTION_OPTIONS);
 
 		// If we were not in a conversation, but now one of these widgets is not null, we have started a conversation.
 		// Else if we were in a conversation, but now there is no widget, we have left the conversation.
