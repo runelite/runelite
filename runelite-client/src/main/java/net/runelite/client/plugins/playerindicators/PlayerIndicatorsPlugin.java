@@ -26,6 +26,11 @@ package net.runelite.client.plugins.playerindicators;
 
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Value;
 import net.runelite.api.Client;
@@ -46,8 +51,13 @@ import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
 import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.VarClientStr;
+import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanTitle;
 import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ChatIconManager;
@@ -107,6 +117,37 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsTileOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick) {
+		playerIndicatorsService.setTobTeamMembers(getTobTeamMembers());
+	}
+
+	private List<String> getTobTeamMembers()
+	{
+		int tobVar = client.getVar(Varbits.THEATRE_OF_BLOOD);
+		if (tobVar == 1) { // in party, outside of tob.
+			Widget widget = client.getWidget(WidgetInfo.TOB_PARTY_MEMBERS);
+			if (widget != null)
+			{
+				return Arrays.stream(widget.getText().split("<br>"))
+					.filter(name -> !name.equals("-"))
+					.collect(Collectors.toList());
+			}
+		} else if (tobVar > 1) { // inside tob.
+			// These vars contain garbage or misleading values when not inside a ToB instance, so only read them when
+			// you're in tob.
+			List<String> team = new ArrayList<>();
+			team.add(client.getVar(VarClientStr.TOB_TEAM_MEMBER_NAME_1));
+			team.add(client.getVar(VarClientStr.TOB_TEAM_MEMBER_NAME_2));
+			team.add(client.getVar(VarClientStr.TOB_TEAM_MEMBER_NAME_3));
+			team.add(client.getVar(VarClientStr.TOB_TEAM_MEMBER_NAME_4));
+			team.add(client.getVar(VarClientStr.TOB_TEAM_MEMBER_NAME_5));
+			team = team.stream().filter(name -> !name.isEmpty()).collect(Collectors.toList());
+			return team;
+		}
+		return Collections.emptyList();
 	}
 
 	@Subscribe

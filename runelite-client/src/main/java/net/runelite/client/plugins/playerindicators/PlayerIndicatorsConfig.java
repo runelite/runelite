@@ -116,7 +116,7 @@ public interface PlayerIndicatorsConfig extends Config
 		position = 6,
 		keyName = "drawTeamMemberNames",
 		name = "Highlight team members",
-		description = "Configures whether or not team members should be highlighted",
+		description = "Configures whether or not team members should be highlighted. Team members are players wearing the same team cape as yourself, or players on your Theatre of Blood team.",
 		section = highlightSection
 	)
 	default boolean highlightTeamMembers()
