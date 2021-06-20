@@ -7,6 +7,12 @@
       "xp": 86.5
     },
     {
+      "level": 5,
+      "icon": 13359,
+      "name": "Shayzien Basic Course",
+      "xp": 133.2
+    },
+    {
       "level": 10,
       "icon": 11849,
       "name": "Draynor Village Rooftop",
@@ -65,6 +71,12 @@
       "icon": 4026,
       "name": "Ape Atoll",
       "xp": 580
+    },
+    {
+      "level": 48,
+      "icon": 13379,
+      "name": "Shayzien Advanced Course",
+      "xp": 474.3
     },
     {
       "level": 50,
