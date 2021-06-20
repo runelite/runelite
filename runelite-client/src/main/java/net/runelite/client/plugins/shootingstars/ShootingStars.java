@@ -67,6 +67,8 @@ import net.runelite.client.plugins.shootingstars.event.StarCrashEvent;
 import net.runelite.client.plugins.shootingstars.event.StarDepletionEvent;
 import net.runelite.client.plugins.shootingstars.event.StarDowngradeEvent;
 import net.runelite.client.plugins.shootingstars.event.StarScoutEvent;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -127,6 +129,9 @@ public class ShootingStars extends Plugin
 	private EventBus eventBus;
 
 	@Inject
+	private ClientToolbar clientToolbar;
+
+	@Inject
 	@Named("developerMode")
 	private boolean developerMode;
 
@@ -138,16 +143,33 @@ public class ShootingStars extends Plugin
 
 	private BufferedImage worldMapImage;
 
+	private ShootingStarsPanel starsPanel;
+
+	private NavigationButton navigationButton;
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		starsPanel = new ShootingStarsPanel();
+
+		BufferedImage icon = ImageUtil.loadImageResource(ShootingStars.class, "panel_icon.png");
+
+		navigationButton = NavigationButton.builder()
+			.tooltip("Shooting Stars")
+			.icon(icon)
+			.priority(2)
+			.panel(starsPanel)
+			.build();
+
+		clientToolbar.addNavigation(navigationButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		clientToolbar.removeNavigation(navigationButton);
 	}
 
 	@Subscribe
@@ -325,6 +347,7 @@ public class ShootingStars extends Plugin
 
 	/**
 	 * Returns if the given locId (gameObjectId) is a shooting star.
+	 *
 	 * @param locId The locId (gameObjectId)
 	 * @return If the given locId is a shooting star or not.
 	 */
