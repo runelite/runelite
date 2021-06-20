@@ -282,6 +282,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("enter", "the gauntlet", "enter-corrupted", config::swapGauntlet);
 
 		swap("enter", "quick-enter", config::swapQuick);
+		swap("enter-crypt", "quick-enter", config::swapQuick);
 		swap("ring", "quick-start", config::swapQuick);
 		swap("pass", "quick-pass", config::swapQuick);
 		swap("pass", "quick pass", config::swapQuick);
