@@ -28,7 +28,7 @@ import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
 
 @Value(staticConstructor = "of")
-public class StarCrashSite
+public class StarLandingSite
 {
 	String name;
 	WorldPoint location;

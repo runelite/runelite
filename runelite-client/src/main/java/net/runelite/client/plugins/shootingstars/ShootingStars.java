@@ -379,14 +379,14 @@ public class ShootingStars extends Plugin
 
 	private void setupPossibleCrashSites(StarRegion region)
 	{
-		List<StarCrashSite> crashSites = region.getCrashSites();
+		List<StarLandingSite> crashSites = region.getCrashSites();
 
 		if (worldMapImage == null)
 		{
 			worldMapImage = createWorldMapImage();
 		}
 
-		for (StarCrashSite crashSite : crashSites)
+		for (StarLandingSite crashSite : crashSites)
 		{
 			WorldMapPoint mapPoint = WorldMapPoint.builder()
 				.worldPoint(crashSite.getLocation())
