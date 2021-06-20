@@ -133,7 +133,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		int tobVar = client.getVar(Varbits.THEATRE_OF_BLOOD);
 		if (tobVar == 1)
 		{ // in party, outside of tob.
-			Widget widget = client.getWidget(WidgetInfo.TOB_PARTY_MEMBERS);
+			Widget widget = client.getWidget(WidgetInfo.TOB_PARTY_MEMBER_LIST_LOBBY);
 			if (widget != null)
 			{
 				return Arrays.stream(widget.getText().split("<br>"))
