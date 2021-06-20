@@ -44,6 +44,7 @@ public class CrowdsourcingDialogue
 	@Inject
 	private CrowdsourcingManager manager;
 
+	private boolean inDialogue = false;
 	private String lastNpcDialogueText = null;
 	private String lastPlayerDialogueText = null;
 	private Widget[] dialogueOptions;
@@ -58,6 +59,24 @@ public class CrowdsourcingDialogue
 	public void onGameTick(GameTick tick)
 	{
 		Widget npcDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		Widget playerDialogueTextWidget = client.getWidget(WidgetID.DIALOG_PLAYER_GROUP_ID, 5);
+		Widget playerDialogueOptionsWidget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
+
+		// If we were not in a conversation, but now one of these widgets is not null
+		if (!inDialogue && (npcDialogueTextWidget != null || playerDialogueTextWidget != null || playerDialogueOptionsWidget != null))
+		{
+			inDialogue = true;
+			manager.storeEvent(new StartEndData(true));
+		}
+		// If we were in a conversation, but now there is no widget, we have left the conversation.
+		else if (inDialogue && npcDialogueTextWidget == null && playerDialogueTextWidget == null
+			&& playerDialogueOptionsWidget == null)
+		{
+
+			inDialogue = false;
+			manager.storeEvent(new StartEndData(false));
+		}
+
 		if (npcDialogueTextWidget != null && !npcDialogueTextWidget.getText().equals(lastNpcDialogueText))
 		{
 			lastNpcDialogueText = npcDialogueTextWidget.getText();
@@ -66,7 +85,6 @@ public class CrowdsourcingDialogue
 			manager.storeEvent(data);
 		}
 
-		Widget playerDialogueTextWidget = client.getWidget(WidgetID.DIALOG_PLAYER_GROUP_ID, 4);
 		if (playerDialogueTextWidget != null && !playerDialogueTextWidget.getText().equals(lastPlayerDialogueText))
 		{
 			lastPlayerDialogueText = playerDialogueTextWidget.getText();
@@ -74,7 +92,6 @@ public class CrowdsourcingDialogue
 			manager.storeEvent(data);
 		}
 
-		Widget playerDialogueOptionsWidget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
 		if (playerDialogueOptionsWidget != null && playerDialogueOptionsWidget.getChildren() != dialogueOptions)
 		{
 			dialogueOptions = playerDialogueOptionsWidget.getChildren();
