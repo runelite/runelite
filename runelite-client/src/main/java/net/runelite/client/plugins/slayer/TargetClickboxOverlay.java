@@ -63,7 +63,7 @@ public class TargetClickboxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.highlightTargets() == SlayerTaskHighlightMode.NONE)
+		if (!config.highlightTargetTiles() && !config.highlightTargets() && !config.highlightSouthWestTiles())
 		{
 			return null;
 		}
@@ -71,13 +71,18 @@ public class TargetClickboxOverlay extends Overlay
 		List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{
-			if (config.highlightTargets() == SlayerTaskHighlightMode.HULL)
+			if (config.highlightTargets())
 			{
 				renderTargetOverlay(graphics, target, config.getTargetColor());
 			}
-			else
+
+			if (config.highlightTargetTiles())
 			{
 				renderTargetTiles(graphics, target, config.getTargetColor());
+			}
+
+			if (config.highlightSouthWestTiles()){
+				renderSouthWestTile(graphics, target, config.getTargetColor(), target.getComposition().getSize());
 			}
 		}
 
@@ -106,6 +111,17 @@ public class TargetClickboxOverlay extends Overlay
 				renderPoly(graphics, tilePoly, color);
 			}
 		}
+	}
+
+	private void renderSouthWestTile(Graphics2D graphics, NPC actor, Color color, int size){
+		LocalPoint lp = actor.getLocalLocation();
+
+		int x = lp.getX() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
+		int y = lp.getY() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
+
+		Polygon southWestTilePoly = Perspective.getCanvasTilePoly(client, new LocalPoint(x, y));
+
+		renderPoly(graphics, southWestTilePoly, color);
 	}
 
 	private void renderPoly(Graphics2D graphics, Shape shape, Color color)

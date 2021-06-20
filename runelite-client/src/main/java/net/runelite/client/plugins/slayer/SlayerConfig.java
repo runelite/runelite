@@ -30,6 +30,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 
 @ConfigGroup(SlayerConfig.GROUP_NAME)
@@ -92,29 +93,6 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "highlightTargets",
-		name = "Highlight Targets",
-		description = "Highlight the hull or tiles of monsters you can kill for your current slayer assignment"
-	)
-	default SlayerTaskHighlightMode highlightTargets()
-	{
-		return SlayerTaskHighlightMode.NONE;
-	}
-
-	@Alpha
-	@ConfigItem(
-		position = 6,
-		keyName = "targetColor",
-		name = "Target Color",
-		description = "Color of the highlighted targets"
-	)
-	default Color getTargetColor()
-	{
-		return Color.RED;
-	}
-
-	@ConfigItem(
-		position = 7,
 		keyName = "weaknessPrompt",
 		name = "Show Monster Weakness",
 		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)"
@@ -125,7 +103,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 6,
 		keyName = "taskCommand",
 		name = "Task Command",
 		description = "Configures whether the slayer task command is enabled<br> !task"
@@ -134,4 +112,61 @@ public interface SlayerConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigSection(
+		name = "Highlighting",
+		description = "Highlight your current slayer target",
+		position = 7
+	)
+	String highlightSection = "highlightSection";
+
+	@ConfigItem(
+		position = 8,
+		keyName = "highlightTargets",
+		name = "Highlight Target Hulls",
+		description = "Highlight the hull of monsters you can kill for your current slayer assignment",
+		section = highlightSection
+	)
+	default boolean highlightTargets()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "highlightTiles",
+		name = "Highlight Target Tiles",
+		description = "Highlight the tile of monsters you can kill for your current slayer assignment",
+		section = highlightSection
+	)
+	default boolean highlightTargetTiles()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "highlightSouthWestTiles",
+		name = "Highlight Target south west Tiles",
+		description = "Highlight the south west tile of monsters you can kill for your current slayer assignment",
+		section = highlightSection
+	)
+	default boolean highlightSouthWestTiles()
+	{
+		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 11,
+		keyName = "targetColor",
+		name = "Target Color",
+		description = "Color of the highlighted targets",
+		section = highlightSection
+	)
+	default Color getTargetColor()
+	{
+		return Color.RED;
+	}
+
 }
