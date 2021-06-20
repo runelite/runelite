@@ -97,6 +97,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Inject
 	private ChatIconManager chatIconManager;
 
+	private List<String> tobTeamMembers = Collections.emptyList();
+
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -121,7 +123,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick) {
-		playerIndicatorsService.setTobTeamMembers(getTobTeamMembers());
+		tobTeamMembers = getTobTeamMembers();
+		playerIndicatorsService.setTobTeamMembers(tobTeamMembers);
 	}
 
 	private List<String> getTobTeamMembers()
@@ -248,7 +251,12 @@ public class PlayerIndicatorsPlugin extends Plugin
 				}
 			}
 		}
-		else if (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam() && config.highlightTeamMembers())
+		else if (
+			config.highlightTeamMembers()
+			&& (
+				tobTeamMembers.contains(player.getName())
+				|| (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam())
+			))
 		{
 			color = config.getTeamMemberColor();
 		}
