@@ -390,7 +390,7 @@ public class ShootingStars extends Plugin
 		{
 			WorldMapPoint mapPoint = WorldMapPoint.builder()
 				.worldPoint(crashSite.getLocation())
-				.tooltip("Shooting Star")
+				.name("Landing site")
 				.image(worldMapImage)
 				.jumpOnClick(true)
 				.snapToEdge(true)
