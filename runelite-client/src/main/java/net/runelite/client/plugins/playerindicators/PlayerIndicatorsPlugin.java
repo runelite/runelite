@@ -122,7 +122,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick) {
+	public void onGameTick(GameTick gameTick)
+	{
 		tobTeamMembers = getTobTeamMembers();
 		playerIndicatorsService.setTobTeamMembers(tobTeamMembers);
 	}
@@ -130,7 +131,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private List<String> getTobTeamMembers()
 	{
 		int tobVar = client.getVar(Varbits.THEATRE_OF_BLOOD);
-		if (tobVar == 1) { // in party, outside of tob.
+		if (tobVar == 1)
+		{ // in party, outside of tob.
 			Widget widget = client.getWidget(WidgetInfo.TOB_PARTY_MEMBERS);
 			if (widget != null)
 			{
@@ -138,7 +140,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 					.filter(name -> !name.equals("-"))
 					.collect(Collectors.toList());
 			}
-		} else if (tobVar > 1) { // inside tob.
+		}
+		else if (tobVar > 1)
+		{ // inside tob.
 			// These vars contain garbage or misleading values when not inside a ToB instance, so only read them when
 			// you're in tob.
 			List<String> team = new ArrayList<>();
