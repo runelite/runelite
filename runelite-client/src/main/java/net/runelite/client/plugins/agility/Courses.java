@@ -32,7 +32,7 @@ import net.runelite.api.coords.WorldPoint;
 enum Courses
 {
 	GNOME(86.5, 46, 9781),
-	SHAYZIEN_BASIC(133, 92, 6200),
+	SHAYZIEN_BASIC(133.2, 92, 6200),
 	DRAYNOR(120.0, 79, 12338),
 	AL_KHARID(180.0, 0, 13105, new WorldPoint(3299, 3194, 0)),
 	PYRAMID(722.0, 0, 13356, new WorldPoint(3364, 2830, 0)),
