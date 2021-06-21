@@ -181,10 +181,22 @@
       "xp": 22.5
     },
     {
+      "level": 35,
+      "sprite": 1267,
+      "name": "Ghostly Grasp",
+      "xp": 22.5
+    },
+    {
       "level": 37,
       "sprite": 33,
       "name": "Falador Teleport",
       "xp": 48
+    },
+    {
+      "level": 38,
+      "sprite": 1270,
+      "name": "Resurrect Lesser Thrall",
+      "xp": 55
     },
     {
       "level": 39,
@@ -223,6 +235,12 @@
       "xp": 53
     },
     {
+      "level": 44,
+      "sprite": 1302,
+      "name": "Inferior Demonbane",
+      "xp": 27
+    },
+    {
       "level": 45,
       "sprite": 37,
       "name": "Camelot Teleport",
@@ -233,6 +251,12 @@
       "sprite": 38,
       "name": "Water Blast",
       "xp": 28.5
+    },
+    {
+      "level": 47,
+      "sprite": 1315,
+      "name": "Shadow Veil",
+      "xp": 58
     },
     {
       "level": 48,
@@ -274,6 +298,12 @@
       "level": 50,
       "sprite": 320,
       "name": "Snare",
+      "xp": 60
+    },
+    {
+      "level": 50,
+      "sprite": 1316,
+      "name": "Dark Lure",
       "xp": 60
     },
     {
@@ -319,6 +349,12 @@
       "xp": 33
     },
     {
+      "level": 56,
+      "sprite": 1268,
+      "name": "Skeletal Grasp",
+      "xp": 33
+    },
+    {
       "level": 57,
       "sprite": 358,
       "name": "Enchant Diamond Bolt",
@@ -329,6 +365,12 @@
       "sprite": 43,
       "name": "Enchant Diamond Jewellery",
       "xp": 67
+    },
+    {
+      "level": 57,
+      "sprite": 2981,
+      "name": "Resurrect Superior Thrall",
+      "xp": 70
     },
     {
       "level": 58,
@@ -347,6 +389,12 @@
       "sprite": 44,
       "name": "Fire Blast",
       "xp": 34.5
+    },
+    {
+      "level": 59,
+      "sprite": 1305,
+      "name": "Mark of Darkness",
+      "xp": 70
     },
     {
       "level": 60,
@@ -409,6 +457,12 @@
       "xp": 36
     },
     {
+      "level": 62,
+      "sprite": 1303,
+      "name": "Superior Demonbane",
+      "xp": 36
+    },
+    {
       "level": 63,
       "sprite": 47,
       "name": "Charge Fire Orb",
@@ -425,6 +479,12 @@
       "sprite": 357,
       "name": "Teleport Ape Atoll",
       "xp": 74
+    },
+    {
+      "level": 64,
+      "sprite": 1307,
+      "name": "Lesser Corruption",
+      "xp": 75
     },
     {
       "level": 65,
@@ -479,6 +539,12 @@
       "sprite": 577,
       "name": "Monster Examine",
       "xp": 61
+    },
+    {
+      "level": 66,
+      "sprite": 1317,
+      "name": "Vile Vigour",
+      "xp": 76
     },
     {
       "level": 67,
@@ -541,6 +607,12 @@
       "xp": 67
     },
     {
+      "level": 70,
+      "sprite": 1318,
+      "name": "Degrime",
+      "xp": 83
+    },
+    {
       "level": 71, 
       "sprite": 586,
       "name": "Ourania Teleport",
@@ -592,6 +664,12 @@
       "level": 73,
       "sprite": 57,
       "name": "Enfeeble",
+      "xp": 83
+    },
+    {
+      "level": 73,
+      "sprite": 1306,
+      "name": "Ward of Arceuus",
       "xp": 83
     },
     {
@@ -649,6 +727,12 @@
       "xp": 75
     },
     {
+      "level": 76,
+      "sprite": 2984,
+      "name": "Resurrect Greater Thrall",
+      "xp": 88
+    },
+    {
       "level": 77,
       "sprite": 548,
       "name": "Superglass Make",
@@ -697,6 +781,12 @@
       "xp": 82
     },
     {
+      "level": 79,
+      "sprite": 1269,
+      "name": "Undead Grasp",
+      "xp": 46.5
+    },
+    {
       "level": 80,
       "sprite": 322,
       "name": "Charge",
@@ -719,6 +809,12 @@
       "sprite": 550,
       "name": "String Jewellery",
       "xp": 83
+    },
+    {
+      "level": 80,
+      "sprite": 1310,
+      "name": "Death Charge",
+      "xp": 90
     },
     {
       "level": 81,
@@ -751,6 +847,12 @@
       "xp": 46
     },
     {
+      "level": 82,
+      "sprite": 1304,
+      "name": "Dark Demonbane",
+      "xp": 43.5
+    },
+    {
       "level": 83,
       "sprite": 553,
       "name": "Fertile Soil",
@@ -775,6 +877,12 @@
       "xp": 88
     },
     {
+      "level": 84,
+      "sprite": 1311,
+      "name": "Demonic Offering",
+      "xp": 175
+    },
+    {
       "level": 85,
       "sprite": 363,
       "name": "Water Surge",
@@ -797,6 +905,12 @@
       "sprite": 359,
       "name": "Teleport To Bounty Target",
       "xp": 45
+    },
+    {
+      "level": 85,
+      "sprite": 1308,
+      "name": "Greater Corruption",
+      "xp": 95
     },
     {
       "level": 86,
@@ -911,6 +1025,12 @@
       "sprite": 560,
       "name": "Heal Other",
       "xp": 101
+    },
+    {
+      "level": 92,
+      "sprite": 1312,
+      "name": "Sinister Offering",
+      "xp": 180
     },
     {
       "level": 93,

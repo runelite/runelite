@@ -170,6 +170,41 @@
     },
     {
       "level": 1,
+      "icon": 25766,
+      "name": "Fiendish Ashes",
+      "xp": 10,
+      "ignoreBonus": true
+    },
+    {
+      "level": 1,
+      "icon": 25769,
+      "name": "Vile Ashes",
+      "xp": 25,
+      "ignoreBonus": true
+    },
+    {
+      "level": 1,
+      "icon": 25772,
+      "name": "Malicious Ashes",
+      "xp": 65,
+      "ignoreBonus": true
+    },
+    {
+      "level": 1,
+      "icon": 25775,
+      "name": "Abyssal Ashes",
+      "xp": 85,
+      "ignoreBonus": true
+    },
+    {
+      "level": 1,
+      "icon": 25778,
+      "name": "Infernal Ashes",
+      "xp": 110,
+      "ignoreBonus": true
+    },
+    {
+      "level": 1,
       "icon": 526,
       "name": "Bones",
       "xp": 4.5
