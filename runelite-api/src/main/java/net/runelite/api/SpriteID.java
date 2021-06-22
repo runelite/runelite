@@ -313,7 +313,7 @@ public final class SpriteID
 	public static final int COMBAT_STYLE_BUTTON_THIN = 295;
 	public static final int COMBAT_STYLE_BUTTON_THIN_SELECTED = 296;
 	public static final int DIALOG_BACKGROUND = 297;
-	public static final int RS2_HITSPLAT_BLUE_NO_DAMAGE = 298;
+	/* Unmapped: 298 */
 	public static final int RS2_YELLOW_CLICK_ANIMATION_1 = 299;
 	public static final int RS2_MINIMAP_MARKER_RED_ITEM = 300;
 	public static final int RS2_SWORD_POINTED_LEFT = 301;
@@ -1229,7 +1229,7 @@ public final class SpriteID
 	public static final int SPELL_SHADOW_VEIL_DISABLED = 1334;
 	/* Unmapped: 1335~1337 */
 	public static final int WORLD_SWITCHER_WORLD_STAR_BLUE = 1338;
-	public static final int HITSPLAT_DARK_GREEN_VENOM = 1339;
+	/* Unmapped: 1339 */
 	public static final int FAIRY_RING_REMOVE_FAVOURITE = 1340;
 	public static final int FAIRY_RING_ADD_FAVOURITE = 1341;
 	public static final int BANK_PLACEHOLDERS_LOCK = 1342;
@@ -1248,12 +1248,9 @@ public final class SpriteID
 	public static final int EMOTE_SMOOTH_DANCE_LOCKED = 1355;
 	public static final int EMOTE_CRAZY_DANCE_LOCKED = 1356;
 	public static final int EMOTE_PREMIER_SHIELD_LOCKED = 1357;
-	public static final int HITSPLAT_BLUE_NO_DAMAGE = 1358;
-	public static final int HITSPLAT_RED_DAMAGE = 1359;
+	/* Unmapped: 1358~1359 */
 	public static final int HITSPLAT_GREEN_POISON = 1360;
-	public static final int HITSPLAT_ORANGE = 1361;
-	public static final int HITSPLAT_ORANGE_DISEASE = 1362;
-	public static final int HITSPLAT_GREY = 1363;
+	/* Unmapped: 1361~1363 */
 	public static final int BOUNTY_HUNTER_SKIP_TARGET = 1364;
 	public static final int BOUNTY_HUNTER_SKIP_TARGET_HOVERED = 1365;
 	public static final int HOUSE_VIEWER_ROTATE_CLOCKWISE = 1366;
@@ -1307,7 +1304,7 @@ public final class SpriteID
 	public static final int UNKNOWN_BLUE_BAR = 1416;
 	public static final int UNKNOWN_YELLOW_BAR = 1417;
 	public static final int UNKNOWN_RED_BAR = 1418;
-	public static final int HITSPLAT_MAGENTA_ENEMY_HEALING = 1419;
+	/* Unmapped: 1419 */
 	public static final int PRAYER_RIGOUR = 1420;
 	public static final int PRAYER_AUGURY = 1421;
 	/* Unmapped: 1422, 1423 */
@@ -1500,6 +1497,9 @@ public final class SpriteID
 	public static final int MOBILE_FUNCTION_MODE_DISABLED = 1624;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_1 = 1625;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_2 = 1626;
+	/* Unmapped: 1627~1631 */
+	public static final int HITSPLAT_DARK_GREEN_VENOM = 1632;
+	/* Unmapped: 1633~1652 */
 	public static final int MOBILE_FINGER_ON_INTERFACE = 1653;
 	/* Unmapped: 1627~1701 */
 	public static final int BUTTON_FRIENDS = 1702;
