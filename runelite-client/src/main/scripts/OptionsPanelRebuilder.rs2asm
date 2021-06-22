@@ -12,19 +12,19 @@
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551308
+   iconst                 10551313
    enum                  
    istore                 3
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551302
+   iconst                 10551305
    enum                  
    istore                 4
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551310
+   iconst                 10551315
    enum                  
    istore                 5
    iconst                 103
@@ -76,14 +76,14 @@
 LABEL70:
    iconst                 0
    iload                  16
-   iconst                 39387150
+   iconst                 39387155
    if_getwidth           
    sub                   
    invoke                 1045
    istore                 14
    iconst                 0
    iload                  17
-   iconst                 39387150
+   iconst                 39387155
    if_getheight          
    sub                   
    invoke                 1045
@@ -279,7 +279,7 @@ LABEL189:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551309
+   iconst                 10551314
    enum                  
    iload                  5
    iload                  8
@@ -291,7 +291,7 @@ LABEL268:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551309
+   iconst                 10551314
    enum                  
    iload                  3
    iconst                 0
@@ -417,7 +417,7 @@ LABEL342:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551309
+   iconst                 10551314
    enum                  
    iload                  5
    iload                  8
@@ -429,7 +429,7 @@ LABEL385:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551309
+   iconst                 10551314
    enum                  
    iload                  3
    iconst                 0
@@ -439,7 +439,7 @@ LABEL395:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551311
+   iconst                 10551316
    enum                  
    istore                 18
    iload                  18
@@ -503,7 +503,7 @@ LABEL449:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551313
+   iconst                 10551318
    enum                  
    istore                 18
    iconst                 0
@@ -518,7 +518,7 @@ LABEL463:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551304
+   iconst                 10551307
    enum                  
    if_hassub             
    iconst                 1
@@ -578,7 +578,7 @@ LABEL511:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551304
+   iconst                 10551307
    enum                  
    istore                 18
    iconst                 0

@@ -20,11 +20,11 @@
       1131: LABEL9
    jump                   LABEL204
 LABEL9:
-   iconst                 10747939
+   iconst                 10747944
    if_getwidth           
    iconst                 33
    sub                   
-   iconst                 10747939
+   iconst                 10747944
    if_getheight          
    istore                 3
    istore                 2
@@ -33,7 +33,7 @@ LABEL9:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551328
+   iconst                 10551333
    enum                  
    if_getwidth           
    sub                   
@@ -48,7 +48,7 @@ LABEL9:
 LABEL29:
    iconst                 0
    iload                  3
-   iconst                 10747954
+   iconst                 10747959
    if_getheight          
    add                   
    iconst                 2
@@ -56,14 +56,14 @@ LABEL29:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10747971
+   iconst                 10747976
    enum                  
    if_setposition        
    iconst                 0
    iload                  3
    iconst                 2
    iconst                 2
-   iconst                 10747954
+   iconst                 10747959
    if_setposition        
    jump                   LABEL65
 LABEL49:
@@ -74,14 +74,14 @@ LABEL49:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10747971
+   iconst                 10747976
    enum                  
    if_setposition        
    iload                  2
    iconst                 0
    iconst                 2
    iconst                 2
-   iconst                 10747954
+   iconst                 10747959
    if_setposition        
 LABEL65:
    get_varbit             4084
@@ -93,7 +93,7 @@ LABEL69:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
    jump                   LABEL84
@@ -102,7 +102,7 @@ LABEL77:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
 LABEL84:
@@ -119,7 +119,7 @@ LABEL91:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
    jump                   LABEL106
@@ -128,7 +128,7 @@ LABEL99:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
 LABEL106:
@@ -145,7 +145,7 @@ LABEL113:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
    jump                   LABEL128
@@ -154,7 +154,7 @@ LABEL121:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
 LABEL128:
@@ -169,15 +169,15 @@ LABEL129:
    jump                   LABEL140
 LABEL136:
    iconst                 1
-   iconst                 39387169
+   iconst                 39387175
    if_sethide            
    jump                   LABEL195
 LABEL140:
    iconst                 0
-   iconst                 39387169
+   iconst                 39387175
    if_sethide            
    iconst                 1
-   iconst                 39387169
+   iconst                 39387175
    2308                  
    get_varbit             6255
    switch                
@@ -187,38 +187,38 @@ LABEL140:
    jump                   LABEL173
 LABEL149:
    iconst                 1718
-   iconst                 39387171
+   iconst                 39387177
    if_setgraphic         
    iconst                 1
    sconst                 "Toggle single-tap mode"
-   iconst                 39387169
+   iconst                 39387175
    if_setop              
    jump                   LABEL180
 LABEL157:
    iconst                 1717
-   iconst                 39387171
+   iconst                 39387177
    if_setgraphic         
    iconst                 1
    sconst                 "Toggle tap-to-drop mode"
-   iconst                 39387169
+   iconst                 39387175
    if_setop              
    jump                   LABEL180
 LABEL165:
    iconst                 1716
-   iconst                 39387171
+   iconst                 39387177
    if_setgraphic         
    iconst                 1
    sconst                 "Show Keyboard"
-   iconst                 39387169
+   iconst                 39387175
    if_setop              
    jump                   LABEL180
 LABEL173:
    iconst                 1715
-   iconst                 39387171
+   iconst                 39387177
    if_setgraphic         
    iconst                 1
    sconst                 ""
-   iconst                 39387169
+   iconst                 39387175
    if_setop              
 LABEL180:
    get_varbit             6255
@@ -232,18 +232,18 @@ LABEL184:
    jump                   LABEL192
 LABEL188:
    iconst                 155
-   iconst                 39387171
+   iconst                 39387177
    if_settrans           
    jump                   LABEL195
 LABEL192:
    iconst                 0
-   iconst                 39387171
+   iconst                 39387177
    if_settrans           
 LABEL195:
    invoke                 2581
    get_varbit             6254
    invoke                 633
-   iconst                 39387160
+   iconst                 39387166
    if_sethide            
    invoke                 2526
    pop_int               
