@@ -139,7 +139,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				return Arrays.stream(widget.getText().split("<br>"))
 					.filter(name -> !name.equals("-"))
-					.map(Text::toJagexName)
+					.map(Text::sanitize)
 					.collect(Collectors.toList());
 			}
 		}
@@ -153,7 +153,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			team.add(client.getVar(VarClientStr.TOB_TEAM_MEMBER_NAME_3));
 			team.add(client.getVar(VarClientStr.TOB_TEAM_MEMBER_NAME_4));
 			team.add(client.getVar(VarClientStr.TOB_TEAM_MEMBER_NAME_5));
-			team = team.stream().map(Text::toJagexName).filter(name -> !name.isEmpty()).collect(Collectors.toList());
+			team = team.stream().map(Text::sanitize).filter(name -> !name.isEmpty()).collect(Collectors.toList());
 			return team;
 		}
 		return Collections.emptyList();
