@@ -45,8 +45,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.junit.Before;
@@ -94,36 +92,6 @@ public class ClueScrollPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-	}
-
-	@Test
-	public void getGetMirrorPoint()
-	{
-		WorldPoint point, converted;
-
-		// Zalcano's entrance portal
-		point = new WorldPoint(3282, 6058, 0);
-		converted = ClueScrollPlugin.getMirrorPoint(point, true);
-		assertNotEquals(point, converted);
-
-		// Elven Crystal Chest, which is upstairs
-		point = new WorldPoint(3273, 6082, 2);
-		converted = ClueScrollPlugin.getMirrorPoint(point, true);
-		assertNotEquals(point, converted);
-
-		// Around the area of the Elite coordinate clue
-		point = new WorldPoint(2185, 3280, 0);
-		// To overworld
-		converted = ClueScrollPlugin.getMirrorPoint(point, true);
-		assertEquals(point, converted);
-		// To real
-		converted = ClueScrollPlugin.getMirrorPoint(point, false);
-		assertNotEquals(point, converted);
-
-		// Brugsen Bursen, Grand Exchange
-		point = new WorldPoint(3165, 3477, 0);
-		converted = ClueScrollPlugin.getMirrorPoint(point, false);
-		assertEquals(point, converted);
 	}
 
 	@Test
