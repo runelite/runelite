@@ -184,11 +184,23 @@ public class WidgetID
 		static final int TOP_BAR = 12;
 	}
 
+	static class DialogOption
+	{
+		static final int OPTIONS = 1;
+	}
+
 	static class DialogNPC
 	{
 		static final int HEAD_MODEL = 6;
 		static final int NAME = 3;
 		static final int TEXT = 5;
+	}
+
+	static class DialogPlayer
+	{
+		static final int NAME = 3;
+		static final int TEXT = 5;
+		static final int HEAD_MODEL = 6;
 	}
 
 	static class LogoutPanel
