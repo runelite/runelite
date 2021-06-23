@@ -25,9 +25,12 @@
 package net.runelite.client.plugins.playerindicators;
 
 import java.awt.Color;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.BiConsumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.FriendsChatManager;
 import net.runelite.api.FriendsChatMember;
@@ -46,6 +49,9 @@ public class PlayerIndicatorsService
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
 
+	@Setter
+	private List<String> tobTeamMembers = Collections.emptyList();
+
 	@Inject
 	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
 	{
@@ -57,7 +63,7 @@ public class PlayerIndicatorsService
 	{
 		if (!config.highlightOwnPlayer() && !config.highlightFriendsChat()
 			&& !config.highlightFriends() && !config.highlightOthers()
-			&& !config.highlightClanMembers())
+			&& !config.highlightTeamMembers() && !config.highlightClanMembers())
 		{
 			return;
 		}
@@ -89,7 +95,12 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.getFriendsChatMemberColor());
 			}
-			else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+			else if (
+				config.highlightTeamMembers()
+				&& (
+					tobTeamMembers.contains(player.getName())
+					|| (localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+				))
 			{
 				consumer.accept(player, config.getTeamMemberColor());
 			}
