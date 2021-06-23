@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -140,6 +141,8 @@ public class ShootingStars extends Plugin
 
 	@Getter
 	private final List<PossibleCrashSite> possibleSites = new ArrayList<>();
+
+	private final List<ScoutedStar> scouts = new ArrayList<>();
 
 	private BufferedImage worldMapImage;
 
@@ -301,10 +304,36 @@ public class ShootingStars extends Plugin
 		setupPossibleCrashSites(region);
 
 		String chatMessage = new ChatMessageBuilder()
-			.append("A new shooting star has been scouted, it'll land at ")
+			.append("A new shooting star has been scouted in this world, it'll land at ")
 			.append(Color.CYAN, region.getShortName())
 			.append(" in approximately ")
 			.append(Color.CYAN, DurationFormatUtils.formatDurationWords(event.getOffset().toMillis(), true, true))
+			.append(".")
+			.build();
+
+		QueuedMessage queuedMessage = QueuedMessage.builder()
+			.type(ChatMessageType.GAMEMESSAGE)
+			.runeLiteFormattedMessage(chatMessage)
+			.build();
+
+		chatMessageManager.queue(queuedMessage);
+	}
+
+	private void setupScoutedStar(ScoutedStar scoutedStar) {
+		StarRegion region = scoutedStar.getRegion();
+		setupPossibleCrashSites(region);
+
+		LocalDateTime now = LocalDateTime.now();
+		Duration earliest = Duration.between(now, scoutedStar.getEarliestTime());
+		Duration latest = Duration.between(now, scoutedStar.getLatestTime());
+
+		String chatMessage = new ChatMessageBuilder()
+			.append("A shooting star has been scouted in this world, it'll land at ")
+			.append(Color.CYAN, region.getShortName())
+			.append(" in approximately ")
+			.append(Color.CYAN, DurationFormatUtils.formatDurationWords(earliest.toMillis(), true, true))
+			.append(" to ")
+			.append(Color.CYAN, DurationFormatUtils.formatDurationWords(latest.toMillis(), true, true))
 			.append(".")
 			.build();
 
