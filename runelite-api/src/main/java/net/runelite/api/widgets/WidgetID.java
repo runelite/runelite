@@ -635,6 +635,7 @@ public class WidgetID
 	static class Tob
 	{
 		static final int PARTY_STATS = 7;
+		static final int PARTY_MEMBER_LIST_LOBBY = 12;
 	}
 
 	static class PuzzleBox
