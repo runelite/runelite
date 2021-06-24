@@ -50,6 +50,16 @@ public interface GroundMarkerConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "fillTiles",
+			name = "Fill tiles",
+			description = "Fill the tile with the selected color instead of just outlining"
+	)
+	default boolean fillTiles()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "rememberTileColors",
 		name = "Remember color per tile",
 		description = "Color tiles using the color from time of placement"
