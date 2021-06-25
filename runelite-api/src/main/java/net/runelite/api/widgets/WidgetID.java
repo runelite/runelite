@@ -89,7 +89,7 @@ public class WidgetID
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;
 	public static final int BARROWS_REWARD_GROUP_ID = 155;
 	public static final int RAIDS_GROUP_ID = 513;
-	public static final int TOB_PARTY_GROUP_ID = 28;
+	public static final int TOB_GROUP_ID = 28;
 	public static final int MOTHERLODE_MINE_GROUP_ID = 382;
 	public static final int EXPERIENCE_DROP_GROUP_ID = 122;
 	public static final int PUZZLE_BOX_GROUP_ID = 306;
@@ -211,6 +211,9 @@ public class WidgetID
 
 	static class PestControl
 	{
+		static final int KNIGHT_INFO_CONTAINER = 2;
+
+		static final int ACTIVITY_SHIELD_CONTAINER = 9;
 		static final int ACTIVITY_BAR = 10;
 		static final int ACTIVITY_PROGRESS = 12;
 
@@ -582,6 +585,7 @@ public class WidgetID
 
 	static class VolcanicMine
 	{
+		static final int STABILITY_INFOBOX_CONTAINER = 2;
 		static final int TIME_LEFT = 6;
 		static final int POINTS = 8;
 		static final int STABILITY = 10;
@@ -592,6 +596,7 @@ public class WidgetID
 		static final int VENT_A_STATUS = 20;
 		static final int VENT_B_STATUS = 21;
 		static final int VENT_C_STATUS = 22;
+		static final int VENTS_INFOBOX_CONTAINER = 26;
 	}
 
 	static class BarbarianAssault
@@ -634,7 +639,9 @@ public class WidgetID
 
 	static class Tob
 	{
+		static final int PARTY_INTERFACE = 5;
 		static final int PARTY_STATS = 7;
+		static final int HEALTHBAR_CONTAINER = 9;
 	}
 
 	static class PuzzleBox
@@ -765,7 +772,7 @@ public class WidgetID
 		static final int KILLDEATH_RATIO = 26;
 		static final int SKULL_CONTAINER = 45;
 		static final int SAFE_ZONE = 47;
-		static final int WILDERNESS_LEVEL = 49; // this can also be the Deadman Mode "Protection" text
+		static final int WILDERNESS_LEVEL = 50; // this can also be the Deadman Mode "Protection" text
 	}
 
 	static class KourendFavour
@@ -860,7 +867,7 @@ public class WidgetID
 
 	static class LmsKDA
 	{
-		static final int INFO = 7;
+		static final int INFO = 4;
 	}
 
 	static class AdventureLog
@@ -895,7 +902,7 @@ public class WidgetID
 
 	static class TemporossStatus
 	{
-		static final int STATUS_INDICATOR = 4;
+		static final int STATUS_INDICATOR = 2;
 	}
 
 	static class Clan
