@@ -503,7 +503,7 @@ public class TimersPluginTest
 	public void testThrall()
 	{
 		when(timersConfig.showArceuus()).thenReturn(true);
-		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(50);
+		when(client.getBoostedSkillLevel(Skill.MAGIC)).thenReturn(60);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef0083>You resurrect a greater zombified thrall.</col>", "", 0);
 		timersPlugin.onChatMessage(chatMessage);
@@ -512,6 +512,7 @@ public class TimersPluginTest
 		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
 		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
 		assertEquals(GameTimer.RESURRECT_THRALL, infoBox.getTimer());
+		assertEquals(Duration.of(60, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
