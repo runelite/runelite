@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2021, Pristit <https://github.com/pristit>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.skillcalculator.beans;
 
-package net.runelite.client.plugins.skillcalculator;
+import lombok.Getter;
 
-import java.awt.image.BufferedImage;
-import javax.inject.Inject;
-import com.google.inject.Provider;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.util.ImageUtil;
-
-@PluginDescriptor(
-	name = "Skill Calculator",
-	description = "Enable the Skill Calculator panel",
-	tags = {"panel", "skilling"}
-)
-public class SkillCalculatorPlugin extends Plugin
+@Getter
+public class Material
 {
-	@Inject
-	private ClientToolbar clientToolbar;
-
-	@Inject
-	private Provider<SkillCalculatorPanel> uiPanel;
-
-	private NavigationButton uiNavigationButton;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
-
-		uiNavigationButton = NavigationButton.builder()
-			.tooltip("Skill Calculator")
-			.icon(icon)
-			.priority(6)
-			.panel(uiPanel.get())
-			.build();
-
-		clientToolbar.addNavigation(uiNavigationButton);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		clientToolbar.removeNavigation(uiNavigationButton);
-	}
+	private int id;
+	private String name;
+	private int amount;
 }

@@ -31,13 +31,16 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.skillcalculator.beans.Material;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
+import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 
 class CacheSkillData
 {
 	private final Map<String, SkillData> cache = new HashMap<>();
 
-	SkillData getSkillData(String dataFile)
+	SkillData getSkillData(String dataFile, ItemManager itemManager)
 	{
 		if (cache.containsKey(dataFile))
 		{
@@ -47,6 +50,20 @@ class CacheSkillData
 		try (InputStream skillDataFile = SkillCalculatorPlugin.class.getResourceAsStream(dataFile))
 		{
 			SkillData skillData = new Gson().fromJson(new InputStreamReader(skillDataFile, StandardCharsets.UTF_8), SkillData.class);
+
+			for (SkillDataEntry action : skillData.getActions())
+			{
+				if (action.getMaterials() == null)
+				{
+					continue;
+				}
+				int cost = 0;
+				for (Material material : action.getMaterials())
+				{
+					cost += itemManager.getCanonicalItemPrice(material.getId()) * material.getAmount();
+				}
+				action.setCost(cost);
+			}
 
 			cache.put(dataFile, skillData);
 			return skillData;

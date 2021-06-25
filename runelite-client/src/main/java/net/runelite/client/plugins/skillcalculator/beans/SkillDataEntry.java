@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.skillcalculator.beans;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class SkillDataEntry
@@ -35,4 +36,7 @@ public class SkillDataEntry
 	private Integer icon;
 	private Integer sprite;
 	private boolean ignoreBonus;
+	private Material[] materials;
+	@Setter
+	private int cost;
 }

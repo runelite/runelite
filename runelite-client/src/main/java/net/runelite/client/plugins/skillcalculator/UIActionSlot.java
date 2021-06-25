@@ -33,6 +33,8 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,6 +44,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -66,6 +69,11 @@ class UIActionSlot extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillDataEntry action;
 	private final JShadowedLabel uiLabelActions;
+
+	@Accessors(fluent = true)
+	@Getter(AccessLevel.PACKAGE)
+	private final boolean hasCosts;
+	private JShadowedLabel uiLabelCosts;
 
 	private final JPanel uiInfo;
 
@@ -117,7 +125,11 @@ class UIActionSlot extends JPanel
 		uiIcon.setPreferredSize(ICON_SIZE);
 		uiIcon.setHorizontalAlignment(JLabel.CENTER);
 
-		uiInfo = new JPanel(new GridLayout(2, 1));
+		hasCosts = action.getMaterials() != null;
+
+		int lines = hasCosts ? 3 : 2;
+
+		uiInfo = new JPanel(new GridLayout(lines, 1));
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 
@@ -130,6 +142,24 @@ class UIActionSlot extends JPanel
 
 		uiInfo.add(uiLabelName);
 		uiInfo.add(uiLabelActions);
+
+		if (hasCosts)
+		{
+			uiLabelCosts = new JShadowedLabel("Unknown");
+			uiLabelCosts.setFont(FontManager.getRunescapeSmallFont());
+			uiLabelCosts.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+
+			uiInfo.add(uiLabelCosts);
+
+			String tooltip = "<html>" +
+				Arrays.stream(action.getMaterials())
+					.map(m -> m.getAmount() + "x " + m.getName())
+					.collect(Collectors.joining("<br>")
+					) +
+				"</html>";
+
+			setToolTipText(tooltip);
+		}
 
 		add(uiIcon, BorderLayout.LINE_START);
 		add(uiInfo, BorderLayout.CENTER);
@@ -156,6 +186,11 @@ class UIActionSlot extends JPanel
 	void setText(String text)
 	{
 		uiLabelActions.setText(text);
+	}
+
+	void setCosts(String text)
+	{
+		uiLabelCosts.setText(text);
 	}
 
 	private void updateBackground()
