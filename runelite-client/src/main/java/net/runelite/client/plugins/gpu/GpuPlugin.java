@@ -328,6 +328,24 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				invokeOnMainThread(() ->
 				{
+					try
+					{
+						// Get and display the device and driver used by the GPU plugin
+						GLDrawable dummyDrawable = GLDrawableFactory.getFactory(GLProfile.getDefault())
+							.createDummyDrawable(GLProfile.getDefaultDevice(), true, new GLCapabilities(GLProfile.getDefault()), null);
+						dummyDrawable.setRealized(true);
+						GLContext versionContext = dummyDrawable.createContext(null);
+						versionContext.makeCurrent();
+						GL versionGL = versionContext.getGL();
+						log.info("Using device: {}", versionGL.glGetString(GL.GL_RENDERER));
+						log.info("Using driver: {}", versionGL.glGetString(GL.GL_VERSION));
+						versionContext.destroy();
+					}
+					catch (Exception ex)
+					{
+						log.warn("error checking device and driver version", ex);
+					}
+
 					GLProfile glProfile = GLProfile.get(GLProfile.GL4);
 
 					GLCapabilities glCaps = new GLCapabilities(glProfile);
