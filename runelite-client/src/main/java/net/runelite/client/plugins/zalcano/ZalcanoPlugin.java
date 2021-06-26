@@ -42,6 +42,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.ZALCANO_PROJECTILE_FIREBALL;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectSpawned;
@@ -68,6 +69,7 @@ public class ZalcanoPlugin extends Plugin
 {
 	private static final int ZALCANO_WEAKENED = NpcID.ZALCANO_9050;
 	private static final int GOLEM = NpcID.GOLEM_9051;
+	private static final int SHIELD_HP = 300;
 
 	@Inject
 	private Client client;
@@ -96,7 +98,14 @@ public class ZalcanoPlugin extends Plugin
 	@Getter
 	private int healthDamage;
 	@Getter
+	private int totalHealthDamage;
+	@Getter
 	private int shieldDamage;
+	@Getter
+	private int totalShieldDamage;
+
+	private int lastHP;
+
 	@Getter
 	private boolean inCavern;
 
@@ -137,10 +146,15 @@ public class ZalcanoPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		GameState gameState = event.getGameState();
-		if (gameState == GameState.LOADING)
+		switch (event.getGameState())
 		{
-			rocks.clear();
+			case LOADING:
+				rocks.clear();
+				break;
+			case HOPPING:
+			case LOGIN_SCREEN:
+				resetDamageCounter();
+				break;
 		}
 	}
 
@@ -150,10 +164,31 @@ public class ZalcanoPlugin extends Plugin
 		boolean wasInCavern = inCavern;
 		inCavern = isHealthbarActive();
 
-		if (!inCavern && wasInCavern)
+		if (!inCavern)
 		{
-			resetDamageCounter();
+			if (wasInCavern)
+			{
+				resetDamageCounter();
+			}
+			return;
 		}
+
+		// Set up HP correctly for next shield phase
+		int barNPCID = client.getVar(VarPlayer.HP_HUD_NPC_ID);
+		if (barNPCID == ZALCANO_WEAKENED)
+		{
+			lastHP = SHIELD_HP;
+		}
+		else if (barNPCID == ZALCANO && client.getVar(Varbits.LARGE_HP_BAR_MAX_HP) == SHIELD_HP)
+		{
+			int currentHP = client.getVar(Varbits.LARGE_HP_BAR_CURRENT_HP);
+			if (lastHP > currentHP)
+			{
+				totalShieldDamage += lastHP - currentHP;
+			}
+			lastHP = currentHP;
+		}
+
 	}
 
 	@Subscribe
@@ -188,7 +223,10 @@ public class ZalcanoPlugin extends Plugin
 	private void resetDamageCounter()
 	{
 		healthDamage = 0;
+		totalHealthDamage = 0;
 		shieldDamage = 0;
+		totalShieldDamage = 0;
+		lastHP = 0;
 	}
 
 	@Subscribe
@@ -236,6 +274,11 @@ public class ZalcanoPlugin extends Plugin
 	@Subscribe
 	public void onHitsplatApplied(HitsplatApplied event)
 	{
+		if (!inCavern)
+		{
+			return;
+		}
+
 		final Actor actor = event.getActor();
 
 		if (!(actor instanceof NPC))
@@ -256,6 +299,9 @@ public class ZalcanoPlugin extends Plugin
 		{
 			case DAMAGE_ME:
 				healthDamage += damage;
+				// intentional fall-through
+			case DAMAGE_OTHER:
+				totalHealthDamage += damage;
 				break;
 			case DAMAGE_ME_ORANGE:
 				shieldDamage += damage;
