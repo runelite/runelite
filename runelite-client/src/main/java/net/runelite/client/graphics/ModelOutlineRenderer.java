@@ -1117,7 +1117,7 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, gameObject.getPlane()),
-					gameObject.getRsOrientation(), outlineWidth, color, feather);
+					gameObject.getModelOrientation(), outlineWidth, color, feather);
 			}
 		}
 	}
@@ -1193,7 +1193,7 @@ public class ModelOutlineRenderer
 					lp.getX() + decorativeObject.getXOffset(),
 					lp.getY() + decorativeObject.getYOffset(),
 					Perspective.getTileHeight(client, lp, decorativeObject.getPlane()),
-					decorativeObject.getOrientation(), outlineWidth, color, feather);
+					0, outlineWidth, color, feather);
 			}
 		}
 
@@ -1206,7 +1206,7 @@ public class ModelOutlineRenderer
 				// Offset is not used for the second model
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, decorativeObject.getPlane()),
-					decorativeObject.getOrientation(), outlineWidth, color, feather);
+					0, outlineWidth, color, feather);
 			}
 		}
 	}
