@@ -10,24 +10,9 @@ class IntBlockBuffer
 	public static final int BLOCK_BITS = 10;
 	public static final int BLOCK_SIZE = 1 << BLOCK_BITS;
 
-	private int[] memory;
-	private int[] unusedBlockIndices;
+	private int[] memory = new int[0];
+	private int[] unusedBlockIndices = new int[0];
 	private int unusedBlockIndicesLength;
-
-	public IntBlockBuffer()
-	{
-		reset();
-	}
-
-	/**
-	 * Reset memory used by the block buffer.
-	 */
-	public void reset()
-	{
-		memory = new int[0];
-		unusedBlockIndices = new int[0];
-		unusedBlockIndicesLength = 0;
-	}
 
 	private void increaseBlockCount()
 	{

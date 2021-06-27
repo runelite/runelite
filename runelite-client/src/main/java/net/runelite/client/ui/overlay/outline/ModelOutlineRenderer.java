@@ -103,7 +103,7 @@ public class ModelOutlineRenderer
 	// Pixels are grouped by x and y distance to the closest pixel drawn on the model.
 	// A block buffer is used so memory can be reused after a group has been processed
 	// without using the JVM garbage collector.
-	private IntBlockBuffer outlinePixelsBlockBuffer = new IntBlockBuffer();
+	private final IntBlockBuffer outlinePixelsBlockBuffer = new IntBlockBuffer();
 	private int[][] outlinePixelsBlockIndices = new int[0][];
 	private int[] outlinePixelsBlockIndicesLengths = new int[0];
 	private int[] outlinePixelsLastBlockLength;
