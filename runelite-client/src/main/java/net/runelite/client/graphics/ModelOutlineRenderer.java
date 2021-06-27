@@ -33,6 +33,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
@@ -54,45 +57,21 @@ import net.runelite.client.util.IntBlockBuffer;
 @Singleton
 public class ModelOutlineRenderer
 {
+	@AllArgsConstructor
 	private static class PixelDistanceDelta
 	{
 		private final int dx;
 		private final int dy;
-
-		private PixelDistanceDelta(int dx, int dy)
-		{
-			this.dx = dx;
-			this.dy = dy;
-		}
 	}
 
+	@AllArgsConstructor
 	private static class PixelDistanceGroupIndex
 	{
+		@Getter(AccessLevel.PRIVATE)
 		private final double distance;
 		private final int distanceGroupIndex;
 		private final double alphaMultiply;
-
-		private PixelDistanceGroupIndex(double distance, int distanceGroupIndex, double alphaMultiply)
-		{
-			this.distance = distance;
-			this.distanceGroupIndex = distanceGroupIndex;
-			this.alphaMultiply = alphaMultiply;
-		}
-
-		private double getDistance()
-		{
-			return distance;
-		}
 	}
-
-	/*
-	 * This class doesn't really "need" static variables, but they are
-	 * static for performance reasons. Arrays are kept outside methods
-	 * to avoid frequent big allocations. Arrays should mostly be seen
-	 * as ArrayLists, the size of them is increased whenever they need
-	 * to become bigger.
-	 */
-
 
 	private final static int MAX_OUTLINE_WIDTH = 50;
 	private final static int MAX_FEATHER = 4;
@@ -115,49 +94,34 @@ public class ModelOutlineRenderer
 	private int croppedHeight;
 
 	// Bitset with pixel positions that would be rendered to within the cropped area by the model.
-	private int[] visited;
+	private int[] visited = new int[0];
 
 	// Vertex positions projected on the screen.
-	private int[] projectedVerticesX;
-	private int[] projectedVerticesY;
+	private int[] projectedVerticesX = new int[0];
+	private int[] projectedVerticesY = new int[0];
 
 	// Memory used for queueing the pixels for the outline of the model.
 	// Pixels are grouped by x and y distance to the closest pixel drawn on the model.
 	// A block buffer is used so memory can be reused after a group has been processed
 	// without using the JVM garbage collector.
-	private IntBlockBuffer outlinePixelsBlockBuffer;
-	private int[][] outlinePixelsBlockIndices;
-	private int[] outlinePixelsBlockIndicesLengths;
+	private IntBlockBuffer outlinePixelsBlockBuffer = new IntBlockBuffer();
+	private int[][] outlinePixelsBlockIndices = new int[0][];
+	private int[] outlinePixelsBlockIndicesLengths = new int[0];
 	private int[] outlinePixelsLastBlockLength;
 	private int outlineArrayWidth;
 
 	// An array of pixel group indices ordered by distance for each outline width and feather.
 	// These are calculated once upon first usage and then stored here to skip reevaluation.
-	private PixelDistanceGroupIndex[][][] precomputedGroupIndices;
+	private PixelDistanceGroupIndex[][][] precomputedGroupIndices = new PixelDistanceGroupIndex[0][][];
 
 	// An array of pixel distance deltas for each outline width and direction (right/up/left/down).
 	// These are calculated once upon first usage and then stored here to skip reevaluation.
-	private PixelDistanceDelta[][][] precomputedDistanceDeltas;
+	private PixelDistanceDelta[][][] precomputedDistanceDeltas = new PixelDistanceDelta[0][][];
 
 	@Inject
 	private ModelOutlineRenderer(Client client)
 	{
 		this.client = client;
-	}
-
-	/**
-	 * Initialize memory used by the renderer.
-	 */
-	private void initialize()
-	{
-		visited = new int[0];
-		projectedVerticesX = new int[0];
-		projectedVerticesY = new int[0];
-		outlinePixelsBlockBuffer = new IntBlockBuffer();
-		outlinePixelsBlockIndices = new int[0][];
-		outlinePixelsBlockIndicesLengths = new int[0];
-		precomputedDistanceDeltas = new PixelDistanceDelta[0][][];
-		precomputedGroupIndices = new PixelDistanceGroupIndex[0][][];
 	}
 
 	/**
@@ -1002,11 +966,6 @@ public class ModelOutlineRenderer
 		else if (feather > MAX_FEATHER)
 		{
 			feather = MAX_FEATHER;
-		}
-
-		if (visited == null)
-		{
-			initialize();
 		}
 
 		croppedX1 = Integer.MAX_VALUE;
