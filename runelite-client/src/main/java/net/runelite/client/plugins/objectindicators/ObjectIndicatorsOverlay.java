@@ -104,7 +104,7 @@ class ObjectIndicatorsOverlay extends Overlay
 
 			if (config.highlightOutline())
 			{
-				modelOutlineRenderer.drawOutline(object, (int)config.borderWidth(), color);
+				modelOutlineRenderer.drawOutline(object, (int)config.borderWidth(), color, config.outlineFeather());
 			}
 		}
 

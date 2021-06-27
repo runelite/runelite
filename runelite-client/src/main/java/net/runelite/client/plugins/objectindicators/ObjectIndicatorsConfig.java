@@ -31,6 +31,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("objectindicators")
 public interface ObjectIndicatorsConfig extends Config
@@ -71,7 +72,8 @@ public interface ObjectIndicatorsConfig extends Config
 		position = 2,
 		keyName = "markerColor",
 		name = "Marker color",
-		description = "Configures the color of object marker"
+		description = "Configures the color of object marker",
+		section = renderStyleSection
 	)
 	default Color markerColor()
 	{
@@ -80,6 +82,34 @@ public interface ObjectIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
+		keyName = "borderWidth",
+		name = "Border Width",
+		description = "Width of the marked object border",
+		section = renderStyleSection
+	)
+	default double borderWidth()
+	{
+		return 2;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "outlineFeather",
+		name = "Outline feather",
+		description = "Specify between 0-4 how much of the model outline should be faded",
+		section = renderStyleSection
+	)
+	@Range(
+		min = 0,
+		max = 4
+	)
+	default int outlineFeather()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "rememberObjectColors",
 		name = "Remember color per object",
 		description = "Color objects using the color from time of marking"
@@ -87,16 +117,5 @@ public interface ObjectIndicatorsConfig extends Config
 	default boolean rememberObjectColors()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "borderWidth",
-		name = "Border Width",
-		description = "Width of the marked object border"
-	)
-	default double borderWidth()
-	{
-		return 2;
 	}
 }

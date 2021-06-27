@@ -70,11 +70,13 @@ public class ModelOutlineRenderer
 	{
 		private final double distance;
 		private final int distanceGroupIndex;
+		private final double alphaMultiply;
 
-		private PixelDistanceGroupIndex(double distance, int distanceGroupIndex)
+		private PixelDistanceGroupIndex(double distance, int distanceGroupIndex, double alphaMultiply)
 		{
 			this.distance = distance;
 			this.distanceGroupIndex = distanceGroupIndex;
+			this.alphaMultiply = alphaMultiply;
 		}
 
 		private double getDistance()
@@ -91,7 +93,9 @@ public class ModelOutlineRenderer
 	 * to become bigger.
 	 */
 
+
 	private final static int MAX_OUTLINE_WIDTH = 50;
+	private final static int MAX_FEATHER = 4;
 	private final static int DIRECT_WRITE_OUTLINE_WIDTH_THRESHOLD = 10;
 
 	private final Client client;
@@ -127,9 +131,9 @@ public class ModelOutlineRenderer
 	private int[] outlinePixelsLastBlockLength;
 	private int outlineArrayWidth;
 
-	// An array of pixel group indices ordered by distance for each outline width.
+	// An array of pixel group indices ordered by distance for each outline width and feather.
 	// These are calculated once upon first usage and then stored here to skip reevaluation.
-	private PixelDistanceGroupIndex[][] precomputedGroupIndices;
+	private PixelDistanceGroupIndex[][][] precomputedGroupIndices;
 
 	// An array of pixel distance deltas for each outline width and direction (right/up/left/down).
 	// These are calculated once upon first usage and then stored here to skip reevaluation.
@@ -153,7 +157,7 @@ public class ModelOutlineRenderer
 		outlinePixelsBlockIndices = new int[0][];
 		outlinePixelsBlockIndicesLengths = new int[0];
 		precomputedDistanceDeltas = new PixelDistanceDelta[0][][];
-		precomputedGroupIndices = new PixelDistanceGroupIndex[0][];
+		precomputedGroupIndices = new PixelDistanceGroupIndex[0][][];
 	}
 
 	/**
@@ -188,17 +192,27 @@ public class ModelOutlineRenderer
 	 * Get an array of pixel outline group indices ordered by distance for a specific outline width.
 	 *
 	 * @param outlineWidth The outline width.
+	 * @param feather The feather of the outline.
 	 * @return Returns the list of pixel distances.
 	 */
-	private PixelDistanceGroupIndex[] getPriorityList(int outlineWidth)
+	private PixelDistanceGroupIndex[] getPriorityList(int outlineWidth, int feather)
 	{
 		if (precomputedGroupIndices.length <= outlineWidth)
 		{
 			precomputedGroupIndices = Arrays.copyOf(precomputedGroupIndices, outlineWidth + 1);
 		}
-
 		if (precomputedGroupIndices[outlineWidth] == null)
 		{
+			precomputedGroupIndices[outlineWidth] = new PixelDistanceGroupIndex[feather + 1][];
+		}
+		else if (precomputedGroupIndices[outlineWidth].length <= feather)
+		{
+			precomputedGroupIndices[outlineWidth] = Arrays.copyOf(precomputedGroupIndices[outlineWidth], feather + 1);
+		}
+
+		if (precomputedGroupIndices[outlineWidth][feather] == null)
+		{
+			double fadedDistance = (double)feather / MAX_FEATHER * (outlineWidth - 0.5);
 			List<PixelDistanceGroupIndex> ps = new ArrayList<>();
 			for (int x = 0; x <= outlineWidth; x++)
 			{
@@ -215,13 +229,15 @@ public class ModelOutlineRenderer
 						continue;
 					}
 
-					ps.add(new PixelDistanceGroupIndex(dist, x + y * outlineArrayWidth));
+					double outerDist = outlineWidth - dist + 0.5;
+					double multipliedAlpha = outerDist < fadedDistance ? outerDist / fadedDistance : 1.0;
+					ps.add(new PixelDistanceGroupIndex(dist, x + y * outlineArrayWidth, multipliedAlpha));
 				}
 			}
 			ps.sort(Comparator.comparingDouble(PixelDistanceGroupIndex::getDistance));
-			precomputedGroupIndices[outlineWidth] = ps.toArray(new PixelDistanceGroupIndex[0]);
+			precomputedGroupIndices[outlineWidth][feather] = ps.toArray(new PixelDistanceGroupIndex[0]);
 		}
-		return precomputedGroupIndices[outlineWidth];
+		return precomputedGroupIndices[outlineWidth][feather];
 	}
 
 	private void ensureDistanceDeltasCreated(int outlineWidth)
@@ -883,19 +899,19 @@ public class ModelOutlineRenderer
 	 * @param outlineWidth The width of the outline.
 	 * @param color The color of the outline.
 	 */
-	private void processOutlinePixelQueue(int outlineWidth, Color color)
+	private void processOutlinePixelQueue(int outlineWidth, Color color, int feather)
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
 		int imageWidth = image.getWidth();
 		int[] imageData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-		PixelDistanceGroupIndex[] ps = getPriorityList(outlineWidth);
+		PixelDistanceGroupIndex[] ps = getPriorityList(outlineWidth, feather);
 
 		for (PixelDistanceGroupIndex p : ps)
 		{
 			final int[] blockMemory = outlinePixelsBlockBuffer.getMemory();
 			final int colorRGB = color.getRGB();
-			final int alpha = color.getAlpha();
+			final int alpha = (int)Math.round(color.getAlpha() * p.alphaMultiply);
 
 			final int groupIndex = p.distanceGroupIndex;
 			final int nextGroupIndexY = groupIndex + outlineArrayWidth;
@@ -967,7 +983,7 @@ public class ModelOutlineRenderer
 	 */
 	private void drawModelOutline(Model model,
 		int localX, int localY, int localZ, int orientation,
-		int outlineWidth, Color color)
+		int outlineWidth, Color color, int feather)
 	{
 		if (outlineWidth <= 0 || color.getAlpha() == 0 || model == null)
 		{
@@ -977,6 +993,15 @@ public class ModelOutlineRenderer
 		if (outlineWidth > MAX_OUTLINE_WIDTH)
 		{
 			outlineWidth = MAX_OUTLINE_WIDTH;
+		}
+
+		if (feather < 0)
+		{
+			feather = 0;
+		}
+		else if (feather > MAX_FEATHER)
+		{
+			feather = MAX_FEATHER;
 		}
 
 		if (visited == null)
@@ -1019,7 +1044,8 @@ public class ModelOutlineRenderer
 		// outlines since some pixels of the outline can get drawn more than once.
 		// Performance becomes worse than queueing when using larger outline widths,
 		// usually around 10 px outline width according to some basic testing.
-		boolean directWrite = color.getAlpha() == 255 && outlineWidth <= DIRECT_WRITE_OUTLINE_WIDTH_THRESHOLD;
+		boolean directWrite = color.getAlpha() == 255 && outlineWidth <= DIRECT_WRITE_OUTLINE_WIDTH_THRESHOLD &&
+			(feather == 0 || outlineWidth == 1); // Feather has no effect on outlineWidth == 1
 
 		if (directWrite)
 		{
@@ -1037,7 +1063,7 @@ public class ModelOutlineRenderer
 
 			if (!directWrite)
 			{
-				processOutlinePixelQueue(outlineWidth, color);
+				processOutlinePixelQueue(outlineWidth, color, feather);
 			}
 		}
 		finally
@@ -1046,7 +1072,7 @@ public class ModelOutlineRenderer
 		}
 	}
 
-	public void drawOutline(NPC npc, int outlineWidth, Color color)
+	public void drawOutline(NPC npc, int outlineWidth, Color color, int feather)
 	{
 		int size = 1;
 		NPCComposition composition = npc.getTransformedComposition();
@@ -1065,22 +1091,22 @@ public class ModelOutlineRenderer
 
 			drawModelOutline(npc.getModel(), lp.getX(), lp.getY(),
 				Perspective.getTileHeight(client, northEastLp, client.getPlane()),
-				npc.getCurrentOrientation(), outlineWidth, color);
+				npc.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}
 
-	public void drawOutline(Player player, int outlineWidth, Color color)
+	public void drawOutline(Player player, int outlineWidth, Color color, int feather)
 	{
 		LocalPoint lp = player.getLocalLocation();
 		if (lp != null)
 		{
 			drawModelOutline(player.getModel(), lp.getX(), lp.getY(),
 				Perspective.getTileHeight(client, lp, client.getPlane()),
-				player.getCurrentOrientation(), outlineWidth, color);
+				player.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}
 
-	private void drawOutline(GameObject gameObject, int outlineWidth, Color color)
+	private void drawOutline(GameObject gameObject, int outlineWidth, Color color, int feather)
 	{
 		LocalPoint lp = gameObject.getLocalLocation();
 		Renderable renderable = gameObject.getRenderable();
@@ -1091,12 +1117,12 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, gameObject.getPlane()),
-					gameObject.getRsOrientation(), outlineWidth, color);
+					gameObject.getRsOrientation(), outlineWidth, color, feather);
 			}
 		}
 	}
 
-	private void drawOutline(GroundObject groundObject, int outlineWidth, Color color)
+	private void drawOutline(GroundObject groundObject, int outlineWidth, Color color, int feather)
 	{
 		LocalPoint lp = groundObject.getLocalLocation();
 		Renderable renderable = groundObject.getRenderable();
@@ -1107,12 +1133,12 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, client.getPlane()),
-					0, outlineWidth, color);
+					0, outlineWidth, color, feather);
 			}
 		}
 	}
 
-	private void drawOutline(ItemLayer itemLayer, int outlineWidth, Color color)
+	private void drawOutline(ItemLayer itemLayer, int outlineWidth, Color color, int feather)
 	{
 		LocalPoint lp = itemLayer.getLocalLocation();
 
@@ -1124,7 +1150,7 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, itemLayer.getPlane()) - itemLayer.getHeight(),
-					0, outlineWidth, color);
+					0, outlineWidth, color, feather);
 			}
 		}
 
@@ -1136,7 +1162,7 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, itemLayer.getPlane()) - itemLayer.getHeight(),
-					0, outlineWidth, color);
+					0, outlineWidth, color, feather);
 			}
 		}
 
@@ -1148,12 +1174,12 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, itemLayer.getPlane()) - itemLayer.getHeight(),
-					0, outlineWidth, color);
+					0, outlineWidth, color, feather);
 			}
 		}
 	}
 
-	private void drawOutline(DecorativeObject decorativeObject, int outlineWidth, Color color)
+	private void drawOutline(DecorativeObject decorativeObject, int outlineWidth, Color color, int feather)
 	{
 		LocalPoint lp = decorativeObject.getLocalLocation();
 
@@ -1167,7 +1193,7 @@ public class ModelOutlineRenderer
 					lp.getX() + decorativeObject.getXOffset(),
 					lp.getY() + decorativeObject.getYOffset(),
 					Perspective.getTileHeight(client, lp, decorativeObject.getPlane()),
-					decorativeObject.getOrientation(), outlineWidth, color);
+					decorativeObject.getOrientation(), outlineWidth, color, feather);
 			}
 		}
 
@@ -1180,12 +1206,12 @@ public class ModelOutlineRenderer
 				// Offset is not used for the second model
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, decorativeObject.getPlane()),
-					decorativeObject.getOrientation(), outlineWidth, color);
+					decorativeObject.getOrientation(), outlineWidth, color, feather);
 			}
 		}
 	}
 
-	private void drawOutline(WallObject wallObject, int outlineWidth, Color color)
+	private void drawOutline(WallObject wallObject, int outlineWidth, Color color, int feather)
 	{
 		LocalPoint lp = wallObject.getLocalLocation();
 
@@ -1197,7 +1223,7 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, wallObject.getPlane()),
-					wallObject.getOrientationA(), outlineWidth, color);
+					wallObject.getOrientationA(), outlineWidth, color, feather);
 			}
 		}
 
@@ -1209,36 +1235,36 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, wallObject.getPlane()),
-					wallObject.getOrientationB(), outlineWidth, color);
+					wallObject.getOrientationB(), outlineWidth, color, feather);
 			}
 		}
 	}
 
-	public void drawOutline(TileObject tileObject, int outlineWidth, Color color)
+	public void drawOutline(TileObject tileObject, int outlineWidth, Color color, int feather)
 	{
 		if (tileObject instanceof GameObject)
 		{
-			drawOutline((GameObject)tileObject, outlineWidth, color);
+			drawOutline((GameObject)tileObject, outlineWidth, color, feather);
 		}
 		else if (tileObject instanceof GroundObject)
 		{
-			drawOutline((GroundObject)tileObject, outlineWidth, color);
+			drawOutline((GroundObject)tileObject, outlineWidth, color, feather);
 		}
 		else if (tileObject instanceof ItemLayer)
 		{
-			drawOutline((ItemLayer)tileObject, outlineWidth, color);
+			drawOutline((ItemLayer)tileObject, outlineWidth, color, feather);
 		}
 		else if (tileObject instanceof DecorativeObject)
 		{
-			drawOutline((DecorativeObject)tileObject, outlineWidth, color);
+			drawOutline((DecorativeObject)tileObject, outlineWidth, color, feather);
 		}
 		else if (tileObject instanceof WallObject)
 		{
-			drawOutline((WallObject)tileObject, outlineWidth, color);
+			drawOutline((WallObject)tileObject, outlineWidth, color, feather);
 		}
 	}
 
-	public void drawOutline(GraphicsObject graphicsObject, int outlineWidth, Color color)
+	public void drawOutline(GraphicsObject graphicsObject, int outlineWidth, Color color, int feather)
 	{
 		LocalPoint lp = graphicsObject.getLocation();
 		if (lp != null)
@@ -1247,7 +1273,7 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(), graphicsObject.getHeight(),
-					0, outlineWidth, color);
+					0, outlineWidth, color, feather);
 			}
 		}
 	}

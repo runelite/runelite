@@ -187,7 +187,7 @@ public class NpcSceneOverlay extends Overlay
 
 		if (config.highlightOutline())
 		{
-			modelOutlineRenderer.drawOutline(actor, (int)config.borderWidth(), color);
+			modelOutlineRenderer.drawOutline(actor, (int)config.borderWidth(), color, config.outlineFeather());
 		}
 
 		if (config.drawNames() && actor.getName() != null)
