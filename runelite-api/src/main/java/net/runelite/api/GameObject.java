@@ -82,4 +82,15 @@ public interface GameObject extends TileObject
 	Angle getOrientation();
 
 	Renderable getRenderable();
+
+	/**
+	 * Gets the orientation of the model in JAU.
+	 * This is typically 0 for non-actors, since
+	 * most object's models are oriented prior to
+	 * lighting during scene loading. See {@link #getOrientation()}
+	 * instead for object orientation.
+	 *
+	 * @see net.runelite.api.coords.Angle
+	 */
+	int getModelOrientation();
 }
