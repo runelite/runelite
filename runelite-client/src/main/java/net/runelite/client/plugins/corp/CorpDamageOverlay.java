@@ -44,12 +44,16 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ws.PartyService;
 
 class CorpDamageOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final CorpPlugin corpPlugin;
 	private final CorpConfig config;
+
+	@Inject
+	private PartyService party;
 
 	@Inject
 	private CorpDamageOverlay(Client client, CorpPlugin corpPlugin, CorpConfig config)
@@ -79,12 +83,17 @@ class CorpDamageOverlay extends OverlayPanel
 			return null;
 		}
 
-		int myDamage = client.getVar(Varbits.CORP_DAMAGE);
+		int myDamage = corpPlugin.getYourDamage();
 		int totalDamage = corpPlugin.getTotalDamage();
-		int players = corpPlugin.getPlayers().size();
 
 		// estimate how much damage is required for kill based on number of players
-		int damageForKill = players != 0 ? totalDamage / players : 0;
+		int damageForKill;
+		if(!party.getMembers().isEmpty()) {
+			damageForKill = (totalDamage / party.getMembers().size());
+		} else {
+			int players = corpPlugin.getPlayers().size();
+			damageForKill = players != 0 ? totalDamage / players : 0;
+		}
 
 		NPC core = corpPlugin.getCore();
 		if (core != null)
