@@ -30,12 +30,45 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("objectindicators")
 public interface ObjectIndicatorsConfig extends Config
 {
+	@ConfigSection(
+		name = "Render style",
+		description = "The render style of object highlighting",
+		position = 0
+	)
+	String renderStyleSection = "renderStyleSection";
+
+	@ConfigItem(
+		position = 0,
+		keyName = "highlightHull",
+		name = "Highlight hull",
+		description = "Configures whether or not object should be highlighted by hull",
+		section = renderStyleSection
+	)
+	default boolean highlightHull()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "highlightOutline",
+		name = "Highlight outline",
+		description = "Configures whether or not the model of the object should be highlighted by outline",
+		section = renderStyleSection
+	)
+	default boolean highlightOutline()
+	{
+		return false;
+	}
+
 	@Alpha
 	@ConfigItem(
+		position = 2,
 		keyName = "markerColor",
 		name = "Marker color",
 		description = "Configures the color of object marker"
@@ -46,6 +79,7 @@ public interface ObjectIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "rememberObjectColors",
 		name = "Remember color per object",
 		description = "Color objects using the color from time of marking"
@@ -56,6 +90,7 @@ public interface ObjectIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
 		keyName = "borderWidth",
 		name = "Border Width",
 		description = "Width of the marked object border"
