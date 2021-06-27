@@ -1,11 +1,11 @@
-package net.runelite.client.util;
+package net.runelite.client.ui.overlay.outline;
 
 import java.util.Arrays;
 
 /**
  * A class which manages 1024-sized blocks of memory.
  */
-public class IntBlockBuffer
+class IntBlockBuffer
 {
 	public static final int BLOCK_BITS = 10;
 	public static final int BLOCK_SIZE = 1 << BLOCK_BITS;

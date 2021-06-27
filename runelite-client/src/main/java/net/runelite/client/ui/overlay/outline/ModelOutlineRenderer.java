@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.graphics;
+package net.runelite.client.ui.overlay.outline;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -52,7 +52,6 @@ import net.runelite.api.Renderable;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.util.IntBlockBuffer;
 
 @Singleton
 public class ModelOutlineRenderer
