@@ -61,6 +61,8 @@ class XpStateSingle
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
 
+	private boolean hasGoal = false;
+
 	XpStateSingle(Skill skill, long startXp)
 	{
 		this.skill = skill;
@@ -294,6 +296,8 @@ class XpStateSingle
 			{
 				endLevelExp = goalEndXp;
 			}
+
+			hasGoal = goalEndXp != -1;
 		}
 
 		return true;
@@ -327,6 +331,7 @@ class XpStateSingle
 			.timeTillGoalShort(getTimeTillLevel(XpGoalTimeType.SHORT))
 			.startGoalXp(startLevelExp)
 			.endGoalXp(endLevelExp)
+			.hasGoal(hasGoal)
 			.build();
 	}
 }
