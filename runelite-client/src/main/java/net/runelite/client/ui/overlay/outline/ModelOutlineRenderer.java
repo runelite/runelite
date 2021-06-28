@@ -72,9 +72,9 @@ public class ModelOutlineRenderer
 		private final double alphaMultiply;
 	}
 
-	private final static int MAX_OUTLINE_WIDTH = 50;
-	private final static int MAX_FEATHER = 4;
-	private final static int DIRECT_WRITE_OUTLINE_WIDTH_THRESHOLD = 10;
+	private static final int MAX_OUTLINE_WIDTH = 50;
+	private static final int MAX_FEATHER = 4;
+	private static final int DIRECT_WRITE_OUTLINE_WIDTH_THRESHOLD = 10;
 
 	private final Client client;
 
@@ -175,7 +175,7 @@ public class ModelOutlineRenderer
 
 		if (precomputedGroupIndices[outlineWidth][feather] == null)
 		{
-			double fadedDistance = (double)feather / MAX_FEATHER * (outlineWidth - 0.5);
+			double fadedDistance = (double) feather / MAX_FEATHER * (outlineWidth - 0.5);
 			List<PixelDistanceGroupIndex> ps = new ArrayList<>();
 			for (int x = 0; x <= outlineWidth; x++)
 			{
@@ -874,7 +874,7 @@ public class ModelOutlineRenderer
 		{
 			final int[] blockMemory = outlinePixelsBlockBuffer.getMemory();
 			final int colorRGB = color.getRGB();
-			final int alpha = (int)Math.round(color.getAlpha() * p.alphaMultiply);
+			final int alpha = (int) Math.round(color.getAlpha() * p.alphaMultiply);
 
 			final int groupIndex = p.distanceGroupIndex;
 			final int nextGroupIndexY = groupIndex + outlineArrayWidth;
@@ -1070,7 +1070,7 @@ public class ModelOutlineRenderer
 		Renderable renderable = gameObject.getRenderable();
 		if (renderable != null)
 		{
-			Model model = renderable instanceof Model ? (Model)renderable : renderable.getModel();
+			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
@@ -1086,7 +1086,7 @@ public class ModelOutlineRenderer
 		Renderable renderable = groundObject.getRenderable();
 		if (renderable != null)
 		{
-			Model model = renderable instanceof Model ? (Model)renderable : renderable.getModel();
+			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
@@ -1103,7 +1103,7 @@ public class ModelOutlineRenderer
 		Renderable bottomRenderable = itemLayer.getBottom();
 		if (bottomRenderable != null)
 		{
-			Model model = bottomRenderable instanceof Model ? (Model)bottomRenderable : bottomRenderable.getModel();
+			Model model = bottomRenderable instanceof Model ? (Model) bottomRenderable : bottomRenderable.getModel();
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
@@ -1115,7 +1115,7 @@ public class ModelOutlineRenderer
 		Renderable middleRenderable = itemLayer.getMiddle();
 		if (middleRenderable != null)
 		{
-			Model model = middleRenderable instanceof Model ? (Model)middleRenderable : middleRenderable.getModel();
+			Model model = middleRenderable instanceof Model ? (Model) middleRenderable : middleRenderable.getModel();
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
@@ -1127,7 +1127,7 @@ public class ModelOutlineRenderer
 		Renderable topRenderable = itemLayer.getTop();
 		if (topRenderable != null)
 		{
-			Model model = topRenderable instanceof Model ? (Model)topRenderable : topRenderable.getModel();
+			Model model = topRenderable instanceof Model ? (Model) topRenderable : topRenderable.getModel();
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
@@ -1144,7 +1144,7 @@ public class ModelOutlineRenderer
 		Renderable renderable1 = decorativeObject.getRenderable();
 		if (renderable1 != null)
 		{
-			Model model = renderable1 instanceof Model ? (Model)renderable1 : renderable1.getModel();
+			Model model = renderable1 instanceof Model ? (Model) renderable1 : renderable1.getModel();
 			if (model != null)
 			{
 				drawModelOutline(model,
@@ -1158,7 +1158,7 @@ public class ModelOutlineRenderer
 		Renderable renderable2 = decorativeObject.getRenderable2();
 		if (renderable2 != null)
 		{
-			Model model = renderable2 instanceof Model ? (Model)renderable2 : renderable2.getModel();
+			Model model = renderable2 instanceof Model ? (Model) renderable2 : renderable2.getModel();
 			if (model != null)
 			{
 				// Offset is not used for the second model
@@ -1176,7 +1176,7 @@ public class ModelOutlineRenderer
 		Renderable renderable1 = wallObject.getRenderable1();
 		if (renderable1 != null)
 		{
-			Model model = renderable1 instanceof Model ? (Model)renderable1 : renderable1.getModel();
+			Model model = renderable1 instanceof Model ? (Model) renderable1 : renderable1.getModel();
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
@@ -1188,7 +1188,7 @@ public class ModelOutlineRenderer
 		Renderable renderable2 = wallObject.getRenderable2();
 		if (renderable2 != null)
 		{
-			Model model = renderable2 instanceof Model ? (Model)renderable2 : renderable2.getModel();
+			Model model = renderable2 instanceof Model ? (Model) renderable2 : renderable2.getModel();
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
@@ -1202,23 +1202,23 @@ public class ModelOutlineRenderer
 	{
 		if (tileObject instanceof GameObject)
 		{
-			drawOutline((GameObject)tileObject, outlineWidth, color, feather);
+			drawOutline((GameObject) tileObject, outlineWidth, color, feather);
 		}
 		else if (tileObject instanceof GroundObject)
 		{
-			drawOutline((GroundObject)tileObject, outlineWidth, color, feather);
+			drawOutline((GroundObject) tileObject, outlineWidth, color, feather);
 		}
 		else if (tileObject instanceof ItemLayer)
 		{
-			drawOutline((ItemLayer)tileObject, outlineWidth, color, feather);
+			drawOutline((ItemLayer) tileObject, outlineWidth, color, feather);
 		}
 		else if (tileObject instanceof DecorativeObject)
 		{
-			drawOutline((DecorativeObject)tileObject, outlineWidth, color, feather);
+			drawOutline((DecorativeObject) tileObject, outlineWidth, color, feather);
 		}
 		else if (tileObject instanceof WallObject)
 		{
-			drawOutline((WallObject)tileObject, outlineWidth, color, feather);
+			drawOutline((WallObject) tileObject, outlineWidth, color, feather);
 		}
 	}
 
