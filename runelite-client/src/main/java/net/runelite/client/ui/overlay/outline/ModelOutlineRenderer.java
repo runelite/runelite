@@ -873,8 +873,17 @@ public class ModelOutlineRenderer
 		for (PixelDistanceGroupIndex p : ps)
 		{
 			final int[] blockMemory = outlinePixelsBlockBuffer.getMemory();
-			final int colorRGB = color.getRGB();
-			final int alpha = (int) Math.round(color.getAlpha() * p.alphaMultiply);
+			
+			final int colorARGB;
+			final int inverseAlpha;
+			{
+				int alpha = (int) Math.round(color.getAlpha() * p.alphaMultiply);
+				inverseAlpha = 256 - alpha;
+				colorARGB = (alpha << 24)
+					| ((color.getRed() * alpha) / 255) << 16
+					| ((color.getGreen() * alpha) / 255) << 8
+					| ((color.getBlue() * alpha) / 255);
+			}
 
 			final int groupIndex = p.distanceGroupIndex;
 			final int nextGroupIndexY = groupIndex + outlineArrayWidth;
@@ -897,17 +906,10 @@ public class ModelOutlineRenderer
 					visited[visitedPixelPos >> 5] |= 1 << (visitedPixelPos & 31);
 
 					int pixelPos = y * imageWidth + x;
-					if (alpha == 255)
-					{
-						imageData[pixelPos] = colorRGB;
-					}
-					else
-					{
-						imageData[pixelPos] = (alpha << 24) |
-							((((colorRGB & 0xFF0000) * alpha + (imageData[pixelPos] & 0xFF0000) * (255 - alpha)) / 255) & 0xFF0000) |
-							((((colorRGB & 0xFF00) * alpha + (imageData[pixelPos] & 0xFF00) * (255 - alpha)) / 255) & 0xFF00) |
-							((((colorRGB & 0xFF) * alpha + (imageData[pixelPos] & 0xFF) * (255 - alpha)) / 255) & 0xFF);
-					}
+					int dst = imageData[pixelPos];
+					imageData[pixelPos]
+						= (colorARGB & 0xFF00FF00) + (((dst & 0xFF00FF00) * inverseAlpha) >>> 8) & 0xFF00FF00
+						| (colorARGB & 0x00FF00FF) + (((dst & 0x00FF00FF) * inverseAlpha) >>> 8) & 0x00FF00FF;
 
 					if (x - 1 >= clipX1)
 					{
