@@ -85,13 +85,16 @@ class CorpDamageOverlay extends OverlayPanel
 
 		int myDamage = corpPlugin.getYourDamage();
 		int totalDamage = corpPlugin.getTotalDamage();
+		int players = corpPlugin.getPlayers().size();
 
 		// estimate how much damage is required for kill based on number of players
 		int damageForKill;
-		if(!party.getMembers().isEmpty()) {
-			damageForKill = (totalDamage / party.getMembers().size());
-		} else {
-			int players = corpPlugin.getPlayers().size();
+		if (!party.getMembers().isEmpty())
+		{
+			damageForKill = players > party.getMembers().size() ? (totalDamage / players) : (totalDamage / party.getMembers().size());
+		}
+		else
+		{
 			damageForKill = players != 0 ? totalDamage / players : 0;
 		}
 

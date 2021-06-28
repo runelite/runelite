@@ -6,7 +6,6 @@ import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class CorpDamageUpdate extends PartyMemberMessage {
-    private final int hit;
+public class CorpTotalDamageSyncUpdate extends PartyMemberMessage {
     private final int totalDamageSync;
 }

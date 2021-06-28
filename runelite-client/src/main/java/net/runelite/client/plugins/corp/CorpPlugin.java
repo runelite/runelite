@@ -40,12 +40,9 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.specialcounter.SpecialCounterUpdate;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ws.PartyMember;
 import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
 
@@ -107,7 +104,7 @@ public class CorpPlugin extends Plugin
 	{
 		overlayManager.add(corpOverlay);
 		overlayManager.add(coreOverlay);
-		wsClient.registerMessage(CorpDamageUpdate.class);
+		wsClient.registerMessage(CorpTotalDamageSyncUpdate.class);
 		wsClient.registerMessage(CorpDespawnedUpdate.class);
 	}
 
@@ -116,7 +113,7 @@ public class CorpPlugin extends Plugin
 	{
 		overlayManager.remove(corpOverlay);
 		overlayManager.remove(coreOverlay);
-		wsClient.unregisterMessage(CorpDamageUpdate.class);
+		wsClient.unregisterMessage(CorpTotalDamageSyncUpdate.class);
 		wsClient.unregisterMessage(CorpDespawnedUpdate.class);
 
 		corp = core = null;
@@ -142,7 +139,8 @@ public class CorpPlugin extends Plugin
 		switch (npc.getId())
 		{
 			case NpcID.CORPOREAL_BEAST:
-				if(corp != null && !party.getMembers().isEmpty()) {
+				if (corp != null && !party.getMembers().isEmpty())
+				{
 					corp = npc;
 					return;
 				}
@@ -170,7 +168,7 @@ public class CorpPlugin extends Plugin
 			if (npc.isDead())
 			{
 				showKillStats();
-				if(!party.getMembers().isEmpty())
+				if (!party.getMembers().isEmpty())
 				{
 					final CorpDespawnedUpdate update = new CorpDespawnedUpdate();
 					update.setMemberId(party.getLocalMember().getMemberId());
@@ -187,7 +185,6 @@ public class CorpPlugin extends Plugin
 	private void showKillStats()
 	{
 		corp = null;
-		players.clear();
 		// Show kill stats
 		String message = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
@@ -215,7 +212,8 @@ public class CorpPlugin extends Plugin
 			return;
 		}
 
-		if(corp == null) {
+		if (corp == null)
+		{
 			return;
 		}
 
@@ -237,25 +235,24 @@ public class CorpPlugin extends Plugin
 
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
 		int damage = hitsplat.getAmount();
+
+		totalDamage += damage;
+
 		if (hitsplat.isMine())
 		{
 			yourDamage += damage;
-		}
-
-		if(party.getMembers().isEmpty())
-		{
-			totalDamage += damage;
-		}
-		else if (hitsplat.isMine())
-		{
-			final CorpDamageUpdate update = new CorpDamageUpdate(damage, totalDamage);
-			update.setMemberId(party.getLocalMember().getMemberId());
-			wsClient.send(update);
+			if (!party.getMembers().isEmpty())
+			{
+				final CorpTotalDamageSyncUpdate update = new CorpTotalDamageSyncUpdate(totalDamage);
+				update.setMemberId(party.getLocalMember().getMemberId());
+				wsClient.send(update);
+			}
 		}
 	}
 
 	@Subscribe
-	public void onCorpDamageUpdate(CorpDamageUpdate update) {
+	public void onCorpTotalDamageSyncUpdate(CorpTotalDamageSyncUpdate update)
+	{
 		String name = party.getMemberById(update.getMemberId()).getName();
 		if (name == null)
 		{
@@ -264,18 +261,10 @@ public class CorpPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			// you have no idea what a corp is
-			if(corp == null)
-			{
-				return;
-			}
-
-			if(totalDamage < update.getTotalDamageSync())
+			if (totalDamage < update.getTotalDamageSync())
 			{
 				totalDamage = update.getTotalDamageSync();
 			}
-
-			totalDamage += update.getHit();
 		});
 	}
 
@@ -285,16 +274,20 @@ public class CorpPlugin extends Plugin
 		Actor source = interactingChanged.getSource();
 		Actor target = interactingChanged.getTarget();
 
-		if (corp == null || target != corp) {
+		if (corp == null || target != corp)
+		{
 			return;
 		}
 
 		// a source actor that leaves and comes back is a new actor to the client? so they are not part of the player list
-		for(Actor actor : players) {
-			if(actor.getName().equals(source.getName())) {
+		for (Actor actor : players)
+		{
+			if (actor.getName().equals(source.getName()))
+			{
 				return;
 			}
 		}
+
 		players.add(source);
 	}
 }
