@@ -96,8 +96,8 @@ public class ModelOutlineRenderer
 	private int[] visited = new int[0];
 
 	// Vertex positions projected on the screen.
-	private int[] projectedVerticesX = new int[0];
-	private int[] projectedVerticesY = new int[0];
+	private int[] projectedVerticesX = new int[6500];
+	private int[] projectedVerticesY = new int[6500];
 
 	// Memory used for queueing the pixels for the outline of the model.
 	// Pixels are grouped by x and y distance to the closest pixel drawn on the model.
@@ -521,77 +521,25 @@ public class ModelOutlineRenderer
 	 * @param vertexOrientation The orientation of the vertices.
 	 * @return Returns true if any of them are inside the clip area, otherwise false.
 	 */
-	private boolean projectVertices(Model model,
-		final int localX, final int localY, final int localZ, final int vertexOrientation)
+	private boolean projectVertices(Model model, int localX, int localY, int localZ, final int vertexOrientation)
 	{
-		final int cameraX = client.getCameraX();
-		final int cameraY = client.getCameraY();
-		final int cameraZ = client.getCameraZ();
-		final int cameraYaw = client.getCameraYaw();
-		final int cameraPitch = client.getCameraPitch();
-		final int scale = client.getScale();
-		final int orientationSin = Perspective.SINE[vertexOrientation];
-		final int orientationCos = Perspective.COSINE[vertexOrientation];
-		final int pitchSin = Perspective.SINE[cameraPitch];
-		final int pitchCos = Perspective.COSINE[cameraPitch];
-		final int yawSin = Perspective.SINE[cameraYaw];
-		final int yawCos = Perspective.COSINE[cameraYaw];
 		final int vertexCount = model.getVerticesCount();
-		final int[] verticesX = model.getVerticesX();
-		final int[] verticesY = model.getVerticesY();
-		final int[] verticesZ = model.getVerticesZ();
-		final int clipX1 = client.getViewportXOffset();
-		final int clipY1 = client.getViewportYOffset();
-		final int clipX2 = client.getViewportWidth() + clipX1;
-		final int clipY2 = client.getViewportHeight() + clipY1;
+		Perspective.modelToCanvas(client,
+			vertexCount,
+			localX, localY, localZ,
+			vertexOrientation,
+			model.getVerticesX(), model.getVerticesZ(), model.getVerticesY(),
+			projectedVerticesX, projectedVerticesY);
 
 		boolean anyVisible = false;
 
-		if (projectedVerticesY.length < vertexCount)
-		{
-			int newSize = nextPowerOfTwo(vertexCount);
-			projectedVerticesX = new int[newSize];
-			projectedVerticesY = new int[newSize];
-		}
-
 		for (int i = 0; i < vertexCount; i++)
 		{
-			int vx = verticesX[i];
-			int vy = verticesZ[i];
-			int vz = verticesY[i];
-			int vh; // Value holder
+			int x = projectedVerticesX[i];
+			int y = projectedVerticesY[i];
 
-			// Rotate based on orientation
-			vh = vx * orientationCos + vy * orientationSin >> 16;
-			vy = vy * orientationCos - vx * orientationSin >> 16;
-			vx = vh;
-
-			// Translate to local coords
-			vx += localX;
-			vy += localY;
-			vz += localZ;
-
-			// Translate to camera
-			vx -= cameraX;
-			vy -= cameraY;
-			vz -= cameraZ;
-
-			// Transform to canvas
-			vh = vx * yawCos + vy * yawSin >> 16;
-			vy = vy * yawCos - vx * yawSin >> 16;
-			vx = vh;
-			vh = vz * pitchCos - vy * pitchSin >> 16;
-			vz = vz * pitchSin + vy * pitchCos >> 16;
-			vy = vh;
-
-			if (vz >= 50)
+			if (y != Integer.MIN_VALUE)
 			{
-				int x = (clipX1 + clipX2) / 2 + vx * scale / vz;
-				int y = (clipY1 + clipY2) / 2 + vy * scale / vz;
-
-				projectedVerticesX[i] = x;
-				projectedVerticesY[i] = y;
-
 				boolean visibleX = x >= clipX1 && x < clipX2;
 				boolean visibleY = y >= clipY1 && y < clipY2;
 				anyVisible |= visibleX && visibleY;
@@ -873,7 +821,7 @@ public class ModelOutlineRenderer
 		for (PixelDistanceGroupIndex p : ps)
 		{
 			final int[] blockMemory = outlinePixelsBlockBuffer.getMemory();
-			
+
 			final int colorARGB;
 			final int inverseAlpha;
 			{
