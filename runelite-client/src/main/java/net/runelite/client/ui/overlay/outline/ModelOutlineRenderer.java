@@ -77,6 +77,10 @@ public class ModelOutlineRenderer
 	private static final int DIRECT_WRITE_OUTLINE_WIDTH_THRESHOLD = 10;
 
 	private final Client client;
+	
+	// Vertex positions projected on the screen.
+	private final int[] projectedVerticesX = new int[6500];
+	private final int[] projectedVerticesY = new int[6500];
 
 	// Window boundaries for the ingame world
 	private int clipX1;
@@ -94,10 +98,6 @@ public class ModelOutlineRenderer
 
 	// Bitset with pixel positions that would be rendered to within the cropped area by the model.
 	private int[] visited = new int[0];
-
-	// Vertex positions projected on the screen.
-	private int[] projectedVerticesX = new int[6500];
-	private int[] projectedVerticesY = new int[6500];
 
 	// Memory used for queueing the pixels for the outline of the model.
 	// Pixels are grouped by x and y distance to the closest pixel drawn on the model.
