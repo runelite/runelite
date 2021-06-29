@@ -17366,10 +17366,6 @@ public final class ObjectID
 	public static final int STRATEGY_TABLE = 33014;
 	public static final int SMALL_CHEST_33016 = 33016;
 	public static final int WEAPON_RACK_33020 = 33020;
-	public static final int TILE = 33033;
-	public static final int TILE_33034 = 33034;
-	public static final int TILE_33035 = 33035;
-	public static final int TILE_33036 = 33036;
 	public static final int PORTAL_33037 = 33037;
 	public static final int VYRE_WELL_33081 = 33081;
 	public static final int VYRE_WELL_33082 = 33082;
@@ -19915,7 +19911,7 @@ public final class ObjectID
 	public static final int BROKEN_BRIDGE_38809 = 38809;
 	public static final int BROKEN_BRIDGE_38810 = 38810;
 	public static final int BRIDGE_38811 = 38811;
-	public static final int TILE_38822 = 38822;
+	public static final int TILE = 38822;
 	public static final int TILE_38823 = 38823;
 	public static final int TILE_38824 = 38824;
 	public static final int TILE_38825 = 38825;
@@ -21367,8 +21363,6 @@ public final class ObjectID
 	public static final int REWARDS_CHEST_41745 = 41745;
 	public static final int MONUMENTAL_CHEST_41746 = 41746;
 	public static final int ACID_POOL_41747 = 41747;
-	public static final int TILE_41748 = 41748;
-	public static final int TILE_41749 = 41749;
 	public static final int IRON_PICKAXE = 41754;
 	public static final int SILK_STALL_41755 = 41755;
 	public static final int GEM_STALL_41756 = 41756;
