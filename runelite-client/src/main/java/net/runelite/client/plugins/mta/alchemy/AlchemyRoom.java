@@ -79,8 +79,8 @@ public class AlchemyRoom extends MTARoom
 
 	private static final int IMAGE_Z_OFFSET = 150;
 	private static final int NUM_CUPBOARDS = 8;
-	private static final int INFO_ITEM_START = 8;
-	private static final int INFO_POINT_START = 13;
+	private static final int INFO_ITEM_START = 7;
+	private static final int INFO_POINT_START = 12;
 	private static final int INFO_LENGTH = 5;
 	private static final int BEST_POINTS = 30;
 
