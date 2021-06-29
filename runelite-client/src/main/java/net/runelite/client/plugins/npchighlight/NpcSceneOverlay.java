@@ -48,6 +48,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
@@ -67,13 +68,16 @@ public class NpcSceneOverlay extends Overlay
 	private final Client client;
 	private final NpcIndicatorsConfig config;
 	private final NpcIndicatorsPlugin plugin;
+	private final ModelOutlineRenderer modelOutlineRenderer;
 
 	@Inject
-	NpcSceneOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin)
+	NpcSceneOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin,
+		ModelOutlineRenderer modelOutlineRenderer)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+		this.modelOutlineRenderer = modelOutlineRenderer;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
@@ -179,6 +183,11 @@ public class NpcSceneOverlay extends Overlay
 			Polygon southWestTilePoly = Perspective.getCanvasTilePoly(client, new LocalPoint(x, y));
 
 			renderPoly(graphics, color, southWestTilePoly);
+		}
+
+		if (config.highlightOutline())
+		{
+			modelOutlineRenderer.drawOutline(actor, (int)config.borderWidth(), color, config.outlineFeather());
 		}
 
 		if (config.drawNames() && actor.getName() != null)
