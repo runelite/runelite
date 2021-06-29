@@ -84,9 +84,10 @@ public final class ScriptID
 	 * <ul>
 	 * <li> int (boolean) Clear the current text </li>
 	 * <li> int (boolean) Restore to chat view </li>
+	 * <li> int (boolean) Submit close to server </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 2)
+	@ScriptArguments(integer = 3)
 	public static final int MESSAGE_LAYER_CLOSE = 299;
 
 	/**

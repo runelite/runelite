@@ -93,7 +93,8 @@ public class ChatboxPanelManager
 		client.runScript(
 			ScriptID.MESSAGE_LAYER_CLOSE,
 			0,
-			1
+			1,
+			0
 		);
 		if (currentInput != null)
 		{
