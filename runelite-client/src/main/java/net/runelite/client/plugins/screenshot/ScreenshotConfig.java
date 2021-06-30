@@ -283,7 +283,10 @@ public interface ScreenshotConfig extends Config
 		position = 20,
 		section = whatSection
 	)
-	default boolean takeHitsplatShots() { return false; }
+	default boolean takeHitsplatShots()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "hitsplatMin",
@@ -292,7 +295,10 @@ public interface ScreenshotConfig extends Config
 		position = 21,
 		section = whatSection
 	)
-	default int hitsplatMin() {return 50; }
+	default int hitsplatMin()
+	{
+		return 50;
+	}
 
 	@ConfigItem(
 		keyName = "takeEscapeShots",
@@ -301,7 +307,10 @@ public interface ScreenshotConfig extends Config
 		position = 22,
 		section = whatSection
 	)
-	default boolean takeEscapeShots() { return false; }
+	default boolean takeEscapeShots()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "escapeMax",
@@ -310,5 +319,8 @@ public interface ScreenshotConfig extends Config
 		position = 23,
 		section = whatSection
 	)
-	default int escapeMax() { return 5; }
+	default int escapeMax()
+	{
+		return 4;
+	}
 }

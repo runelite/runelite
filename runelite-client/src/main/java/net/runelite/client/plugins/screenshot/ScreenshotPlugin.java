@@ -317,17 +317,21 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied hitsplatApplied) {
-		if (config.takeHitsplatShots()) {
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	{
+		if (config.takeHitsplatShots())
+		{
 			Actor actor = hitsplatApplied.getActor();
 			if (!(actor instanceof NPC))
 			{
 				return;
 			}
 			Hitsplat hitsplat = hitsplatApplied.getHitsplat();
-			if (hitsplat.isMine()) {
+			if (hitsplat.isMine())
+			{
 				int number = hitsplat.getAmount();
-				if (number >= config.hitsplatMin()) {
+				if (number >= config.hitsplatMin())
+				{
 					String fileName = "Hitsplat " + number + " on " + actor.getName();
 					takeScreenshot(fileName, SD_HITSPLATS);
 				}
@@ -338,7 +342,8 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked menuOptionClicked)
 	{
-		if (config.takeEscapeShots()) {
+		if (config.takeEscapeShots())
+		{
 			String optionText = menuOptionClicked.getMenuOption();
 			if (optionText == null)
 			{
