@@ -147,6 +147,7 @@ public class LootTrackerPlugin extends Plugin
 
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
+	private static final Pattern ROGUES_CHEST_PATTERN = Pattern.compile("You find (a|some)([a-z\\s]*) inside.");
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
 	// Used by Stone Chest, Isle of Souls chest, Dark Chest
 	private static final String OTHER_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
@@ -167,6 +168,7 @@ public class LootTrackerPlugin extends Plugin
 		put(7323, "Grubby Chest").
 		put(8593, "Isle of Souls Chest").
 		put(7827, "Dark Chest").
+		put(13117, "Rogues' Chest").
 		build();
 
 	// Shade chest loot handling
@@ -646,7 +648,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(OTHER_CHEST_LOOTED_MESSAGE)
 			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.startsWith(GRUBBY_CHEST_LOOTED_MESSAGE)
-			|| LARRAN_LOOTED_PATTERN.matcher(message).matches())
+			|| LARRAN_LOOTED_PATTERN.matcher(message).matches() || ROGUES_CHEST_PATTERN.matcher(message).matches())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 			if (!CHEST_EVENT_TYPES.containsKey(regionID))
