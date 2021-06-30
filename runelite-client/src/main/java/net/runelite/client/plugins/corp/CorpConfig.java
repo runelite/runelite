@@ -52,4 +52,15 @@ public interface CorpConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showChatDamage",
+		name = "Show damage stats in chat",
+		description = "Shows damage stats in the chat after each kill",
+		position = 3
+	)
+	default boolean showChatDamage()
+	{
+		return true;
+	}
 }
