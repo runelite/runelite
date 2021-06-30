@@ -107,6 +107,7 @@ public class HiscoreServiceTest
 			+ "1234,5678\n" // Tempoross
 			+ "-1,-1\n"
 			+ "-1,-1\n"
+			+ "-1,-1\n"
 			+ "-1,-1\n" // TOB
 			+ "42,42\n" // TOB: Hard Mode
 			+ "29347,130\n"
