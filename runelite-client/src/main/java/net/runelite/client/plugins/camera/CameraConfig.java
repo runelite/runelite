@@ -33,7 +33,7 @@ import net.runelite.client.config.Range;
 public interface CameraConfig extends Config
 {
 	int OUTER_LIMIT_MIN = -400;
-	int OUTER_LIMIT_MAX = 400;
+	int OUTER_LIMIT_MAX = 800;
 	/**
 	 * The largest (most zoomed in) value that can be used without the client crashing.
 	 *
