@@ -34,9 +34,10 @@ import java.awt.Rectangle;
 import java.util.regex.Pattern;
 import lombok.Setter;
 import net.runelite.api.IndexedSprite;
+import net.runelite.client.util.ColorUtil;
 
 @Setter
-public class TooltipComponent implements LayoutableRenderableEntity
+public class TooltipComponent implements LayoutableRenderableEntity, AlphaRenderableEntity
 {
 	private static final Pattern BR = Pattern.compile("</br>");
 	private static final int OFFSET = 4;
@@ -46,6 +47,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private Point position = new Point();
 	private IndexedSprite[] modIcons;
+	private double alphaMultiplier = 1.0;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -79,7 +81,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 		final Rectangle tooltipBackground = new Rectangle(x, y,
 			tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
-		backgroundComponent.setBackgroundColor(backgroundColor);
+		backgroundComponent.setBackgroundColor(ColorUtil.colorWithAlphaMultiplier(backgroundColor, alphaMultiplier));
 		backgroundComponent.setRectangle(tooltipBackground);
 		backgroundComponent.render(graphics);
 		graphics.setColor(Color.WHITE);
@@ -88,7 +90,8 @@ public class TooltipComponent implements LayoutableRenderableEntity
 		int textX = x + OFFSET;
 		int textY = y + OFFSET;
 		int lineX;
-		Color nextColor = Color.WHITE;
+		final Color defaultColor = ColorUtil.colorWithAlphaMultiplier(Color.WHITE, alphaMultiplier);
+		Color nextColor = defaultColor;
 		for (int i = 0; i < lines.length; i++)
 		{
 			lineX = textX;
@@ -103,6 +106,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 				{
 					TextComponent textComponent = new TextComponent();
 					textComponent.setColor(nextColor);
+					textComponent.setAlphaMultiplier(alphaMultiplier);
 					String text = line.substring(begin, j);
 					textComponent.setText(text);
 					textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
@@ -120,11 +124,11 @@ public class TooltipComponent implements LayoutableRenderableEntity
 					if (subLine.startsWith("col="))
 					{
 						String argument = subLine.substring(4);
-						nextColor = Color.decode("#" + argument);
+						nextColor = ColorUtil.colorWithAlphaMultiplier(Color.decode("#" + argument), alphaMultiplier);
 					}
 					else if (subLine.equals("/col"))
 					{
-						nextColor = Color.WHITE;
+						nextColor = defaultColor;
 					}
 					else if (subLine.startsWith("img="))
 					{
@@ -141,6 +145,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 					{
 						TextComponent textComponent = new TextComponent();
 						textComponent.setColor(nextColor);
+						textComponent.setAlphaMultiplier(alphaMultiplier);
 						String text = line.substring(begin, j + 1);
 						textComponent.setText(text);
 						textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
@@ -157,6 +162,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 			// Draw trailing text (after last tag)
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(nextColor);
+			textComponent.setAlphaMultiplier(alphaMultiplier);
 			textComponent.setText(line.substring(begin));
 			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
 			textComponent.render(graphics);
