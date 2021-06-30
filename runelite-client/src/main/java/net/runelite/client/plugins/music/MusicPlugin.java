@@ -188,8 +188,11 @@ public class MusicPlugin extends Plugin
 			channels = new Channel[]{musicChannel, effectChannel, areaChannel};
 
 			addMusicButtons();
-			updateMusicOptions();
-			resetSettingsWindow();
+			if (musicConfig.granularSliders())
+			{
+				updateMusicOptions();
+				resetSettingsWindow();
+			}
 		});
 	}
 
@@ -581,7 +584,11 @@ public class MusicPlugin extends Plugin
 
 			// emulate [proc,settings_update_icon]
 			boolean unmuted = val != 0;
-			icon.getChild(1).setHidden(unmuted);
+			Widget strikethrough = icon.getChild(1);
+			if (strikethrough != null)
+			{
+				strikethrough.setHidden(unmuted);
+			}
 			icon.setAction(0, unmuted ? "Mute" : "Unmute");
 			// Set name + no tooltip; we have our own for ops
 			icon.setName(channel.getName());
@@ -743,6 +750,16 @@ public class MusicPlugin extends Plugin
 			s.update();
 			s.getChannel().setWindowSlider(s);
 		}
+		
+		if (ev.getScriptId() == ScriptID.TOPLEVEL_REDRAW && musicConfig.granularSliders())
+		{
+			// we have to set the var to our value so toplevel_redraw doesn't try to set
+			// the volume to what vanilla has stored
+			for (Channel c : channels)
+			{
+				c.updateVar();
+			}
+		}
 	}
 
 	private class Channel
@@ -788,12 +805,12 @@ public class MusicPlugin extends Plugin
 
 				// the varps are known by the engine and it requires they are stored so
 				// 0 = max and 4 = muted
-				int raw = 4 - client.getVar(var);
+				int raw = client.getVar(var);
 				if (raw == 0)
 				{
-					raw = -(4 - client.getVar(mutedVar));
+					raw = -client.getVar(mutedVar);
 				}
-				value = ((raw * max) / 4);
+				value = raw * this.max / 100;
 
 				// readd our 1 offset for unknown's place
 				value += value < 0 ? -1 : 1;
@@ -842,6 +859,12 @@ public class MusicPlugin extends Plugin
 				windowSlider.update();
 			}
 		}
+		
+		public void updateVar()
+		{
+			int val = getValue();
+			client.getVarps()[this.var.getId()] = val * 100 / this.max;
+		}
 
 		public void shutDown()
 		{
@@ -851,9 +874,7 @@ public class MusicPlugin extends Plugin
 				windowSlider.shutDown();
 			}
 
-			int raw = 4 - client.getVar(var);
-			int value = ((raw * max) / 4);
-			volumeChanger.accept(value);
+			volumeChanger.accept(client.getVar(var) * this.max / 100);
 		}
 	}
 
