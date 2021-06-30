@@ -30,7 +30,9 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
@@ -73,7 +75,11 @@ public class WintertodtPluginTest
 	@Mock
 	@Bind
 	Client client;
-
+	
+	@Mock
+	@Bind
+	Player localPlayer;
+	
 	@Before
 	public void before()
 	{
@@ -84,6 +90,8 @@ public class WintertodtPluginTest
 	public void matchStartingNotification_shouldNotify_when15SecondsOptionSelected()
 	{
 		when(config.roundNotification()).thenReturn(15);
+		when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1630, 3983, 0));
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
 
 		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(35);
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
@@ -98,6 +106,8 @@ public class WintertodtPluginTest
 	public void matchStartingNotification_shouldNotify_when10SecondsOptionSelected()
 	{
 		when(config.roundNotification()).thenReturn(10);
+		when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1630, 3983, 0));
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
 
 		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(20);
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
@@ -112,6 +122,8 @@ public class WintertodtPluginTest
 	public void matchStartingNotification_shouldNotify_when5SecondsOptionSelected()
 	{
 		when(config.roundNotification()).thenReturn(5);
+		when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1630, 3983, 0));
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
 
 		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(10);
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
@@ -126,6 +138,8 @@ public class WintertodtPluginTest
 	public void matchStartingNotification_shouldNotifyOnce()
 	{
 		when(config.roundNotification()).thenReturn(5);
+		when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1630, 3983, 0));
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
 
 		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(0);
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
@@ -151,5 +165,32 @@ public class WintertodtPluginTest
 
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
 		verify(notifier, times(0)).notify("Wintertodt round is about to start");
+	}
+	
+	@Test
+	public void matchStartingNotification_shouldNotRepeatNotify_whenNotAtWintertodt()
+	{
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
+		when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(1234, 1234, 0));
+		when(config.roundNotification()).thenReturn(5);
+
+		// set prevTimer
+		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(12);
+		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		
+		// notify once
+		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(8);
+		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		verify(notifier, times(1)).notify("Wintertodt round is about to start");
+
+		// set prevTimer
+		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(12);
+		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+
+		// shouldn't notify
+		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(8);
+		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+
+		verify(notifier, times(1)).notify("Wintertodt round is about to start");
 	}
 }
