@@ -41,7 +41,7 @@ class HotkeyButton extends JButton
 
 	public HotkeyButton(Keybind value, boolean modifierless)
 	{
-		setFont(FontManager.getDefaultFont().deriveFont(12.f));
+		setFont(FontManager.getDefaultFont());
 		setValue(value);
 		addMouseListener(new MouseAdapter()
 		{
