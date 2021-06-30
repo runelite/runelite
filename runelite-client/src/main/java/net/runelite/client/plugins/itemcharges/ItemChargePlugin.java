@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -129,6 +130,17 @@ public class ItemChargePlugin extends Plugin
 		"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
 	);
 	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
+	private static final Pattern KHAREDSTS_MEMOIRS_USE_PATTERN = Pattern.compile(
+		"Kharedst's Memoirs now has (\\d+) memor(ies|y) remaining\\."
+	);
+	private static final String KHAREDSTS_MEMOIRS_NO_CHARGES_TEXT = "Kharedst's Memoir holds no charge.";
+	private static final Pattern KHAREDSTS_MEMOIRS_CHECK_PATTERN = Pattern.compile(
+		"On the inside of the cover a message is displayed in dark ink\\. It reads: (\\d+) memories remain\\."
+	);
+	private static final Pattern KHAREDSTS_MEMOIRS_ADD_CHARGES_PATTERN = Pattern.compile(
+		"Kharedst's Memoir now has (\\d+) charges\\."
+	);
+	private static final String KHAREDSTS_MEMOIRS_ADD_PAGE_TEXT = "You add an entry to Kharedst's Memoirs.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -226,6 +238,7 @@ public class ItemChargePlugin extends Plugin
 			Matcher slaughterCheckMatcher = BRACELET_OF_SLAUGHTER_CHECK_PATTERN.matcher(message);
 			Matcher expeditiousActivateMatcher = EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN.matcher(message);
 			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
+			Matcher kharedstsMemoirsUseMatcher = KHAREDSTS_MEMOIRS_USE_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -411,6 +424,14 @@ public class ItemChargePlugin extends Plugin
 			{
 				updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
 			}
+			else if (kharedstsMemoirsUseMatcher.find())
+			{
+				setItemCharges(ItemChargeConfig.KEY_KHAREDSTS_MEMOIRS, Integer.parseInt(kharedstsMemoirsUseMatcher.group(1)));
+			}
+			else if (message.equals(KHAREDSTS_MEMOIRS_NO_CHARGES_TEXT))
+			{
+				setItemCharges(ItemChargeConfig.KEY_KHAREDSTS_MEMOIRS, 0);
+			}
 		}
 	}
 
@@ -461,6 +482,10 @@ public class ItemChargePlugin extends Plugin
 				Widget sprite = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
 				if (sprite != null)
 				{
+					String widgetText = Optional.ofNullable(client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT))
+						.map(Widget::getText)
+						.map(text -> Text.removeTags(text.replace("<br>", " ")))
+						.orElse(null);
 					switch (sprite.getItemId())
 					{
 						case ItemID.DODGY_NECKLACE:
@@ -482,6 +507,40 @@ public class ItemChargePlugin extends Plugin
 						case ItemID.EXPEDITIOUS_BRACELET:
 							log.debug("Reset expeditious bracelet");
 							updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
+							break;
+						case ItemID.KHAREDSTS_MEMOIRS:
+							if (widgetText == null)
+							{
+								return;
+							}
+							Matcher kharedstsMemoirsCheckMatcher = KHAREDSTS_MEMOIRS_CHECK_PATTERN.matcher(widgetText);
+							Matcher kharedstsMemoirsAddMatcher = KHAREDSTS_MEMOIRS_ADD_CHARGES_PATTERN.matcher(widgetText);
+							if (kharedstsMemoirsCheckMatcher.find())
+							{
+								setItemCharges(ItemChargeConfig.KEY_KHAREDSTS_MEMOIRS, Integer.parseInt(kharedstsMemoirsCheckMatcher.group(1)));
+							}
+							else if (kharedstsMemoirsAddMatcher.find())
+							{
+								setItemCharges(ItemChargeConfig.KEY_KHAREDSTS_MEMOIRS, Integer.parseInt(kharedstsMemoirsAddMatcher.group(1)));
+							}
+							break;
+						case ItemID.LUNCH_BY_THE_LANCALLIUMS:
+						case ItemID.THE_FISHERS_FLUTE:
+						case ItemID.HISTORY_AND_HEARSAY:
+						case ItemID.JEWELLERY_OF_JUBILATION:
+						case ItemID.A_DARK_DISPOSITION:
+							if (widgetText == null)
+							{
+								return;
+							}
+							if (widgetText.equals(KHAREDSTS_MEMOIRS_ADD_PAGE_TEXT))
+							{
+								final int itemCharges = getItemCharges(ItemChargeConfig.KEY_KHAREDSTS_MEMOIRS);
+								if (itemCharges >= 0)
+								{
+									setItemCharges(ItemChargeConfig.KEY_KHAREDSTS_MEMOIRS, itemCharges + 8);
+								}
+							}
 							break;
 					}
 				}
