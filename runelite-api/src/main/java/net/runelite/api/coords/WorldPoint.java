@@ -373,4 +373,34 @@ public class WorldPoint
 	{
 		return position & (REGION_SIZE - 1);
 	}
+
+	/**
+	 * @return true if at least one WorldArea contains this point, false otherwise.
+	 */
+	public boolean inArea(WorldArea... worldAreas)
+	{
+		for (WorldArea area : worldAreas)
+		{
+			if (area.contains(this))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @return true if at least one WorldArea contains this point, false otherwise.
+	 */
+	public boolean inArea2D(WorldArea... worldAreas)
+	{
+		for (WorldArea area : worldAreas)
+		{
+			if (area.contains2D(this))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }
