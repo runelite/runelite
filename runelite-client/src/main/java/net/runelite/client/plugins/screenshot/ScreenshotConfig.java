@@ -275,4 +275,40 @@ public interface ScreenshotConfig extends Config
 	{
 		return Keybind.NOT_SET;
 	}
+
+	@ConfigItem(
+		keyName = "takeHitsplatShots",
+		name = "Screenshot High Hitting Hitsplats",
+		description = "Configures whether or not screenshots are automatically taken when you hit a high damage hitsplat.",
+		position = 20,
+		section = whatSection
+	)
+	default boolean takeHitsplatShots() { return false; }
+
+	@ConfigItem(
+		keyName = "hitsplatMin",
+		name = "Hitsplat Minimum",
+		description = "The minimum value to save screenshots of hitsplats.",
+		position = 21,
+		section = whatSection
+	)
+	default int hitsplatMin() {return 50; }
+
+	@ConfigItem(
+		keyName = "takeEscapeShots",
+		name = "Screenshot when escaping",
+		description = "Configures whether or not screenshots are automatically taken when you click a teleport tab with low hp.",
+		position = 22,
+		section = whatSection
+	)
+	default boolean takeEscapeShots() { return false; }
+
+	@ConfigItem(
+		keyName = "escapeMax",
+		name = "Escape Max HP",
+		description = "The maximum HP value to save screenshots when teleporting.",
+		position = 23,
+		section = whatSection
+	)
+	default int escapeMax() { return 5; }
 }

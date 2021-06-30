@@ -52,11 +52,16 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Hitsplat;
+import net.runelite.api.Skill;
+import net.runelite.api.NPC;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -130,6 +135,8 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_COLLECTION_LOG = "Collection Log";
 	private static final String SD_PVP_KILLS = "PvP Kills";
 	private static final String SD_DEATHS = "Deaths";
+	private static final String SD_HITSPLATS = "Hitsplats";
+	private static final String SD_ESCAPES = "Escapes";
 
 	private String clueType;
 	private Integer clueNumber;
@@ -305,6 +312,46 @@ public class ScreenshotPlugin extends Plugin
 			else if (player != client.getLocalPlayer() && (player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
 			{
 				takeScreenshot("Death " + player.getName(), SD_DEATHS);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied) {
+		if (config.takeHitsplatShots()) {
+			Actor actor = hitsplatApplied.getActor();
+			if (!(actor instanceof NPC))
+			{
+				return;
+			}
+			Hitsplat hitsplat = hitsplatApplied.getHitsplat();
+			if (hitsplat.isMine()) {
+				int number = hitsplat.getAmount();
+				if (number >= config.hitsplatMin()) {
+					String fileName = "Hitsplat " + number + " on " + actor.getName();
+					takeScreenshot(fileName, SD_HITSPLATS);
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(final MenuOptionClicked menuOptionClicked)
+	{
+		if (config.takeEscapeShots()) {
+			String optionText = menuOptionClicked.getMenuOption();
+			if (optionText == null)
+			{
+				return;
+			}
+			if (optionText.equals("Break") || optionText.equals("Inside") || optionText.equals("Outside"))
+			{
+				int hitpoints = client.getBoostedSkillLevel(Skill.HITPOINTS);
+				if(hitpoints <= config.escapeMax())
+				{
+					String fileName = "Escaped with " + hitpoints + " hitpoints";
+					takeScreenshot(fileName, SD_ESCAPES);
+				}
 			}
 		}
 	}
