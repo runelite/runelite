@@ -64,12 +64,7 @@ class BurnerOverlay extends Overlay
 
 		plugin.getIncenseBurners().forEach((tile, burner) ->
 		{
-			if (tile.getPlane() != client.getPlane())
-			{
-				return;
-			}
-
-			if (!PohPlugin.BURNER_LIT.contains(burner.getId()))
+			if (tile.getPlane() != client.getPlane() || !burner.isLit())
 			{
 				return;
 			}
@@ -103,6 +98,10 @@ class BurnerOverlay extends Overlay
 
 			if (certainSec > 0)
 			{
+				if (certainSec < 10)
+				{
+					burner.setBurnerCloseToExpiration(true);
+				}
 				pieComponent.setProgress(certainSec / burner.getCountdownTimer());
 				pieComponent.setFill(Color.GREEN);
 				pieComponent.setBorderColor(Color.GREEN);
