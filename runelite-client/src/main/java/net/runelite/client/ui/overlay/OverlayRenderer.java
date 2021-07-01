@@ -949,9 +949,9 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		// Constrain overlay position to be within the parent bounds
 		return new Point(
 			Ints.constrainToRange(overlayX, parentBounds.x,
-				Math.max(parentBounds.x, parentBounds.width - overlayWidth)),
+				Math.max(parentBounds.x, parentBounds.x + parentBounds.width - overlayWidth)),
 			Ints.constrainToRange(overlayY, parentBounds.y,
-				Math.max(parentBounds.y, parentBounds.height - overlayHeight))
+				Math.max(parentBounds.y, parentBounds.y + parentBounds.height - overlayHeight))
 		);
 	}
 }
