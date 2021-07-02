@@ -278,7 +278,7 @@ class XpInfoBox extends JPanel
 			{
 				final List<Integer> positions = new ArrayList<>();
 
-				for (int level = xpSnapshotSingle.getStartLevel() + 1; level < xpSnapshotSingle.getEndLevel(); level++)
+				for (int level = xpSnapshotSingle.getStartLevel() + 1; level <= xpSnapshotSingle.getEndLevel(); level++)
 				{
 					double relativeStartExperience = Experience.getXpForLevel(level) - xpSnapshotSingle.getStartGoalXp();
 					double relativeEndExperience = xpSnapshotSingle.getEndGoalXp() - xpSnapshotSingle.getStartGoalXp();
