@@ -1738,11 +1738,21 @@ public class ChatCommandsPlugin extends Plugin
 			case "the corrupted gauntlet":
 				return "Corrupted Gauntlet";
 
+			// The Nightmare
 			case "nm":
 			case "tnm":
 			case "nmare":
 			case "the nightmare":
 				return "Nightmare";
+
+			// Phosani's Nightmare
+			case "pnm":
+			case "phosani":
+			case "phosanis":
+			case "phosani nm":
+			case "phosani nightmare":
+			case "phosanis nightmare":
+				return "Phosani's Nightmare";
 
 			// Hallowed Sepulchre
 			case "hs":
