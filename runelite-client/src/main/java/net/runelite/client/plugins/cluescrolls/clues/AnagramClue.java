@@ -149,7 +149,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("TEN WIGS ON", "Wingstone", new WorldPoint(3389, 2877, 0), "Between Nardah & Agility Pyramid"),
 		new AnagramClue("THEM CAL CAME", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Just outside of the Duel Arena"),
 		new AnagramClue("THICKNO", "Hickton", new WorldPoint(2822, 3442, 0), "Catherby fletching shop", "How many ranges are there in Catherby?", "2"),
-		new AnagramClue("TWENTY CURE IRON", "New recruit Tony", new WorldPoint(1503, 3553, 0), "Shayzien Graveyard"),
+		new AnagramClue("TWENTY CURE IRON", "New Recruit Tony", new WorldPoint(1503, 3553, 0), "Shayzien Graveyard"),
 		new AnagramClue("UNLEASH NIGHT MIST", "Sigli the Huntsman", new WorldPoint(2660, 3654, 0), "Rellekka", "What is the combined slayer requirement of every monster in the slayer cave?", "302"),
 		new AnagramClue("VESTE", "Steve", new WorldPoint(2432, 3423, 0), "Upstairs Wyvern Area or Stronghold Slayer Cave", "How many farming patches are there in Gnome stronghold?", "2"),
 		new AnagramClue("VEIL VEDA", "Evil Dave", new WorldPoint(3079, 9892, 0), "Doris' basement, Edgeville", "What is 333 multiplied by 2?", "666"),
