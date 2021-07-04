@@ -33,6 +33,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -64,22 +65,39 @@ class LootTrackerBox extends JPanel
 	private static final int ITEMS_PER_ROW = 5;
 	private static final int TITLE_PADDING = 5;
 
+	private static final String SESSION_TITLE_TEXT = "Session";
+	private static final String AGGREGATE_TITLE_TEXT = "Aggregate";
+
+	private final JPanel lootPanel = new JPanel();
 	private final JPanel itemContainer = new JPanel();
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
 	private final JPanel logTitle = new JPanel();
+	private final JPanel sessionTitle = new JPanel();
+	private final JPanel aggregateTitle = new JPanel();
+	private final JLabel sessionPriceLabel = new JLabel();
+	private final JLabel aggregatePriceLabel = new JLabel();
+	private final JLabel sessionSubTitleLabel = new JLabel();
+	private final JLabel aggregateSubTitleLabel = new JLabel();
+	private final JPanel sessionItemContainer = new JPanel();
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
 	private final LootRecordType lootRecordType;
 	private final LootTrackerPriceType priceType;
 	private final boolean showPriceType;
+	private final boolean groupLoot;
+	private final boolean splitGroupLoot;
 
-	private int kills;
+	private int sessionKills;
+	private int aggregateKills;
 	@Getter
-	private final List<LootTrackerItem> items = new ArrayList<>();
+	private final List<LootTrackerItem> sessionItems = new ArrayList<>();
+	@Getter
+	private final List<LootTrackerItem> aggregateItems = new ArrayList<>();
 
-	private long totalPrice;
+	private long sessionPrice;
+	private long aggregatePrice;
 	private final boolean hideIgnoredItems;
 	private final BiConsumer<String, Boolean> onItemToggle;
 
@@ -93,7 +111,9 @@ class LootTrackerBox extends JPanel
 		final boolean showPriceType,
 		final BiConsumer<String, Boolean> onItemToggle,
 		final BiConsumer<String, Boolean> onEventToggle,
-		final boolean eventIgnored)
+		final boolean eventIgnored,
+		final boolean groupLoot,
+		final boolean splitGroupLoot)
 	{
 		this.id = id;
 		this.lootRecordType = lootRecordType;
@@ -102,6 +122,8 @@ class LootTrackerBox extends JPanel
 		this.hideIgnoredItems = hideIgnoredItems;
 		this.priceType = priceType;
 		this.showPriceType = showPriceType;
+		this.groupLoot = groupLoot;
+		this.splitGroupLoot = splitGroupLoot;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -135,8 +157,18 @@ class LootTrackerBox extends JPanel
 		priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		logTitle.add(priceLabel);
 
+		lootPanel.setLayout(new BoxLayout(lootPanel, BoxLayout.Y_AXIS));
+
+		buildSubsectionPanel(sessionTitle, SESSION_TITLE_TEXT, sessionPriceLabel, sessionSubTitleLabel);
+		buildSubsectionPanel(aggregateTitle, AGGREGATE_TITLE_TEXT, aggregatePriceLabel, aggregateSubTitleLabel);
+
+		lootPanel.add(sessionTitle);
+		lootPanel.add(sessionItemContainer);
+		lootPanel.add(aggregateTitle);
+		lootPanel.add(itemContainer);
+
 		add(logTitle, BorderLayout.NORTH);
-		add(itemContainer, BorderLayout.CENTER);
+		add(lootPanel, BorderLayout.CENTER);
 
 		// Create popup menu for ignoring the loot event
 		final JPopupMenu popupMenu = new JPopupMenu();
@@ -155,7 +187,7 @@ class LootTrackerBox extends JPanel
 	 */
 	private int getTotalKills()
 	{
-		return kills;
+		return sessionKills + aggregateKills;
 	}
 
 	/**
@@ -189,35 +221,29 @@ class LootTrackerBox extends JPanel
 	/**
 	 * Adds an record's data into a loot box.
 	 */
-	void addKill(final LootTrackerRecord record)
+	void addKill(final LootTrackerRecord record, final Boolean currentSession)
 	{
 		if (!matches(record))
 		{
 			throw new IllegalArgumentException(record.toString());
 		}
 
-		kills += record.getKills();
-
-		outer:
-		for (LootTrackerItem item : record.getItems())
+		if (currentSession)
 		{
-			final int mappedItemId = LootTrackerMapping.map(item.getId(), item.getName());
-			// Combine it into an existing item if one already exists
-			for (int idx = 0; idx < items.size(); ++idx)
+			sessionKills += record.getKills();
+			sessionItemContainer.setVisible(true);
+			if (groupLoot && splitGroupLoot)
 			{
-				LootTrackerItem i = items.get(idx);
-				if (mappedItemId == i.getId())
-				{
-					items.set(idx, new LootTrackerItem(i.getId(), i.getName(), i.getQuantity() + item.getQuantity(), i.getGePrice(), i.getHaPrice(), i.isIgnored()));
-					continue outer;
-				}
+				sessionTitle.setVisible(true);
 			}
-
-			final LootTrackerItem mappedItem = mappedItemId == item.getId()
-				? item // reuse existing item
-				: new LootTrackerItem(mappedItemId, item.getName(), item.getQuantity(), item.getGePrice(), item.getHaPrice(), item.isIgnored());
-			items.add(mappedItem);
 		}
+		else
+		{
+			aggregateKills += record.getKills();
+		}
+
+		List<LootTrackerItem> items = currentSession ? sessionItems : aggregateItems;
+		mergeLootTrackerItems(items, Arrays.asList(record.getItems()));
 	}
 
 	void rebuild()
@@ -230,6 +256,7 @@ class LootTrackerBox extends JPanel
 			priceTypeString = priceType == LootTrackerPriceType.HIGH_ALCHEMY ? "HA: " : "GE: ";
 		}
 
+		long totalPrice = sessionPrice + aggregatePrice;
 		priceLabel.setText(priceTypeString + QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
 		priceLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice) + " gp");
 
@@ -240,6 +267,26 @@ class LootTrackerBox extends JPanel
 			subTitleLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice / kills) + " gp (average)");
 		}
 
+		if (splitGroupLoot)
+		{
+			if (sessionKills > 1)
+			{
+				sessionSubTitleLabel.setText("x " + sessionKills);
+				sessionSubTitleLabel.setToolTipText(QuantityFormatter.formatNumber(sessionPrice / sessionKills) + " gp (average)");
+			}
+
+			if (aggregateKills > 1)
+			{
+				aggregateSubTitleLabel.setText("x " + aggregateKills);
+				aggregateSubTitleLabel.setToolTipText(QuantityFormatter.formatNumber(aggregatePrice / aggregateKills) + " gp (average)");
+			}
+
+			sessionPriceLabel.setText(priceTypeString + QuantityFormatter.quantityToStackSize(sessionPrice) + " gp");
+			sessionPriceLabel.setToolTipText(QuantityFormatter.formatNumber(sessionPrice) + " gp");
+			aggregatePriceLabel.setText(priceTypeString + QuantityFormatter.quantityToStackSize(aggregatePrice) + " gp");
+			aggregatePriceLabel.setToolTipText(QuantityFormatter.formatNumber(aggregatePrice) + " gp");
+		}
+
 		validate();
 		repaint();
 	}
@@ -248,7 +295,7 @@ class LootTrackerBox extends JPanel
 	{
 		if (!isCollapsed())
 		{
-			itemContainer.setVisible(false);
+			lootPanel.setVisible(false);
 			applyDimmer(false, logTitle);
 		}
 	}
@@ -257,14 +304,14 @@ class LootTrackerBox extends JPanel
 	{
 		if (isCollapsed())
 		{
-			itemContainer.setVisible(true);
+			lootPanel.setVisible(true);
 			applyDimmer(true, logTitle);
 		}
 	}
 
 	boolean isCollapsed()
 	{
-		return !itemContainer.isVisible();
+		return !lootPanel.isVisible();
 	}
 
 	private void applyDimmer(boolean brighten, JPanel panel)
@@ -283,15 +330,18 @@ class LootTrackerBox extends JPanel
 	 */
 	private void buildItems()
 	{
-		totalPrice = 0;
+		aggregatePrice = 0;
+		sessionPrice = 0;
 
-		List<LootTrackerItem> items = this.items;
+		List<LootTrackerItem> sessionItems = this.sessionItems;
+		List<LootTrackerItem> previousItems = this.aggregateItems;
 		if (hideIgnoredItems)
 		{
-			items = items.stream().filter(item -> !item.isIgnored()).collect(Collectors.toList());
+			sessionItems = sessionItems.stream().filter(item -> !item.isIgnored()).collect(Collectors.toList());
+			previousItems = previousItems.stream().filter(item -> !item.isIgnored()).collect(Collectors.toList());
 		}
 
-		boolean isHidden = items.isEmpty();
+		boolean isHidden = sessionItems.isEmpty() && previousItems.isEmpty();
 		setVisible(!isHidden);
 
 		if (isHidden)
@@ -299,21 +349,100 @@ class LootTrackerBox extends JPanel
 			return;
 		}
 
+		if (splitGroupLoot)
+		{
+			if (sessionItems.isEmpty())
+			{
+				sessionTitle.setVisible(false);
+				sessionItemContainer.setVisible(false);
+			}
+			else if (!groupLoot)
+			{
+				sessionTitle.setVisible(false);
+			}
+
+			if (previousItems.isEmpty())
+			{
+				aggregateTitle.setVisible(false);
+				itemContainer.setVisible(false);
+			}
+		}
+		else
+		{
+			sessionTitle.setVisible(false);
+			sessionItemContainer.setVisible(false);
+			aggregateTitle.setVisible(false);
+			itemContainer.setVisible(true);
+		}
+
 		ToLongFunction<LootTrackerItem> getPrice = priceType == LootTrackerPriceType.HIGH_ALCHEMY
 			? LootTrackerItem::getTotalHaPrice
 			: LootTrackerItem::getTotalGePrice;
 
-		totalPrice = items.stream()
-			.mapToLong(getPrice)
-			.sum();
+		sessionPrice = sessionItems.stream().mapToLong(getPrice).sum();
+		aggregatePrice = previousItems.stream().mapToLong(getPrice).sum();
 
+		if (splitGroupLoot)
+		{
+			buildItemContainer(sessionItems, sessionItemContainer, getPrice);
+			buildItemContainer(previousItems, itemContainer, getPrice);
+		}
+		else
+		{
+			List<LootTrackerItem> items = new ArrayList<>(previousItems);
+			mergeLootTrackerItems(items, sessionItems);
+			buildItemContainer(items, itemContainer, getPrice);
+		}
+	}
+
+	private static String buildToolTip(LootTrackerItem item)
+	{
+		final String name = item.getName();
+		final int quantity = item.getQuantity();
+		final long gePrice = item.getTotalGePrice();
+		final long haPrice = item.getTotalHaPrice();
+		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
+		return "<html>" + name + " x " + quantity + ignoredLabel
+			+ "<br>GE: " + QuantityFormatter.quantityToStackSize(gePrice)
+			+ "<br>HA: " + QuantityFormatter.quantityToStackSize(haPrice) + "</html>";
+	}
+
+	private void buildSubsectionPanel(JPanel title, String titleText, JLabel sectionPriceLabel, JLabel killTotalLabel)
+	{
+		title.setLayout(new BoxLayout(title, BoxLayout.X_AXIS));
+		title.setBorder(new EmptyBorder(5, 7, 5, 7));
+		title.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+
+		JLabel titleLabel = new JLabel();
+		titleLabel.setText(titleText);
+		titleLabel.setFont(FontManager.getRunescapeSmallFont());
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setMinimumSize(new Dimension(1, titleLabel.getPreferredSize().height));
+		title.add(titleLabel);
+
+		killTotalLabel.setFont(FontManager.getRunescapeSmallFont());
+		killTotalLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+
+		title.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
+		title.add(killTotalLabel);
+		title.add(Box.createHorizontalGlue());
+		title.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
+
+		sectionPriceLabel.setFont(FontManager.getRunescapeSmallFont());
+		sectionPriceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		title.add(sectionPriceLabel);
+	}
+
+	private void buildItemContainer(List<LootTrackerItem> items, JPanel container,
+									ToLongFunction<LootTrackerItem> getPrice)
+	{
 		items.sort(Comparator.comparingLong(getPrice).reversed());
 
 		// Calculates how many rows need to be display to fit all items
 		final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
 
-		itemContainer.removeAll();
-		itemContainer.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
+		container.removeAll();
+		container.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
 		for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++)
 		{
@@ -362,21 +491,33 @@ class LootTrackerBox extends JPanel
 				popupMenu.add(toggle);
 			}
 
-			itemContainer.add(slotContainer);
+			container.add(slotContainer);
 		}
 
-		itemContainer.repaint();
+		container.repaint();
 	}
 
-	private static String buildToolTip(LootTrackerItem item)
+	private void mergeLootTrackerItems(final List<LootTrackerItem> currentItems, final List<LootTrackerItem> addedItems)
 	{
-		final String name = item.getName();
-		final int quantity = item.getQuantity();
-		final long gePrice = item.getTotalGePrice();
-		final long haPrice = item.getTotalHaPrice();
-		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
-		return "<html>" + name + " x " + quantity + ignoredLabel
-			+ "<br>GE: " + QuantityFormatter.quantityToStackSize(gePrice)
-			+ "<br>HA: " + QuantityFormatter.quantityToStackSize(haPrice) + "</html>";
+		outer:
+		for (LootTrackerItem item : addedItems)
+		{
+			final int mappedItemId = LootTrackerMapping.map(item.getId(), item.getName());
+			// Combine it into an existing item if one already exists
+			for (int idx = 0; idx < currentItems.size(); ++idx)
+			{
+				LootTrackerItem i = currentItems.get(idx);
+				if (mappedItemId == i.getId())
+				{
+					currentItems.set(idx, new LootTrackerItem(i.getId(), i.getName(), i.getQuantity() + item.getQuantity(), i.getGePrice(), i.getHaPrice(), i.isIgnored()));
+					continue outer;
+				}
+			}
+
+			final LootTrackerItem mappedItem = mappedItemId == item.getId()
+				? item // reuse existing item
+				: new LootTrackerItem(mappedItemId, item.getName(), item.getQuantity(), item.getGePrice(), item.getHaPrice(), item.isIgnored());
+			currentItems.add(mappedItem);
+		}
 	}
 }

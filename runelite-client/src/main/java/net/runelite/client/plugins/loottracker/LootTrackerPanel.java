@@ -363,7 +363,7 @@ class LootTrackerPanel extends PluginPanel
 			return;
 		}
 
-		LootTrackerBox box = buildBox(record);
+		LootTrackerBox box = buildBox(record, true);
 		if (box != null)
 		{
 			box.rebuild();
@@ -446,15 +446,15 @@ class LootTrackerPanel extends PluginPanel
 	/**
 	 * Rebuilds all the boxes from scratch using existing listed records, depending on the grouping mode.
 	 */
-	private void rebuild()
+	void rebuild()
 	{
 		SwingUtil.fastRemoveAll(logsContainer);
 		boxes.clear();
 
 		if (groupLoot)
 		{
-			aggregateRecords.forEach(this::buildBox);
-			sessionRecords.forEach(this::buildBox);
+			aggregateRecords.forEach(record -> buildBox(record, false));
+			sessionRecords.forEach(record -> buildBox(record, true));
 		}
 		else
 		{
@@ -467,7 +467,7 @@ class LootTrackerPanel extends PluginPanel
 				// since we are looping in reverse order we need to use a data type that support reverse iterating
 				.collect(Collectors.toCollection(ArrayDeque::new))
 				.descendingIterator()
-				.forEachRemaining(this::buildBox);
+				.forEachRemaining(record -> buildBox(record, true));
 		}
 
 		boxes.forEach(LootTrackerBox::rebuild);
@@ -481,7 +481,7 @@ class LootTrackerPanel extends PluginPanel
 	 * add its items to it, updating the log's overall price and kills. If not, a new log will be created
 	 * to hold this entry's information.
 	 */
-	private LootTrackerBox buildBox(LootTrackerRecord record)
+	private LootTrackerBox buildBox(LootTrackerRecord record, boolean currentSession)
 	{
 		// If this record is not part of current view, return
 		if (!record.matches(currentView, currentType))
@@ -504,7 +504,7 @@ class LootTrackerPanel extends PluginPanel
 				{
 					// float the matched box to the top of the UI list if it's not already first
 					logsContainer.setComponentZOrder(box, 0);
-					box.addKill(record);
+					box.addKill(record, currentSession);
 					return box;
 				}
 			}
@@ -517,8 +517,9 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
-			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent, isIgnored);
-		box.addKill(record);
+			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent,
+			isIgnored, groupLoot, config.splitGroupLoot());
+		box.addKill(record, currentSession);
 
 		// Use the existing popup menu or create a new one
 		JPopupMenu popupMenu = box.getComponentPopupMenu();

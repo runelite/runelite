@@ -148,4 +148,14 @@ public interface LootTrackerConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "splitLootGroup",
+		name = "Split group loot section",
+		description = "Split the group loot tracker by current session and aggregate data."
+	)
+	default boolean splitGroupLoot()
+	{
+		return false;
+	}
 }
