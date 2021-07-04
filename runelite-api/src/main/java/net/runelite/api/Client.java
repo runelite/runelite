@@ -1028,6 +1028,39 @@ public interface Client extends GameEngine
 	List<GraphicsObject> getGraphicsObjects();
 
 	/**
+	 * Creates a RuneliteObject which is our customizable implementation of GraphicsObject
+	 *
+	 * @return the created RuneliteObject
+	 */
+	RuneLiteObject createRuneLiteObject();
+
+	/**
+	 * Loads a model from the cache
+	 *
+	 * @param id the ID of the model
+	 * @return the model
+	 */
+	Model loadModel(int id);
+
+	/**
+	 * Loads a model from the cache and also recolors it
+	 *
+	 * @param id the ID of the model
+	 * @param colorToFind array of hsl color values to find in the model to replace
+	 * @param colorToReplace array of hsl color values to replace in the model
+	 * @return the model
+	 */
+	Model loadModel(int id, short[] colorToFind, short[] colorToReplace);
+
+	/**
+	 * Loads an animation from the cache
+	 *
+	 * @param id the ID of the animation
+	 * @return the animation
+	 */
+	Sequence loadAnimation(int id);
+
+	/**
 	 * Gets the music volume
 	 * @return volume 0-255 inclusive
 	 */
