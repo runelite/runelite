@@ -234,22 +234,10 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "flashNotification",
-		name = "Flash",
-		description = "Flashes the game frame as a notification",
-		position = 24,
-		section = notificationSettings
-	)
-	default FlashNotification flashNotification()
-	{
-		return FlashNotification.DISABLED;
-	}
-
-	@ConfigItem(
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
 		description = "Toggles all notifications for when the client is focused",
-		position = 25,
+		position = 24,
 		section = notificationSettings
 	)
 	default boolean sendNotificationsWhenFocused()
@@ -257,17 +245,41 @@ public interface RuneLiteConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		keyName = "flashNotification",
+		name = "Flash notification",
+		description = "Flashes the game frame as a notification",
+		position = 25,
+		section = notificationSettings
+	)
+	default FlashNotification flashNotification()
+	{
+		return FlashNotification.DISABLED;
+	}
+
 	@Alpha
 	@ConfigItem(
 		keyName = "notificationFlashColor",
-		name = "Notification Flash",
-		description = "Sets the color of the notification flashes.",
+		name = "Flash notification color",
+		description = "Sets the color of the notification flashes",
 		position = 26,
 		section = notificationSettings
 	)
 	default Color notificationFlashColor()
 	{
 		return new Color(255, 0, 0, 70);
+	}
+
+	@ConfigItem(
+		keyName = "smoothFlashNotification",
+		name = "Smooth flash notification",
+		description = "Smoothly fade the notification flashes in and out",
+		position = 27,
+		section = notificationSettings
+	)
+	default boolean smoothFlashNotification()
+	{
+		return false;
 	}
 
 	@ConfigItem(
