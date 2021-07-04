@@ -559,13 +559,13 @@ public class ClientLoader implements Supplier<Applet>
 
 	private static Certificate[] getJagexCertificateChain()
 	{
-		try
+		try (InputStream in = ClientLoader.class.getResourceAsStream("jagex.crt"))
 		{
 			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-			Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
+			Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(in);
 			return certificates.toArray(new Certificate[0]);
 		}
-		catch (CertificateException e)
+		catch (CertificateException | IOException e)
 		{
 			throw new RuntimeException("Unable to parse pinned certificates", e);
 		}

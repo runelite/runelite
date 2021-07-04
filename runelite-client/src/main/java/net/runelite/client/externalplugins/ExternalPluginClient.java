@@ -30,6 +30,7 @@ import com.google.gson.JsonSyntaxException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -134,13 +135,12 @@ public class ExternalPluginClient
 
 	private static Certificate loadCertificate()
 	{
-		try
+		try (InputStream in = ExternalPluginClient.class.getResourceAsStream("externalplugins.crt"))
 		{
 			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-			Certificate certificate = certFactory.generateCertificate(ExternalPluginClient.class.getResourceAsStream("externalplugins.crt"));
-			return certificate;
+			return certFactory.generateCertificate(in);
 		}
-		catch (CertificateException e)
+		catch (CertificateException | IOException e)
 		{
 			throw new RuntimeException(e);
 		}
