@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,45 +24,56 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import java.time.Instant;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import lombok.Builder;
-import lombok.Data;
+import net.runelite.api.AnimationID;
+import net.runelite.api.Client;
+import net.runelite.api.JagexColor;
+import net.runelite.api.RuneLiteObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import java.awt.Color;
 
-@Data
-@Builder
-class GroundItem
+class Lootbeam
 {
-	private int id;
-	private int itemId;
-	private String name;
-	private int quantity;
-	private WorldPoint location;
-	private int height;
-	private int haPrice;
-	private int gePrice;
-	private int offset;
-	private boolean tradeable;
-	@Nonnull
-	private LootType lootType;
-	@Nullable
-	private Instant spawnTime;
-	private boolean stackable;
+	private static final int RAID_LIGHT_MODEL = 5809;
+	private static final short RAID_LIGHT_FIND_COLOR = 6371;
 
-	int getHaPrice()
+	private final RuneLiteObject runeLiteObject;
+	private final Client client;
+	private Color color;
+
+	public Lootbeam(Client client, WorldPoint worldPoint, Color color)
 	{
-		return haPrice * quantity;
+		this.client = client;
+		runeLiteObject = client.createRuneLiteObject();
+
+		setColor(color);
+		runeLiteObject.setAnimation(client.loadAnimation(AnimationID.RAID_LIGHT_ANIMATION));
+		runeLiteObject.setShouldLoop(true);
+
+		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+		runeLiteObject.setLocation(lp, client.getPlane());
+
+		runeLiteObject.setActive(true);
 	}
 
-	int getGePrice()
+	public void setColor(Color color)
 	{
-		return gePrice * quantity;
+		if (this.color != null && this.color.equals(color))
+		{
+			return;
+		}
+
+		this.color = color;
+		runeLiteObject.setModel(client.loadModel(
+			RAID_LIGHT_MODEL,
+			new short[]{RAID_LIGHT_FIND_COLOR},
+			new short[]{JagexColor.rgbToHSL(color.getRGB(), 1.0d)}
+		));
 	}
 
-	boolean isMine()
+	public void remove()
 	{
-		return lootType != LootType.UNKNOWN;
+		runeLiteObject.setActive(false);
 	}
+
 }
