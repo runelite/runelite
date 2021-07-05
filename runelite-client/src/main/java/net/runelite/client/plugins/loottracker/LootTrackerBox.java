@@ -411,7 +411,7 @@ class LootTrackerBox extends JPanel
 	{
 		title.setLayout(new BoxLayout(title, BoxLayout.X_AXIS));
 		title.setBorder(new EmptyBorder(5, 7, 5, 7));
-		title.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
+		title.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		JLabel titleLabel = new JLabel();
 		titleLabel.setText(titleText);
