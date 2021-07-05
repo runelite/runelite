@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.objectindicators;
 
+import com.google.common.base.Strings;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -85,7 +86,10 @@ class ObjectIndicatorsOverlay extends Overlay
 				// This is a multiloc
 				composition = composition.getImpostor();
 				// Only mark the object if the name still matches
-				if (composition == null || !composition.getName().equals(colorTileObject.getName()))
+				if (composition == null
+					|| Strings.isNullOrEmpty(composition.getName())
+					|| "null".equals(composition.getName())
+					|| !composition.getName().equals(colorTileObject.getName()))
 				{
 					continue;
 				}
