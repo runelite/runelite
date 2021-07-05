@@ -25,9 +25,11 @@
 package net.runelite.client.plugins.itemstats;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ModifierlessKeybind;
 
 @ConfigGroup("itemstat")
 public interface ItemStatConfig extends Config
@@ -120,6 +122,26 @@ public interface ItemStatConfig extends Config
 	default boolean alwaysShowBaseStats()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "toggleableItemStats",
+		name = "Toggleable Item Stats",
+		description = "Hide item stats behind a hotkey"
+	)
+	default boolean toggleableItemStats()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "toggleableKey",
+		name = "Toggleable Key",
+		description = "The key to hold to toggle item stats on"
+	)
+	default ModifierlessKeybind toggleableKey()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_CONTROL, 0);
 	}
 
 	@ConfigItem(
