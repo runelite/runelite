@@ -7368,7 +7368,7 @@ public final class NpcID
 	public static final int AMELIA = 8180;
 	public static final int JONATHAN = 8181;
 	public static final int NATURAL_HISTORIAN_8182 = 8182;
-	public static final int LITTLE_PARASAITE = 8183;
+	public static final int LITTLE_PARASITE = 8183;
 	public static final int BOULDER_8188 = 8188;
 	public static final int GRAVE_DIGGER = 8189;
 	public static final int JAMES = 8193;
@@ -7634,7 +7634,7 @@ public final class NpcID
 	public static final int ELISE = 8538;
 	public static final int ARC_TEST_01 = 8539;
 	public static final int ARC_TEST_02 = 8540;
-	public static final int LITTLE_PARASITE = 8541;
+	public static final int LITTLE_PARASITE_8541 = 8541;
 	public static final int ROYAL_GUARD = 8542;
 	public static final int ROYAL_GUARD_8543 = 8543;
 	public static final int UNDOR = 8544;
