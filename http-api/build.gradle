@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Mark Koester <mark.koester1@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.overlay;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Set;
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
-public class OverlayIndex
-{
-	private static final Set<Integer> overlays = new HashSet<>();
-
-	static
-	{
-		try (InputStream indexStream = OverlayIndex.class.getResourceAsStream("/runelite/index");
-			DataInputStream in = new DataInputStream(indexStream))
-		{
-			int id;
-			while ((id = in.readInt()) != -1)
-			{
-				overlays.add(id);
-			}
-		}
-		catch (IOException | NullPointerException ex)
-		{
-			log.warn("unable to load overlay index", ex);
-		}
-	}
-
-	public static boolean hasOverlay(int indexId, int archiveId)
-	{
-		return overlays.contains(indexId << 16 | archiveId);
-	}
+plugins {
+    id 'java-library'
+    id 'com.palantir.git-version' version '0.11.0'
 }
+
+ext {
+    gitDescribe = gitVersion()
+}
+
+dependencies {
+    api 'com.squareup.okhttp3:okhttp:3.7.0'
+    api 'com.google.code.gson:gson:2.8.5'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'org.apache.commons:commons-csv:1.4'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.12'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:3.7.0'
+}
+
+processResources {
+    expand(project.properties)
+}
+
+processTestResources {
+    expand(project.properties)
+}
+
+description = 'Web API'

@@ -1,0 +1,64 @@
+/*
+ * Copyright (c) 2019, Mark Koester <mark.koester1@gmail.com>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'net.sf.jopt-simple:jopt-simple:5.0.1'
+    implementation 'com.google.inject:guice:4.1.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'net.runelite.pushingpixels:substance:8.0.02'
+    implementation 'org.apache.commons:commons-text:1.2'
+    implementation 'org.jogamp.jogl:jogl-all:2.3.2'
+    implementation 'org.jogamp.gluegen:gluegen-rt:2.3.2'
+    implementation 'io.sigpipe:jbsdiff:1.0'
+    implementation 'net.java.dev.jna:jna:4.5.1'
+    implementation 'net.java.dev.jna:jna-platform:4.5.1'
+    implementation project(':runelite-api')
+    implementation project(':http-api')
+    implementation 'net.runelite:discord:1.1'
+    runtimeOnly 'net.runelite.pushingpixels:trident:1.5.00'
+    runtimeOnly 'org.jogamp.jogl:jogl-all:2.3.2'
+    runtimeOnly 'org.jogamp.gluegen:gluegen-rt:2.3.2'
+    runtimeOnly 'net.runelite:client-patch:1.5.26-SNAPSHOT'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.hamcrest:hamcrest-library:1.3'
+    testImplementation 'org.mockito:mockito-all:1.10.19'
+    testImplementation 'com.google.inject.extensions:guice-testlib:4.1.0'
+    testImplementation 'com.google.inject.extensions:guice-grapher:4.1.0'
+    compileOnly 'net.runelite:orange-extensions:1.0'
+}
+
+processResources {
+    filesMatching('**/*.properties') {
+        expand(project.properties)
+    }
+}
+
+processTestResources {
+    expand(project.properties)
+}
+
+description = 'RuneLite Client'

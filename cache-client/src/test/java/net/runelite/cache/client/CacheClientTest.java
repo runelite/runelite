@@ -26,7 +26,6 @@ package net.runelite.cache.client;
 
 import java.io.File;
 import java.util.concurrent.CompletableFuture;
-import net.runelite.cache.CacheProperties;
 import net.runelite.cache.fs.Store;
 import net.runelite.protocol.api.login.HandshakeResponseType;
 import org.junit.Assert;
@@ -55,7 +54,7 @@ public class CacheClientTest
 		{
 			store.load();
 
-			CacheClient c = new CacheClient(store, CacheProperties.getRsVersion());
+			CacheClient c = new CacheClient(store, 0);
 			c.connect();
 			CompletableFuture<HandshakeResponseType> handshake = c.handshake();
 

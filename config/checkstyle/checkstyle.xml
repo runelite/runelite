@@ -57,6 +57,6 @@
 		<property name="message" value="Newline should not be between else and if"/>
 	</module>
 	<module name="SuppressionFilter">
-		<property name="file" value="suppressions.xml"/>
+		<property name="file" value="${config_loc}/suppressions.xml"/>
 	</module>
 </module>

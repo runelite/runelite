@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Mark Koester <mark.koester1@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.overlay;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Set;
-import lombok.extern.slf4j.Slf4j;
+ext {
+    lombokVersion = '1.18.20'
+    checkstyleVersion = '8.3'
+}
 
-@Slf4j
-public class OverlayIndex
-{
-	private static final Set<Integer> overlays = new HashSet<>();
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'checkstyle'
 
-	static
-	{
-		try (InputStream indexStream = OverlayIndex.class.getResourceAsStream("/runelite/index");
-			DataInputStream in = new DataInputStream(indexStream))
-		{
-			int id;
-			while ((id = in.readInt()) != -1)
-			{
-				overlays.add(id);
-			}
-		}
-		catch (IOException | NullPointerException ex)
-		{
-			log.warn("unable to load overlay index", ex);
-		}
-	}
+    repositories {
+        mavenCentral()
+        mavenLocal()
 
-	public static boolean hasOverlay(int indexId, int archiveId)
-	{
-		return overlays.contains(indexId << 16 | archiveId);
-	}
+        maven {
+            url = 'https://repo.runelite.net'
+        }
+    }
+    
+    dependencies {
+        compileOnly "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+        implementation 'com.google.guava:guava:23.2-jre'
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    }
+
+    javadoc {
+        options.setEncoding('UTF-8')
+    }
+    
+    task javadocJar(type: Jar) {
+        dependsOn javadoc
+        archiveClassifier = 'javadoc'
+        from(javadoc.destinationDir)
+    }
+
+    sourceCompatibility = '1.8'
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+                artifact javadocJar
+            }
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.overlay;
-
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Set;
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
-public class OverlayIndex
-{
-	private static final Set<Integer> overlays = new HashSet<>();
-
-	static
-	{
-		try (InputStream indexStream = OverlayIndex.class.getResourceAsStream("/runelite/index");
-			DataInputStream in = new DataInputStream(indexStream))
-		{
-			int id;
-			while ((id = in.readInt()) != -1)
-			{
-				overlays.add(id);
-			}
-		}
-		catch (IOException | NullPointerException ex)
-		{
-			log.warn("unable to load overlay index", ex);
-		}
-	}
-
-	public static boolean hasOverlay(int indexId, int archiveId)
-	{
-		return overlays.contains(indexId << 16 | archiveId);
-	}
+grammar rs2asm;
+@header {
+    package net.runelite.cache.script.assembler;
 }
+
+prog: NEWLINE* (header NEWLINE+)* (line NEWLINE+)+ ;
+
+header: id | int_stack_count | string_stack_count | int_var_count | string_var_count ;
+
+id: '.id ' id_value ;
+int_stack_count: '.int_stack_count ' int_stack_value ;
+string_stack_count: '.string_stack_count ' string_stack_value ;
+int_var_count: '.int_var_count ' int_var_value ;
+string_var_count: '.string_var_count ' string_var_value ;
+
+id_value: INT ;
+int_stack_value: INT ;
+string_stack_value: INT ;
+int_var_value: INT ;
+string_var_value: INT ;
+
+line: instruction | label | switch_lookup ;
+instruction: instruction_name instruction_operand ;
+label: IDENTIFIER ':' ;
+
+instruction_name: name_string | name_opcode ;
+name_string: IDENTIFIER ;
+name_opcode: INT ;
+
+instruction_operand: operand_int | operand_qstring | operand_label | ;
+operand_int: INT ;
+operand_qstring: QSTRING ;
+operand_label: IDENTIFIER ;
+
+switch_lookup: switch_key ':' switch_value ;
+switch_key: INT ;
+switch_value: IDENTIFIER ;
+
+NEWLINE: ( '\r' | '\n' )+ ;
+INT: '-'? [0-9]+ ;
+QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
+IDENTIFIER: [a-zA-Z0-9_]+ ;
+COMMENT: ';' ~( '\r' | '\n' )* -> channel(HIDDEN) ;
+
+WS: (' ' | '\t')+ -> channel(HIDDEN) ;
