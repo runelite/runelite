@@ -671,8 +671,8 @@ public class WidgetID
 
 	static class ExperienceTracker
 	{
-		static final int WIDGET = 3;
-		static final int BOTTOM_BAR = 15;
+		static final int WIDGET = 4;
+		static final int BOTTOM_BAR = 16;
 	}
 
 	static class FairyRingPanel
