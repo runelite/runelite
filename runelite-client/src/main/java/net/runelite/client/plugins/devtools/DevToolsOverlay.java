@@ -135,7 +135,48 @@ class DevToolsOverlay extends Overlay
 			renderGraphicsObjects(graphics);
 		}
 
+		if (plugin.getRoofs().isActive())
+		{
+			renderRoofs(graphics);
+		}
+
 		return null;
+	}
+
+	private void renderRoofs(Graphics2D graphics)
+	{
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
+		byte[][][] settings = client.getTileSettings();
+		int z = client.getPlane();
+		String text = "R";
+
+		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+		{
+			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+			{
+				Tile tile = tiles[z][x][y];
+
+				if (tile == null)
+				{
+					continue;
+				}
+
+				int flag = settings[z][x][y];
+				if ((flag & Constants.TILE_FLAG_UNDER_ROOF) == 0)
+				{
+					continue;
+				}
+
+				Point loc = Perspective.getCanvasTextLocation(client, graphics, tile.getLocalLocation(), text, z);
+				if (loc == null)
+				{
+					continue;
+				}
+
+				OverlayUtil.renderTextLocation(graphics, loc, text, Color.RED);
+			}
+		}
 	}
 
 	private void renderPlayers(Graphics2D graphics)
