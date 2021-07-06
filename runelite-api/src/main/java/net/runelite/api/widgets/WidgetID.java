@@ -76,7 +76,6 @@ public class WidgetID
 	public static final int SLAYER_REWARDS_GROUP_ID = 426;
 	public static final int PRIVATE_CHAT = 163;
 	public static final int CHATBOX_GROUP_ID = 162;
-	public static final int WORLD_MAP_MENU_GROUP_ID = 160;
 	public static final int VOLCANIC_MINE_GROUP_ID = 611;
 	public static final int BA_ATTACKER_GROUP_ID = 485;
 	public static final int BA_COLLECTOR_GROUP_ID = 486;
@@ -175,8 +174,7 @@ public class WidgetID
 		static final int BOTTOM_BAR = 23;
 		static final int SEARCH = 26;
 		static final int SURFACE_SELECTOR = 34;
-		static final int TOOLTIP = 43;
-		static final int OPTION = 48;
+		static final int TOOLTIP = 41;
 	}
 
 	static class SlayerRewards
@@ -359,6 +357,7 @@ public class WidgetID
 		static final int SPEC_ORB = 29;
 		static final int WORLDMAP_ORB = 43;
 		static final int WIKI_BANNER = 45;
+		static final int WORLDMAP_OPTIONS = 48;
 	}
 
 	static class LoginClickToPlayScreen
