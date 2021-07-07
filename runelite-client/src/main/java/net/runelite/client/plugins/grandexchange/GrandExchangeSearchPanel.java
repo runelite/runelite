@@ -155,7 +155,8 @@ class GrandExchangeSearchPanel extends JPanel
 
 	private boolean updateSearch()
 	{
-		String lookup = searchBar.getText();
+		// Search common abbreviations and set lookup to actual item name
+		String lookup = GrandExchangeSearchAbbreviations.CheckAbbreviation(searchBar.getText());
 
 		if (Strings.isNullOrEmpty(lookup))
 		{
