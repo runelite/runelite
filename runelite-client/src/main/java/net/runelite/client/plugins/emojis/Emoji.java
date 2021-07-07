@@ -92,6 +92,7 @@ enum Emoji
 	PLEADING("(n_n)"),
 	XD("Xd"),
 	SPOON("--o"),
+	COW("3:O"),
 	WEARY_FACE("Dx"),
 	;
 
