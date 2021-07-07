@@ -494,18 +494,24 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			return;
 		}
 
-		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD || !config.removeSeparators())
-		{
-			return;
-		}
-
-		if (!tabInterface.isActive())
+		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD)
 		{
 			return;
 		}
 
 		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		if (itemContainer == null)
+		{
+			return;
+		}
+
+		if (tabInterface.isTagTabActive())
+		{
+			updateBankContainerScrollHeight(tabInterface.getTabCount());
+			return;
+		}
+
+		if (!tabInterface.isActive() || !config.removeSeparators())
 		{
 			return;
 		}
@@ -549,11 +555,16 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			}
 		}
 
+		updateBankContainerScrollHeight(items);
+	}
+
+	private void updateBankContainerScrollHeight(int items)
+	{
 		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		int itemContainerHeight = bankItemContainer.getHeight();
 		// add a second row of height here to allow users to scroll down when the last row is partially visible
 		int adjustedScrollHeight = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING;
-		itemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
+		bankItemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
 
 		final int itemContainerScroll = bankItemContainer.getScrollY();
 		clientThread.invokeLater(() ->
@@ -561,7 +572,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				WidgetInfo.BANK_SCROLLBAR.getId(),
 				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
 				itemContainerScroll));
-
 	}
 
 	@Subscribe
