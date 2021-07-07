@@ -57,10 +57,10 @@ import static net.runelite.api.ObjectID.YEW_36683;
 @Getter
 enum Tree
 {
-	REGULAR_TREE(null, TREE, TREE_1277, TREE_1278, TREE_1279, TREE_1280),
-	OAK_TREE(Duration.ofMillis(8500), ObjectID.OAK_TREE, OAK_TREE_4540, OAK_10820),
-	WILLOW_TREE(Duration.ofMillis(8500), WILLOW, WILLOW_10829, WILLOW_10831, WILLOW_10833),
-	MAPLE_TREE(Duration.ofSeconds(35), ObjectID.MAPLE_TREE, MAPLE_TREE_10832, MAPLE_TREE_36681)
+	REGULAR_TREE(1, null, TREE, TREE_1277, TREE_1278, TREE_1279, TREE_1280),
+	OAK_TREE(15, Duration.ofMillis(8500), ObjectID.OAK_TREE, OAK_TREE_4540, OAK_10820),
+	WILLOW_TREE(30, Duration.ofMillis(8500), WILLOW, WILLOW_10829, WILLOW_10831, WILLOW_10833),
+	MAPLE_TREE(45, Duration.ofSeconds(35), ObjectID.MAPLE_TREE, MAPLE_TREE_10832, MAPLE_TREE_36681)
 		{
 			@Override
 			Duration getRespawnTime(int region)
@@ -68,18 +68,20 @@ enum Tree
 				return region == MISCELLANIA_REGION ? Duration.ofMillis(8500) : super.respawnTime;
 			}
 		},
-	TEAK_TREE(Duration.ofMillis(8500), TEAK, TEAK_36686),
-	MAHOGANY_TREE(Duration.ofMillis(8500), MAHOGANY, MAHOGANY_36688),
-	YEW_TREE(Duration.ofMinutes(1), YEW, NULL_10823, YEW_36683),
-	MAGIC_TREE(Duration.ofMinutes(2), MAGIC_TREE_10834, NULL_10835),
-	REDWOOD(Duration.ofMinutes(2), ObjectID.REDWOOD, REDWOOD_29670);
+	TEAK_TREE(35, Duration.ofMillis(8500), TEAK, TEAK_36686),
+	MAHOGANY_TREE(50, Duration.ofMillis(8500), MAHOGANY, MAHOGANY_36688),
+	YEW_TREE(60, Duration.ofMinutes(1), YEW, NULL_10823, YEW_36683),
+	MAGIC_TREE(75, Duration.ofMinutes(2), MAGIC_TREE_10834, NULL_10835),
+	REDWOOD(90, Duration.ofMinutes(2), ObjectID.REDWOOD, REDWOOD_29670);
 
+	private final int level;
 	@Nullable
 	private final Duration respawnTime;
 	private final int[] treeIds;
 
-	Tree(Duration respawnTime, int... treeIds)
+	Tree(int level, Duration respawnTime, int... treeIds)
 	{
+		this.level = level;
 		this.respawnTime = respawnTime;
 		this.treeIds = treeIds;
 	}
