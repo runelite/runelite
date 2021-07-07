@@ -275,7 +275,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
 		// Create reset all menu
-		final JMenuItem reset = new JMenuItem("Reset All");
+		final JMenuItem reset = new JMenuItem("Remove All");
 		reset.addActionListener(e ->
 		{
 			final LootTrackerClient client = plugin.getLootTrackerClient();
@@ -551,7 +551,7 @@ class LootTrackerPanel extends PluginPanel
 		});
 
 		// Create reset menu
-		final JMenuItem reset = new JMenuItem("Reset");
+		final JMenuItem reset = new JMenuItem("Remove");
 		reset.addActionListener(e ->
 		{
 			final LootTrackerClient client = plugin.getLootTrackerClient();
