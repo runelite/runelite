@@ -61,6 +61,9 @@ public class BlastMinePlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private BlastMineCollectExp blastMineCollectExp;
+
+	@Inject
 	private BlastMineRockOverlay blastMineRockOverlay;
 
 	@Inject
@@ -77,6 +80,7 @@ public class BlastMinePlugin extends Plugin
 	{
 		overlayManager.add(blastMineRockOverlay);
 		overlayManager.add(blastMineOreCountOverlay);
+		overlayManager.add(blastMineCollectExp);
 	}
 
 	@Override
@@ -84,6 +88,7 @@ public class BlastMinePlugin extends Plugin
 	{
 		overlayManager.remove(blastMineRockOverlay);
 		overlayManager.remove(blastMineOreCountOverlay);
+		overlayManager.remove(blastMineCollectExp);
 		final Widget blastMineWidget = client.getWidget(WidgetInfo.BLAST_MINE);
 
 		if (blastMineWidget != null)
