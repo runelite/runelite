@@ -25,10 +25,15 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
+import com.google.inject.Provides;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NPC;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -38,7 +43,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Boss Timers",
 	description = "Show boss spawn timer overlays",
-	tags = {"combat", "pve", "overlay", "spawn"}
+	tags = {"combat", "pve", "overlay", "spawn", "notifications"}
 )
 @Slf4j
 public class BossTimersPlugin extends Plugin
@@ -48,6 +53,20 @@ public class BossTimersPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private BossTimersConfig config;
+
+	@Inject
+	private Notifier notifier;
+
+	private final Timer notificationTimer = new Timer();
+
+	@Provides
+	BossTimersConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(BossTimersConfig.class);
+	}
 
 	@Override
 	protected void shutDown() throws Exception
@@ -77,10 +96,34 @@ public class BossTimersPlugin extends Plugin
 		// remove existing timer
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
 
-		log.debug("Creating spawn timer for {} ({} seconds)", npc.getName(), boss.getSpawnTime());
+		final String name = npc.getName();
+
+		log.debug("Creating spawn timer for {} ({} seconds)", name, boss.getSpawnTime());
 
 		RespawnTimer timer = new RespawnTimer(boss, itemManager.getImage(boss.getItemSpriteId()), this);
-		timer.setTooltip(npc.getName());
+		timer.setTooltip(name);
 		infoBoxManager.addInfoBox(timer);
+
+		final int delay = config.respawnDelay();
+		// -1 disabled, 0 for instant, greater than 0 to notify before respawn, and don't notify if the delay is longer
+		// than it takes for the boss to respawn.
+		if (delay >= 0 && delay < boss.getSpawnTime().getSeconds())
+		{
+			notificationTimer.schedule(new TimerTask()
+			{
+				@Override
+				public void run()
+				{
+					if (delay == 0)
+					{
+						notifier.notify(name + " has respawned");
+					}
+					else
+					{
+						notifier.notify(name + " will respawn in " + delay + " second(s)");
+					}
+				}
+			}, (boss.getSpawnTime().getSeconds() - delay) * 1_000);
+		}
 	}
 }
