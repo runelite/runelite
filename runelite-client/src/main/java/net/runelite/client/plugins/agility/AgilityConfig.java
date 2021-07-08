@@ -283,4 +283,16 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "highlightSepulchreStatues",
+		name = "Highlight Crossbowman Statues",
+		description = "Highlights the crossbowman statues when their animation begins.",
+		position = 21,
+		section = sepulchreSection
+	)
+	default boolean highlightSepulchreStatues()
+	{
+		return true;
+	}
 }

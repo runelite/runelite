@@ -38,6 +38,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.MenuAction;
@@ -108,6 +109,9 @@ public class AgilityPlugin extends Plugin
 	@Getter
 	private final Set<NPC> npcs = new HashSet<>();
 
+	@Getter
+	private final Map<TileObject, CrossbowmanStatue> statues = new HashMap<>();
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -168,6 +172,7 @@ public class AgilityPlugin extends Plugin
 		overlayManager.remove(lapCounterOverlay);
 		marksOfGrace.clear();
 		obstacles.clear();
+		statues.clear();
 		session = null;
 		agilityLevel = 0;
 		stickTile = null;
@@ -201,6 +206,7 @@ public class AgilityPlugin extends Plugin
 			case LOADING:
 				marksOfGrace.clear();
 				obstacles.clear();
+				statues.clear();
 				stickTile = null;
 				break;
 			case LOGGED_IN:
@@ -428,6 +434,7 @@ public class AgilityPlugin extends Plugin
 	private void onTileObject(Tile tile, TileObject oldObject, TileObject newObject)
 	{
 		obstacles.remove(oldObject);
+		statues.remove(oldObject);
 
 		if (newObject == null)
 		{
@@ -442,6 +449,12 @@ public class AgilityPlugin extends Plugin
 			Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(newObject.getId()))
 		{
 			obstacles.put(newObject, new Obstacle(tile, null));
+		}
+
+		if (Obstacles.SEPULCHRE_CROSSBOWMAN_STATUES.contains(newObject.getId()))
+		{
+			// This cast is safe since the statues are created in onGameObjectSpawned.
+			statues.put(newObject, new CrossbowmanStatue((GameObject) newObject));
 		}
 
 		if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(newObject.getId()))
