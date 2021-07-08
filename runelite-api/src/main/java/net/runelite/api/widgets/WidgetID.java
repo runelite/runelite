@@ -82,6 +82,7 @@ public class WidgetID
 	public static final int BA_DEFENDER_GROUP_ID = 487;
 	public static final int BA_HEALER_GROUP_ID = 488;
 	public static final int BA_REWARD_GROUP_ID = 497;
+	public static final int BA_TEAM_GROUP_ID = 256;
 	public static final int LEVEL_UP_GROUP_ID = 233;
 	public static final int DIALOG_SPRITE_GROUP_ID = 193;
 	public static final int QUEST_COMPLETED_GROUP_ID = 153;
@@ -608,11 +609,14 @@ public class WidgetID
 
 		static class HLR
 		{
+			static final int TEAMMATES = 13;
 			static final int TEAMMATE1 = 18;
 			static final int TEAMMATE2 = 22;
 			static final int TEAMMATE3 = 26;
 			static final int TEAMMATE4 = 30;
 		}
+
+		static final int TEAM = 2;
 
 		static final int ROLE_SPRITE = 10;
 		static final int ROLE = 11;
