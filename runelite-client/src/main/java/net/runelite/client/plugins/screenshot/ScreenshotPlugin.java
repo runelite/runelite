@@ -41,6 +41,8 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -149,6 +151,8 @@ public class ScreenshotPlugin extends Plugin
 
 	private boolean shouldTakeScreenshot;
 
+	private final JPanel saveAsPanel = new JPanel();
+
 	@Inject
 	private ScreenshotConfig config;
 
@@ -224,7 +228,22 @@ public class ScreenshotPlugin extends Plugin
 				{
 					LinkBrowser.open(SCREENSHOT_DIR.toString());
 				})
-				.build())
+				.put("Save as", () ->
+				{
+					final String fileName = JOptionPane.showInputDialog(saveAsPanel, "Enter the filename:",
+						"Screenshot", JOptionPane.QUESTION_MESSAGE);
+
+					if (fileName != null && !fileName.isEmpty())
+					{
+						takeScreenshot(fileName);
+					}
+					else if (fileName != null && fileName.isEmpty())
+					{
+						JOptionPane.showMessageDialog(saveAsPanel,
+							"You cannot create a screenshot with an empty name",
+							"Screenshot", JOptionPane.ERROR_MESSAGE);
+					}
+				}).build())
 			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
