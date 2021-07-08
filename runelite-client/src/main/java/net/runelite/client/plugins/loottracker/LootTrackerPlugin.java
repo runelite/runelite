@@ -77,6 +77,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -154,6 +155,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You have opened the Grubby Chest";
 	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
 	private static final int HAM_STOREROOM_REGION = 10321;
+	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = new ImmutableMap.Builder<Integer, String>().
 		put(5179, "Brimstone Chest").
 		put(11573, "Crystal Chest").
@@ -294,6 +296,8 @@ public class LootTrackerPlugin extends Plugin
 	private Object metadata;
 	private boolean chestLooted;
 	private String lastPickpocketTarget;
+	private int currentRegion = -1;
+	private int lastRegion = -1;
 
 	private List<String> ignoredItems = new ArrayList<>();
 	private List<String> ignoredEvents = new ArrayList<>();
@@ -449,6 +453,8 @@ public class LootTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient.setUuid(null);
 		chestLooted = false;
+		currentRegion = -1;
+		lastRegion = -1;
 	}
 
 	@Subscribe
@@ -778,6 +784,7 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
+		final ItemContainer itemContainer = event.getItemContainer();
 		if (event.getContainerId() != InventoryID.INVENTORY.getId()
 			|| eventType == null)
 		{
@@ -796,8 +803,21 @@ public class LootTrackerPlugin extends Plugin
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 			Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
+			List<ItemStack> loot = getInventoryDiff(itemContainer, groundItems);
 
-			processInventoryLoot(eventType, lootRecordType, metadata, event.getItemContainer(), groundItems);
+			if ("The Gauntlet".equals(eventType))
+			{
+				if (loot != null && loot.stream().noneMatch(is -> is.getId() == ItemID.CRYSTAL_SHARD))
+				{
+					eventType = "Failed Gauntlet";
+				}
+				else if (lastRegion == CORRUPTED_GAUNTLET_REGION)
+				{
+					eventType = "The Corrupted Gauntlet";
+				}
+			}
+
+			processLoot(eventType, lootRecordType, metadata, loot);
 			resetEvent();
 		}
 		// Events that do not produce ground items
@@ -808,7 +828,7 @@ public class LootTrackerPlugin extends Plugin
 			|| TEMPOROSS_EVENT.equals(eventType)
 			|| TEMPOROSS_CASKET_EVENT.equals(eventType))
 		{
-			processInventoryLoot(eventType, lootRecordType, metadata, event.getItemContainer(), Collections.emptyList());
+			processInventoryLoot(eventType, lootRecordType, metadata, itemContainer, Collections.emptyList());
 			resetEvent();
 		}
 	}
@@ -862,6 +882,17 @@ public class LootTrackerPlugin extends Plugin
 						break;
 				}
 			}
+		}
+	}
+
+	@Subscribe
+	void onGameTick(GameTick event)
+	{
+		final int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		if (currentRegion != region)
+		{
+			lastRegion = currentRegion;
+			currentRegion = region;
 		}
 	}
 
@@ -949,27 +980,40 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Nullable
+	private List<ItemStack> getInventoryDiff(ItemContainer inventoryContainer, Collection<ItemStack> groundItems)
+	{
+		if (inventorySnapshot == null)
+		{
+			return null;
+		}
+
+		Multiset<Integer> currentInventory = HashMultiset.create();
+		Arrays.stream(inventoryContainer.getItems())
+			.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+
+		groundItems.stream()
+			.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+
+		final Multiset<Integer> diff = Multisets.difference(currentInventory, inventorySnapshot);
+
+		return diff.entrySet().stream()
+			.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
+			.collect(Collectors.toList());
+	}
+
 	private void processInventoryLoot(String event, LootRecordType lootRecordType, Object metadata, ItemContainer inventoryContainer, Collection<ItemStack> groundItems)
 	{
-		if (inventorySnapshot != null)
+		processLoot(event, lootRecordType, metadata, getInventoryDiff(inventoryContainer, groundItems));
+	}
+
+	private void processLoot(String event, LootRecordType lootRecordType, Object metadata, List<ItemStack> items)
+	{
+		if (items != null)
 		{
-			Multiset<Integer> currentInventory = HashMultiset.create();
-			Arrays.stream(inventoryContainer.getItems())
-				.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
-
-			groundItems.stream()
-				.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
-
-			final Multiset<Integer> diff = Multisets.difference(currentInventory, inventorySnapshot);
-
-			List<ItemStack> items = diff.entrySet().stream()
-				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
-				.collect(Collectors.toList());
-
 			addLoot(event, -1, lootRecordType, metadata, items);
-
-			inventorySnapshot = null;
 		}
+		inventorySnapshot = null;
 	}
 
 	private boolean processHerbiboarHerbSackLoot(int timestamp)
