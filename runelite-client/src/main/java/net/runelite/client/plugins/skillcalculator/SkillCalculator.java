@@ -1,17 +1,18 @@
 /**
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2021, Pristit <https://github.com/pristit>
  * All rights reserved.
- *
+ * <p>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * <p>
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ * list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * <p>
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -48,16 +49,19 @@ import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
+import net.runelite.client.plugins.skillcalculator.beans.Material;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.QuantityFormatter;
 
 class SkillCalculator extends JPanel
 {
@@ -83,12 +87,15 @@ class SkillCalculator extends JPanel
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
 
-	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
+	private final ClientThread clientThread;
+
+	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager, ClientThread clientThread)
 	{
 		this.client = client;
 		this.uiInput = uiInput;
 		this.spriteManager = spriteManager;
 		this.itemManager = itemManager;
+		this.clientThread = clientThread;
 
 		combinedActionSlot = new UICombinedActionSlot(spriteManager);
 
@@ -328,7 +335,6 @@ class SkillCalculator extends JPanel
 					{
 						combinedActionSlots.add(slot);
 					}
-
 					slot.setSelected(!slot.isSelected());
 					updateCombinedAction();
 				}
@@ -353,13 +359,43 @@ class SkillCalculator extends JPanel
 			{
 				actionCount = (int) Math.ceil(neededXP / xp);
 			}
+			// check whether or not this skill action has a material cost field in the resource json file.
+			if (action.getMaterials() != null)
+			{
+				int finalActionCount = actionCount;
+				clientThread.invoke(() ->
+				{
+					int actionCost = 0;
+					int finalCost;
+					String materials = "";
+					for (Material material : action.getMaterials())
+					{
+						if (material != null)
+						{
+							actionCost += (itemManager.getItemPrice(material.getId()) * material.getAmount());
+							materials += (material.getName() + " x" + material.getAmount() * finalActionCount + "<br>");
+						}
+
+					}
+					finalCost = actionCost * finalActionCount;
+					slot.setCost("Cost: " + QuantityFormatter.quantityToStackSize(finalCost) + " GP");
+					slot.setToolTipText("<html>" + materials + "</html>");
+				});
+			}
+			// If this skill action doesn't have material cost for actions (like hunter for example)
+			else
+			{
+				slot.setCost(null);
+				slot.setToolTipText(null);
+			}
+
 
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
+
 			slot.setAvailable(currentLevel >= action.getLevel());
 			slot.setOverlapping(action.getLevel() < targetLevel);
 			slot.setValue(xp);
 		}
-
 		updateCombinedAction();
 	}
 
