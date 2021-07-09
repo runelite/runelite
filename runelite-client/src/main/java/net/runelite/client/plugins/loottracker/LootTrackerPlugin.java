@@ -137,6 +137,9 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HERBIBOAR_EVENT = "Herbiboar";
 	private static final Pattern HERBIBOAR_HERB_SACK_PATTERN = Pattern.compile(".+(Grimy .+?) herb.+");
 
+	// Master Farmer loot handling
+	private static final Pattern MASTER_FARMER_SEED_BOX_PATTERN = Pattern.compile("The following stolen loot gets added to your seed box: (.+?) x (\\d+)\\.");
+
 	// Seed Pack loot handling
 	private static final String SEEDPACK_EVENT = "Seed pack";
 
@@ -697,6 +700,13 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		Matcher seedBoxMatcher = MASTER_FARMER_SEED_BOX_PATTERN.matcher(message);
+		if (seedBoxMatcher.matches())
+		{
+			processMasterFarmerSeedBoxLoot(seedBoxMatcher);
+			return;
+		}
+
 		final Matcher pickpocketMatcher = PICKPOCKET_REGEX.matcher(message);
 		if (pickpocketMatcher.matches())
 		{
@@ -999,6 +1009,14 @@ public class LootTrackerPlugin extends Plugin
 		int herbloreLevel = client.getBoostedSkillLevel(Skill.HERBLORE);
 		addLoot(HERBIBOAR_EVENT, -1, LootRecordType.EVENT, herbloreLevel, herbs);
 		return true;
+	}
+
+	private void processMasterFarmerSeedBoxLoot(Matcher matcher)
+	{
+		int quantityStolen = Integer.parseInt(matcher.group(2));
+		List<ItemStack> seeds = Collections.singletonList(new ItemStack(itemManager.search(matcher.group(1)).get(0).getId(), quantityStolen, client.getLocalPlayer().getLocalLocation()));
+
+		addLoot(lastPickpocketTarget, -1, LootRecordType.PICKPOCKET, client.getBoostedSkillLevel(Skill.THIEVING), seeds);
 	}
 
 	void toggleItem(String name, boolean ignore)
