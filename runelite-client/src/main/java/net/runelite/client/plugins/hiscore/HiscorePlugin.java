@@ -61,6 +61,7 @@ import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreSkill;
+import net.runelite.http.api.hiscore.HiscoreSkillType;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
@@ -269,7 +270,7 @@ public class HiscorePlugin extends Plugin
 		// Hiscore pages after the construction skill are split into their own
 		// section with the additional parameter `category_type=1` being present
 		// and `table` being rebased back to 0 with League Points
-		if (skill.compareTo(HiscoreSkill.CONSTRUCTION) > 0)
+		if (skill.getType() != HiscoreSkillType.SKILL)
 		{
 			skillTable -= HiscoreSkill.LEAGUE_POINTS.ordinal();
 			url += "category_type=1&";
