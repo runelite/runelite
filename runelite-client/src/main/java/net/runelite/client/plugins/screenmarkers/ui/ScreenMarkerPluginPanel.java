@@ -28,6 +28,7 @@ package net.runelite.client.plugins.screenmarkers.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
@@ -37,7 +38,9 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicToggleButtonUI;
 import lombok.Getter;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerOverlay;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
@@ -45,11 +48,16 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.SwingUtil;
 
 public class ScreenMarkerPluginPanel extends PluginPanel
 {
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_HOVER_ICON;
+	private static final ImageIcon VISIBLE_ICON;
+	private static final ImageIcon VISIBLE_HOVER_ICON;
+	private static final ImageIcon INVISIBLE_ICON;
+	private static final ImageIcon INVISIBLE_HOVER_ICON;
 
 	private static final Color DEFAULT_BORDER_COLOR = Color.GREEN;
 	private static final Color DEFAULT_FILL_COLOR = new Color(0, 255, 0, 0);
@@ -57,6 +65,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	private static final int DEFAULT_BORDER_THICKNESS = 3;
 
 	private final JLabel addMarker = new JLabel(ADD_ICON);
+	private final JToggleButton hideAllToggle = new JToggleButton(VISIBLE_ICON);
 	private final JLabel title = new JLabel();
 	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
 	private final JPanel markerView = new JPanel(new GridBagLayout());
@@ -80,6 +89,14 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		final BufferedImage addIcon = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "add_icon.png");
 		ADD_ICON = new ImageIcon(addIcon);
 		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
+
+		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "visible_icon.png");
+		VISIBLE_ICON = new ImageIcon(visibleImg);
+		VISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(visibleImg, -100));
+
+		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "invisible_icon.png");
+		INVISIBLE_ICON = new ImageIcon(invisibleImg);
+		INVISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -100));
 	}
 
 	public ScreenMarkerPluginPanel(ScreenMarkerPlugin screenMarkerPlugin)
@@ -95,8 +112,15 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		title.setText("Screen Markers");
 		title.setForeground(Color.WHITE);
 
+		// Panel to contain the add, remove and show/hide labels.
+		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+		rightActions.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		rightActions.add(hideAllToggle);
+		rightActions.add(addMarker);
+
 		northPanel.add(title, BorderLayout.WEST);
-		northPanel.add(addMarker, BorderLayout.EAST);
+		northPanel.add(rightActions, BorderLayout.EAST);
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
 		centerPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -140,6 +164,25 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			public void mouseExited(MouseEvent mouseEvent)
 			{
 				addMarker.setIcon(ADD_ICON);
+			}
+		});
+
+		SwingUtil.removeButtonDecorations(hideAllToggle);
+		hideAllToggle.setIconTextGap(0);
+		hideAllToggle.setBorderPainted(false);
+		hideAllToggle.setIcon(VISIBLE_ICON);
+		hideAllToggle.setRolloverIcon(VISIBLE_HOVER_ICON);
+		hideAllToggle.setSelectedIcon(INVISIBLE_ICON);
+		hideAllToggle.setRolloverSelectedIcon(INVISIBLE_HOVER_ICON);
+		hideAllToggle.setUI(new BasicToggleButtonUI()); // substance breaks the layout and the pressed icon
+		hideAllToggle.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		SwingUtil.addModalTooltip(hideAllToggle, "Show all screen markers", "Hide all screen markers");
+		hideAllToggle.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				toggleAllMarkers(allHidden());
 			}
 		});
 
@@ -206,5 +249,31 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			plugin.setMouseListenerEnabled(true);
 			plugin.setCreatingScreenMarker(true);
 		}
+	}
+
+	/* Hides all the currently visible markers */
+	private void toggleAllMarkers(boolean on)
+	{
+		for (Object element: markerView.getComponents())
+		{
+			if (element instanceof ScreenMarkerPanel && ((ScreenMarkerPanel) element).isMarkerVisible() != on)
+			{
+				((ScreenMarkerPanel) element).toggle(on);
+			}
+		}
+	}
+
+	/* Check if all the markers are currently hidden */
+	private boolean allHidden()
+	{
+		for (Object element: markerView.getComponents())
+		{
+			if (element instanceof ScreenMarkerPanel && ((ScreenMarkerPanel) element).isMarkerVisible())
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
