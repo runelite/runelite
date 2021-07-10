@@ -418,6 +418,13 @@ public class CannonPlugin extends Plugin
 		{
 			return Color.orange;
 		}
+		else if (cballsLeft <= config.ammoAmount())
+		{
+			if (config.notifyAmmoLeft())
+			{
+				notifier.notify("Your cannon has " + config.ammoAmount() + " balls left!");
+			}
+		}
 
 		return Color.red;
 	}
