@@ -374,7 +374,11 @@ LABEL321:
    jump                   LABEL344
 LABEL325:
    map_members           
-   iconst                 0
+   iconst                 0                    ; Gets changed to 1 if P2P-skill tooltips are enabled
+   iload                  0                    ; Load the skill id from arguments
+   sconst                 "skillTabP2PTooltip" ; Push event name
+   runelite_callback                           ; Invoke callback
+   pop_int                                     ; Pop the skill id
    if_icmpeq              LABEL329
    jump                   LABEL344
 LABEL329:
