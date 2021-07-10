@@ -57,8 +57,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import net.runelite.http.api.hiscore.HiscoreSkill;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
@@ -257,6 +259,30 @@ public class HiscorePlugin extends Plugin
 			}
 			hiscorePanel.lookup(playerName, endpoint);
 		});
+	}
+
+	void openHiscoreLink(HiscoreSkill skill, HiscoreEndpoint endpoint, String user)
+	{
+		String url = endpoint.getHiscoreBasePageURL().toString();
+		int skillTable = skill.ordinal();
+
+		// Hiscore pages after the construction skill are split into their own
+		// section with the additional parameter `category_type=1` being present
+		// and `table` being rebased back to 0 with League Points
+		if (skill.compareTo(HiscoreSkill.CONSTRUCTION) > 0)
+		{
+			skillTable -= HiscoreSkill.LEAGUE_POINTS.ordinal();
+			url += "category_type=1&";
+		}
+
+		url += "table=" + skillTable;
+
+		if (user != null)
+		{
+			url += "&user=" + user;
+		}
+
+		LinkBrowser.browse(url);
 	}
 
 	HiscoreEndpoint getWorldEndpoint()

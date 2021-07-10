@@ -136,6 +136,10 @@ public class HiscorePanel extends PluginPanel
 	/* Used to prevent users from switching endpoint tabs while the results are loading */
 	private boolean loading = false;
 
+	// Used to pass the name of the currently looked up player to Hiscore pages
+	// This is only non-null when a player has been successfully been found
+	private String currUsername = null;
+
 	@Inject
 	public HiscorePanel(@Nullable Client client, HiscorePlugin plugin, HiscoreConfig config,
 		NameAutocompleter nameAutocompleter, OkHttpClient okHttpClient)
@@ -350,6 +354,20 @@ public class HiscorePanel extends PluginPanel
 		boolean totalLabel = skill == OVERALL || skill == null; //overall or combat
 		label.setIconTextGap(totalLabel ? 10 : 4);
 
+		// If skill is null, it's combat level
+		if (skill != null)
+		{
+			MouseAdapter hiscorePanelMouseListener = new MouseAdapter()
+			{
+				@Override
+				public void mouseReleased(MouseEvent e)
+				{
+					plugin.openHiscoreLink(skill, selectedEndPoint, currUsername);
+				}
+			};
+			label.addMouseListener(hiscorePanelMouseListener);
+		}
+
 		JPanel skillPanel = new JPanel();
 		skillPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		skillPanel.setBorder(new EmptyBorder(2, 0, 2, 0));
@@ -422,6 +440,7 @@ public class HiscorePanel extends PluginPanel
 					searchBar.setIcon(IconTextField.Icon.ERROR);
 					searchBar.setEditable(true);
 					loading = false;
+					currUsername = null;
 					return;
 				}
 
@@ -429,6 +448,7 @@ public class HiscorePanel extends PluginPanel
 				searchBar.setIcon(IconTextField.Icon.SEARCH);
 				searchBar.setEditable(true);
 				loading = false;
+				currUsername = searchBar.getText();
 
 				applyHiscoreResult(result);
 			}));
