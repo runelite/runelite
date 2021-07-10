@@ -37,7 +37,10 @@ public enum TabSprites implements SpriteOverride
 	TAB_BACKGROUND_ACTIVE(-202, "tag-tab-active.png"),
 	UP_ARROW(-203, "up-arrow.png"),
 	DOWN_ARROW(-204, "down-arrow.png"),
-	NEW_TAB(-205, "new-tab.png");
+	NEW_TAB(-205, "new-tab.png"),
+	IMPORT_TAB(-206, "import-tab.png"),
+	OPEN_TAB_MENU(-207, "open-tab-menu.png"),
+	;
 
 	@Getter
 	private final int spriteId;

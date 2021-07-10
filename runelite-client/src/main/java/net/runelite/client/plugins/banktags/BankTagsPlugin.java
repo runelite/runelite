@@ -8,10 +8,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -439,15 +439,22 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if (configChanged.getGroup().equals(CONFIG_GROUP) && configChanged.getKey().equals("useTabs"))
+		if (configChanged.getGroup().equals(CONFIG_GROUP))
 		{
-			if (config.tabs())
+			if (configChanged.getKey().equals("useTabs"))
 			{
-				clientThread.invokeLater(tabInterface::init);
+				if (config.tabs())
+				{
+					clientThread.invokeLater(tabInterface::init);
+				}
+				else
+					{
+					clientThread.invokeLater(tabInterface::destroy);
+				}
 			}
-			else
+			else if (configChanged.getKey().equals("topLeftButton"))
 			{
-				clientThread.invokeLater(tabInterface::destroy);
+				clientThread.invoke(tabInterface::updateTopLeftButton);
 			}
 		}
 	}
@@ -494,18 +501,25 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			return;
 		}
 
-		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD || !config.removeSeparators())
-		{
-			return;
-		}
-
-		if (!tabInterface.isActive())
+		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD)
 		{
 			return;
 		}
 
 		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+
 		if (itemContainer == null)
+		{
+			return;
+		}
+
+		if (tabInterface.isTagTabActive())
+		{
+			updateBankContainerScrollHeight(tabInterface.getTabCount());
+			return;
+		}
+
+		if (!tabInterface.isActive() || !config.removeSeparators())
 		{
 			return;
 		}
@@ -549,19 +563,23 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			}
 		}
 
-		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		int itemContainerHeight = bankItemContainer.getHeight();
+		updateBankContainerScrollHeight(items);
+	}
+
+	private void updateBankContainerScrollHeight(int itemCount)
+	{
+		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		int itemContainerHeight = itemContainer.getHeight();
 		// add a second row of height here to allow users to scroll down when the last row is partially visible
-		int adjustedScrollHeight = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING;
+		int adjustedScrollHeight = (itemCount / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING;
 		itemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
 
-		final int itemContainerScroll = bankItemContainer.getScrollY();
+		final int itemContainerScroll = itemContainer.getScrollY();
 		clientThread.invokeLater(() ->
-			client.runScript(ScriptID.UPDATE_SCROLLBAR,
-				WidgetInfo.BANK_SCROLLBAR.getId(),
-				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
-				itemContainerScroll));
-
+				client.runScript(ScriptID.UPDATE_SCROLLBAR,
+						WidgetInfo.BANK_SCROLLBAR.getId(),
+						WidgetInfo.BANK_ITEM_CONTAINER.getId(),
+						itemContainerScroll));
 	}
 
 	@Subscribe
