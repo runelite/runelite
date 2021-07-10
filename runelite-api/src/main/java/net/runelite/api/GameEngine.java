@@ -53,4 +53,6 @@ public interface GameEngine
 	boolean isClientThread();
 
 	void resizeCanvas();
+
+	void setReplaceCanvasNextFrame(boolean replace);
 }
