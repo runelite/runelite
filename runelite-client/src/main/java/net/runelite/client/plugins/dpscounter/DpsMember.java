@@ -37,12 +37,18 @@ class DpsMember
 	private Instant start;
 	private Instant end;
 	private int damage;
+	private boolean reset;
 
 	void addDamage(int amount)
 	{
 		if (start == null)
 		{
 			start = Instant.now();
+		}
+
+		if (reset)
+		{
+			reset = false;
 		}
 
 		damage += amount;
@@ -90,7 +96,10 @@ class DpsMember
 	{
 		damage = 0;
 		start = end = Instant.now();
+		reset = true;
 	}
+
+	boolean isReset() { return reset; }
 
 	Duration elapsed()
 	{
