@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2021, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,10 +26,14 @@
 package net.runelite.client.plugins.itemstats;
 
 import com.google.common.collect.ImmutableMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.itemstats.stats.Stats;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -161,6 +166,36 @@ public class ItemStatEffectTest
 		matchWikiTable(SANFEW_TABLE, item);
 	}
 
+	@Test
+	public void testRockCake()
+	{
+		final Effect dwarvenRockCake = new ItemStatChanges().get(ItemID.DWARVEN_ROCK_CAKE_7510);
+
+		assertArrayEquals(new int[] { -1, -13 }, rockCakeChange(121, dwarvenRockCake));
+		assertArrayEquals(new int[] { -1, -11 }, rockCakeChange(106, dwarvenRockCake));
+		assertArrayEquals(new int[] { -1, -10 }, rockCakeChange(99, dwarvenRockCake));
+		assertArrayEquals(new int[] { -1, -10 }, rockCakeChange(90, dwarvenRockCake));
+		assertArrayEquals(new int[] { -1, -9 }, rockCakeChange(89, dwarvenRockCake));
+		assertArrayEquals(new int[] { -1, -1 }, rockCakeChange(2, dwarvenRockCake));
+		assertArrayEquals(new int[] { 0, 0 }, rockCakeChange(1, dwarvenRockCake));
+		assertArrayEquals(new int[] { 0, 0 }, rockCakeChange(0, dwarvenRockCake));
+	}
+
+	@Test
+	public void testLocatorOrb()
+	{
+		final Effect locatorOrb = new ItemStatChanges().get(ItemID.LOCATOR_ORB);
+
+		assertEquals(-10, hitpointsChange(99, locatorOrb));
+		assertEquals(-10, hitpointsChange(90, locatorOrb));
+		assertEquals(-10, hitpointsChange(11, locatorOrb));
+		assertEquals(-9, hitpointsChange(10, locatorOrb));
+		assertEquals(-4, hitpointsChange(5, locatorOrb));
+		assertEquals(-1, hitpointsChange(2, locatorOrb));
+		assertEquals(0, hitpointsChange(1, locatorOrb));
+		assertEquals(0, hitpointsChange(0, locatorOrb));
+	}
+
 	private void matchWikiTable(final ImmutableMap<Integer, Integer> table, final Effect item)
 	{
 		for (final Map.Entry<Integer, Integer> entry : table.entrySet())
@@ -177,5 +212,54 @@ public class ItemStatEffectTest
 				assertEquals(theoretical, change.getTheoretical());
 			}
 		}
+	}
+
+	private int[] rockCakeChange(int currentHitpoints, Effect effect)
+	{
+		if (effect == null)
+		{
+			throw new IllegalArgumentException("Applied effect is null");
+		}
+
+		when(client.getBoostedSkillLevel(Skill.HITPOINTS)).thenReturn(currentHitpoints);
+		final StatChange[] statsChanges = effect.calculate(client).getStatChanges();
+		final List<Integer> hitpointsChanges = new ArrayList<>(statsChanges.length);
+
+		for (final StatChange statChange : statsChanges)
+		{
+			if (statChange.getStat() != Stats.HITPOINTS)
+			{
+				throw new RuntimeException("Rock cake yielded non-Hitpoints stat change: " + statChange);
+			}
+
+			hitpointsChanges.add(statChange.getRelative());
+		}
+
+		return hitpointsChanges.stream()
+			.mapToInt(x -> x)
+			.toArray();
+	}
+
+	private int hitpointsChange(int currentHitpoints, Effect effect)
+	{
+		if (effect == null)
+		{
+			throw new IllegalArgumentException("Applied effect is null");
+		}
+
+		when(client.getBoostedSkillLevel(Skill.HITPOINTS)).thenReturn(currentHitpoints);
+		final StatsChanges statsChanges = effect.calculate(client);
+
+		for (final StatChange statChange : statsChanges.getStatChanges())
+		{
+			if (statChange.getStat() != Stats.HITPOINTS)
+			{
+				continue;
+			}
+
+			return statChange.getRelative();
+		}
+
+		return 0;
 	}
 }
