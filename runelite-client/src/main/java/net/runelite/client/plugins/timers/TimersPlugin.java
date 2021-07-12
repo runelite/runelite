@@ -562,11 +562,11 @@ public class TimersPlugin extends Plugin
 
 		}
 
-		if (config.showCannon() && (message.equals(CANNON_BASE_MESSAGE) ||
-			message.equals(CANNON_STAND_MESSAGE) ||
-			message.equals(CANNON_BARRELS_MESSAGE) ||
-			message.equals(CANNON_FURNACE_MESSAGE) ||
-			message.contains(CANNON_REPAIR_MESSAGE)))
+		if (config.showCannon() && (message.equals(CANNON_BASE_MESSAGE)
+			|| message.equals(CANNON_STAND_MESSAGE)
+			|| message.equals(CANNON_BARRELS_MESSAGE)
+			|| message.equals(CANNON_FURNACE_MESSAGE)
+			|| message.contains(CANNON_REPAIR_MESSAGE)))
 		{
 			TimerTimer cannonTimer = createGameTimer(CANNON);
 			cannonTimer.setTooltip(cannonTimer.getTooltip() + " - World " + client.getWorld());
