@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,32 +27,26 @@ package net.runelite.client.plugins.roguesden;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Shape;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class RoguesDenOverlay extends Overlay
+class RoguesDenMinimapOverlay extends Overlay
 {
-	private static final Color OBJECT_BORDER_COLOR = Color.RED;
-	private static final Color OBJECT_COLOR = new Color(OBJECT_BORDER_COLOR.getRed(), OBJECT_BORDER_COLOR.getGreen(), OBJECT_BORDER_COLOR.getBlue(), 50);
-	private static final Color OBJECT_BORDER_HOVER_COLOR = OBJECT_BORDER_COLOR.darker();
-
-	private final Client client;
-	private final RoguesDenPlugin plugin;
+	private Client client;
+	private RoguesDenPlugin plugin;
 
 	@Inject
-	public RoguesDenOverlay(Client client, RoguesDenPlugin plugin)
+	public RoguesDenMinimapOverlay(Client client, RoguesDenPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
 	}
@@ -65,48 +59,6 @@ public class RoguesDenOverlay extends Overlay
 			return null;
 		}
 
-		plugin.getObstaclesHull().forEach((obstacle, tile) ->
-		{
-			if (tile.getPlane() == client.getPlane())
-			{
-				final Shape clickBox = obstacle.getClickbox();
-				if (clickBox != null)
-				{
-					final Point mouse = client.getMouseCanvasPosition();
-					if (clickBox.contains(mouse.getX(), mouse.getY()))
-					{
-						graphics.setColor(OBJECT_BORDER_HOVER_COLOR);
-					}
-					else
-					{
-						graphics.setColor(OBJECT_BORDER_COLOR);
-					}
-
-					graphics.draw(clickBox);
-					graphics.setColor(OBJECT_COLOR);
-					graphics.fill(clickBox);
-				}
-				else
-				{
-					Shape p;
-					if (obstacle instanceof GameObject)
-					{
-						p = ((GameObject) obstacle).getConvexHull();
-					}
-					else
-					{
-						p = obstacle.getCanvasTilePoly();
-					}
-
-					if (p != null)
-					{
-						graphics.setColor(OBJECT_COLOR);
-						graphics.draw(p);
-					}
-				}
-			}
-		});
-
 		for (Obstacles.Obstacle obstacle : Obstacles.OBSTACLES)
 		{
 			final LocalPoint localPoint = LocalPoint.fromWorld(client, obstacle.getTile());
@@ -116,21 +68,11 @@ public class RoguesDenOverlay extends Overlay
 				continue;
 			}
 
-			if (!obstacle.getHint().isEmpty())
-			{
-				final Polygon polygon = Perspective.getCanvasTilePoly(client, localPoint);
-				if (polygon != null)
-				{
-					graphics.setColor(obstacle.getTileColor());
-					graphics.drawPolygon(polygon);
-				}
-			}
+			final Point minimapPoint = Perspective.localToMinimap(client, localPoint);
 
-			final Point textLocation = Perspective.getCanvasTextLocation(client, graphics, localPoint, obstacle.getHint(), 0);
-			if (textLocation != null)
+			if (minimapPoint != null)
 			{
-				graphics.setColor(Color.LIGHT_GRAY);
-				graphics.drawString(obstacle.getHint(), textLocation.getX(), textLocation.getY());
+				OverlayUtil.renderMinimapLocation(graphics, minimapPoint, obstacle.getObjectId() == -1 ? Color.GREEN : Color.RED);
 			}
 		}
 
