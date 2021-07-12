@@ -29,6 +29,8 @@ import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -45,6 +47,7 @@ import net.runelite.api.Player;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetInfo;
@@ -73,6 +76,10 @@ public class HiscorePlugin extends Plugin
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Delete", KICK_OPTION);
 	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
+
+	// A short-lived cache of player indexes to names to allow lookup of players who have despawned prior to a lookup
+	// being executed via a "Lookup" menu option click.
+	private final Map<Integer, String> playerIndexName = new HashMap<>();
 
 	@Inject
 	@Nullable
@@ -126,6 +133,7 @@ public class HiscorePlugin extends Plugin
 	{
 		hiscorePanel.shutdown();
 		clientToolbar.removeNavigation(navButton);
+		playerIndexName.clear();
 
 		if (client != null)
 		{
@@ -147,6 +155,33 @@ public class HiscorePlugin extends Plugin
 					menuManager.get().addPlayerMenuItem(LOOKUP);
 				}
 			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuOpened(MenuOpened event)
+	{
+		playerIndexName.clear();
+		for (MenuEntry entry : client.getMenuEntries())
+		{
+			int type = entry.getType();
+			if (type > MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET)
+			{
+				type -= MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
+			}
+
+			if (type != MenuAction.RUNELITE_PLAYER.getId() || !entry.getOption().equals(LOOKUP))
+			{
+				continue;
+			}
+
+			final Player player = client.getCachedPlayers()[entry.getIdentifier()];
+			if (player == null)
+			{
+				continue;
+			}
+
+			playerIndexName.put(entry.getIdentifier(), player.getName());
 		}
 	}
 
@@ -197,13 +232,8 @@ public class HiscorePlugin extends Plugin
 			{
 				// The player id is included in the event, so we can use that to get the player name,
 				// which avoids having to parse out the combat level and any icons preceding the name.
-				Player player = client.getCachedPlayers()[event.getId()];
-				if (player == null)
-				{
-					return;
-				}
-
-				target = player.getName();
+				target = playerIndexName.get(event.getId());
+				playerIndexName.clear();
 			}
 			else
 			{
