@@ -52,6 +52,9 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
+import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 
 /**
  * Manages state of all game overlays
@@ -117,6 +120,8 @@ public class OverlayManager
 		this.configManager = configManager;
 		this.eventBus = eventBus;
 		this.runeLiteConfig = runeLiteConfig;
+
+		resetTooltipOverlayPosition();
 	}
 
 	@Subscribe
@@ -161,6 +166,18 @@ public class OverlayManager
 				eventBus.post(new OverlayMenuClicked(overlayMenuEntry, overlay));
 			}
 		}
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen event)
+	{
+		resetTooltipOverlayPosition();
+	}
+
+	@Subscribe
+	public void onSessionClose(SessionClose event)
+	{
+		resetTooltipOverlayPosition();
 	}
 
 	/**
@@ -430,5 +447,13 @@ public class OverlayManager
 	{
 		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
 		return configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey, OverlayPosition.class);
+	}
+
+	@Deprecated
+	private void resetTooltipOverlayPosition()
+	{
+		configManager.unsetConfiguration(
+			RUNELITE_CONFIG_GROUP_NAME,
+			TooltipOverlay.class.getSimpleName() + OVERLAY_CONFIG_PREFERRED_LOCATION);
 	}
 }
