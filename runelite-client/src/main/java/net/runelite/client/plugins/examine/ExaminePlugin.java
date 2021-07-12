@@ -254,7 +254,8 @@ public class ExaminePlugin extends Plugin
 			|| WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup
 			|| WidgetID.SEED_BOX_GROUP_ID == widgetGroup
 			|| WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID == widgetGroup
-			|| WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID == widgetGroup)
+			|| WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID == widgetGroup
+			|| WidgetID.POH_TREASURE_CHEST_INVENTORY_GROUP_ID == widgetGroup)
 		{
 			Widget widgetItem = widget.getChild(actionParam);
 			if (widgetItem != null)
