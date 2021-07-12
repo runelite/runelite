@@ -58,10 +58,12 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 		new CipherClue("GBJSZ RVFFO", "Fairy Queen", new WorldPoint(2347, 4435, 0), "Fairy Resistance Hideout"),
 		new CipherClue("QSPGFTTPS HSBDLMFCPOF", "Professor Gracklebone", new WorldPoint(1625, 3802, 0), "Ground floor of Arceuus Library", "How many round tables can be found on this floor of the library?", "9"),
 		new CipherClue("IWPPLQTP", "Gunnjorn", new WorldPoint(2541, 3548, 0), "Barbarian Outpost Agility course"),
-		new CipherClue("BSOPME MZETQPS", "Arnold Lydspor", new WorldPoint(2329, 3689, 0), "Piscatoris Fishing Colony general store/bank")
+		new CipherClue("BSOPME MZETQPS", "Arnold Lydspor", new WorldPoint(2329, 3689, 0), "Piscatoris Fishing Colony general store/bank"),
+		new CipherClue("ESBZOPS QJH QFO", new WorldPoint(3077, 3260, 0), "Inside of Martin the Master Gardener's pig pen in Draynor Village.")
 	);
 
 	private String text;
+	@Nullable
 	private String npc;
 	private WorldPoint location;
 	private String area;
@@ -70,12 +72,18 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 	@Nullable
 	private String answer;
 
+	private CipherClue(String text, WorldPoint location, String area)
+	{
+		this(text, null, location, area);
+		this.text = "The cipher reveals where to dig next: " + text;
+	}
+
 	private CipherClue(String text, String npc, WorldPoint location, String area)
 	{
 		this(text, npc, location, area, null, null);
 	}
 
-	private CipherClue(String text, String npc, WorldPoint location, String area, @Nullable String question, @Nullable String answer)
+	private CipherClue(String text, @Nullable String npc, WorldPoint location, String area, @Nullable String question, @Nullable String answer)
 	{
 		this.text = "The cipher reveals who to speak to next: " + text;
 		this.npc = npc;
@@ -88,12 +96,16 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		panelComponent.getChildren().add(TitleComponent.builder().text("Cipher Clue").build());
-		panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getNpc())
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
+		final String clueNpc = getNpc();
+		if (clueNpc != null)
+		{
+			panelComponent.getChildren().add(TitleComponent.builder().text("Cipher Clue").build());
+			panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(clueNpc)
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
+		}
 
 		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
