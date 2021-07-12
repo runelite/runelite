@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -143,4 +144,31 @@ public interface MotherlodeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "oreValueType",
+		name = "Show ore values",
+		description = "Displays GE values for ores found"
+	)
+	default MotherlodeOreValueType oreValueType()
+	{
+		return MotherlodeOreValueType.DISABLED;
+	}
+	
+	@AllArgsConstructor
+	enum MotherlodeOreValueType
+	{
+		DISABLED("Disabled"),
+		MOUSEOVER("On mouseover"),
+		REPLACE("Replace overlay");
+
+		private final String value;
+
+		@Override
+		public String toString()
+		{
+			return value;
+		}
+	}
+
 }
