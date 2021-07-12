@@ -32,13 +32,11 @@ import javax.swing.text.JTextComponent;
 import jdk.jshell.JShell;
 import jdk.jshell.SourceCodeAnalysis;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.CompletionProviderBase;
 import org.fife.ui.autocomplete.ParameterizedCompletion;
 
-@Slf4j
 @RequiredArgsConstructor
 public class JShellAutocompleteProvider extends CompletionProviderBase
 {
