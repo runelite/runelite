@@ -30,10 +30,12 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetType;
 
 public class WidgetOverlay extends Overlay
 {
@@ -114,7 +116,7 @@ public class WidgetOverlay extends Overlay
 
 	private Rectangle getParentBounds(final Widget widget)
 	{
-		if (widget == null || widget.isHidden())
+		if (widget == null || widget.isHidden() || containsOnlyEmptyDynamicTextWidgets(widget))
 		{
 			parentBounds.setBounds(new Rectangle());
 			return parentBounds;
@@ -148,6 +150,26 @@ public class WidgetOverlay extends Overlay
 
 		final Widget widget = client.getWidget(widgetInfo);
 		return getParentBounds(widget);
+	}
+
+	private static boolean containsOnlyEmptyDynamicTextWidgets(@Nonnull final Widget widget)
+	{
+		if ((widget.getStaticChildren() != null && widget.getStaticChildren().length > 0)
+			|| (widget.getNestedChildren() != null && widget.getNestedChildren().length > 0)
+			|| widget.getChildren() == null)
+		{
+			return false;
+		}
+
+		for (final Widget child : widget.getChildren())
+		{
+			if (child.getType() != WidgetType.TEXT || !child.getText().isEmpty())
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private static class XpTrackerWidgetOverlay extends WidgetOverlay
