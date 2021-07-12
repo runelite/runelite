@@ -55,7 +55,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -63,6 +62,7 @@ import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
@@ -90,6 +90,9 @@ public class TimersPlugin extends Plugin
 	private static final String ABYSSAL_SIRE_STUN_MESSAGE = "The Sire has been disorientated temporarily.";
 	private static final String ANTIFIRE_DRINK_MESSAGE = "You drink some of your antifire potion.";
 	private static final String ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your antifire potion has expired.</col>";
+	private static final String CANNON_BASE_MESSAGE = "You place the cannon base on the ground.";
+	private static final String CANNON_STAND_MESSAGE = "You add the stand.";
+	private static final String CANNON_BARRELS_MESSAGE = "You add the barrels.";
 	private static final String CANNON_FURNACE_MESSAGE = "You add the furnace.";
 	private static final String CANNON_PICKUP_MESSAGE = "You pick up the cannon. It's really heavy.";
 	private static final String CANNON_REPAIR_MESSAGE = "You repair your cannon, restoring it to working order.";
@@ -559,7 +562,11 @@ public class TimersPlugin extends Plugin
 
 		}
 
-		if (config.showCannon() && (message.equals(CANNON_FURNACE_MESSAGE) || message.contains(CANNON_REPAIR_MESSAGE)))
+		if (config.showCannon() && (message.equals(CANNON_BASE_MESSAGE)
+			|| message.equals(CANNON_STAND_MESSAGE)
+			|| message.equals(CANNON_BARRELS_MESSAGE)
+			|| message.equals(CANNON_FURNACE_MESSAGE)
+			|| message.contains(CANNON_REPAIR_MESSAGE)))
 		{
 			TimerTimer cannonTimer = createGameTimer(CANNON);
 			cannonTimer.setTooltip(cannonTimer.getTooltip() + " - World " + client.getWorld());
