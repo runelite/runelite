@@ -89,6 +89,7 @@ import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ImageCaptureOptions;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.Text;
@@ -891,7 +892,11 @@ public class RaidsPlugin extends Plugin
 		graphic.fillRect(0, 0, overlayDimensions.width, overlayDimensions.height);
 		overlay.render(graphic);
 
-		imageCapture.takeScreenshot(overlayImage, "CoX_scout-", false, config.uploadScreenshot());
+		imageCapture.takeScreenshot(ImageCaptureOptions.builder()
+			.screenshot(overlayImage)
+			.fileName("CoX_scout-")
+			.imageUploadStyle(config.uploadScreenshot())
+			.build());
 		graphic.dispose();
 	}
 

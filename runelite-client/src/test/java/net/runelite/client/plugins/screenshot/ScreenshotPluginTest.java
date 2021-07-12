@@ -30,6 +30,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import javax.inject.Inject;
+import javax.inject.Named;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
@@ -42,10 +43,8 @@ import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
 import net.runelite.client.Notifier;
-import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
-import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageCapture;
 import static org.junit.Assert.assertEquals;
@@ -102,22 +101,17 @@ public class ScreenshotPluginTest
 
 	@Mock
 	@Bind
-	RuneLiteConfig config;
-
-	@Mock
-	@Bind
 	ScheduledExecutorService service;
-
-	@Mock
-	@Bind
-	private OverlayManager overlayManager;
 
 	@Mock
 	@Bind
 	private InfoBoxManager infoBoxManager;
 
-	@Mock
 	@Bind
+	@Named("runelite.imgur.client.id")
+	private String imgurClientId = "RuneLite";
+
+	@Inject
 	private ImageCapture imageCapture;
 
 	@Before

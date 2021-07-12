@@ -27,38 +27,28 @@ package net.runelite.client.plugins.screenshot;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
-import net.runelite.api.SpriteID;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
@@ -72,17 +62,14 @@ import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PlayerLootReceived;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageCapture;
+import net.runelite.client.util.ImageCaptureOptions;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
@@ -114,10 +101,6 @@ public class ScreenshotPlugin extends Plugin
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
 	private static final Pattern BA_HIGH_GAMBLE_REWARD_PATTERN = Pattern.compile("(?<reward>.+)!<br>High level gamble count: <col=7f0000>(?<gambleCount>.+)</col>");
-	private static final Set<Integer> REPORT_BUTTON_TLIS = ImmutableSet.of(
-		WidgetID.FIXED_VIEWPORT_GROUP_ID,
-		WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID,
-		WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID);
 	private static final String SD_KINGDOM_REWARDS = "Kingdom Rewards";
 	private static final String SD_BOSS_KILLS = "Boss Kills";
 	private static final String SD_CLUE_SCROLL_REWARDS = "Clue Scroll Rewards";
@@ -153,37 +136,16 @@ public class ScreenshotPlugin extends Plugin
 	private ScreenshotConfig config;
 
 	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private ScreenshotOverlay screenshotOverlay;
-
-	@Inject
 	private Client client;
-
-	@Inject
-	private ClientUI clientUi;
 
 	@Inject
 	private ClientToolbar clientToolbar;
 
 	@Inject
-	private DrawManager drawManager;
-
-	@Inject
-	private ScheduledExecutorService executor;
-
-	@Inject
 	private KeyManager keyManager;
 
 	@Inject
-	private SpriteManager spriteManager;
-
-	@Inject
 	private ImageCapture imageCapture;
-
-	@Getter(AccessLevel.PACKAGE)
-	private BufferedImage reportButton;
 
 	private NavigationButton titleBarButton;
 
@@ -207,7 +169,6 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(screenshotOverlay);
 		SCREENSHOT_DIR.mkdirs();
 		keyManager.registerKeyListener(hotkeyListener);
 
@@ -228,14 +189,11 @@ public class ScreenshotPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
-
-		spriteManager.getSpriteAsync(SpriteID.CHATBOX_REPORT_BUTTON, 0, s -> reportButton = s);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(screenshotOverlay);
 		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
 		kickPlayerName = null;
@@ -727,61 +685,18 @@ public class ScreenshotPlugin extends Plugin
 	 */
 	private void takeScreenshot(String fileName, String subDir)
 	{
-		if (client.getGameState() == GameState.LOGIN_SCREEN)
-		{
-			// Prevent the screenshot from being captured
-			log.info("Login screenshot prevented");
-			return;
-		}
+		final List<Consumer<Graphics2D>> overlayList = config.displayDate()
+			? Collections.singletonList(imageCapture::displayDateOverlay)
+			: Collections.emptyList();
 
-		Consumer<Image> imageCallback = (img) ->
-		{
-			// This callback is on the game thread, move to executor thread
-			executor.submit(() -> takeScreenshot(fileName, subDir, img));
-		};
-
-		if (config.displayDate() && REPORT_BUTTON_TLIS.contains(client.getTopLevelInterfaceId()))
-		{
-			screenshotOverlay.queueForTimestamp(imageCallback);
-		}
-		else
-		{
-			drawManager.requestNextFrameListener(imageCallback);
-		}
-	}
-
-	private void takeScreenshot(String fileName, String subDir, Image image)
-	{
-		BufferedImage screenshot = config.includeFrame()
-			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-			: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-		Graphics graphics = screenshot.getGraphics();
-
-		int gameOffsetX = 0;
-		int gameOffsetY = 0;
-
-		if (config.includeFrame())
-		{
-			// Draw the client frame onto the screenshot
-			try
-			{
-				SwingUtilities.invokeAndWait(() -> clientUi.paint(graphics));
-			}
-			catch (InterruptedException | InvocationTargetException e)
-			{
-				log.warn("unable to paint client UI on screenshot", e);
-			}
-
-			// Evaluate the position of the game inside the frame
-			final Point canvasOffset = clientUi.getCanvasOffset();
-			gameOffsetX = canvasOffset.getX();
-			gameOffsetY = canvasOffset.getY();
-		}
-
-		// Draw the game onto the screenshot
-		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
-		imageCapture.takeScreenshot(screenshot, fileName, subDir, config.notifyWhenTaken(), config.uploadScreenshot());
+		imageCapture.takeScreenshot(ImageCaptureOptions.builder()
+			.fileName(fileName)
+			.subDir(subDir)
+			.includeFrame(config.includeFrame())
+			.notify(config.notifyWhenTaken())
+			.imageUploadStyle(config.uploadScreenshot())
+			.overlays(overlayList)
+			.build());
 	}
 
 	private boolean isInsideGauntlet()
