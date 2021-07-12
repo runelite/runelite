@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2021, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,6 +30,7 @@ import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.itemstats.stats.Stats;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -161,6 +163,37 @@ public class ItemStatEffectTest
 		matchWikiTable(SANFEW_TABLE, item);
 	}
 
+	@Test
+	public void testZamorakBrew()
+	{
+		final Effect zamorakBrew = new ItemStatChanges().get(ItemID.ZAMORAK_BREW4);
+
+		assertEquals(-10, hitpointsChange(91, 91, zamorakBrew));
+		assertEquals(-9, hitpointsChange(91, 81, zamorakBrew));
+		assertEquals(-8, hitpointsChange(91, 72, zamorakBrew));
+		assertEquals(-7, hitpointsChange(91, 64, zamorakBrew));
+		assertEquals(-3, hitpointsChange(91, 31, zamorakBrew));
+		assertEquals(-3, hitpointsChange(91, 28, zamorakBrew));
+		assertEquals(-3, hitpointsChange(91, 25, zamorakBrew));
+		assertEquals(-2, hitpointsChange(91, 22, zamorakBrew));
+	}
+
+	@Test
+	public void testZamorakMix()
+	{
+		final Effect zamorakMix = new ItemStatChanges().get(ItemID.ZAMORAK_MIX2);
+
+		assertEquals(-10, hitpointsChange(91, 91, zamorakMix));
+		assertEquals(-3, hitpointsChange(91, 81, zamorakMix));
+		assertEquals(-3, hitpointsChange(91, 78, zamorakMix));
+		assertEquals(-3, hitpointsChange(91, 75, zamorakMix));
+		assertEquals(3, hitpointsChange(91, 31, zamorakMix));
+		assertEquals(2, hitpointsChange(91, 34, zamorakMix));
+		assertEquals(2, hitpointsChange(91, 36, zamorakMix));
+		assertEquals(2, hitpointsChange(91, 38, zamorakMix));
+		assertEquals(0, hitpointsChange(91, 50, zamorakMix));
+	}
+
 	private void matchWikiTable(final ImmutableMap<Integer, Integer> table, final Effect item)
 	{
 		for (final Map.Entry<Integer, Integer> entry : table.entrySet())
@@ -177,5 +210,29 @@ public class ItemStatEffectTest
 				assertEquals(theoretical, change.getTheoretical());
 			}
 		}
+	}
+
+	private int hitpointsChange(int maxHitpoints, int currentHitpoints, Effect effect)
+	{
+		if (effect == null)
+		{
+			throw new IllegalArgumentException("Applied effect is null");
+		}
+
+		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(maxHitpoints);
+		when(client.getBoostedSkillLevel(Skill.HITPOINTS)).thenReturn(currentHitpoints);
+		final StatsChanges statsChanges = effect.calculate(client);
+
+		for (final StatChange statChange : statsChanges.getStatChanges())
+		{
+			if (statChange.getStat() != Stats.HITPOINTS)
+			{
+				continue;
+			}
+
+			return statChange.getRelative();
+		}
+
+		return 0;
 	}
 }
