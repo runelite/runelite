@@ -41,6 +41,8 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -357,6 +359,16 @@ public class ClientUI
 					{
 						shutdownClient();
 					}
+				}
+			});
+
+			frame.addComponentListener(new ComponentAdapter()
+			{
+				@Override
+				public void componentResized(ComponentEvent e)
+				{
+					// Manually call setSize to force the frame to respect it's minimum size after restore
+					frame.setSize(frame.getSize());
 				}
 			});
 

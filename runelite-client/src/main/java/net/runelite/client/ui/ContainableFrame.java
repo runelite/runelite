@@ -157,6 +157,7 @@ public class ContainableFrame extends JFrame
 	{
 		if (isFullScreen())
 		{
+			revalidateMinimumSize();
 			return;
 		}
 
@@ -215,12 +216,12 @@ public class ContainableFrame extends JFrame
 	 */
 	public void contractBy(final int value)
 	{
+		revalidateMinimumSize();
 		if (isFullScreen())
 		{
 			return;
 		}
 
-		revalidateMinimumSize();
 		final Rectangle screenBounds = getGraphicsConfiguration().getBounds();
 		final boolean wasCloseToLeftEdge = Math.abs(getX() - screenBounds.getX()) <= SCREEN_EDGE_CLOSE_DISTANCE;
 		int newWindowX = getX();
