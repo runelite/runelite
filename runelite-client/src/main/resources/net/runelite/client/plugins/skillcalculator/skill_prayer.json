@@ -11,6 +11,10 @@
     {
       "name": "Chaos Altar (700%)",
       "value": 6
+    },
+    {
+      "name": "Bonecrusher (50%)",
+      "value": -0.5
     }
   ],
   "actions": [
