@@ -237,7 +237,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3188, 3939, 0), new CoordinateClueInfo("Wilderness. Resource Area.", BRASSICAN_MAGE))
 		.put(new WorldPoint(3304, 3941, 0), new CoordinateClueInfo("Wilderness. East of Rogues' Castle.", ANCIENT_WIZARDS))
 		.put(new WorldPoint(2994, 3961, 0), new CoordinateClueInfo("Wilderness. Inside Agility Training Area.", BRASSICAN_MAGE))
-		.put(new WorldPoint(1770, 3417, 0), new CoordinateClueInfo("Crabclaw Isle", ANCIENT_WIZARDS))
+		.put(new WorldPoint(1769, 3418, 0), new CoordinateClueInfo("Crabclaw Isle", ANCIENT_WIZARDS))
 		.build();
 
 	private final String text;
