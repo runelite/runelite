@@ -38,10 +38,13 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -183,6 +186,7 @@ public class GroundItemsPlugin extends Plugin
 	private LoadingCache<NamedQuantity, Boolean> hiddenItems;
 	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
 	private int lastUsedItem;
+	private final Map<WorldPoint, LootBeam> lootBeams = new HashMap<>();
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -213,6 +217,7 @@ public class GroundItemsPlugin extends Plugin
 		hiddenItemList = null;
 		highlightedItemsList = null;
 		collectedGroundItems.clear();
+		removeAllLootbeams();
 	}
 
 	@Subscribe
@@ -230,6 +235,7 @@ public class GroundItemsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			collectedGroundItems.clear();
+			lootBeams.clear();
 		}
 	}
 
@@ -253,6 +259,8 @@ public class GroundItemsPlugin extends Plugin
 		{
 			notifyHighlightedItem(groundItem);
 		}
+
+		handleLootbeam(tile.getWorldLocation());
 	}
 
 	@Subscribe
@@ -280,6 +288,8 @@ public class GroundItemsPlugin extends Plugin
 			// time
 			groundItem.setSpawnTime(null);
 		}
+
+		handleLootbeam(tile.getWorldLocation());
 	}
 
 	@Subscribe
@@ -297,6 +307,8 @@ public class GroundItemsPlugin extends Plugin
 		{
 			groundItem.setQuantity(groundItem.getQuantity() + diff);
 		}
+
+		handleLootbeam(tile.getWorldLocation());
 	}
 
 	@Subscribe
@@ -460,6 +472,8 @@ public class GroundItemsPlugin extends Plugin
 		}
 
 		priceChecks = priceCheckBuilder.build();
+
+		handleLootbeams();
 	}
 
 	@Subscribe
@@ -703,6 +717,115 @@ public class GroundItemsPlugin extends Plugin
 			}
 
 			lastUsedItem = clickedItem.getId();
+		}
+	}
+
+	private void handleLootbeam(WorldPoint worldPoint)
+	{
+		/*
+		 * Return and remove the lootbeam from this location if lootbeams are disabled
+		 * Lootbeams can be at this location if the config was just changed
+		 */
+		if (!(config.showLootBeamsForHighlighted() || config.showLootBeamsTier() != HighlightTier.OFF))
+		{
+			removeLootBeam(worldPoint);
+			return;
+		}
+
+		int price = -1;
+		for (Map.Entry<GroundItem.GroundItemKey, GroundItem> entry : collectedGroundItems.entrySet())
+		{
+			GroundItem groundItem = entry.getValue();
+
+			if (!entry.getKey().getLocation().equals(worldPoint)
+				|| (config.onlyShowLoot() && !groundItem.isMine()))
+			{
+				continue;
+			}
+
+			/*
+			 * highlighted items have the highest priority so if an item is highlighted at this location
+			 * we can early return
+			 */
+			NamedQuantity item = new NamedQuantity(groundItem);
+			if (config.showLootBeamsForHighlighted()
+				&& TRUE.equals(highlightedItems.getUnchecked(item)))
+			{
+				addLootBeam(worldPoint, config.highlightedColor());
+				return;
+			}
+
+			// Explicit hide takes priority over implicit highlight
+			if (TRUE.equals(hiddenItems.getUnchecked(item)))
+			{
+				continue;
+			}
+
+			int itemPrice = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
+			price = Math.max(itemPrice, price);
+		}
+
+		if (config.showLootBeamsTier() != HighlightTier.OFF)
+		{
+			for (PriceHighlight highlight : priceChecks)
+			{
+				if (price > highlight.getPrice() && price > config.showLootBeamsTier().getValueFromTier(config))
+				{
+					addLootBeam(worldPoint, highlight.color);
+					return;
+				}
+			}
+		}
+
+		removeLootBeam(worldPoint);
+	}
+
+	private void handleLootbeams()
+	{
+		// get all tiles with ground items
+		Set<WorldPoint> tiles = new HashSet<>();
+		for (GroundItem.GroundItemKey key : collectedGroundItems.keySet())
+		{
+			tiles.add(key.getLocation());
+		}
+
+		for (WorldPoint worldPoint : tiles)
+		{
+			handleLootbeam(worldPoint);
+		}
+	}
+
+	private void removeAllLootbeams()
+	{
+		for (LootBeam lootBeam : lootBeams.values())
+		{
+			lootBeam.remove();
+		}
+
+		lootBeams.clear();
+	}
+
+	private void addLootBeam(WorldPoint worldPoint, Color color)
+	{
+		LootBeam lootBeam = lootBeams.get(worldPoint);
+		if (lootBeam == null)
+		{
+			lootBeam = new LootBeam(client, worldPoint, color);
+			lootBeams.put(worldPoint, lootBeam);
+		}
+		else
+		{
+			lootBeam.setColor(color);
+		}
+	}
+
+	private void removeLootBeam(WorldPoint worldPoint)
+	{
+		LootBeam lootBeam = lootBeams.get(worldPoint);
+		if (lootBeam != null)
+		{
+			lootBeam.remove();
+			lootBeams.remove(worldPoint);
 		}
 	}
 }

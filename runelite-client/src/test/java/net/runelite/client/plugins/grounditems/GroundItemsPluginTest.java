@@ -111,6 +111,8 @@ public class GroundItemsPluginTest
 
 		when(client.getLocalPlayer()).thenReturn(mock(Player.class));
 		when(config.getHiddenItems()).thenReturn("");
+		when(config.showLootBeamsForHighlighted()).thenReturn(false);
+		when(config.showLootBeamsTier()).thenReturn(HighlightTier.OFF);
 	}
 
 	@Test
