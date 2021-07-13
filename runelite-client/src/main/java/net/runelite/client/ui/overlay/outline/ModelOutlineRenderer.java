@@ -450,7 +450,7 @@ public class ModelOutlineRenderer
 		{
 			y3 = clipY2;
 		}
-		if (y1 == y3 || y3 < 0)
+		if (y1 == y3 || y3 < clipY1)
 		{
 			return;
 		}
@@ -459,16 +459,16 @@ public class ModelOutlineRenderer
 		x2 <<= 14;
 		x3 = x1;
 
-		if (y1 < 0)
+		if (y1 < clipY1)
 		{
-			x3 -= y1 * slope3;
-			x1 -= y1 * slope1;
-			y1 = 0;
+			x3 -= (y1 - clipY1) * slope3;
+			x1 -= (y1 - clipY1) * slope1;
+			y1 = clipY1;
 		}
-		if (y2 < 0)
+		if (y2 < clipY1)
 		{
-			x2 -= slope2 * y2;
-			y2 = 0;
+			x2 -= (y2 - clipY1) * slope2;
+			y2 = clipY1;
 		}
 
 		int pixelY = y1;
