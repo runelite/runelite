@@ -65,6 +65,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -216,6 +217,19 @@ public class WintertodtPlugin extends Plugin
 			}
 
 			previousTimerValue = timerValue;
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case HOPPING:
+			case LOGGING_IN:
+				previousTimerValue = 0;
+				client.setVarbit(Varbits.WINTERTODT_TIMER, 0);
+				break;
 		}
 	}
 

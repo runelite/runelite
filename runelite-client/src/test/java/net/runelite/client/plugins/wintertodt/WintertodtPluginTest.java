@@ -30,7 +30,9 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
@@ -150,6 +152,40 @@ public class WintertodtPluginTest
 		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(25);
 
 		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		verify(notifier, times(0)).notify("Wintertodt round is about to start");
+	}
+
+	@Test
+	public void matchStartingNotification_shouldNotNotify_whenLoggingIn()
+	{
+		when(config.roundNotification()).thenReturn(5);
+
+		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(25);
+		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+
+		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(0);
+		GameStateChanged event = new GameStateChanged();
+		event.setGameState(GameState.LOGGING_IN);
+		wintertodtPlugin.onGameStateChanged(event);
+		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+
+		verify(notifier, times(0)).notify("Wintertodt round is about to start");
+	}
+
+	@Test
+	public void matchStartingNotification_shouldNotNotify_whenHoppingWorld()
+	{
+		when(config.roundNotification()).thenReturn(5);
+
+		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(25);
+		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+
+		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(0);
+		GameStateChanged event = new GameStateChanged();
+		event.setGameState(GameState.HOPPING);
+		wintertodtPlugin.onGameStateChanged(event);
+		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+
 		verify(notifier, times(0)).notify("Wintertodt round is about to start");
 	}
 }
