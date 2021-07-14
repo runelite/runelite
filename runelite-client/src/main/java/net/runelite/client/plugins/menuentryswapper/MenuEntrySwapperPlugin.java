@@ -373,6 +373,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("bury", "use", config::swapBones);
 
+		swap("open", "rune pouch", "use", config::swapRunePouch);
+
 		swap("wield", "battlestaff", "use", config::swapBattlestaves);
 
 		swap("clean", "use", config::swapHerbs);
