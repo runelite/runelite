@@ -56,4 +56,21 @@ public class TextTest
 		assertEquals("a <lt> b", Text.removeFormattingTags("a <lt> b"));
 		assertEquals("Remove no tags", Text.removeFormattingTags("Remove no tags"));
 	}
+
+	@Test
+	public void toJagexName()
+	{
+		assertEquals("lab rat", Text.toJagexName("lab rat"));
+		assertEquals("lab rat", Text.toJagexName("-lab_rat"));
+		assertEquals("lab rat", Text.toJagexName("  lab-rat__"));
+		assertEquals("lab rat", Text.toJagexName("lab\u00A0rat\u00A0\u00A0"));
+		assertEquals("Test Man", Text.toJagexName("蹔Test\u00A0蹔Man"));
+		assertEquals("Test Boy", Text.toJagexName(" Te⓲st\u00A0B⓲oy⓲ "));
+		assertEquals("mR  nAmE", Text.toJagexName("mR  nAmE"));
+		assertEquals("mR  nAmE", Text.toJagexName("mR__nAmE"));
+		assertEquals("mR  nAmE", Text.toJagexName("mR--nAmE"));
+		assertEquals("mR  nAmE", Text.toJagexName("-_ mR\u00A0-nAmE _-"));
+		assertEquals("mR  nAmE", Text.toJagexName("--__--mR_-nAmE__  --"));
+		assertEquals("Mind    the     gap", Text.toJagexName("Mind_-_-the-- __gap"));
+	}
 }
