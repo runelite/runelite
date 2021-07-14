@@ -33,7 +33,7 @@ import net.runelite.client.util.QuantityFormatter;
 @AllArgsConstructor
 public enum XpPanelLabel
 {
-	TIME_TO_LEVEL("TTL", XpSnapshotSingle::getTimeTillGoalShort),
+	TIME_TO_LEVEL("", XpSnapshotSingle::getTimeTillGoalShort),
 
 	XP_GAINED("XP Gained", snap -> format(snap.getXpGainedInSession())),
 	XP_HOUR("XP/hr", snap -> format(snap.getXpPerHour())),
@@ -55,6 +55,11 @@ public enum XpPanelLabel
 	 */
 	public String getActionKey(XpSnapshotSingle snapshot)
 	{
+		if (this == TIME_TO_LEVEL)
+		{
+			return snapshot.isHasGoal() ? "TTG" : "TTL";
+		}
+
 		String actionKey = key;
 		if (snapshot.getActionType() == XpActionType.ACTOR_HEALTH)
 		{
