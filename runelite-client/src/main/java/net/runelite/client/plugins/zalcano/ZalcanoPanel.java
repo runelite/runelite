@@ -28,13 +28,15 @@ package net.runelite.client.plugins.zalcano;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class ZalcanoPanel extends OverlayPanel
 {
+	private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat(" (##0.0%)");
 	private final ZalcanoPlugin plugin;
 
 	@Inject
@@ -53,18 +55,34 @@ class ZalcanoPanel extends OverlayPanel
 			return null;
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Health damage:")
-			.leftColor(colorFromCount(plugin.getHealthDamage()))
-			.right(Integer.toString(plugin.getHealthDamage()))
+		double healthRatio = 0;
+		double shieldRatio = 0;
+		if (plugin.getTotalHealthDamage() > 0)
+		{
+			healthRatio = plugin.getHealthDamage() / (double)(plugin.getTotalHealthDamage());
+		}
+		if (plugin.getTotalShieldDamage() > 0)
+		{
+			shieldRatio = plugin.getShieldDamage() / (double)(plugin.getTotalShieldDamage());
+		}
+
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text("Health damage:")
+			.color(colorFromCount(plugin.getHealthDamage()))
 			.build());
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Shield damage:")
-			.leftColor(colorFromCount(plugin.getShieldDamage()))
-			.right(Integer.toString(plugin.getShieldDamage()))
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text(plugin.getHealthDamage() + "/" + plugin.getTotalHealthDamage() + PERCENTAGE_FORMAT.format(healthRatio))
 			.build());
 
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text("Shield damage:")
+			.color(colorFromCount(plugin.getShieldDamage()))
+			.build());
+
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text(plugin.getShieldDamage() + "/" + plugin.getTotalShieldDamage() + PERCENTAGE_FORMAT.format(shieldRatio))
+			.build());
 		return super.render(g);
 	}
 
