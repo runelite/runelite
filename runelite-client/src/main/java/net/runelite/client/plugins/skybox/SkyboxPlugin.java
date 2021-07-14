@@ -34,6 +34,7 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
@@ -108,7 +109,7 @@ public class SkyboxPlugin extends Plugin
 			return;
 		}
 
-		Color overrideColor = player.getWorldLocation().getY() < Constants.OVERWORLD_MAX_Y
+		Color overrideColor = WorldPoint.getMirrorPoint(player.getWorldLocation(), true).getY() < Constants.OVERWORLD_MAX_Y
 			? config.customOverworldColor() : config.customOtherColor();
 		if (overrideColor != null)
 		{
