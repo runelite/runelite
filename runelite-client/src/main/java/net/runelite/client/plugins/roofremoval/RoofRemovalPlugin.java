@@ -175,7 +175,7 @@ public class RoofRemovalPlugin extends Plugin
 
 	private void loadRoofOverrides() throws IOException
 	{
-		try (InputStream in = getClass().getResourceAsStream("overrides.json"))
+		try (InputStream in = getClass().getResourceAsStream("overrides.jsonc"))
 		{
 			final InputStreamReader data = new InputStreamReader(in, StandardCharsets.UTF_8);
 			//CHECKSTYLE:OFF
