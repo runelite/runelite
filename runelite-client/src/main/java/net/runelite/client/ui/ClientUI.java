@@ -136,6 +136,7 @@ public class ClientUI
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
 	private boolean sidebarOpen;
+	private boolean reopenPanelOnSidebarOpen;
 	private JPanel container;
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
@@ -210,7 +211,6 @@ public class ClientUI
 					contract();
 					currentButton.setSelected(false);
 					currentNavButton.setSelected(false);
-					currentButton = null;
 				}
 				else
 				{
@@ -868,22 +868,24 @@ public class ClientUI
 		boolean isSidebarOpen = sidebarOpen;
 		sidebarOpen = !sidebarOpen;
 
-		// Select/deselect buttons
-		if (currentButton != null)
-		{
-			currentButton.setSelected(sidebarOpen);
-		}
-
-		if (currentNavButton != null)
-		{
-			currentNavButton.setSelected(sidebarOpen);
-		}
-
 		if (isSidebarOpen)
 		{
+			// Deselect buttons
+			if (currentButton != null)
+			{
+				currentButton.setSelected(false);
+			}
+
+			if (currentNavButton != null)
+			{
+				currentNavButton.setSelected(false);
+			}
+
 			sidebarNavigationJButton.setIcon(new ImageIcon(sidebarOpenIcon));
 			sidebarNavigationJButton.setToolTipText("Open SideBar");
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_CLOSED, true);
+
+			reopenPanelOnSidebarOpen = pluginPanel != null;
 
 			contract();
 
@@ -896,8 +898,23 @@ public class ClientUI
 			sidebarNavigationJButton.setToolTipText("Close SideBar");
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_CLOSED);
 
-			// Try to restore last panel
-			expand(currentNavButton);
+			// When opening the sidebar and a plugin panel was opened before, try to reopen it
+			if (reopenPanelOnSidebarOpen)
+			{
+				// Select buttons
+				if (currentButton != null)
+				{
+					currentButton.setSelected(true);
+				}
+
+				if (currentNavButton != null)
+				{
+					currentNavButton.setSelected(true);
+				}
+
+				// Try to restore last panel
+				expand(currentNavButton);
+			}
 
 			// Add plugin toolbar back
 			container.add(pluginToolbar);
