@@ -527,7 +527,8 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap Wear with the Nardah or Kalphite Cave teleport on Desert Amulet 4.",
 		section = itemSection
 	)
-	default DesertAmuletMode swapDesertAmuletMode() {
+	default DesertAmuletMode swapDesertAmuletMode()
+	{
 		return DesertAmuletMode.WEAR;
 	}
 
