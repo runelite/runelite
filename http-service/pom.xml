@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.7.16</version>
+		<version>1.7.17-SNAPSHOT</version>
 	</parent>
 
 	<name>Web Service</name>
