@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Instant;
@@ -120,8 +119,9 @@ class WoodcuttingTreesOverlay extends Overlay
 			}
 
 			ProgressPieComponent ppc = new ProgressPieComponent();
-			ppc.setBorderColor(Color.ORANGE);
-			ppc.setFill(Color.YELLOW);
+			ppc.setBorderColor(config.getTreeOverlayOutlineColor());
+			ppc.setFill(config.getTreeOverlayColor());
+			ppc.setDiameter(config.getTreeOverlayDiameter());
 			ppc.setPosition(point);
 			ppc.setProgress(percent);
 			ppc.render(graphics);

@@ -28,6 +28,10 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Alpha;
+
+import java.awt.Color;
 
 @ConfigGroup("woodcutting")
 public interface WoodcuttingConfig extends Config
@@ -87,4 +91,50 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigSection(
+		name = "Graphics Settings",
+		description = "Overlay graphics settings",
+		position = 10
+	)
+	String visualSection = "Graphics";
+
+	@Alpha
+	@ConfigItem(
+		position = 11,
+		keyName = "hexColorTreeOverlay",
+		name = "Overlay color",
+		description = "Color of the tree overlay",
+		section = visualSection
+	)
+	default Color getTreeOverlayColor()
+	{
+		return Color.YELLOW;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 12,
+		keyName = "hexColorTreeOverlayOutline",
+		name = "Overlay outline color",
+		description = "Color of the tree stump outline overlay",
+		section = visualSection
+	)
+	default Color getTreeOverlayOutlineColor()
+	{
+		return Color.ORANGE;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "getTreeOverlayDiameter",
+		name = "Overlay diameter",
+		description = "Adjust the size of the tree stump overlay",
+		section = visualSection
+	)
+	default int getTreeOverlayDiameter()
+	{
+		return 25;
+	}
+
 }
