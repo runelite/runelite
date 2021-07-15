@@ -375,6 +375,11 @@ public class LootTrackerPlugin extends Plugin
 			ignoredItems = Text.fromCSV(config.getIgnoredItems());
 			ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
 			SwingUtilities.invokeLater(panel::updateIgnoredRecords);
+
+			if (event.getKey().equals("splitLootGroup"))
+			{
+				panel.rebuild();
+			}
 		}
 	}
 

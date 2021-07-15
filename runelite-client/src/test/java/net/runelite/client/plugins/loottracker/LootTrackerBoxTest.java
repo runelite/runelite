@@ -29,15 +29,21 @@ import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.http.api.loottracker.LootRecordType;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
 
 public class LootTrackerBoxTest
 {
-	@Test
-	public void testAddKill()
+	private LootTrackerBox lootTrackerBox;
+	private LootTrackerItem[] items;
+	private LootTrackerRecord lootTrackerRecord;
+
+	@Before
+	public void before()
 	{
-		LootTrackerBox lootTrackerBox = new LootTrackerBox(
+		lootTrackerBox = new LootTrackerBox(
 			mock(ItemManager.class),
 			"Theatre of Blood",
 			LootRecordType.EVENT,
@@ -46,26 +52,48 @@ public class LootTrackerBoxTest
 			LootTrackerPriceType.GRAND_EXCHANGE,
 			false,
 			null, null,
+			false,
+			false,
 			false);
 
-		LootTrackerItem[] items = new LootTrackerItem[]{
+		items = new LootTrackerItem[]{
 			new LootTrackerItem(ItemID.CLUE_SCROLL_MEDIUM, "Clue scroll (medium)", 1, 0, 0, false),
 			new LootTrackerItem(ItemID.CLUE_SCROLL_MEDIUM_3602, "Clue scroll (medium)", 1, 0, 0, false),
 			new LootTrackerItem(ItemID.GRACEFUL_HOOD_13579, "Graceful hood", 1, 0, 0, false),
 		};
-		LootTrackerRecord lootTrackerRecord = new LootTrackerRecord(
+
+		lootTrackerRecord = new LootTrackerRecord(
 			"Theatre of Blood",
 			null,
 			LootRecordType.EVENT,
 			items,
 			42
 		);
+	}
 
-		lootTrackerBox.addKill(lootTrackerRecord);
+	@Test
+	public void testAddSessionKill()
+	{
+
+		lootTrackerBox.addKill(lootTrackerRecord, true);
 
 		assertEquals(Arrays.asList(
 			new LootTrackerItem(ItemID.CLUE_SCROLL_MEDIUM, "Clue scroll (medium)", 2, 0, 0, false),
 			new LootTrackerItem(ItemID.GRACEFUL_HOOD_13579, "Graceful hood", 1, 0, 0, false)
-		), lootTrackerBox.getItems());
+		), lootTrackerBox.getSessionItems());
+		assertTrue(lootTrackerBox.getAggregateItems().isEmpty());
+	}
+
+	@Test
+	public void testAddAggregateKill()
+	{
+
+		lootTrackerBox.addKill(lootTrackerRecord, false);
+
+		assertTrue(lootTrackerBox.getSessionItems().isEmpty());
+		assertEquals(Arrays.asList(
+			new LootTrackerItem(ItemID.CLUE_SCROLL_MEDIUM, "Clue scroll (medium)", 2, 0, 0, false),
+			new LootTrackerItem(ItemID.GRACEFUL_HOOD_13579, "Graceful hood", 1, 0, 0, false)
+		), lootTrackerBox.getAggregateItems());
 	}
 }
