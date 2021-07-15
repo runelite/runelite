@@ -76,6 +76,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final Duration DESPAWN_TIME_LOOT = Duration.ofMinutes(2);
 	private static final Duration DESPAWN_TIME_DROP = Duration.ofMinutes(3);
 	private static final Duration DESPAWN_TIME_TABLE = Duration.ofMinutes(10);
+	private static final Duration DESPAWN_TIME_SHADE_CREMATION = Duration.ofMillis(29_400);
 	private static final int KRAKEN_REGION = 9116;
 	private static final int KBD_NMZ_REGION = 9033;
 	private static final int ZILYANA_REGION = 11602;
@@ -404,7 +405,8 @@ public class GroundItemsOverlay extends Overlay
 		// and items we placed on tables
 		if (groundItem.getLootType() != LootType.PVM
 			&& groundItem.getLootType() != LootType.DROPPED
-			&& groundItem.getLootType() != LootType.TABLE)
+			&& groundItem.getLootType() != LootType.TABLE
+			&& groundItem.getLootType() != LootType.SHADE_CREMATION)
 		{
 			return null;
 		}
@@ -476,6 +478,9 @@ public class GroundItemsOverlay extends Overlay
 				case TABLE:
 					despawnTime = spawnTime.plus(DESPAWN_TIME_TABLE);
 					break;
+				case SHADE_CREMATION:
+					despawnTime = spawnTime.plus(DESPAWN_TIME_SHADE_CREMATION);
+					break;
 				default:
 					despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
 					break;
@@ -497,7 +502,8 @@ public class GroundItemsOverlay extends Overlay
 		// and items we placed on tables
 		if (groundItem.getLootType() != LootType.PVM
 			&& groundItem.getLootType() != LootType.DROPPED
-			&& groundItem.getLootType() != LootType.TABLE)
+			&& groundItem.getLootType() != LootType.TABLE
+			&& groundItem.getLootType() != LootType.SHADE_CREMATION)
 		{
 			return null;
 		}

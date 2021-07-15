@@ -59,6 +59,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
@@ -112,6 +113,7 @@ public class GroundItemsPlugin extends Plugin
 	static final int MAX_QUANTITY = 65535;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
+	private static final int MORTTON_REGION_ID = 13875;
 	// Ground item menu options
 	private static final int FIRST_OPTION = MenuAction.GROUND_ITEM_FIRST_OPTION.getId();
 	private static final int SECOND_OPTION = MenuAction.GROUND_ITEM_SECOND_OPTION.getId();
@@ -389,6 +391,10 @@ public class GroundItemsPlugin extends Plugin
 		final int alchPrice = itemComposition.getHaPrice();
 		final boolean dropped = tile.getWorldLocation().equals(client.getLocalPlayer().getWorldLocation()) && droppedItemQueue.remove(itemId);
 		final boolean table = itemId == lastUsedItem && tile.getItemLayer().getHeight() > 0;
+		final boolean shadeCremation = tile.getItemLayer().getHeight() > 0
+			&& tile.getWorldLocation().getRegionID() == MORTTON_REGION_ID
+			&& tile.getGameObjects().length > 0
+			&& tile.getGameObjects()[0].getId() == ObjectID.STONE_STAND;
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -399,7 +405,7 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
-			.lootType(dropped ? LootType.DROPPED : (table ? LootType.TABLE : LootType.UNKNOWN))
+			.lootType(dropped ? LootType.DROPPED : (table ? LootType.TABLE : (shadeCremation ? LootType.SHADE_CREMATION : LootType.UNKNOWN)))
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())
 			.build();
