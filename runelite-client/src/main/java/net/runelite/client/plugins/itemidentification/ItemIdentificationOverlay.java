@@ -58,7 +58,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		ItemIdentification iden = findItemIdentification(itemId);
-		if (iden == null || !iden.type.enabled.test(config))
+		if (iden == null || !iden.type.enabled.test(config) || (!config.displayOnUnique() && iden.isIconUnique))
 		{
 			return;
 		}
