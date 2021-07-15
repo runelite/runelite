@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-class DpsMember
+class DpsMember implements Comparable<DpsMember>
 {
 	private final String name;
 	private Instant start;
@@ -95,5 +96,11 @@ class DpsMember
 	Duration elapsed()
 	{
 		return Duration.between(start, end == null ? Instant.now() : end);
+	}
+
+	@Override
+	public int compareTo(DpsMember o)
+	{
+		return Integer.compare(damage, o.getDamage());
 	}
 }
