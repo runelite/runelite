@@ -26,6 +26,8 @@ package net.runelite.client.plugins.itemidentification;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import java.util.function.Predicate;
+import lombok.AllArgsConstructor;
 import net.runelite.api.ItemID;
 
 enum ItemIdentification
@@ -419,21 +421,24 @@ enum ItemIdentification
 		return itemIdentifications.get(id);
 	}
 
+	@AllArgsConstructor
 	enum Type
 	{
-		SEED,
-		SACK,
-		HERB,
-		LOGS,
-		PLANK,
-		SAPLING,
-		COMPOST,
-		ORE,
-		BAR,
-		GEM,
-		POTION,
-		IMPLING_JAR,
-		TABLET,
-		SCROLL
+		SEED(ItemIdentificationConfig::showSeeds),
+		SACK(ItemIdentificationConfig::showSacks),
+		HERB(ItemIdentificationConfig::showHerbs),
+		LOGS(ItemIdentificationConfig::showLogs),
+		PLANK(ItemIdentificationConfig::showPlanks),
+		SAPLING(ItemIdentificationConfig::showSaplings),
+		COMPOST(ItemIdentificationConfig::showComposts),
+		ORE(ItemIdentificationConfig::showOres),
+		BAR(ItemIdentificationConfig::showBars),
+		GEM(ItemIdentificationConfig::showGems),
+		POTION(ItemIdentificationConfig::showPotions),
+		IMPLING_JAR(ItemIdentificationConfig::showImplingJars),
+		TABLET(ItemIdentificationConfig::showTablets),
+		SCROLL(ItemIdentificationConfig::showTeleportScrolls);
+
+		final Predicate<ItemIdentificationConfig> enabled;
 	}
 }
