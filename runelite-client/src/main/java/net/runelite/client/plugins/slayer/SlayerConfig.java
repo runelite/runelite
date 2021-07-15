@@ -93,18 +93,18 @@ public interface SlayerConfig extends Config
 
 	@ConfigSection(
 			name = "Target Highlighting",
-			description = "The highlighted and hidden item lists",
+			description = "Slayer target highlighting",
 			position = 5,
 			closedByDefault = true
 	)
-	String highlightTargeter = "itemLists";
+	String slayerHighlighting = "slayerHighlighting";
 
 	@ConfigItem(
 			position = 5,
 			keyName = "highlightTargets",
 			name = "Highlight Targets",
 			description = "Highlight monsters you can kill for your current slayer assignment",
-			section = highlightTargeter
+			section = slayerHighlighting
 	)
 	default boolean highlightTargets()
 	{
@@ -116,7 +116,7 @@ public interface SlayerConfig extends Config
 			keyName = "filterHighlightTargetLevel",
 			name = "Filter Target Levels",
 			description = "Filter the highlighting of monsters by combat levels",
-			section = highlightTargeter
+			section = slayerHighlighting
 	)
 	default boolean filterHighlightTargetLevel()
 	{
@@ -128,7 +128,7 @@ public interface SlayerConfig extends Config
 		keyName = "minHighlightTargetLevel",
 		name = "Highlight Min Level",
 		description = "Highlight monsters above a combat level threshold",
-		section = highlightTargeter
+		section = slayerHighlighting
 	)
 	default int minHighlightTargetLevel()
 	{
@@ -140,7 +140,7 @@ public interface SlayerConfig extends Config
 			keyName = "maxHighlightTargetLevel",
 			name = "Highlight Max Level",
 			description = "Highlight monsters below a combat level threshold",
-			section = highlightTargeter
+			section = slayerHighlighting
 	)
 	default int maxHighlightTargetLevel()
 	{
@@ -153,7 +153,7 @@ public interface SlayerConfig extends Config
 			keyName = "targetColor",
 			name = "Target Color",
 			description = "Color of the highlighted targets",
-			section = highlightTargeter
+			section = slayerHighlighting
 	)
 	default Color getTargetColor()
 	{
