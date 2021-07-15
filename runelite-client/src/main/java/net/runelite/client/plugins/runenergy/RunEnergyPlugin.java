@@ -103,6 +103,10 @@ public class RunEnergyPlugin extends Plugin
 		AGILITY_CAPE, AGILITY_CAPET, MAX_CAPE
 	);
 
+	private static final ImmutableSet<Integer> ALL_RING_OF_ENDURENCES = ImmutableSet.of(
+		RING_OF_ENDURANCE, RING_OF_ENDURANCE_UNCHARGED, RING_OF_ENDURANCE_UNCHARGED_24844
+	);
+
 	@RequiredArgsConstructor
 	@Getter
 	private enum GracefulEquipmentSlot
@@ -209,7 +213,12 @@ public class RunEnergyPlugin extends Plugin
 
 		if (client.getVar(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
 		{
-			lossRate *= 0.3; // Stamina effect reduces energy depletion to 30%
+			lossRate *= 0.3; // Stamina effect reduces energy depletion by 70%
+		}
+
+		if (isWearingRingOfEndurence())
+		{
+			lossRate *= 0.85; // Ring of endurance effect reduces energy depletion by 15%
 		}
 
 		// Calculate the number of seconds left
@@ -279,5 +288,18 @@ public class RunEnergyPlugin extends Plugin
 		// Calculate the number of seconds left
 		final double secondsLeft = (100 - client.getEnergy()) / recoverRate;
 		return (int) secondsLeft;
+	}
+
+	boolean isWearingRingOfEndurence()
+	{
+		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+		Item ring = equipment.getItem(EquipmentInventorySlot.RING.getSlotIdx());
+
+		if (ring == null || !ALL_RING_OF_ENDURENCES.stream().anyMatch(ringOfEndurance -> ringOfEndurance == ring.getId()))
+		{
+			return false;
+		}
+		return true;
 	}
 }
