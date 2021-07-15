@@ -696,7 +696,15 @@ public class SlayerPlugin extends Plugin
 	{
 		if (config.filterHighlightTargetLevel())
 		{
-			targetLevelRange = Range.open(config.minHighlightTargetLevel(), config.maxHighlightTargetLevel());
+				try
+				{
+					targetLevelRange = Range.open(config.minHighlightTargetLevel(), config.maxHighlightTargetLevel());
+				}
+				// failsafe for invalid range, do not filter levels
+				catch (IllegalArgumentException e)
+				{
+					targetLevelRange = null;
+				}
 		}
 		else
 		{
