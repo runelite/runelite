@@ -246,6 +246,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("inspect", "trapdoor", "travel", config::swapTravel);
 		swap("board", "travel cart", "pay-fare", config::swapTravel);
 
+		swap("board", "sacrificial boat", "quick-board", config::swapQuick);
+
 		swap("cage", "harpoon", config::swapHarpoon);
 		swap("big net", "harpoon", config::swapHarpoon);
 		swap("net", "harpoon", config::swapHarpoon);
