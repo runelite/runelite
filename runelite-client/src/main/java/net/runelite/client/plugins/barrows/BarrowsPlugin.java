@@ -25,8 +25,11 @@
 package net.runelite.client.plugins.barrows;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -35,9 +38,45 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import static net.runelite.api.NullObjectID.NULL_20681;
+import static net.runelite.api.NullObjectID.NULL_20682;
+import static net.runelite.api.NullObjectID.NULL_20683;
+import static net.runelite.api.NullObjectID.NULL_20684;
+import static net.runelite.api.NullObjectID.NULL_20685;
+import static net.runelite.api.NullObjectID.NULL_20686;
+import static net.runelite.api.NullObjectID.NULL_20687;
+import static net.runelite.api.NullObjectID.NULL_20688;
+import static net.runelite.api.NullObjectID.NULL_20689;
+import static net.runelite.api.NullObjectID.NULL_20690;
+import static net.runelite.api.NullObjectID.NULL_20691;
+import static net.runelite.api.NullObjectID.NULL_20692;
+import static net.runelite.api.NullObjectID.NULL_20693;
+import static net.runelite.api.NullObjectID.NULL_20694;
+import static net.runelite.api.NullObjectID.NULL_20695;
+import static net.runelite.api.NullObjectID.NULL_20696;
+import static net.runelite.api.NullObjectID.NULL_20700;
+import static net.runelite.api.NullObjectID.NULL_20701;
+import static net.runelite.api.NullObjectID.NULL_20702;
+import static net.runelite.api.NullObjectID.NULL_20703;
+import static net.runelite.api.NullObjectID.NULL_20704;
+import static net.runelite.api.NullObjectID.NULL_20705;
+import static net.runelite.api.NullObjectID.NULL_20706;
+import static net.runelite.api.NullObjectID.NULL_20707;
+import static net.runelite.api.NullObjectID.NULL_20708;
+import static net.runelite.api.NullObjectID.NULL_20709;
+import static net.runelite.api.NullObjectID.NULL_20710;
+import static net.runelite.api.NullObjectID.NULL_20711;
+import static net.runelite.api.NullObjectID.NULL_20712;
+import static net.runelite.api.NullObjectID.NULL_20713;
+import static net.runelite.api.NullObjectID.NULL_20714;
+import static net.runelite.api.NullObjectID.NULL_20715;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
+import net.runelite.api.WallObject;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -76,6 +115,13 @@ public class BarrowsPlugin extends Plugin
 	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
 	private static final int CRYPT_REGION_ID = 14231;
 
+	static final ImmutableSet<Integer> DOOR_IDS = ImmutableSet.of(
+		NULL_20681, NULL_20682, NULL_20683, NULL_20684, NULL_20685, NULL_20686, NULL_20687, NULL_20688,
+		NULL_20689, NULL_20690, NULL_20691, NULL_20692, NULL_20693, NULL_20694, NULL_20695, NULL_20696,
+		NULL_20700, NULL_20701, NULL_20702, NULL_20703, NULL_20704, NULL_20705, NULL_20706, NULL_20707,
+		NULL_20708, NULL_20709, NULL_20710, NULL_20711, NULL_20712, NULL_20713, NULL_20714, NULL_20715
+	);
+
 	private LoopTimer barrowsPrayerDrainTimer;
 
 	@Getter
@@ -108,6 +154,9 @@ public class BarrowsPlugin extends Plugin
 	@Inject
 	private BarrowsConfig config;
 
+	@Getter
+	private final Set<WallObject> doors = new HashSet<>();
+
 	@Provides
 	BarrowsConfig provideConfig(ConfigManager configManager)
 	{
@@ -124,6 +173,7 @@ public class BarrowsPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		doors.clear();
 		overlayManager.remove(barrowsOverlay);
 		overlayManager.remove(brotherOverlay);
 		puzzleAnswer = null;
@@ -166,6 +216,10 @@ public class BarrowsPlugin extends Plugin
 			{
 				startPrayerDrainTimer();
 			}
+		}
+		else if (event.getGameState() == GameState.LOADING)
+		{
+			doors.clear();
 		}
 	}
 
@@ -221,6 +275,36 @@ public class BarrowsPlugin extends Plugin
 		{
 			puzzleAnswer = null;
 		}
+	}
+
+	@Subscribe
+	public void onWallObjectSpawned(WallObjectSpawned event)
+	{
+		WallObject wallObject = event.getWallObject();
+		if (DOOR_IDS.contains(wallObject.getId()))
+		{
+			doors.add(wallObject);
+		}
+	}
+
+	@Subscribe
+	public void onWallObjectChanged(WallObjectChanged event)
+	{
+		WallObject previous = event.getPrevious();
+		WallObject wallObject = event.getWallObject();
+
+		doors.remove(previous);
+		if (DOOR_IDS.contains(wallObject.getId()))
+		{
+			doors.add(wallObject);
+		}
+	}
+
+	@Subscribe
+	public void onWallObjectDespawned(WallObjectDespawned event)
+	{
+		WallObject wallObject = event.getWallObject();
+		doors.remove(wallObject);
 	}
 
 	private void startPrayerDrainTimer()
