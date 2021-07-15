@@ -305,6 +305,35 @@ public class MenuEntrySwapperPluginTest
 	}
 
 	@Test
+	public void testDroppedLogs()
+	{
+		when(config.swapDroppedLogs()).thenReturn(true);
+
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Logs", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
+
+			menu("Light", "Logs", MenuAction.GAME_OBJECT_SECOND_OPTION),
+			menu("Take", "Logs", MenuAction.GAME_OBJECT_FIRST_OPTION),
+		};
+
+		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+
+		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
+		verify(client).setMenuEntries(argumentCaptor.capture());
+
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Logs", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
+
+			menu("Take", "Logs", MenuAction.GAME_OBJECT_FIRST_OPTION),
+			menu("Light", "Logs", MenuAction.GAME_OBJECT_SECOND_OPTION),
+		}, argumentCaptor.getValue());
+	}
+
+	@Test
 	public void testShiftWithdraw()
 	{
 		when(config.bankDepositShiftClick()).thenReturn(ShiftDepositMode.EXTRA_OP);
