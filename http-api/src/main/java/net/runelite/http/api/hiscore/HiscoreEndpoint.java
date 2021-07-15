@@ -32,20 +32,50 @@ import okhttp3.HttpUrl;
 @Getter
 public enum HiscoreEndpoint
 {
-	NORMAL("Normal", "https://services.runescape.com/m=hiscore_oldschool/index_lite.ws"),
-	IRONMAN("Ironman", "https://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws"),
-	HARDCORE_IRONMAN("Hardcore Ironman", "https://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws"),
-	ULTIMATE_IRONMAN("Ultimate Ironman", "https://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws"),
-	DEADMAN("Deadman", "https://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws"),
-	LEAGUE("Leagues", "https://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws"),
-	TOURNAMENT("Tournament", "https://services.runescape.com/m=hiscore_oldschool_tournament/index_lite.ws");
+	NORMAL(
+			"Normal",
+			"https://services.runescape.com/m=hiscore_oldschool/index_lite.ws",
+			"https://secure.runescape.com/m=hiscore_oldschool/overall?"
+	),
+	IRONMAN(
+			"Ironman",
+			"https://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws",
+			"https://secure.runescape.com/m=hiscore_oldschool_ironman/overall?"
+	),
+	HARDCORE_IRONMAN(
+			"Hardcore Ironman",
+			"https://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws",
+			"https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/overall?"
+	),
+	ULTIMATE_IRONMAN(
+			"Ultimate Ironman",
+			"https://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws",
+			"https://secure.runescape.com/m=hiscore_oldschool_ultimate/overall?"
+	),
+	DEADMAN(
+			"Deadman",
+			"https://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws",
+			"https://secure.runescape.com/m=hiscore_oldschool_deadman/overall?"
+	),
+	LEAGUE(
+			"Leagues",
+			"https://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws",
+			"https://secure.runescape.com/m=hiscore_oldschool_seasonal/overall?"
+	),
+	TOURNAMENT(
+			"Tournament",
+			"https://services.runescape.com/m=hiscore_oldschool_tournament/index_lite.ws",
+			"https://secure.runescape.com/m=hiscore_oldschool_tournament/overall?"
+	);
 
 	private final String name;
 	private final HttpUrl hiscoreURL;
+	private final HttpUrl hiscoreBasePageURL;
 
-	HiscoreEndpoint(String name, String hiscoreURL)
+	HiscoreEndpoint(String name, String hiscoreURL, String hiscoreBasePageURL)
 	{
 		this.name = name;
 		this.hiscoreURL = HttpUrl.parse(hiscoreURL);
+		this.hiscoreBasePageURL = HttpUrl.parse(hiscoreBasePageURL);
 	}
 }
