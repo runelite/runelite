@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Range;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -200,6 +201,7 @@ public class SlayerPlugin extends Plugin
 	private Instant infoTimer;
 	private boolean loginFlag;
 	private final List<String> targetNames = new ArrayList<>();
+	private Range<Integer> targetLevelRange;
 
 	@Override
 	protected void startUp() throws Exception
@@ -562,6 +564,13 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
+
+		if (event.getKey().endsWith("HighlightTargetLevel"))
+		{
+			rebuildTargetLevelRange();
+			rebuildTargetList();
+		}
+
 		if (!event.getGroup().equals(SlayerConfig.GROUP_NAME) || !event.getKey().equals("infobox"))
 		{
 			return;
@@ -633,6 +642,11 @@ public class SlayerPlugin extends Plugin
 			{
 				NPCComposition composition = npc.getTransformedComposition();
 
+				if (!isWithinCombatLevelRange(npc))
+				{
+					return false;
+				}
+
 				if (composition != null)
 				{
 					List<String> actions = Arrays.asList(composition.getActions());
@@ -644,6 +658,11 @@ public class SlayerPlugin extends Plugin
 			}
 		}
 		return false;
+	}
+
+	private boolean isWithinCombatLevelRange(NPC npc)
+	{
+		return targetLevelRange == null || targetLevelRange.contains(npc.getCombatLevel());
 	}
 
 	private void rebuildTargetNames(Task task)
@@ -670,6 +689,18 @@ public class SlayerPlugin extends Plugin
 			{
 				highlightedTargets.add(npc);
 			}
+		}
+	}
+
+	private void rebuildTargetLevelRange()
+	{
+		if (config.filterHighlightTargetLevel())
+		{
+			targetLevelRange = Range.open(config.minHighlightTargetLevel(), config.maxHighlightTargetLevel());
+		}
+		else
+		{
+			targetLevelRange = null;
 		}
 	}
 
@@ -701,6 +732,7 @@ public class SlayerPlugin extends Plugin
 		Task task = Task.getTask(name);
 		rebuildTargetNames(task);
 		rebuildTargetList();
+		rebuildTargetLevelRange();
 	}
 
 	private void addCounter()
