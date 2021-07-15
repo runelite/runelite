@@ -47,7 +47,9 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -380,6 +382,19 @@ public class PluginManager
 			return false;
 		}
 
+		List<Plugin> conflicts = conflictsForPlugin(plugin);
+		for (Plugin conflict : conflicts)
+		{
+			if (isPluginEnabled(conflict))
+			{
+				setPluginEnabled(conflict, false);
+			}
+			if (activePlugins.contains(conflict))
+			{
+				stopPlugin(conflict);
+			}
+		}
+
 		activePlugins.add(plugin);
 
 		try
@@ -445,6 +460,18 @@ public class PluginManager
 		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
 		final String keyName = Strings.isNullOrEmpty(pluginDescriptor.configName()) ? plugin.getClass().getSimpleName() : pluginDescriptor.configName();
 		configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, keyName.toLowerCase(), String.valueOf(enabled));
+
+		if (enabled)
+		{
+			List<Plugin> conflicts = conflictsForPlugin(plugin);
+			for (Plugin conflict : conflicts)
+			{
+				if (isPluginEnabled(conflict))
+				{
+					setPluginEnabled(conflict, false);
+				}
+			}
+		}
 	}
 
 	public boolean isPluginEnabled(Plugin plugin)
@@ -637,5 +664,41 @@ public class PluginManager
 			throw new RuntimeException("Graph has at least one cycle");
 		}
 		return l;
+	}
+
+	public List<Plugin> conflictsForPlugin(Plugin plugin)
+	{
+		Set<String> conflicts;
+		{
+			PluginDescriptor desc = plugin.getClass().getAnnotation(PluginDescriptor.class);
+			conflicts = new HashSet<>(Arrays.asList(desc.conflicts()));
+			conflicts.add(desc.name());
+		}
+
+		return plugins.stream()
+			.filter(p ->
+			{
+				if (p == plugin)
+				{
+					return false;
+				}
+
+				PluginDescriptor desc = p.getClass().getAnnotation(PluginDescriptor.class);
+				if (conflicts.contains(desc.name()))
+				{
+					return true;
+				}
+
+				for (String conflict : desc.conflicts())
+				{
+					if (conflicts.contains(conflict))
+					{
+						return true;
+					}
+				}
+
+				return false;
+			})
+			.collect(Collectors.toList());
 	}
 }
