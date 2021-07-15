@@ -767,4 +767,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "runePouch",
+		name = "Rune Pouch",
+		description = "Swap Open with Use on the Rune Pouch",
+		section = itemSection
+	)
+	default boolean swapRunePouch()
+	{
+		return false;
+	}
 }
