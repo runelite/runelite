@@ -767,4 +767,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "swapAshes",
+		name = "Ashes",
+		description = "Swap Scatter with Use on ashes",
+		section = itemSection
+	)
+	default boolean swapAshes()
+	{
+		return false;
+	}
 }

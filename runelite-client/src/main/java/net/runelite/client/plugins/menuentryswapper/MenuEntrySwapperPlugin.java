@@ -374,6 +374,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("wear", "burgh teleport", () -> config.swapMorytaniaLegsMode() == MorytaniaLegsMode.BURGH_DE_ROTT);
 
 		swap("bury", "use", config::swapBones);
+		swap("scatter", "use", config::swapAshes);
 
 		swap("wield", "battlestaff", "use", config::swapBattlestaves);
 
