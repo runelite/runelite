@@ -759,6 +759,12 @@
     },
     {
       "level": 89,
+      "icon": 25853,
+      "name": "Amethyst Dart Tips",
+      "xp": 60
+    },
+    {
+      "level": 89,
       "icon": 19538,
       "name": "Zenyte Ring",
       "xp": 150
