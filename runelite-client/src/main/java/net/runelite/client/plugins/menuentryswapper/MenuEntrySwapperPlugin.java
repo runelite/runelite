@@ -69,6 +69,7 @@ import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.ArdougneCloakMode;
+import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.DrakansMedallionMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.KaramjaGlovesMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.MorytaniaLegsMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.RadasBlessingMode;
@@ -372,6 +373,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("wear", "ecto teleport", () -> config.swapMorytaniaLegsMode() == MorytaniaLegsMode.ECTOFUNTUS);
 		swap("wear", "burgh teleport", () -> config.swapMorytaniaLegsMode() == MorytaniaLegsMode.BURGH_DE_ROTT);
+		
+		swap("wear", "ver sinhaza", () -> config.swapDrakansMedallionMode() == DrakansMedallionMode.VER_SINHAZA);
+		swap("wear", "darkmeyer", () -> config.swapDrakansMedallionMode() == DrakansMedallionMode.DARKMEYER);
+		swap("wear", "slepe", () -> config.swapDrakansMedallionMode() == DrakansMedallionMode.SLEPE);
 
 		swap("bury", "use", config::swapBones);
 
