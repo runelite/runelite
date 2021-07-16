@@ -28,11 +28,13 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.chat.LayoutRoom;
 import net.runelite.http.api.chat.Task;
-import net.runelite.http.api.chat.Duels;
 import net.runelite.http.service.util.redis.RedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -227,6 +229,35 @@ public class ChatService
 		try (Jedis jedis = jedisPool.getResource())
 		{
 			jedis.setex("layout." + name, (int) EXPIRE.getSeconds(), Joiner.on(' ').join(rooms));
+		}
+	}
+
+	public int[] getPetList(String name)
+	{
+		Set<String> pets;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			pets = jedis.smembers("pets." + name);
+		}
+
+		if (pets.isEmpty())
+		{
+			return null;
+		}
+
+		return pets.stream()
+			.mapToInt(Integer::parseInt)
+			.toArray();
+	}
+
+	public void setPetList(String name, int[] petList)
+	{
+		String[] pets = Arrays.stream(petList).mapToObj(Integer::toString).toArray(String[]::new);
+		String key = "pets." + name;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.sadd(key, pets);
+			jedis.expire(key, (int) EXPIRE.getSeconds());
 		}
 	}
 }
