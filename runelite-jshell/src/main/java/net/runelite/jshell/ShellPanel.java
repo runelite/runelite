@@ -419,18 +419,23 @@ public abstract class ShellPanel extends JPanel
 
 	private void cleanup()
 	{
-		for (var c : cleanup)
-		{
-			try
-			{
-				c.run();
-			}
-			catch (Exception e)
-			{
-				shellLogger.error("Cleanup threw:", e);
-			}
-		}
+		var todo = new ArrayList<>(cleanup);
 		cleanup.clear();
+
+		invokeOnClientThread(() ->
+		{
+			for (var c : todo)
+			{
+				try
+				{
+					c.run();
+				}
+				catch (Exception e)
+				{
+					shellLogger.error("Cleanup threw:", e);
+				}
+			}
+		});
 	}
 
 	protected abstract void invokeOnClientThread(Runnable r);
