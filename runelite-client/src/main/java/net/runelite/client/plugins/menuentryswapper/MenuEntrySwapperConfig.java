@@ -99,6 +99,14 @@ public interface MenuEntrySwapperConfig extends Config
 		}
 	}
 
+	enum DrakansMedallionMode
+	{
+		WEAR,
+		VER_SINHAZA,
+		DARKMEYER,
+		SLEPE,
+	}
+
 	enum RadasBlessingMode
 	{
 		EQUIP,
@@ -512,6 +520,17 @@ public interface MenuEntrySwapperConfig extends Config
 	default MorytaniaLegsMode swapMorytaniaLegsMode()
 	{
 		return MorytaniaLegsMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapDrakansMedallion",
+		name = "Drakan's Medallion",
+		description = "Swap Wear with the Ver Sinhaza, Darkmeyer or Slepe teleport on Drakan's Medallion.",
+		section = itemSection
+	)
+	default DrakansMedallionMode swapDrakansMedallionMode()
+	{
+		return DrakansMedallionMode.WEAR;
 	}
 
 	@ConfigItem(
