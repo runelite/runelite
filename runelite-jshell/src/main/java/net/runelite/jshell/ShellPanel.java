@@ -185,7 +185,6 @@ public abstract class ShellPanel extends JPanel
 		}
 
 		console.setFont(codeFont);
-		console.setFocusable(false);
 		console.setEditable(false);
 		console.setOpaque(false); // this turns off the hover effect for some reason
 
