@@ -247,4 +247,26 @@ public class ChatController
 
 		return layout;
 	}
+
+	@PostMapping("/pets")
+	public void submitPetList(@RequestParam String name, @RequestParam Integer[] petList)
+	{
+		if (petList == null)
+		{
+			return;
+		}
+
+		chatService.setPetList(name, petList);
+	}
+
+	@GetMapping("/pets")
+	public Integer[] getPetList(@RequestParam String name)
+	{
+		Integer[] petList = chatService.getPetList(name);
+		if (petList == null)
+		{
+			throw new NotFoundException();
+		}
+		return petList;
+	}
 }

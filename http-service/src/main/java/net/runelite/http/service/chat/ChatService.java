@@ -229,4 +229,30 @@ public class ChatService
 			jedis.setex("layout." + name, (int) EXPIRE.getSeconds(), Joiner.on(' ').join(rooms));
 		}
 	}
+
+	public Integer[] getPetList(String name)
+	{
+		String petIds;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			petIds = jedis.get("pets." + name);
+		}
+		if (petIds == null)
+		{
+			return null;
+		}
+
+		List<String> petList = Splitter.on(' ').splitToList(petIds);
+		return petList.stream()
+			.map(Integer::parseInt)
+			.toArray(Integer[]::new);
+	}
+
+	public void setPetList(String name, Integer[] petList)
+	{
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("pets." + name, (int) EXPIRE.getSeconds(), Joiner.on(' ').join(petList));
+		}
+	}
 }

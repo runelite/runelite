@@ -178,6 +178,18 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 12,
+		keyName = "pets",
+		name = "Pets Command",
+		description = "Configures whether the player pet list command is enabled<br> !pets<br>" +
+			" Note: Update your pet list by looking at the All Pets tab in the Collection Log"
+	)
+	default boolean pets()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 13,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",
