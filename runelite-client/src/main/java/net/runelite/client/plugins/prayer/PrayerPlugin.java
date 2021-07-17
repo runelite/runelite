@@ -69,9 +69,6 @@ public class PrayerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean prayersActive = false;
 
-	@Getter(AccessLevel.PACKAGE)
-	private int prayerBonus;
-
 	@Inject
 	private Client client;
 
@@ -98,6 +95,9 @@ public class PrayerPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private PrayerCalculator prayerCalculator;
 
 	@Provides
 	PrayerConfig provideConfig(ConfigManager configManager)
@@ -158,7 +158,7 @@ public class PrayerPlugin extends Plugin
 
 			if (equipment != null)
 			{
-				prayerBonus = checkContainerForPrayer(equipment.getItems());
+				prayerCalculator.setPrayerBonus(checkContainerForPrayer(equipment.getItems()));
 			}
 
 		}
@@ -327,43 +327,19 @@ public class PrayerPlugin extends Plugin
 		}
 	}
 
-	private static double getPrayerDrainRate(Client client)
-	{
-		double drainRate = 0.0;
-
-		for (Prayer prayer : Prayer.values())
-		{
-			if (client.isPrayerActive(prayer))
-			{
-				drainRate += prayer.getDrainRate();
-			}
-		}
-
-		return drainRate;
-	}
 
 	String getEstimatedTimeRemaining(boolean formatForOrb)
 	{
-		final double drainRate = getPrayerDrainRate(client);
+		LocalTime timeLeft = PrayerCalculator.getEstimatedTimeRemaining(client);
 
-		if (drainRate == 0)
+		if (timeLeft == null)
 		{
 			return "N/A";
 		}
 
-		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-
-		// Calculate how many seconds each prayer points last so the prayer bonus can be applied
-		final double secondsPerPoint = (60.0 / drainRate) * (1.0 + (prayerBonus / 30.0));
-
-		// Calculate the number of seconds left
-		final double secondsLeft = (currentPrayer * secondsPerPoint);
-
-		LocalTime timeLeft = LocalTime.ofSecondOfDay((long) secondsLeft);
-
 		if (formatForOrb && (timeLeft.getHour() > 0 || timeLeft.getMinute() > 9))
 		{
-			long minutes = Duration.ofSeconds((long) secondsLeft).toMinutes();
+			long minutes = Duration.ofSeconds(timeLeft.toSecondOfDay()).toMinutes();
 			return String.format("%dm", minutes);
 		}
 		else if (timeLeft.getHour() > 0)

@@ -123,7 +123,7 @@ class PrayerDoseOverlay extends Overlay
 				sb.append("Time Remaining: ").append(plugin.getEstimatedTimeRemaining(false));
 			}
 
-			sb.append("</br>").append("Prayer Bonus: ").append(plugin.getPrayerBonus());
+			sb.append("</br>").append("Prayer Bonus: ").append(PrayerCalculator.getPrayerBonus());
 			tooltipManager.add(new Tooltip(sb.toString()));
 		}
 

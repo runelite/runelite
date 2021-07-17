@@ -112,10 +112,21 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "prayerTime",
+		name = "Prayer Time Threshold",
+		description = "The number of seconds of prayer left to send a notification at. A value of 0 will disable notification.",
+		position = 8
+	)
+	default int getPrayerTimeThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
 		keyName = "lowEnergy",
 		name = "Low Energy Threshold",
 		description = "The amount of energy points remaining to send a notification at. A value of 100 will disable notification.",
-		position = 8
+		position = 9
 	)
 	@Units(Units.PERCENT)
 	@Range(max = 100)
@@ -128,7 +139,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "highEnergy",
 		name = "High Energy Threshold",
 		description = "The amount of energy points reached to send a notification. A value of 0 will disable notification.",
-		position = 9
+		position = 10
 	)
 	@Units(Units.PERCENT)
 	@Range(max = 100)
@@ -140,7 +151,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "oxygen",
 		name = "Oxygen Threshold",
-		position = 10,
+		position = 11,
 		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification."
 	)
 	@Units(Units.PERCENT)
@@ -152,7 +163,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "spec",
 		name = "Spec Threshold",
-		position = 11,
+		position = 12,
 		description = "The amount of special attack energy reached to send a notification at. A value of 0 will disable notification."
 	)
 	@Units(Units.PERCENT)

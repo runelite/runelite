@@ -28,8 +28,12 @@ package net.runelite.client.plugins.idlenotifier;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import static net.runelite.api.AnimationID.*;
@@ -52,10 +56,14 @@ import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.idlenotifier.checks.IdleCheck;
+import net.runelite.client.plugins.idlenotifier.checks.PrayerIdleCheck;
+import net.runelite.client.plugins.prayer.PrayerCalculator;
 
 @PluginDescriptor(
 	name = "Idle Notifier",
@@ -92,7 +100,6 @@ public class IdleNotifierPlugin extends Plugin
 	private WorldPoint lastPosition;
 	private boolean notifyPosition = false;
 	private boolean notifyHitpoints = true;
-	private boolean notifyPrayer = true;
 	private boolean shouldNotifyLowEnergy = false;
 	private boolean shouldNotifyHighEnergy = false;
 	private boolean notifyOxygen = true;
@@ -103,6 +110,8 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant sixHourWarningTime;
 	private boolean ready;
 	private boolean lastInteractWasCombat;
+
+	private List<IdleCheck> idleChecks = new ArrayList<>();
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -115,6 +124,18 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		// can't tell when 6hr will be if enabled while already logged in
 		sixHourWarningTime = null;
+		initialiseIdleChecks();
+	}
+
+	private void initialiseIdleChecks()
+	{
+		idleChecks.add(new PrayerIdleCheck(notifier, config, client));
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		idleChecks.clear();
 	}
 
 	@Subscribe
@@ -481,11 +502,6 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("You have low hitpoints!");
 		}
 
-		if (checkLowPrayer())
-		{
-			notifier.notify("You have low prayer!");
-		}
-
 		if (checkLowEnergy())
 		{
 			notifier.notify("You have low run energy!");
@@ -505,6 +521,12 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify("You have restored spec energy!");
 		}
+
+		/**
+		 * Check all
+		 * @see IdleCheck objects
+		 */
+		idleChecks.forEach(IdleCheck::check);
 	}
 
 	private boolean checkFullSpecEnergy()
@@ -566,31 +588,6 @@ public class IdleNotifierPlugin extends Plugin
 			else
 			{
 				notifyHitpoints = false;
-			}
-		}
-
-		return false;
-	}
-
-	private boolean checkLowPrayer()
-	{
-		if (config.getPrayerThreshold() == 0)
-		{
-			return false;
-		}
-		if (client.getRealSkillLevel(Skill.PRAYER) > config.getPrayerThreshold())
-		{
-			if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.getPrayerThreshold())
-			{
-				if (!notifyPrayer)
-				{
-					notifyPrayer = true;
-					return true;
-				}
-			}
-			else
-			{
-				notifyPrayer = false;
 			}
 		}
 

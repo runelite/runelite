@@ -36,6 +36,8 @@ import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
+import net.runelite.api.Prayer;
+import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -56,6 +58,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -320,4 +323,29 @@ public class IdleNotifierPluginTest
 
 		verify(notifier).notify(eq("You have stopped moving!"));
 	}
+
+	@Test
+	public void testPrayerIdle() throws Exception
+	{
+		// initialise idleCheck list
+		plugin.startUp();
+
+		when(config.getPrayerTimeThreshold()).thenReturn(0);
+		when(config.getPrayerThreshold()).thenReturn(10);
+		when(client.getRealSkillLevel(eq(Skill.PRAYER))).thenReturn(50);
+		when(client.getBoostedSkillLevel(eq(Skill.PRAYER))).thenReturn(20);
+		plugin.onGameTick(new GameTick());
+		verifyNoInteractions(notifier);
+
+		when(config.getPrayerThreshold()).thenReturn(30);
+		plugin.onGameTick(new GameTick());
+		verify(notifier).notify(eq("You have low prayer!"));
+
+		when(config.getPrayerThreshold()).thenReturn(0);
+		when(config.getPrayerTimeThreshold()).thenReturn(100);
+		when(client.isPrayerActive(eq(Prayer.PIETY))).thenReturn(true);
+		plugin.onGameTick(new GameTick());
+		verify(notifier).notify(eq("You have low prayer!"));
+	}
+
 }
