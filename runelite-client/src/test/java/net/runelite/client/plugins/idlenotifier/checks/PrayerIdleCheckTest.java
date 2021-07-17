@@ -74,21 +74,21 @@ public class PrayerIdleCheckTest {
     {
         // disabled config
         when(config.getPrayerThreshold()).thenReturn(0);
-        assertFalse(underTest.isLowPrayerPoints().test(null));
+        assertFalse(underTest.isLowPrayerPoints.test(null));
         verify(config, times(1)).getPrayerThreshold();
         clearInvocations(client, config);
 
         // 60/60 prayer w/ 70 threshold
         when(config.getPrayerThreshold()).thenReturn(70);
         when(client.getRealSkillLevel(eq(Skill.PRAYER))).thenReturn(60);
-        assertFalse(underTest.isLowPrayerPoints().test(null));
+        assertFalse(underTest.isLowPrayerPoints.test(null));
         verify(config, times(2)).getPrayerThreshold();
         clearInvocations(client, config);
 
         // 99/99 prayer w/ 70 threshold
         when(client.getRealSkillLevel(eq(Skill.PRAYER))).thenReturn(99);
         when(client.getBoostedSkillLevel(eq(Skill.PRAYER))).thenReturn(99);
-        assertFalse(underTest.isLowPrayerPoints().test(null));
+        assertFalse(underTest.isLowPrayerPoints.test(null));
         verify(config, times(3)).getPrayerThreshold();
         verify(client, times(1)).getRealSkillLevel(eq(Skill.PRAYER));
         verify(client, times(1)).getBoostedSkillLevel(eq(Skill.PRAYER));
@@ -98,7 +98,7 @@ public class PrayerIdleCheckTest {
         when(config.getPrayerThreshold()).thenReturn(70);
         when(client.getRealSkillLevel(eq(Skill.PRAYER))).thenReturn(99);
         when(client.getBoostedSkillLevel(eq(Skill.PRAYER))).thenReturn(69);
-        assertTrue(underTest.isLowPrayerPoints().test(null));
+        assertTrue(underTest.isLowPrayerPoints.test(null));
         verify(config, times(3)).getPrayerThreshold();
         verify(client, times(1)).getRealSkillLevel(eq(Skill.PRAYER));
         verify(client, times(1)).getBoostedSkillLevel(eq(Skill.PRAYER));
@@ -110,13 +110,13 @@ public class PrayerIdleCheckTest {
     {
         // disabled config
         when(config.getPrayerTimeThreshold()).thenReturn(0);
-        assertFalse(underTest.isLowPrayerTimeLeft().test(null));
+        assertFalse(underTest.isLowPrayerTimeLeft.test(null));
         verify(config, times(1)).getPrayerTimeThreshold();
         clearInvocations(client, config);
 
         // 99/99 prayer w/ 45 second threshold
         when(config.getPrayerTimeThreshold()).thenReturn(45);
-        assertFalse(underTest.isLowPrayerTimeLeft().test(null));
+        assertFalse(underTest.isLowPrayerTimeLeft.test(null));
         verify(config, times(2)).getPrayerTimeThreshold();
         verify(client, times(1)).getBoostedSkillLevel(eq(Skill.PRAYER));
         verify(client).isPrayerActive(Prayer.PIETY);
@@ -125,7 +125,7 @@ public class PrayerIdleCheckTest {
 
         // 40/99 prayer w/ 45 second threshold
         when(client.getBoostedSkillLevel(eq(Skill.PRAYER))).thenReturn(40);
-        assertTrue(underTest.isLowPrayerTimeLeft().test(null));
+        assertTrue(underTest.isLowPrayerTimeLeft.test(null));
         verify(config, times(2)).getPrayerTimeThreshold();
         verify(client, times(1)).getBoostedSkillLevel(eq(Skill.PRAYER));
         clearInvocations(client, config);

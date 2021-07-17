@@ -13,8 +13,8 @@ import java.util.function.Predicate;
 public class PrayerIdleCheck extends IdleCheck
 {
 
-    private final IdleNotifierConfig config;
-    private final Client client;
+    private IdleNotifierConfig config;
+    private Client client;
 
     public PrayerIdleCheck(Notifier notifier, IdleNotifierConfig config, Client client)
     {
@@ -25,7 +25,7 @@ public class PrayerIdleCheck extends IdleCheck
 
     @Override
     public boolean internalIdleCheck() {
-        return isLowPrayerPoints().or(isLowPrayerTimeLeft()).test(null);
+        return isLowPrayerPoints.or(isLowPrayerTimeLeft).test(null);
     }
 
     @Override
@@ -34,9 +34,7 @@ public class PrayerIdleCheck extends IdleCheck
     }
 
     @VisibleForTesting
-    Predicate<Void> isLowPrayerPoints()
-    {
-        return x ->
+    final Predicate<Void> isLowPrayerPoints = x ->
         {
             if (config.getPrayerThreshold() > 0)
             {
@@ -46,27 +44,21 @@ public class PrayerIdleCheck extends IdleCheck
                 }
             }
             return false;
-        };
-    }
+    };
 
     @VisibleForTesting
-    Predicate<Void> isLowPrayerTimeLeft()
+    final Predicate<Void> isLowPrayerTimeLeft = x ->
     {
-            return x ->
+        if (config.getPrayerTimeThreshold() > 0)
+        {
+            LocalTime timeLeft = PrayerCalculator.getEstimatedTimeRemaining(client);
+            if (timeLeft != null)
             {
-                if (config.getPrayerTimeThreshold() > 0)
-                {
-                    LocalTime timeLeft = PrayerCalculator.getEstimatedTimeRemaining(client);
-                    if (timeLeft != null)
-                    {
-                        LocalTime timeThreshold = LocalTime.ofSecondOfDay(config.getPrayerTimeThreshold());
-                        return timeLeft.isBefore(timeThreshold);
-                    }
-
-                }
-                return false;
-            };
-
-    }
+                LocalTime timeThreshold = LocalTime.ofSecondOfDay(config.getPrayerTimeThreshold());
+                return timeLeft.isBefore(timeThreshold);
+            }
+        }
+        return false;
+    };
 
 }
