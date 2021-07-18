@@ -31,10 +31,10 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
+import net.runelite.client.plugins.timetracking.farming.CropState;
 import net.runelite.client.plugins.timetracking.farming.FarmingContractManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
@@ -124,14 +124,13 @@ class OverviewTabPanel extends TabContentPanel
 		}
 
 		farmingOverviews.forEach((patchType, panel) ->
-			updateItemPanel(panel, farmingTracker.getSummary(patchType), farmingTracker.getCompletionTime(patchType), null));
+			updateItemPanel(panel, farmingTracker.getSummary(patchType), farmingTracker.getCompletionTime(patchType)));
 
-		updateItemPanel(birdHouseOverview, birdHouseTracker.getSummary(), birdHouseTracker.getCompletionTime(), null);
-		updateItemPanel(farmingContractOverview, farmingContractManager.getSummary(), farmingContractManager.getCompletionTime(),
-			farmingContractManager.getContractName());
+		updateItemPanel(birdHouseOverview, birdHouseTracker.getSummary(), birdHouseTracker.getCompletionTime());
+		updateContractPanel();
 	}
 
-	private void updateItemPanel(OverviewItemPanel panel, SummaryState summary, long completionTime, @Nullable String farmingContract)
+	private void updateItemPanel(OverviewItemPanel panel, SummaryState summary, long completionTime)
 	{
 		switch (summary)
 		{
@@ -151,15 +150,53 @@ class OverviewTabPanel extends TabContentPanel
 				break;
 			}
 			case EMPTY:
-				panel.updateStatus(farmingContract == null ? "Empty" : farmingContract, Color.GRAY);
-				break;
-			case OCCUPIED:
-				panel.updateStatus(farmingContract == null ? "" : farmingContract, Color.RED);
+				panel.updateStatus("Empty", Color.GRAY);
 				break;
 			case UNKNOWN:
 			default:
 				panel.updateStatus("Unknown", Color.GRAY);
 				break;
+		}
+	}
+
+	private void updateContractPanel()
+	{
+		switch (farmingContractManager.getSummary())
+		{
+			case COMPLETED:
+			case IN_PROGRESS:
+				switch (farmingContractManager.getContractCropState())
+				{
+					case HARVESTABLE:
+					case GROWING:
+						long duration = farmingContractManager.getCompletionTime() - Instant.now().getEpochSecond();
+
+						if (duration <= 0)
+						{
+							farmingContractOverview.updateStatus("Ready", ColorScheme.PROGRESS_COMPLETE_COLOR);
+							return;
+						}
+
+						farmingContractOverview.updateStatus("Ready " + getFormattedEstimate(duration, config.timeFormatMode()), Color.GRAY);
+						return;
+					case DISEASED:
+						farmingContractOverview.updateStatus("Diseased", CropState.DISEASED.getColor());
+						return;
+					case DEAD:
+						farmingContractOverview.updateStatus("Dead", CropState.DEAD.getColor());
+						return;
+				}
+				// fallthrough
+			case UNKNOWN:
+			default:
+				farmingContractOverview.updateStatus("Unknown", Color.GRAY);
+				return;
+			case EMPTY:
+				farmingContractOverview.updateStatus(farmingContractManager.getContractName(), Color.GRAY);
+				return;
+			case OCCUPIED:
+				farmingContractOverview.updateStatus(farmingContractManager.getContractName(), Color.RED);
+				return;
 		}
 	}
 }
