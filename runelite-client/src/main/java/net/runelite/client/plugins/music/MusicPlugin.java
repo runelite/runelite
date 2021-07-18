@@ -748,7 +748,7 @@ public class MusicPlugin extends Plugin
 			s.update();
 			s.getChannel().setWindowSlider(s);
 		}
-		
+
 		if (ev.getScriptId() == ScriptID.TOPLEVEL_REDRAW && musicConfig.granularSliders())
 		{
 			// we have to set the var to our value so toplevel_redraw doesn't try to set
@@ -857,11 +857,12 @@ public class MusicPlugin extends Plugin
 				windowSlider.update();
 			}
 		}
-		
+
 		public void updateVar()
 		{
 			int val = getValue();
-			client.getVarps()[this.var.getId()] = val * 100 / this.max;
+			int varVal = Math.round((float) val / (max / 100.f));
+			client.getVarps()[this.var.getId()] = varVal;
 		}
 
 		public void shutDown()
