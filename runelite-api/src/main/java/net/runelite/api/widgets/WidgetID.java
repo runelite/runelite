@@ -885,7 +885,7 @@ public class WidgetID
 		static final int TABS = 3;
 		static final int ENTRY = 17;
 		static final int ENTRY_HEADER = 19;
-		static final int ENTRY_ITEMS = 35;
+		static final int ENTRY_ITEMS = 36;
 	}
 
 	static class GenericScroll
