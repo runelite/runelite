@@ -130,7 +130,7 @@ public class WorldMapOverlay extends Overlay
 		Area currentClip = null;
 
 		Point mousePos = client.getMouseCanvasPosition();
-		if (!canvasViewArea.contains(mousePos.getX(), mousePos.getY()))
+		if (!mapViewArea.contains(mousePos.getX(), mousePos.getY()))
 		{
 			mousePos = null;
 		}

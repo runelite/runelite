@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2021 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +23,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems.config;
+package net.runelite.api;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import net.runelite.api.coords.LocalPoint;
 
-@Getter
-@RequiredArgsConstructor
-public enum ItemHighlightMode
+/**
+ * Represents a modified {@link GraphicsObject}
+ */
+public interface RuneLiteObject extends GraphicsObject
 {
-	NONE("None"),
-	OVERLAY("Overlay"),
-	MENU("Right-click menu"),
-	BOTH("Both");
+	/**
+	 * Sets the model of the RuneLiteObject
+	 */
+	void setModel(Model model);
 
-	private final String name;
+	/**
+	 * Sets the animation of the RuneLiteObject
+	 * If animation is null model will be static
+	 */
+	void setAnimation(Sequence animation);
 
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	/**
+	 * Sets whether the animation of the RuneLiteObject should loop when the animation ends.
+	 * If this is false the object will despawn when the animation ends.
+	 * Does nothing if the animation is null.
+	 */
+	void setShouldLoop(boolean shouldLoop);
+
+	/**
+	 * Sets the location in the scene for the RuneLiteObject
+	 */
+	void setLocation(LocalPoint point, int plane);
+
+	/**
+	 * Sets the state of the RuneLiteObject
+	 * Set to true to spawn the object
+	 * Set to false to despawn the object
+	 */
+	void setActive(boolean active);
+
+	/**
+	 * Gets the state of the RuneLiteObject
+	 *
+	 * @return true if the RuneLiteObject is added to the scene
+	 */
+	boolean isActive();
 }

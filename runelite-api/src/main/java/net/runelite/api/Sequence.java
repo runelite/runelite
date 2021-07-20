@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems.config;
+package net.runelite.api;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
-public enum ItemHighlightMode
+/**
+ * Represents an animation of a renderable
+ */
+public interface Sequence
 {
-	NONE("None"),
-	OVERLAY("Overlay"),
-	MENU("Right-click menu"),
-	BOTH("Both");
-
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
 }

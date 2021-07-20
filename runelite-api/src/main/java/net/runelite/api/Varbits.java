@@ -316,7 +316,7 @@ public enum Varbits
 	 */
 	FIRE_PIT_GIANT_MOLE(6532),
 	FIRE_PIT_LUMBRIDGE_SWAMP(6533),
-	FIRE_PIT_MOS_LE_HARMLESS(6544),
+	FIRE_PIT_MOS_LE_HARMLESS(6534),
 
 	/**
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
