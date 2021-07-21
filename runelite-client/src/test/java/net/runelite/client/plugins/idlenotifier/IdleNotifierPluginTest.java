@@ -153,7 +153,7 @@ public class IdleNotifierPluginTest
 		animationChanged.setActor(player);
 		plugin.onAnimationChanged(animationChanged);
 		plugin.onGameTick(new GameTick());
-		when(player.getAnimation()).thenReturn(AnimationID.UNUSED);
+		when(player.getAnimation()).thenReturn(0x7fffffff);
 		plugin.onAnimationChanged(animationChanged);
 		plugin.onGameTick(new GameTick());
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
