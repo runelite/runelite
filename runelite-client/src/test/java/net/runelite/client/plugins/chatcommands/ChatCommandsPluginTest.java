@@ -39,12 +39,13 @@ import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.COLLECTION_LOG_ID;
 import static net.runelite.api.widgets.WidgetID.GENERIC_SCROLL_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatCommandManager;
@@ -986,9 +987,8 @@ public class ChatCommandsPluginTest
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
 
-		WidgetLoaded logEvent = new WidgetLoaded();
-		logEvent.setGroupId(COLLECTION_LOG_ID);
-		chatCommandsPlugin.onWidgetLoaded(logEvent);
+		ScriptPostFired scriptPostFired = new ScriptPostFired(ScriptID.COLLECTION_DRAW_LIST);
+		chatCommandsPlugin.onScriptPostFired(scriptPostFired);
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
@@ -1024,9 +1024,8 @@ public class ChatCommandsPluginTest
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
 
-		WidgetLoaded logEvent = new WidgetLoaded();
-		logEvent.setGroupId(COLLECTION_LOG_ID);
-		chatCommandsPlugin.onWidgetLoaded(logEvent);
+		ScriptPostFired scriptPostFired = new ScriptPostFired(ScriptID.COLLECTION_DRAW_LIST);
+		chatCommandsPlugin.onScriptPostFired(scriptPostFired);
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
@@ -1062,9 +1061,8 @@ public class ChatCommandsPluginTest
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
 
-		WidgetLoaded logEvent = new WidgetLoaded();
-		logEvent.setGroupId(COLLECTION_LOG_ID);
-		chatCommandsPlugin.onWidgetLoaded(logEvent);
+		ScriptPostFired scriptPostFired = new ScriptPostFired(ScriptID.COLLECTION_DRAW_LIST);
+		chatCommandsPlugin.onScriptPostFired(scriptPostFired);
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 

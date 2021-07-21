@@ -56,18 +56,19 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.COLLECTION_LOG_ID;
 import static net.runelite.api.widgets.WidgetID.GENERIC_SCROLL_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -155,7 +156,6 @@ public class ChatCommandsPlugin extends Plugin
 	private boolean bossLogLoaded;
 	private boolean advLogLoaded;
 	private boolean scrollInterfaceLoaded;
-	private boolean collectionLogLoaded;
 	private String pohOwner;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 	private String lastBossKill;
@@ -599,39 +599,6 @@ public class ChatCommandsPlugin extends Plugin
 			}
 		}
 
-		if (collectionLogLoaded && (pohOwner == null || pohOwner.equals(client.getLocalPlayer().getName())))
-		{
-			collectionLogLoaded = false;
-
-			Widget collectionLogEntryHeader = client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER);
-			if (collectionLogEntryHeader != null && collectionLogEntryHeader.getChildren() != null)
-			{
-				Widget entryTitle = collectionLogEntryHeader.getChild(COL_LOG_ENTRY_HEADER_TITLE_INDEX);
-				// Make sure that the player is looking in the All Pets tab of the collection log
-				if (entryTitle.getText().equals("All Pets"))
-				{
-					Widget collectionLogEntryItems = client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS);
-					if (collectionLogEntryItems != null && collectionLogEntryItems.getChildren() != null)
-					{
-						List<Pet> petList = new ArrayList<>();
-						for (Widget child : collectionLogEntryItems.getChildren())
-						{
-							if (child.getOpacity() == 0)
-							{
-								Pet pet = Pet.findPet(Text.removeTags(child.getName()));
-								if (pet != null)
-								{
-									petList.add(pet);
-								}
-							}
-						}
-
-						setPetList(petList);
-					}
-				}
-			}
-		}
-
 		if (bossLogLoaded && (pohOwner == null || pohOwner.equals(client.getLocalPlayer().getName())))
 		{
 			bossLogLoaded = false;
@@ -701,15 +668,53 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	{
+		if (scriptPostFired.getScriptId() != ScriptID.COLLECTION_DRAW_LIST)
+		{
+			return;
+		}
+
+		if (pohOwner == null || pohOwner.equals(client.getLocalPlayer().getName()))
+		{
+			Widget collectionLogEntryHeader = client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER);
+			if (collectionLogEntryHeader != null && collectionLogEntryHeader.getChildren() != null)
+			{
+				Widget entryTitle = collectionLogEntryHeader.getChild(COL_LOG_ENTRY_HEADER_TITLE_INDEX);
+				// Make sure that the player is looking in the All Pets tab of the collection log
+				if (entryTitle.getText().equals("All Pets"))
+				{
+					Widget collectionLogEntryItems = client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS);
+					if (collectionLogEntryItems != null && collectionLogEntryItems.getChildren() != null)
+					{
+						List<Pet> petList = new ArrayList<>();
+						for (Widget child : collectionLogEntryItems.getChildren())
+						{
+							if (child.getOpacity() == 0)
+							{
+								Pet pet = Pet.findPet(Text.removeTags(child.getName()));
+								if (pet != null)
+								{
+									petList.add(pet);
+								}
+							}
+						}
+
+						setPetList(petList);
+						log.debug("Loaded {} pets", petList.size());
+					}
+				}
+			}
+		}
+	}
+
+	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widget)
 	{
 		switch (widget.getGroupId())
 		{
 			case ADVENTURE_LOG_ID:
 				advLogLoaded = true;
-				break;
-			case COLLECTION_LOG_ID:
-				collectionLogLoaded = true;
 				break;
 			case KILL_LOGS_GROUP_ID:
 				bossLogLoaded = true;

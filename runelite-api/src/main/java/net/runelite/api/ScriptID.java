@@ -364,4 +364,7 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 6)
 	public static final int SETTINGS_ZOOM_SLIDER_ONDRAG = 3896;
+
+	@ScriptArguments(integer = 6)
+	public static final int COLLECTION_DRAW_LIST = 2730;
 }
