@@ -1194,7 +1194,9 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		ChatMessageBuilder responseBuilder = new ChatMessageBuilder().append("Pets: ")
+		ChatMessageBuilder responseBuilder = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Pets: ")
 			.append("(" + playerPetList.size() + ")");
 
 		// Append pets that the player owns
@@ -1211,7 +1213,8 @@ public class ChatCommandsPlugin extends Plugin
 
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
-		messageNode.setValue(response);
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
 
