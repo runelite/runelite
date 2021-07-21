@@ -8,12 +8,6 @@
     },
     {
       "level": 3,
-      "sprite": 1247,
-      "name": "Reanimate Goblin",
-      "xp": 6
-    },
-    {
-      "level": 3,
       "sprite": 16,
       "name": "Confuse",
       "xp": 13
@@ -32,8 +26,8 @@
     },
     {
       "level": 6,
-      "sprite": 1269,
-      "name": "Lumbridge Graveyard Teleport",
+      "sprite": 1252,
+      "name": "Arceuus Library Teleport",
       "xp": 10
     },
     {
@@ -49,12 +43,6 @@
       "xp": 17.5
     },
     {
-      "level": 7,
-      "sprite": 1264,
-      "name": "Reanimate Monkey",
-      "xp": 14
-    },
-    {
       "level": 9,
       "sprite": 19,
       "name": "Earth Strike",
@@ -65,12 +53,6 @@
       "sprite": 20,
       "name": "Weaken",
       "xp": 21
-    },
-    {
-      "level": 12,
-      "sprite": 1258,
-      "name": "Reanimate Imp",
-      "xp": 24
     },
     {
       "level": 13,
@@ -92,13 +74,13 @@
     },
     {
       "level": 16,
-      "sprite": 1259,
-      "name": "Reanimate Minotaur",
+      "sprite": 1247,
+      "name": "Basic Reanimation",
       "xp": 32
     },
     {
       "level": 17,
-      "sprite": 1269,
+      "sprite": 1253,
       "name": "Draynor Manor Teleport",
       "xp": 16
     },
@@ -107,12 +89,6 @@
       "sprite": 23,
       "name": "Wind Bolt",
       "xp": 13.5
-    },
-    {
-      "level": 19,
-      "sprite": 1257,
-      "name": "Reanimate Scorpion",
-      "xp": 38
     },
     {
       "level": 19,
@@ -133,18 +109,6 @@
       "xp": 31
     },
     {
-      "level": 21,
-      "sprite": 1256,
-      "name": "Reanimate Bear",
-      "xp": 42
-    },
-    {
-      "level": 22,
-      "sprite": 1260,
-      "name": "Reanimate Unicorn",
-      "xp": 44
-    },
-    {
       "level": 23,
       "sprite": 26,
       "name": "Water Bolt",
@@ -163,12 +127,6 @@
       "xp": 35
     },
     {
-      "level": 26,
-      "sprite": 1268,
-      "name": "Reanimate Dog",
-      "xp": 52
-    },
-    {
       "level": 27,
       "sprite": 28,
       "name": "Enchant Emerald Jewellery",
@@ -182,7 +140,7 @@
     },
     {
       "level": 28,
-      "sprite": 1271,
+      "sprite": 1256,
       "name": "Mind Altar Teleport",
       "xp": 22
     },
@@ -199,12 +157,6 @@
       "xp": 19.5
     },
     {
-      "level": 30,
-      "sprite": 1251,
-      "name": "Reanimate Chaos Druid",
-      "xp": 60
-    },
-    {
       "level": 31,
       "sprite": 30,
       "name": "Lumbridge Teleport",
@@ -218,7 +170,7 @@
     },
     {
       "level": 34,
-      "sprite": 1300,
+      "sprite": 1257,
       "name": "Respawn Teleport",
       "xp": 27
     },
@@ -229,16 +181,22 @@
       "xp": 22.5
     },
     {
-      "level": 37,
-      "sprite": 1255,
-      "name": "Reanimate Giant",
-      "xp": 74
+      "level": 35,
+      "sprite": 1267,
+      "name": "Ghostly Grasp",
+      "xp": 22.5
     },
     {
       "level": 37,
       "sprite": 33,
       "name": "Falador Teleport",
       "xp": 48
+    },
+    {
+      "level": 38,
+      "sprite": 1270,
+      "name": "Resurrect Lesser Thrall",
+      "xp": 55
     },
     {
       "level": 39,
@@ -248,21 +206,21 @@
     },
     {
       "level": 40,
-      "sprite": 1301,
+      "sprite": 1254,
       "name": "Salve Graveyard Teleport",
       "xp": 30
-    },
-    {
-      "level": 40,
-      "sprite": 1254,
-      "name": "Reanimate Ogre",
-      "xp": 80
     },
     {
       "level": 40,
       "sprite": 355,
       "name": "Teleport To House",
       "xp": 30
+    },
+    {
+      "level": 41,
+      "sprite": 1248,
+      "name": "Adept Reanimation",
+      "xp": 80
     },
     {
       "level": 41,
@@ -277,10 +235,10 @@
       "xp": 53
     },
     {
-      "level": 43,
-      "sprite": 1250,
-      "name": "Reanimate Elf",
-      "xp": 86
+      "level": 44,
+      "sprite": 1302,
+      "name": "Inferior Demonbane",
+      "xp": 27
     },
     {
       "level": 45,
@@ -289,20 +247,20 @@
       "xp": 55.5
     },
     {
-      "level": 46,
-      "sprite": 1252,
-      "name": "Reanimate Troll",
-      "xp": 92
-    },
-    {
       "level": 47,
       "sprite": 38,
       "name": "Water Blast",
       "xp": 28.5
     },
     {
+      "level": 47,
+      "sprite": 1315,
+      "name": "Shadow Veil",
+      "xp": 58
+    },
+    {
       "level": 48,
-      "sprite": 1302,
+      "sprite": 1259,
       "name": "Fenkenstrain's Castle Teleport",
       "xp": 50
     },
@@ -343,16 +301,16 @@
       "xp": 60
     },
     {
+      "level": 50,
+      "sprite": 1316,
+      "name": "Dark Lure",
+      "xp": 60
+    },
+    {
       "level": 51,
       "sprite": 54,
       "name": "Ardougne Teleport",
       "xp": 61
-    },
-    {
-      "level": 52,
-      "sprite": 1266,
-      "name": "Reanimate Horror",
-      "xp": 104
     },
     {
       "level": 52,
@@ -391,6 +349,12 @@
       "xp": 33
     },
     {
+      "level": 56,
+      "sprite": 1268,
+      "name": "Skeletal Grasp",
+      "xp": 33
+    },
+    {
       "level": 57,
       "sprite": 358,
       "name": "Enchant Diamond Bolt",
@@ -404,9 +368,9 @@
     },
     {
       "level": 57,
-      "sprite": 1261,
-      "name": "Reanimate Kalphite",
-      "xp": 114
+      "sprite": 2981,
+      "name": "Resurrect Superior Thrall",
+      "xp": 70
     },
     {
       "level": 58,
@@ -425,6 +389,12 @@
       "sprite": 44,
       "name": "Fire Blast",
       "xp": 34.5
+    },
+    {
+      "level": 59,
+      "sprite": 1305,
+      "name": "Mark of Darkness",
+      "xp": 70
     },
     {
       "level": 60,
@@ -464,7 +434,7 @@
     },
     {
       "level": 61,
-      "sprite": 1303,
+      "sprite": 1260,
       "name": "West Ardougne Teleport",
       "xp": 68
     },
@@ -476,12 +446,6 @@
     },
     {
       "level": 62,
-      "sprite": 1253,
-      "name": "Reanimate Dagannoth",
-      "xp": 124
-    },
-    {
-      "level": 62,
       "sprite": 330,
       "name": "Smoke Burst",
       "xp": 36
@@ -490,6 +454,12 @@
       "level": 62,
       "sprite": 46,
       "name": "Wind Wave",
+      "xp": 36
+    },
+    {
+      "level": 62,
+      "sprite": 1303,
+      "name": "Superior Demonbane",
       "xp": 36
     },
     {
@@ -511,6 +481,12 @@
       "xp": 74
     },
     {
+      "level": 64,
+      "sprite": 1307,
+      "name": "Lesser Corruption",
+      "xp": 75
+    },
+    {
       "level": 65,
       "sprite": 543,
       "name": "Bake Pie",
@@ -518,15 +494,9 @@
     },
     {
       "level": 65,
-      "sprite": 1304,
+      "sprite": 1261,
       "name": "Harmony Island Teleport",
       "xp": 74
-    },
-    {
-      "level": 65,
-      "sprite": 1267,
-      "name": "Reanimate Bloodveld",
-      "xp": 130
     },
     {
       "level": 65,
@@ -571,6 +541,12 @@
       "xp": 61
     },
     {
+      "level": 66,
+      "sprite": 1317,
+      "name": "Vile Vigour",
+      "xp": 76
+    },
+    {
       "level": 67,
       "sprite": 568,
       "name": "Npc Contact",
@@ -613,12 +589,6 @@
       "xp": 66
     },
     {
-      "level": 69,
-      "sprite": 1262,
-      "name": "Reanimate Tzhaar",
-      "xp": 138
-    },
-    {
       "level": 70,
       "sprite": 51,
       "name": "Earth Wave",
@@ -637,6 +607,12 @@
       "xp": 67
     },
     {
+      "level": 70,
+      "sprite": 1318,
+      "name": "Degrime",
+      "xp": 83
+    },
+    {
       "level": 71, 
       "sprite": 586,
       "name": "Ourania Teleport",
@@ -644,7 +620,7 @@
     },
     {
       "level": 71,
-      "sprite": 1305,
+      "sprite": 1264,
       "name": "Cemetery Teleport",
       "xp": 82
     },
@@ -662,15 +638,15 @@
     },
     {
       "level": 72,
-      "sprite": 344,
-      "name": "Lassar Teleport",
-      "xp": 82
+      "sprite": 1249,
+      "name": "Expert Reanimation",
+      "xp": 138
     },
     {
       "level": 72,
-      "sprite": 1248,
-      "name": "Reanimate Demon",
-      "xp": 144
+      "sprite": 344,
+      "name": "Lassar Teleport",
+      "xp": 82
     },
     {
       "level": 72,
@@ -688,6 +664,12 @@
       "level": 73,
       "sprite": 57,
       "name": "Enfeeble",
+      "xp": 83
+    },
+    {
+      "level": 73,
+      "sprite": 1306,
+      "name": "Ward of Arceuus",
       "xp": 83
     },
     {
@@ -745,6 +727,12 @@
       "xp": 75
     },
     {
+      "level": 76,
+      "sprite": 2984,
+      "name": "Resurrect Greater Thrall",
+      "xp": 88
+    },
+    {
       "level": 77,
       "sprite": 548,
       "name": "Superglass Make",
@@ -770,15 +758,9 @@
     },
     {
       "level": 78,
-      "sprite": 1308,
+      "sprite": 1266,
       "name": "Resurrect Crops",
       "xp": 90
-    },
-    {
-      "level": 78,
-      "sprite": 1263,
-      "name": "Reanimate Aviansie",
-      "xp": 156
     },
     {
       "level": 79,
@@ -797,6 +779,12 @@
       "sprite": 580,
       "name": "Dream",
       "xp": 82
+    },
+    {
+      "level": 79,
+      "sprite": 1269,
+      "name": "Undead Grasp",
+      "xp": 46.5
     },
     {
       "level": 80,
@@ -821,6 +809,12 @@
       "sprite": 550,
       "name": "String Jewellery",
       "xp": 83
+    },
+    {
+      "level": 80,
+      "sprite": 1310,
+      "name": "Death Charge",
+      "xp": 90
     },
     {
       "level": 81,
@@ -853,6 +847,12 @@
       "xp": 46
     },
     {
+      "level": 82,
+      "sprite": 1304,
+      "name": "Dark Demonbane",
+      "xp": 43.5
+    },
+    {
       "level": 83,
       "sprite": 553,
       "name": "Fertile Soil",
@@ -860,7 +860,7 @@
     },
     {
       "level": 83,
-      "sprite": 1306,
+      "sprite": 1262,
       "name": "Barrows Teleport",
       "xp": 90
     },
@@ -877,10 +877,10 @@
       "xp": 88
     },
     {
-      "level": 85,
-      "sprite": 1265,
-      "name": "Reanimate Abyssal Creature",
-      "xp": 170
+      "level": 84,
+      "sprite": 1311,
+      "name": "Demonic Offering",
+      "xp": 175
     },
     {
       "level": 85,
@@ -905,6 +905,12 @@
       "sprite": 359,
       "name": "Teleport To Bounty Target",
       "xp": 45
+    },
+    {
+      "level": 85,
+      "sprite": 1308,
+      "name": "Greater Corruption",
+      "xp": 95
     },
     {
       "level": 86,
@@ -980,6 +986,12 @@
     },
     {
       "level": 90,
+      "sprite": 1250,
+      "name": "Master Reanimation",
+      "xp": 170
+    },
+    {
+      "level": 90,
       "sprite": 575,
       "name": "Tele Group Ice Plateau",
       "xp": 99
@@ -992,7 +1004,7 @@
     },
     {
       "level": 90,
-      "sprite": 1307,
+      "sprite": 1263,
       "name": "Ape Atoll Teleport",
       "xp": 100
     },
@@ -1015,6 +1027,12 @@
       "xp": 101
     },
     {
+      "level": 92,
+      "sprite": 1312,
+      "name": "Sinister Offering",
+      "xp": 180
+    },
+    {
       "level": 93,
       "sprite": 561,
       "name": "Vengeance Other",
@@ -1025,12 +1043,6 @@
       "sprite": 361,
       "name": "Enchant Zenyte Jewellery",
       "xp": 110
-    },
-    {
-      "level": 93,
-      "sprite": 1249,
-      "name": "Reanimate Dragon",
-      "xp": 186
     },
     {
       "level": 94,

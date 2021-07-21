@@ -26,7 +26,6 @@
 #include FACE_COUNT
 
 #include cl_types.cl
-#include to_screen.cl
 #include common.cl
 #include priority_render.cl
 

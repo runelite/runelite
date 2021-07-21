@@ -26,6 +26,7 @@ package net.runelite.client.plugins.specialcounter;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -42,7 +43,9 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcDespawned;
@@ -71,11 +74,19 @@ public class SpecialCounterPlugin extends Plugin
 		NpcID.DARK_ENERGY_CORE, NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063,
 		NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY
 	);
+	
+	private static final Set<Integer> RESET_ON_LEAVE_INSTANCED_REGIONS = ImmutableSet.of(
+			9023, // vorkath
+			5536 // hydra
+	);
 
 	private int currentWorld;
 	private int specialPercentage;
 	private Actor lastSpecTarget;
 	private int lastSpecTick;
+
+	private int previousRegion;
+	private boolean wasInInstance;
 
 	private SpecialWeapon specialWeapon;
 	private final Set<Integer> interactedNpcIds = new HashSet<>();
@@ -127,6 +138,31 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		removeCounters();
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
+	}
+	
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+		
+		assert client.getLocalPlayer() != null;
+		int currentRegion = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		boolean inInstance = client.isInInstancedRegion();
+		
+		// if the player left the region/instance and was fighting boss that resets, reset specs
+		if (currentRegion != previousRegion || (wasInInstance && !inInstance))
+		{
+			if (RESET_ON_LEAVE_INSTANCED_REGIONS.contains(previousRegion))
+			{
+				removeCounters();
+			}
+		}
+		
+		previousRegion = currentRegion;
+		wasInInstance = inInstance;
 	}
 
 	@Subscribe
@@ -314,7 +350,7 @@ public class SpecialCounterPlugin extends Plugin
 
 		for (SpecialWeapon specialWeapon : SpecialWeapon.values())
 		{
-			if (specialWeapon.getItemID() == weapon.getId())
+			if (Arrays.stream(specialWeapon.getItemID()).anyMatch(id -> id == weapon.getId()))
 			{
 				return specialWeapon;
 			}
@@ -328,7 +364,7 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (counter == null)
 		{
-			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()), this, config,
+			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()[0]), this, config,
 				hit, specialWeapon);
 			infoBoxManager.addInfoBox(counter);
 			specialCounter[specialWeapon.ordinal()] = counter;

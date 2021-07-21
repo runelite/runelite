@@ -199,7 +199,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int vboUiHandle;
 
 	private int fboSceneHandle;
-	private int texSceneHandle;
 	private int rboSceneHandle;
 
 	// scene vertex buffer
@@ -218,7 +217,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int textureArrayId;
 
 	private final GLBuffer uniformBuffer = new GLBuffer();
-	private final float[] textureOffsets = new float[128];
+	private final float[] textureOffsets = new float[256];
 
 	private GpuIntBuffer vertexBuffer;
 	private GpuFloatBuffer uvBuffer;
@@ -297,7 +296,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			try
 			{
-				texSceneHandle = fboSceneHandle = rboSceneHandle = -1; // AA FBO
+				fboSceneHandle = rboSceneHandle = -1; // AA FBO
 				unorderedModels = smallModels = largeModels = 0;
 				drawingModel = false;
 
@@ -737,28 +736,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glRenderbufferStorageMultisample(gl.GL_RENDERBUFFER, aaSamples, gl.GL_RGBA, width, height);
 		gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_RENDERBUFFER, rboSceneHandle);
 
-		// Create texture
-		texSceneHandle = glGenTexture(gl);
-		gl.glBindTexture(gl.GL_TEXTURE_2D_MULTISAMPLE, texSceneHandle);
-		gl.glTexImage2DMultisample(gl.GL_TEXTURE_2D_MULTISAMPLE, aaSamples, gl.GL_RGBA, width, height, true);
-
-		// Bind texture
-		gl.glFramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_TEXTURE_2D_MULTISAMPLE, texSceneHandle, 0);
-
 		// Reset
-		gl.glBindTexture(gl.GL_TEXTURE_2D_MULTISAMPLE, 0);
 		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
 		gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, 0);
 	}
 
 	private void shutdownAAFbo()
 	{
-		if (texSceneHandle != -1)
-		{
-			glDeleteTexture(gl, texSceneHandle);
-			texSceneHandle = -1;
-		}
-
 		if (fboSceneHandle != -1)
 		{
 			glDeleteFrameBuffer(gl, fboSceneHandle);
@@ -1078,8 +1062,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				shutdownAAFbo();
 
+				// Bind default FBO to check whether anti-aliasing is forced
+				gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
+				final int forcedAASamples = glGetInteger(gl, gl.GL_SAMPLES);
 				final int maxSamples = glGetInteger(gl, gl.GL_MAX_SAMPLES);
-				final int samples = Math.min(antiAliasingMode.getSamples(), maxSamples);
+				final int samples = forcedAASamples != 0 ? forcedAASamples :
+					Math.min(antiAliasingMode.getSamples(), maxSamples);
+
+				log.debug("AA samples: {}, max samples: {}, forced samples: {}", samples, maxSamples, forcedAASamples);
 
 				initAAFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
 
@@ -1192,7 +1182,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// Bind uniforms
 			gl.glUniformBlockBinding(glProgram, uniBlockMain, 0);
 			gl.glUniform1i(uniTextures, 1); // texture sampler array is bound to texture1
-			gl.glUniform2fv(uniTextureOffsets, 128, textureOffsets, 0);
+			gl.glUniform2fv(uniTextureOffsets, textureOffsets.length, textureOffsets, 0);
 
 			// We just allow the GL to do face culling. Note this requires the priority renderer
 			// to have logic to disregard culled faces in the priority depth testing.

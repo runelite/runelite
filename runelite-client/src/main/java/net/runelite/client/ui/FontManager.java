@@ -28,6 +28,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.swing.text.StyleContext;
 import lombok.Getter;
 
@@ -48,10 +49,12 @@ public class FontManager
 	{
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-		try
+		try (InputStream inRunescape = FontManager.class.getResourceAsStream("runescape.ttf");
+			InputStream inRunescapeSmall = FontManager.class.getResourceAsStream("runescape_small.ttf");
+			InputStream inRunescapeBold = FontManager.class.getResourceAsStream("runescape_bold.ttf"))
 		{
-			Font font = Font.createFont(Font.TRUETYPE_FONT,
-				FontManager.class.getResourceAsStream("runescape.ttf"))
+			// runescape
+			Font font = Font.createFont(Font.TRUETYPE_FONT, inRunescape)
 				.deriveFont(Font.PLAIN, 16);
 			ge.registerFont(font);
 
@@ -59,8 +62,8 @@ public class FontManager
 				.getFont(font.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeFont);
 
-			Font smallFont = Font.createFont(Font.TRUETYPE_FONT,
-				FontManager.class.getResourceAsStream("runescape_small.ttf"))
+			// small
+			Font smallFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeSmall)
 				.deriveFont(Font.PLAIN, 16);
 			ge.registerFont(smallFont);
 
@@ -68,8 +71,8 @@ public class FontManager
 				.getFont(smallFont.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeSmallFont);
 
-			Font boldFont = Font.createFont(Font.TRUETYPE_FONT,
-				FontManager.class.getResourceAsStream("runescape_bold.ttf"))
+			// bold
+			Font boldFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeBold)
 				.deriveFont(Font.BOLD, 16);
 			ge.registerFont(boldFont);
 

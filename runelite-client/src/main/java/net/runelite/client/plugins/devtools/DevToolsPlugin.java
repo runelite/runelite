@@ -38,6 +38,7 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.IndexedSprite;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -143,6 +144,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton soundEffects;
 	private DevToolsButton scriptInspector;
 	private DevToolsButton inventoryInspector;
+	private DevToolsButton roofs;
 	private DevToolsButton shell;
 	private NavigationButton navButton;
 
@@ -188,6 +190,7 @@ public class DevToolsPlugin extends Plugin
 		soundEffects = new DevToolsButton("Sound Effects");
 		scriptInspector = new DevToolsButton("Script Inspector");
 		inventoryInspector = new DevToolsButton("Inventory Inspector");
+		roofs = new DevToolsButton("Roofs");
 		shell = new DevToolsButton("Shell");
 
 		overlayManager.add(overlay);
@@ -345,7 +348,7 @@ public class DevToolsPlugin extends Plugin
 				int id = Integer.parseInt(args[0]);
 				Player localPlayer = client.getLocalPlayer();
 				localPlayer.setAnimation(id);
-				localPlayer.setActionFrame(0);
+				localPlayer.setAnimationFrame(0);
 				break;
 			}
 			case "gfx":
@@ -425,6 +428,25 @@ public class DevToolsPlugin extends Plugin
 				chatMessageManager.queue(QueuedMessage.builder()
 					.type(ChatMessageType.GAMEMESSAGE)
 					.runeLiteFormattedMessage(new ChatMessageBuilder().append(message).build())
+					.build());
+				break;
+			}
+			case "modicons":
+			{
+				final ChatMessageBuilder builder = new ChatMessageBuilder();
+				final IndexedSprite[] modIcons = client.getModIcons();
+				for (int i = 0; i < modIcons.length; i++)
+				{
+					builder.append(i + "=").img(i);
+
+					if (i != modIcons.length - 1)
+					{
+						builder.append(", ");
+					}
+				}
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.GAMEMESSAGE)
+					.runeLiteFormattedMessage(builder.build())
 					.build());
 				break;
 			}

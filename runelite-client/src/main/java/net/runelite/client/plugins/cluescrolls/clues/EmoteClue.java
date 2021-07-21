@@ -83,7 +83,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Beckon by a collection of crystalline maple trees. Beware of double agents! Equip Bryophyta's staff and a nature tiara.", "North of Prifddinas", CRYSTALLINE_MAPLE_TREES, new WorldPoint(2211, 3427, 0), DOUBLE_AGENT_141, BECKON, range("Bryophyta's staff", BRYOPHYTAS_STAFF_UNCHARGED, BRYOPHYTAS_STAFF), item(NATURE_TIARA)),
 		new EmoteClue("Beckon in the Digsite, near the eastern winch. Bow before you talk to me. Equip a green gnome hat, snakeskin boots and an iron pickaxe.", "Digsite", DIGSITE, new WorldPoint(3370, 3425, 0), BECKON, BOW, item(GREEN_HAT), item(SNAKESKIN_BOOTS), item(IRON_PICKAXE)),
 		new EmoteClue("Beckon in Tai Bwo Wannai. Clap before you talk to me. Equip green dragonhide chaps, a ring of dueling and a mithril medium helmet.", "Tai Bwo Wannai", SOUTH_OF_THE_SHRINE_IN_TAI_BWO_WANNAI_VILLAGE, new WorldPoint(2803, 3073, 0), BECKON, CLAP, item(GREEN_DHIDE_CHAPS), any("Ring of dueling", item(RING_OF_DUELING1), item(RING_OF_DUELING2), item(RING_OF_DUELING3), item(RING_OF_DUELING4), item(RING_OF_DUELING5), item(RING_OF_DUELING6), item(RING_OF_DUELING7), item(RING_OF_DUELING8)), item(MITHRIL_MED_HELM)),
-		new EmoteClue("Beckon in the combat ring of Shayzien. Show your anger before you talk to me. Equip an adamant platebody, adamant full helm and adamant platelegs.", "Shayzien combat ring", WEST_OF_THE_SHAYZIEN_COMBAT_RING, new WorldPoint(1545, 3594, 0), BECKON, ANGRY, item(ADAMANT_PLATELEGS), item(ADAMANT_PLATEBODY), item(ADAMANT_FULL_HELM)),
+		new EmoteClue("Beckon in the Shayzien Combat Ring. Show your anger before you talk to me. Equip an adamant platebody, adamant full helm and adamant platelegs.", "Shayzien Combat Ring", WEST_OF_THE_SHAYZIEN_COMBAT_RING, new WorldPoint(1543, 3623, 0), BECKON, ANGRY, item(ADAMANT_PLATELEGS), item(ADAMANT_PLATEBODY), item(ADAMANT_FULL_HELM)),
 		new EmoteClue("Bow near Lord Iorwerth. Beware of double agents! Equip a charged crystal bow.", "Lord Iorwerth's camp", TENT_IN_LORD_IORWERTHS_ENCAMPMENT, new WorldPoint(2205, 3252, 0), DOUBLE_AGENT_141, BOW, any("Crystal Bow", item(CRYSTAL_BOW), item(CRYSTAL_BOW_24123))),
 		new EmoteClue("Bow in the Iorwerth Camp. Beware of double agents! Equip a charged crystal bow.", "Lord Iorwerth's camp", TENT_IN_LORD_IORWERTHS_ENCAMPMENT, new WorldPoint(2205, 3252, 0), DOUBLE_AGENT_141, BOW, any("Crystal Bow", item(CRYSTAL_BOW), item(CRYSTAL_BOW_24123))),
 		new EmoteClue("Bow outside the entrance to the Legends' Guild. Equip iron platelegs, an emerald amulet and an oak longbow.", "Legend's Guild", OUTSIDE_THE_LEGENDS_GUILD_GATES, new WorldPoint(2729, 3349, 0), BOW, item(IRON_PLATELEGS), item(OAK_LONGBOW), item(EMERALD_AMULET)),
@@ -151,7 +151,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Shrug in the mine near Rimmington. Equip a gold necklace, a gold ring and a bronze spear.", "Rimmington mine", RIMMINGTON_MINE, new WorldPoint(2976, 3238, 0), SHRUG, item(GOLD_NECKLACE), item(GOLD_RING), item(BRONZE_SPEAR)),
 		new EmoteClue("Shrug in Catherby bank. Yawn before you talk to me. Equip a maple longbow, green d'hide chaps and an iron med helm.", "Catherby", OUTSIDE_CATHERBY_BANK, new WorldPoint(2808, 3440, 0), SHRUG, YAWN, item(MAPLE_LONGBOW), item(GREEN_DHIDE_CHAPS), item(IRON_MED_HELM)),
 		new EmoteClue("Shrug in the Zamorak temple found in the Eastern Wilderness. Beware of double agents! Equip rune platelegs, an iron platebody and blue dragonhide vambraces.", "Chaos temple", CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS, new WorldPoint(3239, 3611, 0), DOUBLE_AGENT_65, SHRUG, item(RUNE_PLATELEGS), item(IRON_PLATEBODY), item(BLUE_DHIDE_VAMBRACES)),
-		new EmoteClue("Shrug in the Shayzien command tent. Equip a blue mystic robe bottom, a rune kiteshield and any bob shirt.", "Shayzien command tent", SHAYZIEN_WAR_TENT, new WorldPoint(1555, 3537, 0), SHRUG, item(MYSTIC_ROBE_BOTTOM), item(RUNE_KITESHIELD), range("Any bob shirt", BOBS_RED_SHIRT, BOBS_PURPLE_SHIRT)),
+		new EmoteClue("Shrug in the Shayzien war tent. Equip a blue mystic robe bottom, a rune kiteshield and any bob shirt.", "Shayzien war tent", SHAYZIEN_WAR_TENT, new WorldPoint(1487, 3635, 0), SHRUG, item(MYSTIC_ROBE_BOTTOM), item(RUNE_KITESHIELD), range("Any bob shirt", BOBS_RED_SHIRT, BOBS_PURPLE_SHIRT)),
 		new EmoteClue("Slap your head in the centre of the Kourend catacombs. Beware of double agents! Equip the arclight and the amulet of the damned.", "Kourend catacombs", CENTRE_OF_THE_CATACOMBS_OF_KOUREND, new WorldPoint(1663, 10045, 0), DOUBLE_AGENT_141, SLAP_HEAD, item(ARCLIGHT), any("Amulet of the damned", item(AMULET_OF_THE_DAMNED), item(AMULET_OF_THE_DAMNED_FULL))),
 		new EmoteClue("Spin at the crossroads north of Rimmington. Equip a green gnome hat, cream gnome top and leather chaps.", "Rimmington", ROAD_JUNCTION_NORTH_OF_RIMMINGTON, new WorldPoint(2981, 3276, 0), SPIN, item(GREEN_HAT), item(CREAM_ROBE_TOP), item(LEATHER_CHAPS)),
 		new EmoteClue("Spin in Draynor Manor by the fountain. Equip an iron platebody, studded leather chaps and a bronze full helmet.", "Draynor Manor", DRAYNOR_MANOR_BY_THE_FOUNTAIN, new WorldPoint(3088, 3336, 0), SPIN, item(IRON_PLATEBODY), item(STUDDED_CHAPS), item(BRONZE_FULL_HELM)),
@@ -172,14 +172,15 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Yawn in the Castle Wars lobby. Shrug before you talk to me. Equip a ruby amulet, a mithril scimitar and a Wilderness cape.", "Castle Wars", CASTLE_WARS_BANK, new WorldPoint(2440, 3092, 0), YAWN, SHRUG, item(RUBY_AMULET), item(MITHRIL_SCIMITAR), range("Any team cape", TEAM1_CAPE, TEAM50_CAPE)),
 		new EmoteClue("Yawn in the rogues' general store. Beware of double agents! Equip an adamant square shield, blue dragon vambraces and a rune pickaxe.", "Rogues general store", NOTERAZZOS_SHOP_IN_THE_WILDERNESS, new WorldPoint(3026, 3701, 0), DOUBLE_AGENT_65, YAWN, item(ADAMANT_SQ_SHIELD), item(BLUE_DHIDE_VAMBRACES), item(RUNE_PICKAXE)),
 		new EmoteClue("Yawn at the top of Trollheim. Equip a lava battlestaff, black dragonhide vambraces and a mind shield.", "Trollheim Mountain", ON_TOP_OF_TROLLHEIM_MOUNTAIN, new WorldPoint(2887, 3676, 0), YAWN, any("Lava battlestaff", item(LAVA_BATTLESTAFF), item(LAVA_BATTLESTAFF_21198)), item(BLACK_DHIDE_VAMBRACES), item(MIND_SHIELD)),
-		new EmoteClue("Yawn in the centre of Arceuus library. Nod your head before you talk to me. Equip blue dragonhide vambraces, adamant boots and an adamant dagger.", "Arceuus library", ENTRANCE_OF_THE_ARCEUUS_LIBRARY, new WorldPoint(1632, 3807, 0), YAWN, YES, item(BLUE_DHIDE_VAMBRACES), item(ADAMANT_BOOTS), item(ADAMANT_DAGGER)),
+		new EmoteClue("Yawn in the centre of the Arceuus Library. Nod your head before you talk to me. Equip blue dragonhide vambraces, adamant boots and an adamant dagger.", "Arceuus library", ENTRANCE_OF_THE_ARCEUUS_LIBRARY, new WorldPoint(1632, 3807, 0), YAWN, YES, item(BLUE_DHIDE_VAMBRACES), item(ADAMANT_BOOTS), item(ADAMANT_DAGGER)),
 		new EmoteClue("Swing a bullroarer at the top of the Watchtower. Beware of double agents! Equip a dragon plateskirt, climbing boots and a dragon chainbody.", "Yanille Watchtower", TOP_FLOOR_OF_THE_YANILLE_WATCHTOWER, new WorldPoint(2930, 4717, 2), DOUBLE_AGENT_141, BULL_ROARER, any("Dragon plateskirt", item(DRAGON_PLATESKIRT), item(DRAGON_PLATESKIRT_G)), item(CLIMBING_BOOTS), any("Dragon chainbody", item(DRAGON_CHAINBODY_3140), item(DRAGON_CHAINBODY_G)), item(ItemID.BULL_ROARER)),
 		new EmoteClue("Blow a raspberry at Gypsy Aris in her tent. Equip a gold ring and a gold necklace.", "Varrock", GYPSY_TENT_ENTRANCE, new WorldPoint(3203, 3424, 0), RASPBERRY, item(GOLD_RING), item(GOLD_NECKLACE)),
 		new EmoteClue("Bow to Brugsen Bursen at the Grand Exchange.", "Grand Exchange", null, new WorldPoint(3164, 3477, 0), BOW),
 		new EmoteClue("Cheer at Iffie Nitter. Equip a chef hat and a red cape.", "Varrock", FINE_CLOTHES_ENTRANCE, new WorldPoint(3205, 3416, 0), CHEER, item(CHEFS_HAT), item(RED_CAPE)),
 		new EmoteClue("Clap at Bob's Brilliant Axes. Equip a bronze axe and leather boots.", "Lumbridge", BOB_AXES_ENTRANCE, new WorldPoint(3231, 3203, 0), CLAP, item(BRONZE_AXE), item(LEATHER_BOOTS)),
 		new EmoteClue("Panic at Al Kharid mine.", "Al Kharid mine", null, new WorldPoint(3300, 3314, 0), PANIC),
-		new EmoteClue("Spin at Flynn's Mace Shop.", "Falador", null, new WorldPoint(2950, 3387, 0), SPIN));
+		new EmoteClue("Spin at Flynn's Mace Shop.", "Falador", null, new WorldPoint(2950, 3387, 0), SPIN),
+		new EmoteClue("Salute by the Charcoal Burners. Equip a Farmer's strawhat, Shayzien platebody (5) and Pyromancer robes.", "Charcoal Burners", CHARCOAL_BURNERS, new WorldPoint(1714, 3467, 0), SALUTE, any("Farmer's strawhat", item(FARMERS_STRAWHAT), item(FARMERS_STRAWHAT_13647)), item(SHAYZIEN_BODY_5), item(PYROMANCER_ROBE)));
 
 	private static final String UNICODE_CHECK_MARK = "\u2713";
 	private static final String UNICODE_BALLOT_X = "\u2717";
@@ -311,6 +312,11 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localPoint, plugin.getEmoteImage(), Color.ORANGE);
 		}
 
+		makeSTASHOverlay(graphics, plugin);
+	}
+
+	public void makeSTASHOverlay(Graphics2D graphics, ClueScrollPlugin plugin)
+	{
 		if (stashUnit != null)
 		{
 			final WorldPoint[] worldPoints = stashUnit.getWorldPoints();

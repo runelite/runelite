@@ -46,6 +46,6 @@ runelite:
     history: 90 # days
   wiki:
     poll.ms: 300000 # 5 minutes
-    url: https://prices.runescape.wiki/osrs/latest
+    url: https://prices.runescape.wiki/api/v1/osrs/latest
   price:
     cache: 30 # minutes

@@ -40,8 +40,26 @@ public interface Scene
 	void setDrawDistance(int drawDistance);
 
 	/**
+	 * Get the minimum scene level which will be rendered
+	 *
+	 * @return the plane of the minimum level
+	 */
+	int getMinLevel();
+
+	/**
+	 * Set the minimum scene level which will be rendered
+	 *
+	 * @param minLevel the plane of the minimum level
+	 */
+	void setMinLevel(int minLevel);
+
+	/**
 	 * Remove a game object from the scene
 	 * @param gameObject
 	 */
 	void removeGameObject(GameObject gameObject);
+
+	void generateHouses();
+
+	void setRoofRemovalMode(int flags);
 }

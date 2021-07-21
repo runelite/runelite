@@ -55,7 +55,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -63,6 +62,7 @@ import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
@@ -76,12 +76,13 @@ import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.RSTimeUnit;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Timers",
 	description = "Show various timers in an infobox",
-	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar"}
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar", "thieving", "pickpocket"}
 )
 @Slf4j
 public class TimersPlugin extends Plugin
@@ -89,10 +90,14 @@ public class TimersPlugin extends Plugin
 	private static final String ABYSSAL_SIRE_STUN_MESSAGE = "The Sire has been disorientated temporarily.";
 	private static final String ANTIFIRE_DRINK_MESSAGE = "You drink some of your antifire potion.";
 	private static final String ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your antifire potion has expired.</col>";
+	private static final String CANNON_BASE_MESSAGE = "You place the cannon base on the ground.";
+	private static final String CANNON_STAND_MESSAGE = "You add the stand.";
+	private static final String CANNON_BARRELS_MESSAGE = "You add the barrels.";
 	private static final String CANNON_FURNACE_MESSAGE = "You add the furnace.";
 	private static final String CANNON_PICKUP_MESSAGE = "You pick up the cannon. It's really heavy.";
 	private static final String CANNON_REPAIR_MESSAGE = "You repair your cannon, restoring it to working order.";
 	private static final String CANNON_DESTROYED_MESSAGE = "Your cannon has been destroyed!";
+	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
 	private static final String CHARGE_EXPIRED_MESSAGE = "<col=ef1020>Your magical charge fades away.</col>";
 	private static final String CHARGE_MESSAGE = "<col=ef1020>You feel charged with magic power.</col>";
 	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
@@ -113,6 +118,15 @@ public class TimersPlugin extends Plugin
 	private static final String KILLED_TELEBLOCK_OPPONENT_TEXT = "Your Tele Block has been removed because you killed ";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 	private static final String ENDURANCE_EFFECT_MESSAGE = "Your Ring of endurance doubles the duration of your stamina potion's effect.";
+	private static final String SHADOW_VEIL_MESSAGE = ">Your thieving abilities have been enhanced.</col>";
+	private static final String DEATH_CHARGE_MESSAGE = ">Upon the death of your next foe, some of your special attack energy will be restored.</col>";
+	private static final String DEATH_CHARGE_ACTIVATE_MESSAGE = ">Some of your special attack energy has been restored.</col>";
+	private static final String RESURRECT_THRALL_MESSAGE_START = ">You resurrect a ";
+	private static final String RESURRECT_THRALL_MESSAGE_END = " thrall.</col>";
+	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_START = ">Your ";
+	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_END = " thrall returns to the grave.</col>";
+	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
+	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick the ";
 
 	private static final Pattern TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you(?: by .+)?\\. It will expire in (?<mins>\\d+) minutes?(?:, (?<secs>\\d+) seconds?)?\\.");
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
@@ -138,6 +152,7 @@ public class TimersPlugin extends Plugin
 	private int lastIsVengeancedVarb;
 	private int lastPoisonVarp;
 	private int lastPvpVarb;
+	private int lastCorruptionVarb;
 	private int nextPoisonTick;
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
@@ -202,6 +217,7 @@ public class TimersPlugin extends Plugin
 		int isVengeancedVarb = client.getVar(Varbits.VENGEANCE_ACTIVE);
 		int poisonVarp = client.getVar(VarPlayer.POISON);
 		int pvpVarb = client.getVar(Varbits.PVP_SPEC_ORB);
+		int corruptionCooldownVarb = client.getVar(Varbits.CORRUPTION_COOLDOWN);
 
 		if (lastRaidVarb != raidVarb)
 		{
@@ -222,6 +238,20 @@ public class TimersPlugin extends Plugin
 			}
 
 			lastVengCooldownVarb = vengCooldownVarb;
+		}
+
+		if (lastCorruptionVarb != corruptionCooldownVarb && config.showArceuusCooldown())
+		{
+			if (corruptionCooldownVarb == 1)
+			{
+				createGameTimer(CORRUPTION_COOLDOWN);
+			}
+			else
+			{
+				removeGameTimer(CORRUPTION_COOLDOWN);
+			}
+
+			lastCorruptionVarb = corruptionCooldownVarb;
 		}
 
 		if (lastIsVengeancedVarb != isVengeancedVarb && config.showVengeanceActive())
@@ -473,6 +503,18 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
+		if (message.contains(PICKPOCKET_FAILURE_MESSAGE) && config.showPickpocketStun() && message.contains("pocket"))
+		{
+			if (message.contains("hero") || message.contains("elf"))
+			{
+				createGameTimer(PICKPOCKET_STUN, Duration.ofSeconds(6));
+			}
+			else
+			{
+				createGameTimer(PICKPOCKET_STUN, Duration.ofSeconds(5));
+			}
+		}
+
 		if (message.equals(ABYSSAL_SIRE_STUN_MESSAGE) && config.showAbyssalSireStun())
 		{
 			createGameTimer(ABYSSAL_SIRE_STUN);
@@ -534,15 +576,27 @@ public class TimersPlugin extends Plugin
 
 		}
 
-		if (config.showCannon() && (message.equals(CANNON_FURNACE_MESSAGE) || message.contains(CANNON_REPAIR_MESSAGE)))
+		if (config.showCannon())
 		{
-			TimerTimer cannonTimer = createGameTimer(CANNON);
-			cannonTimer.setTooltip(cannonTimer.getTooltip() + " - World " + client.getWorld());
-		}
-
-		if (config.showCannon() && (message.equals(CANNON_PICKUP_MESSAGE) || message.equals(CANNON_DESTROYED_MESSAGE)))
-		{
-			removeGameTimer(CANNON);
+			if (message.equals(CANNON_BASE_MESSAGE) || message.equals(CANNON_STAND_MESSAGE)
+				|| message.equals(CANNON_BARRELS_MESSAGE) || message.equals(CANNON_FURNACE_MESSAGE)
+				|| message.contains(CANNON_REPAIR_MESSAGE))
+			{
+				removeGameTimer(CANNON_REPAIR);
+				TimerTimer cannonTimer = createGameTimer(CANNON);
+				cannonTimer.setTooltip(cannonTimer.getTooltip() + " - World " + client.getWorld());
+			}
+			else if (message.equals(CANNON_BROKEN_MESSAGE))
+			{
+				removeGameTimer(CANNON);
+				TimerTimer cannonTimer = createGameTimer(CANNON_REPAIR);
+				cannonTimer.setTooltip(cannonTimer.getTooltip() + " - World " + client.getWorld());
+			}
+			else if (message.equals(CANNON_PICKUP_MESSAGE) || message.equals(CANNON_DESTROYED_MESSAGE))
+			{
+				removeGameTimer(CANNON);
+				removeGameTimer(CANNON_REPAIR);
+			}
 		}
 
 		if (config.showMagicImbue() && message.equals(MAGIC_IMBUE_MESSAGE))
@@ -662,6 +716,55 @@ public class TimersPlugin extends Plugin
 						createGameTimer(DIVINE_BATTLEMAGE);
 						break;
 				}
+			}
+		}
+
+		if (config.showArceuus())
+		{
+			Duration duration = Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS);
+			if (message.endsWith(SHADOW_VEIL_MESSAGE))
+			{
+				createGameTimer(SHADOW_VEIL, duration);
+			}
+			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
+			{
+				createGameTimer(WARD_OF_ARCEUUS, duration);
+			}
+			else if (message.endsWith(DEATH_CHARGE_MESSAGE))
+			{
+				createGameTimer(DEATH_CHARGE, duration);
+			}
+			else if (message.endsWith(DEATH_CHARGE_ACTIVATE_MESSAGE))
+			{
+				removeGameTimer(DEATH_CHARGE);
+			}
+			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
+			{
+				createGameTimer(RESURRECT_THRALL, Duration.of(client.getBoostedSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS));
+			}
+			else if (message.contains(RESURRECT_THRALL_DISAPPEAR_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_DISAPPEAR_MESSAGE_END))
+			{
+				removeGameTimer(RESURRECT_THRALL);
+			}
+		}
+
+		if (config.showArceuusCooldown())
+		{
+			if (message.endsWith(SHADOW_VEIL_MESSAGE))
+			{
+				createGameTimer(SHADOW_VEIL_COOLDOWN);
+			}
+			else if (message.endsWith(DEATH_CHARGE_MESSAGE))
+			{
+				createGameTimer(DEATH_CHARGE_COOLDOWN);
+			}
+			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
+			{
+				createGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
+			}
+			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
+			{
+				createGameTimer(RESURRECT_THRALL_COOLDOWN);
 			}
 		}
 

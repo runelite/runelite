@@ -18,13 +18,13 @@ LABEL10:
    return                
 LABEL11:
    ; switch on op index
-   iload 0
-   switch
+   iload                  0
+   switch                
      1: LOOK_NORTH
      2: LOOK_SOUTH
      3: LOOK_EAST
      4: LOOK_WEST
-   jump LABEL10
+   jump                   LABEL10
 LOOK_NORTH:
    iconst                 0
    istore                 1
@@ -49,7 +49,9 @@ LOOK:
    iconst                 225
    iconst                 5
    randominc             
-   add
+   add                   
+   sconst                 "lookPreservePitch"
+   runelite_callback     
    iload                  1 ; load target angle
-   cam_forceangle
+   cam_forceangle        
    return                

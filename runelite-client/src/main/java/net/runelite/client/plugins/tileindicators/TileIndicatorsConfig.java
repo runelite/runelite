@@ -56,12 +56,23 @@ public interface TileIndicatorsConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "destinationTileBorderWidth",
+		name = "Destination border width",
+		description = "Width of the destination tile marker border",
+		position = 3
+	)
+	default double destinationTileBorderWidth()
+	{
+		return 2;
+	}
+
 	@Alpha
 	@ConfigItem(
 		keyName = "highlightHoveredColor",
 		name = "Hovered tile",
 		description = "Configures the highlight color of hovered tile",
-		position = 3
+		position = 4
 	)
 	default Color highlightHoveredColor()
 	{
@@ -72,11 +83,22 @@ public interface TileIndicatorsConfig extends Config
 		keyName = "highlightHoveredTile",
 		name = "Highlight hovered tile",
 		description = "Highlights tile player is hovering with mouse",
-		position = 4
+		position = 5
 	)
 	default boolean highlightHoveredTile()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hoveredTileBorderWidth",
+		name = "Hovered tile border width",
+		description = "Width of the hovered tile marker border",
+		position = 6
+	)
+	default double hoveredTileBorderWidth()
+	{
+		return 2;
 	}
 
 	@Alpha
@@ -84,7 +106,7 @@ public interface TileIndicatorsConfig extends Config
 		keyName = "highlightCurrentColor",
 		name = "True tile",
 		description = "Configures the highlight color of current true tile",
-		position = 5
+		position = 7
 	)
 	default Color highlightCurrentColor()
 	{
@@ -95,10 +117,21 @@ public interface TileIndicatorsConfig extends Config
 		keyName = "highlightCurrentTile",
 		name = "Highlight true tile",
 		description = "Highlights true tile player is on as seen by server",
-		position = 6
+		position = 8
 	)
 	default boolean highlightCurrentTile()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "currentTileBorderWidth",
+		name = "True tile border width",
+		description = "Width of the true tile marker border",
+		position = 9
+	)
+	default double currentTileBorderWidth()
+	{
+		return 2;
 	}
 }

@@ -41,7 +41,7 @@ public interface GroundMarkerConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "markerColor",
-		name = "Color of the tile",
+		name = "Tile color",
 		description = "Configures the color of marked tile"
 	)
 	default Color markerColor()
@@ -87,5 +87,15 @@ public interface GroundMarkerConfig extends Config
 	default boolean showClear()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "borderWidth",
+		name = "Border Width",
+		description = "Width of the marked tile border"
+	)
+	default double borderWidth()
+	{
+		return 2;
 	}
 }

@@ -26,9 +26,8 @@
 package net.runelite.client.eventbus;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.Iterables;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
@@ -186,26 +185,10 @@ public class EventBus
 	 */
 	public synchronized void unregister(@Nonnull final Object object)
 	{
-		final Multimap<Class<?>, Subscriber> map = HashMultimap.create();
-		map.putAll(subscribers);
-
-		for (Class<?> clazz = object.getClass(); clazz != null; clazz = clazz.getSuperclass())
-		{
-			for (final Method method : clazz.getDeclaredMethods())
-			{
-				final Subscribe sub = method.getAnnotation(Subscribe.class);
-
-				if (sub == null)
-				{
-					continue;
-				}
-
-				final Class<?> parameterClazz = method.getParameterTypes()[0];
-				map.remove(parameterClazz, new Subscriber(object, method, sub.priority(), null));
-			}
-		}
-
-		subscribers = ImmutableMultimap.copyOf(map);
+		subscribers = ImmutableMultimap.copyOf(Iterables.filter(
+			subscribers.entries(),
+			e -> e.getValue().getObject() != object
+		));
 	}
 
 	public synchronized void unregister(Subscriber sub)
@@ -215,12 +198,10 @@ public class EventBus
 			return;
 		}
 
-		final Multimap<Class<?>, Subscriber> map = HashMultimap.create();
-		map.putAll(subscribers);
-
-		map.values().remove(sub);
-
-		subscribers = ImmutableMultimap.copyOf(map);
+		subscribers = ImmutableMultimap.copyOf(Iterables.filter(
+			subscribers.entries(),
+			e -> sub != e.getValue()
+		));
 	}
 
 	/**

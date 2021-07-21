@@ -62,11 +62,11 @@ enum KourendTaskLocation
 	PISCARILIUS_SANDWORMS("Piscarilius Task (30%) - Hunting Sandworms", new WorldPoint(1841, 3789, 0)),
 	PISCARILIUS_STEALING_ARTEFACTS("Piscarilius Task (75%) - Stealing Artefacts", new WorldPoint(1849, 3753, 0)),
 
-	SHAYZIEN_HEALING_SOLDIERS("Shayzien Task (0%) - Healing Wounded Soldiers", new WorldPoint(1572, 3581, 0)),
+	SHAYZIEN_HEALING_SOLDIERS("Shayzien Task (0%) - Healing Wounded Soldiers", new WorldPoint(1528, 3627, 0)),
 	SHAYZIEN_LIZARDMEN_EAST("Shayzien Task (5%) - Killing Lizardmen", new WorldPoint(1570, 3668, 0)),
 	SHAYZIEN_LIZARDMEN_WEST("Shayzien Task (5%) - Killing Lizardmen", new WorldPoint(1471, 3686, 0)),
-	SHAYZIEN_ORGANIZED_CRIME("Shayzien Task (40%) - Organized Crime", new WorldPoint(1565, 3605, 0)),
-	SHAYZIEN_COMBAT_RING("Shayzien Task (60%) - Combat Ring", new WorldPoint(1539, 3589, 0)),
+	SHAYZIEN_ORGANIZED_CRIME("Shayzien Task (40%) - Organized Crime", new WorldPoint(1504, 3635, 0)),
+	SHAYZIEN_COMBAT_RING("Shayzien Task (60%) - Combat Ring", new WorldPoint(1541, 3628, 0)),
 	SHAYZIEN_LIZARDMAN_SHAMANS("Shayzien Unlock (100%) - Lizardman Shamans", new WorldPoint(1455, 3693, 0));
 
 	private final String tooltip;

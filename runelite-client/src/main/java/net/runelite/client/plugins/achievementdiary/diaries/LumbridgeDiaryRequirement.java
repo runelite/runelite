@@ -43,7 +43,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.SLAYER, 7));
 		add("Have Sedridor teleport you to the Essence Mine.",
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
-		add("Craft some water runes.",
+		add("Craft some water runes from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 5),
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Chop and burn some oak logs in Lumbridge.",
@@ -94,7 +94,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 		add("Squeeze past the jutting wall on your way to the cosmic altar.",
 			new SkillRequirement(Skill.AGILITY, 46),
 			new QuestRequirement(Quest.LOST_CITY));
-		add("Craft 56 Cosmic runes simultaneously.",
+		add("Craft 56 Cosmic runes simultaneously from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 59),
 			new QuestRequirement(Quest.LOST_CITY));
 		add("Travel from Lumbridge to Edgeville on a Waka Canoe.",
@@ -109,7 +109,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FARMING, 63));
 		add("Light your mining helmet in the Lumbridge castle basement.",
 			new SkillRequirement(Skill.FIREMAKING, 65));
-		add("Recharge your prayer at Clan Wars with Smite activated.",
+		add("Recharge your prayer at the Duel Arena with Smite activated.",
 			new SkillRequirement(Skill.PRAYER, 52));
 		add("Craft, string and enchant an Amulet of Power in Lumbridge.",
 			new SkillRequirement(Skill.CRAFTING, 70),
@@ -128,7 +128,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.WOODCUTTING, 75));
 		add("Smith an Adamant platebody down Draynor sewer.",
 			new SkillRequirement(Skill.SMITHING, 88));
-		add("Craft 140 or more Water runes at once.",
+		add("Craft 140 or more Water runes at once from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 76),
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
 	}

@@ -110,7 +110,7 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.DREAM_MENTOR));
 
 		//ELITE
-		add("Craft one or more Blood runes.",
+		add("Craft one or more Blood runes from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 77),
 			new SkillRequirement(Skill.MINING, 38),
 			new SkillRequirement(Skill.CRAFTING, 38),

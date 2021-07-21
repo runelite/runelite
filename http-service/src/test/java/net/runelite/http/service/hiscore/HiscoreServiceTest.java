@@ -29,9 +29,9 @@ import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class HiscoreServiceTest
@@ -99,14 +99,17 @@ public class HiscoreServiceTest
 			+ "10170,184\n"
 			+ "8064,202\n"
 			+ "6936,2\n"
-			+ "2335,9\n"
+			+ "2335,9\n" // Nightmare
+			+ "2336,10\n" // Phosanis Nightmare
 			+ "-1,-1\n"
 			+ "-1,-1\n"
 			+ "19779,22\n"
 			+ "58283,10\n"
+			+ "1234,5678\n" // Tempoross
 			+ "-1,-1\n"
 			+ "-1,-1\n"
-			+ "-1,-1\n"
+			+ "-1,-1\n" // TOB
+			+ "42,42\n" // TOB: Hard Mode
 			+ "29347,130\n"
 			+ "723,4\n"
 			+ "1264,38\n"
@@ -117,20 +120,13 @@ public class HiscoreServiceTest
 			+ "19301,62\n"
 			+ "1498,5847\n";
 
-	private final MockWebServer server = new MockWebServer();
+	@Rule
+	public final MockWebServer server = new MockWebServer();
 
 	@Before
 	public void before() throws IOException
 	{
 		server.enqueue(new MockResponse().setBody(RESPONSE));
-
-		server.start();
-	}
-
-	@After
-	public void after() throws IOException
-	{
-		server.shutdown();
 	}
 
 	@Test
@@ -155,6 +151,9 @@ public class HiscoreServiceTest
 		Assert.assertEquals(2460, result.getLeaguePoints().getLevel());
 		Assert.assertEquals(37, result.getAbyssalSire().getLevel());
 		Assert.assertEquals(92357, result.getCallisto().getRank());
+		Assert.assertEquals(2336, result.getPhosanisNightmare().getRank());
+		Assert.assertEquals(5678, result.getTempoross().getLevel());
+		Assert.assertEquals(42, result.getTheatreOfBloodHardMode().getLevel());
 		Assert.assertEquals(5847, result.getZulrah().getLevel());
 	}
 

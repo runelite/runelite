@@ -26,9 +26,7 @@
 package net.runelite.http.service.wiki;
 
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
@@ -79,7 +77,7 @@ public class WikiPriceService
 	{
 		try
 		{
-			Map<Integer, ItemPrice> summary = getPrices();
+			PriceResult summary = getPrices();
 
 			try (Connection con = sql2o.beginTransaction())
 			{
@@ -88,10 +86,10 @@ public class WikiPriceService
 					+ " ON DUPLICATE KEY UPDATE high = VALUES(high), highTime = VALUES(highTime),"
 					+ " low = VALUES(low), lowTime = VALUES(lowTime)");
 
-				for (Map.Entry<Integer, ItemPrice> entry : summary.entrySet())
+				for (Map.Entry<Integer, PriceResult.Item> entry : summary.getData().entrySet())
 				{
 					Integer itemId = entry.getKey();
-					ItemPrice item = entry.getValue();
+					PriceResult.Item item = entry.getValue();
 
 					query
 						.addParameter("itemId", itemId)
@@ -112,7 +110,7 @@ public class WikiPriceService
 		}
 	}
 
-	private Map<Integer, ItemPrice> getPrices() throws IOException
+	private PriceResult getPrices() throws IOException
 	{
 		HttpUrl httpUrl = HttpUrl.parse(url);
 		Request request = new Request.Builder()
@@ -127,11 +125,7 @@ public class WikiPriceService
 				throw new IOException("Error retrieving prices: " + responseOk.message());
 			}
 
-			Type type = new TypeToken<Map<Integer, ItemPrice>>()
-			{
-			}.getType();
-
-			return RuneLiteAPI.GSON.fromJson(responseOk.body().string(), type);
+			return RuneLiteAPI.GSON.fromJson(responseOk.body().string(), PriceResult.class);
 		}
 		catch (JsonSyntaxException ex)
 		{

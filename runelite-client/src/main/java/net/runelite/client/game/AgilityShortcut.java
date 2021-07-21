@@ -169,6 +169,7 @@ public enum AgilityShortcut
 	SLAYER_DUNGEON_CREVICE(62, "Narrow Crevice", new WorldPoint(2729, 10008, 0), CREVICE_16539),
 	MOUNT_KARUULM_UPPER(62, "Rocks", new WorldPoint(1322, 3791, 0), ROCKS_34396),
 	TAVERLEY_DUNGEON_RAILING(63, "Loose Railing", new WorldPoint(2935, 9811, 0), LOOSE_RAILING_28849),
+	DARKMEYER_WALL(63, "Wall (Long rope)", new WorldPoint(3669, 3375, 0), NULL_39541, NULL_39542),
 	TROLLHEIM_WILDERNESS_ROCKS_EAST(64, "Rocks", new WorldPoint(2945, 3678, 0), ROCKS_16545),
 	TROLLHEIM_WILDERNESS_ROCKS_WEST(64, "Rocks", new WorldPoint(2917, 3672, 0), ROCKS_16545),
 	FOSSIL_ISLAND_VOLCANO(64, "Rope", new WorldPoint(3780, 3822, 0), ROPE_ANCHOR, ROPE_ANCHOR_30917),
@@ -188,13 +189,13 @@ public enum AgilityShortcut
 	TAVERLEY_DUNGEON_ROCKS_SOUTH(70, "Rocks", new WorldPoint(2887, 9631, 0), ROCKS, ROCKS_14106),
 	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole" , new WorldPoint(3712, 3828, 0), HOLE_31481, HOLE_31482),
 	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole" , new WorldPoint(3714, 3816, 0), HOLE_31481, HOLE_31482),
-	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3295, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
+	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
 	{
 		@Override
 		public boolean matches(TileObject object)
 		{
 			// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
-			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(getWorldLocation());
+			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(new WorldPoint(3295, 3158, 0));
 		}
 	},
 	GWD_SARADOMIN_ROPE_NORTH(70, "Rope Descent", new WorldPoint(2912, 5300, 0), NULL_26371, NULL_26561),

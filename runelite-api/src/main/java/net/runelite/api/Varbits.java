@@ -316,7 +316,7 @@ public enum Varbits
 	 */
 	FIRE_PIT_GIANT_MOLE(6532),
 	FIRE_PIT_LUMBRIDGE_SWAMP(6533),
-	FIRE_PIT_MOS_LE_HARMLESS(6544),
+	FIRE_PIT_MOS_LE_HARMLESS(6534),
 
 	/**
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
@@ -527,6 +527,7 @@ public enum Varbits
 	 * Spell cooldowns
 	 */
 	VENGEANCE_COOLDOWN(2451),
+	CORRUPTION_COOLDOWN(12288),
 
 	/**
 	 * Amount of items in each bank tab
@@ -588,6 +589,15 @@ public enum Varbits
 	 *
 	 */
 	PARASITE(10151),
+
+	/**
+	 * Whether the vanilla wiki entity lookup is displayed under the minimap
+	 *
+	 * 0 = Enabled
+	 * 1 = Disabled
+	 *
+	 */
+	WIKI_ENTITY_LOOKUP(10113),
 
 	/**
 	 * Whether the Special Attack orb is disabled due to being in a PvP area

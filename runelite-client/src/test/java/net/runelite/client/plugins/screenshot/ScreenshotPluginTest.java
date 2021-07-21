@@ -36,6 +36,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
@@ -68,6 +69,8 @@ public class ScreenshotPluginTest
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
 	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
 	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
+	private static final String THREATRE_OF_BLOOD_SM_CHEST = "Your completed Theatre of Blood: Story Mode count is: <col=ff0000>73</col>.";
+	private static final String THREATRE_OF_BLOOD_HM_CHEST = "Your completed Theatre of Blood: Hard Mode count is: <col=ff0000>73</col>.";
 	private static final String NOT_SO_VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
 	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: Rune scimitar (25,600 coins)</col>";
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
@@ -143,7 +146,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Seth", BARROWS_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(310, screenshotPlugin.getBarrowsNumber());
+		assertEquals(310, screenshotPlugin.getKillCountNumber());
 	}
 
 	@Test
@@ -152,16 +155,61 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Seth", CHAMBERS_OF_XERIC_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(489, screenshotPlugin.getChambersOfXericNumber());
+		assertEquals(489, screenshotPlugin.getKillCountNumber());
 	}
 
 	@Test
 	public void testTheatreOfBloodChest()
 	{
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
+
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Magic fTail", THEATRE_OF_BLOOD_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
+		assertEquals(73, screenshotPlugin.getKillCountNumber());
+		assertEquals(ScreenshotPlugin.KillType.TOB, screenshotPlugin.getKillType());
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testTheatreOfBloodSmChest()
+	{
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Magic fTail", THREATRE_OF_BLOOD_SM_CHEST, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(73, screenshotPlugin.getKillCountNumber());
+		assertEquals(ScreenshotPlugin.KillType.TOB_SM, screenshotPlugin.getKillType());
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testTheatreOfBloodHmChest()
+	{
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Magic fTail", THREATRE_OF_BLOOD_HM_CHEST, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(73, screenshotPlugin.getKillCountNumber());
+		assertEquals(ScreenshotPlugin.KillType.TOB_HM, screenshotPlugin.getKillType());
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
 	}
 
 	@Test

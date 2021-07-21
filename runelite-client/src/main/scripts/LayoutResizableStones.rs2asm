@@ -18,13 +18,13 @@
       1129: LABEL109
       1130: LABEL87
       1131: LABEL9
-   jump                   LABEL201
+   jump                   LABEL204
 LABEL9:
-   iconst                 10747939
+   iconst                 10747944
    if_getwidth           
    iconst                 33
    sub                   
-   iconst                 10747939
+   iconst                 10747944
    if_getheight          
    istore                 3
    istore                 2
@@ -33,7 +33,7 @@ LABEL9:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551328
+   iconst                 10551333
    enum                  
    if_getwidth           
    sub                   
@@ -43,11 +43,12 @@ LABEL9:
    sconst                 "forceStackStones" ; push event name
    runelite_callback     ; invoke callback
    iconst                 0                  ; if 0 is returned, continue normal layout
-   if_icmpeq              LABEL49
+   if_icmpne              LABEL29
+   jump                   LABEL49
 LABEL29:
    iconst                 0
    iload                  3
-   iconst                 10747954
+   iconst                 10747959
    if_getheight          
    add                   
    iconst                 2
@@ -55,14 +56,14 @@ LABEL29:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10747971
+   iconst                 10747976
    enum                  
    if_setposition        
    iconst                 0
    iload                  3
    iconst                 2
    iconst                 2
-   iconst                 10747954
+   iconst                 10747959
    if_setposition        
    jump                   LABEL65
 LABEL49:
@@ -73,14 +74,14 @@ LABEL49:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10747971
+   iconst                 10747976
    enum                  
    if_setposition        
    iload                  2
    iconst                 0
    iconst                 2
    iconst                 2
-   iconst                 10747954
+   iconst                 10747959
    if_setposition        
 LABEL65:
    get_varbit             4084
@@ -92,7 +93,7 @@ LABEL69:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
    jump                   LABEL84
@@ -101,13 +102,13 @@ LABEL77:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
 LABEL84:
    clientclock           
    set_varc_int           384
-   jump                   LABEL201
+   jump                   LABEL204
 LABEL87:
    get_varbit             4084
    iconst                 1
@@ -118,7 +119,7 @@ LABEL91:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
    jump                   LABEL106
@@ -127,13 +128,13 @@ LABEL99:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
 LABEL106:
    clientclock           
    set_varc_int           384
-   jump                   LABEL201
+   jump                   LABEL204
 LABEL109:
    invoke                 3297
    iconst                 1
@@ -144,7 +145,7 @@ LABEL113:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
    jump                   LABEL128
@@ -153,97 +154,100 @@ LABEL121:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551324
+   iconst                 10551329
    enum                  
    2122                  
 LABEL128:
-   jump                   LABEL201
+   jump                   LABEL204
 LABEL129:
    get_varbit             6257
    iconst                 1
-   if_icmpeq              LABEL133
-   jump                   LABEL137
-LABEL133:
+   if_icmpeq              LABEL136
+   get_varbit             542
    iconst                 1
-   iconst                 39387169
+   if_icmpeq              LABEL136
+   jump                   LABEL140
+LABEL136:
+   iconst                 1
+   iconst                 39387175
    if_sethide            
-   jump                   LABEL192
-LABEL137:
+   jump                   LABEL195
+LABEL140:
    iconst                 0
-   iconst                 39387169
+   iconst                 39387175
    if_sethide            
    iconst                 1
-   iconst                 39387169
+   iconst                 39387175
    2308                  
    get_varbit             6255
    switch                
-      1: LABEL154
-      2: LABEL146
-      3: LABEL162
-   jump                   LABEL170
-LABEL146:
+      1: LABEL157
+      2: LABEL149
+      3: LABEL165
+   jump                   LABEL173
+LABEL149:
    iconst                 1718
-   iconst                 39387171
+   iconst                 39387177
    if_setgraphic         
    iconst                 1
    sconst                 "Toggle single-tap mode"
-   iconst                 39387169
+   iconst                 39387175
    if_setop              
-   jump                   LABEL177
-LABEL154:
+   jump                   LABEL180
+LABEL157:
    iconst                 1717
-   iconst                 39387171
+   iconst                 39387177
    if_setgraphic         
    iconst                 1
    sconst                 "Toggle tap-to-drop mode"
-   iconst                 39387169
+   iconst                 39387175
    if_setop              
-   jump                   LABEL177
-LABEL162:
+   jump                   LABEL180
+LABEL165:
    iconst                 1716
-   iconst                 39387171
+   iconst                 39387177
    if_setgraphic         
    iconst                 1
    sconst                 "Show Keyboard"
-   iconst                 39387169
+   iconst                 39387175
    if_setop              
-   jump                   LABEL177
-LABEL170:
+   jump                   LABEL180
+LABEL173:
    iconst                 1715
-   iconst                 39387171
+   iconst                 39387177
    if_setgraphic         
    iconst                 1
    sconst                 ""
-   iconst                 39387169
+   iconst                 39387175
    if_setop              
-LABEL177:
+LABEL180:
    get_varbit             6255
    iconst                 3
-   if_icmpne              LABEL181
-   jump                   LABEL189
-LABEL181:
+   if_icmpne              LABEL184
+   jump                   LABEL192
+LABEL184:
    get_varbit             6256
    iconst                 0
-   if_icmpeq              LABEL185
-   jump                   LABEL189
-LABEL185:
-   iconst                 155
-   iconst                 39387171
-   if_settrans           
+   if_icmpeq              LABEL188
    jump                   LABEL192
-LABEL189:
-   iconst                 0
-   iconst                 39387171
+LABEL188:
+   iconst                 155
+   iconst                 39387177
    if_settrans           
+   jump                   LABEL195
 LABEL192:
+   iconst                 0
+   iconst                 39387177
+   if_settrans           
+LABEL195:
    invoke                 2581
    get_varbit             6254
    invoke                 633
-   iconst                 39387160
+   iconst                 39387166
    if_sethide            
    invoke                 2526
    pop_int               
    clientclock           
    set_varc_int           384
-LABEL201:
+LABEL204:
    return                

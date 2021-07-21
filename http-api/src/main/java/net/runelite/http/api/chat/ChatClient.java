@@ -25,10 +25,13 @@
 package net.runelite.http.api.chat;
 
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
@@ -179,14 +182,14 @@ public class ChatClient
 		}
 	}
 
-	public boolean submitPb(String username, String boss, int pb) throws IOException
+	public boolean submitPb(String username, String boss, double pb) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("pb")
 			.addQueryParameter("name", username)
 			.addQueryParameter("boss", boss)
-			.addQueryParameter("pb", Integer.toString(pb))
+			.addQueryParameter("pb", Double.toString(pb))
 			.build();
 
 		Request request = new Request.Builder()
@@ -200,7 +203,7 @@ public class ChatClient
 		}
 	}
 
-	public int getPb(String username, String boss) throws IOException
+	public double getPb(String username, String boss) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
@@ -219,7 +222,7 @@ public class ChatClient
 			{
 				throw new IOException("Unable to look up personal best!");
 			}
-			return Integer.parseInt(response.body().string());
+			return Double.parseDouble(response.body().string());
 		}
 	}
 
@@ -356,6 +359,56 @@ public class ChatClient
 
 			InputStream in = response.body().byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), LayoutRoom[].class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
+	}
+
+	public boolean submitPetList(String username, Collection<Integer> petList) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("pets")
+			.addQueryParameter("name", username)
+			.build();
+
+		Request request = new Request.Builder()
+			.post(RequestBody.create(RuneLiteAPI.JSON, RuneLiteAPI.GSON.toJson(petList)))
+			.url(url)
+			.build();
+
+		try (Response response = client.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
+
+	public Set<Integer> getPetList(String username) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("pets")
+			.addQueryParameter("name", username)
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = client.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to look up pet list!");
+			}
+
+			InputStream in = response.body().byteStream();
+			// CHECKSTYLE:OFF
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8),
+				new TypeToken<Set<Integer>>(){}.getType());
+			// CHECKSTYLE:ON
 		}
 		catch (JsonParseException ex)
 		{

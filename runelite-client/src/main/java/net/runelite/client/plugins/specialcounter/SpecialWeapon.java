@@ -33,20 +33,16 @@ import net.runelite.api.ItemID;
 @Getter
 enum SpecialWeapon
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", ItemID.DRAGON_WARHAMMER, false, SpecialCounterConfig::dragonWarhammerThreshold),
-	ARCLIGHT("Arclight", ItemID.ARCLIGHT, false, SpecialCounterConfig::arclightThreshold),
-	DARKLIGHT("Darklight", ItemID.DARKLIGHT, false, SpecialCounterConfig::darklightThreshold),
-	BANDOS_GODSWORD("Bandos Godsword", ItemID.BANDOS_GODSWORD, true, SpecialCounterConfig::bandosGodswordThreshold),
-	BANDOS_GODSWORD_OR("Bandos Godsword", ItemID.BANDOS_GODSWORD_OR, true, SpecialCounterConfig::bandosGodswordThreshold),
-	BARRELCHEST_ANCHOR("Barrelchest Anchor", ItemID.BARRELCHEST_ANCHOR, true, (c) -> 0),
-	BONE_DAGGER("Bone Dagger", ItemID.BONE_DAGGER, true, (c) -> 0),
-	BONE_DAGGER_P("Bone Dagger (p)", ItemID.BONE_DAGGER_P, true, (c) -> 0),
-	BONE_DAGGER_P8876("Bone Dagger (p+)", ItemID.BONE_DAGGER_P_8876, true, (c) -> 0),
-	BONE_DAGGER_P8878("Bone Dagger (p++)", ItemID.BONE_DAGGER_P_8878, true, (c) -> 0),
-	DORGESHUUN_CROSSBOW("Dorgeshuun Crossbow", ItemID.DORGESHUUN_CROSSBOW, true, (c) -> 0);
+	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER}, false, SpecialCounterConfig::dragonWarhammerThreshold),
+	ARCLIGHT("Arclight", new int[]{ItemID.ARCLIGHT}, false, SpecialCounterConfig::arclightThreshold),
+	DARKLIGHT("Darklight", new int[]{ItemID.DARKLIGHT}, false, SpecialCounterConfig::darklightThreshold),
+	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BANDOS_GODSWORD, ItemID.BANDOS_GODSWORD_OR}, true, SpecialCounterConfig::bandosGodswordThreshold),
+	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BARRELCHEST_ANCHOR}, true, (c) -> 0),
+	BONE_DAGGER("Bone Dagger", new int[]{ItemID.BONE_DAGGER, ItemID.BONE_DAGGER_P, ItemID.BONE_DAGGER_P_8876, ItemID.BONE_DAGGER_P_8878}, true, (c) -> 0),
+	DORGESHUUN_CROSSBOW("Dorgeshuun Crossbow", new int[]{ItemID.DORGESHUUN_CROSSBOW}, true, (c) -> 0);
 
 	private final String name;
-	private final int itemID;
+	private final int[] itemID;
 	private final boolean damage;
 	private final Function<SpecialCounterConfig, Integer> threshold;
 }

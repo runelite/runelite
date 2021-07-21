@@ -94,13 +94,16 @@ public class HiscoreResult
 	private Skill krilTsutsaroth;
 	private Skill mimic;
 	private Skill nightmare;
+	private Skill phosanisNightmare;
 	private Skill obor;
 	private Skill sarachnis;
 	private Skill scorpia;
 	private Skill skotizo;
+	private Skill tempoross;
 	private Skill gauntlet;
 	private Skill corruptedGauntlet;
 	private Skill theatreOfBlood;
+	private Skill theatreOfBloodHardMode;
 	private Skill thermonuclearSmokeDevil;
 	private Skill tzKalZuk;
 	private Skill tzTokJad;
@@ -243,6 +246,8 @@ public class HiscoreResult
 				return mimic;
 			case NIGHTMARE:
 				return nightmare;
+			case PHOSANIS_NIGHTMARE:
+				return phosanisNightmare;
 			case OBOR:
 				return obor;
 			case SARACHNIS:
@@ -251,12 +256,16 @@ public class HiscoreResult
 				return scorpia;
 			case SKOTIZO:
 				return skotizo;
+			case TEMPOROSS:
+				return tempoross;
 			case THE_GAUNTLET:
 				return gauntlet;
 			case THE_CORRUPTED_GAUNTLET:
 				return corruptedGauntlet;
 			case THEATRE_OF_BLOOD:
 				return theatreOfBlood;
+			case THEATRE_OF_BLOOD_HARD_MODE:
+				return theatreOfBloodHardMode;
 			case THERMONUCLEAR_SMOKE_DEVIL:
 				return thermonuclearSmokeDevil;
 			case TZKAL_ZUK:

@@ -288,6 +288,18 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
+		ObjectComposition objectComposition = client.getObjectDefinition(object.getId());
+		if (objectComposition.getImpostorIds() == null)
+		{
+			// Multiloc names are instead checked in the overlay
+			String name = objectComposition.getName();
+			if (Strings.isNullOrEmpty(name) || name.equals("null"))
+			{
+				// was marked, but name has changed
+				return;
+			}
+		}
+
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
@@ -297,7 +309,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			{
 				log.debug("Marking object {} due to matching {}", object, objectPoint);
 				objects.add(new ColorTileObject(object,
-					client.getObjectDefinition(object.getId()),
+					objectComposition,
 					objectPoint.getName(),
 					objectPoint.getColor()));
 				break;

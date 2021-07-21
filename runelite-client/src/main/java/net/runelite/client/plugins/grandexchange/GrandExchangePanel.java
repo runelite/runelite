@@ -48,20 +48,18 @@ class GrandExchangePanel extends PluginPanel
 	@Getter
 	private final GrandExchangeSearchPanel searchPanel;
 	@Getter
-	private GrandExchangeOffersPanel offersPanel;
+	private final GrandExchangeOffersPanel offersPanel;
 
 	@Inject
-	private GrandExchangePanel(GrandExchangeSearchPanel searchPanel)
+	private GrandExchangePanel(GrandExchangeSearchPanel searchPanel, GrandExchangeOffersPanel offersPanel)
 	{
 		super(false);
 
 		this.searchPanel = searchPanel;
+		this.offersPanel = offersPanel;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-		//Offers Panel
-		offersPanel = new GrandExchangeOffersPanel();
 
 		MaterialTab offersTab = new MaterialTab("Offers", tabGroup, offersPanel);
 		searchTab = new MaterialTab("Search", tabGroup, searchPanel);

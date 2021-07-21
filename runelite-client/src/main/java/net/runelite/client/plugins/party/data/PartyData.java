@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,20 +26,19 @@
 package net.runelite.client.plugins.party.data;
 
 import java.awt.Color;
-import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import net.runelite.client.ws.PartyMember;
 
 @Setter
 @Getter
 @RequiredArgsConstructor
 public class PartyData
 {
-	private final UUID memberId;
-	private final String name;
+	private final PartyMember member;
 	private final WorldMapPoint worldMapPoint;
 	private final PanelComponent panel = new PanelComponent();
 	private final Color color;
@@ -47,4 +47,6 @@ public class PartyData
 	private int maxHitpoints;
 	private int prayer;
 	private int maxPrayer;
+	private String characterName = "";
+	private boolean showOverlay;
 }

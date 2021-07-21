@@ -25,12 +25,14 @@
  */
 package net.runelite.client.plugins.statusbars;
 
-import lombok.RequiredArgsConstructor;
-import net.runelite.client.ui.FontManager;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.util.function.Supplier;
+import lombok.RequiredArgsConstructor;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 @RequiredArgsConstructor
 class BarRenderer
@@ -100,28 +102,26 @@ class BarRenderer
 
 	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y)
 	{
-		graphics.setFont(FontManager.getRunescapeSmallFont());
-		graphics.setColor(Color.WHITE);
-		String counterText = Integer.toString(currentValue);
-		final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
-		int centerText = (WIDTH - PADDING) / 2 - (widthOfCounter / 2);
-		final Image icon = iconSupplier.get();
+		final boolean skillIconEnabled = config.enableSkillIcon();
+
+		if (skillIconEnabled)
+		{
+			final Image icon = iconSupplier.get();
+			graphics.drawImage(icon, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - icon.getWidth(null), null);
+		}
 
 		if (config.enableCounter())
 		{
-			if (config.enableSkillIcon())
-			{
-				graphics.drawImage(icon, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - icon.getWidth(null), null);
-				graphics.drawString(counterText, x + centerText + PADDING, y + SKILL_ICON_HEIGHT);
-			}
-			else
-			{
-				graphics.drawString(counterText, x + centerText + PADDING, y + COUNTER_ICON_HEIGHT);
-			}
-		}
-		else if (config.enableSkillIcon())
-		{
-			graphics.drawImage(icon, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - icon.getWidth(null), null);
+			graphics.setFont(FontManager.getRunescapeSmallFont());
+			final String counterText = Integer.toString(currentValue);
+			final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
+			final int centerText = (WIDTH - PADDING) / 2 - (widthOfCounter / 2);
+			final int yOffset = skillIconEnabled ? SKILL_ICON_HEIGHT : COUNTER_ICON_HEIGHT;
+
+			final TextComponent textComponent = new TextComponent();
+			textComponent.setText(counterText);
+			textComponent.setPosition(new Point(x + centerText + PADDING, y + yOffset));
+			textComponent.render(graphics);
 		}
 	}
 

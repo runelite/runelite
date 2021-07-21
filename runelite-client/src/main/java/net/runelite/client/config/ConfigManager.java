@@ -485,7 +485,7 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String profile, String key, @NonNull String value)
 	{
-		if (Strings.isNullOrEmpty(groupName) || Strings.isNullOrEmpty(key))
+		if (Strings.isNullOrEmpty(groupName) || Strings.isNullOrEmpty(key) || key.indexOf(':') != -1)
 		{
 			throw new IllegalArgumentException();
 		}
@@ -753,6 +753,10 @@ public class ConfigManager
 		if (type == int.class || type == Integer.class)
 		{
 			return Integer.parseInt(str);
+		}
+		if (type == double.class || type == Double.class)
+		{
+			return Double.parseDouble(str);
 		}
 		if (type == Color.class)
 		{

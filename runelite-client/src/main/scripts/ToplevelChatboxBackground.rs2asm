@@ -13,113 +13,121 @@
    istore                 0
    get_varc_int           41
    iconst                 1337
-   if_icmpeq              LABEL8
-   jump                   LABEL24
-LABEL8:
-   invoke                 922
+   if_icmpeq              LABEL15
+   get_varbit             542
    iconst                 1
-   if_icmpeq              LABEL12
-   jump                   LABEL15
-LABEL12:
-   iconst                 1
-   istore                 0
-   jump                   LABEL24
-LABEL15:
+   if_icmpeq              LABEL11
+   jump                   LABEL31
+LABEL11:
    getwindowmode         
    iconst                 1
+   if_icmpne              LABEL15
+   jump                   LABEL31
+LABEL15:
+   invoke                 922
+   iconst                 1
    if_icmpeq              LABEL19
-   jump                   LABEL24
+   jump                   LABEL22
 LABEL19:
+   iconst                 1
+   istore                 0
+   jump                   LABEL31
+LABEL22:
+   getwindowmode         
+   iconst                 1
+   if_icmpeq              LABEL26
+   jump                   LABEL31
+LABEL26:
    iconst                 0
    set_varc_int           41
    iconst                 0
    iconst                 0
    invoke                 183
-LABEL24:
+LABEL31:
    iload                  0
-   iconst                 10616869
+   iconst                 10616866
    if_sethide            
    get_varbit             6374
    iconst                 1
-   if_icmpeq              LABEL31
-   jump                   LABEL48
-LABEL31:
+   if_icmpeq              LABEL38
+   jump                   LABEL55
+LABEL38:
    getwindowmode         
    iconst                 1
-   if_icmpne              LABEL35
-   jump                   LABEL48
-LABEL35:
+   if_icmpne              LABEL42
+   jump                   LABEL55
+LABEL42:
    iconst                 1
    iconst                 0
    iconst                 2
    iconst                 0
-   iconst                 10616891
+   iconst                 10616888
    if_setposition        
    iconst                 -1
    iconst                 0
    iconst                 0
    iconst                 0
-   iconst                 10617392
+   iconst                 10617389
    if_setposition        
-   jump                   LABEL60
-LABEL48:
+   jump                   LABEL67
+LABEL55:
    iconst                 0
    iconst                 0
    iconst                 0
    iconst                 0
-   iconst                 10616891
+   iconst                 10616888
    if_setposition        
    iconst                 0
    iconst                 0
    iconst                 2
    iconst                 0
-   iconst                 10617392
+   iconst                 10617389
    if_setposition        
-LABEL60:
-   iconst                 10616870
+LABEL67:
+   iconst                 10616867
    cc_deleteall          
-   iconst                 10616889
+   iconst                 10616886
    cc_deleteall          
    iconst                 0
    istore                 1
    clientclock           
    get_varc_int           223
-   if_icmplt              LABEL70
-   jump                   LABEL82
-LABEL70:
+   if_icmplt              LABEL77
+   jump                   LABEL89
+LABEL77:
    invoke                 900
    iconst                 1129
-   if_icmpne              LABEL74
-   jump                   LABEL82
-LABEL74:
+   if_icmpne              LABEL81
+   jump                   LABEL89
+LABEL81:
    iconst                 1
    istore                 1
    iconst                 2155
    get_varc_int           223
    sconst                 "i"
-   iconst                 10616870
+   iconst                 10616867
    if_setontimer         
-   jump                   LABEL86
-LABEL82:
+   jump                   LABEL93
+LABEL89:
    iconst                 -1
    sconst                 ""
-   iconst                 10616870
+   iconst                 10616867
    if_setontimer         
-LABEL86:
+LABEL93:
    invoke                 921
    iconst                 0
-   if_icmpeq              LABEL90
-   jump                   LABEL156
-LABEL90:
+   if_icmpeq              LABEL97
+   jump                   LABEL163
+LABEL97:
    iconst                 1
-   iconst                 10616870
+   iconst                 10616867
    if_setnoclickthrough  
    iload                  1
    iconst                 0
-   if_icmpeq              LABEL97
-   jump                   LABEL135
-LABEL97:
-   iconst                 10616870
+   if_icmpeq              LABEL104
+   jump                   LABEL142
+LABEL104:
+   iconst                 10616867
    iconst                 5
    iconst                 0
    cc_create             
@@ -139,7 +147,7 @@ LABEL97:
    cc_settiling          
    iconst                 0
    cc_settrans           
-   iconst                 10616889
+   iconst                 10616886
    iconst                 3
    iconst                 0
    cc_create             
@@ -157,8 +165,8 @@ LABEL97:
    cc_setcolour          
    iconst                 1
    cc_setfill            
-LABEL135:
-   iconst                 10617392
+LABEL142:
+   iconst                 10617389
    iconst                 792
    iconst                 789
    iconst                 790
@@ -169,20 +177,20 @@ LABEL135:
    invoke                 838
    invoke                 2373
    iconst                 1
-   if_icmpeq              LABEL148
-   jump                   LABEL152
-LABEL148:
+   if_icmpeq              LABEL155
+   jump                   LABEL159
+LABEL155:
    iconst                 255
    iconst                 10616835
    if_settrans           
-   jump                   LABEL155
-LABEL152:
+   jump                   LABEL162
+LABEL159:
    iconst                 0
    iconst                 10616835
    if_settrans           
-LABEL155:
+LABEL162:
    return                
-LABEL156:
+LABEL163:
    iconst                 16384
    iconst                 25
    div                   
@@ -191,39 +199,121 @@ LABEL156:
    istore                 3
    get_varbit             2570
    iconst                 1
-   if_icmpeq              LABEL166
-   jump                   LABEL170
-LABEL166:
+   if_icmpeq              LABEL173
+   jump                   LABEL177
+LABEL173:
    iconst                 1
-   iconst                 10616870
+   iconst                 10616867
    if_setnoclickthrough  
-   jump                   LABEL176
-LABEL170:
+   jump                   LABEL183
+LABEL177:
    iconst                 0
-   iconst                 10616870
+   iconst                 10616867
    if_setnoclickthrough  
    iconst                 1
-   iconst                 10616870
-   2006                  
-LABEL176:
+   iconst                 10616867
+   if_setnoscrollthrough 
+LABEL183:
    iconst                 0
    istore                 4
    iload                  1
    iconst                 0
-   if_icmpeq              LABEL182
-   jump                   LABEL332
-LABEL182:
-   invoke                 1972
-   iconst                 0
-   if_icmpeq              LABEL186
-   jump                   LABEL266
-LABEL186:
+   if_icmpeq              LABEL189
+   jump                   LABEL417
+LABEL189:
+   invoke                 2357
+   iconst                 1
+   if_icmpeq              LABEL193
+   jump                   LABEL267
+LABEL193:
    iload                  4
    iconst                 20
-   if_icmplt              LABEL190
-   jump                   LABEL265
-LABEL190:
-   iconst                 10616870
+   if_icmplt              LABEL197
+   jump                   LABEL226
+LABEL197:
+   iconst                 10616867
+   iconst                 3
+   iload                  4
+   cc_create             
+   iconst                 0
+   iload                  3
+   iconst                 1
+   iconst                 2
+   cc_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 2
+   cc_setposition        
+   iconst                 0
+   cc_setcolour          
+   iconst                 1
+   cc_setfill            
+   iconst                 252
+   cc_settrans           
+   iload                  4
+   iconst                 1
+   add                   
+   iload                  3
+   iload                  2
+   sub                   
+   istore                 3
+   istore                 4
+   jump                   LABEL193
+LABEL226:
+   iconst                 10616886
+   iconst                 3
+   iconst                 0
+   cc_create             
+   iconst                 10616886
+   iconst                 3
+   iconst                 1
+   cc_create              1
+   iconst                 16384
+   iconst                 1
+   iconst                 2
+   iconst                 0
+   cc_setsize            
+   iconst                 16384
+   iconst                 1
+   iconst                 2
+   iconst                 0
+   cc_setsize             1
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 0
+   iconst                 15
+   iconst                 0
+   iconst                 2
+   cc_setposition         1
+   iconst                 16777215
+   cc_setcolour          
+   iconst                 16777215
+   cc_setcolour           1
+   iconst                 1
+   cc_setfill            
+   iconst                 1
+   cc_setfill             1
+   iconst                 100
+   cc_settrans           
+   iconst                 120
+   cc_settrans            1
+   jump                   LABEL417
+LABEL267:
+   invoke                 1972
+   iconst                 0
+   if_icmpeq              LABEL271
+   jump                   LABEL351
+LABEL271:
+   iload                  4
+   iconst                 20
+   if_icmplt              LABEL275
+   jump                   LABEL350
+LABEL275:
+   iconst                 10616867
    iconst                 3
    iload                  4
    cc_create             
@@ -243,13 +333,13 @@ LABEL190:
    cc_setfill            
    iconst                 254
    cc_settrans           
-   iconst                 10616889
+   iconst                 10616886
    iconst                 3
    iload                  4
    iconst                 2
    multiply              
    cc_create             
-   iconst                 10616889
+   iconst                 10616886
    iconst                 3
    iload                  4
    iconst                 2
@@ -285,7 +375,7 @@ LABEL190:
    cc_setfill            
    iconst                 1
    cc_setfill             1
-   iconst                 251
+   iconst                 250
    cc_settrans           
    iconst                 250
    cc_settrans            1
@@ -297,13 +387,13 @@ LABEL190:
    sub                   
    istore                 3
    istore                 4
-   jump                   LABEL186
-LABEL265:
+   jump                   LABEL271
+LABEL350:
    sconst                 "chatboxBackgroundBuilt"
    runelite_callback     
-   jump                   LABEL332
-LABEL266:
-   iconst                 10616870
+   jump                   LABEL417
+LABEL351:
+   iconst                 10616867
    iconst                 3
    iload                  4
    cc_create             
@@ -323,13 +413,13 @@ LABEL266:
    cc_setfill            
    iconst                 225
    cc_settrans           
-   iconst                 10616889
+   iconst                 10616886
    iconst                 3
    iload                  4
    iconst                 2
    multiply              
    cc_create             
-   iconst                 10616889
+   iconst                 10616886
    iconst                 3
    iload                  4
    iconst                 2
@@ -369,8 +459,8 @@ LABEL266:
    cc_settrans           
    iconst                 130
    cc_settrans            1
-LABEL332:
-   iconst                 10617392
+LABEL417:
+   iconst                 10617389
    iconst                 1190
    iconst                 1187
    iconst                 1188
@@ -381,24 +471,24 @@ LABEL332:
    invoke                 838
    iload                  0
    iconst                 1
-   if_icmpeq              LABEL345
-   jump                   LABEL349
-LABEL345:
+   if_icmpeq              LABEL430
+   jump                   LABEL434
+LABEL430:
    iconst                 255
    iconst                 10616835
    if_settrans           
-   jump                   LABEL380
-LABEL349:
+   jump                   LABEL465
+LABEL434:
    invoke                 1972
    iconst                 0
-   if_icmpeq              LABEL353
-   jump                   LABEL357
-LABEL353:
+   if_icmpeq              LABEL438
+   jump                   LABEL442
+LABEL438:
    iconst                 155
    iconst                 10616835
    if_settrans           
-   jump                   LABEL380
-LABEL357:
+   jump                   LABEL465
+LABEL442:
    iconst                 255
    iconst                 10616835
    if_settrans           
@@ -422,5 +512,5 @@ LABEL357:
    cc_setfill            
    iconst                 225
    cc_settrans           
-LABEL380:
+LABEL465:
    return                

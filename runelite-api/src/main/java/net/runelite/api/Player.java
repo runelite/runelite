@@ -72,6 +72,13 @@ public interface Player extends Actor
 	boolean isFriend();
 
 	/**
+	 * Checks whether the player is a member of the same clan as the local player.
+	 *
+	 * @return
+	 */
+	boolean isClanMember();
+
+	/**
 	 * Gets the displayed overhead icon of the player.
 	 *
 	 * @return the overhead icon

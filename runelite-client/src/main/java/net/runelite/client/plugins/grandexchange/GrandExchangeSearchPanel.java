@@ -67,6 +67,7 @@ class GrandExchangeSearchPanel extends JPanel
 	private final ItemManager itemManager;
 	private final ScheduledExecutorService executor;
 	private final RuneLiteConfig runeLiteConfig;
+	private final GrandExchangePlugin grandExchangePlugin;
 
 	private final IconTextField searchBar = new IconTextField();
 
@@ -83,12 +84,13 @@ class GrandExchangeSearchPanel extends JPanel
 
 	@Inject
 	private GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager,
-		ScheduledExecutorService executor, RuneLiteConfig runeLiteConfig)
+		ScheduledExecutorService executor, RuneLiteConfig runeLiteConfig, GrandExchangePlugin grandExchangePlugin)
 	{
 		this.clientThread = clientThread;
 		this.itemManager = itemManager;
 		this.executor = executor;
 		this.runeLiteConfig = runeLiteConfig;
+		this.grandExchangePlugin = grandExchangePlugin;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -215,9 +217,10 @@ class GrandExchangeSearchPanel extends JPanel
 
 			int itemPrice = useActivelyTradedPrice && item.getWikiPrice() > 0 ? item.getWikiPrice() : item.getPrice();
 			int itemLimit = itemStats != null ? itemStats.getGeLimit() : 0;
+			final int haPrice = itemComp.getHaPrice();
 			AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
-			itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, itemComp.getPrice() * 0.6, itemLimit));
+			itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, haPrice, itemLimit));
 
 			// If using hotkey to lookup item, stop after finding match.
 			if (exactMatch && item.getName().equalsIgnoreCase(lookup))
@@ -231,7 +234,7 @@ class GrandExchangeSearchPanel extends JPanel
 			int index = 0;
 			for (GrandExchangeItems item : itemsList)
 			{
-				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(),
+				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(grandExchangePlugin, item.getIcon(), item.getName(),
 					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit());
 
 				/*

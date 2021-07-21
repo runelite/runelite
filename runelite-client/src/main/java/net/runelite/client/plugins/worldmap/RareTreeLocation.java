@@ -138,6 +138,9 @@ enum RareTreeLocation
 		new WorldPoint(1642, 3533, 0),
 		new WorldPoint(1671, 3657, 0),
 		new WorldPoint(1680, 3657, 0),
+		new WorldPoint(1572, 3618, 0),
+		new WorldPoint(1553, 3551, 0),
+		new WorldPoint(1496, 3582, 0),
 
 		// Tirannwn
 		new WorldPoint(2217, 3141, 0),
@@ -198,6 +201,10 @@ enum RareTreeLocation
 	MAPLE_YEW("Maple/Yew trees", 60,
 		// Feldip Hills
 		new WorldPoint(2476, 2893, 0)),
+
+	BLISTERWOOD("Blisterwood tree", 62,
+		// Darkmeyer
+		new WorldPoint(3631, 3362, 0)),
 
 	SULLIUSCEP("Sulliuscep", 65,
 		// Fossil Island

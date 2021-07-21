@@ -110,6 +110,13 @@ public class IdleNotifierPlugin extends Plugin
 		return configManager.getConfig(IdleNotifierConfig.class);
 	}
 
+	@Override
+	protected void startUp() throws Exception
+	{
+		// can't tell when 6hr will be if enabled while already logged in
+		sixHourWarningTime = null;
+	}
+
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
@@ -189,6 +196,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_ATTACH_BOLT_TIPS_TO_DRAGON_BOLT:
 			/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
+			case SMITHING_IMCANDO_HAMMER:
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
 			/* Fishing */

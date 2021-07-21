@@ -554,6 +554,18 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
+			final LootTrackerClient client = plugin.getLootTrackerClient();
+			final boolean syncLoot = client.getUuid() != null && config.syncPanel();
+			final int result = JOptionPane.showOptionDialog(overallPanel,
+				syncLoot ? SYNC_RESET_ALL_WARNING_TEXT : NO_SYNC_RESET_ALL_WARNING_TEXT,
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
+
+			if (result != JOptionPane.YES_OPTION)
+			{
+				return;
+			}
+
 			Predicate<LootTrackerRecord> match = groupLoot
 				// With grouped loot, remove any record with this title
 				? r -> r.matches(record.getTitle(), record.getType())
@@ -566,7 +578,6 @@ class LootTrackerPanel extends PluginPanel
 			logsContainer.remove(box);
 			logsContainer.repaint();
 
-			LootTrackerClient client = plugin.getLootTrackerClient();
 			// Without loot being grouped we have no way to identify single kills to be deleted
 			if (client.getUuid() != null && groupLoot && config.syncPanel())
 			{

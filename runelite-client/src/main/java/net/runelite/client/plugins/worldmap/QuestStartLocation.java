@@ -26,14 +26,15 @@
 package net.runelite.client.plugins.worldmap;
 
 import lombok.Getter;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.Quest;
+import net.runelite.api.coords.WorldPoint;
 
 // Some quests are in the same spot, but they are done in order. If multiple
 // quests start in the same location, an array of quests is expected.
 enum QuestStartLocation
 {
 	//Free Quests
+	BELOW_ICE_MOUNTAIN(Quest.BELOW_ICE_MOUNTAIN, new WorldPoint(3001, 3436, 0)),
 	COOKS_ASSISTANT_RFD(Quest.COOKS_ASSISTANT, new WorldPoint(3211, 3216, 0)),
 	THE_CORSAIR_CURSE(Quest.THE_CORSAIR_CURSE, new WorldPoint(3029, 3273, 0)),
 	DEMON_SLAYER(Quest.DEMON_SLAYER, new WorldPoint(3204, 3424, 0)),
@@ -115,6 +116,7 @@ enum QuestStartLocation
 	ICTHLARINS_LITTLE_HELPER(Quest.ICTHLARINS_LITTLE_HELPER, new WorldPoint(3314, 2849, 0)),
 	IN_SEARCH_OF_THE_MYREQUE(Quest.IN_SEARCH_OF_THE_MYREQUE, new WorldPoint(3502, 3477, 0)),
 	JUNGLE_POTION(Quest.JUNGLE_POTION, new WorldPoint(2809, 3086, 0)),
+	A_KINGDOM_DIVIDED(Quest.A_KINGDOM_DIVIDED, new WorldPoint(1663, 3672, 0)),
 	KINGS_RANSOM(Quest.KINGS_RANSOM, new WorldPoint(2741, 3554, 0)),
 	LEGENDS_QUEST(Quest.LEGENDS_QUEST, new WorldPoint(2725, 3367, 0)),
 	LOST_CITY(Quest.LOST_CITY, new WorldPoint(3149, 3205, 0)),
@@ -129,6 +131,7 @@ enum QuestStartLocation
 	MURDER_MYSTERY(Quest.MURDER_MYSTERY, new WorldPoint(2740, 3562, 0)),
 	MY_ARMS_BIG_ADVENTURE(Quest.MY_ARMS_BIG_ADVENTURE, new WorldPoint(2908, 10088, 0)),
 	NATURE_SPIRIT(Quest.NATURE_SPIRIT, new WorldPoint(3440, 9894, 0)),
+	A_NIGHT_AT_THE_THEATRE(Quest.A_NIGHT_AT_THE_THEATRE, new WorldPoint(3672, 3224, 0)),
 	OBSERVATORY_QUEST(Quest.OBSERVATORY_QUEST, new WorldPoint(2438, 3185, 0)),
 	OLAFS_QUEST(Quest.OLAFS_QUEST, new WorldPoint(2723, 3729, 0)),
 	ONE_SMALL_FAVOUR(Quest.ONE_SMALL_FAVOUR, new WorldPoint(2834, 2985, 0)),
@@ -152,7 +155,7 @@ enum QuestStartLocation
 	SWAN_SONG(Quest.SWAN_SONG, new WorldPoint(2345, 3652, 0)),
 	TAI_BWO_WANNAI_TRIO(Quest.TAI_BWO_WANNAI_TRIO, new WorldPoint(2779, 3087, 0)),
 	A_TAIL_OF_TWO_CATS(Quest.A_TAIL_OF_TWO_CATS, new WorldPoint(2917, 3557, 0)),
-	TALE_OF_THE_RIGHTEOUS(Quest.TALE_OF_THE_RIGHTEOUS, new WorldPoint(1511, 3631, 0)),
+	TALE_OF_THE_RIGHTEOUS(Quest.TALE_OF_THE_RIGHTEOUS, new WorldPoint(1541, 3570, 0)),
 	A_TASTE_OF_HOPE(Quest.A_TASTE_OF_HOPE, new WorldPoint(3668, 3216, 0)),
 	TEARS_OF_GUTHIX(Quest.TEARS_OF_GUTHIX, new WorldPoint(3251, 9517, 0)),
 	TEMPLE_OF_IKOV(Quest.TEMPLE_OF_IKOV, new WorldPoint(2574, 3320, 0)),

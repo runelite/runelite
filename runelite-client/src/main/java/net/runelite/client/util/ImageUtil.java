@@ -35,6 +35,7 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.PixelGrabber;
 import java.awt.image.RescaleOp;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -209,7 +210,38 @@ public class ImageUtil
 	 */
 	public static BufferedImage resizeImage(final BufferedImage image, final int newWidth, final int newHeight)
 	{
-		final Image resized = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+		return resizeImage(image, newWidth, newHeight, false);
+	}
+
+	/**
+	 * Re-size a BufferedImage to the given dimensions.
+	 *
+	 * @param image the BufferedImage.
+	 * @param newWidth The width to set the BufferedImage to.
+	 * @param newHeight The height to set the BufferedImage to.
+	 * @param preserveAspectRatio Whether to preserve the original image's aspect ratio. When {@code true}, the image
+	 *                               will be scaled to have a maximum of {@code newWidth} width and {@code newHeight}
+	 *                               height.
+	 * @return The BufferedImage with the specified dimensions
+	 */
+	public static BufferedImage resizeImage(final BufferedImage image, final int newWidth, final int newHeight, final boolean preserveAspectRatio)
+	{
+		final Image resized;
+		if (preserveAspectRatio)
+		{
+			if (image.getWidth() > image.getHeight())
+			{
+				resized = image.getScaledInstance(newWidth, -1, Image.SCALE_SMOOTH);
+			}
+			else
+			{
+				resized = image.getScaledInstance(-1, newHeight, Image.SCALE_SMOOTH);
+			}
+		}
+		else
+		{
+			resized = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+		}
 		return ImageUtil.bufferedImageFromImage(resized);
 	}
 
@@ -351,11 +383,11 @@ public class ImageUtil
 	 */
 	public static BufferedImage loadImageResource(final Class<?> c, final String path)
 	{
-		try
+		try (InputStream in = c.getResourceAsStream(path))
 		{
 			synchronized (ImageIO.class)
 			{
-				return ImageIO.read(c.getResourceAsStream(path));
+				return ImageIO.read(in);
 			}
 		}
 		catch (IllegalArgumentException e)

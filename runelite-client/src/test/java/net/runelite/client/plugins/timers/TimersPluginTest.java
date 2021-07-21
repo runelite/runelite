@@ -30,6 +30,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.function.Predicate;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -37,15 +38,19 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.RSTimeUnit;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -376,6 +381,166 @@ public class TimersPluginTest
 		ElapsedTimer timer = (ElapsedTimer) captor.getValue();
 		assertEquals("00:06", timer.getText());
 	}
+
+	// region Arceuus spells
+	@Test
+	public void testDeathChargeCast()
+	{
+		when(timersConfig.showArceuus()).thenReturn(true);
+		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(50);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=6800bf>Upon the death of your next foe, some of your special attack energy will be restored.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
+		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
+		assertEquals(GameTimer.DEATH_CHARGE, infoBox.getTimer());
+		assertEquals(Duration.of(50, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
+	}
+
+	@Test
+	public void testDeathChargeCooldown()
+	{
+		when(timersConfig.showArceuusCooldown()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=6800bf>Upon the death of your next foe, some of your special attack energy will be restored.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
+		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
+		assertEquals(GameTimer.DEATH_CHARGE_COOLDOWN, infoBox.getTimer());
+	}
+
+	@Test
+	public void testDeathChargeRestore()
+	{
+		when(timersConfig.showArceuus()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=6800bf>Some of your special attack energy has been restored.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		TimerTimer correctInfoBox = new TimerTimer(GameTimer.DEATH_CHARGE, Duration.ofSeconds(1), timersPlugin);
+		TimerTimer incorrectInfoBox = new TimerTimer(GameTimer.WARD_OF_ARCEUUS, Duration.ofSeconds(1), timersPlugin);
+		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
+		verify(infoBoxManager).removeIf(prcaptor.capture());
+		Predicate<InfoBox> pred = prcaptor.getValue();
+		assertTrue(pred.test(correctInfoBox));
+		assertFalse(pred.test(incorrectInfoBox));
+	}
+
+	@Test
+	public void testArceuusWard()
+	{
+		when(timersConfig.showArceuus()).thenReturn(true);
+		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(57);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=0000b2>Your defence against Arceuus magic has been strengthened.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.WARD_OF_ARCEUUS, infoBox.getTimer());
+		assertEquals(Duration.of(57, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
+	}
+
+	@Test
+	public void testArceuusWardCooldown()
+	{
+		when(timersConfig.showArceuusCooldown()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=0000b2>Your defence against Arceuus magic has been strengthened.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.WARD_OF_ARCEUUS_COOLDOWN, infoBox.getTimer());
+	}
+
+	@Test
+	public void testCorruptionCooldown()
+	{
+		when(timersConfig.showArceuusCooldown()).thenReturn(true);
+		when(client.getVar(any(Varbits.class))).thenReturn(0);
+		when(client.getVar(Varbits.CORRUPTION_COOLDOWN)).thenReturn(1);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.CORRUPTION_COOLDOWN, infoBox.getTimer());
+	}
+
+	@Test
+	public void testShadowVail()
+	{
+		when(timersConfig.showArceuus()).thenReturn(true);
+		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(57);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=6800bf>Your thieving abilities have been enhanced.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.SHADOW_VEIL, infoBox.getTimer());
+	}
+
+	@Test
+	public void testShadowVailCooldown()
+	{
+		when(timersConfig.showArceuusCooldown()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=6800bf>Your thieving abilities have been enhanced.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.SHADOW_VEIL_COOLDOWN, infoBox.getTimer());
+	}
+
+	@Test
+	public void testThrall()
+	{
+		when(timersConfig.showArceuus()).thenReturn(true);
+		when(client.getBoostedSkillLevel(Skill.MAGIC)).thenReturn(60);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef0083>You resurrect a greater zombified thrall.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
+		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
+		assertEquals(GameTimer.RESURRECT_THRALL, infoBox.getTimer());
+		assertEquals(Duration.of(60, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
+	}
+
+	@Test
+	public void testThrallCooldown()
+	{
+		when(timersConfig.showArceuusCooldown()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef0083>You resurrect a greater zombified thrall.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
+		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
+		assertEquals(GameTimer.RESURRECT_THRALL_COOLDOWN, infoBox.getTimer());
+	}
+
+	@Test
+	public void testThrallEnd()
+	{
+		when(timersConfig.showArceuus()).thenReturn(true);
+		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(50);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef0083>Your greater zombified thrall returns to the grave.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		verify(infoBoxManager).removeIf(any());
+	}
+	// endregion
 
 	@Test
 	public void testImbuedHeartBoost()

@@ -29,7 +29,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
 
 @Data
@@ -65,12 +64,5 @@ class GroundItem
 	boolean isMine()
 	{
 		return lootType != LootType.UNKNOWN;
-	}
-
-	@Value
-	static class GroundItemKey
-	{
-		private int itemId;
-		private WorldPoint location;
 	}
 }

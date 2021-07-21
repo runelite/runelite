@@ -173,7 +173,7 @@ public class ChatController
 	}
 
 	@PostMapping("/pb")
-	public void submitPb(@RequestParam String name, @RequestParam String boss, @RequestParam int pb)
+	public void submitPb(@RequestParam String name, @RequestParam String boss, @RequestParam double pb)
 	{
 		if (pb < 0)
 		{
@@ -184,9 +184,9 @@ public class ChatController
 	}
 
 	@GetMapping("/pb")
-	public int getPb(@RequestParam String name, @RequestParam String boss)
+	public double getPb(@RequestParam String name, @RequestParam String boss)
 	{
-		Integer pb = chatService.getPb(name, boss);
+		Double pb = chatService.getPb(name, boss);
 		if (pb == null)
 		{
 			throw new NotFoundException();
@@ -246,5 +246,23 @@ public class ChatController
 		}
 
 		return layout;
+	}
+
+	@PostMapping("/pets")
+	public void submitPetList(@RequestParam String name, @RequestBody int[] petList)
+	{
+		chatService.setPetList(name, petList);
+	}
+
+	@GetMapping("/pets")
+	public int[] getPetList(@RequestParam String name)
+	{
+		int[] petList = chatService.getPetList(name);
+		if (petList == null)
+		{
+			throw new NotFoundException();
+		}
+
+		return petList;
 	}
 }

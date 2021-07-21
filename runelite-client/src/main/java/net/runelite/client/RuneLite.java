@@ -73,6 +73,7 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import org.slf4j.LoggerFactory;
 
 @Singleton
@@ -139,6 +140,9 @@ public class RuneLite
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("safe-mode", "Disables external plugins and the GPU plugin");
 		parser.accepts("insecure-skip-tls-verification", "Disables TLS verification");
+		parser.accepts("jav_config", "jav_config url")
+			.withRequiredArg()
+			.defaultsTo(RuneLiteProperties.getJavConfig());
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -188,8 +192,8 @@ public class RuneLite
 			}
 		});
 
-		OkHttpClient.Builder okHttpClientBuilder = RuneLiteAPI.CLIENT.newBuilder()
-			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE));
+		OkHttpClient.Builder okHttpClientBuilder = RuneLiteAPI.CLIENT.newBuilder();
+		setupCache(okHttpClientBuilder, new File(CACHE_DIR, "okhttp"));
 
 		final boolean insecureSkipTlsVerification = options.has("insecure-skip-tls-verification");
 		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
@@ -204,7 +208,7 @@ public class RuneLite
 
 		try
 		{
-			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode));
+			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode), (String) options.valueOf("jav_config"));
 
 			new Thread(() ->
 			{
@@ -322,6 +326,7 @@ public class RuneLite
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
 			overlayManager.add(worldMapOverlay.get());
+			eventBus.register(worldMapOverlay.get());
 			overlayManager.add(tooltipOverlay.get());
 		}
 
@@ -376,6 +381,25 @@ public class RuneLite
 		{
 			return null;
 		}
+	}
+
+	@VisibleForTesting
+	static void setupCache(OkHttpClient.Builder builder, File cacheDir)
+	{
+		builder.cache(new Cache(cacheDir, MAX_OKHTTP_CACHE_SIZE))
+			.addNetworkInterceptor(chain ->
+			{
+				// This has to be a network interceptor so it gets hit before the cache tries to store stuff
+				Response res = chain.proceed(chain.request());
+				if (res.code() >= 400 && "GET".equals(res.request().method()))
+				{
+					// if the request 404'd we don't want to cache it because its probably temporary
+					res = res.newBuilder()
+						.header("Cache-Control", "no-store")
+						.build();
+				}
+				return res;
+			});
 	}
 
 	private static void setupInsecureTrustManager(OkHttpClient.Builder okHttpClientBuilder)

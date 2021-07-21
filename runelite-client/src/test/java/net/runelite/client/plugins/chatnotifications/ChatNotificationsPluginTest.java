@@ -82,6 +82,8 @@ public class ChatNotificationsPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(config.highlightRegexString()).thenReturn("");
+		when(config.highlightWordsString()).thenReturn("");
 	}
 
 	@Test
@@ -100,6 +102,42 @@ public class ChatNotificationsPluginTest
 		chatNotificationsPlugin.onChatMessage(chatMessage);
 
 		verify(messageNode).setValue("<colHIGHLIGHT>Deathbeam<colNORMAL>, <colHIGHLIGHT>Deathbeam<colNORMAL> OSRS");
+	}
+
+	@Test
+	public void testRegexMultiplePatternsMessage()
+	{
+		when(config.highlightRegexString()).thenReturn("brandie+\ntest");
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("brandieeee testing");
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp();
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setValue("<colHIGHLIGHT>brandieeee<colNORMAL> <colHIGHLIGHT>test<colNORMAL>ing");
+	}
+
+	@Test
+	public void testRegexMultiplePatternsWithOnlyOneMatch()
+	{
+		when(config.highlightRegexString()).thenReturn("brandie+\nwillNotMatch");
+
+		MessageNode messageNode = mock(MessageNode.class);
+		when(messageNode.getValue()).thenReturn("brandieeee testing");
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setMessageNode(messageNode);
+
+		chatNotificationsPlugin.startUp();
+		chatNotificationsPlugin.onChatMessage(chatMessage);
+
+		verify(messageNode).setValue("<colHIGHLIGHT>brandieeee<colNORMAL> testing");
 	}
 
 	@Test
@@ -179,7 +217,7 @@ public class ChatNotificationsPluginTest
 	}
 
 	@Test
-	public void testPreceedingColor()
+	public void testPrecedingColor()
 	{
 		when(config.highlightWordsString()).thenReturn("you. It");
 
@@ -239,10 +277,10 @@ public class ChatNotificationsPluginTest
 	public void highlightListTest()
 	{
 		when(config.highlightWordsString()).thenReturn("this,is, a                   , test, ");
-		final List<String> higlights = Text.fromCSV(config.highlightWordsString());
-		assertEquals(4, higlights.size());
+		final List<String> highlights = Text.fromCSV(config.highlightWordsString());
+		assertEquals(4, highlights.size());
 
-		final Iterator<String> iterator = higlights.iterator();
+		final Iterator<String> iterator = highlights.iterator();
 		assertEquals("this", iterator.next());
 		assertEquals("is", iterator.next());
 		assertEquals("a", iterator.next());
