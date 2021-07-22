@@ -392,6 +392,13 @@ public class GroundItemsPlugin extends Plugin
 				}
 			}
 		}
+
+		// Since the loot can potentially be over multiple tiles, make sure to process lootbeams on all those tiles
+		items.stream()
+			.map(ItemStack::getLocation)
+			.map(l -> WorldPoint.fromLocal(client, l))
+			.distinct()
+			.forEach(this::handleLootbeam);
 	}
 
 	private GroundItem buildGroundItem(final Tile tile, final TileItem item)
