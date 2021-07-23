@@ -126,7 +126,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("O BIRDZ A ZANY EN PC", "Cap'n Izzy No-Beard", new WorldPoint(2807, 3191, 0), "Brimhaven Agility Arena", "How many Banana Trees are there in the plantation?", "33"),
 		new AnagramClue("OK CO", "Cook", new WorldPoint(3207, 3214, 0), "Ground floor of Lumbridge Castle", "How many cannons does Lumbridge Castle have?", "9"),
 		new AnagramClue("OR ZINC FUMES WARD", "Wizard Frumscone", new WorldPoint(2594, 3086, 0), "Downstairs in the Wizards' Guild"),
-		new AnagramClue("OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1511, 3619, 0), "Shayzien Infirmary", "How many wounded soldiers are in the camp?", "16"),
+		new AnagramClue("OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1511, 3619, 0), "Shayzien Infirmary", "How many wounded soldiers are there in the camp?", "16"),
 		new AnagramClue("PACINNG A TAIE", "Captain Ginea", new WorldPoint(1504, 3632, 0), "Tent east of Shayzien Encampment war tent", "1 soldier can deal with 6 lizardmen. How many soldiers do we need for an army of 678 lizardmen?", "113"),
 		new AnagramClue("PEAK REFLEX", "Flax keeper", new WorldPoint(2744, 3444, 0), "Flax field south of Seers Village", "If I have 1014 flax, and I spin a third of them into bowstring, how many flax do I have left?", "676"),
 		new AnagramClue("PEATY PERT", "Party Pete", new WorldPoint(3047, 3376, 0), "Falador Party Room"),
