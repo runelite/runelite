@@ -45,6 +45,7 @@ public class LootTrackerBoxTest
 			false,
 			LootTrackerPriceType.GRAND_EXCHANGE,
 			false,
+			null,
 			null, null,
 			false);
 

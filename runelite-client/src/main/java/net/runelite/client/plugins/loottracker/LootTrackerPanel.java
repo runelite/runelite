@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import com.google.common.base.Strings;
 import static com.google.common.collect.Iterables.concat;
 import com.google.common.collect.Lists;
 import java.awt.BorderLayout;
@@ -52,13 +53,18 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
+import lombok.AllArgsConstructor;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
@@ -113,6 +119,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JRadioButton singleLootBtn = new JRadioButton();
 	private final JRadioButton groupedLootBtn = new JRadioButton();
 	private final JButton collapseBtn = new JButton();
+	private final IconTextField searchBar = new IconTextField();
 
 	// Aggregate of all kills
 	private final List<LootTrackerRecord> aggregateRecords = new ArrayList<>();
@@ -128,6 +135,7 @@ class LootTrackerPanel extends PluginPanel
 	private boolean hideIgnoredItems;
 	private String currentView;
 	private LootRecordType currentType;
+	private SearchType currentSearchType = SearchType.ITEMS;
 
 	static
 	{
@@ -253,6 +261,57 @@ class LootTrackerPanel extends PluginPanel
 		actionsContainer.add(viewControls, BorderLayout.EAST);
 		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
 
+		// Set up search bar
+		searchBar.setIcon(currentSearchType.icon);
+		searchBar.setToolTipText(currentSearchType.tooltip);
+		searchBar.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR));
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 35));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				SwingUtilities.invokeLater(LootTrackerPanel.this::rebuild);
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				SwingUtilities.invokeLater(LootTrackerPanel.this::rebuild);
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				SwingUtilities.invokeLater(LootTrackerPanel.this::rebuild);
+			}
+		});
+		searchBar.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				switch (currentSearchType)
+				{
+					case ITEMS:
+						currentSearchType = SearchType.EVENTS;
+						break;
+					case EVENTS:
+						currentSearchType = SearchType.ITEMS;
+						break;
+				}
+				searchBar.setIcon(currentSearchType.icon);
+				searchBar.setToolTipText(currentSearchType.tooltip);
+				// If currently searching, we need to rebuild to apply the filter
+				if (getSearchTerm() != null)
+				{
+					rebuild();
+				}
+			}
+		});
+
 		// Create panel that will contain overall data
 		overallPanel.setBorder(BorderFactory.createCompoundBorder(
 			BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR),
@@ -314,6 +373,7 @@ class LootTrackerPanel extends PluginPanel
 		// Create loot boxes wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
 		layoutPanel.add(actionsContainer);
+		layoutPanel.add(searchBar);
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(logsContainer);
 
@@ -453,8 +513,12 @@ class LootTrackerPanel extends PluginPanel
 
 		if (groupLoot)
 		{
-			aggregateRecords.forEach(this::buildBox);
-			sessionRecords.forEach(this::buildBox);
+			aggregateRecords.stream()
+				.filter(this::shouldFilterEvent)
+				.forEach(this::buildBox);
+			sessionRecords.stream()
+				.filter(this::shouldFilterEvent)
+				.forEach(this::buildBox);
 		}
 		else
 		{
@@ -462,6 +526,7 @@ class LootTrackerPanel extends PluginPanel
 			Lists.reverse(sessionRecords).stream()
 				// filter records prior to limiting so that it is limited to the correct amount
 				.filter(r -> !hideIgnoredItems || !plugin.isEventIgnored(r.getTitle()))
+				.filter(this::shouldFilterEvent)
 				.limit(MAX_LOOT_BOXES)
 				// The box that is built last is first inside the UI.
 				// since we are looping in reverse order we need to use a data type that support reverse iterating
@@ -517,7 +582,8 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
-			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent, isIgnored);
+			hideIgnoredItems, config.priceType(), config.showPriceType(), getSearchTerm(SearchType.ITEMS),
+			plugin::toggleItem, plugin::toggleEvent, isIgnored);
 		box.addKill(record);
 
 		// Use the existing popup menu or create a new one
@@ -624,6 +690,8 @@ class LootTrackerPanel extends PluginPanel
 			records = concat(aggregateRecords, sessionRecords);
 		}
 
+		final String searchTerm = getSearchTerm();
+
 		for (LootTrackerRecord record : records)
 		{
 			if (!record.matches(currentView, currentType))
@@ -631,7 +699,8 @@ class LootTrackerPanel extends PluginPanel
 				continue;
 			}
 
-			if (hideIgnoredItems && plugin.isEventIgnored(record.getTitle()))
+			if (hideIgnoredItems && plugin.isEventIgnored(record.getTitle())
+				|| currentSearchType == SearchType.EVENTS && searchTerm != null && !record.getTitle().toLowerCase().contains(searchTerm))
 			{
 				continue;
 			}
@@ -640,7 +709,8 @@ class LootTrackerPanel extends PluginPanel
 
 			for (LootTrackerItem item : record.getItems())
 			{
-				if (hideIgnoredItems && item.isIgnored())
+				if (hideIgnoredItems && item.isIgnored()
+					|| currentSearchType == SearchType.ITEMS && searchTerm != null && !item.getName().toLowerCase().contains(searchTerm))
 				{
 					present--;
 					continue;
@@ -648,9 +718,14 @@ class LootTrackerPanel extends PluginPanel
 
 				overallGe += item.getTotalGePrice();
 				overallHa += item.getTotalHaPrice();
+
+				if (currentSearchType == SearchType.ITEMS && searchTerm != null)
+				{
+					overallKills += item.getQuantity();
+				}
 			}
 
-			if (present > 0)
+			if (present > 0 && (currentSearchType == SearchType.EVENTS || searchTerm == null))
 			{
 				overallKills += record.getKills();
 			}
@@ -673,5 +748,36 @@ class LootTrackerPanel extends PluginPanel
 	{
 		final String valueStr = QuantityFormatter.quantityToStackSize(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+	}
+
+	private boolean shouldFilterEvent(LootTrackerRecord rec)
+	{
+		final String searchTerm = getSearchTerm(SearchType.EVENTS);
+		return searchTerm == null || rec.getTitle().toLowerCase().contains(searchTerm);
+	}
+
+	private String getSearchTerm()
+	{
+		return getSearchTerm(currentSearchType);
+	}
+
+	private String getSearchTerm(SearchType type)
+	{
+		if (type != currentSearchType)
+		{
+			return null;
+		}
+		final String term = searchBar.getText();
+		return Strings.isNullOrEmpty(term) ? null : term.toLowerCase();
+	}
+
+	@AllArgsConstructor
+	private enum SearchType
+	{
+		ITEMS(IconTextField.Icon.SEARCH_ITEMS, "Searching for items"),
+		EVENTS(IconTextField.Icon.SEARCH_EVENTS, "Searching for events");
+
+		IconTextField.Icon icon;
+		String tooltip;
 	}
 }

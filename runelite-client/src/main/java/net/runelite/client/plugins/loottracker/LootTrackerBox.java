@@ -74,6 +74,7 @@ class LootTrackerBox extends JPanel
 	private final LootRecordType lootRecordType;
 	private final LootTrackerPriceType priceType;
 	private final boolean showPriceType;
+	private final String searchTerm;
 
 	private int kills;
 	@Getter
@@ -91,6 +92,7 @@ class LootTrackerBox extends JPanel
 		final boolean hideIgnoredItems,
 		final LootTrackerPriceType priceType,
 		final boolean showPriceType,
+		final String searchTerm,
 		final BiConsumer<String, Boolean> onItemToggle,
 		final BiConsumer<String, Boolean> onEventToggle,
 		final boolean eventIgnored)
@@ -102,6 +104,7 @@ class LootTrackerBox extends JPanel
 		this.hideIgnoredItems = hideIgnoredItems;
 		this.priceType = priceType;
 		this.showPriceType = showPriceType;
+		this.searchTerm = searchTerm;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -201,6 +204,11 @@ class LootTrackerBox extends JPanel
 		outer:
 		for (LootTrackerItem item : record.getItems())
 		{
+			if (searchTerm != null && !item.getName().toLowerCase().contains(searchTerm))
+			{
+				continue;
+			}
+
 			final int mappedItemId = LootTrackerMapping.map(item.getId(), item.getName());
 			// Combine it into an existing item if one already exists
 			for (int idx = 0; idx < items.size(); ++idx)
