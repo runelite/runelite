@@ -265,7 +265,7 @@ public class FriendNotesPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		final int groupId = WidgetInfo.TO_GROUP(event.getWidgetId());
+		final int groupId = WidgetInfo.TO_GROUP(event.getParam1());
 
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.IGNORE_LIST.getGroupId())
 		{

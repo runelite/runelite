@@ -487,7 +487,7 @@ public class TimersPlugin extends Plugin
 			imbuedHeartClickTick = client.getTickCount();
 		}
 
-		TeleportWidget teleportWidget = TeleportWidget.of(event.getWidgetId());
+		TeleportWidget teleportWidget = TeleportWidget.of(event.getParam1());
 		if (teleportWidget != null)
 		{
 			lastTeleportClicked = teleportWidget;

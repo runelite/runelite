@@ -255,7 +255,7 @@ public class HerbiboarPlugin extends Plugin
 			case "Rock":
 			case "Mushroom":
 			case "Driftwood":
-				startPoint = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
+				startPoint = WorldPoint.fromScene(client, menuOpt.getParam0(), menuOpt.getParam1(), client.getPlane());
 		}
 	}
 

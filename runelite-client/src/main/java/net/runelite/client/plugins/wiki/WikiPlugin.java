@@ -284,11 +284,11 @@ public class WikiPlugin extends Plugin
 					}
 					id = lc.getId();
 					name = lc.getName();
-					location = WorldPoint.fromScene(client, ev.getActionParam(), ev.getWidgetId(), client.getPlane());
+					location = WorldPoint.fromScene(client, ev.getParam0(), ev.getParam1(), client.getPlane());
 					break;
 				}
 				case SPELL_CAST_ON_WIDGET:
-					Widget w = getWidget(ev.getWidgetId(), ev.getActionParam());
+					Widget w = getWidget(ev.getParam1(), ev.getParam0());
 
 					if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1)
 					{
