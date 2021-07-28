@@ -45,7 +45,7 @@
 		<checkstyle.skip>true</checkstyle.skip>
 		<glslang.path></glslang.path>
 
-		<rs.version>197</rs.version>
+		<rs.version>198</rs.version>
 	</properties>
 
 	<licenses>
