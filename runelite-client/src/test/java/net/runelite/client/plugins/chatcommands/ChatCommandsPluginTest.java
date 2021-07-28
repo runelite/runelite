@@ -972,6 +972,19 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testNightmareNoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Nightmare kill count is: <col=ff0000>1130</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>Solo</col> Fight duration: <col=ff0000>10:47</col>. Personal best: 8:44", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "nightmare", 1130);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare", 8 * 60 + 44.0);
+	}
+
+	@Test
 	public void testPlayerPetList()
 	{
 		Widget logEntryHeaderWidget = mock(Widget.class);
