@@ -29,8 +29,6 @@ import lombok.Getter;
 import net.runelite.api.Quest;
 import net.runelite.api.coords.WorldPoint;
 
-// Some quests are in the same spot, but they are done in order. If multiple
-// quests start in the same location, an array of quests is expected.
 enum QuestStartLocation
 {
 	//Free Quests
@@ -193,17 +191,11 @@ enum QuestStartLocation
 	private final WorldPoint location;
 
 	@Getter
-	private final Quest[] quests;
-
-	QuestStartLocation(Quest[] quests, WorldPoint location)
-	{
-		this.location = location;
-		this.quests = quests;
-	}
+	private final Quest quest;
 
 	QuestStartLocation(Quest quest, WorldPoint location)
 	{
 		this.location = location;
-		this.quests = new Quest[]{quest};
+		this.quest = quest;
 	}
 }
