@@ -91,7 +91,7 @@ class TimeTrackingPanel extends PluginPanel
 		add(display, BorderLayout.CENTER);
 
 		addTab(Tab.OVERVIEW, new OverviewTabPanel(itemManager, config, this, farmingTracker, birdHouseTracker, clockManager,
-			farmingContractManager));
+			farmingContractManager, configManager));
 		addTab(Tab.CLOCK, clockManager.getClockTabPanel());
 		addTab(Tab.BIRD_HOUSE, birdHouseTracker.createBirdHouseTabPanel());
 

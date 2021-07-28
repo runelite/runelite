@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import net.runelite.api.ItemID;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.CropState;
@@ -56,7 +57,7 @@ class OverviewTabPanel extends TabContentPanel
 
 	OverviewTabPanel(ItemManager itemManager, TimeTrackingConfig config, TimeTrackingPanel pluginPanel,
 		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager,
-		FarmingContractManager farmingContractManager)
+		FarmingContractManager farmingContractManager, ConfigManager configManager)
 	{
 		this.config = config;
 		this.farmingTracker = farmingTracker;
@@ -88,8 +89,9 @@ class OverviewTabPanel extends TabContentPanel
 				}
 			));
 
-		farmingContractOverview = new OverviewItemPanel(itemManager, () -> pluginPanel.switchTab(farmingContractManager.getContractTab()),
-			farmingContractManager::hasContract, ItemID.SEED_PACK, "Farming Contract");
+		farmingContractOverview = new OverviewItemPanelWithNotification(itemManager, () -> pluginPanel.switchTab(farmingContractManager.getContractTab()),
+			farmingContractManager::hasContract, ItemID.SEED_PACK, "Farming Contract",
+			configManager, TimeTrackingConfig.NOTIFY_CONTRACT);
 		add(farmingContractOverview);
 	}
 

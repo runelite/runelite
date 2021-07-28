@@ -46,12 +46,12 @@ class OverviewItemPanel extends JPanel
 {
 	private static final ImageIcon ARROW_RIGHT_ICON;
 
-	private static final Color HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
+	protected static final Color HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
 
 	private final JPanel textContainer;
 	private final JLabel statusLabel;
-	private final JLabel arrowLabel;
-	private final BooleanSupplier isSelectable;
+	protected final JLabel arrowLabel;
+	protected final BooleanSupplier isSelectable;
 
 	private boolean isHighlighted;
 
@@ -143,7 +143,7 @@ class OverviewItemPanel extends JPanel
 		}
 	}
 
-	private void setHighlighted(boolean highlighted)
+	protected void setHighlighted(boolean highlighted)
 	{
 		if (highlighted && !isSelectable.getAsBoolean())
 		{

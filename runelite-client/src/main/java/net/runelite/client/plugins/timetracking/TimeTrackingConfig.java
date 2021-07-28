@@ -42,6 +42,7 @@ public interface TimeTrackingConfig extends Config
 	String STOPWATCHES = "stopwatches";
 	String PREFER_SOONEST = "preferSoonest";
 	String NOTIFY = "notify";
+	String NOTIFY_CONTRACT = "notify_contract";
 	String BIRDHOUSE_NOTIFY = "birdHouseNotification";
 
 	@ConfigItem(

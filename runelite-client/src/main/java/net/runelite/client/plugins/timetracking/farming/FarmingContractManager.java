@@ -27,6 +27,8 @@ package net.runelite.client.plugins.timetracking.farming;
 
 import com.google.inject.Singleton;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
@@ -39,6 +41,7 @@ import net.runelite.api.NullNpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
@@ -87,6 +90,9 @@ public class FarmingContractManager
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	private Notifier notifier;
+
 	@Getter
 	private Produce contract = null;
 
@@ -96,6 +102,9 @@ public class FarmingContractManager
 
 	@Getter
 	private long completionTime;
+
+	private final Map<String, Boolean> notified = new HashMap<>();
+	private boolean firstNotifyCheck = true;
 
 	public void setContract(@Nullable Produce contract)
 	{
@@ -325,6 +334,36 @@ public class FarmingContractManager
 				}
 			}
 		}
+	}
+
+	public void checkCompletion()
+	{
+		String profile = configManager.getRSProfileKey();
+		if (profile == null)
+		{
+			return;
+		}
+
+		boolean notificationsEnabled = Boolean.TRUE.equals(configManager.getRSProfileConfiguration(
+			TimeTrackingConfig.CONFIG_GROUP,
+			TimeTrackingConfig.NOTIFY_CONTRACT,
+			Boolean.class));
+
+		boolean wasNotified = notified.getOrDefault(profile, false);
+
+		if (notificationsEnabled && summary == SummaryState.COMPLETED && !wasNotified)
+		{
+			notified.put(profile, true);
+			if (!firstNotifyCheck)
+			{
+				notifier.notify("Your farming contract has finished growing!");
+			}
+		}
+		else if (summary != SummaryState.COMPLETED)
+		{
+			notified.put(profile, false);
+		}
+		firstNotifyCheck = false;
 	}
 
 
