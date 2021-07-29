@@ -46,6 +46,8 @@ import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 class WoodcuttingTreesOverlay extends Overlay
 {
+	private static final int MAX_REDWOOD_INDICATOR_DISTANCE = 12;
+
 	private final Client client;
 	private final WoodcuttingConfig config;
 	private final ItemManager itemManager;
@@ -85,7 +87,9 @@ class WoodcuttingTreesOverlay extends Overlay
 
 		for (GameObject treeObject : plugin.getTreeObjects())
 		{
-			if (treeObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 12)
+			Tree tree = Tree.findTree(treeObject.getId());
+			if (tree == Tree.REDWOOD
+				&& treeObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= MAX_REDWOOD_INDICATOR_DISTANCE)
 			{
 				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
 			}
