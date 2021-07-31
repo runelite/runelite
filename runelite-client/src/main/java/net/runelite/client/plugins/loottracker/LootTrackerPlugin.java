@@ -792,7 +792,8 @@ public class LootTrackerPlugin extends Plugin
 			|| WINTERTODT_SUPPLY_CRATE_EVENT.equals(eventType)
 			|| eventType.endsWith("Bird House")
 			|| eventType.startsWith("H.A.M. chest")
-			|| lootRecordType == LootRecordType.PICKPOCKET)
+			|| lootRecordType == LootRecordType.PICKPOCKET
+			|| eventType.endsWith("lockbox"))
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 			Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
@@ -858,6 +859,12 @@ public class LootTrackerPlugin extends Plugin
 						break;
 					case ItemID.CASKET_25590:
 						setEvent(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT);
+						takeInventorySnapshot();
+						break;
+					case ItemID.SIMPLE_LOCKBOX_25647:
+					case ItemID.ELABORATE_LOCKBOX_25649:
+					case ItemID.ORNATE_LOCKBOX_25651:
+						setEvent(LootRecordType.EVENT, itemManager.getItemComposition(event.getId()).getName());
 						takeInventorySnapshot();
 						break;
 				}
