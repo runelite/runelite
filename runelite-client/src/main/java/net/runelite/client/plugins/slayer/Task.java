@@ -137,7 +137,7 @@ enum Task
 	MOGRES("Mogres", ItemID.MOGRE),
 	MOLANISKS("Molanisks", ItemID.MOLANISK),
 	MONKEYS("Monkeys", ItemID.ENSOULED_MONKEY_HEAD, "Tortured gorilla"),
-	MOSS_GIANTS("Moss giants", ItemID.HILL_GIANT_CLUB),
+	MOSS_GIANTS("Moss giants", ItemID.MOSSY_KEY),
 	MUTATED_ZYGOMITES("Mutated zygomites", ItemID.MUTATED_ZYGOMITE, 7, ItemID.FUNGICIDE_SPRAY_0, "Zygomite", "Fungi"),
 	NECHRYAEL("Nechryael", ItemID.NECHRYAEL, "Nechryarch"),
 	OGRES("Ogres", ItemID.ENSOULED_OGRE_HEAD),
