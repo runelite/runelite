@@ -35,7 +35,7 @@ import lombok.Getter;
 import net.runelite.api.ItemID;
 
 @Getter
-enum Task
+public enum Task
 {
 	//<editor-fold desc="Enums">
 	ABERRANT_SPECTRES("Aberrant spectres", ItemID.ABERRANT_SPECTRE, "Spectre"),

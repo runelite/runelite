@@ -79,6 +79,7 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
@@ -88,6 +89,8 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.npchighlight.NpcIndicatorsPlugin;
 import net.runelite.client.plugins.npchighlight.NpcIndicatorsService;
+import net.runelite.client.plugins.slayer.events.SlayerTaskEndsEvent;
+import net.runelite.client.plugins.slayer.events.SlayerTaskIsSetEvent;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
@@ -176,6 +179,9 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private NpcIndicatorsService npcIndicatorsService;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> targets = new ArrayList<>();
@@ -475,6 +481,17 @@ public class SlayerPlugin extends Plugin
 					setProfileConfig(SlayerConfig.POINTS_KEY, points);
 				}
 			}
+			if (taskName == null || taskName.equals(""))
+			{
+				eventBus.post(new SlayerTaskEndsEvent());
+			}
+			else
+			{
+				Task task = Task.getTask(taskName);
+				eventBus.post(new SlayerTaskEndsEvent(task));
+			}
+
+
 
 			setTask("", 0, 0);
 			return;
@@ -730,6 +747,10 @@ public class SlayerPlugin extends Plugin
 		rebuildTargetNames(task);
 		rebuildTargetList();
 		npcIndicatorsService.rebuild();
+		if (task != null)
+		{
+			eventBus.post(new SlayerTaskIsSetEvent(task));
+		}
 	}
 
 	private void addCounter()

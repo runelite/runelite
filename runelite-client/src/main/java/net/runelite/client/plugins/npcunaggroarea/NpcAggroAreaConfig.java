@@ -117,4 +117,15 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "autoShowSlayerTaskAggroTimer",
+		name = "Show timer for current slayer task",
+		description = "Will automatically show the NPC Aggression Timer for the current task",
+		position = 8
+	)
+	default boolean autoShowSlayerTaskAggroTimer()
+	{
+		return false;
+	}
 }

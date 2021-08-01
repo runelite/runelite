@@ -34,10 +34,13 @@ import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.ItemID;
@@ -58,6 +61,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.slayer.events.SlayerTaskEndsEvent;
+import net.runelite.client.plugins.slayer.events.SlayerTaskIsSetEvent;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.WildcardMatcher;
@@ -131,7 +136,13 @@ public class NpcAggroAreaPlugin extends Plugin
 	private boolean loggingIn;
 	private boolean notifyOnce;
 
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private List<String> npcNamePatterns;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private List<String> slayerTaskList = new ArrayList<>();
 
 	@Provides
 	NpcAggroAreaConfig provideConfig(ConfigManager configManager)
@@ -164,6 +175,52 @@ public class NpcAggroAreaPlugin extends Plugin
 		Arrays.fill(linesToDisplay, null);
 	}
 
+	private String formatSlayerNpcPattern(String target)
+	{
+		return "*" + target.toLowerCase().replaceAll("s$", "") + "*";
+	}
+
+	@Subscribe
+	public void onSlayerTaskIsSetEvent(SlayerTaskIsSetEvent slayerTaskIsSetEvent)
+	{
+
+		List<String> newlySetSlayerTaskList = new ArrayList<>();
+		newlySetSlayerTaskList.add(formatSlayerNpcPattern(slayerTaskIsSetEvent.slayerTask.getName()));
+		Arrays.stream(slayerTaskIsSetEvent.slayerTask.getTargetNames())
+			.map(this::formatSlayerNpcPattern)
+			.forEach(newlySetSlayerTaskList::add);
+
+		if (!slayerTaskList.containsAll(newlySetSlayerTaskList))
+		{
+			if (config.autoShowSlayerTaskAggroTimer())
+			{
+				if (!slayerTaskList.containsAll(newlySetSlayerTaskList))
+				{
+					npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
+				}
+				if (!npcNamePatterns.containsAll(newlySetSlayerTaskList))
+				{
+					List<String> combindedList = new ArrayList<>();
+					combindedList.addAll(newlySetSlayerTaskList);
+					combindedList.addAll(npcNamePatterns);
+					npcNamePatterns = combindedList;
+				}
+			}
+			slayerTaskList = newlySetSlayerTaskList;
+
+		}
+	}
+
+	@Subscribe
+	public void onSlayerTaskEndsEvent(SlayerTaskEndsEvent slayerTaskEndsEvent)
+	{
+		if (npcNamePatterns.containsAll(slayerTaskList))
+		{
+			npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
+		}
+		slayerTaskList = new ArrayList<>();
+	}
+
 	private Area generateSafeArea()
 	{
 		final Area area = new Area();
@@ -188,7 +245,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void transformWorldToLocal(float[] coords)
 	{
-		final LocalPoint lp = LocalPoint.fromWorld(client, (int)coords[0], (int)coords[1]);
+		final LocalPoint lp = LocalPoint.fromWorld(client, (int) coords[0], (int) coords[1]);
 		coords[0] = lp.getX() - Perspective.LOCAL_TILE_SIZE / 2f;
 		coords[1] = lp.getY() - Perspective.LOCAL_TILE_SIZE / 2f;
 	}
@@ -399,6 +456,20 @@ public class NpcAggroAreaPlugin extends Plugin
 				break;
 			case "npcUnaggroNames":
 				npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
+				recheckActive();
+				break;
+			case "autoShowSlayerTaskAggroTimer":
+				if (Boolean.parseBoolean(event.getNewValue()))
+				{
+					List<String> combinedList = new ArrayList<>();
+					combinedList.addAll(slayerTaskList);
+					combinedList.addAll(npcNamePatterns);
+					npcNamePatterns = combinedList;
+				}
+				else
+				{
+					npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
+				}
 				recheckActive();
 				break;
 		}
