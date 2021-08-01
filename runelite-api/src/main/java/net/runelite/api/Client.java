@@ -619,6 +619,34 @@ public interface Client extends GameEngine
 	boolean isMenuOpen();
 
 	/**
+	 * Get the menu x location. Only valid if the menu is open.
+	 *
+	 * @return the menu x location
+	 */
+	int getMenuX();
+
+	/**
+	 * Get the menu y location. Only valid if the menu is open.
+	 *
+	 * @return the menu y location
+	 */
+	int getMenuY();
+
+	/**
+	 * Get the menu height. Only valid if the menu is open.
+	 *
+	 * @return the menu height
+	 */
+	int getMenuHeight();
+
+	/**
+	 * Get the menu width. Only valid if the menu is open.
+	 *
+	 * @return the menu width
+	 */
+	int getMenuWidth();
+
+	/**
 	 * Gets the angle of the map, or target camera yaw.
 	 *
 	 * @return the map angle
