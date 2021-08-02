@@ -84,11 +84,6 @@ class InteractHighlightOverlay extends Overlay
 		}
 
 		MenuEntry entry = client.isMenuOpen() ? determineMenuEntry(menuEntries) : menuEntries[menuEntries.length - 1];
-		if (entry == null)
-		{
-			return;
-		}
-
 		MenuAction menuAction = MenuAction.of(entry.getType());
 
 		switch (menuAction)
@@ -173,20 +168,13 @@ class InteractHighlightOverlay extends Overlay
 		final Rectangle menu = new Rectangle(client.getMenuX(), client.getMenuY(), client.getMenuWidth(), client.getMenuHeight());
 		final Point mousePosition = client.getMouseCanvasPosition();
 
-		if (!menu.contains(mousePosition.getX(), mousePosition.getY()))
-		{
-			return null;
-		}
-
 		final int fromTop = (mousePosition.getY() - MENU_EXTRA_TOP) - menu.y;
 		final int index = menuEntries.length - (fromTop / MENU_OPTION_HEIGHT);
 
-		if (index >= menuEntries.length || index < 0)
+		if (index >= menuEntries.length || index < 0 || !menu.contains(mousePosition.getX(), mousePosition.getY()))
 		{
-			return null;
+			return menuEntries[menuEntries.length - 1];
 		}
-
 		return menuEntries[index];
 	}
-
 }
