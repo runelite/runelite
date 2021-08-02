@@ -27,12 +27,14 @@ package net.runelite.client.plugins.interacthighlight;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -44,6 +46,9 @@ import net.runelite.client.util.ColorUtil;
 class InteractHighlightOverlay extends Overlay
 {
 	private static final Color INTERACT_CLICK_COLOR = new Color(0x90ffffff);
+
+	private static final int MENU_OPTION_HEIGHT = 15;
+	private static final int MENU_EXTRA_TOP = 4;
 
 	private final Client client;
 	private final InteractHighlightPlugin plugin;
@@ -78,8 +83,13 @@ class InteractHighlightOverlay extends Overlay
 			return;
 		}
 
-		MenuEntry top = menuEntries[menuEntries.length - 1];
-		MenuAction menuAction = MenuAction.of(top.getType());
+		MenuEntry entry = client.isMenuOpen() ? determineMenuEntry(menuEntries) : menuEntries[menuEntries.length - 1];
+		if (entry == null)
+		{
+			return;
+		}
+
+		MenuAction menuAction = MenuAction.of(entry.getType());
 
 		switch (menuAction)
 		{
@@ -90,10 +100,11 @@ class InteractHighlightOverlay extends Overlay
 			case GAME_OBJECT_THIRD_OPTION:
 			case GAME_OBJECT_FOURTH_OPTION:
 			case GAME_OBJECT_FIFTH_OPTION:
+			case EXAMINE_OBJECT:
 			{
-				int x = top.getParam0();
-				int y = top.getParam1();
-				int id = top.getIdentifier();
+				int x = entry.getParam0();
+				int y = entry.getParam1();
+				int id = entry.getIdentifier();
 				TileObject tileObject = plugin.findTileObject(x, y, id);
 				if (tileObject != null && config.objectShowHover() && (tileObject != plugin.getInteractedObject() || !config.objectShowInteract()))
 				{
@@ -108,8 +119,9 @@ class InteractHighlightOverlay extends Overlay
 			case NPC_THIRD_OPTION:
 			case NPC_FOURTH_OPTION:
 			case NPC_FIFTH_OPTION:
+			case EXAMINE_NPC:
 			{
-				int id = top.getIdentifier();
+				int id = entry.getIdentifier();
 				NPC npc = plugin.findNpc(id);
 				if (npc != null && config.npcShowHover() && (npc != plugin.getInteractedTarget() || !config.npcShowInteract()))
 				{
@@ -155,4 +167,26 @@ class InteractHighlightOverlay extends Overlay
 		}
 		return end;
 	}
+
+	private MenuEntry determineMenuEntry(final MenuEntry[] menuEntries)
+	{
+		final Rectangle menu = new Rectangle(client.getMenuX(), client.getMenuY(), client.getMenuWidth(), client.getMenuHeight());
+		final Point mousePosition = client.getMouseCanvasPosition();
+
+		if (!menu.contains(mousePosition.getX(), mousePosition.getY()))
+		{
+			return null;
+		}
+
+		final int fromTop = (mousePosition.getY() - MENU_EXTRA_TOP) - menu.y;
+		final int index = menuEntries.length - (fromTop / MENU_OPTION_HEIGHT);
+
+		if (index >= menuEntries.length || index < 0)
+		{
+			return null;
+		}
+
+		return menuEntries[index];
+	}
+
 }
