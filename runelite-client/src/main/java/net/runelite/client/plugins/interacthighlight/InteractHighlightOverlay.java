@@ -97,7 +97,8 @@ class InteractHighlightOverlay extends Overlay
 				TileObject tileObject = plugin.findTileObject(x, y, id);
 				if (tileObject != null && config.objectShowHover() && (tileObject != plugin.getInteractedObject() || !config.objectShowInteract()))
 				{
-					modelOutlineRenderer.drawOutline(tileObject, config.borderWidth(), config.objectHoverHighlightColor(), config.outlineFeather());
+					Color hoverColor = getClickColor(config.objectHoverHighlightColor(), config.objectHoverHighlightColor(), client.getGameCycle() - plugin.getGameCycle());
+					modelOutlineRenderer.drawOutline(tileObject, config.borderWidth(), hoverColor, config.outlineFeather());
 				}
 				break;
 			}
@@ -115,7 +116,8 @@ class InteractHighlightOverlay extends Overlay
 				{
 					Color highlightColor = menuAction == MenuAction.NPC_SECOND_OPTION || menuAction == MenuAction.SPELL_CAST_ON_NPC
 						? config.npcAttackHoverHighlightColor() : config.npcHoverHighlightColor();
-					modelOutlineRenderer.drawOutline(npc, config.borderWidth(), highlightColor, config.outlineFeather());
+					Color hoverColor = getClickColor(highlightColor, highlightColor, client.getGameCycle() - plugin.getGameCycle());
+					modelOutlineRenderer.drawOutline(npc, config.borderWidth(), hoverColor, config.outlineFeather());
 				}
 				break;
 			}
