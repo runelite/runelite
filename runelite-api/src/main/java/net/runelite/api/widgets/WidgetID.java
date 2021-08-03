@@ -774,6 +774,7 @@ public class WidgetID
 	static class Pvp
 	{
 		static final int KILLDEATH_RATIO = 26;
+		static final int WILDERNESS_SKULL_CONTAINER = 44;
 		static final int SKULL_CONTAINER = 45;
 		static final int SAFE_ZONE = 47;
 		static final int WILDERNESS_LEVEL = 50; // this can also be the Deadman Mode "Protection" text
