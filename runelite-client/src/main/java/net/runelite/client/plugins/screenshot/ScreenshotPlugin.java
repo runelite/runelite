@@ -130,7 +130,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_COLLECTION_LOG = "Collection Log";
 	private static final String SD_PVP_KILLS = "PvP Kills";
 	private static final String SD_DEATHS = "Deaths";
-	private static final string SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
+	private static final String SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
 
 	private String clueType;
 	private Integer clueNumber;
