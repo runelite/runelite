@@ -489,8 +489,33 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotCombatAchievements() && chatMessage.contains("completed") && chatMessage.contains("combat task"))
 		{
+			String tier = "";
+			if (chatMessage.contains("easy"))
+			{
+				tier = "Easy";
+			}
+			if (chatMessage.contains("medium"))
+			{
+				tier = "Medium";
+			}
+			if (chatMessage.contains("hard"))
+			{
+				tier = "Hard";
+			}
+			if (chatMessage.contains("elite"))
+			{
+				tier = "Elite";
+			}
+			if (chatMessage.contains("master"))
+			{
+				tier = "Master";
+			}
+			if (chatMessage.contains("grandmaster"))
+			{
+				tier = "Grandmaster";
+			}
 			String achievement = chatMessage.substring(chatMessage.indexOf(":") + 2, chatMessage.length() - 1);
-			String filename = "Combat achievement (" + achievement + ")";
+			String filename = tier + " achievement (" + achievement + ")";
 			takeScreenshot(filename, SD_COMBAT_ACHIEVEMENTS);
 		}
 	}
