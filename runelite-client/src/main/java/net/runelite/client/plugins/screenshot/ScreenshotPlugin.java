@@ -1,46 +1,3 @@
-
-Skip to content
-Pull requests
-Issues
-Marketplace
-Explore
-@EvanDeadlySins
-runelite /
-runelite
-
-92
-3.3k
-
-    4.2k
-
-Code
-Issues 1.4k
-Pull requests 518
-Actions
-Wiki
-Security
-
-    Insights
-
-runelite/runelite-client/src/main/java/net/runelite/client/plugins/screenshot/ScreenshotPlugin.java /
-@Adam-
-Adam- screenshot plugin: name tob hm/sm files differently
-Latest commit 0580e32 on Jun 13
-History
-39 contributors
-@Adam-
-@alexanderhenne
-@deathbeam
-@MagicfTail
-@abextm
-@Nightfirecat
-@sethtroll
-@SoyChai
-@Hydrox6
-@Alexsuperfly
-@Spedwards
-@Joshua-F
-818 lines (731 sloc) 24.1 KB
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
@@ -867,18 +824,3 @@ public class ScreenshotPlugin extends Plugin
 		return killCountNumber;
 	}
 }
-
-    © 2021 GitHub, Inc.
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
-
