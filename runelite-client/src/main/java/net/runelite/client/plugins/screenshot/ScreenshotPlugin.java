@@ -515,7 +515,7 @@ public class ScreenshotPlugin extends Plugin
 				tier = "Grandmaster";
 			}
 			String achievement = chatMessage.substring(chatMessage.indexOf(":") + 2, chatMessage.length() - 1);
-			String filename = tier + " achievement (" + achievement + ")";
+			String fileName = tier + " achievement (" + achievement + ")";
 			takeScreenshot(filename, SD_COMBAT_ACHIEVEMENTS);
 		}
 	}
