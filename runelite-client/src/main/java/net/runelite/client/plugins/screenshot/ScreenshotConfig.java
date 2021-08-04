@@ -266,10 +266,22 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "combatAchievements",
+		name = "Screenshot combat achievements",
+		description = "Take a screenshot when completing a combat achievement task",
+		position = 19,
+		section = whatSection
+	)
+	default boolean screenshotCombatAchievements()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 19
+		position = 20
 	)
 	default Keybind hotkey()
 	{
