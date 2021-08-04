@@ -1,3 +1,46 @@
+
+Skip to content
+Pull requests
+Issues
+Marketplace
+Explore
+@EvanDeadlySins
+runelite /
+runelite
+
+92
+3.3k
+
+    4.2k
+
+Code
+Issues 1.4k
+Pull requests 518
+Actions
+Wiki
+Security
+
+    Insights
+
+runelite/runelite-client/src/main/java/net/runelite/client/plugins/screenshot/ScreenshotPlugin.java /
+@Adam-
+Adam- screenshot plugin: name tob hm/sm files differently
+Latest commit 0580e32 on Jun 13
+History
+39 contributors
+@Adam-
+@alexanderhenne
+@deathbeam
+@MagicfTail
+@abextm
+@Nightfirecat
+@sethtroll
+@SoyChai
+@Hydrox6
+@Alexsuperfly
+@Spedwards
+@Joshua-F
+818 lines (731 sloc) 24.1 KB
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
@@ -130,6 +173,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_COLLECTION_LOG = "Collection Log";
 	private static final String SD_PVP_KILLS = "PvP Kills";
 	private static final String SD_DEATHS = "Deaths";
+	private static final string SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
 
 	private String clueType;
 	private Integer clueNumber;
@@ -485,6 +529,13 @@ public class ScreenshotPlugin extends Plugin
 			String fileName = "Collection log (" + entry + ")";
 			takeScreenshot(fileName, SD_COLLECTION_LOG);
 		}
+
+		if (config.screenshotCombatAchievements() && chatMessage.contains("completed") && chatMessage.contains("combat task"))
+		{
+			String achievement = chatMessage.substring(chatMessage.indexOf(":") + 2, chatMessage.length() - 1);
+			String filename = "Combat achievement (" + achievement + ")";
+			takeScreenshot(filename, SD_COMBAT_ACHIEVEMENTS);
+		}
 	}
 
 	@Subscribe
@@ -816,3 +867,18 @@ public class ScreenshotPlugin extends Plugin
 		return killCountNumber;
 	}
 }
+
+    © 2021 GitHub, Inc.
+    Terms
+    Privacy
+    Security
+    Status
+    Docs
+
+    Contact GitHub
+    Pricing
+    API
+    Training
+    Blog
+    About
+
