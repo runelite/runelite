@@ -1238,7 +1238,10 @@ public class ChatCommandsPlugin extends Plugin
 			try
 			{
 				List<Integer> petList = getPetList().stream().map(Pet::getIconID).collect(Collectors.toList());
-				chatClient.submitPetList(playerName, petList);
+				if (!petList.isEmpty())
+				{
+					chatClient.submitPetList(playerName, petList);
+				}
 			}
 			catch (Exception ex)
 			{
