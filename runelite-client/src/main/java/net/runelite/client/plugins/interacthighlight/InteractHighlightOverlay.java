@@ -43,8 +43,6 @@ import net.runelite.client.util.ColorUtil;
 
 class InteractHighlightOverlay extends Overlay
 {
-	private static final Color INTERACT_CLICK_COLOR = new Color(0x90ffffff);
-
 	private final Client client;
 	private final InteractHighlightPlugin plugin;
 	private final InteractHighlightConfig config;
@@ -147,13 +145,17 @@ class InteractHighlightOverlay extends Overlay
 
 	private Color getClickColor(Color start, Color end, long time)
 	{
+		if (!config.clickFlash())
+		{
+			return end;
+		}
 		if (time < 5)
 		{
-			return ColorUtil.colorLerp(start, INTERACT_CLICK_COLOR, time / 5f);
+			return ColorUtil.colorLerp(start, config.clickColor(), time / 5f);
 		}
 		else if (time < 10)
 		{
-			return ColorUtil.colorLerp(INTERACT_CLICK_COLOR, end, (time - 5) / 5f);
+			return ColorUtil.colorLerp(config.clickColor(), end, (time - 5) / 5f);
 		}
 		return end;
 	}
