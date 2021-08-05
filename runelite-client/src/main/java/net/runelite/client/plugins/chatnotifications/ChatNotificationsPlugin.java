@@ -40,7 +40,6 @@ import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
@@ -248,13 +247,7 @@ public class ChatNotificationsPlugin extends Plugin
 				final String replacement = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u>" + closeColor;
 				messageNode.setValue(matcher.replaceAll(replacement));
 				update = true;
-				if (config.notifyOnOwnName() && (chatMessage.getType() == ChatMessageType.PUBLICCHAT
-					|| chatMessage.getType() == ChatMessageType.PRIVATECHAT
-					|| chatMessage.getType() == ChatMessageType.FRIENDSCHAT
-					|| chatMessage.getType() == ChatMessageType.MODCHAT
-					|| chatMessage.getType() == ChatMessageType.MODPRIVATECHAT
-					|| chatMessage.getType() == ChatMessageType.CLAN_CHAT
-					|| chatMessage.getType() == ChatMessageType.CLAN_GUEST_CHAT))
+				if (config.notifyOnOwnName() && ChatNotificationsScope.PLAYER_CHAT.getMessageTypes().contains(chatMessage.getType()))
 				{
 					sendNotification(chatMessage);
 				}
@@ -312,7 +305,7 @@ public class ChatNotificationsPlugin extends Plugin
 		if (matchesHighlight)
 		{
 			messageNode.setValue(nodeValue);
-			if (config.notifyOnHighlight())
+			if (config.notifyOnHighlight() && config.notifyFor().getMessageTypes().contains(chatMessage.getType()))
 			{
 				sendNotification(chatMessage);
 			}
