@@ -134,8 +134,8 @@ public interface NpcIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "fillOpacity",
-		name = "Tile Fill Opacity",
-		description = "Specify between 0-255 how much opacity the inner filling of npc tiles should have.",
+		name = "Fill Opacity",
+		description = "Specify between 0-255 how much opacity the fill for the indicators.",
 		section = renderStyleSection
 	)
 	@Range(
