@@ -135,7 +135,7 @@ public interface NpcIndicatorsConfig extends Config
 		position = 7,
 		keyName = "fillOpacity",
 		name = "Fill Opacity",
-		description = "Specify between 0-255 how much opacity the fill for the indicators.",
+		description = "Specify between 0-255 how much opacity the fill for the indicators",
 		section = renderStyleSection
 	)
 	@Range(
