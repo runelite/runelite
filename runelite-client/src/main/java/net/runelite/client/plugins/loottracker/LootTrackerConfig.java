@@ -148,4 +148,13 @@ public interface LootTrackerConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "hideLootUnderACertainValue",
+		name = "Hide under value",
+		description = "Hides all loot that is under the specified value.",
+		section = ignored
+	)
+
+	default int ignoreLootBasedOnACertainValue() {return 0; }
 }
