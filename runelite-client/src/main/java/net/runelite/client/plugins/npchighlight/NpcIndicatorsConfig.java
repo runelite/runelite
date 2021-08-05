@@ -31,6 +31,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Range;
+import net.runelite.client.util.ColorUtil;
 
 @ConfigGroup("npcindicators")
 public interface NpcIndicatorsConfig extends Config
@@ -131,20 +132,17 @@ public interface NpcIndicatorsConfig extends Config
 		return 0;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 7,
-		keyName = "fillOpacity",
-		name = "Fill Opacity",
-		description = "Specify between 0-255 how much opacity the fill for the indicators",
+		keyName = "fillColor",
+		name = "Fill Color",
+		description = "Color for the indicator fills",
 		section = renderStyleSection
 	)
-	@Range(
-		min = 0,
-		max = 255
-	)
-	default int fillOpacity()
+	default Color fillColor()
 	{
-		return 20;
+		return ColorUtil.colorWithAlpha(Color.CYAN, 20);
 	}
 
 	@ConfigItem(
