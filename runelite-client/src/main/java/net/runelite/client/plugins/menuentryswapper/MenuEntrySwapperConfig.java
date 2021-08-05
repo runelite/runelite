@@ -467,6 +467,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "teleportItemExcludes",
+		name = "Teleport item excludes",
+		description = "Items excluded from Teleport item swap. Format: (item), (item)",
+		section = itemSection
+	)
+	default String teleportItemExcludes()
+	{
+		return "";
+	}
+
+	@ConfigItem(
 		keyName = "swapTeleToPoh",
 		name = "Tele to POH",
 		description = "Swap Wear with Tele to POH on the construction cape",

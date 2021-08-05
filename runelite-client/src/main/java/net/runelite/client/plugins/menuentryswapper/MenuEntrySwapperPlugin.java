@@ -37,6 +37,7 @@ import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -166,6 +167,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private final Multimap<String, Swap> swaps = LinkedHashMultimap.create();
 	private final ArrayListMultimap<String, Integer> optionIndexes = ArrayListMultimap.create();
+	private final Set<String> telepotItemExcludes = new HashSet<>();
 
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
@@ -181,6 +183,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			enableCustomization();
 		}
 
+		rebuildConfigCache();
 		setupSwaps();
 	}
 
@@ -357,10 +360,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("wear", "tele to poh", config::swapTeleToPoh);
 
-		swap("wear", "rub", config::swapTeleportItem);
-		swap("wear", "teleport", config::swapTeleportItem);
-		swap("wield", "teleport", config::swapTeleportItem);
-		swap("wield", "invoke", config::swapTeleportItem);
+		swap("wear", target -> !telepotItemExcludes.contains(target), "rub", config::swapTeleportItem);
+		swap("wear", target -> !telepotItemExcludes.contains(target), "teleport", config::swapTeleportItem);
+		swap("wield", target -> !telepotItemExcludes.contains(target), "teleport", config::swapTeleportItem);
+		swap("wield", target -> !telepotItemExcludes.contains(target), "invoke", config::swapTeleportItem);
 
 		swap("wear", "farm teleport", () -> config.swapArdougneCloakMode() == ArdougneCloakMode.FARM);
 		swap("wear", "monastery teleport", () -> config.swapArdougneCloakMode() == ArdougneCloakMode.MONASTERY);
@@ -439,15 +442,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals(MenuEntrySwapperConfig.GROUP) && event.getKey().equals("shiftClickCustomization"))
+		if (event.getGroup().equals(MenuEntrySwapperConfig.GROUP))
 		{
-			if (config.shiftClickCustomization())
+			switch (event.getKey())
 			{
-				enableCustomization();
-			}
-			else
-			{
-				disableCustomization();
+				case "shiftClickCustomization":
+					if (config.shiftClickCustomization())
+					{
+						enableCustomization();
+					}
+					else
+					{
+						disableCustomization();
+					}
+					break;
+				case "teleportItemExcludes":
+					rebuildConfigCache();
+					break;
 			}
 		}
 		else if (event.getGroup().equals(SHIFTCLICK_CONFIG_GROUP) && event.getKey().startsWith(ITEM_KEY_PREFIX))
@@ -460,6 +471,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		itemManager.invalidateItemCompositionCache();
 		client.getItemCompositionCache().reset();
+	}
+
+	private void rebuildConfigCache()
+	{
+		telepotItemExcludes.clear();
+		telepotItemExcludes.addAll(Text.fromCSV(config.teleportItemExcludes().toLowerCase()));
 	}
 
 	private Integer getSwapConfig(int itemId)
