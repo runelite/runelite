@@ -133,6 +133,22 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 7,
+		keyName = "fillOpacity",
+		name = "Tile Fill Opacity",
+		description = "Specify between 0-255 how much opacity the inner filling of npc tiles should have.",
+		section = renderStyleSection
+	)
+	@Range(
+		min = 0,
+		max = 255
+	)
+	default int fillOpacity()
+	{
+		return 20;
+	}
+
+	@ConfigItem(
+		position = 8,
 		keyName = "npcToHighlight",
 		name = "NPCs to Highlight",
 		description = "List of NPC names to highlight"
@@ -150,7 +166,7 @@ public interface NpcIndicatorsConfig extends Config
 	void setNpcToHighlight(String npcsToHighlight);
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "drawNames",
 		name = "Draw names above NPC",
 		description = "Configures whether or not NPC names should be drawn above the NPC"
@@ -161,7 +177,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not NPC names should be drawn on the minimap"
@@ -172,7 +188,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "highlightMenuNames",
 		name = "Highlight menu names",
 		description = "Highlight NPC names in right click menu"
@@ -183,7 +199,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "ignoreDeadNpcs",
 		name = "Ignore dead NPCs",
 		description = "Prevents highlighting NPCs after they are dead"
@@ -194,7 +210,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "deadNpcMenuColor",
 		name = "Dead NPC menu color",
 		description = "Color of the NPC menus for dead NPCs"
@@ -202,7 +218,7 @@ public interface NpcIndicatorsConfig extends Config
 	Color deadNpcMenuColor();
 
 	@ConfigItem(
-		position = 13,
+		position = 14,
 		keyName = "showRespawnTimer",
 		name = "Show respawn timer",
 		description = "Show respawn timer of tagged NPCs")
