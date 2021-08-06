@@ -46,6 +46,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_EXPEDITIOUS_BRACELET = "expeditiousBracelet";
 	String KEY_EXPLORERS_RING = "explorerRing";
 	String KEY_RING_OF_FORGING = "ringOfForging";
+	String KEY_FALADOR_SHIELD = "faladorShield";
 
 	@ConfigSection(
 		name = "Charge Settings",
@@ -412,6 +413,18 @@ public interface ItemChargeConfig extends Config
 		section = chargesSection
 	)
 	default boolean showGuthixRestDoses()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showFaladorShieldCharges",
+		name = "Falador Shield Charges",
+		description = "Show Falador Shield charges",
+		position = 30,
+		section = chargesSection
+	)
+	default boolean showFaladorShieldCharges()
 	{
 		return true;
 	}
