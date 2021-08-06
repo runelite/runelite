@@ -513,10 +513,6 @@ public class ItemChargePlugin extends Plugin
 							log.debug("Reset expeditious bracelet");
 							updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
 							break;
-						case ItemID.FALADOR_SHIELD:
-							log.debug("Reset falador shield");
-							updateFaladorShieldCharges(MAX_FALADOR_SHIELD_CHARGES);
-							break;
 					}
 				}
 			});
