@@ -27,6 +27,7 @@ package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.Instant;
@@ -38,6 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -77,7 +79,7 @@ import net.runelite.client.util.WildcardMatcher;
 	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
 )
 @Slf4j
-public class NpcIndicatorsPlugin extends Plugin
+public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
 
@@ -173,10 +175,18 @@ public class NpcIndicatorsPlugin extends Plugin
 	 */
 	private boolean skipNextSpawnCheck = false;
 
+	private final List<Predicate<NPC>> higlightPredicates = new ArrayList<>();
+
 	@Provides
 	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(NpcIndicatorsConfig.class);
+	}
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(NpcIndicatorsService.class).toInstance(this);
 	}
 
 	@Override
@@ -187,7 +197,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		clientThread.invoke(() ->
 		{
 			skipNextSpawnCheck = true;
-			rebuildAllNpcs();
+			rebuild();
 		});
 	}
 
@@ -230,7 +240,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		clientThread.invoke(this::rebuildAllNpcs);
+		clientThread.invoke(this::rebuild);
 	}
 
 	@Subscribe
@@ -394,7 +404,23 @@ public class NpcIndicatorsPlugin extends Plugin
 				memorizeNpc(npc);
 				spawnedNpcsThisTick.add(npc);
 			}
+			return;
 		}
+
+		for (Predicate<NPC> predicate : higlightPredicates)
+		{
+			if (predicate.test(npc))
+			{
+				highlightedNpcs.add(npc);
+				if (!client.isInInstancedRegion())
+				{
+					memorizeNpc(npc);
+					spawnedNpcsThisTick.add(npc);
+				}
+				return;
+			}
+		}
+
 	}
 
 	@Subscribe
@@ -534,8 +560,8 @@ public class NpcIndicatorsPlugin extends Plugin
 		return Text.fromCSV(configNpcs);
 	}
 
-	@VisibleForTesting
-	void rebuildAllNpcs()
+	@Override
+	public void rebuild()
 	{
 		highlights = getHighlights();
 		highlightedNpcs.clear();
@@ -548,6 +574,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
+		outer:
 		for (NPC npc : client.getNpcs())
 		{
 			final String npcName = npc.getName();
@@ -571,6 +598,19 @@ public class NpcIndicatorsPlugin extends Plugin
 				}
 				highlightedNpcs.add(npc);
 				continue;
+			}
+
+			for (Predicate<NPC> predicate : higlightPredicates)
+			{
+				if (predicate.test(npc))
+				{
+					if (!client.isInInstancedRegion())
+					{
+						memorizeNpc(npc);
+					}
+					highlightedNpcs.add(npc);
+					continue outer;
+				}
 			}
 
 			// NPC is not highlighted
@@ -679,5 +719,17 @@ public class NpcIndicatorsPlugin extends Plugin
 		spawnedNpcsThisTick.clear();
 		despawnedNpcsThisTick.clear();
 		teleportGraphicsObjectSpawnedThisTick.clear();
+	}
+
+	@Override
+	public void registerHighlighter(Predicate<NPC> p)
+	{
+		higlightPredicates.add(p);
+	}
+
+	@Override
+	public void unregisterHighlighter(Predicate<NPC> p)
+	{
+		higlightPredicates.remove(p);
 	}
 }

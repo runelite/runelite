@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
@@ -55,6 +56,7 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.npchighlight.NpcIndicatorsService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.chat.ChatClient;
@@ -167,6 +169,14 @@ public class SlayerPluginTest
 	@Mock
 	@Bind
 	ChatClient chatClient;
+
+	@Bind
+	@Named("developerMode")
+	boolean developerMode;
+
+	@Mock
+	@Bind
+	NpcIndicatorsService npcIndicatorsService;
 
 	@Inject
 	SlayerPlugin slayerPlugin;
@@ -871,14 +881,13 @@ public class SlayerPluginTest
 		slayerPlugin.onStatChanged(statChanged);
 
 		NPCComposition npcComposition = mock(NPCComposition.class);
+		when(npcComposition.getName()).thenReturn("Suqah");
 		when(npcComposition.getActions()).thenReturn(new String[]{"Attack"});
 
 		NPC npc1 = mock(NPC.class);
-		when(npc1.getName()).thenReturn("Suqah");
 		when(npc1.getTransformedComposition()).thenReturn(npcComposition);
 
 		NPC npc2 = mock(NPC.class);
-		when(npc2.getName()).thenReturn("Suqah");
 		when(npc2.getTransformedComposition()).thenReturn(npcComposition);
 
 		when(client.getNpcs()).thenReturn(Arrays.asList(npc1, npc2));
