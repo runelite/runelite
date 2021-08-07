@@ -276,6 +276,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("check", "reset", config::swapBoxTrap);
 		swap("dismantle", "reset", config::swapBoxTrap);
+		swap("dismantle", "investigate", config::swapMonkeyTrap);
 		swap("take", "lay", config::swapBoxTrap);
 
 		swap("pick-up", "chase", config::swapChase);

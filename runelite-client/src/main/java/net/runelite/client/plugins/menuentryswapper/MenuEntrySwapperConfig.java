@@ -456,6 +456,14 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapMonkeyTrap",
+			name = "Maniacal Trap Swap",
+			description = "Swap dismantle with investigate on maniacal monkey's trap",
+			section = objectSection
+	)
+	default boolean swapMonkeyTrap() { return true; }
+
+	@ConfigItem(
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
 		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Explorer's ring, Chronicle",
