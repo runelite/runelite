@@ -155,7 +155,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(notWorkingOverlay);
-		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
+		rebuildNpcNamePatterns();
 		recheckActive();
 	}
 
@@ -184,41 +184,40 @@ public class NpcAggroAreaPlugin extends Plugin
 	public void onSlayerTaskIsSetEvent(SlayerTaskIsSetEvent slayerTaskIsSetEvent)
 	{
 
+		//Formats slayer names to be able to use current NPC agro logic since task does not whole npc names for each task
+		//Example trolls
 		List<String> newlySetSlayerTaskList = new ArrayList<>();
 		newlySetSlayerTaskList.add(formatSlayerNpcPattern(slayerTaskIsSetEvent.slayerTask.getName()));
 		Arrays.stream(slayerTaskIsSetEvent.slayerTask.getTargetNames())
 			.map(this::formatSlayerNpcPattern)
 			.forEach(newlySetSlayerTaskList::add);
 
-		if (!slayerTaskList.containsAll(newlySetSlayerTaskList))
+		if (slayerTaskList.containsAll(newlySetSlayerTaskList))
 		{
-			if (config.autoShowSlayerTaskAggroTimer())
-			{
-				if (!slayerTaskList.containsAll(newlySetSlayerTaskList))
-				{
-					npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
-				}
-				if (!npcNamePatterns.containsAll(newlySetSlayerTaskList))
-				{
-					List<String> combindedList = new ArrayList<>();
-					combindedList.addAll(newlySetSlayerTaskList);
-					combindedList.addAll(npcNamePatterns);
-					npcNamePatterns = combindedList;
-				}
-			}
-			slayerTaskList = newlySetSlayerTaskList;
-
+			return;
 		}
+		slayerTaskList = newlySetSlayerTaskList;
+		rebuildNpcNamePatterns();
 	}
 
 	@Subscribe
 	public void onSlayerTaskEndsEvent(SlayerTaskEndsEvent slayerTaskEndsEvent)
 	{
-		if (npcNamePatterns.containsAll(slayerTaskList))
-		{
-			npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
-		}
 		slayerTaskList = new ArrayList<>();
+		rebuildNpcNamePatterns();
+	}
+
+	private void rebuildNpcNamePatterns()
+	{
+		List<String> newNamePatternsList = new ArrayList<>(NAME_SPLITTER.splitToList(config.npcNamePatterns()));
+		if (config.autoShowSlayerTaskAggroTimer())
+		{
+			if (!newNamePatternsList.containsAll(slayerTaskList))
+			{
+				newNamePatternsList.addAll(slayerTaskList);
+			}
+		}
+		npcNamePatterns = newNamePatternsList;
 	}
 
 	private Area generateSafeArea()
@@ -455,21 +454,11 @@ public class NpcAggroAreaPlugin extends Plugin
 				calculateLinesToDisplay();
 				break;
 			case "npcUnaggroNames":
-				npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
+				rebuildNpcNamePatterns();
 				recheckActive();
 				break;
 			case "autoShowSlayerTaskAggroTimer":
-				if (Boolean.parseBoolean(event.getNewValue()))
-				{
-					List<String> combinedList = new ArrayList<>();
-					combinedList.addAll(slayerTaskList);
-					combinedList.addAll(npcNamePatterns);
-					npcNamePatterns = combinedList;
-				}
-				else
-				{
-					npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
-				}
+				rebuildNpcNamePatterns();
 				recheckActive();
 				break;
 		}
