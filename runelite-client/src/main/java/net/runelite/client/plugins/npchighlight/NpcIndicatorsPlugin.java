@@ -725,4 +725,15 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		return config.getHighlightColor();
 	}
+
+	Color decideRespawnTileColor(String npcName)
+	{
+		HighlightNpcEvent npcFromOtherPlugin = otherPluginHighlightedNpcs.stream().filter(o -> o.npcToHighLight.getName().equals(npcName)).findFirst().orElse(null);
+
+		if (npcFromOtherPlugin != null)
+		{
+			return npcFromOtherPlugin.colorToHighLight;
+		}
+		return config.getHighlightColor();
+	}
 }

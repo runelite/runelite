@@ -28,22 +28,24 @@ package net.runelite.client.plugins.npchighlight.events;
 import lombok.Value;
 import net.runelite.api.NPC;
 
+/**
+ * This event fires whenever you want to un high light a npc
+ */
 @Value
 public class UnHighlightNpcEvent
 {
+	/**
+	 * The npc to have the highlight removed from
+	 */
 	public NPC npcToBeRemovedFromBeingHighlight;
-
-	public String sourcePlugin;
 
 	public UnHighlightNpcEvent(NPC npcToHighLight)
 	{
 		this.npcToBeRemovedFromBeingHighlight = npcToHighLight;
-		this.sourcePlugin = "";
 	}
 
 	public UnHighlightNpcEvent(NPC npcToHighLight, String sourcePlugin)
 	{
 		this.npcToBeRemovedFromBeingHighlight = npcToHighLight;
-		this.sourcePlugin = sourcePlugin;
 	}
 }

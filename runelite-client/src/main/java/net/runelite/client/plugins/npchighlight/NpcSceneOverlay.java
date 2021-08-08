@@ -114,8 +114,7 @@ public class NpcSceneOverlay extends Overlay
 			return;
 		}
 
-		//TODO not sure if this is working
-		final Color color = plugin.decideHighLightColor(npc.getNpcIndex());
+		final Color color = plugin.decideRespawnTileColor(npc.getNpcName());
 
 		final LocalPoint centerLp = new LocalPoint(
 			lp.getX() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2,
