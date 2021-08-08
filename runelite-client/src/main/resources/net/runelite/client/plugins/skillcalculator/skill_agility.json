@@ -43,6 +43,12 @@
       "xp": 540
     },
     {
+      "level": 30,
+      "icon": 6970,
+      "name": "Agility Pyramid",
+      "xp": 722
+    },
+    {
       "level":30,
       "icon": 11330,
       "name": "Leaping salmon",
