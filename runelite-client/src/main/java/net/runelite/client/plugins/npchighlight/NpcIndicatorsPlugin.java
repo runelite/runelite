@@ -168,6 +168,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	 */
 	private WorldPoint lastPlayerLocation;
 
+	/**
+	 * Holds npcs from other plugins and their colors to be highlighted 
+	 */
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<HighlightNpcEvent> otherPluginHighlightedNpcs = new HashSet<>();
 
