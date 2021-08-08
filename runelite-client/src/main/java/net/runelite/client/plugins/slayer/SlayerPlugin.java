@@ -76,12 +76,15 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.npchighlight.events.HighlightNpcEvent;
+import net.runelite.client.plugins.npchighlight.events.UnHighlightNpcEvent;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
@@ -152,13 +155,7 @@ public class SlayerPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private TargetClickboxOverlay targetClickboxOverlay;
-
-	@Inject
 	private TargetWeaknessOverlay targetWeaknessOverlay;
-
-	@Inject
-	private TargetMinimapOverlay targetMinimapOverlay;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -171,6 +168,9 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private ChatClient chatClient;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
@@ -205,9 +205,7 @@ public class SlayerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(targetClickboxOverlay);
 		overlayManager.add(targetWeaknessOverlay);
-		overlayManager.add(targetMinimapOverlay);
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -232,10 +230,9 @@ public class SlayerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		overlayManager.remove(targetClickboxOverlay);
 		overlayManager.remove(targetWeaknessOverlay);
-		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
+		removeHighlightedNpcs();
 		highlightedTargets.clear();
 		taggedNpcs.clear();
 		cachedXp = -1;
@@ -260,6 +257,7 @@ public class SlayerPlugin extends Plugin
 				taskName = "";
 				amount = 0;
 				loginFlag = true;
+				removeHighlightedNpcs();
 				highlightedTargets.clear();
 				taggedNpcs.clear();
 				break;
@@ -319,7 +317,7 @@ public class SlayerPlugin extends Plugin
 		NPC npc = npcSpawned.getNpc();
 		if (isTarget(npc))
 		{
-			highlightedTargets.add(npc);
+			addNpcToBeHighlighted(npc);
 		}
 	}
 
@@ -329,6 +327,7 @@ public class SlayerPlugin extends Plugin
 		NPC npc = npcDespawned.getNpc();
 		taggedNpcs.remove(npc);
 		highlightedTargets.remove(npc);
+		eventBus.post(new UnHighlightNpcEvent(npc));
 	}
 
 	@Subscribe
@@ -562,7 +561,13 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals(SlayerConfig.GROUP_NAME) || !event.getKey().equals("infobox"))
+		String key = event.getKey();
+		if (key.equals("targetColor"))
+		{
+			rebuildTargetList();
+		}
+
+		if (!event.getGroup().equals(SlayerConfig.GROUP_NAME) || !key.equals("infobox"))
 		{
 			return;
 		}
@@ -662,13 +667,14 @@ public class SlayerPlugin extends Plugin
 
 	private void rebuildTargetList()
 	{
+		removeHighlightedNpcs();
 		highlightedTargets.clear();
 
 		for (NPC npc : client.getNpcs())
 		{
 			if (isTarget(npc))
 			{
-				highlightedTargets.add(npc);
+				addNpcToBeHighlighted(npc);
 			}
 		}
 	}
@@ -880,5 +886,19 @@ public class SlayerPlugin extends Plugin
 			configManager.unsetConfiguration(SlayerConfig.GROUP_NAME, key);
 			configManager.setRSProfileConfiguration(SlayerConfig.GROUP_NAME, key, value);
 		}
+	}
+
+	private void removeHighlightedNpcs()
+	{
+		for (NPC npc: highlightedTargets)
+		{
+			eventBus.post(new UnHighlightNpcEvent(npc, SlayerPlugin.class.toString()));
+		}
+	}
+
+	private void addNpcToBeHighlighted(NPC npc)
+	{
+		highlightedTargets.add(npc);
+		eventBus.post(new HighlightNpcEvent(npc, config.getTargetColor()));
 	}
 }

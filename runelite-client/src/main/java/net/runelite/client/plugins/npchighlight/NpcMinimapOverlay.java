@@ -57,7 +57,8 @@ public class NpcMinimapOverlay extends Overlay
 	{
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, Text.removeTags(npc.getName()), config.getHighlightColor());
+			Color highlightColor = plugin.decideHighLightColor(npc.getIndex());
+			renderNpcOverlay(graphics, npc, Text.removeTags(npc.getName()), highlightColor);
 		}
 
 		return null;

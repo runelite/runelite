@@ -92,7 +92,8 @@ public class NpcSceneOverlay extends Overlay
 
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, config.getHighlightColor());
+			Color npcHighLightColor = plugin.decideHighLightColor(npc.getIndex());
+			renderNpcOverlay(graphics, npc, npcHighLightColor);
 		}
 
 		return null;
@@ -113,7 +114,8 @@ public class NpcSceneOverlay extends Overlay
 			return;
 		}
 
-		final Color color = config.getHighlightColor();
+		//TODO not sure if this is working
+		final Color color = plugin.decideHighLightColor(npc.getNpcIndex());
 
 		final LocalPoint centerLp = new LocalPoint(
 			lp.getX() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2,

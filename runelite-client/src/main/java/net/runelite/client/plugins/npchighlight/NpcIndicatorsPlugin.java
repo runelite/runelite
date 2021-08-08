@@ -32,7 +32,6 @@ import java.awt.Color;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -66,6 +65,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.npchighlight.events.HighlightNpcEvent;
+import net.runelite.client.plugins.npchighlight.events.UnHighlightNpcEvent;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
@@ -166,6 +167,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * The players location on the last game tick.
 	 */
 	private WorldPoint lastPlayerLocation;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<HighlightNpcEvent> otherPluginHighlightedNpcs = new HashSet<>();
 
 	/**
 	 * When hopping worlds, NPCs can spawn without them actually respawning,
@@ -450,6 +454,31 @@ public class NpcIndicatorsPlugin extends Plugin
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
 
+	@Subscribe
+	public void onHighlightNpcEvent(HighlightNpcEvent highlightNpcEvent)
+	{
+		String npcName = highlightNpcEvent.npcToHighLight.getName();
+		if (npcName == null)
+		{
+			return;
+		}
+
+		boolean alreadyPresentInList = otherPluginHighlightedNpcs.stream().anyMatch(o -> o.npcToHighLight.getIndex() == highlightNpcEvent.npcToHighLight.getIndex());
+		if (alreadyPresentInList)
+		{
+			return;
+		}
+		otherPluginHighlightedNpcs.add(highlightNpcEvent);
+		rebuildAllNpcs();
+	}
+
+	@Subscribe
+	public void onUnHighlightNpcEvent(UnHighlightNpcEvent unHighlightNpcEvent)
+	{
+		otherPluginHighlightedNpcs.removeIf(highlightNpcEvent -> highlightNpcEvent.npcToHighLight.getIndex() == unHighlightNpcEvent.npcToBeRemovedFromBeingHighlight.getIndex());
+		rebuildAllNpcs();
+	}
+
 	private void updateNpcsToHighlight(String npc)
 	{
 		final List<String> highlightedNpcs = new ArrayList<>(highlights);
@@ -525,13 +554,18 @@ public class NpcIndicatorsPlugin extends Plugin
 	List<String> getHighlights()
 	{
 		final String configNpcs = config.getNpcToHighlight();
+		List<String> highLightedNpcNames = new ArrayList<>();
+		otherPluginHighlightedNpcs.stream()
+			.map(HighlightNpcEvent::getNpcToHighLight)
+			.map(NPC::getName)
+			.forEach(highLightedNpcNames::add);
 
 		if (configNpcs.isEmpty())
 		{
-			return Collections.emptyList();
+			return highLightedNpcNames;
 		}
-
-		return Text.fromCSV(configNpcs);
+		highLightedNpcNames.addAll(Text.fromCSV(configNpcs));
+		return highLightedNpcNames;
 	}
 
 	@VisibleForTesting
@@ -679,5 +713,16 @@ public class NpcIndicatorsPlugin extends Plugin
 		spawnedNpcsThisTick.clear();
 		despawnedNpcsThisTick.clear();
 		teleportGraphicsObjectSpawnedThisTick.clear();
+	}
+
+	Color decideHighLightColor(int npcIndex)
+	{
+		HighlightNpcEvent npcFromOtherPlugin = otherPluginHighlightedNpcs.stream().filter(o -> o.npcToHighLight.getIndex() == npcIndex).findFirst().orElse(null);
+
+		if (npcFromOtherPlugin != null)
+		{
+			return npcFromOtherPlugin.colorToHighLight;
+		}
+		return config.getHighlightColor();
 	}
 }
