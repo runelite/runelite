@@ -108,6 +108,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9]+) duels?\\.");
 	private static final Pattern QUEST_PATTERN_1 = Pattern.compile(".+?ve\\.*? (?<verb>been|rebuilt|.+?ed)? ?(?:the )?'?(?<quest>.+?)'?(?: [Qq]uest)?[!.]?$");
 	private static final Pattern QUEST_PATTERN_2 = Pattern.compile("'?(?<quest>.+?)'?(?: [Qq]uest)? (?<verb>[a-z]\\w+?ed)?(?: f.*?)?[!.]?$");
+	private static final Pattern COMBAT_ACHIEVEMENTS_PATTERN = Pattern.compile("Congratulations, you've completed an? (?<tier>\\w+) combat task: <col=06600c>(?<task>[\\w ',-:.?!()]+)</col>\\.");
 	private static final ImmutableList<String> RFD_TAGS = ImmutableList.of("Another Cook", "freed", "defeated", "saved");
 	private static final ImmutableList<String> WORD_QUEST_IN_NAME_TAGS = ImmutableList.of("Another Cook", "Doric", "Heroes", "Legends", "Observatory", "Olaf", "Waterfall");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
@@ -487,36 +488,16 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName, SD_COLLECTION_LOG);
 		}
 
-		if (config.screenshotCombatAchievements() && chatMessage.contains("completed") && chatMessage.contains("combat task"))
+		if (config.screenshotCombatAchievements() && chatMessage.contains("combat task"))
 		{
-			String tier = "";
-			if (chatMessage.contains("easy"))
+			Matcher m = COMBAT_ACHIEVEMENTS_PATTERN.matcher(chatMessage);
+			if (m.matches())
 			{
-				tier = "Easy";
+				String tier = m.group(1).substring(0,1).toUpperCase() + m.group(1).substring(1);
+				String task = m.group(2);
+				String fileName = tier + " (" + task + ")";
+				takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
 			}
-			if (chatMessage.contains("medium"))
-			{
-				tier = "Medium";
-			}
-			if (chatMessage.contains("hard"))
-			{
-				tier = "Hard";
-			}
-			if (chatMessage.contains("elite"))
-			{
-				tier = "Elite";
-			}
-			if (chatMessage.contains("master"))
-			{
-				tier = "Master";
-			}
-			if (chatMessage.contains("grandmaster"))
-			{
-				tier = "Grandmaster";
-			}
-			String achievement = chatMessage.substring(chatMessage.indexOf(":") + 2, chatMessage.length() - 1);
-			String fileName = tier + " achievement (" + achievement + ")";
-			takeScreenshot(filename, SD_COMBAT_ACHIEVEMENTS);
 		}
 	}
 
