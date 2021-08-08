@@ -365,7 +365,7 @@ class SkillCalculator extends JPanel
 
 	private String formatXPActionString(double xp, int actionCount, String expExpression)
 	{
-		return XP_FORMAT.format(xp) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount > 1 ? " actions" : " action");
+		return XP_FORMAT.format(xp) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount == 1 ? " action" : " actions");
 	}
 
 	private void updateInputFields()
