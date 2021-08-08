@@ -55,7 +55,7 @@ public class ItemStatOverlay extends Overlay
 {
 	// Unarmed attack speed is 4
 	@VisibleForTesting
-	static final ItemStats UNARMED = new ItemStats(false, true, 0, 0,
+	static final ItemStats UNARMED = new ItemStats(true, 0, 0,
 		ItemEquipmentStats.builder()
 			.aspeed(4)
 			.build());
