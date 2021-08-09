@@ -39,13 +39,13 @@ import net.runelite.api.widgets.WidgetInfo;
 @Slf4j
 public class WidgetOverlay extends Overlay
 {
-	public static Collection<WidgetOverlay> createOverlays(final Client client)
+	public static Collection<WidgetOverlay> createOverlays(final OverlayManager overlayManager, final Client client)
 	{
 		return Arrays.asList(
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_CENTER),
-			new XpTrackerWidgetOverlay(client, WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),
+			new XpTrackerWidgetOverlay(overlayManager, client, WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.RAIDS_POINTS_INFOBOX, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.TOB_PARTY_INTERFACE, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.TOB_PARTY_STATS, OverlayPosition.TOP_LEFT),
@@ -190,9 +190,12 @@ public class WidgetOverlay extends Overlay
 
 	private static class XpTrackerWidgetOverlay extends WidgetOverlay
 	{
-		private XpTrackerWidgetOverlay(Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
+		private final OverlayManager overlayManager;
+
+		private XpTrackerWidgetOverlay(OverlayManager overlayManager, Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
 		{
 			super(client, widgetInfo, overlayPosition);
+			this.overlayManager = overlayManager;
 		}
 
 		/**
@@ -224,7 +227,13 @@ public class WidgetOverlay extends Overlay
 					position = OverlayPosition.TOP_LEFT;
 					break;
 			}
-			setPosition(position);
+
+			if (position != super.getPosition())
+			{
+				log.debug("Xp tracker moved position");
+				setPosition(position);
+				overlayManager.rebuildOverlayLayers();
+			}
 			return position;
 		}
 	}
