@@ -197,10 +197,10 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 11,
-			keyName = "drawPlayerOutline",
-			name = "Draw player outlines",
-			description = "Configures whether or not player outlines should be drawn"
+		position = 11,
+		keyName = "drawPlayerOutline",
+		name = "Draw player outlines",
+		description = "Configures whether or not player outlines should be drawn"
 	)
 	default boolean drawOutline()
 	{
@@ -208,10 +208,10 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "borderWidth",
-			name = "Outline Width",
-			description = "Width of the outlined border",
-			position = 12
+		keyName = "borderWidth",
+		name = "Outline Width",
+		description = "Width of the outlined border",
+		position = 12
 	)
 	default int borderWidth()
 	{
@@ -219,10 +219,10 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "outlineFeather",
-			name = "Outline feather",
-			description = "Specify between 0-4 how much of the model outline should be faded",
-			position = 13
+		keyName = "outlineFeather",
+		name = "Outline feather",
+		description = "Specify between 0-4 how much of the model outline should be faded",
+		position = 13
 	)
 	@Range(
 			max = 4
