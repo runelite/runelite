@@ -45,6 +45,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -120,6 +121,17 @@ public class InteractHighlightPlugin extends Plugin
 			// when the destination is reached, clear the interacting object
 			interactedObject = null;
 			interactedNpc = null;
+		}
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged interactingChanged)
+	{
+		if (interactingChanged.getSource() == client.getLocalPlayer()
+				&& client.getTickCount() > clickTick && interactingChanged.getTarget() != interactedNpc)
+		{
+			interactedNpc = null;
+			attacked = interactingChanged.getTarget() != null && interactingChanged.getTarget().getCombatLevel() > 0;
 		}
 	}
 

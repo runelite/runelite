@@ -30,11 +30,13 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
+@Slf4j
 public class WidgetOverlay extends Overlay
 {
 	public static Collection<WidgetOverlay> createOverlays(final Client client)
@@ -71,13 +73,15 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZEABLE_CLASSIC, OverlayPosition.CANVAS_TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.TEMPOROSS_STATUS_INDICATOR, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.BA_HEAL_TEAMMATES, OverlayPosition.BOTTOM_LEFT),
-			new WidgetOverlay(client, WidgetInfo.BA_TEAM, OverlayPosition.TOP_RIGHT)
+			new WidgetOverlay(client, WidgetInfo.BA_TEAM, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DETACHED)
 		);
 	}
 
 	protected final Client client;
 	private final WidgetInfo widgetInfo;
 	private final Rectangle parentBounds = new Rectangle();
+	private boolean revalidate;
 
 	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition)
 	{
@@ -107,10 +111,34 @@ public class WidgetOverlay extends Overlay
 			return null;
 		}
 
+		assert widget != null;
+
 		final Rectangle bounds = getBounds();
-		// The widget relative pos is relative to the parent
-		widget.setRelativeX(bounds.x - parent.x);
-		widget.setRelativeY(bounds.y - parent.y);
+		// OverlayRenderer sets the overlay bounds to the preferred location if one is set prior to calling render()
+		// for detached overlays.
+		if (getPosition() != OverlayPosition.DETACHED || getPreferredLocation() != null)
+		{
+			// The widget relative pos is relative to the parent
+			widget.setRelativeX(bounds.x - parent.x);
+			widget.setRelativeY(bounds.y - parent.y);
+		}
+		else
+		{
+			if (revalidate)
+			{
+				revalidate = false;
+				log.debug("Revalidating {}", widgetInfo);
+				// Revalidate the widget to reposition it back to its normal location after an overlay reset
+				widget.revalidate();
+			}
+
+			// Update the overlay bounds to the widget bounds so the drag overlay renders correctly.
+			// Note OverlayManager uses original bounds reference to render managing mode and for
+			// onMouseOver, so update the existing bounds vs. replacing the reference.
+			Rectangle widgetBounds = widget.getBounds();
+			bounds.setBounds(widgetBounds.x, widgetBounds.y, widgetBounds.width, widgetBounds.height);
+		}
+
 		return new Dimension(widget.getWidth(), widget.getHeight());
 	}
 
@@ -150,6 +178,14 @@ public class WidgetOverlay extends Overlay
 
 		final Widget widget = client.getWidget(widgetInfo);
 		return getParentBounds(widget);
+	}
+
+	@Override
+	public void reset()
+	{
+		super.reset();
+		// Revalidate must be called on the client thread, so defer til next frame
+		revalidate = true;
 	}
 
 	private static class XpTrackerWidgetOverlay extends WidgetOverlay

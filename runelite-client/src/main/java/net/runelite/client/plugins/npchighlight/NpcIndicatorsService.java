@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.poh;
+package net.runelite.client.plugins.npchighlight;
 
-import java.time.Instant;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.function.Predicate;
+import net.runelite.api.NPC;
 
-@Getter
-@Setter
-class IncenseBurner
+public interface NpcIndicatorsService
 {
-	private Instant start;
-	private boolean lit;
-	private double countdownTimer;
-	private double randomTimer;
-	private Instant end;
-
-	void reset()
-	{
-		countdownTimer = 0;
-		randomTimer = 0;
-	}
+	void registerHighlighter(Predicate<NPC> p);
+	void unregisterHighlighter(Predicate<NPC> p);
+	void rebuild();
 }
