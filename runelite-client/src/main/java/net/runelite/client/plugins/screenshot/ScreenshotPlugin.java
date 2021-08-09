@@ -86,6 +86,7 @@ import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
+import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
 	name = "Screenshot",
@@ -493,8 +494,8 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = COMBAT_ACHIEVEMENTS_PATTERN.matcher(chatMessage);
 			if (m.matches())
 			{
-				String tier = m.group(1).substring(0,1).toUpperCase() + m.group(1).substring(1);
-				String task = m.group(2);
+				String tier = WordUtils.capitalize(m.group("tier"));
+				String task = m.group("task").replaceAll("[:?]","");
 				String fileName = tier + " (" + task + ")";
 				takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
 			}
