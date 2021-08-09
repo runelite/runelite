@@ -29,6 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("playerindicators")
 public interface PlayerIndicatorsConfig extends Config
@@ -196,7 +197,43 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+			position = 11,
+			keyName = "drawPlayerOutline",
+			name = "Draw player outlines",
+			description = "Configures whether or not player outlines should be drawn"
+	)
+	default boolean drawOutline()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "borderWidth",
+			name = "Outline Width",
+			description = "Width of the outlined border",
+			position = 12
+	)
+	default int borderWidth()
+	{
+		return 4;
+	}
+
+	@ConfigItem(
+			keyName = "outlineFeather",
+			name = "Outline feather",
+			description = "Specify between 0-4 how much of the model outline should be faded",
+			position = 13
+	)
+	@Range(
+			max = 4
+	)
+	default int outlineFeather()
+	{
+		return 4;
+	}
+
+	@ConfigItem(
+		position = 14,
 		keyName = "playerNamePosition",
 		name = "Name position",
 		description = "Configures the position of drawn player names, or if they should be disabled"
@@ -207,7 +244,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 15,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not minimap names for players with rendered names should be drawn"
@@ -218,7 +255,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 16,
 		keyName = "colorPlayerMenu",
 		name = "Colorize player menu",
 		description = "Color right click menu for players"
@@ -229,7 +266,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 17,
 		keyName = "clanMenuIcons",
 		name = "Show friends chat ranks",
 		description = "Add friends chat rank to right click menu and next to player names"
@@ -240,7 +277,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 18,
 		keyName = "clanchatMenuIcons",
 		name = "Show clan chat ranks",
 		description = "Add clan chat rank to right click menu and next to player names"
