@@ -234,6 +234,7 @@ public class ChatService
 
 	public int[] getPetList(String name)
 	{
+		//  Use HSET instead of SET for !pets
 		Set<String> pets;
 		try (Jedis jedis = jedisPool.getResource())
 		{
@@ -252,6 +253,7 @@ public class ChatService
 
 	public void setPetList(String name, int[] petList)
 	{
+		//  Use HSET instead of SET for !pets
 		String[] pets = Arrays.stream(petList).mapToObj(Integer::toString).toArray(String[]::new);
 		String key = "pets." + name;
 		try (Jedis jedis = jedisPool.getResource())
