@@ -52,7 +52,6 @@ enum ItemWithConfig
 	FALADOR_SHIELD_3(ItemID.FALADOR_SHIELD_3, ItemChargeConfig.KEY_FALADOR_SHIELD, ItemChargeType.FALADOR_SHIELD),
 	FALADOR_SHIELD_4(ItemID.FALADOR_SHIELD_4, ItemChargeConfig.KEY_FALADOR_SHIELD, ItemChargeType.FALADOR_SHIELD);
 
-
 	private final int itemId;
 	private final String configKey;
 	private final ItemChargeType type;
