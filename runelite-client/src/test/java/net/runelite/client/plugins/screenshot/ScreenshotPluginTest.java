@@ -344,6 +344,17 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
+	public void testCombatAchievementsParsing()
+	{
+		assertEquals("Easy (Into the Den of Giants)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an easy combat task: <col=06600c>Into the Den of Giants</col>."));
+		assertEquals("Medium (I'd Rather Not Learn)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a medium combat task: <col=06600c>I'd Rather Not Learn</col>."));
+		assertEquals("Hard (Why Cook)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a hard combat task: <col=0cc919>Why Cook?</col>."));
+		assertEquals("Elite (From Dusk...)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an elite combat task: <col=06600c>From Dusk...</col>."));
+		assertEquals("Master (Perfect Olm (Trio))", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a master combat task: <col=0cc919>Perfect Olm (Trio)</col>."));
+		assertEquals("Grandmaster (Chambers of Xeric CM (5-Scale) Speed-Runner)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a grandmaster combat task: <col=0cc919>Chambers of Xeric: CM (5-Scale) Speed-Runner</col>."));
+	}
+
+	@Test
 	public void testBAHighGambleRewardParsing()
 	{
 		assertEquals("High Gamble(100)", ScreenshotPlugin.parseBAHighGambleWidget(BA_HIGH_GAMBLE_REWARD));
