@@ -432,11 +432,7 @@ public class ItemChargePlugin extends Plugin
 					updateFaladorShieldCharges(2);
 				}
 			}
-			else if (message.equals(FALADOR_SHIELD_EMPTY_TEXT))
-			{
-				updateFaladorShieldCharges(0);
-			}
-			else if (message.equals(FALADOR_SHIELD_EMPTY_TEXT_RECHARGE))
+			else if (message.equals(FALADOR_SHIELD_EMPTY_TEXT) || message.equals(FALADOR_SHIELD_EMPTY_TEXT_RECHARGE))
 			{
 				updateFaladorShieldCharges(0);
 			}
