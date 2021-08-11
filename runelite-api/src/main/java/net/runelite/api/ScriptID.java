@@ -367,4 +367,18 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 6)
 	public static final int COLLECTION_DRAW_LIST = 2730;
+
+	/**
+	 * Draws the active notification in increasing sizes (increasing horizontally first, then vertically) to show a
+	 * starting animation.
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int NOTIFICATION_START = 3346;
+
+	/**
+	 * Draws the active notification in full size for a specified number of client ticks. In essence, delayed between
+	 * the open and close animations.
+	 */
+	@ScriptArguments(integer = 1)
+	public static final int NOTIFICATION_DELAY = 3347;
 }

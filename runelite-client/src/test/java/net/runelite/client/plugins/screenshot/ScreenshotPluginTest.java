@@ -32,8 +32,12 @@ import java.util.function.Consumer;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
+import net.runelite.api.ScriptID;
+import net.runelite.api.VarClientStr;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -59,6 +63,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -76,6 +81,7 @@ public class ScreenshotPluginTest
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
 	private static final String BA_HIGH_GAMBLE_REWARD = "Raw shark (x 300)!<br>High level gamble count: <col=7f0000>100</col>";
 	private static final String HUNTER_LEVEL_2_TEXT = "<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.";
+	private static final String COLLECTION_LOG_CHAT = "New item added to your collection log: <col=ef1020>Chompy bird hat</col>";
 
 	@Mock
 	@Bind
@@ -128,6 +134,7 @@ public class ScreenshotPluginTest
 		when(screenshotConfig.screenshotValuableDrop()).thenReturn(true);
 		when(screenshotConfig.valuableDropThreshold()).thenReturn(1000);
 		when(screenshotConfig.screenshotUntradeableDrop()).thenReturn(true);
+		when(screenshotConfig.screenshotCollectionLogEntries()).thenReturn(true);
 	}
 
 	@Test
@@ -385,5 +392,36 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onGameTick(new GameTick());
 
 		verify(drawManager, times(0)).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testCollectionLogPopup()
+	{
+		ScriptPreFired notificationStart = new ScriptPreFired(ScriptID.NOTIFICATION_START);
+		screenshotPlugin.onScriptPreFired(notificationStart);
+
+		when(client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Collection log");
+		when(client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("New item:<br><br><col=ffffff>Chompy bird hat</col>");
+
+		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
+		screenshotPlugin.onScriptPreFired(notificationDelay);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testCollectionLogChat()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", COLLECTION_LOG_CHAT, null, 0);
+
+		when(client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(1);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+
+		when(client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(3);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verifyNoMoreInteractions(drawManager);
 	}
 }
