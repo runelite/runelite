@@ -719,7 +719,7 @@
       "level": 83,
       "icon": 21338,
       "name": "Amethyst Bolt Tips",
-      "xp": 60
+      "xp": 4
     },
     {
       "level": 83,
@@ -743,19 +743,25 @@
       "level": 85,
       "icon": 21350,
       "name": "Amethyst Arrowtips",
-      "xp": 60
+      "xp": 4
     },
     {
       "level": 87,
       "icon": 21352,
       "name": "Amethyst Javelin Heads",
-      "xp": 60
+      "xp": 12
     },
     {
       "level": 87,
       "icon": 10973,
       "name": "Light Orb",
       "xp": 70
+    },
+    {
+      "level": 89,
+      "icon": 25853,
+      "name": "Amethyst Dart Tip",
+      "xp": 7.5
     },
     {
       "level": 89,

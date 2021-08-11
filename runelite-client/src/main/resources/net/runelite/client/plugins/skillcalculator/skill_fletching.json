@@ -566,6 +566,12 @@
     },
     {
       "level": 90,
+      "icon": 25849,
+      "name": "Amethyst Dart",
+      "xp": 21
+    },
+    {
+      "level": 90,
       "icon": 11212,
       "name": "Dragon Arrow",
       "xp": 15
