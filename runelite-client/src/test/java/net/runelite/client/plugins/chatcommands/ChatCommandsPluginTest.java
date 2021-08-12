@@ -31,6 +31,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -840,6 +841,7 @@ public class ChatCommandsPluginTest
 		}
 
 		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
+		when(logPetEntriesWidget[1].getItemQuantity()).thenReturn(1);
 		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
@@ -849,10 +851,11 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		Pet[] playerPetList = new Pet[1];
-		playerPetList[0] = Pet.IKKLE_HYDRA;
+		HashMap<Integer, Integer> playerPetList = new HashMap<Integer, Integer>();
+		playerPetList.put(Pet.IKKLE_HYDRA.getIconID(), 1);
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets",
+			gson.toJson(playerPetList));
 	}
 
 	@Test
@@ -886,7 +889,8 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(new Pet[0]));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets",
+			gson.toJson(new HashMap<Integer, Integer>()));
 	}
 
 	@Test
@@ -914,6 +918,7 @@ public class ChatCommandsPluginTest
 		}
 
 		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
+		when(logPetEntriesWidget[1].getItemQuantity()).thenReturn(1);
 		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
@@ -923,10 +928,11 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		Pet[] playerPetList = new Pet[1];
-		playerPetList[0] = Pet.IKKLE_HYDRA;
+		HashMap<Integer, Integer> playerPetList = new HashMap<Integer, Integer>();
+		playerPetList.put(Pet.IKKLE_HYDRA.getIconID(), 1);
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets",
+			gson.toJson(playerPetList));
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setMessage("New item added to your collection log: Chompy chick");
@@ -935,10 +941,51 @@ public class ChatCommandsPluginTest
 			String.class)).thenReturn(gson.toJson(playerPetList));
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		playerPetList = new Pet[2];
-		playerPetList[0] = Pet.IKKLE_HYDRA;
-		playerPetList[1] = Pet.CHOMPY_CHICK;
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+		playerPetList.put(Pet.CHOMPY_CHICK.getIconID(), 1);
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets",
+			gson.toJson(playerPetList));
+	}
+
+	@Test
+	public void testDuplicatePetsPlayerPetList()
+	{
+		Widget logEntryHeaderWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+
+		Widget[] logEntryHeaderItemsWidget = new Widget[1];
+		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
+
+		Widget logEntryHeaderTitleWidget = mock(Widget.class);
+		when(logEntryHeaderWidget.getChild(ChatCommandsPlugin.COL_LOG_ENTRY_HEADER_TITLE_INDEX))
+			.thenReturn(logEntryHeaderTitleWidget);
+		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
+
+		Widget logEntryItemsWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+
+		Widget[] logPetEntriesWidget = new Widget[3];
+		for (int i = 0; i < 3; i++)
+		{
+			logPetEntriesWidget[i] = mock(Widget.class);
+			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
+		}
+
+		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
+		when(logPetEntriesWidget[1].getItemQuantity()).thenReturn(3);
+		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
+
+		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
+
+		ScriptPostFired scriptPostFired = new ScriptPostFired(ScriptID.COLLECTION_DRAW_LIST);
+		chatCommandsPlugin.onScriptPostFired(scriptPostFired);
+
+		chatCommandsPlugin.onGameTick(new GameTick());
+
+		HashMap<Integer, Integer> playerPetList = new HashMap<Integer, Integer>();
+		playerPetList.put(Pet.IKKLE_HYDRA.getIconID(), 3);
+
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets",
+			gson.toJson(playerPetList));
 	}
 
 	@Test
