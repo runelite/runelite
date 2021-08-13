@@ -27,6 +27,7 @@ package net.runelite.client.plugins.worldhopper.ping;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.unix.LibC;
+import net.runelite.client.util.OSType;
 
 interface RLLibC extends LibC
 {
@@ -34,9 +35,9 @@ interface RLLibC extends LibC
 
 	int AF_INET = 2;
 	int SOCK_DGRAM = 2;
-	int SOL_SOCKET = 1;
+	int SOL_SOCKET = OSType.getOSType() == OSType.MacOS ? 0xffff : 1;
 	int IPPROTO_ICMP = 1;
-	int SO_RCVTIMEO = 20;
+	int SO_RCVTIMEO = OSType.getOSType() == OSType.MacOS ? 0x1006 : 20;
 
 	int socket(int domain, int type, int protocol);
 
