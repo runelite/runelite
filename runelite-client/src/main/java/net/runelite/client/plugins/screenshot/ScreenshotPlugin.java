@@ -729,7 +729,13 @@ public class ScreenshotPlugin extends Plugin
 		return "High Gamble(count not found)";
 	}
 
-	/**Parses the combat achievement success chat message into a string for filename. ...*/
+	/**
+	 * Parses a combat achievement success chat message into a filename-safe string.
+	 *
+	 * @param text A received chat message which may or may not be from completing a combat achievement.
+	 * @return A formatted string of the achieved combat task tier and name, or the empty string if the passed message
+	 *         is not a combat achievement completion message.
+	 */
 	@VisibleForTesting
 	static String parseCombatAchievementWidget(final String text)
 	{
