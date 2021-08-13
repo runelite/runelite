@@ -489,7 +489,7 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName, SD_COLLECTION_LOG);
 		}
 
-		if (config.screenshotCombatAchievements() && chatMessage.contains("combat task"))
+		if (chatMessage.contains("combat task") && config.screenshotCombatAchievements())
 		{
 			String fileName = parseCombatAchievementWidget(chatMessage);
 			if (!fileName.isEmpty())
