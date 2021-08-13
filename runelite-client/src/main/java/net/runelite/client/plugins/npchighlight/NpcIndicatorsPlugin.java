@@ -267,7 +267,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 
 			if (color == null && highlightedNpcs.contains(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
 			{
-				color = config.getHighlightColor();
+				color = config.highlightColor();
 			}
 
 			if (color != null)

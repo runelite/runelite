@@ -122,7 +122,7 @@ public class NpcIndicatorsPluginTest
 	{
 		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
 		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(true);
-		when(npcIndicatorsConfig.getHighlightColor()).thenReturn(Color.BLUE);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLUE);
 
 		npcIndicatorsPlugin.rebuild();
 
