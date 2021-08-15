@@ -46,6 +46,7 @@ import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -62,8 +63,10 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
@@ -77,6 +80,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -99,6 +103,7 @@ import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -126,6 +131,13 @@ import org.apache.commons.text.WordUtils;
 @Slf4j
 public class LootTrackerPlugin extends Plugin
 {
+	// Tracking coin drops while wearing Ring of Wealth
+	private Integer coinsLastTick;
+	private Integer tokkulLastTick;
+	private Integer numulitesLastTick;
+	private Optional<LootLast> lastLoot = Optional.empty();
+	private boolean ringOfWeathEquiped;
+
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails?\\.");
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
@@ -489,6 +501,12 @@ public class LootTrackerPlugin extends Plugin
 		eventBus.post(new LootReceived(name, combatLevel, type, items));
 	}
 
+	private Integer getCurrentCurrency(int ItemID)
+	{
+		Optional<Item> coins = Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems()).filter(item -> item.getId() == ItemID).findFirst();
+		return !coins.isPresent() ? 0 : coins.get().getQuantity();
+	}
+
 	@Subscribe
 	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
 	{
@@ -497,7 +515,14 @@ public class LootTrackerPlugin extends Plugin
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
 
-		addLoot(name, combat, LootRecordType.NPC, npc.getId(), items);
+		if (config.trackCoinsFromRingOfWealth())
+		{
+			lastLoot = Optional.of(new LootLast(npc.getId(), name, combat, LootRecordType.NPC, items));
+		}
+		else
+		{
+			addLoot(name, combat, LootRecordType.NPC, npc.getId(), items);
+		}
 
 		if (config.npcKillChatMessage())
 		{
@@ -530,6 +555,45 @@ public class LootTrackerPlugin extends Plugin
 			lootReceivedChatMessage(items, name);
 		}
 	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (config.trackCoinsFromRingOfWealth() && ringOfWeathEquiped)
+		{
+			lastLoot.ifPresent(loot ->
+			{
+				log.debug("Tick - {}", loot.getName());
+				Integer coinsThisTick = getCurrentCurrency(ItemID.COINS_995);
+				Integer numulitesThisTick = getCurrentCurrency(ItemID.NUMULITE);
+				Integer tokkulThisTick = getCurrentCurrency(ItemID.TOKKUL);
+
+				Collection<ItemStack> items = loot.getItems();
+				ItemStack firstItem = items.stream().findFirst().get();
+
+				if (coinsThisTick > coinsLastTick)
+				{
+					items.add(new ItemStack(ItemID.COINS_995, coinsThisTick - coinsLastTick, firstItem.getLocation()));
+				}
+				if (numulitesThisTick > numulitesLastTick)
+				{
+					items.add(new ItemStack(ItemID.NUMULITE, numulitesThisTick - numulitesLastTick, firstItem.getLocation()));
+				}
+				if (tokkulThisTick > tokkulLastTick)
+				{
+					items.add(new ItemStack(ItemID.TOKKUL, tokkulThisTick - tokkulLastTick, firstItem.getLocation()));
+				}
+
+				addLoot(loot.getName(), loot.getCombatLevel(), loot.getType(), loot.getId(), items);
+				lastLoot = Optional.empty();
+			});
+
+			coinsLastTick = getCurrentCurrency(ItemID.COINS_995);
+			numulitesLastTick = getCurrentCurrency(ItemID.NUMULITE);
+			tokkulLastTick = getCurrentCurrency(ItemID.TOKKUL);
+		}
+	}
+
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
@@ -780,6 +844,23 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			Item ring = event.getItemContainer().getItem(EquipmentInventorySlot.RING.getSlotIdx());
+
+			if (ring == null)
+			{
+				ringOfWeathEquiped = false;
+				return;
+			}
+			if (ItemVariationMapping.getVariations(ItemID.RING_OF_WEALTH).contains(ring.getId()))
+			{
+				ringOfWeathEquiped = true;
+				return;
+			}
+			return;
+
+		}
 		if (event.getContainerId() != InventoryID.INVENTORY.getId()
 			|| eventType == null)
 		{
