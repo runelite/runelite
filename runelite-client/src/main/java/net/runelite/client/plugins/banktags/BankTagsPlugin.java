@@ -99,6 +99,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private static final int ITEM_VERTICAL_SPACING = 36;
 	private static final int ITEM_HORIZONTAL_SPACING = 48;
 	private static final int ITEM_ROW_START = 51;
+	private static final int ITEM_CONTAINER_BOTTOM_PADDING = 4;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
@@ -551,8 +552,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		int itemContainerHeight = bankItemContainer.getHeight();
-		// add a second row of height here to allow users to scroll down when the last row is partially visible
-		int adjustedScrollHeight = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING;
+		final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
 		itemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
 
 		final int itemContainerScroll = bankItemContainer.getScrollY();
