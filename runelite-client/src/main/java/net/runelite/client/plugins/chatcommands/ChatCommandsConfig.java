@@ -113,6 +113,17 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 7,
+		keyName = "roles",
+		name = "Roles command",
+		description = "Configures whether the Barbarian Assault role points command is enabled<br> !roles"
+	)
+	default boolean roles()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 8,
 		keyName = "duels",
 		name = "Duels Command",
 		description = "Configures whether the duel arena command is enabled<br> !duels"
@@ -123,7 +134,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "bh",
 		name = "BH Command",
 		description = "Configures whether the Bounty Hunter - Hunter command is enabled<br> !bh"
@@ -134,7 +145,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "bhRogue",
 		name = "BH Rogue Command",
 		description = "Configures whether the Bounty Hunter - Rogue command is enabled<br> !bhrogue"
@@ -145,7 +156,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "lms",
 		name = "LMS Command",
 		description = "Configures whether the Last Man Standing command is enabled<br> !lms"
@@ -156,7 +167,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "lp",
 		name = "LP Command",
 		description = "Configures whether the League Points command is enabled<br> !lp"
@@ -167,7 +178,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "sw",
 		name = "SW Command",
 		description = "Configures whether the Soul Wars Zeal command is enabled<br> !sw"
@@ -178,7 +189,7 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 14,
 		keyName = "pets",
 		name = "Pets Command",
 		description = "Configures whether the player pet list command is enabled<br> !pets<br>" +
