@@ -1190,10 +1190,15 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (player.equals(client.getLocalPlayer().getName()))
 			{
-				String response = "Open the 'All Pets' tab in the Collection Log to update your pet list";
+				ChatMessageBuilder responseBuilder = new ChatMessageBuilder()
+					.append(ChatColorType.NORMAL)
+					.append("Open the 'All Pets' tab in the Collection Log to update your pet list");
+				String response = responseBuilder.build();
+
 				log.debug("Setting response {}", response);
 				final MessageNode messageNode = chatMessage.getMessageNode();
-				messageNode.setValue(response);
+				messageNode.setRuneLiteFormatMessage(response);
+				chatMessageManager.update(messageNode);
 				client.refreshChat();
 			}
 			return;

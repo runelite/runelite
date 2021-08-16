@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import java.util.HashMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -84,15 +85,18 @@ enum Pet
 	private final String name;
 	private final Integer iconID;
 
-	static Pet findPet(String petName)
+	private static final HashMap<String, Pet> PET_HASH_MAP = new HashMap<>();
+
+	static
 	{
 		for (Pet pet : values())
 		{
-			if (pet.name.equals(petName))
-			{
-				return pet;
-			}
+			PET_HASH_MAP.put(pet.name, pet);
 		}
-		return null;
+	}
+
+	static Pet findPet(String petName)
+	{
+		return PET_HASH_MAP.get(petName);
 	}
 }
