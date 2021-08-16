@@ -120,7 +120,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won (\\d+) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost (\\d+) duels?");
 	private static final Pattern ADVENTURE_LOG_TITLE_PATTERN = Pattern.compile("The Exploits of (.+)");
-	private static final Pattern ADVENTURE_LOG_COX_PB_PATTERN = Pattern.compile("Fastest (?:kill|run)(?: - \\(Team size: " + COX_TEAM_SIZES  + "\\))?: ([0-9:]+(?:\\.[0-9]+)?)");
+	private static final Pattern ADVENTURE_LOG_COX_PB_PATTERN = Pattern.compile("Fastest (?:kill|run)(?: - \\(Team size: " + COX_TEAM_SIZES + "\\))?: ([0-9:]+(?:\\.[0-9]+)?)");
 	private static final Pattern ADVENTURE_LOG_BOSS_PB_PATTERN = Pattern.compile("[a-zA-Z]+(?: [a-zA-Z]+)*");
 	private static final Pattern ADVENTURE_LOG_PB_PATTERN = Pattern.compile("(" + ADVENTURE_LOG_BOSS_PB_PATTERN + "(?: - " + ADVENTURE_LOG_BOSS_PB_PATTERN + ")*) (?:" + ADVENTURE_LOG_COX_PB_PATTERN + "( )*)+");
 	private static final Pattern HS_PB_PATTERN = Pattern.compile("Floor (?<floor>\\d) time: <col=ff0000>(?<floortime>[0-9:]+(?:\\.[0-9]+)?)</col>(?: \\(new personal best\\)|. Personal best: (?<floorpb>[0-9:]+(?:\\.[0-9]+)?))" +
@@ -1187,23 +1187,23 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		String response = new ChatMessageBuilder()
-				  .append(ChatColorType.NORMAL)
-				  .append("Attacker" + ": ")
-				  .append(ChatColorType.HIGHLIGHT)
-				  .append(String.valueOf(roles.getAttacker()))
-				  .append(ChatColorType.NORMAL)
-				  .append("  Defender: ")
-				  .append(ChatColorType.HIGHLIGHT)
-				  .append(String.valueOf(roles.getDefender()))
-				  .append(ChatColorType.NORMAL)
-				  .append("  Collector: ")
-				  .append(ChatColorType.HIGHLIGHT)
-				  .append(String.valueOf(roles.getCollector()))
-				  .append(ChatColorType.NORMAL)
-				  .append("  Healer: ")
-				  .append(ChatColorType.HIGHLIGHT)
-				  .append(String.valueOf(roles.getHealer()))
-				  .build();
+			.append(ChatColorType.NORMAL)
+			.append("Attacker: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(roles.getAttacker()))
+			.append(ChatColorType.NORMAL)
+			.append("  Defender: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(roles.getDefender()))
+			.append(ChatColorType.NORMAL)
+			.append("  Collector: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(roles.getCollector()))
+			.append(ChatColorType.NORMAL)
+			.append("  Healer: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(roles.getHealer()))
+			.build();
 
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
@@ -1353,7 +1353,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -1411,7 +1411,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	@VisibleForTesting
 	void playerSkillLookup(ChatMessage chatMessage, String message)
