@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.chat.LayoutRoom;
+import net.runelite.http.api.chat.Roles;
 import net.runelite.http.api.chat.Task;
 import net.runelite.http.service.util.redis.RedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,6 +163,46 @@ public class ChatService
 		try (Jedis jedis = jedisPool.getResource())
 		{
 			jedis.setex("gc." + name, (int) EXPIRE.getSeconds(), Integer.toString(gc));
+		}
+	}
+
+	public Roles getRoles(String name)
+	{
+		Map<String, String> map;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			map = jedis.hgetAll("roles." + name);
+		}
+
+		if (map.isEmpty())
+		{
+			return null;
+		}
+
+		Roles roles = new Roles();
+		roles.setAttacker(Integer.parseInt(map.get("attacker")));
+		roles.setDefender(Integer.parseInt(map.get("defender")));
+		roles.setCollector(Integer.parseInt(map.get("collector")));
+		roles.setHealer(Integer.parseInt(map.get("healer")));
+		return roles;
+	}
+
+	public void setRoles(String name, Roles roles)
+	{
+		Map<String, String> duelsMap = ImmutableMap.<String, String>builderWithExpectedSize(4)
+			.put("attacker", Integer.toString(roles.getAttacker()))
+			.put("defender", Integer.toString(roles.getDefender()))
+			.put("collector", Integer.toString(roles.getCollector()))
+			.put("healer", Integer.toString(roles.getHealer()))
+			.build();
+
+		String key = "roles." + name;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.hmset(key, duelsMap);
+			jedis.expire(key, (int) EXPIRE.getSeconds());
 		}
 	}
 

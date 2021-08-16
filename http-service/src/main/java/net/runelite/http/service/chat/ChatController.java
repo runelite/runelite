@@ -31,6 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.chat.LayoutRoom;
+import net.runelite.http.api.chat.Roles;
 import net.runelite.http.api.chat.Task;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,12 +108,12 @@ public class ChatController
 	@GetMapping("/qp")
 	public int getQp(@RequestParam String name)
 	{
-		Integer kc = chatService.getQp(name);
-		if (kc == null)
+		Integer qp = chatService.getQp(name);
+		if (qp == null)
 		{
 			throw new NotFoundException();
 		}
-		return kc;
+		return qp;
 	}
 
 	@PostMapping("/gc")
@@ -127,7 +128,7 @@ public class ChatController
 	}
 
 	@GetMapping("/gc")
-	public int getKc(@RequestParam String name)
+	public int getGc(@RequestParam String name)
 	{
 		Integer gc = chatService.getGc(name);
 		if (gc == null)
@@ -135,6 +136,35 @@ public class ChatController
 			throw new NotFoundException();
 		}
 		return gc;
+	}
+
+	@PostMapping("/roles")
+	public void submitRoles(@RequestParam String name, @RequestParam int attacker,
+							@RequestParam int defender, @RequestParam int collector, @RequestParam int healer)
+	{
+		if (attacker < 0 || defender < 0 || collector < 0 || healer < 0)
+		{
+			return;
+		}
+
+		Roles roles = new Roles();
+		roles.setAttacker(attacker);
+		roles.setDefender(defender);
+		roles.setCollector(collector);
+		roles.setHealer(healer);
+
+		chatService.setRoles(name, roles);
+	}
+
+	@GetMapping("/roles")
+	public Roles getRoles(@RequestParam String name)
+	{
+		Roles roles = chatService.getRoles(name);
+		if (roles == null)
+		{
+			throw new NotFoundException();
+		}
+		return roles;
 	}
 
 	@PostMapping("/task")
