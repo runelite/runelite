@@ -3222,5 +3222,43 @@
       "z1": 1,
       "z2": 1
     }
+  ],
+  "7236": [ // Waterbirth Island Dungeon Lower Level West
+    {
+      "rx1": 0,
+      "ry1": 0,
+      "rx2": 63,
+      "ry2": 63,
+      "z1": 1,
+      "z2": 1
+    }
+  ],
+  "7492": [ // Waterbirth Island Dungeon Lower Level Centre
+    {
+      "rx1": 0,
+      "ry1": 14,
+      "rx2": 2,
+      "ry2": 16,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 0,
+      "ry1": 0,
+      "rx2": 63,
+      "ry2": 63,
+      "z1": 0,
+      "z2": 0
+    }
+  ],
+  "7748": [ // Waterbirth Island Dungeon Lower Level East
+    {
+      "rx1": 0,
+      "ry1": 0,
+      "rx2": 63,
+      "ry2": 63,
+      "z1": 1,
+      "z2": 2
+    }
   ]
 }
