@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.collect.ImmutableMap;
 import java.util.HashMap;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -85,14 +87,16 @@ enum Pet
 	private final String name;
 	private final Integer iconID;
 
-	private static final HashMap<String, Pet> PET_HASH_MAP = new HashMap<>();
+	private static final ImmutableMap<String, Pet> PET_HASH_MAP;
 
 	static
 	{
+		Map<String, Pet> pets = new HashMap<>();
 		for (Pet pet : values())
 		{
-			PET_HASH_MAP.put(pet.name, pet);
+			pets.put(pet.name, pet);
 		}
+		PET_HASH_MAP = ImmutableMap.copyOf(pets);
 	}
 
 	static Pet findPet(String petName)
