@@ -212,7 +212,7 @@ public class ItemStatChanges
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(DEFENCE, -1)), JANGERBERRIES);
 
 		// Gauntlet items
-		add(heal(HITPOINTS, 16), CRYSTAL_PADDLEFISH);
+		add(heal(HITPOINTS, 16), CRYSTAL_PADDLEFISH, CORRUPTED_PADDLEFISH);
 		add(heal(HITPOINTS, 20), PADDLEFISH);
 		add(new GauntletPotion(), EGNIOL_POTION_1, EGNIOL_POTION_2, EGNIOL_POTION_3, EGNIOL_POTION_4);
 
