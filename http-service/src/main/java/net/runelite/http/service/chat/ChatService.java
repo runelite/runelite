@@ -190,7 +190,7 @@ public class ChatService
 
 	public void setRoles(String name, Roles roles)
 	{
-		Map<String, String> duelsMap = ImmutableMap.<String, String>builderWithExpectedSize(4)
+		Map<String, String> rolesMap = ImmutableMap.<String, String>builderWithExpectedSize(4)
 			.put("attacker", Integer.toString(roles.getAttacker()))
 			.put("defender", Integer.toString(roles.getDefender()))
 			.put("collector", Integer.toString(roles.getCollector()))
@@ -201,7 +201,7 @@ public class ChatService
 
 		try (Jedis jedis = jedisPool.getResource())
 		{
-			jedis.hmset(key, duelsMap);
+			jedis.hmset(key, rolesMap);
 			jedis.expire(key, (int) EXPIRE.getSeconds());
 		}
 	}
