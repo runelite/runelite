@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageCapture;
@@ -97,6 +98,10 @@ public class RaidsPluginTest
 	@Mock
 	@Bind
 	private OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	ClientUI clientUi;
 
 	@Before
 	public void before()
