@@ -743,7 +743,7 @@ public class ScreenshotPlugin extends Plugin
 		if (m.matches())
 		{
 			String tier = WordUtils.capitalize(m.group("tier"));
-			String task = m.group("task").replaceAll("[:?]","");
+			String task = m.group("task").replaceAll("[:?]", "");
 			return tier + " (" + task + ")";
 		}
 		return "";
