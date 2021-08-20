@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.WidgetMenuOptionClicked;
-import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_OPTION;
+import static net.runelite.api.widgets.WidgetInfo.MINIMAP_WORLDMAP_OPTIONS;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.Subscribe;
@@ -57,9 +57,9 @@ import net.runelite.client.menus.WidgetMenuOption;
 @Slf4j
 class GroundMarkerSharingManager
 {
-	private static final WidgetMenuOption EXPORT_MARKERS_OPTION = new WidgetMenuOption("Export", "Ground Markers", WORLD_MAP_OPTION);
-	private static final WidgetMenuOption IMPORT_MARKERS_OPTION = new WidgetMenuOption("Import", "Ground Markers", WORLD_MAP_OPTION);
-	private static final WidgetMenuOption CLEAR_MARKERS_OPTION = new WidgetMenuOption("Clear", "Ground Markers", WORLD_MAP_OPTION);
+	private static final WidgetMenuOption EXPORT_MARKERS_OPTION = new WidgetMenuOption("Export", "Ground Markers", MINIMAP_WORLDMAP_OPTIONS);
+	private static final WidgetMenuOption IMPORT_MARKERS_OPTION = new WidgetMenuOption("Import", "Ground Markers", MINIMAP_WORLDMAP_OPTIONS);
+	private static final WidgetMenuOption CLEAR_MARKERS_OPTION = new WidgetMenuOption("Clear", "Ground Markers", MINIMAP_WORLDMAP_OPTIONS);
 
 	private final GroundMarkerPlugin plugin;
 	private final Client client;
@@ -108,7 +108,7 @@ class GroundMarkerSharingManager
 	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
 		// ensure that the option clicked is the export markers option
-		if (event.getWidget() != WORLD_MAP_OPTION)
+		if (event.getWidget() != MINIMAP_WORLDMAP_OPTIONS)
 		{
 			return;
 		}

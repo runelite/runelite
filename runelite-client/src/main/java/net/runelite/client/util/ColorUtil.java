@@ -101,11 +101,14 @@ public class ColorUtil
 		final double g2 = b.getGreen();
 		final double b1 = a.getBlue();
 		final double b2 = b.getBlue();
+		final double a1 = a.getAlpha();
+		final double a2 = b.getAlpha();
 
 		return new Color(
 			(int) Math.round(r1 + (t * (r2 - r1))),
 			(int) Math.round(g1 + (t * (g2 - g1))),
-			(int) Math.round(b1 + (t * (b2 - b1)))
+			(int) Math.round(b1 + (t * (b2 - b1))),
+			(int) Math.round(a1 + (t * (a2 - a1)))
 		);
 	}
 

@@ -260,6 +260,12 @@ public class WintertodtPlugin extends Plugin
 		MessageNode messageNode = chatMessage.getMessageNode();
 		final WintertodtInterruptType interruptType;
 
+		if (messageNode.getValue().startsWith("You carefully fletch the root"))
+		{
+			setActivity(WintertodtActivity.FLETCHING);
+			return;
+		}
+
 		if (messageNode.getValue().startsWith("The cold of"))
 		{
 			interruptType = WintertodtInterruptType.COLD;

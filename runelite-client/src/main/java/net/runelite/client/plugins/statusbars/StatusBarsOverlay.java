@@ -80,6 +80,7 @@ class StatusBarsOverlay extends Overlay
 	private static final int MAX_RUN_ENERGY_VALUE = 100;
 
 	private final Client client;
+	private final StatusBarsPlugin plugin;
 	private final StatusBarsConfig config;
 	private final ItemStatChangesService itemStatService;
 	private final SpriteManager spriteManager;
@@ -94,11 +95,12 @@ class StatusBarsOverlay extends Overlay
 	private final Map<BarMode, BarRenderer> barRenderers = new EnumMap<>(BarMode.class);
 
 	@Inject
-	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
+	private StatusBarsOverlay(Client client, StatusBarsPlugin plugin, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
+		this.plugin = plugin;
 		this.config = config;
 		this.itemStatService = itemstatservice;
 		this.spriteManager = spriteManager;
@@ -216,6 +218,11 @@ class StatusBarsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D g)
 	{
+		if (!plugin.isBarsDisplayed())
+		{
+			return null;
+		}
+
 		Viewport curViewport = null;
 		Widget curWidget = null;
 

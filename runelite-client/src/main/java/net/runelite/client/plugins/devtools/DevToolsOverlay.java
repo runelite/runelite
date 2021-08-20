@@ -56,6 +56,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -134,7 +135,48 @@ class DevToolsOverlay extends Overlay
 			renderGraphicsObjects(graphics);
 		}
 
+		if (plugin.getRoofs().isActive())
+		{
+			renderRoofs(graphics);
+		}
+
 		return null;
+	}
+
+	private void renderRoofs(Graphics2D graphics)
+	{
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
+		byte[][][] settings = client.getTileSettings();
+		int z = client.getPlane();
+		String text = "R";
+
+		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+		{
+			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+			{
+				Tile tile = tiles[z][x][y];
+
+				if (tile == null)
+				{
+					continue;
+				}
+
+				int flag = settings[z][x][y];
+				if ((flag & Constants.TILE_FLAG_UNDER_ROOF) == 0)
+				{
+					continue;
+				}
+
+				Point loc = Perspective.getCanvasTextLocation(client, graphics, tile.getLocalLocation(), text, z);
+				if (loc == null)
+				{
+					continue;
+				}
+
+				OverlayUtil.renderTextLocation(graphics, loc, text, Color.RED);
+			}
+		}
 	}
 
 	private void renderPlayers(Graphics2D graphics)
@@ -248,7 +290,11 @@ class DevToolsOverlay extends Overlay
 		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
 		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			toolTipManager.add(new Tooltip("World Location: " + tile.getWorldLocation().getX() + ", " + tile.getWorldLocation().getY() + ", " + client.getPlane()));
+			WorldPoint worldLocation = tile.getWorldLocation();
+			String tooltip = String.format("World location: %d, %d, %d</br>" +
+					"Region ID: %d location: %d, %d", worldLocation.getX(), worldLocation.getY(), worldLocation.getPlane(),
+				worldLocation.getRegionID(), worldLocation.getRegionX(), worldLocation.getRegionY());
+			toolTipManager.add(new Tooltip(tooltip));
 			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}
 	}

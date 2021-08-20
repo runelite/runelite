@@ -51,6 +51,7 @@ public class ChatController
 	private static final Pattern STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int STRING_MAX_LENGTH = 50;
 	private static final int MAX_LAYOUT_ROOMS = 16;
+	private static final int MAX_PETS = 256;
 
 	private final Cache<KillCountKey, Integer> killCountCache = CacheBuilder.newBuilder()
 		.expireAfterWrite(2, TimeUnit.MINUTES)
@@ -246,5 +247,28 @@ public class ChatController
 		}
 
 		return layout;
+	}
+
+	@PostMapping("/pets")
+	public void submitPetList(@RequestParam String name, @RequestBody int[] petList)
+	{
+		if (petList.length == 0 || petList.length > MAX_PETS)
+		{
+			return;
+		}
+
+		chatService.setPetList(name, petList);
+	}
+
+	@GetMapping("/pets")
+	public int[] getPetList(@RequestParam String name)
+	{
+		int[] petList = chatService.getPetList(name);
+		if (petList == null)
+		{
+			throw new NotFoundException();
+		}
+
+		return petList;
 	}
 }

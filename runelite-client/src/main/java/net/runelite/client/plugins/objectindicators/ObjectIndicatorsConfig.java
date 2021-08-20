@@ -30,15 +30,50 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("objectindicators")
 public interface ObjectIndicatorsConfig extends Config
 {
+	@ConfigSection(
+		name = "Render style",
+		description = "The render style of object highlighting",
+		position = 0
+	)
+	String renderStyleSection = "renderStyleSection";
+
+	@ConfigItem(
+		position = 0,
+		keyName = "highlightHull",
+		name = "Highlight hull",
+		description = "Configures whether or not object should be highlighted by hull",
+		section = renderStyleSection
+	)
+	default boolean highlightHull()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "highlightOutline",
+		name = "Highlight outline",
+		description = "Configures whether or not the model of the object should be highlighted by outline",
+		section = renderStyleSection
+	)
+	default boolean highlightOutline()
+	{
+		return false;
+	}
+
 	@Alpha
 	@ConfigItem(
+		position = 2,
 		keyName = "markerColor",
 		name = "Marker color",
-		description = "Configures the color of object marker"
+		description = "Configures the color of object marker",
+		section = renderStyleSection
 	)
 	default Color markerColor()
 	{
@@ -46,6 +81,35 @@ public interface ObjectIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
+		keyName = "borderWidth",
+		name = "Border Width",
+		description = "Width of the marked object border",
+		section = renderStyleSection
+	)
+	default double borderWidth()
+	{
+		return 2;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "outlineFeather",
+		name = "Outline feather",
+		description = "Specify between 0-4 how much of the model outline should be faded",
+		section = renderStyleSection
+	)
+	@Range(
+		min = 0,
+		max = 4
+	)
+	default int outlineFeather()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "rememberObjectColors",
 		name = "Remember color per object",
 		description = "Color objects using the color from time of marking"
@@ -53,15 +117,5 @@ public interface ObjectIndicatorsConfig extends Config
 	default boolean rememberObjectColors()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		keyName = "borderWidth",
-		name = "Border Width",
-		description = "Width of the marked object border"
-	)
-	default double borderWidth()
-	{
-		return 2;
 	}
 }

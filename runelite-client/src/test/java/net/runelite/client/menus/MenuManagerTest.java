@@ -34,7 +34,7 @@ import static net.runelite.api.MenuAction.CC_OP;
 import static net.runelite.api.MenuAction.RUNELITE;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuEntryAdded;
-import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_OPTION;
+import static net.runelite.api.widgets.WidgetInfo.MINIMAP_WORLDMAP_OPTIONS;
 import net.runelite.client.util.Text;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
@@ -70,7 +70,7 @@ public class MenuManagerTest
 	{
 		CANCEL.setOption("Cancel");
 		CANCEL.setType(MenuAction.CANCEL.getId());
-		CANCEL.setParam1(WORLD_MAP_OPTION.getPackedId());
+		CANCEL.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
 	}
 
 	@Before
@@ -94,19 +94,19 @@ public class MenuManagerTest
 		final MenuEntry third = new MenuEntry();
 		first.setOption("Test");
 		first.setTarget("First Entry");
-		first.setParam1(WORLD_MAP_OPTION.getPackedId());
+		first.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
 		first.setType(RUNELITE.getId());
 		second.setOption("Test");
 		second.setTarget("Second Entry");
-		second.setParam1(WORLD_MAP_OPTION.getPackedId());
+		second.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
 		second.setType(RUNELITE.getId());
 		third.setOption("Test");
 		third.setTarget("Third Entry");
-		third.setParam1(WORLD_MAP_OPTION.getPackedId());
+		third.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
 		third.setType(RUNELITE.getId());
-		menuManager.addManagedCustomMenu(new WidgetMenuOption(first.getOption(), first.getTarget(), WORLD_MAP_OPTION));
-		menuManager.addManagedCustomMenu(new WidgetMenuOption(second.getOption(), second.getTarget(), WORLD_MAP_OPTION));
-		menuManager.addManagedCustomMenu(new WidgetMenuOption(third.getOption(), third.getTarget(), WORLD_MAP_OPTION));
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(first.getOption(), first.getTarget(), MINIMAP_WORLDMAP_OPTIONS));
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(second.getOption(), second.getTarget(), MINIMAP_WORLDMAP_OPTIONS));
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(third.getOption(), third.getTarget(), MINIMAP_WORLDMAP_OPTIONS));
 
 		menuManager.onMenuEntryAdded(new MenuEntryAdded(
 			CANCEL.getOption(),

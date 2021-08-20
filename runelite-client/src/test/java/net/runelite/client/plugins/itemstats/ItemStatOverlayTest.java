@@ -53,7 +53,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class ItemStatOverlayTest
 {
 	// Weapon definitions
-	private static final ItemStats ABYSSAL_DAGGER = new ItemStats(false, true, 0.453, 8,
+	private static final ItemStats ABYSSAL_DAGGER = new ItemStats(true, 0.453, 8,
 		ItemEquipmentStats.builder()
 			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
 			.isTwoHanded(false)
@@ -65,7 +65,7 @@ public class ItemStatOverlayTest
 			.str(75)
 			.aspeed(4)
 			.build());
-	private static final ItemStats KATANA = new ItemStats(false, true, 0, 8,
+	private static final ItemStats KATANA = new ItemStats(true, 0, 8,
 		ItemEquipmentStats.builder()
 			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
 			.isTwoHanded(true)
@@ -78,7 +78,7 @@ public class ItemStatOverlayTest
 			.str(40)
 			.aspeed(4)
 			.build());
-	private static final ItemStats BLOWPIPE = new ItemStats(false, true, 0, 0,
+	private static final ItemStats BLOWPIPE = new ItemStats(true, 0, 0,
 		ItemEquipmentStats.builder()
 			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
 			.isTwoHanded(true)
@@ -86,7 +86,7 @@ public class ItemStatOverlayTest
 			.rstr(40)
 			.aspeed(3)
 			.build());
-	private static final ItemStats HEAVY_BALLISTA = new ItemStats(false, true, 4, 8,
+	private static final ItemStats HEAVY_BALLISTA = new ItemStats(true, 4, 8,
 		ItemEquipmentStats.builder()
 			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
 			.isTwoHanded(true)

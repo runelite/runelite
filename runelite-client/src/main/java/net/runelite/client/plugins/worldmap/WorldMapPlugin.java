@@ -33,7 +33,6 @@ import java.util.function.Predicate;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Quest;
-import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -505,41 +504,21 @@ public class WorldMapPlugin extends Plugin
 
 	private MapPoint createQuestStartPoint(QuestStartLocation data)
 	{
-		Quest[] quests = data.getQuests();
-
-		// Get first uncompleted quest. Else, return the last quest.
-		Quest quest = null;
-		for (Quest q : quests)
-		{
-			if (q.getState(client) != QuestState.FINISHED)
-			{
-				quest = q;
-				break;
-			}
-		}
-		if (quest == null)
-		{
-			quest = quests[quests.length - 1];
-		}
+		Quest quest = data.getQuest();
 
 		BufferedImage icon = BLANK_ICON;
-		String tooltip = "";
 		if (quest != null)
 		{
-			tooltip = quest.getName();
 			switch (quest.getState(client))
 			{
 				case FINISHED:
 					icon = FINISHED_ICON;
-					tooltip += " - Finished";
 					break;
 				case IN_PROGRESS:
 					icon = STARTED_ICON;
-					tooltip += " - Started";
 					break;
 				case NOT_STARTED:
 					icon = NOT_STARTED_ICON;
-					tooltip += " - Not Started";
 					break;
 			}
 		}
@@ -548,7 +527,6 @@ public class WorldMapPlugin extends Plugin
 			.type(MapPoint.Type.QUEST)
 			.worldPoint(data.getLocation())
 			.image(icon)
-			.tooltip(tooltip)
 			.build();
 	}
 

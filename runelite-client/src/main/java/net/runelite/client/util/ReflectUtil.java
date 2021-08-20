@@ -27,6 +27,7 @@ package net.runelite.client.util;
 
 import com.google.common.io.ByteStreams;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -104,10 +105,10 @@ public class ReflectUtil
 	 */
 	public static void installLookupHelper(PrivateLookupableClassLoader cl)
 	{
-		try
+		String name = PrivateLookupHelper.class.getName();
+		try (InputStream in = ReflectUtil.class.getResourceAsStream("/" + name.replace('.', '/') + ".class"))
 		{
-			String name = PrivateLookupHelper.class.getName();
-			byte[] classData = ByteStreams.toByteArray(ReflectUtil.class.getResourceAsStream("/" + name.replace('.', '/') + ".class"));
+			byte[] classData = ByteStreams.toByteArray(in);
 			Class<?> clazz = cl.defineClass0(name, classData, 0, classData.length);
 
 			// force <clinit> to run
