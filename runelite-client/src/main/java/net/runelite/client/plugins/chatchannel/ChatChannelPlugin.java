@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.chatchannel;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -36,9 +37,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.ListIterator;
 import javax.inject.Inject;
 import lombok.AllArgsConstructor;
 import net.runelite.api.ChatLineBuffer;
@@ -101,7 +102,8 @@ public class ChatChannelPlugin extends Plugin
 {
 	private static final int MAX_CHATS = 10;
 	private static final String RECENT_TITLE = "Recent FCs";
-	private static final int MESSAGE_DELAY = 10;
+	@VisibleForTesting
+	static final int MESSAGE_DELAY = 10;
 
 	@Inject
 	private Client client;
@@ -129,7 +131,7 @@ public class ChatChannelPlugin extends Plugin
 	 * queue of temporary messages added to the client
 	 */
 	private final Deque<MemberJoinMessage> joinMessages = new ArrayDeque<>();
-	private final Map<ChatPlayer, MemberActivity> activityBuffer = new LinkedHashMap<>();
+	private final List<MemberActivity> activityBuffer = new LinkedList<>();
 	private int joinedTick;
 
 	private boolean kickConfirmed = false;
@@ -284,31 +286,38 @@ public class ChatChannelPlugin extends Plugin
 
 	private void queueJoin(ChatPlayer member, MemberActivity.ChatType chatType)
 	{
-		// attempt to filter out world hopping joins
-		if (!activityBuffer.containsKey(member))
+		for (ListIterator<MemberActivity> iter = activityBuffer.listIterator(); iter.hasNext(); )
 		{
-			MemberActivity joinActivity = new MemberActivity(ActivityType.JOINED, chatType,
-				member, client.getTickCount());
-			activityBuffer.put(member, joinActivity);
+			MemberActivity activity = iter.next();
+
+			if (activity.getChatType() == chatType && activity.getMember().compareTo(member) == 0)
+			{
+				iter.remove();
+				return;
+			}
 		}
-		else
-		{
-			activityBuffer.remove(member);
-		}
+
+		MemberActivity activity = new MemberActivity(ActivityType.JOINED, chatType,
+			member, client.getTickCount());
+		activityBuffer.add(activity);
 	}
 
 	private void queueLeave(ChatPlayer member, MemberActivity.ChatType chatType)
 	{
-		if (!activityBuffer.containsKey(member))
+		for (ListIterator<MemberActivity> iter = activityBuffer.listIterator(); iter.hasNext(); )
 		{
-			MemberActivity leaveActivity = new MemberActivity(ActivityType.LEFT, chatType,
-				member, client.getTickCount());
-			activityBuffer.put(member, leaveActivity);
+			MemberActivity activity = iter.next();
+
+			if (activity.getChatType() == chatType && activity.getMember().compareTo(member) == 0)
+			{
+				iter.remove();
+				return;
+			}
 		}
-		else
-		{
-			activityBuffer.remove(member);
-		}
+
+		MemberActivity activity = new MemberActivity(ActivityType.LEFT, chatType,
+			member, client.getTickCount());
+		activityBuffer.add(activity);
 	}
 
 	@Subscribe
@@ -386,32 +395,33 @@ public class ChatChannelPlugin extends Plugin
 		}
 	}
 
-	private void addActivityMessages()
+	@VisibleForTesting
+	void addActivityMessages()
 	{
 		if (activityBuffer.isEmpty())
 		{
 			return;
 		}
 
-		Iterator<MemberActivity> activityIt = activityBuffer.values().iterator();
-
-		while (activityIt.hasNext())
+		for (ListIterator<MemberActivity> iter = activityBuffer.listIterator(); iter.hasNext(); )
 		{
-			MemberActivity activity = activityIt.next();
-
-			if (activity.getTick() < client.getTickCount() - MESSAGE_DELAY)
+			MemberActivity activity = iter.next();
+			if (activity.getTick() >= client.getTickCount() - MESSAGE_DELAY)
 			{
-				activityIt.remove();
-				switch (activity.getChatType())
-				{
-					case FRIENDS_CHAT:
-						addActivityMessage((FriendsChatMember) activity.getMember(), activity.getActivityType());
-						break;
-					case CLAN_CHAT:
-					case GUEST_CHAT:
-						addClanActivityMessage((ClanChannelMember) activity.getMember(), activity.getActivityType(), activity.getChatType());
-						break;
-				}
+				// everything after this is older
+				return;
+			}
+
+			iter.remove();
+			switch (activity.getChatType())
+			{
+				case FRIENDS_CHAT:
+					addActivityMessage((FriendsChatMember) activity.getMember(), activity.getActivityType());
+					break;
+				case CLAN_CHAT:
+				case GUEST_CHAT:
+					addClanActivityMessage((ClanChannelMember) activity.getMember(), activity.getActivityType(), activity.getChatType());
+					break;
 			}
 		}
 	}
