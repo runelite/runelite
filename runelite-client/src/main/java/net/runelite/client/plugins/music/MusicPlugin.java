@@ -42,6 +42,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -85,6 +86,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
+@Slf4j
 @PluginDescriptor(
 	name = "Music",
 	description = "Adds search and filter for the music list, and additional volume control",
@@ -186,11 +188,8 @@ public class MusicPlugin extends Plugin
 			channels = new Channel[]{musicChannel, effectChannel, areaChannel};
 
 			addMusicButtons();
-			if (musicConfig.granularSliders())
-			{
-				updateMusicOptions();
-				resetSettingsWindow();
-			}
+			updateMusicOptions();
+			resetSettingsWindow();
 		});
 	}
 
@@ -582,11 +581,7 @@ public class MusicPlugin extends Plugin
 
 			// emulate [proc,settings_update_icon]
 			boolean unmuted = val != 0;
-			Widget strikethrough = icon.getChild(1);
-			if (strikethrough != null)
-			{
-				strikethrough.setHidden(unmuted);
-			}
+			icon.getChild(1).setHidden(unmuted);
 			icon.setAction(0, unmuted ? "Mute" : "Unmute");
 			// Set name + no tooltip; we have our own for ops
 			icon.setName(channel.getName());
@@ -748,16 +743,6 @@ public class MusicPlugin extends Plugin
 			s.update();
 			s.getChannel().setWindowSlider(s);
 		}
-
-		if (ev.getScriptId() == ScriptID.TOPLEVEL_REDRAW && musicConfig.granularSliders())
-		{
-			// we have to set the var to our value so toplevel_redraw doesn't try to set
-			// the volume to what vanilla has stored
-			for (Channel c : channels)
-			{
-				c.updateVar();
-			}
-		}
 	}
 
 	private class Channel
@@ -803,12 +788,12 @@ public class MusicPlugin extends Plugin
 
 				// the varps are known by the engine and it requires they are stored so
 				// 0 = max and 4 = muted
-				int raw = client.getVar(var);
+				int raw = 4 - client.getVar(var);
 				if (raw == 0)
 				{
-					raw = -client.getVar(mutedVar);
+					raw = -(4 - client.getVar(mutedVar));
 				}
-				value = raw * this.max / 100;
+				value = ((raw * max) / 4);
 
 				// readd our 1 offset for unknown's place
 				value += value < 0 ? -1 : 1;
@@ -858,13 +843,6 @@ public class MusicPlugin extends Plugin
 			}
 		}
 
-		public void updateVar()
-		{
-			int val = getValue();
-			int varVal = Math.round((float) val / (max / 100.f));
-			client.getVarps()[this.var.getId()] = varVal;
-		}
-
 		public void shutDown()
 		{
 			sideSlider.shutDown();
@@ -873,7 +851,9 @@ public class MusicPlugin extends Plugin
 				windowSlider.shutDown();
 			}
 
-			volumeChanger.accept(client.getVar(var) * this.max / 100);
+			int raw = 4 - client.getVar(var);
+			int value = ((raw * max) / 4);
+			volumeChanger.accept(value);
 		}
 	}
 

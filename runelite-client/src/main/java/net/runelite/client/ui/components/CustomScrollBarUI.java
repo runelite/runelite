@@ -90,7 +90,7 @@ public class CustomScrollBarUI extends BasicScrollBarUI
 	{
 		JScrollBar bar = (JScrollBar) c;
 		bar.setUnitIncrement(16);
-		bar.setPreferredSize(new Dimension(7, 7));
+		bar.setPreferredSize(new Dimension(7, 0));
 		return new CustomScrollBarUI();
 	}
 

@@ -58,9 +58,91 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		ItemIdentification iden = findItemIdentification(itemId);
-		if (iden == null || !iden.type.enabled.test(config))
+		if (iden == null)
 		{
 			return;
+		}
+
+		switch (iden.type)
+		{
+			case SEED:
+				if (!config.showSeeds())
+				{
+					return;
+				}
+				break;
+			case SACK:
+				if (!config.showSacks())
+				{
+					return;
+				}
+				break;
+			case HERB:
+				if (!config.showHerbs())
+				{
+					return;
+				}
+				break;
+			case LOGS:
+				if (!config.showLogs())
+				{
+					return;
+				}
+				break;
+			case PLANK:
+				if (!config.showPlanks())
+				{
+					return;
+				}
+				break;
+			case SAPLING:
+				if (!config.showSaplings())
+				{
+					return;
+				}
+				break;
+			case COMPOST:
+				if (!config.showComposts())
+				{
+					return;
+				}
+				break;
+			case ORE:
+				if (!config.showOres())
+				{
+					return;
+				}
+				break;
+			case BAR:
+				if (!config.showBars())
+				{
+					return;
+				}
+				break;
+			case GEM:
+				if (!config.showGems())
+				{
+					return;
+				}
+				break;
+			case POTION:
+				if (!config.showPotions())
+				{
+					return;
+				}
+				break;
+			case IMPLING_JAR:
+				if (!config.showImplingJars())
+				{
+					return;
+				}
+				break;
+			case TABLET:
+				if (!config.showTablets())
+				{
+					return;
+				}
+				break;
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());

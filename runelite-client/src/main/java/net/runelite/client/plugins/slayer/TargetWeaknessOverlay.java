@@ -64,7 +64,7 @@ class TargetWeaknessOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final List<NPC> targets = plugin.getTargets();
+		final List<NPC> targets = plugin.getHighlightedTargets();
 
 		if (targets.isEmpty() || !config.weaknessPrompt())
 		{

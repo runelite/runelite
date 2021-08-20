@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.objectindicators;
 
-import com.google.common.base.Strings;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -44,23 +43,19 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
 	private final Client client;
 	private final ObjectIndicatorsConfig config;
 	private final ObjectIndicatorsPlugin plugin;
-	private final ModelOutlineRenderer modelOutlineRenderer;
 
 	@Inject
-	private ObjectIndicatorsOverlay(Client client, ObjectIndicatorsConfig config, ObjectIndicatorsPlugin plugin,
-		ModelOutlineRenderer modelOutlineRenderer)
+	private ObjectIndicatorsOverlay(Client client, ObjectIndicatorsConfig config, ObjectIndicatorsPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
-		this.modelOutlineRenderer = modelOutlineRenderer;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -86,10 +81,7 @@ class ObjectIndicatorsOverlay extends Overlay
 				// This is a multiloc
 				composition = composition.getImpostor();
 				// Only mark the object if the name still matches
-				if (composition == null
-					|| Strings.isNullOrEmpty(composition.getName())
-					|| "null".equals(composition.getName())
-					|| !composition.getName().equals(colorTileObject.getName()))
+				if (composition == null || !composition.getName().equals(colorTileObject.getName()))
 				{
 					continue;
 				}
@@ -101,56 +93,43 @@ class ObjectIndicatorsOverlay extends Overlay
 				color = config.markerColor();
 			}
 
-			if (config.highlightHull())
+			final Shape polygon;
+			Shape polygon2 = null;
+
+			if (object instanceof GameObject)
 			{
-				renderConvexHull(graphics, object, color, stroke);
+				polygon = ((GameObject) object).getConvexHull();
+			}
+			else if (object instanceof WallObject)
+			{
+				polygon = ((WallObject) object).getConvexHull();
+				polygon2 = ((WallObject) object).getConvexHull2();
+			}
+			else if (object instanceof DecorativeObject)
+			{
+				polygon = ((DecorativeObject) object).getConvexHull();
+				polygon2 = ((DecorativeObject) object).getConvexHull2();
+			}
+			else if (object instanceof GroundObject)
+			{
+				polygon = ((GroundObject) object).getConvexHull();
+			}
+			else
+			{
+				polygon = object.getCanvasTilePoly();
 			}
 
-			if (config.highlightOutline())
+			if (polygon != null)
 			{
-				modelOutlineRenderer.drawOutline(object, (int)config.borderWidth(), color, config.outlineFeather());
+				OverlayUtil.renderPolygon(graphics, polygon, color, stroke);
+			}
+
+			if (polygon2 != null)
+			{
+				OverlayUtil.renderPolygon(graphics, polygon2, color, stroke);
 			}
 		}
 
 		return null;
-	}
-
-	private void renderConvexHull(Graphics2D graphics, TileObject object, Color color, Stroke stroke)
-	{
-		final Shape polygon;
-		Shape polygon2 = null;
-
-		if (object instanceof GameObject)
-		{
-			polygon = ((GameObject) object).getConvexHull();
-		}
-		else if (object instanceof WallObject)
-		{
-			polygon = ((WallObject) object).getConvexHull();
-			polygon2 = ((WallObject) object).getConvexHull2();
-		}
-		else if (object instanceof DecorativeObject)
-		{
-			polygon = ((DecorativeObject) object).getConvexHull();
-			polygon2 = ((DecorativeObject) object).getConvexHull2();
-		}
-		else if (object instanceof GroundObject)
-		{
-			polygon = ((GroundObject) object).getConvexHull();
-		}
-		else
-		{
-			polygon = object.getCanvasTilePoly();
-		}
-
-		if (polygon != null)
-		{
-			OverlayUtil.renderPolygon(graphics, polygon, color, stroke);
-		}
-
-		if (polygon2 != null)
-		{
-			OverlayUtil.renderPolygon(graphics, polygon2, color, stroke);
-		}
 	}
 }

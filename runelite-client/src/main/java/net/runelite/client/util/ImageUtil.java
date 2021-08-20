@@ -35,7 +35,6 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.PixelGrabber;
 import java.awt.image.RescaleOp;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -383,11 +382,11 @@ public class ImageUtil
 	 */
 	public static BufferedImage loadImageResource(final Class<?> c, final String path)
 	{
-		try (InputStream in = c.getResourceAsStream(path))
+		try
 		{
 			synchronized (ImageIO.class)
 			{
-				return ImageIO.read(in);
+				return ImageIO.read(c.getResourceAsStream(path));
 			}
 		}
 		catch (IllegalArgumentException e)

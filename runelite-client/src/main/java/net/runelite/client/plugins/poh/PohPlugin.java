@@ -27,7 +27,6 @@ package net.runelite.client.plugins.poh;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +49,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
@@ -57,7 +57,6 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -145,11 +144,9 @@ public class PohPlugin extends Plugin
 			return;
 		}
 
-		IncenseBurner incenseBurner = incenseBurners.computeIfAbsent(event.getTile(), k -> new IncenseBurner());
-		incenseBurner.setStart(Instant.now());
-		incenseBurner.setLit(BURNER_LIT.contains(gameObject.getId()));
-		incenseBurner.setEnd(null);
-		// The burner timers are set when observing a player light the burner
+		final double countdownTimer = 130.0; // Minimum amount of seconds a burner will light
+		final double randomTimer = 30.0; // Minimum amount of seconds a burner will light
+		incenseBurners.put(event.getTile(), new IncenseBurner(gameObject.getId(), countdownTimer, randomTimer, null));
 	}
 
 	@Subscribe
@@ -206,7 +203,6 @@ public class PohPlugin extends Plugin
 			.ifPresent(tile ->
 			{
 				final IncenseBurner incenseBurner = incenseBurners.get(tile);
-				incenseBurner.reset();
 
 				if (actor == client.getLocalPlayer())
 				{
@@ -249,7 +245,6 @@ public class PohPlugin extends Plugin
 	{
 		final double tickLengthSeconds = Constants.GAME_TICK_LENGTH / 1000.0;
 		incenseBurner.setCountdownTimer((200 + fmLevel) * tickLengthSeconds);
-		incenseBurner.setRandomTimer((fmLevel - 1) * tickLengthSeconds);
-		log.debug("Set burner timer for firemaking level {}", fmLevel);
+		incenseBurner.setRandomTimer(fmLevel * tickLengthSeconds);
 	}
 }

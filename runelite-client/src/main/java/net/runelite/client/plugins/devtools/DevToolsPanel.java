@@ -177,8 +177,6 @@ class DevToolsPanel extends PluginPanel
 		disconnectBtn.addActionListener(e -> clientThread.invoke(() -> client.setGameState(GameState.CONNECTION_LOST)));
 		container.add(disconnectBtn);
 
-		container.add(plugin.getRoofs());
-
 		try
 		{
 			ShellFrame sf = plugin.getInjector().getInstance(ShellFrame.class);

@@ -55,7 +55,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Segment;
-import jdk.jshell.DeclarationSnippet;
 import jdk.jshell.Diag;
 import jdk.jshell.JShell;
 import jdk.jshell.Snippet;
@@ -186,6 +185,7 @@ public abstract class ShellPanel extends JPanel
 		}
 
 		console.setFont(codeFont);
+		console.setFocusable(false);
 		console.setEditable(false);
 		console.setOpaque(false); // this turns off the hover effect for some reason
 
@@ -316,13 +316,11 @@ public abstract class ShellPanel extends JPanel
 			{
 				Snippet snip = ev.snippet();
 				offsets.put("#" + snip.id(), thisOffset);
-				if (ev.status() != Snippet.Status.VALID)
+				if (ev.status() != Snippet.Status.VALID && ev.status() != Snippet.Status.RECOVERABLE_DEFINED)
 				{
-					boolean handled = false;
 					var diags = shell.diagnostics(snip).collect(Collectors.toList());
 					for (var diag : diags)
 					{
-						handled = true;
 						String msg = toStringDiagnostic(src, thisOffset, diag);
 						if (isUserCode)
 						{
@@ -334,23 +332,11 @@ public abstract class ShellPanel extends JPanel
 							throw new RuntimeException("prelude error: " + msg);
 						}
 					}
-					if (snip instanceof DeclarationSnippet)
-					{
-						var unresolved = shell.unresolvedDependencies((DeclarationSnippet) snip).collect(Collectors.toList());
-						for (var ident : unresolved)
-						{
-							handled = true;
-							logToConsole("Unresolved symbol: " + ident);
-						}
-					}
-					if (!handled)
+					if (diags.isEmpty())
 					{
 						logToConsole("bad snippet" + ev.status());
 					}
-					if (ev.status() != Snippet.Status.RECOVERABLE_DEFINED)
-					{
-						break evaluation;
-					}
+					break evaluation;
 				}
 				if (ev.exception() != null)
 				{
@@ -433,23 +419,18 @@ public abstract class ShellPanel extends JPanel
 
 	private void cleanup()
 	{
-		var todo = new ArrayList<>(cleanup);
-		cleanup.clear();
-
-		invokeOnClientThread(() ->
+		for (var c : cleanup)
 		{
-			for (var c : todo)
+			try
 			{
-				try
-				{
-					c.run();
-				}
-				catch (Exception e)
-				{
-					shellLogger.error("Cleanup threw:", e);
-				}
+				c.run();
 			}
-		});
+			catch (Exception e)
+			{
+				shellLogger.error("Cleanup threw:", e);
+			}
+		}
+		cleanup.clear();
 	}
 
 	protected abstract void invokeOnClientThread(Runnable r);

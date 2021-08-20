@@ -52,7 +52,6 @@ import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROA
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
-import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
 import net.runelite.client.ui.FontManager;
@@ -64,42 +63,6 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
-	private static final AnyRequirementCollection ANY_SLAYER_HELMET = any("Any slayer helmet",
-		item(SLAYER_HELMET),
-		item(BLACK_SLAYER_HELMET),
-		item(GREEN_SLAYER_HELMET),
-		item(PURPLE_SLAYER_HELMET),
-		item(RED_SLAYER_HELMET),
-		item(TURQUOISE_SLAYER_HELMET),
-		item(HYDRA_SLAYER_HELMET),
-		item(TWISTED_SLAYER_HELMET),
-		item(TZTOK_SLAYER_HELMET),
-		item(VAMPYRIC_SLAYER_HELMET),
-		item(TZKAL_SLAYER_HELMET),
-		item(SLAYER_HELMET_I),
-		item(BLACK_SLAYER_HELMET_I),
-		item(GREEN_SLAYER_HELMET_I),
-		item(PURPLE_SLAYER_HELMET_I),
-		item(RED_SLAYER_HELMET_I),
-		item(TURQUOISE_SLAYER_HELMET_I),
-		item(HYDRA_SLAYER_HELMET_I),
-		item(TWISTED_SLAYER_HELMET_I),
-		item(TZTOK_SLAYER_HELMET_I),
-		item(VAMPYRIC_SLAYER_HELMET_I),
-		item(TZKAL_SLAYER_HELMET_I),
-		item(SLAYER_HELMET_I_25177),
-		item(BLACK_SLAYER_HELMET_I_25179),
-		item(GREEN_SLAYER_HELMET_I_25181),
-		item(RED_SLAYER_HELMET_I_25183),
-		item(PURPLE_SLAYER_HELMET_I_25185),
-		item(TURQUOISE_SLAYER_HELMET_I_25187),
-		item(HYDRA_SLAYER_HELMET_I_25189),
-		item(TWISTED_SLAYER_HELMET_I_25191),
-		item(TZTOK_SLAYER_HELMET_I_25902),
-		item(VAMPYRIC_SLAYER_HELMET_I_25908),
-		item(TZKAL_SLAYER_HELMET_I_25914)
-	);
-
 	private static final Set<EmoteClue> CLUES = ImmutableSet.of(
 		new EmoteClue("Beckon on the east coast of the Kharazi Jungle. Beware of double agents! Equip any vestment stole and a heraldic rune shield.", "Kharazi Jungle", NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE, new WorldPoint(2954, 2933, 0), DOUBLE_AGENT_108, BECKON, any("Any stole", item(GUTHIX_STOLE), item(SARADOMIN_STOLE), item(ZAMORAK_STOLE), item(ARMADYL_STOLE), item(BANDOS_STOLE), item(ANCIENT_STOLE)), any("Any heraldic rune shield", item(RUNE_SHIELD_H1), item(RUNE_SHIELD_H2), item(RUNE_SHIELD_H3), item(RUNE_SHIELD_H4), item(RUNE_SHIELD_H5))),
 		new EmoteClue("Cheer in the Barbarian Agility Arena. Headbang before you talk to me. Equip a steel platebody, maple shortbow and a Wilderness cape.", "Barbarian Outpost", BARBARIAN_OUTPOST_OBSTACLE_COURSE, new WorldPoint(2552, 3556, 0), CHEER, HEADBANG, item(STEEL_PLATEBODY), item(MAPLE_SHORTBOW), range("Any team cape", TEAM1_CAPE, TEAM50_CAPE)),
@@ -177,8 +140,8 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Panic by the pilot on White Wolf Mountain. Beware of double agents! Equip mithril platelegs, a ring of life and a rune axe.", "White Wolf Mountain", GNOME_GLIDER_ON_WHITE_WOLF_MOUNTAIN, new WorldPoint(2847, 3499, 0), DOUBLE_AGENT_108, PANIC, item(MITHRIL_PLATELEGS), item(RING_OF_LIFE), item(RUNE_AXE)),
 		new EmoteClue("Panic by the big egg where no one dare goes and the ground is burnt. Beware of double agents! Equip a dragon med helm, a TokTz-Ket-Xil, a brine sabre, rune platebody and an uncharged amulet of glory.", "Lava dragon isle", SOUTHEAST_CORNER_OF_LAVA_DRAGON_ISLE, new WorldPoint(3227, 3831, 0), DOUBLE_AGENT_141, PANIC, item(DRAGON_MED_HELM), item(TOKTZKETXIL), item(BRINE_SABRE), item(RUNE_PLATEBODY), any("Uncharged Amulet of glory", item(AMULET_OF_GLORY))),
 		new EmoteClue("Panic at the area flowers meet snow. Equip Blue D'hide vambraces, a dragon spear and a rune plateskirt.", "Trollweiss mountain", HALFWAY_DOWN_TROLLWEISS_MOUNTAIN, new WorldPoint(2776, 3781, 0), PANIC, item(BLUE_DHIDE_VAMBRACES), item(DRAGON_SPEAR), item(RUNE_PLATESKIRT), item(SLED_4084)),
-		new EmoteClue("Do a push up at the bank of the Warrior's guild. Beware of double agents! Equip a dragon battleaxe, a dragon defender and a slayer helm of any kind.", "Warriors' guild", WARRIORS_GUILD_BANK_29047, new WorldPoint(2843, 3543, 0), DOUBLE_AGENT_141, PUSH_UP, item(DRAGON_BATTLEAXE), any("Dragon defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L)), ANY_SLAYER_HELMET),
-		new EmoteClue("Blow a raspberry in the bank of the Warriors' Guild. Beware of double agents! Equip a dragon battleaxe, a slayer helm of any kind and a dragon defender or avernic defender.", "Warriors' guild", WARRIORS_GUILD_BANK_29047, new WorldPoint(2843, 3543, 0), DOUBLE_AGENT_141, RASPBERRY, item(DRAGON_BATTLEAXE), any("Dragon defender or Avernic defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L), item(AVERNIC_DEFENDER), item(AVERNIC_DEFENDER_L)), ANY_SLAYER_HELMET),
+		new EmoteClue("Do a push up at the bank of the Warrior's guild. Beware of double agents! Equip a dragon battleaxe, a dragon defender and a slayer helm of any kind.", "Warriors' guild", WARRIORS_GUILD_BANK_29047, new WorldPoint(2843, 3543, 0), DOUBLE_AGENT_141, PUSH_UP, item(DRAGON_BATTLEAXE), any("Dragon defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L)), any("Any slayer helmet", item(SLAYER_HELMET), item(BLACK_SLAYER_HELMET), item(GREEN_SLAYER_HELMET), item(PURPLE_SLAYER_HELMET), item(RED_SLAYER_HELMET), item(TURQUOISE_SLAYER_HELMET), item(SLAYER_HELMET_I), item(BLACK_SLAYER_HELMET_I), item(GREEN_SLAYER_HELMET_I), item(PURPLE_SLAYER_HELMET_I), item(RED_SLAYER_HELMET_I), item(TURQUOISE_SLAYER_HELMET_I), item(HYDRA_SLAYER_HELMET), item(HYDRA_SLAYER_HELMET_I), item(TWISTED_SLAYER_HELMET), item(TWISTED_SLAYER_HELMET_I), item(SLAYER_HELMET_I_25177), item(BLACK_SLAYER_HELMET_I_25179), item(GREEN_SLAYER_HELMET_I_25181), item(RED_SLAYER_HELMET_I_25183), item(PURPLE_SLAYER_HELMET_I_25185), item(TURQUOISE_SLAYER_HELMET_I_25187), item(HYDRA_SLAYER_HELMET_I_25189), item(TWISTED_SLAYER_HELMET_I_25191))),
+		new EmoteClue("Blow a raspberry in the bank of the Warriors' Guild. Beware of double agents! Equip a dragon battleaxe, a slayer helm of any kind and a dragon defender or avernic defender.", "Warriors' guild", WARRIORS_GUILD_BANK_29047, new WorldPoint(2843, 3543, 0), DOUBLE_AGENT_141, RASPBERRY, item(DRAGON_BATTLEAXE), any("Dragon defender or Avernic defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L), item(AVERNIC_DEFENDER), item(AVERNIC_DEFENDER_L)), any("Any slayer helmet", item(SLAYER_HELMET), item(BLACK_SLAYER_HELMET), item(GREEN_SLAYER_HELMET), item(PURPLE_SLAYER_HELMET), item(RED_SLAYER_HELMET), item(TURQUOISE_SLAYER_HELMET), item(SLAYER_HELMET_I), item(BLACK_SLAYER_HELMET_I), item(GREEN_SLAYER_HELMET_I), item(PURPLE_SLAYER_HELMET_I), item(RED_SLAYER_HELMET_I), item(TURQUOISE_SLAYER_HELMET_I), item(HYDRA_SLAYER_HELMET), item(HYDRA_SLAYER_HELMET_I), item(TWISTED_SLAYER_HELMET), item(TWISTED_SLAYER_HELMET_I), item(SLAYER_HELMET_I_25177), item(BLACK_SLAYER_HELMET_I_25179), item(GREEN_SLAYER_HELMET_I_25181), item(RED_SLAYER_HELMET_I_25183), item(PURPLE_SLAYER_HELMET_I_25185), item(TURQUOISE_SLAYER_HELMET_I_25187), item(HYDRA_SLAYER_HELMET_I_25189), item(TWISTED_SLAYER_HELMET_I_25191))),
 		new EmoteClue("Blow a raspberry at the monkey cage in Ardougne Zoo. Equip a studded leather body, bronze platelegs and a normal staff with no orb.", "Ardougne Zoo", NEAR_THE_PARROTS_IN_ARDOUGNE_ZOO, new WorldPoint(2607, 3282, 0), RASPBERRY, item(STUDDED_BODY), item(BRONZE_PLATELEGS), item(STAFF)),
 		new EmoteClue("Blow raspberries outside the entrance to Keep Le Faye. Equip a coif, an iron platebody and leather gloves.", "Keep Le Faye", OUTSIDE_KEEP_LE_FAYE, new WorldPoint(2757, 3401, 0), RASPBERRY, item(COIF), item(IRON_PLATEBODY), item(LEATHER_GLOVES)),
 		new EmoteClue("Blow a raspberry in the Fishing Guild bank. Beware of double agents! Equip an elemental shield, blue dragonhide chaps and a rune warhammer.", "Fishing Guild", FISHING_GUILD_BANK, new WorldPoint(2588, 3419, 0), DOUBLE_AGENT_108, RASPBERRY, item(ELEMENTAL_SHIELD), item(BLUE_DHIDE_CHAPS), item(RUNE_WARHAMMER)),
@@ -217,7 +180,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Clap at Bob's Brilliant Axes. Equip a bronze axe and leather boots.", "Lumbridge", BOB_AXES_ENTRANCE, new WorldPoint(3231, 3203, 0), CLAP, item(BRONZE_AXE), item(LEATHER_BOOTS)),
 		new EmoteClue("Panic at Al Kharid mine.", "Al Kharid mine", null, new WorldPoint(3300, 3314, 0), PANIC),
 		new EmoteClue("Spin at Flynn's Mace Shop.", "Falador", null, new WorldPoint(2950, 3387, 0), SPIN),
-		new EmoteClue("Salute by the Charcoal Burners. Equip a Farmer's strawhat, Shayzien platebody (5) and Pyromancer robes.", "Charcoal Burners", CHARCOAL_BURNERS, new WorldPoint(1714, 3467, 0), SALUTE, any("Farmer's strawhat", item(FARMERS_STRAWHAT), item(FARMERS_STRAWHAT_13647)), item(SHAYZIEN_BODY_5), item(PYROMANCER_ROBE)));
+		new EmoteClue("Salute by the Charcoal Burners. Equip a Farmer's strawhat, Shayzien platebody (5) and Pyromancer robes.", "Charcoal Burners", CHARCOAL_BURNERS, new WorldPoint(1714, 3467, 0), SALUTE, any("Farmer's strawhat", item(FARMERS_STRAWHAT), item(FARMERS_STRAWHAT_13647)), item(SHAYZIEN_PLATEBODY_5), item(PYROMANCER_ROBE)));
 
 	private static final String UNICODE_CHECK_MARK = "\u2713";
 	private static final String UNICODE_BALLOT_X = "\u2717";

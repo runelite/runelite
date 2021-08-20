@@ -28,7 +28,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.io.IOException;
-import java.io.InputStream;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
@@ -60,10 +59,7 @@ public class SkyboxPlugin extends Plugin
 	@Override
 	public void startUp() throws IOException
 	{
-		try (InputStream in = SkyboxPlugin.class.getResourceAsStream("skybox.txt"))
-		{
-			skybox = new Skybox(in, "skybox.txt");
-		}
+		skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt");
 	}
 
 	@Override

@@ -37,7 +37,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -50,7 +49,6 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
-import org.apache.commons.lang3.time.DurationFormatUtils;
 
 @PluginDescriptor(
 	name = "Report Button",
@@ -182,9 +180,6 @@ public class ReportButtonPlugin extends Plugin
 			case LOGIN_TIME:
 				reportButton.setText(getLoginTime());
 				break;
-			case IDLE_TIME:
-				reportButton.setText(getIdleTime());
-				break;
 			case DATE:
 				reportButton.setText(getDate());
 				break;
@@ -195,12 +190,6 @@ public class ReportButtonPlugin extends Plugin
 				reportButton.setText("Report");
 				break;
 		}
-	}
-
-	private String getIdleTime()
-	{
-		long lastActivity = Long.min(client.getMouseIdleTicks(), client.getKeyboardIdleTicks());
-		return DurationFormatUtils.formatDuration(lastActivity * Constants.CLIENT_TICK_LENGTH, "mm:ss");
 	}
 
 	private String getLoginTime()

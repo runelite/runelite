@@ -30,23 +30,20 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
-@Slf4j
 public class WidgetOverlay extends Overlay
 {
-	public static Collection<WidgetOverlay> createOverlays(final OverlayManager overlayManager, final Client client)
+	public static Collection<WidgetOverlay> createOverlays(final Client client)
 	{
 		return Arrays.asList(
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
-			// The client forces the oxygen bar below the xp tracker, so set its priority lower
-			new WidgetOverlay(client, WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_CENTER, OverlayPriority.HIGH),
-			new XpTrackerWidgetOverlay(overlayManager, client, WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_CENTER),
+			new XpTrackerWidgetOverlay(client, WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.RAIDS_POINTS_INFOBOX, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.TOB_PARTY_INTERFACE, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.TOB_PARTY_STATS, OverlayPosition.TOP_LEFT),
@@ -64,8 +61,7 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.LMS_KDA, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.GAUNTLET_TIMER_CONTAINER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.HALLOWED_SEPULCHRE_TIMER_CONTAINER, OverlayPosition.TOP_LEFT),
-			// The client forces the health overlay bar below the xp tracker, so set its priority lower
-			new WidgetOverlay(client, WidgetInfo.HEALTH_OVERLAY_BAR, OverlayPosition.TOP_CENTER, OverlayPriority.HIGH),
+			new WidgetOverlay(client, WidgetInfo.HEALTH_OVERLAY_BAR, OverlayPosition.TOP_CENTER),
 			new WidgetOverlay(client, WidgetInfo.TOB_HEALTH_BAR, OverlayPosition.TOP_CENTER),
 			new WidgetOverlay(client, WidgetInfo.NIGHTMARE_PILLAR_HEALTH, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.VOLCANIC_MINE_VENTS_INFOBOX_GROUP, OverlayPosition.BOTTOM_RIGHT),
@@ -73,28 +69,19 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_FIXED, OverlayPosition.BOTTOM_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZEABLE_MODERN, OverlayPosition.CANVAS_TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZEABLE_CLASSIC, OverlayPosition.CANVAS_TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.TEMPOROSS_STATUS_INDICATOR, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.BA_HEAL_TEAMMATES, OverlayPosition.BOTTOM_LEFT),
-			new WidgetOverlay(client, WidgetInfo.BA_TEAM, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DETACHED)
+			new WidgetOverlay(client, WidgetInfo.TEMPOROSS_STATUS_INDICATOR, OverlayPosition.TOP_LEFT)
 		);
 	}
 
 	protected final Client client;
 	private final WidgetInfo widgetInfo;
 	private final Rectangle parentBounds = new Rectangle();
-	private boolean revalidate;
 
 	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition)
 	{
-		this(client, widgetInfo, overlayPosition, OverlayPriority.HIGHEST);
-	}
-
-	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition, final OverlayPriority overlayPriority)
-	{
 		this.client = client;
 		this.widgetInfo = widgetInfo;
-		setPriority(overlayPriority);
+		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPosition(overlayPosition);
 		// It's almost possible to drawAfterInterface(widgetInfo.getGroupId()) here, but that fires
@@ -118,34 +105,10 @@ public class WidgetOverlay extends Overlay
 			return null;
 		}
 
-		assert widget != null;
-
 		final Rectangle bounds = getBounds();
-		// OverlayRenderer sets the overlay bounds to the preferred location if one is set prior to calling render()
-		// for detached overlays.
-		if (getPosition() != OverlayPosition.DETACHED || getPreferredLocation() != null)
-		{
-			// The widget relative pos is relative to the parent
-			widget.setRelativeX(bounds.x - parent.x);
-			widget.setRelativeY(bounds.y - parent.y);
-		}
-		else
-		{
-			if (revalidate)
-			{
-				revalidate = false;
-				log.debug("Revalidating {}", widgetInfo);
-				// Revalidate the widget to reposition it back to its normal location after an overlay reset
-				widget.revalidate();
-			}
-
-			// Update the overlay bounds to the widget bounds so the drag overlay renders correctly.
-			// Note OverlayManager uses original bounds reference to render managing mode and for
-			// onMouseOver, so update the existing bounds vs. replacing the reference.
-			Rectangle widgetBounds = widget.getBounds();
-			bounds.setBounds(widgetBounds.x, widgetBounds.y, widgetBounds.width, widgetBounds.height);
-		}
-
+		// The widget relative pos is relative to the parent
+		widget.setRelativeX(bounds.x - parent.x);
+		widget.setRelativeY(bounds.y - parent.y);
 		return new Dimension(widget.getWidth(), widget.getHeight());
 	}
 
@@ -187,22 +150,11 @@ public class WidgetOverlay extends Overlay
 		return getParentBounds(widget);
 	}
 
-	@Override
-	public void reset()
-	{
-		super.reset();
-		// Revalidate must be called on the client thread, so defer til next frame
-		revalidate = true;
-	}
-
 	private static class XpTrackerWidgetOverlay extends WidgetOverlay
 	{
-		private final OverlayManager overlayManager;
-
-		private XpTrackerWidgetOverlay(OverlayManager overlayManager, Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
+		private XpTrackerWidgetOverlay(Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
 		{
 			super(client, widgetInfo, overlayPosition);
-			this.overlayManager = overlayManager;
 		}
 
 		/**
@@ -234,13 +186,7 @@ public class WidgetOverlay extends Overlay
 					position = OverlayPosition.TOP_LEFT;
 					break;
 			}
-
-			if (position != super.getPosition())
-			{
-				log.debug("Xp tracker moved position");
-				setPosition(position);
-				overlayManager.rebuildOverlayLayers();
-			}
+			setPosition(position);
 			return position;
 		}
 	}

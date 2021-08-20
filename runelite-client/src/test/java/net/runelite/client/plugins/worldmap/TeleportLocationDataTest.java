@@ -25,24 +25,19 @@
  */
 package net.runelite.client.plugins.worldmap;
 
-import java.io.IOException;
-import java.io.InputStream;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 public class TeleportLocationDataTest
 {
 	@Test
-	public void testResources() throws IOException
+	public void testResources()
 	{
 		for (TeleportLocationData data : TeleportLocationData.values())
 		{
 			String path = data.getIconPath();
 			assertNotNull(path);
-			try (InputStream in = getClass().getResourceAsStream(path))
-			{
-				assertNotNull(in);
-			}
+			assertNotNull(path, getClass().getResourceAsStream(path));
 		}
 	}
 }

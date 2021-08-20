@@ -49,7 +49,6 @@ import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.grounditems.GroundItemsPlugin.MAX_QUANTITY;
 import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
-import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.NONE;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -108,8 +107,7 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final boolean dontShowOverlay = (config.itemHighlightMode() == MENU || config.itemHighlightMode() == NONE
-			|| plugin.isHideAll()) && !plugin.isHotKeyPressed();
+		final boolean dontShowOverlay = (config.itemHighlightMode() == MENU || plugin.isHideAll()) && !plugin.isHotKeyPressed();
 
 		if (dontShowOverlay && !config.highlightTiles())
 		{

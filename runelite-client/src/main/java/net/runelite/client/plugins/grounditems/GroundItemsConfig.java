@@ -403,26 +403,4 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
-
-	@ConfigItem(
-		keyName = "showLootbeamForHighlighted",
-		name = "Highlighted item lootbeams",
-		description = "Configures lootbeams to show for all highlighted items.",
-		position = 30
-	)
-	default boolean showLootbeamForHighlighted()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "showLootbeamTier",
-		name = "Lootbeam tier",
-		description = "Configures which price tiers will trigger a lootbeam",
-		position = 31
-	)
-	default HighlightTier showLootbeamTier()
-	{
-		return HighlightTier.HIGH;
-	}
 }

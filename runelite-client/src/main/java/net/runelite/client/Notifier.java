@@ -479,11 +479,14 @@ public class Notifier
 	{
 		if (NOTIFICATION_FILE.exists())
 		{
-			try (InputStream fileStream = new BufferedInputStream(new FileInputStream(NOTIFICATION_FILE));
-				AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+			try
 			{
-				clip.open(sound);
-				return true;
+				InputStream fileStream = new BufferedInputStream(new FileInputStream(NOTIFICATION_FILE));
+				try (AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+				{
+					clip.open(sound);
+					return true;
+				}
 			}
 			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
 			{
@@ -492,8 +495,8 @@ public class Notifier
 		}
 
 		// Otherwise load from the classpath
-		try (InputStream fileStream = new BufferedInputStream(Notifier.class.getResourceAsStream("notification.wav"));
-			AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+		InputStream fileStream = new BufferedInputStream(Notifier.class.getResourceAsStream("notification.wav"));
+		try (AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
 		{
 			clip.open(sound);
 			return true;

@@ -25,6 +25,8 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -97,6 +99,18 @@ public interface SlayerConfig extends Config
 	default boolean highlightTargets()
 	{
 		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 6,
+		keyName = "targetColor",
+		name = "Target Color",
+		description = "Color of the highlighted targets"
+	)
+	default Color getTargetColor()
+	{
+		return Color.RED;
 	}
 
 	@ConfigItem(

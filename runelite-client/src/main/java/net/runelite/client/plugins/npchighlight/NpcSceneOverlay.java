@@ -48,7 +48,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 public class NpcSceneOverlay extends Overlay
@@ -67,16 +67,13 @@ public class NpcSceneOverlay extends Overlay
 	private final Client client;
 	private final NpcIndicatorsConfig config;
 	private final NpcIndicatorsPlugin plugin;
-	private final ModelOutlineRenderer modelOutlineRenderer;
 
 	@Inject
-	NpcSceneOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin,
-		ModelOutlineRenderer modelOutlineRenderer)
+	NpcSceneOverlay(Client client, NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
-		this.modelOutlineRenderer = modelOutlineRenderer;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
@@ -91,7 +88,7 @@ public class NpcSceneOverlay extends Overlay
 
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc);
+			renderNpcOverlay(graphics, npc, config.getHighlightColor());
 		}
 
 		return null;
@@ -112,12 +109,18 @@ public class NpcSceneOverlay extends Overlay
 			return;
 		}
 
+		final Color color = config.getHighlightColor();
+
 		final LocalPoint centerLp = new LocalPoint(
 			lp.getX() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2,
 			lp.getY() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2);
 
 		final Polygon poly = Perspective.getCanvasTileAreaPoly(client, centerLp, npc.getNpcSize());
-		renderPoly(graphics, config.highlightColor(), config.fillColor(), poly);
+
+		if (poly != null)
+		{
+			OverlayUtil.renderPolygon(graphics, poly, color);
+		}
 
 		final Instant now = Instant.now();
 		final double baseTick = ((npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount()) * (Constants.GAME_TICK_LENGTH / 1000.0);
@@ -141,7 +144,7 @@ public class NpcSceneOverlay extends Overlay
 		}
 	}
 
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor)
+	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
 		NPCComposition npcComposition = actor.getTransformedComposition();
 		if (npcComposition == null || !npcComposition.isInteractible()
@@ -150,13 +153,10 @@ public class NpcSceneOverlay extends Overlay
 			return;
 		}
 
-		final Color borderColor = config.highlightColor();
-		final Color fillColor = config.fillColor();
-
 		if (config.highlightHull())
 		{
 			Shape objectClickbox = actor.getConvexHull();
-			renderPoly(graphics, borderColor, fillColor, objectClickbox);
+			renderPoly(graphics, color, objectClickbox);
 		}
 
 		if (config.highlightTile())
@@ -165,7 +165,7 @@ public class NpcSceneOverlay extends Overlay
 			LocalPoint lp = actor.getLocalLocation();
 			Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 
-			renderPoly(graphics, borderColor, fillColor, tilePoly);
+			renderPoly(graphics, color, tilePoly);
 		}
 
 		if (config.highlightSouthWestTile())
@@ -178,12 +178,7 @@ public class NpcSceneOverlay extends Overlay
 
 			Polygon southWestTilePoly = Perspective.getCanvasTilePoly(client, new LocalPoint(x, y));
 
-			renderPoly(graphics, borderColor, fillColor, southWestTilePoly);
-		}
-
-		if (config.highlightOutline())
-		{
-			modelOutlineRenderer.drawOutline(actor, (int)config.borderWidth(), borderColor, config.outlineFeather());
+			renderPoly(graphics, color, southWestTilePoly);
 		}
 
 		if (config.drawNames() && actor.getName() != null)
@@ -193,19 +188,19 @@ public class NpcSceneOverlay extends Overlay
 
 			if (textLocation != null)
 			{
-				OverlayUtil.renderTextLocation(graphics, textLocation, npcName, borderColor);
+				OverlayUtil.renderTextLocation(graphics, textLocation, npcName, color);
 			}
 		}
 	}
 
-	private void renderPoly(Graphics2D graphics, Color borderColor, Color fillColor, Shape polygon)
+	private void renderPoly(Graphics2D graphics, Color color, Shape polygon)
 	{
 		if (polygon != null)
 		{
-			graphics.setColor(borderColor);
+			graphics.setColor(color);
 			graphics.setStroke(new BasicStroke((float) config.borderWidth()));
 			graphics.draw(polygon);
-			graphics.setColor(fillColor);
+			graphics.setColor(ColorUtil.colorWithAlpha(color, 20));
 			graphics.fill(polygon);
 		}
 	}

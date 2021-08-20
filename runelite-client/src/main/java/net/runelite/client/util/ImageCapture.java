@@ -42,6 +42,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import java.util.EnumSet;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -51,9 +52,9 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.WorldType;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
-import net.runelite.client.config.RuneScapeProfileType;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -115,11 +116,20 @@ public class ImageCapture
 		File playerFolder;
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
+			final EnumSet<WorldType> worldTypes = client.getWorldType();
+
 			String playerDir = client.getLocalPlayer().getName();
-			RuneScapeProfileType profileType = RuneScapeProfileType.getCurrent(client);
-			if (profileType != RuneScapeProfileType.STANDARD)
+			if (worldTypes.contains(WorldType.DEADMAN))
 			{
-				playerDir += "-" + Text.titleCase(profileType);
+				playerDir += "-Deadman";
+			}
+			else if (worldTypes.contains(WorldType.LEAGUE))
+			{
+				playerDir += "-League";
+			}
+			else if (worldTypes.contains(WorldType.TOURNAMENT))
+			{
+				playerDir += "-Tournament";
 			}
 
 			if (!Strings.isNullOrEmpty(subDir))

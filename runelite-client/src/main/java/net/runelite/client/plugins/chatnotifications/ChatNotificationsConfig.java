@@ -44,7 +44,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 1,
 		keyName = "highlightWordsString",
 		name = "Highlight words",
-		description = "Highlights the following words in chat, separated by commas",
+		description = "Highlights the following words in chat",
 		section = highlightLists
 	)
 	default String highlightWordsString()

@@ -64,7 +64,12 @@ class BurnerOverlay extends Overlay
 
 		plugin.getIncenseBurners().forEach((tile, burner) ->
 		{
-			if (tile.getPlane() != client.getPlane() || !burner.isLit())
+			if (tile.getPlane() != client.getPlane())
+			{
+				return;
+			}
+
+			if (!PohPlugin.BURNER_LIT.contains(burner.getId()))
 			{
 				return;
 			}

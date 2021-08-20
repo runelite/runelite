@@ -30,6 +30,7 @@ import lombok.Value;
 @Value
 public class ItemStats
 {
+	private boolean quest;
 	private boolean equipable;
 	private double weight;
 	@SerializedName("ge_limit")
@@ -78,7 +79,7 @@ public class ItemStats
 			newEquipment = equipment;
 		}
 
-		return new ItemStats(equipable, newWeight, 0, newEquipment);
+		return new ItemStats(quest, equipable, newWeight, 0, newEquipment);
 	}
 }
 

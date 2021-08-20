@@ -253,8 +253,8 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getTiles();
-		final int x = event.getParam0();
-		final int y = event.getParam1();
+		final int x = event.getActionParam();
+		final int y = event.getWidgetId();
 		final int z = client.getPlane();
 		final Tile tile = tiles[z][x][y];
 
@@ -288,18 +288,6 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		ObjectComposition objectComposition = client.getObjectDefinition(object.getId());
-		if (objectComposition.getImpostorIds() == null)
-		{
-			// Multiloc names are instead checked in the overlay
-			String name = objectComposition.getName();
-			if (Strings.isNullOrEmpty(name) || name.equals("null"))
-			{
-				// was marked, but name has changed
-				return;
-			}
-		}
-
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
@@ -309,7 +297,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			{
 				log.debug("Marking object {} due to matching {}", object, objectPoint);
 				objects.add(new ColorTileObject(object,
-					objectComposition,
+					client.getObjectDefinition(object.getId()),
 					objectPoint.getName(),
 					objectPoint.getColor()));
 				break;

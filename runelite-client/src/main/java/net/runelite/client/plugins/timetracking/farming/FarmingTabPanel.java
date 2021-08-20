@@ -35,6 +35,7 @@ import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -44,6 +45,7 @@ import net.runelite.client.plugins.timetracking.TimeablePanel;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 
+@Slf4j
 public class FarmingTabPanel extends TabContentPanel
 {
 	private final FarmingTracker farmingTracker;

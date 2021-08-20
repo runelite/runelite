@@ -94,7 +94,6 @@ public class HiscoreResult
 	private Skill krilTsutsaroth;
 	private Skill mimic;
 	private Skill nightmare;
-	private Skill phosanisNightmare;
 	private Skill obor;
 	private Skill sarachnis;
 	private Skill scorpia;
@@ -246,8 +245,6 @@ public class HiscoreResult
 				return mimic;
 			case NIGHTMARE:
 				return nightmare;
-			case PHOSANIS_NIGHTMARE:
-				return phosanisNightmare;
 			case OBOR:
 				return obor;
 			case SARACHNIS:

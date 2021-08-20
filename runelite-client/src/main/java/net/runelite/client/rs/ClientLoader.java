@@ -533,7 +533,7 @@ public class ClientLoader implements Supplier<Applet>
 				if (name.endsWith(".class"))
 				{
 					name = name.substring(0, name.length() - 6);
-					classLoader.loadClass(name.replace('/', '.'));
+					classLoader.loadClass(name);
 				}
 			}
 
@@ -559,13 +559,13 @@ public class ClientLoader implements Supplier<Applet>
 
 	private static Certificate[] getJagexCertificateChain()
 	{
-		try (InputStream in = ClientLoader.class.getResourceAsStream("jagex.crt"))
+		try
 		{
 			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-			Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(in);
+			Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
 			return certificates.toArray(new Certificate[0]);
 		}
-		catch (CertificateException | IOException e)
+		catch (CertificateException e)
 		{
 			throw new RuntimeException("Unable to parse pinned certificates", e);
 		}

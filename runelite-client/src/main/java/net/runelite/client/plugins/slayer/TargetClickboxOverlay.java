@@ -1,5 +1,7 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, James Swindle <wilingua@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,89 +24,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.tileindicators;
+package net.runelite.client.plugins.slayer;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.awt.Shape;
+import java.util.List;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Perspective;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.NPC;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ColorUtil;
 
-public class TileIndicatorsOverlay extends Overlay
+public class TargetClickboxOverlay extends Overlay
 {
-	private final Client client;
-	private final TileIndicatorsConfig config;
+	private final SlayerConfig config;
+	private final SlayerPlugin plugin;
 
 	@Inject
-	private TileIndicatorsOverlay(Client client, TileIndicatorsConfig config)
+	TargetClickboxOverlay(SlayerConfig config, SlayerPlugin plugin)
 	{
-		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(OverlayPriority.MED);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.highlightHoveredTile())
+		if (!config.highlightTargets())
 		{
-			// If we have tile "selected" render it
-			if (client.getSelectedSceneTile() != null)
-			{
-				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), config.highlightHoveredColor());
-			}
+			return null;
 		}
 
-		if (config.highlightDestinationTile())
+		List<NPC> targets = plugin.getHighlightedTargets();
+		for (NPC target : targets)
 		{
-			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor());
-		}
-
-		if (config.highlightCurrentTile())
-		{
-			final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
-			if (playerPos == null)
-			{
-				return null;
-			}
-
-			final LocalPoint playerPosLocal = LocalPoint.fromWorld(client, playerPos);
-			if (playerPosLocal == null)
-			{
-				return null;
-			}
-
-			renderTile(graphics, playerPosLocal, config.highlightCurrentColor());
+			renderTargetOverlay(graphics, target, config.getTargetColor());
 		}
 
 		return null;
 	}
 
-	private void renderTile(final Graphics2D graphics, final LocalPoint dest, final Color color)
+	private void renderTargetOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
-		if (dest == null)
+		Shape objectClickbox = actor.getConvexHull();
+		if (objectClickbox != null)
 		{
-			return;
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.draw(objectClickbox);
+			graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12));
+			graphics.fill(objectClickbox);
 		}
-
-		final Polygon poly = Perspective.getCanvasTilePoly(client, dest);
-
-		if (poly == null)
-		{
-			return;
-		}
-
-		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 }

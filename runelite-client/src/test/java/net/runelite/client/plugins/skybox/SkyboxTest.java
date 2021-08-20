@@ -29,7 +29,6 @@ import com.google.common.io.CharSource;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -51,13 +50,8 @@ public class SkyboxTest
 	@Test
 	public void testLoadActual() throws IOException
 	{
-		long start;
-		Skybox skybox;
-		try (InputStream in = SkyboxPlugin.class.getResourceAsStream("skybox.txt"))
-		{
-			start = System.nanoTime();
-			skybox = new Skybox(in, "skybox.txt");
-		}
+		long start = System.nanoTime();
+		Skybox skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt");
 		log.info("Parse took {}ms", (System.nanoTime() - start) / 1_000_000);
 
 		String skyboxFile = System.getProperty("skyboxExport");

@@ -206,7 +206,7 @@ public class MenuManager
 			return;
 		}
 
-		int widgetId = event.getParam1();
+		int widgetId = event.getWidgetId();
 		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
 
 		for (WidgetMenuOption curMenuOption : options)
