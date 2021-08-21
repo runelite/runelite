@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
  Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
@@ -29,7 +30,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.7.20.2-SNAPSHOT</version>
+		<version>1.7.21-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>cache-client</artifactId>
