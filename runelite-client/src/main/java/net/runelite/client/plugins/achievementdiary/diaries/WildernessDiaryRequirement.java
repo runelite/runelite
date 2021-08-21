@@ -70,7 +70,7 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 		// HARD
 		add("Cast one of the 3 God spells against another player in the Wilderness.",
 			new SkillRequirement(Skill.MAGIC, 60),
-			new QuestRequirement(Quest.THE_MAGE_ARENA));
+			new QuestRequirement(Quest.MAGE_ARENA_I));
 		add("Charge an Air Orb.",
 			new SkillRequirement(Skill.MAGIC, 66));
 		add("Catch a Black Salamander in the Wilderness.",

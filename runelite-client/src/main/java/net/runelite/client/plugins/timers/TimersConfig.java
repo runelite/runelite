@@ -283,4 +283,14 @@ public interface TimersConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showPickpocketStun",
+		name = "Pickpocket stun timer",
+		description = "Configures whether pickpocket stun timer is displayed"
+	)
+	default boolean showPickpocketStun()
+	{
+		return true;
+	}
 }

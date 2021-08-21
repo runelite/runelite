@@ -32,7 +32,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Template
 {
 	private final List<Function<String, String>> resourceLoaders = new ArrayList<>();
@@ -80,10 +82,16 @@ public class Template
 	{
 		return add(f ->
 		{
-			InputStream is = clazz.getResourceAsStream(f);
-			if (is != null)
+			try (InputStream is = clazz.getResourceAsStream(f))
 			{
-				return inputStreamToString(is);
+				if (is != null)
+				{
+					return inputStreamToString(is);
+				}
+			}
+			catch (IOException ex)
+			{
+				log.warn(null, ex);
 			}
 			return null;
 		});

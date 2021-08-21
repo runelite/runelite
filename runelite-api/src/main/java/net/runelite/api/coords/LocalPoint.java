@@ -96,6 +96,16 @@ public class LocalPoint
 	}
 
 	/**
+	 * Test if this point is in the loaded scene, a 104x104 tile area.
+	 * @return
+	 */
+	public boolean isInScene()
+	{
+		return x >= 0 && x < Perspective.SCENE_SIZE << Perspective.LOCAL_COORD_BITS
+			&& y >= 0 && y < Perspective.SCENE_SIZE << Perspective.LOCAL_COORD_BITS;
+	}
+
+	/**
 	 * Gets the coordinate at the center of the passed tile.
 	 *
 	 * @param x      x-axis coordinate of the tile in Scene coords
@@ -117,7 +127,7 @@ public class LocalPoint
 	 */
 	public int getSceneX()
 	{
-		return x >>> Perspective.LOCAL_COORD_BITS;
+		return x >> Perspective.LOCAL_COORD_BITS;
 	}
 
 	/**
@@ -127,6 +137,6 @@ public class LocalPoint
 	 */
 	public int getSceneY()
 	{
-		return y >>> Perspective.LOCAL_COORD_BITS;
+		return y >> Perspective.LOCAL_COORD_BITS;
 	}
 }

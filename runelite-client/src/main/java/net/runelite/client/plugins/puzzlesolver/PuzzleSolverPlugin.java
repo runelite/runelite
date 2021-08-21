@@ -138,7 +138,7 @@ public class PuzzleSolverPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		int widgetId = menuOptionClicked.getWidgetId();
+		int widgetId = menuOptionClicked.getParam1();
 		if (TO_GROUP(widgetId) != WidgetID.LIGHT_BOX_GROUP_ID)
 		{
 			return;

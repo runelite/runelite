@@ -410,6 +410,21 @@ public class Perspective
 		int plane,
 		int zOffset)
 	{
+		if (!localLocation.isInScene())
+		{
+			return null;
+		}
+
+		final byte[][][] tileSettings = client.getTileSettings();
+		final int sceneX = localLocation.getSceneX();
+		final int sceneY = localLocation.getSceneY();
+
+		int tilePlane = plane;
+		if (plane < Constants.MAX_Z - 1 && (tileSettings[1][sceneX][sceneY] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
+		{
+			tilePlane = plane + 1;
+		}
+
 		final int swX = localLocation.getX() - (sizeX * LOCAL_TILE_SIZE / 2);
 		final int swY = localLocation.getY() - (sizeY * LOCAL_TILE_SIZE / 2);
 
@@ -421,22 +436,6 @@ public class Perspective
 
 		final int nwX = neX;
 		final int nwY = swY;
-
-		final byte[][][] tileSettings = client.getTileSettings();
-
-		final int sceneX = localLocation.getSceneX();
-		final int sceneY = localLocation.getSceneY();
-
-		if (sceneX < 0 || sceneY < 0 || sceneX >= SCENE_SIZE || sceneY >= SCENE_SIZE)
-		{
-			return null;
-		}
-
-		int tilePlane = plane;
-		if (plane < Constants.MAX_Z - 1 && (tileSettings[1][sceneX][sceneY] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
-		{
-			tilePlane = plane + 1;
-		}
 
 		final int swHeight = getHeight(client, swX, swY, tilePlane) - zOffset;
 		final int nwHeight = getHeight(client, nwX, nwY, tilePlane) - zOffset;

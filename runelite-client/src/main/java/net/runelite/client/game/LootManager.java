@@ -237,7 +237,7 @@ public class LootManager
 	public void onNpcChanged(NpcChanged npcChanged)
 	{
 		final NPC npc = npcChanged.getNpc();
-		if (npc.getId() == NpcID.THE_NIGHTMARE_9433)
+		if (npc.getId() == NpcID.THE_NIGHTMARE_9433 || npc.getId() == NpcID.PHOSANIS_NIGHTMARE_9424)
 		{
 			delayedLootNpc = npc;
 			delayedLootTickLimit = 15;

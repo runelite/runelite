@@ -97,11 +97,11 @@ public class ExaminePlugin extends Plugin
 				type = ExamineType.ITEM;
 				id = event.getId();
 
-				int widgetId = event.getWidgetId();
+				int widgetId = event.getParam1();
 				int widgetGroup = TO_GROUP(widgetId);
 				int widgetChild = TO_CHILD(widgetId);
 				Widget widget = client.getWidget(widgetGroup, widgetChild);
-				WidgetItem widgetItem = widget.getWidgetItem(event.getActionParam());
+				WidgetItem widgetItem = widget.getWidgetItem(event.getParam0());
 				quantity = widgetItem != null && widgetItem.getId() >= 0 ? widgetItem.getQuantity() : 1;
 
 				// Examine on inventory items with more than 100000 quantity is handled locally and shows the item stack
@@ -127,7 +127,7 @@ public class ExaminePlugin extends Plugin
 			case CC_OP_LOW_PRIORITY:
 			{
 				type = ExamineType.ITEM_BANK_EQ;
-				int[] qi = findItemFromWidget(event.getWidgetId(), event.getActionParam());
+				int[] qi = findItemFromWidget(event.getParam1(), event.getParam0());
 				if (qi == null)
 				{
 					log.debug("Examine for item with unknown widget: {}", event);

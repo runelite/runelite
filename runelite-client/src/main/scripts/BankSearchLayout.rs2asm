@@ -848,13 +848,14 @@ LABEL750:
    invoke                 514
    iconst                 1
    if_icmpeq              LABEL754
-   jump                   LABEL757
+   jump                   LABEL758
 LABEL754:
+   iconst                 1
    iconst                 1
    iconst                 1
    invoke                 299
 GetTabRange:
-LABEL757:
+LABEL758:
    iconst                 -1
    istore                 32
    iconst                 -1
@@ -867,43 +868,43 @@ LABEL757:
    istore                 34
    iconst                 0
    istore                 35
-LABEL769:
+LABEL770:
    iload                  20
    iconst                 816
-   if_icmplt              LABEL773
-   jump                   LABEL853
-LABEL773:
+   if_icmplt              LABEL774
+   jump                   LABEL854
+LABEL774:
    iload                  2
    iload                  20
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL779
-   jump                   LABEL848
-LABEL779:
+   if_icmpeq              LABEL780
+   jump                   LABEL849
+LABEL780:
    iconst                 95
    iload                  20
    inv_getobj            
    istore                 25
    iload                  25
    iconst                 -1
-   if_icmpne              LABEL787
-   jump                   LABEL791
-LABEL787:
+   if_icmpne              LABEL788
+   jump                   LABEL792
+LABEL788:
    iload                  29
    iconst                 1
    add                   
    istore                 29
-LABEL791:
+LABEL792:
    iload                  20
    iload                  32
-   if_icmpge              LABEL795
-   jump                   LABEL846
-LABEL795:
+   if_icmpge              LABEL796
+   jump                   LABEL847
+LABEL796:
    iload                  20
    iload                  33
-   if_icmplt              LABEL799
-   jump                   LABEL846
-LABEL799:
+   if_icmplt              LABEL800
+   jump                   LABEL847
+LABEL800:
    iconst                 0
    cc_sethide            
    iload                  25
@@ -937,38 +938,38 @@ LABEL799:
    istore                 28
    iload                  34
    iload                  22
-   if_icmplt              LABEL834
-   jump                   LABEL839
-LABEL834:
+   if_icmplt              LABEL835
+   jump                   LABEL840
+LABEL835:
    iload                  34
    iconst                 1
    add                   
    istore                 34
-   jump                   LABEL845
-LABEL839:
+   jump                   LABEL846
+LABEL840:
    iconst                 0
    iload                  35
    iconst                 1
    add                   
    istore                 35
    istore                 34
-LABEL845:
-   jump                   LABEL848
 LABEL846:
+   jump                   LABEL849
+LABEL847:
    iconst                 1
    cc_sethide            
-LABEL848:
+LABEL849:
    iload                  20
    iconst                 1
    add                   
    istore                 20
-   jump                   LABEL769
-LABEL853:
+   jump                   LABEL770
+LABEL854:
    get_varbit             4170
    iconst                 2
-   if_icmpeq              LABEL857
-   jump                   LABEL867
-LABEL857:
+   if_icmpeq              LABEL858
+   jump                   LABEL868
+LABEL858:
    sconst                 "Tab "
    iconst                 105
    iconst                 115
@@ -978,8 +979,8 @@ LABEL857:
    join_string            2
    iload                  5
    if_settext            
-   jump                   LABEL873
-LABEL867:
+   jump                   LABEL874
+LABEL868:
    sconst                 "Tab "
    get_varbit             4150
    tostring              
@@ -987,7 +988,7 @@ LABEL867:
    iload                  5
    if_settext            
 FinishBuilding:
-LABEL873:
+LABEL874:
    iload                  0
    iload                  1
    iload                  2

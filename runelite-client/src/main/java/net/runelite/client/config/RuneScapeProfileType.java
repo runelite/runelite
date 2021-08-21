@@ -37,10 +37,16 @@ public enum RuneScapeProfileType
 	STANDARD(client -> true),
 	BETA(client -> client.getWorldType().contains(WorldType.TOURNAMENT)),
 	DEADMAN(client -> client.getWorldType().contains(WorldType.DEADMAN)),
-	TRAILBLAZER_LEAGUE(client -> client.getWorldType().contains(WorldType.LEAGUE)),
+	TRAILBLAZER_LEAGUE,
+	DEADMAN_REBORN(client -> client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
 	;
 
 	private final Predicate<Client> test;
+
+	RuneScapeProfileType()
+	{
+		this(client -> false);
+	}
 
 	public static RuneScapeProfileType getCurrent(Client client)
 	{

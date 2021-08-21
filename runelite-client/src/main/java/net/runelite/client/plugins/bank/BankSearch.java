@@ -105,7 +105,7 @@ public class BankSearch
 			if (closeChat)
 			{
 				// this clears the input text and type, and resets the chatbox to allow input
-				client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 1, 1);
+				client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 1, 1, 0);
 			}
 			else
 			{

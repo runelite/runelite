@@ -27,7 +27,6 @@ package net.runelite.client.plugins.crowdsourcing;
 
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -40,7 +39,6 @@ import net.runelite.client.plugins.crowdsourcing.woodcutting.CrowdsourcingWoodcu
 import net.runelite.client.plugins.crowdsourcing.zmi.CrowdsourcingZMI;
 import net.runelite.client.task.Schedule;
 
-@Slf4j
 @PluginDescriptor(
 	name = "OSRS Wiki Crowdsourcing",
 	description = "Send data to the wiki to help figure out skilling success rates, burn rates, more. See osrs.wiki/RS:CROWD"

@@ -29,6 +29,7 @@ import com.google.common.primitives.Bytes;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -43,6 +44,7 @@ public class Ping
 	private static final byte[] RUNELITE_PING = "RuneLitePing".getBytes(Charsets.UTF_8);
 	private static final int TIMEOUT = 2000; // ms
 	private static final int PORT = 43594;
+	private static final int MAX_IPV4_HEADER_SIZE = 60;
 
 	private static short seq;
 
@@ -59,19 +61,27 @@ public class Ping
 			return -1;
 		}
 
+		if (!(inetAddress instanceof Inet4Address))
+		{
+			log.debug("Only ipv4 ping is supported");
+			return -1;
+		}
+
 		try
 		{
 			switch (OSType.getOSType())
 			{
 				case Windows:
 					return windowsPing(inetAddress);
+				case MacOS:
 				case Linux:
 					try
 					{
-						return linuxPing(inetAddress);
+						return icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS);
 					}
 					catch (Exception ex)
 					{
+						log.debug("error during icmp ping", ex);
 						return tcpPing(inetAddress);
 					}
 				default:
@@ -111,7 +121,7 @@ public class Ping
 		}
 	}
 
-	private static int linuxPing(InetAddress inetAddress) throws IOException
+	private static int icmpPing(InetAddress inetAddress, boolean includeIpHeader) throws IOException
 	{
 		RLLibC libc = RLLibC.INSTANCE;
 		byte[] address = inetAddress.getAddress();
@@ -137,12 +147,19 @@ public class Ping
 			byte[] request = {
 				8, // type 8 - ipv4 echo request
 				0, // code
-				0, 0, // checksum (set by kernel)
-				0, 0, // id (set by kernel)
+				0, 0, // checksum
+				0, 0, // id - set by kernel on Linux. MacOS uses pid, however sending 0 appears to work fine.
 				(byte) (((seqno >> 8) & 0xff)), (byte) (seqno & 0xff)
 			};
 			// append payload
 			request = Bytes.concat(request, RUNELITE_PING);
+
+			final short checksum = checksum(request);
+			// on Linux the kernel automatically sets the checksum and ignores what we set,
+			// however it is required on MacOS
+			request[2] = (byte) ((checksum >> 8) & 0xff);
+			request[3] = (byte) (checksum & 0xff);
+
 			// struct sockaddr_in
 			byte[] addr = {
 				(byte) libc.AF_INET, 0, // sin_family
@@ -151,21 +168,44 @@ public class Ping
 				0, 0, 0, 0, 0, 0, 0, 0 // padding
 			};
 
+			// response size/buffer
+			int size = 8 + RUNELITE_PING.length + // struct icmphdr + response
+				(includeIpHeader ? MAX_IPV4_HEADER_SIZE : 0); // struct ip
+			Memory response = new Memory(size);
+
 			long start = System.nanoTime();
 			if (libc.sendto(sock, request, request.length, 0, addr, addr.length) != request.length)
 			{
 				return -1;
 			}
 
-			int size = 8 + RUNELITE_PING.length; // struct icmphdr + response
-			Memory response = new Memory(size);
-			if (libc.recvfrom(sock, response, size, 0, null, null) != size)
+			int rlen = libc.recvfrom(sock, response, size, 0, null, null);
+			long end = System.nanoTime();
+			if (rlen <= 0)
 			{
 				return -1;
 			}
-			long end = System.nanoTime();
 
-			short seq = (short) (((response.getByte(6) & 0xff) << 8) | response.getByte(7) & 0xff);
+			int icmpHeaderOffset = 0;
+			if (includeIpHeader)
+			{
+				int ihl = response.getByte(0) & 0xf;
+				icmpHeaderOffset = ihl << 2; // to bytes
+			}
+
+			if (icmpHeaderOffset + 7 >= rlen)
+			{
+				log.warn("packet too short (received {} bytes but icmp header offset is {})", rlen, icmpHeaderOffset);
+				return -1;
+			}
+
+			if (response.getByte(icmpHeaderOffset) != 0) // ICMP type - echo reply
+			{
+				log.warn("non-echo reply");
+				return -1;
+			}
+
+			short seq = (short) (((response.getByte(icmpHeaderOffset + 6) & 0xff) << 8) | response.getByte(icmpHeaderOffset + 7) & 0xff);
 			if (seqno != seq)
 			{
 				log.warn("sequence number mismatch ({} != {})", seqno, seq);
@@ -178,6 +218,24 @@ public class Ping
 		{
 			libc.close(sock);
 		}
+	}
+
+	// IP checksum
+	private static short checksum(byte[] data)
+	{
+		int a = 0;
+		for (int i = 0; i < data.length - 1; i += 2)
+		{
+			a += ((data[i] & 0xff) << 8) | (data[i + 1] & 0xff);
+		}
+
+		if ((data.length & 1) != 0)
+		{
+			a += (data[data.length - 1] & 0xff) << 8;
+		}
+
+		a = (a >> 16 & 0xffff) + (a & 0xffff);
+		return (short) (~a & 0xffff);
 	}
 
 	private static int tcpPing(InetAddress inetAddress) throws IOException
