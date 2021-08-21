@@ -28,6 +28,7 @@ package net.runelite.client.plugins.xpupdater;
 
 import com.google.inject.Provides;
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.Objects;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -132,53 +133,72 @@ public class XpUpdaterPlugin extends Plugin
 
 	private void update(String username)
 	{
-		String reformedUsername = username.replace(" ", "_");
+		EnumSet<WorldType> worldTypes = client.getWorldType();
+		username = username.replace(" ", "_");
+		updateCml(username, worldTypes);
+		updateTempleosrs(username, worldTypes);
+		updateWom(username, worldTypes);
+	}
 
-		if (config.cml())
+	private void updateCml(String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.cml()
+			&& !worldTypes.contains(WorldType.LEAGUE)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.TOURNAMENT))
 		{
 			HttpUrl url = new HttpUrl.Builder()
-					.scheme("https")
-					.host("crystalmathlabs.com")
-					.addPathSegment("tracker")
-					.addPathSegment("api.php")
-					.addQueryParameter("type", "update")
-					.addQueryParameter("player", reformedUsername)
-					.build();
+				.scheme("https")
+				.host("crystalmathlabs.com")
+				.addPathSegment("tracker")
+				.addPathSegment("api.php")
+				.addQueryParameter("type", "update")
+				.addQueryParameter("player", username)
+				.build();
 
 			Request request = new Request.Builder()
-					.header("User-Agent", "RuneLite")
-					.url(url)
-					.build();
+				.header("User-Agent", "RuneLite")
+				.url(url)
+				.build();
 
 			sendRequest("CrystalMathLabs", request);
 		}
+	}
 
-		if (config.templeosrs())
+	private void updateTempleosrs(String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.templeosrs()
+			&& !worldTypes.contains(WorldType.LEAGUE)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.TOURNAMENT))
 		{
 			HttpUrl url = new HttpUrl.Builder()
-					.scheme("https")
-					.host("templeosrs.com")
-					.addPathSegment("php")
-					.addPathSegment("add_datapoint.php")
-					.addQueryParameter("player", reformedUsername)
-					.build();
+				.scheme("https")
+				.host("templeosrs.com")
+				.addPathSegment("php")
+				.addPathSegment("add_datapoint.php")
+				.addQueryParameter("player", username)
+				.build();
 
 			Request request = new Request.Builder()
-					.header("User-Agent", "RuneLite")
-					.url(url)
-					.build();
+				.header("User-Agent", "RuneLite")
+				.url(url)
+				.build();
 
 			sendRequest("TempleOSRS", request);
 		}
+	}
 
-		if (config.wiseoldman())
+	private void updateWom(String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.wiseoldman()
+			&& !worldTypes.contains(WorldType.LEAGUE)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.TOURNAMENT))
 		{
-			final boolean leagueWorld = client.getWorldType().contains(WorldType.LEAGUE);
-			final String host = leagueWorld ? "trailblazer.wiseoldman.net" : "wiseoldman.net";
-
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
-				.host(host)
+				.host("wiseoldman.net")
 				.addPathSegment("api")
 				.addPathSegment("players")
 				.addPathSegment("track")
