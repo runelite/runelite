@@ -77,7 +77,7 @@ public class CorpPlugin extends Plugin
 	private int totalDamage;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<Actor> players = new HashSet<>();
+	private final Set<String> players = new HashSet<>();
 
 	@Inject
 	private PartyService party;
@@ -178,6 +178,7 @@ public class CorpPlugin extends Plugin
 			if (npc.isDead())
 			{
 				showKillStats();
+				corp = null;
 				if (!party.getMembers().isEmpty())
 				{
 					final CorpDespawnedUpdate update = new CorpDespawnedUpdate();
@@ -194,7 +195,6 @@ public class CorpPlugin extends Plugin
 
 	private void showKillStats()
 	{
-		corp = null;
 		// Show kill stats
 		String message = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
@@ -230,6 +230,7 @@ public class CorpPlugin extends Plugin
 		clientThread.invoke(() ->
 		{
 			showKillStats();
+			corp = null;
 		});
 	}
 
@@ -289,15 +290,6 @@ public class CorpPlugin extends Plugin
 			return;
 		}
 
-		// a source actor that leaves and comes back is a new actor to the client? so they are not part of the player list
-		for (Actor actor : players)
-		{
-			if (actor.getName().equals(source.getName()))
-			{
-				return;
-			}
-		}
-
-		players.add(source);
+		players.add(source.getName());
 	}
 }
