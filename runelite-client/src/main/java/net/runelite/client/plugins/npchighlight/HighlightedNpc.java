@@ -24,12 +24,22 @@
  */
 package net.runelite.client.plugins.npchighlight;
 
-import java.util.function.Function;
+import java.awt.Color;
+import lombok.Builder;
+import lombok.Value;
 import net.runelite.api.NPC;
 
-public interface NpcIndicatorsService
+@Value
+@Builder
+public class HighlightedNpc
 {
-	void registerHighlighter(Function<NPC, HighlightedNpc> p);
-	void unregisterHighlighter(Function<NPC, HighlightedNpc> p);
-	void rebuild();
+	NPC npc;
+	Color highlightColor;
+	Color fillColor;
+	boolean hull;
+	boolean tile;
+	boolean swTile;
+	boolean outline;
+	boolean name;
+	boolean nameOnMinimap;
 }

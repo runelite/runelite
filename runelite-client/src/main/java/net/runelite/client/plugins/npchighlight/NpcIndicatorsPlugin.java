@@ -39,7 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.function.Function;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -116,7 +116,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<NPC> highlightedNpcs = new HashSet<>();
+	private final Map<NPC, HighlightedNpc> highlightedNpcs = new HashMap<>();
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
@@ -175,7 +175,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 	 */
 	private boolean skipNextSpawnCheck = false;
 
-	private final List<Predicate<NPC>> higlightPredicates = new ArrayList<>();
+	private final List<Function<NPC, HighlightedNpc>> higlightPredicates = new ArrayList<>();
 
 	@Provides
 	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -265,7 +265,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 				color = config.deadNpcMenuColor();
 			}
 
-			if (color == null && highlightedNpcs.contains(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
+			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
 			{
 				color = config.highlightColor();
 			}
@@ -365,7 +365,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 					memorizeNpc(npc);
 					npcTags.add(id);
 				}
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, highlightedNpc(npc));
 			}
 		}
 		else
@@ -391,14 +391,14 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 		if (npcTags.contains(npc.getIndex()))
 		{
 			memorizeNpc(npc);
-			highlightedNpcs.add(npc);
+			highlightedNpcs.put(npc, highlightedNpc(npc));
 			spawnedNpcsThisTick.add(npc);
 			return;
 		}
 
 		if (highlightMatchesNPCName(npcName))
 		{
-			highlightedNpcs.add(npc);
+			highlightedNpcs.put(npc, highlightedNpc(npc));
 			if (!client.isInInstancedRegion())
 			{
 				memorizeNpc(npc);
@@ -407,11 +407,12 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 			return;
 		}
 
-		for (Predicate<NPC> predicate : higlightPredicates)
+		for (Function<NPC, HighlightedNpc> predicate : higlightPredicates)
 		{
-			if (predicate.test(npc))
+			HighlightedNpc highlightedNpc = predicate.apply(npc);
+			if (highlightedNpc != null)
 			{
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, highlightedNpc);
 				if (!client.isInInstancedRegion())
 				{
 					memorizeNpc(npc);
@@ -452,7 +453,18 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 		if (npcTags.contains(npc.getIndex())
 			|| highlightMatchesNPCName(npcName))
 		{
-			highlightedNpcs.add(npc);
+			highlightedNpcs.put(npc, highlightedNpc(npc));
+			return;
+		}
+
+		for (Function<NPC, HighlightedNpc> predicate : higlightPredicates)
+		{
+			HighlightedNpc highlightedNpc = predicate.apply(npc);
+			if (highlightedNpc != null)
+			{
+				highlightedNpcs.put(npc, highlightedNpc);
+				return;
+			}
 		}
 	}
 
@@ -586,7 +598,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 
 			if (npcTags.contains(npc.getIndex()))
 			{
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, highlightedNpc(npc));
 				continue;
 			}
 
@@ -596,19 +608,20 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 				{
 					memorizeNpc(npc);
 				}
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, highlightedNpc(npc));
 				continue;
 			}
 
-			for (Predicate<NPC> predicate : higlightPredicates)
+			for (Function<NPC, HighlightedNpc> predicate : higlightPredicates)
 			{
-				if (predicate.test(npc))
+				HighlightedNpc highlightedNpc = predicate.apply(npc);
+				if (highlightedNpc != null)
 				{
 					if (!client.isInInstancedRegion())
 					{
 						memorizeNpc(npc);
 					}
-					highlightedNpcs.add(npc);
+					highlightedNpcs.put(npc, highlightedNpc);
 					continue outer;
 				}
 			}
@@ -721,14 +734,29 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 		teleportGraphicsObjectSpawnedThisTick.clear();
 	}
 
+	private HighlightedNpc highlightedNpc(NPC npc)
+	{
+		return HighlightedNpc.builder()
+			.npc(npc)
+			.highlightColor(config.highlightColor())
+			.fillColor(config.fillColor())
+			.hull(config.highlightHull())
+			.tile(config.highlightTile())
+			.swTile(config.highlightSouthWestTile())
+			.outline(config.highlightOutline())
+			.name(config.drawNames())
+			.nameOnMinimap(config.drawMinimapNames())
+			.build();
+	}
+
 	@Override
-	public void registerHighlighter(Predicate<NPC> p)
+	public void registerHighlighter(Function<NPC, HighlightedNpc> p)
 	{
 		higlightPredicates.add(p);
 	}
 
 	@Override
-	public void unregisterHighlighter(Predicate<NPC> p)
+	public void unregisterHighlighter(Function<NPC, HighlightedNpc> p)
 	{
 		higlightPredicates.remove(p);
 	}
