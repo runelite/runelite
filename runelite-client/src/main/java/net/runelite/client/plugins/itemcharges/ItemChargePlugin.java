@@ -129,6 +129,11 @@ public class ItemChargePlugin extends Plugin
 		"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
 	);
 	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
+	private static final String CAMULET_RECHARGE_TEXT = "You recharge the Camulet using camel dung. Yuck!";
+	private static final Pattern CAMULET_CHECK_PATTERN = Pattern.compile(
+		"Your Camulet has (\\d+|one) charges? left\\."
+	);
+	private static final String CAMULET_EMPTY_TEXT = "Your Camulet has run out of charges.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -137,6 +142,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
+	private static final int MAX_CAMULET_CHARGES = 4;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -226,6 +232,7 @@ public class ItemChargePlugin extends Plugin
 			Matcher slaughterCheckMatcher = BRACELET_OF_SLAUGHTER_CHECK_PATTERN.matcher(message);
 			Matcher expeditiousActivateMatcher = EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN.matcher(message);
 			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
+			Matcher camuletCheckMatcher = CAMULET_CHECK_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -410,6 +417,25 @@ public class ItemChargePlugin extends Plugin
 			else if (expeditiousCheckMatcher.find())
 			{
 				updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
+			}
+			else if (camuletCheckMatcher.find())
+			{
+				final String match = camuletCheckMatcher.group(1);
+
+				int charges = 1;
+				if (!match.equals("one"))
+				{
+					charges = Integer.parseInt(match);
+				}
+				setItemCharges(ItemChargeConfig.KEY_CAMULET, charges);
+			}
+			else if (message.equals(CAMULET_RECHARGE_TEXT))
+			{
+				setItemCharges(ItemChargeConfig.KEY_CAMULET, MAX_CAMULET_CHARGES);
+			}
+			else if (message.equals(CAMULET_EMPTY_TEXT))
+			{
+				setItemCharges(ItemChargeConfig.KEY_CAMULET, 0);
 			}
 		}
 	}
