@@ -392,6 +392,9 @@ public class ChatCommandsPlugin extends Plugin
 				unsetPb(boss);
 				unsetKc(boss.replace(":", "."));
 				unsetPb(boss.replace(":", "."));
+				// Unset old story mode
+				unsetKc("Theatre of Blood Story Mode");
+				unsetPb("Theatre of Blood Story Mode");
 			}
 
 			setKc(renamedBoss, kc);
@@ -1965,13 +1968,17 @@ public class ChatCommandsPlugin extends Plugin
 			case "raids 2":
 				return "Theatre of Blood";
 
-			case "Theatre of Blood: Story Mode":
+			case "theatre of blood: story mode":
 			case "tob sm":
 			case "tob story mode":
 			case "tob story":
-				return "Theatre of Blood Story Mode";
+			case "Theatre of Blood: Entry Mode":
+			case "tob em":
+			case "tob entry mode":
+			case "tob entry":
+				return "Theatre of Blood Entry Mode";
 
-			case "Theatre of Blood: Hard Mode":
+			case "theatre of blood: hard mode":
 			case "tob cm":
 			case "tob hm":
 			case "tob hard mode":

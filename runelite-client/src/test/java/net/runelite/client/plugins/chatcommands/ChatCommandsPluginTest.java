@@ -189,17 +189,17 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
-	public void testTheatreOfBloodStoryMode()
+	public void testTheatreOfBloodEntryMode()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Wave 'The Final Challenge' (Story Mode) complete!<br>Duration: <col=ff0000>2:42</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00</col> (new personal best)", null, 0);
+			"Wave 'The Final Challenge' (Entry Mode) complete!<br>Duration: <col=ff0000>2:42</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood: Story Mode count is: <col=ff0000>73</col>.", null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood: Entry Mode count is: <col=ff0000>73</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood story mode", 73);
-		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood story mode", 17 * 60.);
+		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood entry mode", 73);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood entry mode", 17 * 60.);
 	}
 
 	@Test
