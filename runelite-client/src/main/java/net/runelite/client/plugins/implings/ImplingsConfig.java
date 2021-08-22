@@ -31,13 +31,11 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
-/**
- *
- * @author robin
- */
-@ConfigGroup("implings")
+@ConfigGroup(ImplingsConfig.GROUP)
 public interface ImplingsConfig extends Config
 {
+	String GROUP = "implings";
+
 	enum ImplingMode
 	{
 		NONE,

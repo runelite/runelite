@@ -152,12 +152,12 @@ public class NpcIndicatorsPluginTest
 		when(npc.getName()).thenReturn("Joseph");
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
-		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
 
 		when(npc.getName()).thenReturn("Werewolf");
 		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
 
-		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
 	}
 
 	@Test
@@ -171,11 +171,11 @@ public class NpcIndicatorsPluginTest
 		when(npc.getName()).thenReturn("Joseph");
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
-		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
 
 		when(npc.getName()).thenReturn("Werewolf");
 		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
 
-		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
 	}
 }
