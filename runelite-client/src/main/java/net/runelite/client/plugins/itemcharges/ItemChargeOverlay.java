@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import javax.inject.Inject;
+import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -80,8 +81,13 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			charges = chargeItem.getCharges();
 		}
 
-		graphics.setFont(FontManager.getRunescapeSmallFont());
+		// Handle unlimited Camulet
+		if (itemId == ItemID.CAMULET && charges > ItemChargePlugin.MAX_CAMULET_CHARGES)
+		{
+			return;
+		}
 
+		graphics.setFont(FontManager.getRunescapeSmallFont());
 		final Rectangle bounds = widgetItem.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + 15));

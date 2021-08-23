@@ -134,6 +134,7 @@ public class ItemChargePlugin extends Plugin
 		"Your Camulet has (\\d+|one) charges? left\\."
 	);
 	private static final String CAMULET_EMPTY_TEXT = "Your Camulet has run out of charges.";
+	private static final String CAMULET_UNLIMITED_CHARGES = "The Camulet has unlimited charges.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -142,7 +143,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
-	private static final int MAX_CAMULET_CHARGES = 4;
+	public static final int MAX_CAMULET_CHARGES = 4;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -436,6 +437,10 @@ public class ItemChargePlugin extends Plugin
 			else if (message.equals(CAMULET_EMPTY_TEXT))
 			{
 				setItemCharges(ItemChargeConfig.KEY_CAMULET, 0);
+			}
+			else if (message.equals(CAMULET_UNLIMITED_CHARGES))
+			{
+				setItemCharges(ItemChargeConfig.KEY_CAMULET, MAX_CAMULET_CHARGES + 1);
 			}
 		}
 	}
