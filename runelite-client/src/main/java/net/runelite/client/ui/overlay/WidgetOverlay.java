@@ -56,7 +56,7 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_KNIGHT_INFO_CONTAINER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_ACTIVITY_SHIELD_INFO_CONTAINER, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.ZEAH_MESS_HALL_COOKING_DISPLAY, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
+			new PvpKDRWidgetOverlay(client, WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER),
 			new WidgetOverlay(client, WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER),
@@ -255,6 +255,26 @@ public class WidgetOverlay extends Overlay
 				overlayManager.rebuildOverlayLayers();
 			}
 			return position;
+		}
+	}
+
+	private static class PvpKDRWidgetOverlay extends WidgetOverlay
+	{
+		private PvpKDRWidgetOverlay(Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
+		{
+			super(client, widgetInfo, overlayPosition);
+		}
+
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			// Don't draw widget overlay if the PVP KDR stats text will be empty
+			if (client.getVar(Varbits.SHOW_PVP_KDR_STATS) == 1)
+			{
+				return super.render(graphics);
+			}
+
+			return null;
 		}
 	}
 }

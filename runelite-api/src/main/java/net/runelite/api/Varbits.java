@@ -639,7 +639,16 @@ public enum Varbits
 	 * 0 = on
 	 * 1 = off
 	 */
-	BOSS_HEALTH_OVERLAY(12389);
+	BOSS_HEALTH_OVERLAY(12389),
+
+	/**
+	 * Whether the PVP kill-death stats widget should be drawn while in the wilderness or in PVP worlds.
+	 *
+	 * 0 = Disabled
+	 * 1 = Enabled
+	 */
+	SHOW_PVP_KDR_STATS(4143),
+	;
 
 	/**
 	 * The raw varbit ID.
