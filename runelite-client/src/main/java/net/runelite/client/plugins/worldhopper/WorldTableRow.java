@@ -311,8 +311,13 @@ class WorldTableRow extends JPanel
 		JPanel column = new JPanel(new BorderLayout());
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
-		activityField = new JLabel(world.getActivity());
+		String activity = world.getActivity();
+		activityField = new JLabel(activity);
 		activityField.setFont(FontManager.getRunescapeSmallFont());
+		if (activity != null && activity.length() > 16)
+		{
+			activityField.setToolTipText(activity);
+		}
 
 		column.add(activityField, BorderLayout.WEST);
 
