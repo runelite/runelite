@@ -62,7 +62,7 @@ class WorldTableRow extends JPanel
 	private static final Color TOURNAMENT_WORLD = new Color(79, 145, 255);
 	private static final Color MEMBERS_WORLD = new Color(210, 193, 53);
 	private static final Color FREE_WORLD = new Color(200, 200, 200);
-	private static final Color LEAGUE_WORLD = new Color(133, 177, 178);
+	private static final Color SEASONAL_WORLD = new Color(133, 177, 178);
 
 	static
 	{
@@ -253,11 +253,11 @@ class WorldTableRow extends JPanel
 		{
 			activityField.setForeground(DANGEROUS_WORLD);
 		}
-		else if (world.getTypes().contains(WorldType.LEAGUE))
+		else if (world.getTypes().contains(WorldType.SEASONAL))
 		{
-			activityField.setForeground(LEAGUE_WORLD);
+			activityField.setForeground(SEASONAL_WORLD);
 		}
-		else if (world.getTypes().contains(WorldType.TOURNAMENT))
+		else if (world.getTypes().contains(WorldType.NOSAVE_MODE))
 		{
 			activityField.setForeground(TOURNAMENT_WORLD);
 		}

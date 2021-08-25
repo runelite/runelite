@@ -479,9 +479,9 @@ public class GrandExchangePlugin extends Plugin
 	private WorldType getGeWorldType()
 	{
 		EnumSet<net.runelite.api.WorldType> worldTypes = client.getWorldType();
-		if (worldTypes.contains(net.runelite.api.WorldType.DEADMAN_TOURNAMENT))
+		if (worldTypes.contains(net.runelite.api.WorldType.SEASONAL))
 		{
-			return WorldType.DEADMAN_TOURNAMENT;
+			return WorldType.SEASONAL;
 		}
 		else if (worldTypes.contains(net.runelite.api.WorldType.DEADMAN))
 		{

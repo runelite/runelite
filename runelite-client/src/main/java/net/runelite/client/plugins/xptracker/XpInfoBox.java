@@ -50,7 +50,6 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
-import net.runelite.api.WorldType;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -125,7 +124,7 @@ class XpInfoBox extends JPanel
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
-			client.getLocalPlayer(), skill, client.getWorldType().contains(WorldType.LEAGUE))));
+			client.getLocalPlayer(), skill)));
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
