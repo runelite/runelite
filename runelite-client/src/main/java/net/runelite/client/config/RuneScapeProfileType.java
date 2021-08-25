@@ -35,10 +35,10 @@ import net.runelite.api.WorldType;
 public enum RuneScapeProfileType
 {
 	STANDARD(client -> true),
-	BETA(client -> client.getWorldType().contains(WorldType.TOURNAMENT)),
+	BETA(client -> client.getWorldType().contains(WorldType.NOSAVE_MODE)),
 	DEADMAN(client -> client.getWorldType().contains(WorldType.DEADMAN)),
 	TRAILBLAZER_LEAGUE,
-	DEADMAN_REBORN(client -> client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
+	DEADMAN_REBORN(client -> client.getWorldType().contains(WorldType.SEASONAL))
 	;
 
 	private final Predicate<Client> test;
