@@ -45,11 +45,6 @@ import net.runelite.client.ws.PartyService;
 
 public class PartyStatsOverlay extends OverlayPanel
 {
-	private static final Color HP_FG = new Color(0, 146, 54, 230);
-	private static final Color HP_BG = new Color(102, 15, 16, 230);
-	private static final Color PRAY_FG = new Color(0, 149, 151);
-	private static final Color PRAY_BG = Color.black;
-
 	private final PartyPlugin plugin;
 	private final PartyService party;
 	private final PartyConfig config;
@@ -101,8 +96,9 @@ public class PartyStatsOverlay extends OverlayPanel
 				if (v.getMaxHitpoints() > 0)
 				{
 					final ProgressBarComponent hpBar = new ProgressBarComponent();
-					hpBar.setBackgroundColor(HP_BG);
-					hpBar.setForegroundColor(HP_FG);
+					hpBar.setFontColor(config.healthFontColor());
+					hpBar.setBackgroundColor(config.healthBackgroundColor());
+					hpBar.setForegroundColor(config.healthForegroundColor());
 					hpBar.setMaximum(v.getMaxHitpoints());
 					hpBar.setValue(v.getHitpoints());
 					hpBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
@@ -112,8 +108,9 @@ public class PartyStatsOverlay extends OverlayPanel
 				if (v.getMaxPrayer() > 0)
 				{
 					final ProgressBarComponent prayBar = new ProgressBarComponent();
-					prayBar.setBackgroundColor(PRAY_BG);
-					prayBar.setForegroundColor(PRAY_FG);
+					prayBar.setFontColor(config.prayerFontColor());
+					prayBar.setBackgroundColor(config.prayerBackgroundColor());
+					prayBar.setForegroundColor(config.prayerForegroundColor());
 					prayBar.setMaximum(v.getMaxPrayer());
 					prayBar.setValue(v.getPrayer());
 					prayBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);

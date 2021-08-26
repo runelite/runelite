@@ -50,11 +50,6 @@ import net.runelite.client.util.ImageUtil;
 
 class PartyMemberBox extends JPanel
 {
-	private static final Color HP_FG = new Color(0, 146, 54, 230);
-	private static final Color HP_BG = new Color(102, 15, 16, 230);
-	private static final Color PRAY_FG = new Color(0, 149, 151);
-	private static final Color PRAY_BG = Color.black;
-
 	@Getter(AccessLevel.PACKAGE)
 	private final PartyData memberPartyData;
 
@@ -129,11 +124,11 @@ class PartyMemberBox extends JPanel
 		progressWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		progressWrapper.setLayout(new DynamicGridLayout(2, 1, 0, 2));
 
-		hpBar.setBackground(HP_BG);
-		hpBar.setForeground(HP_FG);
+		hpBar.setBackground(config.healthBackgroundColor());
+		hpBar.setForeground(config.healthForegroundColor());
 
-		prayerBar.setBackground(PRAY_BG);
-		prayerBar.setForeground(PRAY_FG);
+		prayerBar.setBackground(config.prayerBackgroundColor());
+		prayerBar.setForeground(config.prayerForegroundColor());
 
 		progressWrapper.add(hpBar);      // top
 		progressWrapper.add(prayerBar);  // bottom
@@ -166,10 +161,14 @@ class PartyMemberBox extends JPanel
 		}
 
 		// Update progress bars
+		hpBar.setBackground(config.healthBackgroundColor());
+		hpBar.setForeground(config.healthForegroundColor());
 		hpBar.setValue(memberPartyData.getHitpoints());
 		hpBar.setMaximumValue(memberPartyData.getMaxHitpoints());
 		hpBar.setCenterLabel(progressBarLabel(memberPartyData.getHitpoints(), memberPartyData.getMaxHitpoints()));
 
+		prayerBar.setBackground(config.prayerBackgroundColor());
+		prayerBar.setForeground(config.prayerForegroundColor());
 		prayerBar.setValue(memberPartyData.getPrayer());
 		prayerBar.setMaximumValue(memberPartyData.getMaxPrayer());
 		prayerBar.setCenterLabel(progressBarLabel(memberPartyData.getPrayer(), memberPartyData.getMaxPrayer()));
