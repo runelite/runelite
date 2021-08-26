@@ -43,6 +43,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.OverlayLayout;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import net.runelite.api.Client;
@@ -63,6 +64,7 @@ import net.runelite.client.util.LinkBrowser;
 public class InfoPanel extends PluginPanel
 {
 	private static final String RUNELITE_LOGIN = "https://runelite_login/";
+	private static final String REVEAL_EMAIL_URL = "http://reveal.email.dummy.url";
 
 	private static final ImageIcon ARROW_RIGHT_ICON;
 	private static final ImageIcon GITHUB_ICON;
@@ -72,7 +74,8 @@ public class InfoPanel extends PluginPanel
 	private static final ImageIcon IMPORT_ICON;
 
 	private final JLabel loggedLabel = new JLabel();
-	private final JRichTextPane emailLabel = new JRichTextPane();
+	private final JRichTextPane loginLabel = new JRichTextPane();
+	private final JLabel emailLabel = new JLabel();
 	private JPanel syncPanel;
 	private JPanel actionsContainer;
 
@@ -156,10 +159,15 @@ public class InfoPanel extends PluginPanel
 		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 		loggedLabel.setFont(smallFont);
 
-		emailLabel.setForeground(Color.WHITE);
-		emailLabel.setFont(smallFont);
-		emailLabel.enableAutoLinkHandler(false);
-		emailLabel.addHyperlinkListener(e ->
+		JPanel emailWrapper = new JPanel();
+		emailWrapper.setLayout(new OverlayLayout(emailWrapper));
+		emailWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		loginLabel.setForeground(Color.WHITE);
+		loginLabel.setFont(smallFont);
+		loginLabel.enableAutoLinkHandler(false);
+		loginLabel.setContentType("text/html");
+		loginLabel.addHyperlinkListener(e ->
 		{
 			if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null)
 			{
@@ -167,15 +175,34 @@ public class InfoPanel extends PluginPanel
 				{
 					executor.execute(sessionManager::login);
 				}
+				else if (e.getURL().toString().equals(REVEAL_EMAIL_URL))
+				{
+					setEmailVisibility(true);
+				}
 			}
 		});
+
+		emailLabel.setForeground(Color.WHITE);
+		emailLabel.setVisible(false);
+		emailLabel.setToolTipText("Click to hide email");
+		emailLabel.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				setEmailVisibility(false);
+			}
+		});
+
+		emailWrapper.add(emailLabel);
+		emailWrapper.add(loginLabel);
 
 		versionPanel.add(version);
 		versionPanel.add(revision);
 		versionPanel.add(launcher);
 		versionPanel.add(Box.createGlue());
 		versionPanel.add(loggedLabel);
-		versionPanel.add(emailLabel);
+		versionPanel.add(emailWrapper);
 
 		actionsContainer = new JPanel();
 		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
@@ -296,17 +323,32 @@ public class InfoPanel extends PluginPanel
 
 		if (name != null)
 		{
-			emailLabel.setContentType("text/plain");
 			emailLabel.setText(name);
+			setEmailVisibility(false);
+
 			loggedLabel.setText("Signed in as");
 			actionsContainer.add(syncPanel, 0);
 		}
 		else
 		{
-			emailLabel.setContentType("text/html");
+			setEmailVisibility(false);
 			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\">Sign in</a> to sync settings to the cloud.");
 			loggedLabel.setText("Not signed in");
 			actionsContainer.remove(syncPanel);
+		}
+	}
+
+	private void setEmailVisibility(boolean state)
+	{
+		if (state)
+		{
+			loginLabel.setText("");
+			emailLabel.setVisible(true);
+		}
+		else
+		{
+			loginLabel.setText("<a href=\"" + REVEAL_EMAIL_URL + "\">Click to reveal email</a>");
+			emailLabel.setVisible(false);
 		}
 	}
 
