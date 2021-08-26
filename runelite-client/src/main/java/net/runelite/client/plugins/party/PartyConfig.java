@@ -107,7 +107,8 @@ public interface PartyConfig extends Config
 		description = "Change the foreground color of health bars in the party",
 		position = 7
 	)
-	default Color healthForegroundColor() {
+	default Color healthForegroundColor()
+	{
 		return new Color(0, 146, 54, 230);
 	}
 
@@ -117,7 +118,8 @@ public interface PartyConfig extends Config
 		description = "Change the background color of health bars in the party",
 		position = 8
 	)
-	default Color healthBackgroundColor() {
+	default Color healthBackgroundColor()
+	{
 		return new Color(102, 15, 16, 230);
 	}
 
@@ -127,7 +129,8 @@ public interface PartyConfig extends Config
 		description = "Change the font color of health bars in the party",
 		position = 9
 	)
-	default Color healthFontColor() {
+	default Color healthFontColor()
+	{
 		return Color.WHITE;
 	}
 
@@ -137,7 +140,8 @@ public interface PartyConfig extends Config
 		description = "Change the foreground color of prayer bars in the party",
 		position = 10
 	)
-	default Color prayerForegroundColor() {
+	default Color prayerForegroundColor()
+	{
 		return new Color(0, 149, 151);
 	}
 
@@ -147,7 +151,8 @@ public interface PartyConfig extends Config
 		description = "Change the background color of prayer bars in the party",
 		position = 11
 	)
-	default Color prayerBackgroundColor() {
+	default Color prayerBackgroundColor()
+	{
 		return Color.black;
 	}
 
@@ -157,7 +162,8 @@ public interface PartyConfig extends Config
 		description = "Change the font color of prayer bars in the party",
 		position = 12
 	)
-	default Color prayerFontColor() {
+	default Color prayerFontColor()
+	{
 		return Color.WHITE;
 	}
 }
