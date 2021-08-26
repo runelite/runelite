@@ -39,7 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.Predicate;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -86,6 +86,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.npchighlight.HighlightedNpc;
 import net.runelite.client.plugins.npchighlight.NpcIndicatorsPlugin;
 import net.runelite.client.plugins.npchighlight.NpcIndicatorsService;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -210,7 +211,23 @@ public class SlayerPlugin extends Plugin
 	private boolean loginFlag;
 	private final List<String> targetNames = new ArrayList<>();
 
-	public final Predicate<NPC> isTarget = (n) -> config.highlightTargets() && targets.contains(n);
+	public final Function<NPC, HighlightedNpc> isTarget = (n) ->
+	{
+		if ((config.highlightHull() || config.highlightTile() || config.highlightOutline()) && targets.contains(n))
+		{
+			Color color = config.getTargetColor();
+			return HighlightedNpc.builder()
+				.npc(n)
+				.highlightColor(color)
+				.fillColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12))
+				.hull(config.highlightHull())
+				.tile(config.highlightTile())
+				.outline(config.highlightOutline())
+				.build();
+
+		}
+		return null;
+	};
 
 	@Override
 	protected void startUp() throws Exception
@@ -603,7 +620,7 @@ public class SlayerPlugin extends Plugin
 		}
 		else
 		{
-			npcIndicatorsService.rebuild();
+			clientThread.invoke(npcIndicatorsService::rebuild);
 		}
 	}
 

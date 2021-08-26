@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.worlds;
+package net.runelite.client.plugins.npchighlight;
 
-public enum WorldType
+import java.awt.Color;
+import lombok.Builder;
+import lombok.Value;
+import net.runelite.api.NPC;
+
+@Value
+@Builder
+public class HighlightedNpc
 {
-	MEMBERS,
-	PVP,
-	BOUNTY,
-	SKILL_TOTAL,
-	HIGH_RISK,
-	LAST_MAN_STANDING,
-	NOSAVE_MODE,
-	DEADMAN,
-	TOURNAMENT,
-	SEASONAL;
+	NPC npc;
+	Color highlightColor;
+	Color fillColor;
+	boolean hull;
+	boolean tile;
+	boolean swTile;
+	boolean outline;
+	boolean name;
+	boolean nameOnMinimap;
 }

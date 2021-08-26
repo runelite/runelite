@@ -265,17 +265,13 @@ public class HiscorePlugin extends Plugin
 		{
 			EnumSet<WorldType> wTypes = client.getWorldType();
 
-			if (wTypes.contains(WorldType.DEADMAN_TOURNAMENT))
+			if (wTypes.contains(WorldType.SEASONAL))
 			{
 				return HiscoreEndpoint.TOURNAMENT;
 			}
 			else if (wTypes.contains(WorldType.DEADMAN))
 			{
 				return HiscoreEndpoint.DEADMAN;
-			}
-			else if (wTypes.contains(WorldType.LEAGUE))
-			{
-				return HiscoreEndpoint.LEAGUE;
 			}
 		}
 		return HiscoreEndpoint.NORMAL;

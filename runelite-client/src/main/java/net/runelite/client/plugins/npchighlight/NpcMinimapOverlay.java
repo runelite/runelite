@@ -55,16 +55,18 @@ public class NpcMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		for (NPC npc : plugin.getHighlightedNpcs())
+		for (HighlightedNpc highlightedNpc : plugin.getHighlightedNpcs().values())
 		{
-			renderNpcOverlay(graphics, npc, Text.removeTags(npc.getName()), config.highlightColor());
+			renderNpcOverlay(graphics, highlightedNpc);
 		}
 
 		return null;
 	}
 
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
+	private void renderNpcOverlay(Graphics2D graphics, HighlightedNpc highlightedNpc)
 	{
+		NPC actor = highlightedNpc.getNpc();
+		String name = Text.removeTags(actor.getName());
 		NPCComposition npcComposition = actor.getTransformedComposition();
 		if (npcComposition == null || !npcComposition.isInteractible()
 			|| (actor.isDead() && config.ignoreDeadNpcs()))
@@ -75,9 +77,10 @@ public class NpcMinimapOverlay extends Overlay
 		Point minimapLocation = actor.getMinimapLocation();
 		if (minimapLocation != null)
 		{
+			Color color = highlightedNpc.getHighlightColor();
 			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color.darker());
 
-			if (config.drawMinimapNames())
+			if (highlightedNpc.isNameOnMinimap())
 			{
 				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
 			}

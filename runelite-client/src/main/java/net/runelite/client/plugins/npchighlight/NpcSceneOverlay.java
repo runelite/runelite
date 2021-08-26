@@ -89,9 +89,9 @@ public class NpcSceneOverlay extends Overlay
 			plugin.getDeadNpcsToDisplay().forEach((id, npc) -> renderNpcRespawn(npc, graphics));
 		}
 
-		for (NPC npc : plugin.getHighlightedNpcs())
+		for (HighlightedNpc highlightedNpc : plugin.getHighlightedNpcs().values())
 		{
-			renderNpcOverlay(graphics, npc);
+			renderNpcOverlay(graphics, highlightedNpc);
 		}
 
 		return null;
@@ -141,8 +141,9 @@ public class NpcSceneOverlay extends Overlay
 		}
 	}
 
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor)
+	private void renderNpcOverlay(Graphics2D graphics, HighlightedNpc highlightedNpc)
 	{
+		NPC actor = highlightedNpc.getNpc();
 		NPCComposition npcComposition = actor.getTransformedComposition();
 		if (npcComposition == null || !npcComposition.isInteractible()
 			|| (actor.isDead() && config.ignoreDeadNpcs()))
@@ -150,16 +151,16 @@ public class NpcSceneOverlay extends Overlay
 			return;
 		}
 
-		final Color borderColor = config.highlightColor();
-		final Color fillColor = config.fillColor();
+		final Color borderColor = highlightedNpc.getHighlightColor();
+		final Color fillColor = highlightedNpc.getFillColor();
 
-		if (config.highlightHull())
+		if (highlightedNpc.isHull())
 		{
 			Shape objectClickbox = actor.getConvexHull();
 			renderPoly(graphics, borderColor, fillColor, objectClickbox);
 		}
 
-		if (config.highlightTile())
+		if (highlightedNpc.isTile())
 		{
 			int size = npcComposition.getSize();
 			LocalPoint lp = actor.getLocalLocation();
@@ -168,7 +169,7 @@ public class NpcSceneOverlay extends Overlay
 			renderPoly(graphics, borderColor, fillColor, tilePoly);
 		}
 
-		if (config.highlightSouthWestTile())
+		if (highlightedNpc.isSwTile())
 		{
 			int size = npcComposition.getSize();
 			LocalPoint lp = actor.getLocalLocation();
@@ -181,12 +182,12 @@ public class NpcSceneOverlay extends Overlay
 			renderPoly(graphics, borderColor, fillColor, southWestTilePoly);
 		}
 
-		if (config.highlightOutline())
+		if (highlightedNpc.isOutline())
 		{
 			modelOutlineRenderer.drawOutline(actor, (int)config.borderWidth(), borderColor, config.outlineFeather());
 		}
 
-		if (config.drawNames() && actor.getName() != null)
+		if (highlightedNpc.isName() && actor.getName() != null)
 		{
 			String npcName = Text.removeTags(actor.getName());
 			Point textLocation = actor.getCanvasTextLocation(graphics, npcName, actor.getLogicalHeight() + 40);

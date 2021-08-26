@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.npchighlight;
 
-import java.util.function.Predicate;
+import java.util.function.Function;
 import net.runelite.api.NPC;
 
 public interface NpcIndicatorsService
 {
-	void registerHighlighter(Predicate<NPC> p);
-	void unregisterHighlighter(Predicate<NPC> p);
+	void registerHighlighter(Function<NPC, HighlightedNpc> p);
+	void unregisterHighlighter(Function<NPC, HighlightedNpc> p);
 	void rebuild();
 }
