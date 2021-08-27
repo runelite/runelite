@@ -121,10 +121,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 		return null;
 	}
 
-	public void reset()
+	public void revalidate()
 	{
-		setPreferredPosition(null);
-		setPreferredSize(null);
-		setPreferredLocation(null);
 	}
 }

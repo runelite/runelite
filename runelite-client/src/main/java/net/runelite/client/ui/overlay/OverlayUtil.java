@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -201,33 +202,32 @@ public class OverlayUtil
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
-	public static java.awt.Point padPosition(OverlayPosition position, Dimension dimension, final int padding)
+	static void shiftSnapCorner(OverlayPosition overlayPosition, Rectangle snapCorner, Rectangle bounds, int padding)
 	{
-		final java.awt.Point result = new java.awt.Point();
-
-		switch (position)
+		// translate corner for padding and also based on where the overlay bounds are now
+		int sX = snapCorner.x, sY = snapCorner.y;
+		switch (overlayPosition)
 		{
-			case DYNAMIC:
-			case TOOLTIP:
-				break;
 			case BOTTOM_LEFT:
-				result.x += dimension.width + (dimension.width == 0 ? 0 : padding);
+				sX = bounds.x + bounds.width + padding;
 				break;
 			case BOTTOM_RIGHT:
-				result.x -= dimension.width + (dimension.width == 0 ? 0 : padding);
+				sX = bounds.x - padding;
 				break;
 			case TOP_LEFT:
 			case TOP_CENTER:
 			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
-				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
+				sY = bounds.y + bounds.height + padding;
 				break;
 			case ABOVE_CHATBOX_RIGHT:
-				result.y -= dimension.height + (dimension.height == 0 ? 0 : padding);
+				sY = bounds.y - padding;
 				break;
+			default:
+				throw new IllegalArgumentException();
 		}
-
-		return result;
+		snapCorner.x = sX;
+		snapCorner.y = sY;
 	}
 
 	public static java.awt.Point transformPosition(OverlayPosition position, Dimension dimension)

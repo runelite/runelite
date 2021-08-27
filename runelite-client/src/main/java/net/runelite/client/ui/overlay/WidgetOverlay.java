@@ -121,9 +121,9 @@ public class WidgetOverlay extends Overlay
 		assert widget != null;
 
 		final Rectangle bounds = getBounds();
-		// OverlayRenderer sets the overlay bounds to the preferred location if one is set prior to calling render()
-		// for detached overlays.
-		if (getPosition() != OverlayPosition.DETACHED || getPreferredLocation() != null)
+		// OverlayRenderer sets the overlay bounds to where it would like the overlay to render at prior to calling
+		// render(). If the overlay has a preferred location or position set we update the widget position to that.
+		if (getPreferredLocation() != null || getPreferredPosition() != null)
 		{
 			// The widget relative pos is relative to the parent
 			widget.setRelativeX(bounds.x - parent.x);
@@ -188,9 +188,8 @@ public class WidgetOverlay extends Overlay
 	}
 
 	@Override
-	public void reset()
+	public void revalidate()
 	{
-		super.reset();
 		// Revalidate must be called on the client thread, so defer til next frame
 		revalidate = true;
 	}

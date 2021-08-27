@@ -289,8 +289,11 @@ public class OverlayManager
 	 */
 	public synchronized void resetOverlay(final Overlay overlay)
 	{
-		overlay.reset();
+		overlay.setPreferredPosition(null);
+		overlay.setPreferredSize(null);
+		overlay.setPreferredLocation(null);
 		saveOverlay(overlay);
+		overlay.revalidate();
 	}
 
 	synchronized void rebuildOverlayLayers()
