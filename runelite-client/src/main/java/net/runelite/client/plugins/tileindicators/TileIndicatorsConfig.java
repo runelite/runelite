@@ -125,10 +125,21 @@ public interface TileIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "highlightCurrentTileOnlyWhileMoving",
+			name = "Show true tile only while moving",
+			description = "Only highlights true tile when moving. When standing true tile will not appear.",
+			position = 9
+	)
+	default boolean highlightCurrentTileOnlyWhileMoving()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "currentTileBorderWidth",
 		name = "True tile border width",
 		description = "Width of the true tile marker border",
-		position = 9
+		position = 10
 	)
 	default double currentTileBorderWidth()
 	{
