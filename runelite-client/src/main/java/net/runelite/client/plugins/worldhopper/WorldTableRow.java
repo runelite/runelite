@@ -317,6 +317,39 @@ class WorldTableRow extends JPanel
 		if (activity != null && activity.length() > 16)
 		{
 			activityField.setToolTipText(activity);
+			// Pass up events - https://stackoverflow.com/a/14932443
+			activityField.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+			});
 		}
 
 		column.add(activityField, BorderLayout.WEST);
