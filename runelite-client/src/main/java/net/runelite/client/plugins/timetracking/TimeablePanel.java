@@ -46,6 +46,9 @@ import net.runelite.client.util.SwingUtil;
 @Getter
 public class TimeablePanel<T> extends JPanel
 {
+	private static final ImageIcon NOTIFY_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_icon.png"));
+	private static final ImageIcon NOTIFY_SELECTED_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_selected_icon.png"));
+
 	private final T timeable;
 	private final JLabel icon = new JLabel();
 	private final JLabel farmingContractIcon = new JLabel();
@@ -84,13 +87,10 @@ public class TimeablePanel<T> extends JPanel
 		infoPanel.add(text);
 		infoPanel.add(estimate);
 
-		ImageIcon notifyIcon = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_icon.png"));
-		ImageIcon notifySelectedIcon = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_selected_icon.png"));
-
 		notifyButton.setPreferredSize(new Dimension(30, 16));
 		notifyButton.setBorder(new EmptyBorder(0, 0, 0, 10));
-		notifyButton.setIcon(notifyIcon);
-		notifyButton.setSelectedIcon(notifySelectedIcon);
+		notifyButton.setIcon(NOTIFY_ICON);
+		notifyButton.setSelectedIcon(NOTIFY_SELECTED_ICON);
 		SwingUtil.removeButtonDecorations(notifyButton);
 		SwingUtil.addModalTooltip(notifyButton, "Disable notifications", "Enable notifications");
 
