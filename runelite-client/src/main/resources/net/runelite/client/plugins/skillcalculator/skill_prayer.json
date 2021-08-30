@@ -11,6 +11,10 @@
     {
       "name": "Chaos Altar (700%)",
       "value": 6
+    },
+    {
+      "name": "Morytania Diary 3 Shades(150%)",
+      "value": 0.5
     }
   ],
   "actions": [
@@ -184,8 +188,7 @@
       "level": 1,
       "icon": 3396,
       "name": "Loar Remains",
-      "xp": 33,
-      "ignoreBonus": true
+      "xp": 33
     },
     {
       "level": 1,
@@ -239,8 +242,7 @@
       "level": 1,
       "icon": 3398,
       "name": "Phrin Remains",
-      "xp": 46.5,
-      "ignoreBonus": true
+      "xp": 46.5
     },
     {
       "level": 1,
@@ -252,8 +254,7 @@
       "level": 1,
       "icon": 3400,
       "name": "Riyl Remains",
-      "xp": 59.5,
-      "ignoreBonus": true
+      "xp": 59.5
     },
     {
       "level": 1,
@@ -277,8 +278,7 @@
       "level": 1,
       "icon": 3402,
       "name": "Asyn Remains",
-      "xp": 82.5,
-      "ignoreBonus": true
+      "xp": 82.5
     },
     {
       "level": 1,
@@ -290,8 +290,7 @@
       "level": 1,
       "icon": 3404,
       "name": "Fiyr Remains",
-      "xp": 84,
-      "ignoreBonus": true
+      "xp": 84
     },
     {
       "level": 1,
