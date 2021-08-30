@@ -327,6 +327,12 @@
       "icon": 22124,
       "name": "Superior Dragon Bones",
       "xp": 150
+    },
+    {
+      "level": 1,
+      "icon": 25419,
+      "name": "Urium Remains",
+      "xp": 120
     }
   ]
 }
