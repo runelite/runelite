@@ -25,6 +25,12 @@
       "xp": 5
     },
     {
+      "level": 7,
+      "icon": 25652,
+      "name": "Raw Guppy",
+      "xp": 8
+    },
+    {
       "level": 10,
       "icon": 345,
       "name": "Raw Herring",
@@ -49,6 +55,12 @@
       "xp": 50
     },
     {
+      "level": 20,
+      "icon": 25658,
+      "name": "Raw Cavefish",
+      "xp": 16
+    },
+    {
       "level": 23,
       "icon": 341,
       "name": "Raw Cod",
@@ -71,6 +83,12 @@
       "icon": 331,
       "name": "Raw Salmon",
       "xp": 70
+    },
+    {
+      "level": 33,
+      "icon": 25664,
+      "name": "Raw Tetra",
+      "xp": 24
     },
     {
       "level": 35,
@@ -101,6 +119,12 @@
       "icon": 363,
       "name": "Raw Bass",
       "xp": 100
+    },
+    {
+      "level": 46,
+      "icon": 25670,
+      "name": "Raw Catfish",
+      "xp": 33
     },
     {
       "level": 48,

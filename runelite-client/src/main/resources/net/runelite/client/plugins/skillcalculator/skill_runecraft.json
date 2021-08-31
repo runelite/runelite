@@ -103,6 +103,12 @@
       "xp": 5.5
     },
     {
+      "level": 2,
+      "icon": 25696,
+      "name": "Mind core",
+      "xp": 55
+    },
+    {
       "level": 5,
       "icon": 555,
       "name": "Water Rune",
@@ -157,6 +163,12 @@
       "xp": 7.5
     },
     {
+      "level": 20,
+      "icon": 25698,
+      "name": "Body core",
+      "xp": 75
+    },
+    {
       "level": 23,
       "icon": 4699,
       "name": "Lava Rune",
@@ -173,6 +185,12 @@
       "icon": 562,
       "name": "Chaos Rune",
       "xp": 8.5
+    },
+    {
+      "level": 35,
+      "icon": 25700,
+      "name": "Chaos core",
+      "xp": 85
     },
     {
       "level": 40,

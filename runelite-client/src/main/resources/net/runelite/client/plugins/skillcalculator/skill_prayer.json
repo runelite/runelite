@@ -368,6 +368,30 @@
       "icon": 25419,
       "name": "Urium Remains",
       "xp": 120
+    },
+    {
+      "level": 1,
+      "icon": 25654,
+      "name": "Guppy",
+      "xp": 4
+    },
+    {
+      "level": 1,
+      "icon": 25660,
+      "name": "Cavefish",
+      "xp": 7
+    },
+    {
+      "level": 1,
+      "icon": 25666,
+      "name": "Tetra",
+      "xp": 10
+    },
+    {
+      "level": 1,
+      "icon": 25672,
+      "name": "Cavefish",
+      "xp": 16
     }
   ]
 }
