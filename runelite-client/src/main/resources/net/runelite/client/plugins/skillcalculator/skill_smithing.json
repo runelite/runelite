@@ -157,6 +157,12 @@
       "xp": 37.5
     },
     {
+      "level": 14,
+      "icon": 25684,
+      "name": "Barronite deposits",
+      "xp": 30
+    },
+    {
       "level": 15,
       "icon": 2351,
       "name": "Iron Bar",
