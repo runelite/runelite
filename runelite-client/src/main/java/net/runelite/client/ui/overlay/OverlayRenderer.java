@@ -67,11 +67,14 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 @Singleton
 @Slf4j
 public class OverlayRenderer extends MouseAdapter implements KeyListener
 {
+	private static final Marker DEDUPLICATE = MarkerFactory.getMarker("DEDUPLICATE");
 	private static final int BORDER = 5;
 	private static final int BORDER_TOP = BORDER + 15;
 	private static final int PADDING = 2;
@@ -748,7 +751,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.warn(DEDUPLICATE, "Error during overlay rendering", ex);
 			return;
 		}
 
