@@ -72,8 +72,7 @@ public interface Model extends Renderable
 
 	short[] getFaceTextures();
 
-	float[][] getFaceTextureUCoordinates();
-	float[][] getFaceTextureVCoordinates();
+	float[] getFaceTextureUVCoordinates();
 
 	void calculateExtreme(int orientation);
 
