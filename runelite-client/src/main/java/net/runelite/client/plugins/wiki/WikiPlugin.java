@@ -118,13 +118,12 @@ public class WikiPlugin extends Plugin
 
 	private void removeWidgets()
 	{
-
-		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
-		if (minimapOrbs == null)
+		Widget wikiBannerParent = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER_PARENT);
+		if (wikiBannerParent == null)
 		{
 			return;
 		}
-		Widget[] children = minimapOrbs.getChildren();
+		Widget[] children = wikiBannerParent.getChildren();
 		if (children == null || children.length < 1)
 		{
 			return;
@@ -152,8 +151,8 @@ public class WikiPlugin extends Plugin
 
 	private void addWidgets()
 	{
-		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
-		if (minimapOrbs == null)
+		Widget wikiBannerParent = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER_PARENT);
+		if (wikiBannerParent == null)
 		{
 			return;
 		}
@@ -164,12 +163,12 @@ public class WikiPlugin extends Plugin
 			vanilla.setHidden(true);
 		}
 
-		icon = minimapOrbs.createChild(0, WidgetType.GRAPHIC);
+		icon = wikiBannerParent.createChild(0, WidgetType.GRAPHIC);
 		icon.setSpriteId(SpriteID.WIKI_DESELECTED);
 		icon.setOriginalX(0);
 		icon.setOriginalY(0);
-		icon.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-		icon.setYPositionMode(WidgetPositionMode.ABSOLUTE_BOTTOM);
+		icon.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		icon.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
 		icon.setOriginalWidth(40);
 		icon.setOriginalHeight(14);
 		icon.setTargetVerb("Lookup");
