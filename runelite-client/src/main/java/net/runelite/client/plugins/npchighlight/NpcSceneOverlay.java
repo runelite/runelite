@@ -162,10 +162,7 @@ public class NpcSceneOverlay extends Overlay
 
 		if (highlightedNpc.isTile())
 		{
-			int size = npcComposition.getSize();
-			LocalPoint lp = actor.getLocalLocation();
-			Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
-
+			Polygon tilePoly = actor.getCanvasTilePoly();
 			renderPoly(graphics, borderColor, fillColor, tilePoly);
 		}
 
