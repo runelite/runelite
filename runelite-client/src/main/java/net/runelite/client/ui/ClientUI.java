@@ -323,6 +323,7 @@ public class ClientUI
 
 			// Try to enable fullscreen on OSX
 			OSXUtil.tryEnableFullscreen(frame);
+			HeavyWeightPopupProxyFactory.install();
 
 			frame.setTitle(title);
 			frame.setIconImage(ICON);
