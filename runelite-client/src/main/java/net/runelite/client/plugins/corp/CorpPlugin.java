@@ -32,18 +32,18 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
-import net.runelite.api.Varbits;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Hitsplat;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.InteractingChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -53,6 +53,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
 	name = "Corporeal Beast",
@@ -68,13 +70,23 @@ public class CorpPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private NPC core;
 
+	@Getter(AccessLevel.PACKAGE)
 	private int yourDamage;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int totalDamage;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<Actor> players = new HashSet<>();
+	private final Set<String> players = new HashSet<>();
+
+	@Inject
+	private PartyService party;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private WSClient wsClient;
 
 	@Inject
 	private Client client;
@@ -102,6 +114,8 @@ public class CorpPlugin extends Plugin
 	{
 		overlayManager.add(corpOverlay);
 		overlayManager.add(coreOverlay);
+		wsClient.registerMessage(CorpTotalDamageSyncUpdate.class);
+		wsClient.registerMessage(CorpDespawnedUpdate.class);
 	}
 
 	@Override
@@ -109,6 +123,8 @@ public class CorpPlugin extends Plugin
 	{
 		overlayManager.remove(corpOverlay);
 		overlayManager.remove(coreOverlay);
+		wsClient.unregisterMessage(CorpTotalDamageSyncUpdate.class);
+		wsClient.unregisterMessage(CorpDespawnedUpdate.class);
 
 		corp = core = null;
 		yourDamage = 0;
@@ -133,6 +149,11 @@ public class CorpPlugin extends Plugin
 		switch (npc.getId())
 		{
 			case NpcID.CORPOREAL_BEAST:
+				if (corp != null && !party.getMembers().isEmpty())
+				{
+					corp = npc;
+					return;
+				}
 				log.debug("Corporeal beast spawn: {}", npc);
 				corp = npc;
 				yourDamage = 0;
@@ -153,33 +174,64 @@ public class CorpPlugin extends Plugin
 		if (npc == corp)
 		{
 			log.debug("Corporeal beast despawn: {}", npc);
-			corp = null;
-			players.clear();
 
 			if (npc.isDead())
 			{
-				// Show kill stats
-				String message = new ChatMessageBuilder()
-					.append(ChatColorType.NORMAL)
-					.append("Corporeal Beast: Your damage: ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(Integer.toString(yourDamage))
-					.append(ChatColorType.NORMAL)
-					.append(", Total damage: ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(Integer.toString(totalDamage))
-					.build();
-
-				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.CONSOLE)
-					.runeLiteFormattedMessage(message)
-					.build());
+				showKillStats();
+				corp = null;
+				if (!party.getMembers().isEmpty())
+				{
+					final CorpDespawnedUpdate update = new CorpDespawnedUpdate();
+					update.setMemberId(party.getLocalMember().getMemberId());
+					wsClient.send(update);
+				}
 			}
 		}
 		else if (npc == core)
 		{
 			core = null;
 		}
+	}
+
+	private void showKillStats()
+	{
+		// Show kill stats
+		String message = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Corporeal Beast: Your damage: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(yourDamage))
+			.append(ChatColorType.NORMAL)
+			.append(", Total damage: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(totalDamage))
+			.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.CONSOLE)
+			.runeLiteFormattedMessage(message)
+			.build());
+	}
+
+	@Subscribe
+	public void onCorpDespawnedUpdate(CorpDespawnedUpdate update)
+	{
+		String name = party.getMemberById(update.getMemberId()).getName();
+		if (name == null)
+		{
+			return;
+		}
+
+		if (corp == null)
+		{
+			return;
+		}
+
+		clientThread.invoke(() ->
+		{
+			showKillStats();
+			corp = null;
+		});
 	}
 
 	@Subscribe
@@ -192,7 +244,39 @@ public class CorpPlugin extends Plugin
 			return;
 		}
 
-		totalDamage += hitsplatApplied.getHitsplat().getAmount();
+		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
+		int damage = hitsplat.getAmount();
+
+		totalDamage += damage;
+
+		if (hitsplat.isMine())
+		{
+			yourDamage += damage;
+			if (!party.getMembers().isEmpty())
+			{
+				final CorpTotalDamageSyncUpdate update = new CorpTotalDamageSyncUpdate(totalDamage);
+				update.setMemberId(party.getLocalMember().getMemberId());
+				wsClient.send(update);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onCorpTotalDamageSyncUpdate(CorpTotalDamageSyncUpdate update)
+	{
+		String name = party.getMemberById(update.getMemberId()).getName();
+		if (name == null)
+		{
+			return;
+		}
+
+		clientThread.invoke(() ->
+		{
+			if (totalDamage < update.getTotalDamageSync())
+			{
+				totalDamage = update.getTotalDamageSync();
+			}
+		});
 	}
 
 	@Subscribe
@@ -206,20 +290,6 @@ public class CorpPlugin extends Plugin
 			return;
 		}
 
-		players.add(source);
-	}
-
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
-	{
-		if (corp != null)
-		{
-			int myDamage = client.getVar(Varbits.CORP_DAMAGE);
-			// avoid resetting our counter when the client's is reset
-			if (myDamage > 0)
-			{
-				yourDamage = myDamage;
-			}
-		}
+		players.add(source.getName());
 	}
 }
