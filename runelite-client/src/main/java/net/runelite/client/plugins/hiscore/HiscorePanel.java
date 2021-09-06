@@ -29,6 +29,7 @@ package net.runelite.client.plugins.hiscore;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -38,6 +39,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +78,11 @@ public class HiscorePanel extends PluginPanel
 {
 	/* The maximum allowed username length in RuneScape accounts */
 	private static final int MAX_USERNAME_LENGTH = 12;
+
+	private static final Color SKILL_MAXED_COLOR = new Color(0x00ff88);
+	private static final Color SKILL_200M_COLOR = new Color(0xff66b2);
+
+	private static final DecimalFormat SHOW_TENTHS_FORMATTER = new DecimalFormat("#0.0");
 
 	/**
 	 * Real skills, ordered in the way they should be displayed in the panel.
@@ -479,12 +486,28 @@ public class HiscorePanel extends PluginPanel
 			}
 			else if ((s = result.getSkill(skill)) != null)
 			{
+				label.setForeground(Color.WHITE);
 				final long exp = s.getExperience();
 				final boolean isSkill = skill.getType() == HiscoreSkillType.SKILL;
-				int level = -1;
-				if (config.virtualLevels() && isSkill && exp > -1L)
+				long level = -1;
+				if (config.post99SkillDisplayStyle() == Post99Display.VIRTUAL_LEVELS && isSkill && exp > -1L)
 				{
 					level = Experience.getLevelForXp((int) exp);
+				}
+				else if (config.post99SkillDisplayStyle() == Post99Display.EXPERIENCE && (isSkill || skill.getType() == HiscoreSkillType.OVERALL) && exp > -1L)
+				{
+					if ((isSkill && s.getLevel() == 99) || s.getLevel() == 2277)
+					{
+						level = exp;
+						label.setForeground((isSkill && exp == 200_000_000) || exp == 4_600_000_000L
+							? SKILL_200M_COLOR
+							: SKILL_MAXED_COLOR
+						);
+					}
+					else
+					{
+						level = s.getLevel();
+					}
 				}
 				else if (!isSkill || exp != -1L)
 				{
@@ -714,15 +737,23 @@ public class HiscorePanel extends PluginPanel
 	}
 
 	@VisibleForTesting
-	static String formatLevel(int level)
+	static String formatLevel(long level)
 	{
-		if (level < 10000)
+		if (level < 10_000)
 		{
-			return Integer.toString(level);
+			return Long.toString(level);
+		}
+		else if (level < 10_000_000)
+		{
+			return (level / 1000) + "k";
+		}
+		else if (level < 100_000_000)
+		{
+			return SHOW_TENTHS_FORMATTER.format(level / 1_000_000D) + "M";
 		}
 		else
 		{
-			return (level / 1000) + "k";
+			return (level / 1_000_000) + "M";
 		}
 	}
 

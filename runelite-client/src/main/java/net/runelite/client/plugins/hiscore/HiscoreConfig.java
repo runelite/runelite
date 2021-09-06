@@ -28,7 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("hiscore")
+@ConfigGroup(HiscorePlugin.CONFIG_GROUP)
 public interface HiscoreConfig extends Config
 {
 	@ConfigItem(
@@ -55,13 +55,13 @@ public interface HiscoreConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "virtualLevels",
-		name = "Display virtual levels",
-		description = "Display levels over 99 in the hiscore panel"
+		keyName = HiscorePlugin.CONFIG_KEY_POST_99_DISPLAY,
+		name = "Post 99 skills",
+		description = "How to display skills over 99 in the hiscore panel"
 	)
-	default boolean virtualLevels()
+	default Post99Display post99SkillDisplayStyle()
 	{
-		return true;
+		return Post99Display.VIRTUAL_LEVELS;
 	}
 
 	@ConfigItem(
