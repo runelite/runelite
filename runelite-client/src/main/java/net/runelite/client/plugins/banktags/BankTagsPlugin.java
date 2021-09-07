@@ -495,18 +495,27 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			return;
 		}
 
-		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD || !config.removeSeparators())
-		{
-			return;
-		}
-
-		if (!tabInterface.isActive())
+		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD)
 		{
 			return;
 		}
 
 		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		if (itemContainer == null)
+		{
+			return;
+		}
+
+		if (tabInterface.isTagTabActive())
+		{
+			int numTabs = (int) Arrays.stream(itemContainer.getDynamicChildren())
+				.filter(child -> child.getItemId() != -1 && !child.isHidden())
+				.count();
+			updateBankContainerScrollHeight(numTabs);
+			return;
+		}
+
+		if (!tabInterface.isActive() || !config.removeSeparators())
 		{
 			return;
 		}
@@ -550,10 +559,15 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			}
 		}
 
-		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		updateBankContainerScrollHeight(items);
+	}
+
+	private void updateBankContainerScrollHeight(int items)
+	{
+		Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		int itemContainerHeight = bankItemContainer.getHeight();
 		final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
-		itemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
+		bankItemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
 
 		final int itemContainerScroll = bankItemContainer.getScrollY();
 		clientThread.invokeLater(() ->
@@ -561,7 +575,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				WidgetInfo.BANK_SCROLLBAR.getId(),
 				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
 				itemContainerScroll));
-
 	}
 
 	@Subscribe
