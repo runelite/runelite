@@ -509,7 +509,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		if (tabInterface.isTagTabActive())
 		{
 			int numTabs = (int) Arrays.stream(itemContainer.getDynamicChildren())
-				.filter(child -> child.getItemId() != -1 && !child.isHidden()).count();
+				.filter(child -> child.getItemId() != -1 && !child.isHidden())
+				.count();
 			updateBankContainerScrollHeight(numTabs);
 			return;
 		}
