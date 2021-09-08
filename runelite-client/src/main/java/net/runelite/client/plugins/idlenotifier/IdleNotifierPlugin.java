@@ -291,6 +291,7 @@ public class IdleNotifierPlugin extends Plugin
 			/* Misc */
 			case PISCARILIUS_CRANE_REPAIR:
 			case HOME_MAKE_TABLET:
+			case LOOKING_INTO:
 			case SAND_COLLECTION:
 				resetTimers();
 				lastAnimation = animation;
