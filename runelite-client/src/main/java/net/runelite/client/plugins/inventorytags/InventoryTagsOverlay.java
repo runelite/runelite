@@ -38,6 +38,8 @@ import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
+import static net.runelite.api.widgets.WidgetID.GRAVESTONE_GROUP_ID;
+
 public class InventoryTagsOverlay extends WidgetItemOverlay
 {
 	private final ItemManager itemManager;
@@ -53,6 +55,7 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 		this.config = config;
 		showOnEquipment();
 		showOnInventory();
+		showOnInterfaces(GRAVESTONE_GROUP_ID);
 		fillCache = CacheBuilder.newBuilder()
 			.concurrencyLevel(1)
 			.maximumSize(32)

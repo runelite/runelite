@@ -45,7 +45,6 @@ import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SEED_VAULT_INVENTORY_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SHOP_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.GRAVESTONE_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 
@@ -128,8 +127,7 @@ public abstract class WidgetItemOverlay extends Overlay
 			DUEL_INVENTORY_GROUP_ID,
 			DUEL_INVENTORY_OTHER_GROUP_ID,
 			PLAYER_TRADE_SCREEN_GROUP_ID,
-			PLAYER_TRADE_INVENTORY_GROUP_ID,
-			GRAVESTONE_GROUP_ID);
+			PLAYER_TRADE_INVENTORY_GROUP_ID);
 	}
 
 	protected void showOnBank()
