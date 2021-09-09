@@ -80,7 +80,7 @@ class NpcMinimapOverlay extends Overlay
 		if (minimapLocation != null)
 		{
 			Color color = highlightedNpc.getHighlightColor();
-			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color.darker());
+			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color);
 
 			if (highlightedNpc.isNameOnMinimap() && actor.getName() != null)
 			{
