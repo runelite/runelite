@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
@@ -81,7 +81,7 @@ class SkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
-	private float xpFactor = 1.0f;
+	private float xpFactor = 1;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
@@ -145,7 +145,7 @@ class SkillCalculator extends JPanel
 			skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
 
 			// Reset the XP factor, removing bonuses.
-			xpFactor = 1.0f;
+			xpFactor = 1;
 
 			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
 			int endGoal = client.getVar(endGoalVarp);
@@ -234,15 +234,17 @@ class SkillCalculator extends JPanel
 
 	private void renderBonusOptions()
 	{
-		if (skillData.getBonuses() != null)
+		if (skillData.getBonuses() == null)
 		{
-			for (SkillDataBonus bonus : skillData.getBonuses())
-			{
-				JPanel checkboxPanel = buildCheckboxPanel(bonus);
+			return;
+		}
 
-				add(checkboxPanel);
-				add(Box.createRigidArea(new Dimension(0, 5)));
-			}
+		for (SkillDataBonus bonus : skillData.getBonuses())
+		{
+			JPanel checkboxPanel = buildCheckboxPanel(bonus);
+
+			add(checkboxPanel);
+			add(Box.createRigidArea(new Dimension(0, 5)));
 		}
 	}
 
@@ -363,7 +365,7 @@ class SkillCalculator extends JPanel
 		updateCombinedAction();
 	}
 
-	private String formatXPActionString(double xp, int actionCount, String expExpression)
+	private static String formatXPActionString(double xp, int actionCount, String expExpression)
 	{
 		return XP_FORMAT.format(xp) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount > 1 ? " actions" : " action");
 	}
@@ -389,7 +391,7 @@ class SkillCalculator extends JPanel
 
 	private void adjustXPBonus(float value)
 	{
-		xpFactor = 1f + value;
+		xpFactor = 1 + value;
 		calculate();
 	}
 
@@ -449,12 +451,12 @@ class SkillCalculator extends JPanel
 		});
 	}
 
-	private boolean slotContainsText(UIActionSlot slot, String text)
+	private static boolean slotContainsText(UIActionSlot slot, String text)
 	{
 		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
 	}
 
-	private FocusAdapter buildFocusAdapter(Consumer<FocusEvent> focusLostConsumer)
+	private static FocusAdapter buildFocusAdapter(Consumer<FocusEvent> focusLostConsumer)
 	{
 		return new FocusAdapter()
 		{
