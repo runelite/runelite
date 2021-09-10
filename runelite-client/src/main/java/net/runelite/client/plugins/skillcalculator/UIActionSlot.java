@@ -41,7 +41,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
+import net.runelite.client.plugins.skillcalculator.skills.SkillAction;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
@@ -63,7 +63,7 @@ class UIActionSlot extends JPanel
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
 	@Getter(AccessLevel.PACKAGE)
-	private final SkillDataEntry action;
+	private final SkillAction action;
 	private final JShadowedLabel uiLabelActions;
 
 	private final JPanel uiInfo;
@@ -81,7 +81,7 @@ class UIActionSlot extends JPanel
 	@Setter(AccessLevel.PACKAGE)
 	private double value;
 
-	UIActionSlot(SkillDataEntry action, JLabel uiIcon)
+	UIActionSlot(SkillAction action, JLabel uiIcon)
 	{
 		this.action = action;
 

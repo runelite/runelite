@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2021, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.skillcalculator;
+package net.runelite.client.plugins.skillcalculator.skills;
 
-import com.google.gson.Gson;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import net.runelite.client.plugins.skillcalculator.beans.SkillData;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-class CacheSkillData
+@AllArgsConstructor
+@Getter(onMethod_ = @Override)
+public enum RunecraftBonus implements SkillBonus
 {
-	private final Map<String, SkillData> cache = new HashMap<>();
+	DAEYALT_ESSENCE("Daeyalt essence (+50%)", 0.5f),
+	;
 
-	SkillData getSkillData(String dataFile)
-	{
-		if (cache.containsKey(dataFile))
-		{
-			return cache.get(dataFile);
-		}
-
-		try (InputStream skillDataFile = SkillCalculatorPlugin.class.getResourceAsStream(dataFile))
-		{
-			SkillData skillData = new Gson().fromJson(new InputStreamReader(skillDataFile, StandardCharsets.UTF_8), SkillData.class);
-
-			cache.put(dataFile, skillData);
-			return skillData;
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
+	private final String name;
+	private final float value;
 }

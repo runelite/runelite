@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2021, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.skillcalculator.beans;
+package net.runelite.client.plugins.skillcalculator.skills;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.ItemID;
 
+@AllArgsConstructor
 @Getter
-public class SkillDataEntry
+public enum FiremakingAction implements SkillAction
 {
-	private String name;
-	private int level;
-	private double xp;
-	private Integer icon;
-	private Integer sprite;
-	private boolean ignoreBonus;
+	LOGS("Logs", 1, 40, ItemID.LOGS),
+	ACHEY_TREE_LOGS("Achey tree logs", 1, 40, ItemID.ACHEY_TREE_LOGS),
+	OAK_LOGS("Oak logs", 15, 60, ItemID.OAK_LOGS),
+	WILLOW_LOGS("Willow logs", 30, 90, ItemID.WILLOW_LOGS),
+	TEAK_LOGS("Teak logs", 35, 105, ItemID.TEAK_LOGS),
+	ARCTIC_PINE_LOGS("Arctic pine logs", 42, 125, ItemID.ARCTIC_PINE_LOGS),
+	MAPLE_LOGS("Maple logs", 45, 135, ItemID.MAPLE_LOGS),
+	MAHOGANY_LOGS("Mahogany logs", 50, 157.5f, ItemID.MAHOGANY_LOGS),
+	YEW_LOGS("Yew logs", 60, 202.5f, ItemID.YEW_LOGS),
+	BLISTERWOOD_LOGS("Blisterwood logs", 62, 96, ItemID.BLISTERWOOD_LOGS),
+	MAGIC_LOGS("Magic logs", 75, 303.8f, ItemID.MAGIC_LOGS),
+	REDWOOD_LOGS("Redwood logs", 90, 350, ItemID.REDWOOD_LOGS),
+	;
+
+	private final String name;
+	private final int level;
+	private final float xp;
+	private final int icon;
 }
