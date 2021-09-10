@@ -81,14 +81,18 @@ public class NpcOverlayService
 		}
 	}
 
-	@Subscribe
+	@Subscribe(
+		priority = -1
+	)
 	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
 		highlightedNpcs.remove(npc);
 	}
 
-	@Subscribe
+	@Subscribe(
+		priority = -1
+	)
 	private void onNpcChanged(NpcChanged event)
 	{
 		final NPC npc = event.getNpc();
