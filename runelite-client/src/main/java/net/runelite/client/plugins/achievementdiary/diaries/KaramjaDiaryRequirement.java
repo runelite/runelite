@@ -109,7 +109,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.THIEVING, 50),
 			new SkillRequirement(Skill.MINING, 52),
 			new QuestRequirement(Quest.LEGENDS_QUEST));
-		add("Use the crossbow short cut south of the volcano.",
+		add("Use the crossbow shortcut south of the volcano.",
 			new SkillRequirement(Skill.AGILITY, 53),
 			new SkillRequirement(Skill.RANGED, 42),
 			new SkillRequirement(Skill.STRENGTH, 21));
