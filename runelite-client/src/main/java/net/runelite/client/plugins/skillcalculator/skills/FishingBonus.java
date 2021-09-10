@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2021, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.skillcalculator.beans;
+package net.runelite.client.plugins.skillcalculator.skills;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
-public class SkillDataBonus
+@AllArgsConstructor
+@Getter(onMethod_ = @Override)
+public enum FishingBonus implements SkillBonus
 {
-	private String name;
-	private float value;
+	ANGLERS_OUTFIT("Angler's Outfit (+2.5%)", 0.025f),
+	;
+
+	private final String name;
+	private final float value;
 }
