@@ -320,8 +320,7 @@ public class CannonPlugin extends Plugin
 				}
 			}
 		}
-
-		if (event.getMessage().contains("You pick up the cannon")
+		else if (event.getMessage().contains("You pick up the cannon")
 			|| event.getMessage().contains("Your cannon has decayed. Speak to Nulodion to get a new one!")
 			|| event.getMessage().contains("Your cannon has been destroyed!"))
 		{
@@ -329,8 +328,7 @@ public class CannonPlugin extends Plugin
 			cballsLeft = 0;
 			removeCounter();
 		}
-
-		if (event.getMessage().startsWith("You load the cannon with"))
+		else if (event.getMessage().startsWith("You load the cannon with"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
@@ -368,8 +366,7 @@ public class CannonPlugin extends Plugin
 
 			cannonBallNotificationSent = false;
 		}
-
-		if (event.getMessage().contains("Your cannon is out of ammo!"))
+		else if (event.getMessage().contains("Your cannon is out of ammo!"))
 		{
 			skipProjectileCheckThisTick = true;
 
@@ -383,8 +380,7 @@ public class CannonPlugin extends Plugin
 				notifier.notify("Your cannon is out of ammo!");
 			}
 		}
-
-		if (event.getMessage().startsWith("Your cannon contains"))
+		else if (event.getMessage().startsWith("Your cannon contains"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
@@ -392,8 +388,7 @@ public class CannonPlugin extends Plugin
 				cballsLeft = Integer.parseInt(m.group());
 			}
 		}
-
-		if (event.getMessage().startsWith("You unload your cannon and receive Cannonball")
+		else if (event.getMessage().startsWith("You unload your cannon and receive Cannonball")
 			|| event.getMessage().startsWith("You unload your cannon and receive Granite cannonball"))
 		{
 			skipProjectileCheckThisTick = true;
