@@ -30,7 +30,7 @@ import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-public enum FarmingAction implements SkillAction
+public enum FarmingAction implements NamedSkillAction
 {
 	PLANT("Plant", 1, 31, ItemID.PLANT),
 	FERN_BIG_PLANT("Fern (big plant)", 1, 31, ItemID.FERN_8186),

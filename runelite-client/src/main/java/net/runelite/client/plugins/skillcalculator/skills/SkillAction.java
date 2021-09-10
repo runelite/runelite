@@ -24,17 +24,22 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import net.runelite.api.ItemComposition;
+import net.runelite.client.game.ItemManager;
+
 /**
  * An object representing a single skill action which grants some xp.
  */
 public interface SkillAction
 {
 	/**
-	 * Gets the name of this skill action, usually the item or object created, or the spell cast.
+	 * Gets the name of this skill action, usually the item or object created, or the spell cast. This name may be
+	 * fetched via {@link ItemComposition#getName()} from some defined item ID or explicitly defined.
 	 *
+	 * @param itemManager An {@link ItemManager item manager} instance.
 	 * @return The name of this skill action.
 	 */
-	String getName();
+	String getName(final ItemManager itemManager);
 
 	/**
 	 * Gets the level required to perform this skill action.

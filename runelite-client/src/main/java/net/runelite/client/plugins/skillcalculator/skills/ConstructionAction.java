@@ -30,7 +30,7 @@ import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-public enum ConstructionAction implements SkillAction
+public enum ConstructionAction implements NamedSkillAction
 {
 	EXIT_PORTAL("Exit Portal", 1, 100, ItemID.EXIT_PORTAL),
 	PLANK("Plank", 1, 29, ItemID.PLANK),

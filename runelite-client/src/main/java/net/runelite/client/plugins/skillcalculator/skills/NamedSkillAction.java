@@ -24,29 +24,23 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
 
-@AllArgsConstructor
-@Getter
-public enum FiremakingAction implements ItemSkillAction
+/**
+ * An object representing a single skill action which grants some xp, with an explicitly defined name field.
+ */
+public interface NamedSkillAction extends SkillAction
 {
-	LOGS(ItemID.LOGS, 1, 40),
-	ACHEY_TREE_LOGS(ItemID.ACHEY_TREE_LOGS, 1, 40),
-	OAK_LOGS(ItemID.OAK_LOGS, 15, 60),
-	WILLOW_LOGS(ItemID.WILLOW_LOGS, 30, 90),
-	TEAK_LOGS(ItemID.TEAK_LOGS, 35, 105),
-	ARCTIC_PINE_LOGS(ItemID.ARCTIC_PINE_LOGS, 42, 125),
-	MAPLE_LOGS(ItemID.MAPLE_LOGS, 45, 135),
-	MAHOGANY_LOGS(ItemID.MAHOGANY_LOGS, 50, 157.5f),
-	YEW_LOGS(ItemID.YEW_LOGS, 60, 202.5f),
-	BLISTERWOOD_LOGS(ItemID.BLISTERWOOD_LOGS, 62, 96),
-	MAGIC_LOGS(ItemID.MAGIC_LOGS, 75, 303.8f),
-	REDWOOD_LOGS(ItemID.REDWOOD_LOGS, 90, 350),
-	;
+	/**
+	 * Gets the name of this skill action, usually the item or object created, or the spell cast.
+	 *
+	 * @return The name of this skill action.
+	 */
+	String getName();
 
-	private final int itemId;
-	private final int level;
-	private final float xp;
+	@Override
+	default String getName(ItemManager itemManager)
+	{
+		return getName();
+	}
 }

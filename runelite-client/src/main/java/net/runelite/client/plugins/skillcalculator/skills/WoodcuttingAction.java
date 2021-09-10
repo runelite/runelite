@@ -30,7 +30,7 @@ import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-public enum WoodcuttingAction implements SkillAction
+public enum WoodcuttingAction implements NamedSkillAction
 {
 	LOGS("Logs", 1, 25, ItemID.LOGS),
 	ACHEY_TREE_LOGS("Achey tree logs", 1, 25, ItemID.ACHEY_TREE_LOGS),

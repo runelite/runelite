@@ -27,6 +27,7 @@ package net.runelite.client.plugins.skillcalculator.skills;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.SpriteID;
+import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
@@ -218,4 +219,10 @@ public enum MagicAction implements SkillAction
 	private final int level;
 	private final float xp;
 	private final int sprite;
+
+	@Override
+	public String getName(final ItemManager itemManager)
+	{
+		return getName();
+	}
 }

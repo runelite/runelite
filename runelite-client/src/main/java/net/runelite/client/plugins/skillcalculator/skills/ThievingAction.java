@@ -30,7 +30,7 @@ import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-public enum ThievingAction implements SkillAction
+public enum ThievingAction implements NamedSkillAction
 {
 	MAN_OR_WOMAN("Man / Woman", 1, 8, ItemID.MAN),
 	WINTER_SQIRKJUICE("Winter Sq'irkjuice", 1, 350, ItemID.WINTER_SQIRKJUICE),

@@ -30,7 +30,7 @@ import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-public enum HunterAction implements SkillAction
+public enum HunterAction implements NamedSkillAction
 {
 	CRIMSON_SWIFT("Crimson Swift", 1, 34, ItemID.CRIMSON_SWIFT),
 	POLAR_KEBBIT("Polar Kebbit", 1, 30, ItemID.KEBBIT),
