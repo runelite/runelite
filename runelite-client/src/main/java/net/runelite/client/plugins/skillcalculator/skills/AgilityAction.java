@@ -30,7 +30,7 @@ import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-public enum AgilityAction implements SkillAction
+public enum AgilityAction implements NamedSkillAction
 {
 	GNOME_STRONGHOLD_COURSE("Gnome Stronghold", 1, 86.5f, ItemID.SWAMP_TOAD),
 	SHAYZIEN_BASIC_COURSE("Shayzien Basic Course", 5, 133.2f, ItemID.SHAYZIEN_HELM_1),

@@ -48,6 +48,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.skills.SkillAction;
@@ -65,6 +66,7 @@ class SkillCalculator extends JPanel
 
 	private final UICalculatorInputArea uiInput;
 	private final Client client;
+	private final ClientThread clientThread;
 	private final SpriteManager spriteManager;
 	private final ItemManager itemManager;
 	private final List<UIActionSlot> uiActionSlots = new ArrayList<>();
@@ -80,9 +82,10 @@ class SkillCalculator extends JPanel
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1;
 
-	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
+	SkillCalculator(Client client, ClientThread clientThread, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		this.client = client;
+		this.clientThread = clientThread;
 		this.uiInput = uiInput;
 		this.spriteManager = spriteManager;
 		this.itemManager = itemManager;
@@ -303,7 +306,7 @@ class SkillCalculator extends JPanel
 				spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
 			}
 
-			UIActionSlot slot = new UIActionSlot(action, uiIcon);
+			UIActionSlot slot = new UIActionSlot(action, clientThread, itemManager, uiIcon);
 			uiActionSlots.add(slot); // Keep our own reference.
 			add(slot); // Add component to the panel.
 
@@ -448,7 +451,7 @@ class SkillCalculator extends JPanel
 
 	private static boolean slotContainsText(UIActionSlot slot, String text)
 	{
-		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
+		return slot.getActionName().toLowerCase().contains(text.toLowerCase());
 	}
 
 	private static FocusAdapter buildFocusAdapter(Consumer<FocusEvent> focusLostConsumer)

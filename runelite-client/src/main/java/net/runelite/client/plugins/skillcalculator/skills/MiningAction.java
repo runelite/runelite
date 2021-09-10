@@ -31,7 +31,7 @@ import net.runelite.api.NullItemID;
 
 @AllArgsConstructor
 @Getter
-public enum MiningAction implements SkillAction
+public enum MiningAction implements NamedSkillAction
 {
 	CLAY("Clay", 1, 5, ItemID.CLAY),
 	RUNE_ESSENCE("Rune essence", 1, 5, ItemID.RUNE_ESSENCE),
