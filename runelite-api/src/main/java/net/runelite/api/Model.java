@@ -85,4 +85,8 @@ public interface Model extends Renderable
 
 	int getXYZMag();
 	boolean isClickable();
+
+	int[] getVertexNormalsX();
+	int[] getVertexNormalsY();
+	int[] getVertexNormalsZ();
 }
