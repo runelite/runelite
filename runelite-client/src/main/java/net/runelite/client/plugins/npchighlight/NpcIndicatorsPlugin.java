@@ -224,6 +224,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			memorizedNpcs.forEach((id, npc) -> npc.setDiedOnTick(-1));
 			lastPlayerLocation = null;
 			skipNextSpawnCheck = true;
+			npcOverlayService.rebuild();
 		}
 	}
 
