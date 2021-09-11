@@ -357,6 +357,7 @@ public abstract class ShellPanel extends JPanel
 					if (isUserCode)
 					{
 						shellLogger.error("", new RemappingThrowable(src, offsets, ev.exception()));
+						break evaluation;
 					}
 					else
 					{
