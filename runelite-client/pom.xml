@@ -198,16 +198,15 @@
 			<artifactId>archive-patcher</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<!-- net.runelite:discord also has this -->
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
-			<version>4.5.1</version>
+			<version>5.9.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna-platform</artifactId>
-			<version>4.5.1</version>
+			<version>5.9.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
