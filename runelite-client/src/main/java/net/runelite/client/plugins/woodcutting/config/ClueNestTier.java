@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.woodcutting.config;
 
-public enum ClueNestNotifyTier
+public enum ClueNestTier
 {
 	BEGINNER(0),
 	EASY(1),
@@ -34,6 +34,6 @@ public enum ClueNestNotifyTier
 	DISABLED(999);
 
 	private final int tier;
-	ClueNestNotifyTier(int tier) { this.tier = tier; }
+	ClueNestTier(int tier) { this.tier = tier; }
 	public int getTier() { return this.tier; }
 }

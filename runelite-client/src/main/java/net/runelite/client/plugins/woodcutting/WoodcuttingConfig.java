@@ -28,7 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
-import net.runelite.client.plugins.woodcutting.config.ClueNestNotifyTier;
+import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 
 @ConfigGroup("woodcutting")
 public interface WoodcuttingConfig extends Config
@@ -62,9 +62,9 @@ public interface WoodcuttingConfig extends Config
 		name = "Clue nest notification",
 		description = "Configures the clue tier from which to start notifying of a clue nest spawn"
 	)
-	default ClueNestNotifyTier clueNestNotifyTier()
+	default ClueNestTier clueNestNotifyTier()
 	{
-		return ClueNestNotifyTier.BEGINNER;
+		return ClueNestTier.BEGINNER;
 	}
 
 	@ConfigItem(

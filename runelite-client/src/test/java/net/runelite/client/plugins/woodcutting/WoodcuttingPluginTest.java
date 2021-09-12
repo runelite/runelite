@@ -37,7 +37,7 @@ import net.runelite.api.TileItem;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.Notifier;
-import net.runelite.client.plugins.woodcutting.config.ClueNestNotifyTier;
+import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
@@ -154,43 +154,43 @@ public class WoodcuttingPluginTest
 		ItemSpawned regularNestSpawned = new ItemSpawned(tile, nestTileItem);
 
 		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
-		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestNotifyTier.BEGINNER);
+		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.BEGINNER);
 		woodcuttingPlugin.onItemSpawned(beginnerClueSpawned);
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verify(notifier).notify("A bird nest has spawned!");
 
 		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
-		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestNotifyTier.BEGINNER);
+		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.BEGINNER);
 		woodcuttingPlugin.onItemSpawned(eliteClueSpawned);
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verify(notifier, times(2)).notify("A bird nest has spawned!");
 
 		when(woodcuttingConfig.showNestNotification()).thenReturn(false);
-		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestNotifyTier.BEGINNER);
+		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.BEGINNER);
 		woodcuttingPlugin.onItemSpawned(eliteClueSpawned);
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verifyNoMoreInteractions(notifier);
 
 		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
-		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestNotifyTier.HARD);
+		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.HARD);
 		woodcuttingPlugin.onItemSpawned(eliteClueSpawned);
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verify(notifier, times(3)).notify("A bird nest has spawned!");
 
 		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
-		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestNotifyTier.ELITE);
+		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.ELITE);
 		woodcuttingPlugin.onItemSpawned(eliteClueSpawned);
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verify(notifier, times(4)).notify("A bird nest has spawned!");
 
 		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
-		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestNotifyTier.DISABLED);
+		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.DISABLED);
 		woodcuttingPlugin.onItemSpawned(eliteClueSpawned);
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verifyNoMoreInteractions(notifier);
 
 		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
-		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestNotifyTier.HARD);
+		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.HARD);
 		woodcuttingPlugin.onItemSpawned(beginnerClueSpawned);
 		woodcuttingPlugin.onChatMessage(chatMessage);
 		verifyNoMoreInteractions(notifier);
