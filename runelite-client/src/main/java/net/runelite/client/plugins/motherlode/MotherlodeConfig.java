@@ -31,116 +31,114 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("motherlode")
-public interface MotherlodeConfig extends Config
-{
-	@ConfigItem(
-		keyName = "showVeins",
-		name = "Show pay-dirt mining spots",
-		description = "Configures whether or not the pay-dirt mining spots are displayed."
-	)
-	default boolean showVeins()
-	{
-		return true;
-	}
+public interface MotherlodeConfig extends Config {
+    @ConfigItem(
+            keyName = "showValueMined",
+            name = "Show value of mined ore",
+            description = "Shows the total Grand Exchange value of mined ore"
+    )
+    default boolean showValueMined() { return false;}
 
-	@ConfigItem(
-		keyName = "showRocks",
-		name = "Show rocks obstacles",
-		description = "Configures whether or not the fallen rocks obstacles are displayed."
-	)
-	default boolean showRockFalls()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = "showVeins",
+            name = "Show pay-dirt mining spots",
+            description = "Configures whether or not the pay-dirt mining spots are displayed."
+    )
+    default boolean showVeins() {
+        return true;
+    }
 
-	@ConfigItem(
-		keyName = "statTimeout",
-		name = "Reset stats",
-		description = "Configures the time until statistics are reset"
-	)
-	@Units(Units.MINUTES)
-	default int statTimeout()
-	{
-		return 5;
-	}
+    @ConfigItem(
+            keyName = "showRocks",
+            name = "Show rocks obstacles",
+            description = "Configures whether or not the fallen rocks obstacles are displayed."
+    )
+    default boolean showRockFalls() {
+        return true;
+    }
 
-	@ConfigItem(
-		keyName = "showSack",
-		name = "Show pay-dirt sack",
-		description = "Configures whether the pay-dirt sack is displayed or not."
-	)
-	default boolean showSack()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = "statTimeout",
+            name = "Reset stats",
+            description = "Configures the time until statistics are reset"
+    )
+    @Units(Units.MINUTES)
+    default int statTimeout() {
+        return 5;
+    }
 
-	@ConfigItem(
-		keyName = "showMiningStats",
-		name = "Show mining session stats",
-		description = "Configures whether to display mining session stats"
-	)
-	default boolean showMiningStats()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = "showSack",
+            name = "Show pay-dirt sack",
+            description = "Configures whether the pay-dirt sack is displayed or not."
+    )
+    default boolean showSack() {
+        return true;
+    }
 
-	@ConfigItem(
-		keyName = "showDepositsLeft",
-		name = "Show deposits left",
-		description = "Displays deposits left before sack is full"
-	)
-	default boolean showDepositsLeft()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = "showMiningStats",
+            name = "Show mining session stats",
+            description = "Configures whether to display mining session stats"
+    )
+    default boolean showMiningStats() {
+        return true;
+    }
 
-	@ConfigItem(
-		keyName = "showMiningState",
-		name = "Show current mining state",
-		description = "Shows current mining state. 'You are currently mining' / 'You are currently NOT mining'"
-	)
-	default boolean showMiningState()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = "showDepositsLeft",
+            name = "Show deposits left",
+            description = "Displays deposits left before sack is full"
+    )
+    default boolean showDepositsLeft() {
+        return true;
+    }
 
-	@ConfigItem(
-		keyName = "showGemsFound",
-		name = "Show gems found",
-		description = "Shows gems found during current mining session"
-	)
-	default boolean showGemsFound()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = "showMiningState",
+            name = "Show current mining state",
+            description = "Shows current mining state. 'You are currently mining' / 'You are currently NOT mining'"
+    )
+    default boolean showMiningState() {
+        return true;
+    }
 
-	@ConfigItem(
-		keyName = "showOresFound",
-		name = "Show ores found",
-		description = "Shows the ores found during current mining session"
-	)
-	default boolean showOresFound()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = "showGemsFound",
+            name = "Show gems found",
+            description = "Shows gems found during current mining session"
+    )
+    default boolean showGemsFound() {
+        return true;
+    }
 
-	@ConfigItem(
-		keyName = "showBrokenStruts",
-		name = "Show broken struts",
-		description = "Shows broken water wheel struts"
-	)
-	default boolean showBrokenStruts()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = "showOresFound",
+            name = "Show ores found",
+            description = "Shows the ores found during current mining session"
+    )
+    default boolean showOresFound() {
+        return true;
+    }
 
-	@ConfigItem(
-		keyName = "showLootIcons",
-		name = "Show ore icons",
-		description = "Display collected ores and gems as item images instead of text"
-	)
-	default boolean showLootIcons()
-	{
-		return false;
-	}
+    @ConfigItem(
+            keyName = "showBrokenStruts",
+            name = "Show broken struts",
+            description = "Shows broken water wheel struts"
+    )
+    default boolean showBrokenStruts() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "showLootIcons",
+            name = "Show ore icons",
+            description = "Display collected ores and gems as item images instead of text"
+    )
+
+    default boolean showLootIcons() {
+        return false;
+    }
+
+
 }
