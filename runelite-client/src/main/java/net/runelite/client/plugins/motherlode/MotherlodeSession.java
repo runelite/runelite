@@ -41,157 +41,157 @@ import javax.inject.Inject;
 
 
 public class MotherlodeSession {
-    @Inject
-    private ItemManager itemManager;
+	@Inject
+	private ItemManager itemManager;
 
-    private static final Duration HOUR = Duration.ofHours(1);
+	private static final Duration HOUR = Duration.ofHours(1);
 
-    private int perHour;
-
-
-    private Instant lastPayDirtMined;
-    private int totalMined;
-
-    private Instant recentPayDirtMined;
-    private int recentMined;
+	private int perHour;
 
 
-    @Getter(AccessLevel.PACKAGE)
-    private Instant lastGemFound;
+	private Instant lastPayDirtMined;
+	private int totalMined;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int diamondsFound;
+	private Instant recentPayDirtMined;
+	private int recentMined;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int rubiesFound;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int emeraldsFound;
+	@Getter(AccessLevel.PACKAGE)
+	private Instant lastGemFound;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int sapphiresFound;
+	@Getter(AccessLevel.PACKAGE)
+	private int diamondsFound;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int nuggetsFound;
+	@Getter(AccessLevel.PACKAGE)
+	private int rubiesFound;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int coalFound;
+	@Getter(AccessLevel.PACKAGE)
+	private int emeraldsFound;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int goldFound;
+	@Getter(AccessLevel.PACKAGE)
+	private int sapphiresFound;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int mithrilFound;
+	@Getter(AccessLevel.PACKAGE)
+	private int nuggetsFound;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int adamantiteFound;
+	@Getter(AccessLevel.PACKAGE)
+	private int coalFound;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int runiteFound;
+	@Getter(AccessLevel.PACKAGE)
+	private int goldFound;
 
-    @Getter(AccessLevel.PACKAGE)
-    private int totalValue;
+	@Getter(AccessLevel.PACKAGE)
+	private int mithrilFound;
 
-    void incrementGemFound(int gemID) {
-        lastGemFound = Instant.now();
+	@Getter(AccessLevel.PACKAGE)
+	private int adamantiteFound;
 
-        switch (gemID) {
-            case ItemID.UNCUT_DIAMOND:
-                diamondsFound++;
-                break;
+	@Getter(AccessLevel.PACKAGE)
+	private int runiteFound;
 
-            case ItemID.UNCUT_RUBY:
-                rubiesFound++;
-                break;
+	@Getter(AccessLevel.PACKAGE)
+	private int totalValue;
 
-            case ItemID.UNCUT_EMERALD:
-                emeraldsFound++;
-                break;
+	void incrementGemFound(int gemID) {
+		lastGemFound = Instant.now();
 
-            case ItemID.UNCUT_SAPPHIRE:
-                sapphiresFound++;
-                break;
+		switch (gemID) {
+			case ItemID.UNCUT_DIAMOND:
+				diamondsFound++;
+				break;
 
-            default:
-                log.debug("Invalid gem type specified. The gem count will not be incremented.");
-        }
-    }
+			case ItemID.UNCUT_RUBY:
+				rubiesFound++;
+				break;
 
-    void updateOreFound(int item, int count) {
-        switch (item) {
-            case ItemID.GOLDEN_NUGGET:
-                nuggetsFound += count;
-                break;
-            case ItemID.COAL:
-                coalFound += count;
-                break;
-            case ItemID.GOLD_ORE:
-                goldFound += count;
-                break;
-            case ItemID.MITHRIL_ORE:
-                mithrilFound += count;
-                break;
-            case ItemID.ADAMANTITE_ORE:
-                adamantiteFound += count;
-                break;
-            case ItemID.RUNITE_ORE:
-                runiteFound += count;
-                break;
-            default:
-                log.debug("Invalid ore specified. The ore count will not be updated.");
-        }
-        addMinedValue(item, count);
+			case ItemID.UNCUT_EMERALD:
+				emeraldsFound++;
+				break;
 
-    }
+			case ItemID.UNCUT_SAPPHIRE:
+				sapphiresFound++;
+				break;
 
-    public void incrementPayDirtMined() {
-        Instant now = Instant.now();
+			default:
+				log.debug("Invalid gem type specified. The gem count will not be incremented.");
+		}
+	}
 
-        lastPayDirtMined = now;
-        ++totalMined;
+	void updateOreFound(int item, int count) {
+		switch (item) {
+			case ItemID.GOLDEN_NUGGET:
+				nuggetsFound += count;
+				break;
+			case ItemID.COAL:
+				coalFound += count;
+				break;
+			case ItemID.GOLD_ORE:
+				goldFound += count;
+				break;
+			case ItemID.MITHRIL_ORE:
+				mithrilFound += count;
+				break;
+			case ItemID.ADAMANTITE_ORE:
+				adamantiteFound += count;
+				break;
+			case ItemID.RUNITE_ORE:
+				runiteFound += count;
+				break;
+			default:
+				log.debug("Invalid ore specified. The ore count will not be updated.");
+		}
+		addMinedValue(item, count);
 
-        if (recentMined == 0) {
-            recentPayDirtMined = now;
-        }
-        ++recentMined;
+	}
 
-        Duration timeSinceStart = Duration.between(recentPayDirtMined, now);
-        if (!timeSinceStart.isZero()) {
-            perHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
-        }
-    }
+	public void incrementPayDirtMined() {
+		Instant now = Instant.now();
 
-    public void resetRecent() {
-        recentPayDirtMined = null;
-        recentMined = 0;
-    }
+		lastPayDirtMined = now;
+		++totalMined;
 
-    public int getPerHour() {
-        return perHour;
-    }
+		if (recentMined == 0) {
+			recentPayDirtMined = now;
+		}
+		++recentMined;
 
-    public Instant getLastPayDirtMined() {
-        return lastPayDirtMined;
-    }
+		Duration timeSinceStart = Duration.between(recentPayDirtMined, now);
+		if (!timeSinceStart.isZero()) {
+			perHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+		}
+	}
 
-    public int getTotalMined() {
-        return totalMined;
-    }
+	public void resetRecent() {
+		recentPayDirtMined = null;
+		recentMined = 0;
+	}
 
-    public Instant getRecentPayDirtMined() {
-        return recentPayDirtMined;
-    }
+	public int getPerHour() {
+		return perHour;
+	}
 
-    public int getRecentMined() {
-        return recentMined;
-    }
+	public Instant getLastPayDirtMined() {
+		return lastPayDirtMined;
+	}
 
-    private int getGoldValue(int itemId) {
-        return itemManager.getItemPrice(itemId);
-    }
+	public int getTotalMined() {
+		return totalMined;
+	}
 
-    public int addMinedValue(int itemID, int count) {
-        return totalValue += getGoldValue(itemID);
-    }
+	public Instant getRecentPayDirtMined() {
+		return recentPayDirtMined;
+	}
+
+	public int getRecentMined() {
+		return recentMined;
+	}
+
+	private int getGoldValue(int itemId) {
+		return itemManager.getItemPrice(itemId);
+	}
+
+	public int addMinedValue(int itemID, int count) {
+		return totalValue += getGoldValue(itemID);
+	}
 
 }
