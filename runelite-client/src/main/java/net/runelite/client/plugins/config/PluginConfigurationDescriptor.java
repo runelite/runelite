@@ -24,10 +24,8 @@
  */
 package net.runelite.client.plugins.config;
 
-import java.util.List;
 import javax.annotation.Nullable;
 import javax.swing.JMenuItem;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
@@ -37,7 +35,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.util.LinkBrowser;
 
 @Value
-@RequiredArgsConstructor
 class PluginConfigurationDescriptor
 {
 	private final String name;
@@ -55,17 +52,9 @@ class PluginConfigurationDescriptor
 	@Nullable
 	private final ConfigDescriptor configDescriptor;
 
-	@Nullable
-	private final List<String> conflicts;
-
 	boolean hasConfigurables()
 	{
 		return configDescriptor != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden());
-	}
-
-	PluginConfigurationDescriptor(String name, String description, String[] tags, Config config, ConfigDescriptor configDescriptor)
-	{
-		this(name, description, tags, null, config, configDescriptor, null);
 	}
 
 	/**

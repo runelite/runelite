@@ -181,7 +181,7 @@ class ConfigPanel extends PluginPanel
 		topPanelBackButton.setToolTipText("Back");
 		topPanel.add(topPanelBackButton, BorderLayout.WEST);
 
-		pluginToggle = new PluginToggleButton(pluginConfig.getConflicts());
+		pluginToggle = new PluginToggleButton();
 		topPanel.add(pluginToggle, BorderLayout.EAST);
 		title = new JLabel();
 		title.setForeground(Color.WHITE);

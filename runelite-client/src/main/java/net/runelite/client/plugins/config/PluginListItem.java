@@ -166,7 +166,7 @@ class PluginListItem extends JPanel implements SearchablePlugin
 		addLabelPopupMenu(nameLabel, configMenuItem, pluginConfig.createSupportMenuItem(), uninstallItem);
 		add(nameLabel, BorderLayout.CENTER);
 
-		onOffToggle = new PluginToggleButton(pluginConfig.getConflicts());
+		onOffToggle = new PluginToggleButton();
 		buttonPanel.add(onOffToggle);
 		if (pluginConfig.getPlugin() != null)
 		{
