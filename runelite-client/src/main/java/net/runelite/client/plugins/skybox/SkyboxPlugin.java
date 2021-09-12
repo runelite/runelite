@@ -29,11 +29,13 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
@@ -56,6 +58,8 @@ public class SkyboxPlugin extends Plugin
 	private SkyboxPluginConfig config;
 
 	private Skybox skybox;
+
+	private final int[] REGION_POH = {7513, 7514, 7769, 7770};
 
 	@Override
 	public void startUp() throws IOException
@@ -110,6 +114,11 @@ public class SkyboxPlugin extends Plugin
 
 		Color overrideColor = player.getWorldLocation().getY() < Constants.OVERWORLD_MAX_Y
 			? config.customOverworldColor() : config.customOtherColor();
+		if (config.christmasMode() && Arrays.stream(REGION_POH).anyMatch(i -> i == WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID()))
+		{
+			client.setSkyboxColor(Color.WHITE.getRGB());
+			return;
+		}
 		if (overrideColor != null)
 		{
 			client.setSkyboxColor(overrideColor.getRGB());
