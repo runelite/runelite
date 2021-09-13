@@ -113,7 +113,7 @@ class StatusBarsOverlay extends Overlay
 	{
 		barRenderers.put(BarMode.DISABLED, null);
 		barRenderers.put(BarMode.HITPOINTS, new BarRenderer(
-			() -> client.getRealSkillLevel(Skill.HITPOINTS),
+			() -> plugin.inLMS ? 99 : client.getRealSkillLevel(Skill.HITPOINTS),
 			() -> client.getBoostedSkillLevel(Skill.HITPOINTS),
 			() -> getRestoreValue(Skill.HITPOINTS.getName()),
 			() ->

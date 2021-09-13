@@ -34,6 +34,9 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.WidgetClosed;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -72,6 +75,7 @@ public class StatusBarsPlugin extends Plugin
 	private boolean barsDisplayed;
 
 	private int lastCombatActionTickCount;
+	boolean inLMS;
 
 	@Override
 	protected void startUp() throws Exception
@@ -131,6 +135,24 @@ public class StatusBarsPlugin extends Plugin
 		else if (client.getTickCount() - lastCombatActionTickCount >= config.hideAfterCombatDelay())
 		{
 			barsDisplayed = false;
+		}
+	}
+
+	@Subscribe
+	public void onWidgetClosed(WidgetClosed ev)
+	{
+		if (ev.getGroupId() == WidgetInfo.LMS_KDA.getGroupId())
+		{
+			inLMS = false;
+		}
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	{
+		if (widgetLoaded.getGroupId() == WidgetInfo.LMS_KDA.getGroupId())
+		{
+			inLMS = true;
 		}
 	}
 }
