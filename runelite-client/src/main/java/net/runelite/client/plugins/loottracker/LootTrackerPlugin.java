@@ -74,6 +74,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -479,7 +480,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now());
+			LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId());
 			synchronized (queuedLoots)
 			{
 				queuedLoots.add(lootRecord);
@@ -487,6 +488,12 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		eventBus.post(new LootReceived(name, combatLevel, type, items));
+	}
+
+	private Integer getLootWorldId()
+	{
+		// For the wiki to determine drop rates based on dmm brackets
+		return client.getWorldType().contains(WorldType.SEASONAL) ? client.getWorld() : null;
 	}
 
 	@Subscribe

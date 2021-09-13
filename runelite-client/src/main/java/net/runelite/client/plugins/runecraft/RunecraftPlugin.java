@@ -26,10 +26,12 @@ package net.runelite.client.plugins.runecraft;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -47,12 +49,12 @@ import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.npcoverlay.HighlightedNpc;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -78,11 +80,7 @@ public class RunecraftPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<AbyssRifts> rifts = new HashSet<>();
 
-	@Getter(AccessLevel.PACKAGE)
 	private boolean degradedPouchInInventory;
-
-	@Getter(AccessLevel.PACKAGE)
-	private NPC darkMage;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -99,6 +97,11 @@ public class RunecraftPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	private NpcOverlayService npcOverlayService;
+
+	private final Function<NPC, HighlightedNpc> highlightDarkMage = this::highlightDarkMage;
+
 	@Provides
 	RunecraftConfig getConfig(ConfigManager configManager)
 	{
@@ -108,6 +111,7 @@ public class RunecraftPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		npcOverlayService.registerHighlighter(highlightDarkMage);
 		overlayManager.add(abyssOverlay);
 		overlayManager.add(abyssMinimapOverlay);
 		updateRifts();
@@ -116,10 +120,10 @@ public class RunecraftPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		npcOverlayService.unregisterHighlighter(highlightDarkMage);
 		overlayManager.remove(abyssOverlay);
 		overlayManager.remove(abyssMinimapOverlay);
 		abyssObjects.clear();
-		darkMage = null;
 		degradedPouchInInventory = false;
 	}
 
@@ -170,16 +174,9 @@ public class RunecraftPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gameState = event.getGameState();
-		switch (gameState)
+		if (gameState == GameState.LOADING)
 		{
-			case LOADING:
-				abyssObjects.clear();
-				break;
-			case CONNECTION_LOST:
-			case HOPPING:
-			case LOGIN_SCREEN:
-				darkMage = null;
-				break;
+			abyssObjects.clear();
 		}
 	}
 
@@ -195,24 +192,18 @@ public class RunecraftPlugin extends Plugin
 		degradedPouchInInventory = Stream.of(items).anyMatch(i -> DEGRADED_POUCHES.contains(i.getId()));
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private HighlightedNpc highlightDarkMage(NPC npc)
 	{
-		final NPC npc = event.getNpc();
 		if (npc.getId() == NpcID.DARK_MAGE)
 		{
-			darkMage = npc;
+			return HighlightedNpc.builder()
+				.npc(npc)
+				.tile(true)
+				.highlightColor(Color.GREEN)
+				.render(n -> config.hightlightDarkMage() && degradedPouchInInventory)
+				.build();
 		}
-	}
-
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
-	{
-		final NPC npc = event.getNpc();
-		if (npc == darkMage)
-		{
-			darkMage = null;
-		}
+		return null;
 	}
 
 	private void updateRifts()

@@ -27,7 +27,6 @@ package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.Instant;
@@ -39,7 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.function.Function;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -66,6 +65,8 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.npcoverlay.HighlightedNpc;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -79,7 +80,7 @@ import net.runelite.client.util.WildcardMatcher;
 	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
 )
 @Slf4j
-public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
+public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
 
@@ -104,19 +105,19 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 	private OverlayManager overlayManager;
 
 	@Inject
-	private NpcSceneOverlay npcSceneOverlay;
-
-	@Inject
-	private NpcMinimapOverlay npcMinimapOverlay;
+	private NpcRespawnOverlay npcRespawnOverlay;
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private NpcOverlayService npcOverlayService;
 
 	/**
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<NPC> highlightedNpcs = new HashSet<>();
+	private final Map<NPC, HighlightedNpc> highlightedNpcs = new HashMap<>();
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
@@ -175,7 +176,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 	 */
 	private boolean skipNextSpawnCheck = false;
 
-	private final List<Predicate<NPC>> higlightPredicates = new ArrayList<>();
+	private final Function<NPC, HighlightedNpc> isHighlighted = highlightedNpcs::get;
 
 	@Provides
 	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -184,16 +185,10 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 	}
 
 	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(NpcIndicatorsService.class).toInstance(this);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(npcSceneOverlay);
-		overlayManager.add(npcMinimapOverlay);
+		npcOverlayService.registerHighlighter(isHighlighted);
+		overlayManager.add(npcRespawnOverlay);
 		clientThread.invoke(() ->
 		{
 			skipNextSpawnCheck = true;
@@ -204,8 +199,8 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(npcSceneOverlay);
-		overlayManager.remove(npcMinimapOverlay);
+		npcOverlayService.unregisterHighlighter(isHighlighted);
+		overlayManager.remove(npcRespawnOverlay);
 		clientThread.invoke(() ->
 		{
 			deadNpcsToDisplay.clear();
@@ -265,7 +260,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 				color = config.deadNpcMenuColor();
 			}
 
-			if (color == null && highlightedNpcs.contains(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
+			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
 			{
 				color = config.highlightColor();
 			}
@@ -365,12 +360,15 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 					memorizeNpc(npc);
 					npcTags.add(id);
 				}
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, highlightedNpc(npc));
 			}
+
+			npcOverlayService.rebuild();
 		}
 		else
 		{
 			final String name = npc.getName();
+			// this trips a config change which triggers the overlay rebuild
 			updateNpcsToHighlight(name);
 		}
 
@@ -391,36 +389,20 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 		if (npcTags.contains(npc.getIndex()))
 		{
 			memorizeNpc(npc);
-			highlightedNpcs.add(npc);
+			highlightedNpcs.put(npc, highlightedNpc(npc));
 			spawnedNpcsThisTick.add(npc);
 			return;
 		}
 
 		if (highlightMatchesNPCName(npcName))
 		{
-			highlightedNpcs.add(npc);
+			highlightedNpcs.put(npc, highlightedNpc(npc));
 			if (!client.isInInstancedRegion())
 			{
 				memorizeNpc(npc);
 				spawnedNpcsThisTick.add(npc);
 			}
-			return;
 		}
-
-		for (Predicate<NPC> predicate : higlightPredicates)
-		{
-			if (predicate.test(npc))
-			{
-				highlightedNpcs.add(npc);
-				if (!client.isInInstancedRegion())
-				{
-					memorizeNpc(npc);
-					spawnedNpcsThisTick.add(npc);
-				}
-				return;
-			}
-		}
-
 	}
 
 	@Subscribe
@@ -452,7 +434,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 		if (npcTags.contains(npc.getIndex())
 			|| highlightMatchesNPCName(npcName))
 		{
-			highlightedNpcs.add(npc);
+			highlightedNpcs.put(npc, highlightedNpc(npc));
 		}
 	}
 
@@ -560,8 +542,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 		return Text.fromCSV(configNpcs);
 	}
 
-	@Override
-	public void rebuild()
+	void rebuild()
 	{
 		highlights = getHighlights();
 		highlightedNpcs.clear();
@@ -574,7 +555,6 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 			return;
 		}
 
-		outer:
 		for (NPC npc : client.getNpcs())
 		{
 			final String npcName = npc.getName();
@@ -586,7 +566,7 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 
 			if (npcTags.contains(npc.getIndex()))
 			{
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, highlightedNpc(npc));
 				continue;
 			}
 
@@ -596,26 +576,15 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 				{
 					memorizeNpc(npc);
 				}
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, highlightedNpc(npc));
 				continue;
-			}
-
-			for (Predicate<NPC> predicate : higlightPredicates)
-			{
-				if (predicate.test(npc))
-				{
-					if (!client.isInInstancedRegion())
-					{
-						memorizeNpc(npc);
-					}
-					highlightedNpcs.add(npc);
-					continue outer;
-				}
 			}
 
 			// NPC is not highlighted
 			memorizedNpcs.remove(npc.getIndex());
 		}
+
+		npcOverlayService.rebuild();
 	}
 
 	private boolean highlightMatchesNPCName(String npcName)
@@ -721,15 +690,21 @@ public class NpcIndicatorsPlugin extends Plugin implements NpcIndicatorsService
 		teleportGraphicsObjectSpawnedThisTick.clear();
 	}
 
-	@Override
-	public void registerHighlighter(Predicate<NPC> p)
+	private HighlightedNpc highlightedNpc(NPC npc)
 	{
-		higlightPredicates.add(p);
-	}
-
-	@Override
-	public void unregisterHighlighter(Predicate<NPC> p)
-	{
-		higlightPredicates.remove(p);
+		return HighlightedNpc.builder()
+			.npc(npc)
+			.highlightColor(config.highlightColor())
+			.fillColor(config.fillColor())
+			.hull(config.highlightHull())
+			.tile(config.highlightTile())
+			.swTile(config.highlightSouthWestTile())
+			.outline(config.highlightOutline())
+			.name(config.drawNames())
+			.nameOnMinimap(config.drawMinimapNames())
+			.borderWidth((float) config.borderWidth())
+			.outlineFeather(config.outlineFeather())
+			.render(n -> !n.isDead() || !config.ignoreDeadNpcs())
+			.build();
 	}
 }

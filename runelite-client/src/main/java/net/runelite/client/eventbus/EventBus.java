@@ -44,12 +44,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.util.ReflectUtil;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 @Slf4j
 @RequiredArgsConstructor
 @ThreadSafe
 public class EventBus
 {
+	private static final Marker DEDUPLICATE = MarkerFactory.getMarker("DEDUPLICATE");
+
 	@Value
 	public static class Subscriber
 	{
@@ -82,7 +86,7 @@ public class EventBus
 	 */
 	public EventBus()
 	{
-		this((e) -> log.warn("Uncaught exception in event subscriber", e));
+		this((e) -> log.warn(DEDUPLICATE, "Uncaught exception in event subscriber", e));
 	}
 
 	/**

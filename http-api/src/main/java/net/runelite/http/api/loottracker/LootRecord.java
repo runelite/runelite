@@ -40,4 +40,5 @@ public class LootRecord
 	private Object metadata;
 	private Collection<GameItem> drops;
 	private Instant time;
+	private Integer world;
 }
