@@ -53,6 +53,18 @@ public @interface PluginDescriptor
 	 */
 	String[] tags() default {};
 
+	/**
+	 * A list of plugin names that are mutually exclusive with this plugin. Any plugins
+	 * with a name or conflicts value that matches this will be disabled when this plugin
+	 * is started
+	 */
+	String[] conflicts() default {};
+
+	/**
+	 * If this plugin should be defaulted to on. Plugin-Hub plugins should always
+	 * have this set to true (the default), since having them off by defaults means
+	 * the user has to install the plugin, then separately enable it, which is confusing.
+	 */
 	boolean enabledByDefault() default true;
 
 	/**
@@ -62,6 +74,9 @@ public @interface PluginDescriptor
 
 	boolean developerPlugin() default false;
 
+	/**
+	 * If this plugin should be loaded when there is no {@link net.runelite.api.Client}
+	 */
 	boolean loadWhenOutdated() default false;
 
 	boolean loadInSafeMode() default true;
