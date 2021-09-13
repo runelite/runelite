@@ -22,10 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.client.game.npcoverlay;
 
 import java.awt.Color;
+import java.util.function.Predicate;
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 import net.runelite.api.NPC;
 
@@ -33,13 +35,20 @@ import net.runelite.api.NPC;
 @Builder
 public class HighlightedNpc
 {
+	@NonNull
 	NPC npc;
+	@NonNull
 	Color highlightColor;
-	Color fillColor;
+	@Builder.Default
+	Color fillColor = new Color(0, 0, 0, 50);
 	boolean hull;
 	boolean tile;
 	boolean swTile;
 	boolean outline;
 	boolean name;
 	boolean nameOnMinimap;
+	@Builder.Default
+	float borderWidth = 2.0f;
+	int outlineFeather;
+	Predicate<NPC> render;
 }

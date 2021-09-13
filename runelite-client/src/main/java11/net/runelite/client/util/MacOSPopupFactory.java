@@ -22,14 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.client.util;
 
-import java.util.function.Function;
-import net.runelite.api.NPC;
+import java.awt.Component;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 
-public interface NpcIndicatorsService
+/**
+ * Popup factory for Java 11 which forces heavyweight popups. Lightweight popups do not render correctly
+ * over AWT canvases on OSX.
+ */
+class MacOSPopupFactory extends PopupFactory
 {
-	void registerHighlighter(Function<NPC, HighlightedNpc> p);
-	void unregisterHighlighter(Function<NPC, HighlightedNpc> p);
-	void rebuild();
+	@Override
+	protected Popup getPopup(Component owner, Component contents, int x, int y, boolean isHeavyWeightPopup) throws IllegalArgumentException
+	{
+		return super.getPopup(owner, contents, x, y, true);
+	}
 }

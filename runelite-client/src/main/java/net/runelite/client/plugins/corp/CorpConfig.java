@@ -28,9 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("corp")
+@ConfigGroup(CorpConfig.GROUP)
 public interface CorpConfig extends Config
 {
+	String GROUP = "corp";
+
 	@ConfigItem(
 		keyName = "showDamage",
 		name = "Show damage overlay",

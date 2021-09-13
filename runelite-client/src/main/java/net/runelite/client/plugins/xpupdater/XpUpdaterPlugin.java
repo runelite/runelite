@@ -143,9 +143,9 @@ public class XpUpdaterPlugin extends Plugin
 	private void updateCml(String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.cml()
-			&& !worldTypes.contains(WorldType.LEAGUE)
+			&& !worldTypes.contains(WorldType.SEASONAL)
 			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.TOURNAMENT))
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
@@ -168,9 +168,9 @@ public class XpUpdaterPlugin extends Plugin
 	private void updateTempleosrs(String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.templeosrs()
-			&& !worldTypes.contains(WorldType.LEAGUE)
+			&& !worldTypes.contains(WorldType.SEASONAL)
 			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.TOURNAMENT))
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
@@ -192,9 +192,9 @@ public class XpUpdaterPlugin extends Plugin
 	private void updateWom(String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.wiseoldman()
-			&& !worldTypes.contains(WorldType.LEAGUE)
+			&& !worldTypes.contains(WorldType.SEASONAL)
 			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.TOURNAMENT))
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")

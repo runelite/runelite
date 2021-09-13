@@ -83,12 +83,10 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.npcoverlay.HighlightedNpc;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.npchighlight.HighlightedNpc;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsPlugin;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
@@ -101,7 +99,6 @@ import org.apache.commons.lang3.ArrayUtils;
 	description = "Show additional slayer task related information",
 	tags = {"combat", "notifications", "overlay", "tasks"}
 )
-@PluginDependency(NpcIndicatorsPlugin.class)
 @Slf4j
 public class SlayerPlugin extends Plugin
 {
@@ -176,7 +173,7 @@ public class SlayerPlugin extends Plugin
 	private ChatClient chatClient;
 
 	@Inject
-	private NpcIndicatorsService npcIndicatorsService;
+	private NpcOverlayService npcOverlayService;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> targets = new ArrayList<>();
@@ -233,7 +230,7 @@ public class SlayerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
-		npcIndicatorsService.registerHighlighter(isTarget);
+		npcOverlayService.registerHighlighter(isTarget);
 
 		overlayManager.add(overlay);
 		overlayManager.add(targetWeaknessOverlay);
@@ -259,8 +256,7 @@ public class SlayerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		chatCommandManager.unregisterCommand(TASK_COMMAND_STRING);
-		npcIndicatorsService.unregisterHighlighter(isTarget);
-		npcIndicatorsService.rebuild();
+		npcOverlayService.unregisterHighlighter(isTarget);
 
 		overlayManager.remove(overlay);
 		overlayManager.remove(targetWeaknessOverlay);
@@ -350,10 +346,7 @@ public class SlayerPlugin extends Plugin
 		setProfileConfig(SlayerConfig.TASK_LOC_KEY, taskLocation);
 	}
 
-	@Subscribe(
-		// Run prior to npc indicators plugin so targets is populated before the isTarget predicate is checked
-		priority = 1
-	)
+	@Subscribe
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
@@ -620,7 +613,7 @@ public class SlayerPlugin extends Plugin
 		}
 		else
 		{
-			clientThread.invoke(npcIndicatorsService::rebuild);
+			npcOverlayService.rebuild();
 		}
 	}
 
@@ -746,7 +739,7 @@ public class SlayerPlugin extends Plugin
 		Task task = Task.getTask(name);
 		rebuildTargetNames(task);
 		rebuildTargetList();
-		npcIndicatorsService.rebuild();
+		npcOverlayService.rebuild();
 	}
 
 	private void addCounter()

@@ -184,7 +184,7 @@ public class InfoPanel extends PluginPanel
 		syncPanel = buildLinkPanel(IMPORT_ICON, "Import signed-out", "settings", () ->
 		{
 			final int result = JOptionPane.showOptionDialog(syncPanel,
-				"<html>This will overwrite your settings with settings from your local profile, which<br/>is the profile used when not logged into RuneLite with a RuneLite account.</html>",
+				"<html>This will overwrite your settings with settings from your local profile, which<br/>is the profile used when not signed into RuneLite with a RuneLite account.</html>",
 				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 				null, new String[]{"Yes", "No"}, "No");
 
@@ -298,14 +298,14 @@ public class InfoPanel extends PluginPanel
 		{
 			emailLabel.setContentType("text/plain");
 			emailLabel.setText(name);
-			loggedLabel.setText("Logged in as");
+			loggedLabel.setText("Signed in as");
 			actionsContainer.add(syncPanel, 0);
 		}
 		else
 		{
 			emailLabel.setContentType("text/html");
-			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\">Login</a> to sync settings to the cloud.");
-			loggedLabel.setText("Not logged in");
+			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\">Sign in</a> to sync settings to the cloud.");
+			loggedLabel.setText("Not signed in");
 			actionsContainer.remove(syncPanel);
 		}
 	}

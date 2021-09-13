@@ -283,7 +283,7 @@ public interface Actor extends Renderable
 	void setSpotAnimFrame(int spotAnimFrame);
 
 	/**
-	 * Gets the canvas area of the current tile the actor is standing on.
+	 * Gets the canvas area of the current tiles the actor is standing on.
 	 *
 	 * @return the current tile canvas area
 	 */

@@ -37,6 +37,18 @@
       "xp": 26.5
     },
     {
+      "level": 14,
+      "icon": 25683,
+      "name": "Barronite shards",
+      "xp": 16
+    },
+    {
+      "level": 14,
+      "icon": 25684,
+      "name": "Barronite deposit",
+      "xp": 32
+    },
+    {
       "level": 15,
       "icon": 440,
       "name": "Iron Ore",
