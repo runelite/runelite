@@ -72,6 +72,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	static final int MAX_OVERLAY_DISTANCE = 4100;
 	static final int MAX_CBALLS = 30;
 
 	private CannonCounter counter;
