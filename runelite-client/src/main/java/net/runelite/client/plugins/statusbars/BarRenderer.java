@@ -46,8 +46,10 @@ class BarRenderer
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
 	private static final int OFFSET = 2;
-	private static final int WIDTH = 20;
 	private static final int PADDING = 1;
+	static final int DEFAULT_WIDTH = 20;
+	static final int MIN_WIDTH = 3;
+	static final int MAX_WIDTH = 40;
 	private final Supplier<Integer> maxValueSupplier;
 	private final Supplier<Integer> currentValueSupplier;
 	private final Supplier<Integer> healSupplier;
@@ -72,42 +74,44 @@ class BarRenderer
 	 * @param y The location on the client where it will draw the bar on the y axis starting on the bottom side.
 	 * @param height The height of the bar.
 	 */
-	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int height)
+	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height)
 	{
 		final int filledHeight = getBarHeight(maxValue, currentValue, height);
 		final Color fill = colorSupplier.get();
-
+		System.out.println(x);
 		refreshSkills();
 
 		graphics.setColor(BACKGROUND);
-		graphics.drawRect(x, y, WIDTH - PADDING, height - PADDING);
-		graphics.fillRect(x, y, WIDTH, height);
+		graphics.drawRect(x, y, width - PADDING, height - PADDING);
+		graphics.fillRect(x, y, width, height);
 
 		graphics.setColor(fill);
 		graphics.fillRect(x + PADDING,
 			y + PADDING + (height - filledHeight),
-			WIDTH - PADDING * OFFSET,
+			width - PADDING * OFFSET,
 			filledHeight - PADDING * OFFSET);
 
 		if (config.enableRestorationBars())
 		{
-			renderRestore(graphics, x, y, height);
+			renderRestore(graphics, x, y, width, height);
 		}
 
 		if (config.enableSkillIcon() || config.enableCounter())
 		{
-			renderIconsAndCounters(config, graphics, x, y);
+			renderIconsAndCounters(config, graphics, x, y, width);
 		}
 	}
 
-	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y)
+	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y, int barWidth)
 	{
 		final boolean skillIconEnabled = config.enableSkillIcon();
 
 		if (skillIconEnabled)
 		{
 			final Image icon = iconSupplier.get();
-			graphics.drawImage(icon, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - icon.getWidth(null), null);
+			int xDraw = x + ICON_AND_COUNTER_OFFSET_X + PADDING + (barWidth - DEFAULT_WIDTH) / 2;
+			int yDraw = y + ICON_AND_COUNTER_OFFSET_Y - icon.getWidth(null);
+			graphics.drawImage(icon, xDraw, yDraw, null);
 		}
 
 		if (config.enableCounter())
@@ -115,7 +119,7 @@ class BarRenderer
 			graphics.setFont(FontManager.getRunescapeSmallFont());
 			final String counterText = Integer.toString(currentValue);
 			final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
-			final int centerText = (WIDTH - PADDING) / 2 - (widthOfCounter / 2);
+			final int centerText = (barWidth - PADDING) / 2 - (widthOfCounter / 2);
 			final int yOffset = skillIconEnabled ? SKILL_ICON_HEIGHT : COUNTER_ICON_HEIGHT;
 
 			final TextComponent textComponent = new TextComponent();
@@ -125,7 +129,7 @@ class BarRenderer
 		}
 	}
 
-	private void renderRestore(Graphics2D graphics, int x, int y, int height)
+	private void renderRestore(Graphics2D graphics, int x, int y, int width, int height)
 	{
 		final Color color = healColorSupplier.get();
 		final int heal = healSupplier.get();
@@ -146,14 +150,14 @@ class BarRenderer
 			graphics.setColor(OVERHEAL_COLOR);
 			graphics.fillRect(x + PADDING,
 				y - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
-				WIDTH - PADDING * OVERHEAL_OFFSET,
+				width - PADDING * OVERHEAL_OFFSET,
 				filledHeight - PADDING * OVERHEAL_OFFSET);
 		}
 		else
 		{
 			graphics.fillRect(x + PADDING,
 				y - OVERHEAL_OFFSET - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
-				WIDTH - PADDING * OVERHEAL_OFFSET,
+				width - PADDING * OVERHEAL_OFFSET,
 				filledHeight + OVERHEAL_OFFSET - PADDING * OVERHEAL_OFFSET);
 		}
 	}
