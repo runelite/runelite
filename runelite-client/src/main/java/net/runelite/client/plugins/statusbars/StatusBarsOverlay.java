@@ -246,20 +246,18 @@ class StatusBarsOverlay extends Overlay
 		final Point offsetLeft = curViewport.getOffsetLeft();
 		final Point offsetRight = curViewport.getOffsetRight();
 		final Point location = curWidget.getCanvasLocation();
-		final int width, height, offsetLeftBarX, offsetLeftBarY, offsetRightBarX, offsetRightBarY;
+		final int height, offsetLeftBarX, offsetLeftBarY, offsetRightBarX, offsetRightBarY;
 
 		if (curViewport == Viewport.RESIZED_BOTTOM)
 		{
-			width = config.barWidth();
 			height = RESIZED_BOTTOM_HEIGHT;
-			offsetLeftBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX() - 2 * (width - BarRenderer.DEFAULT_WIDTH));
+			offsetLeftBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX());
 			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
-			offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX() - (width - BarRenderer.DEFAULT_WIDTH));
+			offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX());
 			offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
 		}
 		else
 		{
-			width = BarRenderer.DEFAULT_WIDTH;
 			height = HEIGHT;
 			offsetLeftBarX = (location.getX() - offsetLeft.getX());
 			offsetLeftBarY = (location.getY() - offsetLeft.getY());
@@ -274,12 +272,12 @@ class StatusBarsOverlay extends Overlay
 
 		if (left != null)
 		{
-			left.renderBar(config, g, offsetLeftBarX, offsetLeftBarY, width, height);
+			left.renderBar(config, g, offsetLeftBarX, offsetLeftBarY, height);
 		}
 
 		if (right != null)
 		{
-			right.renderBar(config, g, offsetRightBarX, offsetRightBarY, width, height);
+			right.renderBar(config, g, offsetRightBarX, offsetRightBarY, height);
 		}
 
 		return null;

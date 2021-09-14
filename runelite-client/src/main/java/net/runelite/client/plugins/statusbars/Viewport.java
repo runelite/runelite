@@ -34,17 +34,16 @@ import net.runelite.api.widgets.WidgetInfo;
 enum Viewport
 {
 	RESIZED_BOX(WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX, WidgetInfo.RESIZABLE_VIEWPORT_INTERFACE_CONTAINER,
-			new Point(20, -4), new Point(0, -4), true),
+			new Point(20, -4), new Point(0, -4)),
 	RESIZED_BOTTOM(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INTERFACE_CONTAINER,
-			new Point(61, 8), new Point(35, -12), true),
+			new Point(61, 8), new Point(35, -12)),
 	FIXED(WidgetInfo.FIXED_VIEWPORT, WidgetInfo.FIXED_VIEWPORT_INTERFACE_CONTAINER,
-			new Point(20, -4), new Point(0, -4), false),
+			new Point(20, -4), new Point(0, -4)),
 	FIXED_BANK(WidgetInfo.BANK_CONTAINER, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER,
-			new Point(20, -4), new Point(0, -4), false);
+			new Point(20, -4), new Point(0, -4));
 
 	private WidgetInfo container;
 	private WidgetInfo viewport;
 	private Point offsetLeft;
 	private Point offsetRight;
-	private boolean variableWidth;
 }

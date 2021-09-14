@@ -27,7 +27,6 @@ package net.runelite.client.plugins.statusbars;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 import net.runelite.client.plugins.statusbars.config.BarMode;
 
@@ -95,19 +94,5 @@ public interface StatusBarsConfig extends Config
 	default int hideAfterCombatDelay()
 	{
 		return 0;
-	}
-
-	@Range(
-		min = BarRenderer.MIN_WIDTH,
-		max = BarRenderer.MAX_WIDTH
-	)
-	@ConfigItem(
-		keyName = "barWidth",
-		name = "Bar Width",
-		description = "The width of the bars on resizeable. Note the icons and counters will disappear when smaller."
-	)
-	default int barWidth()
-	{
-		return BarRenderer.DEFAULT_WIDTH;
 	}
 }
