@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
@@ -80,13 +79,6 @@ public class WoodcuttingPlugin extends Plugin
 	private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
 	private static final Set<Integer> CLUE_NEST_IDS = ImmutableSet.of(ItemID.CLUE_NEST_ELITE, ItemID.CLUE_NEST_HARD, ItemID.CLUE_NEST_MEDIUM, ItemID.CLUE_NEST_EASY, ItemID.CLUE_NEST_BEGINNER);
 	private static final Set<Integer> NON_CLUE_NEST_IDS = ImmutableSet.of(ItemID.BIRD_NEST, ItemID.BIRD_NEST_5071, ItemID.BIRD_NEST_5072, ItemID.BIRD_NEST_5073, ItemID.BIRD_NEST_5074, ItemID.BIRD_NEST_5075, ItemID.BIRD_NEST_7413, ItemID.BIRD_NEST_13653, ItemID.BIRD_NEST_22798, ItemID.BIRD_NEST_22800);
-	private static final ImmutableMap<Integer, ClueNestTier> clueNestIdToTier = new ImmutableMap.Builder<Integer, ClueNestTier>()
-		.put(ItemID.CLUE_NEST_ELITE, ClueNestTier.ELITE)
-		.put(ItemID.CLUE_NEST_HARD, ClueNestTier.HARD)
-		.put(ItemID.CLUE_NEST_MEDIUM, ClueNestTier.MEDIUM)
-		.put(ItemID.CLUE_NEST_EASY, ClueNestTier.EASY)
-		.put(ItemID.CLUE_NEST_BEGINNER, ClueNestTier.BEGINNER)
-		.build();
 
 	@Inject
 	private Notifier notifier;
@@ -121,7 +113,7 @@ public class WoodcuttingPlugin extends Plugin
 	private final List<TreeRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
 	private int currentPlane;
-	ClueNestTier clueTierSpawned = null;
+	ClueNestTier clueTierSpawned;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -145,6 +137,7 @@ public class WoodcuttingPlugin extends Plugin
 		treeObjects.clear();
 		session = null;
 		axe = null;
+		clueTierSpawned = null;
 	}
 
 	@Subscribe
@@ -205,7 +198,7 @@ public class WoodcuttingPlugin extends Plugin
 
 			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
 			{
-				if (clueTierSpawned == null || clueTierSpawned.getTier() >= config.clueNestNotifyTier().getTier())
+				if (clueTierSpawned == null || clueTierSpawned.ordinal() >= config.clueNestNotifyTier().ordinal())
 				{
 					notifier.notify("A bird nest has spawned!");
 				}
@@ -221,7 +214,7 @@ public class WoodcuttingPlugin extends Plugin
 		if (CLUE_NEST_IDS.contains(itemSpawned.getItem().getId()))
 		{
 			// It seems that falling nests spawn before the chat message is displayed, thus we can save state here and notify on game message.
-			clueTierSpawned = clueNestIdToTier.get(itemSpawned.getItem().getId());
+			clueTierSpawned = ClueNestTier.getTierFromItem(itemSpawned.getItem().getId());
 		}
 		else if (NON_CLUE_NEST_IDS.contains(itemSpawned.getItem().getId()))
 		{

@@ -24,16 +24,29 @@
  */
 package net.runelite.client.plugins.woodcutting.config;
 
+import com.google.common.collect.ImmutableMap;
+import net.runelite.api.ItemID;
+
 public enum ClueNestTier
 {
-	BEGINNER(0),
-	EASY(1),
-	MEDIUM(2),
-	HARD(3),
-	ELITE(4),
-	DISABLED(999);
+	BEGINNER,
+	EASY,
+	MEDIUM,
+	HARD,
+	ELITE,
+	DISABLED;
 
-	private final int tier;
-	ClueNestTier(int tier) { this.tier = tier; }
-	public int getTier() { return this.tier; }
+
+	private static final ImmutableMap<Integer, ClueNestTier> clueNestIdToTier = new ImmutableMap.Builder<Integer, ClueNestTier>()
+		.put(ItemID.CLUE_NEST_ELITE, ClueNestTier.ELITE)
+		.put(ItemID.CLUE_NEST_HARD, ClueNestTier.HARD)
+		.put(ItemID.CLUE_NEST_MEDIUM, ClueNestTier.MEDIUM)
+		.put(ItemID.CLUE_NEST_EASY, ClueNestTier.EASY)
+		.put(ItemID.CLUE_NEST_BEGINNER, ClueNestTier.BEGINNER)
+		.build();
+
+	static public ClueNestTier getTierFromItem(int itemId)
+	{
+		return clueNestIdToTier.get(itemId);
+	}
 }

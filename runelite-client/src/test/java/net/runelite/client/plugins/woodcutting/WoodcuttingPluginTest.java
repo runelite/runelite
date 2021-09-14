@@ -136,7 +136,8 @@ public class WoodcuttingPluginTest
 	}
 
 	@Test
-	public void testClueNest(){
+	public void testClueNest()
+	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 
 		Tile tile = mock(Tile.class);
