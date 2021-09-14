@@ -75,7 +75,8 @@ public class StatusBarsPlugin extends Plugin
 	private boolean barsDisplayed;
 
 	private int lastCombatActionTickCount;
-	boolean inLMS;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean inLMS;
 
 	@Override
 	protected void startUp() throws Exception
