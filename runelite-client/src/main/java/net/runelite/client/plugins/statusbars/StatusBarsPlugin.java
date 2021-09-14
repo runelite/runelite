@@ -83,6 +83,7 @@ public class StatusBarsPlugin extends Plugin
 	{
 		clientThread.invokeLater(this::checkStatusBars);
 		overlayManager.add(overlay);
+		inLMS = client.getWidget(WidgetInfo.LMS_KDA) != null;
 	}
 
 	@Override
