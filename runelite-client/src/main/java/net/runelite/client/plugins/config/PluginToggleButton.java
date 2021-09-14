@@ -73,13 +73,13 @@ class PluginToggleButton extends JToggleButton
 	{
 		if (conflicts != null && !conflicts.isEmpty())
 		{
-			StringBuilder sb = new StringBuilder("<br>Conflicts with ");
+			StringBuilder sb = new StringBuilder("<br>Plugin conflicts: ");
 			for (int i = 0; i < conflicts.size() - 2; i++)
 			{
 				sb.append(conflicts.get(i));
 				sb.append(", ");
 			}
-			if (conflicts.size() > 2)
+			if (conflicts.size() >= 2)
 			{
 				sb.append(conflicts.get(conflicts.size() - 2));
 				sb.append(" and ");
