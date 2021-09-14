@@ -957,7 +957,14 @@ c 7 4
 
 m31 89
 
-// 31 89 p0 Hosidius
+// 31 89 p1 Christmas-themed POH
+p 1
+#FFFFFF
+C 0 0 7 15
+
+m32 89
+
+// 32 89 p0 Hosidius
 p 0
 #8AD2DF
 C 0 0 7 15
