@@ -167,7 +167,7 @@ class StatusBarsOverlay extends Overlay
 			}
 		));
 		barRenderers.put(BarMode.PRAYER, new BarRenderer(
-			() -> client.getRealSkillLevel(Skill.PRAYER),
+			() -> plugin.isInLMS() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.PRAYER),
 			() -> client.getBoostedSkillLevel(Skill.PRAYER),
 			() -> getRestoreValue(Skill.PRAYER.getName()),
 			() ->
