@@ -184,7 +184,7 @@ public interface ScreenshotConfig extends Config
 	@ConfigItem(
 		keyName = "clanDeath",
 		name = "Screenshot Clan Deaths",
-		description = "Configures whether or not screenshots are automatically taken when clan chat members die.",
+		description = "Configures whether or not screenshots are automatically taken when clan members die.",
 		position = 12,
 		section = whatSection
 	)
