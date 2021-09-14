@@ -59,7 +59,7 @@ public class SkyboxPlugin extends Plugin
 
 	private Skybox skybox;
 
-	private final int[] REGION_POH = {7513, 7514, 7769, 7770};
+	private final int[] REGION_POH = {8025, 8026};
 
 	@Override
 	public void startUp() throws IOException
