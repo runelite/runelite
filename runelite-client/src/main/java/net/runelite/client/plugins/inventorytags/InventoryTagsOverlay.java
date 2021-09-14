@@ -32,6 +32,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import static net.runelite.api.widgets.WidgetID.GRAVESTONE_GROUP_ID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -53,6 +54,7 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 		this.config = config;
 		showOnEquipment();
 		showOnInventory();
+		showOnInterfaces(GRAVESTONE_GROUP_ID);
 		fillCache = CacheBuilder.newBuilder()
 			.concurrencyLevel(1)
 			.maximumSize(32)

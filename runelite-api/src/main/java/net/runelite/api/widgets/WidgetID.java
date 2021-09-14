@@ -168,6 +168,7 @@ public class WidgetID
 	public static final int TEMPOROSS_GROUP_ID = 437;
 	public static final int CLAN_GROUP_ID = 701;
 	public static final int CLAN_GUEST_GROUP_ID = 702;
+	public static final int GRAVESTONE_GROUP_ID = 672;
 
 	static class WorldMap
 	{
