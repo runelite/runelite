@@ -47,15 +47,4 @@ public interface SkyboxPluginConfig extends Config
 		position = 2
 	)
 	Color customOtherColor();
-
-	@ConfigItem(
-		keyName = "christmasMode",
-		name = "PoH Christmas mode",
-		description = "Toggle for Christmas themed PoH skybox.",
-		position = 3
-	)
-	default boolean christmasMode()
-	{
-		return false;
-	}
 }
