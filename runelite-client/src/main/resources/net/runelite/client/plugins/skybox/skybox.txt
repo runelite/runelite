@@ -962,9 +962,9 @@ p 1
 #B6CBD8
 C 0 0 7 15
 
-m32 89
+m31 89
 
-// 32 89 p0 Hosidius
+// 31 89 p0 Hosidius
 p 0
 #8AD2DF
 C 0 0 7 15
