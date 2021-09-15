@@ -145,7 +145,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 28)
 		{
-			def.setDecorDisplacement(is.readUnsignedByte());
+			def.setWallWidth(is.readUnsignedByte());
 		}
 		else if (opcode == 29)
 		{
@@ -285,13 +285,13 @@ public class ObjectLoader
 		else if (opcode == 78)
 		{
 			def.setAmbientSoundId(is.readUnsignedShort());
-			def.setAnInt2083(is.readUnsignedByte());
+			def.setAmbientSoundRadius(is.readUnsignedByte());
 		}
 		else if (opcode == 79)
 		{
-			def.setAnInt2112(is.readUnsignedShort());
-			def.setAnInt2113(is.readUnsignedShort());
-			def.setAnInt2083(is.readUnsignedByte());
+			def.setAmbientSoundMinLoopTime(is.readUnsignedShort());
+			def.setAmbientSoundMaxLoopTime(is.readUnsignedShort());
+			def.setAmbientSoundRadius(is.readUnsignedByte());
 			int length = is.readUnsignedByte();
 			int[] anIntArray2084 = new int[length];
 
@@ -300,7 +300,7 @@ public class ObjectLoader
 				anIntArray2084[index] = is.readUnsignedShort();
 			}
 
-			def.setAnIntArray2084(anIntArray2084);
+			def.setAmbientSoundIds(anIntArray2084);
 		}
 		else if (opcode == 81)
 		{

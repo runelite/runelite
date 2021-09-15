@@ -33,7 +33,7 @@ public class ObjectDefinition
 {
 	private int id;
 	private short[] retextureToFind;
-	private int decorDisplacement = 16;
+	private int wallWidth = 16;
 	private boolean isHollow = false;
 	private String name = "null";
 	private int[] objectModels;
@@ -43,8 +43,8 @@ public class ObjectDefinition
 	private short[] textureToReplace;
 	private int sizeX = 1;
 	private int sizeY = 1;
-	private int anInt2083 = 0;
-	private int[] anIntArray2084;
+	private int ambientSoundRadius = 0;
+	private int[] ambientSoundIds;
 	private int offsetX = 0;
 	private boolean mergeNormals = false;
 	private int wallOrDoor = -1;
@@ -73,8 +73,8 @@ public class ObjectDefinition
 	private int varpID = -1;
 	private int ambientSoundId = -1;
 	private boolean aBool2111 = false;
-	private int anInt2112 = 0;
-	private int anInt2113 = 0;
+	private int ambientSoundMinLoopTime = 0;
+	private int ambientSoundMaxLoopTime = 0;
 	private boolean blocksProjectile = true;
 	private boolean randomizeAnimStart;
 	private Map<Integer, Object> params = null;
