@@ -251,7 +251,7 @@ class StatusBarsOverlay extends Overlay
 		{
 			height = RESIZED_BOTTOM_HEIGHT;
 			offsetLeftBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX());
-			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetLeft.getY());
 			offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX());
 			offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
 		}
