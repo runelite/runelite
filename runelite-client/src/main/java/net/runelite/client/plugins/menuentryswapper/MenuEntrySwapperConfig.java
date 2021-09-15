@@ -114,7 +114,7 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		position = -2,
+		position = -4,
 		keyName = "shiftClickCustomization",
 		name = "Customizable shift-click",
 		description = "Allows customization of shift-clicks on items",
@@ -123,6 +123,28 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean shiftClickCustomization()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			position = -3,
+			keyName = "removeRepeatedBankOptions",
+			name = "Remove repeated bank options",
+			description = "Removes repeated Withdraw and Deposit options when the default quantity is changed"
+	)
+	default boolean removeRepeatedBankOptions()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = -2,
+			keyName = "removeWithdrawAllButOne",
+			name = "Remove Withdraw All but 1",
+			description = "Removes Withdraw All but 1 option"
+	)
+	default boolean removeWithdrawAllButOne()
+	{
+		return false;
 	}
 
 	@ConfigItem(
