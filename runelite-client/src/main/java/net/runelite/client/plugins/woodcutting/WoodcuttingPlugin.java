@@ -77,8 +77,6 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 public class WoodcuttingPlugin extends Plugin
 {
 	private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
-	private static final Set<Integer> CLUE_NEST_IDS = ImmutableSet.of(ItemID.CLUE_NEST_ELITE, ItemID.CLUE_NEST_HARD, ItemID.CLUE_NEST_MEDIUM, ItemID.CLUE_NEST_EASY, ItemID.CLUE_NEST_BEGINNER);
-	private static final Set<Integer> NON_CLUE_NEST_IDS = ImmutableSet.of(ItemID.BIRD_NEST, ItemID.BIRD_NEST_5071, ItemID.BIRD_NEST_5072, ItemID.BIRD_NEST_5073, ItemID.BIRD_NEST_5074, ItemID.BIRD_NEST_5075, ItemID.BIRD_NEST_7413, ItemID.BIRD_NEST_13653, ItemID.BIRD_NEST_22798, ItemID.BIRD_NEST_22800);
 
 	@Inject
 	private Notifier notifier;
@@ -113,7 +111,7 @@ public class WoodcuttingPlugin extends Plugin
 	private final List<TreeRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
 	private int currentPlane;
-	ClueNestTier clueTierSpawned;
+	private ClueNestTier clueTierSpawned;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -156,6 +154,7 @@ public class WoodcuttingPlugin extends Plugin
 	public void onGameTick(GameTick gameTick)
 	{
 		recentlyLoggedIn = false;
+		clueTierSpawned = null;
 		currentPlane = client.getPlane();
 
 		respawns.removeIf(TreeRespawn::isExpired);
@@ -211,15 +210,10 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
-		if (CLUE_NEST_IDS.contains(itemSpawned.getItem().getId()))
+		if (clueTierSpawned == null)
 		{
-			// It seems that falling nests spawn before the chat message is displayed, thus we can save state here and notify on game message.
+			// This will be set only if one of the clue nests has spawned. It will then be reset the next game tick.
 			clueTierSpawned = ClueNestTier.getTierFromItem(itemSpawned.getItem().getId());
-		}
-		else if (NON_CLUE_NEST_IDS.contains(itemSpawned.getItem().getId()))
-		{
-			// Clear the tier spawned to prevent player nest drop from affecting notification.
-			clueTierSpawned = null;
 		}
 	}
 
