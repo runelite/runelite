@@ -37,7 +37,7 @@ public enum ClueNestTier
 	DISABLED;
 
 
-	private static final ImmutableMap<Integer, ClueNestTier> clueNestIdToTier = new ImmutableMap.Builder<Integer, ClueNestTier>()
+	private static final ImmutableMap<Integer, ClueNestTier> CLUE_NEST_ID_TO_TIER = new ImmutableMap.Builder<Integer, ClueNestTier>()
 		.put(ItemID.CLUE_NEST_ELITE, ClueNestTier.ELITE)
 		.put(ItemID.CLUE_NEST_HARD, ClueNestTier.HARD)
 		.put(ItemID.CLUE_NEST_MEDIUM, ClueNestTier.MEDIUM)
@@ -47,6 +47,6 @@ public enum ClueNestTier
 
 	static public ClueNestTier getTierFromItem(int itemId)
 	{
-		return clueNestIdToTier.get(itemId);
+		return CLUE_NEST_ID_TO_TIER.get(itemId);
 	}
 }

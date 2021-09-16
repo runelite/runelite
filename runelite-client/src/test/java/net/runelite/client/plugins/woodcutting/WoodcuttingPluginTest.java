@@ -46,6 +46,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -182,7 +183,7 @@ public class WoodcuttingPluginTest
 		woodcuttingPlugin.onItemSpawned(eliteClueSpawned);
 		woodcuttingPlugin.onChatMessage(nestChatMessage);
 		woodcuttingPlugin.onGameTick(null);
-		verifyNoMoreInteractions(notifier);
+		verifyNoInteractions(notifier);
 	}
 
 	@Test
@@ -199,7 +200,7 @@ public class WoodcuttingPluginTest
 		woodcuttingPlugin.onItemSpawned(beginnerClueSpawned);
 		woodcuttingPlugin.onChatMessage(nestChatMessage);
 		woodcuttingPlugin.onGameTick(null);
-		verifyNoMoreInteractions(notifier);
+		verifyNoInteractions(notifier);
 	}
 
 	@Test
@@ -216,11 +217,34 @@ public class WoodcuttingPluginTest
 
 		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
 
-		// Player drops nest
+		// Player drops clue nest
 		woodcuttingPlugin.onItemSpawned(beginnerClueSpawned);
-		// Assume that at least one tick has passed
 		woodcuttingPlugin.onGameTick(null);
+		verifyNoInteractions(notifier);
+		// A regular nest has spawned
 		woodcuttingPlugin.onItemSpawned(regularNestSpawned);
+		woodcuttingPlugin.onChatMessage(nestChatMessage);
+		woodcuttingPlugin.onGameTick(null);
+		verify(notifier).notify("A bird nest has spawned!");
+	}
+
+	@Test
+	public void testClueNestOtherItemSpawn()
+	{
+		ChatMessage nestChatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
+		Tile tile = mock(Tile.class);
+		TileItem beginnerTileItem = mock(TileItem.class);
+		when(beginnerTileItem.getId()).thenReturn(ItemID.CLUE_NEST_BEGINNER);
+		ItemSpawned beginnerClueSpawned = new ItemSpawned(tile, beginnerTileItem);
+		TileItem anotherItemTileItem = mock(TileItem.class);
+		ItemSpawned anotherItemSpawned = new ItemSpawned(tile, anotherItemTileItem);
+
+		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
+		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.BEGINNER);
+
+		woodcuttingPlugin.onItemSpawned(beginnerClueSpawned);
+		woodcuttingPlugin.onItemSpawned(anotherItemSpawned);
+
 		woodcuttingPlugin.onChatMessage(nestChatMessage);
 		woodcuttingPlugin.onGameTick(null);
 		verify(notifier).notify("A bird nest has spawned!");
