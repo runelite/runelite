@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -41,7 +40,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
