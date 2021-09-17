@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import static net.runelite.api.ChatMessageType.CONSOLE;
 import static net.runelite.api.ChatMessageType.ENGINE;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.ITEM_EXAMINE;
@@ -88,6 +89,7 @@ public class ChatFilterPlugin extends Plugin
 		NPC_EXAMINE,
 		OBJECT_EXAMINE,
 		SPAM,
+		CONSOLE,
 		PUBLICCHAT,
 		MODCHAT
 	);
@@ -199,6 +201,7 @@ public class ChatFilterPlugin extends Plugin
 			case NPC_EXAMINE:
 			case OBJECT_EXAMINE:
 			case SPAM:
+			case CONSOLE:
 				if (config.filterGameChat())
 				{
 					message = censorMessage(null, message);
