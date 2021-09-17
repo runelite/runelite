@@ -73,7 +73,7 @@ class StatusBarsOverlay extends Overlay
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int IMAGE_SIZE = 17;
-	private static final int ICON_DIMENSIONS = 26;
+	private static final Dimension ICON_DIMENSIONS = new Dimension(26, 25);
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
 	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
 	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
@@ -105,7 +105,7 @@ class StatusBarsOverlay extends Overlay
 		this.itemStatService = itemstatservice;
 		this.spriteManager = spriteManager;
 
-		prayerIcon = ImageUtil.resizeCanvas(ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE), ICON_DIMENSIONS, ICON_DIMENSIONS);
+		prayerIcon = ImageUtil.resizeCanvas(ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
 		initRenderers();
 	}
 
@@ -251,7 +251,7 @@ class StatusBarsOverlay extends Overlay
 		{
 			height = RESIZED_BOTTOM_HEIGHT;
 			offsetLeftBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX());
-			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetLeft.getY());
 			offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX());
 			offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
 		}
@@ -317,11 +317,11 @@ class StatusBarsOverlay extends Overlay
 			return;
 		}
 
-		heartIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, 0)), ICON_DIMENSIONS, ICON_DIMENSIONS);
-		heartDisease = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.DISEASE_HEART), ICON_DIMENSIONS, ICON_DIMENSIONS);
-		heartPoison = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.POISON_HEART), ICON_DIMENSIONS, ICON_DIMENSIONS);
-		heartVenom = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.VENOM_HEART), ICON_DIMENSIONS, ICON_DIMENSIONS);
-		energyIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_WALK_ICON, 0)), ICON_DIMENSIONS, ICON_DIMENSIONS);
-		specialIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON, 0)), ICON_DIMENSIONS, ICON_DIMENSIONS);
+		heartIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, 0)), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		heartDisease = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.DISEASE_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		heartPoison = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.POISON_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		heartVenom = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.VENOM_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		energyIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_WALK_ICON, 0)), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		specialIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON, 0)), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
 	}
 }
