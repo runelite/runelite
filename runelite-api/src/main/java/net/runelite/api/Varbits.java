@@ -314,9 +314,11 @@ public enum Varbits
 	 *  0 = Not built
 	 *  1 = Built
 	 */
+    FIRE_PIT_GWD(6531),
 	FIRE_PIT_GIANT_MOLE(6532),
 	FIRE_PIT_LUMBRIDGE_SWAMP(6533),
 	FIRE_PIT_MOS_LE_HARMLESS(6534),
+    FIRE_PIT_MORT_MYRE(6535),
 
 	/**
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
