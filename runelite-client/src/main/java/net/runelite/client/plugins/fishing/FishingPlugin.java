@@ -210,6 +210,7 @@ public class FishingPlugin extends Plugin
 		{
 			session.setLastFishCaught(Instant.now());
 			session.increaseFishCaught(1);
+			session.increaseFishCaughtSinceHrReset(1);
 			spotOverlay.setHidden(false);
 			fishingSpotMinimapOverlay.setHidden(false);
 		}
@@ -380,7 +381,9 @@ public class FishingPlugin extends Plugin
 		log.debug("Got skill reset for skill {}", event.getSkill());
 		if (event.getSkill() == Skill.FISHING)
 		{
-			session.setExtraFishCaughtSinceHrReset(0); // Both types reset actions per hour.
+			// Both types reset actions per hour.
+			session.setFishCaughtSinceHrReset(0);
+			session.setExtraFishCaughtSinceHrReset(0);
 			if (event.getResetType() == XpTrackerSkillReset.ResetType.ACTIONS)
 			{
 				session.setFishCaught(0);

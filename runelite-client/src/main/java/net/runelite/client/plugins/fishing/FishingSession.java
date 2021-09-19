@@ -37,6 +37,10 @@ class FishingSession
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter
+	private int fishCaughtSinceHrReset;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
 	private int extraFishCaught;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -51,6 +55,11 @@ class FishingSession
 	public void increaseFishCaught(int amount)
 	{
 		fishCaught += amount;
+	}
+
+	public void increaseFishCaughtSinceHrReset(int amount)
+	{
+		fishCaughtSinceHrReset += amount;
 	}
 
 	public void increaseExtraFishCaught(int amount)

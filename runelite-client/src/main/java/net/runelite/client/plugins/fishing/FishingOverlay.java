@@ -127,16 +127,20 @@ class FishingOverlay extends OverlayPanel
 		int actions = xpTrackerService.getActions(Skill.FISHING);
 		if (actions > 0)
 		{
-			StringBuilder caughtFish = new StringBuilder(Integer.toString(plugin.getSession().getFishCaught()));
+			FishingSession session = plugin.getSession();
+			StringBuilder caughtFish = new StringBuilder(Integer.toString(session.getFishCaught()));
 			float fishHrMultiplier = 1;
 			if (config.includeExtraFish())
 			{
 				caughtFish
 					.append(" (+ ")
-					.append(plugin.getSession().getExtraFishCaught())
+					.append(session.getExtraFishCaught())
 					.append(")");
 
-				fishHrMultiplier += ((float) plugin.getSession().getExtraFishCaughtSinceHrReset()) / actions;
+				if (session.getFishCaughtSinceHrReset() > 0)
+				{
+					fishHrMultiplier += ((float) session.getExtraFishCaughtSinceHrReset()) / session.getFishCaughtSinceHrReset();
+				}
 			}
 
 			panelComponent.getChildren().add(LineComponent.builder()
