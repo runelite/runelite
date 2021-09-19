@@ -204,6 +204,20 @@ public class WidgetOverlay extends Overlay
 			this.overlayManager = overlayManager;
 		}
 
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			// The xptracker component layer isn't hidden if the counter and process bar are both configured "Off",
+			// it just has its children hidden.
+			if (client.getVar(Varbits.EXPERIENCE_TRACKER_COUNTER) == 30 // Off
+				&& client.getVar(Varbits.EXPERIENCE_TRACKER_PROGRESS_BAR) == 0) // Off
+			{
+				return null;
+			}
+
+			return super.render(graphics);
+		}
+
 		/**
 		 * Get the overlay position of the xptracker based on the configured location in-game.
 		 *
