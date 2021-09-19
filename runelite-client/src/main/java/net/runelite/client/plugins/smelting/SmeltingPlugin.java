@@ -32,11 +32,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.MenuAction;
+import net.runelite.api.Skill;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.events.XpTrackerSkillReset;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -62,7 +64,7 @@ public class SmeltingPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Getter(AccessLevel.PACKAGE)
-	private SmeltingSession session;
+	private final SmeltingSession session = new SmeltingSession();
 
 	@Provides
 	SmeltingConfig getConfig(ConfigManager configManager)
@@ -73,7 +75,6 @@ public class SmeltingPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		session = null;
 		overlayManager.add(overlay);
 	}
 
@@ -81,7 +82,6 @@ public class SmeltingPlugin extends Plugin
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
-		session = null;
 	}
 
 	@Subscribe
@@ -92,7 +92,7 @@ public class SmeltingPlugin extends Plugin
 			&& overlayMenuClicked.getEntry().getOption().equals(SmeltingOverlay.SMELTING_RESET)
 			&& overlayMenuClicked.getOverlay() == overlay)
 		{
-			session = null;
+			session.setLastItemSmelted(null);
 		}
 	}
 
@@ -106,33 +106,48 @@ public class SmeltingPlugin extends Plugin
 
 		if (event.getMessage().startsWith("You retrieve a bar of"))
 		{
-			if (session == null)
-			{
-				session = new SmeltingSession();
-			}
-			session.increaseBarsSmelted();
+			session.increaseBarsSmelted(1);
+			session.increaseBarsSmeltedSinceHrReset(1);
 		}
 		else if (event.getMessage().startsWith("You remove the cannonballs from the mould"))
 		{
-			if (session == null)
-			{
-				session = new SmeltingSession();
-			}
-			session.increaseCannonBallsSmelted();
+			session.increaseCannonBallsSmelted(4);
+		}
+		else if (event.getMessage().equals("The Varrock platebody enabled you to smelt your next ore simultaneously."))
+		{
+			session.increaseExtraBarsSmelted(1);
+			session.increaseExtraBarsSmeltedSinceHrReset(1);
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (session != null)
+		if (session.getLastItemSmelted() != null)
 		{
 			final Duration statTimeout = Duration.ofMinutes(config.statTimeout());
 			final Duration sinceCaught = Duration.between(session.getLastItemSmelted(), Instant.now());
 
 			if (sinceCaught.compareTo(statTimeout) >= 0)
 			{
-				session = null;
+				session.setLastItemSmelted(null);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onXpTrackerSkillReset(XpTrackerSkillReset event)
+	{
+		if (event.getSkill() == Skill.SMITHING)
+		{
+			// Both types reset actions per hour.
+			session.setBarsSmeltedSinceHrReset(0);
+			session.setExtraBarsSmeltedSinceHrReset(0);
+			if (event.getResetType() == XpTrackerSkillReset.ResetType.ACTIONS)
+			{
+				session.setBarsSmelted(0);
+				session.setExtraBarsSmelted(0);
+				session.setCannonBallsSmelted(0);
 			}
 		}
 	}

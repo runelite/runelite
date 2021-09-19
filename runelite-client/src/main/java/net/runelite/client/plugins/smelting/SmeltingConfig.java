@@ -35,12 +35,23 @@ public interface SmeltingConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "statTimeout",
-		name = "Reset stats",
-		description = "The time it takes for the current smelting session to be reset"
+		name = "Session stats stats",
+		description = "Timeout after which Smithing session stats are hidden"
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
 	{
 		return 5;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "includeExtraBars",
+		name = "Include extra bars smelted",
+		description = "Include extra bars smelted via Varrock Armour effect in session stats."
+	)
+	default boolean includeExtraBars()
+	{
+		return true;
 	}
 }
