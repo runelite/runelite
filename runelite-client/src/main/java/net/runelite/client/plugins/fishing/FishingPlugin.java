@@ -48,6 +48,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
@@ -65,6 +66,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.events.XpTrackerSkillReset;
 import net.runelite.client.game.FishingSpot;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -207,6 +209,7 @@ public class FishingPlugin extends Plugin
 			event.getMessage().equals("Your cormorant returns with its catch."))
 		{
 			session.setLastFishCaught(Instant.now());
+			session.increaseFishCaught(1);
 			spotOverlay.setHidden(false);
 			fishingSpotMinimapOverlay.setHidden(false);
 		}
@@ -214,6 +217,12 @@ public class FishingPlugin extends Plugin
 		if (event.getMessage().equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
 		{
 			notifier.notify("A flying fish is eating your minnows!");
+		}
+
+		if (event.getMessage().endsWith("enabled you to catch an extra fish."))
+		{
+			session.increaseExtraFishCaught(1);
+			session.increaseExtraFishCaughtSinceHrReset(1);
 		}
 	}
 
@@ -362,6 +371,21 @@ public class FishingPlugin extends Plugin
 		{
 			trawlerStartTime = Instant.now();
 			log.debug("Trawler session started");
+		}
+	}
+
+	@Subscribe
+	public void onXpTrackerSkillReset(XpTrackerSkillReset event)
+	{
+		log.debug("Got skill reset for skill {}", event.getSkill());
+		if (event.getSkill() == Skill.FISHING)
+		{
+			session.setExtraFishCaughtSinceHrReset(0); // Both types reset actions per hour.
+			if (event.getResetType() == XpTrackerSkillReset.ResetType.ACTIONS)
+			{
+				session.setFishCaught(0);
+				session.setExtraFishCaught(0);
+			}
 		}
 	}
 
