@@ -130,7 +130,7 @@ public interface FishingConfig extends Config
 		position = 7,
 		keyName = "statTimeout",
 		name = "Session stats timeout",
-		description = "Timeout after which fishing session stats is hidden."
+		description = "Timeout after which Fishing session stats are hidden."
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()

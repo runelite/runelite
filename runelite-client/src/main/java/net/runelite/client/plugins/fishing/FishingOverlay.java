@@ -101,7 +101,8 @@ class FishingOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showFishingStats() || plugin.getSession().getLastFishCaught() == null)
+		FishingSession session = plugin.getSession();
+		if (!config.showFishingStats() || session.getLastFishCaught() == null)
 		{
 			return null;
 		}
@@ -127,13 +128,11 @@ class FishingOverlay extends OverlayPanel
 		int actions = xpTrackerService.getActions(Skill.FISHING);
 		if (actions > 0)
 		{
-			FishingSession session = plugin.getSession();
 			StringBuilder caughtFish = new StringBuilder(Integer.toString(session.getFishCaught()));
 			float fishHrMultiplier = 1;
 			if (config.includeExtraFish())
 			{
-				caughtFish
-					.append(" (+ ")
+				caughtFish.append(" (+ ")
 					.append(session.getExtraFishCaught())
 					.append(")");
 

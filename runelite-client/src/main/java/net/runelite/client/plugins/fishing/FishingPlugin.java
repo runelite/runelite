@@ -378,7 +378,6 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onXpTrackerSkillReset(XpTrackerSkillReset event)
 	{
-		log.debug("Got skill reset for skill {}", event.getSkill());
 		if (event.getSkill() == Skill.FISHING)
 		{
 			// Both types reset actions per hour.
