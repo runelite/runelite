@@ -33,6 +33,7 @@ import java.awt.Rectangle;
 import java.util.Map;
 import java.util.UUID;
 import javax.inject.Inject;
+import lombok.Setter;
 import net.runelite.api.MenuAction;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -53,6 +54,9 @@ public class PartyStatsOverlay extends OverlayPanel
 	private final PartyPlugin plugin;
 	private final PartyService party;
 	private final PartyConfig config;
+	
+	@Setter
+	private boolean enabled = true;
 
 	@Inject
 	private PartyStatsOverlay(final PartyPlugin plugin, final PartyService party, final PartyConfig config)
@@ -70,7 +74,7 @@ public class PartyStatsOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		final Map<UUID, PartyData> partyDataMap = plugin.getPartyDataMap();
-		if (partyDataMap.isEmpty())
+		if (partyDataMap.isEmpty() || !enabled)
 		{
 			return null;
 		}

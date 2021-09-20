@@ -181,6 +181,7 @@ public class PartyPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
+		partyStatsOverlay.setEnabled(config.partyStatsOverlay());
 		overlayManager.add(partyStatsOverlay);
 		overlayManager.add(partyPingOverlay);
 		wsClient.registerMessage(SkillUpdate.class);
@@ -253,6 +254,8 @@ public class PartyPlugin extends Plugin
 	{
 		if (event.getGroup().equals(PartyConfig.GROUP))
 		{
+			partyStatsOverlay.setEnabled(config.partyStatsOverlay());
+			
 			final PartyMember localMember = party.getLocalMember();
 
 			if (localMember != null)

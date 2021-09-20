@@ -33,6 +33,17 @@ import net.runelite.client.config.ConfigItem;
 public interface PartyConfig extends Config
 {
 	String GROUP = "party";
+	
+	@ConfigItem(
+		keyName = "partyStatsOverlay",
+		name = "Party Stats Overlay",
+		description = "Displays party members' health and prayer as an overlay.",
+		position = 0
+	)
+	default boolean partyStatsOverlay()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "pings",
