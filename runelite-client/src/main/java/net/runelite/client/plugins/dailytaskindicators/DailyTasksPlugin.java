@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.dailytaskindicators;
 
 import com.google.inject.Provides;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 
 import net.runelite.api.*;
@@ -96,15 +97,15 @@ public class DailyTasksPlugin extends Plugin
 	public void startUp()
 	{
 		loggingIn = true;
-		infoBoxManager.addInfoBox(new HerbBoxes(ItemID.HERB_BOX, HERB_BOX_MESSAGE, itemManager, config, this));
-		infoBoxManager.addInfoBox(new Battlestaves(ItemID.BATTLESTAFF, STAVES_MESSAGE, itemManager, config, this));
-		infoBoxManager.addInfoBox(new Essence(ItemID.RUNE_ESSENCE, ESSENCE_MESSAGE, itemManager, config, this));
-		infoBoxManager.addInfoBox(new Runes(ItemID.FIRE_RUNE, RUNES_MESSAGE, itemManager, config, this));
-		infoBoxManager.addInfoBox(new Sand(ItemID.BUCKET_OF_SAND, SAND_MESSAGE, itemManager, config, this));
-		infoBoxManager.addInfoBox(new Flax(ItemID.BOW_STRING, FLAX_MESSAGE, itemManager, config, this));
-		infoBoxManager.addInfoBox(new Arrows(ItemID.OGRE_ARROW, ARROWS_MESSAGE, itemManager, config, this));
-		infoBoxManager.addInfoBox(new Bonemeal(ItemID.BONEMEAL, BONEMEAL_MESSAGE, itemManager, config, this));
-		infoBoxManager.addInfoBox(new Dynamite(ItemID.DYNAMITE, DYNAMITE_MESSAGE, itemManager, config, this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.HERB_BOX), HERB_BOX_MESSAGE, () -> config.showInfoBoxes() && herbBoxesAvailable(), this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BATTLESTAFF), STAVES_MESSAGE, () -> config.showInfoBoxes() && stavesAvailable(), this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.RUNE_ESSENCE), ESSENCE_MESSAGE, () -> config.showInfoBoxes() && essenceAvailable(), this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.FIRE_RUNE), RUNES_MESSAGE, () -> config.showInfoBoxes() && runesAvailable(),this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BUCKET_OF_SAND), SAND_MESSAGE, () -> config.showInfoBoxes() && sandAvailable(),this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BOW_STRING), FLAX_MESSAGE, () -> config.showInfoBoxes() && flaxAvailable(),this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.OGRE_ARROW), ARROWS_MESSAGE,  () -> config.showInfoBoxes() && arrowsAvailable(),this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BONEMEAL), BONEMEAL_MESSAGE,  () -> config.showInfoBoxes() && bonemealAvailable(),this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.DYNAMITE), DYNAMITE_MESSAGE, () -> config.showInfoBoxes() && dynamiteAvailable(),this));
 	}
 
 	@Override

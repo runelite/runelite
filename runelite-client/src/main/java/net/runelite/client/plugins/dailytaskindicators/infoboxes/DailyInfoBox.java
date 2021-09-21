@@ -1,22 +1,23 @@
 package net.runelite.client.plugins.dailytaskindicators.infoboxes;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.Predicate;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.dailytaskindicators.DailyTasksConfig;
 import net.runelite.client.plugins.dailytaskindicators.DailyTasksPlugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 
 import java.awt.*;
+import net.runelite.client.util.AsyncBufferedImage;
 
-public abstract class DailyInfoBox extends InfoBox
+public class DailyInfoBox extends InfoBox
 {
-	protected DailyTasksPlugin plugin;
-	protected DailyTasksConfig config;
+	private final BooleanSupplier check;
 
-	public DailyInfoBox(final int itemId, final String tooltip, final ItemManager itemManager, final DailyTasksConfig config, final DailyTasksPlugin plugin)
+	public DailyInfoBox(final AsyncBufferedImage image, final String tooltip, final BooleanSupplier check, final DailyTasksPlugin plugin)
 	{
-		super(itemManager.getImage(itemId), plugin);
-		this.plugin = plugin;
-		this.config = config;
+		super(image, plugin);
+		this.check = check;
 		setTooltip(tooltip);
 	}
 
@@ -33,5 +34,8 @@ public abstract class DailyInfoBox extends InfoBox
 	}
 
 	@Override
-	public abstract boolean render();
+	public boolean render()
+	{
+		return check.getAsBoolean();
+	}
 }
