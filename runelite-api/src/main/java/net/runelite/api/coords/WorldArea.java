@@ -152,6 +152,26 @@ public class WorldArea
 	}
 
 	/**
+	 * Checks whether a tile is contained within the area and in the same plane.
+	 *
+	 * @return {@code true} if the tile is contained within the bounds of this area, {@code false} otherwise.
+	 */
+	public boolean contains(WorldPoint worldPoint)
+	{
+		return distanceTo(worldPoint) == 0;
+	}
+
+	/**
+	 * Checks whether a tile is contained within the area while ignoring the plane.
+	 *
+	 * @return {@code true} if the tile is contained within the bounds of this area regardless of plane, {@code false} otherwise.
+	 */
+	public boolean contains2D(WorldPoint worldPoint)
+	{
+		return distanceTo2D(worldPoint) == 0;
+	}
+
+	/**
 	 * Checks whether this area is within melee distance of another.
 	 * <p>
 	 * Melee distance is exactly 1 tile, so this method computes and returns
