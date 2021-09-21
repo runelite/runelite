@@ -34,9 +34,10 @@ import net.runelite.client.config.Units;
 public interface MiningConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "statTimeout",
 		name = "Reset stats",
-		description = "Duration the mining indicator and session stats are displayed before being reset"
+		description = "Timeout after which Mining session stats are hidden"
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
@@ -45,11 +46,23 @@ public interface MiningConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "showMiningStats",
 		name = "Show session stats",
-		description = "Configures whether to display mining session stats"
+		description = "Configures whether to display Mining session stats"
 	)
 	default boolean showMiningStats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "includeExtraOres",
+		name = "Include extra ores mined",
+		description = "Include extra ores mined via Varrock Armour effect in session stats."
+	)
+	default boolean includeExtraOres()
 	{
 		return true;
 	}
