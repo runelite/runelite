@@ -1,9 +1,6 @@
 package net.runelite.client.plugins.dailytaskindicators.infoboxes;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.dailytaskindicators.DailyTasksConfig;
 import net.runelite.client.plugins.dailytaskindicators.DailyTasksPlugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 
@@ -12,12 +9,12 @@ import net.runelite.client.util.AsyncBufferedImage;
 
 public class DailyInfoBox extends InfoBox
 {
-	private final BooleanSupplier check;
+	private final BooleanSupplier renderCondition;
 
-	public DailyInfoBox(final AsyncBufferedImage image, final String tooltip, final BooleanSupplier check, final DailyTasksPlugin plugin)
+	public DailyInfoBox(final AsyncBufferedImage image, final String tooltip, final BooleanSupplier renderCondition, final DailyTasksPlugin plugin)
 	{
 		super(image, plugin);
-		this.check = check;
+		this.renderCondition = renderCondition;
 		setTooltip(tooltip);
 	}
 
@@ -36,6 +33,6 @@ public class DailyInfoBox extends InfoBox
 	@Override
 	public boolean render()
 	{
-		return check.getAsBoolean();
+		return renderCondition.getAsBoolean();
 	}
 }
