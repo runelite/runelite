@@ -1,10 +1,8 @@
 package net.runelite.client.plugins.dailytaskindicators;
 
+import java.awt.Color;
 import java.util.function.BooleanSupplier;
-import net.runelite.client.plugins.dailytaskindicators.DailyTasksPlugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
-
-import java.awt.*;
 import net.runelite.client.util.AsyncBufferedImage;
 
 public class DailyInfoBox extends InfoBox
