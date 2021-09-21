@@ -30,10 +30,12 @@ import net.runelite.api.Skill;
 @Value
 public class XpTrackerSkillReset
 {
-	public enum ResetType {
+	public enum ResetType
+	{
 		ACTIONS,
 		ACTIONS_PER_HR,
 	}
+
 	ResetType resetType;
 	Skill skill;
 }

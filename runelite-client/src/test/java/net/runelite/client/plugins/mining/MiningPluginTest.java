@@ -30,8 +30,11 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.events.XpTrackerSkillReset;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +45,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MiningPluginTest
 {
+	private static final String EXTRA_ORE_MINED_MESSAGE = "The Varrock platebody enabled you to mine an additional ore.";
+	private static final String CLAY_MINED_MESSAGE = "You manage to mine some clay.";
+
 	@Inject
 	MiningPlugin miningPlugin;
 
@@ -141,6 +147,65 @@ public class MiningPluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", gameMessage, "", 0);
 		miningPlugin.onChatMessage(chatMessage);
-		assertNotNull(miningPlugin.getSession());
+
+		assertSessionStats(1, 1, 0, 0);
+	}
+
+	@Test
+	public void testExtraOresMined()
+	{
+		ChatMessage clayMessage = new ChatMessage(null, ChatMessageType.SPAM, "", CLAY_MINED_MESSAGE, "", 0);
+		ChatMessage extraOreMinedMessage = new ChatMessage(null, ChatMessageType.SPAM, "", EXTRA_ORE_MINED_MESSAGE, "", 0);
+		miningPlugin.onChatMessage(clayMessage);
+		miningPlugin.onChatMessage(extraOreMinedMessage);
+
+		assertSessionStats(1, 1, 1, 1);
+	}
+
+	@Test
+	public void testMiningSkillReset()
+	{
+		ChatMessage clayMessage = new ChatMessage(null, ChatMessageType.SPAM, "", CLAY_MINED_MESSAGE, "", 0);
+		ChatMessage extraOreMinedMessage = new ChatMessage(null, ChatMessageType.SPAM, "", EXTRA_ORE_MINED_MESSAGE, "", 0);
+
+		miningPlugin.onChatMessage(clayMessage);
+		miningPlugin.onChatMessage(clayMessage);
+		miningPlugin.onChatMessage(extraOreMinedMessage);
+
+		XpTrackerSkillReset magicResetEvent = new XpTrackerSkillReset(XpTrackerSkillReset.ResetType.ACTIONS, Skill.MAGIC);
+		miningPlugin.onXpTrackerSkillReset(magicResetEvent);
+		assertSessionStats(2, 2, 1, 1);
+
+		XpTrackerSkillReset miningResetEvent = new XpTrackerSkillReset(XpTrackerSkillReset.ResetType.ACTIONS, Skill.MINING);
+		miningPlugin.onXpTrackerSkillReset(miningResetEvent);
+		assertSessionStats(0, 0, 0, 0);
+	}
+
+	@Test
+	public void testMiningSkillHrReset()
+	{
+		ChatMessage clayMessage = new ChatMessage(null, ChatMessageType.SPAM, "", CLAY_MINED_MESSAGE, "", 0);
+		ChatMessage extraOreMinedMessage = new ChatMessage(null, ChatMessageType.SPAM, "", EXTRA_ORE_MINED_MESSAGE, "", 0);
+
+		miningPlugin.onChatMessage(clayMessage);
+		miningPlugin.onChatMessage(clayMessage);
+		miningPlugin.onChatMessage(extraOreMinedMessage);
+
+		XpTrackerSkillReset magicHrResetEvent = new XpTrackerSkillReset(XpTrackerSkillReset.ResetType.ACTIONS_PER_HR, Skill.MAGIC);
+		miningPlugin.onXpTrackerSkillReset(magicHrResetEvent);
+		assertSessionStats(2, 2, 1, 1);
+
+		XpTrackerSkillReset miningHrResetEvent = new XpTrackerSkillReset(XpTrackerSkillReset.ResetType.ACTIONS_PER_HR, Skill.MINING);
+		miningPlugin.onXpTrackerSkillReset(miningHrResetEvent);
+		assertSessionStats(2, 0, 1, 0);
+	}
+
+	void assertSessionStats(int amountMined, int amountMinedSinceReset, int amountExtraMined, int amountExtraMinedSinceReset)
+	{
+		assertNotNull(miningPlugin.getSession().getLastMined());
+		assertEquals(miningPlugin.getSession().getOresMined(), amountMined);
+		assertEquals(miningPlugin.getSession().getOresMinedSinceHrReset(), amountMinedSinceReset);
+		assertEquals(miningPlugin.getSession().getExtraOresMined(), amountExtraMined);
+		assertEquals(miningPlugin.getSession().getExtraOresMinedSinceHrReset(), amountExtraMinedSinceReset);
 	}
 }
