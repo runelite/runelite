@@ -241,7 +241,7 @@ public class DailyTasksPlugin extends Plugin
 
 	public boolean bonemealAvailable()
 	{
-		if (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
+		if (config.showBonemeal() && client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
 		{
 			int collected = client.getVar(Varbits.DAILY_BONEMEAL_STATE);
 			int max = BONEMEAL_PER_DIARY;

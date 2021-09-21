@@ -14,6 +14,6 @@ public class Dynamite extends DailyInfoBox
 	@Override
 	public boolean render()
 	{
-		return plugin.dynamiteAvailable();
+		return config.showInfoBoxes() && plugin.dynamiteAvailable();
 	}
 }

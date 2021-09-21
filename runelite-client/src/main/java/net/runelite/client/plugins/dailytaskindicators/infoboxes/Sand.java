@@ -14,6 +14,6 @@ public class Sand extends DailyInfoBox
 	@Override
 	public boolean render()
 	{
-		return plugin.sandAvailable();
+		return config.showInfoBoxes() && plugin.sandAvailable();
 	}
 }

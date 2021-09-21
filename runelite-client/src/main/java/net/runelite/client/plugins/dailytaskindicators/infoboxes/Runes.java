@@ -14,6 +14,6 @@ public class Runes extends DailyInfoBox
 	@Override
 	public boolean render()
 	{
-		return plugin.runesAvailable();
+		return config.showInfoBoxes() && plugin.runesAvailable();
 	}
 }

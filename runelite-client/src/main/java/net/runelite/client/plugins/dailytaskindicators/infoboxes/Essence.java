@@ -14,6 +14,6 @@ public class Essence extends DailyInfoBox
 	@Override
 	public boolean render()
 	{
-		return plugin.essenceAvailable();
+		return config.showInfoBoxes() && plugin.essenceAvailable();
 	}
 }

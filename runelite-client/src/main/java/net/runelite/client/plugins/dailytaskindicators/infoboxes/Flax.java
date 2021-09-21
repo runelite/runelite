@@ -14,6 +14,6 @@ public class Flax extends DailyInfoBox
 	@Override
 	public boolean render()
 	{
-		return plugin.flaxAvailable();
+		return config.showInfoBoxes() && plugin.flaxAvailable();
 	}
 }

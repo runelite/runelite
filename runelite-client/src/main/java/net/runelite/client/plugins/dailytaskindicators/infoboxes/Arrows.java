@@ -14,6 +14,6 @@ public class Arrows extends DailyInfoBox
 	@Override
 	public boolean render()
 	{
-		return plugin.arrowsAvailable();
+		return config.showInfoBoxes() && plugin.arrowsAvailable();
 	}
 }

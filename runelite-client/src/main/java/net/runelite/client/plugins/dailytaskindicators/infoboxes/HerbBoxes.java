@@ -14,6 +14,6 @@ public class HerbBoxes extends DailyInfoBox
 	@Override
 	public boolean render()
 	{
-		return plugin.herbBoxesAvailable();
+		return config.showInfoBoxes() && plugin.herbBoxesAvailable();
 	}
 }

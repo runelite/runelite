@@ -14,6 +14,6 @@ public class Battlestaves extends DailyInfoBox
 	@Override
 	public boolean render()
 	{
-		return plugin.stavesAvailable();
+		return config.showInfoBoxes() && plugin.stavesAvailable();
 	}
 }

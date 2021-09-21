@@ -14,6 +14,6 @@ public class Bonemeal extends DailyInfoBox
 	@Override
 	public boolean render()
 	{
-		return plugin.bonemealAvailable();
+		return config.showInfoBoxes() && plugin.bonemealAvailable();
 	}
 }
