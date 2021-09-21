@@ -607,7 +607,17 @@ public enum Varbits
 	 *
 	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
 	 */
-	PVP_SPEC_ORB(8121);
+	PVP_SPEC_ORB(8121),
+
+	/**
+	 * Collection Log notification settings whenever a new item is added
+	 *
+	 * 0 = no notification
+	 * 1 = chat notification only
+	 * 2 = popup notification only
+	 * 3 = chat and popup
+	 */
+	COLLECTION_LOG_NOTIFICATION(11959);
 
 	/**
 	 * The raw varbit ID.
