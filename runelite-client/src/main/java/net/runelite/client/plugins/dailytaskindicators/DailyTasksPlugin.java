@@ -100,12 +100,12 @@ public class DailyTasksPlugin extends Plugin
 		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.HERB_BOX), HERB_BOX_MESSAGE, () -> config.showInfoBoxes() && herbBoxesAvailable(), this));
 		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BATTLESTAFF), STAVES_MESSAGE, () -> config.showInfoBoxes() && stavesAvailable(), this));
 		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.RUNE_ESSENCE), ESSENCE_MESSAGE, () -> config.showInfoBoxes() && essenceAvailable(), this));
-		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.FIRE_RUNE), RUNES_MESSAGE, () -> config.showInfoBoxes() && runesAvailable(),this));
-		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BUCKET_OF_SAND), SAND_MESSAGE, () -> config.showInfoBoxes() && sandAvailable(),this));
-		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BOW_STRING), FLAX_MESSAGE, () -> config.showInfoBoxes() && flaxAvailable(),this));
-		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.OGRE_ARROW), ARROWS_MESSAGE,  () -> config.showInfoBoxes() && arrowsAvailable(),this));
-		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BONEMEAL), BONEMEAL_MESSAGE,  () -> config.showInfoBoxes() && bonemealAvailable(),this));
-		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.DYNAMITE), DYNAMITE_MESSAGE, () -> config.showInfoBoxes() && dynamiteAvailable(),this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.FIRE_RUNE), RUNES_MESSAGE, () -> config.showInfoBoxes() && runesAvailable(), this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BUCKET_OF_SAND), SAND_MESSAGE, () -> config.showInfoBoxes() && sandAvailable(), this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BOW_STRING), FLAX_MESSAGE, () -> config.showInfoBoxes() && flaxAvailable(), this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.OGRE_ARROW), ARROWS_MESSAGE, () -> config.showInfoBoxes() && arrowsAvailable(), this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.BONEMEAL), BONEMEAL_MESSAGE, () -> config.showInfoBoxes() && bonemealAvailable(), this));
+		infoBoxManager.addInfoBox(new DailyInfoBox(itemManager.getImage(ItemID.DYNAMITE), DYNAMITE_MESSAGE, () -> config.showInfoBoxes() && dynamiteAvailable(), this));
 	}
 
 	@Override
