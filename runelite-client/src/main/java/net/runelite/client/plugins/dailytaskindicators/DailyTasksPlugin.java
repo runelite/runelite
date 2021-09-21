@@ -27,7 +27,6 @@
 package net.runelite.client.plugins.dailytaskindicators;
 
 import com.google.inject.Provides;
-import java.util.function.Predicate;
 import javax.inject.Inject;
 
 import net.runelite.api.*;
@@ -43,8 +42,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.dailytaskindicators.infoboxes.*;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(

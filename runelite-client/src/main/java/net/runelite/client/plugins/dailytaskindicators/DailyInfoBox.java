@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.dailytaskindicators.infoboxes;
+package net.runelite.client.plugins.dailytaskindicators;
 
 import java.util.function.BooleanSupplier;
 import net.runelite.client.plugins.dailytaskindicators.DailyTasksPlugin;
