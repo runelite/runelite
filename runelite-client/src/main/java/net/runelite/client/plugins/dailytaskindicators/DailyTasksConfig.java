@@ -29,15 +29,24 @@ package net.runelite.client.plugins.dailytaskindicators;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("dailytaskindicators")
 public interface DailyTasksConfig extends Config
 {
+	@ConfigSection(
+		position = 1,
+		name = "Tasks",
+		description = "List of daily tasks"
+	)
+	String tasks = "tasks";
+
 	@ConfigItem(
 		position = 1,
 		keyName = "showHerbBoxes",
 		name = "Show Herb Boxes",
-		description = "Show a message when you can collect your daily herb boxes at NMZ."
+		description = "Show a message when you can collect your daily herb boxes at NMZ.",
+		section = tasks
 	)
 	default boolean showHerbBoxes()
 	{
@@ -48,7 +57,8 @@ public interface DailyTasksConfig extends Config
 		position = 2,
 		keyName = "showStaves",
 		name = "Show Claimable Staves",
-		description = "Show a message when you can collect your daily battlestaves from Zaff."
+		description = "Show a message when you can collect your daily battlestaves from Zaff.",
+		section = tasks
 	)
 	default boolean showStaves()
 	{
@@ -59,7 +69,8 @@ public interface DailyTasksConfig extends Config
 		position = 3,
 		keyName = "showEssence",
 		name = "Show Claimable Essence",
-		description = "Show a message when you can collect your daily pure essence from Wizard Cromperty."
+		description = "Show a message when you can collect your daily pure essence from Wizard Cromperty.",
+		section = tasks
 	)
 	default boolean showEssence()
 	{
@@ -70,7 +81,8 @@ public interface DailyTasksConfig extends Config
 		position = 4,
 		keyName = "showRunes",
 		name = "Show Claimable Random Runes",
-		description = "Show a message when you can collect your daily random runes from Lundail."
+		description = "Show a message when you can collect your daily random runes from Lundail.",
+		section = tasks
 	)
 	default boolean showRunes()
 	{
@@ -81,7 +93,8 @@ public interface DailyTasksConfig extends Config
 		position = 5,
 		keyName = "showSand",
 		name = "Show Claimable Sand",
-		description = "Show a message when you can collect your daily sand from Bert."
+		description = "Show a message when you can collect your daily sand from Bert.",
+		section = tasks
 	)
 	default boolean showSand()
 	{
@@ -92,7 +105,8 @@ public interface DailyTasksConfig extends Config
 		position = 6,
 		keyName = "showFlax",
 		name = "Show Claimable Bow Strings",
-		description = "Show a message when you can convert noted flax to bow strings with the Flax keeper."
+		description = "Show a message when you can convert noted flax to bow strings with the Flax keeper.",
+		section = tasks
 	)
 	default boolean showFlax()
 	{
@@ -103,7 +117,8 @@ public interface DailyTasksConfig extends Config
 		position = 7,
 		keyName = "showBonemeal",
 		name = "Show Claimable Bonemeal & Slime",
-		description = "Show a message when you can collect bonemeal & slime from Robin."
+		description = "Show a message when you can collect bonemeal & slime from Robin.",
+		section = tasks
 	)
 	default boolean showBonemeal()
 	{
@@ -114,7 +129,8 @@ public interface DailyTasksConfig extends Config
 		position = 8,
 		keyName = "showDynamite",
 		name = "Show Claimable Dynamite",
-		description = "Show a message when you can collect Dynamite from Thirus."
+		description = "Show a message when you can collect Dynamite from Thirus.",
+		section = tasks
 	)
 	default boolean showDynamite()
 	{
@@ -125,9 +141,29 @@ public interface DailyTasksConfig extends Config
 		position = 9,
 		keyName = "showArrows",
 		name = "Show Claimable Ogre Arrows",
-		description = "Show a message when you can collect ogre arrows from Rantz."
+		description = "Show a message when you can collect ogre arrows from Rantz.",
+		section = tasks
 	)
 	default boolean showArrows()
+	{
+		return false;
+	}
+
+	@ConfigSection(
+		position = 2,
+		name = "Infoboxes",
+		description = "Infoboxes settings"
+	)
+	String infoboxes = "infoboxes";
+
+	@ConfigItem(
+		position = 1,
+		keyName = "showInfoBoxes",
+		name = "Show Daily Tasks as Infoboxes",
+		description = "Hide daily tasks messages from the chat and show daily tasks as infoboxes.",
+		section = infoboxes
+	)
+	default boolean showInfoBoxes()
 	{
 		return false;
 	}

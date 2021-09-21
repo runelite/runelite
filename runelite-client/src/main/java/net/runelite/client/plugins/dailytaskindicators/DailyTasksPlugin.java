@@ -28,12 +28,8 @@ package net.runelite.client.plugins.dailytaskindicators;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
+
+import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.vars.AccountType;
@@ -43,8 +39,12 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.dailytaskindicators.infoboxes.*;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Daily Task Indicator",
@@ -77,8 +77,14 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ItemManager itemManager;
+
 	private long lastReset;
-	private boolean loggingIn;
+	private boolean loggingIn, dailyReset;
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -90,6 +96,15 @@ public class DailyTasksPlugin extends Plugin
 	public void startUp()
 	{
 		loggingIn = true;
+		infoBoxManager.addInfoBox(new HerbBoxes(ItemID.HERB_BOX, HERB_BOX_MESSAGE, itemManager, config, this));
+		infoBoxManager.addInfoBox(new Battlestaves(ItemID.BATTLESTAFF, STAVES_MESSAGE, itemManager, config, this));
+		infoBoxManager.addInfoBox(new Essence(ItemID.RUNE_ESSENCE, ESSENCE_MESSAGE, itemManager, config, this));
+		infoBoxManager.addInfoBox(new Runes(ItemID.FIRE_RUNE, RUNES_MESSAGE, itemManager, config, this));
+		infoBoxManager.addInfoBox(new Sand(ItemID.BUCKET_OF_SAND, SAND_MESSAGE, itemManager, config, this));
+		infoBoxManager.addInfoBox(new Flax(ItemID.BOW_STRING, FLAX_MESSAGE, itemManager, config, this));
+		infoBoxManager.addInfoBox(new Arrows(ItemID.OGRE_ARROW, ARROWS_MESSAGE, itemManager, config, this));
+		infoBoxManager.addInfoBox(new Bonemeal(ItemID.BONEMEAL, BONEMEAL_MESSAGE, itemManager, config, this));
+		infoBoxManager.addInfoBox(new Dynamite(ItemID.DYNAMITE, DYNAMITE_MESSAGE, itemManager, config, this));
 	}
 
 	@Override
@@ -111,7 +126,7 @@ public class DailyTasksPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		long currentTime = System.currentTimeMillis();
-		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
+		dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
 		if ((dailyReset || loggingIn)
 			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
@@ -120,125 +135,111 @@ public class DailyTasksPlugin extends Plugin
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
 			loggingIn = false;
 
-			if (config.showHerbBoxes())
+			if (herbBoxesAvailable())
 			{
-				checkHerbBoxes(dailyReset);
+				sendChatMessage(HERB_BOX_MESSAGE);
 			}
 
-			if (config.showStaves())
+			if (stavesAvailable())
 			{
-				checkStaves(dailyReset);
+				sendChatMessage(STAVES_MESSAGE);
 			}
 
-			if (config.showEssence())
+			if (essenceAvailable())
 			{
-				checkEssence(dailyReset);
+				sendChatMessage(ESSENCE_MESSAGE);
 			}
 
-			if (config.showRunes())
+			if (runesAvailable())
 			{
-				checkRunes(dailyReset);
+				sendChatMessage(RUNES_MESSAGE);
 			}
 
-			if (config.showSand())
+			if (sandAvailable())
 			{
-				checkSand(dailyReset);
+				sendChatMessage(SAND_MESSAGE);
 			}
 
-			if (config.showFlax())
+			if (flaxAvailable())
 			{
-				checkFlax(dailyReset);
+				sendChatMessage(FLAX_MESSAGE);
 			}
 
-			if (config.showBonemeal())
+			if (arrowsAvailable())
 			{
-				checkBonemeal(dailyReset);
+				sendChatMessage(ARROWS_MESSAGE);
 			}
 
-			if (config.showDynamite())
+			if (bonemealAvailable())
 			{
-				checkDynamite(dailyReset);
+				sendChatMessage(BONEMEAL_MESSAGE);
 			}
 
-			if (config.showArrows())
+			if (dynamiteAvailable())
 			{
-				checkArrows(dailyReset);
+				sendChatMessage(DYNAMITE_MESSAGE);
 			}
 		}
 	}
 
-	private void checkHerbBoxes(boolean dailyReset)
+	public boolean herbBoxesAvailable()
 	{
-		if (client.getAccountType() == AccountType.NORMAL
+		return config.showHerbBoxes()
+			&& client.getAccountType() == AccountType.NORMAL
 			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
 			&& (client.getVar(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
-			|| dailyReset))
-		{
-			sendChatMessage(HERB_BOX_MESSAGE);
-		}
+			|| dailyReset);
 	}
 
-	private void checkStaves(boolean dailyReset)
+	public boolean stavesAvailable()
 	{
-		if (client.getVar(Varbits.DIARY_VARROCK_EASY) == 1
+		return config.showStaves()
+			&& client.getVar(Varbits.DIARY_VARROCK_EASY) == 1
 			&& (client.getVar(Varbits.DAILY_STAVES_COLLECTED) == 0
-			|| dailyReset))
-		{
-			sendChatMessage(STAVES_MESSAGE);
-		}
+			|| dailyReset);
 	}
 
-	private void checkEssence(boolean dailyReset)
+	public boolean essenceAvailable()
 	{
-		if (client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
+		return config.showEssence()
+			&& client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
 			&& (client.getVar(Varbits.DAILY_ESSENCE_COLLECTED) == 0
-			|| dailyReset))
-		{
-			sendChatMessage(ESSENCE_MESSAGE);
-		}
+			|| dailyReset);
 	}
 
-	private void checkRunes(boolean dailyReset)
+	public boolean runesAvailable()
 	{
-		if (client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1
+		return config.showRunes()
+			&& client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1
 			&& (client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0
-			|| dailyReset))
-		{
-			sendChatMessage(RUNES_MESSAGE);
-		}
+			|| dailyReset);
 	}
 
-	private void checkSand(boolean dailyReset)
+	public boolean sandAvailable()
 	{
-		if (client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
+		return config.showSand()
+			&& client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
 			&& (client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0
-			|| dailyReset))
-		{
-			sendChatMessage(SAND_MESSAGE);
-		}
+			|| dailyReset);
 	}
 
-	private void checkFlax(boolean dailyReset)
+	public boolean flaxAvailable()
 	{
-		if (client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1
+		return config.showFlax()
+			&& client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1
 			&& (client.getVar(Varbits.DAILY_FLAX_STATE) == 0
-			|| dailyReset))
-		{
-			sendChatMessage(FLAX_MESSAGE);
-		}
+			|| dailyReset);
 	}
 
-	private void checkArrows(boolean dailyReset)
+	public boolean arrowsAvailable()
 	{
-		if (client.getVar(Varbits.DIARY_WESTERN_EASY) == 1
+		return config.showArrows()
+			&& client.getVar(Varbits.DIARY_WESTERN_EASY) == 1
 			&& (client.getVar(Varbits.DAILY_ARROWS_STATE) == 0
-			|| dailyReset))
-		{
-			sendChatMessage(ARROWS_MESSAGE);
-		}
+			|| dailyReset);
 	}
 
-	private void checkBonemeal(boolean dailyReset)
+	public boolean bonemealAvailable()
 	{
 		if (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
 		{
@@ -252,21 +253,18 @@ public class DailyTasksPlugin extends Plugin
 					max += BONEMEAL_PER_DIARY;
 				}
 			}
-			if (collected < max || dailyReset)
-			{
-				sendChatMessage(BONEMEAL_MESSAGE);
-			}
+			return collected < max || dailyReset;
 		}
+
+		return false;
 	}
 
-	private void checkDynamite(boolean dailyReset)
+	public boolean dynamiteAvailable()
 	{
-		if (client.getVar(Varbits.DIARY_KOUREND_MEDIUM) == 1
+		return config.showDynamite()
+			&& client.getVar(Varbits.DIARY_KOUREND_MEDIUM) == 1
 			&& (client.getVar(Varbits.DAILY_DYNAMITE_COLLECTED) == 0
-			|| dailyReset))
-		{
-			sendChatMessage(DYNAMITE_MESSAGE);
-		}
+			|| dailyReset);
 	}
 
 	private void sendChatMessage(String chatMessage)

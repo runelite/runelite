@@ -406,4 +406,40 @@ public class WorldPoint
 		}
 		return worldPoint;
 	}
+
+	/**
+	 * Checks whether this tile is located within any of the given areas.
+	 *
+	 * @param worldAreas areas to check within
+	 * @return {@code true} if any area contains this point, {@code false} otherwise.
+	 */
+	public boolean isInArea(WorldArea... worldAreas)
+	{
+		for (WorldArea area : worldAreas)
+		{
+			if (area.contains(this))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks whether this tile is located within any of the given areas, disregarding any plane differences.
+	 *
+	 * @param worldAreas areas to check within
+	 * @return {@code true} if any area contains this point, {@code false} otherwise.
+	 */
+	public boolean isInArea2D(WorldArea... worldAreas)
+	{
+		for (WorldArea area : worldAreas)
+		{
+			if (area.contains2D(this))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }
