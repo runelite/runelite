@@ -94,7 +94,7 @@ class SmeltingOverlay extends OverlayPanel
 		int actions = xpTrackerService.getActions(Skill.SMITHING);
 		if (actions > 0)
 		{
-			if (plugin.getSession().getBarsSmelted() > 0)
+			if (session.getBarsSmelted() > 0)
 			{
 				StringBuilder barsSmelted = new StringBuilder(Integer.toString(session.getBarsSmelted()));
 				if (config.includeExtraBars())
@@ -109,7 +109,7 @@ class SmeltingOverlay extends OverlayPanel
 					.build());
 			}
 
-			if (plugin.getSession().getCannonBallsSmelted() > 0)
+			if (session.getCannonBallsSmelted() > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Cannonballs:")
@@ -119,17 +119,17 @@ class SmeltingOverlay extends OverlayPanel
 
 			if (actions > 2)
 			{
-				float smithHrMultiplier = 1;
+				float actionsHrMultiplier = 1;
 				if (config.includeExtraBars())
 				{
 					if (session.getBarsSmeltedSinceHrReset() > 0)
 					{
-						smithHrMultiplier += ((float) session.getExtraBarsSmeltedSinceHrReset() / session.getBarsSmeltedSinceHrReset());
+						actionsHrMultiplier += ((float) session.getExtraBarsSmeltedSinceHrReset() / session.getBarsSmeltedSinceHrReset());
 					}
 				}
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Actions/hr:")
-					.right(Integer.toString((int) (smithHrMultiplier * ((float) xpTrackerService.getActionsHr(Skill.SMITHING)))))
+					.right(Integer.toString((int) (actionsHrMultiplier * ((float) xpTrackerService.getActionsHr(Skill.SMITHING)))))
 					.build());
 			}
 		}

@@ -36,7 +36,7 @@ public interface SmeltingConfig extends Config
 		position = 1,
 		keyName = "statTimeout",
 		name = "Session stats stats",
-		description = "Timeout after which Smithing session stats are hidden"
+		description = "Timeout after which Smelting session stats are hidden"
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
