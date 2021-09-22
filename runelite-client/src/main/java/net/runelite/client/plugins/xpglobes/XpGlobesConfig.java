@@ -31,7 +31,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Units;
 
-@ConfigGroup("xpglobes")
+@ConfigGroup(XpGlobesPlugin.CONFIG_GROUP)
 public interface XpGlobesConfig extends Config
 {
 	@ConfigItem(
@@ -181,6 +181,17 @@ public interface XpGlobesConfig extends Config
 	default int xpOrbDuration()
 	{
 		return 10;
+	}
+
+	@ConfigItem(
+			keyName = "maxOrbs",
+			name = "Maximum orbs",
+			description = "Set the max number of orbs to be displayed",
+			position = 13
+	)
+	default int maxOrbCount()
+	{
+		return 5;
 	}
 
 	@ConfigItem(

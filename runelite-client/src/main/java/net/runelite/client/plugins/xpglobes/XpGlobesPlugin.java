@@ -40,6 +40,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -57,7 +58,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDependency(XpTrackerPlugin.class)
 public class XpGlobesPlugin extends Plugin
 {
-	private static final int MAXIMUM_SHOWN_GLOBES = 5;
+	private static int MAXIMUM_SHOWN_GLOBES = 5;
+	protected static final String CONFIG_GROUP = "xpglobes";
 
 	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
 
@@ -89,6 +91,17 @@ public class XpGlobesPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event) {
+		if (event.getGroup().equals(CONFIG_GROUP)) {
+			switch (event.getKey()) {
+				case "maxOrbs":
+					MAXIMUM_SHOWN_GLOBES = config.maxOrbCount();
+					break;
+			}
+		}
 	}
 
 	@Subscribe
