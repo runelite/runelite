@@ -122,24 +122,25 @@ public class Perspective
 			y -= client.getCameraY();
 			z -= client.getCameraZ();
 
-			int cameraPitch = client.getCameraPitch();
-			int cameraYaw = client.getCameraYaw();
+			final int cameraPitch = client.getCameraPitch();
+			final int cameraYaw = client.getCameraYaw();
 
-			int pitchSin = SINE[cameraPitch];
-			int pitchCos = COSINE[cameraPitch];
-			int yawSin = SINE[cameraYaw];
-			int yawCos = COSINE[cameraYaw];
+			final int pitchSin = SINE[cameraPitch];
+			final int pitchCos = COSINE[cameraPitch];
+			final int yawSin = SINE[cameraYaw];
+			final int yawCos = COSINE[cameraYaw];
 
-			int var8 = yawCos * x + y * yawSin >> 16;
-			y = yawCos * y - yawSin * x >> 16;
-			x = var8;
-			var8 = pitchCos * z - y * pitchSin >> 16;
-			y = z * pitchSin + y * pitchCos >> 16;
+			final int
+				x1 = x * yawCos + y * yawSin >> 16,
+				y1 = y * yawCos - x * yawSin >> 16,
+				y2 = z * pitchCos - y1 * pitchSin >> 16,
+				z1 = y1 * pitchCos + z * pitchSin >> 16;
 
-			if (y >= 50)
+			if (z1 >= 50)
 			{
-				int pointX = client.getViewportWidth() / 2 + x * client.getScale() / y;
-				int pointY = client.getViewportHeight() / 2 + var8 * client.getScale() / y;
+				final int scale = client.getScale();
+				final int pointX = client.getViewportWidth() / 2 + x1 * scale / z1;
+				final int pointY = client.getViewportHeight() / 2 + y2 * scale / z1;
 				return new Point(
 					pointX + client.getViewportXOffset(),
 					pointY + client.getViewportYOffset());
