@@ -94,9 +94,12 @@ public class XpGlobesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event) {
-		if (event.getGroup().equals(CONFIG_GROUP)) {
-			switch (event.getKey()) {
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals(CONFIG_GROUP))
+		{
+			switch (event.getKey())
+			{
 				case "maxOrbs":
 					MAXIMUM_SHOWN_GLOBES = config.maxOrbCount();
 					break;
