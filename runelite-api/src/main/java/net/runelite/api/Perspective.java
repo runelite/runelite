@@ -150,9 +150,88 @@ public class Perspective
 	}
 
 	/**
-	 * Translates a model's vertices into 2d space
+	 * Translates a model's vertices into 2d space. There is a separate implementation for GPU since GPU
+	 * uses a slightly more precise projection that can cause features like model outlines being noticeably
+	 * off otherwise.
 	 */
 	public static void modelToCanvas(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
+	{
+		if (client.isGpu())
+		{
+			modelToCanvasGpu(client, end, x3dCenter, y3dCenter, z3dCenter, rotate, x3d, y3d, z3d, x2d, y2d);
+		}
+		else
+		{
+			modelToCanvasCpu(client, end, x3dCenter, y3dCenter, z3dCenter, rotate, x3d, y3d, z3d, x2d, y2d);
+		}
+	}
+
+	private static void modelToCanvasGpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
+	{
+		final int
+			cameraPitch = client.getCameraPitch(),
+			cameraYaw = client.getCameraYaw();
+		final float
+			pitchSin = SINE[cameraPitch] / 65536.0f,
+			pitchCos = COSINE[cameraPitch] / 65536.0f,
+			yawSin = SINE[cameraYaw] / 65536.0f,
+			yawCos = COSINE[cameraYaw] / 65536.0f,
+			rotateSin = SINE[rotate] / 65536.0f,
+			rotateCos = COSINE[rotate] / 65536.0f,
+
+			cx = x3dCenter - client.getCameraX(),
+			cy = y3dCenter - client.getCameraY(),
+			cz = z3dCenter - client.getCameraZ(),
+
+			viewportXMiddle = client.getViewportWidth() / 2f,
+			viewportYMiddle = client.getViewportHeight() / 2f,
+			viewportXOffset = client.getViewportXOffset(),
+			viewportYOffset = client.getViewportYOffset(),
+
+			zoom3d = client.getScale();
+
+		for (int i = 0; i < end; i++)
+		{
+			float x = x3d[i];
+			float y = y3d[i];
+			float z = z3d[i];
+
+			if (rotate != 0)
+			{
+				float x0 = x;
+				x = x0 * rotateCos + y * rotateSin;
+				y = y * rotateCos - x0 * rotateSin;
+			}
+
+			x += cx;
+			y += cy;
+			z += cz;
+
+			final float
+				x1 = x * yawCos + y * yawSin,
+				y1 = y * yawCos - x * yawSin,
+				y2 = z * pitchCos - y1 * pitchSin,
+				z1 = y1 * pitchCos + z * pitchSin;
+
+			int viewX, viewY;
+
+			if (z1 < 50)
+			{
+				viewX = Integer.MIN_VALUE;
+				viewY = Integer.MIN_VALUE;
+			}
+			else
+			{
+				viewX = Math.round((viewportXMiddle + x1 * zoom3d / z1) + viewportXOffset);
+				viewY = Math.round((viewportYMiddle + y2 * zoom3d / z1) + viewportYOffset);
+			}
+
+			x2d[i] = viewX;
+			y2d[i] = viewY;
+		}
+	}
+
+	private static void modelToCanvasCpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
 	{
 		final int
 			cameraPitch = client.getCameraPitch(),
