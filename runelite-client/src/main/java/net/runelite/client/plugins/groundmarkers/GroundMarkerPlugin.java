@@ -358,6 +358,10 @@ public class GroundMarkerPlugin extends Plugin
 			.onDone((input) ->
 			{
 				Collection<GroundMarkerPoint> updatedPoints = getPoints(regionId);
+				if (!updatedPoints.contains(searchPoint))
+				{
+					return;
+				}
 				input = Strings.emptyToNull(input);
 
 				GroundMarkerPoint newPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), existing.getColor(), input);
