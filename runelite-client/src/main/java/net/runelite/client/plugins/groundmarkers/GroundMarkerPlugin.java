@@ -357,12 +357,13 @@ public class GroundMarkerPlugin extends Plugin
 			.value(Optional.ofNullable(existing.getLabel()).orElse(""))
 			.onDone((input) ->
 			{
+				Collection<GroundMarkerPoint> updatedPoints = getPoints(regionId);
 				input = Strings.emptyToNull(input);
 
 				GroundMarkerPoint newPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), existing.getColor(), input);
-				points.remove(searchPoint);
-				points.add(newPoint);
-				savePoints(regionId, points);
+				updatedPoints.remove(searchPoint);
+				updatedPoints.add(newPoint);
+				savePoints(regionId, updatedPoints);
 
 				loadPoints();
 			})
