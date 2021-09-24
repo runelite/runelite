@@ -42,6 +42,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.boosts.BoostIndicator;
+import net.runelite.client.plugins.boosts.StatChangeIndicator;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -109,6 +111,7 @@ public class DailyTasksPlugin extends Plugin
 	public void shutDown()
 	{
 		lastReset = 0L;
+		infoBoxManager.removeIf(t -> t instanceof DailyInfoBox);
 	}
 
 	@Subscribe
