@@ -83,8 +83,8 @@ public class OverlayUtil
 
 		graphics.setColor(color);
 		graphics.rotate(angle, center.getX(), center.getY());
-		graphics.drawRect(center.getX() - width / 2, center.getY() - height / 2, width, height);
-		graphics.rotate(-angle , center.getX(), center.getY());
+		graphics.drawRect(center.getX() - width / 2 + 1, center.getY() - height / 2 - 1, width - 1, height - 1);
+		graphics.rotate(-angle, center.getX(), center.getY());
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, Point txtLoc, String text, Color color)
