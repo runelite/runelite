@@ -29,6 +29,8 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
+import org.intellij.lang.annotations.MagicConstant;
+import org.jetbrains.annotations.Range;
 
 /**
  * Represents an on-screen UI element that is drawn on the canvas.
@@ -59,6 +61,7 @@ public interface Widget
 	 *
 	 * @see WidgetType
 	 */
+	@MagicConstant(valuesFromClass = WidgetType.class)
 	int getType();
 
 	/**
@@ -66,7 +69,7 @@ public interface Widget
 	 *
 	 * @see WidgetType
 	 */
-	void setType(int type);
+	void setType(@MagicConstant(valuesFromClass = WidgetType.class) int type);
 
 	/**
 	 * Gets the type of content displayed by the widget.
@@ -81,9 +84,8 @@ public interface Widget
 	/**
 	 * Gets the current click configuration of the widget.
 	 * @see WidgetConfig
-	 *
-	 * @see WidgetConfig
 	 */
+	@MagicConstant(flagsFromClass = WidgetConfig.class)
 	int getClickMask();
 
 	/**
@@ -91,7 +93,7 @@ public interface Widget
 	 *
 	 * @see WidgetConfig
 	 */
-	Widget setClickMask(int mask);
+	Widget setClickMask(@MagicConstant(flagsFromClass = WidgetConfig.class) int mask);
 
 	/**
 	 * Gets the parent widget, if this widget is a child.
@@ -246,7 +248,7 @@ public interface Widget
 	/**
 	 * Gets the Model/NPC/Item ID displayed in the widget.
 	 *
-	 * @see WidgetModelType
+	 * @see #getModelType()
 	 */
 	int getModelId();
 
@@ -262,6 +264,7 @@ public interface Widget
 	 *
 	 * @see WidgetModelType
 	 */
+	@MagicConstant(valuesFromClass = WidgetModelType.class)
 	int getModelType();
 
 	/**
@@ -270,7 +273,7 @@ public interface Widget
 	 * @param type the new model type
 	 * @see WidgetModelType
 	 */
-	Widget setModelType(int type);
+	Widget setModelType(@MagicConstant(valuesFromClass = WidgetModelType.class) int type);
 
 	/**
 	 * Gets the sequence ID used to animate the model in the widget
@@ -290,6 +293,7 @@ public interface Widget
 	 * Gets the x rotation of the model displayed in the widget.
 	 * 0 = no rotation, 2047 = full rotation
 	 */
+	@Range(from = 0, to = 2047)
 	int getRotationX();
 
 	/**
@@ -300,12 +304,13 @@ public interface Widget
 	 *
 	 * @param modelX the new model x rotation value
 	 */
-	Widget setRotationX(int modelX);
+	Widget setRotationX(@Range(from = 0, to = 2047) int modelX);
 
 	/**
 	 * Gets the y rotation of the model displayed in the widget.
 	 * 0 = no rotation, 2047 = full rotation
 	 */
+	@Range(from = 0, to = 2047)
 	int getRotationY();
 
 	/**
@@ -316,12 +321,13 @@ public interface Widget
 	 *
 	 * @param modelY the new model y rotation value
 	 */
-	Widget setRotationY(int modelY);
+	Widget setRotationY(@Range(from = 0, to = 2047) int modelY);
 
 	/**
 	 * Gets the z rotation of the model displayed in the widget.
 	 * 0 = no rotation, 2047 = full rotation
 	 */
+	@Range(from = 0, to = 2047)
 	int getRotationZ();
 
 	/**
@@ -332,7 +338,7 @@ public interface Widget
 	 *
 	 * @param modelZ the new model z rotation value
 	 */
-	Widget setRotationZ(int modelZ);
+	Widget setRotationZ(@Range(from = 0, to = 2047) int modelZ);
 
 	/**
 	 * Gets the amount zoomed in on the model displayed in the widget.
@@ -577,8 +583,13 @@ public interface Widget
 	 */
 	Widget setOriginalY(int originalY);
 
+	/**
+	 * Sets the X/Y coordinates
+	 */
 	Widget setPos(int x, int y);
-	Widget setPos(int x, int y, int xMode, int yMode);
+	Widget setPos(int x, int y,
+		@MagicConstant(valuesFromClass = WidgetPositionMode.class) int xMode,
+		@MagicConstant(valuesFromClass = WidgetPositionMode.class) int yMode);
 
 	/**
 	 * Gets the height coordinate of this widget before being adjusted by
@@ -609,7 +620,9 @@ public interface Widget
 	Widget setOriginalWidth(int originalWidth);
 
 	Widget setSize(int width, int height);
-	Widget setSize(int width, int height, int widthMode, int heightMode);
+	Widget setSize(int width, int height,
+		@MagicConstant(valuesFromClass = WidgetSizeMode.class) int widthMode,
+		@MagicConstant(valuesFromClass = WidgetSizeMode.class) int heightMode);
 
 	/**
 	 * Gets the menu options available on the widget as a sparse array.
@@ -622,14 +635,14 @@ public interface Widget
 	 * @param index the index of the new widget in the children list or -1 to append to the back
 	 * @param type  the {@link WidgetType} of the widget
 	 */
-	Widget createChild(int index, int type);
+	Widget createChild(int index, @MagicConstant(valuesFromClass = WidgetType.class) int type);
 
 	/**
 	 * Creates a dynamic widget child at the end of the children list
 	 *
 	 * @param type  the {@link WidgetType} of the widget
 	 */
-	Widget createChild(int type);
+	Widget createChild(@MagicConstant(valuesFromClass = WidgetType.class) int type);
 
 	/**
 	 * Removes all of this widget's dynamic children
@@ -821,11 +834,13 @@ public interface Widget
 	/**
 	 * Returns widget {@link net.runelite.api.widgets.ItemQuantityMode}.
 	 */
+	@MagicConstant(valuesFromClass = ItemQuantityMode.class)
 	int getItemQuantityMode();
 
 	/**
 	 * Sets the widget {@link net.runelite.api.widgets.ItemQuantityMode}
 	 */
+	@MagicConstant(valuesFromClass = ItemQuantityMode.class)
 	Widget setItemQuantityMode(int itemQuantityMode);
 
 	/**
@@ -833,6 +848,7 @@ public interface Widget
 	 *
 	 * @see WidgetPositionMode
 	 */
+	@MagicConstant(valuesFromClass = WidgetPositionMode.class)
 	int getXPositionMode();
 
 	/**
@@ -841,13 +857,14 @@ public interface Widget
 	 *
 	 * @see WidgetPositionMode
 	 */
-	Widget setXPositionMode(int xpm);
+	Widget setXPositionMode(@MagicConstant(valuesFromClass = WidgetPositionMode.class) int xpm);
 
 	/**
 	 * Gets the mode that the Y position is calculated from the original Y position
 	 *
 	 * @see WidgetPositionMode
 	 */
+	@MagicConstant(valuesFromClass = WidgetPositionMode.class)
 	int getYPositionMode();
 
 	/**
@@ -856,7 +873,7 @@ public interface Widget
 	 *
 	 * @see WidgetPositionMode
 	 */
-	Widget setYPositionMode(int ypm);
+	Widget setYPositionMode(@MagicConstant(valuesFromClass = WidgetPositionMode.class) int ypm);
 
 	/**
 	 * Get the line height for this widget.
@@ -877,6 +894,7 @@ public interface Widget
 	 *
 	 * @see WidgetTextAlignment
 	 */
+	@MagicConstant(valuesFromClass = WidgetTextAlignment.class)
 	int getXTextAlignment();
 
 	/**
@@ -884,13 +902,14 @@ public interface Widget
 	 *
 	 * @see WidgetTextAlignment
 	 */
-	Widget setXTextAlignment(int xta);
+	Widget setXTextAlignment(@MagicConstant(valuesFromClass = WidgetTextAlignment.class) int xta);
 
 	/**
 	 * Gets the Y axis text position mode
 	 *
 	 * @see WidgetTextAlignment
 	 */
+	@MagicConstant(valuesFromClass = WidgetTextAlignment.class)
 	int getYTextAlignment();
 
 	/**
@@ -898,13 +917,14 @@ public interface Widget
 	 *
 	 * @see WidgetTextAlignment
 	 */
-	Widget setYTextAlignment(int yta);
+	Widget setYTextAlignment(@MagicConstant(valuesFromClass = WidgetTextAlignment.class) int yta);
 
 	/**
 	 * Gets the mode controlling widget width
 	 *
 	 * @see WidgetSizeMode
 	 */
+	@MagicConstant(valuesFromClass = WidgetSizeMode.class)
 	int getWidthMode();
 
 	/**
@@ -913,13 +933,14 @@ public interface Widget
 	 *
 	 * @see WidgetSizeMode
 	 */
-	Widget setWidthMode(int widthMode);
+	Widget setWidthMode(@MagicConstant(valuesFromClass = WidgetSizeMode.class) int widthMode);
 
 	/**
 	 * Gets the mode controlling widget width
 	 *
 	 * @see WidgetSizeMode
 	 */
+	@MagicConstant(valuesFromClass = WidgetSizeMode.class)
 	int getHeightMode();
 
 	/**
@@ -928,7 +949,7 @@ public interface Widget
 	 *
 	 * @see WidgetSizeMode
 	 */
-	Widget setHeightMode(int heightMode);
+	Widget setHeightMode(@MagicConstant(valuesFromClass = WidgetSizeMode.class) int heightMode);
 
 	/**
 	 * Gets the font that this widget uses
