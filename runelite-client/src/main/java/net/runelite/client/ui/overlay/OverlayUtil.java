@@ -35,6 +35,8 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.List;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -81,9 +83,13 @@ public class OverlayUtil
 	{
 		double angle = client.getMapAngle() * UNIT;
 
+		List<Integer> exceptions = Arrays.asList(1, 3);
+		int a = exceptions.contains(width) ? 0 : 1;
+		int b = exceptions.contains(height) ? 2 : 1;
+
 		graphics.setColor(color);
 		graphics.rotate(angle, center.getX(), center.getY());
-		graphics.drawRect(center.getX() - width / 2 + 1, center.getY() - height / 2 - 1, width - 1, height - 1);
+		graphics.drawRect(center.getX() - width / 2 + a, center.getY() - height / 2 - b, width - 1, height - 1);
 		graphics.rotate(-angle, center.getX(), center.getY());
 	}
 
