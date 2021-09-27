@@ -59,7 +59,7 @@ enum CannonSpots
 	ICE_WARRIOR(new WorldPoint(2955, 3876, 0)),
 	KALPHITE(new WorldPoint(3307, 9528, 0)),
 	LESSER_DEMON(new WorldPoint(2838, 9559, 0), new WorldPoint(3163, 10114, 0)),
-	LIZARDMEN(new WorldPoint(1500, 3703, 0)),
+	LIZARDMEN(new WorldPoint(1507, 3705, 0)),
 	LIZARDMEN_SHAMAN(new WorldPoint(1423, 3715, 0)),
 	MAGIC_AXE(new WorldPoint(3190, 3960, 0)),
 	MAMMOTH(new WorldPoint(3168, 3595, 0)),
