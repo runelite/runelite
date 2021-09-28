@@ -22,24 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.http.service;
 
-import java.awt.Color;
-import lombok.Builder;
-import lombok.Value;
-import net.runelite.api.NPC;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
-@Value
-@Builder
-public class HighlightedNpc
+@Configuration
+public class SpringSchedulingConfigurer implements SchedulingConfigurer
 {
-	NPC npc;
-	Color highlightColor;
-	Color fillColor;
-	boolean hull;
-	boolean tile;
-	boolean swTile;
-	boolean outline;
-	boolean name;
-	boolean nameOnMinimap;
+	@Override
+	public void configureTasks(ScheduledTaskRegistrar taskRegistrar)
+	{
+		// this is from ScheduledTaskRegistrar.scheduleTasks() but modified to give the scheduler thread a
+		// recognizable name
+		ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
+			new ThreadFactoryBuilder()
+				.setNameFormat("scheduler-%d")
+				.build()
+		);
+		TaskScheduler scheduler = new ConcurrentTaskScheduler(scheduledExecutorService);
+		taskRegistrar.setTaskScheduler(scheduler);
+	}
 }

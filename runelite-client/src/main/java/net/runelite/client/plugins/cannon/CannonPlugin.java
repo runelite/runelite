@@ -41,17 +41,21 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
+import net.runelite.api.ObjectID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.CANNONBALL;
 import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -72,11 +76,14 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	static final int MAX_OVERLAY_DISTANCE = 4100;
 	static final int MAX_CBALLS = 30;
 
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
 	private boolean cannonBallNotificationSent;
+	private WorldPoint clickedCannonLocation;
+	private boolean firstCannonLoad;
 
 	@Getter
 	private int cballsLeft;
@@ -257,6 +264,39 @@ public class CannonPlugin extends Plugin
 			}
 		}
 	}
+	
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (cannonPosition != null || event.getId() != ObjectID.DWARF_MULTICANNON)
+		{
+			return;
+		}
+
+		// Check if cannonballs are being used on the cannon
+		if (event.getMenuAction() == MenuAction.ITEM_USE_ON_GAME_OBJECT)
+		{
+			final int idx = event.getSelectedItemIndex();
+			final ItemContainer items = client.getItemContainer(InventoryID.INVENTORY);
+			if (items == null)
+			{
+				return;
+			}
+			final Item item = items.getItem(idx);
+			if (item == null || (item.getId() != ItemID.CANNONBALL && item.getId() != ItemID.GRANITE_CANNONBALL))
+			{
+				return;
+			}
+		}
+		// Check for the Fire option being selected on the cannon.
+		else if (event.getMenuAction() != MenuAction.GAME_OBJECT_FIRST_OPTION)
+		{
+			return;
+		}
+
+		// Store the click location as a WorldPoint to avoid issues with scene loads
+		clickedCannonLocation = WorldPoint.fromScene(client, event.getParam0(), event.getParam1(), client.getPlane());
+	}
 
 	@Subscribe
 	public void onProjectileMoved(ProjectileMoved event)
@@ -302,6 +342,7 @@ public class CannonPlugin extends Plugin
 			cannonPlaced = true;
 			addCounter();
 			cballsLeft = 0;
+			firstCannonLoad = true;
 
 			final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 			if (inventory != null)
@@ -320,18 +361,45 @@ public class CannonPlugin extends Plugin
 				}
 			}
 		}
-
-		if (event.getMessage().contains("You pick up the cannon")
+		else if (event.getMessage().contains("You pick up the cannon")
 			|| event.getMessage().contains("Your cannon has decayed. Speak to Nulodion to get a new one!")
 			|| event.getMessage().contains("Your cannon has been destroyed!"))
 		{
 			cannonPlaced = false;
 			cballsLeft = 0;
 			removeCounter();
+			cannonPosition = null;
 		}
-
-		if (event.getMessage().startsWith("You load the cannon with"))
+		else if (event.getMessage().startsWith("You load the cannon with"))
 		{
+			// Set the cannon's position and object if the player's animation was interrupted during setup
+			if (cannonPosition == null && clickedCannonLocation != null)
+			{
+				// There is a window of 1 tick where the player can add the furnace, click on another cannon, and then
+				// the initial cannon load message arrives. This can cause the client to confuse the other cannon with
+				// the player's, so ignore that first message when deciding the cannon's location.
+				if (firstCannonLoad)
+				{
+					firstCannonLoad = false;
+				}
+				else
+				{
+					LocalPoint lp = LocalPoint.fromWorld(client, clickedCannonLocation);
+					if (lp != null)
+					{
+						GameObject[] objects = client.getScene().getTiles()[client.getPlane()][lp.getSceneX()][lp.getSceneY()].getGameObjects();
+						if (objects.length > 0 && client.getLocalPlayer().getWorldLocation().distanceTo(objects[0].getWorldLocation()) <= 2)
+						{
+							cannonPlaced = true;
+							cannonWorld = client.getWorld();
+							cannon = objects[0];
+							cannonPosition = cannon.getWorldLocation();
+						}
+					}
+				}
+				clickedCannonLocation = null;
+			}
+
 			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
 			{
@@ -368,8 +436,7 @@ public class CannonPlugin extends Plugin
 
 			cannonBallNotificationSent = false;
 		}
-
-		if (event.getMessage().contains("Your cannon is out of ammo!"))
+		else if (event.getMessage().contains("Your cannon is out of ammo!"))
 		{
 			skipProjectileCheckThisTick = true;
 
@@ -383,8 +450,7 @@ public class CannonPlugin extends Plugin
 				notifier.notify("Your cannon is out of ammo!");
 			}
 		}
-
-		if (event.getMessage().startsWith("Your cannon contains"))
+		else if (event.getMessage().startsWith("Your cannon contains"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(event.getMessage());
 			if (m.find())
@@ -392,13 +458,16 @@ public class CannonPlugin extends Plugin
 				cballsLeft = Integer.parseInt(m.group());
 			}
 		}
-
-		if (event.getMessage().startsWith("You unload your cannon and receive Cannonball")
+		else if (event.getMessage().startsWith("You unload your cannon and receive Cannonball")
 			|| event.getMessage().startsWith("You unload your cannon and receive Granite cannonball"))
 		{
 			skipProjectileCheckThisTick = true;
 
 			cballsLeft = 0;
+		}
+		else if (event.getMessage().equals("This isn't your cannon!") || event.getMessage().equals("This is not your cannon."))
+		{
+			clickedCannonLocation = null;
 		}
 	}
 

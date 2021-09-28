@@ -79,6 +79,12 @@
       "xp": 15
     },
     {
+      "level": 7,
+      "icon": 25654,
+      "name": "Guppy",
+      "xp": 12
+    },
+    {
       "level": 8,
       "icon": 2048,
       "name": "Pineapple Punch",
@@ -227,6 +233,12 @@
       "icon": 712,
       "name": "Cup of tea",
       "xp": 52
+    },
+    {
+      "level": 20,
+      "icon": 25660,
+      "name": "Cavefish",
+      "xp": 23
     },
     {
       "level": 21,
@@ -379,6 +391,12 @@
       "xp": 170
     },
     {
+      "level": 33,
+      "icon": 25666,
+      "name": "Tetra",
+      "xp": 31
+    },
+    {
       "level": 34,
       "icon": 7178,
       "name": "Garden Pie",
@@ -515,6 +533,12 @@
       "icon": 7082,
       "name": "Fried Mushrooms",
       "xp": 60
+    },
+    {
+      "level": 46,
+      "icon": 25672,
+      "name": "Catfish",
+      "xp": 43
     },
     {
       "level": 47,

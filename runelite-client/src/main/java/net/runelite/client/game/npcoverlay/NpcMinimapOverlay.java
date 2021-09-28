@@ -23,12 +23,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.client.game.npcoverlay;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import javax.inject.Inject;
+import java.util.Map;
+import java.util.function.Predicate;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Point;
@@ -38,16 +39,13 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.Text;
 
-public class NpcMinimapOverlay extends Overlay
+class NpcMinimapOverlay extends Overlay
 {
-	private final NpcIndicatorsConfig config;
-	private final NpcIndicatorsPlugin plugin;
+	private final Map<NPC, HighlightedNpc> highlightedNpcs;
 
-	@Inject
-	NpcMinimapOverlay(NpcIndicatorsConfig config, NpcIndicatorsPlugin plugin)
+	NpcMinimapOverlay(Map<NPC, HighlightedNpc> highlightedNpcs)
 	{
-		this.config = config;
-		this.plugin = plugin;
+		this.highlightedNpcs = highlightedNpcs;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
@@ -55,7 +53,7 @@ public class NpcMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		for (HighlightedNpc highlightedNpc : plugin.getHighlightedNpcs().values())
+		for (HighlightedNpc highlightedNpc : highlightedNpcs.values())
 		{
 			renderNpcOverlay(graphics, highlightedNpc);
 		}
@@ -66,10 +64,14 @@ public class NpcMinimapOverlay extends Overlay
 	private void renderNpcOverlay(Graphics2D graphics, HighlightedNpc highlightedNpc)
 	{
 		NPC actor = highlightedNpc.getNpc();
-		String name = Text.removeTags(actor.getName());
 		NPCComposition npcComposition = actor.getTransformedComposition();
-		if (npcComposition == null || !npcComposition.isInteractible()
-			|| (actor.isDead() && config.ignoreDeadNpcs()))
+		if (npcComposition == null || !npcComposition.isInteractible())
+		{
+			return;
+		}
+
+		Predicate<NPC> render = highlightedNpc.getRender();
+		if (render != null && !render.test(actor))
 		{
 			return;
 		}
@@ -78,10 +80,11 @@ public class NpcMinimapOverlay extends Overlay
 		if (minimapLocation != null)
 		{
 			Color color = highlightedNpc.getHighlightColor();
-			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color.darker());
+			OverlayUtil.renderMinimapLocation(graphics, minimapLocation, color);
 
-			if (highlightedNpc.isNameOnMinimap())
+			if (highlightedNpc.isNameOnMinimap() && actor.getName() != null)
 			{
+				String name = Text.removeTags(actor.getName());
 				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
 			}
 		}

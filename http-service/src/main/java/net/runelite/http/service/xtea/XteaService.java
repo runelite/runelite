@@ -28,6 +28,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.io.IOException;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.fs.Container;
 import net.runelite.cache.util.Djb2;
@@ -45,6 +46,7 @@ import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 @Service
+@Slf4j
 public class XteaService
 {
 	private static final String CREATE_SQL = "CREATE TABLE IF NOT EXISTS `xtea` (\n"
@@ -101,6 +103,11 @@ public class XteaService
 			int region = key.getRegion();
 			int[] keys = key.getKeys();
 
+			if (keys.length != 4)
+			{
+				throw new IllegalArgumentException("Key length must be 4");
+			}
+
 			XteaCache xteaCache = keyCache.getIfPresent(region);
 			if (xteaCache == null
 				|| xteaCache.getKey1() != keys[0]
@@ -136,11 +143,6 @@ public class XteaService
 
 				XteaEntry xteaEntry = findLatestXtea(con, region);
 
-				if (keys.length != 4)
-				{
-					throw new IllegalArgumentException("Key length must be 4");
-				}
-
 				// already have these?
 				if (xteaEntry != null
 					&& xteaEntry.getKey1() == keys[0]
@@ -151,7 +153,14 @@ public class XteaService
 					continue;
 				}
 
-				if (!checkKeys(cache, region, keys))
+				ArchiveEntry archiveEntry = archiveForRegion(cache, region);
+				if (archiveEntry == null)
+				{
+					// the client sends 0,0,0,0 for non-existent regions, just ignore them
+					continue;
+				}
+
+				if (!checkKeys(archiveEntry, keys))
 				{
 					continue;
 				}
@@ -169,6 +178,8 @@ public class XteaService
 					.addParameter("key3", keys[2])
 					.addParameter("key4", keys[3])
 					.addToBatch();
+
+				log.debug("Inserted keys for {}: {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
 			}
 
 			if (query != null)
@@ -202,7 +213,7 @@ public class XteaService
 		}
 	}
 
-	private boolean checkKeys(CacheEntry cache, int regionId, int[] keys)
+	private ArchiveEntry archiveForRegion(CacheEntry cache, int regionId)
 	{
 		int x = regionId >>> 8;
 		int y = regionId & 0xFF;
@@ -215,16 +226,15 @@ public class XteaService
 			.toString();
 		int archiveNameHash = Djb2.hash(archiveName);
 
-		ArchiveEntry archiveEntry = cacheService.findArchiveForTypeAndName(cache, IndexType.MAPS, archiveNameHash);
-		if (archiveEntry == null)
-		{
-			throw new InternalServerErrorException("Unable to find archive for region");
-		}
+		return cacheService.findArchiveForTypeAndName(cache, IndexType.MAPS, archiveNameHash);
+	}
 
+	private boolean checkKeys(ArchiveEntry archiveEntry, int[] keys)
+	{
 		byte[] data = cacheService.getArchive(archiveEntry);
 		if (data == null)
 		{
-			throw new InternalServerErrorException("Unable to get archive data");
+			throw new InternalServerErrorException("Unable to get archive data for archive " + archiveEntry.getArchiveId());
 		}
 
 		try

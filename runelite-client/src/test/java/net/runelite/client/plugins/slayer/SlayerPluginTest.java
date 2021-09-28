@@ -56,7 +56,7 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsService;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.chat.ChatClient;
@@ -176,7 +176,7 @@ public class SlayerPluginTest
 
 	@Mock
 	@Bind
-	NpcIndicatorsService npcIndicatorsService;
+	NpcOverlayService npcOverlayService;
 
 	@Inject
 	SlayerPlugin slayerPlugin;

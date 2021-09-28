@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.7.22-SNAPSHOT</version>
+		<version>1.7.25-SNAPSHOT</version>
 	</parent>
 
 	<name>Web Service</name>
@@ -137,7 +137,7 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>mockwebserver</artifactId>
-			<version>3.7.0</version>
+			<version>3.14.9</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -167,6 +167,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
+					<source>1.8</source> <!-- required for mapstruct -->
+					<target>1.8</target> <!-- required for mapstruct -->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>

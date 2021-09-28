@@ -51,11 +51,15 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
+import net.runelite.api.VarClientStr;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -148,6 +152,7 @@ public class ScreenshotPlugin extends Plugin
 	private Integer killCountNumber;
 
 	private boolean shouldTakeScreenshot;
+	private boolean notificationStarted;
 
 	@Inject
 	private ScreenshotConfig config;
@@ -239,6 +244,7 @@ public class ScreenshotPlugin extends Plugin
 		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
 		kickPlayerName = null;
+		notificationStarted = false;
 	}
 
 	@Subscribe
@@ -302,7 +308,10 @@ public class ScreenshotPlugin extends Plugin
 			{
 				takeScreenshot("Death", SD_DEATHS);
 			}
-			else if (player != client.getLocalPlayer() && (player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath() && player.getCanvasTilePoly() != null)
+			else if (player != client.getLocalPlayer()
+				&& player.getCanvasTilePoly() != null
+				&& (((player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath())
+					|| (player.isClanMember() && config.screenshotClanDeath())))
 			{
 				takeScreenshot("Death " + player.getName(), SD_DEATHS);
 			}
@@ -479,7 +488,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith(COLLECTION_LOG_TEXT))
+		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION) == 1)
 		{
 			String entry = Text.removeTags(chatMessage).substring(COLLECTION_LOG_TEXT.length());
 			String fileName = "Collection log (" + entry + ")";
@@ -620,6 +629,32 @@ public class ScreenshotPlugin extends Plugin
 		}
 
 		takeScreenshot(fileName, screenshotSubDir);
+	}
+
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	{
+		switch (scriptPreFired.getScriptId())
+		{
+			case ScriptID.NOTIFICATION_START:
+				notificationStarted = true;
+				break;
+			case ScriptID.NOTIFICATION_DELAY:
+				if (!notificationStarted)
+				{
+					return;
+				}
+				String topText = client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT);
+				String bottomText = client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
+				if (topText.equalsIgnoreCase("Collection log") && config.screenshotCollectionLogEntries())
+				{
+					String entry = Text.removeTags(bottomText).substring("New item:".length());
+					String fileName = "Collection log (" + entry + ")";
+					takeScreenshot(fileName, SD_COLLECTION_LOG);
+				}
+				notificationStarted = false;
+				break;
+		}
 	}
 
 	private void manualScreenshot()

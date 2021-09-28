@@ -32,16 +32,13 @@ import net.runelite.api.NPC;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.npcoverlay.HighlightedNpc;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.npchighlight.HighlightedNpc;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsPlugin;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsService;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -49,7 +46,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	description = "Highlight nearby implings on the minimap and on-screen",
 	tags = {"hunter", "minimap", "overlay", "imp"}
 )
-@PluginDependency(NpcIndicatorsPlugin.class)
 public class ImplingsPlugin extends Plugin
 {
 	@Inject
@@ -65,10 +61,7 @@ public class ImplingsPlugin extends Plugin
 	private Notifier notifier;
 
 	@Inject
-	private NpcIndicatorsService npcIndicatorsService;
-
-	@Inject
-	private ClientThread clientThread;
+	private NpcOverlayService npcOverlayService;
 
 	public final Function<NPC, HighlightedNpc> isTarget = (npc) ->
 	{
@@ -79,7 +72,6 @@ public class ImplingsPlugin extends Plugin
 			return HighlightedNpc.builder()
 				.npc(npc)
 				.highlightColor(color)
-				.fillColor(new Color(0, 0, 0, 50))
 				.tile(true)
 				.name(true)
 				.nameOnMinimap(config.showName())
@@ -98,13 +90,13 @@ public class ImplingsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		npcIndicatorsService.registerHighlighter(isTarget);
+		npcOverlayService.registerHighlighter(isTarget);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		npcIndicatorsService.unregisterHighlighter(isTarget);
+		npcOverlayService.unregisterHighlighter(isTarget);
 		overlayManager.remove(overlay);
 	}
 
@@ -116,7 +108,7 @@ public class ImplingsPlugin extends Plugin
 			return;
 		}
 
-		clientThread.invoke(npcIndicatorsService::rebuild);
+		npcOverlayService.rebuild();
 	}
 
 	@Subscribe

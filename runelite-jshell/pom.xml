@@ -30,7 +30,7 @@
     <parent>
         <groupId>net.runelite</groupId>
         <artifactId>runelite-parent</artifactId>
-        <version>1.7.22-SNAPSHOT</version>
+        <version>1.7.25-SNAPSHOT</version>
     </parent>
 
     <artifactId>jshell</artifactId>
@@ -73,8 +73,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
                     <release>11</release>
                 </configuration>
             </plugin>

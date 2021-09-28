@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021 Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.api.coords;
 
-import java.util.function.Function;
-import net.runelite.api.NPC;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import org.junit.Test;
 
-public interface NpcIndicatorsService
+public class WorldPointTest
 {
-	void registerHighlighter(Function<NPC, HighlightedNpc> p);
-	void unregisterHighlighter(Function<NPC, HighlightedNpc> p);
-	void rebuild();
+	@Test
+	public void getGetMirrorPoint()
+	{
+		WorldPoint point, converted;
+
+		// Zalcano's entrance portal
+		point = new WorldPoint(3282, 6058, 0);
+		converted = WorldPoint.getMirrorPoint(point, true);
+		assertNotEquals(point, converted);
+
+		// Elven Crystal Chest, which is upstairs
+		point = new WorldPoint(3273, 6082, 2);
+		converted = WorldPoint.getMirrorPoint(point, true);
+		assertNotEquals(point, converted);
+
+		// Around the area of the Elite coordinate clue
+		point = new WorldPoint(2185, 3280, 0);
+		// To overworld
+		converted = WorldPoint.getMirrorPoint(point, true);
+		assertEquals(point, converted);
+		// To real
+		converted = WorldPoint.getMirrorPoint(point, false);
+		assertNotEquals(point, converted);
+
+		// Brugsen Bursen, Grand Exchange
+		point = new WorldPoint(3165, 3477, 0);
+		converted = WorldPoint.getMirrorPoint(point, false);
+		assertEquals(point, converted);
+	}
 }

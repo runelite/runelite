@@ -186,7 +186,7 @@ public class MusicPlugin extends Plugin
 			channels = new Channel[]{musicChannel, effectChannel, areaChannel};
 
 			addMusicButtons();
-			if (musicConfig.granularSliders())
+			if (client.getGameState() == GameState.LOGGED_IN && musicConfig.granularSliders())
 			{
 				updateMusicOptions();
 				resetSettingsWindow();

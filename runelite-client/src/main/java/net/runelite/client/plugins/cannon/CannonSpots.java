@@ -43,7 +43,7 @@ enum CannonSpots
 	BLUE_DRAGON(new WorldPoint(1933, 8973, 1)),
 	BRINE_RAT(new WorldPoint(2707, 10132, 0)),
 	CAVE_HORROR(new WorldPoint(3785, 9460, 0)),
-	DAGGANOTH(new WorldPoint(2524, 10020, 0)),
+	DAGGANOTH(new WorldPoint(2524, 10020, 0), new WorldPoint(2478, 10443, 0), new WorldPoint(2420, 10425, 0)),
 	DARK_BEAST(new WorldPoint(1992, 4655, 0)),
 	DARK_WARRIOR(new WorldPoint(3030, 3632, 0)),
 	DUST_DEVIL(new WorldPoint(3218, 9366, 0)),

@@ -98,4 +98,14 @@ public interface GroundMarkerConfig extends Config
 	{
 		return 2;
 	}
+
+	@ConfigItem(
+		keyName = "fillOpacity",
+		name = "Fill Opacity",
+		description = "Opacity of the tile fill color"
+	)
+	default int fillOpacity()
+	{
+		return 50;
+	}
 }

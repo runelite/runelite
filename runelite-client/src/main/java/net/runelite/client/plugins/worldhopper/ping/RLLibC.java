@@ -41,8 +41,6 @@ interface RLLibC extends LibC
 
 	int socket(int domain, int type, int protocol);
 
-	void close(int socket);
-
 	int sendto(int sockfd, byte[] buf, int len, int flags, byte[] dest_addr, int addrlen);
 
 	int recvfrom(int sockfd, Pointer buf, int len, int flags, Pointer src_addr, Pointer addrlen);
