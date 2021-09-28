@@ -27,7 +27,7 @@ package net.runelite.api;
 /**
  * @see ParamHolder
  */
-public class ParamID
+public final class ParamID
 {
 	/**
 	 * @see SettingID
