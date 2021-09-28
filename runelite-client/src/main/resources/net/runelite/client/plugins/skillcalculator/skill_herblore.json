@@ -88,7 +88,24 @@
       "level": 26,
       "icon": 3010,
       "name": "Energy Potion (3)",
-      "xp": 67.5
+      "xp": 67.5,
+      "materials": [
+        {
+          "id": 255,
+          "name": "Harralander",
+          "amount": 1
+        },
+        {
+          "id": 1975,
+          "name": "Chocolate dust",
+          "amount": 1
+        },
+        {
+          "id": 227,
+          "name": "Vial of water",
+          "amount": 1
+        }
+      ]
     },
     {
       "level": 30,
