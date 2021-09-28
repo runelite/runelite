@@ -64,4 +64,52 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<!-- from JLS 13.1.3: references to a static field that is a constant variable (§4.12.4) must be resolved
+					at compile time to the value denoted by the constant variable's initializer *and* no refernces to the
+					field should be present in the code in a binary file.
+
+					This permits us to remove the classes containing only these types of fields at runtime
+					-->
+					<execution>
+						<id>runtime-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>runtime</classifier>
+							<excludes>
+								<exclude>net/runelite/api/AnimationID.class</exclude>
+								<exclude>net/runelite/api/EnumID.class</exclude>
+								<exclude>net/runelite/api/FontID.class</exclude>
+								<exclude>net/runelite/api/GraphicID.class</exclude>
+								<exclude>net/runelite/api/ItemID.class</exclude>
+								<exclude>net/runelite/api/NpcID.class</exclude>
+								<exclude>net/runelite/api/NullItemID.class</exclude>
+								<exclude>net/runelite/api/NullNpcID.class</exclude>
+								<exclude>net/runelite/api/NullObjectID.class</exclude>
+								<exclude>net/runelite/api/ObjectID.class</exclude>
+								<exclude>net/runelite/api/Opcodes.class</exclude>
+								<exclude>net/runelite/api/ParamID.class</exclude>
+								<exclude>net/runelite/api/ProjectileID.class</exclude>
+								<exclude>net/runelite/api/ScriptID.class</exclude>
+								<exclude>net/runelite/api/SettingID.class</exclude>
+								<exclude>net/runelite/api/SoundEffectID.class</exclude>
+								<exclude>net/runelite/api/SoundEffectVolume.class</exclude>
+								<exclude>net/runelite/api/SpriteID.class</exclude>
+								<exclude>net/runelite/api/StructID.class</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
