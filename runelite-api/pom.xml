@@ -86,6 +86,7 @@
 						<configuration>
 							<classifier>runtime</classifier>
 							<excludes>
+								<exclude>net/runelite/api/clan/ClanID.class</exclude>
 								<exclude>net/runelite/api/AnimationID.class</exclude>
 								<exclude>net/runelite/api/EnumID.class</exclude>
 								<exclude>net/runelite/api/FontID.class</exclude>
