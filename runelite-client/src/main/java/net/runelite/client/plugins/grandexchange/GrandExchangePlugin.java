@@ -196,6 +196,8 @@ public class GrandExchangePlugin extends Plugin
 	private String machineUuid;
 	private String lastUsername;
 	private int tradeSeq;
+	
+	private int defaultGeTextLineHeight = -1;
 
 	/**
 	 * Logic from {@link org.apache.commons.text.similarity.FuzzyScore}
@@ -846,8 +848,14 @@ public class GrandExchangePlugin extends Plugin
 			return;
 		}
 
+		if (defaultGeTextLineHeight == -1) {
+			defaultGeTextLineHeight = geText.getLineHeight();
+		}
+		
+		geText.setLineHeight(defaultGeTextLineHeight);
+		
 		String text = geText.getText();
-
+		
 		if (config.enableGELimits())
 		{
 			final ItemStats itemStats = itemManager.getItemStats(itemId, false);
@@ -884,7 +892,12 @@ public class GrandExchangePlugin extends Plugin
 			final int profit = highAlchValue - (itemManager.getItemPriceWithSource(itemId, true) + itemManager.getItemPriceWithSource(ItemID.NATURE_RUNE, true));
 			if (highAlchValue > 0)
 			{
-				text += "<br>High alch value: " + QuantityFormatter.formatNumber(highAlchValue) + " (" + (profit > 0 ? "+" : "") + profit + ")";
+				text += "<br>High alch value: " + QuantityFormatter.formatNumber(highAlchValue) + " (" + (profit > 0 ? "+" : "") + QuantityFormatter.formatNumber(profit) + ")";
+				
+				//If examine text takes 2 lines then decrese lineHeight by two so the high alch text will fit
+				if (geText.getText().length() > 55) {
+					geText.setLineHeight(defaultGeTextLineHeight - 2);
+				}
 			}
 		}
 
