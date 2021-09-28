@@ -52,10 +52,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @PluginDescriptor(
-	name = "XP Updater",
-	description = "Automatically updates your stats on external xptrackers when you log out",
-	tags = {"cml", "crystalmathlabs", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "external", "integration"},
-	enabledByDefault = false
+		name = "XP Updater",
+		description = "Automatically updates your stats on external xptrackers when you log out",
+		tags = {"cml", "crystalmathlabs", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "f2pwiki", "f2p wiki", "f2p.wiki", "external", "integration"},
+		enabledByDefault = false
 )
 @Slf4j
 public class XpUpdaterPlugin extends Plugin
@@ -138,28 +138,30 @@ public class XpUpdaterPlugin extends Plugin
 		updateCml(username, worldTypes);
 		updateTempleosrs(username, worldTypes);
 		updateWom(username, worldTypes);
+		updateF2PWiki(username, worldTypes);
+
 	}
 
 	private void updateCml(String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.cml()
-			&& !worldTypes.contains(WorldType.SEASONAL)
-			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+				&& !worldTypes.contains(WorldType.SEASONAL)
+				&& !worldTypes.contains(WorldType.DEADMAN)
+				&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
 			HttpUrl url = new HttpUrl.Builder()
-				.scheme("https")
-				.host("crystalmathlabs.com")
-				.addPathSegment("tracker")
-				.addPathSegment("api.php")
-				.addQueryParameter("type", "update")
-				.addQueryParameter("player", username)
-				.build();
+					.scheme("https")
+					.host("crystalmathlabs.com")
+					.addPathSegment("tracker")
+					.addPathSegment("api.php")
+					.addQueryParameter("type", "update")
+					.addQueryParameter("player", username)
+					.build();
 
 			Request request = new Request.Builder()
-				.header("User-Agent", "RuneLite")
-				.url(url)
-				.build();
+					.header("User-Agent", "RuneLite")
+					.url(url)
+					.build();
 
 			sendRequest("CrystalMathLabs", request);
 		}
@@ -168,22 +170,22 @@ public class XpUpdaterPlugin extends Plugin
 	private void updateTempleosrs(String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.templeosrs()
-			&& !worldTypes.contains(WorldType.SEASONAL)
-			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+				&& !worldTypes.contains(WorldType.SEASONAL)
+				&& !worldTypes.contains(WorldType.DEADMAN)
+				&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
 			HttpUrl url = new HttpUrl.Builder()
-				.scheme("https")
-				.host("templeosrs.com")
-				.addPathSegment("php")
-				.addPathSegment("add_datapoint.php")
-				.addQueryParameter("player", username)
-				.build();
+					.scheme("https")
+					.host("templeosrs.com")
+					.addPathSegment("php")
+					.addPathSegment("add_datapoint.php")
+					.addQueryParameter("player", username)
+					.build();
 
 			Request request = new Request.Builder()
-				.header("User-Agent", "RuneLite")
-				.url(url)
-				.build();
+					.header("User-Agent", "RuneLite")
+					.url(url)
+					.build();
 
 			sendRequest("TempleOSRS", request);
 		}
@@ -192,29 +194,53 @@ public class XpUpdaterPlugin extends Plugin
 	private void updateWom(String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.wiseoldman()
-			&& !worldTypes.contains(WorldType.SEASONAL)
-			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+				&& !worldTypes.contains(WorldType.SEASONAL)
+				&& !worldTypes.contains(WorldType.DEADMAN)
+				&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
 			HttpUrl url = new HttpUrl.Builder()
-				.scheme("https")
-				.host("wiseoldman.net")
-				.addPathSegment("api")
-				.addPathSegment("players")
-				.addPathSegment("track")
-				.build();
+					.scheme("https")
+					.host("wiseoldman.net")
+					.addPathSegment("api")
+					.addPathSegment("players")
+					.addPathSegment("track")
+					.build();
 
 			RequestBody formBody = new FormBody.Builder()
-				.add("username", username)
-				.build();
+					.add("username", username)
+					.build();
 
 			Request request = new Request.Builder()
-				.header("User-Agent", "RuneLite")
-				.url(url)
-				.post(formBody)
-				.build();
+					.header("User-Agent", "RuneLite")
+					.url(url)
+					.post(formBody)
+					.build();
 
 			sendRequest("Wise Old Man", request);
+		}
+	}
+
+	private void updateF2PWiki(String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.f2pwiki()
+				&& !worldTypes.contains(WorldType.SEASONAL)
+				&& !worldTypes.contains(WorldType.DEADMAN)
+				&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+		{
+			HttpUrl url = new HttpUrl.Builder()
+					.scheme("https")
+					.host("www.f2p.wiki")
+					.addPathSegment("players")
+					.addPathSegment(username)
+					.addPathSegment("update")
+					.build();
+
+			Request request = new Request.Builder()
+					.header("User-Agent", "RuneLite")
+					.url(url)
+					.build();
+
+			sendRequest("F2PWiki", request);
 		}
 	}
 
