@@ -282,7 +282,7 @@ class LootTrackerPanel extends PluginPanel
 			final boolean syncLoot = client.getUuid() != null && config.syncPanel();
 			final int result = JOptionPane.showOptionDialog(overallPanel,
 				syncLoot ? SYNC_RESET_ALL_WARNING_TEXT : NO_SYNC_RESET_ALL_WARNING_TEXT,
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				"Are you sure to reset all records?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 				null, new String[]{"Yes", "No"}, "No");
 
 			if (result != JOptionPane.YES_OPTION)
@@ -558,7 +558,8 @@ class LootTrackerPanel extends PluginPanel
 			final boolean syncLoot = client.getUuid() != null && config.syncPanel();
 			final int result = JOptionPane.showOptionDialog(overallPanel,
 				syncLoot ? SYNC_RESET_ALL_WARNING_TEXT : NO_SYNC_RESET_ALL_WARNING_TEXT,
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				"Are you sure to reset " + record.getTitle() + "?",
+				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 				null, new String[]{"Yes", "No"}, "No");
 
 			if (result != JOptionPane.YES_OPTION)
