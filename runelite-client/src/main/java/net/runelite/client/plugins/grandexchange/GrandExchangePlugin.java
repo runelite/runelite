@@ -62,6 +62,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
@@ -874,6 +875,16 @@ public class GrandExchangePlugin extends Plugin
 			if (price > 0)
 			{
 				text += "<br>Actively traded price: " + QuantityFormatter.formatNumber(price);
+			}
+		}
+		
+		if (config.showHighAlchValue())
+		{
+			final int highAlchValue = client.getItemDefinition(itemId).getHaPrice();
+			final int profit = highAlchValue - (itemManager.getItemPriceWithSource(itemId, true) + itemManager.getItemPriceWithSource(ItemID.NATURE_RUNE, true));
+			if (highAlchValue > 0)
+			{
+				text += "<br>High alch value: " + QuantityFormatter.formatNumber(highAlchValue) + " (" + (profit > 0 ? "+" : "") + profit + ")";
 			}
 		}
 
