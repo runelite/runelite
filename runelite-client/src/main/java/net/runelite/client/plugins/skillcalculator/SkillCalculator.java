@@ -340,6 +340,24 @@ class SkillCalculator extends JPanel
 		repaint();
 	}
 
+	/*
+		Calculate the final XP provided by an action, including xp factor and skill-dependent bonuses.
+	 */
+	private double calculateFinalActionXp(SkillDataEntry action)
+	{
+		double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
+		if (currentSkill == Skill.AGILITY)
+		{
+			// The Agility Pyramid provides bonus XP based on the player's Agility level.
+			// We use the calculator's "Current Level" as the basis for this calculation.
+			if (action.getName().equals("Agility Pyramid"))
+			{
+				xp += Math.min(1000.0, 300.0+currentLevel*8.0);
+			}
+		}
+		return xp;
+	}
+
 	private void calculate()
 	{
 		for (UIActionSlot slot : uiActionSlots)
@@ -347,7 +365,7 @@ class SkillCalculator extends JPanel
 			int actionCount = 0;
 			int neededXP = targetXP - currentXP;
 			SkillDataEntry action = slot.getAction();
-			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
+			double xp = calculateFinalActionXp(action);
 
 			if (neededXP > 0)
 			{
