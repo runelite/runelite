@@ -35,6 +35,7 @@ public enum PrayerBonus implements SkillBonus
 	ECTOFUNTUS("Ectofuntus (400%)", 3),
 	CHAOS_ALTAR("Chaos Altar (700%)", 6),
 	MORYTANIA_DIARY_3_SHADES("Morytania Diary 3 Shades(150%)", 0.5f),
+	BONECRUSHER("Bonecrusher (50%)", -0.5f),
 	;
 
 	private final String name;
