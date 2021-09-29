@@ -28,31 +28,32 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
+import com.google.inject.Singleton;
 import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
+@Singleton
 class SkillCalculatorPanel extends PluginPanel
 {
 	private final SkillCalculator uiCalculator;
 	private final SkillIconManager iconManager;
 	private final MaterialTabGroup tabGroup;
 
-	SkillCalculatorPanel(SkillIconManager iconManager, Client client, ClientThread clientThread, SpriteManager spriteManager, ItemManager itemManager)
+	@Inject
+	SkillCalculatorPanel(SkillCalculator skillCalculator, SkillIconManager iconManager, UICalculatorInputArea uiInput)
 	{
 		super();
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		this.iconManager = iconManager;
+		uiCalculator = skillCalculator;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setLayout(new GridBagLayout());
@@ -68,10 +69,8 @@ class SkillCalculatorPanel extends PluginPanel
 
 		addCalculatorButtons();
 
-		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
 		uiInput.setBorder(new EmptyBorder(15, 0, 15, 0));
 		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		uiCalculator = new SkillCalculator(client, clientThread, uiInput, spriteManager, itemManager);
 
 		add(tabGroup, c);
 		c.gridy++;
