@@ -94,4 +94,6 @@ public interface SkillAction
 	{
 		return true;
 	}
+
+	boolean isMembers(final ItemManager itemManager);
 }
