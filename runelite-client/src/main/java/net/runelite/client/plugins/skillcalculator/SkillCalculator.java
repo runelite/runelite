@@ -38,16 +38,21 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.WorldType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -62,6 +67,13 @@ import net.runelite.client.ui.components.IconTextField;
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
+	private static final JLabel EMPTY_PANEL = new JLabel("No F2P actions to show.");
+
+	static
+	{
+		EMPTY_PANEL.setHorizontalAlignment(SwingConstants.CENTER);
+		EMPTY_PANEL.setBorder(new EmptyBorder(50, 0, 0, 0));
+	}
 
 	private final UICalculatorInputArea uiInput;
 	private final Client client;
@@ -164,8 +176,11 @@ class SkillCalculator extends JPanel
 			// Clear the combined action slots
 			clearCombinedSlots();
 
-			// Add in checkboxes for available skill bonuses.
-			renderBonusOptions();
+			// Add in checkboxes for available skill bonuses if we're not on a F2P world.
+			if (client.getWorldType().contains(WorldType.MEMBERS))
+			{
+				renderBonusOptions();
+			}
 
 			// Add the combined action slot.
 			add(combinedActionSlot);
@@ -303,7 +318,6 @@ class SkillCalculator extends JPanel
 
 			UIActionSlot slot = new UIActionSlot(action, clientThread, itemManager, uiIcon);
 			uiActionSlots.add(slot); // Keep our own reference.
-			add(slot); // Add component to the panel.
 
 			slot.addMouseListener(new MouseAdapter()
 			{
@@ -330,9 +344,37 @@ class SkillCalculator extends JPanel
 			});
 		}
 
-		// Refresh the rendering of this panel.
-		revalidate();
-		repaint();
+		if (client.getWorldType().contains(WorldType.MEMBERS))
+		{
+			// All actions should be visible, so no need to filter; just refresh the rendering of this panel.
+			uiActionSlots.forEach(this::add);
+			revalidate();
+			repaint();
+		}
+		else
+		{
+			// Filter out members actions due to being on F2P, then refresh the rendering
+			clientThread.invokeLater(() ->
+			{
+				List<UIActionSlot> membersActions = uiActionSlots.stream()
+					.filter(slot -> !slot.getAction().isMembers(itemManager))
+					.collect(Collectors.toList());
+
+				SwingUtilities.invokeLater(() ->
+				{
+					if (membersActions.isEmpty())
+					{
+						add(EMPTY_PANEL);
+					}
+					else
+					{
+						membersActions.forEach(this::add);
+					}
+					revalidate();
+					repaint();
+				});
+			});
+		}
 	}
 
 	private void calculate()

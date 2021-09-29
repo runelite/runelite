@@ -58,13 +58,13 @@ public enum RunecraftAction implements ItemSkillAction
 	BODY_RUNE(ItemID.BODY_RUNE, 20, 7.5f, false),
 	BODY_CORE(ItemID.BODY_CORE, 20, 75, true),
 	LAVA_RUNE(ItemID.LAVA_RUNE, 23, 10.5f, false),
-	COSMIC_RUNE(ItemID.COSMIC_RUNE, 27, 8, false),
-	CHAOS_RUNE(ItemID.CHAOS_RUNE, 35, 8.5f, false),
+	COSMIC_RUNE(ItemID.COSMIC_RUNE, 27, 8, false, true),
+	CHAOS_RUNE(ItemID.CHAOS_RUNE, 35, 8.5f, false, true),
 	CHAOS_CORE(ItemID.CHAOS_CORE, 35, 85, true),
 	ASTRAL_RUNE(ItemID.ASTRAL_RUNE, 40, 8.7f, false),
-	NATURE_RUNE(ItemID.NATURE_RUNE, 44, 9, false),
-	LAW_RUNE(ItemID.LAW_RUNE, 54, 9.5f, false),
-	DEATH_RUNE(ItemID.DEATH_RUNE, 65, 10, false),
+	NATURE_RUNE(ItemID.NATURE_RUNE, 44, 9, false, true),
+	LAW_RUNE(ItemID.LAW_RUNE, 54, 9.5f, false, true),
+	DEATH_RUNE(ItemID.DEATH_RUNE, 65, 10, false, true),
 	BLOOD_RUNE(ItemID.BLOOD_RUNE, 77, 24.425f, true),
 	SOUL_RUNE(ItemID.SOUL_RUNE, 90, 30.325f, true),
 	WRATH_RUNE(ItemID.WRATH_RUNE, 95, 8, false),
@@ -74,6 +74,12 @@ public enum RunecraftAction implements ItemSkillAction
 	private final int level;
 	private final float xp;
 	private final boolean ignoreBonus;
+	private final boolean isMembersOverride;
+
+	RunecraftAction(int itemId, int level, float xp, boolean ignoreBonus)
+	{
+		this(itemId, level, xp, ignoreBonus, false);
+	}
 
 	@Override
 	public boolean isBonusApplicable(SkillBonus bonus)
