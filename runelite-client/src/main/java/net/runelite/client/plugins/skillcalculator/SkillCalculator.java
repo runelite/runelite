@@ -345,7 +345,7 @@ class SkillCalculator extends JPanel
 			float bonus = 1f;
 			if (currentBonus != null && action.isBonusApplicable(currentBonus))
 			{
-				bonus += currentBonus.getValue();
+				bonus = currentBonus.getValue();
 			}
 			final int xp = Math.round(action.getXp() * bonus * 10f);
 
