@@ -27,6 +27,10 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import com.google.inject.Provider;
+import net.runelite.api.Client;
+import net.runelite.api.WorldType;
+import net.runelite.api.events.WorldChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -41,12 +45,16 @@ import net.runelite.client.util.ImageUtil;
 public class SkillCalculatorPlugin extends Plugin
 {
 	@Inject
+	private Client client;
+
+	@Inject
 	private ClientToolbar clientToolbar;
 
 	@Inject
 	private Provider<SkillCalculatorPanel> uiPanel;
 
 	private NavigationButton uiNavigationButton;
+	private boolean lastWorldWasMembers;
 
 	@Override
 	protected void startUp() throws Exception
@@ -67,5 +75,17 @@ public class SkillCalculatorPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(uiNavigationButton);
+	}
+
+	@Subscribe
+	public void onWorldChanged(WorldChanged event)
+	{
+		// We only need to reload the interface if the player switches from P2P to F2P or vice versa
+		boolean currentWorldIsMembers = client.getWorldType().contains(WorldType.MEMBERS);
+		if (currentWorldIsMembers != lastWorldWasMembers)
+		{
+			uiPanel.get().reloadCurrentCalculator();
+		}
+		lastWorldWasMembers = currentWorldIsMembers;
 	}
 }
