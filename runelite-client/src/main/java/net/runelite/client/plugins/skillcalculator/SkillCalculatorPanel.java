@@ -31,6 +31,7 @@ import java.awt.GridLayout;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import com.google.inject.Singleton;
 import net.runelite.client.game.SkillIconManager;
@@ -45,6 +46,9 @@ class SkillCalculatorPanel extends PluginPanel
 	private final SkillCalculator uiCalculator;
 	private final SkillIconManager iconManager;
 	private final MaterialTabGroup tabGroup;
+
+	private MaterialTab currentTab;
+	private boolean shouldForceReload;
 
 	@Inject
 	SkillCalculatorPanel(SkillCalculator skillCalculator, SkillIconManager iconManager, UICalculatorInputArea uiInput)
@@ -90,11 +94,22 @@ class SkillCalculatorPanel extends PluginPanel
 			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
 			tab.setOnSelectEvent(() ->
 			{
-				uiCalculator.openCalculator(calculatorType);
+				uiCalculator.openCalculator(calculatorType, shouldForceReload);
+				currentTab = tab;
+				shouldForceReload = false;
 				return true;
 			});
 
 			tabGroup.addTab(tab);
+		}
+	}
+
+	void reloadCurrentCalculator()
+	{
+		if (currentTab != null)
+		{
+			shouldForceReload = true;
+			SwingUtilities.invokeLater(() -> tabGroup.select(currentTab));
 		}
 	}
 }

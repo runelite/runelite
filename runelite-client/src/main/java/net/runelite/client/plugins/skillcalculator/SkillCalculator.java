@@ -143,13 +143,13 @@ class SkillCalculator extends JPanel
 		uiInput.getUiFieldTargetXP().addFocusListener(buildFocusAdapter(e -> onFieldTargetXPUpdated()));
 	}
 
-	void openCalculator(CalculatorType calculatorType)
+	void openCalculator(CalculatorType calculatorType, boolean forceReload)
 	{
 		// Update internal skill/XP values.
 		currentXP = client.getSkillExperience(calculatorType.getSkill());
 		currentLevel = Experience.getLevelForXp(currentXP);
 
-		if (currentCalculator != calculatorType)
+		if (forceReload || currentCalculator != calculatorType)
 		{
 			currentCalculator = calculatorType;
 			currentBonus = null;
