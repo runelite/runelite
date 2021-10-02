@@ -67,6 +67,7 @@ public class KingdomPlugin extends Plugin
 	private static final String CONFIG_COFFER_KEY = "coffer";
 	private static final String CONFIG_APPROVAL_KEY = "approval";
 	private static final String CHAT_MESSAGE_FORMAT = "Your Kingdom of Miscellania approval is %d%%, and your coffer has %s coins.";
+	private static final String CHAT_MESSAGE_FORMAT_COLLECTION = "You last collected from Miscellania %s days ago.";
 	private static final int MAX_WITHDRAWAL_BASE = 50_000;
 	private static final int MAX_WITHDRAWAL_ROYAL_TROUBLE = 75_000;
 	private static final float APPROVAL_DECREMENT_BASE = 0.025f;
@@ -186,6 +187,14 @@ public class KingdomPlugin extends Plugin
 				getApprovalPercent(estimatedApproval),
 				QuantityFormatter.quantityToStackSize(estimatedCoffer)));
 		}
+
+		int lastCollected = getCollected(lastChanged);
+		if (config.shouldSendCollectedNotifications())
+		{
+			sendChatMessage(String.format(
+				CHAT_MESSAGE_FORMAT_COLLECTION,
+				lastCollected));
+		}
 	}
 
 	private void addKingdomInfobox()
@@ -295,5 +304,9 @@ public class KingdomPlugin extends Plugin
 	private void setApproval(int approval)
 	{
 		configManager.setRSProfileConfiguration(KingdomConfig.CONFIG_GROUP_NAME, CONFIG_APPROVAL_KEY, approval);
+	}
+
+	private int getCollected(Instant lastChanged) {
+		return (int) Duration.between(lastChanged, Instant.now()).toDays();
 	}
 }
