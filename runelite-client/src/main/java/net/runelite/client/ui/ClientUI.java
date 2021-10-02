@@ -32,6 +32,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -358,6 +359,16 @@ public class ClientUI
 					{
 						shutdownClient();
 					}
+				}
+			});
+
+			frame.addWindowStateListener(l ->
+			{
+				if (l.getNewState() == Frame.NORMAL)
+				{
+					// Recompute minimum size after a restore.
+					// Invoking this immediately causes the minimum size to be 8px too small with custom chrome on.
+					SwingUtilities.invokeLater(frame::revalidateMinimumSize);
 				}
 			});
 
