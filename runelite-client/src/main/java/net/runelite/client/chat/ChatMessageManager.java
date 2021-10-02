@@ -435,11 +435,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueServerMessage(), false),
 				ChatMessageType.GAMEMESSAGE);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueServerMessage(), false),
+				ChatMessageType.ENGINE);
 		}
 		if (chatColorConfig.opaqueServerMessageHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueServerMessageHighlight(), false),
 				ChatMessageType.GAMEMESSAGE);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueServerMessageHighlight(), false),
+				ChatMessageType.ENGINE);
 		}
 		if (chatColorConfig.opaqueGameMessage() != null)
 		{
@@ -613,11 +617,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentServerMessage(), true),
 				ChatMessageType.GAMEMESSAGE);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentServerMessage(), true),
+				ChatMessageType.ENGINE);
 		}
 		if (chatColorConfig.transparentServerMessageHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentServerMessageHighlight(), true),
 				ChatMessageType.GAMEMESSAGE);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentServerMessageHighlight(), true),
+				ChatMessageType.ENGINE);
 		}
 		if (chatColorConfig.transparentGameMessage() != null)
 		{

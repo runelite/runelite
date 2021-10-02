@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.skillcalculator.beans;
+package net.runelite.api.clan;
 
-import lombok.Getter;
-
-@Getter
-public class SkillDataEntry
+public final class ClanID
 {
-	private String name;
-	private int level;
-	private double xp;
-	private Integer icon;
-	private Integer sprite;
-	private boolean ignoreBonus;
+	/**
+	 * The primary clan.
+	 */
+	public static final int CLAN = 0;
+	/**
+	 * The group ironman clan.
+	 */
+	public static final int GROUP_IRONMAN = 1;
 }

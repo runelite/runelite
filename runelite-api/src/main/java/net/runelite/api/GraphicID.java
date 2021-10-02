@@ -24,7 +24,7 @@
  */
 package net.runelite.api;
 
-public class GraphicID
+public final class GraphicID
 {
 	public static final int WINE_MAKE = 47;
 	public static final int SPLASH = 85;

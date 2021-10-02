@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.skillcalculator.skills;
 
 /**
- * Utility class used for mapping projectile IDs.
- * <p>
- * Note: This class is not complete and may be missing mapped IDs.
+ * An object representing a skill bonus, such as from a skilling outfit or activity granting boosted xp.
  */
-public final class ProjectileID
+public interface SkillBonus
 {
-	public static final int CANNONBALL = 53;
-	public static final int GRANITE_CANNONBALL = 1443;
-	public static final int TELEKINETIC_SPELL = 143;
-	public static final int ZALCANO_PROJECTILE_FIREBALL = 1728;
+	/**
+	 * Gets the name of this skill bonus.
+	 *
+	 * @return The name of this skill bonus.
+	 */
+	String getName();
+
+	/**
+	 * Gets the multiplier for this skill bonus. When multiplied with the skill action XP value, it yields the amount of
+	 * additional xp granted for that action. (eg. {@code {@link SkillAction#getXp()} * (1 + {@link #getValue()}} yields
+	 * the full amount of xp gained)
+	 *
+	 * @return The skill bonus multiplier.
+	 */
+	float getValue();
 }

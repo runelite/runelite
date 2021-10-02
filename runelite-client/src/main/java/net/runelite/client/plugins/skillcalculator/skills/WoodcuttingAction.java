@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
+ * Copyright (c) 2021, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,28 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.specialcounter;
+package net.runelite.client.plugins.skillcalculator.skills;
 
-import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-enum SpecialWeapon
+public enum WoodcuttingAction implements NamedSkillAction
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER}, false, SpecialCounterConfig::dragonWarhammerThreshold),
-	ARCLIGHT("Arclight", new int[]{ItemID.ARCLIGHT}, false, SpecialCounterConfig::arclightThreshold),
-	DARKLIGHT("Darklight", new int[]{ItemID.DARKLIGHT}, false, SpecialCounterConfig::darklightThreshold),
-	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BANDOS_GODSWORD, ItemID.BANDOS_GODSWORD_OR}, true, SpecialCounterConfig::bandosGodswordThreshold),
-	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BARRELCHEST_ANCHOR}, true, (c) -> 0),
-	BONE_DAGGER("Bone Dagger", new int[]{ItemID.BONE_DAGGER, ItemID.BONE_DAGGER_P, ItemID.BONE_DAGGER_P_8876, ItemID.BONE_DAGGER_P_8878}, true, (c) -> 0),
-	DORGESHUUN_CROSSBOW("Dorgeshuun Crossbow", new int[]{ItemID.DORGESHUUN_CROSSBOW}, true, (c) -> 0),
-	BULWARK("Dinh's Bulwark", new int[]{ItemID.DINHS_BULWARK}, false, c -> 0);
+	LOGS("Logs", 1, 25, ItemID.LOGS),
+	ACHEY_TREE_LOGS("Achey tree logs", 1, 25, ItemID.ACHEY_TREE_LOGS),
+	OAK_LOGS("Oak logs", 15, 37.5f, ItemID.OAK_LOGS),
+	WILLOW_LOGS("Willow logs", 30, 67.5f, ItemID.WILLOW_LOGS),
+	TEAK_LOGS("Teak logs", 35, 85, ItemID.TEAK_LOGS),
+	BARK("Bark", 45, 82.5f, ItemID.BARK),
+	MAPLE_LOGS("Maple logs", 45, 100, ItemID.MAPLE_LOGS),
+	MAHOGANY_LOGS("Mahogany logs", 50, 125, ItemID.MAHOGANY_LOGS),
+	ARCTIC_PINE_LOGS("Arctic pine logs", 54, 40, ItemID.ARCTIC_PINE_LOGS),
+	YEW_LOGS("Yew logs", 60, 175, ItemID.YEW_LOGS),
+	BLISTERWOOD_LOGS("Blisterwood logs", 62, 76, ItemID.BLISTERWOOD_LOGS),
+	SULLIUSCEPS("Sulliusceps", 65, 127, ItemID.SULLIUSCEP_CAP),
+	MAGIC_LOGS("Magic logs", 75, 250, ItemID.MAGIC_LOGS),
+	REDWOOD_LOGS("Redwood logs", 90, 380, ItemID.REDWOOD_LOGS),
+	;
 
 	private final String name;
-	private final int[] itemID;
-	private final boolean damage;
-	private final Function<SpecialCounterConfig, Integer> threshold;
+	private final int level;
+	private final float xp;
+	private final int icon;
 }

@@ -1209,17 +1209,52 @@ public final class SpriteID
 	public static final int KOUREND_FAVOUR_LOVAKENGJ_ICON = 1244;
 	public static final int KOUREND_FAVOUR_PISCARILIUS_ICON = 1245;
 	public static final int KOUREND_FAVOUR_SHAYZIEN_ICON = 1246;
-	/* Unmapped: 1247~1296 */
+	public static final int SPELL_BASIC_REANIMATION = 1247;
+	public static final int SPELL_ADEPT_REANIMATION = 1248;
+	public static final int SPELL_EXPERT_REANIMATION = 1249;
+	public static final int SPELL_MASTER_REANIMATION = 1250;
+	/* Unmapped: 1251 */
+	public static final int SPELL_ARCEUUS_LIBRARY_TELEPORT = 1252;
+	public static final int SPELL_DRAYNOR_MANOR_TELEPORT = 1253;
+	public static final int SPELL_SALVE_GRAVEYARD_TELEPORT = 1254;
+	/* Unmapped: 1255 */
+	public static final int SPELL_MIND_ALTAR_TELEPORT = 1256;
+	public static final int SPELL_RESPAWN_TELEPORT = 1257;
+	/* Unmapped 1258 */
+	public static final int SPELL_FENKENSTRAINS_CASTLE_TELEPORT = 1259;
+	public static final int SPELL_WEST_ARDOUGNE_TELEPORT = 1260;
+	public static final int SPELL_HARMONY_ISLAND_TELEPORT = 1261;
+	public static final int SPELL_BARROWS_TELEPORT = 1262;
+	public static final int SPELL_APE_ATOLL_TELEPORT = 1263;
+	public static final int SPELL_CEMETERY_TELEPORT = 1264;
+	/* Unmapped: 1265 */
+	public static final int SPELL_RESURRECT_CROPS = 1266;
+	public static final int SPELL_GHOSTLY_GRASP = 1267;
+	public static final int SPELL_SKELETAL_GRASP = 1268;
+	public static final int SPELL_UNDEAD_GRASP = 1269;
+	public static final int SPELL_RESURRECT_LESSER_GHOST = 1270;
+	/* Unmapped: 1271~1296 */
 	public static final int QUESTS_PAGE_ICON_PURPLE_KOUREND = 1297;
 	public static final int UNUSED_TAB_QUESTS_GREEN_ACHIEVEMENT_DIARIES = 1298;
 	public static final int TAB_QUESTS_GREEN_ACHIEVEMENT_DIARIES = 1299;
-	/* Unmapped: 1300~1305 */
+	/* Unmapped: 1300~1301 */
+	public static final int SPELL_INFERIOR_DEMONBANE = 1302;
+	public static final int SPELL_SUPERIOR_DEMONBANE = 1303;
+	public static final int SPELL_DARK_DEMONBANE = 1304;
+	public static final int SPELL_MARK_OF_DARKNESS = 1305;
 	public static final int SPELL_WARD_OF_ARCEUUS = 1306;
-	/* Unmapped: 1307~1309 */
+	public static final int SPELL_LESSER_CORRUPTION = 1307;
+	public static final int SPELL_GREATER_CORRUPTION = 1308;
+	/* Unmapped: 1309 */
 	public static final int SPELL_DEATH_CHARGE = 1310;
-	/* Unmapped: 1311~1314 */
+	public static final int SPELL_DEMONIC_OFFERING = 1311;
+	public static final int SPELL_SINISTER_OFFERING = 1312;
+	/* Unmapped: 1313~1314 */
 	public static final int SPELL_SHADOW_VEIL = 1315;
-	/* Unmapped: 1316~1324 */
+	public static final int SPELL_DARK_LURE = 1316;
+	public static final int SPELL_VILE_VIGOUR = 1317;
+	public static final int SPELL_DEGRIME = 1318;
+	/* Unmapped: 1319~1324 */
 	public static final int SPELL_WARD_OF_ARCEUUS_DISABLED = 1325;
 	/* Unmapped: 1326 */
 	public static final int SPELL_GREATER_CORRUPTION_DISABLED = 1327;
@@ -1615,6 +1650,8 @@ public final class SpriteID
 	public static final int HEALTHBAR_YELLOW_BACK_70PX = 2978;
 	/* Unmapped: 2979, 2980 */
 	public static final int SPELL_RESURRECT_SUPERIOR_SKELETON = 2981;
-	/* Unmapped: 2982~2986 */
+	/* Unmapped: 2982~2983 */
+	public static final int SPELL_RESURRECT_GREATER_ZOMBIE = 2984;
+	/* Unmapped: 2985~2986 */
 	public static final int SPELL_RESURRECT_SUPERIOR_SKELETON_DISABLED = 2987;
 }

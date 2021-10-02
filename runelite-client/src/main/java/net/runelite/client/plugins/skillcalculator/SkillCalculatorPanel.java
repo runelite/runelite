@@ -23,7 +23,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.GridBagConstraints;
@@ -33,6 +32,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
@@ -47,7 +47,7 @@ class SkillCalculatorPanel extends PluginPanel
 	private final SkillIconManager iconManager;
 	private final MaterialTabGroup tabGroup;
 
-	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SpriteManager spriteManager, ItemManager itemManager)
+	SkillCalculatorPanel(SkillIconManager iconManager, Client client, ClientThread clientThread, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		super();
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -71,7 +71,7 @@ class SkillCalculatorPanel extends PluginPanel
 		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
 		uiInput.setBorder(new EmptyBorder(15, 0, 15, 0));
 		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		uiCalculator = new SkillCalculator(client, uiInput, spriteManager, itemManager);
+		uiCalculator = new SkillCalculator(client, clientThread, uiInput, spriteManager, itemManager);
 
 		add(tabGroup, c);
 		c.gridy++;

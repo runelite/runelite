@@ -38,7 +38,8 @@ public enum RuneScapeProfileType
 	BETA(client -> client.getWorldType().contains(WorldType.NOSAVE_MODE)),
 	DEADMAN(client -> client.getWorldType().contains(WorldType.DEADMAN)),
 	TRAILBLAZER_LEAGUE,
-	DEADMAN_REBORN(client -> client.getWorldType().contains(WorldType.SEASONAL))
+	DEADMAN_REBORN,
+	SHATTERED_RELICS_LEAGUE(client -> client.getWorldType().contains(WorldType.SEASONAL)),
 	;
 
 	private final Predicate<Client> test;
