@@ -29,9 +29,7 @@ import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -69,7 +67,6 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Inject
 	private KeyManager keyManager;
 
-	private boolean inPvp;
 	private boolean shiftHeld;
 	private boolean ctrlHeld;
 
@@ -86,8 +83,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		{
 			clientThread.invokeLater(() ->
 			{
-				inPvp = client.getVar(Varbits.PVP_SPEC_ORB) == 1;
-				if (!config.onShiftOnly() && !inPvp)
+				if (!config.onShiftOnly())
 				{
 					setDragDelay();
 				}
@@ -113,12 +109,12 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_CONTROL && config.disableOnCtrl() && !(inPvp || config.onShiftOnly()))
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL && config.disableOnCtrl() && !config.onShiftOnly())
 		{
 			resetDragDelay();
 			ctrlHeld = true;
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_SHIFT && (inPvp || config.onShiftOnly()))
+		else if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
 		{
 			setDragDelay();
 			shiftHeld = true;
@@ -128,12 +124,12 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_CONTROL && config.disableOnCtrl() && !(inPvp || config.onShiftOnly()))
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL && config.disableOnCtrl() && !config.onShiftOnly())
 		{
 			setDragDelay();
 			ctrlHeld = false;
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_SHIFT && (inPvp || config.onShiftOnly()))
+		else if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
 		{
 			resetDragDelay();
 			shiftHeld = false;
@@ -150,7 +146,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 				ctrlHeld = false;
 			}
 
-			if (config.onShiftOnly() || inPvp)
+			if (config.onShiftOnly())
 			{
 				shiftHeld = false;
 				clientThread.invoke(this::resetDragDelay);
@@ -163,27 +159,6 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
-	{
-		boolean currentStatus = client.getVar(Varbits.PVP_SPEC_ORB) == 1;
-
-		if (currentStatus != inPvp)
-		{
-			inPvp = currentStatus;
-
-			if (!inPvp && !config.onShiftOnly())
-			{
-				setDragDelay();
-			}
-			else
-			{
-				resetDragDelay();
-			}
-		}
-
-	}
-
-	@Subscribe
 	public void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
@@ -192,7 +167,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 			ctrlHeld = false;
 			clientThread.invoke(this::resetDragDelay);
 		}
-		else if (!inPvp && !config.onShiftOnly())
+		else if (!config.onShiftOnly())
 		{
 			clientThread.invoke(this::setDragDelay);
 		}

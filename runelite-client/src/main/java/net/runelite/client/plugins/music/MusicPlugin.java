@@ -42,7 +42,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -86,7 +85,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
-@Slf4j
 @PluginDescriptor(
 	name = "Music",
 	description = "Adds search and filter for the music list, and additional volume control",
@@ -188,7 +186,7 @@ public class MusicPlugin extends Plugin
 			channels = new Channel[]{musicChannel, effectChannel, areaChannel};
 
 			addMusicButtons();
-			if (musicConfig.granularSliders())
+			if (client.getGameState() == GameState.LOGGED_IN && musicConfig.granularSliders())
 			{
 				updateMusicOptions();
 				resetSettingsWindow();
@@ -750,7 +748,7 @@ public class MusicPlugin extends Plugin
 			s.update();
 			s.getChannel().setWindowSlider(s);
 		}
-		
+
 		if (ev.getScriptId() == ScriptID.TOPLEVEL_REDRAW && musicConfig.granularSliders())
 		{
 			// we have to set the var to our value so toplevel_redraw doesn't try to set
@@ -859,11 +857,12 @@ public class MusicPlugin extends Plugin
 				windowSlider.update();
 			}
 		}
-		
+
 		public void updateVar()
 		{
 			int val = getValue();
-			client.getVarps()[this.var.getId()] = val * 100 / this.max;
+			int varVal = Math.round((float) val / (max / 100.f));
+			client.getVarps()[this.var.getId()] = varVal;
 		}
 
 		public void shutDown()

@@ -211,6 +211,7 @@ public class ClientUI
 					currentButton.setSelected(false);
 					currentNavButton.setSelected(false);
 					currentButton = null;
+					currentNavButton = null;
 				}
 				else
 				{

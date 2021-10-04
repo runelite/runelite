@@ -276,6 +276,10 @@
     20854,
     23873
   ],
+  "tuna": [
+    361,
+    26149
+  ],
   "shark": [
     385,
     6969,
@@ -3765,7 +3769,13 @@
     23072,
     23082,
     25753,
-    25820
+    25820,
+    25920,
+    25921,
+    25922,
+    25923,
+    25924,
+    25925
   ],
   "herb tea mix": [
     4464,
@@ -6473,7 +6483,11 @@
     9739,
     9741,
     9743,
-    9745
+    9745,
+    26150,
+    26151,
+    26152,
+    26153
   ],
   "attack cape": [
     9747,
@@ -7528,7 +7542,16 @@
     25185,
     25187,
     25189,
-    25191
+    25191,
+    25898,
+    25900,
+    25902,
+    25904,
+    25906,
+    25908,
+    25910,
+    25912,
+    25914
   ],
   "slayer ring": [
     11866,
@@ -8640,6 +8663,11 @@
   "dragon sword": [
     21009,
     21206
+  ],
+  "dragon hunter crossbow": [
+    21012,
+    25916,
+    25918
   ],
   "ancestral hat": [
     21018,
@@ -9884,5 +9912,237 @@
     25892,
     25894,
     25896
+  ],
+  "ghommals hilt": [
+    25926,
+    25928,
+    25930,
+    25932,
+    25934,
+    25936
+  ],
+  "anim offhand": [
+    25938,
+    25941,
+    25944,
+    25947,
+    25950,
+    25953
+  ],
+  "tumekens heka": [
+    25987,
+    25989
+  ],
+  "sigil of resilience": [
+    25990,
+    25991
+  ],
+  "sigil of consistency": [
+    25993,
+    25994
+  ],
+  "sigil of the formidable fighter": [
+    25996,
+    25997
+  ],
+  "sigil of the rigorous ranger": [
+    25999,
+    26000
+  ],
+  "sigil of the meticulous mage": [
+    26002,
+    26003
+  ],
+  "sigil of fortification": [
+    26005,
+    26006
+  ],
+  "sigil of barrows": [
+    26008,
+    26009
+  ],
+  "sigil of deft strikes": [
+    26011,
+    26012
+  ],
+  "sigil of freedom": [
+    26014,
+    26015
+  ],
+  "sigil of enhanced harvest": [
+    26017,
+    26018
+  ],
+  "sigil of storage": [
+    26020,
+    26021
+  ],
+  "sigil of the smith": [
+    26023,
+    26024
+  ],
+  "sigil of the alchemist": [
+    26026,
+    26027
+  ],
+  "sigil of the fletcher": [
+    26029,
+    26030
+  ],
+  "sigil of the chef": [
+    26032,
+    26033
+  ],
+  "sigil of the craftsman": [
+    26035,
+    26036
+  ],
+  "sigil of the abyss": [
+    26038,
+    26039
+  ],
+  "sigil of stamina": [
+    26041,
+    26042
+  ],
+  "sigil of the potion master": [
+    26044,
+    26045
+  ],
+  "sigil of the eternal jeweller": [
+    26047,
+    26048
+  ],
+  "sigil of the treasure hunter": [
+    26050,
+    26051
+  ],
+  "sigil of mobility": [
+    26053,
+    26054
+  ],
+  "sigil of exaggeration": [
+    26056,
+    26057
+  ],
+  "sigil of specialised strikes": [
+    26059,
+    26060
+  ],
+  "sigil of the porcupine": [
+    26062,
+    26063
+  ],
+  "sigil of binding": [
+    26065,
+    26066
+  ],
+  "sigil of escaping": [
+    26068,
+    26069
+  ],
+  "sigil of the ruthless ranger": [
+    26071,
+    26072
+  ],
+  "sigil of the feral fighter": [
+    26074,
+    26075
+  ],
+  "sigil of the menacing mage": [
+    26077,
+    26078
+  ],
+  "sigil of prosperity": [
+    26080,
+    26081
+  ],
+  "sigil of the dwarves": [
+    26083,
+    26084
+  ],
+  "sigil of the elves": [
+    26086,
+    26087
+  ],
+  "sigil of the barbarians": [
+    26089,
+    26090
+  ],
+  "sigil of the gnomes": [
+    26092,
+    26093
+  ],
+  "sigil of nature": [
+    26095,
+    26096
+  ],
+  "sigil of devotion": [
+    26098,
+    26099
+  ],
+  "sigil of the forager": [
+    26101,
+    26102
+  ],
+  "sigil of garments": [
+    26104,
+    26105
+  ],
+  "sigil of slaughter": [
+    26107,
+    26108
+  ],
+  "sigil of the fortune farmer": [
+    26110,
+    26111
+  ],
+  "sigil of versatility": [
+    26113,
+    26114
+  ],
+  "sigil of the serpent": [
+    26116,
+    26117
+  ],
+  "sigil of supreme stamina": [
+    26119,
+    26120
+  ],
+  "sigil of preservation": [
+    26122,
+    26123
+  ],
+  "sigil of finality": [
+    26125,
+    26126
+  ],
+  "sigil of pious protection": [
+    26128,
+    26129
+  ],
+  "sigil of aggression": [
+    26131,
+    26132
+  ],
+  "sigil of rampage": [
+    26134,
+    26135
+  ],
+  "sigil of the skiller": [
+    26137,
+    26138
+  ],
+  "sigil of remote storage": [
+    26140,
+    26141
+  ],
+  "sigil of last recall": [
+    26143,
+    26144
+  ],
+  "sigil of the guardian angel": [
+    26146,
+    26147
   ]
 }

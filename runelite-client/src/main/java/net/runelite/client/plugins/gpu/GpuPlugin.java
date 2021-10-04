@@ -66,7 +66,6 @@ import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Model;
-import net.runelite.api.NodeCache;
 import net.runelite.api.Perspective;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
@@ -329,6 +328,24 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				invokeOnMainThread(() ->
 				{
+					try
+					{
+						// Get and display the device and driver used by the GPU plugin
+						GLDrawable dummyDrawable = GLDrawableFactory.getFactory(GLProfile.getDefault())
+							.createDummyDrawable(GLProfile.getDefaultDevice(), true, new GLCapabilities(GLProfile.getDefault()), null);
+						dummyDrawable.setRealized(true);
+						GLContext versionContext = dummyDrawable.createContext(null);
+						versionContext.makeCurrent();
+						GL versionGL = versionContext.getGL();
+						log.info("Using device: {}", versionGL.glGetString(GL.GL_RENDERER));
+						log.info("Using driver: {}", versionGL.glGetString(GL.GL_VERSION));
+						versionContext.destroy();
+					}
+					catch (Exception ex)
+					{
+						log.warn("error checking device and driver version", ex);
+					}
+
 					GLProfile glProfile = GLProfile.get(GLProfile.GL4);
 
 					GLCapabilities glCaps = new GLCapabilities(glProfile);
@@ -406,12 +423,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				lastAntiAliasingMode = null;
 
 				textureArrayId = -1;
-
-				// increase size of model cache for dynamic objects since we are extending scene size
-				NodeCache cachedModels2 = client.getCachedModels2();
-				cachedModels2.setCapacity(256);
-				cachedModels2.setRemainingCapacity(256);
-				cachedModels2.reset();
 
 				if (client.getGameState() == GameState.LOGGED_IN)
 				{

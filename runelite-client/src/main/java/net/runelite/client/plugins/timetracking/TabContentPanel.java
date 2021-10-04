@@ -24,13 +24,16 @@
  */
 package net.runelite.client.plugins.timetracking;
 
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import javax.swing.JPanel;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class TabContentPanel extends JPanel
 {
 	private static final DateTimeFormatter DATETIME_FORMATTER_24H = DateTimeFormatter.ofPattern("HH:mm");
@@ -72,17 +75,25 @@ public abstract class TabContentPanel extends JPanel
 		}
 		else
 		{
-			StringBuilder sb = new StringBuilder();
-			LocalDateTime endTime = LocalDateTime.now().plus(remainingSeconds, ChronoUnit.SECONDS);
-			LocalDateTime currentTime = LocalDateTime.now();
-			if (endTime.getDayOfWeek() != currentTime.getDayOfWeek())
+			try
 			{
-				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault())).append(" ");
-			}
-			sb.append("at ");
-			sb.append(formatter.format(endTime));
+				StringBuilder sb = new StringBuilder();
+				LocalDateTime endTime = LocalDateTime.now().plus(remainingSeconds, ChronoUnit.SECONDS);
+				LocalDateTime currentTime = LocalDateTime.now();
+				if (endTime.getDayOfWeek() != currentTime.getDayOfWeek())
+				{
+					sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault())).append(" ");
+				}
+				sb.append("at ");
+				sb.append(formatter.format(endTime));
 
-			return sb.toString();
+				return sb.toString();
+			}
+			catch (DateTimeException e)
+			{
+				log.warn("error formatting absolute time: now + {}", remainingSeconds, e);
+				return "Invalid";
+			}
 		}
 	}
 

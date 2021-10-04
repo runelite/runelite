@@ -24,32 +24,36 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.skillcalculator.skills.*;
 
 @AllArgsConstructor
 @Getter
 enum CalculatorType
 {
-	MINING(Skill.MINING, "skill_mining.json"),
-	AGILITY(Skill.AGILITY, "skill_agility.json"),
-	SMITHING(Skill.SMITHING, "skill_smithing.json"),
-	HERBLORE(Skill.HERBLORE, "skill_herblore.json"),
-	FISHING(Skill.FISHING, "skill_fishing.json"),
-	THIEVING(Skill.THIEVING, "skill_thieving.json"),
-	COOKING(Skill.COOKING, "skill_cooking.json"),
-	PRAYER(Skill.PRAYER, "skill_prayer.json"),
-	CRAFTING(Skill.CRAFTING, "skill_crafting.json"),
-	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json"),
-	MAGIC(Skill.MAGIC, "skill_magic.json"),
-	FLETCHING(Skill.FLETCHING, "skill_fletching.json"),
-	WOODCUTTING(Skill.WOODCUTTING, "skill_woodcutting.json"),
-	RUNECRAFT(Skill.RUNECRAFT, "skill_runecraft.json"),
-	FARMING(Skill.FARMING, "skill_farming.json"),
-	CONSTRUCTION(Skill.CONSTRUCTION, "skill_construction.json"),
-	HUNTER(Skill.HUNTER, "skill_hunter.json");
+	MINING(Skill.MINING, MiningBonus.values(), MiningAction.values()),
+	AGILITY(Skill.AGILITY, null, AgilityAction.values()),
+	SMITHING(Skill.SMITHING, null, SmithingAction.values()),
+	HERBLORE(Skill.HERBLORE, null, HerbloreAction.values()),
+	FISHING(Skill.FISHING, FishingBonus.values(), FishingAction.values()),
+	THIEVING(Skill.THIEVING, null, ThievingAction.values()),
+	COOKING(Skill.COOKING, null, CookingAction.values()),
+	PRAYER(Skill.PRAYER, PrayerBonus.values(), PrayerAction.values()),
+	CRAFTING(Skill.CRAFTING, null, CraftingAction.values()),
+	FIREMAKING(Skill.FIREMAKING, FiremakingBonus.values(), FiremakingAction.values()),
+	MAGIC(Skill.MAGIC, null, MagicAction.values()),
+	FLETCHING(Skill.FLETCHING, null, FletchingAction.values()),
+	WOODCUTTING(Skill.WOODCUTTING, WoodcuttingBonus.values(), WoodcuttingAction.values()),
+	RUNECRAFT(Skill.RUNECRAFT, RunecraftBonus.values(), RunecraftAction.values()),
+	FARMING(Skill.FARMING, FarmingBonus.values(), FarmingAction.values()),
+	CONSTRUCTION(Skill.CONSTRUCTION, ConstructionBonus.values(), ConstructionAction.values()),
+	HUNTER(Skill.HUNTER, null, HunterAction.values());
 
 	private final Skill skill;
-	private final String dataFile;
+	@Nullable
+	private final SkillBonus[] skillBonuses;
+	private final SkillAction[] skillActions;
 }

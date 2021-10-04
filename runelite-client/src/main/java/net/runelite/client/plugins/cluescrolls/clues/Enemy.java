@@ -41,8 +41,12 @@ public enum Enemy
 	ZAMORAK_WIZARD("Zamorak Wizard"),
 	//appears for hard clue coordinate steps not in the wilderness
 	SARADOMIN_WIZARD("Saradomin Wizard"),
-	//appears for elite clue coordinate steps all areas
+	//appears for elite clue coordinate steps in most areas
 	ARMADYLEAN_OR_BANDOSIAN_GUARD("Armadylean OR Bandosian Guard"),
+	//appears for elite clue coordinate steps on the west side of the Isle of Souls
+	ARMADYLEAN_GUARD("Armadylean Guard"),
+	//appears for elite clue coordinate steps on the east side of the Isle of Souls
+	BANDOSIAN_GUARD("Bandosian Guard"),
 	//appears for master clue coordinate and hot cold clues when single-way combat
 	BRASSICAN_MAGE("Brassican Mage"),
 	//appears for master clue coordinate and hot cold clues when multi-way combat

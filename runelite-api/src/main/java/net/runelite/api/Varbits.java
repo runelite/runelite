@@ -316,7 +316,7 @@ public enum Varbits
 	 */
 	FIRE_PIT_GIANT_MOLE(6532),
 	FIRE_PIT_LUMBRIDGE_SWAMP(6533),
-	FIRE_PIT_MOS_LE_HARMLESS(6544),
+	FIRE_PIT_MOS_LE_HARMLESS(6534),
 
 	/**
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
@@ -607,7 +607,17 @@ public enum Varbits
 	 *
 	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
 	 */
-	PVP_SPEC_ORB(8121);
+	PVP_SPEC_ORB(8121),
+
+	/**
+	 * Collection Log notification settings whenever a new item is added
+	 *
+	 * 0 = no notification
+	 * 1 = chat notification only
+	 * 2 = popup notification only
+	 * 3 = chat and popup
+	 */
+	COLLECTION_LOG_NOTIFICATION(11959);
 
 	/**
 	 * The raw varbit ID.

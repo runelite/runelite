@@ -36,7 +36,7 @@ public enum ShiftDepositMode
 	DEPOSIT_10("Deposit-10", 5, 4, 3),
 	DEPOSIT_X("Deposit-X", 6, 6, 5),
 	DEPOSIT_ALL("Deposit-All", 8, 5, 4),
-	EXTRA_OP("Eat/Wield/Etc.", 9, 0, 0),
+	EXTRA_OP("Eat/Wield/Etc.", 9, 9, 0),
 	OFF("Off", 0, 0, 0);
 
 	private final String name;

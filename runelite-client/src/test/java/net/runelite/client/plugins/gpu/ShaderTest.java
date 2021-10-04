@@ -31,7 +31,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import joptsimple.internal.Strings;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.gpu.template.Template;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -39,7 +38,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-@Slf4j
 public class ShaderTest
 {
 	@Rule

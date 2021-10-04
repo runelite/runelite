@@ -95,16 +95,29 @@ public interface NpcIndicatorsConfig extends Config
 		position = 4,
 		keyName = "npcColor",
 		name = "Highlight Color",
-		description = "Color of the NPC highlight",
+		description = "Color of the NPC highlight border, menu, and text",
 		section = renderStyleSection
 	)
-	default Color getHighlightColor()
+	default Color highlightColor()
 	{
 		return Color.CYAN;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 5,
+		keyName = "fillColor",
+		name = "Fill Color",
+		description = "Color of the NPC highlight fill",
+		section = renderStyleSection
+	)
+	default Color fillColor()
+	{
+		return new Color(0, 255, 255, 20);
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "borderWidth",
 		name = "Border Width",
 		description = "Width of the highlighted NPC border",
@@ -116,7 +129,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "outlineFeather",
 		name = "Outline feather",
 		description = "Specify between 0-4 how much of the model outline should be faded",

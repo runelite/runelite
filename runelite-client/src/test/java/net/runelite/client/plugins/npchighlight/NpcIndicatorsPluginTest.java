@@ -78,6 +78,7 @@ public class NpcIndicatorsPluginTest
 	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.RED);
 	}
 
 	@Test
@@ -99,7 +100,7 @@ public class NpcIndicatorsPluginTest
 		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
 		when(npcIndicatorsConfig.deadNpcMenuColor()).thenReturn(Color.RED);
 
-		npcIndicatorsPlugin.rebuildAllNpcs();
+		npcIndicatorsPlugin.rebuild();
 
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Goblin");
@@ -122,9 +123,9 @@ public class NpcIndicatorsPluginTest
 	{
 		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
 		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(true);
-		when(npcIndicatorsConfig.getHighlightColor()).thenReturn(Color.BLUE);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLUE);
 
-		npcIndicatorsPlugin.rebuildAllNpcs();
+		npcIndicatorsPlugin.rebuild();
 
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Goblin");
@@ -146,18 +147,18 @@ public class NpcIndicatorsPluginTest
 	{
 		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Joseph");
 
-		npcIndicatorsPlugin.rebuildAllNpcs();
+		npcIndicatorsPlugin.rebuild();
 
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Joseph");
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
-		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
 
 		when(npc.getName()).thenReturn("Werewolf");
 		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
 
-		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
 	}
 
 	@Test
@@ -165,17 +166,17 @@ public class NpcIndicatorsPluginTest
 	{
 		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Werewolf");
 
-		npcIndicatorsPlugin.rebuildAllNpcs();
+		npcIndicatorsPlugin.rebuild();
 
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Joseph");
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
-		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
 
 		when(npc.getName()).thenReturn("Werewolf");
 		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
 
-		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().contains(npc));
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
 	}
 }

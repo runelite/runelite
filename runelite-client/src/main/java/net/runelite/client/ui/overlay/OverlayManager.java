@@ -293,6 +293,7 @@ public class OverlayManager
 		overlay.setPreferredSize(null);
 		overlay.setPreferredLocation(null);
 		saveOverlay(overlay);
+		overlay.revalidate();
 	}
 
 	synchronized void rebuildOverlayLayers()

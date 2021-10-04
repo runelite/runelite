@@ -46,6 +46,7 @@ import static net.runelite.api.Constants.ROOF_FLAG_HOVERED;
 import static net.runelite.api.Constants.ROOF_FLAG_POSITION;
 import net.runelite.api.GameState;
 import net.runelite.api.Tile;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -175,7 +176,7 @@ public class RoofRemovalPlugin extends Plugin
 
 	private void loadRoofOverrides() throws IOException
 	{
-		try (InputStream in = getClass().getResourceAsStream("overrides.json"))
+		try (InputStream in = getClass().getResourceAsStream("overrides.jsonc"))
 		{
 			final InputStreamReader data = new InputStreamReader(in, StandardCharsets.UTF_8);
 			//CHECKSTYLE:OFF
@@ -246,14 +247,17 @@ public class RoofRemovalPlugin extends Plugin
 						continue;
 					}
 
-					int regionID = tile.getWorldLocation().getRegionID() << 2 | z;
+					// Properly account for instances shifting worldpoints around
+					final WorldPoint wp = WorldPoint.fromLocalInstance(client, tile.getLocalLocation(), tile.getPlane());
+
+					int regionID = wp.getRegionID() << 2 | z;
 					if (!overrides.containsKey(regionID))
 					{
 						continue;
 					}
 
-					int rx = tile.getWorldLocation().getRegionX();
-					int ry = tile.getWorldLocation().getRegionY();
+					int rx = wp.getRegionX();
+					int ry = wp.getRegionY();
 					long[] region = overrides.get(regionID);
 					if ((region[ry] & (1L << rx)) != 0)
 					{

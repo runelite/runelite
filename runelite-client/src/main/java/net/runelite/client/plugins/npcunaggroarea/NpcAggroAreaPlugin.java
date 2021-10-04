@@ -248,7 +248,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private static boolean isInWilderness(WorldPoint location)
 	{
-		return WILDERNESS_ABOVE_GROUND.distanceTo2D(location) == 0 || WILDERNESS_UNDERGROUND.distanceTo2D(location) == 0;
+		return location.isInArea2D(WILDERNESS_ABOVE_GROUND, WILDERNESS_UNDERGROUND);
 	}
 
 	private boolean isNpcMatch(NPC npc)

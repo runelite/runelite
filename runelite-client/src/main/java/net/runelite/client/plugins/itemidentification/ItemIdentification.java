@@ -26,6 +26,8 @@ package net.runelite.client.plugins.itemidentification;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import java.util.function.Predicate;
+import lombok.AllArgsConstructor;
 import net.runelite.api.ItemID;
 
 enum ItemIdentification
@@ -364,7 +366,25 @@ enum ItemIdentification
 
 	TARGET_TELEPORT(Type.TABLET, "Target", "TRG", ItemID.TARGET_TELEPORT),
 	VOLCANIC_MINE_TELEPORT(Type.TABLET, "V.Mine", "VM", ItemID.VOLCANIC_MINE_TELEPORT),
-	WILDERNESS_CRABS_TELEPORT(Type.TABLET, "W.Crab", "CRAB", ItemID.WILDERNESS_CRABS_TELEPORT);
+	WILDERNESS_CRABS_TELEPORT(Type.TABLET, "W.Crab", "CRAB", ItemID.WILDERNESS_CRABS_TELEPORT),
+
+	// Scrolls
+	NARDAH_TELEPORT(Type.SCROLL, "Nardah", "NAR", ItemID.NARDAH_TELEPORT),
+	DIGSITE_TELEPORT(Type.SCROLL, "Digsite", "DIG", ItemID.DIGSITE_TELEPORT),
+	FELDIP_HILLS_TELEPORT(Type.SCROLL, "F.Hills", "F.H", ItemID.FELDIP_HILLS_TELEPORT),
+	LUNAR_ISLE_TELEPORT(Type.SCROLL, "L.Isle", "L.I", ItemID.LUNAR_ISLE_TELEPORT),
+	MORTTON_TELEPORT(Type.SCROLL, "Mort'ton", "MORT", ItemID.MORTTON_TELEPORT),
+	PEST_CONTROL_TELEPORT(Type.SCROLL, "P.Cont", "PEST", ItemID.PEST_CONTROL_TELEPORT),
+	PISCATORIS_TELEPORT(Type.SCROLL, "Pisca", "PISC", ItemID.PISCATORIS_TELEPORT),
+	TAI_BWO_WANNAI_TELEPORT(Type.SCROLL, "TaiBwo", "TAI", ItemID.TAI_BWO_WANNAI_TELEPORT),
+	IORWERTH_CAMP_TELEPORT(Type.SCROLL, "Iorwerth", "IOR", ItemID.IORWERTH_CAMP_TELEPORT),
+	MOS_LEHARMLESS_TELEPORT(Type.SCROLL, "M.LeHarm", "M.L", ItemID.MOS_LEHARMLESS_TELEPORT),
+	LUMBERYARD_TELEPORT(Type.SCROLL, "Lumber", "LUMB", ItemID.LUMBERYARD_TELEPORT),
+
+	ZUL_ANDRA_TELEPORT(Type.SCROLL, "Zul-andra", "ZUL", ItemID.ZULANDRA_TELEPORT),
+	KEY_MASTER_TELEPORT(Type.SCROLL, "Key master", "KEY", ItemID.KEY_MASTER_TELEPORT),
+	REVENANT_CAVE_TELEPORT(Type.SCROLL, "Rev cave", "REV", ItemID.REVENANT_CAVE_TELEPORT),
+	WATSON_TELEPORT(Type.SCROLL, "Watson", "WATS", ItemID.WATSON_TELEPORT);
 
 	final Type type;
 	final String medName;
@@ -401,20 +421,24 @@ enum ItemIdentification
 		return itemIdentifications.get(id);
 	}
 
+	@AllArgsConstructor
 	enum Type
 	{
-		SEED,
-		SACK,
-		HERB,
-		LOGS,
-		PLANK,
-		SAPLING,
-		COMPOST,
-		ORE,
-		BAR,
-		GEM,
-		POTION,
-		IMPLING_JAR,
-		TABLET
+		SEED(ItemIdentificationConfig::showSeeds),
+		SACK(ItemIdentificationConfig::showSacks),
+		HERB(ItemIdentificationConfig::showHerbs),
+		LOGS(ItemIdentificationConfig::showLogs),
+		PLANK(ItemIdentificationConfig::showPlanks),
+		SAPLING(ItemIdentificationConfig::showSaplings),
+		COMPOST(ItemIdentificationConfig::showComposts),
+		ORE(ItemIdentificationConfig::showOres),
+		BAR(ItemIdentificationConfig::showBars),
+		GEM(ItemIdentificationConfig::showGems),
+		POTION(ItemIdentificationConfig::showPotions),
+		IMPLING_JAR(ItemIdentificationConfig::showImplingJars),
+		TABLET(ItemIdentificationConfig::showTablets),
+		SCROLL(ItemIdentificationConfig::showTeleportScrolls);
+
+		final Predicate<ItemIdentificationConfig> enabled;
 	}
 }

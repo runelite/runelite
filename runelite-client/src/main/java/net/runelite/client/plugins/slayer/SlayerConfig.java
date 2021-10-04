@@ -92,20 +92,42 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "highlightTargets",
-		name = "Highlight Targets",
-		description = "Highlight monsters you can kill for your current slayer assignment"
+		keyName = "highlightHull",
+		name = "Highlight hull",
+		description = "Configures whether the NPC hull should be highlighted"
 	)
-	default boolean highlightTargets()
+	default boolean highlightHull()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "highlightTile",
+		name = "Highlight tile",
+		description = "Configures whether the NPC tile should be highlighted"
+	)
+	default boolean highlightTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "highlightOutline",
+		name = "Highlight outline",
+		description = "Configures whether or not the NPC outline should be highlighted"
+	)
+	default boolean highlightOutline()
 	{
 		return false;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 6,
+		position = 8,
 		keyName = "targetColor",
-		name = "Target Color",
+		name = "Target color",
 		description = "Color of the highlighted targets"
 	)
 	default Color getTargetColor()
@@ -114,7 +136,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 9,
 		keyName = "weaknessPrompt",
 		name = "Show Monster Weakness",
 		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)"
@@ -125,7 +147,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 10,
 		keyName = "taskCommand",
 		name = "Task Command",
 		description = "Configures whether the slayer task command is enabled<br> !task"

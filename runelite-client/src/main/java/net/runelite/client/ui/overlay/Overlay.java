@@ -120,4 +120,8 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	{
 		return null;
 	}
+
+	public void revalidate()
+	{
+	}
 }

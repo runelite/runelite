@@ -70,12 +70,10 @@ enum XpWorldType
 	{
 		switch (type)
 		{
-			case TOURNAMENT:
+			case NOSAVE_MODE:
 				return TOURNEY;
 			case DEADMAN:
 				return DMM;
-			case LEAGUE:
-				return LEAGUE;
 			default:
 				return NORMAL;
 		}

@@ -619,6 +619,34 @@ public interface Client extends GameEngine
 	boolean isMenuOpen();
 
 	/**
+	 * Get the menu x location. Only valid if the menu is open.
+	 *
+	 * @return the menu x location
+	 */
+	int getMenuX();
+
+	/**
+	 * Get the menu y location. Only valid if the menu is open.
+	 *
+	 * @return the menu y location
+	 */
+	int getMenuY();
+
+	/**
+	 * Get the menu height. Only valid if the menu is open.
+	 *
+	 * @return the menu height
+	 */
+	int getMenuHeight();
+
+	/**
+	 * Get the menu width. Only valid if the menu is open.
+	 *
+	 * @return the menu width
+	 */
+	int getMenuWidth();
+
+	/**
 	 * Gets the angle of the map, or target camera yaw.
 	 *
 	 * @return the map angle
@@ -1026,6 +1054,35 @@ public interface Client extends GameEngine
 	 * @return all graphics objects
 	 */
 	List<GraphicsObject> getGraphicsObjects();
+
+	/**
+	 * Creates a RuneLiteObject, which is a modified {@link GraphicsObject}
+	 */
+	RuneLiteObject createRuneLiteObject();
+
+	/**
+	 * Loads a model from the cache
+	 *
+	 * @param id the ID of the model
+	 */
+	Model loadModel(int id);
+
+	/**
+	 * Loads a model from the cache and also recolors it
+	 *
+	 * @param id the ID of the model
+	 * @param colorToFind array of hsl color values to find in the model to replace
+	 * @param colorToReplace array of hsl color values to replace in the model
+	 */
+	Model loadModel(int id, short[] colorToFind, short[] colorToReplace);
+
+	/**
+	 * Loads an animation from the cache
+	 *
+	 * @param id the ID of the animation. Any int is allowed, but implementations in the client
+	 * should be defined in {@link AnimationID}
+	 */
+	Sequence loadAnimation(int id);
 
 	/**
 	 * Gets the music volume
@@ -1712,8 +1769,6 @@ public interface Client extends GameEngine
 
 	TextureProvider getTextureProvider();
 
-	NodeCache getCachedModels2();
-
 	void setRenderArea(boolean[][] renderArea);
 
 	int getRasterizer3D_clipMidX2();
@@ -1861,4 +1916,22 @@ public interface Client extends GameEngine
 	 */
 	@Nullable
 	ClanSettings getGuestClanSettings();
+
+	/**
+	 * Get clan channel by id.
+	 * @param clanId the clan id
+	 * @return
+	 * @see net.runelite.api.clan.ClanID
+	 */
+	@Nullable
+	ClanChannel getClanChannel(int clanId);
+
+	/**
+	 * Get clan settings by id
+	 * @param clanId the clan id
+	 * @return
+	 * @see net.runelite.api.clan.ClanID
+	 */
+	@Nullable
+	ClanSettings getClanSettings(int clanId);
 }

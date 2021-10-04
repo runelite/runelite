@@ -50,6 +50,10 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
 import static net.runelite.api.ObjectID.ORE_VEIN_26664;
+import static net.runelite.api.ObjectID.ROCKS_41547;
+import static net.runelite.api.ObjectID.ROCKS_41548;
+import static net.runelite.api.ObjectID.ROCKS_41549;
+import static net.runelite.api.ObjectID.ROCKS_41550;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
@@ -79,12 +83,12 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 @PluginDependency(XpTrackerPlugin.class)
 public class MiningPlugin extends Plugin
 {
-	private static final Pattern MINING_PATERN = Pattern.compile(
+	private static final Pattern MINING_PATTERN = Pattern.compile(
 		"You " +
 			"(?:manage to|just)" +
 			" (?:mined?|quarry) " +
 			"(?:some|an?) " +
-			"(?:copper|tin|clay|iron|silver|coal|gold|mithril|adamantite|runeite|amethyst|sandstone|granite|Opal|piece of Jade|Red Topaz|Emerald|Sapphire|Ruby|Diamond)" +
+			"(?:copper|tin|clay|iron|silver|coal|gold|mithril|adamantite|runeite|amethyst|sandstone|granite|barronite shards|barronite deposit|Opal|piece of Jade|Red Topaz|Emerald|Sapphire|Ruby|Diamond)" +
 			"(?:\\.|!)");
 
 	@Inject
@@ -343,10 +347,20 @@ public class MiningPlugin extends Plugin
 				respawns.add(rockRespawn);
 				break;
 			}
+			case ROCKS_41549: // Depleted barronite vein
+			case ROCKS_41550: // Depleted barronite vein
+			{
+				Rock rock = Rock.BARRONITE;
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
+				respawns.add(rockRespawn);
+				break;
+			}
 			case ORE_VEIN_26661: // Motherlode vein
 			case ORE_VEIN_26662: // Motherlode vein
 			case ORE_VEIN_26663: // Motherlode vein
 			case ORE_VEIN_26664: // Motherlode vein
+			case ROCKS_41547: // Barronite vein
+			case ROCKS_41548: // Barronite vein
 			{
 				// If the vein respawns before the timer is up, remove it
 				final WorldPoint point = object.getWorldLocation();
@@ -361,7 +375,7 @@ public class MiningPlugin extends Plugin
 	{
 		if (event.getType() == ChatMessageType.SPAM || event.getType() == ChatMessageType.GAMEMESSAGE)
 		{
-			if (MINING_PATERN.matcher(event.getMessage()).matches())
+			if (MINING_PATTERN.matcher(event.getMessage()).matches())
 			{
 				if (session == null)
 				{

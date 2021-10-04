@@ -273,7 +273,7 @@ LABEL226:
    iload                  6                    ; prefix length
    iload                  5                    ; chat type
    sconst                 "preChatSendpublic"
-   runelite_callback
+   runelite_callback     
    istore                 5                    ; chat type
    istore                 6                    ; prefix length
    get_varc_string        335                  ; load input string
@@ -565,7 +565,7 @@ LABEL441:
    if_icmpeq              LABEL445
    jump                   LABEL490
 LABEL445:
-   iconst                 40697935
+   iconst                 40697936
    iconst                 1
    cc_find               
    iconst                 1

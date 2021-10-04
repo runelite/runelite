@@ -27,7 +27,6 @@ package net.runelite.http.service.cache;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.ConfigType;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.ItemDefinition;
@@ -53,7 +52,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/cache")
-@Slf4j
 public class CacheController
 {
 	@Autowired

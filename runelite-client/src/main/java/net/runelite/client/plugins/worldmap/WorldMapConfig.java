@@ -188,8 +188,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_QUEST_START_TOOLTIPS,
-		name = "Quest names and status",
-		description = "Indicates the names of quests and shows completion status",
+		name = "Quest status icons",
+		description = "Shows completion status of quests on the quest's icon",
 		position = 15
 	)
 	default boolean questStartTooltips()

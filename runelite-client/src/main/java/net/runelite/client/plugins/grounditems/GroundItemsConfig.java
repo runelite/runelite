@@ -405,10 +405,32 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showLootbeamForHighlighted",
+		name = "Highlighted item lootbeams",
+		description = "Configures lootbeams to show for all highlighted items.",
+		position = 30
+	)
+	default boolean showLootbeamForHighlighted()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showLootbeamTier",
+		name = "Lootbeam tier",
+		description = "Configures which price tiers will trigger a lootbeam",
+		position = 31
+	)
+	default HighlightTier showLootbeamTier()
+	{
+		return HighlightTier.HIGH;
+	}
+
+	@ConfigItem(
 			keyName = "highlightStackable",
 			name = "Highlight stackable in inventory",
 			description = "Highlight stackable ground items already in inventory",
-			position = 30
+			position = 32
 	)
 	default boolean highlightStackable()
 	{
@@ -420,7 +442,7 @@ public interface GroundItemsConfig extends Config
 			keyName = "highlightStackableColor",
 			name = "Highlight stackable",
 			description = "Configures the color for highlighted stackable items",
-			position = 31
+			position = 33
 	)
 	default Color highlightStackableColor()
 	{
