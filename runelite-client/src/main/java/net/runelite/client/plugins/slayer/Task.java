@@ -55,7 +55,7 @@ enum Task
 	BASILISKS("Basilisks", ItemID.BASILISK),
 	BATS("Bats", ItemID.GIRAL_BAT_2, "Death wing"),
 	BEARS("Bears", ItemID.ENSOULED_BEAR_HEAD),
-	BIRDS("Birds", ItemID.FEATHER, "Chicken", "Rooster", "Terrorbird", "Seagull", "Vulture"),
+	BIRDS("Birds", ItemID.FEATHER, "Chicken", "Rooster", "Terrorbird", "Seagull", "Vulture", "Duck"),
 	BLACK_DEMONS("Black demons", ItemID.BLACK_DEMON_MASK),
 	BLACK_DRAGONS("Black dragons", ItemID.BLACK_DRAGON_MASK, "Baby black dragon"),
 	BLACK_KNIGHTS("Black Knights", ItemID.BLACK_FULL_HELM, "Black Knight"),
