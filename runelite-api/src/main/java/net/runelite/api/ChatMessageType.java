@@ -176,6 +176,9 @@ public enum ChatMessageType
 	 * Clan wars challenge for clans rather than FCs
 	 */
 	CLAN_CLAN_WARS_CHALLENGE(110),
+
+	CLAN_GIM_FORM_GROUP(111),
+	CLAN_GIM_GROUP_WITH(112),
 	/**
 	 * An unknown message type.
 	 */
