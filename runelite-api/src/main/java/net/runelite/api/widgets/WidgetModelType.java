@@ -24,7 +24,7 @@
  */
 package net.runelite.api.widgets;
 
-public class WidgetModelType
+public final class WidgetModelType
 {
 	public static final int NULL = 0;
 	public static final int MODEL = 1;
