@@ -308,6 +308,12 @@ public enum Varbits
 	RAID_STATE(5425),
 
 	/**
+	 * 1 = raid has a middle floor that hasn't been cleared yet (only set when creating a challenge mode raid)
+	 * 0 = raid doesn't have a middle floor or the middle floor has been cleared (on challenge mode)
+	 */
+	RAID_MIDDLE_FLOOR_IS_CLEARED(6385),
+
+	/**
 	 * Making Friends with My Arm fire pits
 	 *
 	 * Expected values:
