@@ -183,7 +183,6 @@ public class GrandExchangePlugin extends Plugin
 	private RuneLiteConfig runeLiteConfig;
 
 	private Widget grandExchangeText;
-	private Widget grandExchangeItem;
 	private String grandExchangeExamine;
 
 	@Inject
@@ -319,7 +318,6 @@ public class GrandExchangePlugin extends Plugin
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
 		grandExchangeText = null;
-		grandExchangeItem = null;
 		lastUsername = machineUuid = null;
 		tradeSeq = 0;
 	}
@@ -597,14 +595,11 @@ public class GrandExchangePlugin extends Plugin
 		{
 			// Grand exchange was opened.
 			case WidgetID.GRAND_EXCHANGE_GROUP_ID:
-				Widget grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
 				grandExchangeText = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TEXT);
-				grandExchangeItem = grandExchangeOffer.getChild(OFFER_CONTAINER_ITEM);
 				break;
 			// Grand exchange was closed (if it was open before).
 			case WidgetID.INVENTORY_GROUP_ID:
 				grandExchangeText = null;
-				grandExchangeItem = null;
 				break;
 		}
 	}
@@ -825,7 +820,17 @@ public class GrandExchangePlugin extends Plugin
 
 	private void rebuildGeText()
 	{
-		if (grandExchangeText == null || grandExchangeItem == null || grandExchangeItem.isHidden())
+		if (grandExchangeText == null)
+		{
+			return;
+		}
+		Widget grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
+		if (grandExchangeOffer == null)
+		{
+			return;
+		}
+		Widget grandExchangeItem = grandExchangeOffer.getChild(OFFER_CONTAINER_ITEM);
+		if (grandExchangeItem == null || grandExchangeItem.isHidden())
 		{
 			return;
 		}
