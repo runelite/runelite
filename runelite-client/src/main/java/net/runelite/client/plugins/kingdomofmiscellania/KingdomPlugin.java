@@ -306,7 +306,7 @@ public class KingdomPlugin extends Plugin
 		configManager.setRSProfileConfiguration(KingdomConfig.CONFIG_GROUP_NAME, CONFIG_APPROVAL_KEY, approval);
 	}
 
-	private int getCollected(Instant lastChanged) 
+	private int getCollected(Instant lastChanged)
 	{
 		return (int) Duration.between(lastChanged, Instant.now()).toDays();
 	}
