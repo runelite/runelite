@@ -62,11 +62,9 @@ class PrayerDoseOverlay extends Overlay
 	private boolean trackTick = true;
 
 	@Setter(AccessLevel.PACKAGE)
-	private boolean hasPrayerRestore;
+	private boolean hasPrayerRestoreItem;
 	@Setter(AccessLevel.PACKAGE)
-	private int bonusPrayer;
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hasHolyWrench;
+	private int prayerPointsRestored;
 
 	@Inject
 	private PrayerDoseOverlay(final Client client, final TooltipManager tooltipManager, final PrayerPlugin plugin, final PrayerConfig config)
@@ -127,7 +125,7 @@ class PrayerDoseOverlay extends Overlay
 			tooltipManager.add(new Tooltip(sb.toString()));
 		}
 
-		if (!config.showPrayerDoseIndicator() || !hasPrayerRestore)
+		if (!config.showPrayerDoseIndicator() || !hasPrayerRestoreItem)
 		{
 			return null;
 		}
@@ -141,12 +139,7 @@ class PrayerDoseOverlay extends Overlay
 			return null;
 		}
 
-		final double dosePercentage = hasHolyWrench ? .27 : .25;
-		final int basePointsRestored = (int) Math.floor(maxPrayer * dosePercentage);
-
-		final int pointsRestored = basePointsRestored + 7 + bonusPrayer;
-
-		if (prayerPointsMissing < pointsRestored)
+		if (prayerPointsMissing < prayerPointsRestored)
 		{
 			return null;
 		}

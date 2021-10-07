@@ -147,20 +147,18 @@ public class PrayerPlugin extends Plugin
 
 		if (container == inventory || container == equipment)
 		{
-			doseOverlay.setHasHolyWrench(false);
-			doseOverlay.setHasPrayerRestore(false);
-			doseOverlay.setBonusPrayer(0);
+			doseOverlay.setHasPrayerRestoreItem(false);
+			doseOverlay.setPrayerPointsRestored(0);
 
 			if (inventory != null)
 			{
-				checkContainerForPrayer(inventory.getItems());
+				checkInventoryForPrayerRestoreItems(inventory.getItems());
 			}
 
 			if (equipment != null)
 			{
-				prayerBonus = checkContainerForPrayer(equipment.getItems());
+				prayerBonus = checkEquipmentForPrayer(equipment.getItems());
 			}
-
 		}
 	}
 
@@ -222,7 +220,7 @@ public class PrayerPlugin extends Plugin
 		}
 	}
 
-	private int checkContainerForPrayer(Item[] items)
+	private int checkEquipmentForPrayer(Item[] items)
 	{
 		if (items == null)
 		{
@@ -231,9 +229,35 @@ public class PrayerPlugin extends Plugin
 
 		int total = 0;
 
+		for (Item item : items)
+		{
+			if (item == null)
+			{
+				continue;
+			}
+
+			ItemStats is = itemManager.getItemStats(item.getId(), false);
+			if (is != null && is.getEquipment() != null)
+			{
+				total += is.getEquipment().getPrayer();
+			}
+		}
+
+		return total;
+	}
+
+	private void checkInventoryForPrayerRestoreItems(Item[] items)
+	{
+		if (items == null)
+		{
+			return;
+		}
+
+		final int maxPrayer = client.getRealSkillLevel(Skill.PRAYER);
 		boolean hasPrayerPotion = false;
 		boolean hasSuperRestore = false;
-		boolean hasSanfew = false;
+		boolean hasSanfewSerum = false;
+		double holyWrenchBonus = 0;
 
 		for (Item item : items)
 		{
@@ -255,35 +279,31 @@ public class PrayerPlugin extends Plugin
 						hasSuperRestore = true;
 						break;
 					case SANFEWPOT:
-						hasSanfew = true;
+						hasSanfewSerum = true;
 						break;
 					case HOLYWRENCH:
-						doseOverlay.setHasHolyWrench(true);
+						holyWrenchBonus = .02;
 						break;
 				}
 			}
-
-			ItemStats is = itemManager.getItemStats(item.getId(), false);
-			if (is != null && is.getEquipment() != null)
-			{
-				total += is.getEquipment().getPrayer();
-			}
 		}
 
-		if (hasSanfew || hasSuperRestore || hasPrayerPotion)
+		if (hasSuperRestore || hasPrayerPotion || hasSanfewSerum)
 		{
-			doseOverlay.setHasPrayerRestore(true);
-			if (hasSanfew)
-			{
-				doseOverlay.setBonusPrayer(2);
-			}
-			else if (hasSuperRestore)
-			{
-				doseOverlay.setBonusPrayer(1);
-			}
-		}
+			// Default to Prayer Potion / Super Restore
+			int basePrayerRestored = hasSuperRestore ? 8 : 7;
+			double percentRestored = .25 + holyWrenchBonus;
 
-		return total;
+			// Sanfew restores the same or more points as prayer/super restore at level 66 and 85, respectively
+			if (hasSanfewSerum && (!hasPrayerPotion || maxPrayer >= 66) && (!hasSuperRestore || maxPrayer >= 85))
+			{
+				basePrayerRestored = 4;
+				percentRestored += 0.05;
+			}
+
+			doseOverlay.setHasPrayerRestoreItem(true);
+			doseOverlay.setPrayerPointsRestored(basePrayerRestored + (int) Math.floor(maxPrayer * percentRestored));
+		}
 	}
 
 	double getTickProgress()
