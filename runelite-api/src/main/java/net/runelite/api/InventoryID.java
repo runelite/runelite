@@ -81,10 +81,10 @@ public enum InventoryID
 	 * Theater of Blood reward chest inventory (Raids 2)
 	 */
 	THEATRE_OF_BLOOD_CHEST(612),
-    	/**
-     	* Read only inventory representing the contents of the collection log.
-     	*/
-    	COLLECTION_LOG(620),
+	/**
+	* Read only inventory representing the contents of the collection log.
+	*/
+	COLLECTION_LOG(620),
 	/**
 	 * Seed vault located inside the Farming Guild
 	 */
