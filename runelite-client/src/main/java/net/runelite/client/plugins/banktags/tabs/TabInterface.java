@@ -275,6 +275,15 @@ public class TabInterface
 		titleBar.setOriginalX(equipmentButton.getWidth() / 2);
 		titleBar.setOriginalWidth(titleBar.getWidth() - equipmentButton.getWidth());
 		titleBar.revalidate();
+
+		Widget groupStorageButton = client.getWidget(WidgetInfo.BANK_GROUP_STORAGE_BUTTON);
+		if (groupStorageButton == null)
+		{
+			return;
+		}
+
+		groupStorageButton.setOriginalX(groupStorageButton.getOriginalX() + equipmentButtonTotalWidth);
+		groupStorageButton.revalidate();
 	}
 
 	private void handleDeposit(MenuOptionClicked event, Boolean inventory)
