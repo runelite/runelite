@@ -252,6 +252,13 @@ public class TabInterface
 		equipmentButton.setOriginalY(4);
 		equipmentButton.revalidate();
 
+		Widget bankItemCountTop = client.getWidget(WidgetInfo.BANK_ITEM_COUNT_TOP);
+		if (bankItemCountTop == null)
+		{
+			return;
+		}
+
+		int equipmentButtonTotalWidth = equipmentButton.getWidth() + equipmentButton.getOriginalX() - bankItemCountTop.getOriginalX();
 		// the bank item count is 3 widgets
 		for (int child = WidgetInfo.BANK_ITEM_COUNT_TOP.getChildId(); child <= WidgetInfo.BANK_ITEM_COUNT_BOTTOM.getChildId(); child++)
 		{
@@ -261,7 +268,7 @@ public class TabInterface
 				return;
 			}
 
-			widget.setOriginalX(widget.getOriginalX() + equipmentButton.getWidth());
+			widget.setOriginalX(widget.getOriginalX() + equipmentButtonTotalWidth);
 			widget.revalidate();
 		}
 
