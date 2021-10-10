@@ -67,7 +67,7 @@ enum Pet
 	HERON("Heron", ItemID.HERON),
 	ROCK_GOLEM("Rock golem", ItemID.ROCK_GOLEM),
 	BEAVER("Beaver", ItemID.BEAVER),
-	BABY_CHINCHOMPA("Baby chinchompa", ItemID.BABY_CHINCHOMPA),
+	BABY_CHINCHOMPA("Baby chinchompa", ItemID.BABY_CHINCHOMPA_13324),
 	GIANT_SQUIRREL("Giant squirrel", ItemID.GIANT_SQUIRREL),
 	TANGLEROOT("Tangleroot", ItemID.TANGLEROOT),
 	ROCKY("Rocky", ItemID.ROCKY),
