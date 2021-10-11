@@ -27,6 +27,7 @@ package net.runelite.client.plugins.skillcalculator.skills;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.api.NullItemID;
 
 @AllArgsConstructor
 @Getter
@@ -82,7 +83,7 @@ public enum FarmingAction implements NamedSkillAction
 	YEW_TREE("Yew Tree", 60, 7150.9f, ItemID.YEW_LOGS),
 	SNAPE_GRASS("Snape grass", 61, 82, ItemID.SNAPE_GRASS),
 	SNAPDRAGON("Snapdragon", 62, 87.5f, ItemID.SNAPDRAGON),
-	HESPORI("Hespori", 65, 12662, ItemID.CLAN_WARS_CAPE_12662),
+	HESPORI("Hespori", 65, 12662, NullItemID.NULL_23044),
 	CADANTINE("Cadantine", 67, 106.5f, ItemID.CADANTINE),
 	PALM_TREE("Palm Tree", 68, 10260.6f, ItemID.COCONUT),
 	CALQUAT_TREE("Calquat Tree", 72, 12225.5f, ItemID.CALQUAT_FRUIT),
