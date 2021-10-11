@@ -26,6 +26,7 @@ package net.runelite.http.service.loottracker;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.temporal.ChronoField;
 import java.util.Collections;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -88,7 +89,7 @@ public class LootTrackerControllerTest
 	{
 		LootRecord lootRecord = new LootRecord();
 		lootRecord.setType(LootRecordType.NPC);
-		lootRecord.setTime(Instant.now());
+		lootRecord.setTime(Instant.now().with(ChronoField.NANO_OF_SECOND, 0));
 		lootRecord.setDrops(Collections.singletonList(new GameItem(4151, 1)));
 
 		String data = RuneLiteAPI.GSON.toJson(Collections.singletonList(lootRecord));

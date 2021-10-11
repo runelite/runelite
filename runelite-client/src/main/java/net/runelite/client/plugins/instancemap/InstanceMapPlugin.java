@@ -28,7 +28,7 @@ import com.google.inject.Binder;
 import javax.inject.Inject;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
-import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_OPTION;
+import static net.runelite.api.widgets.WidgetInfo.MINIMAP_WORLDMAP_OPTIONS;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
@@ -44,7 +44,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class InstanceMapPlugin extends Plugin
 {
-	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", WORLD_MAP_OPTION);
+	private final WidgetMenuOption openMapOption = new WidgetMenuOption("Show", "Instance Map", MINIMAP_WORLDMAP_OPTIONS);
 
 	@Inject
 	private InstanceMapInputListener inputListener;
@@ -115,7 +115,7 @@ public class InstanceMapPlugin extends Plugin
 	@Subscribe
 	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
-		if (event.getWidget() != WORLD_MAP_OPTION)
+		if (event.getWidget() != MINIMAP_WORLDMAP_OPTIONS)
 		{
 			return;
 		}

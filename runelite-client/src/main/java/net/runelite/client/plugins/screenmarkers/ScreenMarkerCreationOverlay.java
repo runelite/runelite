@@ -43,7 +43,7 @@ class ScreenMarkerCreationOverlay extends Overlay
 	{
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DETACHED);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
 	}
 

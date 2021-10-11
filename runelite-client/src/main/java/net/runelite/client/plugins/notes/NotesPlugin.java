@@ -65,7 +65,7 @@ public class NotesPlugin extends Plugin
 		panel = injector.getInstance(NotesPanel.class);
 		panel.init(config);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "notes_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "notes_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Notes")

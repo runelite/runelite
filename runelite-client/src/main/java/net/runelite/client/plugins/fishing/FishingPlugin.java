@@ -57,7 +57,6 @@ import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -86,8 +85,7 @@ public class FishingPlugin extends Plugin
 {
 	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
-	private static final int TRAWLER_TIME_LIMIT_IN_SECONDS = 614;
-	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
+	private static final int TRAWLER_TIME_LIMIT_IN_SECONDS = 314;
 
 	private Instant trawlerStartTime;
 
@@ -124,8 +122,6 @@ public class FishingPlugin extends Plugin
 	@Inject
 	private FishingSpotMinimapOverlay fishingSpotMinimapOverlay;
 
-	private boolean trawlerNotificationSent;
-
 	@Provides
 	FishingConfig provideConfig(ConfigManager configManager)
 	{
@@ -150,7 +146,6 @@ public class FishingPlugin extends Plugin
 		overlayManager.remove(fishingSpotMinimapOverlay);
 		fishingSpots.clear();
 		minnowSpots.clear();
-		trawlerNotificationSent = false;
 		currentSpot = null;
 		trawlerStartTime = null;
 	}
@@ -215,6 +210,11 @@ public class FishingPlugin extends Plugin
 			spotOverlay.setHidden(false);
 			fishingSpotMinimapOverlay.setHidden(false);
 		}
+
+		if (event.getMessage().equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
+		{
+			notifier.notify("A flying fish is eating your minnows!");
+		}
 	}
 
 	@Subscribe
@@ -255,8 +255,10 @@ public class FishingPlugin extends Plugin
 			switch (item.getId())
 			{
 				case ItemID.DRAGON_HARPOON:
+				case ItemID.DRAGON_HARPOON_OR:
 				case ItemID.INFERNAL_HARPOON:
 				case ItemID.INFERNAL_HARPOON_UNCHARGED:
+				case ItemID.INFERNAL_HARPOON_UNCHARGED_25367:
 				case ItemID.HARPOON:
 				case ItemID.BARBTAIL_HARPOON:
 				case ItemID.BIG_FISHING_NET:
@@ -274,6 +276,11 @@ public class FishingPlugin extends Plugin
 				case ItemID.KARAMBWAN_VESSEL_3159:
 				case ItemID.CORMORANTS_GLOVE:
 				case ItemID.CORMORANTS_GLOVE_22817:
+				case ItemID.INFERNAL_HARPOON_OR:
+				case ItemID.TRAILBLAZER_HARPOON:
+				case ItemID.CRYSTAL_HARPOON:
+				case ItemID.CRYSTAL_HARPOON_23864:
+				case ItemID.CRYSTAL_HARPOON_INACTIVE:
 					return true;
 			}
 		}
@@ -316,10 +323,8 @@ public class FishingPlugin extends Plugin
 			}
 		}
 
-		if (config.trawlerTimer())
-		{
-			updateTrawlerTimer();
-		}
+		updateTrawlerTimer();
+		updateTrawlerContribution();
 	}
 
 	@Subscribe
@@ -351,37 +356,39 @@ public class FishingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
-		if (!config.trawlerNotification() || client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-
-		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
-
-		if ((regionID == TRAWLER_SHIP_REGION_NORMAL || regionID == TRAWLER_SHIP_REGION_SINKING)
-			&& client.getVar(Varbits.FISHING_TRAWLER_ACTIVITY) <= TRAWLER_ACTIVITY_THRESHOLD)
-		{
-			if (!trawlerNotificationSent)
-			{
-				notifier.notify("[" + client.getLocalPlayer().getName() + "] has low Fishing Trawler activity!");
-				trawlerNotificationSent = true;
-			}
-		}
-		else
-		{
-			trawlerNotificationSent = false;
-		}
-	}
-
-	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() == WidgetID.FISHING_TRAWLER_GROUP_ID)
 		{
 			trawlerStartTime = Instant.now();
+			log.debug("Trawler session started");
 		}
+	}
+
+	/**
+	 * Updates the trawler contribution value
+	 */
+	private void updateTrawlerContribution()
+	{
+		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING)
+		{
+			return;
+		}
+
+		if (!config.trawlerContribution())
+		{
+			return;
+		}
+
+		Widget trawlerContributionWidget = client.getWidget(WidgetInfo.FISHING_TRAWLER_CONTRIBUTION);
+		if (trawlerContributionWidget == null)
+		{
+			return;
+		}
+
+		int trawlerContribution = client.getVar(Varbits.FISHING_TRAWLER_ACTIVITY);
+		trawlerContributionWidget.setText("Contribution: " + trawlerContribution);
 	}
 
 	/**
@@ -399,6 +406,11 @@ public class FishingPlugin extends Plugin
 		{
 			log.debug("Trawler session ended");
 			trawlerStartTime = null;
+			return;
+		}
+
+		if (!config.trawlerTimer())
+		{
 			return;
 		}
 
@@ -426,7 +438,7 @@ public class FishingPlugin extends Plugin
 		}
 		else
 		{
-			trawlerText.append("00");
+			trawlerText.append('0');
 		}
 
 		trawlerText.append(':');

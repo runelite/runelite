@@ -40,7 +40,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -62,9 +61,6 @@ public class EmojiPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
 
 	private int modIconsStart = -1;
 
@@ -128,6 +124,8 @@ public class EmojiPlugin extends Plugin
 			case PUBLICCHAT:
 			case MODCHAT:
 			case FRIENDSCHAT:
+			case CLAN_CHAT:
+			case CLAN_GUEST_CHAT:
 			case PRIVATECHAT:
 			case PRIVATECHATOUT:
 			case MODPRIVATECHAT:
@@ -145,9 +143,7 @@ public class EmojiPlugin extends Plugin
 			return;
 		}
 
-		messageNode.setRuneLiteFormatMessage(updatedMessage);
-		chatMessageManager.update(messageNode);
-		client.refreshChat();
+		messageNode.setValue(updatedMessage);
 	}
 
 	@Subscribe

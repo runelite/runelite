@@ -194,6 +194,10 @@ public class ObjectLoader
 			def.setRetextureToFind(retextureToFind);
 			def.setTextureToReplace(textureToReplace);
 		}
+		else if (opcode == 61)
+		{
+			def.setCategory(is.readUnsignedShort());
+		}
 		else if (opcode == 62)
 		{
 			def.setRotated(true);
@@ -305,6 +309,10 @@ public class ObjectLoader
 		else if (opcode == 82)
 		{
 			def.setMapAreaId(is.readUnsignedShort());
+		}
+		else if (opcode == 89)
+		{
+			def.setRandomizeAnimStart(true);
 		}
 		else if (opcode == 92)
 		{

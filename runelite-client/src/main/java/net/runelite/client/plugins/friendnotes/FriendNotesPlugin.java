@@ -265,7 +265,7 @@ public class FriendNotesPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		final int groupId = WidgetInfo.TO_GROUP(event.getWidgetId());
+		final int groupId = WidgetInfo.TO_GROUP(event.getParam1());
 
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.IGNORE_LIST.getGroupId())
 		{
@@ -342,8 +342,7 @@ public class FriendNotesPlugin extends Plugin
 
 		switch (event.getEventName())
 		{
-			case "friend_cc_settext":
-			case "ignore_cc_settext":
+			case "friendsChatSetText":
 				String[] stringStack = client.getStringStack();
 				int stringStackSize = client.getStringStackSize();
 				final String rsn = stringStack[stringStackSize - 1];
@@ -354,8 +353,7 @@ public class FriendNotesPlugin extends Plugin
 					stringStack[stringStackSize - 1] = rsn + " <img=" + iconIdx + ">";
 				}
 				break;
-			case "friend_cc_setposition":
-			case "ignore_cc_setposition":
+			case "friendsChatSetPosition":
 				if (currentlyLayouting == null || getFriendNote(currentlyLayouting) == null)
 				{
 					return;
@@ -416,7 +414,7 @@ public class FriendNotesPlugin extends Plugin
 			return;
 		}
 
-		final BufferedImage iconImg = ImageUtil.getResourceStreamFromClass(getClass(), "note_icon.png");
+		final BufferedImage iconImg = ImageUtil.loadImageResource(getClass(), "note_icon.png");
 		if (iconImg == null)
 		{
 			return;

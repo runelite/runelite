@@ -27,6 +27,7 @@ package net.runelite.api;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -65,8 +66,19 @@ public interface TileObject
 	 */
 	int getId();
 
+	/**
+	 * Get the world location for this object. For objects which are larger than 1 tile, this is the
+	 * center most tile, rounded to the south-west.
+	 * @return
+	 */
+	@Nonnull
 	WorldPoint getWorldLocation();
 
+	/**
+	 * Get the local location for this object. This point is the center point of the object.
+	 * @return
+	 */
+	@Nonnull
 	LocalPoint getLocalLocation();
 
 	/**

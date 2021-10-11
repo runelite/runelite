@@ -42,4 +42,16 @@ public interface DecorativeObject extends TileObject
 
 	Renderable getRenderable();
 	Renderable getRenderable2();
+
+	/**
+	 * Decorative object x offset. This is added to the x position of the object, and is used to
+	 * account for walls of varying widths.
+	 */
+	int getXOffset();
+
+	/**
+	 * Decorative object y offset. This is added to the z position of the object, and is used to
+	 * account for walls of varying widths.
+	 */
+	int getYOffset();
 }

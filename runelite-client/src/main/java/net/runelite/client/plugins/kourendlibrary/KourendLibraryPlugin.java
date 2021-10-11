@@ -134,7 +134,7 @@ public class KourendLibraryPlugin extends Plugin
 		panel = injector.getInstance(KourendLibraryPanel.class);
 		panel.init();
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Kourend Library")
@@ -218,7 +218,7 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
 		{
-			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
+			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getParam0(), menuOpt.getParam1(), client.getPlane());
 		}
 	}
 

@@ -39,6 +39,7 @@ import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -145,6 +146,15 @@ public class InventoryTagsPlugin extends Plugin
 		removeInventoryMenuOptions();
 		overlayManager.remove(overlay);
 		editorMode = false;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (configChanged.getGroup().equals(InventoryTagsConfig.GROUP))
+		{
+			overlay.invalidateCache();
+		}
 	}
 
 	@Subscribe

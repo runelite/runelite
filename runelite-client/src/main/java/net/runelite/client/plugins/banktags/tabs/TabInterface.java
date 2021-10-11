@@ -252,6 +252,13 @@ public class TabInterface
 		equipmentButton.setOriginalY(4);
 		equipmentButton.revalidate();
 
+		Widget bankItemCountTop = client.getWidget(WidgetInfo.BANK_ITEM_COUNT_TOP);
+		if (bankItemCountTop == null)
+		{
+			return;
+		}
+
+		int equipmentButtonTotalWidth = equipmentButton.getWidth() + equipmentButton.getOriginalX() - bankItemCountTop.getOriginalX();
 		// the bank item count is 3 widgets
 		for (int child = WidgetInfo.BANK_ITEM_COUNT_TOP.getChildId(); child <= WidgetInfo.BANK_ITEM_COUNT_BOTTOM.getChildId(); child++)
 		{
@@ -261,13 +268,22 @@ public class TabInterface
 				return;
 			}
 
-			widget.setOriginalX(widget.getOriginalX() + equipmentButton.getWidth());
+			widget.setOriginalX(widget.getOriginalX() + equipmentButtonTotalWidth);
 			widget.revalidate();
 		}
 
 		titleBar.setOriginalX(equipmentButton.getWidth() / 2);
 		titleBar.setOriginalWidth(titleBar.getWidth() - equipmentButton.getWidth());
 		titleBar.revalidate();
+
+		Widget groupStorageButton = client.getWidget(WidgetInfo.BANK_GROUP_STORAGE_BUTTON);
+		if (groupStorageButton == null)
+		{
+			return;
+		}
+
+		groupStorageButton.setOriginalX(groupStorageButton.getOriginalX() + equipmentButtonTotalWidth);
+		groupStorageButton.revalidate();
 	}
 
 	private void handleDeposit(MenuOptionClicked event, Boolean inventory)
@@ -447,7 +463,7 @@ public class TabInterface
 						})
 					)
 					.option("2. Only tab", () -> clientThread.invoke(() -> deleteTab(target)))
-					.option("3. Cancel", Runnables::doNothing)
+					.option("3. Cancel", Runnables.doNothing())
 					.build();
 				break;
 			case Tab.EXPORT_TAB:
@@ -661,26 +677,26 @@ public class TabInterface
 			activateTab(null);
 		}
 		else if (activeTab != null
-			&& event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.RUNELITE
 			&& event.getMenuOption().startsWith(REMOVE_TAG))
 		{
 			// Add "remove" menu entry to all items in bank while tab is selected
 			event.consume();
-			final ItemComposition item = getItem(event.getActionParam());
+			final ItemComposition item = getItem(event.getParam0());
 			final int itemId = item.getId();
 			tagManager.removeTag(itemId, activeTab.getTag());
 			bankSearch.layoutBank(); // re-layout to filter the removed item out
 		}
 		else if (event.getMenuAction() == MenuAction.RUNELITE
-			&& ((event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getMenuOption().equals(TAG_INVENTORY))
-			|| (event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getMenuOption().equals(TAG_GEAR))))
+			&& ((event.getParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getMenuOption().equals(TAG_INVENTORY))
+			|| (event.getParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getMenuOption().equals(TAG_GEAR))))
 		{
-			handleDeposit(event, event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
+			handleDeposit(event, event.getParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
 		}
-		else if (activeTab != null && ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(SHOW_WORN))
-			|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(SHOW_SETTINGS))
-			|| (event.getWidgetId() == WidgetInfo.BANK_TUTORIAL_BUTTON.getId() && event.getMenuOption().equals(SHOW_TUTORIAL))))
+		else if (activeTab != null && ((event.getParam1() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(SHOW_WORN))
+			|| (event.getParam1() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(SHOW_SETTINGS))
+			|| (event.getParam1() == WidgetInfo.BANK_TUTORIAL_BUTTON.getId() && event.getMenuOption().equals(SHOW_TUTORIAL))))
 		{
 			saveTab();
 		}

@@ -131,13 +131,13 @@ class LootTrackerPanel extends PluginPanel
 
 	static
 	{
-		final BufferedImage singleLootImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "single_loot_icon.png");
-		final BufferedImage groupedLootImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "grouped_loot_icon.png");
-		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
-		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "visible_icon.png");
-		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "invisible_icon.png");
-		final BufferedImage collapseImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "collapsed.png");
-		final BufferedImage expandedImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "expanded.png");
+		final BufferedImage singleLootImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "single_loot_icon.png");
+		final BufferedImage groupedLootImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "grouped_loot_icon.png");
+		final BufferedImage backArrowImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "back_icon.png");
+		final BufferedImage visibleImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "visible_icon.png");
+		final BufferedImage invisibleImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "invisible_icon.png");
+		final BufferedImage collapseImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "collapsed.png");
+		final BufferedImage expandedImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "expanded.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
 		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));
@@ -554,6 +554,18 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
+			final LootTrackerClient client = plugin.getLootTrackerClient();
+			final boolean syncLoot = client.getUuid() != null && config.syncPanel();
+			final int result = JOptionPane.showOptionDialog(overallPanel,
+				syncLoot ? SYNC_RESET_ALL_WARNING_TEXT : NO_SYNC_RESET_ALL_WARNING_TEXT,
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
+
+			if (result != JOptionPane.YES_OPTION)
+			{
+				return;
+			}
+
 			Predicate<LootTrackerRecord> match = groupLoot
 				// With grouped loot, remove any record with this title
 				? r -> r.matches(record.getTitle(), record.getType())
@@ -566,7 +578,6 @@ class LootTrackerPanel extends PluginPanel
 			logsContainer.remove(box);
 			logsContainer.repaint();
 
-			LootTrackerClient client = plugin.getLootTrackerClient();
 			// Without loot being grouped we have no way to identify single kills to be deleted
 			if (client.getUuid() != null && groupLoot && config.syncPanel())
 			{

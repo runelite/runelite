@@ -37,11 +37,21 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
+import net.runelite.api.SettingID;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.JavaScriptCallback;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -52,7 +62,8 @@ import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @PluginDescriptor(
 	name = "Camera",
@@ -79,7 +90,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 * Whether or not the current menu has any non-ignored menu entries
 	 */
 	private boolean menuHasEntries;
-	
+	private int savedCameraYaw;
+
 	@Inject
 	private Client client;
 
@@ -96,10 +108,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private MouseManager mouseManager;
 
 	@Inject
-	private OverlayManager overlayManager;
+	private TooltipManager tooltipManager;
 
-	@Inject
-	private CameraOverlay cameraOverlay;
+	private Tooltip sliderTooltip;
 
 	@Provides
 	CameraConfig getConfig(ConfigManager configManager)
@@ -116,19 +127,50 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		copyConfigs();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
-		overlayManager.add(cameraOverlay);
+		clientThread.invoke(() ->
+		{
+			Widget sideSlider = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
+			if (sideSlider != null)
+			{
+				addZoomTooltip(sideSlider);
+			}
+
+			Widget settingsInit = client.getWidget(WidgetInfo.SETTINGS_INIT);
+			if (settingsInit != null)
+			{
+				client.createScriptEvent(settingsInit.getOnLoadListener())
+					.setSource(settingsInit)
+					.run();
+			}
+		});
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.remove(cameraOverlay);
 		client.setCameraPitchRelaxerEnabled(false);
 		client.setInvertYaw(false);
 		client.setInvertPitch(false);
 		keyManager.unregisterKeyListener(this);
 		mouseManager.unregisterMouseListener(this);
 		controlDown = false;
+
+		clientThread.invoke(() ->
+		{
+			Widget sideSlider = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
+			if (sideSlider != null)
+			{
+				sideSlider.setOnMouseRepeatListener((Object[]) null);
+			}
+
+			Widget settingsInit = client.getWidget(WidgetInfo.SETTINGS_INIT);
+			if (settingsInit != null)
+			{
+				client.createScriptEvent(settingsInit.getOnLoadListener())
+					.setSource(settingsInit)
+					.run();
+			}
+		});
 	}
 
 	void copyConfigs()
@@ -206,6 +248,12 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		if ("scrollWheelZoomIncrement".equals(event.getEventName()) && config.zoomIncrement() != DEFAULT_ZOOM_INCREMENT)
 		{
 			intStack[intStackSize - 1] = config.zoomIncrement();
+			return;
+		}
+
+		if ("lookPreservePitch".equals(event.getEventName()) && config.compassLookPreservePitch())
+		{
+			intStack[intStackSize - 1] = client.getCameraPitch();
 			return;
 		}
 
@@ -316,6 +364,78 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	public void onClientTick(ClientTick event)
 	{
 		menuHasEntries = hasMenuEntries(client.getMenuEntries());
+	}
+
+	@Subscribe
+	private void onScriptPreFired(ScriptPreFired ev)
+	{
+		switch (ev.getScriptId())
+		{
+			case ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP:
+			{
+				int arg = client.getIntStackSize() - 7;
+				int[] is = client.getIntStack();
+
+				if (is[arg] == SettingID.CAMERA_ZOOM)
+				{
+					addZoomTooltip(client.getScriptActiveWidget());
+				}
+				break;
+			}
+			case ScriptID.ZOOM_SLIDER_ONDRAG:
+			case ScriptID.SETTINGS_ZOOM_SLIDER_ONDRAG:
+				sliderTooltip = makeSliderTooltip();
+				break;
+		}
+	}
+
+	@Subscribe
+	private void onWidgetLoaded(WidgetLoaded ev)
+	{
+		if (ev.getGroupId() == WidgetID.SETTINGS_SIDE_GROUP_ID)
+		{
+			addZoomTooltip(client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK));
+		}
+	}
+
+	private void addZoomTooltip(Widget w)
+	{
+		w.setOnMouseRepeatListener((JavaScriptCallback) ev -> sliderTooltip = makeSliderTooltip());
+	}
+
+	private Tooltip makeSliderTooltip()
+	{
+		int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+		int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
+		return new Tooltip("Camera Zoom: " + value + " / " + max);
+	}
+
+	@Subscribe
+	private void onBeforeRender(BeforeRender ev)
+	{
+		if (sliderTooltip != null)
+		{
+			tooltipManager.add(sliderTooltip);
+			sliderTooltip = null;
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		switch (gameStateChanged.getGameState())
+		{
+			case HOPPING:
+				savedCameraYaw = client.getMapAngle();
+				break;
+			case LOGGED_IN:
+				if (savedCameraYaw != 0 && config.preserveYaw())
+				{
+					client.setCameraYawTarget(savedCameraYaw);
+				}
+				savedCameraYaw = 0;
+				break;
+		}
 	}
 
 	/**

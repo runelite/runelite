@@ -10,9 +10,9 @@
    pop_int               ; pop chat type
    string_length         ; get string length of chat message
    iconst                 0              ; load 0
-   if_icmpne              LABEL100       ; if length is not 0, continue
+   if_icmpne              CONTINUE       ; if length is not 0, continue
    return                
-LABEL100:
+CONTINUE:
    get_varbit             4394
    iconst                 1
    if_icmpeq              LABEL4
@@ -40,12 +40,26 @@ LABEL16:
    join_string            5
    mes                   
 LABEL23:
-   jump                   LABEL27
+   jump                   LABEL39
 LABEL24:
+   iload                  0
+   iconst                 3
+   if_icmpeq              LABEL31
+   iload                  0
+   iconst                 4
+   if_icmpeq              LABEL31
+   jump                   LABEL36
+LABEL31:
+   sload                  0
+   iload                  0
+   iconst                 0
+   chat_sendclan         
+   jump                   LABEL39
+LABEL36:
    sload                  0
    iload                  0
    chat_sendpublic       
-LABEL27:
+LABEL39:
    clientclock           
    set_varc_int           61
    return                

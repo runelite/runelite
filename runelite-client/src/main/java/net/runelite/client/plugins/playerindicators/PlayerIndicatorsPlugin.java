@@ -28,16 +28,29 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
 import lombok.Value;
+import net.runelite.api.Client;
 import net.runelite.api.FriendsChatRank;
 import static net.runelite.api.FriendsChatRank.UNRANKED;
-import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.*;
+import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
+import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
+import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FOURTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
+import static net.runelite.api.MenuAction.RUNELITE_PLAYER;
+import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
+import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.clan.ClanTitle;
 import net.runelite.api.events.ClientTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.FriendChatManager;
+import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -66,10 +79,13 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
 
 	@Inject
+	private PlayerIndicatorsService playerIndicatorsService;
+
+	@Inject
 	private Client client;
 
 	@Inject
-	private FriendChatManager friendChatManager;
+	private ChatIconManager chatIconManager;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -174,26 +190,41 @@ public class PlayerIndicatorsPlugin extends Plugin
 		int image = -1;
 		Color color = null;
 
-		if (config.highlightFriends() && player.isFriend())
+		if (player.isFriend() && config.highlightFriends())
 		{
 			color = config.getFriendColor();
 		}
-		else if (config.drawFriendsChatMemberNames() && player.isFriendsChatMember())
+		else if (player.isFriendsChatMember() && config.highlightFriendsChat())
 		{
 			color = config.getFriendsChatMemberColor();
 
-			FriendsChatRank rank = friendChatManager.getRank(player.getName());
-			if (rank != UNRANKED)
+			if (config.showFriendsChatRanks())
 			{
-				image = friendChatManager.getIconNumber(rank);
+				FriendsChatRank rank = playerIndicatorsService.getFriendsChatRank(player);
+				if (rank != UNRANKED)
+				{
+					image = chatIconManager.getIconNumber(rank);
+				}
 			}
 		}
-		else if (config.highlightTeamMembers()
-			&& player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam())
+		else if (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam() && config.highlightTeamMembers())
 		{
 			color = config.getTeamMemberColor();
 		}
-		else if (config.highlightOthers() && !player.isFriendsChatMember())
+		else if (player.isClanMember() && config.highlightClanMembers())
+		{
+			color = config.getClanMemberColor();
+
+			if (config.showClanChatRanks())
+			{
+				ClanTitle clanTitle = playerIndicatorsService.getClanTitle(player);
+				if (clanTitle != null)
+				{
+					image = chatIconManager.getIconNumber(clanTitle);
+				}
+			}
+		}
+		else if (!player.isFriendsChatMember() && !player.isClanMember() && config.highlightOthers())
 		{
 			color = config.getOthersColor();
 		}
@@ -222,7 +253,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			newTarget = ColorUtil.prependColorTag(newTarget, decorations.getColor());
 		}
 
-		if (decorations.getImage() != -1 && config.showFriendsChatRanks())
+		if (decorations.getImage() != -1)
 		{
 			newTarget = "<img=" + decorations.getImage() + ">" + newTarget;
 		}

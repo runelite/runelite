@@ -28,69 +28,19 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("minimap")
+@ConfigGroup(MinimapConfig.GROUP)
 public interface MinimapConfig extends Config
 {
-	@ConfigItem(
-		keyName = "item",
-		name = "Item color",
-		description = "Set the minimap color items are drawn in"
-	)
-	default Color itemColor() //mapdot 0
-	{
-		return new Color(255, 0, 0);
-	}
+	String GROUP = "minimap";
 
-	@ConfigItem(
-		keyName = "npc",
-		name = "NPC color",
-		description = "Set the minimap color NPCs are drawn in"
+	@ConfigSection(
+		name = "Minimap dot colors",
+		description = "The colors of dots on the minimap.",
+		position = 0
 	)
-	default Color npcColor() //mapdot 1
-	{
-		return new Color(255, 255, 0);
-	}
-
-	@ConfigItem(
-		keyName = "player",
-		name = "Player color",
-		description = "Set the minimap Color players are drawn in"
-	)
-	default Color playerColor() //mapdot 2
-	{
-		return new Color(255, 255, 255);
-	}
-
-	@ConfigItem(
-		keyName = "friend",
-		name = "Friends color",
-		description = "Set the minimap color your friends are drawn in"
-	)
-	default Color friendColor() //mapdot 3
-	{
-		return new Color(0, 255, 0);
-	}
-
-	@ConfigItem(
-		keyName = "team",
-		name = "Team color",
-		description = "Set the minimap color your team is drawn in"
-	)
-	default Color teamColor() //mapdot 4
-	{
-		return new Color(19, 110, 247);
-	}
-
-	@ConfigItem(
-		keyName = "clan",
-		name = "Friends Chat color",
-		description = "Set the minimap color your friends chat members are drawn in"
-	)
-	default Color friendsChatColor() //mapdot 5
-	{
-		return new Color(170, 0, 190);
-	}
+	String minimapDotSection = "minimapDotSection";
 
 	@ConfigItem(
 		keyName = "hideMinimap",
@@ -101,4 +51,60 @@ public interface MinimapConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "item",
+		name = "Item color",
+		description = "Set the minimap color items are drawn in",
+		section = minimapDotSection
+	)
+	Color itemColor();
+
+	@ConfigItem(
+		keyName = "npc",
+		name = "NPC color",
+		description = "Set the minimap color NPCs are drawn in",
+		section = minimapDotSection
+	)
+	Color npcColor();
+
+	@ConfigItem(
+		keyName = "player",
+		name = "Player color",
+		description = "Set the minimap Color players are drawn in",
+		section = minimapDotSection
+	)
+	Color playerColor();
+
+	@ConfigItem(
+		keyName = "friend",
+		name = "Friends color",
+		description = "Set the minimap color your friends are drawn in",
+		section = minimapDotSection
+	)
+	Color friendColor();
+
+	@ConfigItem(
+		keyName = "team",
+		name = "Team color",
+		description = "Set the minimap color your team is drawn in",
+		section = minimapDotSection
+	)
+	Color teamColor();
+
+	@ConfigItem(
+		keyName = "clan", // old name from prior to clans
+		name = "Friends Chat color",
+		description = "Set the minimap color your friends chat members are drawn in",
+		section = minimapDotSection
+	)
+	Color friendsChatColor();
+
+	@ConfigItem(
+		keyName = "clanchat",
+		name = "Clan Chat color",
+		description = "Set the minimap color your clan chat members are drawn in",
+		section = minimapDotSection
+	)
+	Color clanChatColor();
 }

@@ -43,10 +43,11 @@ public final class AnimationID
 	public static final int WOODCUTTING_RUNE = 867;
 	public static final int WOODCUTTING_GILDED = 8303;
 	public static final int WOODCUTTING_DRAGON = 2846;
+	public static final int WOODCUTTING_DRAGON_OR = 24;
 	public static final int WOODCUTTING_INFERNAL = 2117;
 	public static final int WOODCUTTING_3A_AXE = 7264;
 	public static final int WOODCUTTING_CRYSTAL = 8324;
-	public static final int WOODCUTTING_TRAILBLAZER = 8778;
+	public static final int WOODCUTTING_TRAILBLAZER = 8778; // Same animation as Infernal axe (or)
 	public static final int CONSUMING = 829; // consuming consumables
 	public static final int FIREMAKING = 733;
 	public static final int DEATH = 836;
@@ -96,9 +97,11 @@ public final class AnimationID
 	public static final int CRAFTING_SPINNING = 894;
 	public static final int CRAFTING_POTTERS_WHEEL = 883;
 	public static final int CRAFTING_POTTERY_OVEN = 24975;
+	public static final int CRAFTING_LOOM = 2270;
 	public static final int SMITHING_SMELTING = 899;
 	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
 	public static final int SMITHING_ANVIL = 898;
+	public static final int SMITHING_IMCANDO_HAMMER = 8911;
 	public static final int FISHING_BIG_NET = 620;
 	public static final int FISHING_NET = 621;
 	public static final int FISHING_POLE_CAST = 623; // pole is in the water
@@ -106,10 +109,10 @@ public final class AnimationID
 	public static final int FISHING_HARPOON = 618;
 	public static final int FISHING_BARBTAIL_HARPOON = 5108;
 	public static final int FISHING_DRAGON_HARPOON = 7401;
+	public static final int FISHING_DRAGON_HARPOON_OR = 88;
 	public static final int FISHING_INFERNAL_HARPOON = 7402;
 	public static final int FISHING_CRYSTAL_HARPOON = 8336;
-	public static final int FISHING_TRAILBLAZER_HARPOON = 8784;
-	public static final int FISHING_TRAILBLAZER_HARPOON_2 = 8785;
+	public static final int FISHING_TRAILBLAZER_HARPOON = 8784; // Same animation as Infernal harpoon (or)
 	public static final int FISHING_OILY_ROD = 622;
 	public static final int FISHING_KARAMBWAN = 1193;
 	public static final int FISHING_CRUSHING_INFERNAL_EELS = 7553;
@@ -141,10 +144,11 @@ public final class AnimationID
 	public static final int MINING_DRAGON_PICKAXE = 7139;
 	public static final int MINING_DRAGON_PICKAXE_UPGRADED = 642;
 	public static final int MINING_DRAGON_PICKAXE_OR = 8346;
+	public static final int MINING_DRAGON_PICKAXE_OR_TRAILBLAZER = 8887;
 	public static final int MINING_INFERNAL_PICKAXE = 4482;
 	public static final int MINING_3A_PICKAXE = 7283;
 	public static final int MINING_CRYSTAL_PICKAXE = 8347;
-	public static final int MINING_TRAILBLAZER_PICKAXE = 8787;
+	public static final int MINING_TRAILBLAZER_PICKAXE = 8787; // Same animation as Infernal pickaxe (or)
 	public static final int MINING_TRAILBLAZER_PICKAXE_2 = 8788;
 	public static final int MINING_TRAILBLAZER_PICKAXE_3 = 8789;
 	public static final int MINING_MOTHERLODE_BRONZE = 6753;
@@ -158,10 +162,11 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_DRAGON = 6758;
 	public static final int MINING_MOTHERLODE_DRAGON_UPGRADED = 335;
 	public static final int MINING_MOTHERLODE_DRAGON_OR = 8344;
+	public static final int MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER = 8886;
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int MINING_MOTHERLODE_3A = 7282;
 	public static final int MINING_MOTHERLODE_CRYSTAL = 8345;
-	public static final int MINING_MOTHERLODE_TRAILBLAZER = 8786;
+	public static final int MINING_MOTHERLODE_TRAILBLAZER = 8786; // Same animation as Infernal pickaxe (or)
 	public static final int DENSE_ESSENCE_CHIPPING = 7201;
 	public static final int DENSE_ESSENCE_CHISELING = 7202;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
@@ -174,7 +179,7 @@ public final class AnimationID
 	public static final int MAGIC_ENCHANTING_BOLTS = 4462;
 	public static final int BURYING_BONES = 827;
 	public static final int USING_GILDED_ALTAR = 3705;
-	public static final int LOOKING_INTO = 832;
+	public static final int LOOKING_INTO = 832; // Generic animation used for filling water vessels, Shades of Mort'ton, etc.
 	public static final int DIG = 830;
 	public static final int DEMONIC_GORILLA_MAGIC_ATTACK = 7225;
 	public static final int DEMONIC_GORILLA_MELEE_ATTACK = 7226;
@@ -199,12 +204,20 @@ public final class AnimationID
 	public static final int LEAGUE_HOME_TELEPORT_4 = 8803;
 	public static final int LEAGUE_HOME_TELEPORT_5 = 8805;
 	public static final int LEAGUE_HOME_TELEPORT_6 = 8807;
+	public static final int RAID_LIGHT_ANIMATION = 3101;
 
 	public static final int CONSTRUCTION = 3676;
+	public static final int CONSTRUCTION_IMCANDO = 8912;
 	public static final int SAND_COLLECTION = 895;
 	public static final int PISCARILIUS_CRANE_REPAIR = 7199;
 	public static final int HOME_MAKE_TABLET = 4067;
 	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
+
+	// Ectofuntus animations
+	public static final int ECTOFUNTUS_FILL_SLIME_BUCKET = 4471;
+	public static final int ECTOFUNTUS_GRIND_BONES = 1648;
+	public static final int ECTOFUNTUS_INSERT_BONES = 1649;
+	public static final int ECTOFUNTUS_EMPTY_BIN = 1650;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;

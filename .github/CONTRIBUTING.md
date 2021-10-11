@@ -14,7 +14,7 @@ Here are the guidelines we'd like you to follow:
 
 ## <a name="question"></a> Got a Question or Problem?
 
-If you have questions about how to contribute to runelite, please join our [Discord](https://discord.gg/mePCs8U) server.
+If you have questions about how to contribute to runelite, please join our [Discord](https://discord.gg/ArdAhnN) server.
 
 ## <a name="issue"></a> Found an Issue?
 
@@ -131,4 +131,4 @@ To ensure consistency throughout the source code, review our [code conventions](
 
 
 [github]: https://github.com/runelite/runelite
-[discord]: https://discord.gg/mePCs8U
+[discord]: https://discord.gg/ArdAhnN

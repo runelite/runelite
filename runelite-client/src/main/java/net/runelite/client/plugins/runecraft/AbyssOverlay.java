@@ -24,20 +24,18 @@
  */
 package net.runelite.client.plugins.runecraft;
 
-import java.awt.Color;
-import java.awt.Polygon;
-import java.awt.Shape;
 import com.google.inject.Inject;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
-import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 class AbyssOverlay extends Overlay
 {
@@ -58,42 +56,18 @@ class AbyssOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.showRifts() && config.showClickBox())
+		Set<DecorativeObject> abyssObjects = plugin.getAbyssObjects();
+		if (abyssObjects.isEmpty() || !config.showRifts() || !config.showClickBox())
 		{
-			for (DecorativeObject object : plugin.getAbyssObjects())
-			{
-				renderRift(graphics, object);
-			}
+			return null;
 		}
 
-		if (config.hightlightDarkMage())
+		for (DecorativeObject object : abyssObjects)
 		{
-			highlightDarkMage(graphics);
+			renderRift(graphics, object);
 		}
 
 		return null;
-	}
-
-	private void highlightDarkMage(Graphics2D graphics)
-	{
-		if (!plugin.isDegradedPouchInInventory())
-		{
-			return;
-		}
-
-		NPC darkMage = plugin.getDarkMage();
-		if (darkMage == null)
-		{
-			return;
-		}
-
-		Polygon tilePoly = darkMage.getCanvasTilePoly();
-		if (tilePoly == null)
-		{
-			return;
-		}
-
-		OverlayUtil.renderPolygon(graphics, tilePoly, Color.green);
 	}
 
 	private void renderRift(Graphics2D graphics, DecorativeObject object)

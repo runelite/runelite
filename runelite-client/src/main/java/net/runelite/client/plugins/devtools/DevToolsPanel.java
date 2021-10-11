@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.google.inject.ProvisionException;
 import java.awt.GridLayout;
 import java.awt.TrayIcon;
 import java.util.concurrent.ScheduledExecutorService;
@@ -32,9 +33,12 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -42,9 +46,11 @@ import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
 
+@Slf4j
 class DevToolsPanel extends PluginPanel
 {
 	private final Client client;
+	private final ClientThread clientThread;
 	private final Notifier notifier;
 	private final DevToolsPlugin plugin;
 
@@ -58,6 +64,7 @@ class DevToolsPanel extends PluginPanel
 	@Inject
 	private DevToolsPanel(
 		Client client,
+		ClientThread clientThread,
 		DevToolsPlugin plugin,
 		WidgetInspector widgetInspector,
 		VarInspector varInspector,
@@ -69,6 +76,7 @@ class DevToolsPanel extends PluginPanel
 	{
 		super();
 		this.client = client;
+		this.clientThread = clientThread;
 		this.plugin = plugin;
 		this.widgetInspector = widgetInspector;
 		this.varInspector = varInspector;
@@ -124,30 +132,10 @@ class DevToolsPanel extends PluginPanel
 		});
 
 		container.add(plugin.getWidgetInspector());
-		plugin.getWidgetInspector().addActionListener((ev) ->
-		{
-			if (plugin.getWidgetInspector().isActive())
-			{
-				widgetInspector.close();
-			}
-			else
-			{
-				widgetInspector.open();
-			}
-		});
+		plugin.getWidgetInspector().addFrame(widgetInspector);
 
 		container.add(plugin.getVarInspector());
-		plugin.getVarInspector().addActionListener((ev) ->
-		{
-			if (plugin.getVarInspector().isActive())
-			{
-				varInspector.close();
-			}
-			else
-			{
-				varInspector.open();
-			}
-		});
+		plugin.getVarInspector().addFrame(varInspector);
 
 		container.add(plugin.getSoundEffects());
 
@@ -159,22 +147,20 @@ class DevToolsPanel extends PluginPanel
 		container.add(notificationBtn);
 
 		container.add(plugin.getScriptInspector());
-		plugin.getScriptInspector().addActionListener((ev) ->
-		{
-			if (plugin.getScriptInspector().isActive())
-			{
-				scriptInspector.close();
-			}
-			else
-			{
-				scriptInspector.open();
-			}
-		});
+		plugin.getScriptInspector().addFrame(scriptInspector);
 
 		final JButton newInfoboxBtn = new JButton("Infobox");
 		newInfoboxBtn.addActionListener(e ->
 		{
-			Counter counter = new Counter(ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png"), plugin, 42);
+			Counter counter = new Counter(ImageUtil.loadImageResource(getClass(), "devtools_icon.png"), plugin, 42)
+			{
+				@Override
+				public String getName()
+				{
+					// Give the infobox a unique name to test infobox splitting
+					return "devtools-" + hashCode();
+				}
+			};
 			counter.getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_INFOBOX, "Test", "DevTools"));
 			infoBoxManager.addInfoBox(counter);
 		});
@@ -185,17 +171,28 @@ class DevToolsPanel extends PluginPanel
 		container.add(clearInfoboxBtn);
 
 		container.add(plugin.getInventoryInspector());
-		plugin.getInventoryInspector().addActionListener((ev) ->
+		plugin.getInventoryInspector().addFrame(inventoryInspector);
+
+		final JButton disconnectBtn = new JButton("Disconnect");
+		disconnectBtn.addActionListener(e -> clientThread.invoke(() -> client.setGameState(GameState.CONNECTION_LOST)));
+		container.add(disconnectBtn);
+
+		container.add(plugin.getRoofs());
+
+		try
 		{
-			if (plugin.getInventoryInspector().isActive())
-			{
-				inventoryInspector.close();
-			}
-			else
-			{
-				inventoryInspector.open();
-			}
-		});
+			ShellFrame sf = plugin.getInjector().getInstance(ShellFrame.class);
+			container.add(plugin.getShell());
+			plugin.getShell().addFrame(sf);
+		}
+		catch (LinkageError | ProvisionException e)
+		{
+			log.debug("Shell is not supported", e);
+		}
+		catch (Exception e)
+		{
+			log.info("Shell couldn't be loaded", e);
+		}
 
 		return container;
 	}

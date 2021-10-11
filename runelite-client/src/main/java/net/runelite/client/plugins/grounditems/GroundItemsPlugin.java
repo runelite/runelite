@@ -28,7 +28,9 @@ package net.runelite.client.plugins.grounditems;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.EvictingQueue;
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Table;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -38,7 +40,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -52,11 +54,13 @@ import lombok.Setter;
 import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
@@ -69,6 +73,7 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -81,7 +86,7 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
-import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.OVERLAY;
+import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
@@ -157,6 +162,9 @@ public class GroundItemsPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private ItemManager itemManager;
 
 	@Inject
@@ -175,11 +183,13 @@ public class GroundItemsPlugin extends Plugin
 	private ScheduledExecutorService executor;
 
 	@Getter
-	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
+	private final Table<WorldPoint, Integer, GroundItem> collectedGroundItems = HashBasedTable.create();
 	private List<PriceHighlight> priceChecks = ImmutableList.of();
 	private LoadingCache<NamedQuantity, Boolean> highlightedItems;
 	private LoadingCache<NamedQuantity, Boolean> hiddenItems;
 	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
+	private int lastUsedItem;
+	private final Map<WorldPoint, Lootbeam> lootbeams = new HashMap<>();
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -194,6 +204,7 @@ public class GroundItemsPlugin extends Plugin
 		mouseManager.registerMouseListener(inputListener);
 		keyManager.registerKeyListener(inputListener);
 		executor.execute(this::reset);
+		lastUsedItem = -1;
 	}
 
 	@Override
@@ -209,6 +220,7 @@ public class GroundItemsPlugin extends Plugin
 		hiddenItemList = null;
 		highlightedItemsList = null;
 		collectedGroundItems.clear();
+		clientThread.invokeLater(this::removeAllLootbeams);
 	}
 
 	@Subscribe
@@ -226,6 +238,7 @@ public class GroundItemsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			collectedGroundItems.clear();
+			lootbeams.clear();
 		}
 	}
 
@@ -236,19 +249,23 @@ public class GroundItemsPlugin extends Plugin
 		Tile tile = itemSpawned.getTile();
 
 		GroundItem groundItem = buildGroundItem(tile, item);
-
-		GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), tile.getWorldLocation());
-		GroundItem existing = collectedGroundItems.putIfAbsent(groundItemKey, groundItem);
+		GroundItem existing = collectedGroundItems.get(tile.getWorldLocation(), item.getId());
 		if (existing != null)
 		{
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 			// The spawn time remains set at the oldest spawn
+		}
+		else
+		{
+			collectedGroundItems.put(tile.getWorldLocation(), item.getId(), groundItem);
 		}
 
 		if (!config.onlyShowLoot())
 		{
 			notifyHighlightedItem(groundItem);
 		}
+
+		handleLootbeam(tile.getWorldLocation());
 	}
 
 	@Subscribe
@@ -257,8 +274,7 @@ public class GroundItemsPlugin extends Plugin
 		TileItem item = itemDespawned.getItem();
 		Tile tile = itemDespawned.getTile();
 
-		GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), tile.getWorldLocation());
-		GroundItem groundItem = collectedGroundItems.get(groundItemKey);
+		GroundItem groundItem = collectedGroundItems.get(tile.getWorldLocation(), item.getId());
 		if (groundItem == null)
 		{
 			return;
@@ -266,7 +282,7 @@ public class GroundItemsPlugin extends Plugin
 
 		if (groundItem.getQuantity() <= item.getQuantity())
 		{
-			collectedGroundItems.remove(groundItemKey);
+			collectedGroundItems.remove(tile.getWorldLocation(), item.getId());
 		}
 		else
 		{
@@ -276,6 +292,8 @@ public class GroundItemsPlugin extends Plugin
 			// time
 			groundItem.setSpawnTime(null);
 		}
+
+		handleLootbeam(tile.getWorldLocation());
 	}
 
 	@Subscribe
@@ -287,12 +305,13 @@ public class GroundItemsPlugin extends Plugin
 		int newQuantity = itemQuantityChanged.getNewQuantity();
 
 		int diff = newQuantity - oldQuantity;
-		GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), tile.getWorldLocation());
-		GroundItem groundItem = collectedGroundItems.get(groundItemKey);
+		GroundItem groundItem = collectedGroundItems.get(tile.getWorldLocation(), item.getId());
 		if (groundItem != null)
 		{
 			groundItem.setQuantity(groundItem.getQuantity() + diff);
 		}
+
+		handleLootbeam(tile.getWorldLocation());
 	}
 
 	@Subscribe
@@ -362,8 +381,7 @@ public class GroundItemsPlugin extends Plugin
 		for (ItemStack itemStack : items)
 		{
 			WorldPoint location = WorldPoint.fromLocal(client, itemStack.getLocation());
-			GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(itemStack.getId(), location);
-			GroundItem groundItem = collectedGroundItems.get(groundItemKey);
+			GroundItem groundItem = collectedGroundItems.get(location, itemStack.getId());
 			if (groundItem != null)
 			{
 				groundItem.setLootType(lootType);
@@ -374,6 +392,13 @@ public class GroundItemsPlugin extends Plugin
 				}
 			}
 		}
+
+		// Since the loot can potentially be over multiple tiles, make sure to process lootbeams on all those tiles
+		items.stream()
+			.map(ItemStack::getLocation)
+			.map(l -> WorldPoint.fromLocal(client, l))
+			.distinct()
+			.forEach(this::handleLootbeam);
 	}
 
 	private GroundItem buildGroundItem(final Tile tile, final TileItem item)
@@ -384,6 +409,7 @@ public class GroundItemsPlugin extends Plugin
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = itemComposition.getHaPrice();
 		final boolean dropped = tile.getWorldLocation().equals(client.getLocalPlayer().getWorldLocation()) && droppedItemQueue.remove(itemId);
+		final boolean table = itemId == lastUsedItem && tile.getItemLayer().getHeight() > 0;
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -394,11 +420,10 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
-			.lootType(dropped ? LootType.DROPPED : LootType.UNKNOWN)
+			.lootType(dropped ? LootType.DROPPED : (table ? LootType.TABLE : LootType.UNKNOWN))
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())
 			.build();
-
 
 		// Update item price in case it is coins
 		if (realItemId == COINS)
@@ -456,12 +481,14 @@ public class GroundItemsPlugin extends Plugin
 		}
 
 		priceChecks = priceCheckBuilder.build();
+
+		clientThread.invokeLater(this::handleLootbeams);
 	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (config.itemHighlightMode() != OVERLAY)
+		if (config.itemHighlightMode() == ItemHighlightMode.MENU || config.itemHighlightMode() == ItemHighlightMode.BOTH)
 		{
 			final boolean telegrabEntry = event.getOption().equals("Cast") && event.getTarget().startsWith(TELEGRAB_TEXT) && event.getType() == CAST_ON_ITEM;
 			if (!(event.getOption().equals("Take") && event.getType() == THIRD_OPTION) && !telegrabEntry)
@@ -477,8 +504,7 @@ public class GroundItemsPlugin extends Plugin
 			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
 			final WorldPoint worldPoint = WorldPoint.fromScene(client, sceneX, sceneY, client.getPlane());
-			GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(itemId, worldPoint);
-			GroundItem groundItem = collectedGroundItems.get(groundItemKey);
+			GroundItem groundItem = collectedGroundItems.get(worldPoint, itemId);
 			int quantity = groundItem.getQuantity();
 
 			final int gePrice = groundItem.getGePrice();
@@ -638,11 +664,8 @@ public class GroundItemsPlugin extends Plugin
 			return;
 		}
 
-		final Player local = client.getLocalPlayer();
 		final StringBuilder notificationStringBuilder = new StringBuilder()
-			.append('[')
-			.append(local.getName())
-			.append("] received a ")
+			.append("You received a ")
 			.append(dropType)
 			.append(" drop: ")
 			.append(item.getName());
@@ -680,12 +703,127 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_DROP)
+		if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_FIFTH_OPTION)
 		{
 			int itemId = menuOptionClicked.getId();
 			// Keep a queue of recently dropped items to better detect
 			// item spawns that are drops
 			droppedItemQueue.add(itemId);
+		}
+		else if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_USE_ON_GAME_OBJECT)
+		{
+			final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			if (inventory == null)
+			{
+				return;
+			}
+
+			final Item clickedItem = inventory.getItem(menuOptionClicked.getSelectedItemIndex());
+			if (clickedItem == null)
+			{
+				return;
+			}
+
+			lastUsedItem = clickedItem.getId();
+		}
+	}
+
+	private void handleLootbeam(WorldPoint worldPoint)
+	{
+		/*
+		 * Return and remove the lootbeam from this location if lootbeam are disabled
+		 * Lootbeam can be at this location if the config was just changed
+		 */
+		if (!(config.showLootbeamForHighlighted() || config.showLootbeamTier() != HighlightTier.OFF))
+		{
+			removeLootbeam(worldPoint);
+			return;
+		}
+
+		int price = -1;
+		Collection<GroundItem> groundItems = collectedGroundItems.row(worldPoint).values();
+		for (GroundItem groundItem : groundItems)
+		{
+			if ((config.onlyShowLoot() && !groundItem.isMine()))
+			{
+				continue;
+			}
+
+			/*
+			 * highlighted items have the highest priority so if an item is highlighted at this location
+			 * we can early return
+			 */
+			NamedQuantity item = new NamedQuantity(groundItem);
+			if (config.showLootbeamForHighlighted()
+				&& TRUE.equals(highlightedItems.getUnchecked(item)))
+			{
+				addLootbeam(worldPoint, config.highlightedColor());
+				return;
+			}
+
+			// Explicit hide takes priority over implicit highlight
+			if (TRUE.equals(hiddenItems.getUnchecked(item)))
+			{
+				continue;
+			}
+
+			int itemPrice = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
+			price = Math.max(itemPrice, price);
+		}
+
+		if (config.showLootbeamTier() != HighlightTier.OFF)
+		{
+			for (PriceHighlight highlight : priceChecks)
+			{
+				if (price > highlight.getPrice() && price > config.showLootbeamTier().getValueFromTier(config))
+				{
+					addLootbeam(worldPoint, highlight.color);
+					return;
+				}
+			}
+		}
+
+		removeLootbeam(worldPoint);
+	}
+
+	private void handleLootbeams()
+	{
+		for (WorldPoint worldPoint : collectedGroundItems.rowKeySet())
+		{
+			handleLootbeam(worldPoint);
+		}
+	}
+
+	private void removeAllLootbeams()
+	{
+		for (Lootbeam lootbeam : lootbeams.values())
+		{
+			lootbeam.remove();
+		}
+
+		lootbeams.clear();
+	}
+
+	private void addLootbeam(WorldPoint worldPoint, Color color)
+	{
+		Lootbeam lootbeam = lootbeams.get(worldPoint);
+		if (lootbeam == null)
+		{
+			lootbeam = new Lootbeam(client, worldPoint, color);
+			lootbeams.put(worldPoint, lootbeam);
+		}
+		else
+		{
+			lootbeam.setColor(color);
+		}
+	}
+
+	private void removeLootbeam(WorldPoint worldPoint)
+	{
+		Lootbeam lootbeam = lootbeams.remove(worldPoint);
+		if (lootbeam != null)
+		{
+			lootbeam.remove();
 		}
 	}
 }

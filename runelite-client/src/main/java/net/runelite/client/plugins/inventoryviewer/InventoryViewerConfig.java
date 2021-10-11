@@ -55,4 +55,15 @@ public interface InventoryViewerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "hideIfInventoryActive",
+		name = "Hidden on inventory tab",
+		description = "Whether or not the overlay is hidden when the inventory tab is open.",
+		position = 2
+	)
+	default boolean hideIfInventoryActive()
+	{
+		return false;
+	}
 }

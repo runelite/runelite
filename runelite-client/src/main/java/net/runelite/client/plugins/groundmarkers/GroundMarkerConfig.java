@@ -31,13 +31,17 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("groundMarker")
+@ConfigGroup(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
 public interface GroundMarkerConfig extends Config
 {
+	String GROUND_MARKER_CONFIG_GROUP = "groundMarker";
+	String SHOW_IMPORT_EXPORT_KEY_NAME = "showImportExport";
+	String SHOW_CLEAR_KEY_NAME = "showClear";
+
 	@Alpha
 	@ConfigItem(
 		keyName = "markerColor",
-		name = "Color of the tile",
+		name = "Tile color",
 		description = "Configures the color of marked tile"
 	)
 	default Color markerColor()
@@ -63,5 +67,45 @@ public interface GroundMarkerConfig extends Config
 	default boolean drawTileOnMinimmap()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
+		name = "Show Import/Export options",
+		description = "Show the Import/Export options on the minimap right-click menu"
+	)
+	default boolean showImportExport()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = SHOW_CLEAR_KEY_NAME,
+		name = "Show Clear option",
+		description = "Show the Clear option on the minimap right-click menu, which deletes all currently loaded markers"
+	)
+	default boolean showClear()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "borderWidth",
+		name = "Border Width",
+		description = "Width of the marked tile border"
+	)
+	default double borderWidth()
+	{
+		return 2;
+	}
+
+	@ConfigItem(
+		keyName = "fillOpacity",
+		name = "Fill Opacity",
+		description = "Opacity of the tile fill color"
+	)
+	default int fillOpacity()
+	{
+		return 50;
 	}
 }

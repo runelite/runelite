@@ -36,11 +36,13 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
+import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -116,13 +118,12 @@ public class WikiPlugin extends Plugin
 
 	private void removeWidgets()
 	{
-
-		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
-		if (minimapOrbs == null)
+		Widget wikiBannerParent = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER_PARENT);
+		if (wikiBannerParent == null)
 		{
 			return;
 		}
-		Widget[] children = minimapOrbs.getChildren();
+		Widget[] children = wikiBannerParent.getChildren();
 		if (children == null || children.length < 1)
 		{
 			return;
@@ -130,7 +131,7 @@ public class WikiPlugin extends Plugin
 		children[0] = null;
 
 		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
-		if (vanilla != null)
+		if (vanilla != null && client.getVar(Varbits.WIKI_ENTITY_LOOKUP) == 0)
 		{
 			vanilla.setHidden(false);
 		}
@@ -150,8 +151,8 @@ public class WikiPlugin extends Plugin
 
 	private void addWidgets()
 	{
-		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
-		if (minimapOrbs == null)
+		Widget wikiBannerParent = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER_PARENT);
+		if (wikiBannerParent == null)
 		{
 			return;
 		}
@@ -162,12 +163,12 @@ public class WikiPlugin extends Plugin
 			vanilla.setHidden(true);
 		}
 
-		icon = minimapOrbs.createChild(0, WidgetType.GRAPHIC);
+		icon = wikiBannerParent.createChild(0, WidgetType.GRAPHIC);
 		icon.setSpriteId(SpriteID.WIKI_DESELECTED);
 		icon.setOriginalX(0);
 		icon.setOriginalY(0);
-		icon.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-		icon.setYPositionMode(WidgetPositionMode.ABSOLUTE_BOTTOM);
+		icon.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+		icon.setYPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
 		icon.setOriginalWidth(40);
 		icon.setOriginalHeight(14);
 		icon.setTargetVerb("Lookup");
@@ -198,11 +199,12 @@ public class WikiPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onWidgetHiddenChanged(WidgetHiddenChanged ev)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (ev.getWidget().getId() == WidgetInfo.MINIMAP_WIKI_BANNER.getId())
+		if (scriptPostFired.getScriptId() == ScriptID.WIKI_ICON_UPDATE)
 		{
-			ev.getWidget().setHidden(true);
+			Widget w = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+			w.setHidden(true);
 		}
 	}
 
@@ -281,11 +283,11 @@ public class WikiPlugin extends Plugin
 					}
 					id = lc.getId();
 					name = lc.getName();
-					location = WorldPoint.fromScene(client, ev.getActionParam(), ev.getWidgetId(), client.getPlane());
+					location = WorldPoint.fromScene(client, ev.getParam0(), ev.getParam1(), client.getPlane());
 					break;
 				}
 				case SPELL_CAST_ON_WIDGET:
-					Widget w = getWidget(ev.getWidgetId(), ev.getActionParam());
+					Widget w = getWidget(ev.getParam1(), ev.getParam0());
 
 					if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1)
 					{
@@ -345,7 +347,7 @@ public class WikiPlugin extends Plugin
 
 	private Widget getWidget(int wid, int index)
 	{
-		Widget w = client.getWidget(WidgetInfo.TO_GROUP(wid), WidgetInfo.TO_CHILD(wid));
+		Widget w = client.getWidget(wid);
 		if (index != -1)
 		{
 			w = w.getChild(index);

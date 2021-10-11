@@ -56,7 +56,7 @@ public class ChatboxPerformancePlugin extends Plugin
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0));
+			clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0, 0));
 		}
 	}
 
@@ -65,7 +65,7 @@ public class ChatboxPerformancePlugin extends Plugin
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0));
+			clientThread.invokeLater(() -> client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 0, 0, 0));
 		}
 	}
 

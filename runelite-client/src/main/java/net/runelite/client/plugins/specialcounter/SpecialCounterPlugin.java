@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -38,13 +41,18 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -55,17 +63,30 @@ import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
-	description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
+	description = "Track special attacks used on NPCs",
 	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
 @Slf4j
 public class SpecialCounterPlugin extends Plugin
 {
+	private static final Set<Integer> IGNORED_NPCS = ImmutableSet.of(
+		NpcID.DARK_ENERGY_CORE, NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063,
+		NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY
+	);
+	
+	private static final Set<Integer> RESET_ON_LEAVE_INSTANCED_REGIONS = ImmutableSet.of(
+			9023, // vorkath
+			5536 // hydra
+	);
+
 	private int currentWorld;
 	private int specialPercentage;
 	private Actor lastSpecTarget;
 	private int lastSpecTick;
+
+	private int previousRegion;
+	private boolean wasInInstance;
 
 	private SpecialWeapon specialWeapon;
 	private final Set<Integer> interactedNpcIds = new HashSet<>();
@@ -89,6 +110,18 @@ public class SpecialCounterPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	private SpecialCounterConfig config;
+
+	@Provides
+	SpecialCounterConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SpecialCounterConfig.class);
+	}
+
 	@Override
 	protected void startUp()
 	{
@@ -105,6 +138,31 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		removeCounters();
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
+	}
+	
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+		
+		assert client.getLocalPlayer() != null;
+		int currentRegion = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		boolean inInstance = client.isInInstancedRegion();
+		
+		// if the player left the region/instance and was fighting boss that resets, reset specs
+		if (currentRegion != previousRegion || (wasInInstance && !inInstance))
+		{
+			if (RESET_ON_LEAVE_INSTANCED_REGIONS.contains(previousRegion))
+			{
+				removeCounters();
+			}
+		}
+		
+		previousRegion = currentRegion;
+		wasInInstance = inInstance;
 	}
 
 	@Subscribe
@@ -190,6 +248,11 @@ public class SpecialCounterPlugin extends Plugin
 
 		NPC npc = (NPC) target;
 		int interactingId = npc.getId();
+
+		if (IGNORED_NPCS.contains(interactingId))
+		{
+			return;
+		}
 
 		// If this is a new NPC reset the counters
 		if (!interactedNpcIds.contains(interactingId))
@@ -287,7 +350,7 @@ public class SpecialCounterPlugin extends Plugin
 
 		for (SpecialWeapon specialWeapon : SpecialWeapon.values())
 		{
-			if (specialWeapon.getItemID() == weapon.getId())
+			if (Arrays.stream(specialWeapon.getItemID()).anyMatch(id -> id == weapon.getId()))
 			{
 				return specialWeapon;
 			}
@@ -301,7 +364,7 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (counter == null)
 		{
-			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()), this,
+			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()[0]), this, config,
 				hit, specialWeapon);
 			infoBoxManager.addInfoBox(counter);
 			specialCounter[specialWeapon.ordinal()] = counter;
@@ -310,6 +373,9 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			counter.addHits(hit);
 		}
+
+		// Display a notification if special attack thresholds are met
+		sendNotification(specialWeapon, counter);
 
 		// If in a party, add hit to partySpecs for the infobox tooltip
 		Map<String, Integer> partySpecs = counter.getPartySpecs();
@@ -323,6 +389,15 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				partySpecs.put(name, hit);
 			}
+		}
+	}
+
+	private void sendNotification(SpecialWeapon weapon, SpecialCounter counter)
+	{
+		int threshold = weapon.getThreshold().apply(config);
+		if (threshold > 0 && counter.getCount() >= threshold && config.thresholdNotification())
+		{
+			notifier.notify(weapon.getName() + " special attack threshold reached!");
 		}
 	}
 

@@ -24,7 +24,6 @@
  */
 package net.runelite.http.api.item;
 
-import java.time.Instant;
 import lombok.Data;
 
 @Data
@@ -33,5 +32,5 @@ public class ItemPrice
 	private int id;
 	private String name;
 	private int price;
-	private Instant time;
+	private int wikiPrice;
 }

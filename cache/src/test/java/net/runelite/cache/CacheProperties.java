@@ -40,7 +40,7 @@ public class CacheProperties
 
 	public static int getRsVersion() throws IOException
 	{
-		return Integer.parseInt(getProperties().getProperty("rs.version"));
+		return (int) Double.parseDouble(getProperties().getProperty("rs.version"));
 	}
 
 	public static int getCacheVersion() throws IOException

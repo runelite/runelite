@@ -89,7 +89,7 @@ public class EmojiPluginTest
 
 		emojiPlugin.onChatMessage(chatMessage);
 
-		verify(messageNode).setRuneLiteFormatMessage("<col=ff0000><img=0> <img=0> <img=0></col>");
+		verify(messageNode).setValue("<col=ff0000><img=0> <img=0> <img=0></col>");
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class EmojiPluginTest
 
 		emojiPlugin.onChatMessage(chatMessage);
 
-		verify(messageNode).setRuneLiteFormatMessage("<img=10>");
+		verify(messageNode).setValue("<img=10>");
 	}
 
 	@Test

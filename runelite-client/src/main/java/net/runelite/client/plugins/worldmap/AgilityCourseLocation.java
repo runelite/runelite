@@ -46,6 +46,7 @@ enum AgilityCourseLocation
 	PRIFDDINAS_AGILITY_COURSE("Prifddinas Agility Course", new WorldPoint(3253, 6109, 0)),
 	RELLEKKA_ROOFTOP_COURSE("Rellekka Rooftop Course", new WorldPoint(2624, 3677, 0)),
 	SEERS_VILLAGE_ROOFTOP_COURSE("Seers' Village Rooftop Course", new WorldPoint(2728, 3488, 0)),
+	SHAYZIEN_COURSE("Shayzien Agility Course", new WorldPoint(1551, 3632, 0)),
 	VARROCK_ROOFTOP_COURSE("Varrock Rooftop Course", new WorldPoint(3219, 3414, 0)),
 	WEREWOLF_AGILITY_COURSE("Werewolf Agility Course", new WorldPoint(3542, 3463, 0)),
 	WILDERNESS_AGILITY_COURSE("Wilderness Agility Course", new WorldPoint(2997, 3916, 0));

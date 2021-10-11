@@ -162,12 +162,9 @@ public class KeyRemappingPlugin extends Plugin
 		{
 			case SCRIPT_EVENT_SET_CHATBOX_INPUT:
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-				if (chatboxInput != null)
+				if (chatboxInput != null && !typing)
 				{
-					if (chatboxFocused() && !typing)
-					{
-						setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
-					}
+					setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 				}
 				break;
 			case SCRIPT_EVENT_BLOCK_CHAT_INPUT:

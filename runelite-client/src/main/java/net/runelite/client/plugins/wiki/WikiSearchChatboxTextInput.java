@@ -67,7 +67,6 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 	private static final int PREDICTION_DEBOUNCE_DELAY_MS = 200;
 
 	private final ChatboxPanelManager chatboxPanelManager;
-	private final Gson gson = new Gson();
 
 	private Future<?> runningRequest = null;
 	private List<String> predictions = ImmutableList.of();
@@ -78,7 +77,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 	@Inject
 	public WikiSearchChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
 		ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode,
-		OkHttpClient okHttpClient)
+		OkHttpClient okHttpClient, Gson gson)
 	{
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;

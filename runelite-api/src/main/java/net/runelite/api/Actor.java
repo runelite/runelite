@@ -103,19 +103,21 @@ public interface Actor extends Renderable
 	 */
 	LocalPoint getLocalLocation();
 
-	@VisibleForDevtools
-	void setIdlePoseAnimation(int animation);
-
-	@VisibleForDevtools
-	void setPoseAnimation(int animation);
-
 	/**
-	 * Gets the orientation of the actor.
+	 * Gets the target orientation of the actor.
 	 *
 	 * @return the orientation
 	 * @see net.runelite.api.coords.Angle
 	 */
 	int getOrientation();
+
+	/**
+	 * Gets the current orientation of the actor.
+	 *
+	 * @return the orientation
+	 * @see net.runelite.api.coords.Angle
+	 */
+	int getCurrentOrientation();
 
 	/**
 	 * Gets the current animation the actor is performing.
@@ -126,21 +128,97 @@ public interface Actor extends Renderable
 	int getAnimation();
 
 	/**
-	 * Gets the secondary animation the actor is performing.
+	 * Gets the secondary animation the actor is performing. Usually an idle animation, or one of the walking ones.
 	 *
 	 * @return the animation ID
 	 * @see AnimationID
 	 */
 	int getPoseAnimation();
 
+	@VisibleForDevtools
+	void setPoseAnimation(int animation);
+
 	/**
-	 * If this is equal to the pose animation, the pose animation is ignored when
-	 * you are doing another action.
+	 * The idle pose animation. If the actor is not walking or otherwise animating, this will be used
+	 * for their pose animation.
 	 *
 	 * @return the animation ID
 	 * @see AnimationID
 	 */
 	int getIdlePoseAnimation();
+
+	@VisibleForDevtools
+	void setIdlePoseAnimation(int animation);
+
+	/**
+	 * Animation used for rotating left if the actor is also not walking
+	 *
+	 * @return the animation ID
+	 * @see AnimationID
+	 */
+	int getIdleRotateLeft();
+
+	void setIdleRotateLeft(int animationID);
+
+	/**
+	 * Animation used for rotating right if the actor is also not walking
+	 *
+	 * @return the animation ID
+	 * @see AnimationID
+	 */
+	int getIdleRotateRight();
+
+	void setIdleRotateRight(int animationID);
+
+	/**
+	 * Animation used for walking
+	 *
+	 * @return the animation ID
+	 * @see AnimationID
+	 */
+	int getWalkAnimation();
+
+	void setWalkAnimation(int animationID);
+
+	/**
+	 * Animation used for rotating left while walking
+	 *
+	 * @return the animation ID
+	 * @see AnimationID
+	 */
+	int getWalkRotateLeft();
+
+	void setWalkRotateLeft(int animationID);
+
+	/**
+	 * Animation used for rotating right while walking
+	 *
+	 * @return the animation ID
+	 * @see AnimationID
+	 */
+	int getWalkRotateRight();
+
+	void setWalkRotateRight(int animationID);
+
+	/**
+	 * Animation used for an about-face while walking
+	 *
+	 * @return the animation ID
+	 * @see AnimationID
+	 */
+	int getWalkRotate180();
+
+	void setWalkRotate180(int animationID);
+
+	/**
+	 * Animation used for running
+	 *
+	 * @return the animation ID
+	 * @see AnimationID
+	 */
+	int getRunAnimation();
+
+	void setRunAnimation(int animationID);
 
 	/**
 	 * Sets an animation for the actor to perform.
@@ -152,29 +230,60 @@ public interface Actor extends Renderable
 	void setAnimation(int animation);
 
 	/**
-	 * Sets the frame of the animation the actor is performing.
+	 * Get the frame of the animation the actor is performing
 	 *
-	 * @param actionFrame the animation frame
+	 * @return the frame
 	 */
-	@VisibleForDevtools
-	void setActionFrame(int actionFrame);
+	int getAnimationFrame();
 
 	/**
-	 * Gets the graphic that is currently on the player.
+	 * Sets the frame of the animation the actor is performing.
 	 *
-	 * @return the graphic of the actor
+	 * @param frame the animation frame
+	 * @deprecated use setAnimationFrame
+	 */
+	@Deprecated
+	void setActionFrame(int frame);
+
+	/**
+	 * Sets the frame of the animation the actor is performing.
+	 *
+	 * @param frame the animation frame
+	 */
+	void setAnimationFrame(int frame);
+
+	/**
+	 * Get the graphic/spotanim that is currently on the actor.
+	 *
+	 * @return the spotanim of the actor
 	 * @see GraphicID
 	 */
 	int getGraphic();
 
-	@VisibleForDevtools
+	/**
+	 * Set the graphic/spotanim that is currently on the actor.
+	 *
+	 * @param graphic The spotanim id
+	 * @see GraphicID
+	 */
 	void setGraphic(int graphic);
 
-	@VisibleForDevtools
+	/**
+	 * Get the frame of the currently playing spotanim
+	 *
+	 * @return
+	 */
+	int getSpotAnimFrame();
+
+	/**
+	 * Set the frame of the currently playing spotanim
+	 *
+	 * @param spotAnimFrame
+	 */
 	void setSpotAnimFrame(int spotAnimFrame);
 
 	/**
-	 * Gets the canvas area of the current tile the actor is standing on.
+	 * Gets the canvas area of the current tiles the actor is standing on.
 	 *
 	 * @return the current tile canvas area
 	 */
@@ -259,6 +368,20 @@ public interface Actor extends Renderable
 	 * @param overheadText the overhead text
 	 */
 	void setOverheadText(String overheadText);
+
+	/**
+	 * Get the number of cycles/client ticks remaining before the overhead text is timed out
+	 *
+	 * @return
+	 */
+	int getOverheadCycle();
+
+	/**
+	 * Set the number of cycles/client ticks before the overhead text is timed out
+	 *
+	 * @param cycles
+	 */
+	void setOverheadCycle(int cycles);
 
 	/**
 	 * Returns true if this actor has died

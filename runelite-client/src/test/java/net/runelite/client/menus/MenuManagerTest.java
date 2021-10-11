@@ -1,16 +1,15 @@
 /*
- * Copyright (c) 2020, bfmoatbio <bfmoatbio@protonmail.com>
- * Copyright (c) 2020, Jordan Atwood <nightfirecat@protonmail.com>
+ * Copyright (c) 2021, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *     list of conditions and the following disclaimer.
+ *    list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -26,26 +25,37 @@
 package net.runelite.client.menus;
 
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.PlayerMenuOptionClicked;
-import net.runelite.client.eventbus.EventBus;
+import static net.runelite.api.MenuAction.CC_OP;
+import static net.runelite.api.MenuAction.RUNELITE;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.events.MenuEntryAdded;
+import static net.runelite.api.widgets.WidgetInfo.MINIMAP_WORLDMAP_OPTIONS;
+import net.runelite.client.util.Text;
+import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
-import static org.junit.Assert.assertEquals;
+import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MenuManagerTest
 {
+	private static final MenuEntry CANCEL = new MenuEntry();
+
 	@Inject
 	private MenuManager menuManager;
 
@@ -53,43 +63,73 @@ public class MenuManagerTest
 	@Bind
 	private Client client;
 
-	@Mock
-	@Bind
-	private EventBus eventBus;
+	private MenuEntry[] clientMenuEntries = {CANCEL};
+
+	@BeforeClass
+	public static void beforeClass()
+	{
+		CANCEL.setOption("Cancel");
+		CANCEL.setType(MenuAction.CANCEL.getId());
+		CANCEL.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
+	}
 
 	@Before
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		doAnswer((Answer<Void>) invocationOnMock ->
+		{
+			clientMenuEntries = invocationOnMock.getArgument(0, MenuEntry[].class);
+			return null;
+		}).when(client).setMenuEntries(ArgumentMatchers.any(MenuEntry[].class));
+		when(client.getMenuEntries()).thenAnswer((Answer<MenuEntry[]>) invocationMock -> clientMenuEntries);
 	}
 
 	@Test
-	public void testPlayerMenuOptionClicked()
+	public void testManagedMenuOrder()
 	{
-		MenuOptionClicked event = new MenuOptionClicked();
-		event.setMenuAction(MenuAction.RUNELITE_PLAYER);
-		event.setMenuTarget("username<col=40ff00>  (level-42)");
+		final MenuEntry first = new MenuEntry();
+		final MenuEntry second = new MenuEntry();
+		final MenuEntry third = new MenuEntry();
+		first.setOption("Test");
+		first.setTarget("First Entry");
+		first.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
+		first.setType(RUNELITE.getId());
+		second.setOption("Test");
+		second.setTarget("Second Entry");
+		second.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
+		second.setType(RUNELITE.getId());
+		third.setOption("Test");
+		third.setTarget("Third Entry");
+		third.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
+		third.setType(RUNELITE.getId());
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(first.getOption(), first.getTarget(), MINIMAP_WORLDMAP_OPTIONS));
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(second.getOption(), second.getTarget(), MINIMAP_WORLDMAP_OPTIONS));
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(third.getOption(), third.getTarget(), MINIMAP_WORLDMAP_OPTIONS));
 
-		menuManager.onMenuOptionClicked(event);
+		menuManager.onMenuEntryAdded(new MenuEntryAdded(
+			CANCEL.getOption(),
+			CANCEL.getTarget(),
+			CC_OP.getId(),
+			CANCEL.getIdentifier(),
+			CANCEL.getParam0(),
+			CANCEL.getParam1()));
 
-		ArgumentCaptor<PlayerMenuOptionClicked> captor = ArgumentCaptor.forClass(PlayerMenuOptionClicked.class);
-		verify(eventBus).post(captor.capture());
-		PlayerMenuOptionClicked clicked = captor.getValue();
-		assertEquals("username", clicked.getMenuTarget());
-	}
+		ArgumentCaptor<MenuEntry[]> captor = ArgumentCaptor.forClass(MenuEntry[].class);
+		verify(client, atLeastOnce()).setMenuEntries(captor.capture());
 
-	@Test
-	public void testPlayerMenuOptionWithBountyHunterEmblemClicked()
-	{
-		MenuOptionClicked event = new MenuOptionClicked();
-		event.setMenuAction(MenuAction.RUNELITE_PLAYER);
-		event.setMenuTarget("username<img=20>5<col=40ff00>  (level-42)");
+		final MenuEntry[] resultMenuEntries = captor.getValue();
+		// Strip color tags from menu options before array comparison
+		for (MenuEntry resultEntry : resultMenuEntries)
+		{
+			final String resultTarget = resultEntry.getTarget();
+			if (resultTarget != null)
+			{
+				resultEntry.setTarget(Text.removeTags(resultEntry.getTarget()));
+			}
+		}
 
-		menuManager.onMenuOptionClicked(event);
-
-		ArgumentCaptor<PlayerMenuOptionClicked> captor = ArgumentCaptor.forClass(PlayerMenuOptionClicked.class);
-		verify(eventBus).post(captor.capture());
-		PlayerMenuOptionClicked clicked = captor.getValue();
-		assertEquals("username", clicked.getMenuTarget());
+		assertArrayEquals(new MenuEntry[]{CANCEL, third, second, first}, resultMenuEntries);
 	}
 }

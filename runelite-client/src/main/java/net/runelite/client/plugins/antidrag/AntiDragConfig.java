@@ -46,7 +46,7 @@ public interface AntiDragConfig extends Config
 	@ConfigItem(
 		keyName = "onShiftOnly",
 		name = "On Shift Only",
-		description = "Configures whether to only adjust the delay while holding shift in non-PvP scenarios. Shift is required in PvP regardless of this config setting",
+		description = "Configures whether to only adjust the delay while holding shift.",
 		position = 2
 	)
 	default boolean onShiftOnly()

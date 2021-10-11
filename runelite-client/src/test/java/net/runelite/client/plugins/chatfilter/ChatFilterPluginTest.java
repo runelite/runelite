@@ -31,12 +31,13 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.FriendsChatManager;
+import net.runelite.api.FriendsChatMember;
 import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.client.game.FriendChatManager;
 import static net.runelite.client.plugins.chatfilter.ChatFilterPlugin.CENSOR_MESSAGE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -46,6 +47,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -58,12 +60,11 @@ public class ChatFilterPluginTest
 	private Client client;
 
 	@Mock
-	@Bind
-	private ChatFilterConfig chatFilterConfig;
+	private FriendsChatManager friendsChatManager;
 
 	@Mock
 	@Bind
-	private FriendChatManager friendChatManager;
+	private ChatFilterConfig chatFilterConfig;
 
 	@Mock
 	private Player localPlayer;
@@ -80,7 +81,9 @@ public class ChatFilterPluginTest
 		when(chatFilterConfig.filteredWords()).thenReturn("");
 		when(chatFilterConfig.filteredRegex()).thenReturn("");
 		when(chatFilterConfig.filteredNames()).thenReturn("");
+
 		when(client.getLocalPlayer()).thenReturn(localPlayer);
+		when(client.getFriendsChatManager()).thenReturn(friendsChatManager);
 	}
 
 	private ScriptCallbackEvent createCallbackEvent(final String sender, final String chatMessage, final ChatMessageType messageType)
@@ -186,7 +189,6 @@ public class ChatFilterPluginTest
 	@Test
 	public void testMessageFromFriendIsFiltered()
 	{
-		when(friendChatManager.isMember("Iron Mammal")).thenReturn(false);
 		when(chatFilterConfig.filterFriends()).thenReturn(true);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Iron Mammal"));
 	}
@@ -210,7 +212,7 @@ public class ChatFilterPluginTest
 	@Test
 	public void testMessageFromFriendsChatIsNotFiltered()
 	{
-		when(friendChatManager.isMember("B0aty")).thenReturn(true);
+		when(friendsChatManager.findByName("B0aty")).thenReturn(mock(FriendsChatMember.class));
 		when(chatFilterConfig.filterFriendsChat()).thenReturn(false);
 		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
 	}
@@ -226,7 +228,6 @@ public class ChatFilterPluginTest
 	public void testMessageFromNonFriendNonFCIsFiltered()
 	{
 		when(client.isFriended("Woox", false)).thenReturn(false);
-		when(friendChatManager.isMember("Woox")).thenReturn(false);
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Woox"));
 	}
 
@@ -405,5 +406,19 @@ public class ChatFilterPluginTest
 
 		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]);
 		assertEquals("<col=000000>testMessage</col> (4)", client.getStringStack()[client.getStringStackSize() - 1]);
+	}
+
+	@Test
+	public void testChatIcons()
+	{
+		when(chatFilterConfig.filteredWords()).thenReturn("test");
+		// if this test is broken, this stubbing is required to trip the assert
+		lenient().when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		when(friendsChatManager.findByName("Lazark")).thenReturn(mock(FriendsChatMember.class));
+
+		chatFilterPlugin.updateFilteredPatterns();
+		ScriptCallbackEvent event = createCallbackEvent("<img=22>Lazark", "test", ChatMessageType.PUBLICCHAT);
+		chatFilterPlugin.onScriptCallbackEvent(event);
+		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]); // not filtered
 	}
 }

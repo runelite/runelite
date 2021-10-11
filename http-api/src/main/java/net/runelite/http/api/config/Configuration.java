@@ -26,18 +26,12 @@ package net.runelite.http.api.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class Configuration
 {
 	private List<ConfigEntry> config = new ArrayList<>();
-
-	public Configuration(List<ConfigEntry> config)
-	{
-		this.config = config;
-	}
-
-	public List<ConfigEntry> getConfig()
-	{
-		return config;
-	}
 }

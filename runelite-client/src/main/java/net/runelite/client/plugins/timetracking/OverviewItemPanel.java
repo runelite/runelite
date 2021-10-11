@@ -57,7 +57,7 @@ class OverviewItemPanel extends JPanel
 
 	static
 	{
-		ARROW_RIGHT_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(TimeTrackingPlugin.class, "/util/arrow_right.png"));
+		ARROW_RIGHT_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "/util/arrow_right.png"));
 	}
 
 	OverviewItemPanel(ItemManager itemManager, TimeTrackingPanel pluginPanel, Tab tab, String title)

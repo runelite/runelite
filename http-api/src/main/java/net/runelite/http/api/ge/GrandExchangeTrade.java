@@ -24,6 +24,7 @@
  */
 package net.runelite.http.api.ge;
 
+import java.time.Instant;
 import lombok.Data;
 import net.runelite.http.api.worlds.WorldType;
 
@@ -42,4 +43,6 @@ public class GrandExchangeTrade
 	private int offer;
 	private int slot;
 	private WorldType worldType;
+	private int seq;
+	private Instant resetTime;
 }

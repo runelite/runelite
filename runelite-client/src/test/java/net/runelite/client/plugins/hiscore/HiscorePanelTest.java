@@ -25,17 +25,22 @@
 package net.runelite.client.plugins.hiscore;
 
 import static net.runelite.client.plugins.hiscore.HiscorePanel.formatLevel;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import okhttp3.OkHttpClient;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class HiscorePanelTest
 {
 	@Test
 	public void testConstructor()
 	{
-		new HiscorePanel(null, mock(HiscoreConfig.class), mock(NameAutocompleter.class), mock(OkHttpClient.class));
+		HiscorePlugin plugin = mock(HiscorePlugin.class);
+		when(plugin.getWorldEndpoint()).thenReturn(HiscoreEndpoint.NORMAL);
+		new HiscorePanel(null, plugin, mock(HiscoreConfig.class),
+			mock(NameAutocompleter.class), mock(OkHttpClient.class));
 	}
 
 	@Test

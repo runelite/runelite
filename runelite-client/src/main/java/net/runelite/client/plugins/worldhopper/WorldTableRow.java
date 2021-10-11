@@ -62,14 +62,14 @@ class WorldTableRow extends JPanel
 	private static final Color TOURNAMENT_WORLD = new Color(79, 145, 255);
 	private static final Color MEMBERS_WORLD = new Color(210, 193, 53);
 	private static final Color FREE_WORLD = new Color(200, 200, 200);
-	private static final Color LEAGUE_WORLD = new Color(133, 177, 178);
+	private static final Color SEASONAL_WORLD = new Color(133, 177, 178);
 
 	static
 	{
-		FLAG_AUS = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_aus.png"));
-		FLAG_UK = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_uk.png"));
-		FLAG_US = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_us.png"));
-		FLAG_GER = new ImageIcon(ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "flag_ger.png"));
+		FLAG_AUS = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_aus.png"));
+		FLAG_UK = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_uk.png"));
+		FLAG_US = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us.png"));
+		FLAG_GER = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_ger.png"));
 	}
 
 	private final JMenuItem favoriteMenuOption = new JMenuItem();
@@ -253,11 +253,11 @@ class WorldTableRow extends JPanel
 		{
 			activityField.setForeground(DANGEROUS_WORLD);
 		}
-		else if (world.getTypes().contains(WorldType.LEAGUE))
+		else if (world.getTypes().contains(WorldType.SEASONAL))
 		{
-			activityField.setForeground(LEAGUE_WORLD);
+			activityField.setForeground(SEASONAL_WORLD);
 		}
-		else if (world.getTypes().contains(WorldType.TOURNAMENT))
+		else if (world.getTypes().contains(WorldType.NOSAVE_MODE))
 		{
 			activityField.setForeground(TOURNAMENT_WORLD);
 		}
@@ -311,8 +311,46 @@ class WorldTableRow extends JPanel
 		JPanel column = new JPanel(new BorderLayout());
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
-		activityField = new JLabel(world.getActivity());
+		String activity = world.getActivity();
+		activityField = new JLabel(activity);
 		activityField.setFont(FontManager.getRunescapeSmallFont());
+		if (activity != null && activity.length() > 16)
+		{
+			activityField.setToolTipText(activity);
+			// Pass up events - https://stackoverflow.com/a/14932443
+			activityField.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+			});
+		}
 
 		column.add(activityField, BorderLayout.WEST);
 

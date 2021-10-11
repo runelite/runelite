@@ -69,16 +69,18 @@ class StatusBarsOverlay extends Overlay
 	private static final Color SPECIAL_ATTACK_COLOR = new Color(3, 153, 0, 195);
 	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
 	private static final Color DISEASE_COLOR = new Color(255, 193, 75, 181);
+	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int IMAGE_SIZE = 17;
-	private static final int ICON_DIMENSIONS = 26;
+	private static final Dimension ICON_DIMENSIONS = new Dimension(26, 25);
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
 	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
 	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
 	private static final int MAX_RUN_ENERGY_VALUE = 100;
 
 	private final Client client;
+	private final StatusBarsPlugin plugin;
 	private final StatusBarsConfig config;
 	private final ItemStatChangesService itemStatService;
 	private final SpriteManager spriteManager;
@@ -93,16 +95,17 @@ class StatusBarsOverlay extends Overlay
 	private final Map<BarMode, BarRenderer> barRenderers = new EnumMap<>(BarMode.class);
 
 	@Inject
-	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
+	private StatusBarsOverlay(Client client, StatusBarsPlugin plugin, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
+		this.plugin = plugin;
 		this.config = config;
 		this.itemStatService = itemstatservice;
 		this.spriteManager = spriteManager;
 
-		prayerIcon = ImageUtil.resizeCanvas(ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE), ICON_DIMENSIONS, ICON_DIMENSIONS);
+		prayerIcon = ImageUtil.resizeCanvas(ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
 		initRenderers();
 	}
 
@@ -130,6 +133,11 @@ class StatusBarsOverlay extends Overlay
 				if (client.getVar(VarPlayer.DISEASE_VALUE) > 0)
 				{
 					return DISEASE_COLOR;
+				}
+
+				if (client.getVar(Varbits.PARASITE) >= 1)
+				{
+					return PARASITE_COLOR;
 				}
 
 				return HEALTH_COLOR;
@@ -210,6 +218,11 @@ class StatusBarsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D g)
 	{
+		if (!plugin.isBarsDisplayed())
+		{
+			return null;
+		}
+
 		Viewport curViewport = null;
 		Widget curWidget = null;
 
@@ -238,7 +251,7 @@ class StatusBarsOverlay extends Overlay
 		{
 			height = RESIZED_BOTTOM_HEIGHT;
 			offsetLeftBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX());
-			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetLeft.getY());
 			offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX());
 			offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
 		}
@@ -304,11 +317,11 @@ class StatusBarsOverlay extends Overlay
 			return;
 		}
 
-		heartIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, 0)), ICON_DIMENSIONS, ICON_DIMENSIONS);
-		heartDisease = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.DISEASE_HEART), ICON_DIMENSIONS, ICON_DIMENSIONS);
-		heartPoison = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.POISON_HEART), ICON_DIMENSIONS, ICON_DIMENSIONS);
-		heartVenom = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.VENOM_HEART), ICON_DIMENSIONS, ICON_DIMENSIONS);
-		energyIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_WALK_ICON, 0)), ICON_DIMENSIONS, ICON_DIMENSIONS);
-		specialIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON, 0)), ICON_DIMENSIONS, ICON_DIMENSIONS);
+		heartIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, 0)), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		heartDisease = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.DISEASE_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		heartPoison = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.POISON_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		heartVenom = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.VENOM_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		energyIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_WALK_ICON, 0)), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		specialIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON, 0)), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
 	}
 }

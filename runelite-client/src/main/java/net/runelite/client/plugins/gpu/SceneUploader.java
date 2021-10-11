@@ -389,8 +389,7 @@ class SceneUploader
 		final short[] faceTextures = model.getFaceTextures();
 		final byte[] facePriorities = model.getFaceRenderPriorities();
 
-		float[][] u = model.getFaceTextureUCoordinates();
-		float[][] v = model.getFaceTextureVCoordinates();
+		float[] uv = model.getFaceTextureUVCoordinates();
 
 		int len = 0;
 		for (int face = 0; face < triangleCount; ++face)
@@ -432,7 +431,7 @@ class SceneUploader
 
 			if (faceTextures != null)
 			{
-				pushUvForFace(faceTextures, u, v, face, uvBuffer);
+				pushUvForFace(faceTextures, uv, face, uvBuffer);
 			}
 
 			len += 3;
@@ -559,11 +558,9 @@ class SceneUploader
 
 		vertexBuffer.put(a, b, c, packedAlphaPriority | color3);
 
-		float[][] u = model.getFaceTextureUCoordinates();
-		float[][] v = model.getFaceTextureVCoordinates();
 		if (padUvs || faceTextures != null)
 		{
-			pushUvForFace(faceTextures, u, v, face, uvBuffer);
+			pushUvForFace(faceTextures, model.getFaceTextureUVCoordinates(), face, uvBuffer);
 		}
 
 		return 3;
@@ -584,15 +581,15 @@ class SceneUploader
 		return alpha | priority;
 	}
 
-	private static void pushUvForFace(short[] faceTextures, float[][] u, float[][] v, int face, GpuFloatBuffer uvBuffer)
+	private static void pushUvForFace(short[] faceTextures, float[] uv, int face, GpuFloatBuffer uvBuffer)
 	{
-		float[] uf, vf;
-		if (faceTextures != null && u != null && v != null && (uf = u[face]) != null && (vf = v[face]) != null)
+		if (faceTextures != null && faceTextures[face] != -1 && uv != null)
 		{
+			int idx = face * 6;
 			float texture = faceTextures[face] + 1f;
-			uvBuffer.put(texture, uf[0], vf[0], 0f);
-			uvBuffer.put(texture, uf[1], vf[1], 0f);
-			uvBuffer.put(texture, uf[2], vf[2], 0f);
+			uvBuffer.put(texture, uv[idx], uv[idx + 1], 0f);
+			uvBuffer.put(texture, uv[idx + 2], uv[idx + 3], 0f);
+			uvBuffer.put(texture, uv[idx + 4], uv[idx + 5], 0f);
 		}
 		else
 		{

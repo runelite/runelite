@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -107,7 +106,6 @@ class PluginListPanel extends PluginPanel
 		ConfigManager configManager,
 		PluginManager pluginManager,
 		ExternalPluginManager externalPluginManager,
-		ScheduledExecutorService executorService,
 		EventBus eventBus,
 		Provider<ConfigPanel> configPanelProvider,
 		Provider<PluginHubPanel> pluginHubPanelProvider)
@@ -179,11 +177,11 @@ class PluginListPanel extends PluginPanel
 		externalPluginButton.setBorder(new EmptyBorder(5, 5, 5, 5));
 		externalPluginButton.setLayout(new BorderLayout(0, BORDER_OFFSET));
 		externalPluginButton.addActionListener(l -> muxer.pushState(pluginHubPanelProvider.get()));
+		add(externalPluginButton, BorderLayout.SOUTH);
 
 		JPanel northPanel = new FixedWidthPanel();
 		northPanel.setLayout(new BorderLayout());
 		northPanel.add(mainPanel, BorderLayout.NORTH);
-		northPanel.add(externalPluginButton, BorderLayout.SOUTH);
 
 		scrollPane = new JScrollPane(northPanel);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -204,6 +202,9 @@ class PluginListPanel extends PluginPanel
 					PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
 					Config config = pluginManager.getPluginConfigProxy(plugin);
 					ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
+					List<String> conflicts = pluginManager.conflictsForPlugin(plugin).stream()
+						.map(Plugin::getName)
+						.collect(Collectors.toList());
 
 					return new PluginConfigurationDescriptor(
 						descriptor.name(),
@@ -211,7 +212,8 @@ class PluginListPanel extends PluginPanel
 						descriptor.tags(),
 						plugin,
 						config,
-						configDescriptor);
+						configDescriptor,
+						conflicts);
 				})
 		)
 			.map(desc ->

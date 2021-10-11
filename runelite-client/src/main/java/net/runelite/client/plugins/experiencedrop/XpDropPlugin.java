@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.experiencedrop;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
@@ -43,8 +44,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -92,7 +91,7 @@ public class XpDropPlugin extends Plugin
 
 	private void processXpDrop(int widgetId)
 	{
-		final Widget xpdrop = client.getWidget(TO_GROUP(widgetId), TO_CHILD(widgetId));
+		final Widget xpdrop = client.getWidget(widgetId);
 		final Widget[] children = xpdrop.getChildren();
 		// child 0 is the xpdrop text, everything else are sprite ids for skills
 		final Widget text = children[0];
@@ -153,10 +152,19 @@ public class XpDropPlugin extends Plugin
 
 	private void resetTextColor(Widget widget)
 	{
-		EnumComposition colorEnum = client.getEnum(EnumID.XPDROP_COLORS);
-		int defaultColorId = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
-		int color = colorEnum.getIntValue(defaultColorId);
-		widget.setTextColor(color);
+		Color standardColor = config.standardColor();
+		if (standardColor != null)
+		{
+			int color = standardColor.getRGB();
+			widget.setTextColor(color);
+		}
+		else
+		{
+			EnumComposition colorEnum = client.getEnum(EnumID.XPDROP_COLORS);
+			int defaultColorId = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
+			int color = colorEnum.getIntValue(defaultColorId);
+			widget.setTextColor(color);
+		}
 	}
 
 	private void hideSkillIcons(Widget xpdrop)

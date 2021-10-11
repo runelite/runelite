@@ -27,7 +27,7 @@ package net.runelite.api;
 /**
  * Information about a specific {@link NpcID}
  */
-public interface NPCComposition
+public interface NPCComposition extends ParamHolder
 {
 	/**
 	 * Gets the name of the NPC.

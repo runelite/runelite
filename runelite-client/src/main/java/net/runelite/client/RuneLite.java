@@ -56,35 +56,24 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.account.SessionManager;
-import net.runelite.client.callback.Hooks;
-import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.externalplugins.ExternalPluginManager;
-import net.runelite.client.game.FriendChatManager;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.LootManager;
-import net.runelite.client.game.chatbox.ChatboxPanelManager;
-import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.WidgetOverlay;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
-import net.runelite.client.ws.PartyService;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import org.slf4j.LoggerFactory;
 
 @Singleton
@@ -118,9 +107,6 @@ public class RuneLite
 	private ConfigManager configManager;
 
 	@Inject
-	private DrawManager drawManager;
-
-	@Inject
 	private SessionManager sessionManager;
 
 	@Inject
@@ -133,46 +119,13 @@ public class RuneLite
 	private ClientUI clientUI;
 
 	@Inject
-	private Provider<InfoBoxManager> infoBoxManager;
-
-	@Inject
 	private OverlayManager overlayManager;
-
-	@Inject
-	private Provider<PartyService> partyService;
-
-	@Inject
-	private Provider<ItemManager> itemManager;
-
-	@Inject
-	private Provider<OverlayRenderer> overlayRenderer;
-
-	@Inject
-	private Provider<FriendChatManager> friendsChatManager;
-
-	@Inject
-	private Provider<ChatMessageManager> chatMessageManager;
-
-	@Inject
-	private Provider<MenuManager> menuManager;
-
-	@Inject
-	private Provider<CommandManager> commandManager;
 
 	@Inject
 	private Provider<TooltipOverlay> tooltipOverlay;
 
 	@Inject
 	private Provider<WorldMapOverlay> worldMapOverlay;
-
-	@Inject
-	private Provider<LootManager> lootManager;
-
-	@Inject
-	private Provider<ChatboxPanelManager> chatboxPanelManager;
-
-	@Inject
-	private Provider<Hooks> hooks;
 
 	@Inject
 	@Nullable
@@ -187,6 +140,9 @@ public class RuneLite
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("safe-mode", "Disables external plugins and the GPU plugin");
 		parser.accepts("insecure-skip-tls-verification", "Disables TLS verification");
+		parser.accepts("jav_config", "jav_config url")
+			.withRequiredArg()
+			.defaultsTo(RuneLiteProperties.getJavConfig());
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -236,8 +192,8 @@ public class RuneLite
 			}
 		});
 
-		OkHttpClient.Builder okHttpClientBuilder = RuneLiteAPI.CLIENT.newBuilder()
-			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE));
+		OkHttpClient.Builder okHttpClientBuilder = RuneLiteAPI.CLIENT.newBuilder();
+		setupCache(okHttpClientBuilder, new File(CACHE_DIR, "okhttp"));
 
 		final boolean insecureSkipTlsVerification = options.has("insecure-skip-tls-verification");
 		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
@@ -252,7 +208,7 @@ public class RuneLite
 
 		try
 		{
-			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode));
+			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode), (String) options.valueOf("jav_config"));
 
 			new Thread(() ->
 			{
@@ -362,30 +318,15 @@ public class RuneLite
 		eventBus.register(pluginManager);
 		eventBus.register(externalPluginManager);
 		eventBus.register(overlayManager);
-		eventBus.register(drawManager);
 		eventBus.register(configManager);
 		eventBus.register(discordService);
 
 		if (!isOutdated)
 		{
-			// Initialize chat colors
-			chatMessageManager.get().loadColors();
-
-			eventBus.register(infoBoxManager.get());
-			eventBus.register(partyService.get());
-			eventBus.register(overlayRenderer.get());
-			eventBus.register(friendsChatManager.get());
-			eventBus.register(itemManager.get());
-			eventBus.register(menuManager.get());
-			eventBus.register(chatMessageManager.get());
-			eventBus.register(commandManager.get());
-			eventBus.register(lootManager.get());
-			eventBus.register(chatboxPanelManager.get());
-			eventBus.register(hooks.get());
-
 			// Add core overlays
-			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
+			WidgetOverlay.createOverlays(overlayManager, client).forEach(overlayManager::add);
 			overlayManager.add(worldMapOverlay.get());
+			eventBus.register(worldMapOverlay.get());
 			overlayManager.add(tooltipOverlay.get());
 		}
 
@@ -440,6 +381,25 @@ public class RuneLite
 		{
 			return null;
 		}
+	}
+
+	@VisibleForTesting
+	static void setupCache(OkHttpClient.Builder builder, File cacheDir)
+	{
+		builder.cache(new Cache(cacheDir, MAX_OKHTTP_CACHE_SIZE))
+			.addNetworkInterceptor(chain ->
+			{
+				// This has to be a network interceptor so it gets hit before the cache tries to store stuff
+				Response res = chain.proceed(chain.request());
+				if (res.code() >= 400 && "GET".equals(res.request().method()))
+				{
+					// if the request 404'd we don't want to cache it because its probably temporary
+					res = res.newBuilder()
+						.header("Cache-Control", "no-store")
+						.build();
+				}
+				return res;
+			});
 	}
 
 	private static void setupInsecureTrustManager(OkHttpClient.Builder okHttpClientBuilder)

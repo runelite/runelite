@@ -69,6 +69,8 @@ public class Instructions
 		add(GET_VARC_STRING, "get_varc_string");
 		add(SET_VARC_STRING, "set_varc_string");
 		add(SWITCH, "switch");
+		add(GET_VARCLANSETTING, "get_varclansetting");
+		add(GET_VARCLAN, "get_varclan");
 		add(CC_CREATE, "cc_create");
 		add(CC_DELETE, "cc_delete");
 		add(CC_DELETEALL, "cc_deleteall");
@@ -78,6 +80,7 @@ public class Instructions
 		add(CC_SETSIZE, "cc_setsize");
 		add(CC_SETHIDE, "cc_sethide");
 		add(CC_SETNOCLICKTHROUGH, "cc_setnoclickthrough");
+		add(CC_SETNOSCROLLTHROUGH, "cc_setnoscrollthrough");
 		add(CC_SETSCROLLPOS, "cc_setscrollpos");
 		add(CC_SETCOLOUR, "cc_setcolour");
 		add(CC_SETFILL, "cc_setfill");
@@ -102,6 +105,7 @@ public class Instructions
 		add(CC_RESUME_PAUSEBUTTON, "cc_resume_pausebutton");
 		add(CC_SETFILLCOLOUR, "cc_setfillcolour");
 		add(CC_SETLINEDIRECTION, "cc_setlinedirection");
+		add(CC_SETMODELTRANSPARENT, "cc_setmodeltransparent");
 		add(CC_SETOBJECT, "cc_setobject");
 		add(CC_SETNPCHEAD, "cc_setnpchead");
 		add(CC_SETPLAYERHEAD_SELF, "cc_setplayerhead_self");
@@ -115,6 +119,12 @@ public class Instructions
 		add(CC_SETOPBASE, "cc_setopbase");
 		add(CC_SETTARGETVERB, "cc_settargetverb");
 		add(CC_CLEAROPS, "cc_clearops");
+		add(CC_SETOPKEY, "cc_setopkey");
+		add(CC_SETOPTKEY, "cc_setoptkey");
+		add(CC_SETOPKEYRATE, "cc_setopkeyrate");
+		add(CC_SETOPTKEYRATE, "cc_setoptkeyrate");
+		add(CC_SETOPKEYIGNOREHELD, "cc_setopkeyignoreheld");
+		add(CC_SETOPTKEYIGNOREHELD, "cc_setoptkeyignoreheld");
 		add(CC_SETONCLICK, "cc_setonclick");
 		add(CC_SETONHOLD, "cc_setonhold");
 		add(CC_SETONRELEASE, "cc_setonrelease");
@@ -141,6 +151,8 @@ public class Instructions
 		add(CC_SETONSUBCHANGE, "cc_setonsubchange");
 		add(CC_SETONSTOCKTRANSMIT, "cc_setonstocktransmit");
 		add(CC_SETONRESIZE, "cc_setonresize");
+		add(CC_SETONCLANSETTINGSTRANSMIT, "cc_setonclansettingstransmit");
+		add(CC_SETONCLANCHANNELTRANSMIT, "cc_setonclanchanneltransmit");
 		add(CC_GETX, "cc_getx");
 		add(CC_GETY, "cc_gety");
 		add(CC_GETWIDTH, "cc_getwidth");
@@ -159,6 +171,7 @@ public class Instructions
 		add(CC_GETTRANS, "cc_gettrans");
 		add(CC_GETCOLOUR, "cc_getcolour");
 		add(CC_GETFILLCOLOUR, "cc_getfillcolour");
+		add(CC_GETMODELTRANSPARENT, "cc_getmodeltransparent");
 		add(CC_GETINVOBJECT, "cc_getinvobject");
 		add(CC_GETINVCOUNT, "cc_getinvcount");
 		add(CC_GETID, "cc_getid");
@@ -166,10 +179,12 @@ public class Instructions
 		add(CC_GETOP, "cc_getop");
 		add(CC_GETOPBASE, "cc_getopbase");
 		add(CC_CALLONRESIZE, "cc_callonresize");
+		add(CC_TRIGGEROP, "cc_triggerop");
 		add(IF_SETPOSITION, "if_setposition");
 		add(IF_SETSIZE, "if_setsize");
 		add(IF_SETHIDE, "if_sethide");
 		add(IF_SETNOCLICKTHROUGH, "if_setnoclickthrough");
+		add(IF_SETNOSCROLLTHROUGH, "if_setnoscrollthrough");
 		add(IF_SETSCROLLPOS, "if_setscrollpos");
 		add(IF_SETCOLOUR, "if_setcolour");
 		add(IF_SETFILL, "if_setfill");
@@ -194,6 +209,7 @@ public class Instructions
 		add(IF_RESUME_PAUSEBUTTON, "if_resume_pausebutton");
 		add(IF_SETFILLCOLOUR, "if_setfillcolour");
 		add(IF_SETLINEDIRECTION, "if_setlinedirection");
+		add(IF_SETMODELTRANSPARENT, "if_setmodeltransparent");
 		add(IF_SETOBJECT, "if_setobject");
 		add(IF_SETNPCHEAD, "if_setnpchead");
 		add(IF_SETPLAYERHEAD_SELF, "if_setplayerhead_self");
@@ -239,6 +255,8 @@ public class Instructions
 		add(IF_SETONSUBCHANGE, "if_setonsubchange");
 		add(IF_SETONSTOCKTRANSMIT, "if_setonstocktransmit");
 		add(IF_SETONRESIZE, "if_setonresize");
+		add(IF_SETONCLANSETTINGSTRANSMIT, "if_setonclansettingstransmit");
+		add(IF_SETONCLANCHANNELTRANSMIT, "if_setonclanchanneltransmit");
 		add(IF_GETX, "if_getx");
 		add(IF_GETY, "if_gety");
 		add(IF_GETWIDTH, "if_getwidth");
@@ -257,6 +275,7 @@ public class Instructions
 		add(IF_GETTRANS, "if_gettrans");
 		add(IF_GETCOLOUR, "if_getcolour");
 		add(IF_GETFILLCOLOUR, "if_getfillcolour");
+		add(IF_GETMODELTRANSPARENT, "if_getmodeltransparent");
 		add(IF_GETINVOBJECT, "if_getinvobject");
 		add(IF_GETINVCOUNT, "if_getinvcount");
 		add(IF_HASSUB, "if_hassub");
@@ -265,6 +284,7 @@ public class Instructions
 		add(IF_GETOP, "if_getop");
 		add(IF_GETOPBASE, "if_getopbase");
 		add(IF_CALLONRESIZE, "if_callonresize");
+		add(IF_TRIGGEROP, "if_triggerop");
 		add(MES, "mes");
 		add(ANIM, "anim");
 		add(IF_CLOSE, "if_close");
@@ -288,10 +308,14 @@ public class Instructions
 		add(SETTAPTODROP, "settaptodrop");
 		add(GETTAPTODROP, "gettaptodrop");
 		add(GETCANVASSIZE, "getcanvassize");
+		add(MOBILE_SETFPS, "mobile_setfps");
+		add(MOBILE_OPENSTORE, "mobile_openstore");
+		add(MOBILE_OPENSTORECATEGORY, "mobile_openstorecategory");
 		add(SETHIDEUSERNAME, "sethideusername");
 		add(GETHIDEUSERNAME, "gethideusername");
 		add(SETREMEMBERUSERNAME, "setrememberusername");
 		add(GETREMEMBERUSERNAME, "getrememberusername");
+		add(SHOW_IOS_REVIEW, "show_ios_review");
 		add(SOUND_SYNTH, "sound_synth");
 		add(SOUND_SONG, "sound_song");
 		add(SOUND_JINGLE, "sound_jingle");
@@ -349,6 +373,41 @@ public class Instructions
 		add(CLAN_GETCHATOWNERNAME, "clan_getchatownername");
 		add(CLAN_ISFRIEND, "clan_isfriend");
 		add(CLAN_ISIGNORE, "clan_isignore");
+		add(ACTIVECLANSETTINGS_FIND_LISTENED, "activeclansettings_find_listened");
+		add(ACTIVECLANSETTINGS_FIND_AFFINED, "activeclansettings_find_affined");
+		add(ACTIVECLANSETTINGS_GETCLANNAME, "activeclansettings_getclanname");
+		add(ACTIVECLANSETTINGS_GETALLOWUNAFFINED, "activeclansettings_getallowunaffined");
+		add(ACTIVECLANSETTINGS_GETRANKTALK, "activeclansettings_getranktalk");
+		add(ACTIVECLANSETTINGS_GETRANKKICK, "activeclansettings_getrankkick");
+		add(ACTIVECLANSETTINGS_GETRANKLOOTSHARE, "activeclansettings_getranklootshare");
+		add(ACTIVECLANSETTINGS_GETCOINSHARE, "activeclansettings_getcoinshare");
+		add(ACTIVECLANSETTINGS_GETAFFINEDCOUNT, "activeclansettings_getaffinedcount");
+		add(ACTIVECLANSETTINGS_GETAFFINEDDISPLAYNAME, "activeclansettings_getaffineddisplayname");
+		add(ACTIVECLANSETTINGS_GETAFFINEDRANK, "activeclansettings_getaffinedrank");
+		add(ACTIVECLANSETTINGS_GETBANNEDCOUNT, "activeclansettings_getbannedcount");
+		add(ACTIVECLANSETTINGS_GETBANNEDDISPLAYNAME, "activeclansettings_getbanneddisplayname");
+		add(ACTIVECLANSETTINGS_GETAFFINEDEXTRAINFO, "activeclansettings_getaffinedextrainfo");
+		add(ACTIVECLANSETTINGS_GETCURRENTOWNER_SLOT, "activeclansettings_getcurrentowner_slot");
+		add(ACTIVECLANSETTINGS_GETREPLACEMENTOWNER_SLOT, "activeclansettings_getreplacementowner_slot");
+		add(ACTIVECLANSETTINGS_GETAFFINEDSLOT, "activeclansettings_getaffinedslot");
+		add(ACTIVECLANSETTINGS_GETSORTEDAFFINEDSLOT, "activeclansettings_getsortedaffinedslot");
+		add(AFFINEDCLANSETTINGS_ADDBANNED_FROMCHANNEL, "affinedclansettings_addbanned_fromchannel");
+		add(ACTIVECLANSETTINGS_GETAFFINEDJOINRUNEDAY, "activeclansettings_getaffinedjoinruneday");
+		add(AFFINEDCLANSETTINGS_SETMUTED_FROMCHANNEL, "affinedclansettings_setmuted_fromchannel");
+		add(ACTIVECLANSETTINGS_GETAFFINEDMUTED, "activeclansettings_getaffinedmuted");
+		add(ACTIVECLANCHANNEL_FIND_LISTENED, "activeclanchannel_find_listened");
+		add(ACTIVECLANCHANNEL_FIND_AFFINED, "activeclanchannel_find_affined");
+		add(ACTIVECLANCHANNEL_GETCLANNAME, "activeclanchannel_getclanname");
+		add(ACTIVECLANCHANNEL_GETRANKKICK, "activeclanchannel_getrankkick");
+		add(ACTIVECLANCHANNEL_GETRANKTALK, "activeclanchannel_getranktalk");
+		add(ACTIVECLANCHANNEL_GETUSERCOUNT, "activeclanchannel_getusercount");
+		add(ACTIVECLANCHANNEL_GETUSERDISPLAYNAME, "activeclanchannel_getuserdisplayname");
+		add(ACTIVECLANCHANNEL_GETUSERRANK, "activeclanchannel_getuserrank");
+		add(ACTIVECLANCHANNEL_GETUSERWORLD, "activeclanchannel_getuserworld");
+		add(ACTIVECLANCHANNEL_KICKUSER, "activeclanchannel_kickuser");
+		add(ACTIVECLANCHANNEL_GETUSERSLOT, "activeclanchannel_getuserslot");
+		add(ACTIVECLANCHANNEL_GETSORTEDUSERSLOT, "activeclanchannel_getsorteduserslot");
+		add(CLANPROFILE_FIND, "clanprofile_find");
 		add(STOCKMARKET_GETOFFERTYPE, "stockmarket_getoffertype");
 		add(STOCKMARKET_GETOFFERITEM, "stockmarket_getofferitem");
 		add(STOCKMARKET_GETOFFERPRICE, "stockmarket_getofferprice");
@@ -389,6 +448,11 @@ public class Instructions
 		add(AND, "and");
 		add(OR, "or");
 		add(SCALE, "scale");
+		add(BITCOUNT, "bitcount");
+		add(TOGGLEBIT, "togglebit");
+		add(SETBIT_RANGE, "setbit_range");
+		add(CLEARBIT_RANGE, "clearbit_range");
+		add(GETBIT_RANGE, "getbit_range");
 		add(APPEND_NUM, "append_num");
 		add(APPEND, "append");
 		add(APPEND_SIGNNUM, "append_signnum");
@@ -432,6 +496,7 @@ public class Instructions
 		add(CHAT_GETFILTER_PRIVATE, "chat_getfilter_private");
 		add(CHAT_SENDPUBLIC, "chat_sendpublic");
 		add(CHAT_SENDPRIVATE, "chat_sendprivate");
+		add(CHAT_SENDCLAN, "chat_sendclan");
 		add(CHAT_PLAYERNAME, "chat_playername");
 		add(CHAT_GETFILTER_TRADE, "chat_getfilter_trade");
 		add(CHAT_GETHISTORYLENGTH, "chat_gethistorylength");
@@ -440,6 +505,7 @@ public class Instructions
 		add(DOCHEAT, "docheat");
 		add(CHAT_SETMESSAGEFILTER, "chat_setmessagefilter");
 		add(CHAT_GETMESSAGEFILTER, "chat_getmessagefilter");
+		add(WRITECONSOLE, "writeconsole");
 		add(GETWINDOWMODE, "getwindowmode");
 		add(SETWINDOWMODE, "setwindowmode");
 		add(GETDEFAULTWINDOWMODE, "getdefaultwindowmode");
@@ -468,9 +534,10 @@ public class Instructions
 		add(STRUCT_PARAM, "struct_param");
 		add(ON_MOBILE, "on_mobile");
 		add(CLIENTTYPE, "clienttype");
-		add(BATTERYLEVEL, "batterylevel");
-		add(BATTERYCHARGING, "batterycharging");
-		add(WIFIAVAILABLE, "wifiavailable");
+		add(MOBILE_KEYBOARDHIDE, "mobile_keyboardhide");
+		add(MOBILE_BATTERYLEVEL, "mobile_batterylevel");
+		add(MOBILE_BATTERYCHARGING, "mobile_batterycharging");
+		add(MOBILE_WIFIAVAILABLE, "mobile_wifiavailable");
 		add(WORLDMAP_GETMAPNAME, "worldmap_getmapname");
 		add(WORLDMAP_SETMAP, "worldmap_setmap");
 		add(WORLDMAP_GETZOOM, "worldmap_getzoom");
@@ -505,6 +572,8 @@ public class Instructions
 		add(MEC_TEXTSIZE, "mec_textsize");
 		add(MEC_CATEGORY, "mec_category");
 		add(MEC_SPRITE, "mec_sprite");
+		add(WORLDMAP_ELEMENT, "worldmap_element");
+		add(WORLDMAP_ELEMENTCOORD, "worldmap_elementcoord");
 	}
 
 	protected void add(int opcode, String name)

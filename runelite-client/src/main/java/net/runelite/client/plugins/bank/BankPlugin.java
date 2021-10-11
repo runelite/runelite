@@ -56,8 +56,6 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
@@ -72,7 +70,7 @@ import net.runelite.client.util.QuantityFormatter;
 @PluginDescriptor(
 	name = "Bank",
 	description = "Modifications to the banking interface",
-	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit"}
+	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit", "pin"}
 )
 @Slf4j
 public class BankPlugin extends Plugin
@@ -226,7 +224,7 @@ public class BankPlugin extends Plugin
 
 				final int compId = intStack[intStackSize - 2];
 				final int buttonId = intStack[intStackSize - 1];
-				Widget button = client.getWidget(TO_GROUP(compId), TO_CHILD(compId));
+				Widget button = client.getWidget(compId);
 				Widget buttonRect = button.getChild(0);
 
 				final Object[] onOpListener = buttonRect.getOnOpListener();
@@ -240,12 +238,15 @@ public class BankPlugin extends Plugin
 
 					log.debug("Bank pin keypress");
 
-					final String input = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+					final String chatboxTypedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
+					final String inputText = client.getVar(VarClientStr.INPUT_TEXT);
 					clientThread.invokeLater(() ->
 					{
 						// reset chatbox input to avoid pin going to chatbox..
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, input);
+						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, chatboxTypedText);
 						client.runScript(ScriptID.CHAT_PROMPT_INIT);
+						client.setVar(VarClientStr.INPUT_TEXT, inputText);
+						client.runScript(ScriptID.CHAT_TEXT_INPUT_REBUILD, "");
 
 						client.runScript(onOpListener);
 					});
@@ -277,7 +278,7 @@ public class BankPlugin extends Plugin
 			final Widget[] children = bankItemContainer.getChildren();
 			long geTotal = 0, haTotal = 0;
 
-			if (children != null)
+			if (bankContainer != null && children != null)
 			{
 				log.debug("Computing bank price of {} items", bankContainer.size());
 

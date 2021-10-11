@@ -35,6 +35,7 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.PixelGrabber;
 import java.awt.image.RescaleOp;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -209,7 +210,38 @@ public class ImageUtil
 	 */
 	public static BufferedImage resizeImage(final BufferedImage image, final int newWidth, final int newHeight)
 	{
-		final Image resized = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+		return resizeImage(image, newWidth, newHeight, false);
+	}
+
+	/**
+	 * Re-size a BufferedImage to the given dimensions.
+	 *
+	 * @param image the BufferedImage.
+	 * @param newWidth The width to set the BufferedImage to.
+	 * @param newHeight The height to set the BufferedImage to.
+	 * @param preserveAspectRatio Whether to preserve the original image's aspect ratio. When {@code true}, the image
+	 *                               will be scaled to have a maximum of {@code newWidth} width and {@code newHeight}
+	 *                               height.
+	 * @return The BufferedImage with the specified dimensions
+	 */
+	public static BufferedImage resizeImage(final BufferedImage image, final int newWidth, final int newHeight, final boolean preserveAspectRatio)
+	{
+		final Image resized;
+		if (preserveAspectRatio)
+		{
+			if (image.getWidth() > image.getHeight())
+			{
+				resized = image.getScaledInstance(newWidth, -1, Image.SCALE_SMOOTH);
+			}
+			else
+			{
+				resized = image.getScaledInstance(-1, newHeight, Image.SCALE_SMOOTH);
+			}
+		}
+		else
+		{
+			resized = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+		}
 		return ImageUtil.bufferedImageFromImage(resized);
 	}
 
@@ -332,21 +364,30 @@ public class ImageUtil
 	}
 
 	/**
+	 * @see #loadImageResource(Class, String)
+	 */
+	@Deprecated
+	public static BufferedImage getResourceStreamFromClass(Class<?> c, String path)
+	{
+		return loadImageResource(c, path);
+	}
+
+	/**
 	 * Reads an image resource from a given path relative to a given class.
 	 * This method is primarily shorthand for the synchronization and error handling required for
-	 * loading image resources from classes.
+	 * loading image resources from the classpath.
 	 *
-	 * @param c    The class to be referenced for resource path.
+	 * @param c    The class to be referenced for the package path.
 	 * @param path The path, relative to the given class.
 	 * @return     A {@link BufferedImage} of the loaded image resource from the given path.
 	 */
-	public static BufferedImage getResourceStreamFromClass(final Class c, final String path)
+	public static BufferedImage loadImageResource(final Class<?> c, final String path)
 	{
-		try
+		try (InputStream in = c.getResourceAsStream(path))
 		{
 			synchronized (ImageIO.class)
 			{
-				return ImageIO.read(c.getResourceAsStream(path));
+				return ImageIO.read(in);
 			}
 		}
 		catch (IllegalArgumentException e)
@@ -359,7 +400,7 @@ public class ImageUtil
 			}
 			else
 			{
-				filePath = c.getPackage().getName().replace(".", "/") + "/" + path;
+				filePath = c.getPackage().getName().replace('.', '/') + "/" + path;
 			}
 
 			log.warn("Failed to load image from class: {}, path: {}", c.getName(), filePath);
@@ -386,8 +427,9 @@ public class ImageUtil
 		{
 			for (int y = 0; y < filledImage.getHeight(); y++)
 			{
-				final Color pixelColor = new Color(image.getRGB(x, y), true);
-				if (pixelColor.getAlpha() == 0)
+				int pixel = image.getRGB(x, y);
+				int a = pixel >>> 24;
+				if (a == 0)
 				{
 					continue;
 				}

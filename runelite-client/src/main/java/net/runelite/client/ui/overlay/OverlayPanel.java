@@ -41,7 +41,7 @@ public abstract class OverlayPanel extends Overlay
 	protected final PanelComponent panelComponent = new PanelComponent();
 
 	/**
-	 * Enables/disables automatic clearing of {@link this#getPanelComponent()} children after rendering (enabled by default)
+	 * Enables/disables automatic clearing of {@link OverlayPanel#getPanelComponent()} children after rendering (enabled by default)
 	 */
 	private boolean clearChildren = true;
 

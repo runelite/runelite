@@ -872,7 +872,7 @@ public class RaidsPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			screenshotScoutOverlay();
+			clientThread.invoke(RaidsPlugin.this::screenshotScoutOverlay);
 		}
 	};
 

@@ -41,6 +41,7 @@ import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollecti
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.RangeItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -50,20 +51,19 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcClueScroll
 {
 	private static final List<FaloTheBardClue> CLUES = ImmutableList.of(
-		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", item(DRAGON_SCIMITAR)),
+		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", any("Dragon scimitar", item(DRAGON_SCIMITAR), item(DRAGON_SCIMITAR_OR))),
 		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any god book (must be complete)", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS))),
 		new FaloTheBardClue("A bow of elven craft was made, it shimmers bright, but will soon fade.", any("Crystal Bow", item(CRYSTAL_BOW), item(CRYSTAL_BOW_24123))),
-		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", item(INFERNAL_AXE)),
+		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", any("Infernal axe", item(INFERNAL_AXE), item(INFERNAL_AXE_OR))),
 		new FaloTheBardClue("A mark used to increase one's grace, found atop a seer's place.", item(MARK_OF_GRACE)),
 		new FaloTheBardClue("A molten beast with fiery breath, you acquire these with its death.", item(LAVA_DRAGON_BONES)),
 		new FaloTheBardClue("A shiny helmet of flight, to obtain this with melee, struggle you might.", item(ARMADYL_HELMET)),
-		// The wiki doesn't specify whether the trimmed dragon defender will work so I've assumed that it doesn't
-		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", any("Dragon or Avernic Defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_L), item(AVERNIC_DEFENDER), item(AVERNIC_DEFENDER_L))),
+		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", any("Dragon or Avernic Defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L), item(AVERNIC_DEFENDER), item(AVERNIC_DEFENDER_L))),
 		new FaloTheBardClue("A token used to kill mythical beasts, in hopes of a blade or just for an xp feast.", item(WARRIOR_GUILD_TOKEN)),
 		new FaloTheBardClue("Green is my favourite, mature ale I do love, this takes your herblore above.", item(GREENMANS_ALEM)),
 		new FaloTheBardClue("It can hold down a boat or crush a goat, this object, you see, is quite heavy.", item(BARRELCHEST_ANCHOR)),
 		new FaloTheBardClue("It comes from the ground, underneath the snowy plain. Trolls aplenty, with what looks like a mane.", item(BASALT)),
-		new FaloTheBardClue("No attack to wield, only strength is required, made of obsidian, but with no room for a shield.", item(TZHAARKETOM)),
+		new FaloTheBardClue("No attack to wield, only strength is required, made of obsidian, but with no room for a shield.", any("Tzhaar-ket-om", item(TZHAARKETOM), item(TZHAARKETOM_T))),
 		new FaloTheBardClue("Penance healers runners and more, obtaining this body often gives much deplore.", any("Fighter Torso", item(FIGHTER_TORSO), item(FIGHTER_TORSO_L))),
 		new FaloTheBardClue("Strangely found in a chest, many believe these gloves are the best.", item(BARROWS_GLOVES)),
 		new FaloTheBardClue("These gloves of white won't help you fight, but aid in cooking, they just might.", item(COOKING_GAUNTLETS)),
@@ -134,6 +134,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 				.left(requirement.getCollectiveName(plugin.getClient()))
 				.leftColor(TITLED_CONTENT_COLOR)
 				.right(inventoryFulfilled ? "\u2713" : "\u2717")
+				.rightFont(FontManager.getDefaultFont())
 				.rightColor(inventoryFulfilled ? Color.GREEN : Color.RED)
 				.build());
 		}

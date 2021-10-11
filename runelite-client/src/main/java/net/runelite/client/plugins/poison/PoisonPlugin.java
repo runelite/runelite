@@ -71,9 +71,9 @@ public class PoisonPlugin extends Plugin
 
 	static
 	{
-		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.DISEASE_HEART), 26, 26);
-		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.POISON_HEART), 26, 26);
-		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(AlternateSprites.class, AlternateSprites.VENOM_HEART), 26, 26);
+		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.DISEASE_HEART), 26, 26);
+		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.POISON_HEART), 26, 26);
+		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.VENOM_HEART), 26, 26);
 	}
 
 	@Inject

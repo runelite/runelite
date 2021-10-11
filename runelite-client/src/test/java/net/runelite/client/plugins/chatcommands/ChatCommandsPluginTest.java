@@ -25,10 +25,12 @@
 package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.collect.Sets;
+import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -38,17 +40,21 @@ import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.GENERIC_SCROLL_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.DIARY_QUEST_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreSkill;
@@ -59,16 +65,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -111,10 +112,16 @@ public class ChatCommandsPluginTest
 
 	@Mock
 	@Bind
+	RuneLiteConfig runeLiteConfig;
+
+	@Mock
+	@Bind
 	ChatCommandsConfig chatCommandsConfig;
 
 	@Inject
 	ChatCommandsPlugin chatCommandsPlugin;
+
+	final Gson gson = RuneLiteAPI.GSON;
 
 	@Before
 	public void before()
@@ -124,8 +131,6 @@ public class ChatCommandsPluginTest
 		Player player = mock(Player.class);
 		when(player.getName()).thenReturn(PLAYER_NAME);
 		when(client.getLocalPlayer()).thenReturn(player);
-
-		when(client.getUsername()).thenReturn(PLAYER_NAME);
 	}
 
 	@Test
@@ -151,48 +156,49 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your Corporeal Beast kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "corporeal beast", 4);
+		verify(configManager).setRSProfileConfiguration("killcount", "corporeal beast", 4);
 	}
 
 	@Test
 	public void testTheatreOfBlood()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Wave 'The Final Challenge' complete! Duration: <col=ff0000>5:04</col><br>Theatre of Blood wave completion time: <col=ff0000>37:04</col> (Personal best!)", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
+			"Wave 'The Final Challenge' (Normal Mode) complete!<br>Duration: <col=ff0000>2:42.0</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00.20</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "theatre of blood", 73);
-		verify(configManager).setConfiguration("personalbest.adam", "theatre of blood", 37 * 60 + 4);
+		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 17 * 60 + .2);
 	}
 
 	@Test
-	public void testTheatreOfBloodUnknownPB()
+	public void testTheatreOfBloodNoPb()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Wave 'The Final Challenge' complete! Duration: <col=ff0000>5:04</col><br>Theatre of Blood wave completion time: <col=ff0000>38:17</col><br></col>Personal best: 37:04", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
+			"Wave 'The Final Challenge' (Normal Mode) complete!<br>Duration: <col=ff0000>2:42</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00</col>. Personal best: 13:52.80", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "theatre of blood", 73);
-		verify(configManager).setConfiguration("personalbest.adam", "theatre of blood", 37 * 60 + 4);
+		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 13 * 60 + 52.8);
 	}
 
 	@Test
-	public void testTheatreOfBloodNoPB()
+	public void testTheatreOfBloodEntryMode()
 	{
-		when(configManager.getConfiguration("personalbest.adam", "theatre of blood", int.class)).thenReturn(37 * 60 + 4); // 37:04
-
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Wave 'The Final Challenge' complete! Duration: <col=ff0000>5:04</col><br>Theatre of Blood wave completion time: <col=ff0000>38:17</col><br></col>Personal best: 37:10", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
+			"Wave 'The Final Challenge' (Entry Mode) complete!<br>Duration: <col=ff0000>2:42</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood: Entry Mode count is: <col=ff0000>73</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "theatre of blood", 73);
-		verify(configManager, never()).setConfiguration(eq("personalbest.adam"), eq("theatre of blood"), anyInt());
+		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood entry mode", 73);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood entry mode", 17 * 60.);
 	}
 
 	@Test
@@ -201,7 +207,7 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your subdued Wintertodt count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "wintertodt", 4);
+		verify(configManager).setRSProfileConfiguration("killcount", "wintertodt", 4);
 	}
 
 	@Test
@@ -210,7 +216,7 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "kree'arra", 4);
+		verify(configManager).setRSProfileConfiguration("killcount", "kree'arra", 4);
 	}
 
 	@Test
@@ -219,7 +225,7 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your Barrows chest count is: <col=ff0000>277</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "barrows chests", 277);
+		verify(configManager).setRSProfileConfiguration("killcount", "barrows chests", 277);
 	}
 
 	@Test
@@ -228,7 +234,7 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your herbiboar harvest count is: <col=ff0000>4091</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "herbiboar", 4091);
+		verify(configManager).setRSProfileConfiguration("killcount", "herbiboar", 4091);
 	}
 
 	@Test
@@ -237,7 +243,7 @@ public class ChatCommandsPluginTest
 		ChatMessage gauntletMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Gauntlet completion count is: <col=ff0000>123</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(gauntletMessage);
 
-		verify(configManager).setConfiguration("killcount.adam", "gauntlet", 123);
+		verify(configManager).setRSProfileConfiguration("killcount", "gauntlet", 123);
 	}
 
 	@Test
@@ -246,13 +252,14 @@ public class ChatCommandsPluginTest
 		ChatMessage corruptedGauntletMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Corrupted Gauntlet completion count is: <col=ff0000>4729</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(corruptedGauntletMessage);
 
-		verify(configManager).setConfiguration("killcount.adam", "corrupted gauntlet", 4729);
+		verify(configManager).setRSProfileConfiguration("killcount", "corrupted gauntlet", 4729);
 	}
 
 	@Test
 	public void testPersonalBest()
 	{
 		final String FIGHT_DURATION = "Fight duration: <col=ff0000>2:06</col>. Personal best: 1:19.";
+		final String FIGHT_DURATION_PRECISE = "Fight duration: <col=ff0000>2:06.40</col>. Personal best: 1:19.20.";
 
 		// This sets lastBoss
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
@@ -261,13 +268,20 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", FIGHT_DURATION, null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("kree'arra"), eq(79));
+		verify(configManager).setRSProfileConfiguration("personalbest", "kree'arra", 79.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", FIGHT_DURATION_PRECISE, null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "kree'arra", 79.2);
 	}
 
 	@Test
 	public void testPersonalBestNoTrailingPeriod()
 	{
 		final String FIGHT_DURATION = "Fight duration: <col=ff0000>0:59</col>. Personal best: 0:55";
+		final String FIGHT_DURATION_PRECISE = "Fight duration: <col=ff0000>0:59.20</col>. Personal best: 0:55.40";
 
 		// This sets lastBoss
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Zulrah kill count is: <col=ff0000>4</col>.", null, 0);
@@ -276,13 +290,20 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", FIGHT_DURATION, null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("zulrah"), eq(55));
+		verify(configManager).setRSProfileConfiguration("personalbest", "zulrah", 55.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", FIGHT_DURATION_PRECISE, null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "zulrah", 55.4);
 	}
 
 	@Test
 	public void testNewPersonalBest()
 	{
 		final String NEW_PB = "Fight duration: <col=ff0000>3:01</col> (new personal best).";
+		final String NEW_PB_PRECISE = "Fight duration: <col=ff0000>3:01.40</col> (new personal best).";
 
 		// This sets lastBoss
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
@@ -291,7 +312,13 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", NEW_PB, null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("kree'arra"), eq(181));
+		verify(configManager).setRSProfileConfiguration("personalbest", "kree'arra", 181.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", NEW_PB_PRECISE, null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "kree'arra", 181.4);
 	}
 
 	@Test
@@ -300,8 +327,8 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You won! You have now won 27 duels.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "duel arena wins", 27);
-		verify(configManager).setConfiguration("killcount.adam", "duel arena win streak", 1);
+		verify(configManager).setRSProfileConfiguration("killcount", "duel arena wins", 27);
+		verify(configManager).setRSProfileConfiguration("killcount", "duel arena win streak", 1);
 	}
 
 	@Test
@@ -310,7 +337,7 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You were defeated! You have won 22 duels.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "duel arena wins", 22);
+		verify(configManager).setRSProfileConfiguration("killcount", "duel arena wins", 22);
 	}
 
 	@Test
@@ -319,13 +346,14 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You have now lost 999 duels.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "duel arena losses", 999);
+		verify(configManager).setRSProfileConfiguration("killcount", "duel arena losses", 999);
 	}
 
 	@Test
 	public void testAgilityLap()
 	{
 		final String NEW_PB = "Lap duration: <col=ff0000>1:01</col> (new personal best).";
+		final String NEW_PB_PRECISE = "Lap duration: <col=ff0000>1:01.20</col> (new personal best).";
 
 		// This sets lastBoss
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Prifddinas Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
@@ -334,8 +362,14 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", NEW_PB, null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("prifddinas agility course"), eq(61));
-		verify(configManager).setConfiguration(eq("killcount.adam"), eq("prifddinas agility course"), eq(2));
+		verify(configManager).setRSProfileConfiguration("personalbest", "prifddinas agility course", 61.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "prifddinas agility course", 2);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", NEW_PB_PRECISE, null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "prifddinas agility course", 61.2);
 	}
 
 	@Test
@@ -347,8 +381,13 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Duration: <col=ff0000>104:31</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("tzkal-zuk"), eq(104 * 60 + 31));
-		verify(configManager).setConfiguration(eq("killcount.adam"), eq("tzkal-zuk"), eq(2));
+		verify(configManager).setRSProfileConfiguration("personalbest", "tzkal-zuk", 104 * 60 + 31.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "tzkal-zuk", 2);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Duration: <col=ff0000>104:31.20</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tzkal-zuk", 104 * 60 + 31.2);
 	}
 
 	@Test
@@ -360,8 +399,13 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Duration: <col=ff0000>172:18</col>. Personal best: 134:52", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("tzkal-zuk"), eq(134 * 60 + 52));
-		verify(configManager).setConfiguration(eq("killcount.adam"), eq("tzkal-zuk"), eq(3));
+		verify(configManager).setRSProfileConfiguration("personalbest", "tzkal-zuk", 134 * 60 + 52.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "tzkal-zuk", 3);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Duration: <col=ff0000>172:18.40</col>. Personal best: 134:52.20", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tzkal-zuk", 134 * 60 + 52.2);
 	}
 
 	@Test
@@ -373,8 +417,17 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Grotesque Guardians kill count is: <col=ff0000>179</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("grotesque guardians"), eq(96));
-		verify(configManager).setConfiguration(eq("killcount.adam"), eq("grotesque guardians"), eq(179));
+		verify(configManager).setRSProfileConfiguration("personalbest", "grotesque guardians", 96.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "grotesque guardians", 179);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>1:36.40</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Grotesque Guardians kill count is: <col=ff0000>179</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "grotesque guardians", 96.4);
 	}
 
 	@Test
@@ -386,12 +439,21 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Grotesque Guardians kill count is: <col=ff0000>32</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("grotesque guardians"), eq(2 * 60 + 14));
-		verify(configManager).setConfiguration(eq("killcount.adam"), eq("grotesque guardians"), eq(32));
+		verify(configManager).setRSProfileConfiguration("personalbest", "grotesque guardians", 2 * 60 + 14.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "grotesque guardians", 32);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Fight duration: <col=ff0000>2:41.40</col>. Personal best: 2:14.20", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Grotesque Guardians kill count is: <col=ff0000>32</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "grotesque guardians", 2 * 60 + 14.2);
 	}
 
 	@Test
-	public void testGuantletPersonalBest()
+	public void testGauntletPersonalBest()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>10:24</col>. Personal best: 7:59.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
@@ -399,12 +461,21 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Gauntlet completion count is: <col=ff0000>124</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("killcount.adam"), eq("gauntlet"), eq(124));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("gauntlet"), eq(7 * 60 + 59));
+		verify(configManager).setRSProfileConfiguration("killcount", "gauntlet", 124);
+		verify(configManager).setRSProfileConfiguration("personalbest", "gauntlet", 7 * 60 + 59.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>10:24.20</col>. Personal best: 7:52.40.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Gauntlet completion count is: <col=ff0000>124</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "gauntlet", 7 * 60 + 52.4);
 	}
 
 	@Test
-	public void testGuantletNewPersonalBest()
+	public void testGauntletNewPersonalBest()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>10:24</col> (new personal best).", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
@@ -412,8 +483,17 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Gauntlet completion count is: <col=ff0000>124</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("gauntlet"), eq(10 * 60 + 24));
-		verify(configManager).setConfiguration(eq("killcount.adam"), eq("gauntlet"), eq(124));
+		verify(configManager).setRSProfileConfiguration("personalbest", "gauntlet", 10 * 60 + 24.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "gauntlet", 124);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>10:24.40</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Gauntlet completion count is: <col=ff0000>124</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "gauntlet", 10 * 60 + 24.4);
 	}
 
 	@Test
@@ -425,163 +505,39 @@ public class ChatCommandsPluginTest
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>51</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("killcount.adam"), eq("chambers of xeric"), eq(51));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric"), eq(37 * 60 + 4));
+		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric", 51);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 37 * 60 + 4.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>24+ players</col> Duration:</col> <col=ff0000>37:04.20</col> (new personal best)</col>>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>51</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 37 * 60 + 4.2);
 	}
 
 	@Test
-	public void testCoXKillUnknownPb()
+	public void testCoXKillNoPb()
 	{
-		when(configManager.getConfiguration("personalbest.adam", "chambers of xeric", int.class)).thenReturn(25 * 60 + 14);
-
 		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>11-15 players</col> Duration:</col> <col=ff0000>23:25</col> Personal best: </col><col=ff0000>20:19</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration("killcount.adam", "chambers of xeric", 52);
-		verify(configManager).setConfiguration("personalbest.adam", "chambers of xeric", 20 * 60 + 19);
-	}
+		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric", 52);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 20 * 60 + 19.0);
 
-	@Test
-	public void testCoXKillNoPb()
-	{
-		when(configManager.getConfiguration(anyString(), anyString(), any())).thenReturn(2224);
-
-		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>3 players</col> Duration:</col> <col=ff0000>37:10</col> (new personal best)</col>", null, 0);
+		// Precise times
+		chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>11-15 players</col> Duration:</col> <col=ff0000>23:25.40</col> Personal best: </col><col=ff0000>20:19.20</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration(eq("killcount.adam"), eq("chambers of xeric"), eq(52));
-		verify(configManager, never()).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric"), anyInt());
-	}
-
-	@Test
-	public void testAdventureLogCountersPage()
-	{
-		Widget advLogWidget = mock(Widget.class);
-		Widget advLogExploitsTextWidget = mock(Widget.class);
-		when(advLogWidget.getChild(ChatCommandsPlugin.ADV_LOG_EXPLOITS_TEXT_INDEX)).thenReturn(advLogExploitsTextWidget);
-		when(advLogExploitsTextWidget.getText()).thenReturn("The Exploits of " + PLAYER_NAME);
-		when(client.getWidget(WidgetInfo.ADVENTURE_LOG)).thenReturn(advLogWidget);
-		when(configManager.getConfiguration(anyString(), anyString(), any())).thenReturn(2224);
-
-		WidgetLoaded advLogEvent = new WidgetLoaded();
-		advLogEvent.setGroupId(ADVENTURE_LOG_ID);
-		chatCommandsPlugin.onWidgetLoaded(advLogEvent);
-		chatCommandsPlugin.onGameTick(new GameTick());
-
-		String COUNTER_TEXT = "Duel Arena<br>Wins: <col=d0c0b0>4</col><br>Losses: <col=d0c0b0>2</col>" +
-			"<br><br>Last Man Standing<br>Rank: <col=d0c0b0>0</col>" +
-			"<br><br>Treasure Trails<br>Beginner: <col=d0c0b0>0</col><br>Easy: <col=d0c0b0>7</col>" +
-			"<br>Medium: <col=d0c0b0>28</col><br>Hard: <col=d0c0b0>108</col><br>Elite: <col=d0c0b0>15</col>" +
-			"<br>Master: <col=d0c0b0>27</col><br>Rank: <col=d0c0b0>Novice</col>" +
-			"<br><br>Chompy Hunting<br>Kills: <col=d0c0b0>1,000</col><br>Rank: <col=d0c0b0>Ogre Expert</col>" +
-			"<br><br>Order of the White Knights<br>Rank: <col=d0c0b0>Master</col><br>with a kill score of <col=d0c0b0>1,300</col>" +
-			"<br><br>TzHaar Fight Cave<br>Fastest run: <col=d0c0b0>38:10</col>" +
-			"<br><br>Inferno<br>Fastest run: <col=d0c0b0>-</col><br><br>Zulrah<br>" +
-			"Fastest kill: <col=d0c0b0>5:48</col><br><br>Vorkath<br>Fastest kill: <col=d0c0b0>1:21</col>" +
-			"<br><br>Galvek<br>Fastest kill: <col=d0c0b0>-</col><br><br>Grotesque Guardians<br>" +
-			"Fastest kill: <col=d0c0b0>2:49</col><br><br>Alchemical Hydra<br>Fastest kill: <col=d0c0b0>-</col>" +
-			"<br><br>Hespori<br>Fastest kill: <col=d0c0b0>0:57</col><br><br>Nightmare<br>" +
-			"Fastest kill: <col=d0c0b0>3:30</col><br><br>The Gauntlet<br>Fastest run: <col=d0c0b0>-</col>" +
-			"<br><br>The Corrupted Gauntlet<br>Fastest run: <col=d0c0b0>-</col><br><br>Fragment of Seren<br>Fastest kill: <col=d0c0b0>-</col>" +
-			"<br><br>Chambers of Xeric<br>Fastest run - (Team size: 24+ players): <col=d0c0b0>24:17</col>" +
-			"<br><br>Chambers of Xeric - Challenge mode<br>Fastest run - (Team size: Solo): <col=d0c0b0>22:15</col>" +
-			"<br><br>Barbarian Assault<br>High-level gambles: <col=d0c0b0>0</col><br><br>Fremennik spirits rested: <col=d0c0b0>0</col>";
-
-		Widget countersPage = mock(Widget.class);
-		when(countersPage.getText()).thenReturn(COUNTER_TEXT);
-		when(client.getWidget(WidgetInfo.GENERIC_SCROLL_TEXT)).thenReturn(countersPage);
-
-		WidgetLoaded countersLogEvent = new WidgetLoaded();
-		countersLogEvent.setGroupId(GENERIC_SCROLL_GROUP_ID);
-		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
-		chatCommandsPlugin.onGameTick(new GameTick());
-
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("tztok-jad"), eq(38 * 60 + 10));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("zulrah"), eq(5 * 60 + 48));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("vorkath"), eq(1 * 60 + 21));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("grotesque guardians"), eq(2 * 60 + 49));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("hespori"), eq(57));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("nightmare"), eq(3 * 60 + 30));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric"), eq(24 * 60 + 17));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric challenge mode"), eq(22 * 60 + 15));
-	}
-
-	@Test
-	public void testAdventurerLogCountersPage2()
-	{
-		Widget advLogWidget = mock(Widget.class);
-		Widget advLogExploitsTextWidget = mock(Widget.class);
-		when(advLogWidget.getChild(ChatCommandsPlugin.ADV_LOG_EXPLOITS_TEXT_INDEX)).thenReturn(advLogExploitsTextWidget);
-		when(advLogExploitsTextWidget.getText()).thenReturn("The Exploits of " + PLAYER_NAME);
-		when(client.getWidget(WidgetInfo.ADVENTURE_LOG)).thenReturn(advLogWidget);
-
-		WidgetLoaded advLogEvent = new WidgetLoaded();
-		advLogEvent.setGroupId(ADVENTURE_LOG_ID);
-		chatCommandsPlugin.onWidgetLoaded(advLogEvent);
-		chatCommandsPlugin.onGameTick(new GameTick());
-
-		String COUNTER_TEXT = "Duel Arena<br>Wins: <col=d0c0b0>12</col><br>Losses: <col=d0c0b0>20</col>" +
-			"<br><br>Last Man Standing<br>Rank: <col=d0c0b0>0</col>" +
-			"<br><br>Treasure Trails<br>Beginner: <col=d0c0b0>1</col><br>Easy: <col=d0c0b0>4</col>" +
-			"<br>Medium: <col=d0c0b0>35</col><br>Hard: <col=d0c0b0>66</col><br>Elite: <col=d0c0b0>2</col>" +
-			"<br>Master: <col=d0c0b0>0</col><br>Rank: <col=d0c0b0>Novice</col>" +
-			"<br><br>Chompy Hunting<br>Kills: <col=d0c0b0>300</col><br>Rank: <col=d0c0b0>Ogre Forester</col>" +
-			"<br><br>Order of the White Knights<br>Rank: <col=d0c0b0>Unrated</col><br>with a kill score of <col=d0c0b0>99</col>" +
-			"<br><br>TzHaar Fight Cave<br>Fastest run: <col=d0c0b0>65:12</col>" +
-			"<br><br>Inferno<br>Fastest run: <col=d0c0b0>-</col><br><br>Zulrah<br>" +
-			"Fastest kill: <col=d0c0b0>2:55</col><br><br>Vorkath<br>Fastest kill: <col=d0c0b0>1:37</col>" +
-			"<br><br>Galvek<br>Fastest kill: <col=d0c0b0>-</col><br><br>Grotesque Guardians<br>" +
-			"Fastest kill: <col=d0c0b0>-</col><br><br>Alchemical Hydra<br>Fastest kill: <col=d0c0b0>-</col>" +
-			"<br><br>Hespori<br>Fastest kill: <col=d0c0b0>1:42</col><br><br>Nightmare<br>" +
-			"Fastest kill: <col=d0c0b0>-</col><br><br>The Gauntlet<br>Fastest run: <col=d0c0b0>-</col>" +
-			"<br><br>The Corrupted Gauntlet<br>Fastest run: <col=d0c0b0>-</col><br><br>Fragment of Seren<br>Fastest kill: <col=d0c0b0>-</col>" +
-			"<br><br>Chambers of Xeric<br>Fastest run - (Team size: Solo): <col=d0c0b0>21:23</col><br>Fastest run - (Team size: 3 players): <col=d0c0b0>27:16</col>" +
-			"<br><br>Chambers of Xeric - Challenge mode<br>Fastest run - (Team size: Solo): <col=d0c0b0>34:30</col><br>Fastest run - (Team size: 4 players): <col=d0c0b0>21:26</col>" +
-			"<br><br>Barbarian Assault<br>High-level gambles: <col=d0c0b0>0</col><br><br>Fremennik spirits rested: <col=d0c0b0>0</col>";
-
-		Widget countersPage = mock(Widget.class);
-		when(countersPage.getText()).thenReturn(COUNTER_TEXT);
-		when(client.getWidget(WidgetInfo.GENERIC_SCROLL_TEXT)).thenReturn(countersPage);
-
-		WidgetLoaded countersLogEvent = new WidgetLoaded();
-		countersLogEvent.setGroupId(GENERIC_SCROLL_GROUP_ID);
-		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
-		chatCommandsPlugin.onGameTick(new GameTick());
-
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("tztok-jad"), eq(65 * 60 + 12));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("zulrah"), eq(2 * 60 + 55));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("vorkath"), eq(1 * 60 + 37));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("hespori"), eq(1 * 60 + 42));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric"), eq(21 * 60 + 23));
-		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("chambers of xeric challenge mode"), eq(21 * 60 + 26));
-	}
-
-	@Test
-	public void testNotYourAdventureLogCountersPage()
-	{
-		Widget advLogWidget = mock(Widget.class);
-		Widget advLogExploitsTextWidget = mock(Widget.class);
-		when(advLogWidget.getChild(ChatCommandsPlugin.ADV_LOG_EXPLOITS_TEXT_INDEX)).thenReturn(advLogExploitsTextWidget);
-		when(advLogExploitsTextWidget.getText()).thenReturn("The Exploits of " + "not the player");
-		when(client.getWidget(WidgetInfo.ADVENTURE_LOG)).thenReturn(advLogWidget);
-
-		WidgetLoaded advLogEvent = new WidgetLoaded();
-		advLogEvent.setGroupId(ADVENTURE_LOG_ID);
-		chatCommandsPlugin.onWidgetLoaded(advLogEvent);
-		chatCommandsPlugin.onGameTick(new GameTick());
-
-		WidgetLoaded countersLogEvent = new WidgetLoaded();
-		countersLogEvent.setGroupId(GENERIC_SCROLL_GROUP_ID);
-		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
-		chatCommandsPlugin.onGameTick(new GameTick());
-
-		verifyNoMoreInteractions(configManager);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 20 * 60 + 19.2);
 	}
 
 	@Test
@@ -612,7 +568,13 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 1 time: <col=ff0000>1:19</col>. Personal best: 0:28", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 1", 28);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 1", 28.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 1 time: <col=ff0000>1:19.20</col>. Personal best: 0:28.40", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 1", 28.4);
 	}
 
 	@Test
@@ -621,7 +583,13 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 2 time: <col=ff0000>0:47</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 2", 47);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 2", 47.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 2 time: <col=ff0000>0:47.20</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 2", 47.2);
 	}
 
 	@Test
@@ -630,8 +598,15 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>4:46</col> (new personal best)<br>Overall time: <col=ff0000>9:53</col> (new personal best)<br>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 4 * 60 + 46);
-		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 9 * 60 + 53);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 5", 4 * 60 + 46.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre", 9 * 60 + 53.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>4:46.20</col> (new personal best)<br>Overall time: <col=ff0000>9:53.40</col> (new personal best)<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 5", 4 * 60 + 46.2);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre", 9 * 60 + 53.4);
 	}
 
 	@Test
@@ -640,8 +615,15 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:26</col> (new personal best)<br>Overall time: <col=ff0000>9:17</col>. Personal best: 9:15<br>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 3 * 60 + 26);
-		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 9 * 60 + 15);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 5", 3 * 60 + 26.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre", 9 * 60 + 15.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:26.20</col> (new personal best)<br>Overall time: <col=ff0000>9:17.00</col>. Personal best: 9:15.40<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 5", 3 * 60 + 26.2);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre", 9 * 60 + 15.4);
 	}
 
 	@Test
@@ -650,8 +632,15 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:56</col>. Personal best: 3:05<br>Overall time: <col=ff0000>9:14</col>. Personal best: 7:49<br>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 3 * 60 + 5);
-		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 7 * 60 + 49);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 5", 3 * 60 + 5.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre", 7 * 60 + 49.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:56.40</col>. Personal best: 3:05.20<br>Overall time: <col=ff0000>9:14.20</col>. Personal best: 7:49.20<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 5", 3 * 60 + 5.2);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre", 7 * 60 + 49.2);
 	}
 
 	@Test
@@ -660,25 +649,427 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:10</col>. Personal best: 3:04<br>Overall time: <col=ff0000>7:47</col> (new personal best)<br>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre floor 5", 3 * 60 + 4);
-		verify(configManager).setConfiguration("personalbest.adam", "hallowed sepulchre", 7 * 60 + 47);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 5", 3 * 60 + 4.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre", 7 * 60 + 47.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 5 time: <col=ff0000>3:10.00</col>. Personal best: 3:04.40<br>Overall time: <col=ff0000>7:47.20</col> (new personal best)<br>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre floor 5", 3 * 60 + 4.4);
+		verify(configManager).setRSProfileConfiguration("personalbest", "hallowed sepulchre", 7 * 60 + 47.2);
 	}
 
 	@Test
 	public void testHsFloorKc()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have completed Floor 5 of the Hallowed Sepulchre! Total completions: <col=ff0000>81</col>.", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have completed Floor 5 of the Hallowed Sepulchre! Total completions: <col=ff0000>1,114</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration("killcount.adam", "hallowed sepulchre floor 5", 81);
+		verify(configManager).setRSProfileConfiguration("killcount", "hallowed sepulchre floor 5", 1114);
 	}
 
 	@Test
 	public void testHsGhcKc()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have opened the Grand Hallowed Coffin <col=ff0000>36</col> times!", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have opened the Grand Hallowed Coffin <col=ff0000>1,542</col> times!", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setConfiguration("killcount.adam", "hallowed sepulchre", 36);
+		verify(configManager).setRSProfileConfiguration("killcount", "hallowed sepulchre", 1542);
+	}
+
+	@Test
+	public void testJadNewPbWithLeagueTask()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your TzTok-Jad kill count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Congratulations, you've completed a master task: <col=7f3700>Complete the Fight Caves in 25:00</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Duration: <col=ff0000>21:58</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "tztok-jad", 21 * 60 + 58.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "tztok-jad", 2);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Duration: <col=ff0000>21:58.40</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "tztok-jad", 21 * 60 + 58.4);
+	}
+
+	@Test
+	public void testJadChallengeNewPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completion count for TzHaar-Ket-Rak's First Challenge is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>1:46</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "TzHaar-Ket-Rak's First Challenge".toLowerCase(), 1);
+		verify(configManager).setRSProfileConfiguration("personalbest", "TzHaar-Ket-Rak's First Challenge".toLowerCase(), 60 + 46.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>1:46.40</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "TzHaar-Ket-Rak's First Challenge".toLowerCase(), 60 + 46.4);
+	}
+
+	@Test
+	public void testJadChallengeNoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completion count for TzHaar-Ket-Rak's First Challenge is: <col=ff0000>3</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>1:10</col>. Personal best: <col=ff0000>0:59</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "TzHaar-Ket-Rak's First Challenge".toLowerCase(), 3);
+		verify(configManager).setRSProfileConfiguration("personalbest", "TzHaar-Ket-Rak's First Challenge".toLowerCase(), 59.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge duration: <col=ff0000>1:10.00</col>. Personal best: <col=ff0000>0:59.20</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "TzHaar-Ket-Rak's First Challenge".toLowerCase(), 59.2);
+	}
+
+	@Test
+	public void testTemporossNewPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Subdued in <col=ef1020>6:35</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Tempoross kill count is: <col=ff0000>60</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tempoross", 60);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 6 * 60 + 35.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Subdued in <col=ef1020>5:20.60</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Tempoross kill count is: <col=ff0000>60</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 5 * 60 + 20.6);
+	}
+
+	@Test
+	public void testTemporossNoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Subdued in <col=ef1020>7:40</col>. Personal best: 5:38.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Tempoross kill count is: <col=ff0000>55</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tempoross", 55);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 5 * 60 + 38.0);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Subdued in <col=ef1020>6:19.80</col>. Personal best: 5:42.60.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Tempoross kill count is: <col=ff0000>55</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 5 * 60 + 42.6);
+	}
+
+	@Test
+	public void testNightmarePb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Nightmare kill count is: <col=ff0000>1130</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>5 players</col> Fight duration: <col=ff0000>3:28</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "nightmare", 1130);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare", 3 * 60 + 28.0);
+	}
+
+	@Test
+	public void testNightmareNoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Nightmare kill count is: <col=ff0000>1130</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>Solo</col> Fight duration: <col=ff0000>10:47</col>. Personal best: 8:44", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "nightmare", 1130);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare", 8 * 60 + 44.0);
+	}
+
+	@Test
+	public void testPlayerPetList()
+	{
+		Widget logEntryHeaderWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+
+		Widget[] logEntryHeaderItemsWidget = new Widget[1];
+		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
+
+		Widget logEntryHeaderTitleWidget = mock(Widget.class);
+		when(logEntryHeaderWidget.getChild(ChatCommandsPlugin.COL_LOG_ENTRY_HEADER_TITLE_INDEX))
+			.thenReturn(logEntryHeaderTitleWidget);
+		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
+
+		Widget logEntryItemsWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+
+		Widget[] logPetEntriesWidget = new Widget[3];
+		for (int i = 0; i < 3; i++)
+		{
+			logPetEntriesWidget[i] = mock(Widget.class);
+			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
+		}
+
+		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
+		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
+
+		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
+
+		ScriptPostFired scriptPostFired = new ScriptPostFired(ScriptID.COLLECTION_DRAW_LIST);
+		chatCommandsPlugin.onScriptPostFired(scriptPostFired);
+
+		chatCommandsPlugin.onGameTick(new GameTick());
+
+		Pet[] playerPetList = new Pet[1];
+		playerPetList[0] = Pet.IKKLE_HYDRA;
+
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+	}
+
+	@Test
+	public void testEmptyPlayerPetList()
+	{
+		Widget logEntryHeaderWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+
+		Widget[] logEntryHeaderItemsWidget = new Widget[1];
+		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
+
+		Widget logEntryHeaderTitleWidget = mock(Widget.class);
+		when(logEntryHeaderWidget.getChild(ChatCommandsPlugin.COL_LOG_ENTRY_HEADER_TITLE_INDEX))
+			.thenReturn(logEntryHeaderTitleWidget);
+		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
+
+		Widget logEntryItemsWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+
+		Widget[] logPetEntriesWidget = new Widget[3];
+		for (int i = 0; i < 3; i++)
+		{
+			logPetEntriesWidget[i] = mock(Widget.class);
+			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
+		}
+
+		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
+
+		ScriptPostFired scriptPostFired = new ScriptPostFired(ScriptID.COLLECTION_DRAW_LIST);
+		chatCommandsPlugin.onScriptPostFired(scriptPostFired);
+
+		chatCommandsPlugin.onGameTick(new GameTick());
+
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(new Pet[0]));
+	}
+
+	@Test
+	public void testUpdatePlayerPetList()
+	{
+		Widget logEntryHeaderWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+
+		Widget[] logEntryHeaderItemsWidget = new Widget[1];
+		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
+
+		Widget logEntryHeaderTitleWidget = mock(Widget.class);
+		when(logEntryHeaderWidget.getChild(ChatCommandsPlugin.COL_LOG_ENTRY_HEADER_TITLE_INDEX))
+			.thenReturn(logEntryHeaderTitleWidget);
+		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
+
+		Widget logEntryItemsWidget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+
+		Widget[] logPetEntriesWidget = new Widget[3];
+		for (int i = 0; i < 3; i++)
+		{
+			logPetEntriesWidget[i] = mock(Widget.class);
+			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
+		}
+
+		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
+		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
+
+		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
+
+		ScriptPostFired scriptPostFired = new ScriptPostFired(ScriptID.COLLECTION_DRAW_LIST);
+		chatCommandsPlugin.onScriptPostFired(scriptPostFired);
+
+		chatCommandsPlugin.onGameTick(new GameTick());
+
+		Pet[] playerPetList = new Pet[1];
+		playerPetList[0] = Pet.IKKLE_HYDRA;
+
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setMessage("New item added to your collection log: Chompy chick");
+		chatMessage.setType(GAMEMESSAGE);
+		when(configManager.getRSProfileConfiguration("chatcommands", "pets",
+			String.class)).thenReturn(gson.toJson(playerPetList));
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		playerPetList = new Pet[2];
+		playerPetList[0] = Pet.IKKLE_HYDRA;
+		playerPetList[1] = Pet.CHOMPY_CHICK;
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+	}
+
+	@Test
+	public void testTimeStringToSeconds()
+	{
+		final double DELTA = 0.0001;
+
+		// ss
+		assertEquals(55.0, ChatCommandsPlugin.timeStringToSeconds("55.00"), DELTA);
+		// mm:ss
+		assertEquals(6 * 60 + 55.4, ChatCommandsPlugin.timeStringToSeconds("6:55.40"), DELTA);
+		// h:mm:ss
+		assertEquals(2 * 3600 + 50 * 60 + 30.2, ChatCommandsPlugin.timeStringToSeconds("2:50:30.20"), DELTA);
+	}
+
+	@Test
+	public void testCounters()
+	{
+		final String[] log = {
+			"Chompy Hunting",
+			"Kills: <col=ffffff>1,003</col>",
+			"Rank: <col=ffffff>Ogre Expert</col>",
+			"",
+			"Order of the White Knights",
+			"Rank: <col=ffffff>Master</col>",
+			"with a kill score of <col=ffffff>1,300</col>",
+			"",
+			"TzHaar Fight Cave",
+			"Fastest run: <col=ffffff>33:53</col>",
+			"",
+			"Inferno",
+			"Fastest run: <col=ffffff>2:02:20</col>",
+			"",
+			"Zulrah",
+			"Fastest kill: <col=ffffff>0:47</col>",
+			"",
+			"Vorkath",
+			"Fastest kill: <col=ffffff>1:04</col>",
+			"",
+			"Galvek",
+			"Fastest kill: <col=ffffff>-</col>",
+			"",
+			"Grotesque Guardians",
+			"Fastest kill: <col=ffffff>1:20</col>",
+			"",
+			"Alchemical Hydra",
+			"Fastest kill: <col=ffffff>1:34</col>",
+			"",
+			"Hespori",
+			"Fastest kill: <col=ffffff>1:24</col>",
+			"",
+			// Nightmare is here 3x!
+			"Nightmare", // including one only called "Nightmare"
+			"Fastest kill: <col=ffffff>-</col>", // with no time
+			"",
+			"The Nightmare",
+			"Fastest kill - (Team size: 6+ players): <col=ffffff>3:22</col>",
+			"",
+			"The Nightmare",
+			"Fastest kill - (Team size: 6+ players): <col=ffffff>3:22</col>",
+			"",
+			"Phosani's Nightmare",
+			"Fastest kill: <col=ffffff>-</col>",
+			"",
+			"The Gauntlet",
+			"Fastest run: <col=ffffff>-</col>",
+			"",
+			"The Corrupted Gauntlet",
+			"Fastest run: <col=ffffff>-</col>",
+			"",
+			"Fragment of Seren",
+			"Fastest kill: <col=ffffff>-</col>",
+			"",
+			"Chambers of Xeric",
+			"Fastest run - (Team size: Solo): <col=ffffff>28:07</col>",
+			"Fastest run - (Team size: 2 players): <col=ffffff>24:40</col>",
+			"Fastest run - (Team size: 3 players): <col=ffffff>25:35</col>",
+			"Fastest run - (Team size: 4 players): <col=ffffff>22:40</col>",
+			"Fastest run - (Team size: 5 players): <col=ffffff>23:00</col>",
+			"Fastest run - (Team size: 6 players): <col=ffffff>28:11</col>",
+			"",
+			"Chambers of Xeric - Challenge mode",
+			"Fastest run - (Team size: 3 players): <col=ffffff>45:41</col>",
+			"",
+			"Theatre of Blood",
+			"Fastest Room time (former): <col=ffffff>18:45</col>",
+			"Fastest Wave time (former): <col=ffffff>22:01</col>",
+			"Fastest Room time - (Team size: (3 player): <col=ffffff>19:50</col>",
+			"Fastest Overall time - (Team size: 3 player): <col=ffffff>22:47</col>",
+			"Fastest Room time - (Team size: (4 player): <col=ffffff>17:38</col>",
+			"Fastest Overall time - (Team size: 4 player): <col=ffffff>20:31</col>",
+			"Fastest Room time - (Team size: (5 player): <col=ffffff>18:45</col>",
+			"Fastest Overall time - (Team size: 5 player): <col=ffffff>22:01</col>",
+			"",
+			"Tempoross",
+			"Fastest run: <col=ffffff>3:54</col>",
+			"",
+			"Barbarian Assault",
+			"High-level gambles: <col=ffffff>0</col>",
+			"",
+			"Fremennik spirits rested: <col=ffffff>0</col>",
+		};
+
+		// adv log
+		Widget advLogWidget = mock(Widget.class);
+		Widget advLogExploitsTextWidget = mock(Widget.class);
+		when(advLogWidget.getChild(ChatCommandsPlugin.ADV_LOG_EXPLOITS_TEXT_INDEX)).thenReturn(advLogExploitsTextWidget);
+		when(advLogExploitsTextWidget.getText()).thenReturn("The Exploits of " + PLAYER_NAME);
+		when(client.getWidget(WidgetInfo.ADVENTURE_LOG)).thenReturn(advLogWidget);
+
+		// counters
+		when(client.getWidget(WidgetInfo.DIARY_QUEST_WIDGET_TEXT)).thenAnswer(a ->
+		{
+			Widget widget = mock(Widget.class);
+			Widget[] children = Arrays.stream(log)
+				.map(s ->
+				{
+					Widget w = mock(Widget.class);
+					when(w.getText()).thenReturn(s);
+					return w;
+				})
+				.toArray(Widget[]::new);
+			when(widget.getStaticChildren()).thenReturn(children);
+			return widget;
+		});
+
+		WidgetLoaded advLogEvent = new WidgetLoaded();
+		advLogEvent.setGroupId(ADVENTURE_LOG_ID);
+		chatCommandsPlugin.onWidgetLoaded(advLogEvent);
+		chatCommandsPlugin.onGameTick(new GameTick());
+
+		WidgetLoaded countersLogEvent = new WidgetLoaded();
+		countersLogEvent.setGroupId(DIARY_QUEST_GROUP_ID);
+		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
+		chatCommandsPlugin.onGameTick(new GameTick());
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "tztok-jad", 2033.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 234.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 1360.0); // the lowest time
 	}
 }

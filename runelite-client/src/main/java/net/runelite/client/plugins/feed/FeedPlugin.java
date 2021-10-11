@@ -97,7 +97,7 @@ public class FeedPlugin extends Plugin
 	{
 		feedPanel = injector.getInstance(FeedPanel.class);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("News Feed")

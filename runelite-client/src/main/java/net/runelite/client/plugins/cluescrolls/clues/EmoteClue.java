@@ -45,15 +45,17 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
+import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
-import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -62,6 +64,42 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
+	private static final AnyRequirementCollection ANY_SLAYER_HELMET = any("Any slayer helmet",
+		item(SLAYER_HELMET),
+		item(BLACK_SLAYER_HELMET),
+		item(GREEN_SLAYER_HELMET),
+		item(PURPLE_SLAYER_HELMET),
+		item(RED_SLAYER_HELMET),
+		item(TURQUOISE_SLAYER_HELMET),
+		item(HYDRA_SLAYER_HELMET),
+		item(TWISTED_SLAYER_HELMET),
+		item(TZTOK_SLAYER_HELMET),
+		item(VAMPYRIC_SLAYER_HELMET),
+		item(TZKAL_SLAYER_HELMET),
+		item(SLAYER_HELMET_I),
+		item(BLACK_SLAYER_HELMET_I),
+		item(GREEN_SLAYER_HELMET_I),
+		item(PURPLE_SLAYER_HELMET_I),
+		item(RED_SLAYER_HELMET_I),
+		item(TURQUOISE_SLAYER_HELMET_I),
+		item(HYDRA_SLAYER_HELMET_I),
+		item(TWISTED_SLAYER_HELMET_I),
+		item(TZTOK_SLAYER_HELMET_I),
+		item(VAMPYRIC_SLAYER_HELMET_I),
+		item(TZKAL_SLAYER_HELMET_I),
+		item(SLAYER_HELMET_I_25177),
+		item(BLACK_SLAYER_HELMET_I_25179),
+		item(GREEN_SLAYER_HELMET_I_25181),
+		item(RED_SLAYER_HELMET_I_25183),
+		item(PURPLE_SLAYER_HELMET_I_25185),
+		item(TURQUOISE_SLAYER_HELMET_I_25187),
+		item(HYDRA_SLAYER_HELMET_I_25189),
+		item(TWISTED_SLAYER_HELMET_I_25191),
+		item(TZTOK_SLAYER_HELMET_I_25902),
+		item(VAMPYRIC_SLAYER_HELMET_I_25908),
+		item(TZKAL_SLAYER_HELMET_I_25914)
+	);
+
 	private static final Set<EmoteClue> CLUES = ImmutableSet.of(
 		new EmoteClue("Beckon on the east coast of the Kharazi Jungle. Beware of double agents! Equip any vestment stole and a heraldic rune shield.", "Kharazi Jungle", NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE, new WorldPoint(2954, 2933, 0), DOUBLE_AGENT_108, BECKON, any("Any stole", item(GUTHIX_STOLE), item(SARADOMIN_STOLE), item(ZAMORAK_STOLE), item(ARMADYL_STOLE), item(BANDOS_STOLE), item(ANCIENT_STOLE)), any("Any heraldic rune shield", item(RUNE_SHIELD_H1), item(RUNE_SHIELD_H2), item(RUNE_SHIELD_H3), item(RUNE_SHIELD_H4), item(RUNE_SHIELD_H5))),
 		new EmoteClue("Cheer in the Barbarian Agility Arena. Headbang before you talk to me. Equip a steel platebody, maple shortbow and a Wilderness cape.", "Barbarian Outpost", BARBARIAN_OUTPOST_OBSTACLE_COURSE, new WorldPoint(2552, 3556, 0), CHEER, HEADBANG, item(STEEL_PLATEBODY), item(MAPLE_SHORTBOW), range("Any team cape", TEAM1_CAPE, TEAM50_CAPE)),
@@ -82,7 +120,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Beckon by a collection of crystalline maple trees. Beware of double agents! Equip Bryophyta's staff and a nature tiara.", "North of Prifddinas", CRYSTALLINE_MAPLE_TREES, new WorldPoint(2211, 3427, 0), DOUBLE_AGENT_141, BECKON, range("Bryophyta's staff", BRYOPHYTAS_STAFF_UNCHARGED, BRYOPHYTAS_STAFF), item(NATURE_TIARA)),
 		new EmoteClue("Beckon in the Digsite, near the eastern winch. Bow before you talk to me. Equip a green gnome hat, snakeskin boots and an iron pickaxe.", "Digsite", DIGSITE, new WorldPoint(3370, 3425, 0), BECKON, BOW, item(GREEN_HAT), item(SNAKESKIN_BOOTS), item(IRON_PICKAXE)),
 		new EmoteClue("Beckon in Tai Bwo Wannai. Clap before you talk to me. Equip green dragonhide chaps, a ring of dueling and a mithril medium helmet.", "Tai Bwo Wannai", SOUTH_OF_THE_SHRINE_IN_TAI_BWO_WANNAI_VILLAGE, new WorldPoint(2803, 3073, 0), BECKON, CLAP, item(GREEN_DHIDE_CHAPS), any("Ring of dueling", item(RING_OF_DUELING1), item(RING_OF_DUELING2), item(RING_OF_DUELING3), item(RING_OF_DUELING4), item(RING_OF_DUELING5), item(RING_OF_DUELING6), item(RING_OF_DUELING7), item(RING_OF_DUELING8)), item(MITHRIL_MED_HELM)),
-		new EmoteClue("Beckon in the combat ring of Shayzien. Show your anger before you talk to me. Equip an adamant platebody, adamant full helm and adamant platelegs.", "Shayzien combat ring", WEST_OF_THE_SHAYZIEN_COMBAT_RING, new WorldPoint(1545, 3594, 0), BECKON, ANGRY, item(ADAMANT_PLATELEGS), item(ADAMANT_PLATEBODY), item(ADAMANT_FULL_HELM)),
+		new EmoteClue("Beckon in the Shayzien Combat Ring. Show your anger before you talk to me. Equip an adamant platebody, adamant full helm and adamant platelegs.", "Shayzien Combat Ring", WEST_OF_THE_SHAYZIEN_COMBAT_RING, new WorldPoint(1543, 3623, 0), BECKON, ANGRY, item(ADAMANT_PLATELEGS), item(ADAMANT_PLATEBODY), item(ADAMANT_FULL_HELM)),
 		new EmoteClue("Bow near Lord Iorwerth. Beware of double agents! Equip a charged crystal bow.", "Lord Iorwerth's camp", TENT_IN_LORD_IORWERTHS_ENCAMPMENT, new WorldPoint(2205, 3252, 0), DOUBLE_AGENT_141, BOW, any("Crystal Bow", item(CRYSTAL_BOW), item(CRYSTAL_BOW_24123))),
 		new EmoteClue("Bow in the Iorwerth Camp. Beware of double agents! Equip a charged crystal bow.", "Lord Iorwerth's camp", TENT_IN_LORD_IORWERTHS_ENCAMPMENT, new WorldPoint(2205, 3252, 0), DOUBLE_AGENT_141, BOW, any("Crystal Bow", item(CRYSTAL_BOW), item(CRYSTAL_BOW_24123))),
 		new EmoteClue("Bow outside the entrance to the Legends' Guild. Equip iron platelegs, an emerald amulet and an oak longbow.", "Legend's Guild", OUTSIDE_THE_LEGENDS_GUILD_GATES, new WorldPoint(2729, 3349, 0), BOW, item(IRON_PLATELEGS), item(OAK_LONGBOW), item(EMERALD_AMULET)),
@@ -139,8 +177,8 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Panic by the pilot on White Wolf Mountain. Beware of double agents! Equip mithril platelegs, a ring of life and a rune axe.", "White Wolf Mountain", GNOME_GLIDER_ON_WHITE_WOLF_MOUNTAIN, new WorldPoint(2847, 3499, 0), DOUBLE_AGENT_108, PANIC, item(MITHRIL_PLATELEGS), item(RING_OF_LIFE), item(RUNE_AXE)),
 		new EmoteClue("Panic by the big egg where no one dare goes and the ground is burnt. Beware of double agents! Equip a dragon med helm, a TokTz-Ket-Xil, a brine sabre, rune platebody and an uncharged amulet of glory.", "Lava dragon isle", SOUTHEAST_CORNER_OF_LAVA_DRAGON_ISLE, new WorldPoint(3227, 3831, 0), DOUBLE_AGENT_141, PANIC, item(DRAGON_MED_HELM), item(TOKTZKETXIL), item(BRINE_SABRE), item(RUNE_PLATEBODY), any("Uncharged Amulet of glory", item(AMULET_OF_GLORY))),
 		new EmoteClue("Panic at the area flowers meet snow. Equip Blue D'hide vambraces, a dragon spear and a rune plateskirt.", "Trollweiss mountain", HALFWAY_DOWN_TROLLWEISS_MOUNTAIN, new WorldPoint(2776, 3781, 0), PANIC, item(BLUE_DHIDE_VAMBRACES), item(DRAGON_SPEAR), item(RUNE_PLATESKIRT), item(SLED_4084)),
-		new EmoteClue("Do a push up at the bank of the Warrior's guild. Beware of double agents! Equip a dragon battleaxe, a dragon defender and a slayer helm of any kind.", "Warriors' guild", WARRIORS_GUILD_BANK_29047, new WorldPoint(2843, 3543, 0), DOUBLE_AGENT_141, PUSH_UP, item(DRAGON_BATTLEAXE), any("Dragon defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L)), any("Any slayer helmet", item(SLAYER_HELMET), item(BLACK_SLAYER_HELMET), item(GREEN_SLAYER_HELMET), item(PURPLE_SLAYER_HELMET), item(RED_SLAYER_HELMET), item(TURQUOISE_SLAYER_HELMET), item(SLAYER_HELMET_I), item(BLACK_SLAYER_HELMET_I), item(GREEN_SLAYER_HELMET_I), item(PURPLE_SLAYER_HELMET_I), item(RED_SLAYER_HELMET_I), item(TURQUOISE_SLAYER_HELMET_I), item(HYDRA_SLAYER_HELMET), item(HYDRA_SLAYER_HELMET_I), item(TWISTED_SLAYER_HELMET), item(TWISTED_SLAYER_HELMET_I))),
-		new EmoteClue("Blow a raspberry in the bank of the Warriors' Guild. Beware of double agents! Equip a dragon battleaxe, a slayer helm of any kind and a dragon defender or avernic defender.", "Warriors' guild", WARRIORS_GUILD_BANK_29047, new WorldPoint(2843, 3543, 0), DOUBLE_AGENT_141, RASPBERRY, item(DRAGON_BATTLEAXE), any("Dragon defender or Avernic defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L), item(AVERNIC_DEFENDER), item(AVERNIC_DEFENDER_L)), any("Any slayer helmet", item(SLAYER_HELMET), item(BLACK_SLAYER_HELMET), item(GREEN_SLAYER_HELMET), item(PURPLE_SLAYER_HELMET), item(RED_SLAYER_HELMET), item(TURQUOISE_SLAYER_HELMET), item(SLAYER_HELMET_I), item(BLACK_SLAYER_HELMET_I), item(GREEN_SLAYER_HELMET_I), item(PURPLE_SLAYER_HELMET_I), item(RED_SLAYER_HELMET_I), item(TURQUOISE_SLAYER_HELMET_I), item(HYDRA_SLAYER_HELMET), item(HYDRA_SLAYER_HELMET_I), item(TWISTED_SLAYER_HELMET), item(TWISTED_SLAYER_HELMET_I))),
+		new EmoteClue("Do a push up at the bank of the Warrior's guild. Beware of double agents! Equip a dragon battleaxe, a dragon defender and a slayer helm of any kind.", "Warriors' guild", WARRIORS_GUILD_BANK_29047, new WorldPoint(2843, 3543, 0), DOUBLE_AGENT_141, PUSH_UP, item(DRAGON_BATTLEAXE), any("Dragon defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L)), ANY_SLAYER_HELMET),
+		new EmoteClue("Blow a raspberry in the bank of the Warriors' Guild. Beware of double agents! Equip a dragon battleaxe, a slayer helm of any kind and a dragon defender or avernic defender.", "Warriors' guild", WARRIORS_GUILD_BANK_29047, new WorldPoint(2843, 3543, 0), DOUBLE_AGENT_141, RASPBERRY, item(DRAGON_BATTLEAXE), any("Dragon defender or Avernic defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L), item(AVERNIC_DEFENDER), item(AVERNIC_DEFENDER_L)), ANY_SLAYER_HELMET),
 		new EmoteClue("Blow a raspberry at the monkey cage in Ardougne Zoo. Equip a studded leather body, bronze platelegs and a normal staff with no orb.", "Ardougne Zoo", NEAR_THE_PARROTS_IN_ARDOUGNE_ZOO, new WorldPoint(2607, 3282, 0), RASPBERRY, item(STUDDED_BODY), item(BRONZE_PLATELEGS), item(STAFF)),
 		new EmoteClue("Blow raspberries outside the entrance to Keep Le Faye. Equip a coif, an iron platebody and leather gloves.", "Keep Le Faye", OUTSIDE_KEEP_LE_FAYE, new WorldPoint(2757, 3401, 0), RASPBERRY, item(COIF), item(IRON_PLATEBODY), item(LEATHER_GLOVES)),
 		new EmoteClue("Blow a raspberry in the Fishing Guild bank. Beware of double agents! Equip an elemental shield, blue dragonhide chaps and a rune warhammer.", "Fishing Guild", FISHING_GUILD_BANK, new WorldPoint(2588, 3419, 0), DOUBLE_AGENT_108, RASPBERRY, item(ELEMENTAL_SHIELD), item(BLUE_DHIDE_CHAPS), item(RUNE_WARHAMMER)),
@@ -150,15 +188,15 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Shrug in the mine near Rimmington. Equip a gold necklace, a gold ring and a bronze spear.", "Rimmington mine", RIMMINGTON_MINE, new WorldPoint(2976, 3238, 0), SHRUG, item(GOLD_NECKLACE), item(GOLD_RING), item(BRONZE_SPEAR)),
 		new EmoteClue("Shrug in Catherby bank. Yawn before you talk to me. Equip a maple longbow, green d'hide chaps and an iron med helm.", "Catherby", OUTSIDE_CATHERBY_BANK, new WorldPoint(2808, 3440, 0), SHRUG, YAWN, item(MAPLE_LONGBOW), item(GREEN_DHIDE_CHAPS), item(IRON_MED_HELM)),
 		new EmoteClue("Shrug in the Zamorak temple found in the Eastern Wilderness. Beware of double agents! Equip rune platelegs, an iron platebody and blue dragonhide vambraces.", "Chaos temple", CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS, new WorldPoint(3239, 3611, 0), DOUBLE_AGENT_65, SHRUG, item(RUNE_PLATELEGS), item(IRON_PLATEBODY), item(BLUE_DHIDE_VAMBRACES)),
-		new EmoteClue("Shrug in the Shayzien command tent. Equip a blue mystic robe bottom, a rune kiteshield and any bob shirt.", "Shayzien command tent", SHAYZIEN_WAR_TENT, new WorldPoint(1555, 3537, 0), SHRUG, item(MYSTIC_ROBE_BOTTOM), item(RUNE_KITESHIELD), range("Any bob shirt", BOBS_RED_SHIRT, BOBS_PURPLE_SHIRT)),
+		new EmoteClue("Shrug in the Shayzien war tent. Equip a blue mystic robe bottom, a rune kiteshield and any bob shirt.", "Shayzien war tent", SHAYZIEN_WAR_TENT, new WorldPoint(1487, 3635, 0), SHRUG, item(MYSTIC_ROBE_BOTTOM), item(RUNE_KITESHIELD), range("Any bob shirt", BOBS_RED_SHIRT, BOBS_PURPLE_SHIRT)),
 		new EmoteClue("Slap your head in the centre of the Kourend catacombs. Beware of double agents! Equip the arclight and the amulet of the damned.", "Kourend catacombs", CENTRE_OF_THE_CATACOMBS_OF_KOUREND, new WorldPoint(1663, 10045, 0), DOUBLE_AGENT_141, SLAP_HEAD, item(ARCLIGHT), any("Amulet of the damned", item(AMULET_OF_THE_DAMNED), item(AMULET_OF_THE_DAMNED_FULL))),
 		new EmoteClue("Spin at the crossroads north of Rimmington. Equip a green gnome hat, cream gnome top and leather chaps.", "Rimmington", ROAD_JUNCTION_NORTH_OF_RIMMINGTON, new WorldPoint(2981, 3276, 0), SPIN, item(GREEN_HAT), item(CREAM_ROBE_TOP), item(LEATHER_CHAPS)),
 		new EmoteClue("Spin in Draynor Manor by the fountain. Equip an iron platebody, studded leather chaps and a bronze full helmet.", "Draynor Manor", DRAYNOR_MANOR_BY_THE_FOUNTAIN, new WorldPoint(3088, 3336, 0), SPIN, item(IRON_PLATEBODY), item(STUDDED_CHAPS), item(BRONZE_FULL_HELM)),
-		new EmoteClue("Spin in front of the Soul altar. Beware of double agents! Equip a dragon pickaxe, helm of neitiznot and a pair of rune boots.", "Soul altar", SOUL_ALTAR, new WorldPoint(1815, 3856, 0), DOUBLE_AGENT_141, SPIN, any("Dragon or Crystal pickaxe", item(DRAGON_PICKAXE), item(DRAGON_PICKAXE_12797), item(INFERNAL_PICKAXE), item(INFERNAL_PICKAXE_UNCHARGED), item(DRAGON_PICKAXE_OR), item(CRYSTAL_PICKAXE), item(CRYSTAL_PICKAXE_INACTIVE)), item(HELM_OF_NEITIZNOT), item(RUNE_BOOTS)),
+		new EmoteClue("Spin in front of the Soul altar. Beware of double agents! Equip a dragon pickaxe, helm of neitiznot and a pair of rune boots.", "Soul altar", SOUL_ALTAR, new WorldPoint(1815, 3856, 0), DOUBLE_AGENT_141, SPIN, any("Dragon or Crystal pickaxe", item(DRAGON_PICKAXE), item(DRAGON_PICKAXE_12797), item(INFERNAL_PICKAXE), item(INFERNAL_PICKAXE_UNCHARGED), item(DRAGON_PICKAXE_OR), item(DRAGON_PICKAXE_OR_25376), item(CRYSTAL_PICKAXE), item(CRYSTAL_PICKAXE_INACTIVE), item(INFERNAL_PICKAXE_OR), item(INFERNAL_PICKAXE_UNCHARGED_25369)), item(HELM_OF_NEITIZNOT), item(RUNE_BOOTS)),
 		new EmoteClue("Spin in the Varrock Castle courtyard. Equip a black axe, a coif and a ruby ring.", "Varrock Castle", OUTSIDE_VARROCK_PALACE_COURTYARD, new WorldPoint(3213, 3463, 0), SPIN, item(BLACK_AXE), item(COIF), item(RUBY_RING)),
 		new EmoteClue("Spin in West Ardougne Church. Equip a dragon spear and red dragonhide chaps.", "West Ardougne Church", CHAPEL_IN_WEST_ARDOUGNE, new WorldPoint(2530, 3290, 0), SPIN, item(DRAGON_SPEAR), item(RED_DHIDE_CHAPS)),
 		new EmoteClue("Spin on the bridge by the Barbarian Village. Salute before you talk to me. Equip purple gloves, a steel kiteshield and a mithril full helmet.", "Barbarian Village", EAST_OF_THE_BARBARIAN_VILLAGE_BRIDGE, new WorldPoint(3105, 3420, 0), SPIN, SALUTE, item(PURPLE_GLOVES), item(STEEL_KITESHIELD), item(MITHRIL_FULL_HELM)),
-		new EmoteClue("Stamp in the Enchanted valley west of the waterfall. Beware of double agents! Equip a dragon axe.", "Enchanted Valley (BKQ)", NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY, new WorldPoint(3030, 4522, 0), DOUBLE_AGENT_141, STAMP, any("Dragon or Crystal axe", item(DRAGON_AXE), item(CRYSTAL_AXE), item(CRYSTAL_AXE_INACTIVE), item(INFERNAL_AXE), item(INFERNAL_AXE_UNCHARGED))),
+		new EmoteClue("Stamp in the Enchanted valley west of the waterfall. Beware of double agents! Equip a dragon axe.", "Enchanted Valley (BKQ)", NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY, new WorldPoint(3030, 4522, 0), DOUBLE_AGENT_141, STAMP, any("Dragon or Crystal axe", item(DRAGON_AXE), item(DRAGON_AXE_OR), item(CRYSTAL_AXE), item(CRYSTAL_AXE_INACTIVE), item(INFERNAL_AXE), item(INFERNAL_AXE_UNCHARGED), item(INFERNAL_AXE_OR), item(INFERNAL_AXE_UNCHARGED_25371))),
 		new EmoteClue("Think in middle of the wheat field by the Lumbridge mill. Equip a blue gnome robetop, a turquoise gnome robe bottom and an oak shortbow.", "Lumbridge mill", WHEAT_FIELD_NEAR_THE_LUMBRIDGE_WINDMILL, new WorldPoint(3159, 3298, 0), THINK, item(BLUE_ROBE_TOP), item(TURQUOISE_ROBE_BOTTOMS), item(OAK_SHORTBOW)),
 		new EmoteClue("Think in the centre of the Observatory. Spin before you talk to me. Equip a mithril chain body, green dragonhide chaps and a ruby amulet.", "Observatory", OBSERVATORY, new WorldPoint(2439, 3161, 0), THINK, SPIN, item(MITHRIL_CHAINBODY), item(GREEN_DHIDE_CHAPS), item(RUBY_AMULET)),
 		new EmoteClue("Wave along the south fence of the Lumber Yard. Equip a hard leather body, leather chaps and a bronze axe.", "Lumber Yard", NEAR_THE_SAWMILL_OPERATORS_BOOTH, new WorldPoint(3307, 3491, 0), WAVE, item(HARDLEATHER_BODY), item(LEATHER_CHAPS), item(BRONZE_AXE)),
@@ -171,14 +209,15 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Yawn in the Castle Wars lobby. Shrug before you talk to me. Equip a ruby amulet, a mithril scimitar and a Wilderness cape.", "Castle Wars", CASTLE_WARS_BANK, new WorldPoint(2440, 3092, 0), YAWN, SHRUG, item(RUBY_AMULET), item(MITHRIL_SCIMITAR), range("Any team cape", TEAM1_CAPE, TEAM50_CAPE)),
 		new EmoteClue("Yawn in the rogues' general store. Beware of double agents! Equip an adamant square shield, blue dragon vambraces and a rune pickaxe.", "Rogues general store", NOTERAZZOS_SHOP_IN_THE_WILDERNESS, new WorldPoint(3026, 3701, 0), DOUBLE_AGENT_65, YAWN, item(ADAMANT_SQ_SHIELD), item(BLUE_DHIDE_VAMBRACES), item(RUNE_PICKAXE)),
 		new EmoteClue("Yawn at the top of Trollheim. Equip a lava battlestaff, black dragonhide vambraces and a mind shield.", "Trollheim Mountain", ON_TOP_OF_TROLLHEIM_MOUNTAIN, new WorldPoint(2887, 3676, 0), YAWN, any("Lava battlestaff", item(LAVA_BATTLESTAFF), item(LAVA_BATTLESTAFF_21198)), item(BLACK_DHIDE_VAMBRACES), item(MIND_SHIELD)),
-		new EmoteClue("Yawn in the centre of Arceuus library. Nod your head before you talk to me. Equip blue dragonhide vambraces, adamant boots and an adamant dagger.", "Arceuus library", ENTRANCE_OF_THE_ARCEUUS_LIBRARY, new WorldPoint(1632, 3807, 0), YAWN, YES, item(BLUE_DHIDE_VAMBRACES), item(ADAMANT_BOOTS), item(ADAMANT_DAGGER)),
+		new EmoteClue("Yawn in the centre of the Arceuus Library. Nod your head before you talk to me. Equip blue dragonhide vambraces, adamant boots and an adamant dagger.", "Arceuus library", ENTRANCE_OF_THE_ARCEUUS_LIBRARY, new WorldPoint(1632, 3807, 0), YAWN, YES, item(BLUE_DHIDE_VAMBRACES), item(ADAMANT_BOOTS), item(ADAMANT_DAGGER)),
 		new EmoteClue("Swing a bullroarer at the top of the Watchtower. Beware of double agents! Equip a dragon plateskirt, climbing boots and a dragon chainbody.", "Yanille Watchtower", TOP_FLOOR_OF_THE_YANILLE_WATCHTOWER, new WorldPoint(2930, 4717, 2), DOUBLE_AGENT_141, BULL_ROARER, any("Dragon plateskirt", item(DRAGON_PLATESKIRT), item(DRAGON_PLATESKIRT_G)), item(CLIMBING_BOOTS), any("Dragon chainbody", item(DRAGON_CHAINBODY_3140), item(DRAGON_CHAINBODY_G)), item(ItemID.BULL_ROARER)),
 		new EmoteClue("Blow a raspberry at Gypsy Aris in her tent. Equip a gold ring and a gold necklace.", "Varrock", GYPSY_TENT_ENTRANCE, new WorldPoint(3203, 3424, 0), RASPBERRY, item(GOLD_RING), item(GOLD_NECKLACE)),
 		new EmoteClue("Bow to Brugsen Bursen at the Grand Exchange.", "Grand Exchange", null, new WorldPoint(3164, 3477, 0), BOW),
 		new EmoteClue("Cheer at Iffie Nitter. Equip a chef hat and a red cape.", "Varrock", FINE_CLOTHES_ENTRANCE, new WorldPoint(3205, 3416, 0), CHEER, item(CHEFS_HAT), item(RED_CAPE)),
 		new EmoteClue("Clap at Bob's Brilliant Axes. Equip a bronze axe and leather boots.", "Lumbridge", BOB_AXES_ENTRANCE, new WorldPoint(3231, 3203, 0), CLAP, item(BRONZE_AXE), item(LEATHER_BOOTS)),
 		new EmoteClue("Panic at Al Kharid mine.", "Al Kharid mine", null, new WorldPoint(3300, 3314, 0), PANIC),
-		new EmoteClue("Spin at Flynn's Mace Shop.", "Falador", null, new WorldPoint(2950, 3387, 0), SPIN));
+		new EmoteClue("Spin at Flynn's Mace Shop.", "Falador", null, new WorldPoint(2950, 3387, 0), SPIN),
+		new EmoteClue("Salute by the Charcoal Burners. Equip a Farmer's strawhat, Shayzien platebody (5) and Pyromancer robes.", "Charcoal Burners", CHARCOAL_BURNERS, new WorldPoint(1714, 3467, 0), SALUTE, any("Farmer's strawhat", item(FARMERS_STRAWHAT), item(FARMERS_STRAWHAT_13647)), item(SHAYZIEN_BODY_5), item(PYROMANCER_ROBE)));
 
 	private static final String UNICODE_CHECK_MARK = "\u2713";
 	private static final String UNICODE_BALLOT_X = "\u2717";
@@ -258,6 +297,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("STASH Unit:")
 					.right(stashUnitBuilt ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
+					.rightFont(FontManager.getDefaultFont())
 					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
 					.build());
 			}
@@ -292,6 +332,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 					.left(requirement.getCollectiveName(client))
 					.leftColor(TITLED_CONTENT_COLOR)
 					.right(combinedFulfilled ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
+					.rightFont(FontManager.getDefaultFont())
 					.rightColor(equipmentFulfilled ? Color.GREEN : (combinedFulfilled ? Color.ORANGE : Color.RED))
 					.build());
 			}
@@ -308,6 +349,11 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localPoint, plugin.getEmoteImage(), Color.ORANGE);
 		}
 
+		makeSTASHOverlay(graphics, plugin);
+	}
+
+	public void makeSTASHOverlay(Graphics2D graphics, ClueScrollPlugin plugin)
+	{
 		if (stashUnit != null)
 		{
 			final WorldPoint[] worldPoints = stashUnit.getWorldPoints();

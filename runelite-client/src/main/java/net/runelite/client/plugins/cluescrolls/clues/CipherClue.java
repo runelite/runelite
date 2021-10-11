@@ -52,23 +52,35 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 		new CipherClue("OVEXON", "Eluned", new WorldPoint(2289, 3144, 0), "Outside Lletya or in Prifddinas after Song of the Elves", "A question on elven crystal math. I have 5 and 3 crystals, large and small respectively. A large crystal is worth 10,000 coins and a small is worth but 1,000. How much are all my crystals worth?", "53,000"),
 		new CipherClue("VTYR APCNTGLW", "King Percival", new WorldPoint(2634, 4682, 1), "Fisher Realm, first floor. Fairy ring BJR", "How many cannons are on this here castle?", "5"),
 		new CipherClue("UZZU MUJHRKYYKJ", "Otto Godblessed", new WorldPoint(2501, 3487, 0), "Otto's Grotto", "How many pyre sites are found around this lake?", "3"),
-		new CipherClue("USBJCPSO", "Traiborn", new WorldPoint(3112, 3162, 0), "First floor of Wizards Tower", "How many air runes would I need to cast 630 wind waves?", "3150"),
+		new CipherClue("USBJCPSO", "Traiborn", new WorldPoint(3112, 3162, 0), "First floor of Wizards Tower. Fairy ring DIS", "How many air runes would I need to cast 630 wind waves?", "3150"),
 		new CipherClue("HCKTA IQFHCVJGT", "Fairy Godfather", new WorldPoint(2446, 4428, 0), "Zanaris throne room", "There are 3 inputs and 4 letters on each ring How many total individual fairy ring codes are possible?", "64"),
 		new CipherClue("ZSBKDO ZODO", "Pirate Pete", new WorldPoint(3680, 3537, 0), "Dock northeast of the Ectofunctus"),
 		new CipherClue("GBJSZ RVFFO", "Fairy Queen", new WorldPoint(2347, 4435, 0), "Fairy Resistance Hideout"),
 		new CipherClue("QSPGFTTPS HSBDLMFCPOF", "Professor Gracklebone", new WorldPoint(1625, 3802, 0), "Ground floor of Arceuus Library", "How many round tables can be found on this floor of the library?", "9"),
 		new CipherClue("IWPPLQTP", "Gunnjorn", new WorldPoint(2541, 3548, 0), "Barbarian Outpost Agility course"),
-		new CipherClue("BSOPME MZETQPS", "Arnold Lydspor", new WorldPoint(2329, 3689, 0), "Piscatoris Fishing Colony general store/bank")
+		new CipherClue("BSOPME MZETQPS", "Arnold Lydspor", new WorldPoint(2329, 3689, 0), "Piscatoris Fishing Colony general store/bank"),
+		new CipherClue("ESBZOPS QJH QFO", new WorldPoint(3077, 3260, 0), "Inside of Martin the Master Gardener's pig pen in Draynor Village.")
 	);
 
-	private String text;
-	private String npc;
-	private WorldPoint location;
-	private String area;
+	private final String text;
 	@Nullable
-	private String question;
+	private final String npc;
+	private final WorldPoint location;
+	private final String area;
 	@Nullable
-	private String answer;
+	private final String question;
+	@Nullable
+	private final String answer;
+
+	private CipherClue(String text, WorldPoint location, String area)
+	{
+		this.text = "The cipher reveals where to dig next: " + text;
+		this.npc = null;
+		this.location = location;
+		this.area = area;
+		this.question = null;
+		this.answer = null;
+	}
 
 	private CipherClue(String text, String npc, WorldPoint location, String area)
 	{
@@ -89,11 +101,16 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Cipher Clue").build());
-		panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getNpc())
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
+
+		final String clueNpc = getNpc();
+		if (clueNpc != null)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(clueNpc)
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
+		}
 
 		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
 		panelComponent.getChildren().add(LineComponent.builder()

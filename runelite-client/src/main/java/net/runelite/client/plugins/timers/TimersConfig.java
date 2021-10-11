@@ -29,9 +29,11 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import java.time.Instant;
 
-@ConfigGroup("timers")
+@ConfigGroup(TimersConfig.GROUP)
 public interface TimersConfig extends Config
 {
+	String GROUP = "timers";
+
 	@ConfigItem(
 		keyName = "showHomeMinigameTeleports",
 		name = "Teleport cooldown timers",
@@ -258,6 +260,36 @@ public interface TimersConfig extends Config
 		description = "Configures whether the special attack cooldown timer for the Dragonfire Shield is displayed"
 	)
 	default boolean showDFSSpecial()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showArceuus",
+		name = "Arceuus spells duration",
+		description = "Whether to show Arceuus spellbook spell timers"
+	)
+	default boolean showArceuus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showArceuusCooldown",
+		name = "Arceuus spells cooldown",
+		description = "Whether to show cooldown timers for Arceuus spellbook spells"
+	)
+	default boolean showArceuusCooldown()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showPickpocketStun",
+		name = "Pickpocket stun timer",
+		description = "Configures whether pickpocket stun timer is displayed"
+	)
+	default boolean showPickpocketStun()
 	{
 		return true;
 	}

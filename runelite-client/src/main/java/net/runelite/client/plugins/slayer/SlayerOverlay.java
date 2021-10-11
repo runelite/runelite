@@ -52,25 +52,40 @@ class SlayerOverlay extends WidgetItemOverlay
 	private final static Set<Integer> ALL_SLAYER_ITEMS = ImmutableSet.of(
 		ItemID.SLAYER_HELMET,
 		ItemID.SLAYER_HELMET_I,
+		ItemID.SLAYER_HELMET_I_25177,
 		ItemID.BLACK_SLAYER_HELMET,
 		ItemID.BLACK_SLAYER_HELMET_I,
+		ItemID.BLACK_SLAYER_HELMET_I_25179,
 		ItemID.GREEN_SLAYER_HELMET,
 		ItemID.GREEN_SLAYER_HELMET_I,
+		ItemID.GREEN_SLAYER_HELMET_I_25181,
 		ItemID.PURPLE_SLAYER_HELMET,
 		ItemID.PURPLE_SLAYER_HELMET_I,
+		ItemID.PURPLE_SLAYER_HELMET_I_25185,
 		ItemID.RED_SLAYER_HELMET,
 		ItemID.RED_SLAYER_HELMET_I,
+		ItemID.RED_SLAYER_HELMET_I_25183,
 		ItemID.TURQUOISE_SLAYER_HELMET,
 		ItemID.TURQUOISE_SLAYER_HELMET_I,
+		ItemID.TURQUOISE_SLAYER_HELMET_I_25187,
 		ItemID.TWISTED_SLAYER_HELMET,
 		ItemID.TWISTED_SLAYER_HELMET_I,
+		ItemID.TWISTED_SLAYER_HELMET_I_25191,
 		ItemID.HYDRA_SLAYER_HELMET,
 		ItemID.HYDRA_SLAYER_HELMET_I,
+		ItemID.HYDRA_SLAYER_HELMET_I_25189,
+		ItemID.TZTOK_SLAYER_HELMET,
+		ItemID.TZTOK_SLAYER_HELMET_I,
+		ItemID.TZTOK_SLAYER_HELMET_I_25902,
+		ItemID.VAMPYRIC_SLAYER_HELMET,
+		ItemID.VAMPYRIC_SLAYER_HELMET_I,
+		ItemID.VAMPYRIC_SLAYER_HELMET_I_25908,
+		ItemID.TZKAL_SLAYER_HELMET,
+		ItemID.TZKAL_SLAYER_HELMET_I,
+		ItemID.TZKAL_SLAYER_HELMET_I_25914,
 		ItemID.SLAYER_RING_ETERNAL,
 		ItemID.ENCHANTED_GEM,
 		ItemID.ETERNAL_GEM,
-		ItemID.BRACELET_OF_SLAUGHTER,
-		ItemID.EXPEDITIOUS_BRACELET,
 		ItemID.SLAYER_RING_1,
 		ItemID.SLAYER_RING_2,
 		ItemID.SLAYER_RING_3,
@@ -94,7 +109,7 @@ class SlayerOverlay extends WidgetItemOverlay
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		if (!ALL_SLAYER_ITEMS.contains(itemId))
 		{
@@ -112,26 +127,11 @@ class SlayerOverlay extends WidgetItemOverlay
 			return;
 		}
 
-		int slaughterCount = plugin.getSlaughterChargeCount();
-		int expeditiousCount = plugin.getExpeditiousChargeCount();
-
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		final Rectangle bounds = itemWidget.getCanvasBounds();
+		final Rectangle bounds = widgetItem.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
-
-		switch (itemId)
-		{
-			case ItemID.EXPEDITIOUS_BRACELET:
-				textComponent.setText(String.valueOf(expeditiousCount));
-				break;
-			case ItemID.BRACELET_OF_SLAUGHTER:
-				textComponent.setText(String.valueOf(slaughterCount));
-				break;
-			default:
-				textComponent.setText(String.valueOf(amount));
-				break;
-		}
+		textComponent.setText(String.valueOf(amount));
 
 		// Draw the counter in the bottom left for equipment, and top left for jewelry
 		textComponent.setPosition(new Point(bounds.x - 1, bounds.y - 1 + (SLAYER_JEWELRY.contains(itemId)

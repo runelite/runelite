@@ -32,10 +32,15 @@ import java.util.function.Consumer;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
+import net.runelite.api.ScriptID;
+import net.runelite.api.VarClientStr;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
@@ -46,6 +51,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ImageCapture;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +62,8 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -66,10 +74,14 @@ public class ScreenshotPluginTest
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
 	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
 	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
-	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
+	private static final String THREATRE_OF_BLOOD_SM_CHEST = "Your completed Theatre of Blood: Story Mode count is: <col=ff0000>73</col>.";
+	private static final String THREATRE_OF_BLOOD_HM_CHEST = "Your completed Theatre of Blood: Hard Mode count is: <col=ff0000>73</col>.";
+	private static final String NOT_SO_VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
+	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: Rune scimitar (25,600 coins)</col>";
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
 	private static final String BA_HIGH_GAMBLE_REWARD = "Raw shark (x 300)!<br>High level gamble count: <col=7f0000>100</col>";
 	private static final String HUNTER_LEVEL_2_TEXT = "<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.";
+	private static final String COLLECTION_LOG_CHAT = "New item added to your collection log: <col=ef1020>Chompy bird hat</col>";
 
 	@Mock
 	@Bind
@@ -110,13 +122,19 @@ public class ScreenshotPluginTest
 	@Bind
 	private InfoBoxManager infoBoxManager;
 
+	@Mock
+	@Bind
+	private ImageCapture imageCapture;
+
 	@Before
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(screenshotConfig.screenshotLevels()).thenReturn(true);
 		when(screenshotConfig.screenshotValuableDrop()).thenReturn(true);
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(1000);
 		when(screenshotConfig.screenshotUntradeableDrop()).thenReturn(true);
+		when(screenshotConfig.screenshotCollectionLogEntries()).thenReturn(true);
 	}
 
 	@Test
@@ -135,7 +153,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Seth", BARROWS_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(310, screenshotPlugin.getBarrowsNumber());
+		assertEquals(310, screenshotPlugin.getKillCountNumber());
 	}
 
 	@Test
@@ -144,22 +162,87 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Seth", CHAMBERS_OF_XERIC_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(489, screenshotPlugin.getChambersOfXericNumber());
+		assertEquals(489, screenshotPlugin.getKillCountNumber());
 	}
 
 	@Test
 	public void testTheatreOfBloodChest()
 	{
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
+
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Magic fTail", THEATRE_OF_BLOOD_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
+		assertEquals(73, screenshotPlugin.getKillCountNumber());
+		assertEquals(ScreenshotPlugin.KillType.TOB, screenshotPlugin.getKillType());
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testTheatreOfBloodSmChest()
+	{
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Magic fTail", THREATRE_OF_BLOOD_SM_CHEST, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(73, screenshotPlugin.getKillCountNumber());
+		assertEquals(ScreenshotPlugin.KillType.TOB_SM, screenshotPlugin.getKillType());
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testTheatreOfBloodHmChest()
+	{
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Magic fTail", THREATRE_OF_BLOOD_HM_CHEST, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals(73, screenshotPlugin.getKillCountNumber());
+		assertEquals(ScreenshotPlugin.KillType.TOB_HM, screenshotPlugin.getKillType());
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
+		screenshotPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testNotSoValuableDrop()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", NOT_SO_VALUABLE_DROP, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verifyNoInteractions(drawManager);
+
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
 	}
 
 	@Test
 	public void testValuableDrop()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", VALUABLE_DROP, null, 0);
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(100_000);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verifyNoInteractions(drawManager);
+
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(1000);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(drawManager).requestNextFrameListener(any(Consumer.class));
@@ -309,5 +392,36 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onGameTick(new GameTick());
 
 		verify(drawManager, times(0)).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testCollectionLogPopup()
+	{
+		ScriptPreFired notificationStart = new ScriptPreFired(ScriptID.NOTIFICATION_START);
+		screenshotPlugin.onScriptPreFired(notificationStart);
+
+		when(client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Collection log");
+		when(client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("New item:<br><br><col=ffffff>Chompy bird hat</col>");
+
+		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
+		screenshotPlugin.onScriptPreFired(notificationDelay);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testCollectionLogChat()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", COLLECTION_LOG_CHAT, null, 0);
+
+		when(client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(1);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+
+		when(client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(3);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verifyNoMoreInteractions(drawManager);
 	}
 }

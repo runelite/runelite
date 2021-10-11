@@ -29,7 +29,16 @@ import java.util.function.BiConsumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.FriendsChatManager;
+import net.runelite.api.FriendsChatMember;
+import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Player;
+import net.runelite.api.clan.ClanChannel;
+import net.runelite.api.clan.ClanChannelMember;
+import net.runelite.api.clan.ClanRank;
+import net.runelite.api.clan.ClanSettings;
+import net.runelite.api.clan.ClanTitle;
+import net.runelite.client.util.Text;
 
 @Singleton
 public class PlayerIndicatorsService
@@ -46,8 +55,9 @@ public class PlayerIndicatorsService
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
-		if (!config.highlightOwnPlayer() && !config.drawFriendsChatMemberNames()
-			&& !config.highlightFriends() && !config.highlightOthers())
+		if (!config.highlightOwnPlayer() && !config.highlightFriendsChat()
+			&& !config.highlightFriends() && !config.highlightOthers()
+			&& !config.highlightClanMembers())
 		{
 			return;
 		}
@@ -62,6 +72,7 @@ public class PlayerIndicatorsService
 			}
 
 			boolean isFriendsChatMember = player.isFriendsChatMember();
+			boolean isClanMember = player.isClanMember();
 
 			if (player == localPlayer)
 			{
@@ -74,7 +85,7 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.getFriendColor());
 			}
-			else if (config.drawFriendsChatMemberNames() && isFriendsChatMember)
+			else if (config.highlightFriendsChat() && isFriendsChatMember)
 			{
 				consumer.accept(player, config.getFriendsChatMemberColor());
 			}
@@ -82,10 +93,45 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.getTeamMemberColor());
 			}
-			else if (config.highlightOthers() && !isFriendsChatMember)
+			else if (config.highlightClanMembers() && isClanMember)
+			{
+				consumer.accept(player, config.getClanMemberColor());
+			}
+			else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember)
 			{
 				consumer.accept(player, config.getOthersColor());
 			}
 		}
+	}
+
+	ClanTitle getClanTitle(Player player)
+	{
+		ClanChannel clanChannel = client.getClanChannel();
+		ClanSettings clanSettings = client.getClanSettings();
+		if (clanChannel == null || clanSettings == null)
+		{
+			return null;
+		}
+
+		ClanChannelMember member = clanChannel.findMember(player.getName());
+		if (member == null)
+		{
+			return null;
+		}
+
+		ClanRank rank = member.getRank();
+		return clanSettings.titleForRank(rank);
+	}
+
+	FriendsChatRank getFriendsChatRank(Player player)
+	{
+		final FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+		if (friendsChatManager == null)
+		{
+			return FriendsChatRank.UNRANKED;
+		}
+
+		FriendsChatMember friendsChatMember = friendsChatManager.findByName(Text.removeTags(player.getName()));
+		return friendsChatMember != null ? friendsChatMember.getRank() : FriendsChatRank.UNRANKED;
 	}
 }

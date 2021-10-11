@@ -220,7 +220,7 @@ public class FlatStorage implements Storage
 				br.printf("revision=%d\n", idx.getRevision());
 				br.printf("compression=%d\n", idx.getCompression());
 				br.printf("crc=%d\n", idx.getCrc());
-				br.printf("named=%b\n", idx.getCompression());
+				br.printf("named=%b\n", idx.isNamed());
 
 				idx.getArchives().sort(Comparator.comparing(Archive::getArchiveId));
 				for (Archive archive : idx.getArchives())

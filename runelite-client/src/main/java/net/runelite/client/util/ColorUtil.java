@@ -101,11 +101,14 @@ public class ColorUtil
 		final double g2 = b.getGreen();
 		final double b1 = a.getBlue();
 		final double b2 = b.getBlue();
+		final double a1 = a.getAlpha();
+		final double a2 = b.getAlpha();
 
 		return new Color(
 			(int) Math.round(r1 + (t * (r2 - r1))),
 			(int) Math.round(g1 + (t * (g2 - g1))),
-			(int) Math.round(b1 + (t * (b2 - b1)))
+			(int) Math.round(b1 + (t * (b2 - b1))),
+			(int) Math.round(a1 + (t * (a2 - a1)))
 		);
 	}
 
@@ -129,6 +132,24 @@ public class ColorUtil
 	public static String colorToAlphaHexCode(final Color color)
 	{
 		return String.format("%08x", color.getRGB());
+	}
+
+	/**
+	 * Gets the same RGB color with the specified alpha value.
+	 *
+	 * @param color The RGB color to use.
+	 * @param alpha The alpha value to use (0-255).
+	 * @return      A Color with the given RGB and alpha.
+	 */
+	public static Color colorWithAlpha(final Color color, int alpha)
+	{
+		if (color.getAlpha() == alpha)
+		{
+			return color;
+		}
+
+		alpha = constrainValue(alpha);
+		return new Color((color.getRGB() & 0x00ffffff) | (alpha << 24), true);
 	}
 
 	/**

@@ -28,28 +28,19 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
-import net.runelite.api.MenuAction;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.game.ItemManager;
-import net.runelite.http.api.examine.ExamineClient;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -59,10 +50,6 @@ public class ExaminePluginTest
 {
 	@Inject
 	ExaminePlugin examinePlugin;
-
-	@Mock
-	@Bind
-	ExamineClient examineClient;
 
 	@Mock
 	@Bind
@@ -80,43 +67,6 @@ public class ExaminePluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-	}
-
-	@Test
-	public void testItem()
-	{
-		when(client.getWidget(anyInt(), anyInt())).thenReturn(mock(Widget.class));
-		when(itemManager.getItemComposition(anyInt())).thenReturn(mock(ItemComposition.class));
-
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setMenuOption("Examine");
-		menuOptionClicked.setMenuAction(MenuAction.EXAMINE_ITEM);
-		menuOptionClicked.setId(ItemID.ABYSSAL_WHIP);
-		examinePlugin.onMenuOptionClicked(menuOptionClicked);
-
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.ITEM_EXAMINE, "", "A weapon from the abyss.", "", 0);
-		examinePlugin.onChatMessage(chatMessage);
-
-		// This passes due to not mocking the ItemComposition for the whip
-		verify(examineClient).submitItem(anyInt(), anyString());
-	}
-
-	@Test
-	public void testLargeStacks()
-	{
-		when(client.getWidget(anyInt(), anyInt())).thenReturn(mock(Widget.class));
-		when(itemManager.getItemComposition(anyInt())).thenReturn(mock(ItemComposition.class));
-
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setMenuOption("Examine");
-		menuOptionClicked.setMenuAction(MenuAction.EXAMINE_ITEM);
-		menuOptionClicked.setId(ItemID.ABYSSAL_WHIP);
-		examinePlugin.onMenuOptionClicked(menuOptionClicked);
-
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.ITEM_EXAMINE, "", "100000 x Abyssal whip", "", 0);
-		examinePlugin.onChatMessage(chatMessage);
-
-		verify(examineClient, never()).submitItem(anyInt(), anyString());
 	}
 
 	@Test

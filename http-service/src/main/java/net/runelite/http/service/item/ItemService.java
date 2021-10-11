@@ -30,12 +30,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.http.api.RuneLiteAPI;
@@ -111,60 +108,6 @@ public class ItemService
 		}
 	}
 
-	private PriceEntry getPrice(Connection con, int itemId, Instant time)
-	{
-		if (time != null)
-		{
-			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item and time <= :time order by time desc limit 1")
-				.addParameter("item", itemId)
-				.addParameter("time", time.toString())
-				.executeAndFetchFirst(PriceEntry.class);
-		}
-		else
-		{
-			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item order by time desc limit 1")
-				.addParameter("item", itemId)
-				.executeAndFetchFirst(PriceEntry.class);
-		}
-	}
-
-	public PriceEntry getPrice(int itemId, Instant time)
-	{
-		try (Connection con = sql2o.open())
-		{
-			return getPrice(con, itemId, time);
-		}
-	}
-
-	public List<PriceEntry> getPrices(int... itemIds)
-	{
-		try (Connection con = sql2o.open())
-		{
-			Set<Integer> seen = new HashSet<>();
-			List<PriceEntry> priceEntries = new ArrayList<>(itemIds.length);
-
-			for (int itemId : itemIds)
-			{
-				if (seen.contains(itemId))
-				{
-					continue;
-				}
-				seen.add(itemId);
-
-				PriceEntry priceEntry = getPrice(con, itemId, null);
-
-				if (priceEntry == null)
-				{
-					continue;
-				}
-
-				priceEntries.add(priceEntry);
-			}
-
-			return priceEntries;
-		}
-	}
-
 	public ItemEntry fetchItem(int itemId)
 	{
 		try
@@ -197,7 +140,7 @@ public class ItemService
 		}
 	}
 
-	private List<PriceEntry> fetchPrice(int itemId)
+	private void fetchPrice(int itemId)
 	{
 		RSPrices rsprice;
 		try
@@ -207,12 +150,11 @@ public class ItemService
 		catch (IOException ex)
 		{
 			log.warn("unable to fetch price for item {}", itemId, ex);
-			return null;
+			return;
 		}
 
 		try (Connection con = sql2o.beginTransaction())
 		{
-			List<PriceEntry> entries = new ArrayList<>();
 			Instant now = Instant.now();
 
 			Query query = con.createQuery("insert into prices (item, price, time, fetched_time) values (:item, :price, :time, :fetched_time) "
@@ -225,13 +167,6 @@ public class ItemService
 
 				Instant time = Instant.ofEpochMilli(ts);
 
-				PriceEntry priceEntry = new PriceEntry();
-				priceEntry.setItem(itemId);
-				priceEntry.setPrice(price);
-				priceEntry.setTime(time);
-				priceEntry.setFetched_time(now);
-				entries.add(priceEntry);
-
 				query
 					.addParameter("item", itemId)
 					.addParameter("price", price)
@@ -242,8 +177,6 @@ public class ItemService
 
 			query.executeBatch();
 			con.commit(false);
-
-			return entries;
 		}
 	}
 
@@ -251,9 +184,11 @@ public class ItemService
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
-			Query query = con.createQuery("select t2.item, t3.name, t2.time, prices.price, prices.fetched_time from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2 " +
-				" join prices on t2.item=prices.item and t2.time=prices.time" +
-				" join items t3 on t2.item=t3.id");
+			Query query = con.createQuery("select t2.item, t3.name, t2.time, prices.price, prices.fetched_time, t4.high, t4.low" +
+				"  from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2" +
+				"  join prices on t2.item=prices.item and t2.time=prices.time" +
+				"  join items t3 on t2.item=t3.id" +
+				"  join wiki_prices t4 on t2.item=t4.item_id");
 			return query.executeAndFetch(PriceEntry.class);
 		}
 	}
@@ -324,7 +259,7 @@ public class ItemService
 		fetchPrice(id);
 	}
 
-	@Scheduled(fixedDelay = 1_8000_000) // 30 minutes
+	@Scheduled(fixedDelay = 1_800_000) // 30 minutes
 	public void reloadItems() throws IOException
 	{
 		List<ItemDefinition> items = cacheService.getItems();

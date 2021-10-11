@@ -107,7 +107,7 @@ class ScreenMarkerPanel extends JPanel
 
 	static
 	{
-		final BufferedImage borderImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "border_color_icon.png");
+		final BufferedImage borderImg = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "border_color_icon.png");
 		final BufferedImage borderImgHover = ImageUtil.luminanceOffset(borderImg, -150);
 		BORDER_COLOR_ICON = new ImageIcon(borderImg);
 		BORDER_COLOR_HOVER_ICON = new ImageIcon(borderImgHover);
@@ -115,7 +115,7 @@ class ScreenMarkerPanel extends JPanel
 		NO_BORDER_COLOR_ICON = new ImageIcon(borderImgHover);
 		NO_BORDER_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(borderImgHover, -100));
 
-		final BufferedImage fillImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "fill_color_icon.png");
+		final BufferedImage fillImg = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "fill_color_icon.png");
 		final BufferedImage fillImgHover = ImageUtil.luminanceOffset(fillImg, -150);
 		FILL_COLOR_ICON = new ImageIcon(fillImg);
 		FILL_COLOR_HOVER_ICON = new ImageIcon(fillImgHover);
@@ -123,7 +123,7 @@ class ScreenMarkerPanel extends JPanel
 		NO_FILL_COLOR_ICON = new ImageIcon(fillImgHover);
 		NO_FILL_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(fillImgHover, -100));
 
-		final BufferedImage opacityImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "opacity_icon.png");
+		final BufferedImage opacityImg = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "opacity_icon.png");
 		final BufferedImage opacityImgHover = ImageUtil.luminanceOffset(opacityImg, -150);
 		FULL_OPACITY_ICON = new ImageIcon(opacityImg);
 		FULL_OPACITY_HOVER_ICON = new ImageIcon(opacityImgHover);
@@ -131,15 +131,15 @@ class ScreenMarkerPanel extends JPanel
 		NO_OPACITY_ICON = new ImageIcon(opacityImgHover);
 		NO_OPACITY_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(opacityImgHover, -100));
 
-		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "visible_icon.png");
+		final BufferedImage visibleImg = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "visible_icon.png");
 		VISIBLE_ICON = new ImageIcon(visibleImg);
 		VISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(visibleImg, -100));
 
-		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "invisible_icon.png");
+		final BufferedImage invisibleImg = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "invisible_icon.png");
 		INVISIBLE_ICON = new ImageIcon(invisibleImg);
 		INVISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -100));
 
-		final BufferedImage deleteImg = ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "delete_icon.png");
+		final BufferedImage deleteImg = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "delete_icon.png");
 		DELETE_ICON = new ImageIcon(deleteImg);
 		DELETE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(deleteImg, -100));
 	}

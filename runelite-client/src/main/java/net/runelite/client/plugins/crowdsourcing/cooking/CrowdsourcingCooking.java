@@ -75,10 +75,19 @@ public class CrowdsourcingCooking
 		// Message prefixes taken from CookingPlugin
 		if (message.startsWith("You successfully cook")
 			|| message.startsWith("You successfully bake")
+			|| message.startsWith("You successfully fry")
 			|| message.startsWith("You manage to cook")
 			|| message.startsWith("You roast a")
+			|| message.startsWith("You spit-roast")
 			|| message.startsWith("You cook")
+			|| message.equals("You burn the mushroom in the fire.")
+			|| message.startsWith("Eventually the Jubbly")
+			|| message.startsWith("Unfortunately the Jubbly")
 			|| message.startsWith("You accidentally burn")
+			|| message.startsWith("You half-cook")
+			|| message.startsWith("The undead meat is now cooked")
+			|| message.startsWith("The undead chicken is now cooked")
+			|| message.startsWith("You successfully scramble")
 			|| message.startsWith("You accidentally spoil"))
 		{
 			boolean inHosidiusKitchen = false;

@@ -27,17 +27,22 @@ package net.runelite.http.service.util.redis;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 @Component
+@Slf4j
 public class RedisPool
 {
+	private final String redisHost;
 	private final BlockingQueue<Jedis> queue;
 
 	RedisPool(@Value("${redis.pool.size:10}") int queueSize, @Value("${redis.host:localhost}") String redisHost)
 	{
+		this.redisHost = redisHost;
+
 		queue = new ArrayBlockingQueue<>(queueSize);
 		for (int i = 0; i < queueSize; ++i)
 		{
@@ -74,7 +79,24 @@ public class RedisPool
 		@Override
 		public void close()
 		{
-			queue.offer(this);
+			if (!getClient().isBroken())
+			{
+				queue.offer(this);
+				return;
+			}
+
+			log.warn("jedis client is broken, creating new client");
+
+			try
+			{
+				super.close();
+			}
+			catch (Exception e)
+			{
+				log.warn("unable to close broken jedis", e);
+			}
+
+			queue.offer(new PooledJedis(redisHost));
 		}
 	}
 }

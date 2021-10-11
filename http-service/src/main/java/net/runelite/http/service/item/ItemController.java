@@ -24,31 +24,25 @@
  */
 package net.runelite.http.service.item;
 
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import net.runelite.http.api.item.ItemPrice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/item")
 public class ItemController
 {
-	private static final int MAX_BATCH_LOOKUP = 1024;
-
 	private static class MemoizedPrices
 	{
 		final ItemPrice[] prices;
@@ -69,13 +63,18 @@ public class ItemController
 	}
 
 	private final ItemService itemService;
+	private final int priceCache;
 
 	private final Supplier<MemoizedPrices> memoizedPrices;
 
 	@Autowired
-	public ItemController(ItemService itemService)
+	public ItemController(
+		ItemService itemService,
+		@Value("${runelite.price.cache}") int priceCache
+	)
 	{
 		this.itemService = itemService;
+		this.priceCache = priceCache;
 
 		memoizedPrices = Suppliers.memoizeWithExpiration(() -> new MemoizedPrices(itemService.fetchPrices().stream()
 			.map(priceEntry ->
@@ -84,77 +83,22 @@ public class ItemController
 				itemPrice.setId(priceEntry.getItem());
 				itemPrice.setName(priceEntry.getName());
 				itemPrice.setPrice(priceEntry.getPrice());
-				itemPrice.setTime(priceEntry.getTime());
+				itemPrice.setWikiPrice(computeWikiPrice(priceEntry));
 				return itemPrice;
 			})
-			.toArray(ItemPrice[]::new)), 30, TimeUnit.MINUTES);
+			.toArray(ItemPrice[]::new)), priceCache, TimeUnit.MINUTES);
 	}
 
-	@GetMapping("/{itemId}/price")
-	public ResponseEntity<ItemPrice> itemPrice(
-		@PathVariable int itemId,
-		@RequestParam(required = false) Instant time
-	)
+	private static int computeWikiPrice(PriceEntry priceEntry)
 	{
-		Instant now = Instant.now();
-
-		if (time != null && time.isAfter(now))
+		if (priceEntry.getLow() > 0 && priceEntry.getHigh() > 0)
 		{
-			time = now;
+			return (priceEntry.getLow() + priceEntry.getHigh()) / 2;
 		}
-
-		PriceEntry priceEntry = itemService.getPrice(itemId, time);
-
-		if (time != null)
+		else
 		{
-			if (priceEntry == null)
-			{
-				// we maybe can't backfill this
-				return ResponseEntity.notFound()
-					.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-					.build();
-			}
+			return Math.max(priceEntry.getLow(), priceEntry.getHigh());
 		}
-		else if (priceEntry == null)
-		{
-			// Price is unknown
-			return ResponseEntity.notFound()
-				.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-				.build();
-		}
-
-		ItemPrice itemPrice = new ItemPrice();
-		itemPrice.setId(itemId);
-		itemPrice.setName(priceEntry.getName());
-		itemPrice.setPrice(priceEntry.getPrice());
-		itemPrice.setTime(priceEntry.getTime());
-
-		return ResponseEntity.ok()
-			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-			.body(itemPrice);
-	}
-
-	@GetMapping("/price")
-	public ItemPrice[] prices(@RequestParam("id") int[] itemIds)
-	{
-		if (itemIds.length > MAX_BATCH_LOOKUP)
-		{
-			itemIds = Arrays.copyOf(itemIds, MAX_BATCH_LOOKUP);
-		}
-
-		List<PriceEntry> prices = itemService.getPrices(itemIds);
-
-		return prices.stream()
-			.map(priceEntry ->
-			{
-				ItemPrice itemPrice = new ItemPrice();
-				itemPrice.setId(priceEntry.getItem());
-				itemPrice.setName(priceEntry.getName());
-				itemPrice.setPrice(priceEntry.getPrice());
-				itemPrice.setTime(priceEntry.getTime());
-				return itemPrice;
-			})
-			.toArray(ItemPrice[]::new);
 	}
 
 	@GetMapping("/prices")
@@ -163,7 +107,7 @@ public class ItemController
 		MemoizedPrices memorizedPrices = this.memoizedPrices.get();
 		return ResponseEntity.ok()
 			.eTag(memorizedPrices.hash)
-			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+			.cacheControl(CacheControl.maxAge(priceCache, TimeUnit.MINUTES).cachePublic())
 			.body(memorizedPrices.prices);
 	}
 }

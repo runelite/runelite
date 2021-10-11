@@ -59,7 +59,7 @@ class KourendLibraryPanel extends PluginPanel
 
 	static
 	{
-		final BufferedImage resetIcon = ImageUtil.getResourceStreamFromClass(KourendLibraryPanel.class, "/util/reset.png");
+		final BufferedImage resetIcon = ImageUtil.loadImageResource(KourendLibraryPanel.class, "/util/reset.png");
 		RESET_ICON = new ImageIcon(resetIcon);
 		RESET_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(resetIcon, -100));
 	}

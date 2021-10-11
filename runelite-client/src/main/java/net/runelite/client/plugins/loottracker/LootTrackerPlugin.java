@@ -41,6 +41,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -66,12 +67,14 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -127,6 +130,7 @@ public class LootTrackerPlugin extends Plugin
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails?\\.");
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
+	private static final int THEATRE_OF_BLOOD_LOBBY = 14642;
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -144,8 +148,10 @@ public class LootTrackerPlugin extends Plugin
 
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
+	private static final Pattern ROGUES_CHEST_PATTERN = Pattern.compile("You find (a|some)([a-z\\s]*) inside.");
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
-	private static final String STONE_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
+	// Used by Stone Chest, Isle of Souls chest, Dark Chest
+	private static final String OTHER_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
 	private static final String DORGESH_KAAN_CHEST_LOOTED_MESSAGE = "You find treasure inside!";
 	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You have opened the Grubby Chest";
 	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
@@ -161,6 +167,9 @@ public class LootTrackerPlugin extends Plugin
 		put(10835, "Dorgesh-Kaan Chest").
 		put(10834, "Dorgesh-Kaan Chest").
 		put(7323, "Grubby Chest").
+		put(8593, "Isle of Souls Chest").
+		put(7827, "Dark Chest").
+		put(13117, "Rogues' Chest").
 		build();
 
 	// Shade chest loot handling
@@ -186,6 +195,11 @@ public class LootTrackerPlugin extends Plugin
 		put(ObjectID.SILVER_CHEST_4128, "Silver key crimson").
 		put(ObjectID.SILVER_CHEST_4129, "Silver key black").
 		put(ObjectID.SILVER_CHEST_4130, "Silver key purple").
+		put(ObjectID.GOLD_CHEST, "Gold key red").
+		put(ObjectID.GOLD_CHEST_41213, "Gold key brown").
+		put(ObjectID.GOLD_CHEST_41214, "Gold key crimson").
+		put(ObjectID.GOLD_CHEST_41215, "Gold key black").
+		put(ObjectID.GOLD_CHEST_41216, "Gold key purple").
 		build();
 
 	// Hallow Sepulchre Coffin handling
@@ -194,7 +208,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
 
 	// Last man standing map regions
-	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13914, 13915, 13916);
+	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13660, 13914, 13915, 13916, 13918, 13919, 13920, 14174, 14175, 14176, 14430, 14431, 14432);
 
 	private static final Pattern PICKPOCKET_REGEX = Pattern.compile("You pick (the )?(?<target>.+)'s? pocket.*");
 
@@ -226,6 +240,18 @@ public class LootTrackerPlugin extends Plugin
 	);
 
 	private static final String CASKET_EVENT = "Casket";
+
+	private static final String WINTERTODT_SUPPLY_CRATE_EVENT = "Supply crate (Wintertodt)";
+
+	// Soul Wars
+	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
+	private static final Set<Integer> SOUL_WARS_REGIONS = ImmutableSet.of(8493, 8749, 9005);
+
+	// Tempoross
+	private static final String TEMPOROSS_EVENT = "Reward pool (Tempoross)";
+	private static final String TEMPOROSS_CASKET_EVENT = "Casket (Tempoross)";
+	private static final String TEMPOROSS_LOOT_STRING = "You found some loot: ";
+	private static final int TEMPOROSS_REGION = 12588;
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
@@ -363,7 +389,7 @@ public class LootTrackerPlugin extends Plugin
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Loot Tracker")
@@ -454,7 +480,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now());
+			LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId());
 			synchronized (queuedLoots)
 			{
 				queuedLoots.add(lootRecord);
@@ -462,6 +488,12 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		eventBus.post(new LootReceived(name, combatLevel, type, items));
+	}
+
+	private Integer getLootWorldId()
+	{
+		// For the wiki to determine drop rates based on dmm brackets
+		return client.getWorldType().contains(WorldType.SEASONAL) ? client.getWorld() : null;
 	}
 
 	@Subscribe
@@ -487,8 +519,8 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
-		// Ignore Last Man Standing player loots
-		if (isPlayerWithinMapRegion(LAST_MAN_STANDING_REGIONS))
+		// Ignore Last Man Standing and Soul Wars player loots
+		if (isPlayerWithinMapRegion(LAST_MAN_STANDING_REGIONS) || isPlayerWithinMapRegion(SOUL_WARS_REGIONS))
 		{
 			return;
 		}
@@ -532,7 +564,7 @@ public class LootTrackerPlugin extends Plugin
 					return;
 				}
 				int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-				if (region != THEATRE_OF_BLOOD_REGION)
+				if (region != THEATRE_OF_BLOOD_REGION && region != THEATRE_OF_BLOOD_LOBBY)
 				{
 					return;
 				}
@@ -621,9 +653,9 @@ public class LootTrackerPlugin extends Plugin
 
 		final String message = event.getMessage();
 
-		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(STONE_CHEST_LOOTED_MESSAGE)
+		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(OTHER_CHEST_LOOTED_MESSAGE)
 			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.startsWith(GRUBBY_CHEST_LOOTED_MESSAGE)
-			|| LARRAN_LOOTED_PATTERN.matcher(message).matches())
+			|| LARRAN_LOOTED_PATTERN.matcher(message).matches() || ROGUES_CHEST_PATTERN.matcher(message).matches())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 			if (!CHEST_EVENT_TYPES.containsKey(regionID))
@@ -741,7 +773,13 @@ public class LootTrackerPlugin extends Plugin
 				return;
 			}
 
-			setEvent(LootRecordType.EVENT, type, client.getRealSkillLevel(Skill.HUNTER));
+			setEvent(LootRecordType.EVENT, type, client.getBoostedSkillLevel(Skill.HUNTER));
+			takeInventorySnapshot();
+		}
+
+		if (regionID == TEMPOROSS_REGION && message.startsWith(TEMPOROSS_LOOT_STRING))
+		{
+			setEvent(LootRecordType.EVENT, TEMPOROSS_EVENT, client.getBoostedSkillLevel(Skill.FISHING));
 			takeInventorySnapshot();
 		}
 	}
@@ -760,17 +798,27 @@ public class LootTrackerPlugin extends Plugin
 			|| HALLOWED_SEPULCHRE_COFFIN_EVENT.equals(eventType)
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
-			|| SEEDPACK_EVENT.equals(eventType)
-			|| CASKET_EVENT.equals(eventType)
-			|| BIRDNEST_EVENT.equals(eventType)
+			|| WINTERTODT_SUPPLY_CRATE_EVENT.equals(eventType)
 			|| eventType.endsWith("Bird House")
 			|| eventType.startsWith("H.A.M. chest")
-			|| lootRecordType == LootRecordType.PICKPOCKET)
+			|| lootRecordType == LootRecordType.PICKPOCKET
+			|| eventType.endsWith("lockbox"))
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 			Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
 
 			processInventoryLoot(eventType, lootRecordType, metadata, event.getItemContainer(), groundItems);
+			resetEvent();
+		}
+		// Events that do not produce ground items
+		else if (SEEDPACK_EVENT.equals(eventType)
+			|| CASKET_EVENT.equals(eventType)
+			|| BIRDNEST_EVENT.equals(eventType)
+			|| SPOILS_OF_WAR_EVENT.equals(eventType)
+			|| TEMPOROSS_EVENT.equals(eventType)
+			|| TEMPOROSS_CASKET_EVENT.equals(eventType))
+		{
+			processInventoryLoot(eventType, lootRecordType, metadata, event.getItemContainer(), Collections.emptyList());
 			resetEvent();
 		}
 	}
@@ -780,34 +828,76 @@ public class LootTrackerPlugin extends Plugin
 	{
 		// There are some pickpocket targets who show up in the chat box with a different name (e.g. H.A.M. members -> man/woman)
 		// We use the value selected from the right-click menu as a fallback for the event lookup in those cases.
-		if (event.getMenuOption().equals("Pickpocket"))
+		if (isNPCOp(event.getMenuAction()) && event.getMenuOption().equals("Pickpocket"))
 		{
 			lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
 		}
-
-		if (event.getMenuOption().equals("Take") && event.getId() == ItemID.SEED_PACK)
-		{
-			setEvent(LootRecordType.EVENT, SEEDPACK_EVENT);
-			takeInventorySnapshot();
-		}
-
-		if (event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
+		else if (isObjectOp(event.getMenuAction()) && event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
 		{
 			setEvent(LootRecordType.EVENT, SHADE_CHEST_OBJECTS.get(event.getId()));
 			takeInventorySnapshot();
 		}
-
-		if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
+		else if (isItemOp(event.getMenuAction()))
 		{
-			setEvent(LootRecordType.EVENT, BIRDNEST_EVENT);
-			takeInventorySnapshot();
+			if (event.getMenuOption().equals("Take") && event.getId() == ItemID.SEED_PACK)
+			{
+				setEvent(LootRecordType.EVENT, SEEDPACK_EVENT);
+				takeInventorySnapshot();
+			}
+			else if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
+			{
+				setEvent(LootRecordType.EVENT, BIRDNEST_EVENT, event.getId());
+				takeInventorySnapshot();
+			}
+			else if (event.getMenuOption().equals("Open"))
+			{
+				switch (event.getId())
+				{
+					case ItemID.CASKET:
+						setEvent(LootRecordType.EVENT, CASKET_EVENT);
+						takeInventorySnapshot();
+						break;
+					case ItemID.SUPPLY_CRATE:
+					case ItemID.EXTRA_SUPPLY_CRATE:
+						setEvent(LootRecordType.EVENT, WINTERTODT_SUPPLY_CRATE_EVENT);
+						takeInventorySnapshot();
+						break;
+					case ItemID.SPOILS_OF_WAR:
+						setEvent(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT);
+						takeInventorySnapshot();
+						break;
+					case ItemID.CASKET_25590:
+						setEvent(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT);
+						takeInventorySnapshot();
+						break;
+					case ItemID.SIMPLE_LOCKBOX_25647:
+					case ItemID.ELABORATE_LOCKBOX_25649:
+					case ItemID.ORNATE_LOCKBOX_25651:
+						setEvent(LootRecordType.EVENT, itemManager.getItemComposition(event.getId()).getName());
+						takeInventorySnapshot();
+						break;
+				}
+			}
 		}
+	}
 
-		if (event.getMenuOption().equals("Open") && event.getId() == ItemID.CASKET)
-		{
-			setEvent(LootRecordType.EVENT, CASKET_EVENT);
-			takeInventorySnapshot();
-		}
+	private static boolean isItemOp(MenuAction menuAction)
+	{
+		final int id = menuAction.getId();
+		return id >= MenuAction.ITEM_FIRST_OPTION.getId() && id <= MenuAction.ITEM_FIFTH_OPTION.getId();
+	}
+
+	private static boolean isNPCOp(MenuAction menuAction)
+	{
+		final int id = menuAction.getId();
+		return id >= MenuAction.NPC_FIRST_OPTION.getId() && id <= MenuAction.NPC_FIFTH_OPTION.getId();
+	}
+
+	private static boolean isObjectOp(MenuAction menuAction)
+	{
+		final int id = menuAction.getId();
+		return (id >= MenuAction.GAME_OBJECT_FIRST_OPTION.getId() && id <= MenuAction.GAME_OBJECT_FOURTH_OPTION.getId())
+			|| id == MenuAction.GAME_OBJECT_FIFTH_OPTION.getId();
 	}
 
 	@Schedule(

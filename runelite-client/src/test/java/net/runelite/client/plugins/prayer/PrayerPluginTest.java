@@ -55,7 +55,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class PrayerPluginTest
 {
-	private static final ItemStats HIGH_PRAYER_BONUS_WEAPON = new ItemStats(false, false, 0, 0,
+	private static final ItemStats HIGH_PRAYER_BONUS_WEAPON = new ItemStats(false, 0, 0,
 		ItemEquipmentStats.builder()
 			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
 			.prayer(50)

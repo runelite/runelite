@@ -50,9 +50,9 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		add("Claim a ticket from the Agility Arena in Brimhaven.",
 			new SkillRequirement(Skill.AGILITY, 30));
 		add("Discover hidden wall in the dungeon below the volcano.",
-			new QuestRequirement(Quest.DRAGON_SLAYER, true));
+			new QuestRequirement(Quest.DRAGON_SLAYER_I, true));
 		add("Visit the Isle of Crandor via the dungeon below the volcano.",
-			new QuestRequirement(Quest.DRAGON_SLAYER, true));
+			new QuestRequirement(Quest.DRAGON_SLAYER_I, true));
 		add("Use Vigroy and Hajedy's cart service.",
 			new QuestRequirement(Quest.SHILO_VILLAGE));
 		add("Earn 100% favour in the village of Tai Bwo Wannai.",
@@ -96,7 +96,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		);
 
 		// HARD
-		add("Craft some nature runes.",
+		add("Craft some nature runes from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 44),
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Cook a karambwan thoroughly.",
@@ -109,7 +109,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.THIEVING, 50),
 			new SkillRequirement(Skill.MINING, 52),
 			new QuestRequirement(Quest.LEGENDS_QUEST));
-		add("Use the crossbow short cut south of the volcano.",
+		add("Use the crossbow shortcut south of the volcano.",
 			new SkillRequirement(Skill.AGILITY, 53),
 			new SkillRequirement(Skill.RANGED, 42),
 			new SkillRequirement(Skill.STRENGTH, 21));
@@ -122,7 +122,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.SHILO_VILLAGE));
 
 		// ELITE
-		add("Craft 56 Nature runes at once.",
+		add("Craft 56 Nature runes at once from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 91));
 		add("Check the health of a palm tree in Brimhaven.",
 			new SkillRequirement(Skill.FARMING, 68));

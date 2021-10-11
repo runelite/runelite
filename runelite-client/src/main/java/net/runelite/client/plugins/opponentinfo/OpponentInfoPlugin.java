@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -80,6 +81,8 @@ public class OpponentInfoPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Actor lastOpponent;
 
+	@Getter(AccessLevel.PACKAGE)
+	@VisibleForTesting
 	private Instant lastTime;
 
 	@Provides
@@ -113,17 +116,13 @@ public class OpponentInfoPlugin extends Plugin
 		}
 
 		final EnumSet<WorldType> worldType = client.getWorldType();
-		if (worldType.contains(WorldType.DEADMAN_TOURNAMENT))
+		if (worldType.contains(WorldType.SEASONAL))
 		{
 			hiscoreEndpoint = HiscoreEndpoint.TOURNAMENT;
 		}
 		else if (worldType.contains(WorldType.DEADMAN))
 		{
 			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
-		}
-		else if (worldType.contains(WorldType.LEAGUE))
-		{
-			hiscoreEndpoint = HiscoreEndpoint.LEAGUE;
 		}
 		else
 		{

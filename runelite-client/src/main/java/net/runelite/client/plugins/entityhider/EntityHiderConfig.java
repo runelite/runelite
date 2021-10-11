@@ -29,16 +29,18 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("entityhider")
+@ConfigGroup(EntityHiderConfig.GROUP)
 public interface EntityHiderConfig extends Config
 {
+	String GROUP = "entityhider";
+
 	@ConfigItem(
 		position = 1,
 		keyName = "hidePlayers",
-		name = "Hide Players",
-		description = "Configures whether or not players are hidden"
+		name = "Hide Others",
+		description = "Configures whether or not other players are hidden"
 	)
-	default boolean hidePlayers()
+	default boolean hideOthers()
 	{
 		return true;
 	}
@@ -46,10 +48,10 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "hidePlayers2D",
-		name = "Hide Players 2D",
-		description = "Configures whether or not players 2D elements are hidden"
+		name = "Hide Others 2D",
+		description = "Configures whether or not other players 2D elements are hidden"
 	)
-	default boolean hidePlayers2D()
+	default boolean hideOthers2D()
 	{
 		return true;
 	}
@@ -78,6 +80,17 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 5,
+		keyName = "hideIgnores",
+		name = "Hide Ignores",
+		description = "Configures whether or not ignored players are hidden"
+	)
+	default boolean hideIgnores()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "hideLocalPlayer",
 		name = "Hide Local Player",
 		description = "Configures whether or not the local player is hidden"
@@ -88,7 +101,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "hideLocalPlayer2D",
 		name = "Hide Local Player 2D",
 		description = "Configures whether or not the local player's 2D elements are hidden"
@@ -99,7 +112,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "hideNPCs",
 		name = "Hide NPCs",
 		description = "Configures whether or not NPCs are hidden"
@@ -110,7 +123,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "hideNPCs2D",
 		name = "Hide NPCs 2D",
 		description = "Configures whether or not NPCs 2D elements are hidden"
@@ -121,7 +134,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "hidePets",
 		name = "Hide Pets",
 		description = "Configures whether or not other player pets are hidden"
@@ -132,7 +145,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "hideAttackers",
 		name = "Hide Attackers",
 		description = "Configures whether or not NPCs/players attacking you are hidden"
@@ -143,7 +156,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "hideProjectiles",
 		name = "Hide Projectiles",
 		description = "Configures whether or not projectiles are hidden"

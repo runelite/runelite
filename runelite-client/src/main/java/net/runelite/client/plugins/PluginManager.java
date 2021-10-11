@@ -25,6 +25,7 @@
 package net.runelite.client.plugins;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
@@ -46,7 +47,9 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -312,7 +315,8 @@ public class PluginManager
 			{
 				log.debug("Disabling {} due to safe mode", clazz);
 				// also disable the plugin from autostarting later
-				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME, clazz.getSimpleName().toLowerCase());
+				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME,
+					(Strings.isNullOrEmpty(pluginDescriptor.configName()) ? clazz.getSimpleName() : pluginDescriptor.configName()).toLowerCase());
 				continue;
 			}
 
@@ -378,6 +382,19 @@ public class PluginManager
 			return false;
 		}
 
+		List<Plugin> conflicts = conflictsForPlugin(plugin);
+		for (Plugin conflict : conflicts)
+		{
+			if (isPluginEnabled(conflict))
+			{
+				setPluginEnabled(conflict, false);
+			}
+			if (activePlugins.contains(conflict))
+			{
+				stopPlugin(conflict);
+			}
+		}
+
 		activePlugins.add(plugin);
 
 		try
@@ -440,22 +457,29 @@ public class PluginManager
 
 	public void setPluginEnabled(Plugin plugin, boolean enabled)
 	{
-		final String keyName = plugin.getClass().getSimpleName().toLowerCase();
-		configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, keyName, String.valueOf(enabled));
+		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+		final String keyName = Strings.isNullOrEmpty(pluginDescriptor.configName()) ? plugin.getClass().getSimpleName() : pluginDescriptor.configName();
+		configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, keyName.toLowerCase(), String.valueOf(enabled));
+
+		if (enabled)
+		{
+			List<Plugin> conflicts = conflictsForPlugin(plugin);
+			for (Plugin conflict : conflicts)
+			{
+				if (isPluginEnabled(conflict))
+				{
+					setPluginEnabled(conflict, false);
+				}
+			}
+		}
 	}
 
 	public boolean isPluginEnabled(Plugin plugin)
 	{
-		final String keyName = plugin.getClass().getSimpleName().toLowerCase();
-		final String value = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, keyName);
-
-		if (value != null)
-		{
-			return Boolean.valueOf(value);
-		}
-
 		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-		return pluginDescriptor == null || pluginDescriptor.enabledByDefault();
+		final String keyName = Strings.isNullOrEmpty(pluginDescriptor.configName()) ? plugin.getClass().getSimpleName() : pluginDescriptor.configName();
+		final String value = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, keyName.toLowerCase());
+		return value != null ? Boolean.parseBoolean(value) : pluginDescriptor.enabledByDefault();
 	}
 
 	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz) throws PluginInstantiationException
@@ -640,5 +664,41 @@ public class PluginManager
 			throw new RuntimeException("Graph has at least one cycle");
 		}
 		return l;
+	}
+
+	public List<Plugin> conflictsForPlugin(Plugin plugin)
+	{
+		Set<String> conflicts;
+		{
+			PluginDescriptor desc = plugin.getClass().getAnnotation(PluginDescriptor.class);
+			conflicts = new HashSet<>(Arrays.asList(desc.conflicts()));
+			conflicts.add(desc.name());
+		}
+
+		return plugins.stream()
+			.filter(p ->
+			{
+				if (p == plugin)
+				{
+					return false;
+				}
+
+				PluginDescriptor desc = p.getClass().getAnnotation(PluginDescriptor.class);
+				if (conflicts.contains(desc.name()))
+				{
+					return true;
+				}
+
+				for (String conflict : desc.conflicts())
+				{
+					if (conflicts.contains(conflict))
+					{
+						return true;
+					}
+				}
+
+				return false;
+			})
+			.collect(Collectors.toList());
 	}
 }

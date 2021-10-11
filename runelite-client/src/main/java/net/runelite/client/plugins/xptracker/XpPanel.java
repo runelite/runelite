@@ -41,7 +41,6 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.api.WorldType;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -84,11 +83,15 @@ class XpPanel extends PluginPanel
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
-			client.getLocalPlayer(), Skill.OVERALL, client.getWorldType().contains(WorldType.LEAGUE))));
+			client.getLocalPlayer(), Skill.OVERALL)));
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
+
+		// Create reset all per hour menu
+		final JMenuItem resetPerHour = new JMenuItem("Reset All/hr");
+		resetPerHour.addActionListener(e -> xpTrackerPlugin.resetAllSkillsPerHourState());
 
 		// Create pause all menu
 		final JMenuItem pauseAll = new JMenuItem("Pause All");
@@ -104,6 +107,7 @@ class XpPanel extends PluginPanel
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
+		popupMenu.add(resetPerHour);
 		popupMenu.add(pauseAll);
 		popupMenu.add(unpauseAll);
 		overallPanel.setComponentPopupMenu(popupMenu);
@@ -142,18 +146,16 @@ class XpPanel extends PluginPanel
 		add(errorPanel);
 	}
 
-	static String buildXpTrackerUrl(final Actor player, final Skill skill, boolean leagueWorld)
+	static String buildXpTrackerUrl(final Actor player, final Skill skill)
 	{
 		if (player == null)
 		{
 			return "";
 		}
 
-		final String host = leagueWorld ? "trailblazer.wiseoldman.net" : "wiseoldman.net";
-
 		return new HttpUrl.Builder()
 			.scheme("https")
-			.host(host)
+			.host("wiseoldman.net")
 			.addPathSegment("players")
 			.addPathSegment(player.getName())
 			.addPathSegment("gained")

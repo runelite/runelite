@@ -37,9 +37,12 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,6 +78,7 @@ public class NpcIndicatorsPluginTest
 	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.RED);
 	}
 
 	@Test
@@ -96,7 +100,7 @@ public class NpcIndicatorsPluginTest
 		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
 		when(npcIndicatorsConfig.deadNpcMenuColor()).thenReturn(Color.RED);
 
-		npcIndicatorsPlugin.rebuildAllNpcs();
+		npcIndicatorsPlugin.rebuild();
 
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Goblin");
@@ -119,9 +123,9 @@ public class NpcIndicatorsPluginTest
 	{
 		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
 		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(true);
-		when(npcIndicatorsConfig.getHighlightColor()).thenReturn(Color.BLUE);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLUE);
 
-		npcIndicatorsPlugin.rebuildAllNpcs();
+		npcIndicatorsPlugin.rebuild();
 
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Goblin");
@@ -136,5 +140,43 @@ public class NpcIndicatorsPluginTest
 		MenuEntry target = new MenuEntry();
 		target.setTarget("<col=0000ff>Goblin"); // blue
 		verify(client).setMenuEntries(new MenuEntry[]{target});
+	}
+
+	@Test
+	public void taggedNpcChanges()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Joseph");
+
+		npcIndicatorsPlugin.rebuild();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Joseph");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
+
+		when(npc.getName()).thenReturn("Werewolf");
+		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
+
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
+	}
+
+	@Test
+	public void npcChangesToTagged()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Werewolf");
+
+		npcIndicatorsPlugin.rebuild();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Joseph");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
+
+		when(npc.getName()).thenReturn("Werewolf");
+		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
+
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
 	}
 }

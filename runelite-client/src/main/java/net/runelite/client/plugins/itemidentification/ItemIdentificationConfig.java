@@ -74,12 +74,44 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showSacks",
+		name = "Sacks",
+		description = "Show identification on Sacks"
+	)
+	default boolean showSacks()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showHerbs",
 		name = "Herbs",
 		description = "Show identification on Herbs",
 		section = identificationSection
 	)
 	default boolean showHerbs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showLogs",
+		name = "Logs",
+		description = "Show identification on Logs",
+		section = identificationSection
+	)
+	default boolean showLogs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showPlanks",
+		name = "Planks",
+		description = "Show identification on Planks",
+		section = identificationSection
+	)
+	default boolean showPlanks()
 	{
 		return false;
 	}
@@ -96,12 +128,34 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showComposts",
+		name = "Composts",
+		description = "Show identification on Composts",
+		section = identificationSection
+	)
+	default boolean showComposts()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showOres",
 		name = "Ores",
 		description = "Show identification on Ores",
 		section = identificationSection
 	)
 	default boolean showOres()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showBars",
+		name = "Bars",
+		description = "Show identification on Bars",
+		section = identificationSection
+	)
+	default boolean showBars()
 	{
 		return false;
 	}
@@ -146,6 +200,17 @@ public interface ItemIdentificationConfig extends Config
 		section = identificationSection
 	)
 	default boolean showTablets()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showTeleportScrolls",
+		name = "Teleport Scrolls",
+		description = "Show identification on teleport scrolls",
+		section = identificationSection
+	)
+	default boolean showTeleportScrolls()
 	{
 		return false;
 	}

@@ -38,7 +38,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +52,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Player;
-import net.runelite.api.WorldType;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
@@ -106,19 +104,20 @@ public class HiscorePanel extends PluginPanel
 		GIANT_MOLE, GROTESQUE_GUARDIANS, HESPORI,
 		KALPHITE_QUEEN, KING_BLACK_DRAGON, KRAKEN,
 		KREEARRA, KRIL_TSUTSAROTH, MIMIC,
-		NIGHTMARE, OBOR, SARACHNIS,
-		SCORPIA, SKOTIZO, THE_GAUNTLET,
-		THE_CORRUPTED_GAUNTLET, THEATRE_OF_BLOOD, THERMONUCLEAR_SMOKE_DEVIL,
-		TZKAL_ZUK, TZTOK_JAD, VENENATIS,
-		VETION, VORKATH, WINTERTODT,
-		ZALCANO, ZULRAH
+		NIGHTMARE, PHOSANIS_NIGHTMARE, OBOR, SARACHNIS,
+		SCORPIA, SKOTIZO, TEMPOROSS,
+		THE_GAUNTLET, THE_CORRUPTED_GAUNTLET, THEATRE_OF_BLOOD,
+		THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL, TZKAL_ZUK,
+		TZTOK_JAD, VENENATIS, VETION,
+		VORKATH, WINTERTODT, ZALCANO,
+		ZULRAH
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
 		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.LEAGUE
 	};
 
-	private final Client client;
+	private final HiscorePlugin plugin;
 	private final HiscoreConfig config;
 	private final NameAutocompleter nameAutocompleter;
 	private final HiscoreClient hiscoreClient;
@@ -138,10 +137,10 @@ public class HiscorePanel extends PluginPanel
 	private boolean loading = false;
 
 	@Inject
-	public HiscorePanel(@Nullable Client client,
-		HiscoreConfig config, NameAutocompleter nameAutocompleter, OkHttpClient okHttpClient)
+	public HiscorePanel(@Nullable Client client, HiscorePlugin plugin, HiscoreConfig config,
+		NameAutocompleter nameAutocompleter, OkHttpClient okHttpClient)
 	{
-		this.client = client;
+		this.plugin = plugin;
 		this.config = config;
 		this.nameAutocompleter = nameAutocompleter;
 		this.hiscoreClient = new HiscoreClient(okHttpClient);
@@ -187,7 +186,7 @@ public class HiscorePanel extends PluginPanel
 
 				if (localPlayer != null)
 				{
-					lookup(localPlayer.getName());
+					lookup(localPlayer.getName(), plugin.getLocalHiscoreEndpoint());
 				}
 			}
 		});
@@ -206,7 +205,7 @@ public class HiscorePanel extends PluginPanel
 
 		for (HiscoreEndpoint endpoint : ENDPOINTS)
 		{
-			final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), endpoint.name().toLowerCase() + ".png");
+			final BufferedImage iconImage = ImageUtil.loadImageResource(getClass(), endpoint.name().toLowerCase() + ".png");
 
 			MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), tabGroup, null);
 			tab.setToolTipText(endpoint.getName() + " Hiscores");
@@ -282,6 +281,7 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.add(makeHiscorePanel(CLUE_SCROLL_ALL));
 		minigamePanel.add(makeHiscorePanel(LEAGUE_POINTS));
 		minigamePanel.add(makeHiscorePanel(LAST_MAN_STANDING));
+		minigamePanel.add(makeHiscorePanel(SOUL_WARS_ZEAL));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_HUNTER));
 
@@ -345,7 +345,7 @@ public class HiscorePanel extends PluginPanel
 		String skillIcon = directory + skillName + ".png";
 		log.debug("Loading skill icon from {}", skillIcon);
 
-		label.setIcon(new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(), skillIcon)));
+		label.setIcon(new ImageIcon(ImageUtil.loadImageResource(getClass(), skillIcon)));
 
 		boolean totalLabel = skill == OVERALL || skill == null; //overall or combat
 		label.setIconTextGap(totalLabel ? 10 : 4);
@@ -359,10 +359,10 @@ public class HiscorePanel extends PluginPanel
 		return skillPanel;
 	}
 
-	public void lookup(String username)
+	public void lookup(String username, HiscoreEndpoint endpoint)
 	{
 		searchBar.setText(username);
-		resetEndpoints();
+		tabGroup.select(tabGroup.getTab(ArrayUtils.indexOf(ENDPOINTS, endpoint)));
 		lookup();
 	}
 
@@ -595,6 +595,18 @@ public class HiscorePanel extends PluginPanel
 					}
 					break;
 				}
+				case SOUL_WARS_ZEAL:
+				{
+					Skill soulWarsZeal = result.getSoulWarsZeal();
+					String rank = (soulWarsZeal.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(soulWarsZeal.getRank());
+					content += "<p><span style = 'color:white'>Soul Wars Zeal</span></p>";
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					if (soulWarsZeal.getLevel() > -1)
+					{
+						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(soulWarsZeal.getLevel()) + "</p>";
+					}
+					break;
+				}
 				case LEAGUE_POINTS:
 				{
 					Skill leaguePoints = result.getLeaguePoints();
@@ -707,31 +719,9 @@ public class HiscorePanel extends PluginPanel
 	private void resetEndpoints()
 	{
 		// Select the correct tab based on the world type.
-		HiscoreEndpoint endpoint = selectWorldEndpoint();
+		HiscoreEndpoint endpoint = plugin.getWorldEndpoint();
 		int idx = ArrayUtils.indexOf(ENDPOINTS, endpoint);
 		tabGroup.select(tabGroup.getTab(idx));
-	}
-
-	private HiscoreEndpoint selectWorldEndpoint()
-	{
-		if (client != null)
-		{
-			EnumSet<WorldType> wTypes = client.getWorldType();
-
-			if (wTypes.contains(WorldType.DEADMAN_TOURNAMENT))
-			{
-				return HiscoreEndpoint.TOURNAMENT;
-			}
-			else if (wTypes.contains(WorldType.DEADMAN))
-			{
-				return HiscoreEndpoint.DEADMAN;
-			}
-			else if (wTypes.contains(WorldType.LEAGUE))
-			{
-				return HiscoreEndpoint.LEAGUE;
-			}
-		}
-		return HiscoreEndpoint.NORMAL;
 	}
 
 	@VisibleForTesting

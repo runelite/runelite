@@ -106,9 +106,17 @@ public class XpGlobesPlugin extends Plugin
 			return;
 		}
 
-		if (config.hideMaxed() && currentLevel >= Experience.MAX_REAL_LEVEL)
+		if (currentLevel >= Experience.MAX_REAL_LEVEL)
 		{
-			return;
+			if (config.hideMaxed())
+			{
+				return;
+			}
+
+			if (config.showVirtualLevel())
+			{
+				currentLevel = Experience.getLevelForXp(currentXp);
+			}
 		}
 
 		if (cachedGlobe != null)

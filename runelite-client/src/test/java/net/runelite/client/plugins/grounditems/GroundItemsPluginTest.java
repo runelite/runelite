@@ -109,14 +109,10 @@ public class GroundItemsPluginTest
 			return null;
 		}).when(executor).execute(any(Runnable.class));
 
-		when(client.getLocalPlayer()).then(a ->
-		{
-			Player player = mock(Player.class);
-			when(player.getName()).thenReturn("Adam");
-			return player;
-		});
-
+		when(client.getLocalPlayer()).thenReturn(mock(Player.class));
 		when(config.getHiddenItems()).thenReturn("");
+		when(config.showLootbeamForHighlighted()).thenReturn(false);
+		when(config.showLootbeamTier()).thenReturn(HighlightTier.OFF);
 	}
 
 	@Test
@@ -149,6 +145,6 @@ public class GroundItemsPluginTest
 
 		groundItemsPlugin.onItemSpawned(new ItemSpawned(tile, tileItem));
 
-		verify(notifier).notify("[Adam] received a highlighted drop: Abyssal whip");
+		verify(notifier).notify("You received a highlighted drop: Abyssal whip");
 	}
 }

@@ -35,4 +35,6 @@ class PriceEntry
 	private int price;
 	private Instant time;
 	private Instant fetched_time;
+	private int high;
+	private int low;
 }

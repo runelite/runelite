@@ -102,6 +102,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 
 		Request request = new Request.Builder()
 			.url(RuneLiteAPI.getWsEndpoint())
+			.header("User-Agent", RuneLiteAPI.userAgent)
 			.build();
 
 		webSocket = okHttpClient.newWebSocket(request, this);
@@ -190,7 +191,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void onFailure(WebSocket webSocket, Throwable t, Response response)
 	{
-		log.warn("Error in websocket {}:{}", response, t);
+		log.warn("Error in websocket: {}", response, t);
 		this.webSocket = null;
 	}
 }

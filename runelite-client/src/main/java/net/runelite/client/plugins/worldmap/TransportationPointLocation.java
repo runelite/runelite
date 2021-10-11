@@ -121,18 +121,23 @@ enum TransportationPointLocation
 	CHARTER_PRIFDDINAS("Charter Ship", new WorldPoint(2156, 3331, 0)),
 	CHARTER_PRIFDDINAS_INSTANCE("Charter Ship", new WorldPoint(3180, 6083, 0)),
 
+	//Ferries
+	FERRY_AL_KHARID("Ferry to Ruins of Unkah", new WorldPoint(3269, 3142, 0), new WorldPoint(3145, 2843, 0)),
+	FERRY_RUINS_OF_UNKAH("Ferry to Al Kharid", new WorldPoint(3145, 2843, 0), new WorldPoint(3269, 3142, 0)),
+
 	//Minecarts/Carts
-	MINE_CART_ARCEUUS("Minecart", new WorldPoint(1673, 3832, 0)),
+	MINE_CART_ARCEUUS("Lovakengj Minecart Network", new WorldPoint(1673, 3832, 0)),
 	MINE_CART_GRANDEXCHANGE("Minecart to Keldagrim", new WorldPoint(3139, 3504, 0)),
-	MINE_CART_HOSIDIUS("Minecart", new WorldPoint(1656, 3542, 0)),
-	MINE_CART_KELDAGRIM("Minecart", new WorldPoint(2908, 10170, 0)),
-	MINE_CART_LOVAKENGJ("Minecart", new WorldPoint(1524, 3721, 0)),
-	MINE_CART_PORT_PISCARILIUS("Minecart", new WorldPoint(1760, 3708, 0)),
-	MINE_CART_QUIDAMORTEM("Minecart", new WorldPoint(1253, 3550, 0)),
-	MINE_CART_SHAYZIEN("Minecart", new WorldPoint(1586, 3622, 0)),
-	MINE_CART_TAVERLEY_UNDERGROUND("Minecart", new WorldPoint(2874, 9870, 0)),
+	MINE_CART_HOSIDIUS("Lovakengj Minecart Network", new WorldPoint(1656, 3542, 0)),
+	MINE_CART_ICE_MOUNTAIN("Minecart to Keldagrim", new WorldPoint(2995, 9836, 0)),
+	MINE_CART_KELDAGRIM("Keldagrim Minecart System", new WorldPoint(2908, 10170, 0)),
+	MINE_CART_LOVAKENGJ("Lovakengj Minecart Network", new WorldPoint(1524, 3721, 0)),
+	MINE_CART_PORT_PISCARILIUS("Lovakengj Minecart Network", new WorldPoint(1760, 3708, 0)),
+	MINE_CART_QUIDAMORTEM("Lovakengj Minecart Network", new WorldPoint(1253, 3550, 0)),
+	MINE_CART_SHAYZIEN("Lovakengj Minecart Network", new WorldPoint(1586, 3622, 0)),
+	MINE_CART_WHITE_WOLF_MOUNTAIN("Minecart to Keldagrim", new WorldPoint(2874, 9870, 0)),
 	CART_TO_BRIMHAVEN("Cart to Brimhaven", new WorldPoint(2833, 2958, 0), new WorldPoint(2780, 3214, 0)),
-	CART_TO_SHILO("Cart to Shilo", new WorldPoint(2780, 3214, 0), new WorldPoint(2833, 2958, 0)),
+	CART_TO_SHILO("Cart to Shilo Village", new WorldPoint(2780, 3214, 0), new WorldPoint(2833, 2958, 0)),
 
 	//Canoes
 	CANOE_BARBVILLAGE("Canoe", new WorldPoint(3111, 3409, 0)),
@@ -192,6 +197,7 @@ enum TransportationPointLocation
 	MUSHTREE_TAR_SWAMP("Mushtree", new WorldPoint(3676, 3755, 0)),
 	MUSHTREE_VERDANT_VALLEY("Mushtree", new WorldPoint(3757, 3756, 0)),
 	MYTHS_GUILD_PORTAL("Portal to Guilds", new WorldPoint(2456, 2856, 0)),
+	SOUL_WARS_PORTAL("Portal to Edgeville/Ferox Enclave", new WorldPoint(2204, 2858, 0)),
 	TRAIN_KELDAGRIM("Railway Station", new WorldPoint(2941, 10179, 0)),
 	WILDERNESS_LEVER_ARDOUGNE("Wilderness Lever to Deserted Keep", new WorldPoint(2559, 3309, 0), new WorldPoint(3154, 3924, 0)),
 	WILDERNESS_LEVER_EDGEVILLE("Wilderness Lever to Deserted Keep", new WorldPoint(3088, 3474, 0), new WorldPoint(3154, 3924, 0)),

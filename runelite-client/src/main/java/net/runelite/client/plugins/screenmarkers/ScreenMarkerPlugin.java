@@ -88,6 +88,9 @@ public class ScreenMarkerPlugin extends Plugin
 	@Inject
 	private ScreenMarkerCreationOverlay overlay;
 
+	@Inject
+	private Gson gson;
+
 	@Getter
 	@Inject
 	private ColorPickerManager colorPickerManager;
@@ -125,7 +128,7 @@ public class ScreenMarkerPlugin extends Plugin
 		pluginPanel = new ScreenMarkerPluginPanel(this);
 		pluginPanel.rebuild();
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), ICON_FILE);
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), ICON_FILE);
 
 		navigationButton = NavigationButton.builder()
 			.tooltip(PLUGIN_NAME)
@@ -266,7 +269,6 @@ public class ScreenMarkerPlugin extends Plugin
 			return;
 		}
 
-		final Gson gson = new Gson();
 		final String json = gson
 			.toJson(screenMarkers.stream().map(ScreenMarkerOverlay::getMarker).collect(Collectors.toList()));
 		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY, json);
@@ -279,7 +281,6 @@ public class ScreenMarkerPlugin extends Plugin
 			return Stream.empty();
 		}
 
-		final Gson gson = new Gson();
 		final List<ScreenMarker> screenMarkerData = gson.fromJson(json, new TypeToken<ArrayList<ScreenMarker>>()
 		{
 		}.getType());

@@ -25,10 +25,16 @@
 package net.runelite.http.api;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import net.runelite.http.api.gson.ColorTypeAdapter;
+import net.runelite.http.api.gson.InstantTypeAdapter;
+import net.runelite.http.api.gson.IllegalReflectionExclusion;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -46,7 +52,7 @@ public class RuneLiteAPI
 	public static final String RUNELITE_MACHINEID = "RUNELITE-MACHINEID";
 
 	public static final OkHttpClient CLIENT;
-	public static final Gson GSON = new Gson();
+	public static final Gson GSON;
 	public static final MediaType JSON = MediaType.parse("application/json");
 	public static String userAgent;
 
@@ -55,7 +61,6 @@ public class RuneLiteAPI
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final Properties properties = new Properties();
 	private static String version;
-	private static int rsVersion;
 
 	static
 	{
@@ -65,7 +70,6 @@ public class RuneLiteAPI
 			properties.load(in);
 
 			version = properties.getProperty("runelite.version");
-			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
 			String commit = properties.getProperty("runelite.commit");
 			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
 
@@ -96,6 +100,23 @@ public class RuneLiteAPI
 				}
 			})
 			.build();
+
+		GsonBuilder gsonBuilder = new GsonBuilder();
+
+		gsonBuilder
+			.registerTypeAdapter(Instant.class, new InstantTypeAdapter())
+			.registerTypeAdapter(Color.class, new ColorTypeAdapter());
+
+		boolean assertionsEnabled = false;
+		assert assertionsEnabled = true;
+		if (assertionsEnabled)
+		{
+			IllegalReflectionExclusion jbe = new IllegalReflectionExclusion();
+			gsonBuilder.addSerializationExclusionStrategy(jbe);
+			gsonBuilder.addDeserializationExclusionStrategy(jbe);
+		}
+
+		GSON = gsonBuilder.create();
 	}
 
 	public static HttpUrl getSessionBase()
@@ -154,11 +175,6 @@ public class RuneLiteAPI
 	public static void setVersion(String version)
 	{
 		RuneLiteAPI.version = version;
-	}
-
-	public static int getRsVersion()
-	{
-		return rsVersion;
 	}
 
 }

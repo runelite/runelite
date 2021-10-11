@@ -55,68 +55,16 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		ItemIdentification iden = findItemIdentification(itemId);
-		if (iden == null)
+		if (iden == null || !iden.type.enabled.test(config))
 		{
 			return;
 		}
 
-		switch (iden.type)
-		{
-			case SEED:
-				if (!config.showSeeds())
-				{
-					return;
-				}
-				break;
-			case HERB:
-				if (!config.showHerbs())
-				{
-					return;
-				}
-				break;
-			case SAPLING:
-				if (!config.showSaplings())
-				{
-					return;
-				}
-				break;
-			case ORE:
-				if (!config.showOres())
-				{
-					return;
-				}
-				break;
-			case GEM:
-				if (!config.showGems())
-				{
-					return;
-				}
-				break;
-			case POTION:
-				if (!config.showPotions())
-				{
-					return;
-				}
-				break;
-			case IMPLING_JAR:
-				if (!config.showImplingJars())
-				{
-					return;
-				}
-				break;
-			case TABLET:
-				if (!config.showTablets())
-				{
-					return;
-				}
-				break;
-		}
-
 		graphics.setFont(FontManager.getRunescapeSmallFont());
-		renderText(graphics, itemWidget.getCanvasBounds(), iden);
+		renderText(graphics, widgetItem.getCanvasBounds(), iden);
 	}
 
 	private void renderText(Graphics2D graphics, Rectangle bounds, ItemIdentification iden)

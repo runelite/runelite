@@ -33,17 +33,20 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,40 +84,14 @@ public class ClueScrollPluginTest
 	@Bind
 	ItemManager itemManager;
 
+	@Mock
+	@Bind
+	TagManager tagManager;
+
 	@Before
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-	}
-
-	@Test
-	public void getGetMirrorPoint()
-	{
-		WorldPoint point, converted;
-
-		// Zalcano's entrance portal
-		point = new WorldPoint(3282, 6058, 0);
-		converted = ClueScrollPlugin.getMirrorPoint(point, true);
-		assertNotEquals(point, converted);
-
-		// Elven Crystal Chest, which is upstairs
-		point = new WorldPoint(3273, 6082, 2);
-		converted = ClueScrollPlugin.getMirrorPoint(point, true);
-		assertNotEquals(point, converted);
-
-		// Around the area of the Elite coordinate clue
-		point = new WorldPoint(2185, 3280, 0);
-		// To overworld
-		converted = ClueScrollPlugin.getMirrorPoint(point, true);
-		assertEquals(point, converted);
-		// To real
-		converted = ClueScrollPlugin.getMirrorPoint(point, false);
-		assertNotEquals(point, converted);
-
-		// Brugsen Bursen, Grand Exchange
-		point = new WorldPoint(3165, 3477, 0);
-		converted = ClueScrollPlugin.getMirrorPoint(point, false);
-		assertEquals(point, converted);
 	}
 
 	@Test
@@ -162,5 +139,48 @@ public class ClueScrollPluginTest
 		// scene
 		verify(client, times(++clueSetupHintArrowClears)).clearHintArrow();
 		verify(client, times(1)).setHintArrow(any(WorldPoint.class));
+	}
+
+	@Test
+	public void testSTASHMarkerPersistence()
+	{
+		when(client.getCachedNPCs()).thenReturn(new NPC[] {});
+
+		// Set up emote clue
+		final Widget clueWidget = mock(Widget.class);
+		when(clueWidget.getText()).thenReturn("Spin in the Varrock Castle courtyard. Equip a black axe, a coif and a ruby ring.");
+		when(client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT)).thenReturn(clueWidget);
+		plugin.onGameTick(new GameTick());
+
+		// Simulate clicking on the STASH
+		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
+		menuOptionClicked.setMenuOption("Search");
+		menuOptionClicked.setMenuTarget("<col=ffff>STASH unit (easy)");
+		menuOptionClicked.setId(NullObjectID.NULL_28983);
+		plugin.onMenuOptionClicked(menuOptionClicked);
+
+		// Check that the STASH is stored after withdrawing
+		ChatMessage withdrawMessage = new ChatMessage();
+		withdrawMessage.setType(ChatMessageType.GAMEMESSAGE);
+		withdrawMessage.setMessage("You withdraw your items from the STASH unit.");
+		plugin.onChatMessage(withdrawMessage);
+		assertNotNull(plugin.getActiveSTASHClue());
+
+		// Complete the step and get a new step, check that the clue is stored for rendering
+		when(clueWidget.getText()).thenReturn("Talk to the bartender of the Rusty Anchor in Port Sarim.");
+		plugin.onGameTick(new GameTick());
+		assertNotNull(plugin.getActiveSTASHClue());
+
+		// Simulate depositing the emote items, make sure it's cleared the stored clue
+		ChatMessage depositMessage = new ChatMessage();
+		depositMessage.setType(ChatMessageType.GAMEMESSAGE);
+		depositMessage.setMessage("You deposit your items into the STASH unit.");
+		plugin.onChatMessage(depositMessage);
+		assertNull(plugin.getActiveSTASHClue());
+
+		// Make sure that the STASH won't get re-marked if it's not part of the active clue.
+		plugin.onMenuOptionClicked(menuOptionClicked);
+		plugin.onChatMessage(withdrawMessage);
+		assertNull(plugin.getActiveSTASHClue());
 	}
 }

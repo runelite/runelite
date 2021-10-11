@@ -26,16 +26,12 @@
  */
 package net.runelite.client.plugins.discord;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 
 @AllArgsConstructor
 @Getter
@@ -89,6 +85,7 @@ enum DiscordGameEventType
 	BOSS_SARACHNIS("Sarachnis", DiscordAreaType.BOSSES, 7322),
 	BOSS_SKOTIZO("Skotizo", DiscordAreaType.BOSSES, 6810),
 	BOSS_SMOKE_DEVIL("Thermonuclear smoke devil", DiscordAreaType.BOSSES, 9363, 9619),
+	BOSS_TEMPOROSS("Tempoross", DiscordAreaType.BOSSES, 12078),
 	BOSS_VORKATH("Vorkath", DiscordAreaType.BOSSES, 9023),
 	BOSS_WINTERTODT("Wintertodt", DiscordAreaType.BOSSES, 6462),
 	BOSS_ZALCANO("Zalcano", DiscordAreaType.BOSSES, 12126),
@@ -121,22 +118,23 @@ enum DiscordGameEventType
 	CITY_JATIZSO("Jatizso" , DiscordAreaType.CITIES, 9531),
 	CITY_KELDAGRIM("Keldagrim" , DiscordAreaType.CITIES, 11423, 11422, 11679, 11678),
 	CITY_LANDS_END("Land's End", DiscordAreaType.CITIES, 5941),
-	CITY_LLETYA("Lletya" , DiscordAreaType.CITIES, 9265),
+	CITY_LLETYA("Lletya" , DiscordAreaType.CITIES, 9265, 11103),
 	CITY_LOVAKENGJ_HOUSE("Lovakengj" , DiscordAreaType.CITIES, 5692, 5691, 5947, 6203, 6202, 5690, 5946),
 	CITY_LUMBRIDGE("Lumbridge" , DiscordAreaType.CITIES, 12850),
 	CITY_LUNAR_ISLE("Lunar Isle" , DiscordAreaType.CITIES, 8253, 8252, 8509, 8508),
 	CITY_MARIM("Marim", DiscordAreaType.REGIONS, 11051),
 	CITY_MEIYERDITCH("Meiyerditch" , DiscordAreaType.CITIES, 14132, 14387, 14386, 14385),
+	CITY_MENAPHOS("Menaphos", DiscordAreaType.CITIES, 12843),
 	CITY_MISCELLANIA("Miscellania" , DiscordAreaType.CITIES, 10044),
 	CITY_MOR_UL_REK("Mor Ul Rek" , DiscordAreaType.CITIES, 9808, 9807, 10064, 10063),
 	CITY_MORTTON("Mort'ton" , DiscordAreaType.CITIES, 13875),
-	CITY_MOS_LE_HARMLESS("Mos Le'Harmless" , DiscordAreaType.CITIES, 14638, 14639, 14894, 14895, 15151, 15406, 15407),
+	CITY_MOS_LE_HARMLESS("Mos Le'Harmless" , DiscordAreaType.CITIES, 14637, 14638, 14639, 14894, 14895, 15151, 15406, 15407),
 	CITY_MOUNT_KARUULM("Mount Karuulm", DiscordAreaType.CITIES, 5179, 4923, 5180),
 	CITY_MOUNTAIN_CAMP("Mountain Camp", DiscordAreaType.CITIES, 11065),
 	CITY_MYNYDD("Mynydd", DiscordAreaType.CITIES, 8501),
 	CITY_NARDAH("Nardah" , DiscordAreaType.CITIES, 13613),
 	CITY_NEITIZNOT("Neitiznot" , DiscordAreaType.CITIES, 9275),
-	CITY_PISCARILIUS_HOUSE("Port Piscarilius" , DiscordAreaType.CITIES, 6971, 7227, 6970, 7226),
+	CITY_PISCARILIUS_HOUSE("Port Piscarilius" , DiscordAreaType.CITIES, 6969, 6971, 7227, 6970, 7225, 7226),
 	CITY_PISCATORIS("Piscatoris" , DiscordAreaType.CITIES, 9273),
 	CITY_POLLNIVNEACH("Pollnivneach" , DiscordAreaType.CITIES, 13358),
 	CITY_PORT_KHAZARD("Port Khazard" , DiscordAreaType.CITIES, 10545),
@@ -166,12 +164,13 @@ enum DiscordGameEventType
 	CITY_ZULANDRA("Zul-Andra" , DiscordAreaType.CITIES, 8495, 8751),
 
 	// Dungeons
-	DUNGEON_ABANDONED_MINE("Abandoned Mine", DiscordAreaType.DUNGEONS, 13718, 11079, 11078, 11077, 10823, 10822, 10821),
+	DUNGEON_ABANDONED_MINE("Abandoned Mine", DiscordAreaType.DUNGEONS, 13618, 13718, 11079, 11078, 11077, 10823, 10822, 10821),
 	DUNGEON_AH_ZA_RHOON("Ah Za Rhoon", DiscordAreaType.DUNGEONS, 11666),
 	DUNGEON_ANCIENT_CAVERN("Ancient Cavern", DiscordAreaType.DUNGEONS, 6483, 6995),
 	DUNGEON_APE_ATOLL("Ape Atoll Dungeon", DiscordAreaType.DUNGEONS, 11150, 10894),
 	DUNGEON_APE_ATOLL_BANANA_PLANTATION("Ape Atoll Banana Plantation", DiscordAreaType.DUNGEONS, 10895),
-	DUNGEON_ARDY_SEWERS("Ardougne Sewers", DiscordAreaType.DUNGEONS, 10136, 10647),
+	DUNGEON_ARDY_BASEMENT("West Ardougne Basement", DiscordAreaType.DUNGEONS, 10135),
+	DUNGEON_ARDY_SEWERS("Ardougne Sewers", DiscordAreaType.DUNGEONS, 10134, 10136, 10391, 10647),
 	DUNGEON_ASGARNIAN_ICE_CAVES("Asgarnian Ice Caves", DiscordAreaType.DUNGEONS, 11925, 12181),
 	DUNGEON_BERVIRIUS_TOMB("Tomb of Bervirius", DiscordAreaType.DUNGEONS, 11154),
 	DUNGEON_BRIMHAVEN("Brimhaven Dungeon", DiscordAreaType.DUNGEONS, 10901, 10900, 10899, 10645, 10644, 10643),
@@ -186,14 +185,19 @@ enum DiscordGameEventType
 	DUNGEON_CORSAIR_COVE("Corsair Cove Dungeon", DiscordAreaType.DUNGEONS, 8076, 8332),
 	DUNGEON_CRABCLAW_CAVES("Crabclaw Caves", DiscordAreaType.DUNGEONS, 6553, 6809),
 	DUNGEON_CRANDOR("Crandor Dungeon", DiscordAreaType.DUNGEONS, 11414),
+	DUNGEON_CRASH_SITE_CAVERN("Crash Site Cavern", DiscordAreaType.DUNGEONS, 8280, 8536),
+	DUNGEON_CRUMBLING_TOWER("Crumbling Tower", DiscordAreaType.DUNGEONS, 7827),
+	DUNGEON_DAEYALT_ESSENCE_MINE("Daeyalt Essence Mine", DiscordAreaType.DUNGEONS, 14744),
 	DUNGEON_DIGSITE("Digsite Dungeon", DiscordAreaType.DUNGEONS, 13464, 13465),
 	DUNGEON_DORGESHKAAN("Dorgesh-Kaan South Dungeon", DiscordAreaType.DUNGEONS, 10833),
 	DUNGEON_DORGESHUUN_MINES("Dorgeshuun Mines", DiscordAreaType.DUNGEONS, 12950, 13206),
 	DUNGEON_DRAYNOR_SEWERS("Draynor Sewers", DiscordAreaType.DUNGEONS, 12439, 12438),
 	DUNGEON_DWARVEN_MINES("Dwarven Mines", DiscordAreaType.DUNGEONS, 12185, 12184, 12183),
 	DUNGEON_EAGLES_PEAK("Eagles' Peak Dungeon", DiscordAreaType.DUNGEONS, 8013),
+	DUNGEON_ECTOFUNTUS("Ectofuntus", DiscordAreaType.DUNGEONS, 14746),
 	DUNGEON_EDGEVILLE("Edgeville Dungeon", DiscordAreaType.DUNGEONS, 12441, 12442, 12443, 12698),
 	DUNGEON_ELEMENTAL_WORKSHOP("Elemental Workshop", DiscordAreaType.DUNGEONS, 10906, 7760),
+	DUNGEON_ELVEN_RABBIT_CAVE("Elven rabbit cave", DiscordAreaType.DUNGEONS, 13252),
 	DUNGEON_ENAKHRAS_TEMPLE("Enakhra's Temple", DiscordAreaType.DUNGEONS, 12423),
 	DUNGEON_EVIL_CHICKENS_LAIR("Evil Chicken's Lair", DiscordAreaType.DUNGEONS, 9796),
 	DUNGEON_EXPERIMENT_CAVE("Experiment Cave", DiscordAreaType.DUNGEONS, 14235, 13979),
@@ -207,6 +211,7 @@ enum DiscordGameEventType
 	DUNGEON_HAM_STORE_ROOM("H.A.M. Store room", DiscordAreaType.DUNGEONS, 10321),
 	DUNGEON_HEROES_GUILD("Heroes' Guild Mine", DiscordAreaType.DUNGEONS, 11674),
 	DUNGEON_IORWERTH("Iorwerth Dungeon", DiscordAreaType.DUNGEONS, 12737, 12738, 12993, 12994),
+	DUNGEON_ISLE_OF_SOULS("Isle of Souls Dungeon", DiscordAreaType.DUNGEONS, 8593),
 	DUNGEON_JATIZSO_MINES("Jatizso Mines", DiscordAreaType.DUNGEONS, 9631),
 	DUNGEON_JIGGIG_BURIAL_TOMB("Jiggig Burial Tomb", DiscordAreaType.DUNGEONS, 9875, 9874),
 	DUNGEON_JOGRE("Jogre Dungeon", DiscordAreaType.DUNGEONS, 11412),
@@ -221,6 +226,7 @@ enum DiscordGameEventType
 	DUNGEON_LUMBRIDGE_SWAMP_CAVES("Lumbridge Swamp Caves", DiscordAreaType.DUNGEONS, 12693, 12949),
 	DUNGEON_LUNAR_ISLE_MINE("Lunar Isle Mine", DiscordAreaType.DUNGEONS, 9377),
 	DUNGEON_MANIACAL_HUNTER("Maniacal Monkey Hunter Area", DiscordAreaType.DUNGEONS, 11662),
+	DUNGEON_MEIYERDITCH_MINE("Meiyerditch Mine", DiscordAreaType.DUNGEONS, 9544),
 	DUNGEON_MISCELLANIA("Miscellania Dungeon", DiscordAreaType.DUNGEONS, 10144, 10400),
 	DUNGEON_MOGRE_CAMP("Mogre Camp", DiscordAreaType.DUNGEONS, 11924),
 	DUNGEON_MOS_LE_HARMLESS_CAVES("Mos Le'Harmless Caves", DiscordAreaType.DUNGEONS, 14994, 14995, 15251),
@@ -235,6 +241,8 @@ enum DiscordGameEventType
 	DUNGEON_OURANIA("Ourania Cave", DiscordAreaType.DUNGEONS, 12119),
 	DUNGEON_QUIDAMORTEM_CAVE("Quidamortem Cave", DiscordAreaType.DUNGEONS, 4763),
 	DUNGEON_RASHILIYIAS_TOMB("Rashiliyta's Tomb", DiscordAreaType.DUNGEONS, 11668),
+	DUNGEON_RUINS_OF_CAMDOZAAL("Ruins of Camdozaal", DiscordAreaType.DUNGEONS, 11609, 11610, 11611, 11865, 11866, 11867, 12121, 12122, 12123),
+	DUNGEON_SALT_MINE("Salt Mine", DiscordAreaType.DUNGEONS, 11425),
 	DUNGEON_SARADOMINSHRINE("Saradomin Shrine (Paterdomus)", DiscordAreaType.DUNGEONS, 13722),
 	DUNGEON_SHADE_CATACOMBS("Shade Catacombs", DiscordAreaType.DUNGEONS, 13975),
 	DUNGEON_SHADOW("Shadow Dungeon", DiscordAreaType.DUNGEONS, 10575, 10831),
@@ -281,18 +289,21 @@ enum DiscordGameEventType
 	MG_CLAN_WARS("Clan Wars", DiscordAreaType.MINIGAMES, 12621, 12622, 12623, 13130, 13131, 13133, 13134, 13135, 13386, 13387, 13390, 13641, 13642, 13643, 13644, 13645, 13646, 13647, 13899, 13900, 14155, 14156),
 	MG_DUEL_ARENA("Duel Arena", DiscordAreaType.MINIGAMES, 13362, 13363),
 	MG_FISHING_TRAWLER("Fishing Trawler", DiscordAreaType.MINIGAMES, 7499),
-	MG_GAUNTLET("The Gauntlet", DiscordAreaType.MINIGAMES, 12127, 7512, 7768),
+	MG_GAUNTLET("The Gauntlet", DiscordAreaType.MINIGAMES, 12127, 7512),
+	MG_CORRUPTED_GAUNTLET("Corrupted Gauntlet", DiscordAreaType.MINIGAMES, 7768),
 	MG_HALLOWED_SEPULCHRE("Hallowed Sepulchre", DiscordAreaType.MINIGAMES, 8797, 9051, 9052, 9053, 9054, 9309, 9563, 9565, 9821, 10074, 10075, 10077),
 	MG_INFERNO("The Inferno", DiscordAreaType.MINIGAMES, 9043),
 	MG_KELDAGRIM_RAT_PITS("Keldagrim Rat Pits", DiscordAreaType.MINIGAMES, 7753),
-	MG_LAST_MAN_STANDING("Last Man Standing", DiscordAreaType.MINIGAMES, 13660, 13659, 13658, 13916, 13915, 13914),
+	MG_LAST_MAN_STANDING_DESERTED_ISLAND("LMS - Deserted Island", DiscordAreaType.MINIGAMES, 13658, 13659, 13660, 13914, 13915, 13916),
+	MG_LAST_MAN_STANDING_WILD_VARROCK("LMS - Wild Varrock", DiscordAreaType.MINIGAMES, 13918, 13919, 13920, 14174, 14175, 14176, 14430, 14431, 14432),
 	MG_MAGE_TRAINING_ARENA("Mage Training Arena", DiscordAreaType.MINIGAMES, 13462, 13463),
 	MG_NIGHTMARE_ZONE("Nightmare Zone", DiscordAreaType.MINIGAMES, 9033),
 	MG_PEST_CONTROL("Pest Control", DiscordAreaType.MINIGAMES, 10536),
 	MG_PORT_SARIM_RAT_PITS("Port Sarim Rat Pits", DiscordAreaType.MINIGAMES, 11926),
 	MG_PYRAMID_PLUNDER("Pyramid Plunder", DiscordAreaType.MINIGAMES, 7749),
-	MG_ROGUES_DEN("Rogues' Den", DiscordAreaType.MINIGAMES, 11855, 11854, 12111, 12110),
+	MG_ROGUES_DEN("Rogues' Den", DiscordAreaType.MINIGAMES, 11854, 11855, 12109, 12110, 12111),
 	MG_SORCERESS_GARDEN("Sorceress's Garden", DiscordAreaType.MINIGAMES, 11605),
+	MG_SOUL_WARS("Soul Wars", DiscordAreaType.MINIGAMES, 8493, 8748, 8749, 9005),
 	MG_TEMPLE_TREKKING("Temple Trekking", DiscordAreaType.MINIGAMES, 8014, 8270, 8256, 8782, 9038, 9294, 9550, 9806),
 	MG_TITHE_FARM("Tithe Farm", DiscordAreaType.MINIGAMES, 7222),
 	MG_TROUBLE_BREWING("Trouble Brewing", DiscordAreaType.MINIGAMES, 15150),
@@ -302,8 +313,8 @@ enum DiscordGameEventType
 	MG_VOLCANIC_MINE("Volcanic Mine", DiscordAreaType.MINIGAMES, 15263, 15262),
 
 	// Raids
-	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, Varbits.IN_RAID),
-	RAIDS_THEATRE_OF_BLOOD("Theatre of Blood", DiscordAreaType.RAIDS, Varbits.THEATRE_OF_BLOOD),
+	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, 12889, 13136, 13137, 13138, 13139, 13140, 13141, 13145, 13393, 13394, 13395, 13396, 13397, 13401),
+	RAIDS_THEATRE_OF_BLOOD("Theatre of Blood", DiscordAreaType.RAIDS, 12611, 12612, 12613, 12867, 12869, 13122, 13123, 13125, 13379),
 
 	// Other
 	REGION_ABYSSAL_AREA("Abyssal Area", DiscordAreaType.REGIONS, 12108),
@@ -311,7 +322,7 @@ enum DiscordGameEventType
 	REGION_AGILITY_PYRAMID("Agility Pyramid", DiscordAreaType.REGIONS, 12105, 13356),
 	REGION_AIR_ALTAR("Air Altar", DiscordAreaType.REGIONS, 11339),
 	REGION_AL_KHARID_MINE("Al Kharid Mine", DiscordAreaType.REGIONS, 13107),
-	REGION_APE_ATOLL("Ape Atoll" , DiscordAreaType.REGIONS, 10795, 10974, 11050),
+	REGION_APE_ATOLL("Ape Atoll" , DiscordAreaType.REGIONS, 10794, 10795, 10974, 11050),
 	REGION_ARANDAR("Arandar", DiscordAreaType.REGIONS, 9266, 9267, 9523),
 	REGION_ASGARNIA("Asgarnia", DiscordAreaType.REGIONS, 11825, 11829, 11830, 12085, 12086),
 	REGION_BATTLEFIELD("Battlefield", DiscordAreaType.REGIONS, 10034),
@@ -329,6 +340,7 @@ enum DiscordGameEventType
 	REGION_DEATH_ALTAR("Death Altar", DiscordAreaType.REGIONS, 8779),
 	REGION_DEATH_PLATEAU("Death Plateau", DiscordAreaType.REGIONS, 11320),
 	REGION_DENSE_ESSENCE("Dense Essence Mine", DiscordAreaType.REGIONS, 6972),
+	REGION_DESERT_PLATEAU("Desert Plateau", DiscordAreaType.REGIONS, 13361, 13617),
 	REGION_DIGSITE("Digsite", DiscordAreaType.REGIONS, 13365),
 	REGION_DRAGONTOOTH("Dragontooth Island", DiscordAreaType.REGIONS, 15159),
 	REGION_DRAYNOR_MANOR("Draynor Manor", DiscordAreaType.REGIONS, 12340),
@@ -342,6 +354,7 @@ enum DiscordGameEventType
 	REGION_FARMING_GUILD("Farming Guild", DiscordAreaType.REGIONS, 4922),
 	REGION_FELDIP_HILLS("Feldip Hills", DiscordAreaType.REGIONS, 9773, 9774, 10029, 10030, 10285, 10286, 10287, 10542, 10543),
 	REGION_FENKENSTRAIN("Fenkenstrain's Castle", DiscordAreaType.REGIONS, 14135),
+	REGION_FIGHT_ARENA("Fight Arena", DiscordAreaType.REGIONS, 10289),
 	REGION_FIRE_ALTAR("Fire Altar", DiscordAreaType.REGIONS, 10315),
 	REGION_FISHER_REALM("Fisher Realm", DiscordAreaType.REGIONS, 10569),
 	REGION_FISHING_GUILD("Fishing Guild", DiscordAreaType.REGIONS, 10293),
@@ -357,18 +370,21 @@ enum DiscordGameEventType
 	REGION_GRAND_EXCHANGE("Grand Exchange", DiscordAreaType.REGIONS, 12598),
 	REGION_GWD("God Wars Dungeon", DiscordAreaType.REGIONS, 11578),
 	REGION_HARMONY("Harmony Island", DiscordAreaType.REGIONS, 15148),
+	REGION_HAZELMERE("Hazelmere's Island", DiscordAreaType.REGIONS, 10544),
 	REGION_ICE_PATH("Ice Path", DiscordAreaType.REGIONS, 11322, 11323),
 	REGION_ICEBERG("Iceberg", DiscordAreaType.REGIONS, 10558, 10559),
 	REGION_ICYENE_GRAVEYARD("Icyene Graveyard", DiscordAreaType.REGIONS, 14641, 14897, 14898),
 	REGION_ISAFDAR("Isafdar", DiscordAreaType.REGIONS, 8497, 8753, 8754, 9009, 9010),
 	REGION_ISLAND_OF_STONE("Island of Stone", DiscordAreaType.REGIONS, 9790),
+	REGION_ISLE_OF_SOULS("Isle of Souls", DiscordAreaType.REGIONS, 8236, 8237, 8238, 8491, 8492, 8494, 8747, 8750, 9003, 9004, 9006, 9260, 9261, 9262),
 	REGION_JIGGIG("Jiggig" , DiscordAreaType.REGIONS, 9775),
-	REGION_KANDARIN("Kandarin", DiscordAreaType.REGIONS, 9014, 9263, 9264, 9519, 9524, 9527, 9776, 9783, 10037, 10290, 10294, 10546, 10551, 10805),
+	REGION_KANDARIN("Kandarin", DiscordAreaType.REGIONS, 9268, 9269, 9014, 9263, 9264, 9519, 9524, 9527, 9776, 9783, 10037, 10290, 10294, 10546, 10551, 10805, 11062),
 	REGION_KARAMJA("Karamja" , DiscordAreaType.REGIONS, 10801, 10802, 11054, 11311, 11312, 11313, 11566, 11567, 11568, 11569, 11822),
-	REGION_KEBOS_LOWLANDS("Kebos Lowlands", DiscordAreaType.REGIONS, 4665, 4666, 4921, 5178),
+	REGION_KEBOS_LOWLANDS("Kebos Lowlands", DiscordAreaType.REGIONS, 4665, 4666, 4667, 4921, 5178),
 	REGION_KEBOS_SWAMP("Kebos Swamp", DiscordAreaType.REGIONS, 4664, 4920, 5174, 5175, 5176, 5430, 5431),
 	REGION_KHARAZI_JUNGLE("Kharazi Jungle", DiscordAreaType.REGIONS, 11053, 11309, 11565, 11821),
-	REGION_KHARIDIAN_DESERT("Kharidian Desert", DiscordAreaType.REGIONS, 12844, 12845, 12846, 12847, 12848, 13100, 13101, 13102, 13103, 13104, 13357, 13359, 13360, 13614, 13615, 13616),
+	REGION_KHARIDIAN_DESERT("Kharidian Desert", DiscordAreaType.REGIONS, 12587, 12844, 12845, 12846, 12847, 12848, 13100, 13101, 13102, 13103, 13104, 13357, 13359, 13360, 13614, 13615, 13616),
+	REGION_KILLERWATT_PLANE("Killerwatt Plane", DiscordAreaType.REGIONS, 10577),
 	REGION_KOUREND("Great Kourend", DiscordAreaType.REGIONS, 6201, 6457, 6713),
 	REGION_KOUREND_WOODLAND("Kourend Woodland", DiscordAreaType.REGIONS, 5942, 6197, 6453),
 	REGION_LAW_ALTAR("Law Altar", DiscordAreaType.REGIONS, 9803),
@@ -380,7 +396,7 @@ enum DiscordGameEventType
 	REGION_MCGRUBORS_WOOD("McGrubor's Wood", DiscordAreaType.REGIONS, 10550),
 	REGION_MIME_STAGE("Mime's Stage", DiscordAreaType.REGIONS, 8010),
 	REGION_MIND_ALTAR("Mind Altar", DiscordAreaType.REGIONS, 11083),
-	REGION_MISTHALIN("Misthalin", DiscordAreaType.REGIONS, 12594, 12595),
+	REGION_MISTHALIN("Misthalin", DiscordAreaType.REGIONS, 12594, 12595, 12851),
 	REGION_MOLCH("Molch", DiscordAreaType.REGIONS, 5177),
 	REGION_MOLCH_ISLAND("Molch Island", DiscordAreaType.REGIONS, 5432),
 	REGION_MORYTANIA("Morytania", DiscordAreaType.REGIONS, 13619, 13620, 13621, 13622, 13876, 13877, 13879, 14133, 14134, 14389, 14390, 14391, 14645, 14647),
@@ -404,10 +420,12 @@ enum DiscordGameEventType
 	REGION_QUARRY("Quarry", DiscordAreaType.REGIONS, 12589),
 	REGION_RANGING_GUILD("Ranging Guild", DiscordAreaType.REGIONS, 10549),
 	REGION_RATCATCHERS_MANSION("Ratcatchers Mansion", DiscordAreaType.REGIONS, 11343),
+	REGION_RUINS_OF_UNKAH("Ruins of Unkah", DiscordAreaType.REGIONS, 12588),
 	REGION_RUNE_ESSENCE_MINE("Rune Essence Mine", DiscordAreaType.REGIONS, 11595),
 	// The Beekeper, Pinball, and Gravedigger randoms share a region (7758), and although they are not technically ScapeRune, that name is most commonly
 	// associated with random events, so those three have been denoted ScapeRune to avoid leaving multiple random event regions without an assigned name.
 	REGION_SCAPERUNE("ScapeRune", DiscordAreaType.REGIONS, 10058, 7758, 8261),
+	REGION_SEA_SPIRIT_DOCK("Sea Spirit Dock", DiscordAreaType.REGIONS, 12332),
 	REGION_SHIP_YARD("Ship Yard", DiscordAreaType.REGIONS, 11823),
 	REGION_SILVAREA("Silvarea", DiscordAreaType.REGIONS, 13366),
 	REGION_SINCLAR_MANSION("Sinclair Mansion", DiscordAreaType.REGIONS, 10807),
@@ -416,28 +434,22 @@ enum DiscordGameEventType
 	REGION_TROLL_ARENA("Troll Arena", DiscordAreaType.REGIONS, 11576),
 	REGION_TROLLHEIM("Trollheim", DiscordAreaType.REGIONS, 11577),
 	REGION_TROLLWEISS_MTN("Trollweiss Mountain", DiscordAreaType.REGIONS, 11066, 11067, 11068),
+	REGION_TUTORIAL_ISLAND("Tutorial Island", DiscordAreaType.REGIONS, 12079, 12080, 12335, 12336, 12436, 12592),
 	REGION_UNDERWATER("Underwater", DiscordAreaType.REGIONS, 15008, 15264),
 	REGION_WATER_ALTAR("Water Altar", DiscordAreaType.REGIONS, 10827),
+	REGION_WATERBIRTH_ISLAND("Waterbirth Island", DiscordAreaType.REGIONS, 10042),
 	REGION_WINTERTODT_CAMP("Wintertodt Camp", DiscordAreaType.REGIONS, 6461),
 	REGION_WIZARDS_TOWER("Wizards' Tower", DiscordAreaType.REGIONS, 12337),
 	REGION_WOODCUTTING_GUILD("Woodcutting Guild", DiscordAreaType.REGIONS, 6198, 6454),
 	REGION_WRATH_ALTAR("Wrath Altar", DiscordAreaType.REGIONS, 9291);
 
 	private static final Map<Integer, DiscordGameEventType> FROM_REGION;
-	private static final List<DiscordGameEventType> FROM_VARBITS;
 
 	static
 	{
 		ImmutableMap.Builder<Integer, DiscordGameEventType> regionMapBuilder = new ImmutableMap.Builder<>();
-		ImmutableList.Builder<DiscordGameEventType> fromVarbitsBuilder = ImmutableList.builder();
 		for (DiscordGameEventType discordGameEventType : DiscordGameEventType.values())
 		{
-			if (discordGameEventType.getVarbits() != null)
-			{
-				fromVarbitsBuilder.add(discordGameEventType);
-				continue;
-			}
-
 			if (discordGameEventType.getRegionIds() == null)
 			{
 				continue;
@@ -449,7 +461,6 @@ enum DiscordGameEventType
 			}
 		}
 		FROM_REGION = regionMapBuilder.build();
-		FROM_VARBITS = fromVarbitsBuilder.build();
 	}
 
 	@Nullable
@@ -464,7 +475,7 @@ enum DiscordGameEventType
 	private int priority;
 
 	/**
-	 * Marks this event as root event, e.g event that should be used for total time tracking
+	 * Marks this event as root event. (eg. event that should be used for total time tracking)
 	 */
 	private boolean root;
 
@@ -490,9 +501,6 @@ enum DiscordGameEventType
 
 	@Nullable
 	private DiscordAreaType discordAreaType;
-
-	@Nullable
-	private Varbits varbits;
 
 	@Nullable
 	private int[] regionIds;
@@ -533,15 +541,6 @@ enum DiscordGameEventType
 	DiscordGameEventType(String state, int priority)
 	{
 		this(state, priority, true, false, false, true, false);
-	}
-
-	DiscordGameEventType(String areaName, DiscordAreaType areaType, Varbits varbits)
-	{
-		this.state = exploring(areaType, areaName);
-		this.priority = -2;
-		this.discordAreaType = areaType;
-		this.varbits = varbits;
-		this.shouldClear = true;
 	}
 
 	private static String training(final Skill skill)
@@ -602,18 +601,5 @@ enum DiscordGameEventType
 	public static DiscordGameEventType fromRegion(final int regionId)
 	{
 		return FROM_REGION.get(regionId);
-	}
-
-	public static DiscordGameEventType fromVarbit(final Client client)
-	{
-		for (DiscordGameEventType fromVarbit : FROM_VARBITS)
-		{
-			if (client.getVar(fromVarbit.getVarbits()) != 0)
-			{
-				return fromVarbit;
-			}
-		}
-
-		return null;
 	}
 }

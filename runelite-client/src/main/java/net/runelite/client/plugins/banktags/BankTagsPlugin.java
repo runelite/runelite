@@ -75,13 +75,11 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.banktags.tabs.TagTab;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -89,7 +87,6 @@ import net.runelite.client.util.Text;
 	description = "Enable tagging of bank items and searching of bank tags",
 	tags = {"searching", "tagging"}
 )
-@PluginDependency(ClueScrollPlugin.class)
 public class BankTagsPlugin extends Plugin implements MouseWheelListener
 {
 	public static final String CONFIG_GROUP = "banktags";
@@ -102,6 +99,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private static final int ITEM_VERTICAL_SPACING = 36;
 	private static final int ITEM_HORIZONTAL_SPACING = 48;
 	private static final int ITEM_ROW_START = 51;
+	private static final int ITEM_CONTAINER_BOTTOM_PADDING = 4;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
@@ -374,12 +372,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+		if (event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.RUNELITE
 			&& event.getMenuOption().startsWith(EDIT_TAGS_MENU_OPTION))
 		{
 			event.consume();
-			int inventoryIndex = event.getActionParam();
+			int inventoryIndex = event.getParam0();
 			ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
 			if (bankContainer == null)
 			{
@@ -497,18 +495,27 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			return;
 		}
 
-		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD || !config.removeSeparators())
-		{
-			return;
-		}
-
-		if (!tabInterface.isActive())
+		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD)
 		{
 			return;
 		}
 
 		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		if (itemContainer == null)
+		{
+			return;
+		}
+
+		if (tabInterface.isTagTabActive())
+		{
+			int numTabs = (int) Arrays.stream(itemContainer.getDynamicChildren())
+				.filter(child -> child.getItemId() != -1 && !child.isHidden())
+				.count();
+			updateBankContainerScrollHeight(numTabs);
+			return;
+		}
+
+		if (!tabInterface.isActive() || !config.removeSeparators())
 		{
 			return;
 		}
@@ -552,11 +559,15 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			}
 		}
 
-		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		updateBankContainerScrollHeight(items);
+	}
+
+	private void updateBankContainerScrollHeight(int items)
+	{
+		Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		int itemContainerHeight = bankItemContainer.getHeight();
-		// add a second row of height here to allow users to scroll down when the last row is partially visible
-		int adjustedScrollHeight = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING;
-		itemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
+		final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
+		bankItemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
 
 		final int itemContainerScroll = bankItemContainer.getScrollY();
 		clientThread.invokeLater(() ->
@@ -564,7 +575,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				WidgetInfo.BANK_SCROLLBAR.getId(),
 				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
 				itemContainerScroll));
-
 	}
 
 	@Subscribe

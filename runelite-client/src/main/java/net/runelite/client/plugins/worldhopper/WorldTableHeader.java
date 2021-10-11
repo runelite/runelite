@@ -54,7 +54,7 @@ class WorldTableHeader extends JPanel
 
 	static
 	{
-		final BufferedImage arrowDown = ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "arrow_down.png");
+		final BufferedImage arrowDown = ImageUtil.loadImageResource(WorldHopperPlugin.class, "arrow_down.png");
 		final BufferedImage arrowUp = ImageUtil.rotateImage(arrowDown, Math.PI);
 		final BufferedImage arrowUpFaded = ImageUtil.luminanceOffset(arrowUp, -80);
 		ARROW_UP = new ImageIcon(arrowUpFaded);

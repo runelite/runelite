@@ -88,7 +88,6 @@ public class ObjectIndicatorsPlugin extends Plugin
 	private static final String MARK = "Mark object";
 	private static final String UNMARK = "Unmark object";
 
-	private final Gson GSON = new Gson();
 	@Getter(AccessLevel.PACKAGE)
 	private final List<ColorTileObject> objects = new ArrayList<>();
 	private final Map<Integer, Set<ObjectPoint>> points = new HashMap<>();
@@ -107,6 +106,9 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ObjectIndicatorsConfig config;
+
+	@Inject
+	private Gson gson;
 
 	@Provides
 	ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -206,7 +208,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			}
 		}
 
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		if (gameStateChanged.getGameState() != GameState.LOGGED_IN && gameStateChanged.getGameState() != GameState.CONNECTION_LOST)
 		{
 			objects.clear();
 		}
@@ -251,8 +253,8 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getTiles();
-		final int x = event.getActionParam();
-		final int y = event.getWidgetId();
+		final int x = event.getParam0();
+		final int y = event.getParam1();
 		final int z = client.getPlane();
 		final Tile tile = tiles[z][x][y];
 
@@ -286,20 +288,31 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
+		ObjectComposition objectComposition = client.getObjectDefinition(object.getId());
+		if (objectComposition.getImpostorIds() == null)
+		{
+			// Multiloc names are instead checked in the overlay
+			String name = objectComposition.getName();
+			if (Strings.isNullOrEmpty(name) || name.equals("null"))
+			{
+				// was marked, but name has changed
+				return;
+			}
+		}
+
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
 					&& worldPoint.getRegionY() == objectPoint.getRegionY()
-					&& worldPoint.getPlane() == objectPoint.getZ())
+					&& worldPoint.getPlane() == objectPoint.getZ()
+					&& objectPoint.getId() == object.getId())
 			{
-				// Transform object to get the name which matches against what we've stored
-				ObjectComposition composition = getObjectComposition(object.getId());
-				if (composition != null && objectPoint.getName().equals(composition.getName()))
-				{
-					log.debug("Marking object {} due to matching {}", object, objectPoint);
-					objects.add(new ColorTileObject(object, objectPoint.getColor()));
-					break;
-				}
+				log.debug("Marking object {} due to matching {}", object, objectPoint);
+				objects.add(new ColorTileObject(object,
+					objectComposition,
+					objectPoint.getName(),
+					objectPoint.getColor()));
+				break;
 			}
 		}
 	}
@@ -413,7 +426,10 @@ public class ObjectIndicatorsPlugin extends Plugin
 		else
 		{
 			objectPoints.add(point);
-			objects.add(new ColorTileObject(object, color));
+			objects.add(new ColorTileObject(object,
+				client.getObjectDefinition(object.getId()),
+				name,
+				color));
 			log.debug("Marking object: {}", point);
 		}
 
@@ -428,7 +444,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		}
 		else
 		{
-			final String json = GSON.toJson(points);
+			final String json = gson.toJson(points);
 			configManager.setConfiguration(CONFIG_GROUP, "region_" + id, json);
 		}
 	}
@@ -442,7 +458,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return null;
 		}
 
-		Set<ObjectPoint> points = GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
+		Set<ObjectPoint> points = gson.fromJson(json, new TypeToken<Set<ObjectPoint>>()
 		{
 		}.getType());
 		// Prior to multiloc support the plugin would mark objects named "null", which breaks

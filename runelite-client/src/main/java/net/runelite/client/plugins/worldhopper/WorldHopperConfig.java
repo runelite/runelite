@@ -137,6 +137,17 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "regionFilter",
+		name = "Filter worlds by region",
+		description = "Restrict sidebar worlds to one region",
+		position = 8
+	)
+	default RegionFilterMode regionFilter()
+	{
+		return RegionFilterMode.NONE;
+	}
+
+	@ConfigItem(
 		keyName = "displayPing",
 		name = "Display current ping",
 		description = "Displays ping to current game world",

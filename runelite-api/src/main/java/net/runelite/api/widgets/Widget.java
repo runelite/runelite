@@ -26,6 +26,7 @@ package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
 import java.util.Collection;
+import javax.annotation.Nullable;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
 
@@ -116,6 +117,7 @@ public interface Widget
 	/**
 	 * Gets the dynamic children of this widget in a sparse array
 	 */
+	@Nullable
 	Widget[] getChildren();
 
 	/**
@@ -844,6 +846,20 @@ public interface Widget
 	void setYPositionMode(int ypm);
 
 	/**
+	 * Get the line height for this widget.
+	 *
+	 * @return
+	 */
+	int getLineHeight();
+
+	/**
+	 * Set the line height for this widget. If set to 0, the line height is taken from the font instead.
+	 *
+	 * @param lineHeight
+	 */
+	void setLineHeight(int lineHeight);
+
+	/**
 	 * Gets the X axis text position mode
 	 *
 	 * @see WidgetTextAlignment
@@ -972,4 +988,42 @@ public interface Widget
 	 * @param args A ScriptID, then the args for the script
 	 */
 	void setOnReleaseListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran when a drag operation is finished on this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnDragCompleteListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran when this widget moves due to a drag
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnDragListener(Object ...args);
+
+	/**
+	 * Container this can be dragged in
+	 */
+	Widget getDragParent();
+
+	/**
+	 * Container this can be dragged in
+	 */
+	void setDragParent(Widget dragParent);
+
+	/**
+	 * Gets the script and arguments to be ran when one of the listened for vars changes.
+	 *
+	 * @return
+	 */
+	Object[] getOnVarTransmitListener();
+
+	/**
+	 * Sets a script to be ran when a varplayer changes
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnVarTransmitListener(Object ...args);
 }

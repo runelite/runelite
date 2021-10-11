@@ -28,7 +28,6 @@ import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 import com.google.inject.grapher.graphviz.GraphvizGrapher;
 import com.google.inject.grapher.graphviz.GraphvizModule;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -39,10 +38,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import net.runelite.api.Client;
@@ -153,24 +150,28 @@ public class PluginManagerTest
 	@Test
 	public void dumpGraph() throws Exception
 	{
-		List<Module> modules = new ArrayList<>();
-		modules.add(new GraphvizModule());
-		modules.add(new RuneLiteModule(mock(OkHttpClient.class), () -> null, true, false,
-			RuneLite.DEFAULT_SESSION_FILE,
-			RuneLite.DEFAULT_CONFIG_FILE));
-
 		PluginManager pluginManager = new PluginManager(true, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
-		modules.addAll(pluginManager.getPlugins());
 
-		File file = folder.newFile();
-		try (PrintWriter out = new PrintWriter(file, "UTF-8"))
+		Injector graphvizInjector = Guice.createInjector(new GraphvizModule());
+		GraphvizGrapher graphvizGrapher = graphvizInjector.getInstance(GraphvizGrapher.class);
+
+		File dotFolder = folder.newFolder();
+		try (PrintWriter out = new PrintWriter(new File(dotFolder, "runelite.dot"), "UTF-8"))
 		{
-			Injector injector = Guice.createInjector(modules);
-			GraphvizGrapher grapher = injector.getInstance(GraphvizGrapher.class);
-			grapher.setOut(out);
-			grapher.setRankdir("TB");
-			grapher.graph(injector);
+			graphvizGrapher.setOut(out);
+			graphvizGrapher.setRankdir("TB");
+			graphvizGrapher.graph(RuneLite.getInjector());
+		}
+
+		for (Plugin p : pluginManager.getPlugins())
+		{
+			try (PrintWriter out = new PrintWriter(new File(dotFolder, p.getName() + ".dot"), "UTF-8"))
+			{
+				graphvizGrapher.setOut(out);
+				graphvizGrapher.setRankdir("TB");
+				graphvizGrapher.graph(p.getInjector());
+			}
 		}
 	}
 
