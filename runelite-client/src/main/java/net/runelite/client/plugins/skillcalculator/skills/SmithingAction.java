@@ -32,7 +32,7 @@ import net.runelite.api.ItemID;
 @Getter
 public enum SmithingAction implements ItemSkillAction
 {
-	BRONZE_BAR(ItemID.BRONZE_BAR, 1, 6.3f),
+	BRONZE_BAR(ItemID.BRONZE_BAR, 1, 6.2f),
 	BRONZE_AXE(ItemID.BRONZE_AXE, 1, 12.5f),
 	BRONZE_DAGGER(ItemID.BRONZE_DAGGER, 1, 12.5f),
 	BRONZE_MACE(ItemID.BRONZE_MACE, 2, 12.5f),
