@@ -1182,9 +1182,20 @@ public interface Client extends GameEngine
 	 *
 	 * @param inventory the inventory type
 	 * @return the item container
+	 * @see InventoryID
 	 */
 	@Nullable
 	ItemContainer getItemContainer(InventoryID inventory);
+
+	/**
+	 * Get an item container by id
+	 *
+	 * @param id the inventory id
+	 * @return the item container
+	 * @see InventoryID
+	 */
+	@Nullable
+	ItemContainer getItemContainer(int id);
 
 	/**
 	 * Get all item containers
