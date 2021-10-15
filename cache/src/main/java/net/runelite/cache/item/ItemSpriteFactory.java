@@ -33,6 +33,7 @@ import net.runelite.cache.definitions.providers.ModelProvider;
 import net.runelite.cache.definitions.providers.SpriteProvider;
 import net.runelite.cache.definitions.providers.TextureProvider;
 import net.runelite.cache.models.FaceNormal;
+import net.runelite.cache.models.JagexColor;
 import net.runelite.cache.models.VertexNormal;
 
 public class ItemSpriteFactory
@@ -111,7 +112,7 @@ public class ItemSpriteFactory
 
 		SpritePixels spritePixels = new SpritePixels(36, 32);
 		Graphics3D graphics = new Graphics3D(rsTextureProvider);
-		graphics.setBrightness(0.6d);
+		graphics.setBrightness(JagexColor.BRIGHTNESS_MAX);
 		graphics.setRasterBuffer(spritePixels.pixels, 36, 32);
 		graphics.reset();
 		graphics.setRasterClipping();

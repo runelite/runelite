@@ -31,7 +31,7 @@ import net.runelite.cache.definitions.TextureDefinition;
 
 public class ObjExporter
 {
-	private static final double BRIGHTNESS = JagexColor.BRIGTHNESS_MIN;
+	private static final double BRIGHTNESS = JagexColor.BRIGHTNESS_MIN;
 
 	private final TextureManager textureManager;
 	private final ModelDefinition model;
