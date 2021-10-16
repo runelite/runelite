@@ -38,58 +38,8 @@ public interface GroundMarkerConfig extends Config
 	String SHOW_IMPORT_EXPORT_KEY_NAME = "showImportExport";
 	String SHOW_CLEAR_KEY_NAME = "showClear";
 
-	@Alpha
 	@ConfigItem(
-		keyName = "markerColor",
-		name = "Tile color",
-		description = "Configures the color of marked tile"
-	)
-	default Color markerColor()
-	{
-		return Color.YELLOW;
-	}
-
-	@ConfigItem(
-		keyName = "rememberTileColors",
-		name = "Remember color per tile",
-		description = "Color tiles using the color from time of placement"
-	)
-	default boolean rememberTileColors()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "drawOnMinimap",
-		name = "Draw tiles on minimap",
-		description = "Configures whether marked tiles should be drawn on minimap"
-	)
-	default boolean drawTileOnMinimmap()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
-		name = "Show Import/Export options",
-		description = "Show the Import/Export options on the minimap right-click menu"
-	)
-	default boolean showImportExport()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = SHOW_CLEAR_KEY_NAME,
-		name = "Show Clear option",
-		description = "Show the Clear option on the minimap right-click menu, which deletes all currently loaded markers"
-	)
-	default boolean showClear()
-	{
-		return false;
-	}
-
-	@ConfigItem(
+		position = 0,
 		keyName = "borderWidth",
 		name = "Border Width",
 		description = "Width of the marked tile border"
@@ -100,12 +50,70 @@ public interface GroundMarkerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "fillOpacity",
-		name = "Fill Opacity",
-		description = "Opacity of the tile fill color"
+		position = 1,
+		keyName = "drawOnMinimap",
+		name = "Draw tiles on minimap",
+		description = "Configures whether marked tiles should be drawn on minimap"
 	)
-	default int fillOpacity()
+	default boolean drawTileOnMinimmap()
 	{
-		return 50;
+		return false;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "rememberTileColors",
+		name = "Remember color per tile",
+		description = "Color tiles using the color from time of placement"
+	)
+	default boolean rememberTileColors()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = SHOW_CLEAR_KEY_NAME,
+		name = "Show Clear option",
+		description = "Show the Clear option on the minimap right-click menu, which deletes all currently loaded markers"
+	)
+	default boolean showClear()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
+		name = "Show Import/Export options",
+		description = "Show the Import/Export options on the minimap right-click menu"
+	)
+	default boolean showImportExport()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 5,
+		keyName = "markerColor",
+		name = "Tile color",
+		description = "Configures the color of marked tile"
+	)
+	default Color markerColor()
+	{
+		return Color.YELLOW;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 6,
+		keyName = "fillColor",
+		name = "Fill color",
+		description = "Configures the color of the marked tile's fill"
+	)
+	default Color fillColor()
+	{
+		return new Color(0, 0, 0, 50);
 	}
 }
