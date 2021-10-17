@@ -25,52 +25,54 @@
  */
 package net.runelite.client.plugins.wintertodt;
 
-import java.awt.*;
 import javax.inject.Inject;
-
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class WintertodtIdleOverlay extends OverlayPanel {
-    private final WintertodtPlugin plugin;
-    private final WintertodtConfig wintertodtConfig;
-    private final Client client;
+class WintertodtIdleOverlay extends OverlayPanel
+{
+	private final WintertodtPlugin plugin;
+	private final WintertodtConfig wintertodtConfig;
+	private final Client client;
 
-    @Inject
-    private WintertodtIdleOverlay(WintertodtPlugin plugin, WintertodtConfig wintertodtConfig, Client client) {
-        super(plugin);
-        this.plugin = plugin;
-        this.wintertodtConfig = wintertodtConfig;
-        this.client = client;
-        setPosition(OverlayPosition.DYNAMIC);
-        getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Wintertodt idle overlay"));
-    }
+	@Inject
+	private WintertodtIdleOverlay(WintertodtPlugin plugin, WintertodtConfig wintertodtConfig, Client client)
+	{
+		super(plugin);
+		this.plugin = plugin;
+		this.wintertodtConfig = wintertodtConfig;
+		this.client = client;
+		setPosition(OverlayPosition.DYNAMIC);
+	}
 
-    @Override
-    public Dimension getPreferredSize() {
-        return client.getCanvas().getSize();
-    }
+	@Override
+	public Dimension getPreferredSize()
+	{
+		return client.getCanvas().getSize();
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics) {
-        if (!plugin.isInWintertodt() || !wintertodtConfig.showIdleOverlay() || plugin.getPreviousTimerValue() > wintertodtConfig.roundNotification()) {
-            return null;
-        }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!plugin.isInWintertodt() || !wintertodtConfig.showIdleOverlay() || plugin.getPreviousTimerValue() > wintertodtConfig.roundNotification())
+		{
+			return null;
+		}
 
-        if (plugin.getCurrentActivity() == WintertodtActivity.IDLE) {
-            final Color color = graphics.getColor();
-            graphics.setColor(wintertodtConfig.idleOverlayColor());
-            graphics.fill(new Rectangle(client.getCanvas().getSize()));
-            graphics.setColor(color);
-        }
+		if (plugin.getCurrentActivity() == WintertodtActivity.IDLE)
+		{
+			final Color color = graphics.getColor();
+			graphics.setColor(wintertodtConfig.idleOverlayColor());
+			graphics.fill(new Rectangle(client.getCanvas().getSize()));
+			graphics.setColor(color);
+		}
 
-        return super.render(graphics);
-    }
+		return super.render(graphics);
+	}
 }
