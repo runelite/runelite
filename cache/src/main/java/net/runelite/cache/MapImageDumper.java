@@ -106,6 +106,10 @@ public class MapImageDumper
 	@Setter
 	private boolean renderIcons = true;
 
+	@Getter
+	@Setter
+	private boolean transparency = false;
+
 	public MapImageDumper(Store store, KeyProvider keyProvider)
 	{
 		this(store, new RegionLoader(store, keyProvider));
@@ -168,7 +172,7 @@ public class MapImageDumper
 			MAP_SCALE, (pixelsX * pixelsY * 3 / 1024 / 1024),
 			Runtime.getRuntime().maxMemory() / 1024L / 1024L);
 
-		BufferedImage image = new BufferedImage(pixelsX, pixelsY, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(pixelsX, pixelsY, transparency ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
 
 		drawMap(image, z);
 		drawObjects(image, z);
@@ -182,7 +186,7 @@ public class MapImageDumper
 		int pixelsX = Region.X * MAP_SCALE;
 		int pixelsY = Region.Y * MAP_SCALE;
 
-		BufferedImage image = new BufferedImage(pixelsX, pixelsY, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(pixelsX, pixelsY, transparency ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
 
 		drawMap(image, 0, 0, z, region);
 		drawObjects(image, 0, 0, region, z);
@@ -252,9 +256,13 @@ public class MapImageDumper
 		{
 			for (int j = 0; j < MAP_SCALE; ++j)
 			{
-				to.setRGB(drawBaseX * MAP_SCALE + x * MAP_SCALE + i,
-					drawBaseY * MAP_SCALE + y * MAP_SCALE + j,
-					pixels[x * MAP_SCALE + i][y * MAP_SCALE + j]);
+				int argb = pixels[x * MAP_SCALE + i][y * MAP_SCALE + j];
+				if (argb != 0)
+				{
+					to.setRGB(drawBaseX * MAP_SCALE + x * MAP_SCALE + i,
+						drawBaseY * MAP_SCALE + y * MAP_SCALE + j,
+						argb);
+				}
 			}
 		}
 	}
@@ -383,11 +391,11 @@ public class MapImageDumper
 								if (underlayHsl != -1)
 								{
 									int var0 = method1792(underlayHsl, 96);
-									underlayRgb = colorPalette[var0];
+									underlayRgb = colorPalette[var0] | 0xFF000000;
 								}
 
 								int shape, rotation;
-								Integer overlayRgb = null;
+								int overlayRgb = 0;
 								if (overlayId == 0)
 								{
 									shape = rotation = 0;
@@ -399,28 +407,27 @@ public class MapImageDumper
 
 									OverlayDefinition overlayDefinition = findOverlay(overlayId - 1);
 									int overlayTexture = overlayDefinition.getTexture();
-									int rgb;
+									int hsl;
 
 									if (overlayTexture >= 0)
 									{
-										rgb = rsTextureProvider.getAverageTextureRGB(overlayTexture);
+										hsl = rsTextureProvider.getAverageTextureRGB(overlayTexture);
 									}
 									else if (overlayDefinition.getRgbColor() == 0xFF_00FF)
 									{
-										rgb = -2;
+										hsl = -2;
 									}
 									else
 									{
 										// randomness added here
 										int overlayHsl = packHsl(overlayDefinition.getHue(), overlayDefinition.getSaturation(), overlayDefinition.getLightness());
-										rgb = overlayHsl;
+										hsl = overlayHsl;
 									}
 
-									overlayRgb = 0;
-									if (rgb != -2)
+									if (hsl != -2)
 									{
-										int var0 = adjustHSLListness0(rgb, 96);
-										overlayRgb = colorPalette[var0];
+										int var0 = adjustHSLListness0(hsl, 96);
+										overlayRgb = colorPalette[var0] | 0xFF000000;
 									}
 
 									if (overlayDefinition.getSecondaryRgbColor() != -1)
@@ -428,9 +435,9 @@ public class MapImageDumper
 										int hue = overlayDefinition.getOtherHue();
 										int sat = overlayDefinition.getOtherSaturation();
 										int olight = overlayDefinition.getOtherLightness();
-										rgb = packHsl(hue, sat, olight);
-										int var0 = adjustHSLListness0(rgb, 96);
-										overlayRgb = colorPalette[var0];
+										hsl = packHsl(hue, sat, olight);
+										int var0 = adjustHSLListness0(hsl, 96);
+										overlayRgb = colorPalette[var0] | 0xFF000000;
 									}
 								}
 
@@ -585,6 +592,7 @@ public class MapImageDumper
 				{
 					rgb = doorColor;
 				}
+				rgb |= 0xFF000000;
 
 				if (object.getMapSceneID() != -1)
 				{
@@ -698,10 +706,10 @@ public class MapImageDumper
 					continue;
 				}
 
-				int rgb = 0xEE_EEEE;
+				int rgb = 0xFFEE_EEEE;
 				if (hash > 0)
 				{
-					rgb = 0xEE_0000;
+					rgb = 0xFFEE_0000;
 				}
 
 				if (rotation != 0 && rotation != 2)
