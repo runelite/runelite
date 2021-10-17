@@ -108,6 +108,7 @@ public class GroundItemsPlugin extends Plugin
 	{
 		private final int price;
 		private final Color color;
+		private final Color fillColor;
 	}
 
 	// The game won't send anything higher than this value to the plugin -
@@ -462,22 +463,22 @@ public class GroundItemsPlugin extends Plugin
 
 		if (config.insaneValuePrice() > 0)
 		{
-			priceCheckBuilder.add(new PriceHighlight(config.insaneValuePrice(), config.insaneValueColor()));
+			priceCheckBuilder.add(new PriceHighlight(config.insaneValuePrice(), config.insaneValueColor(), config.insaneValueFill()));
 		}
 
 		if (config.highValuePrice() > 0)
 		{
-			priceCheckBuilder.add(new PriceHighlight(config.highValuePrice(), config.highValueColor()));
+			priceCheckBuilder.add(new PriceHighlight(config.highValuePrice(), config.highValueColor(), config.highValueFill()));
 		}
 
 		if (config.mediumValuePrice() > 0)
 		{
-			priceCheckBuilder.add(new PriceHighlight(config.mediumValuePrice(), config.mediumValueColor()));
+			priceCheckBuilder.add(new PriceHighlight(config.mediumValuePrice(), config.mediumValueColor(), config.mediumValueFill()));
 		}
 
 		if (config.lowValuePrice() > 0)
 		{
-			priceCheckBuilder.add(new PriceHighlight(config.lowValuePrice(), config.lowValueColor()));
+			priceCheckBuilder.add(new PriceHighlight(config.lowValuePrice(), config.lowValueColor(), config.lowValueFill()));
 		}
 
 		priceChecks = priceCheckBuilder.build();
@@ -510,7 +511,7 @@ public class GroundItemsPlugin extends Plugin
 			final int gePrice = groundItem.getGePrice();
 			final int haPrice = groundItem.getHaPrice();
 			final Color hidden = getHidden(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice, groundItem.isTradeable());
-			final Color highlighted = getHighlighted(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice);
+			final PriceHighlight highlighted = getHighlighted(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice);
 			final Color color = getItemColor(highlighted, hidden);
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
@@ -578,11 +579,11 @@ public class GroundItemsPlugin extends Plugin
 		config.setHighlightedItem(Text.toCSV(highlightedItemSet));
 	}
 
-	Color getHighlighted(NamedQuantity item, int gePrice, int haPrice)
+	PriceHighlight getHighlighted(NamedQuantity item, int gePrice, int haPrice)
 	{
 		if (TRUE.equals(highlightedItems.getUnchecked(item)))
 		{
-			return config.highlightedColor();
+			return new PriceHighlight(gePrice, config.highlightedColor(), config.highlightedFill());
 		}
 
 		// Explicit hide takes priority over implicit highlight
@@ -596,7 +597,7 @@ public class GroundItemsPlugin extends Plugin
 		{
 			if (price > highlight.getPrice())
 			{
-				return highlight.getColor();
+				return highlight;
 			}
 		}
 
@@ -617,11 +618,11 @@ public class GroundItemsPlugin extends Plugin
 			: null;
 	}
 
-	Color getItemColor(Color highlighted, Color hidden)
+	Color getItemColor(PriceHighlight highlighted, Color hidden)
 	{
 		if (highlighted != null)
 		{
-			return highlighted;
+			return highlighted.getColor();
 		}
 
 		if (hidden != null)
@@ -630,6 +631,21 @@ public class GroundItemsPlugin extends Plugin
 		}
 
 		return config.defaultColor();
+	}
+
+	Color getItemFillColor(PriceHighlight highlighted, Color hiddenFill)
+	{
+		if (highlighted != null)
+		{
+			return highlighted.getFillColor();
+		}
+
+		if (hiddenFill != null)
+		{
+			return hiddenFill;
+		}
+
+		return config.defaultFill();
 	}
 
 	@Subscribe

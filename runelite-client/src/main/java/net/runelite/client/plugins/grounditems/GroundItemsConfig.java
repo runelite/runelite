@@ -234,10 +234,22 @@ public interface GroundItemsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
+		keyName = "defaultFill",
+		name = "Default fill",
+		description = "Configures the fill color for default, non-highlighted items",
+		position = 15
+	)
+	default Color defaultFill()
+	{
+		return new Color(0, 0, 0, 50);
+	}
+
+	@Alpha
+	@ConfigItem(
 		keyName = "highlightedColor",
 		name = "Highlighted items",
 		description = "Configures the color for highlighted items",
-		position = 15
+		position = 16
 	)
 	default Color highlightedColor()
 	{
@@ -246,10 +258,22 @@ public interface GroundItemsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
+		keyName = "highlightedFill",
+		name = "Highlighted fill",
+		description = "Configures the fill color for highlighted items",
+		position = 17
+	)
+	default Color highlightedFill()
+	{
+		return new Color(0, 0, 0, 50);
+	}
+
+	@Alpha
+	@ConfigItem(
 		keyName = "hiddenColor",
 		name = "Hidden items",
 		description = "Configures the color for hidden items in right-click menu and when holding ALT",
-		position = 16
+		position = 18
 	)
 	default Color hiddenColor()
 	{
@@ -261,18 +285,30 @@ public interface GroundItemsConfig extends Config
 		keyName = "lowValueColor",
 		name = "Low value items",
 		description = "Configures the color for low value items",
-		position = 17
+		position = 19
 	)
 	default Color lowValueColor()
 	{
 		return Color.decode("#66B2FF");
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "lowValueFill",
+		name = "Low value fill",
+		description = "Configures the fill color for low value items",
+		position = 20
+	)
+	default Color lowValueFill()
+	{
+		return new Color(0, 0, 0, 50);
+	}
+
 	@ConfigItem(
 		keyName = "lowValuePrice",
 		name = "Low value price",
 		description = "Configures the start price for low value items",
-		position = 18
+		position = 21
 	)
 	default int lowValuePrice()
 	{
@@ -284,18 +320,30 @@ public interface GroundItemsConfig extends Config
 		keyName = "mediumValueColor",
 		name = "Medium value items",
 		description = "Configures the color for medium value items",
-		position = 19
+		position = 22
 	)
 	default Color mediumValueColor()
 	{
 		return Color.decode("#99FF99");
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "mediumValueFill",
+		name = "Medium value fill",
+		description = "Configures the fill color for medium value items",
+		position = 23
+	)
+	default Color mediumValueFill()
+	{
+		return new Color(0, 0, 0, 50);
+	}
+
 	@ConfigItem(
 		keyName = "mediumValuePrice",
 		name = "Medium value price",
 		description = "Configures the start price for medium value items",
-		position = 20
+		position = 24
 	)
 	default int mediumValuePrice()
 	{
@@ -307,18 +355,30 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValueColor",
 		name = "High value items",
 		description = "Configures the color for high value items",
-		position = 21
+		position = 25
 	)
 	default Color highValueColor()
 	{
 		return Color.decode("#FF9600");
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "highValueFill",
+		name = "High value fill",
+		description = "Configures the fill color for high value items",
+		position = 26
+	)
+	default Color highValueFill()
+	{
+		return new Color(0, 0, 0, 50);
+	}
+
 	@ConfigItem(
 		keyName = "highValuePrice",
 		name = "High value price",
 		description = "Configures the start price for high value items",
-		position = 22
+		position = 27
 	)
 	default int highValuePrice()
 	{
@@ -330,18 +390,30 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValueColor",
 		name = "Insane value items",
 		description = "Configures the color for insane value items",
-		position = 23
+		position = 28
 	)
 	default Color insaneValueColor()
 	{
 		return Color.decode("#FF66B2");
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "insaneValueFill",
+		name = "Insane value fill",
+		description = "Configures the fill color for insane value items",
+		position = 29
+	)
+	default Color insaneValueFill()
+	{
+		return new Color(0, 0, 0, 50);
+	}
+
 	@ConfigItem(
 		keyName = "insaneValuePrice",
 		name = "Insane value price",
 		description = "Configures the start price for insane value items",
-		position = 24
+		position = 30
 	)
 	default int insaneValuePrice()
 	{
@@ -352,7 +424,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "onlyShowLoot",
 		name = "Only show loot",
 		description = "Only shows drops from NPCs and players",
-		position = 25
+		position = 31
 	)
 	default boolean onlyShowLoot()
 	{
@@ -363,7 +435,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "doubleTapDelay",
 		name = "Double-tap delay",
 		description = "Delay for the double-tap ALT to hide ground items. 0 to disable.",
-		position = 26
+		position = 32
 	)
 	@Units(Units.MILLISECONDS)
 	default int doubleTapDelay()
@@ -375,7 +447,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "collapseEntries",
 		name = "Collapse ground item menu",
 		description = "Collapses ground item menu entries together and appends count",
-		position = 27
+		position = 33
 	)
 	default boolean collapseEntries()
 	{
@@ -386,7 +458,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "groundItemTimers",
 		name = "Despawn timer",
 		description = "Shows despawn timers for items you've dropped and received as loot",
-		position = 28
+		position = 34
 	)
 	default DespawnTimerMode groundItemTimers()
 	{
@@ -397,7 +469,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "textOutline",
 		name = "Text Outline",
 		description = "Use an outline around text instead of a text shadow",
-		position = 29
+		position = 35
 	)
 	default boolean textOutline()
 	{
@@ -408,7 +480,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "showLootbeamForHighlighted",
 		name = "Highlighted item lootbeams",
 		description = "Configures lootbeams to show for all highlighted items.",
-		position = 30
+		position = 36
 	)
 	default boolean showLootbeamForHighlighted()
 	{
@@ -419,7 +491,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "showLootbeamTier",
 		name = "Lootbeam tier",
 		description = "Configures which price tiers will trigger a lootbeam",
-		position = 31
+		position = 37
 	)
 	default HighlightTier showLootbeamTier()
 	{

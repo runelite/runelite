@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -197,7 +198,7 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final Color highlighted = plugin.getHighlighted(new NamedQuantity(item), item.getGePrice(), item.getHaPrice());
+			final GroundItemsPlugin.PriceHighlight highlighted = plugin.getHighlighted(new NamedQuantity(item), item.getGePrice(), item.getHaPrice());
 			final Color hidden = plugin.getHidden(new NamedQuantity(item), item.getGePrice(), item.getHaPrice(), item.isTradeable());
 
 			if (highlighted == null && !plugin.isHotKeyPressed())
@@ -216,6 +217,7 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final Color color = plugin.getItemColor(highlighted, hidden);
+			final Color fillColor = plugin.getItemFillColor(highlighted, hidden);
 
 			if (config.highlightTiles())
 			{
@@ -223,7 +225,7 @@ public class GroundItemsOverlay extends Overlay
 
 				if (poly != null)
 				{
-					OverlayUtil.renderPolygon(graphics, poly, color);
+					OverlayUtil.renderPolygon(graphics, poly, color, fillColor, new BasicStroke(2));
 				}
 			}
 
