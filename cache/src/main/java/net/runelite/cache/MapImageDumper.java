@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.AreaDefinition;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.OverlayDefinition;
@@ -54,13 +56,11 @@ import net.runelite.cache.region.Region;
 import net.runelite.cache.region.RegionLoader;
 import net.runelite.cache.util.Djb2;
 import net.runelite.cache.util.KeyProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
+@Accessors(chain = true)
 public class MapImageDumper
 {
-	private static final Logger logger = LoggerFactory.getLogger(MapImageDumper.class);
-
 	private static final int MAP_SCALE = 4; // this squared is the number of pixels per map square
 	private static final int MAPICON_MAX_WIDTH = 5; // scale minimap icons down to this size so they fit..
 	private static final int MAPICON_MAX_HEIGHT = 6;
@@ -71,8 +71,8 @@ public class MapImageDumper
 	private static int[][] TILE_SHAPE_2D = new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1}, {1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1}, {0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0}, {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1}, {1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1}};
 	private static int[][] TILE_ROTATION_2D = new int[][]{{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, {12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3}, {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0}, {3, 7, 11, 15, 2, 6, 10, 14, 1, 5, 9, 13, 0, 4, 8, 12}};
 
-	private final int wallColor = (238 + (int) (Math.random() * 20.0D) - 10 << 16) + (238 + (int) (Math.random() * 20.0D) - 10 << 8) + (238 + (int) (Math.random() * 20.0D) - 10);
-	private final int doorColor = 238 + (int) (Math.random() * 20.0D) - 10 << 16;
+	private final int wallColor = (238 + (int) (random() * 20.0D) - 10 << 16) + (238 + (int) (random() * 20.0D) - 10 << 8) + (238 + (int) (random() * 20.0D) - 10);
+	private final int doorColor = 238 + (int) (random() * 20.0D) - 10 << 16;
 
 	private final Store store;
 
@@ -94,6 +94,18 @@ public class MapImageDumper
 	@Setter
 	private boolean outlineRegions;
 
+	@Getter
+	@Setter
+	private boolean renderMap = true;
+
+	@Getter
+	@Setter
+	private boolean renderObjects = true;
+
+	@Getter
+	@Setter
+	private boolean renderIcons = true;
+
 	public MapImageDumper(Store store, KeyProvider keyProvider)
 	{
 		this(store, new RegionLoader(store, keyProvider));
@@ -108,7 +120,19 @@ public class MapImageDumper
 		this.objectManager = new ObjectManager(store);
 	}
 
-	public void load() throws IOException
+	protected double random()
+	{
+		// the client would use a random value here, but we prefer determinism
+		return 0.5;
+	}
+
+	public MapImageDumper setBrightness(double brightness)
+	{
+		colorPalette = JagexColor.createPalette(brightness);
+		return this;
+	}
+
+	public MapImageDumper load() throws IOException
 	{
 		loadUnderlays(store);
 		loadOverlays(store);
@@ -122,6 +146,8 @@ public class MapImageDumper
 		areas.load();
 		sprites.load();
 		loadSprites();
+
+		return this;
 	}
 
 	public BufferedImage drawMap(int z)
@@ -138,7 +164,7 @@ public class MapImageDumper
 		int pixelsX = dimX * MAP_SCALE;
 		int pixelsY = dimY * MAP_SCALE;
 
-		logger.info("Map image dimensions: {}px x {}px, {}px per map square ({} MB). Max memory: {}mb", pixelsX, pixelsY,
+		log.info("Map image dimensions: {}px x {}px, {}px per map square ({} MB). Max memory: {}mb", pixelsX, pixelsY,
 			MAP_SCALE, (pixelsX * pixelsY * 3 / 1024 / 1024),
 			Runtime.getRuntime().maxMemory() / 1024L / 1024L);
 
@@ -167,6 +193,11 @@ public class MapImageDumper
 
 	private void drawMap(BufferedImage image, int drawBaseX, int drawBaseY, int z, Region region)
 	{
+		if (!renderMap)
+		{
+			return;
+		}
+
 		int[][] map = new int[Region.X * MAP_SCALE][Region.Y * MAP_SCALE];
 		drawMap(map, region, z);
 
@@ -493,6 +524,11 @@ public class MapImageDumper
 
 	private void drawObjects(BufferedImage image, int drawBaseX, int drawBaseY, Region region, int z)
 	{
+		if (!renderObjects)
+		{
+			return;
+		}
+
 		Graphics2D graphics = image.createGraphics();
 
 		for (Location location : region.getLocations())
@@ -863,6 +899,11 @@ public class MapImageDumper
 
 	private void drawMapIcons(Graphics2D graphics, Region region, int z, int drawBaseX, int drawBaseY)
 	{
+		if (!renderIcons)
+		{
+			return;
+		}
+
 		for (Location location : region.getLocations())
 		{
 			int localZ = location.getPosition().getZ();
@@ -903,10 +944,10 @@ public class MapImageDumper
 		regionLoader.loadRegions();
 		regionLoader.calculateBounds();
 
-		logger.info("North most region: {}", regionLoader.getLowestY().getBaseY());
-		logger.info("South most region: {}", regionLoader.getHighestY().getBaseY());
-		logger.info("West most region:  {}", regionLoader.getLowestX().getBaseX());
-		logger.info("East most region:  {}", regionLoader.getHighestX().getBaseX());
+		log.debug("North most region: {}", regionLoader.getLowestY().getBaseY());
+		log.debug("South most region: {}", regionLoader.getHighestY().getBaseY());
+		log.debug("West most region:  {}", regionLoader.getLowestX().getBaseX());
+		log.debug("East most region:  {}", regionLoader.getHighestX().getBaseX());
 	}
 
 	private void loadUnderlays(Store store) throws IOException
