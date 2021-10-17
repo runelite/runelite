@@ -74,6 +74,7 @@ class ObjectIndicatorsOverlay extends Overlay
 		{
 			TileObject object = colorTileObject.getTileObject();
 			Color color = colorTileObject.getColor();
+			Color fillColor = colorTileObject.getFillColor();
 
 			if (object.getPlane() != client.getPlane())
 			{
@@ -95,15 +96,16 @@ class ObjectIndicatorsOverlay extends Overlay
 				}
 			}
 
-			if (color == null || !config.rememberObjectColors())
+			if (color == null || fillColor == null || !config.rememberObjectColors())
 			{
 				// Fallback to the current config if the object is marked before the addition of multiple colors
 				color = config.markerColor();
+				fillColor = config.fillColor();
 			}
 
 			if (config.highlightHull())
 			{
-				renderConvexHull(graphics, object, color, stroke);
+				renderConvexHull(graphics, object, color, fillColor, stroke);
 			}
 
 			if (config.highlightOutline())
@@ -115,7 +117,7 @@ class ObjectIndicatorsOverlay extends Overlay
 		return null;
 	}
 
-	private void renderConvexHull(Graphics2D graphics, TileObject object, Color color, Stroke stroke)
+	private void renderConvexHull(Graphics2D graphics, TileObject object, Color color, Color fillColor, Stroke stroke)
 	{
 		final Shape polygon;
 		Shape polygon2 = null;
@@ -145,12 +147,12 @@ class ObjectIndicatorsOverlay extends Overlay
 
 		if (polygon != null)
 		{
-			OverlayUtil.renderPolygon(graphics, polygon, color, stroke);
+			OverlayUtil.renderPolygon(graphics, polygon, color, fillColor, stroke);
 		}
 
 		if (polygon2 != null)
 		{
-			OverlayUtil.renderPolygon(graphics, polygon2, color, stroke);
+			OverlayUtil.renderPolygon(graphics, polygon2, color, fillColor, stroke);
 		}
 	}
 }
