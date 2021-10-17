@@ -26,7 +26,6 @@ package net.runelite.cache;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -54,7 +53,6 @@ import net.runelite.cache.models.JagexColor;
 import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Region;
 import net.runelite.cache.region.RegionLoader;
-import net.runelite.cache.util.Djb2;
 import net.runelite.cache.util.KeyProvider;
 
 @Slf4j
@@ -62,8 +60,6 @@ import net.runelite.cache.util.KeyProvider;
 public class MapImageDumper
 {
 	private static final int MAP_SCALE = 4; // this squared is the number of pixels per map square
-	private static final int MAPICON_MAX_WIDTH = 5; // scale minimap icons down to this size so they fit..
-	private static final int MAPICON_MAX_HEIGHT = 6;
 	private static final int BLEND = 5; // number of surrounding tiles for ground blending
 
 	private static int[] colorPalette = JagexColor.createPalette(JagexColor.BRIGHTNESS_MIN);
@@ -78,7 +74,7 @@ public class MapImageDumper
 
 	private final Map<Integer, UnderlayDefinition> underlays = new HashMap<>();
 	private final Map<Integer, OverlayDefinition> overlays = new HashMap<>();
-	private final Map<Integer, Image> scaledMapIcons = new HashMap<>();
+	private SpriteDefinition[] mapDecorations;
 
 	private final RegionLoader regionLoader;
 	private final AreaManager areas;
@@ -536,8 +532,6 @@ public class MapImageDumper
 			return;
 		}
 
-		Graphics2D graphics = image.createGraphics();
-
 		for (Location location : region.getLocations())
 		{
 
@@ -576,7 +570,7 @@ public class MapImageDumper
 			ObjectDefinition object = findObject(location.getId());
 
 			int drawX = (drawBaseX + localX) * MAP_SCALE;
-			int drawY = (drawBaseY + (Region.Y - 1 - localY)) * MAP_SCALE;
+			int drawY = (drawBaseY + (Region.Y - object.getSizeY() - localY)) * MAP_SCALE;
 
 			if (type >= 0 && type <= 3)
 			{
@@ -596,8 +590,7 @@ public class MapImageDumper
 
 				if (object.getMapSceneID() != -1)
 				{
-					Image spriteImage = scaledMapIcons.get(object.getMapSceneID());
-					graphics.drawImage(spriteImage, drawX * MAP_SCALE, drawY * MAP_SCALE, null);
+					blitMapDecoration(image, drawX, drawY, object);
 				}
 				else
 				{
@@ -690,8 +683,7 @@ public class MapImageDumper
 			{
 				if (object.getMapSceneID() != -1)
 				{
-					Image spriteImage = scaledMapIcons.get(object.getMapSceneID());
-					graphics.drawImage(spriteImage, drawX, drawY, null);
+					blitMapDecoration(image, drawX, drawY, object);
 					continue;
 				}
 
@@ -732,13 +724,10 @@ public class MapImageDumper
 				// ground object
 				if (object.getMapSceneID() != -1)
 				{
-					Image spriteImage = scaledMapIcons.get(object.getMapSceneID());
-					graphics.drawImage(spriteImage, drawX, drawY, null);
+					blitMapDecoration(image, drawX, drawY, object);
 				}
 			}
 		}
-
-		graphics.dispose();
 	}
 
 	private void drawObjects(BufferedImage image, int z)
@@ -766,7 +755,7 @@ public class MapImageDumper
 
 		Graphics2D graphics = image.createGraphics();
 
-		drawMapIcons(graphics, region, z, drawBaseX, drawBaseY);
+		drawMapIcons(image, region, z, drawBaseX, drawBaseY);
 
 		if (labelRegions)
 		{
@@ -905,7 +894,7 @@ public class MapImageDumper
 		}
 	}
 
-	private void drawMapIcons(Graphics2D graphics, Region region, int z, int drawBaseX, int drawBaseY)
+	private void drawMapIcons(BufferedImage img, Region region, int z, int drawBaseX, int drawBaseY)
 	{
 		if (!renderIcons)
 		{
@@ -936,13 +925,13 @@ public class MapImageDumper
 				AreaDefinition area = areas.getArea(od.getMapAreaId());
 				assert area != null;
 
-				int spriteId = area.spriteId;
-
-				SpriteDefinition sprite = sprites.findSprite(spriteId, 0);
+				SpriteDefinition sprite = sprites.findSprite(area.spriteId, 0);
 				assert sprite != null;
 
-				BufferedImage iconImage = sprites.getSpriteImage(sprite);
-				graphics.drawImage(iconImage, drawX * MAP_SCALE, drawY * MAP_SCALE, null);
+				blitIcon(img,
+					2 + (drawX * MAP_SCALE) - (sprite.getMaxWidth() / 2),
+					2 + (drawY * MAP_SCALE) - (sprite.getMaxHeight() / 2),
+					sprite);
 			}
 		}
 	}
@@ -1008,35 +997,42 @@ public class MapImageDumper
 	{
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.SPRITES);
-		final int mapsceneHash = Djb2.hash("mapscene");
+		Archive a = index.findArchiveByName("mapscene");
+		byte[] contents = a.decompress(storage.loadArchive(a));
 
-		for (Archive a : index.getArchives())
+		SpriteLoader loader = new SpriteLoader();
+		mapDecorations = loader.load(a.getArchiveId(), contents);
+	}
+
+	private void blitMapDecoration(BufferedImage dst, int x, int y, ObjectDefinition object)
+	{
+		SpriteDefinition sprite = mapDecorations[object.getMapSceneID()];
+		int ox = (object.getSizeX() * MAP_SCALE - sprite.getWidth()) / 2;
+		int oy = (object.getSizeY() * MAP_SCALE - sprite.getHeight()) / 2;
+		blitIcon(dst, x + ox, y + oy, sprite);
+	}
+
+	private void blitIcon(BufferedImage dst, int x, int y, SpriteDefinition sprite)
+	{
+		x += sprite.getOffsetX();
+		y += sprite.getOffsetY();
+
+		int ymin = Math.max(0, -y);
+		int ymax = Math.min(sprite.getHeight(), dst.getHeight() - y);
+
+		int xmin = Math.max(0, -x);
+		int xmax = Math.min(sprite.getWidth(), dst.getWidth() - x);
+
+		for (int yo = ymin; yo < ymax; yo++)
 		{
-			byte[] contents = a.decompress(storage.loadArchive(a));
-
-			SpriteLoader loader = new SpriteLoader();
-			SpriteDefinition[] sprites = loader.load(a.getArchiveId(), contents);
-
-			for (SpriteDefinition sprite : sprites)
+			for (int xo = xmin; xo < xmax; xo++)
 			{
-				if (sprite.getHeight() <= 0 || sprite.getWidth() <= 0)
+				int rgb = sprite.getPixels()[xo + (yo * sprite.getWidth())];
+				if (rgb != 0)
 				{
-					continue;
-				}
-
-				if (a.getNameHash() == mapsceneHash)
-				{
-					BufferedImage spriteImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
-					spriteImage.setRGB(0, 0, sprite.getWidth(), sprite.getHeight(), sprite.getPixels(), 0, sprite.getWidth());
-
-					// scale image down so it fits
-					Image scaledImage = spriteImage.getScaledInstance(MAPICON_MAX_WIDTH, MAPICON_MAX_HEIGHT, 0);
-
-					assert scaledMapIcons.containsKey(sprite.getFrame()) == false;
-					scaledMapIcons.put(sprite.getFrame(), scaledImage);
+					dst.setRGB(x + xo, y + yo, rgb | 0xFF000000);
 				}
 			}
 		}
 	}
-
 }
