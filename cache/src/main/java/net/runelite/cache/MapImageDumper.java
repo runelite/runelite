@@ -53,6 +53,7 @@ import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Region;
 import net.runelite.cache.region.RegionLoader;
 import net.runelite.cache.util.Djb2;
+import net.runelite.cache.util.KeyProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +80,7 @@ public class MapImageDumper
 	private final Map<Integer, OverlayDefinition> overlays = new HashMap<>();
 	private final Map<Integer, Image> scaledMapIcons = new HashMap<>();
 
-	private RegionLoader regionLoader;
+	private final RegionLoader regionLoader;
 	private final AreaManager areas;
 	private final SpriteManager sprites;
 	private RSTextureProvider rsTextureProvider;
@@ -93,12 +94,18 @@ public class MapImageDumper
 	@Setter
 	private boolean outlineRegions;
 
-	public MapImageDumper(Store store)
+	public MapImageDumper(Store store, KeyProvider keyProvider)
+	{
+		this(store, new RegionLoader(store, keyProvider));
+	}
+
+	public MapImageDumper(Store store, RegionLoader regionLoader)
 	{
 		this.store = store;
+		this.regionLoader = regionLoader;
 		this.areas = new AreaManager(store);
 		this.sprites = new SpriteManager(store);
-		objectManager = new ObjectManager(store);
+		this.objectManager = new ObjectManager(store);
 	}
 
 	public void load() throws IOException
@@ -111,7 +118,7 @@ public class MapImageDumper
 		textureManager.load();
 		rsTextureProvider = new RSTextureProvider(textureManager, sprites);
 
-		loadRegions(store);
+		loadRegions();
 		areas.load();
 		sprites.load();
 		loadSprites();
@@ -891,9 +898,8 @@ public class MapImageDumper
 		}
 	}
 
-	private void loadRegions(Store store) throws IOException
+	private void loadRegions() throws IOException
 	{
-		regionLoader = new RegionLoader(store);
 		regionLoader.loadRegions();
 		regionLoader.calculateBounds();
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
+package net.runelite.cache.util;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class HeightMapDumperTest
+public interface KeyProvider
 {
-	private static final Logger logger = LoggerFactory.getLogger(HeightMapDumperTest.class);
-
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	//@Test
-	public void extract() throws IOException
-	{
-		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
-
-		try (Store store = new Store(base))
-		{
-			store.load();
-
-			HeightMapDumper dumper = new HeightMapDumper(store);
-			dumper.load(null);
-
-			BufferedImage image = dumper.drawHeightMap(0);
-
-			File imageFile = new File(outDir, "heightmap-0.png");
-
-			ImageIO.write(image, "png", imageFile);
-			logger.info("Wrote image {}", imageFile);
-		}
-	}
+	int[] getKey(int region);
 }
