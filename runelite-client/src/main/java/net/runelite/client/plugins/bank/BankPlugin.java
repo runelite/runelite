@@ -30,12 +30,18 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
+
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -43,11 +49,14 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.KeyCode;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
@@ -60,12 +69,15 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.util.Text;
+import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
 	name = "Bank",
@@ -84,6 +96,8 @@ public class BankPlugin extends Plugin
 	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>ge|ha|alch)?" +
 		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
 		"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))$", Pattern.CASE_INSENSITIVE);
+	private static final String IGNORE = "Ignore";
+	private static final String INCLUDE = "Include";
 
 	@Inject
 	private Client client;
@@ -106,6 +120,7 @@ public class BankPlugin extends Plugin
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
+	private List<String> ignoredItems;
 
 	private final KeyListener searchHotkeyListener = new KeyListener()
 	{
@@ -149,6 +164,7 @@ public class BankPlugin extends Plugin
 	protected void startUp()
 	{
 		keyManager.registerKeyListener(searchHotkeyListener);
+		ignoredItems = getIgnoredItems();
 	}
 
 	@Override
@@ -191,6 +207,67 @@ public class BankPlugin extends Plugin
 			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
 		{
 			forceRightClickFlag = true;
+		}
+
+		if (!config.ignoreSpecificitems())
+		{
+			return;
+		}
+
+		if (event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getOption().equals("Examine") && client.isKeyPressed(KeyCode.KC_SHIFT))
+		{
+			final String selectedMenu = Text.removeTags(event.getTarget());
+
+			if (selectedMenu == null || selectedMenu.equals(""))
+			{
+				return;
+			}
+
+			boolean matchesList = ignoredItems.stream()
+				.filter(highlight -> !highlight.equalsIgnoreCase(selectedMenu))
+				.anyMatch(highlight -> WildcardMatcher.matches(highlight, selectedMenu));
+
+			MenuEntry[] menuEntries = client.getMenuEntries();
+
+			if (!matchesList)
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+				final MenuEntry tagAllEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+				tagAllEntry.setOption(
+					ignoredItems.stream().anyMatch(selectedMenu::equalsIgnoreCase) ? INCLUDE : IGNORE);
+				tagAllEntry.setTarget(event.getTarget());
+				tagAllEntry.setParam0(event.getActionParam0());
+				tagAllEntry.setParam1(event.getActionParam1());
+				tagAllEntry.setIdentifier(event.getIdentifier());
+				tagAllEntry.setType(MenuAction.RUNELITE.getId());
+			}
+
+			client.setMenuEntries(menuEntries);
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(final MenuOptionClicked event)
+	{
+		if (event.getMenuAction() != MenuAction.RUNELITE || !config.ignoreSpecificitems())
+		{
+			return;
+		}
+
+		final String selectedMenu = Text.removeTags(event.getMenuTarget());
+
+		if (event.getMenuOption().equals(IGNORE))
+		{
+			List<String> newIgnoredItems = new ArrayList<String>(ignoredItems);
+			newIgnoredItems.add(selectedMenu);
+			config.setItemsToIgnore(Text.toCSV(newIgnoredItems));
+		}
+		else if (event.getMenuOption().equals(INCLUDE))
+		{
+			List<String> newIgnoredItems = new ArrayList<String>(ignoredItems);
+			newIgnoredItems.remove(selectedMenu);
+			config.setItemsToIgnore(Text.toCSV(newIgnoredItems));
 		}
 	}
 
@@ -289,6 +366,13 @@ public class BankPlugin extends Plugin
 					Widget child = children[i];
 					if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
 					{
+						if (config.ignoreSpecificitems() && ignoredItems.stream().anyMatch(
+							k -> WildcardMatcher.matches(k, Text.removeTags(child.getName()))
+						))
+						{
+							continue;
+						}
+
 						final int alchPrice = getHaPrice(child.getItemId());
 						geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
 						haTotal += (long) alchPrice * child.getItemQuantity();
@@ -325,6 +409,17 @@ public class BankPlugin extends Plugin
 		{
 			updateSeedVaultTotal();
 		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (!configChanged.getGroup().equals("bank"))
+		{
+			return;
+		}
+
+		ignoredItems = getIgnoredItems();
 	}
 
 	private String createValueText(long gePrice, long haPrice)
@@ -544,5 +639,17 @@ public class BankPlugin extends Plugin
 			default:
 				return itemManager.getItemComposition(itemId).getHaPrice();
 		}
+	}
+
+	List<String> getIgnoredItems()
+	{
+		final String configItems = config.getItemsToIgnore();
+
+		if (configItems.isEmpty())
+		{
+			return Collections.emptyList();
+		}
+
+		return Text.fromCSV(configItems);
 	}
 }

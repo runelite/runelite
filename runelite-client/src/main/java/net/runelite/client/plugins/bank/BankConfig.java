@@ -69,10 +69,39 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "ignoreSpecificitems",
+		name = "Ignore certain items",
+		description = "Ignore value of certain items when calculating bank value",
+		position = 4
+	)
+	default boolean ignoreSpecificitems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "itemsToIgnore",
+		name = "Items to Ignore",
+		description = "List of items to ignore when calculating bank value",
+		position = 5
+	)
+	default String getItemsToIgnore()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "itemsToIgnore",
+		name = "",
+		description = ""
+	)
+	void setItemsToIgnore(String itemsToIgnore);
+
+	@ConfigItem(
 		keyName = "rightClickBankInventory",
 		name = "Disable left click bank inventory",
 		description = "Configures whether the bank inventory button will bank your inventory on left click",
-		position = 4
+		position = 6
 	)
 	default boolean rightClickBankInventory()
 	{
@@ -83,7 +112,7 @@ public interface BankConfig extends Config
 		keyName = "rightClickBankEquip",
 		name = "Disable left click bank equipment",
 		description = "Configures whether the bank equipment button will bank your equipment on left click",
-		position = 5
+		position = 7
 	)
 	default boolean rightClickBankEquip()
 	{
@@ -94,7 +123,7 @@ public interface BankConfig extends Config
 		keyName = "rightClickBankLoot",
 		name = "Disable left click bank looting bag",
 		description = "Configures whether the bank looting bag button will bank your looting bag contents on left click",
-		position = 6
+		position = 8
 	)
 	default boolean rightClickBankLoot()
 	{
@@ -105,7 +134,7 @@ public interface BankConfig extends Config
 		keyName = "seedVaultValue",
 		name = "Show seed vault value",
 		description = "Adds the total value of all seeds inside the seed vault to the title",
-		position = 7
+		position = 9
 	)
 	default boolean seedVaultValue()
 	{
@@ -116,7 +145,7 @@ public interface BankConfig extends Config
 		keyName = "bankPinKeyboard",
 		name = "Keyboard Bankpin",
 		description = "Allows using the keyboard keys for bank pin input",
-		position = 8
+		position = 10
 	)
 	default boolean bankPinKeyboard()
 	{
@@ -127,7 +156,7 @@ public interface BankConfig extends Config
 		keyName = "searchKeybind",
 		name = "Search Shortcut",
 		description = "Keyboard shortcut for initiating a bank search",
-		position = 9
+		position = 11
 	)
 	default Keybind searchKeybind()
 	{
