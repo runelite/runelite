@@ -596,15 +596,8 @@ public class MapImageDumper
 							int drawX = (drawBaseX + localX) * MAP_SCALE;
 							int drawY = (drawBaseY + (Region.Y - object.getSizeY() - localY)) * MAP_SCALE;
 
-							// this is a wall
-							int hash = (localY << 7) + localX + (location.getId() << 14) + 0x4000_0000;
-							if (object.getWallOrDoor() == 0)
-							{
-								hash -= Integer.MIN_VALUE;
-							}
-
 							int rgb = wallColor;
-							if (hash > 0)
+							if (object.getWallOrDoor() != 0)
 							{
 								rgb = doorColor;
 							}
@@ -721,19 +714,8 @@ public class MapImageDumper
 								continue;
 							}
 
-							int hash = (localY << 7) + localX + (location.getId() << 14) + 0x4000_0000;
-							if (object.getWallOrDoor() == 0)
-							{
-								hash -= Integer.MIN_VALUE;
-							}
-
-							if ((hash >> 29 & 3) != 2)
-							{
-								continue;
-							}
-
 							int rgb = 0xFFEE_EEEE;
-							if (hash > 0)
+							if (object.getWallOrDoor() != 0)
 							{
 								rgb = 0xFFEE_0000;
 							}
@@ -765,7 +747,6 @@ public class MapImageDumper
 							int drawX = (drawBaseX + localX) * MAP_SCALE;
 							int drawY = (drawBaseY + (Region.Y - object.getSizeY() - localY)) * MAP_SCALE;
 
-							// ground object
 							if (object.getMapSceneID() != -1)
 							{
 								blitMapDecoration(image, drawX, drawY, object);
