@@ -157,6 +157,18 @@ public class WikiPlugin extends Plugin
 			return;
 		}
 
+		if (client.getVar(Varbits.WIKI_ENTITY_LOOKUP) == 1) // disabled
+		{
+			// when the wiki entity lookup option is disabled the banner parent layer,
+			// which is used for var transmit events, is not positioned. This is copied
+			// from [proc,wiki_icon_update]
+			wikiBannerParent.setOriginalX(client.isResized() ? 0 : 8);
+			wikiBannerParent.setOriginalY(135);
+			wikiBannerParent.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
+			wikiBannerParent.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
+			wikiBannerParent.revalidate();
+		}
+
 		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
 		if (vanilla != null)
 		{
