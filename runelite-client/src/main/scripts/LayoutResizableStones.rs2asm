@@ -20,11 +20,11 @@
       1131: LABEL9
    jump                   LABEL244
 LABEL9:
-   iconst                 10747945
+   iconst                 10747996
    if_getwidth           
    iconst                 33
    sub                   
-   iconst                 10747945
+   iconst                 10747996
    if_getheight          
    istore                 3
    istore                 2
@@ -33,7 +33,7 @@ LABEL9:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551334
+   iconst                 10551390
    enum                  
    if_getwidth           
    sub                   
@@ -48,7 +48,7 @@ LABEL9:
 LABEL29:
    iconst                 0
    iload                  3
-   iconst                 10747960
+   iconst                 10747997
    if_getheight          
    add                   
    iconst                 2
@@ -56,14 +56,14 @@ LABEL29:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10747977
+   iconst                 10747998
    enum                  
    if_setposition        
    iconst                 0
    iload                  3
    iconst                 2
    iconst                 2
-   iconst                 10747960
+   iconst                 10747997
    if_setposition        
    jump                   LABEL65
 LABEL49:
@@ -74,14 +74,14 @@ LABEL49:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10747977
+   iconst                 10747998
    enum                  
    if_setposition        
    iload                  2
    iconst                 0
    iconst                 2
    iconst                 2
-   iconst                 10747960
+   iconst                 10747997
    if_setposition        
 LABEL65:
    get_varbit             4084
@@ -93,7 +93,7 @@ LABEL69:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551330
+   iconst                 10551325
    enum                  
    2122                  
    jump                   LABEL96
@@ -107,7 +107,7 @@ LABEL81:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551330
+   iconst                 10551325
    enum                  
    2122                  
    jump                   LABEL96
@@ -116,7 +116,7 @@ LABEL89:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551330
+   iconst                 10551325
    enum                  
    2122                  
 LABEL96:
@@ -129,7 +129,7 @@ LABEL96:
 LABEL102:
    get_varbit             12986
    invoke                 633
-   iconst                 10747930
+   iconst                 10747925
    if_sethide            
 LABEL106:
    jump                   LABEL244
@@ -143,7 +143,7 @@ LABEL111:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551330
+   iconst                 10551325
    enum                  
    2122                  
    jump                   LABEL138
@@ -157,7 +157,7 @@ LABEL123:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551330
+   iconst                 10551325
    enum                  
    2122                  
    jump                   LABEL138
@@ -166,7 +166,7 @@ LABEL131:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551330
+   iconst                 10551325
    enum                  
    2122                  
 LABEL138:
@@ -179,7 +179,7 @@ LABEL138:
 LABEL144:
    get_varbit             12986
    invoke                 633
-   iconst                 10551322
+   iconst                 10551317
    if_sethide            
 LABEL148:
    jump                   LABEL244
@@ -193,7 +193,7 @@ LABEL153:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551330
+   iconst                 10551325
    enum                  
    2122                  
    jump                   LABEL168
@@ -202,7 +202,7 @@ LABEL161:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551330
+   iconst                 10551325
    enum                  
    2122                  
 LABEL168:
@@ -217,15 +217,15 @@ LABEL169:
    jump                   LABEL180
 LABEL176:
    iconst                 1
-   iconst                 39387175
+   iconst                 39387174
    if_sethide            
    jump                   LABEL235
 LABEL180:
    iconst                 0
-   iconst                 39387175
+   iconst                 39387174
    if_sethide            
    iconst                 1
-   iconst                 39387175
+   iconst                 39387174
    2308                  
    get_varbit             6255
    switch                
@@ -235,38 +235,38 @@ LABEL180:
    jump                   LABEL213
 LABEL189:
    iconst                 1718
-   iconst                 39387177
+   iconst                 39387176
    if_setgraphic         
    iconst                 1
    sconst                 "Toggle single-tap mode"
-   iconst                 39387175
+   iconst                 39387174
    if_setop              
    jump                   LABEL220
 LABEL197:
    iconst                 1717
-   iconst                 39387177
+   iconst                 39387176
    if_setgraphic         
    iconst                 1
    sconst                 "Toggle tap-to-drop mode"
-   iconst                 39387175
+   iconst                 39387174
    if_setop              
    jump                   LABEL220
 LABEL205:
    iconst                 1716
-   iconst                 39387177
+   iconst                 39387176
    if_setgraphic         
    iconst                 1
    sconst                 "Show Keyboard"
-   iconst                 39387175
+   iconst                 39387174
    if_setop              
    jump                   LABEL220
 LABEL213:
    iconst                 1715
-   iconst                 39387177
+   iconst                 39387176
    if_setgraphic         
    iconst                 1
    sconst                 ""
-   iconst                 39387175
+   iconst                 39387174
    if_setop              
 LABEL220:
    get_varbit             6255
@@ -280,18 +280,18 @@ LABEL224:
    jump                   LABEL232
 LABEL228:
    iconst                 155
-   iconst                 39387177
+   iconst                 39387176
    if_settrans           
    jump                   LABEL235
 LABEL232:
    iconst                 0
-   iconst                 39387177
+   iconst                 39387176
    if_settrans           
 LABEL235:
    invoke                 2581
    get_varbit             6254
    invoke                 633
-   iconst                 39387166
+   iconst                 39387165
    if_sethide            
    invoke                 2526
    pop_int               
