@@ -221,6 +221,15 @@ public class GroundItemsOverlay extends Overlay
 			{
 				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint, item.getHeight());
 
+				int alpha = config.tileOpacity();
+
+				if (alpha > 100)
+				{
+					alpha = 100;
+				}
+				graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha));
+				graphics.fillPolygon(poly);
+
 				if (poly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, color);
@@ -456,7 +465,7 @@ public class GroundItemsOverlay extends Overlay
 			}
 			else if (playerRegionID == ZILYANA_REGION || playerRegionID == GRAARDOR_REGION ||
 				playerRegionID == KRIL_TSUTSAROTH_REGION || playerRegionID == KREEARRA_REGION ||
-				playerRegionID == NIGHTMARE_REGION ||  playerRegionID == TEMPOROSS_REGION)
+				playerRegionID == NIGHTMARE_REGION || playerRegionID == TEMPOROSS_REGION)
 			{
 				// GWD, Nightmare, and Tempoross instances use the normal despawn timers
 				despawnTime = spawnTime.plus(groundItem.getLootType() == LootType.DROPPED
