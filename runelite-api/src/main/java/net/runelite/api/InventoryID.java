@@ -85,7 +85,12 @@ public enum InventoryID
 	/**
 	 * Seed vault located inside the Farming Guild
 	 */
-	SEED_VAULT(626);
+	SEED_VAULT(626),
+
+	/**
+	 * Group Ironman shared storage inventory
+	 */
+	GROUP_STORAGE(659);
 
 	private final int id;
 
