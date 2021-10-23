@@ -78,6 +78,7 @@ import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -387,7 +388,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					}
 
 					this.gl = glContext.getGL().getGL4();
-					gl.setSwapInterval(0);
+
+					final boolean unlockFps = this.config.unlockFps();
+					client.setUnlockedFps(unlockFps);
+					gl.setSwapInterval(unlockFps ? 1 : 0);
 
 					if (log.isDebugEnabled())
 					{
@@ -459,6 +463,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			client.setGpu(false);
 			client.setDrawCallbacks(null);
+			client.setUnlockedFps(false);
 
 			invokeOnMainThread(() ->
 			{
@@ -527,6 +532,23 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	GpuPluginConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(GpuPluginConfig.class);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (configChanged.getGroup().equals(GpuPluginConfig.GROUP))
+		{
+			if (configChanged.getKey().equals("unlockFps"))
+			{
+				boolean unlockFps = Boolean.parseBoolean(configChanged.getNewValue());
+				clientThread.invokeLater(() ->
+				{
+					client.setUnlockedFps(unlockFps);
+					invokeOnMainThread(() -> gl.setSwapInterval(unlockFps ? 1 : 0));
+				});
+			}
+		}
 	}
 
 	private void initProgram() throws ShaderException
