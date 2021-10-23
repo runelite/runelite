@@ -776,6 +776,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final Scene scene = client.getScene();
 		scene.setDrawDistance(getDrawDistance());
 
+		// Only reset the target buffer offset right before drawing the scene. That way if there are frames
+		// after this that don't involve a scene draw, like during LOADING/HOPPING/CONNECTION_LOST, we can
+		// still redraw the previous frame's scene to emulate the client behavior of not painting over the
+		// viewport buffer.
+		targetBufferOffset = 0;
+
 		invokeOnMainThread(() ->
 		{
 			// UBO. Only the first 32 bytes get modified here, the rest is the constant sin/cos table.
@@ -1029,21 +1035,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void drawFrame(int overlayColor)
 	{
-		if (jawtWindow.getAWTComponent() != client.getCanvas())
-		{
-			// We inject code in the game engine mixin to prevent the client from doing canvas replacement,
-			// so this should not ever be hit
-			log.warn("Canvas invalidated!");
-			shutDown();
-			startUp();
-			return;
-		}
-
-		if (client.getGameState() == GameState.LOADING || client.getGameState() == GameState.HOPPING)
-		{
-			// While the client is loading it doesn't draw
-			return;
-		}
+		// We inject code in the game engine mixin to prevent the client from doing canvas replacement,
+		// so this should not ever be tripped
+		assert jawtWindow.getAWTComponent() == client.getCanvas() : "canvas invalidated";
 
 		final int canvasHeight = client.getCanvasHeight();
 		final int canvasWidth = client.getCanvasWidth();
@@ -1105,7 +1099,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		// Draw 3d scene
 		final TextureProvider textureProvider = client.getTextureProvider();
-		if (textureProvider != null)
+		final GameState gameState = client.getGameState();
+		if (textureProvider != null && gameState.getState() >= GameState.LOADING.getState())
 		{
 			if (textureArrayId == -1)
 			{
@@ -1265,7 +1260,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		modelBufferSmall.clear();
 		modelBufferUnordered.clear();
 
-		targetBufferOffset = 0;
 		smallModels = largeModels = unorderedModels = 0;
 		tempOffset = 0;
 		tempUvOffset = 0;
