@@ -34,9 +34,11 @@ import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.ColorBlindMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 
-@ConfigGroup("gpu")
+@ConfigGroup(GpuPluginConfig.GROUP)
 public interface GpuPluginConfig extends Config
 {
+	String GROUP = "gpu";
+
 	@Range(
 		max = MAX_DISTANCE
 	)
@@ -143,6 +145,17 @@ public interface GpuPluginConfig extends Config
 		position = 9
 	)
 	default boolean brightTextures()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "unlockFps",
+		name = "Unlock FPS",
+		description = "Removes the 50 FPS cap for camera movement",
+		position = 10
+	)
+	default boolean unlockFps()
 	{
 		return false;
 	}
