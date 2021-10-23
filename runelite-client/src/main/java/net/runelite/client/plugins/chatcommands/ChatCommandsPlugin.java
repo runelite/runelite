@@ -1879,7 +1879,6 @@ public class ChatCommandsPlugin extends Plugin
 			case "gg":
 				return "Grotesque Guardians";
 
-
 			case "crazy arch":
 				return "Crazy Archaeologist";
 
