@@ -28,9 +28,8 @@ package net.runelite.cache.script;
 
 import java.util.HashMap;
 import java.util.Map;
-import static net.runelite.cache.script.Opcodes.*;
 
-public class Instructions
+public class Instructions implements Opcodes
 {
 	private final Map<Integer, Instruction> instructions = new HashMap<>();
 	private final Map<String, Instruction> instructionsByName = new HashMap<>();
