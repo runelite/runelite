@@ -28,14 +28,17 @@ package net.runelite.client.plugins.camera;
 
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Point;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SettingID;
 import net.runelite.api.VarClientInt;
@@ -91,6 +94,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 */
 	private boolean menuHasEntries;
 	private int savedCameraYaw;
+	private boolean simulateLeftClick;
+	private boolean simulatingMiddleClick;
+	private Point clickDragInitialPoint;
 
 	@Inject
 	private Client client;
@@ -438,6 +444,37 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		}
 	}
 
+	private boolean isPointOnClickableWidget(Point point)
+	{
+		return isPointOnClickableWidget(point, client.getWidgetRoots());
+	}
+
+	private boolean isPointOnClickableWidget(Point point, Widget[] widgets)
+	{
+		if (widgets == null)
+		{
+			return false;
+		}
+
+		for (Widget w : widgets)
+		{
+			if (w.getNoClickThrough() && w.contains(point))
+			{
+				return true;
+			}
+
+			if (
+				isPointOnClickableWidget(point, w.getChildren()) ||
+				isPointOnClickableWidget(point, w.getStaticChildren()) ||
+				isPointOnClickableWidget(point, w.getNestedChildren())
+			)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * The event that is triggered when a mouse button is pressed
 	 * In this method the right click is changed to a middle-click to enable rotating the camera
@@ -484,6 +521,77 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 				mouseEvent.isPopupTrigger(),
 				MouseEvent.BUTTON3);
 		}
+		else if (SwingUtilities.isLeftMouseButton(mouseEvent) && config.rotateOnDrag())
+		{
+			if (simulateLeftClick)
+			{
+				// Let the simulated left click pass through
+				simulateLeftClick = false;
+			}
+			else
+			{
+				Point point = new Point(mouseEvent.getX(), mouseEvent.getY());
+
+				leftClickDrag:
+				{
+					if (client.getGameState() != GameState.LOGGED_IN)
+					{
+						break leftClickDrag;
+					}
+
+					// Slightly more time-sensitive checks for prayer orbs etc
+					Widget orb = client.getWidget(WidgetInfo.MINIMAP_QUICK_HEALTH_ORB);
+					if (orb != null && orb.contains(point))
+					{
+						break leftClickDrag;
+					}
+
+					orb = client.getWidget(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
+					if (orb != null && orb.contains(point))
+					{
+						break leftClickDrag;
+					}
+
+					orb = client.getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
+					if (orb != null && orb.contains(point))
+					{
+						break leftClickDrag;
+					}
+
+					orb = client.getWidget(WidgetInfo.MINIMAP_TOGGLE_SPEC_ORB);
+					if (orb != null && orb.contains(point))
+					{
+						break leftClickDrag;
+					}
+
+					mouseEvent.consume();
+					final MouseEvent consumedEvent = mouseEvent;
+					clientThread.invokeLater(() ->
+					{
+						// Schedule a simulated click on release, if not dragging
+						simulateLeftClick = true;
+						clickDragInitialPoint = point;
+
+						if (isPointOnClickableWidget(point))
+						{
+							// Simulate a normal click since we had to consume the event prior to this check
+							Component source = (Component) consumedEvent.getSource();
+							source.dispatchEvent(new MouseEvent(
+								source,
+								consumedEvent.getID(),
+								consumedEvent.getWhen(),
+								consumedEvent.getModifiersEx(),
+								consumedEvent.getX(),
+								consumedEvent.getY(),
+								consumedEvent.getClickCount(),
+								consumedEvent.isPopupTrigger(),
+								consumedEvent.getButton()));
+						}
+					});
+				}
+			}
+		}
+
 		return mouseEvent;
 	}
 
@@ -522,6 +630,87 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 				mouseEvent.isPopupTrigger(),
 				MouseEvent.BUTTON3);
 		}
+
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
+		{
+			// If dragging occurred, release the simulated middle click
+			if (simulatingMiddleClick)
+			{
+				Component source = (Component) mouseEvent.getSource();
+				source.dispatchEvent(
+					new MouseEvent(
+						source,
+						MouseEvent.MOUSE_RELEASED,
+						mouseEvent.getWhen(),
+						mouseEvent.getModifiersEx(),
+						mouseEvent.getX(),
+						mouseEvent.getY(),
+						mouseEvent.getClickCount(),
+						mouseEvent.isPopupTrigger(),
+						MouseEvent.BUTTON2));
+				simulatingMiddleClick = false;
+			}
+			// If no dragging occurred, and we should simulate a left click
+			else if (simulateLeftClick)
+			{
+				// Dispatch a left click press before continuing to process the release event
+				Component source = (Component) mouseEvent.getSource();
+				source.dispatchEvent(
+					new MouseEvent(
+						source,
+						MouseEvent.MOUSE_PRESSED,
+						mouseEvent.getWhen(),
+						mouseEvent.getModifiersEx(),
+						mouseEvent.getX(),
+						mouseEvent.getY(),
+						mouseEvent.getClickCount(),
+						mouseEvent.isPopupTrigger(),
+						MouseEvent.BUTTON1));
+			}
+			// Reset to initial state
+			simulateLeftClick = false;
+		}
+		return mouseEvent;
+	}
+
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		if (simulateLeftClick && config.rotateOnDrag() && SwingUtilities.isLeftMouseButton(mouseEvent) &&
+			// Require a minimum drag distance threshold to begin dragging instead of clicking
+			(simulatingMiddleClick || clickDragInitialPoint.distanceTo(new Point(mouseEvent.getX(), mouseEvent.getY())) >= config.rotateOnDragThreshold()))
+		{
+			Component source = (Component) mouseEvent.getSource();
+
+			if (!simulatingMiddleClick)
+			{
+				// Dispatch a middle click event
+				source.dispatchEvent(
+					new MouseEvent(
+						source,
+						MouseEvent.MOUSE_PRESSED,
+						mouseEvent.getWhen(),
+						mouseEvent.getModifiersEx(),
+						mouseEvent.getX(),
+						mouseEvent.getY(),
+						mouseEvent.getClickCount(),
+						mouseEvent.isPopupTrigger(),
+						MouseEvent.BUTTON2));
+				simulatingMiddleClick = true;
+			}
+
+			return new MouseEvent(
+				source,
+				mouseEvent.getID(),
+				mouseEvent.getWhen(),
+				mouseEvent.getModifiersEx(),
+				mouseEvent.getX(),
+				mouseEvent.getY(),
+				mouseEvent.getClickCount(),
+				mouseEvent.isPopupTrigger(),
+				MouseEvent.BUTTON2);
+		}
+
 		return mouseEvent;
 	}
 
@@ -529,12 +718,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 * These methods are unused but required to be present in a MouseListener implementation
 	 */
 	// region Unused MouseListener methods
-	@Override
-	public MouseEvent mouseDragged(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
-	}
-
 	@Override
 	public MouseEvent mouseMoved(MouseEvent mouseEvent)
 	{

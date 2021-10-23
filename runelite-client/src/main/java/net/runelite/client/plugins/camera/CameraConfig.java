@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("zoom") // using the old plugin's group name
 public interface CameraConfig extends Config
@@ -201,5 +202,30 @@ public interface CameraConfig extends Config
 	default boolean preserveYaw()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rotateOnDrag",
+		name = "Drag to rotate",
+		description = "Rotate the camera by left clicking and dragging the mouse. Release without dragging to click normally.",
+		position = 15
+	)
+	default boolean rotateOnDrag()
+	{
+		return false;
+	}
+
+	@Units(
+		value = Units.PIXELS
+	)
+	@ConfigItem(
+		keyName = "rotateOnDragThreshold",
+		name = "Minimum drag distance",
+		description = "Only start rotating the camera after dragging a minimum number of pixels.",
+		position = 16
+	)
+	default int rotateOnDragThreshold()
+	{
+		return 30;
 	}
 }

@@ -354,6 +354,7 @@ public final class WidgetID
 	{
 		static final int XP_ORB = 1;
 		static final int HEALTH_ORB = 2;
+		static final int QUICK_HEALTH_ORB = 4;
 		static final int PRAYER_ORB = 13;
 		static final int QUICK_PRAYER_ORB = 15; // Has the "Quick-prayers" name
 		static final int PRAYER_ORB_TEXT = 16;
@@ -361,6 +362,7 @@ public final class WidgetID
 		static final int TOGGLE_RUN_ORB = 23; // Has the "Toggle run" name
 		static final int RUN_ORB_TEXT = 24;
 		static final int SPEC_ORB = 29;
+		static final int TOGGLE_SPEC_ORB = 31;
 		static final int WORLDMAP_ORB = 43;
 		static final int WIKI_BANNER_PARENT = 44;
 		static final int WIKI_BANNER = 45;
