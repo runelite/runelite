@@ -177,9 +177,14 @@ public class ShootingStars extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.HOPPING)
+		if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			resetStarTrackingState();
+
+			scouts.stream()
+				.filter(scout -> scout.getWorld() == client.getWorld())
+				.findFirst()
+				.ifPresent(this::setupScoutedStar);
 		}
 	}
 
