@@ -30,25 +30,36 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.util.ColorUtil;
 
+@Slf4j
 class AgilityOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
 	private static final Color SHORTCUT_HIGH_LEVEL_COLOR = Color.ORANGE;
+
+	private Map<Integer, Integer> trapLastPositions = new HashMap<>();
+	private Map<Integer, Instant> trapStartTimers = new HashMap<>();
 
 	private final Client client;
 	private final AgilityPlugin plugin;
@@ -76,10 +87,10 @@ class AgilityOverlay extends Overlay
 		plugin.getObstacles().forEach((object, obstacle) ->
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
-					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
-					Obstacles.OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
-					Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
-					Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
+				Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
+				Obstacles.OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
+				Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
+				Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
 			{
 				return;
 			}
@@ -150,17 +161,88 @@ class AgilityOverlay extends Overlay
 		}
 
 		Set<NPC> npcs = plugin.getNpcs();
-		if (!npcs.isEmpty() && config.highlightSepulchreNpcs())
+		if (!npcs.isEmpty())
 		{
-			Color color = config.sepulchreHighlightColor();
-			for (NPC npc : npcs)
-			{
-				Polygon tilePoly = npc.getCanvasTilePoly();
-				if (tilePoly != null)
+			Color sepulchreHighlightColor = config.sepulchreHighlightColor();
+			Color trapHighlightColor = config.getTrapColor();
+			npcs.forEach((npc) -> {
+				if (Npcs.SEPULCHRE_NPC_IDS.contains(npc.getId()) && config.highlightSepulchreNpcs())
 				{
-					OverlayUtil.renderPolygon(graphics, tilePoly, color);
+					Polygon tilePoly = npc.getCanvasTilePoly();
+					if (tilePoly != null)
+					{
+						OverlayUtil.renderPolygon(graphics, tilePoly, sepulchreHighlightColor);
+					}
+					return;
 				}
-			}
+
+				if (Npcs.TRAP_NPC_IDS.contains(npc.getId()) && config.showTrapOverlay())
+				{
+					Polygon tilePoly = npc.getCanvasTilePoly();
+					Integer lastTrapPosition = trapLastPositions.get(npc.getId());
+					WorldPoint currentPosition = npc.getWorldLocation();
+					Integer xPos = currentPosition.getX();
+					Integer yPos = currentPosition.getY();
+					String movementDimension = Npcs.TRAP_MOVEMENT_DIMENSION.get(npc.getId());
+
+					if (lastTrapPosition != null)
+					{
+						Integer restingPosition = Npcs.TRAP_RESTING_POSITION.get(npc.getId());
+						boolean shouldRenderTime = false;
+
+						if ((movementDimension.equals("x") && restingPosition.equals(xPos))
+							|| (movementDimension.equals("y") && restingPosition.equals(yPos)))
+						{
+							shouldRenderTime = true;
+						}
+
+						if (shouldRenderTime && tilePoly != null)
+						{
+							if ((movementDimension.equals("x") && !lastTrapPosition.equals(xPos))
+								|| (movementDimension.equals("y") && !lastTrapPosition.equals(yPos)))
+							{
+								trapStartTimers.put(npc.getId(), Instant.now());
+							}
+
+							final String restingTime = Npcs.TRAP_RESTING_TIME.get(npc.getId());
+							final Duration trapTime = Duration.parse(restingTime);
+							Instant timer = trapStartTimers.get(npc.getId());
+							if (timer == null)
+							{
+								timer = Instant.now();
+							}
+
+							final ProgressPieComponent progressPie = new ProgressPieComponent();
+							int xPiePos = (tilePoly.xpoints[0] + tilePoly.xpoints[2]) / 2;
+							int yPiePos = (tilePoly.ypoints[0] + tilePoly.ypoints[2]) / 2;
+
+							final Point position = new Point(xPiePos, yPiePos);
+
+							Color trapBorder = ColorUtil.colorWithAlpha(trapHighlightColor, 255);
+
+							progressPie.setFill(trapHighlightColor);
+							progressPie.setBorderColor(trapBorder);
+							progressPie.setPosition(position);
+
+							final Duration duration = Duration.between(timer, Instant.now());
+							progressPie.setProgress(1 - (duration.compareTo(trapTime) < 0
+								? (double) duration.toMillis() / trapTime.toMillis()
+								: 1));
+
+							progressPie.render(graphics);
+						}
+					}
+
+					if (movementDimension.equals("x"))
+					{
+						trapLastPositions.put(npc.getId(), currentPosition.getX());
+					}
+					else if (movementDimension.equals("y"))
+					{
+						trapLastPositions.put(npc.getId(), currentPosition.getY());
+					}
+				}
+			});
 		}
 
 		return null;

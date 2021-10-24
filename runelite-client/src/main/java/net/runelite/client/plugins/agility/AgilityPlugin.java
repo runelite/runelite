@@ -43,6 +43,7 @@ import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.NullNpcID;
+import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
@@ -97,6 +98,9 @@ public class AgilityPlugin extends Plugin
 	private static final Set<Integer> SEPULCHRE_NPCS = ImmutableSet.of(
 		NullNpcID.NULL_9672, NullNpcID.NULL_9673, NullNpcID.NULL_9674,  // arrows
 		NullNpcID.NULL_9669, NullNpcID.NULL_9670, NullNpcID.NULL_9671   // swords
+	);
+	private static final Set<Integer> AGILITY_PYRAMID_TRAP_NPCS = ImmutableSet.of(
+		NpcID.PYRAMID_BLOCK, NpcID.PYRAMID_BLOCK_5788  // sliding pyramid blocks
 	);
 
 	@Getter
@@ -485,7 +489,7 @@ public class AgilityPlugin extends Plugin
 	{
 		NPC npc = npcSpawned.getNpc();
 
-		if (SEPULCHRE_NPCS.contains(npc.getId()))
+		if (SEPULCHRE_NPCS.contains(npc.getId()) || AGILITY_PYRAMID_TRAP_NPCS.contains(npc.getId()))
 		{
 			npcs.add(npc);
 		}
