@@ -54,19 +54,20 @@ class MiningRocksOverlay extends Overlay
 	private static final int LOVAKITE_ORE_MIN_RESPAWN_TIME = 50; // Game ticks
 	private static final float LOVAKITE_ORE_RANDOM_PERCENT_THRESHOLD = (float) LOVAKITE_ORE_MIN_RESPAWN_TIME / LOVAKITE_ORE_MAX_RESPAWN_TIME;
 
-	private static final Color DARK_GREEN = new Color(0, 100, 0);
 	private static final int MOTHERLODE_UPPER_FLOOR_HEIGHT = -500;
 
 	private final Client client;
 	private final MiningPlugin plugin;
+	private final MiningConfig config;
 
 	@Inject
-	private MiningRocksOverlay(Client client, MiningPlugin plugin)
+	private MiningRocksOverlay(Client client, MiningPlugin plugin, MiningConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
 		this.client = client;
+		this.config = config;
 	}
 
 	@Override
@@ -103,21 +104,22 @@ class MiningRocksOverlay extends Overlay
 				continue;
 			}
 
-			Color pieFillColor = Color.YELLOW;
-			Color pieBorderColor = Color.ORANGE;
+			Color pieFillColor = config.getRockOverlayColor();
+			Color pieBorderColor = config.getRockOverlayOutlineColor();
 
 			// Recolour pie on motherlode veins or Lovakite ore during the portion of the timer where they may respawn
 			if ((rock == Rock.ORE_VEIN && percent > ORE_VEIN_RANDOM_PERCENT_THRESHOLD)
 				|| (rock == Rock.DAEYALT_ESSENCE && percent > DAEYALT_RANDOM_PERCENT_THRESHOLD)
 				|| (rock == Rock.LOVAKITE && percent > LOVAKITE_ORE_RANDOM_PERCENT_THRESHOLD))
 			{
-				pieFillColor = Color.GREEN;
-				pieBorderColor = DARK_GREEN;
+				pieFillColor = config.getRockOverlayColorMLM();
+				pieBorderColor = config.getRockOverlayOutlineColorMLM();
 			}
 
 			ProgressPieComponent ppc = new ProgressPieComponent();
 			ppc.setBorderColor(pieBorderColor);
 			ppc.setFill(pieFillColor);
+			ppc.setDiameter(config.getRockOverlayDiameter());
 			ppc.setPosition(point);
 			ppc.setProgress(percent);
 			ppc.render(graphics);
