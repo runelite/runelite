@@ -40,6 +40,11 @@ public class ClanChannelChanged
 	@Nullable
 	private final ClanChannel clanChannel;
 	/**
+	 * The clan id, or -1 for guest clan
+	 * @see net.runelite.api.clan.ClanID
+	 */
+	private int clanId;
+	/**
 	 * Whether or not this was the guest clan channel
 	 */
 	private boolean guest;
