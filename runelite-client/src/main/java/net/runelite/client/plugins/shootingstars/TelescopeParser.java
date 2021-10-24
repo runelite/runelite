@@ -50,21 +50,25 @@ public class TelescopeParser
 		return null;
 	}
 
-	public static Duration extractDuration(String text)
+	public static Duration extractEarliestDuration(String text)
 	{
 		text = text.replace("<br>", " ");
 		int start = text.indexOf(START_OF_TIME) + START_OF_TIME.length();
 		int separator = text.lastIndexOf(TIME_SEPARATOR);
 
 		String earliest = text.substring(start, separator).trim();
+
+		return parseDuration(earliest);
+	}
+
+	public static Duration extractLatestDuration(String text)
+	{
+		text = text.replace("<br>", " ");
+		int separator = text.lastIndexOf(TIME_SEPARATOR);
+
 		String latest = text.substring(separator + TIME_SEPARATOR.length()).trim();
 
-		Duration earliestDuration = parseDuration(earliest);
-		Duration latestDuration = parseDuration(latest);
-
-		Duration delta = latestDuration.minus(earliestDuration);
-
-		return earliestDuration.plus(delta.dividedBy(2));
+		return parseDuration(latest);
 	}
 
 	private static Duration parseDuration(String text)

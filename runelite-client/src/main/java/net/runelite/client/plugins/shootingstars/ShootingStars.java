@@ -76,7 +76,6 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
-import org.apache.commons.lang3.time.DurationFormatUtils;
 
 @Slf4j
 @PluginDescriptor(
@@ -300,23 +299,15 @@ public class ShootingStars extends Plugin
 	@Subscribe
 	public void onStarScoutEvent(StarScoutEvent event)
 	{
-		StarRegion region = event.getRegion();
-		setupPossibleCrashSites(region);
+		ScoutedStar scoutedStar = ScoutedStar.from(event);
 
-		String chatMessage = new ChatMessageBuilder()
-			.append("A new shooting star has been scouted in this world, it'll land at ")
-			.append(Color.CYAN, region.getShortName())
-			.append(" in approximately ")
-			.append(Color.CYAN, DurationFormatUtils.formatDurationWords(event.getOffset().toMillis(), true, true))
-			.append(".")
-			.build();
+		scouts.removeIf(scout -> scout.getWorld() == event.getWorld());
+		scouts.add(scoutedStar);
 
-		QueuedMessage queuedMessage = QueuedMessage.builder()
-			.type(ChatMessageType.GAMEMESSAGE)
-			.runeLiteFormattedMessage(chatMessage)
-			.build();
-
-		chatMessageManager.queue(queuedMessage);
+		if (scoutedStar.getWorld() == client.getWorld())
+		{
+			setupScoutedStar(scoutedStar);
+		}
 	}
 
 	private void setupScoutedStar(ScoutedStar scoutedStar)
@@ -332,9 +323,9 @@ public class ShootingStars extends Plugin
 			.append("A shooting star has been scouted in this world, it'll land at ")
 			.append(Color.CYAN, region.getShortName())
 			.append(" in approximately ")
-			.append(Color.CYAN, DurationFormatUtils.formatDurationWords(earliest.toMillis(), true, true))
+			.append(Color.CYAN, formatDuration(earliest))
 			.append(" to ")
-			.append(Color.CYAN, DurationFormatUtils.formatDurationWords(latest.toMillis(), true, true))
+			.append(Color.CYAN, formatDuration(latest))
 			.append(".")
 			.build();
 
@@ -344,6 +335,31 @@ public class ShootingStars extends Plugin
 			.build();
 
 		chatMessageManager.queue(queuedMessage);
+	}
+
+	private String formatDuration(Duration duration)
+	{
+		StringBuilder builder = new StringBuilder();
+		long hours = duration.toHours();
+		long minutes = duration.toMinutes();
+
+		if (hours > 0)
+		{
+			builder.append(hours).append(" hour");
+
+			if (hours > 1)
+			{
+				builder.append('s');
+			}
+			builder.append(' ');
+		}
+		builder.append(minutes).append(" minute");
+
+		if (minutes > 1)
+		{
+			builder.append('s');
+		}
+		return builder.toString();
 	}
 
 	private void parseTelescopeWidget()
@@ -360,8 +376,9 @@ public class ShootingStars extends Plugin
 		{
 			return;
 		}
-		Duration earliest = TelescopeParser.extractDuration(widget.getText());
-		eventBus.post(StarScoutEvent.of(world, earliest, region));
+		Duration earliest = TelescopeParser.extractEarliestDuration(widget.getText());
+		Duration latest = TelescopeParser.extractLatestDuration(widget.getText());
+		eventBus.post(StarScoutEvent.of(world, region, earliest, latest));
 	}
 
 	/**

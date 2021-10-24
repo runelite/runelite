@@ -34,7 +34,8 @@ import net.runelite.client.plugins.shootingstars.StarRegion;
 @Value(staticConstructor = "of")
 public class StarScoutEvent
 {
-	int worldId;
-	Duration offset;
+	int world;
 	StarRegion region;
+	Duration earliest;
+	Duration latest;
 }

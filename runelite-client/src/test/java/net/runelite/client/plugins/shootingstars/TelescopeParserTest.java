@@ -134,7 +134,7 @@ public class TelescopeParserTest
 	@Test
 	public void testExtractDuration()
 	{
-		Duration duration = TelescopeParser.extractDuration(message);
+		Duration duration = TelescopeParser.extractEarliestDuration(message);
 		assertEquals(expectedDuration, duration);
 	}
 }
