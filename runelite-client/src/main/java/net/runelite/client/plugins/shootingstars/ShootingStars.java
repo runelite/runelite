@@ -319,7 +319,8 @@ public class ShootingStars extends Plugin
 		chatMessageManager.queue(queuedMessage);
 	}
 
-	private void setupScoutedStar(ScoutedStar scoutedStar) {
+	private void setupScoutedStar(ScoutedStar scoutedStar)
+	{
 		StarRegion region = scoutedStar.getRegion();
 		setupPossibleCrashSites(region);
 
@@ -429,6 +430,11 @@ public class ShootingStars extends Plugin
 		possibleSites.clear();
 	}
 
+	/**
+	 * Sets up the world map with the possible crash sites for the given region.
+	 *
+	 * @param region The region where the star will land in.
+	 */
 	private void setupPossibleCrashSites(StarRegion region)
 	{
 		List<StarLandingSite> crashSites = region.getCrashSites();
@@ -453,6 +459,12 @@ public class ShootingStars extends Plugin
 		}
 	}
 
+	/**
+	 * Checks if there's a shooting star at the given world point.
+	 *
+	 * @param worldPoint The world point to be checked.
+	 * @return If there's a shooting star at the world point.
+	 */
 	private boolean checkForShootingStar(WorldPoint worldPoint)
 	{
 		LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
@@ -511,7 +523,6 @@ public class ShootingStars extends Plugin
 		graphics.drawImage(starFragment, 0, 0, null);
 		return image;
 	}
-
 
 	@Value(staticConstructor = "of")
 	private static class PossibleCrashSite
