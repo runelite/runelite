@@ -177,7 +177,7 @@ public class ShootingStars extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (event.getGameState() == GameState.LOGGING_IN)
 		{
 			resetStarTrackingState();
 
@@ -345,8 +345,9 @@ public class ShootingStars extends Plugin
 	private String formatDuration(Duration duration)
 	{
 		StringBuilder builder = new StringBuilder();
-		long hours = duration.toHours();
-		long minutes = duration.toMinutes();
+		long seconds = duration.getSeconds();
+		long minutes = ((seconds % 3600) / 60);
+		long hours = seconds / 3600;
 
 		if (hours > 0)
 		{
@@ -358,12 +359,7 @@ public class ShootingStars extends Plugin
 			}
 			builder.append(' ');
 		}
-		builder.append(minutes).append(" minute");
-
-		if (minutes > 1)
-		{
-			builder.append('s');
-		}
+		builder.append(minutes).append(" minutes");
 		return builder.toString();
 	}
 
@@ -459,6 +455,7 @@ public class ShootingStars extends Plugin
 	 */
 	private void setupPossibleCrashSites(StarRegion region)
 	{
+		clearPossibleSites();
 		List<StarRegion.LandingSite> crashSites = region.getCrashSites();
 
 		if (worldMapImage == null)
