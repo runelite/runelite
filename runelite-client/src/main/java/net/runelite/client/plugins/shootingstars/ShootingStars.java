@@ -31,6 +31,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -144,9 +146,7 @@ public class ShootingStars extends Plugin
 	private final List<ScoutedStar> scouts = new ArrayList<>();
 
 	private BufferedImage worldMapImage;
-
 	private ShootingStarsPanel starsPanel;
-
 	private NavigationButton navigationButton;
 
 	@Override
@@ -298,6 +298,22 @@ public class ShootingStars extends Plugin
 		{
 			resetStarTrackingState();
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cleared current crashed star", null);
+		}
+		else if (commandExecuted.getCommand().equals("sscouts"))
+		{
+			if (scouts.isEmpty())
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cleared current crashed star", null);
+			}
+			else
+			{
+				for (ScoutedStar scout : scouts)
+				{
+					LocalTime earliestTime = scout.getEarliestTime().toLocalTime().truncatedTo(ChronoUnit.SECONDS);
+					LocalTime latestTime = scout.getLatestTime().toLocalTime().truncatedTo(ChronoUnit.SECONDS);
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", scout.getWorld() + " - " + scout.getRegion() + ", " + earliestTime + " <-> " + latestTime, null);
+				}
+			}
 		}
 	}
 
