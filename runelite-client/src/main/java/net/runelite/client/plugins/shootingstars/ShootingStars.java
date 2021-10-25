@@ -272,48 +272,48 @@ public class ShootingStars extends Plugin
 		{
 			return;
 		}
-		if (commandExecuted.getCommand().equals("ssregion"))
+		switch (commandExecuted.getCommand())
 		{
-			String[] args = commandExecuted.getArguments();
+			case "ssregion":
+				String[] args = commandExecuted.getArguments();
 
-			if (args.length < 1)
-			{
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Insufficient parameters, usage: ssregion <regionname>", null);
-				return;
-			}
-			String region = args[0].toUpperCase();
-			try
-			{
-				StarRegion starRegion = StarRegion.valueOf(region);
-				resetStarTrackingState();
-				setupPossibleCrashSites(starRegion);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Star region set to: " + starRegion, null);
-			}
-			catch (IllegalArgumentException e)
-			{
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "No star region could be found with name: " + region, null);
-			}
-		}
-		else if (commandExecuted.getCommand().equals("ssclear"))
-		{
-			resetStarTrackingState();
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cleared current crashed star", null);
-		}
-		else if (commandExecuted.getCommand().equals("sscouts"))
-		{
-			if (scouts.isEmpty())
-			{
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cleared current crashed star", null);
-			}
-			else
-			{
-				for (ScoutedStar scout : scouts)
+				if (args.length < 1)
 				{
-					LocalTime earliestTime = scout.getEarliestTime().toLocalTime().truncatedTo(ChronoUnit.SECONDS);
-					LocalTime latestTime = scout.getLatestTime().toLocalTime().truncatedTo(ChronoUnit.SECONDS);
-					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", scout.getWorld() + " - " + scout.getRegion() + ", " + earliestTime + " <-> " + latestTime, null);
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Insufficient parameters, usage: ssregion <regionname>", null);
+					return;
 				}
-			}
+				String region = args[0].toUpperCase();
+				try
+				{
+					StarRegion starRegion = StarRegion.valueOf(region);
+					resetStarTrackingState();
+					setupPossibleCrashSites(starRegion);
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Star region set to: " + starRegion, null);
+				}
+				catch (IllegalArgumentException e)
+				{
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "No star region could be found with name: " + region, null);
+				}
+				break;
+			case "ssclear":
+				resetStarTrackingState();
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cleared current crashed star", null);
+				break;
+			case "sscouts":
+				if (scouts.isEmpty())
+				{
+					client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Cleared current crashed star", null);
+				}
+				else
+				{
+					for (ScoutedStar scout : scouts)
+					{
+						LocalTime earliestTime = scout.getEarliestTime().toLocalTime().truncatedTo(ChronoUnit.SECONDS);
+						LocalTime latestTime = scout.getLatestTime().toLocalTime().truncatedTo(ChronoUnit.SECONDS);
+						client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", scout.getWorld() + " - " + scout.getRegion() + ", " + earliestTime + " <-> " + latestTime, null);
+					}
+				}
+				break;
 		}
 	}
 
