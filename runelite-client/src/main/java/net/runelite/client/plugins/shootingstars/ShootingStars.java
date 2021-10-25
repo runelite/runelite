@@ -149,6 +149,8 @@ public class ShootingStars extends Plugin
 	private ShootingStarsPanel starsPanel;
 	private NavigationButton navigationButton;
 
+	private int previousWorld;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -177,8 +179,10 @@ public class ShootingStars extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGING_IN)
+		GameState gameState = event.getGameState();
+		if (gameState == GameState.LOGGING_IN || (gameState == GameState.LOGGED_IN && previousWorld != client.getWorld()))
 		{
+			previousWorld = client.getWorld();
 			resetStarTrackingState();
 
 			scouts.stream()
@@ -310,7 +314,7 @@ public class ShootingStars extends Plugin
 					{
 						LocalTime earliestTime = scout.getEarliestTime().toLocalTime().truncatedTo(ChronoUnit.SECONDS);
 						LocalTime latestTime = scout.getLatestTime().toLocalTime().truncatedTo(ChronoUnit.SECONDS);
-						client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", scout.getWorld() + " - " + scout.getRegion() + ", " + earliestTime + " <-> " + latestTime, null);
+						client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", scout.getWorld() + " - " + scout.getRegion() + "(" + earliestTime + " <-> " + latestTime + ")", null);
 					}
 				}
 				break;
