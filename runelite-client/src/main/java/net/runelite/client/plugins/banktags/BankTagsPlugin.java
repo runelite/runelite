@@ -304,7 +304,10 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				// input. We prevent having a tag tab open while also performing a normal search, so if a tag tab
 				// is active here it must mean we have placed the bank into search mode. See onScriptPostFired().
 				TagTab activeTab = tabInterface.getActiveTab();
-				String search = activeTab != null ? TAG_SEARCH + activeTab.getTag() : searchfilter;
+				// Shared storage uses the bankmain filter scripts too. Allow using tag searches in it but don't
+				// apply the tag search from the active tab.
+				final boolean bankOpen = client.getItemContainer(InventoryID.BANK) != null;
+				String search = activeTab != null && bankOpen ? TAG_SEARCH + activeTab.getTag() : searchfilter;
 
 				if (search.isEmpty())
 				{
@@ -487,8 +490,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		if (event.getScriptId() == ScriptID.BANKMAIN_SEARCHING)
 		{
 			// The return value of bankmain_searching is on the stack. If we have a tag tab active
-			// make it return true to put the bank in a searching state.
-			if (tabInterface.getActiveTab() != null || tabInterface.isTagTabActive())
+			// and are in the bank, make it return true to put the bank in a searching state.
+			boolean bankOpen = client.getItemContainer(InventoryID.BANK) != null;
+			if (bankOpen && (tabInterface.getActiveTab() != null || tabInterface.isTagTabActive()))
 			{
 				client.getIntStack()[client.getIntStackSize() - 1] = 1; // true
 			}
