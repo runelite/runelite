@@ -193,7 +193,8 @@ class SkillCalculator extends JPanel
 
 		for (UIActionSlot slot : combinedActionSlots)
 		{
-			xp += slot.getValue();
+			double formattedXP = Double.parseDouble(XP_FORMAT.format(slot.getValue()));
+			xp += formattedXP;
 		}
 
 		return xp;
