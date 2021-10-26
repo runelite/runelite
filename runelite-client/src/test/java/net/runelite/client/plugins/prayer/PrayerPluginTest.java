@@ -99,7 +99,6 @@ public class PrayerPluginTest
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(itemContainer);
 
 		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
 
@@ -114,7 +113,6 @@ public class PrayerPluginTest
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(itemContainer);
 
 		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
 
@@ -129,7 +127,6 @@ public class PrayerPluginTest
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(itemContainer);
 
 		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
 
@@ -145,7 +142,6 @@ public class PrayerPluginTest
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(itemContainer);
 
 		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
 
