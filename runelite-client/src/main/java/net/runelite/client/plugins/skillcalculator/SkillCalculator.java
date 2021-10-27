@@ -343,7 +343,9 @@ class SkillCalculator extends JPanel
 			int actionCount = 0;
 			int neededXP = targetXP - currentXP;
 			SkillAction action = slot.getAction();
-			double xp = (action.isIgnoreBonus()) ? action.getXp() : action.getXp() * xpFactor;
+			float xp = action.isIgnoreBonus()
+				? action.getXp()
+				: Math.round(action.getXp() * xpFactor * 10f) / 10f;
 
 			if (neededXP > 0)
 			{
