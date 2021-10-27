@@ -23,7 +23,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.BorderLayout;
@@ -36,13 +35,16 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.skillcalculator.skills.SkillAction;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
@@ -64,9 +66,12 @@ class UIActionSlot extends JPanel
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
 	@Getter(AccessLevel.PACKAGE)
-	private final SkillDataEntry action;
-	private final JShadowedLabel uiLabelActions;
+	private final SkillAction action;
 
+	@Getter(AccessLevel.PACKAGE)
+	private String actionName;
+
+	private final JShadowedLabel uiLabelActions;
 	private final JPanel uiInfo;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -80,9 +85,9 @@ class UIActionSlot extends JPanel
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
-	private double value = 0;
+	private double value;
 
-	UIActionSlot(SkillDataEntry action, JLabel uiIcon)
+	UIActionSlot(SkillAction action, ClientThread clientThread, ItemManager itemManager, JLabel uiIcon)
 	{
 		this.action = action;
 
@@ -121,7 +126,12 @@ class UIActionSlot extends JPanel
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 
-		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
+		JShadowedLabel uiLabelName = new JShadowedLabel();
+		clientThread.invokeLater(() ->
+		{
+			actionName = action.getName(itemManager);
+			SwingUtilities.invokeLater(() -> uiLabelName.setText(actionName));
+		});
 		uiLabelName.setForeground(Color.WHITE);
 
 		uiLabelActions = new JShadowedLabel("Unknown");

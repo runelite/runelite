@@ -89,6 +89,7 @@ public class ItemChargePlugin extends Plugin
 		"You can smelt ([0-9]+|one) more pieces? of iron ore before a ring melts\\.");
 	private static final String RING_OF_FORGING_USED_TEXT = "You retrieve a bar of iron.";
 	private static final String RING_OF_FORGING_BREAK_TEXT = "Your Ring of Forging has melted.";
+	private static final String RING_OF_FORGING_VARROCK_PLATEBODY = "The Varrock platebody enabled you to smelt your next ore simultaneously.";
 	private static final Pattern AMULET_OF_CHEMISTRY_CHECK_PATTERN = Pattern.compile(
 		"Your amulet of chemistry has (\\d) charges? left\\."
 	);
@@ -317,8 +318,9 @@ public class ItemChargePlugin extends Plugin
 				}
 				updateRingOfForgingCharges(charges);
 			}
-			else if (message.equals(RING_OF_FORGING_USED_TEXT))
+			else if (message.equals(RING_OF_FORGING_USED_TEXT) || message.equals(RING_OF_FORGING_VARROCK_PLATEBODY))
 			{
+				final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 
 				// Determine if the player smelted with a Ring of Forging equipped.
@@ -327,7 +329,7 @@ public class ItemChargePlugin extends Plugin
 					return;
 				}
 
-				if (equipment.contains(ItemID.RING_OF_FORGING))
+				if (equipment.contains(ItemID.RING_OF_FORGING) && (message.equals(RING_OF_FORGING_USED_TEXT) || inventory.count(ItemID.IRON_ORE) > 1))
 				{
 					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - 1, 0, MAX_RING_OF_FORGING_CHARGES);
 					updateRingOfForgingCharges(charges);

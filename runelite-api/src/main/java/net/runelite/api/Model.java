@@ -62,7 +62,7 @@ public interface Model extends Renderable
 	int getUvBufferOffset();
 	void setUvBufferOffset(int bufferOffset);
 
-	int getModelHeight();
+	int getBottomY();
 
 	void calculateBoundsCylinder();
 
@@ -72,8 +72,7 @@ public interface Model extends Renderable
 
 	short[] getFaceTextures();
 
-	float[][] getFaceTextureUCoordinates();
-	float[][] getFaceTextureVCoordinates();
+	float[] getFaceTextureUVCoordinates();
 
 	void calculateExtreme(int orientation);
 
@@ -86,4 +85,8 @@ public interface Model extends Renderable
 
 	int getXYZMag();
 	boolean isClickable();
+
+	int[] getVertexNormalsX();
+	int[] getVertexNormalsY();
+	int[] getVertexNormalsZ();
 }

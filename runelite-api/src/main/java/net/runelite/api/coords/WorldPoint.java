@@ -44,6 +44,14 @@ import net.runelite.api.Perspective;
 @Value
 public class WorldPoint
 {
+	private static final int[] REGION_MIRRORS = {
+		// Prifddinas
+		12894, 8755,
+		12895, 8756,
+		13150, 9011,
+		13151, 9012
+	};
+
 	/**
 	 * X-axis coordinate.
 	 */
@@ -372,5 +380,66 @@ public class WorldPoint
 	private static int getRegionOffset(final int position)
 	{
 		return position & (REGION_SIZE - 1);
+	}
+
+	/**
+	 * Translate a coordinate either between overworld and real, or real and overworld
+	 *
+	 * @param worldPoint
+	 * @param toOverworld whether to convert to overworld coordinates, or to real coordinates
+	 * @return
+	 */
+	public static WorldPoint getMirrorPoint(WorldPoint worldPoint, boolean toOverworld)
+	{
+		int region = worldPoint.getRegionID();
+		for (int i = 0; i < REGION_MIRRORS.length; i += 2)
+		{
+			int real = REGION_MIRRORS[i];
+			int overworld = REGION_MIRRORS[i + 1];
+
+			// Test against what we are converting from
+			if (region == (toOverworld ? real : overworld))
+			{
+				return fromRegion(toOverworld ? overworld : real,
+					worldPoint.getRegionX(), worldPoint.getRegionY(), worldPoint.getPlane());
+			}
+		}
+		return worldPoint;
+	}
+
+	/**
+	 * Checks whether this tile is located within any of the given areas.
+	 *
+	 * @param worldAreas areas to check within
+	 * @return {@code true} if any area contains this point, {@code false} otherwise.
+	 */
+	public boolean isInArea(WorldArea... worldAreas)
+	{
+		for (WorldArea area : worldAreas)
+		{
+			if (area.contains(this))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks whether this tile is located within any of the given areas, disregarding any plane differences.
+	 *
+	 * @param worldAreas areas to check within
+	 * @return {@code true} if any area contains this point, {@code false} otherwise.
+	 */
+	public boolean isInArea2D(WorldArea... worldAreas)
+	{
+		for (WorldArea area : worldAreas)
+		{
+			if (area.contains2D(this))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

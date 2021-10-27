@@ -43,11 +43,10 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import static net.runelite.client.plugins.cannon.CannonPlugin.MAX_OVERLAY_DISTANCE;
 
 class CannonSpotOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2350;
-
 	private final Client client;
 	private final CannonPlugin plugin;
 	private final CannonConfig config;
@@ -87,7 +86,7 @@ class CannonSpotOverlay extends Overlay
 			LocalPoint spotPoint = LocalPoint.fromWorld(client, spot);
 			LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 
-			if (spotPoint != null && localLocation.distanceTo(spotPoint) <= MAX_DISTANCE)
+			if (spotPoint != null && localLocation.distanceTo(spotPoint) <= MAX_OVERLAY_DISTANCE)
 			{
 				renderCannonSpot(graphics, client, spotPoint, itemManager.getImage(CANNONBALL), Color.RED);
 			}

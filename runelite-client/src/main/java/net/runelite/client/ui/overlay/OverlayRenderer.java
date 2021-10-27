@@ -67,11 +67,14 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 @Singleton
 @Slf4j
 public class OverlayRenderer extends MouseAdapter implements KeyListener
 {
+	private static final Marker DEDUPLICATE = MarkerFactory.getMarker("DEDUPLICATE");
 	private static final int BORDER = 5;
 	private static final int BORDER_TOP = BORDER + 15;
 	private static final int PADDING = 2;
@@ -272,25 +275,18 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				final Dimension dimension = bounds.getSize();
 				final Point preferredLocation = overlay.getPreferredLocation();
 				Point location;
+				Rectangle snapCorner = null;
 
 				// If the final position is not modified, layout it
 				if (overlayPosition != OverlayPosition.DETACHED && (preferredLocation == null || overlay.getPreferredPosition() != null))
 				{
-					final Rectangle snapCorner = snapCorners.forPosition(overlayPosition);
+					snapCorner = snapCorners.forPosition(overlayPosition);
 					final Point translation = OverlayUtil.transformPosition(overlayPosition, dimension); // offset from corner
 					// Target x/y to draw the overlay
-					int destX = (int) snapCorner.getX() + translation.x;
-					int destY = (int) snapCorner.getY() + translation.y;
+					int destX = snapCorner.x + translation.x;
+					int destY = snapCorner.y + translation.y;
 					// Clamp the target position to ensure it is on screen or within parent bounds
 					location = clampOverlayLocation(destX, destY, dimension.width, dimension.height, overlay);
-					// Diff final position to target position in order to add it to the snap corner padding. The
-					// overlay effectively takes up the difference of (clamped location - target location) in
-					// addition to its normal dimensions.
-					int dX = location.x - destX;
-					int dY = location.y - destY;
-					final Point padding = OverlayUtil.padPosition(overlayPosition, dimension, PADDING); // overlay size + fixed padding
-					// translate corner for padding and any difference due to the position clamping
-					snapCorner.translate(padding.x + dX, padding.y + dY);
 				}
 				else
 				{
@@ -306,6 +302,12 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				}
 
 				safeRender(client, overlay, layer, graphics, location);
+
+				// Adjust snap corner based on where the overlay was drawn
+				if (snapCorner != null && bounds.width + bounds.height > 0)
+				{
+					OverlayUtil.shiftSnapCorner(overlayPosition, snapCorner, bounds, PADDING);
+				}
 
 				// Restore graphics2d properties prior to drawing bounds
 				graphics.setTransform(transform);
@@ -665,7 +667,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				{
 					OverlayPosition position = snapCorners.fromBounds(snapCorner);
 
-					if (position == currentManagedOverlay.getPosition())
+					if (position == getCorrectedOverlayPosition(currentManagedOverlay))
 					{
 						// overlay moves back to default position
 						position = null;
@@ -673,6 +675,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 					currentManagedOverlay.setPreferredPosition(position);
 					currentManagedOverlay.setPreferredLocation(null); // from dragging
+					currentManagedOverlay.revalidate();
 					break;
 				}
 			}
@@ -748,7 +751,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.warn(DEDUPLICATE, "Error during overlay rendering", ex);
 			return;
 		}
 

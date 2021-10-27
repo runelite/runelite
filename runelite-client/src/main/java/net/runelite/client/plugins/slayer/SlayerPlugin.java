@@ -39,7 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.Predicate;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -83,11 +83,10 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.npcoverlay.HighlightedNpc;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsPlugin;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
@@ -100,7 +99,6 @@ import org.apache.commons.lang3.ArrayUtils;
 	description = "Show additional slayer task related information",
 	tags = {"combat", "notifications", "overlay", "tasks"}
 )
-@PluginDependency(NpcIndicatorsPlugin.class)
 @Slf4j
 public class SlayerPlugin extends Plugin
 {
@@ -175,7 +173,7 @@ public class SlayerPlugin extends Plugin
 	private ChatClient chatClient;
 
 	@Inject
-	private NpcIndicatorsService npcIndicatorsService;
+	private NpcOverlayService npcOverlayService;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> targets = new ArrayList<>();
@@ -210,13 +208,29 @@ public class SlayerPlugin extends Plugin
 	private boolean loginFlag;
 	private final List<String> targetNames = new ArrayList<>();
 
-	public final Predicate<NPC> isTarget = (n) -> config.highlightTargets() && targets.contains(n);
+	public final Function<NPC, HighlightedNpc> isTarget = (n) ->
+	{
+		if ((config.highlightHull() || config.highlightTile() || config.highlightOutline()) && targets.contains(n))
+		{
+			Color color = config.getTargetColor();
+			return HighlightedNpc.builder()
+				.npc(n)
+				.highlightColor(color)
+				.fillColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12))
+				.hull(config.highlightHull())
+				.tile(config.highlightTile())
+				.outline(config.highlightOutline())
+				.build();
+
+		}
+		return null;
+	};
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
-		npcIndicatorsService.registerHighlighter(isTarget);
+		npcOverlayService.registerHighlighter(isTarget);
 
 		overlayManager.add(overlay);
 		overlayManager.add(targetWeaknessOverlay);
@@ -242,8 +256,7 @@ public class SlayerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		chatCommandManager.unregisterCommand(TASK_COMMAND_STRING);
-		npcIndicatorsService.unregisterHighlighter(isTarget);
-		npcIndicatorsService.rebuild();
+		npcOverlayService.unregisterHighlighter(isTarget);
 
 		overlayManager.remove(overlay);
 		overlayManager.remove(targetWeaknessOverlay);
@@ -333,10 +346,7 @@ public class SlayerPlugin extends Plugin
 		setProfileConfig(SlayerConfig.TASK_LOC_KEY, taskLocation);
 	}
 
-	@Subscribe(
-		// Run prior to npc indicators plugin so targets is populated before the isTarget predicate is checked
-		priority = 1
-	)
+	@Subscribe
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
@@ -603,7 +613,7 @@ public class SlayerPlugin extends Plugin
 		}
 		else
 		{
-			npcIndicatorsService.rebuild();
+			npcOverlayService.rebuild();
 		}
 	}
 
@@ -729,7 +739,7 @@ public class SlayerPlugin extends Plugin
 		Task task = Task.getTask(name);
 		rebuildTargetNames(task);
 		rebuildTargetList();
-		npcIndicatorsService.rebuild();
+		npcOverlayService.rebuild();
 	}
 
 	private void addCounter()

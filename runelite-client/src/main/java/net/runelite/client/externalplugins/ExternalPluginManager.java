@@ -424,6 +424,13 @@ public class ExternalPluginManager
 
 	public static void loadBuiltin(Class<? extends Plugin>... plugins)
 	{
+		boolean assertsEnabled = false;
+		assert (assertsEnabled = true);
+		if (!assertsEnabled)
+		{
+			throw new RuntimeException("Assertions are not enabled, add '-ea' to your VM options. Enabling assertions during development catches undefined behavior and incorrect API usage.");
+		}
+
 		builtinExternals = plugins;
 	}
 }

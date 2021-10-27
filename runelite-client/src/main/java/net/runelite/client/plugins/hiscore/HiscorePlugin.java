@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.hiscore;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -47,6 +46,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -70,8 +70,6 @@ import org.apache.commons.lang3.ArrayUtils;
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
-	private static final String KICK_OPTION = "Kick";
-	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Delete", KICK_OPTION);
 	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
 
 	@Inject
@@ -153,26 +151,24 @@ public class HiscorePlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!config.menuOption())
+		if ((event.getType() != MenuAction.CC_OP.getId() && event.getType() != MenuAction.CC_OP_LOW_PRIORITY.getId()) || !config.menuOption())
 		{
 			return;
 		}
 
+		final String option = event.getOption();
 		final int componentId = event.getActionParam1();
-		int groupId = WidgetInfo.TO_GROUP(componentId);
-		String option = event.getOption();
+		final int groupId = WidgetInfo.TO_GROUP(componentId);
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId() ||
-				groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
-				groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId() ||
-				groupId == WidgetInfo.IGNORE_LIST.getGroupId() || componentId == WidgetInfo.CLAN_MEMBER_LIST.getId() ||
-				componentId == WidgetInfo.CLAN_GUEST_MEMBER_LIST.getId())
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && option.equals("Delete")
+			|| groupId == WidgetInfo.FRIENDS_CHAT.getGroupId() && (option.equals("Add ignore") || option.equals("Remove friend"))
+			|| groupId == WidgetInfo.CHATBOX.getGroupId() && (option.equals("Add ignore") || option.equals("Message"))
+			|| groupId == WidgetInfo.IGNORE_LIST.getGroupId() && option.equals("Delete")
+			|| (componentId == WidgetInfo.CLAN_MEMBER_LIST.getId() || componentId == WidgetInfo.CLAN_GUEST_MEMBER_LIST.getId()) && (option.equals("Add ignore") || option.equals("Remove friend"))
+			|| groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId() && (option.equals("Add ignore") || option.equals("Message"))
+			|| groupId == WidgetID.GROUP_IRON_GROUP_ID && (option.equals("Add friend") || option.equals("Remove friend") || option.equals("Remove ignore"))
+		)
 		{
-			if (!AFTER_OPTIONS.contains(option) || (option.equals("Delete") && groupId != WidgetInfo.IGNORE_LIST.getGroupId()))
-			{
-				return;
-			}
-
 			final MenuEntry lookup = new MenuEntry();
 			lookup.setOption(LOOKUP);
 			lookup.setTarget(event.getTarget());
@@ -265,17 +261,13 @@ public class HiscorePlugin extends Plugin
 		{
 			EnumSet<WorldType> wTypes = client.getWorldType();
 
-			if (wTypes.contains(WorldType.DEADMAN_TOURNAMENT))
+			if (wTypes.contains(WorldType.SEASONAL))
 			{
 				return HiscoreEndpoint.TOURNAMENT;
 			}
 			else if (wTypes.contains(WorldType.DEADMAN))
 			{
 				return HiscoreEndpoint.DEADMAN;
-			}
-			else if (wTypes.contains(WorldType.LEAGUE))
-			{
-				return HiscoreEndpoint.LEAGUE;
 			}
 		}
 		return HiscoreEndpoint.NORMAL;

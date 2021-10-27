@@ -30,6 +30,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,7 +40,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -47,6 +47,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -141,26 +142,15 @@ public class PrayerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		final ItemContainer container = event.getItemContainer();
-		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-
-		if (container == inventory || container == equipment)
+		final int id = event.getContainerId();
+		if (id == InventoryID.INVENTORY.getId())
 		{
-			doseOverlay.setHasHolyWrench(false);
-			doseOverlay.setHasPrayerRestore(false);
-			doseOverlay.setBonusPrayer(0);
-
-			if (inventory != null)
-			{
-				checkContainerForPrayer(inventory.getItems());
-			}
-
-			if (equipment != null)
-			{
-				prayerBonus = checkContainerForPrayer(equipment.getItems());
-			}
-
+			updatePotionBonus(event.getItemContainer(),
+				client.getItemContainer(InventoryID.EQUIPMENT));
+		}
+		else if (id == InventoryID.EQUIPMENT.getId())
+		{
+			prayerBonus = totalPrayerBonus(event.getItemContainer().getItems());
 		}
 	}
 
@@ -222,26 +212,29 @@ public class PrayerPlugin extends Plugin
 		}
 	}
 
-	private int checkContainerForPrayer(Item[] items)
+	private int totalPrayerBonus(Item[] items)
 	{
-		if (items == null)
-		{
-			return 0;
-		}
-
 		int total = 0;
+		for (Item item : items)
+		{
+			ItemStats is = itemManager.getItemStats(item.getId(), false);
+			if (is != null && is.getEquipment() != null)
+			{
+				total += is.getEquipment().getPrayer();
+			}
+		}
+		return total;
+	}
 
+	private void updatePotionBonus(ItemContainer inventory, @Nullable ItemContainer equip)
+	{
 		boolean hasPrayerPotion = false;
 		boolean hasSuperRestore = false;
 		boolean hasSanfew = false;
+		boolean hasWrench = false;
 
-		for (Item item : items)
+		for (Item item : inventory.getItems())
 		{
-			if (item == null)
-			{
-				continue;
-			}
-
 			final PrayerRestoreType type = PrayerRestoreType.getType(item.getId());
 
 			if (type != null)
@@ -258,32 +251,45 @@ public class PrayerPlugin extends Plugin
 						hasSanfew = true;
 						break;
 					case HOLYWRENCH:
-						doseOverlay.setHasHolyWrench(true);
+						hasWrench = true;
 						break;
 				}
 			}
-
-			ItemStats is = itemManager.getItemStats(item.getId(), false);
-			if (is != null && is.getEquipment() != null)
-			{
-				total += is.getEquipment().getPrayer();
-			}
 		}
 
-		if (hasSanfew || hasSuperRestore || hasPrayerPotion)
+		// Some items providing the holy wrench bonus can also be worn
+		if (!hasWrench && equip != null)
 		{
-			doseOverlay.setHasPrayerRestore(true);
-			if (hasSanfew)
+			for (Item item : equip.getItems())
 			{
-				doseOverlay.setBonusPrayer(2);
-			}
-			else if (hasSuperRestore)
-			{
-				doseOverlay.setBonusPrayer(1);
+				final PrayerRestoreType type = PrayerRestoreType.getType(item.getId());
+				if (type == PrayerRestoreType.HOLYWRENCH)
+				{
+					hasWrench = true;
+					break;
+				}
 			}
 		}
 
-		return total;
+		// Prayer potion: floor(7 + 25% of base level) - 27% with holy wrench
+		// Super restore: floor(8 + 25% of base level) - 27% with holy wrench
+		// Sanfew serum: floor(4 + 30% of base level) - 32% with holy wrench
+		final int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
+		int restored = 0;
+		if (hasSanfew)
+		{
+			restored = Math.max(restored, 4 + (int) Math.floor(prayerLevel *  (hasWrench ? .32 : .30)));
+		}
+		if (hasSuperRestore)
+		{
+			restored = Math.max(restored, 8 + (int) Math.floor(prayerLevel *  (hasWrench ? .27 : .25)));
+		}
+		if (hasPrayerPotion)
+		{
+			restored = Math.max(restored, 7 + (int) Math.floor(prayerLevel *  (hasWrench ? .27 : .25)));
+		}
+
+		doseOverlay.setRestoreAmount(restored);
 	}
 
 	double getTickProgress()

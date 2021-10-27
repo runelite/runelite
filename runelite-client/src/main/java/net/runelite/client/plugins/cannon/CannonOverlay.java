@@ -39,11 +39,10 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import static net.runelite.client.plugins.cannon.CannonPlugin.MAX_OVERLAY_DISTANCE;
 
 class CannonOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2500;
-
 	private final Client client;
 	private final CannonConfig config;
 	private final CannonPlugin plugin;
@@ -76,7 +75,7 @@ class CannonOverlay extends Overlay
 
 		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 
-		if (localLocation.distanceTo(cannonPoint) <= MAX_DISTANCE)
+		if (localLocation.distanceTo(cannonPoint) <= MAX_OVERLAY_DISTANCE)
 		{
 			Point cannonLoc = Perspective.getCanvasTextLocation(client,
 				graphics,

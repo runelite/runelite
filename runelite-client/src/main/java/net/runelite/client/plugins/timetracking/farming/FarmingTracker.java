@@ -40,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
+import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.vars.Autoweed;
 import net.runelite.api.widgets.WidgetModalMode;
@@ -101,11 +102,12 @@ public class FarmingTracker
 		boolean changed = false;
 
 		//Varbits don't get sent when a modal widget is open so just return
-		if (client.getComponentTable().getNodes()
-			.stream()
-			.anyMatch(widgetNode -> widgetNode.getModalMode() != WidgetModalMode.NON_MODAL))
+		for (WidgetNode widgetNode : client.getComponentTable())
 		{
-			return false;
+			if (widgetNode.getModalMode() != WidgetModalMode.NON_MODAL)
+			{
+				return false;
+			}
 		}
 
 		{

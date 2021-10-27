@@ -29,7 +29,7 @@ package net.runelite.api;
  * <p>
  * Note: This class is not complete and may be missing mapped IDs.
  */
-public class ProjectileID
+public final class ProjectileID
 {
 	public static final int CANNONBALL = 53;
 	public static final int GRANITE_CANNONBALL = 1443;

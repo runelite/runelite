@@ -24,13 +24,12 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
-import net.runelite.api.Favour;
 import net.runelite.api.Quest;
 import net.runelite.api.Skill;
-import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.SkillRequirement;
-import net.runelite.client.plugins.achievementdiary.QuestRequirement;
 import net.runelite.client.plugins.achievementdiary.FavourRequirement;
+import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
+import net.runelite.client.plugins.achievementdiary.QuestRequirement;
+import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class KourendDiaryRequirement extends GenericDiaryRequirement
 {
@@ -41,7 +40,7 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MINING, 15));
 		add("Steal from a Hosidius Food Stall.",
 			new SkillRequirement(Skill.THIEVING, 25),
-			new FavourRequirement(Favour.HOSIDIUS, 15));
+			new FavourRequirement(FavourRequirement.Favour.HOSIDIUS, 15));
 		add("Browse the Warrens General Store.",
 			new QuestRequirement(Quest.THE_QUEEN_OF_THIEVES, true));
 		add("Enter your Player Owned House from Hosidius.",
@@ -65,11 +64,11 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 		add("Enter the Farming Guild.",
 			new SkillRequirement(Skill.FARMING, 45));
 		add("Switch to the Necromancy Spellbook at Tyss.",
-			new FavourRequirement(Favour.ARCEUUS, 60));
+			new FavourRequirement(FavourRequirement.Favour.ARCEUUS, 60));
 		add("Repair a Piscarilius crane.",
 			new SkillRequirement(Skill.CRAFTING, 30));
 		add("Deliver some intelligence to Captain Ginea.",
-			new FavourRequirement(Favour.SHAYZIEN, 40));
+			new FavourRequirement(FavourRequirement.Favour.SHAYZIEN, 40));
 		add("Catch a Bluegill on Molch Island.",
 			new SkillRequirement(Skill.FISHING, 43),
 			new SkillRequirement(Skill.HUNTER, 35));
@@ -86,23 +85,23 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 		//HARD
 		add("Enter the Woodcutting Guild.",
 			new SkillRequirement(Skill.WOODCUTTING, 60),
-			new FavourRequirement(Favour.HOSIDIUS, 75));
+			new FavourRequirement(FavourRequirement.Favour.HOSIDIUS, 75));
 		add("Smelt an Adamantite bar in The Forsaken Tower.",
 			new SkillRequirement(Skill.SMITHING, 70),
 			new QuestRequirement(Quest.THE_FORSAKEN_TOWER, true));
 		add("Kill a Lizardman Shaman in Molch.",
-			new FavourRequirement(Favour.SHAYZIEN, 100));
+			new FavourRequirement(FavourRequirement.Favour.SHAYZIEN, 100));
 		add("Mine some Lovakite.",
 			new SkillRequirement(Skill.MINING, 65),
-			new FavourRequirement(Favour.LOVAKENGJ, 30));
+			new FavourRequirement(FavourRequirement.Favour.LOVAKENGJ, 30));
 		add("Plant some Logavano seeds at the Tithe Farm.",
 			new SkillRequirement(Skill.FARMING, 74),
-			new FavourRequirement(Favour.HOSIDIUS, 100));
+			new FavourRequirement(FavourRequirement.Favour.HOSIDIUS, 100));
 		add("Teleport to Xeric's Heart using Xeric's Talisman.",
 			new QuestRequirement(Quest.ARCHITECTURAL_ALLIANCE));
 		add("Deliver an artefact to Captain Khaled.",
 			new SkillRequirement(Skill.THIEVING, 49),
-			new FavourRequirement(Favour.PISCARILIUS, 75));
+			new FavourRequirement(FavourRequirement.Favour.PISCARILIUS, 75));
 		add("Kill a Wyrm in the Karuulm Slayer Dungeon.",
 			new SkillRequirement(Skill.SLAYER, 62));
 		add("Cast Monster Examine on a Troll south of Mount Quidamortem.",
@@ -114,21 +113,21 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.RUNECRAFT, 77),
 			new SkillRequirement(Skill.MINING, 38),
 			new SkillRequirement(Skill.CRAFTING, 38),
-			new FavourRequirement(Favour.ARCEUUS, 100));
+			new FavourRequirement(FavourRequirement.Favour.ARCEUUS, 100));
 		add("Chop some Redwood logs.",
 			new SkillRequirement(Skill.WOODCUTTING, 90),
-			new FavourRequirement(Favour.HOSIDIUS, 75));
+			new FavourRequirement(FavourRequirement.Favour.HOSIDIUS, 75));
 		add("Catch an Anglerfish and cook it whilst in Great Kourend.",
 			new SkillRequirement(Skill.FISHING, 82),
 			new SkillRequirement(Skill.COOKING, 84),
-			new FavourRequirement(Favour.PISCARILIUS, 100));
+			new FavourRequirement(FavourRequirement.Favour.PISCARILIUS, 100));
 		add("Kill a Hydra in the Karuulm Slayer Dungeon.",
 			new SkillRequirement(Skill.SLAYER, 95));
 		add("Create an Ape Atoll teleport tablet.",
 			new SkillRequirement(Skill.MAGIC, 90),
 			new SkillRequirement(Skill.MINING, 38),
 			new SkillRequirement(Skill.CRAFTING, 38),
-			new FavourRequirement(Favour.ARCEUUS, 100));
+			new FavourRequirement(FavourRequirement.Favour.ARCEUUS, 100));
 		add("Create your own Battlestaff from scratch within the Farming Guild.",
 			new SkillRequirement(Skill.FARMING, 85),
 			new SkillRequirement(Skill.FLETCHING, 40));

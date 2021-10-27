@@ -50,6 +50,7 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.LookAndFeel;
+import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
@@ -109,6 +110,14 @@ public class SwingUtil
 		try
 		{
 			UIManager.setLookAndFeel(laf);
+
+			if (OSType.getOSType() == OSType.MacOS)
+			{
+				// On MacOS Substance doesn't install its own popup factory, and the default one uses lightweight
+				// components unless the Aqua LAF is used. Lightweight components do not render correctly over AWT
+				// canvases on MacOS - so replace the popup factory one with that forces heavy components.
+				PopupFactory.setSharedInstance(new MacOSPopupFactory());
+			}
 		}
 		catch (UnsupportedLookAndFeelException ex)
 		{

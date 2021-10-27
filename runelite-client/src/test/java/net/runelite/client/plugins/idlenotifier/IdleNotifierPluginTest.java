@@ -62,6 +62,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class IdleNotifierPluginTest
 {
+	private static final int UNKNOWN_ANIMATION = -2;
+
 	@Mock
 	@Bind
 	private Client client;
@@ -153,7 +155,7 @@ public class IdleNotifierPluginTest
 		animationChanged.setActor(player);
 		plugin.onAnimationChanged(animationChanged);
 		plugin.onGameTick(new GameTick());
-		when(player.getAnimation()).thenReturn(AnimationID.LOOKING_INTO);
+		when(player.getAnimation()).thenReturn(UNKNOWN_ANIMATION);
 		plugin.onAnimationChanged(animationChanged);
 		plugin.onGameTick(new GameTick());
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);

@@ -39,15 +39,10 @@ class BarRenderer
 {
 	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
-	private static final int OVERHEAL_OFFSET = 2;
-	private static final int HEAL_OFFSET = 3;
-	private static final int ICON_AND_COUNTER_OFFSET_X = -4;
-	private static final int ICON_AND_COUNTER_OFFSET_Y = 25;
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
-	private static final int OFFSET = 2;
 	private static final int WIDTH = 20;
-	private static final int PADDING = 1;
+	private static final int BORDER_SIZE = 1;
 	private final Supplier<Integer> maxValueSupplier;
 	private final Supplier<Integer> currentValueSupplier;
 	private final Supplier<Integer> healSupplier;
@@ -80,14 +75,14 @@ class BarRenderer
 		refreshSkills();
 
 		graphics.setColor(BACKGROUND);
-		graphics.drawRect(x, y, WIDTH - PADDING, height - PADDING);
+		graphics.drawRect(x, y, WIDTH - BORDER_SIZE, height - BORDER_SIZE);
 		graphics.fillRect(x, y, WIDTH, height);
 
 		graphics.setColor(fill);
-		graphics.fillRect(x + PADDING,
-			y + PADDING + (height - filledHeight),
-			WIDTH - PADDING * OFFSET,
-			filledHeight - PADDING * OFFSET);
+		graphics.fillRect(x + BORDER_SIZE,
+			y + BORDER_SIZE + (height - filledHeight),
+			WIDTH - BORDER_SIZE * 2,
+			filledHeight - BORDER_SIZE * 2);
 
 		if (config.enableRestorationBars())
 		{
@@ -107,7 +102,8 @@ class BarRenderer
 		if (skillIconEnabled)
 		{
 			final Image icon = iconSupplier.get();
-			graphics.drawImage(icon, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - icon.getWidth(null), null);
+			final int xDraw = x + (WIDTH / 2) - (icon.getWidth(null) / 2);
+			graphics.drawImage(icon, xDraw, y, null);
 		}
 
 		if (config.enableCounter())
@@ -115,12 +111,12 @@ class BarRenderer
 			graphics.setFont(FontManager.getRunescapeSmallFont());
 			final String counterText = Integer.toString(currentValue);
 			final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
-			final int centerText = (WIDTH - PADDING) / 2 - (widthOfCounter / 2);
+			final int centerText = (WIDTH / 2) - (widthOfCounter / 2);
 			final int yOffset = skillIconEnabled ? SKILL_ICON_HEIGHT : COUNTER_ICON_HEIGHT;
 
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setText(counterText);
-			textComponent.setPosition(new Point(x + centerText + PADDING, y + yOffset));
+			textComponent.setPosition(new Point(x + centerText, y + yOffset));
 			textComponent.render(graphics);
 		}
 	}
@@ -136,26 +132,26 @@ class BarRenderer
 		}
 
 		final int filledCurrentHeight = getBarHeight(maxValue, currentValue, height);
-		int filledHeight = getBarHeight(maxValue, heal, height);
+		final int filledHealHeight = getBarHeight(maxValue, heal, height);
+		final int fillY, fillHeight;
 		graphics.setColor(color);
 
-		if (filledHeight + filledCurrentHeight > height)
+		if (filledHealHeight + filledCurrentHeight > height)
 		{
-			final int overHeal = filledHeight + filledCurrentHeight - height;
-			filledHeight = filledHeight - overHeal + OVERHEAL_OFFSET;
 			graphics.setColor(OVERHEAL_COLOR);
-			graphics.fillRect(x + PADDING,
-				y - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
-				WIDTH - PADDING * OVERHEAL_OFFSET,
-				filledHeight - PADDING * OVERHEAL_OFFSET);
+			fillY = y + BORDER_SIZE;
+			fillHeight = height - filledCurrentHeight - BORDER_SIZE;
 		}
 		else
 		{
-			graphics.fillRect(x + PADDING,
-				y - OVERHEAL_OFFSET - filledCurrentHeight + (height - filledHeight) + HEAL_OFFSET,
-				WIDTH - PADDING * OVERHEAL_OFFSET,
-				filledHeight + OVERHEAL_OFFSET - PADDING * OVERHEAL_OFFSET);
+			fillY = y + BORDER_SIZE + height - (filledCurrentHeight + filledHealHeight);
+			fillHeight = filledHealHeight;
 		}
+
+		graphics.fillRect(x + BORDER_SIZE,
+			fillY,
+			WIDTH - BORDER_SIZE * 2,
+			fillHeight);
 	}
 
 	private static int getBarHeight(int base, int current, int size)
