@@ -80,7 +80,7 @@ class SkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
-	private int targetAmount = 0;
+	private int targetAmount = 1;
 	private float xpFactor = 1;
 
 	SkillCalculator(Client client, ClientThread clientThread, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
@@ -146,7 +146,6 @@ class SkillCalculator extends JPanel
 
 			// Reset the XP factor, removing bonuses.
 			xpFactor = 1;
-			targetAmount = 1;
 
 			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
 			int endGoal = client.getVar(endGoalVarp);
@@ -187,14 +186,13 @@ class SkillCalculator extends JPanel
 		updateInputFields();
 	}
 
-	private double getCombinedActionXP()
+	private float getCombinedActionXP()
 	{
-		double xp = 0;
+		float xp = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
 		{
-			double formattedXP = Double.parseDouble(XP_FORMAT.format(slot.getValue()));
-			xp += formattedXP;
+			xp += slot.getValue();
 		}
 
 		return xp;
@@ -220,7 +218,7 @@ class SkillCalculator extends JPanel
 
 		int actionCount = 0;
 		int neededXP = targetXP - currentXP;
-		double xp = getCombinedActionXP();
+		float xp = getCombinedActionXP();
 
 		if (neededXP > 0)
 		{
@@ -434,13 +432,13 @@ class SkillCalculator extends JPanel
 
 	private void onFieldTargetAmountUpdated()
 	{
-		double xp = getCombinedActionXP();
+		float xp = getCombinedActionXP();
 
 		if (xp > 0)
 		{
 			targetAmount = uiInput.getTargetAmountInput();
-			int neededXP = (int) Math.floor(xp * targetAmount);
-
+			float targetAmountXP = xp * targetAmount;
+			int neededXP = enforceXPBounds((int) Math.floor(targetAmountXP));
 			targetXP = enforceXPBounds(neededXP + currentXP);
 			targetLevel = Experience.getLevelForXp(targetXP);
 			updateInputFields();
