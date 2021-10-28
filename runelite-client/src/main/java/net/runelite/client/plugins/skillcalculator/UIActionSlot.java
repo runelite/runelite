@@ -85,7 +85,7 @@ class UIActionSlot extends JPanel
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
-	private double value;
+	private int value;
 
 	UIActionSlot(SkillAction action, ClientThread clientThread, ItemManager itemManager, JLabel uiIcon)
 	{

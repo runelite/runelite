@@ -34,7 +34,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,6 @@ import net.runelite.client.ui.components.IconTextField;
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
-	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
 
 	private final UICalculatorInputArea uiInput;
 	private final Client client;
@@ -203,7 +201,7 @@ class SkillCalculator extends JPanel
 
 		int actionCount = 0;
 		int neededXP = targetXP - currentXP;
-		double xp = 0;
+		int xp = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
 		{
@@ -213,7 +211,8 @@ class SkillCalculator extends JPanel
 		if (neededXP > 0)
 		{
 			assert xp != 0;
-			actionCount = (int) Math.ceil(neededXP / xp);
+			neededXP *= 10;
+			actionCount = (neededXP - 1) / xp + 1;
 		}
 
 		combinedActionSlot.setText(formatXPActionString(xp, actionCount, "exp - "));
@@ -344,11 +343,12 @@ class SkillCalculator extends JPanel
 			int neededXP = targetXP - currentXP;
 			SkillAction action = slot.getAction();
 			final float bonus = action.isIgnoreBonus() ? 1f : xpFactor;
-			final double xp = Math.round(action.getXp() * bonus * 10f) / 10d;
+			final int xp = Math.round(action.getXp() * bonus * 10f);
 
 			if (neededXP > 0)
 			{
-				actionCount = (int) Math.ceil(neededXP / xp);
+				neededXP *= 10;
+				actionCount = (neededXP - 1) / xp + 1;
 			}
 
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
@@ -360,9 +360,11 @@ class SkillCalculator extends JPanel
 		updateCombinedAction();
 	}
 
-	private static String formatXPActionString(double xp, int actionCount, String expExpression)
+	private static String formatXPActionString(int xp, int actionCount, String expExpression)
 	{
-		return XP_FORMAT.format(xp) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount == 1 ? " action" : " actions");
+		int integer = xp / 10;
+		int frac = xp % 10;
+		return (frac != 0 ? (integer + "." + frac) : integer) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount == 1 ? " action" : " actions");
 	}
 
 	private void updateInputFields()
