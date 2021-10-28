@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Tal <https://github.com/talsk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.woodcutting.config;
 
-/**
- * Utility class containing ASM opcodes used by the RuneLite client.
- */
-public class Opcodes
+import com.google.common.collect.ImmutableMap;
+import net.runelite.api.ItemID;
+
+public enum ClueNestTier
 {
-	/**
-	 * opcode used to return from scripts.
-	 */
-	public static final int RETURN = 21;
+	BEGINNER,
+	EASY,
+	MEDIUM,
+	HARD,
+	ELITE,
+	DISABLED;
 
-	/**
-	 * opcode used to invoke scripts.
-	 */
-	public static final int INVOKE = 40;
 
-	/**
-	 * RuneLite execution opcode used to inject scripts.
-	 */
-	public static final int RUNELITE_EXECUTE = 6599;
+	private static final ImmutableMap<Integer, ClueNestTier> CLUE_NEST_ID_TO_TIER = new ImmutableMap.Builder<Integer, ClueNestTier>()
+		.put(ItemID.CLUE_NEST_ELITE, ClueNestTier.ELITE)
+		.put(ItemID.CLUE_NEST_HARD, ClueNestTier.HARD)
+		.put(ItemID.CLUE_NEST_MEDIUM, ClueNestTier.MEDIUM)
+		.put(ItemID.CLUE_NEST_EASY, ClueNestTier.EASY)
+		.put(ItemID.CLUE_NEST_BEGINNER, ClueNestTier.BEGINNER)
+		.build();
+
+	static public ClueNestTier getTierFromItem(int itemId)
+	{
+		return CLUE_NEST_ID_TO_TIER.get(itemId);
+	}
 }

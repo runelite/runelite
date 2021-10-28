@@ -61,18 +61,18 @@ public class BarrowsBrotherSlainOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// Do not display overlay if potential is null/hidden
-		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
-		if (potential == null || potential.isHidden())
+		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
+		if (barrowsBrothers == null)
 		{
 			return null;
 		}
 
-		// Hide original overlay
-		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
-		if (barrowsBrothers != null)
+		// Hide original brother and potential overlays
+		barrowsBrothers.setHidden(true);
+
+		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
+		if (potential != null)
 		{
-			barrowsBrothers.setHidden(true);
 			potential.setHidden(true);
 		}
 
