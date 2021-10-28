@@ -186,9 +186,9 @@ class SkillCalculator extends JPanel
 		updateInputFields();
 	}
 
-	private float getCombinedActionXP()
+	private double getCombinedActionXP()
 	{
-		float xp = 0;
+		double xp = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
 		{
@@ -196,6 +196,20 @@ class SkillCalculator extends JPanel
 		}
 
 		return xp;
+	}
+
+	private int getActionCount(int neededXP, double xp)
+	{
+		int remainder = neededXP * 10 % (int) Math.round(xp * 10);
+
+		if (remainder == 0)
+		{
+			return (int) Math.round(neededXP / xp);
+		}
+		else
+		{
+			return (int) Math.ceil(neededXP / xp);
+		}
 	}
 
 	private void updateCombinedAction()
@@ -218,12 +232,12 @@ class SkillCalculator extends JPanel
 
 		int actionCount = 0;
 		int neededXP = targetXP - currentXP;
-		float xp = getCombinedActionXP();
+		double xp = getCombinedActionXP();
 
 		if (neededXP > 0)
 		{
 			assert xp != 0;
-			actionCount = (int) Math.ceil(neededXP / xp);
+			actionCount = getActionCount(neededXP, xp);
 		}
 
 		combinedActionSlot.setText(formatXPActionString(xp, actionCount, "exp - "));
@@ -358,7 +372,7 @@ class SkillCalculator extends JPanel
 
 			if (neededXP > 0)
 			{
-				actionCount = (int) Math.ceil(neededXP / xp);
+				actionCount = getActionCount(neededXP, xp);
 			}
 
 			slot.setText("Lvl. " + action.getLevel() + " (" + formatXPActionString(xp, actionCount, "exp) - "));
@@ -431,12 +445,17 @@ class SkillCalculator extends JPanel
 
 	private void onFieldTargetAmountUpdated()
 	{
-		float xp = getCombinedActionXP();
+		double xp = getCombinedActionXP();
+		int currentTargetAmount = uiInput.getTargetAmountInput();
 
-		if (xp > 0)
+		if (currentTargetAmount == 0)
 		{
-			targetAmount = uiInput.getTargetAmountInput();
-			float targetAmountXP = xp * targetAmount;
+			updateInputFields();
+		}
+		else if (xp > 0)
+		{
+			targetAmount = currentTargetAmount;
+			double targetAmountXP = Math.round(xp * targetAmount * 10f) / 10d;
 			int neededXP = enforceXPBounds((int) Math.floor(targetAmountXP));
 			targetXP = enforceXPBounds(neededXP + currentXP);
 			targetLevel = Experience.getLevelForXp(targetXP);
