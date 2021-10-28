@@ -22,25 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.cache.script;
 
-/**
- * Utility class containing ASM opcodes used by the RuneLite client.
- */
-public class Opcodes
+public class RuneLiteInstructions extends Instructions implements RuneLiteOpcodes
 {
-	/**
-	 * opcode used to return from scripts.
-	 */
-	public static final int RETURN = 21;
-
-	/**
-	 * opcode used to invoke scripts.
-	 */
-	public static final int INVOKE = 40;
-
-	/**
-	 * RuneLite execution opcode used to inject scripts.
-	 */
-	public static final int RUNELITE_EXECUTE = 6599;
+	@Override
+	public void init()
+	{
+		super.init();
+		add(RUNELITE_EXECUTE, "runelite_callback");
+	}
 }

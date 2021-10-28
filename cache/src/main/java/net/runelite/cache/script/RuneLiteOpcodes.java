@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.script;
+package net.runelite.cache.script;
 
-import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
-import net.runelite.cache.script.Instructions;
-
-public class RuneLiteInstructions extends Instructions
+public interface RuneLiteOpcodes extends Opcodes
 {
-	@Override
-	public void init()
-	{
-		super.init();
-		add(RUNELITE_EXECUTE, "runelite_callback");
-	}
+	/**
+	 * RuneLite execution opcode used to inject scripts.
+	 */
+	int RUNELITE_EXECUTE = 6599;
 }
