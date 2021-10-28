@@ -1437,12 +1437,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (computeMode == ComputeMode.NONE || gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		switch (gameStateChanged.getGameState())
 		{
-			return;
+			case LOGGED_IN:
+				if (computeMode != ComputeMode.NONE)
+				{
+					invokeOnMainThread(this::uploadScene);
+				}
+				break;
+			case LOGIN_SCREEN:
+				// Avoid drawing the last frame's buffer during LOADING after LOGIN_SCREEN
+				targetBufferOffset = 0;
 		}
-
-		invokeOnMainThread(this::uploadScene);
 	}
 
 	private void uploadScene()
