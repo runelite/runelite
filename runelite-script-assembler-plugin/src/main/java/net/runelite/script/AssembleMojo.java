@@ -31,6 +31,7 @@ import java.io.IOException;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.definitions.savers.ScriptSaver;
+import net.runelite.cache.script.RuneLiteInstructions;
 import net.runelite.cache.script.assembler.Assembler;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
