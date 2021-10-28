@@ -61,6 +61,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostStructComposition;
 import net.runelite.api.events.ScriptPreFired;
@@ -918,8 +919,13 @@ public class MusicPlugin extends Plugin
 		if (sliderTooltip != null)
 		{
 			tooltipManager.add(sliderTooltip);
-			sliderTooltip = null;
 		}
+	}
+
+	@Subscribe
+	public void onClientTick(ClientTick event)
+	{
+		sliderTooltip = null;
 	}
 
 	@Subscribe
