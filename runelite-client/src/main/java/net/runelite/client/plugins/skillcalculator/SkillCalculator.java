@@ -144,6 +144,7 @@ class SkillCalculator extends JPanel
 
 			// Reset the XP factor, removing bonuses.
 			xpFactor = 1;
+			targetAmount = 1;
 
 			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
 			int endGoal = client.getVar(endGoalVarp);
@@ -184,9 +185,9 @@ class SkillCalculator extends JPanel
 		updateInputFields();
 	}
 
-	private double getCombinedActionXP()
+	private int getCombinedActionXP()
 	{
-		double xp = 0;
+		int xp = 0;
 
 		for (UIActionSlot slot : combinedActionSlots)
 		{
@@ -194,20 +195,6 @@ class SkillCalculator extends JPanel
 		}
 
 		return xp;
-	}
-
-	private int getActionCount(int neededXP, double xp)
-	{
-		int remainder = neededXP * 10 % (int) Math.round(xp * 10);
-
-		if (remainder == 0)
-		{
-			return (int) Math.round(neededXP / xp);
-		}
-		else
-		{
-			return (int) Math.ceil(neededXP / xp);
-		}
 	}
 
 	private void updateCombinedAction()
@@ -231,12 +218,7 @@ class SkillCalculator extends JPanel
 		int actionCount = 0;
 		int neededXP = targetXP - currentXP;
 
-		int xp = 0;
-
-		for (UIActionSlot slot : combinedActionSlots)
-		{
-			xp += slot.getValue();
-		}
+		int xp = getCombinedActionXP();
 
 		if (neededXP > 0)
 		{
@@ -453,18 +435,20 @@ class SkillCalculator extends JPanel
 
 	private void onFieldTargetAmountUpdated()
 	{
-		double xp = getCombinedActionXP();
+		int xp = getCombinedActionXP();
 		int currentTargetAmount = uiInput.getTargetAmountInput();
 
+		// Keep previous input values if entered target amount is out of bounds.
 		if (currentTargetAmount == 0)
 		{
 			updateInputFields();
 		}
+		// Only update input fields if actions are selected.
 		else if (xp > 0)
 		{
 			targetAmount = currentTargetAmount;
-			double targetAmountXP = Math.round(xp * targetAmount * 10f) / 10d;
-			int neededXP = enforceXPBounds((int) Math.floor(targetAmountXP));
+			long targetAmountXP = (long) targetAmount * xp / 10;
+			int neededXP = targetAmountXP > MAX_XP ? MAX_XP : (int) targetAmountXP;
 			targetXP = enforceXPBounds(neededXP + currentXP);
 			targetLevel = Experience.getLevelForXp(targetXP);
 			updateInputFields();
