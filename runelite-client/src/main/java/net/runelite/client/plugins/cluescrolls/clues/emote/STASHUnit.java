@@ -139,7 +139,7 @@ public enum STASHUnit
 	FINE_CLOTHES_ENTRANCE(NullObjectID.NULL_34737, new WorldPoint(3209, 3416, 0)),
 	BOB_AXES_ENTRANCE(NullObjectID.NULL_34738, new WorldPoint(3233, 3200, 0)),
 	CRYSTALLINE_MAPLE_TREES(NullObjectID.NULL_34953, new WorldPoint(2213, 3427, 0)),
-	CHARCOAL_BURNERS(NullObjectID.NULL_41758, new WorldPoint(1712, 3469, 0)),
+	CHARCOAL_BURNERS(NullObjectID.NULL_41758, new WorldPoint(1712, 3470, 0)),
 	;
 
 	private final int objectId;
