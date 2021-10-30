@@ -617,7 +617,15 @@ public enum Varbits
 	 * 2 = popup notification only
 	 * 3 = chat and popup
 	 */
-	COLLECTION_LOG_NOTIFICATION(11959);
+	COLLECTION_LOG_NOTIFICATION(11959),
+
+	/**
+	 * Combat Achievements popup settings whenever a new task is completed
+	 *
+	 * 0 = popup notification enabled
+	 * 1 = popup notification disabled
+	 */
+	COMBAT_ACHIEVEMENTS_POPUP(12455);
 
 	/**
 	 * The raw varbit ID.
