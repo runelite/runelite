@@ -774,7 +774,7 @@ public class ScreenshotPlugin extends Plugin
 	 * Parses a combat achievement success chat message into a filename-safe string.
 	 *
 	 * @param text A received chat message which may or may not be from completing a combat achievement.
-	 * @return A formatted string of the achieved combat task tier and name, or the empty string if the passed message
+	 * @return A formatted string of the achieved combat task name, or the empty string if the passed message
 	 *         is not a combat achievement completion message.
 	 */
 	@VisibleForTesting
