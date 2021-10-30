@@ -93,9 +93,9 @@ import net.runelite.client.util.Text;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
-		name = "Screenshot",
-		description = "Enable the manual and automatic taking of screenshots",
-		tags = {"external", "images", "imgur", "integration", "notifications"}
+	name = "Screenshot",
+	description = "Enable the manual and automatic taking of screenshots",
+	tags = {"external", "images", "imgur", "integration", "notifications"}
 )
 @Slf4j
 public class ScreenshotPlugin extends Plugin
@@ -117,13 +117,13 @@ public class ScreenshotPlugin extends Plugin
 	private static final ImmutableList<String> RFD_TAGS = ImmutableList.of("Another Cook", "freed", "defeated", "saved");
 	private static final ImmutableList<String> WORD_QUEST_IN_NAME_TAGS = ImmutableList.of("Another Cook", "Doric", "Heroes", "Legends", "Observatory", "Olaf", "Waterfall");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
-			"You feel something weird sneaking into your backpack",
-			"You have a funny feeling like you would have been followed");
+		"You feel something weird sneaking into your backpack",
+		"You have a funny feeling like you would have been followed");
 	private static final Pattern BA_HIGH_GAMBLE_REWARD_PATTERN = Pattern.compile("(?<reward>.+)!<br>High level gamble count: <col=7f0000>(?<gambleCount>.+)</col>");
 	private static final Set<Integer> REPORT_BUTTON_TLIS = ImmutableSet.of(
-			WidgetID.FIXED_VIEWPORT_GROUP_ID,
-			WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID,
-			WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID);
+		WidgetID.FIXED_VIEWPORT_GROUP_ID,
+		WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID,
+		WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID);
 	private static final String SD_KINGDOM_REWARDS = "Kingdom Rewards";
 	private static final String SD_BOSS_KILLS = "Boss Kills";
 	private static final String SD_CLUE_SCROLL_REWARDS = "Clue Scroll Rewards";
@@ -222,18 +222,18 @@ public class ScreenshotPlugin extends Plugin
 		final BufferedImage iconImage = ImageUtil.loadImageResource(getClass(), "screenshot.png");
 
 		titleBarButton = NavigationButton.builder()
-				.tab(false)
-				.tooltip("Take screenshot")
-				.icon(iconImage)
-				.onClick(this::manualScreenshot)
-				.popup(ImmutableMap
-						.<String, Runnable>builder()
-						.put("Open screenshot folder...", () ->
-						{
-							LinkBrowser.open(SCREENSHOT_DIR.toString());
-						})
-						.build())
-				.build();
+			.tab(false)
+			.tooltip("Take screenshot")
+			.icon(iconImage)
+			.onClick(this::manualScreenshot)
+			.popup(ImmutableMap
+				.<String, Runnable>builder()
+				.put("Open screenshot folder...", () ->
+				{
+					LinkBrowser.open(SCREENSHOT_DIR.toString());
+				})
+				.build())
+			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
 
@@ -312,8 +312,8 @@ public class ScreenshotPlugin extends Plugin
 				takeScreenshot("Death", SD_DEATHS);
 			}
 			else if (player != client.getLocalPlayer()
-					&& player.getCanvasTilePoly() != null
-					&& (((player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath())
+				&& player.getCanvasTilePoly() != null
+				&& (((player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath())
 					|| (player.isClanMember() && config.screenshotClanDeath())))
 			{
 				takeScreenshot("Death " + player.getName(), SD_DEATHS);
@@ -350,9 +350,9 @@ public class ScreenshotPlugin extends Plugin
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE
-				&& event.getType() != ChatMessageType.SPAM
-				&& event.getType() != ChatMessageType.TRADE
-				&& event.getType() != ChatMessageType.FRIENDSCHATNOTIFICATION)
+			&& event.getType() != ChatMessageType.SPAM
+			&& event.getType() != ChatMessageType.TRADE
+			&& event.getType() != ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
 			return;
 		}
