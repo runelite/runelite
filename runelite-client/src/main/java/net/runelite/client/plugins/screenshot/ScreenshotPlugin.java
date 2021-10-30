@@ -824,8 +824,8 @@ public class ScreenshotPlugin extends Plugin
 	private void takeScreenshot(String fileName, String subDir, Image image)
 	{
 		BufferedImage screenshot = config.includeFrame()
-				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-				: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
+			: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
 		Graphics graphics = screenshot.getGraphics();
 
@@ -858,9 +858,9 @@ public class ScreenshotPlugin extends Plugin
 	private boolean isInsideGauntlet()
 	{
 		return this.client.isInInstancedRegion()
-				&& this.client.getMapRegions().length > 0
-				&& (this.client.getMapRegions()[0] == GAUNTLET_REGION
-				|| this.client.getMapRegions()[0] == CORRUPTED_GAUNTLET_REGION);
+			&& this.client.getMapRegions().length > 0
+			&& (this.client.getMapRegions()[0] == GAUNTLET_REGION
+			|| this.client.getMapRegions()[0] == CORRUPTED_GAUNTLET_REGION);
 	}
 
 	@VisibleForTesting
