@@ -78,7 +78,7 @@ public enum HotColdLocation
 	DESERT_SHANTY(MASTER, new WorldPoint(3292, 3107, 0), DESERT, "South-west of Shantay Pass.", BRASSICAN_MAGE),
 	DRAYNOR_MANOR_MUSHROOMS(BEGINNER, new WorldPoint(3096, 3379, 0), MISTHALIN, "Patch of mushrooms just northwest of Draynor Manor"),
 	DRAYNOR_WHEAT_FIELD(BEGINNER, new WorldPoint(3120, 3282, 0), MISTHALIN, "Inside the wheat field next to Draynor Village"),
-	FELDIP_HILLS_JIGGIG(MASTER, new WorldPoint(2409, 3053, 0), FELDIP_HILLS, "West of Jiggig, east of the fairy ring bkp.", BRASSICAN_MAGE),
+	FELDIP_HILLS_JIGGIG(MASTER, new WorldPoint(2409, 3053, 0), FELDIP_HILLS, "West of Jiggig, east of the fairy ring BKP.", BRASSICAN_MAGE),
 	FELDIP_HILLS_SW(MASTER, new WorldPoint(2586, 2897, 0), FELDIP_HILLS, "West of the southeasternmost lake in Feldip Hills.", BRASSICAN_MAGE),
 	FELDIP_HILLS_GNOME_GLITER(MASTER, new WorldPoint(2555, 2972, 0), FELDIP_HILLS, "East of the gnome glider (Lemantolly Undri).", BRASSICAN_MAGE),
 	FELDIP_HILLS_RANTZ(MASTER, new WorldPoint(2611, 2950, 0), FELDIP_HILLS, "South of Rantz, west of the empty glass bottles.", BRASSICAN_MAGE),
