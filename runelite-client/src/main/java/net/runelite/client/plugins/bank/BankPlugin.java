@@ -45,6 +45,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -238,18 +239,9 @@ public class BankPlugin extends Plugin
 
 					log.debug("Bank pin keypress");
 
-					final String chatboxTypedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-					final String inputText = client.getVar(VarClientStr.INPUT_TEXT);
-					clientThread.invokeLater(() ->
-					{
-						// reset chatbox input to avoid pin going to chatbox..
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, chatboxTypedText);
-						client.runScript(ScriptID.CHAT_PROMPT_INIT);
-						client.setVar(VarClientStr.INPUT_TEXT, inputText);
-						client.runScript(ScriptID.CHAT_TEXT_INPUT_REBUILD, "");
-
-						client.runScript(onOpListener);
-					});
+					client.runScript(onOpListener);
+					// Block the key press this tick in keypress_permit so it doesn't enter the chatbox
+					client.setVar(VarClientInt.BLOCK_KEYPRESS, client.getGameCycle() + 1);
 				});
 				break;
 			}
