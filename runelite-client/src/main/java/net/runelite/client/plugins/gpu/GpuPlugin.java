@@ -1634,16 +1634,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				boolean hasUv = model.getFaceTextures() != null;
 
-				int faces = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
-				vertexBuffer.ensureCapacity(12 * faces);
-				uvBuffer.ensureCapacity(12 * faces);
-				int len = 0;
-				for (int i = 0; i < faces; ++i)
-				{
-					len += sceneUploader.pushFace(model, i, false, vertexBuffer, uvBuffer, 0, 0, 0, 0);
-				}
+				int len = sceneUploader.pushModel(model, vertexBuffer, uvBuffer);
 
-				GpuIntBuffer b = bufferForTriangles(faces);
+				GpuIntBuffer b = bufferForTriangles(len / 3);
 
 				b.ensureCapacity(8);
 				IntBuffer buffer = b.getBuffer();
