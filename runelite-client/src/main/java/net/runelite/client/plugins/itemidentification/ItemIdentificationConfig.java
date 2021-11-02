@@ -63,6 +63,17 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "displayOnUnique",
+		name = "Show on unique item models",
+		position = -2,
+		description = "Also show identification text on items with clearly unique item models"
+	)
+	default boolean displayOnUnique()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showSeeds",
 		name = "Seeds",
 		description = "Show identification on Seeds",
