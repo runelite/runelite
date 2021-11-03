@@ -138,6 +138,17 @@ public class ChatFilterPluginTest
 	}
 
 	@Test
+	public void testDontCensorColorTag()
+	{
+		when(chatFilterConfig.filteredWords()).thenReturn("col");
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_MESSAGE);
+
+		String msg = "<col=0d13a5>Hello</col>";
+		chatFilterPlugin.updateFilteredPatterns();
+		assertEquals(msg, chatFilterPlugin.censorMessage("Blue", msg));
+	}
+
+	@Test
 	public void testCensorRegex()
 	{
 		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
@@ -145,6 +156,28 @@ public class ChatFilterPluginTest
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertNull(chatFilterPlugin.censorMessage("Blue", "55X2 Dicing | Trusted Ranks | Huge Pay Outs!"));
+	}
+
+	@Test
+	public void testCensorRegexColoredFront()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		when(chatFilterConfig.filteredRegex()).thenReturn("^Hello");
+
+		String msg = "<col=0d13a5>Hello</col>";
+		chatFilterPlugin.updateFilteredPatterns();
+		assertNull(chatFilterPlugin.censorMessage("Blue", msg));
+	}
+
+	@Test
+	public void testCensorRegexColoredBack()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		when(chatFilterConfig.filteredRegex()).thenReturn("Hello$");
+
+		String msg = "<col=0d13a5>Hello</col>";
+		chatFilterPlugin.updateFilteredPatterns();
+		assertNull(chatFilterPlugin.censorMessage("Blue", msg));
 	}
 
 	@Test
