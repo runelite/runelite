@@ -221,11 +221,20 @@ public class MusicPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		GameState gameState = gameStateChanged.getGameState();
+		if (gameState == GameState.LOGIN_SCREEN)
 		{
 			// Reset music filter on logout
 			currentMusicFilter = MusicState.ALL;
 			tracks = null;
+		}
+		else if (gameState == GameState.LOGGED_IN)
+		{
+			if (musicConfig.muteAmbientSounds())
+			{
+				client.getAmbientSoundEffects()
+					.clear();
+			}
 		}
 	}
 
@@ -308,7 +317,7 @@ public class MusicPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if ("music".equals(configChanged.getGroup()))
+		if (configChanged.getGroup().equals(MusicConfig.GROUP))
 		{
 			clientThread.invoke(() ->
 			{
@@ -322,6 +331,14 @@ public class MusicPlugin extends Plugin
 					else
 					{
 						teardownMusicOptions();
+					}
+				}
+				else if (MusicConfig.MUTE_AMBIENT_SOUNDS.equals(configChanged.getKey()))
+				{
+					// Reload the scene to reapply ambient sounds
+					if (client.getGameState() == GameState.LOGGED_IN)
+					{
+						client.setGameState(GameState.LOADING);
 					}
 				}
 				else
