@@ -28,18 +28,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.time.temporal.ValueRange;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
+import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
@@ -58,7 +59,6 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
-import org.slf4j.Logger;
 
 @Slf4j
 class PyramidPlunderOverlay extends Overlay
@@ -69,20 +69,25 @@ class PyramidPlunderOverlay extends Overlay
 	private final PyramidPlunderPlugin plugin;
 	private final PyramidPlunderConfig config;
 
-	private static final Map<Integer, Integer> MIN_REQ_PER_ROOM = constructMinReqPerRoomMap();
+	private static final Map<ValueRange, Integer> MIN_REQ_PER_ROOM = constructMinReqPerRoomMap();
 
-	private static Map<Integer, Integer> constructMinReqPerRoomMap() {
-		Map<Integer, Integer> minimumRequirementAndRoom = new HashMap<>();
-		minimumRequirementAndRoom.put(21, 1);
-		minimumRequirementAndRoom.put(31, 2);
-		minimumRequirementAndRoom.put(41, 3);
-		minimumRequirementAndRoom.put(51, 4);
-		minimumRequirementAndRoom.put(61, 5);
-		minimumRequirementAndRoom.put(71, 6);
-		minimumRequirementAndRoom.put(81, 7);
-		minimumRequirementAndRoom.put(91, 8);
+
+
+	private static Map<ValueRange, Integer> constructMinReqPerRoomMap() {
+		Map<ValueRange, Integer> minimumRequirementAndRoom = new HashMap<>();
+		minimumRequirementAndRoom.put(ValueRange.of(21, 30), 1);
+		minimumRequirementAndRoom.put(ValueRange.of(31, 40), 2);
+		minimumRequirementAndRoom.put(ValueRange.of(41, 50), 3);
+		minimumRequirementAndRoom.put(ValueRange.of(51, 60), 4);
+		minimumRequirementAndRoom.put(ValueRange.of(61, 70), 5);
+		minimumRequirementAndRoom.put(ValueRange.of(71, 80), 6);
+		minimumRequirementAndRoom.put(ValueRange.of(81, 90), 7);
+		minimumRequirementAndRoom.put(ValueRange.of(91, 99), 8);
 		return Collections.unmodifiableMap(minimumRequirementAndRoom);
 	}
+
+	private Integer penultimateRoom;
+	private int thievingLevel;
 
 
 
@@ -95,6 +100,8 @@ class PyramidPlunderOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+
+		this.thievingLevel = client.getRealSkillLevel(Skill.THIEVING);
 	}
 
 	@Override
@@ -108,35 +115,32 @@ class PyramidPlunderOverlay extends Overlay
 
 		ppWidget.setHidden(config.hideTimer());
 
-		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
-
-		int thievingLevel = client.getRealSkillLevel(Skill.THIEVING);
-
-		int penultimateRoom = getPenultimateRoom(thievingLevel);
+		if(this.penultimateRoom == null) {
+			this.penultimateRoom = getPenultimateRoom();
+		}
+		if(this.thievingLevel != client.getRealSkillLevel(Skill.THIEVING)) {
+			this.thievingLevel = client.getRealSkillLevel(Skill.THIEVING);
+			this.penultimateRoom = getPenultimateRoom();
+		}
 
 		// Highlight convex hulls of urns, chests, and sarcophagus
 		int currentFloor = client.getVar(Varbits.PYRAMID_PLUNDER_ROOM);
 		for (GameObject object : plugin.getObjectsToHighlight())
 		{
-			if (config.highlightUrnsFloor() > currentFloor && URN_IDS.contains(object.getId())
-				|| config.highlightPenultimateUrns() && currentFloor == penultimateRoom && URN_IDS.contains(object.getId())
-				|| config.highlightChestFloor() > currentFloor && GRAND_GOLD_CHEST_ID == object.getId()
-				|| config.highlightSarcophagusFloor() > currentFloor && SARCOPHAGUS_ID == object.getId()
-				|| object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE)
+			if (highlightObjects(currentFloor, object.getId()) && !objectTooFarAway(object))
 			{
-				continue;
-			}
+				ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
 
-			ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
-			if (URN_CLOSED_IDS.contains(imposter.getId())
-				|| GRAND_GOLD_CHEST_CLOSED_ID == imposter.getId()
-				|| SARCOPHAGUS_CLOSED_ID == imposter.getId())
-			{
-				Shape shape = object.getConvexHull();
-
-				if (shape != null)
+				if (URN_CLOSED_IDS.contains(imposter.getId())
+					|| GRAND_GOLD_CHEST_CLOSED_ID == imposter.getId()
+					|| SARCOPHAGUS_CLOSED_ID == imposter.getId())
 				{
-					OverlayUtil.renderPolygon(graphics, shape, config.highlightContainersColor());
+					Shape shape = object.getConvexHull();
+
+					if (shape != null)
+					{
+						OverlayUtil.renderPolygon(graphics, shape, config.highlightContainersColor());
+					}
 				}
 			}
 		}
@@ -149,7 +153,7 @@ class PyramidPlunderOverlay extends Overlay
 			if (!config.highlightDoors() && TOMB_DOOR_WALL_IDS.contains(object.getId())
 				|| !config.highlightSpeartraps() && SPEARTRAP_ID == object.getId()
 				|| tile.getPlane() != client.getPlane()
-				|| object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE)
+				|| objectTooFarAway(object))
 			{
 				return;
 			}
@@ -197,17 +201,39 @@ class PyramidPlunderOverlay extends Overlay
 		return null;
 	}
 
-	private Integer getPenultimateRoom(int thievingLevel)
+	private boolean objectTooFarAway(TileObject object) {
+		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
+
+		return object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE;
+	}
+
+	private boolean highlightObjects(int currentFloor, int objectId) {
+		if(URN_IDS.contains(objectId)) {
+			boolean isCurrentFloorPenultimate = currentFloor == this.penultimateRoom;
+			boolean shouldHighlightPenultimateUrns = config.highlightPenultimateUrns() && isCurrentFloorPenultimate && URN_CLOSED_IDS.contains(objectId);
+			log.info("Should highlight penultimate urns? " + shouldHighlightPenultimateUrns);
+			return currentFloor >= config.highlightUrnsFloor() || shouldHighlightPenultimateUrns;
+		} else if(GRAND_GOLD_CHEST_ID == objectId) {
+			return currentFloor >= config.highlightChestFloor();
+		} else if(SARCOPHAGUS_ID == objectId) {
+			return currentFloor >= config.highlightSarcophagusFloor();
+		}
+		return false;
+	}
+
+	private Integer getPenultimateRoom()
 	{
 		log.info("Getting penultimate room...");
 		log.info("Thieving level is: " + thievingLevel);
 		AtomicReference<Integer> penultimateRoom = new AtomicReference<>();
 		MIN_REQ_PER_ROOM.forEach((minRequirement, roomNumber) -> {
 			log.info(String.valueOf(minRequirement));
-			if (minRequirement >= thievingLevel) {
-				log.info("found match with thievinglevel of: " + thievingLevel);
-				var penultimateKey = minRequirement - 10;
-				penultimateRoom.set(MIN_REQ_PER_ROOM.get(penultimateKey));
+			if(minRequirement.isValidIntValue(thievingLevel)) {
+				log.info("Found a valid range for our thieving level (" + thievingLevel + ")");
+				log.info("The range is min " + minRequirement.getMinimum() + " with max " + minRequirement.getMaximum());
+				log.info("This means the actual max room is " + roomNumber);
+				log.info("and the penultimate room is " + (roomNumber - 1));
+				penultimateRoom.set(roomNumber - 1);
 			}
 		});
 		return penultimateRoom.get();
