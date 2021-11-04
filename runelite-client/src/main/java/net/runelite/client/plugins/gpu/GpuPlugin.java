@@ -262,6 +262,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int yaw;
 	private int pitch;
+	private int viewportOffsetX;
+	private int viewportOffsetY;
+
 	// fields for non-compute draw
 	private boolean drawingModel;
 	private int modelX, modelY, modelZ;
@@ -794,6 +797,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		yaw = client.getCameraYaw();
 		pitch = client.getCameraPitch();
+		viewportOffsetX = client.getViewportXOffset();
+		viewportOffsetY = client.getViewportYOffset();
 
 		final Scene scene = client.getScene();
 		scene.setDrawDistance(getDrawDistance());
@@ -1132,8 +1137,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			}
 
 			final Texture[] textures = textureProvider.getTextures();
-			int renderHeightOff = client.getViewportYOffset();
-			int renderWidthOff = client.getViewportXOffset();
+			int renderWidthOff = viewportOffsetX;
+			int renderHeightOff = viewportOffsetY;
 			int renderCanvasHeight = canvasHeight;
 			int renderViewportHeight = viewportHeight;
 			int renderViewportWidth = viewportWidth;
