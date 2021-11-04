@@ -89,7 +89,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private static final String DEFAULT_LEFT_CLICK_OPTION = LOOK_NORTH;
 	private int lastUpdatedTick = 0;
 	private String currentLeftClickOption;
-	private String[] options = new String[]{LOOK_NORTH, LOOK_SOUTH, LOOK_EAST, LOOK_WEST};
+	private final String[] options = {LOOK_NORTH, LOOK_SOUTH, LOOK_EAST, LOOK_WEST};
 
 	private boolean controlDown;
 	// flags used to store the mousedown states
