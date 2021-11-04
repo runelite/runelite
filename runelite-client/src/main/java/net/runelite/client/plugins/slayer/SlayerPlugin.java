@@ -391,6 +391,13 @@ public class SlayerPlugin extends Plugin
 			{
 				int amount = Integer.parseInt(mAssignFirst.group(2));
 				setTask(mAssignFirst.group(1), amount, amount);
+				setProfileConfig(SlayerConfig.STREAK_KEY, 0);
+
+				// Players can acquire slayer points prior to their first task via the Porcine of Interest quest
+				if (getIntProfileConfig(SlayerConfig.POINTS_KEY) == -1)
+				{
+					setProfileConfig(SlayerConfig.POINTS_KEY, 0);
+				}
 			}
 			else if (mAssignBoss.find())
 			{

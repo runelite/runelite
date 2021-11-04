@@ -67,7 +67,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
@@ -250,6 +252,24 @@ public class SlayerPluginTest
 
 		assertEquals("goblins", slayerPlugin.getTaskName());
 		assertEquals(17, slayerPlugin.getAmount());
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 0);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 0);
+	}
+
+	@Test
+	public void testFirstTaskWithPoints()
+	{
+		when(configManager.getRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, int.class)).thenReturn(30);
+
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_NEW_FIRST);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("goblins", slayerPlugin.getTaskName());
+		assertEquals(17, slayerPlugin.getAmount());
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 0);
+		verify(configManager, never()).setRSProfileConfiguration(eq(SlayerConfig.GROUP_NAME), eq(SlayerConfig.POINTS_KEY), anyInt());
 	}
 
 	@Test
