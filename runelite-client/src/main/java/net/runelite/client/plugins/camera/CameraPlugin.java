@@ -34,6 +34,7 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
@@ -44,7 +45,9 @@ import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
@@ -64,6 +67,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Camera",
@@ -81,6 +85,11 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private static final String LOOK_SOUTH = "Look South";
 	private static final String LOOK_EAST = "Look East";
 	private static final String LOOK_WEST = "Look West";
+
+	private static final String DEFAULT_LEFT_CLICK_OPTION = LOOK_NORTH;
+	private int lastUpdatedTick = 0;
+	private String currentLeftClickOption;
+	private String[] options = new String[]{LOOK_NORTH, LOOK_SOUTH, LOOK_EAST, LOOK_WEST};
 
 	private boolean controlDown;
 	// flags used to store the mousedown states
@@ -124,6 +133,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		rightClick = false;
 		middleClick = false;
 		menuHasEntries = false;
+		currentLeftClickOption = DEFAULT_LEFT_CLICK_OPTION;
 		copyConfigs();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
@@ -183,33 +193,62 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
-		if (menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getOption().equals(LOOK_NORTH) && config.compassLook())
+		if (menuEntryAdded.getType() == MenuAction.CC_OP.getId())
 		{
+			if (ArrayUtils.indexOf(options, menuEntryAdded.getOption()) < 0)
+			{
+				return;
+			}
+
 			MenuEntry[] menuEntries = client.getMenuEntries();
-			int len = menuEntries.length;
-			MenuEntry north = menuEntries[len - 1];
+			int currentOptionIndex = ArrayUtils.indexOf(options, currentLeftClickOption);
 
-			menuEntries = Arrays.copyOf(menuEntries, len + 3);
+			if (config.compassLook())
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + options.length - 1);
 
-			// The handling for these entries is done in ToplevelCompassOp.rs2asm
-			menuEntries[--len] = createCameraLookEntry(menuEntryAdded, 4, LOOK_WEST);
-			menuEntries[++len] = createCameraLookEntry(menuEntryAdded, 3, LOOK_EAST);
-			menuEntries[++len] = createCameraLookEntry(menuEntryAdded, 2, LOOK_SOUTH);
-			menuEntries[++len] = north;
+				// fill the menu from top to bottom
+				// but iterate options cyclically from 0 -> 3 -> 0
+				for (int i = 1; i < 5; i++)
+				{
+					menuEntries[menuEntries.length - i] = createCameraLookEntry(menuEntryAdded, currentOptionIndex + 1, options[currentOptionIndex % options.length]);
+					currentOptionIndex += 1;
+				}
+			}
+			else
+			{
+				// set top entry to the current left click
+				menuEntries[menuEntries.length - 1] = createCameraLookEntry(menuEntryAdded, currentOptionIndex + 1, options[currentOptionIndex % options.length]);
+			}
 
 			client.setMenuEntries(menuEntries);
 		}
 	}
 
-	private MenuEntry createCameraLookEntry(MenuEntryAdded lookNorth, int identifier, String option)
+
+	@Subscribe
+	private void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		// if the option is disabled, don't process the click any differently
+		if (event.getMenuAction() == MenuAction.CC_OP && config.compassMultipleClickCycle() && event.getMenuOption().equals(currentLeftClickOption))
+		{
+			// set the next option in options array as the left click option
+			final int count = options.length;
+			final int index = ArrayUtils.indexOf(options, currentLeftClickOption);
+			currentLeftClickOption = options[(index + 1) % count];
+			lastUpdatedTick = client.getTickCount();
+		}
+	}
+
+	private MenuEntry createCameraLookEntry(MenuEntryAdded newEntry, int identifier, String option)
 	{
 		MenuEntry m = new MenuEntry();
 		m.setOption(option);
-		m.setTarget(lookNorth.getTarget());
+		m.setTarget(newEntry.getTarget());
 		m.setIdentifier(identifier);
 		m.setType(MenuAction.CC_OP.getId());
-		m.setParam0(lookNorth.getActionParam0());
-		m.setParam1(lookNorth.getActionParam1());
+		m.setParam0(newEntry.getActionParam0());
+		m.setParam1(newEntry.getActionParam1());
 		return m;
 	}
 
@@ -436,6 +475,17 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 				savedCameraYaw = 0;
 				break;
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		final int timeoutTicks = (config.compassMultipleClickTimeout() * 1000) / Constants.GAME_TICK_LENGTH;
+		if (currentLeftClickOption.equals(DEFAULT_LEFT_CLICK_OPTION) || (client.getTickCount() < (lastUpdatedTick + timeoutTicks)))
+		{
+			return;
+		}
+		currentLeftClickOption = DEFAULT_LEFT_CLICK_OPTION;
 	}
 
 	/**
