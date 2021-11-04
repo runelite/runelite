@@ -60,6 +60,12 @@ public final class ScriptID
 	public static final int BUILD_CHATBOX = 216;
 
 	/**
+	 * Chat Box parent script for updating
+	 */
+	@ScriptArguments()
+	public static final int CHATBOX_PARENT = 663;
+
+	/**
 	 * Opens the Private Message chat interface
 	 *
 	 * Jagex refers to this script as {@code meslayer_mode6}

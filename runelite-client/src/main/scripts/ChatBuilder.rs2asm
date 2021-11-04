@@ -344,6 +344,10 @@ LABEL319:
 LABEL323:
    iload                  10
    5031                  
+   iload                  10
+   sconst                 "userNameTagReturn"
+   runelite_callback
+   pop_int
    istore                 21
    sstore                 18
    istore                 15

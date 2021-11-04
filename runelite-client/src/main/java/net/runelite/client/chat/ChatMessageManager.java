@@ -35,10 +35,12 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.ScriptID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
@@ -48,6 +50,8 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.eventbus.EventBus;
@@ -65,6 +69,7 @@ public class ChatMessageManager
 	private final Multimap<ChatMessageType, ChatColor> colorCache = HashMultimap.create();
 	private final Client client;
 	private final ChatColorConfig chatColorConfig;
+	private final HashMap<String, String> sanitizedUserNameMap = new HashMap();
 	private final ClientThread clientThread;
 	private int transparencyVarbit = -1;
 	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
@@ -205,6 +210,9 @@ public class ChatMessageManager
 			case "privChatUsername":
 				wrap = true;
 				break;
+			case "userNameTagReturn":
+					client.getStringStack()[0] = sanitizedUserNameMap.get(client.getStringStack()[0]);
+				return;
 			default:
 				return;
 		}
@@ -229,6 +237,27 @@ public class ChatMessageManager
 			fromToUsername = ColorUtil.colorTag(usernameColor);
 		}
 		stringStack[stringStackSize - 1] = fromToUsername;
+	}
+
+	@Subscribe
+	private void onScriptPreFired(ScriptPreFired ev) {
+		if(ev.getScriptId() == ScriptID.CHATBOX_PARENT){
+			for (MessageNode messageNode : client.getMessages()) {
+				String sanitizedUserName = Text.removeTags(messageNode.getName()).replace('\u00A0', ' ');
+				sanitizedUserNameMap.put(sanitizedUserName, messageNode.getName());
+				messageNode.setName(sanitizedUserName);
+			}
+		}
+	}
+
+	@Subscribe
+	private void onScriptPostFired(ScriptPostFired ev) {
+		if(ev.getScriptId() == ScriptID.CHATBOX_PARENT){
+			for (MessageNode messageNode : client.getMessages()) {
+				String originalUserName = sanitizedUserNameMap.get(messageNode.getName());
+				messageNode.setName(originalUserName);
+			}
+		}
 	}
 
 	private static Color getDefaultColor(ChatMessageType type, boolean transparent)
