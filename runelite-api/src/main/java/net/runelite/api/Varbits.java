@@ -530,6 +530,13 @@ public enum Varbits
 	CORRUPTION_COOLDOWN(12288),
 
 	/**
+	 * Imbued Heart cooldown
+	 * Number of game tick remaining on cooldown in intervals of 10; for a value X there are 10 * X game ticks remaining.
+	 * The heart regains its power once this reaches 0.
+	 */
+	IMBUED_HEART_COOLDOWN(5361),
+
+	/**
 	 * Amount of items in each bank tab
 	 */
 	BANK_TAB_ONE_COUNT(4171),
