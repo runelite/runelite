@@ -170,5 +170,5 @@ public interface PyramidPlunderConfig extends Config
 		name = "Highlight urns in penultimate room until timer",
 		description = "Highlights the urns in the penultimate room until the configured timer elapses"
 	)
-	default int highlightUrnsUntil() { return 150;}
+	default int highlightUrnsUntil() { return 120;}
 }

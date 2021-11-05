@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.time.Duration;
 import java.time.temporal.ValueRange;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,6 +60,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.RSTimeUnit;
 
 @Slf4j
 class PyramidPlunderOverlay extends Overlay
@@ -68,6 +70,7 @@ class PyramidPlunderOverlay extends Overlay
 	private final Client client;
 	private final PyramidPlunderPlugin plugin;
 	private final PyramidPlunderConfig config;
+	private static final Duration PYRAMID_PLUNDER_DURATION = Duration.of(501, RSTimeUnit.GAME_TICKS);
 
 	private static final Map<ValueRange, Integer> MIN_REQ_PER_ROOM = constructMinReqPerRoomMap();
 
@@ -128,19 +131,7 @@ class PyramidPlunderOverlay extends Overlay
 		{
 			if (shouldHighlightObjectOnFloor(object.getId(), currentFloor) && !objectTooFarAway(object))
 			{
-				ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
-
-				if (URN_CLOSED_IDS.contains(imposter.getId())
-					|| GRAND_GOLD_CHEST_CLOSED_ID == imposter.getId()
-					|| SARCOPHAGUS_CLOSED_ID == imposter.getId())
-				{
-					Shape shape = object.getConvexHull();
-
-					if (shape != null)
-					{
-						OverlayUtil.renderPolygon(graphics, shape, config.highlightContainersColor());
-					}
-				}
+				highlightObject(graphics, object);
 			}
 		}
 
@@ -200,6 +191,23 @@ class PyramidPlunderOverlay extends Overlay
 		return null;
 	}
 
+	private void highlightObject(Graphics2D graphics, GameObject object)
+	{
+		ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
+
+		if (URN_CLOSED_IDS.contains(imposter.getId())
+			|| GRAND_GOLD_CHEST_CLOSED_ID == imposter.getId()
+			|| SARCOPHAGUS_CLOSED_ID == imposter.getId())
+		{
+			Shape shape = object.getConvexHull();
+
+			if (shape != null)
+			{
+				OverlayUtil.renderPolygon(graphics, shape, config.highlightContainersColor());
+			}
+		}
+	}
+
 	private boolean objectTooFarAway(TileObject object) {
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 
@@ -209,7 +217,9 @@ class PyramidPlunderOverlay extends Overlay
 	private boolean shouldHighlightObjectOnFloor(int objectId, int currentFloor) {
 		if(URN_IDS.contains(objectId)) {
 			boolean currentFloorPenultimateAndUp = currentFloor >= this.penultimateRoom;
-			return currentFloor >= config.highlightUrnsFloor() || config.highlightPenultimateUrns() && currentFloorPenultimateAndUp && URN_IDS.contains(objectId);
+			return
+				currentFloor >= config.highlightUrnsFloor() ||
+					(config.highlightPenultimateUrns() && currentFloorPenultimateAndUp && URN_IDS.contains(objectId) && stillWithinTimeLimit());
 		} else if(GRAND_GOLD_CHEST_ID == objectId) {
 			return currentFloor >= config.highlightChestFloor();
 		} else if(SARCOPHAGUS_ID == objectId) {
@@ -228,5 +238,13 @@ class PyramidPlunderOverlay extends Overlay
 			}
 		});
 		return penultimateRoom.get();
+	}
+
+	private boolean stillWithinTimeLimit() {
+		int ppTimer = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
+		Duration remaining = PYRAMID_PLUNDER_DURATION.minus(ppTimer, RSTimeUnit.GAME_TICKS);
+		// Want to stop highlighting on the second, plus another second to account for 501 ticks
+		int correctedTimeUtil = config.highlightUrnsUntil() + 2;
+		return remaining.compareTo(Duration.ofSeconds(correctedTimeUtil)) >= 0;
 	}
 }
