@@ -33,16 +33,12 @@ import java.time.Instant;
 import java.util.function.Predicate;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Experience;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -63,11 +59,9 @@ import static org.mockito.ArgumentMatchers.nullable;
 import org.mockito.Mock;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
@@ -327,7 +321,7 @@ public class TimersPluginTest
 		assertTrue(captor.getValue() instanceof ElapsedTimer);
 
 		// test timer pause: verify the added ElapsedTimer has a non-null lastTime
-		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "",  "<col=ef1020>The Inferno has been paused. You may now log out.", "", 0);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>The Inferno has been paused. You may now log out.", "", 0);
 		timersPlugin.onChatMessage(chatMessage);
 		verify(infoBoxManager, times(1)).removeInfoBox(captor.capture());
 		verify(infoBoxManager, times(2)).addInfoBox(captor.capture());
@@ -337,7 +331,7 @@ public class TimersPluginTest
 		Instant oldTime = ((ElapsedTimer) captor.getValue()).getStartTime();
 
 		// test timer unpause: verify the last time is null after being unpaused
-		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "",  "<col=ef1020>Wave: 2</col>", "", 0);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Wave: 2</col>", "", 0);
 		timersPlugin.onChatMessage(chatMessage);
 		verify(infoBoxManager, times(2)).removeInfoBox(captor.capture());
 		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
@@ -346,7 +340,7 @@ public class TimersPluginTest
 		assertNull(timer.getLastTime());
 
 		// test timer remove: verify the infobox was removed (and no more were added)
-		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "",  "You have been defeated!", "", 0);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have been defeated!", "", 0);
 		timersPlugin.onChatMessage(chatMessage);
 		verify(infoBoxManager, times(3)).removeInfoBox(captor.capture());
 		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
@@ -543,123 +537,40 @@ public class TimersPluginTest
 	// endregion
 
 	@Test
-	public void testImbuedHeartBoost()
+	public void testImbuedHeartStart()
 	{
 		when(timersConfig.showImbuedHeart()).thenReturn(true);
-		when(client.getTickCount()).thenReturn(100);
-		StatChanged event;
+		when(client.getVar(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(70);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
-		final MenuOptionClicked imbuedHeartClick = new MenuOptionClicked();
-		imbuedHeartClick.setMenuOption("Invigorate");
-		imbuedHeartClick.setId(ItemID.IMBUED_HEART);
-		timersPlugin.onMenuOptionClicked(imbuedHeartClick);
-
-		when(client.getTickCount()).thenReturn(101);
-
-		for (int level = 1, i = 0; level <= Experience.MAX_REAL_LEVEL; level++, i++)
-		{
-			event = new StatChanged(Skill.MAGIC, 0, level, heartBoostedLevel(level));
-			timersPlugin.onStatChanged(event);
-
-			ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-			verify(infoBoxManager, times(i + 1)).addInfoBox(captor.capture());
-			TimerTimer infoBox = (TimerTimer) captor.getValue();
-			assertEquals(GameTimer.IMBUEDHEART, infoBox.getTimer());
-		}
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.IMBUEDHEART, infoBox.getTimer());
+		assertEquals(GameTimer.IMBUEDHEART.getDuration(), infoBox.getDuration());
 	}
 
 	@Test
-	public void testImbuedHeartBoostFromDrained()
+	public void testImbuedHeartEnd()
 	{
 		when(timersConfig.showImbuedHeart()).thenReturn(true);
-		when(client.getTickCount()).thenReturn(100);
 
-		final MenuOptionClicked imbuedHeartClick = new MenuOptionClicked();
-		imbuedHeartClick.setMenuOption("Invigorate");
-		imbuedHeartClick.setId(ItemID.IMBUED_HEART);
-		timersPlugin.onMenuOptionClicked(imbuedHeartClick);
+		when(client.getVar(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(70);
+		timersPlugin.onVarbitChanged(new VarbitChanged()); // Calls removeIf once (on createGameTimer)
 
-		when(client.getTickCount()).thenReturn(101);
+		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
+		TimerTimer imbuedHeartInfoBox = new TimerTimer(GameTimer.IMBUEDHEART, Duration.ofSeconds(420), timersPlugin);
+		verify(infoBoxManager, times (1)).addInfoBox(any());
+		verify(infoBoxManager, times(1)).removeIf(prcaptor.capture());
+		Predicate<InfoBox> pred = prcaptor.getValue();
+		assertTrue(pred.test(imbuedHeartInfoBox));
 
-		for (int level = 1, i = 0; level <= Experience.MAX_REAL_LEVEL; level++, i++)
-		{
-			timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, level, level - 1));
-			timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, level, heartBoostedLevel(level) - 1));
+		when(client.getVar(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(0);
+		timersPlugin.onVarbitChanged(new VarbitChanged()); // Calls removeIf once
 
-			ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-			verify(infoBoxManager, times(i + 1)).addInfoBox(captor.capture());
-			TimerTimer infoBox = (TimerTimer) captor.getValue();
-			assertEquals(GameTimer.IMBUEDHEART, infoBox.getTimer());
-		}
-	}
-
-	@Test
-	public void testImbuedHeartBoostFromPartialBoost()
-	{
-		when(timersConfig.showImbuedHeart()).thenReturn(true);
-		when(client.getTickCount()).thenReturn(100);
-
-		final MenuOptionClicked imbuedHeartClick = new MenuOptionClicked();
-		imbuedHeartClick.setMenuOption("Invigorate");
-		imbuedHeartClick.setId(ItemID.IMBUED_HEART);
-		timersPlugin.onMenuOptionClicked(imbuedHeartClick);
-
-		when(client.getTickCount()).thenReturn(101);
-
-		for (int level = 10, i = 0; level <= Experience.MAX_REAL_LEVEL; level++, i++)
-		{
-			timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, level, level + 1));
-			timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, level, heartBoostedLevel(level)));
-
-			ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-			verify(infoBoxManager, times(i + 1)).addInfoBox(captor.capture());
-			TimerTimer infoBox = (TimerTimer) captor.getValue();
-			assertEquals(GameTimer.IMBUEDHEART, infoBox.getTimer());
-		}
-	}
-
-	@Test
-	public void testNonImbuedHeartBoost()
-	{
-		lenient().when(timersConfig.showImbuedHeart()).thenReturn(true);
-		timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, 1, 1));
-
-		// Simulate stat changes of imbued heart boost amount without having clicked the imbued heart
-		timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, 29, 34)); // equal to magic essence
-		timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, 39, 43)); // equal to magic potion
-		timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, 49, 54)); // equal to spicy stew
-		timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, 99, 109));
-
-		verifyNoInteractions(infoBoxManager);
-	}
-
-	@Test
-	public void testMagicLevelDrain()
-	{
-		lenient().when(timersConfig.showImbuedHeart()).thenReturn(true);
-		timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, 1, 1));
-		when(client.getTickCount()).thenReturn(100);
-
-		final MenuOptionClicked imbuedHeartClick = new MenuOptionClicked();
-		imbuedHeartClick.setMenuOption("Invigorate");
-		imbuedHeartClick.setId(ItemID.IMBUED_HEART);
-		timersPlugin.onMenuOptionClicked(imbuedHeartClick);
-
-		when(client.getTickCount()).thenReturn(101);
-
-		// Simulate stat changes draining to the imbued heart boost amount
-		for (int level = 1; level <= Experience.MAX_REAL_LEVEL; level++)
-		{
-			timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, level, level));
-			timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, level, heartBoostedLevel(level) + 1));
-			timersPlugin.onStatChanged(new StatChanged(Skill.MAGIC, 0, level, heartBoostedLevel(level)));
-		}
-
-		verifyNoInteractions(infoBoxManager);
-	}
-
-	private static int heartBoostedLevel(final int level)
-	{
-		return level + 1 + (level / 10);
+		verify(infoBoxManager, times(1)).addInfoBox(any());
+		verify(infoBoxManager, times(2)).removeIf(prcaptor.capture());
+		pred = prcaptor.getValue();
+		assertTrue(pred.test(imbuedHeartInfoBox));
 	}
 }
