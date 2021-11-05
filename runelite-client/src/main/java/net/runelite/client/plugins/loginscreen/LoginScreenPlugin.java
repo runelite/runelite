@@ -33,6 +33,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -286,6 +287,11 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 					return;
 				}
 			}
+		}
+		else if (config.loginScreen() == LoginScreenOverride.RANDOM)
+		{
+			LoginScreenOverride rand = LoginScreenOverride.values()[new Random().nextInt(LoginScreenOverride.values().length - 1)];
+			pixels = getFileSpritePixels(rand.getFileName());
 		}
 		else
 		{
