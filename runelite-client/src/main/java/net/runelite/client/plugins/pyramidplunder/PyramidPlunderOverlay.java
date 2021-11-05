@@ -89,7 +89,7 @@ class PyramidPlunderOverlay extends Overlay
 		return Collections.unmodifiableMap(minimumRequirementAndRoom);
 	}
 
-	private Integer penultimateRoom;
+	private Integer penultimateFloor;
 	private int thievingLevel;
 
 
@@ -117,12 +117,12 @@ class PyramidPlunderOverlay extends Overlay
 		}
 		ppWidget.setHidden(config.hideTimer());
 
-		if(this.penultimateRoom == null) {
-			this.penultimateRoom = getPenultimateRoom();
+		if(this.penultimateFloor == null) {
+			this.penultimateFloor = getPenultimateFloor();
 		}
 		if(this.thievingLevel != client.getRealSkillLevel(Skill.THIEVING)) {
 			this.thievingLevel = client.getRealSkillLevel(Skill.THIEVING);
-			this.penultimateRoom = getPenultimateRoom();
+			this.penultimateFloor = getPenultimateFloor();
 		}
 
 		// Highlight convex hulls of urns, chests, and sarcophagus
@@ -216,10 +216,12 @@ class PyramidPlunderOverlay extends Overlay
 
 	private boolean shouldHighlightObjectOnFloor(int objectId, int currentFloor) {
 		if(URN_IDS.contains(objectId)) {
-			boolean currentFloorPenultimateAndUp = currentFloor >= this.penultimateRoom;
+			boolean shouldHighlightPenultimateUrns = config.highlightPenultimateUrns() && URN_IDS.contains(objectId);
 			return
-				currentFloor >= config.highlightUrnsFloor() ||
-					(config.highlightPenultimateUrns() && currentFloorPenultimateAndUp && URN_IDS.contains(objectId) && stillWithinTimeLimit());
+					currentFloor > this.penultimateFloor && shouldHighlightPenultimateUrns ||
+					currentFloor >= config.highlightUrnsFloor() ||
+					currentFloor == this.penultimateFloor && shouldHighlightPenultimateUrns && stillWithinTimeLimit();
+
 		} else if(GRAND_GOLD_CHEST_ID == objectId) {
 			return currentFloor >= config.highlightChestFloor();
 		} else if(SARCOPHAGUS_ID == objectId) {
@@ -228,19 +230,22 @@ class PyramidPlunderOverlay extends Overlay
 		return false;
 	}
 
-	private Integer getPenultimateRoom()
+	private Integer getPenultimateFloor()
 	{
-		AtomicReference<Integer> penultimateRoom = new AtomicReference<>();
+		AtomicReference<Integer> penultimateFloor = new AtomicReference<>();
 		MIN_REQ_PER_ROOM.forEach((minRequirement, roomNumber) -> {
 			log.info(String.valueOf(minRequirement));
 			if(minRequirement.isValidIntValue(thievingLevel)) {
-				penultimateRoom.set(roomNumber == 1 ? 1 : roomNumber - 1);
+				penultimateFloor.set(roomNumber == 1 ? 1 : roomNumber - 1);
 			}
 		});
-		return penultimateRoom.get();
+		return penultimateFloor.get();
 	}
 
 	private boolean stillWithinTimeLimit() {
+		if(config.highlightUrnsUntil() == 0) {
+			return true;
+		}
 		int ppTimer = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
 		Duration remaining = PYRAMID_PLUNDER_DURATION.minus(ppTimer, RSTimeUnit.GAME_TICKS);
 		// Want to stop highlighting on the second, plus another second to account for 501 ticks
