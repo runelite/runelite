@@ -112,7 +112,6 @@ class PyramidPlunderOverlay extends Overlay
 		{
 			return null;
 		}
-
 		ppWidget.setHidden(config.hideTimer());
 
 		if(this.penultimateRoom == null) {
@@ -127,7 +126,7 @@ class PyramidPlunderOverlay extends Overlay
 		int currentFloor = client.getVar(Varbits.PYRAMID_PLUNDER_ROOM);
 		for (GameObject object : plugin.getObjectsToHighlight())
 		{
-			if (highlightObjects(currentFloor, object.getId()) && !objectTooFarAway(object))
+			if (shouldHighlightObjectOnFloor(object.getId(), currentFloor) && !objectTooFarAway(object))
 			{
 				ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
 
@@ -207,12 +206,10 @@ class PyramidPlunderOverlay extends Overlay
 		return object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE;
 	}
 
-	private boolean highlightObjects(int currentFloor, int objectId) {
+	private boolean shouldHighlightObjectOnFloor(int objectId, int currentFloor) {
 		if(URN_IDS.contains(objectId)) {
-			boolean isCurrentFloorPenultimate = currentFloor == this.penultimateRoom;
-			boolean shouldHighlightPenultimateUrns = config.highlightPenultimateUrns() && isCurrentFloorPenultimate && URN_CLOSED_IDS.contains(objectId);
-			log.info("Should highlight penultimate urns? " + shouldHighlightPenultimateUrns);
-			return currentFloor >= config.highlightUrnsFloor() || shouldHighlightPenultimateUrns;
+			boolean currentFloorPenultimateAndUp = currentFloor >= this.penultimateRoom;
+			return currentFloor >= config.highlightUrnsFloor() || config.highlightPenultimateUrns() && currentFloorPenultimateAndUp && URN_IDS.contains(objectId);
 		} else if(GRAND_GOLD_CHEST_ID == objectId) {
 			return currentFloor >= config.highlightChestFloor();
 		} else if(SARCOPHAGUS_ID == objectId) {
@@ -223,17 +220,11 @@ class PyramidPlunderOverlay extends Overlay
 
 	private Integer getPenultimateRoom()
 	{
-		log.info("Getting penultimate room...");
-		log.info("Thieving level is: " + thievingLevel);
 		AtomicReference<Integer> penultimateRoom = new AtomicReference<>();
 		MIN_REQ_PER_ROOM.forEach((minRequirement, roomNumber) -> {
 			log.info(String.valueOf(minRequirement));
 			if(minRequirement.isValidIntValue(thievingLevel)) {
-				log.info("Found a valid range for our thieving level (" + thievingLevel + ")");
-				log.info("The range is min " + minRequirement.getMinimum() + " with max " + minRequirement.getMaximum());
-				log.info("This means the actual max room is " + roomNumber);
-				log.info("and the penultimate room is " + (roomNumber - 1));
-				penultimateRoom.set(roomNumber - 1);
+				penultimateRoom.set(roomNumber == 1 ? 1 : roomNumber - 1);
 			}
 		});
 		return penultimateRoom.get();
