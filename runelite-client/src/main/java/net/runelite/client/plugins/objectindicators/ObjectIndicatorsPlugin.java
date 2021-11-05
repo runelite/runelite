@@ -122,7 +122,8 @@ public class ObjectIndicatorsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		if (reloadMapPointsOnStartup){
+		if (reloadMapPointsOnStartup)
+		{
 			reloadMapPoints();
 			reloadMapPointsOnStartup = false;
 		}
@@ -275,7 +276,8 @@ public class ObjectIndicatorsPlugin extends Plugin
 		markObject(objectDefinition, name, object);
 	}
 
-	private void reloadMapPoints(){
+	private void reloadMapPoints()
+	{
 		points.clear();
 		for (int regionId : client.getMapRegions())
 		{
@@ -313,9 +315,9 @@ public class ObjectIndicatorsPlugin extends Plugin
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
-					&& worldPoint.getRegionY() == objectPoint.getRegionY()
-					&& worldPoint.getPlane() == objectPoint.getZ()
-					&& objectPoint.getId() == object.getId())
+				&& worldPoint.getRegionY() == objectPoint.getRegionY()
+				&& worldPoint.getPlane() == objectPoint.getZ()
+				&& objectPoint.getId() == object.getId())
 			{
 				log.debug("Marking object {} due to matching {}", object, objectPoint);
 				objects.add(new ColorTileObject(object,
@@ -395,11 +397,12 @@ public class ObjectIndicatorsPlugin extends Plugin
 		return false;
 	}
 
-	/** mark or unmark an object
+	/**
+	 * mark or unmark an object
 	 *
 	 * @param objectComposition transformed composition of object based on vars
-	 * @param name name of objectComposition
-	 * @param object tile object, for multilocs object.getId() is the base id
+	 * @param name              name of objectComposition
+	 * @param object            tile object, for multilocs object.getId() is the base id
 	 */
 	private void markObject(ObjectComposition objectComposition, String name, final TileObject object)
 	{
