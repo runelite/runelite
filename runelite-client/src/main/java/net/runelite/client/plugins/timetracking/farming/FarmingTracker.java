@@ -599,6 +599,10 @@ public class FarmingTracker
 				{
 					stringBuilder.append(" is ready to collect in ");
 				}
+				else if (prediction.getProduce().getPatchImplementation().equals(PatchImplementation.ANIMA))
+				{
+					stringBuilder.append(" is ready to be cleared in ");
+				}
 				else
 				{
 					stringBuilder.append(" is ready to harvest in ");

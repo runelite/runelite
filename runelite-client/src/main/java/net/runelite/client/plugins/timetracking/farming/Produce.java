@@ -92,21 +92,21 @@ public enum Produce
 	ANYHERB("Any herb", PatchImplementation.HERB, ItemID.GUAM_LEAF, 20, 5, 0, 3),
 
 	// Tree crops
-	OAK("Oak", "Oak tree", PatchImplementation.TREE, ItemID.OAK_LOGS, 40, 5),
-	WILLOW("Willow", "Willow tree", PatchImplementation.TREE, ItemID.WILLOW_LOGS, 40, 7),
-	MAPLE("Maple", "Maple tree", PatchImplementation.TREE, ItemID.MAPLE_LOGS, 40, 9),
-	YEW("Yew", "Yew tree", PatchImplementation.TREE, ItemID.YEW_LOGS, 40, 11),
-	MAGIC("Magic", "Magic tree", PatchImplementation.TREE, ItemID.MAGIC_LOGS, 40, 13),
+	OAK("Oak tree", "Oak tree", PatchImplementation.TREE, ItemID.OAK_LOGS, 40, 5),
+	WILLOW("Willow tree", "Willow tree", PatchImplementation.TREE, ItemID.WILLOW_LOGS, 40, 7),
+	MAPLE("Maple tree", "Maple tree", PatchImplementation.TREE, ItemID.MAPLE_LOGS, 40, 9),
+	YEW("Yew tree", "Yew tree", PatchImplementation.TREE, ItemID.YEW_LOGS, 40, 11),
+	MAGIC("Magic tree", "Magic tree", PatchImplementation.TREE, ItemID.MAGIC_LOGS, 40, 13),
 
 	// Fruit tree crops
-	APPLE("Apple", "Apple tree", PatchImplementation.FRUIT_TREE, ItemID.COOKING_APPLE, 160, 7, 45, 7),
-	BANANA("Banana", "Banana tree", PatchImplementation.FRUIT_TREE, ItemID.BANANA, 160, 7, 45, 7),
-	ORANGE("Orange", "Orange tree", PatchImplementation.FRUIT_TREE, ItemID.ORANGE, 160, 7, 45, 7),
-	CURRY("Curry", "Curry tree", PatchImplementation.FRUIT_TREE, ItemID.CURRY_LEAF, 160, 7, 45, 7),
-	PINEAPPLE("Pineapple", "Pineapple plant", PatchImplementation.FRUIT_TREE, ItemID.PINEAPPLE, 160, 7, 45, 7),
-	PAPAYA("Papaya", "Papaya tree", PatchImplementation.FRUIT_TREE, ItemID.PAPAYA_FRUIT, 160, 7, 45, 7),
-	PALM("Palm", "Palm tree", PatchImplementation.FRUIT_TREE, ItemID.COCONUT, 160, 7, 45, 7),
-	DRAGONFRUIT("Dragonfruit", "Dragonfruit tree", PatchImplementation.FRUIT_TREE, ItemID.DRAGONFRUIT, 160, 7, 45, 7),
+	APPLE("Apple tree", "Apple tree", PatchImplementation.FRUIT_TREE, ItemID.COOKING_APPLE, 160, 7, 45, 7),
+	BANANA("Banana tree", "Banana tree", PatchImplementation.FRUIT_TREE, ItemID.BANANA, 160, 7, 45, 7),
+	ORANGE("Orange tree", "Orange tree", PatchImplementation.FRUIT_TREE, ItemID.ORANGE, 160, 7, 45, 7),
+	CURRY("Curry tree", "Curry tree", PatchImplementation.FRUIT_TREE, ItemID.CURRY_LEAF, 160, 7, 45, 7),
+	PINEAPPLE("Pineapple tree", "Pineapple plant", PatchImplementation.FRUIT_TREE, ItemID.PINEAPPLE, 160, 7, 45, 7),
+	PAPAYA("Papaya tree", "Papaya tree", PatchImplementation.FRUIT_TREE, ItemID.PAPAYA_FRUIT, 160, 7, 45, 7),
+	PALM("Palm tree", "Palm tree", PatchImplementation.FRUIT_TREE, ItemID.COCONUT, 160, 7, 45, 7),
+	DRAGONFRUIT("Dragonfruit tree", "Dragonfruit tree", PatchImplementation.FRUIT_TREE, ItemID.DRAGONFRUIT, 160, 7, 45, 7),
 
 	// Cactus
 	CACTUS("Cactus", PatchImplementation.CACTUS, ItemID.CACTUS_SPINE, 80, 8, 20, 4),
