@@ -116,10 +116,16 @@ public class ObjectIndicatorsPlugin extends Plugin
 		return configManager.getConfig(ObjectIndicatorsConfig.class);
 	}
 
+	private static boolean reloadMapPointsOnStartup = false;
+
 	@Override
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		if (reloadMapPointsOnStartup){
+			reloadMapPoints();
+			reloadMapPointsOnStartup = false;
+		}
 	}
 
 	@Override
@@ -128,6 +134,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		overlayManager.remove(overlay);
 		points.clear();
 		objects.clear();
+		reloadMapPointsOnStartup = true;
 	}
 
 	@Subscribe
@@ -195,17 +202,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		if (gameState == GameState.LOADING)
 		{
 			// Reload points with new map regions
-
-			points.clear();
-			for (int regionId : client.getMapRegions())
-			{
-				// load points for region
-				final Set<ObjectPoint> regionPoints = loadPoints(regionId);
-				if (regionPoints != null)
-				{
-					points.put(regionId, regionPoints);
-				}
-			}
+			reloadMapPoints();
 		}
 
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN && gameStateChanged.getGameState() != GameState.CONNECTION_LOST)
@@ -276,6 +273,19 @@ public class ObjectIndicatorsPlugin extends Plugin
 		}
 
 		markObject(objectDefinition, name, object);
+	}
+
+	private void reloadMapPoints(){
+		points.clear();
+		for (int regionId : client.getMapRegions())
+		{
+			// load points for region
+			final Set<ObjectPoint> regionPoints = loadPoints(regionId);
+			if (regionPoints != null)
+			{
+				points.put(regionId, regionPoints);
+			}
+		}
 	}
 
 	private void checkObjectPoints(TileObject object)
