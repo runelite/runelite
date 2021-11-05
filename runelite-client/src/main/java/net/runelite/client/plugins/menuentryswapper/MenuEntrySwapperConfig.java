@@ -280,6 +280,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapDive",
+			name = "Dive",
+			description = "Swap Travel with Dive for the rowboat on Fossil Island.",
+			section = objectSection
+	)
+	default boolean swapDive()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapExchange",
 		name = "Exchange",
 		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight",
