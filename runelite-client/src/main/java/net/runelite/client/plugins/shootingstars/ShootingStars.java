@@ -328,6 +328,7 @@ public class ShootingStars extends Plugin
 
 		scouts.removeIf(scout -> scout.getWorld() == event.getWorld());
 		scouts.add(scoutedStar);
+		starsPanel.buildScoutedStarComponents(scouts);
 
 		if (scoutedStar.getWorld() == client.getWorld())
 		{
