@@ -68,31 +68,30 @@ class PyramidPlunderOverlay extends Overlay
 	private static final int MAX_DISTANCE = 2350;
 
 	private final Client client;
+
 	private final PyramidPlunderPlugin plugin;
+
 	private final PyramidPlunderConfig config;
+
 	private static final Duration PYRAMID_PLUNDER_DURATION = Duration.of(501, RSTimeUnit.GAME_TICKS);
 
-	private static final Map<ValueRange, Integer> MIN_REQ_PER_ROOM = constructMinReqPerRoomMap();
+	private static final Map<ValueRange, Integer> MIN_REQ_PER_FLOOR = constructMinReqPerFloorMap();
 
-
-
-	private static Map<ValueRange, Integer> constructMinReqPerRoomMap() {
-		Map<ValueRange, Integer> minimumRequirementAndRoom = new HashMap<>();
-		minimumRequirementAndRoom.put(ValueRange.of(21, 30), 1);
-		minimumRequirementAndRoom.put(ValueRange.of(31, 40), 2);
-		minimumRequirementAndRoom.put(ValueRange.of(41, 50), 3);
-		minimumRequirementAndRoom.put(ValueRange.of(51, 60), 4);
-		minimumRequirementAndRoom.put(ValueRange.of(61, 70), 5);
-		minimumRequirementAndRoom.put(ValueRange.of(71, 80), 6);
-		minimumRequirementAndRoom.put(ValueRange.of(81, 90), 7);
-		minimumRequirementAndRoom.put(ValueRange.of(91, 99), 8);
-		return Collections.unmodifiableMap(minimumRequirementAndRoom);
+	private static Map<ValueRange, Integer> constructMinReqPerFloorMap() {
+		Map<ValueRange, Integer> minimumRequirementAndFloor = new HashMap<>();
+		minimumRequirementAndFloor.put(ValueRange.of(21, 30), 1);
+		minimumRequirementAndFloor.put(ValueRange.of(31, 40), 2);
+		minimumRequirementAndFloor.put(ValueRange.of(41, 50), 3);
+		minimumRequirementAndFloor.put(ValueRange.of(51, 60), 4);
+		minimumRequirementAndFloor.put(ValueRange.of(61, 70), 5);
+		minimumRequirementAndFloor.put(ValueRange.of(71, 80), 6);
+		minimumRequirementAndFloor.put(ValueRange.of(81, 90), 7);
+		minimumRequirementAndFloor.put(ValueRange.of(91, 99), 8);
+		return Collections.unmodifiableMap(minimumRequirementAndFloor);
 	}
 
 	private Integer penultimateFloor;
 	private int thievingLevel;
-
-
 
 	@Inject
 	private PyramidPlunderOverlay(Client client, PyramidPlunderPlugin plugin, PyramidPlunderConfig config)
@@ -233,8 +232,7 @@ class PyramidPlunderOverlay extends Overlay
 	private Integer getPenultimateFloor()
 	{
 		AtomicReference<Integer> penultimateFloor = new AtomicReference<>();
-		MIN_REQ_PER_ROOM.forEach((minRequirement, roomNumber) -> {
-			log.info(String.valueOf(minRequirement));
+		MIN_REQ_PER_FLOOR.forEach((minRequirement, roomNumber) -> {
 			if(minRequirement.isValidIntValue(thievingLevel)) {
 				penultimateFloor.set(roomNumber == 1 ? 1 : roomNumber - 1);
 			}
