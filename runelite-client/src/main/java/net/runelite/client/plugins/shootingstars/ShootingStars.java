@@ -34,7 +34,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -42,13 +41,10 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
-import net.runelite.api.Tile;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameObjectDespawned;
@@ -201,11 +197,7 @@ public class ShootingStars extends Plugin
 		{
 			return;
 		}
-		if (crashedStar == null)
-		{
-			evaluatePossibleCrashSites(localPlayer);
-		}
-		else
+		if (crashedStar != null)
 		{
 			if (client.hasHintArrow() && localPlayer.getWorldLocation().distanceTo(crashedStar.getWorldPoint()) < HINT_ARROW_CLEAR_DISTANCE)
 			{
@@ -415,44 +407,6 @@ public class ShootingStars extends Plugin
 	}
 
 	/**
-	 * Returns if the given locId (gameObjectId) is a shooting star.
-	 *
-	 * @param locId The locId (gameObjectId)
-	 * @return If the given locId is a shooting star or not.
-	 */
-	private boolean isShootingStar(int locId)
-	{
-		return getStarTier(locId) > 0;
-	}
-
-	/**
-	 * Evaluates and excludes crash sites where a star isn't found.
-	 */
-	private void evaluatePossibleCrashSites(Player localPlayer)
-	{
-		Iterator<PossibleCrashSite> iterator = possibleSites.iterator();
-		while (iterator.hasNext())
-		{
-			PossibleCrashSite possibleSite = iterator.next();
-			WorldPoint worldPoint = possibleSite.getWorldPoint();
-
-			if (worldPoint.distanceTo(localPlayer.getWorldLocation()) >= MINIMUM_EVICTION_DISTANCE || checkForShootingStar(worldPoint))
-			{
-				continue;
-			}
-			QueuedMessage queuedMessage = QueuedMessage.builder()
-				.type(ChatMessageType.GAMEMESSAGE)
-				.runeLiteFormattedMessage(ColorUtil.wrapWithColorTag("No shooting star was found, ignoring nearby crash site.", Color.ORANGE))
-				.build();
-
-			chatMessageManager.queue(queuedMessage);
-			log.debug("Removing possible crash site as no star was found at {}", worldPoint);
-			worldMapPointManager.remove(possibleSite.getWorldMapPoint());
-			iterator.remove();
-		}
-	}
-
-	/**
 	 * Resets all the plugin state to the default values.
 	 */
 	private void resetStarTrackingState()
@@ -497,32 +451,6 @@ public class ShootingStars extends Plugin
 			worldMapPointManager.add(mapPoint);
 			possibleSites.add(PossibleCrashSite.of(crashSite.getName(), crashSite.getLocation(), mapPoint));
 		}
-	}
-
-	/**
-	 * Checks if there's a shooting star at the given world point.
-	 *
-	 * @param worldPoint The world point to be checked.
-	 * @return If there's a shooting star at the world point.
-	 */
-	private boolean checkForShootingStar(WorldPoint worldPoint)
-	{
-		LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
-
-		if (localPoint == null)
-		{
-			return false;
-		}
-		Tile tile = client.getScene().getTiles()[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
-
-		for (GameObject gameObject : tile.getGameObjects())
-		{
-			if (gameObject != null && isShootingStar(gameObject.getId()))
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private void handleNewSpottedStar(CrashedStar star)
