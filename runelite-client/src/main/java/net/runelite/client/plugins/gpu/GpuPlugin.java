@@ -301,6 +301,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			try
 			{
 				fboSceneHandle = rboSceneHandle = -1; // AA FBO
+				targetBufferOffset = 0;
 				unorderedModels = smallModels = largeModels = 0;
 				drawingModel = false;
 
