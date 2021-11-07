@@ -164,6 +164,7 @@ public class ShootingStars extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navigationButton);
+		starsPanel.buildScoutedStarComponents(scouts);
 	}
 
 	@Override
