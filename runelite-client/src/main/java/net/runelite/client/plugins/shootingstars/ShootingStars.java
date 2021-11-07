@@ -53,6 +53,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -337,14 +338,18 @@ public class ShootingStars extends Plugin
 		Duration earliest = Duration.between(now, scoutedStar.getEarliestTime());
 		Duration latest = Duration.between(now, scoutedStar.getLatestTime());
 
+		Color color = client.getTopLevelInterfaceId() == WidgetID.FIXED_VIEWPORT_GROUP_ID ? Color.BLUE : Color.CYAN;
+
 		String chatMessage = new ChatMessageBuilder()
 			.append("A shooting star has been scouted in this world, it'll land at ")
-			.append(Color.CYAN, region.getShortName())
+			.append(color, region.getShortName())
 			.append(" in approximately ")
-			.append(Color.CYAN, formatDuration(earliest))
+			.append(color, formatDuration(earliest))
 			.append(" to ")
-			.append(Color.CYAN, formatDuration(latest))
-			.append(".")
+			.append(color, formatDuration(latest))
+			.append(". Open your")
+			.append(color, " world map ")
+			.append("to see possible crash sites.")
 			.build();
 
 		QueuedMessage queuedMessage = QueuedMessage.builder()
