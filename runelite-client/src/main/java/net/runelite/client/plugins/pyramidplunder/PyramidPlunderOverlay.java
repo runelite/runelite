@@ -77,7 +77,8 @@ class PyramidPlunderOverlay extends Overlay
 
 	private static final Map<ValueRange, Integer> MIN_REQ_PER_FLOOR = constructMinReqPerFloorMap();
 
-	private static Map<ValueRange, Integer> constructMinReqPerFloorMap() {
+	private static Map<ValueRange, Integer> constructMinReqPerFloorMap()
+	{
 		Map<ValueRange, Integer> minimumRequirementAndFloor = new HashMap<>();
 		minimumRequirementAndFloor.put(ValueRange.of(21, 30), 1);
 		minimumRequirementAndFloor.put(ValueRange.of(31, 40), 2);
@@ -116,10 +117,12 @@ class PyramidPlunderOverlay extends Overlay
 		}
 		ppWidget.setHidden(config.hideTimer());
 
-		if(this.penultimateFloor == null) {
+		if (this.penultimateFloor == null)
+		{
 			this.penultimateFloor = getPenultimateFloor();
 		}
-		if(this.thievingLevel != client.getRealSkillLevel(Skill.THIEVING)) {
+		if (this.thievingLevel != client.getRealSkillLevel(Skill.THIEVING))
+		{
 			this.thievingLevel = client.getRealSkillLevel(Skill.THIEVING);
 			this.penultimateFloor = getPenultimateFloor();
 		}
@@ -207,23 +210,30 @@ class PyramidPlunderOverlay extends Overlay
 		}
 	}
 
-	private boolean objectTooFarAway(TileObject object) {
+	private boolean objectTooFarAway(TileObject object)
+	{
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 
 		return object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE;
 	}
 
-	private boolean shouldHighlightObjectOnFloor(int objectId, int currentFloor) {
-		if(URN_IDS.contains(objectId)) {
+	private boolean shouldHighlightObjectOnFloor(int objectId, int currentFloor)
+	{
+		if (URN_IDS.contains(objectId))
+		{
 			boolean shouldHighlightPenultimateUrns = config.highlightPenultimateUrns() && URN_IDS.contains(objectId);
 			return
-					currentFloor > this.penultimateFloor && shouldHighlightPenultimateUrns ||
+				currentFloor > this.penultimateFloor && shouldHighlightPenultimateUrns ||
 					currentFloor >= config.highlightUrnsFloor() ||
 					currentFloor == this.penultimateFloor && shouldHighlightPenultimateUrns && stillWithinTimeLimit();
 
-		} else if(GRAND_GOLD_CHEST_ID == objectId) {
+		}
+		else if (GRAND_GOLD_CHEST_ID == objectId)
+		{
 			return currentFloor >= config.highlightChestFloor();
-		} else if(SARCOPHAGUS_ID == objectId) {
+		}
+		else if (SARCOPHAGUS_ID == objectId)
+		{
 			return currentFloor >= config.highlightSarcophagusFloor();
 		}
 		return false;
@@ -233,15 +243,18 @@ class PyramidPlunderOverlay extends Overlay
 	{
 		AtomicReference<Integer> penultimateFloor = new AtomicReference<>();
 		MIN_REQ_PER_FLOOR.forEach((minRequirement, roomNumber) -> {
-			if(minRequirement.isValidIntValue(thievingLevel)) {
+			if (minRequirement.isValidIntValue(thievingLevel))
+			{
 				penultimateFloor.set(roomNumber == 1 ? 1 : roomNumber - 1);
 			}
 		});
 		return penultimateFloor.get();
 	}
 
-	private boolean stillWithinTimeLimit() {
-		if(config.highlightUrnsUntil() == 0) {
+	private boolean stillWithinTimeLimit()
+	{
+		if (config.highlightUrnsUntil() == 0)
+		{
 			return true;
 		}
 		int ppTimer = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
