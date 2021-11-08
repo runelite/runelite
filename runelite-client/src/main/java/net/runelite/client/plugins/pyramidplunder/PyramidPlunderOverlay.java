@@ -29,18 +29,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.time.Duration;
-import java.time.temporal.ValueRange;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
-import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
@@ -73,21 +67,6 @@ class PyramidPlunderOverlay extends Overlay
 
 	private static final Duration PYRAMID_PLUNDER_DURATION = Duration.of(501, RSTimeUnit.GAME_TICKS);
 
-	private static final Map<ValueRange, Integer> MIN_REQ_PER_FLOOR = constructMinReqPerFloorMap();
-
-	private static Map<ValueRange, Integer> constructMinReqPerFloorMap()
-	{
-		Map<ValueRange, Integer> minimumRequirementAndFloor = new HashMap<>();
-		minimumRequirementAndFloor.put(ValueRange.of(21, 30), 1);
-		minimumRequirementAndFloor.put(ValueRange.of(31, 40), 2);
-		minimumRequirementAndFloor.put(ValueRange.of(41, 50), 3);
-		minimumRequirementAndFloor.put(ValueRange.of(51, 60), 4);
-		minimumRequirementAndFloor.put(ValueRange.of(61, 70), 5);
-		minimumRequirementAndFloor.put(ValueRange.of(71, 80), 6);
-		minimumRequirementAndFloor.put(ValueRange.of(81, 90), 7);
-		minimumRequirementAndFloor.put(ValueRange.of(91, 99), 8);
-		return Collections.unmodifiableMap(minimumRequirementAndFloor);
-	}
 
 	private Integer penultimateFloor;
 	private int thievingLevel;
@@ -113,23 +92,24 @@ class PyramidPlunderOverlay extends Overlay
 		{
 			return null;
 		}
+
 		ppWidget.setHidden(config.hideTimer());
 
-		if (this.penultimateFloor == null)
+		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
+
+		int realThievingLevel = client.getRealSkillLevel(Skill.THIEVING);
+
+		if (this.thievingLevel != realThievingLevel)
 		{
-			this.penultimateFloor = getPenultimateFloor();
-		}
-		if (this.thievingLevel != client.getRealSkillLevel(Skill.THIEVING))
-		{
-			this.thievingLevel = client.getRealSkillLevel(Skill.THIEVING);
-			this.penultimateFloor = getPenultimateFloor();
+			this.thievingLevel = realThievingLevel;
+			this.penultimateFloor = (realThievingLevel - 1) / 10 - 2;
 		}
 
 		// Highlight convex hulls of urns, chests, and sarcophagus
 		int currentFloor = client.getVar(Varbits.PYRAMID_PLUNDER_ROOM);
 		for (GameObject object : plugin.getObjectsToHighlight())
 		{
-			if (shouldHighlightObjectOnFloor(object.getId(), currentFloor) && !objectTooFarAway(object))
+			if (shouldHighlightObjectOnFloor(object.getId(), currentFloor) && object.getLocalLocation().distanceTo(playerLocation) <= MAX_DISTANCE)
 			{
 				highlightObject(graphics, object);
 			}
@@ -143,7 +123,7 @@ class PyramidPlunderOverlay extends Overlay
 			if (!config.highlightDoors() && TOMB_DOOR_WALL_IDS.contains(object.getId())
 				|| !config.highlightSpeartraps() && SPEARTRAP_ID == object.getId()
 				|| tile.getPlane() != client.getPlane()
-				|| objectTooFarAway(object))
+				|| object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE)
 			{
 				return;
 			}
@@ -161,8 +141,8 @@ class PyramidPlunderOverlay extends Overlay
 			}
 			else
 			{
-				ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
-				if (imposter.getId() != TOMB_DOOR_CLOSED_ID)
+				ObjectComposition impostor = client.getObjectDefinition(object.getId()).getImpostor();
+				if (impostor.getId() != TOMB_DOOR_CLOSED_ID)
 				{
 					return;
 				}
@@ -193,11 +173,11 @@ class PyramidPlunderOverlay extends Overlay
 
 	private void highlightObject(Graphics2D graphics, GameObject object)
 	{
-		ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
+		ObjectComposition impostor = client.getObjectDefinition(object.getId()).getImpostor();
 
-		if (URN_CLOSED_IDS.contains(imposter.getId())
-			|| GRAND_GOLD_CHEST_CLOSED_ID == imposter.getId()
-			|| SARCOPHAGUS_CLOSED_ID == imposter.getId())
+		if (URN_CLOSED_IDS.contains(impostor.getId())
+			|| GRAND_GOLD_CHEST_CLOSED_ID == impostor.getId()
+			|| SARCOPHAGUS_CLOSED_ID == impostor.getId())
 		{
 			Shape shape = object.getConvexHull();
 
@@ -206,13 +186,6 @@ class PyramidPlunderOverlay extends Overlay
 				OverlayUtil.renderPolygon(graphics, shape, config.highlightContainersColor());
 			}
 		}
-	}
-
-	private boolean objectTooFarAway(TileObject object)
-	{
-		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
-
-		return object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE;
 	}
 
 	private boolean shouldHighlightObjectOnFloor(int objectId, int currentFloor)
@@ -235,18 +208,6 @@ class PyramidPlunderOverlay extends Overlay
 			return currentFloor >= config.highlightSarcophagusFloor();
 		}
 		return false;
-	}
-
-	private Integer getPenultimateFloor()
-	{
-		AtomicReference<Integer> penultimateFloor = new AtomicReference<>();
-		MIN_REQ_PER_FLOOR.forEach((minRequirement, floorNumber) -> {
-			if (minRequirement.isValidIntValue(thievingLevel))
-			{
-				penultimateFloor.set(floorNumber == 1 ? 1 : floorNumber - 1);
-			}
-		});
-		return penultimateFloor.get();
 	}
 
 	private boolean stillWithinTimeLimit()
