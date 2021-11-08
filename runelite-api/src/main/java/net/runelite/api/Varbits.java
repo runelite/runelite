@@ -624,7 +624,11 @@ public enum Varbits
 	 * 2 = popup notification only
 	 * 3 = chat and popup
 	 */
-	COLLECTION_LOG_NOTIFICATION(11959);
+	COLLECTION_LOG_NOTIFICATION(11959),
+
+	
+	LARGE_HP_BAR_CURRENT_HP(6099),
+	LARGE_HP_BAR_MAX_HP(6100);
 
 	/**
 	 * The raw varbit ID.
