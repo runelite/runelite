@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
@@ -62,7 +61,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.RSTimeUnit;
 
-@Slf4j
 class PyramidPlunderOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
@@ -242,10 +240,10 @@ class PyramidPlunderOverlay extends Overlay
 	private Integer getPenultimateFloor()
 	{
 		AtomicReference<Integer> penultimateFloor = new AtomicReference<>();
-		MIN_REQ_PER_FLOOR.forEach((minRequirement, roomNumber) -> {
+		MIN_REQ_PER_FLOOR.forEach((minRequirement, floorNumber) -> {
 			if (minRequirement.isValidIntValue(thievingLevel))
 			{
-				penultimateFloor.set(roomNumber == 1 ? 1 : roomNumber - 1);
+				penultimateFloor.set(floorNumber == 1 ? 1 : floorNumber - 1);
 			}
 		});
 		return penultimateFloor.get();
