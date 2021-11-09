@@ -42,7 +42,8 @@ public class ShootingStarsPanel extends PluginPanel
 
 	public void buildScoutedStarComponents(List<ScoutedStar> scoutedStars)
 	{
-		SwingUtilities.invokeLater(() -> {
+		SwingUtilities.invokeLater(() ->
+		{
 			starsPanel.removeAll();
 
 			for (ScoutedStar scoutedStar : scoutedStars)
