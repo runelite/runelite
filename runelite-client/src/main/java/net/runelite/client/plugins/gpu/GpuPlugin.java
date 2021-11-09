@@ -396,7 +396,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 					final boolean unlockFps = this.config.unlockFps();
 					client.setUnlockedFps(unlockFps);
-					gl.setSwapInterval(unlockFps ? 1 : 0);
+					gl.setSwapInterval(unlockFps ? -1 : 0);
 
 					if (log.isDebugEnabled())
 					{
@@ -562,7 +562,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				clientThread.invokeLater(() ->
 				{
 					client.setUnlockedFps(unlockFps);
-					invokeOnMainThread(() -> gl.setSwapInterval(unlockFps ? 1 : 0));
+					invokeOnMainThread(() -> gl.setSwapInterval(unlockFps ? -1 : 0));
 				});
 			}
 		}
