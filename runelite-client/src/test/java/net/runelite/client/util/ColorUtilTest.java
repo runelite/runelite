@@ -26,6 +26,7 @@ package net.runelite.client.util;
 
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
+import java.util.AbstractMap;
 import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -76,6 +77,33 @@ public class ColorUtilTest
 			assertEquals("<col=" + hex + ">test</col>", ColorUtil.wrapWithColorTag("test", color));
 			assertEquals("<col=" + hex + "></col>", ColorUtil.wrapWithColorTag("", color));
 		});
+	}
+
+	@Test
+	public void unwrapColorTag()
+	{
+		String coloredString = "<col=0c9921>Hello</col>";
+		AbstractMap.SimpleEntry<String, Color> expected = new AbstractMap.SimpleEntry<String, Color>("Hello", ColorUtil.fromHex("0c9921"));
+		AbstractMap.SimpleEntry<String, Color> observed = ColorUtil.unwrapColorTag(coloredString);
+		assertEquals(expected, observed);
+	}
+
+	@Test
+	public void unwrapColorTagNoColor()
+	{
+		String coloredString = "Hello";
+		AbstractMap.SimpleEntry<String, Color> expected = new AbstractMap.SimpleEntry<String, Color>("Hello", null);
+		AbstractMap.SimpleEntry<String, Color> observed = ColorUtil.unwrapColorTag(coloredString);
+		assertEquals(expected, observed);
+	}
+
+	@Test
+	public void unwrapColorTagNoMessage()
+	{
+		String coloredString = "<col=0c9921></col>";
+		AbstractMap.SimpleEntry<String, Color> expected = new AbstractMap.SimpleEntry<String, Color>("", ColorUtil.fromHex("0c9921"));
+		AbstractMap.SimpleEntry<String, Color> observed = ColorUtil.unwrapColorTag(coloredString);
+		assertEquals(expected, observed);
 	}
 
 	@Test

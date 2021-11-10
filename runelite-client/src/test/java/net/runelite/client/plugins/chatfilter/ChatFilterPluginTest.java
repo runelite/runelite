@@ -141,7 +141,6 @@ public class ChatFilterPluginTest
 	public void testDontCensorColorTag()
 	{
 		when(chatFilterConfig.filteredWords()).thenReturn("col");
-		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_MESSAGE);
 
 		String msg = "<col=0d13a5>Hello</col>";
 		chatFilterPlugin.updateFilteredPatterns();

@@ -26,6 +26,8 @@ package net.runelite.client.util;
 
 import com.google.common.primitives.Ints;
 import java.awt.Color;
+import java.util.AbstractMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
@@ -38,6 +40,7 @@ public class ColorUtil
 	public static final String CLOSING_COLOR_TAG = "</col>";
 	private final static Pattern ALPHA_HEX_PATTERN = Pattern.compile("^(#|0x)?[0-9a-fA-F]{7,8}");
 	private final static Pattern HEX_PATTERN = Pattern.compile("^(#|0x)?[0-9a-fA-F]{1,8}");
+	private final static Pattern COLORED_STR_PATTERN = Pattern.compile("^<col=(?<color>[0-9a-fA-F]{6})>(?<message>.*)</col>$");
 
 	/**
 	 * Creates a color tag from the given color.
@@ -73,6 +76,28 @@ public class ColorUtil
 	{
 		return prependColorTag(str, color) + CLOSING_COLOR_TAG;
 	}
+
+	/**
+	 * UnWraps the given str returning the Unwrapped string and its color.
+	 *
+	 * @param str   The string to be unwrapped.
+	 * @return      A pair with the stripped string and the color.
+	 */
+	public static AbstractMap.SimpleEntry<String, Color> unwrapColorTag(final String str)
+	{
+		Matcher m = COLORED_STR_PATTERN.matcher(str);
+		AbstractMap.SimpleEntry<String, Color> out_pair;
+		if(m.matches()){
+			Color col = fromHex(m.group("color"));
+			String clean_str = m.group("message");
+			out_pair = new AbstractMap.SimpleEntry<>(clean_str, col);
+		}
+		else{
+			out_pair = new AbstractMap.SimpleEntry<>(str, null);
+		}
+		return out_pair;
+	}
+
 
 	/**
 	 * Converts a given color to it's hexadecimal equivalent.

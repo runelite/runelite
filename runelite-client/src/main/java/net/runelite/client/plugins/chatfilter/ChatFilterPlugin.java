@@ -30,6 +30,8 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -63,6 +65,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
@@ -314,7 +317,10 @@ public class ChatFilterPlugin extends Plugin
 
 	String censorMessage(final String username, final String message)
 	{
-		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
+		AbstractMap.SimpleEntry<String, Color> message_pair = ColorUtil.unwrapColorTag(message);
+		String uncolored_message = message_pair.getKey();
+		Color message_color = message_pair.getValue();
+		String strippedMessage = jagexPrintableCharMatcher.retainFrom(uncolored_message)
 			.replace('\u00A0', ' ');
 		if (username != null && shouldFilterByName(username))
 		{
@@ -354,7 +360,9 @@ public class ChatFilterPlugin extends Plugin
 
 			strippedMessage = sb.toString();
 		}
-
+		if (message_pair.getValue() != null){
+			strippedMessage = ColorUtil.wrapWithColorTag(strippedMessage, message_color);
+		}
 		return filtered ? strippedMessage : message;
 	}
 
