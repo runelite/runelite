@@ -149,17 +149,6 @@ public interface CameraConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "compassLook",
-		name = "Compass options",
-		description = "Adds Look South, East, and West options to the compass",
-		position = 10
-	)
-	default boolean compassLook()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "compassLookPreservePitch",
 		name = "Preserve pitch on compass look",
 		description = "Preserves the current pitch value (vertical angle) when using the compass look options.",

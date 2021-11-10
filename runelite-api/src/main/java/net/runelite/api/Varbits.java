@@ -624,7 +624,14 @@ public enum Varbits
 	 * 2 = popup notification only
 	 * 3 = chat and popup
 	 */
-	COLLECTION_LOG_NOTIFICATION(11959);
+	COLLECTION_LOG_NOTIFICATION(11959),
+
+	/**
+	 * Show boss health overlay setting
+	 * 0 = on
+	 * 1 = off
+	 */
+	BOSS_HEALTH_OVERLAY(12389);
 
 	/**
 	 * The raw varbit ID.
