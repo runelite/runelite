@@ -30,6 +30,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import java.awt.Color;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
@@ -69,7 +70,7 @@ public class ChatMessageManager
 	private final Multimap<ChatMessageType, ChatColor> colorCache = HashMultimap.create();
 	private final Client client;
 	private final ChatColorConfig chatColorConfig;
-	private final HashMap<String, String> sanitizedUserNameMap = new HashMap();
+	private final HashMap<Integer, Color> userNameColorMap = new HashMap();
 	private final ClientThread clientThread;
 	private int transparencyVarbit = -1;
 	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
@@ -211,7 +212,14 @@ public class ChatMessageManager
 				wrap = true;
 				break;
 			case "userNameTagReturn":
-					client.getStringStack()[0] = sanitizedUserNameMap.get(client.getStringStack()[0]);
+				int[] intStack = client.getIntStack();
+				int intStackSize = client.getIntStackSize();
+				String[] stringStack = client.getStringStack();
+				final int messageId = intStack[intStackSize - 1];
+				Color userNameColor = userNameColorMap.get(messageId);
+				if (userNameColor != null){
+					stringStack[0] = ColorUtil.wrapWithColorTag(stringStack[0], userNameColor);
+				}
 				return;
 			default:
 				return;
@@ -243,9 +251,11 @@ public class ChatMessageManager
 	private void onScriptPreFired(ScriptPreFired ev) {
 		if(ev.getScriptId() == ScriptID.CHATBOX_PARENT){
 			for (MessageNode messageNode : client.getMessages()) {
-				String sanitizedUserName = Text.removeTags(messageNode.getName()).replace('\u00A0', ' ');
-				sanitizedUserNameMap.put(sanitizedUserName, messageNode.getName());
-				messageNode.setName(sanitizedUserName);
+				AbstractMap.SimpleEntry<String, Color> userNamePair = ColorUtil.unwrapColorTag(messageNode.getName());
+				String uncoloredUserName = userNamePair.getKey();
+				Color userNameColor = userNamePair.getValue();
+				userNameColorMap.put(messageNode.getId(), userNameColor);
+				messageNode.setName(uncoloredUserName);
 			}
 		}
 	}
@@ -254,8 +264,11 @@ public class ChatMessageManager
 	private void onScriptPostFired(ScriptPostFired ev) {
 		if(ev.getScriptId() == ScriptID.CHATBOX_PARENT){
 			for (MessageNode messageNode : client.getMessages()) {
-				String originalUserName = sanitizedUserNameMap.get(messageNode.getName());
-				messageNode.setName(originalUserName);
+				Color userNameColor = userNameColorMap.get(messageNode.getId());
+				if (userNameColor != null){
+					String coloredUserName = ColorUtil.wrapWithColorTag(messageNode.getName(), userNameColor);
+					messageNode.setName(coloredUserName);
+				}
 			}
 		}
 	}
