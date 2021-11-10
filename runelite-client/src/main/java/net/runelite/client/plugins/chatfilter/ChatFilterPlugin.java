@@ -317,10 +317,10 @@ public class ChatFilterPlugin extends Plugin
 
 	String censorMessage(final String username, final String message)
 	{
-		AbstractMap.SimpleEntry<String, Color> message_pair = ColorUtil.unwrapColorTag(message);
-		String uncolored_message = message_pair.getKey();
-		Color message_color = message_pair.getValue();
-		String strippedMessage = jagexPrintableCharMatcher.retainFrom(uncolored_message)
+		AbstractMap.SimpleEntry<String, Color> messagePair = ColorUtil.unwrapColorTag(message);
+		String uncoloredMessage = messagePair.getKey();
+		Color messageColor = messagePair.getValue();
+		String strippedMessage = jagexPrintableCharMatcher.retainFrom(uncoloredMessage)
 			.replace('\u00A0', ' ');
 		if (username != null && shouldFilterByName(username))
 		{
@@ -360,8 +360,8 @@ public class ChatFilterPlugin extends Plugin
 
 			strippedMessage = sb.toString();
 		}
-		if (message_pair.getValue() != null){
-			strippedMessage = ColorUtil.wrapWithColorTag(strippedMessage, message_color);
+		if (messagePair.getValue() != null){
+			strippedMessage = ColorUtil.wrapWithColorTag(strippedMessage, messageColor);
 		}
 		return filtered ? strippedMessage : message;
 	}

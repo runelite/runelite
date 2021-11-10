@@ -91,9 +91,9 @@ public class ColorUtilTest
 	@Test
 	public void unwrapColorTagNoColor()
 	{
-		String coloredString = "Hello";
+		String plainString = "Hello";
 		AbstractMap.SimpleEntry<String, Color> expected = new AbstractMap.SimpleEntry<String, Color>("Hello", null);
-		AbstractMap.SimpleEntry<String, Color> observed = ColorUtil.unwrapColorTag(coloredString);
+		AbstractMap.SimpleEntry<String, Color> observed = ColorUtil.unwrapColorTag(plainString);
 		assertEquals(expected, observed);
 	}
 

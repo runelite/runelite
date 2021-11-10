@@ -86,16 +86,16 @@ public class ColorUtil
 	public static AbstractMap.SimpleEntry<String, Color> unwrapColorTag(final String str)
 	{
 		Matcher m = COLORED_STR_PATTERN.matcher(str);
-		AbstractMap.SimpleEntry<String, Color> out_pair;
+		AbstractMap.SimpleEntry<String, Color> outPair;
 		if(m.matches()){
 			Color col = fromHex(m.group("color"));
-			String clean_str = m.group("message");
-			out_pair = new AbstractMap.SimpleEntry<>(clean_str, col);
+			String cleanStr = m.group("message");
+			outPair = new AbstractMap.SimpleEntry<>(cleanStr, col);
 		}
 		else{
-			out_pair = new AbstractMap.SimpleEntry<>(str, null);
+			outPair = new AbstractMap.SimpleEntry<>(str, null);
 		}
-		return out_pair;
+		return outPair;
 	}
 
 
