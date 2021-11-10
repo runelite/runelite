@@ -1,4 +1,4 @@
-.id                 277
+.id                 277 ; [proc,bankmain_build]
 .int_stack_count    17
 .string_stack_count 0
 .int_var_count      36
@@ -842,7 +842,7 @@ LABEL729:
    iload                  14
    iload                  15
    iload                  16
-   invoke                 505
+   invoke                 505 ; [proc,bankmain_finishbuilding]
    return                
 LABEL750:
    invoke                 514
