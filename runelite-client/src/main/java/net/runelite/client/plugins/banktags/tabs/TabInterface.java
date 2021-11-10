@@ -316,7 +316,7 @@ public class TabInterface
 			return;
 		}
 
-		chatboxPanelManager.openTextInput((inventory ? "Inventory " : "Equipment ") + " tags:")
+		chatboxPanelManager.openTextInput((inventory ? "Inventory" : "Equipment") + " tags:")
 			.addCharValidator(FILTERED_CHARS)
 			.onDone((Consumer<String>) (newTags) ->
 				clientThread.invoke(() ->
