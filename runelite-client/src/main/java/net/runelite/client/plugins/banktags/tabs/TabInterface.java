@@ -573,7 +573,15 @@ public class TabInterface
 
 		switch (eventName)
 		{
-			case "setBankScroll":
+			case "bankScrollbarHeight":
+				if (!isTabMenuActive())
+				{
+					return;
+				}
+
+				intStack[intStackSize - 1] = (((tabManager.getTabs().size() - 1) / BANK_ITEMS_PER_ROW) + 1) * (BANK_ITEM_HEIGHT + BANK_ITEM_Y_PADDING);
+				break;
+			case "skipBankLayout":
 				if (!isTabMenuActive())
 				{
 					setTabMenuVisible(false);
@@ -581,9 +589,6 @@ public class TabInterface
 				}
 
 				setTabMenuVisible(true);
-
-				// scroll height
-				intStack[intStackSize - 3] = (((tabManager.getTabs().size() - 1) / BANK_ITEMS_PER_ROW) + 1) * (BANK_ITEM_HEIGHT + BANK_ITEM_Y_PADDING);
 
 				// skip normal bank layout
 				intStack[intStackSize - 2] = 1;

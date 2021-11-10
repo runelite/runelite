@@ -1,0 +1,497 @@
+.id                 505
+.int_stack_count    19
+.string_stack_count 0
+.int_var_count      27
+.string_var_count   0
+
+   ; Allow plugins to change the scrollbar height argument.
+   iload                  12
+   sconst                 "bankScrollbarHeight"
+   runelite_callback
+   istore                 12
+
+   iload                  12
+   iconst                 0
+   if_icmpgt              LABEL4
+   jump                   LABEL8
+LABEL4:
+   iload                  12
+   iconst                 8
+   add                   
+   istore                 12
+LABEL8:
+   iconst                 0
+   istore                 19
+   iload                  12
+   iload                  2
+   if_getheight
+   if_icmpgt              LABEL15
+   jump                   LABEL30
+LABEL15:
+   iconst                 0
+   iload                  12
+   iload                  2
+   if_setscrollsize      
+   get_varc_int           51
+   iconst                 0
+   if_icmpgt              LABEL23
+   jump                   LABEL25
+LABEL23:
+   get_varc_int           51
+   istore                 19
+LABEL25:
+   iload                  3
+   iload                  2
+   iload                  19
+   invoke                 72
+   jump                   LABEL38
+LABEL30:
+   iconst                 0
+   iconst                 0
+   iload                  2
+   if_setscrollsize      
+   iload                  3
+   iload                  2
+   iconst                 0
+   invoke                 72
+LABEL38:
+   iload                  13
+   tostring              
+   iload                  6
+   if_settext            
+   iload                  8
+   cc_deleteall          
+   iload                  8
+   if_getwidth           
+   iconst                 40
+   iconst                 9
+   iconst                 1
+   add                   
+   multiply              
+   sub                   
+   iconst                 2
+   div                   
+   istore                 20
+   iconst                 0
+   istore                 21
+LABEL57:
+   iload                  21
+   iconst                 9
+   if_icmple              LABEL61
+   jump                   LABEL86
+LABEL61:
+   iload                  8
+   iconst                 5
+   iload                  21
+   cc_create             
+   iconst                 41
+   iconst                 40
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iload                  21
+   iconst                 40
+   multiply              
+   iload                  20
+   add                   
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 0
+   cc_settiling          
+   iload                  21
+   iconst                 1
+   add                   
+   istore                 21
+   jump                   LABEL57
+LABEL86:
+   iconst                 0
+   istore                 22
+   get_varbit             4171
+   iconst                 0
+   if_icmpgt              LABEL92
+   jump                   LABEL96
+LABEL92:
+   iload                  22
+   iconst                 1
+   setbit                
+   istore                 22
+LABEL96:
+   get_varbit             4172
+   iconst                 0
+   if_icmpgt              LABEL100
+   jump                   LABEL104
+LABEL100:
+   iload                  22
+   iconst                 2
+   setbit                
+   istore                 22
+LABEL104:
+   get_varbit             4173
+   iconst                 0
+   if_icmpgt              LABEL108
+   jump                   LABEL112
+LABEL108:
+   iload                  22
+   iconst                 3
+   setbit                
+   istore                 22
+LABEL112:
+   get_varbit             4174
+   iconst                 0
+   if_icmpgt              LABEL116
+   jump                   LABEL120
+LABEL116:
+   iload                  22
+   iconst                 4
+   setbit                
+   istore                 22
+LABEL120:
+   get_varbit             4175
+   iconst                 0
+   if_icmpgt              LABEL124
+   jump                   LABEL128
+LABEL124:
+   iload                  22
+   iconst                 5
+   setbit                
+   istore                 22
+LABEL128:
+   get_varbit             4176
+   iconst                 0
+   if_icmpgt              LABEL132
+   jump                   LABEL136
+LABEL132:
+   iload                  22
+   iconst                 6
+   setbit                
+   istore                 22
+LABEL136:
+   get_varbit             4177
+   iconst                 0
+   if_icmpgt              LABEL140
+   jump                   LABEL144
+LABEL140:
+   iload                  22
+   iconst                 7
+   setbit                
+   istore                 22
+LABEL144:
+   get_varbit             4178
+   iconst                 0
+   if_icmpgt              LABEL148
+   jump                   LABEL152
+LABEL148:
+   iload                  22
+   iconst                 8
+   setbit                
+   istore                 22
+LABEL152:
+   get_varbit             4179
+   iconst                 0
+   if_icmpgt              LABEL156
+   jump                   LABEL160
+LABEL156:
+   iload                  22
+   iconst                 9
+   setbit                
+   istore                 22
+LABEL160:
+   iconst                 40
+   iconst                 36
+   sub                   
+   iconst                 2
+   div                   
+   istore                 23
+   iconst                 40
+   iconst                 32
+   sub                   
+   iconst                 2
+   div                   
+   istore                 24
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iconst                 0
+   iconst                 -1
+   iconst                 -1
+   iconst                 0
+   iload                  20
+   iload                  23
+   iload                  24
+   iload                  22
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 506
+   pop_int               
+   pop_int               
+   iconst                 0
+   istore                 25
+   iconst                 0
+   istore                 26
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iconst                 1
+   get_varbit             4171
+   iload                  25
+   iload                  26
+   iload                  20
+   iload                  23
+   iload                  24
+   iload                  22
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 506
+   istore                 26
+   istore                 25
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iconst                 2
+   get_varbit             4172
+   iload                  25
+   iload                  26
+   iload                  20
+   iload                  23
+   iload                  24
+   iload                  22
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 506
+   istore                 26
+   istore                 25
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iconst                 3
+   get_varbit             4173
+   iload                  25
+   iload                  26
+   iload                  20
+   iload                  23
+   iload                  24
+   iload                  22
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 506
+   istore                 26
+   istore                 25
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iconst                 4
+   get_varbit             4174
+   iload                  25
+   iload                  26
+   iload                  20
+   iload                  23
+   iload                  24
+   iload                  22
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 506
+   istore                 26
+   istore                 25
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iconst                 5
+   get_varbit             4175
+   iload                  25
+   iload                  26
+   iload                  20
+   iload                  23
+   iload                  24
+   iload                  22
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 506
+   istore                 26
+   istore                 25
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iconst                 6
+   get_varbit             4176
+   iload                  25
+   iload                  26
+   iload                  20
+   iload                  23
+   iload                  24
+   iload                  22
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 506
+   istore                 26
+   istore                 25
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iconst                 7
+   get_varbit             4177
+   iload                  25
+   iload                  26
+   iload                  20
+   iload                  23
+   iload                  24
+   iload                  22
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 506
+   istore                 26
+   istore                 25
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iconst                 8
+   get_varbit             4178
+   iload                  25
+   iload                  26
+   iload                  20
+   iload                  23
+   iload                  24
+   iload                  22
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 506
+   istore                 26
+   istore                 25
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iconst                 9
+   get_varbit             4179
+   iload                  25
+   iload                  26
+   iload                  20
+   iload                  23
+   iload                  24
+   iload                  22
+   iload                  14
+   iload                  15
+   iload                  16
+   iload                  17
+   iload                  18
+   invoke                 506
+   istore                 26
+   istore                 25
+   return                

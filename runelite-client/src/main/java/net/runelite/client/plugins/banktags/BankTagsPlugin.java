@@ -335,6 +335,26 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			case "getSearchingTagTab":
 				intStack[intStackSize - 1] = tabInterface.isActive() ? 1 : 0;
 				break;
+			case "bankScrollbarHeight":
+				if (!tabInterface.isActive() || !config.removeSeparators())
+				{
+					break;
+				}
+
+				int items = 0;
+
+				Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+				for (Widget child : itemContainer.getDynamicChildren())
+				{
+					if (child.getItemId() != -1 && !child.isHidden())
+					{
+						items++;
+					}
+				}
+
+				final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
+				intStack[intStackSize - 1] = adjustedScrollHeight;
+				break;
 		}
 	}
 
@@ -510,16 +530,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			return;
 		}
 
-		if (tabInterface.isTagTabActive())
-		{
-			int numTabs = (int) Arrays.stream(itemContainer.getDynamicChildren())
-				.filter(child -> child.getItemId() != -1 && !child.isHidden())
-				.count();
-			updateBankContainerScrollHeight(numTabs);
-			return;
-		}
-
-		if (!tabInterface.isActive() || !config.removeSeparators())
+		if (tabInterface.isTagTabActive() || !tabInterface.isActive() || !config.removeSeparators())
 		{
 			return;
 		}
@@ -562,23 +573,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				child.setHidden(true);
 			}
 		}
-
-		updateBankContainerScrollHeight(items);
-	}
-
-	private void updateBankContainerScrollHeight(int items)
-	{
-		Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		int itemContainerHeight = bankItemContainer.getHeight();
-		final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
-		bankItemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
-
-		final int itemContainerScroll = bankItemContainer.getScrollY();
-		clientThread.invokeLater(() ->
-			client.runScript(ScriptID.UPDATE_SCROLLBAR,
-				WidgetInfo.BANK_SCROLLBAR.getId(),
-				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
-				itemContainerScroll));
 	}
 
 	@Subscribe
