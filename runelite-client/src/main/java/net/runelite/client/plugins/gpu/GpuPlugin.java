@@ -194,6 +194,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int vaoHandle;
 
 	private int interfaceTexture;
+	private int interfacePbo;
 
 	private int vaoUiHandle;
 	private int vboUiHandle;
@@ -300,6 +301,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			try
 			{
 				fboSceneHandle = rboSceneHandle = -1; // AA FBO
+				targetBufferOffset = 0;
 				unorderedModels = smallModels = largeModels = 0;
 				drawingModel = false;
 
@@ -394,15 +396,27 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 					final boolean unlockFps = this.config.unlockFps();
 					client.setUnlockedFps(unlockFps);
-					gl.setSwapInterval(unlockFps ? 1 : 0);
+					gl.setSwapInterval(unlockFps ? -1 : 0);
 
 					if (log.isDebugEnabled())
 					{
 						gl.glEnable(gl.GL_DEBUG_OUTPUT);
 
-						// Suppress warning messages which flood the log on NVIDIA systems.
-						gl.getContext().glDebugMessageControl(gl.GL_DEBUG_SOURCE_API, gl.GL_DEBUG_TYPE_OTHER,
-							gl.GL_DEBUG_SEVERITY_NOTIFICATION, 0, null, 0, false);
+						//	GLDebugEvent[ id 0x20071
+						//		type Warning: generic
+						//		severity Unknown (0x826b)
+						//		source GL API
+						//		msg Buffer detailed info: Buffer object 11 (bound to GL_ARRAY_BUFFER_ARB, and GL_SHADER_STORAGE_BUFFER (4), usage hint is GL_STREAM_DRAW) will use VIDEO memory as the source for buffer object operations.
+						glContext.glDebugMessageControl(gl.GL_DEBUG_SOURCE_API, gl.GL_DEBUG_TYPE_OTHER,
+							gl.GL_DONT_CARE, 1, new int[]{0x20071}, 0, false);
+
+						//	GLDebugMessageHandler: GLDebugEvent[ id 0x20052
+						//		type Warning: implementation dependent performance
+						//		severity Medium: Severe performance/deprecation/other warnings
+						//		source GL API
+						//		msg Pixel-path performance warning: Pixel transfer is synchronized with 3D rendering.
+						glContext.glDebugMessageControl(gl.GL_DEBUG_SOURCE_API, gl.GL_DEBUG_TYPE_PERFORMANCE,
+							gl.GL_DONT_CARE, 1, new int[]{0x20052}, 0, false);
 					}
 
 					initVao();
@@ -548,7 +562,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				clientThread.invokeLater(() ->
 				{
 					client.setUnlockedFps(unlockFps);
-					invokeOnMainThread(() -> gl.setSwapInterval(unlockFps ? 1 : 0));
+					invokeOnMainThread(() -> gl.setSwapInterval(unlockFps ? -1 : 0));
 				});
 			}
 		}
@@ -726,6 +740,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void initInterfaceTexture()
 	{
+		interfacePbo = glGenBuffers(gl);
+
 		interfaceTexture = glGenTexture(gl);
 		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
 		gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_WRAP_S, gl.GL_CLAMP_TO_EDGE);
@@ -737,6 +753,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void shutdownInterfaceTexture()
 	{
+		glDeleteBuffer(gl, interfacePbo);
 		glDeleteTexture(gl, interfaceTexture);
 		interfaceTexture = -1;
 	}
@@ -1037,15 +1054,19 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		invokeOnMainThread(() -> drawFrame(overlayColor));
 	}
 
-	private void resize(int canvasWidth, int canvasHeight, int viewportWidth, int viewportHeight)
+	private void prepareInterfaceTexture(int canvasWidth, int canvasHeight)
 	{
 		if (canvasWidth != lastCanvasWidth || canvasHeight != lastCanvasHeight)
 		{
 			lastCanvasWidth = canvasWidth;
 			lastCanvasHeight = canvasHeight;
 
+			gl.glBindBuffer(gl.GL_PIXEL_UNPACK_BUFFER, interfacePbo);
+			gl.glBufferData(gl.GL_PIXEL_UNPACK_BUFFER, canvasWidth * canvasHeight * 4L, null, gl.GL_STREAM_DRAW);
+			gl.glBindBuffer(gl.GL_PIXEL_UNPACK_BUFFER, 0);
+
 			gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
-			gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, canvasWidth, canvasHeight, 0, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, null);
+			gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, canvasWidth, canvasHeight, 0, gl.GL_BGRA, gl.GL_UNSIGNED_BYTE, null);
 			gl.glBindTexture(gl.GL_TEXTURE_2D, 0);
 
 			if (OSType.getOSType() == OSType.MacOS && glDrawable instanceof GLFBODrawable)
@@ -1058,6 +1079,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				glfboDrawable.resetSize(gl);
 			}
 		}
+
+		final BufferProvider bufferProvider = client.getBufferProvider();
+		final int[] pixels = bufferProvider.getPixels();
+		final int width = bufferProvider.getWidth();
+		final int height = bufferProvider.getHeight();
+
+		gl.glBindBuffer(gl.GL_PIXEL_UNPACK_BUFFER, interfacePbo);
+		gl.glMapBuffer(gl.GL_PIXEL_UNPACK_BUFFER, gl.GL_WRITE_ONLY)
+			.asIntBuffer()
+			.put(pixels, 0, width * height);
+		gl.glUnmapBuffer(gl.GL_PIXEL_UNPACK_BUFFER);
+		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
+		gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, width, height, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, 0);
+		gl.glBindBuffer(gl.GL_PIXEL_UNPACK_BUFFER, 0);
+		gl.glBindTexture(gl.GL_TEXTURE_2D, 0);
 	}
 
 	private void drawFrame(int overlayColor)
@@ -1072,7 +1108,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int viewportHeight = client.getViewportHeight();
 		final int viewportWidth = client.getViewportWidth();
 
-		resize(canvasWidth, canvasHeight, viewportWidth, viewportHeight);
+		prepareInterfaceTexture(canvasWidth, canvasHeight);
 
 		// Setup anti-aliasing
 		final AntiAliasingMode antiAliasingMode = config.antiAliasingMode();
@@ -1312,24 +1348,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void drawUi(final int overlayColor, final int canvasHeight, final int canvasWidth)
 	{
-		final BufferProvider bufferProvider = client.getBufferProvider();
-		final int[] pixels = bufferProvider.getPixels();
-		final int width = bufferProvider.getWidth();
-		final int height = bufferProvider.getHeight();
-
 		gl.glEnable(gl.GL_BLEND);
-
-		vertexBuffer.clear(); // reuse vertex buffer for interface
-		vertexBuffer.ensureCapacity(pixels.length);
-
-		IntBuffer interfaceBuffer = vertexBuffer.getBuffer();
-		interfaceBuffer.put(pixels);
-		vertexBuffer.flip();
-
 		gl.glBlendFunc(gl.GL_ONE, gl.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
-
-		gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, width, height, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
 
 		// Use the texture bound in the first pass
 		final UIScalingMode uiScalingMode = config.uiScalingMode();
@@ -1626,16 +1647,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				boolean hasUv = model.getFaceTextures() != null;
 
-				int faces = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
-				vertexBuffer.ensureCapacity(12 * faces);
-				uvBuffer.ensureCapacity(12 * faces);
-				int len = 0;
-				for (int i = 0; i < faces; ++i)
-				{
-					len += sceneUploader.pushFace(model, i, false, vertexBuffer, uvBuffer, 0, 0, 0, 0);
-				}
+				int len = sceneUploader.pushModel(model, vertexBuffer, uvBuffer);
 
-				GpuIntBuffer b = bufferForTriangles(faces);
+				GpuIntBuffer b = bufferForTriangles(len / 3);
 
 				b.ensureCapacity(8);
 				IntBuffer buffer = b.getBuffer();
