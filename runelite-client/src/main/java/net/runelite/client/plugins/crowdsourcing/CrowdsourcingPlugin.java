@@ -35,6 +35,7 @@ import net.runelite.client.plugins.crowdsourcing.dialogue.CrowdsourcingDialogue;
 import net.runelite.client.plugins.crowdsourcing.movement.CrowdsourcingMovement;
 import net.runelite.client.plugins.crowdsourcing.music.CrowdsourcingMusic;
 import net.runelite.client.plugins.crowdsourcing.thieving.CrowdsourcingThieving;
+import net.runelite.client.plugins.crowdsourcing.varbits.CrowdsourcingVarbits;
 import net.runelite.client.plugins.crowdsourcing.woodcutting.CrowdsourcingWoodcutting;
 import net.runelite.client.plugins.crowdsourcing.zmi.CrowdsourcingZMI;
 import net.runelite.client.task.Schedule;
@@ -70,6 +71,9 @@ public class CrowdsourcingPlugin extends Plugin
 	private CrowdsourcingThieving thieving;
 
 	@Inject
+	private CrowdsourcingVarbits varbits;
+
+	@Inject
 	private CrowdsourcingWoodcutting woodcutting;
 
 	@Inject
@@ -83,8 +87,10 @@ public class CrowdsourcingPlugin extends Plugin
 		eventBus.register(movement);
 		eventBus.register(music);
 		eventBus.register(thieving);
+		eventBus.register(varbits);
 		eventBus.register(woodcutting);
 		eventBus.register(zmi);
+		varbits.startUp();
 	}
 
 	@Override
@@ -95,8 +101,10 @@ public class CrowdsourcingPlugin extends Plugin
 		eventBus.unregister(movement);
 		eventBus.unregister(music);
 		eventBus.unregister(thieving);
+		eventBus.unregister(varbits);
 		eventBus.unregister(woodcutting);
 		eventBus.unregister(zmi);
+		varbits.shutDown();
 	}
 
 	@Schedule(
