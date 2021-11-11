@@ -73,4 +73,14 @@ public class TextTest
 		assertEquals("mR  nAmE", Text.toJagexName("--__--mR_-nAmE__  --"));
 		assertEquals("Mind    the     gap", Text.toJagexName("Mind_-_-the-- __gap"));
 	}
+
+	@Test
+	public void stripDiacritics()
+	{
+		assertEquals("Bjorn", Text.stripDiacritics("Björn"));
+		assertEquals("please", Text.stripDiacritics("plëäsë"));
+		assertEquals("inertia", Text.stripDiacritics("ïnertïå"));
+		assertEquals("whole", Text.stripDiacritics("whóle"));
+		assertEquals("C¯at", Text.stripDiacritics("C¯ät"));
+	}
 }

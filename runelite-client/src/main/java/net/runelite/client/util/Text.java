@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
@@ -232,5 +233,19 @@ public class Text
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Strips diacritics and other accent marks from a string.
+	 *
+	 * @return A copy of the passed string, with all character accents and diacritics removed.
+	 */
+	public static String stripDiacritics(String str)
+	{
+		final String normalized = StringUtils.stripAccents(str);
+
+		assert normalized.length() == str.length() : String.format("Normalized string \"%s\" is not the same length as input string \"%s\"}", normalized, str);
+
+		return normalized;
 	}
 }
