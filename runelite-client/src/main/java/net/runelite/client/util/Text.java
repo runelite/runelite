@@ -28,6 +28,7 @@ package net.runelite.client.util;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import java.text.Normalizer;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -42,6 +43,7 @@ public class Text
 {
 	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
+	public static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 	private static final Splitter COMMA_SPLITTER = Splitter
 		.on(",")
 		.omitEmptyStrings()
@@ -232,5 +234,18 @@ public class Text
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Strips diacritics and other accent marks from a string.
+	 * Sourced from <a href="https://stackoverflow.com/a/1453284">Andreas Petersson's implementation</a>.
+	 *
+	 * @return A copy of the passed string, with all character accents and diacritics removed.
+	 */
+	public static String stripDiacritics(String str)
+	{
+		str = Normalizer.normalize(str, Normalizer.Form.NFD);
+		str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll("");
+		return str;
 	}
 }
