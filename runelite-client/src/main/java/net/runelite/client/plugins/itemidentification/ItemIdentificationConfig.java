@@ -303,4 +303,15 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showRunes",
+		name = "Runes",
+		description = "Show identification on Runes",
+		section = identificationSection
+	)
+	default boolean showRunes()
+	{
+		return false;
+	}
 }

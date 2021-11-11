@@ -426,7 +426,11 @@ enum ItemIdentification
 	ZUL_ANDRA_TELEPORT(Type.SCROLL, "Zul-andra", "ZUL", ItemID.ZULANDRA_TELEPORT),
 	KEY_MASTER_TELEPORT(Type.SCROLL, "Key master", "KEY", ItemID.KEY_MASTER_TELEPORT),
 	REVENANT_CAVE_TELEPORT(Type.SCROLL, "Rev cave", "REV", ItemID.REVENANT_CAVE_TELEPORT),
-	WATSON_TELEPORT(Type.SCROLL, "Watson", "WATS", ItemID.WATSON_TELEPORT);
+	WATSON_TELEPORT(Type.SCROLL, "Watson", "WATS", ItemID.WATSON_TELEPORT),
+
+	// Runes
+	AIR_RUNE(Type.RUNE, "Air", "AIR", ItemID.AIR_RUNE),
+	DEATH_RUNE(Type.RUNE, "Death", "DEA", ItemID.DEATH_RUNE);
 
 	final Type type;
 	final String medName;
@@ -487,7 +491,8 @@ enum ItemIdentification
 		POTION(ItemIdentificationConfig::showPotions),
 		IMPLING_JAR(ItemIdentificationConfig::showImplingJars),
 		TABLET(ItemIdentificationConfig::showTablets),
-		SCROLL(ItemIdentificationConfig::showTeleportScrolls);
+		SCROLL(ItemIdentificationConfig::showTeleportScrolls),
+		RUNE(ItemIdentificationConfig::showRunes);
 
 		final Predicate<ItemIdentificationConfig> enabled;
 	}
