@@ -358,22 +358,22 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
 		{
 			equippedItems = event.getItemContainer().getItems();
 			return;
 		}
 
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		if (event.getContainerId() != InventoryID.INVENTORY.getId())
 		{
 			return;
 		}
 
+		inventoryItems = event.getItemContainer().getItems();
+
+		// Add runes from rune pouch to inventoryItems
 		if (event.getItemContainer().contains(ItemID.RUNE_POUCH) || event.getItemContainer().contains(ItemID.RUNE_POUCH_L))
 		{
-			// Clone the array so changes aren't passed back to the event.
-			inventoryItems = event.getItemContainer().getItems().clone();
-
 			List<Item> runePouchContents = getRunepouchContents();
 
 			if (!runePouchContents.isEmpty())
@@ -394,10 +394,6 @@ public class ClueScrollPlugin extends Plugin
 
 				inventoryItems = ArrayUtils.addAll(inventoryItems, runePouchContents.toArray(new Item[0]));
 			}
-		}
-		else
-		{
-			inventoryItems = event.getItemContainer().getItems();
 		}
 
 		// Check if item was removed from inventory
@@ -432,7 +428,7 @@ public class ClueScrollPlugin extends Plugin
 
 	private List<Item> getRunepouchContents()
 	{
-		List<Item> items = new ArrayList<>();
+		List<Item> items = new ArrayList<>(RUNEPOUCH_AMOUNT_VARBITS.length);
 		for (int i = 0; i < RUNEPOUCH_AMOUNT_VARBITS.length; i++)
 		{
 			int amount = client.getVar(RUNEPOUCH_AMOUNT_VARBITS[i]);
