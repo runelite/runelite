@@ -376,6 +376,17 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Reset the xp gained on only PAUSED skills
+	 * Does not clear the UI.
+	 */
+	void resetPausedSkillsState()
+	{
+		Arrays.stream(Skill.values())
+			.filter(xpPauseState::isPaused)
+			.forEach(this::resetSkillState);
+	}
+
 	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{

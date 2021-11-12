@@ -93,6 +93,10 @@ class XpPanel extends PluginPanel
 		final JMenuItem resetPerHour = new JMenuItem("Reset All/hr");
 		resetPerHour.addActionListener(e -> xpTrackerPlugin.resetAllSkillsPerHourState());
 
+		// Create reset all per hour menu
+		final JMenuItem resetPaused = new JMenuItem("Reset Paused");
+		resetPaused.addActionListener(e -> xpTrackerPlugin.resetPausedSkillsState());
+
 		// Create pause all menu
 		final JMenuItem pauseAll = new JMenuItem("Pause All");
 		pauseAll.addActionListener(e -> xpTrackerPlugin.pauseAllSkills(true));
@@ -108,6 +112,7 @@ class XpPanel extends PluginPanel
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
 		popupMenu.add(resetPerHour);
+		popupMenu.add(resetPaused);
 		popupMenu.add(pauseAll);
 		popupMenu.add(unpauseAll);
 		overallPanel.setComponentPopupMenu(popupMenu);
