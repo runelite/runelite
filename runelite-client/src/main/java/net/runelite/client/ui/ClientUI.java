@@ -425,6 +425,32 @@ public class ClientUI
 						mouseEvent.consume();
 					}
 
+					// Workaround for login screen mute button hitbox size
+					if ((client instanceof Client) && ((Client) client).getGameState() == GameState.LOGIN_SCREEN)
+					{
+						final Canvas canvas = ((Client) client).getCanvas();
+						if (canvas != null)
+						{
+							int clientShift = (Constants.GAME_FIXED_WIDTH - canvas.getWidth()) / 2;
+							Rectangle fixedClientRect = new Rectangle(Constants.GAME_FIXED_SIZE);
+
+							// Click position in relation to fixed size client
+							java.awt.Point clickedClientPoint = mouseEvent.getPoint();
+							clickedClientPoint.translate(clientShift, 0);
+
+							Rectangle nextWorldButton = new Rectangle(canvas.getWidth() - 70, (canvas.getHeight() - 40) / 2, 70, 40);
+
+							if ((clickedClientPoint.getX() > Constants.GAME_FIXED_WIDTH - 50) && (clickedClientPoint.getY() > Constants.GAME_FIXED_HEIGHT - 50))
+							{
+								if ( !fixedClientRect.contains(clickedClientPoint) && !nextWorldButton.contains(mouseEvent.getPoint()))
+								{
+									mouseEvent.consume();
+								}
+							}
+						}
+
+					}
+
 					return mouseEvent;
 				}
 			};
