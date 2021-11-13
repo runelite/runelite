@@ -215,7 +215,6 @@ public class ClueScrollPluginTest
 
 		when(container.getItems()).thenReturn(inventory);
 		when(container.contains(ItemID.RUNE_POUCH)).thenReturn(true);
-		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(container);
 
 		when(client.getVar(Varbits.RUNE_POUCH_RUNE1)).thenReturn(9); // Cosmic Rune
 		when(client.getVar(Varbits.RUNE_POUCH_AMOUNT1)).thenReturn(20);
