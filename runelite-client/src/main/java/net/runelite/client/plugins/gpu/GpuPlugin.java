@@ -561,7 +561,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				boolean unlockFps = Boolean.parseBoolean(configChanged.getNewValue());
 				clientThread.invokeLater(() ->
 				{
-					client.setUnlockedFps(unlockFps);
+					setUnlockedFps(unlockFps);
 					invokeOnMainThread(() -> gl.setSwapInterval(unlockFps ? -1 : 0));
 				});
 			}
@@ -1463,6 +1463,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
+		setUnlockedFps(config.unlockFps());
 		switch (gameStateChanged.getGameState())
 		{
 			case LOGGED_IN:
@@ -1474,6 +1475,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			case LOGIN_SCREEN:
 				// Avoid drawing the last frame's buffer during LOADING after LOGIN_SCREEN
 				targetBufferOffset = 0;
+		}
+	}
+
+	/**
+	 * Only unlock FPS when logged in
+	 */
+	private void setUnlockedFps(boolean unlockedFps)
+	{
+		if (GameState.LOGGED_IN == client.getGameState())
+		{
+			client.setUnlockedFps(unlockedFps);
+		}
+		else
+		{
+			client.setUnlockedFps(false);
 		}
 	}
 
