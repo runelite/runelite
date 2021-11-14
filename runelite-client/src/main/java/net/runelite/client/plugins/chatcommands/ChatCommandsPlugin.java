@@ -90,6 +90,7 @@ import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.Duels;
+import net.runelite.http.api.chat.Roles;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -138,6 +139,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String QP_COMMAND_STRING = "!qp";
 	private static final String PB_COMMAND = "!pb";
 	private static final String GC_COMMAND_STRING = "!gc";
+	private static final String ROLES_COMMAND_STRING = "!roles";
 	private static final String DUEL_ARENA_COMMAND = "!duels";
 	private static final String LEAGUE_POINTS_COMMAND = "!lp";
 	private static final String SOUL_WARS_ZEAL_COMMAND = "!sw";
@@ -221,6 +223,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
 		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
 		chatCommandManager.registerCommandAsync(GC_COMMAND_STRING, this::gambleCountLookup, this::gambleCountSubmit);
+		chatCommandManager.registerCommandAsync(ROLES_COMMAND_STRING, this::rolesLookup, this::rolesSubmit);
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
 		chatCommandManager.registerCommandAsync(PET_LIST_COMMAND, this::petListLookup, this::petListSubmit);
@@ -249,6 +252,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(QP_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(PB_COMMAND);
 		chatCommandManager.unregisterCommand(GC_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(ROLES_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 		chatCommandManager.unregisterCommand(SOUL_WARS_ZEAL_COMMAND);
 		chatCommandManager.unregisterCommand(PET_LIST_COMMAND);
@@ -1164,6 +1168,95 @@ public class ChatCommandsPlugin extends Plugin
 		return true;
 	}
 
+	private void rolesLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.roles())
+		{
+			return;
+		}
+
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type == ChatMessageType.PRIVATECHATOUT)
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = Text.sanitize(chatMessage.getName());
+		}
+
+		Roles roles;
+		try
+		{
+			roles = chatClient.getRoles(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup ba role points", ex);
+			return;
+		}
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Attacker: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(roles.getAttacker()))
+			.append(ChatColorType.NORMAL)
+			.append("  Defender: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(roles.getDefender()))
+			.append(ChatColorType.NORMAL)
+			.append("  Collector: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(roles.getCollector()))
+			.append(ChatColorType.NORMAL)
+			.append("  Healer: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(roles.getHealer()))
+			.build();
+
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	private boolean rolesSubmit(ChatInput chatInput, String value)
+	{
+		final int constant = 512;
+
+		final int attacker = client.getVar(Varbits.BA_ATTACKER_BASE_POINTS)
+			+ constant * client.getVar(Varbits.BA_ATTACKER_MULTIPLIER);
+		final int defender = client.getVar(Varbits.BA_DEFENDER_BASE_POINTS)
+			+ constant * client.getVar(Varbits.BA_DEFENDER_MULTIPLIER);
+		final int collector = client.getVar(Varbits.BA_COLLECTOR_BASE_POINTS)
+			+ constant * client.getVar(Varbits.BA_COLLECTOR_MULTIPLIER);
+		final int healer = client.getVar(Varbits.BA_HEALER_BASE_POINTS)
+			+ constant * client.getVar(Varbits.BA_HEALER_MULTIPLIER);
+
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitRoles(playerName, attacker, defender, collector, healer);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit ba role points", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
+	}
+
 	/**
 	 * Looks up the pet list for the player who triggered !pets
 	 *
@@ -1272,7 +1365,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -1330,7 +1423,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	@VisibleForTesting
 	void playerSkillLookup(ChatMessage chatMessage, String message)
