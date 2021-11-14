@@ -436,9 +436,9 @@ class WidgetInspector extends DevToolsFrame
 
 			parent = Stream.of(roots)
 				.filter(w -> w.getType() == WidgetType.LAYER && w.getContentType() == 0 && !w.isSelfHidden())
-				.sorted(Comparator.comparing((Widget w) -> w.getRelativeX() + w.getRelativeY())
+				.sorted(Comparator.comparingInt((Widget w) -> w.getRelativeX() + w.getRelativeY())
 					.reversed()
-					.thenComparing(Widget::getId)
+					.thenComparingInt(Widget::getId)
 					.reversed())
 				.findFirst().get();
 			x = 4;

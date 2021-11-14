@@ -546,8 +546,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		Widget[] containerChildren = itemContainer.getDynamicChildren();
 
 		// sort the child array as the items are not in the displayed order
-		Arrays.sort(containerChildren, Comparator.comparing(Widget::getOriginalY)
-			.thenComparing(Widget::getOriginalX));
+		Arrays.sort(containerChildren, Comparator.comparingInt(Widget::getOriginalY)
+			.thenComparingInt(Widget::getOriginalX));
 
 		for (Widget child : containerChildren)
 		{

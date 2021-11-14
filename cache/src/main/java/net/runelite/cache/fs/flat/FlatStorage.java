@@ -210,7 +210,7 @@ public class FlatStorage implements Storage
 	@Override
 	public void save(Store store) throws IOException
 	{
-		store.getIndexes().sort(Comparator.comparing(Index::getId));
+		store.getIndexes().sort(Comparator.comparingInt(Index::getId));
 		for (Index idx : store.getIndexes())
 		{
 			String file = idx.getId() + EXTENSION;
@@ -222,7 +222,7 @@ public class FlatStorage implements Storage
 				br.printf("crc=%d\n", idx.getCrc());
 				br.printf("named=%b\n", idx.isNamed());
 
-				idx.getArchives().sort(Comparator.comparing(Archive::getArchiveId));
+				idx.getArchives().sort(Comparator.comparingInt(Archive::getArchiveId));
 				for (Archive archive : idx.getArchives())
 				{
 					br.printf("id=%d\n", archive.getArchiveId());

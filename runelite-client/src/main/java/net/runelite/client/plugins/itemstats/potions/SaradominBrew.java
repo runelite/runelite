@@ -72,7 +72,7 @@ public class SaradominBrew implements Effect
 		).toArray(StatChange[]::new));
 		changes.setPositivity(Stream.of(changes.getStatChanges())
 			.map(sc -> sc.getPositivity())
-			.max(Comparator.comparing(Enum::ordinal)).get());
+			.max(Comparator.naturalOrder()).get());
 		return changes;
 	}
 }
