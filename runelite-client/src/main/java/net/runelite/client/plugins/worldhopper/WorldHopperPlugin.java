@@ -32,10 +32,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -162,6 +159,7 @@ public class WorldHopperPlugin extends Plugin
 	private int currentPing;
 
 	private final Map<Integer, Integer> storedPings = new HashMap<>();
+	private final List<World> worldCycleList = new ArrayList<>();
 
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
@@ -225,6 +223,7 @@ public class WorldHopperPlugin extends Plugin
 
 		// populate initial world list
 		updateList();
+		parseConfigAndSetWorldCycleList();
 	}
 
 	@Override
@@ -282,6 +281,49 @@ public class WorldHopperPlugin extends Plugin
 					panel.setRegionFilterMode(config.regionFilter());
 					updateList();
 					break;
+				case "presetWorldCycleList":
+					parseConfigAndSetWorldCycleList();
+					break;
+			}
+		}
+	}
+
+	private void parseConfigAndSetWorldCycleList()
+	{
+		this.worldCycleList.clear();
+		String presetWorldCfg = this.config.presetWorldCycleList();
+
+		if (presetWorldCfg.isEmpty())
+		{
+			return;
+		}
+
+		WorldResult worldResult = this.worldService.getWorlds();
+
+		if (worldResult == null)
+		{
+			return;
+		}
+
+		for (String worldNumString : Text.fromCSV(presetWorldCfg))
+		{
+			int worldNum;
+
+			try
+			{
+				worldNum = Integer.parseInt(worldNumString);
+			}
+			catch (NumberFormatException e)
+			{
+				log.debug("Invalid World Input: {}", e.getMessage());
+				continue;
+			}
+
+			World world = worldResult.findWorld(worldNum);
+
+			if (world != null)
+			{
+				this.worldCycleList.add(world);
 			}
 		}
 	}
@@ -528,7 +570,7 @@ public class WorldHopperPlugin extends Plugin
 		currentWorldTypes.remove(WorldType.SKILL_TOTAL);
 		currentWorldTypes.remove(WorldType.LAST_MAN_STANDING);
 
-		List<World> worlds = worldResult.getWorlds();
+		List<World> worlds = !this.worldCycleList.isEmpty() ? this.worldCycleList : worldResult.getWorlds();
 
 		int worldIdx = worlds.indexOf(currentWorld);
 		int totalLevel = client.getTotalLevel();

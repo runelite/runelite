@@ -157,4 +157,15 @@ public interface WorldHopperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "presetWorldCycleList",
+		name = "World cycle list",
+		description = "Set a custom world cycle list to hop between. Separate each world by commas. Example: 428,415,etc...",
+		position = 10
+	)
+	default String presetWorldCycleList()
+	{
+		return "";
+	}
 }
