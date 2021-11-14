@@ -157,4 +157,15 @@ public interface WorldHopperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "customWorldCycle",
+		name = "Custom world cycle",
+		description = "Hopping cycles between this list of worlds if present; Separate with Commas",
+		position = 10
+	)
+	default String customWorldCycle()
+	{
+		return "";
+	}
 }

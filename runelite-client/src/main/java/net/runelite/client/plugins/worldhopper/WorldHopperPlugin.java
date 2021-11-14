@@ -36,6 +36,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -163,6 +164,8 @@ public class WorldHopperPlugin extends Plugin
 
 	private final Map<Integer, Integer> storedPings = new HashMap<>();
 
+	private List<World> worldCycleList = new ArrayList<>();
+
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
 		@Override
@@ -225,6 +228,9 @@ public class WorldHopperPlugin extends Plugin
 
 		// populate initial world list
 		updateList();
+
+		//set initial world cycle if present
+		setCustomWorldCycle();
 	}
 
 	@Override
@@ -282,8 +288,43 @@ public class WorldHopperPlugin extends Plugin
 					panel.setRegionFilterMode(config.regionFilter());
 					updateList();
 					break;
+				case "customWorldCycle":
+					setCustomWorldCycle();
+					break;
 			}
 		}
+	}
+
+	private void setCustomWorldCycle()
+	{
+		worldCycleList.clear();
+
+		String worldList = config.customWorldCycle();
+		if (worldList.isEmpty())
+		{
+			return;
+		}
+
+		WorldResult worldResult = worldService.getWorlds();
+		if (worldResult == null)
+		{
+			return;
+		}
+
+		Text.fromCSV(worldList).stream()
+			.mapToInt(s ->
+			{
+				try
+				{
+					return Integer.parseInt(s);
+				}
+				catch (NumberFormatException e)
+				{
+					return 0;
+				}
+			})
+			.filter(world -> worldResult.findWorld(world) != null)
+			.forEach(world -> worldCycleList.add(worldResult.findWorld(world)));
 	}
 
 	private void setFavoriteConfig(int world)
@@ -528,7 +569,8 @@ public class WorldHopperPlugin extends Plugin
 		currentWorldTypes.remove(WorldType.SKILL_TOTAL);
 		currentWorldTypes.remove(WorldType.LAST_MAN_STANDING);
 
-		List<World> worlds = worldResult.getWorlds();
+		//use world cycle list if present
+		List<World> worlds = !worldCycleList.isEmpty() ? worldCycleList : worldResult.getWorlds();
 
 		int worldIdx = worlds.indexOf(currentWorld);
 		int totalLevel = client.getTotalLevel();
