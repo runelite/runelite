@@ -65,13 +65,13 @@ public class RectangleUnion
 		boolean trace = log.isTraceEnabled();
 
 		// Sort all of the rectangles so they are ordered by their left edge
-		lefts.sort(Comparator.comparing(Rectangle::getX1));
+		lefts.sort(Comparator.comparingInt(Rectangle::getX1));
 
 		// Again, but for the right edge
 		// this should be relatively fast if the rectangles are similar sizes because timsort deals with partially
 		// presorted data well
 		List<Rectangle> rights = new ArrayList<>(lefts);
-		rights.sort(Comparator.comparing(Rectangle::getX2));
+		rights.sort(Comparator.comparingInt(Rectangle::getX2));
 
 		// ranges of our scan line with how many rectangles it is occluding
 		Segments segments = new Segments();
