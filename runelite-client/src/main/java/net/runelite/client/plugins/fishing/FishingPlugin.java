@@ -462,14 +462,14 @@ public class FishingPlugin extends Plugin
 
 		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
 		fishingSpots.sort(
-			Comparator.comparing(
+			Comparator.comparingInt(
 				// Negate to have the furthest first
 				(NPC npc) -> -npc.getLocalLocation().distanceTo(cameraPoint))
 				// Order by position
-				.thenComparing(NPC::getLocalLocation, Comparator.comparing(LocalPoint::getX)
-					.thenComparing(LocalPoint::getY))
+				.thenComparing(NPC::getLocalLocation, Comparator.comparingInt(LocalPoint::getX)
+					.thenComparingInt(LocalPoint::getY))
 				// And then by id
-				.thenComparing(NPC::getId)
+				.thenComparingInt(NPC::getId)
 		);
 	}
 }
