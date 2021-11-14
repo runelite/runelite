@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.party;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -98,5 +99,71 @@ public interface PartyConfig extends Config
 	default boolean includeSelf()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "healthForegroundColor",
+		name = "Health Foreground Color",
+		description = "Change the foreground color of health bars in the party",
+		position = 7
+	)
+	default Color healthForegroundColor()
+	{
+		return new Color(0, 146, 54, 230);
+	}
+
+	@ConfigItem(
+		keyName = "healthBackgroundColor",
+		name = "Health Background Color",
+		description = "Change the background color of health bars in the party",
+		position = 8
+	)
+	default Color healthBackgroundColor()
+	{
+		return new Color(102, 15, 16, 230);
+	}
+
+	@ConfigItem(
+		keyName = "healthFontColor",
+		name = "Health Font Color",
+		description = "Change the font color of health bars in the party",
+		position = 9
+	)
+	default Color healthFontColor()
+	{
+		return Color.WHITE;
+	}
+
+	@ConfigItem(
+		keyName = "prayerForegroundColor",
+		name = "Prayer Foreground Color",
+		description = "Change the foreground color of prayer bars in the party",
+		position = 10
+	)
+	default Color prayerForegroundColor()
+	{
+		return new Color(0, 149, 151);
+	}
+
+	@ConfigItem(
+		keyName = "prayerBackgroundColor",
+		name = "Prayer Background Color",
+		description = "Change the background color of prayer bars in the party",
+		position = 11
+	)
+	default Color prayerBackgroundColor()
+	{
+		return Color.black;
+	}
+
+	@ConfigItem(
+		keyName = "prayerFontColor",
+		name = "Prayer Font Color",
+		description = "Change the font color of prayer bars in the party",
+		position = 12
+	)
+	default Color prayerFontColor()
+	{
+		return Color.WHITE;
 	}
 }
