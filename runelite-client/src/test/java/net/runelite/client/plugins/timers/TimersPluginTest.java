@@ -475,4 +475,18 @@ public class TimersPluginTest
 		pred = prcaptor.getValue();
 		assertTrue(pred.test(imbuedHeartInfoBox));
 	}
+
+	@Test
+	public void testMartinPickpocket()
+	{
+		when(timersConfig.showPickpocketStun()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You fail to pick Martin's pocket.", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.PICKPOCKET_STUN, infoBox.getTimer());
+		assertEquals(Duration.ofSeconds(5), infoBox.getDuration());
+	}
 }
