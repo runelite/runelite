@@ -159,4 +159,37 @@ public interface GpuPluginConfig extends Config
 	{
 		return false;
 	}
+
+	enum SyncMode
+	{
+		OFF,
+		ON,
+		ADAPTIVE
+	}
+
+	@ConfigItem(
+		keyName = "vsyncMode",
+		name = "Vsync Mode",
+		description = "Method to synchronize frame rate with refresh rate",
+		position = 11
+	)
+	default SyncMode syncMode()
+	{
+		return SyncMode.ADAPTIVE;
+	}
+
+	@ConfigItem(
+		keyName = "fpsTarget",
+		name = "FPS Target",
+		description = "Target FPS when unlock FPS is enabled and Vsync mode is OFF",
+		position = 12
+	)
+	@Range(
+		min = 1,
+		max = 999
+	)
+	default int fpsTarget()
+	{
+		return 60;
+	}
 }

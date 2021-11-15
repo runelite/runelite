@@ -30,6 +30,10 @@ package net.runelite.api;
 public final class ParamID
 {
 	/**
+	 * Long name for NPCs used in the HP hud
+	 */
+	public static final int NPC_HP_NAME = 510;
+	/**
 	 * @see SettingID
 	 */
 	public static final int SETTING_ID = 1077;

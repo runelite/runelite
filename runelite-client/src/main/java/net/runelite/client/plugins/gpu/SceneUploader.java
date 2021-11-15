@@ -147,13 +147,13 @@ class SceneUploader
 			Renderable renderable1 = wallObject.getRenderable1();
 			if (renderable1 instanceof Model)
 			{
-				uploadModel((Model) renderable1, vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) renderable1, vertexBuffer, uvBuffer);
 			}
 
 			Renderable renderable2 = wallObject.getRenderable2();
 			if (renderable2 instanceof Model)
 			{
-				uploadModel((Model) renderable2, vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) renderable2, vertexBuffer, uvBuffer);
 			}
 		}
 
@@ -163,7 +163,7 @@ class SceneUploader
 			Renderable renderable = groundObject.getRenderable();
 			if (renderable instanceof Model)
 			{
-				uploadModel((Model) renderable, vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) renderable, vertexBuffer, uvBuffer);
 			}
 		}
 
@@ -173,13 +173,13 @@ class SceneUploader
 			Renderable renderable = decorativeObject.getRenderable();
 			if (renderable instanceof Model)
 			{
-				uploadModel((Model) renderable, vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) renderable, vertexBuffer, uvBuffer);
 			}
 
 			Renderable renderable2 = decorativeObject.getRenderable2();
 			if (renderable2 instanceof Model)
 			{
-				uploadModel((Model) renderable2, vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) renderable2, vertexBuffer, uvBuffer);
 			}
 		}
 
@@ -194,7 +194,7 @@ class SceneUploader
 			Renderable renderable = gameObject.getRenderable();
 			if (renderable instanceof Model)
 			{
-				uploadModel((Model) gameObject.getRenderable(), vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) gameObject.getRenderable(), vertexBuffer, uvBuffer);
 			}
 		}
 	}
@@ -350,7 +350,7 @@ class SceneUploader
 		return cnt;
 	}
 
-	private void uploadModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	private void uploadSceneModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		if (model.getSceneId() == sceneId)
 		{
@@ -368,7 +368,18 @@ class SceneUploader
 		}
 		model.setSceneId(sceneId);
 
-		final int triangleCount = model.getTrianglesCount();
+		int len = pushModel(model, vertexBuffer, uvBuffer);
+
+		offset += len;
+		if (model.getFaceTextures() != null)
+		{
+			uvoffset += len;
+		}
+	}
+
+	public int pushModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	{
+		final int triangleCount = Math.min(model.getTrianglesCount(), GpuPlugin.MAX_TRIANGLE);
 
 		vertexBuffer.ensureCapacity(triangleCount * 12);
 		uvBuffer.ensureCapacity(triangleCount * 12);
@@ -437,11 +448,7 @@ class SceneUploader
 			len += 3;
 		}
 
-		offset += len;
-		if (model.getFaceTextures() != null)
-		{
-			uvoffset += len;
-		}
+		return len;
 	}
 
 	int pushFace(Model model, int face, boolean padUvs, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,

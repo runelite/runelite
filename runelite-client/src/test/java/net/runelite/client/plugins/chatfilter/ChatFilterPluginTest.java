@@ -187,6 +187,36 @@ public class ChatFilterPluginTest
 	}
 
 	@Test
+	public void testFilterUnicode()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
+		when(chatFilterConfig.filteredWords()).thenReturn("filterme");
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertEquals("plëäsë ******** plügïn", chatFilterPlugin.censorMessage("Blue", "plëäsë fïltërmë plügïn"));
+	}
+
+	@Test
+	public void testUnicodeFiltersUnicode()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
+		when(chatFilterConfig.filteredWords()).thenReturn("plëäsë");
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertEquals("****** fïltërmë plügïn", chatFilterPlugin.censorMessage("Blue", "plëäsë fïltërmë plügïn"));
+	}
+
+	@Test
+	public void testMixedUnicodeFiltersUnicode()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
+		when(chatFilterConfig.filteredWords()).thenReturn("plëäsë, filterme");
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertEquals("****** ******** plügïn", chatFilterPlugin.censorMessage("Blue", "plëäsë fïltërmë plügïn"));
+	}
+
+	@Test
 	public void testMessageFromFriendIsFiltered()
 	{
 		when(chatFilterConfig.filterFriends()).thenReturn(true);

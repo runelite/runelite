@@ -477,6 +477,32 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 				bankTitle.setText("Tag tab <col=ff0000>" + activeTab.getTag() + "</col>");
 			}
+
+			// Recompute scroll size. Only required for tag tab tab and with remove separators, to remove the
+			// space that the separators took.
+			if (tabInterface.isTagTabActive() || (tabInterface.isActive() && config.removeSeparators()))
+			{
+				Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+				Widget[] children = itemContainer.getChildren();
+				int items = 0;
+				for (Widget child : children)
+				{
+					if (child != null && child.getItemId() != -1 && !child.isHidden())
+					{
+						++items;
+					}
+				}
+
+				// New scroll height for if_setscrollsize
+				final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING +
+					ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
+
+				// This is prior to bankmain_finishbuilding running, so the arguments are still on the stack. Overwrite
+				// argument int12 (7 from the end) which is the height passed to if_setscrollsize
+				final int[] intStack = client.getIntStack();
+				final int intStackSize = client.getIntStackSize();
+				intStack[intStackSize - 7] = adjustedScrollHeight;
+			}
 		}
 		else if (scriptId == ScriptID.BANKMAIN_SEARCH_TOGGLE)
 		{
@@ -510,15 +536,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			return;
 		}
 
-		if (tabInterface.isTagTabActive())
-		{
-			int numTabs = (int) Arrays.stream(itemContainer.getDynamicChildren())
-				.filter(child -> child.getItemId() != -1 && !child.isHidden())
-				.count();
-			updateBankContainerScrollHeight(numTabs);
-			return;
-		}
-
 		if (!tabInterface.isActive() || !config.removeSeparators())
 		{
 			return;
@@ -529,8 +546,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		Widget[] containerChildren = itemContainer.getDynamicChildren();
 
 		// sort the child array as the items are not in the displayed order
-		Arrays.sort(containerChildren, Comparator.comparing(Widget::getOriginalY)
-			.thenComparing(Widget::getOriginalX));
+		Arrays.sort(containerChildren, Comparator.comparingInt(Widget::getOriginalY)
+			.thenComparingInt(Widget::getOriginalX));
 
 		for (Widget child : containerChildren)
 		{
@@ -540,14 +557,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				int adjYOffset = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
 				int adjXOffset = (items % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
 
-				if (child.getOriginalY() != adjYOffset)
+				if (child.getOriginalY() != adjYOffset || child.getOriginalX() != adjXOffset)
 				{
 					child.setOriginalY(adjYOffset);
-					child.revalidate();
-				}
-
-				if (child.getOriginalX() != adjXOffset)
-				{
 					child.setOriginalX(adjXOffset);
 					child.revalidate();
 				}
@@ -562,23 +574,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				child.setHidden(true);
 			}
 		}
-
-		updateBankContainerScrollHeight(items);
-	}
-
-	private void updateBankContainerScrollHeight(int items)
-	{
-		Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		int itemContainerHeight = bankItemContainer.getHeight();
-		final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING + ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
-		bankItemContainer.setScrollHeight(Math.max(adjustedScrollHeight, itemContainerHeight));
-
-		final int itemContainerScroll = bankItemContainer.getScrollY();
-		clientThread.invokeLater(() ->
-			client.runScript(ScriptID.UPDATE_SCROLLBAR,
-				WidgetInfo.BANK_SCROLLBAR.getId(),
-				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
-				itemContainerScroll));
 	}
 
 	@Subscribe

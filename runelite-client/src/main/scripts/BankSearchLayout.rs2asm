@@ -1,4 +1,4 @@
-.id                 277
+.id                 277 ; [proc,bankmain_build]
 .int_stack_count    17
 .string_stack_count 0
 .int_var_count      36
@@ -7,8 +7,8 @@
 ;   Fired before the bank starts its layout
 ;	Used by the TabInterface to hide fake bank items for tag tabs
 ;
-; callback "setBankScroll"
-;	Fired before bank is calculated
+; callback "skipBankLayout"
+;	Fired before bank is built
 ;   Used by the TabInterface to show fake bank items for tag tabs
    sconst                 "beforeBankLayout"
    runelite_callback     
@@ -403,13 +403,11 @@ LABEL348:
    sub                   
    istore                 30
 LABEL352:
-   iconst                 0               	; Scroll height variable
    iconst                 0               	; Compare variable
    iconst                 0               	;
-   sconst                 "setBankScroll"   ; Show fake bank items for tag tabs
+   sconst                 "skipBankLayout"   ; Show fake bank items for tag tabs
    runelite_callback     ; If tag tab menu search isn't active
    if_icmpeq              CONTINUE_SEARCH 	; continue to normal bank search
-   istore                 27                ; Load scroll height into variable
    jump                   GetTabRange     	; Skip normal bank layout
 CONTINUE_SEARCH:
    iload                  31
@@ -842,7 +840,7 @@ LABEL729:
    iload                  14
    iload                  15
    iload                  16
-   invoke                 505
+   invoke                 505 ; [proc,bankmain_finishbuilding]
    return                
 LABEL750:
    invoke                 514

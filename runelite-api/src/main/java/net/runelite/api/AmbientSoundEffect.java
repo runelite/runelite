@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,50 +24,36 @@
  */
 package net.runelite.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import net.runelite.api.coords.LocalPoint;
 
 /**
- * Client side only, content-developer integers
- *
- * VarCInts are stored entirely in memory, or locally on a user's
- * machine in the preferences2.dat file depending on how Jagex
- * configured the variable
+ * An ambient sound effect. These are loaded only at scene load and are used to play ambient
+ * sound effects that are purely client side and not sent from the server.
  */
-@AllArgsConstructor
-@Getter
-public enum VarClientInt
+public interface AmbientSoundEffect
 {
-	TOOLTIP_TIMEOUT(1),
+	/**
+	 * The id of the sound effect
+	 * @see SoundEffectID
+	 * @return
+	 */
+	int getSoundEffectId();
 
 	/**
-	 * 0 = no tooltip displayed
-	 * 1 = tooltip displaying
+	 * The plane the sound effect is on
+	 * @return
 	 */
-	TOOLTIP_VISIBLE(2),
+	int getPlane();
 
 	/**
-	 * Current message layer mode
-	 * @see net.runelite.api.vars.InputType
+	 * The min x/y position of the area this sound effect is at.
+	 * @return
 	 */
-	INPUT_TYPE(5),
+	LocalPoint getMinPosition();
 
 	/**
-	 * The game sets this to the same value as {@link #CAMERA_ZOOM_RESIZABLE_VIEWPORT}
+	 * The max x/y position of the area this sound effect is at
+	 * @return
 	 */
-	CAMERA_ZOOM_FIXED_VIEWPORT(73),
-	CAMERA_ZOOM_RESIZABLE_VIEWPORT(74),
-
-	MEMBERSHIP_STATUS(103),
-
-	INVENTORY_TAB(171),
-
-	/**
-	 * time to block keypresses til
-	 */
-	BLOCK_KEYPRESS(187),
-
-	WORLD_MAP_SEARCH_FOCUSED(190);
-
-	private final int index;
+	LocalPoint getMaxPosition();
 }
