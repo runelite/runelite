@@ -122,7 +122,7 @@ LABEL89:
 LABEL96:
    clientclock           
    set_varc_int           384
-   invoke                 2357
+   invoke                 1445
    iconst                 1
    if_icmpeq              LABEL102
    jump                   LABEL106
@@ -172,7 +172,7 @@ LABEL131:
 LABEL138:
    clientclock           
    set_varc_int           384
-   invoke                 2357
+   invoke                 1445
    iconst                 1
    if_icmpeq              LABEL144
    jump                   LABEL148
@@ -217,15 +217,15 @@ LABEL169:
    jump                   LABEL180
 LABEL176:
    iconst                 1
-   iconst                 39387174
+   iconst                 39387162
    if_sethide            
    jump                   LABEL235
 LABEL180:
    iconst                 0
-   iconst                 39387174
+   iconst                 39387162
    if_sethide            
    iconst                 1
-   iconst                 39387174
+   iconst                 39387162
    2308                  
    get_varbit             6255
    switch                
@@ -235,38 +235,38 @@ LABEL180:
    jump                   LABEL213
 LABEL189:
    iconst                 1718
-   iconst                 39387176
+   iconst                 39387181
    if_setgraphic         
    iconst                 1
    sconst                 "Toggle single-tap mode"
-   iconst                 39387174
+   iconst                 39387162
    if_setop              
    jump                   LABEL220
 LABEL197:
    iconst                 1717
-   iconst                 39387176
+   iconst                 39387181
    if_setgraphic         
    iconst                 1
    sconst                 "Toggle tap-to-drop mode"
-   iconst                 39387174
+   iconst                 39387162
    if_setop              
    jump                   LABEL220
 LABEL205:
    iconst                 1716
-   iconst                 39387176
+   iconst                 39387181
    if_setgraphic         
    iconst                 1
    sconst                 "Show Keyboard"
-   iconst                 39387174
+   iconst                 39387162
    if_setop              
    jump                   LABEL220
 LABEL213:
    iconst                 1715
-   iconst                 39387176
+   iconst                 39387181
    if_setgraphic         
    iconst                 1
    sconst                 ""
-   iconst                 39387174
+   iconst                 39387162
    if_setop              
 LABEL220:
    get_varbit             6255
@@ -280,18 +280,18 @@ LABEL224:
    jump                   LABEL232
 LABEL228:
    iconst                 155
-   iconst                 39387176
+   iconst                 39387181
    if_settrans           
    jump                   LABEL235
 LABEL232:
    iconst                 0
-   iconst                 39387176
+   iconst                 39387181
    if_settrans           
 LABEL235:
    invoke                 2581
    get_varbit             6254
    invoke                 633
-   iconst                 39387165
+   iconst                 39387173
    if_sethide            
    invoke                 2526
    pop_int               
