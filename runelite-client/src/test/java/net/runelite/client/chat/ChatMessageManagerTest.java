@@ -29,17 +29,27 @@ import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.awt.Color;
+import java.util.ArrayList;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.util.ColorUtil;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -181,5 +191,87 @@ public class ChatMessageManagerTest
 		chatMessageManager.update(messageNode);
 
 		verify(messageNode).setValue("<col=000000>Total points: <col=ff0000>42<col=000000>, Personal points: <col=ff0000>43<col=000000> (<col=ff0000>44<col=000000>%)");
+	}
+
+	private void setupColorRemoveReturn(String uncoloredName, String coloredName)
+	{
+		IterableHashTable<MessageNode> messageTable = mock(IterableHashTable.class);
+		MessageNode uncoloredMockedMsgNode = mockMessageNode(0, uncoloredName);
+		MessageNode coloredMockedMsgNode = mockMessageNode(1, coloredName);
+		when(client.getMessages()).thenReturn(messageTable);
+		ArrayList<MessageNode> messageList = new ArrayList<>();
+		messageList.add(uncoloredMockedMsgNode);
+		messageList.add(coloredMockedMsgNode);
+		when(messageTable.iterator()).thenReturn(messageList.iterator(), messageList.iterator());
+		when(messageTable.get(0)).thenReturn(uncoloredMockedMsgNode);
+		when(messageTable.get(1)).thenReturn(coloredMockedMsgNode);
+		ScriptPreFired preEvent = new ScriptPreFired(ScriptID.CHATBOX_PARENT);
+		chatMessageManager.onScriptPreFired(preEvent);
+	}
+
+	private MessageNode mockMessageNode(int id, String name)
+	{
+		MessageNode node = mock(MessageNode.class);
+		when(node.getId()).thenReturn(id);
+		doAnswer(invocation -> {
+			String userName = (String)invocation.getArguments()[0];
+			when(node.getName()).thenReturn(userName);
+			return null;
+		}).when(node).setName(anyString());
+		node.setName(name);
+		return node;
+	}
+
+	private ScriptCallbackEvent createCallbackEvent(final String chatUserName, final int messageID)
+	{
+		ScriptCallbackEvent event = new ScriptCallbackEvent();
+		event.setScript(null);
+		event.setEventName("userNameTagReturn");
+		int[] simulatedIntStack = new int[]{messageID}; // message id
+		String[] simulatedStringStack = new String[]{chatUserName};
+		when(client.getIntStack()).thenReturn(simulatedIntStack);
+		when(client.getIntStackSize()).thenReturn(simulatedIntStack.length);
+		when(client.getStringStack()).thenReturn(simulatedStringStack);
+		when(client.getStringStackSize()).thenReturn(simulatedStringStack.length);
+		return event;
+	}
+
+	@Test
+	public void testScriptPreFire()
+	{
+		String uncoloredName = "name";
+		String coloredName = "<col=0d13a5>coloredName</col>";
+		setupColorRemoveReturn(uncoloredName, coloredName);
+		String colorRemovedName = ColorUtil.unwrapColorTag(coloredName).getKey();
+		assertEquals(uncoloredName, client.getMessages().get(0).getName());
+		assertEquals(colorRemovedName, client.getMessages().get(1).getName());
+	}
+
+	@Test
+	public void testScriptPostFire()
+	{
+		String uncoloredName = "name";
+		String coloredName = "<col=0d13a5>coloredName</col>";
+		setupColorRemoveReturn(uncoloredName, coloredName);
+		ScriptPostFired postEvent = new ScriptPostFired(ScriptID.CHATBOX_PARENT);
+		chatMessageManager.onScriptPostFired(postEvent);
+		assertEquals(uncoloredName, client.getMessages().get(0).getName());
+		assertEquals(coloredName, client.getMessages().get(1).getName());
+	}
+
+	@Test
+	public void testUserNameColorReturn()
+	{
+		String uncoloredName = "name";
+		String coloredName = "<col=0d13a5>coloredName</col>";
+		setupColorRemoveReturn(uncoloredName, coloredName);
+		String colorRemovedName = ColorUtil.unwrapColorTag(coloredName).getKey();
+		ScriptCallbackEvent ev0 = createCallbackEvent(uncoloredName, 0);
+		chatMessageManager.onScriptCallbackEvent(ev0);
+		assertEquals(uncoloredName, client.getStringStack()[0]);
+		ScriptCallbackEvent ev1 = createCallbackEvent(colorRemovedName, 1);
+		chatMessageManager.onScriptCallbackEvent(ev1);
+		assertEquals(coloredName, client.getStringStack()[0]);
+
 	}
 }

@@ -248,9 +248,12 @@ public class ChatMessageManager
 	}
 
 	@Subscribe
-	private void onScriptPreFired(ScriptPreFired ev) {
-		if(ev.getScriptId() == ScriptID.CHATBOX_PARENT){
-			for (MessageNode messageNode : client.getMessages()) {
+	public void onScriptPreFired(ScriptPreFired ev)
+	{
+		if(ev.getScriptId() == ScriptID.CHATBOX_PARENT)
+		{
+			for (MessageNode messageNode : client.getMessages())
+			{
 				AbstractMap.SimpleEntry<String, Color> userNamePair = ColorUtil.unwrapColorTag(messageNode.getName());
 				String uncoloredUserName = userNamePair.getKey();
 				Color userNameColor = userNamePair.getValue();
@@ -261,11 +264,15 @@ public class ChatMessageManager
 	}
 
 	@Subscribe
-	private void onScriptPostFired(ScriptPostFired ev) {
-		if(ev.getScriptId() == ScriptID.CHATBOX_PARENT){
-			for (MessageNode messageNode : client.getMessages()) {
+	public void onScriptPostFired(ScriptPostFired ev)
+	{
+		if(ev.getScriptId() == ScriptID.CHATBOX_PARENT)
+		{
+			for (MessageNode messageNode : client.getMessages())
+			{
 				Color userNameColor = userNameColorMap.get(messageNode.getId());
-				if (userNameColor != null){
+				if (userNameColor != null)
+				{
 					String coloredUserName = ColorUtil.wrapWithColorTag(messageNode.getName(), userNameColor);
 					messageNode.setName(coloredUserName);
 				}
