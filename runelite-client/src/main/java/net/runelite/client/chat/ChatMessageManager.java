@@ -198,6 +198,14 @@ public class ChatMessageManager
 		}
 	}
 
+	/**
+	 * Colors username for private chats and returns the color to a username from a public chat.
+	 * To ensure proper functioning when ignoring or friending someone from a message with a
+	 * colored username, the color tag needs to be stripped prior to the chatBuilder script and
+	 * returned here at the userNameTagReturn callback.
+	 *
+	 * @param scriptCallbackEvent   The Event object.
+	 */
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
@@ -248,6 +256,15 @@ public class ChatMessageManager
 		stringStack[stringStackSize - 1] = fromToUsername;
 	}
 
+	/**
+	 * Before the chatbox script runs we remove the color tag from the usernames
+	 * in the message nodes. If we do not do this then past messages where the
+	 * username is colored and the user is ignored will not be hidden.
+	 * Additionally clicking on a friend's message when the username is colored
+	 * will show a menu as if they are not a friend.
+	 *
+	 * @param ev   The Event object.
+	 */
 	@Subscribe
 	public void onScriptPreFired(ScriptPreFired ev)
 	{
@@ -264,6 +281,14 @@ public class ChatMessageManager
 		}
 	}
 
+	/**
+	 * After the chat box script runs we return the color tag to the usernames
+	 * in the message nodes. In the callback function we added it mid-script
+	 * back into the string stack so that the color would be displayed.
+	 * Now we add back to the message nodes themselves.
+	 *
+	 * @param ev   The Event object.
+	 */
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired ev)
 	{
