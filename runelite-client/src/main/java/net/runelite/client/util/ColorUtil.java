@@ -87,12 +87,14 @@ public class ColorUtil
 	{
 		Matcher m = COLORED_STR_PATTERN.matcher(str);
 		AbstractMap.SimpleEntry<String, Color> outPair;
-		if(m.matches()){
+		if(m.matches())
+		{
 			Color col = fromHex(m.group("color"));
 			String cleanStr = m.group("message");
 			outPair = new AbstractMap.SimpleEntry<>(cleanStr, col);
 		}
-		else{
+		else
+		{
 			outPair = new AbstractMap.SimpleEntry<>(str, null);
 		}
 		return outPair;

@@ -360,7 +360,8 @@ public class ChatFilterPlugin extends Plugin
 
 			strippedMessage = sb.toString();
 		}
-		if (messagePair.getValue() != null){
+		if (messagePair.getValue() != null)
+		{
 			strippedMessage = ColorUtil.wrapWithColorTag(strippedMessage, messageColor);
 		}
 		return filtered ? strippedMessage : message;
