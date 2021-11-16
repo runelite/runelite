@@ -221,7 +221,7 @@ LABEL183:
    if_icmpeq              LABEL189
    jump                   LABEL417
 LABEL189:
-   invoke                 2357
+   invoke                 1445
    iconst                 1
    if_icmpeq              LABEL193
    jump                   LABEL267
