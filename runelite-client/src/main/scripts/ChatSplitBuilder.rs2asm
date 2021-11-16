@@ -381,9 +381,9 @@ LABEL344:
    jump                   LABEL566
 LABEL350:
    iload                  12
-   5031                  
+   chat_gethistoryex_byuid
    istore                 15
-   sstore                 2
+   sstore                 2                 ; timestamp
    istore                 14
    sstore                 0
    sstore                 3
@@ -413,9 +413,11 @@ CHAT_FILTER:
    jump                   LABEL562
 LABEL368:
    iload                  12 ; message uid
+   sload                   2 ; message timestamp
    sconst                 "chatMessageBuilding"
    runelite_callback     
-   pop_int               
+   pop_int
+   sstore                  2 ; message timestamp
    iload                  18
    switch                
       3: LABEL371

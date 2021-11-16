@@ -36,13 +36,11 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
-import net.runelite.api.ScriptID;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ScriptPreFired;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ColorUtil;
@@ -63,8 +61,6 @@ public class TimestampPlugin extends Plugin
 
 	@Getter
 	private SimpleDateFormat formatter;
-
-	private MessageNode currentlyBuildingMessage = null;
 
 	@Provides
 	public TimestampConfig provideConfig(final ConfigManager configManager)
@@ -102,51 +98,18 @@ public class TimestampPlugin extends Plugin
 		}
 
 		int uid = client.getIntStack()[client.getIntStackSize() - 1];
-		currentlyBuildingMessage = client.getMessages().get(uid);
-	}
+		final MessageNode messageNode = client.getMessages().get(uid);
+		assert messageNode != null : "chat message build for unknown message";
 
-	@Subscribe
-	private void onScriptPreFired(ScriptPreFired ev)
-	{
-		int numStringArgs;
-		int messagePrefixArg = 0;
-		switch (ev.getScriptId())
-		{
-			case ScriptID.CHATBOX_BUILD_LINE_WITHOUT_USER:
-				numStringArgs = 1;
-				break;
-			case ScriptID.CHATBOX_BUILD_LINE_WITH_USER:
-				numStringArgs = 2;
-				break;
-			case ScriptID.CHATBOX_BUILD_LINE_WITH_CLAN:
-				numStringArgs = 3;
-				break;
-			default:
-				return;
-		}
-
-		if (currentlyBuildingMessage == null)
-		{
-			return;
-		}
-
-		MessageNode messageNode = currentlyBuildingMessage;
-		currentlyBuildingMessage = null;
-
-		String[] stringStack = client.getStringStack();
-		int stringArgStart = client.getStringStackSize() - numStringArgs;
-
-		String timestamp = generateTimestamp(messageNode.getTimestamp(), ZoneId.systemDefault()) + " ";
+		String timestamp = generateTimestamp(messageNode.getTimestamp(), ZoneId.systemDefault());
 		
 		Color timestampColour = getTimestampColour();
 		if (timestampColour != null)
 		{
 			timestamp = ColorUtil.wrapWithColorTag(timestamp, timestampColour);
 		}
-		
-		String segment = stringStack[stringArgStart + messagePrefixArg];
-		segment = timestamp + segment;
-		stringStack[stringArgStart + messagePrefixArg] = segment;
+
+		client.getStringStack()[client.getStringStackSize() - 1] = timestamp;
 	}
 
 	private Color getTimestampColour()

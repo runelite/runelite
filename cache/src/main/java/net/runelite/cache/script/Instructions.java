@@ -505,6 +505,8 @@ public class Instructions implements Opcodes
 		add(CHAT_SETMESSAGEFILTER, "chat_setmessagefilter");
 		add(CHAT_GETMESSAGEFILTER, "chat_getmessagefilter");
 		add(WRITECONSOLE, "writeconsole");
+		add(CHAT_GETHISTORYEX_BYTYPEANDLINE, "chat_gethistoryex_bytypeandline");
+		add(CHAT_GETHISTORYEX_BYUID, "chat_gethistoryex_byuid");
 		add(GETWINDOWMODE, "getwindowmode");
 		add(SETWINDOWMODE, "setwindowmode");
 		add(GETDEFAULTWINDOWMODE, "getdefaultwindowmode");
