@@ -632,9 +632,9 @@ public enum Varbits
 	 * 0 = popup notification enabled
 	 * 1 = popup notification disabled
 	 */
-	COMBAT_ACHIEVEMENTS_POPUP(12455);
+	COMBAT_ACHIEVEMENTS_POPUP(12455),
    
-  /**
+	/**
 	 * Show boss health overlay setting
 	 * 0 = on
 	 * 1 = off
