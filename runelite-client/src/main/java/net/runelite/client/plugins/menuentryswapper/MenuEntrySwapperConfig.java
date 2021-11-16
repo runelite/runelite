@@ -66,6 +66,11 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	String uiSection = "ui";
 
+	enum MaxCapeMode{
+		WEAR,
+		TELEPORTS
+	}
+
 	enum ArdougneCloakMode
 	{
 		WEAR,
@@ -486,6 +491,16 @@ public interface MenuEntrySwapperConfig extends Config
 	default KaramjaGlovesMode swapKaramjaGlovesMode()
 	{
 		return KaramjaGlovesMode.WEAR;
+	}
+
+	@ConfigItem(
+			keyName = "swapMaxCape",
+			name = "Max Cape",
+			description = "Swap Wear with Teleport on the Max Cape",
+			section = itemSection
+	)
+	default MaxCapeMode swapMaxCapeMode(){
+		return MaxCapeMode.WEAR;
 	}
 
 	@ConfigItem(

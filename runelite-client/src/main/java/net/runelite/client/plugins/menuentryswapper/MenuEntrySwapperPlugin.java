@@ -408,6 +408,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("eat", "guzzle", config::swapRockCake);
 
 		swap("travel", "dive", config::swapRowboatDive);
+
+		swap("wear", "teleports", () -> config.swapMaxCapeMode() == MenuEntrySwapperConfig.MaxCapeMode.TELEPORTS);
 	}
 
 	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
