@@ -36,8 +36,10 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -55,6 +57,9 @@ public class TimestampPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private TimestampConfig config;
@@ -83,9 +88,18 @@ public class TimestampPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("timestamp") && event.getKey().equals("format"))
+		if (event.getGroup().equals(TimestampConfig.GROUP))
 		{
-			updateFormatter();
+			switch (event.getKey())
+			{
+				case "format":
+					updateFormatter();
+					break;
+				case "opaqueTimestamp":
+				case "transparentTimestamp":
+					clientThread.invokeLater(() -> client.runScript(ScriptID.SPLITPM_CHANGED));
+					break;
+			}
 		}
 	}
 
