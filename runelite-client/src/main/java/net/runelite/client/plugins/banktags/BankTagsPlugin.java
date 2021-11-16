@@ -98,8 +98,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	private static final int ITEMS_PER_ROW = 8;
 	private static final int ITEM_VERTICAL_SPACING = 36;
 	private static final int ITEM_HORIZONTAL_SPACING = 48;
+	private static final int ITEM_VERTICAL_SEPARATION = 4;
 	private static final int ITEM_ROW_START = 51;
-	private static final int ITEM_CONTAINER_BOTTOM_PADDING = 4;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
@@ -493,12 +493,14 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 					}
 				}
 
-				// New scroll height for if_setscrollsize
-				final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING +
-					ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
+				final int itemRows = 1 + (Math.max(0, items - 1) / ITEMS_PER_ROW);
+				// bankmain_finishbuilding expects its height argument to be the distance between the top of the first
+				// item row and the bottom of the last item row. This value is 8 less than the final scrollbar height,
+				// as bankmain_finishbuilding will add 8 to add some padding below the last row of items.
+				final int adjustedScrollHeight = itemRows * ITEM_VERTICAL_SPACING - ITEM_VERTICAL_SEPARATION;
 
 				// This is prior to bankmain_finishbuilding running, so the arguments are still on the stack. Overwrite
-				// argument int12 (7 from the end) which is the height passed to if_setscrollsize
+				// argument int12 (7 from the end) which is the value used to calculate the scrollbar height.
 				final int[] intStack = client.getIntStack();
 				final int intStackSize = client.getIntStackSize();
 				intStack[intStackSize - 7] = adjustedScrollHeight;
