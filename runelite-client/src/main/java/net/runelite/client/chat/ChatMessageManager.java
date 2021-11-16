@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
@@ -70,7 +71,7 @@ public class ChatMessageManager
 	private final Multimap<ChatMessageType, ChatColor> colorCache = HashMultimap.create();
 	private final Client client;
 	private final ChatColorConfig chatColorConfig;
-	private final HashMap<Integer, Color> userNameColorMap = new HashMap();
+	private final Map<Integer, Color> userNameColorMap = new HashMap();
 	private final ClientThread clientThread;
 	private int transparencyVarbit = -1;
 	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
