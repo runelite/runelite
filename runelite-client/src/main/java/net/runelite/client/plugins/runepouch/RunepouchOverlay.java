@@ -35,6 +35,7 @@ import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.RunepouchRune;
 import static net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode.BOTH;
 import static net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode.MOUSE_HOVER;
 import net.runelite.client.ui.FontManager;
@@ -100,7 +101,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 
 			Varbits runeVarbit = RUNE_VARBITS[i];
 			int runeId = client.getVar(runeVarbit);
-			Runes rune = Runes.getRune(runeId);
+			RunepouchRune rune = RunepouchRune.getRune(runeId);
 			if (rune == null)
 			{
 				continue;
@@ -149,7 +150,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 		}
 	}
 
-	private BufferedImage getRuneImage(Runes rune)
+	private BufferedImage getRuneImage(RunepouchRune rune)
 	{
 		BufferedImage runeImg = rune.getImage();
 		if (runeImg != null)

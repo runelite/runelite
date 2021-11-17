@@ -271,7 +271,7 @@ public class ContainableFrame extends JFrame
 	{
 		return Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
 			.map(GraphicsDevice::getDefaultConfiguration)
-			.max(Comparator.comparing(config ->
+			.max(Comparator.comparingInt(config ->
 			{
 				Rectangle intersection = config.getBounds().intersection(getBounds());
 				return intersection.width * intersection.height;

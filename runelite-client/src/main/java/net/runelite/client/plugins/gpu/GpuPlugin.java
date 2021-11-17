@@ -394,9 +394,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 					this.gl = glContext.getGL().getGL4();
 
-					final boolean unlockFps = this.config.unlockFps();
-					client.setUnlockedFps(unlockFps);
-					gl.setSwapInterval(unlockFps ? -1 : 0);
+					setupSyncMode();
 
 					if (log.isDebugEnabled())
 					{
@@ -556,15 +554,40 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		if (configChanged.getGroup().equals(GpuPluginConfig.GROUP))
 		{
-			if (configChanged.getKey().equals("unlockFps"))
+			if (configChanged.getKey().equals("unlockFps")
+				|| configChanged.getKey().equals("vsyncMode")
+				|| configChanged.getKey().equals("fpsTarget"))
 			{
-				boolean unlockFps = Boolean.parseBoolean(configChanged.getNewValue());
-				clientThread.invokeLater(() ->
-				{
-					client.setUnlockedFps(unlockFps);
-					invokeOnMainThread(() -> gl.setSwapInterval(unlockFps ? -1 : 0));
-				});
+				log.debug("Rebuilding sync mode");
+				clientThread.invokeLater(() -> invokeOnMainThread(this::setupSyncMode));
 			}
+		}
+	}
+
+	private void setupSyncMode()
+	{
+		final boolean unlockFps = config.unlockFps();
+		client.setUnlockedFps(unlockFps);
+
+		// Without unlocked fps, the client manages sync on its 20ms timer
+		GpuPluginConfig.SyncMode syncMode = unlockFps
+			? this.config.syncMode()
+			: GpuPluginConfig.SyncMode.OFF;
+
+		switch (syncMode)
+		{
+			case ON:
+				gl.setSwapInterval(1);
+				client.setUnlockedFpsTarget(0);
+				break;
+			case OFF:
+				gl.setSwapInterval(0);
+				client.setUnlockedFpsTarget(config.fpsTarget()); // has no effect with unlockFps=false
+				break;
+			case ADAPTIVE:
+				gl.setSwapInterval(-1);
+				client.setUnlockedFpsTarget(0);
+				break;
 		}
 	}
 

@@ -418,7 +418,7 @@ public class MusicPlugin extends Plugin
 		if (tracks == null)
 		{
 			tracks = Arrays.stream(musicList.getDynamicChildren())
-				.sorted(Comparator.comparing(Widget::getRelativeY))
+				.sorted(Comparator.comparingInt(Widget::getRelativeY))
 				.collect(Collectors.toList());
 		}
 

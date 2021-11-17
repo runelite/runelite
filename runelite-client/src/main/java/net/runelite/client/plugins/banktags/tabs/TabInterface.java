@@ -316,7 +316,7 @@ public class TabInterface
 			return;
 		}
 
-		chatboxPanelManager.openTextInput((inventory ? "Inventory " : "Equipment ") + " tags:")
+		chatboxPanelManager.openTextInput((inventory ? "Inventory" : "Equipment") + " tags:")
 			.addCharValidator(FILTERED_CHARS)
 			.onDone((Consumer<String>) (newTags) ->
 				clientThread.invoke(() ->
@@ -573,7 +573,7 @@ public class TabInterface
 
 		switch (eventName)
 		{
-			case "setBankScroll":
+			case "skipBankLayout":
 				if (!isTabMenuActive())
 				{
 					setTabMenuVisible(false);
@@ -582,11 +582,8 @@ public class TabInterface
 
 				setTabMenuVisible(true);
 
-				// scroll height
-				intStack[intStackSize - 3] = (((tabManager.getTabs().size() - 1) / BANK_ITEMS_PER_ROW) + 1) * (BANK_ITEM_HEIGHT + BANK_ITEM_Y_PADDING);
-
 				// skip normal bank layout
-				intStack[intStackSize - 2] = 1;
+				intStack[intStackSize - 1] = 1;
 				break;
 			case "beforeBankLayout":
 				setTabMenuVisible(false);
