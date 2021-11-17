@@ -492,8 +492,6 @@ public class TimersPlugin extends Plugin
 		{
 			lastTeleportClicked = teleportWidget;
 		}
-		
-		event.setMenuAction(MenuAction.ITEM_FIRST_OPTION);
 	}
 
 	@Subscribe
