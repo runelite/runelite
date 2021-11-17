@@ -29,28 +29,16 @@ package net.runelite.client.plugins.timers;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.Constants;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.*;
+
 import static net.runelite.api.ItemID.FIRE_CAPE;
 import static net.runelite.api.ItemID.INFERNAL_CAPE;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.Player;
-import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
+
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.AnimationChanged;
@@ -493,10 +481,19 @@ public class TimersPlugin extends Plugin
 		}
 
 		TeleportWidget teleportWidget = TeleportWidget.of(event.getParam1());
+		// check for Group Iron Man Helm Teleport
+		if (event.getMenuOption().contains("Teleport")
+				&& event.getMenuTarget().toLowerCase(Locale.ROOT).contains("group iron helm"))
+		{
+			teleportWidget = TeleportWidget.HOME_TELEPORT;
+		}
+
 		if (teleportWidget != null)
 		{
 			lastTeleportClicked = teleportWidget;
 		}
+		
+		event.setMenuAction(MenuAction.ITEM_FIRST_OPTION);
 	}
 
 	@Subscribe
@@ -952,7 +949,8 @@ public class TimersPlugin extends Plugin
 			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
 			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
-			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6))
+			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6
+			|| lastAnimation == AnimationID.GROUP_IRON_HELM_TELEPORT))
 		{
 			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
 			{
