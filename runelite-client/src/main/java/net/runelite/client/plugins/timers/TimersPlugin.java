@@ -482,19 +482,14 @@ public class TimersPlugin extends Plugin
 
 		TeleportWidget teleportWidget = TeleportWidget.of(event.getParam1());
 		// check for Group Iron Man Helm Teleport
-		final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
-		final int helmId = itemContainer.getItems()[EquipmentInventorySlot.HEAD.getSlotIdx()].getId();
 		if (event.getMenuOption().contains("Teleport")
-			&& (helmId == ItemID.GROUP_IRON_HELM
-			|| helmId == ItemID.HARDCORE_GROUP_IRON_HELM))
+			&& event.getMenuTarget().toLowerCase(Locale.ROOT).contains("group iron helm"))
 		{
 			teleportWidget = TeleportWidget.HOME_TELEPORT;
 		}
 
-		if (teleportWidget != null)
-		{
-			lastTeleportClicked = teleportWidget;
-		}
+		log.info("menuOptionClicked");
+		lastTeleportClicked = teleportWidget;
 	}
 
 	@Subscribe
@@ -946,6 +941,8 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
+		log.info("lastTeleportClicked: " + lastTeleportClicked);
+
 		if (config.showHomeMinigameTeleports()
 			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
@@ -956,7 +953,6 @@ public class TimersPlugin extends Plugin
 			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
 			{
 				createGameTimer(HOME_TELEPORT);
-				lastTeleportClicked = null;
 			}
 			else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT)
 			{
