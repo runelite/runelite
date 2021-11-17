@@ -482,8 +482,11 @@ public class TimersPlugin extends Plugin
 
 		TeleportWidget teleportWidget = TeleportWidget.of(event.getParam1());
 		// check for Group Iron Man Helm Teleport
+		final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		final int helmId = itemContainer.getItems()[EquipmentInventorySlot.HEAD.getSlotIdx()].getId();
 		if (event.getMenuOption().contains("Teleport")
-				&& event.getMenuTarget().toLowerCase(Locale.ROOT).contains("group iron helm"))
+			&& (helmId == ItemID.GROUP_IRON_HELM
+			|| helmId == ItemID.HARDCORE_GROUP_IRON_HELM))
 		{
 			teleportWidget = TeleportWidget.HOME_TELEPORT;
 		}
