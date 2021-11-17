@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
@@ -92,6 +93,10 @@ public class FarmingContractManagerTest
 	@Mock
 	@Bind
 	private ScheduledExecutorService executor;
+
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
 
 	@Before
 	public void before()
