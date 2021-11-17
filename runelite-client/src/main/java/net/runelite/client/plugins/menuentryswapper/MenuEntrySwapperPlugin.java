@@ -361,6 +361,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("wear", "teleport", config::swapTeleportItem);
 		swap("wield", "teleport", config::swapTeleportItem);
 		swap("wield", "invoke", config::swapTeleportItem);
+		swap("wear", "teleports", config::swapTeleportItem);
 
 		swap("wear", "farm teleport", () -> config.swapArdougneCloakMode() == ArdougneCloakMode.FARM);
 		swap("wear", "monastery teleport", () -> config.swapArdougneCloakMode() == ArdougneCloakMode.MONASTERY);
@@ -408,8 +409,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("eat", "guzzle", config::swapRockCake);
 
 		swap("travel", "dive", config::swapRowboatDive);
-
-		swap("wear", "teleports", () -> config.swapMaxCapeMode() == MenuEntrySwapperConfig.MaxCapeMode.TELEPORTS);
 	}
 
 	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
