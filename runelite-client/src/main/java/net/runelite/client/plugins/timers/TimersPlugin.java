@@ -488,11 +488,6 @@ public class TimersPlugin extends Plugin
 			teleportWidget = TeleportWidget.HOME_TELEPORT;
 		}
 
-		log.info("EventId: " + event.getId());
-		log.info("Param0: " + event.getParam0());
-		log.info("Param1 : " + event.getParam1());
-		log.info("ActionParam: " + event.getActionParam());
-
 		if (teleportWidget != null)
 		{
 			lastTeleportClicked = teleportWidget;
