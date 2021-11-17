@@ -488,6 +488,11 @@ public class TimersPlugin extends Plugin
 			teleportWidget = TeleportWidget.HOME_TELEPORT;
 		}
 
+		log.info("EventId: " + event.getId());
+		log.info("Param0: " + event.getParam0());
+		log.info("Param1 : " + event.getParam1());
+		log.info("ActionParam: " + event.getActionParam());
+
 		if (teleportWidget != null)
 		{
 			lastTeleportClicked = teleportWidget;
@@ -948,11 +953,12 @@ public class TimersPlugin extends Plugin
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
 			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
 			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6
-			|| lastAnimation == AnimationID.GROUP_IRON_HELM_TELEPORT))
+			|| lastAnimation == AnimationID.GENERIC_TELEPORT))
 		{
 			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
 			{
 				createGameTimer(HOME_TELEPORT);
+				lastTeleportClicked = null;
 			}
 			else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT)
 			{
