@@ -45,7 +45,9 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
@@ -135,6 +137,10 @@ public class HiscorePanel extends PluginPanel
 
 	/* Used to prevent users from switching endpoint tabs while the results are loading */
 	private boolean loading = false;
+
+	// Used to pass the name of the currently looked up player to Hiscore pages
+	// This is only non-null when a player has been successfully been found
+	private String currUsername = null;
 
 	@Inject
 	public HiscorePanel(@Nullable Client client, HiscorePlugin plugin, HiscoreConfig config,
@@ -356,6 +362,54 @@ public class HiscorePanel extends PluginPanel
 		skillLabels.put(skill, label);
 		skillPanel.add(label);
 
+		// If skill is null, it's combat level
+		if (skill != null)
+		{
+			final JPopupMenu popupMenu = new JPopupMenu();
+			popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+			if (skill == CLUE_SCROLL_ALL)
+			{
+				final JMenuItem allHiscore = new JMenuItem("Open " + skill.getName() + " Hiscores");
+				allHiscore.addActionListener(e -> plugin.openHiscoreLink(skill, selectedEndPoint, currUsername));
+
+				final JMenuItem beginnerHiscore = new JMenuItem("Open " + CLUE_SCROLL_BEGINNER.getName() + " Hiscores");
+				beginnerHiscore.addActionListener(e -> plugin.openHiscoreLink(CLUE_SCROLL_BEGINNER, selectedEndPoint, currUsername));
+
+				final JMenuItem easyHiscore = new JMenuItem("Open " + CLUE_SCROLL_EASY.getName() + " Hiscores");
+				easyHiscore.addActionListener(e -> plugin.openHiscoreLink(CLUE_SCROLL_EASY, selectedEndPoint, currUsername));
+
+				final JMenuItem mediumHiscore = new JMenuItem("Open " + CLUE_SCROLL_MEDIUM.getName() + " Hiscores");
+				mediumHiscore.addActionListener(e -> plugin.openHiscoreLink(CLUE_SCROLL_MEDIUM, selectedEndPoint, currUsername));
+
+				final JMenuItem hardHiscore = new JMenuItem("Open " + CLUE_SCROLL_HARD.getName() + " Hiscores");
+				hardHiscore.addActionListener(e -> plugin.openHiscoreLink(CLUE_SCROLL_HARD, selectedEndPoint, currUsername));
+
+				final JMenuItem eliteHiscore = new JMenuItem("Open " + CLUE_SCROLL_ELITE.getName() + " Hiscores");
+				eliteHiscore.addActionListener(e -> plugin.openHiscoreLink(CLUE_SCROLL_ELITE, selectedEndPoint, currUsername));
+
+				final JMenuItem masterHiscore = new JMenuItem("Open " + CLUE_SCROLL_MASTER.getName() + " Hiscores");
+				masterHiscore.addActionListener(e -> plugin.openHiscoreLink(CLUE_SCROLL_MASTER, selectedEndPoint, currUsername));
+
+				popupMenu.add(allHiscore);
+				popupMenu.add(beginnerHiscore);
+				popupMenu.add(easyHiscore);
+				popupMenu.add(mediumHiscore);
+				popupMenu.add(hardHiscore);
+				popupMenu.add(eliteHiscore);
+				popupMenu.add(masterHiscore);
+			}
+			else
+			{
+				final JMenuItem skillHiscore = new JMenuItem("Open " + skill.getName() + " Hiscores");
+				skillHiscore.addActionListener(e -> plugin.openHiscoreLink(skill, selectedEndPoint, currUsername));
+
+				popupMenu.add(skillHiscore);
+			}
+
+			skillPanel.setComponentPopupMenu(popupMenu);
+		}
+
 		return skillPanel;
 	}
 
@@ -422,6 +476,7 @@ public class HiscorePanel extends PluginPanel
 					searchBar.setIcon(IconTextField.Icon.ERROR);
 					searchBar.setEditable(true);
 					loading = false;
+					currUsername = null;
 					return;
 				}
 
@@ -429,6 +484,7 @@ public class HiscorePanel extends PluginPanel
 				searchBar.setIcon(IconTextField.Icon.SEARCH);
 				searchBar.setEditable(true);
 				loading = false;
+				currUsername = searchBar.getText();
 
 				applyHiscoreResult(result);
 			}));
