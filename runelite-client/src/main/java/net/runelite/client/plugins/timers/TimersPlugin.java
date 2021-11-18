@@ -513,7 +513,8 @@ public class TimersPlugin extends Plugin
 				&& (getEquipmentItemID(event) == ItemID.HARDCORE_GROUP_IRON_HELM
 				|| getEquipmentItemID(event) == ItemID.GROUP_IRON_HELM
 				|| event.getId() == ItemID.HARDCORE_GROUP_IRON_HELM
-				|| event.getId() == ItemID.GROUP_IRON_HELM)) {
+				|| event.getId() == ItemID.GROUP_IRON_HELM))
+		{
 			groupIronTeleport = true;
 			return;
 		}
@@ -975,18 +976,25 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showHomeMinigameTeleports()
-				&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE) {
+				&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE)
+		{
+			if (groupIronTeleport && lastAnimation == AnimationID.TELEPORT_EMOTE)
+			{
+				createGameTimer(HOME_TELEPORT);
+			}
+			
 			if (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
 					|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
-					|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6) {
-				if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT) {
+					|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6)
+			{
+				if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
+				{
 					createGameTimer(HOME_TELEPORT);
-				} else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT) {
+				}
+				else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT)
+				{
 					createGameTimer(MINIGAME_TELEPORT);
 				}
-			}
-			if (groupIronTeleport && lastAnimation == AnimationID.TELEPORT_EMOTE) {
-				createGameTimer(HOME_TELEPORT);
 			}
 		}
 
