@@ -146,7 +146,7 @@ public class TimersPlugin extends Plugin
 	private int lastAnimation;
 	private boolean widgetHiddenChangedOnPvpWorld;
 	private ElapsedTimer tzhaarTimer;
-	private boolean gimHelmTeleportClicked;
+	private boolean gimHelmTeleportClickedLast;
 
 	@Inject
 	private ItemManager itemManager;
@@ -482,12 +482,13 @@ public class TimersPlugin extends Plugin
 		}
 
 		TeleportWidget teleportWidget = TeleportWidget.of(event.getParam1());
-		if (teleportWidget != null) {
+		if (teleportWidget != null)
+		{
 			lastTeleportClicked = teleportWidget;
 		}
 
 		// check for Group Iron Man Helm Teleport
-		gimHelmTeleportClicked = event.getMenuOption().contains("Teleport")
+		gimHelmTeleportClickedLast = event.getMenuOption().contains("Teleport")
 				&& event.getMenuTarget().toLowerCase(Locale.ROOT).contains("group iron helm");
 	}
 
@@ -940,16 +941,13 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		log.info("lastTeleportClicked: " + lastTeleportClicked);
-
 		if (config.showHomeMinigameTeleports()
 			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
 			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
-			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6
-			|| lastAnimation == AnimationID.GENERIC_TELEPORT))
+			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6))
 		{
-			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT || gimHelmTeleportClicked)
+			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
 			{
 				createGameTimer(HOME_TELEPORT);
 			}
@@ -957,6 +955,15 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(MINIGAME_TELEPORT);
 			}
+		}
+
+		// group ironman helm teleport
+		if (config.showHomeMinigameTeleports()
+			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
+			&& lastAnimation == AnimationID.GENERIC_TELEPORT
+			&& gimHelmTeleportClickedLast)
+		{
+			createGameTimer(HOME_TELEPORT);
 		}
 
 		if (config.showDFSSpecial() && lastAnimation == AnimationID.DRAGONFIRE_SHIELD_SPECIAL)
