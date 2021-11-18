@@ -146,6 +146,7 @@ public class TimersPlugin extends Plugin
 	private int lastAnimation;
 	private boolean widgetHiddenChangedOnPvpWorld;
 	private ElapsedTimer tzhaarTimer;
+	private boolean gimHelmTeleportClicked;
 
 	@Inject
 	private ItemManager itemManager;
@@ -481,15 +482,13 @@ public class TimersPlugin extends Plugin
 		}
 
 		TeleportWidget teleportWidget = TeleportWidget.of(event.getParam1());
-		// check for Group Iron Man Helm Teleport
-		if (event.getMenuOption().contains("Teleport")
-			&& event.getMenuTarget().toLowerCase(Locale.ROOT).contains("group iron helm"))
-		{
-			teleportWidget = TeleportWidget.HOME_TELEPORT;
+		if (teleportWidget != null) {
+			lastTeleportClicked = teleportWidget;
 		}
 
-		log.info("menuOptionClicked");
-		lastTeleportClicked = teleportWidget;
+		// check for Group Iron Man Helm Teleport
+		gimHelmTeleportClicked = event.getMenuOption().contains("Teleport")
+				&& event.getMenuTarget().toLowerCase(Locale.ROOT).contains("group iron helm");
 	}
 
 	@Subscribe
@@ -950,7 +949,7 @@ public class TimersPlugin extends Plugin
 			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6
 			|| lastAnimation == AnimationID.GENERIC_TELEPORT))
 		{
-			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
+			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT || gimHelmTeleportClicked)
 			{
 				createGameTimer(HOME_TELEPORT);
 			}
