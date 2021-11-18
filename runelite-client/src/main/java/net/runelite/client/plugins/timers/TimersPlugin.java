@@ -439,13 +439,17 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	private int getEquipmentItemID(MenuOptionClicked event) {
-		if(EQUIPMENT.getGroupId() == TO_GROUP(event.getParam1())) {
+	private int getEquipmentItemID(MenuOptionClicked event)
+	{
+		if(EQUIPMENT.getGroupId() == TO_GROUP(event.getParam1()))
+		{
 			return client.getWidget(
 					TO_GROUP(event.getParam1()),
 					TO_CHILD(event.getParam1())
 			).getChild(1).getItemId();
-		} else {
+		}
+		else
+		{
 			return -1;
 		}
 	}
@@ -982,7 +986,7 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(HOME_TELEPORT);
 			}
-			
+
 			if (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
 					|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
 					|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6)
