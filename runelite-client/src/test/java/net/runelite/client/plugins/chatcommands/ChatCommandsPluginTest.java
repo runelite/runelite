@@ -324,29 +324,29 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testDuelArenaWin()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You won! You have now won 27 duels.", null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You won! You have now won 1,909 duels.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setRSProfileConfiguration("killcount", "duel arena wins", 27);
+		chatMessageEvent = new ChatMessage(null, TRADE, "", "You have lost 1,999 duels.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "duel arena wins", 1909);
 		verify(configManager).setRSProfileConfiguration("killcount", "duel arena win streak", 1);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "duel arena losses", 1999);
 	}
 
 	@Test
-	public void testDuelArenaWin2()
+	public void testDuelArenaLoss()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You were defeated! You have won 22 duels.", null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You were defeated! You have won 1,909 duels.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setRSProfileConfiguration("killcount", "duel arena wins", 22);
-	}
-
-	@Test
-	public void testDuelArenaLose()
-	{
-		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You have now lost 999 duels.", null, 0);
+		chatMessageEvent = new ChatMessage(null, TRADE, "", "You have now lost 1999 duels.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setRSProfileConfiguration("killcount", "duel arena losses", 999);
+		verify(configManager).setRSProfileConfiguration("killcount", "duel arena wins", 1909);
+		verify(configManager).setRSProfileConfiguration("killcount", "duel arena losses", 1999);
 	}
 
 	@Test
