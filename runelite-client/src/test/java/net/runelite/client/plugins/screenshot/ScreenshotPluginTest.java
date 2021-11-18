@@ -31,6 +31,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
+import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
@@ -60,6 +61,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -135,6 +137,7 @@ public class ScreenshotPluginTest
 		when(screenshotConfig.valuableDropThreshold()).thenReturn(1000);
 		when(screenshotConfig.screenshotUntradeableDrop()).thenReturn(true);
 		when(screenshotConfig.screenshotCollectionLogEntries()).thenReturn(true);
+		when(screenshotConfig.screenshotDuels()).thenReturn(true);
 	}
 
 	@Test
@@ -423,5 +426,33 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verifyNoMoreInteractions(drawManager);
+	}
+
+	@Test
+	public void testDuelWin()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You won! You have now won 1,909 duels.", null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+
+		chatMessageEvent = new ChatMessage(null, TRADE, "", "You have lost 145 duels.", null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verifyNoMoreInteractions(drawManager);
+	}
+
+	@Test
+	public void testDuelLoss()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You were defeated! You have won 1,909 duels.", null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(drawManager, never()).requestNextFrameListener(any(Consumer.class));
+
+		chatMessageEvent = new ChatMessage(null, TRADE, "", "You have now lost 1,909 duels.", null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
 	}
 }
