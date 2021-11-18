@@ -439,9 +439,10 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+
 	private int getEquipmentItemID(MenuOptionClicked event)
 	{
-		if(EQUIPMENT.getGroupId() == TO_GROUP(event.getParam1()))
+		if (EQUIPMENT.getGroupId() == TO_GROUP(event.getParam1()))
 		{
 			return client.getWidget(
 					TO_GROUP(event.getParam1()),
@@ -452,8 +453,8 @@ public class TimersPlugin extends Plugin
 		{
 			return -1;
 		}
-
 	}
+
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
