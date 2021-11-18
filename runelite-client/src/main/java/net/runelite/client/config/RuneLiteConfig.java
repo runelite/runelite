@@ -222,10 +222,23 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notificationTimeout",
+		name = "Notification timeout",
+		description = "How long notification will be shown in milliseconds. A value of 0 will make it use the system configuration. (Linux only)",
+		position = 23,
+		section = notificationSettings
+	)
+	@Units(Units.MILLISECONDS)
+	default int notificationTimeout()
+	{
+		return 10000;
+	}
+
+	@ConfigItem(
 		keyName = "notificationGameMessage",
 		name = "Game message notifications",
 		description = "Adds a notification message to the chatbox",
-		position = 23,
+		position = 24,
 		section = notificationSettings
 	)
 	default boolean enableGameMessageNotification()
@@ -237,7 +250,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "flashNotification",
 		name = "Flash",
 		description = "Flashes the game frame as a notification",
-		position = 24,
+		position = 25,
 		section = notificationSettings
 	)
 	default FlashNotification flashNotification()
@@ -249,7 +262,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
 		description = "Toggles all notifications for when the client is focused",
-		position = 25,
+		position = 26,
 		section = notificationSettings
 	)
 	default boolean sendNotificationsWhenFocused()
@@ -262,7 +275,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationFlashColor",
 		name = "Notification Flash",
 		description = "Sets the color of the notification flashes.",
-		position = 26,
+		position = 27,
 		section = notificationSettings
 	)
 	default Color notificationFlashColor()
