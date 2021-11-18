@@ -64,6 +64,9 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import static net.runelite.api.widgets.WidgetInfo.EQUIPMENT;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -143,6 +146,7 @@ public class TimersPlugin extends Plugin
 
 	private TimerTimer staminaTimer;
 	private boolean wasWearingEndurance;
+	private boolean groupIronTeleport;
 
 	private int lastRaidVarb;
 	private int lastVengCooldownVarb;
@@ -435,6 +439,17 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	private int getEquipmentItemID(MenuOptionClicked event) {
+		if(EQUIPMENT.getGroupId() == TO_GROUP(event.getParam1())) {
+			return client.getWidget(
+					TO_GROUP(event.getParam1()),
+					TO_CHILD(event.getParam1())
+			).getChild(1).getItemId();
+		} else {
+			return -1;
+		}
+	}
+
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
@@ -489,6 +504,17 @@ public class TimersPlugin extends Plugin
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(EXSUPERANTIFIRE);
+			return;
+		}
+
+		groupIronTeleport = false;
+		if (config.showHomeMinigameTeleports()
+				&& event.getMenuOption().contains("Teleport")
+				&& (getEquipmentItemID(event) == ItemID.HARDCORE_GROUP_IRON_HELM
+				|| getEquipmentItemID(event) == ItemID.GROUP_IRON_HELM
+				|| event.getId() == ItemID.HARDCORE_GROUP_IRON_HELM
+				|| event.getId() == ItemID.GROUP_IRON_HELM)) {
+			groupIronTeleport = true;
 			return;
 		}
 
@@ -949,18 +975,18 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showHomeMinigameTeleports()
-			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
-			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
-			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
-			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6))
-		{
-			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
-			{
-				createGameTimer(HOME_TELEPORT);
+				&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE) {
+			if (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
+					|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
+					|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6) {
+				if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT) {
+					createGameTimer(HOME_TELEPORT);
+				} else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT) {
+					createGameTimer(MINIGAME_TELEPORT);
+				}
 			}
-			else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT)
-			{
-				createGameTimer(MINIGAME_TELEPORT);
+			if (groupIronTeleport && lastAnimation == AnimationID.TELEPORT_EMOTE) {
+				createGameTimer(HOME_TELEPORT);
 			}
 		}
 

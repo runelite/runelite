@@ -187,6 +187,7 @@ public final class AnimationID
 	public static final int DEMONIC_GORILLA_AOE_ATTACK = 7228;
 	public static final int DEMONIC_GORILLA_PRAYER_SWITCH = 7228;
 	public static final int DEMONIC_GORILLA_DEFEND = 7224;
+	public static final int TELEPORT_EMOTE = 714;
 	public static final int BOOK_HOME_TELEPORT_1 = 4847;
 	public static final int BOOK_HOME_TELEPORT_2 = 4850;
 	public static final int BOOK_HOME_TELEPORT_3 = 4853;
