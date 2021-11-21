@@ -36,7 +36,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -68,8 +67,6 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.Triple;
 
 @PluginDescriptor(
 	name = "Bank",
@@ -267,15 +264,14 @@ public class BankPlugin extends Plugin
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			Triple<Boolean, Long, Long> result = getContainerGEandAlchPrice(WidgetInfo.BANK_ITEM_CONTAINER, InventoryID.BANK);
-			if (!result.getLeft()) {
+			Price price = getContainerGEandAlchPrice(WidgetInfo.BANK_ITEM_CONTAINER, InventoryID.BANK);
+			if (price == null)
+			{
 				return;
 			}
 
-			long geTotal = result.getMiddle();
-			long haTotal = result.getRight();
 			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-			bankTitle.setText(bankTitle.getText() + createValueText(geTotal, haTotal));
+			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHaPrice()));
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
 		{
@@ -288,16 +284,16 @@ public class BankPlugin extends Plugin
 				searchString = inputText;
 			}
 		}
-		else if (event.getScriptId() == ScriptID.GROUP_STORAGE_ITEM_CONTAINER) {
-			Triple<Boolean, Long, Long> result = getContainerGEandAlchPrice(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER, InventoryID.GROUP_STORAGE);
-			if (!result.getLeft()) {
+		else if (event.getScriptId() == ScriptID.GROUP_STORAGE_ITEM_CONTAINER)
+		{
+			Price price = getContainerGEandAlchPrice(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER, InventoryID.GROUP_STORAGE);
+			if (price == null)
+			{
 				return;
 			}
 
-			long geTotal = result.getMiddle();
-			long haTotal = result.getRight();
 			Widget bankTitle = client.getWidget(WidgetInfo.GROUP_STORAGE_TITLE_BAR).getChild(1);
-			bankTitle.setText(bankTitle.getText() + createValueText(geTotal, haTotal));
+			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHaPrice()));
 		}
 	}
 
@@ -535,29 +531,34 @@ public class BankPlugin extends Plugin
 		}
 	}
 
-	private Triple<Boolean, Long, Long> getContainerGEandAlchPrice(WidgetInfo widgetInfo, InventoryID inventoryID) {
+	private Price getContainerGEandAlchPrice(WidgetInfo widgetInfo, InventoryID inventoryID)
+	{
 		final Widget bankItemContainer = client.getWidget(widgetInfo);
 		final ItemContainer bankContainer = client.getItemContainer(inventoryID);
 		final Widget[] children = bankItemContainer.getChildren();
-		long geTotal = 0, haTotal = 0;
-		boolean success = false;
+		Price price = null;
 
-		if (bankContainer != null && children != null) {
-			success = true;
+		if (bankContainer != null && children != null)
+		{
+			long geTotal = 0, haTotal = 0;
 			log.debug("Computing bank price of {} items", bankContainer.size());
 
 			// The first components are the bank items, followed by tabs etc. There are always 816 components regardless
 			// of bank size, but we only need to check up to the bank size.
-			for (int i = 0; i < bankContainer.size(); ++i) {
+			for (int i = 0; i < bankContainer.size(); ++i)
+			{
 				Widget child = children[i];
-				if (child != null && !child.isSelfHidden() && child.getItemId() > -1) {
+				if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
+				{
 					final int alchPrice = getHaPrice(child.getItemId());
 					geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
 					haTotal += (long) alchPrice * child.getItemQuantity();
 				}
 			}
+
+			price = new Price(geTotal, haTotal);
 		}
 
-		return new ImmutableTriple(success, geTotal, haTotal);
+		return price;
 	}
 }
