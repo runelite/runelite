@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -46,6 +48,7 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
 
+@Slf4j
 class ItemPricesOverlay extends Overlay
 {
 	private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
@@ -145,7 +148,7 @@ class ItemPricesOverlay extends Overlay
 	private String makeValueTooltip(MenuEntry menuEntry)
 	{
 		// Disabling both disables all value tooltips
-		if (!config.showGEPrice() && !config.showHAValue())
+		if (!config.showGEPrice() && !config.showHAValue() && !config.showAlchProfit())
 		{
 			return null;
 		}
@@ -217,17 +220,17 @@ class ItemPricesOverlay extends Overlay
 		int haProfit = 0;
 		final int itemHaPrice = itemDef.getHaPrice();
 
-		if (config.showGEPrice())
+		if (config.showGEPrice() || config.showAlchProfit())
 		{
 			gePrice = itemManager.getItemPrice(id);
 		}
-		if (config.showHAValue())
+		if (config.showHAValue() || config.showAlchProfit())
 		{
 			haPrice = itemHaPrice;
 		}
-		if (gePrice > 0 && itemHaPrice > 0 && config.showAlchProfit())
+		if (gePrice > 0 && haPrice > 0 && config.showAlchProfit())
 		{
-			haProfit = calculateHAProfit(itemHaPrice, gePrice);
+			haProfit = calculateHAProfit(haPrice, gePrice);
 		}
 
 		if (gePrice > 0 || haPrice > 0)
@@ -240,7 +243,7 @@ class ItemPricesOverlay extends Overlay
 
 	private String stackValueText(int qty, int gePrice, int haValue, int haProfit)
 	{
-		if (gePrice > 0)
+		if (gePrice > 0 && config.showGEPrice())
 		{
 			itemStringBuilder.append("GE: ")
 				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
@@ -252,9 +255,9 @@ class ItemPricesOverlay extends Overlay
 					.append(" ea)");
 			}
 		}
-		if (haValue > 0)
+		if (haValue > 0 && config.showHAValue())
 		{
-			if (gePrice > 0)
+			if (gePrice > 0 && config.showGEPrice())
 			{
 				itemStringBuilder.append("</br>");
 			}
@@ -274,7 +277,12 @@ class ItemPricesOverlay extends Overlay
 		{
 			Color haColor = haProfitColor(haProfit);
 
-			itemStringBuilder.append("</br>");
+			if ((gePrice > 0 && config.showGEPrice())
+					|| (haValue > 0 && config.showHAValue()))
+			{
+				itemStringBuilder.append("</br>");
+			}
+
 			itemStringBuilder.append("HA Profit: ")
 				.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
 				.append(" gp");
@@ -294,8 +302,7 @@ class ItemPricesOverlay extends Overlay
 
 	private int calculateHAProfit(int haPrice, int gePrice)
 	{
-		int natureRunePrice = itemManager.getItemPrice(ItemID.NATURE_RUNE);
-		return haPrice - gePrice - natureRunePrice;
+		return haPrice - gePrice;
 	}
 
 	private static Color haProfitColor(int haProfit)
