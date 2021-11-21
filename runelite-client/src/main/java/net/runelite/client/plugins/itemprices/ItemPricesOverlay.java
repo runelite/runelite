@@ -302,7 +302,8 @@ class ItemPricesOverlay extends Overlay
 
 	private int calculateHAProfit(int haPrice, int gePrice)
 	{
-		return haPrice - gePrice;
+		int natureRunePrice = itemManager.getItemPrice(ItemID.NATURE_RUNE);
+		return haPrice - gePrice - natureRunePrice;
 	}
 
 	private static Color haProfitColor(int haProfit)
