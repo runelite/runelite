@@ -44,7 +44,6 @@ import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.vars.Autoweed;
 import net.runelite.api.widgets.WidgetModalMode;
-import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.config.RuneScapeProfileType;
@@ -52,6 +51,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import net.runelite.client.plugins.timetracking.TimeTrackingNotifier;
 import net.runelite.client.util.Text;
 
 @Slf4j
@@ -63,7 +63,7 @@ public class FarmingTracker
 	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
 	private final FarmingWorld farmingWorld;
-	private final Notifier notifier;
+	private final TimeTrackingNotifier notifier;
 
 	private final Map<Tab, SummaryState> summaries = new EnumMap<>(Tab.class);
 
@@ -79,7 +79,7 @@ public class FarmingTracker
 	private boolean firstNotifyCheck = true;
 
 	@Inject
-	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager, TimeTrackingConfig config, FarmingWorld farmingWorld, Notifier notifier)
+	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager, TimeTrackingConfig config, FarmingWorld farmingWorld, TimeTrackingNotifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -493,13 +493,24 @@ public class FarmingTracker
 		}
 	}
 
-	public void checkCompletion()
+	/**
+	 * @param onLogin whether this check is performed on player login as part of persistent notifications
+	 */
+	public void checkCompletion(boolean onLogin)
 	{
 		List<RuneScapeProfile> rsProfiles = configManager.getRSProfiles();
 		long unixNow = Instant.now().getEpochSecond();
 
 		for (RuneScapeProfile profile : rsProfiles)
 		{
+			// if this is an 'on-login' call, we only send notifications for the currently logged in player
+			boolean sameAccount = client.getGameState() == GameState.LOGGED_IN && profile.getDisplayName().equals(client.getLocalPlayer().getName());
+			boolean sameProfileType = profile.getType() == RuneScapeProfileType.getCurrent(client);
+			if (onLogin && (!sameAccount || !sameProfileType))
+			{
+				continue;
+			}
+
 			Integer offsetPrecisionMins = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, int.class);
 			Integer offsetTimeMins = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), TimeTrackingConfig.FARM_TICK_OFFSET, int.class);
 
@@ -508,7 +519,8 @@ public class FarmingTracker
 				for (FarmingPatch patch : tab.getValue())
 				{
 					ProfilePatch profilePatch = new ProfilePatch(patch, profile.getKey());
-					boolean patchNotified = wasNotified.getOrDefault(profilePatch, false);
+					// if this is an 'on-login' check, we send notifications even if player was previously notified
+					boolean patchNotified = !onLogin && wasNotified.getOrDefault(profilePatch, false);
 					String configKey = patch.notifyConfigKey();
 					boolean shouldNotify = Boolean.TRUE
 						.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), configKey, Boolean.class));
@@ -529,9 +541,9 @@ public class FarmingTracker
 
 					wasNotified.put(profilePatch, true);
 
-					if (!firstNotifyCheck && shouldNotify)
+					if ((onLogin || !firstNotifyCheck) && shouldNotify)
 					{
-						sendNotification(profile, prediction, patch);
+						sendNotification(profile, prediction, patch, onLogin);
 					}
 				}
 			}
@@ -540,7 +552,7 @@ public class FarmingTracker
 	}
 
 	@VisibleForTesting
-	void sendNotification(RuneScapeProfile profile, PatchPrediction prediction, FarmingPatch patch)
+	void sendNotification(RuneScapeProfile profile, PatchPrediction prediction, FarmingPatch patch, boolean onLogin)
 	{
 		final RuneScapeProfileType profileType = profile.getType();
 
@@ -619,6 +631,6 @@ public class FarmingTracker
 			.append(patch.getRegion().getName())
 			.append(".");
 
-		notifier.notify(stringBuilder.toString());
+		notifier.notify(stringBuilder.toString(), onLogin);
 	}
 }

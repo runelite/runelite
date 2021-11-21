@@ -36,10 +36,10 @@ import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import joptsimple.internal.Strings;
 import lombok.Getter;
-import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.timetracking.SortOrder;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import net.runelite.client.plugins.timetracking.TimeTrackingNotifier;
 
 @Singleton
 public class ClockManager
@@ -51,7 +51,7 @@ public class ClockManager
 	private TimeTrackingConfig config;
 
 	@Inject
-	private Notifier notifier;
+	private TimeTrackingNotifier notifier;
 
 	@Inject
 	private Gson gson;
@@ -109,21 +109,23 @@ public class ClockManager
 
 	/**
 	 * Checks if any timers have completed, and send notifications if required.
+	 * @param onLogin whether this check is performed on player login as part of persistent notifications
 	 */
-	public boolean checkCompletion()
+	public boolean checkCompletion(boolean onLogin)
 	{
 		boolean changed = false;
 
 		for (Timer timer : timers)
 		{
-			if (timer.isActive() && timer.getDisplayTime() == 0)
+			// if this is an 'on-login' check, we send notifications even if player was previously notified
+			if ((onLogin || timer.isActive()) && timer.getDisplayTime() == 0)
 			{
 				timer.pause();
 				changed = true;
 
 				if (config.timerNotification())
 				{
-					notifier.notify("[" + timer.getName() + "] has finished counting down.");
+					notifier.notify("[" + timer.getName() + "] has finished counting down.", onLogin);
 				}
 
 				if (timer.isLoop())

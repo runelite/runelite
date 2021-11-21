@@ -38,6 +38,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.widgets.Widget;
@@ -98,6 +99,9 @@ public class TimeTrackingPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	private TimeTrackingConfig config;
+
 	private ScheduledFuture panelUpdateFuture;
 
 	private ScheduledFuture notifierFuture;
@@ -110,6 +114,9 @@ public class TimeTrackingPlugin extends Plugin
 	private boolean lastTickPostLogin;
 
 	private int lastModalCloseTick = 0;
+
+	private boolean isLoggedOut = true;
+	private boolean justLoggedIn = false;
 
 	@Provides
 	TimeTrackingConfig provideConfig(ConfigManager configManager)
@@ -139,7 +146,7 @@ public class TimeTrackingPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 		panelUpdateFuture = executorService.scheduleAtFixedRate(this::updatePanel, 200, 200, TimeUnit.MILLISECONDS);
-		notifierFuture = executorService.scheduleAtFixedRate(this::checkCompletion, 10, 10, TimeUnit.SECONDS);
+		notifierFuture = executorService.scheduleAtFixedRate(() -> checkCompletion(false), 10, 10, TimeUnit.SECONDS);
 	}
 
 	@Override
@@ -158,6 +165,20 @@ public class TimeTrackingPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 		infoBoxManager.removeInfoBox(farmingContractManager.getInfoBox());
 		farmingContractManager.setInfoBox(null);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN && isLoggedOut)
+		{
+			justLoggedIn = true;
+			isLoggedOut = false;
+		}
+		else if (event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			isLoggedOut = true;
+		}
 	}
 
 	@Subscribe
@@ -194,6 +215,21 @@ public class TimeTrackingPlugin extends Plugin
 
 	@Subscribe
 	public void onGameTick(GameTick t)
+	{
+		updateData();
+
+		// we're reacting to login here, and not in #onGameStateChanged, for Client to be fully initialised
+		if (justLoggedIn)
+		{
+			justLoggedIn = false;
+			if (config.persistentNotifications())
+			{
+				checkCompletion(true);
+			}
+		}
+	}
+
+	private void updateData()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -262,16 +298,22 @@ public class TimeTrackingPlugin extends Plugin
 		}
 	}
 
-	private void checkCompletion()
+	/**
+	 * @param onLogin whether this check is performed on player log-in as part of persistent notifications
+	 */
+	private void checkCompletion(boolean onLogin)
 	{
-		boolean birdHouseDataChanged = birdHouseTracker.checkCompletion();
+		boolean dataChanged = birdHouseTracker.checkCompletion(onLogin);
+		if (onLogin)
+		{
+			dataChanged |= clockManager.checkCompletion(true);
+		}
+		farmingTracker.checkCompletion(onLogin);
 
-		if (birdHouseDataChanged)
+		if (dataChanged)
 		{
 			panel.update();
 		}
-
-		farmingTracker.checkCompletion();
 	}
 
 	private void updatePanel()
@@ -283,7 +325,7 @@ public class TimeTrackingPlugin extends Plugin
 
 		if (unitTime % 5 == 0)
 		{
-			clockDataChanged = clockManager.checkCompletion();
+			clockDataChanged = clockManager.checkCompletion(false);
 			timerOrderChanged = clockManager.checkTimerOrder();
 			clockManager.checkForWarnings();
 		}

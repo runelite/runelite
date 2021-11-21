@@ -67,6 +67,17 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "persistentNotifications",
+		name = "Persistent notifications",
+		description = "Continue to notify you on login until timer is cleared",
+		position = 3
+	)
+	default boolean persistentNotifications()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "farmingContractInfoBox",
 		name = "Show farming contract infobox",
 		description = "Show an infobox of your current farming contract when inside the farming guild",
