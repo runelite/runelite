@@ -42,7 +42,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
-public class BarrowsBrotherSlainOverlay extends OverlayPanel
+class BarrowsBrotherSlainOverlay extends OverlayPanel
 {
 	private static final DecimalFormat REWARD_POTENTIAL_FORMATTER = new DecimalFormat("##0.00%");
 
@@ -61,19 +61,11 @@ public class BarrowsBrotherSlainOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		// Only render the brothers slain overlay if the vanilla interface is loaded
 		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
 		if (barrowsBrothers == null)
 		{
 			return null;
-		}
-
-		// Hide original brother and potential overlays
-		barrowsBrothers.setHidden(true);
-
-		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
-		if (potential != null)
-		{
-			potential.setHidden(true);
 		}
 
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
