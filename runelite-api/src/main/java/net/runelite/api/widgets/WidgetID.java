@@ -296,7 +296,9 @@ public final class WidgetID
 
 	static class GroupStorage
 	{
+		static final int TITLE = 2;
 		static final int ITEM_CONTAINER = 10;
+		static final int CONTAINER = 45;
 	}
 
 	static class GrandExchange
