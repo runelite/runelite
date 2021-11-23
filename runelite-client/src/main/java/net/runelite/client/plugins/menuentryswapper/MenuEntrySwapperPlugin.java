@@ -383,6 +383,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("wield", "battlestaff", "use", config::swapBattlestaves);
 
 		swap("fill", "seed box", "check", config::swapSeedBox);
+		swap("fill", "open seed box", "check", config::swapSeedBox);
 
 		swap("clean", "use", config::swapHerbs);
 
