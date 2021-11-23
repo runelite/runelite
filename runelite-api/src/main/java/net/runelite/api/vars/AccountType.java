@@ -65,6 +65,16 @@ public enum AccountType
 	}
 
 	/**
+	 * Checks whether this type is a non-group ultimate ironman.
+	 *
+	 * @return {@code true} if the type is any of the non-group ironman types.
+	 */
+	public boolean isUltimateIronman()
+	{
+		return this.ordinal() >= ULTIMATE_IRONMAN.ordinal();
+	}
+
+	/**
 	 * Checks whether this type is a group ironman.
 	 *
 	 * @return {@code true} if the type is either of the group ironman types.
