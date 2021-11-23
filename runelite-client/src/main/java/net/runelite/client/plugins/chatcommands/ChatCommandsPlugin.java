@@ -34,7 +34,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -351,9 +350,7 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			// CHECKSTYLE:OFF
-			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>()
-			{
-			}.getType());
+			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
@@ -765,33 +762,43 @@ public class ChatCommandsPlugin extends Plugin
 	private boolean killCountSubmit(ChatInput chatInput, String value)
 	{
 		int idx = value.indexOf(' ');
-		final String boss = longBossName(value.substring(idx + 1));
-
-		final int kc = getKc(boss);
-		if (kc <= 0)
+		final List<String> bosses = longBossNames(value.substring(idx + 1));
+		if (bosses.size() == 0)
 		{
-			return false;
+			bosses.add(longBossName(value.substring(idx + 1)));
 		}
 
-		final String playerName = client.getLocalPlayer().getName();
-
-		executor.execute(() ->
+		boolean submitted = false;
+		for (String boss : bosses)
 		{
-			try
+			final int kc = getKc(boss);
+			if (kc <= 0)
 			{
-				chatClient.submitKc(playerName, boss, kc);
+				continue;
 			}
-			catch (Exception ex)
-			{
-				log.warn("unable to submit killcount", ex);
-			}
-			finally
-			{
-				chatInput.resume();
-			}
-		});
 
-		return true;
+			final String playerName = client.getLocalPlayer().getName();
+
+			executor.execute(() ->
+			{
+				try
+				{
+					chatClient.submitKc(playerName, boss, kc);
+				}
+				catch (Exception ex)
+				{
+					log.warn("unable to submit killcount", ex);
+				}
+				finally
+				{
+					chatInput.resume();
+				}
+			});
+
+			submitted = true;
+		}
+
+		return submitted;
 	}
 
 	private void killCountLookup(ChatMessage chatMessage, String message)
@@ -819,7 +826,7 @@ public class ChatCommandsPlugin extends Plugin
 			player = Text.sanitize(chatMessage.getName());
 		}
 
-		List<String> searches = longBossesName(search);
+		List<String> searches = longBossNames(search);
 		if (searches.size() == 0)
 		{
 			searches.add(longBossName(search));
@@ -1292,7 +1299,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message     The chat message
+	 * @param message    The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -2200,7 +2207,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
-	private static List<String> longBossesName(String boss)
+	private static List<String> longBossNames(String boss)
 	{
 		switch (boss.toLowerCase())
 		{
