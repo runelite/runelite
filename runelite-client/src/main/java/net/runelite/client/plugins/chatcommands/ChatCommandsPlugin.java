@@ -839,7 +839,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (response.length() > 0)
 			{
-				response += " ";
+				response += ", ";
 			}
 			response += new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
