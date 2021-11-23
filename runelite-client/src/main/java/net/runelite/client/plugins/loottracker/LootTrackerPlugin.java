@@ -253,6 +253,9 @@ public class LootTrackerPlugin extends Plugin
 	private static final String TEMPOROSS_LOOT_STRING = "You found some loot: ";
 	private static final int TEMPOROSS_REGION = 12588;
 
+	// Mahogany Homes
+	private static final String MAHOGANY_CRATE_EVENT = "Supply crate (Mahogany Homes)";
+
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
 	@Inject
@@ -816,7 +819,8 @@ public class LootTrackerPlugin extends Plugin
 			|| BIRDNEST_EVENT.equals(eventType)
 			|| SPOILS_OF_WAR_EVENT.equals(eventType)
 			|| TEMPOROSS_EVENT.equals(eventType)
-			|| TEMPOROSS_CASKET_EVENT.equals(eventType))
+			|| TEMPOROSS_CASKET_EVENT.equals(eventType)
+			|| MAHOGANY_CRATE_EVENT.equals(eventType))
 		{
 			processInventoryLoot(eventType, lootRecordType, metadata, event.getItemContainer(), Collections.emptyList());
 			resetEvent();
@@ -874,6 +878,10 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.ELABORATE_LOCKBOX_25649:
 					case ItemID.ORNATE_LOCKBOX_25651:
 						setEvent(LootRecordType.EVENT, itemManager.getItemComposition(event.getId()).getName());
+						takeInventorySnapshot();
+						break;
+					case ItemID.SUPPLY_CRATE_24884:
+						setEvent(LootRecordType.EVENT, MAHOGANY_CRATE_EVENT, client.getBoostedSkillLevel(Skill.CONSTRUCTION));
 						takeInventorySnapshot();
 						break;
 				}
