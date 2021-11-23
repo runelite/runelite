@@ -204,8 +204,8 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapSeedBox",
-		name = "SeedBox",
-		description = "Swap Fill with Check on the seedbox",
+		name = "Seed box",
+		description = "Swap Fill with Check on the Seed box",
 		section = itemSection
 	)
 	default boolean swapSeedBox()
