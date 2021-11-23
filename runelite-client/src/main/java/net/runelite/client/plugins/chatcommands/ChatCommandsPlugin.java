@@ -832,7 +832,7 @@ public class ChatCommandsPlugin extends Plugin
 			searches.add(longBossName(search));
 		}
 
-		String response = "";
+		StringBuilder response = new StringBuilder();
 		for (String searchVal : searches)
 		{
 			final int kc;
@@ -848,23 +848,23 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (response.length() > 0)
 			{
-				response += ", ";
+				response.append(", ");
 			}
-			response += new ChatMessageBuilder()
+			response.append(new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
 				.append(searchVal)
 				.append(ChatColorType.NORMAL)
 				.append(" kill count: ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(String.format("%,d", kc))
-				.build();
+				.build());
 		}
 
 		if (response.length() > 0)
 		{
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = chatMessage.getMessageNode();
-			messageNode.setRuneLiteFormatMessage(response);
+			messageNode.setRuneLiteFormatMessage(response.toString());
 			chatMessageManager.update(messageNode);
 			client.refreshChat();
 		}
