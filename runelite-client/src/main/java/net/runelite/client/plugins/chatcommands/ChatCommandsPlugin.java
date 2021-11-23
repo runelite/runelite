@@ -37,7 +37,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Dictionary;
 import java.util.EnumSet;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -832,7 +836,7 @@ public class ChatCommandsPlugin extends Plugin
 			searches.add(longBossName(search));
 		}
 
-		StringBuilder response = new StringBuilder();
+		Map<String, Integer> bossToKc = new HashMap<>();
 		for (String searchVal : searches)
 		{
 			final int kc;
@@ -846,28 +850,36 @@ public class ChatCommandsPlugin extends Plugin
 				continue;
 			}
 
-			if (response.length() > 0)
-			{
-				response.append(", ");
-			}
-			response.append(new ChatMessageBuilder()
+			bossToKc.put(searchVal, kc);
+		}
+
+		if (bossToKc.isEmpty())
+		{
+			return;
+		}
+
+		ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder();
+		int keyCount = 1;
+		for (String boss : bossToKc.keySet())
+		{
+			chatMessageBuilder
 				.append(ChatColorType.HIGHLIGHT)
-				.append(searchVal)
+				.append(boss)
 				.append(ChatColorType.NORMAL)
 				.append(" kill count: ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", kc))
-				.build());
+				.append(String.format("%,d", bossToKc.get(boss)));
+			if (keyCount++ < bossToKc.size()) {
+				chatMessageBuilder.append(", ");
+			}
 		}
 
-		if (response.length() > 0)
-		{
-			log.debug("Setting response {}", response);
-			final MessageNode messageNode = chatMessage.getMessageNode();
-			messageNode.setRuneLiteFormatMessage(response.toString());
-			chatMessageManager.update(messageNode);
-			client.refreshChat();
-		}
+		String response = chatMessageBuilder.build();
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response.toString());
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
 	}
 
 	private boolean duelArenaSubmit(ChatInput chatInput, String value)
