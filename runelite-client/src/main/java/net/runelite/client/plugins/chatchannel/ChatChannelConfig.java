@@ -69,17 +69,6 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "targetMode",
-		name = "Target mode",
-		description = "Enables target changing mode via /f, /c, and /g which controls which channel messages are sent to.",
-		position = 1
-	)
-	default boolean targetMode()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "clanChatIcons",
 		name = "Chat Icons",
 		description = "Show rank icons next to friends chat members.",
