@@ -203,6 +203,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapSeedBox",
+			name = "SeedBox",
+			description = "Swap Fill with Check on the seedbox",
+			section = itemSection
+	)
+	default boolean swapSeedBox()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapPrayerBook",
 		name = "Recite-Prayer",
 		description = "Swap Read with Recite-prayer on the Prayer Book from The Great Brain Robbery quest",
