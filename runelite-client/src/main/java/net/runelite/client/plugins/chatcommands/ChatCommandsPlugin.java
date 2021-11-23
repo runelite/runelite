@@ -840,7 +840,8 @@ public class ChatCommandsPlugin extends Plugin
 				continue;
 			}
 
-			if (response.length() > 0) {
+			if (response.length() > 0)
+			{
 				response += " ";
 			}
 			response += new ChatMessageBuilder()
