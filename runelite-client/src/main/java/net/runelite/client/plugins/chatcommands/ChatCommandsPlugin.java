@@ -866,7 +866,8 @@ public class ChatCommandsPlugin extends Plugin
 				.append(" kill count: ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(String.format("%,d", bossToKc.get(boss)));
-			if (keyCount++ < bossToKc.size()) {
+			if (keyCount++ < bossToKc.size())
+			{
 				chatMessageBuilder.append(", ");
 			}
 		}
