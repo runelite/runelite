@@ -926,11 +926,11 @@ public final class WidgetID
 
 	static class Clan
 	{
-		static final int MEMBERS = 8;
+		static final int MEMBERS = 6;
 	}
 
 	static class ClanGuest
 	{
-		static final int MEMBERS = 8;
+		static final int MEMBERS = 6;
 	}
 }
