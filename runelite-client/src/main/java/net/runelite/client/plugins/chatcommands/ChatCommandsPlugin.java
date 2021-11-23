@@ -877,7 +877,7 @@ public class ChatCommandsPlugin extends Plugin
 		String response = chatMessageBuilder.build();
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
-		messageNode.setRuneLiteFormatMessage(response.toString());
+		messageNode.setRuneLiteFormatMessage(response);
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
