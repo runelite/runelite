@@ -1357,7 +1357,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message     The chat message
+	 * @param message    The chat message
 	 */
 	@VisibleForTesting
 	void playerSkillLookup(ChatMessage chatMessage, String message)
