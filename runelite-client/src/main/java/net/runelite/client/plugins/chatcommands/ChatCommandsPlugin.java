@@ -34,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -350,7 +351,9 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			// CHECKSTYLE:OFF
-			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>(){}.getType());
+			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>()
+			{
+			}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
@@ -816,33 +819,48 @@ public class ChatCommandsPlugin extends Plugin
 			player = Text.sanitize(chatMessage.getName());
 		}
 
-		search = longBossName(search);
-
-		final int kc;
-		try
+		List<String> searches = longBossesName(search);
+		if (searches.size() == 0)
 		{
-			kc = chatClient.getKc(player, search);
-		}
-		catch (IOException ex)
-		{
-			log.debug("unable to lookup killcount", ex);
-			return;
+			search = longBossName(search);
+			searches.add(search);
 		}
 
-		String response = new ChatMessageBuilder()
-			.append(ChatColorType.HIGHLIGHT)
-			.append(search)
-			.append(ChatColorType.NORMAL)
-			.append(" kill count: ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(String.format("%,d", kc))
-			.build();
+		String response = "";
+		for (String searchVal : searches)
+		{
+			final int kc;
+			try
+			{
+				kc = chatClient.getKc(player, searchVal);
+			}
+			catch (IOException ex)
+			{
+				log.debug("unable to lookup killcount", ex);
+				continue;
+			}
 
-		log.debug("Setting response {}", response);
-		final MessageNode messageNode = chatMessage.getMessageNode();
-		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
-		client.refreshChat();
+			if (response.length() > 0) {
+				response += " ";
+			}
+			response += new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(searchVal)
+				.append(ChatColorType.NORMAL)
+				.append(" kill count: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(String.format("%,d", kc))
+				.build();
+		}
+
+		if (response.length() > 0)
+		{
+			log.debug("Setting response {}", response);
+			final MessageNode messageNode = chatMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
+			client.refreshChat();
+		}
 	}
 
 	private boolean duelArenaSubmit(ChatInput chatInput, String value)
@@ -1274,7 +1292,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -1332,7 +1350,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	@VisibleForTesting
 	void playerSkillLookup(ChatMessage chatMessage, String message)
@@ -2179,6 +2197,21 @@ public class ChatCommandsPlugin extends Plugin
 
 			default:
 				return WordUtils.capitalize(boss);
+		}
+	}
+
+	private static List<String> longBossesName(String boss)
+	{
+		switch (boss.toLowerCase())
+		{
+			case "dks":
+				return Arrays.asList("Dagannoth Supreme", "Dagannoth Rex", "Dagannoth Prime");
+
+			case "gwd":
+				return Arrays.asList("Commander Zilyana", "K'ril Tsutsaroth", "Kree'arra", "General Graardor");
+
+			default:
+				return new ArrayList<String>();
 		}
 	}
 }
