@@ -351,9 +351,7 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			// CHECKSTYLE:OFF
-			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>()
-			{
-			}.getType());
+			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
@@ -822,8 +820,7 @@ public class ChatCommandsPlugin extends Plugin
 		List<String> searches = longBossesName(search);
 		if (searches.size() == 0)
 		{
-			search = longBossName(search);
-			searches.add(search);
+			searches.add(longBossName(search));
 		}
 
 		String response = "";
