@@ -1,0 +1,159 @@
+.id                 5517
+.int_stack_count    4
+.string_stack_count 1
+.int_var_count      4
+.string_var_count   2
+   get_varbit             4394
+   iconst                 1
+   if_icmpeq              LABEL4
+   jump                   LABEL23
+LABEL4:
+   iload                  0
+   iconst                 1
+   if_icmpeq              LABEL8
+   jump                   LABEL16
+LABEL8:
+   chat_playername       
+   sconst                 ": "
+   sconst                 "<col=2020ef>"
+   sload                  0
+   sconst                 "</col>"
+   join_string            5
+   mes                   
+   jump                   LABEL23
+LABEL16:
+   chat_playername       
+   sconst                 ": "
+   sconst                 "<col=0000ff>"
+   sload                  0
+   sconst                 "</col>"
+   join_string            5
+   mes                   
+LABEL23:
+   iload                  3
+   iconst                 -1
+   if_icmpne              LABEL27
+   jump                   LABEL33
+LABEL27:
+   iload                  3
+   iconst                 4
+   if_icmple              LABEL31
+   jump                   LABEL33
+LABEL31:
+   iload                  3
+   set_varc_int           945
+LABEL33:
+   iload                  2
+   iconst                 1
+   if_icmpeq              LABEL37
+   jump                   LABEL75
+LABEL37:
+   get_varc_int           945
+   switch                
+      1: LABEL40
+      2: LABEL61
+      3: LABEL66
+      4: LABEL71
+   jump                   LABEL75
+LABEL40:
+   iconst                 2
+   istore                 0
+   sload                  0
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL47
+   jump                   LABEL60
+LABEL47:
+   sload                  0
+   iconst                 0
+   iconst                 1
+   substring             
+   sconst                 "/"
+   compare               
+   iconst                 1
+   if_icmpeq              LABEL56
+   jump                   LABEL60
+LABEL56:
+   sconst                 "/"
+   sload                  0
+   append                
+   sstore                 0
+LABEL60:
+   jump                   LABEL75
+LABEL61:
+   iconst                 3
+   iconst                 0
+   istore                 1
+   istore                 0
+   jump                   LABEL75
+LABEL66:
+   iconst                 4
+   iconst                 0
+   istore                 1
+   istore                 0
+   jump                   LABEL75
+LABEL71:
+   iconst                 3
+   iconst                 1
+   istore                 1
+   istore                 0
+LABEL75:
+   sload                  0              ; load input
+   iload                  0              ; load chat type
+   iload                  1              ; load clan target
+   sconst                 "chatboxInput" ; event name
+   runelite_callback     ; invoke callback
+   pop_int               ; pop clan target
+   pop_int               ; pop chat type
+   string_length         ; get string length of chat message
+   iconst                 0              ; load 0
+   if_icmpne              CONTINUE       ; if length is not 0, continue
+   return                
+CONTINUE:
+   sconst                 ""
+   sstore                 1
+   iload                  0
+   iconst                 2
+   if_icmpeq              LABEL87
+   iload                  0
+   iconst                 3
+   if_icmpeq              LABEL87
+   iload                  0
+   iconst                 4
+   if_icmpeq              LABEL87
+   jump                   LABEL109
+LABEL87:
+   sload                  0
+   invoke                 5501
+   iconst                 1
+   if_icmpeq              LABEL92
+   jump                   LABEL96
+LABEL92:
+   sload                  0
+   invoke                 632
+   sstore                 0
+   sstore                 1
+LABEL96:
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL100
+   jump                   LABEL104
+LABEL100:
+   sconst                 "|"
+   sload                  0
+   append                
+   sstore                 0
+LABEL104:
+   sload                  0
+   iload                  0
+   iload                  1
+   chat_sendclan         
+   jump                   LABEL112
+LABEL109:
+   sload                  0
+   iload                  0
+   chat_sendpublic       
+LABEL112:
+   clientclock           
+   set_varc_int           61
+   return                
