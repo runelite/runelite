@@ -92,6 +92,7 @@ public class ItemStatChanges
 		add(food(perc(.1, 1)), COOKED_SWEETCORN, SWEETCORN_7088 /* Bowl of cooked sweetcorn */);
 		add(combo(food(1), boost(DEFENCE, perc(.02, 1))), CABBAGE_1967 /* Draynor Manor */);
 		add(combo(2, food(8), heal(RUN_ENERGY, 5)), PAPAYA_FRUIT);
+		add(combo(2, food(3), boost(ATTACK, 3)), CUP_OF_TEA);
 		add(range(food(5), food(7)), THIN_SNAIL_MEAT);
 		add(range(food(7), food(9)), FAT_SNAIL_MEAT);
 		add(range(food(7), food(10)), SPIDER_ON_STICK_6297, SPIDER_ON_SHAFT_6299);
@@ -106,13 +107,37 @@ public class ItemStatChanges
 		add(food(10), EEL_SUSHI);
 
 		// Alcoholic Beverages
+		// Many of these retrieved from https://oldschool.runescape.wiki/w/User:Choppe/Sandbox2
 		add(combo(food(11), dec(ATTACK, 2)), JUG_OF_WINE);
 		add(combo(food(14), dec(ATTACK, 3)), BOTTLE_OF_WINE);
 		add(combo(2, food(5), boost(STRENGTH, 6), heal(ATTACK, -4)), PREMADE_WIZ_BLZD, WIZARD_BLIZZARD);
 		add(combo(2, food(5), boost(STRENGTH, 4), heal(ATTACK, -3)), PREMADE_SGG, SHORT_GREEN_GUY);
 		add(combo(2, food(5), boost(STRENGTH, 7), heal(ATTACK, -4)), PREMADE_DR_DRAGON, DRUNK_DRAGON);
 		add(combo(2, food(5), boost(STRENGTH, 7), heal(ATTACK, -4)), PREMADE_CHOC_SDY, CHOC_SATURDAY);
+		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), BRANDY);
+		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), GIN);
+		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.04, 1)), new BoostedStatBoost(ATTACK, false, perc(0.05, -3))), GROG);
+		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), VODKA);
+		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), WHISKY);
+		add(combo(2, food(1), boost(STRENGTH, perc(.02, 1)), new BoostedStatBoost(ATTACK, false, perc(.06, -1))), BEER);
 		add(combo(4, boost(ATTACK, 5), boost(STRENGTH, 5), heal(MAGIC, -5), heal(PRAYER, -5)), BLOOD_PINT);
+		add(combo(2, food(1), boost(STRENGTH, 2), new BoostedStatBoost(ATTACK, false, perc(0.05, -2))), ASGARNIAN_ALE);
+		add(combo(5, food(1), boost(STRENGTH, 3), new BoostedStatBoost(ATTACK, false, perc(0.05, -3))), ASGARNIAN_ALEM);
+		add(combo(3, food(1), boost(WOODCUTTING, 1), new BoostedStatBoost(ATTACK, false, perc(0.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.02, -2))), AXEMANS_FOLLY);
+		add(combo(3, food(2), boost(WOODCUTTING, 2), new BoostedStatBoost(ATTACK, false, perc(0.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.02, -2))), AXEMANS_FOLLYM);
+		add(combo(4, food(1), boost(THIEVING, 1), boost(ATTACK, 1),  new BoostedStatBoost(DEFENCE, false, perc(0.06, -3)), new BoostedStatBoost(STRENGTH, false, perc(0.06, -3))), BANDITS_BREW);
+		add(combo(3, food(1), new SimpleStatBoost(COOKING, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.05, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.05, -2))), CHEFS_DELIGHT);
+		add(combo(3, food(2), new SimpleStatBoost(COOKING, true, perc(0.05, 2)), new BoostedStatBoost(ATTACK, false, perc(0.05, -3)), new BoostedStatBoost(STRENGTH, false, perc(0.05, -3))), CHEFS_DELIGHTM);
+		add(combo(3, food(1), boost(FARMING, 1), new BoostedStatBoost(ATTACK, false, perc(0.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.02, -2))), CIDER);
+		add(combo(3, food(2), boost(FARMING, 2), new BoostedStatBoost(ATTACK, false, perc(0.02, -3)), new BoostedStatBoost(STRENGTH, false, perc(0.02, -3))), CIDERM1);
+		add(combo(4, food(1), boost(HERBLORE, 1), new BoostedStatBoost(ATTACK, false, perc(0.04, -2)), new BoostedStatBoost(DEFENCE, false, perc(0.04, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.04, -2))), GREENMANS_ALE);
+		add(combo(4, food(2), boost(HERBLORE, 2), new BoostedStatBoost(ATTACK, false, perc(0.04, -3)), new BoostedStatBoost(DEFENCE, false, perc(0.04, -3)), new BoostedStatBoost(STRENGTH, false, perc(0.04, -3))), GREENMANS_ALEM);
+		add(combo(5, food(1), boost(MINING, 1), boost(SMITHING, 1), new BoostedStatBoost(ATTACK, false, perc(0.04, -2)), new BoostedStatBoost(DEFENCE, false, perc(0.04, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.04, -2))), DWARVEN_STOUT);
+		add(combo(5, food(2), boost(MINING, 2), boost(SMITHING, 2), new BoostedStatBoost(ATTACK, false, perc(0.04, -3)), new BoostedStatBoost(DEFENCE, false, perc(0.04, -3)), new BoostedStatBoost(STRENGTH, false, perc(0.04, -3))), DWARVEN_STOUTM);
+		add(combo(4, food(1), boost(SLAYER, 2), new BoostedStatBoost(ATTACK, false, perc(0.02, -2)), new BoostedStatBoost(DEFENCE, false, perc(0.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.02, -2))), SLAYERS_RESPITE);
+		add(combo(4, food(2), boost(SLAYER, 4), new BoostedStatBoost(ATTACK, false, perc(0.02, -3)), new BoostedStatBoost(DEFENCE, false, perc(0.02, -3)), new BoostedStatBoost(STRENGTH, false, perc(0.02, -3))), SLAYERS_RESPITEM);
+		add(combo(4, food(1), new SimpleStatBoost(MAGIC, true, perc(0.02, 2)), new BoostedStatBoost(ATTACK, false, perc(0.05, -1)), new BoostedStatBoost(DEFENCE, false, perc(0.05, -1)), new BoostedStatBoost(STRENGTH, false, perc(0.05, -1))), WIZARDS_MIND_BOMB);
+		add(combo(4, food(2), new SimpleStatBoost(MAGIC, true, perc(0.02, 3)), new BoostedStatBoost(ATTACK, false, perc(0.05, -2)), new BoostedStatBoost(DEFENCE, false, perc(0.05, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.05, -2))), MATURE_WMB);
 
 		// Sq'irk Juice
 		add(heal(RUN_ENERGY, 5), WINTER_SQIRKJUICE);
