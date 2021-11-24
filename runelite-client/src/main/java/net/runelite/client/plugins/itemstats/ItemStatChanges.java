@@ -129,7 +129,7 @@ public class ItemStatChanges
 		add(combo(3, food(1), new SimpleStatBoost(COOKING, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.05, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.05, -2))), CHEFS_DELIGHT);
 		add(combo(3, food(2), new SimpleStatBoost(COOKING, true, perc(0.05, 2)), new BoostedStatBoost(ATTACK, false, perc(0.05, -3)), new BoostedStatBoost(STRENGTH, false, perc(0.05, -3))), CHEFS_DELIGHTM);
 		add(combo(3, food(1), boost(FARMING, 1), new BoostedStatBoost(ATTACK, false, perc(0.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.02, -2))), CIDER);
-		add(combo(3, food(2), boost(FARMING, 2), new BoostedStatBoost(ATTACK, false, perc(0.02, -3)), new BoostedStatBoost(STRENGTH, false, perc(0.02, -3))), CIDERM1);
+		add(combo(3, food(2), boost(FARMING, 2), new BoostedStatBoost(ATTACK, false, perc(0.02, -3)), new BoostedStatBoost(STRENGTH, false, perc(0.02, -3))), MATURE_CIDER);
 		add(combo(4, food(1), boost(HERBLORE, 1), new BoostedStatBoost(ATTACK, false, perc(0.04, -2)), new BoostedStatBoost(DEFENCE, false, perc(0.04, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.04, -2))), GREENMANS_ALE);
 		add(combo(4, food(2), boost(HERBLORE, 2), new BoostedStatBoost(ATTACK, false, perc(0.04, -3)), new BoostedStatBoost(DEFENCE, false, perc(0.04, -3)), new BoostedStatBoost(STRENGTH, false, perc(0.04, -3))), GREENMANS_ALEM);
 		add(combo(5, food(1), boost(MINING, 1), boost(SMITHING, 1), new BoostedStatBoost(ATTACK, false, perc(0.04, -2)), new BoostedStatBoost(DEFENCE, false, perc(0.04, -2)), new BoostedStatBoost(STRENGTH, false, perc(0.04, -2))), DWARVEN_STOUT);
