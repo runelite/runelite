@@ -114,11 +114,8 @@ public class ItemStatChanges
 		add(combo(2, food(5), boost(STRENGTH, 4), heal(ATTACK, -3)), PREMADE_SGG, SHORT_GREEN_GUY);
 		add(combo(2, food(5), boost(STRENGTH, 7), heal(ATTACK, -4)), PREMADE_DR_DRAGON, DRUNK_DRAGON);
 		add(combo(2, food(5), boost(STRENGTH, 7), heal(ATTACK, -4)), PREMADE_CHOC_SDY, CHOC_SATURDAY);
-		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), BRANDY);
-		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), GIN);
+		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), BRANDY, GIN, VODKA, WHISKY);
 		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.04, 1)), new BoostedStatBoost(ATTACK, false, perc(0.05, -3))), GROG);
-		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), VODKA);
-		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), WHISKY);
 		add(combo(2, food(1), boost(STRENGTH, perc(.02, 1)), new BoostedStatBoost(ATTACK, false, perc(.06, -1))), BEER);
 		add(combo(4, boost(ATTACK, 5), boost(STRENGTH, 5), heal(MAGIC, -5), heal(PRAYER, -5)), BLOOD_PINT);
 		add(combo(2, food(1), boost(STRENGTH, 2), new BoostedStatBoost(ATTACK, false, perc(0.05, -2))), ASGARNIAN_ALE);
