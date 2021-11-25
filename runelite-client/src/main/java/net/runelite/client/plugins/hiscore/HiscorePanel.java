@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -145,10 +146,7 @@ public class HiscorePanel extends PluginPanel
 		this.nameAutocompleter = nameAutocompleter;
 		this.hiscoreClient = new HiscoreClient(okHttpClient);
 
-		// The layout seems to be ignoring the top margin and only gives it
-		// a 2-3 pixel margin, so I set the value to 18 to compensate
-		// TODO: Figure out why this layout is ignoring most of the top margin
-		setBorder(new EmptyBorder(18, 10, 0, 10));
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new GridBagLayout());
 
