@@ -36,7 +36,7 @@ public interface DiscordConfig extends Config
 	@AllArgsConstructor
 	enum ElapsedTimeType
 	{
-		TOTAL("Total elapsed time"),
+		TOTAL("Total session time"),
 		ACTIVITY("Per activity"),
 		HIDDEN("Hide elapsed time");
 
