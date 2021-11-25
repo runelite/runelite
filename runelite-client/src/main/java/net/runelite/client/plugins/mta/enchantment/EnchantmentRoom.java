@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.mta.enchantment;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -31,9 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
+import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -42,11 +47,13 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTARoom;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Slf4j
 public class EnchantmentRoom extends MTARoom
 {
 	private static final int MTA_ENCHANT_REGION = 13462;
+	private static final Color DEFAULT_HIGHLIGHT_COLOR = Color.YELLOW;
 
 	private final Client client;
 	private final List<WorldPoint> dragonstones = new ArrayList<>();
@@ -145,5 +152,50 @@ public class EnchantmentRoom extends MTARoom
 		Player player = client.getLocalPlayer();
 		return player != null && player.getWorldLocation().getRegionID() == MTA_ENCHANT_REGION
 			&& player.getWorldLocation().getPlane() == 0;
+	}
+
+	@Override
+	public void under(Graphics2D graphics)
+	{
+		client.clearHintArrow();
+
+		if (!config.enchantment())
+		{
+			return;
+		}
+
+		switch (config.dragonstoneMode())
+		{
+			case ALL:
+				dragonstones.forEach(stone -> renderStonePoly(graphics, stone));
+			case NEAREST:
+				WorldPoint nearest = findNearestStone();
+				if (nearest == null)
+				{
+					return;
+				}
+				client.setHintArrow(nearest);
+			case NONE:
+			default:
+		}
+	}
+
+	private void renderStonePoly(final Graphics2D graphics, final WorldPoint point)
+	{
+		final LocalPoint local = LocalPoint.fromWorld(client, point);
+
+		if (local == null)
+		{
+			return;
+		}
+
+		final Polygon poly = Perspective.getCanvasTilePoly(client, local);
+
+		if (poly == null)
+		{
+			return;
+		}
+
+		OverlayUtil.renderPolygon(graphics, poly, DEFAULT_HIGHLIGHT_COLOR);
 	}
 }

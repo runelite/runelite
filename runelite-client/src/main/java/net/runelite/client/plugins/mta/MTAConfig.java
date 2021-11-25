@@ -32,6 +32,13 @@ import net.runelite.client.config.ConfigSection;
 @ConfigGroup("mta")
 public interface MTAConfig extends Config
 {
+	enum MarkingMode
+	{
+		ALL,
+		NEAREST,
+		NONE
+	}
+
 	@ConfigSection(
 		name = "Alchemists' Playground",
 		description = "",
@@ -101,10 +108,23 @@ public interface MTAConfig extends Config
 		keyName = "enchantment",
 		name = "Enable",
 		description = "Configures whether or not the Enchanting Chamber overlay is enabled.",
+		position = 0,
 		section = enchantmentGroup
 	)
 	default boolean enchantment()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "dragonstoneMode",
+		name = "Highlighting mode",
+		description = "Chooses which dragonstones should be highlighted.",
+		position = 1,
+		section = enchantmentGroup
+	)
+	default MarkingMode dragonstoneMode()
+	{
+		return MarkingMode.ALL;
 	}
 }
