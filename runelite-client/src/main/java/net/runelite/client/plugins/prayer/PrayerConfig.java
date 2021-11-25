@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.prayer;
 
+import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -31,6 +32,22 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("prayer")
 public interface PrayerConfig extends Config
 {
+	@AllArgsConstructor
+	enum PrayerBarVisibility
+	{
+		ALWAYS("Always"),
+		IN_COMBAT("In combat"),
+		PRAYER_ACTIVE("Prayer active");
+
+		private final String value;
+
+		@Override
+		public String toString()
+		{
+			return value;
+		}
+	}
+
 	@ConfigItem(
 		position = 0,
 		keyName = "prayerFlickLocation",
@@ -110,28 +127,17 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 7,
-		keyName = "prayerBarHideIfNotPraying",
-		name = "Hide bar while prayer is inactive",
-		description = "Prayer bar will be hidden while prayers are inactive."
+		keyName = "prayerBarVisibility",
+		name = "Bar Visibility",
+		description = "When the prayer bar should be visible"
 	)
-	default boolean hideIfNotPraying()
+	default PrayerBarVisibility barVisibility()
 	{
-		return true;
+		return PrayerBarVisibility.PRAYER_ACTIVE;
 	}
 
 	@ConfigItem(
 		position = 8,
-		keyName = "prayerBarHideIfNonCombat",
-		name = "Hide bar while out-of-combat",
-		description = "Prayer bar will be hidden while out-of-combat."
-	)
-	default boolean hideIfOutOfCombat()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 9,
 		keyName = "replaceOrbText",
 		name = "Show time left",
 		description = "Show time remaining of current prayers in the prayer orb."

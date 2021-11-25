@@ -159,13 +159,14 @@ class PrayerBarOverlay extends Overlay
 			return;
 		}
 
-		if (config.hideIfNotPraying() && !plugin.isPrayersActive())
+		PrayerConfig.PrayerBarVisibility visibility = config.barVisibility();
+		if (visibility == PrayerConfig.PrayerBarVisibility.PRAYER_ACTIVE && !plugin.isPrayersActive())
 		{
 			showingPrayerBar = false;
 			return;
 		}
 
-		if (config.hideIfOutOfCombat() && localPlayer.getHealthScale() == -1)
+		if (visibility == PrayerConfig.PrayerBarVisibility.IN_COMBAT && localPlayer.getHealthScale() == -1)
 		{
 			showingPrayerBar = false;
 		}
