@@ -59,7 +59,7 @@ class PrayerBarOverlay extends Overlay
 	private final PrayerConfig config;
 	private final PrayerPlugin plugin;
 
-	private boolean showingPrayerBar;
+	private int prayerBarTicksLeft = 0;
 
 	@Inject
 	private PrayerBarOverlay(final Client client, final PrayerConfig config, final PrayerPlugin plugin)
@@ -76,7 +76,7 @@ class PrayerBarOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showPrayerBar() || !showingPrayerBar)
+		if (!config.showPrayerBar() || prayerBarTicksLeft <= 0)
 		{
 			return null;
 		}
@@ -151,24 +151,25 @@ class PrayerBarOverlay extends Overlay
 	void onTick()
 	{
 		final Player localPlayer = client.getLocalPlayer();
-		showingPrayerBar = true;
-
 		if (localPlayer == null)
 		{
-			showingPrayerBar = false;
+			--prayerBarTicksLeft;
 			return;
 		}
 
 		PrayerConfig.PrayerBarVisibility visibility = config.barVisibility();
 		if (visibility == PrayerConfig.PrayerBarVisibility.PRAYER_ACTIVE && !plugin.isPrayersActive())
 		{
-			showingPrayerBar = false;
+			--prayerBarTicksLeft;
 			return;
 		}
 
 		if (visibility == PrayerConfig.PrayerBarVisibility.IN_COMBAT && localPlayer.getHealthScale() == -1)
 		{
-			showingPrayerBar = false;
+			--prayerBarTicksLeft;
+			return;
 		}
+
+		prayerBarTicksLeft = 1 + config.barHideDelay();
 	}
 }

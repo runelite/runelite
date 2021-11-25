@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("prayer")
 public interface PrayerConfig extends Config
@@ -138,6 +139,18 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 8,
+		keyName = "prayerBarHideDelay",
+		name = "Bar Hide Delay",
+		description = "How many ticks to wait before hiding the prayer bar"
+	)
+	@Units(Units.TICKS)
+	default int barHideDelay()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		position = 9,
 		keyName = "replaceOrbText",
 		name = "Show time left",
 		description = "Show time remaining of current prayers in the prayer orb."
