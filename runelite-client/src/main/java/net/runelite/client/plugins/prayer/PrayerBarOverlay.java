@@ -60,6 +60,7 @@ class PrayerBarOverlay extends Overlay
 	private final PrayerPlugin plugin;
 
 	private int prayerBarTicksLeft = 0;
+	private int prayerFlickTicksLeft = 0;
 
 	@Inject
 	private PrayerBarOverlay(final Client client, final PrayerConfig config, final PrayerPlugin plugin)
@@ -102,7 +103,7 @@ class PrayerBarOverlay extends Overlay
 			// Use a sub-image to create the same effect the HD Health Bar has
 			graphics.drawImage(HD_FRONT_BAR.getSubimage(0, 0, progressFill, barHeight), barX, barY, progressFill, barHeight, null);
 
-			if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
+			if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn() || prayerFlickTicksLeft > 0)
 				&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
 				|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 			{
@@ -133,7 +134,7 @@ class PrayerBarOverlay extends Overlay
 		graphics.setColor(BAR_FILL_COLOR);
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 
-		if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
+		if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn() || prayerFlickTicksLeft > 0)
 			&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
 			|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 		{
@@ -150,6 +151,8 @@ class PrayerBarOverlay extends Overlay
 
 	void onTick()
 	{
+		prayerFlickTicksLeft = plugin.getFlickHelperTicksLeft();
+
 		final Player localPlayer = client.getLocalPlayer();
 		if (localPlayer == null)
 		{

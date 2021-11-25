@@ -72,7 +72,19 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+			position = 2,
+			keyName = "prayerFlickHideDelay",
+			name = "Flick helper hide delay",
+			description = "How many ticks to wait before hiding the prayer flick helper"
+	)
+	@Units(Units.TICKS)
+	default int flickHideDelay()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		position = 3,
 		keyName = "prayerIndicator",
 		name = "Boost indicator",
 		description = "Enable infoboxes for prayers."
@@ -83,7 +95,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "prayerIndicatorOverheads",
 		name = "Overhead indicator",
 		description = "Also enable infoboxes for overheads."
@@ -94,7 +106,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "showPrayerDoseIndicator",
 		name = "Show prayer dose indicator",
 		description = "Enables the prayer dose indicator."
@@ -105,7 +117,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "showPrayerTooltip",
 		name = "Show prayer orb tooltip",
 		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
@@ -116,7 +128,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "showPrayerBar",
 		name = "Show prayer bar",
 		description = "Displays prayer bar under HP bar when praying."
@@ -127,7 +139,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "prayerBarVisibility",
 		name = "Bar Visibility",
 		description = "When the prayer bar should be visible"
@@ -138,7 +150,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "prayerBarHideDelay",
 		name = "Bar Hide Delay",
 		description = "How many ticks to wait before hiding the prayer bar"
@@ -150,7 +162,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "replaceOrbText",
 		name = "Show time left",
 		description = "Show time remaining of current prayers in the prayer orb."

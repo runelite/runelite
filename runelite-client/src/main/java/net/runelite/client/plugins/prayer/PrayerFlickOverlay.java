@@ -29,6 +29,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import javax.inject.Inject;
+
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -41,6 +44,9 @@ class PrayerFlickOverlay extends Overlay
 	private final Client client;
 	private final PrayerConfig config;
 	private final PrayerPlugin plugin;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int prayerFlickTicksLeft = 0;
 
 	@Inject
 	private PrayerFlickOverlay(Client client, PrayerConfig config, PrayerPlugin plugin)
@@ -56,7 +62,7 @@ class PrayerFlickOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		// If there are no prayers active or flick location is set to the prayer bar we don't require the flick helper
-		if ((!plugin.isPrayersActive() && !config.prayerFlickAlwaysOn())
+		if ((!plugin.isPrayersActive() && !config.prayerFlickAlwaysOn() && prayerFlickTicksLeft <= 0)
 			|| config.prayerFlickLocation().equals(PrayerFlickLocation.NONE)
 			|| config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR))
 		{
@@ -93,5 +99,16 @@ class PrayerFlickOverlay extends Overlay
 		graphics.fillRect(orbInnerX + xOffset, orbInnerY + yOffset, 1, indicatorHeight);
 
 		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
+	}
+
+	void onTick()
+	{
+		if (!plugin.isPrayersActive() && !config.prayerFlickAlwaysOn())
+		{
+			--prayerFlickTicksLeft;
+			return;
+		}
+
+		prayerFlickTicksLeft = 1 + config.flickHideDelay();
 	}
 }

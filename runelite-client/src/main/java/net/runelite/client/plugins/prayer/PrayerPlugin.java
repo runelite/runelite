@@ -162,6 +162,10 @@ public class PrayerPlugin extends Plugin
 		if (!config.prayerFlickLocation().equals(PrayerFlickLocation.NONE))
 		{
 			startOfLastTick = Instant.now();
+			if (config.flickHideDelay() > 0)
+			{
+				flickOverlay.onTick();
+			}
 		}
 
 		if (config.showPrayerDoseIndicator())
@@ -380,5 +384,10 @@ public class PrayerPlugin extends Plugin
 		{
 			return timeLeft.format(DateTimeFormatter.ofPattern("m:ss"));
 		}
+	}
+
+	int getFlickHelperTicksLeft()
+	{
+		return flickOverlay.getPrayerFlickTicksLeft();
 	}
 }
