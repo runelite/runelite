@@ -204,7 +204,7 @@ public class ChatMessageManager
 	 * colored username, the color tag needs to be stripped prior to the chatBuilder script and
 	 * returned here at the userNameTagReturn callback.
 	 *
-	 * @param scriptCallbackEvent   The Event object.
+	 * @param scriptCallbackEvent The Event object.
 	 */
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
@@ -226,7 +226,8 @@ public class ChatMessageManager
 				String[] stringStack = client.getStringStack();
 				final int messageId = intStack[intStackSize - 1];
 				Color userNameColor = userNameColorMap.get(messageId);
-				if (userNameColor != null){
+				if (userNameColor != null)
+				{
 					stringStack[0] = ColorUtil.wrapWithColorTag(stringStack[0], userNameColor);
 				}
 				return;
@@ -243,7 +244,7 @@ public class ChatMessageManager
 
 		final String[] stringStack = client.getStringStack();
 		final int stringStackSize = client.getStringStackSize();
-		
+
 		String fromToUsername = stringStack[stringStackSize - 1];
 		if (wrap)
 		{
@@ -263,12 +264,12 @@ public class ChatMessageManager
 	 * Additionally clicking on a friend's message when the username is colored
 	 * will show a menu as if they are not a friend.
 	 *
-	 * @param ev   The Event object.
+	 * @param ev The Event object.
 	 */
 	@Subscribe
 	public void onScriptPreFired(ScriptPreFired ev)
 	{
-		if(ev.getScriptId() == ScriptID.CHATBOX_PARENT)
+		if (ev.getScriptId() == ScriptID.CHATBOX_PARENT)
 		{
 			for (MessageNode messageNode : client.getMessages())
 			{
@@ -287,12 +288,12 @@ public class ChatMessageManager
 	 * back into the string stack so that the color would be displayed.
 	 * Now we add back to the message nodes themselves.
 	 *
-	 * @param ev   The Event object.
+	 * @param ev The Event object.
 	 */
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired ev)
 	{
-		if(ev.getScriptId() == ScriptID.CHATBOX_PARENT)
+		if (ev.getScriptId() == ScriptID.CHATBOX_PARENT)
 		{
 			for (MessageNode messageNode : client.getMessages())
 			{
@@ -790,7 +791,7 @@ public class ChatMessageManager
 
 		// Update the message with RuneLite additions
 		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
-		
+
 		if (message.getTimestamp() != 0)
 		{
 			line.setTimestamp(message.getTimestamp());
