@@ -319,9 +319,9 @@ public class ChatFilterPlugin extends Plugin
 	 * This removes the color tag from the message and then filters it.
 	 * The color tag is returned at the end if one was present.
 	 *
-	 * @param username   Sender of the message.
-	 * @param message	 Content of message.
-	 * @return      Filtered message content.
+	 * @param username Sender of the message.
+	 * @param message  Content of message.
+	 * @return Filtered message content.
 	 */
 	String censorMessage(final String username, final String message)
 	{
