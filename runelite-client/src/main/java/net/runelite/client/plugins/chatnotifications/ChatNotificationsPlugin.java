@@ -211,6 +211,7 @@ public class ChatNotificationsPlugin extends Plugin
 			case FRIENDSCHAT:
 			case CLAN_CHAT:
 			case CLAN_GUEST_CHAT:
+			case CLAN_GIM_CHAT:
 			case AUTOTYPER:
 			case MODAUTOTYPER:
 				if (client.getLocalPlayer() != null && Text.toJagexName(Text.removeTags(chatMessage.getName())).equals(client.getLocalPlayer().getName()))
