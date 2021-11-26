@@ -213,7 +213,8 @@ public class ChatMessageManagerTest
 	{
 		MessageNode node = mock(MessageNode.class);
 		when(node.getId()).thenReturn(id);
-		doAnswer(invocation -> {
+		doAnswer(invocation ->
+		{
 			String userName = (String) invocation.getArguments()[0];
 			when(node.getName()).thenReturn(userName);
 			return null;
