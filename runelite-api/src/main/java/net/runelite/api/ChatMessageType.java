@@ -179,6 +179,8 @@ public enum ChatMessageType
 
 	CLAN_GIM_FORM_GROUP(111),
 	CLAN_GIM_GROUP_WITH(112),
+	CLAN_GIM_CHAT(-1),
+	CLAN_GIM_MESSAGE(-1),
 	/**
 	 * An unknown message type.
 	 */
@@ -192,7 +194,10 @@ public enum ChatMessageType
 	{
 		for (ChatMessageType chatMessageType : values())
 		{
-			CHAT_MESSAGE_TYPES.put(chatMessageType.type, chatMessageType);
+			if (chatMessageType.type != -1)
+			{
+				CHAT_MESSAGE_TYPES.put(chatMessageType.type, chatMessageType);
+			}
 		}
 	}
 

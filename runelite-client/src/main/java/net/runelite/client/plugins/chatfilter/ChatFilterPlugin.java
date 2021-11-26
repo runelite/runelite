@@ -188,6 +188,7 @@ public class ChatFilterPlugin extends Plugin
 			case FRIENDSCHAT:
 			case CLAN_CHAT:
 			case CLAN_GUEST_CHAT:
+			case CLAN_GIM_CHAT:
 				if (shouldFilterPlayerMessage(Text.removeTags(name)))
 				{
 					message = censorMessage(name, message);
