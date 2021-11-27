@@ -413,11 +413,17 @@ CHAT_FILTER:
    jump                   LABEL562
 LABEL368:
    iload                  12 ; message uid
-   sload                  2 ; message timestamp
+   sconst                 "" ; message channel
+   sload                   1 ; message name
+   sload                   0 ; message
+   sload                   2 ; message timestamp
    sconst                 "chatMessageBuilding"
    runelite_callback     
-   pop_int               
+   pop_int                  ; uid
    sstore                 2 ; message timestamp
+   sstore                 0 ; message
+   sstore                 1 ; message name
+   pop_string               ; message channel
    iload                  18
    switch                
       3: LABEL371
