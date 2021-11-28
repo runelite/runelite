@@ -174,8 +174,11 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			case MODCHAT:
 			case FRIENDSCHAT:
 			case CLAN_GUEST_CHAT:
+			case CLAN_GUEST_MESSAGE:
 			case CLAN_CHAT:
+			case CLAN_MESSAGE:
 			case CLAN_GIM_CHAT:
+			case CLAN_GIM_MESSAGE:
 			case CONSOLE:
 				messageQueue.offer(chatMessage.getMessageNode());
 		}
