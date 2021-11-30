@@ -43,15 +43,10 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.GraphicID;
-import net.runelite.api.GraphicsObject;
-import net.runelite.api.KeyCode;
-import net.runelite.api.MenuAction;
+import net.runelite.api.*;
+
 import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.NPC;
+
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -260,7 +255,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				color = config.deadNpcMenuColor();
 			}
 
-			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
+			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npc.isDead() || !hasDeathAnimation(npc) || !config.ignoreDeadNpcs()))
 			{
 				color = config.highlightColor();
 			}
@@ -704,7 +699,29 @@ public class NpcIndicatorsPlugin extends Plugin
 			.nameOnMinimap(config.drawMinimapNames())
 			.borderWidth((float) config.borderWidth())
 			.outlineFeather(config.outlineFeather())
-			.render(n -> !n.isDead() || !config.ignoreDeadNpcs())
+			.render(n -> !n.isDead() || !hasDeathAnimation(npc) || !config.ignoreDeadNpcs())
 			.build();
+	}
+
+	/**
+	 * Checking if NPC has one of the death animations
+	 */
+	private boolean hasDeathAnimation(NPC npc)
+	{
+		boolean result = false;
+		final int animation = npc.getAnimation();
+		if ((animation == AnimationID.DEATH)
+				|| (animation == AnimationID.CAVE_KRAKEN_DEATH)
+				|| (animation == AnimationID.WIZARD_DEATH)
+				|| (animation == AnimationID.GARGOYLE_DEATH)
+				|| (animation == AnimationID.MARBLE_GARGOYLE_DEATH)
+				|| (animation == AnimationID.LIZARD_DEATH)
+				|| (animation == AnimationID.ROCKSLUG_DEATH)
+				|| (animation == AnimationID.ZYGOMITE_DEATH)
+				|| (animation == AnimationID.IMP_DEATH))
+		{
+			result = true;
+		}
+		return result;
 	}
 }
