@@ -114,6 +114,18 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		position = -3,
+		keyName = "leftClickCustomization",
+		name = "Customizable left-click",
+		description = "Allows customization of left-clicks on items",
+		section = itemSection
+	)
+	default boolean leftClickCustomization()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = -2,
 		keyName = "shiftClickCustomization",
 		name = "Customizable shift-click",
