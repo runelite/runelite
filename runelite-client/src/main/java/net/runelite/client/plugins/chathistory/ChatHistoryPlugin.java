@@ -334,7 +334,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		boolean removed = false;
 		for (ChatMessageType msgType : tab.getMessageTypes())
 		{
-			final ChatLineBuffer lineBuffer = client.getChatLineMap().get(toRealType(msgType).getType());
+			final ChatLineBuffer lineBuffer = client.getChatLineMap().get(msgType.getType());
 			if (lineBuffer == null)
 			{
 				continue;
@@ -343,8 +343,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			final MessageNode[] lines = lineBuffer.getLines().clone();
 			for (final MessageNode line : lines)
 			{
-				// check the type because gim and clan chat are shared in the same line buffer
-				if (line != null && line.getType() == msgType)
+				if (line != null)
 				{
 					lineBuffer.removeMessageNode(line);
 					removed = true;
@@ -356,20 +355,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		{
 			// this rebuilds both the chatbox and the pmbox
 			clientThread.invoke(() -> client.runScript(ScriptID.SPLITPM_CHANGED));
-		}
-	}
-
-	private ChatMessageType toRealType(ChatMessageType type)
-	{
-		switch (type)
-		{
-			// gim chat/message are actually in the clan chat/message line buffers
-			case CLAN_GIM_CHAT:
-				return ChatMessageType.CLAN_CHAT;
-			case CLAN_GIM_MESSAGE:
-				return ChatMessageType.CLAN_MESSAGE;
-			default:
-				return type;
 		}
 	}
 
