@@ -61,7 +61,8 @@ enum ChatboxTab
 		ChatMessageType.CLAN_CHAT, ChatMessageType.CLAN_MESSAGE,
 		ChatMessageType.CLAN_GUEST_CHAT, ChatMessageType.CLAN_GUEST_MESSAGE),
 
-	TRADE_GROUP("Show none", WidgetInfo.CHATBOX_TAB_TRADE,
+	// Group has its own Clear option, but Trade does not
+	TRADE_GROUP("Trade:</col> Show none", WidgetInfo.CHATBOX_TAB_TRADE,
 		ChatMessageType.TRADE_SENT, ChatMessageType.TRADEREQ, ChatMessageType.TRADE, ChatMessageType.CHALREQ_TRADE,
 		ChatMessageType.CLAN_GIM_CHAT, ChatMessageType.CLAN_GIM_MESSAGE),
 	;
