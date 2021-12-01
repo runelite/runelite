@@ -100,8 +100,8 @@ LABEL74:
    substring             
    sconst                 "/"
    compare               
-   iconst                 1
-   if_icmpeq              LABEL83
+   iconst                 0 ;  
+   if_icmpne              LABEL83
    jump                   LABEL87
 LABEL83:
    sconst                 "/"
