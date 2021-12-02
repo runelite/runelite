@@ -113,7 +113,7 @@ public interface XpTrackerConfig extends Config
 	@ConfigItem(
 		position = 6,
 		keyName = "onScreenDisplayMode",
-		name = "On-screen tracker display mode (top)",
+		name = "Tracker display mode (top)",
 		description = "Configures the information displayed in the first line of on-screen XP overlays",
 		section = overlaySection
 	)
@@ -125,7 +125,7 @@ public interface XpTrackerConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "onScreenDisplayModeBottom",
-		name = "On-screen tracker display mode (bottom)",
+		name = "Tracker display mode (bottom)",
 		description = "Configures the information displayed in the second line of on-screen XP overlays",
 		section = overlaySection
 	)
@@ -135,7 +135,31 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+			position = 8,
+			keyName = "onScreenDisplayProgressBar",
+			name = "Display xp progress bar",
+			description = "Toggles the xp progress bar tracker display on the on-screen canvas",
+			section = overlaySection
+	)
+	default boolean onScreenDisplayProgressBar()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 9,
+			keyName = "onScreenDisplayOneLine",
+			name = "Simple view (one-line)",
+			description = "Toggles the on screen trackers to display on one line",
+			section = overlaySection
+	)
+	default boolean onScreenDisplayOneLine()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 10,
 		keyName = "xpPanelLabel1",
 		name = "Top-left XP info label",
 		description = "Configures the information displayed in the top-left of XP info box"
@@ -146,7 +170,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 11,
 		keyName = "xpPanelLabel2",
 		name = "Top-right XP info label",
 		description = "Configures the information displayed in the top-right of XP info box"
@@ -158,7 +182,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 12,
 		keyName = "xpPanelLabel3",
 		name = "Bottom-left XP info label",
 		description = "Configures the information displayed in the bottom-left of XP info box"
@@ -169,7 +193,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 13,
 		keyName = "xpPanelLabel4",
 		name = "Bottom-right XP info label",
 		description = "Configures the information displayed in the bottom-right of XP info box"
@@ -180,7 +204,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 14,
 		keyName = "progressBarLabel",
 		name = "Progress bar label",
 		description = "Configures the info box progress bar to show Time to goal or percentage complete"
@@ -191,7 +215,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 15,
 		keyName = "progressBarTooltipLabel",
 		name = "Tooltip label",
 		description = "Configures the info box progress bar tooltip to show Time to goal or percentage complete"
@@ -202,7 +226,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 16,
 		keyName = "prioritizeRecentXpSkills",
 		name = "Move recently trained skills to top",
 		description = "Configures whether skills should be organized by most recently gained xp"
