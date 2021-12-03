@@ -440,11 +440,17 @@ LABEL391:
    jump                   LABEL1721
 LABEL405:
    iload                  10 ; message uid
+   sload                  17 ; message channel
+   sload                  16 ; message name
+   sload                  18 ; message
    sload                  21 ; message timestamp
    sconst                 "chatMessageBuilding"
    runelite_callback     
    pop_int                   ; pop uid
    sstore                 21 ; message timestamp
+   sstore                 18 ; message
+   sstore                 16 ; message name
+   sstore                 17 ; message channel
    iload                  11
    switch                
       1: LABEL408

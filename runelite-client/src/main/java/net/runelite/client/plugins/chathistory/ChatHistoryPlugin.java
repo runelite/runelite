@@ -28,7 +28,6 @@ package net.runelite.client.plugins.chathistory;
 import com.google.common.base.Strings;
 import com.google.common.collect.EvictingQueue;
 import com.google.inject.Provides;
-import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
@@ -63,7 +62,6 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -176,7 +174,11 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			case MODCHAT:
 			case FRIENDSCHAT:
 			case CLAN_GUEST_CHAT:
+			case CLAN_GUEST_MESSAGE:
 			case CLAN_CHAT:
+			case CLAN_MESSAGE:
+			case CLAN_GIM_CHAT:
+			case CLAN_GIM_MESSAGE:
 			case CONSOLE:
 				messageQueue.offer(chatMessage.getMessageNode());
 		}
@@ -266,35 +268,37 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded entry)
 	{
-		final ChatboxTab tab = ChatboxTab.of(entry.getActionParam1());
+		if (entry.getType() != MenuAction.CC_OP.getId())
+		{
+			return;
+		}
 
-		if (tab == null || tab.getAfter() == null || !config.clearHistory() || !Text.removeTags(entry.getOption()).equals(tab.getAfter()))
+		ChatboxTab tab = ChatboxTab.of(entry.getActionParam1());
+		if (tab == null || tab.getAfter() == null || !config.clearHistory() || !entry.getOption().endsWith(tab.getAfter()))
 		{
 			return;
 		}
 
 		final MenuEntry clearEntry = new MenuEntry();
 		clearEntry.setTarget("");
-		clearEntry.setType(MenuAction.RUNELITE.getId());
+		clearEntry.setType(MenuAction.RUNELITE_HIGH_PRIORITY.getId());
 		clearEntry.setParam0(entry.getActionParam0());
 		clearEntry.setParam1(entry.getActionParam1());
 
-		if (tab == ChatboxTab.GAME)
-		{
-			// keep type as the original CC_OP to correctly group "Game: Clear history" with
-			// other tab "Game: *" options.
-			clearEntry.setType(entry.getType());
-		}
-
-		final StringBuilder messageBuilder = new StringBuilder();
-
+		final StringBuilder optionBuilder = new StringBuilder();
 		if (tab != ChatboxTab.ALL)
 		{
-			messageBuilder.append(ColorUtil.wrapWithColorTag(tab.getName() + ": ", Color.YELLOW));
+			// Pull tab name from menu since Trade/Group is variable
+			String option = entry.getOption();
+			int idx = option.indexOf(':');
+			if (idx != -1)
+			{
+				optionBuilder.append(option, 0, idx).append(":</col> ");
+			}
 		}
 
-		messageBuilder.append(CLEAR_HISTORY);
-		clearEntry.setOption(messageBuilder.toString());
+		optionBuilder.append(CLEAR_HISTORY);
+		clearEntry.setOption(optionBuilder.toString());
 
 		final MenuEntry[] menuEntries = client.getMenuEntries();
 		client.setMenuEntries(ArrayUtils.insert(menuEntries.length - 1, menuEntries, clearEntry));

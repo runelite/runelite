@@ -30,6 +30,7 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
+import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -43,7 +44,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
@@ -120,6 +123,7 @@ public class ConfigManager
 	private final File settingsFileInput;
 	private final EventBus eventBus;
 	private final OkHttpClient okHttpClient;
+	private final Gson gson;
 
 	private AccountSession session;
 	private ConfigClient configClient;
@@ -143,13 +147,15 @@ public class ConfigManager
 		ScheduledExecutorService scheduledExecutorService,
 		EventBus eventBus,
 		OkHttpClient okHttpClient,
-		@Nullable Client client)
+		@Nullable Client client,
+		Gson gson)
 	{
 		this.settingsFileInput = config;
 		this.eventBus = eventBus;
 		this.okHttpClient = okHttpClient;
 		this.client = client;
 		this.propertiesFile = getPropertiesFile();
+		this.gson = gson;
 
 		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
@@ -449,12 +455,12 @@ public class ConfigManager
 		return properties.getProperty(getWholeKey(groupName, profile, key));
 	}
 
-	public <T> T getConfiguration(String groupName, String key, Class<T> clazz)
+	public <T> T getConfiguration(String groupName, String key, Type clazz)
 	{
 		return getConfiguration(groupName, null, key, clazz);
 	}
 
-	public <T> T getRSProfileConfiguration(String groupName, String key, Class<T> clazz)
+	public <T> T getRSProfileConfiguration(String groupName, String key, Type clazz)
 	{
 		String rsProfileKey = this.rsProfileKey;
 		if (rsProfileKey == null)
@@ -465,14 +471,14 @@ public class ConfigManager
 		return getConfiguration(groupName, rsProfileKey, key, clazz);
 	}
 
-	public <T> T getConfiguration(String groupName, String profile, String key, Class<T> clazz)
+	public <T> T getConfiguration(String groupName, String profile, String key, Type type)
 	{
 		String value = getConfiguration(groupName, profile, key);
 		if (!Strings.isNullOrEmpty(value))
 		{
 			try
 			{
-				return (T) stringToObject(value, clazz);
+				return (T) stringToObject(value, type);
 			}
 			catch (Exception e)
 			{
@@ -525,17 +531,17 @@ public class ConfigManager
 		eventBus.post(configChanged);
 	}
 
-	public void setConfiguration(String groupName, String profile, String key, Object value)
+	public <T> void setConfiguration(String groupName, String profile, String key, T value)
 	{
 		setConfiguration(groupName, profile, key, objectToString(value));
 	}
 
-	public void setConfiguration(String groupName, String key, Object value)
+	public <T> void setConfiguration(String groupName, String key, T value)
 	{
 		setConfiguration(groupName, null, key, value);
 	}
 
-	public void setRSProfileConfiguration(String groupName, String key, Object value)
+	public <T> void setRSProfileConfiguration(String groupName, String key, T value)
 	{
 		String rsProfileKey = this.rsProfileKey;
 		if (rsProfileKey == null)
@@ -657,7 +663,7 @@ public class ConfigManager
 			.filter(m -> m.getParameterCount() == 0 && m.isAnnotationPresent(ConfigItem.class))
 			.map(m -> new ConfigItemDescriptor(
 				m.getDeclaredAnnotation(ConfigItem.class),
-				m.getReturnType(),
+				m.getGenericReturnType(),
 				m.getDeclaredAnnotation(Range.class),
 				m.getDeclaredAnnotation(Alpha.class),
 				m.getDeclaredAnnotation(Units.class)
@@ -714,7 +720,7 @@ public class ConfigManager
 			{
 				// This checks if it is set and is also unmarshallable to the correct type; so
 				// we will overwrite invalid config values with the default
-				Object current = getConfiguration(group.value(), item.keyName(), method.getReturnType());
+				Object current = getConfiguration(group.value(), item.keyName(), method.getGenericReturnType());
 				if (current != null)
 				{
 					continue; // something else is already set
@@ -748,7 +754,7 @@ public class ConfigManager
 		}
 	}
 
-	static Object stringToObject(String str, Class<?> type)
+	Object stringToObject(String str, Type type)
 	{
 		if (type == boolean.class || type == Boolean.class)
 		{
@@ -789,7 +795,7 @@ public class ConfigManager
 			int height = Integer.parseInt(splitStr[3]);
 			return new Rectangle(x, y, width, height);
 		}
-		if (type.isEnum())
+		if (type instanceof Class && ((Class<?>) type).isEnum())
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
 		}
@@ -824,11 +830,19 @@ public class ConfigManager
 		{
 			return Base64.getUrlDecoder().decode(str);
 		}
+		if (type instanceof ParameterizedType)
+		{
+			ParameterizedType parameterizedType = (ParameterizedType) type;
+			if (parameterizedType.getRawType() == Set.class)
+			{
+				return gson.fromJson(str, parameterizedType);
+			}
+		}
 		return str;
 	}
 
 	@Nullable
-	static String objectToString(Object object)
+	String objectToString(Object object)
 	{
 		if (object instanceof Color)
 		{
@@ -874,6 +888,10 @@ public class ConfigManager
 		if (object instanceof byte[])
 		{
 			return Base64.getUrlEncoder().encodeToString((byte[]) object);
+		}
+		if (object instanceof Set)
+		{
+			return gson.toJson(object, Set.class);
 		}
 		return object == null ? null : object.toString();
 	}

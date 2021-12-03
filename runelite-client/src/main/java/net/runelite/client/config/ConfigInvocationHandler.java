@@ -99,11 +99,9 @@ class ConfigInvocationHandler implements InvocationHandler
 			}
 
 			// Convert value to return type
-			Class<?> returnType = method.getReturnType();
-			
 			try
 			{
-				Object objectValue = ConfigManager.stringToObject(value, returnType);
+				Object objectValue = manager.stringToObject(value, method.getGenericReturnType());
 				cache.put(method, objectValue == null ? NULL : objectValue);
 				return objectValue;
 			}
@@ -155,7 +153,7 @@ class ConfigInvocationHandler implements InvocationHandler
 			}
 			else
 			{
-				String newValueStr = ConfigManager.objectToString(newValue);
+				String newValueStr = manager.objectToString(newValue);
 				manager.setConfiguration(group.value(), item.keyName(), newValueStr);
 			}
 			return null;

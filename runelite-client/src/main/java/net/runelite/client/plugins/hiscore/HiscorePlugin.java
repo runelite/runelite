@@ -188,7 +188,7 @@ public class HiscorePlugin extends Plugin
 			&& event.getMenuOption().equals(LOOKUP))
 		{
 			final String target;
-			HiscoreEndpoint endpoint = HiscoreEndpoint.NORMAL;
+			HiscoreEndpoint endpoint;
 			if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER)
 			{
 				// The player id is included in the event, so we can use that to get the player name,
@@ -199,6 +199,7 @@ public class HiscorePlugin extends Plugin
 					return;
 				}
 
+				endpoint = getWorldEndpoint();
 				target = player.getName();
 			}
 			else

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.chat;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.HashMultimap;
@@ -44,7 +45,6 @@ import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
@@ -111,15 +111,23 @@ public class ChatMessageManager
 		}
 	}
 
-	@Subscribe(priority = -1) // run after all plugins
-	public void onChatMessage(ChatMessage chatMessage)
+	@VisibleForTesting
+	void colorChatMessage()
 	{
-		MessageNode messageNode = chatMessage.getMessageNode();
-		ChatMessageType chatMessageType = chatMessage.getType();
+		final String[] stringStack = client.getStringStack();
+		final int size = client.getStringStackSize();
+		final int uid = client.getIntStack()[client.getIntStackSize() - 1];
 
-		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+		final MessageNode messageNode = client.getMessages().get(uid);
+		assert messageNode != null : "chat message build for unknown message";
+
+		final String username = stringStack[size - 3];
+		final String channel = stringStack[size - 4];
+		final ChatMessageType chatMessageType = messageNode.getType();
+
+		final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 		Color usernameColor = null;
-		Color senderColor = null;
+		Color channelColor = null;
 
 		switch (chatMessageType)
 		{
@@ -130,7 +138,7 @@ public class ChatMessageManager
 			case PUBLICCHAT:
 			case MODCHAT:
 			{
-				String sanitizedUsername = Text.removeTags(chatMessage.getName()).replace('\u00A0', ' ');
+				String sanitizedUsername = Text.removeTags(username).replace('\u00A0', ' ');
 
 				if (client.getLocalPlayer().getName().equals(sanitizedUsername))
 				{
@@ -149,29 +157,30 @@ public class ChatMessageManager
 			case FRIENDSCHAT:
 			case FRIENDSCHATNOTIFICATION:
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentFriendsChatUsernames() : chatColorConfig.opaqueFriendsChatUsernames();
-				senderColor = isChatboxTransparent ? chatColorConfig.transparentFriendsChatChannelName() : chatColorConfig.opaqueFriendsChatChannelName();
+				channelColor = isChatboxTransparent ? chatColorConfig.transparentFriendsChatChannelName() : chatColorConfig.opaqueFriendsChatChannelName();
 				break;
 			case CLAN_CHAT:
 			case CLAN_MESSAGE:
+			case CLAN_GIM_CHAT:
+			case CLAN_GIM_MESSAGE:
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanChatUsernames() : chatColorConfig.opaqueClanChatUsernames();
-				senderColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelName() : chatColorConfig.opaqueClanChannelName();
+				channelColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelName() : chatColorConfig.opaqueClanChannelName();
 				break;
 			case CLAN_GUEST_CHAT:
 			case CLAN_GUEST_MESSAGE:
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanChatGuestUsernames() : chatColorConfig.opaqueClanChatGuestUsernames();
-				senderColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelGuestName() : chatColorConfig.opaqueClanGuestChatChannelName();
+				channelColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelGuestName() : chatColorConfig.opaqueClanGuestChatChannelName();
 				break;
 		}
 
 		if (usernameColor != null)
 		{
-			messageNode.setName(ColorUtil.wrapWithColorTag(messageNode.getName(), usernameColor));
+			stringStack[size - 3] = ColorUtil.wrapWithColorTag(username, usernameColor);
 		}
 
-		String sender = messageNode.getSender();
-		if (senderColor != null && !Strings.isNullOrEmpty(sender))
+		if (channelColor != null && !Strings.isNullOrEmpty(channel))
 		{
-			messageNode.setSender(ColorUtil.wrapWithColorTag(sender, senderColor));
+			stringStack[size - 4] = ColorUtil.wrapWithColorTag(channel, channelColor);
 		}
 
 		final Collection<ChatColor> chatColors = colorCache.get(chatMessageType);
@@ -184,9 +193,9 @@ public class ChatMessageManager
 
 			// Replace </col> tags in the message with the new color so embedded </col> won't reset the color
 			final Color color = chatColor.getColor();
-			messageNode.setValue(ColorUtil.wrapWithColorTag(
-				messageNode.getValue().replace(ColorUtil.CLOSING_COLOR_TAG, ColorUtil.colorTag(color)),
-				color));
+			stringStack[size - 2] = ColorUtil.wrapWithColorTag(
+				stringStack[size - 2].replace(ColorUtil.CLOSING_COLOR_TAG, ColorUtil.colorTag(color)),
+				color);
 			break;
 		}
 	}
@@ -205,6 +214,9 @@ public class ChatMessageManager
 			case "privChatUsername":
 				wrap = true;
 				break;
+			case "chatMessageBuilding":
+				colorChatMessage();
+				return;
 			default:
 				return;
 		}
@@ -247,6 +259,7 @@ public class ChatMessageManager
 				case FRIENDSCHAT:
 				case CLAN_CHAT:
 				case CLAN_GUEST_CHAT:
+				case CLAN_GIM_CHAT:
 					return JagexColors.CHAT_FC_TEXT_OPAQUE_BACKGROUND;
 				case ITEM_EXAMINE:
 				case OBJECT_EXAMINE:
@@ -255,6 +268,7 @@ public class ChatMessageManager
 				case FRIENDSCHATNOTIFICATION:
 				case CLAN_MESSAGE:
 				case CLAN_GUEST_MESSAGE:
+				case CLAN_GIM_MESSAGE:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
 			}
 		}
@@ -272,6 +286,7 @@ public class ChatMessageManager
 				case FRIENDSCHAT:
 				case CLAN_CHAT:
 				case CLAN_GUEST_CHAT:
+				case CLAN_GIM_CHAT:
 					return JagexColors.CHAT_FC_TEXT_TRANSPARENT_BACKGROUND;
 				case ITEM_EXAMINE:
 				case OBJECT_EXAMINE:
@@ -280,6 +295,7 @@ public class ChatMessageManager
 				case FRIENDSCHATNOTIFICATION:
 				case CLAN_MESSAGE:
 				case CLAN_GUEST_MESSAGE:
+				case CLAN_GIM_MESSAGE:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
 			}
 		}
@@ -373,21 +389,29 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatInfo(), false),
 				ChatMessageType.CLAN_MESSAGE);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatInfo(), false),
+				ChatMessageType.CLAN_GIM_MESSAGE);
 		}
 		if (chatColorConfig.opaqueClanChatInfoHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatInfoHighlight(), false),
 				ChatMessageType.CLAN_MESSAGE);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatInfoHighlight(), false),
+				ChatMessageType.CLAN_GIM_MESSAGE);
 		}
 		if (chatColorConfig.opaqueClanChatMessage() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatMessage(), false),
 				ChatMessageType.CLAN_CHAT);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatMessage(), false),
+				ChatMessageType.CLAN_GIM_CHAT);
 		}
 		if (chatColorConfig.opaqueClanChatMessageHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatMessageHighlight(), false),
 				ChatMessageType.CLAN_CHAT);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatMessageHighlight(), false),
+				ChatMessageType.CLAN_GIM_CHAT);
 		}
 
 		if (chatColorConfig.opaqueClanChatGuestInfo() != null)
@@ -555,21 +579,29 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatInfo(), true),
 				ChatMessageType.CLAN_MESSAGE);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatInfo(), true),
+				ChatMessageType.CLAN_GIM_MESSAGE);
 		}
 		if (chatColorConfig.transparentClanChatInfoHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentClanChatInfoHighlight(), true),
 				ChatMessageType.CLAN_MESSAGE);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentClanChatInfoHighlight(), true),
+				ChatMessageType.CLAN_GIM_MESSAGE);
 		}
 		if (chatColorConfig.transparentClanChatMessage() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatMessage(), true),
 				ChatMessageType.CLAN_CHAT);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatMessage(), true),
+				ChatMessageType.CLAN_GIM_CHAT);
 		}
 		if (chatColorConfig.transparentClanChatMessageHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentClanChatMessageHighlight(), true),
 				ChatMessageType.CLAN_CHAT);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentClanChatMessageHighlight(), true),
+				ChatMessageType.CLAN_GIM_CHAT);
 		}
 
 		if (chatColorConfig.transparentClanChatGuestInfo() != null)
