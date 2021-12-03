@@ -43,10 +43,17 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.GraphicID;
+import net.runelite.api.GraphicsObject;
+import net.runelite.api.KeyCode;
+import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
-
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.AnimationID;
+import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -729,15 +736,36 @@ public class NpcIndicatorsPlugin extends Plugin
 		return result;
 	}
 
+	/**
+	 * Checking if NPC is one of the types that we need to delay ignoring upon death
+	 * We will keep highlighting these types until we see a death animation
+	 *
+	 * @param npc the npc we are interested in
+	 * @return boolean indicating if the npc is one of the specified types
+	 */
 	private boolean doesNpcRequireDelay(NPC npc)
 	{
 		boolean result = false;
 		final int type = npc.getId();
 		if ((type == NpcID.GARGOYLE)
+				|| (type == NpcID.GARGOYLE_413)
+				|| (type == NpcID.GARGOYLE_1543)
 				|| (type == NpcID.MARBLE_GARGOYLE)
-				|| (type == NpcID.LIZARD)
+				|| (type == NpcID.MARBLE_GARGOYLE_7408)
+				|| (type == NpcID.DUSK_7888)
+				|| (type == NpcID.DUSK_7889)
 				|| (type == NpcID.ROCKSLUG)
-				|| (type == NpcID.ZYGOMITE))
+				|| (type == NpcID.ROCKSLUG_422)
+				|| (type == NpcID.GIANT_ROCKSLUG)
+				|| (type == NpcID.SMALL_LIZARD)
+				|| (type == NpcID.SMALL_LIZARD_463)
+				|| (type == NpcID.DESERT_LIZARD)
+				|| (type == NpcID.DESERT_LIZARD_460)
+				|| (type == NpcID.DESERT_LIZARD_461)
+				|| (type == NpcID.LIZARD)
+				|| (type == NpcID.ZYGOMITE)
+				|| (type == NpcID.ZYGOMITE_1024)
+				|| (type == NpcID.ANCIENT_ZYGOMITE))
 		{
 			result = true;
 		}
