@@ -255,7 +255,8 @@ public class NpcIndicatorsPlugin extends Plugin
 				color = config.deadNpcMenuColor();
 			}
 
-			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npc.isDead() || !hasDeathAnimation(npc) || !config.ignoreDeadNpcs()))
+			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames()
+					&& (!npc.isDead() || (!hasDeathAnimation(npc) && doesNpcRequireDelay(npc)) || !config.ignoreDeadNpcs()))
 			{
 				color = config.highlightColor();
 			}
@@ -699,12 +700,15 @@ public class NpcIndicatorsPlugin extends Plugin
 			.nameOnMinimap(config.drawMinimapNames())
 			.borderWidth((float) config.borderWidth())
 			.outlineFeather(config.outlineFeather())
-			.render(n -> !n.isDead() || !hasDeathAnimation(npc) || !config.ignoreDeadNpcs())
+			.render(n -> !n.isDead() || (!hasDeathAnimation(npc) && doesNpcRequireDelay(npc)) || !config.ignoreDeadNpcs())
 			.build();
 	}
 
 	/**
 	 * Checking if NPC has one of the death animations
+	 *
+	 * @param npc the npc we are interested in
+	 * @return boolean indicating if the npc currently has a death animation
 	 */
 	private boolean hasDeathAnimation(NPC npc)
 	{
@@ -719,6 +723,21 @@ public class NpcIndicatorsPlugin extends Plugin
 				|| (animation == AnimationID.ROCKSLUG_DEATH)
 				|| (animation == AnimationID.ZYGOMITE_DEATH)
 				|| (animation == AnimationID.IMP_DEATH))
+		{
+			result = true;
+		}
+		return result;
+	}
+
+	private boolean doesNpcRequireDelay(NPC npc)
+	{
+		boolean result = false;
+		final int type = npc.getId();
+		if ((type == NpcID.GARGOYLE)
+				|| (type == NpcID.MARBLE_GARGOYLE)
+				|| (type == NpcID.LIZARD)
+				|| (type == NpcID.ROCKSLUG)
+				|| (type == NpcID.ZYGOMITE))
 		{
 			result = true;
 		}
