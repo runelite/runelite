@@ -71,9 +71,11 @@ import net.runelite.client.ws.WSClient;
 public class SpecialCounterPlugin extends Plugin
 {
 	private static final Set<Integer> IGNORED_NPCS = ImmutableSet.of(
-		NpcID.DARK_ENERGY_CORE, NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063,
-		NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY,
-		NpcID.SKELETON_HELLHOUND_6613, NpcID.GREATER_SKELETON_HELLHOUND
+		NpcID.DARK_ENERGY_CORE, // corp 
+		NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063, // vorkath
+		NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY, // poh
+		NpcID.SKELETON_HELLHOUND_6613, NpcID.GREATER_SKELETON_HELLHOUND, // vetion
+		NpcID.SPAWN, NpcID.SCION // abyssal sire
 	);
 	
 	private static final Set<Integer> RESET_ON_LEAVE_INSTANCED_REGIONS = ImmutableSet.of(
