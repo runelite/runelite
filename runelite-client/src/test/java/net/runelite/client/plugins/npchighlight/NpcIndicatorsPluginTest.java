@@ -31,11 +31,15 @@ import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Predicate;
 import javax.inject.Inject;
+
+import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
@@ -140,6 +144,38 @@ public class NpcIndicatorsPluginTest
 		MenuEntry target = new MenuEntry();
 		target.setTarget("<col=0000ff>Goblin"); // blue
 		verify(client).setMenuEntries(new MenuEntry[]{target});
+	}
+
+	/**
+	 * Testing that we do not ignore a dead gargoyle until we see the death animation
+	 * When we only see isDead() return true, we do not know that is absolutely dead
+	 * Once we see the death animation, we can ignore, so we make sure the render predicate returns false
+	 */
+	@Test
+	public void testDeadGargoyleHighlight()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Gargolye");
+		when(npcIndicatorsConfig.ignoreDeadNpcs()).thenReturn(true);
+
+		npcIndicatorsPlugin.rebuild();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Gargolye");
+		when(npc.getId()).thenReturn(NpcID.GARGOYLE);
+		when(npc.isDead()).thenReturn(true);
+
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
+		Predicate<NPC> render = npcIndicatorsPlugin.getHighlightedNpcs().get(npc).getRender();
+		assertTrue(render.test(npc));
+
+		when(npc.getAnimation()).thenReturn(AnimationID.DEATH);
+		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
+
+		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
+		render = npcIndicatorsPlugin.getHighlightedNpcs().get(npc).getRender();
+		assertFalse(render.test(npc));
 	}
 
 	@Test
