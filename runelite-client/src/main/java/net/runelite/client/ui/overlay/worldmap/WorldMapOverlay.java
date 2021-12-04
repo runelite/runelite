@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay.worldmap;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import java.awt.Dimension;
@@ -32,23 +33,18 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
@@ -73,7 +69,7 @@ public class WorldMapOverlay extends Overlay
 	private final WorldMapPointManager worldMapPointManager;
 	private final Client client;
 
-	private final List<MenuEntry> mapMenuEntries = new ArrayList<>();
+	private WorldMapPoint hoveredPoint;
 
 	@Inject
 	private WorldMapOverlay(
@@ -107,19 +103,18 @@ public class WorldMapOverlay extends Overlay
 
 		bottomBar.setOnTimerListener((JavaScriptCallback) ev ->
 		{
-			if (client.isMenuOpen() || mapMenuEntries.isEmpty())
+			WorldMapPoint worldPoint = hoveredPoint;
+			if (client.isMenuOpen() || worldPoint == null)
 			{
 				return;
 			}
 
-			MenuEntry[] entries = client.getMenuEntries();
-			int end = entries.length;
-			entries = Arrays.copyOf(entries, end + mapMenuEntries.size());
-			for (int i = 0; i < mapMenuEntries.size(); i++)
-			{
-				entries[end + i] = mapMenuEntries.get(i);
-			}
-			client.setMenuEntries(entries);
+			client.createMenuEntry(-1)
+				.setTarget(ColorUtil.wrapWithColorTag(worldPoint.getName(), JagexColors.MENU_TARGET))
+				.setOption(FOCUS_ON)
+				.setType(MenuAction.RUNELITE)
+				.onClick(m -> client.getRenderOverview().setWorldMapPositionTarget(
+					MoreObjects.firstNonNull(worldPoint.getTarget(), worldPoint.getWorldPoint())));
 		});
 		bottomBar.setHasListener(true);
 
@@ -135,7 +130,7 @@ public class WorldMapOverlay extends Overlay
 			mousePos = null;
 		}
 
-		mapMenuEntries.clear();
+		hoveredPoint = null;
 
 		WorldMapPoint tooltipPoint = null;
 
@@ -227,19 +222,7 @@ public class WorldMapOverlay extends Overlay
 					if (worldPoint.isJumpOnClick())
 					{
 						assert worldPoint.getName() != null;
-
-						WorldPoint target = worldPoint.getTarget();
-						if (target == null)
-						{
-							target = worldPoint.getWorldPoint();
-						}
-
-						MenuEntry entry = new MenuEntry();
-						entry.setType(MenuAction.RUNELITE.getId());
-						entry.setOption(FOCUS_ON);
-						entry.setTarget(ColorUtil.wrapWithColorTag(worldPoint.getName(), JagexColors.MENU_TARGET));
-						entry.setIdentifier(target.getPlane() << 28 | target.getX() << 14 | target.getY());
-						mapMenuEntries.add(entry);
+						hoveredPoint = worldPoint;
 					}
 				}
 			}
@@ -257,21 +240,6 @@ public class WorldMapOverlay extends Overlay
 		}
 
 		return null;
-	}
-
-	@Subscribe
-	private void onMenuOptionClicked(MenuOptionClicked ev)
-	{
-		if (ev.getMenuAction() == MenuAction.RUNELITE && FOCUS_ON.equals(ev.getMenuOption()))
-		{
-			int pxy = ev.getId();
-			WorldPoint wp = new WorldPoint(
-				pxy >> 14 & 0x3fff,
-				pxy & 0x3fff,
-				pxy >> 28);
-
-			client.getRenderOverview().setWorldMapPositionTarget(wp);
-		}
 	}
 
 	/**

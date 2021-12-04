@@ -28,6 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
@@ -37,6 +38,7 @@ import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.menus.TestMenuEntry;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -88,9 +90,7 @@ public class MenuEntrySwapperPluginTest
 		{
 			// The menu implementation returns a copy of the array, which causes swap() to not
 			// modify the same array being iterated in onClientTick
-			MenuEntry[] copy = new MenuEntry[entries.length];
-			System.arraycopy(entries, 0, copy, 0, entries.length);
-			return copy;
+			return Arrays.copyOf(entries, entries.length);
 		});
 		doAnswer((Answer<Void>) invocationOnMock ->
 		{
@@ -109,10 +109,10 @@ public class MenuEntrySwapperPluginTest
 
 	private static MenuEntry menu(String option, String target, MenuAction menuAction, int identifier)
 	{
-		MenuEntry menuEntry = new MenuEntry();
+		MenuEntry menuEntry = new TestMenuEntry();
 		menuEntry.setOption(option);
 		menuEntry.setTarget(target);
-		menuEntry.setType(menuAction.getId());
+		menuEntry.setType(menuAction);
 		menuEntry.setIdentifier(identifier);
 		return menuEntry;
 	}

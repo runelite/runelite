@@ -79,7 +79,7 @@ class InteractHighlightOverlay extends Overlay
 		}
 
 		MenuEntry top = menuEntries[menuEntries.length - 1];
-		MenuAction menuAction = MenuAction.of(top.getType());
+		MenuAction menuAction = top.getType();
 
 		switch (menuAction)
 		{

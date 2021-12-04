@@ -108,7 +108,7 @@ class MouseHighlightOverlay extends Overlay
 		MenuEntry menuEntry = menuEntries[last];
 		String target = menuEntry.getTarget();
 		String option = menuEntry.getOption();
-		MenuAction type = MenuAction.of(menuEntry.getType());
+		MenuAction type = menuEntry.getType();
 
 		if (type == MenuAction.RUNELITE_OVERLAY || type == MenuAction.CC_OP_LOW_PRIORITY)
 		{

@@ -28,7 +28,6 @@ package net.runelite.client.plugins.worldhopper;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
@@ -54,7 +53,6 @@ import net.runelite.api.FriendsChatManager;
 import net.runelite.api.FriendsChatMember;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanChannel;
@@ -63,7 +61,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.widgets.WidgetInfo;
@@ -92,7 +89,6 @@ import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "World Hopper",
@@ -397,43 +393,19 @@ public class WorldHopperPlugin extends Plugin
 				return;
 			}
 
-			final MenuEntry hopTo = new MenuEntry();
-			hopTo.setOption(HOP_TO);
-			hopTo.setTarget(event.getTarget());
-			hopTo.setType(MenuAction.RUNELITE.getId());
-			hopTo.setParam0(event.getActionParam0());
-			hopTo.setParam1(event.getActionParam1());
+			client.createMenuEntry(after ? -2 : -1)
+				.setOption(HOP_TO)
+				.setTarget(event.getTarget())
+				.setType(MenuAction.RUNELITE)
+				.onClick(e ->
+				{
+					ChatPlayer p = getChatPlayerFromName(e.getTarget());
 
-			insertMenuEntry(hopTo, client.getMenuEntries(), after);
-		}
-	}
-
-	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries, boolean after)
-	{
-		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
-
-		if (after)
-		{
-			int menuEntryCount = newMenu.length;
-			ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
-		}
-
-		client.setMenuEntries(newMenu);
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		if (event.getMenuAction() != MenuAction.RUNELITE || !event.getMenuOption().equals(HOP_TO))
-		{
-			return;
-		}
-
-		ChatPlayer player = getChatPlayerFromName(event.getMenuTarget());
-
-		if (player != null)
-		{
-			hop(player.getWorld());
+					if (p != null)
+					{
+						hop(p.getWorld());
+					}
+				});
 		}
 	}
 

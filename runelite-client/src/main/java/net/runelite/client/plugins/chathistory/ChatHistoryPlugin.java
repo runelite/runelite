@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.chathistory;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.EvictingQueue;
 import com.google.inject.Provides;
 import java.awt.Toolkit;
@@ -83,8 +82,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	private Queue<MessageNode> messageQueue;
 	private Deque<String> friends;
 
-	private String currentMessage = null;
-
 	@Inject
 	private Client client;
 
@@ -121,7 +118,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		messageQueue = null;
 		friends.clear();
 		friends = null;
-		currentMessage = null;
 		keyManager.unregisterKeyListener(this);
 	}
 
@@ -195,7 +191,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		// Use second entry as first one can be walk here with transparent chatbox
 		final MenuEntry entry = event.getMenuEntries()[event.getMenuEntries().length - 2];
 
-		if (entry.getType() != MenuAction.CC_OP_LOW_PRIORITY.getId() && entry.getType() != MenuAction.RUNELITE.getId())
+		if (entry.getType() != MenuAction.CC_OP_LOW_PRIORITY && entry.getType() != MenuAction.RUNELITE)
 		{
 			return;
 		}
@@ -236,16 +232,17 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		currentMessage = messageContents.getText();
+		String currentMessage = messageContents.getText();
 
-		final MenuEntry menuEntry = new MenuEntry();
-		menuEntry.setOption(COPY_TO_CLIPBOARD);
-		menuEntry.setTarget(entry.getTarget());
-		menuEntry.setType(MenuAction.RUNELITE.getId());
-		menuEntry.setParam0(entry.getParam0());
-		menuEntry.setParam1(entry.getParam1());
-		menuEntry.setIdentifier(entry.getIdentifier());
-		client.setMenuEntries(ArrayUtils.insert(1, client.getMenuEntries(), menuEntry));
+		client.createMenuEntry(1)
+			.setOption(COPY_TO_CLIPBOARD)
+			.setTarget(entry.getTarget())
+			.setType(MenuAction.RUNELITE)
+			.onClick(e ->
+			{
+				final StringSelection stringSelection = new StringSelection(Text.removeTags(currentMessage));
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+			});
 	}
 
 	@Subscribe
@@ -257,11 +254,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		if (menuOption.endsWith(CLEAR_HISTORY))
 		{
 			clearChatboxHistory(ChatboxTab.of(event.getParam1()));
-		}
-		else if (COPY_TO_CLIPBOARD.equals(menuOption) && !Strings.isNullOrEmpty(currentMessage))
-		{
-			final StringSelection stringSelection = new StringSelection(Text.removeTags(currentMessage));
-			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 		}
 	}
 
@@ -279,10 +271,8 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		final MenuEntry clearEntry = new MenuEntry();
-		clearEntry.setTarget("");
-		clearEntry.setType(MenuAction.RUNELITE_HIGH_PRIORITY.getId());
-		clearEntry.setParam0(entry.getActionParam0());
+		final MenuEntry clearEntry = client.createMenuEntry(-2)
+			.setType(MenuAction.RUNELITE_HIGH_PRIORITY);
 		clearEntry.setParam1(entry.getActionParam1());
 
 		final StringBuilder optionBuilder = new StringBuilder();
@@ -299,9 +289,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 
 		optionBuilder.append(CLEAR_HISTORY);
 		clearEntry.setOption(optionBuilder.toString());
-
-		final MenuEntry[] menuEntries = client.getMenuEntries();
-		client.setMenuEntries(ArrayUtils.insert(menuEntries.length - 1, menuEntries, clearEntry));
 	}
 
 	private void clearMessageQueue(ChatboxTab tab)
