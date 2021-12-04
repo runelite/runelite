@@ -594,6 +594,13 @@ public interface Client extends GameEngine
 	World[] getWorldList();
 
 	/**
+	 * Create a new menu entry
+	 * @param idx the index to create the menu entry at. Accepts negative indexes eg. -1 inserts at the end.
+	 * @return the newly created menu entry
+	 */
+	MenuEntry createMenuEntry(int idx);
+
+	/**
 	 * Gets an array of currently open right-click menu entries that can be
 	 * clicked and activated.
 	 *

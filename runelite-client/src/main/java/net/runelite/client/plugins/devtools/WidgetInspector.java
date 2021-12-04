@@ -487,7 +487,7 @@ class WidgetInspector extends DevToolsFrame
 		client.setSpellSelected(false);
 		ev.consume();
 
-		Object target = getWidgetOrWidgetItemForMenuOption(ev.getMenuAction().getId(), ev.getParam0(), ev.getParam1());
+		Object target = getWidgetOrWidgetItemForMenuOption(ev.getMenuAction(), ev.getParam0(), ev.getParam1());
 		if (target == null)
 		{
 			return;
@@ -516,8 +516,8 @@ class WidgetInspector extends DevToolsFrame
 		for (int i = 0; i < menuEntries.length; i++)
 		{
 			MenuEntry entry = menuEntries[i];
-			if (entry.getType() != MenuAction.ITEM_USE_ON_WIDGET.getId()
-				&& entry.getType() != MenuAction.SPELL_CAST_ON_WIDGET.getId())
+			if (entry.getType() != MenuAction.ITEM_USE_ON_WIDGET
+				&& entry.getType() != MenuAction.SPELL_CAST_ON_WIDGET)
 			{
 				continue;
 			}
@@ -532,8 +532,6 @@ class WidgetInspector extends DevToolsFrame
 
 			entry.setTarget(ColorUtil.wrapWithColorTag(name, color));
 		}
-
-		client.setMenuEntries(menuEntries);
 	}
 
 	Color colorForWidget(int index, int length)
@@ -543,9 +541,9 @@ class WidgetInspector extends DevToolsFrame
 		return Color.getHSBColor(h, 1, 1);
 	}
 
-	Object getWidgetOrWidgetItemForMenuOption(int type, int param0, int param1)
+	Object getWidgetOrWidgetItemForMenuOption(MenuAction type, int param0, int param1)
 	{
-		if (type == MenuAction.SPELL_CAST_ON_WIDGET.getId())
+		if (type == MenuAction.SPELL_CAST_ON_WIDGET)
 		{
 			Widget w = client.getWidget(param1);
 			if (param0 != -1)
@@ -555,7 +553,7 @@ class WidgetInspector extends DevToolsFrame
 
 			return w;
 		}
-		else if (type == MenuAction.ITEM_USE_ON_WIDGET.getId())
+		else if (type == MenuAction.ITEM_USE_ON_WIDGET)
 		{
 			Widget w = client.getWidget(param1);
 			return w.getWidgetItem(param0);

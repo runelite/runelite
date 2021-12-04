@@ -115,14 +115,6 @@ public class GroundItemsPlugin extends Plugin
 	static final int MAX_QUANTITY = 65535;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
-	// Ground item menu options
-	private static final int FIRST_OPTION = MenuAction.GROUND_ITEM_FIRST_OPTION.getId();
-	private static final int SECOND_OPTION = MenuAction.GROUND_ITEM_SECOND_OPTION.getId();
-	private static final int THIRD_OPTION = MenuAction.GROUND_ITEM_THIRD_OPTION.getId(); // this is Take
-	private static final int FOURTH_OPTION = MenuAction.GROUND_ITEM_FOURTH_OPTION.getId();
-	private static final int FIFTH_OPTION = MenuAction.GROUND_ITEM_FIFTH_OPTION.getId();
-	private static final int EXAMINE_ITEM = MenuAction.EXAMINE_ITEM_GROUND.getId();
-	private static final int CAST_ON_ITEM = MenuAction.SPELL_CAST_ON_GROUND_ITEM.getId();
 
 	private static final String TELEGRAB_TEXT = ColorUtil.wrapWithColorTag("Telekinetic Grab", Color.GREEN) + ColorUtil.prependColorTag(" -> ", Color.WHITE);
 
@@ -344,9 +336,10 @@ public class GroundItemsPlugin extends Plugin
 		{
 			MenuEntry menuEntry = menuEntries[i];
 
-			int menuType = menuEntry.getType();
-			if (menuType == FIRST_OPTION || menuType == SECOND_OPTION || menuType == THIRD_OPTION
-				|| menuType == FOURTH_OPTION || menuType == FIFTH_OPTION || menuType == EXAMINE_ITEM)
+			MenuAction menuType = menuEntry.getType();
+			if (menuType == MenuAction.GROUND_ITEM_FIRST_OPTION || menuType == MenuAction.GROUND_ITEM_SECOND_OPTION
+				|| menuType == MenuAction.GROUND_ITEM_THIRD_OPTION || menuType == MenuAction.GROUND_ITEM_FOURTH_OPTION
+				|| menuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || menuType == MenuAction.SPELL_CAST_ON_GROUND_ITEM)
 			{
 				for (MenuEntryWithCount entryWCount : newEntries)
 				{
@@ -490,8 +483,8 @@ public class GroundItemsPlugin extends Plugin
 	{
 		if (config.itemHighlightMode() == ItemHighlightMode.MENU || config.itemHighlightMode() == ItemHighlightMode.BOTH)
 		{
-			final boolean telegrabEntry = event.getOption().equals("Cast") && event.getTarget().startsWith(TELEGRAB_TEXT) && event.getType() == CAST_ON_ITEM;
-			if (!(event.getOption().equals("Take") && event.getType() == THIRD_OPTION) && !telegrabEntry)
+			final boolean telegrabEntry = event.getOption().equals("Cast") && event.getTarget().startsWith(TELEGRAB_TEXT) && event.getType() == MenuAction.SPELL_CAST_ON_GROUND_ITEM.getId();
+			if (!(event.getOption().equals("Take") && event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId()) && !telegrabEntry)
 			{
 				return;
 			}
@@ -548,8 +541,6 @@ public class GroundItemsPlugin extends Plugin
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
 			}
-
-			client.setMenuEntries(menuEntries);
 		}
 	}
 

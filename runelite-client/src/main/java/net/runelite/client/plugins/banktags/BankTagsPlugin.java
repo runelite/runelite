@@ -341,8 +341,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		MenuEntry[] entries = client.getMenuEntries();
-
 		if (event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getOption().equals("Examine"))
 		{
@@ -357,87 +355,80 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				text += " (" + tagCount + ")";
 			}
 
-			MenuEntry editTags = new MenuEntry();
-			editTags.setParam0(event.getActionParam0());
-			editTags.setParam1(event.getActionParam1());
-			editTags.setTarget(event.getTarget());
-			editTags.setOption(text);
-			editTags.setType(MenuAction.RUNELITE.getId());
-			editTags.setIdentifier(event.getIdentifier());
-			entries = Arrays.copyOf(entries, entries.length + 1);
-			entries[entries.length - 1] = editTags;
-			client.setMenuEntries(entries);
+			client.createMenuEntry(-1)
+				.setParam0(event.getActionParam0())
+				.setParam1(event.getActionParam1())
+				.setTarget(event.getTarget())
+				.setOption(text)
+				.setType(MenuAction.RUNELITE)
+				.setIdentifier(event.getIdentifier())
+				.onClick(this::editTags);
 		}
 
 		tabInterface.handleAdd(event);
 	}
 
+	private void editTags(MenuEntry entry)
+	{
+		int inventoryIndex = entry.getParam0();
+		ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
+		if (bankContainer == null)
+		{
+			return;
+		}
+		Item[] items = bankContainer.getItems();
+		if (inventoryIndex < 0 || inventoryIndex >= items.length)
+		{
+			return;
+		}
+		Item item = bankContainer.getItems()[inventoryIndex];
+		if (item == null)
+		{
+			return;
+		}
+
+		int itemId = item.getId();
+		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		String name = itemComposition.getName();
+
+		// Get both tags and vartags and append * to end of vartags name
+		Collection<String> tags = tagManager.getTags(itemId, false);
+		tagManager.getTags(itemId, true).stream()
+			.map(i -> i + "*")
+			.forEach(tags::add);
+
+		String initialValue = Text.toCSV(tags);
+
+		chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
+			.addCharValidator(FILTERED_CHARS)
+			.value(initialValue)
+			.onDone((Consumer<String>) (newValue) ->
+				clientThread.invoke(() ->
+				{
+					// Split inputted tags to vartags (ending with *) and regular tags
+					final Collection<String> newTags = new ArrayList<>(Text.fromCSV(newValue.toLowerCase()));
+					final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
+					{
+						newTags.remove(s);
+						return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
+					}).collect(Collectors.toList());
+
+					// And save them
+					tagManager.setTagString(itemId, Text.toCSV(newTags), false);
+					tagManager.setTagString(itemId, Text.toCSV(newVarTags), true);
+
+					// Check both previous and current tags in case the tag got removed in new tags or in case
+					// the tag got added in new tags
+					tabInterface.updateTabIfActive(Text.fromCSV(initialValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
+					tabInterface.updateTabIfActive(Text.fromCSV(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
+				}))
+			.build();
+	}
+
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-			&& event.getMenuAction() == MenuAction.RUNELITE
-			&& event.getMenuOption().startsWith(EDIT_TAGS_MENU_OPTION))
-		{
-			event.consume();
-			int inventoryIndex = event.getParam0();
-			ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-			if (bankContainer == null)
-			{
-				return;
-			}
-			Item[] items = bankContainer.getItems();
-			if (inventoryIndex < 0 || inventoryIndex >= items.length)
-			{
-				return;
-			}
-			Item item = bankContainer.getItems()[inventoryIndex];
-			if (item == null)
-			{
-				return;
-			}
-
-			int itemId = item.getId();
-			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			String name = itemComposition.getName();
-
-			// Get both tags and vartags and append * to end of vartags name
-			Collection<String> tags = tagManager.getTags(itemId, false);
-			tagManager.getTags(itemId, true).stream()
-				.map(i -> i + "*")
-				.forEach(tags::add);
-
-			String initialValue = Text.toCSV(tags);
-
-			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
-				.addCharValidator(FILTERED_CHARS)
-				.value(initialValue)
-				.onDone((Consumer<String>) (newValue) ->
-					clientThread.invoke(() ->
-					{
-						// Split inputted tags to vartags (ending with *) and regular tags
-						final Collection<String> newTags = new ArrayList<>(Text.fromCSV(newValue.toLowerCase()));
-						final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
-						{
-							newTags.remove(s);
-							return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
-						}).collect(Collectors.toList());
-
-						// And save them
-						tagManager.setTagString(itemId, Text.toCSV(newTags), false);
-						tagManager.setTagString(itemId, Text.toCSV(newVarTags), true);
-
-						// Check both previous and current tags in case the tag got removed in new tags or in case
-						// the tag got added in new tags
-						tabInterface.updateTabIfActive(Text.fromCSV(initialValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
-						tabInterface.updateTabIfActive(Text.fromCSV(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
-					}))
-				.build();
-		}
-		else
-		{
-			tabInterface.handleClick(event);
-		}
+		tabInterface.handleClick(event);
 	}
 
 	@Subscribe

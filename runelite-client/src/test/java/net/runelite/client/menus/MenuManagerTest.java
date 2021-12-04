@@ -24,9 +24,12 @@
  */
 package net.runelite.client.menus;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
@@ -38,24 +41,18 @@ import static net.runelite.api.widgets.WidgetInfo.MINIMAP_WORLDMAP_OPTIONS;
 import net.runelite.client.util.Text;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
+import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MenuManagerTest
 {
-	private static final MenuEntry CANCEL = new MenuEntry();
-
 	@Inject
 	private MenuManager menuManager;
 
@@ -63,14 +60,18 @@ public class MenuManagerTest
 	@Bind
 	private Client client;
 
-	private MenuEntry[] clientMenuEntries = {CANCEL};
+	private final MenuEntry CANCEL = createMenuEntry("Cancel", "", MenuAction.CANCEL, MINIMAP_WORLDMAP_OPTIONS.getPackedId());
 
-	@BeforeClass
-	public static void beforeClass()
+	private final List<MenuEntry> createdMenuEntries = new ArrayList<>();
+
+	private static MenuEntry createMenuEntry(String option, String target, MenuAction type, int param1)
 	{
-		CANCEL.setOption("Cancel");
-		CANCEL.setType(MenuAction.CANCEL.getId());
-		CANCEL.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
+		MenuEntry menuEntry = new TestMenuEntry();
+		menuEntry.setOption(option);
+		menuEntry.setTarget(target);
+		menuEntry.setType(type);
+		menuEntry.setParam1(param1);
+		return menuEntry;
 	}
 
 	@Before
@@ -78,35 +79,25 @@ public class MenuManagerTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
-		doAnswer((Answer<Void>) invocationOnMock ->
-		{
-			clientMenuEntries = invocationOnMock.getArgument(0, MenuEntry[].class);
-			return null;
-		}).when(client).setMenuEntries(ArgumentMatchers.any(MenuEntry[].class));
-		when(client.getMenuEntries()).thenAnswer((Answer<MenuEntry[]>) invocationMock -> clientMenuEntries);
+		when(client.createMenuEntry(anyInt()))
+			.thenAnswer(a ->
+			{
+				MenuEntry e = new TestMenuEntry();
+				createdMenuEntries.add(e);
+				return e;
+			});
+		when(client.getMenuEntries()).thenReturn(new MenuEntry[]{CANCEL});
 	}
 
 	@Test
 	public void testManagedMenuOrder()
 	{
-		final MenuEntry first = new MenuEntry();
-		final MenuEntry second = new MenuEntry();
-		final MenuEntry third = new MenuEntry();
-		first.setOption("Test");
-		first.setTarget("First Entry");
-		first.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
-		first.setType(RUNELITE.getId());
-		second.setOption("Test");
-		second.setTarget("Second Entry");
-		second.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
-		second.setType(RUNELITE.getId());
-		third.setOption("Test");
-		third.setTarget("Third Entry");
-		third.setParam1(MINIMAP_WORLDMAP_OPTIONS.getPackedId());
-		third.setType(RUNELITE.getId());
-		menuManager.addManagedCustomMenu(new WidgetMenuOption(first.getOption(), first.getTarget(), MINIMAP_WORLDMAP_OPTIONS));
-		menuManager.addManagedCustomMenu(new WidgetMenuOption(second.getOption(), second.getTarget(), MINIMAP_WORLDMAP_OPTIONS));
-		menuManager.addManagedCustomMenu(new WidgetMenuOption(third.getOption(), third.getTarget(), MINIMAP_WORLDMAP_OPTIONS));
+		final MenuEntry first = createMenuEntry("Test", "First Entry", RUNELITE, MINIMAP_WORLDMAP_OPTIONS.getPackedId());
+		final MenuEntry second = createMenuEntry("Test", "Second Entry", RUNELITE, MINIMAP_WORLDMAP_OPTIONS.getPackedId());
+		final MenuEntry third = createMenuEntry("Test", "Third Entry", RUNELITE, MINIMAP_WORLDMAP_OPTIONS.getPackedId());
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(first.getOption(), first.getTarget(), MINIMAP_WORLDMAP_OPTIONS), null);
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(second.getOption(), second.getTarget(), MINIMAP_WORLDMAP_OPTIONS), null);
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(third.getOption(), third.getTarget(), MINIMAP_WORLDMAP_OPTIONS), null);
 
 		menuManager.onMenuEntryAdded(new MenuEntryAdded(
 			CANCEL.getOption(),
@@ -116,12 +107,10 @@ public class MenuManagerTest
 			CANCEL.getParam0(),
 			CANCEL.getParam1()));
 
-		ArgumentCaptor<MenuEntry[]> captor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client, atLeastOnce()).setMenuEntries(captor.capture());
+		verify(client, times(3)).createMenuEntry(anyInt());
 
-		final MenuEntry[] resultMenuEntries = captor.getValue();
 		// Strip color tags from menu options before array comparison
-		for (MenuEntry resultEntry : resultMenuEntries)
+		for (MenuEntry resultEntry : createdMenuEntries)
 		{
 			final String resultTarget = resultEntry.getTarget();
 			if (resultTarget != null)
@@ -130,6 +119,7 @@ public class MenuManagerTest
 			}
 		}
 
-		assertArrayEquals(new MenuEntry[]{CANCEL, third, second, first}, resultMenuEntries);
+		assertArrayEquals(new MenuEntry[]{third, second, first},
+			Lists.reverse(createdMenuEntries).toArray(new MenuEntry[0]));
 	}
 }

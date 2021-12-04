@@ -184,7 +184,6 @@ public class OpponentInfoPlugin extends Plugin
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			menuEntries[menuEntries.length - 1].setTarget("*" + menuEntries[menuEntries.length - 1].getTarget());
-			client.setMenuEntries(menuEntries);
 		}
 	}
 }

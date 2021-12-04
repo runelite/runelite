@@ -31,7 +31,6 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,7 +56,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -271,7 +269,6 @@ public class NpcIndicatorsPlugin extends Plugin
 				final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
 				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
 				menuEntry.setTarget(target);
-				client.setMenuEntries(menuEntries);
 			}
 		}
 		else if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
@@ -291,48 +288,29 @@ public class NpcIndicatorsPlugin extends Plugin
 				.filter(highlight -> !highlight.equalsIgnoreCase(npcName))
 				.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcName));
 
-			MenuEntry[] menuEntries = client.getMenuEntries();
-
 			// Only add Untag-All option to npcs not highlighted by a wildcard entry, because untag-all will not remove wildcards
 			if (!matchesList)
 			{
-				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
-				final MenuEntry tagAllEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
-				tagAllEntry.setOption(highlights.stream().anyMatch(npcName::equalsIgnoreCase) ? UNTAG_ALL : TAG_ALL);
-				tagAllEntry.setTarget(event.getTarget());
-				tagAllEntry.setParam0(event.getActionParam0());
-				tagAllEntry.setParam1(event.getActionParam1());
-				tagAllEntry.setIdentifier(event.getIdentifier());
-				tagAllEntry.setType(MenuAction.RUNELITE.getId());
-			}
-			else
-			{
-				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+				client.createMenuEntry(-1)
+					.setOption(highlights.stream().anyMatch(npcName::equalsIgnoreCase) ? UNTAG_ALL : TAG_ALL)
+					.setTarget(event.getTarget())
+					.setIdentifier(event.getIdentifier())
+					.setType(MenuAction.RUNELITE)
+					.onClick(this::tag);
 			}
 
-			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption(npcTags.contains(npc.getIndex()) ? UNTAG : TAG);
-			tagEntry.setTarget(event.getTarget());
-			tagEntry.setParam0(event.getActionParam0());
-			tagEntry.setParam1(event.getActionParam1());
-			tagEntry.setIdentifier(event.getIdentifier());
-			tagEntry.setType(MenuAction.RUNELITE.getId());
-
-			client.setMenuEntries(menuEntries);
+			client.createMenuEntry(-1)
+				.setOption(npcTags.contains(npc.getIndex()) ? UNTAG : TAG)
+				.setTarget(event.getTarget())
+				.setIdentifier(event.getIdentifier())
+				.setType(MenuAction.RUNELITE)
+				.onClick(this::tag);
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked click)
+	private void tag(MenuEntry entry)
 	{
-		if (click.getMenuAction() != MenuAction.RUNELITE ||
-			!(click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG) ||
-				click.getMenuOption().equals(TAG_ALL) || click.getMenuOption().equals(UNTAG_ALL)))
-		{
-			return;
-		}
-
-		final int id = click.getId();
+		final int id = entry.getIdentifier();
 		final NPC[] cachedNPCs = client.getCachedNPCs();
 		final NPC npc = cachedNPCs[id];
 
@@ -341,7 +319,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (click.getMenuOption().equals(TAG) || click.getMenuOption().equals(UNTAG))
+		if (entry.getOption().equals(TAG) || entry.getOption().equals(UNTAG))
 		{
 			final boolean removed = npcTags.remove(id);
 
@@ -371,8 +349,6 @@ public class NpcIndicatorsPlugin extends Plugin
 			// this trips a config change which triggers the overlay rebuild
 			updateNpcsToHighlight(name);
 		}
-
-		click.consume();
 	}
 
 	@Subscribe
