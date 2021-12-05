@@ -795,7 +795,8 @@ public class ScreenshotPlugin extends Plugin
 	 * @param fileName Filename to use, without file extension.
 	 * @param subDir   Subdirectory to store the captured screenshot in.
 	 */
-	private void takeScreenshot(String fileName, String subDir)
+	@VisibleForTesting
+	void takeScreenshot(String fileName, String subDir)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
