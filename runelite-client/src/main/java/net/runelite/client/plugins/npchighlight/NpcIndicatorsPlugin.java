@@ -263,7 +263,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			}
 
 			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames()
-					&& (!npc.isDead() || (!hasDeathAnimation(npc) && doesNpcRequireDelay(npc)) || !config.ignoreDeadNpcs()))
+					&& (!isActuallyDead(npc) || !config.ignoreDeadNpcs()))
 			{
 				color = config.highlightColor();
 			}
@@ -707,29 +707,47 @@ public class NpcIndicatorsPlugin extends Plugin
 			.nameOnMinimap(config.drawMinimapNames())
 			.borderWidth((float) config.borderWidth())
 			.outlineFeather(config.outlineFeather())
-			.render(n -> !n.isDead() || (!hasDeathAnimation(npc) && doesNpcRequireDelay(npc)) || !config.ignoreDeadNpcs())
+			.render(n -> !isActuallyDead(n) || !config.ignoreDeadNpcs())
 			.build();
 	}
 
 	/**
-	 * Checking if NPC has one of the death animations
+	 * Checks whether an NPC is actually dead. Some NPCs can die above 0 HP and do not die normally
+	 * at 0 HP due to their death requiring the use of an item.
 	 *
 	 * @param npc the npc we are interested in
-	 * @return boolean indicating if the npc currently has a death animation
+	 * @return boolean indicating whether the npc is actually dead
 	 */
-	private boolean hasDeathAnimation(NPC npc)
+	private boolean isActuallyDead(NPC npc)
+	{
+		boolean result;
+		if (npc.isDead())
+		{
+			result = !npcRequiresItemToKill(npc) || isDeathAnimation(npc);
+		}
+		else
+		{
+			result = npcRequiresItemToKill(npc) && isDeathAnimation(npc);
+		}
+		return result;
+	}
+
+	/**
+	 * Checking if current animation being performed by the given NPC is a death animation.
+	 *
+	 * @param npc the npc we are interested in
+	 * @return boolean indicating if the current animation is a death animation
+	 */
+	private boolean isDeathAnimation(NPC npc)
 	{
 		boolean result = false;
 		final int animation = npc.getAnimation();
 		if ((animation == AnimationID.DEATH)
-				|| (animation == AnimationID.CAVE_KRAKEN_DEATH)
-				|| (animation == AnimationID.WIZARD_DEATH)
 				|| (animation == AnimationID.GARGOYLE_DEATH)
 				|| (animation == AnimationID.MARBLE_GARGOYLE_DEATH)
 				|| (animation == AnimationID.LIZARD_DEATH)
 				|| (animation == AnimationID.ROCKSLUG_DEATH)
-				|| (animation == AnimationID.ZYGOMITE_DEATH)
-				|| (animation == AnimationID.IMP_DEATH))
+				|| (animation == AnimationID.ZYGOMITE_DEATH))
 		{
 			result = true;
 		}
@@ -737,13 +755,12 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	/**
-	 * Checking if NPC is one of the types that we need to delay ignoring upon death
-	 * We will keep highlighting these types until we see a death animation
+	 * Checking if NPC is in the list of NPCs that can only be killed after using an item on them.
 	 *
 	 * @param npc the npc we are interested in
-	 * @return boolean indicating if the npc is one of the specified types
+	 * @return boolean indicating if the npc can only be killed after using an item
 	 */
-	private boolean doesNpcRequireDelay(NPC npc)
+	private boolean npcRequiresItemToKill(NPC npc)
 	{
 		boolean result = false;
 		final int type = npc.getId();

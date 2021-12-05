@@ -154,13 +154,13 @@ public class NpcIndicatorsPluginTest
 	@Test
 	public void testDeadGargoyleHighlight()
 	{
-		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Gargolye");
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("Gargoyle");
 		when(npcIndicatorsConfig.ignoreDeadNpcs()).thenReturn(true);
 
 		npcIndicatorsPlugin.rebuild();
 
 		NPC npc = mock(NPC.class);
-		when(npc.getName()).thenReturn("Gargolye");
+		when(npc.getName()).thenReturn("Gargoyle");
 		when(npc.getId()).thenReturn(NpcID.GARGOYLE);
 		when(npc.isDead()).thenReturn(true);
 
@@ -170,7 +170,7 @@ public class NpcIndicatorsPluginTest
 		Predicate<NPC> render = npcIndicatorsPlugin.getHighlightedNpcs().get(npc).getRender();
 		assertTrue(render.test(npc));
 
-		when(npc.getAnimation()).thenReturn(AnimationID.DEATH);
+		when(npc.getAnimation()).thenReturn(AnimationID.GARGOYLE_DEATH);
 		npcIndicatorsPlugin.onNpcChanged(new NpcChanged(npc, null));
 
 		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
