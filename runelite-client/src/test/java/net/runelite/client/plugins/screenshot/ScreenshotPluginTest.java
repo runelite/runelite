@@ -28,7 +28,6 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.Consumer;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
@@ -57,15 +56,14 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -132,6 +130,7 @@ public class ScreenshotPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		screenshotPlugin = spy(screenshotPlugin);
 		when(screenshotConfig.screenshotLevels()).thenReturn(true);
 		when(screenshotConfig.screenshotValuableDrop()).thenReturn(true);
 		when(screenshotConfig.valuableDropThreshold()).thenReturn(1000);
@@ -183,7 +182,7 @@ public class ScreenshotPluginTest
 		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(widgetLoaded);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Theatre of Blood(73)", "Boss Kills");
 	}
 
 	@Test
@@ -201,7 +200,7 @@ public class ScreenshotPluginTest
 		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(widgetLoaded);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Theatre of Blood Story Mode(73)", "Boss Kills");
 	}
 
 	@Test
@@ -219,7 +218,7 @@ public class ScreenshotPluginTest
 		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
 		screenshotPlugin.onWidgetLoaded(widgetLoaded);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Theatre of Blood Hard Mode(73)", "Boss Kills");
 	}
 
 	@Test
@@ -228,12 +227,12 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", NOT_SO_VALUABLE_DROP, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verifyNoInteractions(drawManager);
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 
 		when(screenshotConfig.valuableDropThreshold()).thenReturn(0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Valuable drop 6 x Bronze arrow (42 coins)", "Valuable Drops");
 	}
 
 	@Test
@@ -243,12 +242,12 @@ public class ScreenshotPluginTest
 		when(screenshotConfig.valuableDropThreshold()).thenReturn(100_000);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verifyNoInteractions(drawManager);
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 
 		when(screenshotConfig.valuableDropThreshold()).thenReturn(1000);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Valuable drop Rune scimitar (25,600 coins)", "Valuable Drops");
 	}
 
 	@Test
@@ -257,7 +256,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", UNTRADEABLE_DROP, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Untradeable drop Rusty sword", "Untradeable Drops");
 	}
 
 	@Test
@@ -277,7 +276,7 @@ public class ScreenshotPluginTest
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Hitpoints(99)", "Levels");
 	}
 
 	@Test
@@ -297,7 +296,7 @@ public class ScreenshotPluginTest
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Firemaking(9)", "Levels");
 	}
 
 	@Test
@@ -317,7 +316,7 @@ public class ScreenshotPluginTest
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Attack(70)", "Levels");
 	}
 
 	@Test
@@ -337,7 +336,7 @@ public class ScreenshotPluginTest
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Hunter(2)", "Levels");
 	}
 
 	@Test
@@ -386,7 +385,7 @@ public class ScreenshotPluginTest
 
 		screenshotPlugin.onGameTick(new GameTick());
 
-		verify(drawManager, times(0)).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 	}
 
 	@Test
@@ -405,7 +404,7 @@ public class ScreenshotPluginTest
 
 		screenshotPlugin.onGameTick(new GameTick());
 
-		verify(drawManager, times(0)).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 	}
 
 	@Test
@@ -420,7 +419,7 @@ public class ScreenshotPluginTest
 		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
 		screenshotPlugin.onScriptPreFired(notificationDelay);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Collection log (Chompy bird hat)", "Collection Log");
 	}
 
 	@Test
@@ -431,12 +430,13 @@ public class ScreenshotPluginTest
 		when(client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(1);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Collection log (Chompy bird hat)", "Collection Log");
+		reset(screenshotPlugin);
 
 		when(client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(3);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verifyNoMoreInteractions(drawManager);
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 	}
 
 	@Test
@@ -445,12 +445,13 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You won! You have now won 1,909 duels.", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Duel won (1909)", "Duels");
+		reset(screenshotPlugin);
 
 		chatMessageEvent = new ChatMessage(null, TRADE, "", "You have lost 145 duels.", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verifyNoMoreInteractions(drawManager);
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 	}
 
 	@Test
@@ -459,12 +460,12 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You were defeated! You have won 1,909 duels.", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verify(drawManager, never()).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 
 		chatMessageEvent = new ChatMessage(null, TRADE, "", "You have now lost 1,909 duels.", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Duel lost (1909)", "Duels");
 	}
 
 	@Test
@@ -481,7 +482,7 @@ public class ScreenshotPluginTest
 		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
 		screenshotPlugin.onScriptPreFired(notificationDelay);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Combat task (Handyman)", "Combat Achievements");
 	}
 
 	@Test
@@ -495,6 +496,6 @@ public class ScreenshotPluginTest
 			"Congratulations, you've completed an easy combat task: <col=06600c>Handyman</col>.", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+		verify(screenshotPlugin).takeScreenshot("Combat task (Handyman)", "Combat Achievements");
 	}
 }
