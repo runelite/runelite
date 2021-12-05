@@ -354,6 +354,17 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
+	public void testCombatAchievementsParsing()
+	{
+		assertEquals("Combat task (Into the Den of Giants)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an easy combat task: <col=06600c>Into the Den of Giants</col>."));
+		assertEquals("Combat task (I'd Rather Not Learn)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a medium combat task: <col=06600c>I'd Rather Not Learn</col>."));
+		assertEquals("Combat task (Why Cook)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a hard combat task: <col=0cc919>Why Cook?</col>."));
+		assertEquals("Combat task (From Dusk...)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed an elite combat task: <col=06600c>From Dusk...</col>."));
+		assertEquals("Combat task (Perfect Olm (Trio))", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a master combat task: <col=0cc919>Perfect Olm (Trio)</col>."));
+		assertEquals("Combat task (Chambers of Xeric CM (5-Scale) Speed-Runner)", ScreenshotPlugin.parseCombatAchievementWidget("Congratulations, you've completed a grandmaster combat task: <col=0cc919>Chambers of Xeric: CM (5-Scale) Speed-Runner</col>."));
+	}
+
+	@Test
 	public void testBAHighGambleRewardParsing()
 	{
 		assertEquals("High Gamble(100)", ScreenshotPlugin.parseBAHighGambleWidget(BA_HIGH_GAMBLE_REWARD));
@@ -451,6 +462,37 @@ public class ScreenshotPluginTest
 		verify(drawManager, never()).requestNextFrameListener(any(Consumer.class));
 
 		chatMessageEvent = new ChatMessage(null, TRADE, "", "You have now lost 1,909 duels.", null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testCombatAchievementsPopup()
+	{
+		when(screenshotConfig.screenshotCombatAchievements()).thenReturn(true);
+
+		ScriptPreFired notificationStart = new ScriptPreFired(ScriptID.NOTIFICATION_START);
+		screenshotPlugin.onScriptPreFired(notificationStart);
+
+		when(client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Combat Task Completed!");
+		when(client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("Task Completed: <col=ffffff>Handyman</col>");
+
+		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
+		screenshotPlugin.onScriptPreFired(notificationDelay);
+
+		verify(drawManager).requestNextFrameListener(any(Consumer.class));
+	}
+
+	@Test
+	public void testCombatAchievementsChat()
+	{
+		when(screenshotConfig.screenshotCombatAchievements()).thenReturn(true);
+
+		when(client.getVar(Varbits.COMBAT_ACHIEVEMENTS_POPUP)).thenReturn(1);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "",
+			"Congratulations, you've completed an easy combat task: <col=06600c>Handyman</col>.", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(drawManager).requestNextFrameListener(any(Consumer.class));
