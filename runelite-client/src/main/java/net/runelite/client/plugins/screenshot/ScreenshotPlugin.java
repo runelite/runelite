@@ -112,6 +112,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9,]+) duels?\\.");
 	private static final Pattern QUEST_PATTERN_1 = Pattern.compile(".+?ve\\.*? (?<verb>been|rebuilt|.+?ed)? ?(?:the )?'?(?<quest>.+?)'?(?: [Qq]uest)?[!.]?$");
 	private static final Pattern QUEST_PATTERN_2 = Pattern.compile("'?(?<quest>.+?)'?(?: [Qq]uest)? (?<verb>[a-z]\\w+?ed)?(?: f.*?)?[!.]?$");
+	private static final Pattern COMBAT_ACHIEVEMENTS_PATTERN = Pattern.compile("Congratulations, you've completed an? (?<tier>\\w+) combat task: <col=[0-9a-f]+>(?<task>(.+))</col>\\.");
 	private static final ImmutableList<String> RFD_TAGS = ImmutableList.of("Another Cook", "freed", "defeated", "saved");
 	private static final ImmutableList<String> WORD_QUEST_IN_NAME_TAGS = ImmutableList.of("Another Cook", "Doric", "Heroes", "Legends", "Observatory", "Olaf", "Waterfall");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
@@ -134,6 +135,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_COLLECTION_LOG = "Collection Log";
 	private static final String SD_PVP_KILLS = "PvP Kills";
 	private static final String SD_DEATHS = "Deaths";
+	private static final String SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
 
 	private String clueType;
 	private Integer clueNumber;
@@ -494,6 +496,15 @@ public class ScreenshotPlugin extends Plugin
 			String fileName = "Collection log (" + entry + ")";
 			takeScreenshot(fileName, SD_COLLECTION_LOG);
 		}
+
+		if (chatMessage.contains("combat task") && config.screenshotCombatAchievements() && client.getVar(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 1)
+		{
+			String fileName = parseCombatAchievementWidget(chatMessage);
+			if (!fileName.isEmpty())
+			{
+				takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
+			}
+		}
 	}
 
 	@Subscribe
@@ -652,6 +663,12 @@ public class ScreenshotPlugin extends Plugin
 					String fileName = "Collection log (" + entry + ")";
 					takeScreenshot(fileName, SD_COLLECTION_LOG);
 				}
+				if (topText.equalsIgnoreCase("Combat Task Completed!") && config.screenshotCombatAchievements() && client.getVar(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 0)
+				{
+					String entry = Text.removeTags(bottomText).substring("Task Completed: ".length());
+					String fileName = "Combat task (" + entry.replaceAll("[:?]", "") + ")";
+					takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
+				}
 				notificationStarted = false;
 				break;
 		}
@@ -752,6 +769,24 @@ public class ScreenshotPlugin extends Plugin
 		return "High Gamble(count not found)";
 	}
 
+	/**
+	 * Parses a combat achievement success chat message into a filename-safe string.
+	 *
+	 * @param text A received chat message which may or may not be from completing a combat achievement.
+	 * @return A formatted string of the achieved combat task name, or the empty string if the passed message
+	 *         is not a combat achievement completion message.
+	 */
+	@VisibleForTesting
+	static String parseCombatAchievementWidget(final String text)
+	{
+		final Matcher m = COMBAT_ACHIEVEMENTS_PATTERN.matcher(text);
+		if (m.matches())
+		{
+			String task = m.group("task").replaceAll("[:?]", "");
+			return "Combat task (" + task + ")";
+		}
+		return "";
+	}
 
 	/**
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,

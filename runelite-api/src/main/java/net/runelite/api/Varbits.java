@@ -627,6 +627,14 @@ public enum Varbits
 	COLLECTION_LOG_NOTIFICATION(11959),
 
 	/**
+	 * Combat Achievements popup settings whenever a new task is completed
+	 *
+	 * 0 = popup notification enabled
+	 * 1 = popup notification disabled
+	 */
+	COMBAT_ACHIEVEMENTS_POPUP(12455),
+
+	/**
 	 * Show boss health overlay setting
 	 * 0 = on
 	 * 1 = off

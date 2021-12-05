@@ -287,4 +287,16 @@ public interface ScreenshotConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "combatAchievements",
+		name = "Screenshot combat achievements",
+		description = "Take a screenshot when completing a combat achievement task",
+		position = 20,
+		section = whatSection
+	)
+	default boolean screenshotCombatAchievements()
+	{
+		return true;
+	}
 }
