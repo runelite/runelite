@@ -257,7 +257,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			NPC npc = client.getCachedNPCs()[event.getIdentifier()];
 
 			Color color = null;
-			if (npc.isDead())
+			if (isActuallyDead(npc))
 			{
 				color = config.deadNpcMenuColor();
 			}
