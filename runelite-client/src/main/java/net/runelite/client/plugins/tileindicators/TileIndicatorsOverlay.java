@@ -63,13 +63,13 @@ public class TileIndicatorsOverlay extends Overlay
 			// If we have tile "selected" render it
 			if (client.getSelectedSceneTile() != null)
 			{
-				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), config.highlightHoveredColor(), config.hoveredTileBorderWidth());
+				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), config.highlightHoveredColor(), config.hoveredTileBorderWidth(), config.hoveredTileFillColor());
 			}
 		}
 
 		if (config.highlightDestinationTile())
 		{
-			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor(), config.destinationTileBorderWidth());
+			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor(), config.destinationTileBorderWidth(), config.destinationTileFillColor());
 		}
 
 		if (config.highlightCurrentTile())
@@ -86,13 +86,13 @@ public class TileIndicatorsOverlay extends Overlay
 				return null;
 			}
 
-			renderTile(graphics, playerPosLocal, config.highlightCurrentColor(), config.currentTileBorderWidth());
+			renderTile(graphics, playerPosLocal, config.highlightCurrentColor(), config.currentTileBorderWidth(), config.currentTileFillColor());
 		}
 
 		return null;
 	}
 
-	private void renderTile(final Graphics2D graphics, final LocalPoint dest, final Color color, final double borderWidth)
+	private void renderTile(final Graphics2D graphics, final LocalPoint dest, final Color color, final double borderWidth, final Color fillColor)
 	{
 		if (dest == null)
 		{
@@ -106,6 +106,6 @@ public class TileIndicatorsOverlay extends Overlay
 			return;
 		}
 
-		OverlayUtil.renderPolygon(graphics, poly, color, new BasicStroke((float) borderWidth));
+		OverlayUtil.renderPolygon(graphics, poly, color, fillColor, new BasicStroke((float) borderWidth));
 	}
 }

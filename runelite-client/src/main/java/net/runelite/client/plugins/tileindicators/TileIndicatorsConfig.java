@@ -56,11 +56,23 @@ public interface TileIndicatorsConfig extends Config
 		return true;
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "destinationTileFillColor",
+		name = "Destination tile fill color",
+		description = "Configures the fill color of destination tile",
+		position = 3
+	)
+	default Color destinationTileFillColor()
+	{
+		return new Color(0, 0, 0, 50);
+	}
+
 	@ConfigItem(
 		keyName = "destinationTileBorderWidth",
 		name = "Destination border width",
 		description = "Width of the destination tile marker border",
-		position = 3
+		position = 4
 	)
 	default double destinationTileBorderWidth()
 	{
@@ -72,7 +84,7 @@ public interface TileIndicatorsConfig extends Config
 		keyName = "highlightHoveredColor",
 		name = "Hovered tile",
 		description = "Configures the highlight color of hovered tile",
-		position = 4
+		position = 5
 	)
 	default Color highlightHoveredColor()
 	{
@@ -83,18 +95,30 @@ public interface TileIndicatorsConfig extends Config
 		keyName = "highlightHoveredTile",
 		name = "Highlight hovered tile",
 		description = "Highlights tile player is hovering with mouse",
-		position = 5
+		position = 6
 	)
 	default boolean highlightHoveredTile()
 	{
 		return false;
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "hoveredTileFillColor",
+		name = "Hovered tile fill color",
+		description = "Configures the fill color of hovered tile",
+		position = 7
+	)
+	default Color hoveredTileFillColor()
+	{
+		return new Color(0, 0, 0, 50);
+	}
+
 	@ConfigItem(
 		keyName = "hoveredTileBorderWidth",
 		name = "Hovered tile border width",
 		description = "Width of the hovered tile marker border",
-		position = 6
+		position = 8
 	)
 	default double hoveredTileBorderWidth()
 	{
@@ -106,7 +130,7 @@ public interface TileIndicatorsConfig extends Config
 		keyName = "highlightCurrentColor",
 		name = "True tile",
 		description = "Configures the highlight color of current true tile",
-		position = 7
+		position = 9
 	)
 	default Color highlightCurrentColor()
 	{
@@ -117,18 +141,30 @@ public interface TileIndicatorsConfig extends Config
 		keyName = "highlightCurrentTile",
 		name = "Highlight true tile",
 		description = "Highlights true tile player is on as seen by server",
-		position = 8
+		position = 10
 	)
 	default boolean highlightCurrentTile()
 	{
 		return false;
 	}
 
+	@Alpha
+	@ConfigItem(
+		keyName = "currentTileFillColor",
+		name = "True tile fill color",
+		description = "Configures the fill color of current true tile",
+		position = 11
+	)
+	default Color currentTileFillColor()
+	{
+		return new Color(0, 0, 0, 50);
+	}
+
 	@ConfigItem(
 		keyName = "currentTileBorderWidth",
 		name = "True tile border width",
 		description = "Width of the true tile marker border",
-		position = 9
+		position = 12
 	)
 	default double currentTileBorderWidth()
 	{
