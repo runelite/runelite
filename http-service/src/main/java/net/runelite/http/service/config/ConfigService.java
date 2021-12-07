@@ -47,6 +47,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.config.ConfigEntry;
@@ -60,6 +61,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConfigService
 {
+	private static final Pattern MAYBE_JSON = Pattern.compile("^[\\-0-9{\\[\"]|true|false");
 	private static final int MAX_DEPTH = 8;
 	private static final int MAX_VALUE_LENGTH = 262144;
 
@@ -184,12 +186,25 @@ public class ConfigService
 			return unset(dbKey);
 		}
 
-		if (!validateJson(value))
+		Object jsonValue;
+		if (!isMaybeJson(value))
 		{
-			return null;
-		}
+			if (!validateStr(value))
+			{
+				return null;
+			}
 
-		Object jsonValue = parseJsonString(value);
+			jsonValue = value;
+		}
+		else
+		{
+			if (!validateJson(value))
+			{
+				return null;
+			}
+
+			jsonValue = parseJsonString(value);
+		}
 		return set(dbKey, jsonValue);
 	}
 
@@ -266,6 +281,17 @@ public class ConfigService
 			jsonValue = value;
 		}
 		return jsonValue;
+	}
+
+	@VisibleForTesting
+	static boolean isMaybeJson(String value)
+	{
+		return MAYBE_JSON.matcher(value).find();
+	}
+
+	private static boolean validateStr(String value)
+	{
+		return value.length() < MAX_VALUE_LENGTH;
 	}
 
 	@VisibleForTesting
