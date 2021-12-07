@@ -27,10 +27,16 @@ package net.runelite.http.service.loottracker;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
+import net.runelite.http.api.loottracker.LootRecordType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,7 +73,7 @@ public class LootTrackerService
 		") ENGINE=InnoDB;\n";
 
 	// Queries for inserting kills
-	private static final String INSERT_KILL_QUERY = "INSERT INTO loottracker_kills (accountId, type, eventId, amount) VALUES (:accountId, :type, :eventId, 1) ON DUPLICATE KEY UPDATE amount = amount + 1";
+	private static final String INSERT_KILL_QUERY = "INSERT INTO loottracker_kills (accountId, type, eventId, amount) VALUES (:accountId, :type, :eventId, :kills) ON DUPLICATE KEY UPDATE amount = amount + :kills";
 	private static final String INSERT_DROP_QUERY = "INSERT INTO loottracker_drops (killId, itemId, itemQuantity) VALUES (:killId, :itemId, :itemQuantity) ON DUPLICATE KEY UPDATE itemQuantity = itemQuantity + :itemQuantity";
 
 	private static final String SELECT_LOOT_QUERY = "SELECT killId,first_time,last_time,type,eventId,amount,itemId,itemQuantity FROM loottracker_kills JOIN loottracker_drops ON loottracker_drops.killId = loottracker_kills.id WHERE accountId = :accountId ORDER BY last_time DESC LIMIT :limit OFFSET :offset";
@@ -95,6 +101,46 @@ public class LootTrackerService
 		}
 	}
 
+	@RequiredArgsConstructor
+	@EqualsAndHashCode(exclude = {"kills", "drops"})
+	@Getter
+	private static class AggregateLootRecord
+	{
+		final LootRecordType type;
+		final String eventId;
+		int kills = 0;
+		Map<AggregateDrop, AggregateDrop> drops = new HashMap<>();
+	}
+
+	@RequiredArgsConstructor
+	@EqualsAndHashCode(exclude = "qty")
+	@Getter
+	private static class AggregateDrop
+	{
+		final int id;
+		int qty = 0;
+	}
+
+	private static Collection<AggregateLootRecord> aggregate(Collection<LootRecord> records)
+	{
+		Map<AggregateLootRecord, AggregateLootRecord> combinedRecords = new HashMap<>();
+		for (LootRecord record : records)
+		{
+			AggregateLootRecord r = new AggregateLootRecord(record.getType(), record.getEventId());
+			r = combinedRecords.computeIfAbsent(r, (k) -> k);
+			++r.kills;
+
+			// Combine drops
+			for (GameItem gameItem : record.getDrops())
+			{
+				AggregateDrop cd = new AggregateDrop(gameItem.getId());
+				cd = r.drops.computeIfAbsent(cd, (k) -> k);
+				cd.qty += gameItem.getQty();
+			}
+		}
+		return combinedRecords.values();
+	}
+
 	/**
 	 * Store LootRecord
 	 *
@@ -103,21 +149,24 @@ public class LootTrackerService
 	 */
 	public void store(Collection<LootRecord> records, int accountId)
 	{
+		Collection<AggregateLootRecord> combinedRecords = aggregate(records);
+
 		try (Connection con = sql2o.beginTransaction())
 		{
 			Query killQuery = con.createQuery(INSERT_KILL_QUERY, true);
 			Query insertDrop = con.createQuery(INSERT_DROP_QUERY);
 
-			for (LootRecord record : records)
+			for (AggregateLootRecord record : combinedRecords)
 			{
 				killQuery
 					.addParameter("accountId", accountId)
 					.addParameter("type", record.getType())
 					.addParameter("eventId", record.getEventId())
+					.addParameter("kills", record.getKills())
 					.executeUpdate();
 				Object[] keys = con.getKeys();
 
-				for (GameItem drop : record.getDrops())
+				for (AggregateDrop drop : record.getDrops().values())
 				{
 					insertDrop
 						.addParameter("killId", keys[0])
