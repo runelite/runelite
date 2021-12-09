@@ -12,45 +12,40 @@ public class ModelDefinition
 	public int id;
 
 	public int vertexCount = 0;
-	public int[] vertexPositionsX;
-	public int[] vertexPositionsY;
-	public int[] vertexPositionsZ;
+	public int[] vertexX;
+	public int[] vertexY;
+	public int[] vertexZ;
 	public transient VertexNormal[] vertexNormals;
 
 	public int faceCount;
-	public int[] faceVertexIndices1;
-	public int[] faceVertexIndices2;
-	public int[] faceVertexIndices3;
-	public byte[] faceAlphas;
+	public int[] faceIndices1;
+	public int[] faceIndices2;
+	public int[] faceIndices3;
+	public byte[] faceTransparencies;
 	public short[] faceColors;
 	public byte[] faceRenderPriorities;
 	public byte[] faceRenderTypes;
 	public transient FaceNormal[] faceNormals;
 
-	public int textureTriangleCount;
-	public short[] textureTriangleVertexIndices1;
-	public short[] textureTriangleVertexIndices2;
-	public short[] textureTriangleVertexIndices3;
+	public int numTextureFaces;
+	public short[] texIndices1;
+	public short[] texIndices2;
+	public short[] texIndices3;
 	public transient float[][] faceTextureUCoordinates;
 	public transient float[][] faceTextureVCoordinates;
 	public short[] texturePrimaryColors;
 	public short[] faceTextures;
-	public byte[] textureCoordinates;
+	public byte[] textureCoords;
 	public byte[] textureRenderTypes;
 
-	public int[] vertexSkins;
-	public int[] faceSkins;
+	public int[] packedVertexGroups;
+	public int[] packedTransparencyVertexGroups;
 
 	public byte priority;
 
-	public short[] aShortArray2574;
-	public short[] aShortArray2575;
-	public short[] aShortArray2577;
-	public short[] aShortArray2578;
-	public byte[] aByteArray2580;
-	public short[] aShortArray2586;
-
 	private transient int[][] vertexGroups;
+	public int[][] animayaGroups;
+	public int[][] animayaScales;
 
 	private transient int[] origVX;
 	private transient int[] origVY;
@@ -77,17 +72,17 @@ public class ModelDefinition
 
 		for (var1 = 0; var1 < this.faceCount; ++var1)
 		{
-			int vertexA = this.faceVertexIndices1[var1];
-			int vertexB = this.faceVertexIndices2[var1];
-			int vertexC = this.faceVertexIndices3[var1];
+			int vertexA = this.faceIndices1[var1];
+			int vertexB = this.faceIndices2[var1];
+			int vertexC = this.faceIndices3[var1];
 
-			int xA = this.vertexPositionsX[vertexB] - this.vertexPositionsX[vertexA];
-			int yA = this.vertexPositionsY[vertexB] - this.vertexPositionsY[vertexA];
-			int zA = this.vertexPositionsZ[vertexB] - this.vertexPositionsZ[vertexA];
+			int xA = this.vertexX[vertexB] - this.vertexX[vertexA];
+			int yA = this.vertexY[vertexB] - this.vertexY[vertexA];
+			int zA = this.vertexZ[vertexB] - this.vertexZ[vertexA];
 
-			int xB = this.vertexPositionsX[vertexC] - this.vertexPositionsX[vertexA];
-			int yB = this.vertexPositionsY[vertexC] - this.vertexPositionsY[vertexA];
-			int zB = this.vertexPositionsZ[vertexC] - this.vertexPositionsZ[vertexA];
+			int xB = this.vertexX[vertexC] - this.vertexX[vertexA];
+			int yB = this.vertexY[vertexC] - this.vertexY[vertexA];
+			int zB = this.vertexZ[vertexC] - this.vertexZ[vertexA];
 
 			// Compute cross product
 			int var11 = yA * zB - yB * zA;
@@ -168,13 +163,13 @@ public class ModelDefinition
 		for (int i = 0; i < faceCount; i++)
 		{
 			int textureCoordinate;
-			if (textureCoordinates == null)
+			if (textureCoords == null)
 			{
 				textureCoordinate = -1;
 			}
 			else
 			{
-				textureCoordinate = textureCoordinates[i];
+				textureCoordinate = textureCoords[i];
 			}
 
 			int textureIdx;
@@ -215,33 +210,33 @@ public class ModelDefinition
 
 					if (textureRenderType == 0)
 					{
-						int faceVertexIdx1 = faceVertexIndices1[i];
-						int faceVertexIdx2 = faceVertexIndices2[i];
-						int faceVertexIdx3 = faceVertexIndices3[i];
+						int faceVertexIdx1 = faceIndices1[i];
+						int faceVertexIdx2 = faceIndices2[i];
+						int faceVertexIdx3 = faceIndices3[i];
 
-						short triangleVertexIdx1 = textureTriangleVertexIndices1[textureCoordinate];
-						short triangleVertexIdx2 = textureTriangleVertexIndices2[textureCoordinate];
-						short triangleVertexIdx3 = textureTriangleVertexIndices3[textureCoordinate];
+						short triangleVertexIdx1 = texIndices1[textureCoordinate];
+						short triangleVertexIdx2 = texIndices2[textureCoordinate];
+						short triangleVertexIdx3 = texIndices3[textureCoordinate];
 
-						float triangleX = (float) vertexPositionsX[triangleVertexIdx1];
-						float triangleY = (float) vertexPositionsY[triangleVertexIdx1];
-						float triangleZ = (float) vertexPositionsZ[triangleVertexIdx1];
+						float triangleX = (float) vertexX[triangleVertexIdx1];
+						float triangleY = (float) vertexY[triangleVertexIdx1];
+						float triangleZ = (float) vertexZ[triangleVertexIdx1];
 
-						float f_882_ = (float) vertexPositionsX[triangleVertexIdx2] - triangleX;
-						float f_883_ = (float) vertexPositionsY[triangleVertexIdx2] - triangleY;
-						float f_884_ = (float) vertexPositionsZ[triangleVertexIdx2] - triangleZ;
-						float f_885_ = (float) vertexPositionsX[triangleVertexIdx3] - triangleX;
-						float f_886_ = (float) vertexPositionsY[triangleVertexIdx3] - triangleY;
-						float f_887_ = (float) vertexPositionsZ[triangleVertexIdx3] - triangleZ;
-						float f_888_ = (float) vertexPositionsX[faceVertexIdx1] - triangleX;
-						float f_889_ = (float) vertexPositionsY[faceVertexIdx1] - triangleY;
-						float f_890_ = (float) vertexPositionsZ[faceVertexIdx1] - triangleZ;
-						float f_891_ = (float) vertexPositionsX[faceVertexIdx2] - triangleX;
-						float f_892_ = (float) vertexPositionsY[faceVertexIdx2] - triangleY;
-						float f_893_ = (float) vertexPositionsZ[faceVertexIdx2] - triangleZ;
-						float f_894_ = (float) vertexPositionsX[faceVertexIdx3] - triangleX;
-						float f_895_ = (float) vertexPositionsY[faceVertexIdx3] - triangleY;
-						float f_896_ = (float) vertexPositionsZ[faceVertexIdx3] - triangleZ;
+						float f_882_ = (float) vertexX[triangleVertexIdx2] - triangleX;
+						float f_883_ = (float) vertexY[triangleVertexIdx2] - triangleY;
+						float f_884_ = (float) vertexZ[triangleVertexIdx2] - triangleZ;
+						float f_885_ = (float) vertexX[triangleVertexIdx3] - triangleX;
+						float f_886_ = (float) vertexY[triangleVertexIdx3] - triangleY;
+						float f_887_ = (float) vertexZ[triangleVertexIdx3] - triangleZ;
+						float f_888_ = (float) vertexX[faceVertexIdx1] - triangleX;
+						float f_889_ = (float) vertexY[faceVertexIdx1] - triangleY;
+						float f_890_ = (float) vertexZ[faceVertexIdx1] - triangleZ;
+						float f_891_ = (float) vertexX[faceVertexIdx2] - triangleX;
+						float f_892_ = (float) vertexY[faceVertexIdx2] - triangleY;
+						float f_893_ = (float) vertexZ[faceVertexIdx2] - triangleZ;
+						float f_894_ = (float) vertexX[faceVertexIdx3] - triangleX;
+						float f_895_ = (float) vertexY[faceVertexIdx3] - triangleY;
+						float f_896_ = (float) vertexZ[faceVertexIdx3] - triangleZ;
 
 						float f_897_ = f_883_ * f_887_ - f_884_ * f_886_;
 						float f_898_ = f_884_ * f_885_ - f_882_ * f_887_;
@@ -274,7 +269,7 @@ public class ModelDefinition
 
 	public void computeAnimationTables()
 	{
-		if (this.vertexSkins != null)
+		if (this.packedVertexGroups != null)
 		{
 			int[] groupCounts = new int[256];
 			int numGroups = 0;
@@ -282,7 +277,7 @@ public class ModelDefinition
 
 			for (var3 = 0; var3 < this.vertexCount; ++var3)
 			{
-				var4 = this.vertexSkins[var3];
+				var4 = this.packedVertexGroups[var3];
 				++groupCounts[var4];
 				if (var4 > numGroups)
 				{
@@ -300,10 +295,10 @@ public class ModelDefinition
 
 			for (var3 = 0; var3 < this.vertexCount; this.vertexGroups[var4][groupCounts[var4]++] = var3++)
 			{
-				var4 = this.vertexSkins[var3];
+				var4 = this.packedVertexGroups[var3];
 			}
 
-			this.vertexSkins = null;
+			this.packedVertexGroups = null;
 		}
 
 		// triangleSkinValues is here
@@ -314,13 +309,13 @@ public class ModelDefinition
 		int sin = CircularAngle.SINE[orientation];
 		int cos = CircularAngle.COSINE[orientation];
 
-		assert vertexPositionsX.length == vertexPositionsY.length;
-		assert vertexPositionsY.length == vertexPositionsZ.length;
+		assert vertexX.length == vertexY.length;
+		assert vertexY.length == vertexZ.length;
 
-		for (int i = 0; i < vertexPositionsX.length; ++i)
+		for (int i = 0; i < vertexX.length; ++i)
 		{
-			vertexPositionsX[i] = vertexPositionsX[i] * cos + vertexPositionsZ[i] * sin >> 16;
-			vertexPositionsZ[i] = vertexPositionsZ[i] * cos - vertexPositionsX[i] * sin >> 16;
+			vertexX[i] = vertexX[i] * cos + vertexZ[i] * sin >> 16;
+			vertexZ[i] = vertexZ[i] * cos - vertexX[i] * sin >> 16;
 		}
 
 		reset();
@@ -333,23 +328,23 @@ public class ModelDefinition
 			return;
 		}
 
-		System.arraycopy(origVX, 0, vertexPositionsX, 0, origVX.length);
-		System.arraycopy(origVY, 0, vertexPositionsY, 0, origVY.length);
-		System.arraycopy(origVZ, 0, vertexPositionsZ, 0, origVZ.length);
+		System.arraycopy(origVX, 0, vertexX, 0, origVX.length);
+		System.arraycopy(origVY, 0, vertexY, 0, origVY.length);
+		System.arraycopy(origVZ, 0, vertexZ, 0, origVZ.length);
 	}
 
 	public void animate(int type, int[] frameMap, int dx, int dy, int dz)
 	{
 		if (origVX == null)
 		{
-			origVX = Arrays.copyOf(vertexPositionsX, vertexPositionsX.length);
-			origVY = Arrays.copyOf(vertexPositionsY, vertexPositionsY.length);
-			origVZ = Arrays.copyOf(vertexPositionsZ, vertexPositionsZ.length);
+			origVX = Arrays.copyOf(vertexX, vertexX.length);
+			origVY = Arrays.copyOf(vertexY, vertexY.length);
+			origVZ = Arrays.copyOf(vertexZ, vertexZ.length);
 		}
 
-		final int[] verticesX = vertexPositionsX;
-		final int[] verticesY = vertexPositionsY;
-		final int[] verticesZ = vertexPositionsZ;
+		final int[] verticesX = vertexX;
+		final int[] verticesY = vertexY;
+		final int[] verticesZ = vertexZ;
 		int var6 = frameMap.length;
 		int var7;
 		int var8;
@@ -512,14 +507,14 @@ public class ModelDefinition
 		int var1;
 		for (var1 = 0; var1 < this.vertexCount; ++var1)
 		{
-			this.vertexPositionsZ[var1] = -this.vertexPositionsZ[var1];
+			this.vertexZ[var1] = -this.vertexZ[var1];
 		}
 
 		for (var1 = 0; var1 < this.faceCount; ++var1)
 		{
-			int var2 = this.faceVertexIndices1[var1];
-			this.faceVertexIndices1[var1] = this.faceVertexIndices3[var1];
-			this.faceVertexIndices3[var1] = var2;
+			int var2 = this.faceIndices1[var1];
+			this.faceIndices1[var1] = this.faceIndices3[var1];
+			this.faceIndices3[var1] = var2;
 		}
 
 		reset();
@@ -529,9 +524,9 @@ public class ModelDefinition
 	{
 		for (int var1 = 0; var1 < this.vertexCount; ++var1)
 		{
-			int var2 = this.vertexPositionsX[var1];
-			this.vertexPositionsX[var1] = this.vertexPositionsZ[var1];
-			this.vertexPositionsZ[var1] = -var2;
+			int var2 = this.vertexX[var1];
+			this.vertexX[var1] = this.vertexZ[var1];
+			this.vertexZ[var1] = -var2;
 		}
 
 		reset();
@@ -541,8 +536,8 @@ public class ModelDefinition
 	{
 		for (int var1 = 0; var1 < this.vertexCount; ++var1)
 		{
-			this.vertexPositionsX[var1] = -this.vertexPositionsX[var1];
-			this.vertexPositionsZ[var1] = -this.vertexPositionsZ[var1];
+			this.vertexX[var1] = -this.vertexX[var1];
+			this.vertexZ[var1] = -this.vertexZ[var1];
 		}
 
 		reset();
@@ -552,9 +547,9 @@ public class ModelDefinition
 	{
 		for (int var1 = 0; var1 < this.vertexCount; ++var1)
 		{
-			int var2 = this.vertexPositionsZ[var1];
-			this.vertexPositionsZ[var1] = this.vertexPositionsX[var1];
-			this.vertexPositionsX[var1] = -var2;
+			int var2 = this.vertexZ[var1];
+			this.vertexZ[var1] = this.vertexX[var1];
+			this.vertexX[var1] = -var2;
 		}
 
 		reset();
@@ -571,9 +566,9 @@ public class ModelDefinition
 	{
 		for (int var4 = 0; var4 < this.vertexCount; ++var4)
 		{
-			this.vertexPositionsX[var4] = this.vertexPositionsX[var4] * var1 / 128;
-			this.vertexPositionsY[var4] = var2 * this.vertexPositionsY[var4] / 128;
-			this.vertexPositionsZ[var4] = var3 * this.vertexPositionsZ[var4] / 128;
+			this.vertexX[var4] = this.vertexX[var4] * var1 / 128;
+			this.vertexY[var4] = var2 * this.vertexY[var4] / 128;
+			this.vertexZ[var4] = var3 * this.vertexZ[var4] / 128;
 		}
 
 		reset();
@@ -610,9 +605,9 @@ public class ModelDefinition
 	{
 		for (int i = 0; i < this.vertexCount; i++)
 		{
-			this.vertexPositionsX[i] += xOffset;
-			this.vertexPositionsY[i] += yOffset;
-			this.vertexPositionsZ[i] += zOffset;
+			this.vertexX[i] += xOffset;
+			this.vertexY[i] += yOffset;
+			this.vertexZ[i] += zOffset;
 		}
 		this.reset();
 	}
