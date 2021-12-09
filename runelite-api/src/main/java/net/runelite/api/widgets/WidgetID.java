@@ -297,13 +297,8 @@ public final class WidgetID
 	static class GrandExchange
 	{
 		static final int WINDOW_CONTAINER = 0;
-		static final int WINDOW_BORDERS = 2;
-		static final int HISTORY_BUTTON = 3;
-		static final int BACK_BUTTON = 4;
-		static final int OFFER_CONTAINER = 24;
-		static final int OFFER_DESCRIPTION = 25;
-		static final int OFFER_PRICE = 26;
-		static final int OFFER_CONFIRM_BUTTON = 27;
+		static final int OFFER_CONTAINER = 25;
+		static final int OFFER_DESCRIPTION = 26;
 	}
 
 	static class GrandExchangeInventory
@@ -849,10 +844,10 @@ public final class WidgetID
 
 	static class SettingsSide
 	{
-		static final int CAMERA_ZOOM_SLIDER_TRACK = 98;
-		static final int MUSIC_SLIDER = 27;
-		static final int SOUND_EFFECT_SLIDER = 41;
-		static final int AREA_SOUND_SLIDER = 55;
+		static final int CAMERA_ZOOM_SLIDER_TRACK = 100;
+		static final int MUSIC_SLIDER = 29;
+		static final int SOUND_EFFECT_SLIDER = 43;
+		static final int AREA_SOUND_SLIDER = 57;
 	}
 
 	static class Settings
