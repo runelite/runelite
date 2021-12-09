@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Maciej <https://github.com/mlewicki12>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.friendlist;
+package net.runelite.api;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup(FriendListConfig.GROUP)
-public interface FriendListConfig extends Config
+/**
+ * A nameable container of friends
+ */
+public interface FriendContainer extends NameableContainer<Friend>
 {
-	String GROUP = "friendlist";
-
-	@ConfigItem(
-		keyName = "showWorldOnLogin",
-		name = "Show world on login",
-		description = "Shows world number on friend login notifications"
-	)
-	default boolean showWorldOnLogin()
-	{
-		return false;
-	}
+	/**
+	 * Get the recent logins/logouts of friends from the last few seconds
+	 * @return
+	 */
+	Deque<PendingLogin> getPendingLogins();
 }
