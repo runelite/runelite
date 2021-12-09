@@ -1,7 +1,7 @@
 .id                 923
 .int_stack_count    0
 .string_stack_count 0
-.int_var_count      5
+.int_var_count      14
 .string_var_count   0
 ; callback "chatboxBackgroundBuilt"
 ; 	used by the ChatboxPerformancePlugin to know when it needs to rebuild.
@@ -191,178 +191,154 @@ LABEL159:
 LABEL162:
    return                
 LABEL163:
-   iconst                 16384
-   iconst                 25
-   div                   
-   istore                 2
-   iconst                 16384
-   istore                 3
    get_varbit             2570
    iconst                 1
-   if_icmpeq              LABEL173
-   jump                   LABEL177
-LABEL173:
+   if_icmpeq              LABEL167
+   jump                   LABEL171
+LABEL167:
    iconst                 1
    iconst                 10616867
    if_setnoclickthrough  
-   jump                   LABEL183
-LABEL177:
+   jump                   LABEL177
+LABEL171:
    iconst                 0
    iconst                 10616867
    if_setnoclickthrough  
    iconst                 1
    iconst                 10616867
    if_setnoscrollthrough 
-LABEL183:
-   iconst                 0
+LABEL177:
+   iconst                 20
+   istore                 2
+   iconst                 193
+   istore                 3
+   iconst                 253
    istore                 4
+   iconst                 10616867
+   if_getheight          
+   istore                 5
+   iload                  5
+   iload                  2
+   div                   
+   istore                 6
+   iload                  5
+   iload                  6
+   iload                  2
+   multiply              
+   sub                   
+   istore                 7
+   iconst                 200
+   istore                 8
+   iconst                 253
+   istore                 9
+   iconst                 10616886
+   if_getwidth           
+   istore                 10
+   iload                  10
+   iload                  2
+   div                   
+   istore                 11
+   iload                  10
+   iload                  11
+   iload                  2
+   multiply              
+   sub                   
+   istore                 12
+   iconst                 0
+   istore                 13
    iload                  1
    iconst                 0
-   if_icmpeq              LABEL189
-   jump                   LABEL417
-LABEL189:
-   invoke                 1445
-   iconst                 1
-   if_icmpeq              LABEL193
-   jump                   LABEL267
-LABEL193:
-   iload                  4
-   iconst                 20
-   if_icmplt              LABEL197
-   jump                   LABEL226
-LABEL197:
-   iconst                 10616867
-   iconst                 3
-   iload                  4
-   cc_create             
-   iconst                 0
-   iload                  3
-   iconst                 1
-   iconst                 2
-   cc_setsize            
-   iconst                 0
-   iconst                 0
-   iconst                 1
-   iconst                 2
-   cc_setposition        
-   iconst                 0
-   cc_setcolour          
-   iconst                 1
-   cc_setfill            
-   iconst                 252
-   cc_settrans           
-   iload                  4
-   iconst                 1
-   add                   
-   iload                  3
-   iload                  2
-   sub                   
-   istore                 3
-   istore                 4
-   jump                   LABEL193
-LABEL226:
-   iconst                 10616886
-   iconst                 3
-   iconst                 0
-   cc_create             
-   iconst                 10616886
-   iconst                 3
-   iconst                 1
-   cc_create              1
-   iconst                 16384
-   iconst                 1
-   iconst                 2
-   iconst                 0
-   cc_setsize            
-   iconst                 16384
-   iconst                 1
-   iconst                 2
-   iconst                 0
-   cc_setsize             1
-   iconst                 0
-   iconst                 0
-   iconst                 0
-   iconst                 0
-   cc_setposition        
-   iconst                 0
-   iconst                 15
-   iconst                 0
-   iconst                 2
-   cc_setposition         1
-   iconst                 16777215
-   cc_setcolour          
-   iconst                 16777215
-   cc_setcolour           1
-   iconst                 1
-   cc_setfill            
-   iconst                 1
-   cc_setfill             1
-   iconst                 100
-   cc_settrans           
-   iconst                 120
-   cc_settrans            1
-   jump                   LABEL417
-LABEL267:
+   if_icmpeq              LABEL219
+   jump                   LABEL394
+LABEL219:
    invoke                 1972
    iconst                 0
-   if_icmpeq              LABEL271
-   jump                   LABEL351
-LABEL271:
-   iload                  4
-   iconst                 20
-   if_icmplt              LABEL275
-   jump                   LABEL350
-LABEL275:
+   if_icmpeq              LABEL223
+   jump                   LABEL334
+LABEL223:
+   iload                  13
+   iload                  2
+   if_icmplt              LABEL227
+   jump                   LABEL333
+LABEL227:
    iconst                 10616867
    iconst                 3
-   iload                  4
+   iload                  13
    cc_create             
-   iconst                 0
-   iload                  3
+   iload                  13
+   iload                  2
    iconst                 1
-   iconst                 2
+   sub                   
+   if_icmpeq              LABEL237
+   jump                   LABEL245
+LABEL237:
+   iconst                 0
+   iload                  6
+   iload                  7
+   add                   
+   iconst                 1
+   iconst                 0
    cc_setsize            
+   jump                   LABEL250
+LABEL245:
    iconst                 0
-   iconst                 0
+   iload                  6
    iconst                 1
-   iconst                 2
+   iconst                 0
+   cc_setsize            
+LABEL250:
+   iconst                 0
+   iload                  6
+   iload                  13
+   multiply              
+   iconst                 0
+   iconst                 0
    cc_setposition        
    iconst                 0
    cc_setcolour          
    iconst                 1
    cc_setfill            
-   iconst                 254
+   iload                  4
+   iload                  3
+   iconst                 0
+   iload                  2
+   iload                  13
+   interpolate           
    cc_settrans           
    iconst                 10616886
    iconst                 3
-   iload                  4
+   iload                  13
    iconst                 2
    multiply              
    cc_create             
    iconst                 10616886
    iconst                 3
-   iload                  4
+   iload                  13
    iconst                 2
    multiply              
    iconst                 1
    add                   
    cc_create              1
-   iload                  3
+   iload                  11
    iconst                 1
-   iconst                 2
+   iconst                 0
    iconst                 0
    cc_setsize            
-   iload                  3
+   iload                  11
    iconst                 1
-   iconst                 2
+   iconst                 0
    iconst                 0
    cc_setsize             1
-   iconst                 0
+   iload                  11
+   iload                  13
+   multiply              
    iconst                 0
    iconst                 0
    iconst                 0
    cc_setposition        
-   iconst                 0
+   iload                  11
+   iload                  13
+   multiply              
    iconst                 15
    iconst                 0
    iconst                 2
@@ -375,30 +351,36 @@ LABEL275:
    cc_setfill            
    iconst                 1
    cc_setfill             1
-   iconst                 250
+   iload                  8
+   iload                  9
+   iconst                 0
+   iload                  2
+   iload                  13
+   interpolate           
    cc_settrans           
-   iconst                 250
+   iload                  8
+   iload                  9
+   iconst                 0
+   iload                  2
+   iload                  13
+   interpolate           
    cc_settrans            1
-   iload                  4
+   iload                  13
    iconst                 1
    add                   
-   iload                  3
-   iload                  2
-   sub                   
-   istore                 3
-   istore                 4
-   jump                   LABEL271
-LABEL350:
+   istore                 13
+   jump                   LABEL223
+LABEL333:
    sconst                 "chatboxBackgroundBuilt"
    runelite_callback     
-   jump                   LABEL417
-LABEL351:
+   jump                   LABEL394
+LABEL334:
    iconst                 10616867
    iconst                 3
-   iload                  4
+   iconst                 0
    cc_create             
    iconst                 0
-   iload                  3
+   iconst                 16384
    iconst                 1
    iconst                 2
    cc_setsize            
@@ -415,24 +397,18 @@ LABEL351:
    cc_settrans           
    iconst                 10616886
    iconst                 3
-   iload                  4
-   iconst                 2
-   multiply              
+   iconst                 0
    cc_create             
    iconst                 10616886
    iconst                 3
-   iload                  4
-   iconst                 2
-   multiply              
    iconst                 1
-   add                   
    cc_create              1
-   iload                  3
+   iconst                 16384
    iconst                 1
    iconst                 2
    iconst                 0
    cc_setsize            
-   iload                  3
+   iconst                 16384
    iconst                 1
    iconst                 2
    iconst                 0
@@ -459,7 +435,7 @@ LABEL351:
    cc_settrans           
    iconst                 130
    cc_settrans            1
-LABEL417:
+LABEL394:
    iconst                 10617389
    iconst                 1190
    iconst                 1187
@@ -471,24 +447,24 @@ LABEL417:
    invoke                 838
    iload                  0
    iconst                 1
-   if_icmpeq              LABEL430
-   jump                   LABEL434
-LABEL430:
+   if_icmpeq              LABEL407
+   jump                   LABEL411
+LABEL407:
    iconst                 255
    iconst                 10616835
    if_settrans           
-   jump                   LABEL465
-LABEL434:
+   jump                   LABEL442
+LABEL411:
    invoke                 1972
    iconst                 0
-   if_icmpeq              LABEL438
-   jump                   LABEL442
-LABEL438:
+   if_icmpeq              LABEL415
+   jump                   LABEL419
+LABEL415:
    iconst                 155
    iconst                 10616835
    if_settrans           
-   jump                   LABEL465
-LABEL442:
+   jump                   LABEL442
+LABEL419:
    iconst                 255
    iconst                 10616835
    if_settrans           
@@ -512,5 +488,5 @@ LABEL442:
    cc_setfill            
    iconst                 225
    cc_settrans           
-LABEL465:
+LABEL442:
    return                

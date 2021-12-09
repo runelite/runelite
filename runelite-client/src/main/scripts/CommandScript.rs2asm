@@ -789,7 +789,7 @@ LABEL659:
    mes                   
    jump                   LABEL664
 LABEL662:
-   sconst                 "You are not chatting in the channel of your own clan at the moment."
+   sconst                 "You are not chatting in the channel of your own Iron Group at the moment."
    mes                   
 LABEL664:
    jump                   LABEL810
