@@ -63,7 +63,7 @@ public class RandomEventPlugin extends Plugin
 		NpcID.EVIL_BOB, NpcID.EVIL_BOB_6754,
 		NpcID.FLIPPA_6744,
 		NpcID.FREAKY_FORESTER_6748,
-		NpcID.FROG_5429,
+		NpcID.FROG_5429, NpcID.FROG_5430, NpcID.FROG_5431, NpcID.FROG_5432, NpcID.FROG_PRINCE, NpcID.FROG_PRINCESS,
 		NpcID.GENIE, NpcID.GENIE_327,
 		NpcID.GILES, NpcID.GILES_5441,
 		NpcID.LEO_6746,
@@ -76,7 +76,8 @@ public class RandomEventPlugin extends Plugin
 		NpcID.QUIZ_MASTER_6755,
 		NpcID.RICK_TURPENTINE, NpcID.RICK_TURPENTINE_376,
 		NpcID.SANDWICH_LADY,
-		NpcID.SERGEANT_DAMIEN_6743
+		NpcID.SERGEANT_DAMIEN_6743,
+		NpcID.STRANGE_PLANT
 	);
 	private static final Set<String> EVENT_OPTIONS = ImmutableSet.of(
 		"Talk-to",
@@ -161,9 +162,16 @@ public class RandomEventPlugin extends Plugin
 			&& EVENT_OPTIONS.contains(event.getOption()))
 		{
 			NPC npc = client.getCachedNPCs()[event.getIdentifier()];
-			if (npc != null && EVENT_NPCS.contains(npc.getId()) && npc != currentRandomEvent && config.removeMenuOptions())
+			if (npc != null && EVENT_NPCS.contains(npc.getId()) && config.removeMenuOptions())
 			{
-				client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), client.getMenuEntries().length - 1));
+				if (config.HideAllEvents() && npc == currentRandomEvent)
+				{
+					client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), client.getMenuEntries().length - 1));
+				}
+				else if ( npc != currentRandomEvent)
+				{
+					client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), client.getMenuEntries().length - 1));
+				}
 			}
 		}
 	}
@@ -184,6 +192,11 @@ public class RandomEventPlugin extends Plugin
 			case NpcID.FREAKY_FORESTER_6748:
 				return config.notifyForester();
 			case NpcID.FROG_5429:
+			case NpcID.FROG_5430:
+			case NpcID.FROG_5431:
+			case NpcID.FROG_5432:
+			case NpcID.FROG_PRINCE:
+			case NpcID.FROG_PRINCESS:
 				return config.notifyFrog();
 			case NpcID.GENIE:
 			case NpcID.GENIE_327:
@@ -207,6 +220,8 @@ public class RandomEventPlugin extends Plugin
 				return config.notifyDunce();
 			case NpcID.SANDWICH_LADY:
 				return config.notifySandwich();
+			case NpcID.STRANGE_PLANT:
+				return config.notifyStrange();
 			default:
 				return false;
 		}
