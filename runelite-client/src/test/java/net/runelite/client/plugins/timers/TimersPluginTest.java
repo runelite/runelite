@@ -31,20 +31,28 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.function.Predicate;
+import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.RSTimeUnit;
+import static net.runelite.api.widgets.WidgetInfo.EQUIPMENT;
+import static net.runelite.api.widgets.WidgetInfo.PACK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -521,6 +529,62 @@ public class TimersPluginTest
 		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
 		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
 		assertEquals(GameTimer.RESURRECT_THRALL_COOLDOWN, infoBox.getTimer());
+	}
+
+	@Test
+	public void testHardcoreGroupIronHomeTeleportFromEquipment()
+	{
+		when(timersConfig.showHomeMinigameTeleports()).thenReturn(true);
+
+		MenuOptionClicked menuoptionclicked = mock(MenuOptionClicked.class);
+		when(menuoptionclicked.getParam1()).thenReturn( PACK(EQUIPMENT.getGroupId(), 0));
+		Widget equipment = mock(Widget.class);
+		Widget head = mock(Widget.class);
+		when(client.getWidget(EQUIPMENT.getGroupId(), 0)).thenReturn(equipment);
+		when(equipment.getChild(1)).thenReturn(head);
+		when(head.getItemId()).thenReturn(ItemID.HARDCORE_GROUP_IRON_HELM);
+		when(menuoptionclicked.getMenuOption()).thenReturn("Teleport");
+		timersPlugin.onMenuOptionClicked(menuoptionclicked);
+
+		Player player = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(player);
+		AnimationChanged animationchanged = new AnimationChanged();
+		animationchanged.setActor(player);
+		when(client.getLocalPlayer().getAnimation()).thenReturn(AnimationID.TELEPORT_EMOTE);
+		timersPlugin.onAnimationChanged(animationchanged);
+		when(client.getLocalPlayer().getAnimation()).thenReturn(AnimationID.IDLE);
+		timersPlugin.onAnimationChanged(animationchanged);
+
+		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
+		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
+		assertEquals(GameTimer.HOME_TELEPORT, infoBox.getTimer());
+	}
+
+	@Test
+	public void testGroupIronHomeTeleportFromInventory()
+	{
+		when(timersConfig.showHomeMinigameTeleports()).thenReturn(true);
+
+		MenuOptionClicked menuoptionclicked = mock(MenuOptionClicked.class);
+		when(menuoptionclicked.getId()).thenReturn(ItemID.GROUP_IRON_HELM);
+		when(menuoptionclicked.getMenuOption()).thenReturn("Teleport");
+		when(menuoptionclicked.getParam1()).thenReturn(-1);
+		timersPlugin.onMenuOptionClicked(menuoptionclicked);
+
+		Player player = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(player);
+		AnimationChanged animationchanged = new AnimationChanged();
+		animationchanged.setActor(player);
+		when(client.getLocalPlayer().getAnimation()).thenReturn(AnimationID.TELEPORT_EMOTE);
+		timersPlugin.onAnimationChanged(animationchanged);
+		when(client.getLocalPlayer().getAnimation()).thenReturn(AnimationID.IDLE);
+		timersPlugin.onAnimationChanged(animationchanged);
+
+		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
+		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
+		assertEquals(GameTimer.HOME_TELEPORT, infoBox.getTimer());
 	}
 
 	@Test
