@@ -27,6 +27,6 @@ package net.runelite.api;
 /**
  * Represents an animation of a renderable
  */
-public interface Sequence
+public interface Animation
 {
 }
