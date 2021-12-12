@@ -89,4 +89,9 @@ public interface Model extends Renderable
 	int[] getVertexNormalsX();
 	int[] getVertexNormalsY();
 	int[] getVertexNormalsZ();
+
+	byte getOverrideAmount();
+	byte getOverrideHue();
+	byte getOverrideSaturation();
+	byte getOverrideLuminance();
 }
