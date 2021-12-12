@@ -91,13 +91,6 @@ class NightmareZoneOverlay extends OverlayPanel
 			return null;
 		}
 
-		Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
-
-		if (nmzWidget != null)
-		{
-			nmzWidget.setHidden(true);
-		}
-
 		renderAbsorptionCounter();
 
 		final int currentPoints = client.getVar(Varbits.NMZ_POINTS);
