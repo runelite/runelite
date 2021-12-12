@@ -321,7 +321,8 @@ public class ChatFilterPlugin extends Plugin
 	{
 		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
 			.replace('\u00A0', ' ');
-		String strippedAccents = StringUtils.stripAccents(strippedMessage);
+		boolean shouldStripAccents = !strippedMessage.contains("(?U)");
+		String strippedAccents = shouldStripAccents ? StringUtils.stripAccents(strippedMessage) : strippedMessage;
 		assert strippedMessage.length() == strippedAccents.length();
 
 		if (username != null && shouldFilterByName(username))
