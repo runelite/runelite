@@ -402,6 +402,11 @@ class SceneUploader
 
 		float[] uv = model.getFaceTextureUVCoordinates();
 
+		final byte overrideAmount = model.getOverrideAmount();
+		final byte overrideHue = model.getOverrideHue();
+		final byte overrideSat = model.getOverrideSaturation();
+		final byte overrideLum = model.getOverrideLuminance();
+
 		int len = 0;
 		for (int face = 0; face < triangleCount; ++face)
 		{
@@ -428,6 +433,16 @@ class SceneUploader
 
 				len += 3;
 				continue;
+			}
+			// HSL override is not applied to flat shade faces or to textured faces
+			else if (faceTextures == null || faceTextures[face] == -1)
+			{
+				if (overrideAmount > 0)
+				{
+					color1 = interpolateHSL(color1, overrideHue, overrideSat, overrideLum, overrideAmount);
+					color2 = interpolateHSL(color2, overrideHue, overrideSat, overrideLum, overrideAmount);
+					color3 = interpolateHSL(color3, overrideHue, overrideSat, overrideLum, overrideAmount);
+				}
 			}
 
 			int packAlphaPriority = packAlphaPriority(faceTextures, transparencies, facePriorities, face);
@@ -470,13 +485,18 @@ class SceneUploader
 		final short[] faceTextures = model.getFaceTextures();
 		final byte[] facePriorities = model.getFaceRenderPriorities();
 
-		int triangleA = indices1[face];
-		int triangleB = indices2[face];
-		int triangleC = indices3[face];
+		final int triangleA = indices1[face];
+		final int triangleB = indices2[face];
+		final int triangleC = indices3[face];
 
 		int color1 = color1s[face];
 		int color2 = color2s[face];
 		int color3 = color3s[face];
+
+		final byte overrideAmount = model.getOverrideAmount();
+		final byte overrideHue = model.getOverrideHue();
+		final byte overrideSat = model.getOverrideSaturation();
+		final byte overrideLum = model.getOverrideLuminance();
 
 		int packedAlphaPriority = packAlphaPriority(faceTextures, transparencies, facePriorities, face);
 
@@ -504,6 +524,16 @@ class SceneUploader
 				uvBuffer.put(0, 0, 0, 0f);
 			}
 			return 3;
+		}
+		// HSL override is not applied to flat shade faces or to textured faces
+		else if (faceTextures == null || faceTextures[face] == -1)
+		{
+			if (overrideAmount > 0)
+			{
+				color1 = interpolateHSL(color1, overrideHue, overrideSat, overrideLum, overrideAmount);
+				color2 = interpolateHSL(color2, overrideHue, overrideSat, overrideLum, overrideAmount);
+				color3 = interpolateHSL(color3, overrideHue, overrideSat, overrideLum, overrideAmount);
+			}
 		}
 
 		int a, b, c;
@@ -604,5 +634,29 @@ class SceneUploader
 			uvBuffer.put(0, 0, 0, 0);
 			uvBuffer.put(0, 0, 0, 0);
 		}
+	}
+
+	private static int interpolateHSL(int hsl, byte hue2, byte sat2, byte lum2, byte lerp)
+	{
+		int hue = hsl >> 10 & 63;
+		int sat = hsl >> 7 & 7;
+		int lum = hsl & 127;
+		int var9 = lerp & 255;
+		if (hue2 != -1)
+		{
+			hue += var9 * (hue2 - hue) >> 7;
+		}
+
+		if (sat2 != -1)
+		{
+			sat += var9 * (sat2 - sat) >> 7;
+		}
+
+		if (lum2 != -1)
+		{
+			lum += var9 * (lum2 - lum) >> 7;
+		}
+
+		return (hue << 10 | sat << 7 | lum) & 65535;
 	}
 }
