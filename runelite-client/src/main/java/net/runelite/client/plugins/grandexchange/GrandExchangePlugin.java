@@ -66,6 +66,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -74,7 +75,6 @@ import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -120,10 +120,9 @@ public class GrandExchangePlugin extends Plugin
 	@VisibleForTesting
 	static final int GE_SLOTS = 8;
 	private static final int GE_LOGIN_BURST_WINDOW = 2; // ticks
-	private static final int OFFER_CONTAINER_ITEM = 21;
-	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
+	private static final int GE_MAX_EXAMINE_LEN = 100;
 
-	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
+	private static final String BUY_LIMIT_GE_TEXT = "Buy limit: ";
 	private static final String BUY_LIMIT_KEY = "buylimit";
 	private static final Duration BUY_LIMIT_RESET = Duration.ofHours(4);
 
@@ -181,9 +180,6 @@ public class GrandExchangePlugin extends Plugin
 
 	@Inject
 	private RuneLiteConfig runeLiteConfig;
-
-	private Widget grandExchangeText;
-	private String grandExchangeExamine;
 
 	@Inject
 	private GrandExchangeClient grandExchangeClient;
@@ -317,7 +313,6 @@ public class GrandExchangePlugin extends Plugin
 		clientToolbar.removeNavigation(button);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
-		grandExchangeText = null;
 		lastUsername = machineUuid = null;
 		tradeSeq = 0;
 	}
@@ -588,30 +583,9 @@ public class GrandExchangePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		switch (event.getGroupId())
-		{
-			// Grand exchange was opened.
-			case WidgetID.GRAND_EXCHANGE_GROUP_ID:
-				grandExchangeText = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_TEXT);
-				break;
-			// Grand exchange was closed (if it was open before).
-			case WidgetID.INVENTORY_GROUP_ID:
-				grandExchangeText = null;
-				break;
-		}
-	}
-
-	@Subscribe
 	public void onScriptPostFired(ScriptPostFired event)
 	{
-		// GE offers setup init
-		if (event.getScriptId() == ScriptID.GE_OFFERS_SETUP_BUILD)
-		{
-			rebuildGeText();
-		}
-		else if (event.getScriptId() == ScriptID.GE_ITEM_SEARCH && config.highlightSearchMatch())
+		if (event.getScriptId() == ScriptID.GE_ITEM_SEARCH && config.highlightSearchMatch())
 		{
 			highlightSearchMatches();
 		}
@@ -738,7 +712,30 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (!event.getEventName().equals("setGETitle") || !config.showTotal())
+		switch (event.getEventName())
+		{
+			case "setGETitle":
+				setGeTitle();
+				break;
+			case "geExamineText":
+			{
+				String[] stack = client.getStringStack();
+				int sz = client.getStringStackSize();
+				String fee = stack[sz - 2];
+				String examine = stack[sz - 3];
+				String text = setExamineText(examine, fee);
+				if (text != null)
+				{
+					stack[sz - 1] = text;
+				}
+				break;
+			}
+		}
+	}
+
+	private void setGeTitle()
+	{
+		if (!config.showTotal())
 		{
 			return;
 		}
@@ -817,39 +814,10 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	private void rebuildGeText()
+	private String setExamineText(String examine, String fee)
 	{
-		if (grandExchangeText == null)
-		{
-			return;
-		}
-		Widget grandExchangeOffer = client.getWidget(WidgetInfo.GRAND_EXCHANGE_OFFER_CONTAINER);
-		if (grandExchangeOffer == null)
-		{
-			return;
-		}
-		Widget grandExchangeItem = grandExchangeOffer.getChild(OFFER_CONTAINER_ITEM);
-		if (grandExchangeItem == null || grandExchangeItem.isHidden())
-		{
-			return;
-		}
-
-		final Widget geText = grandExchangeText;
-		final int itemId = grandExchangeItem.getItemId();
-
-		if (itemId == OFFER_DEFAULT_ITEM_ID || itemId == -1)
-		{
-			// This item is invalid/nothing has been searched for
-			return;
-		}
-
-		if (geText.getText() == grandExchangeExamine)
-		{
-			// if we've already set the text, don't set it again
-			return;
-		}
-
-		String text = geText.getText();
+		final int itemId = client.getVar(VarPlayer.CURRENT_GE_ITEM);
+		StringBuilder sb = new StringBuilder();
 
 		if (config.enableGELimits())
 		{
@@ -858,7 +826,7 @@ public class GrandExchangePlugin extends Plugin
 			// If we have item buy limit, append it
 			if (itemStats != null && itemStats.getGeLimit() > 0)
 			{
-				text += BUY_LIMIT_GE_TEXT + QuantityFormatter.formatNumber(itemStats.getGeLimit());
+				sb.append(BUY_LIMIT_GE_TEXT).append(QuantityFormatter.formatNumber(itemStats.getGeLimit()));
 			}
 		}
 
@@ -868,7 +836,7 @@ public class GrandExchangePlugin extends Plugin
 			if (resetTime != null)
 			{
 				Duration remaining = Duration.between(Instant.now(), resetTime);
-				text += " (" + DurationFormatUtils.formatDuration(remaining.toMillis(), "H:mm") + ")";
+				sb.append(" (").append(DurationFormatUtils.formatDuration(remaining.toMillis(), "H:mm")).append(")");
 			}
 		}
 
@@ -877,12 +845,41 @@ public class GrandExchangePlugin extends Plugin
 			final int price = itemManager.getItemPriceWithSource(itemId, true);
 			if (price > 0)
 			{
-				text += "<br>Actively traded price: " + QuantityFormatter.formatNumber(price);
+				if (sb.length() > 0)
+				{
+					sb.append(" / ");
+				}
+				sb.append("Actively traded price: ").append(QuantityFormatter.formatNumber(price));
 			}
 		}
 
-		grandExchangeExamine = text;
-		geText.setText(text);
+		if (sb.length() == 0)
+		{
+			return null;
+		}
+
+		return shortenExamine(examine) + "<br>" + sb + "<br>" + fee;
+	}
+
+	private static String shortenExamine(String examine)
+	{
+		int from = 0;
+		int idx;
+		while (true)
+		{
+			idx = examine.indexOf(' ', from);
+			if (idx == -1)
+			{
+				return examine;
+			}
+			if (idx > GE_MAX_EXAMINE_LEN && from > 0)
+			{
+				break; // use from
+			}
+			from = idx + 1;
+		}
+
+		return examine.substring(0, from - 1) + "...";
 	}
 
 	void openGeLink(String name, int itemId)
