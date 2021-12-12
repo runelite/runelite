@@ -33,11 +33,15 @@ import net.runelite.api.FriendsChatManager;
 import net.runelite.api.FriendsChatMember;
 import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanRank;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.clan.ClanTitle;
+import static net.runelite.client.plugins.playerindicators.HighlightOthersOptions.ALWAYS;
+import static net.runelite.client.plugins.playerindicators.HighlightOthersOptions.NEVER;
+import static net.runelite.client.plugins.playerindicators.HighlightOthersOptions.ONLY_IN_WILDERNESS;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -56,7 +60,7 @@ public class PlayerIndicatorsService
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 		if (!config.highlightOwnPlayer() && !config.highlightFriendsChat()
-			&& !config.highlightFriends() && !config.highlightOthers()
+			&& !config.highlightFriends() && !(config.highlightOthers() == NEVER)
 			&& !config.highlightClanMembers())
 		{
 			return;
@@ -97,7 +101,8 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.getClanMemberColor());
 			}
-			else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember)
+			else if ((config.highlightOthers() == ALWAYS || (config.highlightOthers() == ONLY_IN_WILDERNESS
+				&& client.getVar(Varbits.IN_WILDERNESS) == 1)) && !isFriendsChatMember && !isClanMember)
 			{
 				consumer.accept(player, config.getOthersColor());
 			}

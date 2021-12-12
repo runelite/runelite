@@ -46,6 +46,7 @@ import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
 import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanTitle;
 import net.runelite.api.events.ClientTick;
 import net.runelite.client.config.ConfigManager;
@@ -53,6 +54,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.playerindicators.HighlightOthersOptions.ALWAYS;
+import static net.runelite.client.plugins.playerindicators.HighlightOthersOptions.ONLY_IN_WILDERNESS;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
@@ -212,7 +215,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 				}
 			}
 		}
-		else if (!player.isFriendsChatMember() && !player.isClanMember() && config.highlightOthers())
+		else if (!player.isFriendsChatMember() && !player.isClanMember() && (config.highlightOthers() == ALWAYS ||
+			(config.highlightOthers() == ONLY_IN_WILDERNESS && client.getVar(Varbits.IN_WILDERNESS) == 1)))
 		{
 			color = config.getOthersColor();
 		}

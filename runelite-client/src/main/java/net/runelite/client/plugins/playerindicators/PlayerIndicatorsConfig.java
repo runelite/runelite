@@ -164,12 +164,12 @@ public interface PlayerIndicatorsConfig extends Config
 		position = 10,
 		keyName = "drawNonClanMemberNames",
 		name = "Highlight others",
-		description = "Configures whether or not other players should be highlighted",
+		description = "Configures in which case other players should be highlighted",
 		section = highlightSection
 	)
-	default boolean highlightOthers()
+	default HighlightOthersOptions highlightOthers()
 	{
-		return false;
+		return HighlightOthersOptions.NEVER;
 	}
 
 	@ConfigItem(
