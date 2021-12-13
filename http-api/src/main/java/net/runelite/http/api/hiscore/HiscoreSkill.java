@@ -97,6 +97,7 @@ public enum HiscoreSkill
 	KREEARRA("Kree'Arra", BOSS),
 	KRIL_TSUTSAROTH("K'ril Tsutsaroth", BOSS),
 	MIMIC("Mimic", BOSS),
+	NEX("Nex", BOSS),
 	NIGHTMARE("Nightmare", BOSS),
 	PHOSANIS_NIGHTMARE("Phosani's Nightmare", BOSS),
 	OBOR("Obor", BOSS),

@@ -98,7 +98,8 @@ public class HiscoreServiceTest
 			+ "702,6495\n"
 			+ "10170,184\n"
 			+ "8064,202\n"
-			+ "6936,2\n"
+			+ "6936,2\n" // Mimic
+			+ "1,4920\n" // Nex
 			+ "2335,9\n" // Nightmare
 			+ "2336,10\n" // Phosanis Nightmare
 			+ "-1,-1\n"
@@ -151,6 +152,7 @@ public class HiscoreServiceTest
 		Assert.assertEquals(2460, result.getLeaguePoints().getLevel());
 		Assert.assertEquals(37, result.getAbyssalSire().getLevel());
 		Assert.assertEquals(92357, result.getCallisto().getRank());
+		Assert.assertEquals(4920, result.getNex().getLevel());
 		Assert.assertEquals(2336, result.getPhosanisNightmare().getRank());
 		Assert.assertEquals(5678, result.getTempoross().getLevel());
 		Assert.assertEquals(42, result.getTheatreOfBloodHardMode().getLevel());
