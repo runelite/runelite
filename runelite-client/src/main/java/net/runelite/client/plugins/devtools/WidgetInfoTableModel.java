@@ -48,16 +48,16 @@ public class WidgetInfoTableModel extends AbstractTableModel
 	private static final int COL_FIELD = 0;
 	private static final int COL_VALUE = 1;
 
-	private final List<WidgetField> fields = populateWidgetFields();
+	private final List<WidgetField<?>> fields = populateWidgetFields();
 
 	private Widget widget = null;
-	private Map<WidgetField, Object> values = null;
+	private Map<WidgetField<?>, Object> values = null;
 
 	public void setWidget(Widget w)
 	{
 		clientThread.invoke(() ->
 		{
-			Map<WidgetField, Object> newValues = w == null ? null : fields.stream().collect(ImmutableMap.toImmutableMap(
+			Map<WidgetField<?>, Object> newValues = w == null ? null : fields.stream().collect(ImmutableMap.toImmutableMap(
 				Function.identity(),
 				i -> i.getValue(w)
 			));
@@ -137,9 +137,9 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		});
 	}
 
-	private List<WidgetField> populateWidgetFields()
+	private List<WidgetField<?>> populateWidgetFields()
 	{
-		List<WidgetField> out = new ArrayList<>();
+		List<WidgetField<?>> out = new ArrayList<>();
 
 		out.add(new WidgetField<>("Id", Widget::getId));
 		out.add(new WidgetField<>("Type", Widget::getType, Widget::setType, Integer.class));
@@ -209,6 +209,11 @@ public class WidgetInfoTableModel extends AbstractTableModel
 			}
 			return null;
 		}));
+		out.add(new WidgetField<>("OnOpListener", Widget::getOnOpListener));
+		out.add(new WidgetField<>("OnKeyListener", Widget::getOnKeyListener));
+		out.add(new WidgetField<>("OnLoadListener", Widget::getOnLoadListener));
+		out.add(new WidgetField<>("OnInvTransmitListener", Widget::getOnInvTransmitListener));
+		out.add(new WidgetField<>("OnVarTransmitListener", Widget::getOnVarTransmitListener));
 
 		return out;
 	}
