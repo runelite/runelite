@@ -200,6 +200,12 @@ public final class ScriptID
 	public static final int FRIENDS_CHAT_CHANNEL_REBUILD = 1658;
 
 	/**
+	 * Builds the widget that holds all of the players inside a clan chat
+	 */
+	@ScriptArguments(integer = 7)
+	public static final int CLAN_SIDEPANEL_DRAW = 4396;
+
+	/**
 	 * Builds the widget for making an offer in Grand Exchange
 	 */
 	@ScriptArguments(integer = 16)

@@ -921,11 +921,15 @@ public final class WidgetID
 
 	static class Clan
 	{
+		static final int LAYER = 0;
+		static final int HEADER = 1;
 		static final int MEMBERS = 6;
 	}
 
 	static class ClanGuest
 	{
+		static final int LAYER = 0;
+		static final int HEADER = 1;
 		static final int MEMBERS = 6;
 	}
 }
