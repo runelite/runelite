@@ -124,6 +124,7 @@ public class TimersPlugin extends Plugin
 	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_END = " thrall returns to the grave.</col>";
 	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
 	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick the ";
+	private static final String PLANT_MITHRIL_SEED = "You drop a seed by your feet.";
 	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
 
 	private static final Pattern TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you(?: by .+)?\\. It will expire in (?<mins>\\d+) minutes?(?:, (?<secs>\\d+) seconds?)?\\.");
@@ -157,6 +158,7 @@ public class TimersPlugin extends Plugin
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
+	private boolean mithrilSeedPlanted;
 	private boolean widgetHiddenChangedOnPvpWorld;
 	private ElapsedTimer tzhaarTimer;
 
@@ -194,6 +196,7 @@ public class TimersPlugin extends Plugin
 		lastPoint = null;
 		lastTeleportClicked = null;
 		lastAnimation = -1;
+		mithrilSeedPlanted = false;
 		widgetHiddenChangedOnPvpWorld = false;
 		lastPoisonVarp = 0;
 		nextPoisonTick = 0;
@@ -529,6 +532,11 @@ public class TimersPlugin extends Plugin
 		if (message.equals(ABYSSAL_SIRE_STUN_MESSAGE) && config.showAbyssalSireStun())
 		{
 			createGameTimer(ABYSSAL_SIRE_STUN);
+		}
+
+		if (message.contains(PLANT_MITHRIL_SEED))
+		{
+			mithrilSeedPlanted = true;
 		}
 
 		if (message.equals(ENDURANCE_EFFECT_MESSAGE))
@@ -883,9 +891,10 @@ public class TimersPlugin extends Plugin
 
 		if (freezeTimer != null)
 		{
-			// assume movement means unfrozen
+			// We can assume movement means unfrozen, with the exception of planting a Mithril Seed
 			if (freezeTime != client.getTickCount()
-				&& !currentWorldPoint.equals(lastPoint))
+					&& !currentWorldPoint.equals(lastPoint)
+					&& !mithrilSeedPlanted)
 			{
 				removeGameTimer(freezeTimer.getTimer());
 				freezeTimer = null;
@@ -893,6 +902,7 @@ public class TimersPlugin extends Plugin
 		}
 
 		lastPoint = currentWorldPoint;
+		mithrilSeedPlanted = false;
 
 		if (!widgetHiddenChangedOnPvpWorld)
 		{
