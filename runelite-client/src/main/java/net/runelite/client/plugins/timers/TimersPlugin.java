@@ -885,7 +885,7 @@ public class TimersPlugin extends Plugin
 
 		if (freezeTimer != null)
 		{
-			// assume movement means unfrozen
+			// We can assume movement means unfrozen, with the exception of planting a Mithril Seed
 			if (freezeTime != client.getTickCount()
 				&& !currentWorldPoint.equals(lastPoint)
 				&& !mithrilSeedPlanted)
