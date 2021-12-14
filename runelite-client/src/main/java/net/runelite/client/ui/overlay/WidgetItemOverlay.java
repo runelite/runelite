@@ -135,6 +135,7 @@ public abstract class WidgetItemOverlay extends Overlay
 	protected void showOnBank()
 	{
 		drawAfterLayer(WidgetInfo.BANK_ITEM_CONTAINER);
+		drawAfterLayer(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER);
 	}
 
 	protected void showOnEquipment()
