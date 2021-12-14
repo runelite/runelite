@@ -103,7 +103,6 @@ import net.runelite.client.util.Text;
 import net.runelite.http.api.ge.GrandExchangeClient;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.api.item.ItemStats;
-import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 import net.runelite.http.api.worlds.WorldType;
 import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -258,12 +257,6 @@ public class GrandExchangePlugin extends Plugin
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(GrandExchangeConfig.class);
-	}
-
-	@Provides
-	OSBGrandExchangeClient provideOsbGrandExchangeClient(OkHttpClient okHttpClient)
-	{
-		return new OSBGrandExchangeClient(okHttpClient);
 	}
 
 	@Provides
